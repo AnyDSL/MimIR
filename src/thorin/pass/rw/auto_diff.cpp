@@ -326,7 +326,20 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
         }
         // ∇(a / b) = λz.∂a ∂b
         case ROp::div: {
-            THORIN_UNREACHABLE; // TODO
+            auto dst = world_.op(ROp::div, (nat_t)0, a, b);
+            pb->set_dbg(world_.dbg(pb->name() + "/"));
+
+            pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), b), middle}));
+            middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), a), end}));
+            auto adiff = middle->var(1);
+            auto bdiff = end->var(1);
+
+            auto bsq=world_.op(ROp::mul, (nat_t)0, b, b);
+            auto c=world_.op(ROp::sub, (nat_t)0, adiff, bdiff);
+
+            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::div, (nat_t)0, c, bsq)}));
+            pullbacks_[dst] = pb;
+            return dst;
         }
         default:
             THORIN_UNREACHABLE;
@@ -364,7 +377,8 @@ const Def* AutoDiff::rewrite(const Def* def) {
                 dst_lam->set_body(world.lit_true());
                 dst_lam->set_body(differ.reverse_diff(src_lam));
 
-                //debug_dump(dst_lam);
+                // debug_dump(src_lam);
+                // debug_dump(dst_lam);
 
                 return dst_lam;
             }
