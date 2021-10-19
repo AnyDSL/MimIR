@@ -140,6 +140,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto callee = app->callee();
         auto arg = app->arg();
 
+        // remove
+        // errf("Diff app: {}\n", app);
+        // errf("Diff args: {}\n", arg);
+
         // Handle binary operations
         if (auto inner = callee->isa<App>()) {
             // Take care of binary operations
@@ -159,9 +163,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 }
             }
         }
+
         auto ad = j_wrap(arg);
+        // remove
+        // errf("Num outs: {}\n", ad->num_outs());
         auto ad_mem = world_.extract(ad, (u64)0, world_.dbg("mem"));
-        auto ad_arg = world_.extract(ad, (u64)1, world_.dbg("arg"));
+        auto ad_arg = world_.extract(ad, (u64)1, world_.dbg("arg")); // TODO: error with relu.impala
+            // call to then/else branch only takes memory
 
         auto cpi = (src_to_dst_.count(callee) ? src_to_dst_[callee]->type()->as<Pi>() : nullptr);
         if(cpi != nullptr) {
@@ -171,6 +179,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
                 if (pullbacks_.count(ad)) {
                     auto dst = world_.app(cd, {ad_mem, ad_arg, pullbacks_[ad]});
+                    // remove
+                    // auto dst = world_.app(cd, {ad_mem, pullbacks_[ad]});
                     src_to_dst_[app] = dst;
 
                     pullbacks_[dst] = pullbacks_[ad];
@@ -190,6 +200,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             auto dstcallee = src_to_dst_[callee];
 
             auto dst = world_.app(dstcallee, {ad_mem, ad_arg, pullbacks_[ad]});
+            // remove
+            // auto dst = world_.app(dstcallee, {ad_mem, pullbacks_[ad]});
             pullbacks_[dst] = pullbacks_[ad]; // <- chain pullback of dstcallee?
 
             return dst;
@@ -220,6 +232,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         }
         return dst;
     }
+
 
     if (auto pack = def->isa<Pack>()) {
         auto dst = world_.pack(pack->type()->arity(), j_wrap(pack->body()));
@@ -324,7 +337,7 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             pullbacks_[dst] = pb;
             return dst;
         }
-        // ∇(a / b) = λz.∂a ∂b
+        // ∇(a / b) = λz. (g* (z * h) - h* (z * g))/h²
         case ROp::div: {
             auto dst = world_.op(ROp::div, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "/"));
