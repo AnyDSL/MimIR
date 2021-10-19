@@ -23,15 +23,34 @@ namespace {
 
 class AutoDiffer {
 public:
-    AutoDiffer(World& world, const Def2Def src_to_dst, const Def* A)
+    AutoDiffer(World& world, const Def2Def src_to_dst, const Def* A, const Def* B)
         : world_{world}
         , src_to_dst_{src_to_dst}
         , idpb{}
     {
-        auto idpi = world_.cn_mem_flat(A, A);
+        auto idpi = world_.cn_mem_flat(B, A);
+        errf("IDPI {} \n",idpi);
         idpb = world_.nom_lam(idpi, world_.dbg("id"));
         idpb->set_filter(world_.lit_true());
-        idpb->set_body(world_.app(idpb->ret_var(), {idpb->mem_var(), idpb->var(1, world.dbg("a"))}));
+        errf("IDPB {} \n",A); // r32 or <<2::nat, r32>>
+        errf("IDPB Var {} \n",idpb->var());
+        errf("IDPB RVar {} \n",idpb->ret_var());
+        errf("IDPB Var T {} \n",idpb->var()->type());
+        errf("IDPB RVar T {} \n",idpb->ret_var()->type());
+
+        auto num_args = idpi->doms().back()->as<Pi>()->num_doms();
+        Array<const Def*> ops{num_args, [&](auto i) { 
+            if(i==0) return idpb->mem_var();
+            else return idpb->var(1, world.dbg("a")); }};
+        // errf("Nums: {}\n",idpi->doms().back()->as<Pi>()->num_doms());
+        // errf("Nums: {}\n",idpi->doms().back()->as<Pi>());
+        // errf("Nums: {}\n",idpi->codom());
+        // errf("Nums: {}\n",idpi->num_doms());
+        // errf("Nums: {}\n",idpi->num_codoms());
+        // errf("Nums: {}\n",num_args);
+        idpb->set_body(world_.app(idpb->ret_var(), world_.tuple(ops)));
+        // idpb->set_body(world_.app(idpb->ret_var(), {idpb->mem_var(), idpb->var(1, world.dbg("a"))}));
+        // idpb->set_body(world_.app(idpb->ret_var(), {idpb->mem_var(), idpb->var(1, world.dbg("a")),idpb->var(1, world.dbg("b"))}));
     }
 
     const Def* reverse_diff(Lam* src);
@@ -149,6 +168,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             // Take care of binary operations
             if (auto axiom = inner->callee()->isa<Axiom>()) {
                 if (axiom->tag() == Tag::ROp) {
+                    // errf("Op: {}\n",axiom->flags());
                     auto [a, b] = j_wrap(arg)->split<2>();
                     auto dst = j_wrap_rop(ROp(axiom->flags()), a, b);
                     src_to_dst_[app] = dst;
@@ -286,8 +306,13 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
     auto one = ONE(world_, r_type);
 
     // Grab argument pullbacks
+    assert(pullbacks_.count(a) && "Pullbacks for ROp arguments should already be created");
+    assert(pullbacks_.count(b) && "Pullbacks for ROp arguments should already be created");
     auto apb = pullbacks_[a];
     auto bpb = pullbacks_[b];
+    errf("ROp Pullback {} : {}\n",apb,apb->type());
+    // errf("ROp {} Pullback {} & {}\n",op,apb,bpb);
+    errf("ROp Pullback {} => {}\n",a, apb);
     switch (op) {
         // ∇(a + b) = λz.∂a(z * (1 + 0)) + ∂b(z * (0 + 1))
         case ROp::add: {
@@ -309,7 +334,7 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto dst = world_.op(ROp::sub, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "-"));
 
-            pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), one), middle}));
+            pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), one), middle})); // TODO: error with binary
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), world_.op_rminus((nat_t)0, one)), end}));
             auto adiff = middle->var(1);
             auto bdiff = end->var(1);
@@ -379,6 +404,9 @@ const Def* AutoDiff::rewrite(const Def* def) {
                 auto A = dst_pi->dom(1);
                 auto B = src_lam->ret_var()->type()->as<Pi>()->dom(1);
 
+                errf("A: {}\n",A);
+                errf("B: {}\n",B);
+
                 // The actual AD, i.e. construct "sq_cpy"
                 Def2Def src_to_dst;
                 for (size_t i = 0, e = src_lam->num_vars(); i < e; ++i) {
@@ -386,7 +414,7 @@ const Def* AutoDiff::rewrite(const Def* def) {
                     auto dst_param = dst_lam->var(i, world.dbg(src_param->name()));
                     src_to_dst[src_param] = i == e - 1 ? dst_lam->ret_var() : dst_param;
                 }
-                auto differ = AutoDiffer{world, src_to_dst, A};
+                auto differ = AutoDiffer{world, src_to_dst, A, B};
                 dst_lam->set_body(world.lit_true());
                 dst_lam->set_body(differ.reverse_diff(src_lam));
 
