@@ -23,15 +23,18 @@ void optimize(World& world) {
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);
     opt.add<SSAConstr>(ee);
-    //opt.add<CopyProp>();
-    //opt.add<Scalerize>();
-    //opt.add<AutoDiff>();
+        //opt.add<CopyProp>();
+        //opt.add<Scalerize>();
+    opt.add<AutoDiff>();
+    printf("Start Opti\n");
     opt.run();
+    printf("Finished Opti1\n");
 
     cleanup_world(world);
     while (partial_evaluation(world, true)); // lower2cff
     flatten_tuples(world);
     cleanup_world(world);
+    printf("Finished Opti2\n");
 
     PassMan codgen_prepare(world);
     //codgen_prepare.add<BoundElim>();
