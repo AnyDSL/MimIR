@@ -7,6 +7,11 @@
 
 namespace thorin {
 
+// TODO: errf -> outln
+void debug_dump(const char* name, const Def* d) {
+    errf("{} {} : {}\n",name,d,d->type());
+}
+
 // Sadly, we need to "unpack" the type
 const Def* lit_of_type(World& world, const Def* type, u64 lit) {
     // TODO: Actually implement this. For now, all functions are r32 anyways, so whatever.
@@ -31,18 +36,19 @@ public:
         , B{B}
     {
         // TODO: handle everything directly as tuple instead of flattening
-        auto idpi = world_.cn_mem_flat(B, A);
+//        auto idpi = world_.cn_mem_flat(B, A);
+        auto idpi = world_.cn_mem_ret(B, A);
         errf("IDPI {} \n",idpi);
         idpb = world_.nom_lam(idpi, world_.dbg("id"));
         idpb->set_filter(world_.lit_true());
-        errf("IDPB {} \n",A); // r32 or <<2::nat, r32>>
-        errf("IDPB Var {} \n",idpb->var());
-        errf("IDPB RVar {} \n",idpb->ret_var());
-        errf("IDPB Var T {} \n",idpb->var()->type());
-        errf("IDPB RVar T {} \n",idpb->ret_var()->type());
+        debug_dump("A",A);
+        debug_dump("B",B);
+//        errf("A {} \n",A); // r32 or <<2::nat, r32>>
+        errf("IDPB Var {} : {}\n",idpb->var(),idpb->var()->type());
+        errf("IDPB RVar {} : {}\n",idpb->ret_var(),idpb->ret_var()->type());
 
         // use type A directly instead of doms().back()
-        dim = idpi->doms().back()->as<Pi>()->num_doms()-1;
+        dim = idpi->doms().back()->as<Pi>()->num_doms()-1; // TODO: compute size correctly from A
         errf("Dim {} \n",dim);
         Array<const Def*> ops{dim+1, [&](auto i) {
             if(i==0) return idpb->mem_var();
@@ -53,6 +59,9 @@ public:
         // errf("Nums: {}\n",idpi->num_doms());
         // errf("Nums: {}\n",idpi->num_codoms());
         // errf("Nums: {}\n",num_args);
+
+        debug_dump("tuple of ops: ",world_.tuple(ops));
+
         idpb->set_body(world_.app(idpb->ret_var(), world_.tuple(ops)));
         // idpb->set_body(world_.app(idpb->ret_var(), {idpb->mem_var(), idpb->var(1, world.dbg("a"))}));
         // idpb->set_body(world_.app(idpb->ret_var(), {idpb->mem_var(), idpb->var(1, world.dbg("a")),idpb->var(1, world.dbg("b"))}));
@@ -137,8 +146,10 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 // Instead of explicitly putting everything into a pair, we just use the pullbacks freely
 //  Each `x` gets transformed to a `<x, λδz. δz * (δz / δx)>`
 const Def* AutoDiffer::j_wrap(const Def* def) {
-    if (auto dst = seen(def))
+    if (auto dst = seen(def)) {
+        errf("  seen {} : {} \n",def,def->type());
         return dst;
+    }
 
     if (auto var = def->isa<Var>()) {
         errf("Out of scope var: {}\n Not differentiable", var);
@@ -195,6 +206,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         auto ad = j_wrap(arg);
         // remove
+        errf("callee: {} : {}\n",callee, callee->type());
+        errf("ad: {} : {}\n",ad, ad->type());
         // errf("Num outs: {}\n", ad->num_outs());
         auto ad_mem = world_.extract(ad, (u64)0, world_.dbg("mem"));
         auto ad_arg = world_.extract(ad, (u64)1, world_.dbg("arg")); // TODO: error with relu.impala
@@ -204,7 +217,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         if(cpi != nullptr) {
             // check if our functions returns a pullback already
             if (auto rett = cpi->doms().back()->isa<Pi>(); rett && rett->is_returning()) {
+                errf("callee has node: {}\n",callee->node());
+//                errf("callee is Extract: {}\n",callee->isa<Extract>());
+//                errf("callee is App: {}\n",callee->isa<App>());
+//                errf("callee is Lam: {}\n",callee->isa<Lam>());
+//                errf("callee is nom Lam: {}\n",callee->isa_nom<Lam>());
                 auto cd = j_wrap(callee);
+                errf("cd: {} : {}\n",cd, cd->type());
 
                 if (pullbacks_.count(ad)) {
                     auto dst = world_.app(cd, {ad_mem, ad_arg, pullbacks_[ad]});
@@ -271,8 +290,11 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     }
 
     if (auto extract = def->isa<Extract>()) {
+        errf("ex {} : {}\n",extract,extract->type());
         auto jtup = j_wrap(extract->tuple());
+        errf("jtup {} : {}\n",jtup,jtup->type());
         auto dst = world_.extract_unsafe(jtup, extract->index());
+        errf("dst {} : {}\n",dst,dst->type());
         src_to_dst_[extract] = dst;
         pullbacks_[dst] = pullbacks_[jtup]; // <- FIXME: This must not be idpb lmao
         return dst;
@@ -468,7 +490,8 @@ const Def* AutoDiff::rewrite(const Def* def) {
 
                 // We get for `A -> B` the type `A -> (B * (B -> A))`.
                 //  i.e. cn[:mem, A, [:mem, B]] ---> cn[:mem, A, cn[:mem, B, cn[:mem, B, A]]]
-                auto dst_pi = app->type()->as<Pi>();
+                auto dst_pi = app->type()->as<Pi>(); // multi dim as array
+                debug_dump("dst_pi",dst_pi);
                 auto dst_lam = world.nom_lam(dst_pi, world.dbg("top_level_rev_diff_" + src_lam->name()));
                 dst_lam->set_filter(src_lam->filter());
                 auto A = dst_pi->dom(1);
@@ -486,6 +509,8 @@ const Def* AutoDiff::rewrite(const Def* def) {
                 }
                 auto differ = AutoDiffer{world, src_to_dst, A, B};
                 dst_lam->set_body(world.lit_true());
+                debug_dump("src_lam",src_lam);
+                debug_dump("dst_lam",dst_lam);
                 dst_lam->set_body(differ.reverse_diff(src_lam));
 
                 // debug_dump(src_lam);
