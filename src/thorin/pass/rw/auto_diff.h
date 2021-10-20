@@ -10,6 +10,7 @@ namespace thorin {
     Backpropagation in the Simply Typed Lambda-Calculus with Linear Negation
     Brunel et al, 2020
     Df(x,x*) = <f(x), λa. x* (a * f'(x))>
+    (as x* is a pullback the call corresponds to a multiplication of the inner derivative)
 
     This rewrite pass rewrites occurences of the rev_diff axiom
     into the differentiated versions with pullbacks.
@@ -50,6 +51,11 @@ namespace thorin {
                 op     a       b
         differentiates a binary rop like addition or multiplication
 
+
+    in general we have
+    D(f(t)) = 
+        (x,x*) = D(t)
+        <f(x); λ z. Σ xᵢ*( ∂ᵢf(x) ⋅ z )>
 
     */
 
