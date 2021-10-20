@@ -27,6 +27,8 @@ public:
         : world_{world}
         , src_to_dst_{src_to_dst}
         , idpb{}
+        , A{A}
+        , B{B}
     {
         auto idpi = world_.cn_mem_flat(B, A);
         errf("IDPI {} \n",idpi);
@@ -38,8 +40,9 @@ public:
         errf("IDPB Var T {} \n",idpb->var()->type());
         errf("IDPB RVar T {} \n",idpb->ret_var()->type());
 
-        auto num_args = idpi->doms().back()->as<Pi>()->num_doms();
-        Array<const Def*> ops{num_args, [&](auto i) { 
+        // use type A directly instead of doms().back()
+        dim = idpi->doms().back()->as<Pi>()->num_doms();
+        Array<const Def*> ops{dim, [&](auto i) { 
             if(i==0) return idpb->mem_var();
             else return idpb->var(1, world.dbg("a")); }};
         // errf("Nums: {}\n",idpi->doms().back()->as<Pi>()->num_doms());
@@ -68,6 +71,9 @@ private:
     Def2Def src_to_dst_;
     Lam* idpb;
     DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term to its pullback function
+    const Def* A;
+    const Def* B;
+    size_t dim;
 };
 
 Lam* AutoDiffer::chain(Lam* a, Lam* b) {
@@ -169,6 +175,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             if (auto axiom = inner->callee()->isa<Axiom>()) {
                 if (axiom->tag() == Tag::ROp) {
                     // errf("Op: {}\n",axiom->flags());
+                    errf("Arg {}\n",arg);
                     auto [a, b] = j_wrap(arg)->split<2>();
                     auto dst = j_wrap_rop(ROp(axiom->flags()), a, b);
                     src_to_dst_[app] = dst;
@@ -290,29 +297,50 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     THORIN_UNREACHABLE;
 }
 
+const Def* vec_add(World& world,const Def* a, const Def* b) {
+    return world.op(ROp::add, (nat_t)0, a, b);
+    // auto ai = world.extract(a,i);
+    // auto bi = world.extract(b,i);
+    // auto ci = world.op(ROp::add, (nat_t)0, ai, bi);
+}
+
 const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
     // build up pullback type for this expression
-    auto r_type = a->type();
-    auto pbpi = world_.cn_mem_flat(r_type, r_type);
+    // auto r_type = a->type();
+    auto o_type = a->type();
+    auto r_type = flatten(A); // does not flatten
+    auto pbpi = world_.cn_mem_flat(B, A);
+    errf("o_type {} \n",o_type);
+    errf("r_type {} \n",r_type);
+    errf("apb last {} \n",pullbacks_[a]->type()->as<Pi>()->doms().back());
+    // auto pbT = pullbacks_[a]->type()->as<Pi>()->doms().back()->as<Pi>(); // TODO: create using flattened A
+    auto pbT = pullbacks_[a]->type()->as<Pi>()->doms().back()->as<Pi>(); // TODO: create using flattened A
     auto pb = world_.nom_lam(pbpi, world_.dbg("φ"));
+    errf("pbT {} \n",pbT);
+    errf("pbpi {} \n",pbpi);
+    errf("pb ret var {} : {} \n",pb->ret_var(),pb->ret_var()->type());
 
-    auto middle = world_.nom_lam(world_.cn({world_.type_mem(), r_type}), world_.dbg("φmiddle"));
-    auto end = world_.nom_lam(world_.cn({world_.type_mem(), r_type}), world_.dbg("φend"));
+    auto middle = world_.nom_lam(pbT, world_.dbg("φmiddle"));
+    auto end = world_.nom_lam(pbT, world_.dbg("φend"));
+    // auto middle = world_.nom_lam(world_.cn({world_.type_mem(), r_type}), world_.dbg("φmiddle"));
+    // auto end = world_.nom_lam(world_.cn({world_.type_mem(), r_type}), world_.dbg("φend"));
+
+    errf("middle type {}\n",middle->type());
 
     pb->set_filter(world_.lit_true());
     middle->set_filter(world_.lit_true());
     end->set_filter(world_.lit_true());
 
-    auto one = ONE(world_, r_type);
+    auto one = ONE(world_, o_type);
 
     // Grab argument pullbacks
     assert(pullbacks_.count(a) && "Pullbacks for ROp arguments should already be created");
     assert(pullbacks_.count(b) && "Pullbacks for ROp arguments should already be created");
     auto apb = pullbacks_[a];
     auto bpb = pullbacks_[b];
+    errf("ROp Pullback {} => {}\n",a, apb);
     errf("ROp Pullback {} : {}\n",apb,apb->type());
     // errf("ROp {} Pullback {} & {}\n",op,apb,bpb);
-    errf("ROp Pullback {} => {}\n",a, apb);
     switch (op) {
         // ∇(a + b) = λz.∂a(z * (1 + 0)) + ∂b(z * (0 + 1))
         case ROp::add: {
@@ -334,10 +362,15 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto dst = world_.op(ROp::sub, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "-"));
 
-            pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), one), middle})); // TODO: error with binary
+            pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), one), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), world_.op_rminus((nat_t)0, one)), end}));
-            auto adiff = middle->var(1);
+            auto adiff = middle->var(1); // all args 1..n as tuple => vector for addition
             auto bdiff = end->var(1);
+
+            errf("adiff {}\n",adiff);
+            errf("adiff {}\n",adiff->type());
+            // errf("adiff {}\n",adiff->type()->as<Sigma>());
+            // errf("adiff {}\n",adiff->type()->as<Sigma>()->ops());
 
             end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
             pullbacks_[dst] = pb;
