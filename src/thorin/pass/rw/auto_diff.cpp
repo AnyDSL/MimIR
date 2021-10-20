@@ -30,6 +30,7 @@ public:
         , A{A}
         , B{B}
     {
+        // TODO: handle everything directly as tuple instead of flattening
         auto idpi = world_.cn_mem_flat(B, A);
         errf("IDPI {} \n",idpi);
         idpb = world_.nom_lam(idpi, world_.dbg("id"));
@@ -41,8 +42,9 @@ public:
         errf("IDPB RVar T {} \n",idpb->ret_var()->type());
 
         // use type A directly instead of doms().back()
-        dim = idpi->doms().back()->as<Pi>()->num_doms();
-        Array<const Def*> ops{dim, [&](auto i) { 
+        dim = idpi->doms().back()->as<Pi>()->num_doms()-1;
+        errf("Dim {} \n",dim);
+        Array<const Def*> ops{dim+1, [&](auto i) {
             if(i==0) return idpb->mem_var();
             else return idpb->var(1, world.dbg("a")); }};
         // errf("Nums: {}\n",idpi->doms().back()->as<Pi>()->num_doms());
@@ -297,11 +299,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     THORIN_UNREACHABLE;
 }
 
-const Def* vec_add(World& world,const Def* a, const Def* b) {
-    return world.op(ROp::add, (nat_t)0, a, b);
-    // auto ai = world.extract(a,i);
-    // auto bi = world.extract(b,i);
-    // auto ci = world.op(ROp::add, (nat_t)0, ai, bi);
+Array<const Def*> vec_add(World& world, Array<const Def*> a, Array<const Def*> b) {
+    return {a.size(), [&](auto i) {
+        return world.op(ROp::add,(nat_t)0,a[i],b[i]);
+    }};
+}
+
+Array<const Def*> collect_arguments(Def* lam) {
+    return {lam->num_vars()-1, [&](auto i) { return lam->var(i+1); }};
 }
 
 const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
@@ -364,15 +369,42 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
 
             pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), one), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), world_.op_rminus((nat_t)0, one)), end}));
-            auto adiff = middle->var(1); // all args 1..n as tuple => vector for addition
-            auto bdiff = end->var(1);
+            // all args 1..n as tuple => vector for addition
+//             auto adiff = middle->var(1);
+                // proj((const Def*) var(), num_vars(), 1, nullptr)
+//             auto bdiff = end->var(1);
+//            auto adiffV = middle->vars().skip_front();
+                // Array<const Def*>(num_vars(), [&](auto i) { return var(i); });
+//            auto bdiffV = end->vars().skip_front();
+//            auto adiff2=adiffV[0];
+                // ptr_[0] = var(1)
+//            auto adiffV = Array<const Def*>(middle->num_vars()-1, [&](auto i) { return middle->var(i+1); });
+//            auto bdiffV = Array<const Def*>(end->num_vars()-1, [&](auto i) { return end->var(i+1); });
+//            auto adiff=adiffV.front();
+//            auto bdiff=bdiffV.front();
 
-            errf("adiff {}\n",adiff);
-            errf("adiff {}\n",adiff->type());
+            // dim = middle->num_vars()-1=end.num_vars()-1
+//            Array<const Def*> sum{dim, [&](auto i) {
+//                return world_.op(ROp::add,(nat_t)0,adiffV[i],bdiffV[i]);
+//            }};
+
+//            errf("middle->vars {} = 1+ {}\n",middle->num_vars(),adiffV.size());
+//            errf("sum size {}\n",sum.size());
+//            intuitively adiff==adiff2
+//            intuitively bdiff==bdiff2
+//            adiff=adiff2;
+
+//            errf("adiff {}\n",adiff);
+//            errf("adiff {}\n",adiff->type());
             // errf("adiff {}\n",adiff->type()->as<Sigma>());
             // errf("adiff {}\n",adiff->type()->as<Sigma>()->ops());
 
-            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
+//            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
+            end->set_body(world_.app(pb->ret_var(), world_.tuple(merge(
+                    end->mem_var(),
+                    vec_add(world_,
+                        collect_arguments(middle),
+                        collect_arguments(end))))));
             pullbacks_[dst] = pb;
 
             return dst;
@@ -388,10 +420,15 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
 
             pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), b), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), a), end}));
-            auto adiff = middle->var(1);
-            auto bdiff = end->var(1);
+//            auto adiff = middle->var(1);
+//            auto bdiff = end->var(1);
 
-            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
+            end->set_body(world_.app(pb->ret_var(), world_.tuple(merge(
+                end->mem_var(),
+                vec_add(world_,
+                        collect_arguments(middle),
+                        collect_arguments(end))))));
+//            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
             pullbacks_[dst] = pb;
             return dst;
         }
