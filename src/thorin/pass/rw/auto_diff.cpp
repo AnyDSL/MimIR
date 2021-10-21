@@ -18,6 +18,16 @@ const Def* lit_of_type(World& world, const Def* type, u64 lit) {
 
     if (auto real = isa<Tag::Real>(type))
         return world.lit_real(as_lit(real->arg()), lit);
+    if (auto a = type->isa<Arr>()) {
+        errf("Arr\n");
+        auto dim = a->shape()->as<Lit>()->get<uint8_t>();
+        Array<const Def*> ops{dim, [&](auto i) {
+            return lit_of_type(world,a->body(),lit);
+                              }};
+        return world.tuple(ops);
+    }
+//        return world.lit_real(as_lit(real->arg()), lit);
+//        errf("LIT TY {}\n",type);
     return world.lit_int(as_lit(as<Tag::Int>(type)), lit);
 }
 
@@ -51,11 +61,14 @@ public:
         errf("IDPB RVar {} : {}\n",idpb->ret_var(),idpb->ret_var()->type());
 
         // use type A directly instead of doms().back()
+        const Def* inner;
         if (auto a = A->isa<Arr>()) {
             dim = a->shape()->as<Lit>()->get<uint8_t>();
             errf("Arr Dim {} \n",dim);
+            inner=a->body();
         }else {
             dim=1;
+            inner=A;
         }
         errf("Dim {} \n",dim);
         Array<const Def*> ops{dim, [&](auto i) {
@@ -78,6 +91,23 @@ public:
 //        idpb->set_body(world_.app(idpb->ret_var(), world_.tuple(merge(idpb->mem_var(),ops))));
         // idpb->set_body(world_.app(idpb->ret_var(), {idpb->mem_var(), idpb->var(1, world.dbg("a"))}));
         // idpb->set_body(world_.app(idpb->ret_var(), {idpb->mem_var(), idpb->var(1, world.dbg("a")),idpb->var(1, world.dbg("b"))}));
+
+        ind_idpb={
+            dim,
+            [&](auto i) {
+                Lam* ipb=world_.nom_lam(idpi, world_.dbg("id"));
+                ipb->set_filter(world_.lit_true());
+                Array<const Def*> ops{dim, [&](auto j) {
+                    if(i==j)
+                        return idpb->var(1, world.dbg("a")); // z
+                    else
+                        return ZERO(world_,inner);
+                }};
+                const Def* opArr = world_.tuple(ops);
+                ipb->set_body(world_.app(ipb->ret_var(), {ipb->mem_var(),opArr}));
+                return ipb;
+            }
+        };
     }
 
     const Def* reverse_diff(Lam* src);
@@ -94,6 +124,7 @@ private:
     World& world_;
     Def2Def src_to_dst_;
     Lam* idpb;
+    Array<Lam*> ind_idpb;
     DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term to its pullback function
     const Def* A;
     const Def* B;
@@ -130,13 +161,17 @@ Lam* AutoDiffer::chain(Lam* a, Lam* b) {
 
 const Def* AutoDiffer::reverse_diff(Lam* src) {
     // For each param, create an appropriate pullback. It is just the identity function for each of those.
+//    errf("Src Num Vars {} \n",src->num_vars());
+    debug_dump("src",src); // ignore 0 and 2 => only 2 (might be an array)
     for(size_t i = 0, e = src->num_vars(); i < e; ++i) {
         auto src_param = src->var(i);
         if(src_param == src->ret_var() || src_param == src->mem_var()) {
+            errf("Src Not Count {} \n",i);
             continue;
         }
         auto dst = src_to_dst_[src_param];
         pullbacks_[dst] = idpb;
+//        pullbacks_[dst] = ind_idpb[i];
     }
     auto dst = j_wrap(src->body());
     return dst;
@@ -275,22 +310,32 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     }
 
     if (auto tuple = def->isa<Tuple>()) {
+        // TODO: adjust start pullback for tuple argument acordingly
+        // TODO: distinguish [mem, r32] from <<2::nat,r32>>
+        debug_dump("Tuple",tuple);
+        errf("Tuple NumOps {}\n",tuple->num_outs());
         Array<const Def*> ops{tuple->num_ops(), [&](auto i) { return j_wrap(tuple->op(i)); }};
         auto dst = world_.tuple(ops);
         src_to_dst_[tuple] = dst;
 
+        Array<const Def*> pbs{tuple->num_ops()-1,
+                [&](auto i) { return pullbacks_[ops[i+1]]; }};
+        pullbacks_[dst] = world_.tuple(pbs);
         // FIXME: this obviously doesn't work in general
-        if(ops.size() == 2) {
-            pullbacks_[dst] = pullbacks_[ops[1]];
-        }
-        else {
-            // fallback
-            pullbacks_[dst] = idpb;
-            for (auto i : ops) {
-                if (pullbacks_.contains(i))
-                    pullbacks_[dst] = pullbacks_[i];
-            }
-        }
+//        if(ops.size() == 2) {
+//            pullbacks_[dst] = pullbacks_[ops[1]];
+////            pullbacks_[dst] = world_.tuple(
+////                {tuple->num_ops()-1, [&](auto i) { return pullbacks_[ops[i+1]]; }}
+////            );
+//        }
+//        else {
+//            // fallback
+//            pullbacks_[dst] = idpb;
+//            for (auto i : ops) {
+//                if (pullbacks_.contains(i))
+//                    pullbacks_[dst] = pullbacks_[i];
+//            }
+//        }
         return dst;
     }
 
@@ -309,7 +354,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto dst = world_.extract_unsafe(jtup, extract->index());
         errf("dst {} : {}\n",dst,dst->type());
         src_to_dst_[extract] = dst;
-        pullbacks_[dst] = pullbacks_[jtup]; // <- FIXME: This must not be idpb lmao
+        // do not extract diff
+        // but tuple => tuple of diffs
+        // no lambda
+
+        // TODO: only at correct index not all
+        // everywhere else zero?
+//        pullbacks_[dst] = pullbacks_[jtup]; // <- FIXME: This must not be idpb lmao
+        pullbacks_[dst] = world_.extract_unsafe(pullbacks_[jtup], extract->index());
         return dst;
     }
 
@@ -322,10 +374,15 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
     if (auto lit = def->isa<Lit>()) {
         // The derivative of a literal is ZERO
-        auto zeropi = world_.cn_mem_flat(lit->type(), lit->type());
+//        auto zeropi = world_.cn_mem_flat(lit->type(), lit->type());
+        auto zeropi = world_.cn_mem_ret(lit->type(), A);
+//        errf("ZPi {}\n",zeropi);
         auto zeropb = world_.nom_lam(zeropi, world_.dbg("id"));
+        debug_dump("zero PB",zeropb);
         zeropb->set_filter(world_.lit_true());
-        zeropb->set_body(world_.app(zeropb->ret_var(), {zeropb->mem_var(), ZERO(world_, lit->type())}));
+//        auto zero = ZERO(world_, lit->type());
+        auto zero = ZERO(world_, A);// or use dim directly
+        zeropb->set_body(world_.app(zeropb->ret_var(), {zeropb->mem_var(), zero}));
         pullbacks_[lit] = zeropb;
         return lit;
     }
@@ -360,8 +417,10 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
     auto pbpi = world_.cn_mem_ret(B, A);
     errf("o_type {} \n",o_type);
     errf("r_type {} \n",r_type);
-    errf("apb last {} \n",pullbacks_[a]->type()->as<Pi>()->doms().back());
-    // auto pbT = pullbacks_[a]->type()->as<Pi>()->doms().back()->as<Pi>(); // TODO: create using flattened A
+//    errf("apb last {} \n",pullbacks_[a]->type()->as<Pi>()->doms().back());
+    debug_dump("apb",pullbacks_[a]);
+    debug_dump("bpb",pullbacks_[b]);
+    // auto pbT = pullbacks_[a]->type()->as<Pi>()->doms().back()->as<Pi>();
     auto pbT = pullbacks_[a]->type()->as<Pi>()->doms().back()->as<Pi>(); // TODO: create using flattened A
     auto pb = world_.nom_lam(pbpi, world_.dbg("φ"));
     errf("pbT {} \n",pbT);
