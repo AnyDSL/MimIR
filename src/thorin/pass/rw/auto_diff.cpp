@@ -72,7 +72,7 @@ public:
         }
         errf("Dim {} \n",dim);
         Array<const Def*> ops{dim, [&](auto i) {
-            return idpb->var(1, world.dbg("a")); // z
+            return idpb->var(1, world_.dbg("a")); // z
         }};
         // errf("Nums: {}\n",idpi->doms().back()->as<Pi>()->num_doms());
         // errf("Nums: {}\n",idpi->doms().back()->as<Pi>());
@@ -99,7 +99,7 @@ public:
                 ipb->set_filter(world_.lit_true());
                 Array<const Def*> ops{dim, [&](auto j) {
                     if(i==j)
-                        return idpb->var(1, world.dbg("a")); // z
+                        return ipb->var(1, world_.dbg("a")); // z
                     else
                         return ZERO(world_,inner);
                 }};
@@ -124,7 +124,7 @@ private:
     World& world_;
     Def2Def src_to_dst_;
     Lam* idpb;
-    Array<Lam*> ind_idpb;
+    Array<const Def*> ind_idpb; // TODO: specialize Def* to Lam*, inline in reverse_diff
     DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term to its pullback function
     const Def* A;
     const Def* B;
@@ -170,7 +170,38 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
             continue;
         }
         auto dst = src_to_dst_[src_param];
+        debug_dump("start pb for ",dst);
         pullbacks_[dst] = idpb;
+
+        // or use dim
+        if (auto a = dst->type()->isa<Arr>()) {
+//            auto idpi = world_.cn_mem_ret(B, A);
+//            Array<const Def*> ind_idpb={
+//                a->shape()->as<Lit>()->get<uint8_t>(),
+//                [&](auto i) {
+//                    Lam* ipb=world_.nom_lam(idpi, world_.dbg("id"));
+//                    ipb->set_filter(world_.lit_true());
+//                    Array<const Def*> ops{dim, [&](auto j) {
+//                        if(i==j)
+//                            return ipb->var(1, world_.dbg("a")); // z
+//                        else
+//                            return ZERO(world_,inner);
+//                    }};
+//                    const Def* opArr = world_.tuple(ops);
+//                    ipb->set_body(world_.app(ipb->ret_var(), {ipb->mem_var(),opArr}));
+//                    return ipb;
+//                }
+//            };
+            pullbacks_[dst] = world_.tuple(ind_idpb);
+        }else {
+            pullbacks_[dst] = idpb;
+        }
+
+
+
+//        pullbacks_[dst] = world_.tuple(ind_idpb);
+        debug_dump("pb is ",pullbacks_[dst]);
+
 //        pullbacks_[dst] = ind_idpb[i];
     }
     auto dst = j_wrap(src->body());
@@ -194,8 +225,13 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 // Instead of explicitly putting everything into a pair, we just use the pullbacks freely
 //  Each `x` gets transformed to a `<x, λδz. δz * (δz / δx)>`
 const Def* AutoDiffer::j_wrap(const Def* def) {
+//    if(isa<Tag::Mem>(def->type())) {
+//        debug_dump("mem",def);
+//        return def; // and pb is idbp
+//    }
+
     if (auto dst = seen(def)) {
-        errf("  seen {} : {} \n",def,def->type());
+        debug_dump("seen",def);
         return dst;
     }
 
@@ -252,6 +288,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             }
         }
 
+        debug_dump("arg in call",arg);
         auto ad = j_wrap(arg);
         // remove
         errf("callee: {} : {}\n",callee, callee->type());
@@ -318,16 +355,20 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto dst = world_.tuple(ops);
         src_to_dst_[tuple] = dst;
 
-        Array<const Def*> pbs{tuple->num_ops()-1,
-                [&](auto i) { return pullbacks_[ops[i+1]]; }};
-        pullbacks_[dst] = world_.tuple(pbs);
+        Array<const Def*> pbs{tuple->num_ops(),
+                [&](auto i) { return pullbacks_[ops[i]]; }};
+        debug_dump("tuple dst",dst);
         // FIXME: this obviously doesn't work in general
-//        if(ops.size() == 2) {
-//            pullbacks_[dst] = pullbacks_[ops[1]];
-////            pullbacks_[dst] = world_.tuple(
-////                {tuple->num_ops()-1, [&](auto i) { return pullbacks_[ops[i+1]]; }}
-////            );
-//        }
+        if(ops.size() == 2 && isa<Tag::Mem>(tuple->op(0)->type())) {
+            errf("tuple mem arg\n");
+            pullbacks_[dst] = pbs[1];
+//            pullbacks_[dst] = world_.tuple(
+//                {tuple->num_ops()-1, [&](auto i) { return pullbacks_[ops[i+1]]; }}
+//            );
+        }else{
+            pullbacks_[dst] = world_.tuple(pbs);
+        }
+        debug_dump("pb",pullbacks_[dst]);
 //        else {
 //            // fallback
 //            pullbacks_[dst] = idpb;
@@ -361,7 +402,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // TODO: only at correct index not all
         // everywhere else zero?
 //        pullbacks_[dst] = pullbacks_[jtup]; // <- FIXME: This must not be idpb lmao
+        debug_dump("ex pb",pullbacks_[jtup]);
         pullbacks_[dst] = world_.extract_unsafe(pullbacks_[jtup], extract->index());
+        debug_dump("ex pb dst",pullbacks_[dst]);
         return dst;
     }
 
@@ -459,8 +502,10 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto adiff = middle->var(1);
             auto bdiff = end->var(1);
 
-            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
+            auto sum = vec_add(world_, dim, adiff, bdiff);
+            end->set_body(world_.app(pb->ret_var(), { end->mem_var(), sum}));
             pullbacks_[dst] = pb;
+//            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
 
             return dst;
         }
