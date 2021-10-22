@@ -53,8 +53,8 @@ public:
         idpb->set_filter(world_.lit_true());
         debug_dump("A",A);
         errf("Node {} \n",A->node_name());
-        debug_dump("Shape",A->as<Arr>()->shape());
-        debug_dump("Body",A->as<Arr>()->body());
+//        debug_dump("Shape",A->as<Arr>()->shape());
+//        debug_dump("Body",A->as<Arr>()->body());
         debug_dump("B",B);
 //        errf("A {} \n",A); // r32 or <<2::nat, r32>>
         errf("IDPB Var {} : {}\n",idpb->var(),idpb->var()->type());
@@ -193,6 +193,25 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 //                }
 //            };
             pullbacks_[dst] = world_.tuple(ind_idpb);
+
+            // TODO: dst is an extract of vars
+            //   but is itself a tuple
+            //   register components with corresponding pullbacks
+//            if (auto extract = dst->isa<Extract>()) {
+//                debug_dump("dst",dst);
+// //                errf("dst tuple size {} \n",extract->tuple()->num_ops());
+// //                debug_dump("dst arg ex tuple",extract->tuple()->op(0));
+//            }
+
+//            errf("dst Node {} \n",dst->node_name());
+//            if (auto tuple = dst->isa<Tuple>()) {
+//                // or use dim
+//                for(size_t j = 0; j < tuple->num_ops(); ++j) {
+//                    pullbacks_[tuple->op(j)] = ind_idpb[j];
+//                }
+//            }else{
+//                errf("No Tuple?!\n");
+//            }
         }else {
             pullbacks_[dst] = idpb;
         }
@@ -273,7 +292,17 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 if (axiom->tag() == Tag::ROp) {
                     // errf("Op: {}\n",axiom->flags());
                     errf("Arg {}\n",arg);
-                    auto [a, b] = j_wrap(arg)->split<2>();
+                    auto ab = j_wrap(arg);
+                    auto [a, b] = ab->split<2>();
+                    if(!pullbacks_.count(a) || !pullbacks_.count(b)){
+                        // necessary for non-extracted components of main function argument
+                        // => the array function argument has a pullback (tuple)
+                        //    but the components do not (not registered)
+                        // TODO: maybe move up to reverse_diff?
+                        auto [pa,pb]=pullbacks_[ab]->split<2>();
+                        pullbacks_[a]=pa;
+                        pullbacks_[b]=pb;
+                    }
                     auto dst = j_wrap_rop(ROp(axiom->flags()), a, b);
                     src_to_dst_[app] = dst;
                     return dst;
@@ -582,6 +611,9 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
         }
         // ∇(a / b) = λz. (g* (z * h) - h* (z * g))/h²
         case ROp::div: {
+            // TODO: use sum definition
+            //    a*(1/b * z)
+            //  + b*(a * -b^(-2) * z)
             auto dst = world_.op(ROp::div, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "/"));
 
