@@ -4,14 +4,13 @@
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/scalarize.h"
 #include "thorin/pass/fp/ssa_constr.h"
-#include "thorin/pass/rw/auto_diff.h"
 #include "thorin/pass/rw/bound_elim.h"
 #include "thorin/pass/rw/partial_eval.h"
 #include "thorin/pass/rw/ret_wrap.h"
+#include "thorin/pass/rw/scalarize.h"
 
 // old stuff
 #include "thorin/transform/cleanup_world.h"
-#include "thorin/transform/flatten_tuples.h"
 #include "thorin/transform/partial_evaluation.h"
 
 namespace thorin {
@@ -23,16 +22,17 @@ void optimize(World& world) {
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);
     opt.add<SSAConstr>(ee);
-        //opt.add<CopyProp>();
-        //opt.add<Scalerize>();
-    opt.add<AutoDiff>();
+
+    opt.add<Scalerize>();
+    //opt.add<CopyProp>();
+//    opt.add<AutoDiff>();
+
     printf("Start Opti\n");
     opt.run();
     printf("Finished Opti1\n");
 
     cleanup_world(world);
     while (partial_evaluation(world, true)); // lower2cff
-    flatten_tuples(world);
     cleanup_world(world);
     printf("Finished Opti2\n");
 
