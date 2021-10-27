@@ -640,7 +640,7 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::div, (nat_t)0, pb->var(1), b), middle}));
             auto za=world_.op(ROp::mul, (nat_t)0, pb->var(1), a);
             auto bsq=world_.op(ROp::mul, (nat_t)0, b, b);
-            middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::div, (nat_t)0, za, bsq), end}));
+            middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op_rminus((nat_t)0, world_.op(ROp::div, (nat_t)0, za, bsq)), end}));
             auto adiff = middle->var(1);
             auto bdiff = end->var(1);
 
