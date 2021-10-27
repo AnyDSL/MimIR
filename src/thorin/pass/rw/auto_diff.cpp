@@ -282,6 +282,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto callee = app->callee();
         auto arg = app->arg();
 
+        debug_dump("App Callee: ",callee);
+        debug_dump("App Arg: ",arg);
+
         // remove
         // msg("Diff app: {}", app);
         // msg("Diff args: {}", arg);
@@ -313,6 +316,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto [a, b] = j_wrap(arg)->split<2>();
                     auto dst = world_.op(RCmp(axiom->flags()), nat_t(0), a, b);
                     src_to_dst_[app] = dst;
+                    // TODO: tuple or app
                     return world_.tuple({inner, dst});
                 }
             }
@@ -324,14 +328,23 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         debug_dump("args were in call",arg);
         msg("callee: {} : {}",callee, callee->type());
         msg("ad (arg jwrap): {} : {}",ad, ad->type());
+        msg("ad node type: {}",ad->node_name());
         // msg("Num outs: {}", ad->num_outs());
-        auto ad_mem = world_.extract(ad, (u64)0, world_.dbg("mem"));
-        // TODO: if only mem
-        auto ad_arg = world_.extract(ad, (u64)1, world_.dbg("arg")); // TODO: error with relu.impala
+        const Def* ad_mem;
+        const Def* ad_arg;
+        if(ad->isa<Tuple>()) {
+            ad_mem = world_.extract(ad, (u64)0, world_.dbg("mem"));
+            ad_arg = world_.extract(ad, (u64)1, world_.dbg("arg")); // TODO: error with relu.impala
+        } else {
+            // TODO: if only mem
+            ad_mem = ad;
+            ad_arg= nullptr;
+        }
             // call to then/else branch only takes memory
 
         auto cpi = (src_to_dst_.count(callee) ? src_to_dst_[callee]->type()->as<Pi>() : nullptr);
         if(cpi != nullptr) {
+            msg("cpi is not null (callee in mapping)");
             // check if our functions returns a pullback already
             if (auto rett = cpi->doms().back()->isa<Pi>(); rett && rett->is_returning()) {
                 msg("callee has node type: {}",callee->node());
@@ -361,7 +374,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 }
             }
         }
+        msg("No translation of callee found or pullback not available");
         if (!callee->isa_nom<Lam>() && src_to_dst_.count(callee)) {
+            msg("No Lam and found in mapping");
             auto dstcallee = src_to_dst_[callee];
 
             auto dst = world_.app(dstcallee, {ad_mem, ad_arg, pullbacks_[ad]});
@@ -371,6 +386,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
             return dst;
         }
+        msg("Nothing found for app");
+        debug_dump("callee in question:",callee);
+        debug_dump("ad args in question:",ad);
         auto dst_callee = world_.op_rev_diff(callee);
         auto dst = world_.app(dst_callee, ad);
         pullbacks_[dst] = pullbacks_[ad];
@@ -390,7 +408,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         debug_dump("tuple dst",dst);
         // distinguish [mem, r32] from <<2::nat,r32>>
         // TODO: multiple arguments
-        if(ops.size() == 2 && isa<Tag::Mem>(tuple->op(0)->type())) {
+        // TODO: double diff? [mem, r32,
+        //      cn[mem, r32, cn[mem, r32, cn[mem, r32]]]]
+        if(isa<Tag::Mem>(tuple->op(0)->type())) { // ops.size() == 2 &&
             msg("tuple mem arg");
             pullbacks_[dst] = pbs[1];
 //            pullbacks_[dst] = world_.tuple(
