@@ -134,6 +134,7 @@ private:
     size_t dim;
 };
 
+// unused
 Lam* AutoDiffer::chain(Lam* a, Lam* b) {
     // chaining with identity is neutral
     if (a == idpb) return b;
@@ -320,10 +321,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         debug_dump("arg in call",arg);
         auto ad = j_wrap(arg);
         // remove
+        debug_dump("args were in call",arg);
         msg("callee: {} : {}",callee, callee->type());
-        msg("ad: {} : {}",ad, ad->type());
+        msg("ad (arg jwrap): {} : {}",ad, ad->type());
         // msg("Num outs: {}", ad->num_outs());
         auto ad_mem = world_.extract(ad, (u64)0, world_.dbg("mem"));
+        // TODO: if only mem
         auto ad_arg = world_.extract(ad, (u64)1, world_.dbg("arg")); // TODO: error with relu.impala
             // call to then/else branch only takes memory
 
@@ -331,13 +334,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         if(cpi != nullptr) {
             // check if our functions returns a pullback already
             if (auto rett = cpi->doms().back()->isa<Pi>(); rett && rett->is_returning()) {
-                msg("callee has node: {}",callee->node());
+                msg("callee has node type: {}",callee->node());
 //                msg("callee is Extract: {}",callee->isa<Extract>());
 //                msg("callee is App: {}",callee->isa<App>());
 //                msg("callee is Lam: {}",callee->isa<Lam>());
 //                msg("callee is nom Lam: {}",callee->isa_nom<Lam>());
                 auto cd = j_wrap(callee);
-                msg("cd: {} : {}",cd, cd->type());
+                msg("cd (callee jwrap): {} : {}",cd, cd->type());
 
                 if (pullbacks_.count(ad)) {
                     auto dst = world_.app(cd, {ad_mem, ad_arg, pullbacks_[ad]});
