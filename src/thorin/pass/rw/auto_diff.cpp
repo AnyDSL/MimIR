@@ -291,6 +291,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         THORIN_UNREACHABLE;
     }
     if (auto lam = def->isa_nom<Lam>()) {
+        // TODO: need closure conversion
         type_dump(world_,"Lam",lam);
         // FIXME: pb type correct? might not be able to just use idpb->type() here
         auto old_pi = lam->type()->as<Pi>();
@@ -474,20 +475,30 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             return dst;
         }
         log(world_,"  No previous rule applied for app");
+        type_dump(world_,"  reminder: callee",callee);
+        type_dump(world_,"  reminder: args",arg);
+        type_dump(world_,"  reminder: args (jwrapped)",ad);
         msg("Nothing found for app");
         debug_dump("callee in question:",callee);
         debug_dump("ad args in question:",ad);
-        auto dst_callee = world_.op_rev_diff(callee);
-        type_dump(world_,"  Use Op on callee",dst_callee);
-        auto dst = world_.app(dst_callee, ad);
-        type_dump(world_,"  application with jwrapped args",dst);
-        log(world_,"  this call will invoke AutoDiff rewrite");
-        pullbacks_[dst] = pullbacks_[ad];
-        type_dump(world_,"  pullback: ",pullbacks_[ad]);
-        // TODO: why no registration in src_to_dst
-        // TODO: overwrite pullback after reverse_diff => know diff of functions
+        if(callee->isa<Lam>()) {
+            auto dst_callee = world_.op_rev_diff(callee);
+            type_dump(world_,"  Use Op on callee",dst_callee);
+            auto dst = world_.app(dst_callee, ad);
+            type_dump(world_,"  application with jwrapped args",dst);
+            log(world_,"  this call will invoke AutoDiff rewrite");
+            pullbacks_[dst] = pullbacks_[ad];
+            type_dump(world_,"  pullback: ",pullbacks_[ad]);
+            // TODO: why no registration in src_to_dst
+            // TODO: overwrite pullback after reverse_diff => know diff of functions
 
-        return dst;
+            return dst;
+        }else{
+            log(world_,"  try to diff the callee");
+            auto dst_callee = j_wrap(callee);
+            type_dump(world_,"  jwrapped callee",dst_callee);
+            THORIN_UNREACHABLE;
+        }
     }
 
     if (auto tuple = def->isa<Tuple>()) {
