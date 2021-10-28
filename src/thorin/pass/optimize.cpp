@@ -21,9 +21,9 @@ namespace thorin {
 void optimize(World& world) {
     world.set(LogLevel::Debug);
 
-     std::ofstream ofile("output.txt");
-     std::shared_ptr<Stream> s(new Stream(ofile));
-    world.set(s);
+//     std::ofstream ofile("output.txt");
+//     std::shared_ptr<Stream> s(new Stream(ofile));
+//    world.set(s);
 
     PassMan opt(world);
 //    opt.add<PartialEval>();
@@ -32,11 +32,10 @@ void optimize(World& world) {
     auto ee = opt.add<EtaExp>(er);
     opt.add<SSAConstr>(ee);
 
-    opt.add<Scalerize>();
     //opt.add<CopyProp>();
 
     printf("Start Opti1\n");
-    opt.run();
+//    opt.run();
     printf("Finished Opti1\n");
 
 //            ClosureConv cc(world);
@@ -53,6 +52,7 @@ void optimize(World& world) {
     auto er2 = opt2.add<EtaRed>();
     auto ee2 = opt2.add<EtaExp>(er2);
     opt2.add<SSAConstr>(ee2);
+    //    opt2.add<Scalerize>();
 
 //    opt2.add<AutoDiff>();
 
