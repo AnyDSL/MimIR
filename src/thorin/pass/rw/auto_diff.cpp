@@ -295,6 +295,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"Lam",lam);
         // FIXME: pb type correct? might not be able to just use idpb->type() here
         auto old_pi = lam->type()->as<Pi>();
+        // TODO: not necessarily idpb but corresponding for type of lam
         auto pi = world_.cn({world_.type_mem(), old_pi->doms()[1], idpb->type()});
         auto dst = world_.nom_lam(pi, world_.dbg(lam->name()));
         type_dump(world_,"  => ",dst);
@@ -370,6 +371,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         debug_dump("arg in call",arg);
         auto ad = j_wrap(arg);
         type_dump(world_,"  jwrapped args",ad);
+//        log(world_,"  jwrapped args type node {}",ad->type()->node_name());
+
         // remove
         debug_dump("args were in call",arg);
         msg("callee: {} : {}",callee, callee->type());
@@ -379,8 +382,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         const Def* ad_mem;
         const Def* ad_arg;
         Array<const Def*> ad_args;
+
+//        if(isa<Tag::Mem>(ad)) {
+//            log(world_,"  arg jwrap is mem",ad);
+//        }
+
         if(auto ad_tuple = ad->isa<Tuple>()) {
-            msg("ad has {} args",ad_tuple->num_ops());
+            log(world_,"  jwrapped args are a tuple with {} components",ad_tuple->num_ops());
+            msg("ad is tuple with {} args",ad_tuple->num_ops());
             ad_args = Array<const Def*>(
                 ad_tuple->num_ops(),
                 [&](auto i) {return world_.extract(ad, (u64)i, world_.dbg("ad_arg"));}
@@ -389,14 +398,25 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             ad_mem = world_.extract(ad, (u64)0, world_.dbg("mem"));
             ad_arg = world_.extract(ad, (u64)1, world_.dbg("arg")); // TODO: error with relu.impala
         } else {
+            log(world_,"  jwrapped args are {} ",ad->node_name());
             // TODO: if only mem
             ad_args=Array<const Def*>(
                 1,
                 [&](auto i) {return ad;}
                 );
 
-            ad_mem = ad;
-            ad_arg= nullptr;
+//            ad_mem = ad;
+//            ad_arg= nullptr;
+            // important for call2 test (but not call test) ad in the call in sq_cont (with whole sq_cont as arg) is a var
+
+            if(auto adTypeAxiom = ad->type()->isa<Axiom>(); adTypeAxiom && adTypeAxiom->tag()==Tag::Mem) {
+                log(world_,"  Jwrapped arg type is axiom of memory");
+                ad_mem = ad;
+                ad_arg= nullptr;
+            }else {
+                ad_mem = world_.extract(ad, (u64)0, world_.dbg("mem"));
+                ad_arg = world_.extract(ad, (u64)1, world_.dbg("arg")); // TODO: error with relu.impala
+            }
         }
             // call to then/else branch only takes memory
 
@@ -419,6 +439,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
                 if (pullbacks_.count(ad)) {
                     type_dump(world_,"  args have pullback", pullbacks_[ad]);
+                    type_dump(world_,"  reminder jwrapped args", ad);
                     debug_dump("ad_pullback",pullbacks_[ad]);
 //                    debug_dump("Tuple {}",world_.tuple({ad, pullbacks_[ad]}));
 //                    auto args=Array<const Def*>(ad_args.size() + 1,
@@ -497,6 +518,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             log(world_,"  try to diff the callee");
             auto dst_callee = j_wrap(callee);
             type_dump(world_,"  jwrapped callee",dst_callee);
+
+            // TODO: apply calle to ad? or pullback?
+
             THORIN_UNREACHABLE;
         }
     }
