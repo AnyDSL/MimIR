@@ -2,7 +2,6 @@
 #include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
-#include "thorin/pass/fp/scalarize.h"
 #include "thorin/pass/fp/ssa_constr.h"
 #include "thorin/pass/rw/bound_elim.h"
 #include "thorin/pass/rw/partial_eval.h"
@@ -31,11 +30,12 @@ void optimize(World& world) {
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);
     opt.add<SSAConstr>(ee);
-
-    //opt.add<CopyProp>();
+    opt.add<CopyProp>(ee);
 
     printf("Start Opti1\n");
 //    opt.run();
+    // do not run opt yet as it destroys complicated behaviour interesting for autodiff
+    //  otherwise the behavior is not completely eliminated but only hidden in obscure contexts
     printf("Finished Opti1\n");
 
 //            ClosureConv cc(world);
@@ -52,7 +52,7 @@ void optimize(World& world) {
     auto er2 = opt2.add<EtaRed>();
     auto ee2 = opt2.add<EtaExp>(er2);
     opt2.add<SSAConstr>(ee2);
-    //    opt2.add<Scalerize>();
+    //    opt2.add<Scalerize>(ee2);
 
 //    opt2.add<AutoDiff>();
 
