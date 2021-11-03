@@ -24,7 +24,7 @@ public:
 
     enum : flags_t { Phixy, Sloxy, Traxy };
 
-    struct Info {
+    struct SSAInfo {
         Lam* pred = nullptr;
         GIDSet<const Proxy*> writable;
     };
