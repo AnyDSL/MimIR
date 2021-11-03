@@ -14,7 +14,6 @@
 #include "thorin/transform/partial_evaluation.h"
 #include "thorin/transform/closure_conv.h"
 
-#include "thorin/transform/closure_conv.h"
 
 namespace thorin {
 

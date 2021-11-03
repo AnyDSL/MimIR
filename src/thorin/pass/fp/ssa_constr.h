@@ -29,7 +29,7 @@ public:
         GIDSet<const Proxy*> writable;
     };
 
-    using Data = std::map<Lam*, Info, GIDLt<Lam*>>;
+    using Data = std::map<Lam*, SSAInfo, GIDLt<Lam*>>;
 
 private:
     /// @name PassMan hooks
