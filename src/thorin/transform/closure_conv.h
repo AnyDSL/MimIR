@@ -15,7 +15,7 @@ class FVA {
 public:
     FVA(World& world)
         : world_(world)
-        , cur_pass_id(1)
+        , cur_pass_id(1) 
         , lam2nodes_() {};
 
     DefSet& run(Lam *lam);
@@ -34,8 +34,8 @@ private:
     };
 
     bool is_bot(Node* node) { return node->pass_id == 0; }
-    bool is_done(Node* node) {
-        return !is_bot(node) && node->pass_id < cur_pass_id;
+    bool is_done(Node* node) { 
+        return !is_bot(node) && node->pass_id < cur_pass_id; 
     }
     void mark(Node* node) { node->pass_id = cur_pass_id; }
 
@@ -52,38 +52,38 @@ private:
 };
 
 class ClosureConv {
-public:
-    ClosureConv(World& world)
-        : world_(world)
-        , fva_(world)
-        , closures_(DefMap<Closure>())
-        , closure_types_(Def2Def())
-        , worklist_(std::queue<const Def*>()) {};
+    public:
+        ClosureConv(World& world)
+            : world_(world)
+            , fva_(world)
+            , closures_(DefMap<Closure>())
+            , closure_types_(Def2Def())
+            , worklist_(std::queue<const Def*>()) {};
 
-    void run();
+        void run();
 
-private:
-    struct Closure {
-        Lam* old_fn;
-        size_t num_fvs;
-        const Def* env;
-        Lam* fn;
-    };
+    private:
+        struct Closure {
+            Lam* old_fn;
+            size_t num_fvs;
+            const Def* env;
+            Lam* fn;
+        };
 
 
-    const Def* rewrite(const Def* old_def, Def2Def& subst);
+        const Def* rewrite(const Def* old_def, Def2Def& subst);
 
-    const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
+        const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
 
-    Closure make_closure(Lam* lam, Def2Def& subst);
+        Closure make_closure(Lam* lam, Def2Def& subst);
 
-    World& world() { return world_; }
+        World& world() { return world_; }
 
-    World& world_;
-    FVA fva_;
-    DefMap<Closure> closures_;
-    Def2Def closure_types_;
-    std::queue<const Def*> worklist_;
+        World& world_;
+        FVA fva_;
+        DefMap<Closure> closures_;
+        Def2Def closure_types_;
+        std::queue<const Def*> worklist_;
 
 };
 

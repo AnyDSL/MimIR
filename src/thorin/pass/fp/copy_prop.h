@@ -5,32 +5,24 @@
 
 namespace thorin {
 
-class EtaExp;
-
-/// This @p FPPass is similar to sparse conditional constant propagation (SCCP).
+/// This @p FPPass is similar to sparse conditional constant propagation (SCCP) but also propagates arbitrary values through @p Var%s.
 /// However, this optmization also works on all @p Lam%s alike and does not only consider basic blocks as opposed to traditional SCCP.
-/// What is more, this optimization will also propagate arbitrary @p Def%s and not only constants.
+/// What is more, this optimization will also propagate arbitrary @p Def%s and not only constants. <br>
 class CopyProp : public FPPass<CopyProp, Lam> {
 public:
-    CopyProp(PassMan& man, EtaExp* eta_exp)
+    CopyProp(PassMan& man)
         : FPPass(man, "copy_prop")
-        , eta_exp_(eta_exp)
     {}
 
-    using Data = LamMap<DefVec>;
+    using Args = std::vector<const Def*>;
+    using Data = LamMap<Args>;
 
 private:
-    /// @name PassMan hooks
-    //@{
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Proxy*) override;
     undo_t analyze(const Def*) override;
-    //@}
 
-    const Def* var2prop(const App*, Lam*);
-
-    EtaExp* eta_exp_;
-    LamMap<std::pair<Lam*, DefVec>> var2prop_;
+    Lam2Lam var2prop_;
     DefSet keep_;
 };
 

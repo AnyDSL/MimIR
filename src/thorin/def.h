@@ -176,7 +176,6 @@ public:
     unsigned dep() const { return dep_; }
     bool no_dep() const { return dep() == Dep::Bot; }
     bool has_dep(unsigned dep) const { return (dep_ & dep) != 0; }
-    bool contains_proxy() const { return proxy_; }
     //@}
 
     /// @name split def via proj%s
@@ -256,7 +255,7 @@ public:
     const Var* has_var() { return var_ ? var() : nullptr; }
     const Var* var(const Def* dbg);
     const Def* var(size_t i, const Def* dbg) { return proj((const Def*) var(), num_vars(), i, dbg); }
-    const Var* var();         ///< Wrapper instead of default argument for easy access in @c gdb.
+    const Var* var();       ///< Wrapper instead of default argument for easy access in @c gdb.
     const Def* var(size_t i); ///< Wrapper instead of default argument for easy access in @c gdb.
     Array<const Def*> vars() { return Array<const Def*>(num_vars(), [&](auto i) { return var(i); }); }
     size_t num_vars();
@@ -325,8 +324,7 @@ protected:
     unsigned nom_   :  1;
     unsigned var_   :  1;
     unsigned dep_   :  2;
-    unsigned proxy_ :  1;
-    unsigned order_ : 11;
+    unsigned order_ : 12;
     u32 gid_;
     u32 num_ops_;
     hash_t hash_;
@@ -359,8 +357,8 @@ template<class To>
 using DefMap  = GIDMap<const Def*, To>;
 using DefSet  = GIDSet<const Def*>;
 using Def2Def = DefMap<const Def*>;
-using DefDef  = std::tuple<const Def*, const Def*>;
-using DefVec  = std::vector<const Def*>;
+
+using DefDef = std::tuple<const Def*, const Def*>;
 
 struct DefDefHash {
     static hash_t hash(DefDef pair) {

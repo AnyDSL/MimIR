@@ -37,11 +37,11 @@ const Def* lit_of_type(World& world, const Def* type, u64 lit) {
         auto dim = a->shape()->as<Lit>()->get<uint8_t>();
         Array<const Def*> ops{dim, [&](auto i) {
             return lit_of_type(world,a->body(),lit);
-                              }};
+        }};
         return world.tuple(ops);
     }
-//        return world.lit_real(as_lit(real->arg()), lit);
-//        msg("LIT TY {}",type);
+    //        return world.lit_real(as_lit(real->arg()), lit);
+    //        msg("LIT TY {}",type);
     return world.lit_int(as_lit(as<Tag::Int>(type)), lit);
 }
 
@@ -59,7 +59,7 @@ public:
         , A{A}
         , B{B}
     {
-//        auto idpi = world_.cn_mem_flat(B, A);
+        //        auto idpi = world_.cn_mem_flat(B, A);
         auto idpi = world_.cn_mem_ret(B, A);
         log(world_,"The pullback type is {}",idpi);
         msg("IDPI {} ",idpi);
@@ -68,10 +68,10 @@ public:
         idpb->set_filter(world_.lit_true());
         debug_dump("A",A);
         msg("Node {} ",A->node_name());
-//        debug_dump("Shape",A->as<Arr>()->shape());
-//        debug_dump("Body",A->as<Arr>()->body());
+        //        debug_dump("Shape",A->as<Arr>()->shape());
+        //        debug_dump("Body",A->as<Arr>()->body());
         debug_dump("B",B);
-//        msg("A {} ",A); // r32 or <<2::nat, r32>>
+        //        msg("A {} ",A); // r32 or <<2::nat, r32>>
         msg("IDPB Var {} : {}",idpb->var(),idpb->var()->type());
         msg("IDPB RVar {} : {}",idpb->ret_var(),idpb->ret_var()->type());
 
@@ -99,12 +99,12 @@ public:
 
 
         const Def* opArr = world_.tuple(ops);
-//        debug_dump("Arr: ",world_.pack(A->arity(),world_.tuple(ops)));
+        //        debug_dump("Arr: ",world_.pack(A->arity(),world_.tuple(ops)));
         debug_dump("Arr: ",opArr);
 
-//        idpb->set_body(world_.app(idpb->ret_var(), world_.tuple(ops)));
+        //        idpb->set_body(world_.app(idpb->ret_var(), world_.tuple(ops)));
         idpb->set_body(world_.app(idpb->ret_var(), {idpb->mem_var(),opArr}));
-//        idpb->set_body(world_.app(idpb->ret_var(), world_.tuple(merge(idpb->mem_var(),ops))));
+        //        idpb->set_body(world_.app(idpb->ret_var(), world_.tuple(merge(idpb->mem_var(),ops))));
         // idpb->set_body(world_.app(idpb->ret_var(), {idpb->mem_var(), idpb->var(1, world.dbg("a"))}));
         // idpb->set_body(world_.app(idpb->ret_var(), {idpb->mem_var(), idpb->var(1, world.dbg("a")),idpb->var(1, world.dbg("b"))}));
 
@@ -143,7 +143,7 @@ private:
     Lam* idpb;
     Array<const Def*> ind_idpb; // TODO: specialize Def* to Lam*, inline in reverse_diff
     DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term to its pullback function
-        // mapping dst to pb
+    // mapping dst to pb
     const Def* A;
     const Def* B;
     size_t dim;
@@ -180,7 +180,7 @@ Lam* AutoDiffer::chain(Lam* a, Lam* b) {
 
 const Def* AutoDiffer::reverse_diff(Lam* src) {
     // For each param, create an appropriate pullback. It is just the identity function for each of those.
-//    msg("Src Num Vars {} ",src->num_vars());
+    //    msg("Src Num Vars {} ",src->num_vars());
     debug_dump("src",src); // ignore 0 and 2 => only 2 (might be an array)
     type_dump(world_,"Apply RevDiff to src",src);
     for(size_t i = 0, e = src->num_vars(); i < e; ++i) {
@@ -197,51 +197,51 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
         // or use dim
         if (auto a = dst->type()->isa<Arr>()) {
-//            auto idpi = world_.cn_mem_ret(B, A);
-//            Array<const Def*> ind_idpb={
-//                a->shape()->as<Lit>()->get<uint8_t>(),
-//                [&](auto i) {
-//                    Lam* ipb=world_.nom_lam(idpi, world_.dbg("id"));
-//                    ipb->set_filter(world_.lit_true());
-//                    Array<const Def*> ops{dim, [&](auto j) {
-//                        if(i==j)
-//                            return ipb->var(1, world_.dbg("a")); // z
-//                        else
-//                            return ZERO(world_,inner);
-//                    }};
-//                    const Def* opArr = world_.tuple(ops);
-//                    ipb->set_body(world_.app(ipb->ret_var(), {ipb->mem_var(),opArr}));
-//                    return ipb;
-//                }
-//            };
+            //            auto idpi = world_.cn_mem_ret(B, A);
+            //            Array<const Def*> ind_idpb={
+            //                a->shape()->as<Lit>()->get<uint8_t>(),
+            //                [&](auto i) {
+            //                    Lam* ipb=world_.nom_lam(idpi, world_.dbg("id"));
+            //                    ipb->set_filter(world_.lit_true());
+            //                    Array<const Def*> ops{dim, [&](auto j) {
+            //                        if(i==j)
+            //                            return ipb->var(1, world_.dbg("a")); // z
+            //                        else
+            //                            return ZERO(world_,inner);
+            //                    }};
+            //                    const Def* opArr = world_.tuple(ops);
+            //                    ipb->set_body(world_.app(ipb->ret_var(), {ipb->mem_var(),opArr}));
+            //                    return ipb;
+            //                }
+            //            };
             pullbacks_[dst] = world_.tuple(ind_idpb);
 
-//            if (auto extract = dst->isa<Extract>()) {
-//                debug_dump("dst",dst);
-// //                msg("dst tuple size {} ",extract->tuple()->num_ops());
-// //                debug_dump("dst arg ex tuple",extract->tuple()->op(0));
-//            }
+            //            if (auto extract = dst->isa<Extract>()) {
+            //                debug_dump("dst",dst);
+            // //                msg("dst tuple size {} ",extract->tuple()->num_ops());
+            // //                debug_dump("dst arg ex tuple",extract->tuple()->op(0));
+            //            }
 
-//            msg("dst Node {} ",dst->node_name());
-//            if (auto tuple = dst->isa<Tuple>()) {
-//                // or use dim
-//                for(size_t j = 0; j < tuple->num_ops(); ++j) {
-//                    pullbacks_[tuple->op(j)] = ind_idpb[j];
-//                }
-//            }else{
-//                msg("No Tuple?!");
-//            }
+            //            msg("dst Node {} ",dst->node_name());
+            //            if (auto tuple = dst->isa<Tuple>()) {
+            //                // or use dim
+            //                for(size_t j = 0; j < tuple->num_ops(); ++j) {
+            //                    pullbacks_[tuple->op(j)] = ind_idpb[j];
+            //                }
+            //            }else{
+            //                msg("No Tuple?!");
+            //            }
         }else {
             pullbacks_[dst] = idpb;
         }
 
 
 
-//        pullbacks_[dst] = world_.tuple(ind_idpb);
+        //        pullbacks_[dst] = world_.tuple(ind_idpb);
         type_dump(world_,"Pullback of dst ",pullbacks_[dst]);
         debug_dump("pb is ",pullbacks_[dst]);
 
-//        pullbacks_[dst] = ind_idpb[i];
+        //        pullbacks_[dst] = ind_idpb[i];
     }
     log(world_,"Initialization finished, start jwrapping");
     auto dst = j_wrap(src->body());
@@ -267,10 +267,10 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 //
 // return src_to_dst[src] => dst
 const Def* AutoDiffer::j_wrap(const Def* def) {
-//    if(isa<Tag::Mem>(def->type())) {
-//        debug_dump("mem",def);
-//        return def; // and pb is idbp
-//    }
+    //    if(isa<Tag::Mem>(def->type())) {
+    //        debug_dump("mem",def);
+    //        return def; // and pb is idbp
+    //    }
     type_dump(world_,"J_wrap of ",def);
     log(world_,"  Node: {}",def->node_name());
 
@@ -371,7 +371,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         debug_dump("arg in call",arg);
         auto ad = j_wrap(arg);
         type_dump(world_,"  jwrapped args",ad);
-//        log(world_,"  jwrapped args type node {}",ad->type()->node_name());
+        //        log(world_,"  jwrapped args type node {}",ad->type()->node_name());
 
         // remove
         debug_dump("args were in call",arg);
@@ -383,9 +383,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         const Def* ad_arg;
         Array<const Def*> ad_args;
 
-//        if(isa<Tag::Mem>(ad)) {
-//            log(world_,"  arg jwrap is mem",ad);
-//        }
+        //        if(isa<Tag::Mem>(ad)) {
+        //            log(world_,"  arg jwrap is mem",ad);
+        //        }
 
         if(auto ad_tuple = ad->isa<Tuple>()) {
             log(world_,"  jwrapped args are a tuple with {} components",ad_tuple->num_ops());
@@ -393,7 +393,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             ad_args = Array<const Def*>(
                 ad_tuple->num_ops(),
                 [&](auto i) {return world_.extract(ad, (u64)i, world_.dbg("ad_arg"));}
-                );
+            );
 
             ad_mem = world_.extract(ad, (u64)0, world_.dbg("mem"));
             ad_arg = world_.extract(ad, (u64)1, world_.dbg("arg")); // TODO: error with relu.impala
@@ -403,10 +403,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             ad_args=Array<const Def*>(
                 1,
                 [&](auto i) {return ad;}
-                );
+            );
 
-//            ad_mem = ad;
-//            ad_arg= nullptr;
+            //            ad_mem = ad;
+            //            ad_arg= nullptr;
             // important for call2 test (but not call test) ad in the call in sq_cont (with whole sq_cont as arg) is a var
 
             if(auto adTypeAxiom = ad->type()->isa<Axiom>(); adTypeAxiom && adTypeAxiom->tag()==Tag::Mem) {
@@ -418,7 +418,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 ad_arg = world_.extract(ad, (u64)1, world_.dbg("arg")); // TODO: error with relu.impala
             }
         }
-            // call to then/else branch only takes memory
+        // call to then/else branch only takes memory
 
         auto cpi = (src_to_dst_.count(callee) ? src_to_dst_[callee]->type()->as<Pi>() : nullptr);
         log(world_,"  know callee? {}",src_to_dst_.count(callee));
@@ -429,10 +429,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             if (auto rett = cpi->doms().back()->isa<Pi>(); rett && rett->is_returning()) {
                 type_dump(world_,"  callee dst is returning", rett);
                 msg("callee has node type: {}",callee->node());
-//                msg("callee is Extract: {}",callee->isa<Extract>());
-//                msg("callee is App: {}",callee->isa<App>());
-//                msg("callee is Lam: {}",callee->isa<Lam>());
-//                msg("callee is nom Lam: {}",callee->isa_nom<Lam>());
+                //                msg("callee is Extract: {}",callee->isa<Extract>());
+                //                msg("callee is App: {}",callee->isa<App>());
+                //                msg("callee is Lam: {}",callee->isa<Lam>());
+                //                msg("callee is nom Lam: {}",callee->isa_nom<Lam>());
                 auto cd = j_wrap(callee);
                 type_dump(world_,"  jwrapped callee", cd);
                 msg("cd (callee jwrap): {} : {}",cd, cd->type());
@@ -441,20 +441,20 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     type_dump(world_,"  args have pullback", pullbacks_[ad]);
                     type_dump(world_,"  reminder jwrapped args", ad);
                     debug_dump("ad_pullback",pullbacks_[ad]);
-//                    debug_dump("Tuple {}",world_.tuple({ad, pullbacks_[ad]}));
-//                    auto args=Array<const Def*>(ad_args.size() + 1,
-//                        [&](auto i) { return i == ad_args.size()
-//                                                 ? pullbacks_[ad]
-//                                                 : ad_args[i]; }
-//                    );
-//                    debug_dump("args",args);
+                    //                    debug_dump("Tuple {}",world_.tuple({ad, pullbacks_[ad]}));
+                    //                    auto args=Array<const Def*>(ad_args.size() + 1,
+                    //                        [&](auto i) { return i == ad_args.size()
+                    //                                                 ? pullbacks_[ad]
+                    //                                                 : ad_args[i]; }
+                    //                    );
+                    //                    debug_dump("args",args);
                     const Def* dst;
-//                    if(ad_args.size()==3)
-//                        dst = world_.app(cd, ad);
-//                    else
-                        dst = world_.app(cd, {ad_mem, ad_arg, pullbacks_[ad]});
+                    //                    if(ad_args.size()==3)
+                    //                        dst = world_.app(cd, ad);
+                    //                    else
+                    dst = world_.app(cd, {ad_mem, ad_arg, pullbacks_[ad]});
                     type_dump(world_,"  applied callee with args and pb", dst);
-//                    auto dst = world_.app(cd, args);
+                    //                    auto dst = world_.app(cd, args);
                     // remove
                     // auto dst = world_.app(cd, {ad_mem, pullbacks_[ad]});
                     src_to_dst_[app] = dst;
@@ -536,7 +536,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         src_to_dst_[tuple] = dst;
 
         Array<const Def*> pbs{tuple->num_ops(),
-                [&](auto i) { return pullbacks_[ops[i]]; }};
+                              [&](auto i) { return pullbacks_[ops[i]]; }};
         debug_dump("tuple dst",dst);
         // distinguish [mem, r32] from <<2::nat,r32>>
         // TODO: multiple arguments
@@ -545,22 +545,22 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         if(isa<Tag::Mem>(tuple->op(0)->type())) { // ops.size() == 2 &&
             msg("tuple mem arg");
             pullbacks_[dst] = pbs[1];
-//            pullbacks_[dst] = world_.tuple(
-//                {tuple->num_ops()-1, [&](auto i) { return pullbacks_[ops[i+1]]; }}
-//            );
+            //            pullbacks_[dst] = world_.tuple(
+            //                {tuple->num_ops()-1, [&](auto i) { return pullbacks_[ops[i+1]]; }}
+            //            );
         }else{
             pullbacks_[dst] = world_.tuple(pbs);
         }
         type_dump(world_,"  pullback for tuple",pullbacks_[dst]);
         debug_dump("pb",pullbacks_[dst]);
-//        else {
-//            // fallback
-//            pullbacks_[dst] = idpb;
-//            for (auto i : ops) {
-//                if (pullbacks_.contains(i))
-//                    pullbacks_[dst] = pullbacks_[i];
-//            }
-//        }
+        //        else {
+        //            // fallback
+        //            pullbacks_[dst] = idpb;
+        //            for (auto i : ops) {
+        //                if (pullbacks_.contains(i))
+        //                    pullbacks_[dst] = pullbacks_[i];
+        //            }
+        //        }
         return dst;
     }
 
@@ -590,7 +590,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // no lambda
 
         // everywhere else zero?
-//        pullbacks_[dst] = pullbacks_[jtup];
+        //        pullbacks_[dst] = pullbacks_[jtup];
         debug_dump("ex pb",pullbacks_[jtup]);
         pullbacks_[dst] = world_.extract_unsafe(pullbacks_[jtup], extract->index());
         type_dump(world_,"  pullback of extract",pullbacks_[dst]);
@@ -611,14 +611,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     if (auto lit = def->isa<Lit>()) {
         type_dump(world_,"Literal",lit);
         // The derivative of a literal is ZERO
-//        auto zeropi = world_.cn_mem_flat(lit->type(), lit->type());
+        //        auto zeropi = world_.cn_mem_flat(lit->type(), lit->type());
         auto zeropi = world_.cn_mem_ret(lit->type(), A);
-//        msg("ZPi {}",zeropi);
+        //        msg("ZPi {}",zeropi);
         auto zeropb = world_.nom_lam(zeropi, world_.dbg("id"));
         type_dump(world_,"  lit pb (zero)",zeropb);
         debug_dump("zero PB",zeropb);
         zeropb->set_filter(world_.lit_true());
-//        auto zero = ZERO(world_, lit->type());
+        //        auto zero = ZERO(world_, lit->type());
         auto zero = ZERO(world_, A);// or use dim directly
         zeropb->set_body(world_.app(zeropb->ret_var(), {zeropb->mem_var(), zero}));
         pullbacks_[lit] = zeropb;
@@ -633,15 +633,15 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
 const Def* vec_add(World& world, size_t dim, const Def* a, const Def* b) {
     Array<const Def*> ops{dim, [&](auto i) {
-            return world.op(ROp::add,(nat_t)0,
-                                  world.extract(a,i),
-                                  world.extract(b,i)
-                                  );
-        }};
+        return world.op(ROp::add,(nat_t)0,
+                        world.extract(a,i),
+                        world.extract(b,i)
+        );
+    }};
     return world.tuple(ops);
-//    return {a.size(), [&](auto i) {
-//        return world.op(ROp::add,(nat_t)0,a[i],b[i]);
-//    }};
+    //    return {a.size(), [&](auto i) {
+    //        return world.op(ROp::add,(nat_t)0,a[i],b[i]);
+    //    }};
 }
 
 Array<const Def*> collect_arguments(Def* lam) {
@@ -653,11 +653,11 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
     // auto r_type = a->type();
     auto o_type = a->type();
     auto r_type = A;
-//    auto pbpi = world_.cn_mem_flat(B, A);
+    //    auto pbpi = world_.cn_mem_flat(B, A);
     auto pbpi = world_.cn_mem_ret(B, A);
     msg("o_type {} ",o_type);
     msg("r_type {} ",r_type);
-//    msg("apb last {} ",pullbacks_[a]->type()->as<Pi>()->doms().back());
+    //    msg("apb last {} ",pullbacks_[a]->type()->as<Pi>()->doms().back());
     debug_dump("apb",pullbacks_[a]);
     debug_dump("bpb",pullbacks_[b]);
     // auto pbT = pullbacks_[a]->type()->as<Pi>()->doms().back()->as<Pi>();
@@ -702,11 +702,11 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto sum = vec_add(world_, dim, adiff, bdiff);
             end->set_body(world_.app(pb->ret_var(), { end->mem_var(), sum}));
             pullbacks_[dst] = pb;
-//            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
+            //            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
 
             return dst;
         }
-        // ∇(a - b) = λz.∂a(z * (0 + 1)) - ∂b(z * (0 + 1))
+            // ∇(a - b) = λz.∂a(z * (0 + 1)) - ∂b(z * (0 + 1))
         case ROp::sub: {
             auto dst = world_.op(ROp::sub, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "-"));
@@ -714,49 +714,49 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), one), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), world_.op_rminus((nat_t)0, one)), end}));
             // all args 1..n as tuple => vector for addition
-             auto adiff = middle->var(1);
-                // proj((const Def*) var(), num_vars(), 1, nullptr)
-             auto bdiff = end->var(1);
-//            auto adiffV = middle->vars().skip_front();
-                // Array<const Def*>(num_vars(), [&](auto i) { return var(i); });
-//            auto bdiffV = end->vars().skip_front();
-//            auto adiff2=adiffV[0];
-                // ptr_[0] = var(1)
-//            auto adiffV = Array<const Def*>(middle->num_vars()-1, [&](auto i) { return middle->var(i+1); });
-//            auto bdiffV = Array<const Def*>(end->num_vars()-1, [&](auto i) { return end->var(i+1); });
-//            auto adiff=adiffV.front();
-//            auto bdiff=bdiffV.front();
+            auto adiff = middle->var(1);
+            // proj((const Def*) var(), num_vars(), 1, nullptr)
+            auto bdiff = end->var(1);
+            //            auto adiffV = middle->vars().skip_front();
+            // Array<const Def*>(num_vars(), [&](auto i) { return var(i); });
+            //            auto bdiffV = end->vars().skip_front();
+            //            auto adiff2=adiffV[0];
+            // ptr_[0] = var(1)
+            //            auto adiffV = Array<const Def*>(middle->num_vars()-1, [&](auto i) { return middle->var(i+1); });
+            //            auto bdiffV = Array<const Def*>(end->num_vars()-1, [&](auto i) { return end->var(i+1); });
+            //            auto adiff=adiffV.front();
+            //            auto bdiff=bdiffV.front();
 
             // dim = middle->num_vars()-1=end.num_vars()-1
-//            Array<const Def*> sum{dim, [&](auto i) {
-//                return world_.op(ROp::add,(nat_t)0,adiffV[i],bdiffV[i]);
-//            }};
+            //            Array<const Def*> sum{dim, [&](auto i) {
+            //                return world_.op(ROp::add,(nat_t)0,adiffV[i],bdiffV[i]);
+            //            }};
 
-//            msg("middle->vars {} = 1+ {}",middle->num_vars(),adiffV.size());
-//            msg("sum size {}",sum.size());
-//            intuitively adiff==adiff2
-//            intuitively bdiff==bdiff2
-//            adiff=adiff2;
+            //            msg("middle->vars {} = 1+ {}",middle->num_vars(),adiffV.size());
+            //            msg("sum size {}",sum.size());
+            //            intuitively adiff==adiff2
+            //            intuitively bdiff==bdiff2
+            //            adiff=adiff2;
 
-//            debug_dump("adiff",adiff);
-//            msg("adiff {}",adiff);
-//            msg("adiff {}",adiff->type());
+            //            debug_dump("adiff",adiff);
+            //            msg("adiff {}",adiff);
+            //            msg("adiff {}",adiff->type());
             // msg("adiff {}",adiff->type()->as<Sigma>());
             // msg("adiff {}",adiff->type()->as<Sigma>()->ops());
 
-             auto sum = vec_add(world_, dim, adiff, bdiff);
-             debug_dump("sum",sum);
-//            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
+            auto sum = vec_add(world_, dim, adiff, bdiff);
+            debug_dump("sum",sum);
+            //            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
             end->set_body(world_.app(pb->ret_var(), { end->mem_var(), sum}));
-                           pullbacks_[dst] = pb;
+            pullbacks_[dst] = pb;
 
             return dst;
         }
-        // ∇(a * b) = λz.∂a(z * (1 * b + a * 0)) + ∂b(z * (0 * b + a * 1))
-        //          potential opt: if ∂a = ∂b, do: ∂a(z * (a + b))
-        //             do this in the future. We need to make sure the pb is linear.
-        //             This should be doable without additional tracking if we change
-        //             their types from `R -> R` to `R -> ⊥`
+            // ∇(a * b) = λz.∂a(z * (1 * b + a * 0)) + ∂b(z * (0 * b + a * 1))
+            //          potential opt: if ∂a = ∂b, do: ∂a(z * (a + b))
+            //             do this in the future. We need to make sure the pb is linear.
+            //             This should be doable without additional tracking if we change
+            //             their types from `R -> R` to `R -> ⊥`
         case ROp::mul: {
             auto dst = world_.op(ROp::mul, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "*"));
@@ -766,18 +766,18 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto adiff = middle->var(1);
             auto bdiff = end->var(1);
 
-//            end->set_body(world_.app(pb->ret_var(), world_.tuple(merge(
-//                end->mem_var(),
-//                vec_add(world_,
-//                        collect_arguments(middle),
-//                        collect_arguments(end))))));
+            //            end->set_body(world_.app(pb->ret_var(), world_.tuple(merge(
+            //                end->mem_var(),
+            //                vec_add(world_,
+            //                        collect_arguments(middle),
+            //                        collect_arguments(end))))));
             auto sum = vec_add(world_, dim, adiff, bdiff);
             end->set_body(world_.app(pb->ret_var(), { end->mem_var(), sum}));
-//            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
+            //            end->set_body(world_.app(pb->ret_var(), {end->mem_var(), world_.op(ROp::add, (nat_t)0, adiff, bdiff)}));
             pullbacks_[dst] = pb;
             return dst;
         }
-        // ∇(a / b) = λz. (g* (z * h) - h* (z * g))/h²
+            // ∇(a / b) = λz. (g* (z * h) - h* (z * g))/h²
         case ROp::div: {
             //    a*(1/b * z)          => a*(z/b)
             //  + b*(a * -b^(-2) * z)  => b*(z*a/(b*b))

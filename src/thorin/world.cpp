@@ -160,9 +160,6 @@ World::World(const std::string& name)
         auto ptr = type_ptr(T, as);
         type->set_codom(pi({mem, ptr}, sigma({mem, T})));
         data_.load_ = axiom(normalize_load, type, Tag::Load, 0, dbg("load"));
-    } { // remem: M -> M
-        auto type = pi(mem, mem);
-        data_.remem_ = axiom(normalize_remem, type, Tag::Remem, 0, dbg("remem"));
     } { // store: [T: *, as: nat] -> [M, ptr(T, as), T] -> M
         auto type = nom_pi(kind())->set_dom({kind(), nat});
         auto T  = type->var(0, dbg("T"));
@@ -190,7 +187,7 @@ World::World(const std::string& name)
         auto R = type->var(1, dbg("R"));
         type->set_codom(pi(T, R));
         data_.atomic_ = axiom(nullptr, type, Tag::Atomic, 0, dbg("atomic"));
-    } { // lift: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
+    } { // lift:, [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#i»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#i»»
         // TODO select which Is/Os to lift
         auto rs = nom_sigma(kind(), 2);
         rs->set(0, nat);
@@ -198,7 +195,7 @@ World::World(const std::string& name)
         auto rs_pi = nom_pi(kind())->set_dom(rs);
         auto s = rs_pi->var(1, dbg("s"));
 
-        // [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»,]
+        // [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#i»,]
         auto is_os = nom_sigma(space(), 5);
         is_os->set(0, nat);
         is_os->set(1, arr(is_os->var(0, dbg("n_i")), kind()));
@@ -211,7 +208,7 @@ World::World(const std::string& name)
         is_os->set(4, pi(f_i, f_o));
         auto is_os_pi = nom_pi(kind())->set_dom(is_os);
 
-        // «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
+        // «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#i»»
         auto dom = nom_arr(is_os_pi->var(0_u64, dbg("n_i")));
         auto cod = nom_arr(is_os_pi->var(2_u64, dbg("n_o")));
         dom->set(arr(s, extract(is_os_pi->var(1, dbg("Is")), dom->var())));
@@ -457,7 +454,7 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
 }
 
 const Def* World::tuple_str(const char* s, const Def* dbg) {
-    DefVec ops;
+    std::vector<const Def*> ops;
     for (; *s != '\0'; ++s)
         ops.emplace_back(lit_nat(*s));
     return tuple(ops, dbg);
@@ -817,11 +814,6 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
         //auto out = merge_sigma(codom, {tan_dom});
         //auto cn = cn_mem_flat(in, out);
 
-        outln("rd dom {}",dom);
-        outln("rd codom {}",codom);
-        outln("tuple dom codom {}",tuple({dom, codom}));
-        outln("rd op rd {}",data_.op_rev_diff_);
-        outln("rd op rd type {}",data_.op_rev_diff_->type());
         auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom}), this->dbg("mk_pullback"));
         auto pullback = app(mk_pullback, fn, dbg);
 

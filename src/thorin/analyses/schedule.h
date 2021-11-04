@@ -28,7 +28,7 @@ public:
 
     private:
         const CFNode* node_;
-        DefVec defs_;
+        std::vector<const Def*> defs_;
         size_t index_;
 
         friend class Schedule;
