@@ -22,7 +22,7 @@ public:
         , eta_exp_(eta_exp)
     {}
 
-    enum : flags_t { Etaxy, Phixy, Sloxy, Traxy };
+    enum : flags_t { Phixy, Sloxy, Traxy };
 
     struct SSAInfo {
         Lam* pred = nullptr;
@@ -49,11 +49,16 @@ private:
     //@}
 
     EtaExp* eta_exp_;
-    std::map<Lam*, GIDMap<const Proxy*, const Def*>, GIDLt<Lam*>> lam2sloxy2val_;
-    LamMap<std::set<const Proxy*, GIDLt<const Proxy*>>> lam2phixys_; ///< Contains the @p Phixy%s to add to @c mem_lam to build the @c phi_lam.
-    GIDSet<const Proxy*> keep_;                                      ///< Contains @p Sloxy%s we want to keep.
-    LamSet preds_n_;
     Lam2Lam mem2phi_;
+
+    /// Value numbering table.
+    std::map<Lam*, GIDMap<const Proxy*, const Def*>, GIDLt<Lam*>> lam2sloxy2val_;
+
+    /// Contains the @p Sloxy%s that we need to install as phi in a @c mem_lam to build the @c phi_lam.
+    LamMap<std::set<const Proxy*, GIDLt<const Proxy*>>> lam2sloxys_;
+
+    /// Contains @p Sloxy%s we have to keep.
+    GIDSet<const Proxy*> keep_;
 };
 
 }
