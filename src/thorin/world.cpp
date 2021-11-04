@@ -814,6 +814,11 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
         //auto out = merge_sigma(codom, {tan_dom});
         //auto cn = cn_mem_flat(in, out);
 
+        outln("rd dom {}",dom);
+        outln("rd codom {}",codom);
+        outln("tuple dom codom {}",tuple({dom, codom}));
+        outln("rd op rd {}",data_.op_rev_diff_);
+        outln("rd op rd type {}",data_.op_rev_diff_->type());
         auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom}), this->dbg("mk_pullback"));
         auto pullback = app(mk_pullback, fn, dbg);
 
