@@ -158,7 +158,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         }
         auto dst = src_to_dst_[src_param];
         log(world_,"Source Param #{} {} => {} : {}",i,src_param,dst,dst->type());
-        pullbacks_[dst] = idpb;
+//        pullbacks_[dst] = idpb;
 
         // or use dim
         if (auto a = dst->type()->isa<Arr>()) {
@@ -251,18 +251,68 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // FIXME: pb type correct? might not be able to just use idpb->type() here
         auto old_pi = lam->type()->as<Pi>();
         // TODO: not necessarily idpb but corresponding for type of lam
-        auto pi = world_.cn({world_.type_mem(), old_pi->doms()[1], idpb->type()});
-        auto dst = world_.nom_lam(pi, world_.dbg(lam->name()));
-        type_dump(world_,"  => ",dst);
-        src_to_dst_[lam->var()] = dst->var();
-        pullbacks_[dst->var()] = dst->var(dst->num_vars() - 1);
-        dst->set_filter(lam->filter());
+//        auto pi = world_.cn({world_.type_mem(), old_pi->doms()[1], idpb->type()});
+//        auto dst = world_.nom_lam(pi, world_.dbg(lam->name()));
+//        type_dump(world_,"  => ",dst);
+//        src_to_dst_[lam->var()] = dst->var();
+//        pullbacks_[dst->var()] = dst->var(dst->num_vars() - 1);
+//        dst->set_filter(lam->filter());
+//
+//        auto bdy = j_wrap(lam->body());
+//        dst->set_body(bdy);
+//        src_to_dst_[lam] = dst;
+//        pullbacks_[dst] = pullbacks_[bdy];
+//        return dst;
 
-        auto bdy = j_wrap(lam->body());
-        dst->set_body(bdy);
-        src_to_dst_[lam] = dst;
-        pullbacks_[dst] = pullbacks_[bdy];
-        return dst;
+//        auto dst = world_.nom_lam(old_pi, world_.dbg(lam->name()));
+//        type_dump(world_,"  => ",dst);
+//        src_to_dst_[lam->var()] = dst->var();
+//        type_dump(world_,"  dst var: ",dst->var());
+////        pullbacks_[dst->var()] = dst->var(dst->num_vars() - 1);
+//        dst->set_filter(lam->filter());
+//
+//        auto bdy = j_wrap(lam->body());
+//        dst->set_body(bdy);
+//        src_to_dst_[lam] = dst;
+////        pullbacks_[dst] = pullbacks_[bdy];
+//        // TODO: pullbacks of lambda
+////        pullbacks_[dst] = pullbacks_[bdy];
+
+        // TODO: distinguish between returning and non-returning
+        // TODO: only mem arg
+        log(world_,"  lam args {}",old_pi->num_doms());
+        if(old_pi->num_doms()==1){//only mem
+            // TODO: merge with else case
+            log(world_,"  non-returning mem lambda");
+                    auto dst = world_.nom_lam(old_pi, world_.dbg(lam->name()));
+                    type_dump(world_,"  => ",dst);
+                    src_to_dst_[lam->var()] = dst->var();
+                    type_dump(world_,"  dst var: ",dst->var());
+            //        pullbacks_[dst->var()] = dst->var(dst->num_vars() - 1);
+                    dst->set_filter(lam->filter());
+
+                    auto bdy = j_wrap(lam->body());
+                    dst->set_body(bdy);
+                    src_to_dst_[lam] = dst;
+                    // TODO: pullbacks?
+            pullbacks_[dst] = idpb;
+                    return dst;
+        }
+
+            auto pi = world_.cn({world_.type_mem(), old_pi->doms()[1], idpb->type()});
+                auto dst = world_.nom_lam(pi, world_.dbg(lam->name()));
+                type_dump(world_,"  => ",dst);
+                src_to_dst_[lam->var()] = dst->var();
+                type_dump(world_,"  dst var: ",dst->var());
+                pullbacks_[dst->var()] = dst->var(dst->num_vars() - 1);
+                type_dump(world_,"  dst var pb: ",pullbacks_[dst->var()]);
+                dst->set_filter(lam->filter());
+
+                auto bdy = j_wrap(lam->body());
+                dst->set_body(bdy);
+                src_to_dst_[lam] = dst;
+                pullbacks_[dst] = pullbacks_[bdy];
+                return dst;
     }
     if (auto app = def->isa<App>()) {
         type_dump(world_,"App",app);
@@ -300,17 +350,89 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
                 if (axiom->tag() == Tag::RCmp) {
                     type_dump(world_,"  RCmp",axiom);
-                    auto [a, b] = j_wrap(arg)->split<2>();
-                    type_dump(world_,"  arg jwrap a",a);
-                    type_dump(world_,"  arg jwrap b",b);
+//                    auto [a, b] = j_wrap(arg)->split<2>();
+//                    type_dump(world_,"  arg jwrap a",a);
+//                    type_dump(world_,"  arg jwrap b",b);
+                    auto ab = j_wrap(arg);
+                    type_dump(world_,"  args jwrap",ab);
+                    auto [a, b] = ab->split<2>();
+                    if(!pullbacks_.count(a) || !pullbacks_.count(b)){
+                        // necessary for non-extracted components of main function argument
+                        // => the array function argument has a pullback (tuple)
+                        //    but the components do not (not registered)
+                        // TODO: maybe move up to reverse_diff?
+                        auto [pa,pb]=pullbacks_[ab]->split<2>();
+                        type_dump(world_,"  manually split pullbacks",pullbacks_[ab]);
+                        pullbacks_[a]=pa;
+                        pullbacks_[b]=pb;
+                    }
                     auto dst = world_.op(RCmp(axiom->flags()), nat_t(0), a, b);
                     src_to_dst_[app] = dst;
                     type_dump(world_,"  result of app",dst);
                     // TODO: tuple or app
-                    return world_.tuple({inner, dst});
+//                    return world_.tuple({inner, dst});
+                    return dst;
                 }
             }
         }
+
+        if (callee->type()->as<Pi>()->is_returning()) {
+            log(world_,"  FYI returning callee");
+            // for function calls
+            // TODO: do something special
+//            THORIN_UNREACHABLE;
+        }else {
+            log(world_,"  FYI non-returning callee");
+            // TODO: move out of if
+            auto d_callee= j_wrap(callee);
+            auto d_arg = j_wrap(arg);
+            type_dump(world_,"  wrapped callee: ",d_callee);
+            type_dump(world_,"  wrapped args: ",d_arg);
+            log(world_,"  arg in pb: {}",pullbacks_.count(d_arg));
+            if(pullbacks_.count(d_arg))
+                type_dump(world_,"  arg pb: ",pullbacks_[d_arg]);
+            log(world_,"  type: {}",d_arg->node_name());
+            Array<const Def*> ad_args;
+            // TODO: maybe switch branches
+            //   should rather look at type if tuple type
+            if(d_arg->isa<Var>()) {
+                log(world_,"  var argument");
+                // TODO: merge with code below
+                auto dst = world_.app(d_callee, d_arg);
+                src_to_dst_[app] = dst;
+                return dst;
+            }else if(d_arg->isa<Tuple>()) {
+                log(world_,"  tuple argument");
+                auto count=d_arg->num_ops();
+                log(world_,"  count: {}",count);
+                ad_args = Array<const Def*>(
+                    count+1,
+                    [&](auto i) {if (i<count) {return world_.extract(d_arg, (u64)i, world_.dbg("ad_arg"));} else {return pullbacks_[d_arg];}}
+                );
+            }else {
+                log(world_,"  non tuple argument");
+                // extract like Mem@
+//                ad_args={d_arg,pullbacks_[d_arg]};
+//                ad_args={d_arg};
+
+                // TODO: merge with code below
+                auto dst = world_.app(d_callee, d_arg);
+                src_to_dst_[app] = dst;
+                return dst;
+            }
+//            auto dst = world_.app(j_wrap(callee), world_.tuple({d_arg, pullbacks_[d_arg]}));
+            auto dst = world_.app(d_callee, ad_args);
+            src_to_dst_[app] = dst;
+            return dst;
+        }
+
+
+
+        // Old code
+
+
+
+
         log(world_,"  non operation call");
         log(world_,"  callee node {}",callee->node_name());
 
@@ -462,6 +584,11 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // TODO: multiple arguments
         // TODO: double diff? [mem, r32,
         //      cn[mem, r32, cn[mem, r32, cn[mem, r32]]]]
+
+        log(world_,"  tuple pbs {}",pbs);
+        // ret (mem, res) is an app with tuple as arg
+        // we want
+        // ret' (mem, res, pb) => pb of arg/res but not again a tuple
         if(isa<Tag::Mem>(tuple->op(0)->type())) { // ops.size() == 2 &&
             pullbacks_[dst] = pbs[1];
             //            pullbacks_[dst] = world_.tuple(
@@ -497,7 +624,11 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"Extract",extract);
         auto jtup = j_wrap(extract->tuple());
         type_dump(world_,"  jwrapped tuple of extract",jtup);
-        auto dst = world_.extract_unsafe(jtup, extract->index());
+        type_dump(world_,"  extract idx",extract->index());
+        auto jeidx= j_wrap(extract->index());
+        type_dump(world_,"  extract wrapped idx",jeidx);
+        auto dst = world_.extract_unsafe(jtup, jeidx);
+//        auto dst = world_.extract_unsafe(jtup, extract->index());
         type_dump(world_,"  jwrapped extract",dst);
         src_to_dst_[extract] = dst;
         // do not extract diff
@@ -525,13 +656,16 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"Literal",lit);
         // The derivative of a literal is ZERO
         //        auto zeropi = world_.cn_mem_flat(lit->type(), lit->type());
+        // TODO: only for r32 literals
         auto zeropi = world_.cn_mem_ret(lit->type(), A);
-        auto zeropb = world_.nom_lam(zeropi, world_.dbg("id"));
+        auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb"));
         type_dump(world_,"  lit pb (zero)",zeropb);
         zeropb->set_filter(world_.lit_true());
         //        auto zero = ZERO(world_, lit->type());
         auto zero = ZERO(world_, A);// or use dim directly
         zeropb->set_body(world_.app(zeropb->ret_var(), {zeropb->mem_var(), zero}));
+        // TODO: no src_to_dst mapping?
+        //   trivial construct => not necessary
         pullbacks_[lit] = zeropb;
         return lit;
     }
@@ -689,7 +823,7 @@ const Def* AutoDiff::rewrite(const Def* def) {
                 auto& world = src_lam->world();
 
                 // We get for `A -> B` the type `A -> (B * (B -> A))`.
-                //  i.e. cn[:mem, A, [:mem, B]] ---> cn[:mem, A, cn[:mem, B, cn[:mem, B, A]]]
+                //  i.e. cn[:mem, A, [:mem, B]] ---> cn[:mem, A, cn[:mem, B, cn[:mem, B, cn[:mem, A]]]]
                 auto dst_pi = app->type()->as<Pi>(); // multi dim as array
                 auto dst_lam = world.nom_lam(dst_pi, world.dbg("top_level_rev_diff_" + src_lam->name()));
                 dst_lam->set_filter(src_lam->filter()); // unfold filter

@@ -77,11 +77,15 @@ void optimize(World& world) {
 //    opt2.add<CopyProp>(ee);
     opt2.run();
     //    world.debug_stream();
+    printf("Finished Opti2\n");
 
 
-    cleanup_world(world);
-    while (partial_evaluation(world, true)); // lower2cff
-    cleanup_world(world);
+    // infinite loop for recursive functions (power, fac, ...) (and errors)
+//    cleanup_world(world);
+//    while (partial_evaluation(world, true)); // lower2cff
+//    cleanup_world(world);
+
+    printf("Finished Cleanup\n");
 
     PassMan codgen_prepare(world);
     //codgen_prepare.add<BoundElim>();
