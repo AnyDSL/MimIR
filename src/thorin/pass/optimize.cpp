@@ -82,7 +82,10 @@ void optimize(World& world) {
 
     // infinite loop for recursive functions (power, fac, ...) (and errors)
 //    cleanup_world(world);
-//    while (partial_evaluation(world, true)); // lower2cff
+//    while (partial_evaluation(world, true)){
+//        world.DLOG("Another Iteration of PE");
+//        world.debug_stream();
+//    }; // lower2cff
 //    cleanup_world(world);
 
     printf("Finished Cleanup\n");

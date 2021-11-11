@@ -105,7 +105,8 @@ private:
     const Def* seen(const Def* src);
 
     // chains cn[:mem, A, cn[:mem, B]] and cn[:mem, B, cn[:mem, C]] to a toplevel cn[:mem, A, cn[:mem, C]]
-    Lam* chain(Lam* a, Lam* b);
+//    const Lam* chain(const Lam* a, const Lam* b);
+    const Def* chain(const Def* a, const Def* b);
 
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
@@ -119,7 +120,8 @@ private:
 };
 
 // unused
-Lam* AutoDiffer::chain(Lam* a, Lam* b) {
+//const Lam* AutoDiffer::chain(const Lam* a, const Lam* b) {
+const Def* AutoDiffer::chain(const Def* a, const Def* b) {
     // chaining with identity is neutral
     if (a == idpb) return b;
     if (b == idpb) return a;
@@ -376,9 +378,75 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             }
         }
 
+
+
         if (callee->type()->as<Pi>()->is_returning()) {
             log(world_,"  FYI returning callee");
             // for function calls
+            // TODO: error with inhomogeneous calls and composition
+
+            auto dst_callee = world_.op_rev_diff(callee);
+            type_dump(world_,"  Used RevDiff Op on callee",dst_callee);
+            log(world_,"  this call will invoke AutoDiff rewrite");
+            auto d_arg = j_wrap(arg);
+            type_dump(world_,"  wrapped args: ",d_arg);
+
+
+            auto [m,arg,ret] = d_arg->split<3>();
+            type_dump(world_,"  split wrapped args into: mem: ",m);
+            type_dump(world_,"  split wrapped args into: arg: ",arg);
+            type_dump(world_,"  split wrapped args into: ret: ",ret);
+
+            // apply ret to expected mem, res, but custom continuation
+//            auto dst = world_.app(dst_callee, {m,arg,ret});
+
+
+            auto pbT = ret->type()->as<Pi>();
+            auto chained = world_.nom_lam(pbT, world_.dbg("φchain"));
+
+            type_dump(world_,"  arg pb",pullbacks_[d_arg]);
+            log(world_,"  arg pb node: {}",pullbacks_[d_arg]->node_name());
+            type_dump(world_,"  ret var pb",chained->ret_var());
+            log(world_,"  ret var pb node: {}",chained->ret_var()->node_name());
+
+            auto arg_pb = pullbacks_[d_arg]; // Lam
+            auto ret_pb = chained->ret_var(); // extract
+
+            chained->set_body( world_.app(
+                ret, // d_arg->ret_var()
+//                    chained->vars()
+                {
+                    chained->mem_var(),
+//                    chained->var((size_t)0),
+                    chained->var(1),
+//                    chained->var(2)
+//                    chained->ret_var()
+                    chain(arg_pb,ret_pb)
+//                    chain(ret_pb,arg_pb)
+                }
+                ));
+            chained->set_filter(world_.lit_true());
+
+            auto dst = world_.app(dst_callee, {m,arg,chained});
+
+//            middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), one), end}));
+//            auto adiff = middle->var(1);
+//            auto bdiff = end->var(1);
+//
+//            auto sum = vec_add(world_, dim, adiff, bdiff);
+//            end->set_body(world_.app(pb->ret_var(), { end->mem_var(), sum}));
+
+
+//            auto dst = world_.app(dst_callee, d_arg);
+            type_dump(world_,"  application with jwrapped args",dst);
+
+            pullbacks_[dst] = pullbacks_[d_arg]; // TODO: where is this pb used?
+            type_dump(world_,"  pullback of dst (call app): ",pullbacks_[dst]);
+            // TODO: why no registration in src_to_dst
+            // TODO: overwrite pullback after reverse_diff => know diff of functions
+
+            return dst;
+
             // TODO: do something special
 //            THORIN_UNREACHABLE;
         }else {
@@ -392,33 +460,26 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             if(pullbacks_.count(d_arg))
                 type_dump(world_,"  arg pb: ",pullbacks_[d_arg]);
             log(world_,"  type: {}",d_arg->node_name());
-            Array<const Def*> ad_args;
-            // TODO: maybe switch branches
-            //   should rather look at type if tuple type
-            if(d_arg->isa<Var>()) {
-                log(world_,"  var argument");
-                // TODO: merge with code below
-                auto dst = world_.app(d_callee, d_arg);
-                src_to_dst_[app] = dst;
-                return dst;
-            }else if(d_arg->isa<Tuple>()) {
+            const Def* ad_args;
+//            Array<const Def*> ad_args;
+            // TODO: one should rather look at the type if it is a tuple type
+
+            if(d_arg->isa<Tuple>()) {
                 log(world_,"  tuple argument");
                 auto count=d_arg->num_ops();
                 log(world_,"  count: {}",count);
-                ad_args = Array<const Def*>(
+                ad_args = world_.tuple(
+                    Array<const Def*>(
                     count+1,
                     [&](auto i) {if (i<count) {return world_.extract(d_arg, (u64)i, world_.dbg("ad_arg"));} else {return pullbacks_[d_arg];}}
-                );
+                ));
             }else {
+                // var (lambda completely with all arguments) and other (non tuple)
                 log(world_,"  non tuple argument");
                 // extract like Mem@
 //                ad_args={d_arg,pullbacks_[d_arg]};
 //                ad_args={d_arg};
-
-                // TODO: merge with code below
-                auto dst = world_.app(d_callee, d_arg);
-                src_to_dst_[app] = dst;
-                return dst;
+                ad_args = d_arg;
             }
 //            auto dst = world_.app(j_wrap(callee), world_.tuple({d_arg, pullbacks_[d_arg]}));
             auto dst = world_.app(d_callee, ad_args);
