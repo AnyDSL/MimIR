@@ -87,6 +87,10 @@ void optimize(World& world) {
 //        world.debug_stream();
 //    }; // lower2cff
 //    cleanup_world(world);
+        cleanup_world(world);
+//    partial_evaluation(world, true);
+    partial_evaluation(world, true);
+        cleanup_world(world);
 
     printf("Finished Cleanup\n");
 

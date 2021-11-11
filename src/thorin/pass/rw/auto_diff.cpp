@@ -422,7 +422,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                    chained->var(2)
 //                    chained->ret_var()
                     chain(arg_pb,ret_pb)
-//                    chain(ret_pb,arg_pb)
+//                    chain(ret_pb,arg_pb) // does not matter (linear maps are commutative)
                 }
                 ));
             chained->set_filter(world_.lit_true());
