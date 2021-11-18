@@ -12,7 +12,7 @@ Brunel et al, 2020
 Df(x,x*) = <f(x), λa. x* (a * f'(x))>
 (as x* is a pullback the call corresponds to a multiplication of the inner derivative)
 
-This rewrite pass rewrites occurences of the rev_diff axiom
+This rewrite pass rewrites occurrences of the rev_diff axiom
 into the differentiated versions with pullbacks.
 
 Example:
@@ -56,6 +56,17 @@ in general we have
 D(f(t)) =
     (x,x*) = D(t)
     <f(x); λ z. Σ xᵢ*( ∂ᵢf(x) ⋅ z )>
+
+
+the transformation is mostly the identity except for functions
+ a lambda f without return value is extended to receive
+    a pullback for its arguments
+ a returning function (having a continuation as last argument)
+    changes its return type to also return a pullback
+    the arguments are assumed to have an identity pullback
+        (this is in agreement with the axiom)
+    and the correct pullback is applied afterwards using the chain rule
+    in fact, returning functions are translated using the axiom
 
 */
 
