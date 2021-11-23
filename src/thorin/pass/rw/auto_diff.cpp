@@ -338,6 +338,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     if (auto axiom = def->isa<Axiom>()) {
         // an axiom without application has no meaning as a standalone term
         type_dump(world_,"Error: axiom",axiom);
+
+        // for nested derivs, handled in app
+//        if(axiom->tag()==Tag::RevDiff) {
+//            type_dump(world_,"Error: Rethrow rev_diff axiom",axiom);
+//            return def;
+//        }
+        log(world_,"  axiom has tag {}",axiom->tag());
+
         THORIN_UNREACHABLE;
     }
     if (auto lam = def->isa_nom<Lam>()) {
@@ -414,23 +422,33 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         if (auto inner = callee->isa<App>()) {
             log(world_,"  app of app");
             // Take care of binary operations
+
+
             if (auto axiom = inner->callee()->isa<Axiom>()) {
                 log(world_,"  app of axiom * args");
+
+                if (axiom->tag() == Tag::RevDiff) {
+                    type_dump(world_,"  wrap op rev_diff of ",arg);
+                    auto dst_callee = world_.op_rev_diff(arg);
+                    type_dump(world_,"  result  ",dst_callee);
+                    return dst_callee;
+                }
+
                 if (axiom->tag() == Tag::ROp) {
                     type_dump(world_,"  ROp",axiom);
                     auto ab = j_wrap(arg);
                     type_dump(world_,"  args jwrap",ab);
                     auto [a, b] = ab->split<2>();
-                    if(!pullbacks_.count(a) || !pullbacks_.count(b)){
-                        // necessary for non-extracted components of main function argument
-                        // => the array function argument has a pullback (tuple)
-                        //    but the components do not (not registered)
-                        // TODO: maybe move up to reverse_diff?
-                        auto [pa,pb]=pullbacks_[ab]->split<2>();
-                        type_dump(world_,"  manually split pullbacks",pullbacks_[ab]);
-                        pullbacks_[a]=pa;
-                        pullbacks_[b]=pb;
-                    }
+//                    if(!pullbacks_.count(a) || !pullbacks_.count(b)){
+//                        // necessary for non-extracted components of main function argument
+//                        // => the array function argument has a pullback (tuple)
+//                        //    but the components do not (not registered)
+//                        // TODO: maybe move up to reverse_diff?
+//                        auto [pa,pb]=pullbacks_[ab]->split<2>();
+//                        type_dump(world_,"  manually split pullbacks",pullbacks_[ab]);
+//                        pullbacks_[a]=pa;
+//                        pullbacks_[b]=pb;
+//                    }
                     auto dst = j_wrap_rop(ROp(axiom->flags()), a, b);
                     src_to_dst_[app] = dst;
                     type_dump(world_,"  result of app",dst);
@@ -445,16 +463,16 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto ab = j_wrap(arg);
                     type_dump(world_,"  args jwrap",ab);
                     auto [a, b] = ab->split<2>();
-                    if(!pullbacks_.count(a) || !pullbacks_.count(b)){
-                        // necessary for non-extracted components of main function argument
-                        // => the array function argument has a pullback (tuple)
-                        //    but the components do not (not registered)
-                        // TODO: maybe move up to reverse_diff?
-                        auto [pa,pb]=pullbacks_[ab]->split<2>();
-                        type_dump(world_,"  manually split pullbacks",pullbacks_[ab]);
-                        pullbacks_[a]=pa;
-                        pullbacks_[b]=pb;
-                    }
+//                    if(!pullbacks_.count(a) || !pullbacks_.count(b)){
+//                        // necessary for non-extracted components of main function argument
+//                        // => the array function argument has a pullback (tuple)
+//                        //    but the components do not (not registered)
+//                        // TODO: maybe move up to reverse_diff?
+//                        auto [pa,pb]=pullbacks_[ab]->split<2>();
+//                        type_dump(world_,"  manually split pullbacks",pullbacks_[ab]);
+//                        pullbacks_[a]=pa;
+//                        pullbacks_[b]=pb;
+//                    }
                     auto dst = world_.op(RCmp(axiom->flags()), nat_t(0), a, b);
                     src_to_dst_[app] = dst;
                     type_dump(world_,"  result of app",dst);
