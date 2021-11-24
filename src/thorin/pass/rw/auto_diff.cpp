@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <string>
+#include <utility>
 
 #include "thorin/analyses/scope.h"
 
@@ -63,17 +64,22 @@ const Def* lit_of_type(World& world, const Def* type, u64 lit) {
 const Def* ONE(World& world, const Def* def) { return lit_of_type(world, def, 1); }
 const Def* ZERO(World& world, const Def* def) { return lit_of_type(world, def, 0); }
 
+
 namespace {
 
 class AutoDiffer {
 public:
-    AutoDiffer(World& world, const Def2Def src_to_dst, const Def* A, const Def* B)
-        : world_{world}
-        , src_to_dst_{src_to_dst}
+    AutoDiffer(World& world, Def2Def  src_to_dst, Def2Def  pullbacks, const Def* A, const Def* B)
+        : pullbacks_{std::move(pullbacks)}
+        , world_{world}
+        , src_to_dst_{std::move(src_to_dst)}
 //        , idpb{}
         , A{A}
         , B{B}
     {
+//        src_to_dst_=src_to_dst;
+//        pullbacks_=pullbacks;
+
         // initializes the differentiation for a function of type A -> B
         // src_to_dst expects the parameters of the source lambda to be mapped
         //  (this property is only used later on)
@@ -131,6 +137,8 @@ public:
 
     const Def* reverse_diff(Lam* src); // top level function to compute the reverse differentiation of a function
     const Def* forward_diff(const Def*) { throw "not implemented"; }
+
+    DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term (a dst term) to its pullback function
 private:
     const Def* j_wrap(const Def* def); // 'identity' (except for lambdas, functions, and applications) traversal annotating the pullbacks
     const Def* j_wrap_rop(ROp op, const Def* a, const Def* b); // pullback computation for predefined functions, specifically operations like +, -, *, /
@@ -146,7 +154,7 @@ private:
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
 //    Lam* idpb; // identity pullback;
-    DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term (a dst term) to its pullback function
+//    Def2Def pullbacks_;  // <- maps a *copied* src term (a dst term) to its pullback function
     const Def* A;// input type
     const Def* inner;
     const Def* B; // return type
@@ -274,6 +282,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
                 pullbacks_[args[i]]=pb;
             }
+        }else {
         }
 //        Array<const Def*> ops{dim, [&](auto i) {
 //          if(dim==1) {
@@ -290,6 +299,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
         pullbacks_[dst] = idpb;
 
+        type_dump(world_,"dst ",dst);
         type_dump(world_,"Pullback of dst ",pullbacks_[dst]);
     }
     log(world_,"Initialization finished, start jwrapping");
@@ -574,8 +584,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             log(world_,"  FYI non-returning callee");
             // TODO: move out of if
             auto d_callee= j_wrap(callee);
-            auto d_arg = j_wrap(arg);
             type_dump(world_,"  wrapped callee: ",d_callee);
+            auto d_arg = j_wrap(arg);
             type_dump(world_,"  wrapped args: ",d_arg);
             log(world_,"  arg in pb: {}",pullbacks_.count(d_arg));
             if(pullbacks_.count(d_arg))
@@ -652,7 +662,15 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto sum=ZERO(world_,A);
         Lam* nextpb;
 
+        log(world_,"  sum up tuple derivatives for ops {}",ops);
+
         for (size_t i = 0; i < tuple_dim; ++i) {
+            log(world_,"  op {} = {} : {}",i,ops[i],ops[i]->type());
+            log(world_,"  has pb? {}",pullbacks_.count(ops[i]));
+            if(!pullbacks_.count(ops[i])) {
+                ops[i]=j_wrap(tuple->op(i));
+            }
+            type_dump(world_,"  has pb",pullbacks_[ops[i]]);
             nextpb = world_.nom_lam(pbT, world_.dbg("φtuple_next"));
             nextpb->set_filter(world_.lit_true());
             cpb->set_body(
@@ -963,7 +981,7 @@ const Def* AutoDiff::rewrite(const Def* def) {
                 type_dump(world,"Result:",dst_lam);
 
                 // The actual AD, i.e. construct "sq_cpy"
-                Def2Def src_to_dst;
+//                Def2Def src_to_dst;
                 // src_to_dst maps old definitions to new ones
                 // here we map the arguments of the lambda
                 for (size_t i = 0, e = src_lam->num_vars(); i < e; ++i) {
@@ -972,9 +990,10 @@ const Def* AutoDiff::rewrite(const Def* def) {
                     // the return continuation changes => special case
                     src_to_dst[src_param] = i == e - 1 ? dst_lam->ret_var() : dst_param;
                 }
-                auto differ = AutoDiffer{world, src_to_dst, A, B};
+                auto differ = AutoDiffer{world, src_to_dst, pullbacks, A, B};
                 dst_lam->set_body(differ.reverse_diff(src_lam));
 
+                pullbacks=differ.pullbacks_;
 
                 return dst_lam;
             }
