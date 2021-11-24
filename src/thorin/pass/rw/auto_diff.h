@@ -76,11 +76,6 @@ public:
         : RWPass(man, "auto_diff")
     {}
     const Def* rewrite(const Def*) override;
-
-private:
-    Def2Def src_to_dst;
-//    DefMap<const Def*> pullbacks;
-    Def2Def pullbacks;
 };
 
 }
