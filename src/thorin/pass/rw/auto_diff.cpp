@@ -31,14 +31,13 @@ const Def* vec_add(World& world, size_t dim, const Def* a, const Def* b) {
     return world.tuple(ops);
 }
 
+// computes the dimension of a tuple/array
 size_t getDim(const Def* def) {
     if(auto arr=def->type()->isa<Arr>()) {
         return arr->shape()->as<Lit>()->get<uint8_t>();
     }else{
         return def->num_ops();
     }
-    //                auto count=d_arg->num_ops();
-    //                auto count = d_arg->type()->as<Arr>()->shape()->as<Lit>()->get<uint8_t>();
 }
 
 // Sadly, we need to "unpack" the type
@@ -78,6 +77,27 @@ public:
         // src_to_dst expects the parameters of the source lambda to be mapped
         //  (this property is only used later on)
 
+        // the general principle is that every expression is a function
+        //   and has a gradient in respect from its outputs to its inputs
+        //   for instance add:R²->R has a pullback R->R²
+        //   describing how the result depends on the two inputs
+        //      (the derivation of the output w.r. to the inputs)
+        //   we mostly directly combine building techniques and chain rule applications
+        //   into the basic construction to derive the wanted derivative
+        //   w.r. to the function inputs of type A for the rev_diff call we currently are working on
+        //   in that sense every expression can be seen as a function from function input to some
+        //   intermediate result
+        //   Therefore, we need to keep track of A (but B is mostly not important)
+
+        // combination of derivatives is in most parts simply multiplication and application
+        // the pullbacks handle this for us as the scalar is applied inside the derivative
+        // and scales the derivative
+        // Therefore, composition of two pullbacks corresponds to (matrix-)multiplication
+        // and represents an application of the chain rule
+        // the nested nature emulates the backward adjoint trace used in backpropagation
+        // also see "Demystifying Differentiable Programming: Shift/Reset the Penultimate Backpropagator"
+        // for a similar approach but with shift and reset primitives
+
 
         // base type of differentiation: inner
         if (auto a = A->isa<Arr>()) {
@@ -100,32 +120,6 @@ public:
             log(world_,"SingleDim output differentiation: {} dimensions",codim);
         }
 
-
-        // indentity pullback for each argument for the multidimensional case
-        // (one hot vector times z)
-        //  <
-        //      lambda z, <z,0,...,0>,
-        //      lambda z, <0,z,...,0>,
-        //      ...,
-        //      lambda z, <0,0,...,z>,
-        //  >
-//        ind_idpb={
-//            dim,
-//            [&](auto i) {
-//                Lam* ipb=world_.nom_lam(idpi, world_.dbg("id"));
-//                // always expand the identity
-//                ipb->set_filter(world_.lit_true());
-//                Array<const Def*> ops{dim, [&](auto j) {
-//                    if(i==j) // the one hot position
-//                        return ipb->var(1, world_.dbg("a")); // z
-//                    else // zero everywhere else
-//                        return ZERO(world_,inner);
-//                }};
-//                const Def* opArr = world_.tuple(ops);
-//                ipb->set_body(world_.app(ipb->ret_var(), {ipb->mem_var(),opArr}));
-//                return ipb;
-//            }
-//        };
         log(world_,"Finished Construction");
     }
 
@@ -153,11 +147,13 @@ private:
     size_t dim, codim; // dimension of input type
 };
 
-// TODO: multidim case
 const Def* AutoDiffer::chain(const Def* a, const Def* b) {
-    // chaining with identity is neutral
+    // chaining with identity is neutral (but it is hard to detect identity
 //    if (a == idpb) return b;
 //    if (b == idpb) return a;
+
+    // chaining of two pullbacks is composition due to the
+    // nature of a pullback as linear map => application corresponds to (matrix-)multiplication
 
     auto at = a->type()->as<Pi>();
     auto bt = b->type()->as<Pi>();
@@ -189,18 +185,20 @@ const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
     return world_.cn_mem_ret(B, A);
 }
 
+// creates a one-hot vector s*(0,...,0,1,0,...,0) with a s at position pos
+// and zeros with the type of s everywhere else
 Array<const Def*> AutoDiffer::oneHot(size_t dim, size_t pos, const Def* s) {
     Array<const Def*> ops{dim, [&](auto i) {
-        if(i==pos) // the one hot position
+        if(i==pos) { // the one hot position
             return s;
-        else // zero everywhere else
+        }else { // zero everywhere else
             // TODO: fix below (cn[mem] in extract when conditional => tuple/lam)
-            if(s->type()->isa<Pi>() || isa<Tag::Mem>(s->type())) {
+            if (s->type()->isa<Pi>() || isa<Tag::Mem>(s->type())) {
                 return s;
-            }else{
+            } else {
                 return ZERO(world_, s->type());
             }
-
+        }
     }};
     return ops;
 }
@@ -209,8 +207,6 @@ Array<const Def*> AutoDiffer::oneHot(size_t dim, size_t pos, const Def* s) {
 // a mapping of source arguments to dst arguments is expected in src_to_dst
 const Def* AutoDiffer::reverse_diff(Lam* src) {
     // For each param, create an appropriate pullback. It is just the (one-hot) identity function for each of those.
-    //   => arguments get unit vector
-    //   => pb of multidim arg is ind_idpb
     type_dump(world_,"Apply RevDiff to src",src);
     for(size_t i = 0, e = src->num_vars(); i < e; ++i) {
         auto src_param = src->var(i);
@@ -233,6 +229,10 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
             dim=1;
         }
 
+        // the pullback of the argument with respect to the argument is the identity
+        // if the argument is a tuple, each component has a projection of one of the components of the
+        // scalar as pullback
+        // the scalar chooses which output (component) is under consideration
         auto idpi = createPbType(A,A);
         log(world_,"The pullback type of the argument is {}",idpi);
         auto idpb = world_.nom_lam(idpi, world_.dbg("id"));
@@ -256,13 +256,6 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
                 pb->set_filter(world_.lit_true());
                 type_dump(world_,"  pb of arg_extract: ",pb);
 
-//                auto tuple_dim = extract->tuple()->num_ops();
-//                log(world_,"  extract from tuple with size {}",tuple_dim);
-//                Array<const Def*> ohv{tuple_dim,
-//                                      [&](auto i) { return world_.tuple(
-//                                          oneHot(tuple_dim,i,pb->var(1, world_.dbg("s")))
-//                                      ); }};
-
                 pb->set_body(world_.app(
                     idpb,
                     {
@@ -275,15 +268,6 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
                 pullbacks_[args[i]]=pb;
             }
         }
-//        Array<const Def*> ops{dim, [&](auto i) {
-//          if(dim==1) {
-//              return idpb->var(1, world_.dbg("s"));
-//          }else{
-//              return world_.extract_unsafe(idpb->var(1, world_.dbg("s")), i);
-//          }
-//        }};
-//        log(world_,"Ops: {}",ops);
-//        const Def* opArr = world_.tuple(ops);
         // shorten to variable input => id
         idpb->set_body(world_.app(idpb->ret_var(),
             {idpb->mem_var(),idpb->var(1,world_.dbg("s"))}));
@@ -297,6 +281,18 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     auto dst = j_wrap(src->body());
     return dst;
 }
+
+
+
+// implement differentiation for each expression
+// an expression is transformed by identity into itself but using the "new" definitions
+//   (the correspondence is stored in src_to_dst where needed)
+// simultaneously the pullbacks are created and associated in pullbacks_
+// lambdas and functions change as returning functions now have an augmented return callback
+//   that also takes the continuation for the pullback
+//   non-returning functions take an additional pullback for each argument
+// the pullbacks are used when passed to the return callbacks and function calls
+
 
 // We implement AD in a similar way as described by Brunel et al., 2020
 //  <x², λa. x'(a * 2*x)>
@@ -339,13 +335,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // an axiom without application has no meaning as a standalone term
         type_dump(world_,"Error: axiom",axiom);
 
-        // for nested derivs, handled in app
-//        if(axiom->tag()==Tag::RevDiff) {
-//            type_dump(world_,"Error: Rethrow rev_diff axiom",axiom);
-//            return def;
-//        }
         log(world_,"  axiom has tag {}",axiom->tag());
-
         THORIN_UNREACHABLE;
     }
     if (auto lam = def->isa_nom<Lam>()) {
@@ -434,6 +424,17 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     return dst_callee;
                 }
 
+                // there are many ways to handle memory but most have problems
+                // the pullback for the pointer only gets a meaning at a store
+                // but the store is only related to the memory
+                // we could compute the derivation value w.r. to the pointer but we need
+                // the pullback of the pointer w.r. to the inputs at the point of a load
+                // therefore, the pointer needs a reference to the pullback of the value
+                // assigned at a store
+                // the pullback is statically unknown as the control flow determines which
+                // store is taken
+
+                // we propagate the memory from before to pullback calls to the transformed dst calls to after
                 if (axiom->tag() == Tag::Slot) {
                     type_dump(world_,"  wrap slot with args ",arg);
                     type_dump(world_,"  wrap slot with inner args ",inner->arg());
@@ -457,6 +458,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
                     type_dump(world_,"  result slot ",dst);
                     type_dump(world_,"  pb slot ",pb);
+                    src_to_dst_[app] = dst; // not needed
                     return dst;
                 }
                 if (axiom->tag() == Tag::Store) {
@@ -478,6 +480,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     type_dump(world_,"  result store ",dst);
                     type_dump(world_,"  pb store ",pb);
                     pullbacks_[dst]=pb; // should be unused
+                    src_to_dst_[app] = dst; // not needed
                     return dst;
                 }
                 if (axiom->tag() == Tag::Load) {
@@ -499,9 +502,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     type_dump(world_,"  pb load ",pb);
                     type_dump(world_,"  pb val load ",pb_val);
                     pullbacks_[dst]=pb_val; // tuple extract [mem,...]
+                    src_to_dst_[app] = dst; // not needed
                     return dst;
                 }
 
+                // handle operations in a hardcoded way
+                // we directly implement the pullbacks including the chaining w.r. to the inputs of the function
                 if (axiom->tag() == Tag::ROp) {
                     type_dump(world_,"  ROp",axiom);
                     auto ab = j_wrap(arg);
@@ -523,6 +529,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     return dst;
                 }
 
+                // conditionals are transformed by the identity
                 if (axiom->tag() == Tag::RCmp) {
                     type_dump(world_,"  RCmp",axiom);
 //                    auto [a, b] = j_wrap(arg)->split<2>();
@@ -552,6 +559,11 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         }
 
 
+        // distinguish between returning calls (other functions)
+        // and non-returning calls (give away control flow) for instance for conditionals
+
+        // a returning call is transformed using rev_diff with another rewrite pass
+        // a non-returning call is transformed directly and augmented using pullbacks for its arguments
 
         if (callee->type()->as<Pi>()->is_returning()) {
             log(world_,"  FYI returning callee");
@@ -657,10 +669,27 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             //   conditional needs no-tuple for ret @if_join takes in all args => with new ones (pb arg)
             //   mut like load returns mem, r32 => needs additionally to take pb
             // nice way would be to handle everything the second way => identify tuple, append pb
-
             // TODO: one should rather look at the type if it is a tuple type
-
             // TODO: what is correct here
+
+
+            // if we encounter a tuple (like [mem, arg]) we add the pullback as additional argument
+            // this is necessary for lambdas (conditionals)
+            // as well as for the final return, which expects [mem, result, pullback of result w.r. to inputs]
+            // all tuples are sigma types
+            // one problem: if we have continuation calls (for instance with conditionals),
+            //   we transformed their signature to take the pullback
+            //   if this continuation makes a non-returning call with [mem,arg] in the normal form
+            //   lazy code is generated to forward all arguments
+            //   this results in forwarding the pullback as well
+            //   therefore, we do not need to additionally give the pullback
+            //   (which in the code would rather result in omitting the main argument due to wrong counting of arguments)
+            //   thus, we skip the augmentation when encountering a var => an argument which is the whole argument of a function call
+            // another case where no agumentation is needed is when a function with only one mem argument
+            //   is called (like in conditionals)
+            //   we have no pullback => no augmentation needed
+            //   coincidentally, this is covered by !type->is<Sigma>() as well as darg->is<Var>
+
 //            if(d_arg->isa<Tuple>()) {
             if(d_arg->type()->isa<Sigma>() && !d_arg->isa<Var>()) {
                 log(world_,"  tuple argument");
@@ -713,6 +742,11 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
 
         // TODO: this seems excessively complicated
+
+        // get pullbacks for each component w.r. to A
+        // apply them with the component of the scalar from the tuple pullback
+        // sum them up
+        // TODO: could a more modular approach with more primitive pullbacks make this code easier?
 
         auto pi = createPbType(A,tuple->type());
         auto pb = world_.nom_lam(pi, world_.dbg("tuple_pb"));
@@ -786,6 +820,18 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     }
 
     if (auto extract = def->isa<Extract>()) {
+        // extracting a tuple B^m results in element B
+        // the tuple has a pullback B^m->A (remember the tuple is viewed as function in the inputs)
+        // to get the pullback for the i-th argument
+        // we have to apply the pullback with the one-hot vector with a 1 (or rather s) at position i
+        // but the extraction position is not statically known therefore, we can not
+        // directly convert the extraction index to a position in a tuple
+        // thus, we need to list all one-hot vectors in a tuple and extract the correct one
+        // using the extraction index
+        // this extracted one-hot vector can now be used to be applied to the pullback of the tuple
+        // to project the correct gradient
+
+
         // when extracting a component, the pullback is extracted from the tuple pullback of the tuple argument
         type_dump(world_,"Extract",extract);
         auto jtup = j_wrap(extract->tuple());
@@ -839,6 +885,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     }
 
     if (auto insert = def->isa<Insert>()) {
+        // currently not handled
+        // important note: we need the pullback w.r. to the tuple and element
+        // construction needs careful consideration of modular basic pullbacks
+        // see notes on paper for correct code
+
+
         // the pullback for an insertion is an insertion of a pullback into the tuple pullback
         type_dump(world_,"Insert",insert);
         auto dst = world_.insert(j_wrap(insert->tuple()), insert->index(), j_wrap(insert->value()));
