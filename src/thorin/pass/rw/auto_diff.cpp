@@ -425,13 +425,81 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
 
             if (auto axiom = inner->callee()->isa<Axiom>()) {
-                log(world_,"  app of axiom * args");
+                log(world_,"  app of axiom [...] args with axiom tag {}",axiom->tag());
 
                 if (axiom->tag() == Tag::RevDiff) {
                     type_dump(world_,"  wrap op rev_diff of ",arg);
                     auto dst_callee = world_.op_rev_diff(arg);
                     type_dump(world_,"  result  ",dst_callee);
                     return dst_callee;
+                }
+
+                if (axiom->tag() == Tag::Slot) {
+                    type_dump(world_,"  wrap slot with args ",arg);
+                    type_dump(world_,"  wrap slot with inner args ",inner->arg());
+                    auto [ty, _] = inner->arg()->split<2>();
+                    auto j_args = j_wrap(arg);
+                    auto [mem, num] = j_args->split<2>();
+
+                    // TODO: in which order should mem be processed
+                    auto pb = world_.op_slot(createPbType(A,ty),mem,world_.dbg("ptr_slot"));
+                    auto [pb_mem, pb_ptr] = pb->split<2>();
+
+                    auto dst = world_.op_slot(ty,pb_mem);
+                    auto [dst_mem, dst_ptr] = dst->split<2>();
+                    type_dump(world_,"  slot dst ptr",dst_ptr);
+                    type_dump(world_,"  slot pb ptr",pb_ptr);
+//                    type_dump(world_,"  slot dst",dst);
+//                    type_dump(world_,"  slot pb",pb);
+//                    pullbacks_[dst]=pb;
+                    pullbacks_[dst]=pb_ptr; // for mem tuple extract
+//                    pullbacks_[dst_ptr]=pb_ptr;
+
+                    type_dump(world_,"  result slot ",dst);
+                    type_dump(world_,"  pb slot ",pb);
+                    return dst;
+                }
+                if (axiom->tag() == Tag::Store) {
+                    type_dump(world_,"  wrap store with args ",arg);
+                    type_dump(world_,"  wrap store with inner args ",inner->arg());
+                    auto j_args = j_wrap(arg);
+                    type_dump(world_,"  continue with store with args ",j_args);
+
+//                    auto [ty, _] = inner->arg()->split<2>();
+                    auto [mem, ptr, val] = j_args->split<3>();
+                    type_dump(world_,"  got ptr ",ptr);
+                    type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
+                    type_dump(world_,"  got val ",val);
+                    type_dump(world_,"  got val pb ",pullbacks_[val]);
+
+                    auto pb = world_.op_store(mem,pullbacks_[ptr],pullbacks_[val],world_.dbg("pb_store"));
+                    auto pb_mem = pb;
+                    auto dst = world_.op_store(pb_mem,ptr,val);
+                    type_dump(world_,"  result store ",dst);
+                    type_dump(world_,"  pb store ",pb);
+                    pullbacks_[dst]=pb; // should be unused
+                    return dst;
+                }
+                if (axiom->tag() == Tag::Load) {
+                    type_dump(world_,"  wrap load with args ",arg);
+                    type_dump(world_,"  wrap load with inner args ",inner->arg());
+
+                    auto j_args = j_wrap(arg);
+                    type_dump(world_,"  continue with load with args ",j_args);
+
+                    auto [mem, ptr] = j_args->split<2>();
+                    type_dump(world_,"  got ptr ",ptr);
+                    type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
+                    auto pb = world_.op_load(mem,pullbacks_[ptr],world_.dbg("pb_load"));
+                    auto [pb_mem,pb_val] = pb->split<2>();
+                    auto dst = world_.op_load(pb_mem,ptr);
+                    auto [dst_mem,dst_val] = pb->split<2>();
+
+                    type_dump(world_,"  result load ",dst);
+                    type_dump(world_,"  pb load ",pb);
+                    type_dump(world_,"  pb val load ",pb_val);
+                    pullbacks_[dst]=pb_val; // tuple extract [mem,...]
+                    return dst;
                 }
 
                 if (axiom->tag() == Tag::ROp) {
@@ -583,10 +651,18 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             log(world_,"  type: {}",d_arg->node_name());
             const Def* ad_args;
 //            Array<const Def*> ad_args;
+
+            log(world_,"  arg type: {} of {}",d_arg->type(),d_arg->type()->node_name());
+            // TODO: conflict
+            //   conditional needs no-tuple for ret @if_join takes in all args => with new ones (pb arg)
+            //   mut like load returns mem, r32 => needs additionally to take pb
+            // nice way would be to handle everything the second way => identify tuple, append pb
+
             // TODO: one should rather look at the type if it is a tuple type
 
             // TODO: what is correct here
-            if(d_arg->isa<Tuple>()) {
+//            if(d_arg->isa<Tuple>()) {
+            if(d_arg->type()->isa<Sigma>() && !d_arg->isa<Var>()) {
                 log(world_,"  tuple argument");
 //                auto count=d_arg->num_ops();
                 auto count=getDim(d_arg);
@@ -605,6 +681,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                ad_args={d_arg};
                 ad_args = d_arg;
             }
+            type_dump(world_,"  ad_arg ",ad_args);
 //            auto dst = world_.app(j_wrap(callee), world_.tuple({d_arg, pullbacks_[d_arg]}));
             auto dst = world_.app(d_callee, ad_args);
             src_to_dst_[app] = dst;
