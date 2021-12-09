@@ -734,7 +734,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  jwrapped tuple:",dst);
         src_to_dst_[tuple] = dst;
 
-        if(isa<Tag::Mem>(tuple->op(0)->type())) {
+        if(tuple_dim>0 && isa<Tag::Mem>(tuple->op(0)->type())) {
             log(world_,"  mem pb tuple");
             pullbacks_[dst] = pullbacks_[ops[1]];
             return dst;
@@ -776,7 +776,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             //all nextpb args are result
             sum=vec_add(world_,dim,sum,nextpb->var(1));
         }
-        nextpb->set_body( world_.app( pb->ret_var(), {nextpb->mem_var(),sum} ));
+        log(world_,"  create final pb app");
+        cpb->set_body( world_.app( pb->ret_var(), {cpb->mem_var(),sum} ));
 
 
 
