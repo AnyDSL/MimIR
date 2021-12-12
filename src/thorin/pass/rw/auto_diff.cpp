@@ -867,16 +867,28 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //        auto tuple_dim = jtup->type()->as<Arr>()->shape()->as<Lit>()->get<uint8_t>();
         type_dump(world_,"  extract from tuple",extract->tuple());
         log(world_,"  extract from tuple with size {}",tuple_dim);
-        Array<const Def*> ohv{tuple_dim,
-                              [&](auto i) { return world_.tuple(
-                                  oneHot(tuple_dim,i,pb->var(1, world_.dbg("s")))
-                              ); }};
 
+        const Def* extract_vec;
+
+        if (auto lit = extract->index()->isa<Lit>()) {
+            // tuples can only be extracted using literals
+            // we also need a direct extract
+            auto i = lit->get<uint8_t>();
+            log(world_,"  literal extract (applicable for tuples) at pos {}",i);
+            extract_vec= world_.tuple(oneHot(tuple_dim,i,pb->var(1, world_.dbg("s"))));
+        } else {
+            Array<const Def*> ohv{tuple_dim,
+                                  [&](auto i) { return world_.tuple(
+                                      oneHot(tuple_dim,i,pb->var(1, world_.dbg("s")))
+                                  ); }};
+            log(world_,"  non-literal extract (applicable for arrays) ");
+            extract_vec=world_.extract_unsafe(world_.tuple(ohv), extract->index());
+        }
         pb->set_body(world_.app(
             pullbacks_[jtup],
             {
                 pb->mem_var(),
-                world_.extract_unsafe(world_.tuple(ohv), extract->index()),
+                extract_vec,
                 pb->ret_var()
             }
         ));
