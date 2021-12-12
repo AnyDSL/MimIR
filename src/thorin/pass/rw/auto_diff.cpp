@@ -513,16 +513,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto ab = j_wrap(arg);
                     type_dump(world_,"  args jwrap",ab);
                     auto [a, b] = ab->split<2>();
-//                    if(!pullbacks_.count(a) || !pullbacks_.count(b)){
-//                        // necessary for non-extracted components of main function argument
-//                        // => the array function argument has a pullback (tuple)
-//                        //    but the components do not (not registered)
-//                        // TODO: maybe move up to reverse_diff?
-//                        auto [pa,pb]=pullbacks_[ab]->split<2>();
-//                        type_dump(world_,"  manually split pullbacks",pullbacks_[ab]);
-//                        pullbacks_[a]=pa;
-//                        pullbacks_[b]=pb;
-//                    }
                     auto dst = j_wrap_rop(ROp(axiom->flags()), a, b);
                     src_to_dst_[app] = dst;
                     type_dump(world_,"  result of app",dst);
@@ -532,27 +522,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 // conditionals are transformed by the identity
                 if (axiom->tag() == Tag::RCmp) {
                     type_dump(world_,"  RCmp",axiom);
-//                    auto [a, b] = j_wrap(arg)->split<2>();
-//                    type_dump(world_,"  arg jwrap a",a);
-//                    type_dump(world_,"  arg jwrap b",b);
                     auto ab = j_wrap(arg);
                     type_dump(world_,"  args jwrap",ab);
                     auto [a, b] = ab->split<2>();
-//                    if(!pullbacks_.count(a) || !pullbacks_.count(b)){
-//                        // necessary for non-extracted components of main function argument
-//                        // => the array function argument has a pullback (tuple)
-//                        //    but the components do not (not registered)
-//                        // TODO: maybe move up to reverse_diff?
-//                        auto [pa,pb]=pullbacks_[ab]->split<2>();
-//                        type_dump(world_,"  manually split pullbacks",pullbacks_[ab]);
-//                        pullbacks_[a]=pa;
-//                        pullbacks_[b]=pb;
-//                    }
                     auto dst = world_.op(RCmp(axiom->flags()), nat_t(0), a, b);
                     src_to_dst_[app] = dst;
                     type_dump(world_,"  result of app",dst);
-                    // TODO: tuple or app
-//                    return world_.tuple({inner, dst});
                     return dst;
                 }
             }
@@ -592,11 +567,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             auto chained = world_.nom_lam(pbT, world_.dbg("φchain"));
             type_dump(world_,"  chained pb will be (app pb) ",chained);
 
-//            type_dump(world_,"  arg pb",pullbacks_[d_arg]);
-//            log(world_,"  arg pb node: {}",pullbacks_[d_arg]->node_name());
-//            type_dump(world_,"  ret var pb",chained->ret_var());
-//            log(world_,"  ret var pb node: {}",chained->ret_var()->node_name());
-
             auto arg_pb = pullbacks_[d_arg]; // Lam
             auto ret_pb = chained->ret_var(); // extract
             type_dump(world_,"  arg pb",arg_pb);
@@ -611,34 +581,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     chained->mem_var(),
                     chained->var(1),
                     chain_pb
-//                    chain(arg_pb,ret_pb)
                 }
-//                ret, // d_arg->ret_var()
-////                    chained->vars()
-//                {
-//                    chained->mem_var(),
-////                    chained->var((size_t)0),
-//                    chained->var(1),
-////                    chained->var(2)
-////                    chained->ret_var()
-////                    chain(arg_pb,ret_pb)
-//                    chain(ret_pb,arg_pb)
-//                }
                 ));
             chained->set_filter(world_.lit_true());
             type_dump(world_,"  build chained (app pb) ",chained);
 
             auto dst = world_.app(dst_callee, {m,arg,chained});
 
-//            middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), one), end}));
-//            auto adiff = middle->var(1);
-//            auto bdiff = end->var(1);
-//
-//            auto sum = vec_add(world_, dim, adiff, bdiff);
-//            end->set_body(world_.app(pb->ret_var(), { end->mem_var(), sum}));
-
-
-//            auto dst = world_.app(dst_callee, d_arg);
             type_dump(world_,"  application with jwrapped args",dst);
 
             pullbacks_[dst] = pullbacks_[d_arg]; // TODO: where is this pb used?
@@ -816,7 +765,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  jwrapped pack",dst);
 //        pullbacks_[dst] = idpb; // TODO: check
         log(world_,"  we need no pb for pack, right?");
-//        type_dump(world_,"  pullback of pack (idpb)",pullbacks_[dst]);
         return dst;
     }
 
@@ -847,7 +795,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // but tuple => tuple of diffs
         // no lambda
 
-//        log(world_,"  tuple first type: {}",jtup->type()->op(0));
 
         if(isa<Tag::Mem>(jtup->type()->op(0))) {
             log(world_,"  extract mem pb tuple ");
