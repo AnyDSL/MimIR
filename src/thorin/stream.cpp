@@ -3,7 +3,6 @@
 #include "thorin/analyses/deptree.h"
 #include "thorin/util/container.h"
 
-
 namespace thorin {
 
 /*
@@ -30,8 +29,8 @@ static bool is_var_ref(const Def* def) {
 }
 
 static bool print_inline(const Def* def) {
-    return !def->isa_nom() && (def->no_dep() || is_var_ref(def) || 
-        match_any(def->node(), Node::Pi, Node::Sigma, Node::Tuple) && def->num_ops() <= 5);
+    return !def->isa_nom() && (def->no_dep() || is_var_ref(def) ||
+        (match_any(def->node(), Node::Pi, Node::Sigma, Node::Tuple) && def->num_ops() <= 5));
 }
 
 struct Fmt {
@@ -48,7 +47,7 @@ struct Fmt {
             return s.fmt("({})", fmt.def);
 
         return s.fmt("{}", fmt.def);
-    } 
+    }
 };
 
 static Fmt parens(const Def* def) {

@@ -12,9 +12,7 @@
 
 // old stuff
 #include "thorin/transform/cleanup_world.h"
-#include "thorin/transform/flatten_tuples.h"
 #include "thorin/transform/partial_evaluation.h"
-#include "thorin/transform/closure_conv.h"
 
 
 namespace thorin {
