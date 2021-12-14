@@ -1,12 +1,5 @@
 #include "thorin/pass/fp/copy_prop.h"
 
-<<<<<<< HEAD
-namespace thorin {
-
-const Def* CopyProp::rewrite(const Def* def) {
-    auto app = def->isa<App>();
-    if (app == nullptr) return def;
-=======
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
 
@@ -17,7 +10,6 @@ const Def* CopyProp::rewrite(const Def* def) {
         if (auto var_lam = app->callee()->isa_nom<Lam>(); !ignore(var_lam))
             return var2prop(app, var_lam);
     }
->>>>>>> main/t2
 
     auto var_lam = app->callee()->isa_nom<Lam>();
     if (ignore(var_lam) || var_lam->num_vars() == 0 || keep_.contains(var_lam)) return app;
@@ -56,11 +48,8 @@ const Def* CopyProp::rewrite(const Def* def) {
         auto prop_dom = world().sigma(types);
         auto new_type = world().pi(prop_dom, var_lam->codom());
         prop_lam = var_lam->stub(world(), new_type, var_lam->dbg());
-<<<<<<< HEAD
-=======
         beta_red_->keep(prop_lam);
         eta_exp_->new2old(prop_lam, var_lam);
->>>>>>> main/t2
         keep_.emplace(prop_lam); // don't try to propagate again
         world().DLOG("var_lam => prop_lam: {}: {} => {}: {}", var_lam, var_lam->type()->dom(), prop_lam, prop_dom);
 
@@ -80,22 +69,4 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     return undo_visit(lam);
 }
 
-<<<<<<< HEAD
-undo_t CopyProp::analyze(const Def* def) {
-    auto undo = No_Undo;
-    for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-        if (auto lam = def->op(i)->isa_nom<Lam>(); lam != nullptr && !ignore(lam) && keep_.emplace(lam).second) {
-            //auto&& [_, u,ins] = data(lam);
-            //if (!ins) {
-                undo = std::min(undo, undo_visit(lam));
-                world().DLOG("keep: {}", lam);
-            //}
-        }
-    }
-
-    return undo;
-}
-
-=======
->>>>>>> main/t2
 }

@@ -3,8 +3,6 @@
 
 namespace thorin {
 
-<<<<<<< HEAD
-=======
 const Proxy* EtaExp::proxy(Lam* lam) {
     return FPPass<EtaExp, Lam>::proxy(lam->type(), {lam}, 0);
 }
@@ -20,7 +18,6 @@ Lam* EtaExp::new2old(Lam* new_lam) {
     return new_lam;
 }
 
->>>>>>> main/t2
 const Def* EtaExp::rewrite(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
