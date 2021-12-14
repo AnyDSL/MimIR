@@ -1,6 +1,7 @@
 
 #include "thorin/tuple.h"
 #include "thorin/rewrite.h"
+#include "thorin/pass/fp/eta_exp.h"
 
 #include "thorin/pass/rw/scalarize.h"
 

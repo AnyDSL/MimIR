@@ -3,6 +3,24 @@
 
 namespace thorin {
 
+<<<<<<< HEAD
+=======
+const Proxy* EtaExp::proxy(Lam* lam) {
+    return FPPass<EtaExp, Lam>::proxy(lam->type(), {lam}, 0);
+}
+
+Lam* EtaExp::new2old(Lam* new_lam) {
+    if (auto old_lam = new2old_.lookup(new_lam)) {
+        auto root = new2old(*old_lam); // path compression
+        assert(root != new_lam);
+        new2old_[new_lam] = root;
+        return root;
+    }
+
+    return new_lam;
+}
+
+>>>>>>> main/t2
 const Def* EtaExp::rewrite(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
@@ -59,7 +77,7 @@ const Def* EtaExp::reexpand(const Def* def) {
     for (auto [wrap, lam] : refinements)
         wrap2subst_[wrap] = std::pair(lam, new_def);
 
-    return new_def;
+    return def2exp_[def] = new_def;
 }
 
 Lam* EtaExp::eta_wrap(Lam* lam) {
