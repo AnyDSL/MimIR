@@ -17,65 +17,16 @@
 #include "thorin/transform/closure_conv.h"
 
 
-//#define closure
-
 namespace thorin {
 
 void optimize(World& world) {
+
     world.set(LogLevel::Debug);
 
-    // incoming from main
-    // opt.add<PartialEval>();
-    // auto br = opt.add<BetaRed>();
-    // auto er = opt.add<EtaRed>();
-    // auto ee = opt.add<EtaExp>(er);
-    // opt.add<SSAConstr>(ee);
-    // opt.add<Scalerize>(ee);
-    // //opt.add<DCE>(br, ee);
-    // opt.add<CopyProp>(br, ee);
-
-#ifdef closure
     PassMan opt(world);
-    // opt.add<PartialEval>();
-    // opt.add<BetaRed>();
-    auto er = opt.add<EtaRed>();
-    auto ee = opt.add<EtaExp>(er);
-    // opt.add<SSAConstr>(ee);
-    // opt.add<CopyProp>();
-    // opt.add<Scalerize>();
-    // opt.add<AutoDiff>();
-    opt.run();
-
-    ClosureConv(world).run();
-    auto cc = PassMan(world);
-    cc.add<Scalerize>();
-    cc.run();
-    world.debug_stream();
-
-    // while (partial_evaluation(world, true)); // lower2cff
-    // flatten_tuples(world);
-
-    // PassMan codgen_prepare(world);
-    //codgen_prepare.add<BoundElim>();
-    // codgen_prepare.add<RetWrap>();
-    // codgen_prepare.run();
-#else
-
-    PassMan opt(world);
-    // opt.add<PartialEval>();
-    // opt.add<BetaRed>();
-    //    auto er = opt.add<EtaRed>();
-    //    auto ee = opt.add<EtaExp>(er);
-    // opt.add<SSAConstr>(ee);
-    // opt.add<CopyProp>();
-    // opt.add<Scalerize>();
     opt.add<AutoDiff>();
     opt.run();
     printf("Finished Opti1\n");
-
-    //    ClosureConv(world).run();
-    //    printf("Finished Closure\n");
-
 
 
     PassMan opt2(world);
@@ -84,33 +35,19 @@ void optimize(World& world) {
     auto er = opt2.add<EtaRed>();
     auto ee = opt2.add<EtaExp>(er);
     opt2.add<SSAConstr>(ee);
-//    opt2.add<Scalerize>(ee);
-//    opt2.add<CopyProp>(ee);
     opt2.run();
-    //    world.debug_stream();
     printf("Finished Opti2\n");
 
 
-    // infinite loop for recursive functions (power, fac, ...) (and errors)
-//    cleanup_world(world);
-//    while (partial_evaluation(world, true)){
-//        world.DLOG("Another Iteration of PE");
-//        world.debug_stream();
-//    }; // lower2cff
-//    cleanup_world(world);
         cleanup_world(world);
-//    partial_evaluation(world, true);
     partial_evaluation(world, true);
         cleanup_world(world);
 
     printf("Finished Cleanup\n");
 
     PassMan codgen_prepare(world);
-    //codgen_prepare.add<BoundElim>();
     codgen_prepare.add<RetWrap>();
     codgen_prepare.run();
-
-#endif
 }
 
 }
