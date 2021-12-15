@@ -122,6 +122,7 @@ private:
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
     DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term (a dst term) to its pullback function
+    DefMap<const Def*> pointer_map;
     const Def* A;// input type
     size_t dim; // dimension of input type
 };
@@ -403,17 +404,31 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto j_args = j_wrap(arg);
                     auto [mem, num] = j_args->split<2>();
 
-                    auto pb = world_.op_slot(createPbType(A,ty),mem,world_.dbg("ptr_slot"));
-                    auto [pb_mem, pb_ptr] = pb->split<2>();
+                    auto pbty = createPbType(A,ty);
+                    auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
+                    auto [pb_mem, pb_ptr] = pb_slot->split<2>();
 
                     auto dst = world_.op_slot(ty,pb_mem);
                     auto [dst_mem, dst_ptr] = dst->split<2>();
                     type_dump(world_,"  slot dst ptr",dst_ptr);
                     type_dump(world_,"  slot pb ptr",pb_ptr);
-                    pullbacks_[dst]=pb_ptr; // for mem tuple extract
+                    pointer_map[dst]=pb_ptr; // for mem tuple extract
+                    pointer_map[dst_ptr]=pb_ptr;
+
+
+                    auto pb = world_.nom_lam(pbty, world_.dbg("pb_ptr_load"));
+                    type_dump(world_,"  pb lam",pb);
+                    pb->set_filter(world_.lit_true());
+                    // we have to load the function from the pointer (using the given memory to capture stores
+                    // then apply the loaded pb with the tangent and forward the result to the return
+                    auto [pb_load_mem,pb_load_fun] = world_.op_load(pb->mem_var(),pb_ptr,world_.dbg("ptr_slot_pb_load"))->split<2>();
+                    pb->set_body(world_.app(pb_load_fun, {pb_load_mem,pb->var(1),pb->ret_var(world_.dbg("pb_load_ret"))}));
+
+                    pullbacks_[dst]=pb; // for mem tuple extract
 
                     type_dump(world_,"  result slot ",dst);
-                    type_dump(world_,"  pb slot ",pb);
+                    type_dump(world_,"  pb slot ",pb_slot);
+                    type_dump(world_,"  pb ",pb);
                     src_to_dst_[app] = dst; // not needed
                     return dst;
                 }
@@ -426,10 +441,11 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto [mem, ptr, val] = j_args->split<3>();
                     type_dump(world_,"  got ptr ",ptr);
                     type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
+                    type_dump(world_,"  got ptr pb slot ",pointer_map[ptr]);
                     type_dump(world_,"  got val ",val);
                     type_dump(world_,"  got val pb ",pullbacks_[val]);
 
-                    auto pb = world_.op_store(mem,pullbacks_[ptr],pullbacks_[val],world_.dbg("pb_store"));
+                    auto pb = world_.op_store(mem,pointer_map[ptr],pullbacks_[val],world_.dbg("pb_store"));
                     auto pb_mem = pb;
                     auto dst = world_.op_store(pb_mem,ptr,val);
                     type_dump(world_,"  result store ",dst);
@@ -448,15 +464,42 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto [mem, ptr] = j_args->split<2>();
                     type_dump(world_,"  got ptr ",ptr);
                     type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
-                    auto pb = world_.op_load(mem,pullbacks_[ptr],world_.dbg("pb_load"));
-                    auto [pb_mem,pb_val] = pb->split<2>();
+
+
+                    // TODO: other order (first normal load then pullback load leads to wrong result)
+                    auto [pb_mem,pb_val] = world_.op_load(mem,pointer_map[ptr],world_.dbg("load_ptr_pb"))->split<2>();
+                    auto pb = pb_val;
+
+
+                    // Load of pullback done in the pullbacks_ entry => pullbacks_ is load of pointer_map
+                    // we need to take care of the memory to load the pointer from
+                    // => swap out mem at load
+                    // TODO: error old_gid == curr_gid(
+//                    auto pb_mem=mem;
+//                    auto pb_val=pullbacks_[ptr];
+//                    auto pbty = pb_val->type()->as<Pi>();
+//                    auto pb = world_.nom_lam(pbty, world_.dbg("pb_ptr_wrap"));
+//                    type_dump(world_,"  pb lam",pb);
+//                    pb->set_filter(world_.lit_true());
+////                    pb->set_body(world_.app(pb_val, {pb_mem,pb->var(1),pb->ret_var(world_.dbg("ptr_pb_wrap_ret"))}));
+//
+//                    auto pb_ret = world_.nom_lam(pb->ret_var()->type()->as<Pi>(), world_.dbg("pb_ptr_wrap_ret"));
+//                    pb->set_body(world_.app(pb_val, {pb_mem,pb->var(1),pb_ret}));
+//                    pb_ret->set_filter(world_.lit_true());
+//                    pb_ret->set_body(world_.app(pb->ret_var(), {pb->mem_var(),pb_ret->var(1)}));
+
+
                     auto dst = world_.op_load(pb_mem,ptr);
-                    auto [dst_mem,dst_val] = pb->split<2>();
+                    auto [dst_mem,dst_val] = dst->split<2>();
+
+
 
                     type_dump(world_,"  result load ",dst);
-                    type_dump(world_,"  pb load ",pb);
+//                    type_dump(world_,"  pb load ",pb);
                     type_dump(world_,"  pb val load ",pb_val);
-                    pullbacks_[dst]=pb_val; // tuple extract [mem,...]
+                    type_dump(world_,"  pb wrap load ",pb);
+                    pullbacks_[dst]=pb; // tuple extract [mem,...]
+//                    pullbacks_[dst_val]=pb;
                     src_to_dst_[app] = dst; // not needed
                     return dst;
                 }
