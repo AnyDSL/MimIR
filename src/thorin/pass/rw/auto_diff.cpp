@@ -73,15 +73,11 @@ const Def* oneHot(World& world_,u64 idx, const Def* shape, const Def* s) {
 
 const Def* oneHot(World& world_,const Def* idx, const Def* shape, const Def* s) {
     // TODO: extend for different shapes => indef array
-    // (can one do better for a def array shape?
-
+    // can one do better for a def array shape?
 
     type_dump(world_,"OH Shape: ",shape);
     type_dump(world_,"OH Idx: ",idx);
 
-    //        if(auto lit = isa_lit(idx)) {
-    //        log(world_,"oh lit");
-    //        }
     if(shape->isa<Pi>()) {
         log(world_,"Pi shape");
     }
@@ -102,25 +98,6 @@ const Def* oneHot(World& world_,const Def* idx, const Def* shape, const Def* s) 
         type_dump(world_, "as tuple: ",t);
         return world_.extract_unsafe(world_.tuple(ohv),idx);
     }
-
-    // or use shape => Pack/Arr/Pi/...
-
-    //    if(shape->isa<Arr>()) {
-    //        log(world_,"Arr shape");
-    //
-    ////        auto arr = world_.nom_arr(shape);
-    //    }else {
-    //        return oneHot(as_lit(idx))
-    //    }
-    //    THORIN_UNREACHABLE;
-    //    if(auto lit = isa_lit(idx)) {
-    //        Array<const Def*> ops{
-    //
-    //        };
-    //        return world_.tuple(ops);
-    //    }else {
-    //
-    //    }
 }
 
 
@@ -273,25 +250,25 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
             // TODO: unify with extract
             auto args=dst->split(dim);
-//            for(size_t i=0;i<dim;i++) {
-//                auto arg=args[i];
-//
-//                auto pi = createPbType(A,arg->type());
-//                auto pb = world_.nom_lam(pi, world_.dbg("arg_extract_pb"));
-//                pb->set_filter(world_.lit_true());
-//                type_dump(world_,"  pb of arg_extract: ",pb);
-//
-//                pb->set_body(world_.app(
-//                    idpb,
-//                    {
-//                        pb->mem_var(),
-//                        oneHot(i,A,pb->var(1,world_.dbg("s"))),
-//                        pb->ret_var()
-//                    }
-//                    ));
-//
-//                pullbacks_[args[i]]=pb;
-//            }
+            for(size_t i=0;i<dim;i++) {
+                auto arg=args[i];
+
+                auto pi = createPbType(A,arg->type());
+                auto pb = world_.nom_lam(pi, world_.dbg("arg_extract_pb"));
+                pb->set_filter(world_.lit_true());
+                type_dump(world_,"  pb of arg_extract: ",pb);
+
+                pb->set_body(world_.app(
+                    idpb,
+                    {
+                        pb->mem_var(),
+                        oneHot(world_,i,A,pb->var(1,world_.dbg("s"))),
+                        pb->ret_var()
+                    }
+                    ));
+
+                pullbacks_[args[i]]=pb;
+            }
         }
         // shorten to variable input => id
         idpb->set_body(world_.app(idpb->ret_var(),
