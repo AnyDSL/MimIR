@@ -465,8 +465,15 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     type_dump(world_,"  got ptr ",ptr);
                     type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
 
+                    // TODO: correct mem access in code but partial eval selects wrong one
+//                    auto dst = world_.op_load(mem,ptr);
+//                    auto [dst_mem,dst_val] = dst->split<2>();
+//
+//                    auto [pb_mem,pb_val] = world_.op_load(mem,pointer_map[ptr],world_.dbg("load_ptr_pb"))->split<2>();
+//                    auto pb = pb_val;
 
-                    // TODO: other order (first normal load then pullback load leads to wrong result)
+
+                    // TODO: other order (first normal load then pullback load) leads to wrong result
                     auto [pb_mem,pb_val] = world_.op_load(mem,pointer_map[ptr],world_.dbg("load_ptr_pb"))->split<2>();
                     auto pb = pb_val;
 
@@ -487,6 +494,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                    pb->set_body(world_.app(pb_val, {pb_mem,pb->var(1),pb_ret}));
 //                    pb_ret->set_filter(world_.lit_true());
 //                    pb_ret->set_body(world_.app(pb->ret_var(), {pb->mem_var(),pb_ret->var(1)}));
+
+
 
 
                     auto dst = world_.op_load(pb_mem,ptr);
