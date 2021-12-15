@@ -32,7 +32,9 @@ const Def* vec_add(World& world, size_t dim, const Def* a, const Def* b) {
 
 // computes the dimension of a tuple/array
 size_t getDim(const Def* def) {
-    if(auto arr=def->type()->isa<Arr>()) {
+    if(auto arr=def->isa<Arr>()) {
+        return arr->shape()->as<Lit>()->get<uint8_t>();
+    }else if(auto arr=def->type()->isa<Arr>()) {
         return arr->shape()->as<Lit>()->get<uint8_t>();
     }else{
         return def->num_ops();
@@ -40,22 +42,89 @@ size_t getDim(const Def* def) {
 }
 
 // Sadly, we need to "unpack" the type
-const Def* lit_of_type(World& world, const Def* type, u64 lit) {
+const Def* lit_of_type(World& world, const Def* type, u64 lit, const Def* dummy) {
 
     if (auto real = isa<Tag::Real>(type))
         return world.lit_real(as_lit(real->arg()), lit);
     if (auto a = type->isa<Arr>()) {
         auto dim = a->shape()->as<Lit>()->get<uint8_t>();
         Array<const Def*> ops{dim, [&](auto i) {
-            return lit_of_type(world,a->body(),lit);
+            return lit_of_type(world,a->body(),lit,dummy);
         }};
         return world.tuple(ops);
     }
+    if(isa<Tag::Mem>(type) || type->isa<Pi>()) { // pi = cn[...]
+        return dummy;
+//        return world.lit(world.type_real(32), thorin::bitcast<u32>(lit));
+    }
+    type_dump(world,"other lit",type);
     return world.lit_int(as_lit(as<Tag::Int>(type)), lit);
 }
 
-const Def* ONE(World& world, const Def* def) { return lit_of_type(world, def, 1); }
-const Def* ZERO(World& world, const Def* def) { return lit_of_type(world, def, 0); }
+const Def* ONE(World& world, const Def* def, const Def* dummy) { return lit_of_type(world, def, 1, dummy); }
+const Def* ZERO(World& world, const Def* def, const Def* dummy) { return lit_of_type(world, def, 0, dummy); }
+const Def* ZERO(World& world, const Def* def) { return ZERO(world,def, nullptr);}
+const Def* ONE(World& world, const Def* def) { return ONE(world,def, nullptr);}
+
+
+const Def* oneHot(World& world_,u64 idx, const Def* shape, const Def* s) {
+    return world_.insert_unsafe(ZERO(world_,shape,s),idx,s);
+}
+
+const Def* oneHot(World& world_,const Def* idx, const Def* shape, const Def* s) {
+    // TODO: extend for different shapes => indef array
+    // (can one do better for a def array shape?
+
+
+    type_dump(world_,"OH Shape: ",shape);
+    type_dump(world_,"OH Idx: ",idx);
+
+    //        if(auto lit = isa_lit(idx)) {
+    //        log(world_,"oh lit");
+    //        }
+    if(shape->isa<Pi>()) {
+        log(world_,"Pi shape");
+    }
+    if(shape->isa<Arr>()) {
+        log(world_, "Arr shape");
+    }
+
+    if(auto lit = isa_lit(idx)) {
+        log(world_, "lit oh");
+        return oneHot(world_,*lit,shape,s);
+    }else {
+        log(world_, "non-lit oh");
+        auto dim = getDim(shape);
+        log(world_,"dim: {}",dim);
+        Array<const Def*> ohv{dim, [&](auto i) { return oneHot(world_,i,shape,s); }};
+        log(world_, "creates ohv: ");
+        auto t = world_.tuple(ohv);
+        type_dump(world_, "as tuple: ",t);
+        return world_.extract_unsafe(world_.tuple(ohv),idx);
+    }
+
+    // or use shape => Pack/Arr/Pi/...
+
+    //    if(shape->isa<Arr>()) {
+    //        log(world_,"Arr shape");
+    //
+    ////        auto arr = world_.nom_arr(shape);
+    //    }else {
+    //        return oneHot(as_lit(idx))
+    //    }
+    //    THORIN_UNREACHABLE;
+    //    if(auto lit = isa_lit(idx)) {
+    //        Array<const Def*> ops{
+    //
+    //        };
+    //        return world_.tuple(ops);
+    //    }else {
+    //
+    //    }
+}
+
+
+
 
 namespace {
 
@@ -106,7 +175,6 @@ public:
     }
 
     const Def* reverse_diff(Lam* src); // top level function to compute the reverse differentiation of a function
-    const Def* forward_diff(const Def*) { throw "not implemented"; }
 private:
     const Def* j_wrap(const Def* def); // 'identity' (except for lambdas, functions, and applications) traversal annotating the pullbacks
     const Def* j_wrap_rop(ROp op, const Def* a, const Def* b); // pullback computation for predefined functions, specifically operations like +, -, *, /
@@ -117,7 +185,6 @@ private:
     const Def* chain(const Def* a, const Def* b);
 
     const Pi* createPbType(const Def* A, const Def* B);
-    Array<const Def*> oneHot(size_t dim, size_t pos, const Def* s);
 
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
@@ -159,24 +226,6 @@ const Def* AutoDiffer::chain(const Def* a, const Def* b) {
 // pullback for a function of type A->B => pb of B result regarding A
 const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
     return world_.cn_mem_ret(B, A);
-}
-
-// creates a one-hot vector s*(0,...,0,1,0,...,0) with a s at position pos
-// and zeros with the type of s everywhere else
-Array<const Def*> AutoDiffer::oneHot(size_t dim, size_t pos, const Def* s) {
-    Array<const Def*> ops{dim, [&](auto i) {
-        if(i==pos) { // the one hot position
-            return s;
-        }else { // zero everywhere else
-            // TODO: fix below (cn[mem] in extract when conditional => tuple/lam)
-            if (s->type()->isa<Pi>() || isa<Tag::Mem>(s->type())) {
-                return s;
-            } else {
-                return ZERO(world_, s->type());
-            }
-        }
-    }};
-    return ops;
 }
 
 // top level entry point after creating the AutoDiffer object
@@ -224,25 +273,25 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
             // TODO: unify with extract
             auto args=dst->split(dim);
-            for(size_t i=0;i<dim;i++) {
-                auto arg=args[i];
-
-                auto pi = createPbType(A,arg->type());
-                auto pb = world_.nom_lam(pi, world_.dbg("arg_extract_pb"));
-                pb->set_filter(world_.lit_true());
-                type_dump(world_,"  pb of arg_extract: ",pb);
-
-                pb->set_body(world_.app(
-                    idpb,
-                    {
-                        pb->mem_var(),
-                        world_.tuple(oneHot(dim,i,pb->var(1,world_.dbg("s")))),
-                        pb->ret_var()
-                    }
-                    ));
-
-                pullbacks_[args[i]]=pb;
-            }
+//            for(size_t i=0;i<dim;i++) {
+//                auto arg=args[i];
+//
+//                auto pi = createPbType(A,arg->type());
+//                auto pb = world_.nom_lam(pi, world_.dbg("arg_extract_pb"));
+//                pb->set_filter(world_.lit_true());
+//                type_dump(world_,"  pb of arg_extract: ",pb);
+//
+//                pb->set_body(world_.app(
+//                    idpb,
+//                    {
+//                        pb->mem_var(),
+//                        oneHot(i,A,pb->var(1,world_.dbg("s"))),
+//                        pb->ret_var()
+//                    }
+//                    ));
+//
+//                pullbacks_[args[i]]=pb;
+//            }
         }
         // shorten to variable input => id
         idpb->set_body(world_.app(idpb->ret_var(),
@@ -363,6 +412,49 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         pullbacks_[dst] = pullbacks_[bdy];
         return dst;
     }
+    // handle operations in a hardcoded way
+    // we directly implement the pullbacks including the chaining w.r. to the inputs of the function
+    if (auto rop = isa<Tag::ROp>(def)) {
+        type_dump(world_,"  ROp",rop);
+        auto ab = j_wrap(rop->arg());
+        type_dump(world_,"  args jwrap",ab);
+        auto [a, b] = ab->split<2>();
+        auto dst = j_wrap_rop(ROp(rop.flags()), a, b);
+        src_to_dst_[rop] = dst;
+        type_dump(world_,"  result of app",dst);
+        return dst;
+    }
+    // conditionals are transformed by the identity (no pullback needed)
+    if(auto rcmp = isa<Tag::RCmp>(def)) {
+        type_dump(world_,"  RCmp",rcmp);
+        auto ab = j_wrap(rcmp->arg());
+        type_dump(world_,"  args jwrap",ab);
+        auto [a, b] = ab->split<2>();
+        auto dst = world_.op(RCmp(rcmp.flags()), nat_t(0), a, b);
+        src_to_dst_[rcmp] = dst;
+        type_dump(world_,"  result of app",dst);
+        return dst;
+    }
+
+    // memory operations
+
+    // there are many ways to handle memory but most have problems
+    // the pullback for the pointer only gets a meaning at a store
+    // but the store is only related to the memory
+    // we could compute the derivation value w.r. to the pointer but we need
+    // the pullback of the pointer w.r. to the inputs at the point of a load
+    // therefore, the pointer needs a reference to the pullback of the value
+    // assigned at a store
+    // the pullback is statically unknown as the control flow determines which
+    // store is taken
+
+    // we propagate the memory from before to pullback calls to the transformed dst calls to after
+//    if(auto slot = isa<Tag::Slot>(def)) {
+//
+//    }
+
+
+
     if (auto app = def->isa<App>()) {
         // the most complicated case: an application
         // we basically distinguish four cases:
@@ -386,17 +478,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             if (auto axiom = inner->callee()->isa<Axiom>()) {
                 log(world_,"  app of axiom [...] args with axiom tag {}",axiom->tag());
 
-                // there are many ways to handle memory but most have problems
-                // the pullback for the pointer only gets a meaning at a store
-                // but the store is only related to the memory
-                // we could compute the derivation value w.r. to the pointer but we need
-                // the pullback of the pointer w.r. to the inputs at the point of a load
-                // therefore, the pointer needs a reference to the pullback of the value
-                // assigned at a store
-                // the pullback is statically unknown as the control flow determines which
-                // store is taken
-
-                // we propagate the memory from before to pullback calls to the transformed dst calls to after
                 if (axiom->tag() == Tag::Slot) {
                     type_dump(world_,"  wrap slot with args ",arg);
                     type_dump(world_,"  wrap slot with inner args ",inner->arg());
@@ -510,31 +591,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     pullbacks_[dst]=pb; // tuple extract [mem,...]
 //                    pullbacks_[dst_val]=pb;
                     src_to_dst_[app] = dst; // not needed
-                    return dst;
-                }
-
-                // handle operations in a hardcoded way
-                // we directly implement the pullbacks including the chaining w.r. to the inputs of the function
-                if (axiom->tag() == Tag::ROp) {
-                    type_dump(world_,"  ROp",axiom);
-                    auto ab = j_wrap(arg);
-                    type_dump(world_,"  args jwrap",ab);
-                    auto [a, b] = ab->split<2>();
-                    auto dst = j_wrap_rop(ROp(axiom->flags()), a, b);
-                    src_to_dst_[app] = dst;
-                    type_dump(world_,"  result of app",dst);
-                    return dst;
-                }
-
-                // conditionals are transformed by the identity
-                if (axiom->tag() == Tag::RCmp) {
-                    type_dump(world_,"  RCmp",axiom);
-                    auto ab = j_wrap(arg);
-                    type_dump(world_,"  args jwrap",ab);
-                    auto [a, b] = ab->split<2>();
-                    auto dst = world_.op(RCmp(axiom->flags()), nat_t(0), a, b);
-                    src_to_dst_[app] = dst;
-                    type_dump(world_,"  result of app",dst);
                     return dst;
                 }
             }
@@ -748,6 +804,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // no lambda
 
 
+        // TODO: more general handling of memory
         if(isa<Tag::Mem>(jtup->type()->op(0))) {
             log(world_,"  extract mem pb tuple ");
             pullbacks_[dst] = pullbacks_[jtup];
@@ -761,31 +818,31 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         pb->set_filter(world_.lit_true());
         type_dump(world_,"  pb of extract: ",pb);
 
-        auto tuple_dim=getDim(jtup);
-        type_dump(world_,"  extract from tuple",extract->tuple());
-        log(world_,"  extract from tuple with size {}",tuple_dim);
-
-        const Def* extract_vec;
-
-        if (auto lit = extract->index()->isa<Lit>()) {
-            // tuples can only be extracted using literals
-            // we also need a direct extract
-            auto i = lit->get<uint8_t>();
-            log(world_,"  literal extract (applicable for tuples) at pos {}",i);
-            extract_vec= world_.tuple(oneHot(tuple_dim,i,pb->var(1, world_.dbg("s"))));
-        } else {
-            Array<const Def*> ohv{tuple_dim,
-                                  [&](auto i) { return world_.tuple(
-                                      oneHot(tuple_dim,i,pb->var(1, world_.dbg("s")))
-                                  ); }};
-            log(world_,"  non-literal extract (applicable for arrays) ");
-            extract_vec=world_.extract_unsafe(world_.tuple(ohv), extract->index());
-        }
+//        auto tuple_dim=getDim(jtup);
+//        type_dump(world_,"  extract from tuple",extract->tuple());
+//        log(world_,"  extract from tuple with size {}",tuple_dim);
+//
+//        const Def* extract_vec;
+//
+//        if (auto lit = extract->index()->isa<Lit>()) {
+//            // tuples can only be extracted using literals
+//            // we also need a direct extract
+//            auto i = lit->get<uint8_t>();
+//            log(world_,"  literal extract (applicable for tuples) at pos {}",i);
+//            extract_vec= world_.tuple(oneHot(tuple_dim,i,pb->var(1, world_.dbg("s"))));
+//        } else {
+//            Array<const Def*> ohv{tuple_dim,
+//                                  [&](auto i) { return world_.tuple(
+//                                      oneHot(tuple_dim,i,pb->var(1, world_.dbg("s")))
+//                                  ); }};
+//            log(world_,"  non-literal extract (applicable for arrays) ");
+//            extract_vec=world_.extract_unsafe(world_.tuple(ohv), extract->index());
+//        }
         pb->set_body(world_.app(
             pullbacks_[jtup],
             {
                 pb->mem_var(),
-                extract_vec,
+                oneHot(world_,extract->index(),jtup->type(),pb->var(1,world_.dbg("s"))),
                 pb->ret_var()
             }
         ));
@@ -964,53 +1021,51 @@ const Def* AutoDiffer::seen(const Def* def) { return src_to_dst_.contains(def) ?
 
 // rewrites applications of the form 'rev_diff function' into the differentiation of f
 const Def* AutoDiff::rewrite(const Def* def) {
+    // isa<Tag::RevDiff> is not applicable here
     if (auto app = def->isa<App>()) {
         if (auto type_app = app->callee()->isa<App>()) {
             if (auto axiom = type_app->callee()->isa<Axiom>(); axiom && axiom->tag() == Tag::RevDiff) {
-                // rev_diff(f)
-                // in thorin :rev_diff ‹2∷nat; r32› f
-                //           --------- app ----------
-                //           ------ type_app ------ arg
-                //           (axiom    arg2       ) arg
+        // rev_diff(f)
+        // in thorin :rev_diff ‹2∷nat; r32› f
+        //           --------- app ----------
+        //           ------ type_app ------ arg
+        //           (axiom    arg2       ) arg
 
-                auto src_lam = app->arg(0)->as_nom<Lam>();
-                // function to differentiate
-                // this should be something like `cn[:mem, r32, cn[:mem, r32]]`
-                auto& world = src_lam->world();
+        auto src_lam = app->arg(0)->as_nom<Lam>();//->as_nom<Lam>();
+        // function to differentiate
+        // this should be something like `cn[:mem, r32, cn[:mem, r32]]`
+        auto& world = src_lam->world();
 
-                // We get for `A -> B` the type `A -> (B * (B -> A))`.
-                //  i.e. cn[:mem, A, [:mem, B]] ---> cn[:mem, A, cn[:mem, B, cn[:mem, B, cn[:mem, A]]]]
-                //  take input, return result and return a function (pullback) taking z and returning the derivative
-                auto dst_pi = app->type()->as<Pi>(); // multi dim as array
-                auto dst_lam = world.nom_lam(dst_pi, world.dbg("top_level_rev_diff_" + src_lam->name()));
-                dst_lam->set_filter(src_lam->filter()); // copy the unfold filter
-                auto A = dst_pi->dom(1); // input variable(s) => possible a pi type (array)
-                auto B = src_lam->ret_var()->type()->as<Pi>()->dom(1); // the output (for now a scalar)
-
-
-                log(world,"AD of function from {} to {}",A,B);
-                type_dump(world,"Transform:",src_lam);
-                type_dump(world,"Result:",dst_lam);
-
-                // The actual AD, i.e. construct "sq_cpy"
-                Def2Def src_to_dst;
-                // src_to_dst maps old definitions to new ones
-                // here we map the arguments of the lambda
-                for (size_t i = 0, e = src_lam->num_vars(); i < e; ++i) {
-                    auto src_param = src_lam->var(i);
-                    auto dst_param = dst_lam->var(i, world.dbg(src_param->name()));
-                    // the return continuation changes => special case
-                    src_to_dst[src_param] = dst_param;
-                }
-                auto differ = AutoDiffer{world, src_to_dst, A};
-                dst_lam->set_body(differ.reverse_diff(src_lam));
+        // We get for `A -> B` the type `A -> (B * (B -> A))`.
+        //  i.e. cn[:mem, A, [:mem, B]] ---> cn[:mem, A, cn[:mem, B, cn[:mem, B, cn[:mem, A]]]]
+        //  take input, return result and return a function (pullback) taking z and returning the derivative
+        auto dst_pi = app->type()->as<Pi>(); // multi dim as array
+        auto dst_lam = world.nom_lam(dst_pi, world.dbg("top_level_rev_diff_" + src_lam->name()));
+        dst_lam->set_filter(src_lam->filter()); // copy the unfold filter
+        auto A = dst_pi->dom(1); // input variable(s) => possible a pi type (array)
+        auto B = src_lam->ret_var()->type()->as<Pi>()->dom(1); // the output (for now a scalar)
 
 
-                return dst_lam;
-            }
+        log(world,"AD of function from {} to {}",A,B);
+        type_dump(world,"Transform:",src_lam);
+        type_dump(world,"Result:",dst_lam);
+
+        // The actual AD, i.e. construct "sq_cpy"
+        Def2Def src_to_dst;
+        // src_to_dst maps old definitions to new ones
+        // here we map the arguments of the lambda
+        for (size_t i = 0, e = src_lam->num_vars(); i < e; ++i) {
+            auto src_param = src_lam->var(i);
+            auto dst_param = dst_lam->var(i, world.dbg(src_param->name()));
+            // the return continuation changes => special case
+            src_to_dst[src_param] = dst_param;
         }
-    }
+        auto differ = AutoDiffer{world, src_to_dst, A};
+        dst_lam->set_body(differ.reverse_diff(src_lam));
 
+
+        return dst_lam;
+    }}}
     return def;
 }
 
