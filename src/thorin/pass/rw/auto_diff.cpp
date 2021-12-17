@@ -475,16 +475,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     pointer_map[dst_ptr]=pb_ptr;
 
 
-//                    auto pb = world_.nom_lam(ptrpbty, world_.dbg("pb_ptr_load"));
-//                    type_dump(world_,"  pb lam slot",pb);
-//                    pb->set_filter(world_.lit_true());
-//                    // we have to load the function from the pointer (using the given memory to capture stores
-//                    // then apply the loaded pb with the tangent and forward the result to the return
-//                    auto [arg_load_mem,arg_load] = world_.op_load(pb->mem_var(),pb->var(1),world_.dbg("ptr_slot_pb_load"))->split<2>();
-//                    auto [pb_load_mem,pb_load_fun] = world_.op_load(arg_load_mem,pb_ptr,world_.dbg("ptr_slot_pb_load"))->split<2>();
-//                    pb->set_body(world_.app(pb_load_fun, {pb_load_mem,arg_load,pb->ret_var(world_.dbg("pb_load_ret"))}));
-
-//                    pullbacks_[dst]=pb; // for mem tuple extract
 
                     type_dump(world_,"  result slot ",dst);
                     type_dump(world_,"  pb slot ",pb_slot);
@@ -509,21 +499,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto pb = world_.op_store(mem,pointer_map[ptr],pullbacks_[val],world_.dbg("pb_store"));
                     auto pb_mem = pb;
 
-                    // necessary to update pb after write
-                    // because otherwise it will use the given mem => wrong slot
-//                    auto [pbt_mem,pb_val] = world_.op_load(pb_mem,pointer_map[ptr],world_.dbg("load_ptr_pb"))->split<2>();
-//                    pullbacks_[ptr]=pb_val;
-
-//                    auto pb_ptr=pointer_map[ptr];
-//                    auto ptrpbty = createPbType(A,ptr->type());
-//                    auto pbptrbdy = world_.nom_lam(ptrpbty, world_.dbg("pb_ptr_load"));
-//                    type_dump(world_,"  pb lam slot",pbptrbdy);
-//                    pbptrbdy->set_filter(world_.lit_true());
-//                    auto [arg_load_mem,arg_load] = world_.op_load(pbptrbdy->mem_var(),pbptrbdy->var(1),world_.dbg("ptr_slot_pb_load"))->split<2>();
-//                    auto [pb_load_mem,pb_load_fun] = world_.op_load(pb_mem,pb_ptr,world_.dbg("ptr_slot_pb_load"))->split<2>();
-//                    pbptrbdy->set_body(world_.app(pb_load_fun, {arg_load_mem,arg_load,pbptrbdy->ret_var(world_.dbg("pb_load_ret"))}));
-//                    pullbacks_[ptr]=pbptrbdy; // for mem tuple extract
-//                    auto pbt_mem=pb_load_mem;
 
                     auto [pb_load_mem,pb_load_fun] = world_.op_load(pb_mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->split<2>();
                     type_dump(world_,"  store loaded pb fun",pb_load_fun);
@@ -562,63 +537,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
                     log(world_,"  got ptr pb {} ",pullbacks_[ptr]);
                     type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
-
-                    // TODO: correct mem access in code but partial eval selects wrong one
-//                    auto dst = world_.op_load(mem,ptr);
-//                    auto [dst_mem,dst_val] = dst->split<2>();
-//
-//                    auto [pb_mem,pb_val] = world_.op_load(mem,pointer_map[ptr],world_.dbg("load_ptr_pb"))->split<2>();
-//                    auto pb = pb_val;
-
-
-//                    if(!pointer_map.count(ptr)) {
-//                        // for argument pointer
-//                        // TODO merge with slot
-//                        auto [ty, _] = inner->arg()->split<2>();
-//                        auto pbty = createPbType(A,ty);
-//                        auto ptrpbty = createPbType(A,world_.type_ptr(ty));
-//                        auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
-//                        auto [pb_mem, pb_ptr] = pb_slot->split<2>();
-//                        pointer_map[ptr]=pb_ptr;
-//                        // TODO: fill slot at beginning with id/projected pullback
-//                    }
-//
-//
-//                    // TODO: other order (first normal load then pullback load) leads to wrong result
-//                    auto [pb_mem,pb_val] = world_.op_load(mem,pointer_map[ptr],world_.dbg("load_ptr_pb"))->split<2>();
-//                    auto pb = pb_val;
-
-
-//                    auto ptrpbty = createPbType(A,ptr->type());
-//                    auto pb = world_.nom_lam(ptrpbty, world_.dbg("pb_ptr_load"));
-//                    type_dump(world_,"  pb lam",pb);
-//                    pb->set_filter(world_.lit_true());
-//                    auto [arg_load_mem,arg_load] = world_.op_load(pb->mem_var(),pb->var(1),world_.dbg("ptr_slot_pb_load"))->split<2>();
-//                    auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->split<2>();
-//                    pb->set_body(world_.app(pb_load_fun, {pb_load_mem,arg_load,pb->ret_var(world_.dbg("pb_load_ret"))}));
-//                    auto pb_mem = pb_load_mem;
-//                    auto pb_val = pb_load_fun;
-
-
-                    // Load of pullback done in the pullbacks_ entry => pullbacks_ is load of pointer_map
-                    // we need to take care of the memory to load the pointer from
-                    // => swap out mem at load
-                    // TODO: error old_gid == curr_gid(
-//                    auto pb_mem=mem;
-//                    auto pb_val=pullbacks_[ptr];
-//                    auto pbty = pb_val->type()->as<Pi>();
-//                    auto pb = world_.nom_lam(pbty, world_.dbg("pb_ptr_wrap"));
-//                    type_dump(world_,"  pb lam",pb);
-//                    pb->set_filter(world_.lit_true());
-////                    pb->set_body(world_.app(pb_val, {pb_mem,pb->var(1),pb->ret_var(world_.dbg("ptr_pb_wrap_ret"))}));
-//
-//                    auto pb_ret = world_.nom_lam(pb->ret_var()->type()->as<Pi>(), world_.dbg("pb_ptr_wrap_ret"));
-//                    pb->set_body(world_.app(pb_val, {pb_mem,pb->var(1),pb_ret}));
-//                    pb_ret->set_filter(world_.lit_true());
-//                    pb_ret->set_body(world_.app(pb->ret_var(), {pb->mem_var(),pb_ret->var(1)}));
-
-
-
 
 //                    auto dst = world_.op_load(pb_mem,ptr);
                     auto dst = world_.op_load(mem,ptr);

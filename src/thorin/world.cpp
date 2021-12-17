@@ -257,21 +257,53 @@ World::World(const std::string& name)
         type->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
         */
-        auto type = nom_pi(kind())->set_dom({kind(), kind()});
+        auto type = nom_pi(kind())->set_dom({kind(), kind(), kind(), kind()});
         auto A = type->var(0, dbg("A"));
         auto B = type->var(1, dbg("B"));
+        auto C = type->var(2, dbg("C"));
+        auto D = type->var(3, dbg("D"));
 
-        auto pullback = cn_mem_flat(B, A);
+        auto pullback = cn_mem_ret(C,D);
         auto diffd = cn({
           type_mem(),
           A,
           cn({type_mem(), B, pullback})
         });
-        auto Xi = pi(cn_mem_flat(A, B), diffd);
+        auto Xi = pi(cn_mem_ret(A, B), diffd);
         type->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
     }
 }
+
+
+const Def* World::tangent_type(const Def* A) {
+//    Stream s2;
+//    s2.fmt("A: {} : {}, {}\n",A,A->type(), A->node_name());
+
+    // TODO: Function types
+    if(auto ptr = isa<Tag::Ptr>(A)) {
+//        s2.fmt("A is ptr\n");
+        auto arg = ptr->arg()->split<2>()[0];
+        return tangent_type(arg);
+    }
+    if(auto arrdef = A->isa<Arr>()) {
+//        s2.fmt("A is arr\n");
+        return arr(arrdef->shape(), tangent_type(arrdef->body()),arrdef->dbg());
+    }
+    if(auto sig = A->isa<Sigma>()) {
+//        s2.fmt("A is Sigma\n");
+        auto ops = sig->ops();
+        Array<const Def*> tan_ops_arr{2 ,[&](auto i) {
+                return tangent_type(ops[i]);
+        }};
+        Defs tan_ops{tan_ops_arr};
+        return sigma(tan_ops,sig->dbg());
+    }
+
+    return A;
+}
+
+
 
 World::~World() {
     for (auto def : data_.defs_) def->~Def();
@@ -809,15 +841,14 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
 
         auto dom = sigma(pi->dom()->ops().skip_front().skip_back());
         auto codom = sigma(pi->dom()->ops().back()->as<Pi>()->dom()->ops().skip_front());
-        //auto tan_dom = type_tangent_vector(dom);
-        //auto tan_codom = type_tangent_vector(codom);
+        auto tan_dom = tangent_type(dom);
+        auto tan_codom = tangent_type(codom);
 
-        // seed value is an additional input   // FIXME: generalize this for the multidimensional case
-        //auto in = merge_sigma(dom, {tan_codom});
-        //auto out = merge_sigma(codom, {tan_dom});
-        //auto cn = cn_mem_flat(in, out);
+//        Stream s2;
+//        s2.fmt("dom {} -> {}\n",dom,tan_dom);
+//        s2.fmt("codom {} -> {}\n",codom,tan_codom);
 
-        auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom}), this->dbg("mk_pullback"));
+        auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom, tan_codom, tan_dom}), this->dbg("mk_pullback"));
         auto pullback = app(mk_pullback, fn, dbg);
 
         return pullback;

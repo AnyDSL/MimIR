@@ -387,6 +387,7 @@ public:
     //@{
     const Def* type_tangent_vector(const Def* primal_type, const Def* dbg = {});
     const Def* op_rev_diff(const Def* fn, const Def* dbg = {});
+    const Def* tangent_type(const Def* A);
     //@}
 
     /// @name helpers
