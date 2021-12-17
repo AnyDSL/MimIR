@@ -491,6 +491,19 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto [mem, ptr, val] = j_args->split<3>();
                     type_dump(world_,"  got ptr at store ",ptr);
 //                    type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
+
+                    // for argument pointer that is written to
+                    if(!pointer_map.count(ptr)) {
+                        auto [ty, _] = inner->arg()->split<2>();
+                        log(world_,"create ptr pb slot at store");
+
+                        auto pbty = createPbType(A,ty);
+                        auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
+                        auto [pb_mem, pb_ptr] = pb_slot->split<2>();
+                        pointer_map[ptr]=pb_ptr;
+                        mem=pb_mem;
+                    }
+
                     type_dump(world_,"  got ptr pb slot ",pointer_map[ptr]);
                     type_dump(world_,"  got val ",val);
 //                    type_dump(world_,"  got val pb ",pullbacks_[val]);
