@@ -53,12 +53,12 @@ const Def* lit_of_type(World& world, const Def* type, u64 lit, const Def* dummy)
         }};
         return world.tuple(ops);
     }
-    if(isa<Tag::Mem>(type) || type->isa<Pi>()) { // pi = cn[...]
+//    if(isa<Tag::Mem>(type) || type->isa<Pi>()) { // pi = cn[...]
         return dummy;
 //        return world.lit(world.type_real(32), thorin::bitcast<u32>(lit));
-    }
-    type_dump(world,"other lit",type);
-    return world.lit_int(as_lit(as<Tag::Int>(type)), lit);
+//    }
+//    type_dump(world,"other lit",type);
+//    return world.lit_int(as_lit(as<Tag::Int>(type)), lit);
 }
 
 const Def* ONE(World& world, const Def* def, const Def* dummy) { return lit_of_type(world, def, 1, dummy); }
@@ -107,10 +107,10 @@ namespace {
 
 class AutoDiffer {
 public:
-    AutoDiffer(World& world, const Def2Def src_to_dst, const Def* A)
+    AutoDiffer(World& world, const Def2Def& src_to_dst, const Def* A_)
         : world_{world}
         , src_to_dst_{src_to_dst}
-        , A{A}
+        , A{world.tangent_type(A_)}
     {
         // initializes the differentiation for a function of type A -> B
         // src_to_dst expects the parameters of the source lambda to be mapped
@@ -463,6 +463,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto [mem, num] = j_args->split<2>();
 
                     auto pbty = createPbType(A,ty);
+//                    auto ptrpbty = createPbType(A,world_.type_ptr(ty));
                     auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
                     auto [pb_mem, pb_ptr] = pb_slot->split<2>();
 
@@ -474,19 +475,20 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     pointer_map[dst_ptr]=pb_ptr;
 
 
-                    auto pb = world_.nom_lam(pbty, world_.dbg("pb_ptr_load"));
-                    type_dump(world_,"  pb lam",pb);
-                    pb->set_filter(world_.lit_true());
-                    // we have to load the function from the pointer (using the given memory to capture stores
-                    // then apply the loaded pb with the tangent and forward the result to the return
-                    auto [pb_load_mem,pb_load_fun] = world_.op_load(pb->mem_var(),pb_ptr,world_.dbg("ptr_slot_pb_load"))->split<2>();
-                    pb->set_body(world_.app(pb_load_fun, {pb_load_mem,pb->var(1),pb->ret_var(world_.dbg("pb_load_ret"))}));
+//                    auto pb = world_.nom_lam(ptrpbty, world_.dbg("pb_ptr_load"));
+//                    type_dump(world_,"  pb lam slot",pb);
+//                    pb->set_filter(world_.lit_true());
+//                    // we have to load the function from the pointer (using the given memory to capture stores
+//                    // then apply the loaded pb with the tangent and forward the result to the return
+//                    auto [arg_load_mem,arg_load] = world_.op_load(pb->mem_var(),pb->var(1),world_.dbg("ptr_slot_pb_load"))->split<2>();
+//                    auto [pb_load_mem,pb_load_fun] = world_.op_load(arg_load_mem,pb_ptr,world_.dbg("ptr_slot_pb_load"))->split<2>();
+//                    pb->set_body(world_.app(pb_load_fun, {pb_load_mem,arg_load,pb->ret_var(world_.dbg("pb_load_ret"))}));
 
-                    pullbacks_[dst]=pb; // for mem tuple extract
+//                    pullbacks_[dst]=pb; // for mem tuple extract
 
                     type_dump(world_,"  result slot ",dst);
                     type_dump(world_,"  pb slot ",pb_slot);
-                    type_dump(world_,"  pb ",pb);
+//                    type_dump(world_,"  pb ",pb);
                     src_to_dst_[app] = dst; // not needed
                     return dst;
                 }
@@ -497,15 +499,40 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     type_dump(world_,"  continue with store with args ",j_args);
 
                     auto [mem, ptr, val] = j_args->split<3>();
-                    type_dump(world_,"  got ptr ",ptr);
-                    type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
+                    type_dump(world_,"  got ptr at store ",ptr);
+//                    type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
                     type_dump(world_,"  got ptr pb slot ",pointer_map[ptr]);
                     type_dump(world_,"  got val ",val);
-                    type_dump(world_,"  got val pb ",pullbacks_[val]);
+//                    type_dump(world_,"  got val pb ",pullbacks_[val]);
+
 
                     auto pb = world_.op_store(mem,pointer_map[ptr],pullbacks_[val],world_.dbg("pb_store"));
                     auto pb_mem = pb;
-                    auto dst = world_.op_store(pb_mem,ptr,val);
+
+                    // necessary to update pb after write
+                    // because otherwise it will use the given mem => wrong slot
+//                    auto [pbt_mem,pb_val] = world_.op_load(pb_mem,pointer_map[ptr],world_.dbg("load_ptr_pb"))->split<2>();
+//                    pullbacks_[ptr]=pb_val;
+
+//                    auto pb_ptr=pointer_map[ptr];
+//                    auto ptrpbty = createPbType(A,ptr->type());
+//                    auto pbptrbdy = world_.nom_lam(ptrpbty, world_.dbg("pb_ptr_load"));
+//                    type_dump(world_,"  pb lam slot",pbptrbdy);
+//                    pbptrbdy->set_filter(world_.lit_true());
+//                    auto [arg_load_mem,arg_load] = world_.op_load(pbptrbdy->mem_var(),pbptrbdy->var(1),world_.dbg("ptr_slot_pb_load"))->split<2>();
+//                    auto [pb_load_mem,pb_load_fun] = world_.op_load(pb_mem,pb_ptr,world_.dbg("ptr_slot_pb_load"))->split<2>();
+//                    pbptrbdy->set_body(world_.app(pb_load_fun, {arg_load_mem,arg_load,pbptrbdy->ret_var(world_.dbg("pb_load_ret"))}));
+//                    pullbacks_[ptr]=pbptrbdy; // for mem tuple extract
+//                    auto pbt_mem=pb_load_mem;
+
+                    auto [pb_load_mem,pb_load_fun] = world_.op_load(pb_mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->split<2>();
+                    type_dump(world_,"  store loaded pb fun",pb_load_fun);
+                    pullbacks_[ptr]=pb_load_fun;
+                    auto pbt_mem=pb_load_mem;
+
+
+
+                    auto dst = world_.op_store(pbt_mem,ptr,val);
                     type_dump(world_,"  result store ",dst);
                     type_dump(world_,"  pb store ",pb);
                     pullbacks_[dst]=pb; // should be unused
@@ -520,7 +547,20 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     type_dump(world_,"  continue with load with args ",j_args);
 
                     auto [mem, ptr] = j_args->split<2>();
-                    type_dump(world_,"  got ptr ",ptr);
+                    type_dump(world_,"  got ptr at load ",ptr);
+
+                    log(world_,"has ptr in pb {}",pullbacks_.count(ptr));
+
+                    // TODO: where is pullbacks_[ptr] set to a nullptr? (happens in conditional stores to slot)
+                    if(!pullbacks_.count(ptr) || !pullbacks_[ptr]) {
+                        log(world_,"manually load ptr pb at load location");
+                        auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->split<2>();
+                        pullbacks_[ptr]=pb_load_fun;
+                        mem=pb_load_mem;
+                    }
+
+
+                    log(world_,"  got ptr pb {} ",pullbacks_[ptr]);
                     type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
 
                     // TODO: correct mem access in code but partial eval selects wrong one
@@ -531,9 +571,33 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                    auto pb = pb_val;
 
 
-                    // TODO: other order (first normal load then pullback load) leads to wrong result
-                    auto [pb_mem,pb_val] = world_.op_load(mem,pointer_map[ptr],world_.dbg("load_ptr_pb"))->split<2>();
-                    auto pb = pb_val;
+//                    if(!pointer_map.count(ptr)) {
+//                        // for argument pointer
+//                        // TODO merge with slot
+//                        auto [ty, _] = inner->arg()->split<2>();
+//                        auto pbty = createPbType(A,ty);
+//                        auto ptrpbty = createPbType(A,world_.type_ptr(ty));
+//                        auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
+//                        auto [pb_mem, pb_ptr] = pb_slot->split<2>();
+//                        pointer_map[ptr]=pb_ptr;
+//                        // TODO: fill slot at beginning with id/projected pullback
+//                    }
+//
+//
+//                    // TODO: other order (first normal load then pullback load) leads to wrong result
+//                    auto [pb_mem,pb_val] = world_.op_load(mem,pointer_map[ptr],world_.dbg("load_ptr_pb"))->split<2>();
+//                    auto pb = pb_val;
+
+
+//                    auto ptrpbty = createPbType(A,ptr->type());
+//                    auto pb = world_.nom_lam(ptrpbty, world_.dbg("pb_ptr_load"));
+//                    type_dump(world_,"  pb lam",pb);
+//                    pb->set_filter(world_.lit_true());
+//                    auto [arg_load_mem,arg_load] = world_.op_load(pb->mem_var(),pb->var(1),world_.dbg("ptr_slot_pb_load"))->split<2>();
+//                    auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->split<2>();
+//                    pb->set_body(world_.app(pb_load_fun, {pb_load_mem,arg_load,pb->ret_var(world_.dbg("pb_load_ret"))}));
+//                    auto pb_mem = pb_load_mem;
+//                    auto pb_val = pb_load_fun;
 
 
                     // Load of pullback done in the pullbacks_ entry => pullbacks_ is load of pointer_map
@@ -556,16 +620,18 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
 
 
-                    auto dst = world_.op_load(pb_mem,ptr);
+//                    auto dst = world_.op_load(pb_mem,ptr);
+                    auto dst = world_.op_load(mem,ptr);
                     auto [dst_mem,dst_val] = dst->split<2>();
 
 
 
                     type_dump(world_,"  result load ",dst);
 //                    type_dump(world_,"  pb load ",pb);
-                    type_dump(world_,"  pb val load ",pb_val);
-                    type_dump(world_,"  pb wrap load ",pb);
-                    pullbacks_[dst]=pb; // tuple extract [mem,...]
+//                    type_dump(world_,"  pb val load ",pb_val);
+//                    type_dump(world_,"  pb wrap load ",pb);
+//                    pullbacks_[dst]=pb; // tuple extract [mem,...]
+                    pullbacks_[dst]=pullbacks_[ptr]; // tuple extract [mem,...]
 //                    pullbacks_[dst_val]=pb;
                     src_to_dst_[app] = dst; // not needed
                     return dst;
@@ -693,9 +759,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  jwrapped tuple:",dst);
         src_to_dst_[tuple] = dst;
 
-        if(tuple_dim>0 && isa<Tag::Mem>(tuple->op(0)->type())) {
+        if(tuple_dim>0 && isa<Tag::Mem>(dst->op(0)->type())) {
             log(world_,"  mem pb tuple");
-            pullbacks_[dst] = pullbacks_[ops[1]];
+
+                pullbacks_[dst] = pullbacks_[ops[1]];
             return dst;
         }
 
@@ -784,8 +851,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // TODO: more general handling of memory
         if(isa<Tag::Mem>(jtup->type()->op(0))) {
             log(world_,"  extract mem pb tuple ");
-            pullbacks_[dst] = pullbacks_[jtup];
-            type_dump(world_,"  pullback of extract",pullbacks_[dst]);
+
+            // for special case pointer slot that has not yet be written to
+            if(pullbacks_.count(jtup)) {
+                pullbacks_[dst] = pullbacks_[jtup];
+                type_dump(world_,"  pullback of extract",pullbacks_[dst]);
+            }
             return dst;
         }
 
@@ -849,7 +920,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb"));
         type_dump(world_,"  lit pb (zero)",zeropb);
         zeropb->set_filter(world_.lit_true());
-        auto zero = ZERO(world_, A);// or use dim directly
+        auto zero = ZERO(world_, A);
         zeropb->set_body(world_.app(zeropb->ret_var(), {zeropb->mem_var(), zero}));
         // no src_to_dst mapping necessary
         pullbacks_[lit] = zeropb;
@@ -992,7 +1063,7 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
 }
 
 // seen is a simple lookup in the src_to_dst mapping
-const Def* AutoDiffer::seen(const Def* def) { return src_to_dst_.contains(def) ? src_to_dst_[def] : nullptr; }
+const Def* AutoDiffer::seen(const Def* src) { return src_to_dst_.contains(src) ? src_to_dst_[src] : nullptr; }
 
 } // namespace
 
