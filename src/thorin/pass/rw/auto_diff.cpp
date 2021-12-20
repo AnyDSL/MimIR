@@ -86,7 +86,7 @@ const Def* oneHot(World& world_,const Def* idx, const Def* shape, const Def* s) 
     }
 
     if(auto lit = isa_lit(idx)) {
-        log(world_, "lit oh");
+        type_dump(world_, "lit oh of type ", shape);
         return oneHot(world_,*lit,shape,s);
     }else {
         log(world_, "non-lit oh");
@@ -202,7 +202,8 @@ const Def* AutoDiffer::chain(const Def* a, const Def* b) {
 
 // pullback for a function of type A->B => pb of B result regarding A
 const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
-    return world_.cn_mem_ret(B, A);
+    // TODO: move tangent_type of A here
+    return world_.cn_mem_ret(world_.tangent_type(B), A);
 }
 
 // top level entry point after creating the AutoDiffer object
@@ -817,11 +818,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //            log(world_,"  non-literal extract (applicable for arrays) ");
 //            extract_vec=world_.extract_unsafe(world_.tuple(ohv), extract->index());
 //        }
+
+        // or use pullbacsk type
         pb->set_body(world_.app(
             pullbacks_[jtup],
             {
                 pb->mem_var(),
-                oneHot(world_,extract->index(),jtup->type(),pb->var(1,world_.dbg("s"))),
+                oneHot(world_,extract->index(),world_.tangent_type(jtup->type()),pb->var(1,world_.dbg("s"))),
                 pb->ret_var()
             }
         ));
