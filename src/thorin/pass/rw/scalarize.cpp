@@ -60,9 +60,7 @@ const Def* Scalerize::rewrite(const Def* def) {
     auto& w = world();
     if (auto app = def->isa<App>()) {
         const Def* sca_callee = app->callee();
-        // auto tup_lam = app->callee()->isa_nom<Lam>();
 
-        // if (!should_expand(tup_lam)) return app;
         if (auto tup_lam = sca_callee->isa_nom<Lam>(); should_expand(tup_lam)) {
             sca_callee = make_scalar(tup_lam);
 

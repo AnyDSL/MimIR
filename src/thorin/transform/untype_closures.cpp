@@ -128,7 +128,7 @@ const Def* UntypeClosures::rewrite(const Def* def) {
                 ? w.op_slot(env->type(), lcm_)
                 : w.op_alloc(env->type(), lcm_);
             auto mem = w.extract(mem_ptr, 0_u64);
-            auto env_ptr = w.extract(mem_ptr, 1_u64, w.dbg(fn->name() + "_env"));
+            auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
             lcm_ = w.op_store(mem, env_ptr, env);
             map(lvm_, lcm_);
             auto ucl = w.tuple({env_ptr, fn});
