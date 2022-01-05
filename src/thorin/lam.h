@@ -21,15 +21,9 @@ public:
     /// @name ops
     //@{
     const Def* dom() const { return op(0); }
-    const Def* dom(size_t i) const { return proj(dom(), num_doms(), i); }
-    Array<const Def*> doms() const { return Array<const Def*>(num_doms(), [&](size_t i) { return dom(i); }); }
-    size_t num_doms() const { return dom()->num_outs(); }
-
     const Def* codom() const { return op(1); }
-    const Def* codom(size_t i) const { return proj(codom(), num_codoms(), i); }
-    Array<const Def*> codoms() const { return Array<const Def*>(num_codoms(), [&](size_t i) { return codom(i); }); }
-    size_t num_codoms() const { return codom()->num_outs(); }
-
+    THORIN_PROJ(dom, const)
+    THORIN_PROJ(codom, const)
     bool is_cn() const;
     bool is_basicblock() const { return order() == 1; }
     bool is_returning() const;
@@ -73,7 +67,7 @@ public:
     const Pi* type() const { return Def::type()->as<Pi>(); }
     const Def* dom() const { return type()->dom(); }
     const Def* dom(size_t i) const { return type()->dom(i); }
-    Array<const Def*> doms() const { return type()->doms(); }
+    DefArray doms() const { return type()->doms(); }
     size_t num_doms() const { return type()->num_doms(); }
     const Def* codom() const { return type()->codom(); }
     //@}
@@ -141,22 +135,15 @@ public:
     const App* decurry() const { return callee()->as<App>(); } ///< Returns the @p callee again as @p App.
     const Pi* callee_type() const { return callee()->type()->as<Pi>(); }
     const Def* arg() const { return op(1); }
-    const Def* arg(size_t i, const Def* dbg = {}) const { return arg()->out(i, dbg); }
-    Array<const Def*> args() const { return arg()->outs(); }
-    size_t num_args() const { return arg()->num_outs(); }
+    THORIN_PROJ(arg, const)
     //@}
-    /// @name split arg
-    //@{
-    template<size_t A, class F> auto args(          F f) const { return arg()->split<A, F>(   f); }
-    template<          class F> auto args(size_t a, F f) const { return arg()->split<   F>(a, f); }
-    template<size_t A> auto args(        ) const { return arg()->split<A>( ); }
-                       auto args(size_t a) const { return arg()->split   (a); }
-    //@}
+
     /// @name get axiom and current currying depth
     //@{
     const Axiom* axiom() const { return axiom_depth_.ptr(); }
     u16 currying_depth() const { return axiom_depth_.index(); }
     //@}
+
     /// @name virtual methods
     //@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;

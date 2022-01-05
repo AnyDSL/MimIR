@@ -41,15 +41,10 @@ class Stream;
 class Tracker;
 class World;
 
-typedef ArrayRef<const Def*> Defs;
+using Defs     = ArrayRef<const Def*>;
+using DefArray = Array<const Def*>;
 
 //------------------------------------------------------------------------------
-
-/**
- * Similar to @p World::extract but also works on @p Sigma%s, and @p Arr%s.
- * If @p def is a value (see @p Def::is_value), proj resorts to @p World::extract.
- */
-const Def* proj(const Def* def, u64 arity, u64 i, const Def* dbg = {});
 
 template<class T = u64> std::optional<T> isa_lit(const Def*);
 template<class T = u64> T as_lit(const Def* def);
@@ -67,7 +62,7 @@ public:
         : tagged_ptr_(def, index)
     {}
 
-    bool is_used_as_type() const { return index() == size_t(-1); }
+    bool is_used_as_type() const { return index() == -1_s; }
     size_t index() const { return tagged_ptr_.index(); }
     const Def* def() const { return tagged_ptr_.ptr(); }
     operator const Def*() const { return tagged_ptr_; }
@@ -98,6 +93,15 @@ enum : unsigned {
 };
 }
 
+/// Use as mixin to wrap all kind of @p Def::proj and @p Def::projs variants.
+#define THORIN_PROJ(NAME, CONST)                                                                                                       \
+    size_t num_##NAME##s() CONST { return ((const Def*) NAME())->num_projs(); }                                                        \
+    const Def* NAME(nat_t a, nat_t i, const Def* dbg = {}) CONST { return ((const Def*) NAME())->proj(a, i, dbg); }                    \
+    const Def* NAME(         nat_t i, const Def* dbg = {}) CONST { return ((const Def*) NAME())->proj(   i, dbg); }                    \
+    template<size_t A = -1_s, class F> auto NAME##s(F f, Defs dbgs = {}) CONST { return ((const Def*) NAME())->projs<A, F>(f, dbgs); } \
+    template<size_t A = -1_s>          auto NAME##s(     Defs dbgs = {}) CONST { return ((const Def*) NAME())->projs<A   >(   dbgs); } \
+    template<class F> auto NAME##s(size_t a, F f, Defs dbgs = {}) CONST { return ((const Def*) NAME())->projs<F>(a, f, dbgs); }        \
+                      auto NAME##s(size_t a,      Defs dbgs = {}) CONST { return ((const Def*) NAME())->projs   (a,    dbgs); }
 /**
  * Base class for all @p Def%s.
  * The data layout (see @p World::alloc) looks like this:
@@ -141,9 +145,9 @@ public:
 
     /// @name ops
     //@{
-    template<size_t N = size_t(-1)>
+    template<size_t N = -1_s>
     auto ops() const {
-        if constexpr (N == size_t(-1)) {
+        if constexpr (N == -1_s) {
             return Defs(num_ops_, ops_ptr());
         } else {
             return ArrayRef<const Def*>(N, ops_ptr()).template to_array<N>();
@@ -179,35 +183,57 @@ public:
     bool contains_proxy() const { return proxy_; }
     //@}
 
-    /// @name split def via proj%s
+    /// @name proj/projs - split this def via proj%s
     //@{
-    /// Splits this @p Def into an array.
-    /// Applies @p f to each @p proj%ected element.
-    template<size_t A, class F>
-    auto split(F f) const {
-        using R = decltype(f(this));
-
-        auto a = as_lit(arity());
-        assert(a == A);
-        std::array<R, A> array;
-        for (size_t i = 0; i != A; ++i)
-            array[i] = f(proj(this, a, i));
-        return array;
-    }
-    template<class F>
-    auto split(size_t a, F f) const {
-        using R = decltype(f(this));
-        return Array<R>(a, [&](size_t i) { return f(proj(this, a, i)); });
-    }
-    /// Splits this @p Def into an array.
-    template<size_t A> auto split(        ) const { return split<A>(   [](const Def* def) { return def; }); }
-                       auto split(size_t a) const { return split   (a, [](const Def* def) { return def; }); }
-    const Def* out(size_t i, const Def* dbg = {}) const { return proj(this, num_outs(), i, dbg); }
-    Array<const Def*> outs() const { return Array<const Def*>(num_outs(), [&](auto i) { return out(i); }); }
-    size_t num_outs() const {
+    /// @return yields arity if a @p Lit or @c 1 otherwise.
+    size_t num_projs() const {
         if (auto a = isa_lit(arity())) return *a;
         return 1;
     }
+    /// Similar to @p World::extract while assuming an arity of @p a but also works on @p Sigma%s, and @p Arr%ays.
+    /// If @p def is a value (see @p Def::is_value), @p proj resorts to @p World::extract.
+    const Def* proj(nat_t a, nat_t i, const Def* dbg = {}) const;
+
+    /// Same as above but takes @p num_projs as arity.
+    const Def* proj(nat_t i, const Def* dbg = {}) const { return proj(num_projs(), i, dbg); }
+
+    /**
+     * Splits this @p Def via @p proj%ections into an Array (if @p A == @c -1_s) or @c std::array (otherwise).
+     * Applies @p f to each element.
+     @code{.cpp}
+        std::array<const Def*, 2> ab = def->projs<2>();
+        std::array<u64, 2>        xy = def->projs<2>(as_lit<nat_t>);
+        auto [a, b] = def->projs<2>();
+        auto [x, y] = def->projs<2>(as_lit<nat_t>);
+        Array<const Def*> projs = def->projs();                // projs has def->num_projs() many elements
+        Array<const Def*> projs = def->projs(n);               // projs has n elements - asserts if incorrect
+        Array<const Lit*> lits = def->projs(as_lit<nat_t>);    // same as above but applies as_lit<nat_t> to each element
+        Array<const Lit*> lits = def->projs(n, as_lit<nat_t>); // same as above but applies as_lit<nat_t> to each element
+     @endcode
+     */
+    template<size_t A = -1_s, class F>
+    auto projs(F f, Defs dbgs = {}) const {
+        using R = std::decay_t<decltype(f(this))>;
+        if constexpr (A == -1_s) {
+            return projs(num_projs(), f, dbgs);
+        } else {
+            assert(A == as_lit(arity()));
+            std::array<R, A> array;
+            for (size_t i = 0; i != A; ++i)
+                array[i] = f(proj(A, i, dbgs.empty() ? nullptr : dbgs[i]));
+            return array;
+        }
+    }
+
+    template<class F>
+    auto projs(size_t a, F f, Defs dbgs = {}) const {
+        using R = std::decay_t<decltype(f(this))>;
+        return Array<R>(a, [&](size_t i) { return f(proj(a, i, dbgs.empty() ? nullptr : dbgs[i])); });
+    }
+
+    template<size_t A = -1_s>
+    auto projs(Defs dbgs = {}) const { return projs<A>([this](const Def* def) { return def; }, dbgs); }
+    auto projs(size_t a, Defs dbgs = {}) const { return projs(a, [this](const Def* def) { return def; }, dbgs); }
     //@}
 
     /// @name external handling
@@ -254,18 +280,14 @@ public:
     //@{
     /// Only returns a @p Var for this @em nom if it has ever been created.
     const Var* has_var() { return var_ ? var() : nullptr; }
-    const Var* var(const Def* dbg);
-    const Def* var(size_t i, const Def* dbg) { return proj((const Def*) var(), num_vars(), i, dbg); }
-    const Var* var();         ///< Wrapper instead of default argument for easy access in @c gdb.
-    const Def* var(size_t i); ///< Wrapper instead of default argument for easy access in @c gdb.
-    Array<const Def*> vars() { return Array<const Def*>(num_vars(), [&](auto i) { return var(i); }); }
-    size_t num_vars();
+    const Var* var(const Def* dbg = {});
+    THORIN_PROJ(var,)
     //@}
 
     /// @name rewrites last op by substituting @p var with @p arg.
     //@{
-    Array<const Def*> apply(const Def* arg) const;
-    Array<const Def*> apply(const Def* arg);
+    DefArray apply(const Def* arg) const;
+    DefArray apply(const Def* arg);
     //@}
 
     /// @name reduce/subst
@@ -284,6 +306,7 @@ public:
         if (node()                 == Node::Space) return *world_;
         if (type()->node()         == Node::Space) return *type()->world_;
         if (type()->type()->node() == Node::Space) return *type()->type()->world_;
+        assert(type()->type()->type()->node() == Node::Space);
         return *type()->type()->type()->world_;
     }
     //@}
@@ -304,7 +327,9 @@ public:
     ///@{ @name stream
     Stream& stream(Stream& s) const;
     Stream& stream(Stream& s, size_t max) const;
-    Stream& stream_assignment(Stream&) const;
+    Stream& let(Stream&) const;
+    Stream& unwrap(Stream&) const;
+    bool unwrap() const;
     void dump() const;
     void dump(size_t) const;
     //@}

@@ -72,7 +72,6 @@ Nat::Nat(World& world)
 
 const Def* App    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.app(o[0], o[1], dbg); }
 const Def* Arr    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.arr(o[0], o[1], dbg); }
-const Def* Axiom  ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.axiom(normalizer(), t, tag(), flags(), dbg); }
 const Def* Et     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.et(t, o, dbg); }
 const Def* Extract::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.extract_(t, o[0], o[1], dbg); }
 const Def* Global ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.global(o[0], o[1], is_mutable(), dbg); }
@@ -82,7 +81,6 @@ const Def* Lam    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) cons
 const Def* Lit    ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.lit(t, get(), dbg); }
 const Def* Nat    ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_nat(); }
 const Def* Pack   ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pack(t->arity(), o[0], dbg); }
-const Def* Var  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.var(t, o[0]->as_nom(), dbg); }
 const Def* Pi     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.pi(o[0], o[1], dbg); }
 const Def* Pick   ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pick(t, o[0], dbg); }
 const Def* Proxy  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->id(), as<Proxy>()->flags(), dbg); }
@@ -90,7 +88,14 @@ const Def* Sigma  ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) cons
 const Def* Space  ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.space(); }
 const Def* Test   ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.test(o[0], o[1], o[2], o[3], dbg); }
 const Def* Tuple  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.tuple(t, o, dbg); }
+const Def* Var    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.var(t, o[0]->as_nom(), dbg); }
 const Def* Vel    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
+
+const Def* Axiom  ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const {
+    auto res = w.axiom(normalizer(), t, tag(), flags(), dbg);
+    assert(&w != &world() || gid() == res->gid());
+    return res;
+}
 
 template<bool up> const Def* TExt  <up>::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.ext  <up>(t,    dbg); }
 template<bool up> const Def* TBound<up>::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.bound<up>(   o, dbg); }
@@ -118,7 +123,7 @@ const Pi* Pi::restructure() {
 const Def* Arr::restructure() {
     auto& w = world();
     if (auto n = isa_lit(shape()))
-        return w.sigma(Array<const Def*>(*n, [&](size_t i) { return apply(w.lit_int(*n, i)).back(); }));
+        return w.sigma(DefArray(*n, [&](size_t i) { return apply(w.lit_int(*n, i)).back(); }));
     return nullptr;
 }
 
@@ -152,10 +157,6 @@ const Var* Def::var(const Def* dbg) {
     if (isa_bound(this)) return w.var(this, this,  dbg);
     THORIN_UNREACHABLE;
 }
-
-const Var* Def::var() { return var(nullptr); }
-const Def* Def::var(size_t i) { return var(i, nullptr); }
-size_t     Def::num_vars() { return var()->num_outs(); }
 
 Sort Def::level() const {
     if (                isa<Space>()) return Sort::Space;
@@ -318,12 +319,12 @@ void Def::replace(Tracker with) const {
     }
 }
 
-Array<const Def*> Def::apply(const Def* arg) const {
+DefArray Def::apply(const Def* arg) const {
     if (auto nom = isa_nom()) return nom->apply(arg);
     return ops();
 }
 
-Array<const Def*> Def::apply(const Def* arg) {
+DefArray Def::apply(const Def* arg) {
     auto& cache = world().data_.cache_;
     if (auto res = cache.lookup({this, arg})) return *res;
 
@@ -345,9 +346,27 @@ const Def* Def::reduce() const {
 }
 
 const Def* Def::refine(size_t i, const Def* new_op) const {
-    Array<const Def*> new_ops(ops());
+    DefArray new_ops(ops());
     new_ops[i] = new_op;
     return rebuild(world(), type(), new_ops, dbg());
+}
+
+const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
+    if (a == 1 && (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>())) return this;
+
+    if (isa<Tuple>() || isa<Sigma>()) {
+        return op(i);
+    } else if (auto arr = isa<Arr>()) {
+        if (arr->arity()->isa<Top>()) return arr->body();
+        return arr->apply(world().lit_int(as_lit(arr->arity()), i)).back();
+    } else if (auto pack = isa<Pack>()) {
+        if (pack->arity()->isa<Top>()) return pack->body();
+        return pack->apply(world().lit_int(as_lit(pack->arity()), i)).back();
+    } else if (sort() == Sort::Term) {
+        return world().extract(this, a, i, dbg);
+    }
+
+    return nullptr;
 }
 
 /*

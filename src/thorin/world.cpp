@@ -14,10 +14,10 @@
 #include "thorin/error.h"
 #include "thorin/normalize.h"
 #include "thorin/rewrite.h"
+#include "thorin/tables.h"
 #include "thorin/analyses/scope.h"
 #include "thorin/util/array.h"
 #include "thorin/util/container.h"
-#include "tables.h"
 
 namespace thorin {
 
@@ -72,8 +72,8 @@ World::World(const std::string& name)
         THORIN_SHR(CODE)
     } { // Wrap: [m: nat, w: nat] -> [int w, int w] -> int w
         auto type = nom_pi(kind())->set_dom({nat, nat});
-        type->var(0, dbg("m"));
-        auto int_w = type_int(type->var(1, dbg("w")));
+        auto [m, w] = type->vars<2>({dbg("m"), dbg("w")});
+        auto int_w = type_int(w);
         type->set_codom(pi({int_w, int_w}, int_w));
         THORIN_WRAP(CODE)
     } { // Div: w: nat -> [mem, int w, int w] -> [mem, int w]
@@ -83,8 +83,8 @@ World::World(const std::string& name)
         THORIN_DIV(CODE)
     } { // ROp: [m: nat, w: nat] -> [real w, real w] -> real w
         auto type = nom_pi(kind())->set_dom({nat, nat});
-        type->var(0, dbg("m"));
-        auto real_w = type_real(type->var(1, dbg("w")));
+        auto [m, w] = type->vars<2>({dbg("m"), dbg("w")});
+        auto real_w = type_real(w);
         type->set_codom(pi({real_w, real_w}, real_w));
         THORIN_R_OP(CODE)
     } { // ICmp: w: nat -> [int w, int w] -> bool
@@ -94,8 +94,8 @@ World::World(const std::string& name)
         THORIN_I_CMP(CODE)
     } { // RCmp: [m: nat, w: nat] -> [real w, real w] -> bool
         auto type = nom_pi(kind())->set_dom({nat, nat});
-        type->var(0, dbg("m"));
-        auto real_w = type_real(type->var(1, dbg("w")));
+        auto [m, w] = type->vars<2>({dbg("m"), dbg("w")});
+        auto real_w = type_real(w);
         type->set_codom(pi({real_w, real_w}, type_bool()));
         THORIN_R_CMP(CODE)
     } { // trait: T: * -> nat
@@ -112,8 +112,7 @@ World::World(const std::string& name)
     {   // Conv: [dw: nat, sw: nat] -> i/r sw -> i/r dw
         auto make_type = [&](Conv o) {
             auto type = nom_pi(kind())->set_dom({nat, nat});
-            auto dw = type->var(0, dbg("dw"));
-            auto sw = type->var(1, dbg("sw"));
+            auto [dw, sw] = type->vars<2>({dbg("dw"), dbg("sw")});
             auto type_dw = o == Conv::s2r || o == Conv::u2r || o == Conv::r2r ? type_real(dw) : type_int(dw);
             auto type_sw = o == Conv::r2s || o == Conv::r2u || o == Conv::r2r ? type_real(sw) : type_int(sw);
             return type->set_codom(pi(type_sw, type_dw));
@@ -134,8 +133,7 @@ World::World(const std::string& name)
         data_.PE_[size_t(PE::known)] = axiom(normalize_PE<PE::known>, type, Tag::PE, flags_t(PE::known), dbg(op2str(PE::known)));
     } { // bitcast: [D: *, S: *] -> S -> D
         auto type = nom_pi(kind())->set_dom({kind(), kind()});
-        auto D = type->var(0, dbg("D"));
-        auto S = type->var(1, dbg("S"));
+        auto [D, S] = type->vars<2>({dbg("D"), dbg("S")});
         type->set_codom(pi(S, D));
         data_.bitcast_ = axiom(normalize_bitcast, type, Tag::Bitcast, 0, dbg("bitcast"));
     } { // lea:, [n: nat, Ts: «n; *», as: nat] -> [ptr(«j: n; Ts#j», as), i: int n] -> ptr(Ts#i, as)
@@ -144,9 +142,7 @@ World::World(const std::string& name)
         dom->set(1, arr(dom->var(0, dbg("n")), kind()));
         dom->set(2, nat);
         auto pi1 = nom_pi(kind())->set_dom(dom);
-        auto n  = pi1->var(0, dbg("n"));
-        auto Ts = pi1->var(1, dbg("Ts"));
-        auto as = pi1->var(2, dbg("as"));
+        auto [n, Ts, as] = pi1->vars<3>({dbg("n"), dbg("Ts"), dbg("as")});
         auto in = nom_arr(n);
         in->set(extract(Ts, in->var(dbg("j"))));
         auto pi2 = nom_pi(kind())->set_dom({type_ptr(in, as), type_int(n)});
@@ -155,8 +151,7 @@ World::World(const std::string& name)
         data_.lea_ = axiom(normalize_lea, pi1, Tag::LEA, 0, dbg("lea"));
     } { // load: [T: *, as: nat] -> [M, ptr(T, as)] -> [M, T]
         auto type = nom_pi(kind())->set_dom({kind(), nat});
-        auto T  = type->var(0, dbg("T"));
-        auto as = type->var(1, dbg("as"));
+        auto [T, as] = type->vars<2>({dbg("T"), dbg("as")});
         auto ptr = type_ptr(T, as);
         type->set_codom(pi({mem, ptr}, sigma({mem, T})));
         data_.load_ = axiom(normalize_load, type, Tag::Load, 0, dbg("load"));
@@ -165,29 +160,25 @@ World::World(const std::string& name)
         data_.remem_ = axiom(normalize_remem, type, Tag::Remem, 0, dbg("remem"));
     } { // store: [T: *, as: nat] -> [M, ptr(T, as), T] -> M
         auto type = nom_pi(kind())->set_dom({kind(), nat});
-        auto T  = type->var(0, dbg("T"));
-        auto as = type->var(1, dbg("as"));
+        auto [T, as] = type->vars<2>({dbg("T"), dbg("as")});
         auto ptr = type_ptr(T, as);
         type->set_codom(pi({mem, ptr, T}, mem));
         data_.store_ = axiom(normalize_store, type, Tag::Store, 0, dbg("store"));
     } { // alloc: [T: *, as: nat] -> M -> [M, ptr(T, as)]
         auto type = nom_pi(kind())->set_dom({kind(), nat});
-        auto T  = type->var(0, dbg("T"));
-        auto as = type->var(1, dbg("as"));
+        auto [T, as] = type->vars<2>({dbg("T"), dbg("as")});
         auto ptr = type_ptr(T, as);
         type->set_codom(pi(mem, sigma({mem, ptr})));
         data_.alloc_ = axiom(nullptr, type, Tag::Alloc, 0, dbg("alloc"));
     } { // slot: [T: *, as: nat] -> [M, nat] -> [M, ptr(T, as)]
         auto type = nom_pi(kind())->set_dom({kind(), nat});
-        auto T  = type->var(0, dbg("T"));
-        auto as = type->var(1, dbg("as"));
+        auto [T, as] = type->vars<2>({dbg("T"), dbg("as")});
         auto ptr = type_ptr(T, as);
         type->set_codom(pi({mem, nat}, sigma({mem, ptr})));
         data_.slot_ = axiom(nullptr, type, Tag::Slot, 0, dbg("slot"));
     } { // atomic: [T: *, R: *] -> T -> R
         auto type = nom_pi(kind())->set_dom({kind(), kind()});
-        auto T = type->var(0, dbg("T"));
-        auto R = type->var(1, dbg("R"));
+        auto [T, R] = type->vars<2>({dbg("T"), dbg("R")});
         type->set_codom(pi(T, R));
         data_.atomic_ = axiom(nullptr, type, Tag::Atomic, 0, dbg("atomic"));
     } { // lift: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
@@ -258,10 +249,7 @@ World::World(const std::string& name)
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
         */
         auto type = nom_pi(kind())->set_dom({kind(), kind(), kind(), kind()});
-        auto A = type->var(0, dbg("A"));
-        auto B = type->var(1, dbg("B"));
-        auto C = type->var(2, dbg("C"));
-        auto D = type->var(3, dbg("D"));
+        auto [A, B, C, D] = type->vars<2>({dbg("A"), dbg("B"),dbg("C"),dbg("D")});
 
         auto pullback = cn_mem_ret(C,D);
         auto diffd = cn({
@@ -395,7 +383,7 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
 }
 
 static const Def* infer_sigma(World& world, Defs ops) {
-    Array<const Def*> elems(ops.size());
+    DefArray elems(ops.size());
     for (size_t i = 0, e = ops.size(); i != e; ++i)
         elems[i] = ops[i]->type();
 
@@ -417,7 +405,7 @@ const Pi* World::cn_mem_half_flat(const Def* dom, const Def* codom, const Def* d
 
     if (dom->isa<Sigma>()) {
         auto size = dom->num_ops() + 2;
-        Array<const Def*> defs(size);
+        DefArray defs(size);
         for (size_t i = 0; i < size; ++i) {
             if (i == 0) {
                 defs[i] = type_mem();
@@ -433,7 +421,7 @@ const Pi* World::cn_mem_half_flat(const Def* dom, const Def* codom, const Def* d
 
     if (auto a = dom->isa<Arr>()) {
         auto size = a->shape()->as<Lit>()->get<uint8_t>() + 2;
-        Array<const Def*> defs(size);
+        DefArray defs(size);
         for (uint8_t i = 0; i < size; ++i) {
             if (i == 0) {
                 defs[i] = type_mem();
@@ -457,7 +445,7 @@ const Pi* World::cn_mem_flat(const Def* dom, const Def* codom, const Def* dbg) {
     }
     if (auto a = codom->isa<Arr>()) {
         auto size = a->shape()->as<Lit>()->get<uint8_t>() + 1;
-        Array<const Def*> defs(size);
+        DefArray defs(size);
         for (uint8_t i = 0; i < size - 1; ++i) {
             defs[i + 1] = a->body();
         }
@@ -468,7 +456,7 @@ const Pi* World::cn_mem_flat(const Def* dom, const Def* codom, const Def* dbg) {
 
     if (dom->isa<Sigma>()) {
         auto size = dom->num_ops() + 2;
-        Array<const Def*> defs(size);
+        DefArray defs(size);
         for (size_t i = 0; i < size; ++i) {
             if (i == 0) {
                 defs[i] = type_mem();
@@ -484,7 +472,7 @@ const Pi* World::cn_mem_flat(const Def* dom, const Def* codom, const Def* dbg) {
 
     if (auto a = dom->isa<Arr>()) {
         auto size = a->shape()->as<Lit>()->get<uint8_t>() + 2;
-        Array<const Def*> defs(size);
+        DefArray defs(size);
         for (uint8_t i = 0; i < size; ++i) {
             if (i == 0) {
                 defs[i] = type_mem();
@@ -545,12 +533,12 @@ const Def* World::tuple_str(const char* s, const Def* dbg) {
 
 const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index, const Def* dbg) {
     if (index->isa<Arr>() || index->isa<Pack>()) {
-        Array<const Def*> ops(as_lit(index->arity()), [&](size_t) { return extract(tup, index->ops().back()); });
+        DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(tup, index->ops().back()); });
         return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);
     } else if (index->isa<Sigma>() || index->isa<Tuple>()) {
         auto n = index->num_ops();
-        Array<const Def*> idx(n, [&](size_t i) { return index->op(i); });
-        Array<const Def*> ops(n, [&](size_t i) { return proj(tup, n, as_lit(idx[i])); });
+        DefArray idx(n, [&](size_t i) { return index->op(i); });
+        DefArray ops(n, [&](size_t i) { return tup->proj(n, as_lit(idx[i])); });
         return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
     }
 
@@ -602,7 +590,7 @@ const Def* World::insert(const Def* tup, const Def* index, const Def* val, const
     // insert(‹4; x›, 2, y) -> (x, x, y, x)
     if (auto pack = tup->isa<Pack>()) {
         if (auto a = isa_lit(pack->arity())) {
-            Array<const Def*> new_ops(*a, pack->body());
+            DefArray new_ops(*a, pack->body());
             new_ops[as_lit(index)] = val;
             return tuple(type, new_ops, dbg);
         }
@@ -703,7 +691,7 @@ const Def* World::global(const Def* id, const Def* init, bool is_mutable, const 
 const Def* World::global_immutable_string(const std::string& str, const Def* dbg) {
     size_t size = str.size() + 1;
 
-    Array<const Def*> str_array(size);
+    DefArray str_array(size);
     for (size_t i = 0; i != size-1; ++i)
         str_array[i] = lit_nat(str[i], dbg);
     str_array.back() = lit_nat('\0', dbg);
@@ -719,7 +707,7 @@ template<bool up>
 const Def* World::ext(const Def* type, const Def* dbg) {
     if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<up>(arr->body()), dbg);
     if (auto sigma = type->isa<Sigma>())
-        return tuple(sigma, Array<const Def*>(sigma->num_ops(), [&](size_t i) { return ext<up>(sigma->op(i), dbg); }), dbg);
+        return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<up>(sigma->op(i), dbg); }), dbg);
     return unify<TExt<up>>(0, type, dbg);
 }
 
@@ -732,7 +720,7 @@ const Def* World::bound(Defs ops, const Def* dbg) {
         return ext<up>(kind);
 
     // ignore: ext<!up>
-    Array<const Def*> cpy(ops);
+    DefArray cpy(ops);
     auto end = std::copy_if(ops.begin(), ops.end(), cpy.begin(), [&](const Def* op) { return !isa_ext(op); });
 
     // sort and remove duplicates
@@ -750,7 +738,7 @@ const Def* World::bound(Defs ops, const Def* dbg) {
 
 const Def* World::et(const Def* type, Defs ops, const Def* dbg) {
     if (type->isa<Meet>()) {
-        Array<const Def*> types(ops.size(), [&](size_t i) { return ops[i]->type(); });
+        DefArray types(ops.size(), [&](size_t i) { return ops[i]->type(); });
         return unify<Et>(ops.size(), meet(types), ops, dbg);
     }
 
@@ -776,7 +764,7 @@ const Def* World::test(const Def* value, const Def* probe, const Def* match, con
         assert(m_pi && c_pi);
         auto a = isa_lit(m_pi->dom()->arity());
         assert(a && *a == 2);
-        assert(checker_->equiv(proj(m_pi->dom(), 2, 0), c_pi->dom()));
+        assert(checker_->equiv(m_pi->dom(2, 0_s), c_pi->dom()));
     }
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
