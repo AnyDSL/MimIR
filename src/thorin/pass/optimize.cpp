@@ -15,7 +15,7 @@
 #include "thorin/transform/cleanup_world.h"
 #include "thorin/transform/partial_evaluation.h"
 #include "thorin/transform/closure_conv.h"
-#include "thorin/transform/untype_closures.h"
+#include "thorin/transform/lower_typed_closures.h"
 
 namespace thorin {
 
@@ -50,7 +50,7 @@ void optimize(World& world) {
     // codgen_prepare.add<UnboxClosure>();
     // codgen_prepare.add<RetWrap>();
     // codgen_prepare.run();
-    // UntypeClosures(world).run();
+    // LowerTypedClosures(world).run();
     // world.debug_stream();
 }
 

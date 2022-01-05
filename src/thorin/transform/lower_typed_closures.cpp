@@ -1,10 +1,10 @@
 #include <functional>
 
-#include "thorin/transform/untype_closures.h"
+#include "thorin/transform/lower_typed_closures.h"
 
 namespace thorin {
 
-void UntypeClosures::run() {
+void LowerTypedClosures::run() {
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (auto [_, n]: externals)
         rewrite(n);
@@ -29,7 +29,7 @@ static const Def* get_mem_var(Lam *lam) {
     assert(false && "continuation \\wo :mem paramter");
 }
 
-Lam *UntypeClosures::make_stub(Lam* lam, bool unbox_env) {
+Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env) {
     assert(lam && "make_stub: not a lam");
     auto& w = world();
     auto new_type = w.cn(Array<const Def*>(lam->num_doms(), [&](auto i) {
@@ -63,7 +63,7 @@ Lam *UntypeClosures::make_stub(Lam* lam, bool unbox_env) {
     return map<Lam>(lam, new_lam);
 }
 
-const Def* UntypeClosures::make_stub(ClosureLit& closure, bool unbox_env) {
+const Def* LowerTypedClosures::make_stub(ClosureLit& closure, bool unbox_env) {
     auto& w = world();
     if (auto fnc = closure.fnc_as_lam())
         return make_stub(fnc, unbox_env);
@@ -92,11 +92,11 @@ static size_t repr_size(const Def* type, size_t inf) {
     }
 }
 
-bool UntypeClosures::unbox_env(const Def* type) {
+bool LowerTypedClosures::unbox_env(const Def* type) {
     return repr_size(type, 64 * 2) <= 64;
 }
 
-const Def* UntypeClosures::rewrite(const Def* def) {
+const Def* LowerTypedClosures::rewrite(const Def* def) {
     switch(def->node()) {
         case Node::Bot:
         case Node::Top:

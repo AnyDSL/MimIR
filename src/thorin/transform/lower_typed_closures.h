@@ -20,12 +20,12 @@
 namespace thorin {
 
 
-class UntypeClosures {
+class LowerTypedClosures {
 public:
 
     using StubQueue = std::queue<std::tuple<const Def*, const Def*, Lam*>>;
 
-    UntypeClosures(World& world)
+    LowerTypedClosures(World& world)
         : world_(world)
         , old2new_()
         , worklist_(){}

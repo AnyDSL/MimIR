@@ -81,8 +81,8 @@ set(THORIN_SOURCES
     transform/partial_evaluation.h
     transform/closure_conv.h
     transform/closure_conv.cpp
-    transform/untype_closures.h
-    transform/untype_closures.cpp
+    transform/lower_typed_closures.h
+    transform/lower_typed_closures.cpp
     util/array.h
     util/assert.h
     util/bit.h
