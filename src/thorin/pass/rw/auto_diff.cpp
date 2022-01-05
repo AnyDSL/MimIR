@@ -169,6 +169,9 @@ private:
     DefMap<const Def*> pointer_map;
     const Def* A;// input type
     size_t dim; // dimension of input type
+
+
+    const Def* ptrSlot(const Def* ty, const Def* mem);
 };
 
 const Def* AutoDiffer::chain(const Def* a, const Def* b) {
@@ -241,7 +244,10 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         auto idpb = world_.nom_lam(idpi, world_.dbg("id"));
         idpb->set_filter(world_.lit_true());
 
+
         if(dim>1) {
+            // TODO: Ptr Tuple
+
             //split pullbacks for each argument
             // such that each component has one without extract
             // (needed for ROp and RCmp in the case for
@@ -277,12 +283,44 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
         pullbacks_[dst] = idpb;
 
+
+        auto arg_ty = dst->type();
+        log(world_,"Arg of Type A: {}", arg_ty);
+        if(auto ptr= isa<Tag::Ptr>(arg_ty)) {
+            auto ty = ptr->arg()->split<2>()[0];
+            log(world_,"A is ptr for {}",ty);
+
+            auto src_mem = src->mem_var();
+            auto dst_mem = src_to_dst_[src_mem];
+            type_dump(world_,"Dst Mem",dst_mem);
+            auto [pb_mem,pb_ptr] = ptrSlot(ty,dst_mem)->split<2>();
+            pointer_map[dst]=pb_ptr;
+            type_dump(world_,"Pb Slot",pb_ptr);
+            type_dump(world_,"Pb Slot Mem",pb_mem);
+
+            // write the pb into the slot
+            auto pb_store_mem = world_.op_store(pb_mem,pb_ptr,idpb,world_.dbg("pb_arg_id_store"));
+            type_dump(world_,"Pb Store Mem",pb_store_mem);
+
+            // TODO: what to do with pb_mem
+            src_to_dst_[src_mem]=pb_store_mem;
+        }
+
+
         type_dump(world_,"Pullback of dst ",pullbacks_[dst]);
     }
     log(world_,"Initialization finished, start jwrapping");
     // translate the body => get correct applications of variables using pullbacks
     auto dst = j_wrap(src->body());
     return dst;
+}
+
+
+const Def* AutoDiffer::ptrSlot(const Def* ty, const Def* mem) {
+    auto pbty = createPbType(A,ty);
+    //                    auto ptrpbty = createPbType(A,world_.type_ptr(ty));
+    auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
+    return pb_slot; // split into pb_mem, pb_ptr
 }
 
 
@@ -362,7 +400,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //            pullbacks_[dst] = idpb; // TODO: correct? needed?
 
             // never executed but needed for tuple pb
+            log(world_,"  compute pb ty of lam: {}",lam->type());
             auto zeropi = createPbType(A,lam->type());
+            log(world_,"  result: {}",zeropi);
             auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb"));
             type_dump(world_,"  non ret pb (zero)",zeropb);
             zeropb->set_filter(world_.lit_true());
@@ -463,22 +503,26 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto j_args = j_wrap(arg);
                     auto [mem, num] = j_args->split<2>();
 
-                    auto pbty = createPbType(A,ty);
-//                    auto ptrpbty = createPbType(A,world_.type_ptr(ty));
-                    auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
-                    auto [pb_mem, pb_ptr] = pb_slot->split<2>();
+//                    auto pbty = createPbType(A,ty);
+////                    auto ptrpbty = createPbType(A,world_.type_ptr(ty));
+//                    auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
+//                    auto [pb_mem, pb_ptr] = pb_slot->split<2>();
+
+                    auto [pb_mem, pb_ptr] = ptrSlot(ty,mem)->split<2>();
 
                     auto dst = world_.op_slot(ty,pb_mem);
                     auto [dst_mem, dst_ptr] = dst->split<2>();
                     type_dump(world_,"  slot dst ptr",dst_ptr);
                     type_dump(world_,"  slot pb ptr",pb_ptr);
+
                     pointer_map[dst]=pb_ptr; // for mem tuple extract
                     pointer_map[dst_ptr]=pb_ptr;
 
 
 
                     type_dump(world_,"  result slot ",dst);
-                    type_dump(world_,"  pb slot ",pb_slot);
+//                    type_dump(world_,"  pb slot ",pb_slot);
+                    type_dump(world_,"  pb slot ptr ",pb_ptr);
 //                    type_dump(world_,"  pb ",pb);
                     src_to_dst_[app] = dst; // not needed
                     return dst;
@@ -494,16 +538,22 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                    type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
 
                     // for argument pointer that is written to
-                    if(!pointer_map.count(ptr)) {
-                        auto [ty, _] = inner->arg()->split<2>();
-                        log(world_,"create ptr pb slot at store");
-
-                        auto pbty = createPbType(A,ty);
-                        auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
-                        auto [pb_mem, pb_ptr] = pb_slot->split<2>();
-                        pointer_map[ptr]=pb_ptr;
-                        mem=pb_mem;
-                    }
+                    // TODO: should no longer happen
+                    assert(pointer_map.count(ptr) && "ptr should have a shadow slot at a store location");
+//                    if(!pointer_map.count(ptr)) {
+//                        log(world_,"need to create ptr pb slot at store");
+//                        THORIN_UNREACHABLE;
+//                    }
+//                    if(!pointer_map.count(ptr)) {
+//                        auto [ty, _] = inner->arg()->split<2>();
+//                        log(world_,"create ptr pb slot at store");
+//
+////                        auto pbty = createPbType(A,ty);
+////                        auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
+//                        auto [pb_mem, pb_ptr] = ptrSlot(ty,mem)->split<2>();
+//                        pointer_map[ptr]=pb_ptr;
+//                        mem=pb_mem;
+//                    }
 
                     type_dump(world_,"  got ptr pb slot ",pointer_map[ptr]);
                     type_dump(world_,"  got val ",val);
@@ -513,11 +563,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto pb = world_.op_store(mem,pointer_map[ptr],pullbacks_[val],world_.dbg("pb_store"));
                     auto pb_mem = pb;
 
-
+                    // necessary to access ptr pb when calling
+                    // all other accesses are handled by load of the ptr with corresponding pb slot load
                     auto [pb_load_mem,pb_load_fun] = world_.op_load(pb_mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->split<2>();
                     type_dump(world_,"  store loaded pb fun",pb_load_fun);
                     pullbacks_[ptr]=pb_load_fun;
+                    // TODO: load mem
                     auto pbt_mem=pb_load_mem;
+//                    auto pbt_mem=pb_mem;
 
 
 
@@ -541,12 +594,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     log(world_,"has ptr in pb {}",pullbacks_.count(ptr));
 
                     // TODO: where is pullbacks_[ptr] set to a nullptr? (happens in conditional stores to slot)
-                    if(!pullbacks_.count(ptr) || !pullbacks_[ptr]) {
+//                    if(!pullbacks_.count(ptr) || !pullbacks_[ptr]) {
                         log(world_,"manually load ptr pb at load location");
                         auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->split<2>();
                         pullbacks_[ptr]=pb_load_fun;
+                        // TODO: load mem
                         mem=pb_load_mem;
-                    }
+//                    }
 
 
                     log(world_,"  got ptr pb {} ",pullbacks_[ptr]);
@@ -581,9 +635,92 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         if (callee->type()->as<Pi>()->is_returning()) {
             log(world_,"  FYI returning callee");
 
-            auto dst_callee = world_.op_rev_diff(callee);
-            type_dump(world_,"  Used RevDiff Op on callee",dst_callee);
-            log(world_,"  this call will invoke AutoDiff rewrite");
+            const Def* dst_callee;
+
+//            log(world_,"is lam: {}",callee->isa<Lam>());
+//            THORIN_UNREACHABLE;
+
+            if(auto cal_lam=callee->isa<Lam>(); cal_lam && !cal_lam->is_set()) {
+                //            type_dump(world_,"callee is ",callee);
+                //            log(world_,"node name {}",callee->node_name());
+                //            log(world_,"is external {}",callee->is_external());
+                ////            log(world_,"is external {}",callee->as_nom<Lam>()->is_external());
+                //            log(world_,"is set {}",callee->as_nom<Lam>()->is_set());
+                //            log(world_,"name {}",callee->as_nom<Lam>()->name());
+                //            log(world_,"name {}",callee->as_nom<Lam>()->debug().name);
+                ////            log(world_,"cc {}",callee->as_nom<Lam>()->cc());
+
+                auto pty = world_.tangent_type(callee->type())->as<Pi>();
+                auto pbT = pty->doms().back()->as<Pi>();
+                auto gradTy = pbT->doms().back()->as<Pi>();
+
+                log(world_,"pbT {}",pbT);
+                log(world_,"grad {}",gradTy);
+                log(world_,"pty {}",pty);
+
+//                THORIN_UNREACHABLE;
+
+                auto gradlam=world_.nom_lam(gradTy,world_.dbg("grad_lam"));
+//                gradlam->unset();
+//                gradlam->unset(0);
+//                log(world_,"unset 0");
+//                gradlam->unset(1);
+//                log(world_,"unset 1");
+                gradlam->set_name(cal_lam->name()+"_diff");
+                log(world_,"isset grad {}",gradlam->is_set());
+//                gradlam->unset();
+
+                auto lam=world_.nom_lam(pty,world_.dbg("lam"));
+                auto lam2 = world_.nom_lam(cal_lam->doms().back()->as<Pi>(),world_.dbg("lam2"));
+
+                lam->set_body( world_.app(
+                    callee,
+                    {
+                        lam->mem_var(),
+                        lam->var(1),
+                        lam2
+                    }
+                ));
+                lam->set_filter(world_.lit_true());
+
+                lam2->set_body( world_.app(
+                    lam->ret_var(),
+                    {
+                        lam2->mem_var(),
+                        lam2->var(1),
+                        gradlam
+                    }
+                ));
+                lam2->set_filter(world_.lit_true());
+
+
+//                lam->set_body( world_.app(
+//                    lam->ret_var(),
+//                    {
+//                        chained->mem_var(),
+//                        chained->var(1),
+//                        chain_pb
+//                    }
+//                    ));
+
+////                type_dump(world_,"  original ty: ",callee->type());
+////                type_dump(world_,"  ty: ",pty);
+//                auto lam=world_.nom_lam(pty,world_.dbg(""));
+//                lam->set_name(cal_lam->name()+"_diff");
+
+//                log(world_,"new name {}",lam->name());
+                type_dump(world_,"new lam",lam);
+                type_dump(world_,"aux lam",lam2);
+                type_dump(world_,"grad lam",gradlam);
+
+//                                THORIN_UNREACHABLE;
+                dst_callee = lam;
+            }else {
+                dst_callee = world_.op_rev_diff(callee);
+                type_dump(world_,"  Used RevDiff Op on callee",dst_callee);
+                log(world_,"  this call will invoke AutoDiff rewrite");
+            }
+
             auto d_arg = j_wrap(arg);
             type_dump(world_,"  wrapped args: ",d_arg);
 

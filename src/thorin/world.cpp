@@ -277,10 +277,58 @@ World::World(const std::string& name)
 
 
 const Def* World::tangent_type(const Def* A) {
-//    Stream s2;
-//    s2.fmt("A: {} : {}, {}\n",A,A->type(), A->node_name());
+    Stream s2;
+    s2.fmt("A: {} : {}, {}\n",A,A->type(), A->node_name());
 
-    // TODO: Function types
+    if(auto pidef = A->isa<Pi>()) {
+        s2.fmt("A is pi\n");
+//        s2.fmt("A exists?\n");
+//
+//        s2.fmt("V0 {}\n",pidef->dom(0));
+//        s2.fmt("V1 {}\n",pidef->dom(1));
+//        s2.fmt("V2 {}\n",pidef->dom(2)->as<Pi>()->dom(1));
+
+//        s2.fmt("pidef {}\n ",pidef);
+//        s2.fmt("ops {}\n ",pidef->num_ops());
+//        s2.fmt("out {}\n ",pidef->num_outs());
+//        s2.fmt("doms {}\n ",pidef->num_doms());
+//        s2.fmt("codoms {}\n ",pidef->num_codoms());
+        if(pidef->num_doms()==1) {
+            //cn :mem
+//            return pidef;
+            return cn(tangent_type(pidef->dom(1)));
+            // or cn(type_mem) if mem
+        }
+
+        // TODO: multiple variables
+        auto A = pidef->dom(1);
+
+        auto B = pidef->dom(2)->as<Pi>()->dom(1);
+
+        auto pullback = cn_mem_ret(tangent_type(B), tangent_type(A));
+        auto diffd = cn({
+                            type_mem(),
+                            A,
+                            cn({type_mem(), B, pullback})
+                        });
+
+        return diffd;
+
+//        THORIN_UNREACHABLE;
+
+//        auto diffd = cn({
+//                            type_mem(),
+//                            A,
+//                            cn({type_mem(), B, pullback})
+//                        });
+//        auto Xi = pi(cn_mem_ret(A, B), diffd);
+
+//        auto dom = pidef->dom();
+//        s2.fmt("dom {} \n",dom);
+//        auto codom = pidef->codom();
+//        s2.fmt("codom {} \n",codom);
+//        return pi(tangent_type(codom), tangent_type(dom),pidef->dbg());
+    }
     if(auto ptr = isa<Tag::Ptr>(A)) {
 //        s2.fmt("A is ptr\n");
         auto arg = ptr->arg()->split<2>()[0];
@@ -293,7 +341,7 @@ const Def* World::tangent_type(const Def* A) {
     if(auto sig = A->isa<Sigma>()) {
 //        s2.fmt("A is Sigma\n");
         auto ops = sig->ops();
-        Array<const Def*> tan_ops_arr{2 ,[&](auto i) {
+        Array<const Def*> tan_ops_arr{ops.size() ,[&](auto i) {
                 return tangent_type(ops[i]);
         }};
         Defs tan_ops{tan_ops_arr};
@@ -844,9 +892,9 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
         auto tan_dom = tangent_type(dom);
         auto tan_codom = tangent_type(codom);
 
-//        Stream s2;
-//        s2.fmt("dom {} -> {}\n",dom,tan_dom);
-//        s2.fmt("codom {} -> {}\n",codom,tan_codom);
+        Stream s2;
+        s2.fmt("dom {} -> {}\n",dom,tan_dom);
+        s2.fmt("codom {} -> {}\n",codom,tan_codom);
 
         auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom, tan_codom, tan_dom}), this->dbg("mk_pullback"));
         auto pullback = app(mk_pullback, fn, dbg);
