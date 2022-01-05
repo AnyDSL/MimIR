@@ -4,11 +4,11 @@
 
 namespace thorin {
 
-
 const Def* ClosureDestruct::rewrite(const Def* def) {
-    if (auto c = isa_closure(def)) {
+    auto& w = world();
+    if (auto c = isa_closure_lit(def)) {
         if (is_esc(c.fnc())) {
-            world().DLOG("mark escaping: {}", c.fnc());
+            world().DLOG("MARK ESCAPING: {}", c.fnc());
             auto dbg = def->debug();
             dbg.meta = nullptr;
             def->set_dbg(world().dbg(dbg));
@@ -16,9 +16,9 @@ const Def* ClosureDestruct::rewrite(const Def* def) {
         }
         if (c.marked_no_esc())
             return def;
-        auto new_dbg = ClosureWrapper::get_esc_annot(def);
+        auto new_dbg = ClosureLit::get_esc_annot(def);
         if (!c.is_basicblock() || !c.fnc_as_lam()) {
-            world().DLOG("mark no esc ({}, {})", c.env(), c.fnc());
+            world().DLOG("MARK NO ESC ({}, {})", c.env(), c.fnc());
             def->set_dbg(new_dbg);
             return def;
         }
@@ -29,14 +29,14 @@ const Def* ClosureDestruct::rewrite(const Def* def) {
                 return (i == 0) ? world().sigma() : c.fnc_as_lam()->dom(i);
             }));
             new_lam = c.fnc_as_lam()->stub(world(), world().cn(doms), c.fnc_as_lam()->dbg());
-            world().DLOG("drop ({}, {}) => {}", c.env(), c.fnc_as_lam(), new_lam);
+            world().DLOG("DROP ({}, {}) => {}", c.env(), c.fnc_as_lam(), new_lam);
             auto new_vars = DefArray(new_lam->num_doms(), [&](auto i) {
                 return (i == 0) ? c.env() : new_lam->var(i); 
             });
             new_lam->set(c.fnc_as_lam()->apply(world().tuple(new_vars)));
             eta_exp_.new2old(new_lam, c.fnc_as_lam());
         }
-        return world().tuple(c.type(), {world().tuple(), new_lam}, new_dbg);
+        return pack_closure_dbg(w.tuple(), new_lam, new_dbg, c.type());
     }
     return def;
 }
@@ -72,8 +72,7 @@ static std::pair<const Def*, Def*> isa_var(const Def* a) {
 static void split(DefSet& out, const Def* def, bool keep_others) {
     if (auto lam = def->isa<Lam>())
         out.insert(lam);
-    else if (auto c = isa_closure(def))
-        // out.insert(c.fnc_as_lam());
+    else if (auto c = isa_closure_lit(def))
         split(out, c.fnc(), keep_others);
     else if (auto [var, lam] = isa_var(def); var && lam)
         out.insert(var);
@@ -151,7 +150,7 @@ const Def* try_get_stored(const Def* def) {
 }
 
 undo_t ClosureDestruct::analyze(const Def* def) {
-    if (auto c = isa_closure(def)) {
+    if (auto c = isa_closure_lit(def)) {
         world().DLOG("closure ({}, {})", c.env(), c.fnc_as_lam());
         return join(c.env(), is_esc(c.fnc_as_lam()) || is_esc(c.env_var()));
     } else if (auto stored = try_get_stored(def)) {

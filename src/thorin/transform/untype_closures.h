@@ -10,9 +10,9 @@
 /// Convert from typed closuras (represented by <code>Σt.[t, cn[t, <args>]code>)
 /// to untyped closures, where the environment is passed via memory (as <code>i8*</code>).
 /// The following assumptions are made:
-/// * @p Lam%s in callee-postion are λ-lifted and not closure converted (See @p Scalerize)
-/// * each function receives its environment as its first paramter
-/// * closure types have the aforementioned form, see @isa_ct
+/// - @p Lam%s in callee-postion are λ-lifted and not closure converted (See @p Scalerize)
+/// - each function receives its environment as its first paramter
+/// - closure types have the aforementioned form, @see isa_ctype
 /// 
 /// All environments are heap allocated. External funtions receive <code>[]</code> as their
 /// environment instead of a pointer
@@ -33,7 +33,7 @@ public:
     void run();
 
     const Def* env_type() {
-        return closure_env_type(world());
+        return closure_uenv_type(world());
     }
 
     bool unbox_env(const Def* type);
@@ -43,7 +43,7 @@ private:
     const Def* rewrite(const Def* def);
 
     Lam* make_stub(Lam* lam, bool unbox_env);
-    const Def* make_stub(ClosureWrapper& closure, bool unbox_env);
+    const Def* make_stub(ClosureLit& closure, bool unbox_env);
 
     template<class D = const Def>
     D* map(const Def* old_def, D* new_def) {
@@ -59,8 +59,8 @@ private:
     Def2Def old2new_;
     StubQueue worklist_;
 
-    const Def* lvm_;  // Last visited memory token
-    const Def* lcm_;  // Last created memory token
+    const Def* lvm_;  //< Last visited memory token
+    const Def* lcm_;  //< Last created memory token
 };
 
 }

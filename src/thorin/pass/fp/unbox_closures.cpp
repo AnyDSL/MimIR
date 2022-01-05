@@ -14,7 +14,7 @@ const Def* UnboxClosure::rewrite(const Def* def) {
         DefVec envs, lams;
         const Def* fnc_type = nullptr;
         for (auto op: tuple->ops()) {
-            auto c = isa_closure(op);
+            auto c = isa_closure_lit(op);
             // TODO: We have to check if the pi's and not just the environmen-types are *equal*, since
             // extract doesn't check for equiv and the closure conv may rewrite noms with different, but equiv noms
             if (!c || !c.fnc_as_lam() || (fnc_type && fnc_type != c.fnc_type()))
@@ -24,8 +24,8 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             lams.push_back(c.fnc_as_lam());
         }
         auto env = w.extract(w.tuple(envs), proj->index());
-        auto lam = w.extract(w.tuple(lams), proj->index());
-        auto new_def = w.tuple(proj->type(), {env, lam});
+        auto fnc = w.extract(w.tuple(lams), proj->index());
+        auto new_def = pack_closure(env, fnc, proj->type());
         w.DLOG("flattend branch: {} => {}", tuple, new_def);
         return new_def;
     }
@@ -44,7 +44,7 @@ const Def* UnboxClosure::rewrite(const Def* def) {
                 args.push_back(arg);
                 continue;
             }
-            auto c = isa_closure(arg);
+            auto c = isa_closure_lit(arg);
             if (!c) {
                 w.DLOG("{}({}) => ⊤ (no closure lit)" , bxd_lam, i);
                 keep_.emplace(bxd_lam->var(i));
@@ -85,10 +85,13 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             ubxd_lam->set_name(bxd_lam->name());
             size_t j = 0;
             auto new_args = w.tuple(DefArray(bxd_lam->num_doms(), [&](auto i) {
-                if (auto ct = isa_ctype(bxd_lam->dom(i)); ct && !keep_.contains(bxd_lam->var(i)))
-                    return w.tuple(ct, {ubxd_lam->var(j++), ubxd_lam->var(j++)});
-                else
+                if (auto ct = isa_ctype(bxd_lam->dom(i)); ct && !keep_.contains(bxd_lam->var(i))) {
+                    auto c = pack_closure(ubxd_lam->var(j), ubxd_lam->var(j+1), ct);
+                    j += 2;
+                    return c;
+                } else {
                     return ubxd_lam->var(j++);
+                }
             }));
             ubxd_lam->set(bxd_lam->apply(new_args));
             w.DLOG("{} => {} (new)", bxd_lam, ubxd_lam);

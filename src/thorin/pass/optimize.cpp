@@ -21,14 +21,14 @@ namespace thorin {
 
 void optimize(World& world) {
     // PassMan opt(world);
-    // // opt.add<PartialEval>();
+    // opt.add<PartialEval>();
     // opt.add<BetaRed>();
     // auto er = opt.add<EtaRed>();
     // auto ee = opt.add<EtaExp>(er);
-    // // opt.add<SSAConstr>(ee);
-    // // opt.add<CopyProp>();
-    // // opt.add<Scalerize>();
-    // // opt.add<AutoDiff>();
+    // opt.add<SSAConstr>(ee);
+    // opt.add<CopyProp>();
+    // opt.add<Scalerize>();
+    // opt.add<AutoDiff>();
     // opt.run();
 
     // while (partial_evaluation(world, true)); // lower2cff
@@ -38,10 +38,8 @@ void optimize(World& world) {
     world.debug_stream();
     
     PassMan conv_closures(world);
-    // auto br = conv_closures.add<BetaRed>();
     // auto er = conv_closures.add<EtaRed>();
     // auto ee = conv_closures.add<EtaExp>(er);
-    // conv_closures.add<CopyProp>(br, ee);
     // conv_closures.add<ClosureDestruct>(ee);
     conv_closures.add<Scalerize>(nullptr);
     conv_closures.add<UnboxClosure>();

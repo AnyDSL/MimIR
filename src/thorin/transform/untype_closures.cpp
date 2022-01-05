@@ -21,11 +21,12 @@ void UntypeClosures::run() {
     }
 }
 
+// After scalarize, the :mem paramter can be basically anywhere
 static const Def* get_mem_var(Lam *lam) {
     for (size_t i = 0; i < lam->num_doms(); i++)
         if (thorin::isa<Tag::Mem>(lam->dom(i)))
             return lam->var(i);
-    assert(false && "Function \\wo :mem paramter");
+    assert(false && "continuation \\wo :mem paramter");
 }
 
 Lam *UntypeClosures::make_stub(Lam* lam, bool unbox_env) {
@@ -62,7 +63,7 @@ Lam *UntypeClosures::make_stub(Lam* lam, bool unbox_env) {
     return map<Lam>(lam, new_lam);
 }
 
-const Def* UntypeClosures::make_stub(ClosureWrapper& closure, bool unbox_env) {
+const Def* UntypeClosures::make_stub(ClosureLit& closure, bool unbox_env) {
     auto& w = world();
     if (auto fnc = closure.fnc_as_lam())
         return make_stub(fnc, unbox_env);
@@ -119,9 +120,9 @@ const Def* UntypeClosures::rewrite(const Def* def) {
 
     if (auto ct = isa_ctype(def)) {
         return map(def, w.sigma({rewrite(ct->op(0)), rewrite(ct->op(1))}));
-    } else if (auto c = isa_closure(def)) {
+    } else if (auto c = isa_closure_lit(def)) {
         auto env = rewrite(c.env());
-        auto unbox = unbox_env(env->type());
+        auto unbox = unbox_env(c.env_type());
         auto fn = make_stub(c, unbox);
         if (!unbox) {
             auto mem_ptr = (c.marked_no_esc()) 

@@ -10,7 +10,7 @@
 
 namespace thorin {
 
-/// Perform free variable analyses.
+/// @brief Perform free variable analyses.
 class FVA {
 public:
     FVA(World& world)
@@ -57,7 +57,7 @@ private:
 
 
 /// Perform typed closure conversion.
-/// Closures are represented using existential types <code>Σent_type.[env_type, cn[ent_type, Args..]]</code>
+/// Closures are represented using existential types <code>[env_type:*, env : env_type, cn[env_type, Args..]]</code>
 /// Only non-returning @p Lam%s are converted (i.e that have type cn[...])
 /// This can lead to bugs in combinations with @p Axiom%s / @p Lam%s that are polymorphic in their arguments
 /// return type:
@@ -65,7 +65,7 @@ private:
 /// Further, there is no machinery to handle free variables in a @p Lam%s type; this may lead to
 /// problems with polymorphic functions.
 /// Neither of this two cases is checked.
-/// The type of higher-order @p Axiom%s is adjusted as well.
+/// The types of @p Axiom%s are adjusted as well.
 
 class ClosureConv {
     public:
@@ -86,7 +86,6 @@ class ClosureConv {
             Lam* fn;
         };
 
-
         const Def* rewrite(const Def* old_def, Def2Def& subst);
 
         const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
@@ -102,15 +101,25 @@ class ClosureConv {
         std::queue<const Def*> worklist_;
 };
 
-/// Utils for working with closures
+/// # Auxillary functions to deal with closures #
 
-const Def* closure_env_type(World& world);
+/// Closure literal
+/// This comes in two flavors:
+/// - @p TYPED, using existentials to hide the type of the environment
+/// - @p UNTYPED, using pointers and <code>:bitcast</code>s to hide the environment
+/// @ClosureConv introduces @p TYPED%-Closures, @p UntypeClosures lowers @p TYPED
+/// to @p UNTYPED closures
+/// Further, closures literals can have to forms:
+/// - Lambdas: <code>(env, lambda)</code>
+/// - Folded branches: <code>(proj i (env_0, .., env_N), proj i (lam_0, .., lam_N))</code>
+/// The later form is introduced by the @p UnboxClosures pass.
 
-class ClosureWrapper {
+class ClosureLit {
 public:
     enum Kind { TYPED, UNTYPED };
 
-    // Getters
+    /// @name Getters
+    /// @{
     const Sigma* type() {
         assert(def_);
         return def_->type()->isa<Sigma>();
@@ -128,8 +137,9 @@ public:
     Lam* fnc_as_lam();
     std::pair<const Def*, const Tuple*> fnc_as_folded();
 
-    const Def* var(size_t i);
+    const Def* var(size_t i); ///< Get the @i%th variable of the function component
     const Def* env_var();
+    ///}
 
     operator bool() const {
         return def_ != nullptr;
@@ -139,7 +149,8 @@ public:
         return def_;
     }
 
-    // Properties
+    /// @name Properties
+    /// @{
     unsigned int order() {
         return old_type()->order();
     }
@@ -147,13 +158,16 @@ public:
     bool is_basicblock() {
         return old_type()->is_basicblock();
     }
+    /// @}
 
-    // Escape analyses
+    // @name Escape analyses
+    /// @{
     bool marked_no_esc(); 
     static const Def* get_esc_annot(const Def*);
+    /// @}
 
 private:
-    ClosureWrapper(const Tuple* def, ClosureWrapper::Kind kind)
+    ClosureLit(const Tuple* def, ClosureLit::Kind kind)
         : kind_(kind), def_(def)
     {};
 
@@ -162,11 +176,32 @@ private:
     const Kind kind_;
     const Tuple* def_;
 
-    friend ClosureWrapper isa_closure(const Def* def, ClosureWrapper::Kind kind);
+    friend ClosureLit isa_closure_lit(const Def* def, ClosureLit::Kind kind);
 };
 
-const Sigma* isa_ctype(const Def*, ClosureWrapper::Kind kind = ClosureWrapper::TYPED);
-ClosureWrapper isa_closure(const Def* def, ClosureWrapper::Kind kind = ClosureWrapper::TYPED);
+/// the type for the the environment of untyped closures
+const Def* closure_uenv_type(World& world);
+
+/// return @p def if @p def is a closure and @c nullptr otherwise
+const Sigma* isa_ctype(const Def* def, ClosureLit::Kind kind = ClosureLit::TYPED);
+
+/// creates a closure type from a @ Pi
+Sigma* ctype(const Pi* pi);
+
+/// tries to match a closure literal
+ClosureLit isa_closure_lit(const Def* def, ClosureLit::Kind kind = ClosureLit::TYPED);
+
+/// pack a typed closure. This assumes that @p fn expects the environment as its first argument.
+const Def* pack_closure_dbg(const Def* env, const Def* fn, const Def* dbg, const Def* ct = nullptr);
+inline const Def* pack_closure(const Def* env, const Def* fn, const Def* ct = nullptr) {
+    return pack_closure_dbg(env, fn, nullptr, ct);
+}
+
+// FIXME: Implement this once the dependet typing works properly (see the App-case in rewrite())
+// const Def* apply_closure(const Def* closure, Defs args);
+// inline const Def* apply_closure(const Def* closure, const Tuple* args) {
+//     return apply_closure(closure, args->ops());
+// }
 
 };
 
