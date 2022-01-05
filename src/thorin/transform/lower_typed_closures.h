@@ -47,7 +47,7 @@ private:
 
     template<class D = const Def>
     D* map(const Def* old_def, D* new_def) {
-        old2new_.emplace(old_def, static_cast<const Def*>(new_def));
+        old2new_[old_def] = static_cast<const Def*>(new_def);
         return new_def;
     }
 

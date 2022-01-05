@@ -139,7 +139,10 @@ public:
 
     const Def* var(size_t i); ///< Get the @i%th variable of the function component
     const Def* env_var();
-    ///}
+    const Def* ret_var() {
+        return var(fnc_type()->num_doms() - 1);
+    }
+    ///@}
 
     operator bool() const {
         return def_ != nullptr;

@@ -1,5 +1,6 @@
 #include <functional>
 
+#include "thorin/check.h"
 #include "thorin/transform/lower_typed_closures.h"
 
 namespace thorin {
@@ -31,6 +32,8 @@ static const Def* get_mem_var(Lam *lam) {
 
 Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env) {
     assert(lam && "make_stub: not a lam");
+    if (auto new_lam = old2new_.lookup(lam); new_lam && (*new_lam)->isa_nom<Lam>())
+        return (*new_lam)->as_nom<Lam>();
     auto& w = world();
     auto new_type = w.cn(Array<const Def*>(lam->num_doms(), [&](auto i) {
         auto new_dom = rewrite(lam->dom(i));
@@ -111,19 +114,30 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
     if (auto new_def = old2new_.lookup(def))
         return *new_def;
 
-    // A sigmas var dependets on the sigma (type)
-    if (auto var = def->isa<Var>(); var && isa_ctype(var->nom()))
-        return map(var, env_type());
-
     auto new_type = rewrite(def->type());
     auto new_dbg = def->dbg() ? rewrite(def->dbg()) : nullptr;
 
     if (auto ct = isa_ctype(def)) {
-        return map(def, w.sigma({rewrite(ct->op(0)), rewrite(ct->op(1))}));
-    } else if (auto c = isa_closure_lit(def)) {
+        return map(def, w.sigma({rewrite(ct->op(1)), rewrite(ct->op(2))}));
+    } else if (auto proj = def->isa<Extract>()) {
+        auto tuple = proj->tuple();
+        auto idx = isa_lit(proj->index());
+        if (isa_ctype(tuple->type())) {
+            assert (idx && idx <= 2 && "unknown proj from closure tuple");
+            if (*idx == 0)
+                return map(def, env_type());
+            else
+                return map(def, rewrite(tuple)->proj(*idx - 1));
+        } else if (auto var = tuple->isa<Var>(); var && isa_ctype(var->nom())) {
+            assert(false && "proj fst type form closure type");
+        }
+    }
+
+    if (auto c = isa_closure_lit(def)) {
         auto env = rewrite(c.env());
         auto unbox = unbox_env(c.env_type());
         auto fn = make_stub(c, unbox);
+        const Def* lwd_clos;
         if (!unbox) {
             auto mem_ptr = (c.marked_no_esc()) 
                 ? w.op_slot(env->type(), lcm_)
@@ -132,21 +146,26 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
             auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
             lcm_ = w.op_store(mem, env_ptr, env);
             map(lvm_, lcm_);
-            auto ucl = w.tuple({env_ptr, fn});
-            return w.op_bitcast(new_type, ucl);
+            lwd_clos = w.tuple({env_ptr, fn});
         } else {
-            return w.tuple({env, fn});
+            lwd_clos = w.tuple({env, fn});
         }
+        return w.op_bitcast(new_type, lwd_clos);
     } else if (auto lam = def->isa_nom<Lam>()) {
         // Lam's in callee pos are scalarized (unpacked env)
         // or external in which case their env is []
         return make_stub(lam, true);
     } else if (auto nom = def->isa_nom()) {
+        assert(!isa_ctype(nom));
         auto new_nom = nom->stub(w, new_type, new_dbg);
         map(nom, new_nom);
         for (size_t i = 0; i < nom->num_ops(); i++)
             if (nom->op(i))
                 new_nom->set(i, rewrite(nom->op(i)));
+        if (Checker(w).equiv(nom, new_nom))
+            return map(nom, nom);
+        if (auto restruct = new_nom->restructure())
+            return map(nom, restruct);
         return new_nom;
     } else {
         auto new_ops = Array<const Def*>(def->num_ops(), [&](auto i) {
