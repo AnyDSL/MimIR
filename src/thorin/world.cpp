@@ -249,7 +249,7 @@ World::World(const std::string& name)
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
         */
         auto type = nom_pi(kind())->set_dom({kind(), kind(), kind(), kind()});
-        auto [A, B, C, D] = type->vars<2>({dbg("A"), dbg("B"),dbg("C"),dbg("D")});
+        auto [A, B, C, D] = type->vars<4>({dbg("A"), dbg("B"),dbg("C"),dbg("D")});
 
         auto pullback = cn_mem_ret(C,D);
         auto diffd = cn({
@@ -319,7 +319,7 @@ const Def* World::tangent_type(const Def* A) {
     }
     if(auto ptr = isa<Tag::Ptr>(A)) {
 //        s2.fmt("A is ptr\n");
-        auto arg = ptr->arg()->split<2>()[0];
+        auto arg = ptr->arg()->projs<2>()[0];
         return tangent_type(arg);
     }
     if(auto arrdef = A->isa<Arr>()) {
