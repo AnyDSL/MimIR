@@ -18,7 +18,7 @@ static bool nom_val_or_typ(const Def *def) {
 size_t flatten(DefVec& ops, const Def* def, bool flatten_noms) {
     if (auto a = isa_lit<nat_t>(def->arity()); a && *a != 1 && should_flatten(def)
             && flatten_noms == nom_val_or_typ(def)) {
-        size_t n = 0;
+        auto n = 0;
         for (size_t i = 0; i != *a; ++i)
             n += flatten(ops, def->proj(*a, i), flatten_noms);
         return n;

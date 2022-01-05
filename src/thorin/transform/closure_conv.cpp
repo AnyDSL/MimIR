@@ -7,7 +7,7 @@ namespace thorin {
 /* auxillary functions */
 
 static const Def* ctype(World& w, const Pi* pi, const Def* env_type = nullptr, 
-        std::function<const Def*(const Def*)> rw_args = std::identity()) {
+        std::function<const Def*(const Def*)> rw_args = [](auto d) { return d; }) {
     if (!env_type) {
         auto sigma = w.nom_sigma(w.kind(), 3_u64, w.dbg("closure_type"));
         sigma->set(0_u64, w.kind());

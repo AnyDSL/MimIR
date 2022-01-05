@@ -93,7 +93,7 @@ const Def* Vel    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) cons
 
 const Def* Axiom  ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const {
     auto res = w.axiom(normalizer(), t, tag(), flags(), dbg);
-    assert(&w != &world() || gid() == res->gid());
+    assert(&w != &world() || type() != t || gid() == res->gid());
     return res;
 }
 
@@ -124,29 +124,6 @@ const Def* Arr::restructure() {
     auto& w = world();
     if (auto n = isa_lit(shape()))
         return w.sigma(DefArray(*n, [&](size_t i) { return apply(w.lit_int(*n, i)).back(); }));
-    return nullptr;
-}
-
-/*
- * proj
- */
-
-const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
-    if (a == 1 && (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>())) return this;
-    if (isa<Tuple>() || isa<Sigma>()) return op(i);
-
-    if (auto arr = isa<Arr>()) {
-        if (arr->arity()->isa<Top>()) return arr->body();
-        return arr->apply(world().lit_int(as_lit(arr->arity()), i)).back();
-    }
-
-    if (auto pack = isa<Pack>()) {
-        if (pack->arity()->isa<Top>()) return pack->body();
-        return pack->apply(world().lit_int(as_lit(pack->arity()), i)).back();
-    }
-
-    if (sort() == Sort::Term) { return world().extract(this, a, i, dbg); }
-
     return nullptr;
 }
 
@@ -372,6 +349,24 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
     DefArray new_ops(ops());
     new_ops[i] = new_op;
     return rebuild(world(), type(), new_ops, dbg());
+}
+
+const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
+    if (a == 1 && (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>())) return this;
+
+    if (isa<Tuple>() || isa<Sigma>()) {
+        return op(i);
+    } else if (auto arr = isa<Arr>()) {
+        if (arr->arity()->isa<Top>()) return arr->body();
+        return arr->apply(world().lit_int(as_lit(arr->arity()), i)).back();
+    } else if (auto pack = isa<Pack>()) {
+        if (pack->arity()->isa<Top>()) return pack->body();
+        return pack->apply(world().lit_int(as_lit(pack->arity()), i)).back();
+    } else if (sort() == Sort::Term) {
+        return world().extract(this, a, i, dbg);
+    }
+
+    return nullptr;
 }
 
 /*
