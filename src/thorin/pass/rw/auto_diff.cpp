@@ -447,6 +447,16 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  result of app",dst);
         return dst;
     }
+    // TODO: more general
+    if(auto icmp = isa<Tag::ICmp>(def)) {
+        type_dump(world_,"  ICmp",icmp);
+        auto ab = j_wrap(icmp->arg());
+        auto [a, b] = ab->projs<2>();
+        auto dst = world_.op(ICmp(icmp.flags()), a, b);
+        src_to_dst_[icmp] = dst;
+        type_dump(world_,"  result of app",dst);
+        return dst;
+    }
 
     // memory operations
 
@@ -974,14 +984,15 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto dst = world_.insert(j_wrap(insert->tuple()), insert->index(), j_wrap(insert->value()));
         src_to_dst_[insert] = dst;
         type_dump(world_,"  jwrapped insert",dst);
-        log(world_,"  TODO: pullback of insert is currently missing");
+        dlog(world_,"  TODO: pullback of insert is currently missing");
         return dst;
     }
 
     if (auto lit = def->isa<Lit>()) {
         // a literal (number) has a zero pullback
         type_dump(world_,"Literal",lit);
-        auto zeropi = world_.cn_mem_ret(lit->type(), A);
+//        auto zeropi = world_.cn_mem_ret(lit->type(), A);
+        auto zeropi = createPbType(A,lit->type());
         auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb"));
         type_dump(world_,"  lit pb (zero)",zeropb);
         zeropb->set_filter(world_.lit_true());

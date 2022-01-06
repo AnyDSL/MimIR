@@ -335,8 +335,11 @@ const Def* World::tangent_type(const Def* A) {
         Defs tan_ops{tan_ops_arr};
         return sigma(tan_ops,sig->dbg());
     }
-
-    return A;
+    if(auto real = isa<Tag::Real>(A)) {
+        return A;
+    }else {
+        return type_real(32);
+    }
 }
 
 
