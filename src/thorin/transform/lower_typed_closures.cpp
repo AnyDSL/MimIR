@@ -82,7 +82,10 @@ const Def* LowerTypedClosures::make_stub(ClosureLit& closure, bool unbox_env) {
 // TODO: Handle ptr?
 static size_t repr_size(const Def* type, size_t inf) {
     if (auto size = thorin::isa_sized_type(type)) {
-        return as_lit(size);
+        if (auto sz = isa_lit(size))
+            return *sz;
+        else
+            return inf;
     } else if (auto sigma = type->isa<Sigma>()) {
         auto size = 0;
         for (size_t i = 0; i < sigma->num_ops(); i++)
