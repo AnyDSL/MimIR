@@ -255,9 +255,14 @@ World::World(const std::string& name)
         auto diffd = cn({
           type_mem(),
           A,
+//          flatten(A),
           cn({type_mem(), B, pullback})
         });
+//        auto diffd= cn_mem_flat(A,tuple({B,pullback}));
+        // TODO: flattening at this point is useless as we handle abstract kinds here
         auto Xi = pi(cn_mem_ret(A, B), diffd);
+        //        auto Xi = pi(cn_mem_ret(flatten(A), B), diffd);
+//        auto Xi = pi(cn_mem_flat(A, B), diffd);
         type->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
     }
@@ -299,6 +304,7 @@ const Def* World::tangent_type(const Def* A) {
                             A,
                             cn({type_mem(), B, pullback})
                         });
+//        auto diffd= cn_mem_flat(A,tuple({B,pullback}));
 
         return diffd;
 
@@ -884,11 +890,17 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
         auto tan_codom = tangent_type(codom);
 
         Stream s2;
-        s2.fmt("dom {} -> {}\n",dom,tan_dom);
-        s2.fmt("codom {} -> {}\n",codom,tan_codom);
+        s2.fmt("dom {} => {}\n",dom,tan_dom);
+        s2.fmt("codom {} => {}\n",codom,tan_codom);
+
+        s2.fmt("fn {} : {}\n",fn, fn->type());
+
+        // wrapper for fn not possible due to recursive calls
 
         auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom, tan_codom, tan_dom}), this->dbg("mk_pullback"));
+        s2.fmt("mk pb {} : {}\n",mk_pullback,mk_pullback->type());
         auto pullback = app(mk_pullback, fn, dbg);
+        s2.fmt("pb {}\n",pullback);
 
         return pullback;
     }
