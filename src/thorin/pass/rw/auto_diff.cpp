@@ -7,14 +7,8 @@
 
 namespace thorin {
 
-//#define log(world,fmt,...) world.DLOG(fmt,__VA_ARGS__)
-// TODO: use macros to preserve __LINE__
-template<class... Args> auto log (World& world,const char* fmt, Args&&... args) {
-    world.DLOG(fmt,std::forward<Args&&>(args)...);
-}
-void type_dump(World& world,const char* name, const Def* d) {
-    world.DLOG("{} {} : {}",name,d,d->type());
-}
+#define dlog(world,...) world.DLOG(__VA_ARGS__)
+#define type_dump(world,name,d) world.DLOG("{} {} : {}",name,d,d->type())
 
 // multidimensional addition of values
 // needed for operation differentiation
@@ -79,21 +73,21 @@ const Def* oneHot(World& world_,const Def* idx, const Def* shape, const Def* s) 
     type_dump(world_,"OH Idx: ",idx);
 
     if(shape->isa<Pi>()) {
-        log(world_,"Pi shape");
+        dlog(world_,"Pi shape");
     }
     if(shape->isa<Arr>()) {
-        log(world_, "Arr shape");
+        dlog(world_, "Arr shape");
     }
 
     if(auto lit = isa_lit(idx)) {
         type_dump(world_, "lit oh of type ", shape);
         return oneHot(world_,*lit,shape,s);
     }else {
-        log(world_, "non-lit oh");
+        dlog(world_, "non-lit oh");
         auto dim = getDim(shape);
-        log(world_,"dim: {}",dim);
+        dlog(world_,"dim: {}",dim);
         Array<const Def*> ohv{dim, [&](auto i) { return oneHot(world_,i,shape,s); }};
-        log(world_, "creates ohv: ");
+        dlog(world_, "creates ohv: ");
         auto t = world_.tuple(ohv);
         type_dump(world_, "as tuple: ",t);
         return world_.extract_unsafe(world_.tuple(ohv),idx);
@@ -142,13 +136,13 @@ public:
         if (auto a = A->isa<Arr>()) {
             // if the input is an array, we compute the dimension
             dim = a->shape()->as<Lit>()->get<uint8_t>();
-            log(world_,"Multidimensional differentiation: {} dimensions",dim);
+            dlog(world_,"Multidimensional differentiation: {} dimensions",dim);
         }else {
             dim=1;
-            log(world_,"SingleDim differentiation: {} dimensions",dim);
+            dlog(world_,"SingleDim differentiation: {} dimensions",dim);
         }
 
-        log(world_,"Finished Construction");
+        dlog(world_,"Finished Construction");
     }
 
     const Def* reverse_diff(Lam* src); // top level function to compute the reverse differentiation of a function
@@ -184,9 +178,9 @@ const Def* AutoDiffer::chain(const Def* a, const Def* b) {
     auto A = at->doms()[1];
     auto B = bt->doms()[1];
     auto C = bt->doms()[2]->as<Pi>()->doms()[1];
-    log(world_,"   A {}",A);
-    log(world_,"   B {}",B);
-    log(world_,"   C {}",C);
+    dlog(world_,"   A {}",A);
+    dlog(world_,"   B {}",B);
+    dlog(world_,"   C {}",C);
 
     auto pi = world_.cn_mem_ret(A, C);
     auto toplevel = world_.nom_lam(pi, world_.dbg("chain"));
@@ -219,11 +213,11 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         if(src_param == src->ret_var() || src_param == src->mem_var()) {
             // skip first and last argument
             // memory and return continuation are no "real" arguments
-            log(world_,"Ignore variable {} of src",i);
+            dlog(world_,"Ignore variable {} of src",i);
             continue;
         }
         auto dst = src_to_dst_[src_param];
-        log(world_,"Source Param #{} {} => {} : {}",i,src_param,dst,dst->type());
+        dlog(world_,"Source Param #{} {} => {} : {}",i,src_param,dst,dst->type());
 
 
         // TODO: move computation of A and params here
@@ -240,7 +234,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         // scalar as pullback
         // the scalar chooses which output (component) is under consideration
         auto idpi = createPbType(A,A);
-        log(world_,"The pullback type of the argument is {}",idpi);
+        dlog(world_,"The pullback type of the argument is {}",idpi);
         auto idpb = world_.nom_lam(idpi, world_.dbg("id"));
         idpb->set_filter(world_.lit_true());
 
@@ -285,10 +279,10 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
 
         auto arg_ty = dst->type();
-        log(world_,"Arg of Type A: {}", arg_ty);
+        dlog(world_,"Arg of Type A: {}", arg_ty);
         if(auto ptr= isa<Tag::Ptr>(arg_ty)) {
             auto ty = ptr->arg()->projs<2>()[0];
-            log(world_,"A is ptr for {}",ty);
+            dlog(world_,"A is ptr for {}",ty);
 
             auto src_mem = src->mem_var();
             auto dst_mem = src_to_dst_[src_mem];
@@ -309,7 +303,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
         type_dump(world_,"Pullback of dst ",pullbacks_[dst]);
     }
-    log(world_,"Initialization finished, start jwrapping");
+    dlog(world_,"Initialization finished, start jwrapping");
     // translate the body => get correct applications of variables using pullbacks
     auto dst = j_wrap(src->body());
     return dst;
@@ -355,7 +349,7 @@ const Def* AutoDiffer::ptrSlot(const Def* ty, const Def* mem) {
 // return src_to_dst[src] => dst
 const Def* AutoDiffer::j_wrap(const Def* def) {
     type_dump(world_,"J_wrap of ",def);
-    log(world_,"  Node: {}",def->node_name());
+    dlog(world_,"  Node: {}",def->node_name());
 
     if (auto dst = seen(def)) {
         // we have converted def and already have a pullback
@@ -373,7 +367,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // an axiom without application has no meaning as a standalone term
         type_dump(world_,"Error: axiom",axiom);
 
-        log(world_,"  axiom has tag {}",axiom->tag());
+        dlog(world_,"  axiom has tag {}",axiom->tag());
         THORIN_UNREACHABLE;
     }
     if (auto lam = def->isa_nom<Lam>()) {
@@ -381,12 +375,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"Lam",lam);
         auto old_pi = lam->type()->as<Pi>();
 
-        log(world_,"  lam args {}",old_pi->num_doms());
+        dlog(world_,"  lam args {}",old_pi->num_doms());
         if(old_pi->num_doms()==1){//only mem argument
             // keep everything as is
             // and differentiate body
             // TODO: merge with else case
-            log(world_,"  non-returning mem lambda");
+            dlog(world_,"  non-returning mem lambda");
             auto dst = world_.nom_lam(old_pi, world_.dbg(lam->name()));
             type_dump(world_,"  => ",dst);
             src_to_dst_[lam->var()] = dst->var();
@@ -400,9 +394,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //            pullbacks_[dst] = idpb; // TODO: correct? needed?
 
             // never executed but needed for tuple pb
-            log(world_,"  compute pb ty of lam: {}",lam->type());
+            dlog(world_,"  compute pb ty of lam: {}",lam->type());
             auto zeropi = createPbType(A,lam->type());
-            log(world_,"  result: {}",zeropi);
+            dlog(world_,"  result: {}",zeropi);
             auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb"));
             type_dump(world_,"  non ret pb (zero)",zeropb);
             zeropb->set_filter(world_.lit_true());
@@ -489,12 +483,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         // Handle binary operations
         if (auto inner = callee->isa<App>()) {
-            log(world_,"  app of app");
+            dlog(world_,"  app of app");
             // Take care of binary operations
 
 
             if (auto axiom = inner->callee()->isa<Axiom>()) {
-                log(world_,"  app of axiom [...] args with axiom tag {}",axiom->tag());
+                dlog(world_,"  app of axiom [...] args with axiom tag {}",axiom->tag());
 
                 if (axiom->tag() == Tag::Slot) {
                     type_dump(world_,"  wrap slot with args ",arg);
@@ -541,12 +535,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     // TODO: should no longer happen
                     assert(pointer_map.count(ptr) && "ptr should have a shadow slot at a store location");
 //                    if(!pointer_map.count(ptr)) {
-//                        log(world_,"need to create ptr pb slot at store");
+//                        dlog(world_,"need to create ptr pb slot at store");
 //                        THORIN_UNREACHABLE;
 //                    }
 //                    if(!pointer_map.count(ptr)) {
 //                        auto [ty, _] = inner->arg()->projs<2>();
-//                        log(world_,"create ptr pb slot at store");
+//                        dlog(world_,"create ptr pb slot at store");
 //
 ////                        auto pbty = createPbType(A,ty);
 ////                        auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
@@ -591,11 +585,11 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto [mem, ptr] = j_args->projs<2>();
                     type_dump(world_,"  got ptr at load ",ptr);
 
-                    log(world_,"has ptr in pb {}",pullbacks_.count(ptr));
+                    dlog(world_,"has ptr in pb {}",pullbacks_.count(ptr));
 
                     // TODO: where is pullbacks_[ptr] set to a nullptr? (happens in conditional stores to slot)
 //                    if(!pullbacks_.count(ptr) || !pullbacks_[ptr]) {
-                        log(world_,"manually load ptr pb at load location");
+                        dlog(world_,"manually load ptr pb at load location");
                         auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->projs<2>();
                         pullbacks_[ptr]=pb_load_fun;
                         // TODO: load mem
@@ -603,7 +597,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                    }
 
 
-                    log(world_,"  got ptr pb {} ",pullbacks_[ptr]);
+                    dlog(world_,"  got ptr pb {} ",pullbacks_[ptr]);
                     type_dump(world_,"  got ptr pb ",pullbacks_[ptr]);
 
 //                    auto dst = world_.op_load(pb_mem,ptr);
@@ -633,41 +627,41 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // a non-returning call is transformed directly and augmented using pullbacks for its arguments
 
         if (callee->type()->as<Pi>()->is_returning()) {
-            log(world_,"  FYI returning callee");
+            dlog(world_,"  FYI returning callee");
 
             const Def* dst_callee;
 
-//            log(world_,"is lam: {}",callee->isa<Lam>());
+//            dlog(world_,"is lam: {}",callee->isa<Lam>());
 //            THORIN_UNREACHABLE;
 
             if(auto cal_lam=callee->isa<Lam>(); cal_lam && !cal_lam->is_set()) {
                 //            type_dump(world_,"callee is ",callee);
-                //            log(world_,"node name {}",callee->node_name());
-                //            log(world_,"is external {}",callee->is_external());
-                ////            log(world_,"is external {}",callee->as_nom<Lam>()->is_external());
-                //            log(world_,"is set {}",callee->as_nom<Lam>()->is_set());
-                //            log(world_,"name {}",callee->as_nom<Lam>()->name());
-                //            log(world_,"name {}",callee->as_nom<Lam>()->debug().name);
-                ////            log(world_,"cc {}",callee->as_nom<Lam>()->cc());
+                //            dlog(world_,"node name {}",callee->node_name());
+                //            dlog(world_,"is external {}",callee->is_external());
+                ////            dlog(world_,"is external {}",callee->as_nom<Lam>()->is_external());
+                //            dlog(world_,"is set {}",callee->as_nom<Lam>()->is_set());
+                //            dlog(world_,"name {}",callee->as_nom<Lam>()->name());
+                //            dlog(world_,"name {}",callee->as_nom<Lam>()->debug().name);
+                ////            dlog(world_,"cc {}",callee->as_nom<Lam>()->cc());
 
                 auto pty = world_.tangent_type(callee->type())->as<Pi>();
                 auto pbT = pty->doms().back()->as<Pi>();
                 auto gradTy = pbT->doms().back()->as<Pi>();
 
-                log(world_,"pbT {}",pbT);
-                log(world_,"grad {}",gradTy);
-                log(world_,"pty {}",pty);
+                dlog(world_,"pbT {}",pbT);
+                dlog(world_,"grad {}",gradTy);
+                dlog(world_,"pty {}",pty);
 
 //                THORIN_UNREACHABLE;
 
                 auto gradlam=world_.nom_lam(gradTy,world_.dbg("grad_lam"));
 //                gradlam->unset();
 //                gradlam->unset(0);
-//                log(world_,"unset 0");
+//                dlog(world_,"unset 0");
 //                gradlam->unset(1);
-//                log(world_,"unset 1");
+//                dlog(world_,"unset 1");
                 gradlam->set_name(cal_lam->name()+"_diff");
-                log(world_,"isset grad {}",gradlam->is_set());
+                dlog(world_,"isset grad {}",gradlam->is_set());
 //                gradlam->unset();
 
                 auto lam=world_.nom_lam(pty,world_.dbg("lam"));
@@ -708,7 +702,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                auto lam=world_.nom_lam(pty,world_.dbg(""));
 //                lam->set_name(cal_lam->name()+"_diff");
 
-//                log(world_,"new name {}",lam->name());
+//                dlog(world_,"new name {}",lam->name());
                 type_dump(world_,"new lam",lam);
                 type_dump(world_,"aux lam",lam2);
                 type_dump(world_,"grad lam",gradlam);
@@ -718,7 +712,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             }else {
                 dst_callee = world_.op_rev_diff(callee);
                 type_dump(world_,"  Used RevDiff Op on callee",dst_callee);
-                log(world_,"  this call will invoke AutoDiff rewrite");
+                dlog(world_,"  this call will invoke AutoDiff rewrite");
             }
 
             auto d_arg = j_wrap(arg);
@@ -762,18 +756,18 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
             return dst;
         }else {
-            log(world_,"  FYI non-returning callee");
+            dlog(world_,"  FYI non-returning callee");
             auto d_callee= j_wrap(callee);
             auto d_arg = j_wrap(arg);
             type_dump(world_,"  wrapped callee: ",d_callee);
             type_dump(world_,"  wrapped args: ",d_arg);
-            log(world_,"  arg in pb: {}",pullbacks_.count(d_arg));
+            dlog(world_,"  arg in pb: {}",pullbacks_.count(d_arg));
             if(pullbacks_.count(d_arg))
                 type_dump(world_,"  arg pb: ",pullbacks_[d_arg]);
-            log(world_,"  type: {}",d_arg->node_name());
+            dlog(world_,"  type: {}",d_arg->node_name());
             const Def* ad_args;
 
-            log(world_,"  arg type: {} of {}",d_arg->type(),d_arg->type()->node_name());
+            dlog(world_,"  arg type: {} of {}",d_arg->type(),d_arg->type()->node_name());
 
 
             // if we encounter a tuple (like [mem, arg]) we add the pullback as additional argument
@@ -794,9 +788,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             //   coincidentally, this is covered by !type->is<Sigma>() as well as darg->is<Var>
 
             if(d_arg->type()->isa<Sigma>() && !d_arg->isa<Var>()) {
-                log(world_,"  tuple argument");
+                dlog(world_,"  tuple argument");
                 auto count=getDim(d_arg);
-                log(world_,"  count: {}",count);
+                dlog(world_,"  count: {}",count);
                 ad_args = world_.tuple(
                     Array<const Def*>(
                     count+1,
@@ -804,7 +798,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 ));
             }else {
                 // var (lambda completely with all arguments) and other (non tuple)
-                log(world_,"  non tuple argument");
+                dlog(world_,"  non tuple argument");
                 ad_args = d_arg;
             }
             type_dump(world_,"  ad_arg ",ad_args);
@@ -820,7 +814,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // a tuple with memory as argument is used in applications but we only want the pullback of the "real" arguments
         type_dump(world_,"tuple",tuple);
         auto tuple_dim=getDim(tuple);
-        log(world_,"  num of ops: {}",tuple_dim);
+        dlog(world_,"  num of ops: {}",tuple_dim);
         // jwrap each component
         Array<const Def*> ops{tuple_dim, [&](auto i) { return j_wrap(tuple->op(i)); }};
         // reconstruct the tuple term
@@ -829,7 +823,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         src_to_dst_[tuple] = dst;
 
         if(tuple_dim>0 && isa<Tag::Mem>(dst->op(0)->type())) {
-            log(world_,"  mem pb tuple");
+            dlog(world_,"  mem pb tuple");
 
                 pullbacks_[dst] = pullbacks_[ops[1]];
             return dst;
@@ -845,13 +839,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         auto pi = createPbType(A,tuple->type());
         auto pb = world_.nom_lam(pi, world_.dbg("tuple_pb"));
-        log(world_,"  complete tuple pb type: {}",pi);
+        dlog(world_,"  complete tuple pb type: {}",pi);
         pb->set_filter(world_.lit_true());
 
         type_dump(world_,"  A:",A);
         auto pbT = pi->as<Pi>()->doms().back()->as<Pi>();
-        log(world_,"  intermediate tuple pb type: {}",pbT);
-        log(world_,"  should be cn_mem of {}",A);
+        dlog(world_,"  intermediate tuple pb type: {}",pbT);
+        dlog(world_,"  should be cn_mem of {}",A);
         auto cpb = pb;
         auto sum=ZERO(world_,A);
         Lam* nextpb;
@@ -869,12 +863,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             //all nextpb args are result
             sum=vec_add(world_,dim,sum,nextpb->var(1));
         }
-        log(world_,"  create final pb app");
+        dlog(world_,"  create final pb app");
         cpb->set_body( world_.app( pb->ret_var(), {cpb->mem_var(),sum} ));
 
         // TODO: multiple arguments
 
-        log(world_,"  tuple pbs {}",pb);
+        dlog(world_,"  tuple pbs {}",pb);
         pullbacks_[dst]=pb;
         type_dump(world_,"  pullback for tuple",pullbacks_[dst]);
         return dst;
@@ -919,7 +913,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         // TODO: more general handling of memory
         if(isa<Tag::Mem>(jtup->type()->op(0))) {
-            log(world_,"  extract mem pb tuple ");
+            dlog(world_,"  extract mem pb tuple ");
 
             // for special case pointer slot that has not yet be written to
             if(pullbacks_.count(jtup)) {
@@ -937,7 +931,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
 //        auto tuple_dim=getDim(jtup);
 //        type_dump(world_,"  extract from tuple",extract->tuple());
-//        log(world_,"  extract from tuple with size {}",tuple_dim);
+//        dlog(world_,"  extract from tuple with size {}",tuple_dim);
 //
 //        const Def* extract_vec;
 //
@@ -945,14 +939,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //            // tuples can only be extracted using literals
 //            // we also need a direct extract
 //            auto i = lit->get<uint8_t>();
-//            log(world_,"  literal extract (applicable for tuples) at pos {}",i);
+//            dlog(world_,"  literal extract (applicable for tuples) at pos {}",i);
 //            extract_vec= world_.tuple(oneHot(tuple_dim,i,pb->var(1, world_.dbg("s"))));
 //        } else {
 //            Array<const Def*> ohv{tuple_dim,
 //                                  [&](auto i) { return world_.tuple(
 //                                      oneHot(tuple_dim,i,pb->var(1, world_.dbg("s")))
 //                                  ); }};
-//            log(world_,"  non-literal extract (applicable for arrays) ");
+//            dlog(world_,"  non-literal extract (applicable for arrays) ");
 //            extract_vec=world_.extract_unsafe(world_.tuple(ohv), extract->index());
 //        }
 
@@ -999,7 +993,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     }
 
     type_dump(world_,"unhandeled def",def);
-    log(world_,"  node {}",def->node_name());
+    dlog(world_,"  node {}",def->node_name());
     THORIN_UNREACHABLE;
 }
 
@@ -1165,7 +1159,7 @@ const Def* AutoDiff::rewrite(const Def* def) {
         auto B = src_lam->ret_var()->type()->as<Pi>()->dom(1); // the output (for now a scalar)
 
 
-        log(world,"AD of function from {} to {}",A,B);
+        dlog(world,"AD of function from {} to {}",A,B);
         type_dump(world,"Transform:",src_lam);
         type_dump(world,"Result:",dst_lam);
 
