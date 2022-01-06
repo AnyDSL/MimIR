@@ -154,13 +154,8 @@ public:
 
     /// @name Properties
     /// @{
-    unsigned int order() {
-        return old_type()->order();
-    }
-
-    bool is_basicblock() {
-        return old_type()->is_basicblock();
-    }
+    unsigned int order();
+    bool is_basicblock();
     /// @}
 
     // @name Escape analyses
@@ -174,8 +169,6 @@ private:
         : kind_(kind), def_(def)
     {};
 
-    const Pi* old_type();
-
     const Kind kind_;
     const Tuple* def_;
 
@@ -188,8 +181,12 @@ const Def* closure_uenv_type(World& world);
 /// return @p def if @p def is a closure and @c nullptr otherwise
 const Sigma* isa_ctype(const Def* def, ClosureLit::Kind kind = ClosureLit::TYPED);
 
-/// creates a closure type from a @ Pi
+/// creates a typed closure type from a @p Pi
 Sigma* ctype(const Pi* pi);
+
+/// Convert a closure type to a @p Pi, where the environment type has been removed
+/// or replaced by new_env_type (if @c != nullptr)
+const Pi* ctype_to_pi(const Def* ct, const Def* new_env_type = nullptr);
 
 /// tries to match a closure literal
 ClosureLit isa_closure_lit(const Def* def, ClosureLit::Kind kind = ClosureLit::TYPED);
@@ -200,11 +197,21 @@ inline const Def* pack_closure(const Def* env, const Def* fn, const Def* ct = nu
     return pack_closure_dbg(env, fn, nullptr, ct);
 }
 
-// FIXME: Implement this once the dependet typing works properly (see the App-case in rewrite())
-// const Def* apply_closure(const Def* closure, Defs args);
-// inline const Def* apply_closure(const Def* closure, const Tuple* args) {
-//     return apply_closure(closure, args->ops());
-// }
+/// Which param is the env param()
+const size_t CLOSURE_ENV_PARAM = 0_u64;
+
+/// Return env at the env position and f(i')) otherwise where i' has been shifted
+const Def* closure_insert_env(size_t i, const Def* env, std::function<const Def* (size_t)> f);
+inline const Def* closure_insert_env(size_t i, const Def* env, const Def* a) {
+    return closure_insert_env(i, env, [&](auto i) { return a->proj(i); });
+}
+
+const Def* apply_closure(const Def* closure, const Def* args);
+template<typename T>
+inline const Def* apply_closure(const Def* closure, T&& args) {
+    auto& w = closure->world();
+    return apply_closure(closure, w.tuple(std::forward<T>(args)));
+}
 
 };
 

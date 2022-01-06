@@ -6,6 +6,25 @@ namespace thorin {
 
 /* auxillary functions */
 
+// Where is the env in a closure type?
+static size_t closure_sig_env_pos(ClosureLit::Kind kind) {
+    return (kind == ClosureLit::TYPED) ? 1 : 0;
+}
+
+// Adjust the index of an argument to account for the env param
+size_t shift_env(size_t i) {
+    return (i < CLOSURE_ENV_PARAM) ? i : i - 1_u64;
+}
+
+// Same but skip the env param
+size_t skip_env(size_t i) {
+    return (i < CLOSURE_ENV_PARAM) ? i : i + 1_u64;
+}
+
+const Def* closure_insert_env(size_t i, const Def* env, std::function<const Def* (size_t)> f) {
+    return (i == CLOSURE_ENV_PARAM) ? env : f(shift_env(i));
+}
+
 static const Def* ctype(World& w, const Pi* pi, const Def* env_type = nullptr, 
         std::function<const Def*(const Def*)> rw_args = [](auto d) { return d; }) {
     if (!env_type) {
@@ -16,7 +35,7 @@ static const Def* ctype(World& w, const Pi* pi, const Def* env_type = nullptr,
         return sigma;
     } else {
         auto dom = w.sigma(DefArray(pi->num_doms() + 1, [&](auto i) {
-            return (i == 0) ? env_type : rw_args(pi->dom(i - 1));
+            return closure_insert_env(i, env_type, [&](auto i) { return rw_args(pi->dom(i)); });
         }));
         assert(dom->type() == w.kind());
         auto new_pi = w.cn(dom);
@@ -28,9 +47,19 @@ Sigma* ctype(const Pi* pi) {
     return ctype(pi->world(), pi, nullptr)->as_nom<Sigma>();
 }
 
-// Where in the closure is the environment located?
-static size_t env_pos(ClosureLit::Kind kind) {
-    return (kind == ClosureLit::TYPED) ? 1 : 0;
+const Pi* ctype_to_pi(const Def* ct, const Def* new_env_type) {
+    assert(isa_ctype(ct));
+    auto& w = ct->world();
+    auto pi = ct->op(2_u64)->isa<Pi>();
+    assert(pi);
+    if (!new_env_type)
+        return w.cn(w.tuple(DefArray(pi->num_doms() - 1, [&](auto i) {
+            return pi->dom(skip_env(i));
+        })));
+    else
+        return w.cn(w.sigma(DefArray(pi->num_doms(), [&](auto i) {
+            return (i == CLOSURE_ENV_PARAM) ? new_env_type : pi->dom(i);
+        })));
 }
 
 const Def* closure_uenv_type(World& world) {
@@ -49,7 +78,7 @@ static bool isa_ctype(size_t env_pos, const Def* def, std::function<bool (const 
 }
 
 const Sigma* isa_ctype(const Def* def, ClosureLit::Kind kind) {
-    auto ep = env_pos(kind);
+    auto ep = closure_sig_env_pos(kind);
     auto& w = def->world();
     if (kind == ClosureLit::TYPED) {
         auto sig = def->isa_nom<Sigma>();
@@ -60,7 +89,7 @@ const Sigma* isa_ctype(const Def* def, ClosureLit::Kind kind) {
     } else {
         auto sig = def->isa<Sigma>();
         return (sig 
-            && isa_ctype(ep, sig, [](auto def) { return def == closure_uenv_type(def->world()); }))
+            && isa_ctype(ep, sig, [&](auto def) { return def == closure_uenv_type(w); }))
             ? sig : nullptr;
     }
 }
@@ -69,10 +98,21 @@ const Def* pack_closure_dbg(const Def* env, const Def* lam, const Def* dbg, cons
     assert(env && lam);
     assert(!ct || isa_ctype(ct));
     auto pi = lam->type()->isa<Pi>();
-    assert(pi && env->type() == pi->dom(0_u64));
+    assert(pi && env->type() == pi->dom(CLOSURE_ENV_PARAM));
     ct = (ct) ? ct : ctype(pi);
     auto& w = env->world();
     return w.tuple(ct, {env->type(), env, lam}, dbg)->isa<Tuple>();
+}
+
+const Def* apply_closure(const Def* closure, const Def* args) {
+    auto& w = closure->world();
+    auto env_type = closure->proj(0_u64);
+    auto env = w.extract_(env_type, closure, w.lit_int(3, 1));
+    auto pi = ctype_to_pi(closure->type(), env_type);
+    auto fn = w.extract_(pi, closure, w.lit_int(3, 2));
+    return w.app(fn, DefArray(pi->num_doms(), [&](auto i) {
+        return closure_insert_env(i, env, args);
+    }));
 }
 
 static std::pair<const Def*, const Tuple*>
@@ -86,7 +126,7 @@ isa_folded_branch(const Def* def) {
 }
 
 ClosureLit isa_closure_lit(const Def* def, ClosureLit::Kind kind) {
-    auto ep = env_pos(kind);
+    auto ep = closure_sig_env_pos(kind);
     if (isa_ctype(def->type(), kind)) {
         if (auto tpl = def->isa<Tuple>()) {
             assert(tpl->num_ops() == ep + 2);
@@ -101,12 +141,12 @@ ClosureLit isa_closure_lit(const Def* def, ClosureLit::Kind kind) {
 
 const Def* ClosureLit::env() {
     assert(def_);
-    return def_->op(env_pos(kind_));
+    return def_->op(closure_sig_env_pos(kind_));
 }
 
 const Def* ClosureLit::fnc() {
     assert(def_);
-    return def_->op(env_pos(kind_) + 1);
+    return def_->op(closure_sig_env_pos(kind_) + 1);
 }
 
 Lam* ClosureLit::fnc_as_lam() {
@@ -132,7 +172,7 @@ const Def* ClosureLit::var(size_t i) {
 }
 
 const Def* ClosureLit::env_var() {
-    return var(0_u64);
+    return var(CLOSURE_ENV_PARAM);
 }
 
 // TODO: Introduce a sperat axiom/flag for this??
@@ -157,18 +197,15 @@ const Def* ClosureLit::get_esc_annot(const Def* def) {
     return w.dbg(dbg);
 }
 
-const Pi* ClosureLit::old_type() {
-    auto& w = def_->world();
-    return w.cn(fnc_type()->doms().skip_front());
+bool ClosureLit::is_basicblock() { 
+    return ctype_to_pi(type())->is_basicblock(); 
+}
+
+unsigned int ClosureLit::order() { 
+    return ctype_to_pi(type())->order(); 
 }
 
 /* Closure Conversion */
-
-static auto num_doms(const Def *def) {
-    auto pi = def->type()->isa<Pi>();
-    assert(pi && "def not of pi type");
-    return pi->num_doms();
-}
 
 void ClosureConv::run() {
     auto& w = world();
@@ -189,7 +226,7 @@ void ClosureConv::run() {
             auto old_fn = closure->old_fn;
 
             w.DLOG("RUN: closure body {} [old={}, env={}]\n\t", new_fn, old_fn, env);
-            auto env_param = new_fn->var(0_u64);
+            auto env_param = new_fn->var(CLOSURE_ENV_PARAM);
             if (num_fvs == 1) {
                 subst.emplace(env, env_param);
             } else {
@@ -201,7 +238,7 @@ void ClosureConv::run() {
 
             auto params =
                 w.tuple(DefArray(old_fn->num_doms(), [&] (auto i) {
-                    return new_fn->var(i + 1);
+                    return new_fn->var(skip_env(i));
                 }), w.dbg("param"));
             subst.emplace(old_fn->var(), params);
 
@@ -279,22 +316,10 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
         auto new_ops = DefArray(def->num_ops(), [&](auto i) {
             return rewrite(def->op(i), subst);
         });
-        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>()) {
-            auto closure = new_ops[0];
-            auto args = new_ops[1];
-
-            // FIXME: Type this properly
-            auto env_type = closure->proj(0_u64);
-            auto env = w.extract_(env_type, closure, w.lit_int(3, 1));
-            auto fn = w.extract_(closure_type(app->callee_type(), subst, env_type), closure, w.lit_int(3, 2));
-
-            w.DLOG("RW: call {} ~> APP {} {} {}", closure, fn, env, args);
-            return map(w.app(fn, DefArray(num_doms(fn), [&](auto i) {
-                return (i == 0) ? env : args->proj(i - 1);
-            })));
-        } else {
+        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
+            return apply_closure(new_ops[0], new_ops[1]);
+        else 
             return map(def->rebuild(w, new_type, new_ops, new_dbg));
-        }
     }
 }
 
