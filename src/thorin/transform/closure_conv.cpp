@@ -74,7 +74,7 @@ static bool isa_ctype(size_t env_pos, const Def* def, std::function<bool (const 
         && var_pred(def->op(env_pos + 0))
         && cn->is_cn()
         && cn->num_ops() > 1
-        && var_pred(cn->dom(0));
+        && var_pred(cn->dom(CLOSURE_ENV_PARAM));
 }
 
 const Sigma* isa_ctype(const Def* def, ClosureLit::Kind kind) {

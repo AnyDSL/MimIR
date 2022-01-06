@@ -185,20 +185,20 @@ const Sigma* isa_ctype(const Def* def, ClosureLit::Kind kind = ClosureLit::TYPED
 Sigma* ctype(const Pi* pi);
 
 /// Convert a closure type to a @p Pi, where the environment type has been removed
-/// or replaced by new_env_type (if @c != nullptr)
+/// or replaced by new_env_type (if new_env_type != @c nullptr)
 const Pi* ctype_to_pi(const Def* ct, const Def* new_env_type = nullptr);
 
 /// tries to match a closure literal
 ClosureLit isa_closure_lit(const Def* def, ClosureLit::Kind kind = ClosureLit::TYPED);
 
-/// pack a typed closure. This assumes that @p fn expects the environment as its first argument.
+/// pack a typed closure. This assumes that @p fn expects the environment as its @p CLOSURE_ENV_PARAM argument.
 const Def* pack_closure_dbg(const Def* env, const Def* fn, const Def* dbg, const Def* ct = nullptr);
 inline const Def* pack_closure(const Def* env, const Def* fn, const Def* ct = nullptr) {
     return pack_closure_dbg(env, fn, nullptr, ct);
 }
 
-/// Which param is the env param()
-const size_t CLOSURE_ENV_PARAM = 0_u64;
+/// Which param is the env param
+const size_t CLOSURE_ENV_PARAM = 1_u64;
 
 /// Return env at the env position and f(i')) otherwise where i' has been shifted
 const Def* closure_insert_env(size_t i, const Def* env, std::function<const Def* (size_t)> f);

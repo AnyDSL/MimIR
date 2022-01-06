@@ -37,7 +37,7 @@ Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env) {
     auto& w = world();
     auto new_type = w.cn(Array<const Def*>(lam->num_doms(), [&](auto i) {
         auto new_dom = rewrite(lam->dom(i));
-        return (i == 0 && !unbox_env) ? w.type_ptr(new_dom) : new_dom;
+        return (i == CLOSURE_ENV_PARAM && !unbox_env) ? w.type_ptr(new_dom) : new_dom;
     }));
     auto new_lam = lam->stub(w, new_type, w.dbg("uc" + lam->name()));
     w.DLOG("stub {} ~> {}", lam, new_lam);
@@ -50,14 +50,14 @@ Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env) {
     }
     auto mem_var = get_mem_var(lam);
     const Def* lcm = get_mem_var(new_lam);
-    const Def* env = new_lam->var(0_u64);
+    const Def* env = new_lam->var(CLOSURE_ENV_PARAM);
     if (!unbox_env) {
         auto env_mem = w.op_load(lcm, env);
         lcm = w.extract(env_mem, 0_u64);
         env = w.extract(env_mem, 1_u64, w.dbg("env"));
     }
     auto new_args = w.tuple(Array<const Def*>(lam->num_doms(), [&](auto i) {
-        return (i == 0) ? env
+        return (i == CLOSURE_ENV_PARAM) ? env
              : (lam->var(i) == mem_var) ? lcm
              : new_lam->var(i);
     }));
@@ -79,7 +79,7 @@ const Def* LowerTypedClosures::make_stub(ClosureLit& closure, bool unbox_env) {
     return w.extract(w.tuple(new_lams), idx);
 }
 
-// TODO: Handle ptr?
+// TODO: Handle ptr, cn's?
 static size_t repr_size(const Def* type, size_t inf) {
     if (auto size = thorin::isa_sized_type(type)) {
         if (auto sz = isa_lit(size))
@@ -138,7 +138,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
 
     if (auto c = isa_closure_lit(def)) {
         auto env = rewrite(c.env());
-        auto unbox = unbox_env(c.env_type());
+        auto unbox = unbox_env(env);
         auto fn = make_stub(c, unbox);
         const Def* lwd_clos;
         if (!unbox) {

@@ -25,15 +25,12 @@ const Def* ClosureDestruct::rewrite(const Def* def) {
         auto& [old_env, new_lam] = clos2dropped_[c.fnc_as_lam()];
         if (!new_lam || c.env() != old_env) {
             old_env = c.env();
-            auto doms = world().sigma(DefArray(c.fnc_as_lam()->num_doms(), [&](auto i) {
-                return (i == 0) ? world().sigma() : c.fnc_as_lam()->dom(i);
-            }));
-            new_lam = c.fnc_as_lam()->stub(world(), world().cn(doms), c.fnc_as_lam()->dbg());
+            new_lam = c.fnc_as_lam()->stub(world(), ctype_to_pi(c.type(), w.sigma()), c.fnc_as_lam()->dbg());
             world().DLOG("DROP ({}, {}) => {}", c.env(), c.fnc_as_lam(), new_lam);
             auto new_vars = DefArray(new_lam->num_doms(), [&](auto i) {
-                return (i == 0) ? c.env() : new_lam->var(i); 
+                return (i == CLOSURE_ENV_PARAM) ? c.env() : new_lam->var(i); 
             });
-            new_lam->set(c.fnc_as_lam()->apply(world().tuple(new_vars)));
+            new_lam->set(c.fnc_as_lam()->apply(w.tuple(new_vars)));
             eta_exp_.new2old(new_lam, c.fnc_as_lam());
         }
         return pack_closure_dbg(w.tuple(), new_lam, new_dbg, c.type());
