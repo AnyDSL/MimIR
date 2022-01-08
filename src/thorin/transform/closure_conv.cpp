@@ -220,10 +220,7 @@ void ClosureConv::run() {
         subst = Def2Def();
         worklist_.pop();
         if (auto closure = closures_.lookup(def)) {
-            auto new_fn = closure->fn;
-            auto env = closure->env;
-            auto num_fvs = closure->num_fvs;
-            auto old_fn = closure->old_fn;
+            auto [old_fn, num_fvs, env, new_fn] = *closure;
 
             w.DLOG("RUN: closure body {} [old={}, env={}]\n\t", new_fn, old_fn, env);
             auto env_param = new_fn->var(CLOSURE_ENV_PARAM);
@@ -287,7 +284,7 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
         /* Types: rewrite dom, codom \w susbt here */
         return map(closure_type(pi, subst));
     } else if (auto lam = def->isa_nom<Lam>(); lam && lam->type()->is_cn()) {
-        auto [old, num, fv_env, fn] = make_closure(lam, subst);
+        auto [old, num, fv_env, fn] = make_stub(lam, subst);
         auto closure_type = rewrite(lam->type(), subst);
         auto env = rewrite(fv_env, subst);
         auto closure = pack_closure(env, fn, closure_type);
@@ -317,7 +314,7 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
             return rewrite(def->op(i), subst);
         });
         if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
-            return apply_closure(new_ops[0], new_ops[1]);
+            return map(apply_closure(new_ops[0], new_ops[1]));
         else 
             return map(def->rebuild(w, new_type, new_ops, new_dbg));
     }
@@ -340,35 +337,25 @@ const Def* ClosureConv::closure_type(const Pi* pi, Def2Def& subst, const Def* en
     }
 }
 
-ClosureConv::Closure ClosureConv::make_closure(Lam* fn, Def2Def& subst) {
-    if (auto closure = closures_.lookup(fn))
-        return* closure;
-
+ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
+    if (auto closure = closures_.lookup(old_lam))
+        return *closure;
     auto& w = world();
-    auto& fv_set = fva_.run(fn);
-    auto fvs = DefVec();
-    auto fvs_types = DefVec();
-    for (auto fv: fv_set) {
-        fvs.emplace_back(fv);
-        fvs_types.emplace_back(rewrite(fv->type(), subst));
-    }
-    auto env = w.tuple(fvs);
-    auto env_type = w.sigma(fvs_types);
-
-    /* Types: rewrite function type here \w fv s */
-    auto new_fn_type = closure_type(fn->type(), subst, env_type)->as<Pi>();
-    auto new_lam = w.nom_lam(new_fn_type, w.dbg(fn->name()));
-    new_lam->set_body(fn->body());
-    new_lam->set_filter(fn->filter());
-    if (fn->is_external()) {
-        fn->make_internal();
+    auto& fvs = fva_.run(old_lam);
+    auto env = w.tuple(DefArray(fvs.begin(), fvs.end()));
+    auto env_type = rewrite(env->type(), subst);
+    auto new_fn_type = closure_type(old_lam->type(), subst, env_type)->as<Pi>();
+    auto new_lam = old_lam->stub(w, new_fn_type, w.dbg(old_lam->name()));
+    new_lam->set_name(old_lam->name());
+    new_lam->set_body(old_lam->body());
+    new_lam->set_filter(old_lam->filter());
+    if (old_lam->is_external()) {
+        old_lam->make_internal();
         new_lam->make_external();
     }
-
-    w.DLOG("STUB {} ~~> ({}, {})", fn, env, new_lam);
-
-    auto closure = Closure{fn, fv_set.size(), env, new_lam};
-    closures_.emplace(fn, closure);
+    w.DLOG("STUB {} ~~> ({}, {})", old_lam, env, new_lam);
+    auto closure = ClosureStub{old_lam, fvs.size(), env, new_lam};
+    closures_.emplace(old_lam, closure);
     closures_.emplace(new_lam, closure);
     worklist_.emplace(new_lam);
     return closure;

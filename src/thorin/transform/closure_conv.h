@@ -1,9 +1,9 @@
 #ifndef THORIN_CLOSURE_CONV_H
 #define THORIN_CLOSURE_CONV_H
 
+#include <functional>
 #include <queue>
 #include <vector>
-#include <set>
 
 #include "thorin/world.h"
 #include "thorin/analyses/scope.h"
@@ -72,14 +72,14 @@ class ClosureConv {
         ClosureConv(World& world)
             : world_(world)
             , fva_(world)
-            , closures_(DefMap<Closure>())
+            , closures_(DefMap<ClosureStub>())
             , closure_types_(Def2Def())
             , worklist_(std::queue<const Def*>()) {};
 
         void run();
 
     private:
-        struct Closure {
+        struct ClosureStub {
             Lam* old_fn;
             size_t num_fvs;
             const Def* env;
@@ -90,13 +90,13 @@ class ClosureConv {
 
         const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
 
-        Closure make_closure(Lam* lam, Def2Def& subst);
+        ClosureStub make_stub(Lam* lam, Def2Def& subst);
 
         World& world() { return world_; }
 
         World& world_;
         FVA fva_;
-        DefMap<Closure> closures_;
+        DefMap<ClosureStub> closures_;
         Def2Def closure_types_;
         std::queue<const Def*> worklist_;
 };
