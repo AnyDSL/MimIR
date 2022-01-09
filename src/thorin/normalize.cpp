@@ -169,7 +169,7 @@ template<RCmp cmp, nat_t w> struct Fold<RCmp, cmp, w> {
         using T = w2r<w>;
         auto x = get<T>(a), y = get<T>(b);
         bool result = false;
-        result |= ((cmp & RCmp::u) != RCmp::f) && std::isunordered(x, y);
+        result |= ((cmp & RCmp::u) != RCmp::f) && std::isunordered((uint64_t)x, (uint64_t)y);
         result |= ((cmp & RCmp::g) != RCmp::f) && x > y;
         result |= ((cmp & RCmp::l) != RCmp::f) && x < y;
         result |= ((cmp & RCmp::e) != RCmp::f) && x == y;
@@ -973,10 +973,10 @@ const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const D
     if (lr && ls && *lr == 1 && *ls == 1) return w.app(f, arg, dbg);
 
     if (auto l_in = isa_lit(n_i)) {
-        auto args = arg->projs(*l_in);
+        auto args = arg->projs((size_t)*l_in);
 
         if (lr && std::all_of(args.begin(), args.end(), [&](const Def* arg) { return is_tuple_or_pack(arg); })) {
-            auto shapes = s->projs(*lr);
+            auto shapes = s->projs((size_t)*lr);
             auto s_n = isa_lit(shapes.front());
 
             if (s_n) {
