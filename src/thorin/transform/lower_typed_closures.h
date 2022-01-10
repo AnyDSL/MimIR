@@ -33,7 +33,8 @@ public:
     void run();
 
     const Def* env_type() {
-        return closure_uenv_type(world());
+        auto& w = world();
+        return w.type_ptr(w.type_int_width(8));
     }
 
     bool unbox_env(const Def* type);

@@ -61,10 +61,10 @@ const Def* UnboxClosure::rewrite(const Def* def) {
                 arg_spec[i] = c.env_type();
                 w.DLOG("{}({}): ⊥ => {}", bxd_lam, i, c.env_type());
             }
-            doms.push_back(c.env_type());
             doms.push_back(c.fnc_type());
-            args.push_back(c.env());
+            doms.push_back(c.env_type());
             args.push_back(c.fnc());
+            args.push_back(c.env());
         }
 
         if (proxy_ops.size() > 1) {
@@ -86,7 +86,7 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             size_t j = 0;
             auto new_args = w.tuple(DefArray(bxd_lam->num_doms(), [&](auto i) {
                 if (auto ct = isa_ctype(bxd_lam->dom(i)); ct && !keep_.contains(bxd_lam->var(i))) {
-                    auto c = pack_closure(ubxd_lam->var(j), ubxd_lam->var(j+1), ct);
+                    auto c = pack_closure(ubxd_lam->var(j+1), ubxd_lam->var(j), ct);
                     j += 2;
                     return c;
                 } else {

@@ -104,20 +104,13 @@ class ClosureConv {
 /// # Auxillary functions to deal with closures #
 
 /// Closure literal
-/// This comes in two flavors:
-/// - @p TYPED, using existentials to hide the type of the environment
-/// - @p UNTYPED, using pointers and <code>:bitcast</code>s to hide the environment
-/// @ClosureConv introduces @p TYPED%-Closures, @p UntypeClosures lowers @p TYPED
-/// to @p UNTYPED closures
-/// Further, closures literals can have to forms:
-/// - Lambdas: <code>(env, lambda)</code>
-/// - Folded branches: <code>(proj i (env_0, .., env_N), proj i (lam_0, .., lam_N))</code>
+/// Closure literals can have to forms:
+/// - Lambdas: <code>(type, lambda, env)</code>
+/// - Folded branches: <code>(type, proj i (lam_0, .., lam_N), proj i (env_0, .., env_N))</code>
 /// The later form is introduced by the @p UnboxClosures pass.
 
 class ClosureLit {
 public:
-    enum Kind { TYPED, UNTYPED };
-
     /// @name Getters
     /// @{
     const Sigma* type() {
@@ -165,21 +158,17 @@ public:
     /// @}
 
 private:
-    ClosureLit(const Tuple* def, ClosureLit::Kind kind)
-        : kind_(kind), def_(def)
+    ClosureLit(const Tuple* def)
+        : def_(def)
     {};
 
-    const Kind kind_;
     const Tuple* def_;
 
-    friend ClosureLit isa_closure_lit(const Def* def, ClosureLit::Kind kind);
+    friend ClosureLit isa_closure_lit(const Def* def);
 };
 
-/// the type for the the environment of untyped closures
-const Def* closure_uenv_type(World& world);
-
 /// return @p def if @p def is a closure and @c nullptr otherwise
-const Sigma* isa_ctype(const Def* def, ClosureLit::Kind kind = ClosureLit::TYPED);
+const Sigma* isa_ctype(const Def* def);
 
 /// creates a typed closure type from a @p Pi
 Sigma* ctype(const Pi* pi);
@@ -189,13 +178,16 @@ Sigma* ctype(const Pi* pi);
 const Pi* ctype_to_pi(const Def* ct, const Def* new_env_type = nullptr);
 
 /// tries to match a closure literal
-ClosureLit isa_closure_lit(const Def* def, ClosureLit::Kind kind = ClosureLit::TYPED);
+ClosureLit isa_closure_lit(const Def* def);
 
 /// pack a typed closure. This assumes that @p fn expects the environment as its @p CLOSURE_ENV_PARAM argument.
 const Def* pack_closure_dbg(const Def* env, const Def* fn, const Def* dbg, const Def* ct = nullptr);
 inline const Def* pack_closure(const Def* env, const Def* fn, const Def* ct = nullptr) {
     return pack_closure_dbg(env, fn, nullptr, ct);
 }
+
+/// Deconstruct a closure into (env_type, function, env)
+std::tuple<const Def*, const Def*, const Def*> unpack_closure(const Def* c);
 
 /// Which param is the env param
 const size_t CLOSURE_ENV_PARAM = 1_u64;
