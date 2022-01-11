@@ -26,12 +26,16 @@ const Def* vec_add(World& world, size_t dim, const Def* a, const Def* b) {
 
 // computes the dimension of a tuple/array
 size_t getDim(const Def* def) {
+    // TODO: test def, idef, tuple
     if(auto arr=def->isa<Arr>()) {
         return arr->shape()->as<Lit>()->get<uint8_t>();
     }else if(auto arr=def->type()->isa<Arr>()) {
         return arr->shape()->as<Lit>()->get<uint8_t>();
     }else{
-        return def->num_ops();
+        dlog(def->world(),"  def dim {} : {}, dim {}",def,def->type(),def->num_projs());
+        return def->num_projs();
+        // ptr -> 1
+        // tuple -> size
     }
 }
 
@@ -164,7 +168,7 @@ private:
     const Def* A;// input type
     size_t dim; // dimension of input type
 
-
+    void initArg(Lam* src,const Def* dst);
     const Def* ptrSlot(const Def* ty, const Def* mem);
 };
 
@@ -213,7 +217,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         if(src_param == src->ret_var() || src_param == src->mem_var()) {
             // skip first and last argument
             // memory and return continuation are no "real" arguments
-            dlog(world_,"Ignore variable {} of src",i);
+            dlog(world_,"Ignore variable {} of src: {}",i,src_param);
             continue;
         }
         auto dst = src_to_dst_[src_param];
@@ -222,12 +226,13 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
         // TODO: move computation of A and params here
 
-        size_t dim;
-        if (auto a = A->isa<Arr>()) {
-            dim = a->shape()->as<Lit>()->get<uint8_t>();
-        }else {
-            dim=1;
-        }
+        size_t dim= getDim(dst->type());
+        dlog(world_,"Source Param dim {}",dim);
+//        if (auto a = A->isa<Arr>()) {
+//            dim = a->shape()->as<Lit>()->get<uint8_t>();
+//        }else {
+//            dim=1;
+//        }
 
         // the pullback of the argument with respect to the argument is the identity
         // if the argument is a tuple, each component has a projection of one of the components of the
@@ -241,6 +246,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
         if(dim>1) {
             // TODO: Ptr Tuple
+            dlog(world_,"Non scalar argument, manually create extract pullbacks");
 
             //split pullbacks for each argument
             // such that each component has one without extract
@@ -248,6 +254,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
             //      2d function which uses the arguments
             //      in the same order
             // )
+            // f((a,b)) = a-b
 
             // TODO: unify with extract
             auto args=dst->projs(dim);
@@ -271,6 +278,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
                 pullbacks_[args[i]]=pb;
             }
         }
+        dlog(world_,"Set IDPB");
         // shorten to variable input => id
         idpb->set_body(world_.app(idpb->ret_var(),
             {idpb->mem_var(),idpb->var(1,world_.dbg("s"))}));
@@ -278,27 +286,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         pullbacks_[dst] = idpb;
 
 
-        auto arg_ty = dst->type();
-        dlog(world_,"Arg of Type A: {}", arg_ty);
-        if(auto ptr= isa<Tag::Ptr>(arg_ty)) {
-            auto ty = ptr->arg()->projs<2>()[0];
-            dlog(world_,"A is ptr for {}",ty);
-
-            auto src_mem = src->mem_var();
-            auto dst_mem = src_to_dst_[src_mem];
-            type_dump(world_,"Dst Mem",dst_mem);
-            auto [pb_mem,pb_ptr] = ptrSlot(ty,dst_mem)->projs<2>();
-            pointer_map[dst]=pb_ptr;
-            type_dump(world_,"Pb Slot",pb_ptr);
-            type_dump(world_,"Pb Slot Mem",pb_mem);
-
-            // write the pb into the slot
-            auto pb_store_mem = world_.op_store(pb_mem,pb_ptr,idpb,world_.dbg("pb_arg_id_store"));
-            type_dump(world_,"Pb Store Mem",pb_store_mem);
-
-            // TODO: what to do with pb_mem
-            src_to_dst_[src_mem]=pb_store_mem;
-        }
+        initArg(src,dst);
 
 
         type_dump(world_,"Pullback of dst ",pullbacks_[dst]);
@@ -307,6 +295,49 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     // translate the body => get correct applications of variables using pullbacks
     auto dst = j_wrap(src->body());
     return dst;
+}
+
+void AutoDiffer::initArg(Lam* src,const Def* dst) {
+
+    // create shadow slots for pointers
+
+
+    // we need to initialize the shadow ptr slot for
+    // ptr args here instead of at store & load (first usage)
+    // as the slot needs the correct pullback (from the ptr object)
+    // to be stored and loaded
+    // when the ptr shadow slot is accessed it has to have the correct
+    // content in the current memory object used to load
+    // this is only possible at a common point before all usages
+    //   => creation / first mentioning
+    auto arg_ty = dst->type();
+    dlog(world_,"Arg of Type A: {}", arg_ty);
+    if(auto ptr= isa<Tag::Ptr>(arg_ty)) {
+        dlog(world_,"Create Ptr arg shadow slot");
+        auto ty = ptr->arg()->projs<2>()[0];
+        dlog(world_, "A is ptr for {}", ty);
+
+        auto src_mem = src->mem_var();
+        auto dst_mem = src_to_dst_[src_mem];
+        type_dump(world_, "Dst Mem", dst_mem);
+        auto [pb_mem, pb_ptr] = ptrSlot(ty, dst_mem)->projs<2>();
+        pointer_map[dst] = pb_ptr;
+        type_dump(world_, "Pb Slot", pb_ptr);
+        type_dump(world_, "Pb Slot Mem", pb_mem);
+
+        // write the pb into the slot
+        auto pb_store_mem = world_.op_store(pb_mem, pb_ptr, pullbacks_[dst], world_.dbg("pb_arg_id_store"));
+        type_dump(world_, "Pb Store Mem", pb_store_mem);
+
+        // TODO: what to do with pb_mem
+        src_to_dst_[src_mem] = pb_store_mem;
+        return;
+    }
+
+
+
+    // prepare extracts
+
 }
 
 
@@ -826,18 +857,26 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto tuple_dim=getDim(tuple);
         dlog(world_,"  num of ops: {}",tuple_dim);
         // jwrap each component
-        Array<const Def*> ops{tuple_dim, [&](auto i) { return j_wrap(tuple->op(i)); }};
+        Array<const Def*> ops{tuple_dim, [&](auto i) { return j_wrap(tuple->proj(i)); }};
         // reconstruct the tuple term
         auto dst = world_.tuple(ops);
+        type_dump(world_,"  tuple:",dst);
         type_dump(world_,"  jwrapped tuple:",dst);
         src_to_dst_[tuple] = dst;
 
-        if(tuple_dim>0 && isa<Tag::Mem>(dst->op(0)->type())) {
+        if(tuple_dim>0 && isa<Tag::Mem>(dst->proj(0)->type())) {
             dlog(world_,"  mem pb tuple");
-
+            if(tuple_dim>1)
                 pullbacks_[dst] = pullbacks_[ops[1]];
             return dst;
         }
+
+
+        dlog(world_,"tangent type of tuple: {} => {}",tuple->type(),world_.tangent_type(tuple->type()));
+        dlog(world_,"tangent type of dst: {} => {}",dst->type(),world_.tangent_type(dst->type()));
+        dlog(world_,"tuple dim: {}",tuple_dim);
+//        type_dump(world_,"tuple first: ",dst->op(0));
+//        type_dump(world_,"tuple first: ",dst->proj(0));
 
 
         // TODO: this seems excessively complicated
@@ -863,6 +902,11 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         for (size_t i = 0; i < tuple_dim; ++i) {
             nextpb = world_.nom_lam(pbT, world_.dbg("φtuple_next"));
             nextpb->set_filter(world_.lit_true());
+            dlog(world_,"    build zeroPB op {}: {} : {}",i,ops[i],ops[i]->type());
+            dlog(world_,"      pb {} : {}",pullbacks_[ops[i]],pullbacks_[ops[i]]->type());
+            dlog(world_,"      pb var: {}:{}",
+                    world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
+                    world_.extract_unsafe(pb->var(1, world_.dbg("s")), i)->type());
             cpb->set_body(
                 world_.app(pullbacks_[ops[i]],
                     {cpb->mem_var(),
@@ -922,7 +966,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
 
         // TODO: more general handling of memory
-        if(isa<Tag::Mem>(jtup->type()->op(0))) {
+        if(isa<Tag::Mem>(jtup->type()->proj(0))) {
             dlog(world_,"  extract mem pb tuple ");
 
             // for special case pointer slot that has not yet be written to
