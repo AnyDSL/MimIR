@@ -676,14 +676,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //            THORIN_UNREACHABLE;
 
             if(auto cal_lam=callee->isa<Lam>(); cal_lam && !cal_lam->is_set()) {
-                //            type_dump(world_,"callee is ",callee);
-                //            dlog(world_,"node name {}",callee->node_name());
-                //            dlog(world_,"is external {}",callee->is_external());
-                ////            dlog(world_,"is external {}",callee->as_nom<Lam>()->is_external());
-                //            dlog(world_,"is set {}",callee->as_nom<Lam>()->is_set());
-                //            dlog(world_,"name {}",callee->as_nom<Lam>()->name());
-                //            dlog(world_,"name {}",callee->as_nom<Lam>()->debug().name);
-                ////            dlog(world_,"cc {}",callee->as_nom<Lam>()->cc());
 
                 auto pty = world_.tangent_type(callee->type())->as<Pi>();
                 auto pbT = pty->doms().back()->as<Pi>();
@@ -693,17 +685,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 dlog(world_,"grad {}",gradTy);
                 dlog(world_,"pty {}",pty);
 
-//                THORIN_UNREACHABLE;
 
                 auto gradlam=world_.nom_lam(gradTy,world_.dbg("grad_lam"));
-//                gradlam->unset();
-//                gradlam->unset(0);
-//                dlog(world_,"unset 0");
-//                gradlam->unset(1);
-//                dlog(world_,"unset 1");
                 gradlam->set_name(cal_lam->name()+"_diff");
                 dlog(world_,"isset grad {}",gradlam->is_set());
-//                gradlam->unset();
 
                 auto lam=world_.nom_lam(pty,world_.dbg("lam"));
                 auto lam2 = world_.nom_lam(cal_lam->doms().back()->as<Pi>(),world_.dbg("lam2"));
@@ -729,26 +714,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 lam2->set_filter(world_.lit_true());
 
 
-//                lam->set_body( world_.app(
-//                    lam->ret_var(),
-//                    {
-//                        chained->mem_var(),
-//                        chained->var(1),
-//                        chain_pb
-//                    }
-//                    ));
-
-////                type_dump(world_,"  original ty: ",callee->type());
-////                type_dump(world_,"  ty: ",pty);
-//                auto lam=world_.nom_lam(pty,world_.dbg(""));
-//                lam->set_name(cal_lam->name()+"_diff");
-
-//                dlog(world_,"new name {}",lam->name());
                 type_dump(world_,"new lam",lam);
                 type_dump(world_,"aux lam",lam2);
                 type_dump(world_,"grad lam",gradlam);
 
-//                                THORIN_UNREACHABLE;
                 dst_callee = lam;
             }else {
                 dst_callee = world_.op_rev_diff(callee);
