@@ -166,9 +166,10 @@ private:
     DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term (a dst term) to its pullback function
     DefMap<const Def*> pointer_map;
     const Def* A;// input type
+    Lam* src_;
     size_t dim; // dimension of input type
 
-    void initArg(Lam* src,const Def* dst);
+    void initArg(const Def* dst);
     const Def* ptrSlot(const Def* ty, const Def* mem);
 };
 
@@ -210,6 +211,7 @@ const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
 // top level entry point after creating the AutoDiffer object
 // a mapping of source arguments to dst arguments is expected in src_to_dst
 const Def* AutoDiffer::reverse_diff(Lam* src) {
+    this->src_=src;
     // For each param, create an appropriate pullback. It is just the (one-hot) identity function for each of those.
     type_dump(world_,"Apply RevDiff to src",src);
     for(size_t i = 0, e = src->num_vars(); i < e; ++i) {
@@ -286,7 +288,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         pullbacks_[dst] = idpb;
 
 
-        initArg(src,dst);
+        initArg(dst);
 
 
         type_dump(world_,"Pullback of dst ",pullbacks_[dst]);
@@ -297,7 +299,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     return dst;
 }
 
-void AutoDiffer::initArg(Lam* src,const Def* dst) {
+void AutoDiffer::initArg(const Def* dst) {
 
     // create shadow slots for pointers
 
@@ -317,7 +319,7 @@ void AutoDiffer::initArg(Lam* src,const Def* dst) {
         auto ty = ptr->arg()->projs<2>()[0];
         dlog(world_, "A is ptr for {}", ty);
 
-        auto src_mem = src->mem_var();
+        auto src_mem = this->src_->mem_var();
         auto dst_mem = src_to_dst_[src_mem];
         type_dump(world_, "Dst Mem", dst_mem);
         auto [pb_mem, pb_ptr] = ptrSlot(ty, dst_mem)->projs<2>();
@@ -629,6 +631,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     dlog(world_,"has ptr in pb {}",pullbacks_.count(ptr));
 
                     // TODO: where is pullbacks_[ptr] set to a nullptr? (happens in conditional stores to slot)
+
+                    // TODO: why do we need or not need this load
 //                    if(!pullbacks_.count(ptr) || !pullbacks_[ptr]) {
                         dlog(world_,"manually load ptr pb at load location");
                         auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->projs<2>();
