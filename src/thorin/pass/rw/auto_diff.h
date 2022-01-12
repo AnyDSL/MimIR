@@ -68,6 +68,10 @@ the transformation is mostly the identity except for functions
     and the correct pullback is applied afterwards using the chain rule
     in fact, returning functions are translated using the axiom
 
+
+Read-only link to overview
+    https://www.overleaf.com/read/gdpfxvzqpfjf
+
 */
 
 class AutoDiff : public RWPass<> {
