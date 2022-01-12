@@ -1128,7 +1128,7 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             // ∇(a / b) = λz. (g* (z * h) - h* (z * g))/h²
         case ROp::div: {
             //    a*(1/b * z)          => a*(z/b)
-            //  + b*(a * -b^(-2) * z)  => b*(z*a/(b*b))
+            //  + b*(a * -b^(-2) * z)  => b*(-z*a/(b*b))
             auto dst = world_.op(ROp::div, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "/"));
 
