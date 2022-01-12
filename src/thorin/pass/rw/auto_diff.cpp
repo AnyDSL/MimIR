@@ -490,6 +490,58 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  result of app",dst);
         return dst;
     }
+    if (auto lea = isa<Tag::LEA>(def)) {
+        // Problems:
+        //   we want a shadow cell for the resulting ptr
+        //   but we need a memory to create a slot
+        //     slot creation location does not matter => use src mem
+        //     (alternative: create slots at start)
+
+        // Problem: The shadow slot needs correct pb for the
+        //   array element
+
+
+
+
+        dlog(world_,"  Lea");
+//        dlog(world_,"  projs: {}",lea->projs());
+//        dlog(world_,"  args: {}",lea->args());
+        dlog(world_,"  type: {}",lea->type());
+        dlog(world_,"  callee type: {}",lea->callee_type());
+        auto ptr_ty = as<Tag::Ptr>(lea->type());
+        auto ty = ptr_ty->arg(0);
+        dlog(world_,"  inner type: {}", ty);
+
+        auto ptr = lea->arg(0);
+        auto idx = lea->arg(1);
+        auto dst = world_.op_lea(ptr,idx);
+
+        // in a structure preseving setting
+        //   meaning diff of tuple is tuple, ...
+        //   this would be a lea
+
+        // TODO: correct mem
+        // TODO: or create individual shadow cells at arg/alloc and choose
+        auto [pb_mem, pb_ptr] = ptrSlot(ty,this->src_->mem_var())->projs<2>();
+        pointer_map[dst]=pb_ptr;
+
+        // store extract pb
+        // write pullbacks_
+
+        pullbacks_[ptr]; // can not use shadow location
+
+        auto pb = dst;
+
+        auto pb_store_mem = world_.op_store(pb_mem,pointer_map[ptr],pb,world_.dbg("pb_store"));
+
+//        auto [pb_load_mem,pb_load_fun] = world_.op_load(pb_mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->projs<2>();
+//        pullbacks_[dst]=pb_load_fun;
+        pullbacks_[dst]=pb;
+
+
+        THORIN_UNREACHABLE;
+        return dst;
+    }
 
     // memory operations
 
