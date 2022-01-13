@@ -258,6 +258,42 @@ const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
     return world_.cn_mem_ret(world_.tangent_type(B), A);
 }
 
+
+// loads pb from shadow slot, updates pb for the ptr, returns, mem and pb for the loaded value
+std::pair<const Def*,const Def*> AutoDiffer::reloadPtrPb(const Def* mem, const Def* ptr, const Def* dbg) {
+    auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],dbg)->projs<2>();
+    type_dump(world_,"  reload for ptr",ptr);
+
+    // if ptr B have a pb: ptr B -> A
+    // then the shadow memory has a type ptr(ptr B -> A)
+    // after load we get a B with a pb: B -> A
+    // => wrap the scalar into a ptr
+    // we do all of this to get a ptr of array for indefinite arrays
+
+    // inner type
+    auto ty = as<Tag::Ptr>(ptr->type())->arg()->projs<2>()[0];
+
+
+    auto pi = createPbType(A,ty);
+    auto pb = world_.nom_lam(pi, world_.dbg("pb_load_of_shadow"));
+    pb->set_filter(world_.lit_true());
+
+    // create scalar slot inside pb as it makes more sense to handle and load it locally inside
+    auto [scal_mem, scal_ptr]=world_.op_slot(ty,pb->mem_var(),world_.dbg("s_slot"))->projs<2>();
+    auto st_mem = world_.op_store(scal_mem,scal_ptr,pb->var(1));
+    pb->set_body(world_.app(
+        pb_load_fun,
+        {
+            st_mem,
+            scal_ptr,
+            pb->ret_var()
+        }
+        ));
+
+    pullbacks_[ptr]=pb_load_fun;
+    return {pb_load_mem,pb};
+}
+
 // top level entry point after creating the AutoDiffer object
 // a mapping of source arguments to dst arguments is expected in src_to_dst
 const Def* AutoDiffer::reverse_diff(Lam* src) {
@@ -702,23 +738,38 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                    type_dump(world_,"  got val pb ",pullbacks_[val]);
 
 
-                    auto pb = world_.op_store(mem,pointer_map[ptr],pullbacks_[val],world_.dbg("pb_store"));
-                    auto pb_mem = pb;
+
+                    auto pi = createPbType(A,ptr->type());
+                    auto pb = world_.nom_lam(pi, world_.dbg("pb_store_to_shadow"));
+                    pb->set_filter(world_.lit_true());
+
+                    auto [ld_mem,ld_val]=world_.op_load(pb->mem_var(),pb->var(1))->projs<2>();
+
+                    pb->set_body(world_.app(
+                        pullbacks_[val],
+                        {
+                            ld_mem,
+                            ld_val,
+                            pb->ret_var()
+                        }
+                        ));
+
+
+
+                    auto pb_mem = world_.op_store(mem,pointer_map[ptr],pb,world_.dbg("pb_store"));
 
                     // necessary to access ptr pb when calling
                     // all other accesses are handled by load of the ptr with corresponding pb slot load
-                    auto [pb_load_mem,pb_load_fun] = world_.op_load(pb_mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->projs<2>();
-                    type_dump(world_,"  store loaded pb fun",pb_load_fun);
-                    pullbacks_[ptr]=pb_load_fun;
                     // TODO: load mem
-                    auto pbt_mem=pb_load_mem;
+                    auto [pbt_mem,pbt_pb]= reloadPtrPb(pb_mem,ptr,world_.dbg("ptr_slot_pb_loadS"));
+                    type_dump(world_,"  store loaded pb fun",pullbacks_[ptr]);
 //                    auto pbt_mem=pb_mem;
 
 
 
                     auto dst = world_.op_store(pbt_mem,ptr,val);
                     type_dump(world_,"  result store ",dst);
-                    type_dump(world_,"  pb store ",pb);
+                    type_dump(world_,"  pb store ",pb_mem);
                     pullbacks_[dst]=pb; // should be unused
                     src_to_dst_[app] = dst; // not needed
                     return dst;
@@ -760,7 +811,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                    type_dump(world_,"  pb val load ",pb_val);
 //                    type_dump(world_,"  pb wrap load ",pb);
 //                    pullbacks_[dst]=pb; // tuple extract [mem,...]
-                    pullbacks_[dst]=pullbacks_[ptr]; // tuple extract [mem,...]
+                    pullbacks_[dst]=pb_loaded; // tuple extract [mem,...]
 //                    pullbacks_[dst_val]=pb;
                     src_to_dst_[app] = dst; // not needed
                     return dst;
