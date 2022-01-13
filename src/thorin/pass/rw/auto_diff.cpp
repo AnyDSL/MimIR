@@ -219,6 +219,13 @@ private:
     void initArg(const Def* dst);
     const Def* ptrSlot(const Def* ty, const Def* mem);
     std::pair<const Def*,const Def*> reloadPtrPb(const Def* mem, const Def* ptr, const Def* dbg = {}, bool generateLoadPb=false);
+
+    // next mem object to use / most recent memory object
+    // no problem as control flow is handled by cps
+    // alternative: j_wrap returns mem object
+    // only set at memory alternating operations
+    //   load, store, slot, alloc, function arg
+    const Def* current_mem;
 };
 
 const Def* AutoDiffer::chain(const Def* a, const Def* b) {
@@ -305,6 +312,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     this->src_=src;
     // For each param, create an appropriate pullback. It is just the (one-hot) identity function for each of those.
     type_dump(world_,"Apply RevDiff to src",src);
+    current_mem=src_to_dst_[src->mem_var()];
     for(size_t i = 0, e = src->num_vars(); i < e; ++i) {
         auto src_param = src->var(i);
         if(src_param == src->ret_var() || src_param == src->mem_var()) {
@@ -412,8 +420,7 @@ void AutoDiffer::initArg(const Def* dst) {
         auto ty = ptr->arg()->projs<2>()[0];
         dlog(world_, "A is ptr for {}", ty);
 
-        auto src_mem = this->src_->mem_var();
-        auto dst_mem = src_to_dst_[src_mem];
+        auto dst_mem = current_mem;
         type_dump(world_, "Dst Mem", dst_mem);
         auto [pb_mem, pb_ptr] = ptrSlot(arg_ty, dst_mem)->projs<2>();
         pointer_map[dst] = pb_ptr;
@@ -425,7 +432,12 @@ void AutoDiffer::initArg(const Def* dst) {
         type_dump(world_, "Pb Store Mem", pb_store_mem);
 
         // TODO: what to do with pb_mem
-        src_to_dst_[src_mem] = pb_store_mem;
+
+        // TODO: remove
+//        auto src_mem = this->src_->mem_var();
+//        src_to_dst_[src_mem] = pb_store_mem;
+
+        current_mem=pb_store_mem;
         return;
     }
 
@@ -479,6 +491,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
     if (auto dst = seen(def)) {
         // we have converted def and already have a pullback
+        if(auto m=isa<Tag::Mem>(def->type())) {
+            type_dump(world_,"look at mem",def);
+            type_dump(world_,"default replacement",dst);
+            type_dump(world_,"replace with",current_mem);
+            return current_mem;
+        }
         type_dump(world_,"already seen",def);
         return dst;
     }
@@ -501,6 +519,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"Lam",lam);
         auto old_pi = lam->type()->as<Pi>();
 
+        auto last_mem=current_mem;
+
         dlog(world_,"  lam args {}",old_pi->num_doms());
         if(old_pi->num_doms()==1){//only mem argument
             // keep everything as is
@@ -512,6 +532,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             src_to_dst_[lam->var()] = dst->var();
             type_dump(world_,"  dst var (no pb needed): ",dst->var());
             dst->set_filter(lam->filter());
+
+            current_mem=dst->mem_var();
+            dlog(world_,"  set current mem for Lam {} to {} ", lam,current_mem);
 
             auto bdy = j_wrap(lam->body());
             dst->set_body(bdy);
@@ -530,6 +553,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
             pullbacks_[dst] =zeropb;
 
+            current_mem=last_mem;
+            dlog(world_,"  reset current mem after Lam {} to {} ",lam,current_mem);
             return dst;
         }
 
@@ -543,11 +568,16 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  dst var pb: ",pullbacks_[dst->var()]);
         dst->set_filter(lam->filter());
 
+        current_mem=dst->mem_var();
+        dlog(world_,"  set current mem for LamNM {} to {} ", lam,current_mem);
         // same as above: jwrap body
         auto bdy = j_wrap(lam->body());
         dst->set_body(bdy);
         src_to_dst_[lam] = dst;
         pullbacks_[dst] = pullbacks_[bdy];
+
+        current_mem=last_mem;
+        dlog(world_,"  reset current mem after LamNM {} to {} ",lam,current_mem);
         return dst;
     }
     // handle operations in a hardcoded way
@@ -608,7 +638,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         dlog(world_,"  inner type: {}", ty);
 
 
-        // TODO: jwrap arg
+        // TODO: jwrap arg (need conv)
 //        auto [arr, idx] = j_wrap(lea->arg())->projs<2>();
         auto arr = j_wrap(lea->arg(0));
         auto idx = lea->arg(1);
@@ -648,10 +678,19 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         // TODO: create pSh slot & store pb
 
+        auto [cmem2,ptr_slot]=world_.op_slot(pb->type(),current_mem,world_.dbg("lea_ptr_shadow_slot"))->projs<2>();
+        auto cmem3=world_.op_store(cmem2,ptr_slot,pb);
+        pointer_map[dst]=ptr_slot;
+
 
         // instead of reload because we have no toplevel mem here
         // and this point dominates all usages
-        pullbacks_[dst]=pb;
+//        pullbacks_[dst]=pb;
+
+        auto [cmem4, _]= reloadPtrPb(cmem3,dst,world_.dbg("lea_shadow_load"),false);
+        current_mem=cmem4;
+
+
 
         // in a structure preseving setting
         //   meaning diff of tuple is tuple, ...
@@ -676,7 +715,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //        pullbacks_[dst]=pb;
 
 
-        THORIN_UNREACHABLE;
+//        THORIN_UNREACHABLE;
         return dst;
     }
 
@@ -746,12 +785,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     // TODO: maybe set pb here
 
 
-
                     type_dump(world_,"  result slot ",dst);
 //                    type_dump(world_,"  pb slot ",pb_slot);
                     type_dump(world_,"  pb slot ptr ",pb_ptr);
 //                    type_dump(world_,"  pb ",pb);
                     src_to_dst_[app] = dst; // not needed
+                    current_mem=dst_mem;
                     return dst;
                 }
                 if (axiom->tag() == Tag::Store) {
@@ -821,6 +860,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     type_dump(world_,"  pb store ",pb_mem);
                     pullbacks_[dst]=pb; // should be unused
                     src_to_dst_[app] = dst; // not needed
+                    current_mem=dst;
                     return dst;
                 }
                 if (axiom->tag() == Tag::Load) {
@@ -863,6 +903,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     pullbacks_[dst]=pb_loaded; // tuple extract [mem,...]
 //                    pullbacks_[dst_val]=pb;
                     src_to_dst_[app] = dst; // not needed
+                    current_mem=dst_mem;
                     return dst;
                 }
             }
@@ -975,8 +1016,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             return dst;
         }else {
             dlog(world_,"  FYI non-returning callee");
-            auto d_callee= j_wrap(callee);
             auto d_arg = j_wrap(arg);
+            auto d_callee= j_wrap(callee); // invokes lambda
             type_dump(world_,"  wrapped callee: ",d_callee);
             type_dump(world_,"  wrapped args: ",d_arg);
             dlog(world_,"  arg in pb: {}",pullbacks_.count(d_arg));
@@ -1132,11 +1173,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         // when extracting a component, the pullback is extracted from the tuple pullback of the tuple argument
         type_dump(world_,"Extract",extract);
-        auto jtup = j_wrap(extract->tuple());
-        type_dump(world_,"  jwrapped tuple of extract",jtup);
         type_dump(world_,"  extract idx",extract->index());
         auto jeidx= j_wrap(extract->index());
         type_dump(world_,"  extract wrapped idx",jeidx);
+
+        auto jtup = j_wrap(extract->tuple());
+        type_dump(world_,"  jwrapped tuple of extract",jtup);
+
         auto dst = world_.extract_unsafe(jtup, jeidx);
         type_dump(world_,"  jwrapped extract",dst);
         src_to_dst_[extract] = dst;
