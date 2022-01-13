@@ -218,7 +218,7 @@ private:
 
     void initArg(const Def* dst);
     const Def* ptrSlot(const Def* ty, const Def* mem);
-    std::pair<const Def*,const Def*> reloadPtrPb(const Def* mem, const Def* ptr, const Def* dbg = {});
+    std::pair<const Def*,const Def*> reloadPtrPb(const Def* mem, const Def* ptr, const Def* dbg = {}, bool generateLoadPb=false);
 };
 
 const Def* AutoDiffer::chain(const Def* a, const Def* b) {
@@ -260,9 +260,15 @@ const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
 
 
 // loads pb from shadow slot, updates pb for the ptr, returns, mem and pb for the loaded value
-std::pair<const Def*,const Def*> AutoDiffer::reloadPtrPb(const Def* mem, const Def* ptr, const Def* dbg) {
+std::pair<const Def*,const Def*> AutoDiffer::reloadPtrPb(const Def* mem, const Def* ptr, const Def* dbg, bool generateLoadPb) {
     auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],dbg)->projs<2>();
     type_dump(world_,"  reload for ptr",ptr);
+
+    pullbacks_[ptr]=pb_load_fun;
+
+    if(!generateLoadPb){
+        return {pb_load_mem,pb_load_fun};
+    }
 
     // if ptr B have a pb: ptr B -> A
     // then the shadow memory has a type ptr(ptr B -> A)
@@ -290,7 +296,6 @@ std::pair<const Def*,const Def*> AutoDiffer::reloadPtrPb(const Def* mem, const D
         }
         ));
 
-    pullbacks_[ptr]=pb_load_fun;
     return {pb_load_mem,pb};
 }
 
@@ -584,47 +589,91 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         //   but we need a memory to create a slot
         //     slot creation location does not matter => use src mem
         //     (alternative: create slots at start)
+        //   => not possible as we need to embed the resulting mem
 
         // Problem: The shadow slot needs correct pb for the
         //   array element
 
 
+        // we can not move the shadow slot & its store into the pb (same reason as for ptr)
 
 
         dlog(world_,"  Lea");
-//        dlog(world_,"  projs: {}",lea->projs());
-//        dlog(world_,"  args: {}",lea->args());
+        dlog(world_,"  projs: {}",lea->projs());
+        dlog(world_,"  args: {}",lea->args());
         dlog(world_,"  type: {}",lea->type());
         dlog(world_,"  callee type: {}",lea->callee_type());
         auto ptr_ty = as<Tag::Ptr>(lea->type());
-        auto ty = ptr_ty->arg(0);
+        auto [ty,addr_space] = ptr_ty->arg()->projs<2>();
         dlog(world_,"  inner type: {}", ty);
 
-        auto ptr = lea->arg(0);
+
+        // TODO: jwrap arg
+//        auto [arr, idx] = j_wrap(lea->arg())->projs<2>();
+        auto arr = j_wrap(lea->arg(0));
         auto idx = lea->arg(1);
-        auto dst = world_.op_lea(ptr,idx);
+        auto dst = world_.op_lea(arr,idx);
+
+
+
+        type_dump(world_,"  lea arr:", arr);
+        auto [arr_ty, arr_addr_space] = as<Tag::Ptr>(arr->type())->arg()->projs<2>();
+
+        auto pi = createPbType(A,ptr_ty);
+        auto pb = world_.nom_lam(pi, world_.dbg("pb_lea"));
+        pb->set_filter(world_.lit_true());
+
+
+        auto [mem2,ptr_arr] = world_.op_alloc(arr_ty,pb->mem_var())->projs<2>();
+        auto scal_ptr = world_.op_lea(ptr_arr,idx);
+        auto [mem3,v] = world_.op_load(mem2,pb->var(1))->projs<2>();
+        auto mem4 = world_.op_store(mem3,scal_ptr,v);
+        type_dump(world_,"ptr_arr",ptr_arr);
+
+        assert(pullbacks_.count(arr) && "arr from lea should already have an pullback");
+//        dlog(world_,"has pb old arr? {}",pullbacks_.count(lea->arg(0)));
+//        dlog(world_,"has pb new arr? {}",pullbacks_.count(arr));
+//        type_dump(world_,"arr old",lea->arg(0));
+//        type_dump(world_,"arr new",arr);
+
+        pb->set_body( world_.app(
+            pullbacks_[arr],
+            {
+                mem4,
+                ptr_arr,
+                pb->ret_var()
+            }
+            ));
+
+
+        // TODO: create pSh slot & store pb
+
+
+        // instead of reload because we have no toplevel mem here
+        // and this point dominates all usages
+        pullbacks_[dst]=pb;
 
         // in a structure preseving setting
         //   meaning diff of tuple is tuple, ...
         //   this would be a lea
 
-        // TODO: correct mem
-        // TODO: or create individual shadow cells at arg/alloc and choose
-        auto [pb_mem, pb_ptr] = ptrSlot(ty,this->src_->mem_var())->projs<2>();
-        pointer_map[dst]=pb_ptr;
-
-        // store extract pb
-        // write pullbacks_
-
-        pullbacks_[ptr]; // can not use shadow location
-
-        auto pb = dst;
-
-        auto pb_store_mem = world_.op_store(pb_mem,pointer_map[ptr],pb,world_.dbg("pb_store"));
-
-//        auto [pb_load_mem,pb_load_fun] = world_.op_load(pb_mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->projs<2>();
-//        pullbacks_[dst]=pb_load_fun;
-        pullbacks_[dst]=pb;
+//        // TODO: correct mem
+//        // TODO: or create individual shadow cells at arg/alloc and choose
+//        auto [pb_mem, pb_ptr] = ptrSlot(ty,this->src_->mem_var())->projs<2>();
+//        pointer_map[dst]=pb_ptr;
+//
+//        // store extract pb
+//        // write pullbacks_
+//
+//        pullbacks_[ptr]; // can not use shadow location
+//
+//        auto pb = dst;
+//
+//        auto pb_store_mem = world_.op_store(pb_mem,pointer_map[ptr],pb,world_.dbg("pb_store"));
+//
+////        auto [pb_load_mem,pb_load_fun] = world_.op_load(pb_mem,pointer_map[ptr],world_.dbg("ptr_slot_pb_load"))->projs<2>();
+////        pullbacks_[dst]=pb_load_fun;
+//        pullbacks_[dst]=pb;
 
 
         THORIN_UNREACHABLE;
@@ -761,7 +810,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     // necessary to access ptr pb when calling
                     // all other accesses are handled by load of the ptr with corresponding pb slot load
                     // TODO: load mem
-                    auto [pbt_mem,pbt_pb]= reloadPtrPb(pb_mem,ptr,world_.dbg("ptr_slot_pb_loadS"));
+                    auto [pbt_mem,pbt_pb]= reloadPtrPb(pb_mem,ptr,world_.dbg("ptr_slot_pb_loadS"),false);
                     type_dump(world_,"  store loaded pb fun",pullbacks_[ptr]);
 //                    auto pbt_mem=pb_mem;
 
@@ -792,7 +841,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                    if(!pullbacks_.count(ptr) || !pullbacks_[ptr]) {
                         dlog(world_,"manually load ptr pb at load location");
                         // TODO: load mem
-                        auto [nmem,pb_loaded]=reloadPtrPb(mem,ptr,world_.dbg("ptr_slot_pb_loadL"));
+                        auto [nmem,pb_loaded]=reloadPtrPb(mem,ptr,world_.dbg("ptr_slot_pb_loadL"),true);
                         mem=nmem;
 //                    }
 
