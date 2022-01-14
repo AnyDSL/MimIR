@@ -1076,6 +1076,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         dlog(world_,"  num of ops: {}",tuple_dim);
         // jwrap each component
         Array<const Def*> ops{tuple_dim, [&](auto i) { return j_wrap(tuple->proj(i)); }};
+        if(tuple_dim>0 && isa<Tag::Mem>(tuple->proj(0)->type())) {
+            ops[0] = j_wrap(tuple->proj(0));
+        }
         // reconstruct the tuple term
         auto dst = world_.tuple(ops);
         type_dump(world_,"  tuple:",dst);
