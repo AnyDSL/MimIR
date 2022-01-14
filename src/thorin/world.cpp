@@ -328,7 +328,10 @@ const Def* World::tangent_type(const Def* A) {
         auto [pointee, addr_space] = ptr->arg()->projs<2>();
         auto inner=tangent_type(pointee);
 //        return inner;
-        return type_ptr(inner,addr_space);
+        if(pointee->isa<Arr>()) {
+            return type_ptr(inner,addr_space);
+        }
+        return inner;
     }
     if(auto arrdef = A->isa<Arr>()) {
 //        s2.fmt("A is arr\n");

@@ -273,37 +273,37 @@ std::pair<const Def*,const Def*> AutoDiffer::reloadPtrPb(const Def* mem, const D
 
     pullbacks_[ptr]=pb_load_fun;
 
-    if(!generateLoadPb){
+//    if(!generateLoadPb){
         return {pb_load_mem,pb_load_fun};
-    }
+//    }
 
-    // if ptr B have a pb: ptr B -> A
-    // then the shadow memory has a type ptr(ptr B -> A)
-    // after load we get a B with a pb: B -> A
-    // => wrap the scalar into a ptr
-    // we do all of this to get a ptr of array for indefinite arrays
-
-    // inner type
-    auto ty = as<Tag::Ptr>(ptr->type())->arg()->projs<2>()[0];
-
-
-    auto pi = createPbType(A,ty);
-    auto pb = world_.nom_lam(pi, world_.dbg("pb_load_of_shadow"));
-    pb->set_filter(world_.lit_true());
-
-    // create scalar slot inside pb as it makes more sense to handle and load it locally inside
-    auto [scal_mem, scal_ptr]=world_.op_slot(ty,pb->mem_var(),world_.dbg("s_slot"))->projs<2>();
-    auto st_mem = world_.op_store(scal_mem,scal_ptr,pb->var(1));
-    pb->set_body(world_.app(
-        pb_load_fun,
-        {
-            st_mem,
-            scal_ptr,
-            pb->ret_var()
-        }
-        ));
-
-    return {pb_load_mem,pb};
+//    // if ptr B have a pb: ptr B -> A
+//    // then the shadow memory has a type ptr(ptr B -> A)
+//    // after load we get a B with a pb: B -> A
+//    // => wrap the scalar into a ptr
+//    // we do all of this to get a ptr of array for indefinite arrays
+//
+//    // inner type
+//    auto ty = as<Tag::Ptr>(ptr->type())->arg()->projs<2>()[0];
+//
+//
+//    auto pi = createPbType(A,ty);
+//    auto pb = world_.nom_lam(pi, world_.dbg("pb_load_of_shadow"));
+//    pb->set_filter(world_.lit_true());
+//
+//    // create scalar slot inside pb as it makes more sense to handle and load it locally inside
+//    auto [scal_mem, scal_ptr]=world_.op_slot(ty,pb->mem_var(),world_.dbg("s_slot"))->projs<2>();
+//    auto st_mem = world_.op_store(scal_mem,scal_ptr,pb->var(1));
+//    pb->set_body(world_.app(
+//        pb_load_fun,
+//        {
+//            st_mem,
+//            scal_ptr,
+//            pb->ret_var()
+//        }
+//        ));
+//
+//    return {pb_load_mem,pb};
 }
 
 // top level entry point after creating the AutoDiffer object
@@ -773,7 +773,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //                    auto pb_slot  = world_.op_slot(pbty,mem,world_.dbg("ptr_slot"));
 //                    auto [pb_mem, pb_ptr] = pb_slot->projs<2>();
 
-                    auto [pb_mem, pb_ptr] = ptrSlot(world_.type_ptr(ty,addr_space),mem)->projs<2>();
+//                    auto [pb_mem, pb_ptr] = ptrSlot(world_.type_ptr(ty,addr_space),mem)->projs<2>();
+                    auto [pb_mem, pb_ptr] = ptrSlot(ty,mem)->projs<2>();
 
                     auto dst = world_.op_slot(ty,pb_mem);
                     auto [dst_mem, dst_ptr] = dst->projs<2>();
@@ -827,20 +828,21 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
 
 
-                    auto pi = createPbType(A,ptr->type());
-                    auto pb = world_.nom_lam(pi, world_.dbg("pb_store_to_shadow"));
-                    pb->set_filter(world_.lit_true());
-
-                    auto [ld_mem,ld_val]=world_.op_load(pb->mem_var(),pb->var(1))->projs<2>();
-
-                    pb->set_body(world_.app(
-                        pullbacks_[val],
-                        {
-                            ld_mem,
-                            ld_val,
-                            pb->ret_var()
-                        }
-                        ));
+                    auto pb=pullbacks_[val];
+//                    auto pi = createPbType(A,ptr->type());
+//                    auto pb = world_.nom_lam(pi, world_.dbg("pb_store_to_shadow"));
+//                    pb->set_filter(world_.lit_true());
+//
+//                    auto [ld_mem,ld_val]=world_.op_load(pb->mem_var(),pb->var(1))->projs<2>();
+//
+//                    pb->set_body(world_.app(
+//                        pullbacks_[val],
+//                        {
+//                            ld_mem,
+//                            ld_val,
+//                            pb->ret_var()
+//                        }
+//                        ));
 
 
 
