@@ -42,14 +42,22 @@ static bool interesting_type_b(const Def* type) {
     return isa_ctype(type) != nullptr;
 }
 
-static bool interesting_type(const Def* type) {
+static bool interesting_type(const Def* type, DefSet& visited) {
+    if (type->isa_nom())
+        visited.insert(type);
     if (interesting_type_b(type))
         return true;
     if (auto sigma = type->isa<Sigma>())
-        return std::any_of(sigma->ops().begin(), sigma->ops().end(), interesting_type);
+        return std::any_of(sigma->ops().begin(), sigma->ops().end(), [&](auto d) {
+            return !visited.contains(d) && interesting_type(d, visited); });
     if (auto arr = type->isa<Arr>())
-        return interesting_type(arr->body());
+        return interesting_type(arr->body(), visited);
     return false;
+}
+
+static bool interesting_type(const Def* type) {
+   auto v = DefSet();
+   return interesting_type(type, v);
 }
 
 static std::pair<const Def*, Def*> isa_var(const Def* a) {
