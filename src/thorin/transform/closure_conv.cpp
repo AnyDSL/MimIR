@@ -109,12 +109,12 @@ isa_folded_branch(const Def* def) {
     return {nullptr, nullptr};
 }
 
-ClosureLit isa_closure_lit(const Def* def) {
+ClosureLit isa_closure_lit(const Def* def, bool lambda_or_branch) {
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_ctype(def->type())) {
         auto fnc = std::get<1_u64>(unpack_closure(tpl));
         auto [idx, lams] = isa_folded_branch(fnc);
-        if (fnc->isa<Lam>() || (idx && lams))
+        if (!lambda_or_branch || fnc->isa<Lam>() || (idx && lams))
             return ClosureLit(tpl);
     }
     return ClosureLit(nullptr);

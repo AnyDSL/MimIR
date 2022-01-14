@@ -164,7 +164,7 @@ private:
 
     const Tuple* def_;
 
-    friend ClosureLit isa_closure_lit(const Def* def);
+    friend ClosureLit isa_closure_lit(const Def*, bool);
 };
 
 /// return @p def if @p def is a closure and @c nullptr otherwise
@@ -178,7 +178,7 @@ Sigma* ctype(const Pi* pi);
 const Pi* ctype_to_pi(const Def* ct, const Def* new_env_type = nullptr);
 
 /// tries to match a closure literal
-ClosureLit isa_closure_lit(const Def* def);
+ClosureLit isa_closure_lit(const Def* def, bool lambda_or_branch = true);
 
 /// pack a typed closure. This assumes that @p fn expects the environment as its @p CLOSURE_ENV_PARAM argument.
 const Def* pack_closure_dbg(const Def* env, const Def* fn, const Def* dbg, const Def* ct = nullptr);

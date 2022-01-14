@@ -44,7 +44,7 @@ const Def* UnboxClosure::rewrite(const Def* def) {
                 args.push_back(arg);
                 continue;
             }
-            auto c = isa_closure_lit(arg);
+            auto c = isa_closure_lit(arg, false);
             if (!c) {
                 w.DLOG("{}({}) => ⊤ (no closure lit)" , bxd_lam, i);
                 keep_.emplace(bxd_lam->var(i));
