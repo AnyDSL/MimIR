@@ -31,7 +31,7 @@
 
 #include "thorin/def.h"
 #include "thorin/world.h"
-#include "thorin/analyses/schedule.h"
+#include "thorin/analyses/schedule_old.h"
 #include "thorin/analyses/scope.h"
 #include "thorin/be/llvm/cpu.h"
 #include "thorin/pass/optimize.h"
@@ -261,7 +261,7 @@ std::unique_ptr<llvm::Module>& CodeGen::emit(int opt, bool debug) {
         assert(ret_var);
 
         BBMap bb2lam;
-        Schedule schedule(scope);
+        old::Schedule schedule(scope);
 
         for (const auto& block : schedule) {
             auto nom = block.nom();

@@ -35,6 +35,8 @@ set(THORIN_SOURCES
     analyses/looptree.h
     analyses/schedule.cpp
     analyses/schedule.h
+    analyses/schedule_old.cpp
+    analyses/schedule_old.h
     analyses/scope.cpp
     analyses/scope.h
     fe/lexer.cpp
