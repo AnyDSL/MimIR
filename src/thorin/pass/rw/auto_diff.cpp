@@ -941,13 +941,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 auto lam=world_.nom_lam(pty,world_.dbg("lam"));
                 auto lam2 = world_.nom_lam(cal_lam->doms().back()->as<Pi>(),world_.dbg("lam2"));
 
-                if( name == "logf" ){
-                    dlog(world_,"type {}",gradlam->var(1)->type());
-                    dlog(world_,"type {}",gradlam->ret_var()->type());
+                if( name == "log" ){
+                    const Def* log_type = gradlam->var(1)->type();
+                    auto [rmem,one] = ONE(world_,gradlam->mem_var(), log_type);
 
                     const Def* log_d = world_.app(gradlam->ret_var(), {
-                            gradlam->mem_var(),
-                            world_.op(ROp::div, (nat_t)0, world_.lit_real(1.0_r32), lam->var(1))
+                            rmem,
+                            world_.op(ROp::div, (nat_t)0, one, lam->var(1))
                     });
 
                     gradlam->set_filter(world_.lit_true());
