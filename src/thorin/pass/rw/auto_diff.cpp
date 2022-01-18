@@ -926,6 +926,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
             if(auto cal_lam=callee->isa<Lam>(); cal_lam && !cal_lam->is_set()) {
 
+                std::string name = cal_lam->name();
+
                 auto pty = world_.tangent_type(callee->type())->as<Pi>();
                 auto pbT = pty->doms().back()->as<Pi>();
                 auto gradTy = pbT->doms().back()->as<Pi>();
@@ -934,13 +936,26 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 dlog(world_,"grad {}",gradTy);
                 dlog(world_,"pty {}",pty);
 
-
-                auto gradlam=world_.nom_lam(gradTy,world_.dbg("grad_lam"));
-                gradlam->set_name(cal_lam->name()+"_diff");
-                dlog(world_,"isset grad {}",gradlam->is_set());
+                auto gradlam=world_.nom_lam(gradTy, world_.dbg("grad_lam"));
 
                 auto lam=world_.nom_lam(pty,world_.dbg("lam"));
                 auto lam2 = world_.nom_lam(cal_lam->doms().back()->as<Pi>(),world_.dbg("lam2"));
+
+                if( name == "logf" ){
+                    dlog(world_,"type {}",gradlam->var(1)->type());
+                    dlog(world_,"type {}",gradlam->ret_var()->type());
+
+                    const Def* log_d = world_.app(gradlam->ret_var(), {
+                            gradlam->mem_var(),
+                            world_.op(ROp::div, (nat_t)0, world_.lit_real(1.0_r32), lam->var(1))
+                    });
+
+                    gradlam->set_filter(world_.lit_true());
+                    gradlam->set_body(log_d);
+                }
+
+                gradlam->set_name(name + "_diff");
+                dlog(world_,"isset grad {}",gradlam->is_set());
 
                 lam->set_body( world_.app(
                     callee,
