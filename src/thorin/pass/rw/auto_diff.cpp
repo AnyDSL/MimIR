@@ -200,6 +200,7 @@ public:
 private:
     const Def* j_wrap(const Def* def); // 'identity' (except for lambdas, functions, and applications) traversal annotating the pullbacks
     const Def* j_wrap_rop(ROp op, const Def* a, const Def* b); // pullback computation for predefined functions, specifically operations like +, -, *, /
+    void derive_math_functions( const Lam* fun, Lam* lam_d, Lam* fw, Lam* bw );
 
     const Def* seen(const Def* src); // lookup in the map
 
@@ -455,6 +456,30 @@ const Def* AutoDiffer::ptrSlot(const Def* ty, const Def* mem) {
     return pb_slot; // split into pb_mem, pb_ptr
 }
 
+
+void AutoDiffer::derive_math_functions(const Lam* fun, Lam* lam_d, Lam* fw, Lam* bw ){
+    std::string name = fun->name();
+    if( name == "log" ){
+        const Def* log_type = lam_d->var(1)->type();
+        auto [rmem,one] = ONE(world_,lam_d->mem_var(), log_type);
+
+        const Def* log_d = world_.app(lam_d->ret_var(), {
+                rmem,
+                world_.op(ROp::div, (nat_t)0, one, fw->var(1))
+        });
+
+        lam_d->set_filter(world_.lit_true());
+        lam_d->set_body(log_d);
+    }else if(name == "exp"){
+        const Def* log_d = world_.app(lam_d->ret_var(), {
+                lam_d->mem_var(),
+                bw->var(1)
+        });
+
+        lam_d->set_filter(world_.lit_true());
+        lam_d->set_body(log_d);
+    }
+}
 
 
 // implement differentiation for each expression
@@ -925,9 +950,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //            THORIN_UNREACHABLE;
 
             if(auto cal_lam=callee->isa<Lam>(); cal_lam && !cal_lam->is_set()) {
-
-                std::string name = cal_lam->name();
-
                 auto pty = world_.tangent_type(callee->type())->as<Pi>();
                 auto pbT = pty->doms().back()->as<Pi>();
                 auto gradTy = pbT->doms().back()->as<Pi>();
@@ -941,20 +963,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 auto lam=world_.nom_lam(pty,world_.dbg("lam"));
                 auto lam2 = world_.nom_lam(cal_lam->doms().back()->as<Pi>(),world_.dbg("lam2"));
 
-                if( name == "log" ){
-                    const Def* log_type = gradlam->var(1)->type();
-                    auto [rmem,one] = ONE(world_,gradlam->mem_var(), log_type);
+                derive_math_functions(cal_lam, gradlam, lam, lam2);
 
-                    const Def* log_d = world_.app(gradlam->ret_var(), {
-                            rmem,
-                            world_.op(ROp::div, (nat_t)0, one, lam->var(1))
-                    });
-
-                    gradlam->set_filter(world_.lit_true());
-                    gradlam->set_body(log_d);
-                }
-
-                gradlam->set_name(name + "_diff");
+                gradlam->set_name(cal_lam->name() + "_diff");
                 dlog(world_,"isset grad {}",gradlam->is_set());
 
                 lam->set_body( world_.app(
