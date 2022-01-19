@@ -463,9 +463,11 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* lam_d, Lam* fw, Lam*
         const Def* log_type = lam_d->var(1)->type();
         auto [rmem,one] = ONE(world_,lam_d->mem_var(), log_type);
 
+        const Def* derivative = world_.op(ROp::div, (nat_t)0, one, fw->var(1));
+
         const Def* log_d = world_.app(lam_d->ret_var(), {
                 rmem,
-                world_.op(ROp::div, (nat_t)0, one, fw->var(1))
+                world_.op(ROp::mul, (nat_t)0, derivative, lam_d->var(1))
         });
 
         lam_d->set_filter(world_.lit_true());
@@ -473,7 +475,7 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* lam_d, Lam* fw, Lam*
     }else if(name == "exp"){
         const Def* log_d = world_.app(lam_d->ret_var(), {
                 lam_d->mem_var(),
-                bw->var(1)
+                world_.op(ROp::mul, (nat_t)0, bw->var(1), lam_d->var(1))
         });
 
         lam_d->set_filter(world_.lit_true());
