@@ -201,6 +201,7 @@ private:
     const Def* j_wrap(const Def* def); // 'identity' (except for lambdas, functions, and applications) traversal annotating the pullbacks
     const Def* j_wrap_rop(ROp op, const Def* a, const Def* b); // pullback computation for predefined functions, specifically operations like +, -, *, /
     void derive_math_functions( const Lam* fun, Lam* lam_d, Lam* fw, Lam* bw );
+    const Def* derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta );
 
     const Def* seen(const Def* src); // lookup in the map
 
@@ -208,6 +209,8 @@ private:
     const Def* chain(const Def* a, const Def* b);
 
     const Pi* createPbType(const Def* A, const Def* B);
+
+    const Def* lit_of_real(const Def* type, r64 lit);
 
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
@@ -228,6 +231,18 @@ private:
     //   load, store, slot, alloc, function arg
     const Def* current_mem;
 };
+
+
+
+const Def* AutoDiffer::lit_of_real(const Def* type, r64 lit){
+    const Def* litdef = nullptr;
+
+    if (auto real = isa<Tag::Real>(type)){
+        litdef= world_.lit_real(as_lit(real->arg()), lit);
+    }
+
+    return litdef;
+}
 
 const Def* AutoDiffer::chain(const Def* a, const Def* b) {
     // chaining of two pullbacks is composition due to the
@@ -456,6 +471,43 @@ const Def* AutoDiffer::ptrSlot(const Def* ty, const Def* mem) {
     return pb_slot; // split into pb_mem, pb_ptr
 }
 
+const Def* AutoDiffer::derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta ){
+    auto type = x->type();
+
+    auto funType = fun->doms().back()->as<Pi>();
+
+    auto high = world_.nom_lam(funType,world_.dbg("high"));
+    lam_d->set_body(world_.app(fun, {
+            lam_d->mem_var(),
+            world_.op(ROp::sub, (nat_t)0, x, lit_of_real(type, delta / 2)),
+            high
+    }));
+    lam_d->set_filter(world_.lit_true());
+
+
+    auto diff = world_.nom_lam(funType,world_.dbg("low"));
+    high->set_body(world_.app(fun, {
+            lam_d->mem_var(),
+            world_.op(ROp::add, (nat_t)0, x, lit_of_real(type, delta / 2)),
+            diff
+    }));
+    high->set_filter(world_.lit_true());
+
+
+    diff->set_body(world_.app(lam_d->ret_var(), {
+            high->mem_var(),
+            world_.op(ROp::mul, (nat_t)0,
+                world_.op(ROp::div, (nat_t)0,
+                        world_.op(ROp::sub, (nat_t)0, diff->var(1), high->var(1)),
+                        lit_of_real( type, delta)
+                ),
+                lam_d->var(1)
+            )
+    }));
+    diff->set_filter(world_.lit_true());
+
+    return nullptr;
+}
 
 void AutoDiffer::derive_math_functions(const Lam* fun, Lam* lam_d, Lam* fw, Lam* bw ){
     std::string name = fun->name();
@@ -480,6 +532,8 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* lam_d, Lam* fw, Lam*
 
         lam_d->set_filter(world_.lit_true());
         lam_d->set_body(log_d);
+    }else if(name == "lgamma"){
+        derive_numeric(fun, lam_d, fw->var(1), 0.001);
     }
 }
 
