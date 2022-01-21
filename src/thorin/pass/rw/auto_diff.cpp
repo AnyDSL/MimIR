@@ -201,7 +201,7 @@ private:
     const Def* j_wrap(const Def* def); // 'identity' (except for lambdas, functions, and applications) traversal annotating the pullbacks
     const Def* j_wrap_rop(ROp op, const Def* a, const Def* b); // pullback computation for predefined functions, specifically operations like +, -, *, /
     void derive_math_functions( const Lam* fun, Lam* lam_d, Lam* fw, Lam* bw );
-    const Def* derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta );
+    void derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta );
 
     const Def* seen(const Def* src); // lookup in the map
 
@@ -471,7 +471,7 @@ const Def* AutoDiffer::ptrSlot(const Def* ty, const Def* mem) {
     return pb_slot; // split into pb_mem, pb_ptr
 }
 
-const Def* AutoDiffer::derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta ){
+void AutoDiffer::derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta ){
     auto type = x->type();
 
     auto funType = fun->doms().back()->as<Pi>();
@@ -505,8 +505,6 @@ const Def* AutoDiffer::derive_numeric( const Lam* fun, Lam* lam_d, const Def* x,
             )
     }));
     diff->set_filter(world_.lit_true());
-
-    return nullptr;
 }
 
 void AutoDiffer::derive_math_functions(const Lam* fun, Lam* lam_d, Lam* fw, Lam* bw ){
