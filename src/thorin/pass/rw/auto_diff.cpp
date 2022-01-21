@@ -530,6 +530,36 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* lam_d, Lam* fw, Lam*
 
         lam_d->set_filter(world_.lit_true());
         lam_d->set_body(log_d);
+    }else if(name == "sin"){
+        auto cos = world_.nom_lam(fun->type(),world_.dbg("cos"));
+        cos->set_name("cos");
+
+        const Def* cos_app = world_.app(cos, {
+                lam_d->mem_var(),
+                fw->var(1),
+                lam_d->ret_var()
+        });
+
+        lam_d->set_filter(world_.lit_true());
+        lam_d->set_body(cos_app);
+    }else if(name == "cos"){
+        auto cos = world_.nom_lam(fun->type(),world_.dbg("sin"));
+        auto fun_return_type = fun->doms().back()->as<Pi>();
+        auto negate = world_.nom_lam(fun_return_type,world_.dbg("negate"));
+        cos->set_name("sin");
+
+        negate->set_body(world_.app(lam_d->ret_var(), {
+            cos->mem_var(),
+            world_.op(ROp::mul, (nat_t)0, negate->var(1), lit_of_real(fw->var(1)->type(), -1))
+        }));
+        negate->set_filter(true);
+
+        lam_d->set_filter(world_.lit_true());
+        lam_d->set_body(world_.app(cos, {
+                lam_d->mem_var(),
+                fw->var(1),
+                negate
+        }));
     }else if(name == "lgamma"){
         derive_numeric(fun, lam_d, fw->var(1), 0.001);
     }
