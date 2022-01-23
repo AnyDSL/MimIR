@@ -530,6 +530,21 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* lam_d, Lam* fw, Lam*
 
         lam_d->set_filter(world_.lit_true());
         lam_d->set_body(log_d);
+    }else if(name == "sqrt"){
+        const Def* real_type = lam_d->var(1)->type();
+        const Def* log_d = world_.app(lam_d->ret_var(), {
+                lam_d->mem_var(),
+                world_.op(ROp::mul, (nat_t)0,
+                    world_.op(ROp::div, (nat_t)0,
+                        lit_of_real( real_type, 1.0),
+                        world_.op(ROp::mul, (nat_t)0, lit_of_real( real_type, 2.0), bw->var(1))
+                    ),
+                    lam_d->var(1)
+                )
+        });
+
+        lam_d->set_filter(world_.lit_true());
+        lam_d->set_body(log_d);
     }else if(name == "sin"){
         auto cos = world_.nom_lam(fun->type(),world_.dbg("cos"));
         cos->set_name("cos");
