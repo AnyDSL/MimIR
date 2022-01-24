@@ -4,6 +4,27 @@
 
 namespace thorin {
 
+/*
+ * Pi
+ */
+
+const Pi* Pi::ret_pi(const Def* dbg) const {
+    if (num_doms() > 0) {
+        auto ret = dom(num_doms() - 1, dbg);
+        if (auto pi = ret->isa<Pi>(); pi != nullptr && pi->is_cn()) return pi;
+    }
+
+    return nullptr;
+}
+
+Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); }
+
+bool Pi::is_cn() const { return codom()->isa<Bot>(); }
+
+/*
+ * Lam
+ */
+
 Lam* Lam::set_filter(bool filter) { return set_filter(world().lit_bool(filter)); }
 
 const Def* Lam::mem_var(const Def* dbg) {
@@ -11,15 +32,10 @@ const Def* Lam::mem_var(const Def* dbg) {
 }
 
 const Def* Lam::ret_var(const Def* dbg) {
-    if (num_vars() > 0) {
-        auto p = var(num_vars() - 1, dbg);
-        if (auto pi = p->type()->isa<thorin::Pi>(); pi != nullptr && pi->is_cn()) return p;
-    }
-    return nullptr;
+    return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr;
 }
 
 bool Lam::is_basicblock() const { return type()->is_basicblock(); }
-bool Lam::is_returning() const { return type()->is_returning(); }
 
 void Lam::app(const Def* callee, const Def* arg, const Def* dbg) {
     assert(isa_nom());
@@ -41,56 +57,11 @@ void Lam::test(const Def* value, const Def* index, const Def* match, const Def* 
  * Pi
  */
 
-Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); }
-
-bool Pi::is_cn() const { return codom()->isa<Bot>(); }
-
-bool Pi::is_returning() const {
-    bool ret = false;
-    for (auto op : ops()) {
-        switch (op->order()) {
-            case 1:
-                if (!ret) {
-                    ret = true;
-                    continue;
-                }
-                return false;
-            default: continue;
-        }
-    }
-    return ret;
-}
-
 // TODO remove
 Lam* get_var_lam(const Def* def) {
     if (auto extract = def->isa<Extract>())
         return extract->tuple()->as<Var>()->nom()->as<Lam>();
     return def->as<Var>()->nom()->as<Lam>();
-}
-
-// TODO remove
-size_t get_var_index(const Def* def) {
-    if (auto extract = def->isa<Extract>())
-        return as_lit<size_t>(extract->index());
-    assert(def->isa<Var>());
-    return 0;
-}
-
-std::vector<Peek> peek(const Def* var) {
-    std::vector<Peek> peeks;
-    size_t index = get_var_index(var);
-    for (auto use : get_var_lam(var)->uses()) {
-        if (auto app = use->isa<App>()) {
-            for (auto use : app->uses()) {
-                if (auto pred = use->isa_nom<Lam>()) {
-                    if (pred->body() == app)
-                        peeks.emplace_back(app->arg(index), pred);
-                }
-            }
-        }
-    }
-
-    return peeks;
 }
 
 }

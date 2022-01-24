@@ -36,6 +36,8 @@ Scheduler::Scheduler(const Scope& s)
         auto def = queue.front();
         queue.pop();
 
+        if (!def->is_set()) continue;
+
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
             // all reachable noms have already been registered above
             // NOTE we might still see references to unreachable noms in the schedule
@@ -47,6 +49,7 @@ Scheduler::Scheduler(const Scope& s)
 
 Def* Scheduler::early(const Def* def) {
     if (auto nom = early_.lookup(def)) return *nom;
+    if (def->no_dep() || !scope().bound(def)) return early_[def] = scope().entry();
     if (auto var = def->isa<Var>()) return early_[def] = var->nom();
 
     auto result = scope().entry();
@@ -63,6 +66,7 @@ Def* Scheduler::early(const Def* def) {
 
 Def* Scheduler::late(const Def* def) {
     if (auto nom = late_.lookup(def)) return *nom;
+    if (def->no_dep() || !scope().bound(def)) return early_[def] = scope().entry();
 
     Def* result = nullptr;
     if (auto nom = def->isa_nom()) {

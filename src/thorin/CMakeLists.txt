@@ -35,10 +35,11 @@ set(THORIN_SOURCES
     analyses/looptree.h
     analyses/schedule.cpp
     analyses/schedule.h
-    analyses/schedule_old.cpp
-    analyses/schedule_old.h
     analyses/scope.cpp
     analyses/scope.h
+    be/emitter.h
+    be/ll/ll.cpp
+    be/ll/ll.h
     fe/lexer.cpp
     fe/lexer.h
     fe/parser.cpp
@@ -59,8 +60,6 @@ set(THORIN_SOURCES
     pass/fp/dce.h
     pass/fp/ssa_constr.cpp
     pass/fp/ssa_constr.h
-    pass/rw/auto_diff.cpp
-    pass/rw/auto_diff.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
     pass/rw/ret_wrap.cpp
@@ -113,18 +112,6 @@ add_library(libthorin ${THORIN_SOURCES})
 set_target_properties(libthorin PROPERTIES PREFIX "")
 target_compile_options(libthorin PRIVATE -Wall -Wextra)
 target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
-
-if(LLVM_FOUND)
-    target_compile_definitions(libthorin PUBLIC ${LLVM_DEFINITIONS} LLVM_SUPPORT)
-    target_include_directories(libthorin PRIVATE ${LLVM_INCLUDE_DIRS})
-    llvm_map_components_to_libnames(LLVM_LIBRARIES all)
-    target_link_libraries(libthorin PUBLIC ${LLVM_LIBRARIES})
-endif()
-
-if(RV_FOUND)
-    target_link_libraries(libthorin PUBLIC ${RV_LIBRARIES})
-    target_include_directories(libthorin PRIVATE ${RV_INCLUDE_DIRS})
-endif()
 
 find_package(Half REQUIRED)
 message(STATUS "Building with Half library from ${Half_INCLUDE_DIRS}.")
