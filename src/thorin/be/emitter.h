@@ -17,12 +17,6 @@ private:
     }
 
 protected:
-    //@{
-    /// @name default implemantations
-    void finalize(const Scope&) {}
-    void finalize(Lam*) {}
-    //@}
-
     /// Recursively emits code. @c mem -typed @p Def%s return sth that is @c !child().is_valid(value) - this variant asserts in this case.
     Value emit(const Def* def) {
         auto res = emit_unsafe(def);
@@ -45,10 +39,6 @@ protected:
         assert(entry_->ret_var());
 
         auto fct = child().prepare(scope);
-        for (auto nom : noms) {
-            if (auto lam = nom->isa<Lam>(); lam && lam != scope.exit())
-                child().prepare(lam, fct);
-        }
 
         Scheduler new_scheduler(scope);
         swap(scheduler_, new_scheduler);
@@ -60,10 +50,6 @@ protected:
             }
         }
 
-        for (auto nom : noms) {
-            if (auto lam = nom->isa<Lam>(); lam && lam != scope.exit())
-                child().finalize(lam);
-        }
         child().finalize(scope);
     }
 
