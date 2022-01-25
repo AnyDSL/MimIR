@@ -32,6 +32,8 @@ size_t getDim(const Def* def) {
 // needed for operation differentiation
 // we only need a multidimensional addition
 std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def* a, const Def* b) {
+    dlog(world,"add {}:{} + {}:{}",a,a->type(),b,b->type());
+
     if (auto aptr = isa<Tag::Ptr>(a->type())) {
         auto [ty,addr_space] = aptr->arg()->projs<2>();
 
@@ -66,8 +68,16 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
 
 std::pair<const Def*,const Def*> lit_of_type(World& world, const Def* mem, const Def* type, u64 lit, const Def* dummy) {
     // TODO: a monad would be easier
+    dlog(world,"create literal of type {}",type);
+
     if (auto ptr = isa<Tag::Ptr>(type)) {
         auto [ty,addr_space] = ptr->arg()->projs<2>();
+
+        if(ty->isa<Arr>()) {
+            auto [mem2,ptr_arr]=world.op_alloc(ty,mem)->projs<2>();
+            type_dump(world,"ptr arr",ptr_arr);
+            return {mem2,ptr_arr};
+        }
 
         auto [mem2, lit_ptr]=world.op_slot(ty,mem,world.dbg("lit_slot"))->projs<2>();
         auto [mem3, lit_res] = lit_of_type(world,mem2,ty,lit,dummy);
@@ -649,14 +659,17 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  lea arr:", arr);
         auto [arr_ty, arr_addr_space] = as<Tag::Ptr>(arr->type())->arg()->projs<2>();
 
-        auto pi = createPbType(A,ptr_ty);
+//        auto pi = createPbType(A,ptr_ty);
+        auto pi = createPbType(A,ty);
         auto pb = world_.nom_lam(pi, world_.dbg("pb_lea"));
         pb->set_filter(world_.lit_true());
 
 
         auto [mem2,ptr_arr] = world_.op_alloc(arr_ty,pb->mem_var())->projs<2>();
         auto scal_ptr = world_.op_lea(ptr_arr,idx);
-        auto [mem3,v] = world_.op_load(mem2,pb->var(1))->projs<2>();
+//        auto [mem3,v] = world_.op_load(mem2,pb->var(1))->projs<2>();
+        auto mem3=mem2;
+        auto v = pb->var(1);
         auto mem4 = world_.op_store(mem3,scal_ptr,v);
         type_dump(world_,"ptr_arr",ptr_arr);
 
