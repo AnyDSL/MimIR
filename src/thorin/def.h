@@ -232,8 +232,8 @@ public:
     }
 
     template<size_t A = -1_s>
-    auto projs(Defs dbgs = {}) const { return projs<A>([this](const Def* def) { return def; }, dbgs); }
-    auto projs(size_t a, Defs dbgs = {}) const { return projs(a, [this](const Def* def) { return def; }, dbgs); }
+    auto projs(Defs dbgs = {}) const { return projs<A>([](const Def* def) { return def; }, dbgs); }
+    auto projs(size_t a, Defs dbgs = {}) const { return projs(a, [](const Def* def) { return def; }, dbgs); }
     //@}
 
     /// @name external handling
@@ -390,7 +390,7 @@ using DefVec  = std::vector<const Def*>;
 struct DefDefHash {
     static hash_t hash(DefDef pair) {
         hash_t hash = std::get<0>(pair)->gid();
-        hash = murmur3(hash, std::get<1>(pair)->gid());
+        hash = murmur3(hash, (uint32_t)std::get<1>(pair)->gid());
         hash = murmur3_finalize(hash, 8);
         return hash;
     }
