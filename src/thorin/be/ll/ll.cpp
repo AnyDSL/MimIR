@@ -1,5 +1,7 @@
 #include "thorin/be/ll/ll.h"
 
+#include <deque>
+
 #include "thorin/world.h"
 #include "thorin/analyses/cfg.h"
 #include "thorin/analyses/schedule.h"
@@ -14,21 +16,25 @@ struct BB {
 
     Lam* lam = nullptr;
     DefMap<std::vector<std::pair<const Def*, Lam*>>> phis;
-    StringStream head;
-    StringStream body;
-    StringStream tail;
+    std::array<std::deque<StringStream>, 3> parts;
+
+    std::deque<StringStream>& head() { return parts[0]; }
+    std::deque<StringStream>& body() { return parts[1]; }
+    std::deque<StringStream>& tail() { return parts[2]; }
 
     template<class... Args> std::string assign(const std::string& name, const char* s, Args&&... args) {
-        body.endl().fmt("{} = ", name).fmt(s, std::forward<Args&&>(args)...);
+        body().emplace_back().fmt("{} = ", name).fmt(s, std::forward<Args&&>(args)...);
         return name;
+    }
+
+    template<class... Args> void jump(const char* s, Args&&... args) {
+        tail().emplace_back().fmt(s, std::forward<Args&&>(args)...);
     }
 
     friend void swap(BB& a, BB& b) {
         using std::swap;
-        swap(a.lam,  b.lam);
-        swap(a.head, b.head);
-        swap(a.body, b.body);
-        swap(a.tail, b.tail);
+        swap(a.lam,   b.lam);
+        swap(a.parts, b.parts);
     }
 };
 
@@ -100,9 +106,9 @@ std::string CodeGen::convert(const Def* type) {
         }
     } else if (auto real = isa<Tag::Real>(type)) {
         switch (as_lit<nat_t>(real->arg())) {
-            case 16: return types_[type] = "f16";
-            case 32: return types_[type] = "f32";
-            case 64: return types_[type] = "f64";
+            case 16: return types_[type] = "half";
+            case 32: return types_[type] = "float";
+            case 64: return types_[type] = "double";
             default: THORIN_UNREACHABLE;
         }
     }
@@ -190,7 +196,7 @@ std::string CodeGen::prepare(const Scope& scope) {
         sep = ", ";
     }
 
-    func_impls_.fmt(") {{\t\n");
+    func_impls_.fmt(") {{\n");
 
     return lam->unique_name();
 }
@@ -203,23 +209,28 @@ void CodeGen::finalize(const Scope&) {
 
     for (auto& [lam, bb] : lam2bb_) {
         for (const auto& [phi, args] : bb.phis) {
-            bb.head.fmt("\n{} = phi ", phi);
+            bb.head().emplace_back().fmt("{} = phi ", phi);
             const char* sep = "";
             for (const auto& [arg, pred] : args) {
-                bb.head.fmt("{}[ {}, {} ]", sep, arg, pred);
+                bb.head().back().fmt("{}[ {}, {} ]", sep, arg, pred);
                 sep = ", ";
             }
         }
     }
 
     for (auto& [lam, bb] : lam2bb_) {
-        if (lam != entry_)
-            func_impls_.fmt("{}: \t", lam->unique_name());
-        func_impls_.fmt("\t\n{}\n{}\n{}\b\n", bb.head.str(), bb.body.str(), bb.tail.str());
+        func_impls_.fmt("{}:\t", lam->unique_name());
+
+        for (const auto& part : bb.parts) {
+            for (const auto& line : part)
+                func_impls_.endl() << line.str();
+        }
+
+        func_impls_.dedent();
     }
 
     func_defs_.clear();
-    func_impls_.fmt("}}\n\n");
+    func_impls_.fmt("\n}}\n");
 }
 
 void CodeGen::emit_epilogue(Lam* lam) {
@@ -238,22 +249,21 @@ void CodeGen::emit_epilogue(Lam* lam) {
         }
 
         switch (values.size()) {
-            case 0: bb.tail.fmt("ret"); break;
-            case 1: bb.tail.fmt("ret {} {}", convert(types[0]), values[0]); break;
+            case 0: return bb.jump("ret");
+            case 1: return bb.jump("ret {} {}", convert(types[0]), values[0]);
             default:
                 auto tuple = convert(world().sigma(types));
-                bb.tail.fmt("{} ret_val\n", tuple);
+                bb.jump("{} ret_val\n", tuple);
                 for (size_t i = 0, e = types.size(); i != e; ++i)
-                    bb.tail.fmt("ret_val.e{} = {};\n", i, values[i]);
-                bb.tail.fmt("ret ret_val");
-                break;
+                    bb.jump("ret_val.e{} = {};\n", i, values[i]);
+                return bb.jump("ret ret_val");
         }
     } else if (auto ex = app->callee()->isa<Extract>()) {
         auto c = emit(ex->index());
         auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
-        bb.tail.fmt("br i1 {}, label {}, label {}", c, t, f);
+        return bb.jump("br i1 {}, label {}, label {}", c, t, f);
     } else if (app->callee()->isa<Bot>()) {
-        bb.tail.fmt("ret ; bottom: unreachable");
+        return bb.jump("ret ; bottom: unreachable");
     } else if (auto callee = app->callee()->isa_nom<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
         assert(callee->num_vars() == app->num_args());
         auto& target = lam2bb_[callee];
@@ -261,7 +271,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty())
                 target.phis[callee->var(i)].emplace_back(app->arg(i), lam);
         }
-        bb.tail.fmt("br label {}", callee->unique_name());
+        bb.jump("br label {}", callee->unique_name());
     } else if (auto callee = app->callee()->isa_nom<Lam>()) { // function/closure call
         auto ret_cont = (*std::find_if(app->args().begin(), app->args().end(), [] (const Def* arg) {
             return arg->isa_nom<Lam>();
