@@ -210,7 +210,7 @@ public:
 private:
     const Def* j_wrap(const Def* def); // 'identity' (except for lambdas, functions, and applications) traversal annotating the pullbacks
     const Def* j_wrap_rop(ROp op, const Def* a, const Def* b); // pullback computation for predefined functions, specifically operations like +, -, *, /
-    void derive_math_functions( const Lam* fun, Lam* lam_d, Lam* fw, Lam* bw );
+    void derive_math_functions( const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam);
     void derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta );
 
     const Def* seen(const Def* src); // lookup in the map
@@ -517,77 +517,80 @@ void AutoDiffer::derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 d
     diff->set_filter(world_.lit_true());
 }
 
-void AutoDiffer::derive_math_functions(const Lam* fun, Lam* lam_d, Lam* fw, Lam* bw ){
+
+// fills in the body of pb (below called gradlam) which stands for f* the pullback function
+// the pullback function takes a tangent scalar and returns the derivative
+// fun is the original called external function (like exp, sin, ...) : A->B
+// pb is the pullback B->A that might use the argument of fw in its computation
+// fw is the new toplevel called function that invokes fun and hands over control to res_lam
+// res_lam is a helper function that takes the result f(x) as argument and returns the result together with the pullback
+void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam){
     std::string name = fun->name();
+
+    // x
+    const Def* fun_arg = fw->var(1);
+    // f(x)
+    const Def* res = res_lam->var(1);
+    // s (in an isolated environment s=1 -> f*(s) = df/dx)
+    const Def* scal = pb->var(1);
     if( name == "log" ){
-        const Def* log_type = lam_d->var(1)->type();
-        auto [rmem,one] = ONE(world_,lam_d->mem_var(), log_type);
+        const Def* log_type = scal->type();
+        auto [rmem,one] = ONE(world_, pb->mem_var(), log_type);
 
-        const Def* derivative = world_.op(ROp::div, (nat_t)0, one, fw->var(1));
+        const Def* derivative = world_.op(ROp::div, (nat_t)0, one, fun_arg);
 
-        const Def* log_d = world_.app(lam_d->ret_var(), {
+        const Def* log_d = world_.app(pb->ret_var(), {
                 rmem,
-                world_.op(ROp::mul, (nat_t)0, derivative, lam_d->var(1))
+                world_.op(ROp::mul, (nat_t)0, derivative, scal)
         });
 
-        lam_d->set_filter(world_.lit_true());
-        lam_d->set_body(log_d);
+        pb->set_body(log_d);
     }else if(name == "exp"){
-        const Def* log_d = world_.app(lam_d->ret_var(), {
-                lam_d->mem_var(),
-                world_.op(ROp::mul, (nat_t)0, bw->var(1), lam_d->var(1))
-        });
-
-        lam_d->set_filter(world_.lit_true());
-        lam_d->set_body(log_d);
+        // d exp(x)/d y = d/dy x * exp(x)
+        pb->set_body(
+            world_.app(pb->ret_var(),
+                {pb->mem_var(),
+                    world_.op(ROp::mul, (nat_t)0, res, scal)
+               }));
     }else if(name == "sqrt"){
-        const Def* real_type = lam_d->var(1)->type();
-        const Def* log_d = world_.app(lam_d->ret_var(), {
-                lam_d->mem_var(),
+        const Def* real_type = scal->type();
+        const Def* log_d = world_.app(pb->ret_var(), {pb->mem_var(),
                 world_.op(ROp::mul, (nat_t)0,
                     world_.op(ROp::div, (nat_t)0,
                         lit_of_real( real_type, 1.0),
-                        world_.op(ROp::mul, (nat_t)0, lit_of_real( real_type, 2.0), bw->var(1))
+                        world_.op(ROp::mul, (nat_t)0, lit_of_real( real_type, 2.0), res)
                     ),
-                    lam_d->var(1)
-                )
+                                   scal)
         });
 
-        lam_d->set_filter(world_.lit_true());
-        lam_d->set_body(log_d);
+        pb->set_body(log_d);
     }else if(name == "sin"){
         auto cos = world_.nom_lam(fun->type(),world_.dbg("cos"));
         cos->set_name("cos");
 
-        const Def* cos_app = world_.app(cos, {
-                lam_d->mem_var(),
-                fw->var(1),
-                lam_d->ret_var()
+        const Def* cos_app = world_.app(cos, {pb->mem_var(), fun_arg, pb->ret_var()
         });
 
-        lam_d->set_filter(world_.lit_true());
-        lam_d->set_body(cos_app);
+        pb->set_body(cos_app);
     }else if(name == "cos"){
         auto cos = world_.nom_lam(fun->type(),world_.dbg("sin"));
         auto fun_return_type = fun->doms().back()->as<Pi>();
         auto negate = world_.nom_lam(fun_return_type,world_.dbg("negate"));
         cos->set_name("sin");
 
-        negate->set_body(world_.app(lam_d->ret_var(), {
+        negate->set_body(world_.app(pb->ret_var(), {
             cos->mem_var(),
-            world_.op(ROp::mul, (nat_t)0, negate->var(1), lit_of_real(fw->var(1)->type(), -1))
+            world_.op(ROp::mul, (nat_t)0, negate->var(1), lit_of_real(fun_arg->type(), -1))
         }));
         negate->set_filter(true);
 
-        lam_d->set_filter(world_.lit_true());
-        lam_d->set_body(world_.app(cos, {
-                lam_d->mem_var(),
-                fw->var(1),
+        pb->set_body(world_.app(cos, {pb->mem_var(), fun_arg,
                 negate
         }));
     }else if(name == "lgamma"){
-        derive_numeric(fun, lam_d, fw->var(1), 0.001);
+        derive_numeric(fun, pb, fun_arg, 0.001);
     }
+    pb->set_filter(world_.lit_true());
 }
 
 
@@ -1064,22 +1067,61 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //            THORIN_UNREACHABLE;
 
             if(auto cal_lam=callee->isa<Lam>(); cal_lam && !cal_lam->is_set()) {
-                auto pty = world_.tangent_type(callee->type())->as<Pi>();
-                auto pbT = pty->doms().back()->as<Pi>();
-                auto gradTy = pbT->doms().back()->as<Pi>();
+                dlog(world_,"  found external function {}",cal_lam->name());
 
-                dlog(world_,"pbT {}",pbT);
-                dlog(world_,"grad {}",gradTy);
-                dlog(world_,"pty {}",pty);
+                // derive the correct type for the differentiated function f'
+                // f'(x) = (f(x), f*)
+                // where f*(1) = df/dx
 
-                auto gradlam=world_.nom_lam(gradTy, world_.dbg("grad_lam"));
+                // idea in pseudocode:
+                // f is eta convertible to λ mem arg ret. f (mem,arg,ret)
+                // we want to intercept and also return the gradient
+                // f: A -> B
+                //  = cn[mem, A, cn[mem, B]]
+                // f'
+                // lam₁ = λ mem arg ret. f (mem,arg,lam₂)
+                //      = x ↦ lam₂(f(x))
+                //    : A -> B*(B->A)
+                //      = cn[mem, A, cn[mem, B, cn[mem, B, cn[mem, A]]]
+                // 
+                // lam₂ = λ mem₂ res. ret (mem₂, res, grad)
+                //      = y ↦ (y,grad(x))
+                //    : B -> B*(B->A)
+                //      = cn[mem, B]
+                //  res is f(x)
+                //  lam₂ might look returning in its body but it takes not returning argument
+                //   instead it uses the return from lam₁ which is the return supplied by the user
+                // 
+                // f*
+                // grad = λ x. λ mem s ret. ...
+                //    : A -> (B -> A)
+                //      = A -> cn[mem, B, cn[mem, A]]
+                //  x is supplied at compile time by direct forwardig from lam₁
 
-                auto lam=world_.nom_lam(pty,world_.dbg("lam"));
-                auto lam2 = world_.nom_lam(cal_lam->doms().back()->as<Pi>(),world_.dbg("lam2"));
+                auto augTy = world_.tangent_type(callee->type())->as<Pi>();
+                // type of result (after taking argument x)
+                auto resTy = augTy->doms().back()->as<Pi>();
+                // type of the pullback f*
+                auto pbTy = resTy->doms().back()->as<Pi>();
+
+                dlog(world_,"  augmented ty {}", augTy);
+                dlog(world_,"  result {}", resTy);
+                dlog(world_,"  pullback type {}", pbTy);
+
+                // f*
+                auto gradlam=world_.nom_lam(pbTy, world_.dbg("dummy"));
+
+                // new augmented lam f' to replace old one
+                auto lam=world_.nom_lam(augTy,world_.dbg("dummy"));
+                dlog(world_,"lam2 ty {}",cal_lam->doms().back());
+                dlog(world_,"lam2 ty {}",cal_lam->doms().back()->as<Pi>());
+                auto lam2 = world_.nom_lam(cal_lam->doms().back()->as<Pi>(),world_.dbg("dummy"));
 
                 derive_math_functions(cal_lam, gradlam, lam, lam2);
 
-                gradlam->set_name(cal_lam->name() + "_diff");
+                lam->set_name(cal_lam->name() + "_diff");
+                lam2->set_name(lam->name() + "_cont");
+                gradlam->set_name(cal_lam->name() + "_pb");
                 dlog(world_,"isset grad {}",gradlam->is_set());
 
                 lam->set_body( world_.app(
