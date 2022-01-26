@@ -69,13 +69,12 @@ private:
 
 class ClosureConv {
 public:
-    ClosureConv(World& world, bool keep_ca_marks = false)
+    ClosureConv(World& world)
         : world_(world)
         , fva_(world)
         , closures_(DefMap<ClosureStub>())
         , closure_types_(Def2Def())
         , worklist_(std::queue<const Def*>()) 
-        , keep_ca_marks_(keep_ca_marks)
     {};
 
     void run();
@@ -89,9 +88,8 @@ private:
     };
 
     const Def* rewrite(const Def* old_def, Def2Def& subst);
-
+    const Def* rw_non_captured(const Def* var, Def2Def& subst);
     const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
-
     ClosureStub make_stub(Lam* lam, Def2Def& subst);
 
     World& world() { return world_; }
@@ -101,7 +99,6 @@ private:
     DefMap<ClosureStub> closures_;
     Def2Def closure_types_;
     std::queue<const Def*> worklist_;
-    const bool keep_ca_marks_;
 };
 
 /// # Auxillary functions to deal with closures #
@@ -188,7 +185,7 @@ private:
     friend ClosureLit isa_closure_lit(const Def*, bool);
 };
 
-
+std::tuple<const Def*, Lam*> isa_lam_var(const Def* def);
 
 /// return @p def if @p def is a closure and @c nullptr otherwise
 const Sigma* isa_ctype(const Def* def);

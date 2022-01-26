@@ -185,6 +185,14 @@ unsigned int ClosureLit::order() {
     return ctype_to_pi(type())->order(); 
 }
 
+std::tuple<const Def*, Lam*> isa_lam_var(const Def* def) {
+    if (auto proj = def->isa<Extract>()) {
+        if (auto var = proj->tuple()->isa<Var>(); var && var->nom()->isa<Lam>())
+            return std::tuple(proj, var->nom()->as<Lam>());
+    }
+    return {nullptr,  nullptr};
+}
+
 /* Closure Conversion */
 
 void ClosureConv::run() {
@@ -270,6 +278,8 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
         auto closure = pack_closure(env, fn, closure_type);
         w.DLOG("RW: pack {} ~> {} : {}", lam, closure, closure_type);
         return map(closure);
+    } else if (auto [marked, v] = isa_mark(def); marked) {
+        return (v == CA::ret) ? rw_non_captured(marked, subst) : rewrite(marked, subst);
     }
 
     auto new_type = rewrite(def->type(), subst);
@@ -317,6 +327,18 @@ const Def* ClosureConv::closure_type(const Pi* pi, Def2Def& subst, const Def* en
     }
 }
 
+const Def* ClosureConv::rw_non_captured(const Def* def, Def2Def& subst) {
+    if (auto proj = def->isa<Extract>()) {
+        if (auto var = proj->tuple()->isa<Var>()) {
+            auto old_lam = var->nom()->as_nom<Lam>();
+            auto index = as_lit(proj->index());
+            auto new_lam = make_stub(old_lam, subst).fn;
+            return new_lam->var(skip_env(index));
+        }
+    }
+    return rewrite(def, subst);
+}
+
 ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
     if (auto closure = closures_.lookup(old_lam))
         return *closure;
@@ -341,9 +363,16 @@ ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
     return closure;
 }
 
+
 /* Free variable analysis */
 
 void FVA::split_fv(Def *nom, const Def* def, DefSet& out) {
+    if (auto [marked, v] = isa_mark(def); marked) {
+        if (auto [var, _] = isa_lam_var(marked); var && v == CA::ret)
+            return;
+        else
+            def = marked;
+    }
     if (def->no_dep() || def->isa<Global>() || def->isa<Axiom>() || def->isa_nom()) {
         return;
     } else if (def->dep() == Dep::Var && !def->isa<Tuple>()) {

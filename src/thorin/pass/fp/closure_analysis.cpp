@@ -2,16 +2,6 @@
 
 namespace thorin {
 
-using std::tuple;
-
-static tuple<const Def*, Lam*> isa_var(const Def* def) {
-    if (auto proj = def->isa<Extract>()) {
-        if (auto var = proj->tuple()->isa<Var>(); var && var->nom()->isa<Lam>())
-            return std::tuple(proj, var->nom()->as<Lam>());
-    }
-    return {nullptr,  nullptr};
-}
-
 static bool interesting_type_b(const Def* type) {
     if (auto pi = type->isa<Pi>(); pi && pi->is_cn())
         return true;
@@ -39,7 +29,7 @@ static bool interesting_type(const Def* type) {
 static void split(DefSet& out, const Def* def, bool keep_others) {
     if (auto lam = def->isa<Lam>())
         out.insert(lam);
-    else if (auto [var, lam] = isa_var(def); var && lam)
+    else if (auto [var, lam] = isa_lam_var(def); var && lam)
         out.insert(var);
     else if (auto c = isa_closure_lit(def))
         split(out, c.fnc(), keep_others);
@@ -64,7 +54,7 @@ static DefSet&& split(const Def* def, bool keep_others, DefSet&& out = DefSet())
 ClosureAnalysis::Err ClosureAnalysis::error(const Def* def) {
     if (auto lam = def->isa_nom<Lam>())
         return {lam, undo_visit(lam)};
-    if (auto [var, lam] = isa_var(def); var && lam)
+    if (auto [var, lam] = isa_lam_var(def); var && lam)
         return error(lam);
     assert(false && "only track variables and lams");
 }
@@ -123,7 +113,7 @@ CA ClosureAnalysis::lookup_init(const Def* def) {
         return v;
     if (auto lam = def->isa_nom<Lam>()) {
         v = (!lam->is_set() || lam->ret_var()) ? CA::proc : CA::jmp;
-    } else if (auto [var, lam] = isa_var(def); var && lam) {
+    } else if (auto [var, lam] = isa_lam_var(def); var && lam) {
         v = (lam->ret_var() == var) ? CA::ret : CA::proc;
     } else {
         v = CA::unknown;
@@ -134,7 +124,7 @@ CA ClosureAnalysis::lookup_init(const Def* def) {
 
 const Def* ClosureAnalysis::mark(const Def* def, CA a) {
     auto& w = world();
-    auto [var, _] = isa_var(def);
+    auto [var, _] = isa_lam_var(def);
     if (auto tuple = def->isa<Tuple>(); tuple && !isa_closure_lit(def)) {
         auto new_ops = DefArray(tuple->num_ops(), [&](auto i) { return mark(tuple->op(i), a); });
         return w.tuple(tuple->type(), new_ops, tuple->dbg());
@@ -177,7 +167,7 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
                     continue;
                 if (auto lam = c->isa_nom<Lam>()) {
                     absytpe[i] &= lookup_init(lam->var(i));
-                } else if (auto [var, lam] = isa_var(c); var && !is_evil(var)) {
+                } else if (auto [var, lam] = isa_lam_var(c); var && !is_evil(var)) {
                     auto v = lookup_init(var);
                     if ((v == CA::proc_e || v == CA::proc) && i == num_args - 1)
                         absytpe[i] &= CA::ret;
@@ -255,7 +245,7 @@ undo_t ClosureAnalysis::analyze(const Def* def) {
         w.DLOG("analyze implicit captures of {} ({})", curr_nom(), op2str(v));
         auto& free_defs = fva_->run(curr_nom());
         for (auto def: free_defs) {
-            if (auto [var, _] = isa_var(def); var && interesting_type(var->type())) {
+            if (auto [var, _] = isa_lam_var(def); var && interesting_type(var->type())) {
                 w.DLOG("capture {}", var);
                 err = std::min(err, assign({var}, v));
             }

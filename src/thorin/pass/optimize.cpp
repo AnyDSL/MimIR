@@ -33,15 +33,15 @@ void optimize(World& world) {
     // opt.add<AutoDiff>();
     opt.run();
 
-    PassMan annot_ret(world);
-    annot_ret.add<ClosureAnalysis>();
-    annot_ret.run();
+    PassMan closure_ana(world);
+    closure_ana.add<ClosureAnalysis>();
+    closure_ana.run();
 
     // while (partial_evaluation(world, true)); // lower2cff
     // world.debug_stream();
     
-    // ClosureConv(world).run();
-    // world.debug_stream();
+    ClosureConv(world).run();
+    world.debug_stream();
     
     // PassMan closure_destruct(world);
     // er = closure_destruct.add<EtaRed>();
