@@ -227,11 +227,9 @@ public:
         // base type of differentiation: inner
         if (auto a = A->isa<Arr>()) {
             // if the input is an array, we compute the dimension
-            dim = a->shape()->as<Lit>()->get<uint8_t>();
-            dlog(world_,"Multidimensional differentiation: {} dimensions",dim);
+            dlog(world_,"Multidimensional differentiation: {} dimensions",a->shape()->as<Lit>()->get<uint8_t>());
         }else {
-            dim=1;
-            dlog(world_,"SingleDim differentiation: {} dimensions",dim);
+            dlog(world_,"SingleDim differentiation");
         }
 
         dlog(world_,"Finished Construction");
@@ -259,7 +257,6 @@ private:
     DefMap<const Def*> pointer_map;
     const Def* A;// input type
     Lam* src_;
-    size_t dim; // dimension of input type
 
     void initArg(const Def* dst);
     const Def* ptrSlot(const Def* ty, const Def* mem);
