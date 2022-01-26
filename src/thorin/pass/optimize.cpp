@@ -7,6 +7,7 @@
 #include "thorin/pass/rw/auto_diff.h"
 #include "thorin/pass/rw/bound_elim.h"
 #include "thorin/pass/rw/partial_eval.h"
+#include "thorin/pass/rw/remem_elim.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 
@@ -47,6 +48,8 @@ void optimize(World& world) {
     printf("Finished Cleanup\n");
 
     PassMan codgen_prepare(world);
+    //codgen_prepare.add<BoundElim>();
+    codgen_prepare.add<RememElim>();
     codgen_prepare.add<RetWrap>();
     codgen_prepare.run();
 }
