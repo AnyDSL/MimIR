@@ -18,14 +18,7 @@ public:
         , unknown_(), esc_proc_()
     {}
 
-    enum class Lattice : uint8_t {
-        BOT,
-        PROC, RET, JMP,
-        PROC_E,
-        UNKNOWN
-    };
-
-    using Data = DefMap<Lattice>;
+    using Data = DefMap<CA>;
 
     void enter() override;
     const Def* rewrite(const Def*) override;
@@ -63,25 +56,23 @@ private:
         return FPPass::proxy(def->type(), {def, e.bad_lam});
     }
 
-    Lattice lookup(const Def* def) {
+    CA lookup(const Def* def) {
         if (unknown_.contains(def))
-            return Lattice::UNKNOWN;
+            return CA::unknown;
         if (esc_proc_.contains(def))
-            return Lattice::PROC_E;
+            return CA::proc_e;
         if (auto v = data().lookup(def))
             return *v;
-        return Lattice::BOT;
+        return CA::bot;
     }
 
-    Err assign(const DefSet& defs, Lattice v);
-    Lattice lookup_init(const Def*);
+    Err assign(const DefSet& defs, CA v);
+    CA lookup_init(const Def*);
 
-    static bool is_escaping(Lattice v) { return v == Lattice::UNKNOWN || v == Lattice::PROC_E; }
-    bool is_escaping(const Def* def) { return is_escaping(lookup_init(def)); }
-    static bool is_basicblock(Lattice v) { return v == Lattice::JMP || v == Lattice::RET; }
-    bool is_basicblock(const Def* def) { return is_basicblock(lookup_init(def)); }
+    bool is_escaping(const Def* def) { return ca_is_escaping(lookup_init(def)); }
+    bool is_basicblock(const Def* def) { return ca_is_basicblock(lookup_init(def)); }
 
-    const Def* mark(const Def* def, Lattice l = Lattice::BOT);
+    const Def* mark(const Def* def, CA l = CA::bot);
 
     bool is_evil(const Def*);
 

@@ -6,6 +6,25 @@ namespace thorin {
 
 /* auxillary functions */
 
+/* annotations */
+
+CA operator&(CA a, CA b) {
+    if ((uint8_t) b < (uint8_t) a)
+        std::swap(a, b);
+    if (a == CA::bot || a == b)
+        return b;
+    if (a == CA::proc && b == CA::proc_e)
+        return CA::proc_e;
+    return CA::unknown;
+}
+
+std::tuple<const Def*, CA> isa_mark(const Def* def) {
+    if (auto query = isa<Tag::CA>(def)) {
+        return {query->arg(), query.flags()};
+    }
+    return {nullptr, CA::bot};
+}
+
 // Adjust the index of an argument to account for the env param
 size_t shift_env(size_t i) {
     return (i < CLOSURE_ENV_PARAM) ? i : i - 1_u64;
@@ -110,14 +129,19 @@ isa_folded_branch(const Def* def) {
 }
 
 ClosureLit isa_closure_lit(const Def* def, bool lambda_or_branch) {
+    auto mark = CA::bot;
+    if (auto q = isa<Tag::CA>(def)) {
+        def = q->arg();
+        mark = q.flags();
+    }
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_ctype(def->type())) {
         auto fnc = std::get<1_u64>(unpack_closure(tpl));
         auto [idx, lams] = isa_folded_branch(fnc);
         if (!lambda_or_branch || fnc->isa<Lam>() || (idx && lams))
-            return ClosureLit(tpl);
+            return ClosureLit(tpl, mark);
     }
-    return ClosureLit(nullptr);
+    return ClosureLit(nullptr, mark);
 }
 
 const Def* ClosureLit::env() {
@@ -156,31 +180,6 @@ const Def* ClosureLit::env_var() {
     return var(CLOSURE_ENV_PARAM);
 }
 
-// TODO: Introduce a sperat axiom/flag for this??
-static bool isa_mark(const Def* def) {
-    auto& w = def->world();
-    return def == w.type_mem();
-}
-
-bool ClosureLit::marked_no_esc() {
-    auto m = def_->debug().meta;
-    return m &&
-        (isa_mark(m) ||
-           (m->isa<Tuple>() &&
-           std::any_of(m->ops().begin(), m->ops().end(), isa_mark)));
-}
-
-const Def* ClosureLit::get_esc_annot(const Def* def) {
-    auto& w = def->world();
-    auto dbg = def->debug();
-    dbg.name += "no_esc";
-    dbg.meta = (dbg.meta) ? merge_tuple(dbg.meta, {w.type_mem()}) : w.type_mem();
-    return w.dbg(dbg);
-}
-
-bool ClosureLit::is_basicblock() { 
-    return ctype_to_pi(type())->is_basicblock(); 
-}
 
 unsigned int ClosureLit::order() { 
     return ctype_to_pi(type())->order(); 

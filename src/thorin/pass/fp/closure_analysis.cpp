@@ -2,49 +2,7 @@
 
 namespace thorin {
 
-using Lattice = ClosureAnalysis::Lattice;
 using std::tuple;
-
-Lattice operator&(Lattice a, Lattice b) {
-    if ((uint8_t) b < (uint8_t) a)
-        std::swap(a, b);
-    if (a == Lattice::BOT || a == b)
-        return b;
-    if (a == Lattice::PROC && b == Lattice::PROC_E)
-        return Lattice::PROC_E;
-    return Lattice::UNKNOWN;
-}
-
-Lattice& operator&=(Lattice& a, const Lattice& b) {
-    return a = a & b;
-}
-    
-static const char* lattice2str(Lattice a) {
-    switch (a) {
-        case Lattice::PROC:    return "PROC";
-        case Lattice::PROC_E:  return "PROC_E";
-        case Lattice::RET:     return "RET";
-        case Lattice::JMP:     return "JMP";
-        case Lattice::UNKNOWN: return "UNKNOWN";
-        default:               return "BOT";
-    }
-}
-
-static tuple<const Def*, Lattice> isa_mark(const Def* def) {
-    if (auto query = isa<Tag::CA>(def)) {
-        switch(query.flags()) {
-            case CA::jmp: return {query->arg(), Lattice::JMP};
-            case CA::ret: return {query->arg(), Lattice::RET};
-            case CA::unknown: return {query->arg(), Lattice::UNKNOWN};
-            case CA::proc: {
-                auto papp = query->callee()->isa<App>();
-                assert(papp && isa_lit(papp->arg()));
-                return {query->arg(), (as_lit(papp->arg()) ? Lattice::PROC_E : Lattice::PROC)};
-           }
-        }
-    }
-    return {nullptr, Lattice::BOT};
-}
 
 static tuple<const Def*, Lam*> isa_var(const Def* def) {
     if (auto proj = def->isa<Extract>()) {
@@ -112,26 +70,26 @@ ClosureAnalysis::Err ClosureAnalysis::error(const Def* def) {
 }
 
 
-ClosureAnalysis::Err ClosureAnalysis::assign(const DefSet& defs, Lattice v) {
+ClosureAnalysis::Err ClosureAnalysis::assign(const DefSet& defs, CA v) {
     auto e = ok();
-    if (v == Lattice::BOT)
+    if (v == CA::bot)
         return e;
     for (auto def: defs) {
         auto prev = lookup(def);
         auto new_v = prev & v;
         if (new_v == prev)
             continue;
-        if (prev != Lattice::BOT) {
+        if (prev != CA::bot) {
             e = std::min(e, error(def));
-            world().DLOG("{}: {} -> {}", def, lattice2str(prev), lattice2str(new_v));
+            world().DLOG("{}: {} -> {}", def, op2str(prev), op2str(new_v));
         } else {
-            world().DLOG("init {}: {}", def, lattice2str(new_v));
+            world().DLOG("init {}: {}", def, op2str(new_v));
         }
         switch (new_v) {
-            case Lattice::PROC_E:
+            case CA::proc_e:
                 esc_proc_.insert(def);
                 break;
-            case Lattice::UNKNOWN:
+            case CA::unknown:
                 unknown_.insert(def);
                 break;
             default: {
@@ -145,9 +103,9 @@ ClosureAnalysis::Err ClosureAnalysis::assign(const DefSet& defs, Lattice v) {
                     auto var = lam->var(i);
                     if (!interesting_type(var->type()))
                         continue;
-                    auto var_v = (new_v == Lattice::JMP) ? Lattice::PROC
-                               : (new_v == Lattice::RET) ? Lattice::PROC_E
-                               : (var == lam->ret_var()) ? Lattice::RET : Lattice::PROC;
+                    auto var_v = (new_v == CA::jmp) ? CA::proc
+                               : (new_v == CA::ret) ? CA::proc_e
+                               : (var == lam->ret_var()) ? CA::ret : CA::proc;
                     e = std::min(e, assign({var}, var_v));
                 }
             }
@@ -159,22 +117,22 @@ ClosureAnalysis::Err ClosureAnalysis::assign(const DefSet& defs, Lattice v) {
 // This is like simpl_lookup, but pre-assignes a lattice value if we have not seen 
 // 'def' before. This is required if 'def' appears for the first time in (known) callee position.
 // Note that 'RET' can never appear as a known callee
-Lattice ClosureAnalysis::lookup_init(const Def* def) {
-    Lattice v = lookup(def);
-    if (v != Lattice::BOT)
+CA ClosureAnalysis::lookup_init(const Def* def) {
+    CA v = lookup(def);
+    if (v != CA::bot)
         return v;
     if (auto lam = def->isa_nom<Lam>()) {
-        v = (!lam->is_set() || lam->ret_var()) ? Lattice::PROC : Lattice::JMP;
+        v = (!lam->is_set() || lam->ret_var()) ? CA::proc : CA::jmp;
     } else if (auto [var, lam] = isa_var(def); var && lam) {
-        v = (lam->ret_var() == var) ? Lattice::RET : Lattice::PROC;
+        v = (lam->ret_var() == var) ? CA::ret : CA::proc;
     } else {
-        v = Lattice::UNKNOWN;
+        v = CA::unknown;
     }
     assign({def}, v);
     return v;
 }
 
-const Def* ClosureAnalysis::mark(const Def* def, Lattice a) {
+const Def* ClosureAnalysis::mark(const Def* def, CA a) {
     auto& w = world();
     auto [var, _] = isa_var(def);
     if (auto tuple = def->isa<Tuple>(); tuple && !isa_closure_lit(def)) {
@@ -188,15 +146,8 @@ const Def* ClosureAnalysis::mark(const Def* def, Lattice a) {
         return (a == b) ? def : mark(inner, a);
     } else {
         // Lambda, Variable, Closure
-        a = (a == Lattice::BOT) ? lookup_init(def) : a;
-        switch(a) {
-            case Lattice::RET:     return w.mark_ret(def);
-            case Lattice::JMP:     return w.mark_jmp(def);
-            case Lattice::PROC:    return w.mark_proc(def, false);
-            case Lattice::PROC_E:  return w.mark_proc(def, true);
-            case Lattice::UNKNOWN: return w.mark_unknown(def);
-            default:               return def;
-        }
+        a = (a == CA::bot) ? lookup_init(def) : a;
+        return w.ca_mark(def, a);
     }
 }
 
@@ -219,7 +170,7 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
     if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
         w.DLOG("analyze/rw app: {}", def);
         auto num_args = app->num_args();
-        auto absytpe = Array<Lattice>(app->callee_type()->num_doms(), Lattice::BOT);
+        auto absytpe = Array<CA>(app->callee_type()->num_doms(), CA::bot);
         for (auto c: split(app->callee(), true)) {
             for (size_t i = 0; i < num_args; i++) {
                 if (!interesting_type(app->callee_type()->dom(i)))
@@ -228,12 +179,12 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
                     absytpe[i] &= lookup_init(lam->var(i));
                 } else if (auto [var, lam] = isa_var(c); var && !is_evil(var)) {
                     auto v = lookup_init(var);
-                    if ((v == Lattice::PROC_E || v == Lattice::PROC) && i == num_args - 1)
-                        absytpe[i] &= Lattice::RET;
+                    if ((v == CA::proc_e || v == CA::proc) && i == num_args - 1)
+                        absytpe[i] &= CA::ret;
                     else
-                        absytpe[i] &= Lattice::PROC_E;
+                        absytpe[i] &= CA::proc_e;
                 } else {
-                    absytpe[i] = Lattice::UNKNOWN;
+                    absytpe[i] = CA::unknown;
                 }
             }
         }
@@ -242,7 +193,7 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
         auto new_callee = mark(app->callee());
         auto new_args = app->args();
         for (size_t i = 0; i < app->num_args(); i++) {
-            if (absytpe[i] != Lattice::BOT) {
+            if (absytpe[i] != CA::bot) {
                 auto arg = app->arg(i);
                 err = std::min(err, assign(split(arg, false), absytpe[i]));
                 new_args[i] = mark(arg);
@@ -254,16 +205,16 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
 
     } else if (auto closure = isa_closure_lit(def)) {
         w.DLOG("analyze/rw closure: {}", def);
-        auto lam_v = Lattice::BOT;
-        auto env_v = Lattice::BOT;
+        auto lam_v = CA::bot;
+        auto env_v = CA::bot;
         for (auto f: split(closure.fnc(), false)) {
             auto lam = f->isa_nom<Lam>();
             assert(lam && "closure fnc = lam or folded branch");
             lam_v &= lookup_init(lam);
             env_v &= lookup_init(lam->var(CLOSURE_ENV_PARAM));
         }
-        env_v &= (lam_v == Lattice::UNKNOWN || lam_v == Lattice::PROC_E)
-               ? Lattice::PROC_E : Lattice::PROC;
+        env_v &= (lam_v == CA::unknown || lam_v == CA::proc_e)
+               ? CA::proc_e : CA::proc;
 
         if (auto err = assign(split(closure.env(), false), env_v)) {
             return proxy(def, err);
@@ -275,7 +226,7 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
     } else if (auto store = isa<Tag::Store>(def)) {
         w.DLOG("analyze/rw store: {}", def);
         auto stored_defs = split(store->arg(), false);
-        if (auto err = assign(stored_defs, Lattice::PROC_E)) {
+        if (auto err = assign(stored_defs, CA::proc_e)) {
             return proxy(def, err);
         } else {
             auto args = store->args();
@@ -300,8 +251,8 @@ undo_t ClosureAnalysis::analyze(const Def* def) {
 
     // Which *variables* are captured by escaping functions for which are closure has not yet been built?
     if (analyze_captured_ && !is_basicblock(curr_nom())) {
-        auto v = is_escaping(curr_nom()) ? Lattice::PROC_E : Lattice::PROC;
-        w.DLOG("analyze implicit captures of {} ({})", curr_nom(), lattice2str(v));
+        auto v = is_escaping(curr_nom()) ? CA::proc_e : CA::proc;
+        w.DLOG("analyze implicit captures of {} ({})", curr_nom(), op2str(v));
         auto& free_defs = fva_->run(curr_nom());
         for (auto def: free_defs) {
             if (auto [var, _] = isa_var(def); var && interesting_type(var->type())) {

@@ -68,37 +68,40 @@ private:
 /// The types of @p Axiom%s are adjusted as well.
 
 class ClosureConv {
-    public:
-        ClosureConv(World& world)
-            : world_(world)
-            , fva_(world)
-            , closures_(DefMap<ClosureStub>())
-            , closure_types_(Def2Def())
-            , worklist_(std::queue<const Def*>()) {};
+public:
+    ClosureConv(World& world, bool keep_ca_marks = false)
+        : world_(world)
+        , fva_(world)
+        , closures_(DefMap<ClosureStub>())
+        , closure_types_(Def2Def())
+        , worklist_(std::queue<const Def*>()) 
+        , keep_ca_marks_(keep_ca_marks)
+    {};
 
-        void run();
+    void run();
 
-    private:
-        struct ClosureStub {
-            Lam* old_fn;
-            size_t num_fvs;
-            const Def* env;
-            Lam* fn;
-        };
+private:
+    struct ClosureStub {
+        Lam* old_fn;
+        size_t num_fvs;
+        const Def* env;
+        Lam* fn;
+    };
 
-        const Def* rewrite(const Def* old_def, Def2Def& subst);
+    const Def* rewrite(const Def* old_def, Def2Def& subst);
 
-        const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
+    const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
 
-        ClosureStub make_stub(Lam* lam, Def2Def& subst);
+    ClosureStub make_stub(Lam* lam, Def2Def& subst);
 
-        World& world() { return world_; }
+    World& world() { return world_; }
 
-        World& world_;
-        FVA fva_;
-        DefMap<ClosureStub> closures_;
-        Def2Def closure_types_;
-        std::queue<const Def*> worklist_;
+    World& world_;
+    FVA fva_;
+    DefMap<ClosureStub> closures_;
+    Def2Def closure_types_;
+    std::queue<const Def*> worklist_;
+    const bool keep_ca_marks_;
 };
 
 /// # Auxillary functions to deal with closures #
@@ -108,6 +111,20 @@ class ClosureConv {
 /// - Lambdas: <code>(type, lambda, env)</code>
 /// - Folded branches: <code>(type, proj i (lam_0, .., lam_N), proj i (env_0, .., env_N))</code>
 /// The later form is introduced by the @p UnboxClosures pass.
+
+/* marks */
+
+// join 
+CA operator&(CA a, CA b);
+inline CA& operator&=(CA& a, const CA& b) {
+    return a = a & b;
+}
+
+inline bool ca_is_escaping(CA v) { return v == CA::unknown || v == CA::proc_e; }
+inline bool ca_is_basicblock(CA v) { return v == CA::jmp || v == CA::ret; }
+inline bool ca_is_proc(CA v) { return v == CA::proc || v == CA::proc_e; }
+
+std::tuple<const Def*, CA> isa_mark(const Def* def);
 
 class ClosureLit {
 public:
@@ -148,24 +165,30 @@ public:
     /// @name Properties
     /// @{
     unsigned int order();
-    bool is_basicblock();
+    bool is_escaping() { return ca_is_escaping(mark_); };
+    bool is_basicblock() { return ca_is_basicblock(mark_); };
+    bool is_proc() { return ca_is_proc(mark_); };
+    bool is(CA a) { return mark_ == a; }
     /// @}
 
     // @name Escape analyses
     /// @{
-    bool marked_no_esc(); 
-    static const Def* get_esc_annot(const Def*);
+    bool marked_no_esc() { return false; }
+    static const Def* get_esc_annot(const Def* def) { return def; };
     /// @}
 
 private:
-    ClosureLit(const Tuple* def)
-        : def_(def)
+    ClosureLit(const Tuple* def, CA mark = CA::bot)
+        : def_(def), mark_(mark)
     {};
 
     const Tuple* def_;
+    const CA mark_;
 
     friend ClosureLit isa_closure_lit(const Def*, bool);
 };
+
+
 
 /// return @p def if @p def is a closure and @c nullptr otherwise
 const Sigma* isa_ctype(const Def* def);

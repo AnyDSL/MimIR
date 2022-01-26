@@ -389,12 +389,17 @@ public:
     const Def* op_rev_diff(const Def* fn, const Def* dbg = {});
     //@}
     
-    /// @name BE annoations
+    /// @name CA annoations
     // @{
-    const Def* mark_ret(const Def* def, const Def* dbg = {}) { return app(app(data_.be_ret_, def->type()), def, dbg); }
-    const Def* mark_jmp(const Def* def, const Def* dbg = {}) { return app(app(data_.be_jmp_, def->type()), def, dbg); }
-    const Def* mark_proc(const Def* def, bool escaping, const Def* dbg = {}) { return app(app(app(data_.be_proc_, def->type()), lit_bool(escaping)), def, dbg); }
-    const Def* mark_unknown(const Def* def, const Def* dbg = {}) { return app(app(data_.be_unknown_, def->type()), def, dbg); }
+    const Def* ca_mark(const Def* def, CA a, const Def* dbg = {}) {
+        switch (a) {
+#define CODE(T, o) case T::o: return app(app(data_.ca_ ## o ## _, def->type()), def, dbg);
+            THORIN_CA (CODE)
+#undef CODE
+            default: return def;
+        }
+
+    }
     // @}
 
     /// @name helpers
@@ -656,10 +661,11 @@ private:
         const Axiom* type_real_;
         const Axiom* type_tangent_vector_;
         const Axiom* op_rev_diff_;
-        const Axiom* be_ret_;
-        const Axiom* be_jmp_;
-        const Axiom* be_proc_;
-        const Axiom* be_unknown_;
+        const Axiom* ca_ret_;
+        const Axiom* ca_jmp_;
+        const Axiom* ca_proc_;
+        const Axiom* ca_proc_e_;
+        const Axiom* ca_unknown_;
         std::string name_;
         Externals externals_;
         Sea defs_;

@@ -263,15 +263,9 @@ World::World(const std::string& name)
         auto id_type = nom_pi(kind())->set_dom(kind());
         auto var = id_type->var(0_u64);
         id_type->set_codom(pi(var, var));
-        data_.be_ret_ = axiom(id_type, Tag::CA, (flags_t) CA::ret, dbg(op2str(CA::ret)));
-        data_.be_jmp_ = axiom(id_type, Tag::CA, (flags_t) CA::jmp, dbg(op2str(CA::jmp)));
-        data_.be_unknown_ = axiom(id_type, Tag::CA, (flags_t) CA::unknown, dbg(op2str(CA::unknown)));
-
-        // Note: This has to be curried or the rewrite does not work
-        auto proc_type = nom_pi(kind())->set_dom(kind());
-        var = proc_type->var();
-        proc_type->set_codom(pi(type_bool(), pi(var, var))); 
-        data_.be_proc_ = axiom(proc_type, Tag::CA, (flags_t) CA::proc, dbg(op2str(CA::proc)));
+#define CODE(T, o) data_.ca_ ## o ## _ = axiom(id_type, Tag::T, (flags_t) T::o, dbg(op2str(T::o)));
+        THORIN_CA (CODE)
+#undef CODE
     }
 }
 

@@ -8,8 +8,10 @@
 #include "thorin/pass/rw/partial_eval.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
+
 #include "thorin/pass/fp/closure_destruct.h"
 #include "thorin/pass/fp/unbox_closures.h"
+#include "thorin/pass/fp/closure_analysis.h"
 
 // old stuff
 #include "thorin/transform/cleanup_world.h"
@@ -23,37 +25,42 @@ void optimize(World& world) {
     PassMan opt(world);
     // opt.add<PartialEval>();
     // opt.add<BetaRed>();
-    // auto er = opt.add<EtaRed>();
-    // auto ee = opt.add<EtaExp>(er);
-    // opt.add<SSAConstr>(ee);
+    auto er = opt.add<EtaRed>();
+    auto ee = opt.add<EtaExp>(er);
+    opt.add<SSAConstr>(ee);
     // opt.add<CopyProp>();
-    // opt.add<Scalerize>();
+    opt.add<Scalerize>(ee);
     // opt.add<AutoDiff>();
-    // opt.run();
+    opt.run();
+
+    PassMan annot_ret(world);
+    annot_ret.add<ClosureAnalysis>();
+    annot_ret.run();
 
     // while (partial_evaluation(world, true)); // lower2cff
     // world.debug_stream();
     
-    ClosureConv(world).run();
-    world.debug_stream();
-    
-    PassMan closure_destruct(world);
-    auto er = closure_destruct.add<EtaRed>();
-    auto ee = closure_destruct.add<EtaExp>(er);
-    closure_destruct.add<ClosureDestruct>(ee);
-    closure_destruct.run();
-
-    PassMan unbox_closures(world);
-    unbox_closures.add<Scalerize>(nullptr);
-    unbox_closures.add<UnboxClosure>();
-    unbox_closures.run();
-    LowerTypedClosures(world).run();
-
-    PassMan codgen_prepare(world);
-    codgen_prepare.add<Scalerize>(nullptr);
-    codgen_prepare.add<RetWrap>();
-    codgen_prepare.run();
+    // ClosureConv(world).run();
     // world.debug_stream();
-}
+    
+    // PassMan closure_destruct(world);
+    // er = closure_destruct.add<EtaRed>();
+    // ee = closure_destruct.add<EtaExp>(er);
+    // closure_destruct.add<ClosureDestruct>(ee);
+    // closure_destruct.add<Scalerize>(nullptr);
+    // closure_destruct.run();
 
+    // PassMan unbox_closures(world);
+    // unbox_closures.add<Scalerize>(nullptr);
+    // unbox_closures.add<UnboxClosure>();
+    // unbox_closures.run();
+
+    // LowerTypedClosures(world).run();
+
+    // PassMan codgen_prepare(world);
+    // codgen_prepare.add<Scalerize>(nullptr);
+    // codgen_prepare.add<RetWrap>();
+    // codgen_prepare.run();
+    world.debug_stream();
+}
 }
