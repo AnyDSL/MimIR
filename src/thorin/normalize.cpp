@@ -989,9 +989,13 @@ const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const D
     if (auto l_in = isa_lit(n_i)) {
         s2.fmt("n_i is lit\n");
 
+        s2.fmt("lr has value {}\n",lr.has_value());
         auto args = arg->projs((size_t)*l_in);
+        s2.fmt("lin {}\n",*l_in);
+        s2.fmt("args {}\n",args);
 
         if (lr && std::all_of(args.begin(), args.end(), [&](const Def* arg) { return is_tuple_or_pack(arg); })) {
+            s2.fmt("all tuple or pack\n");
             auto shapes = s->projs((size_t)*lr);
             auto s_n = isa_lit(shapes.front());
 
