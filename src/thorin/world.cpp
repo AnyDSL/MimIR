@@ -374,6 +374,8 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto type = pi->apply(arg).back();
     auto [axiom, currying_depth] = get_axiom(callee); // TODO move down again
     if (axiom && currying_depth == 1) {
+//        if(axiom->tag()==Tag::Lift)
+//            DLOG("Lift Axiom & CURRYING DEPTH");
         if (auto normalize = axiom->normalizer())
             return normalize(type, callee, arg, dbg);
     }

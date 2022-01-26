@@ -13,6 +13,7 @@
 // old stuff
 #include "thorin/transform/cleanup_world.h"
 #include "thorin/transform/partial_evaluation.h"
+#include "thorin/transform/mangle.h"
 
 
 namespace thorin {
@@ -35,6 +36,7 @@ void optimize(World& world) {
     opt2.add<SSAConstr>(ee);
     opt2.run();
     printf("Finished Opti2\n");
+
 
 
 

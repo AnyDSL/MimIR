@@ -49,6 +49,37 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
 
     // TODO: idef array
 
+    if(auto arr = a->type()->isa<Arr>();false) {
+        dlog(world,"  Array add");
+        auto shape = arr->shape();
+        dlog(world,"  Array shape {}", shape);
+        dlog(world,"  Array {}", arr);
+        #define w world
+        auto lifted=w.app(w.app(w.app(w.ax_lift(),
+                        // rs => sigma(r:nat, s:arr with size r of nat)
+                        // r = how many dimensions in the array
+                        // s = dimensions
+            {w.lit_nat(1), shape}), // w.tuple({shape})
+
+                  // is_os = [ni, Is, no, Os, f]
+                  // ni:nat how many base input dims
+                  // Is: <n_i;*> type array os size ni => base input types
+                  // no:nat how many base out dims
+                  // Os: <n_o;*> type array os size no => base output types
+                  // f: arr of size ni of types Is
+                  //    to arr of size no of types Os
+            {w.lit_nat(2),w.tuple({w.type_real(32),w.type_real(32)}),
+                  w.lit_nat(1), w.type_real(32),
+                  w.fn(ROp::add, (nat_t)0, (nat_t)32)
+                  }),
+            world.tuple({a,b}));
+        type_dump(world,"  lifted",lifted);
+//      w.app(w.app(w.app(w.ax_lift(),
+//                        {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os), inner_args);
+        THORIN_UNREACHABLE;
+        return {mem, lifted};
+    }
+
     auto dim = getDim(a);
     Array<const Def*> ops{dim};
     for (size_t i = 0; i < ops.size(); ++i) {

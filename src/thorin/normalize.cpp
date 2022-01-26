@@ -970,9 +970,25 @@ const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const D
     // TODO more than one Os
     // TODO select which Is/Os to lift
 
+    Stream s2;
+    s2.fmt("norm lift:\n");
+    s2.fmt("type {}\n",type);
+    s2.fmt("c {} : {}\n",c,c->type());
+    s2.fmt("arg {} : {}\n",arg, arg->type());
+    s2.fmt("r {}\n",r);
+    s2.fmt("s {}\n",s);
+    s2.fmt("ni {}\n",n_i);
+    s2.fmt("no {}\n",n_o);
+    s2.fmt("Is {}\n",Is);
+    s2.fmt("Os {}\n",Os);
+    s2.fmt("f {} : {}\n",f,f->type());
+
     if (lr && ls && *lr == 1 && *ls == 1) return w.app(f, arg, dbg);
+    s2.fmt("not all one\n");
 
     if (auto l_in = isa_lit(n_i)) {
+        s2.fmt("n_i is lit\n");
+
         auto args = arg->projs((size_t)*l_in);
 
         if (lr && std::all_of(args.begin(), args.end(), [&](const Def* arg) { return is_tuple_or_pack(arg); })) {
@@ -991,6 +1007,7 @@ const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const D
             }
         }
     }
+    s2.fmt("use raw_app\n");
 
     return w.raw_app(callee, arg, dbg);
 }
