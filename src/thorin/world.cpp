@@ -119,7 +119,7 @@ World::World(const std::string& name)
         };
 #define CODE(T, o) data_.Conv_[size_t(T::o)] = axiom(normalize_Conv<T::o>, make_type(T::o), Tag::Conv, flags_t(T::o), dbg(op2str(T::o)));
         THORIN_CONV(CODE)
-#undef Code
+#undef CODE
     } { // hlt/run: T: * -> T -> T
         auto type = nom_pi(kind())->set_dom(kind());
         auto T = type->var(dbg("T"));
@@ -259,6 +259,19 @@ World::World(const std::string& name)
         auto Xi = pi(cn_mem_flat(A, B), diffd);
         type->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
+    } { // Backend annotations
+        auto id_type = nom_pi(kind())->set_dom(kind());
+        auto var = id_type->var(0_u64);
+        id_type->set_codom(pi(var, var));
+        data_.be_ret_ = axiom(id_type, Tag::CA, (flags_t) CA::ret, dbg(op2str(CA::ret)));
+        data_.be_jmp_ = axiom(id_type, Tag::CA, (flags_t) CA::jmp, dbg(op2str(CA::jmp)));
+        data_.be_unknown_ = axiom(id_type, Tag::CA, (flags_t) CA::unknown, dbg(op2str(CA::unknown)));
+
+        // Note: This has to be curried or the rewrite does not work
+        auto proc_type = nom_pi(kind())->set_dom(kind());
+        var = proc_type->var();
+        proc_type->set_codom(pi(type_bool(), pi(var, var))); 
+        data_.be_proc_ = axiom(proc_type, Tag::CA, (flags_t) CA::proc, dbg(op2str(CA::proc)));
     }
 }
 

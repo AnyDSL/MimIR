@@ -388,6 +388,14 @@ public:
     const Def* type_tangent_vector(const Def* primal_type, const Def* dbg = {});
     const Def* op_rev_diff(const Def* fn, const Def* dbg = {});
     //@}
+    
+    /// @name BE annoations
+    // @{
+    const Def* mark_ret(const Def* def, const Def* dbg = {}) { return app(app(data_.be_ret_, def->type()), def, dbg); }
+    const Def* mark_jmp(const Def* def, const Def* dbg = {}) { return app(app(data_.be_jmp_, def->type()), def, dbg); }
+    const Def* mark_proc(const Def* def, bool escaping, const Def* dbg = {}) { return app(app(app(data_.be_proc_, def->type()), lit_bool(escaping)), def, dbg); }
+    const Def* mark_unknown(const Def* def, const Def* dbg = {}) { return app(app(data_.be_unknown_, def->type()), def, dbg); }
+    // @}
 
     /// @name helpers
     //@{
@@ -648,6 +656,10 @@ private:
         const Axiom* type_real_;
         const Axiom* type_tangent_vector_;
         const Axiom* op_rev_diff_;
+        const Axiom* be_ret_;
+        const Axiom* be_jmp_;
+        const Axiom* be_proc_;
+        const Axiom* be_unknown_;
         std::string name_;
         Externals externals_;
         Sea defs_;
