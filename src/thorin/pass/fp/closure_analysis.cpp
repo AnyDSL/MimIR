@@ -95,7 +95,8 @@ ClosureAnalysis::Err ClosureAnalysis::assign(const DefSet& defs, CA v) {
                         continue;
                     auto var_v = (new_v == CA::jmp) ? CA::proc
                                : (new_v == CA::ret) ? CA::proc_e
-                               : (var == lam->ret_var()) ? CA::ret : CA::proc;
+                               : (var == lam->ret_var()) ? CA::ret   // proc or proc_e
+                               : (lam->is_set()) ? CA::proc : CA::proc_e;
                     e = std::min(e, assign({var}, var_v));
                 }
             }
