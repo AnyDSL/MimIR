@@ -114,31 +114,40 @@ CA ClosureAnalysis::lookup_init(const Def* def) {
         return v;
     if (auto lam = def->isa_nom<Lam>()) {
         v = (!lam->is_set() || lam->ret_var()) ? CA::proc : CA::jmp;
+        assign({def}, v);
     } else if (auto [var, lam] = isa_lam_var(def); var && lam) {
-        v = (lam->ret_var() == var) ? CA::ret : CA::proc;
+        v = (lam->ret_var() == var) ? CA::ret 
+          : (lam->is_set()) ? CA::proc : CA::proc_e;
+        assign({def}, v);
     } else {
         v = CA::unknown;
     }
-    assign({def}, v);
     return v;
 }
 
-const Def* ClosureAnalysis::mark(const Def* def, CA a) {
+const Def* ClosureAnalysis::mark(const Def* def) {
     auto& w = world();
-    auto [var, _] = isa_lam_var(def);
-    if (auto tuple = def->isa<Tuple>(); tuple && !isa_closure_lit(def)) {
-        auto new_ops = DefArray(tuple->num_ops(), [&](auto i) { return mark(tuple->op(i), a); });
+    if (auto [var, _] = isa_lam_var(def); var || def->isa<Lam>()) {
+        return w.ca_mark(def, lookup_init(def));
+    } else if (auto c = isa_closure_lit(def)) {
+        auto lam = c.fnc_as_lam();
+        if (!lam) {
+            auto lams = c.fnc_as_folded().second;
+            assert (lams && lams->num_ops() > 0);
+            lam = lams->op(0)->as_nom<Lam>();
+        }
+        return w.ca_mark(pack_closure(mark(c.env()), c.fnc(), c.type()), lookup_init(lam));
+    } else if (auto tuple = def->isa<Tuple>(); tuple && !isa_closure_lit(def)) {
+        auto new_ops = DefArray(tuple->num_ops(), [&](auto i) { return mark(tuple->op(i)); });
         return w.tuple(tuple->type(), new_ops, tuple->dbg());
     } else if (auto arr = def->isa<Arr>()) {
-        return arr->refine(1, mark(arr->body(), a));
+        return arr->refine(1, mark(arr->body()));
     } else if (auto proj = def->isa<Extract>(); proj && !var) {
-        return w.extract(mark(proj->tuple(), a),proj->index(), proj->dbg());
+        return w.extract(mark(proj->tuple()),proj->index(), proj->dbg());
     } else if (auto [inner, b] = isa_mark(def); inner) {
-        return (a == b) ? def : mark(inner, a);
+        return mark(inner);
     } else {
-        // Lambda, Variable, Closure
-        a = (a == CA::bot) ? lookup_init(def) : a;
-        return w.ca_mark(def, a);
+        return def;
     }
 }
 
@@ -162,7 +171,8 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
         w.DLOG("analyze/rw app: {}", def);
         auto num_args = app->num_args();
         auto absytpe = Array<CA>(app->callee_type()->num_doms(), CA::bot);
-        for (auto c: split(app->callee(), true)) {
+        auto callees = split(app->callee(), true);
+        for (auto c: callees) {
             for (size_t i = 0; i < num_args; i++) {
                 if (!interesting_type(app->callee_type()->dom(i)))
                     continue;
@@ -210,8 +220,7 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
         if (auto err = assign(split(closure.env(), false), env_v)) {
             return proxy(def, err);
         } else {
-            auto new_env = mark(closure.env(), env_v);
-            return mark(pack_closure(new_env, closure.fnc(), closure.type()), lam_v);
+            return mark(closure);
         }
 
     } else if (auto store = isa<Tag::Store>(def)) {

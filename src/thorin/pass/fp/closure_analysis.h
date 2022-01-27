@@ -72,8 +72,7 @@ private:
     bool is_escaping(const Def* def) { return ca_is_escaping(lookup_init(def)); }
     bool is_basicblock(const Def* def) { return ca_is_basicblock(lookup_init(def)); }
 
-    const Def* mark(const Def* def, CA l = CA::bot);
-
+    const Def* mark(const Def* def);
     bool is_evil(const Def*);
 
     std::unique_ptr<FVA> fva_;

@@ -22,16 +22,16 @@
 namespace thorin {
 
 void optimize(World& world) {
-    PassMan opt(world);
+    // PassMan opt(world);
     // opt.add<PartialEval>();
     // opt.add<BetaRed>();
-    auto er = opt.add<EtaRed>();
-    auto ee = opt.add<EtaExp>(er);
-    opt.add<SSAConstr>(ee);
+    // auto er = opt.add<EtaRed>();
+    // auto ee = opt.add<EtaExp>(er);
+    // opt.add<SSAConstr>(ee);
     // opt.add<CopyProp>();
-    opt.add<Scalerize>(ee);
+    // opt.add<Scalerize>(ee);
     // opt.add<AutoDiff>();
-    opt.run();
+    // opt.run();
 
     PassMan closure_ana(world);
     closure_ana.add<ClosureAnalysis>();

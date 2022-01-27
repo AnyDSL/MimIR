@@ -69,12 +69,21 @@ private:
 
 class ClosureConv {
 public:
-    ClosureConv(World& world)
+
+    enum Flags : uint8_t {
+        KEEP_MARKS = 1,     ///< preserve closure analysis marks
+        MAX = 1 << 2,       ///< closure convert everything
+        SSI = 1 << 3,       ///< closure convert everything but jumps and funtions
+        MIN = 1 << 4        ///< closure convert functions only
+    };
+
+    ClosureConv(World& world, Flags flags = Flags(MIN | KEEP_MARKS))
         : world_(world)
         , fva_(world)
         , closures_(DefMap<ClosureStub>())
         , closure_types_(Def2Def())
         , worklist_(std::queue<const Def*>()) 
+        , flags_(flags)
     {};
 
     void run();
@@ -87,10 +96,20 @@ private:
         Lam* fn;
     };
 
-    const Def* rewrite(const Def* old_def, Def2Def& subst);
-    const Def* rw_non_captured(const Def* var, Def2Def& subst);
+    void rewrite_body(Lam* lam, Def2Def& subst);
+    const Def* rewrite(const Def* old_def, Def2Def& subst, CA ca = CA::bot);
+    const Def* rw_non_captured(const Def* var, Def2Def& subst, CA ca = CA::bot);
     const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
-    ClosureStub make_stub(Lam* lam, Def2Def& subst);
+    ClosureStub make_stub(Lam* lam, Def2Def& subst, bool covert);
+    const Def* make_closure(Lam* lam, Def2Def& subst, bool convert);
+
+    bool convert_lam(CA ca) {
+        switch (ca) {
+            case CA::jmp:                     
+            case CA::ret: return flags_ <= MAX;         
+            default:      return true;
+        }
+    }
 
     World& world() { return world_; }
 
@@ -99,6 +118,7 @@ private:
     DefMap<ClosureStub> closures_;
     Def2Def closure_types_;
     std::queue<const Def*> worklist_;
+    const Flags flags_;
 };
 
 /// # Auxillary functions to deal with closures #
@@ -115,9 +135,7 @@ private:
 CA operator&(CA a, CA b);
 inline CA& operator&=(CA& a, const CA& b) {
     return a = a & b;
-}
-
-inline bool ca_is_escaping(CA v) { return v == CA::unknown || v == CA::proc_e; }
+} inline bool ca_is_escaping(CA v) { return v == CA::unknown || v == CA::proc_e; }
 inline bool ca_is_basicblock(CA v) { return v == CA::jmp || v == CA::ret; }
 inline bool ca_is_proc(CA v) { return v == CA::proc || v == CA::proc_e; }
 
