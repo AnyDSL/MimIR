@@ -338,7 +338,10 @@ const Def* World::tangent_type(const Def* A) {
         return arr(arrdef->shape(), tangent_type(arrdef->body()),arrdef->dbg());
     }
     if(auto sig = A->isa<Sigma>()) {
+        // TODO: handle structs
 //        s2.fmt("A is Sigma\n");
+//        s2.fmt("A fields {} \n",sig->fields());
+//        s2.fmt("A is structural {} \n",sig->isa_structural());
         auto ops = sig->ops();
         Array<const Def*> tan_ops_arr{ops.size() ,[&](auto i) {
                 return tangent_type(ops[i]);
