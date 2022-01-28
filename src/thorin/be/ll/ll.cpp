@@ -27,7 +27,7 @@ struct BB {
         return name;
     }
 
-    template<class... Args> void jump(const char* s, Args&&... args) {
+    template<class... Args> void tail(const char* s, Args&&... args) {
         tail().emplace_back().fmt(s, std::forward<Args&&>(args)...);
     }
 
@@ -67,13 +67,10 @@ private:
     bool debug_;
     Stream& stream_;
 
-    StringStream func_impls_;
-    StringStream func_decls_;
     StringStream type_decls_;
     StringStream vars_decls_;
-    /// Tracks defs that have been emitted as local variables of the current function
-    // TODO do we need this?
-    DefSet func_defs_;
+    StringStream func_decls_;
+    StringStream func_impls_;
 };
 
 /*
@@ -201,12 +198,7 @@ std::string CodeGen::prepare(const Scope& scope) {
     return lam->unique_name();
 }
 
-void CodeGen::finalize(const Scope&) {
-    for (auto& def : func_defs_) {
-        assert(defs_.contains(def) && "sanity check, should have been emitted if it's here");
-        defs_.erase(def);
-    }
-
+void CodeGen::finalize(const Scope& scope) {
     for (auto& [lam, bb] : lam2bb_) {
         for (const auto& [phi, args] : bb.phis) {
             bb.head().emplace_back().fmt("{} = phi ", phi);
@@ -218,18 +210,20 @@ void CodeGen::finalize(const Scope&) {
         }
     }
 
-    for (auto& [lam, bb] : lam2bb_) {
-        func_impls_.fmt("{}:\t", lam->unique_name());
+    for (auto nom : schedule(scope)) {
+        if (auto lam = nom->isa_nom<Lam>()) {
+            auto& bb = lam2bb_[lam];
+            func_impls_.fmt("{}:\t\n", lam->unique_name());
 
-        for (const auto& part : bb.parts) {
-            for (const auto& line : part)
-                func_impls_.endl() << line.str();
+            for (const auto& part : bb.parts) {
+                for (const auto& line : part)
+                    (func_impls_ << line.str()).endl();
+            }
+
+            func_impls_.dedent().endl();
         }
-
-        func_impls_.dedent();
     }
 
-    func_defs_.clear();
     func_impls_.fmt("\n}}\n");
 }
 
@@ -249,68 +243,54 @@ void CodeGen::emit_epilogue(Lam* lam) {
         }
 
         switch (values.size()) {
-            case 0: return bb.jump("ret");
-            case 1: return bb.jump("ret {} {}", convert(types[0]), values[0]);
+            case 0: return bb.tail("ret");
+            case 1: return bb.tail("ret {} {}", convert(types[0]), values[0]);
             default:
                 auto tuple = convert(world().sigma(types));
-                bb.jump("{} ret_val\n", tuple);
+                bb.tail("{} ret_val\n", tuple);
                 for (size_t i = 0, e = types.size(); i != e; ++i)
-                    bb.jump("ret_val.e{} = {};\n", i, values[i]);
-                return bb.jump("ret ret_val");
+                    bb.tail("ret_val.e{} = {};\n", i, values[i]);
+                return bb.tail("ret ret_val");
         }
     } else if (auto ex = app->callee()->isa<Extract>()) {
         auto c = emit(ex->index());
         auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
-        return bb.jump("br i1 {}, label {}, label {}", c, t, f);
+        return bb.tail("br i1 {}, label {}, label {}", c, t, f);
     } else if (app->callee()->isa<Bot>()) {
-        return bb.jump("ret ; bottom: unreachable");
+        return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = app->callee()->isa_nom<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
         assert(callee->num_vars() == app->num_args());
-        auto& target = lam2bb_[callee];
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty())
-                target.phis[callee->var(i)].emplace_back(app->arg(i), lam);
+                lam2bb_[callee].phis[callee->var(i)].emplace_back(app->arg(i), lam);
         }
-        bb.jump("br label {}", callee->unique_name());
+        bb.tail("br label {}", callee->unique_name());
     } else if (auto callee = app->callee()->isa_nom<Lam>()) { // function/closure call
-        auto ret_cont = (*std::find_if(app->args().begin(), app->args().end(), [] (const Def* arg) {
-            return arg->isa_nom<Lam>();
-        }))->as_nom<Lam>();
+        auto ret_lam = app->args().back()->as_nom<Lam>();
 
         std::vector<std::string> args;
-        for (auto arg : app->args()) {
-            if (arg == ret_cont) continue;
+        auto app_args = app->args();
+        for (auto arg : app_args.skip_back()) {
             if (auto emitted_arg = emit_unsafe(arg); !emitted_arg.empty())
                 args.emplace_back(emitted_arg);
         }
 
-        size_t num_vars = ret_cont->num_vars();
+        size_t num_vars = ret_lam->num_vars();
         size_t n = 0;
         Array<const Def*> values(num_vars);
         Array<const Def*> types(num_vars);
-        for (auto var : ret_cont->vars()) {
+        for (auto var : ret_lam->vars().skip_back()) {
             if (isa<Tag::Mem>(var->type()) || is_unit(var->type())) continue;
             values[n] = var;
             types[n] = var->type();
-            n++;
+            ++n;
         }
 
         auto name = callee->unique_name();
-#if 0
+        auto ret_ty = convert_ret_pi(ret_lam->type());
 
-        // Pass the result to the phi nodes of the return continuation
-        if (!is_unit(ret_type)) {
-            size_t i = 0;
-            for (auto var : ret_cont->vars()) {
-                if (ret_type->isa<TupleType>())
-                    bb.tail.fmt("p_{} = ret_val.e{};\n", var->unique_name(), i++);
-                else if ((lang_ == Lang::OpenCL && use_channels_) || (lang_ == Lang::HLS))
-                    bb.tail.fmt(" p_{} = {};\n", emit(channel_read_result), var->unique_name());
-                else
-                    bb.tail.fmt("p_{} = ret_val;\n", var->unique_name());
-            }
-        }
-#endif
+        bb.tail("{} = {} call({, })", app->unique_name(), ret_ty, values);
+        bb.tail("br label {}", ret_lam->unique_name());
     }
 }
 
@@ -319,7 +299,40 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     auto name = def->unique_name();
     std::string op;
 
-    if (auto bit = isa<Tag::Bit>(def)) {
+    if (auto lit = def->isa<Lit>()) {
+        if (lit->type()->isa<Nat>()) {
+            return std::to_string(lit->get<nat_t>());
+        } else if (isa<Tag::Int>(lit->type())) {
+            auto size = isa_sized_type(lit->type());
+            if (size->isa<Top>()) return std::to_string(lit->get<nat_t>());
+            if (auto mod = mod2width(as_lit(size))) {
+                switch (*mod) {
+                    case  1: return std::to_string(lit->get< u1>());
+                    case  2:
+                    case  4:
+                    case  8: return std::to_string(lit->get< u8>());
+                    case 16: return std::to_string(lit->get<u16>());
+                    case 32: return std::to_string(lit->get<u32>());
+                    case 64: return std::to_string(lit->get<u64>());
+                    default: THORIN_UNREACHABLE;
+                }
+            } else {
+                return std::to_string(lit->get<u64>());
+            }
+        }
+
+        if (auto real = isa<Tag::Real>(lit->type())) {
+            switch (as_lit<nat_t>(real->arg())) {
+                case 16: return std::to_string(lit->get<r16>());
+                case 32: return std::to_string(lit->get<r32>());
+                case 64: return std::to_string(lit->get<r64>());
+                default: THORIN_UNREACHABLE;
+            }
+        }
+        THORIN_UNREACHABLE;
+    } else if (def->isa<Bot>()) {
+        return "undef";
+    } else if (auto bit = isa<Tag::Bit>(def)) {
         auto [a, b] = bit->args<2>([this](auto def) { return emit(def); });
         auto t = ty(bit);
 
@@ -410,8 +423,8 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         op = "icmp ";
 
         switch (icmp.flags()) {
-            case ICmp::e:   op += "eq "; break;
-            case ICmp::ne:  op += "ne "; break;
+            case ICmp::e:   op += "eq" ; break;
+            case ICmp::ne:  op += "ne" ; break;
             case ICmp::sg:  op += "sgt"; break;
             case ICmp::sge: op += "sge"; break;
             case ICmp::sl:  op += "slt"; break;
@@ -561,41 +574,6 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         }
         // tuple/struct
         return irbuilder_.CreateInsertValue(llvm_agg, val, {as_lit<u32>(insert->index())});
-    } else if (auto lit = def->isa<Lit>()) {
-        llvm::Type* llvm_type = convert(lit->type());
-
-        if (lit->type()->isa<Nat>()) {
-            return irbuilder_.getInt64(lit->get<u64>());
-        } else if (isa<Tag::Int>(lit->type())) {
-            auto size = isa_sized_type(lit->type());
-            if (size->isa<Top>()) return irbuilder_.getInt64(lit->get<u64>());
-            if (auto mod = mod2width(as_lit(size))) {
-                switch (*mod) {
-                    case  1: return irbuilder_. getInt1(lit->get< u1>());
-                    case  2:
-                    case  4:
-                    case  8: return irbuilder_. getInt8(lit->get< u8>());
-                    case 16: return irbuilder_.getInt16(lit->get<u16>());
-                    case 32: return irbuilder_.getInt32(lit->get<u32>());
-                    case 64: return irbuilder_.getInt64(lit->get<u64>());
-                    default: THORIN_UNREACHABLE;
-                }
-            } else {
-                return irbuilder_.getInt64(lit->get<u64>());
-            }
-        }
-
-        if (auto real = isa<Tag::Real>(lit->type())) {
-            switch (as_lit<nat_t>(real->arg())) {
-                case 16: return llvm::ConstantFP::get(llvm_type, lit->get<r16>());
-                case 32: return llvm::ConstantFP::get(llvm_type, lit->get<r32>());
-                case 64: return llvm::ConstantFP::get(llvm_type, lit->get<r64>());
-                default: THORIN_UNREACHABLE;
-            }
-        }
-        THORIN_UNREACHABLE;
-    } else if (def->isa<Bot>()) {
-        return llvm::UndefValue::get(convert(def->type()));
     } else if (auto global = def->isa<Global>()) {
         return emit_global(global);
 #endif
