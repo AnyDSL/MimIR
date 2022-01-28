@@ -49,8 +49,8 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
 
     // TODO: idef array
 
-    if(auto arr = a->type()->isa<Arr>()) {
-//    if(auto arr = a->type()->isa<Arr>();false) {
+//    if(auto arr = a->type()->isa<Arr>()) {
+    if(auto arr = a->type()->isa<Arr>();false) {
         dlog(world,"  Array add");
         auto shape = arr->shape();
         dlog(world,"  Array shape {}", shape);
@@ -82,16 +82,21 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
     }
 
     auto dim = getDim(a);
+
+    if(dim==1){
+        return {mem, world.op(ROp::add,(nat_t)0,a,b)};
+    }
+
     Array<const Def*> ops{dim};
     for (size_t i = 0; i < ops.size(); ++i) {
-        // TODO: call recursively vec_add
         // adds component-wise both vectors
-        auto [nmem, op]=std::pair{mem,
-            world.op(ROp::add,(nat_t)0,
-                world.extract(a,i),
-                world.extract(b,i)
-            )
-        };
+        auto [nmem, op]=vec_add( world,mem, world.extract(a,i), world.extract(b,i) );
+//        auto [nmem, op]=std::pair{mem,
+//            world.op(ROp::add,(nat_t)0,
+//                world.extract(a,i),
+//                world.extract(b,i)
+//            )
+//        };
         mem=nmem;
         ops[i]=op;
     }
@@ -1213,9 +1218,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             auto chained = world_.nom_lam(pbT, world_.dbg("φchain"));
             type_dump(world_,"  chained pb will be (app pb) ",chained);
 
+//            type_dump(world_,"  d_arg",d_arg);
+            dlog(world_,"  d_arg pb {}",pullbacks_[d_arg]);
+
             auto arg_pb = pullbacks_[d_arg]; // Lam
-            auto ret_pb = chained->ret_var(); // extract
             type_dump(world_,"  arg pb",arg_pb);
+            auto ret_pb = chained->ret_var(); // extract
             type_dump(world_,"  ret var pb",ret_pb);
             auto chain_pb = chain(ret_pb,arg_pb);
             type_dump(world_,"  chain pb",chain_pb);
@@ -1307,7 +1315,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         }
         // reconstruct the tuple term
         auto dst = world_.tuple(ops);
-        type_dump(world_,"  tuple:",dst);
+        type_dump(world_,"  tuple:",tuple);
         type_dump(world_,"  jwrapped tuple:",dst);
         src_to_dst_[tuple] = dst;
 
@@ -1381,8 +1389,61 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     if (auto pack = def->isa<Pack>()) {
         // no pullback for pack needed
         type_dump(world_,"Pack",pack);
-        auto dst = world_.pack(pack->type()->arity(), j_wrap(pack->body()));
+        auto d_bdy=j_wrap(pack->body());
+        auto dst = world_.pack(pack->type()->arity(), d_bdy);
         src_to_dst_[pack] = dst;
+
+
+        // TODO: a pack can only be extracted => optimize
+        // TODO: handle non-lit arity (even possible?)
+        // TODO: unify with tuple
+//        pullbacks_[dst]=pullbacks_[d_bdy];
+        auto dim = as_lit(pack->type()->arity());
+
+            auto pi = createPbType(A,dst->type());
+        auto pb = world_.nom_lam(pi, world_.dbg("pack_pb"));
+        dlog(world_,"  complete pack pb type: {}",pi);
+        pb->set_filter(world_.lit_true());
+
+        auto pbT = pi->as<Pi>()->doms().back()->as<Pi>();
+        dlog(world_,"  intermediate pack pb type: {}",pbT);
+        auto cpb = pb;
+        auto [cpb_mem,sum]=ZERO(world_,cpb->mem_var(),A);
+        Lam* nextpb;
+
+        for (size_t i = 0; i < dim; ++i) {
+            nextpb = world_.nom_lam(pbT, world_.dbg("φpack_next"));
+            nextpb->set_filter(world_.lit_true());
+//            dlog(world_,"    build zeroPB op {}: {} : {}",i,ops[i],ops[i]->type());
+//            dlog(world_,"      pb {} : {}",pullbacks_[ops[i]],pullbacks_[ops[i]]->type());
+//            dlog(world_,"      pb var: {}:{}",
+//                 world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
+//                 world_.extract_unsafe(pb->var(1, world_.dbg("s")), i)->type());
+            cpb->set_body(
+                world_.app(pullbacks_[d_bdy],
+                           {cpb_mem,
+                            world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
+                            nextpb
+                           }));
+            cpb=nextpb;
+            cpb_mem=cpb->mem_var();
+            //all nextpb args are result
+            auto [nmem, nsum]=vec_add(world_,cpb_mem,sum,nextpb->var(1));
+            cpb_mem=nmem;
+            sum=nsum;
+        }
+        dlog(world_,"  create final pb app");
+        cpb->set_body( world_.app( pb->ret_var(), {cpb_mem,sum} ));
+
+        dlog(world_,"  pack pbs {}",pb);
+        pullbacks_[dst]=pb;
+
+
+
+
+
+
+
         type_dump(world_,"  jwrapped pack",dst);
         return dst;
     }
