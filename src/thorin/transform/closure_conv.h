@@ -73,7 +73,6 @@ public:
     enum Flags : uint8_t {
         KEEP_MARKS = 1,     ///< preserve closure analysis marks
         MAX = 1 << 2,       ///< closure convert everything
-        SSI = 1 << 3,       ///< closure convert everything but jumps and funtions
         MIN = 1 << 4        ///< closure convert functions only
     };
 

@@ -281,18 +281,6 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst, CA ca) {
         auto new_def = (v == CA::ret) ? rw_non_captured(marked, subst, v) : rewrite(marked, subst, v);
         return (flags_ & Flags::KEEP_MARKS) ? w.ca_mark(new_def, v) : new_def;
     } 
-    // else if (auto tuple = def->isa<Tuple>(); def && (flags_ & SSI)) {
-        // auto lams = tuple->ops();
-        // if (std::all_of(lams.begin(), lams.end(), [](const Def* d) {
-        //         auto [marked, v] = isa_mark(d); return marked->isa<Lam>() && v == CA::jmp; })) {
-        //     w.DLOG("SSI: convert branch");
-            // auto new_lams = DefArray(lams.size(), [&](size_t i) {
-            //         auto stub = make_stub(lams[i]->as_nom<Lam>(), subst, false);
-            //         pack_closure(w.D)
-            //         })
-            // return w.tuple(new_lams);
-        // }
-    // }
 
     auto new_type = rewrite(def->type(), subst);
     auto new_dbg = (def->dbg()) ? rewrite(def->dbg(), subst) : nullptr;
