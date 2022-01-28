@@ -49,7 +49,8 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
 
     // TODO: idef array
 
-    if(auto arr = a->type()->isa<Arr>();false) {
+    if(auto arr = a->type()->isa<Arr>()) {
+//    if(auto arr = a->type()->isa<Arr>();false) {
         dlog(world,"  Array add");
         auto shape = arr->shape();
         dlog(world,"  Array shape {}", shape);
@@ -76,7 +77,7 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
         type_dump(world,"  lifted",lifted);
 //      w.app(w.app(w.app(w.ax_lift(),
 //                        {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os), inner_args);
-        THORIN_UNREACHABLE;
+//        THORIN_UNREACHABLE;
         return {mem, lifted};
     }
 
@@ -554,6 +555,8 @@ void AutoDiffer::derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 d
 // res_lam is a helper function that takes the result f(x) as argument and returns the result together with the pullback
 void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam){
     std::string name = fun->name();
+    // d/dx f(g(x)) = g'(x) f'(g(x))
+    // => times s at front
 
     // x
     const Def* fun_arg = fw->var(1);
@@ -561,15 +564,28 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
     const Def* res = res_lam->var(1);
     // s (in an isolated environment s=1 -> f*(s) = df/dx)
     const Def* scal = pb->var(1);
+
+
+    // wrapper to add times s around it
+    auto scal_mul_wrap =world_.nom_lam(pb->ret_var()->type()->as<Pi>(),world_.dbg("scal_mul"));
+    scal_mul_wrap->set_filter(world_.lit_true());
+    scal_mul_wrap->set_body(
+        world_.app(
+            pb->ret_var(),
+            {scal_mul_wrap->mem_var(),
+                world_.op(ROp::mul, (nat_t) 0, scal, scal_mul_wrap->var(1))
+            }
+        )
+    );
+
+
     if( name == "log" ){
         const Def* log_type = scal->type();
         auto [rmem,one] = ONE(world_, pb->mem_var(), log_type);
 
-        const Def* derivative = world_.op(ROp::div, (nat_t)0, one, fun_arg);
-
         const Def* log_d = world_.app(pb->ret_var(), {
                 rmem,
-                world_.op(ROp::mul, (nat_t)0, derivative, scal)
+                world_.op(ROp::div, (nat_t)0, scal, fun_arg)
         });
 
         pb->set_body(log_d);
@@ -581,6 +597,7 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
                     world_.op(ROp::mul, (nat_t)0, res, scal)
                }));
     }else if(name == "sqrt"){
+        // TODO: more generally pow
         const Def* real_type = scal->type();
         const Def* log_d = world_.app(pb->ret_var(), {pb->mem_var(),
                 world_.op(ROp::mul, (nat_t)0,
@@ -593,28 +610,27 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
 
         pb->set_body(log_d);
     }else if(name == "sin"){
+        // sin(x) |-> (sin(x), lambda s. s*cos(x))
         auto cos = world_.nom_lam(fun->type(),world_.dbg("cos"));
         cos->set_name("cos");
-
-        const Def* cos_app = world_.app(cos, {pb->mem_var(), fun_arg, pb->ret_var()
-        });
-
-        pb->set_body(cos_app);
+        
+        pb->set_body(world_.app(cos, {pb->mem_var(), fun_arg, scal_mul_wrap}));
     }else if(name == "cos"){
-        auto cos = world_.nom_lam(fun->type(),world_.dbg("sin"));
+        // lambda s. -s * sin(x)
+        auto sin = world_.nom_lam(fun->type(),world_.dbg("sin"));
+        sin->set_name("sin");
+
         auto fun_return_type = fun->doms().back()->as<Pi>();
         auto negate = world_.nom_lam(fun_return_type,world_.dbg("negate"));
-        cos->set_name("sin");
 
+        // -s * return of cos
         negate->set_body(world_.app(pb->ret_var(), {
-            cos->mem_var(),
-            world_.op(ROp::mul, (nat_t)0, negate->var(1), lit_of_real(fun_arg->type(), -1))
+            sin->mem_var(),
+            world_.op(ROp::mul, (nat_t)0, negate->var(1), world_.op_rminus((nat_t)0, scal))
         }));
         negate->set_filter(true);
 
-        pb->set_body(world_.app(cos, {pb->mem_var(), fun_arg,
-                negate
-        }));
+        pb->set_body(world_.app(sin, {pb->mem_var(), fun_arg, negate}));
     }else if(name == "lgamma"){
         derive_numeric(fun, pb, fun_arg, 0.001);
     }
@@ -1110,7 +1126,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 // lam₁ = λ mem arg ret. f (mem,arg,lam₂)
                 //      = x ↦ lam₂(f(x))
                 //    : A -> B*(B->A)
-                //      = cn[mem, A, cn[mem, B, cn[mem, B, cn[mem, A]]]
+                //      = cn[mem, A, cn[mem, B, cn[mem, B, cn[mem, A]]]]
                 // 
                 // lam₂ = λ mem₂ res. ret (mem₂, res, grad)
                 //      = y ↦ (y,grad(x))
@@ -1124,7 +1140,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 // grad = λ x. λ mem s ret. ...
                 //    : A -> (B -> A)
                 //      = A -> cn[mem, B, cn[mem, A]]
-                //  x is supplied at compile time by direct forwardig from lam₁
+                //  x is supplied at compile time by direct forwarding from lam₁
 
                 auto augTy = world_.tangent_type(callee->type())->as<Pi>();
                 // type of result (after taking argument x)
