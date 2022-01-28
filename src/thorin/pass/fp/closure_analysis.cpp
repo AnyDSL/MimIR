@@ -8,6 +8,11 @@ static bool interesting_type_b(const Def* type) {
     return isa_ctype(type) != nullptr;
 }
 
+static const Def* ret_var(Lam* lam) {
+    auto v = lam->var(lam->num_doms() - 1);
+    return (interesting_type_b(v->type())) ? v : nullptr;
+}
+
 static bool interesting_type(const Def* type, DefSet& visited) {
     if (type->isa_nom())
         visited.insert(type);
@@ -27,23 +32,25 @@ static bool interesting_type(const Def* type) {
 }
 
 static void split(DefSet& out, const Def* def, bool keep_others) {
-    if (auto lam = def->isa<Lam>())
+    if (auto lam = def->isa<Lam>()) {
         out.insert(lam);
-    else if (auto [var, lam] = isa_lam_var(def); var && lam)
-        out.insert(var);
-    else if (auto c = isa_closure_lit(def))
+    } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam) {
+        if (interesting_type(var->type()))
+            out.insert(var);
+    } else if (auto c = isa_closure_lit(def)) {
         split(out, c.fnc(), keep_others);
-    else if (auto [inner, _] = isa_mark(def); inner)
+    } else if (auto [inner, _] = ca_isa_mark(def); inner) {
         split(out, inner, keep_others);
-    else if (auto proj = def->isa<Extract>())
+    } else if (auto proj = def->isa<Extract>()) {
         split(out, proj->tuple(), keep_others);
-    else if (auto pack = def->isa<Pack>())
+    } else if (auto pack = def->isa<Pack>()) {
         split(out, pack->body(), keep_others);
-    else if (auto tuple = def->isa<Tuple>())
+    } else if (auto tuple = def->isa<Tuple>()) {
         for (auto op: tuple->ops())
             split(out, op, keep_others);
-    else if (keep_others)
+    } else if (keep_others) {
         out.insert(def);
+    }
 }
 
 static DefSet&& split(const Def* def, bool keep_others, DefSet&& out = DefSet()) {
@@ -54,7 +61,7 @@ static DefSet&& split(const Def* def, bool keep_others, DefSet&& out = DefSet())
 ClosureAnalysis::Err ClosureAnalysis::error(const Def* def) {
     if (auto lam = def->isa_nom<Lam>())
         return {lam, undo_visit(lam)};
-    if (auto [var, lam] = isa_lam_var(def); var && lam)
+    if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam)
         return error(lam);
     assert(false && "only track variables and lams");
 }
@@ -95,7 +102,7 @@ ClosureAnalysis::Err ClosureAnalysis::assign(const DefSet& defs, CA v) {
                         continue;
                     auto var_v = (new_v == CA::jmp) ? CA::proc
                                : (new_v == CA::ret) ? CA::proc_e
-                               : (var == lam->ret_var()) ? CA::ret   // proc or proc_e
+                               : (var == ret_var(lam)) ? CA::ret   // proc or proc_e
                                : (lam->is_set()) ? CA::proc : CA::proc_e;
                     e = std::min(e, assign({var}, var_v));
                 }
@@ -113,10 +120,10 @@ CA ClosureAnalysis::lookup_init(const Def* def) {
     if (v != CA::bot)
         return v;
     if (auto lam = def->isa_nom<Lam>()) {
-        v = (!lam->is_set() || lam->ret_var()) ? CA::proc : CA::jmp;
+        v = (!lam->is_set() || ret_var(lam)) ? CA::proc : CA::jmp;
         assign({def}, v);
-    } else if (auto [var, lam] = isa_lam_var(def); var && lam) {
-        v = (lam->ret_var() == var) ? CA::ret 
+    } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam) {
+        v = (ret_var(lam) == var) ? CA::ret 
           : (lam->is_set()) ? CA::proc : CA::proc_e;
         assign({def}, v);
     } else {
@@ -127,24 +134,18 @@ CA ClosureAnalysis::lookup_init(const Def* def) {
 
 const Def* ClosureAnalysis::mark(const Def* def) {
     auto& w = world();
-    if (auto [var, _] = isa_lam_var(def); var || def->isa<Lam>()) {
-        return w.ca_mark(def, lookup_init(def));
-    } else if (auto c = isa_closure_lit(def)) {
-        auto lam = c.fnc_as_lam();
-        if (!lam) {
-            auto lams = c.fnc_as_folded().second;
-            assert (lams && lams->num_ops() > 0);
-            lam = lams->op(0)->as_nom<Lam>();
-        }
-        return w.ca_mark(pack_closure(mark(c.env()), c.fnc(), c.type()), lookup_init(lam));
-    } else if (auto tuple = def->isa<Tuple>(); tuple && !isa_closure_lit(def)) {
+    if (auto [var, _] = ca_isa_var<Lam>(def); var && interesting_type_b(var->type())) {
+        return w.ca_mark(def, lookup_init(var));
+    } else if (auto lam = def->isa_nom<Lam>()) {
+        return w.ca_mark(lam, lookup_init(lam));
+    } else if (auto tuple = def->isa<Tuple>()) {
         auto new_ops = DefArray(tuple->num_ops(), [&](auto i) { return mark(tuple->op(i)); });
         return w.tuple(tuple->type(), new_ops, tuple->dbg());
     } else if (auto arr = def->isa<Arr>()) {
         return arr->refine(1, mark(arr->body()));
     } else if (auto proj = def->isa<Extract>(); proj && !var) {
         return w.extract(mark(proj->tuple()),proj->index(), proj->dbg());
-    } else if (auto [inner, b] = isa_mark(def); inner) {
+    } else if (auto [inner, b] = ca_isa_mark(def); inner) {
         return mark(inner);
     } else {
         return def;
@@ -167,6 +168,10 @@ void ClosureAnalysis::enter() {
 const Def* ClosureAnalysis::rewrite(const Def* def) {
     auto& w = world();
 
+    // Note: To guess a good inital assignment, we have to analyze a def's use first, i.e we should 
+    // assign 'ret' for things that appear in return position (last argument) and proc otherwise etc.
+    // Also the rewrite will not terminate if we add annotations bottom up :(
+
     if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
         w.DLOG("analyze/rw app: {}", def);
         auto num_args = app->num_args();
@@ -178,7 +183,7 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
                     continue;
                 if (auto lam = c->isa_nom<Lam>()) {
                     absytpe[i] &= lookup_init(lam->var(i));
-                } else if (auto [var, lam] = isa_lam_var(c); var && !is_evil(var)) {
+                } else if (auto [var, lam] = ca_isa_var<Lam>(c); var && !is_evil(var)) {
                     auto v = lookup_init(var);
                     if ((v == CA::proc_e || v == CA::proc) && i == num_args - 1)
                         absytpe[i] &= CA::ret;
@@ -194,34 +199,19 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
         auto new_callee = mark(app->callee());
         auto new_args = app->args();
         for (size_t i = 0; i < app->num_args(); i++) {
+            auto arg = app->arg(i);
             if (absytpe[i] != CA::bot) {
-                auto arg = app->arg(i);
                 err = std::min(err, assign(split(arg, false), absytpe[i]));
+                new_args[i] = mark(arg);
+            } else if (auto proj = arg->type()->isa<Extract>(); proj && isa_ctype(proj->tuple()->type())) {
+                // This is a hack to rewrite the environment of the old closure
+                // to the environment of the annotated closure :(
                 new_args[i] = mark(arg);
             }
         }
         if (err)
             return proxy(def, err);
         return w.app(new_callee, new_args, app->dbg());
-
-    } else if (auto closure = isa_closure_lit(def)) {
-        w.DLOG("analyze/rw closure: {}", def);
-        auto lam_v = CA::bot;
-        auto env_v = CA::bot;
-        for (auto f: split(closure.fnc(), false)) {
-            auto lam = f->isa_nom<Lam>();
-            assert(lam && "closure fnc = lam or folded branch");
-            lam_v &= lookup_init(lam);
-            env_v &= lookup_init(lam->var(CLOSURE_ENV_PARAM));
-        }
-        env_v &= (lam_v == CA::unknown || lam_v == CA::proc_e)
-               ? CA::proc_e : CA::proc;
-
-        if (auto err = assign(split(closure.env(), false), env_v)) {
-            return proxy(def, err);
-        } else {
-            return mark(closure);
-        }
 
     } else if (auto store = isa<Tag::Store>(def)) {
         w.DLOG("analyze/rw store: {}", def);
@@ -234,7 +224,7 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
             return w.app(store->callee(), args, store->dbg());
         }
 
-    } 
+    }
 
     return def;
 }
@@ -249,18 +239,32 @@ undo_t ClosureAnalysis::analyze(const Def* def) {
     auto& w = world();
     auto err = ok();
 
-    // Which *variables* are captured by escaping functions for which are closure has not yet been built?
     if (analyze_captured_ && !is_basicblock(curr_nom())) {
+        // Which *variables* are captured by escaping functions for which are closure has not yet been built?
         auto v = is_escaping(curr_nom()) ? CA::proc_e : CA::proc;
         w.DLOG("analyze implicit captures of {} ({})", curr_nom(), op2str(v));
         auto& free_defs = fva_->run(curr_nom());
         for (auto def: free_defs) {
-            if (auto [var, _] = isa_lam_var(def); var && interesting_type(var->type())) {
+            if (auto [var, _] = ca_isa_var<Lam>(def); var && interesting_type(var->type())) {
                 w.DLOG("capture {}", var);
                 err = std::min(err, assign({var}, v));
             }
         }
         analyze_captured_ = false;
+
+    } else if (auto closure = isa_closure_lit(def)) {
+        // Variables captured by explicit closures
+        w.DLOG("analyze closure: {}", def);
+        auto lam_v = CA::bot;
+        auto env_v = CA::bot;
+        for (auto f: split(closure.fnc(), false)) {
+            auto lam = f->isa_nom<Lam>();
+            assert(lam && "closure fnc = lam or folded branch");
+            lam_v &= lookup_init(lam);
+            env_v &= lookup_init(lam->var(CLOSURE_ENV_PARAM));
+        }
+        env_v &= (ca_is_escaping(lam_v)) ? CA::proc_e : CA::proc;
+        err = std::min(err, assign(split(closure.env(), false), env_v));
     }
 
     // TODO Evilness

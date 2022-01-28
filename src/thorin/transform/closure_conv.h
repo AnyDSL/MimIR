@@ -138,7 +138,17 @@ inline CA& operator&=(CA& a, const CA& b) {
 inline bool ca_is_basicblock(CA v) { return v == CA::jmp || v == CA::ret; }
 inline bool ca_is_proc(CA v) { return v == CA::proc || v == CA::proc_e; }
 
-std::tuple<const Def*, CA> isa_mark(const Def* def);
+template<class N>
+std::tuple<const Def*, N*> ca_isa_var(const Def* def) {
+    if (auto proj = def->isa<Extract>()) {
+        if (auto var = proj->tuple()->isa<Var>(); var && var->nom()->isa<N>())
+            return std::tuple(proj, var->nom()->as<N>());
+    }
+    return {nullptr,  nullptr};
+}
+
+std::tuple<const Def*, CA> ca_isa_mark(const Def* def);
+std::tuple<Lam*, CA> ca_isa_marked_lam(const Def* def);
 
 class ClosureLit {
 public:
@@ -202,7 +212,6 @@ private:
     friend ClosureLit isa_closure_lit(const Def*, bool);
 };
 
-std::tuple<const Def*, Lam*> isa_lam_var(const Def* def);
 
 /// return @p def if @p def is a closure and @c nullptr otherwise
 const Sigma* isa_ctype(const Def* def);

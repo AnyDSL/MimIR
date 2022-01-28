@@ -18,7 +18,7 @@ CA operator&(CA a, CA b) {
     return CA::unknown;
 }
 
-std::tuple<const Def*, CA> isa_mark(const Def* def) {
+std::tuple<const Def*, CA> ca_isa_mark(const Def* def) {
     if (auto query = isa<Tag::CA>(def)) {
         return {query->arg(), query.flags()};
     }
@@ -118,30 +118,40 @@ const Def* apply_closure(const Def* closure, const Def* args) {
     }));
 }
 
-static std::pair<const Def*, const Tuple*>
+std::tuple<Lam*, CA> ca_isa_marked_lam(const Def* def) {
+    auto ca = CA::bot;
+    if (auto q = isa<Tag::CA>(def)) {
+        ca = q.flags();
+        def = q->arg();
+    }
+    return {def->isa_nom<Lam>(), ca};
+}
+
+static std::tuple<const Def*, const Tuple*, CA>
 isa_folded_branch(const Def* def) {
-    if (auto proj = def->isa<Extract>())
-        if (auto tuple = proj->tuple()->isa<Tuple>())
-            if (std::all_of(tuple->ops().begin(), tuple->ops().end(),
-                    [](const Def* d) { return d->isa_nom<Lam>(); }))
-                return {proj->index(), tuple};
-    return {nullptr, nullptr};
+    auto ca = CA::bot;
+    if (auto proj = def->isa<Extract>()) {
+        if (auto tuple = proj->tuple()->isa<Tuple>()) {
+            if (std::all_of(tuple->ops().begin(), tuple->ops().end(), [&](const Def* d) { 
+                    auto [lam, v] = ca_isa_marked_lam(d); ca &= v; return lam != nullptr; }))
+                return {proj->index(), tuple, ca};
+        }
+    }
+    return {nullptr, nullptr, CA::bot};
 }
 
 ClosureLit isa_closure_lit(const Def* def, bool lambda_or_branch) {
-    auto mark = CA::bot;
-    if (auto q = isa<Tag::CA>(def)) {
-        def = q->arg();
-        mark = q.flags();
-    }
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_ctype(def->type())) {
         auto fnc = std::get<1_u64>(unpack_closure(tpl));
-        auto [idx, lams] = isa_folded_branch(fnc);
-        if (!lambda_or_branch || fnc->isa<Lam>() || (idx && lams))
-            return ClosureLit(tpl, mark);
+        if (auto [lam, ca] = ca_isa_marked_lam(fnc); lam)
+            return ClosureLit(tpl, ca);
+        if (auto [idx, lams, ca] = isa_folded_branch(fnc); idx && lams)
+            return ClosureLit(tpl, ca);
+        else if (!lambda_or_branch)
+            return ClosureLit(tpl, CA::bot);
     }
-    return ClosureLit(nullptr, mark);
+    return ClosureLit(nullptr, CA::bot);
 }
 
 const Def* ClosureLit::env() {
@@ -155,11 +165,13 @@ const Def* ClosureLit::fnc() {
 }
 
 Lam* ClosureLit::fnc_as_lam() {
-    return fnc()->isa_nom<Lam>();
+    auto [lam, _] = ca_isa_marked_lam(fnc());
+    return lam;
 }
 
 std::pair<const Def*, const Tuple*> ClosureLit::fnc_as_folded() {
-    return isa_folded_branch(fnc());
+    auto [idx, tupel, _] = isa_folded_branch(fnc());
+    return {idx, tupel};
 }
 
 const Def* ClosureLit::var(size_t i) {
@@ -169,9 +181,9 @@ const Def* ClosureLit::var(size_t i) {
     auto [idx, lams] = fnc_as_folded();
     assert(idx && lams && "closure should be a lam or folded branch");
     auto& w = idx->world();
-    auto tuple = w.tuple(DefArray(lams->num_ops(), [&](auto j) {
-        const Def* lam = lams->op(j);
-        return lam->isa_nom<Lam>()->var(i);
+    auto tuple = w.tuple(DefArray(lams->num_ops(), [&](size_t j) {
+        auto [lam, _] = ca_isa_marked_lam(lams->op(j));
+        return lam->var(i);
     }));
     return w.extract(tuple, idx);
 }
@@ -183,14 +195,6 @@ const Def* ClosureLit::env_var() {
 
 unsigned int ClosureLit::order() { 
     return ctype_to_pi(type())->order(); 
-}
-
-std::tuple<const Def*, Lam*> isa_lam_var(const Def* def) {
-    if (auto proj = def->isa<Extract>()) {
-        if (auto var = proj->tuple()->isa<Var>(); var && var->nom()->isa<Lam>())
-            return std::tuple(proj, var->nom()->as<Lam>());
-    }
-    return {nullptr,  nullptr};
 }
 
 /* Closure Conversion */
@@ -277,7 +281,7 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst, CA ca) {
         return map(closure_type(pi, subst));
     } else if (auto lam = def->isa_nom<Lam>(); lam && lam->type()->is_cn()) {
         return map(make_closure(lam, subst, convert_lam(ca)));
-    } else if (auto [marked, v] = isa_mark(def); marked) {
+    } else if (auto [marked, v] = ca_isa_mark(def); marked) {
         auto new_def = (v == CA::ret) ? rw_non_captured(marked, subst, v) : rewrite(marked, subst, v);
         return (flags_ & Flags::KEEP_MARKS) ? w.ca_mark(new_def, v) : new_def;
     } 
@@ -387,8 +391,8 @@ const Def* ClosureConv::make_closure(Lam *old_lam, Def2Def& subst, bool convert)
 /* Free variable analysis */
 
 void FVA::split_fv(Def *nom, const Def* def, DefSet& out) {
-    if (auto [marked, v] = isa_mark(def); marked) {
-        if (auto [var, _] = isa_lam_var(marked); var && v == CA::ret)
+    if (auto [marked, v] = ca_isa_mark(def); marked) {
+        if (auto [var, _] = ca_isa_var<Lam>(marked); var && v == CA::ret)
             return;
         else
             def = marked;
@@ -408,7 +412,7 @@ std::pair<FVA::Node*, bool> FVA::build_node(Def *nom, NodeQueue& worklist) {
     auto [p, inserted] = lam2nodes_.emplace(nom, nullptr);
     if (!inserted)
         return {p->second.get(), false};
-    w.DLOG("FVA: create node: {}", nom);
+    // w.DLOG("FVA: create node: {}", nom);
     p->second = std::make_unique<Node>();
     auto node = p->second.get();
     node->nom = nom;
@@ -431,7 +435,7 @@ std::pair<FVA::Node*, bool> FVA::build_node(Def *nom, NodeQueue& worklist) {
     }
     if (!init_node) {
         worklist.push(node);
-        w.DLOG("FVA: init {}", nom);
+        // w.DLOG("FVA: init {}", nom);
     }
     return {node, true};
 }
@@ -442,7 +446,7 @@ void FVA::run(NodeQueue& worklist) {
     while(!worklist.empty()) {
         auto node = worklist.front();
         worklist.pop();
-        w.DLOG("FA: iter {}: {}", iter, node->nom);
+        // w.DLOG("FA: iter {}: {}", iter, node->nom);
         if (is_done(node))
             continue;
         auto changed = is_bot(node);
@@ -450,7 +454,7 @@ void FVA::run(NodeQueue& worklist) {
         for (auto p: node->preds) {
             auto& pfvs = p->fvs;
             changed |= node->fvs.insert(pfvs.begin(), pfvs.end());
-            w.DLOG("\tFV({}) ∪= FV({}) = {{{, }}}\b", node->nom, p->nom, pfvs);
+            // w.DLOG("\tFV({}) ∪= FV({}) = {{{, }}}\b", node->nom, p->nom, pfvs);
         }
         if (changed) {
             for (auto s: node->succs) {
@@ -459,7 +463,7 @@ void FVA::run(NodeQueue& worklist) {
         }
         iter++;
     }
-    w.DLOG("FVA: done");
+    // w.DLOG("FVA: done");
 }
 
 DefSet& FVA::run(Lam *lam) {
