@@ -188,7 +188,9 @@ std::string CodeGen::prepare(const Scope& scope) {
     const char* sep = "";
     for (auto var : lam->vars().skip_back()) {
         if (isa<Tag::Mem>(var->type())) continue;
-        func_impls_.fmt("{}{} {}", sep, convert(var->type()), var->unique_name());
+        auto name = var->unique_name();
+        defs_[var] = name;
+        func_impls_.fmt("{}{} {}", sep, convert(var->type()), name);
         sep = ", ";
     }
 
@@ -258,11 +260,12 @@ void CodeGen::emit_epilogue(Lam* lam) {
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = app->callee()->isa_nom<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
-        assert(callee->num_vars() == app->num_args());
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
-            if (auto arg = emit_unsafe(app->arg(i)); !arg.empty())
-                lam2bb_[callee].phis[callee->var(i)].emplace_back(arg, lam->unique_name());
-
+            if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
+                auto phi = callee->var(i);
+                lam2bb_[callee].phis[phi].emplace_back(arg, lam->unique_name());
+                defs_[phi] = phi->unique_name();
+            }
         }
         bb.tail("br label {}", callee->unique_name());
     } else if (auto callee = app->callee()->isa_nom<Lam>()) { // function/closure call
@@ -286,12 +289,15 @@ void CodeGen::emit_epilogue(Lam* lam) {
             ++n;
         }
 
-        auto name = callee->unique_name();
+        auto name = callee->unique_name() + ".ret";
         auto ret_ty = convert_ret_pi(ret_lam->type());
 
-        bb.tail("{}.ret = {} call({, })", app->unique_name(), ret_ty, args);
+        bb.tail("{} = {} call @{}({, })", name, ret_ty, callee, args);
+
+        auto phi = ret_lam->var(1);
+        lam2bb_[ret_lam].phis[phi].emplace_back(name, lam->unique_name());
+        defs_[phi] = phi->unique_name();
         bb.tail("br label {}", ret_lam->unique_name());
-        lam2bb_[callee].phis[callee->var(0_s)].emplace_back(app->unique_name(), lam->unique_name());
     }
 }
 
@@ -540,12 +546,13 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = emit(extract->tuple());
         auto index = emit(extract->index());
-        return bb.assign(name, "extract {}, {}", tuple, index);
+        if (isa<Tag::Mem>(extract->type())) return "";
+        return bb.assign(name, "extractvalue {}, {}", tuple, index);
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = emit(insert->tuple());
         auto index = emit(insert->index());
         auto value = emit(insert->value());
-        return bb.assign(name, "insert {}, {}, {}", tuple, index, value);
+        return bb.assign(name, "insertvalue {}, {}, {}", tuple, index, value);
     } else if (auto global = def->isa<Global>()) {
         auto [pointee, addr_space] = as<Tag::Ptr>(global->type())->args<2>();
         vars_decls_.fmt("{} = external global {}\n", name, convert(pointee));
