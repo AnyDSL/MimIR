@@ -15,7 +15,7 @@ struct BB {
     BB() = default;
 
     Lam* lam = nullptr;
-    DefMap<std::vector<std::pair<const Def*, Lam*>>> phis;
+    DefMap<std::vector<std::pair<std::string, std::string>>> phis;
     std::array<std::deque<StringStream>, 3> parts;
 
     std::deque<StringStream>& head() { return parts[0]; }
@@ -61,7 +61,6 @@ public:
 private:
     std::string convert(const Def*);
     std::string convert_ret_pi(const Pi*);
-    std::string ty(const Def* def) { return convert(def->type()); }
 
     World& world_;
     bool debug_;
@@ -262,7 +261,8 @@ void CodeGen::emit_epilogue(Lam* lam) {
         assert(callee->num_vars() == app->num_args());
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty())
-                lam2bb_[callee].phis[callee->var(i)].emplace_back(app->arg(i), lam);
+                lam2bb_[callee].phis[callee->var(i)].emplace_back(arg, lam->unique_name());
+
         }
         bb.tail("br label {}", callee->unique_name());
     } else if (auto callee = app->callee()->isa_nom<Lam>()) { // function/closure call
@@ -289,8 +289,9 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto name = callee->unique_name();
         auto ret_ty = convert_ret_pi(ret_lam->type());
 
-        bb.tail("{} = {} call({, })", app->unique_name(), ret_ty, values);
+        bb.tail("{}.ret = {} call({, })", app->unique_name(), ret_ty, args);
         bb.tail("br label {}", ret_lam->unique_name());
+        lam2bb_[callee].phis[callee->var(0_s)].emplace_back(app->unique_name(), lam->unique_name());
     }
 }
 
@@ -334,7 +335,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return "undef";
     } else if (auto bit = isa<Tag::Bit>(def)) {
         auto [a, b] = bit->args<2>([this](auto def) { return emit(def); });
-        auto t = ty(bit);
+        auto t = convert(bit->type());
 
         auto neg = [&](const std::string& x) {
             return bb.assign(name + ".neg", "xor {} 0, {}", t, x);
@@ -353,6 +354,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         }
     } else if (auto shr = isa<Tag::Shr>(def)) {
         auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
+        auto t = convert(shr->type());
 
         switch (shr.flags()) {
             case Shr::ashr: op = "ashr"; break;
@@ -360,9 +362,10 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             default: THORIN_UNREACHABLE;
         }
 
-        return bb.assign(name, "{} {} {}, {}", op, ty(shr), a, b);
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto wrap = isa<Tag::Wrap>(def)) {
         auto [a, b] = wrap->args<2>([this](auto def) { return emit(def); });
+        auto t = convert(wrap->type());
         auto [mode, width] = wrap->decurry()->args<2>(as_lit<nat_t>);
 
         switch (wrap.flags()) {
@@ -376,9 +379,10 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         if (mode & WMode::nuw) op += " nuw";
         if (mode & WMode::nsw) op += " nsw";
 
-        return bb.assign(name, "{} {} {}, {}", op, ty(wrap), a, b);
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto div = isa<Tag::Div>(def)) {
         auto [m, x, y] = div->args<3>();
+        auto t = convert(div->type());
         emit_unsafe(m);
         auto a = emit(x);
         auto b = emit(y);
@@ -391,9 +395,10 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             default: THORIN_UNREACHABLE;
         }
 
-        return bb.assign(name, "{} {} {}, {}", op, ty(x), a, b);
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto rop = isa<Tag::ROp>(def)) {
         auto [a, b] = rop->args<2>([this](auto def) { return emit(def); });
+        auto t = convert(rop->type());
         auto [mode, width] = rop->decurry()->args<2>(as_lit<nat_t>);
 
         switch (rop.flags()) {
@@ -417,9 +422,10 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             if (mode & RMode::reassoc ) op += " reassoc";
         }
 
-        return bb.assign(name, "{} {} {}, {}", op, ty(rop), a, b);
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto icmp = isa<Tag::ICmp>(def)) {
         auto [a, b] = icmp->args<2>([this](auto def) { return emit(def); });
+        auto t = convert(icmp->arg(0)->type());
         op = "icmp ";
 
         switch (icmp.flags()) {
@@ -436,9 +442,10 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             default: THORIN_UNREACHABLE;
         }
 
-        return bb.assign(name, "{} {} {}, {}", op, ty(icmp->arg(0)), a, b);
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto rcmp = isa<Tag::RCmp>(def)) {
         auto [a, b] = rcmp->args<2>([this](auto def) { return emit(def); });
+        auto t = convert(rcmp->arg(0)->type());
         op = "fcmp ";
 
         switch (rcmp.flags()) {
@@ -459,10 +466,11 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             default: THORIN_UNREACHABLE;
         }
 
-        return bb.assign(name, "{} {} {}, {}", op, ty(rcmp->arg(0)), a, b);
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto conv = isa<Tag::Conv>(def)) {
         auto src = emit(conv->arg());
-        auto type = convert(def->type());
+        auto src_t = convert(conv->arg()->type());
+        auto dst_t = convert(conv->type());
 
         auto size2width = [&](const Def* type) {
             if (auto int_ = isa<Tag::Int>(type)) {
@@ -487,96 +495,61 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             default: THORIN_UNREACHABLE;
         }
 
-        return bb.assign(name, "{} {} {} to {}", op, ty(conv->arg()), type);
-#if 0
+        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
     } else if (auto bitcast = isa<Tag::Bitcast>(def)) {
         auto dst_type_ptr = isa<Tag::Ptr>(bitcast->type());
         auto src_type_ptr = isa<Tag::Ptr>(bitcast->arg()->type());
-        if (src_type_ptr && dst_type_ptr) return irbuilder_.CreatePointerCast(lookup(bitcast->arg()), convert(bitcast->type()), bitcast->debug().name);
-        if (src_type_ptr)                 return irbuilder_.CreatePtrToInt   (lookup(bitcast->arg()), convert(bitcast->type()), bitcast->debug().name);
-        if (dst_type_ptr)                 return irbuilder_.CreateIntToPtr   (lookup(bitcast->arg()), convert(bitcast->type()), bitcast->debug().name);
-        return emit_bitcast(bitcast->arg(), bitcast->type());
+        auto src = emit(bitcast->arg());
+        auto src_t = convert(bitcast->arg()->type());
+        auto dst_t = convert(bitcast->type());
+        if (src_type_ptr && dst_type_ptr) return bb.assign(name,  "bitcast {} {} to {}", src_t, src, dst_t);
+        if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", src_t, src, dst_t);
+        if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
+        return bb.assign(name, "bitcast {} {} to {}", src_t, src, dst_t);
     } else if (auto lea = isa<Tag::LEA>(def)) {
-        return emit_lea(lea);
+        auto [ptr, index] = lea->args<2>([this](auto def) { return emit(def); });
+        return bb.assign(name, "lea {}, {}", ptr, index);
     } else if (auto trait = isa<Tag::Trait>(def)) {
-        auto type = convert(trait->arg());
-        auto layout = llvm::DataLayout(module_->getDataLayout());
-        switch (trait.flags()) {
-            case Trait::size:  return irbuilder_.getInt32(layout.getTypeAllocSize(type));
-            case Trait::align: return irbuilder_.getInt32(layout.getABITypeAlignment(type));
-        }
+        THORIN_UNREACHABLE;
     } else if (auto alloc = isa<Tag::Alloc>(def)) {
-        auto alloced_type = alloc->decurry()->arg(0);
-        return emit_alloc(alloced_type);
+        return bb.assign(name, "TODO");
     } else if (auto slot = isa<Tag::Slot>(def)) {
-        auto alloced_type = slot->decurry()->arg(0);
-        return emit_alloca(convert(alloced_type), slot->unique_name());
+        return bb.assign(name, "alloca {}");
     } else if (auto load = isa<Tag::Load>(def)) {
-        return emit_load(load);
+        emit_unsafe(load->arg(0));
+        auto ptr = emit(load->arg(1));
+        return bb.assign(name, "load {}", ptr);
     } else if (auto store = isa<Tag::Store>(def)) {
-        return emit_store(store);
-    }
-
-    if (auto tuple = def->isa<Tuple>()) {
-        llvm::Value* llvm_agg = llvm::UndefValue::get(convert(tuple->type()));
-
-        for (size_t i = 0, e = tuple->num_ops(); i != e; ++i)
-            llvm_agg = irbuilder_.CreateInsertValue(llvm_agg, lookup(tuple->op(i)), { unsigned(i) });
-
-        return llvm_agg;
-    } else if (auto pack = def->isa<Pack>()) {
-        auto llvm_type = convert(pack->type());
-
-        llvm::Value* llvm_agg = llvm::UndefValue::get(llvm_type);
-        if (pack->body()->isa<Bot>()) return llvm_agg;
-
-        auto elem = lookup(pack->body());
-        for (size_t i = 0, e = as_lit<u64>(pack->shape()); i != e; ++i)
-            llvm_agg = irbuilder_.CreateInsertValue(llvm_agg, elem, { unsigned(i) });
-
-        return llvm_agg;
-    } else if (def->isa<Extract>() || def->isa<Insert>()) {
-        auto llvm_agg = lookup(def->op(0));
-        auto llvm_idx = lookup(def->op(1));
-        auto copy_to_alloca = [&] () {
-            world().wdef(def, "slow: alloca and loads/stores needed for aggregate '{}'", def);
-            auto alloca = emit_alloca(llvm_agg->getType(), def->debug().name);
-            irbuilder_.CreateStore(llvm_agg, alloca);
-
-            llvm::Value* args[2] = { irbuilder_.getInt64(0), i1toi32(llvm_idx) };
-            auto gep = irbuilder_.CreateInBoundsGEP(alloca, args);
-            return std::make_pair(alloca, gep);
-        };
-        auto copy_to_alloca_or_global = [&] () -> llvm::Value* {
-            if (auto constant = llvm::dyn_cast<llvm::Constant>(llvm_agg)) {
-                auto global = llvm::cast<llvm::GlobalVariable>(module_->getOrInsertGlobal(def->op(0)->unique_name().c_str(), llvm_agg->getType()));
-                global->setInitializer(constant);
-                return irbuilder_.CreateInBoundsGEP(global, { irbuilder_.getInt64(0), i1toi32(llvm_idx) });
+        emit_unsafe(store->arg(0));
+        auto ptr = emit(store->arg(1));
+        auto val = emit(store->arg(2));
+        return bb.assign(name, "store {}, {}", val, ptr);
+    } if (auto tuple = def->isa<Tuple>()) {
+        std::string prev = "undef";
+        auto t = convert(tuple->type());
+        for (size_t i = 0, e = tuple->num_ops(); i != e; ++i) {
+            if (auto elem = emit_unsafe(tuple->op(i)); !elem.empty()) {
+                auto elem_t = convert(tuple->op(i));
+                prev = bb.assign(name + "." + std::to_string(i), "insertvalue {} {}, {} {}, i32 {}", t, prev, elem_t, elem, i);
             }
-            return copy_to_alloca().second;
-        };
-
-        if (auto extract = def->isa<Extract>()) {
-            if (is_memop(extract->tuple())) return lookup(extract->tuple());
-            if (extract->tuple()->type()->isa<Arr>()) return irbuilder_.CreateLoad(copy_to_alloca_or_global());
-
-            // tuple/struct
-            return irbuilder_.CreateExtractValue(llvm_agg, {as_lit<u32>(extract->index())});
         }
 
-        auto insert = def->as<Insert>();
-        auto val = lookup(insert->value());
-
-        if (insert->tuple()->type()->isa<Arr>()) {
-            auto p = copy_to_alloca();
-            irbuilder_.CreateStore(lookup(insert->value()), p.second);
-            return irbuilder_.CreateLoad(p.first);
-        }
-        // tuple/struct
-        return irbuilder_.CreateInsertValue(llvm_agg, val, {as_lit<u32>(insert->index())});
+        return prev;
+    } else if (auto pack = def->isa<Pack>()) {
+        return "TODO";
+    } else if (auto extract = def->isa<Extract>()) {
+        auto tuple = emit(extract->tuple());
+        auto index = emit(extract->index());
+        return bb.assign(name, "extract {}, {}", tuple, index);
+    } else if (auto insert = def->isa<Insert>()) {
+        auto tuple = emit(insert->tuple());
+        auto index = emit(insert->index());
+        auto value = emit(insert->value());
+        return bb.assign(name, "insert {}, {}, {}", tuple, index, value);
     } else if (auto global = def->isa<Global>()) {
-        return emit_global(global);
-#endif
+        auto [pointee, addr_space] = as<Tag::Ptr>(global->type())->args<2>();
+        vars_decls_.fmt("{} = external global {}\n", name, convert(pointee));
+        return name;
     }
 
     return "<TODO>";
