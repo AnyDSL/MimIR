@@ -13,10 +13,10 @@ namespace thorin::ll {
 
 struct BB {
     BB() = default;
-
-    Lam* lam = nullptr;
-    DefMap<std::vector<std::pair<std::string, std::string>>> phis;
-    std::array<std::deque<StringStream>, 3> parts;
+    BB(const BB&) = delete;
+    BB(BB&& other) {
+        swap(*this, other);
+    }
 
     std::deque<StringStream>& head() { return parts[0]; }
     std::deque<StringStream>& body() { return parts[1]; }
@@ -33,9 +33,12 @@ struct BB {
 
     friend void swap(BB& a, BB& b) {
         using std::swap;
-        swap(a.lam,   b.lam);
+        swap(a.phis,  b.phis);
         swap(a.parts, b.parts);
     }
+
+    DefMap<std::vector<std::pair<std::string, std::string>>> phis;
+    std::array<std::deque<StringStream>, 3> parts;
 };
 
 class CodeGen : public Emitter<std::string, std::string, BB, CodeGen> {
@@ -59,6 +62,7 @@ public:
     void finalize(const Scope&);
 
 private:
+    std::string id(const Def*, bool force_bb = false) const;
     std::string convert(const Def*);
     std::string convert_ret_pi(const Pi*);
 
@@ -75,6 +79,17 @@ private:
 /*
  * convert
  */
+
+std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
+    if (auto lam = def->isa_nom<Lam>(); lam && !force_bb) {
+        if (lam->type()->ret_pi()) {
+            if (lam->is_external()) return "@" + lam->name();
+            return "@" + lam->unique_name();
+        }
+    }
+
+    return "%" + def->unique_name();
+}
 
 std::string CodeGen::convert(const Def* type) {
     if (auto ll_type = types_.lookup(type)) return *ll_type;
@@ -183,12 +198,12 @@ void CodeGen::emit_module() {
 std::string CodeGen::prepare(const Scope& scope) {
     auto lam = scope.entry()->as_nom<Lam>();
 
-    func_impls_.fmt("define {} @{}(", convert_ret_pi(lam->type()->ret_pi()), lam->unique_name());
+    func_impls_.fmt("define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
     const char* sep = "";
     for (auto var : lam->vars().skip_back()) {
         if (isa<Tag::Mem>(var->type())) continue;
-        auto name = var->unique_name();
+        auto name = id(var);
         defs_[var] = name;
         func_impls_.fmt("{}{} {}", sep, convert(var->type()), name);
         sep = ", ";
@@ -202,7 +217,7 @@ std::string CodeGen::prepare(const Scope& scope) {
 void CodeGen::finalize(const Scope& scope) {
     for (auto& [lam, bb] : lam2bb_) {
         for (const auto& [phi, args] : bb.phis) {
-            bb.head().emplace_back().fmt("{} = phi ", phi);
+            bb.head().emplace_back().fmt("{} = phi {} ", id(phi), convert(phi->type()));
             const char* sep = "";
             for (const auto& [arg, pred] : args) {
                 bb.head().back().fmt("{}[ {}, {} ]", sep, arg, pred);
@@ -213,6 +228,8 @@ void CodeGen::finalize(const Scope& scope) {
 
     for (auto nom : schedule(scope)) {
         if (auto lam = nom->isa_nom<Lam>()) {
+            if (lam == scope.exit()) continue;
+            assert(lam2bb_.contains(lam));
             auto& bb = lam2bb_[lam];
             func_impls_.fmt("{}:\t\n", lam->unique_name());
 
@@ -229,7 +246,6 @@ void CodeGen::finalize(const Scope& scope) {
 }
 
 void CodeGen::emit_epilogue(Lam* lam) {
-    auto&& bb = lam2bb_[lam];
     auto app = lam->body()->as<App>();
 
     if (app->callee() == entry_->ret_var()) { // return
@@ -244,30 +260,31 @@ void CodeGen::emit_epilogue(Lam* lam) {
         }
 
         switch (values.size()) {
-            case 0: return bb.tail("ret");
-            case 1: return bb.tail("ret {} {}", convert(types[0]), values[0]);
+            case 0: return lam2bb_[lam].tail("ret");
+            case 1: return lam2bb_[lam].tail("ret {} {}", convert(types[0]), values[0]);
             default:
                 auto tuple = convert(world().sigma(types));
-                bb.tail("{} ret_val\n", tuple);
+                lam2bb_[lam].tail("{} ret_val\n", tuple);
                 for (size_t i = 0, e = types.size(); i != e; ++i)
-                    bb.tail("ret_val.e{} = {};\n", i, values[i]);
-                return bb.tail("ret ret_val");
+                    lam2bb_[lam].tail("ret_val.e{} = {};\n", i, values[i]);
+                return lam2bb_[lam].tail("ret ret_val");
         }
     } else if (auto ex = app->callee()->isa<Extract>()) {
         auto c = emit(ex->index());
         auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
-        return bb.tail("br i1 {}, label {}, label {}", c, t, f);
+        return lam2bb_[lam].tail("br i1 {}, label {}, label {}", c, t, f);
     } else if (app->callee()->isa<Bot>()) {
-        return bb.tail("ret ; bottom: unreachable");
+        return lam2bb_[lam].tail("ret ; bottom: unreachable");
     } else if (auto callee = app->callee()->isa_nom<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
                 auto phi = callee->var(i);
-                lam2bb_[callee].phis[phi].emplace_back(arg, lam->unique_name());
-                defs_[phi] = phi->unique_name();
+                assert(!isa<Tag::Mem>(phi->type()));
+                lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                defs_[phi] = id(phi);
             }
         }
-        bb.tail("br label {}", callee->unique_name());
+        return lam2bb_[lam].tail("br label {}", id(callee));
     } else if (auto callee = app->callee()->isa_nom<Lam>()) { // function/closure call
         auto ret_lam = app->args().back()->as_nom<Lam>();
 
@@ -275,7 +292,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto app_args = app->args();
         for (auto arg : app_args.skip_back()) {
             if (auto emitted_arg = emit_unsafe(arg); !emitted_arg.empty())
-                args.emplace_back(emitted_arg);
+                args.emplace_back(convert(arg->type()) + " " + emitted_arg);
         }
 
         size_t num_vars = ret_lam->num_vars();
@@ -289,24 +306,41 @@ void CodeGen::emit_epilogue(Lam* lam) {
             ++n;
         }
 
-        auto name = callee->unique_name() + ".ret";
+        auto name = "%" + app->unique_name() + ".ret";
         auto ret_ty = convert_ret_pi(ret_lam->type());
 
-        bb.tail("{} = {} call @{}({, })", name, ret_ty, callee, args);
+        lam2bb_[lam].tail("{} = call {} {}({, })", name, ret_ty, id(callee), args);
 
         auto phi = ret_lam->var(1);
-        lam2bb_[ret_lam].phis[phi].emplace_back(name, lam->unique_name());
-        defs_[phi] = phi->unique_name();
-        bb.tail("br label {}", ret_lam->unique_name());
+        assert(!isa<Tag::Mem>(phi->type()));
+        lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
+        defs_[phi] = id(phi);
+        return lam2bb_[lam].tail("br label {}", id(ret_lam));
     }
 }
 
 std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     StringStream s;
-    auto name = def->unique_name();
+    auto name = id(def);
     std::string op;
 
-    if (auto lit = def->isa<Lit>()) {
+    auto emit_tuple = [&](const Def* tuple) {
+        std::string prev = "undef";
+        auto t = convert(tuple->type());
+        for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
+            auto e = tuple->proj(n, i);
+            if (auto elem = emit_unsafe(e); !elem.empty()) {
+                auto elem_t = convert(e);
+                prev = bb.assign(name + "." + std::to_string(i), "insertvalue {} {}, {} {}, i32 {}", t, prev, elem_t, elem, i);
+            }
+        }
+        return prev;
+    };
+
+    if (auto var = def->isa<Var>()) {
+        if (isa<Tag::Mem>(var->type())) return {};
+        return emit_tuple(var);
+    } else if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
             return std::to_string(lit->get<nat_t>());
         } else if (isa<Tag::Int>(lit->type())) {
@@ -531,19 +565,11 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto val = emit(store->arg(2));
         return bb.assign(name, "store {}, {}", val, ptr);
     } if (auto tuple = def->isa<Tuple>()) {
-        std::string prev = "undef";
-        auto t = convert(tuple->type());
-        for (size_t i = 0, e = tuple->num_ops(); i != e; ++i) {
-            if (auto elem = emit_unsafe(tuple->op(i)); !elem.empty()) {
-                auto elem_t = convert(tuple->op(i));
-                prev = bb.assign(name + "." + std::to_string(i), "insertvalue {} {}, {} {}, i32 {}", t, prev, elem_t, elem, i);
-            }
-        }
-
-        return prev;
+        return emit_tuple(tuple);
     } else if (auto pack = def->isa<Pack>()) {
         return "TODO";
     } else if (auto extract = def->isa<Extract>()) {
+        if (isa<Tag::Mem>(extract->type())) return {};
         auto tuple = emit(extract->tuple());
         auto index = emit(extract->index());
         if (isa<Tag::Mem>(extract->type())) return "";
@@ -562,9 +588,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     return "<TODO>";
 }
 
-std::string CodeGen::emit_fun_decl(Lam* lam) {
-    return lam->is_external() ? lam->name() : lam->unique_name();
-}
+std::string CodeGen::emit_fun_decl(Lam* lam) { return id(lam); }
 
 void emit(World& world, Stream& stream) {
     CodeGen cg(world, stream);
