@@ -1,13 +1,21 @@
-# Thorin
+# Thorin 2
+
 The Higher-Order Intermediate Representation
 
 ## Build Instructions
 
-See [Build Instructions](https://anydsl.github.io/Build-Instructions).
+```
+git clone --recurse-submodules git@github.com:AnyDSL/thorin2.git
+cd thorin2
+mkdir build
+cd build
+cmake ..
+make
+```
 
 ## Documentation
 
-See our [AnyDSL/Thorin Website](https://anydsl.github.io/Thorin).
+See (Read the Docs)[https://readthedocs.org/projects/thorin2/].
 
 ## Syntax
 
