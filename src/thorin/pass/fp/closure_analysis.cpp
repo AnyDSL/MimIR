@@ -101,7 +101,7 @@ ClosureAnalysis::Err ClosureAnalysis::assign(const DefSet& defs, CA v) {
                     if (!interesting_type(var->type()))
                         continue;
                     auto var_v = (new_v == CA::jmp) ? CA::proc
-                               : (new_v == CA::ret) ? CA::proc_e
+                               : (new_v == CA::ret) ? CA::proc_e   // we could do better here for closure environments
                                : (var == ret_var(lam)) ? CA::ret   // proc or proc_e
                                : (lam->is_set()) ? CA::proc : CA::proc_e;
                     e = std::min(e, assign({var}, var_v));
@@ -135,7 +135,8 @@ CA ClosureAnalysis::lookup_init(const Def* def) {
 const Def* ClosureAnalysis::mark(const Def* def) {
     auto& w = world();
     if (auto [var, _] = ca_isa_var<Lam>(def); var && interesting_type_b(var->type())) {
-        return w.ca_mark(def, lookup_init(var));
+        auto v = lookup_init(var);
+        return w.ca_mark(def, (v == CA::ret) ? v : CA::bot);
     } else if (auto lam = def->isa_nom<Lam>()) {
         return w.ca_mark(lam, lookup_init(lam));
     } else if (auto tuple = def->isa<Tuple>()) {

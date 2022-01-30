@@ -280,10 +280,9 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst, CA ca) {
     } else if (auto pi = def->isa<Pi>(); pi && pi->is_cn()) {
         return map(closure_type(pi, subst));
     } else if (auto lam = def->isa_nom<Lam>(); lam && lam->type()->is_cn()) {
-        return map(make_closure(lam, subst, convert_lam(ca)));
+        return map(make_closure(lam, subst, ca));
     } else if (auto [marked, v] = ca_isa_mark(def); marked) {
-        auto new_def = (v == CA::ret) ? rw_non_captured(marked, subst, v) : rewrite(marked, subst, v);
-        return (flags_ & Flags::KEEP_MARKS) ? w.ca_mark(new_def, v) : new_def;
+        return  map((v == CA::ret) ? rw_non_captured(marked, subst, v) : rewrite(marked, subst, v));
     } 
 
     auto new_type = rewrite(def->type(), subst);
@@ -379,12 +378,13 @@ ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst, bo
     return closure;
 }
 
-const Def* ClosureConv::make_closure(Lam *old_lam, Def2Def& subst, bool convert) {
-    auto [_, __, fv_env, new_lam] = make_stub(old_lam, subst, convert);
+const Def* ClosureConv::make_closure(Lam *old_lam, Def2Def& subst, CA ca) {
+    auto& w = world();
+    auto [_, __, fv_env, new_lam] = make_stub(old_lam, subst, convert_lam(ca));
     auto closure_type = rewrite(old_lam->type(), subst);
     auto env = rewrite(fv_env, subst);
-    auto closure = pack_closure(env, new_lam, closure_type);
-    world().DLOG("RW: pack {} ~> {} : {}", old_lam, closure, closure_type);
+    auto closure = pack_closure(env, (flags_ & KEEP_MARKS) ? w.ca_mark(new_lam, ca) : new_lam, closure_type);
+    w.DLOG("RW: pack {} ~> {} : {}", old_lam, closure, closure_type);
     return closure;
 }
 

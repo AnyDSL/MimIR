@@ -100,7 +100,7 @@ private:
     const Def* rw_non_captured(const Def* var, Def2Def& subst, CA ca = CA::bot);
     const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
     ClosureStub make_stub(Lam* lam, Def2Def& subst, bool covert);
-    const Def* make_closure(Lam* lam, Def2Def& subst, bool convert);
+    const Def* make_closure(Lam* lam, Def2Def& subst, CA ca);
 
     bool convert_lam(CA ca) {
         switch (ca) {
