@@ -105,7 +105,7 @@ private:
     bool convert_lam(CA ca) {
         switch (ca) {
             case CA::jmp:                     
-            case CA::ret: return flags_ <= MAX;         
+            case CA::ret: return (flags_ >> 1) <= MAX;         
             default:      return true;
         }
     }
@@ -193,6 +193,7 @@ public:
     bool is_basicblock() { return ca_is_basicblock(mark_); };
     bool is_proc() { return ca_is_proc(mark_); };
     bool is(CA a) { return mark_ == a; }
+    CA mark() { return mark_; }
     /// @}
 
     // @name Escape analyses

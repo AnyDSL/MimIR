@@ -15,9 +15,11 @@ const Def* UnboxClosure::rewrite(const Def* def) {
         const Def* fnc_type = nullptr;
         for (auto op: tuple->ops()) {
             auto c = isa_closure_lit(op);
-            // TODO: We have to check if the pi's and not just the environmen-types are *equal*, since
+            if (c.is_proc() || c.is(CA::unknown))
+                return def;
+            // Note: We have to check if the pi's and not just the environmen-types are *equal*, since
             // extract doesn't check for equiv and the closure conv may rewrite noms with different, but equiv noms
-            if (!c || !c.fnc_as_lam() || (fnc_type && fnc_type != c.fnc_type()))
+            if (!c || !c.fnc_as_lam() || c.is_proc() || c.is(CA::unknown) || (fnc_type && fnc_type != c.fnc_type()))
                 return def;
             fnc_type = c.fnc_type();
             envs.push_back(c.env());
@@ -61,10 +63,8 @@ const Def* UnboxClosure::rewrite(const Def* def) {
                 arg_spec[i] = c.env_type();
                 w.DLOG("{}({}): ⊥ => {}", bxd_lam, i, c.env_type());
             }
-            doms.push_back(c.fnc_type());
-            doms.push_back(c.env_type());
-            args.push_back(c.fnc());
-            args.push_back(c.env());
+            doms.push_back(w.sigma({c.fnc_type(), c.env_type()}));
+            args.push_back(w.tuple({c.fnc(), c.env()}));
         }
 
         if (proxy_ops.size() > 1) {
@@ -83,17 +83,14 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             old_doms = doms;
             ubxd_lam = bxd_lam->stub(w, w.cn(w.sigma(doms)), bxd_lam->dbg());
             ubxd_lam->set_name(bxd_lam->name());
-            size_t j = 0;
-            auto new_args = w.tuple(DefArray(bxd_lam->num_doms(), [&](auto i) {
-                if (auto ct = isa_ctype(bxd_lam->dom(i)); ct && !keep_.contains(bxd_lam->var(i))) {
-                    auto c = pack_closure(ubxd_lam->var(j+1), ubxd_lam->var(j), ct);
-                    j += 2;
-                    return c;
-                } else {
-                    return ubxd_lam->var(j++);
-                }
+            auto new_vars = w.tuple(DefArray(bxd_lam->num_doms(), [&](auto i) {
+                auto old_var = bxd_lam->var(i);
+                auto new_var = ubxd_lam->var(i);
+                if (auto ct = isa_ctype(old_var->type()); ct && !keep_.contains(old_var))
+                    return pack_closure(new_var->proj(1), new_var->proj(0), ct);
+                return new_var;
             }));
-            ubxd_lam->set(bxd_lam->apply(new_args));
+            ubxd_lam->set(bxd_lam->apply(new_vars));
             w.DLOG("{} => {} (new)", bxd_lam, ubxd_lam);
             keep_.insert(ubxd_lam);
         } else {

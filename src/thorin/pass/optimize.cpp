@@ -22,16 +22,16 @@
 namespace thorin {
 
 void optimize(World& world) {
-    // PassMan opt(world);
+    PassMan opt(world);
     // opt.add<PartialEval>();
     // opt.add<BetaRed>();
-    // auto er = opt.add<EtaRed>();
-    // auto ee = opt.add<EtaExp>(er);
-    // opt.add<SSAConstr>(ee);
+    auto er = opt.add<EtaRed>();
+    auto ee = opt.add<EtaExp>(er);
+    opt.add<SSAConstr>(ee);
     // opt.add<CopyProp>();
-    // opt.add<Scalerize>(ee);
+    opt.add<Scalerize>(ee);
     // opt.add<AutoDiff>();
-    // opt.run();
+    opt.run();
 
     PassMan closure_ana(world);
     closure_ana.add<ClosureAnalysis>();
@@ -40,22 +40,16 @@ void optimize(World& world) {
     // while (partial_evaluation(world, true)); // lower2cff
     // world.debug_stream();
     
-    ClosureConv(world).run();
+    ClosureConv(world, ClosureConv::Flags(ClosureConv::MAX | ClosureConv::Flags::KEEP_MARKS)).run();
     world.debug_stream();
     
-    // PassMan closure_destruct(world);
-    // er = closure_destruct.add<EtaRed>();
-    // ee = closure_destruct.add<EtaExp>(er);
-    // closure_destruct.add<ClosureDestruct>(ee);
-    // closure_destruct.add<Scalerize>(nullptr);
-    // closure_destruct.run();
+    PassMan closure_destruct(world);
+    closure_destruct.add<ClosureDestruct>();
+    closure_destruct.add<Scalerize>(nullptr);
+    closure_destruct.add<UnboxClosure>();
+    closure_destruct.run();
 
-    // PassMan unbox_closures(world);
-    // unbox_closures.add<Scalerize>(nullptr);
-    // unbox_closures.add<UnboxClosure>();
-    // unbox_closures.run();
-
-    // LowerTypedClosures(world).run();
+    LowerTypedClosures(world).run();
 
     // PassMan codgen_prepare(world);
     // codgen_prepare.add<Scalerize>(nullptr);

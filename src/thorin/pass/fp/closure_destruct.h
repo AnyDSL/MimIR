@@ -13,26 +13,37 @@ namespace thorin {
 
 class ClosureDestruct : public FPPass<ClosureDestruct, Lam> {
 public:
-    ClosureDestruct(PassMan& man, EtaExp* eta_exp) 
-        : FPPass<ClosureDestruct, Lam>(man, "closure_destruct")
-        , eta_exp_(*eta_exp), escape_(), clos2dropped_()
+    ClosureDestruct(PassMan& man) 
+        : ClosureDestruct(man, "closure_destruct") 
     {}
 
     const Def* rewrite(const Def*) override;
-    undo_t analyze(const Def*) override;
+    undo_t analyze(const Proxy*) override;
 
-    using Data = int;
+    using Data = LamMap<const Def*>;
 
-private:
-    EtaExp& eta_exp_;
-    DefSet escape_;
-    LamMap<std::pair<const Def*, Lam*>> clos2dropped_;
+protected:
+    ClosureDestruct(PassMan& man, const std::string& name) 
+        : FPPass<ClosureDestruct, Lam>(man, name)
+        , clos2dropped_(), keep_()
+    {}
 
-    bool is_esc(const Def* def);
-
-    undo_t join(DefSet& defs, bool cond);
-    undo_t join(const Def* def, bool cond);
+    Lam2Lam clos2dropped_;
+    Lam2Lam dropped2clos_;
+    LamSet keep_;
 };
 
+class Closure2SSI : public ClosureDestruct {
+public:
+    Closure2SSI(PassMan& man) 
+        : ClosureDestruct(man, "closure2ssi") 
+    {}
+
+    undo_t analyze(const Def* def) override;
+};
+
+
+
 }
+
 #endif

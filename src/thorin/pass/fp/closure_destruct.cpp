@@ -6,183 +6,71 @@ namespace thorin {
 
 const Def* ClosureDestruct::rewrite(const Def* def) {
     auto& w = world();
-    if (auto c = isa_closure_lit(def)) {
-        if (is_esc(c.fnc())) {
-            world().DLOG("MARK ESCAPING: {}", c.fnc());
-            auto dbg = def->debug();
-            dbg.meta = nullptr;
-            def->set_dbg(world().dbg(dbg));
-            return def;
+
+    if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
+        if (auto [callee, _] = ca_isa_mark(app->callee()); callee) {
+            w.DLOG("removed mark from callee {} in {}", callee, app);
+            return w.app(callee, app->arg(), app->dbg());
         }
-        if (c.marked_no_esc())
-            return def;
-        auto new_dbg = ClosureLit::get_esc_annot(def);
-        if (!c.is_basicblock() || !c.fnc_as_lam()) {
-            world().DLOG("MARK NO ESC ({}, {})", c.env(), c.fnc());
-            def->set_dbg(new_dbg);
-            return def;
-        }
-        auto& [old_env, new_lam] = clos2dropped_[c.fnc_as_lam()];
-        if (!new_lam || c.env() != old_env) {
-            old_env = c.env();
-            new_lam = c.fnc_as_lam()->stub(world(), ctype_to_pi(c.type(), w.sigma()), c.fnc_as_lam()->dbg());
-            world().DLOG("DROP ({}, {}) => {}", c.env(), c.fnc_as_lam(), new_lam);
-            auto new_vars = DefArray(new_lam->num_doms(), [&](auto i) {
-                return (i == CLOSURE_ENV_PARAM) ? c.env() : new_lam->var(i); 
-            });
-            new_lam->set(c.fnc_as_lam()->apply(w.tuple(new_vars)));
-            eta_exp_.new2old(new_lam, c.fnc_as_lam());
-        }
-        return pack_closure_dbg(w.tuple(), new_lam, new_dbg, c.type());
     }
+
+    if (auto c = isa_closure_lit(def); c && c.is_basicblock()) {
+        auto clam = c.fnc_as_lam();
+        if (!clam)
+            return c;
+        if (keep_.contains(clam) || c.env_type() == w.sigma())
+            return pack_closure(c.env(), c.fnc_as_lam(),  c.type()); // Get rid of the annotations
+        auto& old_env = data(clam);
+        if (old_env && old_env != c.env())
+            return proxy(c.type(), {clam, old_env, c.env()});
+        old_env = c.env();
+        auto& dropped_lam = clos2dropped_[clam];
+        if (!dropped_lam) {
+            dropped_lam = c.fnc_as_lam()->stub(w, ctype_to_pi(c.type(), w.sigma()), c.fnc_as_lam()->dbg());
+            auto new_vars = DefArray(dropped_lam->num_doms(), [&](auto i) {
+                return (i == CLOSURE_ENV_PARAM) ? c.env() : dropped_lam->var(i); 
+            });
+            dropped_lam->set(c.fnc_as_lam()->apply(w.tuple(new_vars)));
+            dropped2clos_[dropped_lam] = clam;
+            w.DLOG("dropped ({}, {}) => {}", c.env(), c.fnc_as_lam(), dropped_lam);
+        }
+        return pack_closure(w.tuple(), dropped_lam, c.type());
+    }
+
     return def;
 }
 
-static bool interesting_type_b(const Def* type) {
-    return isa_ctype(type) != nullptr;
+undo_t ClosureDestruct::analyze(const Proxy* proxy) {
+    auto [clam, old_env, new_env] = proxy->ops<3>();
+    world().DLOG("possible join point {}: env {} != {}", clam, old_env, new_env);
+    keep_.emplace(clam->as_nom<Lam>());
+    return undo_visit(clam->as_nom<Lam>());
 }
 
-static bool interesting_type(const Def* type, DefSet& visited) {
-    if (type->isa_nom())
-        visited.insert(type);
-    if (interesting_type_b(type))
-        return true;
-    if (auto sigma = type->isa<Sigma>())
-        return std::any_of(sigma->ops().begin(), sigma->ops().end(), [&](auto d) {
-            return !visited.contains(d) && interesting_type(d, visited); });
-    if (auto arr = type->isa<Arr>())
-        return interesting_type(arr->body(), visited);
-    return false;
-}
-
-static bool interesting_type(const Def* type) {
-   auto v = DefSet();
-   return interesting_type(type, v);
-}
-
-static std::pair<const Def*, Def*> isa_var(const Def* a) {
-    if (auto proj = a->isa<Extract>()) {
-        if (auto var = proj->tuple()->isa<Var>(); var && var->nom()->isa<Lam>())
-            return {a, var->nom()};
-    }
-    if (auto var = a->isa<Var>()) {
-        if (auto lam = var->nom()->isa<Lam>()) {
-            assert(lam->num_doms() == 1 && "Analyzed whole arg tuple");
-            return {a, var->nom()};
-        }
-    }
-    return {nullptr, nullptr};
-}
-
-static void split(DefSet& out, const Def* def, bool keep_others) {
-    if (auto lam = def->isa<Lam>())
-        out.insert(lam);
-    else if (auto c = isa_closure_lit(def))
-        split(out, c.fnc(), keep_others);
-    else if (auto [var, lam] = isa_var(def); var && lam)
-        out.insert(var);
-    else if (auto proj = def->isa<Extract>())
-        split(out, proj->tuple(), keep_others);
-    else if (auto pack = def->isa<Pack>())
-        split(out, pack->body(), keep_others);
-    else if (auto tuple = def->isa<Tuple>())
-        for (auto op: tuple->ops())
-            split(out, op, keep_others);
-    else if (keep_others)
-        out.insert(def);
-}
-
-static DefSet&& split(DefSet&& out, const Def* def, bool keep_others) {
-    split(out, def, keep_others);
-    return std::move(out);
-}
-
-bool ClosureDestruct::is_esc(const Def* def) {
-    if (escape_.contains(def))
-        return true;
-    if (auto proj = def->isa<Extract>()) {
-        if (auto tuple = proj->tuple()->isa<Tuple>()) {
-            auto ops = tuple->ops();
-            if (std::all_of(ops.begin(), ops.end(), [&](auto d) { return is_esc(d); })) {
-                escape_.emplace(def);
-                return true;
-            }
-        }
-    }
-    if (auto lam = def->isa_nom<Lam>()) {
-        if (auto [_, rw] = clos2dropped_[lam]; rw && escape_.contains(rw)) {
-            escape_.emplace(lam);
-            return true;
-        }
-    }
-    return false;
-}
-
-undo_t ClosureDestruct::join(DefSet& defs, bool cond) {
-    if (!cond)
-        return No_Undo;
-    auto undo = No_Undo;
-    for (auto def: defs) {
-        if (is_esc(def))
-            continue;
-        world().DLOG("escape {}", def);
-        escape_.insert(def);
-        if (auto [_, lam] = isa_var(def); lam) {
-            undo = std::min(undo, undo_visit(lam));
-        } else {
-            lam = def->isa_nom<Lam>();
-            assert(lam && "should be lam or var");
-            undo = std::min(undo, undo_visit(lam));
-        }
-    }
-    return undo;
-}
-
-undo_t ClosureDestruct::join(const Def* def, bool escapes) {
-    if (!escapes)
-        return No_Undo;
-    auto defs = split(DefSet(), def, false);
-    return join(defs, escapes);
-}
-
-// store [type, space] (:mem, ptr, x)
-const Def* try_get_stored(const Def* def) {
-    if (auto top_app = def->isa<App>()) 
-        if (auto head = top_app->callee()->isa<App>(); head && head->axiom())
-            if (head->axiom()->tag() == Tag::Store)
-                return top_app->arg(2_u64); 
-    return nullptr;
-}
-
-undo_t ClosureDestruct::analyze(const Def* def) {
-    if (auto c = isa_closure_lit(def)) {
-        world().DLOG("closure ({}, {})", c.env(), c.fnc_as_lam());
-        return join(c.env(), is_esc(c.fnc_as_lam()) || is_esc(c.env_var()));
-    } else if (auto stored = try_get_stored(def)) {
-        return join(stored, true);
-    } else if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
-        auto callees = split(DefSet(), app->callee(), true);
+undo_t Closure2SSI::analyze(const Def* def) {
+    if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
+        auto clos_branch = app->callee()->isa<Extract>();  // closur call
+        if (!clos_branch || !isa_ctype(clos_branch->type()))
+            return No_Undo;
+        clos_branch = clos_branch->isa<Extract>(); // branches
+        if (!clos_branch || !clos_branch->tuple()->isa<Tuple>())
+            return No_Undo;
         auto undo = No_Undo;
-        world().DLOG("call {}", app);
-        assert(callees.size() > 0);
-        for (auto callee: callees)
-            world().DLOG("callee: {}", callee);
-        for (size_t i = 0; i < app->num_args(); i++) {
-            auto a = app->arg(i);
-            if (!interesting_type(a->type()))
-                continue;
-            auto escapes = std::any_of(callees.begin(), callees.end(), [&](const Def* c) {
-                if (auto lam = c->isa_nom<Lam>())
-                    return is_esc(lam->var(i));
-                return true;
-            });
-            if (!escapes)
-                continue;
-            undo = std::min(undo, join(a, true));
+        for (auto op: clos_branch->tuple()->ops()) {
+            if (auto c = isa_closure_lit(op); c && c.fnc_as_lam()) {
+                auto old_lam = dropped2clos_[c.fnc_as_lam()];
+                if (keep_.contains(old_lam)) {
+                    world().DLOG("dropped closure in branch: {}", dropped2clos_[c.fnc_as_lam()]);
+                    undo = std::min(undo, undo_visit(old_lam));
+                }
+            }
         }
         return undo;
     }
+
     return No_Undo;
+
 }
+
 
 } // namespace thorin
