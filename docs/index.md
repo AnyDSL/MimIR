@@ -1,4 +1,6 @@
-## Welcome to GitHub Pages
+# THORIN - The Higher ORder INtermediate representation
+
+{:toc}
 
 You can use the [editor on GitHub](https://github.com/AnyDSL/thorin2/edit/master/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
