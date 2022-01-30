@@ -98,26 +98,11 @@ set(THORIN_SOURCES
     util/utf8.h
 )
 
-if(LLVM_FOUND)
-    list(APPEND THORIN_SOURCES
-        be/llvm/cpu.cpp
-        be/llvm/cpu.h
-        be/llvm/llvm.cpp
-        be/llvm/llvm.h
-        be/llvm/runtime.inc
-        be/llvm/runtime.cpp
-        be/llvm/runtime.h
-    )
-endif()
-
 add_library(libthorin ${THORIN_SOURCES})
 set_target_properties(libthorin PROPERTIES PREFIX "")
 target_compile_options(libthorin PRIVATE -Wall -Wextra)
 target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
-
-find_package(Half REQUIRED)
-message(STATUS "Building with Half library from ${Half_INCLUDE_DIRS}.")
-target_include_directories(libthorin PUBLIC ${Half_INCLUDE_DIRS})
+target_include_directories(libthorin PUBLIC ${PROJECT_SOURCE_DIR}/half/include)
 
 # check for colored terminal
 set(COLOR_TTY_AVAILABLE TRUE)
