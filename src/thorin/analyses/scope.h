@@ -11,13 +11,11 @@ template<bool> class CFG;
 using F_CFG = CFG<true >;
 using B_CFG = CFG<false>;
 
-/**
- * A @p Scope represents a region of @p Def%s that are live from the view of an @p entry's @p Var.
- * Transitively, all user's of the @p entry's @p Var are pooled into this @p Scope (see @p defs()).
- * Both @p entry() and @p exit() are @em NOT part of the @p Scope itself.
- * The @p exit() is just a virtual dummy to have a unique exit dual to @p entry().
- */
-class Scope : public Streamable<Scope> {
+/// A @p Scope represents a region of @p Def%s that are live from the view of an @p entry's @p Var.
+/// Transitively, all user's of the @p entry's @p Var are pooled into this @p Scope (see @p defs()).
+/// Both @p entry() and @p exit() are @em NOT part of the @p Scope itself.
+/// The @p exit() is just a virtual dummy to have a unique exit dual to @p entry().
+class Scope {
 public:
     Scope(const Scope&) = delete;
     Scope& operator=(Scope) = delete;

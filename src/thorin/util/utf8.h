@@ -6,9 +6,6 @@
 
 #include "thorin/util/types.h"
 
-// remove when migrating to C++20
-using char8_t = uint8_t;
-
 namespace thorin::utf8 {
 
 static constexpr size_t Max = 4;

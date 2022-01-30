@@ -113,7 +113,7 @@ public:
         if (lower2cff)
             if(order >= 2 || (order == 1
                         && (!callee_->var(i)->type()->isa<Pi>()
-                        || (!callee_->is_returning() || (!is_top_level(callee_)))))) {
+                        || (!callee_->ret_var() || (!is_top_level(callee_)))))) {
             world().DLOG("bad var({}) {} of lam {}", i, callee_->var(i), callee_);
             return true;
         }

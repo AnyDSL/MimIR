@@ -149,11 +149,11 @@ Defs Def::extended_ops() const {
 
 const Var* Def::var(const Def* dbg) {
     auto& w = world();
-    if (auto lam    = isa<Lam  >()) return w.var(lam ->dom(), lam,   dbg);
-    if (auto pi     = isa<Pi   >()) return w.var(pi  ->dom(), pi,    dbg);
-    if (auto sigma  = isa<Sigma>()) return w.var(sigma,          sigma, dbg);
-    if (auto arr    = isa<Arr  >()) return w.var(w.type_int(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
-    if (auto pack   = isa<Pack >()) return w.var(w.type_int(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
+    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam, dbg);
+    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi, dbg);
+    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig, dbg);
+    if (auto arr  = isa<Arr  >()) return w.var(w.type_int(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.var(w.type_int(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
     if (isa_bound(this)) return w.var(this, this,  dbg);
     THORIN_UNREACHABLE;
 }
@@ -300,7 +300,7 @@ void Def::make_external() { return world().make_external(this); }
 void Def::make_internal() { return world().make_internal(this); }
 bool Def::is_external() const { return world().is_external(this); }
 
-std::string Def::unique_name() const { return (isa_nom() ? std::string{} : std::string{"%"}) + debug().name + "_" + std::to_string(gid()); }
+std::string Def::unique_name() const { return name() + "_" + std::to_string(gid()); }
 
 void Def::replace(Tracker with) const {
     world().DLOG("replace: {} -> {}", this, with);
