@@ -20,13 +20,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
-
-message(STATUS "Using Debug flags: ${CMAKE_CXX_FLAGS_DEBUG}")
-message(STATUS "Using Release flags: ${CMAKE_CXX_FLAGS_RELEASE}")
-if(DEFINED CMAKE_BUILD_TYPE)
-    message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-endif()
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 # configure thorin preprocessor definitions
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

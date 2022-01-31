@@ -443,6 +443,7 @@ public:
             stream().fmt(fmt, std::forward<Args&&>(args)...).endl().flush();
         }
     }
+    void log() const {} ///< for DLOG in Release build.
 
     template<class... Args>
     [[noreturn]] void error(Loc loc, const char* fmt, Args&&... args) {
@@ -664,7 +665,7 @@ private:
 #ifndef NDEBUG
 #define DLOG(...) log(thorin::LogLevel::Debug,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
 #else
-#define DLOG(...) do {} while (false)
+#define DLOG(...) log()
 #endif
 
 }
