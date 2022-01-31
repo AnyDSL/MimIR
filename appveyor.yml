@@ -1,0 +1,17 @@
+image: Ubuntu
+
+configuration:
+  - Release
+  - Debug
+
+install:
+  - git submodule update --init --recursive
+
+build_script:
+  - mkdir build
+  - cd build
+  - cmake .. -DCMAKE_BUILD_TYPE={configuration}
+  - make
+
+test_script:
+  - ./bin/thorin-gtest
