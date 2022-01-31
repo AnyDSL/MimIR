@@ -39,6 +39,10 @@ const Def* closure_insert_env(size_t i, const Def* env, std::function<const Def*
     return (i == CLOSURE_ENV_PARAM) ? env : f(shift_env(i));
 }
 
+const Def* closure_remove_env(size_t i, std::function<const Def* (size_t)> f) {
+    return f(skip_env(i));
+}
+
 static const Def* ctype(World& w, const Pi* pi, const Def* env_type = nullptr, 
         std::function<const Def*(const Def*)> rw_args = [](auto d) { return d; }) {
     if (!env_type) {

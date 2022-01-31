@@ -9,12 +9,15 @@
 
 namespace thorin {
 
-// class PTG;
+/// Remove closures for @p Lam's that can be compiled to basic blocks, i.e.
+/// are annotated with @p :CA_ret or @p :CA_jmp. 
+/// Closure2SSI will preserve closures at control flow branches
+/// ClosureDestruct will remove thoes as well.
 
-class ClosureDestruct : public FPPass<ClosureDestruct, Lam> {
+class Closure2SSI : public FPPass<Closure2SSI, Lam> {
 public:
-    ClosureDestruct(PassMan& man) 
-        : ClosureDestruct(man, "closure_destruct") 
+    Closure2SSI(PassMan& man) 
+        : Closure2SSI(man, "closure_destruct") 
     {}
 
     const Def* rewrite(const Def*) override;
@@ -23,23 +26,25 @@ public:
     using Data = LamMap<const Def*>;
 
 protected:
-    ClosureDestruct(PassMan& man, const std::string& name) 
-        : FPPass<ClosureDestruct, Lam>(man, name)
+    Closure2SSI(PassMan& man, const std::string& name) 
+        : FPPass<Closure2SSI, Lam>(man, name)
         , clos2dropped_(), keep_()
     {}
+
+    const Def* try_drop(const Def*);
 
     Lam2Lam clos2dropped_;
     Lam2Lam dropped2clos_;
     LamSet keep_;
 };
 
-class Closure2SSI : public ClosureDestruct {
+class ClosureDestruct : public Closure2SSI {
 public:
-    Closure2SSI(PassMan& man) 
-        : ClosureDestruct(man, "closure2ssi") 
+    ClosureDestruct(PassMan& man) 
+        : Closure2SSI(man, "closure2ssi") 
     {}
 
-    undo_t analyze(const Def* def) override;
+    const Def* rewrite(const Def* def);
 };
 
 

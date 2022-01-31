@@ -15,8 +15,10 @@ const Def* UnboxClosure::rewrite(const Def* def) {
         const Def* fnc_type = nullptr;
         for (auto op: tuple->ops()) {
             auto c = isa_closure_lit(op);
-            if (c.is_proc() || c.is(CA::unknown))
+            if (c.mark() != CA::bot) {
+                w.DLOG("brach {}: wait for closure destruct", def);
                 return def;
+            }
             // Note: We have to check if the pi's and not just the environmen-types are *equal*, since
             // extract doesn't check for equiv and the closure conv may rewrite noms with different, but equiv noms
             if (!c || !c.fnc_as_lam() || c.is_proc() || c.is(CA::unknown) || (fnc_type && fnc_type != c.fnc_type()))

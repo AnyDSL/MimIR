@@ -244,6 +244,22 @@ const Def* closure_insert_env(size_t i, const Def* env, std::function<const Def*
 inline const Def* closure_insert_env(size_t i, const Def* env, const Def* a) {
     return closure_insert_env(i, env, [&](auto i) { return a->proj(i); });
 }
+inline const Def* closure_insert_env(const Def* env, const Def* def) {
+    return def->rebuild(def->world(), def->type(), DefArray(def->num_ops() + 1, [&](auto i) {
+        return closure_insert_env(i, env, def);
+    }), def->dbg());
+
+}
+
+const Def* closure_remove_env(size_t i, std::function<const Def* (size_t)> f);
+inline const Def* closure_remove_env(size_t i, const Def* def) {
+    return closure_remove_env(i, [&](auto i) { return def->proj(i); });
+}
+inline const Def* closure_remove_env(const Def* def) {
+    return def->rebuild(def->world(), def->type(), DefArray(def->num_ops() - 1, [&](auto i) { 
+        return closure_remove_env(i, def);
+    }), def->dbg());
+}
 
 const Def* apply_closure(const Def* closure, const Def* args);
 template<typename T>

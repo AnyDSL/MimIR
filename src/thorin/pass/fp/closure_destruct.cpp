@@ -4,16 +4,8 @@
 
 namespace thorin {
 
-const Def* ClosureDestruct::rewrite(const Def* def) {
+const Def* Closure2SSI::try_drop(const Def* def) {
     auto& w = world();
-
-    if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
-        if (auto [callee, _] = ca_isa_mark(app->callee()); callee) {
-            w.DLOG("removed mark from callee {} in {}", callee, app);
-            return w.app(callee, app->arg(), app->dbg());
-        }
-    }
-
     if (auto c = isa_closure_lit(def); c && c.is_basicblock()) {
         auto clam = c.fnc_as_lam();
         if (!clam)
@@ -40,37 +32,53 @@ const Def* ClosureDestruct::rewrite(const Def* def) {
     return def;
 }
 
-undo_t ClosureDestruct::analyze(const Proxy* proxy) {
+const Def* Closure2SSI::rewrite(const Def* def) {
+    auto& w = world();
+
+    if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
+        const Def* new_callee;
+        if (auto [callee, _] = ca_isa_mark(app->callee()); callee) {
+            w.DLOG("removed mark from callee {} in {}", callee, app);
+            new_callee = callee;
+        } else {
+            new_callee = app->callee();
+        }
+
+        auto new_args = DefArray(app->num_args(), [&](auto i) { return try_drop(app->arg(i)); });
+        return w.app(new_callee, new_args, app->dbg());
+    }
+
+    return def;
+}
+
+undo_t Closure2SSI::analyze(const Proxy* proxy) {
     auto [clam, old_env, new_env] = proxy->ops<3>();
     world().DLOG("possible join point {}: env {} != {}", clam, old_env, new_env);
     keep_.emplace(clam->as_nom<Lam>());
     return undo_visit(clam->as_nom<Lam>());
 }
 
-undo_t Closure2SSI::analyze(const Def* def) {
+const Def* ClosureDestruct::rewrite(const Def* def) {
+    auto& w = world();
+    def = Closure2SSI::rewrite(def);
     if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
-        auto clos_branch = app->callee()->isa<Extract>();  // closur call
-        if (!clos_branch || !isa_ctype(clos_branch->type()))
-            return No_Undo;
-        clos_branch = clos_branch->isa<Extract>(); // branches
-        if (!clos_branch || !clos_branch->tuple()->isa<Tuple>())
-            return No_Undo;
-        auto undo = No_Undo;
-        for (auto op: clos_branch->tuple()->ops()) {
-            if (auto c = isa_closure_lit(op); c && c.fnc_as_lam()) {
-                auto old_lam = dropped2clos_[c.fnc_as_lam()];
-                if (keep_.contains(old_lam)) {
-                    world().DLOG("dropped closure in branch: {}", dropped2clos_[c.fnc_as_lam()]);
-                    undo = std::min(undo, undo_visit(old_lam));
-                }
-            }
+        auto closure_fnc = app->callee()->isa<Extract>(); // closure call, get closure
+        if (!closure_fnc)
+            return def;
+        auto cbranch = closure_fnc->tuple()->isa<Extract>(); // closure is a branch
+        if (!cbranch || !isa_ctype(cbranch->type()) || !cbranch->tuple()->isa<Tuple>())
+            return def;
+        auto tuple = cbranch->tuple();
+        auto new_tuple = w.tuple(DefArray(tuple->num_ops(), [&](auto i) { return try_drop(tuple->op(i)); }));
+        auto new_branch = w.extract(new_tuple, cbranch->index(), cbranch->dbg());
+        if (new_branch != cbranch) {
+            w.DLOG("^ dropped branch");
+            return apply_closure(new_branch, closure_remove_env(app->arg()));
         }
-        return undo;
     }
-
-    return No_Undo;
-
+    return def;
 }
+
 
 
 } // namespace thorin
