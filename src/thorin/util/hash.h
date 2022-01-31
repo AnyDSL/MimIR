@@ -192,8 +192,8 @@ public:
             assert(table_ == i.table_ && id_ == i.id_);(void)i;
             verify();
         }
-#else
         int id() const { return id_; }
+#else
         inline void verify() const {}
         inline void verify(iterator_base) const {}
 #endif
