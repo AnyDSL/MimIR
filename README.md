@@ -15,7 +15,7 @@ make
 
 ## Documentation
 
-See (Read the Docs)[https://readthedocs.org/projects/thorin2/].
+See [Read the Docs](https://readthedocs.org/projects/thorin2/).
 
 ## Syntax
 
