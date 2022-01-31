@@ -1,7 +1,6 @@
-# Introduction to Thorin2
+# Introduction
 
 Thorin is a compiler intermediate representation.
-TODO
 
 ## Building
 
