@@ -10,7 +10,7 @@ install:
 build_script:
   - mkdir build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=%CONFIGURATION%
+  - cmake .. -DCMAKE_BUILD_TYPE=$Configuration
   - make
 
 test_script:
