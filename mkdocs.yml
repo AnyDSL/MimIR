@@ -1,7 +1,12 @@
 site_name: Thorin2
 repo_url: https://github.com/anydsl/thorin2/
+strict: true
 
 nav:
-  - 'README.md'
-  - 'langref.md'
-  - 'passes.md'
+  - README.md
+  - User Guide:
+      - user/langref.md
+      - user/cli.md
+  - Developer Guide:
+      - dev/prog.md
+      - dev/passes.md
