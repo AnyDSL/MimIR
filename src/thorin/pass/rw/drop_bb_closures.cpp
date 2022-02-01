@@ -1,11 +1,11 @@
 
 #include "thorin/transform/closure_conv.h"
-#include "thorin/pass/fp/closure_destruct.h"
+#include "thorin/pass//rw//drop_bb_closures.h"
 
 namespace thorin {
 
 
-const Def* ClosureDestruct::rewrite(const Def* def) {
+const Def* DropBBClosures::rewrite(const Def* def) {
     auto& w = world();
 
     if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
