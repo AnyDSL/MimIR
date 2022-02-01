@@ -32,6 +32,12 @@ endif()
 configure_file(src/thorin/config.h.in ${CMAKE_BINARY_DIR}/include/thorin/config.h @ONLY)
 include_directories(${CMAKE_BINARY_DIR}/include)
 
+if (MSVC)
+    add_compile_options(/W4) # /WX
+else()
+    add_compile_options(-Wall -Wextra -pedantic) # -Werror
+endif()
+
 add_subdirectory(src)
 
 if(BUILD_TESTING)
