@@ -100,7 +100,7 @@ ClosureAnalysis::Err ClosureAnalysis::assign(const DefSet& defs, CA v) {
                     auto var = lam->var(i);
                     if (!interesting_type(var->type()))
                         continue;
-                    auto var_v = (new_v == CA::jmp) ? CA::proc
+                    auto var_v = (new_v == CA::br) ? CA::proc
                                : (new_v == CA::ret) ? CA::proc_e   // we could do better here for closure environments
                                : (var == ret_var(lam)) ? CA::ret   // proc or proc_e
                                : (lam->is_set()) ? CA::proc : CA::proc_e;
@@ -120,7 +120,7 @@ CA ClosureAnalysis::lookup_init(const Def* def) {
     if (v != CA::bot)
         return v;
     if (auto lam = def->isa_nom<Lam>()) {
-        v = (!lam->is_set() || ret_var(lam)) ? CA::proc : CA::jmp;
+        v = (!lam->is_set() || ret_var(lam)) ? CA::proc : CA::br;
         assign({def}, v);
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam) {
         v = (ret_var(lam) == var) ? CA::ret 

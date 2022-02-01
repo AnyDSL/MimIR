@@ -81,7 +81,7 @@ enum RMode : nat_t {
 /// Accelerators
 #define THORIN_ACC(m) m(Acc, vecotrize) m(Acc, parallel) m(Acc, opencl) m(Acc, cuda) m(Acc, nvvm) m (Acc, amdgpu)
 /// ClosureAnalysis annotations, THORIN_CA_BOT includes a ⊥ node for convinience
-#define THORIN_CA(m) m(CA, ret) m(CA, jmp) m(CA, proc) m(CA, proc_e) m(CA, unknown)
+#define THORIN_CA(m) m(CA, ret) m(CA, br) m(CA, proc) m(CA, proc_e) m(CA, unknown)
 #define THORIN_CA_BOT(m) m(CA, bot) THORIN_CA(m)
 
 

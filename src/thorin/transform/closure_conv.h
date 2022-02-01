@@ -106,7 +106,7 @@ private:
     bool convert_lam(CA ca) {
         if (ca == CA::ret)
             return mode_ >= MIN;
-        if (ca == CA::jmp)
+        if (ca == CA::br)
             return mode_ >= SSI;
         return true;
     }
@@ -139,7 +139,7 @@ inline CA& operator&=(CA& a, const CA& b) {
 } 
 
 inline bool ca_is_escaping(CA v) { return v == CA::unknown || v == CA::proc_e; }
-inline bool ca_is_basicblock(CA v) { return v == CA::jmp || v == CA::ret; }
+inline bool ca_is_basicblock(CA v) { return v == CA::br || v == CA::ret; }
 inline bool ca_is_proc(CA v) { return v == CA::proc || v == CA::proc_e; }
 
 template<class N>
