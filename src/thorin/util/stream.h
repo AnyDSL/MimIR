@@ -162,7 +162,7 @@ Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
     assert(false && "invalid format string for 's'");
 }
 
-template<class R, class F, bool rangei>
+template<class R, class F, bool use_rangei>
 Stream& Stream::range(const R& r, const char* sep, F f) {
     const char* cur_sep = "";
     size_t j = 0;
@@ -173,7 +173,7 @@ Stream& Stream::range(const R& r, const char* sep, F f) {
             else
                 (*this) << *i;
         }
-        if constexpr (rangei) {
+        if constexpr (use_rangei) {
             f(j++);
         } else {
             f(elem);
