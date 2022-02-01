@@ -387,7 +387,7 @@ const Def* ClosureConv::make_closure(Lam *old_lam, Def2Def& subst, CA ca) {
     auto [_, __, fv_env, new_lam] = make_stub(old_lam, subst, convert_lam(ca));
     auto closure_type = rewrite(old_lam->type(), subst);
     auto env = rewrite(fv_env, subst);
-    auto closure = pack_closure(env, (flags_ & KEEP_MARKS) ? w.ca_mark(new_lam, ca) : new_lam, closure_type);
+    auto closure = pack_closure(env, keep_annots_ ? w.ca_mark(new_lam, ca) : new_lam, closure_type);
     w.DLOG("RW: pack {} ~> {} : {}", old_lam, closure, closure_type);
     return closure;
 }

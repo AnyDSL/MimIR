@@ -70,19 +70,20 @@ private:
 class ClosureConv {
 public:
 
-    enum Flags : uint8_t {
-        KEEP_MARKS = 1,     ///< preserve closure analysis marks
-        MAX = 1 << 2,       ///< closure convert everything
-        MIN = 1 << 4        ///< closure convert functions only
+    enum Mode : uint8_t {
+        MAX,  ///< closure convert functions, branches and return continuations
+        SSI,  ///< closure convert functions and branches only
+        MIN   ///< closure convert functions only
     };
 
-    ClosureConv(World& world, Flags flags = Flags(MIN | KEEP_MARKS))
+    ClosureConv(World& world, Mode mode, bool keep_annots)
         : world_(world)
         , fva_(world)
-        , closures_(DefMap<ClosureStub>())
-        , closure_types_(Def2Def())
-        , worklist_(std::queue<const Def*>()) 
-        , flags_(flags)
+        , closures_()
+        , closure_types_()
+        , worklist_() 
+        , mode_(mode)
+        , keep_annots_(keep_annots)
     {};
 
     void run();
@@ -103,11 +104,11 @@ private:
     const Def* make_closure(Lam* lam, Def2Def& subst, CA ca);
 
     bool convert_lam(CA ca) {
-        switch (ca) {
-            case CA::jmp:                     
-            case CA::ret: return (flags_ >> 1) <= MAX;         
-            default:      return true;
-        }
+        if (ca == CA::ret)
+            return mode_ >= MIN;
+        if (ca == CA::jmp)
+            return mode_ >= SSI;
+        return true;
     }
 
     World& world() { return world_; }
@@ -117,7 +118,8 @@ private:
     DefMap<ClosureStub> closures_;
     Def2Def closure_types_;
     std::queue<const Def*> worklist_;
-    const Flags flags_;
+    const Mode mode_;
+    const bool keep_annots_;
 };
 
 /// # Auxillary functions to deal with closures #
@@ -134,7 +136,9 @@ private:
 CA operator&(CA a, CA b);
 inline CA& operator&=(CA& a, const CA& b) {
     return a = a & b;
-} inline bool ca_is_escaping(CA v) { return v == CA::unknown || v == CA::proc_e; }
+} 
+
+inline bool ca_is_escaping(CA v) { return v == CA::unknown || v == CA::proc_e; }
 inline bool ca_is_basicblock(CA v) { return v == CA::jmp || v == CA::ret; }
 inline bool ca_is_proc(CA v) { return v == CA::proc || v == CA::proc_e; }
 
@@ -194,12 +198,6 @@ public:
     bool is_proc() { return ca_is_proc(mark_); };
     bool is(CA a) { return mark_ == a; }
     CA mark() { return mark_; }
-    /// @}
-
-    // @name Escape analyses
-    /// @{
-    bool marked_no_esc() { return false; }
-    static const Def* get_esc_annot(const Def* def) { return def; };
     /// @}
 
 private:
