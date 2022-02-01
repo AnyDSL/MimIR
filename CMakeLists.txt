@@ -22,7 +22,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules")
 
+
 # check for possible llvm extension
+# message(STATUS "LLVM_DIR ${LLVM_DIR}")
+# find_package(LLVM CONFIG)
 find_package(LLVM CONFIG QUIET)
 if(LLVM_FOUND)
     message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
