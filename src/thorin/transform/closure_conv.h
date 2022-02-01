@@ -190,6 +190,11 @@ public:
         return def_;
     }
 
+    const Tuple* operator->() {
+        assert(def_); 
+        return def_;
+    }
+
     /// @name Properties
     /// @{
     unsigned int order();

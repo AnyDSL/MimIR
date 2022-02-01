@@ -21,7 +21,7 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             }
             // Note: We have to check if the pi's and not just the environmen-types are *equal*, since
             // extract doesn't check for equiv and the closure conv may rewrite noms with different, but equiv noms
-            if (!c || !c.fnc_as_lam() || c.is_proc() || c.is(CA::unknown) || (fnc_type && fnc_type != c.fnc_type()))
+            if (!c || !c.fnc_as_lam() || fnc_type && fnc_type != c.fnc_type())
                 return def;
             fnc_type = c.fnc_type();
             envs.push_back(c.env());

@@ -4,14 +4,14 @@
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/ssa_constr.h"
+#include "thorin/pass/fp/unbox_closures.h"
+#include "thorin/pass/fp/closure_analysis.h"
 #include "thorin/pass/rw/bound_elim.h"
 #include "thorin/pass/rw/partial_eval.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
+#include "thorin/pass/rw/drop_bb_closures.h"
 
-#include "thorin/pass/fp/closure_destruct.h"
-#include "thorin/pass/fp/unbox_closures.h"
-#include "thorin/pass/fp/closure_analysis.h"
 
 // old stuff
 #include "thorin/transform/cleanup_world.h"
@@ -40,11 +40,11 @@ void optimize(World& world) {
     // while (partial_evaluation(world, true)); // lower2cff
     // world.debug_stream();
     
-    ClosureConv(world, ClosureConv::Flags(ClosureConv::MAX | ClosureConv::Flags::KEEP_MARKS)).run();
+    ClosureConv(world, ClosureConv::SSI, true).run();
     world.debug_stream();
     
     PassMan closure_destruct(world);
-    closure_destruct.add<ClosureDestruct>();
+    closure_destruct.add<DropBBClosures>();
     closure_destruct.add<Scalerize>(nullptr);
     closure_destruct.add<UnboxClosure>();
     closure_destruct.run();
@@ -55,6 +55,7 @@ void optimize(World& world) {
     // codgen_prepare.add<Scalerize>(nullptr);
     // codgen_prepare.add<RetWrap>();
     // codgen_prepare.run();
-    world.debug_stream();
+    // world.debug_stream();
 }
+
 }
