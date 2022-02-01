@@ -13,9 +13,8 @@ Thorin is a compiler intermediate representation.
 git clone --recurse-submodules git@github.com:AnyDSL/thorin2.git
 cd thorin2
 mkdir build
-cd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-make
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j $(nproc)
 ```
 
 For a debug build simply use `-DCMAKE_BUILD_TYPE=Debug`.
