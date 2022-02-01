@@ -22,15 +22,15 @@ For a debug build simply use `-DCMAKE_BUILD_TYPE=Debug`.
 
 ### Dependencies
 
-* [The half library](https://sourceforge.net/projects/half/) library.
+* [Half library](https://sourceforge.net/projects/half/).
 
-    This library lives in a subversion repository on Sourceforge.
+    This library originally resides in a subversion repository on Sourceforge.
     For this reason, we use a [git mirror](https://github.com/AnyDSL/half) to deploy it via a git submodule.
 
 * [GoogleTest](https://github.com/google/googletest) for unit testing which is also deployed via a git submodule.
 * Recent version of [CMake](https://cmake.org/)
 * A C++20-compatible C++ compiler.
-* While Thorin emits [LLVM](https://llvm.org/), it does *not* link to LLVM.
+* While Thorin emits [LLVM](https://llvm.org/), it does *not* link against LLVM.
 
-    Simply, toss the emitted `*.ll` file to your system's LLVM tool chain.
+    Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
     But techincally, you don't need LLVM.
