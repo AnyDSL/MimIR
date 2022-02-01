@@ -26,7 +26,7 @@ jobs:
 
     - name: Set up Clang
       uses: egor-tensin/setup-clang@v1
-      if: ${{matrix.os}} != 'macos-latest'
+      if: matrix.os == 'ubuntu-latest'
       with:
         version: latest
         platform: x64
