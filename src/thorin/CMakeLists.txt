@@ -59,8 +59,6 @@ set(THORIN_SOURCES
     pass/fp/dce.h
     pass/fp/ssa_constr.cpp
     pass/fp/ssa_constr.h
-    pass/fp/closure_destruct.h
-    pass/fp/closure_destruct.cpp
     pass/fp/unbox_closures.h
     pass/fp/unbox_closures.cpp
     pass/fp/closure_analysis.h
@@ -75,6 +73,8 @@ set(THORIN_SOURCES
     pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
+    pass/rw/drop_bb_closures.h
+    pass/rw/drop_bb_closures.cpp
     transform/cleanup_world.cpp
     transform/cleanup_world.h
     transform/mangle.cpp
