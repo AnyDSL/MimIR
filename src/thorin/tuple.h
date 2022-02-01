@@ -165,7 +165,7 @@ size_t flatten(DefVec& ops, const Def* def, bool flatten_sigmas = true);
 /// Applies the reverse transformation on a pack/tuple, given the original type.
 const Def* unflatten(const Def* def, const Def* type);
 /// Same as unflatten, but uses the operands of a flattened pack/tuple directly.
-const Def* unflatten(Defs ops, const Def* type);
+const Def* unflatten(Defs ops, const Def* type, bool flatten_noms = true);
 
 DefArray merge(const Def* def, Defs defs);
 const Def* merge_sigma(const Def* def, Defs defs);

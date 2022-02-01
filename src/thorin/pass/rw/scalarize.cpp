@@ -33,10 +33,11 @@ Lam* Scalerize::make_scalar(const Def* def) {
     for (size_t i = 0, e = tup_lam->num_doms(); i != e; ++i) {
         auto n = flatten(types, tup_lam->dom(i), false);
         arg_sz.push_back(n);
-        todo |= n != 1;
+        todo |= n != 1 || types.back() != tup_lam->dom(i);
     }
 
-    if (!todo) return tup2sca_[tup_lam] = tup_lam;
+    if (!todo) 
+       return tup2sca_[tup_lam] = tup_lam;
 
     auto pi = world().cn(world().sigma(types));
     auto sca_lam = tup_lam->stub(world(), pi, tup_lam->dbg());
@@ -47,7 +48,7 @@ Lam* Scalerize::make_scalar(const Def* def) {
         auto tuple = DefArray(arg_sz.at(i), [&](auto j) {
             return sca_lam->var(n++);
         });
-        return unflatten(tuple, tup_lam->dom(i));
+        return unflatten(tuple, tup_lam->dom(i), false);
     }));
     sca_lam->set(tup_lam->apply(new_vars));
     tup2sca_[sca_lam] = sca_lam;

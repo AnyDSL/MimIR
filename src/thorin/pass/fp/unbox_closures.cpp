@@ -21,7 +21,7 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             }
             // Note: We have to check if the pi's and not just the environmen-types are *equal*, since
             // extract doesn't check for equiv and the closure conv may rewrite noms with different, but equiv noms
-            if (!c || !c.fnc_as_lam() || fnc_type && fnc_type != c.fnc_type())
+            if (!c || !c.fnc_as_lam() || (fnc_type && fnc_type != c.fnc_type()))
                 return def;
             fnc_type = c.fnc_type();
             envs.push_back(c.env());
@@ -43,9 +43,15 @@ const Def* UnboxClosure::rewrite(const Def* def) {
         for (size_t i = 0; i < app->num_args(); i++) {
             auto arg = app->arg(i);
             auto type = arg->type();
-            if (!isa_ctype(type) || keep_.contains(bxd_lam->var(i))) {
+            if (keep_.contains(bxd_lam->var(i))) {
                 doms.push_back(type);
                 args.push_back(arg);
+                continue;
+            }
+            if (!isa_ctype(type)) {
+                doms.push_back(type);
+                args.push_back(arg);
+                keep_.emplace(bxd_lam->var(i));
                 continue;
             }
             auto c = isa_closure_lit(arg, false);
@@ -73,13 +79,6 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             return proxy(def->type(), proxy_ops);
         }
 
-        // No argument was flattend, ignore lam from now on
-        if (doms.size() <= bxd_lam->num_doms()) {
-            w.DLOG("KEEP {}", bxd_lam);
-            keep_.emplace(bxd_lam);
-            return def;
-        }
-
         auto& [ubxd_lam, old_doms] = boxed2unboxed_[bxd_lam];
         if (!ubxd_lam || old_doms != doms) {
             old_doms = doms;
@@ -104,9 +103,14 @@ const Def* UnboxClosure::rewrite(const Def* def) {
 }
 
 undo_t UnboxClosure::analyze(const Proxy* def) {
-    auto lam = def->op(0_u64)->isa_nom<Lam>();
-    assert(lam);
-    world().DLOG("undo {}", lam);
+    auto& w = world();
+    auto lam = def->op(0_u64)->as_nom<Lam>();
+    w.DLOG("undo {}", lam);
+    auto vars = lam->vars();
+    if (std::all_of(vars.begin(), vars.end(), [&](auto v) { return keep_.contains(v); })) {
+        w.DLOG("keep {}", lam);
+        keep_.emplace(lam);
+    }
     return undo_visit(lam);
 }
 
