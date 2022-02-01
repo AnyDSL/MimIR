@@ -27,7 +27,7 @@ var searchData=
   ['insert_5funsafe_24',['insert_unsafe',['../classthorin_1_1_world.html#aabd01ffc29009a5d0231e43818badee9',1,'thorin::World::insert_unsafe(const Def *tup, u64 i, const Def *val, const Def *dbg={})'],['../classthorin_1_1_world.html#aa6120631d8d577256d0a66c2883b50a7',1,'thorin::World::insert_unsafe(const Def *tup, const Def *i, const Def *val, const Def *dbg={})']]],
   ['inspect_25',['inspect',['../classthorin_1_1_r_w_pass_base.html#ab08fb019f1aa4638f1d5aaf9995dcc6b',1,'thorin::RWPassBase::inspect() const =0'],['../classthorin_1_1_r_w_pass_base.html#ac562970123e64c176cdae0e9b646e495',1,'thorin::RWPassBase::inspect() const'],['../classthorin_1_1_r_w_pass.html#a316be5140752b8e78ea9858d18586333',1,'thorin::RWPass::inspect()'],['../classthorin_1_1_f_p_pass.html#af2ab235751cc92666c65f108ee427891',1,'thorin::FPPass::inspect()']]],
   ['instantiate_26',['instantiate',['../classthorin_1_1_cond_eval.html#a75d2ab8bca0cad9e1186d2851c0b7dbe',1,'thorin::CondEval']]],
-  ['introduction_27',['Introduction',['../md_docs__r_e_a_d_m_e.html',1,'']]],
+  ['introduction_27',['Introduction',['../index.html',1,'']]],
   ['irreducible_28',['Irreducible',['../classthorin_1_1_eta_red.html#a4ac1f54e62bd9e356510aa0b4520553fa9f35b4d3a8fe44b235df5e1da941d410',1,'thorin::EtaRed']]],
   ['is_5fassociative_29',['is_associative',['../namespacethorin.html#af87a9053c48a88d6b364e2fb1bbd15fb',1,'thorin::is_associative(T op)'],['../namespacethorin.html#a45de74e4a09bf550afc43c3fceac5abb',1,'thorin::is_associative(Bit op)']]],
   ['is_5fbasicblock_30',['is_basicblock',['../classthorin_1_1_pi.html#a116138b6c56c0f3cf2afa27a3077ce12',1,'thorin::Pi::is_basicblock()'],['../classthorin_1_1_lam.html#ad8f4abe37081c565f98e0b0a1543b7dd',1,'thorin::Lam::is_basicblock()']]],
