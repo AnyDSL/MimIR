@@ -6,6 +6,5 @@ var searchData=
   ['ret_5fwrap_2ecpp_3',['ret_wrap.cpp',['../ret__wrap_8cpp.html',1,'']]],
   ['ret_5fwrap_2eh_4',['ret_wrap.h',['../ret__wrap_8h.html',1,'']]],
   ['rewrite_2ecpp_5',['rewrite.cpp',['../rewrite_8cpp.html',1,'']]],
-  ['rewrite_2eh_6',['rewrite.h',['../rewrite_8h.html',1,'']]],
-  ['roadmap_2emd_7',['roadmap.md',['../roadmap_8md.html',1,'']]]
+  ['rewrite_2eh_6',['rewrite.h',['../rewrite_8h.html',1,'']]]
 ];

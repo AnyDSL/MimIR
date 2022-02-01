@@ -9,6 +9,5 @@ var searchData=
   ['pass_2ecpp_6',['pass.cpp',['../pass_8cpp.html',1,'']]],
   ['pass_2eh_7',['pass.h',['../pass_8h.html',1,'']]],
   ['passes_2emd_8',['passes.md',['../passes_8md.html',1,'']]],
-  ['prog_2emd_9',['prog.md',['../prog_8md.html',1,'']]],
-  ['ptr_2eh_10',['ptr.h',['../ptr_8h.html',1,'']]]
+  ['ptr_2eh_9',['ptr.h',['../ptr_8h.html',1,'']]]
 ];
