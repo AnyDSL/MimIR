@@ -9,6 +9,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
         
     - name: Doxygen Action
       uses: mattnotmitt/doxygen-action@v1.1.0
