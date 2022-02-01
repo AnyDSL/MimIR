@@ -47,11 +47,11 @@ public:
      @code{.cpp}
          s.fmt("({, })", list) // yields "(a, b, c)"
      @endcode
-     * If you use @c {\n} as separator, it will invoke Stream::endl - keeping indentation:
+     * If you use @c "\n" as separator, it will invoke Stream::endl - keeping indentation:
      @code{.cpp}
          s.fmt("({\n})", list)
      @endcode
-     * Finally, you can use @c '\n', '\t', and '\b' to @p endl, @p indent, or @p dedent, respectively.
+     * Finally, you can use @c "\n", "\t", and "\b" to @p endl, @p indent, or @p dedent, respectively.
      */
     template<class T, class... Args> Stream& fmt(const char* s, T&& t, Args&&... args);
     Stream& fmt(const char* s); ///< Base case.

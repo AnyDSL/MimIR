@@ -139,8 +139,8 @@ public:
     //@{
     const Def* app(const Def* callee, const Def* arg, const Def* dbg = {});
     const Def* app(const Def* callee, Defs args, const Def* dbg = {}) { return app(callee, tuple(args), dbg); }
-    const Def* raw_app(const Def* callee, const Def* arg, const Def* dbg = {});                                         /// Same as @p app but does @em not apply @p NormalizeFn.
-    const Def* raw_app(const Def* callee, Defs args, const Def* dbg = {}) { return raw_app(callee, tuple(args), dbg); } /// Same as @p app but does @em not apply @p NormalizeFn.
+    const Def* raw_app(const Def* callee, const Def* arg, const Def* dbg = {});                                         ///< Same as @p app but does @em not apply @p NormalizeFn.
+    const Def* raw_app(const Def* callee, Defs args, const Def* dbg = {}) { return raw_app(callee, tuple(args), dbg); } ///< Same as @p app but does @em not apply @p NormalizeFn.
     //@}
 
     /// @name Sigma
