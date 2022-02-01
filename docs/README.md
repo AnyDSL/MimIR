@@ -2,8 +2,8 @@
 
 <a href=https://github.com/AnyDSL/thorin2><img src=https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg alt="GitHub" height="28"/></a>
 <a href=https://thorin2.readthedocs.io/en/latest/><img src=https://read-the-docs-guidelines.readthedocs-hosted.com/_downloads/3ecfe564cae082d94611f6fda5e08d34/logo-wordmark-light.png alt="Read the Docs" height="28"/></a>
-<a href=https://ci.appveyor.com/project/leissa/thorin2/branch/master><img src=https://ci.appveyor.com/api/projects/status/v1u6jvwubqj4b386/branch/master?svg=true lt="GitHub" height="28"/></a>
-<a href=https://thorin2.readthedocs.io/en/latest/?badge=latest><img src=https://readthedocs.org/projects/thorin2/badge/?version=latest alt="GitHub" height="28"/></a>
+<a href=https://ci.appveyor.com/project/leissa/thorin2/branch/master><img src=https://ci.appveyor.com/api/projects/status/v1u6jvwubqj4b386/branch/master?svg=true alt="Build Status" height="28"/></a>
+<a href=https://thorin2.readthedocs.io/en/latest/?badge=latest><img src=https://readthedocs.org/projects/thorin2/badge/?version=latest alt="Documentation Status" height="28"/></a>
 
 Thorin is a compiler intermediate representation.
 
