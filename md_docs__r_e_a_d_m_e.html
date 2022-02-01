@@ -78,14 +78,14 @@ Building</h1>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Dependencies</h2>
 <ul>
-<li><p class="startli"><a href="https://sourceforge.net/projects/half/">The half library</a> library.</p>
-<p class="startli">This library lives in a subversion repository on Sourceforge. For this reason, we use a <a href="https://github.com/AnyDSL/half">git mirror</a> to deploy it via a git submodule.</p>
+<li><p class="startli"><a href="https://sourceforge.net/projects/half/">Half library</a>.</p>
+<p class="startli">This library originally resides in a subversion repository on Sourceforge. For this reason, we use a <a href="https://github.com/AnyDSL/half">git mirror</a> to deploy it via a git submodule.</p>
 </li>
 <li><a href="https://github.com/google/googletest">GoogleTest</a> for unit testing which is also deployed via a git submodule.</li>
 <li>Recent version of <a href="https://cmake.org/">CMake</a></li>
 <li>A C++20-compatible C++ compiler.</li>
-<li><p class="startli">While Thorin emits <a href="https://llvm.org/">LLVM</a>, it does <em>not</em> link to LLVM.</p>
-<p class="startli">Simply, toss the emitted <code>*.ll</code> file to your system's LLVM tool chain. But techincally, you don't need LLVM. </p>
+<li><p class="startli">While Thorin emits <a href="https://llvm.org/">LLVM</a>, it does <em>not</em> link against LLVM.</p>
+<p class="startli">Simply toss the emitted <code>*.ll</code> file to your system's LLVM toolchain. But techincally, you don't need LLVM. </p>
 </li>
 </ul>
 </div></div><!-- contents -->
