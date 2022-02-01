@@ -276,7 +276,7 @@ public:
     template<class T = Def> const T* as_structural() const { return as_nom<T, true>(); }
     //@}
 
-    /// @name retrieve @p Var for @em noms.
+    /// @name retrieve Var for noms.
     //@{
     /// Only returns a @p Var for this @em nom if it has ever been created.
     const Var* has_var() { return var_ ? var() : nullptr; }
@@ -284,7 +284,7 @@ public:
     THORIN_PROJ(var,)
     //@}
 
-    /// @name rewrites last op by substituting @p var with @p arg.
+    /// @name rewrites last op by substituting var with arg.
     //@{
     DefArray apply(const Def* arg) const;
     DefArray apply(const Def* arg);

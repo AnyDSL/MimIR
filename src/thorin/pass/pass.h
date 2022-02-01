@@ -45,11 +45,13 @@ public:
     /// @name Proxy
     //@{
     const Proxy* proxy(const Def* type, Defs ops, flags_t flags = 0, const Def* dbg = {}) { return world().proxy(type, ops, proxy_id(), flags, dbg); }
-    /// @name Check whether given @p def is a Proxy whose index matches this @p Pass's @p index.
+
+    /// Check whether given @p def is a Proxy whose index matches this @p Pass's @p index.
     const Proxy* isa_proxy(const Def* def, flags_t flags = 0) {
         if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->id() == proxy_id() && proxy->flags() == flags) return proxy;
         return nullptr;
     }
+
     const Proxy* as_proxy(const Def* def, flags_t flags = 0) {
         auto proxy = def->as<Proxy>();
         assert(proxy->id() == proxy_id() && proxy->flags() == flags);

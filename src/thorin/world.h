@@ -110,7 +110,7 @@ public:
     Pi* nom_pi(const Def* type, const Def* dbg = {}) { return insert<Pi>(2, type, dbg); }
     //@}
 
-    /// @name Pi: continuation type (cn), i.e., @p Pi type with codom @p Bot%tom
+    /// @name Pi: continuation type (cn), i.e., Pi type with codom Bottom
     //@{
     const Pi* cn() { return cn(sigma()); }
     const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, bot_kind(), dbg); }
@@ -197,7 +197,7 @@ public:
     const Def* extract_unsafe(const Def* tup, const Def* i, const Def* dbg = {}) {
         return extract(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce()->arity())), i, dbg), dbg);
     }
-    /// Builds <tt>(f, t)#cond</tt>.
+    /// Builds <tt>(f, t)%23cond</tt>.
     const Def* select(const Def* t, const Def* f, const Def* cond, const Def* dbg = {}) { return extract(tuple({f, t}), cond, dbg); }
     //@}
 
@@ -332,7 +332,7 @@ public:
     const Axiom* ax_store()   const { return data_.store_;   }
     //@}
 
-    /// @name fn - these guys @em yield the final function to be invoked for the various operations
+    /// @name fn - these guys yield the final function to be invoked for the various operations
     //@{
     const Def* fn(Bit  o,                   const Def*   mod, const Def* dbg = {}) { return app(ax(o),           mod,  dbg); }
     const Def* fn(Conv o, const Def* dst_w, const Def* src_w, const Def* dbg = {}) { return app(ax(o), {dst_w, src_w}, dbg); }
@@ -348,7 +348,7 @@ public:
     const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg = {}) { return app(ax_bitcast(), {dst_t, src_t}, dbg); }
     //@}
 
-    /// @name op - these guys @em build the final function @em application for the various operations
+    /// @name op - these guys build the final function application for the various operations
     //@{
     const Def* op(Bit   o,                   const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o,        infer(a)),      {a, b}, dbg); }
     const Def* op(Div   o, const Def* mem,   const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o,        infer(a)), {mem, a, b}, dbg); }
@@ -465,7 +465,7 @@ public:
     Stream& stream(Stream&) const;
     Stream& stream(RecStreamer&, const DepNode*) const;
     void debug_stream(); ///< Stream thorin IR if @p min_level is @p LogLevel::Debug.
-    ///@}
+    //@}
 
     /// @name error handling
     //@{

@@ -13,7 +13,7 @@ namespace thorin {
  * constructors
  */
 
-Def::Def(node_t node, const Def* type, Defs ops, uint64_t fields, const Def* dbg)
+Def::Def(node_t node, const Def* type, Defs ops, fields_t fields, const Def* dbg)
     : fields_(fields)
     , node_(unsigned(node))
     , nom_(false)
@@ -40,7 +40,7 @@ Def::Def(node_t node, const Def* type, Defs ops, uint64_t fields, const Def* dbg
     }
 }
 
-Def::Def(node_t node, const Def* type, size_t num_ops, uint64_t fields, const Def* dbg)
+Def::Def(node_t node, const Def* type, size_t num_ops, fields_t fields, const Def* dbg)
     : fields_(fields)
     , node_(node)
     , nom_(true)
