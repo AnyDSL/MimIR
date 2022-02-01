@@ -232,8 +232,8 @@ public:
     }
 
     template<size_t A = -1_s>
-    auto projs(Defs dbgs = {}) const { return projs<A>([this](const Def* def) { return def; }, dbgs); }
-    auto projs(size_t a, Defs dbgs = {}) const { return projs(a, [this](const Def* def) { return def; }, dbgs); }
+    auto projs(Defs dbgs = {}) const { return projs<A>([](const Def* def) { return def; }, dbgs); }
+    auto projs(size_t a, Defs dbgs = {}) const { return projs(a, [](const Def* def) { return def; }, dbgs); }
     //@}
 
     /// @name external handling
@@ -300,7 +300,7 @@ public:
     /// @name misc getters
     //@{
     fields_t fields() const { return fields_; }
-    size_t gid() const { return gid_; }
+    u32 gid() const { return gid_; }
     hash_t hash() const { return hash_; }
     World& world() const {
         if (node()                 == Node::Space) return *world_;

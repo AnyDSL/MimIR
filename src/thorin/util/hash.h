@@ -159,6 +159,7 @@ public:
         typedef typename std::conditional<is_const, const value_type*, value_type*>::type pointer;
         typedef std::forward_iterator_tag iterator_category;
 
+        iterator_base() = default;
         iterator_base(value_type* ptr, const HashTable* table)
             : ptr_(ptr)
             , table_(table)
@@ -166,7 +167,6 @@ public:
             , id_(table->id_)
 #endif
         {}
-
         template<bool other_const, class = std::enable_if_t<is_const || !other_const>>
         iterator_base(const iterator_base<other_const>& i)
             : ptr_(i.ptr_)
@@ -175,7 +175,6 @@ public:
             , id_(i.id_)
 #endif
             {}
-
         template<bool other_const, class = std::enable_if_t<is_const || !other_const>>
         iterator_base& operator=(const iterator_base<other_const>& other) {
             ptr_ = other.ptr_;
@@ -202,8 +201,8 @@ public:
         iterator_base operator++(int) { verify(); iterator_base res = *this; ++(*this); return res; }
         reference operator*() const { verify(); return *ptr_; }
         pointer operator->() const { verify(); return ptr_; }
-        bool operator==(const iterator_base& other) { verify(other); return this->ptr_ == other.ptr_; }
-        bool operator!=(const iterator_base& other) { verify(other); return this->ptr_ != other.ptr_; }
+        bool operator==(const iterator_base& other) const { verify(other); return this->ptr_ == other.ptr_; }
+        bool operator!=(const iterator_base& other) const { verify(other); return this->ptr_ != other.ptr_; }
 
     private:
         static iterator_base skip(value_type* ptr, const HashTable* table) {
@@ -290,7 +289,7 @@ public:
 #endif
     //@}
 
-    //@{ get begin/end iterators
+    //@{ begin/end iterators
     iterator begin() { return iterator::skip(nodes_, this); }
     iterator end() { return iterator(end_ptr(), this); }
     const_iterator begin() const { return const_iterator(const_cast<HashTable*>(this)->begin()); }

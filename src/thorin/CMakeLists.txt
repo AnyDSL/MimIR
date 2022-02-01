@@ -100,7 +100,6 @@ set(THORIN_SOURCES
 
 add_library(libthorin ${THORIN_SOURCES})
 set_target_properties(libthorin PROPERTIES PREFIX "")
-target_compile_options(libthorin PRIVATE -Wall -Wextra)
 target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 target_include_directories(libthorin PUBLIC ${PROJECT_SOURCE_DIR}/half/include)
 
