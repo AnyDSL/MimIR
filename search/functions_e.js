@@ -49,5 +49,6 @@ var searchData=
   ['num_5fpreds_46',['num_preds',['../classthorin_1_1_c_f_g.html#a395426d2a2d91edcdbb79ff203cedd96',1,'thorin::CFG::num_preds(Def *nom) const'],['../classthorin_1_1_c_f_g.html#aa832903ceb0c9d92dcdf40a3d27cfaeb',1,'thorin::CFG::num_preds(const CFNode *n) const']]],
   ['num_5fprojs_47',['num_projs',['../classthorin_1_1_def.html#a2b517dfdc4aa7da7d6430608e41210a0',1,'thorin::Def']]],
   ['num_5fsuccs_48',['num_succs',['../classthorin_1_1_c_f_g.html#a5e38ee04a873e3636867ffd5e446da5e',1,'thorin::CFG::num_succs(Def *nom) const'],['../classthorin_1_1_c_f_g.html#aff3e017f448a2f3c0203939ebc794052',1,'thorin::CFG::num_succs(const CFNode *n) const']]],
-  ['num_5fuses_49',['num_uses',['../classthorin_1_1_def.html#ac3de60bf9485ec1a2adc35ff9742b725',1,'thorin::Def']]]
+  ['num_5fuses_49',['num_uses',['../classthorin_1_1_def.html#ac3de60bf9485ec1a2adc35ff9742b725',1,'thorin::Def']]],
+  ['num_5fvars_50',['num_vars',['../classthorin_1_1_def.html#a35058e54f00c027631a08bd7b185a199',1,'thorin::Def']]]
 ];

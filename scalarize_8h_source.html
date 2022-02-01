@@ -104,35 +104,35 @@ $(document).ready(function(){initNavTree('scalarize_8h_source.html',''); initRes
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">class </span>EtaExp;</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classthorin_1_1_scalerize.html">   15</a></span><span class="keyword">class </span><a class="code hl_class" href="classthorin_1_1_scalerize.html">Scalerize</a> : <span class="keyword">public</span> <a class="code hl_class" href="classthorin_1_1_r_w_pass.html">RWPass</a>&lt;Lam&gt; {</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">public</span>:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="classthorin_1_1_scalerize.html#a3cd68d747d5226eff8f2f72da5e3ca15">   17</a></span>    <a class="code hl_function" href="classthorin_1_1_scalerize.html#a3cd68d747d5226eff8f2f72da5e3ca15">Scalerize</a>(<a class="code hl_class" href="classthorin_1_1_pass_man.html">PassMan</a>&amp; <a class="code hl_function" href="classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc">man</a>, <a class="code hl_class" href="classthorin_1_1_eta_exp.html">EtaExp</a>* eta_exp)</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        : <a class="code hl_class" href="classthorin_1_1_r_w_pass.html">RWPass</a>(<a class="code hl_function" href="classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc">man</a>, <span class="stringliteral">&quot;scalerize&quot;</span>)</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        , eta_exp_(eta_exp)</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    {}</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1_def.html">Def</a>* <a class="code hl_function" href="classthorin_1_1_scalerize.html#aa1beecd95ddfde12879b584ad10002b9">rewrite</a>(<span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1_def.html">Def</a>*) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">bool</span> should_expand(<a class="code hl_class" href="classthorin_1_1_lam.html">Lam</a> *lam);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <a class="code hl_class" href="classthorin_1_1_lam.html">Lam</a>* make_scalar(<a class="code hl_class" href="classthorin_1_1_lam.html">Lam</a> *lam);</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <a class="code hl_class" href="classthorin_1_1_eta_exp.html">EtaExp</a>* eta_exp_;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_class" href="classthorin_1_1_hash_map.html">Lam2Lam</a> tup2sca_;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>};</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>}</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="classthorin_1_1_scalerize.html">   16</a></span><span class="keyword">class </span><a class="code hl_class" href="classthorin_1_1_scalerize.html">Scalerize</a> : <span class="keyword">public</span> <a class="code hl_class" href="classthorin_1_1_r_w_pass.html">RWPass</a>&lt;Lam&gt; {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classthorin_1_1_scalerize.html#a3cd68d747d5226eff8f2f72da5e3ca15">   18</a></span>    <a class="code hl_function" href="classthorin_1_1_scalerize.html#a3cd68d747d5226eff8f2f72da5e3ca15">Scalerize</a>(<a class="code hl_class" href="classthorin_1_1_pass_man.html">PassMan</a>&amp; <a class="code hl_function" href="classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc">man</a>, <a class="code hl_class" href="classthorin_1_1_eta_exp.html">EtaExp</a>* eta_exp)</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        : <a class="code hl_class" href="classthorin_1_1_r_w_pass.html">RWPass</a>(<a class="code hl_function" href="classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc">man</a>, <span class="stringliteral">&quot;scalerize&quot;</span>)</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>        , eta_exp_(eta_exp)</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    {}</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1_def.html">Def</a>* <a class="code hl_function" href="classthorin_1_1_scalerize.html#aa1beecd95ddfde12879b584ad10002b9">rewrite</a>(<span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1_def.html">Def</a>*) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keywordtype">bool</span> should_expand(<a class="code hl_class" href="classthorin_1_1_lam.html">Lam</a> *lam);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <a class="code hl_class" href="classthorin_1_1_lam.html">Lam</a>* make_scalar(<a class="code hl_class" href="classthorin_1_1_lam.html">Lam</a> *lam);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <a class="code hl_class" href="classthorin_1_1_eta_exp.html">EtaExp</a>* eta_exp_;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <a class="code hl_class" href="classthorin_1_1_hash_map.html">Lam2Lam</a> tup2sca_;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>};</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>}</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassthorin_1_1_def_html"><div class="ttname"><a href="classthorin_1_1_def.html">thorin::Def</a></div><div class="ttdef"><b>Definition:</b> def.h:115</div></div>
 <div class="ttc" id="aclassthorin_1_1_eta_exp_html"><div class="ttname"><a href="classthorin_1_1_eta_exp.html">thorin::EtaExp</a></div><div class="ttdef"><b>Definition:</b> eta_exp.h:15</div></div>
 <div class="ttc" id="aclassthorin_1_1_hash_map_html"><div class="ttname"><a href="classthorin_1_1_hash_map.html">thorin::HashMap</a></div><div class="ttdef"><b>Definition:</b> hash.h:644</div></div>
 <div class="ttc" id="aclassthorin_1_1_lam_html"><div class="ttname"><a href="classthorin_1_1_lam.html">thorin::Lam</a></div><div class="ttdef"><b>Definition:</b> lam.h:51</div></div>
-<div class="ttc" id="aclassthorin_1_1_pass_man_html"><div class="ttname"><a href="classthorin_1_1_pass_man.html">thorin::PassMan</a></div><div class="ttdef"><b>Definition:</b> pass.h:100</div></div>
+<div class="ttc" id="aclassthorin_1_1_pass_man_html"><div class="ttname"><a href="classthorin_1_1_pass_man.html">thorin::PassMan</a></div><div class="ttdef"><b>Definition:</b> pass.h:102</div></div>
 <div class="ttc" id="aclassthorin_1_1_r_w_pass_base_html_ad2506a9ae875b80c475520552cd969dc"><div class="ttname"><a href="classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc">thorin::RWPassBase::man</a></div><div class="ttdeci">PassMan &amp; man()</div><div class="ttdef"><b>Definition:</b> pass.h:25</div></div>
-<div class="ttc" id="aclassthorin_1_1_r_w_pass_html"><div class="ttname"><a href="classthorin_1_1_r_w_pass.html">thorin::RWPass</a></div><div class="ttdef"><b>Definition:</b> pass.h:206</div></div>
-<div class="ttc" id="aclassthorin_1_1_scalerize_html"><div class="ttname"><a href="classthorin_1_1_scalerize.html">thorin::Scalerize</a></div><div class="ttdef"><b>Definition:</b> scalarize.h:15</div></div>
-<div class="ttc" id="aclassthorin_1_1_scalerize_html_a3cd68d747d5226eff8f2f72da5e3ca15"><div class="ttname"><a href="classthorin_1_1_scalerize.html#a3cd68d747d5226eff8f2f72da5e3ca15">thorin::Scalerize::Scalerize</a></div><div class="ttdeci">Scalerize(PassMan &amp;man, EtaExp *eta_exp)</div><div class="ttdef"><b>Definition:</b> scalarize.h:17</div></div>
+<div class="ttc" id="aclassthorin_1_1_r_w_pass_html"><div class="ttname"><a href="classthorin_1_1_r_w_pass.html">thorin::RWPass</a></div><div class="ttdef"><b>Definition:</b> pass.h:208</div></div>
+<div class="ttc" id="aclassthorin_1_1_scalerize_html"><div class="ttname"><a href="classthorin_1_1_scalerize.html">thorin::Scalerize</a></div><div class="ttdef"><b>Definition:</b> scalarize.h:16</div></div>
+<div class="ttc" id="aclassthorin_1_1_scalerize_html_a3cd68d747d5226eff8f2f72da5e3ca15"><div class="ttname"><a href="classthorin_1_1_scalerize.html#a3cd68d747d5226eff8f2f72da5e3ca15">thorin::Scalerize::Scalerize</a></div><div class="ttdeci">Scalerize(PassMan &amp;man, EtaExp *eta_exp)</div><div class="ttdef"><b>Definition:</b> scalarize.h:18</div></div>
 <div class="ttc" id="aclassthorin_1_1_scalerize_html_aa1beecd95ddfde12879b584ad10002b9"><div class="ttname"><a href="classthorin_1_1_scalerize.html#aa1beecd95ddfde12879b584ad10002b9">thorin::Scalerize::rewrite</a></div><div class="ttdeci">const Def * rewrite(const Def *) override</div><div class="ttdoc">Rewrites a structural def within PassMan::curr_nom. Returns the replacement.</div><div class="ttdef"><b>Definition:</b> scalarize.cpp:56</div></div>
 <div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition:</b> cfg.cpp:14</div></div>
 <div class="ttc" id="apass_8h_html"><div class="ttname"><a href="pass_8h.html">pass.h</a></div></div>
