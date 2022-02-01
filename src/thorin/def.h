@@ -300,7 +300,7 @@ public:
     /// @name misc getters
     //@{
     fields_t fields() const { return fields_; }
-    size_t gid() const { return gid_; }
+    u32 gid() const { return gid_; }
     hash_t hash() const { return hash_; }
     World& world() const {
         if (node()                 == Node::Space) return *world_;
