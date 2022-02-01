@@ -26,10 +26,10 @@ jobs:
 
     - name: Set up Clang
       uses: egor-tensin/setup-clang@v1
+      if: ${{matrix.os}} != 'macos-latest'
       with:
         version: latest
         platform: x64
-      if: ${{matrix.os}} != 'macos-latest'
 
     - name: Configure
       run: >
