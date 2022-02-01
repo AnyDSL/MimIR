@@ -28,6 +28,7 @@ public:
     Sigma* stub(World&, const Def*, const Def*) override;
     //@}
 
+
     static constexpr auto Node = Node::Sigma;
     friend class World;
 };

@@ -994,10 +994,16 @@ const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const D
         s2.fmt("lin {}\n",*l_in);
         s2.fmt("args {}\n",args);
 
-        if (lr && std::all_of(args.begin(), args.end(), [&](const Def* arg) { return is_tuple_or_pack(arg); })) {
+        if (lr) {//} && std::all_of(args.begin(), args.end(), [&](const Def* arg) { return is_tuple_or_pack(arg); })) {
             s2.fmt("all tuple or pack\n");
             auto shapes = s->projs((size_t)*lr);
             auto s_n = isa_lit(shapes.front());
+            s2.fmt("shapes front {}\n",shapes.front());
+            s2.fmt("shapes back {}\n",shapes.back());
+
+//            if(!s_n) {
+//                s_n=isa_lit(w.lit_nat(256));
+//            }
 
             if (s_n) {
                 DefArray elems(*s_n, [&, f = f](size_t s_i) {
@@ -1008,6 +1014,7 @@ const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const D
                         return w.app(w.app(w.app(w.ax_lift(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os), inner_args);
                 });
                 return w.tuple(elems);
+            }else {
             }
         }
     }

@@ -128,6 +128,7 @@ std::pair<const Def*,const Def*> lit_of_type(World& world, const Def* mem, const
     else if (auto a = type->isa<Arr>()) {
         // TODO: we need to drag the mem through
         auto dim = a->shape()->as<Lit>()->get<uint8_t>();
+        dlog(world,"create array literal of dim {}",dim);
         Array<const Def*> ops{dim};
         for (size_t i = 0; i < dim; ++i) {
             auto [nmem, op]=lit_of_type(world,mem,a->body(),lit,dummy);
@@ -135,6 +136,15 @@ std::pair<const Def*,const Def*> lit_of_type(World& world, const Def* mem, const
             ops[i]=op;
         }
         litdef= world.tuple(ops);
+    }else if(auto sig = type->isa<Sigma>()) {
+        std::vector<const Def*> zops;
+        dlog(world,"create tuple (Sigma) literal of dim {}",sig->num_ops());
+        for (auto op : sig->ops()) {
+            auto [nmem, zop]=lit_of_type(world,mem,op,lit,dummy);
+            mem=nmem;
+            zops.push_back(zop);
+        }
+        litdef= world.tuple(zops);
     }
 //    if(isa<Tag::Mem>(type) || type->isa<Pi>()) { // pi = cn[...]
     else litdef= dummy;
@@ -405,7 +415,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         idpb->set_filter(world_.lit_true());
 
 
-        if(dim>1) {
+        if(dim>1 && false) {
             // TODO: Ptr Tuple
             dlog(world_,"Non scalar argument, manually create extract pullbacks");
 
@@ -1557,9 +1567,16 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         zeropb->set_filter(world_.lit_true());
         auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
         dlog(world_,"  computed zero");
+
+        dlog(world_,"  zeropb retvar {}",zeropb->ret_var());
+        type_dump(world_,"  rmem",rmem);
+        dlog(world_,"  zero: {} ",zero);
+        type_dump(world_,"  zero",zero);
         zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
+//        dlog(world_,"  set pb body");
         // no src_to_dst mapping necessary
         pullbacks_[lit] = zeropb;
+        dlog(world_,"  set zero pb");
         return lit;
     }
 

@@ -147,7 +147,7 @@ public:
     //@{
     Sigma* nom_sigma(const Def* type, size_t size, const Def* dbg = {}) { return insert<Sigma>(size, type, size, dbg); }
     Sigma* nom_sigma(size_t size, const Def* dbg = {}) { return nom_sigma(kind(), size, dbg); } ///< a @em nom @p Sigma of type @p kind
-    const Def* sigma(Defs ops, const Def* dbg = {});
+    const Def* sigma(Defs ops, const Def* dbg = {}, bool flatten=true);
     const Sigma* sigma() { return data_.sigma_; } ///< the unit type within @p kind()
     //@}
 

@@ -393,11 +393,16 @@ const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
     return unify<App>(2, axiom, currying_depth-1, type, callee, arg, dbg);
 }
 
-const Def* World::sigma(Defs ops, const Def* dbg) {
+const Def* World::sigma(Defs ops, const Def* dbg, bool flatten) {
     auto n = ops.size();
+
+//    Stream s2;
+//    s2.fmt("sigma [{, }] dbg: {}\n",ops,dbg);
+
     if (n == 0) return sigma();
-    if (n == 1) return ops[0];
-    if (std::all_of(ops.begin()+1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+    if (n == 1 && flatten) return ops[0];
+    // or don't do it while flattening
+    if (n>1 && std::all_of(ops.begin()+1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
     return unify<Sigma>(ops.size(), infer_kind(ops), ops, dbg);
 }
 
