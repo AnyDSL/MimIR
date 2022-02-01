@@ -304,8 +304,8 @@ template&lt;class T , class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 <p >fprintf-like function. Each <code>"{}"</code> in <code>s</code> corresponds to one of the variadic arguments in <code>args</code>. The type of the corresponding argument must support <code>operator&lt;&lt;</code> on <code>std::ostream&amp;</code> or preferably <code><a class="el" href="classthorin_1_1_stream.html">Stream</a></code>. Furthermore, an argument may also be a range-based container where its elements fulfill the condition above. You can specify the separator within the braces: </p><div class="fragment"><div class="line">s.fmt(<span class="stringliteral">&quot;({, })&quot;</span>, list) <span class="comment">// yields &quot;(a, b, c)&quot;</span></div>
-</div><!-- fragment --><p> If you use <code>{\n</code> } as separator, it will invoke <a class="el" href="classthorin_1_1_stream.html#a9af733cb66244f3bf2c8d8511ae4ed0e">Stream::endl</a> - keeping indentation: </p><div class="fragment"><div class="line">s.fmt(<span class="stringliteral">&quot;({\n})&quot;</span>, list)</div>
-</div><!-- fragment --><p> Finally, you can use <code>'\n</code> ', '\t', and '<b></b>' to <code>endl</code>, <code>indent</code>, or <code>dedent</code>, respectively. </p>
+</div><!-- fragment --><p> If you use <code>"\n"</code> as separator, it will invoke <a class="el" href="classthorin_1_1_stream.html#a9af733cb66244f3bf2c8d8511ae4ed0e">Stream::endl</a> - keeping indentation: </p><div class="fragment"><div class="line">s.fmt(<span class="stringliteral">&quot;({\n})&quot;</span>, list)</div>
+</div><!-- fragment --><p> Finally, you can use <code>"\n"</code>, "\t", and "\b" to <code>endl</code>, <code>indent</code>, or <code>dedent</code>, respectively. </p>
 
 </div>
 </div>
