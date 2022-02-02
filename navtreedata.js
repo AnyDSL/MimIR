@@ -79,7 +79,7 @@ var NAVTREEINDEX =
 "classthorin_1_1_array_storage.html#ab5f67e89e3ac1b03493414ced79c6548",
 "classthorin_1_1_cleaner.html#aedfa90bab49b40873085f5f7c116d57c",
 "classthorin_1_1_def.html#af401dbc2a8092cdc438507614174f792",
-"classthorin_1_1_hash_map.html#a451f8dab9b5c0658627dbc46d1c56566",
+"classthorin_1_1_hash_map.html#a3d99bd738376f0ac79912421dc54659c",
 "classthorin_1_1_loop_tree.html#acf2656d830593575a29cbd71c920a8e8",
 "classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc",
 "classthorin_1_1_t_bound.html#a27a4ea29ad2a639474004e78475b97bb",

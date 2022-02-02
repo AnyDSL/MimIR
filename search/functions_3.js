@@ -2,7 +2,7 @@ var searchData=
 [
   ['callee_0',['callee',['../classthorin_1_1_app.html#a50ea8f8c25098398c902dfcc011af9ff',1,'thorin::App']]],
   ['callee_5ftype_1',['callee_type',['../classthorin_1_1_app.html#a73dd6583a55adc9afedd0b6cb9ca29c3',1,'thorin::App']]],
-  ['capacity_2',['capacity',['../classthorin_1_1_index_map.html#aa34f6f4febc42c33e9ccd190b326a597',1,'thorin::IndexMap::capacity()'],['../classthorin_1_1_index_set.html#ac7d046a688e1a6d762afda4d0229d7e5',1,'thorin::IndexSet::capacity()'],['../classthorin_1_1detail_1_1_hash_table.html#afda46afb9789a2bfdcc7013a0c5ef2d6',1,'thorin::detail::HashTable::capacity() const']]],
+  ['capacity_2',['capacity',['../classthorin_1_1_index_map.html#aa34f6f4febc42c33e9ccd190b326a597',1,'thorin::IndexMap::capacity()'],['../classthorin_1_1_index_set.html#ac7d046a688e1a6d762afda4d0229d7e5',1,'thorin::IndexSet::capacity()'],['../classthorin_1_1detail_1_1_hash_table.html#a955e8846f7b4e57c8a94b789c0d55abc',1,'thorin::detail::HashTable::capacity() const']]],
   ['cbegin_3',['cbegin',['../classthorin_1_1detail_1_1_hash_table.html#a8c6e6f886d810cc1c49efb7fbecee6af',1,'thorin::detail::HashTable']]],
   ['cc_4',['cc',['../classthorin_1_1_lam.html#a41ff04c8a9f5d268088afd737f408ebd',1,'thorin::Lam']]],
   ['cend_5',['cend',['../classthorin_1_1detail_1_1_hash_table.html#a74732f4283d1e5187cadd53273cd813a',1,'thorin::detail::HashTable']]],
@@ -41,7 +41,7 @@ var searchData=
   ['copy_5flams_38',['copy_lams',['../classthorin_1_1_world.html#ab148665b02cd6112774e39b647d3a159',1,'thorin::World']]],
   ['copy_5fuses_39',['copy_uses',['../classthorin_1_1_def.html#a6c585d3cebe35269971de0b1fb993c1b',1,'thorin::Def']]],
   ['copyprop_40',['CopyProp',['../classthorin_1_1_copy_prop.html#a721ebd6b6dfcfbb3dcfaee9bb7b88852',1,'thorin::CopyProp']]],
-  ['count_41',['count',['../classthorin_1_1detail_1_1_hash_table.html#a0bd8b726a2e90310b5da9dd5a4830b2d',1,'thorin::detail::HashTable::count()'],['../classthorin_1_1_bit_set.html#a7f32f42e41e2d769b59032d4341a4a1a',1,'thorin::BitSet::count()']]],
+  ['count_41',['count',['../classthorin_1_1detail_1_1_hash_table.html#acd1eaef21643426ceeffd38b11125430',1,'thorin::detail::HashTable::count()'],['../classthorin_1_1_bit_set.html#a7f32f42e41e2d769b59032d4341a4a1a',1,'thorin::BitSet::count()']]],
   ['curr_5fgid_42',['curr_gid',['../classthorin_1_1_world.html#ac3f84d153a4be33297be87599a72f836',1,'thorin::World']]],
   ['curr_5fnom_43',['curr_nom',['../classthorin_1_1_r_w_pass_base.html#adec059b8b68ab646d0b1307858acfa8e',1,'thorin::RWPassBase::curr_nom()'],['../classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b',1,'thorin::PassMan::curr_nom()'],['../classthorin_1_1_r_w_pass.html#aa1b92447f41f06b88e03f68bde2bdd44',1,'thorin::RWPass::curr_nom()'],['../classthorin_1_1_f_p_pass.html#a9b69ec20862e8c918392c3ee575906da',1,'thorin::FPPass::curr_nom() const']]],
   ['curr_5fundo_44',['curr_undo',['../classthorin_1_1_f_p_pass.html#aa8c631fee7f930495e475a90d52f6034',1,'thorin::FPPass']]],

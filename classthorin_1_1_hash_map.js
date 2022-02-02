@@ -8,7 +8,7 @@ var classthorin_1_1_hash_map =
     [ "Super", "classthorin_1_1_hash_map.html#a3d99bd738376f0ac79912421dc54659c", null ],
     [ "value_type", "classthorin_1_1_hash_map.html#a300f35e683a4ec3ee2e9620943c0a0b8", null ],
     [ "HashMap", "classthorin_1_1_hash_map.html#ab35d84609dd9ccdda9d05f11342f82f1", null ],
-    [ "HashMap", "classthorin_1_1_hash_map.html#af8e07919a642cf9902cff77229a0a34c", null ],
+    [ "HashMap", "classthorin_1_1_hash_map.html#a1c38863e7de1eee5356a89888afd9bc4", null ],
     [ "HashMap", "classthorin_1_1_hash_map.html#a841a7e34be9e38a4761eaa31ade35990", null ],
     [ "HashMap", "classthorin_1_1_hash_map.html#a13b8239e5ce1c97a2196fa35c963a532", null ],
     [ "lookup", "classthorin_1_1_hash_map.html#a87a1ccdc387bbc650bb2a61e57870a38", null ],
