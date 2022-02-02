@@ -242,18 +242,18 @@ public:
     const Lit* lit_true()  { return data_.lit_bool_[1]; }
     const Lit* lit_real(nat_t width, r64 val, const Def* dbg = {}) {
         switch (width) {
-            case 16: assert(r64(r16(val)) == val && "loosing precision"); return lit_real(r16(val), dbg);
-            case 32: assert(r64(r32(val)) == val && "loosing precision"); return lit_real(r32(val), dbg);
-            case 64: assert(r64(r64(val)) == val && "loosing precision"); return lit_real(r64(val), dbg);
+            case 16: assert(r64(r16(r32(val))) == val && "loosing precision"); return lit_real(r16(r32(val)), dbg);
+            case 32: assert(r64(r32(   (val))) == val && "loosing precision"); return lit_real(r32(   (val)), dbg);
+            case 64: assert(r64(r64(   (val))) == val && "loosing precision"); return lit_real(r64(   (val)), dbg);
             default: THORIN_UNREACHABLE;
         }
     }
     template<class R> const Lit* lit_real(R val, const Def* dbg = {}) {
         static_assert(std::is_floating_point<R>() || std::is_same<R, r16>());
         if constexpr (false) {}
-        else if (sizeof(R) == 2) return lit(type_real(16), thorin::bitcast<u16>(val), dbg);
-        else if (sizeof(R) == 4) return lit(type_real(32), thorin::bitcast<u32>(val), dbg);
-        else if (sizeof(R) == 8) return lit(type_real(64), thorin::bitcast<u64>(val), dbg);
+        else if constexpr (sizeof(R) == 2) return lit(type_real(16), thorin::bitcast<u16>(val), dbg);
+        else if constexpr (sizeof(R) == 4) return lit(type_real(32), thorin::bitcast<u32>(val), dbg);
+        else if constexpr (sizeof(R) == 8) return lit(type_real(64), thorin::bitcast<u64>(val), dbg);
         else THORIN_UNREACHABLE;
     }
     //@}

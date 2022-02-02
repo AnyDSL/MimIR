@@ -358,9 +358,9 @@ public:
             if (capacity_ > hash_t(MinHeapCapacity) && size_ < capacity_/8_u32)
                 rehash(capacity_/4_u32);
             else {
-                for (hash_t curr = pos.ptr_-nodes_, next = mod(curr+1);
-                    !is_invalid(next) && probe_distance(next) != 0; curr = next, next = mod(next+1)) {
-                    swap(nodes_[curr], nodes_[next]);
+                for (hash_t cur = hash_t(pos.ptr_-nodes_), next = mod(cur+1);
+                    !is_invalid(next) && probe_distance(next) != 0; cur = next, next = mod(next+1)) {
+                    swap(nodes_[cur], nodes_[next]);
                 }
             }
         } else {
@@ -440,9 +440,9 @@ public:
                         swap(nodes_[i], old);
                         break;
                     } else {
-                        hash_t curr_distance = probe_distance(i);
-                        if (curr_distance < distance) {
-                            distance = curr_distance;
+                        hash_t cur_distance = probe_distance(i);
+                        if (cur_distance < distance) {
+                            distance = cur_distance;
                             swap(nodes_[i], old);
                         }
                         debug(i);
@@ -507,10 +507,10 @@ private:
             } else if (result == end_ptr() && H::eq(key(nodes_+i), k)) {
                 return std::make_pair(iterator(nodes_+i, this), false);
             } else {
-                hash_t curr_distance = probe_distance(i);
-                if (curr_distance < distance) {
+                hash_t cur_distance = probe_distance(i);
+                if (cur_distance < distance) {
                     result = result == end_ptr() ? nodes_+i : result;
-                    distance = curr_distance;
+                    distance = cur_distance;
                     swap(nodes_[i], n);
                 }
             }
@@ -523,9 +523,9 @@ private:
             auto dib = probe_distance(i);
             if (dib > 2_u32*log2(capacity())) {
                 // don't use LOG here - this results in a header dependency hell
-                printf("poor hash function; element %zu has distance %zu with size/capacity: %zu/%zu\n", i, dib, size(), capacity());
+                printf("poor hash function; element %u has distance %u with size/capacity: %u/%u\n", i, dib, size(), capacity());
                 for (hash_t j = mod(i-dib); j != i; j = mod(j+1))
-                    printf("elem:desired_pos:hash: %zu:%zu:%" PRIu32 "\n", j, desired_pos(key(&nodes_[j])), hash(j));
+                    printf("elem:desired_pos:hash: %u:%u:%" PRIu32 "\n", j, desired_pos(key(&nodes_[j])), hash(j));
                 debug_hash();
             }
         }
