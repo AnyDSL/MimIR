@@ -212,7 +212,7 @@ public:
     AutoDiffer(World& world, const Def2Def& src_to_dst, const Def* A_)
         : world_{world}
         , src_to_dst_{src_to_dst}
-        , A{world.tangent_type(A_)}
+        , A{world.tangent_type(A_,false)}
     {
         // initializes the differentiation for a function of type A -> B
         // src_to_dst expects the parameters of the source lambda to be mapped
@@ -332,7 +332,7 @@ const Def* AutoDiffer::chain(const Def* a, const Def* b) {
 // pullback for a function of type A->B => pb of B result regarding A
 const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
     // TODO: move tangent_type of A here
-    return world_.cn_mem_ret(world_.tangent_type(B), A);
+    return world_.cn_mem_ret(world_.tangent_type(B,false), A);
 }
 
 
@@ -1123,7 +1123,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             const Def* dst_callee;
 
 //            dlog(world_,"is lam: {}",callee->isa<Lam>());
-//            THORIN_UNREACHABLE;
 
             if(auto cal_lam=callee->isa<Lam>(); cal_lam && !cal_lam->is_set()) {
                 dlog(world_,"  found external function {}",cal_lam->name());
@@ -1157,7 +1156,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 //      = A -> cn[mem, B, cn[mem, A]]
                 //  x is supplied at compile time by direct forwarding from lam₁
 
-                auto augTy = world_.tangent_type(callee->type())->as<Pi>();
+                auto augTy = world_.tangent_type(callee->type(),true)->as<Pi>();
                 // type of result (after taking argument x)
                 auto resTy = augTy->doms().back()->as<Pi>();
                 // type of the pullback f*
@@ -1210,10 +1209,18 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
                 dst_callee = lam;
             }else {
-                dst_callee = world_.op_rev_diff(callee);
-                type_dump(world_,"  Used RevDiff Op on callee",dst_callee);
-                dlog(world_,"  this call will invoke AutoDiff rewrite");
+                dlog(world_,"  fn callee node {}",callee->node_name());
+                if(callee->isa<Lam>()) {
+                    dst_callee = world_.op_rev_diff(callee);
+                    type_dump(world_,"  Used RevDiff Op on callee",dst_callee);
+                    dlog(world_,"  this call will invoke AutoDiff rewrite");
+                }else{
+                    dst_callee= j_wrap(callee);
+//                    dlog(world_,"  replace calle with mapped {}",dst_callee);
+                    type_dump(world_,"  replace calle with mapped",dst_callee);
+                }
             }
+//            THORIN_UNREACHABLE;
 
             auto d_arg = j_wrap(arg);
             type_dump(world_,"  wrapped args: ",d_arg);
@@ -1337,8 +1344,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         }
 
 
-        dlog(world_,"tangent type of tuple: {} => {}",tuple->type(),world_.tangent_type(tuple->type()));
-        dlog(world_,"tangent type of dst: {} => {}",dst->type(),world_.tangent_type(dst->type()));
+        dlog(world_,"tangent type of tuple: {} => {}",tuple->type(),world_.tangent_type(tuple->type(),false));
+        dlog(world_,"tangent type of dst: {} => {}",dst->type(),world_.tangent_type(dst->type(),false));
         dlog(world_,"tuple dim: {}",tuple_dim);
 //        type_dump(world_,"tuple first: ",dst->op(0));
 //        type_dump(world_,"tuple first: ",dst->proj(0));
@@ -1527,7 +1534,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //            extract_vec=world_.extract_unsafe(world_.tuple(ohv), extract->index());
 //        }
 
-        auto [rmem, ohv] = oneHot(world_,pb->mem_var(),extract->index(),world_.tangent_type(jtup->type()),pb->var(1,world_.dbg("s")));
+        auto [rmem, ohv] = oneHot(world_,pb->mem_var(),extract->index(),world_.tangent_type(jtup->type(),false),pb->var(1,world_.dbg("s")));
 
         // or use pullbacsk type
         pb->set_body(world_.app(

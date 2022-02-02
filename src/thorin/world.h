@@ -385,9 +385,8 @@ public:
 
     /// @name AD
     //@{
-    const Def* type_tangent_vector(const Def* primal_type, const Def* dbg = {});
     const Def* op_rev_diff(const Def* fn, const Def* dbg = {});
-    const Def* tangent_type(const Def* A);
+    const Def* tangent_type(const Def* A, bool left=false);
     //@}
 
     /// @name helpers
@@ -647,7 +646,6 @@ private:
         const Axiom* type_mem_;
         const Axiom* type_ptr_;
         const Axiom* type_real_;
-        const Axiom* type_tangent_vector_;
         const Axiom* op_rev_diff_;
         std::string name_;
         Externals externals_;

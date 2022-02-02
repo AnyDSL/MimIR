@@ -212,8 +212,6 @@ World::World(const std::string& name)
         rs_pi->set_codom(is_os_pi);
 
         data_.lift_ = axiom(normalize_lift, rs_pi, Tag::Lift, 0, dbg("lift"));
-    } { // type_tangent_vector: Π*. *
-        data_.type_tangent_vector_ = axiom(normalize_tangent, pi(kind(), kind()), Tag::TangentVector, 0, dbg("tangent"));
     } { // op_rev_diff: Π[I:*.O:*]. ΠI. O
         // DS: I can't figure out how to give it the correct type…
         // pullback assumes that:
@@ -248,15 +246,15 @@ World::World(const std::string& name)
         type->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
         */
-        auto type = nom_pi(kind())->set_dom({kind(), kind(), kind(), kind()});
-        auto [A, B, C, D] = type->vars<4>({dbg("A"), dbg("B"),dbg("C"),dbg("D")});
+        auto type = nom_pi(kind())->set_dom({kind(), kind(), kind(), kind(), kind(), kind()});
+        auto [A, B, C, D,E,F] = type->vars<6>({dbg("A"), dbg("B"),dbg("C"),dbg("D"),dbg("E"),dbg("F")});
 
-        auto pullback = cn_mem_ret(C,D);
+        auto pullback = cn_mem_ret(E,F);
         auto diffd = cn({
           type_mem(),
-          A,
+          C,
 //          flatten(A),
-          cn({type_mem(), B, pullback})
+          cn({type_mem(), D, pullback})
         });
 //        auto diffd= cn_mem_flat(A,tuple({B,pullback}));
         // TODO: flattening at this point is useless as we handle abstract kinds here
@@ -269,11 +267,12 @@ World::World(const std::string& name)
 }
 
 
-const Def* World::tangent_type(const Def* A) {
+// reflect impala tangent type
+const Def* World::tangent_type(const Def* A,bool left) {
     Stream s2;
     s2.fmt("A: {} : {}, {}\n",A,A->type(), A->node_name());
 
-    if(auto pidef = A->isa<Pi>()) {
+    if(auto pidef = A->isa<Pi>();pidef && left) {
         s2.fmt("A is pi\n");
 //        s2.fmt("A exists?\n");
 //
@@ -289,20 +288,21 @@ const Def* World::tangent_type(const Def* A) {
         if(pidef->num_doms()==1) {
             //cn :mem
 //            return pidef;
-            return cn(tangent_type(pidef->dom(1)));
+            return cn(tangent_type(pidef->dom(1),left));
             // or cn(type_mem) if mem
         }
 
         // TODO: multiple variables
         auto A = pidef->dom(1);
-
         auto B = pidef->dom(2)->as<Pi>()->dom(1);
+        auto AL = tangent_type(A,true);
+        auto BL = tangent_type(A,true);
 
-        auto pullback = cn_mem_ret(tangent_type(B), tangent_type(A));
+        auto pullback = cn_mem_ret(tangent_type(B,false), tangent_type(A,false));
         auto diffd = cn({
                             type_mem(),
-                            A,
-                            cn({type_mem(), B, pullback})
+                            AL,
+                            cn({type_mem(), BL, pullback})
                         });
 //        auto diffd= cn_mem_flat(A,tuple({B,pullback}));
 
@@ -326,16 +326,16 @@ const Def* World::tangent_type(const Def* A) {
     if(auto ptr = isa<Tag::Ptr>(A)) {
 //        s2.fmt("A is ptr\n");
         auto [pointee, addr_space] = ptr->arg()->projs<2>();
-        auto inner=tangent_type(pointee);
+        auto inner=tangent_type(pointee,left);
 //        return inner;
-        if(pointee->isa<Arr>()) {
+        if(pointee->isa<Arr>() || left) {
             return type_ptr(inner,addr_space);
         }
         return inner;
     }
     if(auto arrdef = A->isa<Arr>()) {
 //        s2.fmt("A is arr\n");
-        return arr(arrdef->shape(), tangent_type(arrdef->body()),arrdef->dbg());
+        return arr(arrdef->shape(), tangent_type(arrdef->body(),left),arrdef->dbg());
     }
     if(auto sig = A->isa<Sigma>()) {
         // TODO: handle structs
@@ -344,7 +344,7 @@ const Def* World::tangent_type(const Def* A) {
 //        s2.fmt("A is structural {} \n",sig->isa_structural());
         auto ops = sig->ops();
         Array<const Def*> tan_ops_arr{ops.size() ,[&](auto i) {
-                return tangent_type(ops[i]);
+                return tangent_type(ops[i],left);
         }};
         Defs tan_ops{tan_ops_arr};
         return sigma(tan_ops,sig->dbg());
@@ -352,7 +352,7 @@ const Def* World::tangent_type(const Def* A) {
     if(auto real = isa<Tag::Real>(A)) {
         return A;
     }else {
-        return type_real(32);
+        return left ? A : type_real(32);
     }
 }
 
@@ -402,7 +402,8 @@ const Def* World::sigma(Defs ops, const Def* dbg, bool flatten) {
     if (n == 0) return sigma();
     if (n == 1 && flatten) return ops[0];
     // or don't do it while flattening
-    if (n>1 && std::all_of(ops.begin()+1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+    // n>1
+    if (flatten && std::all_of(ops.begin()+1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
     return unify<Sigma>(ops.size(), infer_kind(ops), ops, dbg);
 }
 
@@ -901,18 +902,23 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
 
         auto dom = sigma(pi->dom()->ops().skip_front().skip_back());
         auto codom = sigma(pi->dom()->ops().back()->as<Pi>()->dom()->ops().skip_front());
-        auto tan_dom = tangent_type(dom);
-        auto tan_codom = tangent_type(codom);
+        auto deriv_dom = tangent_type(dom,true);
+        auto deriv_codom = tangent_type(codom,true);
+
+        auto tan_dom = tangent_type(dom,false);
+        auto tan_codom = tangent_type(codom,false);
 
         Stream s2;
         s2.fmt("dom {} => {}\n",dom,tan_dom);
         s2.fmt("codom {} => {}\n",codom,tan_codom);
+        s2.fmt("dom {} =D> {}\n",dom,deriv_dom);
+        s2.fmt("codom {} =D> {}\n",codom,deriv_codom);
 
         s2.fmt("fn {} : {}\n",fn, fn->type());
 
         // wrapper for fn not possible due to recursive calls
 
-        auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom, tan_codom, tan_dom}), this->dbg("mk_pullback"));
+        auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom, deriv_dom, deriv_codom, tan_codom, tan_dom}), this->dbg("mk_pullback"));
         s2.fmt("mk pb {} : {}\n",mk_pullback,mk_pullback->type());
         auto pullback = app(mk_pullback, fn, dbg);
         s2.fmt("pb {}\n",pullback);
@@ -923,9 +929,6 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
     return nullptr;
 }
 
-const Def* World::type_tangent_vector(const Def* primal_type, const Def* dbg) {
-    return app(data_.type_tangent_vector_, primal_type, dbg);
-}
 
 /*
  * misc
