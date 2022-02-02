@@ -12,8 +12,8 @@ private:
 public:
     /// @name misc getters
     //@{
-    tag_t tag() const { return fields() >> 32_u64; }
-    flags_t flags() const { return fields(); }
+    tag_t tag() const { return tag_t(fields() >> 32_u64); }
+    flags_t flags() const { return flags_t(fields()); }
     NormalizeFn normalizer() const { return normalizer_depth_.ptr(); }
     u16 currying_depth() const { return normalizer_depth_.index(); }
     //@}

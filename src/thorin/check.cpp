@@ -12,7 +12,7 @@ bool Checker::equiv(const Def* d1, const Def* d2) {
     if (d1->gid() > d2->gid()) std::swap(d1, d2);
 
     // this assumption will either hold true - or we will bail out with false anyway
-    auto [i, inserted] = equiv_.emplace(d1, d2);
+    auto [_, inserted] = equiv_.emplace(d1, d2);
     if (!inserted) return true;
 
     if (!equiv(d1->type(), d2->type())) return false;

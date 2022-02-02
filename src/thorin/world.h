@@ -46,9 +46,9 @@ public:
     };
 
     struct BreakHash {
-        static hash_t hash(size_t i) { return i; }
-        static bool eq(size_t i1, size_t i2) { return i1 == i2; }
-        static size_t sentinel() { return size_t(-1); }
+        static hash_t hash(u32 u) { return murmur3(u); }
+        static bool eq(u32 a, u32 b) { return a == b; }
+        static u32 sentinel() { return u32(-1); }
     };
 
     struct ExternalsHash {
@@ -58,7 +58,7 @@ public:
     };
 
     using Sea         = HashSet<const Def*, SeaHash>;///< This @p HashSet contains Thorin's "sea of nodes".
-    using Breakpoints = HashSet<size_t, BreakHash>;
+    using Breakpoints = HashSet<u32, BreakHash>;
     using Externals   = HashMap<std::string, Def*, ExternalsHash>;
 
     World(World&&) = delete;

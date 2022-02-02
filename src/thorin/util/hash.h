@@ -130,7 +130,7 @@ struct StrHash {
 namespace detail {
 
 /// Used internally for @p HashSet and @p HashMap.
-template<class Key, class T, class H, size_t StackCapacity>
+template<class Key, class T, class H, hash_t StackCapacity>
 class HashTable {
 public:
     enum { MinHeapCapacity = StackCapacity*4 };
@@ -147,7 +147,7 @@ private:
 
     static key_type& key(value_type* ptr) { return get_key<Key, T>::get(*ptr); }
     static bool is_invalid(value_type* ptr) { return key(ptr) == H::sentinel(); }
-    bool is_invalid(size_t i) { return is_invalid(nodes_+i); }
+    bool is_invalid(hash_t i) { return is_invalid(nodes_+i); }
 
 public:
     template<bool is_const>
@@ -219,7 +219,7 @@ public:
         friend class HashTable;
     };
 
-    typedef std::size_t size_type;
+    typedef hash_t size_type;
     typedef iterator_base<false> iterator;
     typedef iterator_base<true> const_iterator;
 
@@ -233,8 +233,8 @@ public:
     {
         fill(nodes_);
     }
-    HashTable(size_t capacity)
-        : capacity_(capacity < StackCapacity ? StackCapacity : std::max(capacity, size_t(MinHeapCapacity)))
+    HashTable(hash_t capacity)
+        : capacity_(capacity < StackCapacity ? StackCapacity : std::max(capacity, hash_t(MinHeapCapacity)))
         , size_(0)
         , nodes_(on_heap() ? new value_type[capacity_] : array_.data())
 #if THORIN_ENABLE_CHECKS
@@ -281,8 +281,8 @@ public:
     }
 
     //@{ getters
-    size_t capacity() const { return capacity_; }
-    size_t size() const { return size_; }
+    hash_t capacity() const { return capacity_; }
+    hash_t size() const { return size_; }
     bool empty() const { return size() == 0; }
 #if THORIN_ENABLE_CHECKS
     int id() const { return id_; }
@@ -304,8 +304,8 @@ public:
         if (!on_heap() && size_ < capacity_)
             return array_emplace(std::forward<Args>(args)...);
 
-        if (size_ >= capacity_/4_s + capacity_/2_s)
-            rehash(capacity_*4_s);
+        if (size_ >= capacity_/4_u32 + capacity_/2_u32)
+            rehash(capacity_*4_u32);
 
         return emplace_no_rehash(std::forward<Args>(args)...);
     }
@@ -319,16 +319,14 @@ public:
 
     template<class I>
     bool insert(I begin, I end) {
-        size_t s = size() + std::distance(begin, end);
-        size_t c = round_to_power_of_2(s);
+        hash_t s = size() + std::distance(begin, end);
+        hash_t c = round_to_power_of_2(s);
 
-        if (s > c/4_s + c/2_s)
-            c *= 4_s;
+        if (s > c/4_u32 + c/2_u32) c *= 4_u32;
 
-        c = std::max(c, size_t(capacity_));
+        c = std::max(c, hash_t(capacity_));
 
-        if (c != capacity_)
-            rehash(c);
+        if (c != capacity_) rehash(c);
 
         bool changed = false;
         if (on_heap()) {
@@ -357,10 +355,10 @@ public:
             key(&empty) = H::sentinel();
             swap(*pos.ptr_, empty);
 
-            if (capacity_ > size_t(MinHeapCapacity) && size_ < capacity_/8_s)
-                rehash(capacity_/4_s);
+            if (capacity_ > hash_t(MinHeapCapacity) && size_ < capacity_/8_u32)
+                rehash(capacity_/4_u32);
             else {
-                for (size_t curr = pos.ptr_-nodes_, next = mod(curr+1);
+                for (hash_t curr = pos.ptr_-nodes_, next = mod(curr+1);
                     !is_invalid(next) && probe_distance(next) != 0; curr = next, next = mod(next+1)) {
                     swap(nodes_[curr], nodes_[next]);
                 }
@@ -378,7 +376,7 @@ public:
             erase(i);
     }
 
-    size_t erase(const key_type& key) {
+    hash_t erase(const key_type& key) {
         auto i = find(key);
         if (i == end())
             return 0;
@@ -393,7 +391,7 @@ public:
             if (empty())
                 return end();
 
-            for (size_t i = desired_pos(k); true; i = mod(i+1)) {
+            for (hash_t i = desired_pos(k); true; i = mod(i+1)) {
                 if (is_invalid(i))
                     return end();
                 if (H::eq(key(nodes_+i), k))
@@ -421,28 +419,28 @@ public:
         fill(nodes_);
     }
 
-    size_t count(const key_type& key) const { return find(key) == end() ? 0 : 1; }
+    hash_t count(const key_type& key) const { return find(key) == end() ? 0 : 1; }
     bool contains(const key_type& key) const { return count(key) == 1; }
 
-    void rehash(size_t new_capacity) {
+    void rehash(hash_t new_capacity) {
         using std::swap;
 
         assert(is_power_of_2(new_capacity));
 
         auto old_capacity = capacity_;
-        capacity_ = std::max(new_capacity, size_t(MinHeapCapacity));
+        capacity_ = std::max(new_capacity, hash_t(MinHeapCapacity));
         auto old_nodes = alloc();
         swap(old_nodes, nodes_);
 
-        for (size_t i = 0; i != old_capacity; ++i) {
+        for (hash_t i = 0; i != old_capacity; ++i) {
             auto& old = old_nodes[i];
             if (!is_invalid(&old)) {
-                for (size_t i = desired_pos(key(&old)), distance = 0; true; i = mod(i+1), ++distance) {
+                for (hash_t i = desired_pos(key(&old)), distance = 0; true; i = mod(i+1), ++distance) {
                     if (is_invalid(i)) {
                         swap(nodes_[i], old);
                         break;
                     } else {
-                        size_t curr_distance = probe_distance(i);
+                        hash_t curr_distance = probe_distance(i);
                         if (curr_distance < distance) {
                             distance = curr_distance;
                             swap(nodes_[i], old);
@@ -499,7 +497,7 @@ private:
         auto& k = key(&n);
 
         auto result = end_ptr();
-        for (size_t i = desired_pos(k), distance = 0; true; i = mod(i+1), ++distance) {
+        for (hash_t i = desired_pos(k), distance = 0; true; i = mod(i+1), ++distance) {
             if (is_invalid(i)) {
                 ++size_;
                 swap(nodes_[i], n);
@@ -509,7 +507,7 @@ private:
             } else if (result == end_ptr() && H::eq(key(nodes_+i), k)) {
                 return std::make_pair(iterator(nodes_+i, this), false);
             } else {
-                size_t curr_distance = probe_distance(i);
+                hash_t curr_distance = probe_distance(i);
                 if (curr_distance < distance) {
                     result = result == end_ptr() ? nodes_+i : result;
                     distance = curr_distance;
@@ -520,25 +518,25 @@ private:
     }
 
 #if THORIN_ENABLE_PROFILING
-    void debug(size_t i) {
+    void debug(hash_t i) {
         if (capacity() >= 32) {
             auto dib = probe_distance(i);
-            if (dib > 2_s*log2(capacity())) {
+            if (dib > 2_u32*log2(capacity())) {
                 // don't use LOG here - this results in a header dependency hell
                 printf("poor hash function; element %zu has distance %zu with size/capacity: %zu/%zu\n", i, dib, size(), capacity());
-                for (size_t j = mod(i-dib); j != i; j = mod(j+1))
+                for (hash_t j = mod(i-dib); j != i; j = mod(j+1))
                     printf("elem:desired_pos:hash: %zu:%zu:%" PRIu32 "\n", j, desired_pos(key(&nodes_[j])), hash(j));
                 debug_hash();
             }
         }
     }
 #else
-    void debug(size_t) {}
+    void debug(hash_t) {}
 #endif
-    hash_t hash(size_t i) { return H::hash(key(&nodes_[i])); } ///< just for debugging
-    size_t mod(size_t i) const { return i & (capacity_-1); }
-    size_t desired_pos(const key_type& key) const { return mod(H::hash(key)); }
-    size_t probe_distance(size_t i) { return mod(i + capacity() - desired_pos(key(nodes_+i))); }
+    hash_t hash(hash_t i) { return H::hash(key(&nodes_[i])); } ///< just for debugging
+    hash_t mod(hash_t i) const { return i & (capacity_-1); }
+    hash_t desired_pos(const key_type& key) const { return mod(H::hash(key)); }
+    hash_t probe_distance(hash_t i) { return mod(i + capacity() - desired_pos(key(nodes_+i))); }
     value_type* end_ptr() const { return nodes_ + capacity(); }
     bool on_heap() const { return capacity_ != StackCapacity; }
 
@@ -571,7 +569,7 @@ private:
     }
 
     void array_erase(const_iterator pos) {
-        for (size_t i = std::distance(array_.data(), pos.ptr_), e = size_-1; i != e; ++i)
+        for (hash_t i = std::distance(array_.data(), pos.ptr_), e = size_-1; i != e; ++i)
             array_[i] = std::move(array_[i+1]);
 
         --size_;
@@ -586,7 +584,7 @@ private:
     }
 
     value_type* fill(value_type* nodes) {
-        for (size_t i = 0, e = capacity_; i != e; ++i)
+        for (hash_t i = 0, e = capacity_; i != e; ++i)
             key(nodes+i) = H::sentinel();
         return nodes;
     }
@@ -608,7 +606,7 @@ private:
  * This container is for the most part compatible with <code>std::unordered_set</code>.
  * We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
  */
-template<class Key, class H = typename Key::Hash, size_t StackCapacity = 4>
+template<class Key, class H = typename Key::Hash, hash_t StackCapacity = 4>
 class HashSet : public detail::HashTable<Key, void, H, StackCapacity> {
 public:
     typedef detail::HashTable<Key, void, H, StackCapacity> Super;
@@ -620,7 +618,7 @@ public:
     typedef typename Super::const_iterator const_iterator;
 
     HashSet() {}
-    HashSet(size_t capacity)
+    HashSet(hash_t capacity)
         : Super(capacity)
     {}
     template<class InputIt>
@@ -640,7 +638,7 @@ public:
  * This container is for the most part compatible with <code>std::unordered_map</code>.
  * We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
  */
-template<class Key, class T, class H = typename Key::Hash, size_t StackCapacity = 4>
+template<class Key, class T, class H = typename Key::Hash, hash_t StackCapacity = 4>
 class HashMap : public detail::HashTable<Key, T, H, StackCapacity> {
 public:
     typedef detail::HashTable<Key, T, H, StackCapacity> Super;
@@ -654,7 +652,7 @@ public:
     HashMap()
         : Super()
     {}
-    HashMap(size_t capacity)
+    HashMap(hash_t capacity)
         : Super(capacity)
     {}
     template<class InputIt>
