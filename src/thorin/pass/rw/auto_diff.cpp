@@ -776,6 +776,34 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         dlog(world_,"  reset current mem after LamNM {} to {} ",lam,current_mem);
         return dst;
     }
+    if (auto glob = def->isa<Global>()) {
+        dlog(world_,"  Global");
+        if(auto ptr_ty = isa<Tag::Ptr>(glob->type())) {
+            dlog(world_,"  Global Ptr");
+            dlog(world_,"  init {}",glob->init());
+            auto dinit = j_wrap(glob->init());
+            auto dst=world_.global(dinit,glob->is_mutable(),glob->dbg());
+
+            auto pb = pullbacks_[dinit];
+            type_dump(world_,"  pb for global init ",pb);
+
+            auto [ty,addr_space] = ptr_ty->arg()->projs<2>();
+            type_dump(world_,"  ty",ty);
+
+            auto [pb_mem, pb_ptr] = ptrSlot(ty,current_mem)->projs<2>();
+            pointer_map[dst]=pb_ptr;
+            auto pb_mem2 = world_.op_store(pb_mem,pb_ptr,pb,world_.dbg("pb_global"));
+
+            auto [pbt_mem,pbt_pb]= reloadPtrPb(pb_mem2,dst,world_.dbg("ptr_slot_pb_loadS"),false);
+
+            current_mem=pbt_mem;
+
+            type_dump(world_,"  pb slot global ",pb_ptr);
+            src_to_dst_[glob]=dst;
+            return dst;
+        }
+    }
+
     // handle operations in a hardcoded way
     // we directly implement the pullbacks including the chaining w.r. to the inputs of the function
     if (auto rop = isa<Tag::ROp>(def)) {
@@ -956,6 +984,24 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             dlog(world_,"  app of app");
             // Take care of binary operations
 
+            type_dump(world_, "  inner callee", inner->callee());
+            dlog(world_, "  node name {}", inner->callee()->node_name());
+            if (auto inner2_app = inner->callee()->isa<App>()) {
+                dlog(world_, "  app of app of app");
+                if(auto axiom = inner2_app->callee()->isa<Axiom>(); axiom && axiom->tag()==Tag::RevDiff) {
+                    auto d_arg = j_wrap(arg); // args to call diffed function
+                    auto fn = inner->arg(); // function to diff
+                    // inner2_app = rev_diff <...>
+                    // callee = rev_diff ... fun
+                    auto dst = world_.app(callee,d_arg);
+//                    auto rev_diff_call=world_.op_rev_diff(fn,inner2_app->dbg());
+//                    auto dst=world_.app( rev_diff_call, d_arg );
+//                    src_to_dst_[inner2_app]=rev_diff_call;
+                    type_dump(world_, "  translated to ",dst);
+                    src_to_dst_[app]=dst;
+                    return dst;
+                }
+            }
 
             if (auto axiom = inner->callee()->isa<Axiom>()) {
                 dlog(world_,"  app of axiom [...] args with axiom tag {}",axiom->tag());
@@ -1217,7 +1263,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 }else{
                     dst_callee= j_wrap(callee);
 //                    dlog(world_,"  replace calle with mapped {}",dst_callee);
-                    type_dump(world_,"  replace calle with mapped",dst_callee);
+                    type_dump(world_,"  j_wrap callee (for higher order)",dst_callee);
                 }
             }
 //            THORIN_UNREACHABLE;
@@ -1233,9 +1279,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
             auto pbT = dst_callee->type()->as<Pi>()->doms().back()->as<Pi>();
             auto chained = world_.nom_lam(pbT, world_.dbg("φchain"));
+            type_dump(world_,"  orig callee",callee);
+            type_dump(world_,"  dst callee",dst_callee);
             type_dump(world_,"  chained pb will be (app pb) ",chained);
 
+//            world_.debug_stream();
+//            chained->world().debug_stream();
 //            type_dump(world_,"  d_arg",d_arg);
+            dlog(world_,"  d_arg {}",d_arg);
             dlog(world_,"  d_arg pb {}",pullbacks_[d_arg]);
 
             auto arg_pb = pullbacks_[d_arg]; // Lam
