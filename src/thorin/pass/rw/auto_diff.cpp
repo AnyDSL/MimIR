@@ -827,6 +827,29 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  result of app",dst);
         return dst;
     }
+    if(auto iop = isa<Tag::Conv>(def)) {
+        // Unify with wrap
+        type_dump(world_,"  Conv:",iop);
+        auto args = j_wrap(iop->arg());
+        type_dump(world_,"  Wraped Conv args:",args);
+        // avoid case distinction
+        auto dst = world_.app(iop->callee(),args);
+        type_dump(world_,"  Wraped Conv:",dst);
+        // a zero pb but do not recompute
+        pullbacks_[dst]=pullbacks_[args];
+        return dst;
+    }
+    if(auto iop = isa<Tag::Wrap>(def)) {
+        type_dump(world_,"  Wrap:",iop);
+        auto args = j_wrap(iop->arg());
+        type_dump(world_,"  Wraped Wrap args:",args);
+        // avoid case distinction
+        auto dst = world_.app(iop->callee(),args);
+        type_dump(world_,"  Wraped Wrap:",dst);
+        // a zero pb but do not recompute
+        pullbacks_[dst]=pullbacks_[args->op(0)];
+        return dst;
+    }
     // TODO: more general
     if(auto icmp = isa<Tag::ICmp>(def)) {
         type_dump(world_,"  ICmp",icmp);
@@ -865,7 +888,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // TODO: jwrap arg (need conv)
 //        auto [arr, idx] = j_wrap(lea->arg())->projs<2>();
         auto arr = j_wrap(lea->arg(0));
-        auto idx = lea->arg(1);
+        auto idx = j_wrap(lea->arg(1)); // not necessary
         auto dst = world_.op_lea(arr,idx);
 
 
@@ -1171,7 +1194,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //            dlog(world_,"is lam: {}",callee->isa<Lam>());
 
             if(auto cal_lam=callee->isa<Lam>(); cal_lam && !cal_lam->is_set()) {
-                dlog(world_,"  found external function {}",cal_lam->name());
+                dlog(world_,"  found external function");
+                dlog(world_,"  function name {}",cal_lam->name());
 
                 // derive the correct type for the differentiated function f'
                 // f'(x) = (f(x), f*)
@@ -1378,6 +1402,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         dlog(world_,"  num of ops: {}",tuple_dim);
         // jwrap each component
         Array<const Def*> ops{tuple_dim, [&](auto i) { return j_wrap(tuple->proj(i)); }};
+        dlog(world_,"  jwrapped elements: {, }",ops);
         if(tuple_dim>0 && isa<Tag::Mem>(tuple->proj(0)->type())) {
             ops[0] = j_wrap(tuple->proj(0));
         }
