@@ -260,7 +260,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         }
 
         switch (values.size()) {
-            case 0: return lam2bb_[lam].tail("ret");
+            case 0: return lam2bb_[lam].tail("ret void");
             case 1: return lam2bb_[lam].tail("ret {} {}", convert(types[0]), values[0]);
             default:
                 auto tuple = convert(world().sigma(types));
@@ -557,7 +557,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
         assert(pointee->isa<Arr>());
         auto ll_idx = emit(idx);
-        return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 {}", t, p, ll_ptr, ll_idx);
+        return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, i64 {}", t, p, ll_ptr, ll_idx);
     } else if (auto trait = isa<Tag::Trait>(def)) {
         THORIN_UNREACHABLE;
     } else if (auto alloc = isa<Tag::Alloc>(def)) {
