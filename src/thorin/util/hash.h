@@ -435,24 +435,23 @@ public:
         for (hash_t i = 0; i != old_capacity; ++i) {
             auto& old = old_nodes[i];
             if (!is_invalid(&old)) {
-                for (hash_t i = desired_pos(key(&old)), distance = 0; true; i = mod(i+1), ++distance) {
-                    if (is_invalid(i)) {
-                        swap(nodes_[i], old);
+                for (hash_t j = desired_pos(key(&old)), distance = 0; true; j = mod(j+1), ++distance) {
+                    if (is_invalid(j)) {
+                        swap(nodes_[j], old);
                         break;
                     } else {
-                        hash_t cur_distance = probe_distance(i);
+                        hash_t cur_distance = probe_distance(j);
                         if (cur_distance < distance) {
                             distance = cur_distance;
-                            swap(nodes_[i], old);
+                            swap(nodes_[j], old);
                         }
-                        debug(i);
+                        debug(j);
                     }
                 }
             }
         }
 
-        if (old_capacity != StackCapacity)
-            delete[] old_nodes;
+        if (old_capacity != StackCapacity) delete[] old_nodes;
     }
 
     void dump() const { Stream s; s.fmt("[{, }]\n", *this); }
@@ -569,7 +568,7 @@ private:
     }
 
     void array_erase(const_iterator pos) {
-        for (hash_t i = std::distance(array_.data(), pos.ptr_), e = size_-1; i != e; ++i)
+        for (hash_t i = hash_t(std::distance(array_.data(), pos.ptr_)), e = size_-1; i != e; ++i)
             array_[i] = std::move(array_[i+1]);
 
         --size_;
