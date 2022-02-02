@@ -95,6 +95,8 @@ std::string CodeGen::convert(const Def* type) {
     if (auto ll_type = types_.lookup(type)) return *ll_type;
 
     assert(!isa<Tag::Mem>(type));
+    StringStream s;
+    std::string name;
 
     if (type->isa<Nat>()) {
         return types_[type] = "i32";
@@ -122,12 +124,7 @@ std::string CodeGen::convert(const Def* type) {
             case 64: return types_[type] = "double";
             default: THORIN_UNREACHABLE;
         }
-    }
-
-    StringStream s;
-    std::string name;
-
-    if (auto ptr = isa<Tag::Ptr>(type)) {
+    } else if (auto ptr = isa<Tag::Ptr>(type)) {
         auto [pointee, addr_space] = ptr->args<2>();
         // TODO addr_space
         s.fmt("{}*", convert(pointee));
@@ -157,6 +154,8 @@ std::string CodeGen::convert(const Def* type) {
             s << sep << convert(t);
             sep = ", ";
         }
+    } else {
+        THORIN_UNREACHABLE;
     }
 
     if (name.empty()) return types_[type] = s.str();
@@ -201,7 +200,8 @@ std::string CodeGen::prepare(const Scope& scope) {
     func_impls_.fmt("define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
     const char* sep = "";
-    for (auto var : lam->vars().skip_back()) {
+    auto vars = lam->vars();
+    for (auto var : vars.skip_back()) {
         if (isa<Tag::Mem>(var->type())) continue;
         auto name = id(var);
         defs_[var] = name;
@@ -525,13 +525,13 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         nat_t s_dst = size2width(conv->type());
 
         switch (conv.flags()) {
-            case Conv::s2s: return s_src < s_dst ? op = "sext"  : "trunc";
-            case Conv::u2u: return s_src < s_dst ? op = "zext"  : "trunc";
-            case Conv::r2r: return s_src < s_dst ? op = "fpext" : "fptrunc";
-            case Conv::s2r: return op = "sitofp";
-            case Conv::u2r: return op = "uitofp";
-            case Conv::r2s: return op = "fptosi";
-            case Conv::r2u: return op = "fptoui";
+            case Conv::s2s: s_src < s_dst ? op = "sext"  : "trunc";   break;
+            case Conv::u2u: s_src < s_dst ? op = "zext"  : "trunc";   break;
+            case Conv::r2r: s_src < s_dst ? op = "fpext" : "fptrunc"; break;
+            case Conv::s2r: op = "sitofp"; break;
+            case Conv::u2r: op = "uitofp"; break;
+            case Conv::r2s: op = "fptosi"; break;
+            case Conv::r2u: op = "fptoui"; break;
             default: THORIN_UNREACHABLE;
         }
 
@@ -547,8 +547,17 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
         return bb.assign(name, "bitcast {} {} to {}", src_t, src, dst_t);
     } else if (auto lea = isa<Tag::LEA>(def)) {
-        auto [ptr, index] = lea->args<2>([this](auto def) { return emit(def); });
-        return bb.assign(name, "lea {}, {}", ptr, index);
+        auto [ptr, idx] = lea->args<2>();
+        auto ll_ptr = emit(ptr);
+        auto pointee = as<Tag::Ptr>(ptr->type())->arg(0);
+        auto t = convert(pointee);
+        auto p = convert(ptr->type());
+        if (pointee->isa<Sigma>())
+            return bb.assign(name, "getelementptr inbounds {}, {} {}, i32 0, i64 {}", t, p, ll_ptr, as_lit<u64>(idx));
+
+        assert(pointee->isa<Arr>());
+        auto ll_idx = emit(idx);
+        return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 {}", t, p, ll_ptr, ll_idx);
     } else if (auto trait = isa<Tag::Trait>(def)) {
         THORIN_UNREACHABLE;
     } else if (auto alloc = isa<Tag::Alloc>(def)) {
@@ -563,7 +572,10 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(store->arg(0));
         auto ptr = emit(store->arg(1));
         auto val = emit(store->arg(2));
-        return bb.assign(name, "store {}, {}", val, ptr);
+        auto ptr_t = convert(store->arg(1)->type());
+        auto val_t = convert(store->arg(2)->type());
+        bb.body().emplace_back().fmt("store {} {}, {} {}", val_t, val, ptr_t, ptr);
+        return {};
     } if (auto tuple = def->isa<Tuple>()) {
         return emit_tuple(tuple);
     } else if (auto pack = def->isa<Pack>()) {

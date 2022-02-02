@@ -34,6 +34,8 @@ protected:
     }
 
     void emit_scope(const Scope& scope) {
+        if (entry_ = scope.entry()->isa_nom<Lam>(); !entry_) return;
+
         auto noms = schedule(scope); // TODO make sure to not compute twice
         entry_ = scope.entry()->as_nom<Lam>();
         assert(entry_->ret_var());
