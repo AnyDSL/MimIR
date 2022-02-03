@@ -27,13 +27,10 @@ jobs:
         platform: x64
 
     - name: Configure
-      run: >
-        cmake 
-        -B ${{github.workspace}}/build 
-        -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}}
+      run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v
 
     - name: Test
       working-directory: ${{github.workspace}}/build/bin
