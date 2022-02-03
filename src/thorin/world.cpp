@@ -25,7 +25,7 @@ namespace thorin {
  * constructor & destructor
  */
 
-#ifndef NDEBUG
+#if (!defined(MSVC) && defined(NDEBUG))
 bool World::Arena::Lock::guard_ = false;
 #endif
 
