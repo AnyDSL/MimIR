@@ -536,7 +536,7 @@ private:
             std::unique_ptr<Zone> next;
         };
 
-#if (!defined(MSVC) || defined(NDEBUG))
+#if (!defined(MSVC) && defined(NDEBUG))
         struct Lock {
             Lock() { assert((guard_ = !guard_) && "you are not allowed to recursively invoke allocate"); }
             ~Lock() { guard_ = !guard_; }
