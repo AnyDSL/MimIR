@@ -288,7 +288,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
             }
         }
         return lam2bb_[lam].tail("br label {}", id(callee));
-    } else if (auto callee = app->callee()->isa_nom<Lam>()) { // function/closure call
+    } else if (auto callee = app->callee()->isa_nom<Lam>()) { // function call
         auto ret_lam = app->args().back()->as_nom<Lam>();
 
         std::vector<std::string> args;
@@ -303,7 +303,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         Array<const Def*> values(num_vars);
         Array<const Def*> types(num_vars);
         for (auto var : ret_lam->vars().skip_back()) {
-            if (isa<Tag::Mem>(var->type()) || is_unit(var->type())) continue;
+            if (isa<Tag::Mem>(var->type())) continue;
             values[n] = var;
             types[n] = var->type();
             ++n;
@@ -318,6 +318,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         assert(!isa<Tag::Mem>(phi->type()));
         lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
         defs_[phi] = id(phi);
+
         return lam2bb_[lam].tail("br label {}", id(ret_lam));
     }
 }
@@ -333,8 +334,8 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
             auto e = tuple->proj(n, i);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
-                auto elem_t = convert(e);
-                prev = bb.assign(name + "." + std::to_string(i), "insertvalue {} {}, {} {}, i32 {}", t, prev, elem_t, elem, i);
+                auto elem_t = convert(e->type());
+                prev = bb.assign(name + "." + std::to_string(i), "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, i);
             }
         }
         return prev;
@@ -576,7 +577,9 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     } else if (auto load = isa<Tag::Load>(def)) {
         emit_unsafe(load->arg(0));
         auto ptr = emit(load->arg(1));
-        return bb.assign(name, "load {}", ptr);
+        auto ptr_t = convert(load->arg(1)->type());
+        auto pointee_t = convert(as<Tag::Ptr>(load->arg(1)->type())->arg(0));
+        return bb.assign(name, "load {}, {} {}", pointee_t, ptr_t, ptr);
     } else if (auto store = isa<Tag::Store>(def)) {
         emit_unsafe(store->arg(0));
         auto ptr = emit(store->arg(1));
@@ -610,7 +613,9 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto tuple = emit(insert->tuple());
         auto index = emit(insert->index());
         auto value = emit(insert->value());
-        return bb.assign(name, "insertvalue {}, {}, {}", tuple, index, value);
+        auto tup_t = convert(insert->tuple()->type());
+        auto val_t = convert(insert->value()->type());
+        return bb.assign(name, "insertvalue {} {}, {}, {}", tup_t, tuple, val_t, value, index);
     } else if (auto global = def->isa<Global>()) {
         auto [pointee, addr_space] = as<Tag::Ptr>(global->type())->args<2>();
         vars_decls_.fmt("{} = external global {}\n", name, convert(pointee));
