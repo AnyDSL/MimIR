@@ -5,7 +5,7 @@
 <a href="https://anydsl.github.io/thorin2/"><img src="https://anydsl.github.io/thorin2/doxygen.svg" alt="Doxygen" height="20"/></a>
 
 Thorin is an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions). This means:
-* [pute type system (PTS)](https://en.wikipedia.org/wiki/Pure_type_system)
+* [pure type system (PTS)](https://en.wikipedia.org/wiki/Pure_type_system)
 * [higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function)
 * [dependent types](https://en.wikipedia.org/wiki/Dependent_type)
 
