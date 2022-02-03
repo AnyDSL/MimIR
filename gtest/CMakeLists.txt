@@ -3,5 +3,5 @@ add_executable(thorin-gtest
     test.cpp
 )
 
-target_link_libraries (thorin-gtest gtest_main libthorin)
-gtest_discover_tests  (thorin-gtest TEST_PREFIX "thorin.")
+target_link_libraries(thorin-gtest gtest_main libthorin)
+gtest_discover_tests (thorin-gtest TEST_PREFIX "thorin.")
