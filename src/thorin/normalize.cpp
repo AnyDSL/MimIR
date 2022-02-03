@@ -909,7 +909,7 @@ const Def* normalize_store(const Def* type, const Def* callee, const Def* arg, c
     return world.raw_app(callee, {mem, ptr, val}, dbg);
 }
 
-const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& w = type->world();
     auto callee = c->as<App>();
     auto is_os = callee->arg();
@@ -921,7 +921,7 @@ const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const D
     // TODO commute
     // TODO reassociate
     // TODO more than one Os
-    // TODO select which Is/Os to lift
+    // TODO select which Is/Os to zip
 
     if (lr && ls && *lr == 1 && *ls == 1) return w.app(f, arg, dbg);
 
@@ -938,7 +938,7 @@ const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const D
                     if (*lr == 1)
                         return w.app(f, inner_args);
                     else
-                        return w.app(w.app(w.app(w.ax_lift(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os), inner_args);
+                        return w.app(w.app(w.app(w.ax_zip(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os), inner_args);
                 });
                 return w.tuple(elems);
             }

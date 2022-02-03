@@ -181,8 +181,8 @@ World::World(const std::string& name)
         auto [T, R] = type->vars<2>({dbg("T"), dbg("R")});
         type->set_codom(pi(T, R));
         data_.atomic_ = axiom(nullptr, type, Tag::Atomic, 0, dbg("atomic"));
-    } { // lift: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
-        // TODO select which Is/Os to lift
+    } { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
+        // TODO select which Is/Os to zip
         auto rs = nom_sigma(kind(), 2);
         rs->set(0, nat);
         rs->set(1, arr(rs->var(0, dbg("r")), nat));
@@ -211,7 +211,7 @@ World::World(const std::string& name)
         is_os_pi->set_codom(pi(dom, cod));
         rs_pi->set_codom(is_os_pi);
 
-        data_.lift_ = axiom(normalize_lift, rs_pi, Tag::Lift, 0, dbg("lift"));
+        data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
     }
 }
 

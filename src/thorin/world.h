@@ -325,7 +325,7 @@ public:
     const Axiom* ax_atomic()  const { return data_.atomic_;  }
     const Axiom* ax_bitcast() const { return data_.bitcast_; }
     const Axiom* ax_lea()     const { return data_.lea_;     }
-    const Axiom* ax_lift()    const { return data_.lift_;    }
+    const Axiom* ax_zip()     const { return data_.zip_;    }
     const Axiom* ax_load()    const { return data_.load_;    }
     const Axiom* ax_remem()   const { return data_.remem_;   }
     const Axiom* ax_slot()    const { return data_.slot_;    }
@@ -630,7 +630,7 @@ private:
         const Lit* lit_nat_max_;
         const Axiom* alloc_;
         const Axiom* atomic_;
-        const Axiom* lift_;
+        const Axiom* zip_;
         const Axiom* bitcast_;
         const Axiom* lea_;
         const Axiom* load_;
