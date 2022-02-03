@@ -626,14 +626,22 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
         pb->set_body(log_d);
     }else if(name == "sin"){
         // sin(x) |-> (sin(x), lambda s. s*cos(x))
-        auto cos = world_.nom_lam(fun->type(),world_.dbg("cos"));
-        cos->set_name("cos");
-        
+        auto cos = world_.find_def("cos");
+
+        if(cos == nullptr){
+          dlog(world_,"Error: no cos implementation found");
+          THORIN_UNREACHABLE;
+        }
+
         pb->set_body(world_.app(cos, {pb->mem_var(), fun_arg, scal_mul_wrap}));
     }else if(name == "cos"){
         // lambda s. -s * sin(x)
-        auto sin = world_.nom_lam(fun->type(),world_.dbg("sin"));
-        sin->set_name("sin");
+        Lam *sin = (Lam*)world_.find_def("sin");
+
+        if(sin == nullptr){
+          dlog(world_,"Error: no sin implementation found");
+          THORIN_UNREACHABLE;
+        }
 
         auto fun_return_type = fun->doms().back()->as<Pi>();
         auto negate = world_.nom_lam(fun_return_type,world_.dbg("negate"));

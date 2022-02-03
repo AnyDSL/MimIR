@@ -492,6 +492,24 @@ public:
         assert(&w2.space()->world() == &w2);
     }
 
+    const Def* find_def(const std::string& name){
+      std::cout << "hello" << std::endl;
+      std::vector<const Def*> list;
+
+      for (auto &def : this->defs()){
+        list.push_back(def);
+      }
+
+      for (const auto &def : list){
+        if(def->dbg() != nullptr){
+          std::string def_name = tuple2str(def->dbg()->proj(0));
+          if(def_name == name){
+            return def;
+          }
+        }
+      }
+    }
+
 private:
     /// @name put into sea of nodes
     //@{
