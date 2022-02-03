@@ -96,15 +96,21 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p ><a class="anchor" id="md_docs_README"></a> <a href="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master" alt="build-and-test" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master" alt="doxygen" style="pointer-events: none;" class="inline"/></a> <a href="https://anydsl.github.io/thorin2/"><img src="https://anydsl.github.io/thorin2/doxygen.svg" alt="Doxygen" style="pointer-events: none;" height="20" class="inline"/></a></p>
-<p >Thorin is a compiler intermediate representation.</p>
+<p >Thorin is an extensible compiler intermediate representation that is based upon the <a href="https://en.wikipedia.org/wiki/Calculus_of_constructions">Calculus of Constructions (CoC)</a>. This means:</p><ul>
+<li><a href="https://en.wikipedia.org/wiki/Pure_type_system">pute type system (PTS)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Higher-order_function">higher-order functions</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Dependent_type">dependent types</a></li>
+</ul>
+<p >In contrast to other CoC-based program representations such as <a href="https://coq.inria.fr/">Coq</a> or <a href="https://leanprover.github.io/">Lean</a>, Thorin is <em>not</em> a theorem prover but focuses on generating efficient code. For this reason, Thorin features explicit state and models imperative control via <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style (CPS)</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Building</h1>
-<div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:AnyDSL/thorin2.git</div>
-<div class="line">cd thorin2</div>
+<p >If you have a <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub account setup with SSH</a>, just do this: </p><div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:AnyDSL/thorin2.git</div>
+</div><!-- fragment --><p> Otherwise, clone via HTTPS: </p><div class="fragment"><div class="line">git clone --recurse-submodules https://github.com/AnyDSL/thorin2.git</div>
+</div><!-- fragment --><p> Then, build with: </p><div class="fragment"><div class="line">cd thorin2</div>
 <div class="line">mkdir build</div>
-<div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release</div>
+<div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release # or Debug</div>
 <div class="line">cmake --build build -j $(nproc)</div>
-</div><!-- fragment --><p >For a debug build simply use <code>-DCMAKE_BUILD_TYPE=Debug</code>.</p>
+</div><!-- fragment --><p> For a debug build simply use <code>-DCMAKE_BUILD_TYPE=Debug</code>.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Dependencies</h2>
 <ul>
