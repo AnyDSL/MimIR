@@ -144,16 +144,18 @@ std::string CodeGen::convert(const Def* type) {
         }
     } else if (auto sigma = type->isa<Sigma>()) {
         if (sigma->isa_nom()) {
-            name = sigma->name();
+            name = id(sigma);
             types_[sigma] = name;
-            s.fmt("{} = ", name);
+            s.fmt("{} = type", name);
         }
+        s.fmt("{{");
         const char* sep = "";
         for (auto t : sigma->ops()) {
             if (isa<Tag::Mem>(t)) continue;
             s << sep << convert(t);
             sep = ", ";
         }
+        s.fmt("}}");
     } else {
         THORIN_UNREACHABLE;
     }
@@ -188,6 +190,7 @@ std::string CodeGen::convert_ret_pi(const Pi* pi) {
 void CodeGen::emit_module() {
     world_.visit([&](const Scope& scope) { emit_scope(scope); });
 
+    stream_ << "declare i8* @malloc(i64)" << '\n'; // HACK
     stream_ << type_decls_.str() << '\n';
     stream_ << func_decls_.str() << '\n';
     stream_ << vars_decls_.str() << '\n';
@@ -553,7 +556,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto t = convert(pointee);
         auto p = convert(ptr->type());
         if (pointee->isa<Sigma>())
-            return bb.assign(name, "getelementptr inbounds {}, {} {}, i32 0, i64 {}", t, p, ll_ptr, as_lit<u64>(idx));
+            return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, i32 {}", t, p, ll_ptr, as_lit<u64>(idx));
 
         assert(pointee->isa<Arr>());
         auto ll_idx = emit(idx);
@@ -561,9 +564,15 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     } else if (auto trait = isa<Tag::Trait>(def)) {
         THORIN_UNREACHABLE;
     } else if (auto alloc = isa<Tag::Alloc>(def)) {
-        return bb.assign(name, "TODO");
+        emit_unsafe(alloc->arg());
+        auto ptr = as<Tag::Ptr>(def->proj(1)->type());
+        auto size = emit(world().op(Trait::size, ptr->arg(0)));
+        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
+        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", convert(ptr));
     } else if (auto slot = isa<Tag::Slot>(def)) {
-        return bb.assign(name, "alloca {}");
+        emit_unsafe(slot->arg(0));
+        auto [pointee, addr_space] = as<Tag::Ptr>(def->proj(1)->type())->args<2>();
+        return bb.assign(name, "alloca {}", convert(pointee));
     } else if (auto load = isa<Tag::Load>(def)) {
         emit_unsafe(load->arg(0));
         auto ptr = emit(load->arg(1));
@@ -582,10 +591,21 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return "TODO";
     } else if (auto extract = def->isa<Extract>()) {
         if (isa<Tag::Mem>(extract->type())) return {};
-        auto tuple = emit(extract->tuple());
-        auto index = emit(extract->index());
-        if (isa<Tag::Mem>(extract->type())) return "";
-        return bb.assign(name, "extractvalue {}, {}", tuple, index);
+
+        auto tuple = extract->tuple();
+        auto index = extract->index();
+        auto ll_tup = emit_unsafe(tuple);
+        auto ll_idx = emit(index);
+
+        if (tuple->num_projs() == 2) {
+            if (isa<Tag::Mem>(tuple->proj(2, 0_s)->type())) return emit(tuple);
+            if (isa<Tag::Mem>(tuple->proj(2, 1_s)->type())) return emit(tuple);
+        }
+
+        auto tup_t = convert(tuple->type());
+        auto idx_t = convert(extract->index()->type());
+
+        return bb.assign(name, "extractvalue {} {}, {} {}", tup_t, tuple, idx_t, index);
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = emit(insert->tuple());
         auto index = emit(insert->index());
