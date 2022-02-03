@@ -508,6 +508,7 @@ public:
           }
         }
       }
+      return nullptr;
     }
 
 private:

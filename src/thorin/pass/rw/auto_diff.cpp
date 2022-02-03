@@ -580,6 +580,7 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
     // s (in an isolated environment s=1 -> f*(s) = df/dx)
     const Def* scal = pb->var(1);
 
+    auto user_defined_diff = world_.find_def(name + "_diff");
 
     // wrapper to add times s around it
     auto scal_mul_wrap =world_.nom_lam(pb->ret_var()->type()->as<Pi>(),world_.dbg("scal_mul"));
@@ -593,8 +594,9 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
         )
     );
 
-
-    if( name == "log" ){
+    if(user_defined_diff != nullptr){
+        pb->set_body(world_.app(user_defined_diff, {pb->mem_var(), fun_arg, scal_mul_wrap}));
+    }else if( name == "log" ){
         const Def* log_type = scal->type();
         auto [rmem,one] = ONE(world_, pb->mem_var(), log_type);
 
@@ -620,7 +622,7 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
                         lit_of_real( real_type, 1.0),
                         world_.op(ROp::mul, (nat_t)0, lit_of_real( real_type, 2.0), res)
                     ),
-                                   scal)
+                scal)
         });
 
         pb->set_body(log_d);
@@ -654,7 +656,7 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
         negate->set_filter(true);
 
         pb->set_body(world_.app(sin, {pb->mem_var(), fun_arg, negate}));
-    }else if(name == "lgamma"){
+    }else{
         derive_numeric(fun, pb, fun_arg, 0.001);
     }
     pb->set_filter(world_.lit_true());
@@ -1255,7 +1257,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
                 derive_math_functions(cal_lam, gradlam, lam, lam2);
 
-                lam->set_name(cal_lam->name() + "_diff");
+                lam->set_name(cal_lam->name() + "_diff_impl");
                 lam2->set_name(lam->name() + "_cont");
                 gradlam->set_name(cal_lam->name() + "_pb");
                 dlog(world_,"isset grad {}",gradlam->is_set());
