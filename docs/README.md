@@ -9,7 +9,7 @@ Thorin is an extensible compiler intermediate representation that is based upon 
 * [higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function)
 * [dependent types](https://en.wikipedia.org/wiki/Dependent_type)
 
-In contrast to other CoC-based program representations such as [Coq](https://coq.inria.fr/) or [Lean](https://leanprover.github.io/), Thorin is *not* a theorem prover but focuses on generating efficient code. For this reason, Thorin features explicit state and models imperative control via [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style).
+In contrast to other CoC-based program representations such as [Coq](https://coq.inria.fr/) or [Lean](https://leanprover.github.io/), Thorin is *not* a theorem prover but focuses on generating efficient code. For this reason, Thorin  explicitly features mutable state and models imperative control flow via [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style).
 
 ## Building
 
