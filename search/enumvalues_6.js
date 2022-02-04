@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['generic_0',['Generic',['../namespacethorin_1_1_addr_space.html#a3306706adbc856a82f406997e8db0f00acbca0a59b66fa1eb75345dac04f7c8c4',1,'thorin::AddrSpace']]],
-  ['global_1',['Global',['../namespacethorin_1_1_addr_space.html#a3306706adbc856a82f406997e8db0f00a9cb49f81a60b27ed0815a443e8810697',1,'thorin::AddrSpace']]],
-  ['gpukernelconfig_2',['GPUKernelConfig',['../classthorin_1_1_kernel_config.html#a0c6e844e1c698bc6142c192058aa5f6dafd882c17b83d39d3725a9c8d0b0e7586',1,'thorin::KernelConfig']]]
+  ['f_0',['f',['../namespacethorin.html#a89d67b04557e416d256c0cc75a55accea8fa14cdd754f91cc6554c9e71929cce7',1,'thorin::f()'],['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a8fa14cdd754f91cc6554c9e71929cce7',1,'thorin::f()']]],
+  ['fast_1',['fast',['../namespacethorin_1_1_r_mode.html#afc355b8b0b46ac37ac5b35d2f2f93719a15bd4502d3a7637c7bb048db810fcc26',1,'thorin::RMode']]],
+  ['finite_2',['finite',['../namespacethorin_1_1_r_mode.html#afc355b8b0b46ac37ac5b35d2f2f93719a58fcbdf02d7d580039bfbe6c6d82a70b',1,'thorin::RMode']]]
 ];

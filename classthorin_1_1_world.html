@@ -154,6 +154,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7065407d99d5f4af3ced2376ef7b5b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab148665b02cd6112774e39b647d3a159"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classthorin_1_1_lam.html">Lam</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#ab148665b02cd6112774e39b647d3a159">copy_lams</a> () const</td></tr>
 <tr class="separator:ab148665b02cd6112774e39b647d3a159"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f2173289917904b05b2bdbe53b51156"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a6f2173289917904b05b2bdbe53b51156">write</a> (const std::string &amp;filename) const</td></tr>
+<tr class="memdesc:a6f2173289917904b05b2bdbe53b51156"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes to a file with name <code>filename</code>.  <a href="classthorin_1_1_streamable.html#a6f2173289917904b05b2bdbe53b51156">More...</a><br /></td></tr>
+<tr class="separator:a6f2173289917904b05b2bdbe53b51156"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4768771738de2fb037e4f1b026370046"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a4768771738de2fb037e4f1b026370046">write</a> () const</td></tr>
+<tr class="memdesc:a4768771738de2fb037e4f1b026370046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes to a file named <code>child()</code>.name().  <a href="classthorin_1_1_streamable.html#a4768771738de2fb037e4f1b026370046">More...</a><br /></td></tr>
+<tr class="separator:a4768771738de2fb037e4f1b026370046"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f2459fdabbc821751a8e82dd5313119"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a0f2459fdabbc821751a8e82dd5313119">dump</a> () const</td></tr>
+<tr class="memdesc:a0f2459fdabbc821751a8e82dd5313119"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes to stdout.  <a href="classthorin_1_1_streamable.html#a0f2459fdabbc821751a8e82dd5313119">More...</a><br /></td></tr>
+<tr class="separator:a0f2459fdabbc821751a8e82dd5313119"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83907e5615ec8dbada6f053d6fd21d85"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a83907e5615ec8dbada6f053d6fd21d85">to_string</a> () const</td></tr>
+<tr class="memdesc:a83907e5615ec8dbada6f053d6fd21d85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Streams to string.  <a href="classthorin_1_1_streamable.html#a83907e5615ec8dbada6f053d6fd21d85">More...</a><br /></td></tr>
+<tr class="separator:a83907e5615ec8dbada6f053d6fd21d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">manage global identifier - a unique number for each Def</div></td></tr>
 <tr class="memitem:ac3f84d153a4be33297be87599a72f836"><td class="memItemLeft" align="right" valign="top">u32&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#ac3f84d153a4be33297be87599a72f836">curr_gid</a> () const</td></tr>
 <tr class="separator:ac3f84d153a4be33297be87599a72f836"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -571,19 +583,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a62ddee91d07a2e77c0d161723b7a2340"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#a62ddee91d07a2e77c0d161723b7a2340">debug_stream</a> ()</td></tr>
 <tr class="memdesc:a62ddee91d07a2e77c0d161723b7a2340"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1_stream.html">Stream</a> thorin IR if <code>min_level</code> is <code><a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba">LogLevel::Debug</a></code>.  <a href="classthorin_1_1_world.html#a62ddee91d07a2e77c0d161723b7a2340">More...</a><br /></td></tr>
 <tr class="separator:a62ddee91d07a2e77c0d161723b7a2340"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classthorin_1_1_streamable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1_streamable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1_streamable.html">thorin::Streamable&lt; World &gt;</a></td></tr>
-<tr class="memitem:a6f2173289917904b05b2bdbe53b51156 inherit pub_methods_classthorin_1_1_streamable"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a6f2173289917904b05b2bdbe53b51156">write</a> (const std::string &amp;filename) const</td></tr>
-<tr class="memdesc:a6f2173289917904b05b2bdbe53b51156 inherit pub_methods_classthorin_1_1_streamable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes to a file with name <code>filename</code>.  <a href="classthorin_1_1_streamable.html#a6f2173289917904b05b2bdbe53b51156">More...</a><br /></td></tr>
-<tr class="separator:a6f2173289917904b05b2bdbe53b51156 inherit pub_methods_classthorin_1_1_streamable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4768771738de2fb037e4f1b026370046 inherit pub_methods_classthorin_1_1_streamable"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a4768771738de2fb037e4f1b026370046">write</a> () const</td></tr>
-<tr class="memdesc:a4768771738de2fb037e4f1b026370046 inherit pub_methods_classthorin_1_1_streamable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes to a file named <code>child()</code>.name().  <a href="classthorin_1_1_streamable.html#a4768771738de2fb037e4f1b026370046">More...</a><br /></td></tr>
-<tr class="separator:a4768771738de2fb037e4f1b026370046 inherit pub_methods_classthorin_1_1_streamable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f2459fdabbc821751a8e82dd5313119 inherit pub_methods_classthorin_1_1_streamable"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a0f2459fdabbc821751a8e82dd5313119">dump</a> () const</td></tr>
-<tr class="memdesc:a0f2459fdabbc821751a8e82dd5313119 inherit pub_methods_classthorin_1_1_streamable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes to stdout.  <a href="classthorin_1_1_streamable.html#a0f2459fdabbc821751a8e82dd5313119">More...</a><br /></td></tr>
-<tr class="separator:a0f2459fdabbc821751a8e82dd5313119 inherit pub_methods_classthorin_1_1_streamable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83907e5615ec8dbada6f053d6fd21d85 inherit pub_methods_classthorin_1_1_streamable"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a83907e5615ec8dbada6f053d6fd21d85">to_string</a> () const</td></tr>
-<tr class="memdesc:a83907e5615ec8dbada6f053d6fd21d85 inherit pub_methods_classthorin_1_1_streamable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Streams to string.  <a href="classthorin_1_1_streamable.html#a83907e5615ec8dbada6f053d6fd21d85">More...</a><br /></td></tr>
-<tr class="separator:a83907e5615ec8dbada6f053d6fd21d85 inherit pub_methods_classthorin_1_1_streamable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">visit</h2></td></tr>
 <tr class="memitem:af4e2bf1374dd2af475980465c654b903"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#af4e2bf1374dd2af475980465c654b903">VisitFn</a> = std::function&lt; void(const <a class="el" href="classthorin_1_1_scope.html">Scope</a> &amp;)&gt;</td></tr>
@@ -2156,6 +2155,33 @@ template&lt;bool up&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0f2459fdabbc821751a8e82dd5313119" name="a0f2459fdabbc821751a8e82dd5313119"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f2459fdabbc821751a8e82dd5313119">&#9670;&nbsp;</a></span>dump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template void <a class="el" href="classthorin_1_1_streamable.html">thorin::Streamable</a>&lt; <a class="el" href="classthorin_1_1_world.html">World</a>  &gt;::dump </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Writes to stdout. </p>
 
 </div>
 </div>
@@ -7343,6 +7369,33 @@ template&lt;class O &gt; </div>
 
 </div>
 </div>
+<a id="a83907e5615ec8dbada6f053d6fd21d85" name="a83907e5615ec8dbada6f053d6fd21d85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83907e5615ec8dbada6f053d6fd21d85">&#9670;&nbsp;</a></span>to_string()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string <a class="el" href="classthorin_1_1_streamable.html">thorin::Streamable</a>&lt; <a class="el" href="classthorin_1_1_world.html">World</a>  &gt;::to_string </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Streams to string. </p>
+
+</div>
+</div>
 <a id="ac738ea054ed57482121607ec50ccb10a" name="ac738ea054ed57482121607ec50ccb10a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac738ea054ed57482121607ec50ccb10a">&#9670;&nbsp;</a></span>top()</h2>
 
@@ -8059,6 +8112,61 @@ template&lt;class... Args&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4768771738de2fb037e4f1b026370046" name="a4768771738de2fb037e4f1b026370046"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4768771738de2fb037e4f1b026370046">&#9670;&nbsp;</a></span>write() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template void <a class="el" href="classthorin_1_1_streamable.html">thorin::Streamable</a>&lt; <a class="el" href="classthorin_1_1_world.html">World</a>  &gt;::write </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Writes to a file named <code>child()</code>.<a class="el" href="classthorin_1_1_world.html#a3039fc9ac00740f22f2ed48b7035b2a3" title="@ getters">name()</a>. </p>
+
+</div>
+</div>
+<a id="a6f2173289917904b05b2bdbe53b51156" name="a6f2173289917904b05b2bdbe53b51156"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f2173289917904b05b2bdbe53b51156">&#9670;&nbsp;</a></span>write() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template void <a class="el" href="classthorin_1_1_streamable.html">thorin::Streamable</a>&lt; <a class="el" href="classthorin_1_1_world.html">World</a>  &gt;::write </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Writes to a file with name <code>filename</code>. </p>
 
 </div>
 </div>

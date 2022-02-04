@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['fast_0',['fast',['../namespacethorin_1_1_r_mode.html#afc355b8b0b46ac37ac5b35d2f2f93719a15bd4502d3a7637c7bb048db810fcc26',1,'thorin::RMode']]],
-  ['finite_1',['finite',['../namespacethorin_1_1_r_mode.html#afc355b8b0b46ac37ac5b35d2f2f93719a58fcbdf02d7d580039bfbe6c6d82a70b',1,'thorin::RMode']]]
+  ['e_0',['e',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32',1,'thorin::e()'],['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9ae1671797c52e15f763380b45e841ec32',1,'thorin::e()']]],
+  ['error_1',['Error',['../namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd',1,'thorin']]],
+  ['et_2',['Et',['../namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06a72fd652b2b2b95db18710ac32d011f20',1,'thorin::Node']]],
+  ['extract_3',['Extract',['../namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06a257bf2499ed2c21151ca373f7c4c0307',1,'thorin::Node::Extract()'],['../namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601fa97478353818fc5590dc34b57b81a4b23',1,'thorin::Extract()']]]
 ];

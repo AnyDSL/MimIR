@@ -1,14 +1,42 @@
 var classthorin_1_1_tok =
 [
     [ "Tag", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038", [
-      [ "CODE", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a8e8e97f0a5efc333f823cf9417d32d3f", null ]
+      [ "CODE", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a8e8e97f0a5efc333f823cf9417d32d3f", null ],
+      [ "K_in", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a94336bc2150b7a781dbc26b354ea29b8", null ],
+      [ "K_lam", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a27379c42e77c7e30bdc81db7c988058f", null ],
+      [ "K_let", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038abc3b81567a2120d32858af82e3a5fcea", null ],
+      [ "M_eof", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa5958f3529ffa5352df7abb68e3d6e94", null ],
+      [ "M_id", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad43558618211347eb1e180a76a011d7a", null ],
+      [ "P_colon", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa6ede4dcd8033565c9aa3f50c3a7920a", null ],
+      [ "P_colon_colon", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa73f947629db335833d4b19b5ad45847", null ],
+      [ "P_comma", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038adafb56089dc7f2a7f84b600e1615e75c", null ],
+      [ "P_dot", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a583f2c1fa754c7459d78f071c9b5f751", null ],
+      [ "P_semicolon", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038af9423b3491626daacc451712510275d2", null ],
+      [ "P_arrow", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad58c03d53ab4b9323a1c6e05e816924f", null ],
+      [ "P_assign", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2cb3b705eec7f0c3017367245b8ac4e4", null ],
+      [ "D_angle_l", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6", null ],
+      [ "D_angle_r", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aecbf83ec5b71cc1fabb68b9b29602913", null ],
+      [ "D_brace_l", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038af85fb01799db87e4794e759cd80ab24a", null ],
+      [ "D_brace_r", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9ce34fa305fe754b53b83132fa7f6755", null ],
+      [ "D_bracket_l", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a53091fa0e2472f50caed45e35582ccf9", null ],
+      [ "D_bracket_r", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9ad29629b50d3cc6dff258d5b83a2dda", null ],
+      [ "D_paren_l", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038acd04ba93e71e6eb0d2a73e17a67a90cf", null ],
+      [ "D_paren_r", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aee4f36d19b140744668c52ea6444ef44", null ],
+      [ "D_quote_l", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5be9fecd8fb8ece5f3217942ae9f6c4a", null ],
+      [ "D_quote_r", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038add7e7307bb61b436ebfaff2f7f0e0e29", null ],
+      [ "B_lam", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038acea5dc65c7461c55ad4662dfe1fe9c23", null ],
+      [ "B_forall", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5", null ]
     ] ],
     [ "Tok", "classthorin_1_1_tok.html#ab96cbe83a40186a1becbf1e99bb33c5b", null ],
     [ "Tok", "classthorin_1_1_tok.html#a197b6cd7caa11b685f2c0f64323cb3b4", null ],
     [ "Tok", "classthorin_1_1_tok.html#ab2212cb3737713a7d19a9c9da710398b", null ],
+    [ "dump", "classthorin_1_1_tok.html#a0f2459fdabbc821751a8e82dd5313119", null ],
     [ "isa", "classthorin_1_1_tok.html#a3bf30d6bc9b8ca772098449f4b73e274", null ],
     [ "loc", "classthorin_1_1_tok.html#a6e45a93b5e96f909166e338ce3f48060", null ],
     [ "stream", "classthorin_1_1_tok.html#a8fe5202e743a95a61ae502c7641d7b81", null ],
     [ "sym", "classthorin_1_1_tok.html#a237307d0c79f2a973e0a624b050de445", null ],
-    [ "tag", "classthorin_1_1_tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b", null ]
+    [ "tag", "classthorin_1_1_tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b", null ],
+    [ "to_string", "classthorin_1_1_tok.html#a83907e5615ec8dbada6f053d6fd21d85", null ],
+    [ "write", "classthorin_1_1_tok.html#a4768771738de2fb037e4f1b026370046", null ],
+    [ "write", "classthorin_1_1_tok.html#a6f2173289917904b05b2bdbe53b51156", null ]
 ];

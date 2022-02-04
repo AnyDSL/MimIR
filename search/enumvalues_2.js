@@ -1,8 +1,11 @@
 var searchData=
 [
-  ['c_0',['C',['../classthorin_1_1_lam.html#aa847d68653879fa7f7e1eb6531174f90a0d61f8370cad1d412f80b84d143e1257',1,'thorin::Lam']]],
-  ['callee_1',['Callee',['../classthorin_1_1_eta_exp.html#a157a3a4b8851ab5f7840b763f70a0891a42727215769fc9f34f034c9bacff5100',1,'thorin::EtaExp']]],
-  ['code_2',['CODE',['../classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a8e8e97f0a5efc333f823cf9417d32d3f',1,'thorin::Tok']]],
-  ['constant_3',['Constant',['../namespacethorin_1_1_addr_space.html#a3306706adbc856a82f406997e8db0f00a9029353516c6792ed9944884bd196a8c',1,'thorin::AddrSpace']]],
-  ['contract_4',['contract',['../namespacethorin_1_1_r_mode.html#afc355b8b0b46ac37ac5b35d2f2f93719a8fe2b8de7e639c494570e50e0ea3e835',1,'thorin::RMode']]]
+  ['b_0',['b',['../namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f',1,'thorin']]],
+  ['b_5fforall_1',['B_forall',['../classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5',1,'thorin::Tok']]],
+  ['b_5flam_2',['B_lam',['../classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038acea5dc65c7461c55ad4662dfe1fe9c23',1,'thorin::Tok']]],
+  ['bit_3',['Bit',['../namespacethorin_1_1_tag.html#a325dd691b607c807e321a82821ad9f67a6916d575dcf977137afb87ea28185591',1,'thorin::Tag']]],
+  ['bitcast_4',['Bitcast',['../namespacethorin_1_1_tag.html#a325dd691b607c807e321a82821ad9f67a426adf1dd2c8ec251f75d150c133ac3d',1,'thorin::Tag']]],
+  ['bot_5',['Bot',['../classthorin_1_1_eta_red.html#a4ac1f54e62bd9e356510aa0b4520553fa9cb1d0d2710079355b87aa158e3a54a7',1,'thorin::EtaRed::Bot()'],['../namespacethorin_1_1_dep.html#a026486402019f9c00df8e98fe04f8d1fac8193e33d363a6e35b8e3fbfd246c23b',1,'thorin::Dep::Bot()'],['../namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06a68c4ea4a1177ed112e3b590ef39b6538',1,'thorin::Node::Bot()']]],
+  ['bot_6',['bot',['../namespacethorin_1_1_r_mode.html#afc355b8b0b46ac37ac5b35d2f2f93719a13d9573ef23af91a95b15899f5c778c1',1,'thorin::RMode']]],
+  ['bottom_7',['Bottom',['../namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601fa2ad9d63b69c4a10a5cc9cad923133bc4',1,'thorin']]]
 ];
