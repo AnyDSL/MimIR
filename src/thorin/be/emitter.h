@@ -37,6 +37,13 @@ protected:
         if (entry_ = scope.entry()->isa_nom<Lam>(); !entry_) return;
 
         auto noms = schedule(scope); // TODO make sure to not compute twice
+
+        // make sure that we don't need to rehash later on
+        for (auto nom : noms) {
+            if (auto lam = nom->isa<Lam>()) lam2bb_.emplace(lam, BB());
+        }
+        auto old_size = lam2bb_.size();
+
         entry_ = scope.entry()->as_nom<Lam>();
         assert(entry_->ret_var());
 
@@ -53,6 +60,7 @@ protected:
         }
 
         child().finalize(scope);
+        assert(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
     }
 
     Scheduler scheduler_;

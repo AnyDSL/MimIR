@@ -250,6 +250,7 @@ void CodeGen::finalize(const Scope& scope) {
 
 void CodeGen::emit_epilogue(Lam* lam) {
     auto app = lam->body()->as<App>();
+    auto& bb = lam2bb_[lam];
 
     if (app->callee() == entry_->ret_var()) { // return
         std::vector<std::string> values;
@@ -263,21 +264,21 @@ void CodeGen::emit_epilogue(Lam* lam) {
         }
 
         switch (values.size()) {
-            case 0: return lam2bb_[lam].tail("ret void");
-            case 1: return lam2bb_[lam].tail("ret {} {}", convert(types[0]), values[0]);
+            case 0: return bb.tail("ret void");
+            case 1: return bb.tail("ret {} {}", convert(types[0]), values[0]);
             default:
                 auto tuple = convert(world().sigma(types));
-                lam2bb_[lam].tail("{} ret_val\n", tuple);
+                bb.tail("{} ret_val\n", tuple);
                 for (size_t i = 0, e = types.size(); i != e; ++i)
-                    lam2bb_[lam].tail("ret_val.e{} = {};\n", i, values[i]);
-                return lam2bb_[lam].tail("ret ret_val");
+                    bb.tail("ret_val.e{} = {};\n", i, values[i]);
+                return bb.tail("ret ret_val");
         }
     } else if (auto ex = app->callee()->isa<Extract>()) {
         auto c = emit(ex->index());
         auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
-        return lam2bb_[lam].tail("br i1 {}, label {}, label {}", c, t, f);
+        return bb.tail("br i1 {}, label {}, label {}", c, t, f);
     } else if (app->callee()->isa<Bot>()) {
-        return lam2bb_[lam].tail("ret ; bottom: unreachable");
+        return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = app->callee()->isa_nom<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
@@ -287,7 +288,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
                 defs_[phi] = id(phi);
             }
         }
-        return lam2bb_[lam].tail("br label {}", id(callee));
+        return bb.tail("br label {}", id(callee));
     } else if (auto callee = app->callee()->isa_nom<Lam>()) { // function call
         auto ret_lam = app->args().back()->as_nom<Lam>();
 
@@ -312,14 +313,14 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto name = "%" + app->unique_name() + ".ret";
         auto ret_ty = convert_ret_pi(ret_lam->type());
 
-        lam2bb_[lam].tail("{} = call {} {}({, })", name, ret_ty, id(callee), args);
+        bb.tail("{} = call {} {}({, })", name, ret_ty, id(callee), args);
 
         auto phi = ret_lam->var(1);
         assert(!isa<Tag::Mem>(phi->type()));
         lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
         defs_[phi] = id(phi);
 
-        return lam2bb_[lam].tail("br label {}", id(ret_lam));
+        return bb.tail("br label {}", id(ret_lam));
     }
 }
 
