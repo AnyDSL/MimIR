@@ -143,7 +143,7 @@ ALWAYS_DETAILED_SEC    = NO
 # operators of the base classes will not be shown.
 # The default value is: NO.
 
-INLINE_INHERITED_MEMB  = NO
+INLINE_INHERITED_MEMB  = YES
 
 # If the FULL_PATH_NAMES tag is set to YES, doxygen will prepend the full path
 # before files name in the file list and in the header files. If set to NO the
@@ -2274,7 +2274,13 @@ PREDEFINED             =
 # definition found in the source code.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-EXPAND_AS_DEFINED      = THORIN_PROJ
+EXPAND_AS_DEFINED      = CODE \
+                         THORIN_PROJ \
+                         THORIN_TAG THORIN_NODE \
+                         THORIN_KEY THORIN_LIT THORIN_TOK \
+                         THORIN_BIT THORIN_WRAP THORIN_SHR THORIN_DIV THORIN_R_OP \
+                         THORIN_I_CMP THORIN_R_CMP THORIN_CONV\
+                         THORIN_TRAIT THORIN_ACC THORIN_PE
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES then doxygen's preprocessor will
 # remove all references to function-like macros that are alone on a line, have
