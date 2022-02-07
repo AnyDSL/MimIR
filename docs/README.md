@@ -30,17 +30,45 @@ cmake --build build -j $(nproc)
 ```
 For a debug build simply use `-DCMAKE_BUILD_TYPE=Debug`.
 
+### Tests
+
+Run the tests with:
+```
+cd build
+ctest
+```
+
+In addition, you can enable [Valgrind](https://valgrind.org/) with:
+```
+cd build && ctest -T memcheck
+```
+
+### Documentation
+
+You can build the documentation locally with:
+```
+doxygen doxyfile
+```
+
 ### Dependencies
 
+* Recent version of [CMake](https://cmake.org/)
+* A C++20-compatible C++ compiler.
 * [Half library](https://sourceforge.net/projects/half/).
 
     This library originally resides in a subversion repository on Sourceforge.
     For this reason, we use a [git mirror](https://github.com/AnyDSL/half) to deploy it via a git submodule.
 
-* [GoogleTest](https://github.com/google/googletest) for unit testing which is also deployed via a git submodule.
-* Recent version of [CMake](https://cmake.org/)
-* A C++20-compatible C++ compiler.
 * While Thorin emits [LLVM](https://llvm.org/), it does *not* link against LLVM.
 
     Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
     But techincally, you don't need LLVM.
+
+* [GoogleTest](https://github.com/google/googletest).
+
+    This is optional for running the tests and is also deployed via a git submodule.
+
+* [Doxygen](https://www.doxygen.nl/index.html) and [Doxygen Awesome](https://jothepro.github.io/doxygen-awesome-css/).
+
+    This is optional for building the documentation.
+    Doxygen Awesome is pulled in as a submodule as well.

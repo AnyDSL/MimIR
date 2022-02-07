@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 
+#include "thorin/config.h"
 #include "thorin/util/stream.h"
 #include "thorin/fe/parser.h"
 #include "thorin/be/ll/ll.h"
@@ -21,7 +22,7 @@ static const auto usage =
 "Hint: use '-' as file to read from stdin.\n"
 ;
 
-static const auto version = "thorin command-line utility 0.1\n";
+static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
 #ifdef _WIN32
 #define popen _popen
@@ -68,7 +69,7 @@ int main(int argc, char** argv) {
             } else if (is_option("-h", "--help")) {
                 errf(usage, clang);
                 return EXIT_SUCCESS;
-            } else if (is_option("-h", "--help")) {
+            } else if (is_option("-v", "--version")) {
                 std::cerr << version;
                 return EXIT_SUCCESS;
             } else if (file == nullptr) {

@@ -1,24 +1,21 @@
 cmake_minimum_required(VERSION 3.4.3 FATAL_ERROR)
+project(Thorin VERSION 1.9.0)
 
-project(Thorin)
-
-include(CTest)
-option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(THORIN_PROFILE "profile complexity in thorin::HashTable - only works in Debug build" ON)
-
-set(PACKAGE_VERSION "0.4.9")
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "limited config" FORCE)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "limited config" FORCE)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS 1)
-
-if(CMAKE_BUILD_TYPE STREQUAL "")
-    set(CMAKE_BUILD_TYPE Debug CACHE STRING "Debug or Release" FORCE)
-endif()
-
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(THORIN_PROFILE "profile complexity in thorin::HashTable - only works in Debug build" ON)
+
+find_program(MEMORYCHECK_COMMAND valgrind)
+set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --trace-children=yes --error-exitcode=1")
+include(CTest)
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
