@@ -24,23 +24,25 @@
 */
 var NAVTREE =
 [
-  [ "Thorin2", "index.html", [
+  [ "Thorin", "index.html", [
     [ "Introduction", "index.html", [
       [ "Building", "index.html#autotoc_md1", [
-        [ "Dependencies", "index.html#autotoc_md2", null ]
+        [ "Tests", "index.html#autotoc_md2", null ],
+        [ "Documentation", "index.html#autotoc_md3", null ],
+        [ "Dependencies", "index.html#autotoc_md4", null ]
       ] ]
     ] ],
     [ "Language Reference", "md_docs_langref.html", null ],
     [ "Developer Guide", "md_docs_dev.html", [
-      [ "Defs and the World", "md_docs_dev.html#autotoc_md5", [
-        [ "Hash Consing", "md_docs_dev.html#autotoc_md6", null ]
+      [ "Defs and the World", "md_docs_dev.html#autotoc_md7", [
+        [ "Hash Consing", "md_docs_dev.html#autotoc_md8", null ]
       ] ],
-      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md7", null ],
-      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md8", null ]
+      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md9", null ],
+      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md10", null ]
     ] ],
     [ "Passes", "md_docs_passes.html", [
-      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md10", null ],
-      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md11", null ]
+      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md12", null ],
+      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md13", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -117,11 +119,11 @@ var NAVTREEINDEX =
 "classthorin_1_1_world.html#ad7dedfed4570782e8a9b8948b1fd717e",
 "classthorin_1_1ll_1_1_code_gen.html#a1474c73017044bf724604b5dccb1dc7e",
 "functions_func_u.html",
-"namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601fa97478353818fc5590dc34b57b81a4b23",
-"namespacethorin.html#af46278ec1dc091418ec3fe6bc7317561a67a4340d7a68a1c8f6b8ccc2f4972b64",
-"structthorin_1_1_fold_conv_3_01_conv_1_1r2r_00_01dw_00_01sw_01_4.html",
-"tables_8h.html#a2845183b889a0b1ba1256dc2ea7c6e48a48920c071f6a5c97ae3739be64630697",
-"world_8h.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf"
+"namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601fa127125672f1e85d1e676d4394d24e066",
+"namespacethorin.html#af46278ec1dc091418ec3fe6bc7317561a588c850cce77827aeaa0468d9c1c8ff4",
+"structthorin_1_1_fold_conv.html",
+"tables_8h.html#a2845183b889a0b1ba1256dc2ea7c6e48a119582c7c96e5fde654db11acf127e3b",
+"world_8h.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
