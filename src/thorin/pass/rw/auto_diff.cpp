@@ -743,9 +743,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             current_mem=dst->mem_var();
             dlog(world_,"  set current mem for Lam {} to {} ", lam,current_mem);
 
+            src_to_dst_[lam] = dst; // mutual recursion / indirect call
             auto bdy = j_wrap(lam->body());
             dst->set_body(bdy);
-            src_to_dst_[lam] = dst;
             // the pullback of a lambda without call or arguments is the identity
 //            pullbacks_[dst] = idpb; // TODO: correct? needed?
 
@@ -778,9 +778,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         current_mem=dst->mem_var();
         dlog(world_,"  set current mem for LamNM {} to {} ", lam,current_mem);
         // same as above: jwrap body
+        src_to_dst_[lam] = dst; // in case of mutual/indirect recursion
         auto bdy = j_wrap(lam->body());
         dst->set_body(bdy);
-        src_to_dst_[lam] = dst;
         pullbacks_[dst] = pullbacks_[bdy];
 
         current_mem=last_mem;
