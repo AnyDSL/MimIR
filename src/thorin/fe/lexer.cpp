@@ -96,7 +96,7 @@ Tok Lexer::lex() {
                 continue;
             }
 
-            //Loc(loc_.file, peek_.pos_).err() << "invalid input char '/'; maybe you wanted to start a comment?" << std::endl;
+            errln("{}:{}: invalid input char '/'; maybe you wanted to start a comment?", loc_.file, peek_.pos_);
             continue;
         }
 
@@ -107,7 +107,7 @@ Tok Lexer::lex() {
             return {loc(), world_.sym(str_, world_.dbg(loc()))};                            // identifier
         }
 
-        //Loc(loc_.file, peek_.pos_).err() << "invalid input char: '" << (char) peek() << "'" << std::endl;
+        errln("{}:{}: invalid input char '{}'", loc_.file, peek_.pos_, (char) peek_.char_);
         next();
     }
 }
@@ -116,7 +116,7 @@ void Lexer::eat_comments() {
     while (true) {
         while (!eof() && peek_.char_ != '*') next();
         if (eof()) {
-            //loc_.err() << "non-terminated multiline comment" << std::endl;
+            errln("{}:{}: non-terminated multiline comment", loc_);
             return;
         }
         next();
