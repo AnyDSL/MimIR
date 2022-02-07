@@ -69,6 +69,8 @@ private:
  */
 
 std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
+    if (auto global = def->isa<Global>()) return "@" + global->unique_name();
+
     if (auto lam = def->isa_nom<Lam>(); lam && !force_bb) {
         if (lam->type()->ret_pi()) {
             if (lam->is_external() || !lam->is_set()) return "@" + lam->name(); // TODO or use is_internal or sth like that?
@@ -536,10 +538,13 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         nat_t s_src = size2width(conv->arg()->type());
         nat_t s_dst = size2width(conv->type());
 
+        // this might happen when casting from int top to i64
+        if (s_src == s_dst && (conv.flags() == Conv::s2s || conv.flags() == Conv::u2u)) return src;
+
         switch (conv.flags()) {
-            case Conv::s2s: s_src < s_dst ? op = "sext"  : "trunc";   break;
-            case Conv::u2u: s_src < s_dst ? op = "zext"  : "trunc";   break;
-            case Conv::r2r: s_src < s_dst ? op = "fpext" : "fptrunc"; break;
+            case Conv::s2s: op = s_src < s_dst ? "sext"  : "trunc";   break;
+            case Conv::u2u: op = s_src < s_dst ? "zext"  : "trunc";   break;
+            case Conv::r2r: op = s_src < s_dst ? "fpext" : "fptrunc"; break;
             case Conv::s2r: op = "sitofp"; break;
             case Conv::u2r: op = "uitofp"; break;
             case Conv::r2s: op = "fptosi"; break;
@@ -599,7 +604,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     } if (auto tuple = def->isa<Tuple>()) {
         return emit_tuple(tuple);
     } else if (auto pack = def->isa<Pack>()) {
-        return "TODO";
+        return emit_tuple(pack);
     } else if (auto extract = def->isa<Extract>()) {
         if (isa<Tag::Mem>(extract->type())) return {};
 
@@ -609,14 +614,12 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto ll_idx = emit(index);
 
         if (tuple->num_projs() == 2) {
-            if (isa<Tag::Mem>(tuple->proj(2, 0_s)->type())) return emit(tuple);
-            if (isa<Tag::Mem>(tuple->proj(2, 1_s)->type())) return emit(tuple);
+            if (isa<Tag::Mem>(tuple->proj(2, 0_s)->type())) return ll_tup;
+            if (isa<Tag::Mem>(tuple->proj(2, 1_s)->type())) return ll_tup;
         }
 
         auto tup_t = convert(tuple->type());
-        auto idx_t = convert(extract->index()->type());
-
-        return bb.assign(name, "extractvalue {} {}, {} {}", tup_t, tuple, idx_t, index);
+        return bb.assign(name, "extractvalue {} {}, {}", tup_t, ll_tup, ll_idx);
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = emit(insert->tuple());
         auto index = emit(insert->index());
