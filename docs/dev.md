@@ -13,7 +13,7 @@ TODO
 
 [Hash consing](https://en.wikipedia.org/wiki/Hash_consing) TODO
 
-## Structural vs. Nominal Defs
+## Structural vs. Nominal
 
 | Structural                                                            | Nominal                       |
 |-----------------------------------------------------------------------|-------------------------------|
@@ -24,6 +24,8 @@ TODO
 | no [Var](@ref thorin::Var)                                            | has [Var](@ref thorin::Var)   |
 | hash consed                                                           | each new instance is fresh    |
 
+Usually, you will encounter `defs` as `const Def*`.
+Use [Def::isa_nom](@ref thorin::isa_nom) to check whether a specific `Def` is in fact nominal to cast away the `const` or [Def::as_nom](@ref thorin::as_nom) to force this cast (and assert if not possible):
 ```{.cpp}
 void foo(const Def* def) {
     if (auto nom = def->isa_nom()) {
@@ -57,11 +59,11 @@ The simplest way is to kick off with [World::externals](@ref thorin::World::exte
 
 ```
 
-[World::visit](@ref thorin::World::visit) allows you to visit @em all top-level scopes with
+[World::visit](@ref thorin::World::visit) allows you to visit @em all top-level scopes one by one:
 ```{.cpp}
     world.visit([&](const Scope& scope) {
         // ...
     });
 ```
 
-Finally, if you really want to transform the program you probably want to use the [pass](passes.md) infrastructure.
+Finally, if you want to transform the program you probably want to use the [pass](passes.md) infrastructure.
