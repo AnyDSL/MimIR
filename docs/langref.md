@@ -1,5 +1,7 @@
 # Language Reference
 
+[TOC]
+
 ```ebnf
 (* nominals *)
 n = lam ID ":" e ["=" e "," e] ";"

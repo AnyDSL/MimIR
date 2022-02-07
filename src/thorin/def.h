@@ -165,7 +165,6 @@ public:
     void unset() { for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i); }
     /// @c true if all operands are set or @p num_ops == 0, @c false if all operands are @c nullptr, asserts otherwise.
     bool is_set() const;
-    /// @p Var%s and @em noms are @em not const; @p Axiom%s are always const; everything else const iff their @p extended_ops are const.
     //@}
 
     /// @name uses

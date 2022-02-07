@@ -1,5 +1,7 @@
 # Introduction
 
+[TOC]
+
 [![build-and-test](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml)
 [![doxygen](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml)
 <a href="https://anydsl.github.io/thorin2/"><img src="https://anydsl.github.io/thorin2/doxygen.svg" alt="Doxygen" height="20"/></a>
@@ -14,15 +16,15 @@ In contrast to other CoC-based program representations such as [Coq](https://coq
 ## Building
 
 If you have a [GitHub account setup with SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh), just do this:
-```bash
+```
 git clone --recurse-submodules git@github.com:AnyDSL/thorin2.git
 ```
 Otherwise, clone via HTTPS:
-```sh
+```
 git clone --recurse-submodules https://github.com/AnyDSL/thorin2.git
 ```
 Then, build with:
-```sh
+```
 cd thorin2
 mkdir build
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release # or Debug

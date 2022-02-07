@@ -1,5 +1,7 @@
 # Passes
 
+[TOC]
+
 There are two kind of passes in Thorin:
 
 1. Rewrite Pass
