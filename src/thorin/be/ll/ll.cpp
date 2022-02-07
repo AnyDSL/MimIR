@@ -436,7 +436,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto div = isa<Tag::Div>(def)) {
         auto [m, x, y] = div->args<3>();
-        auto t = convert(div->type());
+        auto t = convert(x->type());
         emit_unsafe(m);
         auto a = emit(x);
         auto b = emit(y);
