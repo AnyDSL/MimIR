@@ -324,11 +324,12 @@ const Def* World::tangent_type(const Def* A,bool left) {
 //        return pi(tangent_type(codom), tangent_type(dom),pidef->dbg());
     }
     if(auto ptr = isa<Tag::Ptr>(A)) {
-//        s2.fmt("A is ptr\n");
+        s2.fmt("A is ptr\n");
         auto [pointee, addr_space] = ptr->arg()->projs<2>();
         auto inner=tangent_type(pointee,left);
 //        return inner;
         if(pointee->isa<Arr>() || left) {
+            s2.fmt("Ptr -> Arr\n");
             return type_ptr(inner,addr_space);
         }
         return inner;
@@ -352,7 +353,8 @@ const Def* World::tangent_type(const Def* A,bool left) {
     if(auto real = isa<Tag::Real>(A)) {
         return A;
     }else {
-        return left ? A : type_real(32);
+//        return left ? A : type_real(32);
+        return left ? A : type_real(64);
     }
 }
 

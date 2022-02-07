@@ -50,11 +50,16 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
     // TODO: idef array
 
 //    if(auto arr = a->type()->isa<Arr>()) {
-    if(auto arr = a->type()->isa<Arr>();false) {
+//    if(auto arr = a->type()->isa<Arr>(); arr && !arr->body()->isa<Sigma>()) {
+    if(auto arr = a->type()->isa<Arr>(); arr && !(arr->shape()->isa<Lit>())) {
+//    if(auto arr = a->type()->isa<Arr>();false) {
         dlog(world,"  Array add");
         auto shape = arr->shape();
         dlog(world,"  Array shape {}", shape);
         dlog(world,"  Array {}", arr);
+        type_dump(world,"  Array Body", arr->body());
+//        THORIN_UNREACHABLE;
+//        dlog(world,"  Array Body Sigma {}", arr->body()->isa<Sigma>());
         #define w world
         auto lifted=w.app(w.app(w.app(w.ax_lift(),
                         // rs => sigma(r:nat, s:arr with size r of nat)
@@ -69,9 +74,9 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
                   // Os: <n_o;*> type array os size no => base output types
                   // f: arr of size ni of types Is
                   //    to arr of size no of types Os
-            {w.lit_nat(2),w.tuple({w.type_real(32),w.type_real(32)}),
-                  w.lit_nat(1), w.type_real(32),
-                  w.fn(ROp::add, (nat_t)0, (nat_t)32)
+            {w.lit_nat(2),w.tuple({w.type_real(64),w.type_real(64)}),
+                  w.lit_nat(1), w.type_real(64),
+                  w.fn(ROp::add, (nat_t)0, (nat_t)64)
                   }),
             world.tuple({a,b}));
         type_dump(world,"  lifted",lifted);
@@ -838,6 +843,34 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  result of app",dst);
         return dst;
     }
+
+    if (auto div = isa<Tag::Div>(def)) {
+        // only on integer => no pullback needed
+        type_dump(world_,"  DIVISION",div);
+        auto args = j_wrap(div->arg());
+        type_dump(world_,"  Division org args:",div->arg());
+        type_dump(world_,"  Division wrapped args:",args);
+        type_dump(world_,"  Division callee:",div->callee());
+        auto dst = world_.app(div->callee(),args);
+//        type_dump(world_,"  Wraped Conv:",dst);
+        pullbacks_[dst]=pullbacks_[args->op(1)]; // the arguments are (mem, int, int)
+        return dst;
+    }
+    if(auto cast = isa<Tag::Bitcast>(def)) {
+        // TODO: handle more than identity bitcast
+        type_dump(world_,"  Bitcast:",cast);
+        auto args = j_wrap(cast->arg());
+        type_dump(world_,"  Bitcast:",cast);
+        type_dump(world_,"  Bitcast arg:",cast->arg());
+        type_dump(world_,"  Wraped Bitcast args:",args);
+        // avoid case distinction
+        auto dst = world_.app(cast->callee(),args);
+        type_dump(world_,"  Wraped Bitcast:",dst);
+        // a zero pb but do not recompute
+        pullbacks_[dst]=pullbacks_[args];
+//        THORIN_UNREACHABLE;
+        return dst;
+    }
     if(auto iop = isa<Tag::Conv>(def)) {
         // Unify with wrap
         type_dump(world_,"  Conv:",iop);
@@ -869,6 +902,52 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto dst = world_.op(ICmp(icmp.flags()), a, b);
         src_to_dst_[icmp] = dst;
         type_dump(world_,"  result of app",dst);
+        return dst;
+    }
+    if (auto alloc = isa<Tag::Alloc>(def)) {
+        type_dump(world_,"  Alloc",alloc);
+        type_dump(world_,"  alloc mem arg",alloc->arg()); // mem
+        type_dump(world_,"  alloc type",alloc->type());
+        // inner callee type:  array: size; type
+        type_dump(world_,"  alloc callee",alloc->callee()); // Tuple first is type, second gid
+
+        auto alloc_arg = alloc->callee()->as<App>()->arg();
+        type_dump(world_,"  alloc arg",alloc_arg);
+        auto [base_type,gid] = alloc_arg->projs<2>();
+        auto [_,ptr_type]=alloc->type()->projs<2>();
+        type_dump(world_,"  alloc base type",base_type);
+        type_dump(world_,"  alloc ptr type",ptr_type);
+        auto type=base_type;
+        type_dump(world_,"  alloc inner type",type);
+
+        // DONE: wrap mem, interleave mem ops
+        auto mem_arg = j_wrap(alloc->arg());
+//        auto mem_arg = alloc->arg();
+
+        // TODO: create pb of dst : ptr(Arr)
+        auto dst = world_.op_alloc(type,mem_arg,alloc->dbg());
+        auto [r_mem,arr] = dst->projs<2>();
+        type_dump(world_,"  orig alloc",alloc);
+        type_dump(world_,"  dst",dst);
+        type_dump(world_,"  arr",arr);
+
+        auto pb_ty = createPbType(A,ptr_type);
+        type_dump(world_,"  pb_ty",pb_ty);
+//        THORIN_UNREACHABLE;
+
+        // no shadow needed
+        // TODO: shadow if one handles alloc like a ptr (for definite)
+        auto pb = world_.nom_lam(pb_ty, world_.dbg("pb_alloc"));
+        pb->set_filter(world_.lit_true());
+        auto [z_mem,z] = ZERO(world_,pb->mem_var(),A);
+        pb->set_body( world_.app(pb->ret_var(), {z_mem,z}));
+
+        current_mem=r_mem;
+        pullbacks_[arr]=pb;
+        pullbacks_[dst]=pullbacks_[arr]; // for call f(rmem, arr)
+
+        src_to_dst_[alloc]=dst;
+//        THORIN_UNREACHABLE;
         return dst;
     }
     if (auto lea = isa<Tag::LEA>(def)) {
@@ -1572,6 +1651,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  extract wrapped idx",jeidx);
 
         auto jtup = j_wrap(extract->tuple());
+        type_dump(world_,"  original extract",extract);
+        type_dump(world_,"  original tuple",extract->tuple());
         type_dump(world_,"  jwrapped tuple of extract",jtup);
 
         auto dst = world_.extract_unsafe(jtup, jeidx);
@@ -1587,8 +1668,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             dlog(world_,"  extract mem pb tuple ");
 
             // for special case pointer slot that has not yet be written to
-            if(pullbacks_.count(jtup)) {
+            if(pullbacks_.count(jtup) && ! isa<Tag::Mem>(dst->type())) {
                 pullbacks_[dst] = pullbacks_[jtup];
+                assert(pullbacks_[jtup] && "Tuple that is extracted should have pullback.");
                 type_dump(world_,"  pullback of extract",pullbacks_[dst]);
             }
             return dst;
