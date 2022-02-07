@@ -193,12 +193,16 @@ const Def* Def::arity() const {
 }
 
 bool Def::equal(const Def* other) const {
-    if (isa<Space>() || this->isa_nom() || other->isa_nom())
-        return this == other;
+    if (isa<Space>() || this->isa_nom() || other->isa_nom()) return this == other;
 
-    bool result = this->node() == other->node() && this->fields() == other->fields() && this->num_ops() == other->num_ops() && this->type() == other->type();
+    bool result =  this->node()    == other->node()
+                && this->fields()  == other->fields()
+                && this->num_ops() == other->num_ops()
+                && this->type()    == other->type();
+
     for (size_t i = 0, e = num_ops(); result && i != e; ++i)
         result &= this->op(i) == other->op(i);
+
     return result;
 }
 

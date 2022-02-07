@@ -71,7 +71,7 @@ private:
 std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
     if (auto lam = def->isa_nom<Lam>(); lam && !force_bb) {
         if (lam->type()->ret_pi()) {
-            if (lam->is_external()) return "@" + lam->name();
+            if (lam->is_external() || !lam->is_set()) return "@" + lam->name(); // TODO or use is_internal or sth like that?
             return "@" + lam->unique_name();
         }
     }
@@ -306,22 +306,24 @@ void CodeGen::emit_epilogue(Lam* lam) {
         size_t n = 0;
         Array<const Def*> values(num_vars);
         Array<const Def*> types(num_vars);
-        for (auto var : ret_lam->vars().skip_back()) {
+        for (auto var : ret_lam->vars()) {
             if (isa<Tag::Mem>(var->type())) continue;
             values[n] = var;
             types[n] = var->type();
             ++n;
         }
 
-        auto name = "%" + app->unique_name() + ".ret";
-        auto ret_ty = convert_ret_pi(ret_lam->type());
-
-        bb.tail("{} = call {} {}({, })", name, ret_ty, id(callee), args);
-
-        auto phi = ret_lam->var(1);
-        assert(!isa<Tag::Mem>(phi->type()));
-        lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
-        defs_[phi] = id(phi);
+        if (n == 0) {
+            bb.tail("call void {}({, })", id(callee), args);
+        } else {
+            auto name = "%" + app->unique_name() + ".ret";
+            auto ret_ty = convert_ret_pi(ret_lam->type());
+            auto phi = ret_lam->var(1);
+            assert(!isa<Tag::Mem>(phi->type()));
+            lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
+            defs_[phi] = id(phi);
+            bb.tail("{} = call {} {}({, })", name, ret_ty, id(callee), args);
+        }
 
         return bb.tail("br label {}", id(ret_lam));
     }

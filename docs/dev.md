@@ -24,7 +24,7 @@ Each `Def` is a node in a graph which is maintained in the [World](@ref thorin::
 | no recursion                                                          | may be recursive                                                              |
 | no [Var](@ref thorin::Var)                                            | has [Var](@ref thorin::Var); get with [Def::var](@ref thorin::Def::var)       |
 | hash consed                                                           | each new instance is fresh                                                    |
-| build ops first, then the actual node                                 | build the actual node first, the [Def::set](@ref thorin::Def::set) the ops    |
+| build ops first, then the actual node                                 | build the actual node first, then [set](@ref thorin::Def::set) the ops        |
 | [Def::rebuild](@ref thorin::Def::rebuild)                             | [Def::stub](@ref thorin::Def::stub)                                           |
 
 Usually, you will encounter `defs` as `const Def*`.
@@ -33,7 +33,10 @@ Use [Def::isa_nom](@ref thorin::Def::isa_nom) to check whether a specific `Def` 
 void foo(const Def* def) {
     if (auto nom = def->isa_nom()) {
         // nom of type Def* - const has been removed!
+        // This gives give you access to the non-const methods that only make sense for nominals:
         auto var = nom->var();
+        auto stub = nom->stub(world, type, debug)
+        // ...
     }
 
     if (auto lam = def->isa_nom<Lam>()) {

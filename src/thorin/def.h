@@ -239,8 +239,9 @@ public:
     //@{
     bool is_external() const;
     bool is_internal() const { return !is_external(); }              ///< @em Not @p is_external.
-    bool is_exported() const { return is_external() && is_set(); };  ///< @p is_external and body @p is_set.
-    bool is_imported() const { return is_external() && !is_set(); }; ///< @p is_external and body is @em not @p is_set (empty).
+    // TODO does this really make sense?
+    //bool is_exported() const { return is_external() && is_set(); };  ///< @p is_external and body @p is_set.
+    //bool is_imported() const { return is_external() && !is_set(); }; ///< @p is_external and body is @em not @p is_set (empty).
     void make_external();
     void make_internal();
     //@}
@@ -326,7 +327,8 @@ public:
     virtual const Def* restructure() { return nullptr; }
     //@}
 
-    ///@{ @name stream
+    //@ @name stream
+    //@{
     Stream& stream(Stream& s) const;
     Stream& stream(Stream& s, size_t max) const;
     Stream& let(Stream&) const;
@@ -487,6 +489,7 @@ private:
 public:
     template<class T = fields_t>
     T get() const { static_assert(sizeof(T) <= 8); return bitcast<T>(fields_); }
+
     /// @name virtual methods
     //@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
@@ -555,6 +558,7 @@ public:
     tag_t id() const { return tag_t(fields() >> 32_u64); }
     flags_t flags() const { return flags_t(fields()); }
     //@}
+
     /// @name virtual methods
     //@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
