@@ -109,14 +109,14 @@ Defs and the World</h1>
 <p ><a class="el" href="classthorin_1_1_def.html">Def</a> is the base class for <em>all</em> nodes/expressions in Thorin. TODO</p>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Hash Consing</h2>
-<p ><a href="https://en.wikipedia.org/wiki/Hash_consing">Hash consing</a> TODO</p>
+<p >Each <code>Def</code> is a node in a graph which is maintained in the <a class="el" href="classthorin_1_1_world.html">World</a>. <a href="https://en.wikipedia.org/wiki/Hash_consing">Hash consing</a> TODO</p>
 <h1><a class="anchor" id="autotoc_md7"></a>
 Structural vs. Nominal</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Structural   </th><th class="markdownTableHeadNone">Nominal    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>const</code>   </td><td class="markdownTableBodyNone"><em>not</em> <code>const</code>    </td></tr>
+<td class="markdownTableBodyNone"><code>const</code>   </td><td class="markdownTableBodyNone">not <code>const</code>    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">immutable   </td><td class="markdownTableBodyNone">mutable    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -124,9 +124,13 @@ Structural vs. Nominal</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">no recursion   </td><td class="markdownTableBodyNone">may be recursive    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">no <a class="el" href="classthorin_1_1_var.html">Var</a>   </td><td class="markdownTableBodyNone">has <a class="el" href="classthorin_1_1_var.html">Var</a>    </td></tr>
+<td class="markdownTableBodyNone">no <a class="el" href="classthorin_1_1_var.html">Var</a>   </td><td class="markdownTableBodyNone">has <a class="el" href="classthorin_1_1_var.html">Var</a>; get with <a class="el" href="classthorin_1_1_def.html#a18924dc54286147f46fe53e52a8b34ac">Def::var</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">hash consed   </td><td class="markdownTableBodyNone">each new instance is fresh   </td></tr>
+<td class="markdownTableBodyNone">hash consed   </td><td class="markdownTableBodyNone">each new instance is fresh    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">build ops first, then the actual node   </td><td class="markdownTableBodyNone">build the actual node first, the <a class="el" href="classthorin_1_1_def.html#af401dbc2a8092cdc438507614174f792">Def::set</a> the ops    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1_def.html#a894b8738ff236f12a06b113777877d7f">Def::rebuild</a>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1_def.html#a88360b7240d92f32c6be01e52123bd0d">Def::stub</a>   </td></tr>
 </table>
 <p >Usually, you will encounter <code>defs</code> as <code>const Def*</code>. Use <a class="el" href="classthorin_1_1_def.html#ac79cb2db748fbf0177eb2e6c0fef3fdc">Def::isa_nom</a> to check whether a specific <code>Def</code> is in fact nominal to cast away the <code>const</code> or <a class="el" href="classthorin_1_1_def.html#a1e009bced6c7f37b6316d81ead2ad27e">Def::as_nom</a> to force this cast (and assert if not possible): </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> nom = def-&gt;isa_nom()) {</div>
@@ -154,7 +158,7 @@ Iterating over the Program</h1>
 <div class="line">}</div>
 <div class="ttc" id="anamespacethorin_html_a7fddaff34d4e4927bc748c28b49eef46"><div class="ttname"><a href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">thorin::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition:</b> def.h:387</div></div>
 <div class="ttc" id="anamespacethorin_html_aca7a0dc87489d726385a61cdc1fde51c"><div class="ttname"><a href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">thorin::visit</a></div><div class="ttdeci">bool visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> indexset.h:106</div></div>
-</div><!-- fragment --><p ><a class="el" href="classthorin_1_1_world.html#a35687817089d85315d46a391dd75e320">World::visit</a> allows you to visit <em>all</em> top-level scopes one by one: </p><div class="fragment"><div class="line">world.visit([&amp;](<span class="keyword">const</span> Scope&amp; scope) {</div>
+</div><!-- fragment --><p ><a class="el" href="classthorin_1_1_world.html#a35687817089d85315d46a391dd75e320">World::visit</a> allows you to visit all top-level scopes one by one: </p><div class="fragment"><div class="line">world.visit([&amp;](<span class="keyword">const</span> Scope&amp; scope) {</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">});</div>
 </div><!-- fragment --><p >Finally, if you want to transform the program you probably want to use the <a class="el" href="md_docs_passes.html">pass</a> infrastructure. </p>
