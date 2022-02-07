@@ -2,10 +2,7 @@
 
 #include <deque>
 
-#include "thorin/world.h"
 #include "thorin/analyses/cfg.h"
-#include "thorin/analyses/schedule.h"
-#include "thorin/analyses/scope.h"
 #include "thorin/be/emitter.h"
 #include "thorin/util/stream.h"
 
@@ -44,19 +41,14 @@ struct BB {
 class CodeGen : public Emitter<std::string, std::string, BB, CodeGen> {
 public:
     CodeGen(World& world, Stream& stream)
-        : world_(world)
-        , debug_(false)
-        , stream_(stream)
+        : Emitter(world, stream)
     {}
 
-    World& world() const { return world_; }
-
     bool is_valid(const std::string& s) { return !s.empty(); }
-    void emit_module();
+    void run();
+    void emit_imported(Lam*);
     void emit_epilogue(Lam*);
-
     std::string emit_bb(BB&, const Def*);
-    std::string emit_fun_decl(Lam*);
     std::string prepare(const Scope&);
     void prepare(Lam*, const std::string&);
     void finalize(const Scope&);
@@ -65,10 +57,6 @@ private:
     std::string id(const Def*, bool force_bb = false) const;
     std::string convert(const Def*);
     std::string convert_ret_pi(const Pi*);
-
-    World& world_;
-    bool debug_;
-    Stream& stream_;
 
     StringStream type_decls_;
     StringStream vars_decls_;
@@ -187,14 +175,29 @@ std::string CodeGen::convert_ret_pi(const Pi* pi) {
  * emit
  */
 
-void CodeGen::emit_module() {
-    world_.visit([&](const Scope& scope) { emit_scope(scope); });
+
+void CodeGen::run() {
+    emit_module();
 
     stream_ << "declare i8* @malloc(i64)" << '\n'; // HACK
     stream_ << type_decls_.str() << '\n';
     stream_ << func_decls_.str() << '\n';
     stream_ << vars_decls_.str() << '\n';
     stream_ << func_impls_.str() << '\n';
+}
+
+void CodeGen::emit_imported(Lam* lam) {
+    func_decls_.fmt("declare {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
+
+    const char* sep = "";
+    auto doms = lam->doms();
+    for (auto dom : doms.skip_back()) {
+        if (isa<Tag::Mem>(dom)) continue;
+        func_decls_.fmt("{}{}", sep, convert(dom));
+        sep = ", ";
+    }
+
+    func_decls_.fmt(")").endl();
 }
 
 std::string CodeGen::prepare(const Scope& scope) {
@@ -325,6 +328,8 @@ void CodeGen::emit_epilogue(Lam* lam) {
 }
 
 std::string CodeGen::emit_bb(BB& bb, const Def* def) {
+    if (auto lam = def->isa<Lam>()) return id(lam);
+
     StringStream s;
     auto name = id(def);
     std::string op;
@@ -626,11 +631,9 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     return "<TODO>";
 }
 
-std::string CodeGen::emit_fun_decl(Lam* lam) { return id(lam); }
-
 void emit(World& world, Stream& stream) {
     CodeGen cg(world, stream);
-    cg.emit_module();
+    cg.run();
 }
 
 }

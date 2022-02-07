@@ -1,6 +1,9 @@
 #ifndef THORIN_BE_EMITTER_H
 #define THORIN_BE_EMITTER_H
 
+#include "thorin/world.h"
+#include "thorin/analyses/schedule.h"
+
 namespace thorin {
 
 template<class Value, class Type, class BB, class Child>
@@ -17,6 +20,14 @@ private:
     }
 
 protected:
+    Emitter(World& world, Stream& stream)
+        : world_(world)
+        , stream_(stream)
+    {}
+
+    World& world() const { return world_; }
+    Stream& stream() const { return stream_; }
+
     /// Recursively emits code. @c mem -typed @p Def%s return sth that is @c !child().is_valid(value) - this variant asserts in this case.
     Value emit(const Def* def) {
         auto res = emit_unsafe(def);
@@ -27,14 +38,23 @@ protected:
     /// As above but returning @c !child().is_valid(value) is permitted.
     Value emit_unsafe(const Def* def) {
         if (auto val = defs_.lookup(def)) return *val;
-        if (auto lam = def->isa_nom<Lam>()) return defs_[lam] = child().emit_fun_decl(lam);
 
         auto val = emit_(def);
         return defs_[def] = val;
     }
 
+    void emit_module() {
+        world().template visit<false>([&](const Scope& scope) { emit_scope(scope); });
+    }
+
     void emit_scope(const Scope& scope) {
         if (entry_ = scope.entry()->isa_nom<Lam>(); !entry_) return;
+
+        if (!entry_->is_set()) {
+            assert(entry_->is_imported());
+            child().emit_imported(entry_);
+            return;
+        }
 
         auto noms = schedule(scope); // TODO make sure to not compute twice
 
@@ -63,6 +83,8 @@ protected:
         assert(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
     }
 
+    World& world_;
+    Stream& stream_;
     Scheduler scheduler_;
     DefMap<Value> defs_;
     DefMap<Type> types_;
