@@ -34,4 +34,4 @@ jobs:
 
     - name: Test
       working-directory: ${{github.workspace}}/build/bin
-      run: ctest -C ${{matrix.build-type}} --output-on-failure
+      run: ctest -C ${{matrix.build-type}} --output-on-failure -T memcheck
