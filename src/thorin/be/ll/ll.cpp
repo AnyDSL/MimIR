@@ -279,6 +279,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
                 return bb.tail("ret ret_val");
         }
     } else if (auto ex = app->callee()->isa<Extract>()) {
+        emit_unsafe(app->arg());
         auto c = emit(ex->index());
         auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
         return bb.tail("br i1 {}, label {}, label {}", c, t, f);
