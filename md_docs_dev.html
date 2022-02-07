@@ -95,7 +95,69 @@ $(document).ready(function(){initNavTree('md_docs_dev.html',''); initResizable()
   <div class="headertitle"><div class="title">Developer Guide </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p >TODO </p>
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md5">Defs and the World</a><ul><li class="level2"><a href="#autotoc_md6">Hash Consing</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md7">Structural vs. Nominal Defs</a></li>
+<li class="level1"><a href="#autotoc_md8">Iterating over the Program</a></li>
+</ul>
+</div>
+<div class="textblock"><p >This guide summaries typicical idioms you want to use when working with Thorin as a developer.</p>
+<h1><a class="anchor" id="autotoc_md5"></a>
+Defs and the World</h1>
+<p ><a class="el" href="classthorin_1_1_def.html">Def</a> is the base class for <em>all</em> nodes/expressions in Thorin. TODO</p>
+<h2><a class="anchor" id="autotoc_md6"></a>
+Hash Consing</h2>
+<p ><a href="https://en.wikipedia.org/wiki/Hash_consing">Hash consing</a> TODO</p>
+<h1><a class="anchor" id="autotoc_md7"></a>
+Structural vs. Nominal Defs</h1>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Structural   </th><th class="markdownTableHeadNone">Nominal    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>const</code>   </td><td class="markdownTableBodyNone"><em>not</em> <code>const</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">immutable   </td><td class="markdownTableBodyNone">mutable    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">ops form <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph">DAG</a>   </td><td class="markdownTableBodyNone">ops may be cyclic    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">no recursion   </td><td class="markdownTableBodyNone">may be recursive    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">no <a class="el" href="classthorin_1_1_var.html">Var</a>   </td><td class="markdownTableBodyNone">has <a class="el" href="classthorin_1_1_var.html">Var</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">hash consed   </td><td class="markdownTableBodyNone">each new instance is fresh   </td></tr>
+</table>
+<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> nom = def-&gt;isa_nom()) {</div>
+<div class="line">        <span class="comment">// nom of type Def* - const has been removed!</span></div>
+<div class="line">        <span class="keyword">auto</span> var = nom-&gt;var();</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lam = def-&gt;isa_nom&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362">Lam</a>&gt;()) {</div>
+<div class="line">        <span class="comment">// lam of type Lam* - const has been removed!</span></div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="ttc" id="anamespacethorin_1_1_node_html_a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362"><div class="ttname"><a href="namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a></div><div class="ttdeci">@ Lam</div><div class="ttdef"><b>Definition:</b> tables.h:182</div></div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md8"></a>
+Iterating over the Program</h1>
+<p >There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classthorin_1_1_world.html#ad066f14a09e1d3897199d1a6743ae195">World::externals</a> and recursively run over <a class="el" href="classthorin_1_1_def.html#a543cbdcb17d574373aa65244dcead8f8">Def::extended_ops</a> like this: </p><div class="fragment"><div class="line"><a class="code hl_typedef" href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">DefSet</a> done;</div>
+<div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, nom] : world.externals()) <a class="code hl_function" href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">visit</a>(done, nom);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">visit</a>(<a class="code hl_typedef" href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">DefSet</a>&amp; done, <span class="keyword">const</span> Def* def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (!done.emplace(def).second) <span class="keywordflow">return</span>;</div>
+<div class="line"> </div>
+<div class="line">    do_sth(def);</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : def-&gt;extended_ops())</div>
+<div class="line">        <a class="code hl_function" href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">visit</a>(done, op);</div>
+<div class="line">}</div>
+<div class="ttc" id="anamespacethorin_html_a7fddaff34d4e4927bc748c28b49eef46"><div class="ttname"><a href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">thorin::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition:</b> def.h:387</div></div>
+<div class="ttc" id="anamespacethorin_html_aca7a0dc87489d726385a61cdc1fde51c"><div class="ttname"><a href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">thorin::visit</a></div><div class="ttdeci">bool visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> indexset.h:106</div></div>
+</div><!-- fragment --><p ><a class="el" href="classthorin_1_1_world.html#a35687817089d85315d46a391dd75e320">World::visit</a> allows you to visit <em>all</em> top-level scopes with </p><div class="fragment"><div class="line">world.visit([&amp;](<span class="keyword">const</span> Scope&amp; scope) {</div>
+<div class="line">    <span class="comment">// ...</span></div>
+<div class="line">});</div>
+</div><!-- fragment --><p >Finally, if you really want to transform the program you probably want to use the <a class="el" href="md_docs_passes.html">pass</a> infrastructure. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

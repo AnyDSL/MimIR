@@ -29,13 +29,12 @@ var searchData=
   ['bot_26',['bot',['../namespacethorin_1_1_r_mode.html#afc355b8b0b46ac37ac5b35d2f2f93719a13d9573ef23af91a95b15899f5c778c1',1,'thorin::RMode']]],
   ['bot_5fkind_27',['bot_kind',['../classthorin_1_1_world.html#aa3c5267d2a81a473dcfd4963d429fa14',1,'thorin::World']]],
   ['bottom_28',['Bottom',['../namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601fa2ad9d63b69c4a10a5cc9cad923133bc4',1,'thorin']]],
-  ['bound_29',['Bound',['../classthorin_1_1_bound.html#a42f249066795560a0355f6a14ad2c2e7',1,'thorin::Bound::Bound(node_t node, const Def *type, size_t size, const Def *dbg)'],['../classthorin_1_1_bound.html#a1e58ebc1577c4dcb521a7f18b3ff8e54',1,'thorin::Bound::Bound(node_t node, const Def *type, Defs ops, const Def *dbg)']]],
-  ['bound_30',['bound',['../classthorin_1_1_world.html#a22b93308e80d36882e9260a5c3cb0ffe',1,'thorin::World::bound()'],['../classthorin_1_1_scope.html#ab36494ecdcd1afb09ec0f01ea0daec30',1,'thorin::Scope::bound() const'],['../classthorin_1_1_scope.html#afe87447a90844ef7ccc95eff57ac4720',1,'thorin::Scope::bound(const Def *def) const']]],
-  ['bound_31',['Bound',['../classthorin_1_1_bound.html',1,'thorin']]],
-  ['bound_5felim_2ecpp_32',['bound_elim.cpp',['../bound__elim_8cpp.html',1,'']]],
-  ['bound_5felim_2eh_33',['bound_elim.h',['../bound__elim_8h.html',1,'']]],
-  ['branch_34',['branch',['../classthorin_1_1_lam.html#a2ec06f32a7b445d299280dc1bae38e4a',1,'thorin::Lam']]],
-  ['breakhash_35',['BreakHash',['../structthorin_1_1_world_1_1_break_hash.html',1,'thorin::World']]],
-  ['breakpoints_36',['Breakpoints',['../classthorin_1_1_world.html#a5b257f8771ac8be2c46d55f500454f65',1,'thorin::World']]],
-  ['buffer_37',['buffer',['../structthorin_1_1_world_1_1_arena_1_1_zone.html#a275f87582ac62338fc4d1387ba5415f0',1,'thorin::World::Arena::Zone']]]
+  ['bound_29',['bound',['../classthorin_1_1_world.html#a22b93308e80d36882e9260a5c3cb0ffe',1,'thorin::World::bound()'],['../classthorin_1_1_scope.html#ab36494ecdcd1afb09ec0f01ea0daec30',1,'thorin::Scope::bound() const'],['../classthorin_1_1_scope.html#afe87447a90844ef7ccc95eff57ac4720',1,'thorin::Scope::bound(const Def *def) const']]],
+  ['bound_30',['Bound',['../classthorin_1_1_bound.html#a42f249066795560a0355f6a14ad2c2e7',1,'thorin::Bound::Bound(node_t node, const Def *type, size_t size, const Def *dbg)'],['../classthorin_1_1_bound.html#a1e58ebc1577c4dcb521a7f18b3ff8e54',1,'thorin::Bound::Bound(node_t node, const Def *type, Defs ops, const Def *dbg)'],['../classthorin_1_1_bound.html',1,'thorin::Bound']]],
+  ['bound_5felim_2ecpp_31',['bound_elim.cpp',['../bound__elim_8cpp.html',1,'']]],
+  ['bound_5felim_2eh_32',['bound_elim.h',['../bound__elim_8h.html',1,'']]],
+  ['branch_33',['branch',['../classthorin_1_1_lam.html#a2ec06f32a7b445d299280dc1bae38e4a',1,'thorin::Lam']]],
+  ['breakhash_34',['BreakHash',['../structthorin_1_1_world_1_1_break_hash.html',1,'thorin::World']]],
+  ['breakpoints_35',['Breakpoints',['../classthorin_1_1_world.html#a5b257f8771ac8be2c46d55f500454f65',1,'thorin::World']]],
+  ['buffer_36',['buffer',['../structthorin_1_1_world_1_1_arena_1_1_zone.html#a275f87582ac62338fc4d1387ba5415f0',1,'thorin::World::Arena::Zone']]]
 ];

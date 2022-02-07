@@ -197,8 +197,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6570bc149ba85c9db290765e9d0c6495"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>true</code> if all operands are set or <code>num_ops</code> == 0, <code>false</code> if all operands are <code>nullptr</code>, asserts otherwise.  <a href="classthorin_1_1_def.html#a6570bc149ba85c9db290765e9d0c6495">More...</a><br /></td></tr>
 <tr class="separator:a6570bc149ba85c9db290765e9d0c6495"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">uses</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p ><code><a class="el" href="classthorin_1_1_var.html">Var</a>s</code> and <em>noms</em> are <em>not</em> const; <code><a class="el" href="classthorin_1_1_axiom.html">Axiom</a>s</code> are always const; everything else const iff their <code>extended_ops</code> are const. </p>
-</div></td></tr>
 <tr class="memitem:a8f66f1a1cfbfce39608ca318288866d4"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacethorin.html#a9940ea7e9ae99c708846d9a532c6d905">Uses</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a8f66f1a1cfbfce39608ca318288866d4">uses</a> () const</td></tr>
 <tr class="separator:a8f66f1a1cfbfce39608ca318288866d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c585d3cebe35269971de0b1fb993c1b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_array.html">Array</a>&lt; <a class="el" href="classthorin_1_1_use.html">Use</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a6c585d3cebe35269971de0b1fb993c1b">copy_uses</a> () const</td></tr>
@@ -233,10 +231,19 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a10fa4a23589f3ef85c08fe07e8a21812"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab53b3fbe9c090c735b99cbdc47fe8ab"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#aab53b3fbe9c090c735b99cbdc47fe8ab">projs</a> (size_t a, <a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> dbgs={}) const</td></tr>
 <tr class="separator:aab53b3fbe9c090c735b99cbdc47fe8ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">external handling</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">dealing with externals</div></td></tr>
 <tr class="memitem:a7701ec0e042a91951dcff7bf0b56573c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a7701ec0e042a91951dcff7bf0b56573c">is_external</a> () const</td></tr>
 <tr class="separator:a7701ec0e042a91951dcff7bf0b56573c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89257054c01a40a9c0388cf97eaab282"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a89257054c01a40a9c0388cf97eaab282">is_internal</a> () const</td></tr>
+<tr class="memdesc:a89257054c01a40a9c0388cf97eaab282"><td class="mdescLeft">&#160;</td><td class="mdescRight"><em>Not</em> <code>is_external</code>.  <a href="classthorin_1_1_def.html#a89257054c01a40a9c0388cf97eaab282">More...</a><br /></td></tr>
+<tr class="separator:a89257054c01a40a9c0388cf97eaab282"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5995a1a5e11f12918a1a6a2bcb65c162"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a5995a1a5e11f12918a1a6a2bcb65c162">is_exported</a> () const</td></tr>
+<tr class="separator:a5995a1a5e11f12918a1a6a2bcb65c162"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45f5abb745bc43caa4f2fde23871920c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a45f5abb745bc43caa4f2fde23871920c">is_imported</a> () const</td></tr>
+<tr class="memdesc:a45f5abb745bc43caa4f2fde23871920c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>is_external</code> and body <code>is_set</code>.  <a href="classthorin_1_1_def.html#a45f5abb745bc43caa4f2fde23871920c">More...</a><br /></td></tr>
+<tr class="separator:a45f5abb745bc43caa4f2fde23871920c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0478725100ec49c9cb03ae02864a78d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a0478725100ec49c9cb03ae02864a78d6">make_external</a> ()</td></tr>
+<tr class="memdesc:a0478725100ec49c9cb03ae02864a78d6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>is_external</code> and body is <em>not</em> <code>is_set</code> (empty).  <a href="classthorin_1_1_def.html#a0478725100ec49c9cb03ae02864a78d6">More...</a><br /></td></tr>
 <tr class="separator:a0478725100ec49c9cb03ae02864a78d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0027c07e24d090144365a0857f76d43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#ab0027c07e24d090144365a0857f76d43">make_internal</a> ()</td></tr>
 <tr class="separator:ab0027c07e24d090144365a0857f76d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1231,6 +1238,31 @@ template&lt;class T  = Def&gt; </div>
 
 </div>
 </div>
+<a id="a5995a1a5e11f12918a1a6a2bcb65c162" name="a5995a1a5e11f12918a1a6a2bcb65c162"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5995a1a5e11f12918a1a6a2bcb65c162">&#9670;&nbsp;</a></span>is_exported()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::Def::is_exported </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a7701ec0e042a91951dcff7bf0b56573c" name="a7701ec0e042a91951dcff7bf0b56573c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7701ec0e042a91951dcff7bf0b56573c">&#9670;&nbsp;</a></span>is_external()</h2>
 
@@ -1253,6 +1285,60 @@ template&lt;class T  = Def&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a45f5abb745bc43caa4f2fde23871920c" name="a45f5abb745bc43caa4f2fde23871920c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45f5abb745bc43caa4f2fde23871920c">&#9670;&nbsp;</a></span>is_imported()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::Def::is_imported </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><code>is_external</code> and body <code>is_set</code>. </p>
+
+</div>
+</div>
+<a id="a89257054c01a40a9c0388cf97eaab282" name="a89257054c01a40a9c0388cf97eaab282"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89257054c01a40a9c0388cf97eaab282">&#9670;&nbsp;</a></span>is_internal()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::Def::is_internal </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><em>Not</em> <code>is_external</code>. </p>
 
 </div>
 </div>
@@ -1516,6 +1602,8 @@ template&lt;class T  = Def&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p><code>is_external</code> and body is <em>not</em> <code>is_set</code> (empty). </p>
 
 </div>
 </div>
@@ -2025,7 +2113,7 @@ template&lt;size_t A = -1_s, class F &gt; </div>
 <div class="line">Array&lt;const Def*&gt; <a class="code hl_function" href="classthorin_1_1_def.html#ad7440467a9b76cd3cccfd25886615806">projs</a> = def-&gt;projs(n);               <span class="comment">// projs has n elements - asserts if incorrect</span></div>
 <div class="line">Array&lt;const Lit*&gt; lits = def-&gt;projs(as_lit&lt;nat_t&gt;);    <span class="comment">// same as above but applies as_lit&lt;nat_t&gt; to each element</span></div>
 <div class="line">Array&lt;const Lit*&gt; lits = def-&gt;projs(n, as_lit&lt;nat_t&gt;); <span class="comment">// same as above but applies as_lit&lt;nat_t&gt; to each element</span></div>
-<div class="ttc" id="aclassthorin_1_1_def_html_ad7440467a9b76cd3cccfd25886615806"><div class="ttname"><a href="classthorin_1_1_def.html#ad7440467a9b76cd3cccfd25886615806">thorin::Def::projs</a></div><div class="ttdeci">auto projs(F f, Defs dbgs={}) const</div><div class="ttdef"><b>Definition:</b> def.h:215</div></div>
+<div class="ttc" id="aclassthorin_1_1_def_html_ad7440467a9b76cd3cccfd25886615806"><div class="ttname"><a href="classthorin_1_1_def.html#ad7440467a9b76cd3cccfd25886615806">thorin::Def::projs</a></div><div class="ttdeci">auto projs(F f, Defs dbgs={}) const</div><div class="ttdef"><b>Definition:</b> def.h:214</div></div>
 <div class="ttc" id="anamespacethorin_html_a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661"><div class="ttname"><a href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661">thorin::Bit::a</a></div><div class="ttdeci">@ a</div></div>
 <div class="ttc" id="anamespacethorin_html_a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f"><div class="ttname"><a href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">thorin::Bit::b</a></div><div class="ttdeci">@ b</div></div>
 </div><!-- fragment --> 
