@@ -35,7 +35,7 @@ var NAVTREE =
       [ "Defs and the World", "md_docs_dev.html#autotoc_md5", [
         [ "Hash Consing", "md_docs_dev.html#autotoc_md6", null ]
       ] ],
-      [ "Structural vs. Nominal Defs", "md_docs_dev.html#autotoc_md7", null ],
+      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md7", null ],
       [ "Iterating over the Program", "md_docs_dev.html#autotoc_md8", null ]
     ] ],
     [ "Passes", "md_docs_passes.html", [

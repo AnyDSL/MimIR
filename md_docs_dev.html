@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('md_docs_dev.html',''); initResizable()
 <ul><li class="level1"><a href="#autotoc_md5">Defs and the World</a><ul><li class="level2"><a href="#autotoc_md6">Hash Consing</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md7">Structural vs. Nominal Defs</a></li>
+<li class="level1"><a href="#autotoc_md7">Structural vs. Nominal</a></li>
 <li class="level1"><a href="#autotoc_md8">Iterating over the Program</a></li>
 </ul>
 </div>
@@ -111,7 +111,7 @@ Defs and the World</h1>
 Hash Consing</h2>
 <p ><a href="https://en.wikipedia.org/wiki/Hash_consing">Hash consing</a> TODO</p>
 <h1><a class="anchor" id="autotoc_md7"></a>
-Structural vs. Nominal Defs</h1>
+Structural vs. Nominal</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Structural   </th><th class="markdownTableHeadNone">Nominal    </th></tr>
@@ -128,7 +128,7 @@ Structural vs. Nominal Defs</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">hash consed   </td><td class="markdownTableBodyNone">each new instance is fresh   </td></tr>
 </table>
-<div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
+<p >Usually, you will encounter <code>defs</code> as <code>const Def*</code>. Use Def::isa_nom to check whether a specific <code>Def</code> is in fact nominal to cast away the <code>const</code> or Def::as_nom to force this cast (and assert if not possible): </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> nom = def-&gt;isa_nom()) {</div>
 <div class="line">        <span class="comment">// nom of type Def* - const has been removed!</span></div>
 <div class="line">        <span class="keyword">auto</span> var = nom-&gt;var();</div>
@@ -154,10 +154,10 @@ Iterating over the Program</h1>
 <div class="line">}</div>
 <div class="ttc" id="anamespacethorin_html_a7fddaff34d4e4927bc748c28b49eef46"><div class="ttname"><a href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">thorin::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition:</b> def.h:387</div></div>
 <div class="ttc" id="anamespacethorin_html_aca7a0dc87489d726385a61cdc1fde51c"><div class="ttname"><a href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">thorin::visit</a></div><div class="ttdeci">bool visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> indexset.h:106</div></div>
-</div><!-- fragment --><p ><a class="el" href="classthorin_1_1_world.html#a35687817089d85315d46a391dd75e320">World::visit</a> allows you to visit <em>all</em> top-level scopes with </p><div class="fragment"><div class="line">world.visit([&amp;](<span class="keyword">const</span> Scope&amp; scope) {</div>
+</div><!-- fragment --><p ><a class="el" href="classthorin_1_1_world.html#a35687817089d85315d46a391dd75e320">World::visit</a> allows you to visit <em>all</em> top-level scopes one by one: </p><div class="fragment"><div class="line">world.visit([&amp;](<span class="keyword">const</span> Scope&amp; scope) {</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">});</div>
-</div><!-- fragment --><p >Finally, if you really want to transform the program you probably want to use the <a class="el" href="md_docs_passes.html">pass</a> infrastructure. </p>
+</div><!-- fragment --><p >Finally, if you want to transform the program you probably want to use the <a class="el" href="md_docs_passes.html">pass</a> infrastructure. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
