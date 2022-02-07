@@ -128,14 +128,17 @@ Structural vs. Nominal</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">hash consed   </td><td class="markdownTableBodyNone">each new instance is fresh    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">build ops first, then the actual node   </td><td class="markdownTableBodyNone">build the actual node first, the <a class="el" href="classthorin_1_1_def.html#af401dbc2a8092cdc438507614174f792">Def::set</a> the ops    </td></tr>
+<td class="markdownTableBodyNone">build ops first, then the actual node   </td><td class="markdownTableBodyNone">build the actual node first, then <a class="el" href="classthorin_1_1_def.html#af401dbc2a8092cdc438507614174f792">set</a> the ops    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1_def.html#a894b8738ff236f12a06b113777877d7f">Def::rebuild</a>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1_def.html#a88360b7240d92f32c6be01e52123bd0d">Def::stub</a>   </td></tr>
 </table>
 <p >Usually, you will encounter <code>defs</code> as <code>const Def*</code>. Use <a class="el" href="classthorin_1_1_def.html#ac79cb2db748fbf0177eb2e6c0fef3fdc">Def::isa_nom</a> to check whether a specific <code>Def</code> is in fact nominal to cast away the <code>const</code> or <a class="el" href="classthorin_1_1_def.html#a1e009bced6c7f37b6316d81ead2ad27e">Def::as_nom</a> to force this cast (and assert if not possible): </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> nom = def-&gt;isa_nom()) {</div>
 <div class="line">        <span class="comment">// nom of type Def* - const has been removed!</span></div>
+<div class="line">        <span class="comment">// This gives give you access to the non-const methods that only make sense for nominals:</span></div>
 <div class="line">        <span class="keyword">auto</span> var = nom-&gt;var();</div>
+<div class="line">        <span class="keyword">auto</span> stub = nom-&gt;stub(world, type, debug)</div>
+<div class="line">        <span class="comment">// ...</span></div>
 <div class="line">    }</div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lam = def-&gt;isa_nom&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362">Lam</a>&gt;()) {</div>
@@ -156,7 +159,7 @@ Iterating over the Program</h1>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : def-&gt;extended_ops())</div>
 <div class="line">        <a class="code hl_function" href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">visit</a>(done, op);</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacethorin_html_a7fddaff34d4e4927bc748c28b49eef46"><div class="ttname"><a href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">thorin::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition:</b> def.h:387</div></div>
+<div class="ttc" id="anamespacethorin_html_a7fddaff34d4e4927bc748c28b49eef46"><div class="ttname"><a href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">thorin::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition:</b> def.h:389</div></div>
 <div class="ttc" id="anamespacethorin_html_aca7a0dc87489d726385a61cdc1fde51c"><div class="ttname"><a href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">thorin::visit</a></div><div class="ttdeci">bool visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> indexset.h:106</div></div>
 </div><!-- fragment --><p ><a class="el" href="classthorin_1_1_world.html#a35687817089d85315d46a391dd75e320">World::visit</a> allows you to visit all top-level scopes one by one: </p><div class="fragment"><div class="line">world.visit([&amp;](<span class="keyword">const</span> Scope&amp; scope) {</div>
 <div class="line">    <span class="comment">// ...</span></div>

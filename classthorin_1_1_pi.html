@@ -249,13 +249,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a89257054c01a40a9c0388cf97eaab282"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a89257054c01a40a9c0388cf97eaab282">is_internal</a> () const</td></tr>
 <tr class="memdesc:a89257054c01a40a9c0388cf97eaab282"><td class="mdescLeft">&#160;</td><td class="mdescRight"><em>Not</em> <code>is_external</code>.  <a href="classthorin_1_1_def.html#a89257054c01a40a9c0388cf97eaab282">More...</a><br /></td></tr>
 <tr class="separator:a89257054c01a40a9c0388cf97eaab282"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5995a1a5e11f12918a1a6a2bcb65c162"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a5995a1a5e11f12918a1a6a2bcb65c162">is_exported</a> () const</td></tr>
-<tr class="separator:a5995a1a5e11f12918a1a6a2bcb65c162"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45f5abb745bc43caa4f2fde23871920c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a45f5abb745bc43caa4f2fde23871920c">is_imported</a> () const</td></tr>
-<tr class="memdesc:a45f5abb745bc43caa4f2fde23871920c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>is_external</code> and body <code>is_set</code>.  <a href="classthorin_1_1_def.html#a45f5abb745bc43caa4f2fde23871920c">More...</a><br /></td></tr>
-<tr class="separator:a45f5abb745bc43caa4f2fde23871920c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0478725100ec49c9cb03ae02864a78d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a0478725100ec49c9cb03ae02864a78d6">make_external</a> ()</td></tr>
-<tr class="memdesc:a0478725100ec49c9cb03ae02864a78d6"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>is_external</code> and body is <em>not</em> <code>is_set</code> (empty).  <a href="classthorin_1_1_def.html#a0478725100ec49c9cb03ae02864a78d6">More...</a><br /></td></tr>
 <tr class="separator:a0478725100ec49c9cb03ae02864a78d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0027c07e24d090144365a0857f76d43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#ab0027c07e24d090144365a0857f76d43">make_internal</a> ()</td></tr>
 <tr class="separator:ab0027c07e24d090144365a0857f76d43"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -363,7 +357,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:acb97854745a11b2302ca71930f5b01d6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pi.html#acb97854745a11b2302ca71930f5b01d6">restructure</a> () override</td></tr>
 <tr class="separator:acb97854745a11b2302ca71930f5b01d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">stream</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader">virtual methods</h2></td></tr>
 <tr class="memitem:aa47824524a07e21b088888da282b7b73"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_def.html">Def</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#aa47824524a07e21b088888da282b7b73">ops_ptr</a> () const</td></tr>
 <tr class="separator:aa47824524a07e21b088888da282b7b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3717421752dcb88f0c58773c85c09fa7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_def.html#a3717421752dcb88f0c58773c85c09fa7">finalize</a> ()</td></tr>
@@ -1256,31 +1250,6 @@ template&lt;class T  = Def&gt; </div>
 
 </div>
 </div>
-<a id="a5995a1a5e11f12918a1a6a2bcb65c162" name="a5995a1a5e11f12918a1a6a2bcb65c162"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5995a1a5e11f12918a1a6a2bcb65c162">&#9670;&nbsp;</a></span>is_exported()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool thorin::Def::is_exported </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a7701ec0e042a91951dcff7bf0b56573c" name="a7701ec0e042a91951dcff7bf0b56573c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7701ec0e042a91951dcff7bf0b56573c">&#9670;&nbsp;</a></span>is_external()</h2>
 
@@ -1303,33 +1272,6 @@ template&lt;class T  = Def&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="a45f5abb745bc43caa4f2fde23871920c" name="a45f5abb745bc43caa4f2fde23871920c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45f5abb745bc43caa4f2fde23871920c">&#9670;&nbsp;</a></span>is_imported()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool thorin::Def::is_imported </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p><code>is_external</code> and body <code>is_set</code>. </p>
 
 </div>
 </div>
@@ -1637,8 +1579,6 @@ template&lt;class T  = Def&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p><code>is_external</code> and body is <em>not</em> <code>is_set</code> (empty). </p>
 
 </div>
 </div>
