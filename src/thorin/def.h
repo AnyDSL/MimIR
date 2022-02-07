@@ -235,9 +235,12 @@ public:
     auto projs(size_t a, Defs dbgs = {}) const { return projs(a, [](const Def* def) { return def; }, dbgs); }
     //@}
 
-    /// @name external handling
+    /// @name dealing with externals
     //@{
     bool is_external() const;
+    bool is_internal() const { return !is_external(); }              ///< @em Not @p is_external.
+    bool is_exported() const { return is_external() && is_set(); };  ///< @p is_external and body @p is_set.
+    bool is_imported() const { return is_external() && !is_set(); }; ///< @p is_external and body is @em not @p is_set (empty).
     void make_external();
     void make_internal();
     //@}

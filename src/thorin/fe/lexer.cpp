@@ -100,7 +100,6 @@ Tok Lexer::lex() {
             continue;
         }
 
-
         // identifier or keyword
         if (accept_if([](int i) { return i == '_' || isalpha(i); })) {
             while (accept_if([](int i) { return i == '_' || isalpha(i) || isdigit(i); })) {}

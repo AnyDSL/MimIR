@@ -167,6 +167,7 @@ inline Stream& operator<<(Stream& s, std::pair<Lam*, Lam*> p) { return operator<
 // TODO remove - deprecated
 Lam* get_var_lam(const Def* def);
 
+// TODO remove - deprecated: This one is more confusing than helping.
 inline bool ignore(Lam* lam) { return lam == nullptr || lam->is_external() || !lam->is_set(); }
 
 }
