@@ -25,7 +25,7 @@ TODO
 | hash consed                                                           | each new instance is fresh    |
 
 Usually, you will encounter `defs` as `const Def*`.
-Use [Def::isa_nom](@ref thorin::isa_nom) to check whether a specific `Def` is in fact nominal to cast away the `const` or [Def::as_nom](@ref thorin::as_nom) to force this cast (and assert if not possible):
+Use [Def::isa_nom](@ref thorin::Def::isa_nom) to check whether a specific `Def` is in fact nominal to cast away the `const` or [Def::as_nom](@ref thorin::Def::as_nom) to force this cast (and assert if not possible):
 ```{.cpp}
 void foo(const Def* def) {
     if (auto nom = def->isa_nom()) {
