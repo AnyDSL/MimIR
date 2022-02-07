@@ -128,7 +128,7 @@ Structural vs. Nominal</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">hash consed   </td><td class="markdownTableBodyNone">each new instance is fresh   </td></tr>
 </table>
-<p >Usually, you will encounter <code>defs</code> as <code>const Def*</code>. Use Def::isa_nom to check whether a specific <code>Def</code> is in fact nominal to cast away the <code>const</code> or Def::as_nom to force this cast (and assert if not possible): </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
+<p >Usually, you will encounter <code>defs</code> as <code>const Def*</code>. Use <a class="el" href="classthorin_1_1_def.html#ac79cb2db748fbf0177eb2e6c0fef3fdc">Def::isa_nom</a> to check whether a specific <code>Def</code> is in fact nominal to cast away the <code>const</code> or <a class="el" href="classthorin_1_1_def.html#a1e009bced6c7f37b6316d81ead2ad27e">Def::as_nom</a> to force this cast (and assert if not possible): </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> nom = def-&gt;isa_nom()) {</div>
 <div class="line">        <span class="comment">// nom of type Def* - const has been removed!</span></div>
 <div class="line">        <span class="keyword">auto</span> var = nom-&gt;var();</div>
