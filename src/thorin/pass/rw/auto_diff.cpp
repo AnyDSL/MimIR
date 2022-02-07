@@ -615,14 +615,15 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
                }));
     }else if(name == "sqrt"){
         // TODO: more generally pow
+
+        // d/dx g(sqrt(f(x))) = g'(sqrt(f(x))) * 1/(2sqrt(f(x))) * f'(x)
+        // => sqrt(x) |-> lambda s. s/(2res) with res = sqrt(x)
         const Def* real_type = scal->type();
         const Def* log_d = world_.app(pb->ret_var(), {pb->mem_var(),
-                world_.op(ROp::mul, (nat_t)0,
-                    world_.op(ROp::div, (nat_t)0,
-                        lit_of_real( real_type, 1.0),
+              world_.op(ROp::div, (nat_t)0,
+                        scal,
                         world_.op(ROp::mul, (nat_t)0, lit_of_real( real_type, 2.0), res)
-                    ),
-                scal)
+                         )
         });
 
         pb->set_body(log_d);
