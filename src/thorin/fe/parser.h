@@ -13,6 +13,7 @@ public:
 
 private:
     Sym parse_sym(const char* ctxt);
+    const Def* parse_def();
 
     /// Trick to easily keep track of @p Loc%ations.
     class Tracker {

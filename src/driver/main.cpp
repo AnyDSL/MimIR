@@ -1,8 +1,11 @@
 #include <cstring>
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 
+#include "thorin/util/stream.h"
 #include "thorin/fe/parser.h"
+#include "thorin/be/ll/ll.h"
 
 using namespace thorin;
 
@@ -10,23 +13,62 @@ static const auto usage =
 "Usage: thorin [options] file\n"
 "\n"
 "Options:\n"
-"\t-h, --help\tdisplay this help and exit\n"
-"\t-v, --version\tdisplay version info and exit\n"
+"    -h, --help      display this help and exit\n"
+"    -c, --clang     path to clang executable (default: {})\n"
+"    -l, --emit-llvm emit LLVM\n"
+"    -v, --version   display version info and exit\n"
 "\n"
 "Hint: use '-' as file to read from stdin.\n"
 ;
 
 static const auto version = "thorin command-line utility 0.1\n";
 
+#ifdef _WIN32
+#define popen _popen
+#define pclose _pclose
+#endif
+
+/// see https://stackoverflow.com/a/478960
+std::string exec(const char* cmd) {
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    if (!pipe) {
+        throw std::runtime_error("popen() failed!");
+    }
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+    return result;
+}
+
 int main(int argc, char** argv) {
+    std::string clang;
+    bool emit_llvm = false;
+
     try {
         const char* file = nullptr;
+        clang = exec("which clang");
+        clang.erase(std::remove(clang.begin(), clang.end(), '\n'), clang.end());
 
         for (int i = 1; i != argc; ++i) {
-            if (strcmp("-h", argv[i]) == 0 || strcmp("--help", argv[i]) == 0) {
-                std::cerr << usage;
+            auto is_option = [&](const char* o1, const char* o2) {
+                return strcmp(o1, argv[i]) == 0 || strcmp(o2, argv[i]) == 0;
+            };
+
+            auto check_last = [=](const char* msg) {
+                if (i+1 == argc) throw std::logic_error(msg);
+            };
+
+            if (is_option("-c", "--clang")) {
+                check_last("--clang option requires path to clang executable");
+                clang = exec("which clang");
+            } else if (is_option("-l", "--emit--lvm")) {
+                emit_llvm = true;
+            } else if (is_option("-h", "--help")) {
+                errf(usage, clang);
                 return EXIT_SUCCESS;
-            } else if (strcmp("-v", argv[i]) == 0 || strcmp("--version", argv[i]) == 0) {
+            } else if (is_option("-h", "--help")) {
                 std::cerr << version;
                 return EXIT_SUCCESS;
             } else if (file == nullptr) {
@@ -56,9 +98,15 @@ int main(int argc, char** argv) {
 
         //if (eval) exp = exp->eval();
         //exp->dump();
+
+        if (emit_llvm) {
+            std::ofstream of("test.ll");
+            Stream s(of);
+            thorin::ll::emit(world, s);
+        }
     } catch (const std::exception& e) {
         std::cerr << "error: " << e.what() << std::endl;
-        std::cerr << usage;
+        errf(usage, clang);
         return EXIT_FAILURE;
     } catch (...) {
         std::cerr << "error: unknown exception" << std::endl;

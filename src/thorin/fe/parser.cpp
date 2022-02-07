@@ -41,4 +41,8 @@ Sym Parser::parse_sym(const char* ctxt) {
     return world().sym("<error>", world().dbg((Loc) track));
 }
 
+const Def* Parser::parse_def() {
+    return nullptr;
+}
+
 }

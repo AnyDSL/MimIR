@@ -1,6 +1,8 @@
 #ifndef THORIN_FE_LEXER_H
 #define THORIN_FE_LEXER_H
 
+#include <map>
+
 #include "thorin/debug.h"
 #include "thorin/fe/tok.h"
 #include "thorin/util/utf8.h"
@@ -48,7 +50,7 @@ private:
     } peek_;
     std::istream& stream_;
     std::string str_;
-    std::unordered_map<std::string, Tok::Tag> keywords_;
+    std::map<std::string, Tok::Tag> keywords_;
 };
 
 }
