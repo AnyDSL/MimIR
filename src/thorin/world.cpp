@@ -353,8 +353,8 @@ const Def* World::tangent_type(const Def* A,bool left) {
     if(auto real = isa<Tag::Real>(A)) {
         return A;
     }else {
-//        return left ? A : type_real(32);
-        return left ? A : type_real(64);
+        // dummy deriv
+       return left ? A : type_real(64);
     }
 }
 

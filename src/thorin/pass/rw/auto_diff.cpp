@@ -541,6 +541,8 @@ const Def* AutoDiffer::ptrSlot(const Def* ty, const Def* mem) {
 }
 
 void AutoDiffer::derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta ){
+    // https://www.overleaf.com/read/gdpfxvzqpfjf
+    // # Numeric differentiation    for general case
     auto type = x->type();
 
     auto funType = fun->doms().back()->as<Pi>();
