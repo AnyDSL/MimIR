@@ -26,7 +26,8 @@ jobs:
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 
           sudo apt-get install g++-11
-          export CXX="g++-11"
+        env:
+          CXX: g++-11
 
       - name: Install Valgrind (ubuntu-latest in Debug mode only)
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.build-type == 'Debug' }}
