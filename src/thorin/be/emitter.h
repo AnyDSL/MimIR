@@ -12,7 +12,7 @@ private:
     constexpr const Child& child() const { return *static_cast<const Child*>(this); };
     constexpr Child& child() { return *static_cast<Child*>(this); };
 
-    /// Internal wrapper for @p emit that checks and retrieves/puts the @c Value from @p defs_.
+    /// Internal wrapper for @p emit that checks and retrieves/puts the @c Value from @p locals_/@p globals_.
     Value emit_(const Def* def) {
         auto place = scheduler_.smart(def);
         auto& bb = lam2bb_[place->as_nom<Lam>()];
@@ -38,10 +38,11 @@ protected:
 
     /// As above but returning @c !child().is_valid(value) is permitted.
     Value emit_unsafe(const Def* def) {
-        if (auto val = defs_.lookup(def)) return *val;
+        if (auto val = globals_.lookup(def)) return *val;
+        if (auto val = locals_.lookup(def)) return *val;
 
         auto val = emit_(def);
-        return defs_[def] = val;
+        return locals_[def] = val;
     }
 
     void emit_module() {
@@ -81,6 +82,7 @@ protected:
         }
 
         child().finalize(scope);
+        locals_.clear();
         assert(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
     }
 
@@ -88,7 +90,8 @@ protected:
     const Scope* scope_ = nullptr;
     Stream& stream_;
     Scheduler scheduler_;
-    DefMap<Value> defs_;
+    DefMap<Value> locals_;
+    DefMap<Value> globals_;
     DefMap<Type> types_;
     LamMap<BB> lam2bb_;
     Lam* entry_ = nullptr;

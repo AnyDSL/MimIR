@@ -212,7 +212,7 @@ std::string CodeGen::prepare(const Scope& scope) {
     for (auto var : vars.skip_back()) {
         if (isa<Tag::Mem>(var->type())) continue;
         auto name = id(var);
-        defs_[var] = name;
+        locals_[var] = name;
         func_impls_.fmt("{}{} {}", sep, convert(var->type()), name);
         sep = ", ";
     }
@@ -291,7 +291,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
                 auto phi = callee->var(i);
                 assert(!isa<Tag::Mem>(phi->type()));
                 lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
-                defs_[phi] = id(phi);
+                locals_[phi] = id(phi);
             }
         }
         return bb.tail("br label {}", id(callee));
@@ -324,7 +324,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
             auto phi = ret_lam->var(1);
             assert(!isa<Tag::Mem>(phi->type()));
             lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
-            defs_[phi] = id(phi);
+            locals_[phi] = id(phi);
             bb.tail("{} = call {} {}({, })", name, ret_ty, id(callee), args);
         }
 
@@ -592,7 +592,8 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
         assert(pointee->isa<Arr>());
         auto ll_idx = emit(idx);
-        return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, i64 {}", t, p, ll_ptr, ll_idx);
+        auto idx_t = convert(idx->type());
+        return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t, p, ll_ptr, idx_t, ll_idx);
     } else if (auto trait = isa<Tag::Trait>(def)) {
         THORIN_UNREACHABLE;
     } else if (auto alloc = isa<Tag::Alloc>(def)) {
@@ -641,9 +642,9 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             return bb.assign(name, "extractvalue {} {}, {}", tup_t, ll_tup, ll_idx);
         } else {
             auto elem_t = convert(extract->type());
-            lam2bb_[entry_].body().emplace_front().fmt("{}.alloca = alloca {}", name, tup_t);
+            lam2bb_[entry_].body().emplace_front().fmt("{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, tup_t);
             bb.body().emplace_back().fmt("store {} {}, {}* {}.alloca", tup_t, ll_tup, tup_t, name);
-            bb.body().emplace_back().fmt("{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, i64 {}", name, ll_tup, ll_tup, name, ll_idx);
+            bb.body().emplace_back().fmt("{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, i64 {}", name, tup_t, tup_t, name, ll_idx);
             return bb.assign(name, "load {}, {}* {}.gep", elem_t, elem_t, name);
         }
     } else if (auto insert = def->isa<Insert>()) {
@@ -657,7 +658,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto init = emit(global->init());
         auto [pointee, addr_space] = as<Tag::Ptr>(global->type())->args<2>();
         vars_decls_.fmt("{} = global {} {}\n", name, convert(pointee), init);
-        return name;
+        return globals_[global] = name;
     }
 
     return "<TODO>";
