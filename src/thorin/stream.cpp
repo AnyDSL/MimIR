@@ -1,6 +1,6 @@
-#include "thorin/def.h"
 #include "thorin/world.h"
 #include "thorin/analyses/deptree.h"
+#include "thorin/fe/tok.h"
 #include "thorin/util/container.h"
 
 namespace thorin {
@@ -28,35 +28,27 @@ bool Def::unwrap() const {
     return true;
 }
 
-enum class Prec {   //  left    right
-    Bottom,         //  Bottom  Bottom
-    Pi,             //  App     Pi
-    App,            //  App     Extract
-    Extract,        //  Extract Lit
-    Lit,            //  -       Lit
-};
-
-static Prec prec(const Def* def) {
-    if (def->isa<Pi>())      return Prec::Pi;
-    if (def->isa<App>())     return Prec::App;
-    if (def->isa<Extract>()) return Prec::Extract;
-    if (def->isa<Lit>())     return Prec::Lit;
-    return Prec::Bottom;
+static Tok::Prec prec(const Def* def) {
+    if (def->isa<Pi>())      return Tok::Prec::Pi;
+    if (def->isa<App>())     return Tok::Prec::App;
+    if (def->isa<Extract>()) return Tok::Prec::Extract;
+    if (def->isa<Lit>())     return Tok::Prec::Lit;
+    return Tok::Prec::Bottom;
 }
 
-static Prec prec_l(const Def* def) {
+static Tok::Prec prec_l(const Def* def) {
     assert(!def->isa<Lit>());
-    if (def->isa<Pi>())      return Prec::App;
-    if (def->isa<App>())     return Prec::App;
-    if (def->isa<Extract>()) return Prec::Extract;
-    return Prec::Bottom;
+    if (def->isa<Pi>())      return Tok::Prec::App;
+    if (def->isa<App>())     return Tok::Prec::App;
+    if (def->isa<Extract>()) return Tok::Prec::Extract;
+    return Tok::Prec::Bottom;
 }
 
-static Prec prec_r(const Def* def) {
-    if (def->isa<Pi>())      return Prec::Pi;
-    if (def->isa<App>())     return Prec::Extract;
-    if (def->isa<Extract>()) return Prec::Lit;
-    return Prec::Bottom;
+static Tok::Prec prec_r(const Def* def) {
+    if (def->isa<Pi>())      return Tok::Prec::Pi;
+    if (def->isa<App>())     return Tok::Prec::Extract;
+    if (def->isa<Extract>()) return Tok::Prec::Lit;
+    return Tok::Prec::Bottom;
 }
 
 template<bool L>

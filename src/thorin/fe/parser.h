@@ -13,7 +13,10 @@ public:
 
 private:
     Sym parse_sym(const char* ctxt);
-    const Def* parse_def();
+    const Def* parse_def(const char* ctxt, Tok::Prec);
+    const Def* parse_primary_def(const char* ctxt);
+    const Def* parse_primary_def();
+    const Def* parse_extract();
 
     /// Trick to easily keep track of @p Loc%ations.
     class Tracker {
@@ -32,6 +35,7 @@ private:
 
     /// Factory method to build a @p Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
+    const Def* dbg(Tracker t) { return world().dbg((Loc) t); }
 
     /// Invoke @p Lexer to retrieve next @p Tok%en.
     Tok lex();
