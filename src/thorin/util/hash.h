@@ -519,9 +519,9 @@ private:
 
 #if THORIN_ENABLE_PROFILING
     void debug(hash_t i) {
-        if (capacity() >= 32) {
+        if (capacity() >= 32_u32) {
             auto dib = probe_distance(i);
-            if (dib > 2_u32*log2(capacity())) {
+            if (dib > 2_u32*std::bit_width(capacity())) {
                 // don't use LOG here - this results in a header dependency hell
                 printf("poor hash function; element %u has distance %u with size/capacity: %u/%u\n", i, dib, size(), capacity());
                 for (hash_t j = mod(i-dib); j != i; j = mod(j+1))
