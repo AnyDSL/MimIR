@@ -228,6 +228,7 @@ var hierarchy =
     ] ],
     [ "thorin::RWPassBase", "classthorin_1_1_r_w_pass_base.html", [
       [ "thorin::RWPass< Lam >", "classthorin_1_1_r_w_pass.html", [
+        [ "thorin::Alloc2Malloc", "classthorin_1_1_alloc2_malloc.html", null ],
         [ "thorin::RememElim", "classthorin_1_1_remem_elim.html", null ],
         [ "thorin::RetWrap", "classthorin_1_1_ret_wrap.html", null ],
         [ "thorin::Scalerize", "classthorin_1_1_scalerize.html", null ]

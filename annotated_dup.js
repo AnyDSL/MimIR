@@ -8,6 +8,7 @@ var annotated_dup =
         [ "BB", "structthorin_1_1ll_1_1_b_b.html", "structthorin_1_1ll_1_1_b_b" ],
         [ "CodeGen", "classthorin_1_1ll_1_1_code_gen.html", "classthorin_1_1ll_1_1_code_gen" ]
       ] ],
+      [ "Alloc2Malloc", "classthorin_1_1_alloc2_malloc.html", "classthorin_1_1_alloc2_malloc" ],
       [ "App", "classthorin_1_1_app.html", "classthorin_1_1_app" ],
       [ "Arr", "classthorin_1_1_arr.html", "classthorin_1_1_arr" ],
       [ "Array", "classthorin_1_1_array.html", "classthorin_1_1_array" ],

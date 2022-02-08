@@ -1,5 +1,9 @@
 var dir_bedb7d08736b40aaace21d5514fd3ecc =
 [
+    [ "alloc2malloc.cpp", "alloc2malloc_8cpp.html", null ],
+    [ "alloc2malloc.h", "alloc2malloc_8h.html", [
+      [ "thorin::Alloc2Malloc", "classthorin_1_1_alloc2_malloc.html", "classthorin_1_1_alloc2_malloc" ]
+    ] ],
     [ "bound_elim.cpp", "bound__elim_8cpp.html", null ],
     [ "bound_elim.h", "bound__elim_8h.html", null ],
     [ "partial_eval.cpp", "partial__eval_8cpp.html", null ],

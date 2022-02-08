@@ -30,6 +30,7 @@ var namespacethorin =
       [ "num_bytes", "namespacethorin_1_1utf8.html#a6920d66962b6221e75a9869c1f4da509", null ]
     ] ],
     [ "WMode", "namespacethorin_1_1_w_mode.html", null ],
+    [ "Alloc2Malloc", "classthorin_1_1_alloc2_malloc.html", "classthorin_1_1_alloc2_malloc" ],
     [ "App", "classthorin_1_1_app.html", "classthorin_1_1_app" ],
     [ "Arr", "classthorin_1_1_arr.html", "classthorin_1_1_arr" ],
     [ "Array", "classthorin_1_1_array.html", "classthorin_1_1_array" ],
