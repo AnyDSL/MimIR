@@ -335,11 +335,28 @@ void CodeGen::emit_epilogue(Lam* lam) {
 std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     if (auto lam = def->isa<Lam>()) return id(lam);
 
-    StringStream s;
     auto name = id(def);
     std::string op;
 
     auto emit_tuple = [&](const Def* tuple) {
+        if (!scope().bound().contains(tuple)) {
+            bool is_array = tuple->type()->isa<Arr>();
+
+            std::string s;
+            s += is_array ? "[" : "{";
+            const char* sep = "";
+            for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
+                auto e = tuple->proj(n, i);
+                if (auto elem = emit_unsafe(e); !elem.empty()) {
+                    auto elem_t = convert(e->type());
+                    s += sep + elem_t + " " + elem;
+                    sep = ", ";
+                }
+            }
+            s += is_array ? "]" : "}";
+            return s;
+        }
+
         std::string prev = "undef";
         auto t = convert(tuple->type());
         for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
@@ -637,8 +654,9 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto val_t = convert(insert->value()->type());
         return bb.assign(name, "insertvalue {} {}, {}, {}", tup_t, tuple, val_t, value, index);
     } else if (auto global = def->isa<Global>()) {
+        auto init = emit(global->init());
         auto [pointee, addr_space] = as<Tag::Ptr>(global->type())->args<2>();
-        vars_decls_.fmt("{} = external global {}\n", name, convert(pointee));
+        vars_decls_.fmt("{} = global {} {}\n", name, convert(pointee), init);
         return name;
     }
 

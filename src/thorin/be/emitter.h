@@ -26,6 +26,7 @@ protected:
     {}
 
     World& world() const { return world_; }
+    const Scope& scope() const { return *scope_; }
     Stream& stream() const { return stream_; }
 
     /// Recursively emits code. @c mem -typed @p Def%s return sth that is @c !child().is_valid(value) - this variant asserts in this case.
@@ -49,6 +50,7 @@ protected:
 
     void emit_scope(const Scope& scope) {
         if (entry_ = scope.entry()->isa_nom<Lam>(); !entry_) return;
+        scope_ = &scope;
 
         if (!entry_->is_set()) {
             child().emit_imported(entry_);
@@ -83,6 +85,7 @@ protected:
     }
 
     World& world_;
+    const Scope* scope_ = nullptr;
     Stream& stream_;
     Scheduler scheduler_;
     DefMap<Value> defs_;
