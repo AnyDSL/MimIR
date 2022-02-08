@@ -1,5 +1,7 @@
 # Introduction
 
+[TOC]
+
 [![build-and-test](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml)
 [![doxygen](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml)
 <a href="https://anydsl.github.io/thorin2/"><img src="https://anydsl.github.io/thorin2/doxygen.svg" alt="Doxygen" height="20"/></a>
@@ -40,7 +42,7 @@ ctest
 
 In addition, you can enable [Valgrind](https://valgrind.org/) with:
 ```
-cd build && ctest -T memcheck
+ctest -T memcheck
 ```
 
 ### Documentation
