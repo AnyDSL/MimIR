@@ -89,7 +89,7 @@ std::string CodeGen::convert(const Def* type) {
     std::string name;
 
     if (type->isa<Nat>()) {
-        return types_[type] = "i32";
+        return types_[type] = "i64";
     } else if (isa<Tag::Int>(type)) {
         auto size = isa_sized_type(type);
         if (size->isa<Top>()) return types_[type] = "i64";

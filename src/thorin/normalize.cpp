@@ -760,15 +760,13 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
         }
     } else if (auto arr = type->isa_structural<Arr>()) {
         auto align = world.op(Trait::align, arr->body());
-
         if constexpr (op == Trait::align) return align;
 
-        auto a = isa_lit(align);
-        auto s = isa_lit(world.op(Trait::size , arr->body()));
-
-        if (auto shape = isa_lit(arr->shape()); shape && a && s) {
-            u64 factor = std::max(*a, *s);
-            return world.lit_nat(factor * *shape);
+        if (auto b = isa_lit(world.op(Trait::size, arr->body()))) {
+            auto i64_t = world.type_int_width(64);
+            auto s = world.op_bitcast(i64_t, arr->shape());
+            auto mul = world.op(Wrap::mul, WMode::nsw | WMode::nuw, world.lit_int(i64_t, *b), s);
+            return world.op_bitcast(world.type_nat(), mul);
         }
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = join->convert()) return world.op(op, sigma, dbg);
