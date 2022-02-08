@@ -8,6 +8,5 @@ var searchData=
   ['get_5fvar_5flam_5',['get_var_lam',['../namespacethorin.html#afa219845413436ebd217a971fb700df5',1,'thorin']]],
   ['gid_6',['gid',['../classthorin_1_1_c_f_node.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()'],['../classthorin_1_1_def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()']]],
   ['global_7',['global',['../classthorin_1_1_world.html#aba71cbdf91e5537e3a245e21d216b430',1,'thorin::World::global(const Def *id, const Def *init, bool is_mutable=true, const Def *dbg={})'],['../classthorin_1_1_world.html#a60a65160b686ffacbe2d20af346704da',1,'thorin::World::global(const Def *init, bool is_mutable=true, const Def *dbg={})']]],
-  ['global_5fimmutable_5fstring_8',['global_immutable_string',['../classthorin_1_1_world.html#aca84b28df2950932a7686f7ef4bd27f3',1,'thorin::World']]],
-  ['gpukernelconfig_9',['GPUKernelConfig',['../classthorin_1_1_g_p_u_kernel_config.html#af5926ab8d04d9cfa87cef08f94543435',1,'thorin::GPUKernelConfig']]]
+  ['global_5fimmutable_5fstring_8',['global_immutable_string',['../classthorin_1_1_world.html#aca84b28df2950932a7686f7ef4bd27f3',1,'thorin::World']]]
 ];

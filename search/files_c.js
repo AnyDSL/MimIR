@@ -1,13 +1,10 @@
 var searchData=
 [
-  ['parser_2ecpp_0',['parser.cpp',['../parser_8cpp.html',1,'']]],
-  ['parser_2eh_1',['parser.h',['../parser_8h.html',1,'']]],
-  ['partial_5feval_2ecpp_2',['partial_eval.cpp',['../partial__eval_8cpp.html',1,'']]],
-  ['partial_5feval_2eh_3',['partial_eval.h',['../partial__eval_8h.html',1,'']]],
-  ['partial_5fevaluation_2ecpp_4',['partial_evaluation.cpp',['../partial__evaluation_8cpp.html',1,'']]],
-  ['partial_5fevaluation_2eh_5',['partial_evaluation.h',['../partial__evaluation_8h.html',1,'']]],
-  ['pass_2ecpp_6',['pass.cpp',['../pass_8cpp.html',1,'']]],
-  ['pass_2eh_7',['pass.h',['../pass_8h.html',1,'']]],
-  ['passes_2emd_8',['passes.md',['../passes_8md.html',1,'']]],
-  ['ptr_2eh_9',['ptr.h',['../ptr_8h.html',1,'']]]
+  ['readme_2emd_0',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['remem_5felim_2ecpp_1',['remem_elim.cpp',['../remem__elim_8cpp.html',1,'']]],
+  ['remem_5felim_2eh_2',['remem_elim.h',['../remem__elim_8h.html',1,'']]],
+  ['ret_5fwrap_2ecpp_3',['ret_wrap.cpp',['../ret__wrap_8cpp.html',1,'']]],
+  ['ret_5fwrap_2eh_4',['ret_wrap.h',['../ret__wrap_8h.html',1,'']]],
+  ['rewrite_2ecpp_5',['rewrite.cpp',['../rewrite_8cpp.html',1,'']]],
+  ['rewrite_2eh_6',['rewrite.h',['../rewrite_8h.html',1,'']]]
 ];

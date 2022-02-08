@@ -36,9 +36,6 @@ var hierarchy =
     ] ],
     [ "thorin::ErrorHandler", "classthorin_1_1_error_handler.html", null ],
     [ "thorin::World::ExternalsHash", "structthorin_1_1_world_1_1_externals_hash.html", null ],
-    [ "std::false_type", null, [
-      [ "thorin::is_range< T, class >", "structthorin_1_1is__range.html", null ]
-    ] ],
     [ "thorin::FNV1", "structthorin_1_1_f_n_v1.html", null ],
     [ "thorin::Fold< T, T, nat_t >", "structthorin_1_1_fold.html", null ],
     [ "thorin::Fold< Div, Div::sdiv, w >", "structthorin_1_1_fold_3_01_div_00_01_div_1_1sdiv_00_01w_01_4.html", null ],
@@ -163,9 +160,6 @@ var hierarchy =
     [ "thorin::detail::HashTable< Type, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashMap< Type >", "classthorin_1_1_hash_map.html", null ]
     ] ],
-    [ "thorin::detail::HashTable< uint32_t, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
-      [ "thorin::HashMap< uint32_t >", "classthorin_1_1_hash_map.html", null ]
-    ] ],
     [ "thorin::detail::HashTable< undo_t, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashMap< undo_t >", "classthorin_1_1_hash_map.html", null ]
     ] ],
@@ -186,14 +180,10 @@ var hierarchy =
     [ "thorin::LoopTreeBuilder< forward >", "classthorin_1_1_loop_tree_builder.html", null ],
     [ "thorin::LRPrec< L >", "structthorin_1_1_l_r_prec.html", null ],
     [ "thorin::Mangler", "classthorin_1_1_mangler.html", null ],
-    [ "thorin::map_iterator< I, F >", "classthorin_1_1map__iterator.html", null ],
     [ "thorin::Parser", "classthorin_1_1_parser.html", null ],
     [ "thorin::PartialEvaluator", "classthorin_1_1_partial_evaluator.html", null ],
     [ "thorin::PassMan", "classthorin_1_1_pass_man.html", null ],
     [ "thorin::Query< F, D >", "classthorin_1_1_query.html", null ],
-    [ "thorin::Range< I >", "structthorin_1_1_range.html", [
-      [ "thorin::filter_iterator< I, P, V >", "classthorin_1_1filter__iterator.html", null ]
-    ] ],
     [ "thorin::RecStreamer", "classthorin_1_1_rec_streamer.html", null ],
     [ "thorin::BitSet::reference", "classthorin_1_1_bit_set_1_1reference.html", null ],
     [ "thorin::IndexSet< Indexer, Key >::reference", "classthorin_1_1_index_set_1_1reference.html", null ],
@@ -234,12 +224,6 @@ var hierarchy =
         [ "thorin::Tuple", "classthorin_1_1_tuple.html", null ],
         [ "thorin::Var", "classthorin_1_1_var.html", null ],
         [ "thorin::Vel", "classthorin_1_1_vel.html", null ]
-      ] ]
-    ] ],
-    [ "thorin::RuntimeCast< KernelConfig >", "classthorin_1_1_runtime_cast.html", [
-      [ "thorin::KernelConfig", "classthorin_1_1_kernel_config.html", [
-        [ "thorin::GPUKernelConfig", "classthorin_1_1_g_p_u_kernel_config.html", null ],
-        [ "thorin::HLSKernelConfig", "classthorin_1_1_h_l_s_kernel_config.html", null ]
       ] ]
     ] ],
     [ "thorin::RWPassBase", "classthorin_1_1_r_w_pass_base.html", [
@@ -326,9 +310,6 @@ var hierarchy =
     [ "thorin::TaggedPtr< std::remove_pointer_t< NormalizeFn >, u16 >", "classthorin_1_1_tagged_ptr.html", null ],
     [ "thorin::TaggedPtr< uint64_t >", "classthorin_1_1_tagged_ptr.html", null ],
     [ "thorin::Tracker", "classthorin_1_1_tracker.html", null ],
-    [ "std::true_type", null, [
-      [ "thorin::is_range< T, std::void_t< decltype(std::declval< T >().begin()), decltype(std::declval< T >().end())> >", "structthorin_1_1is__range_3_01_t_00_01std_1_1void__t_3_01decltype_07std_1_1declval_3_01_t_01_4_0522befb87099a1d5ce2f0d0f0d31994f.html", null ]
-    ] ],
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_queue< thorin::HashSet >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_stack< Set >", "classthorin_1_1unique__stack.html", null ],

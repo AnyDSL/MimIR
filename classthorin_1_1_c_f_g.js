@@ -16,7 +16,7 @@ var classthorin_1_1_c_f_g =
     [ "num_succs", "classthorin_1_1_c_f_g.html#a5e38ee04a873e3636867ffd5e446da5e", null ],
     [ "operator=", "classthorin_1_1_c_f_g.html#a2420911c59b8f8dedf0d186e57fc3247", null ],
     [ "operator[]", "classthorin_1_1_c_f_g.html#a9ae8a31d4c801a5cbda9abe4cb6989b0", null ],
-    [ "post_order", "classthorin_1_1_c_f_g.html#aabc5d914f118a2de5607f09189f4c85b", null ],
+    [ "post_order", "classthorin_1_1_c_f_g.html#aa9994dc101db0094d9a02fa339d8164a", null ],
     [ "post_order", "classthorin_1_1_c_f_g.html#a74587d3884b790d3235a9e809cfe3005", null ],
     [ "preds", "classthorin_1_1_c_f_g.html#a4be7bf931bf9471d78c464c9d3559f3b", null ],
     [ "preds", "classthorin_1_1_c_f_g.html#af777a488f6475c0ef39f5a4893469e9c", null ],

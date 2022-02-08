@@ -1,6 +1,5 @@
 var classthorin_1_1_index_map =
 [
-    [ "const_iterator", "classthorin_1_1_index_map.html#ade31678dafded8df853198b10be084c3", null ],
     [ "IndexMap", "classthorin_1_1_index_map.html#a8d0130e6025b99c072a46e52385da562", null ],
     [ "IndexMap", "classthorin_1_1_index_map.html#a607bde58a24f80a3ec64f576a63b7741", null ],
     [ "IndexMap", "classthorin_1_1_index_map.html#aa72d83e1d05a3037fe43435e4ea6b628", null ],
@@ -10,9 +9,9 @@ var classthorin_1_1_index_map =
     [ "array", "classthorin_1_1_index_map.html#a01e5fd3bf3c13a4f08ac14e78d7b556a", null ],
     [ "array", "classthorin_1_1_index_map.html#a823a20bd995b817a52883ce4222e6e1b", null ],
     [ "array", "classthorin_1_1_index_map.html#a92c159cc61259164e5937e719a819c5e", null ],
-    [ "begin", "classthorin_1_1_index_map.html#aca306b5c346f653a658d4e66ad463ab7", null ],
+    [ "begin", "classthorin_1_1_index_map.html#adc89c1b2dfaf4c9828296fb7bfad9cf0", null ],
     [ "capacity", "classthorin_1_1_index_map.html#aa34f6f4febc42c33e9ccd190b326a597", null ],
-    [ "end", "classthorin_1_1_index_map.html#aaf33824eedf3d21a48b433e46df21079", null ],
+    [ "end", "classthorin_1_1_index_map.html#a8ca563be53cd4627f22e00f227902d97", null ],
     [ "indexer", "classthorin_1_1_index_map.html#a4f821283e338b947e295badfa0c4de79", null ],
     [ "operator[]", "classthorin_1_1_index_map.html#ac8b2406aed0f5f5cd5fa5d723c42b629", null ],
     [ "operator[]", "classthorin_1_1_index_map.html#a3a286ea3699e46e9b3748682ccc4bfc5", null ],

@@ -9,15 +9,14 @@ var searchData=
   ['get_5ffront_6',['get_front',['../classthorin_1_1_array_ref.html#a4752647bdfc52b5eda127a7a8aff6db8',1,'thorin::ArrayRef::get_front()'],['../classthorin_1_1_array.html#a1be996ebda89c350c042756cd47acd23',1,'thorin::Array::get_front()']]],
   ['get_5fsign_7',['get_sign',['../namespacethorin.html#ac76b51109303662a47f30fa874337254',1,'thorin']]],
   ['get_5fvar_5flam_8',['get_var_lam',['../namespacethorin.html#afa219845413436ebd217a971fb700df5',1,'thorin']]],
-  ['gid_9',['gid',['../classthorin_1_1_c_f_node.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()'],['../classthorin_1_1_def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid() const']]],
+  ['gid_9',['gid',['../classthorin_1_1_def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()'],['../classthorin_1_1_c_f_node.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()']]],
   ['gid_5f_10',['gid_',['../classthorin_1_1_def.html#ad787194dde14538ab209e0003318c0cd',1,'thorin::Def']]],
   ['gidhash_11',['GIDHash',['../structthorin_1_1_g_i_d_hash.html',1,'thorin']]],
   ['gidlt_12',['GIDLt',['../structthorin_1_1_g_i_d_lt.html',1,'thorin']]],
   ['gidmap_13',['GIDMap',['../namespacethorin.html#a359576edb7d377a272c728fa5f025531',1,'thorin']]],
   ['gidset_14',['GIDSet',['../namespacethorin.html#ad920afc017f128d660ef769bf6223ca3',1,'thorin']]],
-  ['global_15',['Global',['../namespacethorin_1_1_addr_space.html#a3306706adbc856a82f406997e8db0f00a9cb49f81a60b27ed0815a443e8810697',1,'thorin::AddrSpace::Global()'],['../namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06abd8d7821a2fd1239acef09706db6bace',1,'thorin::Node::Global()']]],
+  ['global_15',['Global',['../namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06abd8d7821a2fd1239acef09706db6bace',1,'thorin::Node::Global()'],['../namespacethorin_1_1_addr_space.html#a3306706adbc856a82f406997e8db0f00a9cb49f81a60b27ed0815a443e8810697',1,'thorin::AddrSpace::Global()']]],
   ['global_16',['global',['../classthorin_1_1_world.html#a60a65160b686ffacbe2d20af346704da',1,'thorin::World::global(const Def *init, bool is_mutable=true, const Def *dbg={})'],['../classthorin_1_1_world.html#aba71cbdf91e5537e3a245e21d216b430',1,'thorin::World::global(const Def *id, const Def *init, bool is_mutable=true, const Def *dbg={})']]],
   ['global_17',['Global',['../classthorin_1_1_global.html',1,'thorin']]],
-  ['global_5fimmutable_5fstring_18',['global_immutable_string',['../classthorin_1_1_world.html#aca84b28df2950932a7686f7ef4bd27f3',1,'thorin::World']]],
-  ['gpukernelconfig_19',['GPUKernelConfig',['../classthorin_1_1_kernel_config.html#a0c6e844e1c698bc6142c192058aa5f6dafd882c17b83d39d3725a9c8d0b0e7586',1,'thorin::KernelConfig::GPUKernelConfig()'],['../classthorin_1_1_g_p_u_kernel_config.html#af5926ab8d04d9cfa87cef08f94543435',1,'thorin::GPUKernelConfig::GPUKernelConfig()'],['../classthorin_1_1_g_p_u_kernel_config.html',1,'thorin::GPUKernelConfig']]]
+  ['global_5fimmutable_5fstring_18',['global_immutable_string',['../classthorin_1_1_world.html#aca84b28df2950932a7686f7ef4bd27f3',1,'thorin::World']]]
 ];
