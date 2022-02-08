@@ -80,7 +80,6 @@ set(THORIN_SOURCES
     transform/closure_conv.cpp
     util/array.h
     util/assert.h
-    util/bit.h
     util/bitset.cpp
     util/bitset.h
     util/cast.h
