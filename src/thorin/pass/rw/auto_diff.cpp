@@ -597,7 +597,7 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
     // s (in an isolated environment s=1 -> f*(s) = df/dx)
     const Def* scal = pb->var(1);
 
-    auto user_defined_diff = world_.find_def(name + "_diff");
+    auto user_defined_diff = world_.lookup(name + "_diff");
 
     // wrapper to add times s around it
     auto scal_mul_wrap =world_.nom_lam(pb->ret_var()->type()->as<Pi>(),world_.dbg("scal_mul"));
@@ -646,7 +646,7 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
         pb->set_body(log_d);
     }else if(name == "sin"){
         // sin(x) |-> (sin(x), lambda s. s*cos(x))
-        auto cos = world_.find_def("cos");
+        auto cos = world_.lookup("cos");
 
         if(cos == nullptr){
           dlog(world_,"Error: no cos implementation found");
@@ -656,7 +656,7 @@ void AutoDiffer::derive_math_functions(const Lam* fun, Lam* pb, Lam* fw, Lam* re
         pb->set_body(world_.app(cos, {pb->mem_var(), fun_arg, scal_mul_wrap}));
     }else if(name == "cos"){
         // lambda s. -s * sin(x)
-        Lam *sin = (Lam*)world_.find_def("sin");
+        Lam *sin = (Lam*)world_.lookup("sin");
 
         if(sin == nullptr){
           dlog(world_,"Error: no sin implementation found");
