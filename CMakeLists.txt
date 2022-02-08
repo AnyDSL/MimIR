@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.4.3 FATAL_ERROR)
 project(Thorin VERSION 1.9.0)
 
 if(MSVC)
-    set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
+    set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
 else()
-    set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks the non stable cpp20 features
+    set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
 endif()
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

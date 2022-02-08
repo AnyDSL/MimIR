@@ -52,7 +52,8 @@ It depends on what exactly you want to achieve and how much structure you need d
 The simplest way is to kick off with [World::externals](@ref thorin::World::externals) and recursively run over [Def::extended_ops](@ref thorin::Def::extended_ops) like this:
 ```cpp
     DefSet done;
-    for (const auto& [_, nom] : world.externals()) visit(done, nom);
+    for (const auto& [_, nom] : world.externals())
+        visit(done, nom);
 
     void visit(DefSet& done, const Def* def) {
         if (!done.emplace(def).second) return;
