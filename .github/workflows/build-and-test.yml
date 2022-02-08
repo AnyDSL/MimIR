@@ -21,7 +21,13 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Valgrind
+      - name: Install newest g++ (ubuntu-latest only)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 
+          sudo apt-get install g++-11
+
+      - name: Install Valgrind (ubuntu-latest in Debug mode only)
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.build-type == 'Debug' }}
         run: |
           sudo apt-get update
@@ -33,18 +39,23 @@ jobs:
           version: latest
           platform: x64
 
-      - name: Configure
+      - name: Configure (ubuntu-latest only)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+
+      - name: Configure (windows only)
+        if: ${{ matrix.os != 'ubuntu-latest' }}
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v
 
-      - name: Test with Valgrind
+      - name: Test with Valgrind (ubuntu-latest in Debug mode only)
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.build-type == 'Debug' }}
-        working-directory: ${{github.workspace}}/build/bin
+        working-directory: ${{github.workspace}}/build
         run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure -T memcheck
 
-      - name: Test
+      - name: Test (all other builds)
         if: ${{ matrix.os != 'ubuntu-latest' || matrix.build-type == 'Debug' }}
-        working-directory: ${{github.workspace}}/build/bin
+        working-directory: ${{github.workspace}}/build
         run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure
