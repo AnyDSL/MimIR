@@ -93,7 +93,7 @@ constexpr uint64_t width2mod(uint64_t n) {
 
 constexpr std::optional<uint64_t> mod2width(uint64_t n) {
     if (n == 0) return 64;
-    if (is_power_of_2(n)) return log2(n);
+    if (std::has_single_bit(n)) return std::bit_width(n - 1_u64);
     return {};
 }
 

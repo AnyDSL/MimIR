@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <array>
+#include <bit>
 #include <cassert>
 #include <cinttypes>
 #include <cstdint>
@@ -14,8 +15,8 @@
 #include <utility>
 
 #include "thorin/config.h"
-#include "thorin/util/bit.h"
 #include "thorin/util/stream.h"
+#include "thorin/util/types.h"
 
 namespace thorin {
 
@@ -241,7 +242,7 @@ public:
         , id_(0)
 #endif
     {
-        assert(is_power_of_2(capacity));
+        assert(std::has_single_bit(capacity));
         fill(nodes_);
     }
     HashTable(HashTable&& other)
@@ -320,7 +321,7 @@ public:
     template<class I>
     bool insert(I begin, I end) {
         hash_t s = size() + std::distance(begin, end);
-        hash_t c = round_to_power_of_2(s);
+        hash_t c = std::bit_ceil(s);
 
         if (s > c/4_u32 + c/2_u32) c *= 4_u32;
 
@@ -425,7 +426,7 @@ public:
     void rehash(hash_t new_capacity) {
         using std::swap;
 
-        assert(is_power_of_2(new_capacity));
+        assert(std::has_single_bit(new_capacity));
 
         auto old_capacity = capacity_;
         capacity_ = std::max(new_capacity, hash_t(MinHeapCapacity));
@@ -577,7 +578,7 @@ private:
     //@}
 
     value_type* alloc() {
-        assert(is_power_of_2(capacity_));
+        assert(std::has_single_bit(capacity_));
         auto nodes = new value_type[capacity_];
         return fill(nodes);
     }

@@ -705,6 +705,13 @@ const Def* normalize_RCmp(const Def* type, const Def* c, const Def* arg, const D
     return world.raw_app(callee, {a, b}, dbg);
 }
 
+// TODO I guess we can do that with C++20 <bit>
+inline u64 pad(u64 offset, u64 align) {
+    auto mod = offset % align;
+    if (mod != 0) offset += align - mod;
+    return offset;
+}
+
 // TODO this currently hard-codes x86_64 ABI
 // TODO in contrast to C, we might want to give singleton types like 'int 1' or '[]' a size of 0 and simply nuke each and every occurance of these types in a later phase
 // TODO Pi and others
