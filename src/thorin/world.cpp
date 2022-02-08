@@ -176,6 +176,18 @@ World::World(const std::string& name)
         auto ptr = type_ptr(T, as);
         type->set_codom(pi({mem, nat}, sigma({mem, ptr})));
         data_.slot_ = axiom(nullptr, type, Tag::Slot, 0, dbg("slot"));
+    } { // malloc: [T: *, as: nat] -> [M, nat] -> [M, ptr(T, as)]
+        auto type = nom_pi(kind())->set_dom({kind(), nat});
+        auto [T, as] = type->vars<2>({dbg("T"), dbg("as")});
+        auto ptr = type_ptr(T, as);
+        type->set_codom(pi({mem, nat}, sigma({mem, ptr})));
+        data_.malloc_ = axiom(nullptr, type, Tag::Malloc, 0, dbg("malloc"));
+    } { // mslot: [T: *, as: nat] -> [M, nat, nat] -> [M, ptr(T, as)]
+        auto type = nom_pi(kind())->set_dom({kind(), nat});
+        auto [T, as] = type->vars<2>({dbg("T"), dbg("as")});
+        auto ptr = type_ptr(T, as);
+        type->set_codom(pi({mem, nat, nat}, sigma({mem, ptr})));
+        data_.mslot_ = axiom(nullptr, type, Tag::Mslot, 0, dbg("mslot"));
     } { // atomic: [T: *, R: *] -> T -> R
         auto type = nom_pi(kind())->set_dom({kind(), kind()});
         auto [T, R] = type->vars<2>({dbg("T"), dbg("R")});
@@ -326,7 +338,6 @@ const Pi* World::cn_mem_flat(const Def* dom, const Def* codom, const Def* dbg) {
         defs.front() = type_mem();
         ret = cn(defs);
     }
-
 
     if (dom->isa<Sigma>()) {
         auto size = dom->num_ops() + 2;
@@ -660,6 +671,16 @@ const Def* World::op_lea(const Def* ptr, const Def* index, const Def* dbg) {
     auto [pointee, addr_space] = as<Tag::Ptr>(ptr->type())->args<2>();
     auto Ts = tuple_of_types(pointee);
     return app(app(ax_lea(), {pointee->arity(), Ts, addr_space}), {ptr, index}, dbg);
+}
+
+const Def* World::op_malloc(const Def* type, const Def* mem, const Def* dbg /*= {}*/) {
+    auto size = op(Trait::size, type);
+    return app(app(ax_malloc(), {type, lit_nat_0()}), {mem, size}, dbg);
+}
+
+const Def* World::op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg /*= {}*/) {
+    auto size = op(Trait::size, type);
+    return app(app(ax_mslot(), {type, lit_nat_0()}), {mem, size, id}, dbg);
 }
 
 /*

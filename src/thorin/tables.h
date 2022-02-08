@@ -26,15 +26,16 @@ using nat_t    = u64;
     m(Var, var)                                                               \
     m(Global, global)
 
-#define THORIN_TAG(m)                                                           \
-    m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)                           \
-    m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(Div, div) m(ROp, rop)               \
-    m(ICmp, icmp) m(RCmp, rcmp)                                                 \
-    m(Trait, trait) m(Conv, conv) m(PE, pe) m(Acc, acc)                         \
-    m(Bitcast, bitcast) m(LEA, lea)                                             \
-    m(Alloc, alloc) m(Slot, slot) m(Load, load) m(Remem, remem) m(Store, store) \
-    m(Atomic, atomic)                                                           \
-    m(Zip, zip)                                                                 \
+#define THORIN_TAG(m)                                               \
+    m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)               \
+    m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(Div, div) m(ROp, rop)   \
+    m(ICmp, icmp) m(RCmp, rcmp)                                     \
+    m(Trait, trait) m(Conv, conv) m(PE, pe) m(Acc, acc)             \
+    m(Bitcast, bitcast) m(LEA, lea)                                 \
+    m(Alloc, alloc) m(Slot, slot) m(Malloc, malloc) m(Mslot, mslot) \
+    m(Load, load) m(Remem, remem) m(Store, store)                   \
+    m(Atomic, atomic)                                               \
+    m(Zip, zip)                                                     \
     m(RevDiff, rev_diff) m(TangentVector, tangent_vector)
 
 namespace WMode {

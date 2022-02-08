@@ -596,16 +596,19 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t, p, ll_ptr, idx_t, ll_idx);
     } else if (auto trait = isa<Tag::Trait>(def)) {
         THORIN_UNREACHABLE;
-    } else if (auto alloc = isa<Tag::Alloc>(def)) {
-        emit_unsafe(alloc->arg());
-        auto ptr = as<Tag::Ptr>(def->proj(1)->type());
-        auto size = emit(world().op(Trait::size, ptr->arg(0)));
+    } else if (auto malloc = isa<Tag::Malloc>(def)) {
+        emit_unsafe(malloc->arg(0));
+        auto size = emit(malloc->arg(1));
+        auto ptr_t = convert(as<Tag::Ptr>(def->proj(1)->type()));
         bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
-        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", convert(ptr));
-    } else if (auto slot = isa<Tag::Slot>(def)) {
-        emit_unsafe(slot->arg(0));
-        auto [pointee, addr_space] = as<Tag::Ptr>(def->proj(1)->type())->args<2>();
-        return bb.assign(name, "alloca {}", convert(pointee));
+        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
+    } else if (auto mslot = isa<Tag::Mslot>(def)) {
+        emit_unsafe(mslot->arg(0));
+        // TODO array with size
+        //auto size = emit(mslot->arg(1));
+        auto [pointee, addr_space] = mslot->decurry()->args<2>();
+        bb.body().emplace_front().fmt("{} = alloca {}", name, convert(pointee));
+        return name;
     } else if (auto load = isa<Tag::Load>(def)) {
         emit_unsafe(load->arg(0));
         auto ptr = emit(load->arg(1));

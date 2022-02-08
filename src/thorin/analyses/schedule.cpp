@@ -44,6 +44,8 @@ Scheduler::Scheduler(const Scope& s)
             if (!def->op(i)->isa_nom())
                 enqueue(def, i, def->op(i));
         }
+
+        if (!def->type()->isa_nom()) enqueue(def, -1, def->type());
     }
 }
 

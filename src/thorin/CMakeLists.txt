@@ -60,6 +60,8 @@ set(THORIN_SOURCES
     pass/fp/dce.h
     pass/fp/ssa_constr.cpp
     pass/fp/ssa_constr.h
+    pass/rw/alloc2malloc.cpp
+    pass/rw/alloc2malloc.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
     pass/rw/remem_elim.cpp
