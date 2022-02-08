@@ -16,34 +16,35 @@ jobs:
         os: [ubuntu-latest, windows-2022]
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+      - name: Clone recursively
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
-    - name: Install Valgrind
-      if: ${{matrix.os}} == 'ubuntu-latest' && ${{matrix.build-type}} == 'Debug'
-      run: |
-        sudo apt-get update
-        sudo apt-get install valgrind
+      - name: Install Valgrind
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.build-type == 'Debug' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install valgrind
 
-    - name: Set up Clang
-      uses: egor-tensin/setup-clang@v1
-      with:
-        version: latest
-        platform: x64
+      - name: Set up Clang
+        uses: egor-tensin/setup-clang@v1
+        with:
+          version: latest
+          platform: x64
 
-    - name: Configure
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+      - name: Configure
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
 
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v
 
-    - name: Test with Valgrind
-      if: ${{matrix.os}} == 'ubuntu-latest' && ${{matrix.build-type}} == 'Debug'
-      working-directory: ${{github.workspace}}/build/bin
-      run: ctest -C ${{matrix.build-type}} --output-on-failure -T memcheck
+      - name: Test with Valgrind
+        if: ${{ matrix.os == 'ubuntu-latest' && matrix.build-type == 'Debug' }}
+        working-directory: ${{github.workspace}}/build/bin
+        run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure -T memcheck
 
-    - name: Test
-      if: ${{matrix.os}} != 'ubuntu-latest' || ${{matrix.build-type}} == 'Release'
-      working-directory: ${{github.workspace}}/build/bin
-      run: ctest -C ${{matrix.build-type}} --output-on-failure
+      - name: Test
+        if: ${{ matrix.os != 'ubuntu-latest' || matrix.build-type == 'Debug' }}
+        working-directory: ${{github.workspace}}/build/bin
+        run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure
