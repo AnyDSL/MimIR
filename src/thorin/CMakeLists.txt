@@ -89,7 +89,6 @@ set(THORIN_SOURCES
     util/hash.h
     util/indexmap.h
     util/indexset.h
-    util/iterator.h
     util/ptr.h
     util/stream.cpp
     util/stream.h
