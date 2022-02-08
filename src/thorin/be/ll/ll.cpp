@@ -620,7 +620,15 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         }
 
         auto tup_t = convert(tuple->type());
-        return bb.assign(name, "extractvalue {} {}, {}", tup_t, ll_tup, ll_idx);
+        if (isa_lit(index)) {
+            return bb.assign(name, "extractvalue {} {}, {}", tup_t, ll_tup, ll_idx);
+        } else {
+            auto elem_t = convert(extract->type());
+            lam2bb_[entry_].body().emplace_front().fmt("{}.alloca = alloca {}", name, tup_t);
+            bb.body().emplace_back().fmt("store {} {}, {}* {}.alloca", tup_t, ll_tup, tup_t, name);
+            bb.body().emplace_back().fmt("{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, i64 {}", name, ll_tup, ll_tup, name, ll_idx);
+            return bb.assign(name, "load {}, {}* {}.gep", elem_t, elem_t, name);
+        }
     } else if (auto insert = def->isa<Insert>()) {
         auto tuple = emit(insert->tuple());
         auto index = emit(insert->index());
