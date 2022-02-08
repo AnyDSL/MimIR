@@ -241,14 +241,6 @@ public:
         // for a similar approach but with shift and reset primitives
 
 
-        // base type of differentiation: inner
-        if (auto a = A->isa<Arr>()) {
-            // if the input is an array, we compute the dimension
-            dlog(world_,"Multidimensional differentiation: {} dimensions",a->shape()->as<Lit>()->get<uint8_t>());
-        }else {
-            dlog(world_,"SingleDim differentiation");
-        }
-
         dlog(world_,"Finished Construction");
     }
 
@@ -263,7 +255,6 @@ private:
 
     // chains cn[:mem, A, cn[:mem, B]] and cn[:mem, B, cn[:mem, C]] to a toplevel cn[:mem, A, cn[:mem, C]]
     const Def* chain(const Def* a, const Def* b);
-
     const Pi* createPbType(const Def* A, const Def* B);
 
     World& world_;
@@ -271,7 +262,6 @@ private:
     DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term (a dst term) to its pullback function
     DefMap<const Def*> pointer_map;
     const Def* A;// input type
-    Lam* src_;
 
     void initArg(const Def* dst);
     const Def* ptrSlot(const Def* ty, const Def* mem);
@@ -318,7 +308,7 @@ const Def* AutoDiffer::chain(const Def* a, const Def* b) {
 
 // pullback for a function of type A->B => pb of B result regarding A
 const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
-    // TODO: move tangent_type of A here
+    // one could keep A "normal" and use tangent type here and at the uses to create a pb ZERO,
     return world_.cn_mem_ret(world_.tangent_type(B,false), A);
 }
 
@@ -327,46 +317,13 @@ const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
 std::pair<const Def*,const Def*> AutoDiffer::reloadPtrPb(const Def* mem, const Def* ptr, const Def* dbg, bool generateLoadPb) {
     auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],dbg)->projs<2>();
     type_dump(world_,"  reload for ptr",ptr);
-
     pullbacks_[ptr]=pb_load_fun;
-
-//    if(!generateLoadPb){
-        return {pb_load_mem,pb_load_fun};
-//    }
-
-//    // if ptr B have a pb: ptr B -> A
-//    // then the shadow memory has a type ptr(ptr B -> A)
-//    // after load we get a B with a pb: B -> A
-//    // => wrap the scalar into a ptr
-//    // we do all of this to get a ptr of array for indefinite arrays
-//
-//    // inner type
-//    auto ty = as<Tag::Ptr>(ptr->type())->arg()->projs<2>()[0];
-//
-//
-//    auto pi = createPbType(A,ty);
-//    auto pb = world_.nom_lam(pi, world_.dbg("pb_load_of_shadow"));
-//    pb->set_filter(world_.lit_true());
-//
-//    // create scalar slot inside pb as it makes more sense to handle and load it locally inside
-//    auto [scal_mem, scal_ptr]=world_.op_slot(ty,pb->mem_var(),world_.dbg("s_slot"))->projs<2>();
-//    auto st_mem = world_.op_store(scal_mem,scal_ptr,pb->var(1));
-//    pb->set_body(world_.app(
-//        pb_load_fun,
-//        {
-//            st_mem,
-//            scal_ptr,
-//            pb->ret_var()
-//        }
-//        ));
-//
-//    return {pb_load_mem,pb};
+    return {pb_load_mem,pb_load_fun};
 }
 
 // top level entry point after creating the AutoDiffer object
 // a mapping of source arguments to dst arguments is expected in src_to_dst
 const Def* AutoDiffer::reverse_diff(Lam* src) {
-    this->src_=src;
     // For each param, create an appropriate pullback. It is just the (one-hot) identity function for each of those.
     type_dump(world_,"Apply RevDiff to src",src);
     current_mem=src_to_dst_[src->mem_var()];
@@ -402,42 +359,43 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         idpb->set_filter(world_.lit_true());
 
 
-        if(dim>1 && false) {
-            // TODO: Ptr Tuple
-            dlog(world_,"Non scalar argument, manually create extract pullbacks");
+//        if(dim>1 && false) {
+//            // TODO: Ptr Tuple
+//            dlog(world_,"Non scalar argument, manually create extract pullbacks");
+//
+//            //split pullbacks for each argument
+//            // such that each component has one without extract
+//            // (needed for ROp and RCmp in the case for
+//            //      2d function which uses the arguments
+//            //      in the same order
+//            // )
+//            // f((a,b)) = a-b
+//
+//            // TODO: unify with extract
+//            auto args=dst->projs(dim);
+//            for(size_t i=0;i<dim;i++) {
+//                auto arg=args[i];
+//
+//                auto pi = createPbType(A,arg->type());
+//                auto pb = world_.nom_lam(pi, world_.dbg("arg_extract_pb"));
+//                pb->set_filter(world_.lit_true());
+//                type_dump(world_,"  pb of arg_extract: ",pb);
+//
+//                auto [rmem, ohv] = oneHot(world_,pb->mem_var(),i,A,pb->var(1,world_.dbg("s")));
+//
+//                pb->set_body(world_.app(
+//                    idpb,
+//                    {
+//                        rmem,
+//                        ohv,
+//                        pb->ret_var()
+//                    }
+//                    ));
+//
+//                pullbacks_[args[i]]=pb;
+//            }
+//        }
 
-            //split pullbacks for each argument
-            // such that each component has one without extract
-            // (needed for ROp and RCmp in the case for
-            //      2d function which uses the arguments
-            //      in the same order
-            // )
-            // f((a,b)) = a-b
-
-            // TODO: unify with extract
-            auto args=dst->projs(dim);
-            for(size_t i=0;i<dim;i++) {
-                auto arg=args[i];
-
-                auto pi = createPbType(A,arg->type());
-                auto pb = world_.nom_lam(pi, world_.dbg("arg_extract_pb"));
-                pb->set_filter(world_.lit_true());
-                type_dump(world_,"  pb of arg_extract: ",pb);
-
-                auto [rmem, ohv] = oneHot(world_,pb->mem_var(),i,A,pb->var(1,world_.dbg("s")));
-
-                pb->set_body(world_.app(
-                    idpb,
-                    {
-                        rmem,
-                        ohv,
-                        pb->ret_var()
-                    }
-                    ));
-
-                pullbacks_[args[i]]=pb;
-            }
-        }
         dlog(world_,"Set IDPB");
         // shorten to variable input => id
         idpb->set_body(world_.app(idpb->ret_var(),
@@ -458,7 +416,6 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 }
 
 void AutoDiffer::initArg(const Def* dst) {
-
     // create shadow slots for pointers
 
 
