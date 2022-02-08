@@ -318,7 +318,15 @@ var hierarchy =
     [ "thorin::w2r_< int >", "structthorin_1_1w2r__.html", null ],
     [ "thorin::w2s_< int >", "structthorin_1_1w2s__.html", null ],
     [ "thorin::w2s_< 1 >", "structthorin_1_1w2s___3_011_01_4.html", null ],
+    [ "thorin::w2s_< 16 >", "structthorin_1_1w2s___3_0116_01_4.html", null ],
+    [ "thorin::w2s_< 32 >", "structthorin_1_1w2s___3_0132_01_4.html", null ],
+    [ "thorin::w2s_< 64 >", "structthorin_1_1w2s___3_0164_01_4.html", null ],
+    [ "thorin::w2s_< 8 >", "structthorin_1_1w2s___3_018_01_4.html", null ],
     [ "thorin::w2u_< int >", "structthorin_1_1w2u__.html", null ],
     [ "thorin::w2u_< 1 >", "structthorin_1_1w2u___3_011_01_4.html", null ],
+    [ "thorin::w2u_< 16 >", "structthorin_1_1w2u___3_0116_01_4.html", null ],
+    [ "thorin::w2u_< 32 >", "structthorin_1_1w2u___3_0132_01_4.html", null ],
+    [ "thorin::w2u_< 64 >", "structthorin_1_1w2u___3_0164_01_4.html", null ],
+    [ "thorin::w2u_< 8 >", "structthorin_1_1w2u___3_018_01_4.html", null ],
     [ "thorin::World::Arena::Zone", "structthorin_1_1_world_1_1_arena_1_1_zone.html", null ]
 ];

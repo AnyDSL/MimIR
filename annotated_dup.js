@@ -150,8 +150,16 @@ var annotated_dup =
       [ "w2r_", "structthorin_1_1w2r__.html", null ],
       [ "w2s_", "structthorin_1_1w2s__.html", null ],
       [ "w2s_< 1 >", "structthorin_1_1w2s___3_011_01_4.html", "structthorin_1_1w2s___3_011_01_4" ],
+      [ "w2s_< 16 >", "structthorin_1_1w2s___3_0116_01_4.html", "structthorin_1_1w2s___3_0116_01_4" ],
+      [ "w2s_< 32 >", "structthorin_1_1w2s___3_0132_01_4.html", "structthorin_1_1w2s___3_0132_01_4" ],
+      [ "w2s_< 64 >", "structthorin_1_1w2s___3_0164_01_4.html", "structthorin_1_1w2s___3_0164_01_4" ],
+      [ "w2s_< 8 >", "structthorin_1_1w2s___3_018_01_4.html", "structthorin_1_1w2s___3_018_01_4" ],
       [ "w2u_", "structthorin_1_1w2u__.html", null ],
       [ "w2u_< 1 >", "structthorin_1_1w2u___3_011_01_4.html", "structthorin_1_1w2u___3_011_01_4" ],
+      [ "w2u_< 16 >", "structthorin_1_1w2u___3_0116_01_4.html", "structthorin_1_1w2u___3_0116_01_4" ],
+      [ "w2u_< 32 >", "structthorin_1_1w2u___3_0132_01_4.html", "structthorin_1_1w2u___3_0132_01_4" ],
+      [ "w2u_< 64 >", "structthorin_1_1w2u___3_0164_01_4.html", "structthorin_1_1w2u___3_0164_01_4" ],
+      [ "w2u_< 8 >", "structthorin_1_1w2u___3_018_01_4.html", "structthorin_1_1w2u___3_018_01_4" ],
       [ "World", "classthorin_1_1_world.html", "classthorin_1_1_world" ]
     ] ]
 ];
