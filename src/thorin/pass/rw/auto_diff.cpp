@@ -1295,6 +1295,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
 //            dlog(world_,"is lam: {}",callee->isa<Lam>());
 
+            auto d_arg = j_wrap(arg);
+            type_dump(world_,"  wrapped args: ",d_arg);
+
             if(auto cal_lam=callee->isa<Lam>(); cal_lam && !cal_lam->is_set()) {
                 dlog(world_,"  found external function");
                 dlog(world_,"  function name {}",cal_lam->name());
@@ -1381,21 +1384,37 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
                 dst_callee = lam;
             }else {
+                type_dump(world_,"  fn callee",callee);
                 dlog(world_,"  fn callee node {}",callee->node_name());
                 if(callee->isa<Lam>()) {
-                    dst_callee = world_.op_rev_diff(callee);
-                    type_dump(world_,"  Used RevDiff Op on callee",dst_callee);
-                    dlog(world_,"  this call will invoke AutoDiff rewrite");
+                    dlog(world_,"  op_rev_diff function");
+                    auto ret_ty = callee->type()->as<Pi>()->doms().back()->as<Pi>();
+                    dlog(world_,"  ret_ty {}",ret_ty);
+                    dlog(world_,"  ret_ty num doms {}",ret_ty->num_doms());
+                    if(ret_ty->num_doms()==1) {
+                        // function is cn[mem] => only side effects
+                        // and it is a called function
+                        // => do nothing
+                        dlog(world_,"  void returning function");
+                        auto dst = world_.app(
+                           callee,
+                            d_arg
+                        );
+                        pullbacks_[dst] = pullbacks_[d_arg];
+                        return dst;
+                    }else {
+                        dst_callee = world_.op_rev_diff(callee);
+                        type_dump(world_,"  Used RevDiff Op on callee",dst_callee);
+                        dlog(world_,"  this call will invoke AutoDiff rewrite");
+                    }
                 }else{
+                    dlog(world_,"  j_wrap argument");
                     dst_callee= j_wrap(callee);
 //                    dlog(world_,"  replace calle with mapped {}",dst_callee);
                     type_dump(world_,"  j_wrap callee (for higher order)",dst_callee);
                 }
             }
 //            THORIN_UNREACHABLE;
-
-            auto d_arg = j_wrap(arg);
-            type_dump(world_,"  wrapped args: ",d_arg);
 
 
             auto [m,arg,ret_arg] = d_arg->projs<3>();
