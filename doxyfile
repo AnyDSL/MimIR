@@ -2275,6 +2275,7 @@ PREDEFINED             =
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
 EXPAND_AS_DEFINED      = CODE \
+                         THORIN_1_8_16_32_64 THORIN_8_16_32_64 THORIN_16_32_64 \
                          THORIN_PROJ \
                          THORIN_TAG THORIN_NODE \
                          THORIN_KEY THORIN_LIT THORIN_TOK \
