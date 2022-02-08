@@ -2,7 +2,6 @@ var dir_b4c1616413e32b88824b4ffdc9da0708 =
 [
     [ "array.h", "array_8h.html", "array_8h" ],
     [ "assert.h", "assert_8h.html", "assert_8h" ],
-    [ "bit.h", "bit_8h.html", "bit_8h" ],
     [ "bitset.cpp", "bitset_8cpp.html", null ],
     [ "bitset.h", "bitset_8h.html", [
       [ "thorin::BitSet", "classthorin_1_1_bit_set.html", "classthorin_1_1_bit_set" ],

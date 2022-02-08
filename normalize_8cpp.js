@@ -59,5 +59,6 @@ var normalize_8cpp =
     [ "normalize_store", "normalize_8cpp.html#a7be201ffa1f5d541964f2c446abcad9e", null ],
     [ "normalize_Trait", "normalize_8cpp.html#a38c51d2b7113cd1bafef05ca8d488b60", null ],
     [ "normalize_Wrap", "normalize_8cpp.html#ab1296b3aacd3bc151b5589a9d276bd8d", null ],
-    [ "normalize_zip", "normalize_8cpp.html#aa171f9cec4330ed2febd4c8d59c9d4e7", null ]
+    [ "normalize_zip", "normalize_8cpp.html#aa171f9cec4330ed2febd4c8d59c9d4e7", null ],
+    [ "pad", "normalize_8cpp.html#ac0939197f6f85434871b98845c13c9a0", null ]
 ];
