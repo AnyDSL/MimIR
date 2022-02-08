@@ -57,7 +57,17 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
         auto shape = arr->shape();
         dlog(world,"  Array shape {}", shape);
         dlog(world,"  Array {}", arr);
-        type_dump(world,"  Array Body", arr->body());
+
+        auto body_type = arr->body();
+        while(auto barr = body_type->isa<Arr>()) {
+            body_type = barr->body();
+        }
+
+        // tangents are only reals
+        nat_t bit_width = as_lit(as<Tag::Real>(body_type)->arg());
+
+        type_dump(world,"  Array Body", body_type);
+        dlog(world,"  Bit width {}", bit_width);
 //        THORIN_UNREACHABLE;
 //        dlog(world,"  Array Body Sigma {}", arr->body()->isa<Sigma>());
         #define w world
@@ -74,9 +84,9 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
                   // Os: <n_o;*> type array os size no => base output types
                   // f: arr of size ni of types Is
                   //    to arr of size no of types Os
-            {w.lit_nat(2),w.tuple({w.type_real(64),w.type_real(64)}),
-                  w.lit_nat(1), w.type_real(64),
-                  w.fn(ROp::add, (nat_t)0, (nat_t)64)
+            {w.lit_nat(2),w.tuple({body_type,body_type}),
+                  w.lit_nat(1), body_type,
+                  w.fn(ROp::add, (nat_t)0, bit_width)
                   }),
             world.tuple({a,b}));
         type_dump(world,"  lifted",lifted);
