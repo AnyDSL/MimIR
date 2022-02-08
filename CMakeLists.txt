@@ -35,7 +35,7 @@ configure_file(src/thorin/config.h.in ${CMAKE_BINARY_DIR}/include/thorin/config.
 include_directories(${CMAKE_BINARY_DIR}/include)
 
 if(MSVC)
-    add_compile_options(/std:c++latest /utf-8 /W4 /wd4146 /wd4245) # /WX
+    add_compile_options(/utf-8 /W4 /wd4146 /wd4245) # /WX
 else()
     add_compile_options(-Wall -Wextra -pedantic) # -Werror
 endif()
