@@ -118,9 +118,9 @@ Building</h1>
 </div><!-- fragment --><p> Otherwise, clone via HTTPS: </p><div class="fragment"><div class="line">git clone --recurse-submodules https://github.com/AnyDSL/thorin2.git</div>
 </div><!-- fragment --><p> Then, build with: </p><div class="fragment"><div class="line">cd thorin2</div>
 <div class="line">mkdir build</div>
-<div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Release # or Debug</div>
+<div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug</div>
 <div class="line">cmake --build build -j $(nproc)</div>
-</div><!-- fragment --><p> For a debug build simply use <code>-DCMAKE_BUILD_TYPE=Debug</code>.</p>
+</div><!-- fragment --><p> For a <code>Release</code> build simply use <code>-DCMAKE_BUILD_TYPE=Release</code>.</p>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Tests</h2>
 <p >Run the tests with: </p><div class="fragment"><div class="line">cd build</div>
