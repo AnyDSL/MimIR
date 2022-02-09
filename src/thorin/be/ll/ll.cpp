@@ -644,7 +644,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         // TODO array with size
         //auto size = emit(mslot->arg(1));
         auto [pointee, addr_space] = mslot->decurry()->args<2>();
-        bb.body().emplace_front().fmt("{} = alloca {}", name, convert(pointee));
+        lam2bb_[entry_].body().emplace_front().fmt("{} = alloca {}", name, convert(pointee));
         return name;
     } else if (auto load = isa<Tag::Load>(def)) {
         emit_unsafe(load->arg(0));
