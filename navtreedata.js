@@ -34,15 +34,16 @@ var NAVTREE =
     ] ],
     [ "Language Reference", "md_docs_langref.html", null ],
     [ "Developer Guide", "md_docs_dev.html", [
-      [ "Defs and the World", "md_docs_dev.html#autotoc_md7", [
-        [ "Hash Consing", "md_docs_dev.html#autotoc_md8", null ]
+      [ "Compiling and Executing", "md_docs_dev.html#autotoc_md7", null ],
+      [ "Defs and the World", "md_docs_dev.html#autotoc_md8", [
+        [ "Hash Consing", "md_docs_dev.html#autotoc_md9", null ]
       ] ],
-      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md9", null ],
-      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md10", null ]
+      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md10", null ],
+      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md11", null ]
     ] ],
     [ "Passes", "md_docs_passes.html", [
-      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md12", null ],
-      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md13", null ]
+      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md13", null ],
+      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md14", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -119,10 +120,10 @@ var NAVTREEINDEX =
 "classthorin_1_1_world.html#adcb533e61821d9fd7cf5a1760705d824",
 "classthorin_1_1unique__stack.html",
 "mangle_8cpp.html#abf5afa0bf107f2fe297567339f761dbf",
-"namespacethorin.html#aa4e9a4b6c779b23a08140d7b1a48a455",
-"parser_8h_source.html",
+"namespacethorin.html#aa4a9df41658521fb2f8a6842c377f13d",
+"parser_8h.html",
 "structthorin_1_1_tag2_enum___3_01_tag_1_1_conv_01_4.html",
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3a4eb31516a4986c34fa297e5e5f4045a9"
+"tables_8h.html#aec7c9c368dda260071936391c37a72e3a3e932611809e2b55152a9c0d50fde604"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
