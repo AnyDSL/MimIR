@@ -31,7 +31,7 @@ void optimize(World& world) {
 
     PassMan optZ(world);
     optZ.add<ZipEval>();
-//    optZ.run();
+    optZ.run();
     printf("Finished OptiZip\n");
 
 

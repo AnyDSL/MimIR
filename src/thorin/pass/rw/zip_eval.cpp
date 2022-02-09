@@ -45,13 +45,29 @@ const Def* ZipEval::rewrite(const Def* def) {
 //                            {a, b});
         auto dst =  w.app(w.app(w.app(w.ax_lift(), {r,s}), {n_i,Is,n_o,Os,f}), {a, b});
 
+        auto c_nom  = RWPass<>::curr_nom();
+        dlog(w,"Current Nom {}",c_nom);
+        auto lam = c_nom->as_nom<Lam>();
+
+        auto cont_lam = w.nom_lam( w.cn_mem(w.type_real()),w.dbg("zip_cont_"+lam->name()) );
+        type_dump(w,"created cont:",cont_lam);
+        cont_lam->set_filter(true);
+        cont_lam->set_body(lam->body());
+
+        lam->set_body(
+            w.app(
+                cont_lam,
+                {
+                    lam->mem_var()
+                }
+                ));
 
 
 //        auto pb = world_.nom_lam(pb_ty, world_.dbg("pb_alloc"));
 //        pb->set_filter(world_.lit_true());
 //        auto [z_mem,z] = ZERO(world_,pb->mem_var(),A);
 //        pb->set_body( world_.app(pb->ret_var(), {z_mem,z}));
-        THORIN_UNREACHABLE;
+//        THORIN_UNREACHABLE;
         return dst;
     }
 //    if (auto app = def->isa<App>()) {
