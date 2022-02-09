@@ -52,6 +52,7 @@ jobs:
         run: |
           pwd
           ctest --verbose -C ${{matrix.build-type}} --output-on-failure -T memcheck
+          ls -l
 
       - name: Test (all other builds)
         if: ${{ matrix.os != 'ubuntu-latest' }}
