@@ -368,8 +368,8 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
                     sep = ", ";
                 }
             }
-            s += is_array ? "]" : "}";
-            return s;
+
+            return s += is_array ? "]" : "}";
         }
 
         std::string prev = "undef";

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "thorin/world.h"
+#include "thorin/be/ll/ll.h"
 
 using namespace thorin;
 
@@ -24,4 +25,30 @@ TEST(Zip, fold) {
 
     res->dump(0);
     EXPECT_EQ(c, res);
+}
+
+TEST(Main, ll) {
+    World w;
+    auto mem_t  = w.type_mem();
+    auto i32_t  = w.type_int_width(32);
+    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
+
+    // Cn [mem, i32, Cn [mem, i32]]
+    auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
+    auto main = w.nom_lam(main_t, w.dbg("main"));
+    auto [mem, argc, argv, ret] = main->vars<4>();
+    main->app(ret, {mem, argc});
+    main->make_external();
+
+    std::ofstream file("test.ll");
+    Stream s(file);
+    thorin::ll::emit(w, s);
+    file.close();
+
+    // TODO make sure that proper clang is in path on Windows
+#ifndef _MSC_VER
+    std::system("clang test.ll -o test");
+    EXPECT_EQ(4, WEXITSTATUS(std::system("./test a b c")));
+    EXPECT_EQ(7, WEXITSTATUS(std::system("./test a b c d e f")));
+#endif
 }
