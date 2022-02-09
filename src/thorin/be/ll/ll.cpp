@@ -1,6 +1,8 @@
 #include "thorin/be/ll/ll.h"
 
+#include <iomanip>
 #include <deque>
+#include <limits>
 
 #include "thorin/analyses/cfg.h"
 #include "thorin/be/emitter.h"
@@ -392,15 +394,35 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             } else {
                 return std::to_string(lit->get<u64>());
             }
-        }
+        } else if (auto real = isa<Tag::Real>(lit->type())) {
+            std::stringstream s;
+            s << std::fixed;
 
-        if (auto real = isa<Tag::Real>(lit->type())) {
+            // TODO std::isfinite might not be entirely correct if decimal representation is slightly off compared to binary/hex
             switch (as_lit<nat_t>(real->arg())) {
-                case 16: return std::to_string(lit->get<r16>());
-                case 32: return std::to_string(lit->get<r32>());
-                case 64: return std::to_string(lit->get<r64>());
+                case 16:
+                    if (std::isfinite(lit->get<r16>()))
+                        s << std::setprecision(std::numeric_limits<r16>::max_digits10) << lit->get<r16>();
+                    else
+                        s << "0xH" << std::setfill('0') << std::setw( 4) << std::right << std::hex << lit->get<u16>();
+                    return s.str();
+                case 32:
+                    if (std::isfinite(lit->get<r32>())) {
+                        s << std::setprecision(std::numeric_limits<r32>::max_digits10) << lit->get<r32>();
+                        return s.str();
+                    }
+                    break;
+                case 64:
+                    if (std::isfinite(lit->get<r64>())) {
+                        s << std::setprecision(std::numeric_limits<r64>::max_digits10) << lit->get<r64>();
+                        return s.str();
+                    }
+                    break;
                 default: THORIN_UNREACHABLE;
             }
+
+            s << "0x" << std::setfill('0') << std::setw(16) << std::right << std::hex << lit->get<u64>();
+            return s.str();
         }
         THORIN_UNREACHABLE;
     } else if (def->isa<Bot>()) {
