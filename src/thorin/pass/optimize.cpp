@@ -18,36 +18,20 @@
 namespace thorin {
 
 void optimize(World& world) {
-    {
-        PassMan opt(world);
-        opt.add<PartialEval>();
-        auto br = opt.add<BetaRed>();
-        auto er = opt.add<EtaRed>();
-        auto ee = opt.add<EtaExp>(er);
-        opt.add<SSAConstr>(ee);
-        opt.add<Scalerize>(ee);
-        //opt.add<DCE>(br, ee);
-        opt.add<CopyProp>(br, ee);
-        opt.run();
-    }
+    PassMan opt(world);
+    opt.add<PartialEval>();
+    auto br = opt.add<BetaRed>();
+    auto er = opt.add<EtaRed>();
+    auto ee = opt.add<EtaExp>(er);
+    opt.add<SSAConstr>(ee);
+    opt.add<Scalerize>(ee);
+    //opt.add<DCE>(br, ee);
+    opt.add<CopyProp>(br, ee);
+    opt.run();
 
     cleanup_world(world);
     while (partial_evaluation(world, true)); // lower2cff
     cleanup_world(world);
-
-    {
-        // HACK rerun everything as lower2cff can be quite indeterministic
-        PassMan opt(world);
-        opt.add<PartialEval>();
-        auto br = opt.add<BetaRed>();
-        auto er = opt.add<EtaRed>();
-        auto ee = opt.add<EtaExp>(er);
-        opt.add<SSAConstr>(ee);
-        opt.add<Scalerize>(ee);
-        //opt.add<DCE>(br, ee);
-        opt.add<CopyProp>(br, ee);
-        opt.run();
-    }
 
     PassMan codgen_prepare(world);
     //codgen_prepare.add<BoundElim>();

@@ -9,6 +9,23 @@
 
 namespace thorin {
 
+// This is just nonsense but restores the old behavior.
+static bool is_returning(const Lam* lam) {
+    bool ret = false;
+    for (auto op : lam->type()->ops()) {
+        switch (op->order()) {
+            case 1:
+                if (!ret) {
+                    ret = true;
+                    continue;
+                }
+                return false;
+            default: continue;
+        }
+    }
+    return ret;
+}
+
 void app_to_dropped_app(Lam* src, Lam* dst, const App* app) {
     DefVec nargs;
     auto src_app = src->body()->as<App>();
@@ -113,7 +130,7 @@ public:
         if (lower2cff)
             if(order >= 2 || (order == 1
                         && (!callee_->var(i)->type()->isa<Pi>()
-                        || (!callee_->ret_var() || (!is_top_level(callee_)))))) {
+                        || (!is_returning(callee_) || (!is_top_level(callee_)))))) {
             world().DLOG("bad var({}) {} of lam {}", i, callee_->var(i), callee_);
             return true;
         }
