@@ -22,7 +22,7 @@ Here is a small example that first constructs a `main` function and simply retur
 
     std::ofstream file("test.ll");
     Stream s(file);
-    thorin::ll::emit(w, s);
+    ll::emit(w, s);
     file.close();
 
     std::system("clang test.ll -o test");
