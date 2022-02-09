@@ -31,8 +31,6 @@ endif()
 if(THORIN_PROFILE)
     set(THORIN_ENABLE_PROFILING TRUE)
 endif()
-configure_file(src/thorin/config.h.in ${CMAKE_BINARY_DIR}/include/thorin/config.h @ONLY)
-include_directories(${CMAKE_BINARY_DIR}/include)
 
 if(MSVC)
     add_compile_options(/utf-8 /W4 /wd4146 /wd4245) # /WX
@@ -60,6 +58,3 @@ if(BUILD_TESTING)
     set_target_properties(gmock      PROPERTIES FOLDER extern)
     set_target_properties(gmock_main PROPERTIES FOLDER extern)
 endif()
-
-export(TARGETS libthorin FILE ${CMAKE_BINARY_DIR}/share/anydsl/cmake/thorin-exports.cmake)
-configure_file(cmake/thorin-config.cmake.in ${CMAKE_BINARY_DIR}/share/anydsl/cmake/thorin-config.cmake @ONLY)

@@ -27,10 +27,10 @@ Then, build with:
 ```
 cd thorin2
 mkdir build
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release # or Debug
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
 cmake --build build -j $(nproc)
 ```
-For a debug build simply use `-DCMAKE_BUILD_TYPE=Debug`.
+For a `Release` build simply use `-DCMAKE_BUILD_TYPE=Release`.
 
 ### Tests
 

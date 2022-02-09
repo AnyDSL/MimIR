@@ -100,6 +100,8 @@ set(THORIN_SOURCES
 
 add_library(libthorin ${THORIN_SOURCES})
 set_target_properties(libthorin PROPERTIES PREFIX "")
+configure_file(config.h.in ${CMAKE_BINARY_DIR}/include/thorin/config.h @ONLY)
+target_include_directories(libthorin PUBLIC ${CMAKE_BINARY_DIR}/include)
 target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 target_include_directories(libthorin PUBLIC ${PROJECT_SOURCE_DIR}/half/include)
 
