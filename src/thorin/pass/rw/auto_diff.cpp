@@ -206,6 +206,7 @@ std::pair<const Def*,const Def*> oneHot(World& world_, const Def* mem,const Def*
 
 
 
+
 namespace {
 
 class AutoDiffer {
@@ -256,6 +257,7 @@ private:
     // chains cn[:mem, A, cn[:mem, B]] and cn[:mem, B, cn[:mem, C]] to a toplevel cn[:mem, A, cn[:mem, C]]
     const Def* chain(const Def* a, const Def* b);
     const Pi* createPbType(const Def* A, const Def* B);
+    const Def* extract_pb(const Def* j_extract);
 
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
@@ -274,6 +276,7 @@ private:
     //   load, store, slot, alloc, function arg
     const Def* current_mem;
 };
+
 
 const Def* AutoDiffer::chain(const Def* a, const Def* b) {
     // chaining of two pullbacks is composition due to the
@@ -313,6 +316,32 @@ const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
 }
 
 
+//const Def* AutoDiffer::extract_pb(const Def* j_tuple, const Def* j_idx) {
+const Def* AutoDiffer::extract_pb(const Def* j_extract) {
+    if(pullbacks_.count(j_extract))
+        return pullbacks_[j_extract];
+    auto extract = j_extract->as<Extract>();
+
+    auto pi = createPbType(A,extract->type());
+    auto pb = world_.nom_lam(pi, world_.dbg("extract_pb"));
+    pb->set_filter(world_.lit_true());
+    type_dump(world_,"  pb of extract: ",pb);
+
+    auto [rmem, ohv] = oneHot(world_,pb->mem_var(),extract->index(),world_.tangent_type(extract->tuple()->type(),false),pb->var(1,world_.dbg("s")));
+
+    // or use pullbacsk type
+    pb->set_body(world_.app(
+        pullbacks_[extract->tuple()],
+        {
+            rmem,
+            ohv,
+            pb->ret_var()
+        }
+    ));
+    return pb;
+}
+
+
 // loads pb from shadow slot, updates pb for the ptr, returns, mem and pb for the loaded value
 std::pair<const Def*,const Def*> AutoDiffer::reloadPtrPb(const Def* mem, const Def* ptr, const Def* dbg, bool generateLoadPb) {
     auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],dbg)->projs<2>();
@@ -343,11 +372,6 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
         size_t dim= getDim(dst->type());
         dlog(world_,"Source Param dim {}",dim);
-//        if (auto a = A->isa<Arr>()) {
-//            dim = a->shape()->as<Lit>()->get<uint8_t>();
-//        }else {
-//            dim=1;
-//        }
 
         // the pullback of the argument with respect to the argument is the identity
         // if the argument is a tuple, each component has a projection of one of the components of the
@@ -358,43 +382,6 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         auto idpb = world_.nom_lam(idpi, world_.dbg("id"));
         idpb->set_filter(world_.lit_true());
 
-
-//        if(dim>1 && false) {
-//            // TODO: Ptr Tuple
-//            dlog(world_,"Non scalar argument, manually create extract pullbacks");
-//
-//            //split pullbacks for each argument
-//            // such that each component has one without extract
-//            // (needed for ROp and RCmp in the case for
-//            //      2d function which uses the arguments
-//            //      in the same order
-//            // )
-//            // f((a,b)) = a-b
-//
-//            // TODO: unify with extract
-//            auto args=dst->projs(dim);
-//            for(size_t i=0;i<dim;i++) {
-//                auto arg=args[i];
-//
-//                auto pi = createPbType(A,arg->type());
-//                auto pb = world_.nom_lam(pi, world_.dbg("arg_extract_pb"));
-//                pb->set_filter(world_.lit_true());
-//                type_dump(world_,"  pb of arg_extract: ",pb);
-//
-//                auto [rmem, ohv] = oneHot(world_,pb->mem_var(),i,A,pb->var(1,world_.dbg("s")));
-//
-//                pb->set_body(world_.app(
-//                    idpb,
-//                    {
-//                        rmem,
-//                        ohv,
-//                        pb->ret_var()
-//                    }
-//                    ));
-//
-//                pullbacks_[args[i]]=pb;
-//            }
-//        }
 
         dlog(world_,"Set IDPB");
         // shorten to variable input => id
@@ -671,28 +658,17 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         auto last_mem=current_mem;
 
-        dlog(world_,"  lam args {}",old_pi->num_doms());
-        if(old_pi->num_doms()==1){//only mem argument
-            // keep everything as is
-            // and differentiate body
-            // TODO: merge with else case
-            dlog(world_,"  non-returning mem lambda");
-            auto dst = world_.nom_lam(old_pi, world_.dbg(lam->name()));
-            type_dump(world_,"  => ",dst);
-            src_to_dst_[lam->var()] = dst->var();
-            type_dump(world_,"  dst var (no pb needed): ",dst->var());
-            dst->set_filter(lam->filter());
+        auto back_order=lam->type()->as<Pi>()->doms().back()->order();
+        auto returning = back_order>0;
+        dlog(world_,"  lam returning: {}", lam->is_returning());
+//        dlog(world_,"  lam returning2: {}", returning);
+        dlog(world_,"  order: {}", back_order);
+        if(lam->is_returning() || returning) {
+            auto dst = world_.op_rev_diff(lam);
+            type_dump(world_,"  new lam",dst);
+//            THORIN_UNREACHABLE;
 
-            current_mem=dst->mem_var();
-            dlog(world_,"  set current mem for Lam {} to {} ", lam,current_mem);
-
-            src_to_dst_[lam] = dst; // mutual recursion / indirect call
-            auto bdy = j_wrap(lam->body());
-            dst->set_body(bdy);
-            // the pullback of a lambda without call or arguments is the identity
-
-            // never executed but needed for tuple pb
-            dlog(world_,"  compute pb ty of lam: {}",lam->type());
+            // should not be needed => TODO: handle higher order pb correctly in app
             auto zeropi = createPbType(A,lam->type());
             dlog(world_,"  result: {}",zeropi);
             auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb"));
@@ -702,19 +678,31 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
             pullbacks_[dst] =zeropb;
 
-            current_mem=last_mem;
-            dlog(world_,"  reset current mem after Lam {} to {} ",lam,current_mem);
             return dst;
         }
 
+
+
+
+
+        dlog(world_,"  lam args {}",old_pi->num_doms());
+        auto args = old_pi->num_doms();
+
         // take a pullback additionally to the argument
-        auto pi = world_.cn({world_.type_mem(), old_pi->doms()[1], createPbType(A,old_pi->doms()[1])});
+        const Pi* pi;
+        if(args==1) {
+            pi=old_pi;
+        }else{
+            pi = world_.cn({world_.type_mem(), old_pi->doms()[1], createPbType(A,old_pi->doms()[1])});
+        }
         auto dst = world_.nom_lam(pi, world_.dbg(lam->name()));
         type_dump(world_,"  => ",dst);
         src_to_dst_[lam->var()] = dst->var();
         type_dump(world_,"  dst var: ",dst->var());
-        pullbacks_[dst->var()] = dst->var(dst->num_vars() - 1); // pullback (for var) is the last argument
-        type_dump(world_,"  dst var pb: ",pullbacks_[dst->var()]);
+        if(args>1) {
+            pullbacks_[dst->var()] = dst->var(dst->num_vars() - 1); // pullback (for var) is the last argument
+            type_dump(world_,"  dst var pb: ",pullbacks_[dst->var()]);
+        }
         dst->set_filter(lam->filter());
 
         current_mem=dst->mem_var();
@@ -723,7 +711,21 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         src_to_dst_[lam] = dst; // in case of mutual/indirect recursion
         auto bdy = j_wrap(lam->body());
         dst->set_body(bdy);
-        pullbacks_[dst] = pullbacks_[bdy];
+
+        // TODO: need pb?
+//        pullbacks_[dst] = pullbacks_[bdy];
+        // never executed but needed for tuple pb
+        dlog(world_,"  compute pb ty of lam: {}",lam->type());
+        auto zeropi = createPbType(A,lam->type());
+        dlog(world_,"  result: {}",zeropi);
+        auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb"));
+        type_dump(world_,"  non ret pb (zero)",zeropb);
+        zeropb->set_filter(world_.lit_true());
+        auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
+        zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
+        pullbacks_[dst] =zeropb;
+
+
 
         current_mem=last_mem;
         dlog(world_,"  reset current mem after LamNM {} to {} ",lam,current_mem);
@@ -765,6 +767,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto ab = j_wrap(rop->arg());
         type_dump(world_,"  args jwrap",ab);
         auto [a, b] = ab->projs<2>();
+        type_dump(world_,"  arg a",a);
+        type_dump(world_,"  arg b",b);
+        if(!pullbacks_.count(a)) {
+            pullbacks_[a]= extract_pb(a);
+            type_dump(world_,"  created pb for a",pullbacks_[a]);
+            pullbacks_[b]= extract_pb(b);
+            type_dump(world_,"  created pb for b",pullbacks_[b]);
+        }
         auto dst = j_wrap_rop(ROp(rop.flags()), a, b);
         src_to_dst_[rop] = dst;
         type_dump(world_,"  result of app",dst);
@@ -1498,23 +1508,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         }
 
 
-        auto pi = createPbType(A,extract->type());
-        auto pb = world_.nom_lam(pi, world_.dbg("extract_pb"));
-        pb->set_filter(world_.lit_true());
-        type_dump(world_,"  pb of extract: ",pb);
-
-        auto [rmem, ohv] = oneHot(world_,pb->mem_var(),extract->index(),world_.tangent_type(jtup->type(),false),pb->var(1,world_.dbg("s")));
-
-        // or use pullbacsk type
-        pb->set_body(world_.app(
-            pullbacks_[jtup],
-            {
-                rmem,
-                ohv,
-                pb->ret_var()
-            }
-        ));
-        pullbacks_[dst] = pb;
+        pullbacks_[dst] = extract_pb(dst);
         type_dump(world_,"  pullback of extract",pullbacks_[dst]);
         return dst;
     }
