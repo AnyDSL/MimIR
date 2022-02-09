@@ -47,7 +47,6 @@ TEST(Main, ll) {
 
 #ifndef _MSC_VER
     // TODO make sure that proper clang is in path on Windows
-    std::system("pwd");
     std::system("clang test.ll -o test");
 #if 0
     EXPECT_EQ(4, WEXITSTATUS(std::system("./test a b c")));
