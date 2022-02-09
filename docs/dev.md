@@ -4,6 +4,32 @@
 
 This guide summaries typicical idioms you want to use when working with Thorin as a developer.
 
+## Compiling and Executing
+
+Here is a small example that first constructs a `main` function and simply returns the `argc`:
+```cpp
+    World w;
+    auto mem_t  = w.type_mem();
+    auto i32_t  = w.type_int_width(32);
+    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
+
+    // Cn [mem, i32, Cn [mem, i32]]
+    auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
+    auto main = w.nom_lam(main_t, w.dbg("main"));
+    auto [mem, argc, argv, ret] = main->vars<4>();
+    main->app(ret, {mem, argc});
+    main->make_external();
+
+    std::ofstream file("test.ll");
+    Stream s(file);
+    thorin::ll::emit(w, s);
+    file.close();
+
+    std::system("clang test.ll -o test");
+    EXPECT_EQ(4, WEXITSTATUS(std::system("./test a b c")));
+```
+TODO explain
+
 ## Defs and the World
 
 [Def](@ref thorin::Def) is the base class for @em all nodes/expressions in Thorin.
