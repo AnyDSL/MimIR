@@ -26,7 +26,7 @@ Here is a small example that first constructs a `main` function and simply retur
     file.close();
 
     std::system("clang test.ll -o test");
-    EXPECT_EQ(4, WEXITSTATUS(std::system("./test a b c")));
+    assert(4 == WEXITSTATUS(std::system("./test a b c")));
 ```
 TODO explain
 
