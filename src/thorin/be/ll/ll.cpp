@@ -10,6 +10,18 @@
 
 namespace thorin::ll {
 
+static bool is_const(const Def* def) {
+    if (def->isa<Lit>()) return true;
+    if (auto pack = def->isa_structural<Pack>()) return is_const(pack->shape()) && is_const(pack->body());
+
+    if (auto tuple = def->isa<Tuple>()) {
+        auto ops = tuple->ops();
+        return std::all_of(ops.begin(), ops.end(), [](auto def) { return is_const(def); });
+    }
+
+    return false;
+}
+
 struct BB {
     BB() = default;
     BB(const BB&) = delete;
@@ -155,7 +167,7 @@ std::string CodeGen::convert(const Def* type) {
     if (name.empty()) return types_[type] = s.str();
 
     assert(!s.str().empty());
-    type_decls_ << s.str();
+    type_decls_ << s.str() << '\n';
     return types_[type] = name;
 }
 
@@ -252,7 +264,7 @@ void CodeGen::finalize(const Scope& scope) {
         }
     }
 
-    func_impls_.fmt("\n}}\n");
+    func_impls_.fmt("}}\n\n");
 }
 
 void CodeGen::emit_epilogue(Lam* lam) {
@@ -342,6 +354,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
     auto emit_tuple = [&](const Def* tuple) {
         if (!scope().bound().contains(tuple)) {
+        //if (is_const(tuple)) {
             bool is_array = tuple->type()->isa<Arr>();
 
             std::string s;
@@ -599,6 +612,8 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto src = emit(bitcast->arg());
         auto src_t = convert(bitcast->arg()->type());
         auto dst_t = convert(bitcast->type());
+
+        if (auto lit = isa_lit(bitcast->arg()); lit && *lit == 0) return "zeroinitializer";
         if (src_type_ptr && dst_type_ptr) return bb.assign(name,  "bitcast {} {} to {}", src_t, src, dst_t);
         if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", src_t, src, dst_t);
         if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
@@ -648,6 +663,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     } if (auto tuple = def->isa<Tuple>()) {
         return emit_tuple(tuple);
     } else if (auto pack = def->isa<Pack>()) {
+        if (auto lit = isa_lit(pack->body()); lit && *lit == 0) return "zeroinitializer";
         return emit_tuple(pack);
     } else if (auto extract = def->isa<Extract>()) {
         if (isa<Tag::Mem>(extract->type())) return {};
