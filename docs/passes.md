@@ -75,22 +75,29 @@ Now, two things might happen:
 2. You prove yourself wrong later on.
 
 If you find a contradiction to your initial assumption, you have to
-1. undo you mistake and backtrace and
+1. undo your mistake by backtracing back to the place where you erroneously made the wrong decision and
 2. correct your assumption such that you do not do the same mistake over and over again.
 
 In order to write a fixed-point pass, you have to inherit from [FPPass](@ref thorin::FPPass).
-It expects two template parameters:
-1. This must be the very class you are currently implementing (known as [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern).
-2. This is the same as for rewrite passes and will most likely be `Lam`.
+It expects two template parameters.
+The first one must be the very class you are currently implementing (this is known as [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) in C++).
+The second one has the same purpose as the template parameter for rewrite passes and will most likely be [Lam](@ref thorin::Lam).
 
 ### Rewrite
 
+The `rewrite` works exactly as for rewrite passes.
+However, this time around, you are guessing that the most optimistic result will happen.
+If you prove yourself wrong afterwards, you will gradually ascend in a [lattice](https://en.wikipedia.org/wiki/Complete_lattice) until the fixed-point pass stabilizes.
 TODO
 
 ### Analyze
 
 TODO
 
-## Other Hooks
+### Other Hooks
 
-TODO
+### Caveats
+
+It is important to always construct a valid program.
+Otherwise, bad things might happen as soon as you toss other passes into the mix.
+The reason is that the very program you are constructing is the **only** way to communicate with the other passes without directly sharing information.

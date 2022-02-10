@@ -44,7 +44,7 @@ Each `Def` is a node in a graph which is maintained in the [World](@ref thorin::
 
 | Structural                                                            | Nominal                                                                       |
 |-----------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| `const`                                                               | not `const`                                                                   |
+| must be `const`                                                       | maybe non-`const`                                                             |
 | immutable                                                             | mutable                                                                       |
 | ops form [DAG](https://en.wikipedia.org/wiki/Directed_acyclic_graph)  | ops may be cyclic                                                             |
 | no recursion                                                          | may be recursive                                                              |
@@ -65,8 +65,24 @@ void foo(const Def* def) {
         // ...
     }
 
+    // ...
+
     if (auto lam = def->isa_nom<Lam>()) {
         // lam of type Lam* - const has been removed!
+    }
+}
+```
+You can also check whether a specific `def` is really a structural:
+```cpp
+void foo(const Def* def) {
+    if (auto s = def->isa_structural()) {
+        // s cannot be a nominal
+    }
+
+    // ...
+
+    if (auto sigma = def->isa_structural<Sigma>()) {
+        // sigma is of type const Sigma* and cannot be a nominal Sigma
     }
 }
 ```
