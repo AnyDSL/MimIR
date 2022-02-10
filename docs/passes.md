@@ -2,6 +2,27 @@
 
 [TOC]
 
+Passes in Thorin are the main infrastructure and preferred method when implementing code transformations.
+However, nothing stops you from manually iterating and transforming the program.
+This is usually only necessary if you need a very specific iteration behavior for your transformation.
+
+Passes are managed by the [PassMan](@ref thorin::PassMan)ager.
+You can put together your optimization pipeline like so:
+```cpp
+    PassMan opt(world);
+    opt.add<PartialEval>();
+    auto br = opt.add<BetaRed>();
+    auto er = opt.add<EtaRed>();
+    auto ee = opt.add<EtaExp>(er);
+    opt.add<SSAConstr>(ee);
+    opt.add<Scalerize>(ee);
+    opt.add<CopyProp>(br, ee);
+    opt.run();
+```
+Note how some passes depend on other passes.
+For example, the [CopyProp](@ref thorin::CopyProp]agation depends on the [BetaRed](@ref thorin::BetaRed)uction and [EtaExp](@ref thorin::EtaExp)ansion.
+In contrast to traditional passes in compilers, Thorin's [PassMan](@ref thorin::PassMan) will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded *phase-ordering problem*.
+
 There are two kind of passes in Thorin:
 1. Rewrite Pass
 2. Fixed-Point Pass
@@ -9,11 +30,11 @@ There are two kind of passes in Thorin:
 ## Rewrite Pass
 
 In order to write a rewrite pass, you have to inherit from [RWPass](@ref thorin::RWPass).
-Usually, you are only interested in looking for code patterns that only occur in specific nominals - typically `Lam`bdas.
-This is the template argument in order to inspect only specific nominals.
-The main hook, the [PassMan](@ref thorin::PassMan) provides, is the [rewrite](@ref thorin::RWPassBase::rewrite) method.
+Usually, you are only interested in looking for code patterns that only occur in specific nominals - typically [Lam](@ref thorin::Lam)bdas.
+You can filter for these nominals by passing it as template parameter to [RWPass](@ref thorin::RWPass) when inherting from it.
+The main hook to the [PassMan](@ref thorin::PassMan), is the [rewrite](@ref thorin::RWPassBase::rewrite) method.
 As an example, let's have a look at the [Alloc2Malloc](@ref thorin::Alloc2Malloc) pass.
-It rewrites `alloc`/`slot` calls into their more verbose siblings `malloc`/`mslot` that make the size of the alloc'ed size explicit:
+It rewrites `alloc`/`slot` calls into their more verbose siblings `malloc`/`mslot` that make the size of the alloc'ed type explicit:
 This is `alloc2malloc.h`:
 ```cpp
 #ifndef THORIN_PASS_RW_ALLOC2MALLOC_H
