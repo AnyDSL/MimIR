@@ -102,7 +102,8 @@ $(document).ready(function(){initNavTree('md_docs_dev.html',''); initResizable()
 </ul>
 </li>
 <li class="level1"><a href="#autotoc_md10">Structural vs. Nominal</a></li>
-<li class="level1"><a href="#autotoc_md11">Iterating over the Program</a></li>
+<li class="level1"><a href="#autotoc_md11">Matching IR</a></li>
+<li class="level1"><a href="#autotoc_md12">Iterating over the Program</a></li>
 </ul>
 </div>
 <div class="textblock"><p >This guide summaries typicical idioms you want to use when working with Thorin as a developer.</p>
@@ -173,6 +174,8 @@ Structural vs. Nominal</h1>
 <div class="line">}</div>
 <div class="ttc" id="anamespacethorin_1_1_node_html_a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362"><div class="ttname"><a href="namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a></div><div class="ttdeci">@ Lam</div><div class="ttdef"><b>Definition:</b> tables.h:183</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md11"></a>
+Matching IR</h1>
+<h1><a class="anchor" id="autotoc_md12"></a>
 Iterating over the Program</h1>
 <p >There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classthorin_1_1_world.html#ad066f14a09e1d3897199d1a6743ae195">World::externals</a> and recursively run over <a class="el" href="classthorin_1_1_def.html#a543cbdcb17d574373aa65244dcead8f8">Def::extended_ops</a> like this: </p><div class="fragment"><div class="line"><a class="code hl_typedef" href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">DefSet</a> done;</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, nom] : world.externals())</div>

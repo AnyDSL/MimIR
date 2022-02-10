@@ -39,11 +39,16 @@ var NAVTREE =
         [ "Hash Consing", "md_docs_dev.html#autotoc_md9", null ]
       ] ],
       [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md10", null ],
-      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md11", null ]
+      [ "Matching IR", "md_docs_dev.html#autotoc_md11", null ],
+      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md12", null ]
     ] ],
     [ "Passes", "md_docs_passes.html", [
-      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md13", null ],
-      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md14", null ]
+      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md14", null ],
+      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md15", [
+        [ "Rewrite", "md_docs_passes.html#autotoc_md16", null ],
+        [ "Analyze", "md_docs_passes.html#autotoc_md17", null ]
+      ] ],
+      [ "Other Hooks", "md_docs_passes.html#autotoc_md18", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -97,11 +102,11 @@ var NAVTREEINDEX =
 "classthorin_1_1_world.html#ab148665b02cd6112774e39b647d3a159",
 "classthorin_1_1detail_1_1_hash_table_1_1iterator__base.html#a2cd6720bd17cfb0819a4b96ac828fab0",
 "hash_8h.html",
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a76cf56920355319ad148e25a340b0f18",
-"namespacethorin.html#aec7c9c368dda260071936391c37a72e3afc0bff96320187c50961a6822914c567",
-"structthorin_1_1_array_storage_3_01_t_00_010_01_4.html",
-"structthorin_1_1ll_1_1_b_b.html#a89bbe278d11d78b7f380426fd1c89178",
-"types_8h.html#a8e3164291bb75601eb2969eb0a24b710"
+"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a2db95e8e1a9267b7a1188556b2013b33",
+"namespacethorin.html#aec7c9c368dda260071936391c37a72e3ad93f2a67ca63f3cd3c9e524b375c3fb8",
+"stream_8h.html#a8c1b8fc8b9eaae55817019dbe1ba3d22",
+"structthorin_1_1ll_1_1_b_b.html#a74fdfecb07de15e76f88b71517c112cc",
+"types_8h.html#a5bdf209d006051cf78afb63e49fca4b7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
