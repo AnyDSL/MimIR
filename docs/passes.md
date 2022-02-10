@@ -16,20 +16,20 @@ As an example, let's have a look at the [Alloc2Malloc](@ref thorin::Alloc2Malloc
 It rewrites `alloc`/`slot` calls into their more verbose siblings `malloc`/`mslot` that make the size of the alloc'ed size explicit:
 This is `alloc2malloc.h`:
 ```cpp
-#ifndef THORIN_PASS_RET_WRAP_H
-#define THORIN_PASS_RET_WRAP_H
+#ifndef THORIN_PASS_RW_ALLOC2MALLOC_H
+#define THORIN_PASS_RW_ALLOC2MALLOC_H
 
 #include "thorin/pass/pass.h"
 
 namespace thorin {
 
-class RetWrap : public RWPass<Lam> {
+class Alloc2Malloc : public RWPass<Lam> {
 public:
-    RetWrap(PassMan& man)
-        : RWPass(man, "ret_wrap")
+    Alloc2Malloc(PassMan& man)
+        : RWPass(man, "alloc2malloc")
     {}
 
-    void enter() override;
+    const Def* rewrite(const Def*) override;
 };
 
 }
