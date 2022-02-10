@@ -71,6 +71,8 @@ void foo(const Def* def) {
 }
 ```
 
+## Matching IR
+
 ## Iterating over the Program
 
 There are several ways of doing this.

@@ -83,4 +83,14 @@ It expects two template parameters:
 1. This must be the very class you are currently implementing (known as [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern).
 2. This is the same as for rewrite passes and will most likely be `Lam`.
 
+### Rewrite
+
+TODO
+
+### Analyze
+
+TODO
+
+## Other Hooks
+
 TODO
