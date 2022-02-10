@@ -77,5 +77,3 @@ doxygen doxyfile
 
     This is optional for building the documentation.
     Doxygen Awesome is pulled in as a submodule as well.
-
-## Usage
