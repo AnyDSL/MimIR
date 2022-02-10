@@ -1,9 +1,9 @@
 var world_8h =
 [
     [ "thorin::World", "classthorin_1_1_world.html", "classthorin_1_1_world" ],
-    [ "thorin::World::SeaHash", "structthorin_1_1_world_1_1_sea_hash.html", null ],
-    [ "thorin::World::BreakHash", "structthorin_1_1_world_1_1_break_hash.html", null ],
-    [ "thorin::World::ExternalsHash", "structthorin_1_1_world_1_1_externals_hash.html", null ],
+    [ "thorin::World::SeaHash", "structthorin_1_1_world_1_1_sea_hash.html", "structthorin_1_1_world_1_1_sea_hash" ],
+    [ "thorin::World::BreakHash", "structthorin_1_1_world_1_1_break_hash.html", "structthorin_1_1_world_1_1_break_hash" ],
+    [ "thorin::World::ExternalsHash", "structthorin_1_1_world_1_1_externals_hash.html", "structthorin_1_1_world_1_1_externals_hash" ],
     [ "thorin::World::Arena::Zone", "structthorin_1_1_world_1_1_arena_1_1_zone.html", "structthorin_1_1_world_1_1_arena_1_1_zone" ],
     [ "thorin::World::Arena::Lock", "structthorin_1_1_world_1_1_arena_1_1_lock.html", "structthorin_1_1_world_1_1_arena_1_1_lock" ],
     [ "DLOG", "world_8h.html#a87fe05eb8767a6b1abf71eea0bdcfcac", null ],

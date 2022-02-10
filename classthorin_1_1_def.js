@@ -95,7 +95,6 @@ var classthorin_1_1_def =
     [ "swap", "classthorin_1_1_def.html#ac16087b25da85305adb283de20b2342d", null ],
     [ "Tracker", "classthorin_1_1_def.html#a178a085e66872f6cbe6c33f101debdf5", null ],
     [ "World", "classthorin_1_1_def.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
-    [ "axiom_depth_", "classthorin_1_1_def.html#aefa2f7d7e4eebc7933ac84e743c96a28", null ],
     [ "dbg_", "classthorin_1_1_def.html#addf021956daa61ab3035dd3a75751215", null ],
     [ "dep_", "classthorin_1_1_def.html#a531bae40dbbd05fe36e2654d66b5906c", null ],
     [ "fields_", "classthorin_1_1_def.html#a91277ddcc8a17161aa2c0a1fa1abf790", null ],
@@ -103,13 +102,10 @@ var classthorin_1_1_def =
     [ "hash_", "classthorin_1_1_def.html#aef8abbe59acbf3a6d93d0e895c9fdfc2", null ],
     [ "node_", "classthorin_1_1_def.html#ad15f6cae6c1675d8a837597e51dbb2df", null ],
     [ "nom_", "classthorin_1_1_def.html#a8dbf3d598ca965f8b5227f55eeffd37e", null ],
-    [ "normalizer_depth_", "classthorin_1_1_def.html#aa012e5bea96f1abbbd9d26917d45f31c", null ],
     [ "num_ops_", "classthorin_1_1_def.html#aca8c4b92e68fac58f8c2812cdff26442", null ],
     [ "order_", "classthorin_1_1_def.html#a4ef6121ecf2bd2434e796d764d8ea92a", null ],
     [ "proxy_", "classthorin_1_1_def.html#a229770e837d6fff5ea711c1f412a2bc7", null ],
     [ "substitute_", "classthorin_1_1_def.html#a20c097843d2e485b0bd7acfea0d89b9d", null ],
-    [ "type_", "classthorin_1_1_def.html#aad84fe7b85030681f216dffc81fc20d2", null ],
     [ "uses_", "classthorin_1_1_def.html#abefc385c0d60ba85c5e649598d20fe05", null ],
-    [ "var_", "classthorin_1_1_def.html#a2b6c0b12aef635dd84112af27d9ecb08", null ],
-    [ "world_", "classthorin_1_1_def.html#a42395dab097da7d7f7387b509cbb767d", null ]
+    [ "var_", "classthorin_1_1_def.html#a2b6c0b12aef635dd84112af27d9ecb08", null ]
 ];

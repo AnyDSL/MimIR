@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['offset_0',['offset',['../structthorin_1_1_f_n_v1.html#a5f45f7a10a2980f0d2171e79aabf7b8a',1,'thorin::FNV1']]],
-  ['old2new_1',['old2new',['../classthorin_1_1_rewriter.html#a43763f4b1da4026338efabd1c0ef9be2',1,'thorin::Rewriter']]],
-  ['old_5fworld_2',['old_world',['../classthorin_1_1_rewriter.html#a30f487c4537a940ff672c5f3cbab7f8d',1,'thorin::Rewriter']]],
-  ['order_5f_3',['order_',['../classthorin_1_1_def.html#a4ef6121ecf2bd2434e796d764d8ea92a',1,'thorin::Def']]],
-  ['ostream_5f_4',['ostream_',['../classthorin_1_1_stream.html#aed54130070b1aed20fc0f50ea767d154',1,'thorin::Stream']]]
+  ['padding_0',['padding',['../classthorin_1_1_bit_set.html#afb9ccf935ed0e0ce3b3229ed00a6321d',1,'thorin::BitSet']]],
+  ['parent_5f_1',['parent_',['../classthorin_1_1_loop_tree_1_1_base.html#a91ee5b0f76552ef43b5d7729aace32c6',1,'thorin::LoopTree::Base']]],
+  ['parts_2',['parts',['../structthorin_1_1ll_1_1_b_b.html#a0448eb9cb7f54ce30c2d2000ba69d8d5',1,'thorin::ll::BB']]],
+  ['phis_3',['phis',['../structthorin_1_1ll_1_1_b_b.html#a22d3a7d469abef311fdd6a06f1aa9f98',1,'thorin::ll::BB']]],
+  ['pred_4',['pred',['../classthorin_1_1_s_s_a_constr.html#a7e971447917136fea7b96f2c386b7914',1,'thorin::SSAConstr::Info']]],
+  ['prime_5',['prime',['../structthorin_1_1_f_n_v1.html#a80162d0acdba80bb75d7f3691219f038',1,'thorin::FNV1']]],
+  ['proxy_5f_6',['proxy_',['../classthorin_1_1_def.html#a229770e837d6fff5ea711c1f412a2bc7',1,'thorin::Def']]]
 ];

@@ -1,8 +1,8 @@
 var classthorin_1_1_world =
 [
-    [ "BreakHash", "structthorin_1_1_world_1_1_break_hash.html", null ],
-    [ "ExternalsHash", "structthorin_1_1_world_1_1_externals_hash.html", null ],
-    [ "SeaHash", "structthorin_1_1_world_1_1_sea_hash.html", null ],
+    [ "BreakHash", "structthorin_1_1_world_1_1_break_hash.html", "structthorin_1_1_world_1_1_break_hash" ],
+    [ "ExternalsHash", "structthorin_1_1_world_1_1_externals_hash.html", "structthorin_1_1_world_1_1_externals_hash" ],
+    [ "SeaHash", "structthorin_1_1_world_1_1_sea_hash.html", "structthorin_1_1_world_1_1_sea_hash" ],
     [ "Breakpoints", "classthorin_1_1_world.html#a5b257f8771ac8be2c46d55f500454f65", null ],
     [ "Externals", "classthorin_1_1_world.html#ac1839ce02376cac38f7c6d3356e1c0e1", null ],
     [ "Sea", "classthorin_1_1_world.html#a9cfe62f63052c440c0b6b8867ae7f0b2", null ],
@@ -52,6 +52,7 @@ var classthorin_1_1_world =
     [ "cn_mem_flat", "classthorin_1_1_world.html#afcfa34a6a71095f39ec3950319a07ebc", null ],
     [ "cn_mem_half_flat", "classthorin_1_1_world.html#ae798bee409588a6774e63d7cfd46f7da", null ],
     [ "cn_mem_ret", "classthorin_1_1_world.html#a6da8f17fb1c9fb06d21b57b32613695a", null ],
+    [ "colorize", "classthorin_1_1_world.html#a25c9ccc2e7c892ad470870218f1b319a", null ],
     [ "copy_lams", "classthorin_1_1_world.html#ab148665b02cd6112774e39b647d3a159", null ],
     [ "curr_gid", "classthorin_1_1_world.html#ac3f84d153a4be33297be87599a72f836", null ],
     [ "dbg", "classthorin_1_1_world.html#a7de00f50ba0c790aa0e67f3a4d065c89", null ],
@@ -102,6 +103,8 @@ var classthorin_1_1_world =
     [ "kind", "classthorin_1_1_world.html#ab0b13abe15da390051cf3627ccde560c", null ],
     [ "lam", "classthorin_1_1_world.html#ab253a7a7c87d28fe76966d7759b37127", null ],
     [ "lam", "classthorin_1_1_world.html#a4243f154058e0aa75b458fa3d3468b99", null ],
+    [ "level2color", "classthorin_1_1_world.html#aa299e8044779b6f4ab8655811c8f3450", null ],
+    [ "level2string", "classthorin_1_1_world.html#a63a6deda35479820744bbf57f1333e75", null ],
     [ "lit", "classthorin_1_1_world.html#a321f6e3321dabccd619c7b289fc350e5", null ],
     [ "lit_bool", "classthorin_1_1_world.html#a7db061f1254682653991b7119d536dcc", null ],
     [ "lit_false", "classthorin_1_1_world.html#a567ded09ffd06e673945fad2646636e8", null ],

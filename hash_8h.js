@@ -1,7 +1,7 @@
 var hash_8h =
 [
-    [ "thorin::FNV1", "structthorin_1_1_f_n_v1.html", null ],
-    [ "thorin::StrHash", "structthorin_1_1_str_hash.html", null ],
+    [ "thorin::FNV1", "structthorin_1_1_f_n_v1.html", "structthorin_1_1_f_n_v1" ],
+    [ "thorin::StrHash", "structthorin_1_1_str_hash.html", "structthorin_1_1_str_hash" ],
     [ "thorin::detail::HashTable< Key, T, H, StackCapacity >", "classthorin_1_1detail_1_1_hash_table.html", "classthorin_1_1detail_1_1_hash_table" ],
     [ "thorin::detail::HashTable< Key, T, H, StackCapacity >::iterator_base< is_const >", "classthorin_1_1detail_1_1_hash_table_1_1iterator__base.html", "classthorin_1_1detail_1_1_hash_table_1_1iterator__base" ],
     [ "thorin::HashSet< Key, H, StackCapacity >", "classthorin_1_1_hash_set.html", "classthorin_1_1_hash_set" ],

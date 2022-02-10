@@ -1,18 +1,44 @@
 var types_8h =
 [
-    [ "thorin::w2u_< int >", "structthorin_1_1w2u__.html", null ],
-    [ "thorin::w2s_< int >", "structthorin_1_1w2s__.html", null ],
-    [ "thorin::w2r_< int >", "structthorin_1_1w2r__.html", null ],
-    [ "thorin::w2u_< 8 >", "structthorin_1_1w2u___3_018_01_4.html", "structthorin_1_1w2u___3_018_01_4" ],
-    [ "thorin::w2s_< 8 >", "structthorin_1_1w2s___3_018_01_4.html", "structthorin_1_1w2s___3_018_01_4" ],
-    [ "thorin::w2u_< 16 >", "structthorin_1_1w2u___3_0116_01_4.html", "structthorin_1_1w2u___3_0116_01_4" ],
-    [ "thorin::w2s_< 16 >", "structthorin_1_1w2s___3_0116_01_4.html", "structthorin_1_1w2s___3_0116_01_4" ],
-    [ "thorin::w2u_< 32 >", "structthorin_1_1w2u___3_0132_01_4.html", "structthorin_1_1w2u___3_0132_01_4" ],
-    [ "thorin::w2s_< 32 >", "structthorin_1_1w2s___3_0132_01_4.html", "structthorin_1_1w2s___3_0132_01_4" ],
-    [ "thorin::w2u_< 64 >", "structthorin_1_1w2u___3_0164_01_4.html", "structthorin_1_1w2u___3_0164_01_4" ],
-    [ "thorin::w2s_< 64 >", "structthorin_1_1w2s___3_0164_01_4.html", "structthorin_1_1w2s___3_0164_01_4" ],
-    [ "thorin::w2u_< 1 >", "structthorin_1_1w2u___3_011_01_4.html", "structthorin_1_1w2u___3_011_01_4" ],
-    [ "thorin::w2s_< 1 >", "structthorin_1_1w2s___3_011_01_4.html", "structthorin_1_1w2s___3_011_01_4" ],
+    [ "thorin::w2u_< int >", "namespacethorin.html#structthorin_1_1w2u__", null ],
+    [ "thorin::w2s_< int >", "namespacethorin.html#structthorin_1_1w2s__", null ],
+    [ "thorin::w2r_< int >", "namespacethorin.html#structthorin_1_1w2r__", null ],
+    [ "thorin::w2u_< 8 >", "namespacethorin.html#structthorin_1_1w2u___3_018_01_4", [
+      [ "type", "namespacethorin.html#a786e2a4a7bdf72a1197a6ed437f91c0a", null ]
+    ] ],
+    [ "thorin::w2s_< 8 >", "namespacethorin.html#structthorin_1_1w2s___3_018_01_4", [
+      [ "type", "namespacethorin.html#acbb00caacb0448f12f9c94b25fa7f3aa", null ]
+    ] ],
+    [ "thorin::w2u_< 16 >", "namespacethorin.html#structthorin_1_1w2u___3_0116_01_4", [
+      [ "type", "namespacethorin.html#a8f4856399cd6fe56e56177e8593ced20", null ],
+      [ "type", "namespacethorin.html#a8f4856399cd6fe56e56177e8593ced20", null ]
+    ] ],
+    [ "thorin::w2s_< 16 >", "namespacethorin.html#structthorin_1_1w2s___3_0116_01_4", [
+      [ "type", "namespacethorin.html#a8676906385bb26058a2d82d6a70ca1fe", null ],
+      [ "type", "namespacethorin.html#a8676906385bb26058a2d82d6a70ca1fe", null ]
+    ] ],
+    [ "thorin::w2u_< 32 >", "namespacethorin.html#structthorin_1_1w2u___3_0132_01_4", [
+      [ "type", "namespacethorin.html#a29c941d22ec38a63827a944f7ed215a6", null ],
+      [ "type", "namespacethorin.html#a29c941d22ec38a63827a944f7ed215a6", null ]
+    ] ],
+    [ "thorin::w2s_< 32 >", "namespacethorin.html#structthorin_1_1w2s___3_0132_01_4", [
+      [ "type", "namespacethorin.html#aafb481bd2cbd5dc8f15fbbc3d906b3d9", null ],
+      [ "type", "namespacethorin.html#aafb481bd2cbd5dc8f15fbbc3d906b3d9", null ]
+    ] ],
+    [ "thorin::w2u_< 64 >", "namespacethorin.html#structthorin_1_1w2u___3_0164_01_4", [
+      [ "type", "namespacethorin.html#ada904db3ded1bcb2a1f6f99d0a1ad3e8", null ],
+      [ "type", "namespacethorin.html#ada904db3ded1bcb2a1f6f99d0a1ad3e8", null ]
+    ] ],
+    [ "thorin::w2s_< 64 >", "namespacethorin.html#structthorin_1_1w2s___3_0164_01_4", [
+      [ "type", "namespacethorin.html#a686101310f40a18ffbe8b0fe2a7d25d8", null ],
+      [ "type", "namespacethorin.html#a686101310f40a18ffbe8b0fe2a7d25d8", null ]
+    ] ],
+    [ "thorin::w2u_< 1 >", "namespacethorin.html#structthorin_1_1w2u___3_011_01_4", [
+      [ "type", "namespacethorin.html#ab209fd19f32af3b1fd46effe6414c214", null ]
+    ] ],
+    [ "thorin::w2s_< 1 >", "namespacethorin.html#structthorin_1_1w2s___3_011_01_4", [
+      [ "type", "namespacethorin.html#a087841abb9883e2b8cce1651d1434995", null ]
+    ] ],
     [ "CODE", "types_8h.html#a48da5e6acc28b0cfe9f3402f29ae9a1c", null ],
     [ "CODE", "types_8h.html#a48da5e6acc28b0cfe9f3402f29ae9a1c", null ],
     [ "HALF_ROUND_STYLE", "types_8h.html#af470ed60568b3e7f4fde6092d22abbde", null ],

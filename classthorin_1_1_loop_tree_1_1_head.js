@@ -22,6 +22,7 @@ var classthorin_1_1_loop_tree_1_1_head =
     [ "LoopTreeBuilder< forward >", "classthorin_1_1_loop_tree_1_1_head.html#a0b97215e639132eee69a71502a6a728a", null ],
     [ "cf_nodes_", "classthorin_1_1_loop_tree_1_1_head.html#a2679000e3aae6a349da4241e3b942ee4", null ],
     [ "depth_", "classthorin_1_1_loop_tree_1_1_head.html#ae83e9600d49583d5aa0d0c45ab36909b", null ],
+    [ "Node", "classthorin_1_1_loop_tree_1_1_head.html#a7265ccf0deb3f553c30593cae7be57cf", null ],
     [ "node_", "classthorin_1_1_loop_tree_1_1_head.html#ac29bcf64d3179e1beeebe66e38c0f459", null ],
     [ "parent_", "classthorin_1_1_loop_tree_1_1_head.html#a91ee5b0f76552ef43b5d7729aace32c6", null ]
 ];

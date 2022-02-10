@@ -12,5 +12,8 @@ var stream_8cpp =
       [ "Lit", "stream_8cpp.html#a50404e0533b9b1a2a1c2e2617a33601fae5e556ecf935270736f5e46e73db06e4", null ]
     ] ],
     [ "operator<<", "stream_8cpp.html#a6bd93f689a50c956269ba837af35945d", null ],
-    [ "operator<<", "stream_8cpp.html#ab8f246cfc8c473dab34f7419c3f58990", null ]
+    [ "operator<<", "stream_8cpp.html#ab8f246cfc8c473dab34f7419c3f58990", null ],
+    [ "prec", "stream_8cpp.html#ae69dbadc7587f234430b5716c2368e58", null ],
+    [ "prec_l", "stream_8cpp.html#a837c1d4fae87cc423607cc0936b83123", null ],
+    [ "prec_r", "stream_8cpp.html#ad887ca8a0641fe12ec376b0b50cb3f41", null ]
 ];

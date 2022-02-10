@@ -2,7 +2,7 @@ var dir_7e048ce593bddfd97190539f41380f52 =
 [
     [ "cfg.cpp", "cfg_8cpp.html", null ],
     [ "cfg.h", "cfg_8h.html", "cfg_8h" ],
-    [ "deptree.cpp", "deptree_8cpp.html", null ],
+    [ "deptree.cpp", "deptree_8cpp.html", "deptree_8cpp" ],
     [ "deptree.h", "deptree_8h.html", [
       [ "thorin::DepNode", "classthorin_1_1_dep_node.html", "classthorin_1_1_dep_node" ],
       [ "thorin::DepTree", "classthorin_1_1_dep_tree.html", "classthorin_1_1_dep_tree" ]

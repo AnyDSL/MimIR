@@ -16,13 +16,16 @@ var dir_3f2eb28d1bda468dd4520f242f410c64 =
     [ "eta_exp.h", "eta__exp_8h.html", [
       [ "thorin::EtaExp", "classthorin_1_1_eta_exp.html", "classthorin_1_1_eta_exp" ]
     ] ],
-    [ "eta_red.cpp", "eta__red_8cpp.html", null ],
+    [ "eta_red.cpp", "eta__red_8cpp.html", "eta__red_8cpp" ],
     [ "eta_red.h", "eta__red_8h.html", [
       [ "thorin::EtaRed", "classthorin_1_1_eta_red.html", "classthorin_1_1_eta_red" ]
     ] ],
-    [ "ssa_constr.cpp", "ssa__constr_8cpp.html", null ],
+    [ "ssa_constr.cpp", "ssa__constr_8cpp.html", "ssa__constr_8cpp" ],
     [ "ssa_constr.h", "ssa__constr_8h.html", [
       [ "thorin::SSAConstr", "classthorin_1_1_s_s_a_constr.html", "classthorin_1_1_s_s_a_constr" ],
-      [ "thorin::SSAConstr::Info", "structthorin_1_1_s_s_a_constr_1_1_info.html", "structthorin_1_1_s_s_a_constr_1_1_info" ]
+      [ "thorin::SSAConstr::Info", "classthorin_1_1_s_s_a_constr.html#structthorin_1_1_s_s_a_constr_1_1_info", [
+        [ "pred", "classthorin_1_1_s_s_a_constr.html#a7e971447917136fea7b96f2c386b7914", null ],
+        [ "writable", "classthorin_1_1_s_s_a_constr.html#a8640798450a1343fdaf4839bfadd34e1", null ]
+      ] ]
     ] ]
 ];

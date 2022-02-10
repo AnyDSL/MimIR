@@ -9,6 +9,7 @@ var classthorin_1_1_c_f_g =
     [ "domtree", "classthorin_1_1_c_f_g.html#a961b890cac82269a9ea0e6575149e109", null ],
     [ "entry", "classthorin_1_1_c_f_g.html#a4c10c693665392b970cefea6c5a46ed2", null ],
     [ "exit", "classthorin_1_1_c_f_g.html#ad848d7c3d392e58d6407d1c92bf7b720", null ],
+    [ "index", "classthorin_1_1_c_f_g.html#a64d8accf26c78129934af6bdca16c626", null ],
     [ "looptree", "classthorin_1_1_c_f_g.html#a19030529390c9eddebab511e075400c7", null ],
     [ "num_preds", "classthorin_1_1_c_f_g.html#aa832903ceb0c9d92dcdf40a3d27cfaeb", null ],
     [ "num_preds", "classthorin_1_1_c_f_g.html#a395426d2a2d91edcdbb79ff203cedd96", null ],

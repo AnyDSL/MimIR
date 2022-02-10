@@ -2,8 +2,12 @@ var axiom_8h =
 [
     [ "thorin::Axiom", "classthorin_1_1_axiom.html", "classthorin_1_1_axiom" ],
     [ "thorin::Query< F, D >", "classthorin_1_1_query.html", "classthorin_1_1_query" ],
-    [ "thorin::Tag2Def_< tag >", "structthorin_1_1_tag2_def__.html", "structthorin_1_1_tag2_def__" ],
-    [ "thorin::Tag2Def_< Tag::Mem >", "structthorin_1_1_tag2_def___3_01_tag_1_1_mem_01_4.html", "structthorin_1_1_tag2_def___3_01_tag_1_1_mem_01_4" ],
+    [ "thorin::Tag2Def_< tag >", "namespacethorin.html#structthorin_1_1_tag2_def__", [
+      [ "type", "namespacethorin.html#a16ae11fe9704e6ce2ea9f7088658f7d5", null ]
+    ] ],
+    [ "thorin::Tag2Def_< Tag::Mem >", "namespacethorin.html#structthorin_1_1_tag2_def___3_01_tag_1_1_mem_01_4", [
+      [ "type", "namespacethorin.html#a6f10ed2ac2a2131cdff806083931b799", null ]
+    ] ],
     [ "Tag2Def", "axiom_8h.html#ae09ad713f008c88390acd966418726a2", null ],
     [ "as", "axiom_8h.html#a668f7b8adb8ba4f34d75ea5ae605c930", null ],
     [ "as", "axiom_8h.html#a7ab8d710962bce89c7ea01e394c43dc6", null ],

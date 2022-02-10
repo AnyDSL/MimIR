@@ -1,12 +1,12 @@
 var def_8h =
 [
     [ "thorin::GIDLt< T >", "structthorin_1_1_g_i_d_lt.html", "structthorin_1_1_g_i_d_lt" ],
-    [ "thorin::GIDHash< T >", "structthorin_1_1_g_i_d_hash.html", null ],
+    [ "thorin::GIDHash< T >", "structthorin_1_1_g_i_d_hash.html", "structthorin_1_1_g_i_d_hash" ],
     [ "thorin::Use", "classthorin_1_1_use.html", "classthorin_1_1_use" ],
-    [ "thorin::UseHash", "structthorin_1_1_use_hash.html", null ],
+    [ "thorin::UseHash", "structthorin_1_1_use_hash.html", "structthorin_1_1_use_hash" ],
     [ "thorin::Def", "classthorin_1_1_def.html", "classthorin_1_1_def" ],
-    [ "thorin::DefDefHash", "structthorin_1_1_def_def_hash.html", null ],
-    [ "thorin::DefsHash", "structthorin_1_1_defs_hash.html", null ],
+    [ "thorin::DefDefHash", "structthorin_1_1_def_def_hash.html", "structthorin_1_1_def_def_hash" ],
+    [ "thorin::DefsHash", "structthorin_1_1_defs_hash.html", "structthorin_1_1_defs_hash" ],
     [ "thorin::Var", "classthorin_1_1_var.html", "classthorin_1_1_var" ],
     [ "thorin::Space", "classthorin_1_1_space.html", "classthorin_1_1_space" ],
     [ "thorin::Kind", "classthorin_1_1_kind.html", "classthorin_1_1_kind" ],

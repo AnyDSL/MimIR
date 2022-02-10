@@ -1,7 +1,7 @@
 var searchData=
 [
   ['fnv1_0',['FNV1',['../structthorin_1_1_f_n_v1.html',1,'thorin']]],
-  ['fold_1',['Fold',['../structthorin_1_1_fold.html',1,'thorin']]],
+  ['fold_1',['Fold',['../namespacethorin.html#structthorin_1_1_fold',1,'thorin']]],
   ['fold_3c_20div_2c_20div_3a_3asdiv_2c_20w_20_3e_2',['Fold&lt; Div, Div::sdiv, w &gt;',['../structthorin_1_1_fold_3_01_div_00_01_div_1_1sdiv_00_01w_01_4.html',1,'thorin']]],
   ['fold_3c_20div_2c_20div_3a_3asrem_2c_20w_20_3e_3',['Fold&lt; Div, Div::srem, w &gt;',['../structthorin_1_1_fold_3_01_div_00_01_div_1_1srem_00_01w_01_4.html',1,'thorin']]],
   ['fold_3c_20div_2c_20div_3a_3audiv_2c_20w_20_3e_4',['Fold&lt; Div, Div::udiv, w &gt;',['../structthorin_1_1_fold_3_01_div_00_01_div_1_1udiv_00_01w_01_4.html',1,'thorin']]],
@@ -19,7 +19,7 @@ var searchData=
   ['fold_3c_20wrap_2c_20wrap_3a_3amul_2c_20w_20_3e_16',['Fold&lt; Wrap, Wrap::mul, w &gt;',['../structthorin_1_1_fold_3_01_wrap_00_01_wrap_1_1mul_00_01w_01_4.html',1,'thorin']]],
   ['fold_3c_20wrap_2c_20wrap_3a_3ashl_2c_20w_20_3e_17',['Fold&lt; Wrap, Wrap::shl, w &gt;',['../structthorin_1_1_fold_3_01_wrap_00_01_wrap_1_1shl_00_01w_01_4.html',1,'thorin']]],
   ['fold_3c_20wrap_2c_20wrap_3a_3asub_2c_20w_20_3e_18',['Fold&lt; Wrap, Wrap::sub, w &gt;',['../structthorin_1_1_fold_3_01_wrap_00_01_wrap_1_1sub_00_01w_01_4.html',1,'thorin']]],
-  ['foldconv_19',['FoldConv',['../structthorin_1_1_fold_conv.html',1,'thorin']]],
+  ['foldconv_19',['FoldConv',['../namespacethorin.html#structthorin_1_1_fold_conv',1,'thorin']]],
   ['foldconv_3c_20conv_3a_3ar2r_2c_20dw_2c_20sw_20_3e_20',['FoldConv&lt; Conv::r2r, dw, sw &gt;',['../structthorin_1_1_fold_conv_3_01_conv_1_1r2r_00_01dw_00_01sw_01_4.html',1,'thorin']]],
   ['foldconv_3c_20conv_3a_3ar2s_2c_20dw_2c_20sw_20_3e_21',['FoldConv&lt; Conv::r2s, dw, sw &gt;',['../structthorin_1_1_fold_conv_3_01_conv_1_1r2s_00_01dw_00_01sw_01_4.html',1,'thorin']]],
   ['foldconv_3c_20conv_3a_3ar2u_2c_20dw_2c_20sw_20_3e_22',['FoldConv&lt; Conv::r2u, dw, sw &gt;',['../structthorin_1_1_fold_conv_3_01_conv_1_1r2u_00_01dw_00_01sw_01_4.html',1,'thorin']]],

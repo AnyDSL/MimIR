@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['elems_0',['elems',['../classthorin_1_1_array_storage.html#a6b16b52b6e6fa647b6cf2c0a32774193',1,'thorin::ArrayStorage']]],
-  ['entry_5f_1',['entry_',['../classthorin_1_1_emitter.html#a1b2cc456783e5646710c356e39007335',1,'thorin::Emitter']]]
+  ['fields_5f_0',['fields_',['../classthorin_1_1_def.html#a91277ddcc8a17161aa2c0a1fa1abf790',1,'thorin::Def']]],
+  ['file_1',['file',['../structthorin_1_1_loc.html#a6ef660df5af4231418b1ab49aab1f092',1,'thorin::Loc']]],
+  ['finis_2',['finis',['../structthorin_1_1_loc.html#a4e9c5322ad9d09bd66f51752d1c29c97',1,'thorin::Loc']]]
 ];

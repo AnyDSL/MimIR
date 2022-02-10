@@ -19,6 +19,7 @@ var classthorin_1_1_eta_exp =
     [ "index", "classthorin_1_1_eta_exp.html#a962d7c5555da3aba7a83effc2f8b43dd", null ],
     [ "inspect", "classthorin_1_1_eta_exp.html#af2ab235751cc92666c65f108ee427891", null ],
     [ "isa_proxy", "classthorin_1_1_eta_exp.html#a9b94e8aa93f5d4fe037b499d3873cb20", null ],
+    [ "lattice2str", "classthorin_1_1_eta_exp.html#a27219524d0f665b4d0f1225f7d3cb4a2", null ],
     [ "man", "classthorin_1_1_eta_exp.html#ad2506a9ae875b80c475520552cd969dc", null ],
     [ "man", "classthorin_1_1_eta_exp.html#a96674bfc85788b0ee1ff7bd8decda05b", null ],
     [ "name", "classthorin_1_1_eta_exp.html#ae862a9a49dda472ec336d4729bae9662", null ],

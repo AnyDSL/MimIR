@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['lam2bb_5f_0',['lam2bb_',['../classthorin_1_1_emitter.html#af657037a433f818dca82c6310914fa19',1,'thorin::Emitter']]],
-  ['level_5f_1',['level_',['../classthorin_1_1_stream.html#a22831b8877bb0908b5fe5e10c50c85a3',1,'thorin::Stream']]],
-  ['loc_2',['loc',['../classthorin_1_1_debug.html#a557dfaa075cb4f02e652644cd5fc07a7',1,'thorin::Debug']]],
-  ['locals_5f_3',['locals_',['../classthorin_1_1_emitter.html#a860e366d86e79f6821ea44fc34a5a6bd',1,'thorin::Emitter']]]
+  ['max_0',['max',['../classthorin_1_1_rec_streamer.html#a4f162bed6c5484fe03e4223092d9def0',1,'thorin::RecStreamer']]],
+  ['max_1',['Max',['../namespacethorin_1_1utf8.html#a25bc821db221db9aad00c895e937c9bb',1,'thorin::utf8']]],
+  ['meta_2',['meta',['../classthorin_1_1_debug.html#a1a2381046065095c09048cb961c3a169',1,'thorin::Debug']]]
 ];

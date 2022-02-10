@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['gid_5f_0',['gid_',['../classthorin_1_1_def.html#ad787194dde14538ab209e0003318c0cd',1,'thorin::Def']]],
-  ['globals_5f_1',['globals_',['../classthorin_1_1_emitter.html#ae6996cbfe877290dc33a25c67a5e3cee',1,'thorin::Emitter']]]
+  ['hash_5f_0',['hash_',['../classthorin_1_1_def.html#aef8abbe59acbf3a6d93d0e895c9fdfc2',1,'thorin::Def']]]
 ];

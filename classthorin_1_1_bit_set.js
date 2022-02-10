@@ -33,7 +33,5 @@ var classthorin_1_1_bit_set =
     [ "swap", "classthorin_1_1_bit_set.html#aa577861df219851e6060c6fa2aa376d8", null ],
     [ "test", "classthorin_1_1_bit_set.html#acc6f1bd3dcd42788c929dfd4b0a7b307", null ],
     [ "toggle", "classthorin_1_1_bit_set.html#a3fa2a5baa32ff8550f56f84bf3af37ae", null ],
-    [ "padding", "classthorin_1_1_bit_set.html#afb9ccf935ed0e0ce3b3229ed00a6321d", null ],
-    [ "word_", "classthorin_1_1_bit_set.html#a93c455cf5ff48d1ff2cb26c85849821b", null ],
-    [ "words_", "classthorin_1_1_bit_set.html#ad4c6033e47a183adf437b692a8225416", null ]
+    [ "padding", "classthorin_1_1_bit_set.html#afb9ccf935ed0e0ce3b3229ed00a6321d", null ]
 ];
