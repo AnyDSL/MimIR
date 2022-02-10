@@ -65,7 +65,6 @@ doxygen doxyfile
 
     Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
     But techincally, you don't need LLVM.
-
 * [GoogleTest](https://github.com/google/googletest).
 
     This is optional for running the tests and is also deployed via a git submodule.
