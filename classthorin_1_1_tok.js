@@ -30,14 +30,10 @@ var classthorin_1_1_tok =
     [ "Tok", "classthorin_1_1_tok.html#ab96cbe83a40186a1becbf1e99bb33c5b", null ],
     [ "Tok", "classthorin_1_1_tok.html#a197b6cd7caa11b685f2c0f64323cb3b4", null ],
     [ "Tok", "classthorin_1_1_tok.html#ab2212cb3737713a7d19a9c9da710398b", null ],
-    [ "dump", "classthorin_1_1_tok.html#a0f2459fdabbc821751a8e82dd5313119", null ],
     [ "isa", "classthorin_1_1_tok.html#a3bf30d6bc9b8ca772098449f4b73e274", null ],
     [ "loc", "classthorin_1_1_tok.html#a6e45a93b5e96f909166e338ce3f48060", null ],
     [ "stream", "classthorin_1_1_tok.html#a8fe5202e743a95a61ae502c7641d7b81", null ],
     [ "sym", "classthorin_1_1_tok.html#a237307d0c79f2a973e0a624b050de445", null ],
     [ "tag", "classthorin_1_1_tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b", null ],
-    [ "tag2str", "classthorin_1_1_tok.html#a1f20dfe379a1a1ce6a19d539e26455ba", null ],
-    [ "to_string", "classthorin_1_1_tok.html#a83907e5615ec8dbada6f053d6fd21d85", null ],
-    [ "write", "classthorin_1_1_tok.html#a4768771738de2fb037e4f1b026370046", null ],
-    [ "write", "classthorin_1_1_tok.html#a6f2173289917904b05b2bdbe53b51156", null ]
+    [ "tag2str", "classthorin_1_1_tok.html#a1f20dfe379a1a1ce6a19d539e26455ba", null ]
 ];
