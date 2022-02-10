@@ -327,7 +327,7 @@ public:
     virtual const Def* restructure() { return nullptr; }
     //@}
 
-    //@ @name stream
+    /// @name stream
     //@{
     Stream& stream(Stream& s) const;
     Stream& stream(Stream& s, size_t max) const;

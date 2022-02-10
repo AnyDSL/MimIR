@@ -44,7 +44,7 @@ PROJECT_NUMBER         = 1.9.0
 # for a project that appears at the top of each page and should give viewer a
 # quick idea about the purpose of the project. Keep the description short.
 
-PROJECT_BRIEF          = The Higher ORder INtermediate representation
+PROJECT_BRIEF          = "The Higher ORder INtermediate representation"
 
 # With the PROJECT_LOGO tag one can specify a logo or an icon that is included
 # in the documentation. The maximum height of the logo should not exceed 55
@@ -426,7 +426,7 @@ INLINE_GROUPED_CLASSES = NO
 # Man pages) or section (for LaTeX and RTF).
 # The default value is: NO.
 
-INLINE_SIMPLE_STRUCTS  = NO
+INLINE_SIMPLE_STRUCTS  = YES
 
 # When TYPEDEF_HIDES_STRUCT tag is enabled, a typedef of a struct, union, or
 # enum is documented as struct, union, or enum with the name of the typedef. So
@@ -495,13 +495,13 @@ EXTRACT_PRIV_VIRTUAL   = NO
 # scope will be included in the documentation.
 # The default value is: NO.
 
-EXTRACT_PACKAGE        = NO
+EXTRACT_PACKAGE        = YES
 
 # If the EXTRACT_STATIC tag is set to YES, all static members of a file will be
 # included in the documentation.
 # The default value is: NO.
 
-EXTRACT_STATIC         = NO
+EXTRACT_STATIC         = YES
 
 # If the EXTRACT_LOCAL_CLASSES tag is set to YES, classes (and structs) defined
 # locally in source files will be included in the documentation. If set to NO,
@@ -1260,11 +1260,10 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  = doxygen-awesome-css/doxygen-awesome.css \ 
+HTML_EXTRA_STYLESHEET  = doxygen-awesome-css/doxygen-awesome.css \
                          doxygen-awesome-css/doxygen-awesome-sidebar-only.css \
                          doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css \
                          doxygen-awesome-css/docs/doxygen-custom/custom.css
-
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -2275,13 +2274,26 @@ PREDEFINED             =
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
 EXPAND_AS_DEFINED      = CODE \
-                         THORIN_1_8_16_32_64 THORIN_8_16_32_64 THORIN_16_32_64 \
+                         THORIN_1_8_16_32_64 \
+                         THORIN_8_16_32_64 \
+                         THORIN_16_32_64 \
                          THORIN_PROJ \
-                         THORIN_TAG THORIN_NODE \
-                         THORIN_KEY THORIN_LIT THORIN_TOK \
-                         THORIN_BIT THORIN_WRAP THORIN_SHR THORIN_DIV THORIN_R_OP \
-                         THORIN_I_CMP THORIN_R_CMP THORIN_CONV\
-                         THORIN_TRAIT THORIN_ACC THORIN_PE
+                         THORIN_TAG \
+                         THORIN_NODE \
+                         THORIN_KEY \
+                         THORIN_LIT \
+                         THORIN_TOK \
+                         THORIN_BIT \
+                         THORIN_WRAP \
+                         THORIN_SHR \
+                         THORIN_DIV \
+                         THORIN_R_OP \
+                         THORIN_I_CMP \
+                         THORIN_R_CMP \
+                         THORIN_CONV \
+                         THORIN_TRAIT \
+                         THORIN_ACC \
+                         THORIN_PE
 
 # If the SKIP_FUNCTION_MACROS tag is set to YES then doxygen's preprocessor will
 # remove all references to function-like macros that are alone on a line, have
