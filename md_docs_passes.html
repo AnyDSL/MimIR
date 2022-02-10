@@ -101,15 +101,80 @@ $(document).ready(function(){initNavTree('md_docs_passes.html',''); initResizabl
 <li class="level1"><a href="#autotoc_md14">Fixed-Point Pass</a></li>
 </ul>
 </div>
-<div class="textblock"><p >There are two kind of passes in Thorin:</p>
-<ol type="1">
+<div class="textblock"><p >There are two kind of passes in Thorin:</p><ol type="1">
 <li>Rewrite Pass</li>
 <li>Fixed-Point Pass</li>
 </ol>
 <h1><a class="anchor" id="autotoc_md13"></a>
 Rewrite Pass</h1>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<p >In order to write a rewrite pass, you have to inherit from <a class="el" href="classthorin_1_1_r_w_pass.html">RWPass</a>. Usually, you are only interested in looking for code patterns that only occur in specific nominals - typically <code>Lam</code>bdas. This is the template argument in order to inspect only specific nominals. The main hook, the <a class="el" href="classthorin_1_1_pass_man.html">PassMan</a> provides, is the <a class="el" href="classthorin_1_1_r_w_pass_base.html#a416313eda3acb53d2609877c4367d07c">rewrite</a> method. As an example, let's have a look at the <a class="el" href="classthorin_1_1_alloc2_malloc.html">Alloc2Malloc</a> pass. It rewrites <code>alloc</code>/<code>slot</code> calls into their more verbose siblings <code>malloc</code>/<code>mslot</code> that make the size of the alloc'ed size explicit: This is <code><a class="el" href="alloc2malloc_8h.html">alloc2malloc.h</a></code>: </p><div class="fragment"><div class="line"><span class="preprocessor">#ifndef THORIN_PASS_RET_WRAP_H</span></div>
+<div class="line"><span class="preprocessor">#define THORIN_PASS_RET_WRAP_H</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#include &quot;<a class="code" href="pass_8h.html">thorin/pass/pass.h</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">class </span>RetWrap : <span class="keyword">public</span> RWPass&lt;Lam&gt; {</div>
+<div class="line"><span class="keyword">public</span>:</div>
+<div class="line">    <a class="code hl_function" href="classthorin_1_1_ret_wrap.html#a7aebec81aa5aff72e54fb6665b3b4159">RetWrap</a>(<a class="code hl_friend" href="classthorin_1_1_r_w_pass_base.html#ae3b741f775f564409b46ea178ca0aefc">PassMan</a>&amp; <a class="code hl_function" href="classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc">man</a>)</div>
+<div class="line">        : <a class="code hl_function" href="classthorin_1_1_r_w_pass.html#a2dab37ccd6894509943c3d0aff357b30">RWPass</a>(<a class="code hl_function" href="classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc">man</a>, <span class="stringliteral">&quot;ret_wrap&quot;</span>)</div>
+<div class="line">    {}</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordtype">void</span> <a class="code hl_function" href="classthorin_1_1_ret_wrap.html#aa9a31d88a64f935f99d2cc21cfd5c5a7">enter</a>() <span class="keyword">override</span>;</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclassthorin_1_1_r_w_pass_base_html_ad2506a9ae875b80c475520552cd969dc"><div class="ttname"><a href="classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc">thorin::RWPassBase::man</a></div><div class="ttdeci">PassMan &amp; man()</div><div class="ttdef"><b>Definition:</b> pass.h:25</div></div>
+<div class="ttc" id="aclassthorin_1_1_r_w_pass_base_html_ae3b741f775f564409b46ea178ca0aefc"><div class="ttname"><a href="classthorin_1_1_r_w_pass_base.html#ae3b741f775f564409b46ea178ca0aefc">thorin::RWPassBase::PassMan</a></div><div class="ttdeci">friend class PassMan</div><div class="ttdef"><b>Definition:</b> pass.h:71</div></div>
+<div class="ttc" id="aclassthorin_1_1_r_w_pass_html_a2dab37ccd6894509943c3d0aff357b30"><div class="ttname"><a href="classthorin_1_1_r_w_pass.html#a2dab37ccd6894509943c3d0aff357b30">thorin::RWPass&lt; Lam &gt;::RWPass</a></div><div class="ttdeci">RWPass(PassMan &amp;man, const std::string &amp;name)</div><div class="ttdef"><b>Definition:</b> pass.h:210</div></div>
+<div class="ttc" id="aclassthorin_1_1_ret_wrap_html_a7aebec81aa5aff72e54fb6665b3b4159"><div class="ttname"><a href="classthorin_1_1_ret_wrap.html#a7aebec81aa5aff72e54fb6665b3b4159">thorin::RetWrap::RetWrap</a></div><div class="ttdeci">RetWrap(PassMan &amp;man)</div><div class="ttdef"><b>Definition:</b> ret_wrap.h:10</div></div>
+<div class="ttc" id="aclassthorin_1_1_ret_wrap_html_aa9a31d88a64f935f99d2cc21cfd5c5a7"><div class="ttname"><a href="classthorin_1_1_ret_wrap.html#aa9a31d88a64f935f99d2cc21cfd5c5a7">thorin::RetWrap::enter</a></div><div class="ttdeci">void enter() override</div><div class="ttdoc">Invoked just before rewriteing PassMan::curr_nom's body.</div><div class="ttdef"><b>Definition:</b> ret_wrap.cpp:5</div></div>
+<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition:</b> cfg.cpp:14</div></div>
+<div class="ttc" id="apass_8h_html"><div class="ttname"><a href="pass_8h.html">pass.h</a></div></div>
+</div><!-- fragment --><p >The actual <code>rewrite</code> simply inspects the current <code>def</code>. If this happens to be a <code>alloc</code>/<code>slot</code>, it will simply return the more explicit counterpart. This is <code><a class="el" href="alloc2malloc_8cpp.html">alloc2malloc.cpp</a></code>: </p><div class="fragment"><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="alloc2malloc_8h.html">thorin/pass/rw/alloc2malloc.h</a>&quot;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">const</span> Def* <a class="code hl_function" href="classthorin_1_1_alloc2_malloc.html#ab39814f9252fe574c46d0677dccff303">Alloc2Malloc::rewrite</a>(<span class="keyword">const</span> Def* def) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> alloc = isa&lt;Tag::Alloc&gt;(def)) {</div>
+<div class="line">        <span class="keyword">auto</span> [pointee, addr_space] = alloc-&gt;decurry()-&gt;args&lt;2&gt;();</div>
+<div class="line">        <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1_r_w_pass_base.html#af10ca8770ec7dc95aa51583cc1961b19">world</a>().<a class="code hl_function" href="classthorin_1_1_world.html#ad21547e21330be59b54d291f26db8812">op_malloc</a>(pointee, alloc-&gt;arg(), alloc-&gt;dbg());</div>
+<div class="line">    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<span class="keyword">auto</span> slot  = isa&lt;Tag::Slot &gt;(def)) {</div>
+<div class="line">        <span class="keyword">auto</span> [pointee, addr_space] = slot-&gt;decurry()-&gt;args&lt;2&gt;();</div>
+<div class="line">        <span class="keyword">auto</span> [mem, id] = slot-&gt;args&lt;2&gt;();</div>
+<div class="line">        <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1_r_w_pass_base.html#af10ca8770ec7dc95aa51583cc1961b19">world</a>().<a class="code hl_function" href="classthorin_1_1_world.html#a136d4720a7c162c13db18d4855ba3b06">op_mslot</a>(pointee, mem, <span class="keywordtype">id</span>, slot-&gt;dbg());</div>
+<div class="line">    }</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">return</span> def;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line">}</div>
+<div class="ttc" id="aalloc2malloc_8h_html"><div class="ttname"><a href="alloc2malloc_8h.html">alloc2malloc.h</a></div></div>
+<div class="ttc" id="aclassthorin_1_1_alloc2_malloc_html_ab39814f9252fe574c46d0677dccff303"><div class="ttname"><a href="classthorin_1_1_alloc2_malloc.html#ab39814f9252fe574c46d0677dccff303">thorin::Alloc2Malloc::rewrite</a></div><div class="ttdeci">const Def * rewrite(const Def *) override</div><div class="ttdoc">Rewrites a structural def within PassMan::curr_nom. Returns the replacement.</div><div class="ttdef"><b>Definition:</b> alloc2malloc.cpp:5</div></div>
+<div class="ttc" id="aclassthorin_1_1_r_w_pass_base_html_af10ca8770ec7dc95aa51583cc1961b19"><div class="ttname"><a href="classthorin_1_1_r_w_pass_base.html#af10ca8770ec7dc95aa51583cc1961b19">thorin::RWPassBase::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition:</b> pass.h:263</div></div>
+<div class="ttc" id="aclassthorin_1_1_world_html_a136d4720a7c162c13db18d4855ba3b06"><div class="ttname"><a href="classthorin_1_1_world.html#a136d4720a7c162c13db18d4855ba3b06">thorin::World::op_mslot</a></div><div class="ttdeci">const Def * op_mslot(const Def *type, const Def *mem, const Def *id, const Def *dbg={})</div><div class="ttdef"><b>Definition:</b> world.cpp:681</div></div>
+<div class="ttc" id="aclassthorin_1_1_world_html_ad21547e21330be59b54d291f26db8812"><div class="ttname"><a href="classthorin_1_1_world.html#ad21547e21330be59b54d291f26db8812">thorin::World::op_malloc</a></div><div class="ttdeci">const Def * op_malloc(const Def *type, const Def *mem, const Def *dbg={})</div><div class="ttdef"><b>Definition:</b> world.cpp:676</div></div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md14"></a>
 Fixed-Point Pass</h1>
+<p >A fixed-point pass allows you to implement a data-flow analysis. Traditionally, an optimizations performs</p><ol type="1">
+<li>the analysis and</li>
+<li>runs the actual transformation based upon the analysis info.</li>
+</ol>
+<p >A fixed-point pass, however, will directly rewrite the code. You <b>optimistically</b> assume that all your assumptions your pass could possibly make about the program simply hold. Now, two things might happen:</p><ol type="1">
+<li>You do not run into any contradictions later on, so your optimistic assumptions were in fact sound.</li>
+<li>You prove yourself wrong later on.</li>
+</ol>
+<p >If you find a contradiction to your initial assumption, you have to</p><ol type="1">
+<li>undo you mistake and backtrace and</li>
+<li>correct your assumption such that you do not do the same mistake over and over again.</li>
+</ol>
+<p >In order to write a fixed-point pass, you have to inherit from <a class="el" href="classthorin_1_1_f_p_pass.html">FPPass</a>. It expects two template parameters:</p><ol type="1">
+<li>This must be the very class you are currently implementing (known as <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a>.</li>
+<li>This is the same as for rewrite passes and will most likely be <code>Lam</code>.</li>
+</ol>
+<p >TODO </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
