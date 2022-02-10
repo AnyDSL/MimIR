@@ -6,12 +6,16 @@
 [![doxygen](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml)
 <a href="https://anydsl.github.io/thorin2/"><img src="https://anydsl.github.io/thorin2/doxygen.svg" alt="Doxygen" height="20"/></a>
 
-Thorin is an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions). This means:
+Thorin is an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions).
+This means:
 * [pure type system (PTS)](https://en.wikipedia.org/wiki/Pure_type_system)
 * [higher-order functions](https://en.wikipedia.org/wiki/Higher-order_function)
 * [dependent types](https://en.wikipedia.org/wiki/Dependent_type)
 
-In contrast to other CoC-based program representations such as [Coq](https://coq.inria.fr/) or [Lean](https://leanprover.github.io/), Thorin is *not* a theorem prover but focuses on generating efficient code. For this reason, Thorin  explicitly features mutable state and models imperative control flow via [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style).
+In contrast to other CoC-based program representations such as [Coq](https://coq.inria.fr/) or [Lean](https://leanprover.github.io/), Thorin is *not* a theorem prover but focuses on generating efficient code.
+For this reason, Thorin  explicitly features mutable state and models imperative control flow via [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style).
+
+You can use Thorin either via it's C++-API or the [command-line utility](cli.md).
 
 ## Building
 
@@ -73,3 +77,5 @@ doxygen doxyfile
 
     This is optional for building the documentation.
     Doxygen Awesome is pulled in as a submodule as well.
+
+## Usage

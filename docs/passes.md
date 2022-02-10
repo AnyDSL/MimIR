@@ -20,7 +20,7 @@ You can put together your optimization pipeline like so:
     opt.run();
 ```
 Note how some passes depend on other passes.
-For example, the [CopyProp](@ref thorin::CopyProp]agation depends on the [BetaRed](@ref thorin::BetaRed)uction and [EtaExp](@ref thorin::EtaExp)ansion.
+For example, the [CopyProp](@ref thorin::CopyProp)agation depends on the [BetaRed](@ref thorin::BetaRed)uction and [EtaExp](@ref thorin::EtaExp)ansion.
 In contrast to traditional passes in compilers, Thorin's [PassMan](@ref thorin::PassMan) will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded *phase-ordering problem*.
 
 There are two kind of passes in Thorin:
@@ -110,6 +110,8 @@ The `rewrite` works exactly as for rewrite passes.
 However, this time around, you are guessing that the most optimistic result will happen.
 If you prove yourself wrong afterwards, you will gradually ascend in a [lattice](https://en.wikipedia.org/wiki/Complete_lattice) until the fixed-point pass stabilizes.
 TODO
+
+#### Proxy
 
 ### Analyze
 
