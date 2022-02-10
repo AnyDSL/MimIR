@@ -30,25 +30,31 @@ var NAVTREE =
         [ "Tests", "index.html#autotoc_md2", null ],
         [ "Documentation", "index.html#autotoc_md3", null ],
         [ "Dependencies", "index.html#autotoc_md4", null ]
-      ] ]
+      ] ],
+      [ "Usage", "index.html#autotoc_md5", null ]
     ] ],
     [ "Language Reference", "md_docs_langref.html", null ],
+    [ "Thorin's Command-Line Interface", "md_docs_cli.html", [
+      [ "Usage", "md_docs_cli.html#autotoc_md8", null ]
+    ] ],
     [ "Developer Guide", "md_docs_dev.html", [
-      [ "Compiling and Executing", "md_docs_dev.html#autotoc_md7", null ],
-      [ "Defs and the World", "md_docs_dev.html#autotoc_md8", [
-        [ "Hash Consing", "md_docs_dev.html#autotoc_md9", null ]
+      [ "Compiling and Executing", "md_docs_dev.html#autotoc_md10", null ],
+      [ "Defs and the World", "md_docs_dev.html#autotoc_md11", [
+        [ "Hash Consing", "md_docs_dev.html#autotoc_md12", null ]
       ] ],
-      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md10", null ],
-      [ "Matching IR", "md_docs_dev.html#autotoc_md11", null ],
-      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md12", null ]
+      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md13", null ],
+      [ "Matching IR", "md_docs_dev.html#autotoc_md14", null ],
+      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md15", null ]
     ] ],
     [ "Passes", "md_docs_passes.html", [
-      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md14", null ],
-      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md15", [
-        [ "Rewrite", "md_docs_passes.html#autotoc_md16", null ],
-        [ "Analyze", "md_docs_passes.html#autotoc_md17", null ],
-        [ "Other Hooks", "md_docs_passes.html#autotoc_md18", null ],
-        [ "Caveats", "md_docs_passes.html#autotoc_md19", null ]
+      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md17", null ],
+      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md18", [
+        [ "Rewrite", "md_docs_passes.html#autotoc_md19", [
+          [ "Proxy", "md_docs_passes.html#autotoc_md20", null ]
+        ] ],
+        [ "Analyze", "md_docs_passes.html#autotoc_md21", null ],
+        [ "Other Hooks", "md_docs_passes.html#autotoc_md22", null ],
+        [ "Caveats", "md_docs_passes.html#autotoc_md23", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
@@ -103,11 +109,11 @@ var NAVTREEINDEX =
 "classthorin_1_1_world.html#ab148665b02cd6112774e39b647d3a159",
 "classthorin_1_1detail_1_1_hash_table_1_1iterator__base.html#a2cd6720bd17cfb0819a4b96ac828fab0",
 "hash_8h.html",
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a2a0617accf8bb8625c43e2ffeb5b8d5b",
-"namespacethorin.html#aec7c9c368dda260071936391c37a72e3ad4f917633649a3c47c7ab917fa990146",
-"stream_8h.html#a7f7f912811602c93fd8ec01fd4ff1f73",
-"structthorin_1_1ll_1_1_b_b.html#a3b03c198eb00e5b6e231295e732f1720",
-"types_8h.html#a5b2f6a43238c38964d80e4106dbb0773"
+"namespacethorin.html#a57f3fc8dc501e3b04e1c6523e32aad64",
+"namespacethorin.html#aec7c9c368dda260071936391c37a72e3aa0554b168cb784a1dda5015939699ae5",
+"stream_8h.html#a30b8c47dfcb51b9b32b36bfb3ea5832b",
+"structthorin_1_1ll_1_1_b_b.html#a0448eb9cb7f54ce30c2d2000ba69d8d5",
+"types_8h.html#a48da5e6acc28b0cfe9f3402f29ae9a1c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

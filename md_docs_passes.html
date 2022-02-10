@@ -97,11 +97,13 @@ $(document).ready(function(){initNavTree('md_docs_passes.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md14">Rewrite Pass</a></li>
-<li class="level1"><a href="#autotoc_md15">Fixed-Point Pass</a><ul><li class="level2"><a href="#autotoc_md16">Rewrite</a></li>
-<li class="level2"><a href="#autotoc_md17">Analyze</a></li>
-<li class="level2"><a href="#autotoc_md18">Other Hooks</a></li>
-<li class="level2"><a href="#autotoc_md19">Caveats</a></li>
+<ul><li class="level1"><a href="#autotoc_md17">Rewrite Pass</a></li>
+<li class="level1"><a href="#autotoc_md18">Fixed-Point Pass</a><ul><li class="level2"><a href="#autotoc_md19">Rewrite</a><ul><li class="level3"><a href="#autotoc_md20">Proxy</a></li>
+</ul>
+</li>
+<li class="level2"><a href="#autotoc_md21">Analyze</a></li>
+<li class="level2"><a href="#autotoc_md22">Other Hooks</a></li>
+<li class="level2"><a href="#autotoc_md23">Caveats</a></li>
 </ul>
 </li>
 </ul>
@@ -116,12 +118,12 @@ $(document).ready(function(){initNavTree('md_docs_passes.html',''); initResizabl
 <div class="line">opt.add&lt;Scalerize&gt;(ee);</div>
 <div class="line">opt.add&lt;CopyProp&gt;(br, ee);</div>
 <div class="line">opt.run();</div>
-</div><!-- fragment --><p> Note how some passes depend on other passes. For example, the [CopyProp](<a class="el" href="classthorin_1_1_copy_prop.html">thorin::CopyProp</a>]agation depends on the <a class="el" href="classthorin_1_1_beta_red.html">BetaRed</a>uction and <a class="el" href="classthorin_1_1_eta_exp.html">EtaExp</a>ansion. In contrast to traditional passes in compilers, Thorin's <a class="el" href="classthorin_1_1_pass_man.html">PassMan</a> will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded <em>phase-ordering problem</em>.</p>
+</div><!-- fragment --><p> Note how some passes depend on other passes. For example, the <a class="el" href="classthorin_1_1_copy_prop.html">CopyProp</a>agation depends on the <a class="el" href="classthorin_1_1_beta_red.html">BetaRed</a>uction and <a class="el" href="classthorin_1_1_eta_exp.html">EtaExp</a>ansion. In contrast to traditional passes in compilers, Thorin's <a class="el" href="classthorin_1_1_pass_man.html">PassMan</a> will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded <em>phase-ordering problem</em>.</p>
 <p >There are two kind of passes in Thorin:</p><ol type="1">
 <li>Rewrite Pass</li>
 <li>Fixed-Point Pass</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Rewrite Pass</h1>
 <p >In order to write a rewrite pass, you have to inherit from <a class="el" href="classthorin_1_1_r_w_pass.html">RWPass</a>. Usually, you are only interested in looking for code patterns that only occur in specific nominals - typically <a class="el" href="classthorin_1_1_lam.html">Lam</a>bdas. You can filter for these nominals by passing it as template parameter to <a class="el" href="classthorin_1_1_r_w_pass.html">RWPass</a> when inherting from it. The main hook to the <a class="el" href="classthorin_1_1_pass_man.html">PassMan</a>, is the <a class="el" href="classthorin_1_1_r_w_pass_base.html#a416313eda3acb53d2609877c4367d07c">rewrite</a> method. As an example, let's have a look at the <a class="el" href="classthorin_1_1_alloc2_malloc.html">Alloc2Malloc</a> pass. It rewrites <code>alloc</code>/<code>slot</code> calls into their more verbose siblings <code>malloc</code>/<code>mslot</code> that make the size of the alloc'ed type explicit: This is <code><a class="el" href="alloc2malloc_8h.html">alloc2malloc.h</a></code>: </p><div class="fragment"><div class="line"><span class="preprocessor">#ifndef THORIN_PASS_RW_ALLOC2MALLOC_H</span></div>
 <div class="line"><span class="preprocessor">#define THORIN_PASS_RW_ALLOC2MALLOC_H</span></div>
@@ -171,7 +173,7 @@ Rewrite Pass</h1>
 <div class="ttc" id="aclassthorin_1_1_r_w_pass_base_html_af10ca8770ec7dc95aa51583cc1961b19"><div class="ttname"><a href="classthorin_1_1_r_w_pass_base.html#af10ca8770ec7dc95aa51583cc1961b19">thorin::RWPassBase::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition:</b> pass.h:263</div></div>
 <div class="ttc" id="aclassthorin_1_1_world_html_a136d4720a7c162c13db18d4855ba3b06"><div class="ttname"><a href="classthorin_1_1_world.html#a136d4720a7c162c13db18d4855ba3b06">thorin::World::op_mslot</a></div><div class="ttdeci">const Def * op_mslot(const Def *type, const Def *mem, const Def *id, const Def *dbg={})</div><div class="ttdef"><b>Definition:</b> world.cpp:681</div></div>
 <div class="ttc" id="aclassthorin_1_1_world_html_ad21547e21330be59b54d291f26db8812"><div class="ttname"><a href="classthorin_1_1_world.html#ad21547e21330be59b54d291f26db8812">thorin::World::op_malloc</a></div><div class="ttdeci">const Def * op_malloc(const Def *type, const Def *mem, const Def *dbg={})</div><div class="ttdef"><b>Definition:</b> world.cpp:676</div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md15"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md18"></a>
 Fixed-Point Pass</h1>
 <p >A fixed-point pass allows you to implement a data-flow analysis. Traditionally, an optimizations performs</p><ol type="1">
 <li>the analysis and</li>
@@ -186,15 +188,17 @@ Fixed-Point Pass</h1>
 <li>correct your assumption such that you do not do the same mistake over and over again.</li>
 </ol>
 <p >In order to write a fixed-point pass, you have to inherit from <a class="el" href="classthorin_1_1_f_p_pass.html">FPPass</a>. It expects two template parameters. The first one must be the very class you are currently implementing (this is known as <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a> in C++). The second one has the same purpose as the template parameter for rewrite passes and will most likely be <a class="el" href="classthorin_1_1_lam.html">Lam</a>.</p>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 Rewrite</h2>
 <p >The <code>rewrite</code> works exactly as for rewrite passes. However, this time around, you are guessing that the most optimistic result will happen. If you prove yourself wrong afterwards, you will gradually ascend in a <a href="https://en.wikipedia.org/wiki/Complete_lattice">lattice</a> until the fixed-point pass stabilizes. TODO</p>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<h3><a class="anchor" id="autotoc_md20"></a>
+Proxy</h3>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Analyze</h2>
 <p >TODO</p>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Other Hooks</h2>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
 Caveats</h2>
 <p >It is important to always construct a valid program. Otherwise, bad things might happen as soon as you toss other passes into the mix. The reason is that the very program you are constructing is the <b>only</b> way to communicate with the other passes without directly sharing information. </p>
 </div></div><!-- contents -->
