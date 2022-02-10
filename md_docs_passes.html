@@ -106,13 +106,24 @@ $(document).ready(function(){initNavTree('md_docs_passes.html',''); initResizabl
 </li>
 </ul>
 </div>
-<div class="textblock"><p >There are two kind of passes in Thorin:</p><ol type="1">
+<div class="textblock"><p >Passes in Thorin are the main infrastructure and preferred method when implementing code transformations. However, nothing stops you from manually iterating and transforming the program. This is usually only necessary if you need a very specific iteration behavior for your transformation.</p>
+<p >Passes are managed by the <a class="el" href="classthorin_1_1_pass_man.html">PassMan</a>ager. You can put together your optimization pipeline like so: </p><div class="fragment"><div class="line">PassMan opt(world);</div>
+<div class="line">opt.add&lt;PartialEval&gt;();</div>
+<div class="line"><span class="keyword">auto</span> br = opt.add&lt;BetaRed&gt;();</div>
+<div class="line"><span class="keyword">auto</span> er = opt.add&lt;EtaRed&gt;();</div>
+<div class="line"><span class="keyword">auto</span> ee = opt.add&lt;EtaExp&gt;(er);</div>
+<div class="line">opt.add&lt;SSAConstr&gt;(ee);</div>
+<div class="line">opt.add&lt;Scalerize&gt;(ee);</div>
+<div class="line">opt.add&lt;CopyProp&gt;(br, ee);</div>
+<div class="line">opt.run();</div>
+</div><!-- fragment --><p> Note how some passes depend on other passes. For example, the [CopyProp](<a class="el" href="classthorin_1_1_copy_prop.html">thorin::CopyProp</a>]agation depends on the <a class="el" href="classthorin_1_1_beta_red.html">BetaRed</a>uction and <a class="el" href="classthorin_1_1_eta_exp.html">EtaExp</a>ansion. In contrast to traditional passes in compilers, Thorin's <a class="el" href="classthorin_1_1_pass_man.html">PassMan</a> will run all passes in tandem and combine the obtained results into the most optimal solution and, hence, avoid the dreaded <em>phase-ordering problem</em>.</p>
+<p >There are two kind of passes in Thorin:</p><ol type="1">
 <li>Rewrite Pass</li>
 <li>Fixed-Point Pass</li>
 </ol>
 <h1><a class="anchor" id="autotoc_md14"></a>
 Rewrite Pass</h1>
-<p >In order to write a rewrite pass, you have to inherit from <a class="el" href="classthorin_1_1_r_w_pass.html">RWPass</a>. Usually, you are only interested in looking for code patterns that only occur in specific nominals - typically <code>Lam</code>bdas. This is the template argument in order to inspect only specific nominals. The main hook, the <a class="el" href="classthorin_1_1_pass_man.html">PassMan</a> provides, is the <a class="el" href="classthorin_1_1_r_w_pass_base.html#a416313eda3acb53d2609877c4367d07c">rewrite</a> method. As an example, let's have a look at the <a class="el" href="classthorin_1_1_alloc2_malloc.html">Alloc2Malloc</a> pass. It rewrites <code>alloc</code>/<code>slot</code> calls into their more verbose siblings <code>malloc</code>/<code>mslot</code> that make the size of the alloc'ed size explicit: This is <code><a class="el" href="alloc2malloc_8h.html">alloc2malloc.h</a></code>: </p><div class="fragment"><div class="line"><span class="preprocessor">#ifndef THORIN_PASS_RW_ALLOC2MALLOC_H</span></div>
+<p >In order to write a rewrite pass, you have to inherit from <a class="el" href="classthorin_1_1_r_w_pass.html">RWPass</a>. Usually, you are only interested in looking for code patterns that only occur in specific nominals - typically <a class="el" href="classthorin_1_1_lam.html">Lam</a>bdas. You can filter for these nominals by passing it as template parameter to <a class="el" href="classthorin_1_1_r_w_pass.html">RWPass</a> when inherting from it. The main hook to the <a class="el" href="classthorin_1_1_pass_man.html">PassMan</a>, is the <a class="el" href="classthorin_1_1_r_w_pass_base.html#a416313eda3acb53d2609877c4367d07c">rewrite</a> method. As an example, let's have a look at the <a class="el" href="classthorin_1_1_alloc2_malloc.html">Alloc2Malloc</a> pass. It rewrites <code>alloc</code>/<code>slot</code> calls into their more verbose siblings <code>malloc</code>/<code>mslot</code> that make the size of the alloc'ed type explicit: This is <code><a class="el" href="alloc2malloc_8h.html">alloc2malloc.h</a></code>: </p><div class="fragment"><div class="line"><span class="preprocessor">#ifndef THORIN_PASS_RW_ALLOC2MALLOC_H</span></div>
 <div class="line"><span class="preprocessor">#define THORIN_PASS_RW_ALLOC2MALLOC_H</span></div>
 <div class="line"> </div>
 <div class="line"><span class="preprocessor">#include &quot;<a class="code" href="pass_8h.html">thorin/pass/pass.h</a>&quot;</span></div>
