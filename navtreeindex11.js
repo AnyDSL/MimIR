@@ -18,8 +18,8 @@ var NAVTREEINDEX11 =
 "hash_8h.html#afd6542b4bbcecac2fe7e4e87251a37f6":[7,0,1,1,5,7,19],
 "hash_8h_source.html":[7,0,1,1,5,7],
 "hierarchy.html":[6,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "index.html#autotoc_md1":[0,0],
 "index.html#autotoc_md2":[0,0,0],
 "index.html#autotoc_md3":[0,0,1],
@@ -93,7 +93,8 @@ var NAVTREEINDEX11 =
 "md_docs_passes.html#autotoc_md15":[3,1],
 "md_docs_passes.html#autotoc_md16":[3,1,0],
 "md_docs_passes.html#autotoc_md17":[3,1,1],
-"md_docs_passes.html#autotoc_md18":[3,2],
+"md_docs_passes.html#autotoc_md18":[3,1,2],
+"md_docs_passes.html#autotoc_md19":[3,1,3],
 "namespacemembers.html":[4,1,0,0],
 "namespacemembers.html":[4,1,0],
 "namespacemembers_a.html":[4,1,0,1],
@@ -179,8 +180,8 @@ var NAVTREEINDEX11 =
 "namespacethorin.html#a2845183b889a0b1ba1256dc2ea7c6e48a665406f59cfb5f597dbd3e509cb16ce8":[4,0,0,227,5],
 "namespacethorin.html#a2845183b889a0b1ba1256dc2ea7c6e48a93195db1ad73788fe96193503a7d8887":[4,0,0,227,2],
 "namespacethorin.html#a2845183b889a0b1ba1256dc2ea7c6e48abce5439b1dc3f93342028c4fd2687cb3":[4,0,0,227,0],
-"namespacethorin.html#a29c941d22ec38a63827a944f7ed215a6":[7,0,1,1,5,13,7,0],
 "namespacethorin.html#a29c941d22ec38a63827a944f7ed215a6":[7,0,1,1,5,13,7,1],
+"namespacethorin.html#a29c941d22ec38a63827a944f7ed215a6":[7,0,1,1,5,13,7,0],
 "namespacethorin.html#a2a84a30e7b882991993ffae40c693cf2":[4,0,0,365],
 "namespacethorin.html#a2ab2d43cef7e77ce1befc1ab32aa67b3":[4,0,0,393],
 "namespacethorin.html#a2ab8d8623a2a2fb97412cf4b05d18811":[4,0,0,271],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "namespacethorin.html#a57f3fc8dc501e3b04e1c6523e32aad64":[4,0,0,294],
 "namespacethorin.html#a58d95fe3d3e9dd82e7cf856a97a5cbca":[4,0,0,387],
 "namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9":[4,0,0,235],
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a0ba64a0dea00947916dfb6a66866e1ca":[4,0,0,235,5],
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a2a0617accf8bb8625c43e2ffeb5b8d5b":[4,0,0,235,12]
+"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a0ba64a0dea00947916dfb6a66866e1ca":[4,0,0,235,5]
 };

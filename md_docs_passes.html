@@ -100,9 +100,10 @@ $(document).ready(function(){initNavTree('md_docs_passes.html',''); initResizabl
 <ul><li class="level1"><a href="#autotoc_md14">Rewrite Pass</a></li>
 <li class="level1"><a href="#autotoc_md15">Fixed-Point Pass</a><ul><li class="level2"><a href="#autotoc_md16">Rewrite</a></li>
 <li class="level2"><a href="#autotoc_md17">Analyze</a></li>
+<li class="level2"><a href="#autotoc_md18">Other Hooks</a></li>
+<li class="level2"><a href="#autotoc_md19">Caveats</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md18">Other Hooks</a></li>
 </ul>
 </div>
 <div class="textblock"><p >There are two kind of passes in Thorin:</p><ol type="1">
@@ -170,22 +171,21 @@ Fixed-Point Pass</h1>
 <li>You prove yourself wrong later on.</li>
 </ol>
 <p >If you find a contradiction to your initial assumption, you have to</p><ol type="1">
-<li>undo you mistake and backtrace and</li>
+<li>undo your mistake by backtracing back to the place where you erroneously made the wrong decision and</li>
 <li>correct your assumption such that you do not do the same mistake over and over again.</li>
 </ol>
-<p >In order to write a fixed-point pass, you have to inherit from <a class="el" href="classthorin_1_1_f_p_pass.html">FPPass</a>. It expects two template parameters:</p><ol type="1">
-<li>This must be the very class you are currently implementing (known as <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a>.</li>
-<li>This is the same as for rewrite passes and will most likely be <code>Lam</code>.</li>
-</ol>
+<p >In order to write a fixed-point pass, you have to inherit from <a class="el" href="classthorin_1_1_f_p_pass.html">FPPass</a>. It expects two template parameters. The first one must be the very class you are currently implementing (this is known as <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a> in C++). The second one has the same purpose as the template parameter for rewrite passes and will most likely be <a class="el" href="classthorin_1_1_lam.html">Lam</a>.</p>
 <h2><a class="anchor" id="autotoc_md16"></a>
 Rewrite</h2>
-<p >TODO</p>
+<p >The <code>rewrite</code> works exactly as for rewrite passes. However, this time around, you are guessing that the most optimistic result will happen. If you prove yourself wrong afterwards, you will gradually ascend in a <a href="https://en.wikipedia.org/wiki/Complete_lattice">lattice</a> until the fixed-point pass stabilizes. TODO</p>
 <h2><a class="anchor" id="autotoc_md17"></a>
 Analyze</h2>
 <p >TODO</p>
-<h1><a class="anchor" id="autotoc_md18"></a>
-Other Hooks</h1>
-<p >TODO </p>
+<h2><a class="anchor" id="autotoc_md18"></a>
+Other Hooks</h2>
+<h2><a class="anchor" id="autotoc_md19"></a>
+Caveats</h2>
+<p >It is important to always construct a valid program. Otherwise, bad things might happen as soon as you toss other passes into the mix. The reason is that the very program you are constructing is the <b>only</b> way to communicate with the other passes without directly sharing information. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

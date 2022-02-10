@@ -46,9 +46,10 @@ var NAVTREE =
       [ "Rewrite Pass", "md_docs_passes.html#autotoc_md14", null ],
       [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md15", [
         [ "Rewrite", "md_docs_passes.html#autotoc_md16", null ],
-        [ "Analyze", "md_docs_passes.html#autotoc_md17", null ]
-      ] ],
-      [ "Other Hooks", "md_docs_passes.html#autotoc_md18", null ]
+        [ "Analyze", "md_docs_passes.html#autotoc_md17", null ],
+        [ "Other Hooks", "md_docs_passes.html#autotoc_md18", null ],
+        [ "Caveats", "md_docs_passes.html#autotoc_md19", null ]
+      ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -102,11 +103,11 @@ var NAVTREEINDEX =
 "classthorin_1_1_world.html#ab148665b02cd6112774e39b647d3a159",
 "classthorin_1_1detail_1_1_hash_table_1_1iterator__base.html#a2cd6720bd17cfb0819a4b96ac828fab0",
 "hash_8h.html",
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a2db95e8e1a9267b7a1188556b2013b33",
-"namespacethorin.html#aec7c9c368dda260071936391c37a72e3ad93f2a67ca63f3cd3c9e524b375c3fb8",
-"stream_8h.html#a8c1b8fc8b9eaae55817019dbe1ba3d22",
-"structthorin_1_1ll_1_1_b_b.html#a74fdfecb07de15e76f88b71517c112cc",
-"types_8h.html#a5bdf209d006051cf78afb63e49fca4b7"
+"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a2a0617accf8bb8625c43e2ffeb5b8d5b",
+"namespacethorin.html#aec7c9c368dda260071936391c37a72e3ad4f917633649a3c47c7ab917fa990146",
+"stream_8h.html#a7f7f912811602c93fd8ec01fd4ff1f73",
+"structthorin_1_1ll_1_1_b_b.html#a3b03c198eb00e5b6e231295e732f1720",
+"types_8h.html#a5b2f6a43238c38964d80e4106dbb0773"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
