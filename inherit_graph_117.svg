@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="classthorin_1_1_r_w_pass_base.html" target="_top" xlink:title=" ">
+<g id="a_node1"><a xlink:href="classthorin_1_1_r_w_pass_base.html" target="_top" xlink:title="All Passes that want to be registered in the PassMan must implement this interface.">
 <polygon fill="none" stroke="black" points="0,-170.5 0,-189.5 106,-189.5 106,-170.5 0,-170.5"/>
 <text text-anchor="middle" x="53" y="-177.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPassBase</text>
 </a>
@@ -110,7 +110,7 @@
 <!-- Node5 -->
 <g id="node6" class="node">
 <title>Node5</title>
-<g id="a_node6"><a xlink:href="classthorin_1_1_scalerize.html" target="_top" xlink:title=" ">
+<g id="a_node6"><a xlink:href="classthorin_1_1_scalerize.html" target="_top" xlink:title="Perform Scalarization (= Argument simplification), i.e.">
 <polygon fill="none" stroke="black" points="324.5,-350.5 324.5,-369.5 409.5,-369.5 409.5,-350.5 324.5,-350.5"/>
 <text text-anchor="middle" x="367" y="-357.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Scalerize</text>
 </a>
@@ -234,7 +234,7 @@
 <!-- Node8 -->
 <g id="node9" class="node">
 <title>Node8</title>
-<g id="a_node9"><a xlink:href="classthorin_1_1_beta_red.html" target="_top" xlink:title=" ">
+<g id="a_node9"><a xlink:href="classthorin_1_1_beta_red.html" target="_top" xlink:title="Optimistically performs β&#45;reduction (aka inlining).">
 <polygon fill="none" stroke="black" points="478.5,-312.5 478.5,-331.5 561.5,-331.5 561.5,-312.5 478.5,-312.5"/>
 <text text-anchor="middle" x="520" y="-319.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::BetaRed</text>
 </a>
@@ -249,7 +249,7 @@
 <!-- Node10 -->
 <g id="node11" class="node">
 <title>Node10</title>
-<g id="a_node11"><a xlink:href="classthorin_1_1_copy_prop.html" target="_top" xlink:title=" ">
+<g id="a_node11"><a xlink:href="classthorin_1_1_copy_prop.html" target="_top" xlink:title="This FPPass is similar to sparse conditional constant propagation (SCCP).">
 <polygon fill="none" stroke="black" points="476.5,-268.5 476.5,-287.5 563.5,-287.5 563.5,-268.5 476.5,-268.5"/>
 <text text-anchor="middle" x="520" y="-275.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::CopyProp</text>
 </a>
@@ -279,7 +279,7 @@
 <!-- Node14 -->
 <g id="node15" class="node">
 <title>Node14</title>
-<g id="a_node15"><a xlink:href="classthorin_1_1_eta_exp.html" target="_top" xlink:title=" ">
+<g id="a_node15"><a xlink:href="classthorin_1_1_eta_exp.html" target="_top" xlink:title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle...">
 <polygon fill="none" stroke="black" points="482.5,-170.5 482.5,-189.5 557.5,-189.5 557.5,-170.5 482.5,-170.5"/>
 <text text-anchor="middle" x="520" y="-177.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::EtaExp</text>
 </a>
@@ -294,7 +294,7 @@
 <!-- Node16 -->
 <g id="node17" class="node">
 <title>Node16</title>
-<g id="a_node17"><a xlink:href="classthorin_1_1_eta_red.html" target="_top" xlink:title=" ">
+<g id="a_node17"><a xlink:href="classthorin_1_1_eta_red.html" target="_top" xlink:title="Performs η&#45;reduction: λx.e x &#45;&gt; e, whenever x does (optimistically) not appear free in e.">
 <polygon fill="none" stroke="black" points="481.5,-126.5 481.5,-145.5 558.5,-145.5 558.5,-126.5 481.5,-126.5"/>
 <text text-anchor="middle" x="520" y="-133.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::EtaRed</text>
 </a>
@@ -309,7 +309,7 @@
 <!-- Node18 -->
 <g id="node19" class="node">
 <title>Node18</title>
-<g id="a_node19"><a xlink:href="classthorin_1_1_s_s_a_constr.html" target="_top" xlink:title=" ">
+<g id="a_node19"><a xlink:href="classthorin_1_1_s_s_a_constr.html" target="_top" xlink:title="SSA construction algorithm that promotes Slots, Loads, and Stores to SSA values.">
 <polygon fill="none" stroke="black" points="473,-82.5 473,-101.5 567,-101.5 567,-82.5 473,-82.5"/>
 <text text-anchor="middle" x="520" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::SSAConstr</text>
 </a>

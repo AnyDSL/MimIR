@@ -102,6 +102,9 @@ $(document).ready(function(){initNavTree('classthorin_1_1_loop_tree_1_1_base.htm
 </div><!--header-->
 <div class="contents">
 
+<p>Represents a node of a loop nesting forest.  
+ <a href="classthorin_1_1_loop_tree_1_1_base.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="looptree_8h_source.html">looptree.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for thorin::LoopTree&lt; forward &gt;::Base:</div>
@@ -185,7 +188,8 @@ Protected Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;bool forward&gt;<br />
-class thorin::LoopTree&lt; forward &gt;::Base</div><p >Represents a node of a loop nesting forest. Please refer to G. Ramalingam, "On Loops, Dominators, and Dominance Frontiers", 1999 for an introduction to loop nesting forests. A <code><a class="el" href="classthorin_1_1_loop_tree_1_1_base.html">Base</a></code> consists of a set of header <code><a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a>s</code>. The header <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a>s are the set of <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a>s not dominated by any other <code><a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a></code> within the loop. The root node is a <code><a class="el" href="classthorin_1_1_loop_tree_1_1_head.html" title="A Head owns further nodes as children.">Head</a></code> without any <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a>s but further children and <code>depth_</code> -1. Thus, the forest is pooled into a tree. </p>
+class thorin::LoopTree&lt; forward &gt;::Base</div><p >Represents a node of a loop nesting forest. </p>
+<p >Please refer to G. Ramalingam, "On Loops, Dominators, and Dominance Frontiers", 1999 for an introduction to loop nesting forests. A <code><a class="el" href="classthorin_1_1_loop_tree_1_1_base.html" title="Represents a node of a loop nesting forest.">Base</a></code> consists of a set of header <code><a class="el" href="classthorin_1_1_c_f_node.html" title="A Control-Flow Node.">CFNode</a>s</code>. The header <a class="el" href="classthorin_1_1_c_f_node.html" title="A Control-Flow Node.">CFNode</a>s are the set of <a class="el" href="classthorin_1_1_c_f_node.html" title="A Control-Flow Node.">CFNode</a>s not dominated by any other <code><a class="el" href="classthorin_1_1_c_f_node.html" title="A Control-Flow Node.">CFNode</a></code> within the loop. The root node is a <code><a class="el" href="classthorin_1_1_loop_tree_1_1_head.html" title="A Head owns further nodes as children.">Head</a></code> without any <a class="el" href="classthorin_1_1_c_f_node.html" title="A Control-Flow Node.">CFNode</a>s but further children and <code>depth_</code> -1. Thus, the forest is pooled into a tree. </p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="a449337d35abc984599dba1e9f5f200cb" name="a449337d35abc984599dba1e9f5f200cb"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a449337d35abc984599dba1e9f5f200cb">&#9670;&nbsp;</a></span>Node</h2>

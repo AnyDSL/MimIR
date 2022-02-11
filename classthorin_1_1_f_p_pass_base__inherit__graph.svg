@@ -129,7 +129,7 @@
 <!-- Node2 -->
 <g id="node2" class="node">
 <title>Node2</title>
-<g id="a_node2"><a xlink:href="classthorin_1_1_r_w_pass_base.html" target="_top" xlink:title=" ">
+<g id="a_node2"><a xlink:href="classthorin_1_1_r_w_pass_base.html" target="_top" xlink:title="All Passes that want to be registered in the PassMan must implement this interface.">
 <polygon fill="none" stroke="black" points="0,-132.5 0,-151.5 106,-151.5 106,-132.5 0,-132.5"/>
 <text text-anchor="middle" x="53" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPassBase</text>
 </a>
@@ -144,7 +144,7 @@
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="classthorin_1_1_beta_red.html" target="_top" xlink:title=" ">
+<g id="a_node4"><a xlink:href="classthorin_1_1_beta_red.html" target="_top" xlink:title="Optimistically performs β&#45;reduction (aka inlining).">
 <polygon fill="none" stroke="black" points="462.5,-274.5 462.5,-293.5 545.5,-293.5 545.5,-274.5 462.5,-274.5"/>
 <text text-anchor="middle" x="504" y="-281.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::BetaRed</text>
 </a>
@@ -159,7 +159,7 @@
 <!-- Node6 -->
 <g id="node6" class="node">
 <title>Node6</title>
-<g id="a_node6"><a xlink:href="classthorin_1_1_copy_prop.html" target="_top" xlink:title=" ">
+<g id="a_node6"><a xlink:href="classthorin_1_1_copy_prop.html" target="_top" xlink:title="This FPPass is similar to sparse conditional constant propagation (SCCP).">
 <polygon fill="none" stroke="black" points="460.5,-230.5 460.5,-249.5 547.5,-249.5 547.5,-230.5 460.5,-230.5"/>
 <text text-anchor="middle" x="504" y="-237.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::CopyProp</text>
 </a>
@@ -189,7 +189,7 @@
 <!-- Node10 -->
 <g id="node10" class="node">
 <title>Node10</title>
-<g id="a_node10"><a xlink:href="classthorin_1_1_eta_exp.html" target="_top" xlink:title=" ">
+<g id="a_node10"><a xlink:href="classthorin_1_1_eta_exp.html" target="_top" xlink:title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle...">
 <polygon fill="none" stroke="black" points="466.5,-132.5 466.5,-151.5 541.5,-151.5 541.5,-132.5 466.5,-132.5"/>
 <text text-anchor="middle" x="504" y="-139.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::EtaExp</text>
 </a>
@@ -204,7 +204,7 @@
 <!-- Node12 -->
 <g id="node12" class="node">
 <title>Node12</title>
-<g id="a_node12"><a xlink:href="classthorin_1_1_eta_red.html" target="_top" xlink:title=" ">
+<g id="a_node12"><a xlink:href="classthorin_1_1_eta_red.html" target="_top" xlink:title="Performs η&#45;reduction: λx.e x &#45;&gt; e, whenever x does (optimistically) not appear free in e.">
 <polygon fill="none" stroke="black" points="465.5,-88.5 465.5,-107.5 542.5,-107.5 542.5,-88.5 465.5,-88.5"/>
 <text text-anchor="middle" x="504" y="-95.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::EtaRed</text>
 </a>
@@ -219,7 +219,7 @@
 <!-- Node14 -->
 <g id="node14" class="node">
 <title>Node14</title>
-<g id="a_node14"><a xlink:href="classthorin_1_1_s_s_a_constr.html" target="_top" xlink:title=" ">
+<g id="a_node14"><a xlink:href="classthorin_1_1_s_s_a_constr.html" target="_top" xlink:title="SSA construction algorithm that promotes Slots, Loads, and Stores to SSA values.">
 <polygon fill="none" stroke="black" points="457,-44.5 457,-63.5 551,-63.5 551,-44.5 457,-44.5"/>
 <text text-anchor="middle" x="504" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::SSAConstr</text>
 </a>

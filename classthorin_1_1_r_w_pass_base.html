@@ -100,6 +100,9 @@ $(document).ready(function(){initNavTree('classthorin_1_1_r_w_pass_base.html',''
 </div><!--header-->
 <div class="contents">
 
+<p>All Passes that want to be registered in the <code><a class="el" href="classthorin_1_1_pass_man.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a></code> must implement this interface.  
+ <a href="classthorin_1_1_r_w_pass_base.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="pass_8h_source.html">pass.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for thorin::RWPassBase:</div>
@@ -114,30 +117,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a858568da01a53aae05a41b8c40defd91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cf643e69d44e023ac85d79c0a1ce3ab"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a5cf643e69d44e023ac85d79c0a1ce3ab">~RWPassBase</a> ()</td></tr>
 <tr class="separator:a5cf643e69d44e023ac85d79c0a1ce3ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">getters</div></td></tr>
-<tr class="memitem:ad2506a9ae875b80c475520552cd969dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_pass_man.html">PassMan</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc">man</a> ()</td></tr>
-<tr class="separator:ad2506a9ae875b80c475520552cd969dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96674bfc85788b0ee1ff7bd8decda05b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_pass_man.html">PassMan</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a96674bfc85788b0ee1ff7bd8decda05b">man</a> () const</td></tr>
-<tr class="separator:a96674bfc85788b0ee1ff7bd8decda05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae862a9a49dda472ec336d4729bae9662"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#ae862a9a49dda472ec336d4729bae9662">name</a> () const</td></tr>
-<tr class="separator:ae862a9a49dda472ec336d4729bae9662"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a86499da04ae1cb7e3c00a957f142b625"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a86499da04ae1cb7e3c00a957f142b625">proxy_id</a> () const</td></tr>
-<tr class="separator:a86499da04ae1cb7e3c00a957f142b625"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af10ca8770ec7dc95aa51583cc1961b19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_world.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#af10ca8770ec7dc95aa51583cc1961b19">world</a> ()</td></tr>
-<tr class="separator:af10ca8770ec7dc95aa51583cc1961b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">hooks for the PassMan</div></td></tr>
-<tr class="memitem:ab08fb019f1aa4638f1d5aaf9995dcc6b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#ab08fb019f1aa4638f1d5aaf9995dcc6b">inspect</a> () const =0</td></tr>
-<tr class="separator:ab08fb019f1aa4638f1d5aaf9995dcc6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a2d70e5b4b679bd5bd7dda99f288e45ae">enter</a> ()</td></tr>
-<tr class="memdesc:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked just before <code>rewriteing</code> <code><a class="el" href="classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a>'s</code> body.  <a href="classthorin_1_1_r_w_pass_base.html#a2d70e5b4b679bd5bd7dda99f288e45ae">More...</a><br /></td></tr>
-<tr class="separator:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a416313eda3acb53d2609877c4367d07c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a416313eda3acb53d2609877c4367d07c">rewrite</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *def)</td></tr>
-<tr class="memdesc:a416313eda3acb53d2609877c4367d07c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rewrites a <em>structural</em> <code>def</code> within <code><a class="el" href="classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a></code>. Returns the replacement.  <a href="classthorin_1_1_r_w_pass_base.html#a416313eda3acb53d2609877c4367d07c">More...</a><br /></td></tr>
-<tr class="separator:a416313eda3acb53d2609877c4367d07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afdb2234d68377a2ba081b860e3bad8e1"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#afdb2234d68377a2ba081b860e3bad8e1">rewrite</a> (const <a class="el" href="classthorin_1_1_var.html">Var</a> *var)</td></tr>
-<tr class="separator:afdb2234d68377a2ba081b860e3bad8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcba6c387007abd43d9c2ff1e83213db"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#afcba6c387007abd43d9c2ff1e83213db">rewrite</a> (const <a class="el" href="classthorin_1_1_proxy.html">Proxy</a> *<a class="el" href="classthorin_1_1_r_w_pass_base.html#a19bcd131336dceb54a95a1eca9cda22e">proxy</a>)</td></tr>
-<tr class="separator:afcba6c387007abd43d9c2ff1e83213db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Proxy</h2></td></tr>
 <tr class="memitem:ae3b741f775f564409b46ea178ca0aefc"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#ae3b741f775f564409b46ea178ca0aefc">PassMan</a></td></tr>
@@ -155,9 +134,36 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adec059b8b68ab646d0b1307858acfa8e"><td class="memTemplParams" colspan="2">template&lt;class N &gt; </td></tr>
 <tr class="memitem:adec059b8b68ab646d0b1307858acfa8e"><td class="memTemplItemLeft" align="right" valign="top">N *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#adec059b8b68ab646d0b1307858acfa8e">curr_nom</a> () const</td></tr>
 <tr class="separator:adec059b8b68ab646d0b1307858acfa8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">getters</h2></td></tr>
+<tr class="memitem:ad2506a9ae875b80c475520552cd969dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_pass_man.html">PassMan</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#ad2506a9ae875b80c475520552cd969dc">man</a> ()</td></tr>
+<tr class="separator:ad2506a9ae875b80c475520552cd969dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96674bfc85788b0ee1ff7bd8decda05b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_pass_man.html">PassMan</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a96674bfc85788b0ee1ff7bd8decda05b">man</a> () const</td></tr>
+<tr class="separator:a96674bfc85788b0ee1ff7bd8decda05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae862a9a49dda472ec336d4729bae9662"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#ae862a9a49dda472ec336d4729bae9662">name</a> () const</td></tr>
+<tr class="separator:ae862a9a49dda472ec336d4729bae9662"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86499da04ae1cb7e3c00a957f142b625"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a86499da04ae1cb7e3c00a957f142b625">proxy_id</a> () const</td></tr>
+<tr class="separator:a86499da04ae1cb7e3c00a957f142b625"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af10ca8770ec7dc95aa51583cc1961b19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_world.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#af10ca8770ec7dc95aa51583cc1961b19">world</a> ()</td></tr>
+<tr class="separator:af10ca8770ec7dc95aa51583cc1961b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">hooks for the PassMan</h2></td></tr>
+<tr class="memitem:ab08fb019f1aa4638f1d5aaf9995dcc6b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#ab08fb019f1aa4638f1d5aaf9995dcc6b">inspect</a> () const =0</td></tr>
+<tr class="separator:ab08fb019f1aa4638f1d5aaf9995dcc6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a2d70e5b4b679bd5bd7dda99f288e45ae">enter</a> ()</td></tr>
+<tr class="memdesc:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked just before <code>rewriteing</code> <code><a class="el" href="classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a>'s</code> body.  <a href="classthorin_1_1_r_w_pass_base.html#a2d70e5b4b679bd5bd7dda99f288e45ae">More...</a><br /></td></tr>
+<tr class="separator:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a416313eda3acb53d2609877c4367d07c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a416313eda3acb53d2609877c4367d07c">rewrite</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *def)</td></tr>
+<tr class="memdesc:a416313eda3acb53d2609877c4367d07c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rewrites a <em>structural</em> <code>def</code> within <code><a class="el" href="classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a></code>. Returns the replacement.  <a href="classthorin_1_1_r_w_pass_base.html#a416313eda3acb53d2609877c4367d07c">More...</a><br /></td></tr>
+<tr class="separator:a416313eda3acb53d2609877c4367d07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdb2234d68377a2ba081b860e3bad8e1"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#afdb2234d68377a2ba081b860e3bad8e1">rewrite</a> (const <a class="el" href="classthorin_1_1_var.html">Var</a> *var)</td></tr>
+<tr class="separator:afdb2234d68377a2ba081b860e3bad8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcba6c387007abd43d9c2ff1e83213db"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#afcba6c387007abd43d9c2ff1e83213db">rewrite</a> (const <a class="el" href="classthorin_1_1_proxy.html">Proxy</a> *<a class="el" href="classthorin_1_1_r_w_pass_base.html#a19bcd131336dceb54a95a1eca9cda22e">proxy</a>)</td></tr>
+<tr class="separator:afcba6c387007abd43d9c2ff1e83213db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >All Passes that want to be registered in the <code><a class="el" href="classthorin_1_1_pass_man.html">PassMan</a></code> must implement this interface.</p><ul>
+<div class="textblock"><p >All Passes that want to be registered in the <code><a class="el" href="classthorin_1_1_pass_man.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a></code> must implement this interface. </p>
+<ul>
 <li>Directly inherit from this class if your pass doesn't need state and a fixed-point iteration (a ReWrite pass).</li>
 <li>Inherit from <code><a class="el" href="classthorin_1_1_f_p_pass.html" title="Inherit from this class using CRTP if you do need a Pass with a state.">FPPass</a></code> using CRTP if you do need state. </li>
 </ul>

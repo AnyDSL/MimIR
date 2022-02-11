@@ -102,6 +102,9 @@ $(document).ready(function(){initNavTree('classthorin_1_1_array_ref.html',''); i
 </div><!--header-->
 <div class="contents">
 
+<p>A container-like wrapper for an array.  
+ <a href="classthorin_1_1_array_ref.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="array_8h_source.html">array.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
@@ -179,7 +182,8 @@ Friends</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
-class thorin::ArrayRef&lt; T &gt;</div><p >A container-like wrapper for an array. The array may either stem from a C array, a <code>std::vector</code>, a <code>std::initializer_list</code>, an <code><a class="el" href="classthorin_1_1_array.html">Array</a></code> or another <code><a class="el" href="classthorin_1_1_array_ref.html">ArrayRef</a></code>. <code><a class="el" href="classthorin_1_1_array_ref.html">ArrayRef</a></code> does <em>not</em> own the data and, thus, does not destroy any data. Likewise, you must be carefull to not destroy data an <code><a class="el" href="classthorin_1_1_array_ref.html">ArrayRef</a></code> is pointing to. Thorin makes use of <code><a class="el" href="classthorin_1_1_array_ref.html">ArrayRef</a>s</code> in many places. Note that you can often construct an <code><a class="el" href="classthorin_1_1_array_ref.html">ArrayRef</a></code> inline with an initializer_list: <code>foo(arg1, {elem1, elem2, elem3}, arg3)</code>. Useful operations are <code>skip_front</code> and <code>skip_back</code> to create other <code><a class="el" href="classthorin_1_1_array_ref.html">ArrayRef</a>s</code>. </p>
+class thorin::ArrayRef&lt; T &gt;</div><p >A container-like wrapper for an array. </p>
+<p >The array may either stem from a C array, a <code>std::vector</code>, a <code>std::initializer_list</code>, an <code><a class="el" href="classthorin_1_1_array.html" title="A container for an array, either heap-allocated or stack allocated.">Array</a></code> or another <code><a class="el" href="classthorin_1_1_array_ref.html" title="A container-like wrapper for an array.">ArrayRef</a></code>. <code><a class="el" href="classthorin_1_1_array_ref.html" title="A container-like wrapper for an array.">ArrayRef</a></code> does <em>not</em> own the data and, thus, does not destroy any data. Likewise, you must be carefull to not destroy data an <code><a class="el" href="classthorin_1_1_array_ref.html" title="A container-like wrapper for an array.">ArrayRef</a></code> is pointing to. Thorin makes use of <code><a class="el" href="classthorin_1_1_array_ref.html" title="A container-like wrapper for an array.">ArrayRef</a>s</code> in many places. Note that you can often construct an <code><a class="el" href="classthorin_1_1_array_ref.html" title="A container-like wrapper for an array.">ArrayRef</a></code> inline with an initializer_list: <code>foo(arg1, {elem1, elem2, elem3}, arg3)</code>. Useful operations are <code>skip_front</code> and <code>skip_back</code> to create other <code><a class="el" href="classthorin_1_1_array_ref.html" title="A container-like wrapper for an array.">ArrayRef</a>s</code>. </p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a51e980e57dfce113d1f72225a1b51ee8" name="a51e980e57dfce113d1f72225a1b51ee8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a51e980e57dfce113d1f72225a1b51ee8">&#9670;&nbsp;</a></span>const_iterator</h2>

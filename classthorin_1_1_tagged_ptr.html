@@ -100,6 +100,9 @@ $(document).ready(function(){initNavTree('classthorin_1_1_tagged_ptr.html',''); 
 </div><!--header-->
 <div class="contents">
 
+<p>A tagged pointer: first 16 bits is tag (index), remaining 48 bits is the actual pointer.  
+ <a href="classthorin_1_1_tagged_ptr.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="ptr_8h_source.html">ptr.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -129,7 +132,8 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T, class I = size_t&gt;<br />
-class thorin::TaggedPtr&lt; T, I &gt;</div><p >A tagged pointer: first 16 bits is tag (index), remaining 48 bits is the actual pointer. For non-x86_64 there is a fallback implementation. </p>
+class thorin::TaggedPtr&lt; T, I &gt;</div><p >A tagged pointer: first 16 bits is tag (index), remaining 48 bits is the actual pointer. </p>
+<p >For non-x86_64 there is a fallback implementation. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aaecd317aa13e5f415782d115c3070850" name="aaecd317aa13e5f415782d115c3070850"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaecd317aa13e5f415782d115c3070850">&#9670;&nbsp;</a></span>TaggedPtr() <span class="overload">[1/2]</span></h2>

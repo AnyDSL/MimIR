@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['developer_20guide_0',['Developer Guide',['../md_docs_dev.html',1,'']]]
+  ['command_2dline_20interface_0',['Command-Line Interface',['../md_docs_cli.html',1,'']]]
 ];

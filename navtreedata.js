@@ -33,7 +33,7 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Language Reference", "md_docs_langref.html", null ],
-    [ "Thorin's Command-Line Interface", "md_docs_cli.html", [
+    [ "Command-Line Interface", "md_docs_cli.html", [
       [ "Usage", "md_docs_cli.html#autotoc_md7", null ]
     ] ],
     [ "Developer Guide", "md_docs_dev.html", [
