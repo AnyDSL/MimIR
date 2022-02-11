@@ -409,32 +409,23 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             }
         } else if (auto real = isa<Tag::Real>(lit->type())) {
             std::stringstream s;
-            s << std::fixed;
+            u64 hex;
 
-            // TODO std::isfinite might not be entirely correct if decimal representation is slightly off compared to binary/hex
             switch (as_lit<nat_t>(real->arg())) {
                 case 16:
-                    if (std::isfinite(lit->get<r16>()))
-                        s << std::setprecision(std::numeric_limits<r16>::max_digits10) << lit->get<r16>();
-                    else
-                        s << "0xH" << std::setfill('0') << std::setw( 4) << std::right << std::hex << lit->get<u16>();
+                    s << "0xH" << std::setfill('0') << std::setw(4) << std::right << std::hex << lit->get<u16>();
                     return s.str();
-                case 32:
-                    if (std::isfinite(lit->get<r32>())) {
-                        s << std::setprecision(std::numeric_limits<r32>::max_digits10) << lit->get<r32>();
-                        return s.str();
-                    }
+                case 32: {
+                    hex = std::bit_cast<u64>(r64(lit->get<r32>()));
                     break;
+                }
                 case 64:
-                    if (std::isfinite(lit->get<r64>())) {
-                        s << std::setprecision(std::numeric_limits<r64>::max_digits10) << lit->get<r64>();
-                        return s.str();
-                    }
+                    hex = lit->get<u64>();
                     break;
                 default: THORIN_UNREACHABLE;
             }
 
-            s << "0x" << std::setfill('0') << std::setw(16) << std::right << std::hex << lit->get<u64>();
+            s << "0x" << std::setfill('0') << std::setw(16) << std::right << std::hex << hex;
             return s.str();
         }
         THORIN_UNREACHABLE;
