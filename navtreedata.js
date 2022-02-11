@@ -56,6 +56,15 @@ var NAVTREE =
         [ "Caveats", "md_docs_passes.html#autotoc_md22", null ]
       ] ]
     ] ],
+    [ "Coding & Debugging", "md_docs_coding.html", [
+      [ "Coding Style", "md_docs_coding.html#autotoc_md24", [
+        [ "Clang-Format", "md_docs_coding.html#autotoc_md25", null ]
+      ] ],
+      [ "Debugging", "md_docs_coding.html#autotoc_md26", [
+        [ "Logging", "md_docs_coding.html#autotoc_md27", null ],
+        [ "Breakpoints", "md_docs_coding.html#autotoc_md28", null ]
+      ] ]
+    ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -112,11 +121,11 @@ var NAVTREEINDEX =
 "classthorin_1_1_world.html#afeb552a0531602017f6edf0bf84a97f3",
 "classthorin_1_1unique__stack.html",
 "lam_8h.html#ac4e11da8b7018338a4ffddad585f61e8",
-"namespacethorin.html#a78f69bd0bad07415aba080f4cdb39a89",
-"namespacethorin.html#structthorin_1_1_fold_conv",
-"structthorin_1_1_f_n_v1.html#a5f45f7a10a2980f0d2171e79aabf7b8a",
-"structthorin_1_1_world_1_1_externals_hash.html#a8346fc0befeb0ac41b42e5211b69303a",
-"tuple_8cpp.html#aea00f96e150831aba073fce80ce0080a"
+"namespacethorin.html#a6fbb7be71b1d1c8df9b69728c62c4cdf",
+"namespacethorin.html#afd6542b4bbcecac2fe7e4e87251a37f6",
+"structthorin_1_1_defs_hash.html#a10a4d49e3dcc09b29c1279f8d3f6ed95",
+"structthorin_1_1_world_1_1_externals_hash.html",
+"tuple_8cpp.html#a833e2a807b47e7f8a3c67fff75985c6f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

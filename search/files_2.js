@@ -10,7 +10,8 @@ var searchData=
   ['cli_2emd_7',['cli.md',['../cli_8md.html',1,'']]],
   ['closure_5fconv_2ecpp_8',['closure_conv.cpp',['../closure__conv_8cpp.html',1,'']]],
   ['closure_5fconv_2eh_9',['closure_conv.h',['../closure__conv_8h.html',1,'']]],
-  ['container_2eh_10',['container.h',['../container_8h.html',1,'']]],
-  ['copy_5fprop_2ecpp_11',['copy_prop.cpp',['../copy__prop_8cpp.html',1,'']]],
-  ['copy_5fprop_2eh_12',['copy_prop.h',['../copy__prop_8h.html',1,'']]]
+  ['coding_2emd_10',['coding.md',['../coding_8md.html',1,'']]],
+  ['container_2eh_11',['container.h',['../container_8h.html',1,'']]],
+  ['copy_5fprop_2ecpp_12',['copy_prop.cpp',['../copy__prop_8cpp.html',1,'']]],
+  ['copy_5fprop_2eh_13',['copy_prop.h',['../copy__prop_8h.html',1,'']]]
 ];
