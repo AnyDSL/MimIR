@@ -96,6 +96,8 @@ $(document).ready(function(){initNavTree('classthorin_1_1_pass_man.html',''); in
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classthorin_1_1_pass_man-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::PassMan Class Reference</div></div>
 </div><!--header-->
@@ -105,18 +107,23 @@ $(document).ready(function(){initNavTree('classthorin_1_1_pass_man.html',''); in
  <a href="classthorin_1_1_pass_man.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="pass_8h_source.html">pass.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for thorin::PassMan:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1_pass_man__coll__graph.svg" width="1794" height="1068"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1_pass_man_1_1_state.html">State</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1cb8f55948131ebc7fca850f616d4d2c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a1cb8f55948131ebc7fca850f616d4d2c">PassMan</a> (<a class="el" href="classthorin_1_1_world.html">World</a> &amp;<a class="el" href="classthorin_1_1_pass_man.html#a845ba5d9f4f2e78fca3efd25f73fc454">world</a>)</td></tr>
 <tr class="separator:a1cb8f55948131ebc7fca850f616d4d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">analyze</h2></td></tr>
-<tr class="memitem:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memTemplParams" colspan="2">template&lt;class P , class N &gt; </td></tr>
-<tr class="memitem:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a48bcac37063f4509ea1db8c9411e3fa6">FPPass</a></td></tr>
-<tr class="separator:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">getters</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">getters</div></td></tr>
 <tr class="memitem:a845ba5d9f4f2e78fca3efd25f73fc454"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_world.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a845ba5d9f4f2e78fca3efd25f73fc454">world</a> () const</td></tr>
 <tr class="separator:a845ba5d9f4f2e78fca3efd25f73fc454"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a301baaabcbdbd533e6bea26be796cf4f"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a301baaabcbdbd533e6bea26be796cf4f">passes</a> () const</td></tr>
@@ -127,15 +134,64 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:afc776db2f238378c332749e07533edd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c16d2fe175c1d11e8137da3e7a4135b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b">curr_nom</a> () const</td></tr>
 <tr class="separator:a5c16d2fe175c1d11e8137da3e7a4135b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">create and run passes</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">create and run passes</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p >Add a pass to this <code><a class="el" href="classthorin_1_1_pass_man.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a></code>. </p>
+</div></td></tr>
 <tr class="memitem:ac9820d74411d7c8462b6b055bbacea3c"><td class="memTemplParams" colspan="2">template&lt;class P , class... Args&gt; </td></tr>
 <tr class="memitem:ac9820d74411d7c8462b6b055bbacea3c"><td class="memTemplItemLeft" align="right" valign="top">P *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#ac9820d74411d7c8462b6b055bbacea3c">add</a> (Args &amp;&amp;... args)</td></tr>
-<tr class="memdesc:ac9820d74411d7c8462b6b055bbacea3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a pass to this <code><a class="el" href="classthorin_1_1_pass_man.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a></code>.  <a href="classthorin_1_1_pass_man.html#ac9820d74411d7c8462b6b055bbacea3c">More...</a><br /></td></tr>
 <tr class="separator:ac9820d74411d7c8462b6b055bbacea3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2a34b331418abd402ef465c2be3120c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#ae2a34b331418abd402ef465c2be3120c">run</a> ()</td></tr>
 <tr class="memdesc:ae2a34b331418abd402ef465c2be3120c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run all registered passes on the whole <code>world</code>.  <a href="classthorin_1_1_pass_man.html#ae2a34b331418abd402ef465c2be3120c">More...</a><br /></td></tr>
 <tr class="separator:ae2a34b331418abd402ef465c2be3120c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">state</div></td></tr>
+<tr class="memitem:aa7eb6d6b4fc380a1bdc946e4164638ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#aa7eb6d6b4fc380a1bdc946e4164638ab">push_state</a> ()</td></tr>
+<tr class="separator:aa7eb6d6b4fc380a1bdc946e4164638ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f1f40c162552db014efeb9bd046836f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a2f1f40c162552db014efeb9bd046836f">pop_states</a> (<a class="el" href="namespacethorin.html#ad9c8d1c5eaf69c4577726bf75fbf9357">undo_t</a> undo)</td></tr>
+<tr class="separator:a2f1f40c162552db014efeb9bd046836f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1034d28217355d81f3d5224e1e83c1e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structthorin_1_1_pass_man_1_1_state.html">State</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a1034d28217355d81f3d5224e1e83c1e1">curr_state</a> ()</td></tr>
+<tr class="separator:a1034d28217355d81f3d5224e1e83c1e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92e34e1c1f4760f82eddd783363aa328"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="structthorin_1_1_pass_man_1_1_state.html">State</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a92e34e1c1f4760f82eddd783363aa328">curr_state</a> () const</td></tr>
+<tr class="separator:a92e34e1c1f4760f82eddd783363aa328"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2004d8c4d31f857c13ef2b976b22910"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#ad9c8d1c5eaf69c4577726bf75fbf9357">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#ac2004d8c4d31f857c13ef2b976b22910">curr_undo</a> () const</td></tr>
+<tr class="separator:ac2004d8c4d31f857c13ef2b976b22910"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">rewriting</div></td></tr>
+<tr class="memitem:a5a40e00dcdedecb7b142de72b7a40c4d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a5a40e00dcdedecb7b142de72b7a40c4d">rewrite</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *)</td></tr>
+<tr class="separator:a5a40e00dcdedecb7b142de72b7a40c4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a52b5c1ef449abf11b4b351c52d9ef3"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a2a52b5c1ef449abf11b4b351c52d9ef3">map</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *old_def, const <a class="el" href="classthorin_1_1_def.html">Def</a> *new_def)</td></tr>
+<tr class="separator:a2a52b5c1ef449abf11b4b351c52d9ef3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77993dbbbee6af11f0566ff21e9b003b"><td class="memItemLeft" align="right" valign="top">std::optional&lt; const <a class="el" href="classthorin_1_1_def.html">Def</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a77993dbbbee6af11f0566ff21e9b003b">lookup</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *old_def)</td></tr>
+<tr class="separator:a77993dbbbee6af11f0566ff21e9b003b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">analyze</div></td></tr>
+<tr class="memitem:a3d52b3c800130c354beeb112d21ab90b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#ad9c8d1c5eaf69c4577726bf75fbf9357">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a3d52b3c800130c354beeb112d21ab90b">analyze</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *)</td></tr>
+<tr class="separator:a3d52b3c800130c354beeb112d21ab90b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7497824a5622bca82d899cb1d6d3dc51"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a7497824a5622bca82d899cb1d6d3dc51">analyzed</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *def)</td></tr>
+<tr class="separator:a7497824a5622bca82d899cb1d6d3dc51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a83a3f62fe40209a84303f15c75a3e2c0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_world.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a83a3f62fe40209a84303f15c75a3e2c0">world_</a></td></tr>
+<tr class="separator:a83a3f62fe40209a84303f15c75a3e2c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa44c6f0ea44f734fe2ff74a19fb0d7db"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classthorin_1_1_r_w_pass_base.html">RWPassBase</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#aa44c6f0ea44f734fe2ff74a19fb0d7db">passes_</a></td></tr>
+<tr class="separator:aa44c6f0ea44f734fe2ff74a19fb0d7db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac0c17eaa0f613a353d0b9844af66dd8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; <a class="el" href="classthorin_1_1_r_w_pass_base.html">RWPassBase</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#aac0c17eaa0f613a353d0b9844af66dd8">rw_passes_</a></td></tr>
+<tr class="separator:aac0c17eaa0f613a353d0b9844af66dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf96d64309ae01fabdbbbf9a1225bc98"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::unique_ptr&lt; <a class="el" href="classthorin_1_1_f_p_pass_base.html">FPPassBase</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#acf96d64309ae01fabdbbbf9a1225bc98">fp_passes_</a></td></tr>
+<tr class="separator:acf96d64309ae01fabdbbbf9a1225bc98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d40f36ff186dd2fefd1b469b24811a2"><td class="memItemLeft" align="right" valign="top">std::deque&lt; <a class="el" href="structthorin_1_1_pass_man_1_1_state.html">State</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a6d40f36ff186dd2fefd1b469b24811a2">states_</a></td></tr>
+<tr class="separator:a6d40f36ff186dd2fefd1b469b24811a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb4e3b0a3862a1fad2cc9dd12c622d6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#aeb4e3b0a3862a1fad2cc9dd12c622d6d">curr_nom_</a> = nullptr</td></tr>
+<tr class="separator:aeb4e3b0a3862a1fad2cc9dd12c622d6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad46d1164dc3d48f613a1f9c01290f0db"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#ad46d1164dc3d48f613a1f9c01290f0db">proxy_</a> = false</td></tr>
+<tr class="separator:ad46d1164dc3d48f613a1f9c01290f0db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memTemplParams" colspan="2">template&lt;class P , class N &gt; </td></tr>
+<tr class="memitem:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1_pass_man.html#a48bcac37063f4509ea1db8c9411e3fa6">FPPass</a></td></tr>
+<tr class="separator:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >An optimizer that combines several optimizations in an optimal way. </p>
@@ -194,7 +250,57 @@ template&lt;class P , class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Add a pass to this <code><a class="el" href="classthorin_1_1_pass_man.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a></code>. </p>
+</div>
+</div>
+<a id="a3d52b3c800130c354beeb112d21ab90b" name="a3d52b3c800130c354beeb112d21ab90b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d52b3c800130c354beeb112d21ab90b">&#9670;&nbsp;</a></span>analyze()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacethorin.html#ad9c8d1c5eaf69c4577726bf75fbf9357">undo_t</a> thorin::PassMan::analyze </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>def</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7497824a5622bca82d899cb1d6d3dc51" name="a7497824a5622bca82d899cb1d6d3dc51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7497824a5622bca82d899cb1d6d3dc51">&#9670;&nbsp;</a></span>analyzed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::PassMan::analyzed </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>def</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -217,6 +323,81 @@ template&lt;class P , class... Args&gt; </div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1034d28217355d81f3d5224e1e83c1e1" name="a1034d28217355d81f3d5224e1e83c1e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1034d28217355d81f3d5224e1e83c1e1">&#9670;&nbsp;</a></span>curr_state() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structthorin_1_1_pass_man_1_1_state.html">State</a> &amp; thorin::PassMan::curr_state </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a92e34e1c1f4760f82eddd783363aa328" name="a92e34e1c1f4760f82eddd783363aa328"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92e34e1c1f4760f82eddd783363aa328">&#9670;&nbsp;</a></span>curr_state() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="structthorin_1_1_pass_man_1_1_state.html">State</a> &amp; thorin::PassMan::curr_state </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac2004d8c4d31f857c13ef2b976b22910" name="ac2004d8c4d31f857c13ef2b976b22910"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2004d8c4d31f857c13ef2b976b22910">&#9670;&nbsp;</a></span>curr_undo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacethorin.html#ad9c8d1c5eaf69c4577726bf75fbf9357">undo_t</a> thorin::PassMan::curr_undo </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -248,6 +429,68 @@ template&lt;class P , class... Args&gt; </div>
 
 </div>
 </div>
+<a id="a77993dbbbee6af11f0566ff21e9b003b" name="a77993dbbbee6af11f0566ff21e9b003b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77993dbbbee6af11f0566ff21e9b003b">&#9670;&nbsp;</a></span>lookup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; const <a class="el" href="classthorin_1_1_def.html">Def</a> * &gt; thorin::PassMan::lookup </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>old_def</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2a52b5c1ef449abf11b4b351c52d9ef3" name="a2a52b5c1ef449abf11b4b351c52d9ef3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a52b5c1ef449abf11b4b351c52d9ef3">&#9670;&nbsp;</a></span>map()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1_def.html">Def</a> * thorin::PassMan::map </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>old_def</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>new_def</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a301baaabcbdbd533e6bea26be796cf4f" name="a301baaabcbdbd533e6bea26be796cf4f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a301baaabcbdbd533e6bea26be796cf4f">&#9670;&nbsp;</a></span>passes()</h2>
 
@@ -267,6 +510,83 @@ template&lt;class P , class... Args&gt; </div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2f1f40c162552db014efeb9bd046836f" name="a2f1f40c162552db014efeb9bd046836f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f1f40c162552db014efeb9bd046836f">&#9670;&nbsp;</a></span>pop_states()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::PassMan::pop_states </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin.html#ad9c8d1c5eaf69c4577726bf75fbf9357">undo_t</a>&#160;</td>
+          <td class="paramname"><em>undo</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa7eb6d6b4fc380a1bdc946e4164638ab" name="aa7eb6d6b4fc380a1bdc946e4164638ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7eb6d6b4fc380a1bdc946e4164638ab">&#9670;&nbsp;</a></span>push_state()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::PassMan::push_state </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5a40e00dcdedecb7b142de72b7a40c4d" name="a5a40e00dcdedecb7b142de72b7a40c4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a40e00dcdedecb7b142de72b7a40c4d">&#9670;&nbsp;</a></span>rewrite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1_def.html">Def</a> * thorin::PassMan::rewrite </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>old_def</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -361,6 +681,161 @@ template&lt;class P , class N &gt; </div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aeb4e3b0a3862a1fad2cc9dd12c622d6d" name="aeb4e3b0a3862a1fad2cc9dd12c622d6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb4e3b0a3862a1fad2cc9dd12c622d6d">&#9670;&nbsp;</a></span>curr_nom_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_def.html">Def</a>* thorin::PassMan::curr_nom_ = nullptr</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acf96d64309ae01fabdbbbf9a1225bc98" name="acf96d64309ae01fabdbbbf9a1225bc98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf96d64309ae01fabdbbbf9a1225bc98">&#9670;&nbsp;</a></span>fp_passes_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::unique_ptr&lt;<a class="el" href="classthorin_1_1_f_p_pass_base.html">FPPassBase</a>&gt; &gt; thorin::PassMan::fp_passes_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa44c6f0ea44f734fe2ff74a19fb0d7db" name="aa44c6f0ea44f734fe2ff74a19fb0d7db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa44c6f0ea44f734fe2ff74a19fb0d7db">&#9670;&nbsp;</a></span>passes_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classthorin_1_1_r_w_pass_base.html">RWPassBase</a>*&gt; thorin::PassMan::passes_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad46d1164dc3d48f613a1f9c01290f0db" name="ad46d1164dc3d48f613a1f9c01290f0db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad46d1164dc3d48f613a1f9c01290f0db">&#9670;&nbsp;</a></span>proxy_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::PassMan::proxy_ = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aac0c17eaa0f613a353d0b9844af66dd8" name="aac0c17eaa0f613a353d0b9844af66dd8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac0c17eaa0f613a353d0b9844af66dd8">&#9670;&nbsp;</a></span>rw_passes_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;std::unique_ptr&lt;<a class="el" href="classthorin_1_1_r_w_pass_base.html">RWPassBase</a>&gt; &gt; thorin::PassMan::rw_passes_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6d40f36ff186dd2fefd1b469b24811a2" name="a6d40f36ff186dd2fefd1b469b24811a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d40f36ff186dd2fefd1b469b24811a2">&#9670;&nbsp;</a></span>states_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::deque&lt;<a class="el" href="structthorin_1_1_pass_man_1_1_state.html">State</a>&gt; thorin::PassMan::states_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a83a3f62fe40209a84303f15c75a3e2c0" name="a83a3f62fe40209a84303f15c75a3e2c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83a3f62fe40209a84303f15c75a3e2c0">&#9670;&nbsp;</a></span>world_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_world.html">World</a>&amp; thorin::PassMan::world_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

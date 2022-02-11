@@ -97,11 +97,18 @@ $(document).ready(function(){initNavTree('classthorin_1_1_loop_tree_builder.html
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classthorin_1_1_loop_tree_builder-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::LoopTreeBuilder&lt; forward &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1_loop_tree_builder_1_1_number.html">Number</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a567648ff72c65a00c300fcb68d3b00c8"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classthorin_1_1_loop_tree.html">LoopTree</a>&lt; forward &gt;::Base&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a567648ff72c65a00c300fcb68d3b00c8">Base</a></td></tr>
@@ -115,6 +122,50 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1026774c35768d126137b47622093883"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a1026774c35768d126137b47622093883">LoopTreeBuilder</a> (<a class="el" href="classthorin_1_1_loop_tree.html">LoopTree</a>&lt; forward &gt; &amp;looptree)</td></tr>
 <tr class="separator:a1026774c35768d126137b47622093883"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a37d81f84578caef3910de6008b0fcb99"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a37d81f84578caef3910de6008b0fcb99">build</a> ()</td></tr>
+<tr class="separator:a37d81f84578caef3910de6008b0fcb99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0a909015de3356c288b4be0be9b549b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt; forward &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#aa0a909015de3356c288b4be0be9b549b">cfg</a> () const</td></tr>
+<tr class="separator:aa0a909015de3356c288b4be0be9b549b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d2ff5dc6bc9eb9413d55f6e4c14d8ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structthorin_1_1_loop_tree_builder_1_1_number.html">Number</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a4d2ff5dc6bc9eb9413d55f6e4c14d8ac">number</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *n)</td></tr>
+<tr class="separator:a4d2ff5dc6bc9eb9413d55f6e4c14d8ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2655c8db775f3f9af51acf4cd40e3653"><td class="memItemLeft" align="right" valign="top">size_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a2655c8db775f3f9af51acf4cd40e3653">lowlink</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *n)</td></tr>
+<tr class="separator:a2655c8db775f3f9af51acf4cd40e3653"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8078f5fc0bd3d4afb39d7333780540dd"><td class="memItemLeft" align="right" valign="top">size_t &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a8078f5fc0bd3d4afb39d7333780540dd">dfs</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *n)</td></tr>
+<tr class="separator:a8078f5fc0bd3d4afb39d7333780540dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28952bdb48098b013666f69a1f329992"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a28952bdb48098b013666f69a1f329992">on_stack</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *n)</td></tr>
+<tr class="separator:a28952bdb48098b013666f69a1f329992"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af72fa5829c5ecb2e27bb2b7b05594932"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#af72fa5829c5ecb2e27bb2b7b05594932">in_scc</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *n)</td></tr>
+<tr class="separator:af72fa5829c5ecb2e27bb2b7b05594932"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d1a233b705a21622d7ace6428521c81"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a2d1a233b705a21622d7ace6428521c81">is_head</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *n)</td></tr>
+<tr class="separator:a2d1a233b705a21622d7ace6428521c81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ae20f03e92c649ccb3dd5cc947f7dd2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a6ae20f03e92c649ccb3dd5cc947f7dd2">is_leaf</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *n, size_t num)</td></tr>
+<tr class="separator:a6ae20f03e92c649ccb3dd5cc947f7dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdf4d6dc5456ffcca2a68ba622971a1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#afdf4d6dc5456ffcca2a68ba622971a1e">push</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *n)</td></tr>
+<tr class="separator:afdf4d6dc5456ffcca2a68ba622971a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae61ddb371b0b6cc3233a8e05d678d6d5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#ae61ddb371b0b6cc3233a8e05d678d6d5">visit</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *n, int counter)</td></tr>
+<tr class="separator:ae61ddb371b0b6cc3233a8e05d678d6d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb2eac31d51694c89e5d7e52bb12487d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#acb2eac31d51694c89e5d7e52bb12487d">recurse</a> (<a class="el" href="classthorin_1_1_loop_tree_builder.html#a72ea549e32f78b7673f39a67d303eb76">Head</a> *parent, <a class="el" href="classthorin_1_1_array_ref.html">ArrayRef</a>&lt; const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> * &gt; heads, int depth)</td></tr>
+<tr class="separator:acb2eac31d51694c89e5d7e52bb12487d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d8d9e7c94c2432a043b377f21bb197f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a4d8d9e7c94c2432a043b377f21bb197f">walk_scc</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *cur, <a class="el" href="classthorin_1_1_loop_tree_builder.html#a72ea549e32f78b7673f39a67d303eb76">Head</a> *parent, int depth, int scc_counter)</td></tr>
+<tr class="separator:a4d8d9e7c94c2432a043b377f21bb197f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a13ca9c09f22f81a6ab312d92a17b92e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_loop_tree.html">LoopTree</a>&lt; forward &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a13ca9c09f22f81a6ab312d92a17b92e7">looptree_</a></td></tr>
+<tr class="separator:a13ca9c09f22f81a6ab312d92a17b92e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa702ef93031288de852c573d8159d5ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt; forward &gt;::template Map&lt; <a class="el" href="structthorin_1_1_loop_tree_builder_1_1_number.html">Number</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#aa702ef93031288de852c573d8159d5ba">numbers_</a></td></tr>
+<tr class="separator:aa702ef93031288de852c573d8159d5ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4414c51e703423d8d848dfad8fd36173"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt; forward &gt;::template Map&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a4414c51e703423d8d848dfad8fd36173">states_</a></td></tr>
+<tr class="separator:a4414c51e703423d8d848dfad8fd36173"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec2e8abb8fef43e1a667db62dc4cfa72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt; forward &gt;::Set&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#aec2e8abb8fef43e1a667db62dc4cfa72">set_</a></td></tr>
+<tr class="separator:aec2e8abb8fef43e1a667db62dc4cfa72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85926652f3dd99d7c89257276eab9c70"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a85926652f3dd99d7c89257276eab9c70">index_</a></td></tr>
+<tr class="separator:a85926652f3dd99d7c89257276eab9c70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79b467a8a0762c9e1ad3292ce86981cc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a79b467a8a0762c9e1ad3292ce86981cc">stack_</a></td></tr>
+<tr class="separator:a79b467a8a0762c9e1ad3292ce86981cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="a567648ff72c65a00c300fcb68d3b00c8" name="a567648ff72c65a00c300fcb68d3b00c8"></a>
@@ -188,6 +239,569 @@ template&lt;bool forward&gt; </div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a37d81f84578caef3910de6008b0fcb99" name="a37d81f84578caef3910de6008b0fcb99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37d81f84578caef3910de6008b0fcb99">&#9670;&nbsp;</a></span>build()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::build</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa0a909015de3356c288b4be0be9b549b" name="aa0a909015de3356c288b4be0be9b549b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0a909015de3356c288b4be0be9b549b">&#9670;&nbsp;</a></span>cfg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt; forward &gt; &amp; <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::cfg </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8078f5fc0bd3d4afb39d7333780540dd" name="a8078f5fc0bd3d4afb39d7333780540dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8078f5fc0bd3d4afb39d7333780540dd">&#9670;&nbsp;</a></span>dfs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t &amp; <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::dfs </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af72fa5829c5ecb2e27bb2b7b05594932" name="af72fa5829c5ecb2e27bb2b7b05594932"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af72fa5829c5ecb2e27bb2b7b05594932">&#9670;&nbsp;</a></span>in_scc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::in_scc </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2d1a233b705a21622d7ace6428521c81" name="a2d1a233b705a21622d7ace6428521c81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d1a233b705a21622d7ace6428521c81">&#9670;&nbsp;</a></span>is_head()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::is_head </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6ae20f03e92c649ccb3dd5cc947f7dd2" name="a6ae20f03e92c649ccb3dd5cc947f7dd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ae20f03e92c649ccb3dd5cc947f7dd2">&#9670;&nbsp;</a></span>is_leaf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::is_leaf </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>num</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2655c8db775f3f9af51acf4cd40e3653" name="a2655c8db775f3f9af51acf4cd40e3653"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2655c8db775f3f9af51acf4cd40e3653">&#9670;&nbsp;</a></span>lowlink()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t &amp; <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::lowlink </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4d2ff5dc6bc9eb9413d55f6e4c14d8ac" name="a4d2ff5dc6bc9eb9413d55f6e4c14d8ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d2ff5dc6bc9eb9413d55f6e4c14d8ac">&#9670;&nbsp;</a></span>number()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structthorin_1_1_loop_tree_builder_1_1_number.html">Number</a> &amp; <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::number </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a28952bdb48098b013666f69a1f329992" name="a28952bdb48098b013666f69a1f329992"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28952bdb48098b013666f69a1f329992">&#9670;&nbsp;</a></span>on_stack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::on_stack </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afdf4d6dc5456ffcca2a68ba622971a1e" name="afdf4d6dc5456ffcca2a68ba622971a1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdf4d6dc5456ffcca2a68ba622971a1e">&#9670;&nbsp;</a></span>push()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::push </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acb2eac31d51694c89e5d7e52bb12487d" name="acb2eac31d51694c89e5d7e52bb12487d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb2eac31d51694c89e5d7e52bb12487d">&#9670;&nbsp;</a></span>recurse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::recurse </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a72ea549e32f78b7673f39a67d303eb76">Head</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1_array_ref.html">ArrayRef</a>&lt; const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> * &gt;&#160;</td>
+          <td class="paramname"><em>heads</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>depth</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae61ddb371b0b6cc3233a8e05d678d6d5" name="ae61ddb371b0b6cc3233a8e05d678d6d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae61ddb371b0b6cc3233a8e05d678d6d5">&#9670;&nbsp;</a></span>visit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::visit </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>n</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>counter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4d8d9e7c94c2432a043b377f21bb197f" name="a4d8d9e7c94c2432a043b377f21bb197f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d8d9e7c94c2432a043b377f21bb197f">&#9670;&nbsp;</a></span>walk_scc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::walk_scc </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>cur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1_loop_tree_builder.html#a72ea549e32f78b7673f39a67d303eb76">Head</a> *&#160;</td>
+          <td class="paramname"><em>parent</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>scc_counter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a85926652f3dd99d7c89257276eab9c70" name="a85926652f3dd99d7c89257276eab9c70"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85926652f3dd99d7c89257276eab9c70">&#9670;&nbsp;</a></span>index_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::index_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a13ca9c09f22f81a6ab312d92a17b92e7" name="a13ca9c09f22f81a6ab312d92a17b92e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13ca9c09f22f81a6ab312d92a17b92e7">&#9670;&nbsp;</a></span>looptree_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_loop_tree.html">LoopTree</a>&lt;forward&gt;&amp; <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::looptree_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa702ef93031288de852c573d8159d5ba" name="aa702ef93031288de852c573d8159d5ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa702ef93031288de852c573d8159d5ba">&#9670;&nbsp;</a></span>numbers_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt;forward&gt;::template Map&lt;<a class="el" href="structthorin_1_1_loop_tree_builder_1_1_number.html">Number</a>&gt; <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::numbers_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aec2e8abb8fef43e1a667db62dc4cfa72" name="aec2e8abb8fef43e1a667db62dc4cfa72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec2e8abb8fef43e1a667db62dc4cfa72">&#9670;&nbsp;</a></span>set_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt;forward&gt;::Set <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::set_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a79b467a8a0762c9e1ad3292ce86981cc" name="a79b467a8a0762c9e1ad3292ce86981cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79b467a8a0762c9e1ad3292ce86981cc">&#9670;&nbsp;</a></span>stack_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a>*&gt; <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::stack_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4414c51e703423d8d848dfad8fd36173" name="a4414c51e703423d8d848dfad8fd36173"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4414c51e703423d8d848dfad8fd36173">&#9670;&nbsp;</a></span>states_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt;forward&gt;::template Map&lt;uint8_t&gt; <a class="el" href="classthorin_1_1_loop_tree_builder.html">thorin::LoopTreeBuilder</a>&lt; forward &gt;::states_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

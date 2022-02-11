@@ -207,7 +207,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs η-expansion: <code>f -&gt; λx.f x</code>, if <code>f</code> is a <code><a class="el" href="classthorin_1_1_lam.html">Lam</a></code> with more than one user and does not appear in callee position.  <a href="classthorin_1_1_eta_exp.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_eta_red.html">EtaRed</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs η-reduction: <code>λx.e x -&gt; e</code>, whenever <code>x</code> does (optimistically) not appear free in <code>e</code>.  <a href="classthorin_1_1_eta_red.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs η-reduction.  <a href="classthorin_1_1_eta_red.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_ext.html">Ext</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Common base for <code><a class="el" href="classthorin_1_1_t_ext.html" title="Extremum. Either Top (up) or Bottom.">TExt</a>remum</code>.  <a href="classthorin_1_1_ext.html#details">More...</a><br /></td></tr>
@@ -286,7 +286,6 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A global variable in the data segment.  <a href="classthorin_1_1_global.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_hash_map.html">HashMap</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This container is for the most part compatible with <code>std::unordered_map</code>.  <a href="classthorin_1_1_hash_map.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_hash_set.html">HashSet</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This container is for the most part compatible with <code>std::unordered_set</code>.  <a href="classthorin_1_1_hash_set.html#details">More...</a><br /></td></tr>
@@ -880,7 +879,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a2ab8d8623a2a2fb97412cf4b05d18811"><td class="memTemplItemLeft" align="right" valign="top">static T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a2ab8d8623a2a2fb97412cf4b05d18811">get</a> (<a class="el" href="namespacethorin.html#aa4a9df41658521fb2f8a6842c377f13d">u64</a> u)</td></tr>
 <tr class="separator:a2ab8d8623a2a2fb97412cf4b05d18811"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1aa84e35a44dd22fe2d00f0d63016425"><td class="memItemLeft" align="right" valign="top">constexpr std::array&lt; std::array&lt; uint64_t, 2 &gt;, 2 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1aa84e35a44dd22fe2d00f0d63016425">make_truth_table</a> (<a class="el" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55acce">Bit</a> op)</td></tr>
-<tr class="memdesc:a1aa84e35a44dd22fe2d00f0d63016425"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1_use.html" title="References a user.">Use</a> like this:  <a href="namespacethorin.html#a1aa84e35a44dd22fe2d00f0d63016425">More...</a><br /></td></tr>
+<tr class="memdesc:a1aa84e35a44dd22fe2d00f0d63016425"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1_use.html" title="References a user.">Use</a> like this: <code>a op b = tab[a][b]</code>  <a href="namespacethorin.html#a1aa84e35a44dd22fe2d00f0d63016425">More...</a><br /></td></tr>
 <tr class="separator:a1aa84e35a44dd22fe2d00f0d63016425"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a802d291c68388ca5b80f3c224b2ba190"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:a802d291c68388ca5b80f3c224b2ba190"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a802d291c68388ca5b80f3c224b2ba190">is_commutative</a> (T)</td></tr>
@@ -5389,11 +5388,8 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classthorin_1_1_use.html" title="References a user.">Use</a> like this: </p>
-<div class="fragment"><div class="line"><a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661">a</a> op <a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">b</a> = tab[<a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661">a</a>][<a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">b</a>] </div>
-<div class="ttc" id="anamespacethorin_html_a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661"><div class="ttname"><a href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661">thorin::Bit::a</a></div><div class="ttdeci">@ a</div></div>
-<div class="ttc" id="anamespacethorin_html_a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f"><div class="ttname"><a href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">thorin::Bit::b</a></div><div class="ttdeci">@ b</div></div>
-</div><!-- fragment --> 
+<p><a class="el" href="classthorin_1_1_use.html" title="References a user.">Use</a> like this: <code>a op b = tab[a][b]</code> </p>
+
 </div>
 </div>
 <a id="abf5afa0bf107f2fe297567339f761dbf" name="abf5afa0bf107f2fe297567339f761dbf"></a>
@@ -8077,14 +8073,16 @@ template&lt;<a class="el" href="namespacethorin.html#a12cc65a06abfcbcae824f6128f
 </div><div class="memdoc">
 
 <p>Reassociates <code>a</code> und <code>b</code> according to following rules. </p>
-<p >We use the following naming convention while literals are prefixed with an 'l': </p><pre class="fragment">    a    op     b
-(x op y) op (z op w)
-
-(1)     la    op (lz op w) -&gt; (la op lz) op w
-(2) (lx op y) op (lz op w) -&gt; (lx op lz) op (y op w)
-(3)      a    op (lz op w) -&gt;  lz op (a op w)
-(4) (lx op y) op      b    -&gt;  lx op (y op b)
-</pre> 
+<p >We use the following naming convention while literals are prefixed with an 'l': </p><div class="fragment"><div class="line">    <a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661">a</a>    op     <a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">b</a></div>
+<div class="line">(x op y) op (z op w)</div>
+<div class="line"> </div>
+<div class="line">(1)     la    op (lz op w) -&gt; (la op lz) op w</div>
+<div class="line">(2) (lx op y) op (lz op w) -&gt; (lx op lz) op (y op w)</div>
+<div class="line">(3)      a    op (lz op w) -&gt;  lz op (a op w)</div>
+<div class="line">(4) (lx op y) op      <a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">b</a>    -&gt;  lx op (y op b)</div>
+<div class="ttc" id="anamespacethorin_html_a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661"><div class="ttname"><a href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661">thorin::Bit::a</a></div><div class="ttdeci">@ a</div></div>
+<div class="ttc" id="anamespacethorin_html_a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f"><div class="ttname"><a href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">thorin::Bit::b</a></div><div class="ttdeci">@ b</div></div>
+</div><!-- fragment --> 
 </div>
 </div>
 <a id="acfc79e85e5edc22a794cb2db4f85b6d8" name="acfc79e85e5edc22a794cb2db4f85b6d8"></a>

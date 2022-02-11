@@ -8,5 +8,7 @@ var classthorin_1_1unique__queue =
     [ "empty", "classthorin_1_1unique__queue.html#a226f67717d2a9c893eaecf8da6a2f52d", null ],
     [ "front", "classthorin_1_1unique__queue.html#aa5cb6efdf0387545a73e968d076f56d0", null ],
     [ "pop", "classthorin_1_1unique__queue.html#ad9ea63062f801c963ec5ab150702240c", null ],
-    [ "push", "classthorin_1_1unique__queue.html#a3bf8b02f709f6e80d7b1119341ec68c5", null ]
+    [ "push", "classthorin_1_1unique__queue.html#a3bf8b02f709f6e80d7b1119341ec68c5", null ],
+    [ "done_", "classthorin_1_1unique__queue.html#a56fd783b91768677248a135db5101d4d", null ],
+    [ "queue_", "classthorin_1_1unique__queue.html#adbfe95c480aa53f44baab9d4346616cc", null ]
 ];

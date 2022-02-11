@@ -23,6 +23,6 @@ var searchData=
   ['test_20',['Test',['../classthorin_1_1_test.html',1,'thorin']]],
   ['text_21',['TExt',['../classthorin_1_1_t_ext.html',1,'thorin']]],
   ['tok_22',['Tok',['../classthorin_1_1_tok.html',1,'thorin']]],
-  ['tracker_23',['Tracker',['../classthorin_1_1_tracker.html',1,'thorin']]],
+  ['tracker_23',['Tracker',['../classthorin_1_1_parser_1_1_tracker.html',1,'thorin::Parser::Tracker'],['../classthorin_1_1_tracker.html',1,'thorin::Tracker']]],
   ['tuple_24',['Tuple',['../classthorin_1_1_tuple.html',1,'thorin']]]
 ];

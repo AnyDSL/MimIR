@@ -1,5 +1,6 @@
 var classthorin_1_1_test =
 [
+    [ "Test", "classthorin_1_1_test.html#ae8356c2a1c56b6ff34fff0651a8fd5ac", null ],
     [ "clash", "classthorin_1_1_test.html#aeed2c5c851a0efc3bd773a2ed6cd3ca5", null ],
     [ "match", "classthorin_1_1_test.html#a87f38021c859f41caaa12611b7b4fef2", null ],
     [ "probe", "classthorin_1_1_test.html#a3a7d472a4b86bd8c041575c4a56c801d", null ],

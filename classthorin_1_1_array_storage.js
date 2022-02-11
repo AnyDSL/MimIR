@@ -8,5 +8,8 @@ var classthorin_1_1_array_storage =
     [ "data", "classthorin_1_1_array_storage.html#aebd22dbd44f06fd595457b00f853458e", null ],
     [ "shrink", "classthorin_1_1_array_storage.html#af3b2e1f9cfc09299c12df615b8d7863e", null ],
     [ "size", "classthorin_1_1_array_storage.html#af8f2d447b4bb913940652c3e0f9297c7", null ],
-    [ "swap", "classthorin_1_1_array_storage.html#ac80d660438b4842b825631b2f3d637b1", null ]
+    [ "swap", "classthorin_1_1_array_storage.html#ac80d660438b4842b825631b2f3d637b1", null ],
+    [ "data_", "classthorin_1_1_array_storage.html#ab6e9673225cff1cbdf0f8fa33342d9d0", null ],
+    [ "size_", "classthorin_1_1_array_storage.html#ae2e9a8ece42a4441741136e5347dff34", null ],
+    [ "stack_", "classthorin_1_1_array_storage.html#a08f4764ce7635a335174f5426bfbeae1", null ]
 ];

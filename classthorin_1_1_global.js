@@ -1,5 +1,6 @@
 var classthorin_1_1_global =
 [
+    [ "Global", "classthorin_1_1_global.html#a7e2b1f49aff5b723b1b2b939a4644301", null ],
     [ "alloced_type", "classthorin_1_1_global.html#ab1b95fb1bd35ad607dff8f98a97626fc", null ],
     [ "id", "classthorin_1_1_global.html#aa6fb8ec34ede304d16eb7bd1bc59f320", null ],
     [ "init", "classthorin_1_1_global.html#ab580e7ecdb7ad0e3281aaf982f0bc869", null ],

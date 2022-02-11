@@ -95,12 +95,19 @@ $(document).ready(function(){initNavTree('classthorin_1_1_checker.html',''); ini
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classthorin_1_1_checker-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::Checker Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="check_8h_source.html">check.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for thorin::Checker:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1_checker__coll__graph.svg" width="1887" height="912"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -112,6 +119,15 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a12019b577e7c78f5691a1cbca39b3942"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f0d4a4327a4b0b58385d105698fc4af"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_checker.html#a1f0d4a4327a4b0b58385d105698fc4af">assignable</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *, const <a class="el" href="classthorin_1_1_def.html">Def</a> *)</td></tr>
 <tr class="separator:a1f0d4a4327a4b0b58385d105698fc4af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a315ed937728609445b68952d3901e56c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_world.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_checker.html#a315ed937728609445b68952d3901e56c">world_</a></td></tr>
+<tr class="separator:a315ed937728609445b68952d3901e56c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29da4d0ac987cae155a520c4223ee360"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_hash_set.html">HashSet</a>&lt; <a class="el" href="namespacethorin.html#a1c686b5d4a914909b3433cae517ec294">DefDef</a>, <a class="el" href="structthorin_1_1_def_def_hash.html">DefDefHash</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_checker.html#a29da4d0ac987cae155a520c4223ee360">equiv_</a></td></tr>
+<tr class="separator:a29da4d0ac987cae155a520c4223ee360"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02122c2da7a5fac155488a0005e2a3cd"><td class="memItemLeft" align="right" valign="top">std::deque&lt; <a class="el" href="namespacethorin.html#a1c686b5d4a914909b3433cae517ec294">DefDef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_checker.html#a02122c2da7a5fac155488a0005e2a3cd">vars_</a></td></tr>
+<tr class="separator:a02122c2da7a5fac155488a0005e2a3cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aaac4fa4a1eb74826aa07c21d695ece22" name="aaac4fa4a1eb74826aa07c21d695ece22"></a>
@@ -216,6 +232,73 @@ Public Member Functions</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a29da4d0ac987cae155a520c4223ee360" name="a29da4d0ac987cae155a520c4223ee360"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a29da4d0ac987cae155a520c4223ee360">&#9670;&nbsp;</a></span>equiv_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_hash_set.html">HashSet</a>&lt;<a class="el" href="namespacethorin.html#a1c686b5d4a914909b3433cae517ec294">DefDef</a>, <a class="el" href="structthorin_1_1_def_def_hash.html">DefDefHash</a>&gt; thorin::Checker::equiv_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a02122c2da7a5fac155488a0005e2a3cd" name="a02122c2da7a5fac155488a0005e2a3cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02122c2da7a5fac155488a0005e2a3cd">&#9670;&nbsp;</a></span>vars_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::deque&lt;<a class="el" href="namespacethorin.html#a1c686b5d4a914909b3433cae517ec294">DefDef</a>&gt; thorin::Checker::vars_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a315ed937728609445b68952d3901e56c" name="a315ed937728609445b68952d3901e56c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a315ed937728609445b68952d3901e56c">&#9670;&nbsp;</a></span>world_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_world.html">World</a>&amp; thorin::Checker::world_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

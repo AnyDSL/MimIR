@@ -10,5 +10,7 @@ var classthorin_1_1_tagged_ptr =
     [ "operator=", "classthorin_1_1_tagged_ptr.html#a42848e123a5b6073092be54bd3920923", null ],
     [ "operator==", "classthorin_1_1_tagged_ptr.html#a72d7244faa770e3778537d4d06461871", null ],
     [ "ptr", "classthorin_1_1_tagged_ptr.html#a7c2edb69fb94363961e8f908337cf802", null ],
-    [ "set", "classthorin_1_1_tagged_ptr.html#a9bec19fa3979974deb9f7a93673a6ab3", null ]
+    [ "set", "classthorin_1_1_tagged_ptr.html#a9bec19fa3979974deb9f7a93673a6ab3", null ],
+    [ "index_", "classthorin_1_1_tagged_ptr.html#ac7f8915a2d95c878e20c70bce77bd8af", null ],
+    [ "ptr_", "classthorin_1_1_tagged_ptr.html#a706c553449cedddfe9665b9586d10b61", null ]
 ];

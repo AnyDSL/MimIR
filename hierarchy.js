@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "thorin::World::Arena", "classthorin_1_1_world_1_1_arena.html", null ],
     [ "thorin::Array< T >", "classthorin_1_1_array.html", null ],
     [ "thorin::Array< const Def * >", "classthorin_1_1_array.html", null ],
     [ "thorin::Array< uint64_t >", "classthorin_1_1_array.html", null ],
@@ -21,8 +22,10 @@ var hierarchy =
     [ "thorin::CFG< forward >", "classthorin_1_1_c_f_g.html", null ],
     [ "thorin::Checker", "classthorin_1_1_checker.html", null ],
     [ "thorin::Cleaner", "classthorin_1_1_cleaner.html", null ],
+    [ "thorin::ClosureConv::Closure", "classthorin_1_1_closure_conv.html#structthorin_1_1_closure_conv_1_1_closure", null ],
     [ "thorin::ClosureConv", "classthorin_1_1_closure_conv.html", null ],
     [ "thorin::CondEval", "classthorin_1_1_cond_eval.html", null ],
+    [ "thorin::World::Data", "classthorin_1_1_world.html#structthorin_1_1_world_1_1_data", null ],
     [ "thorin::Debug", "classthorin_1_1_debug.html", null ],
     [ "thorin::DefDefHash", "structthorin_1_1_def_def_hash.html", null ],
     [ "thorin::DefsHash", "structthorin_1_1_defs_hash.html", null ],
@@ -64,6 +67,8 @@ var hierarchy =
     [ "thorin::FoldConv< Conv::u2r, dw, sw >", "structthorin_1_1_fold_conv_3_01_conv_1_1u2r_00_01dw_00_01sw_01_4.html", null ],
     [ "thorin::FoldConv< Conv::u2u, dw, sw >", "structthorin_1_1_fold_conv_3_01_conv_1_1u2u_00_01dw_00_01sw_01_4.html", null ],
     [ "thorin::FVA", "classthorin_1_1_f_v_a.html", null ],
+    [ "thorin::detail::HashTable< Key, T, H, StackCapacity >::get_key< K, V >", "structthorin_1_1detail_1_1_hash_table_1_1get__key.html", null ],
+    [ "thorin::detail::HashTable< Key, T, H, StackCapacity >::get_key< K, void >", "structthorin_1_1detail_1_1_hash_table_1_1get__key_3_01_k_00_01void_01_4.html", null ],
     [ "thorin::GIDHash< T >", "structthorin_1_1_g_i_d_hash.html", null ],
     [ "thorin::GIDLt< T >", "structthorin_1_1_g_i_d_lt.html", null ],
     [ "thorin::detail::HashTable< Key, T, H, StackCapacity >", "classthorin_1_1detail_1_1_hash_table.html", null ],
@@ -72,9 +77,6 @@ var hierarchy =
     ] ],
     [ "thorin::detail::HashTable< bool, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashMap< bool >", "classthorin_1_1_hash_map.html", null ]
-    ] ],
-    [ "thorin::detail::HashTable< Closure, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
-      [ "thorin::HashMap< Closure >", "classthorin_1_1_hash_map.html", null ]
     ] ],
     [ "thorin::detail::HashTable< const CFNode *, void, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashSet< const CFNode * >", "classthorin_1_1_hash_set.html", null ]
@@ -139,17 +141,20 @@ var hierarchy =
     [ "thorin::detail::HashTable< std::string, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashMap< std::string >", "classthorin_1_1_hash_map.html", null ]
     ] ],
-    [ "thorin::detail::HashTable< std::unique_ptr< Node >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
-      [ "thorin::HashMap< std::unique_ptr< Node > >", "classthorin_1_1_hash_map.html", null ]
-    ] ],
     [ "thorin::detail::HashTable< std::unique_ptr< thorin::DepNode >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashMap< std::unique_ptr< thorin::DepNode > >", "classthorin_1_1_hash_map.html", null ]
+    ] ],
+    [ "thorin::detail::HashTable< std::unique_ptr< thorin::FVA::Node >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
+      [ "thorin::HashMap< std::unique_ptr< thorin::FVA::Node > >", "classthorin_1_1_hash_map.html", null ]
     ] ],
     [ "thorin::detail::HashTable< std::vector< std::pair< std::string, std::string > >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashMap< std::vector< std::pair< std::string, std::string > > >", "classthorin_1_1_hash_map.html", null ]
     ] ],
     [ "thorin::detail::HashTable< thorin::Array, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashMap< thorin::Array >", "classthorin_1_1_hash_map.html", null ]
+    ] ],
+    [ "thorin::detail::HashTable< thorin::ClosureConv::Closure, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
+      [ "thorin::HashMap< thorin::ClosureConv::Closure >", "classthorin_1_1_hash_map.html", null ]
     ] ],
     [ "thorin::detail::HashTable< thorin::Def *, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashMap< thorin::Def * >", "classthorin_1_1_hash_map.html", null ]
@@ -173,6 +178,8 @@ var hierarchy =
     [ "thorin::IndexMap< const thorin::CFNode * >", "classthorin_1_1_index_map.html", null ],
     [ "thorin::IndexSet< Indexer, Key >", "classthorin_1_1_index_set.html", null ],
     [ "thorin::SSAConstr::Info", "classthorin_1_1_s_s_a_constr.html#structthorin_1_1_s_s_a_constr_1_1_info", null ],
+    [ "thorin::IndexMap< Indexer, Key, Value >::IsValidPred< T >", "structthorin_1_1_index_map_1_1_is_valid_pred.html", null ],
+    [ "thorin::IndexMap< Indexer, Key, Value >::IsValidPred< T * >", "structthorin_1_1_index_map_1_1_is_valid_pred_3_01_t_01_5_01_4.html", null ],
     [ "thorin::detail::HashTable< Key, T, H, StackCapacity >::iterator_base< is_const >", "classthorin_1_1detail_1_1_hash_table_1_1iterator__base.html", null ],
     [ "thorin::Lexer", "classthorin_1_1_lexer.html", null ],
     [ "thorin::World::Arena::Lock", "structthorin_1_1_world_1_1_arena_1_1_lock.html", null ],
@@ -180,6 +187,8 @@ var hierarchy =
     [ "thorin::LoopTreeBuilder< forward >", "classthorin_1_1_loop_tree_builder.html", null ],
     [ "thorin::LRPrec< L >", "structthorin_1_1_l_r_prec.html", null ],
     [ "thorin::Mangler", "classthorin_1_1_mangler.html", null ],
+    [ "thorin::FVA::Node", "classthorin_1_1_f_v_a.html#structthorin_1_1_f_v_a_1_1_node", null ],
+    [ "thorin::LoopTreeBuilder< forward >::Number", "structthorin_1_1_loop_tree_builder_1_1_number.html", null ],
     [ "thorin::Parser", "classthorin_1_1_parser.html", null ],
     [ "thorin::PartialEvaluator", "classthorin_1_1_partial_evaluator.html", null ],
     [ "thorin::PassMan", "classthorin_1_1_pass_man.html", null ],
@@ -261,6 +270,8 @@ var hierarchy =
     [ "thorin::Scheduler", "classthorin_1_1_scheduler.html", null ],
     [ "thorin::Scope", "classthorin_1_1_scope.html", null ],
     [ "thorin::World::SeaHash", "structthorin_1_1_world_1_1_sea_hash.html", null ],
+    [ "thorin::PassMan::State", "structthorin_1_1_pass_man_1_1_state.html", null ],
+    [ "thorin::World::State", "classthorin_1_1_world.html#structthorin_1_1_world_1_1_state", null ],
     [ "thorin::Stream", "classthorin_1_1_stream.html", [
       [ "thorin::StringStream", "classthorin_1_1_string_stream.html", null ]
     ] ],
@@ -310,6 +321,7 @@ var hierarchy =
     [ "thorin::TaggedPtr< const thorin::Def, size_t >", "classthorin_1_1_tagged_ptr.html", null ],
     [ "thorin::TaggedPtr< std::remove_pointer_t< NormalizeFn >, u16 >", "classthorin_1_1_tagged_ptr.html", null ],
     [ "thorin::TaggedPtr< uint64_t >", "classthorin_1_1_tagged_ptr.html", null ],
+    [ "thorin::Parser::Tracker", "classthorin_1_1_parser_1_1_tracker.html", null ],
     [ "thorin::Tracker", "classthorin_1_1_tracker.html", null ],
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_queue< thorin::HashSet >", "classthorin_1_1unique__queue.html", null ],

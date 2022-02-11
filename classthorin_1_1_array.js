@@ -43,5 +43,6 @@ var classthorin_1_1_array =
     [ "skip_back", "classthorin_1_1_array.html#a1255c93e66649e0dece316ff6dc94102", null ],
     [ "skip_front", "classthorin_1_1_array.html#aba2b3ff1dadb1cbbbf63e62a7a61cc85", null ],
     [ "to_array", "classthorin_1_1_array.html#ae19d03f56c03a2138438cf8180d828d6", null ],
-    [ "swap", "classthorin_1_1_array.html#ad8f888963f8bc4939796defba4791cb0", null ]
+    [ "swap", "classthorin_1_1_array.html#ad8f888963f8bc4939796defba4791cb0", null ],
+    [ "storage_", "classthorin_1_1_array.html#aefd93edf7522baf2ee47cc4a27f9eb1e", null ]
 ];

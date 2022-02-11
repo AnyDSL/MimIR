@@ -96,19 +96,81 @@ $(document).ready(function(){initNavTree('classthorin_1_1_parser.html',''); init
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classthorin_1_1_parser-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::Parser Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="parser_8h_source.html">parser.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for thorin::Parser:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1_parser__coll__graph.svg" width="1996" height="1212"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser_1_1_tracker.html">Tracker</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trick to easily keep track of <code><a class="el" href="structthorin_1_1_loc.html">Loc</a>ations</code>.  <a href="classthorin_1_1_parser_1_1_tracker.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad61313747796cb0609854d83d8afb4bd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#ad61313747796cb0609854d83d8afb4bd">Parser</a> (<a class="el" href="classthorin_1_1_world.html">World</a> &amp;, const char *, std::istream &amp;)</td></tr>
 <tr class="separator:ad61313747796cb0609854d83d8afb4bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd545f2b14786e73e995e7df438c4baf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_world.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#acd545f2b14786e73e995e7df438c4baf">world</a> ()</td></tr>
 <tr class="separator:acd545f2b14786e73e995e7df438c4baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a01934723f22ceac12fabfe0f011ac622"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_sym.html">Sym</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a01934723f22ceac12fabfe0f011ac622">parse_sym</a> (const char *ctxt)</td></tr>
+<tr class="separator:a01934723f22ceac12fabfe0f011ac622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a989e864da27f654bc4a44a952f0959dc"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a989e864da27f654bc4a44a952f0959dc">parse_def</a> (const char *ctxt, <a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2">Tok::Prec</a>)</td></tr>
+<tr class="separator:a989e864da27f654bc4a44a952f0959dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7522b70841f4ae79354e28eb4777620"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#ac7522b70841f4ae79354e28eb4777620">parse_primary_def</a> (const char *ctxt)</td></tr>
+<tr class="separator:ac7522b70841f4ae79354e28eb4777620"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf38ba3836952b6c2c757b1f5b1f2a95"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#abf38ba3836952b6c2c757b1f5b1f2a95">parse_primary_def</a> ()</td></tr>
+<tr class="separator:abf38ba3836952b6c2c757b1f5b1f2a95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72f158bb87240685f3fd1d149f623ebf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a72f158bb87240685f3fd1d149f623ebf">parse_extract</a> ()</td></tr>
+<tr class="separator:a72f158bb87240685f3fd1d149f623ebf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c5b95b5d976acb16240447e89c43741"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_parser_1_1_tracker.html">Tracker</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a8c5b95b5d976acb16240447e89c43741">tracker</a> ()</td></tr>
+<tr class="memdesc:a8c5b95b5d976acb16240447e89c43741"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factory method to build a <code><a class="el" href="classthorin_1_1_parser_1_1_tracker.html" title="Trick to easily keep track of Locations.">Tracker</a></code>.  <a href="classthorin_1_1_parser.html#a8c5b95b5d976acb16240447e89c43741">More...</a><br /></td></tr>
+<tr class="separator:a8c5b95b5d976acb16240447e89c43741"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76c39e8688d2358c2b3aa8376ad0b961"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a76c39e8688d2358c2b3aa8376ad0b961">dbg</a> (<a class="el" href="classthorin_1_1_parser_1_1_tracker.html">Tracker</a> t)</td></tr>
+<tr class="separator:a76c39e8688d2358c2b3aa8376ad0b961"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c86108a5f518d96d1839f18d9f234cc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_tok.html">Tok</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a1c86108a5f518d96d1839f18d9f234cc">lex</a> ()</td></tr>
+<tr class="memdesc:a1c86108a5f518d96d1839f18d9f234cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoke <code><a class="el" href="classthorin_1_1_lexer.html">Lexer</a></code> to retrieve next <code><a class="el" href="classthorin_1_1_tok.html">Tok</a>en</code>.  <a href="classthorin_1_1_parser.html#a1c86108a5f518d96d1839f18d9f234cc">More...</a><br /></td></tr>
+<tr class="separator:a1c86108a5f518d96d1839f18d9f234cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c02ca5adc387bb66f899121b23a5214"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_tok.html">Tok</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a9c02ca5adc387bb66f899121b23a5214">ahead</a> () const</td></tr>
+<tr class="memdesc:a9c02ca5adc387bb66f899121b23a5214"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get lookahead.  <a href="classthorin_1_1_parser.html#a9c02ca5adc387bb66f899121b23a5214">More...</a><br /></td></tr>
+<tr class="separator:a9c02ca5adc387bb66f899121b23a5214"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a076eaaf16d75546417902aa2ce0e0600"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a076eaaf16d75546417902aa2ce0e0600">accept</a> (<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag)</td></tr>
+<tr class="memdesc:a076eaaf16d75546417902aa2ce0e0600"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code><a class="el" href="classthorin_1_1_parser.html#a9c02ca5adc387bb66f899121b23a5214" title="Get lookahead.">ahead()</a></code> is a <code>tag</code>, <code><a class="el" href="classthorin_1_1_parser.html#a1c86108a5f518d96d1839f18d9f234cc" title="Invoke Lexer to retrieve next Token.">lex()</a></code>, and return <code>true</code>.  <a href="classthorin_1_1_parser.html#a076eaaf16d75546417902aa2ce0e0600">More...</a><br /></td></tr>
+<tr class="separator:a076eaaf16d75546417902aa2ce0e0600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7035bc94890b6cdea6d28c802bd7e0f0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a7035bc94890b6cdea6d28c802bd7e0f0">expect</a> (<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag, const char *ctxt)</td></tr>
+<tr class="memdesc:a7035bc94890b6cdea6d28c802bd7e0f0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>lex</code> <code><a class="el" href="classthorin_1_1_parser.html#a9c02ca5adc387bb66f899121b23a5214" title="Get lookahead.">ahead()</a></code> which must be a <code>tag</code>.  <a href="classthorin_1_1_parser.html#a7035bc94890b6cdea6d28c802bd7e0f0">More...</a><br /></td></tr>
+<tr class="separator:a7035bc94890b6cdea6d28c802bd7e0f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7acf3a3eeae07e71008b84839beb1b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_tok.html">Tok</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#ab7acf3a3eeae07e71008b84839beb1b3">eat</a> (<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag)</td></tr>
+<tr class="memdesc:ab7acf3a3eeae07e71008b84839beb1b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consume <code>ahead</code> which must be a <code>tag</code>; <code>asserts</code> otherwise.  <a href="classthorin_1_1_parser.html#ab7acf3a3eeae07e71008b84839beb1b3">More...</a><br /></td></tr>
+<tr class="separator:ab7acf3a3eeae07e71008b84839beb1b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a957c68929c6e74ff5718f1b490011a1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a957c68929c6e74ff5718f1b490011a1c">err</a> (const std::string &amp;what, const <a class="el" href="classthorin_1_1_tok.html">Tok</a> &amp;tok, const char *ctxt)</td></tr>
+<tr class="memdesc:a957c68929c6e74ff5718f1b490011a1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Issue an error message of the form: "expected \&lt;what\&gt;, got '\&lt;tok&gt;\' while parsing \&lt;ctxt\&gt;".  <a href="classthorin_1_1_parser.html#a957c68929c6e74ff5718f1b490011a1c">More...</a><br /></td></tr>
+<tr class="separator:a957c68929c6e74ff5718f1b490011a1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97754cff483c80ac680c19448ae2cccc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a97754cff483c80ac680c19448ae2cccc">err</a> (const std::string &amp;what, const char *ctxt)</td></tr>
+<tr class="memdesc:a97754cff483c80ac680c19448ae2cccc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same above but uses <code><a class="el" href="classthorin_1_1_parser.html#a9c02ca5adc387bb66f899121b23a5214" title="Get lookahead.">ahead()</a></code> as <code>tok</code>.  <a href="classthorin_1_1_parser.html#a97754cff483c80ac680c19448ae2cccc">More...</a><br /></td></tr>
+<tr class="separator:a97754cff483c80ac680c19448ae2cccc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a2ac692e98d4322824c4b85e6f7e3773e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_lexer.html">Lexer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a2ac692e98d4322824c4b85e6f7e3773e">lexer_</a></td></tr>
+<tr class="separator:a2ac692e98d4322824c4b85e6f7e3773e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a308a7bf465c449f284b37fce876b5aab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structthorin_1_1_loc.html">Loc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a308a7bf465c449f284b37fce876b5aab">prev_</a></td></tr>
+<tr class="separator:a308a7bf465c449f284b37fce876b5aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a348c89d17cb97670f2998081217e11fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_tok.html">Tok</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_parser.html#a348c89d17cb97670f2998081217e11fc">ahead_</a></td></tr>
+<tr class="separator:a348c89d17cb97670f2998081217e11fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad61313747796cb0609854d83d8afb4bd" name="ad61313747796cb0609854d83d8afb4bd"></a>
@@ -146,6 +208,428 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a076eaaf16d75546417902aa2ce0e0600" name="a076eaaf16d75546417902aa2ce0e0600"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a076eaaf16d75546417902aa2ce0e0600">&#9670;&nbsp;</a></span>accept()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::Parser::accept </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a>&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If <code><a class="el" href="classthorin_1_1_parser.html#a9c02ca5adc387bb66f899121b23a5214" title="Get lookahead.">ahead()</a></code> is a <code>tag</code>, <code><a class="el" href="classthorin_1_1_parser.html#a1c86108a5f518d96d1839f18d9f234cc" title="Invoke Lexer to retrieve next Token.">lex()</a></code>, and return <code>true</code>. </p>
+
+</div>
+</div>
+<a id="a9c02ca5adc387bb66f899121b23a5214" name="a9c02ca5adc387bb66f899121b23a5214"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c02ca5adc387bb66f899121b23a5214">&#9670;&nbsp;</a></span>ahead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_tok.html">Tok</a> thorin::Parser::ahead </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get lookahead. </p>
+
+</div>
+</div>
+<a id="a76c39e8688d2358c2b3aa8376ad0b961" name="a76c39e8688d2358c2b3aa8376ad0b961"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76c39e8688d2358c2b3aa8376ad0b961">&#9670;&nbsp;</a></span>dbg()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1_def.html">Def</a> * thorin::Parser::dbg </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1_parser_1_1_tracker.html">Tracker</a>&#160;</td>
+          <td class="paramname"><em>t</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab7acf3a3eeae07e71008b84839beb1b3" name="ab7acf3a3eeae07e71008b84839beb1b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7acf3a3eeae07e71008b84839beb1b3">&#9670;&nbsp;</a></span>eat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_tok.html">Tok</a> thorin::Parser::eat </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a>&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Consume <code>ahead</code> which must be a <code>tag</code>; <code>asserts</code> otherwise. </p>
+
+</div>
+</div>
+<a id="a97754cff483c80ac680c19448ae2cccc" name="a97754cff483c80ac680c19448ae2cccc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97754cff483c80ac680c19448ae2cccc">&#9670;&nbsp;</a></span>err() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::Parser::err </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>what</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>ctxt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Same above but uses <code><a class="el" href="classthorin_1_1_parser.html#a9c02ca5adc387bb66f899121b23a5214" title="Get lookahead.">ahead()</a></code> as <code>tok</code>. </p>
+
+</div>
+</div>
+<a id="a957c68929c6e74ff5718f1b490011a1c" name="a957c68929c6e74ff5718f1b490011a1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a957c68929c6e74ff5718f1b490011a1c">&#9670;&nbsp;</a></span>err() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::Parser::err </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>what</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_tok.html">Tok</a> &amp;&#160;</td>
+          <td class="paramname"><em>tok</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>ctxt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Issue an error message of the form: "expected \&lt;what\&gt;, got '\&lt;tok&gt;\' while parsing \&lt;ctxt\&gt;". </p>
+
+</div>
+</div>
+<a id="a7035bc94890b6cdea6d28c802bd7e0f0" name="a7035bc94890b6cdea6d28c802bd7e0f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7035bc94890b6cdea6d28c802bd7e0f0">&#9670;&nbsp;</a></span>expect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::Parser::expect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a>&#160;</td>
+          <td class="paramname"><em>tag</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>ctxt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p><code>lex</code> <code><a class="el" href="classthorin_1_1_parser.html#a9c02ca5adc387bb66f899121b23a5214" title="Get lookahead.">ahead()</a></code> which must be a <code>tag</code>. </p>
+<p >Issue <code>error</code> with <code>ctxt</code> otherwise. </p>
+
+</div>
+</div>
+<a id="a1c86108a5f518d96d1839f18d9f234cc" name="a1c86108a5f518d96d1839f18d9f234cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c86108a5f518d96d1839f18d9f234cc">&#9670;&nbsp;</a></span>lex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_tok.html">Tok</a> thorin::Parser::lex </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Invoke <code><a class="el" href="classthorin_1_1_lexer.html">Lexer</a></code> to retrieve next <code><a class="el" href="classthorin_1_1_tok.html">Tok</a>en</code>. </p>
+
+</div>
+</div>
+<a id="a989e864da27f654bc4a44a952f0959dc" name="a989e864da27f654bc4a44a952f0959dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a989e864da27f654bc4a44a952f0959dc">&#9670;&nbsp;</a></span>parse_def()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1_def.html">Def</a> * thorin::Parser::parse_def </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>ctxt</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2">Tok::Prec</a>&#160;</td>
+          <td class="paramname"><em>p</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a72f158bb87240685f3fd1d149f623ebf" name="a72f158bb87240685f3fd1d149f623ebf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72f158bb87240685f3fd1d149f623ebf">&#9670;&nbsp;</a></span>parse_extract()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1_def.html">Def</a> * thorin::Parser::parse_extract </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abf38ba3836952b6c2c757b1f5b1f2a95" name="abf38ba3836952b6c2c757b1f5b1f2a95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf38ba3836952b6c2c757b1f5b1f2a95">&#9670;&nbsp;</a></span>parse_primary_def() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1_def.html">Def</a> * thorin::Parser::parse_primary_def </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac7522b70841f4ae79354e28eb4777620" name="ac7522b70841f4ae79354e28eb4777620"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7522b70841f4ae79354e28eb4777620">&#9670;&nbsp;</a></span>parse_primary_def() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1_def.html">Def</a> * thorin::Parser::parse_primary_def </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>ctxt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a01934723f22ceac12fabfe0f011ac622" name="a01934723f22ceac12fabfe0f011ac622"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a01934723f22ceac12fabfe0f011ac622">&#9670;&nbsp;</a></span>parse_sym()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_sym.html">Sym</a> thorin::Parser::parse_sym </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>ctxt</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8c5b95b5d976acb16240447e89c43741" name="a8c5b95b5d976acb16240447e89c43741"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c5b95b5d976acb16240447e89c43741">&#9670;&nbsp;</a></span>tracker()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_parser_1_1_tracker.html">Tracker</a> thorin::Parser::tracker </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Factory method to build a <code><a class="el" href="classthorin_1_1_parser_1_1_tracker.html" title="Trick to easily keep track of Locations.">Tracker</a></code>. </p>
+
+</div>
+</div>
 <a id="acd545f2b14786e73e995e7df438c4baf" name="acd545f2b14786e73e995e7df438c4baf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acd545f2b14786e73e995e7df438c4baf">&#9670;&nbsp;</a></span>world()</h2>
 
@@ -165,6 +649,73 @@ Public Member Functions</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a348c89d17cb97670f2998081217e11fc" name="a348c89d17cb97670f2998081217e11fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a348c89d17cb97670f2998081217e11fc">&#9670;&nbsp;</a></span>ahead_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_tok.html">Tok</a> thorin::Parser::ahead_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2ac692e98d4322824c4b85e6f7e3773e" name="a2ac692e98d4322824c4b85e6f7e3773e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ac692e98d4322824c4b85e6f7e3773e">&#9670;&nbsp;</a></span>lexer_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_lexer.html">Lexer</a> thorin::Parser::lexer_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a308a7bf465c449f284b37fce876b5aab" name="a308a7bf465c449f284b37fce876b5aab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a308a7bf465c449f284b37fce876b5aab">&#9670;&nbsp;</a></span>prev_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structthorin_1_1_loc.html">Loc</a> thorin::Parser::prev_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

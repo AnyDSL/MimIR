@@ -1,5 +1,6 @@
 var classthorin_1_1_app =
 [
+    [ "App", "classthorin_1_1_app.html#ae3cf98f02bb4256148f5a7a7e0ad0960", null ],
     [ "arg", "classthorin_1_1_app.html#a87f636308044d3ec0ee571f9d5658bc7", null ],
     [ "axiom", "classthorin_1_1_app.html#ad4598be862cd415c7bf4198386be3e26", null ],
     [ "callee", "classthorin_1_1_app.html#a50ea8f8c25098398c902dfcc011af9ff", null ],

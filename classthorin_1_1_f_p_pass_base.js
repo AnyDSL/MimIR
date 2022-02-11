@@ -8,5 +8,6 @@ var classthorin_1_1_f_p_pass_base =
     [ "copy", "classthorin_1_1_f_p_pass_base.html#a8d2d8c249103ed11d4e3f7fbdf44e15c", null ],
     [ "dealloc", "classthorin_1_1_f_p_pass_base.html#adfd3bc20d8aad0af342f04e76b2dbb23", null ],
     [ "index", "classthorin_1_1_f_p_pass_base.html#a962d7c5555da3aba7a83effc2f8b43dd", null ],
-    [ "PassMan", "classthorin_1_1_f_p_pass_base.html#ae3b741f775f564409b46ea178ca0aefc", null ]
+    [ "PassMan", "classthorin_1_1_f_p_pass_base.html#ae3b741f775f564409b46ea178ca0aefc", null ],
+    [ "index_", "classthorin_1_1_f_p_pass_base.html#a9d08d343ff472d1eb4af99c5e7974cb8", null ]
 ];

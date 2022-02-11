@@ -1,5 +1,6 @@
 var classthorin_1_1_streamable =
 [
+    [ "child", "classthorin_1_1_streamable.html#a6763b93780b6b02494b2f1b4499f47b2", null ],
     [ "dump", "classthorin_1_1_streamable.html#a0f2459fdabbc821751a8e82dd5313119", null ],
     [ "to_string", "classthorin_1_1_streamable.html#a83907e5615ec8dbada6f053d6fd21d85", null ],
     [ "write", "classthorin_1_1_streamable.html#a4768771738de2fb037e4f1b026370046", null ],

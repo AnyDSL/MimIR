@@ -95,6 +95,8 @@ $(document).ready(function(){initNavTree('classthorin_1_1_stream.html',''); init
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classthorin_1_1_stream-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::Stream Class Reference</div></div>
 </div><!--header-->
@@ -112,21 +114,32 @@ Inheritance diagram for thorin::Stream:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a20bea2a80af159af6edfa218f9abefae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a20bea2a80af159af6edfa218f9abefae">Stream</a> (std::ostream &amp;<a class="el" href="classthorin_1_1_stream.html#ad5e94e3ec32ce4cd4459361cf35a978b">ostream</a>=std::cout, const std::string &amp;<a class="el" href="classthorin_1_1_stream.html#ab82dc4f1dcc5b84bb4390cbc8cb66d8e">tab</a>={&quot;    &quot;}, size_t <a class="el" href="classthorin_1_1_stream.html#a6a99ee383d99c49387ee87a7838f3806">level</a>=0)</td></tr>
 <tr class="separator:a20bea2a80af159af6edfa218f9abefae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">stream</h2></td></tr>
-<tr class="memitem:aed54130070b1aed20fc0f50ea767d154"><td class="memItemLeft" align="right" valign="top">std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#aed54130070b1aed20fc0f50ea767d154">ostream_</a></td></tr>
-<tr class="separator:aed54130070b1aed20fc0f50ea767d154"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0508a63eff37f45630b17e5ac0e7e775"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a0508a63eff37f45630b17e5ac0e7e775">tab_</a></td></tr>
-<tr class="separator:a0508a63eff37f45630b17e5ac0e7e775"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22831b8877bb0908b5fe5e10c50c85a3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a22831b8877bb0908b5fe5e10c50c85a3">level_</a></td></tr>
-<tr class="separator:a22831b8877bb0908b5fe5e10c50c85a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a64bf220ccacc7d7d09dee0dca94037c2"><td class="memTemplParams" colspan="2">template&lt;class T , class... Args&gt; </td></tr>
-<tr class="memitem:a64bf220ccacc7d7d09dee0dca94037c2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a64bf220ccacc7d7d09dee0dca94037c2">fmt</a> (const char *s, T &amp;&amp;t, Args &amp;&amp;... args)</td></tr>
-<tr class="memdesc:a64bf220ccacc7d7d09dee0dca94037c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">fprintf-like function.  <a href="classthorin_1_1_stream.html#a64bf220ccacc7d7d09dee0dca94037c2">More...</a><br /></td></tr>
-<tr class="separator:a64bf220ccacc7d7d09dee0dca94037c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed06a5607c62f81c5e311147134677ba"><td class="memItemLeft" align="right" valign="top">void friend&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#aed06a5607c62f81c5e311147134677ba">swap</a> (<a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;a, <a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;b)</td></tr>
+<tr class="separator:aed06a5607c62f81c5e311147134677ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">getters</div></td></tr>
+<tr class="memitem:ad5e94e3ec32ce4cd4459361cf35a978b"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#ad5e94e3ec32ce4cd4459361cf35a978b">ostream</a> ()</td></tr>
+<tr class="separator:ad5e94e3ec32ce4cd4459361cf35a978b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab82dc4f1dcc5b84bb4390cbc8cb66d8e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#ab82dc4f1dcc5b84bb4390cbc8cb66d8e">tab</a> () const</td></tr>
+<tr class="separator:ab82dc4f1dcc5b84bb4390cbc8cb66d8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a99ee383d99c49387ee87a7838f3806"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a6a99ee383d99c49387ee87a7838f3806">level</a> () const</td></tr>
+<tr class="separator:a6a99ee383d99c49387ee87a7838f3806"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">modify Stream</div></td></tr>
+<tr class="memitem:a9b2f9ca595e22ebce3d904eefa8d63cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a9b2f9ca595e22ebce3d904eefa8d63cb">indent</a> (size_t i=1)</td></tr>
+<tr class="separator:a9b2f9ca595e22ebce3d904eefa8d63cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9699f4a6a98155dc66b842b7610d3c94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a9699f4a6a98155dc66b842b7610d3c94">dedent</a> (size_t i=1)</td></tr>
+<tr class="separator:a9699f4a6a98155dc66b842b7610d3c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af733cb66244f3bf2c8d8511ae4ed0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a9af733cb66244f3bf2c8d8511ae4ed0e">endl</a> ()</td></tr>
+<tr class="separator:a9af733cb66244f3bf2c8d8511ae4ed0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5fc442710d355f04ec1cbcdd02c8062"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#ae5fc442710d355f04ec1cbcdd02c8062">flush</a> ()</td></tr>
+<tr class="separator:ae5fc442710d355f04ec1cbcdd02c8062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">stream</div></td></tr>
 <tr class="memitem:a6b982fe088662c67ca1c16f998f746c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a6b982fe088662c67ca1c16f998f746c7">fmt</a> (const char *s)</td></tr>
 <tr class="memdesc:a6b982fe088662c67ca1c16f998f746c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base case.  <a href="classthorin_1_1_stream.html#a6b982fe088662c67ca1c16f998f746c7">More...</a><br /></td></tr>
 <tr class="separator:a6b982fe088662c67ca1c16f998f746c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64bf220ccacc7d7d09dee0dca94037c2"><td class="memTemplParams" colspan="2">template&lt;class T , class... Args&gt; </td></tr>
+<tr class="memitem:a64bf220ccacc7d7d09dee0dca94037c2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a64bf220ccacc7d7d09dee0dca94037c2">fmt</a> (const char *s, T &amp;&amp;t, Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a64bf220ccacc7d7d09dee0dca94037c2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>fprintf</code>-like function.  <a href="classthorin_1_1_stream.html#a64bf220ccacc7d7d09dee0dca94037c2">More...</a><br /></td></tr>
+<tr class="separator:a64bf220ccacc7d7d09dee0dca94037c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab095366a34b67b336166af3afbb0179a"><td class="memTemplParams" colspan="2">template&lt;class R , class F , bool rangei = false&gt; </td></tr>
 <tr class="memitem:ab095366a34b67b336166af3afbb0179a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#ab095366a34b67b336166af3afbb0179a">range</a> (const R &amp;r, const char *sep, F f)</td></tr>
 <tr class="separator:ab095366a34b67b336166af3afbb0179a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,28 +155,20 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2dbcae46fb42b2e54f1c9ff5cf6b1105"><td class="memTemplParams" colspan="2">template&lt;class R &gt; </td></tr>
 <tr class="memitem:a2dbcae46fb42b2e54f1c9ff5cf6b1105"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a2dbcae46fb42b2e54f1c9ff5cf6b1105">range</a> (const R &amp;r, const char *sep=&quot;, &quot;)</td></tr>
 <tr class="separator:a2dbcae46fb42b2e54f1c9ff5cf6b1105"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed06a5607c62f81c5e311147134677ba"><td class="memItemLeft" align="right" valign="top">void friend&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#aed06a5607c62f81c5e311147134677ba">swap</a> (<a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;a, <a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;b)</td></tr>
-<tr class="separator:aed06a5607c62f81c5e311147134677ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
 <tr class="memitem:a90b5eef0cc508e84256090ae3b9c74bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a90b5eef0cc508e84256090ae3b9c74bb">match2nd</a> (const char *next, const char *&amp;s, const char c)</td></tr>
 <tr class="separator:a90b5eef0cc508e84256090ae3b9c74bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">getters</h2></td></tr>
-<tr class="memitem:ad5e94e3ec32ce4cd4459361cf35a978b"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#ad5e94e3ec32ce4cd4459361cf35a978b">ostream</a> ()</td></tr>
-<tr class="separator:ad5e94e3ec32ce4cd4459361cf35a978b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab82dc4f1dcc5b84bb4390cbc8cb66d8e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#ab82dc4f1dcc5b84bb4390cbc8cb66d8e">tab</a> () const</td></tr>
-<tr class="separator:ab82dc4f1dcc5b84bb4390cbc8cb66d8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a99ee383d99c49387ee87a7838f3806"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a6a99ee383d99c49387ee87a7838f3806">level</a> () const</td></tr>
-<tr class="separator:a6a99ee383d99c49387ee87a7838f3806"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">modify Stream</h2></td></tr>
-<tr class="memitem:a9b2f9ca595e22ebce3d904eefa8d63cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a9b2f9ca595e22ebce3d904eefa8d63cb">indent</a> (size_t i=1)</td></tr>
-<tr class="separator:a9b2f9ca595e22ebce3d904eefa8d63cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9699f4a6a98155dc66b842b7610d3c94"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a9699f4a6a98155dc66b842b7610d3c94">dedent</a> (size_t i=1)</td></tr>
-<tr class="separator:a9699f4a6a98155dc66b842b7610d3c94"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9af733cb66244f3bf2c8d8511ae4ed0e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a9af733cb66244f3bf2c8d8511ae4ed0e">endl</a> ()</td></tr>
-<tr class="separator:a9af733cb66244f3bf2c8d8511ae4ed0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5fc442710d355f04ec1cbcdd02c8062"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#ae5fc442710d355f04ec1cbcdd02c8062">flush</a> ()</td></tr>
-<tr class="separator:ae5fc442710d355f04ec1cbcdd02c8062"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:aed54130070b1aed20fc0f50ea767d154"><td class="memItemLeft" align="right" valign="top">std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#aed54130070b1aed20fc0f50ea767d154">ostream_</a></td></tr>
+<tr class="separator:aed54130070b1aed20fc0f50ea767d154"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0508a63eff37f45630b17e5ac0e7e775"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a0508a63eff37f45630b17e5ac0e7e775">tab_</a></td></tr>
+<tr class="separator:a0508a63eff37f45630b17e5ac0e7e775"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22831b8877bb0908b5fe5e10c50c85a3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_stream.html#a22831b8877bb0908b5fe5e10c50c85a3">level_</a></td></tr>
+<tr class="separator:a22831b8877bb0908b5fe5e10c50c85a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a20bea2a80af159af6edfa218f9abefae" name="a20bea2a80af159af6edfa218f9abefae"></a>
@@ -331,7 +336,7 @@ template&lt;class T , class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>fprintf-like function. </p>
+<p><code>fprintf</code>-like function. </p>
 <p >Each <code>"{}"</code> in <code>s</code> corresponds to one of the variadic arguments in <code>args</code>. The type of the corresponding argument must support <code>operator&lt;&lt;</code> on <code>std::ostream&amp;</code> or preferably <code><a class="el" href="classthorin_1_1_stream.html">Stream</a></code>. Furthermore, an argument may also be a range-based container where its elements fulfill the condition above. You can specify the separator within the braces: </p><div class="fragment"><div class="line">s.fmt(<span class="stringliteral">&quot;({, })&quot;</span>, list) <span class="comment">// yields &quot;(a, b, c)&quot;</span></div>
 </div><!-- fragment --><p> If you use <code>"\n"</code> as separator, it will invoke <a class="el" href="classthorin_1_1_stream.html#a9af733cb66244f3bf2c8d8511ae4ed0e">Stream::endl</a> - keeping indentation: </p><div class="fragment"><div class="line">s.fmt(<span class="stringliteral">&quot;({\n})&quot;</span>, list)</div>
 </div><!-- fragment --><p> Finally, you can use <code>"\n"</code>, "\t", and "\b" to <code>endl</code>, <code>indent</code>, or <code>dedent</code>, respectively. </p>

@@ -19,5 +19,7 @@ var classthorin_1_1_index_set =
     [ "operator|=", "classthorin_1_1_index_set.html#a22735455ff84624ca82c0d9120588c39", null ],
     [ "set", "classthorin_1_1_index_set.html#a5e391b4450570ef5cf35642b6a6d2642", null ],
     [ "transform", "classthorin_1_1_index_set.html#a48b74e332497486e97685ac4fe29c8ee", null ],
-    [ "swap", "classthorin_1_1_index_set.html#a245aada796530949db5a5c38410debae", null ]
+    [ "swap", "classthorin_1_1_index_set.html#a245aada796530949db5a5c38410debae", null ],
+    [ "bits_", "classthorin_1_1_index_set.html#aad4ba1434e1b187baa42c06b2ebc0dcd", null ],
+    [ "indexer_", "classthorin_1_1_index_set.html#a606756f3c48144816a0b49c177e4cb2a", null ]
 ];

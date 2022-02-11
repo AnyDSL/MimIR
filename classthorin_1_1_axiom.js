@@ -1,5 +1,6 @@
 var classthorin_1_1_axiom =
 [
+    [ "Axiom", "classthorin_1_1_axiom.html#aff2e6942ab6373e6406b075d9f21bace", null ],
     [ "currying_depth", "classthorin_1_1_axiom.html#aea789f84e026e06578b13c96ae11dea7", null ],
     [ "flags", "classthorin_1_1_axiom.html#a9b62414ed2be19135df83d9c3571f989", null ],
     [ "normalizer", "classthorin_1_1_axiom.html#a05d2e899a18e55005f71c1803da89ae3", null ],

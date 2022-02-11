@@ -95,6 +95,9 @@ $(document).ready(function(){initNavTree('classthorin_1_1_c_f_node.html',''); in
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="#friends">Friends</a> &#124;
 <a href="classthorin_1_1_c_f_node-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::CFNode Class Reference</div></div>
@@ -114,7 +117,7 @@ Inheritance diagram for thorin::CFNode:</div>
 <div class="dynheader">
 Collaboration diagram for thorin::CFNode:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1_c_f_node__coll__graph.svg" width="138" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1_c_f_node__coll__graph.svg" width="843" height="291"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -133,7 +136,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a6f2173289917904b05b2bdbe53b51156 inherit pub_methods_classthorin_1_1_streamable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes to a file with name <code>filename</code>.  <a href="classthorin_1_1_streamable.html#a6f2173289917904b05b2bdbe53b51156">More...</a><br /></td></tr>
 <tr class="separator:a6f2173289917904b05b2bdbe53b51156 inherit pub_methods_classthorin_1_1_streamable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4768771738de2fb037e4f1b026370046 inherit pub_methods_classthorin_1_1_streamable"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a4768771738de2fb037e4f1b026370046">write</a> () const</td></tr>
-<tr class="memdesc:a4768771738de2fb037e4f1b026370046 inherit pub_methods_classthorin_1_1_streamable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes to a file named <code>child()</code>.name().  <a href="classthorin_1_1_streamable.html#a4768771738de2fb037e4f1b026370046">More...</a><br /></td></tr>
+<tr class="memdesc:a4768771738de2fb037e4f1b026370046 inherit pub_methods_classthorin_1_1_streamable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes to a file named <code><a class="el" href="classthorin_1_1_streamable.html#a6763b93780b6b02494b2f1b4499f47b2">child()</a></code>.name().  <a href="classthorin_1_1_streamable.html#a4768771738de2fb037e4f1b026370046">More...</a><br /></td></tr>
 <tr class="separator:a4768771738de2fb037e4f1b026370046 inherit pub_methods_classthorin_1_1_streamable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f2459fdabbc821751a8e82dd5313119 inherit pub_methods_classthorin_1_1_streamable"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a0f2459fdabbc821751a8e82dd5313119">dump</a> () const</td></tr>
 <tr class="memdesc:a0f2459fdabbc821751a8e82dd5313119 inherit pub_methods_classthorin_1_1_streamable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes to stdout.  <a href="classthorin_1_1_streamable.html#a0f2459fdabbc821751a8e82dd5313119">More...</a><br /></td></tr>
@@ -141,6 +144,37 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a83907e5615ec8dbada6f053d6fd21d85 inherit pub_methods_classthorin_1_1_streamable"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_streamable.html#a83907e5615ec8dbada6f053d6fd21d85">to_string</a> () const</td></tr>
 <tr class="memdesc:a83907e5615ec8dbada6f053d6fd21d85 inherit pub_methods_classthorin_1_1_streamable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Streams to string.  <a href="classthorin_1_1_streamable.html#a83907e5615ec8dbada6f053d6fd21d85">More...</a><br /></td></tr>
 <tr class="separator:a83907e5615ec8dbada6f053d6fd21d85 inherit pub_methods_classthorin_1_1_streamable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a155e8ebc781534395340dd82a5d04479"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacethorin.html#a19b7074020008959b3452d1de6371ff9">CFNodes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_c_f_node.html#a155e8ebc781534395340dd82a5d04479">preds</a> () const</td></tr>
+<tr class="separator:a155e8ebc781534395340dd82a5d04479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a345d669ada7a37f0be0cefb6bb35255e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespacethorin.html#a19b7074020008959b3452d1de6371ff9">CFNodes</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_c_f_node.html#a345d669ada7a37f0be0cefb6bb35255e">succs</a> () const</td></tr>
+<tr class="separator:a345d669ada7a37f0be0cefb6bb35255e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57c839bfa0b63d4e0d14a97c17da69cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_c_f_node.html#a57c839bfa0b63d4e0d14a97c17da69cd">link</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *other) const</td></tr>
+<tr class="separator:a57c839bfa0b63d4e0d14a97c17da69cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a6b66cb1e66ab9358ecba1715c15265e3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_c_f_node.html#a6b66cb1e66ab9358ecba1715c15265e3">f_index_</a> = -1</td></tr>
+<tr class="memdesc:a6b66cb1e66ab9358ecba1715c15265e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">RPO index in a forward <code><a class="el" href="classthorin_1_1_c_f_g.html" title="A Control-Flow Graph.">CFG</a></code>.  <a href="classthorin_1_1_c_f_node.html#a6b66cb1e66ab9358ecba1715c15265e3">More...</a><br /></td></tr>
+<tr class="separator:a6b66cb1e66ab9358ecba1715c15265e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ffab332a15a921b63421348e8467a0a"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_c_f_node.html#a1ffab332a15a921b63421348e8467a0a">b_index_</a> = -1</td></tr>
+<tr class="memdesc:a1ffab332a15a921b63421348e8467a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">RPO index in a backwards <code><a class="el" href="classthorin_1_1_c_f_g.html" title="A Control-Flow Graph.">CFG</a></code>.  <a href="classthorin_1_1_c_f_node.html#a1ffab332a15a921b63421348e8467a0a">More...</a><br /></td></tr>
+<tr class="separator:a1ffab332a15a921b63421348e8467a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f460130d1a19a57b7fa544880884651"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_c_f_node.html#a1f460130d1a19a57b7fa544880884651">nom_</a></td></tr>
+<tr class="separator:a1f460130d1a19a57b7fa544880884651"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a4e9f393bda1ebeddbb944072fc8d3e"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_c_f_node.html#a7a4e9f393bda1ebeddbb944072fc8d3e">gid_</a></td></tr>
+<tr class="separator:a7a4e9f393bda1ebeddbb944072fc8d3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad035aa09e601355aaa87668c417d57bd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a19b7074020008959b3452d1de6371ff9">CFNodes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_c_f_node.html#ad035aa09e601355aaa87668c417d57bd">preds_</a></td></tr>
+<tr class="separator:ad035aa09e601355aaa87668c417d57bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a270804b1c1c294f4a54cd2349624b598"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a19b7074020008959b3452d1de6371ff9">CFNodes</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_c_f_node.html#a270804b1c1c294f4a54cd2349624b598">succs_</a></td></tr>
+<tr class="separator:a270804b1c1c294f4a54cd2349624b598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-attribs" name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:a956586343a9cc87429648d607ef4a987"><td class="memItemLeft" align="right" valign="top">static uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_c_f_node.html#a956586343a9cc87429648d607ef4a987">gid_counter_</a> = 0</td></tr>
+<tr class="separator:a956586343a9cc87429648d607ef4a987"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -206,6 +240,32 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a57c839bfa0b63d4e0d14a97c17da69cd" name="a57c839bfa0b63d4e0d14a97c17da69cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57c839bfa0b63d4e0d14a97c17da69cd">&#9670;&nbsp;</a></span>link()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::CFNode::link </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ae627026aca00319042375565e5a53e0c" name="ae627026aca00319042375565e5a53e0c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae627026aca00319042375565e5a53e0c">&#9670;&nbsp;</a></span>nom()</h2>
 
@@ -231,6 +291,31 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a155e8ebc781534395340dd82a5d04479" name="a155e8ebc781534395340dd82a5d04479"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a155e8ebc781534395340dd82a5d04479">&#9670;&nbsp;</a></span>preds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespacethorin.html#a19b7074020008959b3452d1de6371ff9">CFNodes</a> &amp; thorin::CFNode::preds </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a9bd03fdbd25ebbc8a672389d2e18bd99" name="a9bd03fdbd25ebbc8a672389d2e18bd99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9bd03fdbd25ebbc8a672389d2e18bd99">&#9670;&nbsp;</a></span>stream()</h2>
 
@@ -245,6 +330,31 @@ Friends</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a345d669ada7a37f0be0cefb6bb35255e" name="a345d669ada7a37f0be0cefb6bb35255e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a345d669ada7a37f0be0cefb6bb35255e">&#9670;&nbsp;</a></span>succs()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="namespacethorin.html#a19b7074020008959b3452d1de6371ff9">CFNodes</a> &amp; thorin::CFNode::succs </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -290,6 +400,165 @@ template&lt;bool &gt; </div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a1ffab332a15a921b63421348e8467a0a" name="a1ffab332a15a921b63421348e8467a0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ffab332a15a921b63421348e8467a0a">&#9670;&nbsp;</a></span>b_index_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t thorin::CFNode::b_index_ = -1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>RPO index in a backwards <code><a class="el" href="classthorin_1_1_c_f_g.html" title="A Control-Flow Graph.">CFG</a></code>. </p>
+
+</div>
+</div>
+<a id="a6b66cb1e66ab9358ecba1715c15265e3" name="a6b66cb1e66ab9358ecba1715c15265e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b66cb1e66ab9358ecba1715c15265e3">&#9670;&nbsp;</a></span>f_index_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t thorin::CFNode::f_index_ = -1</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>RPO index in a forward <code><a class="el" href="classthorin_1_1_c_f_g.html" title="A Control-Flow Graph.">CFG</a></code>. </p>
+
+</div>
+</div>
+<a id="a7a4e9f393bda1ebeddbb944072fc8d3e" name="a7a4e9f393bda1ebeddbb944072fc8d3e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a4e9f393bda1ebeddbb944072fc8d3e">&#9670;&nbsp;</a></span>gid_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t thorin::CFNode::gid_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a956586343a9cc87429648d607ef4a987" name="a956586343a9cc87429648d607ef4a987"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a956586343a9cc87429648d607ef4a987">&#9670;&nbsp;</a></span>gid_counter_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t thorin::CFNode::gid_counter_ = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1f460130d1a19a57b7fa544880884651" name="a1f460130d1a19a57b7fa544880884651"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f460130d1a19a57b7fa544880884651">&#9670;&nbsp;</a></span>nom_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_def.html">Def</a>* thorin::CFNode::nom_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad035aa09e601355aaa87668c417d57bd" name="ad035aa09e601355aaa87668c417d57bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad035aa09e601355aaa87668c417d57bd">&#9670;&nbsp;</a></span>preds_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacethorin.html#a19b7074020008959b3452d1de6371ff9">CFNodes</a> thorin::CFNode::preds_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a270804b1c1c294f4a54cd2349624b598" name="a270804b1c1c294f4a54cd2349624b598"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a270804b1c1c294f4a54cd2349624b598">&#9670;&nbsp;</a></span>succs_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacethorin.html#a19b7074020008959b3452d1de6371ff9">CFNodes</a> thorin::CFNode::succs_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

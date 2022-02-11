@@ -174,7 +174,7 @@ Structural vs. Nominal</h1>
 <div class="line">        <span class="comment">// lam of type Lam* - const has been removed!</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacethorin_1_1_node_html_a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362"><div class="ttname"><a href="namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a></div><div class="ttdeci">@ Lam</div><div class="ttdef"><b>Definition:</b> tables.h:183</div></div>
+<div class="ttc" id="anamespacethorin_1_1_node_html_a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362"><div class="ttname"><a href="namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a></div><div class="ttdeci">@ Lam</div><div class="ttdef"><b>Definition:</b> tables.h:179</div></div>
 </div><!-- fragment --><p> You can also check whether a specific <code>def</code> is really a structural: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> s = def-&gt;isa_structural()) {</div>
 <div class="line">        <span class="comment">// s cannot be a nominal</span></div>
@@ -186,7 +186,7 @@ Structural vs. Nominal</h1>
 <div class="line">        <span class="comment">// sigma is of type const Sigma* and cannot be a nominal Sigma</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacethorin_1_1_node_html_a1e65379a5361d88e84c135355c0a6d06ac1fb2543759c1fd49ae0fea3855ea812"><div class="ttname"><a href="namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06ac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a></div><div class="ttdeci">@ Sigma</div><div class="ttdef"><b>Definition:</b> tables.h:183</div></div>
+<div class="ttc" id="anamespacethorin_1_1_node_html_a1e65379a5361d88e84c135355c0a6d06ac1fb2543759c1fd49ae0fea3855ea812"><div class="ttname"><a href="namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06ac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a></div><div class="ttdeci">@ Sigma</div><div class="ttdef"><b>Definition:</b> tables.h:179</div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
 Matching IR</h1>
 <h1><a class="anchor" id="autotoc_md14"></a>
@@ -203,7 +203,7 @@ Iterating over the Program</h1>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keyword">auto</span> op : def-&gt;extended_ops())</div>
 <div class="line">        <a class="code hl_function" href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">visit</a>(done, op);</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacethorin_html_a7fddaff34d4e4927bc748c28b49eef46"><div class="ttname"><a href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">thorin::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition:</b> def.h:389</div></div>
+<div class="ttc" id="anamespacethorin_html_a7fddaff34d4e4927bc748c28b49eef46"><div class="ttname"><a href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">thorin::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition:</b> def.h:386</div></div>
 <div class="ttc" id="anamespacethorin_html_aca7a0dc87489d726385a61cdc1fde51c"><div class="ttname"><a href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">thorin::visit</a></div><div class="ttdeci">bool visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> indexset.h:106</div></div>
 </div><!-- fragment --><p ><a class="el" href="classthorin_1_1_world.html#a35687817089d85315d46a391dd75e320">World::visit</a> allows you to visit all top-level scopes one by one: </p><div class="fragment"><div class="line">world.visit([&amp;](<span class="keyword">const</span> Scope&amp; scope) {</div>
 <div class="line">    <span class="comment">// ...</span></div>

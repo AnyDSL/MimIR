@@ -19,11 +19,17 @@ var classthorin_1_1_c_f_g =
     [ "operator[]", "classthorin_1_1_c_f_g.html#a9ae8a31d4c801a5cbda9abe4cb6989b0", null ],
     [ "post_order", "classthorin_1_1_c_f_g.html#aa9994dc101db0094d9a02fa339d8164a", null ],
     [ "post_order", "classthorin_1_1_c_f_g.html#a74587d3884b790d3235a9e809cfe3005", null ],
+    [ "post_order_visit", "classthorin_1_1_c_f_g.html#ac47d7eea1092ba511b06f5c61084f796", null ],
     [ "preds", "classthorin_1_1_c_f_g.html#a4be7bf931bf9471d78c464c9d3559f3b", null ],
     [ "preds", "classthorin_1_1_c_f_g.html#af777a488f6475c0ef39f5a4893469e9c", null ],
     [ "reverse_post_order", "classthorin_1_1_c_f_g.html#a23322ac0fb3d5a10a65185e29668c7ae", null ],
     [ "reverse_post_order", "classthorin_1_1_c_f_g.html#a1052107167a3b5a18f6b4cb98aa3ddf5", null ],
     [ "size", "classthorin_1_1_c_f_g.html#a41c9bca42fc6c1986e17e9508c7c69be", null ],
     [ "succs", "classthorin_1_1_c_f_g.html#ada7df7890bc4099a7b87e0c63b9ce975", null ],
-    [ "succs", "classthorin_1_1_c_f_g.html#a4ab2c62c5cc4cbc2572c0dc7009b2213", null ]
+    [ "succs", "classthorin_1_1_c_f_g.html#a4ab2c62c5cc4cbc2572c0dc7009b2213", null ],
+    [ "cfa_", "classthorin_1_1_c_f_g.html#a0000e99563aa9b142798b6cd893b91bb", null ],
+    [ "domfrontier_", "classthorin_1_1_c_f_g.html#a4818beaad1c5c04ff1f7980028ebfe38", null ],
+    [ "domtree_", "classthorin_1_1_c_f_g.html#a03061b257580e10a7339d56daa7dc54c", null ],
+    [ "looptree_", "classthorin_1_1_c_f_g.html#adceecd4d0bbe8c1d3a6490627fdf1a9c", null ],
+    [ "rpo_", "classthorin_1_1_c_f_g.html#aac671d2bc1d4e46be6813d39bf4e60cc", null ]
 ];

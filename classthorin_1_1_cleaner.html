@@ -95,10 +95,18 @@ $(document).ready(function(){initNavTree('classthorin_1_1_cleaner.html',''); ini
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classthorin_1_1_cleaner-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::Cleaner Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Collaboration diagram for thorin::Cleaner:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1_cleaner__coll__graph.svg" width="1783" height="1031"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -118,6 +126,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae2bab3526e2e6cf760f5c7f6521cca91"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4fed40c285371f790fc60c52c10e38d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_cleaner.html#a4fed40c285371f790fc60c52c10e38d7">clean_pe_infos</a> ()</td></tr>
 <tr class="separator:a4fed40c285371f790fc60c52c10e38d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a77127080edd6d24e74c7de5e35130a94"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_cleaner.html#a77127080edd6d24e74c7de5e35130a94">cleanup_fix_point</a> ()</td></tr>
+<tr class="separator:a77127080edd6d24e74c7de5e35130a94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:ad879e44f5e6e4355b6ec26bfd0e36b92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_world.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_cleaner.html#ad879e44f5e6e4355b6ec26bfd0e36b92">world_</a></td></tr>
+<tr class="separator:ad879e44f5e6e4355b6ec26bfd0e36b92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7946892328cf7b16b10ea8d0afcf29e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_cleaner.html#aa7946892328cf7b16b10ea8d0afcf29e">todo_</a> = true</td></tr>
+<tr class="separator:aa7946892328cf7b16b10ea8d0afcf29e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="adf14fca22b1c3d331f1d157214c58dbb" name="adf14fca22b1c3d331f1d157214c58dbb"></a>
@@ -160,6 +180,31 @@ Public Member Functions</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a77127080edd6d24e74c7de5e35130a94" name="a77127080edd6d24e74c7de5e35130a94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77127080edd6d24e74c7de5e35130a94">&#9670;&nbsp;</a></span>cleanup_fix_point()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::Cleaner::cleanup_fix_point </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -269,6 +314,51 @@ Public Member Functions</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa7946892328cf7b16b10ea8d0afcf29e" name="aa7946892328cf7b16b10ea8d0afcf29e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7946892328cf7b16b10ea8d0afcf29e">&#9670;&nbsp;</a></span>todo_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::Cleaner::todo_ = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad879e44f5e6e4355b6ec26bfd0e36b92" name="ad879e44f5e6e4355b6ec26bfd0e36b92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad879e44f5e6e4355b6ec26bfd0e36b92">&#9670;&nbsp;</a></span>world_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_world.html">World</a>&amp; thorin::Cleaner::world_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

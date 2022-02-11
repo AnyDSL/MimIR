@@ -7,5 +7,8 @@ var classthorin_1_1_eta_red =
       [ "Irreducible", "classthorin_1_1_eta_red.html#a4ac1f54e62bd9e356510aa0b4520553fa9f35b4d3a8fe44b235df5e1da941d410", null ]
     ] ],
     [ "EtaRed", "classthorin_1_1_eta_red.html#afadd4deea380e54b25a0888f0c99d040", null ],
-    [ "mark_irreducible", "classthorin_1_1_eta_red.html#a9bc9eea6d540cfd464676b6e3c314900", null ]
+    [ "analyze", "classthorin_1_1_eta_red.html#a4100c5ba6ed1f44ff4789301efd0ecce", null ],
+    [ "mark_irreducible", "classthorin_1_1_eta_red.html#a9bc9eea6d540cfd464676b6e3c314900", null ],
+    [ "rewrite", "classthorin_1_1_eta_red.html#ac7344b57c2a73340aa3a2701d43dadcb", null ],
+    [ "irreducible_", "classthorin_1_1_eta_red.html#a413d7aa782c251e4479597a01b8f462b", null ]
 ];

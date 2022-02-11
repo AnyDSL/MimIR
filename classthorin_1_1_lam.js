@@ -4,6 +4,8 @@ var classthorin_1_1_lam =
       [ "C", "classthorin_1_1_lam.html#aa847d68653879fa7f7e1eb6531174f90a0d61f8370cad1d412f80b84d143e1257", null ],
       [ "Device", "classthorin_1_1_lam.html#aa847d68653879fa7f7e1eb6531174f90ae0ac20adce6ffee48c7151b070aa5737", null ]
     ] ],
+    [ "Lam", "classthorin_1_1_lam.html#a79690b28c6a3cdb9f683c0379eb0edb8", null ],
+    [ "Lam", "classthorin_1_1_lam.html#af8d81b5e6f454d877776d700cb30da96", null ],
     [ "app", "classthorin_1_1_lam.html#a091c8a9ca3f30c21a0ac245d947a0b96", null ],
     [ "app", "classthorin_1_1_lam.html#af91f657f870050876d4f622924e9b1e5", null ],
     [ "body", "classthorin_1_1_lam.html#ad4c385e97860a76d0c239f9733df8c9d", null ],

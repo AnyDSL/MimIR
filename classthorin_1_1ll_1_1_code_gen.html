@@ -95,6 +95,8 @@ $(document).ready(function(){initNavTree('classthorin_1_1ll_1_1_code_gen.html','
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classthorin_1_1ll_1_1_code_gen-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::ll::CodeGen Class Reference</div></div>
 </div><!--header-->
@@ -108,7 +110,7 @@ Inheritance diagram for thorin::ll::CodeGen:</div>
 <div class="dynheader">
 Collaboration diagram for thorin::ll::CodeGen:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1ll_1_1_code_gen__coll__graph.svg" width="1266" height="506"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1ll_1_1_code_gen__coll__graph.svg" width="3059" height="1300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -132,6 +134,26 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ab99addb4c919bad9859ce0561518a377"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d31e772e27f4fc38b207c87139e92b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ll_1_1_code_gen.html#a8d31e772e27f4fc38b207c87139e92b6">finalize</a> (const <a class="el" href="classthorin_1_1_scope.html">Scope</a> &amp;)</td></tr>
 <tr class="separator:a8d31e772e27f4fc38b207c87139e92b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:aa00c1a571490eaf878937f9d9d142e97"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ll_1_1_code_gen.html#aa00c1a571490eaf878937f9d9d142e97">id</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *, bool force_bb=false) const</td></tr>
+<tr class="separator:aa00c1a571490eaf878937f9d9d142e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bd8acf095961e873aae94db3d63e0a1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ll_1_1_code_gen.html#a9bd8acf095961e873aae94db3d63e0a1">convert</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *)</td></tr>
+<tr class="separator:a9bd8acf095961e873aae94db3d63e0a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84cd8154d65ecdb81bffd9dfe038f977"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ll_1_1_code_gen.html#a84cd8154d65ecdb81bffd9dfe038f977">convert_ret_pi</a> (const <a class="el" href="classthorin_1_1_pi.html">Pi</a> *)</td></tr>
+<tr class="separator:a84cd8154d65ecdb81bffd9dfe038f977"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:aeaddc6bdf6bc0d4ef3726ef55361c1c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_string_stream.html">StringStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ll_1_1_code_gen.html#aeaddc6bdf6bc0d4ef3726ef55361c1c5">type_decls_</a></td></tr>
+<tr class="separator:aeaddc6bdf6bc0d4ef3726ef55361c1c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a956fe187966aa5ae3f3a22b7a92105c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_string_stream.html">StringStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ll_1_1_code_gen.html#a956fe187966aa5ae3f3a22b7a92105c5">vars_decls_</a></td></tr>
+<tr class="separator:a956fe187966aa5ae3f3a22b7a92105c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a181ba0831b58ccd314522fc5830675d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_string_stream.html">StringStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ll_1_1_code_gen.html#a181ba0831b58ccd314522fc5830675d1">func_decls_</a></td></tr>
+<tr class="separator:a181ba0831b58ccd314522fc5830675d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97cb6f6b68cf8df2a3c5b812e7f2a40d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_string_stream.html">StringStream</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ll_1_1_code_gen.html#a97cb6f6b68cf8df2a3c5b812e7f2a40d">func_impls_</a></td></tr>
+<tr class="separator:a97cb6f6b68cf8df2a3c5b812e7f2a40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -212,6 +234,58 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9bd8acf095961e873aae94db3d63e0a1" name="a9bd8acf095961e873aae94db3d63e0a1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bd8acf095961e873aae94db3d63e0a1">&#9670;&nbsp;</a></span>convert()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string thorin::ll::CodeGen::convert </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a84cd8154d65ecdb81bffd9dfe038f977" name="a84cd8154d65ecdb81bffd9dfe038f977"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a84cd8154d65ecdb81bffd9dfe038f977">&#9670;&nbsp;</a></span>convert_ret_pi()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string thorin::ll::CodeGen::convert_ret_pi </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_pi.html">Pi</a> *&#160;</td>
+          <td class="paramname"><em>pi</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ab0aa2b5c6b8788ff7df1f8c9e9e9d94b" name="ab0aa2b5c6b8788ff7df1f8c9e9e9d94b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab0aa2b5c6b8788ff7df1f8c9e9e9d94b">&#9670;&nbsp;</a></span>emit_bb()</h2>
 
@@ -290,6 +364,42 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa00c1a571490eaf878937f9d9d142e97" name="aa00c1a571490eaf878937f9d9d142e97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa00c1a571490eaf878937f9d9d142e97">&#9670;&nbsp;</a></span>id()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string thorin::ll::CodeGen::id </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>def</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>force_bb</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -379,6 +489,95 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a181ba0831b58ccd314522fc5830675d1" name="a181ba0831b58ccd314522fc5830675d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a181ba0831b58ccd314522fc5830675d1">&#9670;&nbsp;</a></span>func_decls_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_string_stream.html">StringStream</a> thorin::ll::CodeGen::func_decls_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a97cb6f6b68cf8df2a3c5b812e7f2a40d" name="a97cb6f6b68cf8df2a3c5b812e7f2a40d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97cb6f6b68cf8df2a3c5b812e7f2a40d">&#9670;&nbsp;</a></span>func_impls_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_string_stream.html">StringStream</a> thorin::ll::CodeGen::func_impls_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aeaddc6bdf6bc0d4ef3726ef55361c1c5" name="aeaddc6bdf6bc0d4ef3726ef55361c1c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeaddc6bdf6bc0d4ef3726ef55361c1c5">&#9670;&nbsp;</a></span>type_decls_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_string_stream.html">StringStream</a> thorin::ll::CodeGen::type_decls_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a956fe187966aa5ae3f3a22b7a92105c5" name="a956fe187966aa5ae3f3a22b7a92105c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a956fe187966aa5ae3f3a22b7a92105c5">&#9670;&nbsp;</a></span>vars_decls_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_string_stream.html">StringStream</a> thorin::ll::CodeGen::vars_decls_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>

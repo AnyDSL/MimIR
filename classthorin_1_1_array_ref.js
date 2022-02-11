@@ -29,5 +29,7 @@ var classthorin_1_1_array_ref =
     [ "skip_back", "classthorin_1_1_array_ref.html#a40377dfc3fd43093c0df551f3d5a211d", null ],
     [ "skip_front", "classthorin_1_1_array_ref.html#adc6a972e350fc99a765dfb823c8cec25", null ],
     [ "to_array", "classthorin_1_1_array_ref.html#af10a716df2b68e46b40e89277d44f978", null ],
-    [ "swap", "classthorin_1_1_array_ref.html#a3e743a8ad8740b42ceaa356664a24df2", null ]
+    [ "swap", "classthorin_1_1_array_ref.html#a3e743a8ad8740b42ceaa356664a24df2", null ],
+    [ "ptr_", "classthorin_1_1_array_ref.html#a19e1cfe8a4bc7b27d94fcb2f80857801", null ],
+    [ "size_", "classthorin_1_1_array_ref.html#af4f47afea43f199baaf3c419dab233b2", null ]
 ];

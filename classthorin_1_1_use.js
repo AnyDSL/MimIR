@@ -7,5 +7,6 @@ var classthorin_1_1_use =
     [ "is_used_as_type", "classthorin_1_1_use.html#ab0b035140ec21ad63e360f32d5321672", null ],
     [ "operator const Def *", "classthorin_1_1_use.html#a2704b18bf417a0d5210a9ca16a7e6750", null ],
     [ "operator->", "classthorin_1_1_use.html#a9679348d74b4d828330d5ab01bb65b47", null ],
-    [ "operator==", "classthorin_1_1_use.html#a7e6e8c16ac0626c8b9d3b66f315791cf", null ]
+    [ "operator==", "classthorin_1_1_use.html#a7e6e8c16ac0626c8b9d3b66f315791cf", null ],
+    [ "tagged_ptr_", "classthorin_1_1_use.html#ac5cee4440146887a6396d3a21c1889f7", null ]
 ];

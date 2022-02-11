@@ -95,6 +95,8 @@ $(document).ready(function(){initNavTree('classthorin_1_1_dom_frontier_base.html
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classthorin_1_1_dom_frontier_base-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::DomFrontierBase&lt; forward &gt; Class Template Reference</div></div>
 </div><!--header-->
@@ -119,6 +121,22 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4f538c14a8ab877683bc138f5d7d7711"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2aec5566b6c1697071902085bb4b9803"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_dom_frontier_base.html#a2aec5566b6c1697071902085bb4b9803">succs</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *n) const</td></tr>
 <tr class="separator:a2aec5566b6c1697071902085bb4b9803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a258b88bfe14fa77b7b11429d6683ce45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_dom_frontier_base.html#a258b88bfe14fa77b7b11429d6683ce45">create</a> ()</td></tr>
+<tr class="separator:a258b88bfe14fa77b7b11429d6683ce45"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adccef883474a5b6a573623b6b499fda0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_dom_frontier_base.html#adccef883474a5b6a573623b6b499fda0">link</a> (const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *src, const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *dst)</td></tr>
+<tr class="separator:adccef883474a5b6a573623b6b499fda0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a5e0301137c50755b6b988f35f7bf4017"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt; forward &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_dom_frontier_base.html#a5e0301137c50755b6b988f35f7bf4017">cfg_</a></td></tr>
+<tr class="separator:a5e0301137c50755b6b988f35f7bf4017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa96709dd1d9cd30e442571e59bad2996"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt; forward &gt;::template Map&lt; std::vector&lt; const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_dom_frontier_base.html#aa96709dd1d9cd30e442571e59bad2996">preds_</a></td></tr>
+<tr class="separator:aa96709dd1d9cd30e442571e59bad2996"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13c3effb836786ce8b45b331a775bf05"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt; forward &gt;::template Map&lt; std::vector&lt; const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_dom_frontier_base.html#a13c3effb836786ce8b45b331a775bf05">succs_</a></td></tr>
+<tr class="separator:a13c3effb836786ce8b45b331a775bf05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;bool forward&gt;<br />
@@ -209,6 +227,68 @@ template&lt;bool forward&gt; </div>
 
 </div>
 </div>
+<a id="a258b88bfe14fa77b7b11429d6683ce45" name="a258b88bfe14fa77b7b11429d6683ce45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a258b88bfe14fa77b7b11429d6683ce45">&#9670;&nbsp;</a></span>create()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classthorin_1_1_dom_frontier_base.html">thorin::DomFrontierBase</a>&lt; forward &gt;::create</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adccef883474a5b6a573623b6b499fda0" name="adccef883474a5b6a573623b6b499fda0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adccef883474a5b6a573623b6b499fda0">&#9670;&nbsp;</a></span>link()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classthorin_1_1_dom_frontier_base.html">thorin::DomFrontierBase</a>&lt; forward &gt;::link </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a> *&#160;</td>
+          <td class="paramname"><em>dst</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="afd6951c87e4df12a3552992d6c3eb139" name="afd6951c87e4df12a3552992d6c3eb139"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afd6951c87e4df12a3552992d6c3eb139">&#9670;&nbsp;</a></span>operator=()</h2>
 
@@ -287,6 +367,79 @@ template&lt;bool forward&gt; </div>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a5e0301137c50755b6b988f35f7bf4017" name="a5e0301137c50755b6b988f35f7bf4017"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e0301137c50755b6b988f35f7bf4017">&#9670;&nbsp;</a></span>cfg_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt;forward&gt;&amp; <a class="el" href="classthorin_1_1_dom_frontier_base.html">thorin::DomFrontierBase</a>&lt; forward &gt;::cfg_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa96709dd1d9cd30e442571e59bad2996" name="aa96709dd1d9cd30e442571e59bad2996"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa96709dd1d9cd30e442571e59bad2996">&#9670;&nbsp;</a></span>preds_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt;forward&gt;::template Map&lt;std::vector&lt;const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a>*&gt; &gt; <a class="el" href="classthorin_1_1_dom_frontier_base.html">thorin::DomFrontierBase</a>&lt; forward &gt;::preds_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a13c3effb836786ce8b45b331a775bf05" name="a13c3effb836786ce8b45b331a775bf05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13c3effb836786ce8b45b331a775bf05">&#9670;&nbsp;</a></span>succs_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bool forward&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_c_f_g.html">CFG</a>&lt;forward&gt;::template Map&lt;std::vector&lt;const <a class="el" href="classthorin_1_1_c_f_node.html">CFNode</a>*&gt; &gt; <a class="el" href="classthorin_1_1_dom_frontier_base.html">thorin::DomFrontierBase</a>&lt; forward &gt;::succs_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

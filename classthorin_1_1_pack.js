@@ -1,5 +1,6 @@
 var classthorin_1_1_pack =
 [
+    [ "Pack", "classthorin_1_1_pack.html#a244f641c6f67c23345689eed763d8c80", null ],
     [ "body", "classthorin_1_1_pack.html#a933b8506e8b10dd3fea50ab8d62fa291", null ],
     [ "rebuild", "classthorin_1_1_pack.html#a7e84c4dd08857bbfc942bc917d6a7477", null ],
     [ "shape", "classthorin_1_1_pack.html#aceceaafebd954f9de22843a7f9536e53", null ],

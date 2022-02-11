@@ -8,5 +8,7 @@ var structthorin_1_1_array_storage_3_01_t_00_010_01_4 =
     [ "data", "structthorin_1_1_array_storage_3_01_t_00_010_01_4.html#a4edf351eee175027ac1c82daedf283e8", null ],
     [ "shrink", "structthorin_1_1_array_storage_3_01_t_00_010_01_4.html#aaf47fe605aab18bf373e3ee9db286ae0", null ],
     [ "size", "structthorin_1_1_array_storage_3_01_t_00_010_01_4.html#aafd69930df4621be98f4034250f1c10e", null ],
-    [ "swap", "structthorin_1_1_array_storage_3_01_t_00_010_01_4.html#ac80d660438b4842b825631b2f3d637b1", null ]
+    [ "swap", "structthorin_1_1_array_storage_3_01_t_00_010_01_4.html#ac80d660438b4842b825631b2f3d637b1", null ],
+    [ "ptr_", "structthorin_1_1_array_storage_3_01_t_00_010_01_4.html#a26a5b9b483c5c891aedd906ea4df5202", null ],
+    [ "size_", "structthorin_1_1_array_storage_3_01_t_00_010_01_4.html#af48000046c5fb231b2c3d21930b8e45c", null ]
 ];

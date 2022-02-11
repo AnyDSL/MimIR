@@ -45,5 +45,8 @@ var classthorin_1_1_tok =
     [ "tag", "classthorin_1_1_tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b", null ],
     [ "tag2prec_l", "classthorin_1_1_tok.html#a9c5c236562f7835da20bd8a51cf2c10e", null ],
     [ "tag2prec_r", "classthorin_1_1_tok.html#a47d52f308d3b23208a6fd4a7bb117c77", null ],
-    [ "tag2str", "classthorin_1_1_tok.html#a1f20dfe379a1a1ce6a19d539e26455ba", null ]
+    [ "tag2str", "classthorin_1_1_tok.html#a1f20dfe379a1a1ce6a19d539e26455ba", null ],
+    [ "loc_", "classthorin_1_1_tok.html#aa5348dbea15f3778698fd8ee70bc1d27", null ],
+    [ "sym_", "classthorin_1_1_tok.html#afa7411e6bdfbf19060d1f099a1277686", null ],
+    [ "tag_", "classthorin_1_1_tok.html#ad8f5aeea88912c025ef3cf449c20142c", null ]
 ];

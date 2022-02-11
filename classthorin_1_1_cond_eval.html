@@ -95,10 +95,17 @@ $(document).ready(function(){initNavTree('classthorin_1_1_cond_eval.html',''); i
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classthorin_1_1_cond_eval-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::CondEval Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Collaboration diagram for thorin::CondEval:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1_cond_eval__coll__graph.svg" width="1108" height="298"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -114,6 +121,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a52de8c84bd600a723cd3baca9606a4e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1321686470eb1c37f44e5d7951c74179"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_cond_eval.html#a1321686470eb1c37f44e5d7951c74179">is_top_level</a> (<a class="el" href="classthorin_1_1_lam.html">Lam</a> *lam)</td></tr>
 <tr class="separator:a1321686470eb1c37f44e5d7951c74179"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a69e121ce256fc3c5324c9c95f5eaeddf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_lam.html">Lam</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_cond_eval.html#a69e121ce256fc3c5324c9c95f5eaeddf">callee_</a></td></tr>
+<tr class="separator:a69e121ce256fc3c5324c9c95f5eaeddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a579d935b84065db03e4c9dd2f82384a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_cond_eval.html#a579d935b84065db03e4c9dd2f82384a8">args_</a></td></tr>
+<tr class="separator:a579d935b84065db03e4c9dd2f82384a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fb8e400a0fd7922654ad93f526ffb96"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a7907156065ecc2f7a8ad6d0c4b48752d">Def2Def</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_cond_eval.html#a2fb8e400a0fd7922654ad93f526ffb96">old2new_</a></td></tr>
+<tr class="separator:a2fb8e400a0fd7922654ad93f526ffb96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a204bf50929cf68998995df4af8750a24"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#ac4e11da8b7018338a4ffddad585f61e8">LamMap</a>&lt; bool &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_cond_eval.html#a204bf50929cf68998995df4af8750a24">top_level_</a></td></tr>
+<tr class="separator:a204bf50929cf68998995df4af8750a24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af2a00d467397a89328f7f065b90ced8a" name="af2a00d467397a89328f7f065b90ced8a"></a>
@@ -292,6 +310,95 @@ Public Member Functions</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a579d935b84065db03e4c9dd2f82384a8" name="a579d935b84065db03e4c9dd2f82384a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a579d935b84065db03e4c9dd2f82384a8">&#9670;&nbsp;</a></span>args_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> thorin::CondEval::args_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a69e121ce256fc3c5324c9c95f5eaeddf" name="a69e121ce256fc3c5324c9c95f5eaeddf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69e121ce256fc3c5324c9c95f5eaeddf">&#9670;&nbsp;</a></span>callee_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_lam.html">Lam</a>* thorin::CondEval::callee_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2fb8e400a0fd7922654ad93f526ffb96" name="a2fb8e400a0fd7922654ad93f526ffb96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fb8e400a0fd7922654ad93f526ffb96">&#9670;&nbsp;</a></span>old2new_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacethorin.html#a7907156065ecc2f7a8ad6d0c4b48752d">Def2Def</a> thorin::CondEval::old2new_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a204bf50929cf68998995df4af8750a24" name="a204bf50929cf68998995df4af8750a24"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a204bf50929cf68998995df4af8750a24">&#9670;&nbsp;</a></span>top_level_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacethorin.html#ac4e11da8b7018338a4ffddad585f61e8">LamMap</a>&lt;bool&gt;&amp; thorin::CondEval::top_level_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

@@ -17,5 +17,8 @@ var classthorin_1_1_r_w_pass_base =
     [ "rewrite", "classthorin_1_1_r_w_pass_base.html#afcba6c387007abd43d9c2ff1e83213db", null ],
     [ "rewrite", "classthorin_1_1_r_w_pass_base.html#afdb2234d68377a2ba081b860e3bad8e1", null ],
     [ "world", "classthorin_1_1_r_w_pass_base.html#af10ca8770ec7dc95aa51583cc1961b19", null ],
-    [ "PassMan", "classthorin_1_1_r_w_pass_base.html#ae3b741f775f564409b46ea178ca0aefc", null ]
+    [ "PassMan", "classthorin_1_1_r_w_pass_base.html#ae3b741f775f564409b46ea178ca0aefc", null ],
+    [ "man_", "classthorin_1_1_r_w_pass_base.html#af60afa5d64d717011e219dd8edea9431", null ],
+    [ "name_", "classthorin_1_1_r_w_pass_base.html#a47157c7858bc13f0dcdf0a9201db7dc7", null ],
+    [ "proxy_id_", "classthorin_1_1_r_w_pass_base.html#a2c39cd151c11bf124ce81924479aea16", null ]
 ];
