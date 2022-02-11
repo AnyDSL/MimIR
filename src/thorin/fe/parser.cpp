@@ -41,7 +41,31 @@ Sym Parser::parse_sym(const char* ctxt) {
     return world().sym("<error>", world().dbg((Loc) track));
 }
 
-const Def* Parser::parse_def() {
+const Def* Parser::parse_def(const char* ctxt, Tok::Prec p /*= Tok::Prec::Bottom*/) {
+    auto track = tracker();
+    auto lhs = parse_primary_def(ctxt);
+
+    while (true) {
+        // If operator in lookahead has less left precedence: reduce.
+        // If lookahead isn't a valid infix operator, we will see Prec::Error.
+        // This is less than all other prec levels.
+        if (auto q = Tok::tag2prec_l(ahead().tag()); q < p) break;
+
+        auto tag = lex().tag();
+        auto rhs = parse_def("right-hand side of a binary expression", Tok::tag2prec_r(tag));
+
+        switch (tag) {
+            case Tok::Tag::O_extract: lhs = world().extract(lhs, rhs, dbg(track)); break;
+            default: THORIN_UNREACHABLE;
+        }
+        //lhs = mk_ptr<InfixExpr>(track, std::move(lhs), tag, std::move(rhs));
+
+    }
+
+    return nullptr;
+}
+
+const Def* Parser::parse_primary_def(const char* ctxt) {
     return nullptr;
 }
 
