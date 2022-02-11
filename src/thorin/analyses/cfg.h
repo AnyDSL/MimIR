@@ -20,10 +20,8 @@ template<bool> class DomFrontierBase;
 
 typedef GIDSet<const CFNode*> CFNodes;
 
-/**
- * A Control-Flow Node.
- * Managed by @p CFA.
- */
+/// A Control-Flow Node.
+/// Managed by @p CFA.
 class CFNode : public Streamable<CFNode> {
 public:
     CFNode(Def* nom)
@@ -93,15 +91,13 @@ private:
 
 //------------------------------------------------------------------------------
 
-/**
- * A Control-Flow Graph.
- * A small wrapper for the information obtained by a @p CFA.
- * The template parameter @p forward determines the direction of the edges.
- * @c true means a conventional @p CFG.
- * @c false means that all edges in this @p CFG are reverted.
- * Thus, a dominance analysis, for example, becomes a post-dominance analysis.
- * @see DomTreeBase
- */
+/// A Control-Flow Graph.
+/// A small wrapper for the information obtained by a @p CFA.
+/// The template parameter @p forward determines the direction of the edges.
+/// @c true means a conventional @p CFG.
+/// @c false means that all edges in this @p CFG are reverted.
+/// Thus, a dominance analysis, for example, becomes a post-dominance analysis.
+/// @see DomTreeBase
 template<bool forward>
 class CFG {
 public:

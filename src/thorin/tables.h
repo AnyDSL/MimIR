@@ -81,29 +81,27 @@ enum RMode : nat_t {
 /// Accelerators
 #define THORIN_ACC(m) m(Acc, vecotrize) m(Acc, parallel) m(Acc, opencl) m(Acc, cuda) m(Acc, nvvm) m (Acc, amdgpu)
 
-/**
- * The 5 relations are disjoint and are organized as follows:
-@verbatim
-               ----
-               4321
-           01234567
-           ////////
-           00001111
-     y→    00110011
-           01010101
-
-   x 0/000 ELLLXXXX
-   ↓ 1/001 GELLXXXX
-     2/010 GGELXXXX
-     3/011 GGGEXXXX
-  -4/4/100 YYYYELLL
-  -3/5/101 YYYYGELL
-  -2/6/110 YYYYGGEL   X = plus, minus
-  -1/7/111 YYYYGGGE   Y = minus, plus
-@endverbatim
- * The more obscure combinations are prefixed with @c _.
- * The standard comparisons front ends want to use, don't have this prefix.
- */
+/// The 5 relations are disjoint and are organized as follows:
+/// ```
+///              ----
+///              4321
+///          01234567
+///          ////////
+///          00001111
+///    y→    00110011
+///          01010101
+///
+///  x 0/000 ELLLXXXX
+///  ↓ 1/001 GELLXXXX
+///    2/010 GGELXXXX
+///    3/011 GGGEXXXX
+/// -4/4/100 YYYYELLL
+/// -3/5/101 YYYYGELL
+/// -2/6/110 YYYYGGEL   X = plus, minus
+/// -1/7/111 YYYYGGGE   Y = minus, plus
+/// ```
+/// The more obscure combinations are prefixed with @c _.
+/// The standard comparisons front ends want to use, don't have this prefix.
 #define THORIN_I_CMP(m)              /* X Y G L E                                                   */ \
                      m(ICmp,   _f)   /* o o o o o - always false                                    */ \
                      m(ICmp,    e)   /* o o o o x - equal                                           */ \
@@ -156,10 +154,8 @@ enum RMode : nat_t {
                      m(RCmp, une) /* x x x o - unordered or not equal        */ \
                      m(RCmp,   t) /* x x x x - always true                   */
 
-/**
- * Table for all binary boolean operations.
- * See https://en.wikipedia.org/wiki/Truth_table#Binary_operations
- *                                   x o x o                                */
+/// Table for all binary boolean operations.
+/// See https://en.wikipedia.org/wiki/Truth_table#Binary_operations
 #define THORIN_BIT(m)            /* B B A A -                              */ \
                    m(Bit,     f) /* o o o o - always false                 */ \
                    m(Bit,   nor) /* o o o x -                              */ \

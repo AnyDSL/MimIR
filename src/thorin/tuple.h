@@ -18,15 +18,16 @@ private:
 
 public:
     /// @name setters
-    //@{
+    ///@{
     Sigma* set(size_t i, const Def* def) { return Def::set(i, def)->as<Sigma>(); }
     Sigma* set(Defs ops) { return Def::set(ops)->as<Sigma>(); }
-    //@}
+    ///@}
+
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Sigma* stub(World&, const Def*, const Def*) override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Sigma;
     friend class World;
@@ -41,9 +42,9 @@ private:
 
 public:
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Tuple;
     friend class World;
@@ -64,20 +65,22 @@ private:
 
 public:
     /// @name ops
-    //@{
+    ///@{
     const Def* shape() const { return op(0); }
     const Def* body() const { return op(1); }
-    //@}
+    ///@}
+
     /// @name methods for noms
-    //@{
+    ///@{
     Arr* set(const Def* body) { return Def::set(1, body)->as<Arr>(); }
-    //@}
+    ///@}
+
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Arr* stub(World&, const Def*, const Def*) override;
     const Def* restructure() override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Arr;
     friend class World;
@@ -91,15 +94,15 @@ private:
 
 public:
     /// @name getters
-    //@{
+    ///@{
     const Def* body() const { return op(0); }
     const Arr* type() const { return Def::type()->as<Arr>(); }
     const Def* shape() const { return type()->shape(); }
-    //@}
+    ///@}
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Pack;
     friend class World;
@@ -117,25 +120,23 @@ private:
 
 public:
     /// @name ops
-    //@{
+    ///@{
     const Def* tuple() const { return op(0); }
     const Def* index() const { return op(1); }
-    //@}
+    ///@}
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Extract;
     friend class World;
 };
 
-/**
- * Creates a new @p Tuple/@p Pack by inserting @p value at position @p index into @p tuple.
- * @attention { This is a @em functional insert.
- *              The @p tuple itself remains untouched.
- *              The @p Insert itself is a @em new @p Tuple/@p Pack which contains the inserted @p value. }
- */
+/// Creates a new @p Tuple/@p Pack by inserting @p value at position @p index into @p tuple.
+/// @attention { This is a @em functional insert.
+///              The @p tuple itself remains untouched.
+///              The @p Insert itself is a @em new @p Tuple/@p Pack which contains the inserted @p value. }
 class Insert : public Def {
 private:
     Insert(const Def* tuple, const Def* index, const Def* value, const Def* dbg)
@@ -144,15 +145,15 @@ private:
 
 public:
     /// @name ops
-    //@{
+    ///@{
     const Def* tuple() const { return op(0); }
     const Def* index() const { return op(1); }
     const Def* value() const { return op(2); }
-    //@}
+    ///@}
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Insert;
     friend class World;

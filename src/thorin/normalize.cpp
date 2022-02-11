@@ -27,7 +27,7 @@ static const Def* is_not(const Def* def) {
 template<class T> static T get(u64 u) { return bitcast<T>(u); }
 
 /// Use like this:
-/// @code a op b = tab[a][b] @endcode
+/// `a op b = tab[a][b]`
 constexpr std::array<std::array<uint64_t, 2>, 2> make_truth_table(Bit op) {
     return {{ {tag_t(op) & tag_t(0b0001) ? u64(-1) : 0, tag_t(op) & tag_t(0b0100) ? u64(-1) : 0},
               {tag_t(op) & tag_t(0b0010) ? u64(-1) : 0, tag_t(op) & tag_t(0b1000) ? u64(-1) : 0} }};
@@ -198,19 +198,17 @@ static void commute(O op, const Def*& a, const Def*& b) {
     }
 }
 
-/**
- * Reassociates @p a und @p b according to following rules.
- * We use the following naming convention while literals are prefixed with an 'l':
-@verbatim
-    a    op     b
-(x op y) op (z op w)
-
-(1)     la    op (lz op w) -> (la op lz) op w
-(2) (lx op y) op (lz op w) -> (lx op lz) op (y op w)
-(3)      a    op (lz op w) ->  lz op (a op w)
-(4) (lx op y) op      b    ->  lx op (y op b)
-@endverbatim
- */
+/// Reassociates @p a und @p b according to following rules.
+/// We use the following naming convention while literals are prefixed with an 'l':
+/// ```
+///     a    op     b
+/// (x op y) op (z op w)
+///
+/// (1)     la    op (lz op w) -> (la op lz) op w
+/// (2) (lx op y) op (lz op w) -> (lx op lz) op (y op w)
+/// (3)      a    op (lz op w) ->  lz op (a op w)
+/// (4) (lx op y) op      b    ->  lx op (y op b)
+/// ```
 template<tag_t tag>
 static const Def* reassociate(Tag2Enum<tag> op, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b, const Def* dbg) {
     if (!is_associative(op)) return nullptr;

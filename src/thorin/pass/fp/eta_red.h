@@ -5,8 +5,8 @@
 
 namespace thorin {
 
-/// Performs η-reduction:
-/// <code>λx.e x -> e</code>, whenever <code>x</code> does (optimistically) not appear free in <code>e</code>.
+/// Performs η-reduction.
+/// Rewrites `λx.e x` to `e`, whenever `x` does (optimistically) not appear free in `e`.
 class EtaRed : public FPPass<EtaRed> {
 public:
     EtaRed(PassMan& man)

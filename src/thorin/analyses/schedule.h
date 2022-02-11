@@ -14,7 +14,7 @@ public:
     explicit Scheduler(const Scope&);
 
     /// @name getters
-    //@{
+    ///@{
     const Scope& scope() const { return *scope_; }
     const F_CFG& cfg() const { return *cfg_; }
     const CFNode* cfg(Def* nom) const { return cfg()[nom]; }
@@ -24,14 +24,14 @@ public:
         assert(i != def2uses_.end());
         return i->second;
     }
-    //@}
+    ///@}
 
     /// @name compute schedules
-    //@{
+    ///@{
     Def* early(const Def*);
     Def* late (const Def*);
     Def* smart(const Def*);
-    //@}
+    ///@}
 
     friend void swap(Scheduler& s1, Scheduler& s2) {
         using std::swap;

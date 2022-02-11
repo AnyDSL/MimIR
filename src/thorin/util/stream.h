@@ -21,45 +21,43 @@ public:
     {}
 
     /// @name getters
-    //@{
+    ///@{
     std::ostream& ostream() { return *ostream_; }
     std::string tab() const { return tab_; }
     size_t level() const { return level_; }
-    //@}
+    ///@}
 
     /// @name modify Stream
-    //@{
+    ///@{
     Stream& indent(size_t i = 1) { level_ += i; return *this; }
     Stream& dedent(size_t i = 1) { assert(level_ >= i); level_ -= i; return *this; }
     Stream& endl();
     Stream& flush() { ostream().flush(); return *this; }
-    //@}
+    ///@}
 
     /// @name stream
-    //@{
-    /**
-     * fprintf-like function.
-     * Each @c "{}" in @p s corresponds to one of the variadic arguments in @p args.
-     * The type of the corresponding argument must support @c operator<< on @c std::ostream& or preferably @p Stream.
-     * Furthermore, an argument may also be a range-based container where its elements fulfill the condition above.
-     * You can specify the separator within the braces:
-     @code{.cpp}
-         s.fmt("({, })", list) // yields "(a, b, c)"
-     @endcode
-     * If you use @c "\n" as separator, it will invoke Stream::endl - keeping indentation:
-     @code{.cpp}
-         s.fmt("({\n})", list)
-     @endcode
-     * Finally, you can use @c "\n", "\t", and "\b" to @p endl, @p indent, or @p dedent, respectively.
-     */
-    template<class T, class... Args> Stream& fmt(const char* s, T&& t, Args&&... args);
+    ///@{
     Stream& fmt(const char* s); ///< Base case.
+    /// `fprintf`-like function.
+    /// Each @c "{}" in @p s corresponds to one of the variadic arguments in @p args.
+    /// The type of the corresponding argument must support @c operator<< on @c std::ostream& or preferably @p Stream.
+    /// Furthermore, an argument may also be a range-based container where its elements fulfill the condition above.
+    /// You can specify the separator within the braces:
+    /// ```cpp
+    /// s.fmt("({, })", list) // yields "(a, b, c)"
+    /// ```
+    /// If you use @c "\n" as separator, it will invoke Stream::endl - keeping indentation:
+    /// ```cpp
+    /// s.fmt("({\n})", list)
+    /// ```
+    /// Finally, you can use @c "\n", "\t", and "\b" to @p endl, @p indent, or @p dedent, respectively.
+    template<class T, class... Args> Stream& fmt(const char* s, T&& t, Args&&... args);
     template<class R, class F, bool rangei = false> Stream& range(const R& r, const char* sep, F f);
     template<class R, class F, bool rangei = false> Stream& range(const R& r, F f) { return range(r, ", ", f); }
     template<class R, class F> Stream& rangei(const R& r, const char* sep, F f) { return range<R, F, true>(r, sep, f); }
     template<class R, class F> Stream& rangei(const R& r, F f) { return range<R, F, true>(r, ", ", f); }
     template<class R> Stream& range(const R& r, const char* sep = ", ") { return range(r, sep, [&](const auto& x) { (*this) << x; }); }
-    //@}
+    ///@}
 
     void friend swap(Stream& a, Stream& b) {
         using std::swap;

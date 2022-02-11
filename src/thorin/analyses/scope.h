@@ -24,28 +24,28 @@ public:
     ~Scope();
 
     /// @name getters
-    //@{
+    ///@{
     World& world() const { return world_; }
     Def* entry() const { return entry_; }
     Def* exit() const { return exit_; }
     std::string name() const { return entry_->debug().name; }
-    //@}
+    ///@}
 
     /// @name Def%s bound/free in this Scope
-    //@{
+    ///@{
     bool bound(const Def* def) const { return bound().contains(def); }
     const DefSet& bound()     const { calc_bound(); return bound_;     } ///< All @p Def%s within this @p Scope.
     const DefSet& free_defs() const { calc_bound(); return free_defs_; } ///< All @em non-const @p Def%s @em directly referenced but @em not @p bound within this @p Scope. May also include @p Var%s or @em noms.
     const VarSet& free_vars() const { calc_free (); return free_vars_; } ///< All @p Var%s that occurr free in this @p Scope. Does @em not transitively contain any free @p Var%s from @p noms.
     const NomSet& free_noms() const { calc_free (); return free_noms_; } ///< All @em noms that occurr free in this @p Scope.
-    //@}
+    ///@}
 
     /// @name simple CFA to construct a CFG
-    //@{
+    ///@{
     const CFA& cfa() const;
     const F_CFG& f_cfg() const;
     const B_CFG& b_cfg() const;
-    //@}
+    ///@}
 
     Stream& stream(Stream&) const;
 

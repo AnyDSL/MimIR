@@ -405,7 +405,7 @@ GROUP_NESTED_COMPOUNDS = YES
 # \nosubgrouping command.
 # The default value is: YES.
 
-SUBGROUPING            = NO
+SUBGROUPING            = YES
 
 # When the INLINE_GROUPED_CLASSES tag is set to YES, classes, structs and unions
 # are shown inside the group in which they are included (e.g. using \ingroup)
@@ -483,13 +483,13 @@ EXTRACT_ALL            = YES
 # be included in the documentation.
 # The default value is: NO.
 
-EXTRACT_PRIVATE        = NO
+EXTRACT_PRIVATE        = YES
 
 # If the EXTRACT_PRIV_VIRTUAL tag is set to YES, documented private virtual
 # methods of a class will be included in the documentation.
 # The default value is: NO.
 
-EXTRACT_PRIV_VIRTUAL   = NO
+EXTRACT_PRIV_VIRTUAL   = YES
 
 # If the EXTRACT_PACKAGE tag is set to YES, all members with package or internal
 # scope will be included in the documentation.

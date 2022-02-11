@@ -22,10 +22,10 @@ public:
 
 private:
     /// @name PassMan hooks
-    //@{
+    ///@{
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Proxy*) override;
-    //@}
+    ///@}
 
     const Def* var2dead(const App*, Lam*);
 

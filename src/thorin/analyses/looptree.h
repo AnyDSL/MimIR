@@ -12,25 +12,21 @@ namespace thorin {
 
 template<bool> class LoopTreeBuilder;
 
-/**
- * Calculates a loop nesting forest rooted at @p root_.
- * The implementation uses Steensgard's algorithm.
- * Check out G. Ramalingam, "On Loops, Dominators, and Dominance Frontiers", 1999, for more information.
- */
+/// Calculates a loop nesting forest rooted at @p root_.
+/// The implementation uses Steensgard's algorithm.
+/// Check out G. Ramalingam, "On Loops, Dominators, and Dominance Frontiers", 1999, for more information.
 template<bool forward>
 class LoopTree {
 public:
     class Head;
 
-    /**
-    * Represents a node of a loop nesting forest.
-    * Please refer to G. Ramalingam, "On Loops, Dominators, and Dominance Frontiers", 1999
-    * for an introduction to loop nesting forests.
-    * A @p Base consists of a set of header @p CFNode%s.
-    * The header CFNode%s are the set of CFNode%s not dominated by any other @p CFNode within the loop.
-    * The root node is a @p Head without any CFNode%s but further children and @p depth_ -1.
-    * Thus, the forest is pooled into a tree.
-    */
+    /// Represents a node of a loop nesting forest.
+    /// Please refer to G. Ramalingam, "On Loops, Dominators, and Dominance Frontiers", 1999
+    /// for an introduction to loop nesting forests.
+    /// A @p Base consists of a set of header @p CFNode%s.
+    /// The header CFNode%s are the set of CFNode%s not dominated by any other @p CFNode within the loop.
+    /// The root node is a @p Head without any CFNode%s but further children and @p depth_ -1.
+    /// Thus, the forest is pooled into a tree.
     class Base : public RuntimeCast<Base>, public Streamable<LoopTree<forward>> {
     public:
         enum class Node { Head, Leaf };

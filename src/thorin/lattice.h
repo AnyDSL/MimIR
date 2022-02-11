@@ -42,10 +42,10 @@ private:
 
 public:
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     TBound* stub(World&, const Def*, const Def*) override;
-    //@}
+    ///@}
 
     const Sigma* convert() const;
 
@@ -61,11 +61,10 @@ private:
     {}
 
 public:
-    //@}
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Et;
     friend class World;
@@ -80,14 +79,14 @@ private:
 
 public:
     /// @name ops
-    //@{
+    ///@{
     const Def* value() const { return op(0); }
-    //@}
-    //@}
+    ///@}
+
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Vel;
     friend class World;
@@ -102,26 +101,24 @@ private:
 
 public:
     /// @name ops
-    //@{
+    ///@{
     const Def* value() const { return op(0); }
-    //@}
+    ///@}
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Pick;
     friend class World;
 };
 
-/**
- * Tests the @p value of type @p Join whether it currently holds @em type @p probe.
- * Note, that @p probe is a @em type!
- * Yields @p match if @c true and @p clash otherwise.
- * @p match must be of type <tt> A -> B </tt>.
- * @p clash must be of type <tt> [A, probe] -> C </tt>.
- * This operation is usually known as @c case but @c case is a keyword in C++, so we call it @p Test.
- */
+/// Tests the @p value of type @p Join whether it currently holds @em type @p probe.
+/// Note, that @p probe is a @em type!
+/// Yields @p match if @c true and @p clash otherwise.
+/// @p match must be of type <tt> A -> B </tt>.
+/// @p clash must be of type <tt> [A, probe] -> C </tt>.
+/// This operation is usually known as @c case but @c case is a keyword in C++, so we call it @p Test.
 class Test : public Def {
 private:
     Test(const Def* type, const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg)
@@ -130,16 +127,16 @@ private:
 
 public:
     /// @name ops
-    //@{
+    ///@{
     const Def* value() const { return op(0); }
     const Def* probe() const { return op(1); }
     const Def* match() const { return op(2); }
     const Def* clash() const { return op(3); }
-    //@}
+    ///@}
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Test;
     friend class World;
@@ -163,9 +160,9 @@ private:
 
 public:
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = up ? Node::Top : Node::Bot;
     friend class World;

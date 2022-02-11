@@ -54,7 +54,7 @@ private:
     Tok eat([[maybe_unused]] Tok::Tag tag) { assert(tag == ahead().tag() && "internal parser error"); return lex(); }
 
     /// Issue an error message of the form:
-    /// <code>expected <what>, got '<tok>' while parsing <ctxt></code>
+    /// "expected \<what\>, got '\<tok>\' while parsing \<ctxt\>"
     void err(const std::string& what, const Tok& tok, const char* ctxt);
 
     /// Same above but uses @p ahead() as @p tok.

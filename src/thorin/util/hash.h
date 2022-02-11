@@ -281,25 +281,25 @@ public:
             delete[] nodes_;
     }
 
-    //@{ getters
+    ///@{ getters
     hash_t capacity() const { return capacity_; }
     hash_t size() const { return size_; }
     bool empty() const { return size() == 0; }
 #if THORIN_ENABLE_CHECKS
     int id() const { return id_; }
 #endif
-    //@}
+    ///@}
 
-    //@{ begin/end iterators
+    ///@{ begin/end iterators
     iterator begin() { return iterator::skip(nodes_, this); }
     iterator end() { return iterator(end_ptr(), this); }
     const_iterator begin() const { return const_iterator(const_cast<HashTable*>(this)->begin()); }
     const_iterator end() const { return const_iterator(const_cast<HashTable*>(this)->end()); }
     const_iterator cbegin() const { return begin(); }
     const_iterator cend() const { return end(); }
-    //@}
+    ///@}
 
-    //@{ emplace/insert
+    ///@{ emplace/insert
     template<class... Args>
     std::pair<iterator,bool> emplace(Args&&... args) {
         if (!on_heap() && size_ < capacity_)
@@ -340,9 +340,9 @@ public:
 
         return changed;
     }
-    //@}
+    ///@}
 
-    //@{ erase
+    ///@{ erase
     void erase(const_iterator pos) {
         using std::swap;
 
@@ -384,9 +384,9 @@ public:
         erase(i);
         return 1;
     }
-    //@}
+    ///@}
 
-    //@{ find
+    ///@{ find
     iterator find(const key_type& k) {
         if (on_heap()) {
             if (empty())
@@ -406,7 +406,7 @@ public:
     const_iterator find(const key_type& key) const {
         return const_iterator(const_cast<HashTable*>(this)->find(key).ptr_, this);
     }
-    //@}
+    ///@}
 
     void clear() {
         size_ = 0;
@@ -540,7 +540,7 @@ private:
     value_type* end_ptr() const { return nodes_ + capacity(); }
     bool on_heap() const { return capacity_ != StackCapacity; }
 
-    //@{ array set
+    ///@{ array set
     iterator array_find(const key_type& k) {
         assert(!on_heap());
         for (auto i = array_.data(), e = array_.data() + size_; i != e; ++i) {
@@ -575,7 +575,7 @@ private:
         --size_;
         key(array_.data()+size_) = H::sentinel();
     }
-    //@}
+    ///@}
 
     value_type* alloc() {
         assert(std::has_single_bit(capacity_));
@@ -602,10 +602,8 @@ private:
 
 //------------------------------------------------------------------------------
 
-/**
- * This container is for the most part compatible with <code>std::unordered_set</code>.
- * We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
- */
+/// This container is for the most part compatible with `std::unordered_set`.
+/// We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
 template<class Key, class H = typename Key::Hash, hash_t StackCapacity = 4>
 class HashSet : public detail::HashTable<Key, void, H, StackCapacity> {
 public:
@@ -634,10 +632,8 @@ public:
 
 //------------------------------------------------------------------------------
 
-/**
- * This container is for the most part compatible with <code>std::unordered_map</code>.
- * We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
- */
+// This container is for the most part compatible with `std::unordered_map`.
+// We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
 template<class Key, class T, class H = typename Key::Hash, hash_t StackCapacity = 4>
 class HashMap : public detail::HashTable<Key, T, H, StackCapacity> {
 public:

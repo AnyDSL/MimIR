@@ -11,16 +11,16 @@ private:
 
 public:
     /// @name misc getters
-    //@{
+    ///@{
     tag_t tag() const { return tag_t(fields() >> 32_u64); }
     flags_t flags() const { return flags_t(fields()); }
     NormalizeFn normalizer() const { return normalizer_depth_.ptr(); }
     u16 currying_depth() const { return normalizer_depth_.index(); }
-    //@}
+    ///@}
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Axiom;
     friend class World;

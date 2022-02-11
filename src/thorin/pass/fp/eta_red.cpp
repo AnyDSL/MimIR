@@ -2,7 +2,7 @@
 
 namespace thorin {
 
-/// For now, only η-reduce <code>lam x.e x</code> if e is a @p Var or a @p Lam.
+/// For now, only η-reduce `lam x.e x` if e is a @p Var or a @p Lam.
 static const App* eta_rule(Lam* lam) {
     if (auto app = lam->body()->isa<App>()) {
         if (app->arg() == lam->var() && (app->callee()->isa<Var>() || app->callee()->isa<Lam>()))

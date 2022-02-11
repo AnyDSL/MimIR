@@ -18,15 +18,13 @@ class Array;
 
 //------------------------------------------------------------------------------
 
-/**
- * A container-like wrapper for an array.
- * The array may either stem from a C array, a <code>std::vector</code>, a <code>std::initializer_list</code>, an @p Array or another @p ArrayRef.
- * @p ArrayRef does <em>not</em> own the data and, thus, does not destroy any data.
- * Likewise, you must be carefull to not destroy data an @p ArrayRef is pointing to.
- * Thorin makes use of @p ArrayRef%s in many places.
- * Note that you can often construct an @p ArrayRef inline with an initializer_list: <code>foo(arg1, {elem1, elem2, elem3}, arg3)</code>.
- * Useful operations are @p skip_front and @p skip_back to create other @p ArrayRef%s.
- */
+/// A container-like wrapper for an array.
+/// The array may either stem from a C array, a `std::vector`, a `std::initializer_list`, an @p Array or another @p ArrayRef.
+/// @p ArrayRef does <em>not</em> own the data and, thus, does not destroy any data.
+/// Likewise, you must be carefull to not destroy data an @p ArrayRef is pointing to.
+/// Thorin makes use of @p ArrayRef%s in many places.
+/// Note that you can often construct an @p ArrayRef inline with an initializer_list: `foo(arg1, {elem1, elem2, elem3}, arg3)`.
+/// Useful operations are @p skip_front and @p skip_back to create other @p ArrayRef%s.
 template<class T>
 class ArrayRef {
 public:
@@ -197,14 +195,12 @@ private:
 
 //------------------------------------------------------------------------------
 
-/**
- * A container for an array, either heap-allocated or stack allocated.
- * This class is similar to <code>std::vector</code> with the following differences:
- *  - If the size is small enough, the array resides on the stack.
- *  - In contrast to std::vector, @p Array cannot grow dynamically.
- *    A @p Array may @p shrink, however.
- *    But once shrunk, there is no way back.
- */
+/// A container for an array, either heap-allocated or stack allocated.
+/// This class is similar to `std::vector` with the following differences:
+///   - If the size is small enough, the array resides on the stack.
+///   - In contrast to std::vector, @p Array cannot grow dynamically.
+///     A @p Array may @p shrink, however.
+///     But once shrunk, there is no way back.
 template<class T>
 class Array {
 public:
