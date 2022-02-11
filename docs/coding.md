@@ -11,8 +11,8 @@ Use the following coding convetions:
 * constants as defined in an `enum` or via `static const` in `Camel_Snake_Case`
 * macro names in `SNAKE_IN_ALL_CAPS`
 * eveything else like variables, functions, etc. in `snake_case`
-* use a traling underscore suffix for a `private_member_variable_`.
-* don't do that for a `public_member_variable`.
+* use a traling underscore suffix for a `private_member_variable_`
+* don't do that for a `public_member_variable`
 * use `struct` for [plain old data](https://en.cppreference.com/w/cpp/named_req/PODType)
 * use `class` for everything else
 * visibility groups in this order:

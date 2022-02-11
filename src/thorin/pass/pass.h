@@ -29,17 +29,22 @@ public:
     World& world();
     ///@}
 
-    /// @name hooks for the PassMan
+    /// @name rewrite hook for the PassMan
     ///@{
+    /// Rewrites a *structural* @p def within @p PassMan::curr_nom. Returns the replacement.
+    virtual const Def* rewrite(const Def* def) { return def; }
+    virtual const Def* rewrite(const Var* var) { return var; }
+    virtual const Def* rewrite(const Proxy* proxy) { return proxy; }
+    ///@}
+
+    /// @name further hooks for the PassMan
+    ///@{
+
+    /// Should the PassMan even consider this pass?
     virtual bool inspect() const = 0;
 
     /// Invoked just before @p rewrite%ing @p PassMan::curr_nom's body.
     virtual void enter() {}
-
-    /// Rewrites a @em structural @p def within @p PassMan::curr_nom. Returns the replacement.
-    virtual const Def* rewrite(const Def* def) { return def; }
-    virtual const Def* rewrite(const Var* var) { return var; }
-    virtual const Def* rewrite(const Proxy* proxy) { return proxy; }
     ///@}
 
     /// @name Proxy
@@ -118,6 +123,7 @@ public:
 
     /// @name create and run passes
     ///@{
+
     /// Add a pass to this @p PassMan.
     template<class P, class... Args>
     P* add(Args&&... args) {
