@@ -148,7 +148,6 @@ private:
 
     static key_type& key(value_type* ptr) { return get_key<Key, T>::get(*ptr); }
     static bool is_invalid(value_type* ptr) { return key(ptr) == H::sentinel(); }
-    bool is_invalid(hash_t i) { return is_invalid(nodes_+i); }
 
 public:
     template<bool is_const>
@@ -160,6 +159,8 @@ public:
         typedef typename std::conditional<is_const, const value_type*, value_type*>::type pointer;
         typedef std::forward_iterator_tag iterator_category;
 
+        /// @name c'tor/d'tor, assignment operator
+        ///@{
         iterator_base() = default;
         iterator_base(value_type* ptr, const HashTable* table)
             : ptr_(ptr)
@@ -185,7 +186,10 @@ public:
 #endif
             return *this;
         }
+        ///@}
 
+        /// @name verify
+        ///@{
 #if THORIN_ENABLE_CHECKS
         inline void verify() const { assert(table_->id_ == id_); }
         inline void verify(iterator_base i) const {
@@ -197,13 +201,17 @@ public:
         inline void verify() const {}
         inline void verify(iterator_base) const {}
 #endif
+        ///@}
 
+        /// @name operators
+        ///@{
         iterator_base& operator++() { verify(); *this = skip(ptr_+1, table_); return *this; }
         iterator_base operator++(int) { verify(); iterator_base res = *this; ++(*this); return res; }
         reference operator*() const { verify(); return *ptr_; }
         pointer operator->() const { verify(); return ptr_; }
         bool operator==(const iterator_base& other) const { verify(other); return this->ptr_ == other.ptr_; }
         bool operator!=(const iterator_base& other) const { verify(other); return this->ptr_ != other.ptr_; }
+        ///@}
 
     private:
         static iterator_base skip(value_type* ptr, const HashTable* table) {
@@ -224,6 +232,8 @@ public:
     typedef iterator_base<false> iterator;
     typedef iterator_base<true> const_iterator;
 
+    /// @name c'tor/d'tor, assignment operator
+    ///@{
     HashTable()
         : capacity_(StackCapacity)
         , size_(0)
@@ -276,12 +286,17 @@ public:
     {
         insert(ilist);
     }
+
     ~HashTable() {
         if (on_heap())
             delete[] nodes_;
     }
 
-    ///@{ getters
+    HashTable& operator=(HashTable other) { swap(*this, other); return *this; }
+    ///@}
+
+    /// @name getters
+    ///@{
     hash_t capacity() const { return capacity_; }
     hash_t size() const { return size_; }
     bool empty() const { return size() == 0; }
@@ -290,7 +305,8 @@ public:
 #endif
     ///@}
 
-    ///@{ begin/end iterators
+    /// @name begin/end iterators
+    ///@{
     iterator begin() { return iterator::skip(nodes_, this); }
     iterator end() { return iterator(end_ptr(), this); }
     const_iterator begin() const { return const_iterator(const_cast<HashTable*>(this)->begin()); }
@@ -299,7 +315,8 @@ public:
     const_iterator cend() const { return end(); }
     ///@}
 
-    ///@{ emplace/insert
+    /// @name emplace/insert
+    ///@{
     template<class... Args>
     std::pair<iterator,bool> emplace(Args&&... args) {
         if (!on_heap() && size_ < capacity_)
@@ -340,9 +357,42 @@ public:
 
         return changed;
     }
+
+    void rehash(hash_t new_capacity) {
+        using std::swap;
+
+        assert(std::has_single_bit(new_capacity));
+
+        auto old_capacity = capacity_;
+        capacity_ = std::max(new_capacity, hash_t(MinHeapCapacity));
+        auto old_nodes = alloc();
+        swap(old_nodes, nodes_);
+
+        for (hash_t i = 0; i != old_capacity; ++i) {
+            auto& old = old_nodes[i];
+            if (!is_invalid(&old)) {
+                for (hash_t j = desired_pos(key(&old)), distance = 0; true; j = mod(j+1), ++distance) {
+                    if (is_invalid(j)) {
+                        swap(nodes_[j], old);
+                        break;
+                    } else {
+                        hash_t cur_distance = probe_distance(j);
+                        if (cur_distance < distance) {
+                            distance = cur_distance;
+                            swap(nodes_[j], old);
+                        }
+                        debug(j);
+                    }
+                }
+            }
+        }
+
+        if (old_capacity != StackCapacity) delete[] old_nodes;
+    }
     ///@}
 
-    ///@{ erase
+    /// @name erase
+    ///@{
     void erase(const_iterator pos) {
         using std::swap;
 
@@ -384,9 +434,22 @@ public:
         erase(i);
         return 1;
     }
+
+    void clear() {
+        size_ = 0;
+
+        if (on_heap()) {
+            delete[] nodes_;
+            nodes_ = array_.data();
+            capacity_ = StackCapacity;
+        }
+
+        fill(nodes_);
+    }
     ///@}
 
-    ///@{ find
+    /// @name find
+    ///@{
     iterator find(const key_type& k) {
         if (on_heap()) {
             if (empty())
@@ -406,54 +469,10 @@ public:
     const_iterator find(const key_type& key) const {
         return const_iterator(const_cast<HashTable*>(this)->find(key).ptr_, this);
     }
-    ///@}
-
-    void clear() {
-        size_ = 0;
-
-        if (on_heap()) {
-            delete[] nodes_;
-            nodes_ = array_.data();
-            capacity_ = StackCapacity;
-        }
-
-        fill(nodes_);
-    }
 
     hash_t count(const key_type& key) const { return find(key) == end() ? 0 : 1; }
     bool contains(const key_type& key) const { return count(key) == 1; }
-
-    void rehash(hash_t new_capacity) {
-        using std::swap;
-
-        assert(std::has_single_bit(new_capacity));
-
-        auto old_capacity = capacity_;
-        capacity_ = std::max(new_capacity, hash_t(MinHeapCapacity));
-        auto old_nodes = alloc();
-        swap(old_nodes, nodes_);
-
-        for (hash_t i = 0; i != old_capacity; ++i) {
-            auto& old = old_nodes[i];
-            if (!is_invalid(&old)) {
-                for (hash_t j = desired_pos(key(&old)), distance = 0; true; j = mod(j+1), ++distance) {
-                    if (is_invalid(j)) {
-                        swap(nodes_[j], old);
-                        break;
-                    } else {
-                        hash_t cur_distance = probe_distance(j);
-                        if (cur_distance < distance) {
-                            distance = cur_distance;
-                            swap(nodes_[j], old);
-                        }
-                        debug(j);
-                    }
-                }
-            }
-        }
-
-        if (old_capacity != StackCapacity) delete[] old_nodes;
-    }
+    ///@}
 
     void dump() const { Stream s; s.fmt("[{, }]\n", *this); }
 
@@ -483,8 +502,6 @@ public:
         swap(t1.id_,       t2.id_);
 #endif
     }
-
-    HashTable& operator=(HashTable other) { swap(*this, other); return *this; }
 
 private:
     template<class... Args>
@@ -533,14 +550,20 @@ private:
 #else
     void debug(hash_t) {}
 #endif
+
+    /// @name small helpers
+    ///@{
+    bool is_invalid(hash_t i) { return is_invalid(nodes_+i); }
     hash_t hash(hash_t i) { return H::hash(key(&nodes_[i])); } ///< just for debugging
     hash_t mod(hash_t i) const { return i & (capacity_-1); }
     hash_t desired_pos(const key_type& key) const { return mod(H::hash(key)); }
     hash_t probe_distance(hash_t i) { return mod(i + capacity() - desired_pos(key(nodes_+i))); }
     value_type* end_ptr() const { return nodes_ + capacity(); }
     bool on_heap() const { return capacity_ != StackCapacity; }
+    ///@}
 
-    ///@{ array set
+    /// @name array set
+    ///@{
     iterator array_find(const key_type& k) {
         assert(!on_heap());
         for (auto i = array_.data(), e = array_.data() + size_; i != e; ++i) {
@@ -577,6 +600,8 @@ private:
     }
     ///@}
 
+    /// @name memory operations
+    ///@{
     value_type* alloc() {
         assert(std::has_single_bit(capacity_));
         auto nodes = new value_type[capacity_];
@@ -588,6 +613,7 @@ private:
             key(nodes+i) = H::sentinel();
         return nodes;
     }
+    ///@}
 
     uint32_t capacity_;
     uint32_t size_;
