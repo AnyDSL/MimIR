@@ -137,19 +137,23 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a86499da04ae1cb7e3c00a957f142b625"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af10ca8770ec7dc95aa51583cc1961b19"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_world.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#af10ca8770ec7dc95aa51583cc1961b19">world</a> ()</td></tr>
 <tr class="separator:af10ca8770ec7dc95aa51583cc1961b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">hooks for the PassMan</div></td></tr>
-<tr class="memitem:ab08fb019f1aa4638f1d5aaf9995dcc6b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#ab08fb019f1aa4638f1d5aaf9995dcc6b">inspect</a> () const =0</td></tr>
-<tr class="separator:ab08fb019f1aa4638f1d5aaf9995dcc6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a2d70e5b4b679bd5bd7dda99f288e45ae">enter</a> ()</td></tr>
-<tr class="memdesc:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked just before <code>rewriteing</code> <code><a class="el" href="classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a>'s</code> body.  <a href="classthorin_1_1_r_w_pass_base.html#a2d70e5b4b679bd5bd7dda99f288e45ae">More...</a><br /></td></tr>
-<tr class="separator:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">rewrite hook for the PassMan</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p >Rewrites a <em>structural</em> <code>def</code> within <code><a class="el" href="classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a></code>.</p>
+<p >Returns the replacement. </p>
+</div></td></tr>
 <tr class="memitem:a416313eda3acb53d2609877c4367d07c"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a416313eda3acb53d2609877c4367d07c">rewrite</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *def)</td></tr>
-<tr class="memdesc:a416313eda3acb53d2609877c4367d07c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rewrites a <em>structural</em> <code>def</code> within <code><a class="el" href="classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a></code>. Returns the replacement.  <a href="classthorin_1_1_r_w_pass_base.html#a416313eda3acb53d2609877c4367d07c">More...</a><br /></td></tr>
 <tr class="separator:a416313eda3acb53d2609877c4367d07c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdb2234d68377a2ba081b860e3bad8e1"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#afdb2234d68377a2ba081b860e3bad8e1">rewrite</a> (const <a class="el" href="classthorin_1_1_var.html">Var</a> *var)</td></tr>
 <tr class="separator:afdb2234d68377a2ba081b860e3bad8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcba6c387007abd43d9c2ff1e83213db"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#afcba6c387007abd43d9c2ff1e83213db">rewrite</a> (const <a class="el" href="classthorin_1_1_proxy.html">Proxy</a> *<a class="el" href="classthorin_1_1_r_w_pass_base.html#a19bcd131336dceb54a95a1eca9cda22e">proxy</a>)</td></tr>
 <tr class="separator:afcba6c387007abd43d9c2ff1e83213db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">further hooks for the PassMan</div></td></tr>
+<tr class="memitem:ab08fb019f1aa4638f1d5aaf9995dcc6b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#ab08fb019f1aa4638f1d5aaf9995dcc6b">inspect</a> () const =0</td></tr>
+<tr class="memdesc:ab08fb019f1aa4638f1d5aaf9995dcc6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should the <a class="el" href="classthorin_1_1_pass_man.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> even consider this pass?  <a href="classthorin_1_1_r_w_pass_base.html#ab08fb019f1aa4638f1d5aaf9995dcc6b">More...</a><br /></td></tr>
+<tr class="separator:ab08fb019f1aa4638f1d5aaf9995dcc6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a2d70e5b4b679bd5bd7dda99f288e45ae">enter</a> ()</td></tr>
+<tr class="memdesc:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invoked just before <code>rewriteing</code> <code><a class="el" href="classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a>'s</code> body.  <a href="classthorin_1_1_r_w_pass_base.html#a2d70e5b4b679bd5bd7dda99f288e45ae">More...</a><br /></td></tr>
+<tr class="separator:a2d70e5b4b679bd5bd7dda99f288e45ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Proxy</div></td></tr>
 <tr class="memitem:a19bcd131336dceb54a95a1eca9cda22e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_r_w_pass_base.html#a19bcd131336dceb54a95a1eca9cda22e">proxy</a> (const <a class="el" href="classthorin_1_1_def.html">Def</a> *type, <a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> ops, <a class="el" href="namespacethorin.html#af5064c09e15bc314bb4ae3c3219815fe">flags_t</a> flags=0, const <a class="el" href="classthorin_1_1_def.html">Def</a> *dbg={})</td></tr>
 <tr class="separator:a19bcd131336dceb54a95a1eca9cda22e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -383,6 +387,8 @@ template&lt;class N &gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p>Should the <a class="el" href="classthorin_1_1_pass_man.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> even consider this pass? </p>
+
 <p>Implemented in <a class="el" href="classthorin_1_1_r_w_pass.html#a316be5140752b8e78ea9858d18586333">thorin::RWPass&lt; N &gt;</a>, <a class="el" href="classthorin_1_1_r_w_pass.html#a316be5140752b8e78ea9858d18586333">thorin::RWPass&lt; Lam &gt;</a>, <a class="el" href="classthorin_1_1_f_p_pass.html#af2ab235751cc92666c65f108ee427891">thorin::FPPass&lt; P, N &gt;</a>, <a class="el" href="classthorin_1_1_f_p_pass.html#af2ab235751cc92666c65f108ee427891">thorin::FPPass&lt; BetaRed &gt;</a>, <a class="el" href="classthorin_1_1_f_p_pass.html#af2ab235751cc92666c65f108ee427891">thorin::FPPass&lt; CopyProp, Lam &gt;</a>, <a class="el" href="classthorin_1_1_f_p_pass.html#af2ab235751cc92666c65f108ee427891">thorin::FPPass&lt; DCE, Lam &gt;</a>, <a class="el" href="classthorin_1_1_f_p_pass.html#af2ab235751cc92666c65f108ee427891">thorin::FPPass&lt; EtaExp, Lam &gt;</a>, <a class="el" href="classthorin_1_1_f_p_pass.html#af2ab235751cc92666c65f108ee427891">thorin::FPPass&lt; EtaRed &gt;</a>, and <a class="el" href="classthorin_1_1_f_p_pass.html#af2ab235751cc92666c65f108ee427891">thorin::FPPass&lt; SSAConstr, Lam &gt;</a>.</p>
 
 </div>
@@ -596,8 +602,6 @@ template&lt;class N &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Rewrites a <em>structural</em> <code>def</code> within <code><a class="el" href="classthorin_1_1_pass_man.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a></code>. Returns the replacement. </p>
 
 <p>Reimplemented in <a class="el" href="classthorin_1_1_beta_red.html#a915aac0183d2983ba78fe7c6d81df831">thorin::BetaRed</a>, <a class="el" href="classthorin_1_1_copy_prop.html#a8e0fe0838bc5211793f40953a8a70ef7">thorin::CopyProp</a>, <a class="el" href="classthorin_1_1_d_c_e.html#acce2a2f88147f0c6a04c1e84fda42f23">thorin::DCE</a>, <a class="el" href="classthorin_1_1_eta_exp.html#a5498a6fd987ec848fca0879f999a1d5e">thorin::EtaExp</a>, <a class="el" href="classthorin_1_1_eta_red.html#ac7344b57c2a73340aa3a2701d43dadcb">thorin::EtaRed</a>, <a class="el" href="classthorin_1_1_s_s_a_constr.html#a89383ab2c20d4e1ec6f927fd41c7229e">thorin::SSAConstr</a>, <a class="el" href="classthorin_1_1_alloc2_malloc.html#ab39814f9252fe574c46d0677dccff303">thorin::Alloc2Malloc</a>, <a class="el" href="classthorin_1_1_partial_eval.html#a5de285daa3ae0cbf7839d7c79802cd01">thorin::PartialEval</a>, <a class="el" href="classthorin_1_1_remem_elim.html#a0ef4565bbc35c32696b4d31074c6991a">thorin::RememElim</a>, and <a class="el" href="classthorin_1_1_scalerize.html#aa1beecd95ddfde12879b584ad10002b9">thorin::Scalerize</a>.</p>
 
