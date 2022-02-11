@@ -1,30 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classthorin_1_1_runtime_cast.html" title=" " alt="" coords="5,522,140,563"/>
-<area shape="rect" id="node2" href="$classthorin_1_1_def.html" title="Base class for all Defs." alt="" coords="188,563,268,589"/>
-<area shape="rect" id="node3" href="$classthorin_1_1_app.html" title=" " alt="" coords="325,5,407,32"/>
-<area shape="rect" id="node4" href="$classthorin_1_1_arr.html" title=" " alt="" coords="327,56,405,83"/>
-<area shape="rect" id="node5" href="$classthorin_1_1_axiom.html" title=" " alt="" coords="318,107,414,133"/>
-<area shape="rect" id="node6" href="$classthorin_1_1_bound.html" title="Common base for TBound." alt="" coords="317,157,415,184"/>
-<area shape="rect" id="node8" href="$classthorin_1_1_et.html" title="Constructs a Meet value." alt="" coords="330,208,402,235"/>
-<area shape="rect" id="node9" href="$classthorin_1_1_ext.html" title="Common base for TExtremum." alt="" coords="327,259,405,285"/>
-<area shape="rect" id="node11" href="$classthorin_1_1_extract.html" title="Extracts from a Sigma or Variadic typed Def the element at position index." alt="" coords="316,309,416,336"/>
-<area shape="rect" id="node12" href="$classthorin_1_1_global.html" title="A global variable in the data segment." alt="" coords="317,360,415,387"/>
-<area shape="rect" id="node13" href="$classthorin_1_1_insert.html" title="Creates a new Tuple/Pack by inserting value at position index into tuple." alt="" coords="319,411,413,437"/>
-<area shape="rect" id="node14" href="$classthorin_1_1_kind.html" title=" " alt="" coords="323,461,409,488"/>
-<area shape="rect" id="node15" href="$classthorin_1_1_lam.html" title=" " alt="" coords="323,512,409,539"/>
-<area shape="rect" id="node16" href="$classthorin_1_1_lit.html" title=" " alt="" coords="329,563,403,589"/>
-<area shape="rect" id="node17" href="$classthorin_1_1_nat.html" title=" " alt="" coords="325,613,407,640"/>
-<area shape="rect" id="node18" href="$classthorin_1_1_pack.html" title=" " alt="" coords="321,664,411,691"/>
-<area shape="rect" id="node19" href="$classthorin_1_1_pi.html" title="A function type AKA Pi type." alt="" coords="330,715,402,741"/>
-<area shape="rect" id="node20" href="$classthorin_1_1_pick.html" title="Picks the aspect of a Meet value by its type." alt="" coords="323,765,409,792"/>
-<area shape="rect" id="node21" href="$classthorin_1_1_proxy.html" title=" " alt="" coords="320,816,412,843"/>
-<area shape="rect" id="node22" href="$classthorin_1_1_sigma.html" title=" " alt="" coords="317,867,415,893"/>
-<area shape="rect" id="node23" href="$classthorin_1_1_space.html" title=" " alt="" coords="317,917,415,944"/>
-<area shape="rect" id="node24" href="$classthorin_1_1_test.html" title="Tests the value of type Join whether it currently holds type probe." alt="" coords="323,968,409,995"/>
-<area shape="rect" id="node25" href="$classthorin_1_1_tuple.html" title="Data constructor for a Sigma." alt="" coords="320,1019,412,1045"/>
-<area shape="rect" id="node26" href="$classthorin_1_1_var.html" title=" " alt="" coords="326,1069,406,1096"/>
-<area shape="rect" id="node27" href="$classthorin_1_1_vel.html" title="Constructs a Join value." alt="" coords="327,1120,405,1147"/>
-<area shape="rect" id="node7" href="$classthorin_1_1_t_bound.html" title="Either Join (union &#45; up = true) or Meet (intersection &#45; up = false)." alt="" coords="464,157,605,184"/>
-<area shape="rect" id="node10" href="$classthorin_1_1_t_ext.html" title="Extremum. Either Top (up) or Bottom." alt="" coords="473,259,596,285"/>
-<area shape="rect" id="node28" href="$classthorin_1_1_streamable.html" title=" " alt="" coords="9,587,136,629"/>
+<area shape="rect" id="node1" href="$classthorin_1_1_runtime_cast.html" title="Provides a dynamic_cast &#45;like feature without resorting to RTTI." alt="" coords="20,5,155,47"/>
+<area shape="rect" id="node2" href="$classthorin_1_1_loop_tree_1_1_base.html" title="Represents a node of a loop nesting forest." alt="" coords="217,39,387,80"/>
+<area shape="rect" id="node3" href="$classthorin_1_1_loop_tree_1_1_head.html" title="A Head owns further nodes as children." alt="" coords="435,5,604,47"/>
+<area shape="rect" id="node4" href="$classthorin_1_1_loop_tree_1_1_leaf.html" title="A Leaf only holds a single CFNode and does not have any children." alt="" coords="435,71,604,112"/>
+<area shape="rect" id="node5" href="$classthorin_1_1_streamable.html" title=" " alt="" coords="5,71,169,112"/>
 </map>

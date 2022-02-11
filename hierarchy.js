@@ -165,6 +165,9 @@ var hierarchy =
     [ "thorin::detail::HashTable< Type, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashMap< Type >", "classthorin_1_1_hash_map.html", null ]
     ] ],
+    [ "thorin::detail::HashTable< u32, void, BreakHash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
+      [ "thorin::HashSet< u32, BreakHash >", "classthorin_1_1_hash_set.html", null ]
+    ] ],
     [ "thorin::detail::HashTable< undo_t, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1_hash_table.html", [
       [ "thorin::HashMap< undo_t >", "classthorin_1_1_hash_map.html", null ]
     ] ],

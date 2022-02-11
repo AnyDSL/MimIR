@@ -30,11 +30,12 @@ var searchData=
   ['urem_27',['urem',['../namespacethorin.html#aab48efce9aa14b70a78aff291a41e361ae1851600007553e51484056678cdb3d1',1,'thorin']]],
   ['usage_28',['usage',['../main_8cpp.html#a6ad92880e0b5a2b52e7c0a639bba0fc6',1,'main.cpp']]],
   ['use_29',['Use',['../classthorin_1_1_use.html',1,'thorin::Use'],['../classthorin_1_1_use.html#ab04c9352606031636db45fe943262462',1,'thorin::Use::Use(const Def *def, size_t index)'],['../classthorin_1_1_use.html#a0d49bf17bfb4d916e5b655fcf1c1be95',1,'thorin::Use::Use()']]],
-  ['usehash_30',['UseHash',['../structthorin_1_1_use_hash.html',1,'thorin']]],
-  ['uses_31',['uses',['../classthorin_1_1_def.html#a8f66f1a1cfbfce39608ca318288866d4',1,'thorin::Def']]],
-  ['uses_32',['Uses',['../namespacethorin.html#a9940ea7e9ae99c708846d9a532c6d905',1,'thorin']]],
-  ['uses_33',['uses',['../classthorin_1_1_scheduler.html#a2de2f46e34c2d7061d4c967a8ba26791',1,'thorin::Scheduler']]],
-  ['uses_5f_34',['uses_',['../classthorin_1_1_def.html#abefc385c0d60ba85c5e649598d20fe05',1,'thorin::Def']]],
-  ['utf8_2ecpp_35',['utf8.cpp',['../utf8_8cpp.html',1,'']]],
-  ['utf8_2eh_36',['utf8.h',['../utf8_8h.html',1,'']]]
+  ['use_5fbreakpoint_30',['use_breakpoint',['../classthorin_1_1_world.html#ab2b4b3ed8f15ed97e0df04f550589f54',1,'thorin::World']]],
+  ['use_5fbreakpoints_31',['use_breakpoints',['../classthorin_1_1_world.html#aadebb96d533203974dad0543b78b8909',1,'thorin::World::State']]],
+  ['usehash_32',['UseHash',['../structthorin_1_1_use_hash.html',1,'thorin']]],
+  ['uses_33',['Uses',['../namespacethorin.html#a9940ea7e9ae99c708846d9a532c6d905',1,'thorin']]],
+  ['uses_34',['uses',['../classthorin_1_1_scheduler.html#a2de2f46e34c2d7061d4c967a8ba26791',1,'thorin::Scheduler::uses()'],['../classthorin_1_1_def.html#a8f66f1a1cfbfce39608ca318288866d4',1,'thorin::Def::uses() const']]],
+  ['uses_5f_35',['uses_',['../classthorin_1_1_def.html#abefc385c0d60ba85c5e649598d20fe05',1,'thorin::Def']]],
+  ['utf8_2ecpp_36',['utf8.cpp',['../utf8_8cpp.html',1,'']]],
+  ['utf8_2eh_37',['utf8.h',['../utf8_8h.html',1,'']]]
 ];

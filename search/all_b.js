@@ -8,9 +8,8 @@ var searchData=
   ['key_5',['key',['../classthorin_1_1detail_1_1_hash_table.html#ad7cf9a6726794cc3fadecb1531e28258',1,'thorin::detail::HashTable']]],
   ['key_5ftype_6',['key_type',['../classthorin_1_1detail_1_1_hash_table.html#ad5f6f55a3bc2f25f2328090296445da0',1,'thorin::detail::HashTable::key_type()'],['../classthorin_1_1_hash_map.html#a4fb517792d1c5f65c9f88db9fdca27fc',1,'thorin::HashMap::key_type()'],['../classthorin_1_1_hash_set.html#ab6a38c72ee2dbc127602bd09c253bb95',1,'thorin::HashSet::key_type()']]],
   ['keywords_5f_7',['keywords_',['../classthorin_1_1_lexer.html#ae983685e4b42cdfeecca6cdeeb2767a5',1,'thorin::Lexer']]],
-  ['kind_8',['Kind',['../classthorin_1_1_kind.html#ae2f599c347a0f9b80aa0ade2c3a92ba2',1,'thorin::Kind']]],
-  ['kind_9',['kind',['../classthorin_1_1_world.html#ab0b13abe15da390051cf3627ccde560c',1,'thorin::World']]],
-  ['kind_10',['Kind',['../namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06aea0c9a4caa75e2877c3b1e8654d40c49',1,'thorin::Node::Kind()'],['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771',1,'thorin::Kind()'],['../classthorin_1_1_kind.html',1,'thorin::Kind']]],
-  ['kind_5f_11',['kind_',['../classthorin_1_1_world.html#a027f531079cfa3892e678331cb3ffbbf',1,'thorin::World::Data']]],
-  ['known_12',['known',['../namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921ac90ae688b2a3b1fd0751fd743eb385cd',1,'thorin']]]
+  ['kind_8',['kind',['../classthorin_1_1_world.html#ab0b13abe15da390051cf3627ccde560c',1,'thorin::World']]],
+  ['kind_9',['Kind',['../classthorin_1_1_kind.html#ae2f599c347a0f9b80aa0ade2c3a92ba2',1,'thorin::Kind::Kind()'],['../namespacethorin_1_1_node.html#a1e65379a5361d88e84c135355c0a6d06aea0c9a4caa75e2877c3b1e8654d40c49',1,'thorin::Node::Kind()'],['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771',1,'thorin::Kind()'],['../classthorin_1_1_kind.html',1,'thorin::Kind']]],
+  ['kind_5f_10',['kind_',['../classthorin_1_1_world.html#a027f531079cfa3892e678331cb3ffbbf',1,'thorin::World::Data']]],
+  ['known_11',['known',['../namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921ac90ae688b2a3b1fd0751fd743eb385cd',1,'thorin']]]
 ];

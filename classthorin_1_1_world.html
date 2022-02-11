@@ -117,7 +117,7 @@ Inheritance diagram for thorin::World:</div>
 <div class="dynheader">
 Collaboration diagram for thorin::World:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1_world__coll__graph.svg" width="1590" height="912"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1_world__coll__graph.svg" width="1619" height="1152"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -587,6 +587,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a35687817089d85315d46a391dd75e320"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#a35687817089d85315d46a391dd75e320">visit</a> (<a class="el" href="classthorin_1_1_world.html#af4e2bf1374dd2af475980465c654b903">VisitFn</a>) const</td></tr>
 <tr class="memdesc:a35687817089d85315d46a391dd75e320"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively visits all <em>reachable</em> <a class="el" href="classthorin_1_1_scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s in this <code><a class="el" href="classthorin_1_1_world.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a></code> that do not have free variables.  <a href="classthorin_1_1_world.html#a35687817089d85315d46a391dd75e320">More...</a><br /></td></tr>
 <tr class="separator:a35687817089d85315d46a391dd75e320"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">debugging features</div></td></tr>
+<tr class="memitem:af3f8df5247a26f483260eb5a96d3870a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#af3f8df5247a26f483260eb5a96d3870a">breakpoint</a> (size_t number)</td></tr>
+<tr class="separator:af3f8df5247a26f483260eb5a96d3870a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2b4b3ed8f15ed97e0df04f550589f54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#ab2b4b3ed8f15ed97e0df04f550589f54">use_breakpoint</a> (size_t number)</td></tr>
+<tr class="separator:ab2b4b3ed8f15ed97e0df04f550589f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f21095165d57a0ad0921ed68b8ce0d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#a7f21095165d57a0ad0921ed68b8ce0d9">enable_history</a> (bool flag=true)</td></tr>
+<tr class="separator:a7f21095165d57a0ad0921ed68b8ce0d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af79e6559921e169914f81a46e9784937"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#af79e6559921e169914f81a46e9784937">track_history</a> () const</td></tr>
+<tr class="separator:af79e6559921e169914f81a46e9784937"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63364ab75f62f39bf5041710e10701c0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1_def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#a63364ab75f62f39bf5041710e10701c0">gid2def</a> (<a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">u32</a> gid)</td></tr>
+<tr class="separator:a63364ab75f62f39bf5041710e10701c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">stream</div></td></tr>
 <tr class="memitem:a0edbb8b617b1a68ee664c92ad4b01cc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_world.html#a0edbb8b617b1a68ee664c92ad4b01cc8">stream</a> (<a class="el" href="classthorin_1_1_stream.html">Stream</a> &amp;) const</td></tr>
 <tr class="separator:a0edbb8b617b1a68ee664c92ad4b01cc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -988,8 +999,20 @@ zip_</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"></div><table class="fieldtable">
+<div class="textblock"></div><div class="dynheader">
+Collaboration diagram for thorin::World::State:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structthorin_1_1_world_1_1_state__coll__graph.svg" width="199" height="247"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="ada877252efb3aa4740b7996227a3bcac" name="ada877252efb3aa4740b7996227a3bcac"></a><a class="el" href="classthorin_1_1_world.html#a5b257f8771ac8be2c46d55f500454f65">Breakpoints</a></td>
+<td class="fieldname">
+breakpoints</td>
+<td class="fielddoc">
+</td></tr>
 <tr><td class="fieldtype">
 <a id="afeb552a0531602017f6edf0bf84a97f3" name="afeb552a0531602017f6edf0bf84a97f3"></a><a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">u32</a></td>
 <td class="fieldname">
@@ -1006,6 +1029,18 @@ min_level</td>
 <a id="a183dfa7bf4a431cd041f38b5728f5f09" name="a183dfa7bf4a431cd041f38b5728f5f09"></a>bool</td>
 <td class="fieldname">
 pe_done</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="aaed5f4613dc31c57dfe5cf3b88bc03cb" name="aaed5f4613dc31c57dfe5cf3b88bc03cb"></a>bool</td>
+<td class="fieldname">
+track_history</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="aadebb96d533203974dad0543b78b8909" name="aadebb96d533203974dad0543b78b8909"></a><a class="el" href="classthorin_1_1_world.html#a5b257f8771ac8be2c46d55f500454f65">Breakpoints</a></td>
+<td class="fieldname">
+use_breakpoints</td>
 <td class="fielddoc">
 </td></tr>
 </table>
@@ -2188,6 +2223,24 @@ template&lt;bool up&gt; </div>
 
 </div>
 </div>
+<a id="af3f8df5247a26f483260eb5a96d3870a" name="af3f8df5247a26f483260eb5a96d3870a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3f8df5247a26f483260eb5a96d3870a">&#9670;&nbsp;</a></span>breakpoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::World::breakpoint </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>number</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ada59fac911d8db2ace72a5c66a148525" name="ada59fac911d8db2ace72a5c66a148525"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ada59fac911d8db2ace72a5c66a148525">&#9670;&nbsp;</a></span>cn() <span class="overload">[1/3]</span></h2>
 
@@ -2570,6 +2623,24 @@ template&lt;class... Args&gt; </div>
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7f21095165d57a0ad0921ed68b8ce0d9" name="a7f21095165d57a0ad0921ed68b8ce0d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f21095165d57a0ad0921ed68b8ce0d9">&#9670;&nbsp;</a></span>enable_history()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::World::enable_history </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>flag</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>
@@ -3598,6 +3669,24 @@ template&lt;class O &gt; </div>
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a63364ab75f62f39bf5041710e10701c0" name="a63364ab75f62f39bf5041710e10701c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63364ab75f62f39bf5041710e10701c0">&#9670;&nbsp;</a></span>gid2def()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1_def.html">Def</a> * thorin::World::gid2def </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">u32</a>&#160;</td>
+          <td class="paramname"><em>gid</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>
@@ -7864,6 +7953,23 @@ template&lt;class O &gt; </div>
 
 </div>
 </div>
+<a id="af79e6559921e169914f81a46e9784937" name="af79e6559921e169914f81a46e9784937"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af79e6559921e169914f81a46e9784937">&#9670;&nbsp;</a></span>track_history()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool thorin::World::track_history </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="aab07faf7e542e9f83c32e7bc09ab4e73" name="aab07faf7e542e9f83c32e7bc09ab4e73"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aab07faf7e542e9f83c32e7bc09ab4e73">&#9670;&nbsp;</a></span>tuple() <span class="overload">[1/3]</span></h2>
 
@@ -8416,6 +8522,24 @@ template&lt;class T , class... Args&gt; </div>
 <span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab2b4b3ed8f15ed97e0df04f550589f54" name="ab2b4b3ed8f15ed97e0df04f550589f54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2b4b3ed8f15ed97e0df04f550589f54">&#9670;&nbsp;</a></span>use_breakpoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::World::use_breakpoint </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>number</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>

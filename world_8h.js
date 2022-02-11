@@ -8,9 +8,12 @@ var world_8h =
     [ "thorin::World::Arena::Zone", "structthorin_1_1_world_1_1_arena_1_1_zone.html", "structthorin_1_1_world_1_1_arena_1_1_zone" ],
     [ "thorin::World::Arena::Lock", "structthorin_1_1_world_1_1_arena_1_1_lock.html", "structthorin_1_1_world_1_1_arena_1_1_lock" ],
     [ "thorin::World::State", "classthorin_1_1_world.html#structthorin_1_1_world_1_1_state", [
+      [ "breakpoints", "classthorin_1_1_world.html#ada877252efb3aa4740b7996227a3bcac", null ],
       [ "curr_gid", "classthorin_1_1_world.html#afeb552a0531602017f6edf0bf84a97f3", null ],
       [ "min_level", "classthorin_1_1_world.html#acc36ddb57f73cd37bdb3a30a8d87b43e", null ],
-      [ "pe_done", "classthorin_1_1_world.html#a183dfa7bf4a431cd041f38b5728f5f09", null ]
+      [ "pe_done", "classthorin_1_1_world.html#a183dfa7bf4a431cd041f38b5728f5f09", null ],
+      [ "track_history", "classthorin_1_1_world.html#aaed5f4613dc31c57dfe5cf3b88bc03cb", null ],
+      [ "use_breakpoints", "classthorin_1_1_world.html#aadebb96d533203974dad0543b78b8909", null ]
     ] ],
     [ "thorin::World::Data", "classthorin_1_1_world.html#structthorin_1_1_world_1_1_data", [
       [ "Acc_", "classthorin_1_1_world.html#aed468e9f5e8de97d038d9262d1e90417", null ],
