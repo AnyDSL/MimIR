@@ -337,13 +337,6 @@ var namespacethorin =
       [ "known", "namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921ac90ae688b2a3b1fd0751fd743eb385cd", null ],
       [ "run", "namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921aa53108f7543b75adbb34afc035d4cdf6", null ]
     ] ],
-    [ "Prec", "namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601f", [
-      [ "Bottom", "namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601fa2ad9d63b69c4a10a5cc9cad923133bc4", null ],
-      [ "Pi", "namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601fa127125672f1e85d1e676d4394d24e066", null ],
-      [ "App", "namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601faac863f346e618f9a959b5c95d5d28941", null ],
-      [ "Extract", "namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601fa97478353818fc5590dc34b57b81a4b23", null ],
-      [ "Lit", "namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601fae5e556ecf935270736f5e46e73db06e4", null ]
-    ] ],
     [ "RCmp", "namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9", [
       [ "f", "namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a8fa14cdd754f91cc6554c9e71929cce7", null ],
       [ "e", "namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9ae1671797c52e15f763380b45e841ec32", null ],
@@ -544,9 +537,9 @@ var namespacethorin =
     [ "partial_evaluation", "namespacethorin.html#a2ab2d43cef7e77ce1befc1ab32aa67b3", null ],
     [ "pop", "namespacethorin.html#ac092144d1251320b5e13b22eaab57d64", null ],
     [ "pop", "namespacethorin.html#ab31c89d6a2afc9d7693f7fbdd992c7fe", null ],
-    [ "prec", "namespacethorin.html#ae69dbadc7587f234430b5716c2368e58", null ],
-    [ "prec_l", "namespacethorin.html#a837c1d4fae87cc423607cc0936b83123", null ],
-    [ "prec_r", "namespacethorin.html#ad887ca8a0641fe12ec376b0b50cb3f41", null ],
+    [ "prec", "namespacethorin.html#a6fbb7be71b1d1c8df9b69728c62c4cdf", null ],
+    [ "prec_l", "namespacethorin.html#a17b9f81f102326a8fe909c9c704d4ba5", null ],
+    [ "prec_r", "namespacethorin.html#a860a2076e1d440ef8a95947d6215fbe4", null ],
     [ "reassociate", "namespacethorin.html#a7a14bb2032b4f47477d1fd642eb868e1", null ],
     [ "rem", "namespacethorin.html#acfc79e85e5edc22a794cb2db4f85b6d8", null ],
     [ "rem", "namespacethorin.html#a5bdf209d006051cf78afb63e49fca4b7", null ],

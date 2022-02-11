@@ -116,10 +116,16 @@ Namespaces</h2></td></tr>
 Macros</h2></td></tr>
 <tr class="memitem:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8cpp.html#a7d12cc9e30e6f91e9135feb7a67bb4df">CODE</a>(t,  str)&#160;&#160;&#160;case Tok::Tag::t: return str;</td></tr>
 <tr class="separator:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a271eddd9a1e4146856081304fd3decf4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8cpp.html#a271eddd9a1e4146856081304fd3decf4">CODE</a>(t,  str,  prec_l,  prec_r)&#160;&#160;&#160;case Tag::t: return str;</td></tr>
+<tr class="separator:a271eddd9a1e4146856081304fd3decf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a271eddd9a1e4146856081304fd3decf4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8cpp.html#a271eddd9a1e4146856081304fd3decf4">CODE</a>(t,  str,  prec_l,  prec_r)&#160;&#160;&#160;case Tag::t: return Prec::prec_l;</td></tr>
+<tr class="separator:a271eddd9a1e4146856081304fd3decf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a271eddd9a1e4146856081304fd3decf4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8cpp.html#a271eddd9a1e4146856081304fd3decf4">CODE</a>(t,  str,  prec_l,  prec_r)&#160;&#160;&#160;case Tag::t: return Prec::prec_r;</td></tr>
+<tr class="separator:a271eddd9a1e4146856081304fd3decf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a7d12cc9e30e6f91e9135feb7a67bb4df" name="a7d12cc9e30e6f91e9135feb7a67bb4df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d12cc9e30e6f91e9135feb7a67bb4df">&#9670;&nbsp;</a></span>CODE</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d12cc9e30e6f91e9135feb7a67bb4df">&#9670;&nbsp;</a></span>CODE <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -140,6 +146,126 @@ Macros</h2></td></tr>
           <td></td>
           <td>)</td>
           <td></td><td>&#160;&#160;&#160;case Tok::Tag::t: return str;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a271eddd9a1e4146856081304fd3decf4" name="a271eddd9a1e4146856081304fd3decf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a271eddd9a1e4146856081304fd3decf4">&#9670;&nbsp;</a></span>CODE <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">t, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">str, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">prec_l, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">prec_r&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;case Tag::t: return str;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a271eddd9a1e4146856081304fd3decf4" name="a271eddd9a1e4146856081304fd3decf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a271eddd9a1e4146856081304fd3decf4">&#9670;&nbsp;</a></span>CODE <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">t, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">str, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">prec_l, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">prec_r&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;case Tag::t: return Prec::prec_l;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a271eddd9a1e4146856081304fd3decf4" name="a271eddd9a1e4146856081304fd3decf4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a271eddd9a1e4146856081304fd3decf4">&#9670;&nbsp;</a></span>CODE <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">t, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">str, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">prec_l, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">prec_r&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;case Tag::t: return Prec::prec_r;</td>
         </tr>
       </table>
 </div><div class="memdoc">

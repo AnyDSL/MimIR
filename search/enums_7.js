@@ -1,5 +1,5 @@
 var searchData=
 [
   ['pe_0',['PE',['../namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921',1,'thorin']]],
-  ['prec_1',['Prec',['../namespacethorin.html#a50404e0533b9b1a2a1c2e2617a33601f',1,'thorin']]]
+  ['prec_1',['Prec',['../classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2',1,'thorin::Tok']]]
 ];

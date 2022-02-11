@@ -1,5 +1,13 @@
 var classthorin_1_1_tok =
 [
+    [ "Prec", "classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2", [
+      [ "Error", "classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2a902b0d55fddef6f8d651fe1035b7d4bd", null ],
+      [ "Bottom", "classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2a2ad9d63b69c4a10a5cc9cad923133bc4", null ],
+      [ "Pi", "classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2a127125672f1e85d1e676d4394d24e066", null ],
+      [ "App", "classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2aac863f346e618f9a959b5c95d5d28941", null ],
+      [ "Extract", "classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2a97478353818fc5590dc34b57b81a4b23", null ],
+      [ "Lit", "classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2ae5e556ecf935270736f5e46e73db06e4", null ]
+    ] ],
     [ "Tag", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038", [
       [ "CODE", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a8e8e97f0a5efc333f823cf9417d32d3f", null ],
       [ "K_in", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a94336bc2150b7a781dbc26b354ea29b8", null ],
@@ -12,7 +20,6 @@ var classthorin_1_1_tok =
       [ "P_comma", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038adafb56089dc7f2a7f84b600e1615e75c", null ],
       [ "P_dot", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a583f2c1fa754c7459d78f071c9b5f751", null ],
       [ "P_semicolon", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038af9423b3491626daacc451712510275d2", null ],
-      [ "P_arrow", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad58c03d53ab4b9323a1c6e05e816924f", null ],
       [ "P_assign", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2cb3b705eec7f0c3017367245b8ac4e4", null ],
       [ "D_angle_l", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6", null ],
       [ "D_angle_r", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aecbf83ec5b71cc1fabb68b9b29602913", null ],
@@ -25,7 +32,8 @@ var classthorin_1_1_tok =
       [ "D_quote_l", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5be9fecd8fb8ece5f3217942ae9f6c4a", null ],
       [ "D_quote_r", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038add7e7307bb61b436ebfaff2f7f0e0e29", null ],
       [ "B_lam", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038acea5dc65c7461c55ad4662dfe1fe9c23", null ],
-      [ "B_forall", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5", null ]
+      [ "B_forall", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5", null ],
+      [ "CODE", "classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5b5f13d10c2ea409324e7e6f12a20df4", null ]
     ] ],
     [ "Tok", "classthorin_1_1_tok.html#ab96cbe83a40186a1becbf1e99bb33c5b", null ],
     [ "Tok", "classthorin_1_1_tok.html#a197b6cd7caa11b685f2c0f64323cb3b4", null ],
@@ -35,5 +43,7 @@ var classthorin_1_1_tok =
     [ "stream", "classthorin_1_1_tok.html#a8fe5202e743a95a61ae502c7641d7b81", null ],
     [ "sym", "classthorin_1_1_tok.html#a237307d0c79f2a973e0a624b050de445", null ],
     [ "tag", "classthorin_1_1_tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b", null ],
+    [ "tag2prec_l", "classthorin_1_1_tok.html#a9c5c236562f7835da20bd8a51cf2c10e", null ],
+    [ "tag2prec_r", "classthorin_1_1_tok.html#a47d52f308d3b23208a6fd4a7bb117c77", null ],
     [ "tag2str", "classthorin_1_1_tok.html#a1f20dfe379a1a1ce6a19d539e26455ba", null ]
 ];

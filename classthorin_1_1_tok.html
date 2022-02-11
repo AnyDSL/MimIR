@@ -118,6 +118,17 @@ Collaboration diagram for thorin::Tok:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
+<tr class="memitem:afdc0f701e0b635d379f16d20957532a2"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2">Prec</a> { <br />
+&#160;&#160;<a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2a902b0d55fddef6f8d651fe1035b7d4bd">Error</a>
+, <a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2a2ad9d63b69c4a10a5cc9cad923133bc4">Bottom</a>
+, <a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2a127125672f1e85d1e676d4394d24e066">Pi</a>
+, <a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2aac863f346e618f9a959b5c95d5d28941">App</a>
+, <br />
+&#160;&#160;<a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2a97478353818fc5590dc34b57b81a4b23">Extract</a>
+, <a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2ae5e556ecf935270736f5e46e73db06e4">Lit</a>
+<br />
+ }</td></tr>
+<tr class="separator:afdc0f701e0b635d379f16d20957532a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b38ddc0634b228ae22e6c43b0f23038"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a> { <br />
 &#160;&#160;<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a8e8e97f0a5efc333f823cf9417d32d3f">CODE</a>
 , <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a94336bc2150b7a781dbc26b354ea29b8">K_in</a>
@@ -132,24 +143,24 @@ Public Types</h2></td></tr>
 &#160;&#160;<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038adafb56089dc7f2a7f84b600e1615e75c">P_comma</a>
 , <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a583f2c1fa754c7459d78f071c9b5f751">P_dot</a>
 , <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038af9423b3491626daacc451712510275d2">P_semicolon</a>
-, <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad58c03d53ab4b9323a1c6e05e816924f">P_arrow</a>
+, <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2cb3b705eec7f0c3017367245b8ac4e4">P_assign</a>
 , <br />
-&#160;&#160;<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2cb3b705eec7f0c3017367245b8ac4e4">P_assign</a>
-, <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6">D_angle_l</a>
+&#160;&#160;<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6">D_angle_l</a>
 , <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aecbf83ec5b71cc1fabb68b9b29602913">D_angle_r</a>
 , <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038af85fb01799db87e4794e759cd80ab24a">D_brace_l</a>
+, <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9ce34fa305fe754b53b83132fa7f6755">D_brace_r</a>
 , <br />
-&#160;&#160;<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9ce34fa305fe754b53b83132fa7f6755">D_brace_r</a>
-, <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a53091fa0e2472f50caed45e35582ccf9">D_bracket_l</a>
+&#160;&#160;<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a53091fa0e2472f50caed45e35582ccf9">D_bracket_l</a>
 , <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9ad29629b50d3cc6dff258d5b83a2dda">D_bracket_r</a>
 , <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038acd04ba93e71e6eb0d2a73e17a67a90cf">D_paren_l</a>
+, <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aee4f36d19b140744668c52ea6444ef44">D_paren_r</a>
 , <br />
-&#160;&#160;<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aee4f36d19b140744668c52ea6444ef44">D_paren_r</a>
-, <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5be9fecd8fb8ece5f3217942ae9f6c4a">D_quote_l</a>
+&#160;&#160;<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5be9fecd8fb8ece5f3217942ae9f6c4a">D_quote_l</a>
 , <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038add7e7307bb61b436ebfaff2f7f0e0e29">D_quote_r</a>
 , <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038acea5dc65c7461c55ad4662dfe1fe9c23">B_lam</a>
+, <a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5">B_forall</a>
 , <br />
-&#160;&#160;<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5">B_forall</a>
+&#160;&#160;<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5b5f13d10c2ea409324e7e6f12a20df4">CODE</a>
 <br />
  }</td></tr>
 <tr class="separator:a2b38ddc0634b228ae22e6c43b0f23038"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,8 +201,42 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a1f20dfe379a1a1ce6a19d539e26455ba"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_tok.html#a1f20dfe379a1a1ce6a19d539e26455ba">tag2str</a> (<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a>)</td></tr>
 <tr class="separator:a1f20dfe379a1a1ce6a19d539e26455ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c5c236562f7835da20bd8a51cf2c10e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2">Prec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_tok.html#a9c5c236562f7835da20bd8a51cf2c10e">tag2prec_l</a> (<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a>)</td></tr>
+<tr class="separator:a9c5c236562f7835da20bd8a51cf2c10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47d52f308d3b23208a6fd4a7bb117c77"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2">Prec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1_tok.html#a47d52f308d3b23208a6fd4a7bb117c77">tag2prec_r</a> (<a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a>)</td></tr>
+<tr class="separator:a47d52f308d3b23208a6fd4a7bb117c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
+<a id="afdc0f701e0b635d379f16d20957532a2" name="afdc0f701e0b635d379f16d20957532a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdc0f701e0b635d379f16d20957532a2">&#9670;&nbsp;</a></span>Prec</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2">thorin::Tok::Prec</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="afdc0f701e0b635d379f16d20957532a2a902b0d55fddef6f8d651fe1035b7d4bd" name="afdc0f701e0b635d379f16d20957532a2a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="afdc0f701e0b635d379f16d20957532a2a2ad9d63b69c4a10a5cc9cad923133bc4" name="afdc0f701e0b635d379f16d20957532a2a2ad9d63b69c4a10a5cc9cad923133bc4"></a>Bottom&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="afdc0f701e0b635d379f16d20957532a2a127125672f1e85d1e676d4394d24e066" name="afdc0f701e0b635d379f16d20957532a2a127125672f1e85d1e676d4394d24e066"></a>Pi&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="afdc0f701e0b635d379f16d20957532a2aac863f346e618f9a959b5c95d5d28941" name="afdc0f701e0b635d379f16d20957532a2aac863f346e618f9a959b5c95d5d28941"></a>App&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="afdc0f701e0b635d379f16d20957532a2a97478353818fc5590dc34b57b81a4b23" name="afdc0f701e0b635d379f16d20957532a2a97478353818fc5590dc34b57b81a4b23"></a>Extract&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="afdc0f701e0b635d379f16d20957532a2ae5e556ecf935270736f5e46e73db06e4" name="afdc0f701e0b635d379f16d20957532a2ae5e556ecf935270736f5e46e73db06e4"></a>Lit&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 <a id="a2b38ddc0634b228ae22e6c43b0f23038" name="a2b38ddc0634b228ae22e6c43b0f23038"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b38ddc0634b228ae22e6c43b0f23038">&#9670;&nbsp;</a></span>Tag</h2>
 
@@ -223,7 +268,6 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038adafb56089dc7f2a7f84b600e1615e75c" name="a2b38ddc0634b228ae22e6c43b0f23038adafb56089dc7f2a7f84b600e1615e75c"></a>P_comma&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a583f2c1fa754c7459d78f071c9b5f751" name="a2b38ddc0634b228ae22e6c43b0f23038a583f2c1fa754c7459d78f071c9b5f751"></a>P_dot&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038af9423b3491626daacc451712510275d2" name="a2b38ddc0634b228ae22e6c43b0f23038af9423b3491626daacc451712510275d2"></a>P_semicolon&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038ad58c03d53ab4b9323a1c6e05e816924f" name="a2b38ddc0634b228ae22e6c43b0f23038ad58c03d53ab4b9323a1c6e05e816924f"></a>P_arrow&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a2cb3b705eec7f0c3017367245b8ac4e4" name="a2b38ddc0634b228ae22e6c43b0f23038a2cb3b705eec7f0c3017367245b8ac4e4"></a>P_assign&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6" name="a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6"></a>D_angle_l&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aecbf83ec5b71cc1fabb68b9b29602913" name="a2b38ddc0634b228ae22e6c43b0f23038aecbf83ec5b71cc1fabb68b9b29602913"></a>D_angle_r&#160;</td><td class="fielddoc"></td></tr>
@@ -237,6 +281,7 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038add7e7307bb61b436ebfaff2f7f0e0e29" name="a2b38ddc0634b228ae22e6c43b0f23038add7e7307bb61b436ebfaff2f7f0e0e29"></a>D_quote_r&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038acea5dc65c7461c55ad4662dfe1fe9c23" name="a2b38ddc0634b228ae22e6c43b0f23038acea5dc65c7461c55ad4662dfe1fe9c23"></a>B_lam&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5" name="a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5"></a>B_forall&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a5b5f13d10c2ea409324e7e6f12a20df4" name="a2b38ddc0634b228ae22e6c43b0f23038a5b5f13d10c2ea409324e7e6f12a20df4"></a>CODE&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -453,6 +498,58 @@ Static Public Member Functions</h2></td></tr>
   </td>
   <td class="mlabels-right">
 <span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9c5c236562f7835da20bd8a51cf2c10e" name="a9c5c236562f7835da20bd8a51cf2c10e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c5c236562f7835da20bd8a51cf2c10e">&#9670;&nbsp;</a></span>tag2prec_l()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2">Tok::Prec</a> thorin::Tok::tag2prec_l </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a>&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a47d52f308d3b23208a6fd4a7bb117c77" name="a47d52f308d3b23208a6fd4a7bb117c77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47d52f308d3b23208a6fd4a7bb117c77">&#9670;&nbsp;</a></span>tag2prec_r()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classthorin_1_1_tok.html#afdc0f701e0b635d379f16d20957532a2">Tok::Prec</a> thorin::Tok::tag2prec_r </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1_tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a>&#160;</td>
+          <td class="paramname"><em>tag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
