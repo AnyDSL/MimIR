@@ -1,4 +1,4 @@
-# Thorin's Command-Line Interface
+# Command-Line Interface
 
 [TOC]
 
