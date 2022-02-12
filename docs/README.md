@@ -13,7 +13,7 @@ This means:
 * [dependent types](https://en.wikipedia.org/wiki/Dependent_type)
 
 In contrast to other CoC-based program representations such as [Coq](https://coq.inria.fr/) or [Lean](https://leanprover.github.io/), Thorin is *not* a theorem prover but focuses on generating efficient code.
-For this reason, Thorin  explicitly features mutable state and models imperative control flow via [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style).
+For this reason, Thorin explicitly features mutable state and models imperative control flow with [continuation-passing style (CPS)](https://en.wikipedia.org/wiki/Continuation-passing_style).
 
 You can use Thorin either via it's C++-API or the [command-line utility](cli.md).
 
@@ -39,21 +39,21 @@ For a `Release` build simply use `-DCMAKE_BUILD_TYPE=Release`.
 ### Tests
 
 Run the tests with:
-```
+```sh
 cd build
 ctest
 ```
 
 In addition, you can enable [Valgrind](https://valgrind.org/) with:
-```
+```sh
 ctest -T memcheck
 ```
 
 ### Documentation
 
-You can build the documentation locally with:
-```
-doxygen doxyfile
+You can build the documentation locally from the root folder with:
+```sh
+doxygen
 ```
 
 ### Dependencies
