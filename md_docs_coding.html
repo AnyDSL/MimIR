@@ -97,11 +97,9 @@ $(document).ready(function(){initNavTree('md_docs_coding.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md24">Coding Style</a><ul><li class="level2"><a href="#autotoc_md25">Clang-Format</a></li>
-</ul>
-</li>
-<li class="level1"><a href="#autotoc_md26">Debugging</a><ul><li class="level2"><a href="#autotoc_md27">Logging</a></li>
-<li class="level2"><a href="#autotoc_md28">Breakpoints</a></li>
+<ul><li class="level1"><a href="#autotoc_md24">Coding Style</a></li>
+<li class="level1"><a href="#autotoc_md25">Debugging</a><ul><li class="level2"><a href="#autotoc_md26">Logging</a></li>
+<li class="level2"><a href="#autotoc_md27">Breakpoints</a></li>
 </ul>
 </li>
 </ul>
@@ -127,15 +125,12 @@ Coding Style</h1>
 <li>prefer <code>// C++-style comments</code> over <code>/* C-style comments */</code></li>
 <li>use three slashes for Doxygen and <a href="https://www.doxygen.nl/manual/grouping.html">group</a> your methods into logical units if possible</li>
 </ul>
-<p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository.</p>
-<h2><a class="anchor" id="autotoc_md25"></a>
-Clang-Format</h2>
-<p >TODO</p>
-<h1><a class="anchor" id="autotoc_md26"></a>
+<p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. In order to run <code>clang-format</code> automatically on all changed files, switch to the provied pre-commit hook: </p><div class="fragment"><div class="line">git config --local core.hooksPath .githooks/</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md25"></a>
 Debugging</h1>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 Logging</h2>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 Breakpoints</h2>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

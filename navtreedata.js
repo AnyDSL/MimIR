@@ -57,12 +57,10 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Coding & Debugging", "md_docs_coding.html", [
-      [ "Coding Style", "md_docs_coding.html#autotoc_md24", [
-        [ "Clang-Format", "md_docs_coding.html#autotoc_md25", null ]
-      ] ],
-      [ "Debugging", "md_docs_coding.html#autotoc_md26", [
-        [ "Logging", "md_docs_coding.html#autotoc_md27", null ],
-        [ "Breakpoints", "md_docs_coding.html#autotoc_md28", null ]
+      [ "Coding Style", "md_docs_coding.html#autotoc_md24", null ],
+      [ "Debugging", "md_docs_coding.html#autotoc_md25", [
+        [ "Logging", "md_docs_coding.html#autotoc_md26", null ],
+        [ "Breakpoints", "md_docs_coding.html#autotoc_md27", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
@@ -121,11 +119,11 @@ var NAVTREEINDEX =
 "classthorin_1_1_world.html#af79e6559921e169914f81a46e9784937",
 "classthorin_1_1ll_1_1_code_gen.html#aeaddc6bdf6bc0d4ef3726ef55361c1c5",
 "hash_8h.html#ae0e621eb1be011dcdfe11e5171fd7dd4",
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a8fa14cdd754f91cc6554c9e71929cce7",
-"namespacethorin.html#aefce93521e8a134d9ab10e5205925848",
-"structthorin_1_1_array_storage_3_01_t_00_010_01_4.html#a64b01c683e146fe246c8b19346fa6600",
-"structthorin_1_1_use_hash.html",
-"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719ae4a54d0958e3458827376dad1f748681"
+"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a92df19e29c9d45d888ed5f68bad1c3b5",
+"namespacethorin.html#af07839b6df8aeba82f7a923350177c7b",
+"structthorin_1_1_array_storage_3_01_t_00_010_01_4.html#a79aae431450eb531e1403fa22de48a90",
+"structthorin_1_1_use_hash.html#a5f3c80c009fd1134878b6adfb62000cd",
+"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719ae5bb095f00a918615bff3a4852c30a41"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

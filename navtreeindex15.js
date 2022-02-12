@@ -73,10 +73,9 @@ var NAVTREEINDEX15 =
 "md_docs_cli.html#autotoc_md7":[2,0],
 "md_docs_coding.html":[5],
 "md_docs_coding.html#autotoc_md24":[5,0],
-"md_docs_coding.html#autotoc_md25":[5,0,0],
-"md_docs_coding.html#autotoc_md26":[5,1],
-"md_docs_coding.html#autotoc_md27":[5,1,0],
-"md_docs_coding.html#autotoc_md28":[5,1,1],
+"md_docs_coding.html#autotoc_md25":[5,1],
+"md_docs_coding.html#autotoc_md26":[5,1,0],
+"md_docs_coding.html#autotoc_md27":[5,1,1],
 "md_docs_dev.html":[3],
 "md_docs_dev.html#autotoc_md10":[3,1],
 "md_docs_dev.html#autotoc_md11":[3,1,0],
@@ -93,8 +92,8 @@ var NAVTREEINDEX15 =
 "md_docs_passes.html#autotoc_md20":[4,1,1],
 "md_docs_passes.html#autotoc_md21":[4,1,2],
 "md_docs_passes.html#autotoc_md22":[4,1,3],
-"namespacemembers.html":[6,1,0,0],
 "namespacemembers.html":[6,1,0],
+"namespacemembers.html":[6,1,0,0],
 "namespacemembers_a.html":[6,1,0,1],
 "namespacemembers_b.html":[6,1,0,2],
 "namespacemembers_c.html":[6,1,0,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX15 =
 "namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a4eb31516a4986c34fa297e5e5f4045a9":[6,0,0,234,13],
 "namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a738a656e8e8ec272ca17cd51e12f558b":[6,0,0,234,10],
 "namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a76cf56920355319ad148e25a340b0f18":[6,0,0,234,11],
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a7b774effe4a349c6dd82ad4f4f21d34c":[6,0,0,234,8]
+"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a7b774effe4a349c6dd82ad4f4f21d34c":[6,0,0,234,8],
+"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a8fa14cdd754f91cc6554c9e71929cce7":[6,0,0,234,0]
 };
