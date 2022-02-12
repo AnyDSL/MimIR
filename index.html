@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <li><a href="https://en.wikipedia.org/wiki/Higher-order_function">higher-order functions</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Dependent_type">dependent types</a></li>
 </ul>
-<p >In contrast to other CoC-based program representations such as <a href="https://coq.inria.fr/">Coq</a> or <a href="https://leanprover.github.io/">Lean</a>, Thorin is <em>not</em> a theorem prover but focuses on generating efficient code. For this reason, Thorin explicitly features mutable state and models imperative control flow via <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style (CPS)</a>.</p>
+<p >In contrast to other CoC-based program representations such as <a href="https://coq.inria.fr/">Coq</a> or <a href="https://leanprover.github.io/">Lean</a>, Thorin is <em>not</em> a theorem prover but focuses on generating efficient code. For this reason, Thorin explicitly features mutable state and models imperative control flow with <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style (CPS)</a>.</p>
 <p >You can use Thorin either via it's C++-API or the <a class="el" href="md_docs_cli.html">command-line utility</a>.</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Building</h1>
@@ -129,7 +129,7 @@ Tests</h2>
 </div><!-- fragment --><p >In addition, you can enable <a href="https://valgrind.org/">Valgrind</a> with: </p><div class="fragment"><div class="line">ctest -T memcheck</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md3"></a>
 Documentation</h2>
-<p >You can build the documentation locally with: </p><div class="fragment"><div class="line">doxygen doxyfile</div>
+<p >You can build the documentation locally from the root folder with: </p><div class="fragment"><div class="line">doxygen</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>
 Dependencies</h2>
 <ul>
