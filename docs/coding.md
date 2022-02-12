@@ -23,10 +23,10 @@ Use the following coding convetions:
 * use three slashes for Doxygen and [group](https://www.doxygen.nl/manual/grouping.html) your methods into logical units if possible
 
 For all the other minute details like indentation width etc. use [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and the provided `.clang-format` file in the root of the repository.
-
-### Clang-Format
-
-TODO
+In order to run `clang-format` automatically on all changed files, switch to the provied pre-commit hook:
+```sh
+git config --local core.hooksPath .githooks/
+```
 
 # Debugging
 

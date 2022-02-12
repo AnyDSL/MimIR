@@ -1,0 +1,8 @@
+#!/bin/sh
+
+BASEDIR=$(dirname "$0")
+
+for FILE in $(git diff --cached --name-only | grep -E '.*\.(c|cpp|h|hpp)')
+do
+    clang-format -style="${BASEDIR}../.clang-format" -i $FILE
+done
