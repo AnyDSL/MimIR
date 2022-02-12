@@ -8,6 +8,7 @@
 #include "thorin/pass/fp/closure_analysis.h"
 #include "thorin/pass/rw/bound_elim.h"
 #include "thorin/pass/rw/partial_eval.h"
+#include "thorin/pass/rw/remem_elim.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 #include "thorin/pass/rw/drop_bb_closures.h"
@@ -30,7 +31,6 @@ void optimize(World& world) {
     opt.add<SSAConstr>(ee);
     // opt.add<CopyProp>();
     opt.add<Scalerize>(ee);
-    // opt.add<AutoDiff>();
     opt.run();
 
     PassMan closure_ana(world);

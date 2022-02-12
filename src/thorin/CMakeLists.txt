@@ -43,8 +43,6 @@ set(THORIN_SOURCES
     fe/parser.h
     fe/tok.cpp
     fe/tok.h
-    be/c.cpp
-    be/c.h
     pass/optimize.cpp
     pass/pass.cpp
     pass/fp/eta_exp.cpp
@@ -67,6 +65,8 @@ set(THORIN_SOURCES
     pass/rw/auto_diff.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
+    pass/rw/remem_elim.cpp
+    pass/rw/remem_elim.h
     pass/rw/ret_wrap.cpp
     pass/rw/ret_wrap.h
     pass/rw/bound_elim.cpp
@@ -109,23 +109,11 @@ if(LLVM_FOUND)
     list(APPEND THORIN_SOURCES
         be/llvm/cpu.cpp
         be/llvm/cpu.h
-        be/llvm/cuda.cpp
-        be/llvm/cuda.h
-        be/llvm/hls.cpp
-        be/llvm/hls.h
         be/llvm/llvm.cpp
         be/llvm/llvm.h
-        be/llvm/amdgpu.cpp
-        be/llvm/amdgpu.h
-        be/llvm/nvvm.cpp
-        be/llvm/nvvm.h
-        be/llvm/opencl.cpp
-        be/llvm/opencl.h
-        be/llvm/parallel.cpp
         be/llvm/runtime.inc
         be/llvm/runtime.cpp
         be/llvm/runtime.h
-        be/llvm/vectorize.cpp
     )
 endif()
 
