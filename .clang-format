@@ -26,7 +26,7 @@ AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
 AttributeMacros:
   - __capability
-BinPackArguments: false
+BinPackArguments: true
 BinPackParameters: false
 BraceWrapping:
   AfterCaseLabel:  false
@@ -82,18 +82,23 @@ IncludeCategories:
   - Regex:           '<c.*>'
     Priority:        1
     SortPriority:    1
+    CaseSensitive:   false
   - Regex:           '<.*>'
     Priority:        3
     SortPriority:    2
+    CaseSensitive:   false
   - Regex:           '<gtest.*>'
     Priority:        2
     SortPriority:    3
+    CaseSensitive:   false
   - Regex:           '"thorin/[a-zA-Z0-9_]+.h"'
     Priority:        4
     SortPriority:    4
+    CaseSensitive:   false
   - Regex:           '"thorin/.*"'
     Priority:        5
     SortPriority:    5
+    CaseSensitive:   false
 IncludeIsMainRegex: '(XXX)?$'
 IncludeIsMainSourceRegex: ''
 IndentAccessModifiers: false
@@ -105,7 +110,7 @@ IndentExternBlock: AfterExternBlock
 IndentRequires:  false
 IndentWidth:     4
 IndentWrappedFunctionNames: false
-InsertTrailingCommas: Wrapped
+InsertTrailingCommas: None
 JavaScriptQuotes: Leave
 JavaScriptWrapImports: true
 KeepEmptyLinesAtTheStartOfBlocks: false
@@ -177,4 +182,3 @@ WhitespaceSensitiveMacros:
   - NS_SWIFT_NAME
   - CF_SWIFT_NAME
 ...
-
