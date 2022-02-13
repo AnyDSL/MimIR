@@ -37,6 +37,7 @@ var classthorin_1_1Def =
     [ "loc", "classthorin_1_1Def.html#aaa260e29035d724e0f5c4286b93c5f0d", null ],
     [ "make_external", "classthorin_1_1Def.html#a0478725100ec49c9cb03ae02864a78d6", null ],
     [ "make_internal", "classthorin_1_1Def.html#ab0027c07e24d090144365a0857f76d43", null ],
+    [ "meta", "classthorin_1_1Def.html#a7b977900411e059a5e3a09833b1bd95a", null ],
     [ "name", "classthorin_1_1Def.html#a518e9dc3ad4658e41b962364ce960bd8", null ],
     [ "no_dep", "classthorin_1_1Def.html#aaf59c64a4eda3d8501507bfbd03f8cf8", null ],
     [ "node", "classthorin_1_1Def.html#af4196a5497099765af1a0441d1d8744b", null ],

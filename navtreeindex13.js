@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a56525ae64d370c0b448ac0d60710ef17":[6,0,0,232,3],
+"namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd":[6,0,0,232,4],
 "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba":[6,0,0,232,0],
 "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf":[6,0,0,232,1],
 "namespacethorin.html#ad47ce2d4f0c22c86e1466c1c0d1bb2a1":[6,0,0,423],
@@ -247,7 +249,5 @@ var NAVTREEINDEX13 =
 "pass_8h.html":[9,0,2,3,5],
 "pass_8h.html#a4159c79d6283964f1c81f17da2618eec":[9,0,2,3,5,6],
 "pass_8h.html#ad9c8d1c5eaf69c4577726bf75fbf9357":[9,0,2,3,5,5],
-"pass_8h_source.html":[9,0,2,3,5],
-"ptr_8h.html":[9,0,2,5,10],
-"ptr_8h.html#aee2f56c5529fe06f8a103083f64d13f4":[9,0,2,5,10,1]
+"pass_8h_source.html":[9,0,2,3,5]
 };

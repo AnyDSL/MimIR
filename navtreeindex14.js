@@ -1,5 +1,7 @@
 var NAVTREEINDEX14 =
 {
+"ptr_8h.html":[9,0,2,5,10],
+"ptr_8h.html#aee2f56c5529fe06f8a103083f64d13f4":[9,0,2,5,10,1],
 "ptr_8h_source.html":[9,0,2,5,10],
 "remem__elim_8cpp.html":[9,0,2,3,1,6],
 "remem__elim_8cpp_source.html":[9,0,2,3,1,6],
@@ -247,7 +249,5 @@ var NAVTREEINDEX14 =
 "structthorin_1_1Loc.html#abe1987125826cff12faf95a176183f82":[8,0,0,79,6],
 "structthorin_1_1Loc.html#ad1fdf23d819fbbc0d01d0bcf3a728284":[8,0,0,79,7],
 "structthorin_1_1Loc.html#ad1fdf23d819fbbc0d01d0bcf3a728284":[6,0,0,86,7],
-"structthorin_1_1Pos.html":[6,0,0,99],
-"structthorin_1_1Pos.html":[8,0,0,92],
-"structthorin_1_1Pos.html#a19d12dd25c375295f3bed0a2cc55dac7":[6,0,0,99,0]
+"structthorin_1_1Pos.html":[6,0,0,99]
 };

@@ -59,14 +59,13 @@ var searchData=
   ['log_56',['log',['../classthorin_1_1World.html#a065d10ec45ac3612318bbc8571b68b3a',1,'thorin::World::log() const'],['../classthorin_1_1World.html#a352a26e0abf5dcc0e62120a7ce3a8b3d',1,'thorin::World::log(LogLevel level, Loc loc, const char *fmt, Args &amp;&amp;... args)']]],
   ['loglevel_57',['LogLevel',['../namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426',1,'thorin']]],
   ['lookup_58',['lookup',['../classthorin_1_1HashMap.html#a87a1ccdc387bbc650bb2a61e57870a38',1,'thorin::HashMap::lookup()'],['../classthorin_1_1World.html#a9e395f39f57987d870c34df90ae0f80d',1,'thorin::World::lookup()']]],
-  ['looptree_59',['LoopTree',['../classthorin_1_1LoopTree.html#a788caed573f427650316afaf6735d41b',1,'thorin::LoopTree::LoopTree(const CFG&lt; forward &gt; &amp;cfg)'],['../classthorin_1_1LoopTree.html#a0da4823e67b8a40afeafa71f2c3c05a3',1,'thorin::LoopTree::LoopTree(const LoopTree &amp;)=delete']]],
-  ['looptree_60',['looptree',['../classthorin_1_1CFG.html#a19030529390c9eddebab511e075400c7',1,'thorin::CFG']]],
-  ['looptree_61',['LoopTree',['../classthorin_1_1LoopTree.html',1,'thorin']]],
-  ['looptree_2ecpp_62',['looptree.cpp',['../looptree_8cpp.html',1,'']]],
-  ['looptree_2eh_63',['looptree.h',['../looptree_8h.html',1,'']]],
-  ['looptreebuilder_64',['LoopTreeBuilder',['../classthorin_1_1LoopTreeBuilder.html#a1026774c35768d126137b47622093883',1,'thorin::LoopTreeBuilder::LoopTreeBuilder()'],['../classthorin_1_1LoopTreeBuilder.html',1,'thorin::LoopTreeBuilder&lt; forward &gt;']]],
-  ['looptreebuilder_3c_20forward_20_3e_65',['LoopTreeBuilder&lt; forward &gt;',['../classthorin_1_1LoopTree.html#a0b97215e639132eee69a71502a6a728a',1,'thorin::LoopTree::LoopTreeBuilder&lt; forward &gt;()'],['../classthorin_1_1LoopTree_1_1Leaf.html#a0b97215e639132eee69a71502a6a728a',1,'thorin::LoopTree::Leaf::LoopTreeBuilder&lt; forward &gt;()'],['../classthorin_1_1LoopTree_1_1Head.html#a0b97215e639132eee69a71502a6a728a',1,'thorin::LoopTree::Head::LoopTreeBuilder&lt; forward &gt;()']]],
-  ['lprec_66',['LPrec',['../namespacethorin.html#a8a6f378914383c7e6e801d31a00d0eb0',1,'thorin']]],
-  ['lrprec_67',['LRPrec',['../structthorin_1_1LRPrec.html#a6cb98f4eac50388d92b191cbef0712b0',1,'thorin::LRPrec::LRPrec()'],['../structthorin_1_1LRPrec.html',1,'thorin::LRPrec&lt; L &gt;']]],
-  ['lshr_68',['lshr',['../namespacethorin.html#aa4e9a4b6c779b23a08140d7b1a48a455a9d3827a838a5eeb8061fd0380d582ede',1,'thorin']]]
+  ['looptree_59',['looptree',['../classthorin_1_1CFG.html#a19030529390c9eddebab511e075400c7',1,'thorin::CFG']]],
+  ['looptree_60',['LoopTree',['../classthorin_1_1LoopTree.html#a788caed573f427650316afaf6735d41b',1,'thorin::LoopTree::LoopTree(const CFG&lt; forward &gt; &amp;cfg)'],['../classthorin_1_1LoopTree.html#a0da4823e67b8a40afeafa71f2c3c05a3',1,'thorin::LoopTree::LoopTree(const LoopTree &amp;)=delete'],['../classthorin_1_1LoopTree.html',1,'thorin::LoopTree&lt; forward &gt;']]],
+  ['looptree_2ecpp_61',['looptree.cpp',['../looptree_8cpp.html',1,'']]],
+  ['looptree_2eh_62',['looptree.h',['../looptree_8h.html',1,'']]],
+  ['looptreebuilder_63',['LoopTreeBuilder',['../classthorin_1_1LoopTreeBuilder.html#a1026774c35768d126137b47622093883',1,'thorin::LoopTreeBuilder::LoopTreeBuilder()'],['../classthorin_1_1LoopTreeBuilder.html',1,'thorin::LoopTreeBuilder&lt; forward &gt;']]],
+  ['looptreebuilder_3c_20forward_20_3e_64',['LoopTreeBuilder&lt; forward &gt;',['../classthorin_1_1LoopTree.html#a0b97215e639132eee69a71502a6a728a',1,'thorin::LoopTree::LoopTreeBuilder&lt; forward &gt;()'],['../classthorin_1_1LoopTree_1_1Leaf.html#a0b97215e639132eee69a71502a6a728a',1,'thorin::LoopTree::Leaf::LoopTreeBuilder&lt; forward &gt;()'],['../classthorin_1_1LoopTree_1_1Head.html#a0b97215e639132eee69a71502a6a728a',1,'thorin::LoopTree::Head::LoopTreeBuilder&lt; forward &gt;()']]],
+  ['lprec_65',['LPrec',['../namespacethorin.html#a8a6f378914383c7e6e801d31a00d0eb0',1,'thorin']]],
+  ['lrprec_66',['LRPrec',['../structthorin_1_1LRPrec.html#a6cb98f4eac50388d92b191cbef0712b0',1,'thorin::LRPrec::LRPrec()'],['../structthorin_1_1LRPrec.html',1,'thorin::LRPrec&lt; L &gt;']]],
+  ['lshr_67',['lshr',['../namespacethorin.html#aa4e9a4b6c779b23a08140d7b1a48a455a9d3827a838a5eeb8061fd0380d582ede',1,'thorin']]]
 ];
