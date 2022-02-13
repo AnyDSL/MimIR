@@ -84,7 +84,7 @@ inline hash_t murmur3(hash_t h) {
     return h;
 }
 
-/// Magic numbers from http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var .
+/// [Magic numbers](http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var) for FNV1 hash.
 struct FNV1 {
     static const hash_t offset = 2166136261_u32;
     static const hash_t prime  = 16777619_u32;

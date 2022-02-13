@@ -384,8 +384,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     };
 
     if (auto var = def->isa<Var>()) {
-        if (isa<Tag::Mem>(var->type())) return {};
-        return emit_tuple(var);
+        return {};
     } else if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
             return std::to_string(lit->get<nat_t>());
@@ -665,12 +664,12 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         if (auto lit = isa_lit(pack->body()); lit && *lit == 0) return "zeroinitializer";
         return emit_tuple(pack);
     } else if (auto extract = def->isa<Extract>()) {
-        if (isa<Tag::Mem>(extract->type())) return {};
-
         auto tuple = extract->tuple();
         auto index = extract->index();
         auto ll_tup = emit_unsafe(tuple);
         auto ll_idx = emit(index);
+
+        if (isa<Tag::Mem>(extract->type())) return {};
 
         if (tuple->num_projs() == 2) {
             if (isa<Tag::Mem>(tuple->proj(2, 0_s)->type())) return ll_tup;
