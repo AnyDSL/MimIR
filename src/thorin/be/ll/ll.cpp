@@ -11,6 +11,7 @@
 namespace thorin::ll {
 
 static bool is_const(const Def* def) {
+    if (def->isa<Bot>()) return true;
     if (def->isa<Lit>()) return true;
     if (auto pack = def->isa_structural<Pack>()) return is_const(pack->shape()) && is_const(pack->body());
 
@@ -191,7 +192,6 @@ std::string CodeGen::convert_ret_pi(const Pi* pi) {
  * emit
  */
 
-
 void CodeGen::run() {
     emit_module();
 
@@ -353,8 +353,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     std::string op;
 
     auto emit_tuple = [&](const Def* tuple) {
-        if (!scope().bound().contains(tuple)) {
-        //if (is_const(tuple)) {
+        if (is_const(tuple)) {
             bool is_array = tuple->type()->isa<Arr>();
 
             std::string s;
@@ -621,6 +620,15 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         assert(pointee->isa<Arr>());
         auto ll_idx = emit(idx);
         auto idx_t = convert(idx->type());
+
+        if (auto int_t = as<Tag::Int>(idx->type())) {
+            auto size = isa_sized_type(int_t);
+            if (auto s = isa_lit(size); s && *s == 2) { // mod(2) = width(1)
+                ll_idx = bb.assign(name + ".8", "zext i1 {} to i8", ll_idx);
+                idx_t = "i8";
+            }
+        }
+
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t, p, ll_ptr, idx_t, ll_idx);
     } else if (auto trait = isa<Tag::Trait>(def)) {
         THORIN_UNREACHABLE;

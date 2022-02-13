@@ -124,8 +124,18 @@ protected:
     virtual ~Def() {}
 
 public:
-    /// @name node-specific stuff
+    /// @name misc getters
     ///@{
+    World& world() const {
+        if (node()                 == Node::Space) return *world_;
+        if (type()->node()         == Node::Space) return *type()->world_;
+        if (type()->type()->node() == Node::Space) return *type()->type()->world_;
+        assert(type()->type()->type()->node() == Node::Space);
+        return *type()->type()->type()->world_;
+    }
+    fields_t fields() const { return fields_; }
+    u32 gid() const { return gid_; }
+    hash_t hash() const { return hash_; }
     node_t node() const { return node_; }
     const char* node_name() const;
     ///@}
@@ -172,14 +182,17 @@ public:
 
     /// @name dependence checks
     ///@{
+    /// @see Dep.
+
     unsigned dep() const { return dep_; }
     bool no_dep() const { return dep() == Dep::Bot; }
     bool has_dep(unsigned dep) const { return (dep_ & dep) != 0; }
     bool contains_proxy() const { return proxy_; }
     ///@}
 
-    /// @name proj/projs - split this def via proj%s
+    /// @name proj
     ///@{
+    /// split this def via proj%s
 
     /// @return yields arity if a @p Lit or @c 1 otherwise.
     size_t num_projs() const {
@@ -230,26 +243,24 @@ public:
     auto projs(size_t a, Defs dbgs = {}) const { return projs(a, [](const Def* def) { return def; }, dbgs); }
     ///@}
 
-    /// @name dealing with externals
+    /// @name externals
     ///@{
     bool is_external() const;
-    bool is_internal() const { return !is_external(); }              ///< @em Not @p is_external.
-    // TODO does this really make sense?
-    //bool is_exported() const { return is_external() && is_set(); };  ///< @p is_external and body @p is_set.
-    //bool is_imported() const { return is_external() && !is_set(); }; ///< @p is_external and body is @em not @p is_set (empty).
+    bool is_internal() const { return !is_external(); } ///< @em Not @p is_external.
     void make_external();
     void make_internal();
     ///@}
 
-    /// @name Debug
+    /// @name debug
     ///@{
-    const Def* dbg() const { return dbg_; }
-    Debug debug() const { return dbg_; }
+    const Def* dbg() const { return dbg_; } ///< Returns debug information as @p Def.
+    Debug debug() const { return dbg_; }    ///< Returns the debug information as @p Debug.
     std::string name() const { return debug().name; }
     Loc loc() const { return debug().loc; }
+    const Def* meta() const { return debug().meta; }
     void set_dbg(const Def* dbg) const { dbg_ = dbg; }
     void set_name(const std::string&) const;
-    const Def* debug_history() const; ///< In Debug build if World::enable_history is true, this thing keeps the gid to track a history of gid%s.
+    const Def* debug_history() const; ///< In Debug build if @p World::enable_history is `true`, this thing keeps the @p gid to track a history of gid%s.
     std::string unique_name() const;  ///< name + "_" + gid
     ///@}
 
@@ -276,39 +287,28 @@ public:
     }
     ///@}
 
-    /// @name retrieve Var for noms.
+    /// @name var
     ///@{
-    const Var* var(const Def* dbg = {});
+    /// Retrieve @p Var for *nominals*.
+
     /// Only returns a @p Var for this @em nom if it has ever been created.
     const Var* has_var() { return var_ ? var() : nullptr; }
+    const Var* var(const Def* dbg = {});
     THORIN_PROJ(var,)
     ///@}
 
-    /// @name rewrites last op by substituting var with arg.
+    /// @name apply
     ///@{
+    /// rewrites last ops by substituting `this` nominal's @p Var with @p arg.
     DefArray apply(const Def* arg) const;
     DefArray apply(const Def* arg);
     ///@}
 
-    /// @name reduce/subst
+    /// @name reduce/refine
     ///@{
     const Def* reduce() const;
     /// @p rebuild%s this @p Def while using @p new_op as substitute for its @p i'th @p op
     const Def* refine(size_t i, const Def* new_op) const;
-    ///@}
-
-    /// @name misc getters
-    ///@{
-    fields_t fields() const { return fields_; }
-    u32 gid() const { return gid_; }
-    hash_t hash() const { return hash_; }
-    World& world() const {
-        if (node()                 == Node::Space) return *world_;
-        if (type()->node()         == Node::Space) return *type()->world_;
-        if (type()->type()->node() == Node::Space) return *type()->type()->world_;
-        assert(type()->type()->type()->node() == Node::Space);
-        return *type()->type()->type()->world_;
-    }
     ///@}
 
     /// @name replace
@@ -334,11 +334,11 @@ public:
     void dump() const;
     void dump(size_t) const;
     ///@}
-    bool equal(const Def* other) const;
 
 protected:
     const Def** ops_ptr() const { return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1))); }
     void finalize();
+    bool equal(const Def* other) const;
 
     union {
         /// @p Axiom%s use this member to store their normalize function and the currying depth.

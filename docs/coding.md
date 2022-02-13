@@ -20,12 +20,12 @@ Use the following coding convetions:
     2. `protected`
     3. `private`
 * prefer `// C++-style comments` over `/* C-style comments */`
-* use three slashes for Doxygen and [group](https://www.doxygen.nl/manual/grouping.html) your methods into logical units if possible
+* use `/// three slashes for Doxygen` and [group](https://www.doxygen.nl/manual/grouping.html) your methods into logical units if possible
 
 For all the other minute details like indentation width etc. use [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and the provided `.clang-format` file in the root of the repository.
 We found a full automatic run of `clang-format` a bit too intrusive.
-In a compiler, you often have to do similar things where it makes sense to align them logically instead of blindly obeying some formatting rules.
-Simply, checkout plugins like the [Vim integration](https://clang.llvm.org/docs/ClangFormat.html#vim-integration) in order to format only the desired code region.
+In a compiler, you often have to do similar things where it makes sense to align the corresponding code logically instead of blindly obeying some formatting rules.
+Simply, checkout plugins like the [Vim integration](https://clang.llvm.org/docs/ClangFormat.html#vim-integration) in order to only format the desired code region.
 
 # Debugging
 

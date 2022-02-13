@@ -38,12 +38,10 @@ For a `Release` build simply use `-DCMAKE_BUILD_TYPE=Release`.
 
 ### Tests
 
-Run the tests with:
+Run the tests within the `build` folder with:
 ```sh
-cd build
 ctest
 ```
-
 In addition, you can enable [Valgrind](https://valgrind.org/) with:
 ```sh
 ctest -T memcheck
