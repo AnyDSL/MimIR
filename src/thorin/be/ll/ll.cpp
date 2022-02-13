@@ -359,6 +359,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
 }
 
 std::string CodeGen::emit_bb(BB& bb, const Def* def) {
+    if (def->isa<Var>()) return {};
     if (auto lam = def->isa<Lam>()) return id(lam);
 
     auto name = id(def);
@@ -395,9 +396,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return prev;
     };
 
-    if (auto var = def->isa<Var>()) {
-        return {};
-    } else if (auto lit = def->isa<Lit>()) {
+    if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
             return std::to_string(lit->get<nat_t>());
         } else if (isa<Tag::Int>(lit->type())) {
