@@ -8,6 +8,18 @@
 #include "thorin/be/emitter.h"
 #include "thorin/util/stream.h"
 
+// Lessons learned:
+// * **Always** follow all ops - even if you actually want to ignore it.
+//   Otherwise, you might end up with an incorrect schedule.
+//   This was the case for an Extract of type Mem.
+//   While we want to ignore the value obtained from that, since there is no Mem value in LLVM,
+//   we still want to **first** recursively emit code for its operands and **then** ignore the Extract itself.
+// * i1 has a different meaning in LLVM then in Thorin:
+//      * Thorin: {0,  1} = i1
+//      * LLVM:   {0, -1} = i1
+//   This is a problem when, e.g., using an index of type i1 as LLVM thinks like this:
+//   getelementptr ..., i1 1 == getelementptr .., i1 -1
+
 namespace thorin::ll {
 
 static bool is_const(const Def* def) {
