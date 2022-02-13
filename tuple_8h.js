@@ -1,11 +1,11 @@
 var tuple_8h =
 [
-    [ "thorin::Sigma", "classthorin_1_1_sigma.html", "classthorin_1_1_sigma" ],
-    [ "thorin::Tuple", "classthorin_1_1_tuple.html", "classthorin_1_1_tuple" ],
-    [ "thorin::Arr", "classthorin_1_1_arr.html", "classthorin_1_1_arr" ],
-    [ "thorin::Pack", "classthorin_1_1_pack.html", "classthorin_1_1_pack" ],
-    [ "thorin::Extract", "classthorin_1_1_extract.html", "classthorin_1_1_extract" ],
-    [ "thorin::Insert", "classthorin_1_1_insert.html", "classthorin_1_1_insert" ],
+    [ "thorin::Sigma", "classthorin_1_1Sigma.html", "classthorin_1_1Sigma" ],
+    [ "thorin::Tuple", "classthorin_1_1Tuple.html", "classthorin_1_1Tuple" ],
+    [ "thorin::Arr", "classthorin_1_1Arr.html", "classthorin_1_1Arr" ],
+    [ "thorin::Pack", "classthorin_1_1Pack.html", "classthorin_1_1Pack" ],
+    [ "thorin::Extract", "classthorin_1_1Extract.html", "classthorin_1_1Extract" ],
+    [ "thorin::Insert", "classthorin_1_1Insert.html", "classthorin_1_1Insert" ],
     [ "flatten", "tuple_8h.html#a4e087368518f24e3174721f3f993b20e", null ],
     [ "flatten", "tuple_8h.html#a3c8f47ae3611992a68b885cfe1b513c8", null ],
     [ "is_sigma_or_arr", "tuple_8h.html#ac6eab898b3d47f7bfc303837cbfc25e0", null ],

@@ -4,8 +4,8 @@ var dir_b4c1616413e32b88824b4ffdc9da0708 =
     [ "assert.h", "assert_8h.html", "assert_8h" ],
     [ "bitset.cpp", "bitset_8cpp.html", "bitset_8cpp" ],
     [ "bitset.h", "bitset_8h.html", [
-      [ "thorin::BitSet", "classthorin_1_1_bit_set.html", "classthorin_1_1_bit_set" ],
-      [ "thorin::BitSet::reference", "classthorin_1_1_bit_set_1_1reference.html", "classthorin_1_1_bit_set_1_1reference" ]
+      [ "thorin::BitSet", "classthorin_1_1BitSet.html", "classthorin_1_1BitSet" ],
+      [ "thorin::BitSet::reference", "classthorin_1_1BitSet_1_1reference.html", "classthorin_1_1BitSet_1_1reference" ]
     ] ],
     [ "cast.h", "cast_8h.html", "cast_8h" ],
     [ "container.h", "container_8h.html", "container_8h" ],

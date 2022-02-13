@@ -1,7 +1,7 @@
 var stream_8cpp =
 [
-    [ "thorin::LRPrec< L >", "structthorin_1_1_l_r_prec.html", "structthorin_1_1_l_r_prec" ],
-    [ "thorin::RecStreamer", "classthorin_1_1_rec_streamer.html", "classthorin_1_1_rec_streamer" ],
+    [ "thorin::LRPrec< L >", "structthorin_1_1LRPrec.html", "structthorin_1_1LRPrec" ],
+    [ "thorin::RecStreamer", "classthorin_1_1RecStreamer.html", "classthorin_1_1RecStreamer" ],
     [ "LPrec", "stream_8cpp.html#a8a6f378914383c7e6e801d31a00d0eb0", null ],
     [ "RPrec", "stream_8cpp.html#a6a0b8640fb36b9c1d4fbd1ac8e6d947c", null ],
     [ "operator<<", "stream_8cpp.html#a6bd93f689a50c956269ba837af35945d", null ],

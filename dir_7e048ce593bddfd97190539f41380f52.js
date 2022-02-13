@@ -4,8 +4,8 @@ var dir_7e048ce593bddfd97190539f41380f52 =
     [ "cfg.h", "cfg_8h.html", "cfg_8h" ],
     [ "deptree.cpp", "deptree_8cpp.html", "deptree_8cpp" ],
     [ "deptree.h", "deptree_8h.html", [
-      [ "thorin::DepNode", "classthorin_1_1_dep_node.html", "classthorin_1_1_dep_node" ],
-      [ "thorin::DepTree", "classthorin_1_1_dep_tree.html", "classthorin_1_1_dep_tree" ]
+      [ "thorin::DepNode", "classthorin_1_1DepNode.html", "classthorin_1_1DepNode" ],
+      [ "thorin::DepTree", "classthorin_1_1DepTree.html", "classthorin_1_1DepTree" ]
     ] ],
     [ "domfrontier.cpp", "domfrontier_8cpp.html", null ],
     [ "domfrontier.h", "domfrontier_8h.html", "domfrontier_8h" ],
@@ -13,10 +13,10 @@ var dir_7e048ce593bddfd97190539f41380f52 =
     [ "domtree.h", "domtree_8h.html", "domtree_8h" ],
     [ "looptree.cpp", "looptree_8cpp.html", "looptree_8cpp" ],
     [ "looptree.h", "looptree_8h.html", [
-      [ "thorin::LoopTree< forward >", "classthorin_1_1_loop_tree.html", "classthorin_1_1_loop_tree" ],
-      [ "thorin::LoopTree< forward >::Base", "classthorin_1_1_loop_tree_1_1_base.html", "classthorin_1_1_loop_tree_1_1_base" ],
-      [ "thorin::LoopTree< forward >::Head", "classthorin_1_1_loop_tree_1_1_head.html", "classthorin_1_1_loop_tree_1_1_head" ],
-      [ "thorin::LoopTree< forward >::Leaf", "classthorin_1_1_loop_tree_1_1_leaf.html", "classthorin_1_1_loop_tree_1_1_leaf" ]
+      [ "thorin::LoopTree< forward >", "classthorin_1_1LoopTree.html", "classthorin_1_1LoopTree" ],
+      [ "thorin::LoopTree< forward >::Base", "classthorin_1_1LoopTree_1_1Base.html", "classthorin_1_1LoopTree_1_1Base" ],
+      [ "thorin::LoopTree< forward >::Head", "classthorin_1_1LoopTree_1_1Head.html", "classthorin_1_1LoopTree_1_1Head" ],
+      [ "thorin::LoopTree< forward >::Leaf", "classthorin_1_1LoopTree_1_1Leaf.html", "classthorin_1_1LoopTree_1_1Leaf" ]
     ] ],
     [ "schedule.cpp", "schedule_8cpp.html", "schedule_8cpp" ],
     [ "schedule.h", "schedule_8h.html", "schedule_8h" ],

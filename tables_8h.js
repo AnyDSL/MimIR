@@ -1,39 +1,39 @@
 var tables_8h =
 [
-    [ "thorin::Tag2Enum_< tag >", "namespacethorin.html#structthorin_1_1_tag2_enum__", [
+    [ "thorin::Tag2Enum_< tag >", "namespacethorin.html#structthorin_1_1Tag2Enum__", [
       [ "type", "namespacethorin.html#a4bff63b3368412339b5c0ffb0918d477", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::Bit >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_bit_01_4", [
+    [ "thorin::Tag2Enum_< Tag::Bit >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Bit_01_4", [
       [ "type", "namespacethorin.html#a97adf9a799f398d985b619928d7151db", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::Shr >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_shr_01_4", [
+    [ "thorin::Tag2Enum_< Tag::Shr >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Shr_01_4", [
       [ "type", "namespacethorin.html#a4fdddce8ceb6303ac8474760f54acbc2", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::Wrap >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_wrap_01_4", [
+    [ "thorin::Tag2Enum_< Tag::Wrap >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Wrap_01_4", [
       [ "type", "namespacethorin.html#afe45fcf95804fc7c4ab29c051f04c2ca", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::Div >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_div_01_4", [
+    [ "thorin::Tag2Enum_< Tag::Div >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Div_01_4", [
       [ "type", "namespacethorin.html#ab7223912d2c6b24ada2f503e55499d0e", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::ROp >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_r_op_01_4", [
+    [ "thorin::Tag2Enum_< Tag::ROp >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1ROp_01_4", [
       [ "type", "namespacethorin.html#a86a0c6fdd0873cb8f02d0b2d03d28dde", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::ICmp >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_i_cmp_01_4", [
+    [ "thorin::Tag2Enum_< Tag::ICmp >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1ICmp_01_4", [
       [ "type", "namespacethorin.html#a1453716758d2cc8821eb437fd6e4dbc0", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::RCmp >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_r_cmp_01_4", [
+    [ "thorin::Tag2Enum_< Tag::RCmp >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1RCmp_01_4", [
       [ "type", "namespacethorin.html#ae03bc2bcef46138490d49a9a1a1a32df", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::Trait >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_trait_01_4", [
+    [ "thorin::Tag2Enum_< Tag::Trait >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Trait_01_4", [
       [ "type", "namespacethorin.html#a5311fe06fde8f0e06b7a8840df9bc83c", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::Conv >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_conv_01_4", [
+    [ "thorin::Tag2Enum_< Tag::Conv >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Conv_01_4", [
       [ "type", "namespacethorin.html#a4abc262069117958934b5b96e689a416", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::PE >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_p_e_01_4", [
+    [ "thorin::Tag2Enum_< Tag::PE >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1PE_01_4", [
       [ "type", "namespacethorin.html#a27ad04aa53eba02c856419b29ca55c2f", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::Acc >", "namespacethorin.html#structthorin_1_1_tag2_enum___3_01_tag_1_1_acc_01_4", [
+    [ "thorin::Tag2Enum_< Tag::Acc >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Acc_01_4", [
       [ "type", "namespacethorin.html#a856eaf778f0043b9e738648c638f66fc", null ]
     ] ],
     [ "CODE", "tables_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb", null ],

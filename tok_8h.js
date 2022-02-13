@@ -1,6 +1,6 @@
 var tok_8h =
 [
-    [ "thorin::Tok", "classthorin_1_1_tok.html", "classthorin_1_1_tok" ],
+    [ "thorin::Tok", "classthorin_1_1Tok.html", "classthorin_1_1Tok" ],
     [ "CODE", "tok_8h.html#a7d12cc9e30e6f91e9135feb7a67bb4df", null ],
     [ "CODE", "tok_8h.html#a7d12cc9e30e6f91e9135feb7a67bb4df", null ],
     [ "CODE", "tok_8h.html#a271eddd9a1e4146856081304fd3decf4", null ],

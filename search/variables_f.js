@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['queue_5f_0',['queue_',['../classthorin_1_1_partial_evaluator.html#a2f62e90e68acc1d9a39d8c83379e3151',1,'thorin::PartialEvaluator::queue_()'],['../classthorin_1_1unique__queue.html#adbfe95c480aa53f44baab9d4346616cc',1,'thorin::unique_queue::queue_()']]]
+  ['usage_0',['usage',['../main_8cpp.html#a6ad92880e0b5a2b52e7c0a639bba0fc6',1,'main.cpp']]],
+  ['uses_5f_1',['uses_',['../classthorin_1_1Def.html#abefc385c0d60ba85c5e649598d20fe05',1,'thorin::Def']]]
 ];

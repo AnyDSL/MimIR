@@ -13,5 +13,5 @@ var searchData=
   ['w2u_5f_3c_2032_20_3e_10',['w2u_&lt; 32 &gt;',['../namespacethorin.html#structthorin_1_1w2u___3_0132_01_4',1,'thorin']]],
   ['w2u_5f_3c_2064_20_3e_11',['w2u_&lt; 64 &gt;',['../namespacethorin.html#structthorin_1_1w2u___3_0164_01_4',1,'thorin']]],
   ['w2u_5f_3c_208_20_3e_12',['w2u_&lt; 8 &gt;',['../namespacethorin.html#structthorin_1_1w2u___3_018_01_4',1,'thorin']]],
-  ['world_13',['World',['../classthorin_1_1_world.html',1,'thorin']]]
+  ['world_13',['World',['../classthorin_1_1World.html',1,'thorin']]]
 ];

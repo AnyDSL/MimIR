@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('namespacethorin_1_1utf8.html',''); ini
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6920d66962b6221e75a9869c1f4da509"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a6920d66962b6221e75a9869c1f4da509">num_bytes</a> (char8_t c)</td></tr>
+<tr class="memitem:a6920d66962b6221e75a9869c1f4da509"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a6920d66962b6221e75a9869c1f4da509">num_bytes</a> (char8_t c)</td></tr>
 <tr class="memdesc:a6920d66962b6221e75a9869c1f4da509"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the expected number of bytes for an <a class="el" href="namespacethorin_1_1utf8.html">utf8</a> char sequence by inspecting the first byte.  <a href="namespacethorin_1_1utf8.html#a6920d66962b6221e75a9869c1f4da509">More...</a><br /></td></tr>
 <tr class="separator:a6920d66962b6221e75a9869c1f4da509"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab193286524b0df4c5483ae6290004959"><td class="memItemLeft" align="right" valign="top">char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#ab193286524b0df4c5483ae6290004959">append</a> (char32_t c, char32_t b)</td></tr>
@@ -117,7 +117,7 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a25bc821db221db9aad00c895e937c9bb"><td class="memItemLeft" align="right" valign="top">static constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a25bc821db221db9aad00c895e937c9bb">Max</a> = 4</td></tr>
+<tr class="memitem:a25bc821db221db9aad00c895e937c9bb"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a25bc821db221db9aad00c895e937c9bb">Max</a> = 4</td></tr>
 <tr class="separator:a25bc821db221db9aad00c895e937c9bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac779262d791a964e365ba7ff793aa0a5"><td class="memItemLeft" align="right" valign="top">static constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#ac779262d791a964e365ba7ff793aa0a5">BOM</a> = 0xfeff</td></tr>
 <tr class="separator:ac779262d791a964e365ba7ff793aa0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,6 +159,10 @@ Variables</h2></td></tr>
 
 <p>Append <code>b</code> to <code>c</code> for converting utf-8 to a code. </p>
 
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00019">19</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+
+<p class="reference">References <a class="el" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">thorin::b</a>.</p>
+
 </div>
 </div>
 <a id="a30e913f3fce1e8c99a655cf021910bf7" name="a30e913f3fce1e8c99a655cf021910bf7"></a>
@@ -197,6 +201,10 @@ Variables</h2></td></tr>
 
 <p>Get relevant bits of first utf-8 byte <code>c</code> of a <em>multi-byte</em> sequence consisting of <code>num</code> bytes. </p>
 
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00022">22</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="hash_8h_source.html#l00425">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::erase()</a>, and <a class="el" href="hash_8h_source.html#l00279">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::HashTable()</a>.</p>
+
 </div>
 </div>
 <a id="a50d67a2652dfa25b33bc6128f2a49437" name="a50d67a2652dfa25b33bc6128f2a49437"></a>
@@ -225,6 +233,10 @@ Variables</h2></td></tr>
 
 <p>Is the 2nd, 3rd, or 4th byte of an utf-8 byte sequence valid? </p>
 
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00025">25</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="indexmap_8h_source.html#l00055">thorin::IndexMap&lt; Indexer, Key, Value &gt;::begin()</a>, <a class="el" href="emitter_8h_source.html#l00033">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit()</a>, and <a class="el" href="indexmap_8h_source.html#l00056">thorin::IndexMap&lt; Indexer, Key, Value &gt;::end()</a>.</p>
+
 </div>
 </div>
 <a id="a6920d66962b6221e75a9869c1f4da509" name="a6920d66962b6221e75a9869c1f4da509"></a>
@@ -234,7 +246,7 @@ Variables</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">size_t thorin::utf8::num_bytes </td>
+          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> thorin::utf8::num_bytes </td>
           <td>(</td>
           <td class="paramtype">char8_t&#160;</td>
           <td class="paramname"><em>c</em></td><td>)</td>
@@ -245,6 +257,8 @@ Variables</h2></td></tr>
 
 <p>Returns the expected number of bytes for an <a class="el" href="namespacethorin_1_1utf8.html">utf8</a> char sequence by inspecting the first byte. </p>
 <p >Retuns <code>0</code> if invalid. </p>
+
+<p class="definition">Definition at line <a class="el" href="utf8_8cpp_source.html#l00005">5</a> of file <a class="el" href="utf8_8cpp_source.html">utf8.cpp</a>.</p>
 
 </div>
 </div>
@@ -269,6 +283,8 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00012">12</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
+
 </div>
 </div>
 <a id="a25bc821db221db9aad00c895e937c9bb" name="a25bc821db221db9aad00c895e937c9bb"></a>
@@ -281,7 +297,7 @@ Variables</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t thorin::utf8::Max = 4</td>
+          <td class="memname">constexpr <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> thorin::utf8::Max = 4</td>
         </tr>
       </table>
   </td>
@@ -290,6 +306,8 @@ Variables</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00011">11</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
 
 </div>
 </div>

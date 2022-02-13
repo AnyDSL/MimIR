@@ -5,7 +5,5 @@ var classthorin_1_1unique__stack =
     [ "empty", "classthorin_1_1unique__stack.html#af95a51fb32d7d3d6797cc3b7913090ad", null ],
     [ "pop", "classthorin_1_1unique__stack.html#a0b7577b528926cecaaf626fb7984d2ac", null ],
     [ "push", "classthorin_1_1unique__stack.html#a69738c049d6f032000deb25c56bbbf36", null ],
-    [ "top", "classthorin_1_1unique__stack.html#ada63d31fbb61080ec55da601bddc3546", null ],
-    [ "done_", "classthorin_1_1unique__stack.html#a34df11abd0ccdce1ff28996dd3d55efa", null ],
-    [ "stack_", "classthorin_1_1unique__stack.html#ae4dd8eeee9b36b7de70e69cbb052c285", null ]
+    [ "top", "classthorin_1_1unique__stack.html#ada63d31fbb61080ec55da601bddc3546", null ]
 ];
