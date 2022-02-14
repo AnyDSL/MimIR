@@ -107,21 +107,20 @@ $(document).ready(function(){initNavTree('bound__elim_8h_source.html',''); initR
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">class </span>BoundElim : <span class="keyword">public</span> RWPass {</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">public</span>:</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    BoundElim(PassMan&amp; man)</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        : RWPass(man, <span class="stringliteral">&quot;bound_elim&quot;</span>)</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    {}</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">const</span> Def* <a class="code hl_function" href="namespacethorin.html#aae14ac541e8de18c5c705ac427c8bcc1">rewrite</a>(Def*, <span class="keyword">const</span> Def*, <span class="keyword">const</span> Def*) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keyword">const</span> Def* <a class="code hl_function" href="namespacethorin.html#aae14ac541e8de18c5c705ac427c8bcc1">rewrite</a>(<span class="keyword">const</span> Def*, <span class="keyword">const</span> Def*, <a class="code hl_typedef" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a>, <span class="keyword">const</span> Def*) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">const</span> Def* <a class="code hl_function" href="namespacethorin.html#aae14ac541e8de18c5c705ac427c8bcc1">rewrite</a>(<span class="keyword">const</span> Def*) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>};</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>}</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>        : RWPass(man, <span class="stringliteral">&quot;bound_elim&quot;</span>) {}</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">const</span> Def* <a class="code hl_function" href="namespacethorin.html#aae14ac541e8de18c5c705ac427c8bcc1">rewrite</a>(Def*, <span class="keyword">const</span> Def*, <span class="keyword">const</span> Def*) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">const</span> Def* <a class="code hl_function" href="namespacethorin.html#aae14ac541e8de18c5c705ac427c8bcc1">rewrite</a>(<span class="keyword">const</span> Def*, <span class="keyword">const</span> Def*, <a class="code hl_typedef" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a>, <span class="keyword">const</span> Def*) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keyword">const</span> Def* <a class="code hl_function" href="namespacethorin.html#aae14ac541e8de18c5c705ac427c8bcc1">rewrite</a>(<span class="keyword">const</span> Def*) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>};</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition:</b> <a href="cfg_8cpp_source.html#l00014">cfg.cpp:14</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a2d1ba8b5552b3120a6648deb2bf7eb16"><div class="ttname"><a href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">thorin::Defs</a></div><div class="ttdeci">ArrayRef&lt; const Def * &gt; Defs</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00043">def.h:43</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a2d1ba8b5552b3120a6648deb2bf7eb16"><div class="ttname"><a href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">thorin::Defs</a></div><div class="ttdeci">ArrayRef&lt; const Def * &gt; Defs</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00044">def.h:44</a></div></div>
 <div class="ttc" id="anamespacethorin_html_aae14ac541e8de18c5c705ac427c8bcc1"><div class="ttname"><a href="namespacethorin.html#aae14ac541e8de18c5c705ac427c8bcc1">thorin::rewrite</a></div><div class="ttdeci">const Def * rewrite(const Def *def, const Def *old_def, const Def *new_def, const Scope &amp;scope)</div><div class="ttdoc">Rewrites def by mapping old_def to new_def while obeying scope.</div><div class="ttdef"><b>Definition:</b> <a href="rewrite_8cpp_source.html#l00032">rewrite.cpp:32</a></div></div>
 <div class="ttc" id="apass_8h_html"><div class="ttname"><a href="pass_8h.html">pass.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

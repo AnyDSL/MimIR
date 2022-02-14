@@ -117,63 +117,63 @@ $(document).ready(function(){initNavTree('parser_8h_source.html',''); initResiza
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* parse_extract();</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="comment"></span> </div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment">    /// Trick to easily keep track of @p Loc%ations.</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"></span>    <span class="keyword">class </span>Tracker {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment"></span>    <span class="keyword">class </span><a class="code hl_class" href="classthorin_1_1Tracker.html">Tracker</a> {</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        Tracker(<a class="code hl_class" href="classthorin_1_1Parser.html">Parser</a>&amp; parser, <span class="keyword">const</span> <a class="code hl_struct" href="structthorin_1_1Pos.html">Pos</a>&amp; pos)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <a class="code hl_class" href="classthorin_1_1Tracker.html">Tracker</a>(<a class="code hl_class" href="classthorin_1_1Parser.html">Parser</a>&amp; parser, <span class="keyword">const</span> <a class="code hl_struct" href="structthorin_1_1Pos.html">Pos</a>&amp; pos)</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>            : parser_(parser)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            , pos_(pos)</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        {}</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        <span class="keyword">operator</span> Loc()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> {parser_.prev_.file, pos_, parser_.prev_.finis}; }</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <a class="code hl_function" href="classthorin_1_1Parser.html#ad61313747796cb0609854d83d8afb4bd">Parser</a>&amp; parser_;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        Pos pos_;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    };</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"></span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">    /// Factory method to build a @p Tracker.</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"></span>    Tracker tracker() { <span class="keywordflow">return</span> Tracker(*<span class="keyword">this</span>, ahead().loc().begin); }</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">const</span> Def* dbg(Tracker t) { <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#a7de00f50ba0c790aa0e67f3a4d065c89">dbg</a>((Loc) t); }</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"></span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">    /// Invoke @p Lexer to retrieve next @p Tok%en.</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"></span>    Tok lex();</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"></span> </div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">    /// Get lookahead.</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment"></span>    Tok ahead()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ahead_; }</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"></span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">    /// If @p ahead() is a @p tag, @p lex(), and return @c true.</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"></span>    <span class="keywordtype">bool</span> accept(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag);</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"></span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">    /// @p lex @p ahead() which must be a @p tag.</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">    /// Issue @p err%or with @p ctxt otherwise.</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"></span>    <span class="keywordtype">bool</span> expect(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag, <span class="keyword">const</span> <span class="keywordtype">char</span>* ctxt);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"></span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">    /// Consume @p ahead which must be a @p tag; @c asserts otherwise.</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"></span>    Tok eat([[maybe_unused]] <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag) { assert(tag == ahead().tag() &amp;&amp; <span class="stringliteral">&quot;internal parser error&quot;</span>); <span class="keywordflow">return</span> lex(); }</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment"></span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">    /// Issue an error message of the form:</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">    /// &quot;expected &lt;what&gt;, got &#39;&lt;tok&gt;\&#39; while parsing &lt;ctxt&gt;&quot;</span></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"></span>    <span class="keywordtype">void</span> err(<span class="keyword">const</span> std::string&amp; what, <span class="keyword">const</span> Tok&amp; tok, <span class="keyword">const</span> <span class="keywordtype">char</span>* ctxt);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment"></span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">    /// Same above but uses @p ahead() as @p tok.</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment"></span>    <span class="keywordtype">void</span> err(<span class="keyword">const</span> std::string&amp; what, <span class="keyword">const</span> <span class="keywordtype">char</span>* ctxt) { err(what, ahead(), ctxt); }</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    Lexer lexer_;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    Loc prev_;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    Tok ahead_;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>};</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>}</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>            , pos_(pos) {}</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        <span class="keyword">operator</span> Loc()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> {parser_.prev_.file, pos_, parser_.prev_.finis}; }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <a class="code hl_function" href="classthorin_1_1Parser.html#ad61313747796cb0609854d83d8afb4bd">Parser</a>&amp; parser_;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        Pos pos_;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    };</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"></span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment">    /// Factory method to build a @p Tracker.</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"></span>    Tracker tracker() { <span class="keywordflow">return</span> Tracker(*<span class="keyword">this</span>, ahead().loc().begin); }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">const</span> Def* dbg(Tracker t) { <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#a7de00f50ba0c790aa0e67f3a4d065c89">dbg</a>((Loc) t); }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment"></span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">    /// Invoke @p Lexer to retrieve next @p Tok%en.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"></span>    Tok lex();</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"></span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">    /// Get lookahead.</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"></span>    Tok ahead()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ahead_; }</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment"></span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">    /// If @p ahead() is a @p tag, @p lex(), and return @c true.</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment"></span>    <span class="keywordtype">bool</span> accept(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"></span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">    /// @p lex @p ahead() which must be a @p tag.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">    /// Issue @p err%or with @p ctxt otherwise.</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"></span>    <span class="keywordtype">bool</span> expect(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag, <span class="keyword">const</span> <span class="keywordtype">char</span>* ctxt);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"></span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment">    /// Consume @p ahead which must be a @p tag; @c asserts otherwise.</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment"></span>    Tok eat([[maybe_unused]] <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag) { assert(tag == ahead().tag() &amp;&amp; <span class="stringliteral">&quot;internal parser error&quot;</span>); <span class="keywordflow">return</span> lex(); }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"></span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">    /// Issue an error message of the form:</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">    /// &quot;expected &lt;what&gt;, got &#39;&lt;tok&gt;\&#39; while parsing &lt;ctxt&gt;&quot;</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment"></span>    <span class="keywordtype">void</span> err(<span class="keyword">const</span> std::string&amp; what, <span class="keyword">const</span> Tok&amp; tok, <span class="keyword">const</span> <span class="keywordtype">char</span>* ctxt);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment"></span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">    /// Same above but uses @p ahead() as @p tok.</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment"></span>    <span class="keywordtype">void</span> err(<span class="keyword">const</span> std::string&amp; what, <span class="keyword">const</span> <span class="keywordtype">char</span>* ctxt) { err(what, ahead(), ctxt); }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    Lexer lexer_;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    Loc prev_;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    Tok ahead_;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>};</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>}</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassthorin_1_1Def_html"><div class="ttname"><a href="classthorin_1_1Def.html">thorin::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00110">def.h:110</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_aed7d9d0cd682bd7d98eef0019ed9a33e"><div class="ttname"><a href="classthorin_1_1Lexer.html#aed7d9d0cd682bd7d98eef0019ed9a33e">thorin::Lexer::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8h_source.html#l00018">lexer.h:18</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Parser_html"><div class="ttname"><a href="classthorin_1_1Parser.html">thorin::Parser</a></div><div class="ttdef"><b>Definition:</b> <a href="parser_8h_source.html#l00009">parser.h:9</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Parser_html_acd545f2b14786e73e995e7df438c4baf"><div class="ttname"><a href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">thorin::Parser::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition:</b> <a href="parser_8h_source.html#l00012">parser.h:12</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Parser_html_ad61313747796cb0609854d83d8afb4bd"><div class="ttname"><a href="classthorin_1_1Parser.html#ad61313747796cb0609854d83d8afb4bd">thorin::Parser::Parser</a></div><div class="ttdeci">Parser(World &amp;, const char *, std::istream &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8cpp_source.html#l00005">parser.cpp:5</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Sym_html"><div class="ttname"><a href="classthorin_1_1Sym.html">thorin::Sym</a></div><div class="ttdef"><b>Definition:</b> <a href="debug_8h_source.html#l00072">debug.h:72</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Sym_html"><div class="ttname"><a href="classthorin_1_1Sym.html">thorin::Sym</a></div><div class="ttdef"><b>Definition:</b> <a href="debug_8h_source.html#l00066">debug.h:66</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Tok_html_a2b38ddc0634b228ae22e6c43b0f23038"><div class="ttname"><a href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">thorin::Tok::Tag</a></div><div class="ttdeci">Tag</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00064">tok.h:64</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Tok_html_afdc0f701e0b635d379f16d20957532a2"><div class="ttname"><a href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">thorin::Tok::Prec</a></div><div class="ttdeci">Prec</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00055">tok.h:55</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Tracker_html"><div class="ttname"><a href="classthorin_1_1Tracker.html">thorin::Tracker</a></div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00501">def.h:501</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html"><div class="ttname"><a href="classthorin_1_1World.html">thorin::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of Thorin nodes (Defs).</div><div class="ttdef"><b>Definition:</b> <a href="world_8h_source.html#l00035">world.h:35</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html_a7de00f50ba0c790aa0e67f3a4d065c89"><div class="ttname"><a href="classthorin_1_1World.html#a7de00f50ba0c790aa0e67f3a4d065c89">thorin::World::dbg</a></div><div class="ttdeci">const Def * dbg(Debug)</div><div class="ttdef"><b>Definition:</b> <a href="world_8cpp_source.html#l00632">world.cpp:632</a></div></div>
 <div class="ttc" id="alexer_8h_html"><div class="ttname"><a href="lexer_8h.html">lexer.h</a></div></div>
