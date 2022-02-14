@@ -192,7 +192,7 @@ public:
 
     /// @name proj
     ///@{
-    /// split this def via proj%s
+    /// Splits `this` @p Def via @p Extract%s or directly accessing the @p ops in the case of @p Sigma%s or @p Arr%ays.
 
     /// @return yields arity if a @p Lit or @c 1 otherwise.
     size_t num_projs() const {
@@ -299,16 +299,12 @@ public:
 
     /// @name apply
     ///@{
-    /// rewrites last ops by substituting `this` nominal's @p Var with @p arg.
+    /// Rewrites @p ops by substituting `this` nominal's @p Var with @p arg.
     DefArray apply(const Def* arg) const;
     DefArray apply(const Def* arg);
-    ///@}
-
-    /// @name reduce/refine
-    ///@{
+    /// Trnasitively @p apply @Lam%s, if `this` is an @p App.
+    /// @return the reduced body
     const Def* reduce() const;
-    /// @p rebuild%s this @p Def while using @p new_op as substitute for its @p i'th @p op
-    const Def* refine(size_t i, const Def* new_op) const;
     ///@}
 
     /// @name replace
@@ -317,9 +313,11 @@ public:
     bool is_replaced() const { return substitute_ != nullptr; }
     ///@}
 
-    /// @name virtual methods
+    /// @name rebuild & friends
     ///@{
     virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { THORIN_UNREACHABLE; }
+    /// @p rebuild%s this @p Def while using @p new_op as substitute for its @p i'th @p op
+    const Def* refine(size_t i, const Def* new_op) const;
     virtual Def* stub(World&, const Def*, const Def*) { THORIN_UNREACHABLE; }
     virtual const Def* restructure() { return nullptr; }
     ///@}

@@ -31,7 +31,7 @@ public:
 
     /// @name rewrite hook for the PassMan
     ///@{
-    /// Rewrites a *structural* @p def within @p PassMan::curr_nom. Returns the replacement.
+    /// Rewrites a *structural* @p def within @p PassMan::curr_nom; returns the replacement.
     virtual const Def* rewrite(const Def* def) { return def; }
     virtual const Def* rewrite(const Var* var) { return var; }
     virtual const Def* rewrite(const Proxy* proxy) { return proxy; }
