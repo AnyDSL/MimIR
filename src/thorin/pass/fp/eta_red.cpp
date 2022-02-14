@@ -2,11 +2,16 @@
 
 namespace thorin {
 
+static bool is_var(const Def* def) {
+    if (def->isa<Var>()) return true;
+    if (auto extract = def->isa<Extract>()) return extract->tuple()->isa<Var>();
+    return false;
+}
+
 /// For now, only η-reduce `lam x.e x` if e is a @p Var or a @p Lam.
 static const App* eta_rule(Lam* lam) {
     if (auto app = lam->body()->isa<App>()) {
-        if (app->arg() == lam->var() && (app->callee()->isa<Var>() || app->callee()->isa<Lam>()))
-            return app;
+        if (app->arg() == lam->var() && (is_var(app->callee()) || app->callee()->isa<Lam>())) return app;
     }
     return nullptr;
 }
