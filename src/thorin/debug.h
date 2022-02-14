@@ -39,6 +39,8 @@ struct Loc : public Streamable<Loc> {
     std::string file;
     Pos begin = {uint32_t(-1), uint32_t(-1)};
     Pos finis = {uint32_t(-1), uint32_t(-1)};
+    ///< It's called `finis` because it refers to the *last* character within this @p Loc%ation.
+    /// In the STL the word `end` refers to the position of something that is one element *past* the end.
 
     Stream& stream(Stream&) const;
 };

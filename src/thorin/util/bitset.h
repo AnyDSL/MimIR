@@ -44,12 +44,14 @@ public:
         , num_words_(1) {}
     BitSet(const BitSet& other)
         : BitSet() {
-        ensure_capacity(other.num_bits()-1);
+        ensure_capacity(other.num_bits() - 1);
         std::copy_n(other.words(), other.num_words(), words());
+        padding = other.padding;
     }
     BitSet(BitSet&& other)
         : words_(std::move(other.words_))
-        , num_words_(std::move(other.num_words_)) {
+        , num_words_(std::move(other.num_words_))
+        , padding(other.padding) {
         other.words_ = nullptr;
     }
 
@@ -131,6 +133,7 @@ public:
         using std::swap;
         swap(b1.num_words_, b2.num_words_);
         swap(b1.words_,     b2.words_);
+        swap(b1.padding,    b2.padding);
     }
 
 private:
