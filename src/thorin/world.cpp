@@ -119,7 +119,7 @@ World::World(const std::string& name)
         };
 #define CODE(T, o) data_.Conv_[size_t(T::o)] = axiom(normalize_Conv<T::o>, make_type(T::o), Tag::Conv, flags_t(T::o), dbg(op2str(T::o)));
         THORIN_CONV(CODE)
-#undef Code
+#undef CODE
     } { // hlt/run: T: * -> T -> T
         auto type = nom_pi(kind())->set_dom(kind());
         auto T = type->var(dbg("T"));
@@ -224,6 +224,13 @@ World::World(const std::string& name)
         rs_pi->set_codom(is_os_pi);
 
         data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
+    } {
+        auto id_type = nom_pi(kind())->set_dom(kind());
+        auto var = id_type->var(0_u64);
+        id_type->set_codom(pi(var, var));
+#define CODE(T, o) data_.ca_ ## o ## _ = axiom(id_type, Tag::T, (flags_t) T::o, dbg(op2str(T::o)));
+        THORIN_CA (CODE)
+#undef CODE
     }
 }
 

@@ -60,6 +60,10 @@ set(THORIN_SOURCES
     pass/fp/dce.h
     pass/fp/ssa_constr.cpp
     pass/fp/ssa_constr.h
+    pass/fp/unbox_closures.h
+    pass/fp/unbox_closures.cpp
+    pass/fp/closure_analysis.h
+    pass/fp/closure_analysis.cpp
     pass/rw/alloc2malloc.cpp
     pass/rw/alloc2malloc.h
     pass/rw/partial_eval.cpp
@@ -72,6 +76,8 @@ set(THORIN_SOURCES
     pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
+    pass/rw/drop_bb_closures.h
+    pass/rw/drop_bb_closures.cpp
     transform/cleanup_world.cpp
     transform/cleanup_world.h
     transform/mangle.cpp
@@ -80,6 +86,8 @@ set(THORIN_SOURCES
     transform/partial_evaluation.h
     transform/closure_conv.h
     transform/closure_conv.cpp
+    transform/lower_typed_closures.h
+    transform/lower_typed_closures.cpp
     util/array.h
     util/assert.h
     util/bitset.cpp

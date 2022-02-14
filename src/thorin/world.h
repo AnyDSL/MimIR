@@ -390,6 +390,15 @@ public:
     bool is_pe_done() const { return state_.pe_done; }
     ///@}
 
+    const Def* ca_mark(const Def* def, CA a, const Def* dbg = {}) {
+            switch (a) {
+#define CODE(T, o) case T::o: return app(app(data_.ca_ ## o ## _, def->type()), def, dbg);
+                THORIN_CA (CODE)
+#undef CODE
+                default: return def;
+            }
+        }
+
     /// @name manage externals
     ///@{
     bool empty() { return data_.externals_.empty(); }
@@ -630,6 +639,11 @@ private:
         const Axiom* type_ptr_;
         const Axiom* type_real_;
         const Axiom* zip_;
+        const Axiom* ca_ret_;
+        const Axiom* ca_br_;
+        const Axiom* ca_proc_;
+        const Axiom* ca_proc_e_;
+        const Axiom* ca_unknown_;
         std::string name_;
         Externals externals_;
         Sea defs_;
