@@ -32,6 +32,8 @@ public:
     typedef const T* const_iterator;
     typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
+    /// @name constructor, destructor & assignment
+    ///@{
     ArrayRef()
         : size_(0)
         , ptr_(nullptr) {}
@@ -63,22 +65,6 @@ public:
         swap(*this, array);
     }
 
-    const_iterator begin() const { return ptr_; }
-    const_iterator end() const { return ptr_ + size_; }
-    const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
-    const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
-    const T& operator[](size_t i) const { assert(i < size() && "index out of bounds"); return *(ptr_ + i); }
-    size_t size() const { return size_; }
-    bool empty() const { return size_ == 0; }
-    T const& front() const { assert(!empty()); return ptr_[0]; }
-    T const& back()  const { assert(!empty()); return ptr_[size_ - 1]; }
-    ArrayRef<T> skip_front(size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_ + num); }
-    ArrayRef<T> skip_back (size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_); }
-    ArrayRef<T> get_front (size_t num = 1) const { assert(num <= size()); return ArrayRef<T>(num, ptr_); }
-    ArrayRef<T> get_back  (size_t num = 1) const { assert(num <= size()); return ArrayRef<T>(num, ptr_ + size() - num); }
-    Array<T> cut(ArrayRef<size_t> indices, size_t reserve = 0) const;
-    template<class Other>
-    bool operator==(const Other& other) const { return this->size() == other.size() && std::equal(begin(), end(), other.begin()); }
     ArrayRef& operator=(ArrayRef other) { swap(*this, other); return *this; }
     template<size_t N> std::array<T, N> to_array() const {
         assert(size() == N);
@@ -86,6 +72,45 @@ public:
         std::copy(begin(), end(), result.begin());
         return result;
     }
+    ///@}
+
+    /// @name size
+    ///@{
+    size_t size() const { return size_; }
+    bool empty() const { return size_ == 0; }
+    ///@}
+
+    /// @name begin/end iterators
+    ///@{
+    const_iterator begin() const { return ptr_; }
+    const_iterator end() const { return ptr_ + size_; }
+    const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+    const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+    ///@}
+
+    /// @name access
+    ///@{
+    const T& operator[](size_t i) const { assert(i < size() && "index out of bounds"); return *(ptr_ + i); }
+    T const& front() const { assert(!empty()); return ptr_[0]; }
+    T const& back()  const { assert(!empty()); return ptr_[size_ - 1]; }
+    ///@}
+
+    /// @name slice
+    ///@{
+    ArrayRef<T> skip_front(size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_ + num); }
+    ArrayRef<T> skip_back (size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_); }
+    ArrayRef<T> get_front (size_t num = 1) const { assert(num <= size()); return ArrayRef<T>(num, ptr_); }
+    ArrayRef<T> get_back  (size_t num = 1) const { assert(num <= size()); return ArrayRef<T>(num, ptr_ + size() - num); }
+    Array<T> cut(ArrayRef<size_t> indices, size_t reserve = 0) const;
+    ///@}
+
+    /// @name relational operators
+    ///@{
+    template<class Other>
+    bool operator==(const Other& other) const { return this->size() == other.size() && std::equal(begin(), end(), other.begin()); }
+    template<class Other>
+    bool operator!=(const Other& other) const { return this->size() != other.size() || !std::equal(begin(), end(), other.begin()); }
+    ///@}
 
     friend void swap(ArrayRef<T>& a1, ArrayRef<T>& a2) {
         using std::swap;
@@ -121,6 +146,7 @@ public:
         other.stack_ = true;
         other.size_ = 0;
     }
+
     ~ArrayStorage() {
         if (!stack_) delete[] data_.ptr;
     }
@@ -198,6 +224,8 @@ public:
     typedef std::reverse_iterator<iterator> reverse_iterator;
     typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
+    /// @name constructor, destructor & assignment
+    ///@{
     Array()
         : storage_(0) {}
     explicit Array(size_t size)
@@ -236,6 +264,18 @@ public:
         for (size_t i = 0; i != size; ++i) (*this)[i] = f(i);
     }
 
+    Array& operator=(Array other) { swap(*this, other); return *this; }
+    ///@}
+
+    /// @name size
+    ///@{
+    size_t size() const { return storage_.size(); }
+    bool empty() const { return size() == 0; }
+    void shrink(size_t new_size) { assert(new_size <= size()); storage_.shrink(new_size); }
+    ///@}
+
+    /// @name begin/end iterators
+    ///@{
     iterator begin() { return data(); }
     iterator end() { return data() + size(); }
     reverse_iterator rbegin() { return reverse_iterator(end()); }
@@ -244,27 +284,40 @@ public:
     const_iterator end() const { return data() + size(); }
     const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
     const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+    ///@}
 
+    /// @name access
+    ///@{
     T& front() { assert(!empty()); return data()[0]; }
     T& back()  { assert(!empty()); return data()[size() - 1]; }
     const T& front() const { assert(!empty()); return data()[0]; }
     const T& back()  const { assert(!empty()); return data()[size() - 1]; }
     T* data() { return storage_.data(); }
     const T* data() const { return storage_.data(); }
-    size_t size() const { return storage_.size(); }
-    bool empty() const { return size() == 0; }
+    T& operator[](size_t i) { assert(i < size() && "index out of bounds"); return data()[i]; }
+    T const& operator[](size_t i) const { assert(i < size() && "index out of bounds"); return data()[i]; }
+    ///@}
+
+    /// @name slice
+    ///@{
     ArrayRef<T> skip_front(size_t num = 1) const { return ArrayRef<T>(size() - num, data() + num); }
     ArrayRef<T> skip_back (size_t num = 1) const { return ArrayRef<T>(size() - num, data()); }
     ArrayRef<T> get_front (size_t num = 1) const { assert(num <= size()); return ArrayRef<T>(num, data()); }
     ArrayRef<T> get_back  (size_t num = 1) const { assert(num <= size()); return ArrayRef<T>(num, data() + size() - num); }
     Array<T> cut(ArrayRef<size_t> indices, size_t reserve = 0) const { return ArrayRef<T>(*this).cut(indices, reserve); }
-    void shrink(size_t new_size) { assert(new_size <= size()); storage_.shrink(new_size); }
+    ///@}
+
+    /// @name convert
+    ///@{
     ArrayRef<T> ref() const { return ArrayRef<T>(size(), data()); }
-    T& operator[](size_t i) { assert(i < size() && "index out of bounds"); return data()[i]; }
-    T const& operator[](size_t i) const { assert(i < size() && "index out of bounds"); return data()[i]; }
-    bool operator==(const Array other) const { return ArrayRef<T>(*this) == ArrayRef<T>(other); }
-    Array& operator=(Array other) { swap(*this, other); return *this; }
     template<size_t N> std::array<T, N> to_array() const { return ref().template to_array<N>(); }
+    ///@}
+
+    /// @name relational operators
+    ///@{
+    bool operator==(const Array other) const { return ArrayRef<T>(*this) == ArrayRef<T>(other); }
+    bool operator!=(const Array other) const { return ArrayRef<T>(*this) != ArrayRef<T>(other); }
+    ///@}
 
     friend void swap(Array& a, Array& b) {
         swap(a.storage_, b.storage_);
