@@ -434,6 +434,7 @@ var namespacethorin =
     [ "is_tuple_arg_of_app", "namespacethorin.html#a302e2d851b8beb0dc86182d2da14156e", null ],
     [ "is_tuple_or_pack", "namespacethorin.html#a49914b89c55cc74be99001a2875f00d1", null ],
     [ "is_unit", "namespacethorin.html#a496a5dfe6e208b166676c88e28092d48", null ],
+    [ "is_var", "namespacethorin.html#a4bf19bc148d17bf9334eedd5bd184781", null ],
     [ "isa", "namespacethorin.html#a13393e92527438ff4529ebe0834a84c3", null ],
     [ "isa", "namespacethorin.html#abc03433e6b2efb1c4ad7d0c5dd690b10", null ],
     [ "isa", "namespacethorin.html#a42871a77f69d4effae41df9c24b613d2", null ],
