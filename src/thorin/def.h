@@ -38,7 +38,6 @@ class Axiom;
 class Var;
 class Def;
 class Stream;
-class Tracker;
 class World;
 
 using Defs     = ArrayRef<const Def*>;
@@ -307,12 +306,6 @@ public:
     const Def* reduce() const;
     ///@}
 
-    /// @name replace
-    ///@{
-    void replace(Tracker) const;
-    bool is_replaced() const { return substitute_ != nullptr; }
-    ///@}
-
     /// @name rebuild & friends
     ///@{
     virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { THORIN_UNREACHABLE; }
@@ -355,15 +348,12 @@ protected:
     u32 num_ops_;
     hash_t hash_;
     mutable Uses uses_;
-    mutable const Def* substitute_ = nullptr; // TODO remove this
     mutable const Def* dbg_;
     union {
         const Def* type_;
         mutable World* world_;
     };
 
-    friend class Cleaner;
-    friend class Tracker;
     friend class World;
     friend void swap(World&, World&);
 };
@@ -501,31 +491,6 @@ template<class T> std::optional<T> isa_lit(const Def* def) {
 }
 
 template<class T> T as_lit(const Def* def) { return def->as<Lit>()->get<T>(); }
-
-class Tracker {
-public:
-    Tracker()
-        : def_(nullptr)
-    {}
-    Tracker(const Def* def)
-        : def_(def)
-    {}
-
-    operator const Def*() const { return def(); }
-    const Def* operator->() const { return def(); }
-    const Def* def() const {
-        if (def_ != nullptr) {
-            while (auto repr = def_->substitute_)
-                def_ = repr;
-        }
-        return def_;
-    }
-
-    std::ostream& operator<<(std::ostream& os) const { return os << def(); }
-
-private:
-    mutable const Def* def_;
-};
 
 class Nat : public Def {
 private:

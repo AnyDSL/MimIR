@@ -306,23 +306,6 @@ bool Def::is_external() const { return world().is_external(this); }
 
 std::string Def::unique_name() const { return name() + "_" + std::to_string(gid()); }
 
-void Def::replace(Tracker with) const {
-    world().DLOG("replace: {} -> {}", this, with);
-    //assert(type() == with->type());
-    assert(!is_replaced());
-
-    if (this != with) {
-        for (auto& use : copy_uses()) {
-            auto def = const_cast<Def*>(use.def());
-            auto index = use.index();
-            def->set(index, with);
-        }
-
-        uses_.clear();
-        substitute_ = with;
-    }
-}
-
 DefArray Def::apply(const Def* arg) const {
     if (auto nom = isa_nom()) return nom->apply(arg);
     return ops();

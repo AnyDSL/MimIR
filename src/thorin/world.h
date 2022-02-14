@@ -642,9 +642,7 @@ private:
     std::unique_ptr<ErrorHandler> err_;
     std::unique_ptr<Checker> checker_;
 
-    friend class Cleaner;
     friend DefArray Def::apply(const Def*);
-    friend void Def::replace(Tracker) const;
 };
 
 #define ELOG(...) log(thorin::LogLevel::Error,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)

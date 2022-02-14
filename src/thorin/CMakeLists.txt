@@ -72,12 +72,6 @@ set(THORIN_SOURCES
     pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
-    transform/cleanup_world.cpp
-    transform/cleanup_world.h
-    transform/mangle.cpp
-    transform/mangle.h
-    transform/partial_evaluation.cpp
-    transform/partial_evaluation.h
     transform/closure_conv.h
     transform/closure_conv.cpp
     util/array.h
