@@ -146,6 +146,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ad1fdf23d819fbbc0d01d0bcf3a728284"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structthorin_1_1Pos.html">Pos</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Loc.html#ad1fdf23d819fbbc0d01d0bcf3a728284">begin</a> = {<a class="el" href="namespace_3globalScope_4.html#classuint32__t">uint32_t</a>(-1), <a class="el" href="namespace_3globalScope_4.html#classuint32__t">uint32_t</a>(-1)}</td></tr>
 <tr class="separator:ad1fdf23d819fbbc0d01d0bcf3a728284"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e9c5322ad9d09bd66f51752d1c29c97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structthorin_1_1Pos.html">Pos</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Loc.html#a4e9c5322ad9d09bd66f51752d1c29c97">finis</a> = {<a class="el" href="namespace_3globalScope_4.html#classuint32__t">uint32_t</a>(-1), <a class="el" href="namespace_3globalScope_4.html#classuint32__t">uint32_t</a>(-1)}</td></tr>
+<tr class="memdesc:a4e9c5322ad9d09bd66f51752d1c29c97"><td class="mdescLeft">&#160;</td><td class="mdescRight">It's called <code>finis</code> because it refers to the <em>last</em> character within this <code><a class="el" href="structthorin_1_1Loc.html">Loc</a>ation</code>.  <a href="structthorin_1_1Loc.html#a4e9c5322ad9d09bd66f51752d1c29c97">More...</a><br /></td></tr>
 <tr class="separator:a4e9c5322ad9d09bd66f51752d1c29c97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -377,7 +378,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="debug_8h_source.html#l00040">40</a> of file <a class="el" href="debug_8h_source.html">debug.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="debug_8h_source.html#l00036">anew_begin()</a>, <a class="el" href="world_8cpp_source.html#l00632">thorin::World::dbg()</a>, <a class="el" href="debug_8cpp_source.html#l00007">Loc()</a>, <a class="el" href="debug_8h_source.html#l00047">thorin::operator==()</a>, and <a class="el" href="debug_8cpp_source.html#l00036">stream()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="debug_8h_source.html#l00036">anew_begin()</a>, <a class="el" href="world_8cpp_source.html#l00632">thorin::World::dbg()</a>, <a class="el" href="debug_8cpp_source.html#l00007">Loc()</a>, <a class="el" href="debug_8h_source.html#l00049">thorin::operator==()</a>, and <a class="el" href="debug_8cpp_source.html#l00036">stream()</a>.</p>
 
 </div>
 </div>
@@ -395,7 +396,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="debug_8h_source.html#l00039">39</a> of file <a class="el" href="debug_8h_source.html">debug.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="debug_8h_source.html#l00036">anew_begin()</a>, <a class="el" href="debug_8h_source.html#l00037">anew_finis()</a>, <a class="el" href="world_8cpp_source.html#l00632">thorin::World::dbg()</a>, <a class="el" href="debug_8cpp_source.html#l00007">Loc()</a>, <a class="el" href="debug_8h_source.html#l00047">thorin::operator==()</a>, and <a class="el" href="debug_8cpp_source.html#l00036">stream()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="debug_8h_source.html#l00036">anew_begin()</a>, <a class="el" href="debug_8h_source.html#l00037">anew_finis()</a>, <a class="el" href="world_8cpp_source.html#l00632">thorin::World::dbg()</a>, <a class="el" href="debug_8cpp_source.html#l00007">Loc()</a>, <a class="el" href="debug_8h_source.html#l00049">thorin::operator==()</a>, and <a class="el" href="debug_8cpp_source.html#l00036">stream()</a>.</p>
 
 </div>
 </div>
@@ -411,9 +412,12 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>It's called <code>finis</code> because it refers to the <em>last</em> character within this <code><a class="el" href="structthorin_1_1Loc.html">Loc</a>ation</code>. </p>
+<p >In the STL the word <code>end</code> refers to the position of something that is one element <em>past</em> the end. </p>
+
 <p class="definition">Definition at line <a class="el" href="debug_8h_source.html#l00041">41</a> of file <a class="el" href="debug_8h_source.html">debug.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="debug_8h_source.html#l00037">anew_finis()</a>, <a class="el" href="world_8cpp_source.html#l00632">thorin::World::dbg()</a>, <a class="el" href="debug_8cpp_source.html#l00007">Loc()</a>, <a class="el" href="debug_8h_source.html#l00047">thorin::operator==()</a>, and <a class="el" href="debug_8cpp_source.html#l00036">stream()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="debug_8h_source.html#l00037">anew_finis()</a>, <a class="el" href="world_8cpp_source.html#l00632">thorin::World::dbg()</a>, <a class="el" href="debug_8cpp_source.html#l00007">Loc()</a>, <a class="el" href="debug_8h_source.html#l00049">thorin::operator==()</a>, and <a class="el" href="debug_8cpp_source.html#l00036">stream()</a>.</p>
 
 </div>
 </div>
