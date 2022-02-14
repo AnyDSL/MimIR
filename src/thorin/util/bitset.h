@@ -86,11 +86,11 @@ public:
     ///@{
     /// Is any bit range set?
 
-    /// Is any bit in @c [begin,end[ set?
+    /// Is any bit in `[begin, end[` set?
     bool any_range(const size_t begin, const size_t end) const;
-    /// Is any bit in @c [0,end[ set?
+    /// Is any bit in `[0, end[` set?
     bool any_end(const size_t end) const { return any_range(0, end); }
-    /// Is any bit in @c [begin,infinity[ set?
+    /// Is any bit in `[begin, ∞[` set?
     bool any_begin(const size_t begin) const { return any_range(begin, num_bits()); }
     bool any() const { return any_range(0, num_bits()); }
     ///@}
@@ -99,11 +99,11 @@ public:
     ///@{
     /// Is no bit in range set?
 
-    /// Is no bit in @c [begin,end[ set?
+    /// Is no bit in `[begin, end[` set?
     bool none_range(const size_t begin, const size_t end) const { return !any_range(begin, end); }
-    /// Is no bit in @c [0,end[ set?
+    /// Is no bit in `[0, end[` set?
     bool none_end(const size_t end) const { return none_range(0, end); }
-    /// Is no bit in @c [begin,infinity[ set?
+    /// Is no bit in `[begin, ∞[` set?
     bool none_begin(const size_t begin) const { return none_range(begin, num_bits()); }
     bool none() const { return none_range(0, num_bits()); }
     ///@}
@@ -114,7 +114,7 @@ public:
     BitSet operator>>(uint64_t shift) const { BitSet res(*this); res >>= shift; return res; }
     ///@}
 
-    /// @name boolean operators
+    /// @name Boolean operators
     ///@{
     BitSet& operator&=(const BitSet& other) { return op_assign<std::bit_and<uint64_t>>(other); }
     BitSet& operator|=(const BitSet& other) { return op_assign<std::bit_or <uint64_t>>(other); }
@@ -159,7 +159,7 @@ private:
     mutable uint32_t num_words_;
 
 public:
-    uint32_t padding = 0;
+    uint32_t padding = 0; ///< Unused; do whatever you want with this.
 };
 
 static_assert(sizeof(BitSet) == 16);
