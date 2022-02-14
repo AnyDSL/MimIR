@@ -10,8 +10,7 @@ namespace thorin {
 class BetaRed : public FPPass<BetaRed> {
 public:
     BetaRed(PassMan& man)
-        : FPPass(man, "beta_red")
-    {}
+        : FPPass(man, "beta_red") {}
 
     using Data = LamSet;
 

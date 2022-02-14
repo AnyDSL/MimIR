@@ -13,12 +13,10 @@ class Bound : public Def {
 protected:
     /// Constructor for a @em structural Bound.
     Bound(node_t node, const Def* type, Defs ops, const Def* dbg)
-        : Def(node, type, ops, 0, dbg)
-    {}
+        : Def(node, type, ops, 0, dbg) {}
     /// Constructor for a @em nom Bound.
     Bound(node_t node, const Def* type, size_t size, const Def* dbg)
-        : Def(node, type, size, 0, dbg)
-    {}
+        : Def(node, type, size, 0, dbg) {}
 
 public:
     size_t find(const Def* type) const;
@@ -33,12 +31,10 @@ class TBound : public Bound {
 private:
     /// Constructor for a @em structural Bound.
     TBound(const Def* type, Defs ops, const Def* dbg)
-        : Bound(Node, type, ops, dbg)
-    {}
+        : Bound(Node, type, ops, dbg) {}
     /// Constructor for a @em nom Bound.
     TBound(const Def* type, size_t size, const Def* dbg)
-        : Bound(Node, type, size, dbg)
-    {}
+        : Bound(Node, type, size, dbg) {}
 
 public:
     /// @name virtual methods
@@ -57,8 +53,7 @@ public:
 class Et : public Def {
 private:
     Et(const Def* type, Defs defs, const Def* dbg)
-        : Def(Node, type, defs, 0, dbg)
-    {}
+        : Def(Node, type, defs, 0, dbg) {}
 
 public:
     /// @name virtual methods
@@ -74,8 +69,7 @@ public:
 class Vel : public Def {
 private:
     Vel(const Def* type, const Def* value, const Def* dbg)
-        : Def(Node, type, {value}, 0, dbg)
-    {}
+        : Def(Node, type, {value}, 0, dbg) {}
 
 public:
     /// @name ops
@@ -96,8 +90,7 @@ public:
 class Pick : public Def {
 private:
     Pick(const Def* type, const Def* value, const Def* dbg)
-        : Def(Node, type, {value}, 0, dbg)
-    {}
+        : Def(Node, type, {value}, 0, dbg) {}
 
 public:
     /// @name ops
@@ -122,8 +115,7 @@ public:
 class Test : public Def {
 private:
     Test(const Def* type, const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg)
-        : Def(Node, type, {value, probe, match, clash}, 0, dbg)
-    {}
+        : Def(Node, type, {value, probe, match, clash}, 0, dbg) {}
 
 public:
     /// @name ops
@@ -146,8 +138,7 @@ public:
 class Ext : public Def {
 protected:
     Ext(node_t node, const Def* type, const Def* dbg)
-        : Def(node, type, Defs{}, 0, dbg)
-    {}
+        : Def(node, type, Defs{}, 0, dbg) {}
 };
 
 /// Ext%remum. Either @p Top (@p up) or @p Bot%tom.
@@ -155,8 +146,7 @@ template<bool up>
 class TExt : public Ext {
 private:
     TExt(const Def* type, const Def* dbg)
-        : Ext(Node, type, dbg)
-    {}
+        : Ext(Node, type, dbg) {}
 
 public:
     /// @name virtual methods

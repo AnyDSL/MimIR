@@ -68,12 +68,10 @@ constexpr bool is_associative(Bit op) {
 class Res {
 public:
     Res()
-        : data_{}
-    {}
+        : data_{} {}
     template<class T>
     Res(T val)
-        : data_(bitcast<u64>(val))
-    {}
+        : data_(bitcast<u64>(val)) {}
 
     constexpr const u64& operator*() const& { return *data_; }
     constexpr u64& operator*() & { return *data_; }

@@ -26,8 +26,7 @@ class CFNode : public Streamable<CFNode> {
 public:
     CFNode(Def* nom)
         : nom_(nom)
-        , gid_(gid_counter_++)
-    {}
+        , gid_(gid_counter_++) {}
 
     uint64_t gid() const { return gid_; }
     Def* nom() const { return nom_; }

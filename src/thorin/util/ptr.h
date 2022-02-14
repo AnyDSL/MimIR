@@ -21,13 +21,11 @@ public:
 #if defined(__x86_64__) || (_M_X64)
     TaggedPtr(T* ptr, I index)
         : ptr_(reinterpret_cast<int64_t>(ptr))
-        , index_(int16_t(index))
-    {}
+        , index_(int16_t(index)) {}
 #else
     TaggedPtr(T* ptr, I index)
         : ptr_(ptr)
-        , index_(I(index))
-    {}
+        , index_(I(index)) {}
 #endif
 
     T* ptr() const { return reinterpret_cast<T*>(ptr_); }

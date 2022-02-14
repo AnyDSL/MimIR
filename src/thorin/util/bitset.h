@@ -14,8 +14,7 @@ public:
     class reference {
     private:
         reference(uint64_t* word, uint16_t index)
-            : tagged_ptr_(word, index)
-        {}
+            : tagged_ptr_(word, index) {}
 
     public:
         reference operator=(bool b) {
@@ -38,29 +37,32 @@ public:
         friend class BitSet;
     };
 
+    /// @name constructor, destructor & assignment
+    ///@{
     BitSet()
         : word_(0)
-        , num_words_(1)
-    {}
+        , num_words_(1) {}
     BitSet(const BitSet& other)
-        : BitSet()
-    {
+        : BitSet() {
         ensure_capacity(other.num_bits()-1);
         std::copy_n(other.words(), other.num_words(), words());
     }
     BitSet(BitSet&& other)
         : words_(std::move(other.words_))
-        , num_words_(std::move(other.num_words_))
-    {
+        , num_words_(std::move(other.num_words_)) {
         other.words_ = nullptr;
     }
+
     ~BitSet() { dealloc(); }
+
+    BitSet& operator=(BitSet other) { swap(*this, other); return *this; }
+    ///@}
+
 
     /// @name get, set, clear, toggle, and test bits
     ///@{
     bool test(size_t i) const {
-        if ((i/64_s) >= num_words())
-            return false;
+        if ((i / 64_s) >= num_words()) return false;
         return *(words() + i/64_s) & (1_u64 << i%64_u64);
     }
 
@@ -74,12 +76,16 @@ public:
     bool operator[](size_t i) const { return (*const_cast<BitSet*>(this))[i]; }
     ///@}
 
+    /// @name relational operators
+    ///@{
     bool operator==(const BitSet&) const; // TODO test
     bool operator!=(const BitSet& other) const { return !(*this == other); } // TODO optimize
+    ///@}
 
     /// @name any
-    /// Is any bit range set?
     ///@{
+    /// Is any bit range set?
+
     /// Is any bit in @c [begin,end[ set?
     bool any_range(const size_t begin, const size_t end) const;
     /// Is any bit in @c [0,end[ set?
@@ -90,8 +96,9 @@ public:
     ///@}
 
     /// @name none
-    /// Is no bit in range set?
     ///@{
+    /// Is no bit in range set?
+
     /// Is no bit in @c [begin,end[ set?
     bool none_range(const size_t begin, const size_t end) const { return !any_range(begin, end); }
     /// Is no bit in @c [0,end[ set?
@@ -119,8 +126,6 @@ public:
 
     /// number of bits set
     size_t count() const;
-
-    BitSet& operator=(BitSet other) { swap(*this, other); return *this; }
 
     void friend swap(BitSet& b1, BitSet& b2) {
         using std::swap;

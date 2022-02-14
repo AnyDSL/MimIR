@@ -56,8 +56,7 @@ public:
 
     unique_queue() = default;
     unique_queue(Set set)
-        : done_(set)
-    {}
+        : done_(set) {}
 
     bool push(T val) {
         if (done_.emplace(val).second) {

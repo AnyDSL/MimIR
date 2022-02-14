@@ -52,8 +52,7 @@ public:
     class Head : public Base {
     private:
         Head(Head* parent, int depth, const std::vector<const CFNode*>& cf_nodes)
-            : Base(Node, parent, depth, cf_nodes)
-        {}
+            : Base(Node, parent, depth, cf_nodes) {}
 
     public:
         ArrayRef<std::unique_ptr<Base>> children() const { return children_; }
@@ -76,8 +75,7 @@ public:
     private:
         Leaf(size_t index, Head* parent, int depth, const std::vector<const CFNode*>& cf_nodes)
             : Base(Node, parent, depth, cf_nodes)
-            , index_(index)
-        {
+            , index_(index) {
             assert(Leaf::num_cf_nodes() == 1);
         }
 

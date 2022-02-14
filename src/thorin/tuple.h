@@ -9,12 +9,10 @@ class Sigma : public Def {
 private:
     /// Constructor for a @em structural Sigma.
     Sigma(const Def* type, Defs ops, const Def* dbg)
-        : Def(Node, type, ops, 0, dbg)
-    {}
+        : Def(Node, type, ops, 0, dbg) {}
     /// Constructor for a @em nom Sigma.
     Sigma(const Def* type, size_t size, const Def* dbg)
-        : Def(Node, type, size, 0, dbg)
-    {}
+        : Def(Node, type, size, 0, dbg) {}
 
 public:
     /// @name setters
@@ -37,8 +35,7 @@ public:
 class Tuple : public Def {
 private:
     Tuple(const Def* type, Defs args, const Def* dbg)
-        : Def(Node, type, args, 0, dbg)
-    {}
+        : Def(Node, type, args, 0, dbg) {}
 
 public:
     /// @name virtual methods
@@ -54,12 +51,10 @@ class Arr : public Def {
 private:
     /// Constructor for a @em structural Arr.
     Arr(const Def* type, const Def* shape, const Def* body, const Def* dbg)
-        : Def(Node, type, {shape, body}, 0, dbg)
-    {}
+        : Def(Node, type, {shape, body}, 0, dbg) {}
     /// Constructor for a @em nom Arr.
     Arr(const Def* type, const Def* shape, const Def* dbg)
-        : Def(Node, type, 2, 0, dbg)
-    {
+        : Def(Node, type, 2, 0, dbg) {
         Def::set(0, shape);
     }
 
@@ -89,8 +84,7 @@ public:
 class Pack : public Def {
 private:
     Pack(const Def* type, const Def* body, const Def* dbg)
-        : Def(Node, type, {body}, 0, dbg)
-    {}
+        : Def(Node, type, {body}, 0, dbg) {}
 
 public:
     /// @name getters
@@ -115,8 +109,7 @@ inline bool is_tuple_or_pack(const Def* def) { return def->isa<Tuple>() || def->
 class Extract : public Def {
 private:
     Extract(const Def* type, const Def* tuple, const Def* index, const Def* dbg)
-        : Def(Node, type, {tuple, index}, 0, dbg)
-    {}
+        : Def(Node, type, {tuple, index}, 0, dbg) {}
 
 public:
     /// @name ops
@@ -140,8 +133,7 @@ public:
 class Insert : public Def {
 private:
     Insert(const Def* tuple, const Def* index, const Def* value, const Def* dbg)
-        : Def(Node, tuple->type(), {tuple, index, value}, 0, dbg)
-    {}
+        : Def(Node, tuple->type(), {tuple, index, value}, 0, dbg) {}
 
 public:
     /// @name ops

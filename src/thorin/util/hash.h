@@ -159,7 +159,7 @@ public:
         typedef typename std::conditional<is_const, const value_type*, value_type*>::type pointer;
         typedef std::forward_iterator_tag iterator_category;
 
-        /// @name c'tor/d'tor, assignment operator
+        /// @name constructor, destructor & assignment
         ///@{
         iterator_base() = default;
         iterator_base(value_type* ptr, const HashTable* table)
@@ -232,7 +232,7 @@ public:
     typedef iterator_base<false> iterator;
     typedef iterator_base<true> const_iterator;
 
-    /// @name c'tor/d'tor, assignment operator
+    /// @name constructor, destructor & assignment
     ///@{
     HashTable()
         : capacity_(StackCapacity)
@@ -256,8 +256,7 @@ public:
         fill(nodes_);
     }
     HashTable(HashTable&& other)
-        : HashTable()
-    {
+        : HashTable() {
         swap(*this, other);
     }
     HashTable(const HashTable& other)
@@ -277,19 +276,16 @@ public:
     }
     template<class InputIt>
     HashTable(InputIt first, InputIt last)
-        : HashTable()
-    {
+        : HashTable() {
         insert(first, last);
     }
     HashTable(std::initializer_list<value_type> ilist)
-        : HashTable()
-    {
+        : HashTable() {
         insert(ilist);
     }
 
     ~HashTable() {
-        if (on_heap())
-            delete[] nodes_;
+        if (on_heap()) delete[] nodes_;
     }
 
     HashTable& operator=(HashTable other) { swap(*this, other); return *this; }
@@ -319,11 +315,9 @@ public:
     ///@{
     template<class... Args>
     std::pair<iterator,bool> emplace(Args&&... args) {
-        if (!on_heap() && size_ < capacity_)
-            return array_emplace(std::forward<Args>(args)...);
+        if (!on_heap() && size_ < capacity_) return array_emplace(std::forward<Args>(args)...);
 
-        if (size_ >= capacity_/4_u32 + capacity_/2_u32)
-            rehash(capacity_*4_u32);
+        if (size_ >= capacity_ / 4_u32 + capacity_ / 2_u32) rehash(capacity_ * 4_u32);
 
         return emplace_no_rehash(std::forward<Args>(args)...);
     }
@@ -643,15 +637,12 @@ public:
 
     HashSet() {}
     HashSet(hash_t capacity)
-        : Super(capacity)
-    {}
+        : Super(capacity) {}
     template<class InputIt>
     HashSet(InputIt first, InputIt last)
-        : Super(first, last)
-    {}
+        : Super(first, last) {}
     HashSet(std::initializer_list<value_type> ilist)
-        : Super(ilist)
-    {}
+        : Super(ilist) {}
 
     friend void swap(HashSet& s1, HashSet& s2) { swap(static_cast<Super&>(s1), static_cast<Super&>(s2)); }
 };
@@ -672,18 +663,14 @@ public:
     typedef typename Super::const_iterator const_iterator;
 
     HashMap()
-        : Super()
-    {}
+        : Super() {}
     HashMap(hash_t capacity)
-        : Super(capacity)
-    {}
+        : Super(capacity) {}
     template<class InputIt>
     HashMap(InputIt first, InputIt last)
-        : Super(first, last)
-    {}
+        : Super(first, last) {}
     HashMap(std::initializer_list<value_type> ilist)
-        : Super(ilist)
-    {}
+        : Super(ilist) {}
 
     std::optional<mapped_type> lookup(const key_type& k) const {
         auto i = Super::find(k);

@@ -68,8 +68,7 @@ struct BB {
 class CodeGen : public Emitter<std::string, std::string, BB, CodeGen> {
 public:
     CodeGen(World& world, Stream& stream)
-        : Emitter(world, stream)
-    {}
+        : Emitter(world, stream) {}
 
     bool is_valid(const std::string& s) { return !s.empty(); }
     void run();

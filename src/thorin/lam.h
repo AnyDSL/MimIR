@@ -10,12 +10,10 @@ class Pi : public Def {
 protected:
     /// Constructor for a @em structural Pi.
     Pi(const Def* type, const Def* dom, const Def* codom, const Def* dbg)
-        : Def(Node, type, {dom, codom}, 0, dbg)
-    {}
+        : Def(Node, type, {dom, codom}, 0, dbg) {}
     /// Constructor for a @em nom Pi.
     Pi(const Def* type, const Def* dbg)
-        : Def(Node, type, 2, 0, dbg)
-    {}
+        : Def(Node, type, 2, 0, dbg) {}
 
 public:
     /// @name ops
@@ -58,11 +56,9 @@ public:
 
 private:
     Lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg)
-        : Def(Node, pi, {filter, body}, 0, dbg)
-    {}
+        : Def(Node, pi, {filter, body}, 0, dbg) {}
     Lam(const Pi* pi, CC cc, const Def* dbg)
-        : Def(Node, pi, 2, u64(cc), dbg)
-    {}
+        : Def(Node, pi, 2, u64(cc), dbg) {}
 
 public:
     /// @name type
@@ -130,8 +126,7 @@ using Lam2Lam = LamMap<Lam*>;
 class App : public Def {
 private:
     App(const Axiom* axiom, u16 currying_depth, const Def* type, const Def* callee, const Def* arg, const Def* dbg)
-        : Def(Node, type, {callee, arg}, 0, dbg)
-    {
+        : Def(Node, type, {callee, arg}, 0, dbg) {
         axiom_depth_.set(axiom, currying_depth);
     }
 

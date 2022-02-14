@@ -35,12 +35,10 @@ class Query {
 public:
     Query()
         : axiom_(nullptr)
-        , def_(nullptr)
-    {}
+        , def_(nullptr) {}
     Query(const Axiom* axiom, const D* def)
         : axiom_(axiom)
-        , def_(def)
-    {}
+        , def_(def) {}
 
     const Axiom* axiom() const { return axiom_; }
     tag_t tag() const { return axiom()->tag(); }

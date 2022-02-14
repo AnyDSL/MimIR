@@ -16,11 +16,10 @@ public:
     DomFrontierBase(const DomFrontierBase &) = delete;
     DomFrontierBase& operator=(DomFrontierBase) = delete;
 
-    explicit DomFrontierBase(const CFG<forward> &cfg)
+    explicit DomFrontierBase(const CFG<forward>& cfg)
         : cfg_(cfg)
         , preds_(cfg)
-        , succs_(cfg)
-    {
+        , succs_(cfg) {
         create();
     }
 

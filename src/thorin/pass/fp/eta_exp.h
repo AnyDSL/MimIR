@@ -16,8 +16,7 @@ class EtaExp : public FPPass<EtaExp, Lam> {
 public:
     EtaExp(PassMan& man, EtaRed* eta_red)
         : FPPass(man, "eta_exp")
-        , eta_red_(eta_red)
-    {}
+        , eta_red_(eta_red) {}
 
     /// @name interface for other passes
     ///@{

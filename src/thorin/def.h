@@ -57,8 +57,7 @@ class Use {
 public:
     Use() {}
     Use(const Def* def, size_t index)
-        : tagged_ptr_(def, index)
-    {}
+        : tagged_ptr_(def, index) {}
 
     bool is_used_as_type() const { return index() == -1_s; }
     size_t index() const { return tagged_ptr_.index(); }
@@ -423,8 +422,7 @@ using Nom2Nom = NomMap<Def*>;
 class Var : public Def {
 private:
     Var(const Def* type, Def* nom, const Def* dbg)
-        : Def(Node, type, Defs{nom}, 0, dbg)
-    {}
+        : Def(Node, type, Defs{nom}, 0, dbg) {}
 
 public:
     /// @name ops
@@ -448,8 +446,7 @@ using Var2Var = VarMap<const Var*>;
 class Space : public Def {
 private:
     Space(World& world)
-        : Def(Node, reinterpret_cast<const Def*>(&world), Defs{}, 0, nullptr)
-    {}
+        : Def(Node, reinterpret_cast<const Def*>(&world), Defs{}, 0, nullptr) {}
 
 public:
     /// @name virtual methods
@@ -478,8 +475,7 @@ public:
 class Lit : public Def {
 private:
     Lit(const Def* type, fields_t val, const Def* dbg)
-        : Def(Node, type, Defs{}, val, dbg)
-    {}
+        : Def(Node, type, Defs{}, val, dbg) {}
 
 public:
     template<class T = fields_t>
@@ -544,8 +540,7 @@ public:
 class Proxy : public Def {
 private:
     Proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg)
-        : Def(Node, type, ops, (nat_t(index) << 32_u64) | nat_t(flags), dbg)
-    {}
+        : Def(Node, type, ops, (nat_t(index) << 32_u64) | nat_t(flags), dbg) {}
 
 public:
     /// @name misc getters
@@ -569,8 +564,7 @@ public:
 class Global : public Def {
 private:
     Global(const Def* type, const Def* id, const Def* init, bool is_mutable, const Def* dbg)
-        : Def(Node, type, {id, init}, is_mutable, dbg)
-    {}
+        : Def(Node, type, {id, init}, is_mutable, dbg) {}
 
 public:
     /// @name ops
