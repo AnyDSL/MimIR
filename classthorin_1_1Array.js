@@ -29,6 +29,7 @@ var classthorin_1_1Array =
     [ "front", "classthorin_1_1Array.html#aa820fca7c6f7c785f1bfa18786a8ff68", null ],
     [ "get_back", "classthorin_1_1Array.html#ae7613d729573d17e2049bbc7a2951aee", null ],
     [ "get_front", "classthorin_1_1Array.html#a1be996ebda89c350c042756cd47acd23", null ],
+    [ "operator!=", "classthorin_1_1Array.html#acdd993b597ff7034109ee747d518a923", null ],
     [ "operator=", "classthorin_1_1Array.html#aa276c25a8dbd7cae28b0991001fde9c7", null ],
     [ "operator==", "classthorin_1_1Array.html#a9bf1058e1f2d63b3854d68917e6b7dff", null ],
     [ "operator[]", "classthorin_1_1Array.html#a4ee20002c7ed1418465654a03f38874a", null ],

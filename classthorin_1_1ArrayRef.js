@@ -20,6 +20,7 @@ var classthorin_1_1ArrayRef =
     [ "front", "classthorin_1_1ArrayRef.html#ae90aa33866ab681469b7e0ec8a68ca98", null ],
     [ "get_back", "classthorin_1_1ArrayRef.html#a123232f34db5f7d09b56e7609e08aaa9", null ],
     [ "get_front", "classthorin_1_1ArrayRef.html#a4752647bdfc52b5eda127a7a8aff6db8", null ],
+    [ "operator!=", "classthorin_1_1ArrayRef.html#a789bcc441c442b497486196770b74ed4", null ],
     [ "operator=", "classthorin_1_1ArrayRef.html#adf4aaa6e43f0c1a35baa724fb2c3188e", null ],
     [ "operator==", "classthorin_1_1ArrayRef.html#a016a89705642a642262c38c0fa9ae22c", null ],
     [ "operator[]", "classthorin_1_1ArrayRef.html#a886440bba24302f946ac4dedc36bae31", null ],
