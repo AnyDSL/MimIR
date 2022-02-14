@@ -302,7 +302,7 @@ public:
     /// Rewrites @p ops by substituting `this` nominal's @p Var with @p arg.
     DefArray apply(const Def* arg) const;
     DefArray apply(const Def* arg);
-    /// Trnasitively @p apply @Lam%s, if `this` is an @p App.
+    /// Trnasitively @p apply @p Lam%s, if `this` is an @p App.
     /// @return the reduced body
     const Def* reduce() const;
     ///@}
