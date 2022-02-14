@@ -105,21 +105,21 @@ var NAVTREEINDEX =
 [
 "alloc2malloc_8cpp.html",
 "classthorin_1_1ArrayRef.html#adc6a972e350fc99a765dfb823c8cec25",
-"classthorin_1_1Cleaner.html",
-"classthorin_1_1Def.html#addf021956daa61ab3035dd3a75751215",
-"classthorin_1_1Global.html#a7b4bcdf992c21ae83363f25df05b1d25",
-"classthorin_1_1LoopTree.html#a0b97215e639132eee69a71502a6a728a",
-"classthorin_1_1RWPass.html#aa1b92447f41f06b88e03f68bde2bdd44",
-"classthorin_1_1Stream.html#aed54130070b1aed20fc0f50ea767d154",
-"classthorin_1_1World.html#a020664bf1e06a387e8265959eda60b4b",
-"classthorin_1_1World.html#a9a747e4c1081d941f27692a46573f8fd",
-"classthorin_1_1detail_1_1HashTable.html#ad308cabf9f6bd614215a6c0a671f5d64",
-"functions_func.html",
-"namespacethorin.html#a29c941d22ec38a63827a944f7ed215a6",
-"namespacethorin.html#acfc79e85e5edc22a794cb2db4f85b6d8",
-"pass_8h.html",
-"structthorin_1_1Loc.html#abe1987125826cff12faf95a176183f82",
-"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719"
+"classthorin_1_1ClosureConv.html",
+"classthorin_1_1DepTree.html#acd5dda7a5287787af5b7378a0fedd3ca",
+"classthorin_1_1HashSet.html",
+"classthorin_1_1LoopTree_1_1Base.html#a7ca2c194b8fe0dd1cd4ad740e5c655ef",
+"classthorin_1_1Res.html#a3c3dc648a75589fa93c8761612691464",
+"classthorin_1_1TaggedPtr.html#aed7c02c60b63f0a7fd9df464d81f82e5",
+"classthorin_1_1World.html#a3eb5d79bc94b70d2223ee1003a648b3f",
+"classthorin_1_1World.html#acc2004b31278a43411f786764251e5ae",
+"classthorin_1_1unique__queue.html#a226f67717d2a9c893eaecf8da6a2f52d",
+"lam_8h.html#afa219845413436ebd217a971fb700df5",
+"namespacethorin.html#a7c899cc6b963ec90be8fd86ded781647",
+"namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Wrap_01_4",
+"structthorin_1_1FoldConv_3_01Conv_1_1r2u_00_01dw_00_01sw_01_4.html",
+"tables_8h.html#a59b973b9765a3464d068b1413d3da0a9",
+"world_8h.html#a0c221110c77b993968e98cb53c0d652e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
