@@ -47,7 +47,7 @@ public:
     virtual void enter() {}
     ///@}
 
-    /// @name Proxy
+    /// @name proxy
     ///@{
     const Proxy* proxy(const Def* type, Defs ops, flags_t flags = 0, const Def* dbg = {}) { return world().proxy(type, ops, proxy_id(), flags, dbg); }
 
@@ -87,8 +87,8 @@ public:
 
     /// @name hooks for the PassMan
     ///@{
-    /// Invoked after the @p PassMan has @p finish%ed @p rewrite%ing @p curr_nom to analyze the @p Def.
-    /// Return @p No_Undo or the state to roll back to.
+    /// Invoked after the @p PassMan has @p finish%ed @p rewrite%ing @p curr_nom to analyze the @p Def;
+    /// return @p No_Undo or the state to roll back to.
     virtual undo_t analyze(const Def*  ) { return No_Undo; }
     virtual undo_t analyze(const Var*  ) { return No_Undo; }
     virtual undo_t analyze(const Proxy*) { return No_Undo; }
@@ -109,8 +109,7 @@ private:
 class PassMan {
 public:
     PassMan(World& world)
-        : world_(world)
-    {}
+        : world_(world) {}
 
     /// @name getters
     ///@{
@@ -153,8 +152,7 @@ private:
         State(State&&) = delete;
         State& operator=(State) = delete;
         State(size_t num)
-            : data(num)
-        {}
+            : data(num) {}
 
         Def* curr_nom = nullptr;
         DefArray old_ops;
@@ -216,8 +214,7 @@ template<class N = Def>
 class RWPass : public RWPassBase {
 public:
     RWPass(PassMan& man, const std::string& name)
-        : RWPassBase(man, name)
-    {}
+        : RWPassBase(man, name) {}
 
 protected:
     bool inspect() const override { return RWPassBase::inspect<N>(); }
@@ -229,8 +226,7 @@ template<class P, class N = Def>
 class FPPass : public FPPassBase {
 public:
     FPPass(PassMan& man, const std::string& name)
-        : FPPassBase(man, name)
-    {}
+        : FPPassBase(man, name) {}
 
     /// @name memory management for state
     ///@{

@@ -23,8 +23,7 @@ private:
     public:
         Tracker(Parser& parser, const Pos& pos)
             : parser_(parser)
-            , pos_(pos)
-        {}
+            , pos_(pos) {}
 
         operator Loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
 

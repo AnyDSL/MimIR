@@ -21,8 +21,7 @@ class Scalerize : public RWPass<Lam> {
 public:
     Scalerize(PassMan& man, EtaExp* eta_exp)
         : RWPass(man, "scalerize")
-        , eta_exp_(eta_exp)
-    {}
+        , eta_exp_(eta_exp) {}
 
     const Def* rewrite(const Def*) override;
 

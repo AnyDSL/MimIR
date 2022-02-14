@@ -15,8 +15,7 @@ public:
     DCE(PassMan& man, BetaRed* beta_red, EtaExp* eta_exp)
         : FPPass(man, "dce")
         , beta_red_(beta_red)
-        , eta_exp_(eta_exp)
-    {}
+        , eta_exp_(eta_exp) {}
 
     using Data = LamSet;
 

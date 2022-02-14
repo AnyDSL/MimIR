@@ -12,8 +12,7 @@ public:
     private:
         reference(uint64_t& word, uint64_t pos)
             : word_(word)
-            , pos_(pos)
-        {}
+            , pos_(pos) {}
 
     public:
         reference operator=(bool b) {
@@ -39,17 +38,14 @@ public:
 
     IndexSet(const Indexer& indexer)
         : indexer_(indexer)
-        , bits_((capacity()+63u) / 64u)
-    {}
+        , bits_((capacity() + 63u) / 64u) {}
     IndexSet(IndexSet&& other)
-        : IndexSet(indexer)
-    {
+        : IndexSet(indexer) {
         swap(*this, other);
     }
     IndexSet(const IndexSet& other)
         : indexer_(other.indexer())
-        , bits_(other.bits_)
-    {}
+        , bits_(other.bits_) {}
 
     const Indexer& indexer() const { return indexer_; }
     size_t capacity() const { return indexer().size(); }

@@ -19,8 +19,7 @@ class SSAConstr : public FPPass<SSAConstr, Lam> {
 public:
     SSAConstr(PassMan& man, EtaExp* eta_exp)
         : FPPass(man, "ssa_constr")
-        , eta_exp_(eta_exp)
-    {}
+        , eta_exp_(eta_exp) {}
 
     enum : flags_t { Phixy, Sloxy, Traxy };
 

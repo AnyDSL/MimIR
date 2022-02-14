@@ -74,13 +74,11 @@ public:
     Tok() {}
     Tok(Loc loc, Tag tag)
         : loc_(loc)
-        , tag_(tag)
-    {}
+        , tag_(tag) {}
     Tok(Loc loc, Sym sym)
         : loc_(loc)
         , tag_(Tag::M_id)
-        , sym_(sym)
-    {}
+        , sym_(sym) {}
 
     Loc loc() const { return loc_; }
     Tag tag() const { return tag_; }

@@ -34,41 +34,32 @@ public:
 
     ArrayRef()
         : size_(0)
-        , ptr_(nullptr)
-    {}
+        , ptr_(nullptr) {}
     ArrayRef(size_t size, const T* ptr)
         : size_(size)
-        , ptr_(ptr)
-    {}
+        , ptr_(ptr) {}
     template<size_t N>
     ArrayRef(const T (&ptr)[N])
         : size_(N)
-        , ptr_(ptr)
-    {}
+        , ptr_(ptr) {}
     ArrayRef(const ArrayRef<T>& ref)
         : size_(ref.size_)
-        , ptr_(ref.ptr_)
-    {}
+        , ptr_(ref.ptr_) {}
     ArrayRef(const Array<T>& array)
         : size_(array.size())
-        , ptr_(array.begin())
-    {}
+        , ptr_(array.begin()) {}
     template<size_t N>
     ArrayRef(const std::array<T, N>& array)
         : size_(N)
-        , ptr_(array.data())
-    {}
+        , ptr_(array.data()) {}
     ArrayRef(std::initializer_list<T> list)
         : size_(std::distance(list.begin(), list.end()))
-        , ptr_(std::begin(list))
-    {}
+        , ptr_(std::begin(list)) {}
     ArrayRef(const std::vector<T>& vector)
-       : size_(vector.size())
-       , ptr_(vector.data())
-    {}
+        : size_(vector.size())
+        , ptr_(vector.data()) {}
     ArrayRef(ArrayRef&& array)
-        : ArrayRef()
-    {
+        : ArrayRef() {
         swap(*this, array);
     }
 
@@ -115,8 +106,8 @@ class ArrayStorage {
 
 public:
     ArrayStorage()
-        : size_(0), stack_(true)
-    {}
+        : size_(0)
+        , stack_(true) {}
     ArrayStorage(size_t size) {
         size_ = size;
         stack_ = size <= StackSize;
@@ -126,14 +117,12 @@ public:
     ArrayStorage(ArrayStorage&& other)
         : size_(other.size_)
         , stack_(other.stack_)
-        , data_(std::move(other.data_))
-    {
+        , data_(std::move(other.data_)) {
         other.stack_ = true;
         other.size_ = 0;
     }
     ~ArrayStorage() {
-        if (!stack_)
-            delete[] data_.ptr;
+        if (!stack_) delete[] data_.ptr;
     }
 
     size_t size() const { return size_; }
@@ -164,15 +153,14 @@ template <typename T>
 struct ArrayStorage<T, 0> {
 public:
     ArrayStorage()
-        : size_(0), ptr_(nullptr)
-    {}
+        : size_(0)
+        , ptr_(nullptr) {}
     ArrayStorage(size_t size)
-        : size_(size), ptr_(new T[size])
-    {}
+        : size_(size)
+        , ptr_(new T[size]) {}
     ArrayStorage(ArrayStorage&& other)
         : size_(std::move(other.size_))
-        , ptr_(std::move(other.ptr_))
-    {
+        , ptr_(std::move(other.ptr_)) {
         other.ptr_ = nullptr;
         other.size_ = 0;
     }
@@ -211,53 +199,41 @@ public:
     typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
 
     Array()
-        : storage_(0)
-    {}
+        : storage_(0) {}
     explicit Array(size_t size)
-        : storage_(size)
-    {
-        for (auto& elem : *this)
-            new (&elem) T();
+        : storage_(size) {
+        for (auto& elem : *this) new (&elem) T();
     }
     Array(size_t size, const T& val)
-        : storage_(size)
-    {
+        : storage_(size) {
         std::fill(begin(), end(), val);
     }
     Array(ArrayRef<T> ref)
-        : storage_(ref.size())
-    {
+        : storage_(ref.size()) {
         std::copy(ref.begin(), ref.end(), this->begin());
     }
     Array(Array&& other)
-        : storage_(std::move(other.storage_))
-    {}
+        : storage_(std::move(other.storage_)) {}
     Array(const Array& other)
-        : storage_(other.size())
-    {
+        : storage_(other.size()) {
         std::copy(other.begin(), other.end(), this->begin());
     }
     Array(const std::vector<T>& other)
-        : storage_(other.size())
-    {
+        : storage_(other.size()) {
         std::copy(other.begin(), other.end(), this->begin());
     }
     template<class I>
     Array(const I begin, const I end)
-        : storage_(std::distance(begin, end))
-    {
+        : storage_(std::distance(begin, end)) {
         std::copy(begin, end, data());
     }
     Array(std::initializer_list<T> list)
-        : storage_(std::distance(list.begin(), list.end()))
-    {
+        : storage_(std::distance(list.begin(), list.end())) {
         std::copy(list.begin(), list.end(), data());
     }
     Array(size_t size, std::function<T(size_t)> f)
-        : storage_(size)
-    {
-        for (size_t i = 0; i != size; ++i)
-            (*this)[i] = f(i);
+        : storage_(size) {
+        for (size_t i = 0; i != size; ++i) (*this)[i] = f(i);
     }
 
     iterator begin() { return data(); }

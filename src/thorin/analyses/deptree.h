@@ -11,8 +11,7 @@ class DepNode {
 public:
     DepNode(Def* nom, size_t depth)
         : nom_(nom)
-        , depth_(depth)
-    {}
+        , depth_(depth) {}
 
     Def* nom() const { return nom_; }
     size_t depth() const { return depth_; }
@@ -39,8 +38,7 @@ class DepTree {
 public:
     DepTree(const World& world)
         : world_(world)
-        , root_(std::make_unique<DepNode>(nullptr, 0))
-    {
+        , root_(std::make_unique<DepNode>(nullptr, 0)) {
         run();
     }
 

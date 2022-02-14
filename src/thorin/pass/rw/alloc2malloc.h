@@ -8,8 +8,7 @@ namespace thorin {
 class Alloc2Malloc : public RWPass<Lam> {
 public:
     Alloc2Malloc(PassMan& man)
-        : RWPass(man, "alloc2malloc")
-    {}
+        : RWPass(man, "alloc2malloc") {}
 
     const Def* rewrite(const Def*) override;
 };

@@ -22,8 +22,7 @@ private:
 protected:
     Emitter(World& world, Stream& stream)
         : world_(world)
-        , stream_(stream)
-    {}
+        , stream_(stream) {}
 
     World& world() const { return world_; }
     const Scope& scope() const { return *scope_; }

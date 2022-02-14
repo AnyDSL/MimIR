@@ -63,8 +63,7 @@ public:
     explicit World(const std::string& name = {});
     /// Inherits the @p state_ of the @p other @p World but does @em not perform a copy.
     explicit World(const World& other)
-        : World(other.name())
-    {
+        : World(other.name()) {
         stream_ = other.stream_;
         state_  = other.state_;
     }
@@ -516,8 +515,7 @@ private:
     public:
         Arena()
             : root_zone_(new Zone) // don't use 'new Zone()' - we keep the allocated Zone uninitialized
-            , curr_zone_(root_zone_.get())
-        {}
+            , curr_zone_(root_zone_.get()) {}
 
         struct Zone {
             static const size_t Size = 1024 * 1024 - sizeof(std::unique_ptr<int>); // 1MB - sizeof(next)

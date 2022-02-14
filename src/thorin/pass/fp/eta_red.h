@@ -10,8 +10,7 @@ namespace thorin {
 class EtaRed : public FPPass<EtaRed> {
 public:
     EtaRed(PassMan& man)
-        : FPPass(man, "eta_red")
-    {}
+        : FPPass(man, "eta_red") {}
 
     enum Lattice {
         Bot,         ///< Never seen.

@@ -23,25 +23,20 @@ private:
 public:
     IndexMap(IndexMap&& other)
         : indexer_(std::move(other.indexer_))
-        , array_(std::move(other.array_))
-    {}
+        , array_(std::move(other.array_)) {}
     IndexMap(const IndexMap& other)
         : indexer_(other.indexer_)
-        , array_(other.array_)
-    {}
+        , array_(other.array_) {}
     IndexMap(const Indexer& indexer, const Value& value = Value())
         : indexer_(indexer)
-        , array_(indexer.size(), value)
-    {}
+        , array_(indexer.size(), value) {}
     IndexMap(const Indexer& indexer, ArrayRef<Value> array)
         : indexer_(indexer)
-        , array_(array)
-    {}
+        , array_(array) {}
     template<class I>
     IndexMap(const Indexer& indexer, const I begin, const I end)
         : indexer_(indexer)
-        , array_(begin, end)
-    {}
+        , array_(begin, end) {}
 
     const Indexer& indexer() const { return indexer_; }
     size_t capacity() const { return array_.size(); }

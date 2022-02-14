@@ -19,8 +19,7 @@ public:
         : cfg_(cfg)
         , children_(cfg)
         , idoms_(cfg)
-        , depth_(cfg)
-    {
+        , depth_(cfg) {
         create();
         depth(root(), 0);
     }

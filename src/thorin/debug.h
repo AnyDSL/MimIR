@@ -15,8 +15,7 @@ struct Pos : public Streamable<Pos> {
     Pos() = default;
     Pos(uint32_t row, uint32_t col)
         : row(row)
-        , col(col)
-    {}
+        , col(col) {}
 
     Stream& stream(Stream&) const;
 
@@ -29,11 +28,9 @@ struct Loc : public Streamable<Loc> {
     Loc(std::string file, Pos begin, Pos finis)
         : file(file)
         , begin(begin)
-        , finis(finis)
-    {}
+        , finis(finis) {}
     Loc(std::string file, Pos pos)
-        : Loc(file, pos, pos)
-    {}
+        : Loc(file, pos, pos) {}
     Loc(const Def* dbg);
 
     Loc anew_begin() const { return {file, begin, begin}; }
@@ -54,14 +51,11 @@ public:
     Debug(std::string name, Loc loc = {}, const Def* meta = nullptr)
         : name(name)
         , loc(loc)
-        , meta(meta)
-    {}
+        , meta(meta) {}
     Debug(const char* name, Loc loc = {}, const Def* meta = nullptr)
-        : Debug(std::string(name), loc, meta)
-    {}
+        : Debug(std::string(name), loc, meta) {}
     Debug(Loc loc)
-        : Debug("", loc)
-    {}
+        : Debug("", loc) {}
     Debug(const Def*);
 
     std::string name;
@@ -73,8 +67,7 @@ class Sym : public Streamable<Sym> {
 public:
     Sym() {}
     Sym(const Def* def)
-        : def_(def)
-    {}
+        : def_(def) {}
 
     const Def* def() const { return def_; }
     bool operator==(Sym other) const { return this->def() == other.def(); }

@@ -55,8 +55,7 @@ template<bool L>
 struct LRPrec {
     LRPrec(const Def* l, const Def* r)
         : l_(l)
-        , r_(r)
-    {}
+        , r_(r) {}
 
     friend Stream& operator<<(Stream& s, const LRPrec& p) {
         if constexpr (L) {
@@ -154,8 +153,7 @@ class RecStreamer {
 public:
     RecStreamer(Stream& s, size_t max)
         : s(s)
-        , max(max)
-    {}
+        , max(max) {}
 
     void run();
     void run(const Def*);

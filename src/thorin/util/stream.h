@@ -17,8 +17,7 @@ public:
     Stream(std::ostream& ostream = std::cout, const std::string& tab = {"    "}, size_t level = 0)
         : ostream_(&ostream)
         , tab_(tab)
-        , level_(level)
-    {}
+        , level_(level) {}
 
     /// @name getters
     ///@{
@@ -77,8 +76,7 @@ protected:
 class StringStream : public Stream {
 public:
     StringStream()
-        : Stream(oss_)
-    {}
+        : Stream(oss_) {}
 
     std::string str() const { return oss_.str(); }
 
