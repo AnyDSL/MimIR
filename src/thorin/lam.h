@@ -23,7 +23,7 @@ public:
     THORIN_PROJ(dom, const)
     THORIN_PROJ(codom, const)
     bool is_cn() const;
-    bool is_basicblock() const { return order() == 1; }
+    bool is_basicblock() const;
     bool is_returning() const;
     const Pi* ret_pi(const Def* dbg = {}) const;
     ///@}

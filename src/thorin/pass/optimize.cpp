@@ -13,6 +13,7 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 #include "thorin/pass/rw/drop_bb_closures.h"
+#include "thorin/pass/rw/eta_cont.h"
 
 // old stuff
 #include "thorin/transform/cleanup_world.h"
@@ -29,17 +30,20 @@ void optimize(World& world) {
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);
     opt.add<SSAConstr>(ee);
-    opt.add<Scalerize>(ee);
+    // opt.add<Scalerize>(ee);
     //opt.add<DCE>(br, ee);
     // opt.add<CopyProp>(br, ee);
     opt.run();
 
-    // PassMan closure_ana(world);
-    // closure_ana.add<ClosureAnalysis>();
-    // closure_ana.run();
 
-    ClosureConv(world, ClosureConv::SSI, true).run();
-    world.debug_stream();
+    PassMan closure_conv_prepare(world);
+    closure_conv_prepare.add<EtaExp>(nullptr);
+    closure_conv_prepare.add<RetWrap>();
+    closure_conv_prepare.add<EtaCont>();
+    closure_conv_prepare.run();
+
+    // ClosureConv(world, ClosureConv::SSI, true).run();
+    // world.debug_stream();
     
     // PassMan closure_destruct(world);
     // closure_destruct.add<DropBBClosures>();

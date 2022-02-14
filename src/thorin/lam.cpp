@@ -8,10 +8,18 @@ namespace thorin {
  * Pi
  */
 
+bool Pi::is_basicblock() const {
+    return is_cn() && !ret_pi();
+}
+
+bool Pi::is_returning() const {
+    return is_cn() && ret_pi();
+}
+
 const Pi* Pi::ret_pi(const Def* dbg) const {
     if (num_doms() > 0) {
         auto ret = dom(num_doms() - 1, dbg);
-        if (auto pi = ret->isa<Pi>(); pi != nullptr && pi->is_cn()) return pi;
+        if (auto pi = ret->isa<Pi>(); pi != nullptr && pi->is_basicblock()) return pi;
     }
 
     return nullptr;
