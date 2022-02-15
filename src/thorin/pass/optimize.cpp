@@ -23,6 +23,33 @@
 
 namespace thorin {
 
+static void closure_conv(World& world) {
+    PassMan prepare(world);
+    prepare.add<EtaExp>(nullptr);
+    prepare.add<RetWrap>();
+    prepare.add<EtaCont>();
+    prepare.run();
+
+    ClosureConv(world).run();
+    world.debug_stream();
+
+    PassMan cleanup(world);
+    auto er = cleanup.add<EtaRed>();
+    auto ee = cleanup.add<EtaExp>(er);
+    cleanup.add<Scalerize>(ee);
+    cleanup.run();
+}
+
+static void lower_closures(World& world) {
+    PassMan closure_destruct(world);
+    closure_destruct.add<DropBBClosures>();
+    closure_destruct.add<Scalerize>(nullptr);
+    closure_destruct.add<UnboxClosure>();
+    closure_destruct.run();
+
+    LowerTypedClosures(world).run();
+}
+
 void optimize(World& world) {
     PassMan opt(world);
     // opt.add<PartialEval>();
@@ -35,24 +62,8 @@ void optimize(World& world) {
     // opt.add<CopyProp>(br, ee);
     opt.run();
 
-
-    PassMan closure_conv_prepare(world);
-    closure_conv_prepare.add<EtaExp>(nullptr);
-    closure_conv_prepare.add<RetWrap>();
-    closure_conv_prepare.add<EtaCont>();
-    closure_conv_prepare.run();
-
-    // ClosureConv(world, ClosureConv::SSI, true).run();
-    // world.debug_stream();
+    closure_conv(world);
     
-    // PassMan closure_destruct(world);
-    // closure_destruct.add<DropBBClosures>();
-    // closure_destruct.add<Scalerize>(nullptr);
-    // closure_destruct.add<UnboxClosure>();
-    // closure_destruct.run();
-
-    // LowerTypedClosures(world).run();
-
     // PassMan codgen_prepare(world);
     //codgen_prepare.add<BoundElim>();
     // codgen_prepare.add<RememElim>();

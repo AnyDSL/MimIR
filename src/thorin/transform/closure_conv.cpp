@@ -260,7 +260,7 @@ void ClosureConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     new_fn->set_filter(filter);
 }
 
-const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst, CA ca) {
+const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
     switch(def->node()) {
         case Node::Kind:
         case Node::Space:
@@ -284,10 +284,36 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst, CA ca) {
     } else if (auto pi = def->isa<Pi>(); pi && pi->is_cn()) {
         return map(closure_type(pi, subst));
     } else if (auto lam = def->isa_nom<Lam>(); lam && lam->type()->is_cn()) {
-        return map(make_closure(lam, subst, ca));
-    } else if (auto [marked, v] = ca_isa_mark(def); marked) {
-        return  map((v == CA::ret) ? rw_non_captured(marked, subst, v) : rewrite(marked, subst, v));
-    } 
+        auto& w = world();
+        auto [_, __, fv_env, new_lam] = make_stub(lam, subst);
+        auto closure_type = rewrite(lam->type(), subst);
+        auto env = rewrite(fv_env, subst);
+        auto closure = pack_closure(env, new_lam, closure_type);
+        w.DLOG("RW: pack {} ~> {} : {}", lam, closure, closure_type);
+        return map(closure);
+    } else if (auto q = isa<Tag::CA>(CA::ret, def)) {
+        if (auto cont_lam = q->arg()->isa_nom<Lam>()) {
+            assert(cont_lam->is_basicblock());
+            // Note: This should be cont_lam's only occurance after η-expansion, so its okay to 
+            // put into the local subst only
+            auto new_doms = DefArray(cont_lam->num_doms(), [&](auto i) {
+                    return rewrite(cont_lam->dom(i), subst);
+            });
+            auto new_lam = cont_lam->stub(w, w.cn(new_doms), cont_lam->dbg());
+            subst[cont_lam] = new_lam;
+            if (cont_lam->is_set()) {
+                new_lam->set_filter(rewrite(cont_lam->filter(), subst));
+                new_lam->set_body(rewrite(cont_lam->body(), subst));
+            }
+            return new_lam;
+        }
+    } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && lam->ret_var() == var) {
+        // HACK to rewrite a retvar that is defined in an enclosing lambda
+        // If we put external bb's into the env, this should never happen
+        auto new_lam = make_stub(lam, subst).fn;
+        auto new_idx = skip_env(as_lit(var->index()));
+        return map(new_lam->var(new_idx));
+    }
 
     auto new_type = rewrite(def->type(), subst);
     auto new_dbg = (def->dbg()) ? rewrite(def->dbg(), subst) : nullptr;
@@ -317,49 +343,38 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst, CA ca) {
     }
 }
 
+const Pi* ClosureConv::rewrite_cont_type(const Pi* pi, Def2Def& subst) {
+    assert(pi->is_basicblock());
+    auto new_ops = DefArray(pi->num_doms(), [&](auto i) { return rewrite(pi->dom(i), subst); });
+    return world().cn(new_ops);
+}
+
 const Def* ClosureConv::closure_type(const Pi* pi, Def2Def& subst, const Def* env_type) {
     auto& w = world();
-    auto rew = [&](auto d) { return rewrite(d, subst); };
+    auto rewrite_dom = [&](const Def* d) { 
+        return (d == pi->ret_pi()) ? rewrite_cont_type(pi->ret_pi(), subst) : rewrite(d, subst);
+    };
     if (!env_type) {
         if (auto pct = closure_types_.lookup(pi))
             return* pct;
-        auto sigma = ctype(w, pi, nullptr, rew);
+        auto sigma = ctype(w, pi, nullptr, rewrite_dom);
         closure_types_.emplace(pi, sigma);
         w.DLOG("C-TYPE: pct {} ~~> {}", pi, sigma);
         return sigma;
     } else {
-        auto new_pi = ctype(w, pi, env_type, rew);
+        auto new_pi = ctype(w, pi, env_type, rewrite_dom);
         w.DLOG("C-TYPE: ct {}, env = {} ~~> {}", pi, env_type, new_pi);
         return new_pi;
     }
 }
 
-const Def* ClosureConv::rw_non_captured(const Def* def, Def2Def& subst, CA ca) {
-    if (auto proj = def->isa<Extract>()) {
-        if (auto var = proj->tuple()->isa<Var>()) {
-            auto old_lam = var->nom()->as_nom<Lam>();
-            auto index = as_lit(proj->index());
-            auto new_lam = make_stub(old_lam, subst, true).fn;
-            return new_lam->var(skip_env(index));
-        }
-    }
-    return rewrite(def, subst, ca);
-}
-
-ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst, bool convert) {
+ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
     if (auto closure = closures_.lookup(old_lam))
         return *closure;
     auto& w = world();
-    size_t num_fvs;
-    const Def* env;
-    if (convert) {
-        auto& fvs = fva_.run(old_lam);
-        env = w.tuple(DefArray(fvs.begin(), fvs.end()));
-        num_fvs = fvs.size();
-    } else {
-        env = w.tuple();
-        num_fvs = 0;
-    }
+    auto& fvs = fva_.run(old_lam);
+    auto env = w.tuple(DefArray(fvs.begin(), fvs.end()));
+    auto num_fvs = fvs.size();
     auto env_type = rewrite(env->type(), subst);
     auto new_fn_type = closure_type(old_lam->type(), subst, env_type)->as<Pi>();
     auto new_lam = old_lam->stub(w, new_fn_type, w.dbg(old_lam->name()));
@@ -367,7 +382,6 @@ ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst, bo
     new_lam->set_body(old_lam->body());
     new_lam->set_filter(old_lam->filter());
     if (old_lam->is_external()) {
-        assert(convert && "External def must be closure converted!");
         old_lam->make_internal();
         new_lam->make_external();
     }
@@ -375,32 +389,16 @@ ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst, bo
     auto closure = ClosureStub{old_lam, num_fvs, env, new_lam};
     closures_.emplace(old_lam, closure);
     closures_.emplace(new_lam, closure);
-    if (convert)
-        worklist_.emplace(new_lam);
-    else
-        rewrite_body(new_lam, subst);
+    worklist_.emplace(new_lam);
     return closure;
 }
 
-const Def* ClosureConv::make_closure(Lam *old_lam, Def2Def& subst, CA ca) {
-    auto& w = world();
-    auto [_, __, fv_env, new_lam] = make_stub(old_lam, subst, convert_lam(ca));
-    auto closure_type = rewrite(old_lam->type(), subst);
-    auto env = rewrite(fv_env, subst);
-    auto closure = pack_closure(env, keep_annots_ ? w.ca_mark(new_lam, ca) : new_lam, closure_type);
-    w.DLOG("RW: pack {} ~> {} : {}", old_lam, closure, closure_type);
-    return closure;
-}
 
 /* Free variable analysis */
 
 void FVA::split_fv(Def *nom, const Def* def, DefSet& out) {
-    if (auto [marked, v] = ca_isa_mark(def); marked) {
-        if (auto [var, _] = ca_isa_var<Lam>(marked); var && v == CA::ret)
-            return;
-        else
-            def = marked;
-    }
+    if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && var == lam->ret_var())
+        return;
     if (def->no_dep() || def->isa<Global>() || def->isa<Axiom>() || def->isa_nom()) {
         return;
     } else if (def->dep() == Dep::Var && !def->isa<Tuple>()) {

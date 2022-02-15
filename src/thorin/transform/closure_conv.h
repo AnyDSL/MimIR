@@ -70,21 +70,12 @@ private:
 class ClosureConv {
 public:
 
-    enum Mode : uint8_t {
-        MAX,  ///< closure convert functions, branches and return continuations
-        SSI,  ///< closure convert functions and branches only
-        MIN   ///< closure convert functions only
-    };
-
-    ClosureConv(World& world, Mode mode, bool keep_annots)
+    ClosureConv(World& world)
         : world_(world)
         , fva_(world)
         , closures_()
         , closure_types_()
-        , worklist_() 
-        , mode_(mode)
-        , keep_annots_(keep_annots)
-    {};
+        , worklist_() {};
 
     void run();
 
@@ -97,19 +88,10 @@ private:
     };
 
     void rewrite_body(Lam* lam, Def2Def& subst);
-    const Def* rewrite(const Def* old_def, Def2Def& subst, CA ca = CA::bot);
-    const Def* rw_non_captured(const Def* var, Def2Def& subst, CA ca = CA::bot);
+    const Def* rewrite(const Def* old_def, Def2Def& subst);
+    const Pi* rewrite_cont_type(const Pi*, Def2Def& subst);
     const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
-    ClosureStub make_stub(Lam* lam, Def2Def& subst, bool covert);
-    const Def* make_closure(Lam* lam, Def2Def& subst, CA ca);
-
-    bool convert_lam(CA ca) {
-        if (ca == CA::ret)
-            return mode_ >= MIN;
-        if (ca == CA::br)
-            return mode_ >= SSI;
-        return true;
-    }
+    ClosureStub make_stub(Lam* lam, Def2Def& subst);
 
     World& world() { return world_; }
 
@@ -118,8 +100,6 @@ private:
     DefMap<ClosureStub> closures_;
     Def2Def closure_types_;
     std::queue<const Def*> worklist_;
-    const Mode mode_;
-    const bool keep_annots_;
 };
 
 /// # Auxillary functions to deal with closures #
@@ -143,7 +123,7 @@ inline bool ca_is_basicblock(CA v) { return v == CA::br || v == CA::ret; }
 inline bool ca_is_proc(CA v) { return v == CA::proc || v == CA::proc_e; }
 
 template<class N>
-std::tuple<const Def*, N*> ca_isa_var(const Def* def) {
+std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
     if (auto proj = def->isa<Extract>()) {
         if (auto var = proj->tuple()->isa<Var>(); var && var->nom()->isa<N>())
             return std::tuple(proj, var->nom()->as<N>());
