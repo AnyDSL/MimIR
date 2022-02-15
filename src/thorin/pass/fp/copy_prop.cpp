@@ -15,7 +15,9 @@ const Def* CopyProp::rewrite(const Def* def) {
 }
 
 const Def* CopyProp::var2prop(const App* app, Lam* var_lam) {
-    if (ignore(var_lam) || var_lam->num_vars() == 0 || keep_.contains(var_lam)) return app;
+    if (ignore(var_lam) || var_lam->num_vars() == 0 || keep_.contains(var_lam) || 
+            (!var_lam->is_basicblock() && bb_only_)) 
+        return app;
 
     auto& args = data(var_lam);
     args.resize(app->num_args());
@@ -62,8 +64,8 @@ const Def* CopyProp::var2prop(const App* app, Lam* var_lam) {
         auto prop_dom = world().sigma(types);
         auto new_type = world().pi(prop_dom, var_lam->codom());
         prop_lam = var_lam->stub(world(), new_type, var_lam->dbg());
-        beta_red_->keep(prop_lam);
-        eta_exp_->new2old(prop_lam, var_lam);
+        if (beta_red_) beta_red_->keep(prop_lam);
+        if (eta_exp_) eta_exp_->new2old(prop_lam, var_lam);
         keep_.emplace(prop_lam); // don't try to propagate again
         world().DLOG("var_lam => prop_lam: {}: {} => {}: {}", var_lam, var_lam->type()->dom(), prop_lam, prop_dom);
 

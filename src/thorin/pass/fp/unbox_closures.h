@@ -14,8 +14,7 @@ public:
 
     UnboxClosure(PassMan& man) 
         : FPPass<UnboxClosure, Lam>(man, "unbox_closures")
-        , keep_(), boxed2unboxed_()
-    {}
+        , keep_(), boxed2unboxed_(), branch2dropped_() {}
 
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Proxy*) override;
@@ -26,6 +25,7 @@ public:
 private:
     DefSet keep_;
     LamMap<std::tuple<Lam*, DefVec>> boxed2unboxed_;
+    Lam2Lam branch2dropped_;
 };
 
 };

@@ -70,14 +70,9 @@ const Pi* ctype_to_pi(const Def* ct, const Def* new_env_type) {
     auto& w = ct->world();
     auto pi = ct->op(1_u64)->isa<Pi>();
     assert(pi);
-    if (!new_env_type)
-        return w.cn(w.tuple(DefArray(pi->num_doms() - 1, [&](auto i) {
-            return pi->dom(skip_env(i));
-        })));
-    else
-        return w.cn(w.sigma(DefArray(pi->num_doms(), [&](auto i) {
-            return (i == CLOSURE_ENV_PARAM) ? new_env_type : pi->dom(i);
-        })));
+    auto new_dom = new_env_type ? closure_sub_env(pi->dom(), new_env_type)
+        : closure_remove_env(pi->dom());
+    return w.cn(new_dom);
 }
 
 const Sigma* isa_ctype(const Def* def) {

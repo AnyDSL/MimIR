@@ -13,10 +13,11 @@ class EtaExp;
 /// What is more, this optimization will also propagate arbitrary @p Def%s and not only constants.
 class CopyProp : public FPPass<CopyProp, Lam> {
 public:
-    CopyProp(PassMan& man, BetaRed* beta_red, EtaExp* eta_exp)
+    CopyProp(PassMan& man, BetaRed* beta_red, EtaExp* eta_exp, bool bb_only = false)
         : FPPass(man, "copy_prop")
         , beta_red_(beta_red)
-        , eta_exp_(eta_exp) {}
+        , eta_exp_(eta_exp) 
+        , bb_only_(bb_only){}
 
     using Data = LamMap<DefVec>;
 
@@ -33,6 +34,7 @@ private:
     EtaExp* eta_exp_;
     LamMap<std::pair<Lam*, DefVec>> var2prop_;
     DefSet keep_;
+    const bool bb_only_;
 };
 
 }

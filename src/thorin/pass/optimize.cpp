@@ -12,7 +12,6 @@
 #include "thorin/pass/rw/remem_elim.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
-#include "thorin/pass/rw/drop_bb_closures.h"
 #include "thorin/pass/rw/eta_cont.h"
 
 // old stuff
@@ -42,12 +41,12 @@ static void closure_conv(World& world) {
 
 static void lower_closures(World& world) {
     PassMan closure_destruct(world);
-    closure_destruct.add<DropBBClosures>();
     closure_destruct.add<Scalerize>(nullptr);
     closure_destruct.add<UnboxClosure>();
+    closure_destruct.add<CopyProp>(nullptr, nullptr, true);
     closure_destruct.run();
 
-    LowerTypedClosures(world).run();
+    // LowerTypedClosures(world).run();
 }
 
 void optimize(World& world) {
@@ -63,6 +62,7 @@ void optimize(World& world) {
     opt.run();
 
     closure_conv(world);
+    lower_closures(world);
     
     // PassMan codgen_prepare(world);
     //codgen_prepare.add<BoundElim>();
