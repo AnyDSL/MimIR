@@ -1,12 +1,14 @@
-#include <cstring>
 #include <cstdlib>
-#include <iostream>
+#include <cstring>
+
 #include <fstream>
+#include <iostream>
 
 #include "thorin/config.h"
-#include "thorin/util/stream.h"
-#include "thorin/fe/parser.h"
+
 #include "thorin/be/ll/ll.h"
+#include "thorin/fe/parser.h"
+#include "thorin/util/stream.h"
 
 using namespace thorin;
 

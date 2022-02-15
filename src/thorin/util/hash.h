@@ -477,13 +477,13 @@ public:
             if (t2.on_heap())
                 swap(t1.nodes_, t2.nodes_);
             else {
-                std::move(t2.array_.begin(), t2.array_.end(), t1.array_.begin());
+                std::ranges::move(t2.array_, t1.array_.begin());
                 t2.nodes_ = t1.nodes_;
                 t1.nodes_ = t1.array_.data();
             }
         } else {
             if (t2.on_heap()) {
-                std::move(t1.array_.begin(), t1.array_.end(), t2.array_.begin());
+                std::ranges::move(t1.array_, t2.array_.begin());
                 t1.nodes_ = t2.nodes_;
                 t2.nodes_ = t2.array_.data();
             } else

@@ -26,7 +26,7 @@ Def::Def(node_t node, const Def* type, Defs ops, fields_t fields, const Def* dbg
     , type_(type)
 {
     gid_ = world().next_gid();
-    std::copy(ops.begin(), ops.end(), ops_ptr());
+    std::ranges::copy(ops, ops_ptr());
 
     if (node == Node::Space) {
         hash_ = murmur3(gid());
@@ -289,14 +289,14 @@ void Def::unset(size_t i) {
 
 bool Def::is_set() const {
     if (!isa_nom()) {
-        assert(std::all_of(ops().begin(), ops().end(), [&](auto op) { return op != nullptr; }) && "structurals must be always set");
+        assert(std::ranges::all_of(ops(), [](auto op) { return op != nullptr; }) && "structurals must be always set");
         return true;
     }
 
-    if (std::all_of(ops().begin(), ops().end(), [&](auto op) { return op != nullptr; }))
+    if (std::ranges::all_of(ops(), [](auto op) { return op != nullptr; }))
         return true;
 
-    assert(std::all_of(ops().begin(), ops().end(), [&](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
+    assert(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
     return false;
 }
 

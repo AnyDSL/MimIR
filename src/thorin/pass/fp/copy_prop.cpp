@@ -90,7 +90,7 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     }
 
     auto vars = var_lam->vars();
-    if (std::all_of(vars.begin(), vars.end(), [&](const Def* def) { return keep_.contains(def); })) {
+    if (std::ranges::all_of(vars, [this](const Def* def) { return keep_.contains(def); })) {
         if (keep_.emplace(var_lam).second)
             world().DLOG("keep var_lam: {}", var_lam);
     }

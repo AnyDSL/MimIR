@@ -117,7 +117,7 @@ Stream& Def::unwrap(Stream& s) const {
                 std::string str;
                 for (size_t mod = *size; mod > 0; mod /= 10)
                     ((str += char(char(0x80) + char(mod % 10))) += char(0x82)) += char(0xe2);
-                std::reverse(str.begin(), str.end());
+                std::ranges::reverse(str);
 
                 return s.fmt("i{}", str);
             }
