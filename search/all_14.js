@@ -35,7 +35,7 @@ var searchData=
   ['tag2enum_5f_3c_20tag_3a_3awrap_20_3e_32',['Tag2Enum_&lt; Tag::Wrap &gt;',['../namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Wrap_01_4',1,'thorin']]],
   ['tag2prec_5fl_33',['tag2prec_l',['../classthorin_1_1Tok.html#a9c5c236562f7835da20bd8a51cf2c10e',1,'thorin::Tok']]],
   ['tag2prec_5fr_34',['tag2prec_r',['../classthorin_1_1Tok.html#a47d52f308d3b23208a6fd4a7bb117c77',1,'thorin::Tok']]],
-  ['tag2str_35',['tag2str',['../classthorin_1_1Tok.html#a1f20dfe379a1a1ce6a19d539e26455ba',1,'thorin::Tok']]],
+  ['tag2str_35',['tag2str',['../classthorin_1_1Tok.html#a722601fad046ebe11dfcdc29ee675a6c',1,'thorin::Tok']]],
   ['tag_5ft_36',['tag_t',['../namespacethorin.html#a12cc65a06abfcbcae824f6128f3b7a65',1,'thorin']]],
   ['taggedptr_37',['TaggedPtr',['../classthorin_1_1TaggedPtr.html#aaecd317aa13e5f415782d115c3070850',1,'thorin::TaggedPtr::TaggedPtr()'],['../classthorin_1_1TaggedPtr.html#af7140ca51f0135ee26c3aa0f92d553cd',1,'thorin::TaggedPtr::TaggedPtr(T *ptr, I index)'],['../classthorin_1_1TaggedPtr.html',1,'thorin::TaggedPtr&lt; T, I &gt;']]],
   ['taggedptr_3c_20const_20thorin_3a_3aaxiom_2c_20u16_20_3e_38',['TaggedPtr&lt; const thorin::Axiom, u16 &gt;',['../classthorin_1_1TaggedPtr.html',1,'thorin']]],

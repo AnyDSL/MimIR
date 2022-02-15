@@ -1,8 +1,8 @@
 var structthorin_1_1Loc =
 [
     [ "Loc", "structthorin_1_1Loc.html#a2801619c99a72f74d25ed4542a66be6b", null ],
-    [ "Loc", "structthorin_1_1Loc.html#a488e93182996965fdb7e17eea30a37cb", null ],
-    [ "Loc", "structthorin_1_1Loc.html#a0b4bfa0331d4c68d8e49d9132982665f", null ],
+    [ "Loc", "structthorin_1_1Loc.html#ab13ed0aacfef4c36a607fa4c2d5e444c", null ],
+    [ "Loc", "structthorin_1_1Loc.html#ab3498f210f94e517178f93269b549e97", null ],
     [ "Loc", "structthorin_1_1Loc.html#a9e1b49d1cdbecc6bcc202755d45fc74c", null ],
     [ "anew_begin", "structthorin_1_1Loc.html#a53f3ba6335bc0aea1c63c0baaa7627d8", null ],
     [ "anew_finis", "structthorin_1_1Loc.html#a55a1720eb092d5a84b590472ccb9e18b", null ],

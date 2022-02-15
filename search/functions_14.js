@@ -4,7 +4,7 @@ var searchData=
   ['tag_1',['tag',['../classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534',1,'thorin::Axiom::tag()'],['../classthorin_1_1Tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b',1,'thorin::Tok::tag()'],['../classthorin_1_1Query.html#a8e1e29dcb3b399dcf63963368eb9a780',1,'thorin::Query::tag()']]],
   ['tag2prec_5fl_2',['tag2prec_l',['../classthorin_1_1Tok.html#a9c5c236562f7835da20bd8a51cf2c10e',1,'thorin::Tok']]],
   ['tag2prec_5fr_3',['tag2prec_r',['../classthorin_1_1Tok.html#a47d52f308d3b23208a6fd4a7bb117c77',1,'thorin::Tok']]],
-  ['tag2str_4',['tag2str',['../classthorin_1_1Tok.html#a1f20dfe379a1a1ce6a19d539e26455ba',1,'thorin::Tok']]],
+  ['tag2str_4',['tag2str',['../classthorin_1_1Tok.html#a722601fad046ebe11dfcdc29ee675a6c',1,'thorin::Tok']]],
   ['taggedptr_5',['TaggedPtr',['../classthorin_1_1TaggedPtr.html#aaecd317aa13e5f415782d115c3070850',1,'thorin::TaggedPtr::TaggedPtr()'],['../classthorin_1_1TaggedPtr.html#af7140ca51f0135ee26c3aa0f92d553cd',1,'thorin::TaggedPtr::TaggedPtr(T *ptr, I index)']]],
   ['tail_6',['tail',['../structthorin_1_1ll_1_1BB.html#aa1de477a4477ac33538d43ead890408b',1,'thorin::ll::BB::tail()'],['../structthorin_1_1ll_1_1BB.html#a3b03c198eb00e5b6e231295e732f1720',1,'thorin::ll::BB::tail(const char *s, Args &amp;&amp;... args)']]],
   ['test_7',['test',['../classthorin_1_1Lam.html#a3c00f2d43a936ad9526cf16c3c3318bf',1,'thorin::Lam::test()'],['../classthorin_1_1BitSet.html#acc6f1bd3dcd42788c929dfd4b0a7b307',1,'thorin::BitSet::test()'],['../classthorin_1_1World.html#a611b6afef534d56ae1d3fd9dac803635',1,'thorin::World::test()']]],
