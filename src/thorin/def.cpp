@@ -131,7 +131,7 @@ const Def* Arr::restructure() {
  * Def
  */
 
-const char* Def::node_name() const {
+std::string_view Def::node_name() const {
     switch (node()) {
 #define CODE(op, abbr) case Node::op: return #abbr;
 THORIN_NODE(CODE)

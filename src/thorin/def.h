@@ -6,6 +6,7 @@
 
 #include "thorin/debug.h"
 #include "thorin/tables.h"
+
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
 #include "thorin/util/hash.h"
@@ -136,7 +137,7 @@ public:
     u32 gid() const { return gid_; }
     hash_t hash() const { return hash_; }
     node_t node() const { return node_; }
-    const char* node_name() const;
+    std::string_view node_name() const;
     ///@}
 
     /// @name type

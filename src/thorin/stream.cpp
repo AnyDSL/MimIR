@@ -136,7 +136,7 @@ Stream& Def::unwrap(Stream& s) const {
     } else if (auto proxy = isa<Proxy>()) {
         return s.fmt(".proxy#{}#{} {, }", proxy->id(), proxy->flags(), proxy->ops());
     } else if (auto bound = isa_bound(this)) {
-        const char* op = bound->isa<Join>() ? "∪" : "∩";
+        auto op = bound->isa<Join>() ? "∪" : "∩";
         if (isa_nom()) s.fmt("{}{}: {}", op, unique_name(), type());
         return s.fmt("{}({, })", op, ops());
     }

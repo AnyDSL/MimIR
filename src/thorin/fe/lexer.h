@@ -13,7 +13,7 @@ class World;
 
 class Lexer {
 public:
-    Lexer(World&, const char*, std::istream&);
+    Lexer(World&, std::string_view, std::istream&);
 
     World& world() { return world_; }
     Loc loc() const { return loc_; }

@@ -55,11 +55,11 @@ int main(int argc, char** argv) {
         clang.erase(std::remove(clang.begin(), clang.end(), '\n'), clang.end());
 
         for (int i = 1; i != argc; ++i) {
-            auto is_option = [&](const char* o1, const char* o2) {
+            auto is_option = [&](auto o1, auto o2) {
                 return strcmp(o1, argv[i]) == 0 || strcmp(o2, argv[i]) == 0;
             };
 
-            auto check_last = [=](const char* msg) {
+            auto check_last = [=](auto msg) {
                 if (i+1 == argc) throw std::logic_error(msg);
             };
 

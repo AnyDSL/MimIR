@@ -25,11 +25,11 @@ struct Pos : public Streamable<Pos> {
 
 struct Loc : public Streamable<Loc> {
     Loc() = default;
-    Loc(std::string file, Pos begin, Pos finis)
+    Loc(std::string_view file, Pos begin, Pos finis)
         : file(file)
         , begin(begin)
         , finis(finis) {}
-    Loc(std::string file, Pos pos)
+    Loc(std::string_view file, Pos pos)
         : Loc(file, pos, pos) {}
     Loc(const Def* dbg);
 
@@ -50,6 +50,10 @@ inline bool operator==(Loc l1, Loc l2) { return l1.begin == l2.begin && l1.finis
 
 class Debug {
 public:
+    Debug(std::string_view name, Loc loc = {}, const Def* meta = nullptr)
+        : name(name)
+        , loc(loc)
+        , meta(meta) {}
     Debug(std::string name, Loc loc = {}, const Def* meta = nullptr)
         : name(name)
         , loc(loc)
@@ -57,7 +61,7 @@ public:
     Debug(const char* name, Loc loc = {}, const Def* meta = nullptr)
         : Debug(std::string(name), loc, meta) {}
     Debug(Loc loc)
-        : Debug("", loc) {}
+        : Debug(std::string(), loc) {}
     Debug(const Def*);
 
     std::string name;
