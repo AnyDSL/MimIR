@@ -43,26 +43,21 @@ const Def* closure_remove_env(size_t i, std::function<const Def* (size_t)> f) {
     return f(skip_env(i));
 }
 
-static const Def* ctype(World& w, const Pi* pi, const Def* env_type = nullptr, 
-        std::function<const Def*(const Def*)> rw_args = [](auto d) { return d; }) {
+static const Def* ctype(World& w, Defs doms, const Def* env_type = nullptr) {
     if (!env_type) {
         auto sigma = w.nom_sigma(w.kind(), 3_u64, w.dbg("closure_type"));
         sigma->set(0_u64, w.kind());
-        sigma->set(1_u64, ctype(w, pi, sigma->var(0_u64), rw_args));
+        sigma->set(1_u64, ctype(w, doms, sigma->var(0_u64)));
         sigma->set(2_u64, sigma->var(0_u64));
         return sigma;
-    } else {
-        auto dom = w.sigma(DefArray(pi->num_doms() + 1, [&](auto i) {
-            return closure_insert_env(i, env_type, [&](auto i) { return rw_args(pi->dom(i)); });
-        }));
-        assert(dom->type() == w.kind());
-        auto new_pi = w.cn(dom);
-        return new_pi;
-    }
+    } 
+    return w.cn(DefArray(doms.size() + 1, [&](auto i) {
+        return closure_insert_env(i, env_type, [&](auto j) { return doms[j]; });
+    }));
 }
 
 Sigma* ctype(const Pi* pi) {
-    return ctype(pi->world(), pi, nullptr)->as_nom<Sigma>();
+    return ctype(pi->world(), pi->doms(), nullptr)->as_nom<Sigma>();
 }
 
 const Pi* ctype_to_pi(const Def* ct, const Def* new_env_type) {
@@ -345,22 +340,20 @@ const Pi* ClosureConv::rewrite_cont_type(const Pi* pi, Def2Def& subst) {
 }
 
 const Def* ClosureConv::closure_type(const Pi* pi, Def2Def& subst, const Def* env_type) {
+    if (auto pct = closure_types_.lookup(pi); pct && !env_type)
+        return *pct;
     auto& w = world();
-    auto rewrite_dom = [&](const Def* d) { 
-        return (d == pi->ret_pi()) ? rewrite_cont_type(pi->ret_pi(), subst) : rewrite(d, subst);
-    };
+    auto new_doms = DefArray(pi->num_doms(), [&](auto i) {
+        return (i == pi->num_doms() - 1 && pi->is_returning()) ? rewrite_cont_type(pi->ret_pi(), subst) : rewrite(pi->dom(i), subst);
+    });
+    auto ct = ctype(w, new_doms, env_type);
     if (!env_type) {
-        if (auto pct = closure_types_.lookup(pi))
-            return* pct;
-        auto sigma = ctype(w, pi, nullptr, rewrite_dom);
-        closure_types_.emplace(pi, sigma);
-        w.DLOG("C-TYPE: pct {} ~~> {}", pi, sigma);
-        return sigma;
+        closure_types_.emplace(pi, ct);
+        w.DLOG("C-TYPE: pct {} ~~> {}", pi, ct);
     } else {
-        auto new_pi = ctype(w, pi, env_type, rewrite_dom);
-        w.DLOG("C-TYPE: ct {}, env = {} ~~> {}", pi, env_type, new_pi);
-        return new_pi;
+        w.DLOG("C-TYPE: ct {}, env = {} ~~> {}", pi, env_type, ct);
     }
+    return ct;
 }
 
 ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
