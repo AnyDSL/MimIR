@@ -125,7 +125,8 @@ Coding Style</h1>
 <li>prefer <code>// C++-style comments</code> over <code>/* C-style comments */</code></li>
 <li>use <code>/// three slashes for Doxygen</code> and <a href="https://www.doxygen.nl/manual/grouping.html">group</a> your methods into logical units if possible</li>
 </ul>
-<p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. We found a full automatic run of <code>clang-format</code> a bit too intrusive. In a compiler, you often have to do similar things where it makes sense to align the corresponding code logically instead of blindly obeying some formatting rules. Simply, checkout plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a> in order to only format the desired code region.</p>
+<p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. In order to run <code>clang-format</code> automatically on all changed files, switch to the provied pre-commit hook: </p><div class="fragment"><div class="line">git config --local core.hooksPath .githooks/</div>
+</div><!-- fragment --><p> Note that you can <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a>. In addition, you might want to check out plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a>.</p>
 <h1><a class="anchor" id="autotoc_md25"></a>
 Debugging</h1>
 <h2><a class="anchor" id="autotoc_md26"></a>
