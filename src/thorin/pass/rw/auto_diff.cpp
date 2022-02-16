@@ -1111,7 +1111,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // a returning call is transformed using rev_diff with another rewrite pass
         // a non-returning call is transformed directly and augmented using pullbacks for its arguments
 
-        if (callee->type()->as<Pi>()->is_returning()) {
+        auto back_order=callee->type()->as<Pi>()->doms().back()->order();
+        auto returning = back_order>0;
+        if (callee->type()->as<Pi>()->is_returning() || returning) {
             dlog(world_,"  FYI returning callee");
 
             const Def* dst_callee;
