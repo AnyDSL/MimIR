@@ -14,7 +14,7 @@ namespace thorin {
 
 class Stream {
 public:
-    Stream(std::ostream& ostream = std::cout, const std::string& tab = {"    "}, size_t level = 0)
+    Stream(std::ostream& ostream = std::cout, std::string_view tab = {"    "}, size_t level = 0)
         : ostream_(&ostream)
         , tab_(tab)
         , level_(level) {}
@@ -22,7 +22,7 @@ public:
     /// @name getters
     ///@{
     std::ostream& ostream() { return *ostream_; }
-    std::string tab() const { return tab_; }
+    std::string_view tab() const { return tab_; }
     size_t level() const { return level_; }
     ///@}
 
@@ -105,7 +105,11 @@ private:
 
 public:
     /// Writes to a file with name @p filename.
-    void write(const std::string& filename) const { std::ofstream ofs(filename); Stream s(ofs); child().stream(s).endl(); }
+    void write(std::string_view filename) const {
+        std::ofstream ofs{std::string(filename)};
+        Stream s(ofs);
+        child().stream(s).endl();
+    }
     /// Writes to a file named @c child().name().
     void write() const { write(child().name()); }
     /// Writes to stdout.

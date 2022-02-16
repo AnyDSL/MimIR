@@ -54,10 +54,10 @@ private:
 
     /// Issue an error message of the form:
     /// "expected \<what\>, got '\<tok>\' while parsing \<ctxt\>"
-    void err(const std::string_view what, const Tok& tok, std::string_view ctxt);
+    void err(std::string_view what, const Tok& tok, std::string_view ctxt);
 
     /// Same above but uses @p ahead() as @p tok.
-    void err(const std::string_view what, std::string_view ctxt) { err(what, ahead(), ctxt); }
+    void err(std::string_view what, std::string_view ctxt) { err(what, ahead(), ctxt); }
 
     Lexer lexer_;
     Loc prev_;

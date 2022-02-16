@@ -29,7 +29,7 @@ namespace thorin {
 bool World::Arena::Lock::guard_ = false;
 #endif
 
-World::World(const std::string& name)
+World::World(std::string_view name)
     : checker_(std::make_unique<Checker>(*this))
 {
     data_.name_     = name.empty() ? "module" : name;
@@ -321,10 +321,9 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
-const Def* World::tuple_str(const char* s, const Def* dbg) {
+const Def* World::tuple_str(std::string_view s, const Def* dbg) {
     DefVec ops;
-    for (; *s != '\0'; ++s)
-        ops.emplace_back(lit_nat(*s));
+    for (auto c : s) ops.emplace_back(lit_nat(c));
     return tuple(ops, dbg);
 }
 
@@ -485,7 +484,7 @@ const Def* World::global(const Def* id, const Def* init, bool is_mutable, const 
     return unify<Global>(2, type_ptr(init->type()), id, init, is_mutable, dbg);
 }
 
-const Def* World::global_immutable_string(const std::string& str, const Def* dbg) {
+const Def* World::global_immutable_string(std::string_view str, const Def* dbg) {
     size_t size = str.size() + 1;
 
     DefArray str_array(size);
@@ -678,7 +677,7 @@ void World::visit(VisitFn f) const {
  * misc
  */
 
-const char* World::level2string(LogLevel level) {
+std::string_view World::level2string(LogLevel level) {
     switch (level) {
         case LogLevel::Error:   return "E";
         case LogLevel::Warn:    return "W";
@@ -701,16 +700,23 @@ int World::level2color(LogLevel level) {
 }
 
 #ifdef COLORIZE_LOG
-std::string World::colorize(const std::string& str, int color) {
+std::string World::colorize(std::string_view str, int color) {
+    std::string res;
     if (isatty(fileno(stdout))) {
         const char c = '0' + color;
-        return "\033[1;3" + (c + ('m' + str)) + "\033[0m";
+        res = "\033[1;3";
+        res += c;
+        res += 'm';
+        res.append(str);
+        res.append("\033[0m");
     }
-#else
-std::string World::colorize(const std::string& str, int) {
-#endif
-    return str;
+    return res;
 }
+#else
+std::string World::colorize(std::string_view str, int) {
+    return std::string(str);
+}
+#endif
 
 void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
 
@@ -718,7 +724,7 @@ void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
  * instantiate templates
  */
 
-template void Streamable<World>::write(const std::string& filename) const;
+template void Streamable<World>::write(std::string_view filename) const;
 template void Streamable<World>::write() const;
 template void Streamable<World>::dump() const;
 template void World::visit<true >(VisitFn) const;

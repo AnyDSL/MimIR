@@ -215,7 +215,7 @@ const Def* Def::debug_history() const {
     return dbg();
 }
 
-void Def::set_name(const std::string& n) const {
+void Def::set_name(std::string_view n) const {
     auto& w = world();
     auto name = w.tuple_str(n);
 

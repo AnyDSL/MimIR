@@ -17,14 +17,14 @@ static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 /// * Inherit from @p FPPass using CRTP if you do need state.
 class RWPassBase {
 public:
-    RWPassBase(PassMan& man, const std::string& name);
+    RWPassBase(PassMan& man, std::string_view name);
     virtual ~RWPassBase() {}
 
     /// @name getters
     ///@{
     PassMan& man() { return man_; }
     const PassMan& man() const { return man_; }
-    const std::string& name() const { return name_; }
+    std::string_view name() const { return name_; }
     size_t proxy_id() const { return proxy_id_; }
     World& world();
     ///@}
@@ -81,7 +81,7 @@ private:
 /// Base class for all FPPass%es.
 class FPPassBase : public RWPassBase {
 public:
-    FPPassBase(PassMan& man, const std::string& name);
+    FPPassBase(PassMan& man, std::string_view name);
 
     size_t index() const { return index_; }
 
@@ -213,7 +213,7 @@ private:
 template<class N = Def>
 class RWPass : public RWPassBase {
 public:
-    RWPass(PassMan& man, const std::string& name)
+    RWPass(PassMan& man, std::string_view name)
         : RWPassBase(man, name) {}
 
 protected:
@@ -225,7 +225,7 @@ protected:
 template<class P, class N = Def>
 class FPPass : public FPPassBase {
 public:
-    FPPass(PassMan& man, const std::string& name)
+    FPPass(PassMan& man, std::string_view name)
         : FPPassBase(man, name) {}
 
     /// @name memory management for state

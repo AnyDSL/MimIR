@@ -37,7 +37,7 @@ public:
      * ```
      */
     enum Lattice : bool { Callee, Non_Callee_1 };
-    static const char* lattice2str(Lattice l) { return l == Callee ? "Callee" : "Non_Callee_1"; }
+    static std::string_view lattice2str(Lattice l) { return l == Callee ? "Callee" : "Non_Callee_1"; }
     ///@}
 
     using Data = LamMap<Lattice>;

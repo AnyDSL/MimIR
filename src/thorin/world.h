@@ -46,21 +46,15 @@ public:
         static u32 sentinel() { return u32(-1); }
     };
 
-    struct ExternalsHash {
-        static hash_t hash(const std::string& s) { return thorin::hash(s.c_str()); }
-        static bool eq(const std::string& s1, const std::string& s2) { return s1 == s2; }
-        static std::string sentinel() { return std::string(); }
-    };
-
     using Sea         = HashSet<const Def*, SeaHash>;///< This @p HashSet contains Thorin's "sea of nodes".
     using Breakpoints = HashSet<u32, BreakHash>;
-    using Externals   = HashMap<std::string, Def*, ExternalsHash>;
+    using Externals   = HashMap<std::string, Def*, StrViewHash>;
     using VisitFn     = std::function<void(const Scope&)>;
 
     World(World&&) = delete;
     World& operator=(const World&) = delete;
 
-    explicit World(const std::string& name = {});
+    explicit World(std::string_view name = {});
     /// Inherits the @p state_ of the @p other @p World but does @em not perform a copy.
     explicit World(const World& other)
         : World(other.name()) {
@@ -71,7 +65,7 @@ public:
 
     /// @ getters
     ///@{
-    const std::string& name() const { return data_.name_; }
+    std::string_view name() const { return data_.name_; }
     const Sea& defs() const { return data_.defs_; }
     std::vector<Lam*> copy_lams() const; // TODO remove this
     ///@}
@@ -161,10 +155,8 @@ public:
     ///@{
     const Def* tuple(const Def* type, Defs ops, const Def* dbg = {});
     const Def* tuple(Defs ops, const Def* dbg = {});
-    const Def* tuple_str(const char* s, const Def* dbg = {});
-    const Def* tuple_str(const std::string& s, const Def* dbg = {}) { return tuple_str(s.c_str(), dbg); }
-    Sym sym(const char* s, const Def* dbg = {}) { return tuple_str(s, dbg); }
-    Sym sym(const std::string& s, const Def* dbg = {}) { return tuple_str(s, dbg); }
+    const Def* tuple_str(std::string_view s, const Def* dbg = {});
+    Sym sym(std::string_view s, const Def* dbg = {}) { return tuple_str(s, dbg); }
     /// ascribes @p type to this tuple - needed for dependently typed and structural @p Sigma%s
     const Tuple* tuple() { return data_.tuple_; } ///< the unit value of type `[]`
     ///@}
@@ -278,7 +270,7 @@ public:
     ///@{
     const Def* global(const Def* id, const Def* init, bool is_mutable = true, const Def* dbg = {});
     const Def* global(const Def* init, bool is_mutable = true, const Def* dbg = {}) { return global(lit_nat(state_.curr_gid), init, is_mutable, dbg); }
-    const Def* global_immutable_string(const std::string& str, const Def* dbg = {});
+    const Def* global_immutable_string(std::string_view str, const Def* dbg = {});
     ///@}
 
     /// @name types
@@ -397,7 +389,7 @@ public:
     void make_external(Def* def) { data_.externals_.emplace(def->debug().name, def); }
     void make_internal(Def* def) { data_.externals_.erase(def->debug().name); }
     bool is_external(const Def* def) { return data_.externals_.contains(def->debug().name); }
-    Def* lookup(const std::string& name) { return data_.externals_.lookup(name).value_or(nullptr); }
+    Def* lookup(std::string_view name) { return data_.externals_.lookup(std::string(name)).value_or(nullptr); } // TODO
 
     /// Transitively visits all @em reachable Scope%s in this @p World that do not have free variables.
     /// We call these Scope%s @em top-level Scope%s.
@@ -443,9 +435,9 @@ public:
     template<class... Args> void wdef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Warn, def->debug().loc, fmt, std::forward<Args&&>(args)...); }
     template<class... Args> void edef(const Def* def, const char* fmt, Args&&... args) { error(def->debug().loc, fmt, std::forward<Args&&>(args)...); }
 
-    static const char* level2string(LogLevel level);
+    static std::string_view level2string(LogLevel level);
     static int level2color(LogLevel level);
-    static std::string colorize(const std::string& str, int color);
+    static std::string colorize(std::string_view str, int color);
     ///@}
 
     /// @name stream

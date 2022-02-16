@@ -32,7 +32,7 @@ bool Parser::expect(Tok::Tag tag, std::string_view ctxt) {
     return false;
 }
 
-void Parser::err(const std::string_view what, const Tok& tok, std::string_view ctxt) {
+void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
     errln("expected {}, got '{}' while parsing {}", what, tok, ctxt);
 }
 
