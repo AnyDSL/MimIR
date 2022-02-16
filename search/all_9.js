@@ -59,7 +59,7 @@ var searchData=
   ['is_5ftuple_5for_5fpack_56',['is_tuple_or_pack',['../namespacethorin.html#a49914b89c55cc74be99001a2875f00d1',1,'thorin']]],
   ['is_5funit_57',['is_unit',['../namespacethorin.html#a496a5dfe6e208b166676c88e28092d48',1,'thorin']]],
   ['is_5fused_5fas_5ftype_58',['is_used_as_type',['../classthorin_1_1Use.html#ab0b035140ec21ad63e360f32d5321672',1,'thorin::Use']]],
-  ['is_5fvalid_59',['is_valid',['../namespacethorin_1_1utf8.html#a50d67a2652dfa25b33bc6128f2a49437',1,'thorin::utf8::is_valid()'],['../classthorin_1_1ll_1_1CodeGen.html#a67271efa647570c44f1f620cf8ae5a99',1,'thorin::ll::CodeGen::is_valid()']]],
+  ['is_5fvalid_59',['is_valid',['../namespacethorin_1_1utf8.html#a50d67a2652dfa25b33bc6128f2a49437',1,'thorin::utf8::is_valid()'],['../classthorin_1_1ll_1_1CodeGen.html#ad490fd67ad94dd25dabb81c34287e215',1,'thorin::ll::CodeGen::is_valid()']]],
   ['is_5fvar_60',['is_var',['../namespacethorin.html#aa27a0affd7d03618a95b02ee322c6f6a',1,'thorin']]],
   ['isa_61',['isa',['../namespacethorin.html#a13393e92527438ff4529ebe0834a84c3',1,'thorin::isa()'],['../classthorin_1_1RuntimeCast.html#a8349f459f29da96575216355e8589882',1,'thorin::RuntimeCast::isa() const'],['../classthorin_1_1RuntimeCast.html#ae48ccd2ab9e4b674f069c5ae6a3a361f',1,'thorin::RuntimeCast::isa()'],['../classthorin_1_1Tok.html#a3bf30d6bc9b8ca772098449f4b73e274',1,'thorin::Tok::isa()'],['../namespacethorin.html#a42871a77f69d4effae41df9c24b613d2',1,'thorin::isa(Tag2Enum&lt; tag &gt; flags, const Def *def)'],['../namespacethorin.html#abc03433e6b2efb1c4ad7d0c5dd690b10',1,'thorin::isa(fields_t f, const Def *def)']]],
   ['isa_5fbound_62',['isa_bound',['../namespacethorin.html#acf74d6ffc9168d125bb73ff17c3b8395',1,'thorin']]],

@@ -2,6 +2,7 @@ var hash_8h =
 [
     [ "thorin::FNV1", "structthorin_1_1FNV1.html", "structthorin_1_1FNV1" ],
     [ "thorin::StrHash", "structthorin_1_1StrHash.html", "structthorin_1_1StrHash" ],
+    [ "thorin::StrViewHash", "structthorin_1_1StrViewHash.html", "structthorin_1_1StrViewHash" ],
     [ "thorin::detail::HashTable< Key, T, H, StackCapacity >", "classthorin_1_1detail_1_1HashTable.html", "classthorin_1_1detail_1_1HashTable" ],
     [ "thorin::detail::HashTable< Key, T, H, StackCapacity >::iterator_base< is_const >", "classthorin_1_1detail_1_1HashTable_1_1iterator__base.html", "classthorin_1_1detail_1_1HashTable_1_1iterator__base" ],
     [ "thorin::HashSet< Key, H, StackCapacity >", "classthorin_1_1HashSet.html", "classthorin_1_1HashSet" ],
@@ -9,6 +10,7 @@ var hash_8h =
     [ "hash_t", "hash_8h.html#a63fc98b747386959626beff8195c9910", null ],
     [ "debug_hash", "hash_8h.html#ae79eaa83fb8c9cb276a5528ef2423594", null ],
     [ "hash", "hash_8h.html#ae0e621eb1be011dcdfe11e5171fd7dd4", null ],
+    [ "hash", "hash_8h.html#a333d04a40eeb7f22675a906e6cbc00af", null ],
     [ "hash_begin", "hash_8h.html#a25e65e2898328d7df97d05cbe8263220", null ],
     [ "hash_begin", "hash_8h.html#a45953d358ff771ff89168ecc274b7d2b", null ],
     [ "hash_combine", "hash_8h.html#acf896db08a5279cdb1f61589607f055b", null ],

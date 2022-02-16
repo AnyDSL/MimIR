@@ -35,7 +35,6 @@ var hierarchy =
       [ "thorin::ll::CodeGen", "classthorin_1_1ll_1_1CodeGen.html", null ]
     ] ],
     [ "thorin::ErrorHandler", "classthorin_1_1ErrorHandler.html", null ],
-    [ "thorin::World::ExternalsHash", "structthorin_1_1World_1_1ExternalsHash.html", null ],
     [ "thorin::FNV1", "structthorin_1_1FNV1.html", null ],
     [ "thorin::Fold< T, T, nat_t >", "namespacethorin.html#structthorin_1_1Fold", null ],
     [ "thorin::Fold< Div, Div::sdiv, w >", "structthorin_1_1Fold_3_01Div_00_01Div_1_1sdiv_00_01w_01_4.html", null ],
@@ -136,8 +135,8 @@ var hierarchy =
     [ "thorin::detail::HashTable< std::set< const thorin::Proxy *, thorin::GIDLt< const thorin::Proxy * > >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
       [ "thorin::HashMap< std::set< const thorin::Proxy *, thorin::GIDLt< const thorin::Proxy * > > >", "classthorin_1_1HashMap.html", null ]
     ] ],
-    [ "thorin::detail::HashTable< std::string, Def *, ExternalsHash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
-      [ "thorin::HashMap< std::string, Def *, ExternalsHash >", "classthorin_1_1HashMap.html", null ]
+    [ "thorin::detail::HashTable< std::string, Def *, StrViewHash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
+      [ "thorin::HashMap< std::string, Def *, StrViewHash >", "classthorin_1_1HashMap.html", null ]
     ] ],
     [ "thorin::detail::HashTable< std::string, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
       [ "thorin::HashMap< std::string >", "classthorin_1_1HashMap.html", null ]
@@ -293,6 +292,7 @@ var hierarchy =
       [ "thorin::World", "classthorin_1_1World.html", null ]
     ] ],
     [ "thorin::StrHash", "structthorin_1_1StrHash.html", null ],
+    [ "thorin::StrViewHash", "structthorin_1_1StrViewHash.html", null ],
     [ "thorin::SymHash", "structthorin_1_1SymHash.html", null ],
     [ "thorin::Tag2Def_< tag >", "namespacethorin.html#structthorin_1_1Tag2Def__", null ],
     [ "thorin::Tag2Def_< Tag::Mem >", "namespacethorin.html#structthorin_1_1Tag2Def___3_01Tag_1_1Mem_01_4", null ],

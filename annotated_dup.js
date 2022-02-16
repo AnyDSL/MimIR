@@ -119,6 +119,7 @@ var annotated_dup =
       [ "Streamable", "classthorin_1_1Streamable.html", "classthorin_1_1Streamable" ],
       [ "StrHash", "structthorin_1_1StrHash.html", "structthorin_1_1StrHash" ],
       [ "StringStream", "classthorin_1_1StringStream.html", "classthorin_1_1StringStream" ],
+      [ "StrViewHash", "structthorin_1_1StrViewHash.html", "structthorin_1_1StrViewHash" ],
       [ "Sym", "classthorin_1_1Sym.html", "classthorin_1_1Sym" ],
       [ "SymHash", "structthorin_1_1SymHash.html", "structthorin_1_1SymHash" ],
       [ "Tag2Def_", "namespacethorin.html#structthorin_1_1Tag2Def__", "namespacethorin_structthorin_1_1Tag2Def___dup" ],

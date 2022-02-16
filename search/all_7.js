@@ -20,6 +20,6 @@ var searchData=
   ['global_17',['Global',['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06abd8d7821a2fd1239acef09706db6bace',1,'thorin::Node::Global()'],['../namespacethorin_1_1AddrSpace.html#a3306706adbc856a82f406997e8db0f00a9cb49f81a60b27ed0815a443e8810697',1,'thorin::AddrSpace::Global()']]],
   ['global_18',['global',['../classthorin_1_1World.html#a60a65160b686ffacbe2d20af346704da',1,'thorin::World::global(const Def *init, bool is_mutable=true, const Def *dbg={})'],['../classthorin_1_1World.html#aba71cbdf91e5537e3a245e21d216b430',1,'thorin::World::global(const Def *id, const Def *init, bool is_mutable=true, const Def *dbg={})']]],
   ['global_19',['Global',['../classthorin_1_1Global.html',1,'thorin']]],
-  ['global_5fimmutable_5fstring_20',['global_immutable_string',['../classthorin_1_1World.html#aca84b28df2950932a7686f7ef4bd27f3',1,'thorin::World']]],
+  ['global_5fimmutable_5fstring_20',['global_immutable_string',['../classthorin_1_1World.html#aaee300743256fcf167bae34d8e3404b0',1,'thorin::World']]],
   ['globals_5f_21',['globals_',['../classthorin_1_1Emitter.html#ae6996cbfe877290dc33a25c67a5e3cee',1,'thorin::Emitter']]]
 ];

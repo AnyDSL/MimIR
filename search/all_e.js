@@ -1,7 +1,7 @@
 var searchData=
 [
   ['na_0',['na',['../namespacethorin.html#a89d67b04557e416d256c0cc75a55accea6ec66e124fb93c190e9207b0b82f542a',1,'thorin']]],
-  ['name_1',['name',['../classthorin_1_1Debug.html#ac9cf5b71c8294f31e2112e7498d57b57',1,'thorin::Debug::name()'],['../classthorin_1_1Scope.html#a61f82fb1d75c44d95b8876ec3bf16a2c',1,'thorin::Scope::name()'],['../classthorin_1_1Def.html#a518e9dc3ad4658e41b962364ce960bd8',1,'thorin::Def::name()'],['../classthorin_1_1RWPassBase.html#ae862a9a49dda472ec336d4729bae9662',1,'thorin::RWPassBase::name()'],['../classthorin_1_1World.html#a3039fc9ac00740f22f2ed48b7035b2a3',1,'thorin::World::name()']]],
+  ['name_1',['name',['../classthorin_1_1Debug.html#ac9cf5b71c8294f31e2112e7498d57b57',1,'thorin::Debug::name()'],['../classthorin_1_1Scope.html#a61f82fb1d75c44d95b8876ec3bf16a2c',1,'thorin::Scope::name()'],['../classthorin_1_1Def.html#a518e9dc3ad4658e41b962364ce960bd8',1,'thorin::Def::name()'],['../classthorin_1_1RWPassBase.html#ad77a7bb256742547b2ae03ac0099b904',1,'thorin::RWPassBase::name()'],['../classthorin_1_1World.html#ae83bc7243281c049c2760bd4598fdfb1',1,'thorin::World::name()']]],
   ['nand_2',['nand',['../namespacethorin.html#a89d67b04557e416d256c0cc75a55acceac657344463ff1b32bf1ad9bbdb3ef20b',1,'thorin']]],
   ['nat_3',['Nat',['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06a1b3ad193ab60d8bfe3aa5f31beef9355',1,'thorin::Node::Nat()'],['../classthorin_1_1Nat.html',1,'thorin::Nat']]],
   ['nat_5ft_4',['nat_t',['../namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91',1,'thorin']]],

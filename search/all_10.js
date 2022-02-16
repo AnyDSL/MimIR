@@ -51,7 +51,7 @@ var searchData=
   ['prec_5fr_48',['prec_r',['../namespacethorin.html#a860a2076e1d440ef8a95947d6215fbe4',1,'thorin']]],
   ['pred_49',['pred',['../classthorin_1_1SSAConstr.html#a7e971447917136fea7b96f2c386b7914',1,'thorin::SSAConstr::Info']]],
   ['preds_50',['preds',['../classthorin_1_1DomFrontierBase.html#a4f538c14a8ab877683bc138f5d7d7711',1,'thorin::DomFrontierBase::preds()'],['../classthorin_1_1CFG.html#af777a488f6475c0ef39f5a4893469e9c',1,'thorin::CFG::preds(Def *nom) const'],['../classthorin_1_1CFG.html#a4be7bf931bf9471d78c464c9d3559f3b',1,'thorin::CFG::preds(const CFNode *n) const']]],
-  ['prepare_51',['prepare',['../classthorin_1_1ll_1_1CodeGen.html#ab99addb4c919bad9859ce0561518a377',1,'thorin::ll::CodeGen::prepare(Lam *, const std::string &amp;)'],['../classthorin_1_1ll_1_1CodeGen.html#a4e5e07c2799cf4830ac848c13ed08481',1,'thorin::ll::CodeGen::prepare(const Scope &amp;)']]],
+  ['prepare_51',['prepare',['../classthorin_1_1ll_1_1CodeGen.html#a65a72ebb16913424330a9155c2146964',1,'thorin::ll::CodeGen::prepare(Lam *, std::string_view)'],['../classthorin_1_1ll_1_1CodeGen.html#a4e5e07c2799cf4830ac848c13ed08481',1,'thorin::ll::CodeGen::prepare(const Scope &amp;)']]],
   ['prime_52',['prime',['../structthorin_1_1FNV1.html#a80162d0acdba80bb75d7f3691219f038',1,'thorin::FNV1']]],
   ['probe_53',['probe',['../classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d',1,'thorin::Test']]],
   ['proj_54',['proj',['../classthorin_1_1Def.html#a3ec48303a042839042c5c7f85f496845',1,'thorin::Def::proj(nat_t i, const Def *dbg={}) const'],['../classthorin_1_1Def.html#a0ea644f59a105983052c886b3b02692b',1,'thorin::Def::proj(nat_t a, nat_t i, const Def *dbg={}) const']]],

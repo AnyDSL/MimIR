@@ -65,7 +65,7 @@ var classthorin_1_1Def =
     [ "set", "classthorin_1_1Def.html#a152b0e05705b7c1124a74369576cd17c", null ],
     [ "set", "classthorin_1_1Def.html#af401dbc2a8092cdc438507614174f792", null ],
     [ "set_dbg", "classthorin_1_1Def.html#a4cc24cc0b5607cf5b97cf9eb06a1cd97", null ],
-    [ "set_name", "classthorin_1_1Def.html#a20ca1dbf6fd9aad82046708af17ae762", null ],
+    [ "set_name", "classthorin_1_1Def.html#a6ed96c6dda252e77e962c9a2f9519fea", null ],
     [ "sort", "classthorin_1_1Def.html#aa6c3098861fae53f0b0a01e145736eff", null ],
     [ "stream", "classthorin_1_1Def.html#af4047009fd771096e2ea92f48bd9e694", null ],
     [ "stream", "classthorin_1_1Def.html#a488ccad668dca487368b05f30af2c351", null ],

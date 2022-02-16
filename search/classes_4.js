@@ -7,6 +7,5 @@ var searchData=
   ['etaexp_4',['EtaExp',['../classthorin_1_1EtaExp.html',1,'thorin']]],
   ['etared_5',['EtaRed',['../classthorin_1_1EtaRed.html',1,'thorin']]],
   ['ext_6',['Ext',['../classthorin_1_1Ext.html',1,'thorin']]],
-  ['externalshash_7',['ExternalsHash',['../structthorin_1_1World_1_1ExternalsHash.html',1,'thorin::World']]],
-  ['extract_8',['Extract',['../classthorin_1_1Extract.html',1,'thorin']]]
+  ['extract_7',['Extract',['../classthorin_1_1Extract.html',1,'thorin']]]
 ];

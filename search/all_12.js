@@ -53,7 +53,7 @@ var searchData=
   ['runtimecast_50',['RuntimeCast',['../classthorin_1_1RuntimeCast.html',1,'thorin']]],
   ['runtimecast_3c_20def_20_3e_51',['RuntimeCast&lt; Def &gt;',['../classthorin_1_1RuntimeCast.html',1,'thorin']]],
   ['rw_5fpasses_52',['rw_passes',['../classthorin_1_1PassMan.html#a8e22f058268a7de8807eb7fc6a17613d',1,'thorin::PassMan']]],
-  ['rwpass_53',['RWPass',['../classthorin_1_1RWPass.html#a2dab37ccd6894509943c3d0aff357b30',1,'thorin::RWPass::RWPass()'],['../classthorin_1_1RWPass.html',1,'thorin::RWPass&lt; N &gt;']]],
+  ['rwpass_53',['RWPass',['../classthorin_1_1RWPass.html#a33eae491952337cac47ec30054193f68',1,'thorin::RWPass::RWPass()'],['../classthorin_1_1RWPass.html',1,'thorin::RWPass&lt; N &gt;']]],
   ['rwpass_3c_20lam_20_3e_54',['RWPass&lt; Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwpassbase_55',['RWPassBase',['../classthorin_1_1RWPassBase.html#a858568da01a53aae05a41b8c40defd91',1,'thorin::RWPassBase::RWPassBase()'],['../classthorin_1_1RWPassBase.html',1,'thorin::RWPassBase']]]
+  ['rwpassbase_55',['RWPassBase',['../classthorin_1_1RWPassBase.html#a587bcb2adf5a729fbd8fc99c5a82e34f',1,'thorin::RWPassBase::RWPassBase()'],['../classthorin_1_1RWPassBase.html',1,'thorin::RWPassBase']]]
 ];

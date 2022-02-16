@@ -50,7 +50,7 @@ var searchData=
   ['coding_2emd_47',['coding.md',['../coding_8md.html',1,'']]],
   ['codom_48',['codom',['../classthorin_1_1Lam.html#a6bc5bc4cd6161c40fca0f5c351882f9c',1,'thorin::Lam::codom()'],['../classthorin_1_1Pi.html#a3b30de4543d20c85955e970879a54fe2',1,'thorin::Pi::codom()']]],
   ['col_49',['col',['../structthorin_1_1Pos.html#a7ea3f1b1492b717c7037053ba8e6b32b',1,'thorin::Pos']]],
-  ['colorize_50',['colorize',['../classthorin_1_1World.html#a25c9ccc2e7c892ad470870218f1b319a',1,'thorin::World']]],
+  ['colorize_50',['colorize',['../classthorin_1_1World.html#a1136556d04f526ad42a17206472a271d',1,'thorin::World']]],
   ['command_2dline_20interface_51',['Command-Line Interface',['../md__github_workspace_docs_cli.html',1,'']]],
   ['commute_52',['commute',['../namespacethorin.html#ac1caf9dde31a5705cfdf7d70e1f9a96d',1,'thorin']]],
   ['concat_53',['concat',['../namespacethorin.html#a3871d8e6d247d00a69094936175c20e1',1,'thorin::concat(const T &amp;a, const U &amp;b) -&gt; Array&lt; typename T::value_type &gt;'],['../namespacethorin.html#a78f69bd0bad07415aba080f4cdb39a89',1,'thorin::concat(ArrayRef&lt; T &gt; a, const T &amp;val) -&gt; Array&lt; T &gt;'],['../namespacethorin.html#a6a5fe614398a8848c84a14253a2a1497',1,'thorin::concat(const T &amp;val, ArrayRef&lt; T &gt; a) -&gt; Array&lt; T &gt;']]],

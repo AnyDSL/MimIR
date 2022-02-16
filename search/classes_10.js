@@ -19,6 +19,7 @@ var searchData=
   ['streamable_3c_20world_20_3e_16',['Streamable&lt; World &gt;',['../classthorin_1_1Streamable.html',1,'thorin']]],
   ['strhash_17',['StrHash',['../structthorin_1_1StrHash.html',1,'thorin']]],
   ['stringstream_18',['StringStream',['../classthorin_1_1StringStream.html',1,'thorin']]],
-  ['sym_19',['Sym',['../classthorin_1_1Sym.html',1,'thorin']]],
-  ['symhash_20',['SymHash',['../structthorin_1_1SymHash.html',1,'thorin']]]
+  ['strviewhash_19',['StrViewHash',['../structthorin_1_1StrViewHash.html',1,'thorin']]],
+  ['sym_20',['Sym',['../classthorin_1_1Sym.html',1,'thorin']]],
+  ['symhash_21',['SymHash',['../structthorin_1_1SymHash.html',1,'thorin']]]
 ];
