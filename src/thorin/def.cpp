@@ -66,6 +66,8 @@ Nat::Nat(World& world)
     : Def(Node, world.kind(), Defs{}, 0, nullptr)
 {}
 
+// clang-format off
+
 /*
  * rebuild
  */
@@ -109,6 +111,8 @@ Pi*    Pi   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pi   (
 Sigma* Sigma::stub(World& w, const Def* t, const Def* dbg) { return w.nom_sigma(t, num_ops(), dbg); }
 Arr*   Arr  ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_arr  (t, shape(), dbg); }
 
+// clang-format on
+
 template<bool up> TBound<up>* TBound<up>::stub(World& w, const Def* t, const Def* dbg) { return w.nom_bound<up>(t, num_ops(), dbg); }
 
 /*
@@ -146,6 +150,8 @@ Defs Def::extended_ops() const {
     size_t offset = dbg() ? 2 : 1;
     return Defs((is_set() ? num_ops_ : 0) + offset, ops_ptr() - offset);
 }
+
+// clang-format off
 
 const Var* Def::var(const Def* dbg) {
     auto& w = world();
@@ -191,6 +197,8 @@ const Def* Def::arity() const {
     if (sort() == Sort::Term)       return type()->arity();
     return world().lit_nat(1);
 }
+
+// clang-format on
 
 bool Def::equal(const Def* other) const {
     if (isa<Space>() || this->isa_nom() || other->isa_nom()) return this == other;
@@ -384,11 +392,15 @@ const Def* Global::alloced_type() const { return type()->arg(0); }
  * instantiate templates
  */
 
+// clang-format off
+
 template const Def*     TExt  <false>::rebuild(World&, const Def*, Defs, const Def*) const;
 template const Def*     TExt  <true >::rebuild(World&, const Def*, Defs, const Def*) const;
 template const Def*     TBound<false>::rebuild(World&, const Def*, Defs, const Def*) const;
 template const Def*     TBound<true >::rebuild(World&, const Def*, Defs, const Def*) const;
 template TBound<false>* TBound<false>::stub(World&, const Def*, const Def*);
 template TBound<true >* TBound<true >::stub(World&, const Def*, const Def*);
+
+// clang-format on
 
 }

@@ -70,7 +70,7 @@ DisableFormat:   false
 EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: LogicalBlock
 ExperimentalAutoDetectBinPacking: false
-FixNamespaceComments: false
+FixNamespaceComments: true
 ForEachMacros:
   - foreach
   - Q_FOREACH
@@ -82,23 +82,18 @@ IncludeCategories:
   - Regex:           '<c.*>'
     Priority:        1
     SortPriority:    1
-    CaseSensitive:   false
   - Regex:           '<.*>'
     Priority:        3
     SortPriority:    2
-    CaseSensitive:   false
   - Regex:           '<gtest.*>'
     Priority:        2
     SortPriority:    3
-    CaseSensitive:   false
   - Regex:           '"thorin/[a-zA-Z0-9_]+.h"'
     Priority:        4
     SortPriority:    4
-    CaseSensitive:   false
   - Regex:           '"thorin/.*"'
     Priority:        5
     SortPriority:    5
-    CaseSensitive:   false
 IncludeIsMainRegex: '(XXX)?$'
 IncludeIsMainSourceRegex: ''
 IndentAccessModifiers: false
@@ -182,3 +177,4 @@ WhitespaceSensitiveMacros:
   - NS_SWIFT_NAME
   - CF_SWIFT_NAME
 ...
+
