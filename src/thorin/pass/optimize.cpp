@@ -44,9 +44,10 @@ static void lower_closures(World& world) {
     closure_destruct.add<Scalerize>(nullptr);
     closure_destruct.add<UnboxClosure>();
     closure_destruct.add<CopyProp>(nullptr, nullptr, true);
+    closure_destruct.add<ClosureAnalysis>();
     closure_destruct.run();
 
-    // LowerTypedClosures(world).run();
+    LowerTypedClosures(world).run();
 }
 
 void optimize(World& world) {
@@ -64,12 +65,13 @@ void optimize(World& world) {
     closure_conv(world);
     lower_closures(world);
     
-    // PassMan codgen_prepare(world);
-    //codgen_prepare.add<BoundElim>();
-    // codgen_prepare.add<RememElim>();
-    // codgen_prepare.add<Alloc2Malloc>();
-    // codgen_prepare.add<RetWrap>();
-    // codgen_prepare.run();
+    PassMan codgen_prepare(world);
+    // codgen_prepare.add<BoundElim>();
+    codgen_prepare.add<RememElim>();
+    // codgen_prepare.add<Scalerize>(nullptr);
+    codgen_prepare.add<Alloc2Malloc>();
+    codgen_prepare.add<RetWrap>();
+    codgen_prepare.run();
 }
 
 }

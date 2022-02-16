@@ -6,25 +6,6 @@ namespace thorin {
 
 /* auxillary functions */
 
-/* annotations */
-
-CA operator&(CA a, CA b) {
-    if ((uint8_t) b < (uint8_t) a)
-        std::swap(a, b);
-    if (a == CA::bot || a == b)
-        return b;
-    if (a == CA::proc && b == CA::proc_e)
-        return CA::proc_e;
-    return CA::unknown;
-}
-
-std::tuple<const Def*, CA> ca_isa_mark(const Def* def) {
-    if (auto query = isa<Tag::CA>(def)) {
-        return {query->arg(), query.flags()};
-    }
-    return {nullptr, CA::bot};
-}
-
 // Adjust the index of an argument to account for the env param
 size_t shift_env(size_t i) {
     return (i < CLOSURE_ENV_PARAM) ? i : i - 1_u64;
@@ -112,38 +93,17 @@ const Def* apply_closure(const Def* closure, const Def* args) {
     }));
 }
 
-std::tuple<Lam*, CA> ca_isa_marked_lam(const Def* def) {
-    auto ca = CA::bot;
-    if (auto q = isa<Tag::CA>(def)) {
-        ca = q.flags();
-        def = q->arg();
-    }
-    return {def->isa_nom<Lam>(), ca};
-}
-
-static std::tuple<const Def*, const Tuple*, CA>
-isa_folded_branch(const Def* def) {
-    auto ca = CA::bot;
-    if (auto proj = def->isa<Extract>()) {
-        if (auto tuple = proj->tuple()->isa<Tuple>()) {
-            if (std::all_of(tuple->ops().begin(), tuple->ops().end(), [&](const Def* d) { 
-                    auto [lam, v] = ca_isa_marked_lam(d); ca &= v; return lam != nullptr; }))
-                return {proj->index(), tuple, ca};
-        }
-    }
-    return {nullptr, nullptr, CA::bot};
-}
-
 ClosureLit isa_closure_lit(const Def* def, bool lambda_or_branch) {
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_ctype(def->type())) {
+        auto ca = CA::unknown;
         auto fnc = std::get<1_u64>(unpack_closure(tpl));
-        if (auto [lam, ca] = ca_isa_marked_lam(fnc); lam)
+        if (auto q = isa<Tag::CA>(fnc)) {
+            fnc = q->arg();
+            ca = q.flags();
+        }
+        if (!lambda_or_branch || fnc->isa<Lam>())
             return ClosureLit(tpl, ca);
-        if (auto [idx, lams, ca] = isa_folded_branch(fnc); idx && lams)
-            return ClosureLit(tpl, ca);
-        else if (!lambda_or_branch)
-            return ClosureLit(tpl, CA::bot);
     }
     return ClosureLit(nullptr, CA::bot);
 }
@@ -159,33 +119,15 @@ const Def* ClosureLit::fnc() {
 }
 
 Lam* ClosureLit::fnc_as_lam() {
-    auto [lam, _] = ca_isa_marked_lam(fnc());
-    return lam;
-}
-
-std::pair<const Def*, const Tuple*> ClosureLit::fnc_as_folded() {
-    auto [idx, tupel, _] = isa_folded_branch(fnc());
-    return {idx, tupel};
-}
-
-const Def* ClosureLit::var(size_t i) {
-    assert(i < fnc_type()->num_doms());
-    if (auto lam = fnc_as_lam())
-        return lam->var(i);
-    auto [idx, lams] = fnc_as_folded();
-    assert(idx && lams && "closure should be a lam or folded branch");
-    auto& w = idx->world();
-    auto tuple = w.tuple(DefArray(lams->num_ops(), [&](size_t j) {
-        auto [lam, _] = ca_isa_marked_lam(lams->op(j));
-        return lam->var(i);
-    }));
-    return w.extract(tuple, idx);
+    auto f = fnc();
+    if (auto q = isa<Tag::CA>(f))
+        f = q->arg();
+    return f->as_nom<Lam>();
 }
 
 const Def* ClosureLit::env_var() {
-    return var(CLOSURE_ENV_PARAM);
+    return fnc_as_lam()->var(CLOSURE_ENV_PARAM);
 }
-
 
 unsigned int ClosureLit::order() { 
     return ctype_to_pi(type())->order(); 

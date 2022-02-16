@@ -66,19 +66,6 @@ Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env) {
     return map<Lam>(lam, new_lam);
 }
 
-const Def* LowerTypedClosures::make_stub(ClosureLit& closure, bool unbox_env) {
-    auto& w = world();
-    if (auto fnc = closure.fnc_as_lam())
-        return make_stub(fnc, unbox_env);
-    auto [idx, lams] = closure.fnc_as_folded();
-    assert(idx && lams && "closure should be lam or folded branch");
-    auto new_lams = DefArray(lams->num_ops(), [&](auto i) {
-        const Def* lam = lams->op(i);
-        return make_stub(lam->isa_nom<Lam>(), unbox_env);
-    });
-    return w.extract(w.tuple(new_lams), idx);
-}
-
 // TODO: Handle ptr, cn's?
 static size_t repr_size(const Def* type, size_t inf) {
     if (auto size = thorin::isa_sized_type(type)) {
@@ -139,12 +126,12 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
     if (auto c = isa_closure_lit(def)) {
         auto env = rewrite(c.env());
         auto unbox = unbox_env(env);
-        auto fn = make_stub(c, unbox);
+        auto fn = make_stub(c.fnc_as_lam(), unbox);
         const Def* lwd_clos;
         if (!unbox) {
             auto mem_ptr = (c.is_escaping()) 
-                ? w.op_slot(env->type(), lcm_)
-                : w.op_alloc(env->type(), lcm_);
+                ? w.op_alloc(env->type(), lcm_)
+                : w.op_slot(env->type(), lcm_);
             auto mem = w.extract(mem_ptr, 0_u64);
             auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
             lcm_ = w.op_store(mem, env_ptr, env);

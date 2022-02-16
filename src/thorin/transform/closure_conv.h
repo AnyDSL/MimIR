@@ -113,14 +113,7 @@ private:
 /* marks */
 
 // join 
-CA operator&(CA a, CA b);
-inline CA& operator&=(CA& a, const CA& b) {
-    return a = a & b;
-} 
-
 inline bool ca_is_escaping(CA v) { return v == CA::unknown || v == CA::proc_e; }
-inline bool ca_is_basicblock(CA v) { return v == CA::br || v == CA::ret; }
-inline bool ca_is_proc(CA v) { return v == CA::proc || v == CA::proc_e; }
 
 template<class N>
 std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
@@ -130,9 +123,6 @@ std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
     }
     return {nullptr,  nullptr};
 }
-
-std::tuple<const Def*, CA> ca_isa_mark(const Def* def);
-std::tuple<Lam*, CA> ca_isa_marked_lam(const Def* def);
 
 class ClosureLit {
 public:
@@ -153,12 +143,10 @@ public:
         return fnc()->type()->isa<Pi>();
     }
     Lam* fnc_as_lam();
-    std::pair<const Def*, const Tuple*> fnc_as_folded();
 
-    const Def* var(size_t i); ///< Get the @i%th variable of the function component
-    const Def* env_var();
+    const Def* env_var(); 
     const Def* ret_var() {
-        return var(fnc_type()->num_doms() - 1);
+        return fnc_as_lam()->ret_var();
     }
     ///@}
 
@@ -179,9 +167,6 @@ public:
     /// @{
     unsigned int order();
     bool is_escaping() { return ca_is_escaping(mark_); };
-    bool is_basicblock() { return ca_is_basicblock(mark_); };
-    bool is_proc() { return ca_is_proc(mark_); };
-    bool is(CA a) { return mark_ == a; }
     CA mark() { return mark_; }
     /// @}
 
