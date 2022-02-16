@@ -112,6 +112,7 @@ enum : unsigned {
         return ((const Def*)NAME())->projs<F>(a, f, dbgs);                                                         \
     }                                                                                                              \
     auto NAME##s(size_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
+
 /// Base class for all @p Def%s.
 /// The data layout (see @p World::alloc) looks like this:
 /// ```
@@ -266,9 +267,7 @@ public:
         return projs<A>([](const Def* def) { return def; }, dbgs);
     }
     auto projs(size_t a, Defs dbgs = {}) const {
-        return projs(
-            a, [](const Def* def) { return def; }, dbgs);
-    }
+        return projs(a, [](const Def* def) { return def; }, dbgs); }
     ///@}
 
     /// @name externals
