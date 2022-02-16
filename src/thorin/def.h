@@ -6,6 +6,7 @@
 
 #include "thorin/debug.h"
 #include "thorin/tables.h"
+
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
 #include "thorin/util/hash.h"
@@ -135,7 +136,7 @@ public:
     u32 gid() const { return gid_; }
     hash_t hash() const { return hash_; }
     node_t node() const { return node_; }
-    const char* node_name() const;
+    std::string_view node_name() const;
     ///@}
 
     /// @name type
@@ -257,7 +258,7 @@ public:
     Loc loc() const { return debug().loc; }
     const Def* meta() const { return debug().meta; }
     void set_dbg(const Def* dbg) const { dbg_ = dbg; }
-    void set_name(const std::string&) const;
+    void set_name(std::string_view) const;
     const Def* debug_history() const; ///< In Debug build if @p World::enable_history is `true`, this thing keeps the @p gid to track a history of gid%s.
     std::string unique_name() const;  ///< name + "_" + gid
     ///@}

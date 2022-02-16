@@ -86,7 +86,7 @@ public:
     Sym sym() const { assert(isa(Tag::M_id)); return sym_; }
     Stream& stream(Stream& s) const;
 
-    static const char* tag2str(Tok::Tag);
+    static std::string_view tag2str(Tok::Tag);
     static Prec tag2prec_l(Tag);
     static Prec tag2prec_r(Tag);
 

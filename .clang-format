@@ -6,7 +6,7 @@ AlignArrayOfStructures: Right
 AlignConsecutiveMacros: Consecutive
 AlignConsecutiveAssignments: Consecutive
 AlignConsecutiveBitFields: Consecutive
-AlignConsecutiveDeclarations: Consecutive
+AlignConsecutiveDeclarations: None
 AlignEscapedNewlines: Right
 AlignOperands:   AlignAfterOperator
 AlignTrailingComments: true
@@ -70,7 +70,7 @@ DisableFormat:   false
 EmptyLineAfterAccessModifier: Never
 EmptyLineBeforeAccessModifier: LogicalBlock
 ExperimentalAutoDetectBinPacking: false
-FixNamespaceComments: true
+FixNamespaceComments: false
 ForEachMacros:
   - foreach
   - Q_FOREACH

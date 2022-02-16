@@ -29,7 +29,7 @@ static bool is_const(const Def* def) {
 
     if (auto tuple = def->isa<Tuple>()) {
         auto ops = tuple->ops();
-        return std::all_of(ops.begin(), ops.end(), [](auto def) { return is_const(def); });
+        return std::ranges::all_of(ops, [](auto def) { return is_const(def); });
     }
 
     return false;
@@ -46,9 +46,10 @@ struct BB {
     std::deque<StringStream>& body() { return parts[1]; }
     std::deque<StringStream>& tail() { return parts[2]; }
 
-    template<class... Args> std::string assign(const std::string& name, const char* s, Args&&... args) {
+    template<class... Args>
+    std::string assign(std::string_view name, const char* s, Args&&... args) {
         body().emplace_back().fmt("{} = ", name).fmt(s, std::forward<Args&&>(args)...);
-        return name;
+        return std::string(name);
     }
 
     template<class... Args> void tail(const char* s, Args&&... args) {
@@ -70,13 +71,13 @@ public:
     CodeGen(World& world, Stream& stream)
         : Emitter(world, stream) {}
 
-    bool is_valid(const std::string& s) { return !s.empty(); }
+    bool is_valid(std::string_view s) { return !s.empty(); }
     void run();
     void emit_imported(Lam*);
     void emit_epilogue(Lam*);
     std::string emit_bb(BB&, const Def*);
     std::string prepare(const Scope&);
-    void prepare(Lam*, const std::string&);
+    void prepare(Lam*, std::string_view);
     void finalize(const Scope&);
 
 private:
@@ -152,7 +153,7 @@ std::string CodeGen::convert(const Def* type) {
     } else if (auto pi = type->isa<Pi>()) {
         s.fmt("{} (", convert(pi->doms().back()->as<Pi>()->dom()));
 
-        const char* sep = "";
+        std::string_view sep = "";
         for (auto dom : pi->doms().skip_back()) {
             if (isa<Tag::Mem>(dom)) continue;
             s << sep << convert(dom);
@@ -165,7 +166,7 @@ std::string CodeGen::convert(const Def* type) {
             s.fmt("{} = type", name);
         }
         s.fmt("{{");
-        const char* sep = "";
+        std::string_view sep = "";
         for (auto t : sigma->ops()) {
             if (isa<Tag::Mem>(t)) continue;
             s << sep << convert(t);
@@ -216,7 +217,7 @@ void CodeGen::run() {
 void CodeGen::emit_imported(Lam* lam) {
     func_decls_.fmt("declare {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
-    const char* sep = "";
+    auto sep = "";
     auto doms = lam->doms();
     for (auto dom : doms.skip_back()) {
         if (isa<Tag::Mem>(dom)) continue;
@@ -232,7 +233,7 @@ std::string CodeGen::prepare(const Scope& scope) {
 
     func_impls_.fmt("define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
-    const char* sep = "";
+    auto sep = "";
     auto vars = lam->vars();
     for (auto var : vars.skip_back()) {
         if (isa<Tag::Mem>(var->type())) continue;
@@ -251,7 +252,7 @@ void CodeGen::finalize(const Scope& scope) {
     for (auto& [lam, bb] : lam2bb_) {
         for (const auto& [phi, args] : bb.phis) {
             bb.head().emplace_back().fmt("{} = phi {} ", id(phi), convert(phi->type()));
-            const char* sep = "";
+            auto sep = "";
             for (const auto& [arg, pred] : args) {
                 bb.head().back().fmt("{}[ {}, {} ]", sep, arg, pred);
                 sep = ", ";
@@ -370,7 +371,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
             std::string s;
             s += is_array ? "[" : "{";
-            const char* sep = "";
+            auto sep = "";
             for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
                 auto e = tuple->proj(n, i);
                 if (auto elem = emit_unsafe(e); !elem.empty()) {
@@ -443,7 +444,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto [a, b] = bit->args<2>([this](auto def) { return emit(def); });
         auto t = convert(bit->type());
 
-        auto neg = [&](const std::string& x) {
+        auto neg = [&](std::string_view x) {
             return bb.assign(name + ".neg", "xor {} 0, {}", t, x);
         };
 

@@ -79,8 +79,8 @@ DefArray merge(const Def* def, Defs defs) {
 
 DefArray merge(Defs a, Defs b) {
     DefArray result(a.size() + b.size());
-    auto i = std::copy(a.begin(), a.end(), result.begin());
-    std::copy(b.begin(), b.end(), i);
+    auto [_, o] = std::ranges::copy(a, result.begin());
+    std::ranges::copy(b, o);
     return result;
 }
 

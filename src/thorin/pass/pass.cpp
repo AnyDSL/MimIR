@@ -5,13 +5,13 @@
 
 namespace thorin {
 
-RWPassBase::RWPassBase(PassMan& man, const std::string& name)
+RWPassBase::RWPassBase(PassMan& man, std::string_view name)
     : man_(man)
     , name_(name)
     , proxy_id_(man.passes().size())
 {}
 
-FPPassBase::FPPassBase(PassMan& man, const std::string& name)
+FPPassBase::FPPassBase(PassMan& man, std::string_view name)
     : RWPassBase(man, name)
     , index_(man.fp_passes().size())
 {}

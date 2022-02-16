@@ -29,7 +29,7 @@ namespace thorin {
 bool World::Arena::Lock::guard_ = false;
 #endif
 
-World::World(const std::string& name)
+World::World(std::string_view name)
     : checker_(std::make_unique<Checker>(*this))
 {
     data_.name_     = name.empty() ? "module" : name;
@@ -264,7 +264,7 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (std::all_of(ops.begin()+1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
     return unify<Sigma>(ops.size(), infer_kind(ops), ops, dbg);
 }
 
@@ -321,10 +321,9 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
-const Def* World::tuple_str(const char* s, const Def* dbg) {
+const Def* World::tuple_str(std::string_view s, const Def* dbg) {
     DefVec ops;
-    for (; *s != '\0'; ++s)
-        ops.emplace_back(lit_nat(*s));
+    for (auto c : s) ops.emplace_back(lit_nat(c));
     return tuple(ops, dbg);
 }
 
@@ -406,7 +405,7 @@ bool is_shape(const Def* s) {
     if (s->isa<Nat>()) return true;
     if (auto arr = s->isa<Arr  >()) return arr->body()->isa<Nat>();
     if (auto sig = s->isa_structural<Sigma>())
-        return std::all_of(sig->ops().begin(), sig->ops().end(), [&](const Def* op) { return op->isa<Nat>(); });
+        return std::ranges::all_of(sig->ops(), [](const Def* op) { return op->isa<Nat>(); });
 
     return false;
 }
@@ -485,7 +484,7 @@ const Def* World::global(const Def* id, const Def* init, bool is_mutable, const 
     return unify<Global>(2, type_ptr(init->type()), id, init, is_mutable, dbg);
 }
 
-const Def* World::global_immutable_string(const std::string& str, const Def* dbg) {
+const Def* World::global_immutable_string(std::string_view str, const Def* dbg) {
     size_t size = str.size() + 1;
 
     DefArray str_array(size);
@@ -513,12 +512,12 @@ const Def* World::bound(Defs ops, const Def* dbg) {
     auto kind = infer_kind(ops);
 
     // has ext<up> value?
-    if (std::any_of(ops.begin(), ops.end(), [&](const Def* op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
+    if (std::ranges::any_of(ops, [&](const Def* op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
         return ext<up>(kind);
 
     // ignore: ext<!up>
     DefArray cpy(ops);
-    auto end = std::copy_if(ops.begin(), ops.end(), cpy.begin(), [&](const Def* op) { return !isa_ext(op); });
+    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](const Def* op) { return !isa_ext(op); });
 
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
@@ -618,7 +617,7 @@ void World::enable_history(bool flag)     { state_.track_history = flag; }
 bool World::track_history() const         { return state_.track_history; }
 
 const Def* World::gid2def(u32 gid) {
-    auto i = std::find_if(data_.defs_.begin(), data_.defs_.end(), [&](const Def* def) { return def->gid() == gid; });
+    auto i = std::ranges::find_if(data_.defs_, [=](auto def) { return def->gid() == gid; });
     if (i == data_.defs_.end()) return nullptr;
     return *i;
 }
@@ -678,7 +677,7 @@ void World::visit(VisitFn f) const {
  * misc
  */
 
-const char* World::level2string(LogLevel level) {
+std::string_view World::level2string(LogLevel level) {
     switch (level) {
         case LogLevel::Error:   return "E";
         case LogLevel::Warn:    return "W";
@@ -701,16 +700,23 @@ int World::level2color(LogLevel level) {
 }
 
 #ifdef COLORIZE_LOG
-std::string World::colorize(const std::string& str, int color) {
+std::string World::colorize(std::string_view str, int color) {
+    std::string res;
     if (isatty(fileno(stdout))) {
         const char c = '0' + color;
-        return "\033[1;3" + (c + ('m' + str)) + "\033[0m";
+        res = "\033[1;3";
+        res += c;
+        res += 'm';
+        res.append(str);
+        res.append("\033[0m");
     }
-#else
-std::string World::colorize(const std::string& str, int) {
-#endif
-    return str;
+    return res;
 }
+#else
+std::string World::colorize(std::string_view str, int) {
+    return std::string(str);
+}
+#endif
 
 void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
 
@@ -718,7 +724,7 @@ void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
  * instantiate templates
  */
 
-template void Streamable<World>::write(const std::string& filename) const;
+template void Streamable<World>::write(std::string_view filename) const;
 template void Streamable<World>::write() const;
 template void Streamable<World>::dump() const;
 template void World::visit<true >(VisitFn) const;

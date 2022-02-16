@@ -118,12 +118,19 @@ template<class T>
 hash_t hash_begin(T val) { return hash_combine(FNV1::offset, val); }
 inline hash_t hash_begin() { return FNV1::offset; }
 
-hash_t hash(const char* s);
+hash_t hash(const char*);
+hash_t hash(std::string_view);
 
 struct StrHash {
     static hash_t hash(const char* s) { return thorin::hash(s); }
     static bool eq(const char* s1, const char* s2) { return std::strcmp(s1, s2) == 0; }
-    static const char* sentinel() { return (const char*)(1); }
+    static const char* sentinel() { return nullptr; }
+};
+
+struct StrViewHash {
+    static hash_t hash(std::string_view s) { return thorin::hash(s); }
+    static bool eq(std::string_view s1, std::string_view s2) { return s1 == s2; }
+    static std::string_view sentinel() { return {}; }
 };
 
 //------------------------------------------------------------------------------
@@ -477,13 +484,13 @@ public:
             if (t2.on_heap())
                 swap(t1.nodes_, t2.nodes_);
             else {
-                std::move(t2.array_.begin(), t2.array_.end(), t1.array_.begin());
+                std::ranges::move(t2.array_, t1.array_.begin());
                 t2.nodes_ = t1.nodes_;
                 t1.nodes_ = t1.array_.data();
             }
         } else {
             if (t2.on_heap()) {
-                std::move(t1.array_.begin(), t1.array_.end(), t2.array_.begin());
+                std::ranges::move(t1.array_, t2.array_.begin());
                 t1.nodes_ = t2.nodes_;
                 t2.nodes_ = t2.array_.data();
             } else
