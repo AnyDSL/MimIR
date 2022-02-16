@@ -389,7 +389,8 @@ public:
     void make_external(Def* def) { data_.externals_.emplace(def->debug().name, def); }
     void make_internal(Def* def) { data_.externals_.erase(def->debug().name); }
     bool is_external(const Def* def) { return data_.externals_.contains(def->debug().name); }
-    Def* lookup(std::string_view name) { return data_.externals_.lookup(std::string(name)).value_or(nullptr); } // TODO
+    // TODO add magic to use name of type std::string_view directly
+    Def* lookup(std::string_view name) { return data_.externals_.lookup(std::string(name)).value_or(nullptr); }
 
     /// Transitively visits all @em reachable Scope%s in this @p World that do not have free variables.
     /// We call these Scope%s @em top-level Scope%s.
