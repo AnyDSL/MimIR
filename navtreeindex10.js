@@ -231,8 +231,8 @@ var NAVTREEINDEX10 =
 "hash_8h.html#afd6542b4bbcecac2fe7e4e87251a37f6":[9,0,2,5,7,21],
 "hash_8h_source.html":[9,0,2,5,7],
 "hierarchy.html":[8,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "index.html#autotoc_md1":[0,0],
 "index.html#autotoc_md2":[0,0,0],
 "index.html#autotoc_md3":[0,0,1],
@@ -246,8 +246,8 @@ var NAVTREEINDEX10 =
 "indexset_8h.html#aca7a0dc87489d726385a61cdc1fde51c":[9,0,2,5,9,2],
 "indexset_8h_source.html":[9,0,2,5,9],
 "lam_8cpp.html":[9,0,2,16],
-"lam_8cpp.html#afa219845413436ebd217a971fb700df5":[9,0,2,16,0],
 "lam_8cpp_source.html":[9,0,2,16],
 "lam_8h.html":[9,0,2,17],
-"lam_8h.html#a6a281bbadc5cecf55e015fdc8b2f3cd4":[9,0,2,17,7]
+"lam_8h.html#a6a281bbadc5cecf55e015fdc8b2f3cd4":[9,0,2,17,6],
+"lam_8h.html#aab3dcdc17d2ec508ef185b66331e8f14":[9,0,2,17,3]
 };

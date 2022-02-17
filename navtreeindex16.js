@@ -1,8 +1,5 @@
 var NAVTREEINDEX16 =
 {
-"util_2stream_8cpp.html":[9,0,2,5,11],
-"util_2stream_8cpp_source.html":[9,0,2,5,11],
-"world_8cpp.html":[9,0,2,28],
 "world_8cpp.html#a0c9aa9c890f64ffc1d214f34e0f122b6":[9,0,2,28,4],
 "world_8cpp.html#a8160e20af8896b2d63fbdd98dd7425ff":[9,0,2,28,0],
 "world_8cpp.html#a8160e20af8896b2d63fbdd98dd7425ff":[9,0,2,28,1],

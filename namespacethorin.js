@@ -408,7 +408,6 @@ var namespacethorin =
     [ "get_axiom", "namespacethorin.html#a0a73adfd94a978904e88d3f9ab1efcc5", null ],
     [ "get_sign", "namespacethorin.html#ac76b51109303662a47f30fa874337254", null ],
     [ "get_sloxy_type", "namespacethorin.html#aaf8d0bd8f1f063544ef1ea45782003aa", null ],
-    [ "get_var_lam", "namespacethorin.html#afa219845413436ebd217a971fb700df5", null ],
     [ "has", "namespacethorin.html#afd54968402e2d2dd646a2110a1070f92", null ],
     [ "hash", "namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4", null ],
     [ "hash", "namespacethorin.html#a333d04a40eeb7f22675a906e6cbc00af", null ],
