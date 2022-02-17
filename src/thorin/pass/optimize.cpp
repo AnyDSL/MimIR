@@ -4,13 +4,14 @@
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/ssa_constr.h"
-#include "thorin/pass/rw/auto_diff.h"
+// #include "thorin/pass/rw/auto_diff.h"
+#include "thorin/pass/rw/alloc2malloc.h"
 #include "thorin/pass/rw/bound_elim.h"
 #include "thorin/pass/rw/partial_eval.h"
 #include "thorin/pass/rw/remem_elim.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
-#include "thorin/pass/rw/zip_eval.h"
+// #include "thorin/pass/rw/zip_eval.h"
 
 // old stuff
 #include "thorin/transform/cleanup_world.h"
@@ -24,15 +25,15 @@ void optimize(World& world) {
 
     world.set(LogLevel::Debug);
 
-    PassMan opt(world);
-    opt.add<AutoDiff>();
-    opt.run();
-    printf("Finished Opti1\n");
+    // PassMan opt(world);
+    // opt.add<AutoDiff>();
+    // opt.run();
+    // printf("Finished Opti1\n");
 
-    PassMan optZ(world);
-    optZ.add<ZipEval>();
-//    optZ.run();
-    printf("Finished OptiZip\n");
+//     PassMan optZ(world);
+//     optZ.add<ZipEval>();
+// //    optZ.run();
+//     printf("Finished OptiZip\n");
 
 
     PassMan opt2(world);
@@ -56,6 +57,7 @@ void optimize(World& world) {
     PassMan codgen_prepare(world);
     //codgen_prepare.add<BoundElim>();
     codgen_prepare.add<RememElim>();
+    codgen_prepare.add<Alloc2Malloc>();
     codgen_prepare.add<RetWrap>();
     codgen_prepare.run();
 }

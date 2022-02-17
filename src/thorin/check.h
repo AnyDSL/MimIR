@@ -10,8 +10,7 @@ namespace thorin {
 class Checker {
 public:
     Checker(World& world)
-        : world_(world)
-    {}
+        : world_(world) {}
 
     World& world() const { return world_; }
     bool equiv(const Def*, const Def*);

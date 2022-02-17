@@ -37,8 +37,7 @@ public:
         , numbers_(cfg())
         , states_(cfg())
         , set_(cfg())
-        , index_(0)
-    {
+        , index_(0) {
         stack_.reserve(looptree.cfg().size());
         build();
     }
@@ -47,12 +46,10 @@ private:
     struct Number {
         Number()
             : dfs(-1)
-            , low(-1)
-        {}
+            , low(-1) {}
         Number(size_t i)
             : dfs(i)
-            , low(i)
-        {}
+            , low(i) {}
 
         size_t dfs; // depth-first-search number
         size_t low; // low link (see Tarjan's SCC algo)

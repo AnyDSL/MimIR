@@ -6,13 +6,11 @@
 namespace thorin {
 
 /// Optimistically performs β-reduction (aka inlining).
-/// β-reduction of <code>f e</code>happens if <code>f</code> only occurs exactly once in the program in callee position.
-/// Depends on: @p EtaConv.
+/// β-reduction of `f e` happens if `f` only occurs exactly once in the program in callee position.
 class BetaRed : public FPPass<BetaRed> {
 public:
     BetaRed(PassMan& man)
-        : FPPass(man, "beta_red")
-    {}
+        : FPPass(man, "beta_red") {}
 
     using Data = LamSet;
 

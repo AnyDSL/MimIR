@@ -1,7 +1,7 @@
 #ifndef THORIN_FE_LEXER_H
 #define THORIN_FE_LEXER_H
 
-#include <unordered_map>
+#include <map>
 
 #include "thorin/debug.h"
 #include "thorin/fe/tok.h"
@@ -13,7 +13,7 @@ class World;
 
 class Lexer {
 public:
-    Lexer(World&, const char*, std::istream&);
+    Lexer(World&, std::string_view, std::istream&);
 
     World& world() { return world_; }
     Loc loc() const { return loc_; }
@@ -50,7 +50,7 @@ private:
     } peek_;
     std::istream& stream_;
     std::string str_;
-    std::unordered_map<std::string, Tok::Tag> keywords_;
+    std::map<std::string, Tok::Tag> keywords_;
 };
 
 }

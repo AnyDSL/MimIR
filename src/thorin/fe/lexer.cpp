@@ -4,7 +4,7 @@
 
 namespace thorin {
 
-Lexer::Lexer(World& world, const char* filename, std::istream& stream)
+Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
     : world_(world)
     , loc_{filename, {1, 1}, {1, 1}}
     , peek_({0, Pos(1, 0)})
@@ -96,10 +96,9 @@ Tok Lexer::lex() {
                 continue;
             }
 
-            //Loc(loc_.file, peek_.pos_).err() << "invalid input char '/'; maybe you wanted to start a comment?" << std::endl;
+            errln("{}:{}: invalid input char '/'; maybe you wanted to start a comment?", loc_.file, peek_.pos_);
             continue;
         }
-
 
         // identifier or keyword
         if (accept_if([](int i) { return i == '_' || isalpha(i); })) {
@@ -108,7 +107,7 @@ Tok Lexer::lex() {
             return {loc(), world_.sym(str_, world_.dbg(loc()))};                            // identifier
         }
 
-        //Loc(loc_.file, peek_.pos_).err() << "invalid input char: '" << (char) peek() << "'" << std::endl;
+        errln("{}:{}: invalid input char '{}'", loc_.file, peek_.pos_, (char) peek_.char_);
         next();
     }
 }
@@ -117,7 +116,7 @@ void Lexer::eat_comments() {
     while (true) {
         while (!eof() && peek_.char_ != '*') next();
         if (eof()) {
-            //loc_.err() << "non-terminated multiline comment" << std::endl;
+            errln("{}:{}: non-terminated multiline comment", loc_);
             return;
         }
         next();

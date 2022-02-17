@@ -8,8 +8,7 @@ namespace thorin {
 class RememElim : public RWPass<Lam> {
 public:
     RememElim(PassMan& man)
-        : RWPass(man, "remem_elim")
-    {}
+        : RWPass(man, "remem_elim") {}
 
     const Def* rewrite(const Def*) override;
 };
@@ -17,5 +16,3 @@ public:
 }
 
 #endif
-
-

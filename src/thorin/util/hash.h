@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <array>
+#include <bit>
 #include <cassert>
 #include <cinttypes>
 #include <cstdint>
@@ -14,8 +15,8 @@
 #include <utility>
 
 #include "thorin/config.h"
-#include "thorin/util/bit.h"
 #include "thorin/util/stream.h"
+#include "thorin/util/types.h"
 
 namespace thorin {
 
@@ -83,7 +84,7 @@ inline hash_t murmur3(hash_t h) {
     return h;
 }
 
-/// Magic numbers from http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var .
+/// [Magic numbers](http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var) for FNV1 hash.
 struct FNV1 {
     static const hash_t offset = 2166136261_u32;
     static const hash_t prime  = 16777619_u32;
@@ -117,12 +118,19 @@ template<class T>
 hash_t hash_begin(T val) { return hash_combine(FNV1::offset, val); }
 inline hash_t hash_begin() { return FNV1::offset; }
 
-hash_t hash(const char* s);
+hash_t hash(const char*);
+hash_t hash(std::string_view);
 
 struct StrHash {
     static hash_t hash(const char* s) { return thorin::hash(s); }
     static bool eq(const char* s1, const char* s2) { return std::strcmp(s1, s2) == 0; }
-    static const char* sentinel() { return (const char*)(1); }
+    static const char* sentinel() { return nullptr; }
+};
+
+struct StrViewHash {
+    static hash_t hash(std::string_view s) { return thorin::hash(s); }
+    static bool eq(std::string_view s1, std::string_view s2) { return s1 == s2; }
+    static std::string_view sentinel() { return {}; }
 };
 
 //------------------------------------------------------------------------------
@@ -130,7 +138,7 @@ struct StrHash {
 namespace detail {
 
 /// Used internally for @p HashSet and @p HashMap.
-template<class Key, class T, class H, size_t StackCapacity>
+template<class Key, class T, class H, hash_t StackCapacity>
 class HashTable {
 public:
     enum { MinHeapCapacity = StackCapacity*4 };
@@ -147,7 +155,6 @@ private:
 
     static key_type& key(value_type* ptr) { return get_key<Key, T>::get(*ptr); }
     static bool is_invalid(value_type* ptr) { return key(ptr) == H::sentinel(); }
-    bool is_invalid(size_t i) { return is_invalid(nodes_+i); }
 
 public:
     template<bool is_const>
@@ -159,6 +166,9 @@ public:
         typedef typename std::conditional<is_const, const value_type*, value_type*>::type pointer;
         typedef std::forward_iterator_tag iterator_category;
 
+        /// @name constructor, destructor & assignment
+        ///@{
+        iterator_base() = default;
         iterator_base(value_type* ptr, const HashTable* table)
             : ptr_(ptr)
             , table_(table)
@@ -166,7 +176,6 @@ public:
             , id_(table->id_)
 #endif
         {}
-
         template<bool other_const, class = std::enable_if_t<is_const || !other_const>>
         iterator_base(const iterator_base<other_const>& i)
             : ptr_(i.ptr_)
@@ -175,7 +184,6 @@ public:
             , id_(i.id_)
 #endif
             {}
-
         template<bool other_const, class = std::enable_if_t<is_const || !other_const>>
         iterator_base& operator=(const iterator_base<other_const>& other) {
             ptr_ = other.ptr_;
@@ -185,25 +193,32 @@ public:
 #endif
             return *this;
         }
+        ///@}
 
+        /// @name verify
+        ///@{
 #if THORIN_ENABLE_CHECKS
         inline void verify() const { assert(table_->id_ == id_); }
         inline void verify(iterator_base i) const {
             assert(table_ == i.table_ && id_ == i.id_);(void)i;
             verify();
         }
-#else
         int id() const { return id_; }
+#else
         inline void verify() const {}
         inline void verify(iterator_base) const {}
 #endif
+        ///@}
 
+        /// @name operators
+        ///@{
         iterator_base& operator++() { verify(); *this = skip(ptr_+1, table_); return *this; }
         iterator_base operator++(int) { verify(); iterator_base res = *this; ++(*this); return res; }
         reference operator*() const { verify(); return *ptr_; }
         pointer operator->() const { verify(); return ptr_; }
-        bool operator==(const iterator_base& other) { verify(other); return this->ptr_ == other.ptr_; }
-        bool operator!=(const iterator_base& other) { verify(other); return this->ptr_ != other.ptr_; }
+        bool operator==(const iterator_base& other) const { verify(other); return this->ptr_ == other.ptr_; }
+        bool operator!=(const iterator_base& other) const { verify(other); return this->ptr_ != other.ptr_; }
+        ///@}
 
     private:
         static iterator_base skip(value_type* ptr, const HashTable* table) {
@@ -220,10 +235,12 @@ public:
         friend class HashTable;
     };
 
-    typedef std::size_t size_type;
+    typedef hash_t size_type;
     typedef iterator_base<false> iterator;
     typedef iterator_base<true> const_iterator;
 
+    /// @name constructor, destructor & assignment
+    ///@{
     HashTable()
         : capacity_(StackCapacity)
         , size_(0)
@@ -234,20 +251,19 @@ public:
     {
         fill(nodes_);
     }
-    HashTable(size_t capacity)
-        : capacity_(capacity < StackCapacity ? StackCapacity : std::max(capacity, size_t(MinHeapCapacity)))
+    HashTable(hash_t capacity)
+        : capacity_(capacity < StackCapacity ? StackCapacity : std::max(capacity, hash_t(MinHeapCapacity)))
         , size_(0)
         , nodes_(on_heap() ? new value_type[capacity_] : array_.data())
 #if THORIN_ENABLE_CHECKS
         , id_(0)
 #endif
     {
-        assert(is_power_of_2(capacity));
+        assert(std::has_single_bit(capacity));
         fill(nodes_);
     }
     HashTable(HashTable&& other)
-        : HashTable()
-    {
+        : HashTable() {
         swap(*this, other);
     }
     HashTable(const HashTable& other)
@@ -267,46 +283,48 @@ public:
     }
     template<class InputIt>
     HashTable(InputIt first, InputIt last)
-        : HashTable()
-    {
+        : HashTable() {
         insert(first, last);
     }
     HashTable(std::initializer_list<value_type> ilist)
-        : HashTable()
-    {
+        : HashTable() {
         insert(ilist);
     }
+
     ~HashTable() {
-        if (on_heap())
-            delete[] nodes_;
+        if (on_heap()) delete[] nodes_;
     }
 
-    //@{ getters
-    size_t capacity() const { return capacity_; }
-    size_t size() const { return size_; }
+    HashTable& operator=(HashTable other) { swap(*this, other); return *this; }
+    ///@}
+
+    /// @name getters
+    ///@{
+    hash_t capacity() const { return capacity_; }
+    hash_t size() const { return size_; }
     bool empty() const { return size() == 0; }
 #if THORIN_ENABLE_CHECKS
     int id() const { return id_; }
 #endif
-    //@}
+    ///@}
 
-    //@{ get begin/end iterators
+    /// @name begin/end iterators
+    ///@{
     iterator begin() { return iterator::skip(nodes_, this); }
     iterator end() { return iterator(end_ptr(), this); }
     const_iterator begin() const { return const_iterator(const_cast<HashTable*>(this)->begin()); }
     const_iterator end() const { return const_iterator(const_cast<HashTable*>(this)->end()); }
     const_iterator cbegin() const { return begin(); }
     const_iterator cend() const { return end(); }
-    //@}
+    ///@}
 
-    //@{ emplace/insert
+    /// @name emplace/insert
+    ///@{
     template<class... Args>
     std::pair<iterator,bool> emplace(Args&&... args) {
-        if (!on_heap() && size_ < capacity_)
-            return array_emplace(std::forward<Args>(args)...);
+        if (!on_heap() && size_ < capacity_) return array_emplace(std::forward<Args>(args)...);
 
-        if (size_ >= capacity_/4_s + capacity_/2_s)
-            rehash(capacity_*4_s);
+        if (size_ >= capacity_ / 4_u32 + capacity_ / 2_u32) rehash(capacity_ * 4_u32);
 
         return emplace_no_rehash(std::forward<Args>(args)...);
     }
@@ -320,16 +338,14 @@ public:
 
     template<class I>
     bool insert(I begin, I end) {
-        size_t s = size() + std::distance(begin, end);
-        size_t c = round_to_power_of_2(s);
+        hash_t s = size() + std::distance(begin, end);
+        hash_t c = std::bit_ceil(s);
 
-        if (s > c/4_s + c/2_s)
-            c *= 4_s;
+        if (s > c/4_u32 + c/2_u32) c *= 4_u32;
 
-        c = std::max(c, size_t(capacity_));
+        c = std::max(c, hash_t(capacity_));
 
-        if (c != capacity_)
-            rehash(c);
+        if (c != capacity_) rehash(c);
 
         bool changed = false;
         if (on_heap()) {
@@ -342,9 +358,42 @@ public:
 
         return changed;
     }
-    //@}
 
-    //@{ erase
+    void rehash(hash_t new_capacity) {
+        using std::swap;
+
+        assert(std::has_single_bit(new_capacity));
+
+        auto old_capacity = capacity_;
+        capacity_ = std::max(new_capacity, hash_t(MinHeapCapacity));
+        auto old_nodes = alloc();
+        swap(old_nodes, nodes_);
+
+        for (hash_t i = 0; i != old_capacity; ++i) {
+            auto& old = old_nodes[i];
+            if (!is_invalid(&old)) {
+                for (hash_t j = desired_pos(key(&old)), distance = 0; true; j = mod(j+1), ++distance) {
+                    if (is_invalid(j)) {
+                        swap(nodes_[j], old);
+                        break;
+                    } else {
+                        hash_t cur_distance = probe_distance(j);
+                        if (cur_distance < distance) {
+                            distance = cur_distance;
+                            swap(nodes_[j], old);
+                        }
+                        debug(j);
+                    }
+                }
+            }
+        }
+
+        if (old_capacity != StackCapacity) delete[] old_nodes;
+    }
+    ///@}
+
+    /// @name erase
+    ///@{
     void erase(const_iterator pos) {
         using std::swap;
 
@@ -358,12 +407,12 @@ public:
             key(&empty) = H::sentinel();
             swap(*pos.ptr_, empty);
 
-            if (capacity_ > size_t(MinHeapCapacity) && size_ < capacity_/8_s)
-                rehash(capacity_/4_s);
+            if (capacity_ > hash_t(MinHeapCapacity) && size_ < capacity_/8_u32)
+                rehash(capacity_/4_u32);
             else {
-                for (size_t curr = pos.ptr_-nodes_, next = mod(curr+1);
-                    !is_invalid(next) && probe_distance(next) != 0; curr = next, next = mod(next+1)) {
-                    swap(nodes_[curr], nodes_[next]);
+                for (hash_t cur = hash_t(pos.ptr_-nodes_), next = mod(cur+1);
+                    !is_invalid(next) && probe_distance(next) != 0; cur = next, next = mod(next+1)) {
+                    swap(nodes_[cur], nodes_[next]);
                 }
             }
         } else {
@@ -379,22 +428,35 @@ public:
             erase(i);
     }
 
-    size_t erase(const key_type& key) {
+    hash_t erase(const key_type& key) {
         auto i = find(key);
         if (i == end())
             return 0;
         erase(i);
         return 1;
     }
-    //@}
 
-    //@{ find
+    void clear() {
+        size_ = 0;
+
+        if (on_heap()) {
+            delete[] nodes_;
+            nodes_ = array_.data();
+            capacity_ = StackCapacity;
+        }
+
+        fill(nodes_);
+    }
+    ///@}
+
+    /// @name find
+    ///@{
     iterator find(const key_type& k) {
         if (on_heap()) {
             if (empty())
                 return end();
 
-            for (size_t i = desired_pos(k); true; i = mod(i+1)) {
+            for (hash_t i = desired_pos(k); true; i = mod(i+1)) {
                 if (is_invalid(i))
                     return end();
                 if (H::eq(key(nodes_+i), k))
@@ -408,55 +470,10 @@ public:
     const_iterator find(const key_type& key) const {
         return const_iterator(const_cast<HashTable*>(this)->find(key).ptr_, this);
     }
-    //@}
 
-    void clear() {
-        size_ = 0;
-
-        if (on_heap()) {
-            delete[] nodes_;
-            nodes_ = array_.data();
-            capacity_ = StackCapacity;
-        }
-
-        fill(nodes_);
-    }
-
-    size_t count(const key_type& key) const { return find(key) == end() ? 0 : 1; }
+    hash_t count(const key_type& key) const { return find(key) == end() ? 0 : 1; }
     bool contains(const key_type& key) const { return count(key) == 1; }
-
-    void rehash(size_t new_capacity) {
-        using std::swap;
-
-        assert(is_power_of_2(new_capacity));
-
-        auto old_capacity = capacity_;
-        capacity_ = std::max(new_capacity, size_t(MinHeapCapacity));
-        auto old_nodes = alloc();
-        swap(old_nodes, nodes_);
-
-        for (size_t i = 0; i != old_capacity; ++i) {
-            auto& old = old_nodes[i];
-            if (!is_invalid(&old)) {
-                for (size_t i = desired_pos(key(&old)), distance = 0; true; i = mod(i+1), ++distance) {
-                    if (is_invalid(i)) {
-                        swap(nodes_[i], old);
-                        break;
-                    } else {
-                        size_t curr_distance = probe_distance(i);
-                        if (curr_distance < distance) {
-                            distance = curr_distance;
-                            swap(nodes_[i], old);
-                        }
-                        debug(i);
-                    }
-                }
-            }
-        }
-
-        if (old_capacity != StackCapacity)
-            delete[] old_nodes;
-    }
+    ///@}
 
     void dump() const { Stream s; s.fmt("[{, }]\n", *this); }
 
@@ -467,13 +484,13 @@ public:
             if (t2.on_heap())
                 swap(t1.nodes_, t2.nodes_);
             else {
-                std::move(t2.array_.begin(), t2.array_.end(), t1.array_.begin());
+                std::ranges::move(t2.array_, t1.array_.begin());
                 t2.nodes_ = t1.nodes_;
                 t1.nodes_ = t1.array_.data();
             }
         } else {
             if (t2.on_heap()) {
-                std::move(t1.array_.begin(), t1.array_.end(), t2.array_.begin());
+                std::ranges::move(t1.array_, t2.array_.begin());
                 t1.nodes_ = t2.nodes_;
                 t2.nodes_ = t2.array_.data();
             } else
@@ -487,8 +504,6 @@ public:
 #endif
     }
 
-    HashTable& operator=(HashTable other) { swap(*this, other); return *this; }
-
 private:
     template<class... Args>
     std::pair<iterator,bool> emplace_no_rehash(Args&&... args) {
@@ -500,7 +515,7 @@ private:
         auto& k = key(&n);
 
         auto result = end_ptr();
-        for (size_t i = desired_pos(k), distance = 0; true; i = mod(i+1), ++distance) {
+        for (hash_t i = desired_pos(k), distance = 0; true; i = mod(i+1), ++distance) {
             if (is_invalid(i)) {
                 ++size_;
                 swap(nodes_[i], n);
@@ -510,10 +525,10 @@ private:
             } else if (result == end_ptr() && H::eq(key(nodes_+i), k)) {
                 return std::make_pair(iterator(nodes_+i, this), false);
             } else {
-                size_t curr_distance = probe_distance(i);
-                if (curr_distance < distance) {
+                hash_t cur_distance = probe_distance(i);
+                if (cur_distance < distance) {
                     result = result == end_ptr() ? nodes_+i : result;
-                    distance = curr_distance;
+                    distance = cur_distance;
                     swap(nodes_[i], n);
                 }
             }
@@ -521,29 +536,35 @@ private:
     }
 
 #if THORIN_ENABLE_PROFILING
-    void debug(size_t i) {
-        if (capacity() >= 32) {
+    void debug(hash_t i) {
+        if (capacity() >= 32_u32) {
             auto dib = probe_distance(i);
-            if (dib > 2_s*log2(capacity())) {
+            if (dib > 2_u32*std::bit_width(capacity())) {
                 // don't use LOG here - this results in a header dependency hell
-                printf("poor hash function; element %zu has distance %zu with size/capacity: %zu/%zu\n", i, dib, size(), capacity());
-                for (size_t j = mod(i-dib); j != i; j = mod(j+1))
-                    printf("elem:desired_pos:hash: %zu:%zu:%" PRIu32 "\n", j, desired_pos(key(&nodes_[j])), hash(j));
+                printf("poor hash function; element %u has distance %u with size/capacity: %u/%u\n", i, dib, size(), capacity());
+                for (hash_t j = mod(i-dib); j != i; j = mod(j+1))
+                    printf("elem:desired_pos:hash: %u:%u:%" PRIu32 "\n", j, desired_pos(key(&nodes_[j])), hash(j));
                 debug_hash();
             }
         }
     }
 #else
-    void debug(size_t) {}
+    void debug(hash_t) {}
 #endif
-    hash_t hash(size_t i) { return H::hash(key(&nodes_[i])); } ///< just for debugging
-    size_t mod(size_t i) const { return i & (capacity_-1); }
-    size_t desired_pos(const key_type& key) const { return mod(H::hash(key)); }
-    size_t probe_distance(size_t i) { return mod(i + capacity() - desired_pos(key(nodes_+i))); }
+
+    /// @name small helpers
+    ///@{
+    bool is_invalid(hash_t i) { return is_invalid(nodes_+i); }
+    hash_t hash(hash_t i) { return H::hash(key(&nodes_[i])); } ///< just for debugging
+    hash_t mod(hash_t i) const { return i & (capacity_-1); }
+    hash_t desired_pos(const key_type& key) const { return mod(H::hash(key)); }
+    hash_t probe_distance(hash_t i) { return mod(i + capacity() - desired_pos(key(nodes_+i))); }
     value_type* end_ptr() const { return nodes_ + capacity(); }
     bool on_heap() const { return capacity_ != StackCapacity; }
+    ///@}
 
-    //@{ array set
+    /// @name array set
+    ///@{
     iterator array_find(const key_type& k) {
         assert(!on_heap());
         for (auto i = array_.data(), e = array_.data() + size_; i != e; ++i) {
@@ -572,25 +593,28 @@ private:
     }
 
     void array_erase(const_iterator pos) {
-        for (size_t i = std::distance(array_.data(), pos.ptr_), e = size_-1; i != e; ++i)
+        for (hash_t i = hash_t(std::distance(array_.data(), pos.ptr_)), e = size_-1; i != e; ++i)
             array_[i] = std::move(array_[i+1]);
 
         --size_;
         key(array_.data()+size_) = H::sentinel();
     }
-    //@}
+    ///@}
 
+    /// @name memory operations
+    ///@{
     value_type* alloc() {
-        assert(is_power_of_2(capacity_));
+        assert(std::has_single_bit(capacity_));
         auto nodes = new value_type[capacity_];
         return fill(nodes);
     }
 
     value_type* fill(value_type* nodes) {
-        for (size_t i = 0, e = capacity_; i != e; ++i)
+        for (hash_t i = 0, e = capacity_; i != e; ++i)
             key(nodes+i) = H::sentinel();
         return nodes;
     }
+    ///@}
 
     uint32_t capacity_;
     uint32_t size_;
@@ -605,11 +629,9 @@ private:
 
 //------------------------------------------------------------------------------
 
-/**
- * This container is for the most part compatible with <code>std::unordered_set</code>.
- * We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
- */
-template<class Key, class H = typename Key::Hash, size_t StackCapacity = 4>
+/// This container is for the most part compatible with `std::unordered_set`.
+/// We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
+template<class Key, class H = typename Key::Hash, hash_t StackCapacity = 4>
 class HashSet : public detail::HashTable<Key, void, H, StackCapacity> {
 public:
     typedef detail::HashTable<Key, void, H, StackCapacity> Super;
@@ -621,27 +643,22 @@ public:
     typedef typename Super::const_iterator const_iterator;
 
     HashSet() {}
-    HashSet(size_t capacity)
-        : Super(capacity)
-    {}
+    HashSet(hash_t capacity)
+        : Super(capacity) {}
     template<class InputIt>
     HashSet(InputIt first, InputIt last)
-        : Super(first, last)
-    {}
+        : Super(first, last) {}
     HashSet(std::initializer_list<value_type> ilist)
-        : Super(ilist)
-    {}
+        : Super(ilist) {}
 
     friend void swap(HashSet& s1, HashSet& s2) { swap(static_cast<Super&>(s1), static_cast<Super&>(s2)); }
 };
 
 //------------------------------------------------------------------------------
 
-/**
- * This container is for the most part compatible with <code>std::unordered_map</code>.
- * We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
- */
-template<class Key, class T, class H = typename Key::Hash, size_t StackCapacity = 4>
+// This container is for the most part compatible with `std::unordered_map`.
+// We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
+template<class Key, class T, class H = typename Key::Hash, hash_t StackCapacity = 4>
 class HashMap : public detail::HashTable<Key, T, H, StackCapacity> {
 public:
     typedef detail::HashTable<Key, T, H, StackCapacity> Super;
@@ -653,18 +670,14 @@ public:
     typedef typename Super::const_iterator const_iterator;
 
     HashMap()
-        : Super()
-    {}
-    HashMap(size_t capacity)
-        : Super(capacity)
-    {}
+        : Super() {}
+    HashMap(hash_t capacity)
+        : Super(capacity) {}
     template<class InputIt>
     HashMap(InputIt first, InputIt last)
-        : Super(first, last)
-    {}
+        : Super(first, last) {}
     HashMap(std::initializer_list<value_type> ilist)
-        : Super(ilist)
-    {}
+        : Super(ilist) {}
 
     std::optional<mapped_type> lookup(const key_type& k) const {
         auto i = Super::find(k);

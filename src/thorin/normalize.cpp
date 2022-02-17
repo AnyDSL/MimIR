@@ -27,7 +27,7 @@ static const Def* is_not(const Def* def) {
 template<class T> static T get(u64 u) { return bitcast<T>(u); }
 
 /// Use like this:
-/// @code a op b = tab[a][b] @endcode
+/// `a op b = tab[a][b]`
 constexpr std::array<std::array<uint64_t, 2>, 2> make_truth_table(Bit op) {
     return {{ {tag_t(op) & tag_t(0b0001) ? u64(-1) : 0, tag_t(op) & tag_t(0b0100) ? u64(-1) : 0},
               {tag_t(op) & tag_t(0b0010) ? u64(-1) : 0, tag_t(op) & tag_t(0b1000) ? u64(-1) : 0} }};
@@ -68,12 +68,10 @@ constexpr bool is_associative(Bit op) {
 class Res {
 public:
     Res()
-        : data_{}
-    {}
+        : data_{} {}
     template<class T>
     Res(T val)
-        : data_(bitcast<u64>(val))
-    {}
+        : data_(bitcast<u64>(val)) {}
 
     constexpr const u64& operator*() const& { return *data_; }
     constexpr u64& operator*() & { return *data_; }
@@ -198,19 +196,17 @@ static void commute(O op, const Def*& a, const Def*& b) {
     }
 }
 
-/**
- * Reassociates @p a und @p b according to following rules.
- * We use the following naming convention while literals are prefixed with an 'l':
-@verbatim
-    a    op     b
-(x op y) op (z op w)
-
-(1)     la    op (lz op w) -> (la op lz) op w
-(2) (lx op y) op (lz op w) -> (lx op lz) op (y op w)
-(3)      a    op (lz op w) ->  lz op (a op w)
-(4) (lx op y) op      b    ->  lx op (y op b)
-@endverbatim
- */
+/// Reassociates @p a und @p b according to following rules.
+/// We use the following naming convention while literals are prefixed with an 'l':
+/// ```
+///     a    op     b
+/// (x op y) op (z op w)
+///
+/// (1)     la    op (lz op w) -> (la op lz) op w
+/// (2) (lx op y) op (lz op w) -> (lx op lz) op (y op w)
+/// (3)      a    op (lz op w) ->  lz op (a op w)
+/// (4) (lx op y) op      b    ->  lx op (y op b)
+/// ```
 template<tag_t tag>
 static const Def* reassociate(Tag2Enum<tag> op, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b, const Def* dbg) {
     if (!is_associative(op)) return nullptr;
@@ -307,7 +303,7 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
 template<tag_t tag>
 static const Def* merge_cmps(std::array<std::array<uint64_t, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
     static_assert(sizeof(flags_t) == 4, "if this ever changes, please adjust the logic below");
-    static constexpr size_t num_bits = log2(Num<Tag2Enum<tag>>);
+    static constexpr size_t num_bits = std::bit_width(Num<Tag2Enum<tag>> - 1_u64);
     auto a_cmp = isa<tag>(a);
     auto b_cmp = isa<tag>(b);
 
@@ -705,6 +701,13 @@ const Def* normalize_RCmp(const Def* type, const Def* c, const Def* arg, const D
     return world.raw_app(callee, {a, b}, dbg);
 }
 
+// TODO I guess we can do that with C++20 <bit>
+inline u64 pad(u64 offset, u64 align) {
+    auto mod = offset % align;
+    if (mod != 0) offset += align - mod;
+    return offset;
+}
+
 // TODO this currently hard-codes x86_64 ABI
 // TODO in contrast to C, we might want to give singleton types like 'int 1' or '[]' a size of 0 and simply nuke each and every occurance of these types in a later phase
 // TODO Pi and others
@@ -753,15 +756,13 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
         }
     } else if (auto arr = type->isa_structural<Arr>()) {
         auto align = world.op(Trait::align, arr->body());
-
         if constexpr (op == Trait::align) return align;
 
-        auto a = isa_lit(align);
-        auto s = isa_lit(world.op(Trait::size , arr->body()));
-
-        if (auto shape = isa_lit(arr->shape()); shape && a && s) {
-            u64 factor = std::max(*a, *s);
-            return world.lit_nat(factor * *shape);
+        if (auto b = isa_lit(world.op(Trait::size, arr->body()))) {
+            auto i64_t = world.type_int_width(64);
+            auto s = world.op_bitcast(i64_t, arr->shape());
+            auto mul = world.op(Wrap::mul, WMode::nsw | WMode::nuw, world.lit_int(i64_t, *b), s);
+            return world.op_bitcast(world.type_nat(), mul);
         }
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = join->convert()) return world.op(op, sigma, dbg);
@@ -902,16 +903,13 @@ const Def* normalize_store(const Def* type, const Def* callee, const Def* arg, c
     if (ptr->isa<Bot>() || val->isa<Bot>()) return mem;
     if (auto pack = val->isa<Pack>(); pack && pack->body()->isa<Bot>()) return mem;
     if (auto tuple = val->isa<Tuple>()) {
-        if (std::all_of(tuple->ops().begin(), tuple->ops().end(), [&](const Def* op) { return op->isa<Bot>(); }))
-            return mem;
+        if (std::ranges::all_of(tuple->ops(), [](const Def* op) { return op->isa<Bot>(); })) return mem;
     }
 
     return world.raw_app(callee, {mem, ptr, val}, dbg);
 }
 
-
-
-const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& w = type->world();
     auto callee = c->as<App>();
     auto is_os = callee->arg();
@@ -923,42 +921,16 @@ const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const D
     // TODO commute
     // TODO reassociate
     // TODO more than one Os
-    // TODO select which Is/Os to lift
-
-    Stream s2;
-    s2.fmt("norm lift:\n");
-    s2.fmt("type {}\n",type);
-    s2.fmt("c {} : {}\n",c,c->type());
-    s2.fmt("arg {} : {}\n",arg, arg->type());
-    s2.fmt("r {}\n",r);
-    s2.fmt("s {}\n",s);
-    s2.fmt("ni {}\n",n_i);
-    s2.fmt("no {}\n",n_o);
-    s2.fmt("Is {}\n",Is);
-    s2.fmt("Os {}\n",Os);
-    s2.fmt("f {} : {}\n",f,f->type());
+    // TODO select which Is/Os to zip
 
     if (lr && ls && *lr == 1 && *ls == 1) return w.app(f, arg, dbg);
-    s2.fmt("not all one\n");
 
     if (auto l_in = isa_lit(n_i)) {
-        s2.fmt("n_i is lit\n");
+        auto args = arg->projs(*l_in);
 
-        s2.fmt("lr has value {}\n",lr.has_value());
-        auto args = arg->projs((size_t)*l_in);
-        s2.fmt("lin {}\n",*l_in);
-        s2.fmt("args {}\n",args);
-
-        if (lr) {//} && std::all_of(args.begin(), args.end(), [&](const Def* arg) { return is_tuple_or_pack(arg); })) {
-            s2.fmt("all tuple or pack\n");
-            auto shapes = s->projs((size_t)*lr);
+        if (lr && std::ranges::all_of(args, [](auto arg) { return is_tuple_or_pack(arg); })) {
+            auto shapes = s->projs(*lr);
             auto s_n = isa_lit(shapes.front());
-            s2.fmt("shapes front {}\n",shapes.front());
-            s2.fmt("shapes back {}\n",shapes.back());
-
-//            if(!s_n) {
-//                s_n=isa_lit(w.lit_nat(256));
-//            }
 
             if (s_n) {
                 DefArray elems(*s_n, [&, f = f](size_t s_i) {
@@ -966,14 +938,12 @@ const Def* normalize_lift(const Def* type, const Def* c, const Def* arg, const D
                     if (*lr == 1)
                         return w.app(f, inner_args);
                     else
-                        return w.app(w.app(w.app(w.ax_lift(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os), inner_args);
+                        return w.app(w.app(w.app(w.ax_zip(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os), inner_args);
                 });
                 return w.tuple(elems);
-            }else {
             }
         }
     }
-    s2.fmt("use raw_app\n");
 
     return w.raw_app(callee, arg, dbg);
 }

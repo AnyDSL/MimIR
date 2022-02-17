@@ -16,17 +16,16 @@ public:
     CopyProp(PassMan& man, BetaRed* beta_red, EtaExp* eta_exp)
         : FPPass(man, "copy_prop")
         , beta_red_(beta_red)
-        , eta_exp_(eta_exp)
-    {}
+        , eta_exp_(eta_exp) {}
 
     using Data = LamMap<DefVec>;
 
 private:
     /// @name PassMan hooks
-    //@{
+    ///@{
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Proxy*) override;
-    //@}
+    ///@}
 
     const Def* var2prop(const App*, Lam*);
 

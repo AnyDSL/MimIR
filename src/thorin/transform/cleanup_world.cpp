@@ -12,8 +12,7 @@ namespace thorin {
 class Cleaner {
 public:
     Cleaner(World& world)
-        : world_(world)
-    {}
+        : world_(world) {}
 
     World& world() { return world_; }
     void run();

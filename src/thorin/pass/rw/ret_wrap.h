@@ -8,8 +8,7 @@ namespace thorin {
 class RetWrap : public RWPass<Lam> {
 public:
     RetWrap(PassMan& man)
-        : RWPass(man, "ret_wrap")
-    {}
+        : RWPass(man, "ret_wrap") {}
 
     void enter() override;
 };
@@ -17,4 +16,3 @@ public:
 }
 
 #endif
-

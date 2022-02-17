@@ -11,16 +11,16 @@ private:
 
 public:
     /// @name misc getters
-    //@{
-    tag_t tag() const { return fields() >> 32_u64; }
-    flags_t flags() const { return fields(); }
+    ///@{
+    tag_t tag() const { return tag_t(fields() >> 32_u64); }
+    flags_t flags() const { return flags_t(fields()); }
     NormalizeFn normalizer() const { return normalizer_depth_.ptr(); }
     u16 currying_depth() const { return normalizer_depth_.index(); }
-    //@}
+    ///@}
     /// @name virtual methods
-    //@{
+    ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    //@}
+    ///@}
 
     static constexpr auto Node = Node::Axiom;
     friend class World;
@@ -35,12 +35,10 @@ class Query {
 public:
     Query()
         : axiom_(nullptr)
-        , def_(nullptr)
-    {}
+        , def_(nullptr) {}
     Query(const Axiom* axiom, const D* def)
         : axiom_(axiom)
-        , def_(def)
-    {}
+        , def_(def) {}
 
     const Axiom* axiom() const { return axiom_; }
     tag_t tag() const { return axiom()->tag(); }
@@ -93,7 +91,7 @@ constexpr uint64_t width2mod(uint64_t n) {
 
 constexpr std::optional<uint64_t> mod2width(uint64_t n) {
     if (n == 0) return 64;
-    if (is_power_of_2(n)) return log2(n);
+    if (std::has_single_bit(n)) return std::bit_width(n - 1_u64);
     return {};
 }
 

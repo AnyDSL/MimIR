@@ -25,11 +25,11 @@ namespace thorin {
  * constructor & destructor
  */
 
-#ifndef NDEBUG
+#if (!defined(_MSC_VER) && defined(NDEBUG))
 bool World::Arena::Lock::guard_ = false;
 #endif
 
-World::World(const std::string& name)
+World::World(std::string_view name)
     : checker_(std::make_unique<Checker>(*this))
 {
     data_.name_     = name.empty() ? "module" : name;
@@ -176,13 +176,25 @@ World::World(const std::string& name)
         auto ptr = type_ptr(T, as);
         type->set_codom(pi({mem, nat}, sigma({mem, ptr})));
         data_.slot_ = axiom(nullptr, type, Tag::Slot, 0, dbg("slot"));
+    } { // malloc: [T: *, as: nat] -> [M, nat] -> [M, ptr(T, as)]
+        auto type = nom_pi(kind())->set_dom({kind(), nat});
+        auto [T, as] = type->vars<2>({dbg("T"), dbg("as")});
+        auto ptr = type_ptr(T, as);
+        type->set_codom(pi({mem, nat}, sigma({mem, ptr})));
+        data_.malloc_ = axiom(nullptr, type, Tag::Malloc, 0, dbg("malloc"));
+    } { // mslot: [T: *, as: nat] -> [M, nat, nat] -> [M, ptr(T, as)]
+        auto type = nom_pi(kind())->set_dom({kind(), nat});
+        auto [T, as] = type->vars<2>({dbg("T"), dbg("as")});
+        auto ptr = type_ptr(T, as);
+        type->set_codom(pi({mem, nat, nat}, sigma({mem, ptr})));
+        data_.mslot_ = axiom(nullptr, type, Tag::Mslot, 0, dbg("mslot"));
     } { // atomic: [T: *, R: *] -> T -> R
         auto type = nom_pi(kind())->set_dom({kind(), kind()});
         auto [T, R] = type->vars<2>({dbg("T"), dbg("R")});
         type->set_codom(pi(T, R));
         data_.atomic_ = axiom(nullptr, type, Tag::Atomic, 0, dbg("atomic"));
-    } { // lift: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
-        // TODO select which Is/Os to lift
+    } { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
+        // TODO select which Is/Os to zip
         auto rs = nom_sigma(kind(), 2);
         rs->set(0, nat);
         rs->set(1, arr(rs->var(0, dbg("r")), nat));
@@ -211,7 +223,7 @@ World::World(const std::string& name)
         is_os_pi->set_codom(pi(dom, cod));
         rs_pi->set_codom(is_os_pi);
 
-        data_.lift_ = axiom(normalize_lift, rs_pi, Tag::Lift, 0, dbg("lift"));
+        data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
     } { // op_rev_diff: Π[I:*.O:*]. ΠI. O
         // DS: I can't figure out how to give it the correct type…
         // pullback assumes that:
@@ -427,95 +439,6 @@ const Def* World::tuple(Defs ops, const Def* dbg) {
     return t;
 }
 
-const Pi* World::cn_mem_half_flat(const Def* dom, const Def* codom, const Def* dbg) {
-    auto ret = cn(sigma({ type_mem(), codom }));
-
-    if (dom->isa<Sigma>()) {
-        auto size = dom->num_ops() + 2;
-        DefArray defs(size);
-        for (size_t i = 0; i < size; ++i) {
-            if (i == 0) {
-                defs[i] = type_mem();
-            } else if (i == size - 1) {
-                defs[i] = cn(ret);
-            } else {
-                defs[i] = dom->op(i);
-            }
-        }
-
-        return cn(defs);
-    }
-
-    if (auto a = dom->isa<Arr>()) {
-        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 2;
-        DefArray defs(size);
-        for (uint8_t i = 0; i < size; ++i) {
-            if (i == 0) {
-                defs[i] = type_mem();
-            } else if (i == size - 1) {
-                defs[i] = ret;
-            } else {
-                defs[i] = a->body();
-            }
-        }
-
-        return cn(defs);
-    }
-
-    return cn(merge(type_mem(), {dom, ret}), dbg);
-}
-
-const Pi* World::cn_mem_flat(const Def* dom, const Def* codom, const Def* dbg) {
-    auto ret = cn(sigma({ type_mem(), codom }));
-    if (codom->isa<Sigma>()) {
-        ret = cn(merge_sigma(type_mem(), codom->ops())) ;
-    }
-    if (auto a = codom->isa<Arr>()) {
-        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 1;
-        DefArray defs(size);
-        for (uint8_t i = 0; i < size - 1; ++i) {
-            defs[i + 1] = a->body();
-        }
-        defs.front() = type_mem();
-        ret = cn(defs);
-    }
-
-
-    if (dom->isa<Sigma>()) {
-        auto size = dom->num_ops() + 2;
-        DefArray defs(size);
-        for (size_t i = 0; i < size; ++i) {
-            if (i == 0) {
-                defs[i] = type_mem();
-            } else if (i == size - 1) {
-                defs[i] = ret;
-            } else {
-                defs[i] = dom->op(i - 1);
-            }
-        }
-
-        return cn(defs);
-    }
-
-    if (auto a = dom->isa<Arr>()) {
-        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 2;
-        DefArray defs(size);
-        for (uint8_t i = 0; i < size; ++i) {
-            if (i == 0) {
-                defs[i] = type_mem();
-            } else if (i == size - 1) {
-                defs[i] = ret;
-            } else {
-                defs[i] = a->body();
-            }
-        }
-
-        return cn(defs);
-    }
-
-    return cn(merge(type_mem(), {dom, ret}), dbg);
-}
-
 const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     if (err()) {
     // TODO type-check type vs inferred type
@@ -551,10 +474,9 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
-const Def* World::tuple_str(const char* s, const Def* dbg) {
+const Def* World::tuple_str(std::string_view s, const Def* dbg) {
     DefVec ops;
-    for (; *s != '\0'; ++s)
-        ops.emplace_back(lit_nat(*s));
+    for (auto c : s) ops.emplace_back(lit_nat(c));
     return tuple(ops, dbg);
 }
 
@@ -636,7 +558,7 @@ bool is_shape(const Def* s) {
     if (s->isa<Nat>()) return true;
     if (auto arr = s->isa<Arr  >()) return arr->body()->isa<Nat>();
     if (auto sig = s->isa_structural<Sigma>())
-        return std::all_of(sig->ops().begin(), sig->ops().end(), [&](const Def* op) { return op->isa<Nat>(); });
+        return std::ranges::all_of(sig->ops(), [](const Def* op) { return op->isa<Nat>(); });
 
     return false;
 }
@@ -715,7 +637,7 @@ const Def* World::global(const Def* id, const Def* init, bool is_mutable, const 
     return unify<Global>(2, type_ptr(init->type()), id, init, is_mutable, dbg);
 }
 
-const Def* World::global_immutable_string(const std::string& str, const Def* dbg) {
+const Def* World::global_immutable_string(std::string_view str, const Def* dbg) {
     size_t size = str.size() + 1;
 
     DefArray str_array(size);
@@ -743,12 +665,12 @@ const Def* World::bound(Defs ops, const Def* dbg) {
     auto kind = infer_kind(ops);
 
     // has ext<up> value?
-    if (std::any_of(ops.begin(), ops.end(), [&](const Def* op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
+    if (std::ranges::any_of(ops, [&](const Def* op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
         return ext<up>(kind);
 
     // ignore: ext<!up>
     DefArray cpy(ops);
-    auto end = std::copy_if(ops.begin(), ops.end(), cpy.begin(), [&](const Def* op) { return !isa_ext(op); });
+    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](const Def* op) { return !isa_ext(op); });
 
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
@@ -815,6 +737,16 @@ const Def* World::op_lea(const Def* ptr, const Def* index, const Def* dbg) {
     return app(app(ax_lea(), {pointee->arity(), Ts, addr_space}), {ptr, index}, dbg);
 }
 
+const Def* World::op_malloc(const Def* type, const Def* mem, const Def* dbg /*= {}*/) {
+    auto size = op(Trait::size, type);
+    return app(app(ax_malloc(), {type, lit_nat_0()}), {mem, size}, dbg);
+}
+
+const Def* World::op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg /*= {}*/) {
+    auto size = op(Trait::size, type);
+    return app(app(ax_mslot(), {type, lit_nat_0()}), {mem, size, id}, dbg);
+}
+
 /*
  * misc
  */
@@ -838,7 +770,7 @@ void World::enable_history(bool flag)     { state_.track_history = flag; }
 bool World::track_history() const         { return state_.track_history; }
 
 const Def* World::gid2def(u32 gid) {
-    auto i = std::find_if(data_.defs_.begin(), data_.defs_.end(), [&](const Def* def) { return def->gid() == gid; });
+    auto i = std::ranges::find_if(data_.defs_, [=](auto def) { return def->gid() == gid; });
     if (i == data_.defs_.end()) return nullptr;
     return *i;
 }
@@ -936,7 +868,7 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
  * misc
  */
 
-const char* World::level2string(LogLevel level) {
+std::string_view World::level2string(LogLevel level) {
     switch (level) {
         case LogLevel::Error:   return "E";
         case LogLevel::Warn:    return "W";
@@ -959,16 +891,23 @@ int World::level2color(LogLevel level) {
 }
 
 #ifdef COLORIZE_LOG
-std::string World::colorize(const std::string& str, int color) {
+std::string World::colorize(std::string_view str, int color) {
+    std::string res;
     if (isatty(fileno(stdout))) {
         const char c = '0' + color;
-        return "\033[1;3" + (c + ('m' + str)) + "\033[0m";
+        res = "\033[1;3";
+        res += c;
+        res += 'm';
+        res.append(str);
+        res.append("\033[0m");
     }
-#else
-std::string World::colorize(const std::string& str, int) {
-#endif
-    return str;
+    return res;
 }
+#else
+std::string World::colorize(std::string_view str, int) {
+    return std::string(str);
+}
+#endif
 
 void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
 
@@ -976,7 +915,7 @@ void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
  * instantiate templates
  */
 
-template void Streamable<World>::write(const std::string& filename) const;
+template void Streamable<World>::write(std::string_view filename) const;
 template void Streamable<World>::write() const;
 template void Streamable<World>::dump() const;
 template void World::visit<true >(VisitFn) const;

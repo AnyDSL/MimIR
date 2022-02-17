@@ -1,8 +1,9 @@
 #ifndef THORIN_UTIL_INDEXMAP_H
 #define THORIN_UTIL_INDEXMAP_H
 
+#include <ranges>
+
 #include "thorin/util/array.h"
-#include "thorin/util/iterator.h"
 
 namespace thorin {
 
@@ -22,25 +23,20 @@ private:
 public:
     IndexMap(IndexMap&& other)
         : indexer_(std::move(other.indexer_))
-        , array_(std::move(other.array_))
-    {}
+        , array_(std::move(other.array_)) {}
     IndexMap(const IndexMap& other)
         : indexer_(other.indexer_)
-        , array_(other.array_)
-    {}
+        , array_(other.array_) {}
     IndexMap(const Indexer& indexer, const Value& value = Value())
         : indexer_(indexer)
-        , array_(indexer.size(), value)
-    {}
+        , array_(indexer.size(), value) {}
     IndexMap(const Indexer& indexer, ArrayRef<Value> array)
         : indexer_(indexer)
-        , array_(array)
-    {}
+        , array_(array) {}
     template<class I>
     IndexMap(const Indexer& indexer, const I begin, const I end)
         : indexer_(indexer)
-        , array_(begin, end)
-    {}
+        , array_(begin, end) {}
 
     const Indexer& indexer() const { return indexer_; }
     size_t capacity() const { return array_.size(); }
@@ -51,9 +47,8 @@ public:
     Value& array(size_t i) { return array_[i]; }
     const Value& array(size_t i) const { return array_[i]; }
 
-    typedef filter_iterator<typename Array<Value>::const_iterator, bool (*)(Value)> const_iterator;
-    const_iterator begin() const { return filter(array_.begin(), array_.end(), IsValidPred<Value>::is_valid); }
-    const_iterator end() const { return filter(array_.end(), array_.end(), IsValidPred<Value>::is_valid); }
+    auto begin() const { return std::views::filter(array_, IsValidPred<Value>::is_valid).begin(); }
+    auto end() const { return std::views::filter(array_, IsValidPred<Value>::is_valid).end(); }
 
     friend void swap(IndexMap& map1, IndexMap& map2) {
         using std::swap;

@@ -1,14 +1,9 @@
 #ifndef THORIN_ERROR_H
 #define THORIN_ERROR_H
 
-#include <cstdint>
-#include <cstddef>
-
 namespace thorin {
 
 class Def;
-class Ptrn;
-class Match;
 
 class ErrorHandler {
 public:

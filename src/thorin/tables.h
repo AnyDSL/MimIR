@@ -1,6 +1,8 @@
 #ifndef THORIN_TABLES_H
 #define THORIN_TABLES_H
 
+#include <string_view>
+
 #include "thorin/util/assert.h"
 #include "thorin/util/types.h"
 
@@ -26,16 +28,17 @@ using nat_t    = u64;
     m(Var, var)                                                               \
     m(Global, global)
 
-#define THORIN_TAG(m)                                                           \
-    m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)                           \
-    m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(Div, div) m(ROp, rop)               \
-    m(ICmp, icmp) m(RCmp, rcmp)                                                 \
-    m(Trait, trait) m(Conv, conv) m(PE, pe) m(Acc, acc)                         \
-    m(Bitcast, bitcast) m(LEA, lea)                                             \
-    m(Alloc, alloc) m(Slot, slot) m(Load, load) m(Remem, remem) m(Store, store) \
-    m(Atomic, atomic)                                                           \
-    m(Lift, lift)                                                               \
-    m(RevDiff, rev_diff)
+#define THORIN_TAG(m)                                               \
+    m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)               \
+    m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(Div, div) m(ROp, rop)   \
+    m(ICmp, icmp) m(RCmp, rcmp)                                     \
+    m(Trait, trait) m(Conv, conv) m(PE, pe) m(Acc, acc)             \
+    m(Bitcast, bitcast) m(LEA, lea)                                 \
+    m(Alloc, alloc) m(Slot, slot) m(Malloc, malloc) m(Mslot, mslot) \
+    m(Load, load) m(Remem, remem) m(Store, store)                   \
+    m(Atomic, atomic)                                               \
+    m(Zip, zip)                                                     \
+    m(RevDiff, rev_diff) m(TangentVector, tangent_vector)
 
 namespace WMode {
 enum : nat_t {
@@ -69,7 +72,7 @@ enum RMode : nat_t {
 #define THORIN_WRAP(m) m(Wrap, add) m(Wrap, sub) m(Wrap, mul) m(Wrap, shl)
 /// Integer operations that might produce a "division by zero" side effect.
 #define THORIN_DIV(m) m(Div, sdiv) m(Div, udiv) m(Div, srem) m(Div, urem)
-/// Floating point (real) operations that take @p Rreme.
+/// Floating point (real) operations that take @p RMode.
 #define THORIN_R_OP(m) m(ROp, add) m(ROp, sub) m(ROp, mul) m(ROp, div) m(ROp, rem)
 /// Type traits
 #define THORIN_TRAIT(m) m(Trait, size) m(Trait, align)
@@ -80,29 +83,27 @@ enum RMode : nat_t {
 /// Accelerators
 #define THORIN_ACC(m) m(Acc, vecotrize) m(Acc, parallel) m(Acc, opencl) m(Acc, cuda) m(Acc, nvvm) m (Acc, amdgpu)
 
-/**
- * The 5 relations are disjoint and are organized as follows:
-@verbatim
-               ----
-               4321
-           01234567
-           ////////
-           00001111
-     y→    00110011
-           01010101
-
-   x 0/000 ELLLXXXX
-   ↓ 1/001 GELLXXXX
-     2/010 GGELXXXX
-     3/011 GGGEXXXX
-  -4/4/100 YYYYELLL
-  -3/5/101 YYYYGELL
-  -2/6/110 YYYYGGEL   X = plus, minus
-  -1/7/111 YYYYGGGE   Y = minus, plus
-@endverbatim
- * The more obscure combinations are prefixed with @c _.
- * The standard comparisons front ends want to use, don't have this prefix.
- */
+/// The 5 relations are disjoint and are organized as follows:
+/// ```
+///              ----
+///              4321
+///          01234567
+///          ////////
+///          00001111
+///    y→    00110011
+///          01010101
+///
+///  x 0/000 ELLLXXXX
+///  ↓ 1/001 GELLXXXX
+///    2/010 GGELXXXX
+///    3/011 GGGEXXXX
+/// -4/4/100 YYYYELLL
+/// -3/5/101 YYYYGELL
+/// -2/6/110 YYYYGGEL   X = plus, minus
+/// -1/7/111 YYYYGGGE   Y = minus, plus
+/// ```
+/// The more obscure combinations are prefixed with @c _.
+/// The standard comparisons front ends want to use, don't have this prefix.
 #define THORIN_I_CMP(m)              /* X Y G L E                                                   */ \
                      m(ICmp,   _f)   /* o o o o o - always false                                    */ \
                      m(ICmp,    e)   /* o o o o x - equal                                           */ \
@@ -155,10 +156,8 @@ enum RMode : nat_t {
                      m(RCmp, une) /* x x x o - unordered or not equal        */ \
                      m(RCmp,   t) /* x x x x - always true                   */
 
-/**
- * Table for all binary boolean operations.
- * See https://en.wikipedia.org/wiki/Truth_table#Binary_operations
- *                                   x o x o                                */
+/// Table for all binary boolean operations.
+/// See https://en.wikipedia.org/wiki/Truth_table#Binary_operations
 #define THORIN_BIT(m)            /* B B A A -                              */ \
                    m(Bit,     f) /* o o o o - always false                 */ \
                    m(Bit,   nor) /* o o o x -                              */ \
@@ -212,17 +211,17 @@ constexpr RCmp operator&(RCmp a, RCmp b) { return RCmp(flags_t(a) & flags_t(b));
 constexpr RCmp operator^(RCmp a, RCmp b) { return RCmp(flags_t(a) ^ flags_t(b)); }
 
 #define CODE(T, o) case T::o: return #T "_" #o;
-constexpr const char* op2str(Bit   o) { switch (o) { THORIN_BIT  (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Shr   o) { switch (o) { THORIN_SHR  (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Wrap  o) { switch (o) { THORIN_WRAP (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Div   o) { switch (o) { THORIN_DIV  (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(ROp   o) { switch (o) { THORIN_R_OP (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(ICmp  o) { switch (o) { THORIN_I_CMP(CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(RCmp  o) { switch (o) { THORIN_R_CMP(CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Trait o) { switch (o) { THORIN_TRAIT(CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Conv  o) { switch (o) { THORIN_CONV (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(PE    o) { switch (o) { THORIN_PE   (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Acc   o) { switch (o) { THORIN_ACC  (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Bit   o) { switch (o) { THORIN_BIT  (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Shr   o) { switch (o) { THORIN_SHR  (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Wrap  o) { switch (o) { THORIN_WRAP (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Div   o) { switch (o) { THORIN_DIV  (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(ROp   o) { switch (o) { THORIN_R_OP (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(ICmp  o) { switch (o) { THORIN_I_CMP(CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(RCmp  o) { switch (o) { THORIN_R_CMP(CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Trait o) { switch (o) { THORIN_TRAIT(CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Conv  o) { switch (o) { THORIN_CONV (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(PE    o) { switch (o) { THORIN_PE   (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Acc   o) { switch (o) { THORIN_ACC  (CODE) default: THORIN_UNREACHABLE; } }
 #undef CODE
 
 namespace AddrSpace {

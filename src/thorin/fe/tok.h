@@ -29,7 +29,6 @@ constexpr auto Num_Keys  = size_t(0) THORIN_KEY(CODE);
     m(P_comma,        ",")              \
     m(P_dot,          ".")              \
     m(P_semicolon,    ";")              \
-    m(P_arrow,        "→")              \
     m(P_assign,       "=")              \
     /* delimiters */                    \
     m(D_angle_l,      "‹")              \
@@ -46,32 +45,50 @@ constexpr auto Num_Keys  = size_t(0) THORIN_KEY(CODE);
     m(B_lam,          "λ")              \
     m(B_forall,       "∀")
 
+#define THORIN_OP(m)                    \
+    m(O_pi,      "→", App,      Pi)     \
+    m(O_extract, "#", Extract,  Lit)    \
+    m(O_lit,     "∷", Error,    Lit)
+
 class Tok : public Streamable<Tok> {
 public:
+    enum class Prec {   //  left    right
+        Error,          //  -       -       <- If lookahead isn't a valid operator.
+        Bottom,         //  Bottom  Bottom
+        Pi,             //  App     Pi
+        App,            //  App     Extract
+        Extract,        //  Extract Lit
+        Lit,            //  -       Lit
+    };
+
     enum class Tag {
 #define CODE(t, str) t,
         THORIN_KEY(CODE)
         THORIN_TOK(CODE)
+#undef CODE
+#define CODE(t, str, prec_l, prec_r) t,
+        THORIN_OP(CODE)
 #undef CODE
     };
 
     Tok() {}
     Tok(Loc loc, Tag tag)
         : loc_(loc)
-        , tag_(tag)
-    {}
+        , tag_(tag) {}
     Tok(Loc loc, Sym sym)
         : loc_(loc)
         , tag_(Tag::M_id)
-        , sym_(sym)
-    {}
+        , sym_(sym) {}
 
     Loc loc() const { return loc_; }
     Tag tag() const { return tag_; }
     bool isa(Tag tag) const { return tag == tag_; }
     Sym sym() const { assert(isa(Tag::M_id)); return sym_; }
     Stream& stream(Stream& s) const;
-    static const char* tag2str(Tok::Tag);
+
+    static std::string_view tag2str(Tok::Tag);
+    static Prec tag2prec_l(Tag);
+    static Prec tag2prec_r(Tag);
 
 private:
     Loc loc_;

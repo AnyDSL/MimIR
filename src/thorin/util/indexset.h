@@ -12,8 +12,7 @@ public:
     private:
         reference(uint64_t& word, uint64_t pos)
             : word_(word)
-            , pos_(pos)
-        {}
+            , pos_(pos) {}
 
     public:
         reference operator=(bool b) {
@@ -39,17 +38,14 @@ public:
 
     IndexSet(const Indexer& indexer)
         : indexer_(indexer)
-        , bits_((capacity()+63u) / 64u)
-    {}
+        , bits_((capacity() + 63u) / 64u) {}
     IndexSet(IndexSet&& other)
-        : IndexSet(indexer)
-    {
+        : IndexSet(indexer) {
         swap(*this, other);
     }
     IndexSet(const IndexSet& other)
         : indexer_(other.indexer())
-        , bits_(other.bits_)
-    {}
+        , bits_(other.bits_) {}
 
     const Indexer& indexer() const { return indexer_; }
     size_t capacity() const { return indexer().size(); }
@@ -78,7 +74,7 @@ public:
     bool insert(Key key) { return set<true>(key); } ///< Inserts \p key and returns true if successful.
     bool erase(Key key) { return set<false>(key); } ///< Erase \p key and returns true if successful.
     bool contains(Key key) const { return (*this)[key]; }
-    void clear() { std::fill(bits_.begin(), bits_.end(), 0u); }
+    void clear() { std::ranges::fill(bits_, 0u); }
 
     template<class Op>
     IndexSet& transform(const IndexSet& other, Op op) {

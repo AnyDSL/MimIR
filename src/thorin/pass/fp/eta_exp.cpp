@@ -43,11 +43,11 @@ const Def* EtaExp::rewrite(const Def* def) {
 }
 
 /// If a wrapper is somehow reinstantiated again in a different expression, redo eta-conversion.
-/// E.g., say we have <code>(a, f, g)</code> and eta-exand to <code>(a, eta_f, eta_g)</code>.
+/// E.g., say we have `(a, f, g)` and eta-exand to `(a, eta_f, eta_g)`.
 /// But due to beta-reduction we now also have (b, eta_f, eta_g) which renders eta_f and eta_g not unique anymore.
-/// So, we build <code>(b, eta_f', eta_g')</code>.
-/// Likewise, we might end up with a call <code>eta_f (a, b, c)</code> that we have to eta-reduce again to
-/// <code>f (a, b, c)</code>
+/// So, we build `(b, eta_f', eta_g')`.
+/// Likewise, we might end up with a call `eta_f (a, b, c)` that we have to eta-reduce again to
+/// `f (a, b, c)`
 const Def* EtaExp::reconvert(const Def* def) {
     std::vector<std::pair<Lam*, Lam*>> refinements;
     DefArray new_ops(def->num_ops());

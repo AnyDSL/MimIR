@@ -69,7 +69,7 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
         type_dump(world,"  Array Body", body_type);
         dlog(world,"  Bit width {}", bit_width);
         #define w world
-        auto lifted=w.app(w.app(w.app(w.ax_lift(),
+        auto lifted=w.app(w.app(w.app(w.ax_zip(),
                         // rs => sigma(r:nat, s:arr with size r of nat)
                         // r = how many dimensions in the array
                         // s = dimensions
@@ -660,10 +660,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         auto back_order=lam->type()->as<Pi>()->doms().back()->order();
         auto returning = back_order>0;
-        dlog(world_,"  lam returning: {}", lam->is_returning());
+        dlog(world_,"  lam returning: {}", lam->type()->ret_pi());
 //        dlog(world_,"  lam returning2: {}", returning);
         dlog(world_,"  order: {}", back_order);
-        if(lam->is_returning() || returning) {
+        if(lam->type()->ret_pi() || returning) {
             auto dst = world_.op_rev_diff(lam);
             type_dump(world_,"  new lam",dst);
 //            THORIN_UNREACHABLE;
@@ -1113,7 +1113,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         auto back_order=callee->type()->as<Pi>()->doms().back()->order();
         auto returning = back_order>0;
-        if (callee->type()->as<Pi>()->is_returning() || returning) {
+        if (callee->type()->as<Pi>()->ret_pi() || returning) {
             dlog(world_,"  FYI returning callee");
 
             const Def* dst_callee;

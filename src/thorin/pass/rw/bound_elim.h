@@ -9,8 +9,7 @@ namespace thorin {
 class BoundElim : public RWPass {
 public:
     BoundElim(PassMan& man)
-        : RWPass(man, "bound_elim")
-    {}
+        : RWPass(man, "bound_elim") {}
 
 private:
     const Def* rewrite(Def*, const Def*, const Def*) override;

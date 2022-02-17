@@ -20,16 +20,13 @@ template<bool> class DomFrontierBase;
 
 typedef GIDSet<const CFNode*> CFNodes;
 
-/**
- * A Control-Flow Node.
- * Managed by @p CFA.
- */
+/// A Control-Flow Node.
+/// Managed by @p CFA.
 class CFNode : public Streamable<CFNode> {
 public:
     CFNode(Def* nom)
         : nom_(nom)
-        , gid_(gid_counter_++)
-    {}
+        , gid_(gid_counter_++) {}
 
     uint64_t gid() const { return gid_; }
     Def* nom() const { return nom_; }
@@ -93,15 +90,13 @@ private:
 
 //------------------------------------------------------------------------------
 
-/**
- * A Control-Flow Graph.
- * A small wrapper for the information obtained by a @p CFA.
- * The template parameter @p forward determines the direction of the edges.
- * @c true means a conventional @p CFG.
- * @c false means that all edges in this @p CFG are reverted.
- * Thus, a dominance analysis, for example, becomes a post-dominance analysis.
- * @see DomTreeBase
- */
+/// A Control-Flow Graph.
+/// A small wrapper for the information obtained by a @p CFA.
+/// The template parameter @p forward determines the direction of the edges.
+/// @c true means a conventional @p CFG.
+/// @c false means that all edges in this @p CFG are reverted.
+/// Thus, a dominance analysis, for example, becomes a post-dominance analysis.
+/// @see DomTreeBase
 template<bool forward>
 class CFG {
 public:
@@ -128,7 +123,7 @@ public:
     const CFNode* exit()  const { return forward ? cfa().exit()  : cfa().entry(); }
 
     ArrayRef<const CFNode*> reverse_post_order() const { return rpo_.array(); }
-    Range<ArrayRef<const CFNode*>::const_reverse_iterator> post_order() const { return reverse_range(rpo_.array()); }
+    auto post_order() const { return std::views::reverse(rpo_.array()); }
     const CFNode* reverse_post_order(size_t i) const { return rpo_.array()[i]; }  ///< Maps from reverse post-order index to @p CFNode.
     const CFNode* post_order(size_t i) const { return rpo_.array()[size()-1-i]; } ///< Maps from post-order index to @p CFNode.
     const CFNode* operator [] (Def* nom) const { return cfa()[nom]; }    ///< Maps from @p l to @p CFNode.

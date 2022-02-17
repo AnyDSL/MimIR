@@ -8,8 +8,7 @@ namespace thorin {
 class PartialEval : public RWPass<> {
 public:
     PartialEval(PassMan& man)
-        : RWPass(man, "partial_eval")
-    {}
+        : RWPass(man, "partial_eval") {}
 
     const Def* rewrite(const Def*) override;
 };

@@ -37,6 +37,9 @@ set(THORIN_SOURCES
     analyses/schedule.h
     analyses/scope.cpp
     analyses/scope.h
+    be/emitter.h
+    be/ll/ll.cpp
+    be/ll/ll.h
     fe/lexer.cpp
     fe/lexer.h
     fe/parser.cpp
@@ -59,8 +62,10 @@ set(THORIN_SOURCES
     pass/fp/ssa_constr.h
     pass/rw/auto_diff.cpp
     pass/rw/auto_diff.h
-    pass/rw/zip_eval.cpp
-    pass/rw/zip_eval.h
+    # pass/rw/zip_eval.cpp
+    # pass/rw/zip_eval.h
+    pass/rw/alloc2malloc.cpp
+    pass/rw/alloc2malloc.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
     pass/rw/remem_elim.cpp
@@ -81,7 +86,6 @@ set(THORIN_SOURCES
     transform/closure_conv.cpp
     util/array.h
     util/assert.h
-    util/bit.h
     util/bitset.cpp
     util/bitset.h
     util/cast.h
@@ -90,7 +94,6 @@ set(THORIN_SOURCES
     util/hash.h
     util/indexmap.h
     util/indexset.h
-    util/iterator.h
     util/ptr.h
     util/stream.cpp
     util/stream.h
@@ -99,38 +102,12 @@ set(THORIN_SOURCES
     util/utf8.h
 )
 
-if(LLVM_FOUND)
-    list(APPEND THORIN_SOURCES
-        be/llvm/cpu.cpp
-        be/llvm/cpu.h
-        be/llvm/llvm.cpp
-        be/llvm/llvm.h
-        be/llvm/runtime.inc
-        be/llvm/runtime.cpp
-        be/llvm/runtime.h
-    )
-endif()
-
 add_library(libthorin ${THORIN_SOURCES})
 set_target_properties(libthorin PROPERTIES PREFIX "")
-target_compile_options(libthorin PRIVATE -Wall -Wextra)
+configure_file(config.h.in ${CMAKE_BINARY_DIR}/include/thorin/config.h @ONLY)
+target_include_directories(libthorin PUBLIC ${CMAKE_BINARY_DIR}/include)
 target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
-
-if(LLVM_FOUND)
-    target_compile_definitions(libthorin PUBLIC ${LLVM_DEFINITIONS} LLVM_SUPPORT)
-    target_include_directories(libthorin PRIVATE ${LLVM_INCLUDE_DIRS})
-    llvm_map_components_to_libnames(LLVM_LIBRARIES all)
-    target_link_libraries(libthorin PUBLIC ${LLVM_LIBRARIES})
-endif()
-
-if(RV_FOUND)
-    target_link_libraries(libthorin PUBLIC ${RV_LIBRARIES})
-    target_include_directories(libthorin PRIVATE ${RV_INCLUDE_DIRS})
-endif()
-
-find_package(Half REQUIRED)
-message(STATUS "Building with Half library from ${Half_INCLUDE_DIRS}.")
-target_include_directories(libthorin PUBLIC ${Half_INCLUDE_DIRS})
+target_include_directories(libthorin PUBLIC ${PROJECT_SOURCE_DIR}/half/include)
 
 # check for colored terminal
 set(COLOR_TTY_AVAILABLE TRUE)

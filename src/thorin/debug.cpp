@@ -8,10 +8,10 @@ Loc::Loc(const Def* dbg) {
     if (dbg != nullptr) {
         auto [d_file, d_begin, d_finis] = dbg->proj(1)->projs<3>();
         file = tuple2str(d_file);
-        begin.row = as_lit(d_begin) >> 32_u64;
-        begin.col = as_lit(d_begin);
-        finis.row = as_lit(d_finis) >> 32_u64;
-        finis.col = as_lit(d_finis);
+        begin.row = u32(as_lit(d_begin) >> 32_u64);
+        begin.col = u32(as_lit(d_begin));
+        finis.row = u32(as_lit(d_finis) >> 32_u64);
+        finis.col = u32(as_lit(d_finis));
     }
 }
 

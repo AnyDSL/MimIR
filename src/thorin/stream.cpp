@@ -1,6 +1,6 @@
-#include "thorin/def.h"
 #include "thorin/world.h"
 #include "thorin/analyses/deptree.h"
+#include "thorin/fe/tok.h"
 #include "thorin/util/container.h"
 
 namespace thorin {
@@ -28,43 +28,34 @@ bool Def::unwrap() const {
     return true;
 }
 
-enum class Prec {   //  left    right
-    Bottom,         //  Bottom  Bottom
-    Pi,             //  App     Pi
-    App,            //  App     Extract
-    Extract,        //  Extract Lit
-    Lit,            //  -       Lit
-};
-
-static Prec prec(const Def* def) {
-    if (def->isa<Pi>())      return Prec::Pi;
-    if (def->isa<App>())     return Prec::App;
-    if (def->isa<Extract>()) return Prec::Extract;
-    if (def->isa<Lit>())     return Prec::Lit;
-    return Prec::Bottom;
+static Tok::Prec prec(const Def* def) {
+    if (def->isa<Pi>())      return Tok::Prec::Pi;
+    if (def->isa<App>())     return Tok::Prec::App;
+    if (def->isa<Extract>()) return Tok::Prec::Extract;
+    if (def->isa<Lit>())     return Tok::Prec::Lit;
+    return Tok::Prec::Bottom;
 }
 
-static Prec prec_l(const Def* def) {
+static Tok::Prec prec_l(const Def* def) {
     assert(!def->isa<Lit>());
-    if (def->isa<Pi>())      return Prec::App;
-    if (def->isa<App>())     return Prec::App;
-    if (def->isa<Extract>()) return Prec::Extract;
-    return Prec::Bottom;
+    if (def->isa<Pi>())      return Tok::Prec::App;
+    if (def->isa<App>())     return Tok::Prec::App;
+    if (def->isa<Extract>()) return Tok::Prec::Extract;
+    return Tok::Prec::Bottom;
 }
 
-static Prec prec_r(const Def* def) {
-    if (def->isa<Pi>())      return Prec::Pi;
-    if (def->isa<App>())     return Prec::Extract;
-    if (def->isa<Extract>()) return Prec::Lit;
-    return Prec::Bottom;
+static Tok::Prec prec_r(const Def* def) {
+    if (def->isa<Pi>())      return Tok::Prec::Pi;
+    if (def->isa<App>())     return Tok::Prec::Extract;
+    if (def->isa<Extract>()) return Tok::Prec::Lit;
+    return Tok::Prec::Bottom;
 }
 
 template<bool L>
 struct LRPrec {
     LRPrec(const Def* l, const Def* r)
         : l_(l)
-        , r_(r)
-    {}
+        , r_(r) {}
 
     friend Stream& operator<<(Stream& s, const LRPrec& p) {
         if constexpr (L) {
@@ -126,7 +117,7 @@ Stream& Def::unwrap(Stream& s) const {
                 std::string str;
                 for (size_t mod = *size; mod > 0; mod /= 10)
                     ((str += char(char(0x80) + char(mod % 10))) += char(0x82)) += char(0xe2);
-                std::reverse(str.begin(), str.end());
+                std::ranges::reverse(str);
 
                 return s.fmt("i{}", str);
             }
@@ -145,7 +136,7 @@ Stream& Def::unwrap(Stream& s) const {
     } else if (auto proxy = isa<Proxy>()) {
         return s.fmt(".proxy#{}#{} {, }", proxy->id(), proxy->flags(), proxy->ops());
     } else if (auto bound = isa_bound(this)) {
-        const char* op = bound->isa<Join>() ? "∪" : "∩";
+        auto op = bound->isa<Join>() ? "∪" : "∩";
         if (isa_nom()) s.fmt("{}{}: {}", op, unique_name(), type());
         return s.fmt("{}({, })", op, ops());
     }
@@ -162,8 +153,7 @@ class RecStreamer {
 public:
     RecStreamer(Stream& s, size_t max)
         : s(s)
-        , max(max)
-    {}
+        , max(max) {}
 
     void run();
     void run(const Def*);

@@ -90,11 +90,6 @@ const CFA& Scope::cfa() const { return lazy_init(this, cfa_); }
 const F_CFG& Scope::f_cfg() const { return cfa().f_cfg(); }
 const B_CFG& Scope::b_cfg() const { return cfa().b_cfg(); }
 
-Stream& Scope::stream(Stream& s) const { return schedule(*this).stream(s); }
-
-template void Streamable<Scope>::dump() const;
-template void Streamable<Scope>::write() const;
-
 bool is_free(const Var* var, const Def* def) {
     // optimize common cases
     if (def == var) return true;

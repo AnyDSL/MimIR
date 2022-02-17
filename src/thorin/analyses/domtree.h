@@ -5,12 +5,10 @@
 
 namespace thorin {
 
-/**
- * A Dominance Tree.
- * The template parameter @p forward determines
- * whether a regular dominance tree (@c true) or a post-dominance tree (@c false) should be constructed.
- * This template parameter is associated with @p CFG's @c forward parameter.
- */
+/// A Dominance Tree.
+/// The template parameter @p forward determines
+/// whether a regular dominance tree (@c true) or a post-dominance tree (@c false) should be constructed.
+/// This template parameter is associated with @p CFG's @c forward parameter.
 template<bool forward>
 class DomTreeBase {
 public:
@@ -21,8 +19,7 @@ public:
         : cfg_(cfg)
         , children_(cfg)
         , idoms_(cfg)
-        , depth_(cfg)
-    {
+        , depth_(cfg) {
         create();
         depth(root(), 0);
     }

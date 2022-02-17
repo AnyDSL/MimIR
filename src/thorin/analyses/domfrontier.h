@@ -5,24 +5,21 @@
 
 namespace thorin {
 
-/**
- * A Dominance Frontier Graph.
- * The template parameter @p forward determines whether to compute
- * regular dominance frontiers or post-dominance frontiers (i.e. control dependence).
- * This template parameter is associated with @p CFG's @c forward parameter.
- * See Cooper et al, 2001. A Simple, Fast Dominance Algorithm: http://www.cs.rice.edu/~keith/EMBED/dom.pdf
- */
+/// A Dominance Frontier Graph.
+/// The template parameter @p forward determines whether to compute
+/// regular dominance frontiers or post-dominance frontiers (i.e. control dependence).
+/// This template parameter is associated with @p CFG's @c forward parameter.
+/// See Cooper et al, 2001. A Simple, Fast Dominance Algorithm: http://www.cs.rice.edu/~keith/EMBED/dom.pdf
 template<bool forward>
 class DomFrontierBase {
 public:
     DomFrontierBase(const DomFrontierBase &) = delete;
     DomFrontierBase& operator=(DomFrontierBase) = delete;
 
-    explicit DomFrontierBase(const CFG<forward> &cfg)
+    explicit DomFrontierBase(const CFG<forward>& cfg)
         : cfg_(cfg)
         , preds_(cfg)
-        , succs_(cfg)
-    {
+        , succs_(cfg) {
         create();
     }
 

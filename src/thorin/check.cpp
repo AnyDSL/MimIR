@@ -12,7 +12,7 @@ bool Checker::equiv(const Def* d1, const Def* d2) {
     if (d1->gid() > d2->gid()) std::swap(d1, d2);
 
     // this assumption will either hold true - or we will bail out with false anyway
-    auto [i, inserted] = equiv_.emplace(d1, d2);
+    auto [_, inserted] = equiv_.emplace(d1, d2);
     if (!inserted) return true;
 
     if (!equiv(d1->type(), d2->type())) return false;
@@ -47,9 +47,7 @@ bool Checker::equiv(const Def* d1, const Def* d2) {
             || d1->num_ops() != d2->num_ops()
             || d1->is_set () != d2->is_set()) return false;
 
-    return std::equal(d1->ops().begin(), d1->ops().end(),
-                      d2->ops().begin(), d2->ops().end(),
-                      [&](auto op1, auto op2) { return equiv(op1, op2); });
+    return std::ranges::equal(d1->ops(), d2->ops(), [this](auto op1, auto op2) { return equiv(op1, op2); });
 }
 
 bool Checker::assignable(const Def* type, const Def* val) {
