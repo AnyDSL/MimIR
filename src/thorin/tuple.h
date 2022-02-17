@@ -93,6 +93,7 @@ public:
     const Arr* type() const { return Def::type()->as<Arr>(); }
     const Def* shape() const { return type()->shape(); }
     ///@}
+
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
@@ -102,7 +103,7 @@ public:
     friend class World;
 };
 
-inline bool is_sigma_or_arr (const Def* def) { return def->isa<Sigma>() || def->isa<Arr >(); }
+inline bool is_sigma_or_arr(const Def* def) { return def->isa<Sigma>() || def->isa<Arr>(); }
 inline bool is_tuple_or_pack(const Def* def) { return def->isa<Tuple>() || def->isa<Pack>(); }
 
 /// Extracts from a @p Sigma or @p Variadic typed @p Def the element at position @p index.
@@ -117,6 +118,7 @@ public:
     const Def* tuple() const { return op(0); }
     const Def* index() const { return op(1); }
     ///@}
+
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
@@ -142,6 +144,7 @@ public:
     const Def* index() const { return op(1); }
     const Def* value() const { return op(2); }
     ///@}
+
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
@@ -165,10 +168,9 @@ const Def* merge_sigma(const Def* def, Defs defs);
 const Def* merge_tuple(const Def* def, Defs defs);
 
 bool is_unit(const Def*);
-bool is_tuple_arg_of_app(const Def*);
 
 std::string tuple2str(const Def*);
 
-}
+} // namespace thorin
 
 #endif

@@ -5,14 +5,12 @@
 namespace thorin {
 
 const Def* BetaRed::rewrite(const Def* def) {
-    if (auto app = def->isa<App>()) {
-        if (auto lam = app->callee()->isa_nom<Lam>(); !ignore(lam) && !keep_.contains(lam)) {
-            if (auto [_, ins] = data().emplace(lam); ins) {
-                world().DLOG("beta-reduction {}", lam);
-                return lam->apply(app->arg()).back();
-            } else {
-                return proxy(app->type(), {lam, app->arg()}, 0);
-            }
+    if (auto [app, lam] = isa_apped_nom_lam(def); !ignore(lam) && !keep_.contains(lam)) {
+        if (auto [_, ins] = data().emplace(lam); ins) {
+            world().DLOG("beta-reduction {}", lam);
+            return lam->apply(app->arg()).back();
+        } else {
+            return proxy(app->type(), {lam, app->arg()}, 0);
         }
     }
 
@@ -44,4 +42,4 @@ undo_t BetaRed::analyze(const Def* def) {
     return undo;
 }
 
-}
+} // namespace thorin

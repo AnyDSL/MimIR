@@ -26,21 +26,21 @@ void optimize(World& world) {
     auto ee = opt.add<EtaExp>(er);
     opt.add<SSAConstr>(ee);
     opt.add<Scalerize>(ee);
-    //opt.add<DCE>(br, ee);
+    // opt.add<DCE>(br, ee);
     opt.add<CopyProp>(br, ee);
     opt.add<TailRecElim>(er);
     opt.run();
 
     cleanup_world(world);
-    while (partial_evaluation(world, true)); // lower2cff
+    while (partial_evaluation(world, true)) {} // lower2cff
     cleanup_world(world);
 
     PassMan codgen_prepare(world);
-    //codgen_prepare.add<BoundElim>();
+    // codgen_prepare.add<BoundElim>();
     codgen_prepare.add<RememElim>();
     codgen_prepare.add<Alloc2Malloc>();
     codgen_prepare.add<RetWrap>();
     codgen_prepare.run();
 }
 
-}
+} // namespace thorin

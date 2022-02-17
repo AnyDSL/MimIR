@@ -6,11 +6,7 @@
 namespace thorin {
 
 const Def* CopyProp::rewrite(const Def* def) {
-    if (auto app = def->isa<App>()) {
-        if (auto var_lam = app->callee()->isa_nom<Lam>(); !ignore(var_lam))
-            return var2prop(app, var_lam);
-    }
-
+    if (auto [app, var_lam] = isa_apped_nom_lam(def); !ignore(var_lam)) return var2prop(app, var_lam);
     return def;
 }
 
@@ -58,10 +54,10 @@ const Def* CopyProp::var2prop(const App* app, Lam* var_lam) {
     assert(new_args.size() < var_lam->num_vars());
     auto&& [prop_lam, old_args] = var2prop_[var_lam];
     if (prop_lam == nullptr || old_args != args) {
-        old_args = args;
+        old_args      = args;
         auto prop_dom = world().sigma(types);
         auto new_type = world().pi(prop_dom, var_lam->codom());
-        prop_lam = var_lam->stub(world(), new_type, var_lam->dbg());
+        prop_lam      = var_lam->stub(world(), new_type, var_lam->dbg());
         beta_red_->keep(prop_lam);
         eta_exp_->new2old(prop_lam, var_lam);
         keep_.emplace(prop_lam); // don't try to propagate again
@@ -73,7 +69,8 @@ const Def* CopyProp::var2prop(const App* app, Lam* var_lam) {
         });
         prop_lam->set(var_lam->apply(world().tuple(new_vars)));
     } else {
-        world().DLOG("reuse var_lam => prop_lam: {}: {} => {}: {}", var_lam, var_lam->type()->dom(), prop_lam, prop_lam->type()->dom());
+        world().DLOG("reuse var_lam => prop_lam: {}: {} => {}: {}", var_lam, var_lam->type()->dom(), prop_lam,
+                     prop_lam->type()->dom());
     }
 
     return app->world().app(prop_lam, new_args, app->dbg());
@@ -90,12 +87,11 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     }
 
     auto vars = var_lam->vars();
-    if (std::ranges::all_of(vars, [this](const Def* def) { return keep_.contains(def); })) {
-        if (keep_.emplace(var_lam).second)
-            world().DLOG("keep var_lam: {}", var_lam);
+    if (std::ranges::all_of(vars, [this](auto def) { return keep_.contains(def); })) {
+        if (keep_.emplace(var_lam).second) world().DLOG("keep var_lam: {}", var_lam);
     }
 
     return undo_visit(var_lam);
 }
 
-}
+} // namespace thorin
