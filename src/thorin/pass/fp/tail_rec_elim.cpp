@@ -22,31 +22,29 @@ const Def* TailRecElim::rewrite(const Def* def) {
 
 undo_t TailRecElim::analyze(const Def* def) {
     if (auto [app, old] = isa_apped_nom_lam(def); old) {
-        if (auto ret_var = old->ret_var()) {
-            if (app->args().back() == ret_var) {
-                if (auto [i, ins] = old2rec_loop_.emplace(old, std::pair<Lam*, Lam*>(nullptr, nullptr)); ins) {
-                    auto& [rec, loop] = i->second;
-                    rec               = old->stub(world(), old->type(), old->dbg());
-                    auto loop_dom     = rec->doms().skip_back();
-                    loop              = rec->stub(world(), world().cn(loop_dom), rec->dbg());
-                    world().DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
+        if (auto ret_var = old->ret_var(); ret_var && app->args().back() == ret_var) {
+            if (auto [i, ins] = old2rec_loop_.emplace(old, std::pair<Lam*, Lam*>(nullptr, nullptr)); ins) {
+                auto& [rec, loop] = i->second;
+                rec               = old->stub(world(), old->type(), old->dbg());
+                auto loop_dom     = rec->doms().skip_back();
+                loop              = rec->stub(world(), world().cn(loop_dom), rec->dbg());
+                world().DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
 
-                    auto n = rec->num_doms();
-                    std::vector<const Def*> loop_args(n - 1);
-                    std::vector<const Def*> loop_vars(n);
-                    for (size_t i = 0; i != n - 1; ++i) {
-                        auto dbg     = old->var(i)->dbg();
-                        loop_args[i] = rec->var(i, dbg);
-                        loop_vars[i] = loop->var(i, dbg);
-                    }
-                    loop_vars[n - 1] = rec->var(n - 1, old->var(n - 1)->dbg());
-
-                    loop->set(old->apply(world().tuple(loop_vars)));
-                    rec->app(loop, loop_args);
-                    if (eta_red_) eta_red_->mark_irreducible(loop);
-
-                    return undo_visit(old);
+                auto n = rec->num_doms();
+                std::vector<const Def*> loop_args(n - 1);
+                std::vector<const Def*> loop_vars(n);
+                for (size_t i = 0; i != n - 1; ++i) {
+                    auto dbg     = old->var(i)->dbg();
+                    loop_args[i] = rec->var(i, dbg);
+                    loop_vars[i] = loop->var(i, dbg);
                 }
+                loop_vars[n - 1] = rec->var(n - 1, old->var(n - 1)->dbg());
+
+                loop->set(old->apply(world().tuple(loop_vars)));
+                rec->app(loop, loop_args);
+                if (eta_red_) eta_red_->mark_irreducible(loop);
+
+                return undo_visit(old);
             }
         }
     }
