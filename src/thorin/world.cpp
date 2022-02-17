@@ -729,8 +729,6 @@ std::string World::colorize(std::string_view str, int color) {
 }
 #else
 std::string World::colorize(std::string_view str, int) { return std::string(str); }
-    return std::string(str);
-}
 #endif
 
 void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
