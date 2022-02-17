@@ -5,7 +5,6 @@ var searchData=
   ['vars_2',['vars',['../classthorin_1_1Def.html#a8dbfe2f896210936825d2db122b41e27',1,'thorin::Def::vars(Defs dbgs={})'],['../classthorin_1_1Def.html#a89d9dfe4c61c02c0de35548f766c6675',1,'thorin::Def::vars(size_t a, Defs dbgs={})'],['../classthorin_1_1Def.html#a2d6324640221213c98816965e15312a4',1,'thorin::Def::vars(size_t a, F f, Defs dbgs={})'],['../classthorin_1_1Def.html#a1ca2812efecd7b159192dde57ea987c4',1,'thorin::Def::vars(F f, Defs dbgs={})']]],
   ['vel_3',['vel',['../classthorin_1_1World.html#aa73afcb4099190ef420e3073b98600dc',1,'thorin::World']]],
   ['verify_4',['verify',['../classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#ac57100b630025ef6db5dc40908d3658a',1,'thorin::detail::HashTable::iterator_base::verify() const'],['../classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#afb98ff6fb4aa7397e0d8d79bfd99ab88',1,'thorin::detail::HashTable::iterator_base::verify(iterator_base i) const']]],
-  ['verify_5fclosedness_5',['verify_closedness',['../classthorin_1_1Cleaner.html#a9017c341eaab39dd490750f69f35cbb0',1,'thorin::Cleaner']]],
-  ['visit_6',['visit',['../classthorin_1_1World.html#a35687817089d85315d46a391dd75e320',1,'thorin::World::visit()'],['../namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c',1,'thorin::visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)']]],
-  ['visit_5ffirst_7',['visit_first',['../namespacethorin.html#a02f88714441141b4cafcf80c5e49f554',1,'thorin']]]
+  ['visit_5',['visit',['../classthorin_1_1World.html#a35687817089d85315d46a391dd75e320',1,'thorin::World::visit()'],['../namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c',1,'thorin::visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)']]],
+  ['visit_5ffirst_6',['visit_first',['../namespacethorin.html#a02f88714441141b4cafcf80c5e49f554',1,'thorin']]]
 ];

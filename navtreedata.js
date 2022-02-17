@@ -105,21 +105,21 @@ var NAVTREEINDEX =
 [
 "alloc2malloc_8cpp.html",
 "classthorin_1_1ArrayRef.html#adc6a972e350fc99a765dfb823c8cec25",
-"classthorin_1_1Cleaner.html",
-"classthorin_1_1Def.html#ad80387c2b8b00161b6285241cc1c64ed",
-"classthorin_1_1Global.html#a55ede4872ee78e716afa354ebf02bf21",
-"classthorin_1_1Lit.html#abf185284f04c1b1aba69cc7e02c8e1ae",
-"classthorin_1_1RWPass.html#a33eae491952337cac47ec30054193f68",
-"classthorin_1_1Stream.html#aed06a5607c62f81c5e311147134677ba",
-"classthorin_1_1World.html",
-"classthorin_1_1World.html#a97cb493b5397397b581a8b17a6ba51e3",
-"classthorin_1_1detail_1_1HashTable.html#acd1eaef21643426ceeffd38b11125430",
-"functions_e.html",
-"namespacethorin.html#a2845183b889a0b1ba1256dc2ea7c6e48a39466fe22b062a34cfe09f3cc8c24868",
-"namespacethorin.html#ac73cd2add4d040102d8d0570c1db1f3f",
-"partial__evaluation_8cpp.html#a2dbdcfe1bc933d095247c92ff0c7234c",
-"structthorin_1_1Loc.html#a6ef660df5af4231418b1ab49aab1f092",
-"tables_8h.html#af46278ec1dc091418ec3fe6bc7317561"
+"classthorin_1_1ClosureConv.html",
+"classthorin_1_1DepTree.html#a62f4d7ed09ceb27f0346e091c1117867",
+"classthorin_1_1HashMap.html#ad3eceed4c67e185d807b8d697ba54804",
+"classthorin_1_1LoopTree_1_1Base.html#a598e322ef660ed5e6d4cca6979bada43",
+"classthorin_1_1Res.html#a345b617120f45eae6a1b592ea6b90098",
+"classthorin_1_1TaggedPtr.html#ab3ef123d5d1959c79d4a021689ae5d67",
+"classthorin_1_1World.html#a35687817089d85315d46a391dd75e320",
+"classthorin_1_1World.html#ac57aeba2d50c38ac761995b7f2b166f7",
+"classthorin_1_1ll_1_1CodeGen.html#ad490fd67ad94dd25dabb81c34287e215",
+"lam_8h.html#aab3dcdc17d2ec508ef185b66331e8f14",
+"namespacethorin.html#a7907156065ecc2f7a8ad6d0c4b48752d",
+"namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Div_01_4",
+"structthorin_1_1FoldConv_3_01Conv_1_1r2r_00_01dw_00_01sw_01_4.html#a7a6a3f8cbaf73ed6044b7b42e8c3d002",
+"tables_8h.html#a4ade87d234831fccb4c6e71b7eb18348a38696558dc98494c08d951c052900a2a",
+"util_2stream_8cpp_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
