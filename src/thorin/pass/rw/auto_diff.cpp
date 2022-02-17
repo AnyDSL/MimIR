@@ -660,7 +660,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         auto back_order=lam->type()->as<Pi>()->doms().back()->order();
         auto returning = back_order>0;
-        dlog(world_,"  lam returning: {}", lam->type()->ret_pi());
+        dlog(world_,"  lam ret pi: {}", lam->type()->ret_pi() ? 1 : 0);
 //        dlog(world_,"  lam returning2: {}", returning);
         dlog(world_,"  order: {}", back_order);
         if(lam->type()->ret_pi() || returning) {
