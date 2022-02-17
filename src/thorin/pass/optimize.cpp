@@ -22,7 +22,7 @@ void optimize(World& world) {
     auto ee = opt.add<EtaExp>(er);
     opt.add<SSAConstr>(ee);
     opt.add<Scalerize>(ee);
-    //opt.add<DCE>(br, ee);
+    // opt.add<DCE>(br, ee);
     opt.add<CopyProp>(br, ee);
     opt.run();
 
@@ -31,11 +31,11 @@ void optimize(World& world) {
     bla.run();
 
     PassMan codgen_prepare(world);
-    //codgen_prepare.add<BoundElim>();
+    // codgen_prepare.add<BoundElim>();
     codgen_prepare.add<RememElim>();
     codgen_prepare.add<Alloc2Malloc>();
     codgen_prepare.add<RetWrap>();
     codgen_prepare.run();
 }
 
-}
+} // namespace thorin
