@@ -164,20 +164,23 @@ void ClosureConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     auto [old_fn, num_fvs, env, new_fn] = *stub;
 
     w.DLOG("rw body: {} [old={}, env={}]\nt", new_fn, old_fn, env);
-    auto env_param = new_fn->var(CLOSURE_ENV_PARAM);
+    auto env_param = new_fn->var(CLOSURE_ENV_PARAM, w.dbg("closure_env"));
     if (num_fvs == 1) {
         subst.emplace(env, env_param);
     } else {
         for (size_t i = 0; i < num_fvs; i++) {
-            auto dbg = w.dbg("fv_" + std::to_string(i));
-            subst.emplace(env->op(i), env_param->proj(i, dbg));
+            auto fv = env->op(i);
+            auto dbg = (fv->name().empty()) 
+                ? w.dbg("fv_" + std::to_string(i))
+                : w.dbg("fv_" + env->op(i)->name());
+            subst.emplace(fv, env_param->proj(i, dbg));
         }
     }
 
     auto params =
         w.tuple(DefArray(old_fn->num_doms(), [&] (auto i) {
-            return new_lam->var(skip_env(i));
-        }), w.dbg("param"));
+            return new_lam->var(skip_env(i), old_fn->var(i)->dbg());
+        }));
     subst.emplace(old_fn->var(), params);
 
     auto filter = (new_fn->filter())
@@ -224,21 +227,29 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
         w.DLOG("RW: pack {} ~> {} : {}", lam, closure, closure_type);
         return map(closure);
     } else if (auto q = isa<Tag::CA>(CA::ret, def)) {
-        if (auto cont_lam = q->arg()->isa_nom<Lam>()) {
-            assert(cont_lam->is_basicblock());
+        if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
+            assert(ret_lam && ret_lam->is_basicblock());
             // Note: This should be cont_lam's only occurance after η-expansion, so its okay to 
             // put into the local subst only
-            auto new_doms = DefArray(cont_lam->num_doms(), [&](auto i) {
-                    return rewrite(cont_lam->dom(i), subst);
+            auto new_doms = DefArray(ret_lam->num_doms(), [&](auto i) {
+                    return rewrite(ret_lam->dom(i), subst);
             });
-            auto new_lam = cont_lam->stub(w, w.cn(new_doms), cont_lam->dbg());
-            subst[cont_lam] = new_lam;
-            if (cont_lam->is_set()) {
-                new_lam->set_filter(rewrite(cont_lam->filter(), subst));
-                new_lam->set_body(rewrite(cont_lam->body(), subst));
+            auto new_lam = ret_lam->stub(w, w.cn(new_doms), ret_lam->dbg());
+            subst[ret_lam] = new_lam;
+            if (ret_lam->is_set()) {
+                new_lam->set_filter(rewrite(ret_lam->filter(), subst));
+                new_lam->set_body(rewrite(ret_lam->body(), subst));
             }
             return new_lam;
         }
+    } else if (auto q = isa<Tag::CA>(CA::unknown, def)) {
+        // Note: Same thing about η-conversion applies here
+        auto bb_lam = q->arg()->isa_nom<Lam>();
+        assert(bb_lam && bb_lam->is_basicblock());
+        auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
+        subst[bb_lam] = pack_closure(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
+        rewrite_body(new_lam, subst);
+        return subst[bb_lam];
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && lam->ret_var() == var) {
         // HACK to rewrite a retvar that is defined in an enclosing lambda
         // If we put external bb's into the env, this should never happen
@@ -298,11 +309,8 @@ const Def* ClosureConv::closure_type(const Pi* pi, Def2Def& subst, const Def* en
     return ct;
 }
 
-ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
-    if (auto closure = closures_.lookup(old_lam))
-        return *closure;
+ClosureConv::ClosureStub ClosureConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& subst) {
     auto& w = world();
-    auto& fvs = fva_.run(old_lam);
     auto env = w.tuple(DefArray(fvs.begin(), fvs.end()));
     auto num_fvs = fvs.size();
     auto env_type = rewrite(env->type(), subst);
@@ -318,11 +326,17 @@ ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
     w.DLOG("STUB {} ~~> ({}, {})", old_lam, env, new_lam);
     auto closure = ClosureStub{old_lam, num_fvs, env, new_lam};
     closures_.emplace(old_lam, closure);
-    closures_.emplace(new_lam, closure);
-    worklist_.emplace(new_lam);
+    closures_.emplace(closure.fn, closure);
     return closure;
 }
 
+ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
+    if (auto closure = closures_.lookup(old_lam))
+        return *closure;
+    auto closure = make_stub(fva_.run(old_lam), old_lam, subst);
+    worklist_.emplace(closure.fn);
+    return closure;
+}
 
 /* Free variable analysis */
 

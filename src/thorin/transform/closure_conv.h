@@ -91,8 +91,8 @@ private:
     const Def* rewrite(const Def* old_def, Def2Def& subst);
     const Pi* rewrite_cont_type(const Pi*, Def2Def& subst);
     const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
+    ClosureStub make_stub(const DefSet& fvs, Lam* lam, Def2Def& subst);
     ClosureStub make_stub(Lam* lam, Def2Def& subst);
-
     World& world() { return world_; }
 
     World& world_;
