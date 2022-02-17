@@ -45,23 +45,27 @@ const Def* ZipEval::rewrite(const Def* def) {
 //                            {a, b});
         auto dst =  w.app(w.app(w.app(w.ax_lift(), {r,s}), {n_i,Is,n_o,Os,f}), {a, b});
 
+        auto& w2=world();
+
         auto c_nom  = RWPass<>::curr_nom();
         dlog(w,"Current Nom {}",c_nom);
         auto lam = c_nom->as_nom<Lam>();
 
-        auto cont_lam = w.nom_lam( w.cn_mem(w.type_real()),w.dbg("zip_cont_"+lam->name()) );
+        auto cont_lam = w.nom_lam( w.cn_mem(dst->type()),w.dbg("zip_cont_"+lam->name()) );
         type_dump(w,"created cont:",cont_lam);
         cont_lam->set_filter(true);
         cont_lam->set_body(lam->body());
 
-        lam->set_body(
-            w.app(
-                cont_lam,
-                {
-                    lam->mem_var()
-                }
-                ));
+//        lam->set_body(
+//            w.app(
+//                cont_lam,
+//                {
+//                    lam->mem_var(),
+//                    dst
+//                }
+//                ));
 
+//        return cont_lam->var(1);
 
 //        auto pb = world_.nom_lam(pb_ty, world_.dbg("pb_alloc"));
 //        pb->set_filter(world_.lit_true());
@@ -70,6 +74,10 @@ const Def* ZipEval::rewrite(const Def* def) {
 //        THORIN_UNREACHABLE;
         return dst;
     }
+//    else if(auto lam = def->isa<Lam>()) {
+//        type_dump(world()," Lambda",lam);
+//        return lam;
+//    }
 //    if (auto app = def->isa<App>()) {
 //        if (auto type_app = app->callee()->isa<App>()) {
 //            if (auto axiom = type_app->callee()->isa<Axiom>(); axiom && axiom->tag() == Tag::RevDiff) {
