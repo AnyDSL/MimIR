@@ -11,6 +11,8 @@ public:
     EtaCont(PassMan& man)
         : RWPass(man, "eta_cont"), old2wrapper_() {}
 
+    
+    const Def* eta_wrap_cont(const Def*);
     const Def* rewrite(const Def*) override;
 
 private:
