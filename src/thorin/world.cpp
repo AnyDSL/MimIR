@@ -232,8 +232,8 @@ World::World(const std::string& name)
         THORIN_CA (CODE)
 #undef CODE
     } {
-        auto buf_ptr_t = type_ptr(type_jmpbuf());
         data_.sjlj_buf_type_ = axiom(kind(), Tag::JmpBuf, (flags_t) 0, dbg("jmp_buf"));
+        auto buf_ptr_t = type_ptr(type_jmpbuf());
         data_.sjlj_setjmp_ = axiom(pi({type_mem(), buf_ptr_t}, type_mem()), Tag::SetJmp, (flags_t) 0, dbg("set_jmp"));
         data_.sjlj_setjmp_ = axiom(cn({type_mem(), buf_ptr_t}), Tag::LongJmp, (flags_t) 0, dbg("long_jmp"));
     }
