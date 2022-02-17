@@ -163,9 +163,6 @@ inline std::pair<const App*, Lam*> isa_apped_nom_lam(const Def* def) {
     return {nullptr, nullptr};
 }
 
-// TODO remove - deprecated
-Lam* get_var_lam(const Def* def);
-
 // TODO remove - deprecated: This one is more confusing than helping.
 inline bool ignore(Lam* lam) { return lam == nullptr || lam->is_external() || !lam->is_set(); }
 

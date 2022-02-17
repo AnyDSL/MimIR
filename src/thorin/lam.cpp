@@ -18,7 +18,6 @@ const Pi* Pi::ret_pi(const Def* dbg) const {
 }
 
 Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); }
-
 bool Pi::is_cn() const { return codom()->isa<Bot>(); }
 
 /*
@@ -51,17 +50,6 @@ void Lam::branch(const Def* cond, const Def* t, const Def* f, const Def* mem, co
 
 void Lam::test(const Def* value, const Def* index, const Def* match, const Def* clash, const Def* mem, const Def* dbg) {
     return app(world().test(value, index, match, clash), mem, dbg);
-}
-
-/*
- * Pi
- */
-
-// TODO remove
-Lam* get_var_lam(const Def* def) {
-    if (auto extract = def->isa<Extract>())
-        return extract->tuple()->as<Var>()->nom()->as<Lam>();
-    return def->as<Var>()->nom()->as<Lam>();
 }
 
 }
