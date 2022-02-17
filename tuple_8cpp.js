@@ -2,7 +2,6 @@ var tuple_8cpp =
 [
     [ "flatten", "tuple_8cpp.html#a4e087368518f24e3174721f3f993b20e", null ],
     [ "flatten", "tuple_8cpp.html#a3c8f47ae3611992a68b885cfe1b513c8", null ],
-    [ "is_tuple_arg_of_app", "tuple_8cpp.html#a302e2d851b8beb0dc86182d2da14156e", null ],
     [ "is_unit", "tuple_8cpp.html#a496a5dfe6e208b166676c88e28092d48", null ],
     [ "merge", "tuple_8cpp.html#ae79b3c7a7656f77b147095feb289c019", null ],
     [ "merge", "tuple_8cpp.html#abe6d9e9751d9ebd46af3b116c15b4bdd", null ],

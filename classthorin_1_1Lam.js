@@ -24,7 +24,7 @@ var classthorin_1_1Lam =
     [ "set_filter", "classthorin_1_1Lam.html#a5a6b3a850da696ecae096f1b39f3381c", null ],
     [ "set_filter", "classthorin_1_1Lam.html#a11628c7fe3e8a0e5c7e280549255c661", null ],
     [ "stub", "classthorin_1_1Lam.html#a49feb9130586ffbad467f0ffcb18a9ad", null ],
-    [ "test", "classthorin_1_1Lam.html#a3c00f2d43a936ad9526cf16c3c3318bf", null ],
+    [ "test", "classthorin_1_1Lam.html#ad64d81fad5903f5c65ae74228f01c1b7", null ],
     [ "type", "classthorin_1_1Lam.html#aac0491db119a7b3886a28a7736ed6fae", null ],
     [ "World", "classthorin_1_1Lam.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "Node", "classthorin_1_1Lam.html#ae1c46e95c20fbe8755847a93ba0b5c72", null ]

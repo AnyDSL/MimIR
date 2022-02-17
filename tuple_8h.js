@@ -9,7 +9,6 @@ var tuple_8h =
     [ "flatten", "tuple_8h.html#a4e087368518f24e3174721f3f993b20e", null ],
     [ "flatten", "tuple_8h.html#a3c8f47ae3611992a68b885cfe1b513c8", null ],
     [ "is_sigma_or_arr", "tuple_8h.html#ac6eab898b3d47f7bfc303837cbfc25e0", null ],
-    [ "is_tuple_arg_of_app", "tuple_8h.html#a302e2d851b8beb0dc86182d2da14156e", null ],
     [ "is_tuple_or_pack", "tuple_8h.html#a49914b89c55cc74be99001a2875f00d1", null ],
     [ "is_unit", "tuple_8h.html#a496a5dfe6e208b166676c88e28092d48", null ],
     [ "merge", "tuple_8h.html#ae79b3c7a7656f77b147095feb289c019", null ],

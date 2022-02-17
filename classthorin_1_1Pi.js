@@ -6,7 +6,6 @@ var classthorin_1_1Pi =
     [ "dom", "classthorin_1_1Pi.html#a20d8a96fb7cccc26b8e9bac78adeb3f3", null ],
     [ "is_basicblock", "classthorin_1_1Pi.html#a116138b6c56c0f3cf2afa27a3077ce12", null ],
     [ "is_cn", "classthorin_1_1Pi.html#a0e7aabaac67c503372016139b7cc4ee2", null ],
-    [ "is_returning", "classthorin_1_1Pi.html#ab792079b1db71b8fb496fcd740f8b2bf", null ],
     [ "rebuild", "classthorin_1_1Pi.html#a1cdff1acbbe4310f3b89af1b7f80a9db", null ],
     [ "restructure", "classthorin_1_1Pi.html#acb97854745a11b2302ca71930f5b01d6", null ],
     [ "ret_pi", "classthorin_1_1Pi.html#a359b9d8c428845699e810523aebaa316", null ],
