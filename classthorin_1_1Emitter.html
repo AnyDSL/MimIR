@@ -120,7 +120,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a2fa93d0999738028ffcd2775b9d4c883"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Emitter.html#a2fa93d0999738028ffcd2775b9d4c883">stream</a> () const</td></tr>
 <tr class="separator:a2fa93d0999738028ffcd2775b9d4c883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2ede40514dc720f262c7ff72876af8e"><td class="memItemLeft" align="right" valign="top">Value&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Emitter.html#ab2ede40514dc720f262c7ff72876af8e">emit</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
-<tr class="memdesc:ab2ede40514dc720f262c7ff72876af8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively emits code. <code>mem</code> -typed <code><a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s</code> return sth that is <code>!child</code>().is_valid(value) - this variant asserts in this case.  <a href="classthorin_1_1Emitter.html#ab2ede40514dc720f262c7ff72876af8e">More...</a><br /></td></tr>
+<tr class="memdesc:ab2ede40514dc720f262c7ff72876af8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively emits code.  <a href="classthorin_1_1Emitter.html#ab2ede40514dc720f262c7ff72876af8e">More...</a><br /></td></tr>
 <tr class="separator:ab2ede40514dc720f262c7ff72876af8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a018f9adb9376238128cce4669d89d4bd"><td class="memItemLeft" align="right" valign="top">Value&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Emitter.html#a018f9adb9376238128cce4669d89d4bd">emit_unsafe</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="memdesc:a018f9adb9376238128cce4669d89d4bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but returning <code>!child</code>().is_valid(value) is permitted.  <a href="classthorin_1_1Emitter.html#a018f9adb9376238128cce4669d89d4bd">More...</a><br /></td></tr>
@@ -154,7 +154,7 @@ Protected Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class Value, class Type, class BB, class Child&gt;<br />
 class thorin::Emitter&lt; Value, Type, BB, Child &gt;</div>
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00010">10</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00011">11</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a49f0312c5fa8e61b55889c9e7d4974d9" name="a49f0312c5fa8e61b55889c9e7d4974d9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49f0312c5fa8e61b55889c9e7d4974d9">&#9670;&nbsp;</a></span>Emitter()</h2>
@@ -192,7 +192,7 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00023">23</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00024">24</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
 </div>
 </div>
@@ -223,11 +223,12 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Recursively emits code. <code>mem</code> -typed <code><a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s</code> return sth that is <code>!child</code>().is_valid(value) - this variant asserts in this case. </p>
+<p>Recursively emits code. </p>
+<p ><code>mem</code> -typed <code><a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s</code> return sth that is <code>!child</code>().is_valid(value) - this variant asserts in this case. </p>
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00032">32</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00034">34</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">References <a class="el" href="emitter_8h_source.html#l00039">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_unsafe()</a>, and <a class="el" href="utf8_8h_source.html#l00025">thorin::utf8::is_valid()</a>.</p>
+<p class="reference">References <a class="el" href="emitter_8h_source.html#l00041">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_unsafe()</a>, and <a class="el" href="utf8_8h_source.html#l00025">thorin::utf8::is_valid()</a>.</p>
 
 </div>
 </div>
@@ -256,9 +257,9 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00047">47</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00049">49</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">References <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>, <a class="el" href="emitter_8h_source.html#l00028">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scope()</a>, and <a class="el" href="emitter_8h_source.html#l00027">thorin::Emitter&lt; Value, Type, BB, Child &gt;::world()</a>.</p>
+<p class="reference">References <a class="el" href="emitter_8h_source.html#l00053">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>, <a class="el" href="emitter_8h_source.html#l00029">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scope()</a>, and <a class="el" href="emitter_8h_source.html#l00028">thorin::Emitter&lt; Value, Type, BB, Child &gt;::world()</a>.</p>
 
 </div>
 </div>
@@ -288,11 +289,11 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00051">51</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00053">53</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00319">thorin::Def::as_nom()</a>, <a class="el" href="scope_8h_source.html#l00029">thorin::Scope::entry()</a>, <a class="el" href="emitter_8h_source.html#l00096">thorin::Emitter&lt; Value, Type, BB, Child &gt;::entry_</a>, <a class="el" href="scope_8h_source.html#l00030">thorin::Scope::exit()</a>, <a class="el" href="lam_8cpp_source.html#l00037">thorin::Lam::is_basicblock()</a>, <a class="el" href="def_8cpp_source.html#l00293">thorin::Def::is_set()</a>, <a class="el" href="def_8h_source.html#l00309">thorin::Def::isa_nom()</a>, <a class="el" href="emitter_8h_source.html#l00095">thorin::Emitter&lt; Value, Type, BB, Child &gt;::lam2bb_</a>, <a class="el" href="emitter_8h_source.html#l00092">thorin::Emitter&lt; Value, Type, BB, Child &gt;::locals_</a>, <a class="el" href="lam_8cpp_source.html#l00033">thorin::Lam::ret_var()</a>, <a class="el" href="schedule_8cpp_source.html#l00116">thorin::schedule()</a>, <a class="el" href="emitter_8h_source.html#l00091">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scheduler_</a>, <a class="el" href="emitter_8h_source.html#l00028">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scope()</a>, and <a class="el" href="emitter_8h_source.html#l00089">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scope_</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00321">thorin::Def::as_nom()</a>, <a class="el" href="scope_8h_source.html#l00029">thorin::Scope::entry()</a>, <a class="el" href="emitter_8h_source.html#l00098">thorin::Emitter&lt; Value, Type, BB, Child &gt;::entry_</a>, <a class="el" href="scope_8h_source.html#l00030">thorin::Scope::exit()</a>, <a class="el" href="lam_8cpp_source.html#l00038">thorin::Lam::is_basicblock()</a>, <a class="el" href="def_8h_source.html#l00198">thorin::Def::is_unset()</a>, <a class="el" href="def_8h_source.html#l00311">thorin::Def::isa_nom()</a>, <a class="el" href="emitter_8h_source.html#l00097">thorin::Emitter&lt; Value, Type, BB, Child &gt;::lam2bb_</a>, <a class="el" href="emitter_8h_source.html#l00094">thorin::Emitter&lt; Value, Type, BB, Child &gt;::locals_</a>, <a class="el" href="lam_8cpp_source.html#l00034">thorin::Lam::ret_var()</a>, <a class="el" href="schedule_8cpp_source.html#l00114">thorin::schedule()</a>, <a class="el" href="emitter_8h_source.html#l00093">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scheduler_</a>, <a class="el" href="emitter_8h_source.html#l00029">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scope()</a>, and <a class="el" href="emitter_8h_source.html#l00091">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scope_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00047">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_module()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00049">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_module()</a>.</p>
 
 </div>
 </div>
@@ -324,11 +325,11 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 
 <p>As above but returning <code>!child</code>().is_valid(value) is permitted. </p>
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00039">39</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00041">41</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">References <a class="el" href="emitter_8h_source.html#l00093">thorin::Emitter&lt; Value, Type, BB, Child &gt;::globals_</a>, and <a class="el" href="emitter_8h_source.html#l00092">thorin::Emitter&lt; Value, Type, BB, Child &gt;::locals_</a>.</p>
+<p class="reference">References <a class="el" href="emitter_8h_source.html#l00095">thorin::Emitter&lt; Value, Type, BB, Child &gt;::globals_</a>, and <a class="el" href="emitter_8h_source.html#l00094">thorin::Emitter&lt; Value, Type, BB, Child &gt;::locals_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00032">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00034">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit()</a>.</p>
 
 </div>
 </div>
@@ -357,11 +358,11 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00028">28</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00029">29</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">References <a class="el" href="emitter_8h_source.html#l00089">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scope_</a>.</p>
+<p class="reference">References <a class="el" href="emitter_8h_source.html#l00091">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scope_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00047">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_module()</a>, and <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00049">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_module()</a>, and <a class="el" href="emitter_8h_source.html#l00053">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>.</p>
 
 </div>
 </div>
@@ -390,9 +391,9 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00029">29</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00030">30</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">References <a class="el" href="emitter_8h_source.html#l00090">thorin::Emitter&lt; Value, Type, BB, Child &gt;::stream_</a>.</p>
+<p class="reference">References <a class="el" href="emitter_8h_source.html#l00092">thorin::Emitter&lt; Value, Type, BB, Child &gt;::stream_</a>.</p>
 
 </div>
 </div>
@@ -421,11 +422,11 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00027">27</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00028">28</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">References <a class="el" href="emitter_8h_source.html#l00088">thorin::Emitter&lt; Value, Type, BB, Child &gt;::world_</a>.</p>
+<p class="reference">References <a class="el" href="emitter_8h_source.html#l00090">thorin::Emitter&lt; Value, Type, BB, Child &gt;::world_</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00047">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_module()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00049">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_module()</a>.</p>
 
 </div>
 </div>
@@ -452,9 +453,9 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00096">96</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00098">98</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00053">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>.</p>
 
 </div>
 </div>
@@ -480,9 +481,9 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00093">93</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00095">95</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00039">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_unsafe()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00041">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_unsafe()</a>.</p>
 
 </div>
 </div>
@@ -508,9 +509,9 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00095">95</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00097">97</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00053">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>.</p>
 
 </div>
 </div>
@@ -536,9 +537,9 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00092">92</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00094">94</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>, and <a class="el" href="emitter_8h_source.html#l00039">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_unsafe()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00053">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>, and <a class="el" href="emitter_8h_source.html#l00041">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_unsafe()</a>.</p>
 
 </div>
 </div>
@@ -564,9 +565,9 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00091">91</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00093">93</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00053">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>.</p>
 
 </div>
 </div>
@@ -592,9 +593,9 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00089">89</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00091">91</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00051">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>, and <a class="el" href="emitter_8h_source.html#l00028">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scope()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00053">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>, and <a class="el" href="emitter_8h_source.html#l00029">thorin::Emitter&lt; Value, Type, BB, Child &gt;::scope()</a>.</p>
 
 </div>
 </div>
@@ -620,9 +621,9 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00090">90</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00092">92</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00029">thorin::Emitter&lt; Value, Type, BB, Child &gt;::stream()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00030">thorin::Emitter&lt; Value, Type, BB, Child &gt;::stream()</a>.</p>
 
 </div>
 </div>
@@ -648,7 +649,7 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00094">94</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00096">96</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
 </div>
 </div>
@@ -674,9 +675,9 @@ template&lt;class Value , class Type , class BB , class Child &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00088">88</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="emitter_8h_source.html#l00090">90</a> of file <a class="el" href="emitter_8h_source.html">emitter.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00027">thorin::Emitter&lt; Value, Type, BB, Child &gt;::world()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00028">thorin::Emitter&lt; Value, Type, BB, Child &gt;::world()</a>.</p>
 
 </div>
 </div>
