@@ -6,12 +6,12 @@
 namespace thorin {
 
 const Def* CopyProp::rewrite(const Def* def) {
-    if (auto [app, var_lam] = isa_apped_nom_lam(def); !ignore(var_lam)) return var2prop(app, var_lam);
+    if (auto [app, var_lam] = isa_apped_nom_lam(def); isa_workable(var_lam)) return var2prop(app, var_lam);
     return def;
 }
 
 const Def* CopyProp::var2prop(const App* app, Lam* var_lam) {
-    if (ignore(var_lam) || var_lam->num_vars() == 0 || keep_.contains(var_lam)) return app;
+    if (var_lam->num_vars() == 0 || keep_.contains(var_lam)) return app;
 
     auto& args = data(var_lam);
     args.resize(app->num_args());

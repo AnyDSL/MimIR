@@ -52,7 +52,7 @@ Lam* Scalerize::make_scalar(Lam* tup_lam) {
 }
 
 const Def* Scalerize::rewrite(const Def* def) {
-    if (auto [app, tup_lam] = isa_apped_nom_lam(def); !ignore(tup_lam)) {
+    if (auto [app, tup_lam] = isa_apped_nom_lam(def); isa_workable(tup_lam)) {
         if (!should_expand(tup_lam)) return app;
 
         if (auto sca_lam = make_scalar(tup_lam); sca_lam != tup_lam) {

@@ -6,13 +6,13 @@
 namespace thorin {
 
 const Def* DCE::rewrite(const Def* def) {
-    if (auto [app, var_lam] = isa_apped_nom_lam(def); !ignore(var_lam)) {
+    if (auto [app, var_lam] = isa_apped_nom_lam(def); isa_workable(var_lam)) {
         return var2dead(app, var_lam);
     } else {
         // TODO I'm currently not sure why we need this.
         // The eta_exp_->new2old(...) should be enough, but removing this will break reverse.impala.
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-            if (auto lam = def->op(i)->isa_nom<Lam>(); !ignore(lam)) {
+            if (auto lam = isa_workable(def->op(i)->isa_nom<Lam>())) {
                 if (var2dead_.contains(lam)) return def->refine(i, eta_exp_->proxy(lam));
             }
         }
@@ -22,7 +22,7 @@ const Def* DCE::rewrite(const Def* def) {
 }
 
 const Def* DCE::var2dead(const App* app, Lam* var_lam) {
-    if (ignore(var_lam) || var_lam->num_vars() == 0 || keep_.contains(var_lam)) return app;
+    if (var_lam->num_vars() == 0 || keep_.contains(var_lam)) return app;
 
     DefVec new_args;
     DefVec types;

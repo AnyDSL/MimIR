@@ -2,6 +2,7 @@
 #define THORIN_BE_EMITTER_H
 
 #include "thorin/world.h"
+
 #include "thorin/analyses/schedule.h"
 
 namespace thorin {
@@ -15,7 +16,7 @@ private:
     /// Internal wrapper for @p emit that checks and retrieves/puts the @c Value from @p locals_/@p globals_.
     Value emit_(const Def* def) {
         auto place = scheduler_.smart(def);
-        auto& bb = lam2bb_[place->as_nom<Lam>()];
+        auto& bb   = lam2bb_[place->as_nom<Lam>()];
         return child().emit_bb(bb, def);
     }
 
@@ -28,7 +29,8 @@ protected:
     const Scope& scope() const { return *scope_; }
     Stream& stream() const { return stream_; }
 
-    /// Recursively emits code. @c mem -typed @p Def%s return sth that is @c !child().is_valid(value) - this variant asserts in this case.
+    /// Recursively emits code. @c mem -typed @p Def%s return sth that is @c !child().is_valid(value) - this variant
+    /// asserts in this case.
     Value emit(const Def* def) {
         auto res = emit_unsafe(def);
         assert(child().is_valid(res));
@@ -40,7 +42,7 @@ protected:
         if (auto val = globals_.lookup(def)) return *val;
         if (auto val = locals_.lookup(def)) return *val;
 
-        auto val = emit_(def);
+        auto val            = emit_(def);
         return locals_[def] = val;
     }
 
@@ -52,7 +54,7 @@ protected:
         if (entry_ = scope.entry()->isa_nom<Lam>(); !entry_) return;
         scope_ = &scope;
 
-        if (!entry_->is_set()) {
+        if (entry_->is_unset()) {
             child().emit_imported(entry_);
             return;
         }
@@ -96,6 +98,6 @@ protected:
     Lam* entry_ = nullptr;
 };
 
-}
+} // namespace thorin
 
 #endif

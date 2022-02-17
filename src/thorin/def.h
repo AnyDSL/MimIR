@@ -195,6 +195,7 @@ public:
     }
     /// @c true if all operands are set or @p num_ops == 0, @c false if all operands are @c nullptr, asserts otherwise.
     bool is_set() const;
+    bool is_unset() const { return !is_set(); }
     ///@}
 
     /// @name uses
@@ -267,7 +268,9 @@ public:
         return projs<A>([](const Def* def) { return def; }, dbgs);
     }
     auto projs(size_t a, Defs dbgs = {}) const {
-        return projs(a, [](const Def* def) { return def; }, dbgs); }
+        return projs(
+            a, [](const Def* def) { return def; }, dbgs);
+    }
     ///@}
 
     /// @name externals
