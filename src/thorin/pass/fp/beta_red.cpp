@@ -5,7 +5,7 @@
 namespace thorin {
 
 const Def* BetaRed::rewrite(const Def* def) {
-    if (auto [app, lam] = isa_apped_nom_lam(def); !ignore(lam) && !keep_.contains(lam)) {
+    if (auto [app, lam] = isa_apped_nom_lam(def); isa_workable(lam) && !keep_.contains(lam)) {
         if (auto [_, ins] = data().emplace(lam); ins) {
             world().DLOG("beta-reduction {}", lam);
             return lam->apply(app->arg()).back();
@@ -30,7 +30,7 @@ undo_t BetaRed::analyze(const Proxy* proxy) {
 undo_t BetaRed::analyze(const Def* def) {
     auto undo = No_Undo;
     for (auto op : def->ops()) {
-        if (auto lam = op->isa_nom<Lam>(); !ignore(lam) && keep_.emplace(lam).second) {
+        if (auto lam = isa_workable(op->isa_nom<Lam>()); lam && keep_.emplace(lam).second) {
             auto [_, ins] = data().emplace(lam);
             if (!ins) {
                 world().DLOG("non-callee-position of '{}'; undo inlining of {} within {}", lam, lam, curr_nom());

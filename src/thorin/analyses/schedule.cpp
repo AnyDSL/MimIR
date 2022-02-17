@@ -3,6 +3,7 @@
 #include <queue>
 
 #include "thorin/world.h"
+
 #include "thorin/analyses/cfg.h"
 #include "thorin/analyses/domtree.h"
 #include "thorin/analyses/looptree.h"
@@ -13,8 +14,7 @@ namespace thorin {
 Scheduler::Scheduler(const Scope& s)
     : scope_(&s)
     , cfg_(&scope().f_cfg())
-    , domtree_(&cfg().domtree())
-{
+    , domtree_(&cfg().domtree()) {
     std::queue<const Def*> queue;
     DefSet done;
 
@@ -36,13 +36,12 @@ Scheduler::Scheduler(const Scope& s)
         auto def = queue.front();
         queue.pop();
 
-        if (!def->is_set()) continue;
+        if (def->is_unset()) continue;
 
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
             // all reachable noms have already been registered above
             // NOTE we might still see references to unreachable noms in the schedule
-            if (!def->op(i)->isa_nom())
-                enqueue(def, i, def->op(i));
+            if (!def->op(i)->isa_nom()) enqueue(def, i, def->op(i));
         }
 
         if (!def->type()->isa_nom()) enqueue(def, -1, def->type());
@@ -58,8 +57,7 @@ Def* Scheduler::early(const Def* def) {
     for (auto op : def->extended_ops()) {
         if (!op->isa_nom() && def2uses_.find(op) != def2uses_.end()) {
             auto nom = early(op);
-            if (domtree().depth(cfg(nom)) > domtree().depth(cfg(result)))
-                result = nom;
+            if (domtree().depth(cfg(nom)) > domtree().depth(cfg(result))) result = nom;
         }
     }
 
@@ -78,7 +76,7 @@ Def* Scheduler::late(const Def* def) {
     } else {
         for (auto use : uses(def)) {
             auto nom = late(use);
-            result = result ? domtree().least_common_ancestor(cfg(result), cfg(nom))->nom() : nom;
+            result   = result ? domtree().least_common_ancestor(cfg(result), cfg(nom))->nom() : nom;
         }
     }
 
@@ -89,7 +87,7 @@ Def* Scheduler::smart(const Def* def) {
     if (auto nom = smart_.lookup(def)) return *nom;
 
     auto e = cfg(early(def));
-    auto l = cfg(late (def));
+    auto l = cfg(late(def));
     auto s = l;
 
     int depth = cfg().looptree()[l]->depth();
@@ -105,7 +103,7 @@ Def* Scheduler::smart(const Def* def) {
         }
 
         if (int cur_depth = cfg().looptree()[i]->depth(); cur_depth < depth) {
-            s = i;
+            s     = i;
             depth = cur_depth;
         }
     }
@@ -116,10 +114,9 @@ Def* Scheduler::smart(const Def* def) {
 Schedule schedule(const Scope& scope) {
     // until we have sth better simply use the RPO of the CFG
     Schedule result;
-    for (auto n : scope.f_cfg().reverse_post_order())
-        result.emplace_back(n->nom());
+    for (auto n : scope.f_cfg().reverse_post_order()) result.emplace_back(n->nom());
 
     return result;
 }
 
-}
+} // namespace thorin

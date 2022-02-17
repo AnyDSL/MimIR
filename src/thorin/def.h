@@ -194,6 +194,7 @@ public:
     }
     /// @c true if all operands are set or @p num_ops == 0, @c false if all operands are @c nullptr, asserts otherwise.
     bool is_set() const;
+    bool is_unset() const { return !is_set(); }
     ///@}
 
     /// @name uses

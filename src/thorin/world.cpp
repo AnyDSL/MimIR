@@ -223,7 +223,7 @@ World::World(std::string_view name)
         data_.atomic_ = axiom(nullptr, type, Tag::Atomic, 0, dbg("atomic"));
     }
     { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o;
-      // Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
+        // Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
         // TODO select which Is/Os to zip
         auto rs = nom_sigma(kind(), 2);
         rs->set(0, nat);
@@ -325,25 +325,27 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
 
     // eta rule for tuples:
     // (extract(tup, 0), extract(tup, 1), extract(tup, 2)) -> tup
-    if (n != 0)
-        if (auto extract = ops[0]->isa<Extract>()) {
-            auto tup = extract->tuple();
-            bool eta = tup->type() == type;
-            for (size_t i = 0; i != n && eta; ++i) {
-                if (auto extract = ops[i]->isa<Extract>()) {
-                    if (auto index = isa_lit(extract->index())) {
-                        if (eta &= u64(i) == *index) {
-                            eta &= extract->tuple() == tup;
-                            continue;
-                        }
+    if (n == 0) goto out;
+
+    if (auto extract = ops[0]->isa<Extract>()) {
+        auto tup = extract->tuple();
+        bool eta = tup->type() == type;
+        for (size_t i = 0; i != n && eta; ++i) {
+            if (auto extract = ops[i]->isa<Extract>()) {
+                if (auto index = isa_lit(extract->index())) {
+                    if (eta &= u64(i) == *index) {
+                        eta &= extract->tuple() == tup;
+                        continue;
                     }
                 }
-                eta = false;
             }
-
-            if (eta) return tup;
+            eta = false;
         }
 
+        if (eta) return tup;
+    }
+
+out:
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
@@ -678,7 +680,7 @@ void World::visit(VisitFn f) const {
 
     while (!noms.empty()) {
         auto nom = noms.pop();
-        if (elide_empty && !nom->is_set()) continue;
+        if (elide_empty && nom->is_unset()) continue;
 
         Scope scope(nom);
         f(scope);
@@ -693,24 +695,28 @@ void World::visit(VisitFn f) const {
 
 std::string_view World::level2string(LogLevel level) {
     switch (level) {
-        case LogLevel::Error: return "E";
-        case LogLevel::Warn: return "W";
-        case LogLevel::Info: return "I";
+        // clang-format off
+        case LogLevel::Error:   return "E";
+        case LogLevel::Warn:    return "W";
+        case LogLevel::Info:    return "I";
         case LogLevel::Verbose: return "V";
-        case LogLevel::Debug: return "D";
+        case LogLevel::Debug:   return "D";
+        // clang-format on
+        default: THORIN_UNREACHABLE;
     }
-    THORIN_UNREACHABLE;
 }
 
 int World::level2color(LogLevel level) {
     switch (level) {
-        case LogLevel::Error: return 1;
-        case LogLevel::Warn: return 3;
-        case LogLevel::Info: return 2;
+        // clang-format off
+        case LogLevel::Error:   return 1;
+        case LogLevel::Warn:    return 3;
+        case LogLevel::Info:    return 2;
         case LogLevel::Verbose: return 4;
-        case LogLevel::Debug: return 4;
+        case LogLevel::Debug:   return 4;
+        // clang-format on
+        default: THORIN_UNREACHABLE;
     }
-    THORIN_UNREACHABLE;
 }
 
 #ifdef COLORIZE_LOG
@@ -723,6 +729,8 @@ std::string World::colorize(std::string_view str, int color) {
 }
 #else
 std::string World::colorize(std::string_view str, int) { return std::string(str); }
+    return std::string(str);
+}
 #endif
 
 void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
