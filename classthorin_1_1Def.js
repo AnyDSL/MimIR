@@ -28,6 +28,7 @@ var classthorin_1_1Def =
     [ "hash", "classthorin_1_1Def.html#ae387f672716d0aecd825f27d48f13e9e", null ],
     [ "is_external", "classthorin_1_1Def.html#a7701ec0e042a91951dcff7bf0b56573c", null ],
     [ "is_internal", "classthorin_1_1Def.html#a89257054c01a40a9c0388cf97eaab282", null ],
+    [ "is_replaced", "classthorin_1_1Def.html#aa28f105fe93d7c2d69ad210976aa2c6c", null ],
     [ "is_set", "classthorin_1_1Def.html#a6570bc149ba85c9db290765e9d0c6495", null ],
     [ "is_unset", "classthorin_1_1Def.html#ad80387c2b8b00161b6285241cc1c64ed", null ],
     [ "isa_nom", "classthorin_1_1Def.html#ac79cb2db748fbf0177eb2e6c0fef3fdc", null ],
@@ -60,6 +61,7 @@ var classthorin_1_1Def =
     [ "rebuild", "classthorin_1_1Def.html#a894b8738ff236f12a06b113777877d7f", null ],
     [ "reduce", "classthorin_1_1Def.html#a95a227d8a1f1c29b03bd30eda9486d92", null ],
     [ "refine", "classthorin_1_1Def.html#a21a604f6ac783871af333a53b5520303", null ],
+    [ "replace", "classthorin_1_1Def.html#a81fa5f441242256a7e3831b701b6ad63", null ],
     [ "restructure", "classthorin_1_1Def.html#a10bc132476fbcc04a495cda07765d647", null ],
     [ "set", "classthorin_1_1Def.html#a152b0e05705b7c1124a74369576cd17c", null ],
     [ "set", "classthorin_1_1Def.html#af401dbc2a8092cdc438507614174f792", null ],
@@ -84,7 +86,9 @@ var classthorin_1_1Def =
     [ "vars", "classthorin_1_1Def.html#a89d9dfe4c61c02c0de35548f766c6675", null ],
     [ "vars", "classthorin_1_1Def.html#a2d6324640221213c98816965e15312a4", null ],
     [ "world", "classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2", null ],
+    [ "Cleaner", "classthorin_1_1Def.html#ad94dba2e317074efccb2b3ce3fc62741", null ],
     [ "swap", "classthorin_1_1Def.html#ac16087b25da85305adb283de20b2342d", null ],
+    [ "Tracker", "classthorin_1_1Def.html#a178a085e66872f6cbe6c33f101debdf5", null ],
     [ "World", "classthorin_1_1Def.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "dbg_", "classthorin_1_1Def.html#addf021956daa61ab3035dd3a75751215", null ],
     [ "dep_", "classthorin_1_1Def.html#a531bae40dbbd05fe36e2654d66b5906c", null ],
@@ -96,6 +100,7 @@ var classthorin_1_1Def =
     [ "num_ops_", "classthorin_1_1Def.html#aca8c4b92e68fac58f8c2812cdff26442", null ],
     [ "order_", "classthorin_1_1Def.html#a4ef6121ecf2bd2434e796d764d8ea92a", null ],
     [ "proxy_", "classthorin_1_1Def.html#a229770e837d6fff5ea711c1f412a2bc7", null ],
+    [ "substitute_", "classthorin_1_1Def.html#a20c097843d2e485b0bd7acfea0d89b9d", null ],
     [ "uses_", "classthorin_1_1Def.html#abefc385c0d60ba85c5e649598d20fe05", null ],
     [ "var_", "classthorin_1_1Def.html#a2b6c0b12aef635dd84112af27d9ecb08", null ]
 ];

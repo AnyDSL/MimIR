@@ -20,7 +20,7 @@ var dir_6a7c4bb7c40f97e4d670d167d69dfc05 =
     [ "error.h", "error_8h.html", [
       [ "thorin::ErrorHandler", "classthorin_1_1ErrorHandler.html", "classthorin_1_1ErrorHandler" ]
     ] ],
-    [ "lam.cpp", "lam_8cpp.html", null ],
+    [ "lam.cpp", "lam_8cpp.html", "lam_8cpp" ],
     [ "lam.h", "lam_8h.html", "lam_8h" ],
     [ "lattice.cpp", "lattice_8cpp.html", null ],
     [ "lattice.h", "lattice_8h.html", "lattice_8h" ],
