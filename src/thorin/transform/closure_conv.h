@@ -165,6 +165,8 @@ public:
 
     /// @name Properties
     /// @{
+    bool is_returning() { return fnc_type()->is_returning(); }
+    bool is_basicblock() { return fnc_type()->is_basicblock(); }
     unsigned int order();
     bool is_escaping() { return ca_is_escaping(mark_); };
     CA mark() { return mark_; }

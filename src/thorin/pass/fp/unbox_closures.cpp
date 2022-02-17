@@ -65,8 +65,8 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             continue;
         }
         auto c = isa_closure_lit(arg, false);
-        if (!c) {
-            w.DLOG("{}({}) => ⊤ (no closure lit)" , bxd_lam, i);
+        if (!c || !c.is_returning()) {
+            w.DLOG("{}({}) => ⊤ (no returning closure lit)" , bxd_lam, i);
             keep_.emplace(bxd_lam->var(i));
             proxy_ops.push_back(arg);
             continue;
