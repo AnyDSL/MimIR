@@ -24,11 +24,8 @@ void optimize(World& world) {
     opt.add<Scalerize>(ee);
     // opt.add<DCE>(br, ee);
     opt.add<CopyProp>(br, ee);
+    opt.add<TailRecElim>(er);
     opt.run();
-
-    PassMan bla(world);
-    bla.add<TailRecElim>();
-    bla.run();
 
     PassMan codgen_prepare(world);
     // codgen_prepare.add<BoundElim>();
