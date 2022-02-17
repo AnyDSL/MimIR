@@ -27,5 +27,9 @@ var dir_3f2eb28d1bda468dd4520f242f410c64 =
         [ "pred", "classthorin_1_1SSAConstr.html#a7e971447917136fea7b96f2c386b7914", null ],
         [ "writable", "classthorin_1_1SSAConstr.html#a8640798450a1343fdaf4839bfadd34e1", null ]
       ] ]
+    ] ],
+    [ "tail_rec_elim.cpp", "tail__rec__elim_8cpp.html", null ],
+    [ "tail_rec_elim.h", "tail__rec__elim_8h.html", [
+      [ "thorin::TailRecElim", "classthorin_1_1TailRecElim.html", "classthorin_1_1TailRecElim" ]
     ] ]
 ];

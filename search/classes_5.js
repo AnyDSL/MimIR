@@ -34,6 +34,7 @@ var searchData=
   ['fppass_3c_20etaexp_2c_20lam_20_3e_31',['FPPass&lt; EtaExp, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
   ['fppass_3c_20etared_20_3e_32',['FPPass&lt; EtaRed &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
   ['fppass_3c_20ssaconstr_2c_20lam_20_3e_33',['FPPass&lt; SSAConstr, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
-  ['fppassbase_34',['FPPassBase',['../classthorin_1_1FPPassBase.html',1,'thorin']]],
-  ['fva_35',['FVA',['../classthorin_1_1FVA.html',1,'thorin']]]
+  ['fppass_3c_20tailrecelim_2c_20lam_20_3e_34',['FPPass&lt; TailRecElim, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
+  ['fppassbase_35',['FPPassBase',['../classthorin_1_1FPPassBase.html',1,'thorin']]],
+  ['fva_36',['FVA',['../classthorin_1_1FVA.html',1,'thorin']]]
 ];

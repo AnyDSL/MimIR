@@ -1,17 +1,19 @@
 <map id="thorin::FPPassBase" name="thorin::FPPassBase">
-<area shape="rect" id="node1" title="Base class for all FPPasses." alt="" coords="196,234,333,261"/>
-<area shape="rect" id="node3" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="713,201,892,227"/>
-<area shape="rect" id="node5" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="713,92,892,133"/>
-<area shape="rect" id="node7" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="729,5,877,47"/>
-<area shape="rect" id="node9" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="721,263,884,304"/>
-<area shape="rect" id="node11" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="717,350,888,377"/>
-<area shape="rect" id="node13" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="709,445,896,487"/>
-<area shape="rect" id="node15" href="$classthorin_1_1FPPass.html" title="Inherit from this class using CRTP if you do need a Pass with a state." alt="" coords="383,234,537,261"/>
-<area shape="rect" id="node2" href="$classthorin_1_1RWPassBase.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="5,234,147,261"/>
-<area shape="rect" id="node4" href="$classthorin_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="953,201,1063,227"/>
-<area shape="rect" id="node6" href="$classthorin_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="950,99,1066,126"/>
-<area shape="rect" id="node8" href="$classthorin_1_1DCE.html" title="Dead Code Elimination." alt="" coords="965,13,1051,39"/>
-<area shape="rect" id="node10" href="$classthorin_1_1EtaExp.html" title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle..." alt="" coords="958,270,1058,297"/>
-<area shape="rect" id="node12" href="$classthorin_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="957,350,1059,377"/>
-<area shape="rect" id="node14" href="$classthorin_1_1SSAConstr.html" title="SSA construction algorithm that promotes Slots, Loads, and Stores to SSA values." alt="" coords="945,453,1071,479"/>
+<area shape="rect" id="node1" title="Base class for all FPPasses." alt="" coords="196,321,333,347"/>
+<area shape="rect" id="node3" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="719,201,898,227"/>
+<area shape="rect" id="node5" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="719,92,898,133"/>
+<area shape="rect" id="node7" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="735,5,883,47"/>
+<area shape="rect" id="node9" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="727,493,890,535"/>
+<area shape="rect" id="node11" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="723,305,894,331"/>
+<area shape="rect" id="node13" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="715,424,902,465"/>
+<area shape="rect" id="node15" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="713,357,904,399"/>
+<area shape="rect" id="node17" href="$classthorin_1_1FPPass.html" title="Inherit from this class using CRTP if you do need a Pass with a state." alt="" coords="383,275,537,302"/>
+<area shape="rect" id="node2" href="$classthorin_1_1RWPassBase.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="5,321,147,347"/>
+<area shape="rect" id="node4" href="$classthorin_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="963,201,1073,227"/>
+<area shape="rect" id="node6" href="$classthorin_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="960,99,1076,126"/>
+<area shape="rect" id="node8" href="$classthorin_1_1DCE.html" title="Dead Code Elimination." alt="" coords="975,13,1061,39"/>
+<area shape="rect" id="node10" href="$classthorin_1_1EtaExp.html" title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle..." alt="" coords="968,501,1068,527"/>
+<area shape="rect" id="node12" href="$classthorin_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="967,305,1069,331"/>
+<area shape="rect" id="node14" href="$classthorin_1_1SSAConstr.html" title="SSA construction algorithm that promotes Slots, Loads, and Stores to SSA values." alt="" coords="955,431,1081,458"/>
+<area shape="rect" id="node16" href="$classthorin_1_1TailRecElim.html" title=" " alt="" coords="953,365,1083,391"/>
 </map>
