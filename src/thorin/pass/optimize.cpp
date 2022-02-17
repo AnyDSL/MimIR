@@ -4,6 +4,7 @@
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/ssa_constr.h"
+#include "thorin/pass/fp/tail_rec_elim.h"
 #include "thorin/pass/rw/alloc2malloc.h"
 #include "thorin/pass/rw/bound_elim.h"
 #include "thorin/pass/rw/partial_eval.h"
@@ -24,6 +25,10 @@ void optimize(World& world) {
     //opt.add<DCE>(br, ee);
     opt.add<CopyProp>(br, ee);
     opt.run();
+
+    PassMan bla(world);
+    bla.add<TailRecElim>();
+    bla.run();
 
     PassMan codgen_prepare(world);
     //codgen_prepare.add<BoundElim>();

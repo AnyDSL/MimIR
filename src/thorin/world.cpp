@@ -701,16 +701,11 @@ int World::level2color(LogLevel level) {
 
 #ifdef COLORIZE_LOG
 std::string World::colorize(std::string_view str, int color) {
-    std::string res;
     if (isatty(fileno(stdout))) {
         const char c = '0' + color;
-        res = "\033[1;3";
-        res += c;
-        res += 'm';
-        res.append(str);
-        res.append("\033[0m");
+        return "\033[1;3" + (c + ('m' + std::string(str))) + "\033[0m";
     }
-    return res;
+    return std::string(str);
 }
 #else
 std::string World::colorize(std::string_view str, int) {

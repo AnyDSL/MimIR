@@ -46,8 +46,10 @@ using DefArray = Array<const Def*>;
 
 //------------------------------------------------------------------------------
 
-template<class T = u64> std::optional<T> isa_lit(const Def*);
-template<class T = u64> T as_lit(const Def* def);
+template<class T = u64>
+std::optional<T> isa_lit(const Def*);
+template<class T = u64>
+T as_lit(const Def* def);
 
 //------------------------------------------------------------------------------
 
@@ -85,20 +87,31 @@ enum class Sort { Term, Type, Kind, Space };
 namespace Dep {
 enum : unsigned {
     Bot,
-    Nom, Var,
+    Nom,
+    Var,
     Top = Nom | Var,
 };
 }
 
 /// Use as mixin to wrap all kind of @p Def::proj and @p Def::projs variants.
-#define THORIN_PROJ(NAME, CONST)                                                                                                       \
-    size_t num_##NAME##s() CONST { return ((const Def*) NAME())->num_projs(); }                                                        \
-    const Def* NAME(nat_t a, nat_t i, const Def* dbg = {}) CONST { return ((const Def*) NAME())->proj(a, i, dbg); }                    \
-    const Def* NAME(         nat_t i, const Def* dbg = {}) CONST { return ((const Def*) NAME())->proj(   i, dbg); }                    \
-    template<size_t A = -1_s, class F> auto NAME##s(F f, Defs dbgs = {}) CONST { return ((const Def*) NAME())->projs<A, F>(f, dbgs); } \
-    template<size_t A = -1_s>          auto NAME##s(     Defs dbgs = {}) CONST { return ((const Def*) NAME())->projs<A   >(   dbgs); } \
-    template<class F> auto NAME##s(size_t a, F f, Defs dbgs = {}) CONST { return ((const Def*) NAME())->projs<F>(a, f, dbgs); }        \
-                      auto NAME##s(size_t a,      Defs dbgs = {}) CONST { return ((const Def*) NAME())->projs   (a,    dbgs); }
+#define THORIN_PROJ(NAME, CONST)                                                                                   \
+    size_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                     \
+    const Def* NAME(nat_t a, nat_t i, const Def* dbg = {}) CONST { return ((const Def*)NAME())->proj(a, i, dbg); } \
+    const Def* NAME(nat_t i, const Def* dbg = {}) CONST { return ((const Def*)NAME())->proj(i, dbg); }             \
+    template<size_t A = -1_s, class F>                                                                             \
+    auto NAME##s(F f, Defs dbgs = {}) CONST {                                                                      \
+        return ((const Def*)NAME())->projs<A, F>(f, dbgs);                                                         \
+    }                                                                                                              \
+    template<size_t A = -1_s>                                                                                      \
+    auto NAME##s(Defs dbgs = {}) CONST {                                                                           \
+        return ((const Def*)NAME())->projs<A>(dbgs);                                                               \
+    }                                                                                                              \
+    template<class F>                                                                                              \
+    auto NAME##s(size_t a, F f, Defs dbgs = {}) CONST {                                                            \
+        return ((const Def*)NAME())->projs<F>(a, f, dbgs);                                                         \
+    }                                                                                                              \
+    auto NAME##s(size_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
+
 /// Base class for all @p Def%s.
 /// The data layout (see @p World::alloc) looks like this:
 /// ```
@@ -113,7 +126,7 @@ public:
 
 private:
     Def& operator=(const Def&) = delete;
-    Def(const Def&) = delete;
+    Def(const Def&)            = delete;
 
 protected:
     /// Constructor for a @em structural Def.
@@ -126,8 +139,8 @@ public:
     /// @name misc getters
     ///@{
     World& world() const {
-        if (node()                 == Node::Space) return *world_;
-        if (type()->node()         == Node::Space) return *type()->world_;
+        if (node() == Node::Space) return *world_;
+        if (type()->node() == Node::Space) return *type()->world_;
         if (type()->type()->node() == Node::Space) return *type()->type()->world_;
         assert(type()->type()->type()->node() == Node::Space);
         return *type()->type()->type()->world_;
@@ -141,10 +154,15 @@ public:
 
     /// @name type
     ///@{
-    const Def* type() const { assert(node() != Node::Space); return type_; }
+    const Def* type() const {
+        assert(node() != Node::Space);
+        return type_;
+    }
     Sort level() const;
     Sort sort() const;
-    unsigned order() const { /*TODO assertion*/return order_; }
+    unsigned order() const { /*TODO assertion*/
+        return order_;
+    }
     const Def* arity() const;
     ///@}
 
@@ -160,14 +178,20 @@ public:
     }
     const Def* op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
-    /// Includes @p debug (if not @c nullptr), @p type() (if not @p Space), and then the other @p ops() (if @p is_set) in this order.
+    /// Includes @p debug (if not @c nullptr), @p type() (if not @p Space), and then the other @p ops() (if @p is_set)
+    /// in this order.
     Defs extended_ops() const;
     const Def* extended_op(size_t i) const { return extended_ops()[i]; }
     size_t num_extended_ops() const { return extended_ops().size(); }
     Def* set(size_t i, const Def* def);
-    Def* set(Defs ops) { for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]); return this; }
+    Def* set(Defs ops) {
+        for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
+        return this;
+    }
     void unset(size_t i);
-    void unset() { for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i); }
+    void unset() {
+        for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);
+    }
     /// @c true if all operands are set or @p num_ops == 0, @c false if all operands are @c nullptr, asserts otherwise.
     bool is_set() const;
     ///@}
@@ -214,8 +238,9 @@ public:
     /// auto [x, y] = def->projs<2>(as_lit<nat_t>);
     /// Array<const Def*> projs = def->projs();                // projs has def->num_projs() many elements
     /// Array<const Def*> projs = def->projs(n);               // projs has n elements - asserts if incorrect
-    /// Array<const Lit*> lits = def->projs(as_lit<nat_t>);    // same as above but applies as_lit<nat_t> to each element
-    /// Array<const Lit*> lits = def->projs(n, as_lit<nat_t>); // same as above but applies as_lit<nat_t> to each element
+    /// Array<const Lit*> lits = def->projs(as_lit<nat_t>);    // same as above but applies as_lit<nat_t> to each
+    /// element Array<const Lit*> lits = def->projs(n, as_lit<nat_t>); // same as above but applies as_lit<nat_t> to
+    /// each element
     /// ```
     template<size_t A = -1_s, class F>
     auto projs(F f, Defs dbgs = {}) const {
@@ -225,8 +250,7 @@ public:
         } else {
             assert(A == as_lit(arity()));
             std::array<R, A> array;
-            for (size_t i = 0; i != A; ++i)
-                array[i] = f(proj(A, i, dbgs.empty() ? nullptr : dbgs[i]));
+            for (size_t i = 0; i != A; ++i) array[i] = f(proj(A, i, dbgs.empty() ? nullptr : dbgs[i]));
             return array;
         }
     }
@@ -238,8 +262,11 @@ public:
     }
 
     template<size_t A = -1_s>
-    auto projs(Defs dbgs = {}) const { return projs<A>([](const Def* def) { return def; }, dbgs); }
-    auto projs(size_t a, Defs dbgs = {}) const { return projs(a, [](const Def* def) { return def; }, dbgs); }
+    auto projs(Defs dbgs = {}) const {
+        return projs<A>([](const Def* def) { return def; }, dbgs);
+    }
+    auto projs(size_t a, Defs dbgs = {}) const {
+        return projs(a, [](const Def* def) { return def; }, dbgs); }
     ///@}
 
     /// @name externals
@@ -259,27 +286,37 @@ public:
     const Def* meta() const { return debug().meta; }
     void set_dbg(const Def* dbg) const { dbg_ = dbg; }
     void set_name(std::string_view) const;
-    const Def* debug_history() const; ///< In Debug build if @p World::enable_history is `true`, this thing keeps the @p gid to track a history of gid%s.
+    const Def* debug_history() const; ///< In Debug build if @p World::enable_history is `true`, this thing keeps the @p
+                                      ///< gid to track a history of gid%s.
     std::string unique_name() const;  ///< name + "_" + gid
     ///@}
 
     /// @name casts
     ///@{
-    template<class T = Def> const T* isa_structural() const { return isa_nom<T, true>(); }
-    template<class T = Def> const T* as_structural() const { return as_nom<T, true>(); }
+    template<class T = Def>
+    const T* isa_structural() const {
+        return isa_nom<T, true>();
+    }
+    template<class T = Def>
+    const T* as_structural() const {
+        return as_nom<T, true>();
+    }
 
     /// If `this` is @em nom, it will cast constness away and perform a dynamic cast to @p T.
-    template<class T = Def, bool invert = false> T* isa_nom() const {
-        if constexpr(std::is_same<T, Def>::value)
+    template<class T = Def, bool invert = false>
+    T* isa_nom() const {
+        if constexpr (std::is_same<T, Def>::value)
             return nom_ ^ invert ? const_cast<Def*>(this) : nullptr;
         else
             return nom_ ^ invert ? const_cast<Def*>(this)->template isa<T>() : nullptr;
     }
 
-    /// Asserts that @c this is a @em nom, casts constness away and performs a static cast to @p T (checked in Debug build).
-    template<class T = Def, bool invert = false> T* as_nom() const {
+    /// Asserts that @c this is a @em nom, casts constness away and performs a static cast to @p T (checked in Debug
+    /// build).
+    template<class T = Def, bool invert = false>
+    T* as_nom() const {
         assert(nom_ ^ invert);
-        if constexpr(std::is_same<T, Def>::value)
+        if constexpr (std::is_same<T, Def>::value)
             return const_cast<Def*>(this);
         else
             return const_cast<Def*>(this)->template as<T>();
@@ -293,7 +330,7 @@ public:
     /// Only returns a @p Var for this @em nom if it has ever been created.
     const Var* has_var() { return var_ ? var() : nullptr; }
     const Var* var(const Def* dbg = {});
-    THORIN_PROJ(var,)
+    THORIN_PROJ(var, )
     ///@}
 
     /// @name apply
@@ -327,22 +364,25 @@ public:
     ///@}
 
 protected:
-    const Def** ops_ptr() const { return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1))); }
+    const Def** ops_ptr() const {
+        return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
+    }
     void finalize();
     bool equal(const Def* other) const;
 
     union {
         /// @p Axiom%s use this member to store their normalize function and the currying depth.
         TaggedPtr<std::remove_pointer_t<NormalizeFn>, u16> normalizer_depth_;
-        /// Curried @p App%s of @p Axiom%s use this member to propagate the @p Axiom in question and the current currying depth.
+        /// Curried @p App%s of @p Axiom%s use this member to propagate the @p Axiom in question and the current
+        /// currying depth.
         TaggedPtr<const Axiom, u16> axiom_depth_;
     };
     fields_t fields_;
     node_t node_;
-    unsigned nom_   :  1;
-    unsigned var_   :  1;
-    unsigned dep_   :  2;
-    unsigned proxy_ :  1;
+    unsigned nom_   : 1;
+    unsigned var_   : 1;
+    unsigned dep_   : 2;
+    unsigned proxy_ : 1;
     unsigned order_ : 11;
     u32 gid_;
     u32 num_ops_;
@@ -365,7 +405,10 @@ const T* isa(fields_t f, const Def* def) {
 }
 
 template<class T>
-const T* as([[maybe_unused]] fields_t f, const Def* def) { assert(isa<T>(f, def)); return def; }
+const T* as([[maybe_unused]] fields_t f, const Def* def) {
+    assert(isa<T>(f, def));
+    return def;
+}
 
 //------------------------------------------------------------------------------
 
@@ -379,8 +422,8 @@ using DefVec  = std::vector<const Def*>;
 struct DefDefHash {
     static hash_t hash(DefDef pair) {
         hash_t hash = std::get<0>(pair)->gid();
-        hash = murmur3(hash, std::get<1>(pair)->gid());
-        hash = murmur3_finalize(hash, 8);
+        hash        = murmur3(hash, std::get<1>(pair)->gid());
+        hash        = murmur3_finalize(hash, 8);
         return hash;
     }
     static bool eq(DefDef p1, DefDef p2) { return p1 == p2; }
@@ -390,8 +433,7 @@ struct DefDefHash {
 struct DefsHash {
     static hash_t hash(Defs defs) {
         auto seed = hash_begin(defs.front()->gid());
-        for (auto def : defs.skip_front())
-            seed = hash_combine(seed, def->gid());
+        for (auto def : defs.skip_front()) seed = hash_combine(seed, def->gid());
         return seed;
     }
     static bool eq(Defs d1, Defs d2) { return d1 == d2; }
@@ -470,7 +512,10 @@ private:
 
 public:
     template<class T = fields_t>
-    T get() const { static_assert(sizeof(T) <= 8); return bitcast<T>(fields_); }
+    T get() const {
+        static_assert(sizeof(T) <= 8);
+        return bitcast<T>(fields_);
+    }
 
     /// @name virtual methods
     ///@{
@@ -481,13 +526,17 @@ public:
     friend class World;
 };
 
-template<class T> std::optional<T> isa_lit(const Def* def) {
+template<class T>
+std::optional<T> isa_lit(const Def* def) {
     if (def == nullptr) return {};
     if (auto lit = def->isa<Lit>()) return lit->get<T>();
     return {};
 }
 
-template<class T> T as_lit(const Def* def) { return def->as<Lit>()->get<T>(); }
+template<class T>
+T as_lit(const Def* def) {
+    return def->as<Lit>()->get<T>();
+}
 
 class Nat : public Def {
 private:
@@ -539,15 +588,18 @@ public:
     const Def* id() const { return op(0); }
     const Def* init() const { return op(1); }
     ///@}
+
     /// @name type
     ///@{
     const App* type() const;
     const Def* alloced_type() const;
     ///@}
+
     /// @name misc getters
     ///@{
     bool is_mutable() const { return fields(); }
     ///@}
+
     /// @name virtual methods
     ///@{
     const Def* rebuild(World& to, const Def* type, Defs ops, const Def*) const override;
@@ -564,6 +616,6 @@ Stream& operator<<(Stream&, std::pair<const Def*, const Def*>);
 
 //------------------------------------------------------------------------------
 
-}
+} // namespace thorin
 
 #endif
