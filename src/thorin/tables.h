@@ -37,7 +37,8 @@ using nat_t    = u64;
     m(Atomic, atomic)                                               \
     m(Zip, zip)                                                     \
     m(RevDiff, rev_diff) m(TangentVector, tangent_vector)           \
-    m(CA, CA)
+    m(CA, CA)                                                       \
+    m(JmpBuf, jmp_buf_t) m(SetJmp, set_jmp) m(LongJmp, long_jmp)
 
 namespace WMode {
 enum : nat_t {

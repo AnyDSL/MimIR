@@ -283,11 +283,12 @@ public:
 
     /// @name types
     ///@{
-    const Nat* type_nat()    { return data_.type_nat_; }
-    const Axiom* type_mem()  { return data_.type_mem_; }
-    const Axiom* type_int()  { return data_.type_int_; }
-    const Axiom* type_real() { return data_.type_real_; }
-    const Axiom* type_ptr()  { return data_.type_ptr_; }
+    const Nat* type_nat()      { return data_.type_nat_; }
+    const Axiom* type_mem()    { return data_.type_mem_; }
+    const Axiom* type_int()    { return data_.type_int_; }
+    const Axiom* type_real()   { return data_.type_real_; }
+    const Axiom* type_ptr()    { return data_.type_ptr_; }
+    const Axiom* type_jmpbuf() { return data_.sjlj_buf_type_; }
     const App* type_bool() { return data_.type_bool_; }
     const App* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
     const App* type_int (nat_t   mod) { return type_int (lit_nat(  mod)); }
@@ -366,6 +367,8 @@ public:
     const Def* op_slot  (const Def* type, const Def* mem, const Def* dbg = {}) { return app(app(ax_slot (), {type, lit_nat_0()}), {mem, lit_nat(curr_gid())}, dbg); }
     const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
     const Def* op_mslot (const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
+    const Def* op_setjmp(const Def* mem, const Def* buf_ptr, const Def* dbg = {})  { return app(data_.sjlj_setjmp_,  {mem, buf_ptr}, dbg); }
+    const Def* op_longjmp(const Def* mem, const Def* buf_ptr, const Def* dbg = {}) { return app(data_.sjlj_longjmp_, {mem, buf_ptr}, dbg); }
     ///@}
 
     /// @name wrappers for unary operations
@@ -376,6 +379,15 @@ public:
     const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) { return op_rminus(lit_nat(rmode), a, dbg); }
     const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) { return op_wminus(lit_nat(wmode), a, dbg); }
     ///@}
+
+    const Def* ca_mark(const Def* def, CA a, const Def* dbg = {}) {
+        switch (a) {
+#define CODE(T, o) case T::o: return app(app(data_.ca_ ## o ## _, def->type()), def, dbg);
+            THORIN_CA (CODE)
+#undef CODE
+            default: return def;
+        }
+    }
 
     /// @name helpers
     ///@{
@@ -390,14 +402,6 @@ public:
     bool is_pe_done() const { return state_.pe_done; }
     ///@}
 
-    const Def* ca_mark(const Def* def, CA a, const Def* dbg = {}) {
-            switch (a) {
-#define CODE(T, o) case T::o: return app(app(data_.ca_ ## o ## _, def->type()), def, dbg);
-                THORIN_CA (CODE)
-#undef CODE
-                default: return def;
-            }
-        }
 
     /// @name manage externals
     ///@{
@@ -644,6 +648,10 @@ private:
         const Axiom* ca_proc_;
         const Axiom* ca_proc_e_;
         const Axiom* ca_unknown_;
+        const Axiom* sjlj_buf_type_;
+        const Axiom* sjlj_setjmp_;
+        const Axiom* sjlj_longjmp_;
+        
         std::string name_;
         Externals externals_;
         Sea defs_;
