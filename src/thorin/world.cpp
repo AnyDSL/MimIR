@@ -258,21 +258,28 @@ World::World(std::string_view name)
         type->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
         */
-        auto type = nom_pi(kind())->set_dom({kind(), kind(), kind(), kind(), kind(), kind()});
-        auto [A, B, C, D,E,F] = type->vars<6>({dbg("A"), dbg("B"),dbg("C"),dbg("D"),dbg("E"),dbg("F")});
+//        auto type = nom_pi(kind())->set_dom({kind(), kind(), kind(), kind(), kind(), kind()});
+//        auto [A, B, C, D,E,F] = type->vars<6>({dbg("A"), dbg("B"),dbg("C"),dbg("D"),dbg("E"),dbg("F")});
+//
+//        auto pullback = cn_mem_ret(E,F);
+//        auto diffd = cn({
+//          type_mem(),
+//          C,
+////          flatten(A),
+//          cn({type_mem(), D, pullback})
+//        });
+////        auto diffd= cn_mem_flat(A,tuple({B,pullback}));
+//        // TODO: flattening at this point is useless as we handle abstract kinds here
+//        auto Xi = pi(cn_mem_ret(A, B), diffd);
+//        //        auto Xi = pi(cn_mem_ret(flatten(A), B), diffd);
+////        auto Xi = pi(cn_mem_flat(A, B), diffd);
+//        type->set_codom(Xi);
+//        data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
 
-        auto pullback = cn_mem_ret(E,F);
-        auto diffd = cn({
-          type_mem(),
-          C,
-//          flatten(A),
-          cn({type_mem(), D, pullback})
-        });
-//        auto diffd= cn_mem_flat(A,tuple({B,pullback}));
-        // TODO: flattening at this point is useless as we handle abstract kinds here
-        auto Xi = pi(cn_mem_ret(A, B), diffd);
-        //        auto Xi = pi(cn_mem_ret(flatten(A), B), diffd);
-//        auto Xi = pi(cn_mem_flat(A, B), diffd);
+        auto type = nom_pi(kind())->set_dom({kind(), kind()});
+        auto [X,Y] = type->vars<2>({dbg("X"), dbg("Y")});
+
+        auto Xi = pi(X,Y);
         type->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
     }
@@ -428,6 +435,8 @@ static const Def* infer_sigma(World& world, Defs ops) {
 
     return world.sigma(elems);
 }
+
+
 
 const Def* World::tuple(Defs ops, const Def* dbg) {
     auto sigma = infer_sigma(*this, ops);
@@ -852,7 +861,23 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
 
         // wrapper for fn not possible due to recursive calls
 
-        auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom, deriv_dom, deriv_codom, tan_codom, tan_dom}), this->dbg("mk_pullback"));
+        //        auto pullback = cn_mem_ret(E,F);
+        //        auto diffd = cn({
+        //          type_mem(),
+        //          C,
+        ////          flatten(A),
+        //          cn({type_mem(), D, pullback})
+        //        });
+        ////        auto diffd= cn_mem_flat(A,tuple({B,pullback}));
+        //        // TODO: flattening at this point is useless as we handle abstract kinds here
+        //        auto Xi = pi(cn_mem_ret(A, B), diffd);
+
+        auto fn_ty = cn_mem_ret(dom,codom);
+        auto pb_ty = cn_mem_ret(tan_codom,tan_dom);
+        auto diff_ty = cn({type_mem(),deriv_dom,cn({type_mem(),deriv_codom,pb_ty})});
+
+//        auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom, deriv_dom, deriv_codom, tan_codom, tan_dom}), this->dbg("mk_pullback"));
+        auto mk_pullback = app(data_.op_rev_diff_, tuple({fn_ty,diff_ty}), this->dbg("mk_pullback"));
         s2.fmt("mk pb {} : {}\n",mk_pullback,mk_pullback->type());
         auto pullback = app(mk_pullback, fn, dbg);
         s2.fmt("pb {}\n",pullback);
