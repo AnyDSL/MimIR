@@ -62,8 +62,8 @@ set(THORIN_SOURCES
     pass/fp/ssa_constr.h
     pass/rw/auto_diff.cpp
     pass/rw/auto_diff.h
-    # pass/rw/zip_eval.cpp
-    # pass/rw/zip_eval.h
+        pass/fp/zip_eval.cpp
+        pass/fp/zip_eval.h
     pass/rw/alloc2malloc.cpp
     pass/rw/alloc2malloc.h
     pass/rw/partial_eval.cpp

@@ -11,7 +11,7 @@
 #include "thorin/pass/rw/remem_elim.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
-// #include "thorin/pass/rw/zip_eval.h"
+#include "thorin/pass/fp/zip_eval.h"
 
 // old stuff
 #include "thorin/transform/cleanup_world.h"
@@ -32,8 +32,10 @@ void optimize(World& world) {
 
 //     PassMan optZ(world);
 //     optZ.add<ZipEval>();
-// //    optZ.run();
+//     optZ.run();
 //     printf("Finished OptiZip\n");
+
+     return;
 
 
     PassMan opt2(world);
