@@ -13,6 +13,7 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 #include "thorin/pass/rw/eta_cont.h"
+#include "thorin/pass/rw/closure2sjlj.h"
 
 // old stuff
 #include "thorin/transform/cleanup_world.h"
@@ -41,13 +42,14 @@ static void closure_conv(World& world) {
 
 static void lower_closures(World& world) {
     PassMan closure_destruct(world);
-    closure_destruct.add<Scalerize>(nullptr);
+    // closure_destruct.add<Scalerize>(nullptr);
     closure_destruct.add<UnboxClosure>();
-    closure_destruct.add<CopyProp>(nullptr, nullptr, true);
-    closure_destruct.add<ClosureAnalysis>();
+    // closure_destruct.add<CopyProp>(nullptr, nullptr, true);
+    // closure_destruct.add<ClosureAnalysis>();
+    closure_destruct.add<Closure2SjLj>();
     closure_destruct.run();
 
-    LowerTypedClosures(world).run();
+    // LowerTypedClosures(world).run();
 }
 
 void optimize(World& world) {
@@ -65,13 +67,13 @@ void optimize(World& world) {
     closure_conv(world);
     lower_closures(world);
     
-    PassMan codgen_prepare(world);
+    // PassMan codgen_prepare(world);
     // codgen_prepare.add<BoundElim>();
-    codgen_prepare.add<RememElim>();
+    // codgen_prepare.add<RememElim>();
     // codgen_prepare.add<Scalerize>(nullptr);
-    codgen_prepare.add<Alloc2Malloc>();
-    codgen_prepare.add<RetWrap>();
-    codgen_prepare.run();
+    // codgen_prepare.add<Alloc2Malloc>();
+    // codgen_prepare.add<RetWrap>();
+    // codgen_prepare.run();
 }
 
 }

@@ -111,8 +111,6 @@ private:
 /// The later form is introduced by the @p UnboxClosures pass.
 
 /* marks */
-
-// join 
 inline bool ca_is_escaping(CA v) { return v == CA::unknown || v == CA::proc_e; }
 
 template<class N>
@@ -197,6 +195,8 @@ const Pi* ctype_to_pi(const Def* ct, const Def* new_env_type = nullptr);
 /// tries to match a closure literal
 ClosureLit isa_closure_lit(const Def* def, bool lambda_or_branch = true);
 
+std::tuple<Lam*, const Def*, const Def*> closure_lam_stub(const Def* env_type, const Def* dom, const Def* dbg = {});
+
 /// pack a typed closure. This assumes that @p fn expects the environment as its @p CLOSURE_ENV_PARAM argument.
 const Def* pack_closure_dbg(const Def* env, const Def* fn, const Def* dbg, const Def* ct = nullptr);
 inline const Def* pack_closure(const Def* env, const Def* fn, const Def* ct = nullptr) {
@@ -215,7 +215,7 @@ inline const Def* closure_insert_env(size_t i, const Def* env, const Def* a) {
     return closure_insert_env(i, env, [&](auto i) { return a->proj(i); });
 }
 inline const Def* closure_insert_env(const Def* env, const Def* tup_or_sig) {
-    auto& w= tup_or_sig->world();
+    auto& w = tup_or_sig->world();
     return tup_or_sig->rebuild(w, tup_or_sig->type(), DefArray(tup_or_sig->num_ops() + 1, 
         [&](auto i) { return closure_insert_env(i, env, tup_or_sig); }), tup_or_sig->dbg());
 }

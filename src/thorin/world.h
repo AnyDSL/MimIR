@@ -366,9 +366,9 @@ public:
     const Def* op_slot  (const Def* type, const Def* mem, const Def* dbg = {}) { return app(app(ax_slot (), {type, lit_nat_0()}), {mem, lit_nat(curr_gid())}, dbg); }
     const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
     const Def* op_mslot (const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
-    const Def* op_alloc_jumpbuf(const Def* mem);
+    const Def* op_alloc_jumpbuf(const Def* mem, const Def* dbg = {}) { return app(data_.sjlj_alloc_jmpbuf, mem, dbg); }
     const Def* op_setjmp(const Def* mem, const Def* buf, const Def* dbg = {})  { return app(data_.sjlj_setjmp_,  {mem, buf}, dbg); }
-    const Def* op_longjmp(const Def* mem, const Def* buf, const Def* dbg = {}) { return app(data_.sjlj_longjmp_, {mem, buf}, dbg); }
+    const Def* op_longjmp(const Def* mem, const Def* buf, const Def* id, const Def* dbg = {}) { return app(data_.sjlj_longjmp_, {mem, buf, id}, dbg); }
     ///@}
 
     /// @name wrappers for unary operations
