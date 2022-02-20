@@ -35,7 +35,7 @@ void optimize(World& world) {
 //     optZ.run();
 //     printf("Finished OptiZip\n");
 
-     return;
+//     return;
 
 
     PassMan opt2(world);

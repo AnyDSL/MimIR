@@ -1712,8 +1712,17 @@ const Def* AutoDiff::rewrite(const Def* def) {
         auto dst_pi = app->type()->as<Pi>(); // multi dim as array
         auto dst_lam = world.nom_lam(dst_pi, world.dbg("top_level_rev_diff_" + src_lam->name()));
         dst_lam->set_filter(src_lam->filter()); // copy the unfold filter
-        auto A = dst_pi->dom(1); // input variable(s) => possible a pi type (array)
-        auto B = src_lam->ret_var()->type()->as<Pi>()->dom(1); // the output (for now a scalar)
+        auto A = world.params_without_return_continuation(dst_pi); // input variable(s) => possible a pi type (array)
+
+//        auto ret_cont = dst_pi->dom()->ops().back();
+//        auto B = world.sigma(ret_cont->as<Pi>()->dom()->ops().skip_front());
+
+        // is cn[mem, B0, ..., Bm, pb] => skip mem and pb
+        auto B = world.params_without_return_continuation(dst_pi->dom()->ops().back()->as<Pi>());
+//        auto ret_cont = pi->dom()->ops().back();
+//        auto codom = sigma(ret_cont->as<Pi>()->dom()->ops().skip_front());
+//
+//        auto B = src_lam->ret_var()->type()->as<Pi>()->dom(1); // the output (for now a scalar)
 
 
         dlog(world,"AD of function from {} to {}",A,B);

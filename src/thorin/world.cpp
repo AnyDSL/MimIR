@@ -926,12 +926,17 @@ void World::visit(VisitFn f) const {
  * misc
  */
 
+const Def* World::params_without_return_continuation(const Pi* pi) {
+    return sigma(pi->dom()->ops().skip_front().skip_back());
+}
+
 const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
     if (auto pi = fn->type()->isa<Pi>()) {
         assert(pi->is_cn());
 
-        auto dom = sigma(pi->dom()->ops().skip_front().skip_back());
-        auto codom = sigma(pi->dom()->ops().back()->as<Pi>()->dom()->ops().skip_front());
+        auto dom = params_without_return_continuation(pi);
+        auto ret_cont = pi->dom()->ops().back();
+        auto codom = sigma(ret_cont->as<Pi>()->dom()->ops().skip_front());
         auto deriv_dom = tangent_type(dom,true);
         auto deriv_codom = tangent_type(codom,true);
 
@@ -959,9 +964,11 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
         //        // TODO: flattening at this point is useless as we handle abstract kinds here
         //        auto Xi = pi(cn_mem_ret(A, B), diffd);
 
-        auto fn_ty = cn_mem_ret(dom,codom);
-        auto pb_ty = cn_mem_ret(tan_codom,tan_dom);
-        auto diff_ty = cn({type_mem(),deriv_dom,cn({type_mem(),deriv_codom,pb_ty})});
+        auto fn_ty = cn_mem_flat(dom,codom);
+        auto pb_ty = cn_mem_flat(tan_codom,tan_dom);
+//        auto diff_ty = cn_mem_half_flat(deriv_dom,tuple({deriv_codom,pb_ty}));
+        auto diff_ty = cn_mem_flat(deriv_dom,sigma({deriv_codom,pb_ty}));
+//        auto diff_ty = cn({type_mem(),deriv_dom,cn({type_mem(),deriv_codom,pb_ty})});
 
 //        auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom, deriv_dom, deriv_codom, tan_codom, tan_dom}), this->dbg("mk_pullback"));
         auto mk_pullback = app(data_.op_rev_diff_, tuple({fn_ty,diff_ty}), this->dbg("mk_pullback"));

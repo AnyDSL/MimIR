@@ -373,6 +373,7 @@ public:
 
     /// @name AD
     //@{
+    const Def* params_without_return_continuation(const Pi* pi);
     const Def* op_rev_diff(const Def* fn, const Def* dbg = {});
     const Def* tangent_type(const Def* A, bool left=false);
     //@}
