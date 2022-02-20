@@ -42,10 +42,10 @@ static void closure_conv(World& world) {
 
 static void lower_closures(World& world) {
     PassMan closure_destruct(world);
-    // closure_destruct.add<Scalerize>(nullptr);
+    closure_destruct.add<Scalerize>(nullptr);
     closure_destruct.add<UnboxClosure>();
-    // closure_destruct.add<CopyProp>(nullptr, nullptr, true);
-    // closure_destruct.add<ClosureAnalysis>();
+    closure_destruct.add<CopyProp>(nullptr, nullptr, true);
+    closure_destruct.add<ClosureAnalysis>();
     closure_destruct.add<Closure2SjLj>();
     closure_destruct.run();
 
