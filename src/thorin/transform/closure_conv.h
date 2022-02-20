@@ -216,8 +216,8 @@ inline const Def* closure_insert_env(size_t i, const Def* env, const Def* a) {
 }
 inline const Def* closure_insert_env(const Def* env, const Def* tup_or_sig) {
     auto& w = tup_or_sig->world();
-    return tup_or_sig->rebuild(w, tup_or_sig->type(), DefArray(tup_or_sig->num_ops() + 1, 
-        [&](auto i) { return closure_insert_env(i, env, tup_or_sig); }), tup_or_sig->dbg());
+    auto new_ops = DefArray(tup_or_sig->num_ops() + 1, [&](auto i) { return closure_insert_env(i, env, tup_or_sig); });
+    return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 
 const Def* closure_remove_env(size_t i, std::function<const Def* (size_t)> f);
@@ -226,8 +226,8 @@ inline const Def* closure_remove_env(size_t i, const Def* def) {
 }
 inline const Def* closure_remove_env(const Def* tup_or_sig) {
     auto& w = tup_or_sig->world();
-    return tup_or_sig->rebuild(w, tup_or_sig->type(), DefArray(tup_or_sig->num_ops() - 1, 
-        [&](auto i) { return closure_remove_env(i, tup_or_sig); }), tup_or_sig->dbg());
+    auto new_ops = DefArray(tup_or_sig->num_ops() - 1, [&](auto i) { return closure_remove_env(i, tup_or_sig); });
+    return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 
 inline const Def* closure_sub_env(const Def* tup_or_sig, const Def* new_env) {
@@ -235,10 +235,9 @@ inline const Def* closure_sub_env(const Def* tup_or_sig, const Def* new_env) {
 }
 
 const Def* apply_closure(const Def* closure, const Def* args);
-template<typename T>
-inline const Def* apply_closure(const Def* closure, T&& args) {
+inline const Def* apply_closure(const Def* closure, Defs args) {
     auto& w = closure->world();
-    return apply_closure(closure, w.tuple(std::forward<T>(args)));
+    return apply_closure(closure, w.tuple(args));
 }
 
 };

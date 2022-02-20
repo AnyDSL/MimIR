@@ -67,10 +67,10 @@ const Sigma* isa_ctype(const Def* def) {
 const Def* pack_closure_dbg(const Def* env, const Def* lam, const Def* dbg, const Def* ct) {
     assert(env && lam);
     assert(!ct || isa_ctype(ct));
+    auto& w = env->world();
     auto pi = lam->type()->isa<Pi>();
     assert(pi && env->type() == pi->dom(CLOSURE_ENV_PARAM));
-    ct = (ct) ? ct : ctype(pi);
-    auto& w = env->world();
+    ct = (ct) ? ct : ctype(w.cn(closure_remove_env(pi->dom())));
     return w.tuple(ct, {env->type(), lam, env}, dbg)->isa<Tuple>();
 }
 
