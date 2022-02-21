@@ -64,6 +64,8 @@ set(THORIN_SOURCES
     pass/fp/tail_rec_elim.h
     pass/rw/alloc2malloc.cpp
     pass/rw/alloc2malloc.h
+    pass/rw/lam_spec.cpp
+    pass/rw/lam_spec.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
     pass/rw/remem_elim.cpp

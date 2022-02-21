@@ -7,6 +7,7 @@
 #include "thorin/pass/fp/tail_rec_elim.h"
 #include "thorin/pass/rw/alloc2malloc.h"
 #include "thorin/pass/rw/bound_elim.h"
+#include "thorin/pass/rw/lam_spec.h"
 #include "thorin/pass/rw/partial_eval.h"
 #include "thorin/pass/rw/remem_elim.h"
 #include "thorin/pass/rw/ret_wrap.h"
@@ -25,6 +26,7 @@ void optimize(World& world) {
     // opt.add<DCE>(br, ee);
     opt.add<CopyProp>(br, ee);
     opt.add<TailRecElim>(er);
+    opt.add<LamSpec>();
     opt.run();
 
     PassMan codgen_prepare(world);
