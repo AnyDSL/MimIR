@@ -21,6 +21,6 @@ private:
     Def2Def old2new_;
 };
 
-}
+} // namespace thorin
 
 #endif
