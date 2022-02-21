@@ -23,20 +23,22 @@ void Closure2SjLj::get_exn_closures(const Def* def, DefSet& visited) {
 void Closure2SjLj::get_exn_closures() {
     lam2tag_.clear();
     if (ignore(curr_nom()) || !curr_nom()->type()->is_cn()) return;
-    if (auto app = curr_nom()->body()->isa<App>()) {
-        if (auto p = app->callee()->isa<Extract>(); p && isa_ctype(p->tuple()->type())) {
+    auto app = curr_nom()->body()->isa<App>();
+    if (app) return;
+    if (auto p = app->callee()->isa<Extract>(); p && isa_ctype(p->tuple()->type())) {
+        auto p2 = p->tuple()->isa<Extract>();
+        if (p2 && p2->tuple()->isa<Tuple>()) {
             // branch: Check the closure environments, but be careful not to traverse
             // the closures themselves
-            auto branches = p->tuple()->as<Extract>()->tuple();
-            for (auto b: branches->ops()) {
+            auto branches = p2->tuple()->ops();
+            for (auto b: branches) {
                 auto c = isa_closure_lit(b);
-                assert(c);
-                ignore_.emplace(c.fnc_as_lam());
+                if (c) ignore_.emplace(c.fnc_as_lam());
             }
         }
-        auto visited = DefSet();
-        get_exn_closures(app->arg(), visited);
     }
+    auto visited = DefSet();
+    get_exn_closures(app->arg(), visited);
 }
 
 static std::array<const Def*, 3> split(const Def* def) {
@@ -153,7 +155,6 @@ void Closure2SjLj::enter() {
     tag = w.op(Conv::s2s, w.type_int_width(lam2tag_.size() + 1), tag);
     auto branch = w.extract(w.tuple(branches), tag);
     auto [m2, rb] = w.op_load(m1, cur_rbuf_)->projs<2>();
-    auto x = apply_closure(branch, {m2, rb});
     curr_nom()->set_body(apply_closure(branch, {m2, rb}));
 }
 
