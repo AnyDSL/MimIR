@@ -9,7 +9,7 @@ void Closure2SjLj::get_exn_closures(const Def* def, DefSet& visited) {
     visited.emplace(def);
     if (auto c = isa_closure_lit(def)) {
         auto lam = c.fnc_as_lam();
-        if (c.is_basicblock() && !lam2lpad_.contains(lam) && !ignore_.contains(lam)) {
+        if (c.is_basicblock() && !ignore_.contains(lam)) {
             def->world().DLOG("FOUND exn closure: {}", c.fnc_as_lam());
             lam2tag_[c.fnc_as_lam()] = {lam2tag_.size() + 1, c.env()};
         }
@@ -24,7 +24,7 @@ void Closure2SjLj::get_exn_closures() {
     lam2tag_.clear();
     if (ignore(curr_nom()) || !curr_nom()->type()->is_cn()) return;
     auto app = curr_nom()->body()->isa<App>();
-    if (app) return;
+    if (!app) return;
     if (auto p = app->callee()->isa<Extract>(); p && isa_ctype(p->tuple()->type())) {
         auto p2 = p->tuple()->isa<Extract>();
         if (p2 && p2->tuple()->isa<Tuple>()) {
@@ -33,7 +33,10 @@ void Closure2SjLj::get_exn_closures() {
             auto branches = p2->tuple()->ops();
             for (auto b: branches) {
                 auto c = isa_closure_lit(b);
-                if (c) ignore_.emplace(c.fnc_as_lam());
+                if (c) {
+                    ignore_.emplace(c.fnc_as_lam());
+                    world().DLOG("IGNORE {}", c.fnc_as_lam());
+                }
             }
         }
     }
@@ -82,7 +85,7 @@ Lam* Closure2SjLj::get_throw(const Def* dom) {
         auto [jbuf, rbuf, tag] = env->projs<3>();
         auto [m1, r] = w.op_alloc(var->type(), m0)->projs<2>();
         auto m2 = w.op_store(m1, r, var);
-        r = w.op_bitcast(w.type_ptr(w.type_ptr(var->type())), rbuf);
+        rbuf = w.op_bitcast(w.type_ptr(w.type_ptr(var->type())), rbuf);
         auto m3 = w.op_store(m2, rbuf, r);
         tlam->set_body(w.op_longjmp(m3, jbuf, tag));
         tlam->set_filter(w.lit_false());
@@ -159,9 +162,6 @@ void Closure2SjLj::enter() {
 }
 
 const Def* Closure2SjLj::rewrite(const Def* def) {
-    if (auto c = isa_closure_lit(def); c && c.is_basicblock()) {
-        world().DLOG("Rewrite closure: {}", def);
-    }
     if (auto c = isa_closure_lit(def); c && lam2tag_.contains(c.fnc_as_lam())) {
         auto& w = world();
         auto [i, _] = lam2tag_[c.fnc_as_lam()];
