@@ -49,6 +49,7 @@ const Def* UnboxClosure::rewrite(const Def* def) {
     if (ignore(bxd_lam) || keep_.contains(bxd_lam)) return def;
 
     auto& arg_spec = data(bxd_lam);
+    auto num_unboxed = 0;
     DefVec doms, args, proxy_ops = {bxd_lam};
     for (size_t i = 0; i < app->num_args(); i++) {
         auto arg = app->arg(i);
@@ -65,7 +66,7 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             continue;
         }
         auto c = isa_closure_lit(arg, false);
-        if (!c || !c.is_returning()) {
+        if (!c) {
             w.DLOG("{}({}) => ⊤ (no returning closure lit)" , bxd_lam, i);
             keep_.emplace(bxd_lam->var(i));
             proxy_ops.push_back(arg);
@@ -81,12 +82,15 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             arg_spec[i] = c.env_type();
             w.DLOG("{}({}): ⊥ => {}", bxd_lam, i, c.env_type());
         }
+        num_unboxed++;
         doms.push_back(w.sigma({c.fnc_type(), c.env_type()}));
         args.push_back(w.tuple({c.fnc(), c.env()}));
     }
 
     if (proxy_ops.size() > 1)
         return proxy(def->type(), proxy_ops);
+    if (num_unboxed == 0)
+        return def;
 
     auto& [ubxd_lam, old_doms] = boxed2unboxed_[bxd_lam];
     if (!ubxd_lam || old_doms != doms) {
