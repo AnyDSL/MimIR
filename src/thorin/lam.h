@@ -24,7 +24,6 @@ public:
     THORIN_PROJ(codom, const)
     bool is_cn() const;
     bool is_basicblock() const { return order() == 1; }
-    bool is_returning() const;
     const Pi* ret_pi(const Def* dbg = {}) const;
     ///@}
 
@@ -50,8 +49,8 @@ class Lam : public Def {
 public:
     /// calling convention
     enum class CC : u8 {
-        C,          ///< C calling convention.
-        Device,     ///< Device calling convention. These are special functions only available on a particular device.
+        C,      ///< C calling convention.
+        Device, ///< Device calling convention. These are special functions only available on a particular device.
     };
 
 private:
@@ -97,7 +96,7 @@ public:
     void app(const Def* callee, const Def* arg, const Def* dbg = {});
     void app(const Def* callee, Defs args, const Def* dbg = {});
     void branch(const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg = {});
-    void test(const Def* value, const Def* index, const Def* match, const Def* clash, const Def* mem, const Def* dbg = {});
+    void test(const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem, const Def* dbg = {});
     ///@}
 
     /// @name virtual methods
@@ -155,16 +154,25 @@ public:
     friend class World;
 };
 
-inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
+inline Stream& operator<<(Stream& s, std::pair<Lam*, Lam*> p) {
+    return operator<<(s, std::pair<const Def*, const Def*>(p));
+}
 
-inline Stream& operator<<(Stream& s, std::pair<Lam*, Lam*> p) { return operator<<(s, std::pair<const Def*, const Def*>(p.first, p.second)); }
+/// These are @p Lam%s that are neither `nullptr`, nor @p Lam::is_external, nor @p Lam::is_unset.
+inline Lam* isa_workable(Lam* lam) {
+    if (!lam || lam->is_external() || lam->is_unset()) return nullptr;
+    return lam;
+}
+
+inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
+inline std::pair<const App*, Lam*> isa_apped_nom_lam(const Def* def) {
+    if (auto app = def->isa<App>()) return {app, app->callee()->isa_nom<Lam>()};
+    return {nullptr, nullptr};
+}
 
 // TODO remove - deprecated
 Lam* get_var_lam(const Def* def);
 
-// TODO remove - deprecated: This one is more confusing than helping.
-inline bool ignore(Lam* lam) { return lam == nullptr || lam->is_external() || !lam->is_set(); }
-
-}
+} // namespace thorin
 
 #endif

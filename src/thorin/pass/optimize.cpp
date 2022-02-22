@@ -5,6 +5,7 @@
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/ssa_constr.h"
 #include "thorin/pass/rw/auto_diff.h"
+#include "thorin/pass/fp/tail_rec_elim.h"
 #include "thorin/pass/rw/alloc2malloc.h"
 #include "thorin/pass/rw/bound_elim.h"
 #include "thorin/pass/rw/partial_eval.h"
@@ -39,11 +40,14 @@ void optimize(World& world) {
 
 
     PassMan opt2(world);
-    opt2.add<PartialEval>();
-    opt2.add<BetaRed>();
+    auto br = opt2.add<BetaRed>();
     auto er = opt2.add<EtaRed>();
     auto ee = opt2.add<EtaExp>(er);
     opt2.add<SSAConstr>(ee);
+    opt2.add<Scalerize>(ee);
+    // opt2.add<DCE>(br, ee);
+    opt2.add<CopyProp>(br, ee);
+    opt2.add<TailRecElim>(er);
     opt2.run();
     printf("Finished Opti2\n");
 
@@ -51,17 +55,18 @@ void optimize(World& world) {
 
 
         cleanup_world(world);
-    partial_evaluation(world, true);
+    // partial_evaluation(world, true);
+    while (partial_evaluation(world, true)) {} // lower2cff
         cleanup_world(world);
 
     printf("Finished Cleanup\n");
 
     PassMan codgen_prepare(world);
-    //codgen_prepare.add<BoundElim>();
+    // codgen_prepare.add<BoundElim>();
     codgen_prepare.add<RememElim>();
     codgen_prepare.add<Alloc2Malloc>();
     codgen_prepare.add<RetWrap>();
     codgen_prepare.run();
 }
 
-}
+} // namespace thorin

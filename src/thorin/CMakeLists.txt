@@ -64,6 +64,8 @@ set(THORIN_SOURCES
     pass/rw/auto_diff.h
         pass/fp/zip_eval.cpp
         pass/fp/zip_eval.h
+    pass/fp/tail_rec_elim.cpp
+    pass/fp/tail_rec_elim.h
     pass/rw/alloc2malloc.cpp
     pass/rw/alloc2malloc.h
     pass/rw/partial_eval.cpp
