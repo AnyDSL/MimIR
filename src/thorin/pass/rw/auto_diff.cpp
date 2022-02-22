@@ -671,7 +671,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             // should not be needed => TODO: handle higher order pb correctly in app
             auto zeropi = createPbType(A,lam->type());
             dlog(world_,"  result: {}",zeropi);
-            auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb"));
+            auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_lam"));
             type_dump(world_,"  non ret pb (zero)",zeropb);
             zeropb->set_filter(world_.lit_true());
             auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
@@ -718,7 +718,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         dlog(world_,"  compute pb ty of lam: {}",lam->type());
         auto zeropi = createPbType(A,lam->type());
         dlog(world_,"  result: {}",zeropi);
-        auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb"));
+        auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_lam2"));
         type_dump(world_,"  non ret pb (zero)",zeropb);
         zeropb->set_filter(world_.lit_true());
         auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
@@ -1533,7 +1533,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // a literal (number) has a zero pullback
         type_dump(world_,"Literal",lit);
         auto zeropi = createPbType(A,lit->type());
-        auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb"));
+        auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_lit"));
         type_dump(world_,"  lit pb (zero)",zeropb);
         zeropb->set_filter(world_.lit_true());
         auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);

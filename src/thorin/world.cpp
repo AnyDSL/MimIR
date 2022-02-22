@@ -414,9 +414,10 @@ const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
     return unify<App>(2, axiom, currying_depth-1, type, callee, arg, dbg);
 }
 
-const Def* World::sigma(Defs ops, const Def* dbg, bool flatten) {
+const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
 
+    auto flatten = true;
 //    Stream s2;
 //    s2.fmt("sigma [{, }] dbg: {}\n",ops,dbg);
 
@@ -455,21 +456,21 @@ const Pi* World::cn_mem_half_flat(const Def* dom, const Def* codom, const Def* d
         return cn(defs);
     }
 
-    if (auto a = dom->isa<Arr>()) {
-        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 2;
-        DefArray defs(size);
-        for (uint8_t i = 0; i < size; ++i) {
-            if (i == 0) {
-                defs[i] = type_mem();
-            } else if (i == size - 1) {
-                defs[i] = ret;
-            } else {
-                defs[i] = a->body();
-            }
-        }
-
-        return cn(defs);
-    }
+//    if (auto a = dom->isa<Arr>()) {
+//        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 2;
+//        DefArray defs(size);
+//        for (uint8_t i = 0; i < size; ++i) {
+//            if (i == 0) {
+//                defs[i] = type_mem();
+//            } else if (i == size - 1) {
+//                defs[i] = ret;
+//            } else {
+//                defs[i] = a->body();
+//            }
+//        }
+//
+//        return cn(defs);
+//    }
 
     return cn(merge(type_mem(), {dom, ret}), dbg);
 }
@@ -479,15 +480,15 @@ const Pi* World::cn_mem_flat(const Def* dom, const Def* codom, const Def* dbg) {
     if (codom->isa<Sigma>()) {
         ret = cn(merge_sigma(type_mem(), codom->ops())) ;
     }
-    if (auto a = codom->isa<Arr>()) {
-        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 1;
-        DefArray defs(size);
-        for (uint8_t i = 0; i < size - 1; ++i) {
-            defs[i + 1] = a->body();
-        }
-        defs.front() = type_mem();
-        ret = cn(defs);
-    }
+//    if (auto a = codom->isa<Arr>()) {
+//        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 1;
+//        DefArray defs(size);
+//        for (uint8_t i = 0; i < size - 1; ++i) {
+//            defs[i + 1] = a->body();
+//        }
+//        defs.front() = type_mem();
+//        ret = cn(defs);
+//    }
 
     if (dom->isa<Sigma>()) {
         auto size = dom->num_ops() + 2;
@@ -505,24 +506,100 @@ const Pi* World::cn_mem_flat(const Def* dom, const Def* codom, const Def* dbg) {
         return cn(defs);
     }
 
-    if (auto a = dom->isa<Arr>()) {
-        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 2;
-        DefArray defs(size);
-        for (uint8_t i = 0; i < size; ++i) {
-            if (i == 0) {
-                defs[i] = type_mem();
-            } else if (i == size - 1) {
-                defs[i] = ret;
-            } else {
-                defs[i] = a->body();
-            }
-        }
-
-        return cn(defs);
-    }
+//    if (auto a = dom->isa<Arr>()) {
+//        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 2;
+//        DefArray defs(size);
+//        for (uint8_t i = 0; i < size; ++i) {
+//            if (i == 0) {
+//                defs[i] = type_mem();
+//            } else if (i == size - 1) {
+//                defs[i] = ret;
+//            } else {
+//                defs[i] = a->body();
+//            }
+//        }
+//
+//        return cn(defs);
+//    }
 
     return cn(merge(type_mem(), {dom, ret}), dbg);
 }
+
+// cartesion function to cascadadian function
+const Lam* World::flatten_lam(Lam* lam) {
+    auto pi = lam->type();
+    auto dom = params_without_return_continuation(pi); // maybe use var(1)
+    auto ret_cont = pi->dom()->ops().back()->as<Pi>();
+    auto ty = cn_mem_flat(dom,ret_cont,pi->dbg());
+
+    auto flat_f = nom_lam(ty, dbg(lam->name()+"_flat"));
+    flat_f->set_filter(true);
+    // cartesian wrap around ret of flat f
+    auto ret_wrap = nom_lam(ret_cont, dbg(lam->name()+"_ret_wrap"));
+    ret_wrap->set_filter(true);
+
+    auto args = Array<const Def*>(
+            dom->num_ops(),
+            [&](auto i) {
+                return lam->var(i+1);
+            });
+    flat_f->app(lam, {
+        flat_f->mem_var(),
+        tuple(args),
+        ret_wrap
+    });
+
+    auto res = ret_wrap->var(1)->projs();
+//    auto res = Array<const Def*>(
+//        ret_wrap->var(1)->num_projs(),
+//        [&](auto i) {
+//          return ret_wrap->proj(i);
+//        });
+    ret_wrap->app(flat_f->ret_var(),
+        {ret_wrap->mem_var(),
+        tuple(res)}
+    );
+    return flat_f;
+}
+const Lam* World::unflatten_lam(Lam* lam) {
+    auto pi = lam->type();
+    auto dom = params_without_return_continuation(pi);
+    auto ret_cont = pi->dom()->ops().back()->as<Pi>();
+    auto ty = cn_mem_ret(dom,ret_cont,pi->dbg()); // does this flatten it?
+
+    auto unflat_f = nom_lam(ty, dbg(lam->name()+"_unflat"));
+    unflat_f->set_filter(true);
+    auto ret_wrap = nom_lam(ret_cont, dbg(lam->name()+"_ret_wrap"));
+    ret_wrap->set_filter(true);
+
+    auto args = Array<const Def*>(
+        dom->num_ops()+2,
+        [&](auto i) {
+          if(i==0)
+              return unflat_f->mem_var();
+          if(i==dom->num_ops()+1)
+              return (const Def*)ret_wrap;
+          return lam->var(i-1);
+        });
+    unflat_f->app(lam, args);
+    return unflat_f;
+
+//    auto res = ret_wrap->var(1)->projs();
+//    //    auto res = Array<const Def*>(
+//    //        ret_wrap->var(1)->num_projs(),
+//    //        [&](auto i) {
+//    //          return ret_wrap->proj(i);
+//    //        });
+//    ret_wrap->app(flat_f->ret_var(),
+//                  {ret_wrap->mem_var(),
+//                   res}
+//    );
+//    return flat_f;
+}
+
+
+
+
 
 
 const Def* World::tuple(Defs ops, const Def* dbg) {

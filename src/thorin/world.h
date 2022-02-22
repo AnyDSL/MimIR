@@ -122,6 +122,8 @@ public:
     Lam* nom_lam(const Pi* cn, const Def* dbg = {}) { return nom_lam(cn, Lam::CC::C, dbg); }
     const Lam* lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg) { return unify<Lam>(2, pi, filter, body, dbg); }
     const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_true(), body, dbg); }
+    const Lam* flatten_lam(Lam* lam);
+    const Lam* unflatten_lam(Lam* lam);
     ///@}
 
     /// @name App
@@ -136,7 +138,7 @@ public:
     ///@{
     Sigma* nom_sigma(const Def* type, size_t size, const Def* dbg = {}) { return insert<Sigma>(size, type, size, dbg); }
     Sigma* nom_sigma(size_t size, const Def* dbg = {}) { return nom_sigma(kind(), size, dbg); } ///< a @em nom @p Sigma of type @p kind
-    const Def* sigma(Defs ops, const Def* dbg = {}, bool flatten=true);
+    const Def* sigma(Defs ops, const Def* dbg = {});
     const Sigma* sigma() { return data_.sigma_; } ///< the unit type within @p kind()
     ///@}
 
