@@ -37,7 +37,7 @@ const Def* CopyProp::var2prop(const App* app, Lam* var_lam) {
         } else if (args[i] == nullptr) {
             args[i] = app->arg(i);
         } else if (args[i] != app->arg(i)) {
-            proxy_ops.emplace_back(var_lam->var(i));
+            proxy_ops.emplace_back(world().lit_nat(i));
         }
     }
 
@@ -81,9 +81,8 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     world().DLOG("found proxy: {}", var_lam);
 
     for (auto op : proxy->ops().skip_front()) {
-        if (op) {
-            if (keep_.emplace(op).second) world().DLOG("keep var: {}", op);
-        }
+        auto var = var_lam->var(as_lit(op));
+        if (keep_.emplace(var).second) world().DLOG("keep var: {}", var);
     }
 
     auto vars = var_lam->vars();
