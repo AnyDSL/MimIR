@@ -62,6 +62,6 @@ private:
     Def2Def done_;
 };
 
-}
+} // namespace thorin
 
 #endif

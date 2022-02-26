@@ -1,11 +1,10 @@
 #include "thorin/pass/fp/eta_exp.h"
+
 #include "thorin/pass/fp/eta_red.h"
 
 namespace thorin {
 
-const Proxy* EtaExp::proxy(Lam* lam) {
-    return FPPass<EtaExp, Lam>::proxy(lam->type(), {lam}, 0);
-}
+const Proxy* EtaExp::proxy(Lam* lam) { return FPPass<EtaExp, Lam>::proxy(lam->type(), {lam}, 0); }
 
 Lam* EtaExp::new2old(Lam* new_lam) {
     if (auto old_lam = new2old_.lookup(new_lam)) {
@@ -44,8 +43,8 @@ const Def* EtaExp::rewrite(const Def* def) {
     }
 
     if (update) {
-        auto new_def = def->rebuild(world(), def->type(), new_ops, def->dbg());
-        done_[new_def] = new_def;
+        auto new_def      = def->rebuild(world(), def->type(), new_ops, def->dbg());
+        done_[new_def]    = new_def;
         return done_[def] = new_def;
     }
 
@@ -63,8 +62,7 @@ Lam* EtaExp::eta_wrap(Lam* lam) {
 
 undo_t EtaExp::analyze(const Proxy* proxy) {
     auto lam = proxy->op(0)->as_nom<Lam>();
-    if (expand_.emplace(lam).second)
-        return undo_visit(lam);
+    if (expand_.emplace(lam).second) return undo_visit(lam);
     return No_Undo;
 }
 
@@ -101,4 +99,4 @@ undo_t EtaExp::analyze(const Def* def) {
     return undo;
 }
 
-}
+} // namespace thorin
