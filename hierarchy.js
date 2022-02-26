@@ -123,9 +123,6 @@ var hierarchy =
     [ "thorin::detail::HashTable< size_t, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
       [ "thorin::HashMap< size_t >", "classthorin_1_1HashMap.html", null ]
     ] ],
-    [ "thorin::detail::HashTable< std::pair< thorin::Lam *, const thorin::Def * >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
-      [ "thorin::HashMap< std::pair< thorin::Lam *, const thorin::Def * > >", "classthorin_1_1HashMap.html", null ]
-    ] ],
     [ "thorin::detail::HashTable< std::pair< thorin::Lam *, DefVec >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
       [ "thorin::HashMap< std::pair< thorin::Lam *, DefVec > >", "classthorin_1_1HashMap.html", null ]
     ] ],
