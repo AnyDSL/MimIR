@@ -25,19 +25,19 @@ namespace thorin {
 
 static void closure_conv(World& world) {
     PassMan prepare(world);
-    prepare.add<EtaExp>(nullptr);
-    prepare.add<RetWrap>();
-    prepare.add<EtaCont>();
+    auto ee = prepare.add<EtaExp>(nullptr);
+    // prepare.add<RetWrap>();
+    prepare.add<EtaCont>(ee);
     prepare.run();
 
-    ClosureConv(world).run();
-    world.debug_stream();
+    // ClosureConv(world).run();
+    // world.debug_stream();
 
-    PassMan cleanup(world);
-    auto er = cleanup.add<EtaRed>();
-    auto ee = cleanup.add<EtaExp>(er);
-    cleanup.add<Scalerize>(ee);
-    cleanup.run();
+    // PassMan cleanup(world);
+    // auto er = cleanup.add<EtaRed>();
+    // auto ee = cleanup.add<EtaExp>(er);
+    // cleanup.add<Scalerize>(ee);
+    // cleanup.run();
 }
 
 static void lower_closures(World& world) {
@@ -65,7 +65,7 @@ void optimize(World& world) {
     opt.run();
 
     closure_conv(world);
-    lower_closures(world);
+    // lower_closures(world);
     
     // PassMan codgen_prepare(world);
     // codgen_prepare.add<BoundElim>();
