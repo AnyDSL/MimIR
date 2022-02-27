@@ -43,7 +43,7 @@ private:
     }
     void mark(Node* node) { node->pass_id = cur_pass_id; }
 
-    void split_fv(Def *nom, const Def* fv, DefSet& out);
+    void split_fv(Node* node, const Def* fv, bool& is_init, NodeQueue& worklist);
 
     std::pair<Node*, bool> build_node(Def* nom, NodeQueue& worklist);
     void run(NodeQueue& worklist);

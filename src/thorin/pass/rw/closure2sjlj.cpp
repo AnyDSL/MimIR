@@ -22,7 +22,7 @@ void Closure2SjLj::get_exn_closures(const Def* def, DefSet& visited) {
 
 void Closure2SjLj::get_exn_closures() {
     lam2tag_.clear();
-    if (ignore(curr_nom()) || !curr_nom()->type()->is_cn()) return;
+    if (!curr_nom()->is_set() || !curr_nom()->type()->is_cn()) return;
     auto app = curr_nom()->body()->isa<App>();
     if (!app) return;
     if (auto p = app->callee()->isa<Extract>(); p && isa_ctype(p->tuple()->type())) {

@@ -22,6 +22,10 @@ public:
 
     Lam* scope(Lam* lam);
 
+    bool from_outer_scope(Lam* lam) {
+        return scope(lam) && scope(lam) != scope(curr_nom());
+    }
+
     const Def* eta_wrap(const Def* def, CConv cc, const std::string& dbg) {
         auto& w = world();
         auto [entry, inserted] = old2wrapper_.emplace(def, nullptr);

@@ -66,11 +66,11 @@ const Def* CConvPrepare::rewrite(const Def* def) {
                 cur_body_ = cur_body_->refine(1, new_def)->as<App>();
             return new_def;
         };
-        if (auto lam = isa_retvar(op); lam && scope(lam) != scope(curr_nom())) {
+        if (auto lam = isa_retvar(op); lam && from_outer_scope(lam)) {
             w.DLOG("found return var from enclosing scope: {}", op);
             return refine(eta_wrap(op, CConv::freeBB, "free_ret"));
         }
-        if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock() && scope(bb_lam) != scope(curr_nom())) {
+        if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock() && from_outer_scope(bb_lam)) {
             w.DLOG("found BB from enclosing scope {}", op);
             return refine(w.cconv_mark(op, CConv::freeBB));
         }

@@ -242,14 +242,14 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
             }
             return new_lam;
         }
-    } else if (auto q = isa<Tag::CConv>(CConv::fstclassBB, def)) {
+    } else if (auto q = isa<Tag::CConv>(def); q && (q.flags() == CConv::fstclassBB || q.flags() == CConv::freeBB)) {
         // Note: Same thing about η-conversion applies here
         auto bb_lam = q->arg()->isa_nom<Lam>();
         assert(bb_lam && bb_lam->is_basicblock());
         auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
         subst[bb_lam] = pack_closure(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
         rewrite_body(new_lam, subst);
-        return subst[bb_lam];
+        return map(subst[bb_lam]);
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && lam->ret_var() == var) {
         // HACK to rewrite a retvar that is defined in an enclosing lambda
         // If we put external bb's into the env, this should never happen
@@ -340,16 +340,27 @@ ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
 
 /* Free variable analysis */
 
-void FVA::split_fv(Def *nom, const Def* def, DefSet& out) {
-    if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && var == lam->ret_var())
+void FVA::split_fv(Node* node, const Def* fv, bool& init_node, NodeQueue& worklist) {
+    if (auto [var, lam] = ca_isa_var<Lam>(fv); var && lam && var == lam->ret_var())
         return;
-    if (def->no_dep() || def->isa<Global>() || def->isa<Axiom>() || def->isa_nom()) {
+    if (auto q = isa<Tag::CConv>(CConv::freeBB, fv)) {
+        node->fvs.emplace(q);
         return;
-    } else if (def->dep() == Dep::Var && !def->isa<Tuple>()) {
-        out.emplace(def);
+    }
+    if (fv->no_dep() || fv->isa<Global>() || fv->isa<Axiom>())
+        return;
+    if (auto pred = fv->isa_nom()) {
+        if (pred != node->nom) {
+            auto [pnode, inserted] = build_node(pred, worklist);
+            node->preds.push_back(pnode);
+            pnode->succs.push_back(node);
+            init_node |= inserted;
+        }
+    } else if (fv->dep() == Dep::Var && !fv->isa<Tuple>()) {
+        node->fvs.emplace(fv);
     } else {
-        for (auto op: def->ops())
-            split_fv(nom, op, out);
+        for (auto op: fv->ops())
+            split_fv(node, op, init_node, worklist);
     }
 }
 
@@ -358,36 +369,23 @@ std::pair<FVA::Node*, bool> FVA::build_node(Def *nom, NodeQueue& worklist) {
     auto [p, inserted] = lam2nodes_.emplace(nom, nullptr);
     if (!inserted)
         return {p->second.get(), false};
-    // w.DLOG("FVA: create node: {}", nom);
-    p->second = std::make_unique<Node>();
+    w.DLOG("FVA: create node: {}", nom);
+    p->second = std::make_unique<Node>(Node{nom, {}, {}, {}, 0});
     auto node = p->second.get();
-    node->nom = nom;
-    node->pass_id = 0;
     auto scope = Scope(nom);
-    node->fvs = DefSet();
-    for (auto v: scope.free_defs()) {
-        split_fv(nom, v, node->fvs);
-    }
-    node->preds = Nodes();
-    node->succs = Nodes();
     bool init_node = false;
-    for (auto pred: scope.free_noms()) {
-        if (pred != nom) {
-            auto [pnode, inserted] = build_node(pred, worklist);
-            node->preds.push_back(pnode);
-            pnode->succs.push_back(node);
-            init_node |= inserted;
-        }
+    for (auto v: scope.free_defs()) {
+        split_fv(node, v, init_node, worklist);
     }
     if (!init_node) {
         worklist.push(node);
-        // w.DLOG("FVA: init {}", nom);
+        w.DLOG("FVA: init {}", nom);
     }
     return {node, true};
 }
 
 void FVA::run(NodeQueue& worklist) {
-    auto& w = world();
+    // auto& w = world();
     int iter = 0;
     while(!worklist.empty()) {
         auto node = worklist.front();
