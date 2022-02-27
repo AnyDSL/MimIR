@@ -96,16 +96,16 @@ const Def* apply_closure(const Def* closure, const Def* args) {
 ClosureLit isa_closure_lit(const Def* def, bool lambda_or_branch) {
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_ctype(def->type())) {
-        auto ca = CA::unknown;
+        auto cc = CConv::bot;
         auto fnc = std::get<1_u64>(unpack_closure(tpl));
-        if (auto q = isa<Tag::CA>(fnc)) {
+        if (auto q = isa<Tag::CConv>(fnc)) {
             fnc = q->arg();
-            ca = q.flags();
+            cc = q.flags();
         }
         if (!lambda_or_branch || fnc->isa<Lam>())
-            return ClosureLit(tpl, ca);
+            return ClosureLit(tpl, cc);
     }
-    return ClosureLit(nullptr, CA::bot);
+    return ClosureLit(nullptr, CConv::bot);
 }
 
 const Def* ClosureLit::env() {
@@ -120,7 +120,7 @@ const Def* ClosureLit::fnc() {
 
 Lam* ClosureLit::fnc_as_lam() {
     auto f = fnc();
-    if (auto q = isa<Tag::CA>(f))
+    if (auto q = isa<Tag::CConv>(f))
         f = q->arg();
     return f->as_nom<Lam>();
 }
@@ -226,7 +226,7 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
         auto closure = pack_closure(env, new_lam, closure_type);
         w.DLOG("RW: pack {} ~> {} : {}", lam, closure, closure_type);
         return map(closure);
-    } else if (auto q = isa<Tag::CA>(CA::ret, def)) {
+    } else if (auto q = isa<Tag::CConv>(CConv::ret, def)) {
         if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
             assert(ret_lam && ret_lam->is_basicblock());
             // Note: This should be cont_lam's only occurance after η-expansion, so its okay to 
@@ -242,7 +242,7 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
             }
             return new_lam;
         }
-    } else if (auto q = isa<Tag::CA>(CA::unknown, def)) {
+    } else if (auto q = isa<Tag::CConv>(CConv::fstclassBB, def)) {
         // Note: Same thing about η-conversion applies here
         auto bb_lam = q->arg()->isa_nom<Lam>();
         assert(bb_lam && bb_lam->is_basicblock());

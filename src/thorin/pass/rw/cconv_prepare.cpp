@@ -1,5 +1,5 @@
 
-#include "thorin/pass/rw/eta_cont.h"
+#include "thorin/pass/rw/cconv_prepare.h"
 #include "thorin/pass/fp/eta_exp.h"
 
 #include "thorin/transform/closure_conv.h"
@@ -28,13 +28,13 @@ static Lam* isa_retvar(const Def* def) {
     return nullptr;
 }
 
-Lam* EtaCont::scope(Lam* lam) { 
+Lam* CConvPrepare::scope(Lam* lam) { 
     if (eta_exp_)
         lam = eta_exp_->new2old(lam);
     return lam2fscope_[lam];
 }
 
-void EtaCont::enter() {
+void CConvPrepare::enter() {
     if (curr_nom()->type()->is_returning()) {
         lam2fscope_[curr_nom()] = curr_nom();
         world().DLOG("scope {} -> {}", curr_nom(), curr_nom());
@@ -53,9 +53,9 @@ void EtaCont::enter() {
         cur_body_ = nullptr;
 }
 
-const Def* EtaCont::rewrite(const Def* def) {
+const Def* CConvPrepare::rewrite(const Def* def) {
     auto& w = world();
-    if (!cur_body_ || isa<Tag::CA>(def) || def->isa<Var>()) return def;
+    if (!cur_body_ || isa<Tag::CConv>(def) || def->isa<Var>()) return def;
     for (auto i = 0u; i < def->num_ops(); i++) {
         auto op = def->op(i);
         auto refine = [&](const Def* new_op) {
@@ -68,28 +68,28 @@ const Def* EtaCont::rewrite(const Def* def) {
         };
         if (auto lam = isa_retvar(op); lam && scope(lam) != scope(curr_nom())) {
             w.DLOG("found return var from enclosing scope: {}", op);
-            return refine(eta_wrap(op, CA::proc_e, "foreign_ret"));
+            return refine(eta_wrap(op, CConv::freeBB, "free_ret"));
         }
         if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock() && scope(bb_lam) != scope(curr_nom())) {
             w.DLOG("found BB from enclosing scope {}", op);
-            return refine(w.ca_mark(op, CA::proc_e));
+            return refine(w.cconv_mark(op, CConv::freeBB));
         }
-        if (isa_cont(cur_body_, def, i) && !isa<Tag::CA>(CA::ret, op) && !isa_retvar(op)) {
+        if (isa_cont(cur_body_, def, i) && !isa<Tag::CConv>(CConv::ret, op) && !isa_retvar(op)) {
             if (auto contlam = op->isa_nom<Lam>()) {
-                return refine(w.ca_mark(contlam, CA::ret));
+                return refine(w.cconv_mark(contlam, CConv::ret));
             } else {
-                auto wrapper = eta_wrap(op, CA::ret, "eta_cont");
+                auto wrapper = eta_wrap(op, CConv::ret, "eta_cont");
                 w.DLOG("eta expanded return cont: {} -> {}", op, wrapper);
                 return refine(wrapper);
             }
         }
         if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock() && !isa_callee_br(cur_body_, def, i)) {
             w.DLOG("found firstclass use of BB: {}", bb_lam);
-            return refine(w.ca_mark(bb_lam, CA::unknown));
+            return refine(w.cconv_mark(bb_lam, CConv::fstclassBB));
         }
         if (isa_retvar(op) && !isa_callee_br(cur_body_, def, i)) {
             w.DLOG("found firstclass use of return var: {}", op);
-            return refine(eta_wrap(op, CA::unknown, "firstclass_ret"));
+            return refine(eta_wrap(op, CConv::fstclassBB, "fstclass_ret"));
         }
     }
     return def;

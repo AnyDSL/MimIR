@@ -129,7 +129,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
         auto fn = make_stub(c.fnc_as_lam(), unbox);
         const Def* lwd_clos;
         if (!unbox) {
-            auto mem_ptr = (c.is_escaping()) 
+            auto mem_ptr = (c.mark() == CConv::escaping) 
                 ? w.op_alloc(env->type(), lcm_)
                 : w.op_slot(env->type(), lcm_);
             auto mem = w.extract(mem_ptr, 0_u64);

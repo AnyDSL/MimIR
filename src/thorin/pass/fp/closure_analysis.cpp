@@ -29,7 +29,7 @@ static void split(DefSet& out, const Def* def, bool as_callee) {
             out.insert(var);
     } else if (auto c = isa_closure_lit(def)) {
         split(out, c.fnc_as_lam(), as_callee);
-    } else if (auto q = isa<Tag::CA>(def)) {
+    } else if (auto q = isa<Tag::CConv>(def)) {
         split(out, q->arg(), as_callee);
     } else if (auto proj = def->isa<Extract>()) {
         split(out, proj->tuple(), as_callee);
@@ -66,8 +66,8 @@ undo_t ClosureAnalysis::set_escaping(const Def* def) {
 const Def* ClosureAnalysis::rewrite(const Def* def) {
     if (auto closure = isa_closure_lit(def, false)) {
         auto fnc = closure.fnc();
-        if (!isa<Tag::CA>(fnc)) {
-            auto new_fnc = world().ca_mark(fnc, escaping_.contains(fnc) ? CA::proc_e : CA::proc);
+        if (!isa<Tag::CConv>(fnc)) {
+            auto new_fnc = world().cconv_mark(fnc, escaping_.contains(fnc) ? CConv::escaping : CConv::bot);
             return pack_closure(closure.env(), new_fnc, closure->type());
         }
     }

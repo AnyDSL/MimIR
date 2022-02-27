@@ -12,7 +12,7 @@
 #include "thorin/pass/rw/remem_elim.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
-#include "thorin/pass/rw/eta_cont.h"
+#include "thorin/pass/rw/cconv_prepare.h"
 #include "thorin/pass/rw/closure2sjlj.h"
 
 // old stuff
@@ -27,7 +27,7 @@ static void closure_conv(World& world) {
     PassMan prepare(world);
     auto ee = prepare.add<EtaExp>(nullptr);
     // prepare.add<RetWrap>();
-    prepare.add<EtaCont>(ee);
+    prepare.add<CConvPrepare>(ee);
     prepare.run();
 
     // ClosureConv(world).run();

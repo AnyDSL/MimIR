@@ -110,9 +110,6 @@ private:
 /// - Folded branches: <code>(type, proj i (lam_0, .., lam_N), proj i (env_0, .., env_N))</code>
 /// The later form is introduced by the @p UnboxClosures pass.
 
-/* marks */
-inline bool ca_is_escaping(CA v) { return v == CA::unknown || v == CA::proc_e; }
-
 template<class N>
 std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
     if (auto proj = def->isa<Extract>()) {
@@ -166,17 +163,16 @@ public:
     bool is_returning() { return fnc_type()->is_returning(); }
     bool is_basicblock() { return fnc_type()->is_basicblock(); }
     unsigned int order();
-    bool is_escaping() { return ca_is_escaping(mark_); };
-    CA mark() { return mark_; }
+    CConv mark() { return mark_; }
     /// @}
 
 private:
-    ClosureLit(const Tuple* def, CA mark = CA::bot)
+    ClosureLit(const Tuple* def, CConv mark = CConv::bot)
         : def_(def), mark_(mark)
     {};
 
     const Tuple* def_;
-    const CA mark_;
+    const CConv mark_;
 
     friend ClosureLit isa_closure_lit(const Def*, bool);
 };

@@ -76,8 +76,8 @@ set(THORIN_SOURCES
     pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
-    pass/rw/eta_cont.h
-    pass/rw/eta_cont.cpp
+    pass/rw/cconv_prepare.h
+    pass/rw/cconv_prepare.cpp
     pass/rw/closure2sjlj.h
     pass/rw/closure2sjlj.cpp
     transform/cleanup_world.cpp
