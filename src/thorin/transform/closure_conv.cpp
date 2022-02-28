@@ -122,7 +122,7 @@ Lam* ClosureLit::fnc_as_lam() {
     auto f = fnc();
     if (auto q = isa<Tag::CConv>(f))
         f = q->arg();
-    return f->as_nom<Lam>();
+    return f->isa_nom<Lam>();
 }
 
 const Def* ClosureLit::env_var() {
