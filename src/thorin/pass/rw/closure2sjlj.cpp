@@ -156,10 +156,8 @@ void Closure2SjLj::enter() {
     auto m0 = body->arg(0); 
     assert(m0->type() == w.type_mem());
     auto [m1, tag] = w.op_setjmp(m0, cur_jbuf_)->projs<2>();
-    tag = w.op(Conv::s2s, w.type_int_width(lam2tag_.size() + 1), tag);
+    tag = w.op(Conv::s2s, w.type_int_width(lam2tag_.size()), tag);
     auto branch = w.extract(w.tuple(branches), tag);
-    // auto [m2, rb] = w.op_load(m1, cur_rbuf_)->projs<2>();
-    // cur_rbuf_ = rb;
     curr_nom()->set_body(apply_closure(branch, m1));
 }
 

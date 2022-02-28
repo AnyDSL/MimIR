@@ -235,7 +235,7 @@ World::World(const std::string& name)
         auto buf_ptr_t = type_ptr(type_int_width(8));
         data_.sjlj_alloc_jmpbuf = axiom(pi({sigma(), type_mem()}, sigma({type_mem(), buf_ptr_t})), Tag::AllocJmpBuf, (flags_t) 0, dbg("alloc_jmpbuf"));
         data_.sjlj_setjmp_ = axiom(pi({type_mem(), buf_ptr_t}, sigma({type_mem(), type_int_width(32)})), Tag::SetJmp, (flags_t) 0, dbg("set_jmp"));
-        data_.sjlj_longjmp_ = axiom(cn({type_mem(), buf_ptr_t, type_int()}), Tag::LongJmp, (flags_t) 0, dbg("long_jmp"));
+        data_.sjlj_longjmp_ = axiom(cn({type_mem(), buf_ptr_t, type_int_width(32)}), Tag::LongJmp, (flags_t) 0, dbg("long_jmp"));
     }
 }
 
