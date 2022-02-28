@@ -77,29 +77,15 @@ Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env, bool adjust_bb_type
     return map<Lam>(lam, new_lam);
 }
 
-// TODO: Handle ptr, cn's?
-static size_t repr_size(const Def* type, size_t inf) {
-    if (auto size = thorin::isa_sized_type(type)) {
-        if (auto sz = isa_lit(size))
-            return *sz;
-        else
-            return inf;
-    } else if (auto sigma = type->isa<Sigma>()) {
-        auto size = 0;
-        for (size_t i = 0; i < sigma->num_ops(); i++)
-            size += repr_size(sigma->op(0), inf);
-        return size;
-    } else if (auto arr = type->isa<Arr>(); arr && isa_lit(arr->shape())) {
-        return as_lit(arr->shape()) * repr_size(arr->body(), inf);
-    } else {
-        return inf;
-    }
-}
+
+// TODO: In theory, we can directly store ('unbox') scalar values that fit a pointer
+// But this also requires more elaborate conversions, since in LLVM bitcast
+// can only convert pointers to pointers
 
 bool LowerTypedClosures::unbox_env(const Def* type) {
-    return repr_size(type, 64 * 2) <= 64;
+    // return isa_sized_type(type);
+    return false;
 }
-
 
 const Def* LowerTypedClosures::rewrite(const Def* def) {
     switch(def->node()) {
@@ -142,8 +128,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
     if (auto c = isa_closure_lit(def)) {
         auto env = rewrite(c.env());
         auto unbox = unbox_env(env);
-        auto fn = make_stub(c.fnc_as_lam(), unbox, true);
-        const Def* lwd_clos;
+        const Def* fn = make_stub(c.fnc_as_lam(), unbox, true);
         if (!unbox) {
             auto mem_ptr = (c.mark() == CConv::escaping) 
                 ? w.op_alloc(env->type(), lcm_)
@@ -152,11 +137,11 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
             auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
             lcm_ = w.op_store(mem, env_ptr, env);
             map(lvm_, lcm_);
-            lwd_clos = w.tuple({env_ptr, fn});
-        } else {
-            lwd_clos = w.tuple({env, fn});
+            env = env_ptr;
         }
-        return w.op_bitcast(new_type, lwd_clos);
+        fn = w.op_bitcast(new_type->op(0), fn);
+        env = w.op_bitcast(new_type->op(1), env);
+        return map(def, w.tuple({fn, env}));
     } else if (auto lam = def->isa_nom<Lam>()) {
         // Lam's in callee pos are scalarized (unpacked env)
         // or external in which case their env is []
