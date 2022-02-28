@@ -26,18 +26,16 @@ namespace thorin {
 static void closure_conv(World& world) {
     PassMan prepare(world);
     auto ee = prepare.add<EtaExp>(nullptr);
-    // prepare.add<RetWrap>();
     prepare.add<CConvPrepare>(ee);
     prepare.run();
 
-    // ClosureConv(world).run();
-    // world.debug_stream();
+    ClosureConv(world).run();
 
-    // PassMan cleanup(world);
-    // auto er = cleanup.add<EtaRed>();
-    // auto ee = cleanup.add<EtaExp>(er);
-    // cleanup.add<Scalerize>(ee);
-    // cleanup.run();
+    PassMan cleanup(world);
+    auto er = cleanup.add<EtaRed>();
+    ee = cleanup.add<EtaExp>(er);
+    cleanup.add<Scalerize>(ee);
+    cleanup.run();
 }
 
 static void lower_closures(World& world) {
@@ -49,7 +47,7 @@ static void lower_closures(World& world) {
     closure_destruct.add<Closure2SjLj>();
     closure_destruct.run();
 
-    // LowerTypedClosures(world).run();
+    LowerTypedClosures(world).run();
 }
 
 void optimize(World& world) {
@@ -65,15 +63,14 @@ void optimize(World& world) {
     opt.run();
 
     closure_conv(world);
-    // lower_closures(world);
+    lower_closures(world);
     
-    // PassMan codgen_prepare(world);
+    PassMan codgen_prepare(world);
     // codgen_prepare.add<BoundElim>();
-    // codgen_prepare.add<RememElim>();
-    // codgen_prepare.add<Scalerize>(nullptr);
-    // codgen_prepare.add<Alloc2Malloc>();
-    // codgen_prepare.add<RetWrap>();
-    // codgen_prepare.run();
+    codgen_prepare.add<RememElim>();
+    codgen_prepare.add<Alloc2Malloc>();
+    codgen_prepare.add<RetWrap>();
+    codgen_prepare.run();
 }
 
 }

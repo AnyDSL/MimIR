@@ -210,6 +210,10 @@ void CodeGen::run() {
     emit_module();
 
     stream_ << "declare i8* @malloc(i64)" << '\n'; // HACK
+    // SJLJ intrinsics (GLIBC Versions)
+    stream_ << "declare i32 @_setjmp(i8*) returns_twice" << '\n';
+    stream_ << "declare void @longjmp(i8*, i32) noreturn" << '\n';
+    stream_ << "declare i64 @jmpbuf_size()" << '\n';
     stream_ << type_decls_.str() << '\n';
     stream_ << func_decls_.str() << '\n';
     stream_ << vars_decls_.str() << '\n';
@@ -323,6 +327,13 @@ void CodeGen::emit_epilogue(Lam* lam) {
             }
         }
         return bb.tail("br label {}", id(callee));
+    } else if (auto longjmp = isa<Tag::LongJmp>(app)) {
+        auto [mem, jbuf, tag] = app->args<3>();
+        emit_unsafe(mem);
+        auto emitted_jb = emit(jbuf);
+        auto emitted_tag = emit(tag);
+        bb.tail("call void @longjmp(i8* {}, i32 {})", emitted_jb, emitted_tag);
+        return bb.tail("unreachable");
     } else if (app->callee_type()->is_returning()) { // function call
         auto emmited_callee = emit(app->callee());
 
@@ -679,7 +690,17 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto val_t = convert(store->arg(2)->type());
         bb.body().emplace_back().fmt("store {} {}, {} {}", val_t, val, ptr_t, ptr);
         return {};
-    } if (auto tuple = def->isa<Tuple>()) {
+    } else if (auto q = isa<Tag::AllocJmpBuf>(def)) {
+        emit_unsafe(q->arg());
+        auto size = name + ".size";
+        bb.assign(size, "call i64 @jmpbuf_size()");
+        return bb.assign(name, "alloca i8, i64 {}", size);
+    } else if (auto setjmp = isa<Tag::SetJmp>(def)) {
+        auto [mem, jmpbuf] = setjmp->arg()->projs<2>();
+        emit_unsafe(mem);
+        auto emitted_jb = emit(jmpbuf);
+        return bb.assign(name, "call i32 @_setjmp(i8* {})", emitted_jb);
+    } else if (auto tuple = def->isa<Tuple>()) {
         return emit_tuple(tuple);
     } else if (auto pack = def->isa<Pack>()) {
         if (auto lit = isa_lit(pack->body()); lit && *lit == 0) return "zeroinitializer";
