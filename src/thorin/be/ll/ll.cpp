@@ -150,7 +150,8 @@ std::string CodeGen::convert(const Def* type) {
         if (auto arity = isa_lit(arr->shape())) size = *arity;
         s.fmt("[{} x {}]", size, elem_type);
     } else if (auto pi = type->isa<Pi>()) {
-        s.fmt("{} (", convert(pi->doms().back()->as<Pi>()->dom()));
+        assert(pi->is_returning() && "should never have to convert type of BB");
+        s.fmt("{} (", convert_ret_pi(pi->ret_pi()));
 
         const char* sep = "";
         for (auto dom : pi->doms().skip_back()) {
@@ -158,6 +159,8 @@ std::string CodeGen::convert(const Def* type) {
             s << sep << convert(dom);
             sep = ", ";
         }
+
+        s << ")*";
     } else if (auto sigma = type->isa<Sigma>()) {
         if (sigma->isa_nom()) {
             name = id(sigma);
@@ -303,7 +306,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
                     bb.tail("ret_val.e{} = {};\n", i, values[i]);
                 return bb.tail("ret ret_val");
         }
-    } else if (auto ex = app->callee()->isa<Extract>()) {
+    } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
         emit_unsafe(app->arg());
         auto c = emit(ex->index());
         auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
@@ -320,8 +323,8 @@ void CodeGen::emit_epilogue(Lam* lam) {
             }
         }
         return bb.tail("br label {}", id(callee));
-    } else if (auto callee = app->callee()->isa_nom<Lam>()) { // function call
-        auto ret_lam = app->args().back()->as_nom<Lam>();
+    } else if (app->callee_type()->is_returning()) { // function call
+        auto emmited_callee = emit(app->callee());
 
         std::vector<std::string> args;
         auto app_args = app->args();
@@ -330,6 +333,14 @@ void CodeGen::emit_epilogue(Lam* lam) {
                 args.emplace_back(convert(arg->type()) + " " + emitted_arg);
         }
 
+        if (app->args().back()->isa<Bot>()) {
+            // TODO: Perhaps it'd be better to simply η-wrap this prior to the BE...
+            assert(convert_ret_pi(app->callee_type()->ret_pi()) == "void");
+            bb.tail("call void {}({, })", emmited_callee, args);
+            return bb.tail("unreachable");
+        }
+
+        auto ret_lam = app->args().back()->as_nom<Lam>();
         size_t num_vars = ret_lam->num_vars();
         size_t n = 0;
         Array<const Def*> values(num_vars);
@@ -342,7 +353,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         }
 
         if (n == 0) {
-            bb.tail("call void {}({, })", id(callee), args);
+            bb.tail("call void {}({, })", emmited_callee, args);
         } else {
             auto name = "%" + app->unique_name() + ".ret";
             auto ret_ty = convert_ret_pi(ret_lam->type());
@@ -350,7 +361,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
             assert(!isa<Tag::Mem>(phi->type()));
             lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
             locals_[phi] = id(phi);
-            bb.tail("{} = call {} {}({, })", name, ret_ty, id(callee), args);
+            bb.tail("{} = call {} {}({, })", name, ret_ty, emmited_callee, args);
         }
 
         return bb.tail("br label {}", id(ret_lam));
