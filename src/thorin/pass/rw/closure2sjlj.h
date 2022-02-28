@@ -24,36 +24,17 @@ private:
 
     LamMap<std::pair<int, const Def*>> lam2tag_;
     DefMap<Lam*> dom2throw_;
-    LamMap<Lam*> lam2lpad_;
+    DefMap<Lam*> lam2lpad_;
     LamSet ignore_;
 
     Lam* get_throw(const Def* res_type);
-    Lam* get_lpad(Lam* lam);
+    Lam* get_lpad(Lam* lam, const Def* rb);
 
     void get_exn_closures();
     void get_exn_closures(const Def* def, DefSet& visited);
 
     const Def* cur_rbuf_ = nullptr;
     const Def* cur_jbuf_ = nullptr;
-
-#if 0
-    cn [ :mem, [i8*, i8*, i64], <type> ]
-        fn (:mem, [buf, res, tag], x) =
-            m2 := store res x;
-            :longjmp (m2, buf, tag)
-
-    
-    cn [:mem, <env_type>, i8*] ~> ctype [:mem, i8*]
-    fn (m, env, res_ptr) :=
-        args := load ptr
-        f (m, env, args...)
-
-    cn [:mem, <args>, i8*] ~> CTYPE[:mem, i8*]
-        <body> <args>
-#endif
-
-    
-
 };
 
 }

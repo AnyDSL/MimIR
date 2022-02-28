@@ -94,17 +94,18 @@ Lam* Closure2SjLj::get_throw(const Def* dom) {
     return tlam;
 }
 
-Lam* Closure2SjLj::get_lpad(Lam* lam) {
+Lam* Closure2SjLj::get_lpad(Lam* lam, const Def* rb) {
     auto& w = world();
-    auto [p, inserted] = lam2lpad_.emplace(lam, nullptr);
+    auto [p, inserted] = lam2lpad_.emplace(w.tuple({lam, rb}), nullptr);
     auto& lpad = p->second;
     if (inserted || !lpad) {
         auto [_, env_type, dom] = split(lam->dom());
-        auto pi = w.cn(w.sigma({w.type_mem(), env_type, void_ptr()}));
+        auto pi = w.cn(w.sigma({w.type_mem(), env_type}));
         lpad = w.nom_lam(pi, w.dbg("lpad"));
-        auto [m, env, arg_ptr] = split(lpad->var());
+        auto [m, env, __] = split(lpad->var());
+        auto [m1, arg_ptr] = w.op_load(m, rb)->projs<2>();
         arg_ptr = w.op_bitcast(w.type_ptr(dom), arg_ptr);
-        auto [m2, args] = w.op_load(m, arg_ptr)->projs<2>();
+        auto [m2, args] = w.op_load(m1, arg_ptr)->projs<2>();
         lpad->app(lam, rebuild(m2, env, args));
         ignore_.emplace(lpad);
     }
@@ -134,11 +135,11 @@ void Closure2SjLj::enter() {
 
     auto body = curr_nom()->body()->as<App>();
 
-    auto branch_type = ctype(w.cn({w.type_mem(), void_ptr()}));
+    auto branch_type = ctype(w.cn(w.type_mem()));
     auto branches = DefVec(lam2tag_.size() + 1);
     {
         auto env = w.tuple(body->args().skip_front());
-        auto new_callee = w.nom_lam(w.cn({w.type_mem(), env->type(), void_ptr()}), w.dbg("sjlj_wrap"));
+        auto new_callee = w.nom_lam(w.cn({w.type_mem(), env->type()}), w.dbg("sjlj_wrap"));
         auto [m, env_var, _] = split(new_callee->var());
         auto new_args = DefArray(env->num_ops() + 1, [&](auto i) {
             return (i == 0) ? m : env_var->proj(i - 1);
@@ -149,7 +150,7 @@ void Closure2SjLj::enter() {
 
     for (auto [exn_lam, p]: lam2tag_) {
         auto [i, env] = p;
-        branches[i] = pack_closure(env, get_lpad(exn_lam), branch_type);
+        branches[i] = pack_closure(env, get_lpad(exn_lam, cur_rbuf_), branch_type);
     }
 
     auto m0 = body->arg(0); 
@@ -157,8 +158,9 @@ void Closure2SjLj::enter() {
     auto [m1, tag] = w.op_setjmp(m0, cur_jbuf_)->projs<2>();
     tag = w.op(Conv::s2s, w.type_int_width(lam2tag_.size() + 1), tag);
     auto branch = w.extract(w.tuple(branches), tag);
-    auto [m2, rb] = w.op_load(m1, cur_rbuf_)->projs<2>();
-    curr_nom()->set_body(apply_closure(branch, {m2, rb}));
+    // auto [m2, rb] = w.op_load(m1, cur_rbuf_)->projs<2>();
+    // cur_rbuf_ = rb;
+    curr_nom()->set_body(apply_closure(branch, m1));
 }
 
 const Def* Closure2SjLj::rewrite(const Def* def) {
