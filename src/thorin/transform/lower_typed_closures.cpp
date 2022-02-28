@@ -38,7 +38,7 @@ static const Def* insert_ret(const Def* def, const Def* ret) {
     return (def->level() == Sort::Term) ? w.tuple(new_ops) : w.sigma(new_ops);
 }
 
-Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env) {
+Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env, bool adjust_bb_type) {
     assert(lam && "make_stub: not a lam");
     if (auto new_lam = old2new_.lookup(lam); new_lam && (*new_lam)->isa_nom<Lam>())
         return (*new_lam)->as_nom<Lam>();
@@ -47,7 +47,7 @@ Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env) {
         auto new_dom = rewrite(lam->dom(i));
         return (i == CLOSURE_ENV_PARAM && !unbox_env) ? w.type_ptr(new_dom) : new_dom;
     }));
-    if (lam->is_basicblock())
+    if (lam->is_basicblock() && adjust_bb_type)
         new_dom = insert_ret(new_dom, dummy_ret_->type());
     auto new_type = w.cn(new_dom);
     auto new_lam = lam->stub(w, new_type, w.dbg(lam->name()));
@@ -142,7 +142,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
     if (auto c = isa_closure_lit(def)) {
         auto env = rewrite(c.env());
         auto unbox = unbox_env(env);
-        auto fn = make_stub(c.fnc_as_lam(), unbox);
+        auto fn = make_stub(c.fnc_as_lam(), unbox, true);
         const Def* lwd_clos;
         if (!unbox) {
             auto mem_ptr = (c.mark() == CConv::escaping) 
@@ -160,7 +160,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
     } else if (auto lam = def->isa_nom<Lam>()) {
         // Lam's in callee pos are scalarized (unpacked env)
         // or external in which case their env is []
-        return make_stub(lam, true);
+        return make_stub(lam, true, false);
     } else if (auto nom = def->isa_nom()) {
         assert(!isa_ctype(nom));
         auto new_nom = nom->stub(w, new_type, new_dbg);
