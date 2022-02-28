@@ -22,12 +22,20 @@ void LowerTypedClosures::run() {
     }
 }
 
-// After scalarize, the :mem paramter can be basically anywhere
+// TODO: This shouldn't be required anymore...
 static const Def* get_mem_var(Lam *lam) {
     for (size_t i = 0; i < lam->num_doms(); i++)
         if (thorin::isa<Tag::Mem>(lam->dom(i)))
-            return lam->var(i);
+            return lam->var(i, lam->world().dbg("mem"));
     assert(false && "continuation \\wo :mem paramter");
+}
+
+static const Def* insert_ret(const Def* def, const Def* ret) {
+    auto new_ops = DefArray(def->num_projs() + 1, [&](auto i) {
+        return (i == def->num_projs()) ? ret : def->proj(i);
+    });
+    auto& w = def->world();
+    return (def->level() == Sort::Term) ? w.tuple(new_ops) : w.sigma(new_ops);
 }
 
 Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env) {
@@ -35,11 +43,14 @@ Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env) {
     if (auto new_lam = old2new_.lookup(lam); new_lam && (*new_lam)->isa_nom<Lam>())
         return (*new_lam)->as_nom<Lam>();
     auto& w = world();
-    auto new_type = w.cn(Array<const Def*>(lam->num_doms(), [&](auto i) {
+    auto new_dom = w.sigma(Array<const Def*>(lam->num_doms(), [&](auto i) {
         auto new_dom = rewrite(lam->dom(i));
         return (i == CLOSURE_ENV_PARAM && !unbox_env) ? w.type_ptr(new_dom) : new_dom;
     }));
-    auto new_lam = lam->stub(w, new_type, w.dbg("uc" + lam->name()));
+    if (lam->is_basicblock())
+        new_dom = insert_ret(new_dom, dummy_ret_->type());
+    auto new_type = w.cn(new_dom);
+    auto new_lam = lam->stub(w, new_type, w.dbg(lam->name()));
     w.DLOG("stub {} ~> {}", lam, new_lam);
     new_lam->set_name(lam->name());
     new_lam->set_body(lam->body());
@@ -50,7 +61,7 @@ Lam *LowerTypedClosures::make_stub(Lam* lam, bool unbox_env) {
     }
     auto mem_var = get_mem_var(lam);
     const Def* lcm = get_mem_var(new_lam);
-    const Def* env = new_lam->var(CLOSURE_ENV_PARAM);
+    const Def* env = new_lam->var(CLOSURE_ENV_PARAM, w.dbg("closure_env"));
     if (!unbox_env) {
         auto env_mem = w.op_load(lcm, env);
         lcm = w.extract(env_mem, 0_u64);
@@ -89,6 +100,7 @@ bool LowerTypedClosures::unbox_env(const Def* type) {
     return repr_size(type, 64 * 2) <= 64;
 }
 
+
 const Def* LowerTypedClosures::rewrite(const Def* def) {
     switch(def->node()) {
         case Node::Bot:
@@ -108,7 +120,11 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
     auto new_dbg = def->dbg() ? rewrite(def->dbg()) : nullptr;
 
     if (auto ct = isa_ctype(def)) {
-        return map(def, w.sigma({rewrite(ct->op(1)), rewrite(ct->op(2))}));
+        auto pi = rewrite(ct->op(1))->as<Pi>();
+        if (pi->is_basicblock())
+            pi = w.cn(insert_ret(pi->dom(), dummy_ret_->type()));
+        auto env_type = rewrite(ct->op(2));
+        return map(def, w.sigma({pi, env_type}));
     } else if (auto proj = def->isa<Extract>()) {
         auto tuple = proj->tuple();
         auto idx = isa_lit(proj->index());
@@ -161,6 +177,12 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
         auto new_ops = Array<const Def*>(def->num_ops(), [&](auto i) {
             return rewrite(def->op(i));
         });
+
+        if (auto app = def->isa<App>()) {
+            if (auto p = app->callee()->isa<Extract>(); p && isa_ctype(p->tuple()->type()) 
+                    && app->callee_type()->is_basicblock())
+                new_ops[1] = insert_ret(new_ops[1], dummy_ret_);
+        }
         
         auto new_def = def->rebuild(w, new_type, new_ops, new_dbg);
 

@@ -28,7 +28,8 @@ public:
     LowerTypedClosures(World& world)
         : world_(world)
         , old2new_()
-        , worklist_(){}
+        , worklist_() 
+        , dummy_ret_(world.bot(world.cn(world.type_mem()))) {}
 
     void run();
 
@@ -59,6 +60,7 @@ private:
     Def2Def old2new_;
     StubQueue worklist_;
 
+    const Def* const dummy_ret_;
     const Def* lvm_;  //< Last visited memory token
     const Def* lcm_;  //< Last created memory token
 };
