@@ -30,10 +30,10 @@ const Def* UnboxClosure::rewrite(const Def* def) {
         w.DLOG("FLATTEN BRANCH {}", app->callee());
         auto new_branches = w.tuple(DefArray(branches.size(), [&](auto i) {
             auto c = branches[i];
-            auto clam = c.fnc_as_lam();
-            auto [entry, inserted] = branch2dropped_.emplace(clam, nullptr);
+            auto [entry, inserted] = branch2dropped_.emplace(c, nullptr);
             auto& dropped_lam = entry->second;
             if (inserted || !dropped_lam) {
+                auto clam = c.fnc_as_lam();
                 dropped_lam = clam->stub(w, ctype_to_pi(c.type(), w.sigma()), clam->dbg());
                 auto new_vars = DefArray(dropped_lam->num_doms(), [&](auto i) {
                     return (i == CLOSURE_ENV_PARAM) ? c.env() : dropped_lam->var(i); 

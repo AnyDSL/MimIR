@@ -25,7 +25,7 @@ public:
 private:
     DefSet keep_;
     LamMap<std::tuple<Lam*, DefVec>> boxed2unboxed_;
-    Lam2Lam branch2dropped_;
+    DefMap<Lam*> branch2dropped_;
 };
 
 };
