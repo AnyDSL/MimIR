@@ -25,10 +25,10 @@ static void split(DefSet& out, const Def* def, bool as_callee) {
     if (auto lam = def->isa<Lam>()) {
         out.insert(lam);
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam) {
-        if ((as_callee && var->type()->isa<Pi>()) || interesting_type(var))
+        if (var->type()->isa<Pi>() || interesting_type(var))
             out.insert(var);
-    } else if (auto c = isa_closure_lit(def)) {
-        split(out, c.fnc_as_lam(), as_callee);
+    } else if (auto c = isa_closure_lit(def, false)) {
+        split(out, c.fnc(), as_callee);
     } else if (auto q = isa<Tag::CConv>(def)) {
         split(out, q->arg(), as_callee);
     } else if (auto proj = def->isa<Extract>()) {
@@ -55,7 +55,7 @@ undo_t ClosureAnalysis::set_escaping(const Def* def) {
             continue;
         if (auto lam = d->isa_nom<Lam>())
             undo = std::min(undo, undo_visit(lam));
-        else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam)
+        else if (auto [var, lam] = ca_isa_var<Lam>(d); var && lam)
             undo = std::min(undo, undo_visit(lam));
         world().DLOG("set escaping: {}", d);
         escaping_.emplace(d);
@@ -77,12 +77,12 @@ const Def* ClosureAnalysis::rewrite(const Def* def) {
 undo_t ClosureAnalysis::analyze(const Def* def) {
     auto& w = world();
     if (auto c = isa_closure_lit(def, false)) {
-        w.DLOG("closure ({}, {})", c.env(), c.fnc_as_lam());
-        if (is_escaping(c.fnc_as_lam()) || is_escaping(c.env_var()))
+        w.DLOG("closure ({}, {})", c.env(), c.fnc());
+        if (!c.fnc_as_lam() || is_escaping(c.fnc_as_lam()) || is_escaping(c.env_var()))
             return set_escaping(c.env());
     } else if (auto store = isa<Tag::Store>(def)) {
-        w.DLOG("store {}", store->arg());
-        return set_escaping(store->arg());
+        w.DLOG("store {}", store->arg(2));
+        return set_escaping(store->arg(2));
     } else if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
         w.DLOG("app {}", def);
         auto undo = No_Undo;
