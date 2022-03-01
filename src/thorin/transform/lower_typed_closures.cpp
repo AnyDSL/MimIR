@@ -22,14 +22,6 @@ void LowerTypedClosures::run() {
     }
 }
 
-// TODO: This shouldn't be required anymore...
-static const Def* get_mem_var(Lam *lam) {
-    for (size_t i = 0; i < lam->num_doms(); i++)
-        if (thorin::isa<Tag::Mem>(lam->dom(i)))
-            return lam->var(i, lam->world().dbg("mem"));
-    assert(false && "continuation \\wo :mem paramter");
-}
-
 static const Def* insert_ret(const Def* def, const Def* ret) {
     auto new_ops = DefArray(def->num_projs() + 1, [&](auto i) {
         return (i == def->num_projs()) ? ret : def->proj(i);
@@ -63,23 +55,24 @@ Lam *LowerTypedClosures::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type
         lam->make_internal();
         new_lam->make_external();
     }
-    auto mem_var = get_mem_var(lam);
-    const Def* lcm = get_mem_var(new_lam);
+    const Def* lcm = new_lam->mem_var();
     const Def* env = new_lam->var(CLOSURE_ENV_PARAM, w.dbg("closure_env"));
     if (mode == Box) {
         auto env_mem = w.op_load(lcm, env);
-        lcm = w.extract(env_mem, 0_u64);
-        env = w.extract(env_mem, 1_u64, w.dbg("env"));
+        lcm = w.extract(env_mem, 0_u64, w.dbg("mem"));
+        env = w.extract(env_mem, 1_u64, w.dbg("closure_env"));
     } else if (mode == Unbox) {
-        env = w.op_bitcast(lam->dom(CLOSURE_ENV_PARAM), env);
+        env = w.op_bitcast(lam->dom(CLOSURE_ENV_PARAM), env, w.dbg("unboxed_env"));
     }
     auto new_args = w.tuple(Array<const Def*>(lam->num_doms(), [&](auto i) {
         return (i == CLOSURE_ENV_PARAM) ? env
-             : (lam->var(i) == mem_var) ? lcm
+             : (lam->var(i) == lam->mem_var()) ? lcm
              : new_lam->var(i);
     }));
+    assert(new_args->num_projs() == lam->num_doms());
+    assert(lam->num_doms() <= new_lam->num_doms());
     map(lam->var(), new_args);
-    worklist_.emplace(mem_var, lcm, new_lam);
+    worklist_.emplace(lam->mem_var(), lcm, new_lam);
     return map<Lam>(lam, new_lam);
 }
 
@@ -97,6 +90,9 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
 
     if (auto new_def = old2new_.lookup(def))
         return *new_def;
+
+    if (auto var = def->isa<Var>(); var && var->nom()->isa_nom<Lam>())
+        assert(false && "Lam vars should appear in a map!");
 
     auto new_type = rewrite(def->type());
     auto new_dbg = def->dbg() ? rewrite(def->dbg()) : nullptr;
@@ -123,7 +119,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
 
     if (auto c = isa_closure_lit(def)) {
         auto env = rewrite(c.env());
-        auto mode = isa_sized_type(env->type()) ? Unbox : Box;
+        auto mode = isa<Tag::Int>(env->type()) ? Unbox : Box;
         const Def* fn = make_stub(c.fnc_as_lam(), mode, true);
         if (env->type() == w.sigma()) {
             // Optimize empty env
