@@ -35,7 +35,7 @@ public:
 
     const Def* env_type() {
         auto& w = world();
-        return w.type_ptr(w.type_int_width(8));
+        return w.type_ptr(w.sigma());
     }
 
     bool unbox_env(const Def* type);
@@ -44,7 +44,9 @@ private:
 
     const Def* rewrite(const Def* def);
 
-    Lam* make_stub(Lam* lam, bool unbox_env, bool adjust_bb_type);
+
+    enum Mode { Box = 0, Unbox, No_Env };
+    Lam* make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type);
 
     template<class D = const Def>
     D* map(const Def* old_def, D* new_def) {
