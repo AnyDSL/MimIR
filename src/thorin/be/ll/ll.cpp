@@ -708,10 +708,18 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     } else if (auto extract = def->isa<Extract>()) {
         auto tuple = extract->tuple();
         auto index = extract->index();
+
+        if (tuple->isa<Var>()) { 
+            // computing the index may crash, so we bail out
+            assert(isa<Tag::Mem>(extract) && "only mem-var should not be mapped");
+            return {};
+        }
+
         auto ll_tup = emit_unsafe(tuple);
         auto ll_idx = emit(index);
 
-        if (isa<Tag::Mem>(extract->type())) return {};
+        if (isa<Tag::Mem>(extract->type())) 
+            return {};
 
         if (tuple->num_projs() == 2) {
             if (isa<Tag::Mem>(tuple->proj(2, 0_s)->type())) return ll_tup;
