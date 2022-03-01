@@ -711,7 +711,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
         if (tuple->isa<Var>()) { 
             // computing the index may crash, so we bail out
-            assert(isa<Tag::Mem>(extract) && "only mem-var should not be mapped");
+            assert(isa<Tag::Mem>(extract->type()) && "only mem-var should not be mapped");
             return {};
         }
 
