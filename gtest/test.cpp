@@ -49,9 +49,7 @@ TEST(Main, ll) {
     // TODO make sure that proper clang is in path on Windows
     std::system("clang test.ll -o test");
     // I don't know why but for some reason the output doesn't appear on the test server.
-#if 0
     EXPECT_EQ(4, WEXITSTATUS(std::system("./test a b c")));
     EXPECT_EQ(7, WEXITSTATUS(std::system("./test a b c d e f")));
-#endif
 #endif
 }
