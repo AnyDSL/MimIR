@@ -19,7 +19,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(THORIN_PROFILE "profile complexity in thorin::HashTable - only works in Debug build" ON)
 
 find_program(MEMORYCHECK_COMMAND valgrind)
-set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --trace-children=no --error-exitcode=1")
+set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
 include(CTest)
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
