@@ -5,7 +5,12 @@
 
 namespace thorin {
 
-template<class... Args> void err(const char* fmt, Args&&... args) { errf(fmt, std::forward<Args&&>(args)...); std::abort(); }
+template<class... Args>
+[[noreturn]] void err(const char* fmt, Args&&... args) {
+    StringStream s;
+    s.fmt(fmt, std::forward<Args&&>(args)...);
+    throw s.str();
+}
 
 void ErrorHandler::expected_shape(const Def* def) {
     err("exptected shape but got '{}' of type '{}'", def, def->type());
