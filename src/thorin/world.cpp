@@ -156,7 +156,7 @@ World::World(std::string_view name)
         type->set_codom(pi(S, D));
         data_.bitcast_ = axiom(normalize_bitcast, type, Tag::Bitcast, 0, dbg("bitcast"));
     }
-    { // lea:, [n: nat, Ts: «n; *», as: nat] -> [ptr(«j: n; Ts#j», as), i: int n] -> ptr(Ts#i, as)
+    { // lea: [n: nat, Ts: «n; *», as: nat] -> [ptr(«j: n; Ts#j», as), i: int n] -> ptr(Ts#i, as)
         auto dom = nom_sigma(space(), 3);
         dom->set(0, nat);
         dom->set(1, arr(dom->var(0, dbg("n")), kind()));
@@ -222,8 +222,8 @@ World::World(std::string_view name)
         type->set_codom(pi(T, R));
         data_.atomic_ = axiom(nullptr, type, Tag::Atomic, 0, dbg("atomic"));
     }
-    { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o;
-        // Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
+    { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i»
+        // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
         // TODO select which Is/Os to zip
         auto rs = nom_sigma(kind(), 2);
         rs->set(0, nat);
