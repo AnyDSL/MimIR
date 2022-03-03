@@ -1058,7 +1058,39 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
         auto fn_ty = cn_mem_flat(dom,codom);
         auto pb_ty = cn_mem_flat(tan_codom,tan_dom);
 //        auto diff_ty = cn_mem_half_flat(deriv_dom,tuple({deriv_codom,pb_ty}));
-        auto diff_ty = cn_mem_flat(deriv_dom,sigma({deriv_codom,pb_ty}));
+        // deriv_codom
+        const Def* deriv_pb_codom;
+//        if (dom->isa<Sigma>()) {
+//            auto size = dom->num_ops() + 2;
+//            DefArray defs(size);
+//            for (size_t i = 0; i < size; ++i) {
+//                if (i == 0) {
+//                    defs[i] = type_mem();
+//                } else if (i == size - 1) {
+//                    defs[i] = ret;
+//                } else {
+//                    defs[i] = dom->op(i - 1);
+//                }
+//            }
+//
+//            return cn(defs);
+//        }
+        if(deriv_codom->isa<Sigma>()) {
+            auto size = deriv_codom->num_ops() + 1;
+            DefArray defs(size);
+            for (size_t i = 0; i < size; ++i) {
+                if (i == size - 1) {
+                    defs[i] = pb_ty;
+                } else {
+                    defs[i] = deriv_codom->op(i);
+                }
+            }
+            deriv_pb_codom=sigma(defs);
+        }else {
+            deriv_pb_codom=sigma({deriv_codom,pb_ty});
+        }
+        auto diff_ty = cn_mem_flat(deriv_dom,deriv_pb_codom);
+
 //        auto diff_ty = cn({type_mem(),deriv_dom,cn({type_mem(),deriv_codom,pb_ty})});
 
 //        auto mk_pullback = app(data_.op_rev_diff_, tuple({dom, codom, deriv_dom, deriv_codom, tan_codom, tan_dom}), this->dbg("mk_pullback"));
