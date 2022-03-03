@@ -39,6 +39,7 @@ var classthorin_1_1World =
     [ "ax_slot", "classthorin_1_1World.html#a2e9417359989eb2dce13aaa9cc38f36b", null ],
     [ "ax_store", "classthorin_1_1World.html#a23f952dafa0704d1dd81cfefa14ad729", null ],
     [ "ax_zip", "classthorin_1_1World.html#a8e31d8a8297af8bbb06bdbd36b3476a8", null ],
+    [ "axiom", "classthorin_1_1World.html#ae5fcc0021a7708864ecad14c541a51f1", null ],
     [ "axiom", "classthorin_1_1World.html#a2abb1d679a5cd3a3ede28e6ecaafb0cf", null ],
     [ "axiom", "classthorin_1_1World.html#a2d6c2c260ab44cf2314e10fdeb35ee84", null ],
     [ "bot", "classthorin_1_1World.html#a0eedd08743b630e231af89f337799e47", null ],
