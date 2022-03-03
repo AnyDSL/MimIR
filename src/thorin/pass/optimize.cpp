@@ -27,7 +27,7 @@ namespace thorin {
 void optimize(World& world) {
 
     world.set(LogLevel::Debug);
-    world.set(std::make_unique<ErrorHandler>());
+    // world.set(std::make_unique<ErrorHandler>());
 
     PassMan opt(world);
     opt.add<AutoDiff>();
