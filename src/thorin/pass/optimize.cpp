@@ -28,8 +28,6 @@ void optimize(World& world) {
 
     PassMan opt(world);
     opt.add<AutoDiff>();
-    opt.run();
-    printf("Finished Opti1\n");
 
 //     PassMan optZ(world);
 //     optZ.add<ZipEval>();
@@ -49,10 +47,23 @@ void optimize(World& world) {
     opt2.add<CopyProp>(br, ee);
     opt2.add<TailRecElim>(er);
     opt2.run();
-    printf("Finished Opti2\n");
+    printf("Finished Prepare Opti\n");
 
 
+    opt.run();
+    printf("Finished AutoDiff Opti\n");
 
+    PassMan opt3(world);
+    auto br3 = opt3.add<BetaRed>();
+    auto er3 = opt3.add<EtaRed>();
+    auto ee3 = opt3.add<EtaExp>(er);
+    opt3.add<SSAConstr>(ee3);
+    opt3.add<Scalerize>(ee3);
+    // opt3.add<DCE>(br3, ee3);
+    opt3.add<CopyProp>(br3, ee3);
+    opt3.add<TailRecElim>(er3);
+    opt3.run();
+    printf("Finished Simpl Opti\n");
 
         cleanup_world(world);
     // partial_evaluation(world, true);
