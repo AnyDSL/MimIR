@@ -323,22 +323,99 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract) {
         return pullbacks_[j_extract];
     auto extract = j_extract->as<Extract>();
 
+
     auto pi = createPbType(A,extract->type());
     auto pb = world_.nom_lam(pi, world_.dbg("extract_pb"));
     pb->set_filter(world_.lit_true());
     type_dump(world_,"  pb of extract: ",pb);
+    type_dump(world_,"  extract: ",extract);
 
-    auto [rmem, ohv] = oneHot(world_,pb->mem_var(),extract->index(),world_.tangent_type(extract->tuple()->type(),false),pb->var(1,world_.dbg("s")));
+    const Def* idx=extract->index();
+    auto tuple = extract->tuple();
+    auto tuple_ty = tuple->type();
+    auto tuple_pb = pullbacks_[extract->tuple()];
 
-    // or use pullbacsk type
-    pb->set_body(world_.app(
-        pullbacks_[extract->tuple()],
-        {
-            rmem,
-            ohv,
-            pb->ret_var()
+//    const Def* trimmed_ty;
+//    if(isMemTuple) {
+//        auto size = tuple_ty->num_ops() - 1;
+//        DefArray trimmed_var_ty(size);
+//        for (size_t i = 0; i < size; ++i) {
+//            trimmed_var_ty[i] = tuple_ty->op(i+1);
+//        }
+//        trimmed_ty = world_.sigma(trimmed_var_ty);
+//    }else {
+//        trimmed_ty=tuple_ty;
+//    }
+//    type_dump(world_,"  tuple: ",tuple);
+//    type_dump(world_,"  tuple pb: ",pullbacks_[tuple]);
+//    type_dump(world_,"  trimmed type: ",trimmed_ty);
+//
+//    const Def* idx=extract->index();
+////    if(isMemTuple &&
+////        (isa<Tag::Pi>(tuple->type()->proj(tuple_ty->num_ops()-1))) &&  // return cont back
+////        auto idx_lit = ) {
+//////        ->as<Lit>()->get<uint8_t>()
+////    }
+//
+//    auto [rmem, ohv] = oneHot(world_,pb->mem_var(),idx,world_.tangent_type(trimmed_ty,false),pb->var(1,world_.dbg("s")));
+
+//    type_dump(world_,"  one hot: ",ohv);
+
+    Array<const Def*> pb_args;
+
+    // is tuple & index
+    if(auto lit = idx->isa<Lit>()) {
+        dlog(world_,"  extract pb for lit index");
+        auto isMemTuple=isa<Tag::Mem>(tuple->type()->proj(0));
+        auto pb_domain = world_.tangent_type(tuple_ty,false)->as<Sigma>();
+
+        int index_lit = lit->get<uint8_t>();
+        if(isMemTuple) {
+             index_lit -= 1;
         }
-    ));
+
+
+        auto dim=pb_domain->num_ops();
+        Array<const Def*> args{dim};
+        auto mem=pb->mem_var();
+        for (size_t i = 0; i < dim; ++i) {
+            if(dim==0)
+                args[i]=mem;
+            else if(i==index_lit) {
+                args[i]=pb->var(1,world_.dbg("s"));
+            }else {
+                auto [nmem, v]=ZERO(world_,mem,pb_domain->op(i));
+                mem=nmem;
+                args[i]=v;
+            }
+        }
+        pb_args=args;
+
+//        pb_args = Array<const Def*>(
+//            pb_domain->num_ops(),
+//            [&](auto i) {
+//              if(i==0)
+//                  return pb->mem_var();
+//              if(i==index_lit)
+//                  return pb->var(1,world_.dbg("s"));
+//              return ZERO(world_,MEM,pb_domain->op(i));
+//              //          return idpb->var(i);
+//            });
+    }else {
+
+        auto [rmem, ohv] = oneHot(world_,pb->mem_var(), idx,world_.tangent_type(tuple_ty,false),pb->var(1,world_.dbg("s")));
+        pb_args=
+            {
+                rmem,
+                ohv,
+                pb->ret_var()
+            };
+    }
+
+    pb->set_body(world_.app(
+        tuple_pb,
+        pb_args
+        ));
     return pb;
 }
 
@@ -365,7 +442,16 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     type_dump(world_,"src variable",src_var);
     type_dump(world_,"dst variable",dst_var);
 
-    auto idpi = createPbType(A,src_var->type());
+    auto var_sigma = src_var->type()->as<Sigma>();
+
+    auto size = var_sigma->num_ops() - 2;
+    DefArray trimmed_var_ty(size);
+    for (size_t i = 0; i < size; ++i) {
+        trimmed_var_ty[i] = var_sigma->op(i+1);
+    }
+    auto trimmed_var_sigma = world_.sigma(trimmed_var_ty);
+
+    auto idpi = createPbType(A,trimmed_var_sigma);
     auto idpb = world_.nom_lam(idpi, world_.dbg("param_id"));
     idpb->set_filter(world_.lit_true());
 
@@ -378,11 +464,11 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
     // ret only resp. non-mem, non-cont
     auto args = Array<const Def*>(
-        src->num_vars()-2,
+        src->num_vars()-1,
         [&](auto i) {
           if(i==0)
               return idpb->mem_var();
-          return idpb->var(i+1);
+          return idpb->var(i);
         });
     idpb->app(idpb->ret_var(), args);
     type_dump(world_,"idpb body",idpb->body());
@@ -1180,7 +1266,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 //      = x ↦ lam₂(f(x))
                 //    : A -> B*(B->A)
                 //      = cn[mem, A, cn[mem, B, cn[mem, B, cn[mem, A]]]]
-                // 
+                //
                 // lam₂ = λ mem₂ res. ret (mem₂, res, grad)
                 //      = y ↦ (y,grad(x))
                 //    : B -> B*(B->A)
@@ -1188,7 +1274,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 //  res is f(x)
                 //  lam₂ might look returning in its body but it takes not returning argument
                 //   instead it uses the return from lam₁ which is the return supplied by the user
-                // 
+                //
                 // f*
                 // grad = λ x. λ mem s ret. ...
                 //    : A -> (B -> A)
@@ -1385,7 +1471,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // jwrap each component
         Array<const Def*> ops{tuple_dim, [&](auto i) { return j_wrap(tuple->proj(i)); }};
         dlog(world_,"  jwrapped elements: {, }",ops);
-        if(tuple_dim>0 && isa<Tag::Mem>(tuple->proj(0)->type())) {
+
+        auto isMemTuple = tuple_dim>0 && isa<Tag::Mem>(tuple->proj(0)->type());
+
+        if(isMemTuple) {
             ops[0] = j_wrap(tuple->proj(0));
         }
         // reconstruct the tuple term
@@ -1414,7 +1503,20 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // apply them with the component of the scalar from the tuple pullback
         // sum them up
 
-        auto pi = createPbType(A,tuple->type());
+        const Def* trimmed_ty;
+        auto tuple_ty = tuple->type();
+        if(isMemTuple) {
+            auto size = tuple_ty->num_ops() - 1;
+            DefArray trimmed_var_ty(size);
+            for (size_t i = 0; i < size; ++i) {
+                trimmed_var_ty[i] = tuple_ty->op(i+1);
+            }
+            trimmed_ty = world_.sigma(trimmed_var_ty);
+        }else {
+            trimmed_ty=tuple_ty;
+        }
+
+        auto pi = createPbType(A,trimmed_ty);
         auto pb = world_.nom_lam(pi, world_.dbg("tuple_pb"));
         dlog(world_,"  complete tuple pb type: {}",pi);
         pb->set_filter(world_.lit_true());
@@ -1427,35 +1529,47 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto [cpb_mem,sum]=ZERO(world_,cpb->mem_var(),A);
         Lam* nextpb;
 
-        if(tuple_dim>0 && isa<Tag::Mem>(ops[0]->type())) {
-//            auto [cpb_mem2,mem_zero]=ZERO(world_,cpb_mem,A);
+//        if(tuple_dim>0 && isa<Tag::Mem>(ops[0]->type())) {
+////            auto [cpb_mem2,mem_zero]=ZERO(world_,cpb_mem,A);
+//
+//            auto zeropi = createPbType(A,ops[0]->type());
+//            auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_mem"));
+//            zeropb->set_filter(world_.lit_true());
+//            auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
+//            zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
+//
+//            pullbacks_[ops[0]]=zeropb;
+////            cpb_mem=cpb_mem2;
+//        }
 
-            auto zeropi = createPbType(A,ops[0]->type());
-            auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_mem"));
-            zeropb->set_filter(world_.lit_true());
-            auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
-            zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
-
-            pullbacks_[ops[0]]=zeropb;
-//            cpb_mem=cpb_mem2;
-        }
-
-        for (size_t i = 0; i < tuple_dim; ++i) {
+        for (size_t i = 0; i < (isMemTuple ? tuple_dim-1 : tuple_dim); ++i) {
             nextpb = world_.nom_lam(pbT, world_.dbg("φtuple_next"));
             nextpb->set_filter(world_.lit_true());
 
+            const Def* op;
+            if(isMemTuple) {
+                op=ops[i+1];
+            }else {
+                op=ops[i];
+            }
+
+
 //            pullbacks_[ops[i]]= extract_pb(ops[i]);
 
-            dlog(world_,"    build pb sum op {}: {} : {}",i,ops[i],ops[i]->type());
-            dlog(world_,"      pb {}",pullbacks_[ops[i]]);
-            dlog(world_,"      pb {} : {}",pullbacks_[ops[i]],pullbacks_[ops[i]]->type());
+            dlog(world_,"    build pb sum op {}: {} : {}",i,op,op->type());
+            dlog(world_,"      pb {}",pullbacks_[op]);
+            dlog(world_,"      pb {} : {}",pullbacks_[op],pullbacks_[op]->type());
+            auto scalar = pb->var(i+1, world_.dbg("s"));
             dlog(world_,"      pb var: {}:{}",
-                    world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
-                    world_.extract_unsafe(pb->var(1, world_.dbg("s")), i)->type());
+                    scalar,
+                    scalar->type());
+//            world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
+//                world_.extract_unsafe(pb->var(1, world_.dbg("s")), i)->type());
             cpb->set_body(
-                world_.app(pullbacks_[ops[i]],
+                world_.app(pullbacks_[op],
                     {cpb_mem,
-                    world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
+//                    world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
+                     scalar,
                     nextpb
                     }));
             cpb=nextpb;
@@ -1555,6 +1669,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // do not extract diff
         // but tuple => tuple of diffs
         // no lambda
+
+//        auto isMemTuple=isa<Tag::Mem>(jtup->type()->proj(0));
 
         // TODO: more general handling of memory
 //        if(isa<Tag::Mem>(jtup->type()->proj(0))) {
