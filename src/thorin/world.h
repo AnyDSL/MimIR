@@ -98,8 +98,9 @@ public:
     }
 
     /// Builds a fresh @p Axiom with descending tag.
-    /// It starts with tag_t(-1) and counts down from here; flags are set to `0` and the normalizer to `nullptr`.
     /// This is useful during testing to come up with some entitiy of a specific type.
+    /// It starts with `tag_t(-1)` (aka max) for @p Axiom::tag and counts down from there.
+    /// The @p Axiom::flags are set to `0` and the @p Axiom::normalizer to `nullptr`.
     const Axiom* axiom(const Def* type, const Def* dbg = {}) { return axiom(nullptr, type, state_.curr_tag--, 0, dbg); }
     ///@}
 
