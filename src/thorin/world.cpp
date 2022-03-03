@@ -31,7 +31,8 @@ bool World::Arena::Lock::guard_ = false;
 #endif
 
 World::World(std::string_view name)
-    : checker_(std::make_unique<Checker>(*this)) {
+    : checker_(std::make_unique<Checker>(*this))
+    , err_(std::make_unique<ErrorHandler>()) {
     data_.name_        = name.empty() ? "module" : name;
     data_.space_       = insert<Space>(0, *this);
     data_.kind_        = insert<Kind>(0, *this);
