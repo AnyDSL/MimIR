@@ -36,8 +36,8 @@ TEST(Error, app) {
     auto i32_t = w.type_int_width(32);
     auto r32_t = w.type_real(32);
     auto a     = w.axiom(w.cn({i32_t, r32_t}));
-    auto i = w.lit_int_width(32, 23);
-    auto r = w.lit_real(32, 23);
+    auto i     = w.lit_int_width(32, 23);
+    auto r     = w.lit_real(32, 23);
     w.app(a, {i, r}); // Ok!
     EXPECT_THROW(w.app(a, {r, i}), std::logic_error);
 }
