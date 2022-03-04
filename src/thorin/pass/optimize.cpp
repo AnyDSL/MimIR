@@ -28,6 +28,9 @@ void optimize(World& world) {
 
     world.set(LogLevel::Debug);
     // world.set(std::make_unique<ErrorHandler>());
+//    std::unique_ptr<ErrorHandler> err;
+//    ErrorHandler* err;
+    world.set((std::unique_ptr<ErrorHandler>&&) nullptr);
 
     PassMan opt(world);
     opt.add<AutoDiff>();

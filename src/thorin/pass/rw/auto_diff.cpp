@@ -18,7 +18,7 @@ size_t getDim(const Def* def) {
     }else if(auto arr=def->type()->isa<Arr>()) {
         return getDim(def->type());
     }else{
-        dlog(def->world(),"  def dim {} : {}, dim {}",def,def->type(),def->num_projs());
+        dlog(def->world(),"  def {} : {}, dim {}",def,def->type(),def->num_projs());
         return def->num_projs();
         // ptr -> 1
         // tuple -> size
@@ -92,6 +92,8 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
     }
 
     auto dim = getDim(a);
+    auto dimb = getDim(b);
+    assert(dim==dimb && "Dimension in add should be equal");
 
     if(dim==1){
         return {mem, world.op(ROp::add,(nat_t)0,a,b)};
@@ -100,7 +102,9 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
     Array<const Def*> ops{dim};
     for (size_t i = 0; i < ops.size(); ++i) {
         // adds component-wise both vectors
-        auto [nmem, op]=vec_add( world,mem, world.extract(a,i), world.extract(b,i) );
+        auto ai=world.extract(a,i); // use op?
+        auto bi=world.extract(b,i);
+        auto [nmem, op]=vec_add( world,mem, ai,bi );
         mem=nmem;
         ops[i]=op;
     }
@@ -252,6 +256,10 @@ private:
     void derive_external( const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam);
     void derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta );
 
+    const Def* zero_pb(const Def* type, const Def* dbg);
+    Array<const Def*> flat_tuple(Array<const Def*> defs);
+    Array<const Def*> vars_without_mem_cont(Lam* lam);
+
     const Def* seen(const Def* src); // lookup in the map
 
     // chains cn[:mem, A, cn[:mem, B]] and cn[:mem, B, cn[:mem, C]] to a toplevel cn[:mem, A, cn[:mem, C]]
@@ -335,6 +343,11 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract) {
     auto tuple_ty = tuple->type();
     auto tuple_pb = pullbacks_[extract->tuple()];
 
+    type_dump(world_,"  extract of tup: ",tuple);
+    dlog(world_,"  pb of tuple: {}",tuple_pb);
+    dlog(world_,"  pb of tuple type: {}",tuple_pb->type());
+
+
 //    const Def* trimmed_ty;
 //    if(isMemTuple) {
 //        auto size = tuple_ty->num_ops() - 1;
@@ -367,21 +380,25 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract) {
     if(auto lit = idx->isa<Lit>()) {
         dlog(world_,"  extract pb for lit index");
         auto isMemTuple=isa<Tag::Mem>(tuple->type()->proj(0));
-        auto pb_domain = world_.tangent_type(tuple_ty,false)->as<Sigma>();
+//        auto pb_domain = world_.tangent_type(tuple_ty,false)->as<Sigma>();
+        auto pb_domain=tuple_pb->type()->as<Pi>()->dom();//as<Sigma>();
+        dlog(world_,"  pb domain: {}",pb_domain);
 
         int index_lit = lit->get<uint8_t>();
         if(isMemTuple) {
-             index_lit -= 1;
+//             index_lit -= 1;
         }
 
-
+        // TODO: one hot vector, mem tuple
         auto dim=pb_domain->num_ops();
         Array<const Def*> args{dim};
         auto mem=pb->mem_var();
         for (size_t i = 0; i < dim; ++i) {
-            if(dim==0)
+            if(i==0)
                 args[i]=mem;
-            else if(i==index_lit) {
+            else if(i==dim-1) {
+                args[i]=pb->ret_var();
+            } else if(i==index_lit) {
                 args[i]=pb->var(1,world_.dbg("s"));
             }else {
                 auto [nmem, v]=ZERO(world_,mem,pb_domain->op(i));
@@ -412,6 +429,12 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract) {
             };
     }
 
+    dlog(world_,"    pb {}",pb);
+    dlog(world_,"    pb ty {}",pb->type());
+    dlog(world_,"    tuple_pb {}",tuple_pb);
+    dlog(world_,"    tuple_pb ty {}",tuple_pb->type());
+    dlog(world_,"    pb_args {, }",pb_args);
+
     pb->set_body(world_.app(
         tuple_pb,
         pb_args
@@ -426,6 +449,17 @@ std::pair<const Def*,const Def*> AutoDiffer::reloadPtrPb(const Def* mem, const D
     type_dump(world_,"  reload for ptr",ptr);
     pullbacks_[ptr]=pb_load_fun;
     return {pb_load_mem,pb_load_fun};
+}
+
+Array<const Def*> AutoDiffer::vars_without_mem_cont(Lam* lam) {
+    type_dump(world_,"  get vars of",lam);
+    dlog(world_,"  has ret_var {}",lam->ret_var());
+//    if(lam->ret_var())
+    return Array<const Def*>(
+        lam->num_vars()-(lam->ret_var()==nullptr ? 1 : 2),
+        [&](auto i) {
+          return lam->var(i+1);
+        });
 }
 
 // top level entry point after creating the AutoDiffer object
@@ -720,6 +754,76 @@ void AutoDiffer::derive_external(const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam)
 }
 
 
+//pair<const Def*,const Def*> AutoDiffer::split_mem(const Def* def) {
+//
+//}
+
+Array<const Def*> AutoDiffer::flat_tuple(Array<const Def*> defs) {
+    // or use concat
+    std::vector<const Def*> v;
+    for(int i=0;i<defs.size();i++) {
+        auto def=defs[i];
+        if(auto tup=def->isa<Tuple>()) {
+            auto dim=tup->num_ops();
+            for(int j=0;j<dim;j++) {
+                v.push_back(tup->op(j));
+            }
+        }else {
+            v.push_back(def);
+        }
+    }
+    return {v};
+}
+
+const Def* AutoDiffer::zero_pb(const Def* type, const Def* dbg) {
+    auto zeropi = createPbType(A,type);
+    dlog(world_,"  zero_pi ty: {}",zeropi);
+    auto zeropb = world_.nom_lam(zeropi, world_.dbg(dbg));
+    type_dump(world_,"  pb (zero)",zeropb);
+    zeropb->set_filter(world_.lit_true());
+    auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
+
+    type_dump(world_," zero:",zero);
+
+    // TODO: inline in ZERO?
+    Array<const Def*> args= flat_tuple({rmem,zero});
+//    if(auto tup = zero->isa<Tuple>()) {
+//        dlog(world_,"  num ops {}",tup->num_ops());
+////        dlog(world_,"  num projs {}",tup->num_projs());
+////        dlog(world_,"  num op 0 {}",tup->op(0));
+////        dlog(world_,"  num op 1 {}",tup->op(1));
+//
+//        auto dim=tup->num_ops()+1;
+//        args=Array<const Def*>{dim};
+//        for(int i=0;i<dim;i++) {
+//            if(i==0)
+//                args[i]=rmem;
+//            else
+//                args[i]=tup->op(i-1);
+//        }
+////        args=Array<const Def*>(
+////            tup->num_ops()+1,
+////            [&](auto i) {
+////                if(i==0)
+////                    return rmem;
+////                return tup->op(i-1);
+////            }
+////        );
+//
+//
+////        Array<const Def*> arr{tup->num_ops()+1};
+////        arr[0]=rmem;
+////        f
+//    }else {
+//        args={rmem,zero};
+//    }
+
+    zeropb->set_body(world_.app(zeropb->ret_var(), args));
+//    THORIN_UNREACHABLE;
+    return zeropb;
+}
+
+
 // implement differentiation for each expression
 // an expression is transformed by identity into itself but using the "new" definitions
 //   (the correspondence is stored in src_to_dst where needed)
@@ -796,14 +900,15 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //            THORIN_UNREACHABLE;
 
             // should not be needed => TODO: handle higher order pb correctly in app
-            auto zeropi = createPbType(A,lam->type());
-            dlog(world_,"  result: {}",zeropi);
-            auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_lam"));
-            type_dump(world_,"  non ret pb (zero)",zeropb);
-            zeropb->set_filter(world_.lit_true());
-            auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
-            zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
-            pullbacks_[dst] =zeropb;
+            pullbacks_[dst]=zero_pb(lam->type(),world_.dbg("zero_pb_lam"));
+//            auto zeropi = createPbType(A,lam->type());
+//            dlog(world_,"  result: {}",zeropi);
+//            auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_lam"));
+//            type_dump(world_,"  non ret pb (zero)",zeropb);
+//            zeropb->set_filter(world_.lit_true());
+//            auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
+//            zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
+//            pullbacks_[dst] =zeropb;
 
             return dst;
         }
@@ -843,14 +948,15 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //        pullbacks_[dst] = pullbacks_[bdy];
         // never executed but needed for tuple pb
         dlog(world_,"  compute pb ty of lam: {}",lam->type());
-        auto zeropi = createPbType(A,lam->type());
-        dlog(world_,"  result: {}",zeropi);
-        auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_lam2"));
-        type_dump(world_,"  non ret pb (zero)",zeropb);
-        zeropb->set_filter(world_.lit_true());
-        auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
-        zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
-        pullbacks_[dst] =zeropb;
+//        auto zeropi = createPbType(A,lam->type());
+//        dlog(world_,"  result: {}",zeropi);
+//        auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_lam2"));
+//        type_dump(world_,"  non ret pb (zero)",zeropb);
+//        zeropb->set_filter(world_.lit_true());
+//        auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
+//        zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
+//        pullbacks_[dst] =zeropb;
+        pullbacks_[dst] = zero_pb(lam->type(),world_.dbg("zero_pb_lam2"));
 
 
 
@@ -904,7 +1010,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         }
         auto dst = j_wrap_rop(ROp(rop.flags()), a, b);
         src_to_dst_[rop] = dst;
-        type_dump(world_,"  result of app",dst);
+        type_dump(world_,"  result of rop app",dst);
         return dst;
     }
     // conditionals are transformed by the identity (no pullback needed)
@@ -1575,12 +1681,12 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             cpb=nextpb;
             cpb_mem=cpb->mem_var();
             //all nextpb args are result
-            auto [nmem, nsum]=vec_add(world_,cpb_mem,sum,nextpb->var(1));
+            auto [nmem, nsum]=vec_add(world_,cpb_mem,sum, world_.tuple(vars_without_mem_cont(nextpb)));
             cpb_mem=nmem;
             sum=nsum;
         }
         dlog(world_,"  create final pb app");
-        cpb->set_body( world_.app( pb->ret_var(), {cpb_mem,sum} ));
+        cpb->set_body( world_.app( pb->ret_var(), flat_tuple({cpb_mem,sum}) ));
 
         // TODO: multiple arguments
 
@@ -1593,6 +1699,19 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     if (auto pack = def->isa<Pack>()) {
         // no pullback for pack needed
         type_dump(world_,"Pack",pack);
+
+        auto dim = as_lit(pack->type()->arity());
+        auto tup=world_.tuple(Array<const Def*>(
+            dim,
+            [&](auto i) {
+              return pack->body();
+            }));
+        type_dump(world_,"  pack to tuple",tup);
+        auto dst= j_wrap(tup);
+        type_dump(world_,"  jwrapped pack",dst);
+        src_to_dst_[pack] = dst;
+        return dst;
+        /*
         auto d_bdy=j_wrap(pack->body());
         auto dst = world_.pack(pack->type()->arity(), d_bdy);
         src_to_dst_[pack] = dst;
@@ -1637,6 +1756,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         type_dump(world_,"  jwrapped pack",dst);
         return dst;
+         */
     }
 
     if (auto extract = def->isa<Extract>()) {
@@ -1708,20 +1828,21 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     if (auto lit = def->isa<Lit>()) {
         // a literal (number) has a zero pullback
         type_dump(world_,"Literal",lit);
-        auto zeropi = createPbType(A,lit->type());
-        auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_lit"));
-        type_dump(world_,"  lit pb (zero)",zeropb);
-        zeropb->set_filter(world_.lit_true());
-        auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
-        dlog(world_,"  computed zero");
-
-        dlog(world_,"  zeropb retvar {}",zeropb->ret_var());
-        type_dump(world_,"  rmem",rmem);
-        dlog(world_,"  zero: {} ",zero);
-        type_dump(world_,"  zero",zero);
-        zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
+//        auto zeropi = createPbType(A,lit->type());
+//        auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_lit"));
+//        type_dump(world_,"  lit pb (zero)",zeropb);
+//        zeropb->set_filter(world_.lit_true());
+//        auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
+//        dlog(world_,"  computed zero");
+//
+//        dlog(world_,"  zeropb retvar {}",zeropb->ret_var());
+//        type_dump(world_,"  rmem",rmem);
+//        dlog(world_,"  zero: {} ",zero);
+//        type_dump(world_,"  zero",zero);
+//        zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
         // no src_to_dst mapping necessary
-        pullbacks_[lit] = zeropb;
+//        pullbacks_[lit] = zeropb;
+        pullbacks_[lit] = zero_pb(lit->type(), world_.dbg("zero_pb_lit"));
         dlog(world_,"  set zero pb");
         return lit;
     }
@@ -1773,8 +1894,10 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
 
             pb->set_body(world_.app(apb, {pb->mem_var(), pb->var(1), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), pb->var(1), end}));
-            auto adiff = middle->var(1);
-            auto bdiff = end->var(1);
+//            auto adiff = middle->var(1);
+//            auto bdiff = end->var(1);
+            auto adiff = world_.tuple(vars_without_mem_cont(middle));
+            auto bdiff = world_.tuple(vars_without_mem_cont(end));
 
             auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
             end->set_body(world_.app(pb->ret_var(), { smem, sum}));
