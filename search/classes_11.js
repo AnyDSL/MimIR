@@ -25,5 +25,6 @@ var searchData=
   ['text_22',['TExt',['../classthorin_1_1TExt.html',1,'thorin']]],
   ['tok_23',['Tok',['../classthorin_1_1Tok.html',1,'thorin']]],
   ['tracker_24',['Tracker',['../classthorin_1_1Tracker.html',1,'thorin']]],
-  ['tuple_25',['Tuple',['../classthorin_1_1Tuple.html',1,'thorin']]]
+  ['tuple_25',['Tuple',['../classthorin_1_1Tuple.html',1,'thorin']]],
+  ['typeerror_26',['TypeError',['../classthorin_1_1TypeError.html',1,'thorin']]]
 ];

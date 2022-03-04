@@ -29,5 +29,6 @@ var searchData=
   ['type_5fmem_26',['type_mem',['../classthorin_1_1World.html#ae8ce2f48f9051bd984cf280ddcfedf0d',1,'thorin::World']]],
   ['type_5fnat_27',['type_nat',['../classthorin_1_1World.html#a8dc783e28f2818ec5e847645700acbee',1,'thorin::World']]],
   ['type_5fptr_28',['type_ptr',['../classthorin_1_1World.html#aced8a7ca2a3371500e6b4640020ea098',1,'thorin::World::type_ptr()'],['../classthorin_1_1World.html#a2a35a1a471118b1e045ab8898132f592',1,'thorin::World::type_ptr(const Def *pointee, nat_t addr_space=AddrSpace::Generic, const Def *dbg={})'],['../classthorin_1_1World.html#a2c150ae9d1e8a7a0dbec6b80365ae811',1,'thorin::World::type_ptr(const Def *pointee, const Def *addr_space, const Def *dbg={})']]],
-  ['type_5freal_29',['type_real',['../classthorin_1_1World.html#ab68312b4fab76b13437ca784b74c3924',1,'thorin::World::type_real()'],['../classthorin_1_1World.html#a829f106ed87043d5d9d99ca5b93b09d5',1,'thorin::World::type_real(nat_t width)'],['../classthorin_1_1World.html#a3eb5d79bc94b70d2223ee1003a648b3f',1,'thorin::World::type_real(const Def *width)']]]
+  ['type_5freal_29',['type_real',['../classthorin_1_1World.html#ab68312b4fab76b13437ca784b74c3924',1,'thorin::World::type_real()'],['../classthorin_1_1World.html#a829f106ed87043d5d9d99ca5b93b09d5',1,'thorin::World::type_real(nat_t width)'],['../classthorin_1_1World.html#a3eb5d79bc94b70d2223ee1003a648b3f',1,'thorin::World::type_real(const Def *width)']]],
+  ['typeerror_30',['TypeError',['../classthorin_1_1TypeError.html#a6d1b213fd00d08ba6f12861ed2758e03',1,'thorin::TypeError']]]
 ];

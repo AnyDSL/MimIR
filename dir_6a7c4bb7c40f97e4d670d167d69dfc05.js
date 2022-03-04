@@ -18,6 +18,7 @@ var dir_6a7c4bb7c40f97e4d670d167d69dfc05 =
     [ "def.h", "def_8h.html", "def_8h" ],
     [ "error.cpp", "error_8cpp.html", "error_8cpp" ],
     [ "error.h", "error_8h.html", [
+      [ "thorin::TypeError", "classthorin_1_1TypeError.html", "classthorin_1_1TypeError" ],
       [ "thorin::ErrorHandler", "classthorin_1_1ErrorHandler.html", "classthorin_1_1ErrorHandler" ]
     ] ],
     [ "lam.cpp", "lam_8cpp.html", "lam_8cpp" ],

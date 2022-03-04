@@ -144,6 +144,7 @@ var annotated_dup =
       [ "Tok", "classthorin_1_1Tok.html", "classthorin_1_1Tok" ],
       [ "Tracker", "classthorin_1_1Tracker.html", "classthorin_1_1Tracker" ],
       [ "Tuple", "classthorin_1_1Tuple.html", "classthorin_1_1Tuple" ],
+      [ "TypeError", "classthorin_1_1TypeError.html", "classthorin_1_1TypeError" ],
       [ "unique_queue", "classthorin_1_1unique__queue.html", "classthorin_1_1unique__queue" ],
       [ "unique_stack", "classthorin_1_1unique__stack.html", "classthorin_1_1unique__stack" ],
       [ "Use", "classthorin_1_1Use.html", "classthorin_1_1Use" ],

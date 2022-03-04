@@ -178,6 +178,9 @@ var hierarchy =
     [ "thorin::detail::HashTable< Key, T, H, StackCapacity >::iterator_base< is_const >", "classthorin_1_1detail_1_1HashTable_1_1iterator__base.html", null ],
     [ "thorin::Lexer", "classthorin_1_1Lexer.html", null ],
     [ "thorin::World::Arena::Lock", "structthorin_1_1World_1_1Arena_1_1Lock.html", null ],
+    [ "std::logic_error", null, [
+      [ "thorin::TypeError", "classthorin_1_1TypeError.html", null ]
+    ] ],
     [ "thorin::LoopTree< forward >", "classthorin_1_1LoopTree.html", null ],
     [ "thorin::LoopTreeBuilder< forward >", "classthorin_1_1LoopTreeBuilder.html", null ],
     [ "thorin::LRPrec< L >", "structthorin_1_1LRPrec.html", null ],
