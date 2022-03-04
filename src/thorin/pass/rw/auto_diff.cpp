@@ -259,6 +259,7 @@ private:
     const Def* zero_pb(const Def* type, const Def* dbg);
     Array<const Def*> flat_tuple(Array<const Def*> defs);
     Array<const Def*> vars_without_mem_cont(Lam* lam);
+    const Def* j_wrap_tuple(Array<const Def*> tuple);
 
     const Def* seen(const Def* src); // lookup in the map
 
@@ -284,6 +285,141 @@ private:
     //   load, store, slot, alloc, function arg
     const Def* current_mem;
 };
+
+
+const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
+    // the pullback of a tuple is tuple of pullbacks for each component
+    // we need to distinguish [mem, r32] from <<2::nat,r32>>
+    // a tuple with memory as argument is used in applications but we only want the pullback of the "real" arguments
+//    type_dump(world_,"tuple",tuple);
+    auto tuple_dim=tuple.size();
+    dlog(world_,"  num of ops: {}",tuple_dim);
+    // jwrap each component
+    Array<const Def*> ops{tuple_dim, [&](auto i) { return j_wrap(tuple[i]); }};
+    dlog(world_,"  jwrapped elements: {, }",ops);
+
+    auto isMemTuple = tuple_dim>0 && isa<Tag::Mem>(tuple[0]->type());
+
+    if(isMemTuple) {
+        ops[0] = j_wrap(tuple[0]);
+    }
+    // reconstruct the tuple term
+    auto dst = world_.tuple(ops);
+    dlog(world_,"  tuple: {,}",tuple);
+    type_dump(world_,"  jwrapped tuple:",dst);
+//    src_to_dst_[tuple] = dst;
+
+    //        if(tuple_dim>0 && isa<Tag::Mem>(dst->proj(0)->type())) {
+    //            dlog(world_,"  mem pb tuple");
+    //            if(tuple_dim>1)
+    //                pullbacks_[dst] = pullbacks_[ops[1]];
+    //            return dst;
+    //        }
+
+
+//    dlog(world_,"tangent type of tuple: {} => {}",tuple->type(),world_.tangent_type(tuple->type(),false));
+    dlog(world_,"tangent type of dst: {} => {}",dst->type(),world_.tangent_type(dst->type(),false));
+    dlog(world_,"tuple dim: {}",tuple_dim);
+
+
+    // TODO: simplify
+    // TODO: could a more modular approach with more primitive pullbacks make this code easier?
+
+    // get pullbacks for each component w.r. to A
+    // apply them with the component of the scalar from the tuple pullback
+    // sum them up
+
+//    const Def* trimmed_ty;
+//    auto tuple_ty = tuple->type();
+    auto trimmed_var_ty=Array<const Def*>(isMemTuple ? tuple_dim-1 : tuple_dim,
+    [&] (auto i) {
+        return tuple[isMemTuple ? i+1 : i]->type();
+    });
+//    if(isMemTuple) {
+//        auto size = tuple_dim - 1;
+//        DefArray trimmed_var_ty(size);
+//        for (size_t i = 0; i < size; ++i) {
+//            trimmed_var_ty[i] = tuple[i+1]->type();
+//        }
+//        trimmed_ty = world_.sigma(trimmed_var_ty);
+//    }else {
+//        trimmed_ty=tuple_ty;
+//    }
+    auto trimmed_ty=world_.sigma(trimmed_var_ty);
+
+    auto pi = createPbType(A,trimmed_ty);
+    auto pb = world_.nom_lam(pi, world_.dbg("tuple_pb"));
+    dlog(world_,"  complete tuple pb type: {}",pi);
+    pb->set_filter(world_.lit_true());
+
+    type_dump(world_,"  A:",A);
+    auto pbT = pi->as<Pi>()->doms().back()->as<Pi>();
+    dlog(world_,"  intermediate tuple pb type: {}",pbT);
+    dlog(world_,"  should be cn_mem of {}",A);
+    auto cpb = pb;
+    auto [cpb_mem,sum]=ZERO(world_,cpb->mem_var(),A);
+    Lam* nextpb;
+
+    //        if(tuple_dim>0 && isa<Tag::Mem>(ops[0]->type())) {
+    ////            auto [cpb_mem2,mem_zero]=ZERO(world_,cpb_mem,A);
+    //
+    //            auto zeropi = createPbType(A,ops[0]->type());
+    //            auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_mem"));
+    //            zeropb->set_filter(world_.lit_true());
+    //            auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
+    //            zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
+    //
+    //            pullbacks_[ops[0]]=zeropb;
+    ////            cpb_mem=cpb_mem2;
+    //        }
+
+    for (size_t i = 0; i < (isMemTuple ? tuple_dim-1 : tuple_dim); ++i) {
+        nextpb = world_.nom_lam(pbT, world_.dbg("φtuple_next"));
+        nextpb->set_filter(world_.lit_true());
+
+        const Def* op;
+        if(isMemTuple) {
+            op=ops[i+1];
+        }else {
+            op=ops[i];
+        }
+
+
+        //            pullbacks_[ops[i]]= extract_pb(ops[i]);
+
+        dlog(world_,"    build pb sum op {}: {} : {}",i,op,op->type());
+        dlog(world_,"      pb {}",pullbacks_[op]);
+        dlog(world_,"      pb {} : {}",pullbacks_[op],pullbacks_[op]->type());
+        auto scalar = pb->var(i+1, world_.dbg("s"));
+        dlog(world_,"      pb var: {}:{}",
+             scalar,
+             scalar->type());
+        //            world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
+        //                world_.extract_unsafe(pb->var(1, world_.dbg("s")), i)->type());
+        cpb->set_body(
+            world_.app(pullbacks_[op],
+                       {cpb_mem,
+                           //                    world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
+                        scalar,
+                        nextpb
+                       }));
+        cpb=nextpb;
+        cpb_mem=cpb->mem_var();
+        //all nextpb args are result
+        auto [nmem, nsum]=vec_add(world_,cpb_mem,sum, world_.tuple(vars_without_mem_cont(nextpb)));
+        cpb_mem=nmem;
+        sum=nsum;
+    }
+    dlog(world_,"  create final pb app");
+    cpb->set_body( world_.app( pb->ret_var(), flat_tuple({cpb_mem,sum}) ));
+
+    // TODO: multiple arguments
+
+    dlog(world_,"  tuple pbs {}",pb);
+    pullbacks_[dst]=pb;
+    type_dump(world_,"  pullback for tuple",pullbacks_[dst]);
+    return dst;
+}
 
 
 const Def* AutoDiffer::chain(const Def* a, const Def* b) {
@@ -1568,131 +1704,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     }
 
     if (auto tuple = def->isa<Tuple>()) {
-        // the pullback of a tuple is tuple of pullbacks for each component
-        // we need to distinguish [mem, r32] from <<2::nat,r32>>
-        // a tuple with memory as argument is used in applications but we only want the pullback of the "real" arguments
-        type_dump(world_,"tuple",tuple);
         auto tuple_dim=getDim(tuple->type());
-        dlog(world_,"  num of ops: {}",tuple_dim);
-        // jwrap each component
-        Array<const Def*> ops{tuple_dim, [&](auto i) { return j_wrap(tuple->proj(i)); }};
-        dlog(world_,"  jwrapped elements: {, }",ops);
-
-        auto isMemTuple = tuple_dim>0 && isa<Tag::Mem>(tuple->proj(0)->type());
-
-        if(isMemTuple) {
-            ops[0] = j_wrap(tuple->proj(0));
-        }
-        // reconstruct the tuple term
-        auto dst = world_.tuple(ops);
-        type_dump(world_,"  tuple:",tuple);
-        type_dump(world_,"  jwrapped tuple:",dst);
+        Array<const Def*> ops{tuple_dim, [&](auto i) { return tuple->proj(i); }};
+        auto dst = j_wrap_tuple(ops);
         src_to_dst_[tuple] = dst;
-
-//        if(tuple_dim>0 && isa<Tag::Mem>(dst->proj(0)->type())) {
-//            dlog(world_,"  mem pb tuple");
-//            if(tuple_dim>1)
-//                pullbacks_[dst] = pullbacks_[ops[1]];
-//            return dst;
-//        }
-
-
-        dlog(world_,"tangent type of tuple: {} => {}",tuple->type(),world_.tangent_type(tuple->type(),false));
-        dlog(world_,"tangent type of dst: {} => {}",dst->type(),world_.tangent_type(dst->type(),false));
-        dlog(world_,"tuple dim: {}",tuple_dim);
-
-
-        // TODO: simplify
-        // TODO: could a more modular approach with more primitive pullbacks make this code easier?
-
-        // get pullbacks for each component w.r. to A
-        // apply them with the component of the scalar from the tuple pullback
-        // sum them up
-
-        const Def* trimmed_ty;
-        auto tuple_ty = tuple->type();
-        if(isMemTuple) {
-            auto size = tuple_ty->num_ops() - 1;
-            DefArray trimmed_var_ty(size);
-            for (size_t i = 0; i < size; ++i) {
-                trimmed_var_ty[i] = tuple_ty->op(i+1);
-            }
-            trimmed_ty = world_.sigma(trimmed_var_ty);
-        }else {
-            trimmed_ty=tuple_ty;
-        }
-
-        auto pi = createPbType(A,trimmed_ty);
-        auto pb = world_.nom_lam(pi, world_.dbg("tuple_pb"));
-        dlog(world_,"  complete tuple pb type: {}",pi);
-        pb->set_filter(world_.lit_true());
-
-        type_dump(world_,"  A:",A);
-        auto pbT = pi->as<Pi>()->doms().back()->as<Pi>();
-        dlog(world_,"  intermediate tuple pb type: {}",pbT);
-        dlog(world_,"  should be cn_mem of {}",A);
-        auto cpb = pb;
-        auto [cpb_mem,sum]=ZERO(world_,cpb->mem_var(),A);
-        Lam* nextpb;
-
-//        if(tuple_dim>0 && isa<Tag::Mem>(ops[0]->type())) {
-////            auto [cpb_mem2,mem_zero]=ZERO(world_,cpb_mem,A);
-//
-//            auto zeropi = createPbType(A,ops[0]->type());
-//            auto zeropb = world_.nom_lam(zeropi, world_.dbg("zero_pb_mem"));
-//            zeropb->set_filter(world_.lit_true());
-//            auto [rmem,zero] = ZERO(world_,zeropb->mem_var(), A);
-//            zeropb->set_body(world_.app(zeropb->ret_var(), {rmem, zero}));
-//
-//            pullbacks_[ops[0]]=zeropb;
-////            cpb_mem=cpb_mem2;
-//        }
-
-        for (size_t i = 0; i < (isMemTuple ? tuple_dim-1 : tuple_dim); ++i) {
-            nextpb = world_.nom_lam(pbT, world_.dbg("φtuple_next"));
-            nextpb->set_filter(world_.lit_true());
-
-            const Def* op;
-            if(isMemTuple) {
-                op=ops[i+1];
-            }else {
-                op=ops[i];
-            }
-
-
-//            pullbacks_[ops[i]]= extract_pb(ops[i]);
-
-            dlog(world_,"    build pb sum op {}: {} : {}",i,op,op->type());
-            dlog(world_,"      pb {}",pullbacks_[op]);
-            dlog(world_,"      pb {} : {}",pullbacks_[op],pullbacks_[op]->type());
-            auto scalar = pb->var(i+1, world_.dbg("s"));
-            dlog(world_,"      pb var: {}:{}",
-                    scalar,
-                    scalar->type());
-//            world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
-//                world_.extract_unsafe(pb->var(1, world_.dbg("s")), i)->type());
-            cpb->set_body(
-                world_.app(pullbacks_[op],
-                    {cpb_mem,
-//                    world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
-                     scalar,
-                    nextpb
-                    }));
-            cpb=nextpb;
-            cpb_mem=cpb->mem_var();
-            //all nextpb args are result
-            auto [nmem, nsum]=vec_add(world_,cpb_mem,sum, world_.tuple(vars_without_mem_cont(nextpb)));
-            cpb_mem=nmem;
-            sum=nsum;
-        }
-        dlog(world_,"  create final pb app");
-        cpb->set_body( world_.app( pb->ret_var(), flat_tuple({cpb_mem,sum}) ));
-
-        // TODO: multiple arguments
-
-        dlog(world_,"  tuple pbs {}",pb);
-        pullbacks_[dst]=pb;
-        type_dump(world_,"  pullback for tuple",pullbacks_[dst]);
         return dst;
     }
 
@@ -1701,13 +1716,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"Pack",pack);
 
         auto dim = as_lit(pack->type()->arity());
-        auto tup=world_.tuple(Array<const Def*>(
+        auto tup=Array<const Def*>(
             dim,
             [&](auto i) {
               return pack->body();
-            }));
-        type_dump(world_,"  pack to tuple",tup);
-        auto dst= j_wrap(tup);
+            });
+        dlog(world_,"  pack to tuple {,}",tup);
+        auto dst= j_wrap_tuple(tup);
         type_dump(world_,"  jwrapped pack",dst);
         src_to_dst_[pack] = dst;
         return dst;
@@ -1900,7 +1915,7 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto bdiff = world_.tuple(vars_without_mem_cont(end));
 
             auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
-            end->set_body(world_.app(pb->ret_var(), { smem, sum}));
+            end->set_body(world_.app(pb->ret_var(), flat_tuple({ smem, sum})));
             pullbacks_[dst] = pb;
 
             return dst;
@@ -1950,11 +1965,11 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
 
             pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), b), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), a), end}));
-            auto adiff = middle->var(1);
-            auto bdiff = end->var(1);
+            auto adiff = world_.tuple(vars_without_mem_cont(middle));
+            auto bdiff = world_.tuple(vars_without_mem_cont(end));
 
             auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
-            end->set_body(world_.app(pb->ret_var(), { smem, sum}));
+            end->set_body(world_.app(pb->ret_var(), flat_tuple({ smem, sum})));
             pullbacks_[dst] = pb;
             return dst;
         }

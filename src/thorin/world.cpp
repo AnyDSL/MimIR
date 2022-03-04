@@ -532,21 +532,25 @@ const Pi* World::cn_mem_flat(const Def* dom, const Def* codom, const Def* dbg) {
         return cn(defs);
     }
 
-//    if (auto a = dom->isa<Arr>()) {
-//        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 2;
-//        DefArray defs(size);
-//        for (uint8_t i = 0; i < size; ++i) {
-//            if (i == 0) {
-//                defs[i] = type_mem();
-//            } else if (i == size - 1) {
-//                defs[i] = ret;
-//            } else {
-//                defs[i] = a->body();
-//            }
-//        }
-//
-//        return cn(defs);
-//    }
+
+    // for local tupel of same type
+    if (auto a = dom->isa<Arr>()) {
+        if(auto lit_size=a->shape()->isa<Lit>()) {
+            auto size = lit_size->get<uint8_t>() + 2;
+            DefArray defs(size);
+            for (uint8_t i = 0; i < size; ++i) {
+                if (i == 0) {
+                    defs[i] = type_mem();
+                } else if (i == size - 1) {
+                    defs[i] = ret;
+                } else {
+                    defs[i] = a->body();
+                }
+            }
+
+            return cn(defs);
+        }
+    }
 
     return cn(merge(type_mem(), {dom, ret}), dbg);
 }
