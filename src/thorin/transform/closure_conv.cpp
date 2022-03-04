@@ -341,8 +341,11 @@ ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
 /* Free variable analysis */
 
 void FVA::split_fv(Node* node, const Def* fv, bool& init_node, NodeQueue& worklist) {
-    if (auto [var, lam] = ca_isa_var<Lam>(fv); var && lam && var == lam->ret_var())
+    if (auto [var, lam] = ca_isa_var<Lam>(fv); var && lam) {
+        if (var != lam->ret_var())
+            node->fvs.emplace(fv);
         return;
+    }
     if (auto q = isa<Tag::CConv>(CConv::freeBB, fv)) {
         node->fvs.emplace(q);
         return;
@@ -357,6 +360,8 @@ void FVA::split_fv(Node* node, const Def* fv, bool& init_node, NodeQueue& workli
             init_node |= inserted;
         }
     } else if (fv->dep() == Dep::Var && !fv->isa<Tuple>()) {
+        // Var's can still have Def::Top, if their type is a nom!
+        // So the first case is *not* redundant
         node->fvs.emplace(fv);
     } else {
         for (auto op: fv->ops())
