@@ -1,7 +1,5 @@
 #include "thorin/error.h"
 
-#include <stdexcept>
-
 #include "thorin/lam.h"
 
 #include "thorin/util/stream.h"
@@ -12,7 +10,7 @@ template<class... Args>
 [[noreturn]] void err(const char* fmt, Args&&... args) {
     StringStream s;
     s.fmt(fmt, std::forward<Args&&>(args)...);
-    throw std::logic_error(s.str());
+    throw TypeError(s.str());
 }
 
 void ErrorHandler::expected_shape(const Def* def) {
