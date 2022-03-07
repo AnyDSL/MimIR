@@ -53,7 +53,7 @@ var searchData=
   ['operator_7c_3d_50',['operator|=',['../classthorin_1_1BitSet.html#a0d955a767695513d5e79a80fd572c274',1,'thorin::BitSet::operator|=()'],['../classthorin_1_1IndexSet.html#a22735455ff84624ca82c0d9120588c39',1,'thorin::IndexSet::operator|=()']]],
   ['ops_51',['ops',['../classthorin_1_1Def.html#a246337e70da227a251e631aab3fad84d',1,'thorin::Def']]],
   ['ops_5fptr_52',['ops_ptr',['../classthorin_1_1Def.html#aa47824524a07e21b088888da282b7b73',1,'thorin::Def']]],
-  ['optimize_53',['optimize',['../namespacethorin.html#a9e64c2e92ce1a1166c536644960116c2',1,'thorin']]],
+  ['optimize_53',['optimize',['../namespacethorin.html#a732ae46e4fb6114a0c26d81283032ee8',1,'thorin']]],
   ['order_54',['order',['../classthorin_1_1Def.html#a8a5323aff31112beda8f4671e83c12cb',1,'thorin::Def']]],
   ['ostream_55',['ostream',['../classthorin_1_1Stream.html#ad5e94e3ec32ce4cd4459361cf35a978b',1,'thorin::Stream']]],
   ['outf_56',['outf',['../namespacethorin.html#a55060456b4d1d3e6abbee335d73481cc',1,'thorin']]],

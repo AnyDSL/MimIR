@@ -110,10 +110,11 @@ $(document).ready(function(){initNavTree('stream_8h.html',''); initResizable(); 
 <code>#include &lt;ranges&gt;</code><br />
 <code>#include &lt;sstream&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
+<code>#include &quot;thorin/config.h&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for stream.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="stream_8h__incl.svg" width="700" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="stream_8h__incl.svg" width="827" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -175,7 +176,7 @@ requires RefStream&lt;T&gt;</td></tr>
 <tr class="separator:a30b8c47dfcb51b9b32b36bfb3ea5832b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab53353fd2bbb0066137cbe31023d38de"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:ab53353fd2bbb0066137cbe31023d38de"><td class="memTemplItemLeft" align="right" valign="top">Stream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab53353fd2bbb0066137cbe31023d38de">thorin::operator&lt;&lt;</a> (Stream &amp;s, const T &amp;x)</td></tr>
-<tr class="memdesc:ab53353fd2bbb0066137cbe31023d38de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fallback uses <code>std::ostream</code> <code>operator&lt;&lt;</code>.  <a href="namespacethorin.html#ab53353fd2bbb0066137cbe31023d38de">More...</a><br /></td></tr>
+<tr class="memdesc:ab53353fd2bbb0066137cbe31023d38de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fallback uses <code>std::ostream operator&lt;&lt;</code>.  <a href="namespacethorin.html#ab53353fd2bbb0066137cbe31023d38de">More...</a><br /></td></tr>
 <tr class="separator:ab53353fd2bbb0066137cbe31023d38de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -204,14 +205,17 @@ requires RefStream&lt;T&gt;</td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">do</span> {                                                                                                                        \</div>
-<div class="line">        if (!(condition)) {                                                                                                     \</div>
-<div class="line">            Stream(std::cerr).fmt(<span class="stringliteral">&quot;assertion &#39;{}&#39; failed in {}:{}: &quot;</span>, #condition, __FILE__,  __LINE__).fmt(__VA_ARGS__).endl(); \</div>
-<div class="line">            std::abort();                                                                                                       \</div>
-<div class="line">        }                                                                                                                       \</div>
-<div class="line">    } <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
+<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">do</span> {                                                                                 \</div>
+<div class="line">            if (!(condition)) {                                                              \</div>
+<div class="line">                Stream(std::cerr)                                                            \</div>
+<div class="line">                    .fmt(<span class="stringliteral">&quot;assertion &#39;{}&#39; failed in {}:{}: &quot;</span>, #condition, __FILE__, __LINE__) \</div>
+<div class="line">                    .fmt(__VA_ARGS__)                                                        \</div>
+<div class="line">                    .endl();                                                                 \</div>
+<div class="line">                std::abort();                                                                \</div>
+<div class="line">            }                                                                                \</div>
+<div class="line">        } <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="stream_8h_source.html#l00189">189</a> of file <a class="el" href="stream_8h_source.html">stream.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stream_8h_source.html#l00249">249</a> of file <a class="el" href="stream_8h_source.html">stream.h</a>.</p>
 
 </div>
 </div>
