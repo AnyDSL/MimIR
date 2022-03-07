@@ -34,7 +34,7 @@ class Scope;
 /// All worlds are completely independent from each other.
 ///
 /// Note that types are also just @p Def%s and will be hashed as well.
-class World : public Streamable<World> {
+class THORIN_API World : public Streamable<World> {
 public:
     struct SeaHash {
         static hash_t hash(const Def* def) { return def->hash(); }

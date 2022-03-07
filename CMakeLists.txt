@@ -1,13 +1,9 @@
-cmake_minimum_required(VERSION 3.4.3 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 project(Thorin VERSION 1.9.0)
 
-if(MSVC)
-    set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
-else()
-    set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
-endif()
-
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "limited config" FORCE)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "limited config" FORCE)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS 1)
@@ -16,25 +12,31 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(THORIN_PROFILE "profile complexity in thorin::HashTable - only works in Debug build" ON)
+option(THORIN_ENABLE_PROFILING "profile complexity in thorin::HashTable - only works in Debug build" ON)
 
 find_program(MEMORYCHECK_COMMAND valgrind)
 set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
+
+include(GenerateExportHeader)
 include(CTest)
 
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
-# configure thorin preprocessor definitions
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(THORIN_ENABLE_CHECKS TRUE)
 endif()
-if(THORIN_PROFILE)
-    set(THORIN_ENABLE_PROFILING TRUE)
+
+if(WIN32)
+    set(THORIN_COLOR_TERM FALSE) # escape sequences not supported here
+else()
+    set(THORIN_COLOR_TERM TRUE)
 endif()
 
 if(MSVC)
+    set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
     add_compile_options(/utf-8 /W4 /wd4146 /wd4245) # /WX
 else()
+    set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
     add_compile_options(-Wall -Wextra -pedantic) # -Werror
 endif()
 

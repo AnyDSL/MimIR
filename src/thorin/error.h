@@ -3,17 +3,19 @@
 
 #include <stdexcept>
 
+#include "thorin/config.h"
+
 namespace thorin {
 
 class Def;
 
-class TypeError : public std::logic_error {
+class THORIN_API TypeError : public std::logic_error {
 public:
     TypeError(const std::string& what_arg)
         : std::logic_error(what_arg) {}
 };
 
-class ErrorHandler {
+class THORIN_API ErrorHandler {
 public:
     virtual ~ErrorHandler() {}
 
