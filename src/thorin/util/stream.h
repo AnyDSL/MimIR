@@ -178,7 +178,10 @@ template<class T>
 requires RefStream<T> Stream& operator<<(Stream& s, const T& x) { return x.stream(s); }
 /// Fallback uses `std::ostream operator<<`.
 template<class T>
-Stream& operator<<(Stream& s, const T& x) { s.ostream() << x; return s; }
+Stream& operator<<(Stream& s, const T& x) {
+    s.ostream() << x;
+    return s;
+}
 
 template<class T, class... Args>
 Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
