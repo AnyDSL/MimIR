@@ -11,7 +11,7 @@ namespace thorin {
 
 class Def;
 
-struct Pos : public Streamable<Pos> {
+struct THORIN_API Pos : public Streamable<Pos> {
     Pos() = default;
     Pos(uint32_t row, uint32_t col)
         : row(row)
@@ -23,7 +23,7 @@ struct Pos : public Streamable<Pos> {
     uint32_t col = -1;
 };
 
-struct Loc : public Streamable<Loc> {
+struct THORIN_API Loc : public Streamable<Loc> {
     Loc() = default;
     Loc(std::string_view file, Pos begin, Pos finis)
         : file(file)
@@ -48,7 +48,7 @@ struct Loc : public Streamable<Loc> {
 inline bool operator==(Pos p1, Pos p2) { return p1.row == p2.row && p1.col == p2.col; }
 inline bool operator==(Loc l1, Loc l2) { return l1.begin == l2.begin && l1.finis == l2.finis && l1.file == l2.file; }
 
-class Debug {
+class THORIN_API Debug {
 public:
     Debug(std::string_view name, Loc loc = {}, const Def* meta = nullptr)
         : name(name)
@@ -86,13 +86,13 @@ private:
 struct SymHash {
     static hash_t hash(Sym sym);
     static bool eq(Sym a, Sym b) { return a == b; }
-    static Sym sentinel() { return Sym((const Def*) 1); }
+    static Sym sentinel() { return Sym((const Def*)1); }
 };
 
 template<class Val>
 using SymMap = HashMap<Sym, Val, SymHash>;
 using SymSet = HashSet<Sym, SymHash>;
 
-}
+} // namespace thorin
 
 #endif

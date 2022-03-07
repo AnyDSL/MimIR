@@ -1,12 +1,14 @@
 #ifndef THORIN_PASS_OPTIMIZE_H
 #define THORIN_PASS_OPTIMIZE_H
 
-#include "thorin/pass/pass.h"
+#include "thorin/config.h"
 
 namespace thorin {
 
-void optimize(World&);
+class World;
 
-}
+void THORIN_API optimize(World&);
+
+} // namespace thorin
 
 #endif

@@ -274,7 +274,7 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     }
 
     auto type                    = pi->apply(arg).back();
-    auto [axiom, currying_depth] = get_axiom(callee); // TODO move down again
+    auto [axiom, currying_depth] = Axiom::get(callee); // TODO move down again
     if (axiom && currying_depth == 1) {
         if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
     }
@@ -285,7 +285,7 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
 const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi                      = callee->type()->as<Pi>();
     auto type                    = pi->apply(arg).back();
-    auto [axiom, currying_depth] = get_axiom(callee);
+    auto [axiom, currying_depth] = Axiom::get(callee);
     return unify<App>(2, axiom, currying_depth - 1, type, callee, arg, dbg);
 }
 
@@ -702,9 +702,9 @@ std::string_view World::level2string(LogLevel level) {
         case LogLevel::Info:    return "I";
         case LogLevel::Verbose: return "V";
         case LogLevel::Debug:   return "D";
-            // clang-format on
+        // clang-format on
+        default: THORIN_UNREACHABLE;
     }
-    THORIN_UNREACHABLE;
 }
 
 int World::level2color(LogLevel level) {
@@ -715,12 +715,12 @@ int World::level2color(LogLevel level) {
         case LogLevel::Info:    return 2;
         case LogLevel::Verbose: return 4;
         case LogLevel::Debug:   return 4;
-            // clang-format on
+        // clang-format on
+        default: THORIN_UNREACHABLE;
     }
-    THORIN_UNREACHABLE;
 }
 
-#ifdef COLORIZE_LOG
+#ifdef THORIN_COLOR_TERM
 std::string World::colorize(std::string_view str, int color) {
     if (isatty(fileno(stdout))) {
         const char c = '0' + color;
