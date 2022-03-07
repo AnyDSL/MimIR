@@ -739,7 +739,6 @@ void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
  */
 
 template void Streamable<World>::write(std::string_view filename) const;
-template void Streamable<World>::write() const;
 template void Streamable<World>::dump() const;
 template void World::visit<true>(VisitFn) const;
 template void World::visit<false>(VisitFn) const;

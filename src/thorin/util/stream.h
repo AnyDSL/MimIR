@@ -149,8 +149,6 @@ public:
         Stream s(ofs);
         child().stream(s).endl();
     }
-    /// Writes to a file named @c child().name().
-    void write() const { write(child().name()); }
     /// Writes to stdout.
     void dump() const {
         Stream s(std::cout);
@@ -178,11 +176,9 @@ template<class T>
 requires PtrStream<T> Stream& operator<<(Stream& s, const T& x) { return x->stream(s); }
 template<class T>
 requires RefStream<T> Stream& operator<<(Stream& s, const T& x) { return x.stream(s); }
+/// Fallback uses `std::ostream operator<<`.
 template<class T>
-Stream& operator<<(Stream& s, const T& x) {
-    s.ostream() << x;
-    return s;
-} ///< Fallback uses @c std::ostream @c operator<<.
+Stream& operator<<(Stream& s, const T& x) { s.ostream() << x; return s; }
 
 template<class T, class... Args>
 Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
@@ -190,18 +186,11 @@ Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
         auto next = s + 1;
 
         switch (*s) {
-            case '\n':
-                s++;
-                endl();
-                break;
-            case '\t':
-                s++;
-                indent();
-                break;
-            case '\b':
-                s++;
-                dedent();
-                break;
+            // clang-format off
+            case '\n': s++; endl();   break;
+            case '\t': s++; indent(); break;
+            case '\b': s++; dedent(); break;
+            // clang-format on
             case '{': {
                 if (match2nd(next, s, '{')) continue;
                 s++; // skip opening brace '{'

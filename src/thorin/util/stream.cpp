@@ -13,9 +13,11 @@ Stream& Stream::fmt(const char* s) {
         auto next = s + 1;
 
         switch (*s) {
+            // clang-format off
             case '\n': s++; endl();   break;
             case '\t': s++; indent(); break;
             case '\b': s++; dedent(); break;
+            // clang-format on
             case '{':
                 if (match2nd(next, s, '{')) continue;
 
