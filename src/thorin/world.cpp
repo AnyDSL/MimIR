@@ -285,7 +285,7 @@ World::World(std::string_view name)
           B,
           cn({type_mem(), sigma({B, A})})
         });
-        auto Xi = pi(cn_mem_flat(A, B), diffd);
+        auto Xi = pi(cn_mem_ret_flat(A, B), diffd);
         type->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
         */
@@ -299,11 +299,11 @@ World::World(std::string_view name)
 ////          flatten(A),
 //          cn({type_mem(), D, pullback})
 //        });
-////        auto diffd= cn_mem_flat(A,tuple({B,pullback}));
+////        auto diffd= cn_mem_ret_flat(A,tuple({B,pullback}));
 //        // TODO: flattening at this point is useless as we handle abstract kinds here
 //        auto Xi = pi(cn_mem_ret(A, B), diffd);
 //        //        auto Xi = pi(cn_mem_ret(flatten(A), B), diffd);
-////        auto Xi = pi(cn_mem_flat(A, B), diffd);
+////        auto Xi = pi(cn_mem_ret_flat(A, B), diffd);
 //        type->set_codom(Xi);
 //        data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
 
@@ -354,7 +354,7 @@ const Def* World::tangent_type(const Def* A,bool left) {
                             AL,
                             cn({type_mem(), BL, pullback})
                         });
-//        auto diffd= cn_mem_flat(A,tuple({B,pullback}));
+//        auto diffd= cn_mem_ret_flat(A,tuple({B,pullback}));
 
         return diffd;
 
@@ -463,6 +463,9 @@ static const Def* infer_sigma(World& world, Defs ops) {
     return world.sigma(elems);
 }
 
+
+// TODO: unify using a flatten sigma function
+
 const Pi* World::cn_mem_half_flat(const Def* dom, const Def* codom, const Def* dbg) {
     auto ret = cn(sigma({ type_mem(), codom }));
 
@@ -501,7 +504,43 @@ const Pi* World::cn_mem_half_flat(const Def* dom, const Def* codom, const Def* d
     return cn(merge(type_mem(), {dom, ret}), dbg);
 }
 
-const Pi* World::cn_mem_flat(const Def* dom, const Def* codom, const Def* dbg) {
+const Pi* World::cn_mem_flat(const Def* dom, const Def* dbg) {
+    if (dom->isa<Sigma>()) {
+        auto size = dom->num_ops() + 1;
+        DefArray defs(size);
+        for (size_t i = 0; i < size; ++i) {
+            if (i == 0) {
+                defs[i] = type_mem();
+            } else {
+                defs[i] = dom->op(i - 1);
+            }
+        }
+
+        return cn(defs);
+    }
+
+
+    // for local tupel of same type
+    if (auto a = dom->isa<Arr>()) {
+        if(auto lit_size=a->shape()->isa<Lit>()) {
+            auto size = lit_size->get<uint8_t>() + 1;
+            DefArray defs(size);
+            for (uint8_t i = 0; i < size; ++i) {
+                if (i == 0) {
+                    defs[i] = type_mem();
+                } else {
+                    defs[i] = a->body();
+                }
+            }
+
+            return cn(defs);
+        }
+    }
+
+    return cn(merge(type_mem(), {dom}), dbg);
+}
+
+const Pi* World::cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* dbg) {
     auto ret = cn(sigma({ type_mem(), codom }));
     if (codom->isa<Sigma>()) {
         ret = cn(merge_sigma(type_mem(), codom->ops())) ;
@@ -560,7 +599,7 @@ const Lam* World::flatten_lam(Lam* lam) {
     auto pi = lam->type();
     auto dom = params_without_return_continuation(pi); // maybe use var(1)
     auto ret_cont = pi->dom()->ops().back()->as<Pi>();
-    auto ty = cn_mem_flat(dom,ret_cont,pi->dbg());
+    auto ty = cn_mem_ret_flat(dom, ret_cont, pi->dbg());
 
     auto flat_f = nom_lam(ty, dbg(lam->name()+"_flat"));
     flat_f->set_filter(true);
@@ -1056,12 +1095,12 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
         ////          flatten(A),
         //          cn({type_mem(), D, pullback})
         //        });
-        ////        auto diffd= cn_mem_flat(A,tuple({B,pullback}));
+        ////        auto diffd= cn_mem_ret_flat(A,tuple({B,pullback}));
         //        // TODO: flattening at this point is useless as we handle abstract kinds here
         //        auto Xi = pi(cn_mem_ret(A, B), diffd);
 
-        auto fn_ty = cn_mem_flat(dom,codom);
-        auto pb_ty = cn_mem_flat(tan_codom,tan_dom);
+        auto fn_ty = cn_mem_ret_flat(dom, codom);
+        auto pb_ty = cn_mem_ret_flat(tan_codom, tan_dom);
 //        auto diff_ty = cn_mem_half_flat(deriv_dom,tuple({deriv_codom,pb_ty}));
         // deriv_codom
         const Def* deriv_pb_codom;
@@ -1094,7 +1133,7 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
         }else {
             deriv_pb_codom=sigma({deriv_codom,pb_ty});
         }
-        auto diff_ty = cn_mem_flat(deriv_dom,deriv_pb_codom);
+        auto diff_ty = cn_mem_ret_flat(deriv_dom, deriv_pb_codom);
 
 //        auto diff_ty = cn({type_mem(),deriv_dom,cn({type_mem(),deriv_codom,pb_ty})});
 

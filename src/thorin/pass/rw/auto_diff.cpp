@@ -299,6 +299,7 @@ const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
     dlog(world_,"  jwrapped elements: {, }",ops);
 
     auto isMemTuple = tuple_dim>0 && isa<Tag::Mem>(tuple[0]->type());
+    auto isRetTuple = isMemTuple && tuple_dim>1 && tuple[tuple_dim-1]->type()->isa<Pi>();
 
     if(isMemTuple) {
         ops[0] = j_wrap(tuple[0]);
@@ -329,9 +330,17 @@ const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
     // apply them with the component of the scalar from the tuple pullback
     // sum them up
 
+    size_t real_arg_num;
+    if(isRetTuple)
+        real_arg_num=tuple_dim-2;
+    else if(isMemTuple)
+        real_arg_num=tuple_dim-1;
+    else
+        real_arg_num=tuple_dim;
+
 //    const Def* trimmed_ty;
 //    auto tuple_ty = tuple->type();
-    auto trimmed_var_ty=Array<const Def*>(isMemTuple ? tuple_dim-1 : tuple_dim,
+    auto trimmed_var_ty=Array<const Def*>(real_arg_num,
     [&] (auto i) {
         return tuple[isMemTuple ? i+1 : i]->type();
     });
@@ -373,7 +382,7 @@ const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
     ////            cpb_mem=cpb_mem2;
     //        }
 
-    for (size_t i = 0; i < (isMemTuple ? tuple_dim-1 : tuple_dim); ++i) {
+    for (size_t i = 0; i < real_arg_num; ++i) {
         nextpb = world_.nom_lam(pbT, world_.dbg("φtuple_next"));
         nextpb->set_filter(world_.lit_true());
 
@@ -426,26 +435,35 @@ const Def* AutoDiffer::chain(const Def* a, const Def* b) {
     // chaining of two pullbacks is composition due to the
     // nature of a pullback as linear map => application corresponds to (matrix-)multiplication
 
+    // res = b(a(x))
+    // a : A -> B
+    // b : B -> C
+    // res : A -> C
+
     auto at = a->type()->as<Pi>();
     auto bt = b->type()->as<Pi>();
     type_dump(world_,"   chain fun a",a);
     type_dump(world_,"   chain fun b",b);
 
-    auto A = at->doms()[1];
-    auto B = bt->doms()[1];
-    auto C = bt->doms()[2]->as<Pi>()->doms()[1];
+//    auto A = at->doms()[1];
+//    auto B = bt->doms()[1];
+    auto A = world_.params_without_return_continuation(at);
+    auto B = world_.params_without_return_continuation(bt);
+    auto C = world_.sigma(bt->doms().back()->as<Pi>()->doms().skip_front());
+    auto B2 = world_.sigma(at->doms().back()->as<Pi>()->doms().skip_front());
     dlog(world_,"   A {}",A);
     dlog(world_,"   B {}",B);
     dlog(world_,"   C {}",C);
+    dlog(world_,"   B2 {}",B2);
 
-    auto pi = world_.cn_mem_ret(A, C);
+    auto pi = world_.cn_mem_ret_flat(A, C);
     auto toplevel = world_.nom_lam(pi, world_.dbg("chain"));
 
-    auto middlepi = world_.cn_mem(B);
+    auto middlepi = world_.cn_mem_flat(B);
     auto middle = world_.nom_lam(middlepi, world_.dbg("chain_2"));
 
-    toplevel->set_body(world_.app(a, {toplevel->mem_var(), toplevel->var(1), middle}));
-    middle->set_body(world_.app(b, {middle->mem_var(), middle->var(1), toplevel->ret_var()}));
+    toplevel->set_body(world_.app(a, flat_tuple({toplevel->mem_var(), world_.tuple(vars_without_mem_cont(toplevel)), middle})));
+    middle->set_body(world_.app(b, flat_tuple({middle->mem_var(), world_.tuple(vars_without_mem_cont(middle)), toplevel->ret_var()})));
 
     toplevel->set_filter(world_.lit_true());
     middle->set_filter(world_.lit_true());
@@ -457,7 +475,7 @@ const Def* AutoDiffer::chain(const Def* a, const Def* b) {
 const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
     // one could keep A "normal" and use tangent type here and at the uses to create a pb ZERO,
 //    return world_.cn_mem_ret(world_.tangent_type(B,false), A);
-    return world_.cn_mem_flat(world_.tangent_type(B,false), A);
+    return world_.cn_mem_ret_flat(world_.tangent_type(B, false), A);
 }
 
 
@@ -1607,10 +1625,21 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             }
 
 
-            auto [m,arg,ret_arg] = d_arg->projs<3>();
+            type_dump(world_,"  wrapped args: ",d_arg);
+//            auto [m,arg,ret_arg] = d_arg->projs<3>();
+            auto m = d_arg->proj(0);
+            auto num_projs = d_arg->num_projs();
+            auto ret_arg = d_arg->proj(num_projs-1);
+            auto args=Array<const Def*>(
+                num_projs-2,
+                [&](auto i) {
+                  return d_arg->proj(i+1);
+                });
+            auto arg= world_.tuple(args);
             type_dump(world_,"  split wrapped args into: mem: ",m);
             type_dump(world_,"  split wrapped args into: arg: ",arg);
             type_dump(world_,"  split wrapped args into: ret: ",ret_arg);
+//            THORIN_UNREACHABLE;
 
             auto pbT = dst_callee->type()->as<Pi>()->doms().back()->as<Pi>();
             auto chained = world_.nom_lam(pbT, world_.dbg("φchain"));
@@ -1628,25 +1657,27 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             auto chain_pb = chain(ret_pb,arg_pb);
             type_dump(world_,"  chain pb",chain_pb);
 
-
+            // TODO
             chained->set_body( world_.app(
                 ret_arg,
-                {
+                flat_tuple({
                     chained->mem_var(),
-                    chained->var(1),
+                    world_.tuple(vars_without_mem_cont(chained)),
                     chain_pb
-                }
+                })
                 ));
             chained->set_filter(world_.lit_true());
             type_dump(world_,"  build chained (app pb) ",chained);
 
-            auto dst = world_.app(dst_callee, {m,arg,chained});
+            // TODO ?
+            auto dst = world_.app(dst_callee, flat_tuple({m,arg,chained}));
 
             type_dump(world_,"  application with jwrapped args",dst);
 
             pullbacks_[dst] = pullbacks_[d_arg];
             type_dump(world_,"  pullback of dst (call app): ",pullbacks_[dst]);
 
+//            THORIN_UNREACHABLE;
             return dst;
         }else {
             dlog(world_,"  FYI non-returning callee");

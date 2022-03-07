@@ -52,7 +52,7 @@ void optimize(World& world) {
     // opt2.add<DCE>(br, ee);
     opt2.add<CopyProp>(br, ee);
     opt2.add<TailRecElim>(er);
-    opt2.run();
+//    opt2.run();
     printf("Finished Prepare Opti\n");
 
 
