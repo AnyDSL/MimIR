@@ -9,13 +9,13 @@ namespace thorin {
 
 class Def;
 
-class THORIN_API TypeError : public std::logic_error {
+class TypeError : public std::logic_error {
 public:
     TypeError(const std::string& what_arg)
         : std::logic_error(what_arg) {}
 };
 
-class THORIN_API ErrorHandler {
+class ErrorHandler {
 public:
     virtual ~ErrorHandler() {}
 

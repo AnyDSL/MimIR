@@ -34,7 +34,7 @@ class Scope;
 /// All worlds are completely independent from each other.
 ///
 /// Note that types are also just @p Def%s and will be hashed as well.
-class THORIN_API World : public Streamable<World> {
+class World : public Streamable<World> {
 public:
     struct SeaHash {
         static hash_t hash(const Def* def) { return def->hash(); }
@@ -635,7 +635,7 @@ private:
     }
     ///@}
 
-    class THORIN_API Arena {
+    class Arena {
     public:
         Arena()
             : root_zone_(new Zone) // don't use 'new Zone()' - we keep the allocated Zone uninitialized

@@ -5,26 +5,54 @@
 
 namespace thorin {
 
-#define THORIN_KEY(m) m(K_in, "nom") m(K_lam, "lam") m(K_let, "let")
+// clang-format off
+#define THORIN_KEY(m)                   \
+    m(K_in,  "nom" )                    \
+    m(K_lam, "lam")                     \
+    m(K_let, "let")
 
 #define CODE(t, str) +size_t(1)
 constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 #undef CODE
 
-#define THORIN_LIT(m) m(L_s, "<signed integer literal>") m(L_u, "<integer literal>") m(L_f, "<floating-point literal>")
+#define THORIN_LIT(m)                   \
+    m(L_s,  "<signed integer literal>") \
+    m(L_u,  "<integer literal>")        \
+    m(L_f,  "<floating-point literal>")
 
-#define THORIN_TOK(m)                                                                                                \
-    /* misc */                                                                                                       \
-    m(M_eof, "<eof>") m(M_id, "<identifier>") /* punctuators */                                                      \
-        m(P_colon, ":") m(P_colon_colon, "::") m(P_comma, ",") m(P_dot, ".") m(P_semicolon, ";")                     \
-            m(P_assign, "=") /* delimiters */                                                                        \
-        m(D_angle_l, "‹") m(D_angle_r, "›") m(D_brace_l, "{") m(D_brace_r, "}") m(D_bracket_l, "[")                  \
-            m(D_bracket_r, "]") m(D_paren_l, "(") m(D_paren_r, ")") m(D_quote_l, "«") m(D_quote_r, "»") /* binder */ \
-        m(B_lam, "λ") m(B_forall, "∀")
+#define THORIN_TOK(m)                   \
+    /* misc */                          \
+    m(M_eof, "<eof>")                   \
+    m(M_id,  "<identifier>")            \
+    /* punctuators */                   \
+    m(P_colon,        ":")              \
+    m(P_colon_colon,  "::")             \
+    m(P_comma,        ",")              \
+    m(P_dot,          ".")              \
+    m(P_semicolon,    ";")              \
+    m(P_assign,       "=")              \
+    /* delimiters */                    \
+    m(D_angle_l,      "‹")              \
+    m(D_angle_r,      "›")              \
+    m(D_brace_l,      "{")              \
+    m(D_brace_r,      "}")              \
+    m(D_bracket_l,    "[")              \
+    m(D_bracket_r,    "]")              \
+    m(D_paren_l,      "(")              \
+    m(D_paren_r,      ")")              \
+    m(D_quote_l,      "«")              \
+    m(D_quote_r,      "»")              \
+    /* binder */                        \
+    m(B_lam,          "λ")              \
+    m(B_forall,       "∀")
 
-#define THORIN_OP(m) m(O_pi, "→", App, Pi) m(O_extract, "#", Extract, Lit) m(O_lit, "∷", Error, Lit)
+#define THORIN_OP(m)                    \
+    m(O_pi,      "→", App,      Pi)     \
+    m(O_extract, "#", Extract,  Lit)    \
+    m(O_lit,     "∷", Error,    Lit)
+// clang-format on
 
-class THORIN_API Tok : public Streamable<Tok> {
+class Tok : public Streamable<Tok> {
 public:
     enum class Prec { //  left    right
         Error,        //  -       -       <- If lookahead isn't a valid operator.

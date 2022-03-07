@@ -57,7 +57,7 @@ T as_lit(const Def* def);
 
 /// References a user.
 /// A @p Def @c u which uses @p Def @c d as @c i^th operand is a @p Use with @p index_ @c i of @p Def @c d.
-class THORIN_API Use {
+class Use {
 public:
     Use() {}
     Use(const Def* def, size_t index)
@@ -122,7 +122,7 @@ enum : unsigned {
 /// ```
 /// This means that any subclass of @p Def must not introduce additional members.
 /// See also @p Def::extended_ops.
-class THORIN_API Def : public RuntimeCast<Def>, public Streamable<Def> {
+class Def : public RuntimeCast<Def>, public Streamable<Def> {
 public:
     using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*, const Def*);
 
@@ -466,7 +466,7 @@ using Nom2Nom = NomMap<Def*>;
 
 //------------------------------------------------------------------------------
 
-class THORIN_API Var : public Def {
+class Var : public Def {
 private:
     Var(const Def* type, Def* nom, const Def* dbg)
         : Def(Node, type, Defs{nom}, 0, dbg) {}
@@ -490,7 +490,7 @@ using VarMap  = GIDMap<const Var*, To>;
 using VarSet  = GIDSet<const Var*>;
 using Var2Var = VarMap<const Var*>;
 
-class THORIN_API Space : public Def {
+class Space : public Def {
 private:
     Space(World& world)
         : Def(Node, reinterpret_cast<const Def*>(&world), Defs{}, 0, nullptr) {}
@@ -505,7 +505,7 @@ public:
     friend class World;
 };
 
-class THORIN_API Kind : public Def {
+class Kind : public Def {
 private:
     Kind(World&);
 
@@ -519,7 +519,7 @@ public:
     friend class World;
 };
 
-class THORIN_API Lit : public Def {
+class Lit : public Def {
 private:
     Lit(const Def* type, fields_t val, const Def* dbg)
         : Def(Node, type, Defs{}, val, dbg) {}
@@ -552,7 +552,7 @@ T as_lit(const Def* def) {
     return def->as<Lit>()->get<T>();
 }
 
-class THORIN_API Tracker {
+class Tracker {
 public:
     Tracker()
         : def_(nullptr) {}
@@ -574,7 +574,7 @@ private:
     mutable const Def* def_;
 };
 
-class THORIN_API Nat : public Def {
+class Nat : public Def {
 private:
     Nat(World& world);
 
@@ -588,7 +588,7 @@ public:
     friend class World;
 };
 
-class THORIN_API Proxy : public Def {
+class Proxy : public Def {
 private:
     Proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg)
         : Def(Node, type, ops, (nat_t(index) << 32_u64) | nat_t(flags), dbg) {}
@@ -612,7 +612,7 @@ public:
 /// A global variable in the data segment.
 /// A @p Global may be mutable or immutable.
 /// @em deprecated. WILL BE REMOVED
-class THORIN_API Global : public Def {
+class Global : public Def {
 private:
     Global(const Def* type, const Def* id, const Def* init, bool is_mutable, const Def* dbg)
         : Def(Node, type, {id, init}, is_mutable, dbg) {}

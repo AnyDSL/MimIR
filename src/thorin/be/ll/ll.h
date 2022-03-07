@@ -10,7 +10,7 @@ class World;
 
 namespace ll {
 
-THORIN_API void emit(World&, Stream&);
+void emit(World&, Stream&);
 
 }
 } // namespace thorin

@@ -5,7 +5,7 @@
 
 namespace thorin {
 
-class THORIN_API Axiom : public Def {
+class Axiom : public Def {
 private:
     Axiom(NormalizeFn normalizer, const Def* type, tag_t tag, flags_t flags, const Def* dbg);
 
@@ -34,7 +34,7 @@ bool has(T flags, U option) {
 }
 
 template<class F, class D>
-class THORIN_API Query {
+class Query {
 public:
     Query()
         : axiom_(nullptr)

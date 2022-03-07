@@ -10,4 +10,10 @@
 #define THORIN_VER_MINOR "@PROJECT_VERSION_MINOR@"
 #define THORIN_VER_PATCH "@PROJECT_VERSION_PATCH@"
 
+#ifdef _MSC_VER
+#define THORIN_EXPORT __declspec(dllexport)
+#else
+#define THORIN_EXPORT __attribute__((visibility("default")))
+#endif
+
 #endif

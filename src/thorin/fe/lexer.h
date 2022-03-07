@@ -13,7 +13,7 @@ namespace thorin {
 
 class World;
 
-class THORIN_API Lexer {
+class Lexer {
 public:
     Lexer(World&, std::string_view, std::istream&);
 
