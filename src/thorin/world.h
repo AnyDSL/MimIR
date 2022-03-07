@@ -635,7 +635,7 @@ private:
     }
     ///@}
 
-    class Arena {
+    class THORIN_API Arena {
     public:
         Arena()
             : root_zone_(new Zone) // don't use 'new Zone()' - we keep the allocated Zone uninitialized
