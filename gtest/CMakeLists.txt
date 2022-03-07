@@ -4,4 +4,4 @@ add_executable(thorin-gtest
 )
 
 target_link_libraries(thorin-gtest gtest_main libthorin)
-gtest_discover_tests (thorin-gtest TEST_PREFIX "thorin.")
+gtest_discover_tests (thorin-gtest TEST_PREFIX "thorin." PROPERTIES TIMEOUT 60)
