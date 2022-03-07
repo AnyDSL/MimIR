@@ -4,14 +4,21 @@
 #include <fstream>
 #include <iostream>
 
-#include <dlfcn.h>
-
 #include "thorin/config.h"
 
 #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/pass.h"
 #include "thorin/util/stream.h"
+
+#ifdef _WIN32
+#    include <windows.h>
+#    define dlym   GetProcAddress
+#    define popen  _popen
+#    define pclose _pclose
+#else
+#    include <dlfcn.h>
+#endif
 
 using namespace thorin;
 
@@ -28,11 +35,6 @@ static const auto usage = "Usage: thorin [options] file\n"
 
 static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
-#ifdef _WIN32
-#    define popen  _popen
-#    define pclose _pclose
-#endif
-
 /// see https://stackoverflow.com/a/478960
 std::string exec(const char* cmd) {
     std::array<char, 128> buffer;
@@ -44,7 +46,12 @@ std::string exec(const char* cmd) {
 }
 
 void test_plugin(const char* name) {
+#ifdef _WIN32
+    auto handle = LoadLibrary(name);
+#else
     auto handle = dlopen(name, RTLD_LAZY);
+#endif
+
     if (!handle) throw std::logic_error("cannot open plugin");
 
     auto create  = (CreateIPass)dlsym(handle, "create");
