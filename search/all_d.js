@@ -9,7 +9,7 @@ var searchData=
   ['make_5finternal_6',['make_internal',['../classthorin_1_1Def.html#ab0027c07e24d090144365a0857f76d43',1,'thorin::Def::make_internal()'],['../classthorin_1_1World.html#ab73ab54ae387bee661eec51133bdccb9',1,'thorin::World::make_internal()']]],
   ['make_5ftruth_5ftable_7',['make_truth_table',['../namespacethorin.html#a1aa84e35a44dd22fe2d00f0d63016425',1,'thorin']]],
   ['malloc_8',['Malloc',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67a66766177d88d41539d92b02ffed891b4',1,'thorin::Tag']]],
-  ['man_9',['man',['../classthorin_1_1RWPassBase.html#ad2506a9ae875b80c475520552cd969dc',1,'thorin::RWPassBase::man()'],['../classthorin_1_1RWPassBase.html#a96674bfc85788b0ee1ff7bd8decda05b',1,'thorin::RWPassBase::man() const']]],
+  ['man_9',['man',['../classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f',1,'thorin::IPass::man()'],['../classthorin_1_1IPass.html#a6868a4c90e8682c8f519042212c3ae56',1,'thorin::IPass::man() const']]],
   ['mangle_10',['mangle',['../namespacethorin.html#abf5afa0bf107f2fe297567339f761dbf',1,'thorin::mangle()'],['../classthorin_1_1Mangler.html#ab8d5c48c4baa45c0a294250bee638c5f',1,'thorin::Mangler::mangle()']]],
   ['mangle_2ecpp_11',['mangle.cpp',['../mangle_8cpp.html',1,'']]],
   ['mangle_2eh_12',['mangle.h',['../mangle_8h.html',1,'']]],

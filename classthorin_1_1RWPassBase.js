@@ -1,6 +1,6 @@
 var classthorin_1_1RWPassBase =
 [
-    [ "RWPassBase", "classthorin_1_1RWPassBase.html#a587bcb2adf5a729fbd8fc99c5a82e34f", null ],
+    [ "RWPassBase", "classthorin_1_1RWPassBase.html#a3eb83e6f823a0ee32ec2bbf86f31d218", null ],
     [ "~RWPassBase", "classthorin_1_1RWPassBase.html#a5cf643e69d44e023ac85d79c0a1ce3ab", null ],
     [ "as_proxy", "classthorin_1_1RWPassBase.html#aefce686d1167f1abc2217f23b7461de9", null ],
     [ "curr_nom", "classthorin_1_1RWPassBase.html#adec059b8b68ab646d0b1307858acfa8e", null ],
@@ -8,9 +8,6 @@ var classthorin_1_1RWPassBase =
     [ "inspect", "classthorin_1_1RWPassBase.html#ac562970123e64c176cdae0e9b646e495", null ],
     [ "inspect", "classthorin_1_1RWPassBase.html#ab08fb019f1aa4638f1d5aaf9995dcc6b", null ],
     [ "isa_proxy", "classthorin_1_1RWPassBase.html#a9b94e8aa93f5d4fe037b499d3873cb20", null ],
-    [ "man", "classthorin_1_1RWPassBase.html#ad2506a9ae875b80c475520552cd969dc", null ],
-    [ "man", "classthorin_1_1RWPassBase.html#a96674bfc85788b0ee1ff7bd8decda05b", null ],
-    [ "name", "classthorin_1_1RWPassBase.html#ad77a7bb256742547b2ae03ac0099b904", null ],
     [ "proxy", "classthorin_1_1RWPassBase.html#a19bcd131336dceb54a95a1eca9cda22e", null ],
     [ "proxy_id", "classthorin_1_1RWPassBase.html#a86499da04ae1cb7e3c00a957f142b625", null ],
     [ "rewrite", "classthorin_1_1RWPassBase.html#a416313eda3acb53d2609877c4367d07c", null ],

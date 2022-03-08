@@ -1,4 +1,4 @@
 var optimize_8cpp =
 [
-    [ "optimize", "optimize_8cpp.html#a732ae46e4fb6114a0c26d81283032ee8", null ]
+    [ "optimize", "optimize_8cpp.html#a9e64c2e92ce1a1166c536644960116c2", null ]
 ];

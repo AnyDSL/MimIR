@@ -175,6 +175,43 @@ var hierarchy =
     [ "thorin::IndexMap< const thorin::CFNode * >", "classthorin_1_1IndexMap.html", null ],
     [ "thorin::IndexSet< Indexer, Key >", "classthorin_1_1IndexSet.html", null ],
     [ "thorin::SSAConstr::Info", "classthorin_1_1SSAConstr.html#structthorin_1_1SSAConstr_1_1Info", null ],
+    [ "thorin::IPass", "classthorin_1_1IPass.html", [
+      [ "thorin::RWPassBase", "classthorin_1_1RWPassBase.html", [
+        [ "thorin::RWPass< Lam >", "classthorin_1_1RWPass.html", [
+          [ "thorin::Alloc2Malloc", "classthorin_1_1Alloc2Malloc.html", null ],
+          [ "thorin::RememElim", "classthorin_1_1RememElim.html", null ],
+          [ "thorin::RetWrap", "classthorin_1_1RetWrap.html", null ],
+          [ "thorin::Scalerize", "classthorin_1_1Scalerize.html", null ]
+        ] ],
+        [ "thorin::FPPassBase", "classthorin_1_1FPPassBase.html", [
+          [ "thorin::FPPass< BetaRed >", "classthorin_1_1FPPass.html", [
+            [ "thorin::BetaRed", "classthorin_1_1BetaRed.html", null ]
+          ] ],
+          [ "thorin::FPPass< CopyProp, Lam >", "classthorin_1_1FPPass.html", [
+            [ "thorin::CopyProp", "classthorin_1_1CopyProp.html", null ]
+          ] ],
+          [ "thorin::FPPass< DCE, Lam >", "classthorin_1_1FPPass.html", [
+            [ "thorin::DCE", "classthorin_1_1DCE.html", null ]
+          ] ],
+          [ "thorin::FPPass< EtaExp, Lam >", "classthorin_1_1FPPass.html", [
+            [ "thorin::EtaExp", "classthorin_1_1EtaExp.html", null ]
+          ] ],
+          [ "thorin::FPPass< EtaRed >", "classthorin_1_1FPPass.html", [
+            [ "thorin::EtaRed", "classthorin_1_1EtaRed.html", null ]
+          ] ],
+          [ "thorin::FPPass< SSAConstr, Lam >", "classthorin_1_1FPPass.html", [
+            [ "thorin::SSAConstr", "classthorin_1_1SSAConstr.html", null ]
+          ] ],
+          [ "thorin::FPPass< TailRecElim, Lam >", "classthorin_1_1FPPass.html", [
+            [ "thorin::TailRecElim", "classthorin_1_1TailRecElim.html", null ]
+          ] ],
+          [ "thorin::FPPass< P, N >", "classthorin_1_1FPPass.html", null ]
+        ] ],
+        [ "thorin::RWPass< N >", "classthorin_1_1RWPass.html", [
+          [ "thorin::PartialEval", "classthorin_1_1PartialEval.html", null ]
+        ] ]
+      ] ]
+    ] ],
     [ "thorin::detail::HashTable< Key, T, H, StackCapacity >::iterator_base< is_const >", "classthorin_1_1detail_1_1HashTable_1_1iterator__base.html", null ],
     [ "thorin::Lexer", "classthorin_1_1Lexer.html", null ],
     [ "thorin::World::Arena::Lock", "structthorin_1_1World_1_1Arena_1_1Lock.html", null ],
@@ -229,41 +266,6 @@ var hierarchy =
         [ "thorin::Tuple", "classthorin_1_1Tuple.html", null ],
         [ "thorin::Var", "classthorin_1_1Var.html", null ],
         [ "thorin::Vel", "classthorin_1_1Vel.html", null ]
-      ] ]
-    ] ],
-    [ "thorin::RWPassBase", "classthorin_1_1RWPassBase.html", [
-      [ "thorin::RWPass< Lam >", "classthorin_1_1RWPass.html", [
-        [ "thorin::Alloc2Malloc", "classthorin_1_1Alloc2Malloc.html", null ],
-        [ "thorin::RememElim", "classthorin_1_1RememElim.html", null ],
-        [ "thorin::RetWrap", "classthorin_1_1RetWrap.html", null ],
-        [ "thorin::Scalerize", "classthorin_1_1Scalerize.html", null ]
-      ] ],
-      [ "thorin::FPPassBase", "classthorin_1_1FPPassBase.html", [
-        [ "thorin::FPPass< BetaRed >", "classthorin_1_1FPPass.html", [
-          [ "thorin::BetaRed", "classthorin_1_1BetaRed.html", null ]
-        ] ],
-        [ "thorin::FPPass< CopyProp, Lam >", "classthorin_1_1FPPass.html", [
-          [ "thorin::CopyProp", "classthorin_1_1CopyProp.html", null ]
-        ] ],
-        [ "thorin::FPPass< DCE, Lam >", "classthorin_1_1FPPass.html", [
-          [ "thorin::DCE", "classthorin_1_1DCE.html", null ]
-        ] ],
-        [ "thorin::FPPass< EtaExp, Lam >", "classthorin_1_1FPPass.html", [
-          [ "thorin::EtaExp", "classthorin_1_1EtaExp.html", null ]
-        ] ],
-        [ "thorin::FPPass< EtaRed >", "classthorin_1_1FPPass.html", [
-          [ "thorin::EtaRed", "classthorin_1_1EtaRed.html", null ]
-        ] ],
-        [ "thorin::FPPass< SSAConstr, Lam >", "classthorin_1_1FPPass.html", [
-          [ "thorin::SSAConstr", "classthorin_1_1SSAConstr.html", null ]
-        ] ],
-        [ "thorin::FPPass< TailRecElim, Lam >", "classthorin_1_1FPPass.html", [
-          [ "thorin::TailRecElim", "classthorin_1_1TailRecElim.html", null ]
-        ] ],
-        [ "thorin::FPPass< P, N >", "classthorin_1_1FPPass.html", null ]
-      ] ],
-      [ "thorin::RWPass< N >", "classthorin_1_1RWPass.html", [
-        [ "thorin::PartialEval", "classthorin_1_1PartialEval.html", null ]
       ] ]
     ] ],
     [ "thorin::Scheduler", "classthorin_1_1Scheduler.html", null ],

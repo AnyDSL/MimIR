@@ -11,7 +11,8 @@ var searchData=
   ['defs_8',['Defs',['../namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16',1,'thorin']]],
   ['defset_9',['DefSet',['../namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46',1,'thorin']]],
   ['defvec_10',['DefVec',['../namespacethorin.html#a79fff1449ba1eaecead8f607520f8574',1,'thorin']]],
-  ['difference_5ftype_11',['difference_type',['../classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a2e44dd66ef893363e2223f5c137b1858',1,'thorin::detail::HashTable::iterator_base']]],
-  ['domfrontiers_12',['DomFrontiers',['../namespacethorin.html#aabeed34544f6e46c642b30708304cfc2',1,'thorin']]],
-  ['domtree_13',['DomTree',['../namespacethorin.html#a27a76a1f311546f00c650982da319cb5',1,'thorin']]]
+  ['destroyipass_11',['DestroyIPass',['../namespacethorin.html#a181603f6479c823fe5d75e729635ef35',1,'thorin']]],
+  ['difference_5ftype_12',['difference_type',['../classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a2e44dd66ef893363e2223f5c137b1858',1,'thorin::detail::HashTable::iterator_base']]],
+  ['domfrontiers_13',['DomFrontiers',['../namespacethorin.html#aabeed34544f6e46c642b30708304cfc2',1,'thorin']]],
+  ['domtree_14',['DomTree',['../namespacethorin.html#a27a76a1f311546f00c650982da319cb5',1,'thorin']]]
 ];

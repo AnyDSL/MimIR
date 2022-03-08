@@ -7,8 +7,9 @@ var searchData=
   ['_7edef_4',['~Def',['../classthorin_1_1Def.html#a363d906c9d41379ef907c2ebcefe3e57',1,'thorin::Def']]],
   ['_7eerrorhandler_5',['~ErrorHandler',['../classthorin_1_1ErrorHandler.html#ab5a8c839752c1c7b8090005375578624',1,'thorin::ErrorHandler']]],
   ['_7ehashtable_6',['~HashTable',['../classthorin_1_1detail_1_1HashTable.html#ada1e66ba338e13fd3b069e17c8643e78',1,'thorin::detail::HashTable']]],
-  ['_7elock_7',['~Lock',['../structthorin_1_1World_1_1Arena_1_1Lock.html#afa07a5bf3efdfaa263b3806aae4f93fe',1,'thorin::World::Arena::Lock']]],
-  ['_7erwpassbase_8',['~RWPassBase',['../classthorin_1_1RWPassBase.html#a5cf643e69d44e023ac85d79c0a1ce3ab',1,'thorin::RWPassBase']]],
-  ['_7escope_9',['~Scope',['../classthorin_1_1Scope.html#a4c8115844a60de40c7b8f949b4bb6434',1,'thorin::Scope']]],
-  ['_7eworld_10',['~World',['../classthorin_1_1World.html#a957e6e5bec2d46e8095f442bd027cd0b',1,'thorin::World']]]
+  ['_7eipass_7',['~IPass',['../classthorin_1_1IPass.html#aaa9538a515e496cdb5245001e1fd1c43',1,'thorin::IPass']]],
+  ['_7elock_8',['~Lock',['../structthorin_1_1World_1_1Arena_1_1Lock.html#afa07a5bf3efdfaa263b3806aae4f93fe',1,'thorin::World::Arena::Lock']]],
+  ['_7erwpassbase_9',['~RWPassBase',['../classthorin_1_1RWPassBase.html#a5cf643e69d44e023ac85d79c0a1ce3ab',1,'thorin::RWPassBase']]],
+  ['_7escope_10',['~Scope',['../classthorin_1_1Scope.html#a4c8115844a60de40c7b8f949b4bb6434',1,'thorin::Scope']]],
+  ['_7eworld_11',['~World',['../classthorin_1_1World.html#a957e6e5bec2d46e8095f442bd027cd0b',1,'thorin::World']]]
 ];

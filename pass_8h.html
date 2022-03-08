@@ -121,6 +121,8 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html">thorin::IPass</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPassBase.html">thorin::RWPassBase</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">All Passes that want to be registered in the <code><a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a></code> must implement this interface.  <a href="classthorin_1_1RWPassBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,6 +147,10 @@ Namespaces</h2></td></tr>
 Typedefs</h2></td></tr>
 <tr class="memitem:ad9c8d1c5eaf69c4577726bf75fbf9357"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad9c8d1c5eaf69c4577726bf75fbf9357">thorin::undo_t</a></td></tr>
 <tr class="separator:ad9c8d1c5eaf69c4577726bf75fbf9357"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13419c0e67f8ea50a5640636f752e7d4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a13419c0e67f8ea50a5640636f752e7d4">thorin::CreateIPass</a> = IPass *(*)(PassMan &amp;)</td></tr>
+<tr class="separator:a13419c0e67f8ea50a5640636f752e7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a181603f6479c823fe5d75e729635ef35"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a181603f6479c823fe5d75e729635ef35">thorin::DestroyIPass</a> = void(*)(IPass *)</td></tr>
+<tr class="separator:a181603f6479c823fe5d75e729635ef35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>

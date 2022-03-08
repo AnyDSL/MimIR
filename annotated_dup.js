@@ -81,6 +81,7 @@ var annotated_dup =
       [ "IndexMap", "classthorin_1_1IndexMap.html", "classthorin_1_1IndexMap" ],
       [ "IndexSet", "classthorin_1_1IndexSet.html", "classthorin_1_1IndexSet" ],
       [ "Insert", "classthorin_1_1Insert.html", "classthorin_1_1Insert" ],
+      [ "IPass", "classthorin_1_1IPass.html", "classthorin_1_1IPass" ],
       [ "Kind", "classthorin_1_1Kind.html", "classthorin_1_1Kind" ],
       [ "Lam", "classthorin_1_1Lam.html", "classthorin_1_1Lam" ],
       [ "Lexer", "classthorin_1_1Lexer.html", "classthorin_1_1Lexer" ],

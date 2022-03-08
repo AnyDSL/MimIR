@@ -5,5 +5,6 @@ var searchData=
   ['indexset_2',['IndexSet',['../classthorin_1_1IndexSet.html',1,'thorin']]],
   ['info_3',['Info',['../classthorin_1_1SSAConstr.html#structthorin_1_1SSAConstr_1_1Info',1,'thorin::SSAConstr']]],
   ['insert_4',['Insert',['../classthorin_1_1Insert.html',1,'thorin']]],
-  ['iterator_5fbase_5',['iterator_base',['../classthorin_1_1detail_1_1HashTable_1_1iterator__base.html',1,'thorin::detail::HashTable']]]
+  ['ipass_5',['IPass',['../classthorin_1_1IPass.html',1,'thorin']]],
+  ['iterator_5fbase_6',['iterator_base',['../classthorin_1_1detail_1_1HashTable_1_1iterator__base.html',1,'thorin::detail::HashTable']]]
 ];
