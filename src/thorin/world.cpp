@@ -545,6 +545,8 @@ const Pi* World::cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* db
     if (codom->isa<Sigma>()) {
         ret = cn(merge_sigma(type_mem(), codom->ops())) ;
     }
+
+
 //    if (auto a = codom->isa<Arr>()) {
 //        auto size = a->shape()->as<Lit>()->get<uint8_t>() + 1;
 //        DefArray defs(size);
@@ -1119,6 +1121,9 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
 //
 //            return cn(defs);
 //        }
+
+
+        // merge but the other way around
         if(deriv_codom->isa<Sigma>()) {
             auto size = deriv_codom->num_ops() + 1;
             DefArray defs(size);

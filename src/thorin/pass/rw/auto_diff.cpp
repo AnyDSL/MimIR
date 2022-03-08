@@ -311,6 +311,7 @@ const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
     type_dump(world_,"  jwrapped tuple:",dst);
 //    src_to_dst_[tuple] = dst;
 
+    // a bit of partial eval, peephole
     if(isMemTuple &&
         (tuple_dim==2 ||
          (tuple_dim==3 && isRetTuple))) {
