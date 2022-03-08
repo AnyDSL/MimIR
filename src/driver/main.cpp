@@ -13,7 +13,7 @@
 
 #ifdef _WIN32
 #    include <windows.h>
-#    define dlym   GetProcAddress
+#    define dlsym  GetProcAddress
 #    define popen  _popen
 #    define pclose _pclose
 #else
