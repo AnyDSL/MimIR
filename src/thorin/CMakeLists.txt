@@ -62,6 +62,8 @@ add_library(libthorin
     pass/fp/ssa_constr.h
     pass/rw/auto_diff.cpp
     pass/rw/auto_diff.h
+        pass/rw/peephole.cpp
+        pass/rw/peephole.h
         pass/fp/zip_eval.cpp
         pass/fp/zip_eval.h
     pass/fp/tail_rec_elim.cpp

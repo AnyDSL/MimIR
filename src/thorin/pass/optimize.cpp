@@ -15,6 +15,7 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 #include "thorin/pass/fp/zip_eval.h"
+#include "thorin/pass/rw/peephole.h"
 
 // old stuff
 #include "thorin/transform/cleanup_world.h"
@@ -57,9 +58,9 @@ void optimize(World& world) {
 //    opt2.run();
     printf("Finished Prepare Opti\n");
 
-
     opt.run();
     printf("Finished AutoDiff Opti\n");
+
 
     PassMan opt3(world);
     auto br3 = opt3.add<BetaRed>();
@@ -72,6 +73,13 @@ void optimize(World& world) {
     opt3.add<TailRecElim>(er3);
     opt3.run();
     printf("Finished Simpl Opti\n");
+
+
+    PassMan optB(world);
+    optB.add<Peephole>();
+    optB.run();
+    printf("Finished Peephole Opti\n");
+
 
         cleanup_world(world);
 //     partial_evaluation(world, true);
