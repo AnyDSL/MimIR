@@ -15,7 +15,7 @@
 
 namespace thorin {
 
-class THORIN_API Stream {
+class Stream {
 public:
     Stream(std::ostream& ostream = std::cout, std::string_view tab = {"    "}, size_t level = 0)
         : ostream_(&ostream)

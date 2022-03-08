@@ -2,11 +2,9 @@ cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 project(Thorin VERSION 1.9.0)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "limited config" FORCE)
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "limited config" FORCE)
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS 1)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -14,13 +12,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(THORIN_ENABLE_PROFILING "profile complexity in thorin::HashTable - only works in Debug build" ON)
 
-find_program(MEMORYCHECK_COMMAND valgrind)
-set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 include(GenerateExportHeader)
 include(CTest)
 
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+find_program(MEMORYCHECK_COMMAND valgrind)
+set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(THORIN_ENABLE_CHECKS TRUE)
@@ -41,6 +39,7 @@ else()
 endif()
 
 add_subdirectory(src)
+add_subdirectory(dialects)
 
 if(BUILD_TESTING)
     include(GoogleTest)

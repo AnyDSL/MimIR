@@ -26,7 +26,7 @@ using hash_t = uint32_t;
 
 //------------------------------------------------------------------------------
 
-THORIN_API void debug_hash();
+void debug_hash();
 
 // port from https://en.wikipedia.org/wiki/MurmurHash
 
@@ -123,8 +123,8 @@ hash_t hash_begin(T val) {
 }
 inline hash_t hash_begin() { return FNV1::offset; }
 
-hash_t THORIN_API hash(const char*);
-hash_t THORIN_API hash(std::string_view);
+hash_t hash(const char*);
+hash_t hash(std::string_view);
 
 struct StrHash {
     static hash_t hash(const char* s) { return thorin::hash(s); }

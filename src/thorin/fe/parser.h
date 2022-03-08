@@ -7,7 +7,7 @@
 
 namespace thorin {
 
-class THORIN_API Parser {
+class Parser {
 public:
     Parser(World&, std::string_view, std::istream&);
     World& world() { return lexer_.world(); }

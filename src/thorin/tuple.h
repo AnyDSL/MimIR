@@ -5,7 +5,7 @@
 
 namespace thorin {
 
-class THORIN_API Sigma : public Def {
+class Sigma : public Def {
 private:
     /// Constructor for a @em structural Sigma.
     Sigma(const Def* type, Defs ops, const Def* dbg)
@@ -32,7 +32,7 @@ public:
 };
 
 /// Data constructor for a @p Sigma.
-class THORIN_API Tuple : public Def {
+class Tuple : public Def {
 private:
     Tuple(const Def* type, Defs args, const Def* dbg)
         : Def(Node, type, args, 0, dbg) {}
@@ -47,7 +47,7 @@ public:
     friend class World;
 };
 
-class THORIN_API Arr : public Def {
+class Arr : public Def {
 private:
     /// Constructor for a @em structural Arr.
     Arr(const Def* type, const Def* shape, const Def* body, const Def* dbg)
@@ -81,7 +81,7 @@ public:
     friend class World;
 };
 
-class THORIN_API Pack : public Def {
+class Pack : public Def {
 private:
     Pack(const Def* type, const Def* body, const Def* dbg)
         : Def(Node, type, {body}, 0, dbg) {}
@@ -107,7 +107,7 @@ inline bool is_sigma_or_arr(const Def* def) { return def->isa<Sigma>() || def->i
 inline bool is_tuple_or_pack(const Def* def) { return def->isa<Tuple>() || def->isa<Pack>(); }
 
 /// Extracts from a @p Sigma or @p Variadic typed @p Def the element at position @p index.
-class THORIN_API Extract : public Def {
+class Extract : public Def {
 private:
     Extract(const Def* type, const Def* tuple, const Def* index, const Def* dbg)
         : Def(Node, type, {tuple, index}, 0, dbg) {}
@@ -132,7 +132,7 @@ public:
 /// @attention { This is a @em functional insert.
 ///              The @p tuple itself remains untouched.
 ///              The @p Insert itself is a @em new @p Tuple/@p Pack which contains the inserted @p value. }
-class THORIN_API Insert : public Def {
+class Insert : public Def {
 private:
     Insert(const Def* tuple, const Def* index, const Def* value, const Def* dbg)
         : Def(Node, tuple->type(), {tuple, index, value}, 0, dbg) {}

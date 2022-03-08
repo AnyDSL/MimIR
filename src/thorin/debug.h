@@ -11,7 +11,7 @@ namespace thorin {
 
 class Def;
 
-struct THORIN_API Pos : public Streamable<Pos> {
+struct Pos : public Streamable<Pos> {
     Pos() = default;
     Pos(uint32_t row, uint32_t col)
         : row(row)
@@ -23,7 +23,7 @@ struct THORIN_API Pos : public Streamable<Pos> {
     uint32_t col = -1;
 };
 
-struct THORIN_API Loc : public Streamable<Loc> {
+struct Loc : public Streamable<Loc> {
     Loc() = default;
     Loc(std::string_view file, Pos begin, Pos finis)
         : file(file)
@@ -48,7 +48,7 @@ struct THORIN_API Loc : public Streamable<Loc> {
 inline bool operator==(Pos p1, Pos p2) { return p1.row == p2.row && p1.col == p2.col; }
 inline bool operator==(Loc l1, Loc l2) { return l1.begin == l2.begin && l1.finis == l2.finis && l1.file == l2.file; }
 
-class THORIN_API Debug {
+class Debug {
 public:
     Debug(std::string_view name, Loc loc = {}, const Def* meta = nullptr)
         : name(name)

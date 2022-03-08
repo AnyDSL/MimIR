@@ -6,7 +6,7 @@
 namespace thorin {
 
 /// A function type AKA Pi type.
-class THORIN_API Pi : public Def {
+class Pi : public Def {
 protected:
     /// Constructor for a @em structural Pi.
     Pi(const Def* type, const Def* dom, const Def* codom, const Def* dbg)
@@ -45,7 +45,7 @@ public:
     friend class World;
 };
 
-class THORIN_API Lam : public Def {
+class Lam : public Def {
 public:
     /// calling convention
     enum class CC : u8 {
@@ -122,7 +122,7 @@ using LamMap  = GIDMap<Lam*, To>;
 using LamSet  = GIDSet<Lam*>;
 using Lam2Lam = LamMap<Lam*>;
 
-class THORIN_API App : public Def {
+class App : public Def {
 private:
     App(const Axiom* axiom, u16 currying_depth, const Def* type, const Def* callee, const Def* arg, const Def* dbg)
         : Def(Node, type, {callee, arg}, 0, dbg) {

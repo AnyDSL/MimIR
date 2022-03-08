@@ -1,4 +1,4 @@
-set(THORIN_SOURCES
+add_library(libthorin
     axiom.cpp
     axiom.h
     check.cpp
@@ -100,17 +100,9 @@ set(THORIN_SOURCES
     util/utf8.h
 )
 
-add_library(libthorin ${THORIN_SOURCES})
 set_target_properties(libthorin PROPERTIES PREFIX "")
 
-configure_file(config.h.in config.h.extra)
-file(READ ${CMAKE_CURRENT_BINARY_DIR}/config.h.extra THORIN_CONFIG_EXTRA)
-generate_export_header(libthorin 
-    BASE_NAME thorin 
-    EXPORT_MACRO_NAME THORIN_API 
-    EXPORT_FILE_NAME config.h
-    CUSTOM_CONTENT_FROM_VARIABLE THORIN_CONFIG_EXTRA)
-
+configure_file(config.h.in config.h)
 target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/..) # for config.h
 target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 target_include_directories(libthorin PUBLIC ${PROJECT_SOURCE_DIR}/half/include)

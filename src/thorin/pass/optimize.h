@@ -7,7 +7,7 @@ namespace thorin {
 
 class World;
 
-void THORIN_API optimize(World&);
+void optimize(World&);
 
 } // namespace thorin
 

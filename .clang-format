@@ -79,21 +79,16 @@ IfMacros:
   - KJ_IF_MAYBE
 IncludeBlocks:   Regroup
 IncludeCategories:
-  - Regex:           '<c.*>'
+  - Regex:           '<c.*[^.][^h]>'
     Priority:        1
-    SortPriority:    1
+  - Regex:           '<.*[^.][^h]>'
+    Priority:        2
   - Regex:           '<.*>'
     Priority:        3
-    SortPriority:    2
-  - Regex:           '<gtest.*>'
-    Priority:        2
-    SortPriority:    3
-  - Regex:           '"thorin/[a-zA-Z0-9_]+.h"'
-    Priority:        4
-    SortPriority:    4
-  - Regex:           '"thorin/.*"'
+  - Regex:           '"thorin/[a-zA-Z0-9_]+\.h"'
     Priority:        5
-    SortPriority:    5
+  - Regex:           '"thorin/\.*"'
+    Priority:        6
 IncludeIsMainRegex: '(XXX)?$'
 IncludeIsMainSourceRegex: ''
 IndentAccessModifiers: false
