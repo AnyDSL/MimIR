@@ -119,7 +119,8 @@ public:
     const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, bot_kind(), dbg); }
     const Pi* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
     /// Same as @p cn/@p pi but adds a @p mem @p Var to each @p Pi
-    const Pi* cn_mem_flat(const Def* domain, const Def* codomain, const Def* dbg = {});
+    const Pi* cn_mem_flat(const Def* dom, const Def* dbg = {});
+    const Pi* cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* dbg = {});
     const Pi* cn_mem_half_flat(const Def* domain, const Def* codomain, const Def* dbg = {});
     const Pi* cn_mem(const Def* dom, const Def* dbg = {}) { return cn({type_mem(), dom}, dbg); }
     const Pi* cn_mem_ret(const Def* dom, const Def* ret_dom, const Def* dbg = {}) {
