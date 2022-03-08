@@ -72,7 +72,7 @@ void optimize(World& world) {
     printf("Finished Simpl Opti\n");
 
         cleanup_world(world);
-    // partial_evaluation(world, true);
+//     partial_evaluation(world, true);
     while (partial_evaluation(world, true)) {} // lower2cff
         cleanup_world(world);
 
