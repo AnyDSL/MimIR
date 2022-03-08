@@ -452,7 +452,7 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
     if (n == 1 && flatten) return ops[0];
     // or don't do it while flattening
     // n>1
-    if (flatten && std::all_of(ops.begin()+1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+//    if (flatten && std::all_of(ops.begin()+1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
     return unify<Sigma>(ops.size(), infer_kind(ops), ops, dbg);
 }
 
