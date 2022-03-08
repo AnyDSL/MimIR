@@ -67,3 +67,14 @@ TEST(Main, ll) {
     EXPECT_EQ(7, WEXITSTATUS(std::system("./test a b c d e f")));
 #endif
 }
+
+TEST(Axiom, mangle) {
+    EXPECT_EQ(Axiom::demangle(*Axiom::mangle("test")), "test");
+    EXPECT_EQ(Axiom::demangle(*Axiom::mangle("azAZ09_")), "azAZ09_");
+    EXPECT_EQ(Axiom::demangle(*Axiom::mangle("01234567")), "01234567");
+    EXPECT_FALSE(Axiom::mangle("012345678"));
+    EXPECT_FALSE(Axiom::mangle("!"));
+    // Check whether lower 16 bits are properly ignored
+    EXPECT_EQ(Axiom::demangle(*Axiom::mangle("test") | 0xFF_u64), "test");
+    EXPECT_EQ(Axiom::demangle(*Axiom::mangle("01234567") | 0xFF_u64), "01234567");
+}
