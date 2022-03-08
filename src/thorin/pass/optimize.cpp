@@ -63,6 +63,7 @@ void optimize(World& world) {
 
 
     PassMan opt3(world);
+    opt3.add<PartialEval>();
     auto br3 = opt3.add<BetaRed>();
     auto er3 = opt3.add<EtaRed>();
     auto ee3 = opt3.add<EtaExp>(er);

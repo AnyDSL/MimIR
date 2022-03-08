@@ -304,11 +304,19 @@ const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
     if(isMemTuple) {
         ops[0] = j_wrap(tuple[0]);
     }
+
     // reconstruct the tuple term
     auto dst = world_.tuple(ops);
     dlog(world_,"  tuple: {,}",tuple);
     type_dump(world_,"  jwrapped tuple:",dst);
 //    src_to_dst_[tuple] = dst;
+
+    if(isMemTuple &&
+        (tuple_dim==2 ||
+         (tuple_dim==3 && isRetTuple))) {
+        pullbacks_[dst]=pullbacks_[ops[1]];
+        return dst;
+    }
 
     //        if(tuple_dim>0 && isa<Tag::Mem>(dst->proj(0)->type())) {
     //            dlog(world_,"  mem pb tuple");
