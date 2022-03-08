@@ -10,7 +10,6 @@ private:
     Axiom(NormalizeFn normalizer, const Def* type, tag_t tag, flags_t flags, const Def* dbg);
 
 public:
-
     /// @name misc getters
     ///@{
     tag_t tag() const { return tag_t(fields() >> 32_u64); }
