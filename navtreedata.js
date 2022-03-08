@@ -105,21 +105,21 @@ var NAVTREEINDEX =
 [
 "alloc2malloc_8cpp.html",
 "classthorin_1_1ArrayRef.html#adf4aaa6e43f0c1a35baa724fb2c3188e",
-"classthorin_1_1Cleaner.html",
-"classthorin_1_1Def.html#ad80387c2b8b00161b6285241cc1c64ed",
-"classthorin_1_1Global.html#a55ede4872ee78e716afa354ebf02bf21",
-"classthorin_1_1Lexer.html#aca2168b78a86b54fab01007916f3a761",
-"classthorin_1_1Query.html#a8b8df22e8b5d734807e4b023aed21e3b",
-"classthorin_1_1Stream.html#ac3629a89ca7b5ed98c4c36722a7278b0",
-"classthorin_1_1Vel.html#a4206734bc2a95641bad59ac6bd0e5113",
-"classthorin_1_1World.html#a8e31d8a8297af8bbb06bdbd36b3476a8",
-"classthorin_1_1detail_1_1HashTable.html#ab377b54c3751eba2ce18a8e6310792e4",
-"eta__red_8cpp.html#aa27a0affd7d03618a95b02ee322c6f6a",
-"namespacethorin.html#a212be12038d2798c4058622ca13664ae",
-"namespacethorin.html#abf5afa0bf107f2fe297567339f761dbf",
-"optimize_8h_source.html",
-"structthorin_1_1LRPrec.html#a5ffc48cce103dfc021da68def8275401",
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3ad10e901d41271bd5431a62bcad5c935a"
+"classthorin_1_1Checker.html#a1f0d4a4327a4b0b58385d105698fc4af",
+"classthorin_1_1Def.html#ad15f6cae6c1675d8a837597e51dbb2df",
+"classthorin_1_1FVA.html#af1d24b4233cb63270d50b5bc64cbe664",
+"classthorin_1_1Lexer.html",
+"classthorin_1_1Query.html#a3fd02ebc3e42b9d58b7087cf28c5baf5",
+"classthorin_1_1Stream.html#a9af733cb66244f3bf2c8d8511ae4ed0e",
+"classthorin_1_1Var.html#af8845a1c6ba3244d972aa392554d46a2",
+"classthorin_1_1World.html#a8d0884cc317da943952ed0aa55d4dd84",
+"classthorin_1_1detail_1_1HashTable.html#aa17333f4ca5a49ac84e4f92d8f5eea80",
+"eta__exp_8cpp.html",
+"namespacethorin.html#a1c686b5d4a914909b3433cae517ec294",
+"namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771",
+"normalize_8h_source.html",
+"structthorin_1_1GIDLt.html",
+"tables_8h.html#aec7c9c368dda260071936391c37a72e3a8e028532a3bae54686c7b20d9d029a18"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

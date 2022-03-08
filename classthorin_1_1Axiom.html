@@ -346,6 +346,16 @@ Friends</h2></td></tr>
 <tr class="memitem:a7b4bcdf992c21ae83363f25df05b1d25"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a7b4bcdf992c21ae83363f25df05b1d25">World</a></td></tr>
 <tr class="separator:a7b4bcdf992c21ae83363f25df05b1d25"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">mangling dialect name</h2></td></tr>
+<tr class="memitem:a939bf893516cb849960e09442f2edb7f"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a939bf893516cb849960e09442f2edb7f">Max_Dialect_Size</a> = 8</td></tr>
+<tr class="separator:a939bf893516cb849960e09442f2edb7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac22370fdc25307dc58e5a53c0475f388"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; <a class="el" href="namespacethorin.html#aa4a9df41658521fb2f8a6842c377f13d">u64</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#ac22370fdc25307dc58e5a53c0475f388">mangle</a> (std::string_view s)</td></tr>
+<tr class="memdesc:ac22370fdc25307dc58e5a53c0475f388"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mangles <code>s</code> into a dense 48 bit representation.  <a href="classthorin_1_1Axiom.html#ac22370fdc25307dc58e5a53c0475f388">More...</a><br /></td></tr>
+<tr class="separator:ac22370fdc25307dc58e5a53c0475f388"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90268ef34a15500906ec6715ad2bd4b2"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Axiom.html#a90268ef34a15500906ec6715ad2bd4b2">demangle</a> (<a class="el" href="namespacethorin.html#aa4a9df41658521fb2f8a6842c377f13d">u64</a> u)</td></tr>
+<tr class="memdesc:a90268ef34a15500906ec6715ad2bd4b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reverts a <code>mangled</code> string to a <code>std::string</code>.  <a href="classthorin_1_1Axiom.html#a90268ef34a15500906ec6715ad2bd4b2">More...</a><br /></td></tr>
+<tr class="separator:a90268ef34a15500906ec6715ad2bd4b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_types_classthorin_1_1Def"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classthorin_1_1Def')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classthorin_1_1Def.html">thorin::Def</a></td></tr>
@@ -437,7 +447,40 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00018">18</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00019">19</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+
+</div>
+</div>
+<a id="a90268ef34a15500906ec6715ad2bd4b2" name="a90268ef34a15500906ec6715ad2bd4b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90268ef34a15500906ec6715ad2bd4b2">&#9670;&nbsp;</a></span>demangle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string thorin::Axiom::demangle </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin.html#aa4a9df41658521fb2f8a6842c377f13d">u64</a>&#160;</td>
+          <td class="paramname"><em>u</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reverts a <code>mangled</code> string to a <code>std::string</code>. </p>
+<p >Ignores lower 16 bit of <code>u</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="axiom_8cpp_source.html#l00034">34</a> of file <a class="el" href="axiom_8cpp_source.html">axiom.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="axiom_8h_source.html#l00029">Max_Dialect_Size</a>, and <a class="el" href="namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a7b774effe4a349c6dd82ad4f4f21d34c">thorin::u</a>.</p>
 
 </div>
 </div>
@@ -464,7 +507,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00016">16</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00017">17</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00150">thorin::Def::fields()</a>.</p>
 
@@ -496,11 +539,59 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8cpp_source.html#l00016">16</a> of file <a class="el" href="axiom_8cpp_source.html">axiom.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8cpp_source.html#l00067">67</a> of file <a class="el" href="axiom_8cpp_source.html">axiom.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00269">thorin::World::app()</a>, <a class="el" href="axiom_8h_source.html#l00090">thorin::as()</a>, <a class="el" href="axiom_8h_source.html#l00075">thorin::isa()</a>, and <a class="el" href="world_8cpp_source.html#l00285">thorin::World::raw_app()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00269">thorin::World::app()</a>, <a class="el" href="axiom_8h_source.html#l00119">thorin::as()</a>, <a class="el" href="axiom_8h_source.html#l00104">thorin::isa()</a>, and <a class="el" href="world_8cpp_source.html#l00285">thorin::World::raw_app()</a>.</p>
+
+</div>
+</div>
+<a id="ac22370fdc25307dc58e5a53c0475f388" name="ac22370fdc25307dc58e5a53c0475f388"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac22370fdc25307dc58e5a53c0475f388">&#9670;&nbsp;</a></span>mangle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="namespacethorin.html#aa4a9df41658521fb2f8a6842c377f13d">u64</a> &gt; thorin::Axiom::mangle </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>s</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Mangles <code>s</code> into a dense 48 bit representation. </p>
+<p >The layout is as follows: </p><div class="fragment"><div class="line">|---7--||---6--||---5--||---4--||---3--||---2--||---1--||---0--|</div>
+<div class="line">7654321076543210765432107654321076543210765432107654321076543210</div>
+<div class="line">Char67Char66Char65Char64Char63Char62Char61Char60|---reserved---|</div>
+</div><!-- fragment --><p> The <code>reserved</code> part is used for the <code>tag</code> and the <code>flags</code>. Each <code>Char6x</code> is 6 bit wide and uses this encoding: </p><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone"><code>Char6</code>   </th><th class="markdownTableHeadNone">ASCII    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">1:   </td><td class="markdownTableBodyNone"><code>_</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">2-27:   </td><td class="markdownTableBodyNone"><code>a</code>-<code>z</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">28-53:   </td><td class="markdownTableBodyNone"><code>A</code>-<code>Z</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">54-63:   </td><td class="markdownTableBodyNone"><code>0</code>-<code>9</code>   </td></tr>
+</table>
+<dl class="section return"><dt>Returns</dt><dd>returns <code>std::nullopt</code> if encoding is not possible. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="axiom_8cpp_source.html#l00005">5</a> of file <a class="el" href="axiom_8cpp_source.html">axiom.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="axiom_8h_source.html#l00029">Max_Dialect_Size</a>, and <a class="el" href="namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a7b774effe4a349c6dd82ad4f4f21d34c">thorin::u</a>.</p>
 
 </div>
 </div>
@@ -527,7 +618,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00017">17</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00018">18</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00269">thorin::World::app()</a>, and <a class="el" href="def_8cpp_source.html#l00092">rebuild()</a>.</p>
 
@@ -583,7 +674,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00092">92</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00093">thorin::World::axiom()</a>, <a class="el" href="def_8h_source.html#l00287">thorin::Def::dbg()</a>, <a class="el" href="axiom_8h_source.html#l00016">flags()</a>, <a class="el" href="def_8h_source.html#l00151">thorin::Def::gid()</a>, <a class="el" href="axiom_8h_source.html#l00017">normalizer()</a>, <a class="el" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55acceae358efa489f58062f10dd7316b65649e">thorin::t</a>, <a class="el" href="axiom_8h_source.html#l00015">tag()</a>, and <a class="el" href="def_8h_source.html#l00143">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00093">thorin::World::axiom()</a>, <a class="el" href="def_8h_source.html#l00287">thorin::Def::dbg()</a>, <a class="el" href="axiom_8h_source.html#l00017">flags()</a>, <a class="el" href="def_8h_source.html#l00151">thorin::Def::gid()</a>, <a class="el" href="axiom_8h_source.html#l00018">normalizer()</a>, <a class="el" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55acceae358efa489f58062f10dd7316b65649e">thorin::t</a>, <a class="el" href="axiom_8h_source.html#l00016">tag()</a>, and <a class="el" href="def_8h_source.html#l00143">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -610,11 +701,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00015">15</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00016">16</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00150">thorin::Def::fields()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00092">rebuild()</a>, and <a class="el" href="axiom_8h_source.html#l00047">thorin::Query&lt; F, D &gt;::tag()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00092">rebuild()</a>, and <a class="el" href="axiom_8h_source.html#l00076">thorin::Query&lt; F, D &gt;::tag()</a>.</p>
 
 </div>
 </div>
@@ -639,11 +730,37 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00028">28</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00057">57</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a939bf893516cb849960e09442f2edb7f" name="a939bf893516cb849960e09442f2edb7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a939bf893516cb849960e09442f2edb7f">&#9670;&nbsp;</a></span>Max_Dialect_Size</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> thorin::Axiom::Max_Dialect_Size = 8</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00029">29</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="axiom_8cpp_source.html#l00034">demangle()</a>, and <a class="el" href="axiom_8cpp_source.html#l00005">mangle()</a>.</p>
+
+</div>
+</div>
 <a id="a29e2a48824f9326fa06998b0465f9d01" name="a29e2a48824f9326fa06998b0465f9d01"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a29e2a48824f9326fa06998b0465f9d01">&#9670;&nbsp;</a></span>Node</h2>
 
@@ -664,7 +781,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00027">27</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00056">56</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 </div>
 </div>

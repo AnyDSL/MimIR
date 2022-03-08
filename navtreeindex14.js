@@ -1,5 +1,11 @@
 var NAVTREEINDEX14 =
 {
+"normalize_8h_source.html":[9,0,2,21],
+"optimize_8cpp.html":[9,0,2,3,2],
+"optimize_8cpp.html#a9e64c2e92ce1a1166c536644960116c2":[9,0,2,3,2,0],
+"optimize_8cpp_source.html":[9,0,2,3,2],
+"optimize_8h.html":[9,0,2,3,3],
+"optimize_8h.html#a9e64c2e92ce1a1166c536644960116c2":[9,0,2,3,3,0],
 "optimize_8h_source.html":[9,0,2,3,3],
 "pages.html":[],
 "parser_8cpp.html":[9,0,2,2,2],
@@ -243,11 +249,5 @@ var NAVTREEINDEX14 =
 "structthorin_1_1GIDHash.html#a2576cc90e5075261e491494f35c5def9":[8,0,0,67,1],
 "structthorin_1_1GIDHash.html#a2576cc90e5075261e491494f35c5def9":[6,0,0,74,1],
 "structthorin_1_1GIDHash.html#a7f113cdc614a45155bcaa084531cb7a5":[8,0,0,67,0],
-"structthorin_1_1GIDHash.html#a7f113cdc614a45155bcaa084531cb7a5":[6,0,0,74,0],
-"structthorin_1_1GIDLt.html":[6,0,0,75],
-"structthorin_1_1GIDLt.html":[8,0,0,68],
-"structthorin_1_1GIDLt.html#a6462bbf7414788296c43184b10ef0d7a":[6,0,0,75,0],
-"structthorin_1_1GIDLt.html#a6462bbf7414788296c43184b10ef0d7a":[8,0,0,68,0],
-"structthorin_1_1LRPrec.html":[6,0,0,90],
-"structthorin_1_1LRPrec.html":[8,0,0,83]
+"structthorin_1_1GIDHash.html#a7f113cdc614a45155bcaa084531cb7a5":[6,0,0,74,0]
 };
