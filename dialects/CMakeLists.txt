@@ -1,4 +1,4 @@
-add_library(thorin_foo 
+add_library(thorin_foo MODULE
     foo.cpp
     foo.h
 )
