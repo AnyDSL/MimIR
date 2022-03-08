@@ -6,6 +6,7 @@
 #include "thorin/util/assert.h"
 #include "thorin/util/types.h"
 
+// clang-format off
 namespace thorin {
 
 using node_t   = u16;
@@ -267,6 +268,7 @@ template<> struct Tag2Enum_<Tag::PE   > { using type = PE;    };
 template<> struct Tag2Enum_<Tag::Acc  > { using type = Acc;   };
 template<tag_t tag> using Tag2Enum = typename Tag2Enum_<tag>::type;
 
-}
+// clang-format on
+} // namespace thorin
 
 #endif

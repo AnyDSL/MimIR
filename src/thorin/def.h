@@ -4,6 +4,7 @@
 #include <optional>
 #include <vector>
 
+#include "thorin/config.h"
 #include "thorin/debug.h"
 #include "thorin/tables.h"
 

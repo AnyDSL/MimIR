@@ -1,3 +1,5 @@
+#include "thorin/pass/optimize.h"
+
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/dce.h"

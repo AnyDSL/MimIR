@@ -2,6 +2,7 @@
 #define THORIN_FE_PARSER_H
 
 #include "thorin/world.h"
+
 #include "thorin/fe/lexer.h"
 
 namespace thorin {
@@ -34,7 +35,7 @@ private:
 
     /// Factory method to build a @p Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
-    const Def* dbg(Tracker t) { return world().dbg((Loc) t); }
+    const Def* dbg(Tracker t) { return world().dbg((Loc)t); }
 
     /// Invoke @p Lexer to retrieve next @p Tok%en.
     Tok lex();
@@ -50,7 +51,10 @@ private:
     bool expect(Tok::Tag tag, std::string_view ctxt);
 
     /// Consume @p ahead which must be a @p tag; @c asserts otherwise.
-    Tok eat([[maybe_unused]] Tok::Tag tag) { assert(tag == ahead().tag() && "internal parser error"); return lex(); }
+    Tok eat([[maybe_unused]] Tok::Tag tag) {
+        assert(tag == ahead().tag() && "internal parser error");
+        return lex();
+    }
 
     /// Issue an error message of the form:
     /// "expected \<what\>, got '\<tok>\' while parsing \<ctxt\>"
@@ -64,6 +68,6 @@ private:
     Tok ahead_;
 };
 
-}
+} // namespace thorin
 
 #endif

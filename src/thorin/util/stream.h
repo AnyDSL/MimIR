@@ -3,12 +3,15 @@
 
 #include <cassert>
 #include <cstring>
+
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <ranges>
 #include <sstream>
 #include <string>
+
+#include "thorin/config.h"
 
 namespace thorin {
 
@@ -28,10 +31,20 @@ public:
 
     /// @name modify Stream
     ///@{
-    Stream& indent(size_t i = 1) { level_ += i; return *this; }
-    Stream& dedent(size_t i = 1) { assert(level_ >= i); level_ -= i; return *this; }
+    Stream& indent(size_t i = 1) {
+        level_ += i;
+        return *this;
+    }
+    Stream& dedent(size_t i = 1) {
+        assert(level_ >= i);
+        level_ -= i;
+        return *this;
+    }
     Stream& endl();
-    Stream& flush() { ostream().flush(); return *this; }
+    Stream& flush() {
+        ostream().flush();
+        return *this;
+    }
     ///@}
 
     /// @name stream
@@ -50,19 +63,33 @@ public:
     /// s.fmt("({\n})", list)
     /// ```
     /// Finally, you can use @c "\n", "\t", and "\b" to @p endl, @p indent, or @p dedent, respectively.
-    template<class T, class... Args> Stream& fmt(const char* s, T&& t, Args&&... args);
-    template<class R, class F, bool rangei = false> Stream& range(const R& r, const char* sep, F f);
-    template<class R, class F, bool rangei = false> Stream& range(const R& r, F f) { return range(r, ", ", f); }
-    template<class R, class F> Stream& rangei(const R& r, const char* sep, F f) { return range<R, F, true>(r, sep, f); }
-    template<class R, class F> Stream& rangei(const R& r, F f) { return range<R, F, true>(r, ", ", f); }
-    template<class R> Stream& range(const R& r, const char* sep = ", ") { return range(r, sep, [&](const auto& x) { (*this) << x; }); }
+    template<class T, class... Args>
+    Stream& fmt(const char* s, T&& t, Args&&... args);
+    template<class R, class F, bool rangei = false>
+    Stream& range(const R& r, const char* sep, F f);
+    template<class R, class F, bool rangei = false>
+    Stream& range(const R& r, F f) {
+        return range(r, ", ", f);
+    }
+    template<class R, class F>
+    Stream& rangei(const R& r, const char* sep, F f) {
+        return range<R, F, true>(r, sep, f);
+    }
+    template<class R, class F>
+    Stream& rangei(const R& r, F f) {
+        return range<R, F, true>(r, ", ", f);
+    }
+    template<class R>
+    Stream& range(const R& r, const char* sep = ", ") {
+        return range(r, sep, [&](const auto& x) { (*this) << x; });
+    }
     ///@}
 
     void friend swap(Stream& a, Stream& b) {
         using std::swap;
         swap(a.ostream_, b.ostream_);
-        swap(a.tab_,     b.tab_);
-        swap(a.level_,   b.level_);
+        swap(a.tab_, b.tab_);
+        swap(a.level_, b.level_);
     }
 
 protected:
@@ -93,10 +120,22 @@ private:
     std::ostringstream oss_;
 };
 
-template<class... Args> auto outf (const char* fmt, Args&&... args) { return Stream(std::cout).fmt(fmt, std::forward<Args&&>(args)...); }
-template<class... Args> auto errf (const char* fmt, Args&&... args) { return Stream(std::cerr).fmt(fmt, std::forward<Args&&>(args)...); }
-template<class... Args> auto outln(const char* fmt, Args&&... args) { return outf(fmt, std::forward<Args&&>(args)...).endl(); }
-template<class... Args> auto errln(const char* fmt, Args&&... args) { return errf(fmt, std::forward<Args&&>(args)...).endl(); }
+template<class... Args>
+auto outf(const char* fmt, Args&&... args) {
+    return Stream(std::cout).fmt(fmt, std::forward<Args&&>(args)...);
+}
+template<class... Args>
+auto errf(const char* fmt, Args&&... args) {
+    return Stream(std::cerr).fmt(fmt, std::forward<Args&&>(args)...);
+}
+template<class... Args>
+auto outln(const char* fmt, Args&&... args) {
+    return outf(fmt, std::forward<Args&&>(args)...).endl();
+}
+template<class... Args>
+auto errln(const char* fmt, Args&&... args) {
+    return errf(fmt, std::forward<Args&&>(args)...).endl();
+}
 
 template<class C>
 class Streamable {
@@ -110,20 +149,39 @@ public:
         Stream s(ofs);
         child().stream(s).endl();
     }
-    /// Writes to a file named @c child().name().
-    void write() const { write(child().name()); }
     /// Writes to stdout.
-    void dump() const { Stream s(std::cout); child().stream(s).endl(); }
+    void dump() const {
+        Stream s(std::cout);
+        child().stream(s).endl();
+    }
     /// Streams to string.
-    std::string to_string() const { std::ostringstream oss; Stream s(oss); child().stream(s); return oss.str(); }
+    std::string to_string() const {
+        std::ostringstream oss;
+        Stream s(oss);
+        child().stream(s);
+        return oss.str();
+    }
 };
 
-template<typename T> concept PtrStream = requires (T x) { x->stream(std::declval<Stream&>()); };
-template<typename T> concept RefStream = requires (T x) { x. stream(std::declval<Stream&>()); };
+template<typename T>
+concept PtrStream = requires(T x) {
+    x->stream(std::declval<Stream&>());
+};
+template<typename T>
+concept RefStream = requires(T x) {
+    x.stream(std::declval<Stream&>());
+};
 
-template<class T> requires PtrStream<T> Stream& operator<<(Stream& s, const T& x) { return x->stream(s); }
-template<class T> requires RefStream<T> Stream& operator<<(Stream& s, const T& x) { return x .stream(s); }
-template<class T> Stream& operator<<(Stream& s, const T& x) { s.ostream() << x; return s; } ///< Fallback uses @c std::ostream @c operator<<.
+template<class T>
+requires PtrStream<T> Stream& operator<<(Stream& s, const T& x) { return x->stream(s); }
+template<class T>
+requires RefStream<T> Stream& operator<<(Stream& s, const T& x) { return x.stream(s); }
+/// Fallback uses `std::ostream operator<<`.
+template<class T>
+Stream& operator<<(Stream& s, const T& x) {
+    s.ostream() << x;
+    return s;
+}
 
 template<class T, class... Args>
 Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
@@ -131,9 +189,11 @@ Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
         auto next = s + 1;
 
         switch (*s) {
+            // clang-format off
             case '\n': s++; endl();   break;
             case '\t': s++; indent(); break;
             case '\b': s++; dedent(); break;
+            // clang-format on
             case '{': {
                 if (match2nd(next, s, '{')) continue;
                 s++; // skip opening brace '{'
@@ -148,14 +208,13 @@ Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
                     (*this) << t;
                 }
 
-                ++s; // skip closing brace '}'
+                ++s;                                          // skip closing brace '}'
                 return fmt(s, std::forward<Args&&>(args)...); // call even when *s == '\0' to detect extra arguments
-        }
-        case '}':
-            if (match2nd(next, s, '}')) continue;
-            assert(false && "unmatched/unescaped closing brace '}' in format string");
-        default:
-            (*this) << *s++;
+            }
+            case '}':
+                if (match2nd(next, s, '}')) continue;
+                assert(false && "unmatched/unescaped closing brace '}' in format string");
+            default: (*this) << *s++;
         }
     }
 
@@ -165,7 +224,7 @@ Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
 template<class R, class F, bool use_rangei>
 Stream& Stream::range(const R& r, const char* sep, F f) {
     const char* cur_sep = "";
-    size_t j = 0;
+    size_t j            = 0;
     for (const auto& elem : r) {
         for (auto i = cur_sep; *i != '\0'; ++i) {
             if (*i == '\n')
@@ -184,17 +243,21 @@ Stream& Stream::range(const R& r, const char* sep, F f) {
 }
 
 #ifdef NDEBUG
-#define assertf(condition, ...) do { (void)sizeof(condition); } while (false)
+#    define assertf(condition, ...) \
+        do { (void)sizeof(condition); } while (false)
 #else
-#define assertf(condition, ...)                                                                                                 \
-    do {                                                                                                                        \
-        if (!(condition)) {                                                                                                     \
-            Stream(std::cerr).fmt("assertion '{}' failed in {}:{}: ", #condition, __FILE__,  __LINE__).fmt(__VA_ARGS__).endl(); \
-            std::abort();                                                                                                       \
-        }                                                                                                                       \
-    } while (false)
+#    define assertf(condition, ...)                                                          \
+        do {                                                                                 \
+            if (!(condition)) {                                                              \
+                Stream(std::cerr)                                                            \
+                    .fmt("assertion '{}' failed in {}:{}: ", #condition, __FILE__, __LINE__) \
+                    .fmt(__VA_ARGS__)                                                        \
+                    .endl();                                                                 \
+                std::abort();                                                                \
+            }                                                                                \
+        } while (false)
 #endif
 
-}
+} // namespace thorin
 
 #endif
