@@ -444,15 +444,23 @@ const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
 const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
 
-    auto flatten = true;
 //    Stream s2;
 //    s2.fmt("sigma [{, }] dbg: {}\n",ops,dbg);
 
     if (n == 0) return sigma();
-    if (n == 1 && flatten) return ops[0];
+    if (n == 1) return ops[0];
     // or don't do it while flattening
     // n>1
-//    if (flatten && std::all_of(ops.begin()+1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+
+    // prevents functions like _ -> (f64,f64)
+    // but needed for conditional jump (false_cont,true_cont)#cond
+
+//    Stream s2;
+//    s2.fmt("ops[0]: {} : {}\n",ops[0],ops[0]->type());
+//    s2.fmt("ops : {,}\n",ops);
+    if (ops[0]->isa<Pi>() && std::all_of(ops.begin()+1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+//    if (std::all_of(ops.begin()+1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+
     return unify<Sigma>(ops.size(), infer_kind(ops), ops, dbg);
 }
 
@@ -726,6 +734,12 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
 }
 
 const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index, const Def* dbg) {
+//    Stream s2;
+//    s2.fmt("extract\n");
+//    s2.fmt("  ex_type {}\n",ex_type);
+//    s2.fmt("  tup {} : {}\n",tup, tup->type());
+//    s2.fmt("  index {} : {}\n",index,index->type());
+
     if (index->isa<Arr>() || index->isa<Pack>()) {
         DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(tup, index->ops().back()); });
         return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);
@@ -733,7 +747,11 @@ const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index,
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
         DefArray ops(n, [&](size_t i) { return tup->proj(n, as_lit(idx[i])); });
-        return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
+        if(index->isa<Sigma>())
+            return sigma(ops,dbg);
+        else
+            return tuple(ops,dbg);
+//        return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
     }
 
     auto type = tup->type()->reduce();
@@ -763,7 +781,15 @@ const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index,
         if (type->isa<Sigma>()) return unify<Extract>(2, ex_type ? ex_type : type->op(*i), tup, index, dbg);
     }
 
-    type = type->as<Arr>()->body();
+//    s2.fmt("  type (should be array): {}\n",type);
+    if(auto arr = type->isa<Arr>()){
+        type=arr->body();
+    }else {
+        type=type->op(0);
+    }
+//    s2.fmt("  inner type: {}\n",type);
+//    type = type->as<Arr>()->body();
+//    THORIN_UNREACHABLE;
     return unify<Extract>(2, type, tup, index, dbg);
 }
 
