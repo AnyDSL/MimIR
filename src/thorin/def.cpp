@@ -140,7 +140,7 @@ std::string_view Def::node_name() const {
     case Node::op: return #abbr;
         THORIN_NODE(CODE)
 #undef CODE
-        default: THORIN_UNREACHABLE;
+        default: unreachable();
     }
 }
 
@@ -161,7 +161,7 @@ const Var* Def::var(const Def* dbg) {
     if (auto arr  = isa<Arr  >()) return w.var(w.type_int(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
     if (auto pack = isa<Pack >()) return w.var(w.type_int(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
     if (isa_bound(this)) return w.var(this, this,  dbg);
-    THORIN_UNREACHABLE;
+    unreachable();
 }
 
 Sort Def::level() const {

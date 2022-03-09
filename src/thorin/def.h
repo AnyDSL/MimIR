@@ -358,10 +358,10 @@ public:
 
     /// @name rebuild & friends
     ///@{
-    virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { THORIN_UNREACHABLE; }
+    virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
     const Def* refine(size_t i, const Def* new_op) const;
-    virtual Def* stub(World&, const Def*, const Def*) { THORIN_UNREACHABLE; }
+    virtual Def* stub(World&, const Def*, const Def*) { unreachable(); }
     virtual const Def* restructure() { return nullptr; }
     ///@}
 
