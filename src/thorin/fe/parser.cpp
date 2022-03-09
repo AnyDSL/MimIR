@@ -65,6 +65,6 @@ const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::B
     return nullptr;
 }
 
-const Def* Parser::parse_primary_def(std::string_view ctxt) { return nullptr; }
+const Def* Parser::parse_primary_def(std::string_view) { return nullptr; }
 
 } // namespace thorin
