@@ -279,7 +279,7 @@ public:
             case 16: assert(r64(r16(r32(val))) == val && "loosing precision"); return lit_real(r16(r32(val)), dbg);
             case 32: assert(r64(r32(   (val))) == val && "loosing precision"); return lit_real(r32(   (val)), dbg);
             case 64: assert(r64(r64(   (val))) == val && "loosing precision"); return lit_real(r64(   (val)), dbg);
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
     }
     template<class R>
@@ -289,7 +289,7 @@ public:
         else if constexpr (sizeof(R) == 2) return lit(type_real(16), thorin::bitcast<u16>(val), dbg);
         else if constexpr (sizeof(R) == 4) return lit(type_real(32), thorin::bitcast<u32>(val), dbg);
         else if constexpr (sizeof(R) == 8) return lit(type_real(64), thorin::bitcast<u64>(val), dbg);
-        else THORIN_UNREACHABLE;
+        else unreachable();
     }
     // clang-format on
     ///@}
@@ -609,9 +609,9 @@ private:
         auto [i, inserted] = data_.defs_.emplace(def);
         if (inserted) {
 #ifndef NDEBUG
-            if (state_.breakpoints.contains(def->gid())) THORIN_BREAK;
+            if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
             for (auto op : def->ops()) {
-                if (state_.use_breakpoints.contains(op->gid())) THORIN_BREAK;
+                if (state_.use_breakpoints.contains(op->gid())) thorin::breakpoint();
             }
 #endif
             def->finalize();
@@ -627,7 +627,7 @@ private:
     T* insert(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, args...);
 #ifndef NDEBUG
-        if (state_.breakpoints.contains(def->gid())) THORIN_BREAK;
+        if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         auto p = data_.defs_.emplace(def);
         assert_unused(p.second);
