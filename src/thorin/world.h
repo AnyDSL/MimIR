@@ -604,7 +604,7 @@ private:
     ///@{
     template<class T, class... Args>
     const T* unify(size_t num_ops, Args&&... args) {
-        auto def = arena_.allocate<T>(num_ops, args...);
+        auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
         auto [i, inserted] = data_.defs_.emplace(def);
         if (inserted) {
@@ -619,13 +619,12 @@ private:
         }
 
         arena_.deallocate<T>(def);
-        --state_.curr_gid;
         return static_cast<const T*>(*i);
     }
 
     template<class T, class... Args>
     T* insert(size_t num_ops, Args&&... args) {
-        auto def = arena_.allocate<T>(num_ops, args...);
+        auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
 #ifndef NDEBUG
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
@@ -674,7 +673,7 @@ private:
                 buffer_index_ = 0;
             }
 
-            auto result = new (curr_zone_->buffer + buffer_index_) T(args...);
+            auto result = new (curr_zone_->buffer + buffer_index_) T(std::forward<Args&&>(args)...);
             assert(result->num_ops() == num_ops);
             buffer_index_ += num_bytes;
             assert(buffer_index_ % alignof(T) == 0);
