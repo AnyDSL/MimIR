@@ -11,10 +11,10 @@ namespace thorin {
 
 class EtaExp;
 
-/// SSA construction algorithm that promotes @p Slot%s, @p Load%s, and @p Store%s to SSA values.
+/// SSA construction algorithm that promotes Tag::Slot%s, Tag::Load%s, and Tag::Store%s to SSA values.
 /// This is loosely based upon:
 /// "Simple and Efficient Construction of Static Single Assignment Form"
-/// by Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau. <br>
+/// by Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau.
 class SSAConstr : public FPPass<SSAConstr, Lam> {
 public:
     SSAConstr(PassMan& man, EtaExp* eta_exp)
@@ -60,6 +60,6 @@ private:
     GIDSet<const Proxy*> keep_;
 };
 
-}
+} // namespace thorin
 
 #endif

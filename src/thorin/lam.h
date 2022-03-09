@@ -8,10 +8,10 @@ namespace thorin {
 /// A function type AKA Pi type.
 class Pi : public Def {
 protected:
-    /// Constructor for a @em structural Pi.
+    /// Constructor for a *structural* Pi.
     Pi(const Def* type, const Def* dom, const Def* codom, const Def* dbg)
         : Def(Node, type, {dom, codom}, 0, dbg) {}
-    /// Constructor for a @em nom Pi.
+    /// Constructor for a *nom*inal Pi.
     Pi(const Def* type, const Def* dbg)
         : Def(Node, type, 2, 0, dbg) {}
 
@@ -27,7 +27,7 @@ public:
     const Pi* ret_pi(const Def* dbg = {}) const;
     ///@}
 
-    /// @name setters for @em nom @p Pi.
+    /// @name setters for *nom*inal Pi.
     ///@{
     Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
@@ -91,8 +91,10 @@ public:
     Lam* set_body(const Def* body) { return set(1, body); }
     ///@}
 
-    /// @name setters: sets filter to @c false and sets the body by @p App -ing
+    /// @name CPS setters
     ///@{
+    /// Sets filter to `false` and the body by App%ing.
+
     void app(const Def* callee, const Def* arg, const Def* dbg = {});
     void app(const Def* callee, Defs args, const Def* dbg = {});
     void branch(const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg = {});
@@ -133,7 +135,7 @@ public:
     /// @name ops
     ///@{
     const Def* callee() const { return op(0); }
-    const App* decurry() const { return callee()->as<App>(); } ///< Returns the @p callee again as @p App.
+    const App* decurry() const { return callee()->as<App>(); } ///< Returns App::callee again as App.
     const Pi* callee_type() const { return callee()->type()->as<Pi>(); }
     const Def* arg() const { return op(1); }
     THORIN_PROJ(arg, const)
@@ -158,7 +160,7 @@ inline Stream& operator<<(Stream& s, std::pair<Lam*, Lam*> p) {
     return operator<<(s, std::pair<const Def*, const Def*>(p));
 }
 
-/// These are @p Lam%s that are neither `nullptr`, nor @p Lam::is_external, nor @p Lam::is_unset.
+/// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
 inline Lam* isa_workable(Lam* lam) {
     if (!lam || lam->is_external() || lam->is_unset()) return nullptr;
     return lam;

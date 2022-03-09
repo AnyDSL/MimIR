@@ -10,7 +10,7 @@ private:
     Axiom(NormalizeFn normalizer, const Def* type, tag_t tag, flags_t flags, const Def* dbg);
 
 public:
-    /// @name misc getters
+    /// @name getters
     ///@{
     tag_t tag() const { return tag_t(fields() >> 32_u64); }
     flags_t flags() const { return flags_t(fields()); }
@@ -23,8 +23,9 @@ public:
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     ///@}
 
-    /// @name mangling dialect name
+    /// @name Mangling Dialect Name
     ///@{
+    static constexpr size_t Max_Dialect_Size = 8;
 
     /// Mangles @p s into a dense 48-bit representation.
     /// The layout is as follows:
@@ -34,13 +35,15 @@ public:
     /// Char67Char66Char65Char64Char63Char62Char61Char60|---reserved---|
     /// ```
     /// The `reserved` part is used for the Axiom::tag and the Axiom::flags.
-    /// Each `Char6x` is 6-bit wide and uses this encoding:
+    /// Each `Char6x` is 6-bit wide and hence a dialect name has at most Axiom::Max_Dialect_Size = 8 chars.
+    /// It uses this encoding:
     /// | `Char6` | ASCII   |
     /// |---------|---------|
     /// | 1:      | `_`     |
     /// | 2-27:   | `a`-`z` |
     /// | 28-53:  | `A`-`Z` |
     /// | 54-63:  | `0`-`9` |
+    /// The 0 is special and marks the end of the name if the name has less than 8 chars.
     /// @return returns `std::nullopt` if encoding is not possible.
     static std::optional<u64> mangle(std::string_view s);
 
@@ -51,8 +54,7 @@ public:
 
     static std::tuple<const Axiom*, u16> get(const Def*);
 
-    static constexpr size_t Max_Dialect_Size = 8;
-    static constexpr auto Node               = Node::Axiom;
+    static constexpr auto Node = Node::Axiom;
     friend class World;
 };
 
@@ -125,7 +127,7 @@ Query<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
 
-/// Checks whether @p type is an Int or a Real and returns its mod or width, respectively.
+/// Checks whether @p type is an Tag::Int or a Tag::Real and returns its mod or width, respectively.
 inline const Def* isa_sized_type(const Def* type) {
     if (auto int_ = isa<Tag::Int>(type)) return int_->arg();
     if (auto real = isa<Tag::Real>(type)) return real->arg();

@@ -250,18 +250,18 @@ public:
     const Lit* lit_nat_max() { return data_.lit_nat_max_; }
     const Lit* lit_int(const Def* type, u64 val, const Def* dbg = {});
 
-    /// Constructs Int Lit @p val via @p width, i.e. converts from *width* to *internal* *mod* value.
+    /// Constructs Tag::Int Lit @p val via @p width, i.e. converts from *width* to *internal* *mod* value.
     const Lit* lit_int_width(nat_t width, u64 val, const Def* dbg = {}) {
         return lit_int(type_int_width(width), val, dbg);
     }
 
-    /// Constructs Int Lit @p val with *external* *mod*.
+    /// Constructs Tag::Int Lit @p val with *external* *mod*.
     /// I.e. if `mod == 0`, it will be adjusted to `uint_t(-1)` (special case for `2^64`).
     const Lit* lit_int_mod(nat_t mod, u64 val, const Def* dbg = {}) {
         return lit_int(type_int(mod), mod == 0 ? val : (val % mod), dbg);
     }
 
-    /// Constructs Int Lit @p val with *internal* *mod*, i.e. without any conversions - `mod = 0` means `2^64`.
+    /// Constructs Tag::Int Lit @p val with *internal* *mod*, i.e. without any conversions - `mod = 0` means `2^64`.
     /// Use this version if you directly receive an *internal* `mod` which is already converted.
     const Lit* lit_int(nat_t mod, u64 val, const Def* dbg = {}) { return lit_int(type_int(mod), val, dbg); }
     template<class I>
@@ -536,7 +536,7 @@ public:
     ///@}
 #endif
 
-    /// @name logging
+    /// @name Logging
     ///@{
     Stream& stream() { return *stream_; }
     LogLevel min_level() const { return state_.min_level; }
