@@ -129,9 +129,9 @@ public:
 };
 
 /// Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.
-/// **Attention:** This is a *functional* Insert.
-///              The Insert::tuple itself remains untouched.
-///              The Insert itself is a *new* Tuple / Pack which contains the inserted Insert::value.
+/// @attention This is a *functional* Insert.
+///     The Insert::tuple itself remains untouched.
+///     The Insert itself is a *new* Tuple / Pack which contains the inserted Insert::value.
 class Insert : public Def {
 private:
     Insert(const Def* tuple, const Def* index, const Def* value, const Def* dbg)
