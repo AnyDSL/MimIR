@@ -93,7 +93,7 @@ public:
 
     /// @name CPS setters
     ///@{
-    /// Sets filter to `false` and the body by App%ing.
+    /// Sets Lam::filter to World::lit_false, if not yet set and the Lam::body to an App.
 
     void app(const Def* callee, const Def* arg, const Def* dbg = {});
     void app(const Def* callee, Defs args, const Def* dbg = {});

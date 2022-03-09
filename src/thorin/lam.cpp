@@ -39,8 +39,8 @@ bool Lam::is_basicblock() const { return type()->is_basicblock(); }
 
 void Lam::app(const Def* callee, const Def* arg, const Def* dbg) {
     assert(isa_nom());
-    auto filter = world().lit_false();
-    set(filter, world().app(callee, arg, dbg));
+    if (!filter()) set_filter(world().lit_false());
+    set_body(world().app(callee, arg, dbg));
 }
 
 void Lam::app(const Def* callee, Defs args, const Def* dbg) { app(callee, world().tuple(args), dbg); }
