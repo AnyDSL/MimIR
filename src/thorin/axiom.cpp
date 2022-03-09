@@ -2,6 +2,17 @@
 
 namespace thorin {
 
+Axiom::Axiom(NormalizeFn normalizer, const Def* type, u32 tag, u32 flags, const Def* dbg)
+    : Def(Node, type, Defs{}, (nat_t(tag) << 32_u64) | nat_t(flags), dbg) {
+    u16 currying_depth = 0;
+    while (auto pi = type->isa<Pi>()) {
+        ++currying_depth;
+        type = pi->codom();
+    }
+
+    normalizer_depth_.set(normalizer, currying_depth);
+}
+
 std::optional<u64> Axiom::mangle(std::string_view s) {
     auto n = s.size();
     if (n > Max_Dialect_Size) return {};
@@ -51,17 +62,6 @@ std::string Axiom::demangle(u64 u) {
     }
 
     return result;
-}
-
-Axiom::Axiom(NormalizeFn normalizer, const Def* type, u32 tag, u32 flags, const Def* dbg)
-    : Def(Node, type, Defs{}, (nat_t(tag) << 32_u64) | nat_t(flags), dbg) {
-    u16 currying_depth = 0;
-    while (auto pi = type->isa<Pi>()) {
-        ++currying_depth;
-        type = pi->codom();
-    }
-
-    normalizer_depth_.set(normalizer, currying_depth);
 }
 
 std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {

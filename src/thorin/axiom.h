@@ -25,17 +25,16 @@ public:
 
     /// @name mangling dialect name
     ///@{
-    static constexpr size_t Max_Dialect_Size = 8;
 
-    /// Mangles @p s into a dense 48 bit representation.
+    /// Mangles @p s into a dense 48-bit representation.
     /// The layout is as follows:
     /// ```
     /// |---7--||---6--||---5--||---4--||---3--||---2--||---1--||---0--|
     /// 7654321076543210765432107654321076543210765432107654321076543210
     /// Char67Char66Char65Char64Char63Char62Char61Char60|---reserved---|
     /// ```
-    /// The `reserved` part is used for the @p tag and the @p flags.
-    /// Each `Char6x` is 6 bit wide and uses this encoding:
+    /// The `reserved` part is used for the Axiom::tag and the Axiom::flags.
+    /// Each `Char6x` is 6-bit wide and uses this encoding:
     /// | `Char6` | ASCII   |
     /// |---------|---------|
     /// | 1:      | `_`     |
@@ -45,14 +44,15 @@ public:
     /// @return returns `std::nullopt` if encoding is not possible.
     static std::optional<u64> mangle(std::string_view s);
 
-    /// Reverts a @p mangle%d string to a `std::string`.
-    /// Ignores lower 16 bit of @p u.
+    /// Reverts a mangle%d string to a `std::string`.
+    /// Ignores lower 16-bit of @p u.
     static std::string demangle(u64 u);
     ///@}
 
     static std::tuple<const Axiom*, u16> get(const Def*);
 
-    static constexpr auto Node = Node::Axiom;
+    static constexpr size_t Max_Dialect_Size = 8;
+    static constexpr auto Node               = Node::Axiom;
     friend class World;
 };
 
@@ -125,7 +125,7 @@ Query<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
 
-/// Checks whether @p type is an @p Int or a @p Real and returns its mod or width, respectively.
+/// Checks whether @p type is an Int or a Real and returns its mod or width, respectively.
 inline const Def* isa_sized_type(const Def* type) {
     if (auto int_ = isa<Tag::Int>(type)) return int_->arg();
     if (auto real = isa<Tag::Real>(type)) return real->arg();
