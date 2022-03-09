@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('normalize_8cpp.html',''); initResizabl
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for normalize.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="normalize_8cpp__incl.svg" width="2636" height="635"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="normalize_8cpp__incl.svg" width="2548" height="710"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -298,7 +298,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T, T, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>&gt;<br />
 struct thorin::Fold&lt; T, T, nat_t &gt;</div>
-<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00084">84</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00101">101</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 </div>
 </div>
 </div>
@@ -315,7 +315,7 @@ struct thorin::Fold&lt; T, T, nat_t &gt;</div>
 </div><div class="memdoc">
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="namespacethorin.html#af46278ec1dc091418ec3fe6bc7317561">Conv</a> op, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>&gt;<br />
 struct thorin::FoldConv&lt; op, nat_t, nat_t &gt;</div>
-<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00178">178</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00204">204</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 </div>
 </div>
 </div>
@@ -335,18 +335,18 @@ struct thorin::FoldConv&lt; op, nat_t, nat_t &gt;</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">            <span class="keywordflow">case</span> i:                                                                 \</div>
-<div class="line">                if <span class="keyword">constexpr</span> (i &gt;= min_w) {                                         \</div>
-<div class="line">                    if <span class="keyword">constexpr</span> (std::is_same_v&lt;Op, Wrap&gt;)                         \</div>
-<div class="line">                        res = Fold&lt;Op, op, i&gt;::run(la-&gt;get(), lb-&gt;get(), <a class="code hl_enumvalue" href="namespacethorin_1_1WMode.html#a95b854be9148e576359c494681a6bb3eade43029d5b7caff52b12f62f304e5f31">nsw</a>, <a class="code hl_enumvalue" href="namespacethorin_1_1WMode.html#a95b854be9148e576359c494681a6bb3eaa3923d6dc93d93b254f08e39d51aef36">nuw</a>); \</div>
-<div class="line">                    else                                                            \</div>
-<div class="line">                        res = Fold&lt;Op, op, i&gt;::run(la-&gt;get(), lb-&gt;get());           \</div>
-<div class="line">                }                                                                   \</div>
-<div class="line">                break;</div>
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">case</span> i:                                                                 \</div>
+<div class="line">        if <span class="keyword">constexpr</span> (i &gt;= min_w) {                                         \</div>
+<div class="line">            if <span class="keyword">constexpr</span> (std::is_same_v&lt;Op, Wrap&gt;)                         \</div>
+<div class="line">                res = Fold&lt;Op, op, i&gt;::run(la-&gt;get(), lb-&gt;get(), <a class="code hl_enumvalue" href="namespacethorin_1_1WMode.html#a95b854be9148e576359c494681a6bb3eade43029d5b7caff52b12f62f304e5f31">nsw</a>, <a class="code hl_enumvalue" href="namespacethorin_1_1WMode.html#a95b854be9148e576359c494681a6bb3eaa3923d6dc93d93b254f08e39d51aef36">nuw</a>); \</div>
+<div class="line">            else                                                            \</div>
+<div class="line">                res = Fold&lt;Op, op, i&gt;::run(la-&gt;get(), lb-&gt;get());           \</div>
+<div class="line">        }                                                                   \</div>
+<div class="line">        break;</div>
 <div class="ttc" id="anamespacethorin_1_1WMode_html_a95b854be9148e576359c494681a6bb3eaa3923d6dc93d93b254f08e39d51aef36"><div class="ttname"><a href="namespacethorin_1_1WMode.html#a95b854be9148e576359c494681a6bb3eaa3923d6dc93d93b254f08e39d51aef36">thorin::WMode::nuw</a></div><div class="ttdeci">@ nuw</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00048">tables.h:48</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1WMode_html_a95b854be9148e576359c494681a6bb3eade43029d5b7caff52b12f62f304e5f31"><div class="ttname"><a href="namespacethorin_1_1WMode.html#a95b854be9148e576359c494681a6bb3eade43029d5b7caff52b12f62f304e5f31">thorin::WMode::nsw</a></div><div class="ttdeci">@ nsw</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00047">tables.h:47</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00955">955</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l01000">1000</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
 </div>
 </div>
@@ -375,12 +375,11 @@ struct thorin::FoldConv&lt; op, nat_t, nat_t &gt;</div>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">        <span class="keywordflow">else</span> <span class="keywordflow">if</span> (*lit_dw == dw &amp;&amp; *lit_sw == sw) {               \</div>
-<div class="line">            if <span class="keyword">constexpr</span> (dw &gt;= min_dw &amp;&amp; sw &gt;= min_sw)          \</div>
-<div class="line">                res = FoldConv&lt;op, dw, sw&gt;::run(lit_src-&gt;get()); \</div>
-<div class="line">        }</div>
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (*lit_dw == dw &amp;&amp; *lit_sw == sw) {                                                       \</div>
+<div class="line">        if <span class="keyword">constexpr</span> (dw &gt;= min_dw &amp;&amp; sw &gt;= min_sw) res = FoldConv&lt;op, dw, sw&gt;::run(lit_src-&gt;get()); \</div>
+<div class="line">    }</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00955">955</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l01000">1000</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
 </div>
 </div>
@@ -410,7 +409,7 @@ struct thorin::FoldConv&lt; op, nat_t, nat_t &gt;</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00955">955</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l01000">1000</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
 </div>
 </div>
@@ -435,7 +434,7 @@ struct thorin::FoldConv&lt; op, nat_t, nat_t &gt;</div>
 <div class="line">                 m(32,  1) m(32,  8) m(32, 16) m(32, 32) m(32, 64) \</div>
 <div class="line">                 m(64,  1) m(64,  8) m(64, 16) m(64, 32) m(64, 64)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00775">775</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00816">816</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
 </div>
 </div>

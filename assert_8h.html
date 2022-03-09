@@ -110,7 +110,7 @@ Include dependency graph for assert.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="assert_8h__dep__incl.svg" width="4062" height="664"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="assert_8h__dep__incl.svg" width="4142" height="739"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -123,17 +123,15 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a35cda62267cf99326d734c9aa162d2c8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assert_8h.html#a35cda62267cf99326d734c9aa162d2c8">THORIN_UNREACHABLE</a>&#160;&#160;&#160;do { assert(false &amp;&amp; &quot;unreachable&quot;); thorin::_unreachable(); } while(0)</td></tr>
-<tr class="separator:a35cda62267cf99326d734c9aa162d2c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a052914d5d4fec1c6da4632a9665231a9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assert_8h.html#a052914d5d4fec1c6da4632a9665231a9">THORIN_BREAK</a>&#160;&#160;&#160;{ <a class="el" href="namespace_3globalScope_4.html#classint">int</a>* __p__ = nullptr; *__p__ = 42; }</td></tr>
-<tr class="separator:a052914d5d4fec1c6da4632a9665231a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bf507325593e1ed7b3acc75596bd525"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="assert_8h.html#a1bf507325593e1ed7b3acc75596bd525">assert_unused</a>(x)&#160;&#160;&#160;assert(x)</td></tr>
 <tr class="separator:a1bf507325593e1ed7b3acc75596bd525"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af6e5ea94aca3c1ebeb44ad3507ada205"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#af6e5ea94aca3c1ebeb44ad3507ada205">thorin::_unreachable</a> ()</td></tr>
-<tr class="separator:af6e5ea94aca3c1ebeb44ad3507ada205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37d16cd32e773f40b5989147bd9bcbc9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9">thorin::unreachable</a> ()</td></tr>
+<tr class="separator:a37d16cd32e773f40b5989147bd9bcbc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ec2df0cc38989e607e76de0491ef48b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a7ec2df0cc38989e607e76de0491ef48b">thorin::breakpoint</a> ()</td></tr>
+<tr class="separator:a7ec2df0cc38989e607e76de0491ef48b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a1bf507325593e1ed7b3acc75596bd525" name="a1bf507325593e1ed7b3acc75596bd525"></a>
@@ -152,39 +150,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="assert_8h_source.html#l00019">19</a> of file <a class="el" href="assert_8h_source.html">assert.h</a>.</p>
-
-</div>
-</div>
-<a id="a052914d5d4fec1c6da4632a9665231a9" name="a052914d5d4fec1c6da4632a9665231a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a052914d5d4fec1c6da4632a9665231a9">&#9670;&nbsp;</a></span>THORIN_BREAK</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define THORIN_BREAK&#160;&#160;&#160;{ <a class="el" href="namespace_3globalScope_4.html#classint">int</a>* __p__ = nullptr; *__p__ = 42; }</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="assert_8h_source.html#l00015">15</a> of file <a class="el" href="assert_8h_source.html">assert.h</a>.</p>
-
-</div>
-</div>
-<a id="a35cda62267cf99326d734c9aa162d2c8" name="a35cda62267cf99326d734c9aa162d2c8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35cda62267cf99326d734c9aa162d2c8">&#9670;&nbsp;</a></span>THORIN_UNREACHABLE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define THORIN_UNREACHABLE&#160;&#160;&#160;do { assert(false &amp;&amp; &quot;unreachable&quot;); thorin::_unreachable(); } while(0)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="assert_8h_source.html#l00010">10</a> of file <a class="el" href="assert_8h_source.html">assert.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assert_8h_source.html#l00029">29</a> of file <a class="el" href="assert_8h_source.html">assert.h</a>.</p>
 
 </div>
 </div>
