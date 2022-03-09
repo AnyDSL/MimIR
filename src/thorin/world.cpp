@@ -698,7 +698,8 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     if (!type->isa_nom<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return pack(n, ops[0]);
+        // propagated problem from sigma
+//        if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return pack(n, ops[0]);
     }
 
     // eta rule for tuples:

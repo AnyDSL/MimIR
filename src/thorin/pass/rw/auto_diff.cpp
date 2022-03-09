@@ -608,8 +608,10 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract) {
 
 // loads pb from shadow slot, updates pb for the ptr, returns, mem and pb for the loaded value
 std::pair<const Def*,const Def*> AutoDiffer::reloadPtrPb(const Def* mem, const Def* ptr, const Def* dbg, bool generateLoadPb) {
-    auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],dbg)->projs<2>();
     type_dump(world_,"  reload for ptr",ptr);
+    dlog(world_,"  shadow ptr {}",pointer_map[ptr]);
+    type_dump(world_,"  shadow ptr",pointer_map[ptr]);
+    auto [pb_load_mem,pb_load_fun] = world_.op_load(mem,pointer_map[ptr],dbg)->projs<2>();
     pullbacks_[ptr]=pb_load_fun;
     return {pb_load_mem,pb_load_fun};
 }
@@ -631,8 +633,8 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     // For each param, create an appropriate pullback. It is just the (one-hot) identity function for each of those.
     type_dump(world_,"Apply RevDiff to src",src);
 
-    auto dst_lam = src_to_dst_[src];
-    current_mem=dst_lam->as_nom<Lam>()->mem_var();
+    auto dst_lam = src_to_dst_[src]->as_nom<Lam>();
+    current_mem=dst_lam->mem_var();
 
     auto src_var = src->var();
     auto dst_var = src_to_dst_[src_var];
@@ -673,7 +675,16 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     pullbacks_[dst_var] = idpb;
 
 
-    initArg(dst_var);
+    type_dump(world_,"init arg",dst_var);
+//    initArg(dst_var);
+        for(size_t i = 0, e = src->num_vars(); i < e; ++i) {
+            auto dvar = dst_lam->var(i);
+            if(dvar == dst_lam->ret_var() || dvar == dst_lam->mem_var()) {
+                continue;
+            }
+            pullbacks_[dvar]= extract_pb(dvar);
+            initArg(dvar);
+        }
 
 //    current_mem=src_to_dst_[src->mem_var()];
 
@@ -728,6 +739,9 @@ void AutoDiffer::initArg(const Def* dst) {
     // TODO: iterate (recursively) over tuple
     // create shadow slots for pointers
 
+    auto arg_ty = dst->type();
+    dlog(world_,"Arg of Type A: {}", arg_ty);
+
 
     // we need to initialize the shadow ptr slot for
     // ptr args here instead of at store & load (first usage)
@@ -737,8 +751,6 @@ void AutoDiffer::initArg(const Def* dst) {
     // content in the current memory object used to load
     // this is only possible at a common point before all usages
     //   => creation / first mentioning
-    auto arg_ty = dst->type();
-    dlog(world_,"Arg of Type A: {}", arg_ty);
     if(auto ptr= isa<Tag::Ptr>(arg_ty)) {
         dlog(world_,"Create Ptr arg shadow slot");
         auto ty = ptr->arg()->projs<2>()[0];
@@ -750,6 +762,7 @@ void AutoDiffer::initArg(const Def* dst) {
         pointer_map[dst] = pb_ptr;
         type_dump(world_, "Pb Slot", pb_ptr);
         type_dump(world_, "Pb Slot Mem", pb_mem);
+        type_dump(world_, "Pb of var", pullbacks_[dst]);
 
         // write the pb into the slot
         auto pb_store_mem = world_.op_store(pb_mem, pb_ptr, pullbacks_[dst], world_.dbg("pb_arg_id_store"));
