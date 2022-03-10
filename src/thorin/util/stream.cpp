@@ -13,9 +13,11 @@ Stream& Stream::fmt(const char* s) {
         auto next = s + 1;
 
         switch (*s) {
+            // clang-format off
             case '\n': s++; endl();   break;
             case '\t': s++; indent(); break;
             case '\b': s++; dedent(); break;
+            // clang-format on
             case '{':
                 if (match2nd(next, s, '{')) continue;
 
@@ -27,8 +29,7 @@ Stream& Stream::fmt(const char* s) {
             case '}':
                 if (match2nd(next, s, '}')) continue;
                 assert(false && "unmatched/unescaped closing brace '}' in format string");
-            default:
-                (*this) << *s++;
+            default: (*this) << *s++;
         }
     }
     return *this;
@@ -43,4 +44,4 @@ bool Stream::match2nd(const char* next, const char*& s, const char c) {
     return false;
 }
 
-}
+} // namespace thorin

@@ -1,26 +1,23 @@
 #include "thorin/tuple.h"
 
-#include "thorin/world.h"
-
 #include <cassert>
+
+#include "thorin/world.h"
 
 namespace thorin {
 
-static bool should_flatten(const Def* def) {
-    return is_sigma_or_arr(def->sort() == Sort::Term ? def->type() : def);
-}
+static bool should_flatten(const Def* def) { return is_sigma_or_arr(def->sort() == Sort::Term ? def->type() : def); }
 
-static bool nom_val_or_typ(const Def *def) {
+static bool nom_val_or_typ(const Def* def) {
     auto typ = (def->sort() == Sort::Term) ? def->type() : def;
     return typ->isa_nom();
 }
 
 size_t flatten(DefVec& ops, const Def* def, bool flatten_noms) {
-    if (auto a = isa_lit<nat_t>(def->arity()); a && *a != 1 && should_flatten(def)
-            && flatten_noms == nom_val_or_typ(def)) {
+    if (auto a = isa_lit<nat_t>(def->arity());
+        a && *a != 1 && should_flatten(def) && flatten_noms == nom_val_or_typ(def)) {
         auto n = 0;
-        for (size_t i = 0; i != *a; ++i)
-            n += flatten(ops, def->proj(*a, i), flatten_noms);
+        for (size_t i = 0; i != *a; ++i) n += flatten(ops, def->proj(*a, i), flatten_noms);
         return n;
     } else {
         ops.emplace_back(def);
@@ -32,7 +29,8 @@ const Def* flatten(const Def* def) {
     if (!should_flatten(def)) return def;
     DefVec ops;
     flatten(ops, def);
-    return def->sort() == Sort::Term ? def->world().tuple(def->type(), ops, def->dbg()) : def->world().sigma(ops, def->dbg());
+    return def->sort() == Sort::Term ? def->world().tuple(def->type(), ops, def->dbg())
+                                     : def->world().sigma(ops, def->dbg());
 }
 
 static const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_noms) {
@@ -54,33 +52,18 @@ const Def* unflatten(Defs defs, const Def* type, bool flatten_noms) {
     return def;
 }
 
-const Def* unflatten(const Def* def, const Def* type) {
-    return unflatten(def->projs(as_lit(def->arity())), type);
-}
+const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(as_lit(def->arity())), type); }
 
-bool is_unit(const Def* def) {
-    return def->type() == def->world().sigma();
-}
-
-bool is_tuple_arg_of_app(const Def* def) {
-    if (!def->isa<Tuple>()) return false;
-    for (auto& use : def->uses()) {
-        if (use.index() == 1 && use->isa<App>())
-            continue;
-        if (!is_tuple_arg_of_app(use.def()))
-            return false;
-    }
-    return true;
-}
+bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 
 DefArray merge(const Def* def, Defs defs) {
-    return DefArray(defs.size() + 1, [&](auto i) { return i == 0 ? def : defs[i-1]; });
+    return DefArray(defs.size() + 1, [&](auto i) { return i == 0 ? def : defs[i - 1]; });
 }
 
 DefArray merge(Defs a, Defs b) {
     DefArray result(a.size() + b.size());
-    auto i = std::copy(a.begin(), a.end(), result.begin());
-    std::copy(b.begin(), b.end(), i);
+    auto [_, o] = std::ranges::copy(a, result.begin());
+    std::ranges::copy(b, o);
     return result;
 }
 
@@ -108,4 +91,4 @@ std::string tuple2str(const Def* def) {
     return std::string(array.begin(), array.end());
 }
 
-}
+} // namespace thorin

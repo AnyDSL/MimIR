@@ -4,7 +4,7 @@
 
 namespace thorin {
 
-Lexer::Lexer(World& world, const char* filename, std::istream& stream)
+Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
     : world_(world)
     , loc_{filename, {1, 1}, {1, 1}}
     , peek_({0, Pos(1, 0)})

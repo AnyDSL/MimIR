@@ -1,9 +1,12 @@
 #ifndef THORIN_TABLES_H
 #define THORIN_TABLES_H
 
+#include <string_view>
+
 #include "thorin/util/assert.h"
 #include "thorin/util/types.h"
 
+// clang-format off
 namespace thorin {
 
 using node_t   = u16;
@@ -216,18 +219,18 @@ constexpr RCmp operator&(RCmp a, RCmp b) { return RCmp(flags_t(a) & flags_t(b));
 constexpr RCmp operator^(RCmp a, RCmp b) { return RCmp(flags_t(a) ^ flags_t(b)); }
 
 #define CODE(T, o) case T::o: return #T "_" #o;
-constexpr const char* op2str(Bit   o) { switch (o) { THORIN_BIT        (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Shr   o) { switch (o) { THORIN_SHR        (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Wrap  o) { switch (o) { THORIN_WRAP       (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Div   o) { switch (o) { THORIN_DIV        (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(ROp   o) { switch (o) { THORIN_R_OP       (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(ICmp  o) { switch (o) { THORIN_I_CMP      (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(RCmp  o) { switch (o) { THORIN_R_CMP      (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Trait o) { switch (o) { THORIN_TRAIT      (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Conv  o) { switch (o) { THORIN_CONV       (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(PE    o) { switch (o) { THORIN_PE         (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(Acc   o) { switch (o) { THORIN_ACC        (CODE) default: THORIN_UNREACHABLE; } }
-constexpr const char* op2str(CConv o) { switch (o) { THORIN_CCONV_BOT  (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Bit   o) { switch (o) { THORIN_BIT       (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Shr   o) { switch (o) { THORIN_SHR       (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Wrap  o) { switch (o) { THORIN_WRAP      (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Div   o) { switch (o) { THORIN_DIV       (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(ROp   o) { switch (o) { THORIN_R_OP      (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(ICmp  o) { switch (o) { THORIN_I_CMP     (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(RCmp  o) { switch (o) { THORIN_R_CMP     (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Trait o) { switch (o) { THORIN_TRAIT     (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Conv  o) { switch (o) { THORIN_CONV      (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(PE    o) { switch (o) { THORIN_PE        (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(Acc   o) { switch (o) { THORIN_ACC       (CODE) default: THORIN_UNREACHABLE; } }
+constexpr std::string_view op2str(CConv o) { switch (o) { THORIN_CCONV_BOT (CODE) default: THORIN_UNREACHABLE; } }
 #undef CODE
 
 namespace AddrSpace {
@@ -274,6 +277,7 @@ template<> struct Tag2Enum_<Tag::Acc  > { using type = Acc;   };
 template<> struct Tag2Enum_<Tag::CConv> { using type = CConv;    };
 template<tag_t tag> using Tag2Enum = typename Tag2Enum_<tag>::type;
 
-}
+// clang-format on
+} // namespace thorin
 
 #endif

@@ -8,10 +8,10 @@ namespace thorin {
 /// A function type AKA Pi type.
 class Pi : public Def {
 protected:
-    /// Constructor for a @em structural Pi.
+    /// Constructor for a *structural* Pi.
     Pi(const Def* type, const Def* dom, const Def* codom, const Def* dbg)
         : Def(Node, type, {dom, codom}, 0, dbg) {}
-    /// Constructor for a @em nom Pi.
+    /// Constructor for a *nom*inal Pi.
     Pi(const Def* type, const Def* dbg)
         : Def(Node, type, 2, 0, dbg) {}
 
@@ -28,7 +28,7 @@ public:
     const Pi* ret_pi(const Def* dbg = {}) const;
     ///@}
 
-    /// @name setters for @em nom @p Pi.
+    /// @name setters for *nom*inal Pi.
     ///@{
     Pi* set_dom(const Def* dom) { return Def::set(0, dom)->as<Pi>(); }
     Pi* set_dom(Defs doms);
@@ -50,8 +50,8 @@ class Lam : public Def {
 public:
     /// calling convention
     enum class CC : u8 {
-        C,          ///< C calling convention.
-        Device,     ///< Device calling convention. These are special functions only available on a particular device.
+        C,      ///< C calling convention.
+        Device, ///< Device calling convention. These are special functions only available on a particular device.
     };
 
 private:
@@ -92,12 +92,14 @@ public:
     Lam* set_body(const Def* body) { return set(1, body); }
     ///@}
 
-    /// @name setters: sets filter to @c false and sets the body by @p App -ing
+    /// @name CPS setters
     ///@{
+    /// Sets filter to `false` and the body by App%ing.
+
     void app(const Def* callee, const Def* arg, const Def* dbg = {});
     void app(const Def* callee, Defs args, const Def* dbg = {});
     void branch(const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg = {});
-    void test(const Def* value, const Def* index, const Def* match, const Def* clash, const Def* mem, const Def* dbg = {});
+    void test(const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem, const Def* dbg = {});
     ///@}
 
     /// @name virtual methods
@@ -134,7 +136,7 @@ public:
     /// @name ops
     ///@{
     const Def* callee() const { return op(0); }
-    const App* decurry() const { return callee()->as<App>(); } ///< Returns the @p callee again as @p App.
+    const App* decurry() const { return callee()->as<App>(); } ///< Returns App::callee again as App.
     const Pi* callee_type() const { return callee()->type()->as<Pi>(); }
     const Def* arg() const { return op(1); }
     THORIN_PROJ(arg, const)
@@ -155,16 +157,25 @@ public:
     friend class World;
 };
 
-inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
+inline Stream& operator<<(Stream& s, std::pair<Lam*, Lam*> p) {
+    return operator<<(s, std::pair<const Def*, const Def*>(p));
+}
 
-inline Stream& operator<<(Stream& s, std::pair<Lam*, Lam*> p) { return operator<<(s, std::pair<const Def*, const Def*>(p.first, p.second)); }
+/// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
+inline Lam* isa_workable(Lam* lam) {
+    if (!lam || lam->is_external() || lam->is_unset()) return nullptr;
+    return lam;
+}
+
+inline const App* isa_callee(const Def* def, size_t i) { return i == 0 ? def->isa<App>() : nullptr; }
+inline std::pair<const App*, Lam*> isa_apped_nom_lam(const Def* def) {
+    if (auto app = def->isa<App>()) return {app, app->callee()->isa_nom<Lam>()};
+    return {nullptr, nullptr};
+}
 
 // TODO remove - deprecated
 Lam* get_var_lam(const Def* def);
 
-// TODO remove - deprecated: This one is more confusing than helping.
-inline bool ignore(Lam* lam) { return lam == nullptr || lam->is_external() || !lam->is_set(); }
-
-}
+} // namespace thorin
 
 #endif

@@ -1,9 +1,12 @@
+#include "thorin/pass/optimize.h"
+
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/dce.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/ssa_constr.h"
+#include "thorin/pass/fp/tail_rec_elim.h"
 #include "thorin/pass/rw/alloc2malloc.h"
 #include "thorin/pass/fp/unbox_closures.h"
 #include "thorin/pass/fp/closure_analysis.h"
@@ -60,6 +63,7 @@ void optimize(World& world) {
     // opt.add<Scalerize>(ee);
     //opt.add<DCE>(br, ee);
     // opt.add<CopyProp>(br, ee);
+    // opt.add<TailRecElim>(er);
     opt.run();
 
     closure_conv(world);
@@ -73,4 +77,4 @@ void optimize(World& world) {
     codgen_prepare.run();
 }
 
-}
+} // namespace thorin

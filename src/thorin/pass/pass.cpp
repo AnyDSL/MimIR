@@ -1,20 +1,18 @@
 #include "thorin/pass/pass.h"
 
 #include "thorin/rewrite.h"
+
 #include "thorin/util/container.h"
 
 namespace thorin {
 
-RWPassBase::RWPassBase(PassMan& man, const std::string& name)
-    : man_(man)
-    , name_(name)
-    , proxy_id_(man.passes().size())
-{}
+RWPassBase::RWPassBase(PassMan& man, const char* name)
+    : IPass(man, name)
+    , proxy_id_(man.passes().size()) {}
 
-FPPassBase::FPPassBase(PassMan& man, const std::string& name)
+FPPassBase::FPPassBase(PassMan& man, const char* name)
     : RWPassBase(man, name)
-    , index_(man.fp_passes().size())
-{}
+    , index_(man.fp_passes().size()) {}
 
 void PassMan::push_state() {
     if (size_t num = fp_passes_.size()) {
@@ -27,15 +25,13 @@ void PassMan::push_state() {
         curr_state().stack     = prev_state.stack;
         curr_state().nom2visit = prev_state.nom2visit;
 
-        for (size_t i = 0; i != num; ++i)
-            curr_state().data[i] = fp_passes_[i]->copy(prev_state.data[i]);
+        for (size_t i = 0; i != num; ++i) curr_state().data[i] = fp_passes_[i]->copy(prev_state.data[i]);
     }
 }
 
 void PassMan::pop_states(size_t undo) {
     while (states_.size() != undo) {
-        for (size_t i = 0, e = curr_state().data.size(); i != e; ++i)
-            fp_passes_[i]->dealloc(curr_state().data[i]);
+        for (size_t i = 0, e = curr_state().data.size(); i != e; ++i) fp_passes_[i]->dealloc(curr_state().data[i]);
 
         if (undo != 0) // only reset if not final cleanup
             curr_state().curr_nom->set(curr_state().old_ops);
@@ -49,11 +45,9 @@ void PassMan::run() {
 
     auto num = fp_passes_.size();
     states_.emplace_back(num);
-    for (size_t i = 0; i != num; ++i)
-        curr_state().data[i] = fp_passes_[i]->alloc();
+    for (size_t i = 0; i != num; ++i) curr_state().data[i] = fp_passes_[i]->alloc();
 
-    for (auto pass : passes_)
-        world().ILOG(" + {}", pass->name());
+    for (auto pass : passes_) world().ILOG(" + {}", pass->name());
     world().debug_stream();
 
     auto externals = std::vector(world().externals().begin(), world().externals().end());
@@ -67,20 +61,18 @@ void PassMan::run() {
         curr_nom_ = pop(curr_state().stack);
         world().VLOG("=== state {}: {} ===", states_.size() - 1, curr_nom_);
 
-        if (!curr_nom_->is_set()) continue;
+        if (curr_nom_->is_unset()) continue;
 
         for (auto pass : passes_) {
             if (pass->inspect()) pass->enter();
         }
 
-        for (size_t i = 0, e = curr_nom_->num_ops(); i != e; ++i)
-            curr_nom_->set(i, rewrite(curr_nom_->op(i)));
+        for (size_t i = 0, e = curr_nom_->num_ops(); i != e; ++i) curr_nom_->set(i, rewrite(curr_nom_->op(i)));
 
         world().VLOG("=== analyze ===");
-        proxy_ = false;
+        proxy_    = false;
         auto undo = No_Undo;
-        for (auto op : curr_nom_->extended_ops())
-            undo = std::min(undo, analyze(op));
+        for (auto op : curr_nom_->extended_ops()) undo = std::min(undo, analyze(op));
 
         if (undo == No_Undo) {
             assert(!proxy_ && "proxies must not occur anymore after leaving a nom with No_Undo");
@@ -121,19 +113,16 @@ const Def* PassMan::rewrite(const Def* old_def) {
 
     if (auto proxy = new_def->isa<Proxy>()) {
         if (auto pass = static_cast<FPPassBase*>(passes_[proxy->id()]); pass->inspect()) {
-            if (auto rw = pass->rewrite(proxy); rw != proxy)
-                return map(old_def, rewrite(rw));
+            if (auto rw = pass->rewrite(proxy); rw != proxy) return map(old_def, rewrite(rw));
         }
     } else {
         for (auto pass : passes_) {
             if (!pass->inspect()) continue;
 
             if (auto var = new_def->isa<Var>()) {
-                if (auto rw = pass->rewrite(var); rw != var)
-                    return map(old_def, rewrite(rw));
+                if (auto rw = pass->rewrite(var); rw != var) return map(old_def, rewrite(rw));
             } else {
-                if (auto rw = pass->rewrite(new_def); rw != new_def)
-                    return map(old_def, rewrite(rw));
+                if (auto rw = pass->rewrite(new_def); rw != new_def) return map(old_def, rewrite(rw));
             }
         }
     }
@@ -150,22 +139,20 @@ undo_t PassMan::analyze(const Def* def) {
         curr_state().stack.push(nom);
     } else if (auto proxy = def->isa<Proxy>()) {
         proxy_ = true;
-        undo = static_cast<FPPassBase*>(passes_[proxy->id()])->analyze(proxy);
+        undo   = static_cast<FPPassBase*>(passes_[proxy->id()])->analyze(proxy);
     } else {
         auto var = def->isa<Var>();
 
         if (!var) {
-            for (auto op : def->extended_ops())
-                undo = std::min(undo, analyze(op));
+            for (auto op : def->extended_ops()) undo = std::min(undo, analyze(op));
         }
 
         for (auto&& pass : fp_passes_) {
-            if (pass->inspect())
-                undo = std::min(undo, var ? pass->analyze(var) : pass->analyze(def));
+            if (pass->inspect()) undo = std::min(undo, var ? pass->analyze(var) : pass->analyze(def));
         }
     }
 
     return undo;
 }
 
-}
+} // namespace thorin

@@ -31,7 +31,7 @@ public:
     friend class World;
 };
 
-/// Data constructor for a @p Sigma.
+/// Data constructor for a Sigma.
 class Tuple : public Def {
 private:
     Tuple(const Def* type, Defs args, const Def* dbg)
@@ -93,6 +93,7 @@ public:
     const Arr* type() const { return Def::type()->as<Arr>(); }
     const Def* shape() const { return type()->shape(); }
     ///@}
+
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
@@ -102,10 +103,10 @@ public:
     friend class World;
 };
 
-inline bool is_sigma_or_arr (const Def* def) { return def->isa<Sigma>() || def->isa<Arr >(); }
+inline bool is_sigma_or_arr(const Def* def) { return def->isa<Sigma>() || def->isa<Arr>(); }
 inline bool is_tuple_or_pack(const Def* def) { return def->isa<Tuple>() || def->isa<Pack>(); }
 
-/// Extracts from a @p Sigma or @p Variadic typed @p Def the element at position @p index.
+/// Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.
 class Extract : public Def {
 private:
     Extract(const Def* type, const Def* tuple, const Def* index, const Def* dbg)
@@ -117,6 +118,7 @@ public:
     const Def* tuple() const { return op(0); }
     const Def* index() const { return op(1); }
     ///@}
+
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
@@ -126,10 +128,10 @@ public:
     friend class World;
 };
 
-/// Creates a new @p Tuple/@p Pack by inserting @p value at position @p index into @p tuple.
-/// @attention { This is a @em functional insert.
-///              The @p tuple itself remains untouched.
-///              The @p Insert itself is a @em new @p Tuple/@p Pack which contains the inserted @p value. }
+/// Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.
+/// @attention This is a *functional* Insert.
+///     The Insert::tuple itself remains untouched.
+///     The Insert itself is a *new* Tuple / Pack which contains the inserted Insert::value.
 class Insert : public Def {
 private:
     Insert(const Def* tuple, const Def* index, const Def* value, const Def* dbg)
@@ -142,6 +144,7 @@ public:
     const Def* index() const { return op(1); }
     const Def* value() const { return op(2); }
     ///@}
+
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
@@ -165,10 +168,9 @@ const Def* merge_sigma(const Def* def, Defs defs);
 const Def* merge_tuple(const Def* def, Defs defs);
 
 bool is_unit(const Def*);
-bool is_tuple_arg_of_app(const Def*);
 
 std::string tuple2str(const Def*);
 
-}
+} // namespace thorin
 
 #endif

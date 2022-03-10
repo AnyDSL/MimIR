@@ -2,7 +2,7 @@
 
 namespace thorin {
 
-Parser::Parser(World& world, const char* file, std::istream& stream)
+Parser::Parser(World& world, std::string_view file, std::istream& stream)
     : lexer_(world, file, stream)
     , prev_(lexer_.loc())
     , ahead_(lexer_.lex())
@@ -20,28 +20,30 @@ bool Parser::accept(Tok::Tag tag) {
     return true;
 }
 
-bool Parser::expect(Tok::Tag tag, const char* ctxt) {
+bool Parser::expect(Tok::Tag tag, std::string_view ctxt) {
     if (ahead().tag() == tag) {
         lex();
         return true;
     }
 
-    err(std::string("'") + Tok::tag2str(tag) + std::string("'"), ctxt);
+    std::string msg("'");
+    msg.append(Tok::tag2str(tag)).append("'");
+    err(msg, ctxt);
     return false;
 }
 
-void Parser::err(const std::string& what, const Tok& tok, const char* ctxt) {
+void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
     errln("expected {}, got '{}' while parsing {}", what, tok, ctxt);
 }
 
-Sym Parser::parse_sym(const char* ctxt) {
+Sym Parser::parse_sym(std::string_view ctxt) {
     auto track = tracker();
     if (ahead().isa(Tok::Tag::M_id)) return lex().sym();
     err("identifier", ctxt);
     return world().sym("<error>", world().dbg((Loc) track));
 }
 
-const Def* Parser::parse_def(const char* ctxt, Tok::Prec p /*= Tok::Prec::Bottom*/) {
+const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::Bottom*/) {
     auto track = tracker();
     auto lhs = parse_primary_def(ctxt);
 
@@ -65,7 +67,7 @@ const Def* Parser::parse_def(const char* ctxt, Tok::Prec p /*= Tok::Prec::Bottom
     return nullptr;
 }
 
-const Def* Parser::parse_primary_def(const char* ctxt) {
+const Def* Parser::parse_primary_def(std::string_view ctxt) {
     return nullptr;
 }
 

@@ -6,16 +6,14 @@
 namespace thorin {
 
 const Def* DCE::rewrite(const Def* def) {
-    if (auto app = def->isa<App>()) {
-        if (auto var_lam = app->callee()->isa_nom<Lam>(); !ignore(var_lam))
-            return var2dead(app, var_lam);
+    if (auto [app, var_lam] = isa_apped_nom_lam(def); isa_workable(var_lam)) {
+        return var2dead(app, var_lam);
     } else {
         // TODO I'm currently not sure why we need this.
         // The eta_exp_->new2old(...) should be enough, but removing this will break reverse.impala.
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-            if (auto lam = def->op(i)->isa_nom<Lam>(); !ignore(lam)) {
-                if (var2dead_.contains(lam))
-                   return def->refine(i, eta_exp_->proxy(lam));
+            if (auto lam = isa_workable(def->op(i)->isa_nom<Lam>())) {
+                if (var2dead_.contains(lam)) return def->refine(i, eta_exp_->proxy(lam));
             }
         }
     }
@@ -24,7 +22,7 @@ const Def* DCE::rewrite(const Def* def) {
 }
 
 const Def* DCE::var2dead(const App* app, Lam* var_lam) {
-    if (ignore(var_lam) || var_lam->num_vars() == 0 || keep_.contains(var_lam)) return app;
+    if (var_lam->num_vars() == 0 || keep_.contains(var_lam)) return app;
 
     DefVec new_args;
     DefVec types;
@@ -49,10 +47,10 @@ const Def* DCE::var2dead(const App* app, Lam* var_lam) {
 
     auto&& [dead_lam, old_live] = var2dead_[var_lam];
     if (dead_lam == nullptr || old_live != live) {
-        old_live = live;
+        old_live      = live;
         auto dead_dom = world().sigma(types);
         auto new_type = world().pi(dead_dom, var_lam->codom());
-        dead_lam = var_lam->stub(world(), new_type, var_lam->dbg());
+        dead_lam      = var_lam->stub(world(), new_type, var_lam->dbg());
         beta_red_->keep(dead_lam);
         eta_exp_->new2old(dead_lam, var_lam);
         keep_.emplace(dead_lam); // don't try to dce again
@@ -65,7 +63,8 @@ const Def* DCE::var2dead(const App* app, Lam* var_lam) {
         });
         dead_lam->set(var_lam->apply(world().tuple(new_vars)));
     } else {
-        world().DLOG("reuse var_lam => dead_lam: {}: {} => {}: {}", var_lam, var_lam->type()->dom(), dead_lam, dead_lam->type()->dom());
+        world().DLOG("reuse var_lam => dead_lam: {}: {} => {}: {}", var_lam, var_lam->type()->dom(), dead_lam,
+                     dead_lam->type()->dom());
     }
 
     return app->world().app(dead_lam, new_args, app->dbg());
@@ -73,7 +72,7 @@ const Def* DCE::var2dead(const App* app, Lam* var_lam) {
 
 undo_t DCE::analyze(const Proxy* proxy) {
     auto var_lam = proxy->op(0)->as_nom<Lam>();
-    auto v = proxy->op(1);
+    auto v       = proxy->op(1);
     world().DLOG("found proxy: {}", v);
 
     if (keep_.emplace(v).second) return undo_visit(var_lam);
@@ -81,4 +80,4 @@ undo_t DCE::analyze(const Proxy* proxy) {
     return No_Undo;
 }
 
-}
+} // namespace thorin

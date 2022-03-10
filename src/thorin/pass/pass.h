@@ -4,6 +4,7 @@
 #include <stack>
 
 #include "thorin/world.h"
+
 #include "thorin/analyses/scope.h"
 
 namespace thorin {
@@ -12,19 +13,36 @@ class PassMan;
 typedef size_t undo_t;
 static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 
+class IPass {
+public:
+    IPass(PassMan& man, const char* name)
+        : man_(man)
+        , name_(name) {}
+
+    virtual ~IPass() = default;
+
+    PassMan& man() { return man_; }
+    const PassMan& man() const { return man_; }
+    const char* name() const { return name_; }
+
+private:
+    PassMan& man_;
+    const char* name_;
+};
+
+using CreateIPass  = IPass* (*)(PassMan&);
+using DestroyIPass = void (*)(IPass*);
+
 /// All Passes that want to be registered in the @p PassMan must implement this interface.
 /// * Directly inherit from this class if your pass doesn't need state and a fixed-point iteration (a ReWrite pass).
 /// * Inherit from @p FPPass using CRTP if you do need state.
-class RWPassBase {
+class RWPassBase : public IPass {
 public:
-    RWPassBase(PassMan& man, const std::string& name);
+    RWPassBase(PassMan& man, const char* name);
     virtual ~RWPassBase() {}
 
     /// @name getters
     ///@{
-    PassMan& man() { return man_; }
-    const PassMan& man() const { return man_; }
-    const std::string& name() const { return name_; }
     size_t proxy_id() const { return proxy_id_; }
     World& world();
     ///@}
@@ -49,11 +67,14 @@ public:
 
     /// @name proxy
     ///@{
-    const Proxy* proxy(const Def* type, Defs ops, flags_t flags = 0, const Def* dbg = {}) { return world().proxy(type, ops, proxy_id(), flags, dbg); }
+    const Proxy* proxy(const Def* type, Defs ops, flags_t flags = 0, const Def* dbg = {}) {
+        return world().proxy(type, ops, proxy_id(), flags, dbg);
+    }
 
     /// Check whether given @p def is a Proxy whose index matches this @p Pass's @p index.
     const Proxy* isa_proxy(const Def* def, flags_t flags = 0) {
-        if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->id() == proxy_id() && proxy->flags() == flags) return proxy;
+        if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->id() == proxy_id() && proxy->flags() == flags)
+            return proxy;
         return nullptr;
     }
 
@@ -65,14 +86,14 @@ public:
     ///@}
 
 protected:
-    template<class N> bool inspect() const;
+    template<class N>
+    bool inspect() const;
     /// Returns the nominal that is currently rewritten.
     /// Use @p N to case from `Def*` to `N*`
-    template<class N> N* curr_nom() const;
+    template<class N>
+    N* curr_nom() const;
 
 private:
-    PassMan& man_;
-    std::string name_;
     size_t proxy_id_;
 
     friend class PassMan;
@@ -81,7 +102,7 @@ private:
 /// Base class for all FPPass%es.
 class FPPassBase : public RWPassBase {
 public:
-    FPPassBase(PassMan& man, const std::string& name);
+    FPPassBase(PassMan& man, const char* name);
 
     size_t index() const { return index_; }
 
@@ -89,12 +110,12 @@ public:
     ///@{
     /// Invoked after the @p PassMan has @p finish%ed @p rewrite%ing @p curr_nom to analyze the @p Def;
     /// return @p No_Undo or the state to roll back to.
-    virtual undo_t analyze(const Def*  ) { return No_Undo; }
-    virtual undo_t analyze(const Var*  ) { return No_Undo; }
+    virtual undo_t analyze(const Def*) { return No_Undo; }
+    virtual undo_t analyze(const Var*) { return No_Undo; }
     virtual undo_t analyze(const Proxy*) { return No_Undo; }
-    virtual void* alloc() = 0;
+    virtual void* alloc()           = 0;
     virtual void* copy(const void*) = 0;
-    virtual void dealloc(void*) = 0;
+    virtual void dealloc(void*)     = 0;
     ///@}
 
 private:
@@ -147,9 +168,9 @@ private:
     /// @name state
     ///@{
     struct State {
-        State() = default;
+        State()             = default;
         State(const State&) = delete;
-        State(State&&) = delete;
+        State(State&&)      = delete;
         State& operator=(State) = delete;
         State(size_t num)
             : data(num) {}
@@ -165,9 +186,15 @@ private:
 
     void push_state();
     void pop_states(undo_t undo);
-    State& curr_state() { assert(!states_.empty()); return states_.back(); }
-    const State& curr_state() const { assert(!states_.empty()); return states_.back(); }
-    undo_t curr_undo() const { return states_.size()-1; }
+    State& curr_state() {
+        assert(!states_.empty());
+        return states_.back();
+    }
+    const State& curr_state() const {
+        assert(!states_.empty());
+        return states_.back();
+    }
+    undo_t curr_undo() const { return states_.size() - 1; }
     ///@}
 
     /// @name rewriting
@@ -205,15 +232,16 @@ private:
     std::vector<std::unique_ptr<FPPassBase>> fp_passes_;
     std::deque<State> states_;
     Def* curr_nom_ = nullptr;
-    bool proxy_ = false;
+    bool proxy_    = false;
 
-    template<class P, class N> friend class FPPass;
+    template<class P, class N>
+    friend class FPPass;
 };
 
 template<class N = Def>
 class RWPass : public RWPassBase {
 public:
-    RWPass(PassMan& man, const std::string& name)
+    RWPass(PassMan& man, const char* name)
         : RWPassBase(man, name) {}
 
 protected:
@@ -225,14 +253,16 @@ protected:
 template<class P, class N = Def>
 class FPPass : public FPPassBase {
 public:
-    FPPass(PassMan& man, const std::string& name)
+    FPPass(PassMan& man, const char* name)
         : FPPassBase(man, name) {}
 
     /// @name memory management for state
     ///@{
-    void* alloc() override { return new typename P::Data(); }                                                     ///< Default ctor.
-    void* copy(const void* p) override { return new typename P::Data(*static_cast<const typename P::Data*>(p)); } ///< Copy ctor.
-    void dealloc(void* state) override { delete static_cast<typename P::Data*>(state); }                          ///< Dtor.
+    void* alloc() override { return new typename P::Data(); } ///< Default ctor.
+    void* copy(const void* p) override {
+        return new typename P::Data(*static_cast<const typename P::Data*>(p));
+    }                                                                                    ///< Copy ctor.
+    void dealloc(void* state) override { delete static_cast<typename P::Data*>(state); } ///< Dtor.
     ///@}
 
 protected:
@@ -242,9 +272,15 @@ protected:
     /// @name state-related getters
     ///@{
     auto& states() { return man().states_; }
-    auto& data() { assert(!states().empty()); return *static_cast<typename P::Data*>(states().back().data[index()]); }
+    auto& data() {
+        assert(!states().empty());
+        return *static_cast<typename P::Data*>(states().back().data[index()]);
+    }
     /// Use this for your convenience if @c P::Data is a map.
-    template<class K> auto& data(const K& key) { return data()[key]; }
+    template<class K>
+    auto& data(const K& key) {
+        return data()[key];
+    }
     ///@}
 
     /// @name undo getters
@@ -268,20 +304,20 @@ inline World& RWPassBase::world() { return man().world(); }
 
 template<class N>
 bool RWPassBase::inspect() const {
-    if constexpr(std::is_same<N, Def>::value)
-        return man().curr_nom() ;
+    if constexpr (std::is_same<N, Def>::value)
+        return man().curr_nom();
     else
         return man().curr_nom()->template isa<N>();
 }
 
 template<class N>
 N* RWPassBase::curr_nom() const {
-    if constexpr(std::is_same<N, Def>::value)
-        return man().curr_nom() ;
+    if constexpr (std::is_same<N, Def>::value)
+        return man().curr_nom();
     else
         return man().curr_nom()->template as<N>();
 }
 
-}
+} // namespace thorin
 
 #endif

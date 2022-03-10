@@ -5,19 +5,20 @@
 
 namespace thorin {
 
+// clang-format off
 #define THORIN_KEY(m)                   \
     m(K_in,  "nom" )                    \
     m(K_lam, "lam")                     \
     m(K_let, "let")
 
-#define CODE(t, str) + size_t(1)
-constexpr auto Num_Keys  = size_t(0) THORIN_KEY(CODE);
+#define CODE(t, str) +size_t(1)
+constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 #undef CODE
 
-#define THORIN_LIT(m) \
-    m(L_s,        "<signed integer literal>")   \
-    m(L_u,        "<integer literal>")          \
-    m(L_f,        "<floating-point literal>")
+#define THORIN_LIT(m)                   \
+    m(L_s,  "<signed integer literal>") \
+    m(L_u,  "<integer literal>")        \
+    m(L_f,  "<floating-point literal>")
 
 #define THORIN_TOK(m)                   \
     /* misc */                          \
@@ -49,25 +50,25 @@ constexpr auto Num_Keys  = size_t(0) THORIN_KEY(CODE);
     m(O_pi,      "→", App,      Pi)     \
     m(O_extract, "#", Extract,  Lit)    \
     m(O_lit,     "∷", Error,    Lit)
+// clang-format on
 
 class Tok : public Streamable<Tok> {
 public:
-    enum class Prec {   //  left    right
-        Error,          //  -       -       <- If lookahead isn't a valid operator.
-        Bottom,         //  Bottom  Bottom
-        Pi,             //  App     Pi
-        App,            //  App     Extract
-        Extract,        //  Extract Lit
-        Lit,            //  -       Lit
+    enum class Prec { //  left    right
+        Error,        //  -       -       <- If lookahead isn't a valid operator.
+        Bottom,       //  Bottom  Bottom
+        Pi,           //  App     Pi
+        App,          //  App     Extract
+        Extract,      //  Extract Lit
+        Lit,          //  -       Lit
     };
 
     enum class Tag {
 #define CODE(t, str) t,
-        THORIN_KEY(CODE)
-        THORIN_TOK(CODE)
+        THORIN_KEY(CODE) THORIN_TOK(CODE)
 #undef CODE
 #define CODE(t, str, prec_l, prec_r) t,
-        THORIN_OP(CODE)
+            THORIN_OP(CODE)
 #undef CODE
     };
 
@@ -83,10 +84,13 @@ public:
     Loc loc() const { return loc_; }
     Tag tag() const { return tag_; }
     bool isa(Tag tag) const { return tag == tag_; }
-    Sym sym() const { assert(isa(Tag::M_id)); return sym_; }
+    Sym sym() const {
+        assert(isa(Tag::M_id));
+        return sym_;
+    }
     Stream& stream(Stream& s) const;
 
-    static const char* tag2str(Tok::Tag);
+    static std::string_view tag2str(Tok::Tag);
     static Prec tag2prec_l(Tag);
     static Prec tag2prec_r(Tag);
 
@@ -96,6 +100,6 @@ private:
     Sym sym_;
 };
 
-}
+} // namespace thorin
 
 #endif

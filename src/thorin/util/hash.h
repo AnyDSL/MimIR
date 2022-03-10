@@ -1,13 +1,14 @@
 #ifndef THORIN_UTIL_HASH_H
 #define THORIN_UTIL_HASH_H
 
-#include <algorithm>
-#include <array>
-#include <bit>
 #include <cassert>
 #include <cinttypes>
 #include <cstdint>
 #include <cstring>
+
+#include <algorithm>
+#include <array>
+#include <bit>
 #include <iostream>
 #include <memory>
 #include <optional>
@@ -15,6 +16,7 @@
 #include <utility>
 
 #include "thorin/config.h"
+
 #include "thorin/util/stream.h"
 #include "thorin/util/types.h"
 
@@ -66,12 +68,12 @@ inline hash_t murmur3_rest(hash_t h, uint16_t key) {
 
 inline hash_t murmur3_finalize(hash_t h, hash_t len) {
     h ^= len;
-	h ^= h >> 16;
-	h *= 0x85ebca6b;
-	h ^= h >> 13;
-	h *= 0xc2b2ae35;
-	h ^= h >> 16;
-	return h;
+    h ^= h >> 16;
+    h *= 0x85ebca6b;
+    h ^= h >> 13;
+    h *= 0xc2b2ae35;
+    h ^= h >> 16;
+    return h;
 }
 
 /// use for a single value to hash
@@ -93,8 +95,7 @@ struct FNV1 {
 /// Returns a new hash by combining the hash @p seed with @p val.
 template<class T>
 hash_t hash_combine(hash_t seed, T v) {
-    static_assert(std::is_signed<T>::value || std::is_unsigned<T>::value,
-                  "please provide your own hash function");
+    static_assert(std::is_signed<T>::value || std::is_unsigned<T>::value, "please provide your own hash function");
 
     hash_t val = v;
     for (hash_t i = 0; i < sizeof(T); ++i) {
@@ -107,7 +108,9 @@ hash_t hash_combine(hash_t seed, T v) {
 }
 
 template<class T>
-hash_t hash_combine(hash_t seed, T* val) { return hash_combine(seed, uintptr_t(val)); }
+hash_t hash_combine(hash_t seed, T* val) {
+    return hash_combine(seed, uintptr_t(val));
+}
 
 template<class T, class... Args>
 hash_t hash_combine(hash_t seed, T val, Args&&... args) {
@@ -115,15 +118,24 @@ hash_t hash_combine(hash_t seed, T val, Args&&... args) {
 }
 
 template<class T>
-hash_t hash_begin(T val) { return hash_combine(FNV1::offset, val); }
+hash_t hash_begin(T val) {
+    return hash_combine(FNV1::offset, val);
+}
 inline hash_t hash_begin() { return FNV1::offset; }
 
-hash_t hash(const char* s);
+hash_t hash(const char*);
+hash_t hash(std::string_view);
 
 struct StrHash {
     static hash_t hash(const char* s) { return thorin::hash(s); }
     static bool eq(const char* s1, const char* s2) { return std::strcmp(s1, s2) == 0; }
-    static const char* sentinel() { return (const char*)(1); }
+    static const char* sentinel() { return nullptr; }
+};
+
+struct StrViewHash {
+    static hash_t hash(std::string_view s) { return thorin::hash(s); }
+    static bool eq(std::string_view s1, std::string_view s2) { return s1 == s2; }
+    static std::string_view sentinel() { return {}; }
 };
 
 //------------------------------------------------------------------------------
@@ -134,17 +146,21 @@ namespace detail {
 template<class Key, class T, class H, hash_t StackCapacity>
 class HashTable {
 public:
-    enum { MinHeapCapacity = StackCapacity*4 };
+    enum { MinHeapCapacity = StackCapacity * 4 };
     typedef Key key_type;
     typedef typename std::conditional<std::is_void<T>::value, Key, T>::type mapped_type;
     typedef typename std::conditional<std::is_void<T>::value, Key, std::pair<Key, T>>::type value_type;
 
 private:
     template<class K, class V>
-    struct get_key { static K& get(std::pair<K, V>& pair) { return pair.first; } };
+    struct get_key {
+        static K& get(std::pair<K, V>& pair) { return pair.first; }
+    };
 
     template<class K>
-    struct get_key<K, void> { static K& get(K& key) { return key; } };
+    struct get_key<K, void> {
+        static K& get(K& key) { return key; }
+    };
 
     static key_type& key(value_type* ptr) { return get_key<Key, T>::get(*ptr); }
     static bool is_invalid(value_type* ptr) { return key(ptr) == H::sentinel(); }
@@ -168,7 +184,8 @@ public:
 #if THORIN_ENABLE_CHECKS
             , id_(table->id_)
 #endif
-        {}
+        {
+        }
         template<bool other_const, class = std::enable_if_t<is_const || !other_const>>
         iterator_base(const iterator_base<other_const>& i)
             : ptr_(i.ptr_)
@@ -176,10 +193,11 @@ public:
 #if THORIN_ENABLE_CHECKS
             , id_(i.id_)
 #endif
-            {}
+        {
+        }
         template<bool other_const, class = std::enable_if_t<is_const || !other_const>>
         iterator_base& operator=(const iterator_base<other_const>& other) {
-            ptr_ = other.ptr_;
+            ptr_   = other.ptr_;
             table_ = other.table_;
 #if THORIN_ENABLE_CHECKS
             id_ = other.id_;
@@ -193,7 +211,8 @@ public:
 #if THORIN_ENABLE_CHECKS
         inline void verify() const { assert(table_->id_ == id_); }
         inline void verify(iterator_base i) const {
-            assert(table_ == i.table_ && id_ == i.id_);(void)i;
+            assert(table_ == i.table_ && id_ == i.id_);
+            (void)i;
             verify();
         }
         int id() const { return id_; }
@@ -205,18 +224,38 @@ public:
 
         /// @name operators
         ///@{
-        iterator_base& operator++() { verify(); *this = skip(ptr_+1, table_); return *this; }
-        iterator_base operator++(int) { verify(); iterator_base res = *this; ++(*this); return res; }
-        reference operator*() const { verify(); return *ptr_; }
-        pointer operator->() const { verify(); return ptr_; }
-        bool operator==(const iterator_base& other) const { verify(other); return this->ptr_ == other.ptr_; }
-        bool operator!=(const iterator_base& other) const { verify(other); return this->ptr_ != other.ptr_; }
+        iterator_base& operator++() {
+            verify();
+            *this = skip(ptr_ + 1, table_);
+            return *this;
+        }
+        iterator_base operator++(int) {
+            verify();
+            iterator_base res = *this;
+            ++(*this);
+            return res;
+        }
+        reference operator*() const {
+            verify();
+            return *ptr_;
+        }
+        pointer operator->() const {
+            verify();
+            return ptr_;
+        }
+        bool operator==(const iterator_base& other) const {
+            verify(other);
+            return this->ptr_ == other.ptr_;
+        }
+        bool operator!=(const iterator_base& other) const {
+            verify(other);
+            return this->ptr_ != other.ptr_;
+        }
         ///@}
 
     private:
         static iterator_base skip(value_type* ptr, const HashTable* table) {
-            while (ptr != table->end_ptr() && is_invalid(ptr))
-                ++ptr;
+            while (ptr != table->end_ptr() && is_invalid(ptr)) ++ptr;
             return iterator_base(ptr, table);
         }
 
@@ -288,7 +327,10 @@ public:
         if (on_heap()) delete[] nodes_;
     }
 
-    HashTable& operator=(HashTable other) { swap(*this, other); return *this; }
+    HashTable& operator=(HashTable other) {
+        swap(*this, other);
+        return *this;
+    }
     ///@}
 
     /// @name getters
@@ -314,7 +356,7 @@ public:
     /// @name emplace/insert
     ///@{
     template<class... Args>
-    std::pair<iterator,bool> emplace(Args&&... args) {
+    std::pair<iterator, bool> emplace(Args&&... args) {
         if (!on_heap() && size_ < capacity_) return array_emplace(std::forward<Args>(args)...);
 
         if (size_ >= capacity_ / 4_u32 + capacity_ / 2_u32) rehash(capacity_ * 4_u32);
@@ -327,14 +369,16 @@ public:
     void insert(std::initializer_list<value_type> ilist) { insert(ilist.begin(), ilist.end()); }
 
     template<class R>
-    bool insert_range(const R& range) { return insert(range.begin(), range.end()); }
+    bool insert_range(const R& range) {
+        return insert(range.begin(), range.end());
+    }
 
     template<class I>
     bool insert(I begin, I end) {
         hash_t s = size() + std::distance(begin, end);
         hash_t c = std::bit_ceil(s);
 
-        if (s > c/4_u32 + c/2_u32) c *= 4_u32;
+        if (s > c / 4_u32 + c / 2_u32) c *= 4_u32;
 
         c = std::max(c, hash_t(capacity_));
 
@@ -342,11 +386,9 @@ public:
 
         bool changed = false;
         if (on_heap()) {
-            for (auto i = begin; i != end; ++i)
-                changed |= emplace_no_rehash(*i).second;
+            for (auto i = begin; i != end; ++i) changed |= emplace_no_rehash(*i).second;
         } else {
-            for (auto i = begin; i != end; ++i)
-                changed |= array_emplace(*i).second;
+            for (auto i = begin; i != end; ++i) changed |= array_emplace(*i).second;
         }
 
         return changed;
@@ -358,14 +400,14 @@ public:
         assert(std::has_single_bit(new_capacity));
 
         auto old_capacity = capacity_;
-        capacity_ = std::max(new_capacity, hash_t(MinHeapCapacity));
-        auto old_nodes = alloc();
+        capacity_         = std::max(new_capacity, hash_t(MinHeapCapacity));
+        auto old_nodes    = alloc();
         swap(old_nodes, nodes_);
 
         for (hash_t i = 0; i != old_capacity; ++i) {
             auto& old = old_nodes[i];
             if (!is_invalid(&old)) {
-                for (hash_t j = desired_pos(key(&old)), distance = 0; true; j = mod(j+1), ++distance) {
+                for (hash_t j = desired_pos(key(&old)), distance = 0; true; j = mod(j + 1), ++distance) {
                     if (is_invalid(j)) {
                         swap(nodes_[j], old);
                         break;
@@ -400,11 +442,11 @@ public:
             key(&empty) = H::sentinel();
             swap(*pos.ptr_, empty);
 
-            if (capacity_ > hash_t(MinHeapCapacity) && size_ < capacity_/8_u32)
-                rehash(capacity_/4_u32);
+            if (capacity_ > hash_t(MinHeapCapacity) && size_ < capacity_ / 8_u32)
+                rehash(capacity_ / 4_u32);
             else {
-                for (hash_t cur = hash_t(pos.ptr_-nodes_), next = mod(cur+1);
-                    !is_invalid(next) && probe_distance(next) != 0; cur = next, next = mod(next+1)) {
+                for (hash_t cur = hash_t(pos.ptr_ - nodes_), next = mod(cur + 1);
+                     !is_invalid(next) && probe_distance(next) != 0; cur = next, next = mod(next + 1)) {
                     swap(nodes_[cur], nodes_[next]);
                 }
             }
@@ -417,14 +459,12 @@ public:
     }
 
     void erase(const_iterator first, const_iterator last) {
-        for (auto i = first; i != last; ++i)
-            erase(i);
+        for (auto i = first; i != last; ++i) erase(i);
     }
 
     hash_t erase(const key_type& key) {
         auto i = find(key);
-        if (i == end())
-            return 0;
+        if (i == end()) return 0;
         erase(i);
         return 1;
     }
@@ -434,7 +474,7 @@ public:
 
         if (on_heap()) {
             delete[] nodes_;
-            nodes_ = array_.data();
+            nodes_    = array_.data();
             capacity_ = StackCapacity;
         }
 
@@ -446,14 +486,11 @@ public:
     ///@{
     iterator find(const key_type& k) {
         if (on_heap()) {
-            if (empty())
-                return end();
+            if (empty()) return end();
 
-            for (hash_t i = desired_pos(k); true; i = mod(i+1)) {
-                if (is_invalid(i))
-                    return end();
-                if (H::eq(key(nodes_+i), k))
-                    return iterator(nodes_+i, this);
+            for (hash_t i = desired_pos(k); true; i = mod(i + 1)) {
+                if (is_invalid(i)) return end();
+                if (H::eq(key(nodes_ + i), k)) return iterator(nodes_ + i, this);
             }
         }
 
@@ -468,7 +505,10 @@ public:
     bool contains(const key_type& key) const { return count(key) == 1; }
     ///@}
 
-    void dump() const { Stream s; s.fmt("[{, }]\n", *this); }
+    void dump() const {
+        Stream s;
+        s.fmt("[{, }]\n", *this);
+    }
 
     friend void swap(HashTable& t1, HashTable& t2) {
         using std::swap;
@@ -477,13 +517,13 @@ public:
             if (t2.on_heap())
                 swap(t1.nodes_, t2.nodes_);
             else {
-                std::move(t2.array_.begin(), t2.array_.end(), t1.array_.begin());
+                std::ranges::move(t2.array_, t1.array_.begin());
                 t2.nodes_ = t1.nodes_;
                 t1.nodes_ = t1.array_.data();
             }
         } else {
             if (t2.on_heap()) {
-                std::move(t1.array_.begin(), t1.array_.end(), t2.array_.begin());
+                std::ranges::move(t1.array_, t2.array_.begin());
                 t1.nodes_ = t2.nodes_;
                 t2.nodes_ = t2.array_.data();
             } else
@@ -491,15 +531,15 @@ public:
         }
 
         swap(t1.capacity_, t2.capacity_);
-        swap(t1.size_,     t2.size_);
+        swap(t1.size_, t2.size_);
 #if THORIN_ENABLE_CHECKS
-        swap(t1.id_,       t2.id_);
+        swap(t1.id_, t2.id_);
 #endif
     }
 
 private:
     template<class... Args>
-    std::pair<iterator,bool> emplace_no_rehash(Args&&... args) {
+    std::pair<iterator, bool> emplace_no_rehash(Args&&... args) {
         using std::swap;
 #if THORIN_ENABLE_CHECKS
         ++id_;
@@ -508,19 +548,19 @@ private:
         auto& k = key(&n);
 
         auto result = end_ptr();
-        for (hash_t i = desired_pos(k), distance = 0; true; i = mod(i+1), ++distance) {
+        for (hash_t i = desired_pos(k), distance = 0; true; i = mod(i + 1), ++distance) {
             if (is_invalid(i)) {
                 ++size_;
                 swap(nodes_[i], n);
-                result = result == end_ptr() ? nodes_+i : result;
+                result = result == end_ptr() ? nodes_ + i : result;
                 debug(i);
                 return std::make_pair(iterator(result, this), true);
-            } else if (result == end_ptr() && H::eq(key(nodes_+i), k)) {
-                return std::make_pair(iterator(nodes_+i, this), false);
+            } else if (result == end_ptr() && H::eq(key(nodes_ + i), k)) {
+                return std::make_pair(iterator(nodes_ + i, this), false);
             } else {
                 hash_t cur_distance = probe_distance(i);
                 if (cur_distance < distance) {
-                    result = result == end_ptr() ? nodes_+i : result;
+                    result   = result == end_ptr() ? nodes_ + i : result;
                     distance = cur_distance;
                     swap(nodes_[i], n);
                 }
@@ -532,10 +572,11 @@ private:
     void debug(hash_t i) {
         if (capacity() >= 32_u32) {
             auto dib = probe_distance(i);
-            if (dib > 2_u32*std::bit_width(capacity())) {
+            if (dib > 2_u32 * std::bit_width(capacity())) {
                 // don't use LOG here - this results in a header dependency hell
-                printf("poor hash function; element %u has distance %u with size/capacity: %u/%u\n", i, dib, size(), capacity());
-                for (hash_t j = mod(i-dib); j != i; j = mod(j+1))
+                printf("poor hash function; element %u has distance %u with size/capacity: %u/%u\n", i, dib, size(),
+                       capacity());
+                for (hash_t j = mod(i - dib); j != i; j = mod(j + 1))
                     printf("elem:desired_pos:hash: %u:%u:%" PRIu32 "\n", j, desired_pos(key(&nodes_[j])), hash(j));
                 debug_hash();
             }
@@ -547,11 +588,11 @@ private:
 
     /// @name small helpers
     ///@{
-    bool is_invalid(hash_t i) { return is_invalid(nodes_+i); }
+    bool is_invalid(hash_t i) { return is_invalid(nodes_ + i); }
     hash_t hash(hash_t i) { return H::hash(key(&nodes_[i])); } ///< just for debugging
-    hash_t mod(hash_t i) const { return i & (capacity_-1); }
+    hash_t mod(hash_t i) const { return i & (capacity_ - 1); }
     hash_t desired_pos(const key_type& key) const { return mod(H::hash(key)); }
-    hash_t probe_distance(hash_t i) { return mod(i + capacity() - desired_pos(key(nodes_+i))); }
+    hash_t probe_distance(hash_t i) { return mod(i + capacity() - desired_pos(key(nodes_ + i))); }
     value_type* end_ptr() const { return nodes_ + capacity(); }
     bool on_heap() const { return capacity_ != StackCapacity; }
     ///@}
@@ -561,14 +602,13 @@ private:
     iterator array_find(const key_type& k) {
         assert(!on_heap());
         for (auto i = array_.data(), e = array_.data() + size_; i != e; ++i) {
-            if (H::eq(key(i), k))
-                return iterator(i, this);
+            if (H::eq(key(i), k)) return iterator(i, this);
         }
         return end();
     }
 
     template<class... Args>
-    std::pair<iterator,bool> array_emplace(Args&&... args) {
+    std::pair<iterator, bool> array_emplace(Args&&... args) {
         using std::swap;
 #if THORIN_ENABLE_CHECKS
         ++id_;
@@ -586,11 +626,11 @@ private:
     }
 
     void array_erase(const_iterator pos) {
-        for (hash_t i = hash_t(std::distance(array_.data(), pos.ptr_)), e = size_-1; i != e; ++i)
-            array_[i] = std::move(array_[i+1]);
+        for (hash_t i = hash_t(std::distance(array_.data(), pos.ptr_)), e = size_ - 1; i != e; ++i)
+            array_[i] = std::move(array_[i + 1]);
 
         --size_;
-        key(array_.data()+size_) = H::sentinel();
+        key(array_.data() + size_) = H::sentinel();
     }
     ///@}
 
@@ -603,8 +643,7 @@ private:
     }
 
     value_type* fill(value_type* nodes) {
-        for (hash_t i = 0, e = capacity_; i != e; ++i)
-            key(nodes+i) = H::sentinel();
+        for (hash_t i = 0, e = capacity_; i != e; ++i) key(nodes + i) = H::sentinel();
         return nodes;
     }
     ///@}
@@ -618,7 +657,7 @@ private:
 #endif
 };
 
-}
+} // namespace detail
 
 //------------------------------------------------------------------------------
 
@@ -683,6 +722,6 @@ public:
     friend void swap(HashMap& m1, HashMap& m2) { swap(static_cast<Super&>(m1), static_cast<Super&>(m2)); }
 };
 
-}
+} // namespace thorin
 
 #endif

@@ -1,4 +1,4 @@
-set(THORIN_SOURCES
+add_library(libthorin
     axiom.cpp
     axiom.h
     check.cpp
@@ -64,6 +64,8 @@ set(THORIN_SOURCES
     pass/fp/unbox_closures.cpp
     pass/fp/closure_analysis.h
     pass/fp/closure_analysis.cpp
+    pass/fp/tail_rec_elim.cpp
+    pass/fp/tail_rec_elim.h
     pass/rw/alloc2malloc.cpp
     pass/rw/alloc2malloc.h
     pass/rw/partial_eval.cpp
@@ -108,20 +110,9 @@ set(THORIN_SOURCES
     util/utf8.h
 )
 
-add_library(libthorin ${THORIN_SOURCES})
 set_target_properties(libthorin PROPERTIES PREFIX "")
-configure_file(config.h.in ${CMAKE_BINARY_DIR}/include/thorin/config.h @ONLY)
-target_include_directories(libthorin PUBLIC ${CMAKE_BINARY_DIR}/include)
+
+configure_file(config.h.in config.h)
+target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/..) # for config.h
 target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 target_include_directories(libthorin PUBLIC ${PROJECT_SOURCE_DIR}/half/include)
-
-# check for colored terminal
-set(COLOR_TTY_AVAILABLE TRUE)
-if(WIN32)
-    # Windows console does not support ANSI escape codes
-    set(COLOR_TTY_AVAILABLE FALSE)
-endif()
-set(COLORIZE_OUTPUT ${COLOR_TTY_AVAILABLE} CACHE BOOL "Set to true to enable colored error messages")
-if(COLORIZE_OUTPUT)
-    target_compile_definitions(libthorin PUBLIC COLORIZE_LOG)
-endif()

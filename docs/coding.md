@@ -23,9 +23,12 @@ Use the following coding convetions:
 * use `/// three slashes for Doxygen` and [group](https://www.doxygen.nl/manual/grouping.html) your methods into logical units if possible
 
 For all the other minute details like indentation width etc. use [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and the provided `.clang-format` file in the root of the repository.
-We found a full automatic run of `clang-format` a bit too intrusive.
-In a compiler, you often have to do similar things where it makes sense to align the corresponding code logically instead of blindly obeying some formatting rules.
-Simply, checkout plugins like the [Vim integration](https://clang.llvm.org/docs/ClangFormat.html#vim-integration) in order to only format the desired code region.
+In order to run `clang-format` automatically on all changed files, switch to the provied pre-commit hook:
+```sh
+git config --local core.hooksPath .githooks/
+```
+Note that you can [disable clang-format for a piece of code](https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code).
+In addition, you might want to check out plugins like the [Vim integration](https://clang.llvm.org/docs/ClangFormat.html#vim-integration).
 
 # Debugging
 

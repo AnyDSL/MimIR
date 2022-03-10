@@ -5,7 +5,7 @@
 namespace thorin {
 
 bool Checker::equiv(const Def* d1, const Def* d2) {
-    if (d1 == d2 || (!d1->is_set() && !d2->is_set()) || (d1->isa<Space>() && d2->isa<Space>())) return true;
+    if (d1 == d2 || (d1->is_unset() && d2->is_unset()) || (d1->isa<Space>() && d2->isa<Space>())) return true;
     if (d1->level() != d2->level()) return false;
 
     // normalize: always put smaller gid to the left
@@ -38,18 +38,14 @@ bool Checker::equiv(const Def* d1, const Def* d2) {
     }
 
     if (auto n1 = d1->isa_nom()) {
-        if (auto n2 = d2->isa_nom())
-            vars_.emplace_back(n1->var(), n2->var());
+        if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1->var(), n2->var());
     }
 
-    if (       d1->node   () != d2->node   ()
-            || d1->fields () != d2->fields ()
-            || d1->num_ops() != d2->num_ops()
-            || d1->is_set () != d2->is_set()) return false;
+    if (d1->node() != d2->node() || d1->fields() != d2->fields() || d1->num_ops() != d2->num_ops() ||
+        d1->is_set() != d2->is_set())
+        return false;
 
-    return std::equal(d1->ops().begin(), d1->ops().end(),
-                      d2->ops().begin(), d2->ops().end(),
-                      [&](auto op1, auto op2) { return equiv(op1, op2); });
+    return std::ranges::equal(d1->ops(), d2->ops(), [this](auto op1, auto op2) { return equiv(op1, op2); });
 }
 
 bool Checker::assignable(const Def* type, const Def* val) {
@@ -67,7 +63,8 @@ bool Checker::assignable(const Def* type, const Def* val) {
     } else if (auto arr = type->isa<Arr>()) {
         if (!equiv(type->arity(), val->type()->arity())) return false;
 
-        if (auto a = isa_lit(arr->arity())) {;
+        if (auto a = isa_lit(arr->arity())) {
+            ;
             for (size_t i = 0; i != *a; ++i) {
                 if (!assignable(arr->proj(*a, i), val->proj(*a, i))) return false;
             }
@@ -79,4 +76,4 @@ bool Checker::assignable(const Def* type, const Def* val) {
     return equiv(type, val->type());
 }
 
-}
+} // namespace thorin

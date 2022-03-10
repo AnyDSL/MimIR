@@ -5,6 +5,7 @@
 
 #include "thorin/rewrite.h"
 #include "thorin/world.h"
+
 #include "thorin/analyses/scope.h"
 
 namespace thorin {
@@ -23,17 +24,15 @@ Def::Def(node_t node, const Def* type, Defs ops, fields_t fields, const Def* dbg
     , order_(0)
     , num_ops_(ops.size())
     , dbg_(dbg)
-    , type_(type)
-{
+    , type_(type) {
     gid_ = world().next_gid();
-    std::copy(ops.begin(), ops.end(), ops_ptr());
+    std::ranges::copy(ops, ops_ptr());
 
     if (node == Node::Space) {
         hash_ = murmur3(gid());
     } else {
         hash_ = type->gid();
-        for (auto op : ops)
-            hash_ = murmur3(hash_, u32(op->gid()));
+        for (auto op : ops) hash_ = murmur3(hash_, u32(op->gid()));
         hash_ = murmur3(hash_, fields_);
         hash_ = murmur3_rest(hash_, u8(node));
         hash_ = murmur3_finalize(hash_, num_ops());
@@ -50,21 +49,20 @@ Def::Def(node_t node, const Def* type, size_t num_ops, fields_t fields, const De
     , order_(0)
     , num_ops_(num_ops)
     , dbg_(dbg)
-    , type_(type)
-{
-    gid_ = world().next_gid();
+    , type_(type) {
+    gid_  = world().next_gid();
     hash_ = murmur3(gid());
     std::fill_n(ops_ptr(), num_ops, nullptr);
     if (!type->no_dep()) type->uses_.emplace(this, -1);
 }
 
 Kind::Kind(World& world)
-    : Def(Node, (const Def*) world.space(), Defs{}, 0, nullptr)
-{}
+    : Def(Node, (const Def*)world.space(), Defs{}, 0, nullptr) {}
 
 Nat::Nat(World& world)
-    : Def(Node, world.kind(), Defs{}, 0, nullptr)
-{}
+    : Def(Node, world.kind(), Defs{}, 0, nullptr) {}
+
+// clang-format off
 
 /*
  * rebuild
@@ -109,7 +107,12 @@ Pi*    Pi   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pi   (
 Sigma* Sigma::stub(World& w, const Def* t, const Def* dbg) { return w.nom_sigma(t, num_ops(), dbg); }
 Arr*   Arr  ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_arr  (t, shape(), dbg); }
 
-template<bool up> TBound<up>* TBound<up>::stub(World& w, const Def* t, const Def* dbg) { return w.nom_bound<up>(t, num_ops(), dbg); }
+// clang-format on
+
+template<bool up>
+TBound<up>* TBound<up>::stub(World& w, const Def* t, const Def* dbg) {
+    return w.nom_bound<up>(t, num_ops(), dbg);
+}
 
 /*
  * restructure
@@ -131,10 +134,11 @@ const Def* Arr::restructure() {
  * Def
  */
 
-const char* Def::node_name() const {
+std::string_view Def::node_name() const {
     switch (node()) {
-#define CODE(op, abbr) case Node::op: return #abbr;
-THORIN_NODE(CODE)
+#define CODE(op, abbr) \
+    case Node::op: return #abbr;
+        THORIN_NODE(CODE)
 #undef CODE
         default: THORIN_UNREACHABLE;
     }
@@ -146,6 +150,8 @@ Defs Def::extended_ops() const {
     size_t offset = dbg() ? 2 : 1;
     return Defs((is_set() ? num_ops_ : 0) + offset, ops_ptr() - offset);
 }
+
+// clang-format off
 
 const Var* Def::var(const Def* dbg) {
     auto& w = world();
@@ -192,16 +198,15 @@ const Def* Def::arity() const {
     return world().lit_nat(1);
 }
 
+// clang-format on
+
 bool Def::equal(const Def* other) const {
     if (isa<Space>() || this->isa_nom() || other->isa_nom()) return this == other;
 
-    bool result =  this->node()    == other->node()
-                && this->fields()  == other->fields()
-                && this->num_ops() == other->num_ops()
-                && this->type()    == other->type();
+    bool result = this->node() == other->node() && this->fields() == other->fields() &&
+                  this->num_ops() == other->num_ops() && this->type() == other->type();
 
-    for (size_t i = 0, e = num_ops(); result && i != e; ++i)
-        result &= this->op(i) == other->op(i);
+    for (size_t i = 0, e = num_ops(); result && i != e; ++i) result &= this->op(i) == other->op(i);
 
     return result;
 }
@@ -215,16 +220,16 @@ const Def* Def::debug_history() const {
     return dbg();
 }
 
-void Def::set_name(const std::string& n) const {
-    auto& w = world();
+void Def::set_name(std::string_view n) const {
+    auto& w   = world();
     auto name = w.tuple_str(n);
 
     if (dbg_ == nullptr) {
-        auto file = w.tuple_str("");
+        auto file  = w.tuple_str("");
         auto begin = w.lit_nat_max();
         auto finis = w.lit_nat_max();
-        auto meta = w.bot(w.bot_kind());
-        dbg_ = w.tuple({name, w.tuple({file, begin, finis}), meta});
+        auto meta  = w.bot(w.bot_kind());
+        dbg_       = w.tuple({name, w.tuple({file, begin, finis}), meta});
     } else {
         dbg_ = w.insert(dbg_, 3_s, 0_s, name);
     }
@@ -249,19 +254,17 @@ void Def::finalize() {
     }
 
     assert(!dbg() || dbg()->no_dep());
-    if (isa<Pi>())  ++order_;
+    if (isa<Pi>()) ++order_;
     if (auto var = isa<Var>()) {
         var->nom()->var_ = true;
-        dep_ = Dep::Var;
+        dep_             = Dep::Var;
     }
 
     if (isa<Proxy>()) {
         proxy_ = true;
     } else {
-        for (auto op : extended_ops())
-            proxy_ |= op->contains_proxy();
+        for (auto op : extended_ops()) proxy_ |= op->contains_proxy();
     }
-
 }
 
 Def* Def::set(size_t i, const Def* def) {
@@ -270,8 +273,8 @@ Def* Def::set(size_t i, const Def* def) {
 
     if (def != nullptr) {
         assert(i < num_ops() && "index out of bounds");
-        ops_ptr()[i] = def;
-        order_ = std::max(order_, def->order_);
+        ops_ptr()[i]  = def;
+        order_        = std::max(order_, def->order_);
         const auto& p = def->uses_.emplace(this, i);
         assert_unused(p.second);
     }
@@ -289,14 +292,13 @@ void Def::unset(size_t i) {
 
 bool Def::is_set() const {
     if (!isa_nom()) {
-        assert(std::all_of(ops().begin(), ops().end(), [&](auto op) { return op != nullptr; }) && "structurals must be always set");
+        assert(std::ranges::all_of(ops(), [](auto op) { return op != nullptr; }) && "structurals must be always set");
         return true;
     }
 
-    if (std::all_of(ops().begin(), ops().end(), [&](auto op) { return op != nullptr; }))
-        return true;
+    if (std::ranges::all_of(ops(), [](auto op) { return op != nullptr; })) return true;
 
-    assert(std::all_of(ops().begin(), ops().end(), [&](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
+    assert(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
     return false;
 }
 
@@ -308,12 +310,12 @@ std::string Def::unique_name() const { return name() + "_" + std::to_string(gid(
 
 void Def::replace(Tracker with) const {
     world().DLOG("replace: {} -> {}", this, with);
-    //assert(type() == with->type());
+    // assert(type() == with->type());
     assert(!is_replaced());
 
     if (this != with) {
         for (auto& use : copy_uses()) {
-            auto def = const_cast<Def*>(use.def());
+            auto def   = const_cast<Def*>(use.def());
             auto index = use.index();
             def->set(index, with);
         }
@@ -384,6 +386,8 @@ const Def* Global::alloced_type() const { return type()->arg(0); }
  * instantiate templates
  */
 
+// clang-format off
+
 template const Def*     TExt  <false>::rebuild(World&, const Def*, Defs, const Def*) const;
 template const Def*     TExt  <true >::rebuild(World&, const Def*, Defs, const Def*) const;
 template const Def*     TBound<false>::rebuild(World&, const Def*, Defs, const Def*) const;
@@ -391,4 +395,6 @@ template const Def*     TBound<true >::rebuild(World&, const Def*, Defs, const D
 template TBound<false>* TBound<false>::stub(World&, const Def*, const Def*);
 template TBound<true >* TBound<true >::stub(World&, const Def*, const Def*);
 
-}
+// clang-format on
+
+} // namespace thorin

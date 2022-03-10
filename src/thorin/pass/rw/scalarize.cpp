@@ -10,7 +10,7 @@ namespace thorin {
 
 // TODO merge with make_scalar
 bool Scalerize::should_expand(Lam* lam) {
-    if (ignore(lam)) return false;
+    if (isa_workable(lam)) return false;
     if (auto sca_lam = tup2sca_.lookup(lam); sca_lam && *sca_lam == lam) return false;
 
     auto pi = lam->type();

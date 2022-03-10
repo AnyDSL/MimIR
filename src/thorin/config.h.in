@@ -3,11 +3,17 @@
 
 #cmakedefine01 THORIN_ENABLE_CHECKS
 #cmakedefine01 THORIN_ENABLE_PROFILING
-#cmakedefine01 THORIN_ENABLE_RV
+#cmakedefine01 THORIN_COLOR_TERM
 
 #define THORIN_VER  "@PROJECT_VERSION@"
 #define THORIN_VER_MAJOR "@PROJECT_VERSION_MAJOR@"
 #define THORIN_VER_MINOR "@PROJECT_VERSION_MINOR@"
 #define THORIN_VER_PATCH "@PROJECT_VERSION_PATCH@"
+
+#ifdef _MSC_VER
+#define THORIN_EXPORT __declspec(dllexport)
+#else
+#define THORIN_EXPORT __attribute__((visibility("default")))
+#endif
 
 #endif
