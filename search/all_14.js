@@ -88,7 +88,7 @@ var searchData=
   ['tok_2eh_85',['tok.h',['../tok_8h.html',1,'']]],
   ['top_86',['Top',['../namespacethorin_1_1Dep.html#a026486402019f9c00df8e98fe04f8d1fa47ea3db5dd0344dafe5de89e406fe1f3',1,'thorin::Dep::Top()'],['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06aed6c4ae568966987abe32f7fc9342f3e',1,'thorin::Node::Top()']]],
   ['top_87',['top',['../namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719a7924df23a1e99bf4a9f0d9de329b5baf',1,'thorin::RMode']]],
-  ['top_88',['Top',['../namespacethorin.html#a0b21b57cb2b1aaf3ab0eef18d2fae176',1,'thorin']]],
+  ['top_88',['Top',['../namespacethorin.html#ae6638e502eba2c4a1229a5a1af1cfb29',1,'thorin']]],
   ['top_89',['top',['../classthorin_1_1unique__stack.html#ada63d31fbb61080ec55da601bddc3546',1,'thorin::unique_stack::top()'],['../classthorin_1_1World.html#ac738ea054ed57482121607ec50ccb10a',1,'thorin::World::top(const Def *type, const Def *dbg={})']]],
   ['top_5fnat_90',['top_nat',['../classthorin_1_1World.html#ad7dedfed4570782e8a9b8948b1fd717e',1,'thorin::World']]],
   ['track_5fhistory_91',['track_history',['../classthorin_1_1World.html#af79e6559921e169914f81a46e9784937',1,'thorin::World']]],

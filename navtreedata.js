@@ -115,8 +115,8 @@ var NAVTREEINDEX =
 "classthorin_1_1World.html#a8d0884cc317da943952ed0aa55d4dd84",
 "classthorin_1_1detail_1_1HashTable.html#aa17333f4ca5a49ac84e4f92d8f5eea80",
 "eta__exp_8cpp_source.html",
-"namespacethorin.html#a1d6a97e091228875812bc54c1bc5b235",
-"namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771",
+"namespacethorin.html#a1f3db98cc60a59edb91773791e3e2b2b",
+"namespacethorin.html#abcee9768daea1d32c3270ecb1fea94da",
 "optimize_8cpp.html",
 "structthorin_1_1GIDLt.html",
 "tables_8h.html#aec7c9c368dda260071936391c37a72e3aa03404b681bb9cff8b46442fcacbaad5"
