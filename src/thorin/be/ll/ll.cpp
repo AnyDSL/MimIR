@@ -313,8 +313,16 @@ void CodeGen::emit_epilogue(Lam* lam) {
     } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
         emit_unsafe(app->arg());
         auto c = emit(ex->index());
-        auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
-        return bb.tail("br i1 {}, label {}, label {}", c, t, f);
+        if (ex->tuple()->num_projs() == 2) {
+            auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
+            return bb.tail("br i1 {}, label {}, label {}", c, t, f);
+        } else {
+            auto c_ty = convert(ex->index()->type());
+            bb.tail("switch {} {}, label {} [ ", c_ty, c, emit(ex->tuple()->proj(0)));
+            for (auto i = 1u; i < ex->tuple()->num_projs(); i++)
+                bb.tail().back().fmt("{} {}, label {} ", c_ty, std::to_string(i), emit(ex->tuple()->proj(i)));
+            bb.tail().back().fmt("]");
+        }
     } else if (app->callee()->isa<Bot>()) {
         return bb.tail("ret ; bottom: unreachable");
     } else if (auto callee = app->callee()->isa_nom<Lam>(); callee && callee->is_basicblock()) { // ordinary jump
