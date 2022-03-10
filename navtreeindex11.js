@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"error_8h_source.html":[9,0,2,15],
+"eta__exp_8cpp.html":[9,0,2,3,0,6],
 "eta__exp_8cpp_source.html":[9,0,2,3,0,6],
 "eta__exp_8h.html":[9,0,2,3,0,7],
 "eta__exp_8h_source.html":[9,0,2,3,0,7],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "namespacethorin.html#a196c8dd3968fd28a00dc082c191feee6":[6,0,0,315],
 "namespacethorin.html#a19b7074020008959b3452d1de6371ff9":[6,0,0,171],
 "namespacethorin.html#a1aa84e35a44dd22fe2d00f0d63016425":[6,0,0,321],
-"namespacethorin.html#a1ac399ee95f8f3bfb41b4fc13528f2f0":[6,0,0,301],
-"namespacethorin.html#a1c686b5d4a914909b3433cae517ec294":[6,0,0,176],
-"namespacethorin.html#a1c907ba53c2e74cf03f62f96ebc601db":[6,0,0,206]
+"namespacethorin.html#a1ac399ee95f8f3bfb41b4fc13528f2f0":[6,0,0,301]
 };

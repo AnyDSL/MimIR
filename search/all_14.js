@@ -51,7 +51,7 @@ var searchData=
   ['tbound_48',['TBound',['../classthorin_1_1TBound.html',1,'thorin']]],
   ['term_49',['Term',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50eacf5f3091e30dee6597885d8c0e0c357f',1,'thorin']]],
   ['test_50',['Test',['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06a2761c4aad624ceedae7edbf3c551c49b',1,'thorin::Node']]],
-  ['test_51',['test',['../classthorin_1_1Lam.html#ad64d81fad5903f5c65ae74228f01c1b7',1,'thorin::Lam::test()'],['../classthorin_1_1BitSet.html#acc6f1bd3dcd42788c929dfd4b0a7b307',1,'thorin::BitSet::test()'],['../classthorin_1_1World.html#a611b6afef534d56ae1d3fd9dac803635',1,'thorin::World::test()']]],
+  ['test_51',['test',['../classthorin_1_1Lam.html#a7ccfbd745e34f8486ce0af8219728ba8',1,'thorin::Lam::test()'],['../classthorin_1_1BitSet.html#acc6f1bd3dcd42788c929dfd4b0a7b307',1,'thorin::BitSet::test()'],['../classthorin_1_1World.html#a611b6afef534d56ae1d3fd9dac803635',1,'thorin::World::test()']]],
   ['test_52',['Test',['../classthorin_1_1Test.html',1,'thorin']]],
   ['test_5fplugin_53',['test_plugin',['../main_8cpp.html#a8090b08d8da1d3d8c0263aa9edbbcbf0',1,'main.cpp']]],
   ['text_54',['TExt',['../classthorin_1_1TExt.html',1,'thorin']]],

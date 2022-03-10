@@ -222,7 +222,7 @@ var classthorin_1_1World =
     [ "visit", "classthorin_1_1World.html#a35687817089d85315d46a391dd75e320", null ],
     [ "wdef", "classthorin_1_1World.html#aede1cabe21f6568907ff39c5240c5c48", null ],
     [ "Cleaner", "classthorin_1_1World.html#ad94dba2e317074efccb2b3ce3fc62741", null ],
-    [ "Def::apply", "classthorin_1_1World.html#ac57aeba2d50c38ac761995b7f2b166f7", null ],
+    [ "Def::reduce", "classthorin_1_1World.html#a9385c61b1fb0b1d21be6b9d913ad96a0", null ],
     [ "Def::replace", "classthorin_1_1World.html#a63f7d49c2a2260b2648d6c35e24b707f", null ],
     [ "swap", "classthorin_1_1World.html#ab6b27c20d41025c4bc9ddf15adf01f96", null ]
 ];

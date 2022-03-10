@@ -108,18 +108,18 @@ var NAVTREEINDEX =
 "classthorin_1_1Checker.html#a1f10a53ffc87e0cee5dd0007ff2edff6",
 "classthorin_1_1Def.html#ad7440467a9b76cd3cccfd25886615806",
 "classthorin_1_1Global.html",
-"classthorin_1_1Lexer.html#a6bd719c30ca4ab054c3e94dee0870e45",
-"classthorin_1_1Query.html#a4f45d3c8990e12e76a3f6287907b105a",
-"classthorin_1_1Stream.html#a9af733cb66244f3bf2c8d8511ae4ed0e",
-"classthorin_1_1Var.html#af8845a1c6ba3244d972aa392554d46a2",
-"classthorin_1_1World.html#a8d0884cc317da943952ed0aa55d4dd84",
-"classthorin_1_1detail_1_1HashTable.html#aa17333f4ca5a49ac84e4f92d8f5eea80",
-"eta__exp_8cpp_source.html",
-"namespacethorin.html#a1d6a97e091228875812bc54c1bc5b235",
-"namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771",
-"optimize_8cpp.html",
-"structthorin_1_1GIDLt.html",
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3aa03404b681bb9cff8b46442fcacbaad5"
+"classthorin_1_1Lexer.html",
+"classthorin_1_1Query.html#a3fd02ebc3e42b9d58b7087cf28c5baf5",
+"classthorin_1_1Stream.html#a9699f4a6a98155dc66b842b7610d3c94",
+"classthorin_1_1Var.html#a7b4bcdf992c21ae83363f25df05b1d25",
+"classthorin_1_1World.html#a89466e15ce7425745ef8c204c4af0490",
+"classthorin_1_1detail_1_1HashTable.html#a9a099fd5020d99d19eaefcbf32b8f4bd",
+"error_8h_source.html",
+"namespacethorin.html#a1c686b5d4a914909b3433cae517ec294",
+"namespacethorin.html#abb917bebc699083d990fc4592abcc50eacf5f3091e30dee6597885d8c0e0c357f",
+"normalize_8h.html#af122652e0676e66b0c0aa02a0b3dfbe0",
+"structthorin_1_1GIDHash.html#a7f113cdc614a45155bcaa084531cb7a5",
+"tables_8h.html#aec7c9c368dda260071936391c37a72e3a76cf56920355319ad148e25a340b0f18"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
