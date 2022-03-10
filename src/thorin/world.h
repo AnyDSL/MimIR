@@ -506,14 +506,15 @@ public:
     /// @name Manage Externals
     ///@{
     using Externals = HashMap<std::string, Def*, StrViewHash>;
-    using VisitFn   = std::function<void(const Scope&)>;
-    bool empty() { return data_.externals_.empty(); }
     const Externals& externals() const { return data_.externals_; }
-    void make_external(Def* def) { data_.externals_.emplace(def->debug().name, def); }
-    void make_internal(Def* def) { data_.externals_.erase(def->debug().name); }
+    bool empty() { return data_.externals_.empty(); }
+    void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
+    void make_internal(Def* def) { data_.externals_.erase(def->name()); }
     bool is_external(const Def* def) { return data_.externals_.contains(def->debug().name); }
     // TODO add magic to use name of type std::string_view directly
     Def* lookup(std::string_view name) { return data_.externals_.lookup(std::string(name)).value_or(nullptr); }
+
+    using VisitFn = std::function<void(const Scope&)>;
     /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
     /// We call these Scope%s *top-level* Scope%s.
     /// Select with @p elide_empty whether you want to visit trivial Scope%s of *noms* without body.

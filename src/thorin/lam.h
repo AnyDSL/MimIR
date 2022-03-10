@@ -83,9 +83,9 @@ public:
     const Def* ret_var(const Def* dbg = {});
     ///@}
 
-    /// @name Setters for *nom*inal Lam.
+    /// @name Setters for nominal Lam.
     ///@{
-    /// Lam::Filter is a `std::variant<bool, const Def*>` in lets you set the Lam::filter() like this:
+    /// Lam::Filter is a `std::variant<bool, const Def*>` that lets you set the Lam::filter() like this:
     /// ```cpp
     /// lam1->app(true, f, arg);
     /// lam2->app(my_filter_def, f, arg);
