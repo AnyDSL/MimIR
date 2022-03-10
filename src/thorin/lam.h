@@ -49,6 +49,8 @@ public:
 
 class Lam : public Def {
 public:
+    using Filter = std::variant<bool, const Def*>;
+
     /// calling convention
     enum class CC : u8 {
         C,      ///< C calling convention.
@@ -87,19 +89,17 @@ public:
     ///@{
     Lam* set(size_t i, const Def* def) { return Def::set(i, def)->as<Lam>(); }
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
-    Lam* set(const Def* filter, const Def* body) { return set({filter, body}); }
-    Lam* set_filter(const Def* filter) { return set(0_s, filter); }
-    Lam* set_filter(bool filter);
+    Lam* set(Filter filter, const Def* body) {
+        set_filter(filter);
+        return set_body(body);
+    }
+    Lam* set_filter(Filter);
     Lam* set_body(const Def* body) { return set(1, body); }
-    ///@}
-
-    /// @name CPS setters
-    ///@{
-    /// Set filter to `true`, `false`, or an arbitrary Def, while setting the body to an App.
-
-    using Filter = std::variant<bool, const Def*>;
+    /// Set body to an App of @p callee and @p arg.
     Lam* app(Filter filter, const Def* callee, const Def* arg, const Def* dbg = {});
+    /// Set body to an App of @p callee and @p args.
     Lam* app(Filter filter, const Def* callee, Defs args, const Def* dbg = {});
+    /// Set body to an App of `(f, t)#cond mem`.
     Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg = {});
     Lam* test(Filter filter,
               const Def* val,

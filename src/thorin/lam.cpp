@@ -28,16 +28,20 @@ bool Pi::is_cn() const { return codom()->isa<Bot>(); }
 const Def* Lam::mem_var(const Def* dbg) { return thorin::isa<Tag::Mem>(var(0_s)->type()) ? var(0, dbg) : nullptr; }
 const Def* Lam::ret_var(const Def* dbg) { return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr; }
 bool Lam::is_basicblock() const { return type()->is_basicblock(); }
-Lam* Lam::set_filter(bool filter) { return set_filter(world().lit_bool(filter)); }
 
-Lam* Lam::app(Filter filter, const Def* callee, const Def* arg, const Def* dbg) {
-    assert(isa_nom() && !this->filter());
+Lam* Lam::set_filter(Filter filter) {
     const Def* f;
     if (auto b = std::get_if<bool>(&filter))
         f = world().lit_bool(*b);
     else
         f = std::get<const Def*>(filter);
-    return set(f, world().app(callee, arg, dbg));
+    return set(0, f);
+}
+
+Lam* Lam::app(Filter f, const Def* callee, const Def* arg, const Def* dbg) {
+    assert(isa_nom() && !filter());
+    set_filter(f);
+    return set_body(world().app(callee, arg, dbg));
 }
 
 Lam* Lam::app(Filter filter, const Def* callee, Defs args, const Def* dbg) {
