@@ -340,14 +340,14 @@ public:
     THORIN_PROJ(var, )
     ///@}
 
-    /// @name apply
+    /// @name reduce
     ///@{
     /// Rewrites Def::ops by substituting `this` nominal's Var with @p arg.
-    DefArray apply(const Def* arg) const;
-    DefArray apply(const Def* arg);
-    /// Trnasitively Def::apply Lam%s, if `this` is an App.
+    DefArray reduce(const Def* arg) const;
+    DefArray reduce(const Def* arg);
+    /// Transitively Def::reduce Lam%s, if `this` is an App.
     /// @return the reduced body
-    const Def* reduce() const;
+    const Def* reduce_rec() const;
     ///@}
 
     /// @name replace

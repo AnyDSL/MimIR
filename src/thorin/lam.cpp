@@ -25,28 +25,37 @@ bool Pi::is_cn() const { return codom()->isa<Bot>(); }
  * Lam
  */
 
+const Def* Lam::mem_var(const Def* dbg) { return thorin::isa<Tag::Mem>(var(0_s)->type()) ? var(0, dbg) : nullptr; }
+const Def* Lam::ret_var(const Def* dbg) { return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr; }
+bool Lam::is_basicblock() const { return type()->is_basicblock(); }
 Lam* Lam::set_filter(bool filter) { return set_filter(world().lit_bool(filter)); }
 
-const Def* Lam::mem_var(const Def* dbg) { return thorin::isa<Tag::Mem>(var(0_s)->type()) ? var(0, dbg) : nullptr; }
-
-const Def* Lam::ret_var(const Def* dbg) { return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr; }
-
-bool Lam::is_basicblock() const { return type()->is_basicblock(); }
-
-void Lam::app(const Def* callee, const Def* arg, const Def* dbg) {
-    assert(isa_nom());
-    if (!filter()) set_filter(world().lit_false());
-    set_body(world().app(callee, arg, dbg));
+Lam* Lam::app(Filter filter, const Def* callee, const Def* arg, const Def* dbg) {
+    assert(isa_nom() && !this->filter());
+    const Def* f;
+    if (auto b = std::get_if<bool>(&filter))
+        f = world().lit_bool(*b);
+    else
+        f = std::get<const Def*>(filter);
+    return set(f, world().app(callee, arg, dbg));
 }
 
-void Lam::app(const Def* callee, Defs args, const Def* dbg) { app(callee, world().tuple(args), dbg); }
-
-void Lam::branch(const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg) {
-    return app(world().select(t, f, cond), mem, dbg);
+Lam* Lam::app(Filter filter, const Def* callee, Defs args, const Def* dbg) {
+    return app(filter, callee, world().tuple(args), dbg);
 }
 
-void Lam::test(const Def* value, const Def* index, const Def* match, const Def* clash, const Def* mem, const Def* dbg) {
-    return app(world().test(value, index, match, clash), mem, dbg);
+Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg) {
+    return app(filter, world().select(t, f, cond), mem, dbg);
+}
+
+Lam* Lam::test(Filter filter,
+               const Def* value,
+               const Def* index,
+               const Def* match,
+               const Def* clash,
+               const Def* mem,
+               const Def* dbg) {
+    return app(filter, world().test(value, index, match, clash), mem, dbg);
 }
 
 /*

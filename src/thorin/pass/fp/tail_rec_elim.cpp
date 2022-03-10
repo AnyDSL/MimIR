@@ -40,8 +40,8 @@ undo_t TailRecElim::analyze(const Def* def) {
                     }
                     loop_vars.back() = rec->vars().back();
 
-                    loop->set(old->apply(world().tuple(loop_vars)));
-                    rec->app(loop, loop_args);
+                    loop->set(old->reduce(world().tuple(loop_vars)));
+                    rec->app(false, loop, loop_args);
                     if (eta_red_) eta_red_->mark_irreducible(loop);
 
                     return undo_visit(old);

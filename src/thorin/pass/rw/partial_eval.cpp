@@ -8,7 +8,7 @@ const Def* PartialEval::rewrite(const Def* def) {
     if (auto [app, lam] = isa_apped_nom_lam(def); lam && lam->is_set()) {
         if (lam->filter() == world().lit_false()) return def; // optimize this common case
 
-        auto [filter, body] = lam->apply(app->arg()).to_array<2>();
+        auto [filter, body] = lam->reduce(app->arg()).to_array<2>();
         if (auto f = isa_lit<bool>(filter); f && *f) {
             world().DLOG("PE {} within {}", lam, curr_nom());
             return body;

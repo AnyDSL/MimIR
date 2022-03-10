@@ -52,7 +52,7 @@ TEST(Main, ll) {
     auto main_t                 = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
     auto main                   = w.nom_lam(main_t, w.dbg("main"));
     auto [mem, argc, argv, ret] = main->vars<4>();
-    main->app(ret, {mem, argc});
+    main->app(false, ret, {mem, argc});
     main->make_external();
 
     std::ofstream file("test.ll");

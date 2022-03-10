@@ -210,7 +210,7 @@ public:
         return extract_unsafe(tup, lit_int(0_u64, i), dbg);
     }
     const Def* extract_unsafe(const Def* tup, const Def* i, const Def* dbg = {}) {
-        return extract(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce()->arity())), i, dbg), dbg);
+        return extract(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce_rec()->arity())), i, dbg), dbg);
     }
     /// During a rebuild we cannot infer the type if it is not set yet; in this case we rely on @p ex_type.
     const Def* extract_(const Def* ex_type, const Def* tup, const Def* i, const Def* dbg = {});
@@ -234,7 +234,7 @@ public:
         return insert_unsafe(tup, lit_int(0_u64, i), val, dbg);
     }
     const Def* insert_unsafe(const Def* tup, const Def* i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce()->arity())), i), val, dbg);
+        return insert(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce_rec()->arity())), i), val, dbg);
     }
     ///@}
 
@@ -771,7 +771,7 @@ private:
     std::shared_ptr<Stream> stream_;
 
     friend class Cleaner;
-    friend DefArray Def::apply(const Def*);
+    friend DefArray Def::reduce(const Def*);
     friend void Def::replace(Tracker) const;
 };
 

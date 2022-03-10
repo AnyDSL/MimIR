@@ -67,7 +67,7 @@ const Def* CopyProp::var2prop(const App* app, Lam* var_lam) {
         DefArray new_vars(app->num_args(), [&, prop_lam = prop_lam](size_t i) {
             return keep_.contains(var_lam->var(i)) ? prop_lam->var(j++) : args[i];
         });
-        prop_lam->set(var_lam->apply(world().tuple(new_vars)));
+        prop_lam->set(var_lam->reduce(world().tuple(new_vars)));
     } else {
         world().DLOG("reuse var_lam => prop_lam: {}: {} => {}: {}", var_lam, var_lam->type()->dom(), prop_lam,
                      prop_lam->type()->dom());

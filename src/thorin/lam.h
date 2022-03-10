@@ -1,6 +1,8 @@
 #ifndef THORIN_LAM_H
 #define THORIN_LAM_H
 
+#include <variant>
+
 #include "thorin/def.h"
 
 namespace thorin {
@@ -81,7 +83,7 @@ public:
     const Def* ret_var(const Def* dbg = {});
     ///@}
 
-    /// @name setters
+    /// @name setters for *nom*inal Lam.
     ///@{
     Lam* set(size_t i, const Def* def) { return Def::set(i, def)->as<Lam>(); }
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
@@ -93,12 +95,19 @@ public:
 
     /// @name CPS setters
     ///@{
-    /// Sets Lam::filter to World::lit_false, if not yet set and the Lam::body to an App.
+    /// Set filter to `true`, `false`, or an arbitrary Def, while setting the body to an App.
 
-    void app(const Def* callee, const Def* arg, const Def* dbg = {});
-    void app(const Def* callee, Defs args, const Def* dbg = {});
-    void branch(const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg = {});
-    void test(const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem, const Def* dbg = {});
+    using Filter = std::variant<bool, const Def*>;
+    Lam* app(Filter filter, const Def* callee, const Def* arg, const Def* dbg = {});
+    Lam* app(Filter filter, const Def* callee, Defs args, const Def* dbg = {});
+    Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg = {});
+    Lam* test(Filter filter,
+              const Def* val,
+              const Def* idx,
+              const Def* match,
+              const Def* clash,
+              const Def* mem,
+              const Def* dbg = {});
     ///@}
 
     /// @name virtual methods
