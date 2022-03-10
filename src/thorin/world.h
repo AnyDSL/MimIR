@@ -36,23 +36,6 @@ class Scope;
 /// Note that types are also just Def%s and will be hashed as well.
 class World : public Streamable<World> {
 public:
-    struct SeaHash {
-        static hash_t hash(const Def* def) { return def->hash(); }
-        static bool eq(const Def* def1, const Def* def2) { return def1->equal(def2); }
-        static const Def* sentinel() { return (const Def*)(1); }
-    };
-
-    struct BreakHash {
-        static hash_t hash(u32 u) { return murmur3(u); }
-        static bool eq(u32 a, u32 b) { return a == b; }
-        static u32 sentinel() { return u32(-1); }
-    };
-
-    using Sea         = HashSet<const Def*, SeaHash>; ///< This HashSet contains Thorin's "sea of nodes".
-    using Breakpoints = HashSet<u32, BreakHash>;
-    using Externals   = HashMap<std::string, Def*, StrViewHash>;
-    using VisitFn     = std::function<void(const Scope&)>;
-
     World(World&&) = delete;
     World& operator=(const World&) = delete;
 
@@ -65,10 +48,22 @@ public:
     }
     ~World();
 
-    /// @ getters
+    /// @name Sea of Nodes
+    ///@{
+    struct SeaHash {
+        static hash_t hash(const Def* def) { return def->hash(); }
+        static bool eq(const Def* def1, const Def* def2) { return def1->equal(def2); }
+        static const Def* sentinel() { return (const Def*)(1); }
+    };
+
+    using Sea = HashSet<const Def*, SeaHash>; ///< This HashSet contains Thorin's "sea of nodes".
+
+    const Sea& defs() const { return data_.defs_; }
+    ///@}
+
+    /// @name getters
     ///@{
     std::string_view name() const { return data_.name_; }
-    const Sea& defs() const { return data_.defs_; }
     std::vector<Lam*> copy_lams() const; // TODO remove this
     ///@}
 
@@ -508,8 +503,10 @@ public:
     bool is_pe_done() const { return state_.pe_done; }
     ///@}
 
-    /// @name manage externals
+    /// @name Manage Externals
     ///@{
+    using Externals = HashMap<std::string, Def*, StrViewHash>;
+    using VisitFn   = std::function<void(const Scope&)>;
     bool empty() { return data_.externals_.empty(); }
     const Externals& externals() const { return data_.externals_; }
     void make_external(Def* def) { data_.externals_.emplace(def->debug().name, def); }
@@ -517,7 +514,6 @@ public:
     bool is_external(const Def* def) { return data_.externals_.contains(def->debug().name); }
     // TODO add magic to use name of type std::string_view directly
     Def* lookup(std::string_view name) { return data_.externals_.lookup(std::string(name)).value_or(nullptr); }
-
     /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
     /// We call these Scope%s *top-level* Scope%s.
     /// Select with @p elide_empty whether you want to visit trivial Scope%s of *noms* without body.
@@ -526,8 +522,16 @@ public:
     ///@}
 
 #if THORIN_ENABLE_CHECKS
-    /// @name debugging features
+    /// @name Debugging Features
     ///@{
+    struct BreakHash {
+        static hash_t hash(u32 u) { return murmur3(u); }
+        static bool eq(u32 a, u32 b) { return a == b; }
+        static u32 sentinel() { return u32(-1); }
+    };
+
+    using Breakpoints = HashSet<u32, BreakHash>;
+
     void breakpoint(size_t number);
     void use_breakpoint(size_t number);
     void enable_history(bool flag = true);

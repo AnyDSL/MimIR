@@ -161,9 +161,9 @@ public:
 };
 
 using Bot  = TExt<false>;
-using Top  = TExt<true >;
+using Top  = TExt<true>;
 using Meet = TBound<false>;
-using Join = TBound<true >;
+using Join = TBound<true>;
 
 inline const Ext* isa_ext(const Def* def) {
     return def->isa<Bot>() || def->isa<Top>() ? static_cast<const Ext*>(def) : nullptr;
@@ -173,6 +173,6 @@ inline const Bound* isa_bound(const Def* def) {
     return def->isa<Meet>() || def->isa<Join>() ? static_cast<const Bound*>(def) : nullptr;
 }
 
-}
+} // namespace thorin
 
 #endif

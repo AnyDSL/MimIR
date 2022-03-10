@@ -49,8 +49,6 @@ public:
 
 class Lam : public Def {
 public:
-    using Filter = std::variant<bool, const Def*>;
-
     /// calling convention
     enum class CC : u8 {
         C,      ///< C calling convention.
@@ -85,8 +83,14 @@ public:
     const Def* ret_var(const Def* dbg = {});
     ///@}
 
-    /// @name setters for *nom*inal Lam.
+    /// @name Setters for *nom*inal Lam.
     ///@{
+    /// Lam::Filter is a `std::variant<bool, const Def*>` in lets you set the Lam::filter() like this:
+    /// ```cpp
+    /// lam1->app(true, f, arg);
+    /// lam2->app(my_filter_def, f, arg);
+    /// ```
+    using Filter = std::variant<bool, const Def*>;
     Lam* set(size_t i, const Def* def) { return Def::set(i, def)->as<Lam>(); }
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
     Lam* set(Filter filter, const Def* body) {
