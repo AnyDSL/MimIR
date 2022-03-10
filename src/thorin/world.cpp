@@ -1195,7 +1195,7 @@ std::string_view World::level2string(LogLevel level) {
         case LogLevel::Verbose: return "V";
         case LogLevel::Debug:   return "D";
         // clang-format on
-        default: THORIN_UNREACHABLE;
+        default: unreachable();
     }
 }
 
@@ -1208,7 +1208,7 @@ int World::level2color(LogLevel level) {
         case LogLevel::Verbose: return 4;
         case LogLevel::Debug:   return 4;
         // clang-format on
-        default: THORIN_UNREACHABLE;
+        default: unreachable();
     }
 }
 

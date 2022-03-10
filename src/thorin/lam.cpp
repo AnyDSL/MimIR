@@ -27,20 +27,16 @@ bool Pi::is_cn() const { return codom()->isa<Bot>(); }
 
 Lam* Lam::set_filter(bool filter) { return set_filter(world().lit_bool(filter)); }
 
-const Def* Lam::mem_var(const Def* dbg) {
-    return thorin::isa<Tag::Mem>(var(0_s)->type()) ? var(0, dbg) : nullptr;
-}
+const Def* Lam::mem_var(const Def* dbg) { return thorin::isa<Tag::Mem>(var(0_s)->type()) ? var(0, dbg) : nullptr; }
 
-const Def* Lam::ret_var(const Def* dbg) {
-    return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr;
-}
+const Def* Lam::ret_var(const Def* dbg) { return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr; }
 
 bool Lam::is_basicblock() const { return type()->is_basicblock(); }
 
 void Lam::app(const Def* callee, const Def* arg, const Def* dbg) {
     assert(isa_nom());
-    auto filter = world().lit_false();
-    set(filter, world().app(callee, arg, dbg));
+    if (!filter()) set_filter(world().lit_false());
+    set_body(world().app(callee, arg, dbg));
 }
 
 void Lam::app(const Def* callee, Defs args, const Def* dbg) { app(callee, world().tuple(args), dbg); }
@@ -59,9 +55,8 @@ void Lam::test(const Def* value, const Def* index, const Def* match, const Def* 
 
 // TODO remove
 Lam* get_var_lam(const Def* def) {
-    if (auto extract = def->isa<Extract>())
-        return extract->tuple()->as<Var>()->nom()->as<Lam>();
+    if (auto extract = def->isa<Extract>()) return extract->tuple()->as<Var>()->nom()->as<Lam>();
     return def->as<Var>()->nom()->as<Lam>();
 }
 
-}
+} // namespace thorin

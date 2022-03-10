@@ -25,15 +25,15 @@ class ErrorHandler;
 class RecStreamer;
 class Scope;
 
-/// The World represents the whole program and manages creation of Thorin nodes (@p Def%s).
-/// *Structural* @p Def%s are hashed into an internal @p HashSet (@p Sea/@p defs_).
-/// The getters just calculate a hash and lookup the @p Def, if it is already present, or create a new one otherwise.
+/// The World represents the whole program and manages creation of Thorin nodes (Def%s).
+/// *Structural* Def%s are hashed into an internal HashSet.
+/// The getters just calculate a hash and lookup the Def, if it is already present, or create a new one otherwise.
 /// This corresponds to value numbering.
 ///
 /// You can create several worlds.
 /// All worlds are completely independent from each other.
 ///
-/// Note that types are also just @p Def%s and will be hashed as well.
+/// Note that types are also just Def%s and will be hashed as well.
 class World : public Streamable<World> {
 public:
     struct SeaHash {
@@ -48,7 +48,7 @@ public:
         static u32 sentinel() { return u32(-1); }
     };
 
-    using Sea         = HashSet<const Def*, SeaHash>; ///< This @p HashSet contains Thorin's "sea of nodes".
+    using Sea         = HashSet<const Def*, SeaHash>; ///< This HashSet contains Thorin's "sea of nodes".
     using Breakpoints = HashSet<u32, BreakHash>;
     using Externals   = HashMap<std::string, Def*, StrViewHash>;
     using VisitFn     = std::function<void(const Scope&)>;
@@ -57,7 +57,7 @@ public:
     World& operator=(const World&) = delete;
 
     explicit World(std::string_view name = {});
-    /// Inherits the @p state_ of the @p other @p World but does *not* perform a copy.
+    /// Inherits the World::state_ of the @p other World but does *not* perform a copy.
     explicit World(const World& other)
         : World(other.name()) {
         stream_ = other.stream_;
@@ -97,10 +97,10 @@ public:
         return axiom(nullptr, type, tag, flags, dbg);
     }
 
-    /// Builds a fresh @p Axiom with descending tag.
+    /// Builds a fresh Axiom with descending tag.
     /// This is useful during testing to come up with some entitiy of a specific type.
-    /// It starts with `tag_t(-1)` (aka max) for @p Axiom::tag and counts down from there.
-    /// The @p Axiom::flags are set to `0` and the @p Axiom::normalizer to `nullptr`.
+    /// It starts with `tag_t(-1)` (aka max) for Axiom::tag and counts down from there.
+    /// The Axiom::flags are set to `0` and the Axiom::normalizer to `nullptr`.
     const Axiom* axiom(const Def* type, const Def* dbg = {}) { return axiom(nullptr, type, state_.curr_tag--, 0, dbg); }
     ///@}
 
@@ -118,10 +118,14 @@ public:
     const Pi* cn() { return cn(sigma()); }
     const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, bot_kind(), dbg); }
     const Pi* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
+<<<<<<< HEAD
     /// Same as @p cn/@p pi but adds a @p mem @p Var to each @p Pi
     const Pi* cn_mem_flat(const Def* dom, const Def* dbg = {});
     const Pi* cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* dbg = {});
     const Pi* cn_mem_half_flat(const Def* domain, const Def* codomain, const Def* dbg = {});
+=======
+    /// Same as World::cn / World::pi but adds a World::type_mem-typed Var to each Pi.
+>>>>>>> 1c9580253d13a470c61bcfafe556e538a3e0ca9f
     const Pi* cn_mem(const Def* dom, const Def* dbg = {}) { return cn({type_mem(), dom}, dbg); }
     const Pi* cn_mem_ret(const Def* dom, const Def* ret_dom, const Def* dbg = {}) {
         return cn({type_mem(), dom, cn_mem(ret_dom)}, dbg);
@@ -154,19 +158,19 @@ public:
     ///@{
     const Def* app(const Def* callee, const Def* arg, const Def* dbg = {});
     const Def* app(const Def* callee, Defs args, const Def* dbg = {}) { return app(callee, tuple(args), dbg); }
-    /// Same as @p app but does *not* apply @p NormalizeFn.
+    /// Same as World::app but does *not* apply NormalizeFn.
     const Def* raw_app(const Def* callee, const Def* arg, const Def* dbg = {});
-    /// Same as @p app but does *not* apply @p NormalizeFn.
+    /// Same as World::app but does *not* apply NormalizeFn.
     const Def* raw_app(const Def* callee, Defs args, const Def* dbg = {}) { return raw_app(callee, tuple(args), dbg); }
     ///@}
 
     /// @name Sigma
     ///@{
     Sigma* nom_sigma(const Def* type, size_t size, const Def* dbg = {}) { return insert<Sigma>(size, type, size, dbg); }
-    /// A *nom* @p Sigma of type @p kind.
+    /// A *nom*inal Sigma of type Kind.
     Sigma* nom_sigma(size_t size, const Def* dbg = {}) { return nom_sigma(kind(), size, dbg); }
     const Def* sigma(Defs ops, const Def* dbg = {});
-    const Sigma* sigma() { return data_.sigma_; } ///< the unit type within @p kind()
+    const Sigma* sigma() { return data_.sigma_; } ///< The unit type within Kind.
     ///@}
 
     /// @name Arr
@@ -184,11 +188,11 @@ public:
 
     /// @name Tuple
     ///@{
-    const Def* tuple(const Def* type, Defs ops, const Def* dbg = {});
     const Def* tuple(Defs ops, const Def* dbg = {});
+    /// Ascribes @p type to this tuple - needed for dependently typed and nominal Sigma%s.
+    const Def* tuple(const Def* type, Defs ops, const Def* dbg = {});
     const Def* tuple_str(std::string_view s, const Def* dbg = {});
     Sym sym(std::string_view s, const Def* dbg = {}) { return tuple_str(s, dbg); }
-    /// Ascribes @p type to this tuple - needed for dependently typed and structural @p Sigma%s.
     const Tuple* tuple() { return data_.tuple_; } ///< the unit value of type `[]`
     ///@}
 
@@ -220,7 +224,7 @@ public:
     /// During a rebuild we cannot infer the type if it is not set yet; in this case we rely on @p ex_type.
     const Def* extract_(const Def* ex_type, const Def* tup, const Def* i, const Def* dbg = {});
     /// Builds `(f, t)cond`.
-    /// Note that @p select expects @p t as first argument and @p f as second one.
+    /// **Note** that select expects @p t as first argument and @p f as second one.
     const Def* select(const Def* t, const Def* f, const Def* cond, const Def* dbg = {}) {
         return extract(tuple({f, t}), cond, dbg);
     }
@@ -255,18 +259,18 @@ public:
     const Lit* lit_nat_max() { return data_.lit_nat_max_; }
     const Lit* lit_int(const Def* type, u64 val, const Def* dbg = {});
 
-    /// Constructs @p Int @p Lit @p val via @p width, i.e. converts from @p width to *internal* `mod` value.
+    /// Constructs Tag::Int Lit @p val via @p width, i.e. converts from *width* to *internal* *mod* value.
     const Lit* lit_int_width(nat_t width, u64 val, const Def* dbg = {}) {
         return lit_int(type_int_width(width), val, dbg);
     }
 
-    /// Constructs @p Int @p Lit @p val with *external* @p mod.
-    /// I.e. if `mod == 0`, it will be adjusted to `uint_t(-1)` (special case for 2^64).
+    /// Constructs Tag::Int Lit @p val with *external* *mod*.
+    /// I.e. if `mod == 0`, it will be adjusted to `uint_t(-1)` (special case for `2^64`).
     const Lit* lit_int_mod(nat_t mod, u64 val, const Def* dbg = {}) {
         return lit_int(type_int(mod), mod == 0 ? val : (val % mod), dbg);
     }
 
-    /// Constructs @p Int @p Lit @p val with *internal* @p mod, i.e. without any conversions - `mod = 0` means 2^64.
+    /// Constructs Tag::Int Lit @p val with *internal* *mod*, i.e. without any conversions - `mod = 0` means `2^64`.
     /// Use this version if you directly receive an *internal* `mod` which is already converted.
     const Lit* lit_int(nat_t mod, u64 val, const Def* dbg = {}) { return lit_int(type_int(mod), val, dbg); }
     template<class I>
@@ -284,7 +288,7 @@ public:
             case 16: assert(r64(r16(r32(val))) == val && "loosing precision"); return lit_real(r16(r32(val)), dbg);
             case 32: assert(r64(r32(   (val))) == val && "loosing precision"); return lit_real(r32(   (val)), dbg);
             case 64: assert(r64(r64(   (val))) == val && "loosing precision"); return lit_real(r64(   (val)), dbg);
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
     }
     template<class R>
@@ -294,7 +298,7 @@ public:
         else if constexpr (sizeof(R) == 2) return lit(type_real(16), thorin::bitcast<u16>(val), dbg);
         else if constexpr (sizeof(R) == 4) return lit(type_real(32), thorin::bitcast<u32>(val), dbg);
         else if constexpr (sizeof(R) == 8) return lit(type_real(64), thorin::bitcast<u64>(val), dbg);
-        else THORIN_UNREACHABLE;
+        else unreachable();
     }
     // clang-format on
     ///@}
@@ -311,7 +315,7 @@ public:
     TBound<up>* nom_bound(const Def* type, size_t size, const Def* dbg = {}) {
         return insert<TBound<up>>(size, type, size, dbg);
     }
-    /// A *nom* @p Bound of type @p kind.
+    /// A *nom* Bound of type Kind.
     template<bool up>
     TBound<up>* nom_bound(size_t size, const Def* dbg = {}) {
         return nom_bound<up>(kind(), size, dbg);
@@ -325,7 +329,7 @@ public:
     const Def* join(Defs ops, const Def* dbg = {}) { return bound<true>(ops, dbg); }
     const Def* meet(Defs ops, const Def* dbg = {}) { return bound<false>(ops, dbg); }
     const Def* et(const Def* type, Defs ops, const Def* dbg = {});
-    /// Infers the type using a *structural* @p Meet.
+    /// Infers the type using a *structural* Meet.
     const Def* et(Defs ops, const Def* dbg = {}) { return et(infer_kind(ops), ops, dbg); }
     const Def* vel(const Def* type, const Def* value, const Def* dbg = {});
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
@@ -530,9 +534,9 @@ public:
     // TODO add magic to use name of type std::string_view directly
     Def* lookup(std::string_view name) { return data_.externals_.lookup(std::string(name)).value_or(nullptr); }
 
-    /// Transitively visits all *reachable* @p Scope%s in this @p World that do not have free variables.
-    /// We call these @p Scope%s *top-level* Scope%s.
-    /// Select with @p elide_empty whether you want to visit trivial @p Scope%s of *noms* without body.
+    /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
+    /// We call these Scope%s *top-level* Scope%s.
+    /// Select with @p elide_empty whether you want to visit trivial Scope%s of *noms* without body.
     template<bool elide_empty = true>
     void visit(VisitFn) const;
     ///@}
@@ -548,7 +552,7 @@ public:
     ///@}
 #endif
 
-    /// @name logging
+    /// @name Logging
     ///@{
     Stream& stream() { return *stream_; }
     LogLevel min_level() const { return state_.min_level; }
@@ -586,7 +590,7 @@ public:
     ///@{
     Stream& stream(Stream&) const;
     Stream& stream(RecStreamer&, const DepNode*) const;
-    void debug_stream(); ///< Stream thorin IR if @p min_level is @p LogLevel::Debug.
+    void debug_stream(); ///< Stream thorin if World::State::min_level is LogLevel::Debug.
     ///@}
 
     /// @name error handling
@@ -616,14 +620,14 @@ private:
     ///@{
     template<class T, class... Args>
     const T* unify(size_t num_ops, Args&&... args) {
-        auto def = arena_.allocate<T>(num_ops, args...);
+        auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
         auto [i, inserted] = data_.defs_.emplace(def);
         if (inserted) {
 #ifndef NDEBUG
-            if (state_.breakpoints.contains(def->gid())) THORIN_BREAK;
+            if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
             for (auto op : def->ops()) {
-                if (state_.use_breakpoints.contains(op->gid())) THORIN_BREAK;
+                if (state_.use_breakpoints.contains(op->gid())) thorin::breakpoint();
             }
 #endif
             def->finalize();
@@ -631,15 +635,14 @@ private:
         }
 
         arena_.deallocate<T>(def);
-        --state_.curr_gid;
         return static_cast<const T*>(*i);
     }
 
     template<class T, class... Args>
     T* insert(size_t num_ops, Args&&... args) {
-        auto def = arena_.allocate<T>(num_ops, args...);
+        auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
 #ifndef NDEBUG
-        if (state_.breakpoints.contains(def->gid())) THORIN_BREAK;
+        if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         auto p = data_.defs_.emplace(def);
         assert_unused(p.second);
@@ -686,7 +689,7 @@ private:
                 buffer_index_ = 0;
             }
 
-            auto result = new (curr_zone_->buffer + buffer_index_) T(args...);
+            auto result = new (curr_zone_->buffer + buffer_index_) T(std::forward<Args&&>(args)...);
             assert(result->num_ops() == num_ops);
             buffer_index_ += num_bytes;
             assert(buffer_index_ % alignof(T) == 0);

@@ -5,12 +5,11 @@ namespace thorin {
 Parser::Parser(World& world, std::string_view file, std::istream& stream)
     : lexer_(world, file, stream)
     , prev_(lexer_.loc())
-    , ahead_(lexer_.lex())
-{}
+    , ahead_(lexer_.lex()) {}
 
 Tok Parser::lex() {
     auto result = ahead();
-    ahead_ = lexer_.lex();
+    ahead_      = lexer_.lex();
     return result;
 }
 
@@ -40,12 +39,12 @@ Sym Parser::parse_sym(std::string_view ctxt) {
     auto track = tracker();
     if (ahead().isa(Tok::Tag::M_id)) return lex().sym();
     err("identifier", ctxt);
-    return world().sym("<error>", world().dbg((Loc) track));
+    return world().sym("<error>", world().dbg((Loc)track));
 }
 
 const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::Bottom*/) {
     auto track = tracker();
-    auto lhs = parse_primary_def(ctxt);
+    auto lhs   = parse_primary_def(ctxt);
 
     while (true) {
         // If operator in lookahead has less left precedence: reduce.
@@ -58,17 +57,14 @@ const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::B
 
         switch (tag) {
             case Tok::Tag::O_extract: lhs = world().extract(lhs, rhs, dbg(track)); break;
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
-        //lhs = mk_ptr<InfixExpr>(track, std::move(lhs), tag, std::move(rhs));
-
+        // lhs = mk_ptr<InfixExpr>(track, std::move(lhs), tag, std::move(rhs));
     }
 
     return nullptr;
 }
 
-const Def* Parser::parse_primary_def(std::string_view ctxt) {
-    return nullptr;
-}
+const Def* Parser::parse_primary_def(std::string_view) { return nullptr; }
 
-}
+} // namespace thorin
