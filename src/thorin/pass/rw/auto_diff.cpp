@@ -7,6 +7,7 @@
 
 namespace thorin {
 
+#define THORIN_UNREACHABLE unreachable()
 #define dlog(world,...) world.DLOG(__VA_ARGS__)
 #define type_dump(world,name,d) world.DLOG("{} {} : {}",name,d,d->type())
 
@@ -652,7 +653,6 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
     auto idpi = createPbType(A,trimmed_var_sigma);
     auto idpb = world_.nom_lam(idpi, world_.dbg("param_id"));
-    idpb->set_filter(world_.lit_true());
 
     type_dump(world_,"idpb",idpb);
 
@@ -669,7 +669,9 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
               return idpb->mem_var();
           return idpb->var(i);
         });
-    idpb->app(idpb->ret_var(), args);
+    idpb->set_body(world_.app(idpb->ret_var(), args));
+    idpb->set_filter(world_.lit_true());
+
     type_dump(world_,"idpb body",idpb->body());
 
     pullbacks_[dst_var] = idpb;
