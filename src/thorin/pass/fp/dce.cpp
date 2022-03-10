@@ -61,7 +61,7 @@ const Def* DCE::var2dead(const App* app, Lam* var_lam) {
             auto v = var_lam->var(i);
             return keep_.contains(v) ? dead_lam->var(j++) : proxy(v->type(), {var_lam, v}, 0);
         });
-        dead_lam->set(var_lam->apply(world().tuple(new_vars)));
+        dead_lam->set(var_lam->reduce(world().tuple(new_vars)));
     } else {
         world().DLOG("reuse var_lam => dead_lam: {}: {} => {}: {}", var_lam, var_lam->type()->dom(), dead_lam,
                      dead_lam->type()->dom());

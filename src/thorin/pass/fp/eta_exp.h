@@ -52,17 +52,16 @@ private:
 
     /// @name helpers
     ///@{
-    const Def* reconvert(const Def*);
     Lam* eta_wrap(Lam*);
     ///@}
 
     EtaRed* eta_red_;
     LamSet expand_;
-    Def2Def def2exp_;
-    LamMap<std::pair<Lam*, const Def*>> wrap2subst_;
+    Lam2Lam wrap2orig_;
     Lam2Lam new2old_;
+    Def2Def done_;
 };
 
-}
+} // namespace thorin
 
 #endif

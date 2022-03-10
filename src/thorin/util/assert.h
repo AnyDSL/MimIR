@@ -4,21 +4,31 @@
 #include <cassert>
 
 namespace thorin {
-[[noreturn]] inline void _unreachable() { abort(); }
-}
 
-#define THORIN_UNREACHABLE do { assert(false && "unreachable"); thorin::_unreachable(); } while(0)
-
-#if (defined(__clang__) || defined(__GNUC__)) && (defined(__x86_64__) || defined(__i386__))
-#define THORIN_BREAK asm("int3");
-#else
-#define THORIN_BREAK { int* __p__ = nullptr; *__p__ = 42; }
+// see https://stackoverflow.com/a/65258501
+#ifdef __GNUC__ // GCC 4.8+, Clang, Intel and other compilers compatible with GCC (-std=c++0x or above)
+[[noreturn]] inline __attribute__((always_inline)) void unreachable(const char* = {}) { __builtin_unreachable(); }
+#elif defined(_MSC_VER) // MSVC
+[[noreturn]] __forceinline void unreachable(const char* = {}) { __assume(false); }
+#else                   // ???
+inline void unreachable() {}
 #endif
 
-#ifndef NDEBUG
-#define assert_unused(x) assert(x)
+#if (defined(__clang__) || defined(__GNUC__)) && (defined(__x86_64__) || defined(__i386__))
+inline void breakpoint() { asm("int3"); }
 #else
-#define assert_unused(x) ((void) (0 && (x)))
+inline void breakpoint() {
+    volatile int* p = nullptr;
+    *p              = 42;
+}
+#endif
+
+} // namespace thorin
+
+#ifndef NDEBUG
+#    define assert_unused(x) assert(x)
+#else
+#    define assert_unused(x) ((void)(0 && (x)))
 #endif
 
 #endif

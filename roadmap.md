@@ -31,7 +31,7 @@
 - [x] use axioms instead of C++ classes
 - [x] redesign standard operations to work similar to LLVM
 - [ ] remove `Lamm::Intrinsics` in favor of axioms (wip)
-- [ ] rewrite normalizations (wip)
+- [x] rewrite normalizations
 - [x] add function to apply operations polymorphic in rank and dimensions
 
 ## Optimizations
@@ -43,14 +43,15 @@
     - [x] inliner
     - [x] partial eval
     - [x] mem2reg
-    - [ ] scalarize
-    - [ ] flatten       (wip)
-    - [x] eta conv      (wip)
+    - [x] scalarize
+    - [ ] flatten slots
+    - [x] eta red
+    - [x] eta exp
     - [x] copy prop     (wip)
-    - [ ] tail rec elim (maybe can be merged with copy prop)
+    - [x] tail rec elim
     - [ ] closure elim  (wip)
     - [ ] closure conv  (wip)
-x   - [ ] compile ptrn  (wip)
+    - [ ] compile ptrn  (wip)
     - [x] ret\_wrap
     - [ ] reg2mem (for aggregates)
     - [ ] acc prepare (phase that prepares special `vectorize`/`cuda` and friends for code generation)
@@ -66,24 +67,25 @@ x   - [ ] compile ptrn  (wip)
 - [x] remove static state from logging
 - [x] remove `Loc`/`Debug` and make it a `Def`
 - [x] add `meta` field
-- [ ] unit testing with gtest
+- [x] unit testing with gtest
 - [ ] gcov integration
 
 ## Module support
 
 - [ ] polish output     (wip)
-- [ ] frontend to read it again
+- [ ] frontend to read it again (wip)
 - [ ] integrate with debugging infrastructure
 
 ## Backend
 
 - [ ] rewrite C backend
-- [ ] rewrite LLVM backend (wip)
+- [x] rewrite LLVM backend
 
 ## Future
 
 * Thorin-based vectorizer
-* C interface of thorin
+* C interface of Thorin?
+* Pyhton interface of Thorin?
 * add possibility to add new thorin nodes/axioms from frontends
 
 ## Far Future

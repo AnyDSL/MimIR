@@ -8,7 +8,7 @@ const Def* BetaRed::rewrite(const Def* def) {
     if (auto [app, lam] = isa_apped_nom_lam(def); isa_workable(lam) && !keep_.contains(lam)) {
         if (auto [_, ins] = data().emplace(lam); ins) {
             world().DLOG("beta-reduction {}", lam);
-            return lam->apply(app->arg()).back();
+            return lam->reduce(app->arg()).back();
         } else {
             return proxy(app->type(), {lam, app->arg()}, 0);
         }

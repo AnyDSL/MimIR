@@ -86,13 +86,13 @@ private:
 struct SymHash {
     static hash_t hash(Sym sym);
     static bool eq(Sym a, Sym b) { return a == b; }
-    static Sym sentinel() { return Sym((const Def*) 1); }
+    static Sym sentinel() { return Sym((const Def*)1); }
 };
 
 template<class Val>
 using SymMap = HashMap<Sym, Val, SymHash>;
 using SymSet = HashSet<Sym, SymHash>;
 
-}
+} // namespace thorin
 
 #endif

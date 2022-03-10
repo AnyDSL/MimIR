@@ -1,11 +1,10 @@
 #include "thorin/pass/fp/eta_exp.h"
+
 #include "thorin/pass/fp/eta_red.h"
 
 namespace thorin {
 
-const Proxy* EtaExp::proxy(Lam* lam) {
-    return FPPass<EtaExp, Lam>::proxy(lam->type(), {lam}, 0);
-}
+const Proxy* EtaExp::proxy(Lam* lam) { return FPPass<EtaExp, Lam>::proxy(lam->type(), {lam}, 0); }
 
 Lam* EtaExp::new2old(Lam* new_lam) {
     if (auto old_lam = new2old_.lookup(new_lam)) {
@@ -19,78 +18,51 @@ Lam* EtaExp::new2old(Lam* new_lam) {
 }
 
 const Def* EtaExp::rewrite(const Def* def) {
-    for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-        if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
-            if (!isa_callee(def, i) && expand_.contains(lam)) {
-                auto [j, ins] = def2exp_.emplace(def, nullptr);
-                if (ins) {
-                    auto wrap = eta_wrap(lam);
-                    auto new_def = def->refine(i, wrap);
-                    wrap2subst_[wrap] = std::pair(lam, new_def);
-                    j->second = new_def;
-                    world().DLOG("eta-expansion '{}' -> '{}' using '{}'", def, j->second, wrap);
-                }
-                return j->second;
-            }
+    if (std::ranges::none_of(def->ops(), [](const Def* def) { return def->isa<Lam>(); })) return def;
+    if (auto new_def = done_.lookup(def)) return *new_def;
 
-            if (auto subst = wrap2subst_.lookup(lam)) {
-                if (auto [orig, subst_def] = *subst; def != subst_def) return reconvert(def);
+    Array<const Def*> new_ops(def->num_ops());
+    bool update = false;
+
+    for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
+        new_ops[i] = def->op(i);
+
+        if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
+            if (isa_callee(def, i)) {
+                if (auto orig = wrap2orig_.lookup(lam)) new_ops[i] = *orig;
+            } else {
+                if (expand_.contains(lam)) {
+                    new_ops[i] = eta_wrap(lam);
+                } else if (auto orig = wrap2orig_.lookup(lam)) {
+                    new_ops[i] = eta_wrap(*orig);
+                }
             }
         }
+
+        update |= new_ops[i] != def->op(i);
+    }
+
+    if (update) {
+        auto new_def      = def->rebuild(world(), def->type(), new_ops, def->dbg());
+        done_[new_def]    = new_def;
+        return done_[def] = new_def;
     }
 
     return def;
 }
 
-/// If a wrapper is somehow reinstantiated again in a different expression, redo eta-conversion.
-/// E.g., say we have `(a, f, g)` and eta-exand to `(a, eta_f, eta_g)`.
-/// But due to beta-reduction we now also have (b, eta_f, eta_g) which renders eta_f and eta_g not unique anymore.
-/// So, we build `(b, eta_f', eta_g')`.
-/// Likewise, we might end up with a call `eta_f (a, b, c)` that we have to eta-reduce again to
-/// `f (a, b, c)`
-const Def* EtaExp::reconvert(const Def* def) {
-    std::vector<std::pair<Lam*, Lam*>> refinements;
-    DefArray new_ops(def->num_ops());
-
-    for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-        if (auto lam = def->op(i)->isa_nom<Lam>()) {
-            if (auto subst = wrap2subst_.lookup(lam)) {
-                auto [orig, subst_def] = *subst;
-                assert(lam->body()->isa<App>() && lam->body()->as<App>()->callee() == orig);
-                if (isa_callee(def, i)) {
-                    new_ops[i] = orig;
-                } else {
-                    auto wrap = eta_wrap(orig);
-                    refinements.emplace_back(wrap, orig);
-                    new_ops[i] = wrap;
-                }
-                continue;
-            }
-        }
-
-        new_ops[i] = def->op(i);
-    }
-
-    auto new_def = def->rebuild(world(), def->type(), new_ops, def->dbg());
-
-    for (auto [wrap, lam] : refinements)
-        wrap2subst_[wrap] = std::pair(lam, new_def);
-
-    return def2exp_[def] = new_def;
-}
-
 Lam* EtaExp::eta_wrap(Lam* lam) {
     auto wrap = lam->stub(world(), lam->type(), lam->dbg());
+    wrap2orig_.emplace(wrap, lam);
     wrap->set_name(std::string("eta_") + lam->debug().name);
-    wrap->app(lam, wrap->var());
+    wrap->app(false, lam, wrap->var());
     if (eta_red_) eta_red_->mark_irreducible(wrap);
     return wrap;
 }
 
 undo_t EtaExp::analyze(const Proxy* proxy) {
     auto lam = proxy->op(0)->as_nom<Lam>();
-    if (expand_.emplace(lam).second)
-        return undo_visit(lam);
+    if (expand_.emplace(lam).second) return undo_visit(lam);
     return No_Undo;
 }
 
@@ -127,4 +99,4 @@ undo_t EtaExp::analyze(const Def* def) {
     return undo;
 }
 
-}
+} // namespace thorin

@@ -3,7 +3,9 @@
 
 #include <map>
 
+#include "thorin/config.h"
 #include "thorin/debug.h"
+
 #include "thorin/fe/tok.h"
 #include "thorin/util/utf8.h"
 
@@ -21,7 +23,7 @@ public:
 
 private:
     Tok tok(Tok::Tag tag) { return {loc(), tag}; }
-    bool eof() const { return peek_.char_ == (char32_t) std::istream::traits_type::eof(); }
+    bool eof() const { return peek_.char_ == (char32_t)std::istream::traits_type::eof(); }
 
     /// @return @c true if @p pred holds.
     /// In this case invoke @p next() and append to @p str_;
@@ -35,7 +37,7 @@ private:
     }
 
     bool accept(char32_t val) {
-        return accept_if([val] (char32_t p) { return p == val; });
+        return accept_if([val](char32_t p) { return p == val; });
     }
 
     /// Get next utf8-char in @p stream_ and increase @p loc_ / @p peek_.pos_.
@@ -53,6 +55,6 @@ private:
     std::map<std::string, Tok::Tag> keywords_;
 };
 
-}
+} // namespace thorin
 
 #endif

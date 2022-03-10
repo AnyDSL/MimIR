@@ -6,9 +6,11 @@
 
 namespace thorin {
 
+// clang-format off
 template<class O> constexpr bool is_int      () { return true;  }
 template<>        constexpr bool is_int<ROp >() { return false; }
 template<>        constexpr bool is_int<RCmp>() { return false; }
+// clang-format on
 
 /*
  * small helpers
@@ -24,16 +26,26 @@ static const Def* is_not(const Def* def) {
 }
 #endif
 
-template<class T> static T get(u64 u) { return bitcast<T>(u); }
+template<class T>
+static T get(u64 u) {
+    return bitcast<T>(u);
+}
 
 /// Use like this:
 /// `a op b = tab[a][b]`
 constexpr std::array<std::array<uint64_t, 2>, 2> make_truth_table(Bit op) {
-    return {{ {tag_t(op) & tag_t(0b0001) ? u64(-1) : 0, tag_t(op) & tag_t(0b0100) ? u64(-1) : 0},
-              {tag_t(op) & tag_t(0b0010) ? u64(-1) : 0, tag_t(op) & tag_t(0b1000) ? u64(-1) : 0} }};
+    return {
+        {{tag_t(op) & tag_t(0b0001) ? u64(-1) : 0, tag_t(op) & tag_t(0b0100) ? u64(-1) : 0},
+         {tag_t(op) & tag_t(0b0010) ? u64(-1) : 0, tag_t(op) & tag_t(0b1000) ? u64(-1) : 0}}
+    };
 }
 
-template<class T> constexpr bool is_commutative(T) { return false; }
+template<class T>
+constexpr bool is_commutative(T) {
+    return false;
+}
+
+// clang-format off
 constexpr bool is_commutative(Wrap op) { return op == Wrap:: add || op == Wrap::mul; }
 constexpr bool is_commutative(ROp  op) { return op == ROp :: add || op == ROp ::mul; }
 constexpr bool is_commutative(ICmp op) { return op == ICmp::   e || op == ICmp:: ne; }
@@ -42,19 +54,23 @@ constexpr bool is_commutative(Bit  op) {
     auto tab = make_truth_table(op);
     return tab[0][1] == tab[1][0];
 }
+// clang-format off
 
-template<class T> constexpr bool is_associative(T op) { return is_commutative(op); }
+template<class T>
+constexpr bool is_associative(T op) {
+    return is_commutative(op);
+}
 constexpr bool is_associative(Bit op) {
     switch (op) {
-        case Bit::   t:
+        case Bit::t:
         case Bit::_xor:
         case Bit::_and:
         case Bit::nxor:
-        case Bit::   a:
-        case Bit::   b:
-        case Bit:: _or:
-        case Bit::   f: return true;
-        default       : return false;
+        case Bit::a:
+        case Bit::b:
+        case Bit::_or:
+        case Bit::f: return true;
+        default: return false;
     }
 }
 
@@ -81,9 +97,11 @@ private:
     std::optional<u64> data_;
 };
 
-template<class T, T, nat_t> struct Fold {};
+template<class T, T, nat_t>
+struct Fold {};
 
-template<nat_t w> struct Fold<Wrap, Wrap::add, w> {
+template<nat_t w>
+struct Fold<Wrap, Wrap::add, w> {
     static Res run(u64 a, u64 b, bool /*nsw*/, bool nuw) {
         auto x = get<w2u<w>>(a), y = get<w2u<w>>(b);
         decltype(x) res = x + y;
@@ -93,18 +111,20 @@ template<nat_t w> struct Fold<Wrap, Wrap::add, w> {
     }
 };
 
-template<nat_t w> struct Fold<Wrap, Wrap::sub, w> {
+template<nat_t w>
+struct Fold<Wrap, Wrap::sub, w> {
     static Res run(u64 a, u64 b, bool /*nsw*/, bool /*nuw*/) {
         using UT = w2u<w>;
         auto x = get<UT>(a), y = get<UT>(b);
         decltype(x) res = x - y;
-        //if (nuw && y && x > std::numeric_limits<UT>::max() / y) return {};
-        // TODO nsw
+        // if (nuw && y && x > std::numeric_limits<UT>::max() / y) return {};
+        //  TODO nsw
         return res;
     }
 };
 
-template<nat_t w> struct Fold<Wrap, Wrap::mul, w> {
+template<nat_t w>
+struct Fold<Wrap, Wrap::mul, w> {
     static Res run(u64 a, u64 b, bool /*nsw*/, bool /*nuw*/) {
         using UT = w2u<w>;
         auto x = get<UT>(a), y = get<UT>(b);
@@ -116,7 +136,8 @@ template<nat_t w> struct Fold<Wrap, Wrap::mul, w> {
     }
 };
 
-template<nat_t w> struct Fold<Wrap, Wrap::shl, w> {
+template<nat_t w>
+struct Fold<Wrap, Wrap::shl, w> {
     static Res run(u64 a, u64 b, bool nsw, bool nuw) {
         using T = w2u<w>;
         auto x = get<T>(a), y = get<T>(b);
@@ -132,6 +153,7 @@ template<nat_t w> struct Fold<Wrap, Wrap::shl, w> {
     }
 };
 
+// clang-format off
 template<nat_t w> struct Fold<Div, Div::sdiv, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
 template<nat_t w> struct Fold<Div, Div::udiv, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
 template<nat_t w> struct Fold<Div, Div::srem, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
@@ -145,24 +167,27 @@ template<nat_t w> struct Fold<ROp, ROp:: sub, w> { static Res run(u64 a, u64 b) 
 template<nat_t w> struct Fold<ROp, ROp:: mul, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) * get<T>(b)); } };
 template<nat_t w> struct Fold<ROp, ROp:: div, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) / get<T>(b)); } };
 template<nat_t w> struct Fold<ROp, ROp:: rem, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(rem(get<T>(a), get<T>(b))); } };
+// clang-format on
 
-template<ICmp cmp, nat_t w> struct Fold<ICmp, cmp, w> {
+template<ICmp cmp, nat_t w>
+struct Fold<ICmp, cmp, w> {
     inline static Res run(u64 a, u64 b) {
         using T = w2u<w>;
         auto x = get<T>(a), y = get<T>(b);
         bool result = false;
-        auto pm = !(x >> T(w-1)) &&  (y >> T(w-1));
-        auto mp =  (x >> T(w-1)) && !(y >> T(w-1));
+        auto pm     = !(x >> T(w - 1)) && (y >> T(w - 1));
+        auto mp     = (x >> T(w - 1)) && !(y >> T(w - 1));
         result |= ((cmp & ICmp::_x) != ICmp::_f) && pm;
         result |= ((cmp & ICmp::_y) != ICmp::_f) && mp;
         result |= ((cmp & ICmp::_g) != ICmp::_f) && x > y && !mp;
         result |= ((cmp & ICmp::_l) != ICmp::_f) && x < y && !pm;
-        result |= ((cmp & ICmp:: e) != ICmp::_f) && x == y;
+        result |= ((cmp & ICmp::e) != ICmp::_f) && x == y;
         return result;
     }
 };
 
-template<RCmp cmp, nat_t w> struct Fold<RCmp, cmp, w> {
+template<RCmp cmp, nat_t w>
+struct Fold<RCmp, cmp, w> {
     inline static Res run(u64 a, u64 b) {
         using T = w2r<w>;
         auto x = get<T>(a), y = get<T>(b);
@@ -175,6 +200,7 @@ template<RCmp cmp, nat_t w> struct Fold<RCmp, cmp, w> {
     }
 };
 
+// clang-format off
 template<Conv op, nat_t, nat_t> struct FoldConv {};
 template<nat_t dw, nat_t sw> struct FoldConv<Conv::s2s, dw, sw> { static Res run(u64 src) { return w2s<dw>(get<w2s<sw>>(src)); } };
 template<nat_t dw, nat_t sw> struct FoldConv<Conv::u2u, dw, sw> { static Res run(u64 src) { return w2u<dw>(get<w2u<sw>>(src)); } };
@@ -183,6 +209,7 @@ template<nat_t dw, nat_t sw> struct FoldConv<Conv::u2r, dw, sw> { static Res run
 template<nat_t dw, nat_t sw> struct FoldConv<Conv::r2s, dw, sw> { static Res run(u64 src) { return w2s<dw>(get<w2r<sw>>(src)); } };
 template<nat_t dw, nat_t sw> struct FoldConv<Conv::r2u, dw, sw> { static Res run(u64 src) { return w2u<dw>(get<w2r<sw>>(src)); } };
 template<nat_t dw, nat_t sw> struct FoldConv<Conv::r2r, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2r<sw>>(src)); } };
+// clang-format on
 
 /*
  * bigger logic used by several ops
@@ -191,8 +218,8 @@ template<nat_t dw, nat_t sw> struct FoldConv<Conv::r2r, dw, sw> { static Res run
 template<class O>
 static void commute(O op, const Def*& a, const Def*& b) {
     if (is_commutative(op)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) // swap lit to left, or smaller gid to left if no lit present
-            std::swap(a, b);
+        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
+            std::swap(a, b); // swap lit to left, or smaller gid to left if no lit present
     }
 }
 
@@ -208,7 +235,12 @@ static void commute(O op, const Def*& a, const Def*& b) {
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
 template<tag_t tag>
-static const Def* reassociate(Tag2Enum<tag> op, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b, const Def* dbg) {
+static const Def* reassociate(Tag2Enum<tag> op,
+                              World& world,
+                              [[maybe_unused]] const App* ab,
+                              const Def* a,
+                              const Def* b,
+                              const Def* dbg) {
     if (!is_associative(op)) return nullptr;
 
     auto la = a->isa<Lit>();
@@ -216,14 +248,14 @@ static const Def* reassociate(Tag2Enum<tag> op, World& world, [[maybe_unused]] c
     auto zw = isa<tag>(op, b);
     auto lx = xy ? xy->arg(0)->template isa<Lit>() : nullptr;
     auto lz = zw ? zw->arg(0)->template isa<Lit>() : nullptr;
-    auto  y = xy ? xy->arg(1) : nullptr;
-    auto  w = zw ? zw->arg(1) : nullptr;
+    auto y  = xy ? xy->arg(1) : nullptr;
+    auto w  = zw ? zw->arg(1) : nullptr;
 
     std::function<const Def*(const Def*, const Def*)> make_op;
 
     if constexpr (tag == Tag::ROp) {
         // build rmode for all new ops by using the least upper bound of all involved apps
-        nat_t rmode = RMode::bot;
+        nat_t rmode     = RMode::bot;
         auto check_mode = [&](const App* app) {
             auto app_m = isa_lit(app->arg(0));
             if (!app_m || !has(*app_m, RMode::reassoc)) return false;
@@ -245,8 +277,8 @@ static const Def* reassociate(Tag2Enum<tag> op, World& world, [[maybe_unused]] c
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
     if (lx && lz) return make_op(make_op(lx, lz), make_op(y, w)); // (2)
-    if (lz)       return make_op(lz, make_op(a, w));              // (3)
-    if (lx)       return make_op(lx, make_op(y, b));              // (4)
+    if (lz) return make_op(lz, make_op(a, w));                    // (3)
+    if (lx) return make_op(lx, make_op(y, b));                    // (4)
 
     return nullptr;
 }
@@ -264,9 +296,9 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
         [[maybe_unused]] bool nsw = false, nuw = false;
         if constexpr (std::is_same_v<Op, Wrap>) {
             auto [mode, w] = callee->args<2>(as_lit<nat_t>);
-            nsw = mode & WMode::nsw;
-            nuw = mode & WMode::nuw;
-            width = w;
+            nsw            = mode & WMode::nsw;
+            nuw            = mode & WMode::nuw;
+            width          = w;
         } else {
             width = as_lit(a->type()->as<App>()->arg());
         }
@@ -275,18 +307,18 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
 
         Res res;
         switch (width) {
-#define CODE(i)                                                                     \
-            case i:                                                                 \
-                if constexpr (i >= min_w) {                                         \
-                    if constexpr (std::is_same_v<Op, Wrap>)                         \
-                        res = Fold<Op, op, i>::run(la->get(), lb->get(), nsw, nuw); \
-                    else                                                            \
-                        res = Fold<Op, op, i>::run(la->get(), lb->get());           \
-                }                                                                   \
-                break;
+#define CODE(i)                                                             \
+    case i:                                                                 \
+        if constexpr (i >= min_w) {                                         \
+            if constexpr (std::is_same_v<Op, Wrap>)                         \
+                res = Fold<Op, op, i>::run(la->get(), lb->get(), nsw, nuw); \
+            else                                                            \
+                res = Fold<Op, op, i>::run(la->get(), lb->get());           \
+        }                                                                   \
+        break;
             THORIN_1_8_16_32_64(CODE)
 #undef CODE
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
 
         return res ? world.lit(type, *res, dbg) : world.bot(type, dbg);
@@ -304,12 +336,13 @@ template<tag_t tag>
 static const Def* merge_cmps(std::array<std::array<uint64_t, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
     static_assert(sizeof(flags_t) == 4, "if this ever changes, please adjust the logic below");
     static constexpr size_t num_bits = std::bit_width(Num<Tag2Enum<tag>> - 1_u64);
+
     auto a_cmp = isa<tag>(a);
     auto b_cmp = isa<tag>(b);
 
     if (a_cmp && b_cmp && a_cmp->args() == b_cmp->args()) {
         // push flags of a_cmp and b_cmp through truth table
-        flags_t res = 0;
+        flags_t res     = 0;
         flags_t a_flags = a_cmp.axiom()->flags();
         flags_t b_flags = b_cmp.axiom()->flags();
         for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_flags >>= 1, b_flags >>= 1)
@@ -331,7 +364,7 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto w = isa_lit(callee->arg());
+    auto w      = isa_lit(callee->arg());
 
     commute(op, a, b);
 
@@ -342,6 +375,7 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
     auto la = isa_lit(a);
     auto lb = isa_lit(b);
 
+    // clang-format off
     switch (op) {
         case Bit::    f: return world.lit_int(*w,        0);
         case Bit::    t: return world.lit_int(*w, *w-1_u64);
@@ -364,7 +398,7 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
             case Bit::nxor: return world.lit_int_mod(*w, ~(*la ^  *lb));
             case Bit:: iff: return world.lit_int_mod(*w, ~ *la |  *lb);
             case Bit::niff: return world.lit_int    (*w,   *la & ~*lb);
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
     }
 
@@ -375,6 +409,7 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
         if ( x && !y && op != Bit::_xor) return world.op_negate(a, dbg);
         return nullptr;
     };
+    // clang-format on
 
     if (is_commutative(op) && a == b) {
         if (auto res = unary(tab[0][0], tab[1][1], a)) return res;
@@ -383,7 +418,7 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
     if (la) {
         if (*la == 0) {
             if (auto res = unary(tab[0][0], tab[0][1], b)) return res;
-        } else if (*la == *w-1_u64) {
+        } else if (*la == *w - 1_u64) {
             if (auto res = unary(tab[1][0], tab[1][1], b)) return res;
         }
     }
@@ -391,7 +426,7 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
     if (lb) {
         if (*lb == 0) {
             if (auto res = unary(tab[0][0], tab[1][0], b)) return res;
-        } else if (*lb == *w-1_u64) {
+        } else if (*lb == *w - 1_u64) {
             if (auto res = unary(tab[0][1], tab[1][1], b)) return res;
         }
     }
@@ -406,7 +441,7 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
             case IOp::iand: return world.lit_int(*w,       0);
             case IOp::ior : return world.lit_int(*w, *w-1_u64);
             case IOp::ixor: return world.lit_int(*w, *w-1_u64);
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
     }
 
@@ -474,7 +509,7 @@ const Def* normalize_Shr(const Def* type, const Def* c, const Def* arg, const De
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto w = isa_lit(callee->arg());
+    auto w      = isa_lit(callee->arg());
 
     if (auto result = fold<Shr, op>(world, type, callee, a, b, dbg)) return result;
 
@@ -483,7 +518,7 @@ const Def* normalize_Shr(const Def* type, const Def* c, const Def* arg, const De
             switch (op) {
                 case Shr::ashr: return la;
                 case Shr::lshr: return la;
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
             }
         }
     }
@@ -493,7 +528,7 @@ const Def* normalize_Shr(const Def* type, const Def* c, const Def* arg, const De
             switch (op) {
                 case Shr::ashr: return a;
                 case Shr::lshr: return a;
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
             }
         }
 
@@ -512,6 +547,7 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
 
     if (auto result = fold<Wrap, op>(world, type, callee, a, b, dbg)) return result;
 
+    // clang-format off
     if (auto la = a->isa<Lit>()) {
         if (la == world.lit_int(*w, 0)) {
             switch (op) {
@@ -519,7 +555,7 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
                 case Wrap::sub: break;
                 case Wrap::mul: return la;   // 0  * b -> 0
                 case Wrap::shl: return la;   // 0 << b -> 0
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
             }
         }
 
@@ -529,7 +565,7 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
                 case Wrap::sub: break;
                 case Wrap::mul: return b;    // 1  * b -> b
                 case Wrap::shl: break;
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
             }
         }
     }
@@ -539,7 +575,7 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
             switch (op) {
                 case Wrap::sub: return a;    // a  - 0 -> a
                 case Wrap::shl: return a;    // a >> 0 -> a
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
                 // add, mul are commutative, the literal has been normalized to the left
             }
         }
@@ -553,12 +589,13 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
     if (a == b) {
         switch (op) {
             case Wrap::add: return world.op(Wrap::mul, *m, world.lit_int(*w, 2), a, dbg); // a + a -> 2 * a
-            case Wrap::sub: return world.lit_int(*w, 0);                                 // a - a -> 0
+            case Wrap::sub: return world.lit_int(*w, 0);                                  // a - a -> 0
             case Wrap::mul: break;
             case Wrap::shl: break;
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
     }
+    // clang-format on
 
     if (auto res = reassociate<Tag::Wrap>(op, world, callee, a, b, dbg)) return res;
 
@@ -567,12 +604,12 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
 
 template<Div op>
 const Def* normalize_Div(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
-    auto callee = c->as<App>();
+    auto& world      = type->world();
+    auto callee      = c->as<App>();
     auto [mem, a, b] = arg->projs<3>();
-    auto w = isa_lit(callee->arg());
-    type = type->as<Sigma>()->op(1); // peel of actual type
-    auto make_res = [&, mem = mem](const Def* res) { return world.tuple({mem, res}, dbg); };
+    auto w           = isa_lit(callee->arg());
+    type             = type->as<Sigma>()->op(1); // peel of actual type
+    auto make_res    = [&, mem = mem](const Def* res) { return world.tuple({mem, res}, dbg); };
 
     if (auto result = fold<Div, op>(world, type, callee, a, b, dbg)) return make_res(result);
 
@@ -589,7 +626,7 @@ const Def* normalize_Div(const Def* type, const Def* c, const Def* arg, const De
                 case Div::udiv: return make_res(a);                    // a / 1 -> a
                 case Div::srem: return make_res(world.lit_int(*w, 0)); // a % 1 -> 0
                 case Div::urem: return make_res(world.lit_int(*w, 0)); // a % 1 -> 0
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
             }
         }
     }
@@ -600,7 +637,7 @@ const Def* normalize_Div(const Def* type, const Def* c, const Def* arg, const De
             case Div::udiv: return make_res(world.lit_int(*w, 1)); // a / a -> 1
             case Div::srem: return make_res(world.lit_int(*w, 0)); // a % a -> 0
             case Div::urem: return make_res(world.lit_int(*w, 0)); // a % a -> 0
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
     }
 
@@ -616,6 +653,7 @@ const Def* normalize_ROp(const Def* type, const Def* c, const Def* arg, const De
 
     if (auto result = fold<ROp, op>(world, type, callee, a, b, dbg)) return result;
 
+    // clang-format off
     // TODO check rmode properly
     if (m && *m == RMode::fast) {
         if (auto la = a->isa<Lit>()) {
@@ -626,7 +664,7 @@ const Def* normalize_ROp(const Def* type, const Def* c, const Def* arg, const De
                     case ROp::mul: return la;   // 0 * b -> 0
                     case ROp::div: return la;   // 0 / b -> 0
                     case ROp::rem: return la;   // 0 % b -> 0
-                    default: THORIN_UNREACHABLE;
+                    default: unreachable();
                 }
             }
 
@@ -637,7 +675,7 @@ const Def* normalize_ROp(const Def* type, const Def* c, const Def* arg, const De
                     case ROp::mul: return b;    // 1 * b -> b
                     case ROp::div: break;
                     case ROp::rem: break;
-                    default: THORIN_UNREACHABLE;
+                    default: unreachable();
                 }
             }
         }
@@ -648,7 +686,7 @@ const Def* normalize_ROp(const Def* type, const Def* c, const Def* arg, const De
                     case ROp::sub: return a;    // a - 0 -> a
                     case ROp::div: break;
                     case ROp::rem: break;
-                    default: THORIN_UNREACHABLE;
+                    default: unreachable();
                     // add, mul are commutative, the literal has been normalized to the left
                 }
             }
@@ -661,10 +699,11 @@ const Def* normalize_ROp(const Def* type, const Def* c, const Def* arg, const De
                 case ROp::mul: break;
                 case ROp::div: return world.lit_real(*w, 1.0);                             // a / a -> 1
                 case ROp::rem: break;
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
             }
         }
     }
+    // clang-format on
 
     if (auto res = reassociate<Tag::ROp>(op, world, callee, a, b, dbg)) return res;
 
@@ -681,7 +720,7 @@ const Def* normalize_ICmp(const Def* type, const Def* c, const Def* arg, const D
     if (op == ICmp::_f) return world.lit_false();
     if (op == ICmp::_t) return world.lit_true();
     if (a == b) {
-        if (op == ICmp:: e) return world.lit_true();
+        if (op == ICmp::e) return world.lit_true();
         if (op == ICmp::ne) return world.lit_false();
     }
 
@@ -709,7 +748,8 @@ inline u64 pad(u64 offset, u64 align) {
 }
 
 // TODO this currently hard-codes x86_64 ABI
-// TODO in contrast to C, we might want to give singleton types like 'int 1' or '[]' a size of 0 and simply nuke each and every occurance of these types in a later phase
+// TODO in contrast to C, we might want to give singleton types like 'int 1' or '[]' a size of 0 and simply nuke each
+// and every occurance of these types in a later phase
 // TODO Pi and others
 template<Trait op>
 const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const Def* dbg) {
@@ -732,27 +772,27 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
                 case 16: return world.lit_nat(2);
                 case 32: return world.lit_nat(4);
                 case 64: return world.lit_nat(8);
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
             }
         }
     } else if (type->isa<Sigma>() || type->isa<Meet>()) {
         u64 offset = 0;
-        u64 align = 1;
+        u64 align  = 1;
         for (auto t : type->ops()) {
             auto a = isa_lit(world.op(Trait::align, t));
-            auto s = isa_lit(world.op(Trait::size , t));
+            auto s = isa_lit(world.op(Trait::size, t));
             if (!a || !s) goto out;
 
-            align = std::max(align, *a);
+            align  = std::max(align, *a);
             offset = pad(offset, *a) + *s;
         }
 
-        offset = pad(offset, align);
+        offset   = pad(offset, align);
         u64 size = std::max(1_u64, offset);
 
         switch (op) {
             case Trait::align: return world.lit_nat(align);
-            case Trait::size:  return world.lit_nat(size );
+            case Trait::size: return world.lit_nat(size);
         }
     } else if (auto arr = type->isa_structural<Arr>()) {
         auto align = world.op(Trait::align, arr->body());
@@ -760,8 +800,8 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
 
         if (auto b = isa_lit(world.op(Trait::size, arr->body()))) {
             auto i64_t = world.type_int_width(64);
-            auto s = world.op_bitcast(i64_t, arr->shape());
-            auto mul = world.op(Wrap::mul, WMode::nsw | WMode::nuw, world.lit_int(i64_t, *b), s);
+            auto s     = world.op_bitcast(i64_t, arr->shape());
+            auto mul   = world.op(Wrap::mul, WMode::nsw | WMode::nuw, world.lit_int(i64_t, *b), s);
             return world.op_bitcast(world.type_nat(), mul);
         }
     } else if (auto join = type->isa<Join>()) {
@@ -772,11 +812,13 @@ out:
     return world.raw_app(callee, type, dbg);
 }
 
+// clang-format off
 #define TABLE(m) m( 1,  1) m( 1,  8) m( 1, 16) m( 1, 32) m( 1, 64) \
                  m( 8,  1) m( 8,  8) m( 8, 16) m( 8, 32) m( 8, 64) \
                  m(16,  1) m(16,  8) m(16, 16) m(16, 32) m(16, 64) \
                  m(32,  1) m(32,  8) m(32, 16) m(32, 32) m(32, 64) \
                  m(64,  1) m(64,  8) m(64, 16) m(64, 32) m(64, 64)
+// clang-format on
 
 template<nat_t min_sw, nat_t min_dw, Conv op>
 static const Def* fold_Conv(const Def* dst_type, const App* callee, const Def* src, const Def* dbg) {
@@ -784,7 +826,7 @@ static const Def* fold_Conv(const Def* dst_type, const App* callee, const Def* s
     if (src->isa<Bot>()) return world.bot(dst_type, dbg);
 
     auto [lit_dw, lit_sw] = callee->args<2>(isa_lit<nat_t>);
-    auto lit_src = src->isa<Lit>();
+    auto lit_src          = src->isa<Lit>();
     if (lit_src && lit_dw && lit_sw) {
         if (op == Conv::u2u) {
             if (*lit_dw == 0) return world.lit(dst_type, as_lit(lit_src));
@@ -792,15 +834,15 @@ static const Def* fold_Conv(const Def* dst_type, const App* callee, const Def* s
         }
 
         if (isa<Tag::Int>(src->type())) *lit_sw = *mod2width(*lit_sw);
-        if (isa<Tag::Int>( dst_type  )) *lit_dw = *mod2width(*lit_dw);
+        if (isa<Tag::Int>(dst_type)) *lit_dw = *mod2width(*lit_dw);
 
         Res res;
-#define CODE(sw, dw)                                             \
-        else if (*lit_dw == dw && *lit_sw == sw) {               \
-            if constexpr (dw >= min_dw && sw >= min_sw)          \
-                res = FoldConv<op, dw, sw>::run(lit_src->get()); \
-        }
-        if (false) {} TABLE(CODE)
+#define CODE(sw, dw)                                                                                 \
+    else if (*lit_dw == dw && *lit_sw == sw) {                                                       \
+        if constexpr (dw >= min_dw && sw >= min_sw) res = FoldConv<op, dw, sw>::run(lit_src->get()); \
+    }
+        if (false) {}
+        TABLE(CODE)
 #undef CODE
         if (res) return world.lit(dst_type, *res, dbg);
         return world.bot(dst_type, dbg);
@@ -850,7 +892,7 @@ const Def* normalize_Acc(const Def* type, const Def* callee, const Def* arg, con
 const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* src, const Def* dbg) {
     auto& world = dst_type->world();
 
-    if (src->isa<Bot>())         return world.bot(dst_type);
+    if (src->isa<Bot>()) return world.bot(dst_type);
     if (src->type() == dst_type) return src;
 
     if (auto other = isa<Tag::Bitcast>(src))
@@ -865,19 +907,19 @@ const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* 
 }
 
 const Def* normalize_lea(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
-    auto [ptr, index] = arg->projs<2>();
+    auto& world                = type->world();
+    auto [ptr, index]          = arg->projs<2>();
     auto [pointee, addr_space] = as<Tag::Ptr>(ptr->type())->args<2>();
 
-    if (auto a = isa_lit(pointee->arity()); a && *a ==  1) return ptr;
-    //TODO
+    if (auto a = isa_lit(pointee->arity()); a && *a == 1) return ptr;
+    // TODO
 
     return world.raw_app(callee, {ptr, index}, dbg);
 }
 
 const Def* normalize_load(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
-    auto [mem, ptr] = arg->projs<2>();
+    auto& world                = type->world();
+    auto [mem, ptr]            = arg->projs<2>();
     auto [pointee, addr_space] = as<Tag::Ptr>(ptr->type())->args<2>();
 
     if (ptr->isa<Bot>()) return world.tuple({mem, world.bot(type->as<Sigma>()->op(1))}, dbg);
@@ -892,12 +934,12 @@ const Def* normalize_load(const Def* type, const Def* callee, const Def* arg, co
 const Def* normalize_remem(const Def* type, const Def* callee, const Def* mem, const Def* dbg) {
     auto& world = type->world();
 
-    //if (auto m = isa<Tag::Remem>(mem)) mem = m;
+    // if (auto m = isa<Tag::Remem>(mem)) mem = m;
     return world.raw_app(callee, mem, dbg);
 }
 
 const Def* normalize_store(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
+    auto& world          = type->world();
     auto [mem, ptr, val] = arg->projs<3>();
 
     if (ptr->isa<Bot>() || val->isa<Bot>()) return mem;
@@ -910,13 +952,13 @@ const Def* normalize_store(const Def* type, const Def* callee, const Def* arg, c
 }
 
 const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    auto& w = type->world();
-    auto callee = c->as<App>();
-    auto is_os = callee->arg();
+    auto& w                    = type->world();
+    auto callee                = c->as<App>();
+    auto is_os                 = callee->arg();
     auto [n_i, Is, n_o, Os, f] = is_os->projs<5>();
-    auto [r, s] = callee->decurry()->args<2>();
-    auto lr = isa_lit(r);
-    auto ls = isa_lit(s);
+    auto [r, s]                = callee->decurry()->args<2>();
+    auto lr                    = isa_lit(r);
+    auto ls                    = isa_lit(s);
 
     // TODO commute
     // TODO reassociate
@@ -930,7 +972,7 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
 
         if (lr && std::ranges::all_of(args, [](auto arg) { return is_tuple_or_pack(arg); })) {
             auto shapes = s->projs(*lr);
-            auto s_n = isa_lit(shapes.front());
+            auto s_n    = isa_lit(shapes.front());
 
             if (s_n) {
                 DefArray elems(*s_n, [&, f = f](size_t s_i) {
@@ -938,7 +980,9 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
                     if (*lr == 1)
                         return w.app(f, inner_args);
                     else
-                        return w.app(w.app(w.app(w.ax_zip(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os), inner_args);
+                        return w.app(
+                            w.app(w.app(w.ax_zip(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os),
+                            inner_args);
                 });
                 return w.tuple(elems);
             }
@@ -952,6 +996,7 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
  * instantiate templates
  */
 
+// clang-format off
 #define CODE(T, o) template const Def* normalize_ ## T<T::o>(const Def*, const Def*, const Def*, const Def*);
 THORIN_BIT  (CODE)
 THORIN_SHR  (CODE)
@@ -965,5 +1010,6 @@ THORIN_CONV (CODE)
 THORIN_PE   (CODE)
 THORIN_ACC  (CODE)
 #undef CODE
+// clang-format on
 
-}
+} // namespace thorin

@@ -24,32 +24,51 @@ bool Pi::is_cn() const { return codom()->isa<Bot>(); }
  * Lam
  */
 
-Lam* Lam::set_filter(bool filter) { return set_filter(world().lit_bool(filter)); }
-
-const Def* Lam::mem_var(const Def* dbg) {
-    return thorin::isa<Tag::Mem>(var(0_s)->type()) ? var(0, dbg) : nullptr;
-}
-
-const Def* Lam::ret_var(const Def* dbg) {
-    return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr;
-}
-
+const Def* Lam::mem_var(const Def* dbg) { return thorin::isa<Tag::Mem>(var(0_s)->type()) ? var(0, dbg) : nullptr; }
+const Def* Lam::ret_var(const Def* dbg) { return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr; }
 bool Lam::is_basicblock() const { return type()->is_basicblock(); }
 
-void Lam::app(const Def* callee, const Def* arg, const Def* dbg) {
-    assert(isa_nom());
-    auto filter = world().lit_false();
-    set(filter, world().app(callee, arg, dbg));
+Lam* Lam::set_filter(Filter filter) {
+    const Def* f;
+    if (auto b = std::get_if<bool>(&filter))
+        f = world().lit_bool(*b);
+    else
+        f = std::get<const Def*>(filter);
+    return set(0, f);
 }
 
-void Lam::app(const Def* callee, Defs args, const Def* dbg) { app(callee, world().tuple(args), dbg); }
-
-void Lam::branch(const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg) {
-    return app(world().select(t, f, cond), mem, dbg);
+Lam* Lam::app(Filter f, const Def* callee, const Def* arg, const Def* dbg) {
+    assert(isa_nom() && !filter());
+    set_filter(f);
+    return set_body(world().app(callee, arg, dbg));
 }
 
-void Lam::test(const Def* value, const Def* index, const Def* match, const Def* clash, const Def* mem, const Def* dbg) {
-    return app(world().test(value, index, match, clash), mem, dbg);
+Lam* Lam::app(Filter filter, const Def* callee, Defs args, const Def* dbg) {
+    return app(filter, callee, world().tuple(args), dbg);
 }
 
+Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg) {
+    return app(filter, world().select(t, f, cond), mem, dbg);
 }
+
+Lam* Lam::test(Filter filter,
+               const Def* value,
+               const Def* index,
+               const Def* match,
+               const Def* clash,
+               const Def* mem,
+               const Def* dbg) {
+    return app(filter, world().test(value, index, match, clash), mem, dbg);
+}
+
+/*
+ * Pi
+ */
+
+// TODO remove
+Lam* get_var_lam(const Def* def) {
+    if (auto extract = def->isa<Extract>()) return extract->tuple()->as<Var>()->nom()->as<Lam>();
+    return def->as<Var>()->nom()->as<Lam>();
+}
+
+} // namespace thorin

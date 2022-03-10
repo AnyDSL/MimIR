@@ -10,25 +10,58 @@ private:
     Axiom(NormalizeFn normalizer, const Def* type, tag_t tag, flags_t flags, const Def* dbg);
 
 public:
-    /// @name misc getters
+    /// @name getters
     ///@{
     tag_t tag() const { return tag_t(fields() >> 32_u64); }
     flags_t flags() const { return flags_t(fields()); }
     NormalizeFn normalizer() const { return normalizer_depth_.ptr(); }
     u16 currying_depth() const { return normalizer_depth_.index(); }
     ///@}
+
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     ///@}
 
+    /// @name Mangling Dialect Name
+    ///@{
+    static constexpr size_t Max_Dialect_Size = 8;
+
+    /// Mangles @p s into a dense 48-bit representation.
+    /// The layout is as follows:
+    /// ```
+    /// |---7--||---6--||---5--||---4--||---3--||---2--||---1--||---0--|
+    /// 7654321076543210765432107654321076543210765432107654321076543210
+    /// Char67Char66Char65Char64Char63Char62Char61Char60|---reserved---|
+    /// ```
+    /// The `reserved` part is used for the Axiom::tag and the Axiom::flags.
+    /// Each `Char6x` is 6-bit wide and hence a dialect name has at most Axiom::Max_Dialect_Size = 8 chars.
+    /// It uses this encoding:
+    /// | `Char6` | ASCII   |
+    /// |---------|---------|
+    /// | 1:      | `_`     |
+    /// | 2-27:   | `a`-`z` |
+    /// | 28-53:  | `A`-`Z` |
+    /// | 54-63:  | `0`-`9` |
+    /// The 0 is special and marks the end of the name if the name has less than 8 chars.
+    /// @return returns `std::nullopt` if encoding is not possible.
+    static std::optional<u64> mangle(std::string_view s);
+
+    /// Reverts a mangle%d string to a `std::string`.
+    /// Ignores lower 16-bit of @p u.
+    static std::string demangle(u64 u);
+    ///@}
+
+    static std::tuple<const Axiom*, u16> get(const Def*);
+
     static constexpr auto Node = Node::Axiom;
     friend class World;
 };
 
-template<class T, class U> bool has(T flags, U option) { return (flags & option) == option; }
-
-std::tuple<const Axiom*, u16> get_axiom(const Def*);
+template<class T, class U>
+bool has(T flags, U option) {
+    return (flags & option) == option;
+}
 
 template<class F, class D>
 class Query {
@@ -43,7 +76,10 @@ public:
     const Axiom* axiom() const { return axiom_; }
     tag_t tag() const { return axiom()->tag(); }
     F flags() const { return F(axiom()->flags()); }
-    void clear() { axiom_ = nullptr; def_ = nullptr; }
+    void clear() {
+        axiom_ = nullptr;
+        def_   = nullptr;
+    }
 
     const D* operator->() const { return def_; }
     operator const D*() const { return def_; }
@@ -54,32 +90,46 @@ private:
     const D* def_;
 };
 
-template<tag_t tag> struct Tag2Def_ { using type = App; };
-template<> struct Tag2Def_<Tag::Mem> { using type = Axiom; };
-template<tag_t tag> using Tag2Def = typename Tag2Def_<tag>::type;
+template<tag_t tag>
+struct Tag2Def_ {
+    using type = App;
+};
+template<>
+struct Tag2Def_<Tag::Mem> {
+    using type = Axiom;
+};
+template<tag_t tag>
+using Tag2Def = typename Tag2Def_<tag>::type;
 
 template<tag_t tag>
 Query<Tag2Enum<tag>, Tag2Def<tag>> isa(const Def* def) {
-    auto [axiom, currying_depth] = get_axiom(def);
-    if (axiom && axiom->tag() == tag && currying_depth == 0)
-        return {axiom, def->as<Tag2Def<tag>>()};
+    auto [axiom, currying_depth] = Axiom::get(def);
+    if (axiom && axiom->tag() == tag && currying_depth == 0) return {axiom, def->as<Tag2Def<tag>>()};
     return {};
 }
 
 template<tag_t tag>
 Query<Tag2Enum<tag>, Tag2Def<tag>> isa(Tag2Enum<tag> flags, const Def* def) {
-    auto [axiom, currying_depth] = get_axiom(def);
+    auto [axiom, currying_depth] = Axiom::get(def);
     if (axiom && axiom->tag() == tag && axiom->flags() == flags_t(flags) && currying_depth == 0)
         return {axiom, def->as<Tag2Def<tag>>()};
     return {};
 }
 
-template<tag_t t> Query<Tag2Enum<t>, Tag2Def<t>> as(               const Def* d) { assert( isa<t>(   d) ); return {std::get<0>(get_axiom(d)), d->as<App>()}; }
-template<tag_t t> Query<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) { assert((isa<t>(f, d))); return {std::get<0>(get_axiom(d)), d->as<App>()}; }
+template<tag_t t>
+Query<Tag2Enum<t>, Tag2Def<t>> as(const Def* d) {
+    assert(isa<t>(d));
+    return {std::get<0>(Axiom::get(d)), d->as<App>()};
+}
+template<tag_t t>
+Query<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
+    assert((isa<t>(f, d)));
+    return {std::get<0>(Axiom::get(d)), d->as<App>()};
+}
 
-/// Checks whether @p type is an @p Int or a @p Real and returns its mod or width, respectively.
+/// Checks whether @p type is an Tag::Int or a Tag::Real and returns its mod or width, respectively.
 inline const Def* isa_sized_type(const Def* type) {
-    if (auto int_ = isa<Tag:: Int>(type)) return int_->arg();
+    if (auto int_ = isa<Tag::Int>(type)) return int_->arg();
     if (auto real = isa<Tag::Real>(type)) return real->arg();
     return nullptr;
 }
@@ -97,6 +147,6 @@ constexpr std::optional<uint64_t> mod2width(uint64_t n) {
 
 bool is_memop(const Def* def);
 
-}
+} // namespace thorin
 
 #endif

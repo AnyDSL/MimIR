@@ -31,7 +31,8 @@ bool World::Arena::Lock::guard_ = false;
 #endif
 
 World::World(std::string_view name)
-    : checker_(std::make_unique<Checker>(*this)) {
+    : checker_(std::make_unique<Checker>(*this))
+    , err_(std::make_unique<ErrorHandler>()) {
     data_.name_        = name.empty() ? "module" : name;
     data_.space_       = insert<Space>(0, *this);
     data_.kind_        = insert<Kind>(0, *this);
@@ -156,7 +157,7 @@ World::World(std::string_view name)
         type->set_codom(pi(S, D));
         data_.bitcast_ = axiom(normalize_bitcast, type, Tag::Bitcast, 0, dbg("bitcast"));
     }
-    { // lea:, [n: nat, Ts: «n; *», as: nat] -> [ptr(«j: n; Ts#j», as), i: int n] -> ptr(Ts#i, as)
+    { // lea: [n: nat, Ts: «n; *», as: nat] -> [ptr(«j: n; Ts#j», as), i: int n] -> ptr(Ts#i, as)
         auto dom = nom_sigma(space(), 3);
         dom->set(0, nat);
         dom->set(1, arr(dom->var(0, dbg("n")), kind()));
@@ -222,8 +223,8 @@ World::World(std::string_view name)
         type->set_codom(pi(T, R));
         data_.atomic_ = axiom(nullptr, type, Tag::Atomic, 0, dbg("atomic"));
     }
-    { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o;
-        // Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
+    { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i»
+        // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
         // TODO select which Is/Os to zip
         auto rs = nom_sigma(kind(), 2);
         rs->set(0, nat);
@@ -272,8 +273,8 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
         if (!checker_->assignable(pi->dom(), arg)) err()->ill_typed_app(callee, arg);
     }
 
-    auto type                    = pi->apply(arg).back();
-    auto [axiom, currying_depth] = get_axiom(callee); // TODO move down again
+    auto type                    = pi->reduce(arg).back();
+    auto [axiom, currying_depth] = Axiom::get(callee); // TODO move down again
     if (axiom && currying_depth == 1) {
         if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
     }
@@ -283,8 +284,8 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
 
 const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi                      = callee->type()->as<Pi>();
-    auto type                    = pi->apply(arg).back();
-    auto [axiom, currying_depth] = get_axiom(callee);
+    auto type                    = pi->reduce(arg).back();
+    auto [axiom, currying_depth] = Axiom::get(callee);
     return unify<App>(2, axiom, currying_depth - 1, type, callee, arg, dbg);
 }
 
@@ -366,7 +367,7 @@ const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index,
         return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
     }
 
-    auto type = tup->type()->reduce();
+    auto type = tup->type()->reduce_rec();
     if (err()) {
         if (!checker_->equiv(type->arity(), isa_sized_type(index->type())))
             err()->index_out_of_range(type->arity(), index);
@@ -398,7 +399,7 @@ const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index,
 }
 
 const Def* World::insert(const Def* tup, const Def* index, const Def* val, const Def* dbg) {
-    auto type = tup->type()->reduce();
+    auto type = tup->type()->reduce_rec();
 
     if (err() && !checker_->equiv(type->arity(), isa_sized_type(index->type())))
         err()->index_out_of_range(type->arity(), index);
@@ -702,7 +703,7 @@ std::string_view World::level2string(LogLevel level) {
         case LogLevel::Verbose: return "V";
         case LogLevel::Debug:   return "D";
         // clang-format on
-        default: THORIN_UNREACHABLE;
+        default: unreachable();
     }
 }
 
@@ -715,11 +716,11 @@ int World::level2color(LogLevel level) {
         case LogLevel::Verbose: return 4;
         case LogLevel::Debug:   return 4;
         // clang-format on
-        default: THORIN_UNREACHABLE;
+        default: unreachable();
     }
 }
 
-#ifdef COLORIZE_LOG
+#ifdef THORIN_COLOR_TERM
 std::string World::colorize(std::string_view str, int color) {
     if (isatty(fileno(stdout))) {
         const char c = '0' + color;
@@ -738,7 +739,6 @@ void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
  */
 
 template void Streamable<World>::write(std::string_view filename) const;
-template void Streamable<World>::write() const;
 template void Streamable<World>::dump() const;
 template void World::visit<true>(VisitFn) const;
 template void World::visit<false>(VisitFn) const;
