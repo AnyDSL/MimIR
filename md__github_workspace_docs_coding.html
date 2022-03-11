@@ -107,12 +107,12 @@ $(document).ready(function(){initNavTree('md__github_workspace_docs_coding.html'
 <div class="textblock"><p >This document comprises some information that is related to coding but does not directly deals with the API.</p>
 <h1><a class="anchor" id="autotoc_md24"></a>
 Coding Style</h1>
-<p >Use the following coding convetions:</p><ul>
+<p >Use the following coding conventions:</p><ul>
 <li>class/type names in <code>CamelCase</code></li>
 <li>constants as defined in an <code>enum</code> or via <code>static const</code> in <code>Camel_Snake_Case</code></li>
 <li>macro names in <code>SNAKE_IN_ALL_CAPS</code></li>
-<li>eveything else like variables, functions, etc. in <code>snake_case</code></li>
-<li>use a traling underscore suffix for a <code>private_member_variable_</code></li>
+<li>everything else like variables, functions, etc. in <code>snake_case</code></li>
+<li>use a trailing underscore suffix for a <code>private_member_variable_</code></li>
 <li>don't do that for a <code>public_member_variable</code></li>
 <li>use <code>struct</code> for <a href="https://en.cppreference.com/w/cpp/named_req/PODType">plain old data</a></li>
 <li>use <code>class</code> for everything else</li>
@@ -125,11 +125,13 @@ Coding Style</h1>
 <li>prefer <code>// C++-style comments</code> over <code>/* C-style comments */</code></li>
 <li>use <code>/// three slashes for Doxygen</code> and <a href="https://www.doxygen.nl/manual/grouping.html">group</a> your methods into logical units if possible</li>
 </ul>
-<p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. In order to run <code>clang-format</code> automatically on all changed files, switch to the provied pre-commit hook: </p><div class="fragment"><div class="line">git config --local core.hooksPath .githooks/</div>
+<p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. In order to run <code>clang-format</code> automatically on all changed files, switch to the provided pre-commit hook: </p><div class="fragment"><div class="line">git config --local core.hooksPath .githooks/</div>
 </div><!-- fragment --><p> Note that you can <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a>. In addition, you might want to check out plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a>.</p>
 <h1><a class="anchor" id="autotoc_md25"></a>
 Debugging</h1>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<p >As a utility to make debugging Thorin itself less painful with certain debuggers, the <code>thorin.natvis</code> file can be loaded for getting more expressive value inspection. In VS Code you can do so by adding the following to the <code>launch.json</code> configurations. When launching from VS Code via CMake, put it in <code>settings.json</code>'s <code>"cmake.debugConfig":</code>: </p><div class="fragment"><div class="line">&quot;visualizerFile&quot;: &quot;${workspaceFolder}/thorin.natvis&quot;,</div>
+<div class="line">&quot;showDisplayString&quot;: true,</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md26"></a>
 Logging</h2>
 <h2><a class="anchor" id="autotoc_md27"></a>
 Breakpoints</h2>
