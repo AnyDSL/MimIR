@@ -14,7 +14,6 @@
 #include "thorin/pass/rw/remem_elim.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
-#include "thorin/pass/fp/zip_eval.h"
 #include "thorin/pass/rw/peephole.h"
 
 // old stuff

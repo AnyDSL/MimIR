@@ -380,7 +380,11 @@ const Def* World::tangent_type(const Def* A,bool left) {
 //        return inner;
         if(pointee->isa<Arr>() || left) {
             s2.fmt("Ptr -> Arr\n");
-            return type_ptr(inner,addr_space);
+            auto inner_arr=type_ptr(inner,addr_space);
+            Array<const Def*> comp(2);
+            comp[0]= type_int_width(32);
+            comp[1]=inner_arr;
+            return sigma(comp);
         }
         return inner;
     }
@@ -622,7 +626,7 @@ const Lam* World::flatten_lam(Lam* lam) {
             [&](auto i) {
                 return lam->var(i+1);
             });
-    flat_f->app(lam, {
+    flat_f->app(true,lam, {
         flat_f->mem_var(),
         tuple(args),
         ret_wrap
@@ -634,7 +638,7 @@ const Lam* World::flatten_lam(Lam* lam) {
 //        [&](auto i) {
 //          return ret_wrap->proj(i);
 //        });
-    ret_wrap->app(flat_f->ret_var(),
+    ret_wrap->app(true,flat_f->ret_var(),
         {ret_wrap->mem_var(),
         tuple(res)}
     );
@@ -660,7 +664,7 @@ const Lam* World::unflatten_lam(Lam* lam) {
               return (const Def*)ret_wrap;
           return lam->var(i-1);
         });
-    unflat_f->app(lam, args);
+    unflat_f->app(true,lam, args);
     return unflat_f;
 
 //    auto res = ret_wrap->var(1)->projs();
