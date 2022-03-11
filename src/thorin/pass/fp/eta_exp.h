@@ -10,8 +10,7 @@ class EtaRed;
 /// Performs η-expansion:
 /// `f -> λx.f x`, if `f` is a @p Lam with more than one user and does not appear in callee position.
 /// This rule is a generalization of critical edge elimination.
-/// It gives other @p Pass%es such as @p SSAConstr the opportunity to change `f`'s signature
-/// (e.g. adding or removing @p Var%s).
+/// It gives other Pass%es such as SSAConstr the opportunity to change `f`'s signature (e.g. adding or removingp Var%s).
 class EtaExp : public FPPass<EtaExp, Lam> {
 public:
     EtaExp(PassMan& man, EtaRed* eta_red)
