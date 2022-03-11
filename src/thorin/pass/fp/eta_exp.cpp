@@ -55,7 +55,7 @@ Lam* EtaExp::eta_wrap(Lam* lam) {
     auto wrap = lam->stub(world(), lam->type(), lam->dbg());
     wrap2orig_.emplace(wrap, lam);
     wrap->set_name(std::string("eta_") + lam->debug().name);
-    wrap->app(lam, wrap->var());
+    wrap->app(false, lam, wrap->var());
     if (eta_red_) eta_red_->mark_irreducible(wrap);
     return wrap;
 }

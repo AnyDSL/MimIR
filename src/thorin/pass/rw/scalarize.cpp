@@ -44,7 +44,7 @@ Lam* Scalerize::make_scalar(Lam* tup_lam) {
         n += arg_sz.at(i);
         return unflatten(new_args, tup_lam->dom(i));
     }));
-    sca_lam->set(tup_lam->apply(new_vars));
+    sca_lam->set(tup_lam->reduce(new_vars));
     tup2sca_[sca_lam] = sca_lam;
     tup2sca_.emplace(tup_lam, sca_lam);
 

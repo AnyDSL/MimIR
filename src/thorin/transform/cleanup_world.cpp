@@ -1,6 +1,7 @@
 #include "thorin/config.h"
-#include "thorin/world.h"
 #include "thorin/rewrite.h"
+#include "thorin/world.h"
+
 #include "thorin/analyses/cfg.h"
 #include "thorin/analyses/domtree.h"
 #include "thorin/analyses/scope.h"
@@ -49,8 +50,7 @@ void Cleaner::eta_conversion() {
                         if (!callee->is_set() || callee->is_external() || callee->num_uses() > 2) break;
                         bool ok = true;
                         for (auto use : callee->uses()) { // 2 iterations at max - see above
-                            if (!use->isa<App>() && !use->isa<Var>())
-                                ok = false;
+                            if (!use->isa<App>() && !use->isa<Var>()) ok = false;
                         }
                         if (!ok) break;
 
@@ -71,8 +71,7 @@ void Cleaner::eta_conversion() {
             // (that is free within that lam) with that var
             auto callee = app->callee();
             if (is_var(callee)) {
-                if (get_var_lam(callee) == lam || lam->is_external())
-                    continue;
+                if (get_var_lam(callee) == lam || lam->is_external()) continue;
 
                 if (app->arg() == lam->var()) {
                     lam->replace(callee);
@@ -123,22 +122,20 @@ void Cleaner::eliminate_vars() {
         if (!old_lam->is_set()) continue;
 
         std::vector<size_t> proxy_idx; // indices of vars we eliminate
-        std::vector<size_t> var_idx; // indices of vars we keep
+        std::vector<size_t> var_idx;   // indices of vars we keep
 
         auto old_app = old_lam->body()->isa<App>();
         if (old_app == nullptr || world().is_external(old_lam)) continue;
 
         for (auto use : old_lam->uses()) {
             if (use->isa<Var>()) continue; // ignore old_lam's Var
-            if (use.index() != 0 || !use->isa<App>())
-                goto next_lam;
+            if (use.index() != 0 || !use->isa<App>()) goto next_lam;
         }
 
         // maybe the whole var tuple is passed somewhere?
         if (old_lam->num_vars() != 1) {
             for (auto use : old_lam->var()->uses()) {
-                if (!use->isa<Extract>())
-                    goto next_lam;
+                if (!use->isa<Extract>()) goto next_lam;
             }
         }
 
@@ -161,16 +158,15 @@ void Cleaner::eliminate_vars() {
                 new_dom = world().sigma();
             }
 
-            auto cn = world().cn(new_dom);
+            auto cn      = world().cn(new_dom);
             auto new_lam = world().nom_lam(cn, old_lam->cc(), old_lam->debug_history());
-            size_t j = 0;
+            size_t j     = 0;
             for (auto i : var_idx) {
                 old_lam->var(i)->replace(new_lam->var(j));
                 new_lam->var(j++, old_lam->var(i)->debug_history());
             }
 
-            new_lam->set_filter(old_lam->filter());
-            new_lam->app(old_app->callee(), old_app->args(), old_app->dbg());
+            new_lam->app(old_lam->filter(), old_app->callee(), old_app->args(), old_app->dbg());
             old_lam->unset();
 
             for (auto use : old_lam->copy_uses()) {
@@ -250,8 +246,8 @@ void Cleaner::run() {
 
     if (!world().is_pe_done()) {
         world().mark_pe_done();
-        //for (auto lam : world().lams())
-            //lam->destroy_filter();
+        // for (auto lam : world().lams())
+        // lam->destroy_filter();
         todo_ = true;
         cleanup_fix_point();
     }
@@ -264,4 +260,4 @@ void Cleaner::run() {
 
 void cleanup_world(World& world) { Cleaner(world).run(); }
 
-}
+} // namespace thorin

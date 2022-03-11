@@ -126,7 +126,7 @@ const Pi* Pi::restructure() {
 const Def* Arr::restructure() {
     auto& w = world();
     if (auto n = isa_lit(shape()))
-        return w.sigma(DefArray(*n, [&](size_t i) { return apply(w.lit_int(*n, i)).back(); }));
+        return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)).back(); }));
     return nullptr;
 }
 
@@ -325,24 +325,24 @@ void Def::replace(Tracker with) const {
     }
 }
 
-DefArray Def::apply(const Def* arg) const {
-    if (auto nom = isa_nom()) return nom->apply(arg);
+DefArray Def::reduce(const Def* arg) const {
+    if (auto nom = isa_nom()) return nom->reduce(arg);
     return ops();
 }
 
-DefArray Def::apply(const Def* arg) {
+DefArray Def::reduce(const Def* arg) {
     auto& cache = world().data_.cache_;
     if (auto res = cache.lookup({this, arg})) return *res;
 
     return cache[{this, arg}] = rewrite(this, arg);
 }
 
-const Def* Def::reduce() const {
+const Def* Def::reduce_rec() const {
     auto def = this;
     while (auto app = def->isa<App>()) {
-        auto callee = app->callee()->reduce();
+        auto callee = app->callee()->reduce_rec();
         if (callee->isa_nom()) {
-            def = callee->apply(app->arg()).back();
+            def = callee->reduce(app->arg()).back();
         } else {
             def = callee != app->callee() ? world().app(callee, app->arg(), app->dbg()) : app;
             break;
@@ -364,10 +364,10 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
-        return arr->apply(world().lit_int(as_lit(arr->arity()), i)).back();
+        return arr->reduce(world().lit_int(as_lit(arr->arity()), i)).back();
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
-        return pack->apply(world().lit_int(as_lit(pack->arity()), i)).back();
+        return pack->reduce(world().lit_int(as_lit(pack->arity()), i)).back();
     } else if (sort() == Sort::Term) {
         return world().extract(this, a, i, dbg);
     }
