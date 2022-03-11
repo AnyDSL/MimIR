@@ -35,6 +35,6 @@ private:
     DefSet keep_;
 };
 
-}
+} // namespace thorin
 
 #endif
