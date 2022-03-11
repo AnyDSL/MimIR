@@ -6,9 +6,7 @@
 namespace thorin {
 
 const Def* DCE::rewrite(const Def* def) {
-    if (auto [app, var_lam] = isa_apped_nom_lam(def); isa_workable(var_lam)) {
-        return var2dead(app, var_lam);
-    }
+    if (auto [app, var_lam] = isa_apped_nom_lam(def); isa_workable(var_lam)) return var2dead(app, var_lam);
 
 #if 0
     else {
