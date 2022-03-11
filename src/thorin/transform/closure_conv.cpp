@@ -317,10 +317,10 @@ ClosureConv::ClosureStub ClosureConv::make_stub(const DefSet& fvs, Lam* old_lam,
     if (!isa_workable(old_lam)) {
         auto new_ext_type = w.cn(closure_remove_env(new_fn_type->dom()));
         auto new_ext_lam = old_lam->stub(w, new_ext_type, w.dbg(old_lam->name()));
-        old_lam->make_internal();
-        new_ext_lam->make_external();
         w.DLOG("wrap ext lam: {} -> stub: {}, ext: {}", old_lam, new_lam, new_ext_lam);
         if (old_lam->is_set()) {
+            old_lam->make_internal();
+            new_ext_lam->make_external();
             auto args = closure_insert_env(env, new_ext_lam->var());
             new_ext_lam->app(new_lam, args);
         } else {

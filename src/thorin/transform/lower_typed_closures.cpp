@@ -138,9 +138,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
         env = w.op_bitcast(new_type->op(1), env);
         return map(def, w.tuple({fn, env}));
     } else if (auto lam = def->isa_nom<Lam>()) {
-        // Internal Lam's in callee pos are scalarized, i.e their 2nd param is not really the environment
-        auto mode = (lam->is_internal() && lam->is_set()) ? No_Env : Box;
-        return make_stub(lam, mode, false);
+        return make_stub(lam, No_Env, false);
     } else if (auto nom = def->isa_nom()) {
         assert(!isa_ctype(nom));
         auto new_nom = nom->stub(w, new_type, new_dbg);
@@ -163,10 +161,6 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
             if (auto p = app->callee()->isa<Extract>(); p && isa_ctype(p->tuple()->type())
                     && app->callee_type()->is_basicblock())
                 new_ops[1] = insert_ret(new_ops[1], dummy_ret_);
-
-            // Change env of externals from [] to []*
-            if (auto lam = app->callee()->isa_nom<Lam>(); lam && (!lam->is_set() || lam->is_external()))
-                new_ops[1] = new_ops[1]->refine(CLOSURE_ENV_PARAM, w.bot(env_type()));
         }
         
         auto new_def = def->rebuild(w, new_type, new_ops, new_dbg);
