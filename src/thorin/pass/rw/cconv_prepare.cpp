@@ -74,8 +74,10 @@ const Def* CConvPrepare::rewrite(const Def* def) {
             w.DLOG("found BB from enclosing scope {}", op);
             return refine(w.cconv_mark(op, CConv::freeBB));
         }
-        if (isa_cont(cur_body_, def, i) && !isa<Tag::CConv>(CConv::ret, op) && !isa_retvar(op)) {
-            if (auto contlam = op->isa_nom<Lam>()) {
+        if (isa_cont(cur_body_, def, i)) {
+            if (isa<Tag::CConv>(CConv::ret, op) || isa_retvar(op)) {
+                return def;
+            } else if (auto contlam = op->isa_nom<Lam>()) {
                 return refine(w.cconv_mark(contlam, CConv::ret));
             } else {
                 auto wrapper = eta_wrap(op, CConv::ret, "eta_cont");
