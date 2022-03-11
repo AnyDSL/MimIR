@@ -89,6 +89,7 @@ const Def* CConvPrepare::rewrite(const Def* def) {
             w.DLOG("found firstclass use of BB: {}", bb_lam);
             return refine(w.cconv_mark(bb_lam, CConv::fstclassBB));
         }
+        // TODO: If EtaRed eta-reduces branches, we have to wrap them again!
         if (isa_retvar(op) && !isa_callee_br(cur_body_, def, i)) {
             w.DLOG("found firstclass use of return var: {}", op);
             return refine(eta_wrap(op, CConv::fstclassBB, "fstclass_ret"));

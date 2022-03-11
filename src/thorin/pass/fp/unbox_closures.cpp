@@ -24,7 +24,7 @@ static std::tuple<std::vector<ClosureLit>, const Def*> isa_branch(const Def* cal
 const Def* UnboxClosure::rewrite(const Def* def) { 
     auto& w = world();
     auto app = def->isa<App>();
-    if (!app) return def;
+    if (!app || !app->callee_type()->is_cn()) return def;
 
     if (auto [branches, index] = isa_branch(app->callee()); index) {
         w.DLOG("FLATTEN BRANCH {}", app->callee());
@@ -34,11 +34,9 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             auto& dropped_lam = entry->second;
             if (inserted || !dropped_lam) {
                 auto clam = c.fnc_as_lam();
-                dropped_lam = clam->stub(w, ctype_to_pi(c.type(), w.sigma()), clam->dbg());
-                auto new_vars = DefArray(dropped_lam->num_doms(), [&](auto i) {
-                    return (i == CLOSURE_ENV_PARAM) ? c.env() : dropped_lam->var(i); 
-                });
-                dropped_lam->set(clam->apply(w.tuple(new_vars)));
+                dropped_lam = clam->stub(w, ctype_to_pi(c.type()), clam->dbg());
+                auto new_vars = closure_insert_env(c.env(), dropped_lam->var());
+                dropped_lam->set(clam->apply(new_vars));
             }
             return dropped_lam;
         }));

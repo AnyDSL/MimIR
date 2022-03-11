@@ -35,7 +35,7 @@ static void closure_conv(World& world) {
     ClosureConv(world).run();
 
     PassMan cleanup(world);
-    auto er = cleanup.add<EtaRed>();
+    auto er = cleanup.add<EtaRed>(true); // We only want to eta-reduce things in callee position away at this point!
     ee = cleanup.add<EtaExp>(er);
     cleanup.add<Scalerize>(ee);
     cleanup.run();

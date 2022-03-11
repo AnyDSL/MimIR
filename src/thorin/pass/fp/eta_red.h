@@ -9,8 +9,8 @@ namespace thorin {
 /// Rewrites `λx.e x` to `e`, whenever `x` does (optimistically) not appear free in `e`.
 class EtaRed : public FPPass<EtaRed> {
 public:
-    EtaRed(PassMan& man)
-        : FPPass(man, "eta_red") {}
+    EtaRed(PassMan& man, bool callee_only = false)
+        : FPPass(man, "eta_red"), callee_only_(callee_only) {}
 
     enum Lattice {
         Bot,         ///< Never seen.
@@ -22,6 +22,7 @@ public:
     void mark_irreducible(Lam* lam) { irreducible_.emplace(lam); }
 
 private:
+    const bool callee_only_;
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Var*) override;
 
