@@ -39,7 +39,7 @@ public:
     static std::string_view lattice2str(Lattice l) { return l == Callee ? "Callee" : "Non_Callee_1"; }
     ///@}
 
-    using Data = LamMap<Lattice>;
+    using Data = std::tuple<Def2Def, LamMap<Lattice>>;
 
 private:
     /// @name PassMan hooks
@@ -58,7 +58,7 @@ private:
     LamSet expand_;
     Lam2Lam wrap2orig_;
     Lam2Lam new2old_;
-    Def2Def done_;
+    DefMap<Array<const Def*>> def2new_ops_;
 };
 
 } // namespace thorin

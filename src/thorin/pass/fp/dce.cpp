@@ -8,7 +8,10 @@ namespace thorin {
 const Def* DCE::rewrite(const Def* def) {
     if (auto [app, var_lam] = isa_apped_nom_lam(def); isa_workable(var_lam)) {
         return var2dead(app, var_lam);
-    } else {
+    }
+
+#if 0
+    else {
         // TODO I'm currently not sure why we need this.
         // The eta_exp_->new2old(...) should be enough, but removing this will break reverse.impala.
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
@@ -17,6 +20,7 @@ const Def* DCE::rewrite(const Def* def) {
             }
         }
     }
+#endif
 
     return def;
 }
