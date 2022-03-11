@@ -38,7 +38,7 @@ using nat_t    = u64;
     m(Alloc, alloc) m(Slot, slot) m(Malloc, malloc) m(Mslot, mslot) \
     m(Load, load) m(Remem, remem) m(Store, store)                   \
     m(Atomic, atomic)                                               \
-    m(Zip, zip)                                                     \
+    m(Zip, zip) m(For, affine_for)                                  \
     m(RevDiff, rev_diff) m(TangentVector, tangent_vector)
 
 namespace WMode {

@@ -78,3 +78,101 @@ TEST(Axiom, mangle) {
     EXPECT_EQ(Axiom::demangle(*Axiom::mangle("test") | 0xFF_u64), "test");
     EXPECT_EQ(Axiom::demangle(*Axiom::mangle("01234567") | 0xFF_u64), "01234567");
 }
+
+TEST(Main, sec) {
+    World w;
+    auto mem_t  = w.type_mem();
+    auto i32_t  = w.type_int_width(32);
+    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
+    auto i32_w  = w.lit_nat(width2mod(32));
+    auto l32    = w.lit_int(32);
+
+    // Cn [mem, i32, i32**, Cn [mem, i32]]
+    auto main_t                 = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t}, w.dbg("return"))});
+    auto main                   = w.nom_lam(main_t, w.dbg("main"));
+    auto [mem, argc, argv, ret] = main->vars<4>();
+
+    auto body_t = w.cn(mem_t);
+
+    auto lt     = w.fn(ICmp::ul, i32_w);
+    auto loop_t = w.cn({mem_t, i32_t, i32_t});
+    auto loop   = w.nom_lam(loop_t, w.dbg("loop"));
+
+    auto body = w.nom_lam(body_t, w.dbg("body"));
+    auto exit = w.nom_lam(body_t, w.dbg("exit"));
+
+    {
+        auto [lMem, iterVar, accumulator] = loop->vars<3>();
+        loop->app(false, w.select(body, exit, w.app(lt, {iterVar, l32})), lMem);
+    }
+
+    auto add = w.fn(Wrap::add, w.lit_nat(0), i32_w);
+    {
+        auto [lMem, iterVar, accumulator] = loop->vars<3>();
+
+        auto accumAdd = w.app(add, {iterVar, accumulator});
+        auto iterInc  = w.app(add, {iterVar, w.lit_int(1)});
+        body->app(false, loop, {lMem, iterInc, accumAdd});
+    }
+    {
+        auto [lMem, iterVar, accumulator] = loop->vars<3>();
+        exit->app(false, main->var(3), {main->var(0, nullptr), accumulator});
+    }
+
+    main->app(false, loop, {mem, w.lit_int(0), w.lit_int(0)});
+    main->make_external();
+
+    std::ofstream file("test.ll");
+    Stream s(file);
+    thorin::ll::emit(w, s);
+    file.close();
+
+    // TODO make sure that proper clang is in path on Windows
+#ifndef _MSC_VER
+    std::system("clang test.ll -o `pwd`/test");
+    EXPECT_EQ(240, WEXITSTATUS(std::system("./test a b c")));
+#endif
+}
+
+TEST(Main, loop) {
+    World w;
+    auto mem_t  = w.type_mem();
+    auto i32_t  = w.type_int_width(32);
+    auto i64_t  = w.type_int_width(64);
+    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
+
+    // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]
+    auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
+    auto main   = w.nom_lam(main_t, w.dbg("main"));
+
+    {
+        auto loop = w.fn_loop({i32_t, i64_t});
+        auto accumulator_type = w.sigma({i32_t, i64_t});
+        auto cont_type        = w.cn({mem_t, accumulator_type});
+        auto body_type        = w.cn({mem_t, i32_t, accumulator_type, cont_type});
+
+        auto body = w.nom_lam(body_type, w.dbg("body"));
+        {
+            auto [mem, i, acctpl, cont] = body->vars<4>({w.dbg("mem"), w.dbg("i"), w.dbg("acctpl"), w.dbg("cont")});
+            auto add = w.op(Wrap::add, w.lit_nat(0), w.extract(acctpl, 0_s), i);
+            auto mul = w.op(Wrap::mul, w.lit_nat(0), w.extract(acctpl, 1_s), w.op_bitcast(i64_t, i));
+            body->app(false, cont, {mem, w.tuple({add, mul})});
+        }
+
+        auto brk = w.nom_lam(w.cn({mem_t, accumulator_type}), w.dbg("break"));
+        {
+            auto [main_mem, argc, argv, ret] =
+                main->vars<4>({w.dbg("mem"), w.dbg("argc"), w.dbg("argv"), w.dbg("exit")});
+            auto [mem, acctpl] = brk->vars<2>();
+            brk->app(false, ret, {mem, w.extract(acctpl, 0_s)});
+            main->app(false, loop, {main_mem, w.lit_int(0), argc, w.lit_int(1), w.tuple({w.lit_int(0), w.lit_int(i64_t, 5)}), body, brk});
+        }
+    }
+
+    main->make_external();
+
+    std::ofstream file("test.ll");
+    Stream s(file);
+    ll::emit(w, s);
+    file.close();
+}

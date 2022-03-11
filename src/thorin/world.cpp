@@ -256,6 +256,27 @@ World::World(std::string_view name)
 
         data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
     }
+    {   // for :: [m: Nat , n: Nat , Ts: «n; *»] → [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , «i: n; Is#i», Cn
+        // [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];
+
+        auto input_sigma = nom_sigma(space(), 3);
+        input_sigma->set(0, nat);
+        input_sigma->set(1, nat);
+        input_sigma->set(2, arr(input_sigma->var(1), kind()));
+
+        auto ltp                      = nom_pi(kind())->set_dom(input_sigma);
+        auto [mod, type_shape, types] = ltp->vars<3>({dbg("iter_modulo"), dbg("types_shape"), dbg("types")});
+
+        auto it_type                  = type_int(mod);
+        auto type_arr                 = nom_arr(type_shape);
+        type_arr->set(extract(types, type_arr->var()));
+
+        ltp->set_codom(cn({mem, it_type, it_type, it_type, type_arr,
+                           cn({mem, it_type, type_arr, cn({mem, type_arr}, dbg("continue"))}, dbg("body")),
+                           cn({mem, type_arr}, dbg("exit"))}));
+
+        data_.for_ = axiom(nullptr, ltp, Tag::For, 0, dbg("for"));
+    }
 }
 
 World::~World() {
@@ -584,6 +605,10 @@ const Def* World::test(const Def* value, const Def* probe, const Def* match, con
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash, dbg);
+}
+
+const Def* World::fn_loop(Defs params) {
+    return app(ax_for(), {lit_nat(width2mod(32)), lit_nat(params.size()), tuple(params)});
 }
 
 /*
