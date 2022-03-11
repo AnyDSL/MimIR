@@ -11,15 +11,18 @@ static bool isa_cont(const App* body, const Def* def, size_t i) {
     return body->callee_type()->is_returning() && body->arg() == def && i == def->num_ops() - 1;
 }
 
+static const Def* isa_br(const App* body, const Def* def, size_t i) {
+    if (!body->callee_type()->is_cn()) return nullptr;
+    auto proj = body->callee()->isa<Extract>();
+    return (proj
+        && proj->tuple() == def
+        && proj->tuple()->isa<Tuple>()) ? proj->tuple() : nullptr;
+}
+
 static bool isa_callee_br(const App* body, const Def* def, size_t i) {
     if (!body->callee_type()->is_cn())
         return false;
-    if (isa_callee(def, i))
-        return true;
-    auto proj = body->callee()->isa<Extract>();
-    return proj
-        && proj->tuple() == def
-        && proj->tuple()->isa<Tuple>();
+    return isa_callee(def, i) || isa_br(body, def, i);
 }
 
 static Lam* isa_retvar(const Def* def) {
@@ -62,8 +65,10 @@ const Def* CConvPrepare::rewrite(const Def* def) {
             auto new_def = def->refine(i, new_op);
             if (def == cur_body_->callee())
                 cur_body_ = cur_body_->refine(0, new_def)->as<App>();
-            if (def == cur_body_->arg())
+            else if (def == cur_body_->arg())
                 cur_body_ = cur_body_->refine(1, new_def)->as<App>();
+            else if (isa_br(cur_body_, def, i))
+                cur_body_ = cur_body_->refine(0, cur_body_->callee()->refine(0, new_def))->as<App>();
             return new_def;
         };
         if (auto lam = isa_retvar(op); lam && from_outer_scope(lam)) {
@@ -95,6 +100,23 @@ const Def* CConvPrepare::rewrite(const Def* def) {
             return refine(eta_wrap(op, CConv::fstclassBB, "fstclass_ret"));
         }
     }
+
+    // Eta-Expand branches
+    if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {
+        auto br = app->callee()->isa<Extract>();
+        if (!br) return def;
+        auto branches = br->tuple();
+        for (auto i = 0u; i < branches->num_ops(); i++) {
+            if (!branches->op(i)->isa_nom<Lam>()) {
+                auto wrapper = eta_wrap(branches->op(i), CConv::bot, "eta_br");
+                w.DLOG("eta wrap branch: {} -> {}", branches->op(i), wrapper);
+                branches = branches->refine(i, wrapper);
+            }
+        }
+        cur_body_ = app->refine(0, app->callee()->refine(0, branches))->as<App>();
+        return cur_body_;
+    }
+
     return def;
 }
 
