@@ -44,6 +44,7 @@ const Def* Lam::ret_var(const Def* dbg) {
 }
 
 bool Lam::is_basicblock() const { return type()->is_basicblock(); }
+bool Lam::is_returning() const { return type()->is_returning(); }
 
 void Lam::app(const Def* callee, const Def* arg, const Def* dbg) {
     assert(isa_nom());

@@ -212,7 +212,7 @@ inline const Def* closure_insert_env(size_t i, const Def* env, const Def* a) {
 }
 inline const Def* closure_insert_env(const Def* env, const Def* tup_or_sig) {
     auto& w = tup_or_sig->world();
-    auto new_ops = DefArray(tup_or_sig->num_ops() + 1, [&](auto i) { return closure_insert_env(i, env, tup_or_sig); });
+    auto new_ops = DefArray(tup_or_sig->num_projs() + 1, [&](auto i) { return closure_insert_env(i, env, tup_or_sig); });
     return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 
@@ -222,7 +222,7 @@ inline const Def* closure_remove_env(size_t i, const Def* def) {
 }
 inline const Def* closure_remove_env(const Def* tup_or_sig) {
     auto& w = tup_or_sig->world();
-    auto new_ops = DefArray(tup_or_sig->num_ops() - 1, [&](auto i) { return closure_remove_env(i, tup_or_sig); });
+    auto new_ops = DefArray(tup_or_sig->num_projs() - 1, [&](auto i) { return closure_remove_env(i, tup_or_sig); });
     return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 

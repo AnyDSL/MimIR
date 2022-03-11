@@ -163,6 +163,8 @@ void ClosureConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     assert(stub && "closure should have a stub if rewrite_body is called!");
     auto [old_fn, num_fvs, env, new_fn] = *stub;
 
+    if (!old_fn->is_set()) return;
+
     w.DLOG("rw body: {} [old={}, env={}]\nt", new_fn, old_fn, env);
     auto env_param = new_fn->var(CLOSURE_ENV_PARAM, w.dbg("closure_env"));
     if (num_fvs == 1) {
@@ -183,16 +185,9 @@ void ClosureConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
         }));
     subst.emplace(old_fn->var(), params);
 
-    auto filter = (new_fn->filter())
-        ? rewrite(new_fn->filter(), subst)
-        : nullptr; // extern function
-
-    auto body = (new_fn->body())
-        ? rewrite(new_fn->body(), subst)
-        : nullptr;
-
-    new_fn->set_body(body);
-    new_fn->set_filter(filter);
+    auto filter = rewrite(new_fn->filter(), subst);
+    auto body   = rewrite(new_fn->body(), subst);
+    new_fn->set(filter, body);
 }
 
 const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
@@ -316,12 +311,22 @@ ClosureConv::ClosureStub ClosureConv::make_stub(const DefSet& fvs, Lam* old_lam,
     auto env_type = rewrite(env->type(), subst);
     auto new_fn_type = closure_type(old_lam->type(), subst, env_type)->as<Pi>();
     auto new_lam = old_lam->stub(w, new_fn_type, w.dbg(old_lam->name()));
-    new_lam->set_name(old_lam->name());
+    new_lam->set_name((old_lam->is_external() || !old_lam->is_set())? "cc_" + old_lam->name() : old_lam->name());
     new_lam->set_body(old_lam->body());
     new_lam->set_filter(old_lam->filter());
-    if (old_lam->is_external()) {
+    if (!isa_workable(old_lam)) {
+        auto new_ext_type = w.cn(closure_remove_env(new_fn_type->dom()));
+        auto new_ext_lam = old_lam->stub(w, new_ext_type, w.dbg(old_lam->name()));
         old_lam->make_internal();
-        new_lam->make_external();
+        new_ext_lam->make_external();
+        w.DLOG("wrap ext lam: {} -> stub: {}, ext: {}", old_lam, new_lam, new_ext_lam);
+        if (old_lam->is_set()) {
+            auto args = closure_insert_env(env, new_ext_lam->var());
+            new_ext_lam->app(new_lam, args);
+        } else {
+            new_ext_lam->set(nullptr, nullptr);
+            new_lam->app(new_ext_lam, closure_remove_env(new_lam->var()));
+        }
     }
     w.DLOG("STUB {} ~~> ({}, {})", old_lam, env, new_lam);
     auto closure = ClosureStub{old_lam, num_fvs, env, new_lam};
