@@ -54,7 +54,7 @@ const Def* EtaExp::rewrite(const Def* def) {
 Lam* EtaExp::eta_wrap(Lam* lam) {
     auto wrap = lam->stub(world(), lam->type(), lam->dbg());
     wrap2orig_.emplace(wrap, lam);
-    wrap->set_name(std::string("eta_") + lam->debug().name);
+    wrap->set_name(std::string("eta_") + lam->name());
     wrap->app(false, lam, wrap->var());
     if (eta_red_) eta_red_->mark_irreducible(wrap);
     return wrap;
@@ -71,7 +71,7 @@ undo_t EtaExp::analyze(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
             lam = new2old(lam);
-            if (expand_.contains(lam)) continue;
+            if (expand_.contains(lam) || wrap2orig_.contains(lam)) continue;
 
             if (isa_callee(def, i)) {
                 auto [_, l] = *data().emplace(lam, Lattice::Callee).first;

@@ -276,10 +276,20 @@ protected:
         assert(!states().empty());
         return *static_cast<typename P::Data*>(states().back().data[index()]);
     }
+    template<size_t I>
+    auto& data() {
+        assert(!states().empty());
+        return std::get<I>(*static_cast<typename P::Data*>(states().back().data[index()]));
+    }
     /// Use this for your convenience if @c P::Data is a map.
     template<class K>
     auto& data(const K& key) {
         return data()[key];
+    }
+    /// Use this for your convenience if @c P::Data is a map.
+    template<class K, size_t I>
+    auto& data(const K& key) {
+        return std::get<I>(data()[key]);
     }
     ///@}
 

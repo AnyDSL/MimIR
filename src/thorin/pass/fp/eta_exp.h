@@ -8,7 +8,7 @@ namespace thorin {
 class EtaRed;
 
 /// Performs η-expansion:
-/// `f -> λx.f x`, if `f` is a @p Lam with more than one user and does not appear in callee position.
+/// `f -> λx.f x`, if `f` is a Lam with more than one user and does not appear in callee position.
 /// This rule is a generalization of critical edge elimination.
 /// It gives other Pass%es such as SSAConstr the opportunity to change `f`'s signature (e.g. adding or removingp Var%s).
 class EtaExp : public FPPass<EtaExp, Lam> {
