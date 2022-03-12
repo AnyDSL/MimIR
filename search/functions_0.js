@@ -1,10 +1,10 @@
 var searchData=
 [
   ['add_0',['add',['../classthorin_1_1PassMan.html#ac9820d74411d7c8462b6b055bbacea3c',1,'thorin::PassMan']]],
-  ['alloc_1',['alloc',['../classthorin_1_1FPPassBase.html#a644c6af40a211250fbe496a0159079e7',1,'thorin::FPPassBase::alloc()'],['../classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996',1,'thorin::FPPass::alloc()']]],
+  ['alloc_1',['alloc',['../classthorin_1_1Pass.html#a98d4d09fe9b65d060d1c0aeeccadbb7c',1,'thorin::Pass::alloc()'],['../classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996',1,'thorin::FPPass::alloc()']]],
   ['alloc2malloc_2',['Alloc2Malloc',['../classthorin_1_1Alloc2Malloc.html#ad6a7b807349a09371b88813210b02356',1,'thorin::Alloc2Malloc']]],
   ['alloced_5ftype_3',['alloced_type',['../classthorin_1_1Global.html#ab1b95fb1bd35ad607dff8f98a97626fc',1,'thorin::Global']]],
-  ['analyze_4',['analyze',['../classthorin_1_1FPPassBase.html#ace83cbfdbd60d036c02c13d81d551e76',1,'thorin::FPPassBase::analyze(const Def *)'],['../classthorin_1_1FPPassBase.html#a4e8acdb6574f6e6af14a94d5f240ad19',1,'thorin::FPPassBase::analyze(const Var *)'],['../classthorin_1_1FPPassBase.html#ac777543ab430c6bf47bcd2399dff119a',1,'thorin::FPPassBase::analyze(const Proxy *)']]],
+  ['analyze_4',['analyze',['../classthorin_1_1Pass.html#a98a139bb6fb6a5b5a6b0f2d52ebc24dd',1,'thorin::Pass::analyze(const Def *)'],['../classthorin_1_1Pass.html#a5030802a7af3cfb07fd44da37389116d',1,'thorin::Pass::analyze(const Var *)'],['../classthorin_1_1Pass.html#a59d8f1e61ce3027492ee78164de6ae49',1,'thorin::Pass::analyze(const Proxy *)']]],
   ['anew_5fbegin_5',['anew_begin',['../structthorin_1_1Loc.html#a53f3ba6335bc0aea1c63c0baaa7627d8',1,'thorin::Loc']]],
   ['anew_5ffinis_6',['anew_finis',['../structthorin_1_1Loc.html#a55a1720eb092d5a84b590472ccb9e18b',1,'thorin::Loc']]],
   ['any_7',['any',['../classthorin_1_1BitSet.html#a37e3c01d012b9dcf9a69da8d4402d451',1,'thorin::BitSet']]],
@@ -26,7 +26,7 @@ var searchData=
   ['as_23',['as',['../classthorin_1_1RuntimeCast.html#a6246db1c6162065a40342142887df47e',1,'thorin::RuntimeCast::as()'],['../classthorin_1_1RuntimeCast.html#aeb629b194089d5cea40128022c4b99ba',1,'thorin::RuntimeCast::as() const'],['../namespacethorin.html#aa78a06105f27e02c56892a8ed4dd563f',1,'thorin::as(fields_t f, const Def *def)'],['../namespacethorin.html#a7ab8d710962bce89c7ea01e394c43dc6',1,'thorin::as(Tag2Enum&lt; t &gt; f, const Def *d)'],['../namespacethorin.html#a668f7b8adb8ba4f34d75ea5ae605c930',1,'thorin::as(const Def *d)']]],
   ['as_5flit_24',['as_lit',['../namespacethorin.html#a4784a7ada8e2badb49500623824d79e5',1,'thorin']]],
   ['as_5fnom_25',['as_nom',['../classthorin_1_1Def.html#a1e009bced6c7f37b6316d81ead2ad27e',1,'thorin::Def']]],
-  ['as_5fproxy_26',['as_proxy',['../classthorin_1_1RWPassBase.html#aefce686d1167f1abc2217f23b7461de9',1,'thorin::RWPassBase']]],
+  ['as_5fproxy_26',['as_proxy',['../classthorin_1_1Pass.html#a0e998f04dae1fafc75e68815979885d5',1,'thorin::Pass']]],
   ['as_5fstructural_27',['as_structural',['../classthorin_1_1Def.html#a5e049ff76ca81146b2c4c166aa45ba0d',1,'thorin::Def']]],
   ['assign_28',['assign',['../structthorin_1_1ll_1_1BB.html#aaeaf01e76c8eade7e6386c25825e67f6',1,'thorin::ll::BB']]],
   ['assignable_29',['assignable',['../classthorin_1_1Checker.html#a1f0d4a4327a4b0b58385d105698fc4af',1,'thorin::Checker']]],

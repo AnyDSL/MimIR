@@ -122,12 +122,10 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html">thorin::IPass</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a minimalistic base interface to work with when dynamically loading <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>es.  <a href="classthorin_1_1IPass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPassBase.html">thorin::RWPassBase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">All Passes that want to be registered in the <code><a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a></code> must implement this interface.  <a href="classthorin_1_1RWPassBase.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPassBase.html">thorin::FPPassBase</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base class for all <a class="el" href="classthorin_1_1FPPass.html" title="Inherit from this class using CRTP if you do need a Pass with a state.">FPPass</a>es.  <a href="classthorin_1_1FPPassBase.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html">thorin::Pass</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">All Passes that want to be registered in the <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> must implement this interface.  <a href="classthorin_1_1Pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassMan.html">thorin::PassMan</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An optimizer that combines several optimizations in an optimal way.  <a href="classthorin_1_1PassMan.html#details">More...</a><br /></td></tr>
@@ -135,7 +133,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPass.html">thorin::RWPass&lt; N &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html">thorin::FPPass&lt; P, N &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inherit from this class using CRTP if you do need a Pass with a state.  <a href="classthorin_1_1FPPass.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inherit from this class using CRTP if you do need a <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a> with a state.  <a href="classthorin_1_1FPPass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -145,8 +143,8 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ad9c8d1c5eaf69c4577726bf75fbf9357"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad9c8d1c5eaf69c4577726bf75fbf9357">thorin::undo_t</a></td></tr>
-<tr class="separator:ad9c8d1c5eaf69c4577726bf75fbf9357"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae49afdff4a29ba1d94c3fada6e7b32e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e">thorin::undo_t</a> = <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a></td></tr>
+<tr class="separator:aae49afdff4a29ba1d94c3fada6e7b32e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13419c0e67f8ea50a5640636f752e7d4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a13419c0e67f8ea50a5640636f752e7d4">thorin::CreateIPass</a> = IPass *(*)(PassMan &amp;)</td></tr>
 <tr class="separator:a13419c0e67f8ea50a5640636f752e7d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a181603f6479c823fe5d75e729635ef35"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a181603f6479c823fe5d75e729635ef35">thorin::DestroyIPass</a> = void(*)(IPass *)</td></tr>

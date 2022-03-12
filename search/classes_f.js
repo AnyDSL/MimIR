@@ -9,6 +9,6 @@ var searchData=
   ['runtimecast_6',['RuntimeCast',['../classthorin_1_1RuntimeCast.html',1,'thorin']]],
   ['runtimecast_3c_20def_20_3e_7',['RuntimeCast&lt; Def &gt;',['../classthorin_1_1RuntimeCast.html',1,'thorin']]],
   ['rwpass_8',['RWPass',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwpass_3c_20lam_20_3e_9',['RWPass&lt; Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
-  ['rwpassbase_10',['RWPassBase',['../classthorin_1_1RWPassBase.html',1,'thorin']]]
+  ['rwpass_3c_20def_20_3e_9',['RWPass&lt; Def &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]],
+  ['rwpass_3c_20lam_20_3e_10',['RWPass&lt; Lam &gt;',['../classthorin_1_1RWPass.html',1,'thorin']]]
 ];

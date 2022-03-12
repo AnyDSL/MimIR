@@ -19,7 +19,7 @@ var searchData=
   ['dce_16',['DCE',['../classthorin_1_1DCE.html#a0e903a61a950f8d7e60ff999b3d5013d',1,'thorin::DCE::DCE()'],['../classthorin_1_1DCE.html',1,'thorin::DCE']]],
   ['dce_2ecpp_17',['dce.cpp',['../dce_8cpp.html',1,'']]],
   ['dce_2eh_18',['dce.h',['../dce_8h.html',1,'']]],
-  ['dealloc_19',['dealloc',['../classthorin_1_1FPPassBase.html#adfd3bc20d8aad0af342f04e76b2dbb23',1,'thorin::FPPassBase::dealloc()'],['../classthorin_1_1FPPass.html#a1c0af3d3244ec754d861265813e38abf',1,'thorin::FPPass::dealloc()']]],
+  ['dealloc_19',['dealloc',['../classthorin_1_1Pass.html#a8b3128ceb49efff091029cad66962ed3',1,'thorin::Pass::dealloc()'],['../classthorin_1_1FPPass.html#a1c0af3d3244ec754d861265813e38abf',1,'thorin::FPPass::dealloc()']]],
   ['debug_20',['debug',['../classthorin_1_1Def.html#ac00e260dc42e1c46879e2d22f0ab3310',1,'thorin::Def']]],
   ['debug_21',['Debug',['../namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba',1,'thorin::Debug()'],['../classthorin_1_1Debug.html#a2046776a1aacc778c45bdcdd6ffe1241',1,'thorin::Debug::Debug(const Def *)'],['../classthorin_1_1Debug.html#a5c935918e18ae4b3b4daed7418422eab',1,'thorin::Debug::Debug(Loc loc)'],['../classthorin_1_1Debug.html#a626bbb0a3ac65dcba5fa3eaf7167d42a',1,'thorin::Debug::Debug(const char *name, Loc loc={}, const Def *meta=nullptr)'],['../classthorin_1_1Debug.html#a12514e0994c588b984efc8f6c166823a',1,'thorin::Debug::Debug(std::string name, Loc loc={}, const Def *meta=nullptr)'],['../classthorin_1_1Debug.html#ae9e40f99466c58b490b551f0acf77543',1,'thorin::Debug::Debug(std::string_view name, Loc loc={}, const Def *meta=nullptr)'],['../classthorin_1_1Debug.html',1,'thorin::Debug']]],
   ['debug_2ecpp_22',['debug.cpp',['../debug_8cpp.html',1,'']]],

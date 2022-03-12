@@ -15,7 +15,7 @@ var searchData=
   ['ul_12',['ul',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3a738a656e8e8ec272ca17cd51e12f558b',1,'thorin::ul()'],['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a738a656e8e8ec272ca17cd51e12f558b',1,'thorin::ul()']]],
   ['ule_13',['ule',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3a76cf56920355319ad148e25a340b0f18',1,'thorin::ule()'],['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a76cf56920355319ad148e25a340b0f18',1,'thorin::ule()']]],
   ['undo_5fenter_14',['undo_enter',['../classthorin_1_1FPPass.html#a992db753a80b89fb6bcce0dc6154dd8b',1,'thorin::FPPass']]],
-  ['undo_5ft_15',['undo_t',['../namespacethorin.html#ad9c8d1c5eaf69c4577726bf75fbf9357',1,'thorin']]],
+  ['undo_5ft_15',['undo_t',['../namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e',1,'thorin']]],
   ['undo_5fvisit_16',['undo_visit',['../classthorin_1_1FPPass.html#ad68f7d1dcf6986dcf22b465b740f706e',1,'thorin::FPPass']]],
   ['une_17',['une',['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a92df19e29c9d45d888ed5f68bad1c3b5',1,'thorin']]],
   ['unflatten_18',['unflatten',['../namespacethorin.html#a5c1d830f54f2759f11f77e5e0d8355f8',1,'thorin::unflatten(Defs defs, const Def *type, size_t &amp;j)'],['../namespacethorin.html#abe0176edb854a9982662e5bdfe0038a3',1,'thorin::unflatten(Defs ops, const Def *type)'],['../namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f',1,'thorin::unflatten(const Def *def, const Def *type)']]],

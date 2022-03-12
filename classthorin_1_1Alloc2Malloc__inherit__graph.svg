@@ -35,9 +35,9 @@
 <!-- Node3 -->
 <g id="node3" class="node">
 <title>Node3</title>
-<g id="a_node3"><a xlink:href="classthorin_1_1RWPassBase.html" target="_top" xlink:title="All Passes that want to be registered in the PassMan must implement this interface.">
-<polygon fill="none" stroke="black" points="2.5,-181.5 2.5,-200.5 108.5,-200.5 108.5,-181.5 2.5,-181.5"/>
-<text text-anchor="middle" x="55.5" y="-188.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPassBase</text>
+<g id="a_node3"><a xlink:href="classthorin_1_1Pass.html" target="_top" xlink:title="All Passes that want to be registered in the PassMan must implement this interface.">
+<polygon fill="none" stroke="black" points="21.5,-181.5 21.5,-200.5 89.5,-200.5 89.5,-181.5 21.5,-181.5"/>
+<text text-anchor="middle" x="55.5" y="-188.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Pass</text>
 </a>
 </g>
 </g>
@@ -65,7 +65,7 @@
 <!-- Node4 -->
 <g id="node4" class="node">
 <title>Node4</title>
-<g id="a_node4"><a xlink:href="classthorin_1_1IPass.html" target="_top" xlink:title=" ">
+<g id="a_node4"><a xlink:href="classthorin_1_1IPass.html" target="_top" xlink:title="This is a minimalistic base interface to work with when dynamically loading Passes.">
 <polygon fill="none" stroke="black" points="20,-238.5 20,-257.5 91,-257.5 91,-238.5 20,-238.5"/>
 <text text-anchor="middle" x="55.5" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::IPass</text>
 </a>
