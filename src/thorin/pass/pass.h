@@ -10,9 +10,10 @@
 namespace thorin {
 
 class PassMan;
-typedef size_t undo_t;
+using undo_t                    = size_t;
 static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 
+/// This is a minimalistic base interface to work with when dynamically loading Pass%es.
 class IPass {
 public:
     IPass(PassMan& man, const char* name)
@@ -57,9 +58,9 @@ public:
 
     /// @name analyze hook for the PassMan
     ///@{
-    /// Invoked after the @p PassMan has @p finish%ed @p rewrite%ing @p curr_nom to analyze the @p Def;
-    /// return @p No_Undo or the state to roll back to.
+    /// Invoked after the PassMan has finished Pass::rewrite%ing PassMan::curr_nom to analyze the Def;
     /// Will only be invoked if Pass::fixed_point() yields `true` - which will be the case for FPPass%es.
+    /// @return No_Undo or the state to roll back to.
     virtual undo_t analyze(const Def*) { return No_Undo; }
     virtual undo_t analyze(const Var*) { return No_Undo; }
     virtual undo_t analyze(const Proxy*) { return No_Undo; }
@@ -72,7 +73,7 @@ public:
     /// Should the PassMan even consider this pass?
     virtual bool inspect() const = 0;
 
-    /// Invoked just before RWPassBase::rewrite%ing PassMan::curr_nom's body.
+    /// Invoked just before Pass::rewrite%ing PassMan::curr_nom's body.
     virtual void enter() {}
     ///@}
 
@@ -186,8 +187,8 @@ private:
     }
 
     std::optional<const Def*> lookup(const Def* old_def) {
-        for (auto i = states_.rbegin(), e = states_.rend(); i != e; ++i)
-            if (auto new_def = i->old2new.lookup(old_def)) return *new_def;
+        for (auto& state : states_ | std::ranges::views::reverse)
+            if (auto new_def = state.old2new.lookup(old_def)) return *new_def;
         return {};
     }
     ///@}
@@ -196,8 +197,8 @@ private:
     ///@{
     undo_t analyze(const Def*);
     bool analyzed(const Def* def) {
-        for (auto i = states_.rbegin(), e = states_.rend(); i != e; ++i) {
-            if (i->analyzed.contains(def)) return true;
+        for (auto& state : states_ | std::ranges::views::reverse) {
+            if (state.analyzed.contains(def)) return true;
         }
         curr_state().analyzed.emplace(def);
         return false;
