@@ -3,7 +3,7 @@ var classthorin_1_1Def =
     [ "NormalizeFn", "classthorin_1_1Def.html#af282fc4a6b8615c21c73fc2bc9308abe", null ],
     [ "Def", "classthorin_1_1Def.html#aca49408161b5e3018a43788b418ffc1e", null ],
     [ "Def", "classthorin_1_1Def.html#abcf88f659116e82282760376ef8a0976", null ],
-    [ "~Def", "classthorin_1_1Def.html#a363d906c9d41379ef907c2ebcefe3e57", null ],
+    [ "~Def", "classthorin_1_1Def.html#a90ff289edea985bf55aa4b55c8f691e6", null ],
     [ "arity", "classthorin_1_1Def.html#a5077873bd4203c0ea099b044b0231d3d", null ],
     [ "as_nom", "classthorin_1_1Def.html#a1e009bced6c7f37b6316d81ead2ad27e", null ],
     [ "as_structural", "classthorin_1_1Def.html#a5e049ff76ca81146b2c4c166aa45ba0d", null ],

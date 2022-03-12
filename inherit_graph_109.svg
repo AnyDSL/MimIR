@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="node1" class="node">
 <title>Node0</title>
-<g id="a_node1"><a xlink:href="classthorin_1_1IPass.html" target="_top" xlink:title="This is a minimalistic base interface to work with when dynamically loading Passes.">
+<g id="a_node1"><a xlink:href="classthorin_1_1IPass.html" target="_top" xlink:title="This is a minimalistic base interface to work with when dynamically loading a Pass.">
 <polygon fill="none" stroke="black" points="0,-76.5 0,-95.5 71,-95.5 71,-76.5 0,-76.5"/>
 <text text-anchor="middle" x="35.5" y="-83.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::IPass</text>
 </a>
@@ -65,7 +65,7 @@
 <!-- Node23 -->
 <g id="node24" class="node">
 <title>Node23</title>
-<g id="a_node24"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title=" ">
+<g id="a_node24"><a xlink:href="classthorin_1_1RWPass.html" target="_top" xlink:title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration.">
 <polygon fill="none" stroke="black" points="217,-19.5 217,-38.5 324,-38.5 324,-19.5 217,-19.5"/>
 <text text-anchor="middle" x="270.5" y="-26.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::RWPass&lt; N &gt;</text>
 </a>
@@ -325,7 +325,7 @@
 <!-- Node22 -->
 <g id="node23" class="node">
 <title>Node22</title>
-<g id="a_node23"><a xlink:href="classthorin_1_1FPPass.html" target="_top" xlink:title="Inherit from this class using CRTP if you do need a Pass with a state.">
+<g id="a_node23"><a xlink:href="classthorin_1_1FPPass.html" target="_top" xlink:title="Inherit from this class using CRTP if you do need a Pass with a state and a fixed&#45;point.">
 <polygon fill="none" stroke="black" points="379.5,-38.5 379.5,-57.5 495.5,-57.5 495.5,-38.5 379.5,-38.5"/>
 <text text-anchor="middle" x="437.5" y="-45.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::FPPass&lt; P, N &gt;</text>
 </a>

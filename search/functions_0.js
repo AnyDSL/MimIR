@@ -1,7 +1,7 @@
 var searchData=
 [
   ['add_0',['add',['../classthorin_1_1PassMan.html#ac9820d74411d7c8462b6b055bbacea3c',1,'thorin::PassMan']]],
-  ['alloc_1',['alloc',['../classthorin_1_1Pass.html#a98d4d09fe9b65d060d1c0aeeccadbb7c',1,'thorin::Pass::alloc()'],['../classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996',1,'thorin::FPPass::alloc()']]],
+  ['alloc_1',['alloc',['../classthorin_1_1Pass.html#a98d4d09fe9b65d060d1c0aeeccadbb7c',1,'thorin::Pass']]],
   ['alloc2malloc_2',['Alloc2Malloc',['../classthorin_1_1Alloc2Malloc.html#ad6a7b807349a09371b88813210b02356',1,'thorin::Alloc2Malloc']]],
   ['alloced_5ftype_3',['alloced_type',['../classthorin_1_1Global.html#ab1b95fb1bd35ad607dff8f98a97626fc',1,'thorin::Global']]],
   ['analyze_4',['analyze',['../classthorin_1_1Pass.html#a98a139bb6fb6a5b5a6b0f2d52ebc24dd',1,'thorin::Pass::analyze(const Def *)'],['../classthorin_1_1Pass.html#a5030802a7af3cfb07fd44da37389116d',1,'thorin::Pass::analyze(const Var *)'],['../classthorin_1_1Pass.html#a59d8f1e61ce3027492ee78164de6ae49',1,'thorin::Pass::analyze(const Proxy *)']]],

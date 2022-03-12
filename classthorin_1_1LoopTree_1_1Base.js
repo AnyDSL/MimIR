@@ -5,7 +5,7 @@ var classthorin_1_1LoopTree_1_1Base =
       [ "Leaf", "classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cbac3b5e1f7de11d645fb1da6c5415b1fa5", null ]
     ] ],
     [ "Base", "classthorin_1_1LoopTree_1_1Base.html#acfff1d3d42a654bade27f295250b928b", null ],
-    [ "~Base", "classthorin_1_1LoopTree_1_1Base.html#a133f83145427c0f2270b324711078739", null ],
+    [ "~Base", "classthorin_1_1LoopTree_1_1Base.html#a4fe978aebae974b1f6998fe8de617934", null ],
     [ "cf_nodes", "classthorin_1_1LoopTree_1_1Base.html#a7ca2c194b8fe0dd1cd4ad740e5c655ef", null ],
     [ "depth", "classthorin_1_1LoopTree_1_1Base.html#a598e322ef660ed5e6d4cca6979bada43", null ],
     [ "node", "classthorin_1_1LoopTree_1_1Base.html#aa5c3865ef27a1b4ad5020304e4d9e2f6", null ],

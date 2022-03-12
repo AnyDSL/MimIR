@@ -116,15 +116,14 @@ Inheritance diagram for thorin::Pass:</div>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a7590468b286a953e04f3d46cc95f453a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a7590468b286a953e04f3d46cc95f453a">Pass</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f">man</a>, const char *<a class="el" href="classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632">name</a>)</td></tr>
 <tr class="separator:a7590468b286a953e04f3d46cc95f453a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7b1298ddd52ad365d7d691554f156c19"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a7b1298ddd52ad365d7d691554f156c19">~Pass</a> ()</td></tr>
-<tr class="separator:a7b1298ddd52ad365d7d691554f156c19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1422445ab9812219a993c61c2c6842b1"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a1422445ab9812219a993c61c2c6842b1">~Pass</a> ()=default</td></tr>
+<tr class="separator:a1422445ab9812219a993c61c2c6842b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">getters</div></td></tr>
-<tr class="memitem:a63f5c69818c98b9c04b9090b955c1a08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a63f5c69818c98b9c04b9090b955c1a08">index</a> () const</td></tr>
-<tr class="separator:a63f5c69818c98b9c04b9090b955c1a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3292e2b8dbc86e2664e2bbe934d75e7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a> ()</td></tr>
 <tr class="separator:aa3292e2b8dbc86e2664e2bbe934d75e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">rewrite hook for the PassMan</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p >Rewrites a <em>structural</em> <code>def</code> within <a class="el" href="classthorin_1_1PassMan.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a>; returns the replacement. </p>
+<tr><td colspan="2"><div class="groupHeader">Rewrite Hook for the PassMan</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p >Rewrites a <em>structural</em> <code>def</code> within <a class="el" href="classthorin_1_1PassMan.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a>.</p>
+<dl class="section return"><dt>Returns</dt><dd>the replacement. </dd></dl>
 </div></td></tr>
 <tr class="memitem:a76525e5c686c6d515d8ef474489c8d8a"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a76525e5c686c6d515d8ef474489c8d8a">rewrite</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="separator:a76525e5c686c6d515d8ef474489c8d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -132,9 +131,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a684fc6ec621aba9ce278f00a46b43a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1e228dbe8871f4cd027f9801962b256"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#ab1e228dbe8871f4cd027f9801962b256">rewrite</a> (const <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> *<a class="el" href="classthorin_1_1Pass.html#ac1f9cc4d10eb24b0ca4a101e7a4f30cc">proxy</a>)</td></tr>
 <tr class="separator:ab1e228dbe8871f4cd027f9801962b256"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">analyze hook for the PassMan</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p >Invoked after the <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> has finished <a class="el" href="classthorin_1_1Pass.html#a76525e5c686c6d515d8ef474489c8d8a">Pass::rewrite</a>ing <a class="el" href="classthorin_1_1PassMan.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a> to analyze the <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>; Will only be invoked if <a class="el" href="classthorin_1_1Pass.html#ad8dfd5398c9c8f8382668dea21a38d51">Pass::fixed_point()</a> yields <code>true</code> - which will be the case for <a class="el" href="classthorin_1_1FPPass.html" title="Inherit from this class using CRTP if you do need a Pass with a state.">FPPass</a>es.</p>
-<dl class="section return"><dt>Returns</dt><dd>No_Undo or the state to roll back to. </dd></dl>
+<tr><td colspan="2"><div class="groupHeader">Analyze Hook for the PassMan</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p >Invoked after the <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> has finished <a class="el" href="classthorin_1_1Pass.html#a76525e5c686c6d515d8ef474489c8d8a">Pass::rewrite</a>ing <a class="el" href="classthorin_1_1PassMan.html#a5c16d2fe175c1d11e8137da3e7a4135b">PassMan::curr_nom</a> to analyze the <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>.</p>
+<p >Will only be invoked if <a class="el" href="classthorin_1_1Pass.html#ad8dfd5398c9c8f8382668dea21a38d51">Pass::fixed_point()</a> yields <code>true</code> - which will be the case for <a class="el" href="classthorin_1_1FPPass.html" title="Inherit from this class using CRTP if you do need a Pass with a state and a fixed-point.">FPPass</a>es. </p><dl class="section return"><dt>Returns</dt><dd>No_Undo or the state to roll back to. </dd></dl>
 </div></td></tr>
 <tr class="memitem:a98a139bb6fb6a5b5a6b0f2d52ebc24dd"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a98a139bb6fb6a5b5a6b0f2d52ebc24dd">analyze</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:a98a139bb6fb6a5b5a6b0f2d52ebc24dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -142,7 +141,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5030802a7af3cfb07fd44da37389116d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59d8f1e61ce3027492ee78164de6ae49"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a59d8f1e61ce3027492ee78164de6ae49">analyze</a> (const <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> *)</td></tr>
 <tr class="separator:a59d8f1e61ce3027492ee78164de6ae49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">further hooks for the PassMan</div></td></tr>
+<tr><td colspan="2"><div class="groupHeader">Further Hooks for the PassMan</div></td></tr>
 <tr class="memitem:ad8dfd5398c9c8f8382668dea21a38d51"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#ad8dfd5398c9c8f8382668dea21a38d51">fixed_point</a> () const</td></tr>
 <tr class="separator:ad8dfd5398c9c8f8382668dea21a38d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a16826350f9adc391d5b18172d21208ad"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a16826350f9adc391d5b18172d21208ad">inspect</a> () const =0</td></tr>
@@ -170,15 +169,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6868a4c90e8682c8f519042212c3ae56 inherit pub_methods_classthorin_1_1IPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1844d29c109244e2d5f7fdce46f0632 inherit pub_methods_classthorin_1_1IPass"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632">name</a> () const</td></tr>
 <tr class="separator:ae1844d29c109244e2d5f7fdce46f0632 inherit pub_methods_classthorin_1_1IPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae32bba1a36211d7576896c90e12f8944 inherit pub_methods_classthorin_1_1IPass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html#ae32bba1a36211d7576896c90e12f8944">index</a> () const</td></tr>
+<tr class="separator:ae32bba1a36211d7576896c90e12f8944 inherit pub_methods_classthorin_1_1IPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">memory management</div></td></tr>
 <tr class="memitem:a98d4d09fe9b65d060d1c0aeeccadbb7c"><td class="memItemLeft" align="right" valign="top">virtual void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a98d4d09fe9b65d060d1c0aeeccadbb7c">alloc</a> ()</td></tr>
+<tr class="memdesc:a98d4d09fe9b65d060d1c0aeeccadbb7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="classthorin_1_1Pass.html#a98d4d09fe9b65d060d1c0aeeccadbb7c">More...</a><br /></td></tr>
 <tr class="separator:a98d4d09fe9b65d060d1c0aeeccadbb7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e9aea9142c159022f7aa4b6adfbb46e"><td class="memItemLeft" align="right" valign="top">virtual void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a9e9aea9142c159022f7aa4b6adfbb46e">copy</a> (const void *)</td></tr>
+<tr class="memdesc:a9e9aea9142c159022f7aa4b6adfbb46e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="classthorin_1_1Pass.html#a9e9aea9142c159022f7aa4b6adfbb46e">More...</a><br /></td></tr>
 <tr class="separator:a9e9aea9142c159022f7aa4b6adfbb46e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b3128ceb49efff091029cad66962ed3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a8b3128ceb49efff091029cad66962ed3">dealloc</a> (void *)</td></tr>
+<tr class="memdesc:a8b3128ceb49efff091029cad66962ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="classthorin_1_1Pass.html#a8b3128ceb49efff091029cad66962ed3">More...</a><br /></td></tr>
 <tr class="separator:a8b3128ceb49efff091029cad66962ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
@@ -189,17 +193,20 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >All Passes that want to be registered in the <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> must implement this interface. </p>
 <ul>
-<li>Directly inherit from this class if your pass doesn't need state and a fixed-point iteration (a ReWrite pass).</li>
-<li>Inherit from <a class="el" href="classthorin_1_1FPPass.html" title="Inherit from this class using CRTP if you do need a Pass with a state.">FPPass</a> using CRTP if you do need state. </li>
+<li>Inherit from <a class="el" href="classthorin_1_1RWPass.html" title="Inherit from this class if your Pass does not need state and a fixed-point iteration.">RWPass</a> if your pass does <b>not</b> need state and a fixed-point iteration.</li>
+<li>Inherit from <a class="el" href="classthorin_1_1FPPass.html" title="Inherit from this class using CRTP if you do need a Pass with a state and a fixed-point.">FPPass</a> if you <b>do</b> need state and a fixed-point. </li>
 </ul>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00040">40</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00042">42</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a7590468b286a953e04f3d46cc95f453a" name="a7590468b286a953e04f3d46cc95f453a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7590468b286a953e04f3d46cc95f453a">&#9670;&nbsp;</a></span>Pass()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">thorin::Pass::Pass </td>
@@ -219,16 +226,19 @@ Friends</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8cpp_source.html#l00009">9</a> of file <a class="el" href="pass_8cpp_source.html">pass.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="namespacethorin.html#a252c586d22f57e1aaff3b53a3634bfb2af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00044">44</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
-<a id="a7b1298ddd52ad365d7d691554f156c19" name="a7b1298ddd52ad365d7d691554f156c19"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7b1298ddd52ad365d7d691554f156c19">&#9670;&nbsp;</a></span>~Pass()</h2>
+<a id="a1422445ab9812219a993c61c2c6842b1" name="a1422445ab9812219a993c61c2c6842b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1422445ab9812219a993c61c2c6842b1">&#9670;&nbsp;</a></span>~Pass()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -245,12 +255,10 @@ Friends</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span><span class="mlabel">default</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00043">43</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -278,9 +286,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996">thorin::FPPass&lt; P, N &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996">thorin::FPPass&lt; BetaRed &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996">thorin::FPPass&lt; CopyProp, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996">thorin::FPPass&lt; DCE, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996">thorin::FPPass&lt; EtaExp, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996">thorin::FPPass&lt; EtaRed &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996">thorin::FPPass&lt; SSAConstr, Lam &gt;</a>, and <a class="el" href="classthorin_1_1FPPass.html#adee8b3c12921cb76fac794284a4f5996">thorin::FPPass&lt; TailRecElim, Lam &gt;</a>.</p>
+<p>Default constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00103">103</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00102">102</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="alloc2malloc_8cpp_source.html#l00005">thorin::Alloc2Malloc::rewrite()</a>.</p>
 
@@ -310,7 +318,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00064">64</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00067">67</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00014">thorin::No_Undo</a>.</p>
 
@@ -340,7 +348,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00066">66</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00069">69</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00014">thorin::No_Undo</a>.</p>
 
@@ -370,7 +378,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00065">65</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00068">68</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00014">thorin::No_Undo</a>.</p>
 
@@ -410,9 +418,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00093">93</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00092">92</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00031">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="def_8h_source.html#l00601">thorin::Proxy::flags()</a>, <a class="el" href="def_8h_source.html#l00600">thorin::Proxy::index()</a>, <a class="el" href="pass_8h_source.html#l00047">index()</a>, and <a class="el" href="pass_8h_source.html#l00082">proxy()</a>.</p>
+<p class="reference">References <a class="el" href="cast_8h_source.html#l00031">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="def_8h_source.html#l00601">thorin::Proxy::flags()</a>, <a class="el" href="def_8h_source.html#l00600">thorin::Proxy::index()</a>, <a class="el" href="pass_8h_source.html#l00027">thorin::IPass::index()</a>, and <a class="el" href="pass_8h_source.html#l00083">proxy()</a>.</p>
 
 </div>
 </div>
@@ -440,9 +448,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classthorin_1_1FPPass.html#aec64c2c72fb6ebe379c7c3900ceff042">thorin::FPPass&lt; P, N &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#aec64c2c72fb6ebe379c7c3900ceff042">thorin::FPPass&lt; BetaRed &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#aec64c2c72fb6ebe379c7c3900ceff042">thorin::FPPass&lt; CopyProp, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#aec64c2c72fb6ebe379c7c3900ceff042">thorin::FPPass&lt; DCE, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#aec64c2c72fb6ebe379c7c3900ceff042">thorin::FPPass&lt; EtaExp, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#aec64c2c72fb6ebe379c7c3900ceff042">thorin::FPPass&lt; EtaRed &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#aec64c2c72fb6ebe379c7c3900ceff042">thorin::FPPass&lt; SSAConstr, Lam &gt;</a>, and <a class="el" href="classthorin_1_1FPPass.html#aec64c2c72fb6ebe379c7c3900ceff042">thorin::FPPass&lt; TailRecElim, Lam &gt;</a>.</p>
+<p>Copy constructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00104">104</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00103">103</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -470,9 +478,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Reimplemented in <a class="el" href="classthorin_1_1FPPass.html#a1c0af3d3244ec754d861265813e38abf">thorin::FPPass&lt; P, N &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a1c0af3d3244ec754d861265813e38abf">thorin::FPPass&lt; BetaRed &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a1c0af3d3244ec754d861265813e38abf">thorin::FPPass&lt; CopyProp, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a1c0af3d3244ec754d861265813e38abf">thorin::FPPass&lt; DCE, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a1c0af3d3244ec754d861265813e38abf">thorin::FPPass&lt; EtaExp, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a1c0af3d3244ec754d861265813e38abf">thorin::FPPass&lt; EtaRed &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a1c0af3d3244ec754d861265813e38abf">thorin::FPPass&lt; SSAConstr, Lam &gt;</a>, and <a class="el" href="classthorin_1_1FPPass.html#a1c0af3d3244ec754d861265813e38abf">thorin::FPPass&lt; TailRecElim, Lam &gt;</a>.</p>
+<p>Destructor. </p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00105">105</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00104">104</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -503,7 +511,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classthorin_1_1RetWrap.html#aa9a31d88a64f935f99d2cc21cfd5c5a7">thorin::RetWrap</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00077">77</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00078">78</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -532,36 +540,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403">thorin::FPPass&lt; P, N &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403">thorin::FPPass&lt; BetaRed &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403">thorin::FPPass&lt; CopyProp, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403">thorin::FPPass&lt; DCE, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403">thorin::FPPass&lt; EtaExp, Lam &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403">thorin::FPPass&lt; EtaRed &gt;</a>, <a class="el" href="classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403">thorin::FPPass&lt; SSAConstr, Lam &gt;</a>, and <a class="el" href="classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403">thorin::FPPass&lt; TailRecElim, Lam &gt;</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00071">71</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
-
-</div>
-</div>
-<a id="a63f5c69818c98b9c04b9090b955c1a08" name="a63f5c69818c98b9c04b9090b955c1a08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63f5c69818c98b9c04b9090b955c1a08">&#9670;&nbsp;</a></span>index()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> thorin::Pass::index </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00047">47</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00093">as_proxy()</a>, <a class="el" href="pass_8h_source.html#l00264">thorin::FPPass&lt; P, N &gt;::data()</a>, and <a class="el" href="pass_8h_source.html#l00087">isa_proxy()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00074">74</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -632,7 +611,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00087">87</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00601">thorin::Proxy::flags()</a>, <a class="el" href="def_8h_source.html#l00600">thorin::Proxy::index()</a>, <a class="el" href="pass_8h_source.html#l00047">index()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, and <a class="el" href="pass_8h_source.html#l00082">proxy()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00601">thorin::Proxy::flags()</a>, <a class="el" href="def_8h_source.html#l00600">thorin::Proxy::index()</a>, <a class="el" href="pass_8h_source.html#l00027">thorin::IPass::index()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, and <a class="el" href="pass_8h_source.html#l00083">proxy()</a>.</p>
 
 </div>
 </div>
@@ -682,9 +661,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00082">82</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00083">83</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00093">as_proxy()</a>, <a class="el" href="pass_8h_source.html#l00087">isa_proxy()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00007">thorin::EtaExp::proxy()</a>, and <a class="el" href="pass_8h_source.html#l00056">rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00092">as_proxy()</a>, <a class="el" href="pass_8h_source.html#l00087">isa_proxy()</a>, <a class="el" href="eta__exp_8cpp_source.html#l00007">thorin::EtaExp::proxy()</a>, and <a class="el" href="pass_8h_source.html#l00059">rewrite()</a>.</p>
 
 </div>
 </div>
@@ -714,7 +693,7 @@ Friends</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classthorin_1_1Alloc2Malloc.html#ab39814f9252fe574c46d0677dccff303">thorin::Alloc2Malloc</a>, <a class="el" href="classthorin_1_1PartialEval.html#a5de285daa3ae0cbf7839d7c79802cd01">thorin::PartialEval</a>, <a class="el" href="classthorin_1_1RememElim.html#a0ef4565bbc35c32696b4d31074c6991a">thorin::RememElim</a>, and <a class="el" href="classthorin_1_1Scalerize.html#aa1beecd95ddfde12879b584ad10002b9">thorin::Scalerize</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00054">54</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00057">57</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -742,9 +721,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00056">56</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00059">59</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00082">proxy()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00083">proxy()</a>.</p>
 
 </div>
 </div>
@@ -772,7 +751,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00055">55</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00058">58</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -799,9 +778,9 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00302">302</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00297">297</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00025">thorin::IPass::man()</a>, and <a class="el" href="pass_8h_source.html#l00123">thorin::PassMan::world()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00024">thorin::IPass::man()</a>, and <a class="el" href="pass_8h_source.html#l00120">thorin::PassMan::world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ret__wrap_8cpp_source.html#l00005">thorin::RetWrap::enter()</a>, <a class="el" href="alloc2malloc_8cpp_source.html#l00005">thorin::Alloc2Malloc::rewrite()</a>, and <a class="el" href="partial__eval_8cpp_source.html#l00007">thorin::PartialEval::rewrite()</a>.</p>
 
@@ -828,13 +807,12 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00110">110</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00107">107</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>thorin/pass/<a class="el" href="pass_8h_source.html">pass.h</a></li>
-<li>thorin/pass/<a class="el" href="pass_8cpp_source.html">pass.cpp</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

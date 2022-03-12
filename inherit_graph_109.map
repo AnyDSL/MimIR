@@ -1,9 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classthorin_1_1IPass.html" title="This is a minimalistic base interface to work with when dynamically loading Passes." alt="" coords="5,586,100,613"/>
+<area shape="rect" id="node1" href="$classthorin_1_1IPass.html" title="This is a minimalistic base interface to work with when dynamically loading a Pass." alt="" coords="5,586,100,613"/>
 <area shape="rect" id="node2" href="$classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="148,586,239,613"/>
 <area shape="rect" id="node3" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="287,303,445,330"/>
 <area shape="rect" id="node18" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="289,586,443,613"/>
-<area shape="rect" id="node24" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="295,662,437,689"/>
+<area shape="rect" id="node24" href="$classthorin_1_1RWPass.html" title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="295,662,437,689"/>
 <area shape="rect" id="node4" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="499,5,678,47"/>
 <area shape="rect" id="node6" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="515,71,663,112"/>
 <area shape="rect" id="node8" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="507,136,670,177"/>
@@ -20,7 +20,7 @@
 <area shape="rect" id="node13" href="$classthorin_1_1TailRecElim.html" title=" " alt="" coords="732,274,861,301"/>
 <area shape="rect" id="node19" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="499,535,678,562"/>
 <area shape="rect" id="node21" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="503,586,674,613"/>
-<area shape="rect" id="node23" href="$classthorin_1_1FPPass.html" title="Inherit from this class using CRTP if you do need a Pass with a state." alt="" coords="511,637,666,663"/>
+<area shape="rect" id="node23" href="$classthorin_1_1FPPass.html" title="Inherit from this class using CRTP if you do need a Pass with a state and a fixed&#45;point." alt="" coords="511,637,666,663"/>
 <area shape="rect" id="node20" href="$classthorin_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="741,535,852,562"/>
 <area shape="rect" id="node22" href="$classthorin_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="745,586,848,613"/>
 <area shape="rect" id="node25" href="$classthorin_1_1PartialEval.html" title=" " alt="" coords="527,687,650,714"/>

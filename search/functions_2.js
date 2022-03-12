@@ -36,7 +36,7 @@ var searchData=
   ['contains_33',['contains',['../classthorin_1_1detail_1_1HashTable.html#a597927ea8d5fb7c46879e50a3ec9711b',1,'thorin::detail::HashTable::contains()'],['../classthorin_1_1IndexSet.html#a9ec5c4f63dcb39da3a10ccbf26bae240',1,'thorin::IndexSet::contains()']]],
   ['contains_5fproxy_34',['contains_proxy',['../classthorin_1_1Def.html#abe57e6f9e6e57fbddaf797a300d62298',1,'thorin::Def']]],
   ['convert_35',['convert',['../classthorin_1_1Bound.html#a1d917450f8f5ee49f0cb121dda8a2b6a',1,'thorin::Bound::convert()'],['../classthorin_1_1TBound.html#a17bcc965667807edc5bb1586eca05008',1,'thorin::TBound::convert()']]],
-  ['copy_36',['copy',['../classthorin_1_1FPPass.html#aec64c2c72fb6ebe379c7c3900ceff042',1,'thorin::FPPass::copy()'],['../classthorin_1_1Pass.html#a9e9aea9142c159022f7aa4b6adfbb46e',1,'thorin::Pass::copy()']]],
+  ['copy_36',['copy',['../classthorin_1_1Pass.html#a9e9aea9142c159022f7aa4b6adfbb46e',1,'thorin::Pass']]],
   ['copy_5flams_37',['copy_lams',['../classthorin_1_1World.html#ab148665b02cd6112774e39b647d3a159',1,'thorin::World']]],
   ['copy_5fuses_38',['copy_uses',['../classthorin_1_1Def.html#a6c585d3cebe35269971de0b1fb993c1b',1,'thorin::Def']]],
   ['copyprop_39',['CopyProp',['../classthorin_1_1CopyProp.html#a721ebd6b6dfcfbb3dcfaee9bb7b88852',1,'thorin::CopyProp']]],
