@@ -32,7 +32,7 @@ public:
         enum class Node { Head, Leaf };
 
         Base(Node node, Head* parent, int depth, const std::vector<const CFNode*>&);
-        virtual ~Base() {}
+        virtual ~Base() = default;
 
         Node node() const { return node_; }
         int depth() const { return depth_; }

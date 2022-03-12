@@ -13,52 +13,55 @@ class PassMan;
 using undo_t                    = size_t;
 static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 
-/// This is a minimalistic base interface to work with when dynamically loading Pass%es.
+/// This is a minimalistic base interface to work with when dynamically loading a Pass.
 class IPass {
 public:
-    IPass(PassMan& man, const char* name)
-        : man_(man)
-        , name_(name) {}
-
+    IPass(PassMan& man, const char* name);
     virtual ~IPass() = default;
 
+    /// @name getters
+    ///@{
     PassMan& man() { return man_; }
     const PassMan& man() const { return man_; }
     const char* name() const { return name_; }
+    size_t index() const { return index_; }
+    ///@}
 
 private:
     PassMan& man_;
     const char* name_;
+    size_t index_;
 };
 
 using CreateIPass  = IPass* (*)(PassMan&);
 using DestroyIPass = void (*)(IPass*);
 
 /// All Passes that want to be registered in the PassMan must implement this interface.
-/// * Directly inherit from this class if your pass doesn't need state and a fixed-point iteration (a ReWrite pass).
-/// * Inherit from FPPass using CRTP if you do need state.
+/// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
+/// * Inherit from FPPass if you **do** need state and a fixed-point.
 class Pass : public IPass {
 public:
-    Pass(PassMan& man, const char* name);
-    virtual ~Pass() {}
+    Pass(PassMan& man, const char* name)
+        : IPass(man, name) {}
+    virtual ~Pass() = default;
 
     /// @name getters
     ///@{
-    size_t index() const { return index_; }
     World& world();
     ///@}
 
-    /// @name rewrite hook for the PassMan
+    /// @name Rewrite Hook for the PassMan
     ///@{
-    /// Rewrites a *structural* @p def within PassMan::curr_nom; returns the replacement.
+    /// Rewrites a *structural* @p def within PassMan::curr_nom.
+    /// @return the replacement.
     virtual const Def* rewrite(const Def* def) { return def; }
     virtual const Def* rewrite(const Var* var) { return var; }
     virtual const Def* rewrite(const Proxy* proxy) { return proxy; }
     ///@}
 
-    /// @name analyze hook for the PassMan
+    /// @name Analyze Hook for the PassMan
     ///@{
-    /// Invoked after the PassMan has finished Pass::rewrite%ing PassMan::curr_nom to analyze the Def;
+    /// Invoked after the PassMan has finished Pass::rewrite%ing PassMan::curr_nom to analyze the Def.
     /// Will only be invoked if Pass::fixed_point() yields `true` - which will be the case for FPPass%es.
     /// @return No_Undo or the state to roll back to.
     virtual undo_t analyze(const Def*) { return No_Undo; }
@@ -66,13 +69,11 @@ public:
     virtual undo_t analyze(const Proxy*) { return No_Undo; }
     ///@}
 
-    /// @name further hooks for the PassMan
+    /// @name Further Hooks for the PassMan
     ///@{
     virtual bool fixed_point() const { return false; }
-
     /// Should the PassMan even consider this pass?
     virtual bool inspect() const = 0;
-
     /// Invoked just before Pass::rewrite%ing PassMan::curr_nom's body.
     virtual void enter() {}
     ///@}
@@ -82,14 +83,12 @@ public:
     const Proxy* proxy(const Def* type, Defs ops, flags_t flags = 0, const Def* dbg = {}) {
         return world().proxy(type, ops, index(), flags, dbg);
     }
-
     /// Check whether given @p def is a Proxy whose index matches this Pass's @p index.
     const Proxy* isa_proxy(const Def* def, flags_t flags = 0) {
         if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->index() == index() && proxy->flags() == flags)
             return proxy;
         return nullptr;
     }
-
     const Proxy* as_proxy(const Def* def, flags_t flags = 0) {
         auto proxy = def->as<Proxy>();
         assert(proxy->index() == index() && proxy->flags() == flags);
@@ -100,12 +99,10 @@ public:
 private:
     /// @name memory management
     ///@{
-    virtual void* alloc() { return nullptr; }
-    virtual void* copy(const void*) { return nullptr; }
-    virtual void dealloc(void*) {}
+    virtual void* alloc() { return nullptr; }           ///< Default constructor.
+    virtual void* copy(const void*) { return nullptr; } ///< Copy constructor.
+    virtual void dealloc(void*) {}                      ///< Destructor.
     ///@}
-
-    size_t index_;
 
     friend class PassMan;
 };
@@ -128,6 +125,7 @@ public:
 
     /// @name create and run passes
     ///@{
+    void run(); ///< Run all registered passes on the whole World.
 
     /// Add a pass to this PassMan.
     template<class P, class... Args>
@@ -138,18 +136,15 @@ public:
         passes_.emplace_back(std::move(p));
         return res;
     }
-
-    /// Run all registered passes on the whole World.
-    void run();
     ///@}
 
 private:
-    /// @name state
+    /// @name State
     ///@{
     struct State {
-        State()             = default;
-        State(const State&) = delete;
-        State(State&&)      = delete;
+        State()                 = default;
+        State(const State&)     = delete;
+        State(State&&)          = delete;
         State& operator=(State) = delete;
         State(size_t num)
             : data(num) {}
@@ -216,6 +211,7 @@ private:
     friend class FPPass;
 };
 
+/// Inherit from this class if your Pass does **not** need state and a fixed-point iteration.
 template<class N = Def>
 class RWPass : public Pass {
 public:
@@ -237,7 +233,8 @@ public:
     }
 };
 
-/// Inherit from this class using CRTP if you do need a Pass with a state.
+/// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) if you
+/// **do** need a Pass with a state and a fixed-point.
 template<class P, class N = Def>
 class FPPass : public RWPass<N> {
 public:
@@ -248,55 +245,53 @@ public:
 
     bool fixed_point() const override { return true; }
 
-    /// @name memory management for state
-    ///@{
-    void* alloc() override { return new typename P::Data(); } ///< Default ctor.
-    void* copy(const void* p) override {
-        return new typename P::Data(*static_cast<const typename P::Data*>(p));
-    }                                                                                    ///< Copy ctor.
-    void dealloc(void* state) override { delete static_cast<typename P::Data*>(state); } ///< Dtor.
-    ///@}
-
 protected:
     /// @name state-related getters
     ///@{
+    const auto& states() const { return Super::man().states_; }
     auto& states() { return Super::man().states_; }
     auto& data() {
         assert(!states().empty());
         return *static_cast<typename P::Data*>(states().back().data[Super::index()]);
     }
     template<size_t I>
-    auto& data() {
-        assert(!states().empty());
-        return std::get<I>(*static_cast<typename P::Data*>(states().back().data[Super::index()]));
-    }
-    /// Use this for your convenience if @c P::Data is a map.
+    auto& data() { return std::get<I>(data()); }
+    /// Use this for your convenience if `P::Data` is a map.
     template<class K>
     auto& data(const K& key) {
         return data()[key];
     }
-    /// Use this for your convenience if @c P::Data is a map.
+    /// Use this for your convenience if `P::Data` is a map.
     template<class K, size_t I>
     auto& data(const K& key) {
-        return std::get<I>(data()[key]);
+        return data<I>()[key];
     }
     ///@}
 
-    /// @name undo getters
+    /// @name undo
     ///@{
     undo_t curr_undo() const { return Super::man().curr_undo(); }
-
     undo_t undo_visit(Def* nom) const {
         if (auto undo = Super::man().curr_state().nom2visit.lookup(nom)) return *undo;
         return No_Undo;
     }
-
     undo_t undo_enter(Def* nom) const {
-        for (auto i = Super::man().states_.size(); i-- != 0;)
-            if (Super::man().states_[i].curr_nom == nom) return i;
+        for (auto i = states().size(); i-- != 0;)
+            if (states()[i].curr_nom == nom) return i;
         return No_Undo;
     }
     ///@}
+
+private:
+    /// @name memory management for state
+    ///@{
+    void* alloc() override { return new typename P::Data(); }
+    void* copy(const void* p) override {
+        return new typename P::Data(*static_cast<const typename P::Data*>(p));
+    }
+    void dealloc(void* state) override { delete static_cast<typename P::Data*>(state); }
+    ///@}
+
 };
 
 inline World& Pass::world() { return man().world(); }
