@@ -142,9 +142,9 @@ private:
     /// @name State
     ///@{
     struct State {
-        State()                 = default;
-        State(const State&)     = delete;
-        State(State&&)          = delete;
+        State()             = default;
+        State(const State&) = delete;
+        State(State&&)      = delete;
         State& operator=(State) = delete;
         State(size_t num)
             : data(num) {}
@@ -255,7 +255,9 @@ protected:
         return *static_cast<typename P::Data*>(states().back().data[Super::index()]);
     }
     template<size_t I>
-    auto& data() { return std::get<I>(data()); }
+    auto& data() {
+        return std::get<I>(data());
+    }
     /// Use this for your convenience if `P::Data` is a map.
     template<class K>
     auto& data(const K& key) {
@@ -286,12 +288,9 @@ private:
     /// @name memory management for state
     ///@{
     void* alloc() override { return new typename P::Data(); }
-    void* copy(const void* p) override {
-        return new typename P::Data(*static_cast<const typename P::Data*>(p));
-    }
+    void* copy(const void* p) override { return new typename P::Data(*static_cast<const typename P::Data*>(p)); }
     void dealloc(void* state) override { delete static_cast<typename P::Data*>(state); }
     ///@}
-
 };
 
 inline World& Pass::world() { return man().world(); }

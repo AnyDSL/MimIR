@@ -1,8 +1,8 @@
 #ifndef THORIN_ANALYSES_LOOPTREE_H
 #define THORIN_ANALYSES_LOOPTREE_H
 
-#include <vector>
 #include <sstream>
+#include <vector>
 
 #include "thorin/analyses/cfg.h"
 #include "thorin/util/array.h"
@@ -10,7 +10,8 @@
 
 namespace thorin {
 
-template<bool> class LoopTreeBuilder;
+template<bool>
+class LoopTreeBuilder;
 
 /// Calculates a loop nesting forest rooted at @p root_.
 /// The implementation uses Steensgard's algorithm.
@@ -102,11 +103,10 @@ public:
     const Leaf* operator[](const CFNode* n) const { return find(leaves_, n); }
 
 private:
-    static void get_nodes(std::vector<const Base *>& nodes, const Base* node) {
+    static void get_nodes(std::vector<const Base*>& nodes, const Base* node) {
         nodes.push_back(node);
         if (auto head = node->template isa<Head>()) {
-            for (const auto& child : head->children())
-                get_nodes(nodes, child.get());
+            for (const auto& child : head->children()) get_nodes(nodes, child.get());
         }
     }
 
@@ -117,6 +117,6 @@ private:
     friend class LoopTreeBuilder<forward>;
 };
 
-}
+} // namespace thorin
 
 #endif
