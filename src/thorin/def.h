@@ -597,7 +597,7 @@ private:
 public:
     /// @name misc getters
     ///@{
-    tag_t id() const { return tag_t(fields() >> 32_u64); }
+    tag_t index() const { return tag_t(fields() >> 32_u64); }
     flags_t flags() const { return flags_t(fields()); }
     ///@}
 

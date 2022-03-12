@@ -139,7 +139,7 @@ Stream& Def::unwrap(Stream& s) const {
     } else if (auto pack = isa<Pack>()) {
         return s.fmt("‹{}; {}›", pack->shape(), pack->body());
     } else if (auto proxy = isa<Proxy>()) {
-        return s.fmt(".proxy#{}#{} {, }", proxy->id(), proxy->flags(), proxy->ops());
+        return s.fmt(".proxy#{}#{} {, }", proxy->index(), proxy->flags(), proxy->ops());
     } else if (auto bound = isa_bound(this)) {
         auto op = bound->isa<Join>() ? "∪" : "∩";
         if (isa_nom()) s.fmt("{}{}: {}", op, unique_name(), type());
