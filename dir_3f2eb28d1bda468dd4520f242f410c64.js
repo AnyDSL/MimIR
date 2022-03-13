@@ -8,10 +8,6 @@ var dir_3f2eb28d1bda468dd4520f242f410c64 =
     [ "copy_prop.h", "copy__prop_8h.html", [
       [ "thorin::CopyProp", "classthorin_1_1CopyProp.html", "classthorin_1_1CopyProp" ]
     ] ],
-    [ "dce.cpp", "dce_8cpp.html", null ],
-    [ "dce.h", "dce_8h.html", [
-      [ "thorin::DCE", "classthorin_1_1DCE.html", "classthorin_1_1DCE" ]
-    ] ],
     [ "eta_exp.cpp", "eta__exp_8cpp.html", null ],
     [ "eta_exp.h", "eta__exp_8h.html", [
       [ "thorin::EtaExp", "classthorin_1_1EtaExp.html", "classthorin_1_1EtaExp" ]

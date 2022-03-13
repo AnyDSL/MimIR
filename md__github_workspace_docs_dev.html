@@ -170,11 +170,11 @@ Structural vs. Nominal</h1>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lam = def-&gt;isa_nom&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362">Lam</a>&gt;()) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> lam = def-&gt;isa_nom&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8ba3083dfa50d05b28c3cafe6ec116d0362">Lam</a>&gt;()) {</div>
 <div class="line">        <span class="comment">// lam of type Lam* - const has been removed!</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacethorin_1_1Node_html_a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362"><div class="ttname"><a href="namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06a3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a></div><div class="ttdeci">@ Lam</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_abc81787f032eaf9cdcec4e5dcadd9d8ba3083dfa50d05b28c3cafe6ec116d0362"><div class="ttname"><a href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8ba3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a></div><div class="ttdeci">@ Lam</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
 </div><!-- fragment --><p> You can also check whether a specific <code>def</code> is really a structural: </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> foo(<span class="keyword">const</span> Def* def) {</div>
 <div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> s = def-&gt;isa_structural()) {</div>
 <div class="line">        <span class="comment">// s cannot be a nominal</span></div>
@@ -182,11 +182,11 @@ Structural vs. Nominal</h1>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line"> </div>
-<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;isa_structural&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06ac1fb2543759c1fd49ae0fea3855ea812">Sigma</a>&gt;()) {</div>
+<div class="line">    <span class="keywordflow">if</span> (<span class="keyword">auto</span> sigma = def-&gt;isa_structural&lt;<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8bac1fb2543759c1fd49ae0fea3855ea812">Sigma</a>&gt;()) {</div>
 <div class="line">        <span class="comment">// sigma is of type const Sigma* and cannot be a nominal Sigma</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="anamespacethorin_1_1Node_html_a1e65379a5361d88e84c135355c0a6d06ac1fb2543759c1fd49ae0fea3855ea812"><div class="ttname"><a href="namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06ac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a></div><div class="ttdeci">@ Sigma</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_abc81787f032eaf9cdcec4e5dcadd9d8bac1fb2543759c1fd49ae0fea3855ea812"><div class="ttname"><a href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8bac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a></div><div class="ttdeci">@ Sigma</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
 Matching IR</h1>
 <h1><a class="anchor" id="autotoc_md14"></a>

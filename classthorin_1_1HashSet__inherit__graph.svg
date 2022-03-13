@@ -73,35 +73,35 @@
 <g id="node7" class="node">
 <title>Node7</title>
 <g id="a_node7"><a xlink:href="classthorin_1_1HashSet.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="black" points="707.5,-284.5 707.5,-314.5 823.5,-314.5 823.5,-284.5 707.5,-284.5"/>
-<text text-anchor="start" x="715.5" y="-302.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::HashSet&lt; const</text>
-<text text-anchor="middle" x="765.5" y="-291.5" font-family="Helvetica,sans-Serif" font-size="10.00"> Def * &gt;</text>
+<polygon fill="none" stroke="black" points="709,-284.5 709,-314.5 822,-314.5 822,-284.5 709,-284.5"/>
+<text text-anchor="start" x="717" y="-302.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::HashSet&lt; Use,</text>
+<text text-anchor="middle" x="765.5" y="-291.5" font-family="Helvetica,sans-Serif" font-size="10.00"> UseHash &gt;</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node7 -->
 <g id="edge6" class="edge">
 <title>Node1&#45;&gt;Node7</title>
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M540.33,-244.78C550.79,-249.38 562.19,-253.97 573,-257.5 617.16,-271.93 668.67,-282.91 707.14,-290.02"/>
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M540.33,-244.78C550.79,-249.38 562.19,-253.97 573,-257.5 617.81,-272.14 670.19,-283.23 708.83,-290.33"/>
 <polygon fill="orange" stroke="orange" points="541.57,-241.51 531.01,-240.59 538.7,-247.89 541.57,-241.51"/>
-<text text-anchor="middle" x="629" y="-287.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; const Def * &gt;</text>
+<text text-anchor="middle" x="629" y="-287.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; Use, UseHash &gt;</text>
 </g>
 <!-- Node8 -->
 <g id="node8" class="node">
 <title>Node8</title>
 <g id="a_node8"><a xlink:href="classthorin_1_1HashSet.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="black" points="709,-235.5 709,-265.5 822,-265.5 822,-235.5 709,-235.5"/>
-<text text-anchor="start" x="717" y="-253.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::HashSet&lt; Use,</text>
-<text text-anchor="middle" x="765.5" y="-242.5" font-family="Helvetica,sans-Serif" font-size="10.00"> UseHash &gt;</text>
+<polygon fill="none" stroke="black" points="707.5,-235.5 707.5,-265.5 823.5,-265.5 823.5,-235.5 707.5,-235.5"/>
+<text text-anchor="start" x="715.5" y="-253.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::HashSet&lt; const</text>
+<text text-anchor="middle" x="765.5" y="-242.5" font-family="Helvetica,sans-Serif" font-size="10.00"> Def * &gt;</text>
 </a>
 </g>
 </g>
 <!-- Node1&#45;&gt;Node8 -->
 <g id="edge7" class="edge">
 <title>Node1&#45;&gt;Node8</title>
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M565.23,-231.63C609.29,-235.8 667,-241.27 708.96,-245.24"/>
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M565.37,-231.64C608.77,-235.75 665.37,-241.11 707.13,-245.07"/>
 <polygon fill="orange" stroke="orange" points="565.49,-228.14 555.2,-230.68 564.83,-235.11 565.49,-228.14"/>
-<text text-anchor="middle" x="629" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; Use, UseHash &gt;</text>
+<text text-anchor="middle" x="629" y="-245.5" font-family="Helvetica,sans-Serif" font-size="10.00"> &lt; const Def * &gt;</text>
 </g>
 <!-- Node9 -->
 <g id="node9" class="node">

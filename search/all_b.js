@@ -6,6 +6,6 @@ var searchData=
   ['keep_3',['keep',['../classthorin_1_1BetaRed.html#a256524bd29ecf0fefeed14c65e037c91',1,'thorin::BetaRed']]],
   ['key_5ftype_4',['key_type',['../classthorin_1_1detail_1_1HashTable.html#ad5f6f55a3bc2f25f2328090296445da0',1,'thorin::detail::HashTable::key_type()'],['../classthorin_1_1HashSet.html#ab6a38c72ee2dbc127602bd09c253bb95',1,'thorin::HashSet::key_type()'],['../classthorin_1_1HashMap.html#a4fb517792d1c5f65c9f88db9fdca27fc',1,'thorin::HashMap::key_type()']]],
   ['kind_5',['kind',['../classthorin_1_1World.html#ab0b13abe15da390051cf3627ccde560c',1,'thorin::World']]],
-  ['kind_6',['Kind',['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06aea0c9a4caa75e2877c3b1e8654d40c49',1,'thorin::Node::Kind()'],['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771',1,'thorin::Kind()'],['../classthorin_1_1Kind.html',1,'thorin::Kind']]],
+  ['kind_6',['Kind',['../namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8baea0c9a4caa75e2877c3b1e8654d40c49',1,'thorin::Node::Kind()'],['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771',1,'thorin::Kind()'],['../classthorin_1_1Kind.html',1,'thorin::Kind']]],
   ['known_7',['known',['../namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921ac90ae688b2a3b1fd0751fd743eb385cd',1,'thorin']]]
 ];

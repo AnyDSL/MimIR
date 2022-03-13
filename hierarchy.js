@@ -126,9 +126,6 @@ var hierarchy =
     [ "thorin::detail::HashTable< std::pair< thorin::Lam *, DefVec >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
       [ "thorin::HashMap< std::pair< thorin::Lam *, DefVec > >", "classthorin_1_1HashMap.html", null ]
     ] ],
-    [ "thorin::detail::HashTable< std::pair< thorin::Lam *, thorin::BitSet >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
-      [ "thorin::HashMap< std::pair< thorin::Lam *, thorin::BitSet > >", "classthorin_1_1HashMap.html", null ]
-    ] ],
     [ "thorin::detail::HashTable< std::pair< thorin::Lam *, thorin::Lam * >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
       [ "thorin::HashMap< std::pair< thorin::Lam *, thorin::Lam * > >", "classthorin_1_1HashMap.html", null ]
     ] ],
@@ -140,6 +137,9 @@ var hierarchy =
     ] ],
     [ "thorin::detail::HashTable< std::string, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
       [ "thorin::HashMap< std::string >", "classthorin_1_1HashMap.html", null ]
+    ] ],
+    [ "thorin::detail::HashTable< std::tuple< thorin::Array< Lattice >, thorin::Lam *, thorin::Array >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
+      [ "thorin::HashMap< std::tuple< thorin::Array< Lattice >, thorin::Lam *, thorin::Array > >", "classthorin_1_1HashMap.html", null ]
     ] ],
     [ "thorin::detail::HashTable< std::unique_ptr< Node >, T, typename Key::Hash, 4 >", "classthorin_1_1detail_1_1HashTable.html", [
       [ "thorin::HashMap< std::unique_ptr< Node > >", "classthorin_1_1HashMap.html", null ]
@@ -183,9 +183,6 @@ var hierarchy =
         [ "thorin::RWPass< Lam >", "classthorin_1_1RWPass.html", [
           [ "thorin::FPPass< CopyProp, Lam >", "classthorin_1_1FPPass.html", [
             [ "thorin::CopyProp", "classthorin_1_1CopyProp.html", null ]
-          ] ],
-          [ "thorin::FPPass< DCE, Lam >", "classthorin_1_1FPPass.html", [
-            [ "thorin::DCE", "classthorin_1_1DCE.html", null ]
           ] ],
           [ "thorin::FPPass< EtaExp, Lam >", "classthorin_1_1FPPass.html", [
             [ "thorin::EtaExp", "classthorin_1_1EtaExp.html", null ]

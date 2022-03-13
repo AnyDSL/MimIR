@@ -27,7 +27,6 @@ var annotated_dup =
       [ "ClosureConv", "classthorin_1_1ClosureConv.html", "classthorin_1_1ClosureConv" ],
       [ "CondEval", "classthorin_1_1CondEval.html", "classthorin_1_1CondEval" ],
       [ "CopyProp", "classthorin_1_1CopyProp.html", "classthorin_1_1CopyProp" ],
-      [ "DCE", "classthorin_1_1DCE.html", "classthorin_1_1DCE" ],
       [ "Debug", "classthorin_1_1Debug.html", "classthorin_1_1Debug" ],
       [ "Def", "classthorin_1_1Def.html", "classthorin_1_1Def" ],
       [ "DefDefHash", "structthorin_1_1DefDefHash.html", "structthorin_1_1DefDefHash" ],
