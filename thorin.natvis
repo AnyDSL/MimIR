@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+  <Type Name="thorin::Def">
+    <DisplayString Condition="node_==0">{{node = Space}}</DisplayString>
+    <DisplayString Condition="node_==1">{{node = Kind}}</DisplayString>
+    <DisplayString Condition="node_==2">{{node = Pi}}</DisplayString>
+    <DisplayString Condition="node_==3">{{node = Lam}}</DisplayString>
+    <DisplayString Condition="node_==4">{{node = App}}</DisplayString>
+    <DisplayString Condition="node_==5">{{node = Sigma}}</DisplayString>
+    <DisplayString Condition="node_==6">{{node = Tuple}}</DisplayString>
+    <DisplayString Condition="node_==7">{{node = Extract}}</DisplayString>
+    <DisplayString Condition="node_==8">{{node = Insert}}</DisplayString>
+    <DisplayString Condition="node_==9">{{node = Arr}}</DisplayString>
+    <DisplayString Condition="node_==10">{{node = Pack}}</DisplayString>
+    <DisplayString Condition="node_==11">{{node = Join}}</DisplayString>
+    <DisplayString Condition="node_==12">{{node = Vel}}</DisplayString>
+    <DisplayString Condition="node_==13">{{node = Test}}</DisplayString>
+    <DisplayString Condition="node_==14">{{node = Top}}</DisplayString>
+    <DisplayString Condition="node_==15">{{node = Meet}}</DisplayString>
+    <DisplayString Condition="node_==16">{{node = Et}}</DisplayString>
+    <DisplayString Condition="node_==17">{{node = Pick}}</DisplayString>
+    <DisplayString Condition="node_==18">{{node = Bot}}</DisplayString>
+    <DisplayString Condition="node_==19">{{node = Proxy}}</DisplayString>
+    <DisplayString Condition="node_==21">{{node = Lit}}</DisplayString>
+    <DisplayString Condition="node_==22">{{node = Nat}}</DisplayString>
+    <DisplayString Condition="node_==23">{{node = Var}}</DisplayString>
+    <DisplayString Condition="node_==24">{{node = Global}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==0">{{ax = Mem}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==1">{{ax = Int}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==2">{{ax = Real}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==3">{{ax = Ptr}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==4">{{ax = Bit}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==5">{{ax = Shr}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==6">{{ax = Wrap}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==7">{{ax = Div}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==8">{{ax = ROp}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==9">{{ax = ICmp}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==10">{{ax = RCmp}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==11">{{ax = Trait}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==12">{{ax = Conv}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==13">{{ax = PE}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==14">{{ax = Acc}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==15">{{ax = Bitcast}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==16">{{ax = LEA}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==17">{{ax = Alloc}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==18">{{ax = Slot}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==19">{{ax = Malloc}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==20">{{ax = Mslot}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==21">{{ax = Load}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==22">{{ax = Remem}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==23">{{ax = Store}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==24">{{ax = Atomic}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==25">{{ax = Zip}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==26">{{ax = For}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==27">{{ax = RevDiff}}</DisplayString>
+    <DisplayString Condition="node_==20&amp;&amp;(fields_ >> 32)==28">{{ax = TangentVector}}</DisplayString>
+    <DisplayString>{{node = {node_}}}</DisplayString>
+    <Expand>
+        <Item Name="[type]" Condition="node_!=0">type_</Item>
+        <Item Name="[world]" Condition="node_==0">world_</Item>
+        <Item Name="[gid]">gid_</Item>
+        <Item Name="[shape]" Condition="node_==9">*(((Def**)(char*)((Def*)(((char*)&amp;normalizer_depth_)-8) + 1)))</Item>
+        <Item Name="[body]" Condition="node_==9">*(((Def**)(char*)((Def*)(((char*)&amp;normalizer_depth_)-8) + 1)) + 1)</Item>
+        <Item Name="[value]" Condition="node_==21">fields_</Item>
+        <ArrayItems Name="[ops]" Condition="node_!=9">
+            <Size>num_ops_</Size>
+            <ValuePointer>(((Def**)(char*)((Def*)(((char*)&amp;normalizer_depth_)-8) + 1)))</ValuePointer>
+        </ArrayItems>
+    </Expand>
+  </Type>
+</AutoVisualizer>

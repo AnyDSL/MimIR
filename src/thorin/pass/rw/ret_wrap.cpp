@@ -7,19 +7,15 @@ void RetWrap::enter() {
     if (!ret_var) return;
 
     // new wrapper that calls the return continuation
-    auto [p, inserted] = lam2ret_wrap_.emplace(curr_nom()->as<Lam>(), nullptr);
-    auto& ret_cont = p->second;
-    if (inserted) {
-        ret_cont = world().nom_lam(ret_var->type()->as<Pi>(), ret_var->dbg());
-        ret_cont->app(ret_var, ret_cont->var(), ret_var->dbg());
-    }
+    auto ret_cont = world().nom_lam(ret_var->type()->as<Pi>(), ret_var->dbg());
+    ret_cont->app(false, ret_var, ret_cont->var(), ret_var->dbg());
 
     // rebuild a new "var" that substitutes the actual ret_var with ret_cont
     auto new_vars = curr_nom()->vars();
     assert(new_vars.back() == ret_var && "we assume that the last element is the ret_var");
     new_vars.back() = ret_cont;
-    auto new_var = world().tuple(curr_nom()->dom(), new_vars);
-    curr_nom()->set(curr_nom()->apply(new_var));
+    auto new_var    = world().tuple(curr_nom()->dom(), new_vars);
+    curr_nom()->set(curr_nom()->reduce(new_var));
 }
 
-}
+} // namespace thorin

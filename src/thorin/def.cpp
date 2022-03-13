@@ -81,7 +81,7 @@ const Def* Nat    ::rebuild(World& w, const Def*  , Defs  , const Def*    ) cons
 const Def* Pack   ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pack(t->arity(), o[0], dbg); }
 const Def* Pi     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.pi(o[0], o[1], dbg); }
 const Def* Pick   ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pick(t, o[0], dbg); }
-const Def* Proxy  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->id(), as<Proxy>()->flags(), dbg); }
+const Def* Proxy  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->index(), as<Proxy>()->flags(), dbg); }
 const Def* Sigma  ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.sigma(o, dbg); }
 const Def* Space  ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.space(); }
 const Def* Test   ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.test(o[0], o[1], o[2], o[3], dbg); }
@@ -126,7 +126,7 @@ const Pi* Pi::restructure() {
 const Def* Arr::restructure() {
     auto& w = world();
     if (auto n = isa_lit(shape()))
-        return w.sigma(DefArray(*n, [&](size_t i) { return apply(w.lit_int(*n, i)).back(); }));
+        return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)).back(); }));
     return nullptr;
 }
 
@@ -140,7 +140,7 @@ std::string_view Def::node_name() const {
     case Node::op: return #abbr;
         THORIN_NODE(CODE)
 #undef CODE
-        default: THORIN_UNREACHABLE;
+        default: unreachable();
     }
 }
 
@@ -161,7 +161,7 @@ const Var* Def::var(const Def* dbg) {
     if (auto arr  = isa<Arr  >()) return w.var(w.type_int(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
     if (auto pack = isa<Pack >()) return w.var(w.type_int(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
     if (isa_bound(this)) return w.var(this, this,  dbg);
-    THORIN_UNREACHABLE;
+    unreachable();
 }
 
 Sort Def::level() const {
@@ -325,24 +325,24 @@ void Def::replace(Tracker with) const {
     }
 }
 
-DefArray Def::apply(const Def* arg) const {
-    if (auto nom = isa_nom()) return nom->apply(arg);
+DefArray Def::reduce(const Def* arg) const {
+    if (auto nom = isa_nom()) return nom->reduce(arg);
     return ops();
 }
 
-DefArray Def::apply(const Def* arg) {
+DefArray Def::reduce(const Def* arg) {
     auto& cache = world().data_.cache_;
     if (auto res = cache.lookup({this, arg})) return *res;
 
     return cache[{this, arg}] = rewrite(this, arg);
 }
 
-const Def* Def::reduce() const {
+const Def* Def::reduce_rec() const {
     auto def = this;
     while (auto app = def->isa<App>()) {
-        auto callee = app->callee()->reduce();
+        auto callee = app->callee()->reduce_rec();
         if (callee->isa_nom()) {
-            def = callee->apply(app->arg()).back();
+            def = callee->reduce(app->arg()).back();
         } else {
             def = callee != app->callee() ? world().app(callee, app->arg(), app->dbg()) : app;
             break;
@@ -364,10 +364,10 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
-        return arr->apply(world().lit_int(as_lit(arr->arity()), i)).back();
+        return arr->reduce(world().lit_int(as_lit(arr->arity()), i)).back();
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
-        return pack->apply(world().lit_int(as_lit(pack->arity()), i)).back();
+        return pack->reduce(world().lit_int(as_lit(pack->arity()), i)).back();
     } else if (sort() == Sort::Term) {
         return world().extract(this, a, i, dbg);
     }

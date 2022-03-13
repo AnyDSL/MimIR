@@ -32,7 +32,7 @@ public:
         auto& wrapper = entry->second;
         if (inserted) {
             wrapper = w.nom_lam(def->type()->as<Pi>(), w.dbg(dbg));
-            wrapper->app(def, wrapper->var());
+            wrapper->app(false, def, wrapper->var());
             lam2fscope_[wrapper] = scope(curr_nom());
             wrapper_.emplace(wrapper);
         }

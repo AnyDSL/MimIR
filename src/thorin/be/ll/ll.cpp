@@ -131,7 +131,7 @@ std::string CodeGen::convert(const Def* type) {
                 case 32: return types_[type] = "i32";
                 case 64: return types_[type] = "i64";
                 // clang-format on
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
             }
         } else {
             return types_[type] = "i64";
@@ -141,7 +141,7 @@ std::string CodeGen::convert(const Def* type) {
             case 16: return types_[type] = "half";
             case 32: return types_[type] = "float";
             case 64: return types_[type] = "double";
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
     } else if (auto ptr = isa<Tag::Ptr>(type)) {
         auto [pointee, addr_space] = ptr->args<2>();
@@ -179,7 +179,7 @@ std::string CodeGen::convert(const Def* type) {
         }
         s.fmt("}}");
     } else {
-        THORIN_UNREACHABLE;
+        unreachable();
     }
 
     if (name.empty()) return types_[type] = s.str();
@@ -442,7 +442,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
                     case 32: return std::to_string(lit->get<u32>());
                     case 64: return std::to_string(lit->get<u64>());
                     // clang-format on
-                    default: THORIN_UNREACHABLE;
+                    default: unreachable();
                 }
             } else {
                 return std::to_string(lit->get<u64>());
@@ -460,13 +460,13 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
                     break;
                 }
                 case 64: hex = lit->get<u64>(); break;
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
             }
 
             s << "0x" << std::setfill('0') << std::setw(16) << std::right << std::hex << hex;
             return s.str();
         }
-        THORIN_UNREACHABLE;
+        unreachable();
     } else if (def->isa<Bot>()) {
         return "undef";
     } else if (auto bit = isa<Tag::Bit>(def)) {
@@ -486,7 +486,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             case Bit:: iff: return bb.assign(name, "and {} {}, {}", neg(a), b);
             case Bit::niff: return bb.assign(name, "or  {} {}, {}", neg(a), b);
             // clang-format on
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
     } else if (auto shr = isa<Tag::Shr>(def)) {
         auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
@@ -495,7 +495,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         switch (shr.flags()) {
             case Shr::ashr: op = "ashr"; break;
             case Shr::lshr: op = "lshr"; break;
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
@@ -509,7 +509,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             case Wrap::sub: op = "sub"; break;
             case Wrap::mul: op = "mul"; break;
             case Wrap::shl: op = "shl"; break;
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
 
         if (mode & WMode::nuw) op += " nuw";
@@ -528,7 +528,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             case Div::udiv: op = "udiv"; break;
             case Div::srem: op = "srem"; break;
             case Div::urem: op = "urem"; break;
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
@@ -543,7 +543,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             case ROp::mul: op = "fmul"; break;
             case ROp::div: op = "fdiv"; break;
             case ROp::rem: op = "frem"; break;
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
 
         if (mode == RMode::fast)
@@ -579,7 +579,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             case ICmp::ul:  op += "ult"; break;
             case ICmp::ule: op += "ule"; break;
             // clang-format on
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
@@ -605,7 +605,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             case RCmp::uge: op += "uge"; break;
             case RCmp::une: op += "une"; break;
             // clang-format on
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
@@ -639,7 +639,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             case Conv::r2s: op = "fptosi"; break;
             case Conv::r2u: op = "fptoui"; break;
             // clang-format on
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
 
         return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
@@ -680,7 +680,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t, p, ll_ptr, idx_t, ll_idx);
     } else if (auto trait = isa<Tag::Trait>(def)) {
-        THORIN_UNREACHABLE;
+        unreachable();
     } else if (auto malloc = isa<Tag::Malloc>(def)) {
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));

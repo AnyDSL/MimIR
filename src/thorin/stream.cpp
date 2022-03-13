@@ -1,4 +1,5 @@
 #include "thorin/world.h"
+
 #include "thorin/analyses/deptree.h"
 #include "thorin/fe/tok.h"
 #include "thorin/util/container.h"
@@ -16,37 +17,35 @@ namespace thorin {
 bool Def::unwrap() const {
     if (isa_nom()) return false;
     if (isa<Global>()) return false;
-    //if (def->no_dep()) return true;
+    // if (def->no_dep()) return true;
     if (auto app = isa<App>()) {
         if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
         if (app->type()->isa<Kind>() || app->type()->isa<Space>()) return true;
-        if (app->callee()->isa<Axiom>()) {
-            return app->callee_type()->num_doms() <= 1;
-        }
+        if (app->callee()->isa<Axiom>()) { return app->callee_type()->num_doms() <= 1; }
         return false;
     }
     return true;
 }
 
 static Tok::Prec prec(const Def* def) {
-    if (def->isa<Pi>())      return Tok::Prec::Pi;
-    if (def->isa<App>())     return Tok::Prec::App;
+    if (def->isa<Pi>()) return Tok::Prec::Pi;
+    if (def->isa<App>()) return Tok::Prec::App;
     if (def->isa<Extract>()) return Tok::Prec::Extract;
-    if (def->isa<Lit>())     return Tok::Prec::Lit;
+    if (def->isa<Lit>()) return Tok::Prec::Lit;
     return Tok::Prec::Bottom;
 }
 
 static Tok::Prec prec_l(const Def* def) {
     assert(!def->isa<Lit>());
-    if (def->isa<Pi>())      return Tok::Prec::App;
-    if (def->isa<App>())     return Tok::Prec::App;
+    if (def->isa<Pi>()) return Tok::Prec::App;
+    if (def->isa<App>()) return Tok::Prec::App;
     if (def->isa<Extract>()) return Tok::Prec::Extract;
     return Tok::Prec::Bottom;
 }
 
 static Tok::Prec prec_r(const Def* def) {
-    if (def->isa<Pi>())      return Tok::Prec::Pi;
-    if (def->isa<App>())     return Tok::Prec::Extract;
+    if (def->isa<Pi>()) return Tok::Prec::Pi;
+    if (def->isa<App>()) return Tok::Prec::Extract;
     if (def->isa<Extract>()) return Tok::Prec::Lit;
     return Tok::Prec::Bottom;
 }
@@ -76,20 +75,26 @@ using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
 Stream& Def::unwrap(Stream& s) const {
-    if (false) {}
-    else if (isa<Space>()) return s.fmt("□");
-    else if (isa<Kind>())  return s.fmt("★");
-    else if (isa<Nat>())   return s.fmt("nat");
-    else if (auto bot = isa<Bot>()) return s.fmt("⊥∷{}", bot->type());
-    else if (auto top = isa<Top>()) return s.fmt("⊤∷{}", top->type());
-    else if (auto axiom = isa<Axiom>()) return s.fmt(":{}", axiom->debug().name);
+    if (false) {
+    } else if (isa<Space>())
+        return s.fmt("□");
+    else if (isa<Kind>())
+        return s.fmt("★");
+    else if (isa<Nat>())
+        return s.fmt("nat");
+    else if (auto bot = isa<Bot>())
+        return s.fmt("⊥∷{}", bot->type());
+    else if (auto top = isa<Top>())
+        return s.fmt("⊤∷{}", top->type());
+    else if (auto axiom = isa<Axiom>())
+        return s.fmt(":{}", axiom->debug().name);
     else if (auto lit = isa<Lit>()) {
         if (auto real = thorin::isa<Tag::Real>(lit->type())) {
             switch (as_lit(real->arg())) {
                 case 16: return s.fmt("{}∷r16", lit->get<r16>());
                 case 32: return s.fmt("{}∷r32", lit->get<r32>());
                 case 64: return s.fmt("{}∷r64", lit->get<r64>());
-                default: THORIN_UNREACHABLE;
+                default: unreachable();
             }
         }
         return s.fmt("{}∷{}", lit->get(), lit->type());
@@ -110,7 +115,7 @@ Stream& Def::unwrap(Stream& s) const {
     } else if (auto app = isa<App>()) {
         if (auto size = isa_lit(isa_sized_type(app))) {
             if (auto real = thorin::isa<Tag::Real>(app)) return s.fmt("r{}", *size);
-            if (auto _int = thorin::isa<Tag:: Int>(app)) {
+            if (auto _int = thorin::isa<Tag::Int>(app)) {
                 if (auto width = mod2width(*size)) return s.fmt("i{}", *width);
 
                 // append utf-8 subscripts in reverse order
@@ -121,7 +126,7 @@ Stream& Def::unwrap(Stream& s) const {
 
                 return s.fmt("i{}", str);
             }
-            THORIN_UNREACHABLE;
+            unreachable();
         }
         return s.fmt("{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
     } else if (auto sigma = isa<Sigma>()) {
@@ -134,7 +139,7 @@ Stream& Def::unwrap(Stream& s) const {
     } else if (auto pack = isa<Pack>()) {
         return s.fmt("‹{}; {}›", pack->shape(), pack->body());
     } else if (auto proxy = isa<Proxy>()) {
-        return s.fmt(".proxy#{}#{} {, }", proxy->id(), proxy->flags(), proxy->ops());
+        return s.fmt(".proxy#{}#{} {, }", proxy->index(), proxy->flags(), proxy->ops());
     } else if (auto bound = isa_bound(this)) {
         auto op = bound->isa<Join>() ? "∪" : "∩";
         if (isa_nom()) s.fmt("{}{}: {}", op, unique_name(), type());
@@ -142,8 +147,7 @@ Stream& Def::unwrap(Stream& s) const {
     }
 
     // other
-    if (fields() == 0)
-        return s.fmt(".{} {, }", node_name(), ops());
+    if (fields() == 0) return s.fmt(".{} {, }", node_name(), ops());
     return s.fmt(".{}#{} {, }", node_name(), fields(), ops());
 }
 
@@ -234,9 +238,7 @@ Stream& Def::stream(Stream& s, size_t max) const {
     return s;
 }
 
-Stream& Def::let(Stream& s) const {
-    return unwrap(s.fmt("{}: {} = ", unique_name(), type())).fmt(";");
-}
+Stream& Def::let(Stream& s) const { return unwrap(s.fmt("{}: {} = ", unique_name(), type())).fmt(";"); }
 
 void Def::dump() const { Streamable<Def>::dump(); }
 
@@ -247,7 +249,7 @@ void Def::dump(size_t max) const {
 
 // TODO polish this
 Stream& World::stream(Stream& s) const {
-    //auto old_gid = curr_gid();
+    // auto old_gid = curr_gid();
 #if 1
     DepTree dep(*this);
 
@@ -255,7 +257,7 @@ Stream& World::stream(Stream& s) const {
     s << "module '" << name();
 
     stream(rec, dep.root()).endl();
-    //assert_unused(old_gid == curr_gid());
+    // assert_unused(old_gid == curr_gid());
     return s;
 #else
     RecStreamer rec(s, std::numeric_limits<size_t>::max());
@@ -278,8 +280,7 @@ Stream& World::stream(RecStreamer& rec, const DepNode* n) const {
         rec.run();
     }
 
-    for (auto child : n->children())
-        stream(rec, child);
+    for (auto child : n->children()) stream(rec, child);
 
     return rec.s.dedent();
 }
@@ -291,4 +292,4 @@ void World::debug_stream() {
 template void Streamable<Def>::dump() const;
 template void detail::HashTable<const Def*, void, GIDHash<const Def*>, 4>::dump() const;
 
-}
+} // namespace thorin

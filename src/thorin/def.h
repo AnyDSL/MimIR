@@ -135,7 +135,7 @@ protected:
     Def(node_t, const Def* type, Defs ops, fields_t fields, const Def* dbg);
     /// Constructor for a *nom*inal Def.
     Def(node_t, const Def* type, size_t num_ops, fields_t fields, const Def* dbg);
-    virtual ~Def() {}
+    virtual ~Def() = default;
 
 public:
     /// @name misc getters
@@ -340,14 +340,14 @@ public:
     THORIN_PROJ(var, )
     ///@}
 
-    /// @name apply
+    /// @name reduce
     ///@{
     /// Rewrites Def::ops by substituting `this` nominal's Var with @p arg.
-    DefArray apply(const Def* arg) const;
-    DefArray apply(const Def* arg);
-    /// Trnasitively Def::apply Lam%s, if `this` is an App.
+    DefArray reduce(const Def* arg) const;
+    DefArray reduce(const Def* arg);
+    /// Transitively Def::reduce Lam%s, if `this` is an App.
     /// @return the reduced body
-    const Def* reduce() const;
+    const Def* reduce_rec() const;
     ///@}
 
     /// @name replace
@@ -358,10 +358,10 @@ public:
 
     /// @name rebuild & friends
     ///@{
-    virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { THORIN_UNREACHABLE; }
+    virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
     const Def* refine(size_t i, const Def* new_op) const;
-    virtual Def* stub(World&, const Def*, const Def*) { THORIN_UNREACHABLE; }
+    virtual Def* stub(World&, const Def*, const Def*) { unreachable(); }
     virtual const Def* restructure() { return nullptr; }
     ///@}
 
@@ -597,7 +597,7 @@ private:
 public:
     /// @name misc getters
     ///@{
-    tag_t id() const { return tag_t(fields() >> 32_u64); }
+    tag_t index() const { return tag_t(fields() >> 32_u64); }
     flags_t flags() const { return flags_t(fields()); }
     ///@}
 

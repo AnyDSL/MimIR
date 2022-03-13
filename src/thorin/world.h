@@ -36,23 +36,6 @@ class Scope;
 /// Note that types are also just Def%s and will be hashed as well.
 class World : public Streamable<World> {
 public:
-    struct SeaHash {
-        static hash_t hash(const Def* def) { return def->hash(); }
-        static bool eq(const Def* def1, const Def* def2) { return def1->equal(def2); }
-        static const Def* sentinel() { return (const Def*)(1); }
-    };
-
-    struct BreakHash {
-        static hash_t hash(u32 u) { return murmur3(u); }
-        static bool eq(u32 a, u32 b) { return a == b; }
-        static u32 sentinel() { return u32(-1); }
-    };
-
-    using Sea         = HashSet<const Def*, SeaHash>; ///< This HashSet contains Thorin's "sea of nodes".
-    using Breakpoints = HashSet<u32, BreakHash>;
-    using Externals   = HashMap<std::string, Def*, StrViewHash>;
-    using VisitFn     = std::function<void(const Scope&)>;
-
     World(World&&) = delete;
     World& operator=(const World&) = delete;
 
@@ -65,10 +48,22 @@ public:
     }
     ~World();
 
-    /// @ getters
+    /// @name Sea of Nodes
+    ///@{
+    struct SeaHash {
+        static hash_t hash(const Def* def) { return def->hash(); }
+        static bool eq(const Def* def1, const Def* def2) { return def1->equal(def2); }
+        static const Def* sentinel() { return (const Def*)(1); }
+    };
+
+    using Sea = HashSet<const Def*, SeaHash>; ///< This HashSet contains Thorin's "sea of nodes".
+
+    const Sea& defs() const { return data_.defs_; }
+    ///@}
+
+    /// @name getters
     ///@{
     std::string_view name() const { return data_.name_; }
-    const Sea& defs() const { return data_.defs_; }
     std::vector<Lam*> copy_lams() const; // TODO remove this
     ///@}
 
@@ -210,7 +205,7 @@ public:
         return extract_unsafe(tup, lit_int(0_u64, i), dbg);
     }
     const Def* extract_unsafe(const Def* tup, const Def* i, const Def* dbg = {}) {
-        return extract(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce()->arity())), i, dbg), dbg);
+        return extract(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce_rec()->arity())), i, dbg), dbg);
     }
     /// During a rebuild we cannot infer the type if it is not set yet; in this case we rely on @p ex_type.
     const Def* extract_(const Def* ex_type, const Def* tup, const Def* i, const Def* dbg = {});
@@ -234,7 +229,7 @@ public:
         return insert_unsafe(tup, lit_int(0_u64, i), val, dbg);
     }
     const Def* insert_unsafe(const Def* tup, const Def* i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce()->arity())), i), val, dbg);
+        return insert(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce_rec()->arity())), i), val, dbg);
     }
     ///@}
 
@@ -279,7 +274,7 @@ public:
             case 16: assert(r64(r16(r32(val))) == val && "loosing precision"); return lit_real(r16(r32(val)), dbg);
             case 32: assert(r64(r32(   (val))) == val && "loosing precision"); return lit_real(r32(   (val)), dbg);
             case 64: assert(r64(r64(   (val))) == val && "loosing precision"); return lit_real(r64(   (val)), dbg);
-            default: THORIN_UNREACHABLE;
+            default: unreachable();
         }
     }
     template<class R>
@@ -289,7 +284,7 @@ public:
         else if constexpr (sizeof(R) == 2) return lit(type_real(16), thorin::bitcast<u16>(val), dbg);
         else if constexpr (sizeof(R) == 4) return lit(type_real(32), thorin::bitcast<u32>(val), dbg);
         else if constexpr (sizeof(R) == 8) return lit(type_real(64), thorin::bitcast<u64>(val), dbg);
-        else THORIN_UNREACHABLE;
+        else unreachable();
     }
     // clang-format on
     ///@}
@@ -520,17 +515,18 @@ public:
     bool is_pe_done() const { return state_.pe_done; }
     ///@}
 
-
-    /// @name manage externals
+    /// @name Manage Externals
     ///@{
-    bool empty() { return data_.externals_.empty(); }
+    using Externals = HashMap<std::string, Def*, StrViewHash>;
     const Externals& externals() const { return data_.externals_; }
-    void make_external(Def* def) { data_.externals_.emplace(def->debug().name, def); }
-    void make_internal(Def* def) { data_.externals_.erase(def->debug().name); }
+    bool empty() { return data_.externals_.empty(); }
+    void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
+    void make_internal(Def* def) { data_.externals_.erase(def->name()); }
     bool is_external(const Def* def) { return data_.externals_.contains(def->debug().name); }
     // TODO add magic to use name of type std::string_view directly
     Def* lookup(std::string_view name) { return data_.externals_.lookup(std::string(name)).value_or(nullptr); }
 
+    using VisitFn = std::function<void(const Scope&)>;
     /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
     /// We call these Scope%s *top-level* Scope%s.
     /// Select with @p elide_empty whether you want to visit trivial Scope%s of *noms* without body.
@@ -539,8 +535,16 @@ public:
     ///@}
 
 #if THORIN_ENABLE_CHECKS
-    /// @name debugging features
+    /// @name Debugging Features
     ///@{
+    struct BreakHash {
+        static hash_t hash(u32 u) { return murmur3(u); }
+        static bool eq(u32 a, u32 b) { return a == b; }
+        static u32 sentinel() { return u32(-1); }
+    };
+
+    using Breakpoints = HashSet<u32, BreakHash>;
+
     void breakpoint(size_t number);
     void use_breakpoint(size_t number);
     void enable_history(bool flag = true);
@@ -617,14 +621,14 @@ private:
     ///@{
     template<class T, class... Args>
     const T* unify(size_t num_ops, Args&&... args) {
-        auto def = arena_.allocate<T>(num_ops, args...);
+        auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
         auto [i, inserted] = data_.defs_.emplace(def);
         if (inserted) {
 #ifndef NDEBUG
-            if (state_.breakpoints.contains(def->gid())) THORIN_BREAK;
+            if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
             for (auto op : def->ops()) {
-                if (state_.use_breakpoints.contains(op->gid())) THORIN_BREAK;
+                if (state_.use_breakpoints.contains(op->gid())) thorin::breakpoint();
             }
 #endif
             def->finalize();
@@ -632,15 +636,14 @@ private:
         }
 
         arena_.deallocate<T>(def);
-        --state_.curr_gid;
         return static_cast<const T*>(*i);
     }
 
     template<class T, class... Args>
     T* insert(size_t num_ops, Args&&... args) {
-        auto def = arena_.allocate<T>(num_ops, args...);
+        auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
 #ifndef NDEBUG
-        if (state_.breakpoints.contains(def->gid())) THORIN_BREAK;
+        if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         auto p = data_.defs_.emplace(def);
         assert_unused(p.second);
@@ -687,7 +690,7 @@ private:
                 buffer_index_ = 0;
             }
 
-            auto result = new (curr_zone_->buffer + buffer_index_) T(args...);
+            auto result = new (curr_zone_->buffer + buffer_index_) T(std::forward<Args&&>(args)...);
             assert(result->num_ops() == num_ops);
             buffer_index_ += num_bytes;
             assert(buffer_index_ % alignof(T) == 0);
@@ -793,7 +796,7 @@ private:
     std::shared_ptr<Stream> stream_;
 
     friend class Cleaner;
-    friend DefArray Def::apply(const Def*);
+    friend DefArray Def::reduce(const Def*);
     friend void Def::replace(Tracker) const;
 };
 

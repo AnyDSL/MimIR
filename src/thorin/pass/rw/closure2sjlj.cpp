@@ -106,7 +106,7 @@ Lam* Closure2SjLj::get_lpad(Lam* lam, const Def* rb) {
         auto [m1, arg_ptr] = w.op_load(m, rb)->projs<2>();
         arg_ptr = w.op_bitcast(w.type_ptr(dom), arg_ptr);
         auto [m2, args] = w.op_load(m1, arg_ptr)->projs<2>();
-        lpad->app(lam, rebuild(m2, env, args));
+        lpad->app(false, lam, rebuild(m2, env, args));
         ignore_.emplace(lpad);
     }
     return lpad;
@@ -124,7 +124,7 @@ void Closure2SjLj::enter() {
 
         auto new_args = curr_nom()->vars();
         new_args[0] = m2;
-        curr_nom()->set(curr_nom()->apply(w.tuple(new_args)));
+        curr_nom()->set(curr_nom()->reduce(w.tuple(new_args)));
 
         cur_jbuf_ = jb;
         cur_rbuf_ = rb;
@@ -144,7 +144,7 @@ void Closure2SjLj::enter() {
         auto new_args = DefArray(env->num_ops() + 1, [&](auto i) {
             return (i == 0) ? m : env_var->proj(i - 1);
         });
-        new_callee->app(body->callee(), new_args, body->dbg());
+        new_callee->app(false, body->callee(), new_args, body->dbg());
         branches[0] = pack_closure(env, new_callee, branch_type);
     }
 

@@ -284,7 +284,7 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
         if (!checker_->assignable(pi->dom(), arg)) err()->ill_typed_app(callee, arg);
     }
 
-    auto type                    = pi->apply(arg).back();
+    auto type                    = pi->reduce(arg).back();
     auto [axiom, currying_depth] = Axiom::get(callee); // TODO move down again
     if (axiom && currying_depth == 1) {
         if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
@@ -295,7 +295,7 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
 
 const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi                      = callee->type()->as<Pi>();
-    auto type                    = pi->apply(arg).back();
+    auto type                    = pi->reduce(arg).back();
     auto [axiom, currying_depth] = Axiom::get(callee);
     return unify<App>(2, axiom, currying_depth - 1, type, callee, arg, dbg);
 }
@@ -378,7 +378,7 @@ const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index,
         return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
     }
 
-    auto type = tup->type()->reduce();
+    auto type = tup->type()->reduce_rec();
     if (err()) {
         if (!checker_->equiv(type->arity(), isa_sized_type(index->type())))
             err()->index_out_of_range(type->arity(), index);
@@ -410,7 +410,7 @@ const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index,
 }
 
 const Def* World::insert(const Def* tup, const Def* index, const Def* val, const Def* dbg) {
-    auto type = tup->type()->reduce();
+    auto type = tup->type()->reduce_rec();
 
     if (err() && !checker_->equiv(type->arity(), isa_sized_type(index->type())))
         err()->index_out_of_range(type->arity(), index);
@@ -714,7 +714,7 @@ std::string_view World::level2string(LogLevel level) {
         case LogLevel::Verbose: return "V";
         case LogLevel::Debug:   return "D";
         // clang-format on
-        default: THORIN_UNREACHABLE;
+        default: unreachable();
     }
 }
 
@@ -727,7 +727,7 @@ int World::level2color(LogLevel level) {
         case LogLevel::Verbose: return 4;
         case LogLevel::Debug:   return 4;
         // clang-format on
-        default: THORIN_UNREACHABLE;
+        default: unreachable();
     }
 }
 

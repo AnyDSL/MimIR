@@ -50,7 +50,7 @@ Lam* Scalerize::make_scalar(const Def* def) {
         });
         return unflatten(tuple, tup_lam->dom(i), false);
     }));
-    sca_lam->set(tup_lam->apply(new_vars));
+    sca_lam->set(tup_lam->reduce(new_vars));
     tup2sca_[sca_lam] = sca_lam;
     tup2sca_.emplace(tup_lam, sca_lam);
     world().DLOG("lambda {} : {} ~> {} : {}", tup_lam, tup_lam->type(), sca_lam, sca_lam->type());

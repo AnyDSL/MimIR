@@ -17,7 +17,7 @@ public:
 
 class ErrorHandler {
 public:
-    virtual ~ErrorHandler() {}
+    virtual ~ErrorHandler() = default;
 
     virtual void expected_shape(const Def* def);
     virtual void index_out_of_range(const Def* arity, const Def* index);

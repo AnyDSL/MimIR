@@ -13,6 +13,8 @@
 
 #include "thorin/config.h"
 
+#include "thorin/util/assert.h"
+
 namespace thorin {
 
 class Stream {
@@ -218,7 +220,7 @@ Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
         }
     }
 
-    assert(false && "invalid format string for 's'");
+    unreachable("invalid format string for 's'");
 }
 
 template<class R, class F, bool use_rangei>

@@ -1,6 +1,8 @@
 #ifndef THORIN_LAM_H
 #define THORIN_LAM_H
 
+#include <variant>
+
 #include "thorin/def.h"
 
 namespace thorin {
@@ -83,24 +85,35 @@ public:
     const Def* ret_var(const Def* dbg = {});
     ///@}
 
-    /// @name setters
+    /// @name Setters for nominal Lam.
     ///@{
+    /// Lam::Filter is a `std::variant<bool, const Def*>` that lets you set the Lam::filter() like this:
+    /// ```cpp
+    /// lam1->app(true, f, arg);
+    /// lam2->app(my_filter_def, f, arg);
+    /// ```
+    using Filter = std::variant<bool, const Def*>;
     Lam* set(size_t i, const Def* def) { return Def::set(i, def)->as<Lam>(); }
     Lam* set(Defs ops) { return Def::set(ops)->as<Lam>(); }
-    Lam* set(const Def* filter, const Def* body) { return set({filter, body}); }
-    Lam* set_filter(const Def* filter) { return set(0_s, filter); }
-    Lam* set_filter(bool filter);
+    Lam* set(Filter filter, const Def* body) {
+        set_filter(filter);
+        return set_body(body);
+    }
+    Lam* set_filter(Filter);
     Lam* set_body(const Def* body) { return set(1, body); }
-    ///@}
-
-    /// @name CPS setters
-    ///@{
-    /// Sets filter to `false` and the body by App%ing.
-
-    void app(const Def* callee, const Def* arg, const Def* dbg = {});
-    void app(const Def* callee, Defs args, const Def* dbg = {});
-    void branch(const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg = {});
-    void test(const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem, const Def* dbg = {});
+    /// Set body to an App of @p callee and @p arg.
+    Lam* app(Filter filter, const Def* callee, const Def* arg, const Def* dbg = {});
+    /// Set body to an App of @p callee and @p args.
+    Lam* app(Filter filter, const Def* callee, Defs args, const Def* dbg = {});
+    /// Set body to an App of `(f, t)#cond mem`.
+    Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg = {});
+    Lam* test(Filter filter,
+              const Def* val,
+              const Def* idx,
+              const Def* match,
+              const Def* clash,
+              const Def* mem,
+              const Def* dbg = {});
     ///@}
 
     /// @name virtual methods

@@ -36,7 +36,7 @@ const Def* UnboxClosure::rewrite(const Def* def) {
                 auto clam = c.fnc_as_lam();
                 dropped_lam = clam->stub(w, ctype_to_pi(c.type()), clam->dbg());
                 auto new_vars = closure_insert_env(c.env(), dropped_lam->var());
-                dropped_lam->set(clam->apply(new_vars));
+                dropped_lam->set(clam->reduce(new_vars));
             }
             return dropped_lam;
         }));

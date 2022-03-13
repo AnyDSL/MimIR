@@ -8,9 +8,10 @@ namespace thorin {
 class BetaRed;
 class EtaExp;
 
-/// This @p FPPass is similar to sparse conditional constant propagation (SCCP).
-/// However, this optmization also works on all @p Lam%s alike and does not only consider basic blocks as opposed to traditional SCCP.
-/// What is more, this optimization will also propagate arbitrary @p Def%s and not only constants.
+/// This FPPass is similar to sparse conditional constant propagation (SCCP).
+/// However, this optmization also works on all Lam%s alike and does not only consider basic blocks as opposed to
+/// traditional SCCP. What is more, this optimization will also propagate arbitrary Def%s and not only constants.
+/// Finally, it will also remove dead Var%s.
 class CopyProp : public FPPass<CopyProp, Lam> {
 public:
     CopyProp(PassMan& man, BetaRed* beta_red, EtaExp* eta_exp, bool bb_only = false)
@@ -22,21 +23,29 @@ public:
     using Data = LamMap<DefVec>;
 
 private:
+    /// Lattice used for this Pass:
+    /// ```
+    ///  Keep    <-- We cannot do anything here.
+    ///   |
+    ///  Prop    <-- Var is live but the same Def everywhere.
+    ///   |
+    ///  Dead    <-- Var is dead.
+    /// ```
+    enum Lattice : u8 { Dead, Prop, Keep };
+    enum : flags_t { Varxy, Appxy };
+
     /// @name PassMan hooks
     ///@{
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Proxy*) override;
     ///@}
 
-    const Def* var2prop(const App*, Lam*);
-
     BetaRed* beta_red_;
     EtaExp* eta_exp_;
-    LamMap<std::pair<Lam*, DefVec>> var2prop_;
-    DefSet keep_;
+    LamMap<std::tuple<Array<Lattice>, Lam*, DefArray>> lam2info_;
     const bool bb_only_;
 };
 
-}
+} // namespace thorin
 
 #endif

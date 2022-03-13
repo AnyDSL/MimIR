@@ -2,7 +2,6 @@
 
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/copy_prop.h"
-#include "thorin/pass/fp/dce.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/ssa_constr.h"
@@ -56,12 +55,11 @@ static void lower_closures(World& world) {
 void optimize(World& world) {
     PassMan opt(world);
     // opt.add<PartialEval>();
-    // opt.add<BetaRed>();
+    // auto br = opt.add<BetaRed>();
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);
-    opt.add<SSAConstr>(ee);
+    // opt.add<SSAConstr>(ee);
     // opt.add<Scalerize>(ee);
-    //opt.add<DCE>(br, ee);
     // opt.add<CopyProp>(br, ee);
     // opt.add<TailRecElim>(er);
     opt.run();

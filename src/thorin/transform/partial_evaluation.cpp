@@ -1,6 +1,7 @@
 #include <queue>
 
 #include "thorin/world.h"
+
 #include "thorin/transform/mangle.h"
 #include "thorin/util/container.h"
 #include "thorin/util/hash.h"
@@ -30,11 +31,10 @@ void app_to_dropped_app(Lam* src, Lam* dst, const App* app) {
     DefVec nargs;
     auto src_app = src->body()->as<App>();
     for (size_t i = 0, e = src_app->num_args(); i != e; ++i) {
-        if (app->arg(i)->isa<Top>())
-            nargs.push_back(src_app->arg(i));
+        if (app->arg(i)->isa<Top>()) nargs.push_back(src_app->arg(i));
     }
 
-    src->app(dst, nargs, src_app->dbg());
+    src->set_body(src->world().app(dst, nargs, src_app->dbg()));
 }
 
 std::vector<Lam*> succs(Lam* lam) {
@@ -42,7 +42,7 @@ std::vector<Lam*> succs(Lam* lam) {
     std::queue<const Def*> queue;
     DefSet done;
 
-    auto enqueue = [&] (const Def* def) {
+    auto enqueue = [&](const Def* def) {
         if (done.find(def) == done.end()) {
             queue.push(def);
             done.insert(def);
@@ -59,8 +59,7 @@ std::vector<Lam*> succs(Lam* lam) {
             continue;
         }
 
-        for (auto op : def->ops())
-            enqueue(op);
+        for (auto op : def->ops()) enqueue(op);
     }
 
     return succs;
@@ -71,14 +70,12 @@ public:
     PartialEvaluator(World& world, bool lower2cff)
         : world_(world)
         , lower2cff_(lower2cff)
-        , boundary_(world.curr_gid())
-    {}
+        , boundary_(world.curr_gid()) {}
 
     World& world() { return world_; }
     bool run();
     void enqueue(Lam* lam) {
-        if (lam->is_set() && lam->gid() < 2 * boundary_ && done_.emplace(lam).second)
-            queue_.push(lam);
+        if (lam->is_set() && lam->gid() < 2 * boundary_ && done_.emplace(lam).second) queue_.push(lam);
     }
     void eat_pe_info(Lam*);
 
@@ -97,26 +94,22 @@ public:
     CondEval(Lam* callee, Defs args, LamMap<bool>& top_level)
         : callee_(callee)
         , args_(args)
-        , top_level_(top_level)
-    {
-        //assert(callee->filter().empty() || callee->filter().size() == args.size());
+        , top_level_(top_level) {
+        // assert(callee->filter().empty() || callee->filter().size() == args.size());
         assert(callee->num_vars() == args.size());
 
-        for (size_t i = 0, e = args.size(); i != e; ++i)
-            old2new_[callee->var(i)] = args[i];
+        for (size_t i = 0, e = args.size(); i != e; ++i) old2new_[callee->var(i)] = args[i];
     }
 
     World& world() { return callee_->world(); }
     const Def* instantiate(const Def* odef) {
-        if (auto ndef = old2new_.lookup(odef))
-            return *ndef;
+        if (auto ndef = old2new_.lookup(odef)) return *ndef;
 
         if (!odef->isa_nom()) {
             DefArray nops(odef->num_ops());
-            for (size_t i = 0; i != odef->num_ops(); ++i)
-                nops[i] = instantiate(odef->op(i));
+            for (size_t i = 0; i != odef->num_ops(); ++i) nops[i] = instantiate(odef->op(i));
 
-            auto ndef = odef->rebuild(world(), odef->type(), nops, odef->dbg());
+            auto ndef             = odef->rebuild(world(), odef->type(), nops, odef->dbg());
             return old2new_[odef] = ndef;
         }
 
@@ -128,37 +121,33 @@ public:
         // all other vars need specialization (lower2cff)
         auto order = callee_->var(i)->type()->order();
         if (lower2cff)
-            if(order >= 2 || (order == 1
-                        && (!callee_->var(i)->type()->isa<Pi>()
-                        || (!is_returning(callee_) || (!is_top_level(callee_)))))) {
-            world().DLOG("bad var({}) {} of lam {}", i, callee_->var(i), callee_);
-            return true;
-        }
+            if (order >= 2 || (order == 1 && (!callee_->var(i)->type()->isa<Pi>() ||
+                                              (!is_returning(callee_) || (!is_top_level(callee_)))))) {
+                world().DLOG("bad var({}) {} of lam {}", i, callee_->var(i), callee_);
+                return true;
+            }
 
         auto instance = isa_lit<u64>(instantiate(filter(i)));
-        auto is_one = instance ? *instance : false;
+        auto is_one   = instance ? *instance : false;
 
         return (!callee_->is_external() && callee_->num_uses() == 1) || is_one;
-        //return is_one(instantiate(filter(i)));
+        // return is_one(instantiate(filter(i)));
     }
 
     const Def* filter(size_t /*i*/) { return callee_->filter(); }
 
     bool is_top_level(Lam* lam) {
         auto p = top_level_.emplace(lam, true);
-        if (!p.second)
-            return p.first->second;
+        if (!p.second) return p.first->second;
 
         Scope scope(lam);
         unique_queue<DefSet> queue;
 
-        if (!scope.free_vars().empty())
-            return top_level_[lam] = false;
+        if (!scope.free_vars().empty()) return top_level_[lam] = false;
 
         for (auto nom : scope.free_noms()) {
             if (auto free_cn = nom->isa<Lam>()) {
-                if (!is_top_level(free_cn))
-                    return top_level_[lam] = false;
+                if (!is_top_level(free_cn)) return top_level_[lam] = false;
             }
         }
 
@@ -176,7 +165,7 @@ void PartialEvaluator::eat_pe_info(Lam* cur) {
     auto next = cur->body()->as<App>()->arg(3);
 
     if (cur->body()->as<App>()->arg(2)->no_dep()) {
-        //auto msg = cur->body()->as<App>()->arg(1)->as<Bitcast>()->from()->as<Global>()->init();
+        // auto msg = cur->body()->as<App>()->arg(1)->as<Bitcast>()->from()->as<Global>()->init();
         world().idef(cur->body()->as<App>()->callee(), "pe_info: {}: {}", "TODO", cur->body()->as<App>()->arg(2));
         cur->app(next, cur->body()->as<App>()->arg(0), cur->body()->as<App>()->dbg());
 
@@ -206,7 +195,6 @@ bool PartialEvaluator::run() {
         bool force_fold = false;
         auto callee_def = app->callee();
 
-
         if (auto run = isa<Tag::PE>(PE::run, app->callee())) {
             force_fold = true;
             callee_def = run->arg();
@@ -214,9 +202,9 @@ bool PartialEvaluator::run() {
 
         if (auto callee = callee_def->isa_nom<Lam>()) {
             // TODO
-            //if (callee->intrinsic() == Lam::Intrinsic::PeInfo) {
-                //eat_pe_info(lam);
-                //continue;
+            // if (callee->intrinsic() == Lam::Intrinsic::PeInfo) {
+            // eat_pe_info(lam);
+            // continue;
             //}
 
             if (callee->is_set()) {
@@ -229,20 +217,20 @@ bool PartialEvaluator::run() {
                 for (size_t i = 0; i != num_args; ++i) {
                     if (force_fold || cond_eval.eval(i, lower2cff_)) {
                         args[i] = app->arg(i);
-                        fold = true;
+                        fold    = true;
                     } else {
                         args[i] = world().top(callee->var(i)->type());
                     }
                 }
 
                 if (fold) {
-                    auto app = world().app(callee, args)->as<App>();
+                    auto app      = world().app(callee, args)->as<App>();
                     const auto& p = cache_.emplace(app, nullptr);
-                    Lam*& target = p.first->second;
+                    Lam*& target  = p.first->second;
                     // create new specialization if not found in cache
                     if (p.second) {
                         target = drop(app);
-                        todo = true;
+                        todo   = true;
                     }
 
                     app_to_dropped_app(lam, target, app);
@@ -257,8 +245,7 @@ bool PartialEvaluator::run() {
             }
         }
 
-        for (auto succ : succs(lam))
-            enqueue(succ);
+        for (auto succ : succs(lam)) enqueue(succ);
     }
 
     return todo;
@@ -276,4 +263,4 @@ bool partial_evaluation(World& world, bool lower2cff) {
 
 //------------------------------------------------------------------------------
 
-}
+} // namespace thorin

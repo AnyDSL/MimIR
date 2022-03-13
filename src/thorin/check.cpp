@@ -54,7 +54,7 @@ bool Checker::assignable(const Def* type, const Def* val) {
     if (auto sigma = type->isa<Sigma>()) {
         if (!equiv(type->arity(), val->type()->arity())) return false;
 
-        auto red = sigma->apply(val);
+        auto red = sigma->reduce(val);
         for (size_t i = 0, a = red.size(); i != a; ++i) {
             if (!assignable(red[i], val->proj(a, i))) return false;
         }

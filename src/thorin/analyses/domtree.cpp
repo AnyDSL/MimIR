@@ -15,7 +15,7 @@ void DomTreeBase<forward>::create() {
                 goto outer_loop;
             }
         }
-        THORIN_UNREACHABLE;
+        unreachable();
 outer_loop:;
     }
 
@@ -24,26 +24,23 @@ outer_loop:;
 
         for (auto n : cfg().reverse_post_order().skip_front()) {
             const CFNode* new_idom = nullptr;
-            for (auto pred : cfg().preds(n))
-                new_idom = new_idom ? least_common_ancestor(new_idom, pred) : pred;
+            for (auto pred : cfg().preds(n)) new_idom = new_idom ? least_common_ancestor(new_idom, pred) : pred;
 
             assert(new_idom);
             if (idom(n) != new_idom) {
                 idoms_[n] = new_idom;
-                todo = true;
+                todo      = true;
             }
         }
     }
 
-    for (auto n : cfg().reverse_post_order().skip_front())
-        children_[idom(n)].push_back(n);
+    for (auto n : cfg().reverse_post_order().skip_front()) children_[idom(n)].push_back(n);
 }
 
 template<bool forward>
 void DomTreeBase<forward>::depth(const CFNode* n, int i) {
     depth_[n] = i;
-    for (auto child : children(n))
-        depth(child, i+1);
+    for (auto child : children(n)) depth(child, i + 1);
 }
 
 template<bool forward>
@@ -59,4 +56,4 @@ const CFNode* DomTreeBase<forward>::least_common_ancestor(const CFNode* i, const
 template class DomTreeBase<true>;
 template class DomTreeBase<false>;
 
-}
+} // namespace thorin
