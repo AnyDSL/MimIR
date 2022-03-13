@@ -22,6 +22,7 @@ public:
     using Data = LamMap<DefVec>;
 
 private:
+    /// Lattice used for this Pass:
     /// ```
     ///  Keep    <-- We cannot do anything here.
     ///   |
