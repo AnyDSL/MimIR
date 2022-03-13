@@ -2,7 +2,6 @@
 
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
-#include "thorin/util/bitset.h"
 
 namespace thorin {
 
