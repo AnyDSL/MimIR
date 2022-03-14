@@ -35,9 +35,9 @@ public:
     ///         Bot              <-- Never seen.
     /// ```
     /// * EtaExp::expand_ trackes if a Lam is the top element.
-    /// * If it's not within EtaExp::expand_, it's either Pos or Bot.
+    /// * If it's not within EtaExp::expand_, it's either `Pos` or `Bot`.
     ///   But there is no need to differentiate this any further.
-    /// * Pos tracks the particular element at that level and is memorized statefully.
+    /// * EtaExp::Pos tracks the particular element at that level and is memorized statefully.
     enum Pos : bool { Callee, Non_Callee_1 };
     static std::string_view pos2str(Pos pos) { return pos == Callee ? "Callee" : "Non_Callee_1"; }
 
