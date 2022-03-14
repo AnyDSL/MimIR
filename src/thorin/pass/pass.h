@@ -5,8 +5,6 @@
 
 #include "thorin/world.h"
 
-#include "thorin/analyses/scope.h"
-
 namespace thorin {
 
 class PassMan;
@@ -233,12 +231,13 @@ public:
     }
 };
 
-/// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) if you
-/// **do** need a Pass with a state and a fixed-point.
+/// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),
+/// if you **do** need a Pass with a state and a fixed-point.
 template<class P, class N = Def>
 class FPPass : public RWPass<N> {
 public:
     using Super = RWPass<N>;
+    using Data  = std::tuple<>; ///< Default.
 
     FPPass(PassMan& man, const char* name)
         : Super(man, name) {}
@@ -264,7 +263,7 @@ protected:
         return data()[key];
     }
     /// Use this for your convenience if `P::Data` is a map.
-    template<class K, size_t I>
+    template<size_t I, class K>
     auto& data(const K& key) {
         return data<I>()[key];
     }

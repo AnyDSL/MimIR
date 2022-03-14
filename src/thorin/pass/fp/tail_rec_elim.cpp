@@ -9,7 +9,6 @@ const Def* TailRecElim::rewrite(const Def* def) {
     if (auto [app, old] = isa_apped_nom_lam(def); old) {
         if (auto i = old2rec_loop_.find(old); i != old2rec_loop_.end()) {
             auto [rec, loop] = i->second;
-
             if (auto ret_var = rec->ret_var(); app->args().back() == ret_var)
                 return world().app(loop, app->args().skip_back());
             else

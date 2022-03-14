@@ -4,8 +4,6 @@
 
 namespace thorin {
 
-const Proxy* EtaExp::proxy(Lam* lam) { return FPPass<EtaExp, Lam>::proxy(lam->type(), {lam}, 0); }
-
 Lam* EtaExp::new2old(Lam* new_lam) {
     if (auto old_lam = new2old_.lookup(new_lam)) {
         auto root = new2old(*old_lam); // path compression
@@ -19,35 +17,35 @@ Lam* EtaExp::new2old(Lam* new_lam) {
 
 const Def* EtaExp::rewrite(const Def* def) {
     if (std::ranges::none_of(def->ops(), [](const Def* def) { return def->isa<Lam>(); })) return def;
-    if (auto new_def = data<0>().lookup(def)) return *new_def;
+    if (auto new_def = old2new().lookup(def)) return *new_def;
 
     auto& [_, new_ops] = *def2new_ops_.emplace(def, def->ops()).first;
 
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
             if (isa_callee(def, i)) {
-                if (auto orig = wrap2orig_.lookup(lam)) new_ops[i] = *orig;
+                if (auto orig = exp2orig_.lookup(lam)) new_ops[i] = *orig;
             } else {
                 if (expand_.contains(lam)) {
-                    if (new_ops[i] == lam) new_ops[i] = eta_wrap(lam);
-                } else if (auto orig = wrap2orig_.lookup(lam)) {
-                    if (new_ops[i] == lam) new_ops[i] = eta_wrap(*orig);
+                    if (new_ops[i] == lam) new_ops[i] = eta_exp(lam);
+                } else if (auto orig = exp2orig_.lookup(lam)) {
+                    if (new_ops[i] == lam) new_ops[i] = eta_exp(*orig);
                 }
             }
         }
     }
 
     auto new_def              = def->rebuild(world(), def->type(), new_ops, def->dbg());
-    return data<0>()[new_def] = new_def;
+    return old2new()[new_def] = new_def;
 }
 
-Lam* EtaExp::eta_wrap(Lam* lam) {
-    auto wrap = lam->stub(world(), lam->type(), lam->dbg());
-    wrap2orig_.emplace(wrap, lam);
-    wrap->set_name(std::string("eta_") + lam->name());
-    wrap->app(false, lam, wrap->var());
-    if (eta_red_) eta_red_->mark_irreducible(wrap);
-    return wrap;
+Lam* EtaExp::eta_exp(Lam* lam) {
+    auto exp = lam->stub(world(), lam->type(), lam->dbg());
+    exp2orig_.emplace(exp, lam);
+    exp->set_debug_name(std::string("eta_") + lam->name());
+    exp->app(false, lam, exp->var());
+    if (eta_red_) eta_red_->mark_irreducible(exp);
+    return exp;
 }
 
 undo_t EtaExp::analyze(const Proxy* proxy) {
@@ -62,11 +60,10 @@ undo_t EtaExp::analyze(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
         if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
             lam = new2old(lam);
-            if (expand_.contains(lam) || wrap2orig_.contains(lam)) continue;
+            if (expand_.contains(lam) || exp2orig_.contains(lam)) continue;
 
             if (isa_callee(def, i)) {
-                auto [_, l] = *data<1>().emplace(lam, Lattice::Callee).first;
-                if (l == Lattice::Non_Callee_1) {
+                if (auto [_, p] = *pos().emplace(lam, Pos::Callee).first; p == Pos::Non_Callee_1) {
                     world().DLOG("Callee: Callee -> Expand: '{}'", lam);
                     expand_.emplace(lam);
                     undo = std::min(undo, undo_visit(lam));
@@ -74,12 +71,12 @@ undo_t EtaExp::analyze(const Def* def) {
                     world().DLOG("Callee: Bot/Callee -> Callee: '{}'", lam);
                 }
             } else {
-                auto [it, first] = data<1>().emplace(lam, Lattice::Non_Callee_1);
+                auto [it, first] = pos().emplace(lam, Pos::Non_Callee_1);
 
                 if (first) {
                     world().DLOG("Non_Callee: Bot -> Non_Callee_1: '{}'", lam);
                 } else {
-                    world().DLOG("Non_Callee: {} -> Expand: '{}'", lattice2str(it->second), lam);
+                    world().DLOG("Non_Callee: {} -> Expand: '{}'", pos2str(it->second), lam);
                     expand_.emplace(lam);
                     undo = std::min(undo, undo_visit(lam));
                 }

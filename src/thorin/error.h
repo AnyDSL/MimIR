@@ -3,8 +3,6 @@
 
 #include <stdexcept>
 
-#include "thorin/config.h"
-
 namespace thorin {
 
 class Def;

@@ -4,7 +4,6 @@
 #include <optional>
 #include <vector>
 
-#include "thorin/config.h"
 #include "thorin/debug.h"
 #include "thorin/tables.h"
 
@@ -291,7 +290,12 @@ public:
     Loc loc() const { return debug().loc; }
     const Def* meta() const { return debug().meta; }
     void set_dbg(const Def* dbg) const { dbg_ = dbg; }
-    void set_name(std::string_view) const;
+    /// Set Def::name in Debug build only; does nothing in Release build.
+#ifndef NDEBUG
+    void set_debug_name(std::string_view) const;
+#else
+    void set_debug_name(std::string_view) const {}
+#endif
     /// In `Debug` build if World::enable_history is `true`, this thing keeps the Def::gid to track a history of gids.
     const Def* debug_history() const;
     std::string unique_name() const; ///< name + "_" + Def::gid
