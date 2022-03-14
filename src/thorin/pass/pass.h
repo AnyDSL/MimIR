@@ -140,9 +140,9 @@ private:
     /// @name State
     ///@{
     struct State {
-        State()                 = default;
-        State(const State&)     = delete;
-        State(State&&)          = delete;
+        State()             = default;
+        State(const State&) = delete;
+        State(State&&)      = delete;
         State& operator=(State) = delete;
         State(size_t num)
             : data(num) {}
