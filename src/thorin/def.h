@@ -134,7 +134,7 @@ protected:
     Def(node_t, const Def* type, Defs ops, fields_t fields, const Def* dbg);
     /// Constructor for a *nom*inal Def.
     Def(node_t, const Def* type, size_t num_ops, fields_t fields, const Def* dbg);
-    virtual ~Def() {}
+    virtual ~Def() = default;
 
 public:
     /// @name misc getters
@@ -565,7 +565,7 @@ private:
 public:
     /// @name misc getters
     ///@{
-    tag_t id() const { return tag_t(fields() >> 32_u64); }
+    tag_t index() const { return tag_t(fields() >> 32_u64); }
     flags_t flags() const { return flags_t(fields()); }
     ///@}
 
