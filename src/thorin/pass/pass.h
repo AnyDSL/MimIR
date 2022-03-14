@@ -237,6 +237,7 @@ template<class P, class N = Def>
 class FPPass : public RWPass<N> {
 public:
     using Super = RWPass<N>;
+    using Data  = std::tuple<>; ///< Default.
 
     FPPass(PassMan& man, const char* name)
         : Super(man, name) {}
