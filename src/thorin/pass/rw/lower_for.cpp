@@ -39,7 +39,7 @@ const Def* LowerFor::rewrite(const Def* def) {
             auto if_else    = w.nom_lam(if_else_cn, nullptr);
             if_else->app(false, brk, {if_else->mem_var(w.dbg("mem")), acc});
 
-            auto cmp = w.op(ICmp::sl, iter, stop);
+            auto cmp = w.op(ICmp::ul, iter, stop);
             for_lam->branch(false, cmp, if_then, if_else, mem);
         }
 
