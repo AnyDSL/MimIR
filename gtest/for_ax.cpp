@@ -35,7 +35,6 @@ TEST_P(ForAxiomTest, for) {
     auto main   = w.nom_lam(main_t, w.dbg("main"));
 
     {
-        auto loop = w.fn_loop({i32_t, i64_t});
         auto accumulator_type = w.sigma({i32_t, i64_t});
         auto cont_type        = w.cn({mem_t, accumulator_type});
         auto body_type        = w.cn({mem_t, i32_t, accumulator_type, cont_type});
@@ -54,7 +53,8 @@ TEST_P(ForAxiomTest, for) {
                 main->vars<4>({w.dbg("mem"), w.dbg("argc"), w.dbg("argv"), w.dbg("exit")});
             auto [mem, acctpl] = brk->vars<2>();
             brk->app(false, ret, {mem, w.extract(acctpl, 0_s)});
-            main->app(false, loop, {main_mem, lit_start, lit_stop, lit_step, w.tuple({w.lit_int(0), w.lit_int(i64_t, 5)}), body, brk});
+            main->set_filter(false);
+            main->set_body(w.op_for({i32_t, i64_t}, main_mem, lit_start, lit_stop, lit_step, {w.lit_int(0), w.lit_int(i64_t, 5)}, body, brk));
         }
     }
 

@@ -411,7 +411,7 @@ public:
     const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg = {}) {
         return app(ax_bitcast(), {dst_t, src_t}, dbg);
     }
-    const Def* fn_loop(Defs params);
+    const Def* fn_for(Defs params);
     ///@}
 
     /// @name op - these guys build the final function application for the various operations
@@ -472,6 +472,7 @@ public:
     }
     const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
     const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
+    const Def* op_for(Defs paramTypes, const Def* mem, const Def* start, const Def* stop, const Def* step, Defs initAcc, const Def* body, const Def* brk);
     ///@}
 
     /// @name wrappers for unary operations

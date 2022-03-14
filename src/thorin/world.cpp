@@ -607,7 +607,7 @@ const Def* World::test(const Def* value, const Def* probe, const Def* match, con
     return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash, dbg);
 }
 
-const Def* World::fn_loop(Defs params) {
+const Def* World::fn_for(Defs params) {
     return app(ax_for(), {lit_nat(width2mod(32)), lit_nat(params.size()), tuple(params)});
 }
 
@@ -636,6 +636,10 @@ const Def* World::op_malloc(const Def* type, const Def* mem, const Def* dbg /*= 
 const Def* World::op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg /*= {}*/) {
     auto size = op(Trait::size, type);
     return app(app(ax_mslot(), {type, lit_nat_0()}), {mem, size, id}, dbg);
+}
+
+const Def* World::op_for(Defs accumulatorTypes, const Def* mem, const Def* start, const Def* stop, const Def* step, Defs initAcc, const Def* body, const Def* brk) {
+    return app(fn_for(accumulatorTypes), {mem, start, stop, step, tuple(initAcc), body, brk});
 }
 
 /*
