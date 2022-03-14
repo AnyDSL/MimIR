@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['data_0',['Data',['../classthorin_1_1CopyProp.html#a7ddc76131b75c5198c29434572cbbd47',1,'thorin::CopyProp::Data()'],['../classthorin_1_1EtaExp.html#ac983d12573c64bebb3e8b547e545893a',1,'thorin::EtaExp::Data()'],['../classthorin_1_1EtaRed.html#a664e6bedb7586ec35b84b6064bf58c0b',1,'thorin::EtaRed::Data()'],['../classthorin_1_1SSAConstr.html#ac1ae845dbe45b9a7b1236ee1b425fdb6',1,'thorin::SSAConstr::Data()'],['../classthorin_1_1TailRecElim.html#a5a4b0c7e0811663a9e46c26ad3075359',1,'thorin::TailRecElim::Data()'],['../classthorin_1_1BetaRed.html#a4b9bd0a49bb0f7f2c078bf22eb4b4140',1,'thorin::BetaRed::Data()']]],
+  ['data_0',['Data',['../classthorin_1_1CopyProp.html#a7ddc76131b75c5198c29434572cbbd47',1,'thorin::CopyProp::Data()'],['../classthorin_1_1EtaExp.html#aebcfee1cdce37b4a88dc59e1fce54b84',1,'thorin::EtaExp::Data()'],['../classthorin_1_1EtaRed.html#a664e6bedb7586ec35b84b6064bf58c0b',1,'thorin::EtaRed::Data()'],['../classthorin_1_1SSAConstr.html#ac1ae845dbe45b9a7b1236ee1b425fdb6',1,'thorin::SSAConstr::Data()'],['../classthorin_1_1FPPass.html#adf424bdb0ad497b5b46c020ac6c34363',1,'thorin::FPPass::Data()'],['../classthorin_1_1BetaRed.html#a4b9bd0a49bb0f7f2c078bf22eb4b4140',1,'thorin::BetaRed::Data()']]],
   ['def2def_1',['Def2Def',['../namespacethorin.html#a7907156065ecc2f7a8ad6d0c4b48752d',1,'thorin']]],
   ['defarray_2',['DefArray',['../namespacethorin.html#a81c6780cfdf58e5be888c4c16c68476d',1,'thorin']]],
   ['defdef_3',['DefDef',['../namespacethorin.html#a1c686b5d4a914909b3433cae517ec294',1,'thorin']]],

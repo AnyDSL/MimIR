@@ -1,5 +1,6 @@
 var classthorin_1_1FPPass =
 [
+    [ "Data", "classthorin_1_1FPPass.html#adf424bdb0ad497b5b46c020ac6c34363", null ],
     [ "Super", "classthorin_1_1FPPass.html#ab5b9529e4bddbda40f241c4e4be942c6", null ],
     [ "FPPass", "classthorin_1_1FPPass.html#aca3f4ae7d99c6e4d77ba34e853a9233f", null ],
     [ "curr_undo", "classthorin_1_1FPPass.html#aa8c631fee7f930495e475a90d52f6034", null ],
