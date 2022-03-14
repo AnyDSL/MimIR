@@ -615,7 +615,7 @@ private:
         assert(!def->isa_nom());
         auto [i, inserted] = data_.defs_.emplace(def);
         if (inserted) {
-#ifndef NDEBUG
+#if THORIN_ENABLE_CHECKS
             if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
             for (auto op : def->ops()) {
                 if (state_.use_breakpoints.contains(op->gid())) thorin::breakpoint();
@@ -632,7 +632,7 @@ private:
     template<class T, class... Args>
     T* insert(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
-#ifndef NDEBUG
+#if THORIN_ENABLE_CHECKS
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         auto p = data_.defs_.emplace(def);
