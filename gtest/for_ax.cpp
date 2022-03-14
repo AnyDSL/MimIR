@@ -14,10 +14,7 @@
 
 using namespace thorin;
 
-class ForAxiomTest :
-    public testing::TestWithParam<std::tuple<int, int, int>> {
-
-};
+class ForAxiomTest : public testing::TestWithParam<std::tuple<int, int, int>> {};
 
 TEST_P(ForAxiomTest, for) {
     World w;
@@ -75,7 +72,7 @@ TEST_P(ForAxiomTest, for) {
     Stream s(file);
     ll::emit(w, s);
     file.close();
-    
+
     // TODO make sure that proper clang is in path on Windows
 #ifndef _MSC_VER
     unsigned gt = 0;

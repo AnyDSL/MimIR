@@ -5,7 +5,6 @@
 
 namespace thorin {
 
-
 /// Lowers the for axiom to actual control flow in CPS style
 class LowerFor : public RWPass<Lam> {
 public:
@@ -13,8 +12,6 @@ public:
         : RWPass(man, "lower_affine_for") {}
 
     const Def* rewrite(const Def*) override;
-
-private:
 };
 
 }

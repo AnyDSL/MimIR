@@ -1,7 +1,6 @@
 #include "thorin/pass/rw/lower_for.h"
 
 #include "thorin/lam.h"
-#include "thorin/tables.h"
 
 namespace thorin {
 
@@ -10,7 +9,7 @@ const Def* LowerFor::rewrite(const Def* def) {
         if (auto for_ax = app->axiom(); for_ax && for_ax->tag() == Tag::For) {
             auto& w = def->world();
             w.DLOG("rewriting for axiom: {} within {}", app, curr_nom());
-            
+
             auto for_pi  = app->callee_type();
             auto for_lam = w.nom_lam(for_pi, w.dbg("for"));
 
