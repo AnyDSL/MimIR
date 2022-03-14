@@ -373,7 +373,7 @@ public:
     const Axiom* ax_malloc()  const { return data_.malloc_;  }
     const Axiom* ax_mslot()   const { return data_.mslot_;   }
     const Axiom* ax_zip()     const { return data_.zip_;     }
-    const Axiom* ax_for()    const { return data_.for_;    }
+    const Axiom* ax_for()     const { return data_.for_;     }
     const Axiom* ax_load()    const { return data_.load_;    }
     const Axiom* ax_remem()   const { return data_.remem_;   }
     const Axiom* ax_slot()    const { return data_.slot_;    }
@@ -472,7 +472,9 @@ public:
     }
     const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
     const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
+    // clang-format off
     const Def* op_for(Defs paramTypes, const Def* mem, const Def* start, const Def* stop, const Def* step, Defs initAcc, const Def* body, const Def* brk);
+    // clang-format on
     ///@}
 
     /// @name wrappers for unary operations
