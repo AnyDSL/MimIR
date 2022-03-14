@@ -269,9 +269,6 @@ private:
     const Pi* createPbType(const Def* A, const Def* B);
     const Def* extract_pb(const Def* j_extract);
 
-    const Def* fat_ptr(const Def* def);
-    const Def* alloc_fat_ptr(const Def* def);
-
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
     DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term (a dst term) to its pullback function
@@ -1005,20 +1002,7 @@ const Def* AutoDiffer::zero_pb(const Def* type, const Def* dbg) {
 }
 
 
-const Def* AutoDiffer::alloc_fat_ptr(const Def* alloc){
-  auto ptr = world_.extract(alloc, 2, 1, alloc->dbg())->type();
-  return fat_ptr(ptr);
-}
 
-const Def* AutoDiffer::fat_ptr(const Def* ptr){
-  auto [pointee, addr_space] = as<Tag::Ptr>(ptr)->args<2>();
-  auto arrSrc = pointee->as<Arr>();
-  auto size = arrSrc->shape();
-  auto ptrAddr = arrSrc->body();
-  auto sizelessArr = world_.arr(world_.top_nat(), ptrAddr);
-  auto long_size = world_.op_bitcast(world_.type_int_width(64), size);
-  return world_.tuple({long_size, sizelessArr});
-}
 
 // implement differentiation for each expression
 // an expression is transformed by identity into itself but using the "new" definitions
@@ -1297,31 +1281,42 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         auto mem_arg = j_wrap(alloc->arg());
 
-        auto dst = world_.op_alloc(type,mem_arg,alloc->dbg());
-        auto [r_mem,arr] = dst->projs<2>();
+        auto dst_alloc = world_.op_alloc(type,mem_arg,alloc->dbg());
+        auto [r_mem,arr] = dst_alloc->projs<2>();
         type_dump(world_,"  orig alloc",alloc);
-        type_dump(world_,"  dst",dst);
+        type_dump(world_,"  dst alloc",dst_alloc);
         type_dump(world_,"  arr",arr);
 
-        auto pb_ty = createPbType(A,ptr_type);
-        type_dump(world_,"  pb_ty",pb_ty);
+
+        type_dump(world_,"  inner type",type);
+//        dlog(world_,"  inner type node {}",type->node_name());
+        auto size=type->as<Arr>()->shape();
+        auto int_size=world_.op_bitcast(world_.type_int_width(32),size);
+        dlog(world_,"  allocation size {}",size);
+        dlog(world_,"  allocation int size {}",int_size);
+        auto dst_fat_ptr=world_.tuple({int_size,arr});
+        auto dst=world_.tuple({r_mem,dst_fat_ptr});
+        type_dump(world_,"  dst fat ptr",dst_fat_ptr);
+        type_dump(world_,"  dst",dst);
+
+        current_mem = r_mem;
+        src_to_dst_[alloc] = dst_fat_ptr;
 
         // no shadow needed
         // TODO: shadow if one handles alloc like a ptr (for definite)
+                auto pb_ty = createPbType(A,ptr_type);
+                type_dump(world_,"  pb_ty",pb_ty);
 
-        auto pb = world_.nom_lam(pb_ty, world_.dbg("pb_alloc"));
-        pb->set_filter(world_.lit_true());
-        auto [z_mem,z] = ZERO(world_,pb->mem_var(),A);
-        pb->set_body( world_.app(pb->ret_var(), {z_mem,z}));
+                auto pb = world_.nom_lam(pb_ty, world_.dbg("pb_alloc"));
+                pb->set_filter(world_.lit_true());
+                auto [z_mem,z] = ZERO(world_,pb->mem_var(),A);
+                pb->set_body( world_.app(pb->ret_var(), flat_tuple({z_mem,z})));
 
-        auto src_fat_ptr = alloc_fat_ptr(alloc);
-        auto dst_fat_ptr = alloc_fat_ptr(dst);
-
-        current_mem = r_mem;
-        pullbacks_[arr] = pb;
-        pullbacks_[dst_fat_ptr]=pullbacks_[arr]; // for call f(rmem, arr)
-        src_to_dst_[src_fat_ptr] = dst_fat_ptr;
-        return src_fat_ptr;
+                pullbacks_[arr] = pb;
+                pullbacks_[dst_fat_ptr]=pullbacks_[arr];
+                pullbacks_[dst]=pullbacks_[arr]; // for call f(rmem, arr)
+//        THORIN_UNREACHABLE;
+        return dst;
     }
     if (auto lea = isa<Tag::LEA>(def)) {
         // Problems:
