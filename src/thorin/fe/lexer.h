@@ -3,7 +3,6 @@
 
 #include <map>
 
-#include "thorin/config.h"
 #include "thorin/debug.h"
 
 #include "thorin/fe/tok.h"

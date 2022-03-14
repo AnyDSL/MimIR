@@ -11,8 +11,6 @@
 #include <sstream>
 #include <string>
 
-#include "thorin/config.h"
-
 #include "thorin/util/assert.h"
 
 namespace thorin {
