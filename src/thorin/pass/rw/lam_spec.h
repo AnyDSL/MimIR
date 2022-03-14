@@ -10,8 +10,6 @@ public:
     LamSpec(PassMan& man)
         : RWPass(man, "lam_spec") {}
 
-    using Data = std::tuple<>;
-
 private:
     /// @name PassMan hooks
     ///@{

@@ -10,7 +10,7 @@ const Def* LamSpec::rewrite(const Def* def) {
 
     if (auto [app, old_lam] = isa_apped_nom_lam(def); isa_workable(old_lam)) {
         app->dump(0);
-        std::vector<const Def*> new_doms, new_vars, new_args;
+        DefVec new_doms, new_vars, new_args;
         auto skip     = old_lam->ret_var() ? 1 : 0;
         auto old_doms = old_lam->doms();
 
