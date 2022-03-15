@@ -79,7 +79,7 @@ struct UseHash {
     static Use sentinel() { return Use((const Def*)(-1), u16(-1)); }
 };
 
-typedef HashSet<Use, UseHash> Uses;
+using Uses = HashSet<Use, UseHash>;
 
 enum class Sort { Term, Type, Kind, Space };
 

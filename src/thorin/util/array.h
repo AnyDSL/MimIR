@@ -21,18 +21,18 @@ class Array;
 //------------------------------------------------------------------------------
 
 /// A container-like wrapper for an array.
-/// The array may either stem from a C array, a `std::vector`, a `std::initializer_list`, an @p Array or another @p ArrayRef.
-/// @p ArrayRef does <em>not</em> own the data and, thus, does not destroy any data.
-/// Likewise, you must be carefull to not destroy data an @p ArrayRef is pointing to.
-/// Thorin makes use of @p ArrayRef%s in many places.
-/// Note that you can often construct an @p ArrayRef inline with an initializer_list: `foo(arg1, {elem1, elem2, elem3}, arg3)`.
-/// Useful operations are @p skip_front and @p skip_back to create other @p ArrayRef%s.
+/// The array may either stem from a C array, a `std::vector`, a `std::initializer_list`, an Array or another ArrayRef.
+/// ArrayRef does **not** own the data and, thus, does not destroy any data.
+/// Likewise, you must be carefull to not destroy data an ArrayRef is pointing to.
+/// Thorin makes use of ArrayRef%s in many places.
+/// Note that you can often construct an ArrayRef inline with an initializer_list: `foo(arg1, {elem1, elem2, elem3},
+/// arg3)`. Useful operations are ArrayRef::skip_front and ArrayRef::skip_back to create other ArrayRef%s.
 template<class T>
 class ArrayRef {
 public:
-    typedef T value_type;
-    typedef const T* const_iterator;
-    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+    using value_type             = T;
+    using const_iterator         = const T*;
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     /// @name constructor, destructor & assignment
     ///@{
@@ -67,8 +67,12 @@ public:
         swap(*this, array);
     }
 
-    ArrayRef& operator=(ArrayRef other) { swap(*this, other); return *this; }
-    template<size_t N> std::array<T, N> to_array() const {
+    ArrayRef& operator=(ArrayRef other) {
+        swap(*this, other);
+        return *this;
+    }
+    template<size_t N>
+    std::array<T, N> to_array() const {
         assert(size() == N);
         std::array<T, N> result;
         std::ranges::copy(*this, result.begin());
@@ -92,33 +96,53 @@ public:
 
     /// @name access
     ///@{
-    const T& operator[](size_t i) const { assert(i < size() && "index out of bounds"); return *(ptr_ + i); }
-    T const& front() const { assert(!empty()); return ptr_[0]; }
-    T const& back()  const { assert(!empty()); return ptr_[size_ - 1]; }
+    const T& operator[](size_t i) const {
+        assert(i < size() && "index out of bounds");
+        return *(ptr_ + i);
+    }
+    T const& front() const {
+        assert(!empty());
+        return ptr_[0];
+    }
+    T const& back() const {
+        assert(!empty());
+        return ptr_[size_ - 1];
+    }
     ///@}
 
     /// @name slice
     ///@{
     ArrayRef<T> skip_front(size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_ + num); }
-    ArrayRef<T> skip_back (size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_); }
-    ArrayRef<T> get_front (size_t num = 1) const { assert(num <= size()); return ArrayRef<T>(num, ptr_); }
-    ArrayRef<T> get_back  (size_t num = 1) const { assert(num <= size()); return ArrayRef<T>(num, ptr_ + size() - num); }
+    ArrayRef<T> skip_back(size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_); }
+    ArrayRef<T> get_front(size_t num = 1) const {
+        assert(num <= size());
+        return ArrayRef<T>(num, ptr_);
+    }
+    ArrayRef<T> get_back(size_t num = 1) const {
+        assert(num <= size());
+        return ArrayRef<T>(num, ptr_ + size() - num);
+    }
     Array<T> cut(ArrayRef<size_t> indices, size_t reserve = 0) const;
     ///@}
 
     /// @name relational operators
     ///@{
     template<class Other>
-    bool operator==(const Other& other) const { return this->size() == other.size() && std::equal(begin(), end(), other.begin()); }
+    bool operator==(const Other& other) const {
+        return this->size() == other.size() && std::equal(begin(), end(), other.begin());
+    }
     template<class Other>
-    bool operator!=(const Other& other) const { return this->size() != other.size() || !std::equal(begin(), end(), other.begin()); }
+    bool operator!=(const Other& other) const {
+        return this->size() != other.size() || !std::equal(begin(), end(), other.begin());
+    }
     ///@}
 
     friend void swap(ArrayRef<T>& a1, ArrayRef<T>& a2) {
         using std::swap;
         swap(a1.size_, a2.size_);
-        swap(a1.ptr_,  a2.ptr_ );
+        swap(a1.ptr_, a2.ptr_);
     }
+
 private:
     size_t size_;
     const T* ptr_;
@@ -126,7 +150,7 @@ private:
 
 //------------------------------------------------------------------------------
 
-template <typename T, size_t StackSize>
+template<typename T, size_t StackSize>
 class ArrayStorage {
     // Unions only work with trivial types.
     static_assert(std::is_trivial<T>::value, "Stack based array storage is only available for trivial types");
@@ -136,17 +160,16 @@ public:
         : size_(0)
         , stack_(true) {}
     ArrayStorage(size_t size) {
-        size_ = size;
+        size_  = size;
         stack_ = size <= StackSize;
-        if (!stack_)
-            data_.ptr = new T[size]();
+        if (!stack_) data_.ptr = new T[size]();
     }
     ArrayStorage(ArrayStorage&& other)
         : size_(other.size_)
         , stack_(other.stack_)
         , data_(std::move(other.data_)) {
         other.stack_ = true;
-        other.size_ = 0;
+        other.size_  = 0;
     }
 
     ~ArrayStorage() {
@@ -159,25 +182,25 @@ public:
     const T* data() const { return stack_ ? data_.elems : data_.ptr; }
 
     friend void swap(ArrayStorage& a, ArrayStorage& b) {
-        auto size = a.size_;
-        a.size_ = b.size_;
-        b.size_ = size;
+        auto size  = a.size_;
+        a.size_    = b.size_;
+        b.size_    = size;
         auto stack = a.stack_;
-        a.stack_ = b.stack_;
-        b.stack_ = stack;
+        a.stack_   = b.stack_;
+        b.stack_   = stack;
         std::swap(a.data_, b.data_);
     }
 
 private:
     size_t size_ : sizeof(size_t) * 8 - 1;
-    bool stack_  : 1;
+    bool stack_ : 1;
     union {
         T* ptr;
         T elems[StackSize];
     } data_;
 };
 
-template <typename T>
+template<typename T>
 struct ArrayStorage<T, 0> {
 public:
     ArrayStorage()
@@ -189,7 +212,7 @@ public:
     ArrayStorage(ArrayStorage&& other)
         : size_(std::move(other.size_))
         , ptr_(std::move(other.ptr_)) {
-        other.ptr_ = nullptr;
+        other.ptr_  = nullptr;
         other.size_ = 0;
     }
     ~ArrayStorage() { delete[] ptr_; }
@@ -213,18 +236,18 @@ private:
 
 /// A container for an array, either heap-allocated or stack allocated.
 /// This class is similar to `std::vector` with the following differences:
-///   - If the size is small enough, the array resides on the stack.
-///   - In contrast to std::vector, @p Array cannot grow dynamically.
-///     A @p Array may @p shrink, however.
-///     But once shrunk, there is no way back.
+/// * If the size is small enough, the array resides on the stack.
+/// * In contrast to std::vector, Array cannot grow dynamically.
+///   An Array may Array::shrink, however.
+///   But once shrunk, there is no way back.
 template<class T>
 class Array {
 public:
-    typedef T value_type;
-    typedef T* iterator;
-    typedef const T* const_iterator;
-    typedef std::reverse_iterator<iterator> reverse_iterator;
-    typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+    using value_type             = T;
+    using iterator               = T*;
+    using const_iterator         = const T*;
+    using reverse_iterator       = std::reverse_iterator<iterator>;
+    using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
     /// @name constructor, destructor & assignment
     ///@{
@@ -266,14 +289,20 @@ public:
         for (size_t i = 0; i != size; ++i) (*this)[i] = f(i);
     }
 
-    Array& operator=(Array other) { swap(*this, other); return *this; }
+    Array& operator=(Array other) {
+        swap(*this, other);
+        return *this;
+    }
     ///@}
 
     /// @name size
     ///@{
     size_t size() const { return storage_.size(); }
     bool empty() const { return size() == 0; }
-    void shrink(size_t new_size) { assert(new_size <= size()); storage_.shrink(new_size); }
+    void shrink(size_t new_size) {
+        assert(new_size <= size());
+        storage_.shrink(new_size);
+    }
     ///@}
 
     /// @name begin/end iterators
@@ -290,29 +319,58 @@ public:
 
     /// @name access
     ///@{
-    T& front() { assert(!empty()); return data()[0]; }
-    T& back()  { assert(!empty()); return data()[size() - 1]; }
-    const T& front() const { assert(!empty()); return data()[0]; }
-    const T& back()  const { assert(!empty()); return data()[size() - 1]; }
+    T& front() {
+        assert(!empty());
+        return data()[0];
+    }
+    T& back() {
+        assert(!empty());
+        return data()[size() - 1];
+    }
+    const T& front() const {
+        assert(!empty());
+        return data()[0];
+    }
+    const T& back() const {
+        assert(!empty());
+        return data()[size() - 1];
+    }
     T* data() { return storage_.data(); }
     const T* data() const { return storage_.data(); }
-    T& operator[](size_t i) { assert(i < size() && "index out of bounds"); return data()[i]; }
-    T const& operator[](size_t i) const { assert(i < size() && "index out of bounds"); return data()[i]; }
+    T& operator[](size_t i) {
+        assert(i < size() && "index out of bounds");
+        return data()[i];
+    }
+    T const& operator[](size_t i) const {
+        assert(i < size() && "index out of bounds");
+        return data()[i];
+    }
     ///@}
 
     /// @name slice
     ///@{
     ArrayRef<T> skip_front(size_t num = 1) const { return ArrayRef<T>(size() - num, data() + num); }
-    ArrayRef<T> skip_back (size_t num = 1) const { return ArrayRef<T>(size() - num, data()); }
-    ArrayRef<T> get_front (size_t num = 1) const { assert(num <= size()); return ArrayRef<T>(num, data()); }
-    ArrayRef<T> get_back  (size_t num = 1) const { assert(num <= size()); return ArrayRef<T>(num, data() + size() - num); }
-    Array<T> cut(ArrayRef<size_t> indices, size_t reserve = 0) const { return ArrayRef<T>(*this).cut(indices, reserve); }
+    ArrayRef<T> skip_back(size_t num = 1) const { return ArrayRef<T>(size() - num, data()); }
+    ArrayRef<T> get_front(size_t num = 1) const {
+        assert(num <= size());
+        return ArrayRef<T>(num, data());
+    }
+    ArrayRef<T> get_back(size_t num = 1) const {
+        assert(num <= size());
+        return ArrayRef<T>(num, data() + size() - num);
+    }
+    Array<T> cut(ArrayRef<size_t> indices, size_t reserve = 0) const {
+        return ArrayRef<T>(*this).cut(indices, reserve);
+    }
     ///@}
 
     /// @name convert
     ///@{
     ArrayRef<T> ref() const { return ArrayRef<T>(size(), data()); }
-    template<size_t N> std::array<T, N> to_array() const { return ref().template to_array<N>(); }
+    template<size_t N>
+    std::array<T, N> to_array() const {
+        return ref().template to_array<N>();
+    }
     ///@}
 
     /// @name relational operators
@@ -321,9 +379,7 @@ public:
     bool operator!=(const Array other) const { return ArrayRef<T>(*this) != ArrayRef<T>(other); }
     ///@}
 
-    friend void swap(Array& a, Array& b) {
-        swap(a.storage_, b.storage_);
-    }
+    friend void swap(Array& a, Array& b) { swap(a.storage_, b.storage_); }
 
 private:
     ArrayStorage<T, std::is_trivial<T>::value ? 5 : 0> storage_;
@@ -357,7 +413,7 @@ auto concat(const T& a, const U& b) -> Array<typename T::value_type> {
 template<class T>
 auto concat(const T& val, ArrayRef<T> a) -> Array<T> {
     Array<T> result(a.size() + 1);
-    std::ranges::copy(a, result.begin()+1);
+    std::ranges::copy(a, result.begin() + 1);
     result.front() = val;
     return result;
 }
@@ -375,6 +431,6 @@ Array<typename T::value_type> make_array(const T& container) {
     return Array<typename T::value_type>(container.begin(), container.end());
 }
 
-}
+} // namespace thorin
 
 #endif

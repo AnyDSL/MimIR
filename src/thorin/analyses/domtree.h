@@ -30,7 +30,8 @@ public:
     const CFNode* root() const { return *idoms_.begin(); }
     const CFNode* idom(const CFNode* n) const { return idoms_[n]; }
     int depth(const CFNode* n) const { return depth_[n]; }
-    const CFNode* least_common_ancestor(const CFNode* i, const CFNode* j) const; ///< Returns the least common ancestor of @p i and @p j.
+    const CFNode* least_common_ancestor(const CFNode* i,
+                                        const CFNode* j) const; ///< Returns the least common ancestor of @p i and @p j.
 
 private:
     void create();
@@ -42,9 +43,9 @@ private:
     typename CFG<forward>::template Map<int> depth_;
 };
 
-typedef DomTreeBase<true>  DomTree;
-typedef DomTreeBase<false> PostDomTree;
+using DomTree     = DomTreeBase<true>;
+using PostDomTree = DomTreeBase<false>;
 
-}
+} // namespace thorin
 
 #endif
