@@ -220,6 +220,7 @@ public:
     AutoDiffer(World& world, const Def2Def& src_to_dst, const Def* A_)
         : world_{world}
         , src_to_dst_{src_to_dst}
+        , A_src{A_}
         , A{world.tangent_type(A_,false)}
     {
         // initializes the differentiation for a function of type A -> B
@@ -276,7 +277,7 @@ private:
     Def2Def src_to_dst_; // mapping old def to new def
     DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term (a dst term) to its pullback function
     DefMap<const Def*> pointer_map;
-    const Def* A;// input type
+    const Def* A, *A_src;// input type
 
     void initArg(const Def* dst);
     const Def* ptrSlot(const Def* ty, const Def* mem);
@@ -498,8 +499,35 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract) {
         return pullbacks_[j_extract];
     auto extract = j_extract->as<Extract>();
 
+    auto extract_type=extract->type();
 
-    auto pi = createPbType(A,extract->type());
+    auto isFatPtr=false;
+    if(auto sig=extract_type->isa<Sigma>(); sig && sig->num_ops()==2) {
+        // TODO: maybe use original type to detect
+
+//        isFatPtr = isa_sized_type(sig->op(0));
+        dlog(world_,"  extract ty {}", extract_type);
+        dlog(world_,"  num ops {}", extract_type->num_ops());
+        dlog(world_,"  num projs {}", extract_type->num_projs());
+        dlog(world_,"  fst {}", extract_type->op(0));
+//        dlog(world_,"  fst Test {}",isa<Tag::Int>(sig->op(0)));
+        dlog(world_,"  snd {}", extract_type->op(1));
+//        dlog(world_,"  snd Test {}", isa<Tag::Ptr>(sig->op(1)));
+        if( auto ptr=isa<Tag::Ptr>(sig->op(1));ptr &&
+                     isa<Tag::Int>(sig->op(0))
+        ) {
+            auto [pointee, addr_space] = ptr->arg()->projs<2>();
+            if(pointee->isa<Arr>())
+                isFatPtr=true;
+        }
+    }
+
+    auto tangent_type =
+        isFatPtr ?
+        extract_type->op(1) :
+        extract_type;
+
+    auto pi = createPbType(A, tangent_type);
     auto pb = world_.nom_lam(pi, world_.dbg("extract_pb"));
     pb->set_filter(world_.lit_true());
     type_dump(world_,"  pb of extract: ",pb);
@@ -544,6 +572,7 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract) {
     Array<const Def*> pb_args;
 
     // is tuple & index
+    // TODO: integrate into OH
     if(auto lit = idx->isa<Lit>()) {
         dlog(world_,"  extract pb for lit index");
         auto isMemTuple=isa<Tag::Mem>(tuple->type()->proj(0));
@@ -601,6 +630,7 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract) {
     dlog(world_,"    tuple_pb {}",tuple_pb);
     dlog(world_,"    tuple_pb ty {}",tuple_pb->type());
     dlog(world_,"    pb_args {, }",pb_args);
+    type_dump(world_,"    pb_args tuple ",world_.tuple(pb_args));
 
     pb->set_body(world_.app(
         tuple_pb,
@@ -653,11 +683,13 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
         trimmed_var_ty[i] = var_sigma->op(i+1);
     }
     auto trimmed_var_sigma = world_.sigma(trimmed_var_ty);
+    dlog(world_,"trimmed var sigma: {}", trimmed_var_sigma);
 
     auto idpi = createPbType(A,trimmed_var_sigma);
     auto idpb = world_.nom_lam(idpi, world_.dbg("param_id"));
 
     type_dump(world_,"idpb",idpb);
+
 
     dlog(world_,"Set IDPB");
     // shorten to variable input => id
@@ -684,10 +716,13 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 //    initArg(dst_var);
         for(size_t i = 0, e = src->num_vars(); i < e; ++i) {
             auto dvar = dst_lam->var(i);
+            dlog(world_," var {}: {} : {}",i,dvar,dvar->type());
             if(dvar == dst_lam->ret_var() || dvar == dst_lam->mem_var()) {
                 continue;
             }
+            // solve the problem of inital array pb in extract pb
             pullbacks_[dvar]= extract_pb(dvar);
+            type_dump(world_," pb",pullbacks_[dvar]);
             initArg(dvar);
         }
 
