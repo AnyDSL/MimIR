@@ -1372,33 +1372,49 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         dlog(world_,"  Lea");
         dlog(world_,"  projs: {}",lea->projs());
-        dlog(world_,"  args: {}",lea->args());
+        dlog(world_,"  args: {,}",lea->args());
         dlog(world_,"  type: {}",lea->type());
+        type_dump(world_,"  lea",lea);
         dlog(world_,"  callee type: {}",lea->callee_type());
         auto ptr_ty = as<Tag::Ptr>(lea->type());
         auto [ty,addr_space] = ptr_ty->arg()->projs<2>();
         dlog(world_,"  inner type: {}", ty);
 
-        auto arr = j_wrap(lea->arg(0));
-        auto idx = j_wrap(lea->arg(1)); // not necessary
-        auto dst = world_.op_lea(arr,idx);
-
+        auto fat_ptr=j_wrap(lea->arg(0));
+        auto [arr_size,arr] = fat_ptr->projs<2>();
         type_dump(world_,"  lea arr:", arr);
+        auto idx = j_wrap(lea->arg(1)); // not necessary
+        type_dump(world_,"  dst idx:", idx);
+        auto dst = world_.op_lea(arr,idx);
+        type_dump(world_,"  dst lea:", dst);
+
+
         auto [arr_ty, arr_addr_space] = as<Tag::Ptr>(arr->type())->arg()->projs<2>();
 
+        type_dump(world_,"  ty: ",ty);
+        type_dump(world_,"  arr_ty: ",arr_ty);
+        dlog(world_,"  arr_ty_node_name: {}",arr_ty->node_name());
         auto pi = createPbType(A,ty);
+        type_dump(world_,"  lea pi: ",pi);
         auto pb = world_.nom_lam(pi, world_.dbg("pb_lea"));
         pb->set_filter(world_.lit_true());
+        type_dump(world_,"  lea pb: ",pb);
 
-        auto [mem2,ptr_arr] = world_.op_alloc(arr_ty,pb->mem_var())->projs<2>();
+
+        auto arr_sized_ty=world_.arr(arr_size,arr_ty->as<Arr>()->body());
+//        auto arr_sized_ty=arr_ty;
+        type_dump(world_,"  arr_sized_ty",arr_sized_ty);
+        auto [mem2,ptr_arr] = world_.op_alloc(arr_sized_ty,pb->mem_var())->projs<2>();
         auto scal_ptr = world_.op_lea(ptr_arr,idx);
         auto mem3=mem2;
         auto v = pb->var(1);
         auto mem4 = world_.op_store(mem3,scal_ptr,v);
         type_dump(world_,"ptr_arr",ptr_arr);
 
-        assert(pullbacks_.count(arr) && "arr from lea should already have an pullback");
+        assert(pullbacks_.count(fat_ptr) && "arr from lea should already have an pullback");
 
+        dlog(world_,"  pullback of arr (or its fat_ptr): {}",pullbacks_[fat_ptr]);
+        dlog(world_,"  of type: {}",pullbacks_[fat_ptr]->type());
         pb->set_body( world_.app(
             pullbacks_[arr],
             {
@@ -1408,6 +1424,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             }
             ));
 
+        THORIN_UNREACHABLE;
 
         auto [cmem2,ptr_slot]=world_.op_slot(pb->type(),current_mem,world_.dbg("lea_ptr_shadow_slot"))->projs<2>();
         auto cmem3=world_.op_store(cmem2,ptr_slot,pb);
