@@ -64,6 +64,8 @@ add_library(libthorin
     pass/rw/alloc2malloc.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
+    pass/rw/lower_for.cpp
+    pass/rw/lower_for.h
     pass/rw/remem_elim.cpp
     pass/rw/remem_elim.h
     pass/rw/ret_wrap.cpp
