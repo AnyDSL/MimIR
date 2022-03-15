@@ -6,6 +6,8 @@
 namespace thorin {
 
 /// Lowers the for axiom to actual control flow in CPS style
+/// Requires CopyProp to cleanup afterwards.
+/// Should run in a dedicated lowering phase.
 class LowerFor : public RWPass<Lam> {
 public:
     LowerFor(PassMan& man)
