@@ -60,7 +60,8 @@ var NAVTREE =
       [ "Coding Style", "md__github_workspace_docs_coding.html#autotoc_md24", null ],
       [ "Debugging", "md__github_workspace_docs_coding.html#autotoc_md25", [
         [ "Logging", "md__github_workspace_docs_coding.html#autotoc_md26", null ],
-        [ "Breakpoints", "md__github_workspace_docs_coding.html#autotoc_md27", null ]
+        [ "Breakpoints", "md__github_workspace_docs_coding.html#autotoc_md27", null ],
+        [ "VS Code", "md__github_workspace_docs_coding.html#autotoc_md28", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
@@ -115,11 +116,11 @@ var NAVTREEINDEX =
 "classthorin_1_1World.html#a8e31d8a8297af8bbb06bdbd36b3476a8",
 "classthorin_1_1detail_1_1HashTable.html#aa17333f4ca5a49ac84e4f92d8f5eea80",
 "eta__red_8cpp.html#a9ad62aaa1872eb162b0da183bb68f3e9",
-"namespacethorin.html#a214fbe0a10a6d832e3d1883eddfce5be",
-"namespacethorin.html#abcee9768daea1d32c3270ecb1fea94da",
-"optimize_8cpp.html",
+"namespacethorin.html#a212be12038d2798c4058622ca13664ae",
+"namespacethorin.html#abc03433e6b2efb1c4ad7d0c5dd690b10",
+"normalize_8h_source.html",
 "structthorin_1_1GIDLt.html",
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3aa03404b681bb9cff8b46442fcacbaad5"
+"tables_8h.html#aec7c9c368dda260071936391c37a72e3a8e028532a3bae54686c7b20d9d029a18"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

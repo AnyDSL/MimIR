@@ -6,8 +6,8 @@ var NAVTREEINDEX11 =
 "eta__red_8h.html":[9,0,2,3,0,7],
 "eta__red_8h_source.html":[9,0,2,3,0,7],
 "files.html":[9,0],
-"functions.html":[8,3,0],
 "functions.html":[8,3,0,0],
+"functions.html":[8,3,0],
 "functions_b.html":[8,3,0,1],
 "functions_c.html":[8,3,0,2],
 "functions_d.html":[8,3,0,3],
@@ -15,8 +15,8 @@ var NAVTREEINDEX11 =
 "functions_enum.html":[8,3,4],
 "functions_eval.html":[8,3,5],
 "functions_f.html":[8,3,0,5],
-"functions_func.html":[8,3,1,0],
 "functions_func.html":[8,3,1],
+"functions_func.html":[8,3,1,0],
 "functions_func_b.html":[8,3,1,1],
 "functions_func_c.html":[8,3,1,2],
 "functions_func_d.html":[8,3,1,3],
@@ -171,6 +171,7 @@ var NAVTREEINDEX11 =
 "md__github_workspace_docs_coding.html#autotoc_md25":[5,1],
 "md__github_workspace_docs_coding.html#autotoc_md26":[5,1,0],
 "md__github_workspace_docs_coding.html#autotoc_md27":[5,1,1],
+"md__github_workspace_docs_coding.html#autotoc_md28":[5,1,2],
 "md__github_workspace_docs_dev.html":[3],
 "md__github_workspace_docs_dev.html#autotoc_md10":[3,1],
 "md__github_workspace_docs_dev.html#autotoc_md11":[3,1,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX11 =
 "namespacethorin.html#a1c686b5d4a914909b3433cae517ec294":[6,0,0,175],
 "namespacethorin.html#a1d6a97e091228875812bc54c1bc5b235":[6,0,0,264],
 "namespacethorin.html#a1f4495ac5ca4bee6965b07d96c22253b":[6,0,0,201],
-"namespacethorin.html#a1fb0aa15b4f666015b8571bbac5a6d29":[6,0,0,370],
-"namespacethorin.html#a212be12038d2798c4058622ca13664ae":[6,0,0,365]
+"namespacethorin.html#a1fb0aa15b4f666015b8571bbac5a6d29":[6,0,0,370]
 };
