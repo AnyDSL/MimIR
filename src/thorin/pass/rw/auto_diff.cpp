@@ -7,7 +7,8 @@
 
 namespace thorin {
 
-#define THORIN_UNREACHABLE unreachable()
+//#define THORIN_UNREACHABLE unreachable()
+#define THORIN_UNREACHABLE assert(false && "Unreachable")
 #define dlog(world,...) world.DLOG(__VA_ARGS__)
 #define type_dump(world,name,d) world.DLOG("{} {} : {}",name,d,d->type())
 
