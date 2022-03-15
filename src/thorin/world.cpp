@@ -377,16 +377,22 @@ const Def* World::tangent_type(const Def* A,bool left) {
         s2.fmt("A is ptr\n");
         auto [pointee, addr_space] = ptr->arg()->projs<2>();
         auto inner=tangent_type(pointee,left);
-//        return inner;
-        if(pointee->isa<Arr>() || left) {
+        auto ptr_wrap=type_ptr(inner,addr_space);
+        auto isArr = pointee->isa<Arr>();
+        if(isArr) {
+            if(!left) {
+                // in pb => only arr no size information
+                return ptr_wrap;
+            }
             s2.fmt("Ptr -> Arr\n");
-            auto inner_arr=type_ptr(inner,addr_space);
-            Array<const Def*> comp(2);
-            comp[0]= type_int_width(32);
-            comp[1]=inner_arr;
-            return sigma(comp);
+            return sigma({type_int_width(32),ptr_wrap});
+        }else if(left) {
+            // no array, left type
+            return ptr_wrap;
+        }else {
+            // no array, compute tangent type by removing ptr => as content
+            return inner;
         }
-        return inner;
     }
     if(auto arrdef = A->isa<Arr>()) {
 //        s2.fmt("A is arr\n");
