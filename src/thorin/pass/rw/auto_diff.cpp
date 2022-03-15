@@ -248,6 +248,8 @@ public:
         // for a similar approach but with shift and reset primitives
 
 
+        dlog(world_,"  A: {}", A_);
+        dlog(world_,"  tangent type of A: {}", A);
         dlog(world_,"Finished Construction");
     }
 
@@ -733,6 +735,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 //        type_dump(world_,"Pullback of dst ",pullbacks_[dst]);
 //    }
     dlog(world_,"Initialization finished, start jwrapping");
+    dlog(world_,"  tangent type of A: {}", A);
     // translate the body => get correct applications of variables using pullbacks
     auto dst = j_wrap(src->body());
     return dst;
@@ -743,7 +746,7 @@ void AutoDiffer::initArg(const Def* dst) {
     // create shadow slots for pointers
 
     auto arg_ty = dst->type();
-    dlog(world_,"Arg of Type A: {}", arg_ty);
+    dlog(world_,"Arg of Type: {}", arg_ty);
 
 
     // we need to initialize the shadow ptr slot for
@@ -2087,7 +2090,8 @@ const Def* AutoDiff::rewrite(const Def* def) {
         //           ------ type_app ------ arg
         //           (axiom    arg2       ) arg
 
-        auto src_lam = app->arg(0)->as_nom<Lam>();//->as_nom<Lam>();
+        auto src_lam = app->arg(0)->as_nom<Lam>();
+        auto src_pi = src_lam->type();
         // function to differentiate
         // this should be something like `cn[:mem, r32, cn[:mem, r32]]`
         auto& world = src_lam->world();
@@ -2098,7 +2102,8 @@ const Def* AutoDiff::rewrite(const Def* def) {
         auto dst_pi = app->type()->as<Pi>(); // multi dim as array
         auto dst_lam = world.nom_lam(dst_pi, world.dbg("top_level_rev_diff_" + src_lam->name()));
         dst_lam->set_filter(src_lam->filter()); // copy the unfold filter
-        auto A = world.params_without_return_continuation(dst_pi); // input variable(s) => possible a pi type (array)
+        // use src to not dilute tangent transformation with left type transformation (only matters for arrays)
+        auto A = world.params_without_return_continuation(src_pi); // input variable(s) => possible a pi type (array)
 
 //        auto ret_cont = dst_pi->dom()->ops().back();
 //        auto B = world.sigma(ret_cont->as<Pi>()->dom()->ops().skip_front());
