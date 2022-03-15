@@ -14,13 +14,14 @@ var searchData=
   ['fn_11',['fn',['../classthorin_1_1World.html#ad42a5a65dd988b74d3c2e49124505dca',1,'thorin::World::fn(ROp o, const Def *rmode, const Def *width, const Def *dbg={})'],['../classthorin_1_1World.html#ab2705625f60626a2f0e5f79da3ca1555',1,'thorin::World::fn(O o, nat_t other, nat_t size, const Def *dbg={})'],['../classthorin_1_1World.html#a9f23ffa12c86e67c9e6ec135d20c69aa',1,'thorin::World::fn(O o, nat_t size, const Def *dbg={})'],['../classthorin_1_1World.html#a97cb493b5397397b581a8b17a6ba51e3',1,'thorin::World::fn(Shr o, const Def *mod, const Def *dbg={})'],['../classthorin_1_1World.html#a5a9a63d3149f29068f5e93f4b35d734c',1,'thorin::World::fn(Wrap o, const Def *wmode, const Def *mod, const Def *dbg={})'],['../classthorin_1_1World.html#aecbf822376502512975a3d83487ab4d3',1,'thorin::World::fn(Bit o, const Def *mod, const Def *dbg={})'],['../classthorin_1_1World.html#abb6ceb3b958f3fd56e8df7a5babfd486',1,'thorin::World::fn(Conv o, const Def *dst_w, const Def *src_w, const Def *dbg={})'],['../classthorin_1_1World.html#aee557e8f8eb191fac15ae1ffc8bda7e8',1,'thorin::World::fn(Div o, const Def *mod, const Def *dbg={})'],['../classthorin_1_1World.html#a4514299d1917be5e395cd2f121d62b48',1,'thorin::World::fn(ICmp o, const Def *mod, const Def *dbg={})'],['../classthorin_1_1World.html#ad2275e7427c0b9430e79fd3e4f6c2904',1,'thorin::World::fn(RCmp o, const Def *rmode, const Def *width, const Def *dbg={})']]],
   ['fn_5fatomic_12',['fn_atomic',['../classthorin_1_1World.html#ae3e9f40e2738a65a227e4f695400c900',1,'thorin::World']]],
   ['fn_5fbitcast_13',['fn_bitcast',['../classthorin_1_1World.html#a2f4f789f73abec81791418311362076c',1,'thorin::World']]],
-  ['fn_5fmem_14',['fn_mem',['../classthorin_1_1World.html#a7a4081412724d6e5fb59bc22cfc6cd22',1,'thorin::World']]],
-  ['fold_15',['fold',['../namespacethorin.html#ac73cd2add4d040102d8d0570c1db1f3f',1,'thorin']]],
-  ['fold_5fconv_16',['fold_Conv',['../namespacethorin.html#a9936b95c92a3cbd2712e329d3af5f0c7',1,'thorin']]],
-  ['fppass_17',['FPPass',['../classthorin_1_1FPPass.html#aca3f4ae7d99c6e4d77ba34e853a9233f',1,'thorin::FPPass']]],
-  ['free_5fdefs_18',['free_defs',['../classthorin_1_1Scope.html#a546abdb4b59161b1ba6094ec0a5e4b86',1,'thorin::Scope']]],
-  ['free_5fnoms_19',['free_noms',['../classthorin_1_1Scope.html#a3b967377bae646cbd9b148947558cb47',1,'thorin::Scope']]],
-  ['free_5fvars_20',['free_vars',['../classthorin_1_1Scope.html#ad1382b17547a92c8e469ddf4fd5f11b3',1,'thorin::Scope']]],
-  ['front_21',['front',['../classthorin_1_1unique__queue.html#aa5cb6efdf0387545a73e968d076f56d0',1,'thorin::unique_queue::front()'],['../classthorin_1_1Array.html#aa820fca7c6f7c785f1bfa18786a8ff68',1,'thorin::Array::front() const'],['../classthorin_1_1Array.html#ad8561aef9d4eb3c6dee457b9ae4a0d05',1,'thorin::Array::front()'],['../classthorin_1_1ArrayRef.html#ae90aa33866ab681469b7e0ec8a68ca98',1,'thorin::ArrayRef::front()']]],
-  ['fva_22',['FVA',['../classthorin_1_1FVA.html#ad8fd8fcb99019f7924eea7aa962b6eec',1,'thorin::FVA']]]
+  ['fn_5ffor_14',['fn_for',['../classthorin_1_1World.html#abe8c73fbff7e8f342406e03f69096626',1,'thorin::World']]],
+  ['fn_5fmem_15',['fn_mem',['../classthorin_1_1World.html#a7a4081412724d6e5fb59bc22cfc6cd22',1,'thorin::World']]],
+  ['fold_16',['fold',['../namespacethorin.html#ac73cd2add4d040102d8d0570c1db1f3f',1,'thorin']]],
+  ['fold_5fconv_17',['fold_Conv',['../namespacethorin.html#a9936b95c92a3cbd2712e329d3af5f0c7',1,'thorin']]],
+  ['fppass_18',['FPPass',['../classthorin_1_1FPPass.html#aca3f4ae7d99c6e4d77ba34e853a9233f',1,'thorin::FPPass']]],
+  ['free_5fdefs_19',['free_defs',['../classthorin_1_1Scope.html#a546abdb4b59161b1ba6094ec0a5e4b86',1,'thorin::Scope']]],
+  ['free_5fnoms_20',['free_noms',['../classthorin_1_1Scope.html#a3b967377bae646cbd9b148947558cb47',1,'thorin::Scope']]],
+  ['free_5fvars_21',['free_vars',['../classthorin_1_1Scope.html#ad1382b17547a92c8e469ddf4fd5f11b3',1,'thorin::Scope']]],
+  ['front_22',['front',['../classthorin_1_1unique__queue.html#aa5cb6efdf0387545a73e968d076f56d0',1,'thorin::unique_queue::front()'],['../classthorin_1_1Array.html#aa820fca7c6f7c785f1bfa18786a8ff68',1,'thorin::Array::front() const'],['../classthorin_1_1Array.html#ad8561aef9d4eb3c6dee457b9ae4a0d05',1,'thorin::Array::front()'],['../classthorin_1_1ArrayRef.html#ae90aa33866ab681469b7e0ec8a68ca98',1,'thorin::ArrayRef::front()']]],
+  ['fva_23',['FVA',['../classthorin_1_1FVA.html#ad8fd8fcb99019f7924eea7aa962b6eec',1,'thorin::FVA']]]
 ];

@@ -6,6 +6,10 @@ var dir_bedb7d08736b40aaace21d5514fd3ecc =
     ] ],
     [ "bound_elim.cpp", "bound__elim_8cpp.html", null ],
     [ "bound_elim.h", "bound__elim_8h.html", null ],
+    [ "lower_for.cpp", "lower__for_8cpp.html", null ],
+    [ "lower_for.h", "lower__for_8h.html", [
+      [ "thorin::LowerFor", "classthorin_1_1LowerFor.html", "classthorin_1_1LowerFor" ]
+    ] ],
     [ "partial_eval.cpp", "partial__eval_8cpp.html", null ],
     [ "partial_eval.h", "partial__eval_8h.html", [
       [ "thorin::PartialEval", "classthorin_1_1PartialEval.html", "classthorin_1_1PartialEval" ]

@@ -111,6 +111,7 @@ var namespacethorin =
     [ "Loc", "structthorin_1_1Loc.html", "structthorin_1_1Loc" ],
     [ "LoopTree", "classthorin_1_1LoopTree.html", "classthorin_1_1LoopTree" ],
     [ "LoopTreeBuilder", "classthorin_1_1LoopTreeBuilder.html", "classthorin_1_1LoopTreeBuilder" ],
+    [ "LowerFor", "classthorin_1_1LowerFor.html", "classthorin_1_1LowerFor" ],
     [ "LRPrec", "structthorin_1_1LRPrec.html", "structthorin_1_1LRPrec" ],
     [ "Mangler", "classthorin_1_1Mangler.html", "classthorin_1_1Mangler" ],
     [ "Nat", "classthorin_1_1Nat.html", "classthorin_1_1Nat" ],

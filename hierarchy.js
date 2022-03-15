@@ -194,6 +194,7 @@ var hierarchy =
             [ "thorin::TailRecElim", "classthorin_1_1TailRecElim.html", null ]
           ] ],
           [ "thorin::Alloc2Malloc", "classthorin_1_1Alloc2Malloc.html", null ],
+          [ "thorin::LowerFor", "classthorin_1_1LowerFor.html", null ],
           [ "thorin::RememElim", "classthorin_1_1RememElim.html", null ],
           [ "thorin::RetWrap", "classthorin_1_1RetWrap.html", null ],
           [ "thorin::Scalerize", "classthorin_1_1Scalerize.html", null ]
