@@ -213,7 +213,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extracts from a <a class="el" href="classthorin_1_1Sigma.html">Sigma</a> or Arr-typed <a class="el" href="classthorin_1_1Extract.html#af4262f42fbfe1a0ee8cf5cbbfb63f0b8">Extract::tuple</a> the element at position <a class="el" href="classthorin_1_1Extract.html#a54eac43c674a7aee78eeb9ef1dbe1b00">Extract::index</a>.  <a href="classthorin_1_1Extract.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1FNV1.html">FNV1</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a href="http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var">Magic numbers</a> for <a class="el" href="structthorin_1_1FNV1.html" title="Magic numbers for FNV1 hash.">FNV1</a> hash.  <a href="structthorin_1_1FNV1.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a href="http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var">Magic numbers</a> for FNV-1 hash.  <a href="structthorin_1_1FNV1.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structthorin_1_1Fold"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#structthorin_1_1Fold">Fold</a></td></tr>
 <tr class="separator:structthorin_1_1Fold"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,6 +280,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A global variable in the data segment.  <a href="classthorin_1_1Global.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1HashMap.html">HashMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This container is for the most part compatible with <code>std::unordered_map</code>.  <a href="classthorin_1_1HashMap.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1HashSet.html">HashSet</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This container is for the most part compatible with <code>std::unordered_set</code>.  <a href="classthorin_1_1HashSet.html#details">More...</a><br /></td></tr>
@@ -1133,42 +1134,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplParams" colspan="2">template&lt;class I , class T , class Cmp &gt; </td></tr>
 <tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplItemLeft" align="right" valign="top">I&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a437c6f50faf6e57f126429d5a0ce9642">binary_find</a> (I begin, I end, T val, Cmp cmp)</td></tr>
 <tr class="separator:a437c6f50faf6e57f126429d5a0ce9642"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0e621eb1be011dcdfe11e5171fd7dd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4">hash</a> (const char *s)</td></tr>
-<tr class="separator:ae0e621eb1be011dcdfe11e5171fd7dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a333d04a40eeb7f22675a906e6cbc00af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a333d04a40eeb7f22675a906e6cbc00af">hash</a> (std::string_view s)</td></tr>
-<tr class="separator:a333d04a40eeb7f22675a906e6cbc00af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae79eaa83fb8c9cb276a5528ef2423594"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae79eaa83fb8c9cb276a5528ef2423594">debug_hash</a> ()</td></tr>
 <tr class="separator:ae79eaa83fb8c9cb276a5528ef2423594"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a5c4e987f83e9076f9d3d70b1022663"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a8a5c4e987f83e9076f9d3d70b1022663">murmur_32_scramble</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> k)</td></tr>
-<tr class="separator:a8a5c4e987f83e9076f9d3d70b1022663"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa8858444c651d4782136a10c4562574b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aa8858444c651d4782136a10c4562574b">murmur3</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h, <a class="el" href="namespace_3globalScope_4.html#classuint32__t">uint32_t</a> key)</td></tr>
-<tr class="separator:aa8858444c651d4782136a10c4562574b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85d359a40aef5ef0148d3fc6880b8a00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a85d359a40aef5ef0148d3fc6880b8a00">murmur3</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h, uint64_t key)</td></tr>
-<tr class="separator:a85d359a40aef5ef0148d3fc6880b8a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd6542b4bbcecac2fe7e4e87251a37f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#afd6542b4bbcecac2fe7e4e87251a37f6">murmur3_rest</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h, uint8_t key)</td></tr>
-<tr class="separator:afd6542b4bbcecac2fe7e4e87251a37f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79e278c20d96a1b195018a8417e9702b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a79e278c20d96a1b195018a8417e9702b">murmur3_rest</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h, uint16_t key)</td></tr>
-<tr class="separator:a79e278c20d96a1b195018a8417e9702b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11d9f60317a743a4384f429a270db9de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a11d9f60317a743a4384f429a270db9de">murmur3_finalize</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h, <a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> len)</td></tr>
-<tr class="separator:a11d9f60317a743a4384f429a270db9de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7a988abfdb3962f8db0c32f2a4a0110"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#af7a988abfdb3962f8db0c32f2a4a0110">murmur3</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h)</td></tr>
-<tr class="memdesc:af7a988abfdb3962f8db0c32f2a4a0110"><td class="mdescLeft">&#160;</td><td class="mdescRight">use for a single value to hash  <a href="namespacethorin.html#af7a988abfdb3962f8db0c32f2a4a0110">More...</a><br /></td></tr>
-<tr class="separator:af7a988abfdb3962f8db0c32f2a4a0110"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e8bff0379df3f8e717e43f3c1aad22f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a3e8bff0379df3f8e717e43f3c1aad22f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f">hash_combine</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> seed, T v)</td></tr>
-<tr class="memdesc:a3e8bff0379df3f8e717e43f3c1aad22f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new hash by combining the hash <code>seed</code> with <code>val</code>.  <a href="namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f">More...</a><br /></td></tr>
-<tr class="separator:a3e8bff0379df3f8e717e43f3c1aad22f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf896db08a5279cdb1f61589607f055b"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:acf896db08a5279cdb1f61589607f055b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#acf896db08a5279cdb1f61589607f055b">hash_combine</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> seed, T *val)</td></tr>
-<tr class="separator:acf896db08a5279cdb1f61589607f055b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa8ec846210cd2e5bff23fc963021ca7"><td class="memTemplParams" colspan="2">template&lt;class T , class... Args&gt; </td></tr>
-<tr class="memitem:afa8ec846210cd2e5bff23fc963021ca7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#afa8ec846210cd2e5bff23fc963021ca7">hash_combine</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> seed, T val, Args &amp;&amp;... args)</td></tr>
-<tr class="separator:afa8ec846210cd2e5bff23fc963021ca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45953d358ff771ff89168ecc274b7d2b"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a45953d358ff771ff89168ecc274b7d2b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a45953d358ff771ff89168ecc274b7d2b">hash_begin</a> (T val)</td></tr>
-<tr class="separator:a45953d358ff771ff89168ecc274b7d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25e65e2898328d7df97d05cbe8263220"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a25e65e2898328d7df97d05cbe8263220">hash_begin</a> ()</td></tr>
-<tr class="separator:a25e65e2898328d7df97d05cbe8263220"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0a62994b63462d082addeddb1c92029"><td class="memTemplParams" colspan="2">template&lt;class Indexer , class Key , class Value &gt; </td></tr>
 <tr class="memitem:aa0a62994b63462d082addeddb1c92029"><td class="memTemplItemLeft" align="right" valign="top">Value *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aa0a62994b63462d082addeddb1c92029">find</a> (<a class="el" href="classthorin_1_1IndexMap.html">IndexMap</a>&lt; Indexer, Key, Value * &gt; &amp;map, Key key)</td></tr>
 <tr class="separator:aa0a62994b63462d082addeddb1c92029"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1251,6 +1218,43 @@ requires RefStream&lt;T&gt;</td></tr>
 <tr class="separator:ab4e8096218f5bbe9c8076b54793b1342"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c9aa9c890f64ffc1d214f34e0f122b6"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a0c9aa9c890f64ffc1d214f34e0f122b6">tuple_of_types</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *t)</td></tr>
 <tr class="separator:a0c9aa9c890f64ffc1d214f34e0f122b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">string hashing</div></td></tr>
+<tr class="memitem:ae0e621eb1be011dcdfe11e5171fd7dd4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4">hash</a> (const char *s)</td></tr>
+<tr class="separator:ae0e621eb1be011dcdfe11e5171fd7dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a333d04a40eeb7f22675a906e6cbc00af"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a333d04a40eeb7f22675a906e6cbc00af">hash</a> (std::string_view s)</td></tr>
+<tr class="separator:a333d04a40eeb7f22675a906e6cbc00af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">murmur3 hash</div></td></tr>
+<tr class="memitem:a8a5c4e987f83e9076f9d3d70b1022663"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a8a5c4e987f83e9076f9d3d70b1022663">murmur_32_scramble</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> k)</td></tr>
+<tr class="separator:a8a5c4e987f83e9076f9d3d70b1022663"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8858444c651d4782136a10c4562574b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aa8858444c651d4782136a10c4562574b">murmur3</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h, <a class="el" href="namespace_3globalScope_4.html#classuint32__t">uint32_t</a> key)</td></tr>
+<tr class="separator:aa8858444c651d4782136a10c4562574b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85d359a40aef5ef0148d3fc6880b8a00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a85d359a40aef5ef0148d3fc6880b8a00">murmur3</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h, uint64_t key)</td></tr>
+<tr class="separator:a85d359a40aef5ef0148d3fc6880b8a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd6542b4bbcecac2fe7e4e87251a37f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#afd6542b4bbcecac2fe7e4e87251a37f6">murmur3_rest</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h, uint8_t key)</td></tr>
+<tr class="separator:afd6542b4bbcecac2fe7e4e87251a37f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79e278c20d96a1b195018a8417e9702b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a79e278c20d96a1b195018a8417e9702b">murmur3_rest</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h, uint16_t key)</td></tr>
+<tr class="separator:a79e278c20d96a1b195018a8417e9702b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11d9f60317a743a4384f429a270db9de"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a11d9f60317a743a4384f429a270db9de">murmur3_finalize</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h, <a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> len)</td></tr>
+<tr class="separator:a11d9f60317a743a4384f429a270db9de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7a988abfdb3962f8db0c32f2a4a0110"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#af7a988abfdb3962f8db0c32f2a4a0110">murmur3</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> h)</td></tr>
+<tr class="memdesc:af7a988abfdb3962f8db0c32f2a4a0110"><td class="mdescLeft">&#160;</td><td class="mdescRight">use for a single value to hash  <a href="namespacethorin.html#af7a988abfdb3962f8db0c32f2a4a0110">More...</a><br /></td></tr>
+<tr class="separator:af7a988abfdb3962f8db0c32f2a4a0110"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">FNV-1 hash</div></td></tr>
+<tr class="memitem:a3e8bff0379df3f8e717e43f3c1aad22f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a3e8bff0379df3f8e717e43f3c1aad22f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f">hash_combine</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> seed, T v)</td></tr>
+<tr class="memdesc:a3e8bff0379df3f8e717e43f3c1aad22f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new hash by combining the hash <code>seed</code> with <code>val</code>.  <a href="namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f">More...</a><br /></td></tr>
+<tr class="separator:a3e8bff0379df3f8e717e43f3c1aad22f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf896db08a5279cdb1f61589607f055b"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:acf896db08a5279cdb1f61589607f055b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#acf896db08a5279cdb1f61589607f055b">hash_combine</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> seed, T *val)</td></tr>
+<tr class="separator:acf896db08a5279cdb1f61589607f055b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa8ec846210cd2e5bff23fc963021ca7"><td class="memTemplParams" colspan="2">template&lt;class T , class... Args&gt; </td></tr>
+<tr class="memitem:afa8ec846210cd2e5bff23fc963021ca7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#afa8ec846210cd2e5bff23fc963021ca7">hash_combine</a> (<a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> seed, T val, Args &amp;&amp;... args)</td></tr>
+<tr class="separator:afa8ec846210cd2e5bff23fc963021ca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45953d358ff771ff89168ecc274b7d2b"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a45953d358ff771ff89168ecc274b7d2b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a45953d358ff771ff89168ecc274b7d2b">hash_begin</a> (T val)</td></tr>
+<tr class="separator:a45953d358ff771ff89168ecc274b7d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25e65e2898328d7df97d05cbe8263220"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a25e65e2898328d7df97d05cbe8263220">hash_begin</a> ()</td></tr>
+<tr class="separator:a25e65e2898328d7df97d05cbe8263220"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -3858,7 +3862,7 @@ template&lt;class D , class S &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00058">58</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00328">thorin::Def::as_nom()</a>, <a class="el" href="hash_8h_source.html#l00338">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::capacity()</a>, <a class="el" href="world_8h_source.html#l00061">thorin::World::defs()</a>, <a class="el" href="world_8h_source.html#l00514">thorin::World::externals()</a>, <a class="el" href="rewrite_8h_source.html#l00025">thorin::Rewriter::new_world</a>, <a class="el" href="rewrite_8h_source.html#l00027">thorin::Rewriter::old2new</a>, <a class="el" href="rewrite_8h_source.html#l00024">thorin::Rewriter::old_world</a>, <a class="el" href="hash_8h_source.html#l00397">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::rehash()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00008">thorin::Rewriter::rewrite()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00328">thorin::Def::as_nom()</a>, <a class="el" href="hash_8h_source.html#l00347">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::capacity()</a>, <a class="el" href="world_8h_source.html#l00061">thorin::World::defs()</a>, <a class="el" href="world_8h_source.html#l00514">thorin::World::externals()</a>, <a class="el" href="rewrite_8h_source.html#l00025">thorin::Rewriter::new_world</a>, <a class="el" href="rewrite_8h_source.html#l00027">thorin::Rewriter::old2new</a>, <a class="el" href="rewrite_8h_source.html#l00024">thorin::Rewriter::old_world</a>, <a class="el" href="hash_8h_source.html#l00406">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::rehash()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00008">thorin::Rewriter::rewrite()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="pass_8cpp_source.html#l00040">thorin::PassMan::run()</a>.</p>
 
@@ -4762,9 +4766,9 @@ template&lt;class T , class U &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="hash_8cpp_source.html#l00007">7</a> of file <a class="el" href="hash_8cpp_source.html">hash.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00121">hash_begin()</a>, and <a class="el" href="hash_8h_source.html#l00097">hash_combine()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00126">hash_begin()</a>, and <a class="el" href="hash_8h_source.html#l00102">hash_combine()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="hash_8h_source.html#l00130">thorin::StrHash::hash()</a>, and <a class="el" href="hash_8h_source.html#l00136">thorin::StrViewHash::hash()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="hash_8h_source.html#l00138">thorin::StrHash::hash()</a>, and <a class="el" href="hash_8h_source.html#l00144">thorin::StrViewHash::hash()</a>.</p>
 
 </div>
 </div>
@@ -4786,7 +4790,7 @@ template&lt;class T , class U &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="hash_8cpp_source.html#l00014">14</a> of file <a class="el" href="hash_8cpp_source.html">hash.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00121">hash_begin()</a>, and <a class="el" href="hash_8h_source.html#l00097">hash_combine()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00126">hash_begin()</a>, and <a class="el" href="hash_8h_source.html#l00102">hash_combine()</a>.</p>
 
 </div>
 </div>
@@ -4813,9 +4817,9 @@ template&lt;class T , class U &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00124">124</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00129">129</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00091">thorin::FNV1::offset</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00096">thorin::FNV1::offset</a>.</p>
 
 </div>
 </div>
@@ -4837,9 +4841,9 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00121">121</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00126">126</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00097">hash_combine()</a>, and <a class="el" href="hash_8h_source.html#l00091">thorin::FNV1::offset</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00102">hash_combine()</a>, and <a class="el" href="hash_8h_source.html#l00096">thorin::FNV1::offset</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00007">hash()</a>, <a class="el" href="def_8h_source.html#l00453">thorin::DefsHash::hash()</a>, and <a class="el" href="def_8h_source.html#l00653">thorin::UseHash::hash()</a>.</p>
 
@@ -4873,9 +4877,9 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00111">111</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00116">116</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00097">hash_combine()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00102">hash_combine()</a>.</p>
 
 </div>
 </div>
@@ -4909,11 +4913,11 @@ template&lt;class T &gt; </div>
 
 <p>Returns a new hash by combining the hash <code>seed</code> with <code>val</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00097">97</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00102">102</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00092">thorin::FNV1::prime</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00097">thorin::FNV1::prime</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00007">hash()</a>, <a class="el" href="def_8h_source.html#l00453">thorin::DefsHash::hash()</a>, <a class="el" href="def_8h_source.html#l00653">thorin::UseHash::hash()</a>, <a class="el" href="hash_8h_source.html#l00121">hash_begin()</a>, and <a class="el" href="hash_8h_source.html#l00111">hash_combine()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00007">hash()</a>, <a class="el" href="def_8h_source.html#l00453">thorin::DefsHash::hash()</a>, <a class="el" href="def_8h_source.html#l00653">thorin::UseHash::hash()</a>, <a class="el" href="hash_8h_source.html#l00126">hash_begin()</a>, and <a class="el" href="hash_8h_source.html#l00116">hash_combine()</a>.</p>
 
 </div>
 </div>
@@ -4951,9 +4955,9 @@ template&lt;class T , class... Args&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00116">116</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00121">121</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00097">hash_combine()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00102">hash_combine()</a>.</p>
 
 </div>
 </div>
@@ -6162,7 +6166,7 @@ template&lt;class T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="deptree_8cpp_source.html#l00007">7</a> of file <a class="el" href="deptree_8cpp_source.html">deptree.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00367">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::insert()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00376">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::insert()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00069">merge_sigma()</a>, and <a class="el" href="tuple_8cpp_source.html#l00075">merge_tuple()</a>.</p>
 
@@ -6342,7 +6346,7 @@ template&lt;<a class="el" href="namespacethorin.html#a12cc65a06abfcbcae824f6128f
 
 <p>use for a single value to hash </p>
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00080">80</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00081">81</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
 </div>
 </div>
@@ -6380,9 +6384,9 @@ template&lt;<a class="el" href="namespacethorin.html#a12cc65a06abfcbcae824f6128f
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00040">40</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00041">41</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00033">murmur_32_scramble()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00034">murmur_32_scramble()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00017">thorin::Def::Def()</a>, <a class="el" href="def_8h_source.html#l00442">thorin::DefDefHash::hash()</a>, <a class="el" href="debug_8cpp_source.html#l00024">thorin::SymHash::hash()</a>, <a class="el" href="def_8h_source.html#l00025">thorin::GIDHash&lt; T &gt;::hash()</a>, and <a class="el" href="world_8h_source.html#l00534">thorin::World::BreakHash::hash()</a>.</p>
 
@@ -6422,9 +6426,9 @@ template&lt;<a class="el" href="namespacethorin.html#a12cc65a06abfcbcae824f6128f
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00047">47</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00048">48</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00033">murmur_32_scramble()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00034">murmur_32_scramble()</a>.</p>
 
 </div>
 </div>
@@ -6462,7 +6466,7 @@ template&lt;<a class="el" href="namespacethorin.html#a12cc65a06abfcbcae824f6128f
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00069">69</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00070">70</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00017">thorin::Def::Def()</a>, and <a class="el" href="def_8h_source.html#l00442">thorin::DefDefHash::hash()</a>.</p>
 
@@ -6502,9 +6506,9 @@ template&lt;<a class="el" href="namespacethorin.html#a12cc65a06abfcbcae824f6128f
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00064">64</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00065">65</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00033">murmur_32_scramble()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00034">murmur_32_scramble()</a>.</p>
 
 </div>
 </div>
@@ -6542,9 +6546,9 @@ template&lt;<a class="el" href="namespacethorin.html#a12cc65a06abfcbcae824f6128f
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00059">59</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00060">60</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00033">murmur_32_scramble()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00034">murmur_32_scramble()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00017">thorin::Def::Def()</a>.</p>
 
@@ -6574,9 +6578,9 @@ template&lt;<a class="el" href="namespacethorin.html#a12cc65a06abfcbcae824f6128f
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00033">33</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00034">34</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="hash_8h_source.html#l00040">murmur3()</a>, and <a class="el" href="hash_8h_source.html#l00059">murmur3_rest()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="hash_8h_source.html#l00041">murmur3()</a>, and <a class="el" href="hash_8h_source.html#l00060">murmur3_rest()</a>.</p>
 
 </div>
 </div>
@@ -9515,7 +9519,7 @@ template&lt;<a class="el" href="namespacethorin.html#a12cc65a06abfcbcae824f6128f
 
 <p class="definition">Definition at line <a class="el" href="partial__evaluation_8cpp_source.html#l00040">40</a> of file <a class="el" href="partial__evaluation_8cpp_source.html">partial_evaluation.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="lam_8h_source.html#l00077">thorin::Lam::body()</a>, <a class="el" href="hash_8h_source.html#l00349">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::end()</a>, <a class="el" href="hash_8h_source.html#l00487">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::find()</a>, <a class="el" href="hash_8h_source.html#l00367">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::insert()</a>, <a class="el" href="def_8h_source.html#l00318">thorin::Def::isa_nom()</a>, <a class="el" href="container_8h_source.html#l00010">pop()</a>, and <a class="el" href="partial__evaluation_8cpp_source.html#l00040">succs()</a>.</p>
+<p class="reference">References <a class="el" href="lam_8h_source.html#l00077">thorin::Lam::body()</a>, <a class="el" href="hash_8h_source.html#l00358">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::end()</a>, <a class="el" href="hash_8h_source.html#l00496">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::find()</a>, <a class="el" href="hash_8h_source.html#l00376">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::insert()</a>, <a class="el" href="def_8h_source.html#l00318">thorin::Def::isa_nom()</a>, <a class="el" href="container_8h_source.html#l00010">pop()</a>, and <a class="el" href="partial__evaluation_8cpp_source.html#l00040">succs()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="partial__evaluation_8cpp_source.html#l00179">thorin::PartialEvaluator::run()</a>, and <a class="el" href="partial__evaluation_8cpp_source.html#l00040">succs()</a>.</p>
 
