@@ -18,10 +18,8 @@ var searchData=
   ['thorin_5fr_5fcmp_15',['THORIN_R_CMP',['../tables_8h.html#aa417726e30e1fcda3718632ed5fc1a1d',1,'tables.h']]],
   ['thorin_5fr_5fop_16',['THORIN_R_OP',['../tables_8h.html#a30ee7de641f6c0dd0a333b4ec36c9109',1,'tables.h']]],
   ['thorin_5fshr_17',['THORIN_SHR',['../tables_8h.html#a7c2a43f25dbe52f990917b6d1a404179',1,'tables.h']]],
-  ['thorin_5fstringify_18',['THORIN_STRINGIFY',['../types_8h.html#a451dc2378e433e247dfe904584287e8f',1,'types.h']]],
-  ['thorin_5ftag_19',['THORIN_TAG',['../tables_8h.html#a0d966c506a7e321a180379f2f793cbca',1,'tables.h']]],
-  ['thorin_5ftok_20',['THORIN_TOK',['../tok_8h.html#acf85c215badfba27aee55c9cd3af719a',1,'tok.h']]],
-  ['thorin_5ftostring_21',['THORIN_TOSTRING',['../types_8h.html#ac60ff1bfd35e321559ac3a6c385dae1c',1,'types.h']]],
-  ['thorin_5ftrait_22',['THORIN_TRAIT',['../tables_8h.html#a238b01e8961ff93e64c4b9be442c1d8f',1,'tables.h']]],
-  ['thorin_5fwrap_23',['THORIN_WRAP',['../tables_8h.html#a7d44f4fba443cbcbd14dcf49908bcdcc',1,'tables.h']]]
+  ['thorin_5ftag_18',['THORIN_TAG',['../tables_8h.html#a0d966c506a7e321a180379f2f793cbca',1,'tables.h']]],
+  ['thorin_5ftok_19',['THORIN_TOK',['../tok_8h.html#acf85c215badfba27aee55c9cd3af719a',1,'tok.h']]],
+  ['thorin_5ftrait_20',['THORIN_TRAIT',['../tables_8h.html#a238b01e8961ff93e64c4b9be442c1d8f',1,'tables.h']]],
+  ['thorin_5fwrap_21',['THORIN_WRAP',['../tables_8h.html#a7d44f4fba443cbcbd14dcf49908bcdcc',1,'tables.h']]]
 ];

@@ -18,7 +18,7 @@ var searchData=
   ['lazy_5finit_15',['lazy_init',['../namespacethorin.html#aee2f56c5529fe06f8a103083f64d13f4',1,'thorin']]],
   ['le_16',['le',['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9ad9180594744f870aeefb086982e980bb',1,'thorin']]],
   ['lea_17',['LEA',['../namespacethorin_1_1Tag.html#ad1aca2cd5162a2610cb52c28df8f2d55a2967059d2150f3d77949fe5a3369c3b6',1,'thorin::Tag']]],
-  ['leaf_18',['Leaf',['../classthorin_1_1LoopTreeBuilder.html#a525616cc34145dc761d91e8303392369',1,'thorin::LoopTreeBuilder::Leaf()'],['../classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cbac3b5e1f7de11d645fb1da6c5415b1fa5',1,'thorin::LoopTree::Base::Leaf()'],['../classthorin_1_1LoopTree_1_1Leaf.html',1,'thorin::LoopTree&lt; forward &gt;::Leaf']]],
+  ['leaf_18',['Leaf',['../classthorin_1_1LoopTreeBuilder.html#ac690cf3a399ddce6920cc5cc7449a5d3',1,'thorin::LoopTreeBuilder::Leaf()'],['../classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cbac3b5e1f7de11d645fb1da6c5415b1fa5',1,'thorin::LoopTree::Base::Leaf()'],['../classthorin_1_1LoopTree_1_1Leaf.html',1,'thorin::LoopTree&lt; forward &gt;::Leaf']]],
   ['least_5fcommon_5fancestor_19',['least_common_ancestor',['../classthorin_1_1DomTreeBase.html#a8d66dda27fbfe5be9a90a5f65df791a7',1,'thorin::DomTreeBase']]],
   ['let_20',['let',['../classthorin_1_1Def.html#a33c2a298ac5eb7a076c8e7411ab1b220',1,'thorin::Def']]],
   ['level_21',['level',['../classthorin_1_1Stream.html#a6a99ee383d99c49387ee87a7838f3806',1,'thorin::Stream::level()'],['../classthorin_1_1Def.html#a0d1007d230f27aee0aa2e7cee25b9bd5',1,'thorin::Def::level()']]],

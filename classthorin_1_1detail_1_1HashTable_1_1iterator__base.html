@@ -105,23 +105,23 @@ $(document).ready(function(){initNavTree('classthorin_1_1detail_1_1HashTable_1_1
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a31b94f8fc710985d591c9097b3996fb0"><td class="memItemLeft" align="right" valign="top">typedef <a class="el" href="classthorin_1_1detail_1_1HashTable.html">HashTable</a>&lt; Key, T, H, StackCapacity &gt;::value_type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a31b94f8fc710985d591c9097b3996fb0">value_type</a></td></tr>
-<tr class="separator:a31b94f8fc710985d591c9097b3996fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2e44dd66ef893363e2223f5c137b1858"><td class="memItemLeft" align="right" valign="top">typedef std::ptrdiff_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a2e44dd66ef893363e2223f5c137b1858">difference_type</a></td></tr>
-<tr class="separator:a2e44dd66ef893363e2223f5c137b1858"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9617bad905091d24b70967b3df8dd5a2"><td class="memItemLeft" align="right" valign="top">typedef std::conditional&lt; is_const, constvalue_type &amp;, <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a31b94f8fc710985d591c9097b3996fb0">value_type</a> &amp; &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a9617bad905091d24b70967b3df8dd5a2">reference</a></td></tr>
-<tr class="separator:a9617bad905091d24b70967b3df8dd5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c887cbaa304fb1cd04d12cf5ca096fe"><td class="memItemLeft" align="right" valign="top">typedef std::conditional&lt; is_const, constvalue_type *, <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a31b94f8fc710985d591c9097b3996fb0">value_type</a> * &gt;::type&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a3c887cbaa304fb1cd04d12cf5ca096fe">pointer</a></td></tr>
-<tr class="separator:a3c887cbaa304fb1cd04d12cf5ca096fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24307327aefb2064bb4248b4612f1241"><td class="memItemLeft" align="right" valign="top">typedef std::forward_iterator_tag&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a24307327aefb2064bb4248b4612f1241">iterator_category</a></td></tr>
-<tr class="separator:a24307327aefb2064bb4248b4612f1241"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a786f66f05613b78ddb0136a48b4b0416"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a> = typename <a class="el" href="classthorin_1_1detail_1_1HashTable.html">HashTable</a>&lt; Key, T, H, StackCapacity &gt;::value_type</td></tr>
+<tr class="separator:a786f66f05613b78ddb0136a48b4b0416"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7c17659ff5b189c4bd973f0bb129626"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#aa7c17659ff5b189c4bd973f0bb129626">difference_type</a> = std::ptrdiff_t</td></tr>
+<tr class="separator:aa7c17659ff5b189c4bd973f0bb129626"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa27d341016076755c21ffc6307547c4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#afa27d341016076755c21ffc6307547c4">reference</a> = typename std::conditional&lt; is_const, const <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a> &amp;, <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a> &amp; &gt;::type</td></tr>
+<tr class="separator:afa27d341016076755c21ffc6307547c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac30d562a64a3f6030380014559aabab4"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#ac30d562a64a3f6030380014559aabab4">pointer</a> = typename std::conditional&lt; is_const, const <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a> *, <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a> * &gt;::type</td></tr>
+<tr class="separator:ac30d562a64a3f6030380014559aabab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac20442a387b714bc1c0eb4ce654f53bd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#ac20442a387b714bc1c0eb4ce654f53bd">iterator_category</a> = std::forward_iterator_tag</td></tr>
+<tr class="separator:ac20442a387b714bc1c0eb4ce654f53bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">constructor, destructor &amp; assignment</div></td></tr>
 <tr class="memitem:a00349cd937826f3a0c9d00ff1b5fc43c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">iterator_base</a> ()=default</td></tr>
 <tr class="separator:a00349cd937826f3a0c9d00ff1b5fc43c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a775b0f9a493de8ac893e6b82d17037c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a775b0f9a493de8ac893e6b82d17037c9">iterator_base</a> (<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a31b94f8fc710985d591c9097b3996fb0">value_type</a> *ptr, const <a class="el" href="classthorin_1_1detail_1_1HashTable.html">HashTable</a> *table)</td></tr>
+<tr class="memitem:a775b0f9a493de8ac893e6b82d17037c9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a775b0f9a493de8ac893e6b82d17037c9">iterator_base</a> (<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a> *ptr, const <a class="el" href="classthorin_1_1detail_1_1HashTable.html">HashTable</a> *table)</td></tr>
 <tr class="separator:a775b0f9a493de8ac893e6b82d17037c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a930f2733d9b187cddff49af8d828f364"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> other_const, class  = std::enable_if_t&lt;is_const || !other_const&gt;&gt; </td></tr>
 <tr class="memitem:a930f2733d9b187cddff49af8d828f364"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a930f2733d9b187cddff49af8d828f364">iterator_base</a> (const <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html">iterator_base</a>&lt; other_const &gt; &amp;i)</td></tr>
@@ -141,9 +141,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3c631b1910f7bce1fe3603b03969e449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cd6720bd17cfb0819a4b96ac828fab0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html">iterator_base</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a2cd6720bd17cfb0819a4b96ac828fab0">operator++</a> (<a class="el" href="namespace_3globalScope_4.html#classint">int</a>)</td></tr>
 <tr class="separator:a2cd6720bd17cfb0819a4b96ac828fab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a28cf9de74f27638d1ed2615cfa2d33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a9617bad905091d24b70967b3df8dd5a2">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a2a28cf9de74f27638d1ed2615cfa2d33">operator*</a> () const</td></tr>
+<tr class="memitem:a2a28cf9de74f27638d1ed2615cfa2d33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#afa27d341016076755c21ffc6307547c4">reference</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a2a28cf9de74f27638d1ed2615cfa2d33">operator*</a> () const</td></tr>
 <tr class="separator:a2a28cf9de74f27638d1ed2615cfa2d33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1de867a30b66c93d79bcf1a23493ccc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a3c887cbaa304fb1cd04d12cf5ca096fe">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a1de867a30b66c93d79bcf1a23493ccc8">operator-&gt;</a> () const</td></tr>
+<tr class="memitem:a1de867a30b66c93d79bcf1a23493ccc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#ac30d562a64a3f6030380014559aabab4">pointer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a1de867a30b66c93d79bcf1a23493ccc8">operator-&gt;</a> () const</td></tr>
 <tr class="separator:a1de867a30b66c93d79bcf1a23493ccc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b3bd50201e229b813324637d4be62ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a4b3bd50201e229b813324637d4be62ba">operator==</a> (const <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html">iterator_base</a> &amp;other) const</td></tr>
 <tr class="separator:a4b3bd50201e229b813324637d4be62ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,10 +159,10 @@ Friends</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class Key, class T, class H, <a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> StackCapacity&gt;<br />
 template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> is_const&gt;<br />
 class thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;</div>
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00180">180</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00177">177</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a2e44dd66ef893363e2223f5c137b1858" name="a2e44dd66ef893363e2223f5c137b1858"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2e44dd66ef893363e2223f5c137b1858">&#9670;&nbsp;</a></span>difference_type</h2>
+<a id="aa7c17659ff5b189c4bd973f0bb129626" name="aa7c17659ff5b189c4bd973f0bb129626"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7c17659ff5b189c4bd973f0bb129626">&#9670;&nbsp;</a></span>difference_type</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -172,7 +172,27 @@ template&lt;class Key , class T , class H , <a class="el" href="namespacethorin.
 template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> is_const&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::ptrdiff_t <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::difference_type</td>
+          <td class="memname">using <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::difference_type =  std::ptrdiff_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00180">180</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+
+</div>
+</div>
+<a id="ac20442a387b714bc1c0eb4ce654f53bd" name="ac20442a387b714bc1c0eb4ce654f53bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac20442a387b714bc1c0eb4ce654f53bd">&#9670;&nbsp;</a></span>iterator_category</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key , class T , class H , <a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> StackCapacity&gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> is_const&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::iterator_category =  std::forward_iterator_tag</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -181,8 +201,8 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 </div>
 </div>
-<a id="a24307327aefb2064bb4248b4612f1241" name="a24307327aefb2064bb4248b4612f1241"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24307327aefb2064bb4248b4612f1241">&#9670;&nbsp;</a></span>iterator_category</h2>
+<a id="ac30d562a64a3f6030380014559aabab4" name="ac30d562a64a3f6030380014559aabab4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac30d562a64a3f6030380014559aabab4">&#9670;&nbsp;</a></span>pointer</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -192,72 +212,52 @@ template&lt;class Key , class T , class H , <a class="el" href="namespacethorin.
 template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> is_const&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::forward_iterator_tag <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::iterator_category</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00186">186</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-</div>
-</div>
-<a id="a3c887cbaa304fb1cd04d12cf5ca096fe" name="a3c887cbaa304fb1cd04d12cf5ca096fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c887cbaa304fb1cd04d12cf5ca096fe">&#9670;&nbsp;</a></span>pointer</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Key , class T , class H , <a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> StackCapacity&gt; </div>
-<div class="memtemplate">
-template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> is_const&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::conditional&lt;is_const,constvalue_type*,<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a31b94f8fc710985d591c9097b3996fb0">value_type</a>*&gt;::type <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::pointer</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00185">185</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-</div>
-</div>
-<a id="a9617bad905091d24b70967b3df8dd5a2" name="a9617bad905091d24b70967b3df8dd5a2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9617bad905091d24b70967b3df8dd5a2">&#9670;&nbsp;</a></span>reference</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Key , class T , class H , <a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> StackCapacity&gt; </div>
-<div class="memtemplate">
-template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> is_const&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef std::conditional&lt;is_const,constvalue_type&amp;,<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a31b94f8fc710985d591c9097b3996fb0">value_type</a>&amp;&gt;::type <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::reference</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00184">184</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
-
-</div>
-</div>
-<a id="a31b94f8fc710985d591c9097b3996fb0" name="a31b94f8fc710985d591c9097b3996fb0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31b94f8fc710985d591c9097b3996fb0">&#9670;&nbsp;</a></span>value_type</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class Key , class T , class H , <a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> StackCapacity&gt; </div>
-<div class="memtemplate">
-template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> is_const&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef <a class="el" href="classthorin_1_1detail_1_1HashTable.html">HashTable</a>&lt;Key,T,H,StackCapacity&gt;::value_type <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::value_type</td>
+          <td class="memname">using <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::pointer =  typename std::conditional&lt;is_const, const <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a>*, <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a>*&gt;::type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00182">182</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+
+</div>
+</div>
+<a id="afa27d341016076755c21ffc6307547c4" name="afa27d341016076755c21ffc6307547c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa27d341016076755c21ffc6307547c4">&#9670;&nbsp;</a></span>reference</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key , class T , class H , <a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> StackCapacity&gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> is_const&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::reference =  typename std::conditional&lt;is_const, const <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a>&amp;, <a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a>&amp;&gt;::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00181">181</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+
+</div>
+</div>
+<a id="a786f66f05613b78ddb0136a48b4b0416" name="a786f66f05613b78ddb0136a48b4b0416"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a786f66f05613b78ddb0136a48b4b0416">&#9670;&nbsp;</a></span>value_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class Key , class T , class H , <a class="el" href="namespacethorin.html#a63fc98b747386959626beff8195c9910">hash_t</a> StackCapacity&gt; </div>
+<div class="memtemplate">
+template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> is_const&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::value_type =  typename <a class="el" href="classthorin_1_1detail_1_1HashTable.html">HashTable</a>&lt;Key, T, H, StackCapacity&gt;::value_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00179">179</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
 </div>
 </div>
@@ -307,7 +307,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
         <tr>
           <td class="memname"><a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::iterator_base </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a31b94f8fc710985d591c9097b3996fb0">value_type</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a786f66f05613b78ddb0136a48b4b0416">value_type</a> *&#160;</td>
           <td class="paramname"><em>ptr</em>, </td>
         </tr>
         <tr>
@@ -329,7 +329,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00191">191</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00188">188</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
 </div>
 </div>
@@ -363,7 +363,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00200">200</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00197">197</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
 </div>
 </div>
@@ -395,7 +395,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00228">228</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00225">225</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
 </div>
 </div>
@@ -427,9 +427,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00260">260</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00257">257</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00222">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00219">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
 
 </div>
 </div>
@@ -447,7 +447,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a9617bad905091d24b70967b3df8dd5a2">reference</a> <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::operator* </td>
+          <td class="memname"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#afa27d341016076755c21ffc6307547c4">reference</a> <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::operator* </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -460,9 +460,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00248">248</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00245">245</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00222">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00219">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
 
 </div>
 </div>
@@ -493,9 +493,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00237">237</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00234">234</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00222">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00219">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
 
 </div>
 </div>
@@ -527,9 +527,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00242">242</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00239">239</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00222">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00219">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
 
 </div>
 </div>
@@ -547,7 +547,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a3c887cbaa304fb1cd04d12cf5ca096fe">pointer</a> <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::operator-&gt; </td>
+          <td class="memname"><a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#ac30d562a64a3f6030380014559aabab4">pointer</a> <a class="el" href="classthorin_1_1detail_1_1HashTable.html">thorin::detail::HashTable</a>&lt; Key, T, H, StackCapacity &gt;<a class="el" href="classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a00349cd937826f3a0c9d00ff1b5fc43c">::iterator_base</a>&lt; is_const &gt;::operator-&gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -560,9 +560,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00252">252</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00249">249</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00222">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00219">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
 
 </div>
 </div>
@@ -596,7 +596,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00209">209</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00206">206</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
 </div>
 </div>
@@ -628,9 +628,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00256">256</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00253">253</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00222">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00219">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
 
 </div>
 </div>
@@ -661,9 +661,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00222">222</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00219">219</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="hash_8h_source.html#l00442">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::erase()</a>, <a class="el" href="hash_8h_source.html#l00260">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::operator!=()</a>, <a class="el" href="hash_8h_source.html#l00248">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::operator*()</a>, <a class="el" href="hash_8h_source.html#l00237">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::operator++()</a>, <a class="el" href="hash_8h_source.html#l00252">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::operator-&gt;()</a>, <a class="el" href="hash_8h_source.html#l00256">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::operator==()</a>, and <a class="el" href="hash_8h_source.html#l00223">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="hash_8h_source.html#l00439">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::erase()</a>, <a class="el" href="hash_8h_source.html#l00257">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::operator!=()</a>, <a class="el" href="hash_8h_source.html#l00245">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::operator*()</a>, <a class="el" href="hash_8h_source.html#l00234">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::operator++()</a>, <a class="el" href="hash_8h_source.html#l00249">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::operator-&gt;()</a>, <a class="el" href="hash_8h_source.html#l00253">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::operator==()</a>, and <a class="el" href="hash_8h_source.html#l00220">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
 
 </div>
 </div>
@@ -695,9 +695,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00223">223</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00220">220</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
-<p class="reference">References <a class="el" href="hash_8h_source.html#l00222">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
+<p class="reference">References <a class="el" href="hash_8h_source.html#l00219">thorin::detail::HashTable&lt; Key, T, H, StackCapacity &gt;::iterator_base&lt; is_const &gt;::verify()</a>.</p>
 
 </div>
 </div>
@@ -726,7 +726,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00277">277</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hash_8h_source.html#l00274">274</a> of file <a class="el" href="hash_8h_source.html">hash.h</a>.</p>
 
 </div>
 </div>

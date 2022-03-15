@@ -104,7 +104,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "alloc2malloc_8cpp.html",
-"classthorin_1_1ArrayRef.html#ae90aa33866ab681469b7e0ec8a68ca98",
+"classthorin_1_1ArrayRef.html#adf4aaa6e43f0c1a35baa724fb2c3188e",
 "classthorin_1_1Checker.html#a1f10a53ffc87e0cee5dd0007ff2edff6",
 "classthorin_1_1Def.html#addf021956daa61ab3035dd3a75751215",
 "classthorin_1_1HashMap.html#a10fe854baef692006daf9e419a5d261a",
@@ -113,13 +113,13 @@ var NAVTREEINDEX =
 "classthorin_1_1Stream.html#ac3629a89ca7b5ed98c4c36722a7278b0",
 "classthorin_1_1Vel.html#a45fa6c35d6e120c7bc9b146780c07e4f",
 "classthorin_1_1World.html#a8e31d8a8297af8bbb06bdbd36b3476a8",
-"classthorin_1_1detail_1_1HashTable.html#aa50c47d6b3ad88f08ae98ab7030b568c",
-"eta__red_8cpp_source.html",
-"namespacethorin.html#a1fb0aa15b4f666015b8571bbac5a6d29",
-"namespacethorin.html#abe0176edb854a9982662e5bdfe0038a3",
-"optimize_8cpp_source.html",
-"structthorin_1_1GIDLt.html#a6462bbf7414788296c43184b10ef0d7a",
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3aa0554b168cb784a1dda5015939699ae5"
+"classthorin_1_1detail_1_1HashTable.html#aa17333f4ca5a49ac84e4f92d8f5eea80",
+"eta__red_8cpp.html#a9ad62aaa1872eb162b0da183bb68f3e9",
+"namespacethorin.html#a214fbe0a10a6d832e3d1883eddfce5be",
+"namespacethorin.html#abcee9768daea1d32c3270ecb1fea94da",
+"optimize_8cpp.html",
+"structthorin_1_1GIDLt.html",
+"tables_8h.html#aec7c9c368dda260071936391c37a72e3aa03404b681bb9cff8b46442fcacbaad5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

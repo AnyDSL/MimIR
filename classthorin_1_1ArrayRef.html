@@ -114,12 +114,12 @@ Inheritance diagram for thorin::ArrayRef&lt; T &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:abeb7292f929c5338cb3fa51300b8f319"><td class="memItemLeft" align="right" valign="top">typedef T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#abeb7292f929c5338cb3fa51300b8f319">value_type</a></td></tr>
-<tr class="separator:abeb7292f929c5338cb3fa51300b8f319"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51e980e57dfce113d1f72225a1b51ee8"><td class="memItemLeft" align="right" valign="top">typedef const T *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a51e980e57dfce113d1f72225a1b51ee8">const_iterator</a></td></tr>
-<tr class="separator:a51e980e57dfce113d1f72225a1b51ee8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2ef0d52e662575e7d3a4925847c7338"><td class="memItemLeft" align="right" valign="top">typedef std::reverse_iterator&lt; <a class="el" href="classthorin_1_1ArrayRef.html#a51e980e57dfce113d1f72225a1b51ee8">const_iterator</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#af2ef0d52e662575e7d3a4925847c7338">const_reverse_iterator</a></td></tr>
-<tr class="separator:af2ef0d52e662575e7d3a4925847c7338"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a363120459be0efabeef6212e89623f9d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a363120459be0efabeef6212e89623f9d">value_type</a> = T</td></tr>
+<tr class="separator:a363120459be0efabeef6212e89623f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a152d25808d043bd74889fbfedea15dcd"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a152d25808d043bd74889fbfedea15dcd">const_iterator</a> = const T *</td></tr>
+<tr class="separator:a152d25808d043bd74889fbfedea15dcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6ba23f4f7bb9a4c8655946667f7163a"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#ac6ba23f4f7bb9a4c8655946667f7163a">const_reverse_iterator</a> = std::reverse_iterator&lt; <a class="el" href="classthorin_1_1ArrayRef.html#a152d25808d043bd74889fbfedea15dcd">const_iterator</a> &gt;</td></tr>
+<tr class="separator:ac6ba23f4f7bb9a4c8655946667f7163a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -155,13 +155,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0ba08565b553549e191c9c4d5f16346f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a0ba08565b553549e191c9c4d5f16346f">empty</a> () const</td></tr>
 <tr class="separator:a0ba08565b553549e191c9c4d5f16346f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">begin/end iterators</div></td></tr>
-<tr class="memitem:a309d63c8622cb444cce280a6034a96ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1ArrayRef.html#a51e980e57dfce113d1f72225a1b51ee8">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a309d63c8622cb444cce280a6034a96ac">begin</a> () const</td></tr>
+<tr class="memitem:a309d63c8622cb444cce280a6034a96ac"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1ArrayRef.html#a152d25808d043bd74889fbfedea15dcd">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a309d63c8622cb444cce280a6034a96ac">begin</a> () const</td></tr>
 <tr class="separator:a309d63c8622cb444cce280a6034a96ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a860395ed5d2b1c2a37aa8be7e9e3e9cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1ArrayRef.html#a51e980e57dfce113d1f72225a1b51ee8">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a860395ed5d2b1c2a37aa8be7e9e3e9cf">end</a> () const</td></tr>
+<tr class="memitem:a860395ed5d2b1c2a37aa8be7e9e3e9cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1ArrayRef.html#a152d25808d043bd74889fbfedea15dcd">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a860395ed5d2b1c2a37aa8be7e9e3e9cf">end</a> () const</td></tr>
 <tr class="separator:a860395ed5d2b1c2a37aa8be7e9e3e9cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3661436e00adac2d18e3ca858701c209"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1ArrayRef.html#af2ef0d52e662575e7d3a4925847c7338">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a3661436e00adac2d18e3ca858701c209">rbegin</a> () const</td></tr>
+<tr class="memitem:a3661436e00adac2d18e3ca858701c209"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1ArrayRef.html#ac6ba23f4f7bb9a4c8655946667f7163a">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a3661436e00adac2d18e3ca858701c209">rbegin</a> () const</td></tr>
 <tr class="separator:a3661436e00adac2d18e3ca858701c209"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a263b9ae9f71f72e7c7bbc29cd3167436"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1ArrayRef.html#af2ef0d52e662575e7d3a4925847c7338">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a263b9ae9f71f72e7c7bbc29cd3167436">rend</a> () const</td></tr>
+<tr class="memitem:a263b9ae9f71f72e7c7bbc29cd3167436"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1ArrayRef.html#ac6ba23f4f7bb9a4c8655946667f7163a">const_reverse_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a263b9ae9f71f72e7c7bbc29cd3167436">rend</a> () const</td></tr>
 <tr class="separator:a263b9ae9f71f72e7c7bbc29cd3167436"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">access</div></td></tr>
 <tr class="memitem:a886440bba24302f946ac4dedc36bae31"><td class="memItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ArrayRef.html#a886440bba24302f946ac4dedc36bae31">operator[]</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i) const</td></tr>
@@ -197,12 +197,12 @@ Friends</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T&gt;<br />
 class thorin::ArrayRef&lt; T &gt;</div><p >A container-like wrapper for an array. </p>
-<p >The array may either stem from a C array, a <code>std::vector</code>, a <code>std::initializer_list</code>, an <code><a class="el" href="classthorin_1_1Array.html" title="A container for an array, either heap-allocated or stack allocated.">Array</a></code> or another <code><a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a></code>. <code><a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a></code> does <em>not</em> own the data and, thus, does not destroy any data. Likewise, you must be carefull to not destroy data an <code><a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a></code> is pointing to. Thorin makes use of <code><a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a>s</code> in many places. Note that you can often construct an <code><a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a></code> inline with an initializer_list: <code>foo(arg1, {elem1, elem2, elem3}, arg3)</code>. Useful operations are <code>skip_front</code> and <code>skip_back</code> to create other <code><a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a>s</code>. </p>
+<p >The array may either stem from a C array, a <code>std::vector</code>, a <code>std::initializer_list</code>, an <a class="el" href="classthorin_1_1Array.html" title="A container for an array, either heap-allocated or stack allocated.">Array</a> or another <a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a>. <a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a> does <b>not</b> own the data and, thus, does not destroy any data. Likewise, you must be carefull to not destroy data an <a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a> is pointing to. Thorin makes use of <a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a>s in many places. Note that you can often construct an <a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a> inline with an initializer_list: <code>foo(arg1, {elem1, elem2, elem3}, arg3)</code>. Useful operations are <a class="el" href="classthorin_1_1ArrayRef.html#adc6a972e350fc99a765dfb823c8cec25">ArrayRef::skip_front</a> and <a class="el" href="classthorin_1_1ArrayRef.html#a40377dfc3fd43093c0df551f3d5a211d">ArrayRef::skip_back</a> to create other <a class="el" href="classthorin_1_1ArrayRef.html" title="A container-like wrapper for an array.">ArrayRef</a>s. </p>
 
 <p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00031">31</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a51e980e57dfce113d1f72225a1b51ee8" name="a51e980e57dfce113d1f72225a1b51ee8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51e980e57dfce113d1f72225a1b51ee8">&#9670;&nbsp;</a></span>const_iterator</h2>
+<a id="a152d25808d043bd74889fbfedea15dcd" name="a152d25808d043bd74889fbfedea15dcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a152d25808d043bd74889fbfedea15dcd">&#9670;&nbsp;</a></span>const_iterator</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -210,7 +210,7 @@ class thorin::ArrayRef&lt; T &gt;</div><p >A container-like wrapper for an array
 template&lt;class T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef const T* <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::const_iterator</td>
+          <td class="memname">using <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::const_iterator =  const T*</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -219,8 +219,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="af2ef0d52e662575e7d3a4925847c7338" name="af2ef0d52e662575e7d3a4925847c7338"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2ef0d52e662575e7d3a4925847c7338">&#9670;&nbsp;</a></span>const_reverse_iterator</h2>
+<a id="ac6ba23f4f7bb9a4c8655946667f7163a" name="ac6ba23f4f7bb9a4c8655946667f7163a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6ba23f4f7bb9a4c8655946667f7163a">&#9670;&nbsp;</a></span>const_reverse_iterator</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,7 +228,7 @@ template&lt;class T &gt; </div>
 template&lt;class T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef std::reverse_iterator&lt;<a class="el" href="classthorin_1_1ArrayRef.html#a51e980e57dfce113d1f72225a1b51ee8">const_iterator</a>&gt; <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::const_reverse_iterator</td>
+          <td class="memname">using <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::const_reverse_iterator =  std::reverse_iterator&lt;<a class="el" href="classthorin_1_1ArrayRef.html#a152d25808d043bd74889fbfedea15dcd">const_iterator</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -237,8 +237,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="abeb7292f929c5338cb3fa51300b8f319" name="abeb7292f929c5338cb3fa51300b8f319"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abeb7292f929c5338cb3fa51300b8f319">&#9670;&nbsp;</a></span>value_type</h2>
+<a id="a363120459be0efabeef6212e89623f9d" name="a363120459be0efabeef6212e89623f9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a363120459be0efabeef6212e89623f9d">&#9670;&nbsp;</a></span>value_type</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -246,7 +246,7 @@ template&lt;class T &gt; </div>
 template&lt;class T &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">typedef T <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::value_type</td>
+          <td class="memname">using <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::value_type =  T</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -537,7 +537,7 @@ template&lt;class T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00065">65</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00117">thorin::ArrayRef&lt; T &gt;::swap</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00140">thorin::ArrayRef&lt; T &gt;::swap</a>.</p>
 
 </div>
 </div>
@@ -567,9 +567,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00097">97</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00107">107</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00082">thorin::ArrayRef&lt; T &gt;::empty()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00086">thorin::ArrayRef&lt; T &gt;::empty()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00503">thorin::World::arr()</a>, and <a class="el" href="world_8cpp_source.html#l00508">thorin::World::pack()</a>.</p>
 
@@ -587,7 +587,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1ArrayRef.html#a51e980e57dfce113d1f72225a1b51ee8">const_iterator</a> <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::begin </td>
+          <td class="memname"><a class="el" href="classthorin_1_1ArrayRef.html#a152d25808d043bd74889fbfedea15dcd">const_iterator</a> <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::begin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -600,9 +600,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00087">87</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00091">91</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="array_8h_source.html#l00114">thorin::ArrayRef&lt; T &gt;::operator!=()</a>, <a class="el" href="array_8h_source.html#l00112">thorin::ArrayRef&lt; T &gt;::operator==()</a>, <a class="el" href="array_8h_source.html#l00090">thorin::ArrayRef&lt; T &gt;::rend()</a>, <a class="el" href="world_8cpp_source.html#l00313">thorin::World::sigma()</a>, and <a class="el" href="world_8cpp_source.html#l00336">thorin::World::tuple()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="array_8h_source.html#l00135">thorin::ArrayRef&lt; T &gt;::operator!=()</a>, <a class="el" href="array_8h_source.html#l00131">thorin::ArrayRef&lt; T &gt;::operator==()</a>, <a class="el" href="array_8h_source.html#l00094">thorin::ArrayRef&lt; T &gt;::rend()</a>, <a class="el" href="world_8cpp_source.html#l00313">thorin::World::sigma()</a>, and <a class="el" href="world_8cpp_source.html#l00336">thorin::World::tuple()</a>.</p>
 
 </div>
 </div>
@@ -634,11 +634,11 @@ template&lt;class T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00333">333</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00389">389</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>, <a class="el" href="namespacethorin.html#a252c586d22f57e1aaff3b53a3634bfb2af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>, and <a class="el" href="array_8h_source.html#l00081">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>, <a class="el" href="namespacethorin.html#a252c586d22f57e1aaff3b53a3634bfb2af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>, and <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="array_8h_source.html#l00309">thorin::Array&lt; T &gt;::cut()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="array_8h_source.html#l00362">thorin::Array&lt; T &gt;::cut()</a>.</p>
 
 </div>
 </div>
@@ -667,9 +667,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00082">82</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00086">86</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00503">thorin::World::arr()</a>, <a class="el" href="array_8h_source.html#l00097">thorin::ArrayRef&lt; T &gt;::back()</a>, <a class="el" href="array_8h_source.html#l00096">thorin::ArrayRef&lt; T &gt;::front()</a>, <a class="el" href="world_8cpp_source.html#l00508">thorin::World::pack()</a>, and <a class="el" href="tuple_8cpp_source.html#l00036">thorin::unflatten()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00503">thorin::World::arr()</a>, <a class="el" href="array_8h_source.html#l00107">thorin::ArrayRef&lt; T &gt;::back()</a>, <a class="el" href="array_8h_source.html#l00103">thorin::ArrayRef&lt; T &gt;::front()</a>, <a class="el" href="world_8cpp_source.html#l00508">thorin::World::pack()</a>, and <a class="el" href="tuple_8cpp_source.html#l00036">thorin::unflatten()</a>.</p>
 
 </div>
 </div>
@@ -685,7 +685,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1ArrayRef.html#a51e980e57dfce113d1f72225a1b51ee8">const_iterator</a> <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::end </td>
+          <td class="memname"><a class="el" href="classthorin_1_1ArrayRef.html#a152d25808d043bd74889fbfedea15dcd">const_iterator</a> <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::end </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -698,9 +698,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00088">88</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00092">92</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="array_8h_source.html#l00114">thorin::ArrayRef&lt; T &gt;::operator!=()</a>, <a class="el" href="array_8h_source.html#l00112">thorin::ArrayRef&lt; T &gt;::operator==()</a>, <a class="el" href="array_8h_source.html#l00089">thorin::ArrayRef&lt; T &gt;::rbegin()</a>, <a class="el" href="world_8cpp_source.html#l00313">thorin::World::sigma()</a>, and <a class="el" href="world_8cpp_source.html#l00336">thorin::World::tuple()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="array_8h_source.html#l00135">thorin::ArrayRef&lt; T &gt;::operator!=()</a>, <a class="el" href="array_8h_source.html#l00131">thorin::ArrayRef&lt; T &gt;::operator==()</a>, <a class="el" href="array_8h_source.html#l00093">thorin::ArrayRef&lt; T &gt;::rbegin()</a>, <a class="el" href="world_8cpp_source.html#l00313">thorin::World::sigma()</a>, and <a class="el" href="world_8cpp_source.html#l00336">thorin::World::tuple()</a>.</p>
 
 </div>
 </div>
@@ -729,9 +729,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00096">96</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00103">103</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00082">thorin::ArrayRef&lt; T &gt;::empty()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00086">thorin::ArrayRef&lt; T &gt;::empty()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00453">thorin::DefsHash::hash()</a>.</p>
 
@@ -763,9 +763,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00105">105</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00121">121</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00081">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -795,9 +795,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00104">104</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00117">117</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00081">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -829,9 +829,9 @@ template&lt;class Other &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00114">114</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00135">135</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00087">thorin::ArrayRef&lt; T &gt;::begin()</a>, <a class="el" href="array_8h_source.html#l00088">thorin::ArrayRef&lt; T &gt;::end()</a>, and <a class="el" href="array_8h_source.html#l00081">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00091">thorin::ArrayRef&lt; T &gt;::begin()</a>, <a class="el" href="array_8h_source.html#l00092">thorin::ArrayRef&lt; T &gt;::end()</a>, and <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -863,7 +863,7 @@ template&lt;class T &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00070">70</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00117">thorin::ArrayRef&lt; T &gt;::swap</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00140">thorin::ArrayRef&lt; T &gt;::swap</a>.</p>
 
 </div>
 </div>
@@ -895,9 +895,9 @@ template&lt;class Other &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00112">112</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00131">131</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00087">thorin::ArrayRef&lt; T &gt;::begin()</a>, <a class="el" href="array_8h_source.html#l00088">thorin::ArrayRef&lt; T &gt;::end()</a>, and <a class="el" href="array_8h_source.html#l00081">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00091">thorin::ArrayRef&lt; T &gt;::begin()</a>, <a class="el" href="array_8h_source.html#l00092">thorin::ArrayRef&lt; T &gt;::end()</a>, and <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -927,9 +927,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00095">95</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00099">99</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00081">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -945,7 +945,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1ArrayRef.html#af2ef0d52e662575e7d3a4925847c7338">const_reverse_iterator</a> <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::rbegin </td>
+          <td class="memname"><a class="el" href="classthorin_1_1ArrayRef.html#ac6ba23f4f7bb9a4c8655946667f7163a">const_reverse_iterator</a> <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::rbegin </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -958,9 +958,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00089">89</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00093">93</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00088">thorin::ArrayRef&lt; T &gt;::end()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00092">thorin::ArrayRef&lt; T &gt;::end()</a>.</p>
 
 </div>
 </div>
@@ -976,7 +976,7 @@ template&lt;class T &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1ArrayRef.html#af2ef0d52e662575e7d3a4925847c7338">const_reverse_iterator</a> <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::rend </td>
+          <td class="memname"><a class="el" href="classthorin_1_1ArrayRef.html#ac6ba23f4f7bb9a4c8655946667f7163a">const_reverse_iterator</a> <a class="el" href="classthorin_1_1ArrayRef.html">thorin::ArrayRef</a>&lt; T &gt;::rend </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -989,9 +989,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00090">90</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00094">94</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00087">thorin::ArrayRef&lt; T &gt;::begin()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00091">thorin::ArrayRef&lt; T &gt;::begin()</a>.</p>
 
 </div>
 </div>
@@ -1020,9 +1020,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00081">81</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00085">85</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="partial__evaluation_8cpp_source.html#l00094">thorin::CondEval::CondEval()</a>, <a class="el" href="array_8h_source.html#l00333">thorin::ArrayRef&lt; T &gt;::cut()</a>, <a class="el" href="world_8cpp_source.html#l00577">thorin::World::et()</a>, <a class="el" href="world_8cpp_source.html#l00610">thorin::World::fn_for()</a>, <a class="el" href="array_8h_source.html#l00105">thorin::ArrayRef&lt; T &gt;::get_back()</a>, <a class="el" href="array_8h_source.html#l00104">thorin::ArrayRef&lt; T &gt;::get_front()</a>, <a class="el" href="world_8cpp_source.html#l00321">thorin::infer_sigma()</a>, <a class="el" href="mangle_8cpp_source.html#l00009">thorin::Mangler::Mangler()</a>, <a class="el" href="tuple_8cpp_source.html#l00058">thorin::merge()</a>, <a class="el" href="def_8h_source.html#l00186">thorin::Def::num_extended_ops()</a>, <a class="el" href="array_8h_source.html#l00114">thorin::ArrayRef&lt; T &gt;::operator!=()</a>, <a class="el" href="array_8h_source.html#l00112">thorin::ArrayRef&lt; T &gt;::operator==()</a>, <a class="el" href="array_8h_source.html#l00095">thorin::ArrayRef&lt; T &gt;::operator[]()</a>, <a class="el" href="world_8cpp_source.html#l00313">thorin::World::sigma()</a>, <a class="el" href="array_8h_source.html#l00103">thorin::ArrayRef&lt; T &gt;::skip_back()</a>, <a class="el" href="array_8h_source.html#l00102">thorin::ArrayRef&lt; T &gt;::skip_front()</a>, <a class="el" href="array_8h_source.html#l00071">thorin::ArrayRef&lt; T &gt;::to_array()</a>, <a class="el" href="world_8cpp_source.html#l00336">thorin::World::tuple()</a>, and <a class="el" href="tuple_8cpp_source.html#l00047">thorin::unflatten()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="partial__evaluation_8cpp_source.html#l00094">thorin::CondEval::CondEval()</a>, <a class="el" href="array_8h_source.html#l00389">thorin::ArrayRef&lt; T &gt;::cut()</a>, <a class="el" href="world_8cpp_source.html#l00577">thorin::World::et()</a>, <a class="el" href="world_8cpp_source.html#l00610">thorin::World::fn_for()</a>, <a class="el" href="array_8h_source.html#l00121">thorin::ArrayRef&lt; T &gt;::get_back()</a>, <a class="el" href="array_8h_source.html#l00117">thorin::ArrayRef&lt; T &gt;::get_front()</a>, <a class="el" href="world_8cpp_source.html#l00321">thorin::infer_sigma()</a>, <a class="el" href="mangle_8cpp_source.html#l00009">thorin::Mangler::Mangler()</a>, <a class="el" href="tuple_8cpp_source.html#l00058">thorin::merge()</a>, <a class="el" href="def_8h_source.html#l00186">thorin::Def::num_extended_ops()</a>, <a class="el" href="array_8h_source.html#l00135">thorin::ArrayRef&lt; T &gt;::operator!=()</a>, <a class="el" href="array_8h_source.html#l00131">thorin::ArrayRef&lt; T &gt;::operator==()</a>, <a class="el" href="array_8h_source.html#l00099">thorin::ArrayRef&lt; T &gt;::operator[]()</a>, <a class="el" href="world_8cpp_source.html#l00313">thorin::World::sigma()</a>, <a class="el" href="array_8h_source.html#l00116">thorin::ArrayRef&lt; T &gt;::skip_back()</a>, <a class="el" href="array_8h_source.html#l00115">thorin::ArrayRef&lt; T &gt;::skip_front()</a>, <a class="el" href="array_8h_source.html#l00075">thorin::ArrayRef&lt; T &gt;::to_array()</a>, <a class="el" href="world_8cpp_source.html#l00336">thorin::World::tuple()</a>, and <a class="el" href="tuple_8cpp_source.html#l00047">thorin::unflatten()</a>.</p>
 
 </div>
 </div>
@@ -1052,9 +1052,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00103">103</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00116">116</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00081">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00503">thorin::World::arr()</a>, and <a class="el" href="world_8cpp_source.html#l00508">thorin::World::pack()</a>.</p>
 
@@ -1086,9 +1086,9 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00102">102</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00115">115</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00081">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00453">thorin::DefsHash::hash()</a>.</p>
 
@@ -1121,9 +1121,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00071">71</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00075">75</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00081">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
 
 </div>
 </div>
@@ -1164,7 +1164,7 @@ template&lt;class T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00117">117</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="array_8h_source.html#l00140">140</a> of file <a class="el" href="array_8h_source.html">array.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="array_8h_source.html#l00065">thorin::ArrayRef&lt; T &gt;::ArrayRef()</a>, and <a class="el" href="array_8h_source.html#l00070">thorin::ArrayRef&lt; T &gt;::operator=()</a>.</p>
 

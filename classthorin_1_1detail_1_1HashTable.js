@@ -1,12 +1,12 @@
 var classthorin_1_1detail_1_1HashTable =
 [
     [ "iterator_base", "classthorin_1_1detail_1_1HashTable_1_1iterator__base.html", "classthorin_1_1detail_1_1HashTable_1_1iterator__base" ],
-    [ "const_iterator", "classthorin_1_1detail_1_1HashTable.html#af68907c8242bf596732d7e5921f652c8", null ],
-    [ "iterator", "classthorin_1_1detail_1_1HashTable.html#a229856d10f725e4ef05ebe24572e10a7", null ],
-    [ "key_type", "classthorin_1_1detail_1_1HashTable.html#ad5f6f55a3bc2f25f2328090296445da0", null ],
-    [ "mapped_type", "classthorin_1_1detail_1_1HashTable.html#ad5b8dc7e6aaf49b16618658311ca6a92", null ],
-    [ "size_type", "classthorin_1_1detail_1_1HashTable.html#a9a099fd5020d99d19eaefcbf32b8f4bd", null ],
-    [ "value_type", "classthorin_1_1detail_1_1HashTable.html#a37afbb9b74d8f2657dcb6249d006c969", null ],
+    [ "const_iterator", "classthorin_1_1detail_1_1HashTable.html#af0816f7c2a3094dd836a50abc6196816", null ],
+    [ "iterator", "classthorin_1_1detail_1_1HashTable.html#af3dbc6fb91c64707b84c6c58f5d18fdd", null ],
+    [ "key_type", "classthorin_1_1detail_1_1HashTable.html#ad20f07a39170478b65dd9c1de60d7d20", null ],
+    [ "mapped_type", "classthorin_1_1detail_1_1HashTable.html#a8606f3d4cbf98e4d20250fa7c8049857", null ],
+    [ "size_type", "classthorin_1_1detail_1_1HashTable.html#a5c851300e8188c4e7a936d56b3d55666", null ],
+    [ "value_type", "classthorin_1_1detail_1_1HashTable.html#a670d04345458078ce6fabbd68966f180", null ],
     [ "HashTable", "classthorin_1_1detail_1_1HashTable.html#aec6da3e3e25857df86b1735978d942b0", null ],
     [ "HashTable", "classthorin_1_1detail_1_1HashTable.html#aa50c47d6b3ad88f08ae98ab7030b568c", null ],
     [ "HashTable", "classthorin_1_1detail_1_1HashTable.html#a78680fd173be154a86e41aca25359331", null ],
@@ -41,5 +41,6 @@ var classthorin_1_1detail_1_1HashTable =
     [ "operator=", "classthorin_1_1detail_1_1HashTable.html#aa17333f4ca5a49ac84e4f92d8f5eea80", null ],
     [ "rehash", "classthorin_1_1detail_1_1HashTable.html#a2147ee777ec608feed92bc3c003b49a2", null ],
     [ "size", "classthorin_1_1detail_1_1HashTable.html#ab7ef7751375d470688909e90fad91464", null ],
-    [ "swap", "classthorin_1_1detail_1_1HashTable.html#a96a17da89c16aebc2eed92c7f03efe61", null ]
+    [ "swap", "classthorin_1_1detail_1_1HashTable.html#a96a17da89c16aebc2eed92c7f03efe61", null ],
+    [ "MinHeapCapacity", "classthorin_1_1detail_1_1HashTable.html#a9b354dfb375d182098fd1b2f047eb4bf", null ]
 ];

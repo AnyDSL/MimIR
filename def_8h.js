@@ -31,7 +31,7 @@ var def_8h =
     [ "Nom2Nom", "def_8h.html#a847863dc99817523db80a5e862acbb8e", null ],
     [ "NomMap", "def_8h.html#a1f4495ac5ca4bee6965b07d96c22253b", null ],
     [ "NomSet", "def_8h.html#a6448a89fa59bf8622639c34a0747b364", null ],
-    [ "Uses", "def_8h.html#a9940ea7e9ae99c708846d9a532c6d905", null ],
+    [ "Uses", "def_8h.html#a8e71404486bda6b2712789a9a6ff248a", null ],
     [ "Var2Var", "def_8h.html#a574519644134310f7123469cf121d0a2", null ],
     [ "VarMap", "def_8h.html#af280f2e34b689af6206dfb9756aa1df5", null ],
     [ "VarSet", "def_8h.html#a229e892ca840ebda9ce60cfad90ae1b0", null ],
