@@ -28,8 +28,9 @@ using hash_t = uint32_t;
 
 void debug_hash();
 
-// port from https://en.wikipedia.org/wiki/MurmurHash
-
+/// @name murmur3 hash
+///@{
+// Port from [Wikipedia](https://en.wikipedia.org/wiki/MurmurHash).
 inline hash_t murmur_32_scramble(hash_t k) {
     k *= 0xcc9e2d51;
     k = (k << 15) | (k >> 17);
@@ -85,8 +86,12 @@ inline hash_t murmur3(hash_t h) {
     h ^= h >> 16;
     return h;
 }
+///@}
 
-/// [Magic numbers](http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var) for FNV1 hash.
+/// @name FNV-1 hash
+///@{
+
+/// [Magic numbers](http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var) for FNV-1 hash.
 struct FNV1 {
     static const hash_t offset = 2166136261_u32;
     static const hash_t prime  = 16777619_u32;
@@ -122,7 +127,10 @@ hash_t hash_begin(T val) {
     return hash_combine(FNV1::offset, val);
 }
 inline hash_t hash_begin() { return FNV1::offset; }
+///@}
 
+/// @name string hashing
+///@{
 hash_t hash(const char*);
 hash_t hash(std::string_view);
 
@@ -137,6 +145,7 @@ struct StrViewHash {
     static bool eq(std::string_view s1, std::string_view s2) { return s1 == s2; }
     static std::string_view sentinel() { return {}; }
 };
+///@}
 
 //------------------------------------------------------------------------------
 
@@ -659,8 +668,6 @@ private:
 
 } // namespace detail
 
-//------------------------------------------------------------------------------
-
 /// This container is for the most part compatible with `std::unordered_set`.
 /// We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
 template<class Key, class H = typename Key::Hash, hash_t StackCapacity = 4>
@@ -686,10 +693,8 @@ public:
     friend void swap(HashSet& s1, HashSet& s2) { swap(static_cast<Super&>(s1), static_cast<Super&>(s2)); }
 };
 
-//------------------------------------------------------------------------------
-
-// This container is for the most part compatible with `std::unordered_map`.
-// We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
+/// This container is for the most part compatible with `std::unordered_map`.
+/// We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
 template<class Key, class T, class H = typename Key::Hash, hash_t StackCapacity = 4>
 class HashMap : public detail::HashTable<Key, T, H, StackCapacity> {
 public:
