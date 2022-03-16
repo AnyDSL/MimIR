@@ -62,11 +62,8 @@ TEST_P(ForAxiomTest, for) {
 
     main->make_external();
 
-    PassMan man{w};
-    man.add<LowerFor>();
-    man.run();
-
     PassMan opt{w};
+    opt.add<LowerFor>();
     auto br = opt.add<BetaRed>();
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);
@@ -160,11 +157,8 @@ TEST_P(ForAxiomTest, for_dynamic_iters) {
 
     main->make_external();
 
-    PassMan man{w};
-    man.add<LowerFor>();
-    man.run();
-
     PassMan opt{w};
+    opt.add<LowerFor>();
     auto br = opt.add<BetaRed>();
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);

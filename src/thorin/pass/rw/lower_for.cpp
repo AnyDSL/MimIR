@@ -5,6 +5,8 @@
 namespace thorin {
 
 const Def* LowerFor::rewrite(const Def* def) {
+    if (auto rewrote = rewritten_.lookup(def)) return rewrote.value();
+
     if (auto for_ax = isa<Tag::For>(def)) {
         auto& w = world();
         w.DLOG("rewriting for axiom: {} within {}", for_ax, curr_nom());
@@ -43,7 +45,7 @@ const Def* LowerFor::rewrite(const Def* def) {
             for_lam->branch(false, cmp, if_then, if_else, mem);
         }
 
-        return w.app(for_lam, for_ax->arg(), for_ax->dbg());
+        return rewritten_[def] = w.app(for_lam, for_ax->arg(), for_ax->dbg());
     }
 
     return def;
