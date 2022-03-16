@@ -2,6 +2,7 @@
 #define THORIN_TRANSFORM_REWRITE_H
 
 #include "thorin/world.h"
+
 #include "thorin/analyses/scope.h"
 
 namespace thorin {
@@ -19,7 +20,10 @@ public:
         : Rewriter(world, world, scope) {}
 
     const Def* rewrite(const Def* old_def);
-    World& world() { assert(&old_world == &new_world); return old_world; }
+    World& world() {
+        assert(&old_world == &new_world);
+        return old_world;
+    }
 
     World& old_world;
     World& new_world;
@@ -45,6 +49,6 @@ DefArray rewrite(Def* nom, const Def* arg, const Scope& scope);
 /// Removes unreachable and dead code by rebuilding the whole @p world into a new World.
 void cleanup(World& world);
 
-}
+} // namespace thorin
 
 #endif
