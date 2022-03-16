@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <lyra/lyra.hpp>
 
 #include "thorin/config.h"
 
@@ -22,17 +23,6 @@
 
 using namespace thorin;
 
-static const auto usage = "Usage: thorin [options] file\n"
-                          "\n"
-                          "Options:\n"
-                          "    -h, --help      display this help and exit\n"
-                          "    -c, --clang     path to clang executable (default: {})\n"
-                          "    -l, --emit-llvm emit LLVM\n"
-                          "    -v, --version   display version info and exit\n"
-                          "    -d, --dialect   dynamically load dialect [WIP]\n"
-                          "\n"
-                          "Hint: use '-' as file to read from stdin.\n";
-
 static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
 /// see https://stackoverflow.com/a/478960
@@ -45,56 +35,62 @@ std::string exec(const char* cmd) {
     return result;
 }
 
-int main(int argc, char** argv) {
+std::string get_clang_from_path() {
     std::string clang;
+#ifndef _WIN32
+    clang = exec("which clang");
+#else
+    clang = exec("where clang");
+#endif
+    clang.erase(std::remove(clang.begin(), clang.end(), '\n'), clang.end());
+    return clang;
+}
+
+int main(int argc, char** argv) {
+    std::string clang = get_clang_from_path();
+    std::string file;
     bool emit_llvm = false;
+    bool show_help = false;
+
+    auto print_version = [](bool) {
+        std::cerr << version;
+        std::exit(EXIT_SUCCESS);
+    };
+
+    std::vector<std::string> dialects;
+
+    auto cli = lyra::cli() | lyra::help(show_help) |
+               lyra::opt(clang, "clang")["-c"]["--clang"]("path to clang executable (default: {})") |
+               lyra::opt(emit_llvm)["-l"]["--emit-llvm"]("emit LLVM") |
+               lyra::opt(print_version)["-v"]["--version"]("display version info and exit") |
+               lyra::opt(dialects, "dialect")["-d"]["--dialect"]("dynamically load dialect [WIP]") |
+               lyra::arg(file, "input file")("The input file. Use '-' to read from stdin.");
+    auto result = cli.parse({argc, argv});
+    if (!result) {
+        std::cerr << "Error in command line: " << result.message() << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    if (show_help) std::cerr << cli << "\n";
 
     try {
-        const char* file = nullptr;
-#ifndef _WIN32
-        clang = exec("which clang");
-#else
-        clang = exec("where clang");
-#endif
-        clang.erase(std::remove(clang.begin(), clang.end(), '\n'), clang.end());
-
-        for (int i = 1; i != argc; ++i) {
-            auto is_option = [&](auto o1, auto o2) { return strcmp(o1, argv[i]) == 0 || strcmp(o2, argv[i]) == 0; };
-
-            auto check_last = [=](auto msg) {
-                if (i + 1 == argc) throw std::logic_error(msg);
-            };
-
-            if (is_option("-c", "--clang")) {
-                check_last("--clang option requires path to clang executable");
-                clang = argv[++i];
-            } else if (is_option("-l", "--emit--lvm")) {
-                emit_llvm = true;
-            } else if (is_option("-h", "--help")) {
-                errf(usage, clang);
-                return EXIT_SUCCESS;
-            } else if (is_option("-d", "--dialect")) {
-                check_last("--dialect requires name of dialect to load");
-                test_plugin(argv[++i]);
-                return EXIT_SUCCESS;
-            } else if (is_option("-v", "--version")) {
-                std::cerr << version;
-                return EXIT_SUCCESS;
-            } else if (file == nullptr) {
-                file = argv[i];
-            } else {
-                throw std::logic_error("multiple input files given");
-            }
+        if (!dialects.empty()) {
+            for (const auto& dialect : dialects) { test_plugin(dialect); }
+            return EXIT_SUCCESS;
         }
 
-        if (file == nullptr) throw std::logic_error("no input file given");
+        if (file.empty()) throw std::logic_error("no input file given");
 
         World world;
-        if (strcmp("-", file) == 0) {
+        if (file == "-") {
             Parser parser(world, "<stdin>", std::cin);
             // exp = parser.parse_prg();
         } else {
             std::ifstream ifs(file);
+            if (!ifs.good()) {
+                std::cerr << "input file not readable" << std::endl;
+                return EXIT_FAILURE;
+            }
             Parser parser(world, file, ifs);
             // exp = parser.parse_prg();
         }
@@ -114,7 +110,6 @@ int main(int argc, char** argv) {
         }
     } catch (const std::exception& e) {
         std::cerr << "error: " << e.what() << std::endl;
-        errf(usage, clang);
         return EXIT_FAILURE;
     } catch (...) {
         std::cerr << "error: unknown exception" << std::endl;
