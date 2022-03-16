@@ -24,6 +24,7 @@ endif()
 
 if(WIN32)
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" FALSE)
+    add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
 else()
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" TRUE)
 endif()
@@ -41,6 +42,8 @@ include(CTest)
 
 find_program(MEMORYCHECK_COMMAND valgrind)
 set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
+
+add_subdirectory(lyra)
 
 add_subdirectory(src)
 add_subdirectory(dialects)
