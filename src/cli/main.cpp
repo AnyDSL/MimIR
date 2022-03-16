@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
     };
 
     auto cli = lyra::cli() | lyra::help(show_help) |
-               lyra::opt(clang, "clang")["-c"]["--clang"]("path to clang executable (default: {})") |
+               lyra::opt(clang, "clang")["-c"]["--clang"]("path to clang executable (default: " + clang + ")") |
                lyra::opt(emit_llvm)["-l"]["--emit-llvm"]("emit LLVM") |
                lyra::opt(print_version)["-v"]["--version"]("display version info and exit") |
                lyra::opt(dialects, "dialect")["-d"]["--dialect"]("dynamically load dialect [WIP]") |
