@@ -42,22 +42,22 @@ void* load_library(const std::string& filename) {
 #endif
 }
 
-void* get_symbol_from_library(void* handle, const std::string& symbolName) {
+void* get_symbol_from_library(void* handle, const std::string& symbol_name) {
 #ifdef _WIN32
-    if (FARPROC symbol = GetProcAddress(static_cast<HMODULE>(handle), symbolName.c_str())) {
+    if (auto symbol = GetProcAddress(static_cast<HMODULE>(handle), symbol_name.c_str())) {
         return reinterpret_cast<void*>(symbol);
     } else {
         std::stringstream ss;
-        ss << "Could not find symbol name in dialect plugin: " << symbolName << " with: " << GetLastError()
+        ss << "Could not find symbol name in dialect plugin: " << symbol_name << " with: " << GetLastError()
            << " (https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes)" << std::endl;
         throw std::runtime_error{ss.str()};
     }
 #else
     dlerror(); // clear error state
-    void* symbol = dlsym(handle, symbolName.c_str());
+    void* symbol = dlsym(handle, symbol_name.c_str());
     if (char* err = dlerror()) {
         std::stringstream ss;
-        ss << "Could not find symbol name in dialect plugin: " << symbolName << std::endl;
+        ss << "Could not find symbol name in dialect plugin: " << symbol_name << std::endl;
         ss << err << std::endl;
         throw std::runtime_error{ss.str()};
     } else {
