@@ -283,6 +283,8 @@ private:
     const Def* ptrSlot(const Def* ty, const Def* mem);
     std::pair<const Def*,const Def*> reloadPtrPb(const Def* mem, const Def* ptr, const Def* dbg = {}, bool generateLoadPb=false);
 
+    bool isFatPtrType(const Def* type);
+
     // next mem object to use / most recent memory object
     // no problem as control flow is handled by cps
     // alternative: j_wrap returns mem object
@@ -492,6 +494,29 @@ const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
     return world_.cn_mem_ret_flat(world_.tangent_type(B, false), A);
 }
 
+bool AutoDiffer::isFatPtrType(const Def* type) {
+    if(auto sig=type->isa<Sigma>(); sig && sig->num_ops()==2) {
+        // TODO: maybe use original type to detect
+
+        //        isFatPtr = isa_sized_type(sig->op(0));
+        dlog(world_,"  extract ty {}", type);
+        dlog(world_,"  num ops {}", type->num_ops());
+        dlog(world_,"  num projs {}", type->num_projs());
+        dlog(world_,"  fst {}", type->op(0));
+        //        dlog(world_,"  fst Test {}",isa<Tag::Int>(sig->op(0)));
+        dlog(world_,"  snd {}", type->op(1));
+        //        dlog(world_,"  snd Test {}", isa<Tag::Ptr>(sig->op(1)));
+        if( auto ptr=isa<Tag::Ptr>(sig->op(1));ptr &&
+                                               isa<Tag::Int>(sig->op(0))
+            ) {
+            auto [pointee, addr_space] = ptr->arg()->projs<2>();
+            if(pointee->isa<Arr>())
+                return true;
+        }
+    }
+    return false;
+}
+
 
 //const Def* AutoDiffer::extract_pb(const Def* j_tuple, const Def* j_idx) {
 const Def* AutoDiffer::extract_pb(const Def* j_extract) {
@@ -501,26 +526,7 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract) {
 
     auto extract_type=extract->type();
 
-    auto isFatPtr=false;
-    if(auto sig=extract_type->isa<Sigma>(); sig && sig->num_ops()==2) {
-        // TODO: maybe use original type to detect
-
-//        isFatPtr = isa_sized_type(sig->op(0));
-        dlog(world_,"  extract ty {}", extract_type);
-        dlog(world_,"  num ops {}", extract_type->num_ops());
-        dlog(world_,"  num projs {}", extract_type->num_projs());
-        dlog(world_,"  fst {}", extract_type->op(0));
-//        dlog(world_,"  fst Test {}",isa<Tag::Int>(sig->op(0)));
-        dlog(world_,"  snd {}", extract_type->op(1));
-//        dlog(world_,"  snd Test {}", isa<Tag::Ptr>(sig->op(1)));
-        if( auto ptr=isa<Tag::Ptr>(sig->op(1));ptr &&
-                     isa<Tag::Int>(sig->op(0))
-        ) {
-            auto [pointee, addr_space] = ptr->arg()->projs<2>();
-            if(pointee->isa<Arr>())
-                isFatPtr=true;
-        }
-    }
+    auto isFatPtr=isFatPtrType(extract_type);
 
     auto tangent_type =
         isFatPtr ?
@@ -1262,11 +1268,53 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  Bitcast:",cast);
         type_dump(world_,"  Bitcast arg:",cast->arg());
         type_dump(world_,"  Wraped Bitcast args:",args);
+
+        auto isFatPtr = isFatPtrType(args->type());
+
         // avoid case distinction
-        auto dst = world_.app(cast->callee(),args);
+        // copy the bitcast but exchange the arguments with the new ones
+        const Def* dst, *dst_pb_org_ty, *arg_pb_ty;
+        if(isFatPtr) {
+            auto [size,arr] = args->projs<2>();
+            type_dump(world_,"  array from args:",arr);
+            auto dst_arr=world_.app(cast->callee(),arr);
+            dst_pb_org_ty=dst_arr->type();
+            dst = world_.tuple({size,dst_arr});
+            arg_pb_ty = arr->type();
+        }else {
+            dst = world_.app(cast->callee(),args);
+            dst_pb_org_ty=dst->type();
+            arg_pb_ty = args->type();
+        }
         type_dump(world_,"  Wraped Bitcast:",dst);
-        // a zero pb but do not recompute
-        pullbacks_[dst]=pullbacks_[args];
+        // mostly a zero pb that does not need to be recomputed
+        // but for arrays we have to bitcast the argument in opposite direction
+
+        auto arg_pb = pullbacks_[args];
+        type_dump(world_,"  arg ty:",args->type());
+        type_dump(world_,"  arg pb:",arg_pb);
+
+        auto pb_ty = createPbType(A,dst_pb_org_ty);
+        type_dump(world_,"  pb_ty",pb_ty);
+
+        auto pb = world_.nom_lam(pb_ty, world_.dbg("pb_bitcast"));
+        pb->set_filter(world_.lit_true());
+
+        type_dump(world_,"  pb_var",pb->var(1));
+        auto cast_arg = world_.op_bitcast(arg_pb_ty,pb->var(1));
+        type_dump(world_,"  cast pb_var",cast_arg);
+
+        pb->set_body( world_.app(arg_pb,
+         {
+            pb->mem_var(),
+            cast_arg,
+            pb->ret_var()
+         } ));
+
+        pullbacks_[dst]=pb;
+        type_dump(world_,"  set pb:",pullbacks_[dst]);
+
+//        THORIN_UNREACHABLE;
         return dst;
     }
     if(auto iop = isa<Tag::Conv>(def)) {
@@ -1339,7 +1387,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  dst",dst);
 
         current_mem = r_mem;
-        src_to_dst_[alloc] = dst_fat_ptr;
+        src_to_dst_[alloc] = dst;
 
         // no shadow needed
         // TODO: shadow if one handles alloc like a ptr (for definite)
@@ -1351,9 +1399,11 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 auto [z_mem,z] = ZERO(world_,pb->mem_var(),A);
                 pb->set_body( world_.app(pb->ret_var(), flat_tuple({z_mem,z})));
 
+        type_dump(world_,"  alloc pb",pb);
                 pullbacks_[arr] = pb;
                 pullbacks_[dst_fat_ptr]=pullbacks_[arr];
                 pullbacks_[dst]=pullbacks_[arr]; // for call f(rmem, arr)
+                pullbacks_[dst_alloc]=pullbacks_[arr]; // for mem extract
 //        THORIN_UNREACHABLE;
         return dst;
     }
@@ -1381,6 +1431,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         dlog(world_,"  inner type: {}", ty);
 
         auto fat_ptr=j_wrap(lea->arg(0));
+        type_dump(world_,"  lea orig arg:", lea->arg(0));
+        type_dump(world_,"  lea fat_ptr:", fat_ptr);
         auto [arr_size,arr] = fat_ptr->projs<2>();
         type_dump(world_,"  lea arr:", arr);
         auto idx = j_wrap(lea->arg(1)); // not necessary
@@ -1408,6 +1460,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 //        auto arr_sized_ty=arr_ty;
         type_dump(world_,"  arr_sized_ty",arr_sized_ty);
         auto [mem2,ptr_arr] = world_.op_alloc(arr_sized_ty,pb->mem_var())->projs<2>();
+        // TODO: zero initialized => store pack 0 after alloc
+        // move to zero function for code sharing
 
         auto ptr_arr_idef = pullbacks_[fat_ptr]->type()->as<Pi>()->dom(1);
         dlog(world_,"  pullback arr arg: {}", ptr_arr_idef);
@@ -1457,6 +1511,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // in a structure preseving setting
         //   meaning diff of tuple is tuple, ...
         //   this would be a lea
+
+        src_to_dst_[lea]=dst;
 
         return dst;
     }
