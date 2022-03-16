@@ -121,10 +121,19 @@ std::pair<const Def*,const Def*> lit_of_type(World& world, const Def* mem, const
     if (auto ptr = isa<Tag::Ptr>(type)) {
         auto [ty,addr_space] = ptr->arg()->projs<2>();
 
-        if(ty->isa<Arr>()) {
+        if(auto arr=ty->isa<Arr>()) {
             auto [mem2,ptr_arr]=world.op_alloc(ty,mem)->projs<2>();
+            auto shape=arr->shape();
+            type_dump(world,"ptr arr shape",shape);
+            auto body = arr->body();
+            type_dump(world,"ptr arr body",body);
+            auto [mem3, body_lit] = lit_of_type(world,mem2,body,lit,dummy);
+            type_dump(world,"ptr arr body lit",body_lit);
+            auto init=world.pack(shape,body_lit);
+            type_dump(world,"init pack",init); // trick for zero init
+            auto mem4=world.op_store(mem3,ptr_arr,init);
             type_dump(world,"ptr arr",ptr_arr);
-            return {mem2,ptr_arr};
+            return {mem4,ptr_arr};
         }
 
         auto [mem2, lit_ptr]=world.op_slot(ty,mem,world.dbg("lit_slot"))->projs<2>();
@@ -1459,9 +1468,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto arr_sized_ty=world_.arr(arr_size_nat,arr_ty->as<Arr>()->body());
 //        auto arr_sized_ty=arr_ty;
         type_dump(world_,"  arr_sized_ty",arr_sized_ty);
-        auto [mem2,ptr_arr] = world_.op_alloc(arr_sized_ty,pb->mem_var())->projs<2>();
-        // TODO: zero initialized => store pack 0 after alloc
-        // move to zero function for code sharing
+        auto ptr_arr_sized_ty = world_.type_ptr(arr_sized_ty);
+        type_dump(world_,"  ptr_arr_sized_ty",ptr_arr_sized_ty);
+        auto [mem2,ptr_arr] = ZERO(world_,pb->mem_var(),ptr_arr_sized_ty);
+        type_dump(world_,"  ptr_arr",ptr_arr);
 
         auto ptr_arr_idef = pullbacks_[fat_ptr]->type()->as<Pi>()->dom(1);
         dlog(world_,"  pullback arr arg: {}", ptr_arr_idef);
