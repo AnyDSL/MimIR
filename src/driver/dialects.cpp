@@ -124,7 +124,7 @@ void close_library(void* handle) {
 #else
     if (int err = dlclose(handle)) {
         std::stringstream ss;
-        ss << "dlclose() failed" << std::endl;
+        ss << "dlclose() failed (" << err << ")" << std::endl;
         throw std::runtime_error{ss.str()};
     }
 #endif
@@ -132,7 +132,8 @@ void close_library(void* handle) {
 
 void test_plugin(const std::string& name) {
     void* handle = nullptr;
-    if (std::filesystem::is_regular_file(std::filesystem::path{name})) handle = load_library(name);
+    if (auto path = std::filesystem::path{name}; path.is_absolute() && std::filesystem::is_regular_file(path))
+        handle = load_library(name);
     if (!handle) {
         auto paths         = get_plugin_search_paths();
         auto name_variants = get_plugin_name_variants(name);
@@ -141,7 +142,7 @@ void test_plugin(const std::string& name) {
                 auto full_path = path / name_variant;
                 std::error_code ignore;
                 if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore)
-                    if (handle = load_library(full_path.string())) break;
+                    if ((handle = load_library(full_path.string()))) break;
             }
             if (handle) break;
         }
