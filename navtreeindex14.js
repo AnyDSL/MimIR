@@ -1,5 +1,16 @@
 var NAVTREEINDEX14 =
 {
+"normalize_8h.html#a7be201ffa1f5d541964f2c446abcad9e":[9,0,2,21,14],
+"normalize_8h.html#a882d43a6d2bbb9836e230c0be77fa0ff":[9,0,2,21,9],
+"normalize_8h.html#a9dea96748c32d7e675ee36c955025f19":[9,0,2,21,6],
+"normalize_8h.html#aa171f9cec4330ed2febd4c8d59c9d4e7":[9,0,2,21,17],
+"normalize_8h.html#ab1296b3aacd3bc151b5589a9d276bd8d":[9,0,2,21,16],
+"normalize_8h.html#ab92f28f31ffec460457acde494a8e103":[9,0,2,21,11],
+"normalize_8h.html#abcee9768daea1d32c3270ecb1fea94da":[9,0,2,21,10],
+"normalize_8h.html#ac5bfac7920f93ad995b9541acf209563":[9,0,2,21,0],
+"normalize_8h.html#aca6c2c2c35f79f944855e950ee08ea61":[9,0,2,21,3],
+"normalize_8h.html#aefce93521e8a134d9ab10e5205925848":[9,0,2,21,4],
+"normalize_8h.html#af122652e0676e66b0c0aa02a0b3dfbe0":[9,0,2,21,1],
 "normalize_8h_source.html":[9,0,2,21],
 "optimize_8cpp.html":[9,0,2,3,2],
 "optimize_8cpp.html#a9e64c2e92ce1a1166c536644960116c2":[9,0,2,3,2,0],
@@ -238,16 +249,5 @@ var NAVTREEINDEX14 =
 "structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1shl_00_01w_01_4.html":[8,0,0,53],
 "structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1shl_00_01w_01_4.html#a5b8cad7fed994ea8c080afbfd33ff4b7":[8,0,0,53,0],
 "structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1shl_00_01w_01_4.html#a5b8cad7fed994ea8c080afbfd33ff4b7":[6,0,0,60,0],
-"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html":[8,0,0,54],
-"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html":[6,0,0,61],
-"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html#a434cac4a15ccfa2aff1ac6ca2c38ddd0":[6,0,0,61,0],
-"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html#a434cac4a15ccfa2aff1ac6ca2c38ddd0":[8,0,0,54,0],
-"structthorin_1_1GIDHash.html":[6,0,0,72],
-"structthorin_1_1GIDHash.html":[8,0,0,65],
-"structthorin_1_1GIDHash.html#a144582f2c66e3e8114aec42d3df22cc0":[6,0,0,72,2],
-"structthorin_1_1GIDHash.html#a144582f2c66e3e8114aec42d3df22cc0":[8,0,0,65,2],
-"structthorin_1_1GIDHash.html#a2576cc90e5075261e491494f35c5def9":[6,0,0,72,1],
-"structthorin_1_1GIDHash.html#a2576cc90e5075261e491494f35c5def9":[8,0,0,65,1],
-"structthorin_1_1GIDHash.html#a7f113cdc614a45155bcaa084531cb7a5":[8,0,0,65,0],
-"structthorin_1_1GIDHash.html#a7f113cdc614a45155bcaa084531cb7a5":[6,0,0,72,0]
+"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html":[8,0,0,54]
 };

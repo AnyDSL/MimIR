@@ -28,14 +28,12 @@ var searchData=
   ['unset_25',['unset',['../classthorin_1_1Def.html#a2f616ff4efad73f2589e6161d6b4f10f',1,'thorin::Def::unset()'],['../classthorin_1_1Def.html#ad0ea206ded848435dadac1aa06483782',1,'thorin::Def::unset(size_t i)']]],
   ['unwrap_26',['unwrap',['../classthorin_1_1Def.html#a9d45bc8a5c441a5a1361627f165d4807',1,'thorin::Def::unwrap() const'],['../classthorin_1_1Def.html#a6d83f4e52b316a9e0b4b47d51f50d1f6',1,'thorin::Def::unwrap(Stream &amp;) const']]],
   ['urem_27',['urem',['../namespacethorin.html#aab48efce9aa14b70a78aff291a41e361ae1851600007553e51484056678cdb3d1',1,'thorin']]],
-  ['usage_28',['usage',['../main_8cpp.html#a6ad92880e0b5a2b52e7c0a639bba0fc6',1,'main.cpp']]],
-  ['use_29',['Use',['../classthorin_1_1Use.html',1,'thorin::Use'],['../classthorin_1_1Use.html#ab04c9352606031636db45fe943262462',1,'thorin::Use::Use(const Def *def, size_t index)'],['../classthorin_1_1Use.html#a0d49bf17bfb4d916e5b655fcf1c1be95',1,'thorin::Use::Use()']]],
-  ['use_5fbreakpoint_30',['use_breakpoint',['../classthorin_1_1World.html#ab2b4b3ed8f15ed97e0df04f550589f54',1,'thorin::World']]],
-  ['usehash_31',['UseHash',['../structthorin_1_1UseHash.html',1,'thorin']]],
-  ['uses_32',['uses',['../classthorin_1_1Def.html#a8f66f1a1cfbfce39608ca318288866d4',1,'thorin::Def']]],
-  ['uses_33',['Uses',['../namespacethorin.html#a8e71404486bda6b2712789a9a6ff248a',1,'thorin']]],
-  ['uses_34',['uses',['../classthorin_1_1Scheduler.html#a2de2f46e34c2d7061d4c967a8ba26791',1,'thorin::Scheduler']]],
-  ['uses_5f_35',['uses_',['../classthorin_1_1Def.html#abefc385c0d60ba85c5e649598d20fe05',1,'thorin::Def']]],
-  ['utf8_2ecpp_36',['utf8.cpp',['../utf8_8cpp.html',1,'']]],
-  ['utf8_2eh_37',['utf8.h',['../utf8_8h.html',1,'']]]
+  ['use_28',['Use',['../classthorin_1_1Use.html',1,'thorin::Use'],['../classthorin_1_1Use.html#ab04c9352606031636db45fe943262462',1,'thorin::Use::Use(const Def *def, size_t index)'],['../classthorin_1_1Use.html#a0d49bf17bfb4d916e5b655fcf1c1be95',1,'thorin::Use::Use()']]],
+  ['use_5fbreakpoint_29',['use_breakpoint',['../classthorin_1_1World.html#ab2b4b3ed8f15ed97e0df04f550589f54',1,'thorin::World']]],
+  ['usehash_30',['UseHash',['../structthorin_1_1UseHash.html',1,'thorin']]],
+  ['uses_31',['Uses',['../namespacethorin.html#a8e71404486bda6b2712789a9a6ff248a',1,'thorin']]],
+  ['uses_32',['uses',['../classthorin_1_1Scheduler.html#a2de2f46e34c2d7061d4c967a8ba26791',1,'thorin::Scheduler::uses()'],['../classthorin_1_1Def.html#a8f66f1a1cfbfce39608ca318288866d4',1,'thorin::Def::uses() const']]],
+  ['uses_5f_33',['uses_',['../classthorin_1_1Def.html#abefc385c0d60ba85c5e649598d20fe05',1,'thorin::Def']]],
+  ['utf8_2ecpp_34',['utf8.cpp',['../utf8_8cpp.html',1,'']]],
+  ['utf8_2eh_35',['utf8.h',['../utf8_8h.html',1,'']]]
 ];

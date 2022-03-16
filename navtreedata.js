@@ -115,12 +115,12 @@ var NAVTREEINDEX =
 "classthorin_1_1Vel.html#a45fa6c35d6e120c7bc9b146780c07e4f",
 "classthorin_1_1World.html#a8e31d8a8297af8bbb06bdbd36b3476a8",
 "classthorin_1_1detail_1_1HashTable.html#aa17333f4ca5a49ac84e4f92d8f5eea80",
-"eta__red_8cpp.html#a9ad62aaa1872eb162b0da183bb68f3e9",
-"namespacethorin.html#a212be12038d2798c4058622ca13664ae",
-"namespacethorin.html#abc03433e6b2efb1c4ad7d0c5dd690b10",
-"normalize_8h_source.html",
-"structthorin_1_1GIDLt.html",
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3a8e028532a3bae54686c7b20d9d029a18"
+"emitter_8h.html",
+"namespacethorin.html#a1453716758d2cc8821eb437fd6e4dbc0",
+"namespacethorin.html#ab53353fd2bbb0066137cbe31023d38de",
+"normalize_8h.html#a7be201ffa1f5d541964f2c446abcad9e",
+"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html",
+"tables_8h.html#aec7c9c368dda260071936391c37a72e3a37c9b08b656fec614c373c594cec27cc"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
