@@ -1330,7 +1330,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  inner type",type);
 //        dlog(world_,"  inner type node {}",type->node_name());
         auto size=type->as<Arr>()->shape();
-        auto int_size=world_.op_bitcast(world_.type_int_width(32),size);
+        auto int_size=world_.op_bitcast(world_.type_int_width(64),size);
         dlog(world_,"  allocation size {}",size);
         dlog(world_,"  allocation int size {}",int_size);
         auto dst_fat_ptr=world_.tuple({int_size,arr});
@@ -1401,11 +1401,21 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"  lea pb: ",pb);
 
 
-        auto arr_sized_ty=world_.arr(arr_size,arr_ty->as<Arr>()->body());
+        type_dump(world_,"  arr size",arr_size);
+        auto arr_size_nat = world_.op_bitcast(world_.type_nat(),arr_size);
+        type_dump(world_,"  arr size nat",arr_size_nat);
+        auto arr_sized_ty=world_.arr(arr_size_nat,arr_ty->as<Arr>()->body());
 //        auto arr_sized_ty=arr_ty;
         type_dump(world_,"  arr_sized_ty",arr_sized_ty);
         auto [mem2,ptr_arr] = world_.op_alloc(arr_sized_ty,pb->mem_var())->projs<2>();
-        auto scal_ptr = world_.op_lea(ptr_arr,idx);
+
+        auto ptr_arr_idef = pullbacks_[fat_ptr]->type()->as<Pi>()->dom(1);
+        dlog(world_,"  pullback arr arg: {}", ptr_arr_idef);
+        auto ptr_arr_arg = world_.op_bitcast(ptr_arr_idef,ptr_arr);
+        type_dump(world_,"  ptr_arr casted:",ptr_arr_arg);
+
+
+        auto scal_ptr = world_.op_lea(ptr_arr_arg,idx);
         auto mem3=mem2;
         auto v = pb->var(1);
         auto mem4 = world_.op_store(mem3,scal_ptr,v);
@@ -1415,16 +1425,24 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         dlog(world_,"  pullback of arr (or its fat_ptr): {}",pullbacks_[fat_ptr]);
         dlog(world_,"  of type: {}",pullbacks_[fat_ptr]->type());
+
+//        dlog(world_,"  pullback type num_ops: {}",pullbacks_[fat_ptr]->type()->num_ops());
+//        dlog(world_,"  pullback type num_projs: {}",pullbacks_[fat_ptr]->type()->num_projs());
+//        dlog(world_,"  pullback op 0: {}",pullbacks_[fat_ptr]->type()->op(0));
+//        dlog(world_,"  pullback op 1: {}",pullbacks_[fat_ptr]->type()->op(1));
+
+
+
+
         pb->set_body( world_.app(
-            pullbacks_[arr],
+            pullbacks_[fat_ptr],
             {
                 mem4,
-                ptr_arr,
+                ptr_arr_arg,
                 pb->ret_var()
             }
             ));
 
-        THORIN_UNREACHABLE;
 
         auto [cmem2,ptr_slot]=world_.op_slot(pb->type(),current_mem,world_.dbg("lea_ptr_shadow_slot"))->projs<2>();
         auto cmem3=world_.op_store(cmem2,ptr_slot,pb);

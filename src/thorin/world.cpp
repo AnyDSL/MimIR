@@ -385,7 +385,7 @@ const Def* World::tangent_type(const Def* A,bool left) {
                 return ptr_wrap;
             }
             s2.fmt("Ptr -> Arr\n");
-            return sigma({type_int_width(32),ptr_wrap});
+            return sigma({type_int_width(64),ptr_wrap});
         }else if(left) {
             // no array, left type
             return ptr_wrap;
