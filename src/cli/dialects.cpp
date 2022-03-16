@@ -1,6 +1,7 @@
 #include "cli/dialects.h"
 
 #include <filesystem>
+#include <memory>
 #include <sstream>
 #include <string>
 
@@ -128,9 +129,9 @@ void close_library(void* handle) {
 }
 
 void test_plugin(const std::string& name) {
-    void* handle = nullptr;
+    std::unique_ptr<void, decltype(&close_library)> handle{nullptr, close_library};
     if (auto path = std::filesystem::path{name}; path.is_absolute() && std::filesystem::is_regular_file(path))
-        handle = load_library(name);
+        handle.reset(load_library(name));
     if (!handle) {
         auto paths         = get_plugin_search_paths();
         auto name_variants = get_plugin_name_variants(name);
@@ -139,7 +140,7 @@ void test_plugin(const std::string& name) {
                 auto full_path = path / name_variant;
                 std::error_code ignore;
                 if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore)
-                    if ((handle = load_library(full_path.string()))) break;
+                    if (handle.reset(load_library(full_path.string())); handle) break;
             }
             if (handle) break;
         }
@@ -147,16 +148,13 @@ void test_plugin(const std::string& name) {
 
     if (!handle) throw std::runtime_error("cannot open plugin");
 
-    auto create  = (CreateIPass)get_symbol_from_library(handle, "create");
-    auto destroy = (DestroyIPass)get_symbol_from_library(handle, "destroy");
+    auto create  = (CreateIPass)get_symbol_from_library(handle.get(), "create");
+    auto destroy = (DestroyIPass)get_symbol_from_library(handle.get(), "destroy");
 
     if (!create || !destroy) throw std::runtime_error("cannot find symbol");
 
     World world;
     PassMan man(world);
-    auto pass = create(man);
+    std::unique_ptr<IPass, DestroyIPass> pass{create(man), destroy};
     outln("hi from: '{}'", pass->name());
-    destroy(pass);
-
-    close_library(handle);
 }
