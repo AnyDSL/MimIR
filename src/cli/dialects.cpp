@@ -1,4 +1,4 @@
-#include "driver/dialects.h"
+#include "cli/dialects.h"
 
 #include <filesystem>
 #include <sstream>
@@ -11,9 +11,6 @@
 
 #ifdef _WIN32
 #    include <windows.h>
-#    define dlsym  GetProcAddress
-#    define popen  _popen
-#    define pclose _pclose
 #else
 #    include <dlfcn.h>
 #endif

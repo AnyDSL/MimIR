@@ -6,7 +6,7 @@
 
 #include "thorin/config.h"
 
-#include "driver/dialects.h"
+#include "cli/dialects.h"
 #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/pass.h"
@@ -14,7 +14,6 @@
 
 #ifdef _WIN32
 #    include <windows.h>
-#    define dlsym  GetProcAddress
 #    define popen  _popen
 #    define pclose _pclose
 #else
