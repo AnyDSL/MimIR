@@ -114,13 +114,12 @@ enum : unsigned {
     auto NAME##s(size_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
 
 /// Base class for all Def%s.
-/// The data layout (see World::alloc) looks like this:
+/// The data layout (see World::alloc and Def::extended_ops) looks like this:
 /// ```
 /// Def debug type | op(0) ... op(num_ops-1) ||
 ///    |-------------extended_ops-------------|
 /// ```
-/// This means that any subclass of Def must not introduce additional members.
-/// See also Def::extended_ops.
+/// @attention This means that any subclass of Def **must not** introduce additional members.
 class Def : public RuntimeCast<Def>, public Streamable<Def> {
 public:
     using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*, const Def*);
@@ -137,7 +136,7 @@ protected:
     virtual ~Def() = default;
 
 public:
-    /// @name misc getters
+    /// @name getters
     ///@{
     World& world() const {
         if (node() == Node::Space) return *world_;
