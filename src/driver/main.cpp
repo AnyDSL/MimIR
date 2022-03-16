@@ -112,6 +112,10 @@ int main(int argc, char** argv) {
             // exp = parser.parse_prg();
         } else {
             std::ifstream ifs(file);
+            if (!ifs) {
+                errln("error: cannot read file '{}'", file);
+                return EXIT_FAILURE;
+            }
             Parser parser(world, file, ifs);
             // exp = parser.parse_prg();
         }
@@ -127,10 +131,10 @@ int main(int argc, char** argv) {
         if (emit_llvm) {
             std::ofstream of("test.ll");
             Stream s(of);
-            thorin::ll::emit(world, s);
+            ll::emit(world, s);
         }
     } catch (const std::exception& e) {
-        std::cerr << "error: " << e.what() << std::endl;
+        errln("error: {}", e.what());
         errf(usage, clang);
         return EXIT_FAILURE;
     } catch (...) {
