@@ -6,6 +6,7 @@
 
 #include "thorin/config.h"
 
+#include "driver/dialects.h"
 #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/pass.h"
@@ -45,34 +46,17 @@ std::string exec(const char* cmd) {
     return result;
 }
 
-void test_plugin(const char* name) {
-#ifdef _WIN32
-    auto handle = LoadLibrary(name);
-#else
-    auto handle = dlopen(name, RTLD_LAZY);
-#endif
-
-    if (!handle) throw std::logic_error("cannot open plugin");
-
-    auto create  = (CreateIPass)dlsym(handle, "create");
-    auto destroy = (DestroyIPass)dlsym(handle, "destroy");
-
-    if (!create || !destroy) throw std::logic_error("cannot find symbol");
-
-    World world;
-    PassMan man(world);
-    auto pass = create(man);
-    outln("hi from: '{}'", pass->name());
-    destroy(pass);
-}
-
 int main(int argc, char** argv) {
     std::string clang;
     bool emit_llvm = false;
 
     try {
         const char* file = nullptr;
-        clang            = exec("which clang");
+#ifndef _WIN32
+        clang = exec("which clang");
+#else
+        clang = exec("where clang");
+#endif
         clang.erase(std::remove(clang.begin(), clang.end(), '\n'), clang.end());
 
         for (int i = 1; i != argc; ++i) {
