@@ -119,7 +119,7 @@ enum : unsigned {
 /// Def debug type | op(0) ... op(num_ops-1) ||
 ///    |-------------extended_ops-------------|
 /// ```
-/// @attention: This means that any subclass of Def **must not** introduce additional members.
+/// @attention This means that any subclass of Def **must not** introduce additional members.
 class Def : public RuntimeCast<Def>, public Streamable<Def> {
 public:
     using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*, const Def*);
