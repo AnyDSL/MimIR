@@ -1,5 +1,7 @@
 #include "cli/dialects.h"
 
+#include <cstdlib>
+
 #include <filesystem>
 #include <memory>
 #include <sstream>
@@ -64,8 +66,30 @@ void* get_symbol_from_library(void* handle, const std::string& symbolName) {
 #endif
 }
 
-std::vector<std::filesystem::path> get_plugin_search_paths() {
-    std::vector<std::filesystem::path> paths;
+void add_paths_from_env(std::vector<std::filesystem::path>& paths) {
+    if (const char* env_path = std::getenv("THORIN_DIALECT_PATH")) {
+        std::stringstream env_path_stream{env_path};
+        std::string sub_path;
+        while (std::getline(env_path_stream, sub_path, ':')) {
+            std::filesystem::path path{sub_path};
+            if (std::filesystem::is_directory(path)) paths.push_back(std::move(path));
+        }
+    }
+}
+
+std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std::string>& user_paths) {
+    std::vector<std::filesystem::path> paths{user_paths.begin(), user_paths.end()};
+
+    add_paths_from_env(paths);
+
+    // make user paths absolute paths.
+    const auto cwd = std::filesystem::current_path();
+    std::transform(paths.begin(), paths.end(), paths.begin(), [&cwd](std::filesystem::path path) {
+        if (path.is_relative()) return cwd / path;
+        return path;
+    });
+
+    // add path/to/thorin.exe/../../lib
 #ifdef _WIN32
     std::vector<char> path_buffer;
     size_t read = 0;
@@ -84,6 +108,8 @@ std::vector<std::filesystem::path> get_plugin_search_paths() {
         paths.emplace_back(std::filesystem::path{info.dli_fname}.parent_path().parent_path() / "lib");
     }
 #endif
+
+    // add default install path
     const auto install_prefixed_path = std::filesystem::path{THORIN_INSTALL_PREFIX} / "lib";
 
     if (paths.empty() ||
@@ -91,9 +117,8 @@ std::vector<std::filesystem::path> get_plugin_search_paths() {
          !std::filesystem::equivalent(install_prefixed_path, paths.back()))) // avoid double checking install dir
         paths.emplace_back(std::move(install_prefixed_path));
 
-    std::error_code ec;
-    if (auto cwd = std::filesystem::current_path(ec); !ec) paths.emplace_back(std::move(cwd));
-
+    // add current working directory
+    paths.emplace_back(std::move(cwd));
     return paths;
 }
 
@@ -128,12 +153,12 @@ void close_library(void* handle) {
 #endif
 }
 
-void test_plugin(const std::string& name) {
+void test_plugin(const std::string& name, const std::vector<std::string>& search_paths) {
     std::unique_ptr<void, decltype(&close_library)> handle{nullptr, close_library};
     if (auto path = std::filesystem::path{name}; path.is_absolute() && std::filesystem::is_regular_file(path))
         handle.reset(load_library(name));
     if (!handle) {
-        auto paths         = get_plugin_search_paths();
+        auto paths         = get_plugin_search_paths(search_paths);
         auto name_variants = get_plugin_name_variants(name);
         for (const auto& path : paths) {
             for (const auto& name_variant : name_variants) {
