@@ -22,7 +22,11 @@ private:
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Def*) override;
 
-    bool is_escaping(const Def* def) { return escaping_.contains(def); }
+    bool is_escaping(const Def* def) { 
+        if (auto [_, lam] = ca_isa_var<Lam>(def); lam && !lam->is_set())
+            return true;
+        return escaping_.contains(def); 
+    }
     undo_t set_escaping(const Def*);
 
     DefSet escaping_;
