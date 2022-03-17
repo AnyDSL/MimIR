@@ -54,7 +54,7 @@ You can build the documentation locally from the root folder with:
 doxygen
 ```
 
-### Dependencies
+## Dependencies
 
 * Recent version of [CMake](https://cmake.org/)
 * A C++20-compatible C++ compiler.
@@ -63,7 +63,7 @@ doxygen
     Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
     But techincally, you don't need LLVM.
 
-#### Deployed as a git submodule
+### Deployed as a git submodule
 
 The following dependencies are deployed via a git submodule:
 
