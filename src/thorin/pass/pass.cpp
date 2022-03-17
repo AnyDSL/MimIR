@@ -6,17 +6,14 @@
 
 namespace thorin {
 
-RWPassBase::RWPassBase(PassMan& man, const char* name)
-    : IPass(man, name)
-    , proxy_id_(man.passes().size()) {}
-
-FPPassBase::FPPassBase(PassMan& man, const char* name)
-    : RWPassBase(man, name)
-    , index_(man.fp_passes().size()) {}
+IPass::IPass(PassMan& man, const char* name)
+    : man_(man)
+    , name_(name)
+    , index_(man.passes().size()) {}
 
 void PassMan::push_state() {
-    if (size_t num = fp_passes_.size()) {
-        states_.emplace_back(num);
+    if (fixed_point()) {
+        states_.emplace_back(passes().size());
 
         // copy over from prev_state to curr_state
         auto&& prev_state      = states_[states_.size() - 2];
@@ -25,13 +22,13 @@ void PassMan::push_state() {
         curr_state().stack     = prev_state.stack;
         curr_state().nom2visit = prev_state.nom2visit;
 
-        for (size_t i = 0; i != num; ++i) curr_state().data[i] = fp_passes_[i]->copy(prev_state.data[i]);
+        for (size_t i = 0; i != passes().size(); ++i) curr_state().data[i] = passes_[i]->copy(prev_state.data[i]);
     }
 }
 
 void PassMan::pop_states(size_t undo) {
     while (states_.size() != undo) {
-        for (size_t i = 0, e = curr_state().data.size(); i != e; ++i) fp_passes_[i]->dealloc(curr_state().data[i]);
+        for (size_t i = 0, e = curr_state().data.size(); i != e; ++i) passes_[i]->dealloc(curr_state().data[i]);
 
         if (undo != 0) // only reset if not final cleanup
             curr_state().curr_nom->set(curr_state().old_ops);
@@ -43,11 +40,11 @@ void PassMan::pop_states(size_t undo) {
 void PassMan::run() {
     world().ILOG("run");
 
-    auto num = fp_passes_.size();
+    auto num = passes().size();
     states_.emplace_back(num);
-    for (size_t i = 0; i != num; ++i) curr_state().data[i] = fp_passes_[i]->alloc();
+    for (size_t i = 0; i != num; ++i) curr_state().data[i] = passes_[i]->alloc();
 
-    for (auto pass : passes_) world().ILOG(" + {}", pass->name());
+    for (auto&& pass : passes_) world().ILOG(" + {}", pass->name());
     world().debug_stream();
 
     auto externals = std::vector(world().externals().begin(), world().externals().end());
@@ -63,7 +60,7 @@ void PassMan::run() {
 
         if (curr_nom_->is_unset()) continue;
 
-        for (auto pass : passes_) {
+        for (auto&& pass : passes_) {
             if (pass->inspect()) pass->enter();
         }
 
@@ -112,11 +109,11 @@ const Def* PassMan::rewrite(const Def* old_def) {
     auto new_def = old_def->rebuild(world(), new_type, new_ops, new_dbg);
 
     if (auto proxy = new_def->isa<Proxy>()) {
-        if (auto pass = static_cast<FPPassBase*>(passes_[proxy->id()]); pass->inspect()) {
+        if (auto&& pass = passes_[proxy->index()]; pass->inspect()) {
             if (auto rw = pass->rewrite(proxy); rw != proxy) return map(old_def, rewrite(rw));
         }
     } else {
-        for (auto pass : passes_) {
+        for (auto&& pass : passes_) {
             if (!pass->inspect()) continue;
 
             if (auto var = new_def->isa<Var>()) {
@@ -139,7 +136,7 @@ undo_t PassMan::analyze(const Def* def) {
         curr_state().stack.push(nom);
     } else if (auto proxy = def->isa<Proxy>()) {
         proxy_ = true;
-        undo   = static_cast<FPPassBase*>(passes_[proxy->id()])->analyze(proxy);
+        undo   = passes_[proxy->index()]->analyze(proxy);
     } else {
         auto var = def->isa<Var>();
 
@@ -147,7 +144,7 @@ undo_t PassMan::analyze(const Def* def) {
             for (auto op : def->extended_ops()) undo = std::min(undo, analyze(op));
         }
 
-        for (auto&& pass : fp_passes_) {
+        for (auto&& pass : passes_) {
             if (pass->inspect()) undo = std::min(undo, var ? pass->analyze(var) : pass->analyze(def));
         }
     }

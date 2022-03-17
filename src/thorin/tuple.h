@@ -7,10 +7,10 @@ namespace thorin {
 
 class Sigma : public Def {
 private:
-    /// Constructor for a @em structural Sigma.
+    /// Constructor for a *structural* Sigma.
     Sigma(const Def* type, Defs ops, const Def* dbg)
         : Def(Node, type, ops, 0, dbg) {}
-    /// Constructor for a @em nom Sigma.
+    /// Constructor for a *nom*inal Sigma.
     Sigma(const Def* type, size_t size, const Def* dbg)
         : Def(Node, type, size, 0, dbg) {}
 
@@ -50,10 +50,10 @@ public:
 
 class Arr : public Def {
 private:
-    /// Constructor for a @em structural Arr.
+    /// Constructor for a *structural* Arr.
     Arr(const Def* type, const Def* shape, const Def* body, const Def* dbg)
         : Def(Node, type, {shape, body}, 0, dbg) {}
-    /// Constructor for a @em nom Arr.
+    /// Constructor for a *nom*inaml Arr.
     Arr(const Def* type, const Def* shape, const Def* dbg)
         : Def(Node, type, 2, 0, dbg) {
         Def::set(0, shape);

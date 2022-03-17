@@ -81,7 +81,7 @@ const Def* Nat    ::rebuild(World& w, const Def*  , Defs  , const Def*    ) cons
 const Def* Pack   ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pack(t->arity(), o[0], dbg); }
 const Def* Pi     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.pi(o[0], o[1], dbg); }
 const Def* Pick   ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pick(t, o[0], dbg); }
-const Def* Proxy  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->id(), as<Proxy>()->flags(), dbg); }
+const Def* Proxy  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->index(), as<Proxy>()->flags(), dbg); }
 const Def* Sigma  ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.sigma(o, dbg); }
 const Def* Space  ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.space(); }
 const Def* Test   ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.test(o[0], o[1], o[2], o[3], dbg); }
@@ -220,7 +220,8 @@ const Def* Def::debug_history() const {
     return dbg();
 }
 
-void Def::set_name(std::string_view n) const {
+#ifndef NDEBUG
+void Def::set_debug_name(std::string_view n) const {
     auto& w   = world();
     auto name = w.tuple_str(n);
 
@@ -234,6 +235,7 @@ void Def::set_name(std::string_view n) const {
         dbg_ = w.insert(dbg_, 3_s, 0_s, name);
     }
 }
+#endif
 
 void Def::finalize() {
     for (size_t i = 0, e = num_ops(); i != e; ++i) {

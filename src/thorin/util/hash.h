@@ -24,12 +24,11 @@ namespace thorin {
 
 using hash_t = uint32_t;
 
-//------------------------------------------------------------------------------
-
 void debug_hash();
 
-// port from https://en.wikipedia.org/wiki/MurmurHash
-
+/// @name murmur3 hash
+///@{
+/// See [Wikipedia](https://en.wikipedia.org/wiki/MurmurHash).
 inline hash_t murmur_32_scramble(hash_t k) {
     k *= 0xcc9e2d51;
     k = (k << 15) | (k >> 17);
@@ -85,8 +84,13 @@ inline hash_t murmur3(hash_t h) {
     h ^= h >> 16;
     return h;
 }
+///@}
 
-/// [Magic numbers](http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var) for FNV1 hash.
+/// @name FNV-1 hash
+///@{
+/// See [Wikipedia](https://en.wikipedia.org/wiki/Fowler%E2%80%93Noll%E2%80%93Vo_hash_function#FNV-1_hash).
+
+/// [Magic numbers](http://www.isthe.com/chongo/tech/comp/fnv/index.html#FNV-var) for FNV-1 hash.
 struct FNV1 {
     static const hash_t offset = 2166136261_u32;
     static const hash_t prime  = 16777619_u32;
@@ -122,7 +126,10 @@ hash_t hash_begin(T val) {
     return hash_combine(FNV1::offset, val);
 }
 inline hash_t hash_begin() { return FNV1::offset; }
+///@}
 
+/// @name string hashing
+///@{
 hash_t hash(const char*);
 hash_t hash(std::string_view);
 
@@ -137,8 +144,7 @@ struct StrViewHash {
     static bool eq(std::string_view s1, std::string_view s2) { return s1 == s2; }
     static std::string_view sentinel() { return {}; }
 };
-
-//------------------------------------------------------------------------------
+///@}
 
 namespace detail {
 
@@ -146,10 +152,11 @@ namespace detail {
 template<class Key, class T, class H, hash_t StackCapacity>
 class HashTable {
 public:
-    enum { MinHeapCapacity = StackCapacity * 4 };
-    typedef Key key_type;
-    typedef typename std::conditional<std::is_void<T>::value, Key, T>::type mapped_type;
-    typedef typename std::conditional<std::is_void<T>::value, Key, std::pair<Key, T>>::type value_type;
+    static constexpr hash_t MinHeapCapacity = StackCapacity * 4;
+
+    using key_type    = Key;
+    using mapped_type = typename std::conditional<std::is_void<T>::value, Key, T>::type;
+    using value_type  = typename std::conditional<std::is_void<T>::value, Key, std::pair<Key, T>>::type;
 
 private:
     template<class K, class V>
@@ -169,11 +176,11 @@ public:
     template<bool is_const>
     class iterator_base {
     public:
-        typedef typename HashTable<Key, T, H, StackCapacity>::value_type value_type;
-        typedef std::ptrdiff_t difference_type;
-        typedef typename std::conditional<is_const, const value_type&, value_type&>::type reference;
-        typedef typename std::conditional<is_const, const value_type*, value_type*>::type pointer;
-        typedef std::forward_iterator_tag iterator_category;
+        using value_type        = typename HashTable<Key, T, H, StackCapacity>::value_type;
+        using difference_type   = std::ptrdiff_t;
+        using reference         = typename std::conditional<is_const, const value_type&, value_type&>::type;
+        using pointer           = typename std::conditional<is_const, const value_type*, value_type*>::type;
+        using iterator_category = std::forward_iterator_tag;
 
         /// @name constructor, destructor & assignment
         ///@{
@@ -267,9 +274,9 @@ public:
         friend class HashTable;
     };
 
-    typedef hash_t size_type;
-    typedef iterator_base<false> iterator;
-    typedef iterator_base<true> const_iterator;
+    using size_type      = hash_t;
+    using iterator       = iterator_base<false>;
+    using const_iterator = iterator_base<true>;
 
     /// @name constructor, destructor & assignment
     ///@{
@@ -629,8 +636,7 @@ private:
         for (hash_t i = hash_t(std::distance(array_.data(), pos.ptr_)), e = size_ - 1; i != e; ++i)
             array_[i] = std::move(array_[i + 1]);
 
-        --size_;
-        key(array_.data() + size_) = H::sentinel();
+        key(array_.data() + --size_) = H::sentinel();
     }
     ///@}
 
@@ -659,20 +665,18 @@ private:
 
 } // namespace detail
 
-//------------------------------------------------------------------------------
-
 /// This container is for the most part compatible with `std::unordered_set`.
 /// We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
 template<class Key, class H = typename Key::Hash, hash_t StackCapacity = 4>
 class HashSet : public detail::HashTable<Key, void, H, StackCapacity> {
 public:
-    typedef detail::HashTable<Key, void, H, StackCapacity> Super;
-    typedef typename Super::key_type key_type;
-    typedef typename Super::mapped_type mapped_type;
-    typedef typename Super::value_type value_type;
-    typedef typename Super::size_type size_type;
-    typedef typename Super::iterator iterator;
-    typedef typename Super::const_iterator const_iterator;
+    using Super          = detail::HashTable<Key, void, H, StackCapacity>;
+    using key_type       = typename Super::key_type;
+    using mapped_type    = typename Super::mapped_type;
+    using value_type     = typename Super::value_type;
+    using size_type      = typename Super::size_type;
+    using iterator       = typename Super::iterator;
+    using const_iterator = typename Super::const_iterator;
 
     HashSet() {}
     HashSet(hash_t capacity)
@@ -686,20 +690,18 @@ public:
     friend void swap(HashSet& s1, HashSet& s2) { swap(static_cast<Super&>(s1), static_cast<Super&>(s2)); }
 };
 
-//------------------------------------------------------------------------------
-
-// This container is for the most part compatible with `std::unordered_map`.
-// We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
+/// This container is for the most part compatible with `std::unordered_map`.
+/// We use our own implementation in order to have a consistent and deterministic behavior across different platforms.
 template<class Key, class T, class H = typename Key::Hash, hash_t StackCapacity = 4>
 class HashMap : public detail::HashTable<Key, T, H, StackCapacity> {
 public:
-    typedef detail::HashTable<Key, T, H, StackCapacity> Super;
-    typedef typename Super::key_type key_type;
-    typedef typename Super::mapped_type mapped_type;
-    typedef typename Super::value_type value_type;
-    typedef typename Super::size_type size_type;
-    typedef typename Super::iterator iterator;
-    typedef typename Super::const_iterator const_iterator;
+    using Super          = detail::HashTable<Key, T, H, StackCapacity>;
+    using key_type       = typename Super::key_type;
+    using mapped_type    = typename Super::mapped_type;
+    using value_type     = typename Super::value_type;
+    using size_type      = typename Super::size_type;
+    using iterator       = typename Super::iterator;
+    using const_iterator = typename Super::const_iterator;
 
     HashMap()
         : Super() {}

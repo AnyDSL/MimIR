@@ -62,7 +62,7 @@ TEST(Main, ll) {
 
 #ifndef _MSC_VER
     // TODO make sure that proper clang is in path on Windows
-    std::system("clang test.ll -o test");
+    std::system("clang test.ll -o test -Wno-override-module");
     EXPECT_EQ(4, WEXITSTATUS(std::system("./test a b c")));
     EXPECT_EQ(7, WEXITSTATUS(std::system("./test a b c d e f")));
 #endif
@@ -77,4 +77,59 @@ TEST(Axiom, mangle) {
     // Check whether lower 16 bits are properly ignored
     EXPECT_EQ(Axiom::demangle(*Axiom::mangle("test") | 0xFF_u64), "test");
     EXPECT_EQ(Axiom::demangle(*Axiom::mangle("01234567") | 0xFF_u64), "01234567");
+}
+
+TEST(Main, loop) {
+    World w;
+    auto mem_t  = w.type_mem();
+    auto i32_t  = w.type_int_width(32);
+    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
+    auto i32_w  = w.lit_nat(width2mod(32));
+
+    // Cn [mem, i32, i32**, Cn [mem, i32]]
+    auto main_t                 = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t}, w.dbg("return"))});
+    auto main                   = w.nom_lam(main_t, w.dbg("main"));
+    auto [mem, argc, argv, ret] = main->vars<4>();
+
+    auto body_t = w.cn(mem_t);
+
+    auto lt     = w.fn(ICmp::ul, i32_w);
+    auto loop_t = w.cn({mem_t, i32_t, i32_t});
+    auto loop   = w.nom_lam(loop_t, w.dbg("loop"));
+
+    auto body = w.nom_lam(body_t, w.dbg("body"));
+    auto exit = w.nom_lam(body_t, w.dbg("exit"));
+
+    {
+        auto [lMem, iterVar, accumulator] = loop->vars<3>();
+        loop->app(false, w.select(body, exit, w.app(lt, {iterVar, argc})), lMem);
+    }
+
+    auto add = w.fn(Wrap::add, w.lit_nat(0), i32_w);
+    {
+        auto [lMem, iterVar, accumulator] = loop->vars<3>();
+
+        auto accumAdd = w.app(add, {iterVar, accumulator});
+        auto iterInc  = w.app(add, {iterVar, w.lit_int(1)});
+        body->app(false, loop, {lMem, iterInc, accumAdd});
+    }
+    {
+        auto [lMem, iterVar, accumulator] = loop->vars<3>();
+        exit->app(false, main->var(3), {main->var(0, nullptr), accumulator});
+    }
+
+    main->app(false, loop, {mem, w.lit_int(0), w.lit_int(0)});
+    main->make_external();
+
+    std::ofstream file("test.ll");
+    Stream s(file);
+    thorin::ll::emit(w, s);
+    file.close();
+
+    // TODO make sure that proper clang is in path on Windows
+#ifndef _MSC_VER
+    EXPECT_EQ(0, WEXITSTATUS(std::system("clang test.ll -o `pwd`/test -Wno-override-module")));
+    EXPECT_EQ(6, WEXITSTATUS(std::system("./test a b c")));
+    EXPECT_EQ(10, WEXITSTATUS(std::system("./test a b c d")));
+#endif
 }

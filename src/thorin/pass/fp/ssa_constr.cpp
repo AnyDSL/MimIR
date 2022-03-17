@@ -47,8 +47,6 @@ const Def* SSAConstr::rewrite(const Def* def) {
     } else if (auto [app, mem_lam] = isa_apped_nom_lam(def); isa_workable(mem_lam)) {
         return mem2phi(app, mem_lam);
     } else {
-        // TODO I'm currently not sure why we need this.
-        // The eta_exp_->new2old(...) should be enough, but removing this will break reverse.impala.
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
             if (auto lam = def->op(i)->isa_nom<Lam>(); isa_workable(lam)) {
                 if (mem2phi_.contains(lam)) return def->refine(i, eta_exp_->proxy(lam));
@@ -71,7 +69,7 @@ const Def* SSAConstr::get_val(Lam* lam, const Proxy* sloxy) {
         return get_val(pred, sloxy);
     } else {
         auto phixy = proxy(get_sloxy_type(sloxy), {sloxy, lam}, Phixy, sloxy->dbg());
-        phixy->set_name(std::string("phi_") + phixy->debug().name);
+        phixy->set_debug_name(std::string("phi_") + phixy->debug().name);
         world().DLOG("get_val phixy: '{}' '{}'", sloxy, lam);
         return set_val(lam, sloxy, phixy);
     }

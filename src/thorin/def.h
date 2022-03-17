@@ -4,7 +4,6 @@
 #include <optional>
 #include <vector>
 
-#include "thorin/config.h"
 #include "thorin/debug.h"
 #include "thorin/tables.h"
 
@@ -80,7 +79,7 @@ struct UseHash {
     static Use sentinel() { return Use((const Def*)(-1), u16(-1)); }
 };
 
-typedef HashSet<Use, UseHash> Uses;
+using Uses = HashSet<Use, UseHash>;
 
 enum class Sort { Term, Type, Kind, Space };
 
@@ -115,13 +114,12 @@ enum : unsigned {
     auto NAME##s(size_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
 
 /// Base class for all Def%s.
-/// The data layout (see World::alloc) looks like this:
+/// The data layout (see World::alloc and Def::extended_ops) looks like this:
 /// ```
 /// Def debug type | op(0) ... op(num_ops-1) ||
 ///    |-------------extended_ops-------------|
 /// ```
-/// This means that any subclass of Def must not introduce additional members.
-/// See also Def::extended_ops.
+/// @attention This means that any subclass of Def **must not** introduce additional members.
 class Def : public RuntimeCast<Def>, public Streamable<Def> {
 public:
     using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*, const Def*);
@@ -135,10 +133,10 @@ protected:
     Def(node_t, const Def* type, Defs ops, fields_t fields, const Def* dbg);
     /// Constructor for a *nom*inal Def.
     Def(node_t, const Def* type, size_t num_ops, fields_t fields, const Def* dbg);
-    virtual ~Def() {}
+    virtual ~Def() = default;
 
 public:
-    /// @name misc getters
+    /// @name getters
     ///@{
     World& world() const {
         if (node() == Node::Space) return *world_;
@@ -292,7 +290,12 @@ public:
     Loc loc() const { return debug().loc; }
     const Def* meta() const { return debug().meta; }
     void set_dbg(const Def* dbg) const { dbg_ = dbg; }
-    void set_name(std::string_view) const;
+    /// Set Def::name in Debug build only; does nothing in Release build.
+#ifndef NDEBUG
+    void set_debug_name(std::string_view) const;
+#else
+    void set_debug_name(std::string_view) const {}
+#endif
     /// In `Debug` build if World::enable_history is `true`, this thing keeps the Def::gid to track a history of gids.
     const Def* debug_history() const;
     std::string unique_name() const; ///< name + "_" + Def::gid
@@ -597,7 +600,7 @@ private:
 public:
     /// @name misc getters
     ///@{
-    tag_t id() const { return tag_t(fields() >> 32_u64); }
+    tag_t index() const { return tag_t(fields() >> 32_u64); }
     flags_t flags() const { return flags_t(fields()); }
     ///@}
 

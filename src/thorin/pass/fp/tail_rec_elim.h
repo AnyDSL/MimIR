@@ -13,8 +13,6 @@ public:
         : FPPass(man, "tail_rec_elim")
         , eta_red_(eta_red) {}
 
-    using Data = std::tuple<>;
-
 private:
     /// @name PassMan hooks
     ///@{

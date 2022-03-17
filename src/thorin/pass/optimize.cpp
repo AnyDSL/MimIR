@@ -2,7 +2,6 @@
 
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/copy_prop.h"
-#include "thorin/pass/fp/dce.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/ssa_constr.h"
@@ -34,8 +33,8 @@ void optimize(World& world) {
 //    ErrorHandler* err;
     world.set((std::unique_ptr<ErrorHandler>&&) nullptr);
 
-    PassMan opt(world);
-    opt.add<AutoDiff>();
+    PassMan optA(world);
+    optA.add<AutoDiff>();
 
 //     PassMan optZ(world);
 //     optZ.add<ZipEval>();
@@ -57,21 +56,32 @@ void optimize(World& world) {
 //    opt2.run();
     printf("Finished Prepare Opti\n");
 
-    opt.run();
+    optA.run();
     printf("Finished AutoDiff Opti\n");
 
 
-    PassMan opt3(world);
-    opt3.add<PartialEval>();
-    auto br3 = opt3.add<BetaRed>();
-    auto er3 = opt3.add<EtaRed>();
-    auto ee3 = opt3.add<EtaExp>(er);
-    opt3.add<SSAConstr>(ee3);
-    opt3.add<Scalerize>(ee3);
-    // opt3.add<DCE>(br3, ee3);
-    opt3.add<CopyProp>(br3, ee3);
-    opt3.add<TailRecElim>(er3);
-    opt3.run();
+    PassMan opt(world);
+    opt.add<PartialEval>();
+    auto br = opt.add<BetaRed>();
+    auto er = opt.add<EtaRed>();
+    auto ee = opt.add<EtaExp>(er);
+    opt.add<SSAConstr>(ee);
+    opt.add<Scalerize>(ee);
+    opt.add<CopyProp>(br, ee);
+    opt.add<TailRecElim>(er);
+    opt.run();
+
+    // PassMan opt3(world);
+    // opt3.add<PartialEval>();
+    // auto br3 = opt3.add<BetaRed>();
+    // auto er3 = opt3.add<EtaRed>();
+    // auto ee3 = opt3.add<EtaExp>(er);
+    // opt3.add<SSAConstr>(ee3);
+    // opt3.add<Scalerize>(ee3);
+    // // opt3.add<DCE>(br3, ee3);
+    // opt3.add<CopyProp>(br3, ee3);
+    // opt3.add<TailRecElim>(er3);
+    // opt3.run();
     printf("Finished Simpl Opti\n");
 
 

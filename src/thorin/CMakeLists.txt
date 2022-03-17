@@ -56,8 +56,6 @@ add_library(libthorin
     pass/fp/beta_red.h
     pass/fp/copy_prop.cpp
     pass/fp/copy_prop.h
-    pass/fp/dce.cpp
-    pass/fp/dce.h
     pass/fp/ssa_constr.cpp
     pass/fp/ssa_constr.h
     pass/rw/auto_diff.cpp
@@ -70,6 +68,8 @@ add_library(libthorin
     pass/rw/alloc2malloc.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
+    pass/rw/lower_for.cpp
+    pass/rw/lower_for.h
     pass/rw/remem_elim.cpp
     pass/rw/remem_elim.h
     pass/rw/ret_wrap.cpp

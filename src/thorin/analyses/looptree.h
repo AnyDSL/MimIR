@@ -1,8 +1,8 @@
 #ifndef THORIN_ANALYSES_LOOPTREE_H
 #define THORIN_ANALYSES_LOOPTREE_H
 
-#include <vector>
 #include <sstream>
+#include <vector>
 
 #include "thorin/analyses/cfg.h"
 #include "thorin/util/array.h"
@@ -10,9 +10,10 @@
 
 namespace thorin {
 
-template<bool> class LoopTreeBuilder;
+template<bool>
+class LoopTreeBuilder;
 
-/// Calculates a loop nesting forest rooted at @p root_.
+/// Calculates a loop nesting forest rooted at LoopTree::root_.
 /// The implementation uses Steensgard's algorithm.
 /// Check out G. Ramalingam, "On Loops, Dominators, and Dominance Frontiers", 1999, for more information.
 template<bool forward>
@@ -21,18 +22,16 @@ public:
     class Head;
 
     /// Represents a node of a loop nesting forest.
-    /// Please refer to G. Ramalingam, "On Loops, Dominators, and Dominance Frontiers", 1999
-    /// for an introduction to loop nesting forests.
-    /// A @p Base consists of a set of header @p CFNode%s.
-    /// The header CFNode%s are the set of CFNode%s not dominated by any other @p CFNode within the loop.
-    /// The root node is a @p Head without any CFNode%s but further children and @p depth_ -1.
+    /// A LoopTree::Base consists of a set of header CFNode%s.
+    /// The header CFNode%s are the set of CFNode%s not dominated by any other CFNode within the loop.
+    /// The root node is a LoopTree::Head without any CFNode%s but further children and `depth_ -1`.
     /// Thus, the forest is pooled into a tree.
     class Base : public RuntimeCast<Base>, public Streamable<LoopTree<forward>> {
     public:
         enum class Node { Head, Leaf };
 
         Base(Node node, Head* parent, int depth, const std::vector<const CFNode*>&);
-        virtual ~Base() {}
+        virtual ~Base() = default;
 
         Node node() const { return node_; }
         int depth() const { return depth_; }
@@ -70,7 +69,7 @@ public:
         friend class LoopTreeBuilder<forward>;
     };
 
-    /// A Leaf only holds a single @p CFNode and does not have any children.
+    /// A Leaf only holds a single CFNode and does not have any children.
     class Leaf : public Base {
     private:
         Leaf(size_t index, Head* parent, int depth, const std::vector<const CFNode*>& cf_nodes)
@@ -81,7 +80,7 @@ public:
 
     public:
         const CFNode* cf_node() const { return Leaf::cf_nodes().front(); }
-        /// Index of a DFS of the @p LoopTree's @p Leaf%s.
+        /// Index of a DFS of LoopTree::Leaf%s.
         size_t index() const { return index_; }
         Stream& stream(Stream&) const override;
 
@@ -102,11 +101,10 @@ public:
     const Leaf* operator[](const CFNode* n) const { return find(leaves_, n); }
 
 private:
-    static void get_nodes(std::vector<const Base *>& nodes, const Base* node) {
+    static void get_nodes(std::vector<const Base*>& nodes, const Base* node) {
         nodes.push_back(node);
         if (auto head = node->template isa<Head>()) {
-            for (const auto& child : head->children())
-                get_nodes(nodes, child.get());
+            for (const auto& child : head->children()) get_nodes(nodes, child.get());
         }
     }
 
@@ -117,6 +115,6 @@ private:
     friend class LoopTreeBuilder<forward>;
 };
 
-}
+} // namespace thorin
 
 #endif
