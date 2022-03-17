@@ -31,7 +31,7 @@ void optimize(World& world) {
     // world.set(std::make_unique<ErrorHandler>());
 //    std::unique_ptr<ErrorHandler> err;
 //    ErrorHandler* err;
-    world.set((std::unique_ptr<ErrorHandler>&&) nullptr);
+//    world.set((std::unique_ptr<ErrorHandler>&&) nullptr);
 
     PassMan optA(world);
     optA.add<AutoDiff>();

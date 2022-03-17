@@ -401,10 +401,10 @@ const Def* World::tangent_type(const Def* A,bool left) {
         auto ptr_wrap=type_ptr(inner,addr_space);
         auto isArr = pointee->isa<Arr>();
         if(isArr) {
-            if(!left) {
-                // in pb => only arr no size information
-                return ptr_wrap;
-            }
+//            if(!left) {
+//                // in pb => only arr no size information
+//                return ptr_wrap;
+//            }
             s2.fmt("Ptr -> Arr\n");
             return sigma({type_int_width(64),ptr_wrap});
         }else if(left) {
