@@ -97,16 +97,16 @@ $(document).ready(function(){initNavTree('md__github_workspace_docs_coding.html'
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md24">Coding Style</a></li>
-<li class="level1"><a href="#autotoc_md25">Debugging</a><ul><li class="level2"><a href="#autotoc_md26">Logging</a></li>
-<li class="level2"><a href="#autotoc_md27">Breakpoints</a></li>
-<li class="level2"><a href="#autotoc_md28">VS Code</a></li>
+<ul><li class="level1"><a href="#autotoc_md25">Coding Style</a></li>
+<li class="level1"><a href="#autotoc_md26">Debugging</a><ul><li class="level2"><a href="#autotoc_md27">Logging</a></li>
+<li class="level2"><a href="#autotoc_md28">Breakpoints</a></li>
+<li class="level2"><a href="#autotoc_md29">VS Code</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p >This document comprises some information that is related to coding but does not directly deals with the API.</p>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md25"></a>
 Coding Style</h1>
 <p >Use the following coding conventions:</p><ul>
 <li>class/type names in <code>CamelCase</code></li>
@@ -128,13 +128,13 @@ Coding Style</h1>
 </ul>
 <p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. In order to run <code>clang-format</code> automatically on all changed files, switch to the provided pre-commit hook: </p><div class="fragment"><div class="line">git config --local core.hooksPath .githooks/</div>
 </div><!-- fragment --><p> Note that you can <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a>. In addition, you might want to check out plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a>.</p>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 Debugging</h1>
-<h2><a class="anchor" id="autotoc_md26"></a>
-Logging</h2>
 <h2><a class="anchor" id="autotoc_md27"></a>
-Breakpoints</h2>
+Logging</h2>
 <h2><a class="anchor" id="autotoc_md28"></a>
+Breakpoints</h2>
+<h2><a class="anchor" id="autotoc_md29"></a>
 VS Code</h2>
 <p >As a utility to make debugging Thorin itself less painful with certain debuggers, the <code>thorin.natvis</code> file can be loaded for getting more expressive value inspection. In VS Code you can do so by adding the following to the <code>launch.json</code> configurations. When launching from VS Code via CMake, put it in <code>settings.json</code>'s <code>"cmake.debugConfig":</code>: </p><div class="fragment"><div class="line">&quot;visualizerFile&quot;: &quot;${workspaceFolder}/thorin.natvis&quot;,</div>
 <div class="line">&quot;showDisplayString&quot;: true,</div>

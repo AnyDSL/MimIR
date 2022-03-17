@@ -1,5 +1,6 @@
 var NAVTREEINDEX15 =
 {
+"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html":[8,0,0,54],
 "structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html":[6,0,0,61],
 "structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html#a434cac4a15ccfa2aff1ac6ca2c38ddd0":[6,0,0,61,0],
 "structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html#a434cac4a15ccfa2aff1ac6ca2c38ddd0":[8,0,0,54,0],
@@ -61,20 +62,20 @@ var NAVTREEINDEX15 =
 "structthorin_1_1StrHash.html#a0c89764014ba74c4977be67bbeb852da":[6,0,0,118,1],
 "structthorin_1_1StrHash.html#a1aef86ad828f37b98737637e989c7772":[8,0,0,111,0],
 "structthorin_1_1StrHash.html#a1aef86ad828f37b98737637e989c7772":[6,0,0,118,0],
-"structthorin_1_1StrHash.html#a724dbc158f2c4216e0a2ca2accfe4b35":[6,0,0,118,2],
 "structthorin_1_1StrHash.html#a724dbc158f2c4216e0a2ca2accfe4b35":[8,0,0,111,2],
-"structthorin_1_1StrViewHash.html":[8,0,0,113],
+"structthorin_1_1StrHash.html#a724dbc158f2c4216e0a2ca2accfe4b35":[6,0,0,118,2],
 "structthorin_1_1StrViewHash.html":[6,0,0,120],
-"structthorin_1_1StrViewHash.html#a11a7712c9b0f8b21e84106ae2e2df507":[6,0,0,120,2],
+"structthorin_1_1StrViewHash.html":[8,0,0,113],
 "structthorin_1_1StrViewHash.html#a11a7712c9b0f8b21e84106ae2e2df507":[8,0,0,113,2],
+"structthorin_1_1StrViewHash.html#a11a7712c9b0f8b21e84106ae2e2df507":[6,0,0,120,2],
 "structthorin_1_1StrViewHash.html#a36919ed90222e8a1ef602b652efcdb90":[8,0,0,113,0],
 "structthorin_1_1StrViewHash.html#a36919ed90222e8a1ef602b652efcdb90":[6,0,0,120,0],
 "structthorin_1_1StrViewHash.html#a8aae2182581cc85242282b4346c73a1b":[8,0,0,113,1],
 "structthorin_1_1StrViewHash.html#a8aae2182581cc85242282b4346c73a1b":[6,0,0,120,1],
 "structthorin_1_1SymHash.html":[6,0,0,122],
 "structthorin_1_1SymHash.html":[8,0,0,115],
-"structthorin_1_1SymHash.html#a278797dc249c236337772ba0c2a64b75":[8,0,0,115,1],
 "structthorin_1_1SymHash.html#a278797dc249c236337772ba0c2a64b75":[6,0,0,122,1],
+"structthorin_1_1SymHash.html#a278797dc249c236337772ba0c2a64b75":[8,0,0,115,1],
 "structthorin_1_1SymHash.html#a76eac6739354b942e9f70c53f4748527":[8,0,0,115,0],
 "structthorin_1_1SymHash.html#a76eac6739354b942e9f70c53f4748527":[6,0,0,122,0],
 "structthorin_1_1SymHash.html#a829886ff85e3f239f0d49ee0ba13e693":[8,0,0,115,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX15 =
 "tables_8h.html#aec7c9c368dda260071936391c37a72e3a17b75f3794713ead0b4d0d3781f9984d":[9,0,2,25,40,26],
 "tables_8h.html#aec7c9c368dda260071936391c37a72e3a1cc0ad5f46010264c95fdb5f6127f826":[9,0,2,25,40,9],
 "tables_8h.html#aec7c9c368dda260071936391c37a72e3a2a0617accf8bb8625c43e2ffeb5b8d5b":[9,0,2,25,40,12],
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3a2a2ab400d355ac301859e4abb5432138":[9,0,2,25,40,21],
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3a30e890af27ebdae6036521c9e046e7b9":[9,0,2,25,40,6]
+"tables_8h.html#aec7c9c368dda260071936391c37a72e3a2a2ab400d355ac301859e4abb5432138":[9,0,2,25,40,21]
 };
