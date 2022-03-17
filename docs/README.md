@@ -60,13 +60,14 @@ doxygen
 * A C++20-compatible C++ compiler.
 * [Half library](https://sourceforge.net/projects/half/).
 
-    This library originally resides in a subversion repository on Sourceforge.
+    This *header-only* library originally resides in a subversion repository on Sourceforge.
     For this reason, we use a [git mirror](https://github.com/AnyDSL/half) to deploy it via a git submodule.
 
-* While Thorin emits [LLVM](https://llvm.org/), it does *not* link against LLVM.
+* [Lyra](https://www.bfgroup.xyz/Lyra/)
 
-    Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
-    But techincally, you don't need LLVM.
+    For parsing command line arguments.
+    This *header-only* library is also a git submodule.
+
 * [GoogleTest](https://github.com/google/googletest).
 
     This is optional for running the tests and is also deployed via a git submodule.
@@ -75,3 +76,8 @@ doxygen
 
     This is optional for building the documentation.
     Doxygen Awesome is pulled in as a submodule as well.
+
+* While Thorin emits [LLVM](https://llvm.org/), it does *not* link against LLVM.
+
+    Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
+    But techincally, you don't need LLVM.
