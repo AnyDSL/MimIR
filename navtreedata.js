@@ -31,7 +31,7 @@ var NAVTREE =
         [ "Documentation", "index.html#autotoc_md3", null ]
       ] ],
       [ "Dependencies", "index.html#autotoc_md4", [
-        [ "Deployed as a git submodule", "index.html#autotoc_md5", null ]
+        [ "Deployed as a Git Submodule", "index.html#autotoc_md5", null ]
       ] ]
     ] ],
     [ "Language Reference", "md__github_workspace_docs_langref.html", null ],
@@ -54,16 +54,19 @@ var NAVTREE =
           [ "Proxy", "md__github_workspace_docs_passes.html#autotoc_md20", null ]
         ] ],
         [ "Analyze", "md__github_workspace_docs_passes.html#autotoc_md21", null ],
-        [ "Other Hooks", "md__github_workspace_docs_passes.html#autotoc_md22", null ],
-        [ "Caveats", "md__github_workspace_docs_passes.html#autotoc_md23", null ]
+        [ "Other Hooks", "md__github_workspace_docs_passes.html#autotoc_md22", null ]
+      ] ],
+      [ "Caveats", "md__github_workspace_docs_passes.html#autotoc_md23", [
+        [ "Construct Valid Programs", "md__github_workspace_docs_passes.html#autotoc_md24", null ],
+        [ "Creating Nominals", "md__github_workspace_docs_passes.html#autotoc_md25", null ]
       ] ]
     ] ],
     [ "Coding & Debugging", "md__github_workspace_docs_coding.html", [
-      [ "Coding Style", "md__github_workspace_docs_coding.html#autotoc_md25", null ],
-      [ "Debugging", "md__github_workspace_docs_coding.html#autotoc_md26", [
-        [ "Logging", "md__github_workspace_docs_coding.html#autotoc_md27", null ],
-        [ "Breakpoints", "md__github_workspace_docs_coding.html#autotoc_md28", null ],
-        [ "VS Code", "md__github_workspace_docs_coding.html#autotoc_md29", null ]
+      [ "Coding Style", "md__github_workspace_docs_coding.html#autotoc_md27", null ],
+      [ "Debugging", "md__github_workspace_docs_coding.html#autotoc_md28", [
+        [ "Logging", "md__github_workspace_docs_coding.html#autotoc_md29", null ],
+        [ "Breakpoints", "md__github_workspace_docs_coding.html#autotoc_md30", null ],
+        [ "VS Code", "md__github_workspace_docs_coding.html#autotoc_md31", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
@@ -118,11 +121,11 @@ var NAVTREEINDEX =
 "classthorin_1_1World.html#a8e31d8a8297af8bbb06bdbd36b3476a8",
 "classthorin_1_1detail_1_1HashTable.html#aa17333f4ca5a49ac84e4f92d8f5eea80",
 "emitter_8h.html",
-"namespacethorin.html#a13419c0e67f8ea50a5640636f752e7d4",
-"namespacethorin.html#ab4e8096218f5bbe9c8076b54793b1342",
-"normalize_8h.html#a672b399db3625cad14476a6eca8fc6a0",
-"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html",
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3a30e890af27ebdae6036521c9e046e7b9"
+"namespacethorin.html#a12cc65a06abfcbcae824f6128f3b7a65",
+"namespacethorin.html#ab43fd39fce621340c65d8ce39abf0574",
+"normalize_8h.html#a26e12d469ce048d581f65c424e1a1485",
+"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1shl_00_01w_01_4.html#a5b8cad7fed994ea8c080afbfd33ff4b7",
+"tables_8h.html#aec7c9c368dda260071936391c37a72e3a2a0617accf8bb8625c43e2ffeb5b8d5b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
