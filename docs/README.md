@@ -73,14 +73,14 @@ The following dependencies are deployed via a git submodule:
     It originally resides in a subversion repository on Sourceforge.
     For this reason, we use a [git mirror](https://github.com/AnyDSL/half) to deploy it as a git submodule.
 
-* [Lyra](https://www.bfgroup.xyz/Lyra/).
+* [Lyra](https://www.bfgroup.xyz/Lyra/)
 
     *Header-only* library for parsing command line arguments.
 
-* [GoogleTest](https://github.com/google/googletest).
+* [GoogleTest](https://github.com/google/googletest)
 
     This is optional for running the unit tests.
 
-* [Doxygen](https://www.doxygen.nl/index.html) and [Doxygen Awesome](https://jothepro.github.io/doxygen-awesome-css/).
+* [Doxygen](https://www.doxygen.nl/index.html) and [Doxygen Awesome](https://jothepro.github.io/doxygen-awesome-css/)
 
     This is optional for building the documentation.
