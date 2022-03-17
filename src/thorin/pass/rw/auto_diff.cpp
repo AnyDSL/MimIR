@@ -1742,9 +1742,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
                 derive_external(cal_lam, gradlam, lam, lam2);
 
-                lam->set_name(cal_lam->name() + "_diff_impl");
-                lam2->set_name(lam->name() + "_cont");
-                gradlam->set_name(cal_lam->name() + "_pb");
+                lam->set_debug_name(cal_lam->name() + "_diff_impl");
+                lam2->set_debug_name(lam->name() + "_cont");
+                gradlam->set_debug_name(cal_lam->name() + "_pb");
                 dlog(world_,"isset grad {}",gradlam->is_set());
 
                 lam->set_body( world_.app(

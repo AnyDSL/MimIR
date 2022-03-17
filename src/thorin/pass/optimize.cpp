@@ -44,16 +44,16 @@ void optimize(World& world) {
 //     return;
 
 
-    PassMan opt2(world);
-    auto br = opt2.add<BetaRed>();
-    auto er = opt2.add<EtaRed>();
-    auto ee = opt2.add<EtaExp>(er);
-    opt2.add<SSAConstr>(ee);
-    opt2.add<Scalerize>(ee);
-    // opt2.add<DCE>(br, ee);
-    opt2.add<CopyProp>(br, ee);
-    opt2.add<TailRecElim>(er);
-//    opt2.run();
+//     PassMan opt2(world);
+//     auto br = opt2.add<BetaRed>();
+//     auto er = opt2.add<EtaRed>();
+//     auto ee = opt2.add<EtaExp>(er);
+//     opt2.add<SSAConstr>(ee);
+//     opt2.add<Scalerize>(ee);
+//     // opt2.add<DCE>(br, ee);
+//     opt2.add<CopyProp>(br, ee);
+//     opt2.add<TailRecElim>(er);
+// //    opt2.run();
     printf("Finished Prepare Opti\n");
 
     optA.run();
