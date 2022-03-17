@@ -58,26 +58,29 @@ doxygen
 
 * Recent version of [CMake](https://cmake.org/)
 * A C++20-compatible C++ compiler.
-* [Half library](https://sourceforge.net/projects/half/).
-
-    This *header-only* library originally resides in a subversion repository on Sourceforge.
-    For this reason, we use a [git mirror](https://github.com/AnyDSL/half) to deploy it via a git submodule.
-
-* [Lyra](https://www.bfgroup.xyz/Lyra/)
-
-    For parsing command line arguments.
-    This *header-only* library is also a git submodule.
-
-* [GoogleTest](https://github.com/google/googletest).
-
-    This is optional for running the tests and is also deployed via a git submodule.
-
-* [Doxygen](https://www.doxygen.nl/index.html) and [Doxygen Awesome](https://jothepro.github.io/doxygen-awesome-css/).
-
-    This is optional for building the documentation.
-    Doxygen Awesome is pulled in as a submodule as well.
-
 * While Thorin emits [LLVM](https://llvm.org/), it does *not* link against LLVM.
 
     Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
     But techincally, you don't need LLVM.
+
+#### Deployed as a git submodule
+
+The following dependencies are deployed via a git submodule:
+
+* [Half library](https://sourceforge.net/projects/half/)
+
+    This *header-only* library provides a `half` type that mimics the builtin types `float` or `double`.
+    It originally resides in a subversion repository on Sourceforge.
+    For this reason, we use a [git mirror](https://github.com/AnyDSL/half) to deploy it as a git submodule.
+
+* [Lyra](https://www.bfgroup.xyz/Lyra/).
+
+    *Header-only* library for parsing command line arguments.
+
+* [GoogleTest](https://github.com/google/googletest).
+
+    This is optional for running the unit tests.
+
+* [Doxygen](https://www.doxygen.nl/index.html) and [Doxygen Awesome](https://jothepro.github.io/doxygen-awesome-css/).
+
+    This is optional for building the documentation.
