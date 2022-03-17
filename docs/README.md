@@ -63,9 +63,9 @@ doxygen
     Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
     But techincally, you don't need LLVM.
 
-### Deployed as a git submodule
+### Deployed as a Git Submodule
 
-The following dependencies are deployed via a git submodule:
+The following dependencies are deployed via a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules):
 
 * [Half library](https://sourceforge.net/projects/half/)
 
