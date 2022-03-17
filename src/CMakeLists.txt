@@ -1,2 +1,2 @@
 add_subdirectory(thorin)
-add_subdirectory(driver)
+add_subdirectory(cli)

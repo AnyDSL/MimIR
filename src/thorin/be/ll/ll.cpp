@@ -157,7 +157,8 @@ std::string CodeGen::convert(const Def* type) {
         s.fmt("{} (", convert_ret_pi(pi->ret_pi()));
 
         std::string_view sep = "";
-        for (auto dom : pi->doms().skip_back()) {
+        auto doms = pi->doms();
+        for (auto dom : doms.skip_back()) {
             if (isa<Tag::Mem>(dom)) continue;
             s << sep << convert(dom);
             sep = ", ";

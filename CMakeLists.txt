@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
 project(Thorin VERSION 1.9.0)
 
-set(CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "limited config" FORCE)
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type (default Debug)" FORCE)
+endif()
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -9,24 +13,20 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(THORIN_ENABLE_PROFILING "profile complexity in thorin::HashTable - only works in Debug build" ON)
-
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-
-include(GenerateExportHeader)
-include(CTest)
-
-find_program(MEMORYCHECK_COMMAND valgrind)
-set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(THORIN_ENABLE_CHECKS TRUE)
+    option(THORIN_ENABLE_PROFILING "Profile performance of hash functions in thorin::HashTable" ON)
+    option(THORIN_ENABLE_CHECKS "Enable expensive checks" ON)
+else()
+    option(THORIN_ENABLE_PROFILING "Profile performance of hash functions in thorin::HashTable" OFF)
+    option(THORIN_ENABLE_CHECKS "Enable expensive checks" OFF)
 endif()
 
 if(WIN32)
-    set(THORIN_COLOR_TERM FALSE) # escape sequences not supported here
+    option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" FALSE)
+    add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
 else()
-    set(THORIN_COLOR_TERM TRUE)
+    option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" TRUE)
 endif()
 
 if(MSVC)
@@ -36,6 +36,14 @@ else()
     set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
     add_compile_options(-Wall -Wextra -pedantic) # -Werror
 endif()
+
+include(GenerateExportHeader)
+include(CTest)
+
+find_program(MEMORYCHECK_COMMAND valgrind)
+set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
+
+add_subdirectory(lyra)
 
 add_subdirectory(src)
 add_subdirectory(dialects)

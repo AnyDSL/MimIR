@@ -311,7 +311,7 @@ ClosureConv::ClosureStub ClosureConv::make_stub(const DefSet& fvs, Lam* old_lam,
     auto env_type = rewrite(env->type(), subst);
     auto new_fn_type = closure_type(old_lam->type(), subst, env_type)->as<Pi>();
     auto new_lam = old_lam->stub(w, new_fn_type, w.dbg(old_lam->name()));
-    new_lam->set_name((old_lam->is_external() || !old_lam->is_set())? "cc_" + old_lam->name() : old_lam->name());
+    new_lam->set_debug_name((old_lam->is_external() || !old_lam->is_set())? "cc_" + old_lam->name() : old_lam->name());
     if (!isa_workable(old_lam)) {
         auto new_ext_type = w.cn(closure_remove_env(new_fn_type->dom()));
         auto new_ext_lam = old_lam->stub(w, new_ext_type, w.dbg(old_lam->name()));

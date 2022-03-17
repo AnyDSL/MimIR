@@ -1,30 +1,30 @@
 #ifndef THORIN_UTIL_TYPES_H
 #define THORIN_UTIL_TYPES_H
 
-#include <cmath>
 #include <cstdint>
+
 #include <limits>
 #include <ostream>
 #include <type_traits>
 
+#include <cmath>
+
 #ifdef __clang__
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wmismatched-tags"
+#    pragma clang diagnostic push
+#    pragma clang diagnostic ignored "-Wmismatched-tags"
 #endif
-#define HALF_ROUND_STYLE 1
+#define HALF_ROUND_STYLE        1
 #define HALF_ROUND_TIES_TO_EVEN 1
 #include <half.hpp>
 #ifdef __clang__
-#pragma clang diagnostic pop
+#    pragma clang diagnostic pop
 #endif
 
 namespace thorin {
 
 using half_float::half;
 
-#define THORIN_STRINGIFY(x) #x
-#define THORIN_TOSTRING(x) THORIN_STRINGIFY(x)
-
+// clang-format off
 #define THORIN_1_8_16_32_64(m) m(1) m(8) m(16) m(32) m(64)
 #define THORIN_8_16_32_64(m)        m(8) m(16) m(32) m(64)
 #define THORIN_16_32_64(m)               m(16) m(32) m(64)
@@ -43,24 +43,24 @@ template<int> struct w2s_ {};
 template<int> struct w2r_ {};
 
 #define CODE(i)                                                                         \
-    typedef  int ## i ##_t s ## i;                                                      \
-    typedef uint ## i ##_t u ## i;                                                      \
-    template<> struct w2u_<i> { typedef u ## i type; };                                 \
-    template<> struct w2s_<i> { typedef s ## i type; };                                 \
+    using s ## i =  int ## i ##_t;                                                      \
+    using u ## i = uint ## i ##_t;                                                      \
+    template<> struct w2u_<i> { using type = u ## i; };                                 \
+    template<> struct w2s_<i> { using type = s ## i; };                                 \
     constexpr s ## i operator"" _s ## i(unsigned long long int s) { return s ## i(s); } \
     constexpr u ## i operator"" _u ## i(unsigned long long int u) { return u ## i(u); }
 THORIN_8_16_32_64(CODE)
 #undef CODE
 
-typedef bool u1;
+using u1 = bool;
 
 // Map both signed 1 and unsigned 1 to bool
-template<> struct w2u_<1> { typedef bool type; };
-template<> struct w2s_<1> { typedef bool type; };
+template<> struct w2u_<1> { using type = bool; };
+template<> struct w2s_<1> { using type = bool; };
 
-typedef half   r16;
-typedef float  r32;
-typedef double r64;
+using r16 = half;
+using r32 = float;
+using r64 = double;
 
 inline half        rem(half        a, half        b) { return      fmod(a, b); }
 inline float       rem(float       a, float       b) { return std::fmod(a, b); }
@@ -68,7 +68,7 @@ inline double      rem(double      a, double      b) { return std::fmod(a, b); }
 inline long double rem(long double a, long double b) { return std::fmod(a, b); }
 
 #define CODE(i) \
-    template<> struct w2r_<i> { typedef r ## i type; };
+    template<> struct w2r_<i> { using type = r ## i; };
 THORIN_16_32_64(CODE)
 #undef CODE
 
@@ -81,7 +81,8 @@ constexpr size_t operator""_s(unsigned long long int i) { return size_t(i); }
 inline /*constexpr*/ r16 operator""_r16(long double d) { return r16(float(d)); } // wait till fixed upstream
 constexpr r32 operator""_r32(long double d) { return r32(d); }
 constexpr r64 operator""_r64(long double d) { return r64(d); }
+// clang-format on
 
-}
+} // namespace thorin
 
 #endif

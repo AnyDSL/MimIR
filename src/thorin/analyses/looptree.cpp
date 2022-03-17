@@ -5,6 +5,7 @@
 #include <stack>
 
 #include "thorin/def.h"
+
 #include "thorin/analyses/cfg.h"
 
 /*
@@ -20,17 +21,17 @@
 namespace thorin {
 
 enum {
-    InSCC    = 1, // is in current walk_scc run?
-    OnStack  = 2, // is in current SCC stack?
-    IsHead   = 4, // all heads are marked, so subsequent runs can ignore backedges when searching for SCCs
+    InSCC   = 1, // is in current walk_scc run?
+    OnStack = 2, // is in current SCC stack?
+    IsHead  = 4, // all heads are marked, so subsequent runs can ignore backedges when searching for SCCs
 };
 
 template<bool forward>
 class LoopTreeBuilder {
 public:
-    typedef typename LoopTree<forward>::Base Base;
-    typedef typename LoopTree<forward>::Leaf Leaf;
-    typedef typename LoopTree<forward>::Head Head;
+    using Base = typename LoopTree<forward>::Base;
+    using Leaf = typename LoopTree<forward>::Leaf;
+    using Head = typename LoopTree<forward>::Head;
 
     LoopTreeBuilder(LoopTree<forward>& looptree)
         : looptree_(looptree)
@@ -60,15 +61,17 @@ private:
     Number& number(const CFNode* n) { return numbers_[n]; }
     size_t& lowlink(const CFNode* n) { return number(n).low; }
     size_t& dfs(const CFNode* n) { return number(n).dfs; }
-    bool on_stack(const CFNode* n) { assert(set_.contains(n)); return (states_[n] & OnStack) != 0; }
+    bool on_stack(const CFNode* n) {
+        assert(set_.contains(n));
+        return (states_[n] & OnStack) != 0;
+    }
     bool in_scc(const CFNode* n) { return states_[n] & InSCC; }
     bool is_head(const CFNode* n) { return states_[n] & IsHead; }
 
     bool is_leaf(const CFNode* n, size_t num) {
         if (num == 1) {
             for (const auto& succ : cfg().succs(n)) {
-                if (!is_head(succ) && n == succ)
-                    return false;
+                if (!is_head(succ) && n == succ) return false;
             }
             return true;
         }
@@ -119,14 +122,12 @@ void LoopTreeBuilder<forward>::recurse(Head* parent, ArrayRef<const CFNode*> hea
 
         // now mark all newly found heads globally as head
         for (size_t e = parent->num_children(); curr_new_child != e; ++curr_new_child) {
-            for (const auto& head : parent->child(curr_new_child)->cf_nodes())
-                states_[head] |= IsHead;
+            for (const auto& head : parent->child(curr_new_child)->cf_nodes()) states_[head] |= IsHead;
         }
     }
 
     for (const auto& node : parent->children()) {
-        if (auto new_parent = node->template isa<Head>())
-            recurse(new_parent, new_parent->cf_nodes(), depth + 1);
+        if (auto new_parent = node->template isa<Head>()) recurse(new_parent, new_parent->cf_nodes(), depth + 1);
     }
 }
 
@@ -135,10 +136,9 @@ int LoopTreeBuilder<forward>::walk_scc(const CFNode* cur, Head* parent, int dept
     scc_counter = visit(cur, scc_counter);
 
     for (const auto& succ : cfg().succs(cur)) {
-        if (is_head(succ))
-            continue; // this is a backedge
+        if (is_head(succ)) continue; // this is a backedge
         if (!set_.contains(succ)) {
-            scc_counter = walk_scc(succ, parent, depth, scc_counter);
+            scc_counter  = walk_scc(succ, parent, depth, scc_counter);
             lowlink(cur) = std::min(lowlink(cur), lowlink(succ));
         } else if (on_stack(succ))
             lowlink(cur) = std::min(lowlink(cur), lowlink(succ));
@@ -180,8 +180,7 @@ int LoopTreeBuilder<forward>::walk_scc(const CFNode* cur, Head* parent, int dept
             new Head(parent, depth, heads);
 
         // reset InSCC and OnStack flags
-        for (size_t i = b; i != e; ++i)
-            states_[stack_[i]] &= ~(OnStack | InSCC);
+        for (size_t i = b; i != e; ++i) states_[stack_[i]] &= ~(OnStack | InSCC);
 
         // pop whole SCC
         stack_.resize(b);
@@ -197,25 +196,26 @@ LoopTree<forward>::Base::Base(Node node, Head* parent, int depth, const std::vec
     : node_(node)
     , parent_(parent)
     , cf_nodes_(cf_nodes)
-    , depth_(depth)
-{
-    if (parent_)
-        parent_->children_.emplace_back(this);
+    , depth_(depth) {
+    if (parent_) parent_->children_.emplace_back(this);
 }
 
 template<bool forward>
-Stream& LoopTree<forward>::Leaf::stream(Stream& s) const { return s.fmt("<{} | dfs: {}", cf_node(), index()); }
+Stream& LoopTree<forward>::Leaf::stream(Stream& s) const {
+    return s.fmt("<{} | dfs: {}", cf_node(), index());
+}
 
 template<bool forward>
-Stream& LoopTree<forward>::Head::stream(Stream& s) const { return s.fmt("[{, }]", this->cf_nodes()); }
+Stream& LoopTree<forward>::Head::stream(Stream& s) const {
+    return s.fmt("[{, }]", this->cf_nodes());
+}
 
 //------------------------------------------------------------------------------
 
 template<bool forward>
 LoopTree<forward>::LoopTree(const CFG<forward>& cfg)
     : cfg_(cfg)
-    , leaves_(cfg)
-{
+    , leaves_(cfg) {
     LoopTreeBuilder<forward>(*this);
 }
 
@@ -224,4 +224,4 @@ template class LoopTree<false>;
 
 //------------------------------------------------------------------------------
 
-}
+} // namespace thorin

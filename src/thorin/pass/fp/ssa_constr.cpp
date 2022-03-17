@@ -69,7 +69,7 @@ const Def* SSAConstr::get_val(Lam* lam, const Proxy* sloxy) {
         return get_val(pred, sloxy);
     } else {
         auto phixy = proxy(get_sloxy_type(sloxy), {sloxy, lam}, Phixy, sloxy->dbg());
-        phixy->set_name(std::string("phi_") + phixy->debug().name);
+        phixy->set_debug_name(std::string("phi_") + phixy->debug().name);
         world().DLOG("get_val phixy: '{}' '{}'", sloxy, lam);
         return set_val(lam, sloxy, phixy);
     }

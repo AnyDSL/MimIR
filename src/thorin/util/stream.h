@@ -11,8 +11,6 @@
 #include <sstream>
 #include <string>
 
-#include "thorin/config.h"
-
 #include "thorin/util/assert.h"
 
 namespace thorin {
@@ -215,7 +213,7 @@ Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
             }
             case '}':
                 if (match2nd(next, s, '}')) continue;
-                assert(false && "unmatched/unescaped closing brace '}' in format string");
+                unreachable("unmatched/unescaped closing brace '}' in format string");
             default: (*this) << *s++;
         }
     }

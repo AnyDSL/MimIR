@@ -373,6 +373,7 @@ public:
     const Axiom* ax_malloc()  const { return data_.malloc_;  }
     const Axiom* ax_mslot()   const { return data_.mslot_;   }
     const Axiom* ax_zip()     const { return data_.zip_;     }
+    const Axiom* ax_for()     const { return data_.for_;     }
     const Axiom* ax_load()    const { return data_.load_;    }
     const Axiom* ax_remem()   const { return data_.remem_;   }
     const Axiom* ax_slot()    const { return data_.slot_;    }
@@ -410,6 +411,7 @@ public:
     const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg = {}) {
         return app(ax_bitcast(), {dst_t, src_t}, dbg);
     }
+    const Def* fn_for(Defs params);
     ///@}
 
     /// @name op - these guys build the final function application for the various operations
@@ -473,6 +475,9 @@ public:
     const Def* op_alloc_jumpbuf(const Def* mem, const Def* dbg = {}) { return app(data_.sjlj_alloc_jmpbuf, {tuple(), mem}, dbg); }
     const Def* op_setjmp(const Def* mem, const Def* buf, const Def* dbg = {})  { return app(data_.sjlj_setjmp_,  {mem, buf}, dbg); }
     const Def* op_longjmp(const Def* mem, const Def* buf, const Def* id, const Def* dbg = {}) { return app(data_.sjlj_longjmp_, {mem, buf, id}, dbg); }
+    // clang-format off
+    const Def* op_for(Defs paramTypes, const Def* mem, const Def* start, const Def* stop, const Def* step, Defs initAcc, const Def* body, const Def* brk);
+    // clang-format on
     ///@}
 
     /// @name wrappers for unary operations
@@ -625,7 +630,7 @@ private:
         assert(!def->isa_nom());
         auto [i, inserted] = data_.defs_.emplace(def);
         if (inserted) {
-#ifndef NDEBUG
+#if THORIN_ENABLE_CHECKS
             if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
             for (auto op : def->ops()) {
                 if (state_.use_breakpoints.contains(op->gid())) thorin::breakpoint();
@@ -642,7 +647,7 @@ private:
     template<class T, class... Args>
     T* insert(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
-#ifndef NDEBUG
+#if THORIN_ENABLE_CHECKS
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         auto p = data_.defs_.emplace(def);
@@ -784,6 +789,7 @@ private:
         const Axiom* sjlj_alloc_jmpbuf;
         const Axiom* sjlj_setjmp_;
         const Axiom* sjlj_longjmp_;
+        const Axiom* for_;
         
         std::string name_;
         Externals externals_;

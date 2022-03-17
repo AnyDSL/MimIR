@@ -220,7 +220,8 @@ const Def* Def::debug_history() const {
     return dbg();
 }
 
-void Def::set_name(std::string_view n) const {
+#ifndef NDEBUG
+void Def::set_debug_name(std::string_view n) const {
     auto& w   = world();
     auto name = w.tuple_str(n);
 
@@ -234,6 +235,7 @@ void Def::set_name(std::string_view n) const {
         dbg_ = w.insert(dbg_, 3_s, 0_s, name);
     }
 }
+#endif
 
 void Def::finalize() {
     for (size_t i = 0, e = num_ops(); i != e; ++i) {

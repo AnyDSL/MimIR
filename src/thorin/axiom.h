@@ -47,7 +47,7 @@ public:
     /// @return returns `std::nullopt` if encoding is not possible.
     static std::optional<u64> mangle(std::string_view s);
 
-    /// Reverts a mangle%d string to a `std::string`.
+    /// Reverts an Axiom::mangle%d string to a `std::string`.
     /// Ignores lower 16-bit of @p u.
     static std::string demangle(u64 u);
     ///@}

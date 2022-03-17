@@ -10,8 +10,7 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
     , peek_({0, Pos(1, 0)})
     , stream_(stream)
 {
-    if (!stream_) throw std::runtime_error("stream is bad");
-    next(); // fill peek
+    next();            // fill peek
     accept(utf8::BOM); // eat utf-8 BOM if present
 
 #define CODE(t, str) keywords_[str] = Tok::Tag::t;
@@ -22,8 +21,8 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
 char32_t Lexer::next() {
     for (bool ok = true; true; ok = true) {
         char32_t result = peek_.char_;
-        peek_.char_ = stream_.get();
-        loc_.finis = peek_.pos_;
+        peek_.char_     = stream_.get();
+        loc_.finis      = peek_.pos_;
 
         if (eof()) return result;
 
@@ -62,6 +61,7 @@ Tok Lexer::lex() {
         if (eof()) return tok(Tok::Tag::M_eof);
         if (accept_if(isspace)) continue;
 
+        // clang-format off
         // delimiters
         if (accept( '(')) return tok(Tok::Tag::D_paren_l);
         if (accept( ')')) return tok(Tok::Tag::D_paren_r);
@@ -85,8 +85,9 @@ Tok Lexer::lex() {
             if (accept('/')) return tok(Tok::Tag::B_forall);
             return tok(Tok::Tag::B_lam);
         }
+        // clang-format on
 
-        if (accept( '/')) {
+        if (accept('/')) {
             if (accept('*')) {
                 eat_comments();
                 continue;
@@ -107,7 +108,7 @@ Tok Lexer::lex() {
             return {loc(), world_.sym(str_, world_.dbg(loc()))};                            // identifier
         }
 
-        errln("{}:{}: invalid input char '{}'", loc_.file, peek_.pos_, (char) peek_.char_);
+        errln("{}:{}: invalid input char '{}'", loc_.file, peek_.pos_, (char)peek_.char_);
         next();
     }
 }
@@ -124,4 +125,4 @@ void Lexer::eat_comments() {
     }
 }
 
-}
+} // namespace thorin
