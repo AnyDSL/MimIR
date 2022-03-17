@@ -28,10 +28,10 @@ var NAVTREE =
     [ "Introduction", "index.html", [
       [ "Building", "index.html#autotoc_md1", [
         [ "Tests", "index.html#autotoc_md2", null ],
-        [ "Documentation", "index.html#autotoc_md3", null ],
-        [ "Dependencies", "index.html#autotoc_md4", [
-          [ "Deployed as a git submodule", "index.html#autotoc_md5", null ]
-        ] ]
+        [ "Documentation", "index.html#autotoc_md3", null ]
+      ] ],
+      [ "Dependencies", "index.html#autotoc_md4", [
+        [ "Deployed as a git submodule", "index.html#autotoc_md5", null ]
       ] ]
     ] ],
     [ "Language Reference", "md__github_workspace_docs_langref.html", null ],
