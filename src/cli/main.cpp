@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
     std::string file;
     bool emit_llvm = false;
     bool show_help = false;
-    std::vector<std::string> dialects, dialect_search_paths;
+    std::vector<std::string> dialects, dialect_paths;
 
     auto print_version = [](bool) {
         std::cerr << version;
@@ -63,7 +63,7 @@ int main(int argc, char** argv) {
                lyra::opt(emit_llvm)["-l"]["--emit-llvm"]("emit LLVM") |
                lyra::opt(print_version)["-v"]["--version"]("display version info and exit") |
                lyra::opt(dialects, "dialect")["-d"]["--dialect"]("dynamically load dialect [WIP]") |
-               lyra::opt(dialect_search_paths, "path")["-D"]["--dialect-search-path"]("path to search dialects in") |
+               lyra::opt(dialect_paths, "path")["-D"]["--dialect-path"]("path to search dialects in") |
                lyra::arg(file, "input file")("The input file. Use '-' to read from stdin.");
     auto result = cli.parse({argc, argv});
     if (!result) {
@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
 
     try {
         if (!dialects.empty()) {
-            for (const auto& dialect : dialects) { test_plugin(dialect, dialect_search_paths); }
+            for (const auto& dialect : dialects) test_plugin(dialect, dialect_paths);
             return EXIT_SUCCESS;
         }
 
