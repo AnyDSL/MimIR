@@ -30,7 +30,6 @@ void optimize(World& world) {
     opt.add<Scalerize>(ee);
     opt.add<CopyProp>(br, ee);
     opt.add<TailRecElim>(er);
-    // opt.add<LamSpec>();
     opt.run();
 
     PassMan::run<LamSpec>(world);
