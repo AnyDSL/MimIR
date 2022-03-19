@@ -9,7 +9,7 @@
 // clang-format off
 namespace thorin {
 
-using node_t   = u16;
+using node_t   = u8;
 using tag_t    = u32;
 using flags_t  = u32;
 using fields_t = u64;

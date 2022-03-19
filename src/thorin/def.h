@@ -159,9 +159,6 @@ public:
     }
     Sort level() const;
     Sort sort() const;
-    unsigned order() const { /*TODO assertion*/
-        return order_;
-    }
     const Def* arity() const;
     ///@}
 
@@ -386,12 +383,12 @@ protected:
         TaggedPtr<const Axiom, u16> axiom_depth_;
     };
     fields_t fields_;
-    node_t node_;
-    unsigned nom_   : 1;
-    unsigned var_   : 1;
-    unsigned dep_   : 2;
-    unsigned proxy_ : 1;
-    unsigned order_ : 11;
+    uint8_t node_;
+    unsigned nom_    : 1;
+    unsigned var_    : 1;
+    unsigned dep_    : 2;
+    unsigned proxy_  : 1;
+    unsigned pading_ : 19;
     u32 gid_;
     u32 num_ops_;
     hash_t hash_;

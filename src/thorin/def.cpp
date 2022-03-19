@@ -21,7 +21,6 @@ Def::Def(node_t node, const Def* type, Defs ops, fields_t fields, const Def* dbg
     , var_(false)
     , dep_(Dep::Bot)
     , proxy_(0)
-    , order_(0)
     , num_ops_(ops.size())
     , dbg_(dbg)
     , type_(type) {
@@ -46,7 +45,6 @@ Def::Def(node_t node, const Def* type, size_t num_ops, fields_t fields, const De
     , var_(false)
     , dep_(Dep::Nom)
     , proxy_(0)
-    , order_(0)
     , num_ops_(num_ops)
     , dbg_(dbg)
     , type_(type) {
@@ -244,7 +242,6 @@ void Def::finalize() {
             const auto& p = op(i)->uses_.emplace(this, i);
             assert_unused(p.second);
         }
-        order_ = std::max(order_, op(i)->order_);
     }
 
     if (!isa<Space>() && !isa<Axiom>()) {
@@ -256,7 +253,6 @@ void Def::finalize() {
     }
 
     assert(!dbg() || dbg()->no_dep());
-    if (isa<Pi>()) ++order_;
     if (auto var = isa<Var>()) {
         var->nom()->var_ = true;
         dep_             = Dep::Var;
@@ -276,7 +272,6 @@ Def* Def::set(size_t i, const Def* def) {
     if (def != nullptr) {
         assert(i < num_ops() && "index out of bounds");
         ops_ptr()[i]  = def;
-        order_        = std::max(order_, def->order_);
         const auto& p = def->uses_.emplace(this, i);
         assert_unused(p.second);
     }
