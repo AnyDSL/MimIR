@@ -25,7 +25,8 @@ undo_t TailRecElim::analyze(const Def* def) {
             if (auto [i, ins] = old2rec_loop_.emplace(old, std::pair<Lam*, Lam*>(nullptr, nullptr)); ins) {
                 auto& [rec, loop] = i->second;
                 rec               = old->stub(world(), old->type(), old->dbg());
-                auto loop_dom     = rec->doms().skip_back();
+                auto doms         = rec->doms();
+                auto loop_dom     = doms.skip_back();
                 loop              = rec->stub(world(), world().cn(loop_dom), rec->dbg());
                 world().DLOG("old {} -> (rec: {}, loop: {})", old, rec, loop);
 
