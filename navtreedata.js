@@ -71,6 +71,7 @@ var NAVTREE =
         [ "Valgrind & GDB", "md__github_workspace_docs_coding.html#autotoc_md33", null ]
       ] ]
     ] ],
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -121,13 +122,13 @@ var NAVTREEINDEX =
 "classthorin_1_1Stream.html#ac3629a89ca7b5ed98c4c36722a7278b0",
 "classthorin_1_1Vel.html#a45fa6c35d6e120c7bc9b146780c07e4f",
 "classthorin_1_1World.html#a8e31d8a8297af8bbb06bdbd36b3476a8",
-"classthorin_1_1detail_1_1HashTable.html#aa17333f4ca5a49ac84e4f92d8f5eea80",
-"emitter_8h.html",
-"namespacethorin.html#a1146751cff4360b9409462e9ab5c1294",
+"classthorin_1_1detail_1_1HashTable.html#aa50c47d6b3ad88f08ae98ab7030b568c",
+"emitter_8h_source.html",
+"namespacethorin.html#a11d9f60317a743a4384f429a270db9de",
 "namespacethorin.html#ab43fd39fce621340c65d8ce39abf0574",
-"normalize_8h.html#a07a219e12c20ff853c00e3230b4ab9a9",
+"normalize_8h.html#a0a28ffb6b0ebd1bcfefb9aa72e3de869",
 "structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1shl_00_01w_01_4.html",
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3a17b75f3794713ead0b4d0d3781f9984d"
+"tables_8h.html#aec7c9c368dda260071936391c37a72e3a1cc0ad5f46010264c95fdb5f6127f826"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -12,6 +12,6 @@ var searchData=
   ['get_5fvar_5flam_9',['get_var_lam',['../namespacethorin.html#afa219845413436ebd217a971fb700df5',1,'thorin']]],
   ['gid_10',['gid',['../classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb',1,'thorin::Def::gid()'],['../classthorin_1_1CFNode.html#ad1b21de5e0cadae309a8343cf43376e6',1,'thorin::CFNode::gid()']]],
   ['gid2def_11',['gid2def',['../classthorin_1_1World.html#a63364ab75f62f39bf5041710e10701c0',1,'thorin::World']]],
-  ['global_12',['global',['../classthorin_1_1World.html#a60a65160b686ffacbe2d20af346704da',1,'thorin::World::global(const Def *init, bool is_mutable=true, const Def *dbg={})'],['../classthorin_1_1World.html#aba71cbdf91e5537e3a245e21d216b430',1,'thorin::World::global(const Def *id, const Def *init, bool is_mutable=true, const Def *dbg={})']]],
-  ['global_5fimmutable_5fstring_13',['global_immutable_string',['../classthorin_1_1World.html#aaee300743256fcf167bae34d8e3404b0',1,'thorin::World']]]
+  ['global_12',['global',['../classthorin_1_1World.html#a76965a47c1b49afec2aa3978ac9bc86b',1,'thorin::World']]],
+  ['global_5fimmutable_5fstring_13',['global_immutable_string',['../classthorin_1_1World.html#ad8366e9cf977a271904b513802d5a560',1,'thorin::World']]]
 ];
