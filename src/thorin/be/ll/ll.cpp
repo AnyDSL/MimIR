@@ -156,7 +156,7 @@ std::string CodeGen::convert(const Def* type) {
         s.fmt("{} (", convert(pi->doms().back()->as<Pi>()->dom()));
 
         std::string_view sep = "";
-        auto doms = pi->doms();
+        auto doms            = pi->doms();
         for (auto dom : doms.skip_back()) {
             if (isa<Tag::Mem>(dom)) continue;
             s << sep << convert(dom);
