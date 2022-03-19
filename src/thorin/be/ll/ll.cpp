@@ -724,7 +724,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return globals_[global] = name;
     }
 
-    return "<TODO>";
+    assert(false && "not yet implemented");
 }
 
 void emit(World& world, Stream& stream) {
