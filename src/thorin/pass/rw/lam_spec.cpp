@@ -38,7 +38,7 @@ const Def* LamSpec::rewrite(const Def* def) {
 
     app->dump(0);
     DefVec new_doms, new_vars, new_args;
-    auto skip     = old_lam->ret_var() ? (is_top_level(old_lam) ? 0 : 1) : 0;
+    auto skip     = old_lam->ret_var() ? (is_top_level(old_lam) ? 1 : 0) : 0;
     auto old_doms = old_lam->doms();
 
     for (auto dom : old_doms.skip_back(skip)) {
