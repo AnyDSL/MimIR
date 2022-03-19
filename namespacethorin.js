@@ -564,7 +564,7 @@ var namespacethorin =
     [ "unflatten", "namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f", null ],
     [ "unflatten", "namespacethorin.html#a5c1d830f54f2759f11f77e5e0d8355f8", null ],
     [ "unflatten", "namespacethorin.html#abe0176edb854a9982662e5bdfe0038a3", null ],
-    [ "unreachable", "namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9", null ],
+    [ "unreachable", "namespacethorin.html#ae28200e453f278e083c9350e8dbeda0d", null ],
     [ "visit", "namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c", null ],
     [ "visit_first", "namespacethorin.html#a02f88714441141b4cafcf80c5e49f554", null ],
     [ "width2mod", "namespacethorin.html#a8e98aa9b8a5cb1f54a30eb334422b7a6", null ],

@@ -23,7 +23,7 @@ var searchData=
   ['unique_5fqueue_20',['unique_queue',['../classthorin_1_1unique__queue.html',1,'thorin::unique_queue&lt; Set &gt;'],['../classthorin_1_1unique__queue.html#a292a78863316276e6713cf2b5997dea6',1,'thorin::unique_queue::unique_queue(Set set)'],['../classthorin_1_1unique__queue.html#a88c87fbc964625fc09245844a9e680d7',1,'thorin::unique_queue::unique_queue()=default']]],
   ['unique_5fqueue_3c_20thorin_3a_3ahashset_20_3e_21',['unique_queue&lt; thorin::HashSet &gt;',['../classthorin_1_1unique__queue.html',1,'thorin']]],
   ['unique_5fstack_22',['unique_stack',['../classthorin_1_1unique__stack.html',1,'thorin']]],
-  ['unreachable_23',['unreachable',['../namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9',1,'thorin']]],
+  ['unreachable_23',['unreachable',['../namespacethorin.html#ae28200e453f278e083c9350e8dbeda0d',1,'thorin']]],
   ['unsafe_24',['unsafe',['../namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719aade1a883d771d5d2688d6da503f0a8cb',1,'thorin::RMode']]],
   ['unset_25',['unset',['../classthorin_1_1Def.html#a2f616ff4efad73f2589e6161d6b4f10f',1,'thorin::Def::unset()'],['../classthorin_1_1Def.html#ad0ea206ded848435dadac1aa06483782',1,'thorin::Def::unset(size_t i)']]],
   ['unwrap_26',['unwrap',['../classthorin_1_1Def.html#a9d45bc8a5c441a5a1361627f165d4807',1,'thorin::Def::unwrap() const'],['../classthorin_1_1Def.html#a6d83f4e52b316a9e0b4b47d51f50d1f6',1,'thorin::Def::unwrap(Stream &amp;) const']]],

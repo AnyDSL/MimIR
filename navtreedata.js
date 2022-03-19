@@ -124,7 +124,7 @@ var NAVTREEINDEX =
 "classthorin_1_1detail_1_1HashTable.html#aa17333f4ca5a49ac84e4f92d8f5eea80",
 "emitter_8h.html",
 "namespacethorin.html#a1146751cff4360b9409462e9ab5c1294",
-"namespacethorin.html#ab4258beb851bb5c09dcc4e661e786bc5",
+"namespacethorin.html#ab43fd39fce621340c65d8ce39abf0574",
 "normalize_8h.html#a07a219e12c20ff853c00e3230b4ab9a9",
 "structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1shl_00_01w_01_4.html",
 "tables_8h.html#aec7c9c368dda260071936391c37a72e3a17b75f3794713ead0b4d0d3781f9984d"
