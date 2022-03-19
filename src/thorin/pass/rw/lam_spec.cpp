@@ -1,9 +1,11 @@
 #include "thorin/pass/rw/lam_spec.h"
 
 #include "thorin/analyses/scope.h"
-#include "thorin/util/container.h"
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
+#include "thorin/util/container.h"
+
+// TODO This is supposed to recreate what lower2cff did, but we should really consider another strategy and nuke this.
 
 namespace thorin {
 
