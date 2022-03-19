@@ -472,7 +472,7 @@ public:
     const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
     const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
     // clang-format off
-    const Def* op_for(Defs paramTypes, const Def* mem, const Def* start, const Def* stop, const Def* step, Defs initAcc, const Def* body, const Def* brk);
+    const Def* op_for(const Def* mem, const Def* start, const Def* stop, const Def* step, Defs inits, const Def* body, const Def* brk);
     // clang-format on
     ///@}
 

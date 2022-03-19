@@ -256,7 +256,7 @@ World::World(std::string_view name)
 
         data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
     }
-    {   // for :: [m: Nat , n: Nat , Ts: «n; *»] → [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , «i: n; Is#i», Cn
+    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , «i: n; Is#i», Cn
         // [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];
 
         auto input_sigma = nom_sigma(space(), 3);
@@ -267,8 +267,8 @@ World::World(std::string_view name)
         auto ltp                      = nom_pi(kind())->set_dom(input_sigma);
         auto [mod, type_shape, types] = ltp->vars<3>({dbg("iter_modulo"), dbg("types_shape"), dbg("types")});
 
-        auto it_type                  = type_int(mod);
-        auto type_arr                 = nom_arr(type_shape);
+        auto it_type  = type_int(mod);
+        auto type_arr = nom_arr(type_shape);
         type_arr->set(extract(types, type_arr->var()));
 
         ltp->set_codom(cn({mem, it_type, it_type, it_type, type_arr,
@@ -529,7 +529,7 @@ Global* World::global_immutable_string(std::string_view str, const Def* dbg) {
     DefArray str_array(size);
     for (size_t i = 0; i != size - 1; ++i) str_array[i] = lit_nat(str[i], dbg);
     str_array.back() = lit_nat('\0', dbg);
-    auto s = tuple(str_array, dbg);
+    auto s           = tuple(str_array, dbg);
 
     auto glob = global(type_ptr(s->type()), false, dbg);
     glob->set(s);
@@ -637,8 +637,15 @@ const Def* World::op_mslot(const Def* type, const Def* mem, const Def* id, const
     return app(app(ax_mslot(), {type, lit_nat_0()}), {mem, size, id}, dbg);
 }
 
-const Def* World::op_for(Defs accumulatorTypes, const Def* mem, const Def* start, const Def* stop, const Def* step, Defs initAcc, const Def* body, const Def* brk) {
-    return app(fn_for(accumulatorTypes), {mem, start, stop, step, tuple(initAcc), body, brk});
+const Def* World::op_for(const Def* mem,
+                         const Def* begin,
+                         const Def* end,
+                         const Def* step,
+                         Defs inits,
+                         const Def* body,
+                         const Def* brk) {
+    DefArray types(inits.size(), [&](size_t i) { return inits[i]->type(); });
+    return app(fn_for(types), {mem, begin, end, step, tuple(inits), body, brk});
 }
 
 /*

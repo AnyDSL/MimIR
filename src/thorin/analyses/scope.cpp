@@ -4,6 +4,7 @@
 
 #include "thorin/rewrite.h"
 #include "thorin/world.h"
+
 #include "thorin/analyses/cfg.h"
 #include "thorin/analyses/domtree.h"
 #include "thorin/analyses/looptree.h"
@@ -15,8 +16,7 @@ namespace thorin {
 Scope::Scope(Def* entry)
     : world_(entry->world())
     , entry_(entry)
-    , exit_(world().nom_lam(world().cn(world().bot_kind()), world_.dbg("exit")))
-{
+    , exit_(world().nom_lam(world().cn(world().bot_kind()), world_.dbg("exit"))) {
     run();
 }
 
@@ -51,12 +51,10 @@ void Scope::calc_bound() const {
             free_defs_.emplace(def);
     };
 
-    for (auto op : entry()->extended_ops())
-        enqueue(op);
+    for (auto op : entry()->extended_ops()) enqueue(op);
 
     while (!queue.empty()) {
-        for (auto op : queue.pop()->extended_ops())
-            enqueue(op);
+        for (auto op : queue.pop()->extended_ops()) enqueue(op);
     }
 
     swap(live, bound_);
@@ -79,12 +77,10 @@ void Scope::calc_free() const {
             queue.push(def);
     };
 
-    for (auto free : free_defs())
-        enqueue(free);
+    for (auto free : free_defs()) enqueue(free);
 
     while (!queue.empty()) {
-        for (auto op : queue.pop()->extended_ops())
-            enqueue(op);
+        for (auto op : queue.pop()->extended_ops()) enqueue(op);
     }
 }
 
@@ -102,4 +98,4 @@ bool is_free(const Var* var, const Def* def) {
     return scope.bound(def);
 }
 
-}
+} // namespace thorin
