@@ -213,7 +213,7 @@ Stream& Stream::fmt(const char* s, T&& t, Args&&... args) {
             }
             case '}':
                 if (match2nd(next, s, '}')) continue;
-                assert(false && "unmatched/unescaped closing brace '}' in format string");
+                unreachable("unmatched/unescaped closing brace '}' in format string");
             default: (*this) << *s++;
         }
     }

@@ -78,7 +78,7 @@ struct UseHash {
     static Use sentinel() { return Use((const Def*)(-1), u16(-1)); }
 };
 
-typedef HashSet<Use, UseHash> Uses;
+using Uses = HashSet<Use, UseHash>;
 
 enum class Sort { Term, Type, Kind, Space };
 
@@ -113,13 +113,12 @@ enum : unsigned {
     auto NAME##s(size_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
 
 /// Base class for all Def%s.
-/// The data layout (see World::alloc) looks like this:
+/// The data layout (see World::alloc and Def::extended_ops) looks like this:
 /// ```
 /// Def debug type | op(0) ... op(num_ops-1) ||
 ///    |-------------extended_ops-------------|
 /// ```
-/// This means that any subclass of Def must not introduce additional members.
-/// See also Def::extended_ops.
+/// @attention This means that any subclass of Def **must not** introduce additional members.
 class Def : public RuntimeCast<Def>, public Streamable<Def> {
 public:
     using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*, const Def*);
@@ -136,7 +135,7 @@ protected:
     virtual ~Def() = default;
 
 public:
-    /// @name misc getters
+    /// @name getters
     ///@{
     World& world() const {
         if (node() == Node::Space) return *world_;
@@ -582,20 +581,20 @@ public:
     friend class World;
 };
 
-/// A global variable in the data segment.
+/// @deprecated A global variable in the data segment.
 /// A Global may be mutable or immutable.
-/// **Deprecated**. WILL BE REMOVED
+/// @attention WILL BE REMOVED.
 class Global : public Def {
 private:
-    Global(const Def* type, const Def* id, const Def* init, bool is_mutable, const Def* dbg)
-        : Def(Node, type, {id, init}, is_mutable, dbg) {}
+    Global(const Def* type, bool is_mutable, const Def* dbg)
+        : Def(Node, type, 1, is_mutable, dbg) {}
 
 public:
     /// @name ops
     ///@{
     /// This thing's sole purpose is to differentiate on global from another.
-    const Def* id() const { return op(0); }
-    const Def* init() const { return op(1); }
+    const Def* init() const { return op(0); }
+    void set(const Def* init) { Def::set(0, init); }
     ///@}
 
     /// @name type
@@ -611,7 +610,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World& to, const Def* type, Defs ops, const Def*) const override;
+    Global* stub(World&, const Def*, const Def*) override;
     ///@}
 
     static constexpr auto Node = Node::Global;

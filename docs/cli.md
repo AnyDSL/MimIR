@@ -4,4 +4,4 @@
 
 ## Usage
 
-TODO
+\include "cli-help.md"

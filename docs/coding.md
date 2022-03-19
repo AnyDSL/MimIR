@@ -11,7 +11,7 @@ Use the following coding conventions:
 * constants as defined in an `enum` or via `static const` in `Camel_Snake_Case`
 * macro names in `SNAKE_IN_ALL_CAPS`
 * everything else like variables, functions, etc. in `snake_case`
-* use a trailing underscore suffix for a `private_member_variable_`
+* use a trailing underscore suffix for a `private_or_protected_member_variable_`
 * don't do that for a `public_member_variable`
 * use `struct` for [plain old data](https://en.cppreference.com/w/cpp/named_req/PODType)
 * use `class` for everything else
@@ -31,6 +31,13 @@ Note that you can [disable clang-format for a piece of code](https://clang.llvm.
 In addition, you might want to check out plugins like the [Vim integration](https://clang.llvm.org/docs/ClangFormat.html#vim-integration).
 
 # Debugging
+
+## Logging
+
+## Breakpoints
+
+## VS Code
+
 As a utility to make debugging Thorin itself less painful with certain debuggers, the `thorin.natvis` file can be loaded for getting more expressive value inspection.
 In VS Code you can do so by adding the following to the `launch.json` configurations. When launching from VS Code via CMake, put it in `settings.json`'s `"cmake.debugConfig":`:
 ```json
@@ -38,6 +45,24 @@ In VS Code you can do so by adding the following to the `launch.json` configurat
 "showDisplayString": true,
 ```
 
-## Logging
+## GoogleTest
 
-## Breakpoints
+Thorin's unit test suite uses [GoogleTest](https://google.github.io/googletest/).
+During debugging you probably only want to run a specifig test case.
+You can [filter](https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests) the test cases like this:
+```sh
+./thorin-gtest --gtest_filter="*Loc*"
+```
+This command lists all available tests:
+```sh
+./thorin-gtest --gtest_list_tests
+```
+
+## Valgrind & GDB
+
+If you encounter memory related problems, you might want to run the program with [Valgrind's GDB server](https://valgrind.org/docs/manual/manual-core-adv.html).
+Simply launch the program like this
+```sh
+valgrind --vgdb=yes --vgdb-error=0 thorin-gtest
+```
+and follow the instructions.

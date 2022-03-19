@@ -324,11 +324,10 @@ public:
 
     /// @name globals -- depdrecated; will be removed
     ///@{
-    const Def* global(const Def* id, const Def* init, bool is_mutable = true, const Def* dbg = {});
-    const Def* global(const Def* init, bool is_mutable = true, const Def* dbg = {}) {
-        return global(lit_nat(state_.curr_gid), init, is_mutable, dbg);
+    Global* global(const Def* type, bool is_mutable = true, const Def* dbg = {}) {
+        return insert<Global>(1, type, is_mutable, dbg);
     }
-    const Def* global_immutable_string(std::string_view str, const Def* dbg = {});
+    Global* global_immutable_string(std::string_view str, const Def* dbg = {});
     ///@}
 
     /// @name types
@@ -473,7 +472,7 @@ public:
     const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
     const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
     // clang-format off
-    const Def* op_for(Defs paramTypes, const Def* mem, const Def* start, const Def* stop, const Def* step, Defs initAcc, const Def* body, const Def* brk);
+    const Def* op_for(const Def* mem, const Def* start, const Def* stop, const Def* step, Defs inits, const Def* body, const Def* brk);
     // clang-format on
     ///@}
 

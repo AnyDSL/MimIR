@@ -13,7 +13,7 @@ namespace thorin {
 template<bool forward>
 class DomFrontierBase {
 public:
-    DomFrontierBase(const DomFrontierBase &) = delete;
+    DomFrontierBase(const DomFrontierBase&) = delete;
     DomFrontierBase& operator=(DomFrontierBase) = delete;
 
     explicit DomFrontierBase(const CFG<forward>& cfg)
@@ -39,9 +39,9 @@ private:
     typename CFG<forward>::template Map<std::vector<const CFNode*>> succs_;
 };
 
-typedef DomFrontierBase<true>  DomFrontiers;
-typedef DomFrontierBase<false> ControlDeps;
+using DomFrontiers = DomFrontierBase<true>;
+using ControlDeps  = DomFrontierBase<false>;
 
-}
+} // namespace thorin
 
 #endif
