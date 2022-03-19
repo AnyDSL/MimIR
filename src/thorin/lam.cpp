@@ -18,7 +18,6 @@ const Pi* Pi::ret_pi(const Def* dbg) const {
 }
 
 Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); }
-
 bool Pi::is_cn() const { return codom()->isa<Bot>(); }
 
 /*

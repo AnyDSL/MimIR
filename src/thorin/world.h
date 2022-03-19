@@ -780,9 +780,7 @@ private:
     std::unique_ptr<ErrorHandler> err_;
     std::shared_ptr<Stream> stream_;
 
-    friend class Cleaner;
     friend DefArray Def::reduce(const Def*);
-    friend void Def::replace(Tracker) const;
 };
 
 // clang-format off

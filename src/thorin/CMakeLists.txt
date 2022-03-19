@@ -62,6 +62,8 @@ add_library(libthorin
     pass/fp/tail_rec_elim.h
     pass/rw/alloc2malloc.cpp
     pass/rw/alloc2malloc.h
+    pass/rw/lam_spec.cpp
+    pass/rw/lam_spec.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
     pass/rw/lower_for.cpp
@@ -74,12 +76,6 @@ add_library(libthorin
     pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
-    transform/cleanup_world.cpp
-    transform/cleanup_world.h
-    transform/mangle.cpp
-    transform/mangle.h
-    transform/partial_evaluation.cpp
-    transform/partial_evaluation.h
     transform/closure_conv.h
     transform/closure_conv.cpp
     util/array.h

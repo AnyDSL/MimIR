@@ -185,9 +185,6 @@ inline std::pair<const App*, Lam*> isa_apped_nom_lam(const Def* def) {
     return {nullptr, nullptr};
 }
 
-// TODO remove - deprecated
-Lam* get_var_lam(const Def* def);
-
 } // namespace thorin
 
 #endif
