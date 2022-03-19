@@ -30,15 +30,17 @@ void optimize(World& world) {
     opt.add<Scalerize>(ee);
     opt.add<CopyProp>(br, ee);
     opt.add<TailRecElim>(er);
-    opt.add<LamSpec>();
+    //opt.add<LamSpec>();
     opt.run();
 
-    PassMan codgen_prepare(world);
-    // codgen_prepare.add<BoundElim>();
-    codgen_prepare.add<RememElim>();
-    codgen_prepare.add<Alloc2Malloc>();
-    codgen_prepare.add<RetWrap>();
-    codgen_prepare.run();
+    PassMan::run<LamSpec>(world);
+
+    PassMan codgen_prep(world);
+    // codgen_prep.add<BoundElim>();
+    codgen_prep.add<RememElim>();
+    codgen_prep.add<Alloc2Malloc>();
+    codgen_prep.add<RetWrap>();
+    codgen_prep.run();
 }
 
 } // namespace thorin

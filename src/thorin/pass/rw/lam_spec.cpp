@@ -1,9 +1,32 @@
 #include "thorin/pass/rw/lam_spec.h"
 
+#include "thorin/analyses/scope.h"
+#include "thorin/util/container.h"
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
 
 namespace thorin {
+
+static bool is_top_level(LamMap<bool>& top, Lam* lam) {
+    if (lam->is_external()) return true;
+    if (auto [i, ins] = top.emplace(lam, true); !ins) return i->second;
+
+    Scope scope(lam);
+    if (!scope.free_vars().empty()) return top[lam] = false;
+
+    for (auto nom : scope.free_noms()) {
+        if (auto inner = nom->isa<Lam>()) {
+            if (!is_top_level(top, inner)) return top[lam] = false;
+        }
+    }
+
+    return true;
+}
+
+static bool is_top_level(Lam* lam) {
+    LamMap<bool> top;
+    return is_top_level(top, lam);
+}
 
 const Def* LamSpec::rewrite(const Def* def) {
     if (auto new_def = old2new_.lookup(def)) return *new_def;
@@ -11,8 +34,9 @@ const Def* LamSpec::rewrite(const Def* def) {
     auto [app, old_lam] = isa_apped_nom_lam(def);
     if (!isa_workable(old_lam)) return def;
 
+    app->dump(0);
     DefVec new_doms, new_vars, new_args;
-    auto skip     = old_lam->ret_var() ? 1 : 0;
+    auto skip     = old_lam->ret_var() ? (is_top_level(old_lam) ? 0 : 1) : 0;
     auto old_doms = old_lam->doms();
 
     for (auto dom : old_doms.skip_back(skip)) {
@@ -40,6 +64,7 @@ const Def* LamSpec::rewrite(const Def* def) {
         new_args.emplace_back(app->args().back());
     }
 
+    app->dump(0);
     outln("old_args: {, }", app->args());
     outln("new_args: {, }", new_args);
     outln("old_vars: {, }", old_lam->vars());
