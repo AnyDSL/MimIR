@@ -335,5 +335,6 @@ var hierarchy =
     [ "int", "namespace_3globalScope_4.html#classint", null ],
     [ "remove_pointer_t< NormalizeFn > *", "namespace_3globalScope_4.html#classstd_1_1remove__pointer__t_3_01NormalizeFn_01_4_01_5", null ],
     [ "size_t", "namespace_3globalScope_4.html#classsize__t", null ],
+    [ "u16", "namespace_3globalScope_4.html#classu16", null ],
     [ "uint32_t", "namespace_3globalScope_4.html#classuint32__t", null ]
 ];

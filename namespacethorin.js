@@ -218,7 +218,7 @@ var namespacethorin =
     [ "LPrec", "namespacethorin.html#a8a6f378914383c7e6e801d31a00d0eb0", null ],
     [ "Meet", "namespacethorin.html#a62e7b6eac5be14e5d20aafbf32e4ec8c", null ],
     [ "nat_t", "namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91", null ],
-    [ "node_t", "namespacethorin.html#a4faed5fe3a70fa60839ebc08961c39d2", null ],
+    [ "node_t", "namespacethorin.html#ae0ec74d835ce935c637499bea15e74f2", null ],
     [ "Nom2Nom", "namespacethorin.html#a847863dc99817523db80a5e862acbb8e", null ],
     [ "NomMap", "namespacethorin.html#a1f4495ac5ca4bee6965b07d96c22253b", null ],
     [ "NomSet", "namespacethorin.html#a6448a89fa59bf8622639c34a0747b364", null ],

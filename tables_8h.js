@@ -57,7 +57,7 @@ var tables_8h =
     [ "fields_t", "tables_8h.html#af3760d05397d4f4e64db45d9b2f96a9b", null ],
     [ "flags_t", "tables_8h.html#af5064c09e15bc314bb4ae3c3219815fe", null ],
     [ "nat_t", "tables_8h.html#a529e2848fe27ea9f7ccf59bec4fd1e91", null ],
-    [ "node_t", "tables_8h.html#a4faed5fe3a70fa60839ebc08961c39d2", null ],
+    [ "node_t", "tables_8h.html#ae0ec74d835ce935c637499bea15e74f2", null ],
     [ "Tag2Enum", "tables_8h.html#ae6b7dfe6eb24383e103a912b449ac418", null ],
     [ "tag_t", "tables_8h.html#a12cc65a06abfcbcae824f6128f3b7a65", null ],
     [ "Acc", "tables_8h.html#a2845183b889a0b1ba1256dc2ea7c6e48", [
