@@ -120,7 +120,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a3de31bca2c466e987dd1ed560d62fc82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c16d2fe175c1d11e8137da3e7a4135b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassMan.html#a5c16d2fe175c1d11e8137da3e7a4135b">curr_nom</a> () const</td></tr>
 <tr class="separator:a5c16d2fe175c1d11e8137da3e7a4135b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">create and run passes</div></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memTemplParams" colspan="2">template&lt;class P , class N &gt; </td></tr>
+<tr class="memitem:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassMan.html#a48bcac37063f4509ea1db8c9411e3fa6">FPPass</a></td></tr>
+<tr class="separator:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">create and run passes</h2></td></tr>
 <tr class="memitem:ae2a34b331418abd402ef465c2be3120c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassMan.html#ae2a34b331418abd402ef465c2be3120c">run</a> ()</td></tr>
 <tr class="memdesc:ae2a34b331418abd402ef465c2be3120c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run all registered passes on the whole <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a>.  <a href="classthorin_1_1PassMan.html#ae2a34b331418abd402ef465c2be3120c">More...</a><br /></td></tr>
 <tr class="separator:ae2a34b331418abd402ef465c2be3120c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -128,12 +135,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac9820d74411d7c8462b6b055bbacea3c"><td class="memTemplItemLeft" align="right" valign="top">P *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassMan.html#ac9820d74411d7c8462b6b055bbacea3c">add</a> (Args &amp;&amp;... args)</td></tr>
 <tr class="memdesc:ac9820d74411d7c8462b6b055bbacea3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a pass to this <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a>.  <a href="classthorin_1_1PassMan.html#ac9820d74411d7c8462b6b055bbacea3c">More...</a><br /></td></tr>
 <tr class="separator:ac9820d74411d7c8462b6b055bbacea3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
-Friends</h2></td></tr>
-<tr class="memitem:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memTemplParams" colspan="2">template&lt;class P , class N &gt; </td></tr>
-<tr class="memitem:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memTemplItemLeft" align="right" valign="top">class&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassMan.html#a48bcac37063f4509ea1db8c9411e3fa6">FPPass</a></td></tr>
-<tr class="separator:a48bcac37063f4509ea1db8c9411e3fa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaee1f52d697a2ef34af153b77588627"><td class="memTemplParams" colspan="2">template&lt;class P , class... Args&gt; </td></tr>
+<tr class="memitem:afaee1f52d697a2ef34af153b77588627"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassMan.html#afaee1f52d697a2ef34af153b77588627">run</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;<a class="el" href="classthorin_1_1PassMan.html#a845ba5d9f4f2e78fca3efd25f73fc454">world</a>, Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:afaee1f52d697a2ef34af153b77588627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Runs a single <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>.  <a href="classthorin_1_1PassMan.html#afaee1f52d697a2ef34af153b77588627">More...</a><br /></td></tr>
+<tr class="separator:afaee1f52d697a2ef34af153b77588627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >An optimizer that combines several optimizations in an optimal way. </p>
@@ -200,7 +205,7 @@ template&lt;class P , class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00130">130</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="optimize_8cpp_source.html#l00022">thorin::optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="optimize_8cpp_source.html#l00019">thorin::optimize()</a>, and <a class="el" href="pass_8h_source.html#l00140">run()</a>.</p>
 
 </div>
 </div>
@@ -229,7 +234,7 @@ template&lt;class P , class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00121">121</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00226">thorin::RWPass&lt; N &gt;::curr_nom()</a>, and <a class="el" href="pass_8h_source.html#l00219">thorin::RWPass&lt; N &gt;::inspect()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00234">thorin::RWPass&lt; N &gt;::curr_nom()</a>, and <a class="el" href="pass_8h_source.html#l00227">thorin::RWPass&lt; N &gt;::inspect()</a>.</p>
 
 </div>
 </div>
@@ -290,7 +295,7 @@ template&lt;class P , class... Args&gt; </div>
 </div>
 </div>
 <a id="ae2a34b331418abd402ef465c2be3120c" name="ae2a34b331418abd402ef465c2be3120c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2a34b331418abd402ef465c2be3120c">&#9670;&nbsp;</a></span>run()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2a34b331418abd402ef465c2be3120c">&#9670;&nbsp;</a></span>run() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -308,9 +313,53 @@ template&lt;class P , class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="pass_8cpp_source.html#l00040">40</a> of file <a class="el" href="pass_8cpp_source.html">pass.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00058">thorin::cleanup()</a>, <a class="el" href="stream_8cpp_source.html#l00288">thorin::World::debug_stream()</a>, <a class="el" href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">thorin::e</a>, <a class="el" href="def_8cpp_source.html#l00147">thorin::Def::extended_ops()</a>, <a class="el" href="def_8h_source.html#l00200">thorin::Def::is_unset()</a>, <a class="el" href="pass_8h_source.html#l00012">thorin::No_Undo</a>, <a class="el" href="def_8h_source.html#l00180">thorin::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00179">thorin::Def::op()</a>, <a class="el" href="pass_8h_source.html#l00119">passes()</a>, <a class="el" href="container_8h_source.html#l00010">thorin::pop()</a>, <a class="el" href="def_8cpp_source.html#l00272">thorin::Def::set()</a>, and <a class="el" href="pass_8h_source.html#l00118">world()</a>.</p>
+<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00058">thorin::cleanup()</a>, <a class="el" href="stream_8cpp_source.html#l00288">thorin::World::debug_stream()</a>, <a class="el" href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">thorin::e</a>, <a class="el" href="def_8cpp_source.html#l00147">thorin::Def::extended_ops()</a>, <a class="el" href="def_8h_source.html#l00199">thorin::Def::is_unset()</a>, <a class="el" href="pass_8h_source.html#l00012">thorin::No_Undo</a>, <a class="el" href="def_8h_source.html#l00179">thorin::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00178">thorin::Def::op()</a>, <a class="el" href="pass_8h_source.html#l00119">passes()</a>, <a class="el" href="container_8h_source.html#l00010">thorin::pop()</a>, <a class="el" href="def_8cpp_source.html#l00272">thorin::Def::set()</a>, and <a class="el" href="pass_8h_source.html#l00118">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="optimize_8cpp_source.html#l00022">thorin::optimize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="optimize_8cpp_source.html#l00019">thorin::optimize()</a>, and <a class="el" href="pass_8h_source.html#l00140">run()</a>.</p>
+
+</div>
+</div>
+<a id="afaee1f52d697a2ef34af153b77588627" name="afaee1f52d697a2ef34af153b77588627"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaee1f52d697a2ef34af153b77588627">&#9670;&nbsp;</a></span>run() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class P , class... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void thorin::PassMan::run </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Runs a single <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>. </p>
+
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00140">140</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00130">add()</a>, <a class="el" href="pass_8cpp_source.html#l00040">run()</a>, and <a class="el" href="pass_8h_source.html#l00118">world()</a>.</p>
 
 </div>
 </div>
@@ -339,7 +388,7 @@ template&lt;class P , class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00118">118</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8cpp_source.html#l00040">run()</a>, and <a class="el" href="pass_8h_source.html#l00295">thorin::Pass::world()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8cpp_source.html#l00040">run()</a>, and <a class="el" href="pass_8h_source.html#l00303">thorin::Pass::world()</a>.</p>
 
 </div>
 </div>
@@ -366,7 +415,7 @@ template&lt;class P , class N &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00209">209</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00217">217</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>

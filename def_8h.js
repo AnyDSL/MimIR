@@ -11,7 +11,6 @@ var def_8h =
     [ "thorin::Space", "classthorin_1_1Space.html", "classthorin_1_1Space" ],
     [ "thorin::Kind", "classthorin_1_1Kind.html", "classthorin_1_1Kind" ],
     [ "thorin::Lit", "classthorin_1_1Lit.html", "classthorin_1_1Lit" ],
-    [ "thorin::Tracker", "classthorin_1_1Tracker.html", "classthorin_1_1Tracker" ],
     [ "thorin::Nat", "classthorin_1_1Nat.html", "classthorin_1_1Nat" ],
     [ "thorin::Proxy", "classthorin_1_1Proxy.html", "classthorin_1_1Proxy" ],
     [ "thorin::Global", "classthorin_1_1Global.html", "classthorin_1_1Global" ],

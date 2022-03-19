@@ -6,6 +6,10 @@ var dir_bedb7d08736b40aaace21d5514fd3ecc =
     ] ],
     [ "bound_elim.cpp", "bound__elim_8cpp.html", null ],
     [ "bound_elim.h", "bound__elim_8h.html", null ],
+    [ "lam_spec.cpp", "lam__spec_8cpp.html", "lam__spec_8cpp" ],
+    [ "lam_spec.h", "lam__spec_8h.html", [
+      [ "thorin::LamSpec", "classthorin_1_1LamSpec.html", "classthorin_1_1LamSpec" ]
+    ] ],
     [ "lower_for.cpp", "lower__for_8cpp.html", null ],
     [ "lower_for.h", "lower__for_8h.html", [
       [ "thorin::LowerFor", "classthorin_1_1LowerFor.html", "classthorin_1_1LowerFor" ]

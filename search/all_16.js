@@ -15,10 +15,9 @@ var searchData=
   ['vel_12',['Vel',['../namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8ba8488f8c3464a90aa07238d6ae0bce35d',1,'thorin::Node']]],
   ['verbose_13',['Verbose',['../namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf',1,'thorin']]],
   ['verify_14',['verify',['../classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#afb98ff6fb4aa7397e0d8d79bfd99ab88',1,'thorin::detail::HashTable::iterator_base::verify(iterator_base i) const'],['../classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#ac57100b630025ef6db5dc40908d3658a',1,'thorin::detail::HashTable::iterator_base::verify() const']]],
-  ['verify_5fclosedness_15',['verify_closedness',['../classthorin_1_1Cleaner.html#a9017c341eaab39dd490750f69f35cbb0',1,'thorin::Cleaner']]],
-  ['version_16',['version',['../main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec',1,'main.cpp']]],
-  ['visit_17',['visit',['../classthorin_1_1World.html#a35687817089d85315d46a391dd75e320',1,'thorin::World::visit()'],['../namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c',1,'thorin::visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)']]],
-  ['visit_5ffirst_18',['visit_first',['../namespacethorin.html#a02f88714441141b4cafcf80c5e49f554',1,'thorin']]],
-  ['visitfn_19',['VisitFn',['../classthorin_1_1World.html#af4e2bf1374dd2af475980465c654b903',1,'thorin::World']]],
-  ['vlog_20',['VLOG',['../world_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'world.h']]]
+  ['version_15',['version',['../main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec',1,'main.cpp']]],
+  ['visit_16',['visit',['../classthorin_1_1World.html#a35687817089d85315d46a391dd75e320',1,'thorin::World::visit()'],['../namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c',1,'thorin::visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)']]],
+  ['visit_5ffirst_17',['visit_first',['../namespacethorin.html#a02f88714441141b4cafcf80c5e49f554',1,'thorin']]],
+  ['visitfn_18',['VisitFn',['../classthorin_1_1World.html#af4e2bf1374dd2af475980465c654b903',1,'thorin::World']]],
+  ['vlog_19',['VLOG',['../world_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'world.h']]]
 ];
