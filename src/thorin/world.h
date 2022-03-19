@@ -324,11 +324,10 @@ public:
 
     /// @name globals -- depdrecated; will be removed
     ///@{
-    const Def* global(const Def* id, const Def* init, bool is_mutable = true, const Def* dbg = {});
-    const Def* global(const Def* init, bool is_mutable = true, const Def* dbg = {}) {
-        return global(lit_nat(state_.curr_gid), init, is_mutable, dbg);
+    Global* global(const Def* type, bool is_mutable = true, const Def* dbg = {}) {
+        return insert<Global>(1, type, is_mutable, dbg);
     }
-    const Def* global_immutable_string(std::string_view str, const Def* dbg = {});
+    Global* global_immutable_string(std::string_view str, const Def* dbg = {});
     ///@}
 
     /// @name types

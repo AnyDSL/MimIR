@@ -24,11 +24,13 @@ Scope::~Scope() {}
 
 void Scope::run() {
     unique_queue<DefSet&> queue(bound_);
-    queue.push(entry_->var());
+    if (entry_->has_var()) {
+        queue.push(entry_->var());
 
-    while (!queue.empty()) {
-        for (auto use : queue.pop()->uses()) {
-            if (use != entry_ && use != exit_) queue.push(use);
+        while (!queue.empty()) {
+            for (auto use : queue.pop()->uses()) {
+                if (use != entry_ && use != exit_) queue.push(use);
+            }
         }
     }
 }

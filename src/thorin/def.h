@@ -613,20 +613,20 @@ public:
     friend class World;
 };
 
-/// A global variable in the data segment.
+/// @deprecated A global variable in the data segment.
 /// A Global may be mutable or immutable.
-/// **Deprecated**. WILL BE REMOVED
+/// @attention WILL BE REMOVED.
 class Global : public Def {
 private:
-    Global(const Def* type, const Def* id, const Def* init, bool is_mutable, const Def* dbg)
-        : Def(Node, type, {id, init}, is_mutable, dbg) {}
+    Global(const Def* type, bool is_mutable, const Def* dbg)
+        : Def(Node, type, 1, is_mutable, dbg) {}
 
 public:
     /// @name ops
     ///@{
     /// This thing's sole purpose is to differentiate on global from another.
-    const Def* id() const { return op(0); }
-    const Def* init() const { return op(1); }
+    const Def* init() const { return op(0); }
+    void set(const Def* init) { Def::set(0, init); }
     ///@}
 
     /// @name type
@@ -642,7 +642,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World& to, const Def* type, Defs ops, const Def*) const override;
+    Global* stub(World&, const Def*, const Def*) override;
     ///@}
 
     static constexpr auto Node = Node::Global;

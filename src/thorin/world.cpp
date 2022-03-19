@@ -523,18 +523,17 @@ const Lit* World::lit_int(const Def* type, u64 i, const Def* dbg) {
     return l;
 }
 
-const Def* World::global(const Def* id, const Def* init, bool is_mutable, const Def* dbg) {
-    return unify<Global>(2, type_ptr(init->type()), id, init, is_mutable, dbg);
-}
-
-const Def* World::global_immutable_string(std::string_view str, const Def* dbg) {
+Global* World::global_immutable_string(std::string_view str, const Def* dbg) {
     size_t size = str.size() + 1;
 
     DefArray str_array(size);
     for (size_t i = 0; i != size - 1; ++i) str_array[i] = lit_nat(str[i], dbg);
     str_array.back() = lit_nat('\0', dbg);
+    auto s = tuple(str_array, dbg);
 
-    return global(tuple(str_array, dbg), false, dbg);
+    auto glob = global(type_ptr(s->type()), false, dbg);
+    glob->set(s);
+    return glob;
 }
 
 /*
