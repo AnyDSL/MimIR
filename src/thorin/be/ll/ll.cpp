@@ -716,7 +716,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto value = emit(insert->value());
         auto tup_t = convert(insert->tuple()->type());
         auto val_t = convert(insert->value()->type());
-        return bb.assign(name, "insertvalue {} {}, {}, {}", tup_t, tuple, val_t, value, index);
+        return bb.assign(name, "insertvalue {} {}, {} {}, {}", tup_t, tuple, val_t, value, index);
     } else if (auto global = def->isa<Global>()) {
         auto init                  = emit(global->init());
         auto [pointee, addr_space] = as<Tag::Ptr>(global->type())->args<2>();
