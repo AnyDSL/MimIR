@@ -17,13 +17,9 @@
 namespace thorin {
 
 void optimize(World& world) {
-    {
-        PassMan s(world);
-        auto er = s.add<EtaRed>();
-        auto ee = s.add<EtaExp>(er);
-        s.add<Scalerize>(ee);
-        s.run();
-    }
+    PassMan::run<Scalerize>(world, nullptr);
+    PassMan::run<EtaRed>(world);
+    PassMan::run<TailRecElim>(world, nullptr);
 
     PassMan opt(world);
     opt.add<PartialEval>();
@@ -34,7 +30,7 @@ void optimize(World& world) {
     opt.add<Scalerize>(ee);
     opt.add<CopyProp>(br, ee);
     opt.add<TailRecElim>(er);
-    //opt.add<LamSpec>();
+    opt.add<LamSpec>();
     opt.run();
 
     PassMan codgen_prepare(world);
