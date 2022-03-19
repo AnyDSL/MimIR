@@ -184,6 +184,8 @@ var NAVTREEINDEX11 =
 "md__github_workspace_docs_coding.html#autotoc_md29":[5,1,0],
 "md__github_workspace_docs_coding.html#autotoc_md30":[5,1,1],
 "md__github_workspace_docs_coding.html#autotoc_md31":[5,1,2],
+"md__github_workspace_docs_coding.html#autotoc_md32":[5,1,3],
+"md__github_workspace_docs_coding.html#autotoc_md33":[5,1,4],
 "md__github_workspace_docs_dev.html":[3],
 "md__github_workspace_docs_dev.html#autotoc_md10":[3,0],
 "md__github_workspace_docs_dev.html#autotoc_md11":[3,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "namespacethorin.html#a0c9aa9c890f64ffc1d214f34e0f122b6":[6,0,0,418],
 "namespacethorin.html#a0f354f300565433d3e4302eca39d95d4":[6,0,0,336],
 "namespacethorin.html#a0ff05ea830ab281bb1893bd81f023423":[6,0,0,367],
-"namespacethorin.html#a10a4048d7bc36053f84f2811a43999c6":[6,0,0,355],
-"namespacethorin.html#a1146751cff4360b9409462e9ab5c1294":[9,0,2,5,13,12,0],
-"namespacethorin.html#a11d9f60317a743a4384f429a270db9de":[6,0,0,332]
+"namespacethorin.html#a10a4048d7bc36053f84f2811a43999c6":[6,0,0,355]
 };
