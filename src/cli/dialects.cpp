@@ -5,12 +5,14 @@
 #include <filesystem>
 #include <memory>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 #include "thorin/config.h"
 #include "thorin/world.h"
 
 #include "thorin/pass/pass.h"
+#include "thorin/pass/pipelinebuilder.h"
 
 #ifdef _WIN32
 #    include <windows.h>
@@ -153,8 +155,46 @@ void close_library(void* handle) {
 #endif
 }
 
-void test_plugin(const std::string& name, const std::vector<std::string>& search_paths) {
+// todo: remove me again:
+namespace thorin {
+void test_world(World& w) {
+    auto mem_t  = w.type_mem();
+    auto i32_t  = w.type_int_width(32);
+    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
+
+    // Cn [mem, i32, Cn [mem, i32]]
+    auto main_t                 = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
+    auto main                   = w.nom_lam(main_t, w.dbg("main"));
+    auto [mem, argc, argv, ret] = main->vars<4>();
+    main->app(false, ret, {mem, argc});
+    main->make_external();
+}
+
+void test_plugin(Dialect& dialect) {
+    World world;
+    test_world(world);
+    PipelineBuilder builder{};
+    dialect.register_passes(builder);
+
+    auto man = builder.opt_phase(world);
+    for (auto& pass : man.passes()) std::cout << "pass: " << pass->name() << std::endl;
+    man.run();
+}
+} // namespace thorin
+
+Dialect::Dialect(const std::string& plugin_path, std::unique_ptr<void, decltype(&close_library)>&& handle)
+    : plugin_path_(plugin_path)
+    , handle_(std::move(handle)) {
+    auto get_info = reinterpret_cast<decltype(&thorin_get_dialect_info)>(
+        get_symbol_from_library(this->handle(), "thorin_get_dialect_info"));
+
+    if (!get_info) throw std::runtime_error{"dialect plugin has no thorin_get_dialect_info()"};
+    info_ = get_info();
+}
+
+Dialect Dialect::load_dialect_library(const std::string& name, const std::vector<std::string>& search_paths) {
     std::unique_ptr<void, decltype(&close_library)> handle{nullptr, close_library};
+    std::string plugin_path = name;
     if (auto path = std::filesystem::path{name}; path.is_absolute() && std::filesystem::is_regular_file(path))
         handle.reset(load_library(name));
     if (!handle) {
@@ -163,6 +203,8 @@ void test_plugin(const std::string& name, const std::vector<std::string>& search
         for (const auto& path : paths) {
             for (const auto& name_variant : name_variants) {
                 auto full_path = path / name_variant;
+                plugin_path    = full_path;
+
                 std::error_code ignore;
                 if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore)
                     if (handle.reset(load_library(full_path.string())); handle) break;
@@ -173,13 +215,5 @@ void test_plugin(const std::string& name, const std::vector<std::string>& search
 
     if (!handle) throw std::runtime_error("cannot open plugin");
 
-    auto create  = (CreateIPass)get_symbol_from_library(handle.get(), "create");
-    auto destroy = (DestroyIPass)get_symbol_from_library(handle.get(), "destroy");
-
-    if (!create || !destroy) throw std::runtime_error("cannot find symbol");
-
-    World world;
-    PassMan man(world);
-    std::unique_ptr<IPass, DestroyIPass> pass{create(man), destroy};
-    outln("hi from: '{}'", pass->name());
+    return Dialect{plugin_path, std::move(handle)};
 }

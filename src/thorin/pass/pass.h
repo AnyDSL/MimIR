@@ -31,9 +31,6 @@ private:
     size_t index_;
 };
 
-using CreateIPass  = IPass* (*)(PassMan&);
-using DestroyIPass = void (*)(IPass*);
-
 /// All Passes that want to be registered in the PassMan must implement this interface.
 /// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
 /// * Inherit from FPPass if you **do** need state and a fixed-point.

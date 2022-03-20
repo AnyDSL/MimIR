@@ -11,6 +11,7 @@
 #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/pass.h"
+#include "thorin/pass/pipelinebuilder.h"
 #include "thorin/util/stream.h"
 
 #ifdef _WIN32
@@ -21,6 +22,10 @@
 #    include <dlfcn.h>
 #endif
 
+// Todo: cleanup
+namespace thorin {
+void test_world(World& w);
+}
 using namespace thorin;
 
 static const auto version = "thorin command-line utility version " THORIN_VER "\n";
@@ -51,7 +56,7 @@ int main(int argc, char** argv) {
     std::string file;
     bool emit_llvm = false;
     bool show_help = false;
-    std::vector<std::string> dialects, dialect_search_paths;
+    std::vector<std::string> dialect_names, dialect_search_paths;
 
     auto print_version = [](bool) {
         std::cerr << version;
@@ -62,7 +67,7 @@ int main(int argc, char** argv) {
                lyra::opt(clang, "clang")["-c"]["--clang"]("path to clang executable (default: {})") |
                lyra::opt(emit_llvm)["-l"]["--emit-llvm"]("emit LLVM") |
                lyra::opt(print_version)["-v"]["--version"]("display version info and exit") |
-               lyra::opt(dialects, "dialect")["-d"]["--dialect"]("dynamically load dialect [WIP]") |
+               lyra::opt(dialect_names, "dialect")["-d"]["--dialect"]("dynamically load dialect [WIP]") |
                lyra::opt(dialect_search_paths, "path")["-D"]["--dialect-search-path"]("path to search dialects in") |
                lyra::arg(file, "input file")("The input file. Use '-' to read from stdin.");
     auto result = cli.parse({argc, argv});
@@ -74,9 +79,11 @@ int main(int argc, char** argv) {
     if (show_help) std::cerr << cli << "\n";
 
     try {
-        if (!dialects.empty()) {
-            for (const auto& dialect : dialects) { test_plugin(dialect, dialect_search_paths); }
-            return EXIT_SUCCESS;
+        std::vector<Dialect> dialects;
+        if (!dialect_names.empty()) {
+            for (const auto& dialect : dialect_names) {
+                dialects.push_back(Dialect::load_dialect_library(dialect, dialect_search_paths));
+            }
         }
 
         if (file.empty()) throw std::logic_error("no input file given");
@@ -94,7 +101,6 @@ int main(int argc, char** argv) {
             Parser parser(world, file, ifs);
             // exp = parser.parse_prg();
         }
-
         // if (num_errors != 0) {
         // std::cerr << num_errors << " error(s) encountered" << std::endl;
         // return EXIT_FAILURE;
@@ -102,6 +108,11 @@ int main(int argc, char** argv) {
 
         // if (eval) exp = exp->eval();
         // exp->dump();
+        test_world(world);
+        PipelineBuilder builder;
+        for (const auto& dialect : dialects) { dialect.register_passes(builder); }
+        auto opt = builder.opt_phase(world);
+        opt.run();
 
         if (emit_llvm) {
             std::ofstream of("test.ll");
