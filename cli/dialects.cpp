@@ -36,8 +36,7 @@ std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std
     std::ranges::transform(paths, paths.begin(), [&](auto path) { return path.is_relative() ? cwd / path : path; });
 
     // add path/to/thorin.exe/../../lib
-    if(auto path = dl::get_path_to_current_executable())
-        paths.emplace_back(*path);
+    if (auto path = dl::get_path_to_current_executable()) paths.emplace_back(*path);
 
     // add default install path
     const auto install_prefixed_path = std::filesystem::path{THORIN_INSTALL_PREFIX} / "lib";
@@ -61,16 +60,57 @@ std::vector<std::filesystem::path> get_plugin_name_variants(std::string_view nam
     return names;
 }
 
-void test_plugin(const std::string& name, const std::vector<std::string>& search_paths) {
+} // namespace thorin::cli
+
+// todo: remove me again:
+namespace thorin {
+void test_world(World& w) {
+    auto mem_t  = w.type_mem();
+    auto i32_t  = w.type_int_width(32);
+    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
+
+    // Cn [mem, i32, Cn [mem, i32]]
+    auto main_t                 = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
+    auto main                   = w.nom_lam(main_t, w.dbg("main"));
+    auto [mem, argc, argv, ret] = main->vars<4>();
+    main->app(false, ret, {mem, argc});
+    main->make_external();
+}
+
+void test_plugin(Dialect& dialect) {
+    World world;
+    test_world(world);
+    PipelineBuilder builder{};
+    dialect.register_passes(builder);
+
+    auto man = builder.opt_phase(world);
+    for (auto& pass : man.passes()) std::cout << "pass: " << pass->name() << std::endl;
+    man.run();
+}
+
+Dialect::Dialect(const std::string& plugin_path, std::unique_ptr<void, decltype(&dl::close)>&& handle)
+    : plugin_path_(plugin_path)
+    , handle_(std::move(handle)) {
+    auto get_info =
+        reinterpret_cast<decltype(&thorin_get_dialect_info)>(dl::get(this->handle(), "thorin_get_dialect_info"));
+
+    if (!get_info) throw std::runtime_error{"dialect plugin has no thorin_get_dialect_info()"};
+    info_ = get_info();
+}
+
+Dialect Dialect::load_dialect_library(const std::string& name, const std::vector<std::string>& search_paths) {
     std::unique_ptr<void, decltype(&dl::close)> handle{nullptr, dl::close};
+    std::string plugin_path = name;
     if (auto path = std::filesystem::path{name}; path.is_absolute() && std::filesystem::is_regular_file(path))
         handle.reset(dl::open(name));
     if (!handle) {
-        auto paths         = get_plugin_search_paths(search_paths);
-        auto name_variants = get_plugin_name_variants(name);
+        auto paths         = cli::get_plugin_search_paths(search_paths);
+        auto name_variants = cli::get_plugin_name_variants(name);
         for (const auto& path : paths) {
             for (const auto& name_variant : name_variants) {
                 auto full_path = path / name_variant;
+                plugin_path    = full_path.string();
+
                 std::error_code ignore;
                 if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore)
                     if (handle.reset(dl::open(full_path.string())); handle) break;
@@ -79,17 +119,8 @@ void test_plugin(const std::string& name, const std::vector<std::string>& search
         }
     }
 
-    if (!handle) throw std::runtime_error("error: cannot open plugin");
+    if (!handle) throw std::runtime_error("cannot open plugin");
 
-    auto create  = (CreateIPass)dl::get(handle.get(), "create");
-    auto destroy = (DestroyIPass)dl::get(handle.get(), "destroy");
-
-    if (!create || !destroy) throw std::runtime_error("error: cannot find symbol");
-
-    World world;
-    PassMan man(world);
-    std::unique_ptr<IPass, DestroyIPass> pass{create(man), destroy};
-    outln("hi from: '{}'", pass->name());
+    return Dialect{plugin_path, std::move(handle)};
 }
-
-} // namespace thorin::cli
+} // namespace thorin

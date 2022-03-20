@@ -52,6 +52,8 @@ add_library(libthorin
     fe/tok.h
     pass/optimize.cpp
     pass/pass.cpp
+    pass/pipelinebuilder.cpp
+    pass/pipelinebuilder.h
     pass/fp/eta_exp.cpp
     pass/fp/eta_exp.h
     pass/fp/eta_red.cpp
