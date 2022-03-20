@@ -12,6 +12,12 @@ namespace thorin {
 #define dlog(world,...) world.DLOG(__VA_ARGS__)
 #define type_dump(world,name,d) world.DLOG("{} {} : {}",name,d,d->type())
 
+bool isFatPtrType(World& world_,const Def* type);
+
+static const Def* to_fat_ptr(World& world, const Def* ptr, const Def* size){
+    auto int_size=world.op_bitcast(world.type_int_width(64),size);
+    auto dst_fat_ptr=world.tuple({int_size, ptr});
+}
 
 size_t getDim(const Def* def) {
     // TODO: test def, idef, tuple
@@ -33,6 +39,33 @@ size_t getDim(const Def* def) {
 // we only need a multidimensional addition
 std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def* a, const Def* b) {
     dlog(world,"add {}:{} + {}:{}",a,a->type(),b,b->type());
+
+#define w world
+    if(isFatPtrType(world,a->type()) && isFatPtrType(world,b->type())){
+
+        auto [size_a , fat_ptr_a] = a->projs<2>();
+        auto [size_b , fat_ptr_b] = b->projs<2>();
+
+        auto arr_size_nat = world.op_bitcast(world.type_nat(),size_b);
+
+        auto [mem2,arr_a] = world.op_load(mem,fat_ptr_a)->projs<2>();
+        auto [mem3,arr_b] = world.op_load(mem2,fat_ptr_b)->projs<2>();
+
+        auto body_type = world.type_real(32);
+
+        nat_t bit_width = as_lit(as<Tag::Real>(body_type)->arg());
+
+        auto lifted=w.app(w.app(w.app(w.ax_zip(),
+                                {w.lit_nat(1), arr_size_nat}),
+                                {w.lit_nat(2),w.tuple({body_type,body_type}),
+                                 w.lit_nat(1), body_type,
+                                 w.fn(ROp::add, (nat_t)0, bit_width)
+                                }),
+                          world.tuple({arr_a,arr_b}));
+
+        auto result_fat_ptr = to_fat_ptr(world, lifted, size_b);
+        return {mem3, result_fat_ptr};
+    }
 
     if (auto aptr = isa<Tag::Ptr>(a->type())) {
         auto [ty,addr_space] = aptr->arg()->projs<2>();
@@ -70,7 +103,6 @@ std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def
 
         type_dump(world,"  Array Body", body_type);
         dlog(world,"  Bit width {}", bit_width);
-        #define w world
         auto lifted=w.app(w.app(w.app(w.ax_zip(),
                         // rs => sigma(r:nat, s:arr with size r of nat)
                         // r = how many dimensions in the array
@@ -173,6 +205,7 @@ std::pair<const Def*,const Def*> lit_of_type(World& world, const Def* mem, const
         type_dump(world,"init pack",init); // trick for zero init
         auto mem4=world.op_store(mem3,ptr_arr,init);
         auto fat_ptr_arr = world.tuple({arr_size,ptr_arr});
+
         type_dump(world,"fat ptr arr",fat_ptr_arr);
         return {mem4,fat_ptr_arr};
     }
@@ -348,6 +381,7 @@ private:
     const Def* chain(const Def* a, const Def* b);
     const Pi* createPbType(const Def* A, const Def* B);
     const Def* extract_pb(const Def* j_extract, const Def* tuple);
+
 
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
@@ -1128,8 +1162,6 @@ const Def* AutoDiffer::zero_pb(const Def* type, const Def* dbg) {
 //    THORIN_UNREACHABLE;
     return zeropb;
 }
-
-
 
 
 // implement differentiation for each expression
