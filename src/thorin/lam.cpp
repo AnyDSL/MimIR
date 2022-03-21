@@ -8,14 +8,6 @@ namespace thorin {
  * Pi
  */
 
-bool Pi::is_basicblock() const {
-    return is_cn() && !ret_pi();
-}
-
-bool Pi::is_returning() const {
-    return is_cn() && ret_pi();
-}
-
 const Pi* Pi::ret_pi(const Def* dbg) const {
     if (num_doms() > 0) {
         auto ret = dom(num_doms() - 1, dbg);
@@ -26,7 +18,6 @@ const Pi* Pi::ret_pi(const Def* dbg) const {
 }
 
 Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); }
-
 bool Pi::is_cn() const { return codom()->isa<Bot>(); }
 
 /*
@@ -35,8 +26,6 @@ bool Pi::is_cn() const { return codom()->isa<Bot>(); }
 
 const Def* Lam::mem_var(const Def* dbg) { return thorin::isa<Tag::Mem>(var(0_s)->type()) ? var(0, dbg) : nullptr; }
 const Def* Lam::ret_var(const Def* dbg) { return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr; }
-bool Lam::is_basicblock() const { return type()->is_basicblock(); }
-bool Lam::is_returning() const { return type()->is_returning(); }
 
 Lam* Lam::set_filter(Filter filter) {
     const Def* f;

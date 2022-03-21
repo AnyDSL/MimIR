@@ -134,6 +134,14 @@ public:
         passes_.emplace_back(std::move(p));
         return res;
     }
+
+    /// Runs a single Pass.
+    template<class P, class... Args>
+    static void run(World& world, Args&&... args) {
+        PassMan man(world);
+        man.add<P>(std::forward<Args>(args)...);
+        man.run();
+    }
     ///@}
 
 private:

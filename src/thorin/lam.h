@@ -25,8 +25,8 @@ public:
     THORIN_PROJ(dom, const)
     THORIN_PROJ(codom, const)
     bool is_cn() const;
-    bool is_basicblock() const;
-    bool is_returning() const;
+    bool is_basicblock() const { return is_cn() && !ret_pi(); }
+    bool is_returning() const { return is_cn() && ret_pi(); }
     const Pi* ret_pi(const Def* dbg = {}) const;
     ///@}
 
@@ -66,6 +66,8 @@ public:
     /// @name type
     ///@{
     const Pi* type() const { return Def::type()->as<Pi>(); }
+    bool is_basicblock() const { return type()->is_basicblock(); }
+    bool is_returning() const { return type()->is_returning(); }
     const Def* dom() const { return type()->dom(); }
     const Def* codom() const { return type()->codom(); }
     const Pi* ret_pi() const { return type()->ret_pi(); }
@@ -128,9 +130,6 @@ public:
     void set_cc(CC cc) { fields_ = u64(cc); }
     ///@}
 
-    bool is_basicblock() const;
-    bool is_returning() const;
-
     static constexpr auto Node = Node::Lam;
     friend class World;
 };
@@ -187,9 +186,6 @@ inline std::pair<const App*, Lam*> isa_apped_nom_lam(const Def* def) {
     if (auto app = def->isa<App>()) return {app, app->callee()->isa_nom<Lam>()};
     return {nullptr, nullptr};
 }
-
-// TODO remove - deprecated
-Lam* get_var_lam(const Def* def);
 
 } // namespace thorin
 

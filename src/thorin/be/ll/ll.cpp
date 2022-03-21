@@ -157,7 +157,7 @@ std::string CodeGen::convert(const Def* type) {
         s.fmt("{} (", convert_ret_pi(pi->ret_pi()));
 
         std::string_view sep = "";
-        auto doms = pi->doms();
+        auto doms            = pi->doms();
         for (auto dom : doms.skip_back()) {
             if (isa<Tag::Mem>(dom)) continue;
             s << sep << convert(dom);
@@ -763,7 +763,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto value = emit(insert->value());
         auto tup_t = convert(insert->tuple()->type());
         auto val_t = convert(insert->value()->type());
-        return bb.assign(name, "insertvalue {} {}, {}, {}", tup_t, tuple, val_t, value, index);
+        return bb.assign(name, "insertvalue {} {}, {} {}, {}", tup_t, tuple, val_t, value, index);
     } else if (auto global = def->isa<Global>()) {
         auto init                  = emit(global->init());
         auto [pointee, addr_space] = as<Tag::Ptr>(global->type())->args<2>();
@@ -771,7 +771,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return globals_[global] = name;
     }
 
-    return "<TODO>";
+    assert(false && "not yet implemented");
 }
 
 void emit(World& world, Stream& stream) {

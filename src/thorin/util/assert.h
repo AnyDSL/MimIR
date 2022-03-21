@@ -5,13 +5,21 @@
 
 namespace thorin {
 
+// TODO output s in Debug build
+
 // see https://stackoverflow.com/a/65258501
 #ifdef __GNUC__ // GCC 4.8+, Clang, Intel and other compilers compatible with GCC (-std=c++0x or above)
-[[noreturn]] inline __attribute__((always_inline)) void unreachable(const char* = {}) { __builtin_unreachable(); }
+[[noreturn]] inline __attribute__((always_inline)) void unreachable([[maybe_unused]] const char* s = {}) {
+    assert(false && s);
+    __builtin_unreachable();
+}
 #elif defined(_MSC_VER) // MSVC
-[[noreturn]] __forceinline void unreachable(const char* = {}) { __assume(false); }
+[[noreturn]] __forceinline void unreachable([[maybe_unused]] const char* s = {}) {
+    assert(false && s);
+    __assume(false);
+}
 #else                   // ???
-inline void unreachable() {}
+inline void unreachable([[maybe_unused]] const char* s) { assert(false && s); }
 #endif
 
 #if (defined(__clang__) || defined(__GNUC__)) && (defined(__x86_64__) || defined(__i386__))

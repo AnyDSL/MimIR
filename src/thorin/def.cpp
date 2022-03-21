@@ -21,7 +21,6 @@ Def::Def(node_t node, const Def* type, Defs ops, fields_t fields, const Def* dbg
     , var_(false)
     , dep_(Dep::Bot)
     , proxy_(0)
-    , order_(0)
     , num_ops_(ops.size())
     , dbg_(dbg)
     , type_(type) {
@@ -46,7 +45,6 @@ Def::Def(node_t node, const Def* type, size_t num_ops, fields_t fields, const De
     , var_(false)
     , dep_(Dep::Nom)
     , proxy_(0)
-    , order_(0)
     , num_ops_(num_ops)
     , dbg_(dbg)
     , type_(type) {
@@ -72,7 +70,6 @@ const Def* App    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) cons
 const Def* Arr    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.arr(o[0], o[1], dbg); }
 const Def* Et     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.et(t, o, dbg); }
 const Def* Extract::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.extract_(t, o[0], o[1], dbg); }
-const Def* Global ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.global(o[0], o[1], is_mutable(), dbg); }
 const Def* Insert ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.insert(o[0], o[1], o[2], dbg); }
 const Def* Kind   ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.kind(); }
 const Def* Lam    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.lam(t->as<Pi>(), o[0], o[1], dbg); }
@@ -102,10 +99,11 @@ template<bool up> const Def* TBound<up>::rebuild(World& w, const Def*  , Defs o,
  * stub
  */
 
-Lam*   Lam  ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_lam  (t->as<Pi>(), cc(), dbg); }
-Pi*    Pi   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pi   (t, dbg); }
-Sigma* Sigma::stub(World& w, const Def* t, const Def* dbg) { return w.nom_sigma(t, num_ops(), dbg); }
-Arr*   Arr  ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_arr  (t, shape(), dbg); }
+Lam*    Lam   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_lam  (t->as<Pi>(), cc(), dbg); }
+Pi*     Pi    ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pi   (t, dbg); }
+Sigma*  Sigma ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_sigma(t, num_ops(), dbg); }
+Arr*    Arr   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_arr  (t, shape(), dbg); }
+Global* Global::stub(World& w, const Def* t, const Def* dbg) { return w.global(t, is_mutable(), dbg); }
 
 // clang-format on
 
@@ -244,7 +242,6 @@ void Def::finalize() {
             const auto& p = op(i)->uses_.emplace(this, i);
             assert_unused(p.second);
         }
-        order_ = std::max(order_, op(i)->order_);
     }
 
     if (!isa<Space>() && !isa<Axiom>()) {
@@ -256,7 +253,6 @@ void Def::finalize() {
     }
 
     assert(!dbg() || dbg()->no_dep());
-    if (isa<Pi>()) ++order_;
     if (auto var = isa<Var>()) {
         var->nom()->var_ = true;
         dep_             = Dep::Var;
@@ -276,7 +272,6 @@ Def* Def::set(size_t i, const Def* def) {
     if (def != nullptr) {
         assert(i < num_ops() && "index out of bounds");
         ops_ptr()[i]  = def;
-        order_        = std::max(order_, def->order_);
         const auto& p = def->uses_.emplace(this, i);
         assert_unused(p.second);
     }
@@ -309,23 +304,6 @@ void Def::make_internal() { return world().make_internal(this); }
 bool Def::is_external() const { return world().is_external(this); }
 
 std::string Def::unique_name() const { return name() + "_" + std::to_string(gid()); }
-
-void Def::replace(Tracker with) const {
-    world().DLOG("replace: {} -> {}", this, with);
-    // assert(type() == with->type());
-    assert(!is_replaced());
-
-    if (this != with) {
-        for (auto& use : copy_uses()) {
-            auto def   = const_cast<Def*>(use.def());
-            auto index = use.index();
-            def->set(index, with);
-        }
-
-        uses_.clear();
-        substitute_ = with;
-    }
-}
 
 DefArray Def::reduce(const Def* arg) const {
     if (auto nom = isa_nom()) return nom->reduce(arg);

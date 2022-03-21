@@ -84,10 +84,7 @@ std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std
 
     // make user paths absolute paths.
     const auto cwd = std::filesystem::current_path();
-    std::transform(paths.begin(), paths.end(), paths.begin(), [&cwd](std::filesystem::path path) {
-        if (path.is_relative()) return cwd / path;
-        return path;
-    });
+    std::ranges::transform(paths, paths.begin(), [&](auto path) { return path.is_relative() ? cwd / path : path; });
 
     // add path/to/thorin.exe/../../lib
 #ifdef _WIN32

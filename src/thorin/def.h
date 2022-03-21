@@ -39,7 +39,6 @@ class Axiom;
 class Var;
 class Def;
 class Stream;
-class Tracker;
 class World;
 
 using Defs     = ArrayRef<const Def*>;
@@ -160,9 +159,6 @@ public:
     }
     Sort level() const;
     Sort sort() const;
-    unsigned order() const { /*TODO assertion*/
-        return order_;
-    }
     const Def* arity() const;
     ///@}
 
@@ -353,12 +349,6 @@ public:
     const Def* reduce_rec() const;
     ///@}
 
-    /// @name replace
-    ///@{
-    void replace(Tracker) const;
-    bool is_replaced() const { return substitute_ != nullptr; }
-    ///@}
-
     /// @name rebuild & friends
     ///@{
     virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
@@ -393,25 +383,22 @@ protected:
         TaggedPtr<const Axiom, u16> axiom_depth_;
     };
     fields_t fields_;
-    node_t node_;
-    unsigned nom_   : 1;
-    unsigned var_   : 1;
-    unsigned dep_   : 2;
-    unsigned proxy_ : 1;
-    unsigned order_ : 11;
+    uint8_t node_;
+    unsigned nom_    : 1;
+    unsigned var_    : 1;
+    unsigned dep_    : 2;
+    unsigned proxy_  : 1;
+    unsigned pading_ : 19;
     u32 gid_;
     u32 num_ops_;
     hash_t hash_;
     mutable Uses uses_;
-    mutable const Def* substitute_ = nullptr; // TODO remove this
     mutable const Def* dbg_;
     union {
         const Def* type_;
         mutable World* world_;
     };
 
-    friend class Cleaner;
-    friend class Tracker;
     friend class World;
     friend void swap(World&, World&);
 };
@@ -556,28 +543,6 @@ T as_lit(const Def* def) {
     return def->as<Lit>()->get<T>();
 }
 
-class Tracker {
-public:
-    Tracker()
-        : def_(nullptr) {}
-    Tracker(const Def* def)
-        : def_(def) {}
-
-    operator const Def*() const { return def(); }
-    const Def* operator->() const { return def(); }
-    const Def* def() const {
-        if (def_ != nullptr) {
-            while (auto repr = def_->substitute_) def_ = repr;
-        }
-        return def_;
-    }
-
-    std::ostream& operator<<(std::ostream& os) const { return os << def(); }
-
-private:
-    mutable const Def* def_;
-};
-
 class Nat : public Def {
 private:
     Nat(World& world);
@@ -613,20 +578,20 @@ public:
     friend class World;
 };
 
-/// A global variable in the data segment.
+/// @deprecated A global variable in the data segment.
 /// A Global may be mutable or immutable.
-/// **Deprecated**. WILL BE REMOVED
+/// @attention WILL BE REMOVED.
 class Global : public Def {
 private:
-    Global(const Def* type, const Def* id, const Def* init, bool is_mutable, const Def* dbg)
-        : Def(Node, type, {id, init}, is_mutable, dbg) {}
+    Global(const Def* type, bool is_mutable, const Def* dbg)
+        : Def(Node, type, 1, is_mutable, dbg) {}
 
 public:
     /// @name ops
     ///@{
     /// This thing's sole purpose is to differentiate on global from another.
-    const Def* id() const { return op(0); }
-    const Def* init() const { return op(1); }
+    const Def* init() const { return op(0); }
+    void set(const Def* init) { Def::set(0, init); }
     ///@}
 
     /// @name type
@@ -642,7 +607,7 @@ public:
 
     /// @name virtual methods
     ///@{
-    const Def* rebuild(World& to, const Def* type, Defs ops, const Def*) const override;
+    Global* stub(World&, const Def*, const Def*) override;
     ///@}
 
     static constexpr auto Node = Node::Global;

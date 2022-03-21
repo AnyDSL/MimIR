@@ -64,6 +64,8 @@ add_library(libthorin
     pass/fp/tail_rec_elim.h
     pass/rw/alloc2malloc.cpp
     pass/rw/alloc2malloc.h
+    pass/rw/lam_spec.cpp
+    pass/rw/lam_spec.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
     pass/rw/lower_for.cpp
@@ -82,12 +84,6 @@ add_library(libthorin
     pass/rw/clos_conv_prep.cpp
     pass/rw/clos2sjlj.h
     pass/rw/clos2sjlj.cpp
-    transform/cleanup_world.cpp
-    transform/cleanup_world.h
-    transform/mangle.cpp
-    transform/mangle.h
-    transform/partial_evaluation.cpp
-    transform/partial_evaluation.h
     transform/clos_conv.h
     transform/clos_conv.cpp
     transform/lower_typed_clos.h
@@ -110,8 +106,10 @@ add_library(libthorin
     util/utf8.h
 )
 
-set_target_properties(libthorin PROPERTIES PREFIX "")
-
+set_target_properties(libthorin PROPERTIES 
+    PREFIX ""
+    POSITION_INDEPENDENT_CODE ON
+)
 configure_file(config.h.in config.h)
 target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/..) # for config.h
 target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
