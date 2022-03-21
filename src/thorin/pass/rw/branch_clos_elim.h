@@ -9,22 +9,15 @@
 
 namespace thorin {
 
-class BranchClosElim : public FPPass<BranchClosElim, Lam> {
+class BranchClosElim : public RWPass<Lam> {
 public:
 
     BranchClosElim(PassMan& man) 
-        : FPPass<BranchClosElim, Lam>(man, "unbox_closures")
-        , keep_(), boxed2unboxed_(), branch2dropped_() {}
+        : RWPass<Lam>(man, "unbox_closures"), branch2dropped_() {}
 
     const Def* rewrite(const Def*) override;
-    undo_t analyze(const Proxy*) override;
-
-    using ArgSpec = std::map<size_t, const Def*>;
-    using Data = LamMap<ArgSpec>;
 
 private:
-    DefSet keep_;
-    LamMap<std::tuple<Lam*, DefVec>> boxed2unboxed_;
     DefMap<Lam*> branch2dropped_;
 };
 
