@@ -9,11 +9,11 @@
 
 namespace thorin {
 
-class UnboxClosure : public FPPass<UnboxClosure, Lam> {
+class BranchClosElim : public FPPass<BranchClosElim, Lam> {
 public:
 
-    UnboxClosure(PassMan& man) 
-        : FPPass<UnboxClosure, Lam>(man, "unbox_closures")
+    BranchClosElim(PassMan& man) 
+        : FPPass<BranchClosElim, Lam>(man, "unbox_closures")
         , keep_(), boxed2unboxed_(), branch2dropped_() {}
 
     const Def* rewrite(const Def*) override;

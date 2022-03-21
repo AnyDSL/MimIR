@@ -6,9 +6,9 @@
 
 namespace thorin {
 
-class Closure2SjLj : public RWPass<Lam> {
+class Clos2SJLJ : public RWPass<Lam> {
 public:
-    Closure2SjLj(PassMan& man)
+    Clos2SJLJ(PassMan& man)
         : RWPass<Lam>(man, "closure2sjlj")
         , lam2tag_(), dom2throw_(), lam2lpad_(), ignore_() {}
 

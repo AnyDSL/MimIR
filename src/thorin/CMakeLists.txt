@@ -58,10 +58,8 @@ add_library(libthorin
     pass/fp/copy_prop.h
     pass/fp/ssa_constr.cpp
     pass/fp/ssa_constr.h
-    pass/fp/unbox_closures.h
-    pass/fp/unbox_closures.cpp
-    pass/fp/closure_analysis.h
-    pass/fp/closure_analysis.cpp
+    pass/fp/lower_typed_clos_prep.h
+    pass/fp/lower_typed_clos_prep.cpp
     pass/fp/tail_rec_elim.cpp
     pass/fp/tail_rec_elim.h
     pass/rw/alloc2malloc.cpp
@@ -78,20 +76,22 @@ add_library(libthorin
     pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
-    pass/rw/cconv_prepare.h
-    pass/rw/cconv_prepare.cpp
-    pass/rw/closure2sjlj.h
-    pass/rw/closure2sjlj.cpp
+    pass/rw/branch_clos_elim.h
+    pass/rw/branch_clos_elim.cpp
+    pass/rw/clos_conv_prep.h
+    pass/rw/clos_conv_prep.cpp
+    pass/rw/clos2sjlj.h
+    pass/rw/clos2sjlj.cpp
     transform/cleanup_world.cpp
     transform/cleanup_world.h
     transform/mangle.cpp
     transform/mangle.h
     transform/partial_evaluation.cpp
     transform/partial_evaluation.h
-    transform/closure_conv.h
-    transform/closure_conv.cpp
-    transform/lower_typed_closures.h
-    transform/lower_typed_closures.cpp
+    transform/clos_conv.h
+    transform/clos_conv.cpp
+    transform/lower_typed_clos.h
+    transform/lower_typed_clos.cpp
     util/array.h
     util/assert.h
     util/bitset.cpp

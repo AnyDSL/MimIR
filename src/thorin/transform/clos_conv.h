@@ -67,10 +67,10 @@ private:
 /// Neither of this two cases is checked.
 /// The types of @p Axiom%s are adjusted as well.
 
-class ClosureConv {
+class ClosConv {
 public:
 
-    ClosureConv(World& world)
+    ClosConv(World& world)
         : world_(world)
         , fva_(world)
         , closures_()
@@ -119,7 +119,7 @@ std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
     return {nullptr,  nullptr};
 }
 
-class ClosureLit {
+class ClosLit {
 public:
     /// @name Getters
     /// @{
@@ -163,77 +163,77 @@ public:
     bool is_returning() { return fnc_type()->is_returning(); }
     bool is_basicblock() { return fnc_type()->is_basicblock(); }
     unsigned int order();
-    CConv mark() { return mark_; }
+    ClosKind kind() { return kind_; }
     /// @}
 
 private:
-    ClosureLit(const Tuple* def, CConv mark = CConv::bot)
-        : def_(def), mark_(mark)
+    ClosLit(const Tuple* def, ClosKind kind = ClosKind::bot)
+        : def_(def), kind_(kind)
     {};
 
     const Tuple* def_;
-    const CConv mark_;
+    const ClosKind kind_;
 
-    friend ClosureLit isa_closure_lit(const Def*, bool);
+    friend ClosLit isa_clos_lit(const Def*, bool);
 };
 
 
 /// return @p def if @p def is a closure and @c nullptr otherwise
-const Sigma* isa_ctype(const Def* def);
+const Sigma* isa_clos_type(const Def* def);
 
 /// creates a typed closure type from a @p Pi
-Sigma* ctype(const Pi* pi);
+Sigma* clos_type(const Pi* pi);
 
 /// Convert a closure type to a @p Pi, where the environment type has been removed
 /// or replaced by new_env_type (if new_env_type != @c nullptr)
-const Pi* ctype_to_pi(const Def* ct, const Def* new_env_type = nullptr);
+const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type = nullptr);
 
 /// tries to match a closure literal
-ClosureLit isa_closure_lit(const Def* def, bool lambda_or_branch = true);
+ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch = true);
 
-std::tuple<Lam*, const Def*, const Def*> closure_lam_stub(const Def* env_type, const Def* dom, const Def* dbg = {});
+std::tuple<Lam*, const Def*, const Def*> clos_lam_stub(const Def* env_type, const Def* dom, const Def* dbg = {});
 
 /// pack a typed closure. This assumes that @p fn expects the environment as its @p CLOSURE_ENV_PARAM argument.
-const Def* pack_closure_dbg(const Def* env, const Def* fn, const Def* dbg, const Def* ct = nullptr);
-inline const Def* pack_closure(const Def* env, const Def* fn, const Def* ct = nullptr) {
-    return pack_closure_dbg(env, fn, nullptr, ct);
+const Def* clos_pack_dbg(const Def* env, const Def* fn, const Def* dbg, const Def* ct = nullptr);
+inline const Def* clos_pack(const Def* env, const Def* fn, const Def* ct = nullptr) {
+    return clos_pack_dbg(env, fn, nullptr, ct);
 }
 
 /// Deconstruct a closure into (env_type, function, env)
-std::tuple<const Def*, const Def*, const Def*> unpack_closure(const Def* c);
+std::tuple<const Def*, const Def*, const Def*> clos_unpack(const Def* c);
 
 /// Which param is the env param
-const size_t CLOSURE_ENV_PARAM = 1_u64;
+const size_t CLOS_ENV_PARAM = 1_u64;
 
 /// Return env at the env position and f(i')) otherwise where i' has been shifted
-const Def* closure_insert_env(size_t i, const Def* env, std::function<const Def* (size_t)> f);
-inline const Def* closure_insert_env(size_t i, const Def* env, const Def* a) {
-    return closure_insert_env(i, env, [&](auto i) { return a->proj(i); });
+const Def* clos_insert_env(size_t i, const Def* env, std::function<const Def* (size_t)> f);
+inline const Def* clos_insert_env(size_t i, const Def* env, const Def* a) {
+    return clos_insert_env(i, env, [&](auto i) { return a->proj(i); });
 }
-inline const Def* closure_insert_env(const Def* env, const Def* tup_or_sig) {
+inline const Def* clos_insert_env(const Def* env, const Def* tup_or_sig) {
     auto& w = tup_or_sig->world();
-    auto new_ops = DefArray(tup_or_sig->num_projs() + 1, [&](auto i) { return closure_insert_env(i, env, tup_or_sig); });
+    auto new_ops = DefArray(tup_or_sig->num_projs() + 1, [&](auto i) { return clos_insert_env(i, env, tup_or_sig); });
     return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 
-const Def* closure_remove_env(size_t i, std::function<const Def* (size_t)> f);
-inline const Def* closure_remove_env(size_t i, const Def* def) {
-    return closure_remove_env(i, [&](auto i) { return def->proj(i); });
+const Def* clos_remove_env(size_t i, std::function<const Def* (size_t)> f);
+inline const Def* clos_remove_env(size_t i, const Def* def) {
+    return clos_remove_env(i, [&](auto i) { return def->proj(i); });
 }
-inline const Def* closure_remove_env(const Def* tup_or_sig) {
+inline const Def* clos_remove_env(const Def* tup_or_sig) {
     auto& w = tup_or_sig->world();
-    auto new_ops = DefArray(tup_or_sig->num_projs() - 1, [&](auto i) { return closure_remove_env(i, tup_or_sig); });
+    auto new_ops = DefArray(tup_or_sig->num_projs() - 1, [&](auto i) { return clos_remove_env(i, tup_or_sig); });
     return (tup_or_sig->isa<Sigma>()) ? w.sigma(new_ops) : w.tuple(new_ops);
 }
 
-inline const Def* closure_sub_env(const Def* tup_or_sig, const Def* new_env) {
-    return tup_or_sig->refine(CLOSURE_ENV_PARAM, new_env);
+inline const Def* clos_sub_env(const Def* tup_or_sig, const Def* new_env) {
+    return tup_or_sig->refine(CLOS_ENV_PARAM, new_env);
 }
 
-const Def* apply_closure(const Def* closure, const Def* args);
+const Def* clos_apply(const Def* closure, const Def* args);
 inline const Def* apply_closure(const Def* closure, Defs args) {
     auto& w = closure->world();
-    return apply_closure(closure, w.tuple(args));
+    return clos_apply(closure, w.tuple(args));
 }
 
 };

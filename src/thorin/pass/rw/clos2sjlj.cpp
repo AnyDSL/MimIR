@@ -1,13 +1,12 @@
-
-#include "thorin/pass/rw/closure2sjlj.h"
-#include "thorin/transform/closure_conv.h"
+#include "thorin/pass/rw/clos2sjlj.h"
+#include "thorin/transform/clos_conv.h"
 
 namespace thorin {
 
-void Closure2SjLj::get_exn_closures(const Def* def, DefSet& visited) {
+void Clos2SJLJ::get_exn_closures(const Def* def, DefSet& visited) {
     if (def->level() != Sort::Term || def->isa_nom<Lam>() || visited.contains(def)) return;
     visited.emplace(def);
-    if (auto c = isa_closure_lit(def)) {
+    if (auto c = isa_clos_lit(def)) {
         auto lam = c.fnc_as_lam();
         if (c.is_basicblock() && !ignore_.contains(lam)) {
             def->world().DLOG("FOUND exn closure: {}", c.fnc_as_lam());
@@ -20,19 +19,19 @@ void Closure2SjLj::get_exn_closures(const Def* def, DefSet& visited) {
     }
 }
 
-void Closure2SjLj::get_exn_closures() {
+void Clos2SJLJ::get_exn_closures() {
     lam2tag_.clear();
     if (!curr_nom()->is_set() || !curr_nom()->type()->is_cn()) return;
     auto app = curr_nom()->body()->isa<App>();
     if (!app) return;
-    if (auto p = app->callee()->isa<Extract>(); p && isa_ctype(p->tuple()->type())) {
+    if (auto p = app->callee()->isa<Extract>(); p && isa_clos_type(p->tuple()->type())) {
         auto p2 = p->tuple()->isa<Extract>();
         if (p2 && p2->tuple()->isa<Tuple>()) {
             // branch: Check the closure environments, but be careful not to traverse
             // the closures themselves
             auto branches = p2->tuple()->ops();
             for (auto b: branches) {
-                auto c = isa_closure_lit(b);
+                auto c = isa_clos_lit(b);
                 if (c) {
                     ignore_.emplace(c.fnc_as_lam());
                     world().DLOG("IGNORE {}", c.fnc_as_lam());
@@ -53,7 +52,7 @@ static std::array<const Def*, 3> split(const Def* def) {
         auto op = def->proj(i);
         if (op == w.type_mem() || op->type() == w.type_mem())
             mem = op;
-        else if (i == CLOSURE_ENV_PARAM)
+        else if (i == CLOS_ENV_PARAM)
             env = op;
         else
             new_ops[j++] = op;
@@ -74,12 +73,12 @@ static const Def* rebuild(const Def* mem, const Def* env, const Def* remaining) 
     return (remaining->level() == Sort::Term) ? w.tuple(new_ops) : w.sigma(new_ops);
 }
 
-Lam* Closure2SjLj::get_throw(const Def* dom) {
+Lam* Clos2SJLJ::get_throw(const Def* dom) {
     auto& w = world();
     auto [p, inserted] = dom2throw_.emplace(dom, nullptr);
     auto& tlam = p->second;
     if (inserted || !tlam) {
-        auto pi = w.cn(closure_sub_env(dom, w.sigma({jb_type(), rb_type(), tag_type()})));
+        auto pi = w.cn(clos_sub_env(dom, w.sigma({jb_type(), rb_type(), tag_type()})));
         tlam = w.nom_lam(pi, w.dbg("throw"));
         auto [m0, env, var] = split(tlam->var());
         auto [jbuf, rbuf, tag] = env->projs<3>();
@@ -94,7 +93,7 @@ Lam* Closure2SjLj::get_throw(const Def* dom) {
     return tlam;
 }
 
-Lam* Closure2SjLj::get_lpad(Lam* lam, const Def* rb) {
+Lam* Clos2SJLJ::get_lpad(Lam* lam, const Def* rb) {
     auto& w = world();
     auto [p, inserted] = lam2lpad_.emplace(w.tuple({lam, rb}), nullptr);
     auto& lpad = p->second;
@@ -112,7 +111,7 @@ Lam* Closure2SjLj::get_lpad(Lam* lam, const Def* rb) {
     return lpad;
 }
 
-void Closure2SjLj::enter() {
+void Clos2SJLJ::enter() {
     auto&  w = world();
     get_exn_closures();
     if (lam2tag_.empty()) return;
@@ -135,7 +134,7 @@ void Closure2SjLj::enter() {
 
     auto body = curr_nom()->body()->as<App>();
 
-    auto branch_type = ctype(w.cn(w.type_mem()));
+    auto branch_type = clos_type(w.cn(w.type_mem()));
     auto branches = DefVec(lam2tag_.size() + 1);
     {
         auto env = w.tuple(body->args().skip_front());
@@ -145,12 +144,12 @@ void Closure2SjLj::enter() {
             return (i == 0) ? m : env_var->proj(i - 1);
         });
         new_callee->app(false, body->callee(), new_args, body->dbg());
-        branches[0] = pack_closure(env, new_callee, branch_type);
+        branches[0] = clos_pack(env, new_callee, branch_type);
     }
 
     for (auto [exn_lam, p]: lam2tag_) {
         auto [i, env] = p;
-        branches[i] = pack_closure(env, get_lpad(exn_lam, cur_rbuf_), branch_type);
+        branches[i] = clos_pack(env, get_lpad(exn_lam, cur_rbuf_), branch_type);
     }
 
     auto m0 = body->arg(0); 
@@ -158,15 +157,15 @@ void Closure2SjLj::enter() {
     auto [m1, tag] = w.op_setjmp(m0, cur_jbuf_)->projs<2>();
     tag = w.op(Conv::s2s, w.type_int(branches.size()), tag);
     auto branch = w.extract(w.tuple(branches), tag);
-    curr_nom()->set_body(apply_closure(branch, m1));
+    curr_nom()->set_body(clos_apply(branch, m1));
 }
 
-const Def* Closure2SjLj::rewrite(const Def* def) {
-    if (auto c = isa_closure_lit(def); c && lam2tag_.contains(c.fnc_as_lam())) {
+const Def* Clos2SJLJ::rewrite(const Def* def) {
+    if (auto c = isa_clos_lit(def); c && lam2tag_.contains(c.fnc_as_lam())) {
         auto& w = world();
         auto [i, _] = lam2tag_[c.fnc_as_lam()];
         auto tlam = get_throw(c.fnc_as_lam()->dom());
-        return pack_closure(w.tuple({cur_jbuf_, cur_rbuf_, w.lit_int(i)}), tlam, c.type());
+        return clos_pack(w.tuple({cur_jbuf_, cur_rbuf_, w.lit_int(i)}), tlam, c.type());
     }
     return def;
 }

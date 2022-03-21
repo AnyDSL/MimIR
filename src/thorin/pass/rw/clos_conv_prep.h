@@ -9,9 +9,9 @@ namespace thorin {
 
 class EtaExp;
 
-class CConvPrepare : public RWPass<Lam> {
+class ClosConvPrep : public RWPass<Lam> {
 public:
-    CConvPrepare(PassMan& man, EtaExp* eta_exp)
+    ClosConvPrep(PassMan& man, EtaExp* eta_exp)
         : RWPass(man, "eta_cont")
         , eta_exp_(eta_exp)
         , old2wrapper_(), lam2fscope_()
@@ -26,7 +26,7 @@ public:
         return scope(lam) && scope(lam) != scope(curr_nom());
     }
 
-    const Def* eta_wrap(const Def* def, CConv cc, const std::string& dbg) {
+    const Def* eta_wrap(const Def* def, ClosKind kind, const std::string& dbg) {
         auto& w = world();
         auto [entry, inserted] = old2wrapper_.emplace(def, nullptr);
         auto& wrapper = entry->second;
@@ -36,7 +36,7 @@ public:
             lam2fscope_[wrapper] = scope(curr_nom());
             wrapper_.emplace(wrapper);
         }
-        return w.cconv_mark(wrapper, cc);
+        return w.clos_kind(wrapper, kind);
     }
 
 private:

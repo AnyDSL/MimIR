@@ -1,5 +1,5 @@
 #include "thorin/check.h"
-#include "thorin/transform/closure_conv.h"
+#include "thorin/transform/clos_conv.h"
 #include "thorin/analyses/scope.h"
 
 namespace thorin {
@@ -7,20 +7,20 @@ namespace thorin {
 /* auxillary functions */
 
 // Adjust the index of an argument to account for the env param
-size_t shift_env(size_t i) {
-    return (i < CLOSURE_ENV_PARAM) ? i : i - 1_u64;
+static size_t shift_env(size_t i) {
+    return (i < CLOS_ENV_PARAM) ? i : i - 1_u64;
 }
 
 // Same but skip the env param
-size_t skip_env(size_t i) {
-    return (i < CLOSURE_ENV_PARAM) ? i : i + 1_u64;
+static size_t skip_env(size_t i) {
+    return (i < CLOS_ENV_PARAM) ? i : i + 1_u64;
 }
 
-const Def* closure_insert_env(size_t i, const Def* env, std::function<const Def* (size_t)> f) {
-    return (i == CLOSURE_ENV_PARAM) ? env : f(shift_env(i));
+const Def* clos_insert_env(size_t i, const Def* env, std::function<const Def* (size_t)> f) {
+    return (i == CLOS_ENV_PARAM) ? env : f(shift_env(i));
 }
 
-const Def* closure_remove_env(size_t i, std::function<const Def* (size_t)> f) {
+const Def* clos_remove_env(size_t i, std::function<const Def* (size_t)> f) {
     return f(skip_env(i));
 }
 
@@ -33,25 +33,25 @@ static const Def* ctype(World& w, Defs doms, const Def* env_type = nullptr) {
         return sigma;
     } 
     return w.cn(DefArray(doms.size() + 1, [&](auto i) {
-        return closure_insert_env(i, env_type, [&](auto j) { return doms[j]; });
+        return clos_insert_env(i, env_type, [&](auto j) { return doms[j]; });
     }));
 }
 
-Sigma* ctype(const Pi* pi) {
+Sigma* clos_type(const Pi* pi) {
     return ctype(pi->world(), pi->doms(), nullptr)->as_nom<Sigma>();
 }
 
-const Pi* ctype_to_pi(const Def* ct, const Def* new_env_type) {
-    assert(isa_ctype(ct));
+const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
+    assert(isa_clos_type(ct));
     auto& w = ct->world();
     auto pi = ct->op(1_u64)->isa<Pi>();
     assert(pi);
-    auto new_dom = new_env_type ? closure_sub_env(pi->dom(), new_env_type)
-        : closure_remove_env(pi->dom());
+    auto new_dom = new_env_type ? clos_sub_env(pi->dom(), new_env_type)
+        : clos_remove_env(pi->dom());
     return w.cn(new_dom);
 }
 
-const Sigma* isa_ctype(const Def* def) {
+const Sigma* isa_clos_type(const Def* def) {
     auto& w = def->world();
     auto sig = def->isa_nom<Sigma>();
     if (!sig || sig->num_ops() < 3 || sig->op(0_u64) != w.kind())
@@ -60,82 +60,82 @@ const Sigma* isa_ctype(const Def* def) {
     if (sig->op(2_u64) != var)
         return nullptr;
     auto pi = sig->op(1_u64)->isa<Pi>();
-    return (pi && pi->is_cn() && pi->num_ops() > 1_u64 && pi->dom(CLOSURE_ENV_PARAM) == var)
+    return (pi && pi->is_cn() && pi->num_ops() > 1_u64 && pi->dom(CLOS_ENV_PARAM) == var)
         ? sig : nullptr;
 }
 
-const Def* pack_closure_dbg(const Def* env, const Def* lam, const Def* dbg, const Def* ct) {
+const Def* clos_pack_dbg(const Def* env, const Def* lam, const Def* dbg, const Def* ct) {
     assert(env && lam);
-    assert(!ct || isa_ctype(ct));
+    assert(!ct || isa_clos_type(ct));
     auto& w = env->world();
     auto pi = lam->type()->isa<Pi>();
-    assert(pi && env->type() == pi->dom(CLOSURE_ENV_PARAM));
-    ct = (ct) ? ct : ctype(w.cn(closure_remove_env(pi->dom())));
+    assert(pi && env->type() == pi->dom(CLOS_ENV_PARAM));
+    ct = (ct) ? ct : clos_type(w.cn(clos_remove_env(pi->dom())));
     return w.tuple(ct, {env->type(), lam, env}, dbg)->isa<Tuple>();
 }
 
-std::tuple<const Def*, const Def*, const Def*> unpack_closure(const Def* c) {
-    assert(c && isa_ctype(c->type()));
+std::tuple<const Def*, const Def*, const Def*> clos_unpack(const Def* c) {
+    assert(c && isa_clos_type(c->type()));
     auto& w = c->world();
     auto env_type = c->proj(0_u64);
-    auto pi = ctype_to_pi(c->type(), env_type);
+    auto pi = clos_type_to_pi(c->type(), env_type);
     auto fn = w.extract_(pi, c, w.lit_int(3, 1));
     auto env = w.extract_(env_type, c, w.lit_int(3, 2));
     return {env_type, fn, env};
 }
 
-const Def* apply_closure(const Def* closure, const Def* args) {
+const Def* clos_apply(const Def* closure, const Def* args) {
     auto& w = closure->world();
-    auto [_, fn, env] = unpack_closure(closure);
+    auto [_, fn, env] = clos_unpack(closure);
     auto pi = fn->type()->as<Pi>();
     return w.app(fn, DefArray(pi->num_doms(), [&](auto i) {
-        return closure_insert_env(i, env, args);
+        return clos_insert_env(i, env, args);
     }));
 }
 
-ClosureLit isa_closure_lit(const Def* def, bool lambda_or_branch) {
+ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
     auto tpl = def->isa<Tuple>();
-    if (tpl && isa_ctype(def->type())) {
-        auto cc = CConv::bot;
-        auto fnc = std::get<1_u64>(unpack_closure(tpl));
-        if (auto q = isa<Tag::CConv>(fnc)) {
+    if (tpl && isa_clos_type(def->type())) {
+        auto cc = ClosKind::bot;
+        auto fnc = std::get<1_u64>(clos_unpack(tpl));
+        if (auto q = isa<Tag::ClosKind>(fnc)) {
             fnc = q->arg();
             cc = q.flags();
         }
         if (!lambda_or_branch || fnc->isa<Lam>())
-            return ClosureLit(tpl, cc);
+            return ClosLit(tpl, cc);
     }
-    return ClosureLit(nullptr, CConv::bot);
+    return ClosLit(nullptr, ClosKind::bot);
 }
 
-const Def* ClosureLit::env() {
+const Def* ClosLit::env() {
     assert(def_);
-    return std::get<2_u64>(unpack_closure(def_));
+    return std::get<2_u64>(clos_unpack(def_));
 }
 
-const Def* ClosureLit::fnc() {
+const Def* ClosLit::fnc() {
     assert(def_);
-    return std::get<1_u64>(unpack_closure(def_));
+    return std::get<1_u64>(clos_unpack(def_));
 }
 
-Lam* ClosureLit::fnc_as_lam() {
+Lam* ClosLit::fnc_as_lam() {
     auto f = fnc();
-    if (auto q = isa<Tag::CConv>(f))
+    if (auto q = isa<Tag::ClosKind>(f))
         f = q->arg();
     return f->isa_nom<Lam>();
 }
 
-const Def* ClosureLit::env_var() {
-    return fnc_as_lam()->var(CLOSURE_ENV_PARAM);
+const Def* ClosLit::env_var() {
+    return fnc_as_lam()->var(CLOS_ENV_PARAM);
 }
 
-unsigned int ClosureLit::order() { 
-    return ctype_to_pi(type())->order(); 
+unsigned int ClosLit::order() { 
+    return clos_type_to_pi(type())->order(); 
 }
 
 /* Closure Conversion */
 
-void ClosureConv::run() {
+void ClosConv::run() {
     auto& w = world();
     auto externals = std::vector(w.externals().begin(), w.externals().end());
     auto subst = Def2Def();
@@ -157,7 +157,7 @@ void ClosureConv::run() {
     w.DLOG("===== ClosureConv: done ======");
 }
 
-void ClosureConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
+void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     auto& w = world();
     auto stub = closures_.lookup(new_lam);
     assert(stub && "closure should have a stub if rewrite_body is called!");
@@ -166,7 +166,7 @@ void ClosureConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     if (!old_fn->is_set()) return;
 
     w.DLOG("rw body: {} [old={}, env={}]\nt", new_fn, old_fn, env);
-    auto env_param = new_fn->var(CLOSURE_ENV_PARAM, w.dbg("closure_env"));
+    auto env_param = new_fn->var(CLOS_ENV_PARAM, w.dbg("closure_env"));
     if (num_fvs == 1) {
         subst.emplace(env, env_param);
     } else {
@@ -190,7 +190,7 @@ void ClosureConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     new_fn->set(filter, body);
 }
 
-const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
+const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
     switch(def->node()) {
         case Node::Kind:
         case Node::Space:
@@ -218,10 +218,10 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
         auto [_, __, fv_env, new_lam] = make_stub(lam, subst);
         auto closure_type = rewrite(lam->type(), subst);
         auto env = rewrite(fv_env, subst);
-        auto closure = pack_closure(env, new_lam, closure_type);
+        auto closure = clos_pack(env, new_lam, closure_type);
         w.DLOG("RW: pack {} ~> {} : {}", lam, closure, closure_type);
         return map(closure);
-    } else if (auto q = isa<Tag::CConv>(CConv::ret, def)) {
+    } else if (auto q = isa<Tag::ClosKind>(ClosKind::ret, def)) {
         if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
             assert(ret_lam && ret_lam->is_basicblock());
             // Note: This should be cont_lam's only occurance after η-expansion, so its okay to 
@@ -237,12 +237,12 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
             }
             return new_lam;
         }
-    } else if (auto q = isa<Tag::CConv>(def); q && (q.flags() == CConv::fstclassBB || q.flags() == CConv::freeBB)) {
+    } else if (auto q = isa<Tag::ClosKind>(def); q && (q.flags() == ClosKind::fstclassBB || q.flags() == ClosKind::freeBB)) {
         // Note: Same thing about η-conversion applies here
         auto bb_lam = q->arg()->isa_nom<Lam>();
         assert(bb_lam && bb_lam->is_basicblock());
         auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
-        subst[bb_lam] = pack_closure(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
+        subst[bb_lam] = clos_pack(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
         rewrite_body(new_lam, subst);
         return map(subst[bb_lam]);
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && lam->ret_var() == var) {
@@ -257,7 +257,7 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
     auto new_dbg = (def->dbg()) ? rewrite(def->dbg(), subst) : nullptr;
 
     if (auto nom = def->isa_nom()) {
-        assert(!isa_ctype(nom));
+        assert(!isa_clos_type(nom));
         w.DLOG("RW: nom {}", nom);
         auto new_nom = nom->stub(w, new_type, new_dbg);
         subst.emplace(nom, new_nom);
@@ -275,19 +275,19 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
             return rewrite(def->op(i), subst);
         });
         if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
-            return map(apply_closure(new_ops[0], new_ops[1]));
+            return map(clos_apply(new_ops[0], new_ops[1]));
         else 
             return map(def->rebuild(w, new_type, new_ops, new_dbg));
     }
 }
 
-const Pi* ClosureConv::rewrite_cont_type(const Pi* pi, Def2Def& subst) {
+const Pi* ClosConv::rewrite_cont_type(const Pi* pi, Def2Def& subst) {
     assert(pi->is_basicblock());
     auto new_ops = DefArray(pi->num_doms(), [&](auto i) { return rewrite(pi->dom(i), subst); });
     return world().cn(new_ops);
 }
 
-const Def* ClosureConv::closure_type(const Pi* pi, Def2Def& subst, const Def* env_type) {
+const Def* ClosConv::closure_type(const Pi* pi, Def2Def& subst, const Def* env_type) {
     if (auto pct = closure_types_.lookup(pi); pct && !env_type)
         return *pct;
     auto& w = world();
@@ -304,7 +304,7 @@ const Def* ClosureConv::closure_type(const Pi* pi, Def2Def& subst, const Def* en
     return ct;
 }
 
-ClosureConv::ClosureStub ClosureConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& subst) {
+ClosConv::ClosureStub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& subst) {
     auto& w = world();
     auto env = w.tuple(DefArray(fvs.begin(), fvs.end()));
     auto num_fvs = fvs.size();
@@ -313,17 +313,17 @@ ClosureConv::ClosureStub ClosureConv::make_stub(const DefSet& fvs, Lam* old_lam,
     auto new_lam = old_lam->stub(w, new_fn_type, w.dbg(old_lam->name()));
     new_lam->set_debug_name((old_lam->is_external() || !old_lam->is_set())? "cc_" + old_lam->name() : old_lam->name());
     if (!isa_workable(old_lam)) {
-        auto new_ext_type = w.cn(closure_remove_env(new_fn_type->dom()));
+        auto new_ext_type = w.cn(clos_remove_env(new_fn_type->dom()));
         auto new_ext_lam = old_lam->stub(w, new_ext_type, w.dbg(old_lam->name()));
         w.DLOG("wrap ext lam: {} -> stub: {}, ext: {}", old_lam, new_lam, new_ext_lam);
         if (old_lam->is_set()) {
             old_lam->make_internal();
             new_ext_lam->make_external();
-            new_ext_lam->app(false, new_lam, closure_insert_env(env, new_ext_lam->var()));
+            new_ext_lam->app(false, new_lam, clos_insert_env(env, new_ext_lam->var()));
             new_lam->set(old_lam->filter(), old_lam->body());
         } else {
             new_ext_lam->set(nullptr, nullptr);
-            new_lam->app(false, new_ext_lam, closure_remove_env(new_lam->var()));
+            new_lam->app(false, new_ext_lam, clos_remove_env(new_lam->var()));
         }
     } else {
         new_lam->set(old_lam->filter(), old_lam->body());
@@ -335,7 +335,7 @@ ClosureConv::ClosureStub ClosureConv::make_stub(const DefSet& fvs, Lam* old_lam,
     return closure;
 }
 
-ClosureConv::ClosureStub ClosureConv::make_stub(Lam* old_lam, Def2Def& subst) {
+ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
     if (auto closure = closures_.lookup(old_lam))
         return *closure;
     auto closure = make_stub(fva_.run(old_lam), old_lam, subst);
@@ -351,7 +351,7 @@ void FVA::split_fv(Node* node, const Def* fv, bool& init_node, NodeQueue& workli
             node->fvs.emplace(fv);
         return;
     }
-    if (auto q = isa<Tag::CConv>(CConv::freeBB, fv)) {
+    if (auto q = isa<Tag::ClosKind>(ClosKind::freeBB, fv)) {
         node->fvs.emplace(q);
         return;
     }

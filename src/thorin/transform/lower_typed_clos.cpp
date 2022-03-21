@@ -1,11 +1,11 @@
 #include <functional>
 
 #include "thorin/check.h"
-#include "thorin/transform/lower_typed_closures.h"
+#include "thorin/transform/lower_typed_clos.h"
 
 namespace thorin {
 
-void LowerTypedClosures::run() {
+void LowerTypedClos::run() {
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (auto [_, n]: externals)
         rewrite(n);
@@ -30,14 +30,14 @@ static const Def* insert_ret(const Def* def, const Def* ret) {
     return (def->level() == Sort::Term) ? w.tuple(new_ops) : w.sigma(new_ops);
 }
 
-Lam *LowerTypedClosures::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
+Lam *LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     assert(lam && "make_stub: not a lam");
     if (auto new_lam = old2new_.lookup(lam); new_lam && (*new_lam)->isa_nom<Lam>())
         return (*new_lam)->as_nom<Lam>();
     auto& w = world();
     auto new_dom = w.sigma(Array<const Def*>(lam->num_doms(), [&](auto i) -> const Def* {
         auto new_dom = rewrite(lam->dom(i));
-        if (i == CLOSURE_ENV_PARAM) {
+        if (i == CLOS_ENV_PARAM) {
             if (mode == Unbox)    return env_type();
             else if (mode == Box) return w.type_ptr(new_dom);
         }
@@ -56,16 +56,16 @@ Lam *LowerTypedClosures::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type
         new_lam->make_external();
     }
     const Def* lcm = new_lam->mem_var();
-    const Def* env = new_lam->var(CLOSURE_ENV_PARAM, w.dbg("closure_env"));
+    const Def* env = new_lam->var(CLOS_ENV_PARAM, w.dbg("closure_env"));
     if (mode == Box) {
         auto env_mem = w.op_load(lcm, env);
         lcm = w.extract(env_mem, 0_u64, w.dbg("mem"));
         env = w.extract(env_mem, 1_u64, w.dbg("closure_env"));
     } else if (mode == Unbox) {
-        env = w.op_bitcast(lam->dom(CLOSURE_ENV_PARAM), env, w.dbg("unboxed_env"));
+        env = w.op_bitcast(lam->dom(CLOS_ENV_PARAM), env, w.dbg("unboxed_env"));
     }
     auto new_args = w.tuple(Array<const Def*>(lam->num_doms(), [&](auto i) {
-        return (i == CLOSURE_ENV_PARAM) ? env
+        return (i == CLOS_ENV_PARAM) ? env
              : (lam->var(i) == lam->mem_var()) ? lcm
              : new_lam->var(i);
     }));
@@ -76,7 +76,7 @@ Lam *LowerTypedClosures::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type
     return map<Lam>(lam, new_lam);
 }
 
-const Def* LowerTypedClosures::rewrite(const Def* def) {
+const Def* LowerTypedClos::rewrite(const Def* def) {
     switch(def->node()) {
         case Node::Bot:
         case Node::Top:
@@ -97,7 +97,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
     auto new_type = rewrite(def->type());
     auto new_dbg = def->dbg() ? rewrite(def->dbg()) : nullptr;
 
-    if (auto ct = isa_ctype(def)) {
+    if (auto ct = isa_clos_type(def)) {
         auto pi = rewrite(ct->op(1))->as<Pi>();
         if (pi->is_basicblock())
             pi = w.cn(insert_ret(pi->dom(), dummy_ret_->type()));
@@ -106,18 +106,18 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
     } else if (auto proj = def->isa<Extract>()) {
         auto tuple = proj->tuple();
         auto idx = isa_lit(proj->index());
-        if (isa_ctype(tuple->type())) {
+        if (isa_clos_type(tuple->type())) {
             assert (idx && idx <= 2 && "unknown proj from closure tuple");
             if (*idx == 0)
                 return map(def, env_type());
             else
                 return map(def, rewrite(tuple)->proj(*idx - 1));
-        } else if (auto var = tuple->isa<Var>(); var && isa_ctype(var->nom())) {
+        } else if (auto var = tuple->isa<Var>(); var && isa_clos_type(var->nom())) {
             assert(false && "proj fst type form closure type");
         }
     }
 
-    if (auto c = isa_closure_lit(def)) {
+    if (auto c = isa_clos_lit(def)) {
         auto env = rewrite(c.env());
         auto mode = isa<Tag::Int>(env->type()) ? Unbox : Box;
         const Def* fn = make_stub(c.fnc_as_lam(), mode, true);
@@ -125,7 +125,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
             // Optimize empty env
             env = w.bot(env_type());
         } else if (!mode) {
-            auto mem_ptr = (c.mark() == CConv::escaping) 
+            auto mem_ptr = (c.kind() == ClosKind::escaping) 
                 ? w.op_alloc(env->type(), lcm_)
                 : w.op_slot(env->type(), lcm_);
             auto mem = w.extract(mem_ptr, 0_u64);
@@ -140,7 +140,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
     } else if (auto lam = def->isa_nom<Lam>()) {
         return make_stub(lam, No_Env, false);
     } else if (auto nom = def->isa_nom()) {
-        assert(!isa_ctype(nom));
+        assert(!isa_clos_type(nom));
         auto new_nom = nom->stub(w, new_type, new_dbg);
         map(nom, new_nom);
         for (size_t i = 0; i < nom->num_ops(); i++)
@@ -158,7 +158,7 @@ const Def* LowerTypedClosures::rewrite(const Def* def) {
 
         if (auto app = def->isa<App>()) {
             // Add dummy retcont to first-class BB
-            if (auto p = app->callee()->isa<Extract>(); p && isa_ctype(p->tuple()->type())
+            if (auto p = app->callee()->isa<Extract>(); p && isa_clos_type(p->tuple()->type())
                     && app->callee_type()->is_basicblock())
                 new_ops[1] = insert_ret(new_ops[1], dummy_ret_);
         }

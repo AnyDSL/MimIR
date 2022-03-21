@@ -1,8 +1,7 @@
 
-#include "thorin/pass/rw/cconv_prepare.h"
+#include "thorin/pass/rw/clos_conv_prep.h"
 #include "thorin/pass/fp/eta_exp.h"
-
-#include "thorin/transform/closure_conv.h"
+#include "thorin/transform/clos_conv.h"
 
 namespace thorin {
 
@@ -31,13 +30,13 @@ static Lam* isa_retvar(const Def* def) {
     return nullptr;
 }
 
-Lam* CConvPrepare::scope(Lam* lam) { 
+Lam* ClosConvPrep::scope(Lam* lam) { 
     if (eta_exp_)
         lam = eta_exp_->new2old(lam);
     return lam2fscope_[lam];
 }
 
-void CConvPrepare::enter() {
+void ClosConvPrep::enter() {
     if (curr_nom()->type()->is_returning()) {
         lam2fscope_[curr_nom()] = curr_nom();
         world().DLOG("scope {} -> {}", curr_nom(), curr_nom());
@@ -56,9 +55,9 @@ void CConvPrepare::enter() {
         cur_body_ = nullptr;
 }
 
-const Def* CConvPrepare::rewrite(const Def* def) {
+const Def* ClosConvPrep::rewrite(const Def* def) {
     auto& w = world();
-    if (!cur_body_ || isa<Tag::CConv>(def) || def->isa<Var>()) return def;
+    if (!cur_body_ || isa<Tag::ClosKind>(def) || def->isa<Var>()) return def;
     for (auto i = 0u; i < def->num_ops(); i++) {
         auto op = def->op(i);
         auto refine = [&](const Def* new_op) {
@@ -73,31 +72,31 @@ const Def* CConvPrepare::rewrite(const Def* def) {
         };
         if (auto lam = isa_retvar(op); lam && from_outer_scope(lam)) {
             w.DLOG("found return var from enclosing scope: {}", op);
-            return refine(eta_wrap(op, CConv::freeBB, "free_ret"));
+            return refine(eta_wrap(op, ClosKind::freeBB, "free_ret"));
         }
         if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock() && from_outer_scope(bb_lam)) {
             w.DLOG("found BB from enclosing scope {}", op);
-            return refine(w.cconv_mark(op, CConv::freeBB));
+            return refine(w.clos_kind(op, ClosKind::freeBB));
         }
         if (isa_cont(cur_body_, def, i)) {
-            if (isa<Tag::CConv>(CConv::ret, op) || isa_retvar(op)) {
+            if (isa<Tag::ClosKind>(ClosKind::ret, op) || isa_retvar(op)) {
                 return def;
             } else if (auto contlam = op->isa_nom<Lam>()) {
-                return refine(w.cconv_mark(contlam, CConv::ret));
+                return refine(w.clos_kind(contlam, ClosKind::ret));
             } else {
-                auto wrapper = eta_wrap(op, CConv::ret, "eta_cont");
+                auto wrapper = eta_wrap(op, ClosKind::ret, "eta_cont");
                 w.DLOG("eta expanded return cont: {} -> {}", op, wrapper);
                 return refine(wrapper);
             }
         }
         if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock() && !isa_callee_br(cur_body_, def, i)) {
             w.DLOG("found firstclass use of BB: {}", bb_lam);
-            return refine(w.cconv_mark(bb_lam, CConv::fstclassBB));
+            return refine(w.clos_kind(bb_lam, ClosKind::fstclassBB));
         }
         // TODO: If EtaRed eta-reduces branches, we have to wrap them again!
         if (isa_retvar(op) && !isa_callee_br(cur_body_, def, i)) {
             w.DLOG("found firstclass use of return var: {}", op);
-            return refine(eta_wrap(op, CConv::fstclassBB, "fstclass_ret"));
+            return refine(eta_wrap(op, ClosKind::fstclassBB, "fstclass_ret"));
         }
     }
 
@@ -109,7 +108,7 @@ const Def* CConvPrepare::rewrite(const Def* def) {
         if (!branches->isa<Tuple>() || !branches->type()->isa<Arr>()) return def;
         for (auto i = 0u; i < branches->num_ops(); i++) {
             if (!branches->op(i)->isa_nom<Lam>()) {
-                auto wrapper = eta_wrap(branches->op(i), CConv::bot, "eta_br");
+                auto wrapper = eta_wrap(branches->op(i), ClosKind::bot, "eta_br");
                 w.DLOG("eta wrap branch: {} -> {}", branches->op(i), wrapper);
                 branches = branches->refine(i, wrapper);
             }

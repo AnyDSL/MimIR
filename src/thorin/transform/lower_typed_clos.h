@@ -5,7 +5,7 @@
 #include <queue>
 
 #include "thorin/world.h"
-#include "thorin/transform/closure_conv.h"
+#include "thorin/transform/clos_conv.h"
 
 /// Convert from typed closuras (represented by <code>Σt.[t, cn[t, <args>]code>)
 /// to untyped closures, where the environment is passed via memory (as <code>i8*</code>).
@@ -20,12 +20,12 @@
 namespace thorin {
 
 
-class LowerTypedClosures {
+class LowerTypedClos {
 public:
 
     using StubQueue = std::queue<std::tuple<const Def*, const Def*, Lam*>>;
 
-    LowerTypedClosures(World& world)
+    LowerTypedClos(World& world)
         : world_(world)
         , old2new_()
         , worklist_() 

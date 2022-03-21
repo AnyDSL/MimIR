@@ -1,16 +1,16 @@
 
-#include "thorin/pass/fp/unbox_closures.h"
-#include "thorin/transform/closure_conv.h"
+#include "thorin/pass/rw/branch_clos_elim.h"
+#include "thorin/transform/clos_conv.h"
 
 namespace thorin {
 
-static std::tuple<std::vector<ClosureLit>, const Def*> isa_branch(const Def* callee) {
+static std::tuple<std::vector<ClosLit>, const Def*> isa_branch(const Def* callee) {
     if (auto closure_proj = callee->isa<Extract>()) {
         auto inner_proj = closure_proj->tuple()->isa<Extract>();
-        if (inner_proj && inner_proj->tuple()->isa<Tuple>() && isa_ctype(inner_proj->type())) {
-            auto branches = std::vector<ClosureLit>();
+        if (inner_proj && inner_proj->tuple()->isa<Tuple>() && isa_clos_type(inner_proj->type())) {
+            auto branches = std::vector<ClosLit>();
             for (auto op: inner_proj->tuple()->ops()) {
-                if (auto c = isa_closure_lit(op))
+                if (auto c = isa_clos_lit(op))
                     branches.push_back(std::move(c));
                 else
                     return {};
@@ -21,7 +21,7 @@ static std::tuple<std::vector<ClosureLit>, const Def*> isa_branch(const Def* cal
     return {};
 }
 
-const Def* UnboxClosure::rewrite(const Def* def) { 
+const Def* BranchClosElim::rewrite(const Def* def) { 
     auto& w = world();
     auto app = def->isa<App>();
     if (!app || !app->callee_type()->is_cn()) return def;
@@ -34,13 +34,13 @@ const Def* UnboxClosure::rewrite(const Def* def) {
             auto& dropped_lam = entry->second;
             if (inserted || !dropped_lam) {
                 auto clam = c.fnc_as_lam();
-                dropped_lam = clam->stub(w, ctype_to_pi(c.type()), clam->dbg());
-                auto new_vars = closure_insert_env(c.env(), dropped_lam->var());
+                dropped_lam = clam->stub(w, clos_type_to_pi(c.type()), clam->dbg());
+                auto new_vars = clos_insert_env(c.env(), dropped_lam->var());
                 dropped_lam->set(clam->reduce(new_vars));
             }
             return dropped_lam;
         }));
-        return w.app(w.extract(new_branches, index), closure_remove_env(app->arg()));
+        return w.app(w.extract(new_branches, index), clos_remove_env(app->arg()));
     }
 
     // auto bxd_lam = app->callee()->isa_nom<Lam>();
@@ -113,7 +113,7 @@ const Def* UnboxClosure::rewrite(const Def* def) {
     return def;
 }
 
-undo_t UnboxClosure::analyze(const Proxy* def) {
+undo_t BranchClosElim::analyze(const Proxy* def) {
     auto& w = world();
     auto lam = def->op(0_u64)->as_nom<Lam>();
     w.DLOG("undo {}", lam);

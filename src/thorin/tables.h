@@ -29,18 +29,18 @@ using nat_t    = u64;
     m(Var, var)                                                               \
     m(Global, global)
 
-#define THORIN_TAG(m)                                               \
-    m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)               \
-    m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(Div, div) m(ROp, rop)   \
-    m(ICmp, icmp) m(RCmp, rcmp)                                     \
-    m(Trait, trait) m(Conv, conv) m(PE, pe) m(Acc, acc)             \
-    m(Bitcast, bitcast) m(LEA, lea)                                 \
-    m(Alloc, alloc) m(Slot, slot) m(Malloc, malloc) m(Mslot, mslot) \
-    m(Load, load) m(Remem, remem) m(Store, store)                   \
-    m(Atomic, atomic)                                               \
-    m(Zip, zip) m(For, affine_for)                                  \
-    m(RevDiff, rev_diff) m(TangentVector, tangent_vector)           \
-    m(CConv, CConv)                                                 \
+#define THORIN_TAG(m)                                                     \
+    m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)                     \
+    m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(Div, div) m(ROp, rop)         \
+    m(ICmp, icmp) m(RCmp, rcmp)                                           \
+    m(Trait, trait) m(Conv, conv) m(PE, pe) m(Acc, acc)                   \
+    m(Bitcast, bitcast) m(LEA, lea)                                       \
+    m(Alloc, alloc) m(Slot, slot) m(Malloc, malloc) m(Mslot, mslot)       \
+    m(Load, load) m(Remem, remem) m(Store, store)                         \
+    m(Atomic, atomic)                                                     \
+    m(Zip, zip) m(For, affine_for)                                        \
+    m(RevDiff, rev_diff) m(TangentVector, tangent_vector)                 \
+    m(ClosKind, ClosKind)                                                 \
     m(AllocJmpBuf, alloc_jmpbuf) m(SetJmp, set_jmp) m(LongJmp, long_jmp)
 
 namespace WMode {
@@ -86,8 +86,8 @@ enum RMode : nat_t {
 /// Accelerators
 #define THORIN_ACC(m) m(Acc, vecotrize) m(Acc, parallel) m(Acc, opencl) m(Acc, cuda) m(Acc, nvvm) m (Acc, amdgpu)
 /// ClosureAnalysis annotations, THORIN_CA_BOT includes a ⊥ node for convinience
-#define THORIN_CCONV(m) m(CConv, ret) m(CConv, freeBB) m(CConv, fstclassBB) m(CConv, escaping)
-#define THORIN_CCONV_BOT(m) m(CConv, bot) THORIN_CCONV(m)
+#define THORIN_CLOS_KIND(m) m(ClosKind, ret) m(ClosKind, freeBB) m(ClosKind, fstclassBB) m(ClosKind, escaping)
+#define THORIN_CLOS_KIND_BOT(m) m(ClosKind, bot) THORIN_CLOS_KIND(m)
 
 
 /// The 5 relations are disjoint and are organized as follows:
@@ -196,18 +196,18 @@ enum : tag_t { THORIN_TAG(CODE) Max };
 }
 
 #define CODE(T, o) o,
-enum class Bit   : flags_t { THORIN_BIT       (CODE) };
-enum class Shr   : flags_t { THORIN_SHR       (CODE) };
-enum class Wrap  : flags_t { THORIN_WRAP      (CODE) };
-enum class Div   : flags_t { THORIN_DIV       (CODE) };
-enum class ROp   : flags_t { THORIN_R_OP      (CODE) };
-enum class ICmp  : flags_t { THORIN_I_CMP     (CODE) };
-enum class RCmp  : flags_t { THORIN_R_CMP     (CODE) };
-enum class Trait : flags_t { THORIN_TRAIT     (CODE) };
-enum class Conv  : flags_t { THORIN_CONV      (CODE) };
-enum class PE    : flags_t { THORIN_PE        (CODE) };
-enum class Acc   : flags_t { THORIN_ACC       (CODE) };
-enum class CConv : flags_t { THORIN_CCONV_BOT (CODE) };
+enum class Bit      : flags_t { THORIN_BIT           (CODE) };
+enum class Shr      : flags_t { THORIN_SHR           (CODE) };
+enum class Wrap     : flags_t { THORIN_WRAP          (CODE) };
+enum class Div      : flags_t { THORIN_DIV           (CODE) };
+enum class ROp      : flags_t { THORIN_R_OP          (CODE) };
+enum class ICmp     : flags_t { THORIN_I_CMP         (CODE) };
+enum class RCmp     : flags_t { THORIN_R_CMP         (CODE) };
+enum class Trait    : flags_t { THORIN_TRAIT         (CODE) };
+enum class Conv     : flags_t { THORIN_CONV          (CODE) };
+enum class PE       : flags_t { THORIN_PE            (CODE) };
+enum class Acc      : flags_t { THORIN_ACC           (CODE) };
+enum class ClosKind : flags_t { THORIN_CLOS_KIND_BOT (CODE) };
 #undef CODE
 
 constexpr ICmp operator|(ICmp a, ICmp b) { return ICmp(flags_t(a) | flags_t(b)); }
@@ -219,18 +219,18 @@ constexpr RCmp operator&(RCmp a, RCmp b) { return RCmp(flags_t(a) & flags_t(b));
 constexpr RCmp operator^(RCmp a, RCmp b) { return RCmp(flags_t(a) ^ flags_t(b)); }
 
 #define CODE(T, o) case T::o: return #T "_" #o;
-constexpr std::string_view op2str(Bit   o) { switch (o) { THORIN_BIT       (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(Shr   o) { switch (o) { THORIN_SHR       (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(Wrap  o) { switch (o) { THORIN_WRAP      (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(Div   o) { switch (o) { THORIN_DIV       (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(ROp   o) { switch (o) { THORIN_R_OP      (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(ICmp  o) { switch (o) { THORIN_I_CMP     (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(RCmp  o) { switch (o) { THORIN_R_CMP     (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(Trait o) { switch (o) { THORIN_TRAIT     (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(Conv  o) { switch (o) { THORIN_CONV      (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(PE    o) { switch (o) { THORIN_PE        (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(Acc   o) { switch (o) { THORIN_ACC       (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(CConv o) { switch (o) { THORIN_CCONV_BOT (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(Bit      o) { switch (o) { THORIN_BIT           (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(Shr      o) { switch (o) { THORIN_SHR           (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(Wrap     o) { switch (o) { THORIN_WRAP          (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(Div      o) { switch (o) { THORIN_DIV           (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(ROp      o) { switch (o) { THORIN_R_OP          (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(ICmp     o) { switch (o) { THORIN_I_CMP         (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(RCmp     o) { switch (o) { THORIN_R_CMP         (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(Trait    o) { switch (o) { THORIN_TRAIT         (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(Conv     o) { switch (o) { THORIN_CONV          (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(PE       o) { switch (o) { THORIN_PE            (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(Acc      o) { switch (o) { THORIN_ACC           (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(ClosKind o) { switch (o) { THORIN_CLOS_KIND_BOT (CODE) default: unreachable(); } }
 #undef CODE
 
 namespace AddrSpace {
@@ -262,19 +262,19 @@ template<> inline constexpr size_t Num<PE   > = 0_s THORIN_PE   (CODE);
 template<> inline constexpr size_t Num<Acc  > = 0_s THORIN_ACC  (CODE);
 #undef CODE
 
-template<tag_t tag> struct Tag2Enum_    { using type = tag_t; };
-template<> struct Tag2Enum_<Tag::Bit  > { using type = Bit;   };
-template<> struct Tag2Enum_<Tag::Shr  > { using type = Shr;   };
-template<> struct Tag2Enum_<Tag::Wrap > { using type = Wrap;  };
-template<> struct Tag2Enum_<Tag::Div  > { using type = Div;   };
-template<> struct Tag2Enum_<Tag::ROp  > { using type = ROp;   };
-template<> struct Tag2Enum_<Tag::ICmp > { using type = ICmp;  };
-template<> struct Tag2Enum_<Tag::RCmp > { using type = RCmp;  };
-template<> struct Tag2Enum_<Tag::Trait> { using type = Trait; };
-template<> struct Tag2Enum_<Tag::Conv > { using type = Conv;  };
-template<> struct Tag2Enum_<Tag::PE   > { using type = PE;    };
-template<> struct Tag2Enum_<Tag::Acc  > { using type = Acc;   };
-template<> struct Tag2Enum_<Tag::CConv> { using type = CConv;    };
+template<tag_t tag> struct Tag2Enum_        { using type = tag_t;       };
+template<> struct Tag2Enum_<Tag::Bit      > { using type = Bit;         };
+template<> struct Tag2Enum_<Tag::Shr      > { using type = Shr;         };
+template<> struct Tag2Enum_<Tag::Wrap     > { using type = Wrap;        };
+template<> struct Tag2Enum_<Tag::Div      > { using type = Div;         };
+template<> struct Tag2Enum_<Tag::ROp      > { using type = ROp;         };
+template<> struct Tag2Enum_<Tag::ICmp     > { using type = ICmp;        };
+template<> struct Tag2Enum_<Tag::RCmp     > { using type = RCmp;        };
+template<> struct Tag2Enum_<Tag::Trait    > { using type = Trait;       };
+template<> struct Tag2Enum_<Tag::Conv     > { using type = Conv;        };
+template<> struct Tag2Enum_<Tag::PE       > { using type = PE;          };
+template<> struct Tag2Enum_<Tag::Acc      > { using type = Acc;         };
+template<> struct Tag2Enum_<Tag::ClosKind> { using type = ClosKind; };
 template<tag_t tag> using Tag2Enum = typename Tag2Enum_<tag>::type;
 
 // clang-format on

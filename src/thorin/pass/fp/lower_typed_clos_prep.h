@@ -4,15 +4,14 @@
 
 #include "thorin/pass/pass.h"
 #include "thorin/pass/fp/eta_exp.h"
-
-#include "thorin/transform/closure_conv.h"
+#include "thorin/transform/clos_conv.h"
 
 namespace thorin {
 
-class ClosureAnalysis : public FPPass<ClosureAnalysis, Lam> {
+class LowerTypedClosPrep : public FPPass<LowerTypedClosPrep, Lam> {
 public:
-    ClosureAnalysis(PassMan& man)
-        : FPPass<ClosureAnalysis, Lam>(man, "closure_analysis")
+    LowerTypedClosPrep(PassMan& man)
+        : FPPass<LowerTypedClosPrep, Lam>(man, "closure_analysis")
         , escaping_() {}
 
     using Data = int; // Dummy

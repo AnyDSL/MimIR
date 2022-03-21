@@ -498,10 +498,10 @@ public:
     const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) { return op_wminus(lit_nat(wmode), a, dbg); }
     ///@}
 
-    const Def* cconv_mark(const Def* def, CConv a, const Def* dbg = {}) {
+    const Def* clos_kind(const Def* def, ClosKind a, const Def* dbg = {}) {
         switch (a) {
-#define CODE(T, o) case T::o: return app(app(data_.cconv_ ## o ## _, def->type()), def, dbg);
-            THORIN_CCONV (CODE)
+#define CODE(T, o) case T::o: return app(app(data_.clos_ ## o ## _, def->type()), def, dbg);
+            THORIN_CLOS_KIND (CODE)
 #undef CODE
             default: return def;
         }
@@ -782,10 +782,10 @@ private:
         const Axiom* type_ptr_;
         const Axiom* type_real_;
         const Axiom* zip_;
-        const Axiom* cconv_ret_;
-        const Axiom* cconv_freeBB_;
-        const Axiom* cconv_fstclassBB_;
-        const Axiom* cconv_escaping_;
+        const Axiom* clos_ret_;
+        const Axiom* clos_freeBB_;
+        const Axiom* clos_fstclassBB_;
+        const Axiom* clos_escaping_;
         const Axiom* sjlj_alloc_jmpbuf;
         const Axiom* sjlj_setjmp_;
         const Axiom* sjlj_longjmp_;

@@ -1,12 +1,13 @@
 #include "thorin/util/bitset.h"
-#include "thorin/pass/fp/closure_analysis.h"
+#include "thorin/pass/fp/lower_typed_clos_prep.h"
+#include "thorin/transform/clos_conv.h"
 
 namespace thorin {
 
 static bool interesting_type(const Def* type, DefSet& visited) {
     if (type->isa_nom())
         visited.insert(type);
-    if (isa_ctype(type))
+    if (isa_clos_type(type))
         return true;
     if (auto sigma = type->isa<Sigma>())
         return std::any_of(sigma->ops().begin(), sigma->ops().end(), [&](auto d) {
@@ -27,9 +28,9 @@ static void split(DefSet& out, const Def* def, bool as_callee) {
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam) {
         if (var->type()->isa<Pi>() || interesting_type(var))
             out.insert(var);
-    } else if (auto c = isa_closure_lit(def, false)) {
+    } else if (auto c = isa_clos_lit(def, false)) {
         split(out, c.fnc(), as_callee);
-    } else if (auto q = isa<Tag::CConv>(def)) {
+    } else if (auto q = isa<Tag::ClosKind>(def)) {
         split(out, q->arg(), as_callee);
     } else if (auto proj = def->isa<Extract>()) {
         split(out, proj->tuple(), as_callee);
@@ -48,7 +49,7 @@ static DefSet&& split(const Def* def, bool keep_others, DefSet&& out = DefSet())
     return std::move(out);
 }
 
-undo_t ClosureAnalysis::set_escaping(const Def* def) {
+undo_t LowerTypedClosPrep::set_escaping(const Def* def) {
     auto undo = No_Undo;
     for (auto d: split(def, false)) {
         if (is_escaping(d)) 
@@ -63,20 +64,20 @@ undo_t ClosureAnalysis::set_escaping(const Def* def) {
     return undo;
 }
 
-const Def* ClosureAnalysis::rewrite(const Def* def) {
-    if (auto closure = isa_closure_lit(def, false)) {
+const Def* LowerTypedClosPrep::rewrite(const Def* def) {
+    if (auto closure = isa_clos_lit(def, false)) {
         auto fnc = closure.fnc();
-        if (!isa<Tag::CConv>(fnc)) {
-            auto new_fnc = world().cconv_mark(fnc, escaping_.contains(fnc) ? CConv::escaping : CConv::bot);
-            return pack_closure(closure.env(), new_fnc, closure->type());
+        if (!isa<Tag::ClosKind>(fnc)) {
+            auto new_fnc = world().clos_kind(fnc, escaping_.contains(fnc) ? ClosKind::escaping : ClosKind::bot);
+            return clos_pack(closure.env(), new_fnc, closure->type());
         }
     }
     return def;
 }
 
-undo_t ClosureAnalysis::analyze(const Def* def) {
+undo_t LowerTypedClosPrep::analyze(const Def* def) {
     auto& w = world();
-    if (auto c = isa_closure_lit(def, false)) {
+    if (auto c = isa_clos_lit(def, false)) {
         w.DLOG("closure ({}, {})", c.env(), c.fnc());
         if (!c.fnc_as_lam() || is_escaping(c.fnc_as_lam()) || is_escaping(c.env_var()))
             return set_escaping(c.env());
