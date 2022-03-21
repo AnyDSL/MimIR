@@ -146,7 +146,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
         for (size_t i = 0; i < nom->num_ops(); i++)
             if (nom->op(i))
                 new_nom->set(i, rewrite(nom->op(i)));
-        if (Checker(w).equiv(nom, new_nom))
+        if (!def->isa_nom<Global>() && Checker(w).equiv(nom, new_nom))
             return map(nom, nom);
         if (auto restruct = new_nom->restructure())
             return map(nom, restruct);

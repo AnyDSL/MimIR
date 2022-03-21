@@ -187,7 +187,6 @@ public:
     /// @{
     bool is_returning() { return fnc_type()->is_returning(); }
     bool is_basicblock() { return fnc_type()->is_basicblock(); }
-    unsigned int order();
     ClosKind kind() { return kind_; }  ///< @p ClosKind annoation. These should appear before the code-part.
     /// @}
 

@@ -129,10 +129,6 @@ const Def* ClosLit::env_var() {
     return fnc_as_lam()->var(CLOS_ENV_PARAM);
 }
 
-unsigned int ClosLit::order() { 
-    return clos_type_to_pi(type())->order(); 
-}
-
 /* Closure Conversion */
 
 void ClosConv::run() {
@@ -265,7 +261,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             if (def->op(i))
                 new_nom->set(i, rewrite(def->op(i), subst));
         }
-        if (Checker(w).equiv(nom, new_nom))
+        if (!nom->isa_nom<Global>() && Checker(w).equiv(nom, new_nom))
             return map(nom);
         if (auto restruct = new_nom->restructure())
             return map(restruct);

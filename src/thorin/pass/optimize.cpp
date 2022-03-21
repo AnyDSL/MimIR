@@ -18,15 +18,9 @@
 #include "thorin/pass/rw/clos_conv_prep.h"
 #include "thorin/pass/rw/clos2sjlj.h"
 
-<<<<<<< HEAD
-// old stuff
-#include "thorin/transform/cleanup_world.h"
-#include "thorin/transform/partial_evaluation.h"
 #include "thorin/transform/clos_conv.h"
 #include "thorin/transform/lower_typed_clos.h"
 
-=======
->>>>>>> master
 namespace thorin {
 
 static void closure_conv(World& world) {
@@ -72,7 +66,6 @@ void optimize(World& world) {
     // opt.add<TailRecElim>(er);
     opt.run();
 
-<<<<<<< HEAD
     closure_conv(world);
     lower_closures(world);
     
@@ -82,8 +75,6 @@ void optimize(World& world) {
     codgen_prepare.add<Alloc2Malloc>();
     codgen_prepare.add<RetWrap>();
     codgen_prepare.run();
-=======
-    PassMan::run<LamSpec>(world);
 
     PassMan codgen_prep(world);
     // codgen_prep.add<BoundElim>();
@@ -91,7 +82,6 @@ void optimize(World& world) {
     codgen_prep.add<Alloc2Malloc>();
     codgen_prep.add<RetWrap>();
     codgen_prep.run();
->>>>>>> master
 }
 
 } // namespace thorin
