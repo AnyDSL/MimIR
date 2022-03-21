@@ -345,7 +345,7 @@ ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
 
 /* Free variable analysis */
 
-void FVA::split_fv(Node* node, const Def* fv, bool& init_node, NodeQueue& worklist) {
+void FreeDefAna::split_fd(Node* node, const Def* fv, bool& init_node, NodeQueue& worklist) {
     if (auto [var, lam] = ca_isa_var<Lam>(fv); var && lam) {
         if (var != lam->ret_var())
             node->fvs.emplace(fv);
@@ -370,11 +370,11 @@ void FVA::split_fv(Node* node, const Def* fv, bool& init_node, NodeQueue& workli
         node->fvs.emplace(fv);
     } else {
         for (auto op: fv->ops())
-            split_fv(node, op, init_node, worklist);
+            split_fd(node, op, init_node, worklist);
     }
 }
 
-std::pair<FVA::Node*, bool> FVA::build_node(Def *nom, NodeQueue& worklist) {
+std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def *nom, NodeQueue& worklist) {
     auto& w = world();
     auto [p, inserted] = lam2nodes_.emplace(nom, nullptr);
     if (!inserted)
@@ -385,7 +385,7 @@ std::pair<FVA::Node*, bool> FVA::build_node(Def *nom, NodeQueue& worklist) {
     auto scope = Scope(nom);
     bool init_node = false;
     for (auto v: scope.free_defs()) {
-        split_fv(node, v, init_node, worklist);
+        split_fd(node, v, init_node, worklist);
     }
     if (!init_node) {
         worklist.push(node);
@@ -394,7 +394,7 @@ std::pair<FVA::Node*, bool> FVA::build_node(Def *nom, NodeQueue& worklist) {
     return {node, true};
 }
 
-void FVA::run(NodeQueue& worklist) {
+void FreeDefAna::run(NodeQueue& worklist) {
     // auto& w = world();
     int iter = 0;
     while(!worklist.empty()) {
@@ -420,7 +420,7 @@ void FVA::run(NodeQueue& worklist) {
     // w.DLOG("FVA: done");
 }
 
-DefSet& FVA::run(Lam *lam) {
+DefSet& FreeDefAna::run(Lam *lam) {
     auto worklist = NodeQueue();
     auto [node, _] = build_node(lam, worklist);
     if (!is_done(node)) {

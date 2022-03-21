@@ -193,7 +193,7 @@ public:
         for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);
     }
     /// Are all Def::ops set?
-    /// * `true` if all operands are set or Def::num_ops` == 0`.
+    /// * `true` if all operands are set or Def::num_ops ` == 0`.
     /// * `false` if all operands are `nullptr`.
     /// * `assert`s otherwise.
     bool is_set() const;
