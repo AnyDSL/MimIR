@@ -73,12 +73,27 @@ static const Def* to_fat_ptr(World& world, const Def* ptr, const Def* size){
     auto dst_fat_ptr=world.tuple({int_size, ptr});
 }
 
+Array<const Def*> vars_without_mem_cont(World& world, Lam* lam) {
+    type_dump(world,"  get vars of",lam);
+    dlog(world,"  has ret_var {}",lam->ret_var());
+    //    if(lam->ret_var())
+    return Array<const Def*>(
+        lam->num_vars()-(lam->ret_var()==nullptr ? 1 : 2),
+        [&](auto i) {
+          return lam->var(i+1);
+        });
+}
+
 
 // multidimensional addition of values
 // needed for operation differentiation
 // we only need a multidimensional addition
+
+// TODO: Currently: sum takes mem, adds a and b and calls cont
+// TODO: possible: sum := \lambda mem a b cont. cont(mem, a+b)
 const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
     dlog(world,"add {}:{} + {}:{}",a,a->type(),b,b->type());
+    type_dump(world,"add cont",cont);
 
     if (auto aptr = isa<Tag::Ptr>(a->type())) {
         THORIN_UNREACHABLE;
@@ -94,8 +109,80 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
 
 #define w world
     if(isFatPtrType(world,a->type())){
+        auto [size_a, arr_a] = a->projs<2>();
+        auto [size_b, arr_b] = b->projs<2>();
+        // size_b has to be size_a
+        dlog(world," add fat pointer of size {} (={})",size_a,size_b);
+        type_dump(world," arr_a indef",arr_a);
+        type_dump(world," arr_b indef",arr_b);
+
+        auto arr_size_nat = world.op_bitcast(world.type_nat(),size_a);
+        auto [arr_ty, arr_addr_space] = as<Tag::Ptr>(arr_a->type())->arg()->projs<2>();
+        auto arr_sized_ty=world.arr(arr_size_nat,arr_ty->as<Arr>()->body())->as<Arr>();
+
+        type_dump(world," alloc array type",arr_sized_ty);
+
+        auto [mem2,arr_c_def]=world.op_alloc(arr_sized_ty,sum_pb->mem_var())->projs<2>();
+        type_dump(world," arr_c def",arr_c_def);
+
+        auto arr_c = world.op_bitcast(arr_a->type(),arr_c_def);
+        type_dump(world," arr_c indef",arr_c);
+//        THORIN_UNREACHABLE;
+
+        // TODO: replace with for loop
+        auto loop_head = world.nom_lam(world.cn_mem(world.type_int_width(64)),world.dbg("add_loop_head"));
+        auto loop = world.nom_lam(world.cn(world.type_mem()),world.dbg("add_loop_body"));
+        auto loop_end = world.nom_lam(world.cn(world.type_mem()),world.dbg("add_loop_exit"));
+
+        type_dump(world," loop head",loop_head);
+        type_dump(world," loop",loop);
+        type_dump(world," loop end",loop_end);
+
+        auto cond = world.op(ICmp::ul,loop_head->var(1),size_a);
+        loop_head->branch(size_a,cond,loop,loop_end,loop_head->mem_var());
+
+        auto cmem=loop->mem_var();
+        // store into c
+
+        type_dump(world," var i",loop_head->var(1));
+        type_dump(world," 1",world.lit_int_width(64,1));
+        auto inc=world.op(Wrap::add,world.lit_nat(0),world.lit_int_width(64,1),loop_head->var(1));
+        type_dump(world," i+1",inc);
+
+//        loop
+        loop->set_body(world.app(
+            loop_head,
+            {
+                cmem,
+                inc
+            }
+        ));
+        loop->set_filter(true);
+
+        loop_end->set_body(world.app(
+            cont,
+            flat_tuple({loop_end->mem_var(),
+                        world.tuple({size_a,arr_a}) // TODO: arr_c
+                       })
+        ));
+        loop_end->set_filter(true);
+
+
+        sum_pb->set_body(world.app(
+            loop_head,
+            {
+                mem2,
+                world.lit_int_width(64,0)
+            }
+        ));
+        sum_pb->set_filter(true);
+
+        return sum_pb;
 
     }
+
+
+
 //    if(isFatPtrType(world,a->type()) && isFatPtrType(world,b->type())){
 //
 //        auto [size_a , fat_ptr_a] = a->projs<2>();
@@ -197,17 +284,42 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
 //        return {mem, world.op(ROp::add,(nat_t)0,a,b)};
     }
 
-    THORIN_UNREACHABLE;
-//    Array<const Def*> ops{dim};
-//    for (size_t i = 0; i < ops.size(); ++i) {
-//        // adds component-wise both vectors
-//        auto ai=world.extract(a,i); // use op?
-//        auto bi=world.extract(b,i);
-//        auto [nmem, op]=vec_add( world,mem, ai,bi );
-//        mem=nmem;
-//        ops[i]=op;
-//    }
-//    return {mem, world.tuple(ops)};
+
+    Array<const Def*> ops{dim};
+    auto ret_cont_type = cont->type()->as<Pi>();
+//    auto next_cont = world.nom_lam(ret_cont_type,world.dbg("add_tuple_cont"));
+//    type_dump(world," tuple add cont",next_cont);
+    auto current_cont=sum_pb;
+
+//    assert(ops.size()>0);
+    for (size_t i = 0; i < ops.size(); ++i) {
+        // adds component-wise both vectors
+        auto ai=world.extract(a,i); // use op?
+        auto bi=world.extract(b,i);
+        dlog(world,"  {}th: {}:{} + {}:{}",i,ai,ai->type(),bi,bi->type());
+        auto res_cont_type = world.cn_mem(ai->type());
+        auto res_cont = world.nom_lam(res_cont_type,world.dbg("tuple_add_cont"));
+        type_dump(world,"  result cont",res_cont);
+        auto sum_call=vec_add(world,ai,bi,res_cont);
+        ops[i]=world.tuple(vars_without_mem_cont(world,res_cont));
+
+        current_cont->set_body(world.app(
+            sum_call,
+            sum_pb->mem_var()
+        ));
+        current_cont->set_filter(true);
+
+        current_cont=res_cont;
+    }
+
+    current_cont->set_body(world.app(
+        cont,
+        flat_tuple({mem, world.tuple(ops)})
+    ));
+    current_cont->set_filter(true);
+
+    return sum_pb;
+
 }
 
 
@@ -413,7 +525,6 @@ private:
     void derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta );
 
     const Def* zero_pb(const Def* type, const Def* dbg);
-    Array<const Def*> vars_without_mem_cont(Lam* lam);
     const Def* j_wrap_tuple(Array<const Def*> tuple);
 
     const Def* seen(const Def* src); // lookup in the map
@@ -584,8 +695,8 @@ const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
         next_current_sum_pb->set_filter(world_.lit_true());
 
         auto sum_cont_pb = vec_add(world_,
-                                   world_.tuple(vars_without_mem_cont(current_sum_pb)),
-                                   world_.tuple(vars_without_mem_cont(res_pb)),
+                                   world_.tuple(vars_without_mem_cont(world_,current_sum_pb)),
+                                   world_.tuple(vars_without_mem_cont(world_,res_pb)),
                                    next_current_sum_pb);
         type_dump(world_,"  sum_cont {}",sum_cont_pb);
         res_pb->set_body(world_.app(
@@ -711,8 +822,8 @@ const Def* AutoDiffer::chain(const Def* a, const Def* b) {
     auto middlepi = world_.cn_mem_flat(B);
     auto middle = world_.nom_lam(middlepi, world_.dbg("chain_2"));
 
-    toplevel->set_body(world_.app(a, flat_tuple({toplevel->mem_var(), world_.tuple(vars_without_mem_cont(toplevel)), middle})));
-    middle->set_body(world_.app(b, flat_tuple({middle->mem_var(), world_.tuple(vars_without_mem_cont(middle)), toplevel->ret_var()})));
+    toplevel->set_body(world_.app(a, flat_tuple({toplevel->mem_var(), world_.tuple(vars_without_mem_cont(world_,toplevel)), middle})));
+    middle->set_body(world_.app(b, flat_tuple({middle->mem_var(), world_.tuple(vars_without_mem_cont(world_,middle)), toplevel->ret_var()})));
 
     toplevel->set_filter(world_.lit_true());
     middle->set_filter(world_.lit_true());
@@ -815,7 +926,7 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract, const Def* tuple) {
                 args[i]=pb->ret_var();
             } else if(i==index_lit) {
 //                args[i]=pb->var(1,world_.dbg("s"));
-                args[i]= world_.tuple(vars_without_mem_cont(pb));
+                args[i]= world_.tuple(vars_without_mem_cont(world_,pb));
             }else {
                 // TODO: correct index
                 auto [nmem, v]=ZERO(world_,mem,pb_domain->op(i),
@@ -874,16 +985,6 @@ std::pair<const Def*,const Def*> AutoDiffer::reloadPtrPb(const Def* mem, const D
     return {pb_load_mem,pb_load_fun};
 }
 
-Array<const Def*> AutoDiffer::vars_without_mem_cont(Lam* lam) {
-    type_dump(world_,"  get vars of",lam);
-    dlog(world_,"  has ret_var {}",lam->ret_var());
-//    if(lam->ret_var())
-    return Array<const Def*>(
-        lam->num_vars()-(lam->ret_var()==nullptr ? 1 : 2),
-        [&](auto i) {
-          return lam->var(i+1);
-        });
-}
 
 // top level entry point after creating the AutoDiffer object
 // a mapping of source arguments to dst arguments is expected in src_to_dst
@@ -2083,7 +2184,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 ret_arg,
                 flat_tuple({
                     chained->mem_var(),
-                    world_.tuple(vars_without_mem_cont(chained)),
+                    world_.tuple(vars_without_mem_cont(world_,chained)),
                     chain_pb
                 })
                 ));
@@ -2366,8 +2467,8 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             middle->set_body(world_.app(bpb, {middle->mem_var(), pb->var(1), end}));
 //            auto adiff = middle->var(1);
 //            auto bdiff = end->var(1);
-            auto adiff = world_.tuple(vars_without_mem_cont(middle));
-            auto bdiff = world_.tuple(vars_without_mem_cont(end));
+            auto adiff = world_.tuple(vars_without_mem_cont(world_,middle));
+            auto bdiff = world_.tuple(vars_without_mem_cont(world_,end));
 
 
 //            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
@@ -2425,8 +2526,8 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
 
             pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), b), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), a), end}));
-            auto adiff = world_.tuple(vars_without_mem_cont(middle));
-            auto bdiff = world_.tuple(vars_without_mem_cont(end));
+            auto adiff = world_.tuple(vars_without_mem_cont(world_,middle));
+            auto bdiff = world_.tuple(vars_without_mem_cont(world_,end));
 
 //            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
 //            end->set_body(world_.app(pb->ret_var(), flat_tuple({ smem, sum})));
