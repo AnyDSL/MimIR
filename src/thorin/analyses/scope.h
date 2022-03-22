@@ -2,13 +2,20 @@
 #define THORIN_ANALYSES_SCOPE_H
 
 #include "thorin/def.h"
+
 #include "thorin/util/stream.h"
 
 namespace thorin {
 
+template<class This, class T>
+inline T& lazy_init(const This* self, std::unique_ptr<T>& ptr) {
+    return *(ptr ? ptr : ptr = std::make_unique<T>(*self));
+}
+
 class CFA;
-template<bool> class CFG;
-using F_CFG = CFG<true >;
+template<bool>
+class CFG;
+using F_CFG = CFG<true>;
 using B_CFG = CFG<false>;
 
 /// A @p Scope represents a region of @p Def%s that are live from the view of an @p entry's @p Var.
@@ -34,10 +41,12 @@ public:
     /// @name Def%s bound/free in this Scope
     ///@{
     bool bound(const Def* def) const { return bound().contains(def); }
+    // clang-format off
     const DefSet& bound()     const { calc_bound(); return bound_;     } ///< All @p Def%s within this @p Scope.
     const DefSet& free_defs() const { calc_bound(); return free_defs_; } ///< All @em non-const @p Def%s @em directly referenced but @em not @p bound within this @p Scope. May also include @p Var%s or @em noms.
     const VarSet& free_vars() const { calc_free (); return free_vars_; } ///< All @p Var%s that occurr free in this @p Scope. Does @em not transitively contain any free @p Var%s from @p noms.
     const NomSet& free_noms() const { calc_free (); return free_noms_; } ///< All @em noms that occurr free in this @p Scope.
+    // clang-format on
     ///@}
 
     /// @name simple CFA to construct a CFG
@@ -55,8 +64,8 @@ private:
     void calc_free() const;
 
     World& world_;
-    Def* entry_ = nullptr;
-    Def* exit_  = nullptr;
+    Def* entry_             = nullptr;
+    Def* exit_              = nullptr;
     mutable bool has_bound_ = false;
     mutable bool has_free_  = false;
     mutable DefSet bound_;
@@ -69,6 +78,6 @@ private:
 /// Does @p var occurr free in @p def?
 bool is_free(const Var* var, const Def* def);
 
-}
+} // namespace thorin
 
 #endif

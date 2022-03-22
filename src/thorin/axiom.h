@@ -14,8 +14,8 @@ public:
     ///@{
     tag_t tag() const { return tag_t(fields() >> 32_u64); }
     flags_t flags() const { return flags_t(fields()); }
-    NormalizeFn normalizer() const { return normalizer_depth_.ptr(); }
-    u16 currying_depth() const { return normalizer_depth_.index(); }
+    NormalizeFn normalizer() const { return normalizer_; }
+    u16 curry() const { return curry_; }
     ///@}
 
     /// @name virtual methods
@@ -103,15 +103,15 @@ using Tag2Def = typename Tag2Def_<tag>::type;
 
 template<tag_t tag>
 Query<Tag2Enum<tag>, Tag2Def<tag>> isa(const Def* def) {
-    auto [axiom, currying_depth] = Axiom::get(def);
-    if (axiom && axiom->tag() == tag && currying_depth == 0) return {axiom, def->as<Tag2Def<tag>>()};
+    auto [axiom, curry] = Axiom::get(def);
+    if (axiom && axiom->tag() == tag && curry == 0) return {axiom, def->as<Tag2Def<tag>>()};
     return {};
 }
 
 template<tag_t tag>
 Query<Tag2Enum<tag>, Tag2Def<tag>> isa(Tag2Enum<tag> flags, const Def* def) {
-    auto [axiom, currying_depth] = Axiom::get(def);
-    if (axiom && axiom->tag() == tag && axiom->flags() == flags_t(flags) && currying_depth == 0)
+    auto [axiom, curry] = Axiom::get(def);
+    if (axiom && axiom->tag() == tag && axiom->flags() == flags_t(flags) && curry == 0)
         return {axiom, def->as<Tag2Def<tag>>()};
     return {};
 }

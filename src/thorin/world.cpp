@@ -294,20 +294,20 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
         if (!checker_->assignable(pi->dom(), arg)) err()->ill_typed_app(callee, arg);
     }
 
-    auto type                    = pi->reduce(arg).back();
-    auto [axiom, currying_depth] = Axiom::get(callee); // TODO move down again
-    if (axiom && currying_depth == 1) {
+    auto type           = pi->reduce(arg).back();
+    auto [axiom, curry] = Axiom::get(callee); // TODO move down again
+    if (axiom && curry == 1) {
         if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
     }
 
-    return unify<App>(2, axiom, currying_depth - 1, type, callee, arg, dbg);
+    return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
 }
 
 const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
-    auto pi                      = callee->type()->as<Pi>();
-    auto type                    = pi->reduce(arg).back();
-    auto [axiom, currying_depth] = Axiom::get(callee);
-    return unify<App>(2, axiom, currying_depth - 1, type, callee, arg, dbg);
+    auto pi             = callee->type()->as<Pi>();
+    auto type           = pi->reduce(arg).back();
+    auto [axiom, curry] = Axiom::get(callee);
+    return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
 }
 
 const Def* World::sigma(Defs ops, const Def* dbg) {

@@ -140,9 +140,10 @@ using Lam2Lam = LamMap<Lam*>;
 
 class App : public Def {
 private:
-    App(const Axiom* axiom, u16 currying_depth, const Def* type, const Def* callee, const Def* arg, const Def* dbg)
+    App(const Axiom* axiom, u16 curry, const Def* type, const Def* callee, const Def* arg, const Def* dbg)
         : Def(Node, type, {callee, arg}, 0, dbg) {
-        axiom_depth_.set(axiom, currying_depth);
+        axiom_ = axiom;
+        curry_ = curry;
     }
 
 public:
@@ -157,8 +158,8 @@ public:
 
     /// @name get axiom and current currying depth
     ///@{
-    const Axiom* axiom() const { return axiom_depth_.ptr(); }
-    u16 currying_depth() const { return axiom_depth_.index(); }
+    const Axiom* axiom() const { return axiom_; }
+    u16 curry() const { return curry_; }
     ///@}
 
     /// @name virtual methods

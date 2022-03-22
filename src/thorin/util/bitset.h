@@ -2,9 +2,9 @@
 #define THORIN_UTIL_BITSET_H
 
 #include <cstdint>
+
 #include <algorithm>
 
-#include "thorin/util/ptr.h"
 #include "thorin/util/types.h"
 
 namespace thorin {
@@ -14,7 +14,8 @@ public:
     class reference {
     private:
         reference(uint64_t* word, uint16_t index)
-            : tagged_ptr_(word, index) {}
+            : word_(word)
+            , index_(index) {}
 
     public:
         reference operator=(bool b) {
@@ -28,11 +29,12 @@ public:
         operator bool() const { return word() & (1_u64 << index()); }
 
     private:
-        const uint64_t& word() const { return *tagged_ptr_.ptr(); }
-        uint64_t& word() { return *tagged_ptr_.ptr(); }
-        uint64_t index() const { return tagged_ptr_.index(); }
+        const uint64_t& word() const { return *word_; }
+        uint64_t& word() { return *word_; }
+        uint64_t index() const { return index_; }
 
-        TaggedPtr<uint64_t> tagged_ptr_;
+        uint64_t* word_;
+        size_t index_;
 
         friend class BitSet;
     };
@@ -57,30 +59,41 @@ public:
 
     ~BitSet() { dealloc(); }
 
-    BitSet& operator=(BitSet other) { swap(*this, other); return *this; }
+    BitSet& operator=(BitSet other) {
+        swap(*this, other);
+        return *this;
+    }
     ///@}
-
 
     /// @name get, set, clear, toggle, and test bits
     ///@{
     bool test(size_t i) const {
         if ((i / 64_s) >= num_words()) return false;
-        return *(words() + i/64_s) & (1_u64 << i%64_u64);
+        return *(words() + i / 64_s) & (1_u64 << i % 64_u64);
     }
 
+    // clang-format off
     BitSet& set   (size_t i) { ensure_capacity(i); *(words() + i/64_s) |=  (1_u64 << i%64_u64); return *this; }
     BitSet& toggle(size_t i) { ensure_capacity(i); *(words() + i/64_s) ^=  (1_u64 << i%64_u64); return *this; }
     BitSet& clear (size_t i) { ensure_capacity(i); *(words() + i/64_s) &= ~(1_u64 << i%64_u64); return *this; }
+    // clang-format on
     /// clears all bits
-    void clear() { dealloc(); num_words_ = 1; word_ = 0; }
+    void clear() {
+        dealloc();
+        num_words_ = 1;
+        word_      = 0;
+    }
 
-    reference operator[](size_t i) { ensure_capacity(i); return reference(words() + i/64_s, i%64_u64); }
+    reference operator[](size_t i) {
+        ensure_capacity(i);
+        return reference(words() + i / 64_s, i % 64_u64);
+    }
     bool operator[](size_t i) const { return (*const_cast<BitSet*>(this))[i]; }
     ///@}
 
     /// @name relational operators
     ///@{
-    bool operator==(const BitSet&) const; // TODO test
+    bool operator==(const BitSet&) const;                                    // TODO test
     bool operator!=(const BitSet& other) const { return !(*this == other); } // TODO optimize
     ///@}
 
@@ -113,17 +126,23 @@ public:
     /// @name shift
     ///@{
     BitSet& operator>>=(uint64_t shift);
-    BitSet operator>>(uint64_t shift) const { BitSet res(*this); res >>= shift; return res; }
+    BitSet operator>>(uint64_t shift) const {
+        BitSet res(*this);
+        res >>= shift;
+        return res;
+    }
     ///@}
 
     /// @name Boolean operators
     ///@{
+    // clang-format off
     BitSet& operator&=(const BitSet& other) { return op_assign<std::bit_and<uint64_t>>(other); }
     BitSet& operator|=(const BitSet& other) { return op_assign<std::bit_or <uint64_t>>(other); }
     BitSet& operator^=(const BitSet& other) { return op_assign<std::bit_xor<uint64_t>>(other); }
     BitSet operator&(BitSet b) const { BitSet res(*this); res &= b; return res; }
     BitSet operator|(BitSet b) const { BitSet res(*this); res |= b; return res; }
     BitSet operator^(BitSet b) const { BitSet res(*this); res ^= b; return res; }
+    // clang-format on
     ///@}
 
     /// number of bits set
@@ -132,20 +151,18 @@ public:
     void friend swap(BitSet& b1, BitSet& b2) {
         using std::swap;
         swap(b1.num_words_, b2.num_words_);
-        swap(b1.words_,     b2.words_);
-        swap(b1.padding,    b2.padding);
+        swap(b1.words_, b2.words_);
+        swap(b1.padding, b2.padding);
     }
 
 private:
     void ensure_capacity(size_t num_bits) const;
     template<class F>
     BitSet& op_assign(const BitSet& other) {
-        if (this->num_words() < other.num_words())
-            this->ensure_capacity(other.num_bits()-1);
-        auto  this_words = this->words();
+        if (this->num_words() < other.num_words()) this->ensure_capacity(other.num_bits() - 1);
+        auto this_words  = this->words();
         auto other_words = other.words();
-        for (size_t i = 0, e = other.num_words(); i != e; ++i)
-            this_words[i] = F()(this_words[i], other_words[i]);
+        for (size_t i = 0, e = other.num_words(); i != e; ++i) this_words[i] = F()(this_words[i], other_words[i]);
         return *this;
     }
 
@@ -153,7 +170,7 @@ private:
     const uint64_t* words() const { return num_words_ == 1 ? &word_ : words_; }
     uint64_t* words() { return num_words_ == 1 ? &word_ : words_; }
     size_t num_words() const { return num_words_; }
-    size_t num_bits() const { return num_words_*64_s; }
+    size_t num_bits() const { return num_words_ * 64_s; }
 
     union {
         mutable uint64_t* words_;
@@ -167,6 +184,6 @@ public:
 
 static_assert(sizeof(BitSet) == 16);
 
-}
+} // namespace thorin
 
 #endif

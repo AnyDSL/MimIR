@@ -10,7 +10,6 @@
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
 #include "thorin/util/hash.h"
-#include "thorin/util/ptr.h"
 #include "thorin/util/stream.h"
 
 namespace thorin {
@@ -59,17 +58,19 @@ class Use {
 public:
     Use() {}
     Use(const Def* def, size_t index)
-        : tagged_ptr_(def, index) {}
+        : def_(def)
+        , index_(index) {}
 
     bool is_used_as_type() const { return index() == -1_s; }
-    size_t index() const { return tagged_ptr_.index(); }
-    const Def* def() const { return tagged_ptr_.ptr(); }
-    operator const Def*() const { return tagged_ptr_; }
-    const Def* operator->() const { return tagged_ptr_; }
-    bool operator==(Use other) const { return this->tagged_ptr_ == other.tagged_ptr_; }
+    size_t index() const { return index_; }
+    const Def* def() const { return def_; }
+    operator const Def*() const { return def_; }
+    const Def* operator->() const { return def_; }
+    bool operator==(Use other) const { return this->def_ == other.def_ && this->index_ == other.index_; }
 
 private:
-    TaggedPtr<const Def, size_t> tagged_ptr_;
+    const Def* def_;
+    size_t index_;
 };
 
 struct UseHash {
@@ -377,21 +378,21 @@ protected:
     bool equal(const Def* other) const;
 
     union {
-        /// Axiom%s use this member to store their normalize function and the currying depth.
-        TaggedPtr<std::remove_pointer_t<NormalizeFn>, u16> normalizer_depth_;
-        /// Curried App%s of Axiom%s use this member to propagate the Axiom in question and the current currying depth.
-        TaggedPtr<const Axiom, u16> axiom_depth_;
+        NormalizeFn normalizer_; ///< Axiom%s use this member to store their normalizer.
+        const Axiom* axiom_;     /// Curried App%s of Axiom%s use this member to propagate the Axiom.
     };
+
     fields_t fields_;
     uint8_t node_;
     unsigned nom_    : 1;
     unsigned var_    : 1;
     unsigned dep_    : 2;
     unsigned proxy_  : 1;
-    unsigned pading_ : 19;
+    unsigned pading_ : 3;
+    u16 curry_;
+    hash_t hash_;
     u32 gid_;
     u32 num_ops_;
-    hash_t hash_;
     mutable Uses uses_;
     mutable const Def* dbg_;
     union {
