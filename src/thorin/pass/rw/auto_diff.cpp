@@ -109,7 +109,7 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         auto [mem2,a_v] = world.op_load(mem,a)->projs<2>();
         auto [mem3,b_v] = world.op_load(mem2,b)->projs<2>();
 
-        auto res_cont_type = world.cn_mem(a_v->type());
+        auto res_cont_type = world.cn_mem_flat(a_v->type());
         auto res_cont = world.nom_lam(res_cont_type,world.dbg("ptr_add_cont"));
         type_dump(world,"  result cont",res_cont);
         auto sum_cont = vec_add(world,a_v,b_v,res_cont);
@@ -171,28 +171,62 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         auto cond = world.op(ICmp::ul,loop_head->var(1),size_a);
         loop_head->branch(size_a,cond,loop,loop_end,loop_head->mem_var());
 
-        auto cmem=loop->mem_var();
-        // store into c
-
-        type_dump(world," var i",loop_head->var(1));
+        auto idx=loop_head->var(1);
+        type_dump(world," var i",idx);
         type_dump(world," 1",world.lit_int_width(64,1));
-        auto inc=world.op(Wrap::add,world.lit_nat(0),world.lit_int_width(64,1),loop_head->var(1));
+        auto inc=world.op(Wrap::add,world.lit_nat(0),world.lit_int_width(64,1),idx);
         type_dump(world," i+1",inc);
 
-//        loop
-        loop->set_body(world.app(
+        // store into c
+        auto a_p=world.op_lea(arr_a,idx,world.dbg("a_p"));
+        auto b_p=world.op_lea(arr_b,idx,world.dbg("b_p"));
+        auto c_p=world.op_lea(arr_c,idx,world.dbg("c_p"));
+        type_dump(world," a_p",a_p);
+        type_dump(world," b_p",b_p);
+        type_dump(world," c_p",c_p);
+
+        // add pointers using vec_add
+        // lea c, store into c
+
+        auto loop_mem = loop->mem_var();
+
+        auto [lmem2,a_v] = world.op_load(loop_mem,a_p)->projs<2>();
+        auto [lmem3,b_v] = world.op_load(lmem2,   b_p)->projs<2>();
+        loop_mem=lmem3;
+        type_dump(world," a_v",a_v);
+        type_dump(world," b_v",b_v);
+
+
+        // load values manually to allow for easy (and direct) storage into c
+//        auto elem_res_cont_type = world.cn_mem(a_v->type());
+        auto elem_res_cont_type = world.cn_mem_flat(a_v->type());
+        auto elem_res_cont = world.nom_lam(elem_res_cont_type,world.dbg("tuple_add_cont"));
+        auto element_sum_pb = vec_add(world,a_v,b_v,elem_res_cont);
+        auto c_v = world.tuple(vars_without_mem_cont(world,elem_res_cont));
+        type_dump(world," elem_res_cont",elem_res_cont);
+        type_dump(world," elem_sum_pb",element_sum_pb);
+        type_dump(world," c_v",c_v);
+
+        auto res_mem=elem_res_cont->mem_var();
+        res_mem=world.op_store(res_mem,c_p,c_v);
+
+//        set loop
+        loop->set_body(world.app(element_sum_pb, loop_mem));
+        loop->set_filter(true);
+
+        elem_res_cont->set_body(world.app(
             loop_head,
             {
-                cmem,
+                res_mem,
                 inc
             }
         ));
-        loop->set_filter(true);
+        elem_res_cont->set_filter(true);
 
         loop_end->set_body(world.app(
             cont,
             flat_tuple({loop_end->mem_var(),
-                        world.tuple({size_a,arr_a}) // TODO: arr_c
+                        world.tuple({size_a,arr_c})
                        })
         ));
         loop_end->set_filter(true);
@@ -284,7 +318,7 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         auto ai=world.extract(a,i); // use op?
         auto bi=world.extract(b,i);
         dlog(world,"  {}th: {}:{} + {}:{}",i,ai,ai->type(),bi,bi->type());
-        auto res_cont_type = world.cn_mem(ai->type());
+        auto res_cont_type = world.cn_mem_flat(ai->type());
         auto res_cont = world.nom_lam(res_cont_type,world.dbg("tuple_add_cont"));
         type_dump(world,"  result cont",res_cont);
         auto sum_call=vec_add(world,ai,bi,res_cont);
