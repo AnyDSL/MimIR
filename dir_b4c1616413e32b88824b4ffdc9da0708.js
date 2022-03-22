@@ -13,7 +13,6 @@ var dir_b4c1616413e32b88824b4ffdc9da0708 =
     [ "hash.h", "hash_8h.html", "hash_8h" ],
     [ "indexmap.h", "indexmap_8h.html", "indexmap_8h" ],
     [ "indexset.h", "indexset_8h.html", "indexset_8h" ],
-    [ "ptr.h", "ptr_8h.html", "ptr_8h" ],
     [ "stream.cpp", "util_2stream_8cpp.html", null ],
     [ "stream.h", "stream_8h.html", "stream_8h" ],
     [ "types.h", "types_8h.html", "types_8h" ],

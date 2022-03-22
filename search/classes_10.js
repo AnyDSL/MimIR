@@ -14,16 +14,11 @@ var searchData=
   ['tag2enum_5f_3c_20tag_3a_3ashr_20_3e_11',['Tag2Enum_&lt; Tag::Shr &gt;',['../namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Shr_01_4',1,'thorin']]],
   ['tag2enum_5f_3c_20tag_3a_3atrait_20_3e_12',['Tag2Enum_&lt; Tag::Trait &gt;',['../namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Trait_01_4',1,'thorin']]],
   ['tag2enum_5f_3c_20tag_3a_3awrap_20_3e_13',['Tag2Enum_&lt; Tag::Wrap &gt;',['../namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Wrap_01_4',1,'thorin']]],
-  ['taggedptr_14',['TaggedPtr',['../classthorin_1_1TaggedPtr.html',1,'thorin']]],
-  ['taggedptr_3c_20const_20thorin_3a_3aaxiom_2c_20u16_20_3e_15',['TaggedPtr&lt; const thorin::Axiom, u16 &gt;',['../classthorin_1_1TaggedPtr.html',1,'thorin']]],
-  ['taggedptr_3c_20const_20thorin_3a_3adef_2c_20size_5ft_20_3e_16',['TaggedPtr&lt; const thorin::Def, size_t &gt;',['../classthorin_1_1TaggedPtr.html',1,'thorin']]],
-  ['taggedptr_3c_20std_3a_3aremove_5fpointer_5ft_3c_20normalizefn_20_3e_2c_20u16_20_3e_17',['TaggedPtr&lt; std::remove_pointer_t&lt; NormalizeFn &gt;, u16 &gt;',['../classthorin_1_1TaggedPtr.html',1,'thorin']]],
-  ['taggedptr_3c_20uint64_5ft_20_3e_18',['TaggedPtr&lt; uint64_t &gt;',['../classthorin_1_1TaggedPtr.html',1,'thorin']]],
-  ['tailrecelim_19',['TailRecElim',['../classthorin_1_1TailRecElim.html',1,'thorin']]],
-  ['tbound_20',['TBound',['../classthorin_1_1TBound.html',1,'thorin']]],
-  ['test_21',['Test',['../classthorin_1_1Test.html',1,'thorin']]],
-  ['text_22',['TExt',['../classthorin_1_1TExt.html',1,'thorin']]],
-  ['tok_23',['Tok',['../classthorin_1_1Tok.html',1,'thorin']]],
-  ['tuple_24',['Tuple',['../classthorin_1_1Tuple.html',1,'thorin']]],
-  ['typeerror_25',['TypeError',['../classthorin_1_1TypeError.html',1,'thorin']]]
+  ['tailrecelim_14',['TailRecElim',['../classthorin_1_1TailRecElim.html',1,'thorin']]],
+  ['tbound_15',['TBound',['../classthorin_1_1TBound.html',1,'thorin']]],
+  ['test_16',['Test',['../classthorin_1_1Test.html',1,'thorin']]],
+  ['text_17',['TExt',['../classthorin_1_1TExt.html',1,'thorin']]],
+  ['tok_18',['Tok',['../classthorin_1_1Tok.html',1,'thorin']]],
+  ['tuple_19',['Tuple',['../classthorin_1_1Tuple.html',1,'thorin']]],
+  ['typeerror_20',['TypeError',['../classthorin_1_1TypeError.html',1,'thorin']]]
 ];

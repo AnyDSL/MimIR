@@ -81,7 +81,8 @@ var searchData=
   ['hashtable_3c_20u32_2c_20void_2c_20breakhash_2c_204_20_3e_78',['HashTable&lt; u32, void, BreakHash, 4 &gt;',['../classthorin_1_1detail_1_1HashTable.html',1,'thorin::detail']]],
   ['hashtable_3c_20use_2c_20void_2c_20usehash_2c_204_20_3e_79',['HashTable&lt; Use, void, UseHash, 4 &gt;',['../classthorin_1_1detail_1_1HashTable.html',1,'thorin::detail']]],
   ['hashtable_3c_20value_2c_20t_2c_20typename_20key_3a_3ahash_2c_204_20_3e_80',['HashTable&lt; Value, T, typename Key::Hash, 4 &gt;',['../classthorin_1_1detail_1_1HashTable.html',1,'thorin::detail']]],
-  ['head_81',['head',['../structthorin_1_1ll_1_1BB.html#a76a268acc9fff47bbbdcf685f5d1a277',1,'thorin::ll::BB']]],
-  ['head_82',['Head',['../classthorin_1_1LoopTreeBuilder.html#af2176b1acfc3d10dc70c6e8915000925',1,'thorin::LoopTreeBuilder::Head()'],['../classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cba98921133d10fbdb0fb6dbb7b2648befe',1,'thorin::LoopTree::Base::Head()'],['../classthorin_1_1LoopTree_1_1Head.html',1,'thorin::LoopTree&lt; forward &gt;::Head']]],
-  ['hlt_83',['hlt',['../namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921a4f4000d921968b9665f52e88333007da',1,'thorin']]]
+  ['head_81',['Head',['../classthorin_1_1LoopTreeBuilder.html#af2176b1acfc3d10dc70c6e8915000925',1,'thorin::LoopTreeBuilder::Head()'],['../classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cba98921133d10fbdb0fb6dbb7b2648befe',1,'thorin::LoopTree::Base::Head()']]],
+  ['head_82',['head',['../structthorin_1_1ll_1_1BB.html#a76a268acc9fff47bbbdcf685f5d1a277',1,'thorin::ll::BB']]],
+  ['head_83',['Head',['../classthorin_1_1LoopTree_1_1Head.html',1,'thorin::LoopTree']]],
+  ['hlt_84',['hlt',['../namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921a4f4000d921968b9665f52e88333007da',1,'thorin']]]
 ];

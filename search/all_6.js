@@ -2,7 +2,7 @@ var searchData=
 [
   ['f_0',['f',['../namespacethorin.html#a89d67b04557e416d256c0cc75a55accea8fa14cdd754f91cc6554c9e71929cce7',1,'thorin::f()'],['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a8fa14cdd754f91cc6554c9e71929cce7',1,'thorin::f()']]],
   ['f_5fcfg_1',['f_cfg',['../classthorin_1_1CFA.html#ae4a109ef76a97fb3ab65511cab7140df',1,'thorin::CFA::f_cfg()'],['../classthorin_1_1Scope.html#a2c8fbd2333af4d00bd701452f21f2369',1,'thorin::Scope::f_cfg()']]],
-  ['f_5fcfg_2',['F_CFG',['../namespacethorin.html#a6f9e2b51411b2be40d257b9f3faaa76b',1,'thorin']]],
+  ['f_5fcfg_2',['F_CFG',['../namespacethorin.html#afd74630831fc44cb2fc4a0615cc60c0a',1,'thorin']]],
   ['fast_3',['fast',['../namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719a15bd4502d3a7637c7bb048db810fcc26',1,'thorin::RMode']]],
   ['fields_4',['fields',['../classthorin_1_1Def.html#afa52329b52c3ad9bddc13df8a77d68a1',1,'thorin::Def']]],
   ['fields_5f_5',['fields_',['../classthorin_1_1Def.html#a91277ddcc8a17161aa2c0a1fa1abf790',1,'thorin::Def']]],

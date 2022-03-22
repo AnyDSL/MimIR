@@ -133,7 +133,6 @@ var annotated_dup =
       [ "Tag2Enum_< Tag::Shr >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Shr_01_4", "namespacethorin_structthorin_1_1Tag2Enum___3_01Tag_1_1Shr_01_4_dup" ],
       [ "Tag2Enum_< Tag::Trait >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Trait_01_4", "namespacethorin_structthorin_1_1Tag2Enum___3_01Tag_1_1Trait_01_4_dup" ],
       [ "Tag2Enum_< Tag::Wrap >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Wrap_01_4", "namespacethorin_structthorin_1_1Tag2Enum___3_01Tag_1_1Wrap_01_4_dup" ],
-      [ "TaggedPtr", "classthorin_1_1TaggedPtr.html", "classthorin_1_1TaggedPtr" ],
       [ "TailRecElim", "classthorin_1_1TailRecElim.html", "classthorin_1_1TailRecElim" ],
       [ "TBound", "classthorin_1_1TBound.html", "classthorin_1_1TBound" ],
       [ "Test", "classthorin_1_1Test.html", "classthorin_1_1Test" ],

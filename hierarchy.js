@@ -307,11 +307,6 @@ var hierarchy =
     [ "thorin::Tag2Enum_< Tag::Shr >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Shr_01_4", null ],
     [ "thorin::Tag2Enum_< Tag::Trait >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Trait_01_4", null ],
     [ "thorin::Tag2Enum_< Tag::Wrap >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Wrap_01_4", null ],
-    [ "thorin::TaggedPtr< T, I >", "classthorin_1_1TaggedPtr.html", null ],
-    [ "thorin::TaggedPtr< const thorin::Axiom, u16 >", "classthorin_1_1TaggedPtr.html", null ],
-    [ "thorin::TaggedPtr< const thorin::Def, size_t >", "classthorin_1_1TaggedPtr.html", null ],
-    [ "thorin::TaggedPtr< std::remove_pointer_t< NormalizeFn >, u16 >", "classthorin_1_1TaggedPtr.html", null ],
-    [ "thorin::TaggedPtr< uint64_t >", "classthorin_1_1TaggedPtr.html", null ],
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_queue< thorin::HashSet >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_stack< Set >", "classthorin_1_1unique__stack.html", null ],
@@ -333,8 +328,6 @@ var hierarchy =
     [ "thorin::World::Arena::Zone", "structthorin_1_1World_1_1Arena_1_1Zone.html", null ],
     [ "bool", "namespace_3globalScope_4.html#classbool", null ],
     [ "int", "namespace_3globalScope_4.html#classint", null ],
-    [ "remove_pointer_t< NormalizeFn > *", "namespace_3globalScope_4.html#classstd_1_1remove__pointer__t_3_01NormalizeFn_01_4_01_5", null ],
     [ "size_t", "namespace_3globalScope_4.html#classsize__t", null ],
-    [ "u16", "namespace_3globalScope_4.html#classu16", null ],
     [ "uint32_t", "namespace_3globalScope_4.html#classuint32__t", null ]
 ];

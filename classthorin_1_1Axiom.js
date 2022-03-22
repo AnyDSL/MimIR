@@ -1,6 +1,6 @@
 var classthorin_1_1Axiom =
 [
-    [ "currying_depth", "classthorin_1_1Axiom.html#aea789f84e026e06578b13c96ae11dea7", null ],
+    [ "curry", "classthorin_1_1Axiom.html#a6ea6fa10f6be6ecd5f89f2bb0ef3f239", null ],
     [ "demangle", "classthorin_1_1Axiom.html#a90268ef34a15500906ec6715ad2bd4b2", null ],
     [ "flags", "classthorin_1_1Axiom.html#a9b62414ed2be19135df83d9c3571f989", null ],
     [ "get", "classthorin_1_1Axiom.html#acbd0e670843d77165d24ce1f6583d35c", null ],

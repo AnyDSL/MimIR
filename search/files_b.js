@@ -6,6 +6,5 @@ var searchData=
   ['partial_5feval_2eh_3',['partial_eval.h',['../partial__eval_8h.html',1,'']]],
   ['pass_2ecpp_4',['pass.cpp',['../pass_8cpp.html',1,'']]],
   ['pass_2eh_5',['pass.h',['../pass_8h.html',1,'']]],
-  ['passes_2emd_6',['passes.md',['../passes_8md.html',1,'']]],
-  ['ptr_2eh_7',['ptr.h',['../ptr_8h.html',1,'']]]
+  ['passes_2emd_6',['passes.md',['../passes_8md.html',1,'']]]
 ];
