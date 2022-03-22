@@ -12,12 +12,6 @@ namespace thorin {
 #define dlog(world,...) world.DLOG(__VA_ARGS__)
 #define type_dump(world,name,d) world.DLOG("{} {} : {}",name,d,d->type())
 
-bool isFatPtrType(World& world_,const Def* type);
-
-static const Def* to_fat_ptr(World& world, const Def* ptr, const Def* size){
-    auto int_size=world.op_bitcast(world.type_int_width(64),size);
-    auto dst_fat_ptr=world.tuple({int_size, ptr});
-}
 
 size_t getDim(const Def* def) {
     // TODO: test def, idef, tuple
@@ -33,116 +27,21 @@ size_t getDim(const Def* def) {
     }
 }
 
-
-// multidimensional addition of values
-// needed for operation differentiation
-// we only need a multidimensional addition
-std::pair<const Def*,const Def*> vec_add(World& world, const Def* mem, const Def* a, const Def* b) {
-    dlog(world,"add {}:{} + {}:{}",a,a->type(),b,b->type());
-
-#define w world
-    if(isFatPtrType(world,a->type()) && isFatPtrType(world,b->type())){
-
-        auto [size_a , fat_ptr_a] = a->projs<2>();
-        auto [size_b , fat_ptr_b] = b->projs<2>();
-
-        auto arr_size_nat = world.op_bitcast(world.type_nat(),size_b);
-
-        auto [mem2,arr_a] = world.op_load(mem,fat_ptr_a)->projs<2>();
-        auto [mem3,arr_b] = world.op_load(mem2,fat_ptr_b)->projs<2>();
-
-        auto body_type = world.type_real(32);
-
-        nat_t bit_width = as_lit(as<Tag::Real>(body_type)->arg());
-
-        auto lifted=w.app(w.app(w.app(w.ax_zip(),
-                                {w.lit_nat(1), arr_size_nat}),
-                                {w.lit_nat(2),w.tuple({body_type,body_type}),
-                                 w.lit_nat(1), body_type,
-                                 w.fn(ROp::add, (nat_t)0, bit_width)
-                                }),
-                          world.tuple({arr_a,arr_b}));
-
-        auto result_fat_ptr = to_fat_ptr(world, lifted, size_b);
-        return {mem3, result_fat_ptr};
-    }
-
-    if (auto aptr = isa<Tag::Ptr>(a->type())) {
-        auto [ty,addr_space] = aptr->arg()->projs<2>();
-
-        auto [mem2,a_v] = world.op_load(mem,a)->projs<2>();
-        auto [mem3,b_v] = world.op_load(mem2,b)->projs<2>();
-
-        auto [mem4, s_v] = vec_add(world,mem3,a_v,b_v);
-
-        auto [mem5, sum_ptr]=world.op_slot(ty,mem4,world.dbg("add_slot"))->projs<2>();
-        auto mem6 = world.op_store(mem3,sum_ptr,s_v);
-        return {mem6, sum_ptr};
-    }
-
-    // TODO: correct handling of mixed tuple, def array
-    // TODO: handling of idef
-    // lift only for idef (in the future)
-    //   and non-mixed tuple (and array with hack)
-
-//    if(auto arr = a->type()->isa<Arr>()) {
-    if(auto arr = a->type()->isa<Arr>(); arr && !(arr->shape()->isa<Lit>())) {
-//    if(auto arr = a->type()->isa<Arr>();false) {
-        dlog(world,"  Array add");
-        auto shape = arr->shape();
-        dlog(world,"  Array shape {}", shape);
-        dlog(world,"  Array {}", arr);
-
-        auto body_type = arr->body();
-        while(auto barr = body_type->isa<Arr>()) {
-            body_type = barr->body();
+Array<const Def*> flat_tuple(Array<const Def*> defs) {
+    // or use concat
+    std::vector<const Def*> v;
+    for(int i=0;i<defs.size();i++) {
+        auto def=defs[i];
+        if(auto tup=def->isa<Tuple>()) {
+            auto dim=tup->num_ops();
+            for(int j=0;j<dim;j++) {
+                v.push_back(tup->op(j));
+            }
+        }else {
+            v.push_back(def);
         }
-
-        // tangents are only reals
-        nat_t bit_width = as_lit(as<Tag::Real>(body_type)->arg());
-
-        type_dump(world,"  Array Body", body_type);
-        dlog(world,"  Bit width {}", bit_width);
-        auto lifted=w.app(w.app(w.app(w.ax_zip(),
-                        // rs => sigma(r:nat, s:arr with size r of nat)
-                        // r = how many dimensions in the array
-                        // s = dimensions
-            {w.lit_nat(1), shape}), // w.tuple({shape})
-
-                  // is_os = [ni, Is, no, Os, f]
-                  // ni:nat how many base input dims
-                  // Is: <n_i;*> type array os size ni => base input types
-                  // no:nat how many base out dims
-                  // Os: <n_o;*> type array os size no => base output types
-                  // f: arr of size ni of types Is
-                  //    to arr of size no of types Os
-            {w.lit_nat(2),w.tuple({body_type,body_type}),
-                  w.lit_nat(1), body_type,
-                  w.fn(ROp::add, (nat_t)0, bit_width)
-                  }),
-            world.tuple({a,b}));
-        type_dump(world,"  lifted",lifted);
-        return {mem, lifted};
     }
-
-    auto dim = getDim(a);
-    auto dimb = getDim(b);
-    assert(dim==dimb && "Dimension in add should be equal");
-
-    if(dim==1){
-        return {mem, world.op(ROp::add,(nat_t)0,a,b)};
-    }
-
-    Array<const Def*> ops{dim};
-    for (size_t i = 0; i < ops.size(); ++i) {
-        // adds component-wise both vectors
-        auto ai=world.extract(a,i); // use op?
-        auto bi=world.extract(b,i);
-        auto [nmem, op]=vec_add( world,mem, ai,bi );
-        mem=nmem;
-        ops[i]=op;
-    }
-    return {mem, world.tuple(ops)};
+    return {v};
 }
 
 bool isFatPtrType(World& world_,const Def* type) {
@@ -167,6 +66,150 @@ bool isFatPtrType(World& world_,const Def* type) {
     }
     return false;
 }
+
+// expects: size as nat
+static const Def* to_fat_ptr(World& world, const Def* ptr, const Def* size){
+    auto int_size=world.op_bitcast(world.type_int_width(64),size);
+    auto dst_fat_ptr=world.tuple({int_size, ptr});
+}
+
+
+// multidimensional addition of values
+// needed for operation differentiation
+// we only need a multidimensional addition
+const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
+    dlog(world,"add {}:{} + {}:{}",a,a->type(),b,b->type());
+
+    if (auto aptr = isa<Tag::Ptr>(a->type())) {
+        THORIN_UNREACHABLE;
+    }
+    if(auto arr = a->type()->isa<Arr>(); arr && !(arr->shape()->isa<Lit>())) { THORIN_UNREACHABLE; }
+
+
+    auto sum_pb = world.nom_lam(world.cn(world.type_mem()), world.dbg("sum_pb"));
+    type_dump(world,"  pb (sum)",sum_pb);
+    sum_pb->set_filter(world.lit_true());
+
+    auto mem=sum_pb->mem_var();
+
+#define w world
+    if(isFatPtrType(world,a->type())){
+
+    }
+//    if(isFatPtrType(world,a->type()) && isFatPtrType(world,b->type())){
+//
+//        auto [size_a , fat_ptr_a] = a->projs<2>();
+//        auto [size_b , fat_ptr_b] = b->projs<2>();
+//
+//        auto arr_size_nat = world.op_bitcast(world.type_nat(),size_b);
+//
+//        auto [mem2,arr_a] = world.op_load(mem,fat_ptr_a)->projs<2>();
+//        auto [mem3,arr_b] = world.op_load(mem2,fat_ptr_b)->projs<2>();
+//
+//        auto body_type = world.type_real(32);
+//
+//        nat_t bit_width = as_lit(as<Tag::Real>(body_type)->arg());
+//
+//        auto lifted=w.app(w.app(w.app(w.ax_zip(),
+//                                        {w.lit_nat(1), arr_size_nat}),
+//                                  {w.lit_nat(2),w.tuple({body_type,body_type}),
+//                                   w.lit_nat(1), body_type,
+//                                   w.fn(ROp::add, (nat_t)0, bit_width)
+//                                  }),
+//                            world.tuple({arr_a,arr_b}));
+//
+//        auto result_fat_ptr = to_fat_ptr(world, lifted, size_b);
+//        return {mem3, result_fat_ptr};
+//    }
+
+
+//    if (auto aptr = isa<Tag::Ptr>(a->type())) {
+//        auto [ty,addr_space] = aptr->arg()->projs<2>();
+//
+//        auto [mem2,a_v] = world.op_load(mem,a)->projs<2>();
+//        auto [mem3,b_v] = world.op_load(mem2,b)->projs<2>();
+//
+//        auto [mem4, s_v] = vec_add(world,mem3,a_v,b_v);
+//
+//        auto [mem5, sum_ptr]=world.op_slot(ty,mem4,world.dbg("add_slot"))->projs<2>();
+//        auto mem6 = world.op_store(mem3,sum_ptr,s_v);
+//        return {mem6, sum_ptr};
+//    }
+
+    // TODO: correct handling of mixed tuple, def array
+    // TODO: handling of idef
+    // lift only for idef (in the future)
+    //   and non-mixed tuple (and array with hack)
+
+//    if(auto arr = a->type()->isa<Arr>()) {
+//    if(auto arr = a->type()->isa<Arr>(); arr && !(arr->shape()->isa<Lit>())) {
+////    if(auto arr = a->type()->isa<Arr>();false) {
+//        dlog(world,"  Array add");
+//        auto shape = arr->shape();
+//        dlog(world,"  Array shape {}", shape);
+//        dlog(world,"  Array {}", arr);
+//
+//        auto body_type = arr->body();
+//        while(auto barr = body_type->isa<Arr>()) {
+//            body_type = barr->body();
+//        }
+//
+//        // tangents are only reals
+//        nat_t bit_width = as_lit(as<Tag::Real>(body_type)->arg());
+//
+//        type_dump(world,"  Array Body", body_type);
+//        dlog(world,"  Bit width {}", bit_width);
+//        auto lifted=w.app(w.app(w.app(w.ax_zip(),
+//                        // rs => sigma(r:nat, s:arr with size r of nat)
+//                        // r = how many dimensions in the array
+//                        // s = dimensions
+//            {w.lit_nat(1), shape}), // w.tuple({shape})
+//
+//                  // is_os = [ni, Is, no, Os, f]
+//                  // ni:nat how many base input dims
+//                  // Is: <n_i;*> type array os size ni => base input types
+//                  // no:nat how many base out dims
+//                  // Os: <n_o;*> type array os size no => base output types
+//                  // f: arr of size ni of types Is
+//                  //    to arr of size no of types Os
+//            {w.lit_nat(2),w.tuple({body_type,body_type}),
+//                  w.lit_nat(1), body_type,
+//                  w.fn(ROp::add, (nat_t)0, bit_width)
+//                  }),
+//            world.tuple({a,b}));
+//        type_dump(world,"  lifted",lifted);
+//        return {mem, lifted};
+//    }
+
+    auto dim = getDim(a);
+    auto dimb = getDim(b);
+    assert(dim==dimb && "Dimension in add should be equal");
+
+    if(dim==1){
+        sum_pb->set_body(world.app(
+            cont,
+            flat_tuple({mem,
+                world.op(ROp::add,(nat_t)0,a,b)
+            })
+        ));
+        sum_pb->set_filter(true);
+        return sum_pb;
+//        return {mem, world.op(ROp::add,(nat_t)0,a,b)};
+    }
+
+    THORIN_UNREACHABLE;
+//    Array<const Def*> ops{dim};
+//    for (size_t i = 0; i < ops.size(); ++i) {
+//        // adds component-wise both vectors
+//        auto ai=world.extract(a,i); // use op?
+//        auto bi=world.extract(b,i);
+//        auto [nmem, op]=vec_add( world,mem, ai,bi );
+//        mem=nmem;
+//        ops[i]=op;
+//    }
+//    return {mem, world.tuple(ops)};
+}
+
 
 std::pair<const Def*,const Def*> lit_of_type(World& world, const Def* mem, const Def* type, const Def* like, r64 lit, const Def* dummy) {
     // TODO: a monad would be easier for memory
@@ -205,7 +248,6 @@ std::pair<const Def*,const Def*> lit_of_type(World& world, const Def* mem, const
         type_dump(world,"init pack",init); // trick for zero init
         auto mem4=world.op_store(mem3,ptr_arr,init);
         auto fat_ptr_arr = world.tuple({arr_size,ptr_arr});
-
         type_dump(world,"fat ptr arr",fat_ptr_arr);
         return {mem4,fat_ptr_arr};
     }
@@ -371,7 +413,6 @@ private:
     void derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta );
 
     const Def* zero_pb(const Def* type, const Def* dbg);
-    Array<const Def*> flat_tuple(Array<const Def*> defs);
     Array<const Def*> vars_without_mem_cont(Lam* lam);
     const Def* j_wrap_tuple(Array<const Def*> tuple);
 
@@ -381,7 +422,6 @@ private:
     const Def* chain(const Def* a, const Def* b);
     const Pi* createPbType(const Def* A, const Def* B);
     const Def* extract_pb(const Def* j_extract, const Def* tuple);
-
 
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
@@ -491,11 +531,81 @@ const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
     auto pbT = pi->as<Pi>()->doms().back()->as<Pi>();
     dlog(world_,"  intermediate tuple pb type: {}",pbT);
     dlog(world_,"  should be cn_mem of {}",A);
-    auto cpb = pb;
 
-    auto cpb_mem=cpb->mem_var();
-    auto sum=zero_grad;//ZERO(world_,cpb->mem_var(),A);
-    Lam* nextpb;
+    auto current_sum_pb = world_.nom_lam(pbT, world_.dbg("tuple_sum_pb"));
+    current_sum_pb->set_filter(world_.lit_true());
+    type_dump(world_,"  sum 0 pb {}",current_sum_pb);
+
+    pb->set_body(world_.app(
+        current_sum_pb,
+        flat_tuple({
+            pb->mem_var(),
+            zero_grad
+        }) ));
+
+    /**
+     * pb = \lambda mem scalars ret. sum_pb_0 (mem,0)
+     * sum_pb_i = \lambda mem sum_i. pb_i (mem, s_i, res_pb_i)
+     * res_pb_i = \lambda mem res_i. sum_cont (mem, sum_i, res_i, sum_pb_{i+1})
+     * sum_pb_n = \lambda mem sum. ret (mem, sum)
+     */
+
+    dlog(world_,"  tuple size of pbs: {}",real_arg_num);
+    for (size_t i = 0; i < real_arg_num; ++i) {
+
+        const Def* op;
+        if(isMemTuple) {
+            op=ops[i+1];
+        }else {
+            op=ops[i];
+        }
+        auto op_pb=pullbacks_[op];
+        dlog(world_,"    build pb sum op {}: {} : {}",i,op,op->type());
+        dlog(world_,"      pb {}",op_pb);
+        dlog(world_,"      pb {} : {}",op_pb,op_pb->type());
+        auto scalar = pb->var(i+1, world_.dbg("s"));
+        dlog(world_,"      pb var: {}:{}",
+             scalar,
+             scalar->type());
+
+        auto res_pb = world_.nom_lam(pbT, world_.dbg("res_pb"));
+        res_pb->set_filter(world_.lit_true());
+        type_dump(world_,"  result pb {}",res_pb);
+
+        current_sum_pb->set_body(world_.app(
+            op_pb,
+            flat_tuple( {
+                current_sum_pb->mem_var(),
+                scalar,
+                res_pb
+        })));
+
+        auto next_current_sum_pb = world_.nom_lam(pbT, world_.dbg("tuple_sum_pb"));
+        next_current_sum_pb->set_filter(world_.lit_true());
+
+        auto sum_cont_pb = vec_add(world_,
+                                   world_.tuple(vars_without_mem_cont(current_sum_pb)),
+                                   world_.tuple(vars_without_mem_cont(res_pb)),
+                                   next_current_sum_pb);
+        type_dump(world_,"  sum_cont {}",sum_cont_pb);
+        res_pb->set_body(world_.app(
+            sum_cont_pb,
+            res_pb->mem_var()
+        ));
+
+        current_sum_pb=next_current_sum_pb;
+    }
+    current_sum_pb->set_body(world_.app(
+        pb->ret_var(),
+        current_sum_pb->var()));
+
+
+
+//    auto cpb = pb;
+//
+//    auto cpb_mem=cpb->mem_var();
+//    auto sum=zero_grad;//ZERO(world_,cpb->mem_var(),A);
+//    Lam* nextpb;
 
     //        if(tuple_dim>0 && isa<Tag::Mem>(ops[0]->type())) {
     ////            auto [cpb_mem2,mem_zero]=ZERO(world_,cpb_mem,A);
@@ -510,45 +620,56 @@ const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
     ////            cpb_mem=cpb_mem2;
     //        }
 
-    for (size_t i = 0; i < real_arg_num; ++i) {
-        nextpb = world_.nom_lam(pbT, world_.dbg("φtuple_next"));
-        nextpb->set_filter(world_.lit_true());
-
-        const Def* op;
-        if(isMemTuple) {
-            op=ops[i+1];
-        }else {
-            op=ops[i];
-        }
-
-
-        //            pullbacks_[ops[i]]= extract_pb(ops[i]);
-
-        dlog(world_,"    build pb sum op {}: {} : {}",i,op,op->type());
-        dlog(world_,"      pb {}",pullbacks_[op]);
-        dlog(world_,"      pb {} : {}",pullbacks_[op],pullbacks_[op]->type());
-        auto scalar = pb->var(i+1, world_.dbg("s"));
-        dlog(world_,"      pb var: {}:{}",
-             scalar,
-             scalar->type());
-        //            world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
-        //                world_.extract_unsafe(pb->var(1, world_.dbg("s")), i)->type());
-        cpb->set_body(
-            world_.app(pullbacks_[op],
-                       {cpb_mem,
-                           //                    world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
-                        scalar,
-                        nextpb
-                       }));
-        cpb=nextpb;
-        cpb_mem=cpb->mem_var();
-        //all nextpb args are result
-        auto [nmem, nsum]=vec_add(world_,cpb_mem,sum, world_.tuple(vars_without_mem_cont(nextpb)));
-        cpb_mem=nmem;
-        sum=nsum;
-    }
-    dlog(world_,"  create final pb app");
-    cpb->set_body( world_.app( pb->ret_var(), flat_tuple({cpb_mem,sum}) ));
+//    for (size_t i = 0; i < real_arg_num; ++i) {
+//        nextpb = world_.nom_lam(pbT, world_.dbg("φtuple_next"));
+//        nextpb->set_filter(world_.lit_true());
+//
+//        const Def* op;
+//        if(isMemTuple) {
+//            op=ops[i+1];
+//        }else {
+//            op=ops[i];
+//        }
+//
+//
+//        //            pullbacks_[ops[i]]= extract_pb(ops[i]);
+//
+//        dlog(world_,"    build pb sum op {}: {} : {}",i,op,op->type());
+//        dlog(world_,"      pb {}",pullbacks_[op]);
+//        dlog(world_,"      pb {} : {}",pullbacks_[op],pullbacks_[op]->type());
+//        auto scalar = pb->var(i+1, world_.dbg("s"));
+//        dlog(world_,"      pb var: {}:{}",
+//             scalar,
+//             scalar->type());
+//        //            world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
+//        //                world_.extract_unsafe(pb->var(1, world_.dbg("s")), i)->type());
+//        cpb->set_body(
+//            world_.app(pullbacks_[op],
+//                       {cpb_mem,
+//                           //                    world_.extract_unsafe(pb->var(1, world_.dbg("s")), i),
+//                        scalar,
+//                        nextpb
+//                       }));
+//        cpb=nextpb;
+//        cpb_mem=cpb->mem_var();
+//        //all nextpb args are result
+//
+//
+//        auto sum_cont = world_.nom_lam(pbT, world_.dbg("tuple_sum_cont"));
+//        sum_cont->set_filter(world_.lit_true());
+//        sum_cont->set_body( world_.app(
+//                nextpb,
+//            ));
+//
+//        auto sum_pb = vec_add(world_,sum,world_.tuple(vars_without_mem_cont(nextpb)),sum_cont);
+//
+//        THORIN_UNREACHABLE;
+////        auto [nmem, nsum]=vec_add(world_,cpb_mem,sum, world_.tuple(vars_without_mem_cont(nextpb)));
+////        cpb_mem=nmem;
+////        sum=nsum;
+//    }
+//    dlog(world_,"  create final pb app");
+//    cpb->set_body( world_.app( pb->ret_var(), flat_tuple({cpb_mem,sum}) ));
 
     // TODO: multiple arguments
 
@@ -1096,23 +1217,6 @@ void AutoDiffer::derive_external(const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam)
 //
 //}
 
-Array<const Def*> AutoDiffer::flat_tuple(Array<const Def*> defs) {
-    // or use concat
-    std::vector<const Def*> v;
-    for(int i=0;i<defs.size();i++) {
-        auto def=defs[i];
-        if(auto tup=def->isa<Tuple>()) {
-            auto dim=tup->num_ops();
-            for(int j=0;j<dim;j++) {
-                v.push_back(tup->op(j));
-            }
-        }else {
-            v.push_back(def);
-        }
-    }
-    return {v};
-}
-
 const Def* AutoDiffer::zero_pb(const Def* type, const Def* dbg) {
     auto zeropi = createPbType(A,type);
     dlog(world_,"  zero_pi ty: {}",zeropi);
@@ -1162,6 +1266,8 @@ const Def* AutoDiffer::zero_pb(const Def* type, const Def* dbg) {
 //    THORIN_UNREACHABLE;
     return zeropb;
 }
+
+
 
 
 // implement differentiation for each expression
@@ -2263,8 +2369,11 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto adiff = world_.tuple(vars_without_mem_cont(middle));
             auto bdiff = world_.tuple(vars_without_mem_cont(end));
 
-            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
-            end->set_body(world_.app(pb->ret_var(), flat_tuple({ smem, sum})));
+
+//            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
+//            end->set_body(world_.app(pb->ret_var(), flat_tuple({ smem, sum})));
+            auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
+            end->set_body(world_.app(sum_pb, end->mem_var()));
             pullbacks_[dst] = pb;
 
             return dst;
@@ -2289,8 +2398,10 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto adiff = middle->var(1);
             auto bdiff = end->var(1);
 
-            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
-            end->set_body(world_.app(pb->ret_var(), { smem, sum}));
+//            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
+//            end->set_body(world_.app(pb->ret_var(), { smem, sum}));
+            auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
+            end->set_body(world_.app(sum_pb, end->mem_var()));
             pullbacks_[dst] = pb;
 
             return dst;
@@ -2317,8 +2428,10 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto adiff = world_.tuple(vars_without_mem_cont(middle));
             auto bdiff = world_.tuple(vars_without_mem_cont(end));
 
-            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
-            end->set_body(world_.app(pb->ret_var(), flat_tuple({ smem, sum})));
+//            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
+//            end->set_body(world_.app(pb->ret_var(), flat_tuple({ smem, sum})));
+            auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
+            end->set_body(world_.app(sum_pb, end->mem_var()));
             pullbacks_[dst] = pb;
             return dst;
         }
@@ -2336,8 +2449,10 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto adiff = middle->var(1);
             auto bdiff = end->var(1);
 
-            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
-            end->set_body(world_.app(pb->ret_var(), { smem, sum}));
+//            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
+//            end->set_body(world_.app(pb->ret_var(), { smem, sum}));
+            auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
+            end->set_body(world_.app(sum_pb, end->mem_var()));
             pullbacks_[dst] = pb;
             return dst;
         }
@@ -2364,7 +2479,13 @@ const Def* AutoDiff::rewrite(const Def* def) {
         //           ------ type_app ------ arg
         //           (axiom    arg2       ) arg
 
-        auto src_lam = app->arg(0)->as_nom<Lam>();
+        type_dump(app->world()," arg",app->arg());
+        auto isClosure = app->num_args()>1;
+
+        auto fun_arg = isClosure ? app->arg(1) : app->arg(0);
+        type_dump(app->world()," fun arg",fun_arg);
+
+        auto src_lam = fun_arg->as_nom<Lam>();
         auto src_pi = src_lam->type();
         // function to differentiate
         // this should be something like `cn[:mem, r32, cn[:mem, r32]]`
@@ -2373,7 +2494,12 @@ const Def* AutoDiff::rewrite(const Def* def) {
         // We get for `A -> B` the type `A -> (B * (B -> A))`.
         //  i.e. cn[:mem, A, [:mem, B]] ---> cn[:mem, A, cn[:mem, B, cn[:mem, B, cn[:mem, A]]]]
         //  take input, return result and return a function (pullback) taking z and returning the derivative
-        auto dst_pi = app->type()->as<Pi>(); // multi dim as array
+        const Pi* dst_pi;
+        type_dump(world,"app type",app->type());
+        if(isClosure)
+            dst_pi = app->type()->op(1)->as<Pi>();
+        else
+            dst_pi = app->type()->as<Pi>(); // multi dim as array
         auto dst_lam = world.nom_lam(dst_pi, world.dbg("top_level_rev_diff_" + src_lam->name()));
         dst_lam->set_filter(src_lam->filter()); // copy the unfold filter
         // use src to not dilute tangent transformation with left type transformation (only matters for arrays)
@@ -2409,8 +2535,11 @@ const Def* AutoDiff::rewrite(const Def* def) {
         auto differ = AutoDiffer{world, src_to_dst, A};
         dst_lam->set_body(differ.reverse_diff(src_lam));
 
+        auto dst=isClosure ? world.insert(app->arg(),1,dst_lam) : dst_lam;
 
-        return dst_lam;
+        type_dump(world,"dst: ",dst);
+
+        return dst;
     }}}
     return def;
 }
