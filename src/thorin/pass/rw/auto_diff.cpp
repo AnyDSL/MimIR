@@ -94,10 +94,6 @@ Array<const Def*> vars_without_mem_cont(World& world, Lam* lam) {
 const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
     dlog(world,"add {}:{} + {}:{}",a,a->type(),b,b->type());
     type_dump(world,"add cont",cont);
-
-    if (auto aptr = isa<Tag::Ptr>(a->type())) {
-        THORIN_UNREACHABLE;
-    }
     if(auto arr = a->type()->isa<Arr>(); arr && !(arr->shape()->isa<Lit>())) { THORIN_UNREACHABLE; }
 
 
@@ -105,7 +101,41 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
     type_dump(world,"  pb (sum)",sum_pb);
     sum_pb->set_filter(world.lit_true());
 
-    auto mem=sum_pb->mem_var();
+    if (auto aptr = isa<Tag::Ptr>(a->type())) {
+        auto [ty,addr_space] = aptr->arg()->projs<2>();
+
+        auto mem=sum_pb->mem_var();
+
+        auto [mem2,a_v] = world.op_load(mem,a)->projs<2>();
+        auto [mem3,b_v] = world.op_load(mem2,b)->projs<2>();
+
+        auto res_cont_type = world.cn_mem(a_v->type());
+        auto res_cont = world.nom_lam(res_cont_type,world.dbg("ptr_add_cont"));
+        type_dump(world,"  result cont",res_cont);
+        auto sum_cont = vec_add(world,a_v,b_v,res_cont);
+        sum_pb->set_body(world.app(sum_cont, mem3));
+        sum_pb->set_filter(true);
+        type_dump(world,"  sum cont",sum_cont);
+
+        auto rmem=res_cont->mem_var();
+        auto s_v= world.tuple(vars_without_mem_cont(world,res_cont));
+        type_dump(world,"  result sum",s_v);
+        auto [rmem2, sum_ptr]=world.op_slot(ty,rmem,world.dbg("add_slot"))->projs<2>();
+        type_dump(world,"  sum_ptr",sum_ptr);
+        auto rmem3 = world.op_store(rmem2,sum_ptr,s_v);
+
+        res_cont->set_body(world.app(
+            cont,
+            flat_tuple({
+                rmem3,
+                sum_ptr
+            })
+        ));
+        res_cont->set_filter(true);
+
+        return sum_pb;
+    }
+
 
 #define w world
     if(isFatPtrType(world,a->type())){
@@ -182,49 +212,6 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
     }
 
 
-
-//    if(isFatPtrType(world,a->type()) && isFatPtrType(world,b->type())){
-//
-//        auto [size_a , fat_ptr_a] = a->projs<2>();
-//        auto [size_b , fat_ptr_b] = b->projs<2>();
-//
-//        auto arr_size_nat = world.op_bitcast(world.type_nat(),size_b);
-//
-//        auto [mem2,arr_a] = world.op_load(mem,fat_ptr_a)->projs<2>();
-//        auto [mem3,arr_b] = world.op_load(mem2,fat_ptr_b)->projs<2>();
-//
-//        auto body_type = world.type_real(32);
-//
-//        nat_t bit_width = as_lit(as<Tag::Real>(body_type)->arg());
-//
-//        auto lifted=w.app(w.app(w.app(w.ax_zip(),
-//                                        {w.lit_nat(1), arr_size_nat}),
-//                                  {w.lit_nat(2),w.tuple({body_type,body_type}),
-//                                   w.lit_nat(1), body_type,
-//                                   w.fn(ROp::add, (nat_t)0, bit_width)
-//                                  }),
-//                            world.tuple({arr_a,arr_b}));
-//
-//        auto result_fat_ptr = to_fat_ptr(world, lifted, size_b);
-//        return {mem3, result_fat_ptr};
-//    }
-
-
-//    if (auto aptr = isa<Tag::Ptr>(a->type())) {
-//        auto [ty,addr_space] = aptr->arg()->projs<2>();
-//
-//        auto [mem2,a_v] = world.op_load(mem,a)->projs<2>();
-//        auto [mem3,b_v] = world.op_load(mem2,b)->projs<2>();
-//
-//        auto [mem4, s_v] = vec_add(world,mem3,a_v,b_v);
-//
-//        auto [mem5, sum_ptr]=world.op_slot(ty,mem4,world.dbg("add_slot"))->projs<2>();
-//        auto mem6 = world.op_store(mem3,sum_ptr,s_v);
-//        return {mem6, sum_ptr};
-//    }
-
-    // TODO: correct handling of mixed tuple, def array
-    // TODO: handling of idef
     // lift only for idef (in the future)
     //   and non-mixed tuple (and array with hack)
 
@@ -275,7 +262,7 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
     if(dim==1){
         sum_pb->set_body(world.app(
             cont,
-            flat_tuple({mem,
+            flat_tuple({sum_pb->mem_var(),
                 world.op(ROp::add,(nat_t)0,a,b)
             })
         ));
@@ -305,7 +292,7 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
 
         current_cont->set_body(world.app(
             sum_call,
-            sum_pb->mem_var()
+            current_cont->mem_var()
         ));
         current_cont->set_filter(true);
 
@@ -314,7 +301,7 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
 
     current_cont->set_body(world.app(
         cont,
-        flat_tuple({mem, world.tuple(ops)})
+        flat_tuple({current_cont->mem_var(), world.tuple(ops)})
     ));
     current_cont->set_filter(true);
 
