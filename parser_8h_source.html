@@ -117,7 +117,7 @@ $(document).ready(function(){initNavTree('parser_8h_source.html',''); initResiza
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* parse_primary_def();</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* parse_extract();</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="comment"></span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">    /// Trick to easily keep track of @p Loc%ations.</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">    /// Trick to easily keep track of Loc%ations.</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment"></span>    <span class="keyword">class </span>Tracker {</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        Tracker(<a class="code hl_class" href="classthorin_1_1Parser.html">Parser</a>&amp; parser, <span class="keyword">const</span> <a class="code hl_struct" href="structthorin_1_1Pos.html">Pos</a>&amp; pos)</div>
@@ -131,24 +131,24 @@ $(document).ready(function(){initNavTree('parser_8h_source.html',''); initResiza
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        Pos pos_;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    };</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"></span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">    /// Factory method to build a @p Tracker.</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment">    /// Factory method to build a Parser::Tracker.</span></div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"></span>    Tracker tracker() { <span class="keywordflow">return</span> Tracker(*<span class="keyword">this</span>, ahead().loc().begin); }</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">const</span> Def* dbg(Tracker t) { <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#a7de00f50ba0c790aa0e67f3a4d065c89">dbg</a>((Loc)t); }</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"></span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">    /// Invoke @p Lexer to retrieve next @p Tok%en.</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">    /// Invoke Lexer to retrieve next Tok%en.</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"></span>    Tok lex();</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment"></span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">    /// Get lookahead.</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="comment"></span>    Tok ahead()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ahead_; }</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment"></span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">    /// If @p ahead() is a @p tag, @p lex(), and return @c true.</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">    /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment"></span>    <span class="keywordtype">bool</span> accept(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag);</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment"></span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">    /// @p lex @p ahead() which must be a @p tag.</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">    /// Issue @p err%or with @p ctxt otherwise.</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment">    /// Parser::lex Parser::ahead() which must be a @p tag.</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">    /// Issue err%or with @p ctxt otherwise.</span></div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"></span>    <span class="keywordtype">bool</span> expect(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag, std::string_view ctxt);</div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"></span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">    /// Consume @p ahead which must be a @p tag; @c asserts otherwise.</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment">    /// Consume Parser::ahead which must be a @p tag; asserts otherwise.</span></div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment"></span>    Tok eat([[maybe_unused]] <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag) {</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        assert(tag == ahead().tag() &amp;&amp; <span class="stringliteral">&quot;internal parser error&quot;</span>);</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">return</span> lex();</div>

@@ -101,8 +101,8 @@ $(document).ready(function(){initNavTree('md__github_workspace_docs_langref.html
 <div class="line">  | sig ID &quot;:&quot; e ([&quot;=&quot; e &quot;,&quot; ... &quot;,&quot; e]) | (&quot;(&quot; N &quot;)&quot;) &quot;;&quot;</div>
 <div class="line"> </div>
 <div class="line">e = e e                             (* application *)</div>
-<div class="line">  | ex(e, e)                        (* extract *)</div>
-<div class="line">  | ins(e, e, e)                    (* insert *)</div>
+<div class="line">  | e#e                             (* extract *)</div>
+<div class="line">  | .ins(e, e, e)                   (* insert *)</div>
 <div class="line">  | &quot;[&quot; e &quot;,&quot; ... &quot;,&quot; e &quot;]&quot;         (* sigma *)</div>
 <div class="line">  | &quot;(&quot; e &quot;,&quot; ... &quot;,&quot; e&quot;)&quot; [&quot;:&quot; e]  (* tuple *)</div>
 <div class="line">  | ID: e = e; e                    (* let *)</div>

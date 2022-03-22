@@ -145,8 +145,8 @@ $(document).ready(function(){initNavTree('parser_8cpp_source.html',''); initResi
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">auto</span> lhs   = parse_primary_def(ctxt);</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="comment">// If operator in lookahead has less left precedence: reduce.</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="comment">// If lookahead isn&#39;t a valid infix operator, we will see Prec::Error.</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="comment">// If operator in ahead has less left precedence: reduce.</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="comment">// If ahead isn&#39;t a valid infix operator, we will see Prec::Error.</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="comment">// This is less than all other prec levels.</span></div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> q = <a class="code hl_function" href="classthorin_1_1Tok.html#a9c5c236562f7835da20bd8a51cf2c10e">Tok::tag2prec_l</a>(ahead().tag()); q &lt; p) <span class="keywordflow">break</span>;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
