@@ -47,8 +47,8 @@ const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::B
     auto lhs   = parse_primary_def(ctxt);
 
     while (true) {
-        // If operator in lookahead has less left precedence: reduce.
-        // If lookahead isn't a valid infix operator, we will see Prec::Error.
+        // If operator in ahead has less left precedence: reduce.
+        // If ahead isn't a valid infix operator, we will see Prec::Error.
         // This is less than all other prec levels.
         if (auto q = Tok::tag2prec_l(ahead().tag()); q < p) break;
 

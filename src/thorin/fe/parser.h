@@ -19,7 +19,7 @@ private:
     const Def* parse_primary_def();
     const Def* parse_extract();
 
-    /// Trick to easily keep track of @p Loc%ations.
+    /// Trick to easily keep track of Loc%ations.
     class Tracker {
     public:
         Tracker(Parser& parser, const Pos& pos)
@@ -33,24 +33,24 @@ private:
         Pos pos_;
     };
 
-    /// Factory method to build a @p Tracker.
+    /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
     const Def* dbg(Tracker t) { return world().dbg((Loc)t); }
 
-    /// Invoke @p Lexer to retrieve next @p Tok%en.
+    /// Invoke Lexer to retrieve next Tok%en.
     Tok lex();
 
     /// Get lookahead.
     Tok ahead() const { return ahead_; }
 
-    /// If @p ahead() is a @p tag, @p lex(), and return @c true.
+    /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.
     bool accept(Tok::Tag tag);
 
-    /// @p lex @p ahead() which must be a @p tag.
-    /// Issue @p err%or with @p ctxt otherwise.
+    /// Parser::lex Parser::ahead() which must be a @p tag.
+    /// Issue err%or with @p ctxt otherwise.
     bool expect(Tok::Tag tag, std::string_view ctxt);
 
-    /// Consume @p ahead which must be a @p tag; @c asserts otherwise.
+    /// Consume Parser::ahead which must be a @p tag; asserts otherwise.
     Tok eat([[maybe_unused]] Tok::Tag tag) {
         assert(tag == ahead().tag() && "internal parser error");
         return lex();
