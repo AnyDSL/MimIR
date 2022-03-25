@@ -39,8 +39,8 @@ protected:
 
     /// As above but returning @c !child().is_valid(value) is permitted.
     Value emit_unsafe(const Def* def) {
-        if (auto val = globals_.lookup(def)) return *val;
-        if (auto val = locals_.lookup(def)) return *val;
+        if (auto i = globals_.find(def); i != globals_.end()) return i->second;
+        if (auto i = locals_.find(def); i != locals_.end()) return i->second;
 
         auto val            = emit_(def);
         return locals_[def] = val;

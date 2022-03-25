@@ -290,6 +290,5 @@ void World::debug_stream() {
 }
 
 template void Streamable<Def>::dump() const;
-template void detail::HashTable<const Def*, void, GIDHash<const Def*>, 4>::dump() const;
 
 } // namespace thorin

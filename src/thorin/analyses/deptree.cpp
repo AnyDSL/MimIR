@@ -4,9 +4,7 @@
 
 namespace thorin {
 
-static void merge(VarSet& vars, VarSet&& other) {
-    vars.insert(other.begin(), other.end());
-}
+static void merge(VarSet& vars, VarSet&& other) { vars.insert(other.begin(), other.end()); }
 
 void DepTree::run() {
     for (const auto& [_, nom] : world().externals()) run(nom);
@@ -16,10 +14,8 @@ void DepTree::run() {
 VarSet DepTree::run(Def* nom) {
     auto [i, inserted] = nom2node_.emplace(nom, std::unique_ptr<DepNode>());
     if (!inserted) {
-        if (auto vars = def2vars_.lookup(nom))
-            return *vars;
-        else
-            return {};
+        if (auto i = def2vars_.find(nom); i != def2vars_.end()) return i->second;
+        return {};
     }
 
     i->second = std::make_unique<DepNode>(nom, stack_.size() + 1);
@@ -39,16 +35,15 @@ VarSet DepTree::run(Def* nom) {
 }
 
 VarSet DepTree::run(Def* curr_nom, const Def* def) {
-    if (def->no_dep())                                      return {};
-    if (auto vars = def2vars_.lookup(def))                  return *vars;
-    if (auto nom  = def->isa_nom(); nom && curr_nom != nom) return run(nom);
+    if (def->no_dep()) return {};
+    if (auto i = def2vars_.find(def); i != def2vars_.end()) return i->second;
+    if (auto nom = def->isa_nom(); nom && curr_nom != nom) return run(nom);
 
     VarSet result;
     if (auto var = def->isa<Var>()) {
         result.emplace(var);
     } else {
-        for (auto op : def->extended_ops())
-            merge(result, run(curr_nom, op));
+        for (auto op : def->extended_ops()) merge(result, run(curr_nom, op));
 
         if (auto var = curr_nom->has_var()) {
             if (curr_nom == def) result.erase(var);
@@ -61,8 +56,7 @@ VarSet DepTree::run(Def* curr_nom, const Def* def) {
 void DepTree::adjust_depth(DepNode* node, size_t depth) {
     node->depth_ = depth;
 
-    for (const auto& child : node->children())
-        adjust_depth(child, depth + 1);
+    for (const auto& child : node->children()) adjust_depth(child, depth + 1);
 }
 
 bool DepTree::depends(Def* a, Def* b) const {
@@ -77,4 +71,4 @@ bool DepTree::depends(Def* a, Def* b) const {
     return i == m;
 }
 
-}
+} // namespace thorin

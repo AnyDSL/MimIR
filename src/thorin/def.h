@@ -15,21 +15,24 @@
 namespace thorin {
 
 template<class T>
+struct GIDHash {
+    size_t operator()(T p) const { return murmur3(p->gid()); };
+};
+
+template<class T>
+struct GIDEq {
+    bool operator()(T a, T b) const { return a->gid() == b->gid(); }
+};
+
+template<class T>
 struct GIDLt {
     bool operator()(T a, T b) const { return a->gid() < b->gid(); }
 };
 
-template<class T>
-struct GIDHash {
-    static hash_t hash(T n) { return thorin::murmur3(n->gid()); }
-    static bool eq(T a, T b) { return a == b; }
-    static T sentinel() { return T(1); }
-};
-
 template<class Key, class Value>
-using GIDMap = thorin::HashMap<Key, Value, GIDHash<Key>>;
+using GIDMap = absl::flat_hash_map<Key, Value, GIDHash<Key>, GIDEq<Key>>;
 template<class Key>
-using GIDSet = thorin::HashSet<Key, GIDHash<Key>>;
+using GIDSet = absl::flat_hash_set<Key, GIDHash<Key>, GIDEq<Key>>;
 
 //------------------------------------------------------------------------------
 
@@ -74,12 +77,14 @@ private:
 };
 
 struct UseHash {
-    inline static hash_t hash(Use use);
-    static bool eq(Use u1, Use u2) { return u1 == u2; }
-    static Use sentinel() { return Use((const Def*)(-1), u16(-1)); }
+    inline hash_t operator()(Use) const;
 };
 
-using Uses = HashSet<Use, UseHash>;
+struct UseEq {
+    bool operator()(Use u1, Use u2) const { return u1 == u2; }
+};
+
+using Uses = absl::flat_hash_set<Use, UseHash, UseEq>;
 
 enum class Sort { Term, Type, Kind, Space };
 
@@ -426,30 +431,21 @@ using DefDef  = std::tuple<const Def*, const Def*>;
 using DefVec  = std::vector<const Def*>;
 
 struct DefDefHash {
-    static hash_t hash(DefDef pair) {
+    hash_t operator()(DefDef pair) const {
         hash_t hash = std::get<0>(pair)->gid();
         hash        = murmur3(hash, std::get<1>(pair)->gid());
         hash        = murmur3_finalize(hash, 8);
         return hash;
     }
-    static bool eq(DefDef p1, DefDef p2) { return p1 == p2; }
-    static DefDef sentinel() { return {nullptr, nullptr}; }
 };
 
-struct DefsHash {
-    static hash_t hash(Defs defs) {
-        auto seed = hash_begin(defs.front()->gid());
-        for (auto def : defs.skip_front()) seed = hash_combine(seed, def->gid());
-        return seed;
-    }
-    static bool eq(Defs d1, Defs d2) { return d1 == d2; }
-    static Defs sentinel() { return Defs(); }
+struct DefDefEq {
+    bool operator()(DefDef p1, DefDef p2) const { return p1 == p2; }
 };
 
 template<class To>
-using DefDefMap  = HashMap<DefDef, To, DefDefHash>;
-using DefDefSet  = HashSet<DefDef, DefDefHash>;
-using DefDef2Def = DefDefMap<const Def*>;
+using DefDefMap = absl::flat_hash_map<DefDef, To, DefDefHash, DefDefEq>;
+using DefDefSet = absl::flat_hash_set<DefDef, DefDefHash, DefDefEq>;
 
 template<class To>
 using NomMap  = GIDMap<Def*, To>;
@@ -615,7 +611,8 @@ public:
     friend class World;
 };
 
-hash_t UseHash::hash(Use use) { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
+// TODO use friedn Absl magic
+hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
 
 Stream& operator<<(Stream&, const Def* def);
 Stream& operator<<(Stream&, std::pair<const Def*, const Def*>);

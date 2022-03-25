@@ -146,6 +146,8 @@ struct StrViewHash {
 };
 ///@}
 
+#if 0
+
 namespace detail {
 
 /// Used internally for @p HashSet and @p HashMap.
@@ -188,34 +190,34 @@ public:
         iterator_base(value_type* ptr, const HashTable* table)
             : ptr_(ptr)
             , table_(table)
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
             , id_(table->id_)
-#endif
+#    endif
         {
         }
         template<bool other_const, class = std::enable_if_t<is_const || !other_const>>
         iterator_base(const iterator_base<other_const>& i)
             : ptr_(i.ptr_)
             , table_(i.table_)
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
             , id_(i.id_)
-#endif
+#    endif
         {
         }
         template<bool other_const, class = std::enable_if_t<is_const || !other_const>>
         iterator_base& operator=(const iterator_base<other_const>& other) {
             ptr_   = other.ptr_;
             table_ = other.table_;
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
             id_ = other.id_;
-#endif
+#    endif
             return *this;
         }
         ///@}
 
         /// @name verify
         ///@{
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
         inline void verify() const { assert(table_->id_ == id_); }
         inline void verify(iterator_base i) const {
             assert(table_ == i.table_ && id_ == i.id_);
@@ -223,10 +225,10 @@ public:
             verify();
         }
         int id() const { return id_; }
-#else
+#    else
         inline void verify() const {}
         inline void verify(iterator_base) const {}
-#endif
+#    endif
         ///@}
 
         /// @name operators
@@ -268,9 +270,9 @@ public:
 
         value_type* ptr_;
         const HashTable* table_;
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
         int id_;
-#endif
+#    endif
         friend class HashTable;
     };
 
@@ -284,9 +286,9 @@ public:
         : capacity_(StackCapacity)
         , size_(0)
         , nodes_(array_.data())
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
         , id_(0)
-#endif
+#    endif
     {
         fill(nodes_);
     }
@@ -294,9 +296,9 @@ public:
         : capacity_(capacity < StackCapacity ? StackCapacity : std::max(capacity, hash_t(MinHeapCapacity)))
         , size_(0)
         , nodes_(on_heap() ? new value_type[capacity_] : array_.data())
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
         , id_(0)
-#endif
+#    endif
     {
         assert(std::has_single_bit(capacity));
         fill(nodes_);
@@ -308,9 +310,9 @@ public:
     HashTable(const HashTable& other)
         : capacity_(other.capacity_)
         , size_(other.size_)
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
         , id_(0)
-#endif
+#    endif
     {
         if (other.on_heap()) {
             nodes_ = alloc();
@@ -345,9 +347,9 @@ public:
     hash_t capacity() const { return capacity_; }
     hash_t size() const { return size_; }
     bool empty() const { return size() == 0; }
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
     int id() const { return id_; }
-#endif
+#    endif
     ///@}
 
     /// @name begin/end iterators
@@ -460,9 +462,9 @@ public:
         } else {
             array_erase(pos);
         }
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
         ++id_;
-#endif
+#    endif
     }
 
     void erase(const_iterator first, const_iterator last) {
@@ -512,11 +514,6 @@ public:
     bool contains(const key_type& key) const { return count(key) == 1; }
     ///@}
 
-    void dump() const {
-        Stream s;
-        s.fmt("[{, }]\n", *this);
-    }
-
     friend void swap(HashTable& t1, HashTable& t2) {
         using std::swap;
 
@@ -539,18 +536,18 @@ public:
 
         swap(t1.capacity_, t2.capacity_);
         swap(t1.size_, t2.size_);
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
         swap(t1.id_, t2.id_);
-#endif
+#    endif
     }
 
 private:
     template<class... Args>
     std::pair<iterator, bool> emplace_no_rehash(Args&&... args) {
         using std::swap;
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
         ++id_;
-#endif
+#    endif
         value_type n(std::forward<Args>(args)...);
         auto& k = key(&n);
 
@@ -575,7 +572,7 @@ private:
         }
     }
 
-#if THORIN_ENABLE_PROFILING
+#    if THORIN_ENABLE_PROFILING
     void debug(hash_t i) {
         if (capacity() >= 32_u32) {
             auto dib = probe_distance(i);
@@ -589,9 +586,9 @@ private:
             }
         }
     }
-#else
+#    else
     void debug(hash_t) {}
-#endif
+#    endif
 
     /// @name small helpers
     ///@{
@@ -617,9 +614,9 @@ private:
     template<class... Args>
     std::pair<iterator, bool> array_emplace(Args&&... args) {
         using std::swap;
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
         ++id_;
-#endif
+#    endif
         value_type n(std::forward<Args>(args)...);
         auto p = &array_[size_];
         swap(*p, n);
@@ -658,9 +655,9 @@ private:
     uint32_t size_;
     std::array<value_type, StackCapacity> array_;
     value_type* nodes_;
-#if THORIN_ENABLE_CHECKS
+#    if THORIN_ENABLE_CHECKS
     int id_;
-#endif
+#    endif
 };
 
 } // namespace detail
@@ -724,6 +721,7 @@ public:
     friend void swap(HashMap& m1, HashMap& m2) { swap(static_cast<Super&>(m1), static_cast<Super&>(m2)); }
 };
 
+#endif
 } // namespace thorin
 
 #endif

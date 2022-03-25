@@ -312,7 +312,7 @@ DefArray Def::reduce(const Def* arg) const {
 
 DefArray Def::reduce(const Def* arg) {
     auto& cache = world().data_.cache_;
-    if (auto res = cache.lookup({this, arg})) return *res;
+    if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
 
     return cache[{this, arg}] = rewrite(this, arg);
 }

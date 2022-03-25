@@ -11,7 +11,7 @@ namespace thorin {
 
 // TODO merge with make_scalar
 bool Scalerize::should_expand(Lam* lam) {
-    if (auto sca_lam = tup2sca_.lookup(lam); sca_lam && *sca_lam == lam) return false;
+    if (auto i = tup2sca_.find(lam); i != tup2sca_.end() && i->second && i->second == lam) return false;
 
     auto pi = lam->type();
     if (lam->num_doms() > 1 && pi->is_cn() && !pi->isa_nom()) return true; // no ugly dependent pis
@@ -21,7 +21,7 @@ bool Scalerize::should_expand(Lam* lam) {
 }
 
 Lam* Scalerize::make_scalar(Lam* tup_lam) {
-    if (auto sca_lam = tup2sca_.lookup(tup_lam)) return *sca_lam;
+    if (auto i = tup2sca_.find(tup_lam); i != tup2sca_.end()) return i->second;
 
     auto types  = DefVec();
     auto arg_sz = std::vector<size_t>();

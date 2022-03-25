@@ -49,7 +49,7 @@ Scheduler::Scheduler(const Scope& s)
 }
 
 Def* Scheduler::early(const Def* def) {
-    if (auto nom = early_.lookup(def)) return *nom;
+    if (auto i = early_.find(def); i != early_.end()) return i->second;
     if (def->no_dep() || !scope().bound(def)) return early_[def] = scope().entry();
     if (auto var = def->isa<Var>()) return early_[def] = var->nom();
 
@@ -65,7 +65,7 @@ Def* Scheduler::early(const Def* def) {
 }
 
 Def* Scheduler::late(const Def* def) {
-    if (auto nom = late_.lookup(def)) return *nom;
+    if (auto i = late_.find(def); i != late_.end()) return i->second;
     if (def->no_dep() || !scope().bound(def)) return early_[def] = scope().entry();
 
     Def* result = nullptr;
@@ -84,7 +84,7 @@ Def* Scheduler::late(const Def* def) {
 }
 
 Def* Scheduler::smart(const Def* def) {
-    if (auto nom = smart_.lookup(def)) return *nom;
+    if (auto i = smart_.find(def); i != smart_.end()) return i->second;
 
     auto e = cfg(early(def));
     auto l = cfg(late(def));

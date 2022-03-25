@@ -5,7 +5,7 @@
 namespace thorin {
 
 const Def* LowerFor::rewrite(const Def* def) {
-    if (auto rewrote = rewritten_.lookup(def)) return rewrote.value();
+    if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
     if (auto for_ax = isa<Tag::For>(def)) {
         auto& w = world();

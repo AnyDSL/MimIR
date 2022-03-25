@@ -4,6 +4,9 @@
 #include <string>
 #include <tuple>
 
+#include <absl/container/flat_hash_map.h>
+#include <absl/container/flat_hash_set.h>
+
 #include "thorin/util/hash.h"
 #include "thorin/util/stream.h"
 
@@ -84,14 +87,16 @@ private:
 };
 
 struct SymHash {
-    static hash_t hash(Sym sym);
-    static bool eq(Sym a, Sym b) { return a == b; }
-    static Sym sentinel() { return Sym((const Def*)1); }
+    hash_t operator()(Sym) const;
+};
+
+struct SymEq {
+    bool operator()(Sym s1, Sym s2) const { return s1 == s2; }
 };
 
 template<class Val>
-using SymMap = HashMap<Sym, Val, SymHash>;
-using SymSet = HashSet<Sym, SymHash>;
+using SymMap = absl::flat_hash_map<Sym, Val, SymHash, SymEq>;
+using SymSet = absl::flat_hash_set<Sym, SymHash, SymEq>;
 
 } // namespace thorin
 

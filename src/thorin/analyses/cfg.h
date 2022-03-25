@@ -68,7 +68,10 @@ public:
     const NomMap<const CFNode*>& nodes() const { return nodes_; }
     const F_CFG& f_cfg() const;
     const B_CFG& b_cfg() const;
-    const CFNode* operator[](Def* nom) const { return nodes_.lookup(nom).value_or(nullptr); }
+    const CFNode* operator[](Def* nom) const {
+        auto i = nodes_.find(nom);
+        return i == nodes_.end() ? nullptr : i->second;
+    }
 
 private:
     void link_to_exit();

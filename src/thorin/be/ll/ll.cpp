@@ -109,7 +109,7 @@ std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
 }
 
 std::string CodeGen::convert(const Def* type) {
-    if (auto ll_type = types_.lookup(type)) return *ll_type;
+    if (auto i = types_.find(type); i != types_.end()) return i->second;
 
     assert(!isa<Tag::Mem>(type));
     StringStream s;

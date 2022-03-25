@@ -100,6 +100,10 @@ set_target_properties(libthorin PROPERTIES
     POSITION_INDEPENDENT_CODE ON
 )
 configure_file(config.h.in config.h)
-target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/..) # for config.h
-target_include_directories(libthorin PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
-target_include_directories(libthorin PUBLIC ${PROJECT_SOURCE_DIR}/half/include)
+target_include_directories(libthorin PUBLIC 
+    ${CMAKE_CURRENT_BINARY_DIR}/.. # for config.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${PROJECT_SOURCE_DIR}/half/include
+)
+#target_link_libraries_system(libthorin absl::hash absl::flat_hash_map absl::flat_hash_set)
+target_link_libraries(libthorin PUBLIC absl::hash absl::flat_hash_map absl::flat_hash_set)

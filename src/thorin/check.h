@@ -18,10 +18,10 @@ public:
 
 private:
     World& world_;
-    HashSet<DefDef, DefDefHash> equiv_;
+    DefDefSet equiv_;
     std::deque<DefDef> vars_;
 };
 
-}
+} // namespace thorin
 
 #endif

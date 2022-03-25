@@ -58,9 +58,11 @@ const Def* SSAConstr::rewrite(const Def* def) {
 }
 
 const Def* SSAConstr::get_val(Lam* lam, const Proxy* sloxy) {
-    if (auto val = lam2sloxy2val_[lam].lookup(sloxy)) {
-        world().DLOG("get_val found: '{}': '{}': '{}'", sloxy, *val, lam);
-        return *val;
+    auto& sloxy2val = lam2sloxy2val_[lam];
+    if (auto i = sloxy2val.find(sloxy); i != sloxy2val.end()) {
+        auto val = i->second;
+        world().DLOG("get_val found: '{}': '{}': '{}'", sloxy, val, lam);
+        return val;
     } else if (lam->is_external()) {
         world().DLOG("cannot install phi for '{}' in '{}'", sloxy, lam);
         return sloxy;
@@ -157,8 +159,10 @@ undo_t SSAConstr::analyze(const Def* def) {
             auto& succ_info = data(succ_lam);
 
             // TODO this is a bit scruffy - maybe we can do better
-            if (succ_lam->is_basicblock() && succ_lam != curr_nom())
-                succ_info.writable.insert_range(data(curr_nom()).writable);
+            if (succ_lam->is_basicblock() && succ_lam != curr_nom()) {
+                auto writable = data(curr_nom()).writable;
+                for (auto&& w : writable) succ_info.writable.insert(w);
+            }
 
             if (!isa_callee(def, i)) {
                 if (succ_info.pred) {

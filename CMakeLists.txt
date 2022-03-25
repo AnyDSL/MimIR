@@ -31,26 +31,31 @@ endif()
 
 if(MSVC)
     set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
-    add_compile_options(/utf-8 /W4 /wd4146 /wd4245) # /WX
 else()
     set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
-    add_compile_options(-Wall -Wextra -pedantic) # -Werror
+endif()
+
+if(BUILD_TESTING)
+    include(GoogleTest)
+    include(CTest)
+
+    find_program(MEMORYCHECK_COMMAND valgrind)
+    set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
+
+    add_subdirectory(googletest)
 endif()
 
 include(GenerateExportHeader)
-include(CTest)
 
-find_program(MEMORYCHECK_COMMAND valgrind)
-set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
-
+set(ABSL_PROPAGATE_CXX_STD ON)
+set(ABSL_USE_EXTERNAL_GOOGLETEST ON)
+add_subdirectory(abseil-cpp)
 add_subdirectory(lyra)
 
 add_subdirectory(src)
 add_subdirectory(dialects)
 
 if(BUILD_TESTING)
-    include(GoogleTest)
-    add_subdirectory(googletest)
     add_subdirectory(gtest)
 
     # keep cache clean

@@ -31,7 +31,7 @@ static bool is_top_level(Lam* lam) {
 }
 
 const Def* LamSpec::rewrite(const Def* def) {
-    if (auto new_def = old2new_.lookup(def)) return *new_def;
+    if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
 
     auto [app, old_lam] = isa_apped_nom_lam(def);
     if (!isa_workable(old_lam)) return def;

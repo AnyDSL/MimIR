@@ -51,12 +51,14 @@ public:
     /// @name Sea of Nodes
     ///@{
     struct SeaHash {
-        static hash_t hash(const Def* def) { return def->hash(); }
-        static bool eq(const Def* def1, const Def* def2) { return def1->equal(def2); }
-        static const Def* sentinel() { return (const Def*)(1); }
+        size_t operator()(const Def* def) const { return def->hash(); };
     };
 
-    using Sea = HashSet<const Def*, SeaHash>; ///< This HashSet contains Thorin's "sea of nodes".
+    struct SeaEq {
+        bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
+    };
+
+    using Sea = absl::flat_hash_set<const Def*, SeaHash, SeaEq>; ///< This HashSet contains Thorin's "sea of nodes".
 
     const Sea& defs() const { return data_.defs_; }
     ///@}
@@ -509,14 +511,16 @@ public:
 
     /// @name Manage Externals
     ///@{
-    using Externals = HashMap<std::string, Def*, StrViewHash>;
+    using Externals = absl::flat_hash_map<std::string, Def*>;
     const Externals& externals() const { return data_.externals_; }
     bool empty() { return data_.externals_.empty(); }
     void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
     void make_internal(Def* def) { data_.externals_.erase(def->name()); }
     bool is_external(const Def* def) { return data_.externals_.contains(def->debug().name); }
-    // TODO add magic to use name of type std::string_view directly
-    Def* lookup(std::string_view name) { return data_.externals_.lookup(std::string(name)).value_or(nullptr); }
+    Def* lookup(std::string_view name) {
+        auto i = data_.externals_.find(name);
+        return i != data_.externals_.end() ? i->second : nullptr;
+    }
 
     using VisitFn = std::function<void(const Scope&)>;
     /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
@@ -529,13 +533,7 @@ public:
 #if THORIN_ENABLE_CHECKS
     /// @name Debugging Features
     ///@{
-    struct BreakHash {
-        static hash_t hash(u32 u) { return murmur3(u); }
-        static bool eq(u32 a, u32 b) { return a == b; }
-        static u32 sentinel() { return u32(-1); }
-    };
-
-    using Breakpoints = HashSet<u32, BreakHash>;
+    using Breakpoints = absl::flat_hash_set<u32>;
 
     void breakpoint(size_t number);
     void use_breakpoint(size_t number);

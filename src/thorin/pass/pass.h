@@ -189,7 +189,7 @@ private:
 
     std::optional<const Def*> lookup(const Def* old_def) {
         for (auto& state : states_ | std::ranges::views::reverse)
-            if (auto new_def = state.old2new.lookup(old_def)) return *new_def;
+            if (auto i = state.old2new.find(old_def); i != state.old2new.end()) return i->second;
         return {};
     }
     ///@}
@@ -281,7 +281,8 @@ protected:
     ///@{
     undo_t curr_undo() const { return Super::man().curr_undo(); }
     undo_t undo_visit(Def* nom) const {
-        if (auto undo = Super::man().curr_state().nom2visit.lookup(nom)) return *undo;
+        const auto& nom2visit = Super::man().curr_state().nom2visit;
+        if (auto i = nom2visit.find(nom); i != nom2visit.end()) return i->second;
         return No_Undo;
     }
     undo_t undo_enter(Def* nom) const {
