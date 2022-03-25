@@ -37,7 +37,7 @@ Lam *LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     auto& w = world();
     auto new_dom = w.sigma(Array<const Def*>(lam->num_doms(), [&](auto i) -> const Def* {
         auto new_dom = rewrite(lam->dom(i));
-        if (i == CLOS_ENV_PARAM) {
+        if (i == Clos_Env_Param) {
             if (mode == Unbox)    return env_type();
             else if (mode == Box) return w.type_ptr(new_dom);
         }
@@ -56,16 +56,16 @@ Lam *LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         new_lam->make_external();
     }
     const Def* lcm = new_lam->mem_var();
-    const Def* env = new_lam->var(CLOS_ENV_PARAM, w.dbg("closure_env"));
+    const Def* env = new_lam->var(Clos_Env_Param, w.dbg("closure_env"));
     if (mode == Box) {
         auto env_mem = w.op_load(lcm, env);
         lcm = w.extract(env_mem, 0_u64, w.dbg("mem"));
         env = w.extract(env_mem, 1_u64, w.dbg("closure_env"));
     } else if (mode == Unbox) {
-        env = w.op_bitcast(lam->dom(CLOS_ENV_PARAM), env, w.dbg("unboxed_env"));
+        env = w.op_bitcast(lam->dom(Clos_Env_Param), env, w.dbg("unboxed_env"));
     }
     auto new_args = w.tuple(Array<const Def*>(lam->num_doms(), [&](auto i) {
-        return (i == CLOS_ENV_PARAM) ? env
+        return (i == Clos_Env_Param) ? env
              : (lam->var(i) == lam->mem_var()) ? lcm
              : new_lam->var(i);
     }));

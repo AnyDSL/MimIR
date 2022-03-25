@@ -52,7 +52,7 @@ static std::array<const Def*, 3> split(const Def* def) {
         auto op = def->proj(i);
         if (op == w.type_mem() || op->type() == w.type_mem())
             mem = op;
-        else if (i == CLOS_ENV_PARAM)
+        else if (i == Clos_Env_Param)
             env = op;
         else
             new_ops[j++] = op;

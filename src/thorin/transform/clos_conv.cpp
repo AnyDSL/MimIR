@@ -8,16 +8,16 @@ namespace thorin {
 
 // Adjust the index of an argument to account for the env param
 static size_t shift_env(size_t i) {
-    return (i < CLOS_ENV_PARAM) ? i : i - 1_u64;
+    return (i < Clos_Env_Param) ? i : i - 1_u64;
 }
 
 // Same but skip the env param
 static size_t skip_env(size_t i) {
-    return (i < CLOS_ENV_PARAM) ? i : i + 1_u64;
+    return (i < Clos_Env_Param) ? i : i + 1_u64;
 }
 
 const Def* clos_insert_env(size_t i, const Def* env, std::function<const Def* (size_t)> f) {
-    return (i == CLOS_ENV_PARAM) ? env : f(shift_env(i));
+    return (i == Clos_Env_Param) ? env : f(shift_env(i));
 }
 
 const Def* clos_remove_env(size_t i, std::function<const Def* (size_t)> f) {
@@ -60,7 +60,7 @@ const Sigma* isa_clos_type(const Def* def) {
     if (sig->op(2_u64) != var)
         return nullptr;
     auto pi = sig->op(1_u64)->isa<Pi>();
-    return (pi && pi->is_cn() && pi->num_ops() > 1_u64 && pi->dom(CLOS_ENV_PARAM) == var)
+    return (pi && pi->is_cn() && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var)
         ? sig : nullptr;
 }
 
@@ -69,7 +69,7 @@ const Def* clos_pack_dbg(const Def* env, const Def* lam, const Def* dbg, const D
     assert(!ct || isa_clos_type(ct));
     auto& w = env->world();
     auto pi = lam->type()->isa<Pi>();
-    assert(pi && env->type() == pi->dom(CLOS_ENV_PARAM));
+    assert(pi && env->type() == pi->dom(Clos_Env_Param));
     ct = (ct) ? ct : clos_type(w.cn(clos_remove_env(pi->dom())));
     return w.tuple(ct, {env->type(), lam, env}, dbg)->isa<Tuple>();
 }
@@ -126,7 +126,7 @@ Lam* ClosLit::fnc_as_lam() {
 }
 
 const Def* ClosLit::env_var() {
-    return fnc_as_lam()->var(CLOS_ENV_PARAM);
+    return fnc_as_lam()->var(Clos_Env_Param);
 }
 
 /* Closure Conversion */
@@ -162,7 +162,7 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
     if (!old_fn->is_set()) return;
 
     w.DLOG("rw body: {} [old={}, env={}]\nt", new_fn, old_fn, env);
-    auto env_param = new_fn->var(CLOS_ENV_PARAM, w.dbg("closure_env"));
+    auto env_param = new_fn->var(Clos_Env_Param, w.dbg("closure_env"));
     if (num_fvs == 1) {
         subst.emplace(env, env_param);
     } else {

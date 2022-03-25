@@ -246,7 +246,7 @@ std::tuple<Lam*, const Def*, const Def*> clos_lam_stub(const Def* env_type, cons
 /// @{
 
 /// Describes where the environment is placed in the argument list.
-const size_t CLOS_ENV_PARAM = 1_u64;
+const size_t Clos_Env_Param = 1_u64;
 
 const Def* clos_insert_env(size_t i, const Def* env, std::function<const Def* (size_t)> f);
 inline const Def* clos_insert_env(size_t i, const Def* env, const Def* a) {
@@ -270,7 +270,7 @@ inline const Def* clos_remove_env(const Def* tup_or_sig) {
 }
 
 inline const Def* clos_sub_env(const Def* tup_or_sig, const Def* new_env) {
-    return tup_or_sig->refine(CLOS_ENV_PARAM, new_env);
+    return tup_or_sig->refine(Clos_Env_Param, new_env);
 }
 /// @}
 
