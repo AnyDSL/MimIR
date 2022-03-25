@@ -471,9 +471,15 @@ public:
     }
     const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
     const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
-    const Def* op_alloc_jumpbuf(const Def* mem, const Def* dbg = {}) { return app(data_.sjlj_alloc_jmpbuf, {tuple(), mem}, dbg); }
-    const Def* op_setjmp(const Def* mem, const Def* buf, const Def* dbg = {})  { return app(data_.sjlj_setjmp_,  {mem, buf}, dbg); }
-    const Def* op_longjmp(const Def* mem, const Def* buf, const Def* id, const Def* dbg = {}) { return app(data_.sjlj_longjmp_, {mem, buf, id}, dbg); }
+    const Def* op_alloc_jumpbuf(const Def* mem, const Def* dbg = {}) {
+        return app(data_.sjlj_alloc_jmpbuf, {tuple(), mem}, dbg);
+    }
+    const Def* op_setjmp(const Def* mem, const Def* buf, const Def* dbg = {}) {
+        return app(data_.sjlj_setjmp_, {mem, buf}, dbg);
+    }
+    const Def* op_longjmp(const Def* mem, const Def* buf, const Def* id, const Def* dbg = {}) {
+        return app(data_.sjlj_longjmp_, {mem, buf, id}, dbg);
+    }
     // clang-format off
     const Def* op_for(const Def* mem, const Def* start, const Def* stop, const Def* step, Defs inits, const Def* body, const Def* brk);
     // clang-format on
@@ -499,8 +505,9 @@ public:
 
     const Def* clos_kind(const Def* def, ClosKind a, const Def* dbg = {}) {
         switch (a) {
-#define CODE(T, o) case T::o: return app(app(data_.clos_ ## o ## _, def->type()), def, dbg);
-            THORIN_CLOS_KIND (CODE)
+#define CODE(T, o) \
+    case T::o: return app(app(data_.clos_##o##_, def->type()), def, dbg);
+            THORIN_CLOS_KIND(CODE)
 #undef CODE
             default: return def;
         }
@@ -789,7 +796,7 @@ private:
         const Axiom* sjlj_setjmp_;
         const Axiom* sjlj_longjmp_;
         const Axiom* for_;
-        
+
         std::string name_;
         Externals externals_;
         Sea defs_;

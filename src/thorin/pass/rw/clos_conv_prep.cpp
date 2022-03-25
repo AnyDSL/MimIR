@@ -1,5 +1,6 @@
 
 #include "thorin/pass/rw/clos_conv_prep.h"
+
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/transform/clos_conv.h"
 
@@ -13,26 +14,21 @@ static bool isa_cont(const App* body, const Def* def, size_t i) {
 static const Def* isa_br(const App* body, const Def* def, size_t i) {
     if (!body->callee_type()->is_cn()) return nullptr;
     auto proj = body->callee()->isa<Extract>();
-    return (proj
-        && proj->tuple() == def
-        && proj->tuple()->isa<Tuple>()) ? proj->tuple() : nullptr;
+    return (proj && proj->tuple() == def && proj->tuple()->isa<Tuple>()) ? proj->tuple() : nullptr;
 }
 
 static bool isa_callee_br(const App* body, const Def* def, size_t i) {
-    if (!body->callee_type()->is_cn())
-        return false;
+    if (!body->callee_type()->is_cn()) return false;
     return isa_callee(def, i) || isa_br(body, def, i);
 }
 
 static Lam* isa_retvar(const Def* def) {
-    if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && var == lam->ret_var())
-        return lam;
+    if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && var == lam->ret_var()) return lam;
     return nullptr;
 }
 
-Lam* ClosConvPrep::scope(Lam* lam) { 
-    if (eta_exp_)
-        lam = eta_exp_->new2old(lam);
+Lam* ClosConvPrep::scope(Lam* lam) {
+    if (eta_exp_) lam = eta_exp_->new2old(lam);
     return lam2fscope_[lam];
 }
 
@@ -41,7 +37,7 @@ void ClosConvPrep::enter() {
         lam2fscope_[curr_nom()] = curr_nom();
         world().DLOG("scope {} -> {}", curr_nom(), curr_nom());
         auto scope = Scope(curr_nom());
-        for (auto def: scope.bound()) {
+        for (auto def : scope.bound()) {
             assert(def);
             if (auto bb_lam = def->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock()) {
                 world().DLOG("scope {} -> {}", bb_lam, curr_nom());
@@ -49,7 +45,8 @@ void ClosConvPrep::enter() {
             }
         }
     }
-    if (auto body = curr_nom()->body()->isa<App>(); !wrapper_.contains(curr_nom()) && body && body->callee_type()->is_cn())
+    if (auto body = curr_nom()->body()->isa<App>();
+        !wrapper_.contains(curr_nom()) && body && body->callee_type()->is_cn())
         cur_body_ = body;
     else
         cur_body_ = nullptr;
@@ -59,7 +56,7 @@ const Def* ClosConvPrep::rewrite(const Def* def) {
     auto& w = world();
     if (!cur_body_ || isa<Tag::ClosKind>(def) || def->isa<Var>()) return def;
     for (auto i = 0u; i < def->num_ops(); i++) {
-        auto op = def->op(i);
+        auto op     = def->op(i);
         auto refine = [&](const Def* new_op) {
             auto new_def = def->refine(i, new_op);
             if (def == cur_body_->callee())

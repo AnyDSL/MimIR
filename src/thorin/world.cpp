@@ -134,7 +134,8 @@ World::World(std::string_view name)
         axiom(normalize_Conv<T::o>, make_type(T::o), Tag::Conv, flags_t(T::o), dbg(op2str(T::o)));
         THORIN_CONV(CODE)
 #undef CODE
-    } { // hlt/run: T: * -> T -> T
+    }
+    { // hlt/run: T: * -> T -> T
         auto type = nom_pi(kind())->set_dom(kind());
         auto T    = type->var(dbg("T"));
         type->set_codom(pi(T, T));
@@ -254,18 +255,23 @@ World::World(std::string_view name)
         rs_pi->set_codom(is_os_pi);
 
         data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
-    } {
+    }
+    {
         auto id_type = nom_pi(kind())->set_dom(kind());
-        auto var = id_type->var(0_u64);
+        auto var     = id_type->var(0_u64);
         id_type->set_codom(pi(var, var));
-#define CODE(T, o) data_.clos_ ## o ## _ = axiom(id_type, Tag::T, (flags_t) T::o, dbg(op2str(T::o)));
-        THORIN_CLOS_KIND (CODE)
+#define CODE(T, o) data_.clos_##o##_ = axiom(id_type, Tag::T, (flags_t)T::o, dbg(op2str(T::o)));
+        THORIN_CLOS_KIND(CODE)
 #undef CODE
-    } {
-        auto buf_ptr_t = type_ptr(type_int_width(8));
-        data_.sjlj_alloc_jmpbuf = axiom(pi({sigma(), type_mem()}, sigma({type_mem(), buf_ptr_t})), Tag::AllocJmpBuf, (flags_t) 0, dbg("alloc_jmpbuf"));
-        data_.sjlj_setjmp_ = axiom(pi({type_mem(), buf_ptr_t}, sigma({type_mem(), type_int_width(32)})), Tag::SetJmp, (flags_t) 0, dbg("set_jmp"));
-        data_.sjlj_longjmp_ = axiom(cn({type_mem(), buf_ptr_t, type_int_width(32)}), Tag::LongJmp, (flags_t) 0, dbg("long_jmp"));
+    }
+    {
+        auto buf_ptr_t          = type_ptr(type_int_width(8));
+        data_.sjlj_alloc_jmpbuf = axiom(pi({sigma(), type_mem()}, sigma({type_mem(), buf_ptr_t})), Tag::AllocJmpBuf,
+                                        (flags_t)0, dbg("alloc_jmpbuf"));
+        data_.sjlj_setjmp_ = axiom(pi({type_mem(), buf_ptr_t}, sigma({type_mem(), type_int_width(32)})), Tag::SetJmp,
+                                   (flags_t)0, dbg("set_jmp"));
+        data_.sjlj_longjmp_ =
+            axiom(cn({type_mem(), buf_ptr_t, type_int_width(32)}), Tag::LongJmp, (flags_t)0, dbg("long_jmp"));
     }
     { // for :: [m: Nat , n: Nat , Ts: «n; *»] → [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , «i: n; Is#i», Cn
         // [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];

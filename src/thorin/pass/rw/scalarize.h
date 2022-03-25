@@ -26,13 +26,13 @@ public:
     const Def* rewrite(const Def*) override;
 
 private:
-    bool should_expand(Lam *lam);
+    bool should_expand(Lam* lam);
     Lam* make_scalar(const Def* def);
 
     EtaExp* eta_exp_;
     Lam2Lam tup2sca_;
 };
 
-}
+} // namespace thorin
 
 #endif

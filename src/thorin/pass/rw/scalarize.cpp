@@ -1,7 +1,8 @@
 #include "thorin/pass/rw/scalarize.h"
 
-#include "thorin/tuple.h"
 #include "thorin/rewrite.h"
+#include "thorin/tuple.h"
+
 #include "thorin/pass/fp/eta_exp.h"
 
 namespace thorin {
@@ -24,30 +25,26 @@ Lam* Scalerize::make_scalar(const Def* def) {
     auto tup_lam = def->isa_nom<Lam>();
     assert(tup_lam);
 
-    if (auto sca_lam = tup2sca_.lookup(tup_lam)) 
-        return *sca_lam;
+    if (auto sca_lam = tup2sca_.lookup(tup_lam)) return *sca_lam;
 
-    auto types = DefVec();
+    auto types  = DefVec();
     auto arg_sz = std::vector<size_t>();
-    bool todo = false;
+    bool todo   = false;
     for (size_t i = 0, e = tup_lam->num_doms(); i != e; ++i) {
         auto n = flatten(types, tup_lam->dom(i), false);
         arg_sz.push_back(n);
         todo |= n != 1 || types.back() != tup_lam->dom(i);
     }
 
-    if (!todo) 
-       return tup2sca_[tup_lam] = tup_lam;
+    if (!todo) return tup2sca_[tup_lam] = tup_lam;
 
-    auto pi = world().cn(world().sigma(types));
+    auto pi      = world().cn(world().sigma(types));
     auto sca_lam = tup_lam->stub(world(), pi, tup_lam->dbg());
     if (eta_exp_) eta_exp_->new2old(sca_lam, tup_lam);
     size_t n = 0;
     world().DLOG("type {} ~> {}", tup_lam->type(), pi);
     auto new_vars = world().tuple(DefArray(tup_lam->num_doms(), [&](auto i) {
-        auto tuple = DefArray(arg_sz.at(i), [&](auto j) {
-            return sca_lam->var(n++);
-        });
+        auto tuple = DefArray(arg_sz.at(i), [&](auto j) { return sca_lam->var(n++); });
         return unflatten(tuple, tup_lam->dom(i), false);
     }));
     sca_lam->set(tup_lam->reduce(new_vars));
@@ -67,12 +64,10 @@ const Def* Scalerize::rewrite(const Def* def) {
 
         } else if (auto proj = sca_callee->isa<Extract>()) {
             auto tuple = proj->tuple()->isa<Tuple>();
-            if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(), 
-                    [&](const Def* op) { return should_expand(op->isa_nom<Lam>()); })) {
-                auto new_tuple = w.tuple(DefArray(tuple->num_ops(), [&](auto i) { 
-                    return make_scalar(tuple->op(i)); 
-                }));
-                sca_callee = w.extract(new_tuple, proj->index());
+            if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(),
+                                     [&](const Def* op) { return should_expand(op->isa_nom<Lam>()); })) {
+                auto new_tuple = w.tuple(DefArray(tuple->num_ops(), [&](auto i) { return make_scalar(tuple->op(i)); }));
+                sca_callee     = w.extract(new_tuple, proj->index());
                 w.DLOG("Expand tuple: {, } ~> {, }", tuple->ops(), new_tuple->ops());
             }
         }
@@ -86,4 +81,4 @@ const Def* Scalerize::rewrite(const Def* def) {
     return def;
 }
 
-}
+} // namespace thorin

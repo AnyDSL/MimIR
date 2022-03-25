@@ -2,8 +2,8 @@
 #ifndef THORIN_PASS_ASSIGN_RET_H
 #define THORIN_PASS_ASSIGN_RET_H
 
-#include "thorin/pass/pass.h"
 #include "thorin/pass/fp/eta_exp.h"
+#include "thorin/pass/pass.h"
 #include "thorin/transform/clos_conv.h"
 
 namespace thorin {
@@ -17,20 +17,18 @@ public:
     using Data = int; // Dummy
 
 private:
-
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Def*) override;
 
-    bool is_escaping(const Def* def) { 
-        if (auto [_, lam] = ca_isa_var<Lam>(def); lam && !lam->is_set())
-            return true;
-        return escaping_.contains(def); 
+    bool is_escaping(const Def* def) {
+        if (auto [_, lam] = ca_isa_var<Lam>(def); lam && !lam->is_set()) return true;
+        return escaping_.contains(def);
     }
     undo_t set_escaping(const Def*);
 
     DefSet escaping_;
 };
 
-}
+} // namespace thorin
 
 #endif

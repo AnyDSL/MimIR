@@ -338,7 +338,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
     } else if (auto longjmp = isa<Tag::LongJmp>(app)) {
         auto [mem, jbuf, tag] = app->args<3>();
         emit_unsafe(mem);
-        auto emitted_jb = emit(jbuf);
+        auto emitted_jb  = emit(jbuf);
         auto emitted_tag = emit(tag);
         bb.tail("call void @longjmp(i8* {}, i32 {})", emitted_jb, emitted_tag);
         return bb.tail("unreachable");
@@ -359,7 +359,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
             return bb.tail("unreachable");
         }
 
-        auto ret_lam = app->args().back()->as_nom<Lam>();
+        auto ret_lam    = app->args().back()->as_nom<Lam>();
         size_t num_vars = ret_lam->num_vars();
         size_t n        = 0;
         Array<const Def*> values(num_vars);
@@ -728,7 +728,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
 
-        if (tuple->isa<Var>()) { 
+        if (tuple->isa<Var>()) {
             // computing the index may crash, so we bail out
             assert(isa<Tag::Mem>(extract->type()) && "only mem-var should not be mapped");
             return {};
@@ -737,8 +737,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto ll_tup = emit_unsafe(tuple);
         auto ll_idx = emit(index);
 
-        if (isa<Tag::Mem>(extract->type())) 
-            return {};
+        if (isa<Tag::Mem>(extract->type())) return {};
 
         if (tuple->num_projs() == 2) {
             if (isa<Tag::Mem>(tuple->proj(2, 0_s)->type())) return ll_tup;
