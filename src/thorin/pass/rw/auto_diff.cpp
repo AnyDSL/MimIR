@@ -33,10 +33,12 @@ Array<const Def*> flat_tuple(Array<const Def*> defs) {
     for(int i=0;i<defs.size();i++) {
         auto def=defs[i];
         if(auto tup=def->isa<Tuple>()) {
-            auto dim=tup->num_ops();
-            for(int j=0;j<dim;j++) {
-                v.push_back(tup->op(j));
-            }
+            auto dim = tup->num_ops();
+            for (int j = 0; j < dim; j++) { v.push_back(tup->op(j)); }
+//        } else if(auto ext = def->isa<Extract>()) {
+//            World& w = def->world();
+//            type_dump(w," ext flat",ext);
+//            THORIN_UNREACHABLE;
         }else {
             v.push_back(def);
         }
@@ -475,20 +477,43 @@ std::pair<const Def*,const Def*> oneHot(World& world_, const Def* mem, const Def
         return oneHot(world_,mem,*lit,shape,like,s);
     }else {
         // TODO: wrong
+        // TODO: fix like
         dlog(world_, "non-lit oh");
         auto dim = getDim(shape);
         dlog(world_,"dim: {}",dim);
 
+        // instead of
+        // ((1,0,0),(0,1,0),(0,0,1)) # idx
+        // we build
+        // ((1,0,0)#idx, (0,1,0)#idx, (0,0,1)#idx)
+        // which is equivalent
+        // but allows flattening (toplevel tupel)
         Array<const Def*> ohv{dim};
+
         for (size_t i = 0; i < dim; ++i) {
+            dlog(world_,"  shape {}: {}",i,shape);
+//            dlog(world_,"  shape {}: {}",i,shape->op(i));
+            // correct type shape here? => probably not but we know that the tranpose is the same
             auto [nmem, oh]=oneHot(world_,mem,i,shape,like,s);
+            dlog(world_,"  oh {}: {}",i,oh);
             mem=nmem;
-            ohv[i]=oh;
+            ohv[i]=world_.extract_unsafe(oh,idx);
         }
-        dlog(world_, "creates ohv: ");
-        auto t = world_.tuple(ohv);
-        type_dump(world_, "as tuple: ",t);
-        return {mem,world_.extract_unsafe(world_.tuple(ohv),idx)};
+
+        auto oh=world_.tuple(ohv);
+        type_dump(world_,"oh",oh);
+        return {mem,oh};
+
+//        Array<const Def*> ohv{dim};
+//        for (size_t i = 0; i < dim; ++i) {
+//            auto [nmem, oh]=oneHot(world_,mem,i,shape,like,s);
+//            mem=nmem;
+//            ohv[i]=oh;
+//        }
+//        dlog(world_, "creates ohv: ");
+//        auto t = world_.tuple(ohv);
+//        type_dump(world_, "as tuple: ",t);
+//        return {mem,world_.extract_unsafe(world_.tuple(ohv),idx)};
     }
 }
 
@@ -986,10 +1011,11 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract, const Def* tuple) {
     dlog(world_,"    tuple_pb ty {}",tuple_pb->type());
     dlog(world_,"    pb_args {, }",pb_args);
     type_dump(world_,"    pb_args tuple ",world_.tuple(pb_args));
+    type_dump(world_,"    pb_args flat tuple ",world_.tuple(flat_tuple(pb_args)));
 
     pb->set_body(world_.app(
         tuple_pb,
-        pb_args
+        flat_tuple(pb_args)
         ));
 //    THORIN_UNREACHABLE;
     return pb;
