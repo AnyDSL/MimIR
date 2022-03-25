@@ -11,8 +11,8 @@
 
 namespace thorin {
 
-/// @brief Transitivly compute free @p Def's on demand.
-/// This is used internally by @p ClosConv.
+/// Transitively compute free Def's on demand.
+/// This is used internally by ClosConv.
 class FreeDefAna {
 public:
     FreeDefAna(World& world)
@@ -20,10 +20,11 @@ public:
         , cur_pass_id(1)
         , lam2nodes_(){};
 
-    /// @brief run will compute free defs (FD) that appear in @p lam%s body.
-    /// Nominal @p Def%s are only considered free if they are anottated with @p ClosKind::freeBB or @p
-    /// ClosKind::fstclassBB. Otherwise, we add a nom's free defs in order to build a closure for it. Structural @p
-    /// Def%s containing nominals are broken up if necessary.
+    /// FreeDefAna::run will compute free defs (FD) that appear in @p lam%s body.
+    /// Nominal Def%s are only considered free if they are annotated with ClosKind::freeBB or
+    /// ClosKind::fstclassBB.
+    /// Otherwise, we add a nom's free defs in order to build a closure for it.
+    /// Structural Def%s containing nominals are broken up if necessary.
     DefSet& run(Lam* lam);
 
 private:
@@ -33,7 +34,7 @@ private:
     using NodeQueue = std::queue<Node*>;
     using Nodes     = std::vector<Node*>;
 
-    /// In order to save recomputing FDs sets, sets are computed for the subgraph reachable from nom and memorized.
+    /// In order to avoid recomputing FDs sets, sets are computed for the subgraph reachable from nom and memorized.
     /// `pass_id` determines if the node has been initialized.
     struct Node {
         Def* nom;
@@ -44,16 +45,16 @@ private:
     };
     /// @}
 
-    /// @brief node is not initialized
+    /// Node is not initialized?
     bool is_bot(Node* node) { return node->pass_id == 0; }
 
-    /// @brief FD set for node is already present
+    /// FD set for node is already present?
     bool is_done(Node* node) { return !is_bot(node) && node->pass_id < cur_pass_id; }
 
-    /// @brief mark node as done
+    /// Marks a node as done.
     void mark(Node* node) { node->pass_id = cur_pass_id; }
 
-    /// @brief split free def. This may create more Nodes as we discover reachable nodes.
+    /// Split a free Def. This may create more Nodes as more reachable nodes are discovered.
     void split_fd(Node* node, const Def* fv, bool& is_init, NodeQueue& worklist);
 
     std::pair<Node*, bool> build_node(Def* nom, NodeQueue& worklist);
@@ -66,21 +67,20 @@ private:
     DefMap<std::unique_ptr<Node>> lam2nodes_;
 };
 
-/// @brief Perform *typed closure conversion*.
+/// Performs *typed closure conversion*.
 /// This is based on the [Simply Typed Closure Conversion](https://dl.acm.org/doi/abs/10.1145/237721.237791).
-/// Closures are represented using dependen pairs `[env_type:*, cn[env_type, Args..], env_type]`.
-/// In general only *continuations* are converted (i.e @p Lam%s that have type `cn[...]`).
-/// Different kind of @p Lam%s may be rewritten differently:
-/// - *returning* @p continuations, join-points and branches are fully closure converted
-/// - *returning* continuations are not closure converted
-/// - *first-class* continuations get a closures, but still have free variables.
-///   There are hoisted into the *returning* @p Lam they belong to.
+/// Closures are represented using dependent pairs `[env_type:*, cn[env_type, Args..], env_type]`.
+/// In general only *continuations* are converted (i.e Lam%s that have type `cn[...]`).
+/// Different kind of Lam%s may be rewritten differently:
+/// - *returning continuations* ("functions"), *join-points* and *branches* are fully closure converted.
+/// - *return continuations* are not closure converted.
+/// - *first-class continuations* get a "dummy" closure, they still have free variables.
 ///
-/// This pass relies on @p ClosConvPrep to introduce annotations for these cases.
+/// This pass relies on ClosConvPrep to introduce annotations for these cases.
 ///
-/// Note: Since This direct-style @p Def%s are not rewritten, this can lead to problems with ceratin @p Axiom%s:
+/// Note: Since direct-style Def%s are not rewritten, this can lead to problems with certain Axiom%s:
 /// `ax : (B : *, int -> B) -> (int -> B)` won't be converted, possible arguments may.
-/// Further, there is no machinery to handle free variables in a @p Lam%s type; this may lead to
+/// Further, there is no machinery to handle free variables in a Lam%s type; this may lead to
 /// problems with polymorphic functions.
 
 class ClosConv {
@@ -95,7 +95,7 @@ public:
     void run();
 
 private:
-    /// @name closure stub
+    /// @name closure stubs
     /// @{
     struct ClosureStub {
         Lam* old_fn;
@@ -108,7 +108,7 @@ private:
     ClosureStub make_stub(Lam* lam, Def2Def& subst);
     /// @}
 
-    /// @name recursively rewrite @p Def%s
+    /// @name Recursively rewrite Def%s.
     /// @{
     void rewrite_body(Lam* lam, Def2Def& subst);
     const Def* rewrite(const Def* old_def, Def2Def& subst);
@@ -126,7 +126,7 @@ private:
 };
 
 // TODO: rename this
-/// @brief Check is @p def is the variable of a @p nom of type @p N
+/// Checks is def is the variable of a nom of type N.
 template<class N>
 std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
     if (auto proj = def->isa<Extract>()) {
@@ -139,7 +139,7 @@ std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
 /// @name closures
 /// @{
 
-/// @brief wrapper around a @p Def that can be used to match closures (see @p isa_clos_lit ).
+/// Wrapper around a Def that can be used to match closures (see isa_clos_lit).
 class ClosLit {
 public:
     /// @name Getters
@@ -173,7 +173,7 @@ public:
     /// @{
     bool is_returning() { return fnc_type()->is_returning(); }
     bool is_basicblock() { return fnc_type()->is_basicblock(); }
-    ClosKind kind() { return kind_; } ///< @p ClosKind annoation. These should appear before the code-part.
+    ClosKind kind() { return kind_; } ///< ClosKind annotation. These should appear in front of the code-part.
     /// @}
 
 private:
@@ -187,22 +187,22 @@ private:
     friend ClosLit isa_clos_lit(const Def*, bool);
 };
 
-/// @brief tries to match a closure literal
+/// Tries to match a closure literal.
 ClosLit isa_clos_lit(const Def* def, bool fn_isa_lam = true);
 
-/// @brief pack a typed closure. This assumes that @p fn expects the environment as its @p CLOSURE_ENV_PARAM argument.
+/// Pack a typed closure. This assumes that @p fn expects the environment as its Clos_Env_Param%th argument.
 const Def* clos_pack_dbg(const Def* env, const Def* fn, const Def* dbg, const Def* ct = nullptr);
 
 inline const Def* clos_pack(const Def* env, const Def* fn, const Def* ct = nullptr) {
     return clos_pack_dbg(env, fn, nullptr, ct);
 }
 
-/// @brief Deconstruct a closure into `(env_type, function, env)`
-/// **Important**: use this or @p ClosLit to destruct closures, since typechecking for dependet pairs is currently
+/// Deconstruct a closure into `(env_type, function, env)`.
+/// **Important**: use this or ClosLit to destruct closures, since typechecking dependent pairs is currently
 /// broken.
 std::tuple<const Def*, const Def*, const Def*> clos_unpack(const Def* c);
 
-/// @brief apply a closure to arguments
+/// Apply a closure to arguments.
 const Def* clos_apply(const Def* closure, const Def* args);
 inline const Def* apply_closure(const Def* closure, Defs args) {
     auto& w = closure->world();
@@ -214,14 +214,14 @@ inline const Def* apply_closure(const Def* closure, Defs args) {
 /// @name closure types
 /// @{
 
-/// @brief return @p def if @p def is a closure and @c nullptr otherwise
+/// Returns @p def if @p def is a closure and @c nullptr otherwise
 const Sigma* isa_clos_type(const Def* def);
 
-/// @brief creates a typed closure type from a @p Pi
+/// Creates a typed closure type from @p pi.
 Sigma* clos_type(const Pi* pi);
 
-/// @brief Convert a closure type to a @p Pi, where the environment type has been removed or replaced by new_env_type
-/// (if new_env_type != @c nullptr)
+/// Convert a closure type to a Pi, where the environment type has been removed or replaced by @p new_env_type
+/// (if @p new_env_type != @c nullptr)
 const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type = nullptr);
 
 /// @}
@@ -229,7 +229,7 @@ const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type = nullptr);
 std::tuple<Lam*, const Def*, const Def*> clos_lam_stub(const Def* env_type, const Def* dom, const Def* dbg = {});
 
 /// @name closure environments
-/// @p tup_or_sig should generally be a @p Tuple, @p Sigma or @p Var.
+/// @p tup_or_sig should generally be a  Tuple, Sigma or Var.
 /// @{
 
 /// Describes where the environment is placed in the argument list.
