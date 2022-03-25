@@ -40,9 +40,10 @@ static void split(DefSet& out, const Def* def, bool as_callee) {
     }
 }
 
-static DefSet&& split(const Def* def, bool keep_others, DefSet&& out = DefSet()) {
+static DefSet split(const Def* def, bool keep_others) {
+    DefSet out;
     split(out, def, keep_others);
-    return std::move(out);
+    return out;
 }
 
 undo_t LowerTypedClosPrep::set_escaping(const Def* def) {
