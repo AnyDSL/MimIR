@@ -30,6 +30,7 @@ endif()
 if(MSVC)
     set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
     add_compile_options(/utf-8)
+    add_definitions(-DABSL_CONSUME_DLL)
 else()
     set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
 endif()
