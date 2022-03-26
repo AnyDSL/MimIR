@@ -105,5 +105,7 @@ target_include_directories(libthorin PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${PROJECT_SOURCE_DIR}/modules/half/include
 )
-#target_link_libraries_system(libthorin absl::hash absl::flat_hash_map absl::flat_hash_set)
 target_link_libraries(libthorin PUBLIC absl::hash absl::flat_hash_map absl::flat_hash_set)
+if(MSVC)
+    target_compile_options(-DABSL_CONSUME_DLL)
+endif()
