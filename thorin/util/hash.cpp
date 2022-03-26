@@ -1,7 +1,5 @@
 #include "thorin/util/hash.h"
 
-#include "thorin/util/stream.h"
-
 namespace thorin {
 
 hash_t hash(const char* s) {
@@ -15,10 +13,6 @@ hash_t hash(std::string_view s) {
     hash_t seed = thorin::hash_begin(s.size());
     for (auto c : s) seed = thorin::hash_combine(seed, c);
     return seed;
-}
-
-void debug_hash() {
-    errf("debug with: break {}:{}", __FILE__, __LINE__);
 }
 
 }

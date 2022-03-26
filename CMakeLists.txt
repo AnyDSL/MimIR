@@ -15,10 +15,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    option(THORIN_ENABLE_PROFILING "Profile performance of hash functions in thorin::HashTable" ON)
     option(THORIN_ENABLE_CHECKS "Enable expensive checks" ON)
 else()
-    option(THORIN_ENABLE_PROFILING "Profile performance of hash functions in thorin::HashTable" OFF)
     option(THORIN_ENABLE_CHECKS "Enable expensive checks" OFF)
 endif()
 
@@ -31,7 +29,7 @@ endif()
 
 if(MSVC)
     set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
-    add_compile_options(/utf-8) # /WX
+    add_compile_options(/utf-8)
 else()
     set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
 endif()
@@ -50,7 +48,8 @@ set(ABSL_USE_EXTERNAL_GOOGLETEST ON)
 add_subdirectory(modules/abseil-cpp)
 add_subdirectory(modules/lyra)
 
-add_subdirectory(src)
+add_subdirectory(thorin)
+add_subdirectory(cli)
 add_subdirectory(dialects)
 
 if(BUILD_TESTING)
