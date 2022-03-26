@@ -34,7 +34,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install g++-11
           sudo apt-get install valgrind
-          export CXX=g++-11
+          set(ENV{CC}  ${gcc-11})
+          set(ENV{CXX} ${g++-11})
 
       - name: Configure
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
