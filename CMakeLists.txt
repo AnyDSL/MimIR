@@ -35,39 +35,23 @@ else()
     set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
 endif()
 
+include(CTest)
 if(BUILD_TESTING)
     include(GoogleTest)
-    include(CTest)
+    add_subdirectory(modules/googletest)
 
     find_program(MEMORYCHECK_COMMAND valgrind)
     set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
-
-    add_subdirectory(googletest)
 endif()
-
-include(GenerateExportHeader)
 
 set(ABSL_PROPAGATE_CXX_STD ON)
 set(ABSL_USE_EXTERNAL_GOOGLETEST ON)
-add_subdirectory(abseil-cpp)
-add_subdirectory(lyra)
+add_subdirectory(modules/abseil-cpp)
+add_subdirectory(modules/lyra)
 
 add_subdirectory(src)
 add_subdirectory(dialects)
 
 if(BUILD_TESTING)
     add_subdirectory(gtest)
-
-    # keep cache clean
-    mark_as_advanced(
-        BUILD_GMOCK BUILD_GTEST BUILD_SHARED_LIBS
-        gmock_build_tests gtest_build_samples gtest_build_tests
-        gtest_disable_pthreads gtest_force_shared_crt gtest_hide_internal_symbols
-    )
-
-    # keep IDEs folders clean
-    set_target_properties(gtest      PROPERTIES FOLDER extern)
-    set_target_properties(gtest_main PROPERTIES FOLDER extern)
-    set_target_properties(gmock      PROPERTIES FOLDER extern)
-    set_target_properties(gmock_main PROPERTIES FOLDER extern)
 endif()
