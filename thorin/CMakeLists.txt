@@ -107,5 +107,5 @@ target_include_directories(libthorin PUBLIC
 )
 target_link_libraries(libthorin PUBLIC absl::flat_hash_map absl::flat_hash_set)
 if(MSVC)
-    target_compile_options(-DABSL_CONSUME_DLL)
+    target_compile_options(libthorin -DABSL_CONSUME_DLL)
 endif()
