@@ -106,6 +106,6 @@ target_include_directories(libthorin PUBLIC
     ${PROJECT_SOURCE_DIR}/modules/half/include
 )
 target_link_libraries(libthorin PUBLIC absl::flat_hash_map absl::flat_hash_set)
-if(MSVC)
-    target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
-endif()
+#if(MSVC)
+    #target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
+#endif()

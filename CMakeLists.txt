@@ -12,7 +12,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     option(THORIN_ENABLE_CHECKS "Enable expensive checks" ON)
@@ -29,7 +29,7 @@ endif()
 
 if(MSVC)
     set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
-    add_compile_options(/utf-8)
+    add_compile_options(/utf-8 /wd4146 /wd4245)
 else()
     set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
 endif()
