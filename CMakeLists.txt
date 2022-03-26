@@ -6,11 +6,19 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
+if(MSVC)
+    set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
+    add_compile_options(/utf-8 /wd4146 /wd4245)
+else()
+    set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
+endif()
+
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
@@ -25,13 +33,6 @@ if(WIN32)
     add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
 else()
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" TRUE)
-endif()
-
-if(MSVC)
-    set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
-    add_compile_options(/utf-8 /wd4146 /wd4245)
-else()
-    set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
 endif()
 
 include(CTest)

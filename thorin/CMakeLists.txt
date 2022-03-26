@@ -95,10 +95,7 @@ add_library(libthorin
     util/utf8.h
 )
 
-set_target_properties(libthorin PROPERTIES 
-    PREFIX ""
-    POSITION_INDEPENDENT_CODE ON
-)
+set_target_properties(libthorin PROPERTIES PREFIX "")
 configure_file(config.h.in config.h)
 target_include_directories(libthorin PUBLIC 
     ${CMAKE_CURRENT_BINARY_DIR}/.. # for config.h
