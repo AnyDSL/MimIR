@@ -50,7 +50,9 @@ jobs:
       - name: Test with Valgrind (ubuntu-latest only)
         if: ${{ matrix.os == 'ubuntu-latest' }}
         working-directory: ${{github.workspace}}/build
-        run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure -T memcheck
+        run: |
+          ctest --verbose -C ${{matrix.build-type}} --output-on-failure -T memcheck
+          cat Testing/Temporary/MemoryChecker.*.log
 
       - name: Test (all other builds)
         if: ${{ matrix.os != 'ubuntu-latest' }}
