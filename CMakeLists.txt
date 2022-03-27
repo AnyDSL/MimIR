@@ -35,14 +35,13 @@ else()
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" TRUE)
 endif()
 
+find_program(MEMORYCHECK_COMMAND valgrind)
+set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1") # needs to be BEFORE "include(CTest)"
 include(CTest)
 if(BUILD_TESTING)
     include(GoogleTest)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     add_subdirectory(modules/googletest)
-
-    find_program(MEMORYCHECK_COMMAND valgrind)
-    set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
 endif()
 
 set(ABSL_PROPAGATE_CXX_STD ON)
