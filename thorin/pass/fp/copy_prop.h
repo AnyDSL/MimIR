@@ -32,6 +32,7 @@ private:
     /// ```
     enum Lattice : u8 { Dead, Prop, Keep };
     enum : flags_t { Varxy, Appxy };
+    using Lattices = Array<Lattice>;
 
     /// @name PassMan hooks
     ///@{
@@ -41,7 +42,7 @@ private:
 
     BetaRed* beta_red_;
     EtaExp* eta_exp_;
-    LamMap<std::tuple<Array<Lattice>, Lam*, DefArray>> lam2info_;
+    LamMap<std::tuple<Lattices, Lam*, DefArray>> lam2info_;
 };
 
 } // namespace thorin

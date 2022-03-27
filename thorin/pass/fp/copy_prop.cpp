@@ -12,7 +12,7 @@ const Def* CopyProp::rewrite(const Def* def) {
     auto n = app->num_args();
     if (n == 0) return app;
 
-    auto [it, _] = lam2info_.emplace(var_lam, std::tuple(Array<Lattice>(n), (Lam*)nullptr, DefArray(n)));
+    auto [it, _] = lam2info_.emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefArray(n)));
     auto& [lattice, prop_lam, old_args] = it->second;
 
     if (var_lam->mem_var()) lattice[0] = Lattice::Keep;
@@ -84,7 +84,7 @@ const Def* CopyProp::rewrite(const Def* def) {
 
     // Don't optimize again. Also, keep this line here at the very bottom as this invalidates all references.
     Lam* key = prop_lam; // prop_lam is a Lam*& which might get invalidated by the very insertion happening next.
-    lam2info_[key] = std::tuple(Array<Lattice>(new_doms.size(), Lattice::Keep), (Lam*)nullptr, DefArray());
+    lam2info_.insert_or_assign(key, std::tuple(Lattices(new_doms.size(), Lattice::Keep), (Lam*)nullptr, DefArray()));
     return res;
 }
 
