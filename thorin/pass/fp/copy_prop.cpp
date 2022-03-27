@@ -81,8 +81,10 @@ const Def* CopyProp::rewrite(const Def* def) {
 
     world().DLOG("var_lam => prop_lam: {}: {} => {}: {}", var_lam, var_lam->dom(), prop_lam, prop_lam->dom());
     auto res = app->world().app(prop_lam, new_args, app->dbg());
+
     // Don't optimize again. Also, keep this line here at the very bottom as this invalidates all references.
-    lam2info_[prop_lam] = std::tuple(Array<Lattice>(new_doms.size(), Lattice::Keep), (Lam*)nullptr, DefArray());
+    Lam* key = prop_lam; // prop_lam is a Lam*& which might get invalidated by the very insertion happening next.
+    lam2info_[key] = std::tuple(Array<Lattice>(new_doms.size(), Lattice::Keep), (Lam*)nullptr, DefArray());
     return res;
 }
 
