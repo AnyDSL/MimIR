@@ -38,7 +38,7 @@ endif()
 include(CTest)
 if(BUILD_TESTING)
     include(GoogleTest)
-    set(gtest_force_shared_crt ${BUILD_SHARED_LIBS} CACHE BOOL "" FORCE)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     add_subdirectory(modules/googletest)
 
     find_program(MEMORYCHECK_COMMAND valgrind)
