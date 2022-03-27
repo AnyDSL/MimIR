@@ -4,7 +4,6 @@ project(Thorin VERSION 1.9.0)
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type (default Debug)" FORCE)
 endif()
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 if(MSVC)
     set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
@@ -21,6 +20,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}; shared libs: ${BUILD_SHARED_LIBS}")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     option(THORIN_ENABLE_CHECKS "Enable expensive checks" ON)
@@ -38,6 +38,7 @@ endif()
 include(CTest)
 if(BUILD_TESTING)
     include(GoogleTest)
+    set(gtest_force_shared_crt ${BUILD_SHARED_LIBS} CACHE BOOL "" FORCE)
     add_subdirectory(modules/googletest)
 
     find_program(MEMORYCHECK_COMMAND valgrind)
