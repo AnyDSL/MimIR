@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1SSAConstr.html',''); in
 <p>SSA construction algorithm that promotes <a class="el" href="namespacethorin_1_1Tag.html#ad1aca2cd5162a2610cb52c28df8f2d55a10e78fc601c6cb2d71e7ec1a273bf84e">Tag::Slot</a>s, <a class="el" href="namespacethorin_1_1Tag.html#ad1aca2cd5162a2610cb52c28df8f2d55a3fa48428576bbf714933120bcde71526">Tag::Load</a>s, and <a class="el" href="namespacethorin_1_1Tag.html#ad1aca2cd5162a2610cb52c28df8f2d55a617635d8295c3800871d2fba4985aa04">Tag::Store</a>s to SSA values.  
  <a href="classthorin_1_1SSAConstr.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="ssa__constr_8h_source.html">thorin/pass/fp/ssa_constr.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for thorin::SSAConstr:</div>
 <div class="dyncontent">
@@ -125,8 +125,8 @@ Public Types</h2></td></tr>
 , <a class="el" href="classthorin_1_1SSAConstr.html#a91002b94fe5889a8b2a6807a2a5c891eac6afdf202d56604ea83504826746547b">Traxy</a>
  }</td></tr>
 <tr class="separator:a91002b94fe5889a8b2a6807a2a5c891e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1ae845dbe45b9a7b1236ee1b425fdb6"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1SSAConstr.html#ac1ae845dbe45b9a7b1236ee1b425fdb6">Data</a> = std::map&lt; <a class="el" href="classthorin_1_1Lam.html">Lam</a> *, <a class="el" href="classthorin_1_1SSAConstr.html#structthorin_1_1SSAConstr_1_1Info">Info</a>, <a class="el" href="structthorin_1_1GIDLt.html">GIDLt</a>&lt; <a class="el" href="classthorin_1_1Lam.html">Lam</a> * &gt; &gt;</td></tr>
-<tr class="separator:ac1ae845dbe45b9a7b1236ee1b425fdb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58b6c4f375ee1aab763d892b97ae0225"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1SSAConstr.html#a58b6c4f375ee1aab763d892b97ae0225">Data</a> = <a class="el" href="namespacethorin.html#abbb08512ded2c0a47698a71177d29217">GIDNodeMap</a>&lt; <a class="el" href="classthorin_1_1Lam.html">Lam</a> *, <a class="el" href="classthorin_1_1SSAConstr.html#structthorin_1_1SSAConstr_1_1Info">Info</a> &gt;</td></tr>
+<tr class="separator:a58b6c4f375ee1aab763d892b97ae0225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classthorin_1_1FPPass"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classthorin_1_1FPPass')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classthorin_1_1FPPass.html">thorin::FPPass&lt; SSAConstr, Lam &gt;</a></td></tr>
 <tr class="memitem:ab5b9529e4bddbda40f241c4e4be942c6 inherit pub_types_classthorin_1_1FPPass"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#ab5b9529e4bddbda40f241c4e4be942c6">Super</a> = <a class="el" href="classthorin_1_1RWPass.html">RWPass</a>&lt; <a class="el" href="classthorin_1_1Lam.html">Lam</a> &gt;</td></tr>
 <tr class="separator:ab5b9529e4bddbda40f241c4e4be942c6 inherit pub_types_classthorin_1_1FPPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -211,7 +211,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p >SSA construction algorithm that promotes <a class="el" href="namespacethorin_1_1Tag.html#ad1aca2cd5162a2610cb52c28df8f2d55a10e78fc601c6cb2d71e7ec1a273bf84e">Tag::Slot</a>s, <a class="el" href="namespacethorin_1_1Tag.html#ad1aca2cd5162a2610cb52c28df8f2d55a3fa48428576bbf714933120bcde71526">Tag::Load</a>s, and <a class="el" href="namespacethorin_1_1Tag.html#ad1aca2cd5162a2610cb52c28df8f2d55a617635d8295c3800871d2fba4985aa04">Tag::Store</a>s to SSA values. </p>
 <p >This is loosely based upon: "Simple and Efficient Construction of Static Single Assignment Form" by Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau. </p>
 
-<p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00018">18</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00015">15</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
 </div><hr/><h2 class="groupheader">Class Documentation</h2>
 <a name="structthorin_1_1SSAConstr_1_1Info" id="structthorin_1_1SSAConstr_1_1Info"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#structthorin_1_1SSAConstr_1_1Info">&#9670;&nbsp;</a></span>thorin::SSAConstr::Info</h2>
@@ -225,7 +225,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00026">26</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00023">23</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
@@ -235,7 +235,7 @@ pred</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="a8640798450a1343fdaf4839bfadd34e1" name="a8640798450a1343fdaf4839bfadd34e1"></a><a class="el" href="namespacethorin.html#ad920afc017f128d660ef769bf6223ca3">GIDSet</a>&lt; const <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> * &gt;</td>
+<a id="a8640798450a1343fdaf4839bfadd34e1" name="a8640798450a1343fdaf4839bfadd34e1"></a><a class="el" href="namespacethorin.html#ad35b50772866ed1025ef1473bb99856a">GIDSet</a>&lt; const <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> * &gt;</td>
 <td class="fieldname">
 writable</td>
 <td class="fielddoc">
@@ -245,19 +245,19 @@ writable</td>
 </div>
 </div>
 <h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="ac1ae845dbe45b9a7b1236ee1b425fdb6" name="ac1ae845dbe45b9a7b1236ee1b425fdb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1ae845dbe45b9a7b1236ee1b425fdb6">&#9670;&nbsp;</a></span>Data</h2>
+<a id="a58b6c4f375ee1aab763d892b97ae0225" name="a58b6c4f375ee1aab763d892b97ae0225"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58b6c4f375ee1aab763d892b97ae0225">&#9670;&nbsp;</a></span>Data</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="classthorin_1_1SSAConstr.html#ac1ae845dbe45b9a7b1236ee1b425fdb6">thorin::SSAConstr::Data</a> =  std::map&lt;<a class="el" href="classthorin_1_1Lam.html">Lam</a>*, <a class="el" href="classthorin_1_1SSAConstr.html#structthorin_1_1SSAConstr_1_1Info">Info</a>, <a class="el" href="structthorin_1_1GIDLt.html">GIDLt</a>&lt;<a class="el" href="classthorin_1_1Lam.html">Lam</a>*&gt; &gt;</td>
+          <td class="memname">using <a class="el" href="classthorin_1_1SSAConstr.html#a58b6c4f375ee1aab763d892b97ae0225">thorin::SSAConstr::Data</a> =  <a class="el" href="namespacethorin.html#abbb08512ded2c0a47698a71177d29217">GIDNodeMap</a>&lt;<a class="el" href="classthorin_1_1Lam.html">Lam</a>*, <a class="el" href="classthorin_1_1SSAConstr.html#structthorin_1_1SSAConstr_1_1Info">Info</a>&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00031">31</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00028">28</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
 
 </div>
 </div>
@@ -279,7 +279,7 @@ writable</td>
 <tr><td class="fieldname"><a id="a91002b94fe5889a8b2a6807a2a5c891eac6afdf202d56604ea83504826746547b" name="a91002b94fe5889a8b2a6807a2a5c891eac6afdf202d56604ea83504826746547b"></a>Traxy&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00024">24</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00021">21</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
 
 </div>
 </div>
@@ -318,7 +318,7 @@ writable</td>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00020">20</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00017">17</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
 
 </div>
 </div>

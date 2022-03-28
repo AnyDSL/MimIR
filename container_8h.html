@@ -100,18 +100,23 @@ $(document).ready(function(){initNavTree('container_8h.html',''); initResizable(
   <div class="headertitle"><div class="title">container.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;stack&gt;</code><br />
-<code>#include &lt;queue&gt;</code><br />
+<div class="textblock"><code>#include &lt;queue&gt;</code><br />
+<code>#include &lt;stack&gt;</code><br />
+<code>#include &lt;absl/container/flat_hash_map.h&gt;</code><br />
+<code>#include &lt;absl/container/flat_hash_set.h&gt;</code><br />
+<code>#include &lt;absl/container/node_hash_map.h&gt;</code><br />
+<code>#include &lt;absl/container/node_hash_set.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="hash_8h_source.html">thorin/util/hash.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for container.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="container_8h__incl.svg" width="154" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="container_8h__incl.svg" width="1110" height="276"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="container_8h__dep__incl.svg" width="1110" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="container_8h__dep__incl.svg" width="4256" height="619"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -123,11 +128,33 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1unique__queue.html">thorin::unique_queue&lt; Set &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1GIDHash.html">thorin::GIDHash&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1GIDEq.html">thorin::GIDEq&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1GIDLt.html">thorin::GIDLt&lt; T &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr><td colspan="2"><div class="groupHeader">maps/sets based upon gid</div></td></tr>
+<tr class="memitem:a7b3fd301e4692211ebf0d5bcfa17f1ac"><td class="memTemplParams" colspan="2">template&lt;class K , class V &gt; </td></tr>
+<tr class="memitem:a7b3fd301e4692211ebf0d5bcfa17f1ac"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a7b3fd301e4692211ebf0d5bcfa17f1ac">thorin::GIDMap</a> = absl::flat_hash_map&lt; K, V, GIDHash&lt; K &gt;, GIDEq&lt; K &gt; &gt;</td></tr>
+<tr class="separator:a7b3fd301e4692211ebf0d5bcfa17f1ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad35b50772866ed1025ef1473bb99856a"><td class="memTemplParams" colspan="2">template&lt;class K &gt; </td></tr>
+<tr class="memitem:ad35b50772866ed1025ef1473bb99856a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad35b50772866ed1025ef1473bb99856a">thorin::GIDSet</a> = absl::flat_hash_set&lt; K, GIDHash&lt; K &gt;, GIDEq&lt; K &gt; &gt;</td></tr>
+<tr class="separator:ad35b50772866ed1025ef1473bb99856a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abbb08512ded2c0a47698a71177d29217"><td class="memTemplParams" colspan="2">template&lt;class K , class V &gt; </td></tr>
+<tr class="memitem:abbb08512ded2c0a47698a71177d29217"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#abbb08512ded2c0a47698a71177d29217">thorin::GIDNodeMap</a> = absl::node_hash_map&lt; K, V, GIDHash&lt; K &gt;, GIDEq&lt; K &gt; &gt;</td></tr>
+<tr class="separator:abbb08512ded2c0a47698a71177d29217"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56063a2d17c29f75d2e405b36278df32"><td class="memTemplParams" colspan="2">template&lt;class K &gt; </td></tr>
+<tr class="memitem:a56063a2d17c29f75d2e405b36278df32"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a56063a2d17c29f75d2e405b36278df32">thorin::GIDNodeSet</a> = absl::node_hash_set&lt; K, GIDHash&lt; K &gt;, GIDEq&lt; K &gt; &gt;</td></tr>
+<tr class="separator:a56063a2d17c29f75d2e405b36278df32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -147,7 +174,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_6a7c4bb7c40f97e4d670d167d69dfc05.html">thorin</a></li><li class="navelem"><a class="el" href="dir_b4c1616413e32b88824b4ffdc9da0708.html">util</a></li><li class="navelem"><a class="el" href="container_8h.html">container.h</a></li>
+    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="container_8h.html">container.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
   </ul>
 </div>

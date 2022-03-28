@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['operator_3c_3c_0',['operator&lt;&lt;',['../structthorin_1_1LRPrec.html#a5ffc48cce103dfc021da68def8275401',1,'thorin::LRPrec']]]
+  ['passman_0',['PassMan',['../classthorin_1_1Pass.html#ae3b741f775f564409b46ea178ca0aefc',1,'thorin::Pass']]]
 ];

@@ -1,9 +1,13 @@
 var searchData=
 [
-  ['r16_0',['r16',['../namespacethorin.html#a5d4e1ce8a649a791a70e23ac7b61cf34',1,'thorin']]],
-  ['r32_1',['r32',['../namespacethorin.html#a4c922f53424c5c4db54b11e49cb3b052',1,'thorin']]],
-  ['r64_2',['r64',['../namespacethorin.html#ab1ed0de0e01b65bb1ae173a42333ec6b',1,'thorin']]],
-  ['reference_3',['reference',['../classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#afa27d341016076755c21ffc6307547c4',1,'thorin::detail::HashTable::iterator_base']]],
-  ['reverse_5fiterator_4',['reverse_iterator',['../classthorin_1_1Array.html#ac2bc8756d6c189e980f499433f765768',1,'thorin::Array']]],
-  ['rprec_5',['RPrec',['../namespacethorin.html#a6a0b8640fb36b9c1d4fbd1ac8e6d947c',1,'thorin']]]
+  ['s16_0',['s16',['../namespacethorin.html#aead77ec943b2667e0ca8de85dcf65b32',1,'thorin']]],
+  ['s32_1',['s32',['../namespacethorin.html#aec966247b3a15f12201f883262bfdc78',1,'thorin']]],
+  ['s64_2',['s64',['../namespacethorin.html#a3a2fb7fcec1f4e0b791f34d5f3d302cc',1,'thorin']]],
+  ['s8_3',['s8',['../namespacethorin.html#ab0f99eb12483ec616d52dd577f7ae546',1,'thorin']]],
+  ['schedule_4',['Schedule',['../namespacethorin.html#a8aee5aa0e98f35c8d4f186b580f158b7',1,'thorin']]],
+  ['sea_5',['Sea',['../classthorin_1_1World.html#a719f4752866517945dd792ef4d6995cb',1,'thorin::World']]],
+  ['set_6',['Set',['../classthorin_1_1CFG.html#a5627c508042392a0bdad6a46e7326804',1,'thorin::CFG']]],
+  ['super_7',['Super',['../classthorin_1_1FPPass.html#ab5b9529e4bddbda40f241c4e4be942c6',1,'thorin::FPPass']]],
+  ['symmap_8',['SymMap',['../namespacethorin.html#ac6c83ff26c54719de4466900fd016c6e',1,'thorin']]],
+  ['symset_9',['SymSet',['../namespacethorin.html#ae6833c83dc97a46b82490af26f9d532c',1,'thorin']]]
 ];

@@ -1,9 +1,6 @@
 var annotated_dup =
 [
     [ "thorin", "namespacethorin.html", [
-      [ "detail", "namespacethorin_1_1detail.html", [
-        [ "HashTable", "classthorin_1_1detail_1_1HashTable.html", "classthorin_1_1detail_1_1HashTable" ]
-      ] ],
       [ "ll", "namespacethorin_1_1ll.html", [
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
         [ "CodeGen", "classthorin_1_1ll_1_1CodeGen.html", "classthorin_1_1ll_1_1CodeGen" ]
@@ -27,8 +24,8 @@ var annotated_dup =
       [ "CopyProp", "classthorin_1_1CopyProp.html", "classthorin_1_1CopyProp" ],
       [ "Debug", "classthorin_1_1Debug.html", "classthorin_1_1Debug" ],
       [ "Def", "classthorin_1_1Def.html", "classthorin_1_1Def" ],
+      [ "DefDefEq", "structthorin_1_1DefDefEq.html", "structthorin_1_1DefDefEq" ],
       [ "DefDefHash", "structthorin_1_1DefDefHash.html", "structthorin_1_1DefDefHash" ],
-      [ "DefsHash", "structthorin_1_1DefsHash.html", "structthorin_1_1DefsHash" ],
       [ "DepNode", "classthorin_1_1DepNode.html", "classthorin_1_1DepNode" ],
       [ "DepTree", "classthorin_1_1DepTree.html", "classthorin_1_1DepTree" ],
       [ "DomFrontierBase", "classthorin_1_1DomFrontierBase.html", "classthorin_1_1DomFrontierBase" ],
@@ -69,11 +66,10 @@ var annotated_dup =
       [ "FoldConv< Conv::u2u, dw, sw >", "structthorin_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4.html", "structthorin_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4" ],
       [ "FPPass", "classthorin_1_1FPPass.html", "classthorin_1_1FPPass" ],
       [ "FVA", "classthorin_1_1FVA.html", "classthorin_1_1FVA" ],
+      [ "GIDEq", "structthorin_1_1GIDEq.html", "structthorin_1_1GIDEq" ],
       [ "GIDHash", "structthorin_1_1GIDHash.html", "structthorin_1_1GIDHash" ],
       [ "GIDLt", "structthorin_1_1GIDLt.html", "structthorin_1_1GIDLt" ],
       [ "Global", "classthorin_1_1Global.html", "classthorin_1_1Global" ],
-      [ "HashMap", "classthorin_1_1HashMap.html", "classthorin_1_1HashMap" ],
-      [ "HashSet", "classthorin_1_1HashSet.html", "classthorin_1_1HashSet" ],
       [ "IndexMap", "classthorin_1_1IndexMap.html", "classthorin_1_1IndexMap" ],
       [ "IndexSet", "classthorin_1_1IndexSet.html", "classthorin_1_1IndexSet" ],
       [ "Insert", "classthorin_1_1Insert.html", "classthorin_1_1Insert" ],
@@ -114,10 +110,9 @@ var annotated_dup =
       [ "SSAConstr", "classthorin_1_1SSAConstr.html", "classthorin_1_1SSAConstr" ],
       [ "Stream", "classthorin_1_1Stream.html", "classthorin_1_1Stream" ],
       [ "Streamable", "classthorin_1_1Streamable.html", "classthorin_1_1Streamable" ],
-      [ "StrHash", "structthorin_1_1StrHash.html", "structthorin_1_1StrHash" ],
       [ "StringStream", "classthorin_1_1StringStream.html", "classthorin_1_1StringStream" ],
-      [ "StrViewHash", "structthorin_1_1StrViewHash.html", "structthorin_1_1StrViewHash" ],
       [ "Sym", "classthorin_1_1Sym.html", "classthorin_1_1Sym" ],
+      [ "SymEq", "structthorin_1_1SymEq.html", "structthorin_1_1SymEq" ],
       [ "SymHash", "structthorin_1_1SymHash.html", "structthorin_1_1SymHash" ],
       [ "Tag2Def_", "namespacethorin.html#structthorin_1_1Tag2Def__", "namespacethorin_structthorin_1_1Tag2Def___dup" ],
       [ "Tag2Def_< Tag::Mem >", "namespacethorin.html#structthorin_1_1Tag2Def___3_01Tag_1_1Mem_01_4", "namespacethorin_structthorin_1_1Tag2Def___3_01Tag_1_1Mem_01_4_dup" ],
@@ -143,6 +138,7 @@ var annotated_dup =
       [ "unique_queue", "classthorin_1_1unique__queue.html", "classthorin_1_1unique__queue" ],
       [ "unique_stack", "classthorin_1_1unique__stack.html", "classthorin_1_1unique__stack" ],
       [ "Use", "classthorin_1_1Use.html", "classthorin_1_1Use" ],
+      [ "UseEq", "structthorin_1_1UseEq.html", "structthorin_1_1UseEq" ],
       [ "UseHash", "structthorin_1_1UseHash.html", "structthorin_1_1UseHash" ],
       [ "Var", "classthorin_1_1Var.html", "classthorin_1_1Var" ],
       [ "Vel", "classthorin_1_1Vel.html", "classthorin_1_1Vel" ],

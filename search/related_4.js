@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hashtable_0',['HashTable',['../classthorin_1_1detail_1_1HashTable_1_1iterator__base.html#a574ea806a7ec4e2f0fa54ed7da67b628',1,'thorin::detail::HashTable::iterator_base']]]
+  ['indexset_0',['IndexSet',['../classthorin_1_1IndexSet_1_1reference.html#add469a0063023e5ade22035cbaf464fe',1,'thorin::IndexSet::reference']]]
 ];

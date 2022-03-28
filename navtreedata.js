@@ -34,41 +34,41 @@ var NAVTREE =
         [ "Deployed as a Git Submodule", "index.html#autotoc_md5", null ]
       ] ]
     ] ],
-    [ "Language Reference", "md__github_workspace_docs_langref.html", null ],
-    [ "Command-Line Interface", "md__github_workspace_docs_cli.html", [
-      [ "Usage", "md__github_workspace_docs_cli.html#autotoc_md8", null ]
+    [ "Language Reference", "md_docs_langref.html", null ],
+    [ "Command-Line Interface", "md_docs_cli.html", [
+      [ "Usage", "md_docs_cli.html#autotoc_md8", null ]
     ] ],
-    [ "Developer Guide", "md__github_workspace_docs_dev.html", [
-      [ "Compiling and Executing", "md__github_workspace_docs_dev.html#autotoc_md10", null ],
-      [ "Defs and the World", "md__github_workspace_docs_dev.html#autotoc_md11", [
-        [ "Hash Consing", "md__github_workspace_docs_dev.html#autotoc_md12", null ]
+    [ "Developer Guide", "md_docs_dev.html", [
+      [ "Compiling and Executing", "md_docs_dev.html#autotoc_md10", null ],
+      [ "Defs and the World", "md_docs_dev.html#autotoc_md11", [
+        [ "Hash Consing", "md_docs_dev.html#autotoc_md12", null ]
       ] ],
-      [ "Structural vs. Nominal", "md__github_workspace_docs_dev.html#autotoc_md13", null ],
-      [ "Matching IR", "md__github_workspace_docs_dev.html#autotoc_md14", null ],
-      [ "Iterating over the Program", "md__github_workspace_docs_dev.html#autotoc_md15", null ]
+      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md13", null ],
+      [ "Matching IR", "md_docs_dev.html#autotoc_md14", null ],
+      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md15", null ]
     ] ],
-    [ "Passes", "md__github_workspace_docs_passes.html", [
-      [ "Rewrite Pass", "md__github_workspace_docs_passes.html#autotoc_md17", null ],
-      [ "Fixed-Point Pass", "md__github_workspace_docs_passes.html#autotoc_md18", [
-        [ "Rewrite", "md__github_workspace_docs_passes.html#autotoc_md19", [
-          [ "Proxy", "md__github_workspace_docs_passes.html#autotoc_md20", null ]
+    [ "Passes", "md_docs_passes.html", [
+      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md17", null ],
+      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md18", [
+        [ "Rewrite", "md_docs_passes.html#autotoc_md19", [
+          [ "Proxy", "md_docs_passes.html#autotoc_md20", null ]
         ] ],
-        [ "Analyze", "md__github_workspace_docs_passes.html#autotoc_md21", null ],
-        [ "Other Hooks", "md__github_workspace_docs_passes.html#autotoc_md22", null ]
+        [ "Analyze", "md_docs_passes.html#autotoc_md21", null ],
+        [ "Other Hooks", "md_docs_passes.html#autotoc_md22", null ]
       ] ],
-      [ "Caveats", "md__github_workspace_docs_passes.html#autotoc_md23", [
-        [ "Construct Valid Programs", "md__github_workspace_docs_passes.html#autotoc_md24", null ],
-        [ "Creating Nominals", "md__github_workspace_docs_passes.html#autotoc_md25", null ]
+      [ "Caveats", "md_docs_passes.html#autotoc_md23", [
+        [ "Construct Valid Programs", "md_docs_passes.html#autotoc_md24", null ],
+        [ "Creating Nominals", "md_docs_passes.html#autotoc_md25", null ]
       ] ]
     ] ],
-    [ "Coding & Debugging", "md__github_workspace_docs_coding.html", [
-      [ "Coding Style", "md__github_workspace_docs_coding.html#autotoc_md27", null ],
-      [ "Debugging", "md__github_workspace_docs_coding.html#autotoc_md28", [
-        [ "Logging", "md__github_workspace_docs_coding.html#autotoc_md29", null ],
-        [ "Breakpoints", "md__github_workspace_docs_coding.html#autotoc_md30", null ],
-        [ "VS Code", "md__github_workspace_docs_coding.html#autotoc_md31", null ],
-        [ "GoogleTest", "md__github_workspace_docs_coding.html#autotoc_md32", null ],
-        [ "Valgrind & GDB", "md__github_workspace_docs_coding.html#autotoc_md33", null ]
+    [ "Coding & Debugging", "md_docs_coding.html", [
+      [ "Coding Style", "md_docs_coding.html#autotoc_md27", null ],
+      [ "Debugging", "md_docs_coding.html#autotoc_md28", [
+        [ "Logging", "md_docs_coding.html#autotoc_md29", null ],
+        [ "Breakpoints", "md_docs_coding.html#autotoc_md30", null ],
+        [ "VS Code", "md_docs_coding.html#autotoc_md31", null ],
+        [ "GoogleTest", "md_docs_coding.html#autotoc_md32", null ],
+        [ "Valgrind & GDB", "md_docs_coding.html#autotoc_md33", null ]
       ] ]
     ] ],
     [ "Deprecated List", "deprecated.html", null ],
@@ -116,19 +116,18 @@ var NAVTREEINDEX =
 "classthorin_1_1ArrayRef.html#adf4aaa6e43f0c1a35baa724fb2c3188e",
 "classthorin_1_1Checker.html#a1f10a53ffc87e0cee5dd0007ff2edff6",
 "classthorin_1_1DepTree.html#a80404f985151b68186ef3a12fb56fd9a",
-"classthorin_1_1HashSet.html#a7ab60adf508c214f87ed8423cd606699",
-"classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cbac3b5e1f7de11d645fb1da6c5415b1fa5",
-"classthorin_1_1RecStreamer.html#af790433affa3b172b36b09409af12051",
-"classthorin_1_1TailRecElim.html#a3bf48d7a1fe24c52d777ac01c5eab4f1",
-"classthorin_1_1World.html#a3eb1f33f850b9e470aa8189204cd3863",
-"classthorin_1_1World.html#ace18bc458b7e6aa143e7fd7fabddf9c5",
-"classthorin_1_1ll_1_1CodeGen.html#ad490fd67ad94dd25dabb81c34287e215",
-"indexmap_8h.html#aa0a62994b63462d082addeddb1c92029",
-"namespacethorin.html#a6048c1976f32e52047f6e7d00c23e01e",
-"namespacethorin.html#af46278ec1dc091418ec3fe6bc7317561a588c850cce77827aeaa0468d9c1c8ff4",
-"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac3795836fbb5eb4edbb139a0343219dc",
-"tables_8h.html#a0d966c506a7e321a180379f2f793cbca",
-"types_8h.html#aba227b3ba0e6cb0a398abeef94c5ddef"
+"classthorin_1_1IndexMap.html#adc89c1b2dfaf4c9828296fb7bfad9cf0",
+"classthorin_1_1Nat.html",
+"classthorin_1_1SSAConstr.html#a7e971447917136fea7b96f2c386b7914",
+"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038acea5dc65c7461c55ad4662dfe1fe9c23",
+"classthorin_1_1World.html#a62ddee91d07a2e77c0d161723b7a2340",
+"classthorin_1_1World.html#ae3e9f40e2738a65a227e4f695400c900",
+"functions_func_p.html",
+"namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6",
+"namespacethorin.html#ae09ad713f008c88390acd966418726a2",
+"rewrite_8h.html#aae14ac541e8de18c5c705ac427c8bcc1",
+"structthorin_1_1World_1_1SeaEq.html#a137877da98df3449ab2b0cb595d4dcd7",
+"tuple_8h.html#abe0176edb854a9982662e5bdfe0038a3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
