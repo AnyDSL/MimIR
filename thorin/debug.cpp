@@ -20,7 +20,7 @@ Debug::Debug(const Def* dbg)
     , loc(dbg)
     , meta(dbg ? dbg->proj(2) : nullptr) {}
 
-hash_t SymHash::operator()(Sym sym) const { return murmur3(sym.def()->gid()); }
+size_t SymHash::operator()(Sym sym) const { return murmur3(sym.def()->gid()); }
 
 /*
  * stream

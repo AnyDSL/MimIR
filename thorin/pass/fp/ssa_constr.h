@@ -1,9 +1,6 @@
 #ifndef THORIN_PASS_FP_SSA_CONSTR_H
 #define THORIN_PASS_FP_SSA_CONSTR_H
 
-#include <map>
-#include <set>
-
 #include "thorin/pass/pass.h"
 #include "thorin/util/bitset.h"
 
@@ -28,7 +25,7 @@ public:
         GIDSet<const Proxy*> writable;
     };
 
-    using Data = std::map<Lam*, Info, GIDLt<Lam*>>;
+    using Data = GIDNodeMap<Lam*, Info>;
 
 private:
     /// @name PassMan hooks
@@ -51,7 +48,7 @@ private:
     LamMap<std::pair<Lam*, DefVec>> mem2phi_;
 
     /// Value numbering table.
-    std::map<Lam*, GIDMap<const Proxy*, const Def*>, GIDLt<Lam*>> lam2sloxy2val_;
+    GIDNodeMap<Lam*, GIDMap<const Proxy*, const Def*>> lam2sloxy2val_;
 
     /// Contains the @p Sloxy%s that we need to install as phi in a @c mem_lam to build the @c phi_lam.
     LamMap<std::set<const Proxy*, GIDLt<const Proxy*>>> lam2sloxys_;

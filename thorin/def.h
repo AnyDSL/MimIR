@@ -14,28 +14,6 @@
 
 namespace thorin {
 
-template<class T>
-struct GIDHash {
-    size_t operator()(T p) const { return murmur3(p->gid()); };
-};
-
-template<class T>
-struct GIDEq {
-    bool operator()(T a, T b) const { return a->gid() == b->gid(); }
-};
-
-template<class T>
-struct GIDLt {
-    bool operator()(T a, T b) const { return a->gid() < b->gid(); }
-};
-
-template<class Key, class Value>
-using GIDMap = absl::flat_hash_map<Key, Value, GIDHash<Key>, GIDEq<Key>>;
-template<class Key>
-using GIDSet = absl::flat_hash_set<Key, GIDHash<Key>, GIDEq<Key>>;
-
-//------------------------------------------------------------------------------
-
 class App;
 class Axiom;
 class Var;

@@ -7,7 +7,6 @@
 #include <absl/container/flat_hash_map.h>
 #include <absl/container/flat_hash_set.h>
 
-#include "thorin/util/hash.h"
 #include "thorin/util/stream.h"
 
 namespace thorin {
@@ -87,7 +86,7 @@ private:
 };
 
 struct SymHash {
-    hash_t operator()(Sym) const;
+    size_t operator()(Sym) const;
 };
 
 struct SymEq {

@@ -1,13 +1,16 @@
 #ifndef THORIN_UTIL_HASH_H
 #define THORIN_UTIL_HASH_H
 
+#include <absl/container/flat_hash_map.h>
+#include <absl/container/flat_hash_set.h>
+#include <absl/container/node_hash_map.h>
+#include <absl/container/node_hash_set.h>
+
 #include "thorin/util/types.h"
 
 namespace thorin {
 
 using hash_t = uint32_t;
-
-void debug_hash();
 
 /// @name murmur3 hash
 ///@{
@@ -115,18 +118,29 @@ inline hash_t hash_begin() { return FNV1::offset; }
 ///@{
 hash_t hash(const char*);
 hash_t hash(std::string_view);
+///@}
 
-struct StrHash {
-    static hash_t hash(const char* s) { return thorin::hash(s); }
-    static bool eq(const char* s1, const char* s2) { return std::strcmp(s1, s2) == 0; }
-    static const char* sentinel() { return nullptr; }
+/// @name maps/sets based upon gid
+///@{
+template<class T>
+struct GIDHash {
+    size_t operator()(T p) const { return murmur3(p->gid()); };
 };
 
-struct StrViewHash {
-    static hash_t hash(std::string_view s) { return thorin::hash(s); }
-    static bool eq(std::string_view s1, std::string_view s2) { return s1 == s2; }
-    static std::string_view sentinel() { return {}; }
+template<class T>
+struct GIDEq {
+    bool operator()(T a, T b) const { return a->gid() == b->gid(); }
 };
+
+template<class T>
+struct GIDLt {
+    bool operator()(T a, T b) const { return a->gid() < b->gid(); }
+};
+
+template<class K, class V> using GIDMap     = absl::flat_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
+template<class K>          using GIDSet     = absl::flat_hash_set<K,    GIDHash<K>, GIDEq<K>>;
+template<class K, class V> using GIDNodeMap = absl::node_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
+template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<K>, GIDEq<K>>;
 ///@}
 
 } // namespace thorin
