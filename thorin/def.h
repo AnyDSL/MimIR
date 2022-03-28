@@ -9,8 +9,8 @@
 
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
-#include "thorin/util/hash.h"
 #include "thorin/util/container.h"
+#include "thorin/util/hash.h"
 #include "thorin/util/stream.h"
 
 namespace thorin {

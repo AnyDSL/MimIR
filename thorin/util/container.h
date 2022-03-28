@@ -1,8 +1,8 @@
 #ifndef THORIN_UTIL_CONTAINER_H
 #define THORIN_UTIL_CONTAINER_H
 
-#include <stack>
 #include <queue>
+#include <stack>
 
 #include <absl/container/flat_hash_map.h>
 #include <absl/container/flat_hash_set.h>
@@ -47,7 +47,10 @@ public:
     bool empty() const { return stack_.empty(); }
     const T& top() { return stack_.top(); }
     T pop() { return thorin::pop(stack_); }
-    void clear() { done_.clear(); stack_ = {}; }
+    void clear() {
+        done_.clear();
+        stack_ = {};
+    }
 
 private:
     Set done_;
@@ -75,7 +78,10 @@ public:
     T pop() { return thorin::pop(queue_); }
     T& front() { return queue_.front(); }
     T& back() { return queue_.back(); }
-    void clear() { done_.clear(); queue_ = {}; }
+    void clear() {
+        done_.clear();
+        queue_ = {};
+    }
 
 private:
     Set done_;
@@ -107,6 +113,6 @@ template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<
 // clang-format on
 ///@}
 
-}
+} // namespace thorin
 
 #endif
