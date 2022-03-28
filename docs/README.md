@@ -2,7 +2,7 @@
 
 [TOC]
 
-[![documentation](https://img.shields.io/badge/documentation-master-blue)](https://anydsl.github.io/thorin2)
+[![doc](https://img.shields.io/badge/doc-master-blue)](https://anydsl.github.io/thorin2)
 [![GitHub](https://img.shields.io/github/license/anydsl/thorin2)](https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT)
 [![build-and-test](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml)
 [![doxygen](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml)
