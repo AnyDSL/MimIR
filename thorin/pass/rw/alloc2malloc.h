@@ -13,6 +13,6 @@ public:
     const Def* rewrite(const Def*) override;
 };
 
-}
+} // namespace thorin
 
 #endif

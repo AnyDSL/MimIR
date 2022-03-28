@@ -135,7 +135,7 @@ void ClosConv::run() {
 }
 
 void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
-    auto& w   = world();
+    auto& w = world();
     auto it = closures_.find(new_lam);
     assert(it != closures_.end() && "closure should have a stub if rewrite_body is called!");
     auto [old_fn, num_fvs, env, new_fn] = it->second;
@@ -364,8 +364,7 @@ void FreeDefAna::run(NodeQueue& worklist) {
         mark(node);
         for (auto p : node->preds) {
             auto& pfvs = p->fvs;
-            for (auto&& pfv : pfvs)
-                changed |= node->fvs.insert(pfv).second;
+            for (auto&& pfv : pfvs) changed |= node->fvs.insert(pfv).second;
             // w.DLOG("\tFV({}) ∪= FV({}) = {{{, }}}\b", node->nom, p->nom, pfvs);
         }
         if (changed) {

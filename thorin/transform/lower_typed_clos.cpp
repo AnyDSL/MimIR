@@ -84,7 +84,8 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
     auto& w = world();
 
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
-    if (auto var = def->isa<Var>(); var && var->nom()->isa_nom<Lam>()) // TODO put this conditions inside the assert below
+    if (auto var = def->isa<Var>();
+        var && var->nom()->isa_nom<Lam>()) // TODO put this conditions inside the assert below
         assert(false && "Lam vars should appear in a map!");
 
     auto new_type = rewrite(def->type());

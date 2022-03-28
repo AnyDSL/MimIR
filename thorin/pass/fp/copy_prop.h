@@ -18,7 +18,7 @@ public:
         : FPPass(man, "copy_prop")
         , beta_red_(beta_red)
         , eta_exp_(eta_exp)
-        , bb_only_(bb_only){}
+        , bb_only_(bb_only) {}
 
     using Data = LamMap<DefVec>;
 

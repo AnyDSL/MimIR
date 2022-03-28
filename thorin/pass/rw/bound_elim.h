@@ -1,8 +1,8 @@
 #if 0
-#ifndef THORIN_PASS_BOUND_ELIM_H
-#define THORIN_PASS_BOUND_ELIM_H
+#    ifndef THORIN_PASS_BOUND_ELIM_H
+#        define THORIN_PASS_BOUND_ELIM_H
 
-#include "thorin/pass/pass.h"
+#        include "thorin/pass/pass.h"
 
 namespace thorin {
 
@@ -19,5 +19,5 @@ private:
 
 }
 
-#endif
+#    endif
 #endif

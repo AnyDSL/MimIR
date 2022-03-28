@@ -4,20 +4,19 @@
 #include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
+#include "thorin/pass/fp/lower_typed_clos_prep.h"
 #include "thorin/pass/fp/ssa_constr.h"
 #include "thorin/pass/fp/tail_rec_elim.h"
 #include "thorin/pass/rw/alloc2malloc.h"
-#include "thorin/pass/rw/branch_clos_elim.h"
-#include "thorin/pass/fp/lower_typed_clos_prep.h"
 #include "thorin/pass/rw/bound_elim.h"
+#include "thorin/pass/rw/branch_clos_elim.h"
+#include "thorin/pass/rw/clos2sjlj.h"
+#include "thorin/pass/rw/clos_conv_prep.h"
 #include "thorin/pass/rw/lam_spec.h"
 #include "thorin/pass/rw/partial_eval.h"
 #include "thorin/pass/rw/remem_elim.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
-#include "thorin/pass/rw/clos_conv_prep.h"
-#include "thorin/pass/rw/clos2sjlj.h"
-
 #include "thorin/transform/clos_conv.h"
 #include "thorin/transform/lower_typed_clos.h"
 
@@ -33,7 +32,7 @@ static void closure_conv(World& world) {
 
     PassMan cleanup(world);
     auto er = cleanup.add<EtaRed>(true); // We only want to eta-reduce things in callee position away at this point!
-    ee = cleanup.add<EtaExp>(er);
+    ee      = cleanup.add<EtaExp>(er);
     cleanup.add<Scalerize>(ee);
     cleanup.run();
 }
@@ -68,7 +67,7 @@ void optimize(World& world) {
 
     closure_conv(world);
     lower_closures(world);
-    
+
     PassMan codgen_prepare(world);
     // codgen_prepare.add<BoundElim>();
     codgen_prepare.add<RememElim>();

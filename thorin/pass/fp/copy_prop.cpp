@@ -64,7 +64,7 @@ const Def* CopyProp::rewrite(const Def* def) {
 
         world().DLOG("new prop_lam: {}", prop_lam);
         if (beta_red_) beta_red_->keep(prop_lam);
-        if (eta_exp_)  eta_exp_->new2old(prop_lam, var_lam);
+        if (eta_exp_) eta_exp_->new2old(prop_lam, var_lam);
 
         size_t j = 0;
         DefArray new_vars(n, [&, prop_lam = prop_lam](size_t i) -> const Def* {

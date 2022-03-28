@@ -34,11 +34,10 @@ const Def* flatten(const Def* def) {
 }
 
 static const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_noms) {
-    if (!defs.empty() && defs[0]->type() == type)
-        return defs[j++];
+    if (!defs.empty() && defs[0]->type() == type) return defs[j++];
     if (auto a = isa_lit<nat_t>(type->arity()); flatten_noms == nom_val_or_typ(type) && a && *a != 1) {
         auto& world = type->world();
-        DefArray ops(*a, [&] (size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_noms); });
+        DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_noms); });
         return world.tuple(type, ops);
     }
 

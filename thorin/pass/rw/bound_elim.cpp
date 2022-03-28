@@ -1,5 +1,5 @@
 #if 0
-#include "thorin/pass/rw/bound_elim.h"
+#    include "thorin/pass/rw/bound_elim.h"
 
 namespace thorin {
 

@@ -17,8 +17,8 @@ namespace thorin {
 /// - External and imported (not set)  Lam%s also don't receive an environment (they are appropriately η-wrapped by
 /// ClosConv)
 /// - If the environment is of integer type, it's directly stored in the environment-pointer ("unboxed").
-///   Note: In theory this should work for other primitive types as well, but the LL backend does not handle the required
-///   conversion correctly.
+///   Note: In theory this should work for other primitive types as well, but the LL backend does not handle the
+///   required conversion correctly.
 ///
 /// Further, first class continuations are rewritten to returning functions. They receive `⊥` as a dummy continuation.
 /// Therefore Clos2SJLJ should have taken place prior to this pass.

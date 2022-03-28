@@ -10,4 +10,4 @@ size_t num_bytes(char8_t c) {
     return 0;
 }
 
-}
+} // namespace thorin::utf8

@@ -8,7 +8,7 @@
 
 namespace thorin::utf8 {
 
-static constexpr size_t Max = 4;
+static constexpr size_t Max   = 4;
 static constexpr char32_t BOM = 0xfeff;
 
 /// Returns the expected number of bytes for an utf8 char sequence by inspecting the first byte.
@@ -26,6 +26,6 @@ inline std::optional<char8_t> is_valid(char8_t c) {
     return (c & 0b11000000_u8) == 0b10000000_u8 ? (c & 0b00111111_u8) : std::optional<char8_t>();
 }
 
-}
+} // namespace thorin::utf8
 
 #endif

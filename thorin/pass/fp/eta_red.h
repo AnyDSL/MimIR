@@ -10,7 +10,8 @@ namespace thorin {
 class EtaRed : public FPPass<EtaRed> {
 public:
     EtaRed(PassMan& man, bool callee_only = false)
-        : FPPass(man, "eta_red"), callee_only_(callee_only) {}
+        : FPPass(man, "eta_red")
+        , callee_only_(callee_only) {}
 
     enum Lattice {
         Bot,         ///< Never seen.
@@ -29,6 +30,6 @@ private:
     LamSet irreducible_;
 };
 
-}
+} // namespace thorin
 
 #endif

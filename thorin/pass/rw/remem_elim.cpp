@@ -7,4 +7,4 @@ const Def* RememElim::rewrite(const Def* def) {
     return def;
 }
 
-}
+} // namespace thorin
