@@ -9,6 +9,8 @@
 #include <absl/container/node_hash_map.h>
 #include <absl/container/node_hash_set.h>
 
+#include "thorin/util/hash.h"
+
 namespace thorin {
 
 template<class S>

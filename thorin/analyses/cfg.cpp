@@ -1,10 +1,10 @@
 #include "thorin/analyses/cfg.h"
 
 #include <fstream>
-#include <map>
 #include <memory>
 
 #include "thorin/world.h"
+
 #include "thorin/analyses/domfrontier.h"
 #include "thorin/analyses/domtree.h"
 #include "thorin/analyses/looptree.h"
@@ -18,7 +18,7 @@ namespace thorin {
 uint64_t CFNode::gid_counter_ = 0;
 
 void CFNode::link(const CFNode* other) const {
-    this ->succs_.emplace(other);
+    this->succs_.emplace(other);
     other->preds_.emplace(this);
 }
 
@@ -29,14 +29,12 @@ Stream& CFNode::stream(Stream& s) const { return s << nom(); }
 CFA::CFA(const Scope& scope)
     : scope_(scope)
     , entry_(node(scope.entry()))
-    , exit_ (node(scope.exit() ))
-{
+    , exit_(node(scope.exit())) {
     std::queue<Def*> cfg_queue;
     NomSet cfg_done;
 
-    auto cfg_enqueue = [&] (Def* nom) {
-        if (nom->is_set() && cfg_done.emplace(nom).second)
-            cfg_queue.push(nom);
+    auto cfg_enqueue = [&](Def* nom) {
+        if (nom->is_set() && cfg_done.emplace(nom).second) cfg_queue.push(nom);
     };
 
     cfg_enqueue(scope.entry());
@@ -46,7 +44,7 @@ CFA::CFA(const Scope& scope)
         std::queue<const Def*> queue;
         DefSet done;
 
-        auto enqueue = [&] (const Def* def) {
+        auto enqueue = [&](const Def* def) {
             if (def->isa<Var>()) return;
             // TODO maybe optimize a little bit by using the order
             if (scope.bound(def) && done.emplace(def).second) {
@@ -62,8 +60,7 @@ CFA::CFA(const Scope& scope)
 
         while (!queue.empty()) {
             auto def = pop(queue);
-            for (auto op : def->ops())
-                enqueue(op);
+            for (auto op : def->ops()) enqueue(op);
         }
     }
 
@@ -73,14 +70,12 @@ CFA::CFA(const Scope& scope)
 
 const CFNode* CFA::node(Def* nom) {
     auto&& n = nodes_[nom];
-    if (n == nullptr)
-        n = new CFNode(nom);
+    if (n == nullptr) n = new CFNode(nom);
     return n;
 }
 
 CFA::~CFA() {
-    for (const auto& p : nodes_)
-        delete p.second;
+    for (const auto& p : nodes_) delete p.second;
 }
 
 const F_CFG& CFA::f_cfg() const { return lazy_init(this, f_cfg_); }
@@ -95,28 +90,25 @@ void CFA::link_to_exit() {
     // first, link all nodes without succs to exit
     for (auto p : nodes()) {
         auto n = p.second;
-        if (n != exit() && n->succs().empty())
-            n->link(exit());
+        if (n != exit() && n->succs().empty()) n->link(exit());
     }
 
-    auto backwards_reachable = [&] (const CFNode* n) {
-        auto enqueue = [&] (const CFNode* n) {
-            if (reachable.emplace(n).second)
-                queue.push(n);
+    auto backwards_reachable = [&](const CFNode* n) {
+        auto enqueue = [&](const CFNode* n) {
+            if (reachable.emplace(n).second) queue.push(n);
         };
 
         enqueue(n);
 
         while (!queue.empty()) {
-            for (auto pred : pop(queue)->preds())
-                enqueue(pred);
+            for (auto pred : pop(queue)->preds()) enqueue(pred);
         }
     };
 
     std::stack<const CFNode*> stack;
     CFNodeSet on_stack;
 
-    auto push = [&] (const CFNode* n) {
+    auto push = [&](const CFNode* n) {
         if (on_stack.emplace(n).second) {
             stack.push(n);
             return true;
@@ -132,8 +124,7 @@ void CFA::link_to_exit() {
         auto n = stack.top();
 
         bool todo = false;
-        for (auto succ : n->succs())
-            todo |= push(succ);
+        for (auto succ : n->succs()) todo |= push(succ);
 
         if (!todo) {
             if (!reachable.contains(n)) {
@@ -167,8 +158,7 @@ void CFA::verify() {
 template<bool forward>
 CFG<forward>::CFG(const CFA& cfa)
     : cfa_(cfa)
-    , rpo_(*this)
-{
+    , rpo_(*this) {
     auto index = post_order_visit(entry(), size());
     assert_unused(index == 0);
 }
@@ -176,27 +166,28 @@ CFG<forward>::CFG(const CFA& cfa)
 template<bool forward>
 size_t CFG<forward>::post_order_visit(const CFNode* n, size_t i) {
     auto& n_index = forward ? n->f_index_ : n->b_index_;
-    n_index = size_t(-2);
+    n_index       = size_t(-2);
 
     for (auto succ : succs(n)) {
-        if (index(succ) == size_t(-1))
-            i = post_order_visit(succ, i);
+        if (index(succ) == size_t(-1)) i = post_order_visit(succ, i);
     }
 
-    n_index = i-1;
+    n_index = i - 1;
     rpo_[n] = n;
     return n_index;
 }
 
+// clang-format off
 template<bool forward> const CFNodes& CFG<forward>::preds(const CFNode* n) const { assert(n != nullptr); return forward ? n->preds() : n->succs(); }
 template<bool forward> const CFNodes& CFG<forward>::succs(const CFNode* n) const { assert(n != nullptr); return forward ? n->succs() : n->preds(); }
 template<bool forward> const DomTreeBase<forward>& CFG<forward>::domtree() const { return lazy_init(this, domtree_); }
 template<bool forward> const LoopTree<forward>& CFG<forward>::looptree() const { return lazy_init(this, looptree_); }
 template<bool forward> const DomFrontierBase<forward>& CFG<forward>::domfrontier() const { return lazy_init(this, domfrontier_); }
+// clang-format on
 
 template class CFG<true>;
 template class CFG<false>;
 
 //------------------------------------------------------------------------------
 
-}
+} // namespace thorin

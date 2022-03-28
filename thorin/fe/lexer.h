@@ -1,7 +1,7 @@
 #ifndef THORIN_FE_LEXER_H
 #define THORIN_FE_LEXER_H
 
-#include <map>
+#include <absl/container/flat_hash_map.h>
 
 #include "thorin/debug.h"
 
@@ -51,7 +51,7 @@ private:
     } peek_;
     std::istream& stream_;
     std::string str_;
-    std::map<std::string, Tok::Tag> keywords_;
+    absl::flat_hash_map<std::string, Tok::Tag> keywords_;
 };
 
 } // namespace thorin
