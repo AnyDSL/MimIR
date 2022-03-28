@@ -4,6 +4,11 @@
 #include <stack>
 #include <queue>
 
+#include <absl/container/flat_hash_map.h>
+#include <absl/container/flat_hash_set.h>
+#include <absl/container/node_hash_map.h>
+#include <absl/container/node_hash_set.h>
+
 namespace thorin {
 
 template<class S>
@@ -76,6 +81,31 @@ private:
     Set done_;
     std::queue<T> queue_;
 };
+
+/// @name maps/sets based upon gid
+///@{
+template<class T>
+struct GIDHash {
+    size_t operator()(T p) const { return murmur3(p->gid()); };
+};
+
+template<class T>
+struct GIDEq {
+    bool operator()(T a, T b) const { return a->gid() == b->gid(); }
+};
+
+template<class T>
+struct GIDLt {
+    bool operator()(T a, T b) const { return a->gid() < b->gid(); }
+};
+
+// clang-format off
+template<class K, class V> using GIDMap     = absl::flat_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
+template<class K>          using GIDSet     = absl::flat_hash_set<K,    GIDHash<K>, GIDEq<K>>;
+template<class K, class V> using GIDNodeMap = absl::node_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
+template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<K>, GIDEq<K>>;
+// clang-format on
+///@}
 
 }
 
