@@ -4,21 +4,27 @@ project(Thorin VERSION 1.9.0)
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type (default Debug)" FORCE)
 endif()
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
+if(MSVC)
+    set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
+    add_compile_options(/utf-8 /wd4146 /wd4245)
+else()
+    set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
+endif()
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+message(STATUS "Build type: ${CMAKE_BUILD_TYPE}; shared libs: ${BUILD_SHARED_LIBS}")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    option(THORIN_ENABLE_PROFILING "Profile performance of hash functions in thorin::HashTable" ON)
     option(THORIN_ENABLE_CHECKS "Enable expensive checks" ON)
 else()
-    option(THORIN_ENABLE_PROFILING "Profile performance of hash functions in thorin::HashTable" OFF)
     option(THORIN_ENABLE_CHECKS "Enable expensive checks" OFF)
 endif()
 
@@ -29,40 +35,24 @@ else()
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" TRUE)
 endif()
 
-if(MSVC)
-    set(CMAKE_CXX_STANDARD 23) # /std:c++latest - unlocks non-stable c++20 features
-    add_compile_options(/utf-8 /W4 /wd4146 /wd4245) # /WX
-else()
-    set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
-    add_compile_options(-Wall -Wextra -pedantic) # -Werror
+find_program(MEMORYCHECK_COMMAND valgrind)
+set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1") # needs to be BEFORE "include(CTest)"
+include(CTest)
+if(BUILD_TESTING)
+    include(GoogleTest)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    add_subdirectory(modules/googletest)
 endif()
 
-include(GenerateExportHeader)
-include(CTest)
+set(ABSL_PROPAGATE_CXX_STD ON)
+set(ABSL_USE_EXTERNAL_GOOGLETEST ON)
+add_subdirectory(modules/abseil-cpp)
+add_subdirectory(modules/lyra)
 
-find_program(MEMORYCHECK_COMMAND valgrind)
-set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1")
-
-add_subdirectory(lyra)
-
-add_subdirectory(src)
+add_subdirectory(thorin)
+add_subdirectory(cli)
 add_subdirectory(dialects)
 
 if(BUILD_TESTING)
-    include(GoogleTest)
-    add_subdirectory(googletest)
     add_subdirectory(gtest)
-
-    # keep cache clean
-    mark_as_advanced(
-        BUILD_GMOCK BUILD_GTEST BUILD_SHARED_LIBS
-        gmock_build_tests gtest_build_samples gtest_build_tests
-        gtest_disable_pthreads gtest_force_shared_crt gtest_hide_internal_symbols
-    )
-
-    # keep IDEs folders clean
-    set_target_properties(gtest      PROPERTIES FOLDER extern)
-    set_target_properties(gtest_main PROPERTIES FOLDER extern)
-    set_target_properties(gmock      PROPERTIES FOLDER extern)
-    set_target_properties(gmock_main PROPERTIES FOLDER extern)
 endif()
