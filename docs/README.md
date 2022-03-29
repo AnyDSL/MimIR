@@ -2,10 +2,14 @@
 
 [TOC]
 
-[![doc](https://img.shields.io/badge/doc-master-blue)](https://anydsl.github.io/thorin2)
-[![GitHub](https://img.shields.io/github/license/anydsl/thorin2)](https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT)
-[![build-and-test](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml)
-[![doxygen](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml)
+
+| Docs          |   [![Documentation](https://img.shields.io/badge/docs-master-yellowgreen?logo=gitbook&logoColor=white)](https://anydsl.github.io/thorin2)                                                     |
+| License       |   [![License](https://img.shields.io/github/license/anydsl/thorin2)](https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT)                                                               |
+| Requirements  |   [![CMake](https://img.shields.io/badge/cmake-3.4.4-blue.svg?logo=cmake)](https://cmake.org/)
+                    [![C++](https://img.shields.io/badge/standard-C%2B%2B%2020-blue.svg?logo=C%2B%2B)](https://isocpp.org/)
+                    [![Submodules](https://img.shields.io/badge/submodules-5-blue?logo=git&logoColor=white)](https://github.com/AnyDSL/thorin2/tree/master/modules)                                             |
+| Tests         |   [![Build & Test](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml)
+                    [![Doxygen](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml)                      |
 
 Thorin is an extensible compiler intermediate representation that is based upon the [Calculus of Constructions (CoC)](https://en.wikipedia.org/wiki/Calculus_of_constructions).
 This means:
@@ -57,31 +61,11 @@ doxygen
 
 ## Dependencies
 
+In addition to the provided submodules:
+
 * Recent version of [CMake](https://cmake.org/)
 * A C++20-compatible C++ compiler.
 * While Thorin emits [LLVM](https://llvm.org/), it does *not* link against LLVM.
 
     Simply toss the emitted `*.ll` file to your system's LLVM toolchain.
     But techincally, you don't need LLVM.
-
-### Deployed as a Git Submodule
-
-The following dependencies are deployed via a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules):
-
-* [Half library](https://sourceforge.net/projects/half/)
-
-    This *header-only* library provides a `half` type that mimics the builtin types `float` or `double`.
-    It originally resides in a subversion repository on Sourceforge.
-    For this reason, we use a [git mirror](https://github.com/AnyDSL/half) to deploy it as a git submodule.
-
-* [Lyra](https://www.bfgroup.xyz/Lyra/)
-
-    *Header-only* library for parsing command line arguments.
-
-* [GoogleTest](https://github.com/google/googletest)
-
-    This is optional for running the unit tests.
-
-* [Doxygen](https://www.doxygen.nl/index.html) and [Doxygen Awesome](https://jothepro.github.io/doxygen-awesome-css/)
-
-    This is optional for building the documentation.
