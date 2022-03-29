@@ -5,23 +5,25 @@
 <table>
     <tr>
         <td>Documentation</td>
-        <td><a href=https://anydsl.github.io/thorin2><img src="https://img.shields.io/badge/docs-master-yellowgreen?logo=gitbook&logoColor=white)" alt="Documentation"></a></td>
+        <td><a href=https://anydsl.github.io/thorin2><img src="https://img.shields.io/badge/docs-master-yellowgreen?logo=gitbook&logoColor=white" alt="Documentation"></a></td>
     </tr>
     <tr>
         <td>License</td>
-        <td><a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2)" alt="License"></a></td>
+        <td><a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2" alt="License"></a></td>
     </tr>
     <tr>
         <td>Requirements</td>
         <td>
-            <a href="https://cmake.org/"><img src="https://img.shields.io/badge/cmake-3.7-blue.svg?logo=cmake)" alt="CMake"></a>
-            <a href="https://isocpp.org/"><img src="https://img.shields.io/badge/standard-C%2B%2B%2020-blue.svg?logo=C%2B%2B)" alt="C++"></a>
-            <a href="https://github.com/AnyDSL/thorin2/tree/master/modules"><img src="https://img.shields.io/badge/submodules-5-blue?logo=git&logoColor=white)" alt="Submodules"></a>
+            <a href="https://cmake.org/"><img src="https://img.shields.io/badge/cmake-3.7-blue.svg?logo=cmake" alt="CMake"></a>
+            <a href="https://isocpp.org/"><img src="https://img.shields.io/badge/standard-C%2B%2B%2020-blue.svg?logo=C%2B%2B" alt="C++"></a>
+            <a href="https://github.com/AnyDSL/thorin2/tree/master/modules"><img src="https://img.shields.io/badge/submodules-5-blue?logo=git&logoColor=white" alt="Submodules"></a>
         </td>
+    </tr>
+    <tr>
         <td>Tests</td>
         <td>
-            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master)" alt="Build & Test"></a>
-            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master)" alt="Doxygen"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master" alt="Build & Test"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master" alt="Doxygen"></a>
         </td>
     </tr>
 </table>
