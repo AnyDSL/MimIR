@@ -3,9 +3,11 @@
 [TOC]
 
 
+|               |                                                                                                                                                                                               |
+|---------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Docs          |   [![Documentation](https://img.shields.io/badge/docs-master-yellowgreen?logo=gitbook&logoColor=white)](https://anydsl.github.io/thorin2)                                                     |
 | License       |   [![License](https://img.shields.io/github/license/anydsl/thorin2)](https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT)                                                               |
-| Requirements  |   [![CMake](https://img.shields.io/badge/cmake-3.4.4-blue.svg?logo=cmake)](https://cmake.org/)
+| Requirements  |   [![CMake](https://img.shields.io/badge/cmake-3.7-blue.svg?logo=cmake)](https://cmake.org/)
                     [![C++](https://img.shields.io/badge/standard-C%2B%2B%2020-blue.svg?logo=C%2B%2B)](https://isocpp.org/)
                     [![Submodules](https://img.shields.io/badge/submodules-5-blue?logo=git&logoColor=white)](https://github.com/AnyDSL/thorin2/tree/master/modules)                                             |
 | Tests         |   [![Build & Test](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master)](https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml)
