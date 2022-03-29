@@ -27,25 +27,6 @@ size_t getDim(const Def* def) {
     }
 }
 
-Array<const Def*> flat_tuple(Array<const Def*> defs) {
-    // or use concat
-    std::vector<const Def*> v;
-    for(int i=0;i<defs.size();i++) {
-        auto def=defs[i];
-        if(auto tup=def->isa<Tuple>()) {
-            auto dim = tup->num_ops();
-            for (int j = 0; j < dim; j++) { v.push_back(tup->op(j)); }
-//        } else if(auto ext = def->isa<Extract>()) {
-//            World& w = def->world();
-//            type_dump(w," ext flat",ext);
-//            THORIN_UNREACHABLE;
-        }else {
-            v.push_back(def);
-        }
-    }
-    return {v};
-}
-
 bool isFatPtrType(World& world_,const Def* type) {
     if(auto sig=type->isa<Sigma>(); sig && sig->num_ops()==2) {
         // TODO: maybe use original type to detect
@@ -67,6 +48,25 @@ bool isFatPtrType(World& world_,const Def* type) {
         }
     }
     return false;
+}
+
+Array<const Def*> flat_tuple(Array<const Def*> defs, bool preserveFatPtr=false) {
+    // or use concat
+    std::vector<const Def*> v;
+    for(int i=0;i<defs.size();i++) {
+        auto def=defs[i];
+        if(auto tup=def->isa<Tuple>(); tup && (!isFatPtrType(def->world(), def->type()) || !preserveFatPtr)) {
+            auto dim = tup->num_ops();
+            for (int j = 0; j < dim; j++) { v.push_back(tup->op(j)); }
+//        } else if(auto ext = def->isa<Extract>()) {
+//            World& w = def->world();
+//            type_dump(w," ext flat",ext);
+//            THORIN_UNREACHABLE;
+        }else {
+            v.push_back(def);
+        }
+    }
+    return {v};
 }
 
 // expects: size as nat
@@ -1016,7 +1016,7 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract, const Def* tuple) {
 
     pb->set_body(world_.app(
         tuple_pb,
-        flat_tuple(pb_args)
+        flat_tuple(pb_args,true)
         ));
 //    THORIN_UNREACHABLE;
     return pb;
