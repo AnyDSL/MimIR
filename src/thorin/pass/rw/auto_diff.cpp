@@ -595,6 +595,7 @@ private:
     Def2Def src_to_dst_; // mapping old def to new def
     DefMap<const Def*> pullbacks_;  // <- maps a *copied* src term (a dst term) to its pullback function
     DefMap<const Def*> pointer_map;
+    DefMap<const Def*> structure_map;
     const Def* A, *A_src, *zero_grad;// input type
 
     void initArg(const Def* dst);
@@ -710,6 +711,10 @@ const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
             pb->mem_var(),
             zero_grad
         }) ));
+
+    auto tuple_of_pb = world_.tuple(
+        Array<const Def*>{real_arg_num, [&](auto i) { return pullbacks_[isMemTuple ? ops[i+1] : ops[i]]; }}
+    );
 
     /**
      * pb = \lambda mem scalars ret. sum_pb_0 (mem,0)
@@ -843,6 +848,7 @@ const Def* AutoDiffer::j_wrap_tuple(Array<const Def*> tuple) {
 
     dlog(world_,"  tuple pbs {}",pb);
     pullbacks_[dst]=pb;
+//    structure_map[dst] = tuple_of_pb;
     type_dump(world_,"  pullback for tuple",pullbacks_[dst]);
     return dst;
 }
@@ -962,6 +968,12 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract, const Def* tuple) {
     // is tuple & index
     // TODO: integrate into OH
     if(auto lit = idx->isa<Lit>()) {
+        // would save from tuples
+        // but can not occur as partial evaluation removes such projections
+//        if(structure_map.count(tuple)) {
+//            dlog(world_,"  const extract from local tuple");
+//        }
+
         dlog(world_,"  extract pb for lit index");
         auto isMemTuple=isa<Tag::Mem>(tuple->type()->proj(0));
 //        auto pb_domain = world_.tangent_type(tuple_ty,false)->as<Sigma>();
