@@ -1,0 +1,603 @@
+#ifndef THORIN_DEF_H
+#define THORIN_DEF_H
+
+#include <optional>
+#include <vector>
+
+#include "thorin/debug.h"
+#include "thorin/tables.h"
+
+#include "thorin/util/array.h"
+#include "thorin/util/cast.h"
+#include "thorin/util/container.h"
+#include "thorin/util/hash.h"
+#include "thorin/util/stream.h"
+
+namespace thorin {
+
+class App;
+class Axiom;
+class Var;
+class Def;
+class Stream;
+class World;
+
+using Defs     = ArrayRef<const Def*>;
+using DefArray = Array<const Def*>;
+
+//------------------------------------------------------------------------------
+
+template<class T = u64>
+std::optional<T> isa_lit(const Def*);
+template<class T = u64>
+T as_lit(const Def* def);
+
+//------------------------------------------------------------------------------
+
+/// References a user.
+/// A Def `u` which uses Def `d` as `i^th` operand is a Use with Use::index `i` of Def `d`.
+class Use {
+public:
+    Use() {}
+    Use(const Def* def, size_t index)
+        : def_(def)
+        , index_(index) {}
+
+    bool is_used_as_type() const { return index() == -1_s; }
+    size_t index() const { return index_; }
+    const Def* def() const { return def_; }
+    operator const Def*() const { return def_; }
+    const Def* operator->() const { return def_; }
+    bool operator==(Use other) const { return this->def_ == other.def_ && this->index_ == other.index_; }
+
+private:
+    const Def* def_;
+    size_t index_;
+};
+
+struct UseHash {
+    inline hash_t operator()(Use) const;
+};
+
+struct UseEq {
+    bool operator()(Use u1, Use u2) const { return u1 == u2; }
+};
+
+using Uses = absl::flat_hash_set<Use, UseHash, UseEq>;
+
+enum class Sort { Term, Type, Kind, Space };
+
+//------------------------------------------------------------------------------
+
+namespace Dep {
+enum : unsigned {
+    Bot,
+    Nom,
+    Var,
+    Top = Nom | Var,
+};
+}
+
+/// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
+#define THORIN_PROJ(NAME, CONST)                                                                                   \
+    size_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                     \
+    const Def* NAME(nat_t a, nat_t i, const Def* dbg = {}) CONST { return ((const Def*)NAME())->proj(a, i, dbg); } \
+    const Def* NAME(nat_t i, const Def* dbg = {}) CONST { return ((const Def*)NAME())->proj(i, dbg); }             \
+    template<size_t A = -1_s, class F>                                                                             \
+    auto NAME##s(F f, Defs dbgs = {}) CONST {                                                                      \
+        return ((const Def*)NAME())->projs<A, F>(f, dbgs);                                                         \
+    }                                                                                                              \
+    template<size_t A = -1_s>                                                                                      \
+    auto NAME##s(Defs dbgs = {}) CONST {                                                                           \
+        return ((const Def*)NAME())->projs<A>(dbgs);                                                               \
+    }                                                                                                              \
+    template<class F>                                                                                              \
+    auto NAME##s(size_t a, F f, Defs dbgs = {}) CONST {                                                            \
+        return ((const Def*)NAME())->projs<F>(a, f, dbgs);                                                         \
+    }                                                                                                              \
+    auto NAME##s(size_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
+
+/// Base class for all Def%s.
+/// The data layout (see World::alloc and Def::extended_ops) looks like this:
+/// ```
+/// Def debug type | op(0) ... op(num_ops-1) ||
+///    |-------------extended_ops-------------|
+/// ```
+/// @attention This means that any subclass of Def **must not** introduce additional members.
+class Def : public RuntimeCast<Def>, public Streamable<Def> {
+public:
+    using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*, const Def*);
+
+private:
+    Def& operator=(const Def&) = delete;
+    Def(const Def&)            = delete;
+
+protected:
+    /// Constructor for a *structural* Def.
+    Def(node_t, const Def* type, Defs ops, fields_t fields, const Def* dbg);
+    /// Constructor for a *nom*inal Def.
+    Def(node_t, const Def* type, size_t num_ops, fields_t fields, const Def* dbg);
+    virtual ~Def() = default;
+
+public:
+    /// @name getters
+    ///@{
+    World& world() const {
+        if (node() == Node::Space) return *world_;
+        if (type()->node() == Node::Space) return *type()->world_;
+        if (type()->type()->node() == Node::Space) return *type()->type()->world_;
+        assert(type()->type()->type()->node() == Node::Space);
+        return *type()->type()->type()->world_;
+    }
+    fields_t fields() const { return fields_; }
+    u32 gid() const { return gid_; }
+    hash_t hash() const { return hash_; }
+    node_t node() const { return node_; }
+    std::string_view node_name() const;
+    ///@}
+
+    /// @name type
+    ///@{
+    const Def* type() const {
+        assert(node() != Node::Space);
+        return type_;
+    }
+    Sort level() const;
+    Sort sort() const;
+    const Def* arity() const;
+    ///@}
+
+    /// @name ops
+    ///@{
+    template<size_t N = -1_s>
+    auto ops() const {
+        if constexpr (N == -1_s) {
+            return Defs(num_ops_, ops_ptr());
+        } else {
+            return ArrayRef<const Def*>(N, ops_ptr()).template to_array<N>();
+        }
+    }
+    const Def* op(size_t i) const { return ops()[i]; }
+    size_t num_ops() const { return num_ops_; }
+    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not `Space`),
+    /// and then the other Def::ops() (if Def::is_set) in this order.
+    Defs extended_ops() const;
+    const Def* extended_op(size_t i) const { return extended_ops()[i]; }
+    size_t num_extended_ops() const { return extended_ops().size(); }
+    Def* set(size_t i, const Def* def);
+    Def* set(Defs ops) {
+        for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
+        return this;
+    }
+    void unset(size_t i);
+    void unset() {
+        for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);
+    }
+    /// Are all Def::ops set?
+    /// * `true` if all operands are set or Def::num_ops ` == 0`.
+    /// * `false` if all operands are `nullptr`.
+    /// * `assert`s otherwise.
+    bool is_set() const;
+    bool is_unset() const { return !is_set(); } ///< *Not* Def::is_set.
+    ///@}
+
+    /// @name uses
+    ///@{
+    const Uses& uses() const { return uses_; }
+    Array<Use> copy_uses() const { return Array<Use>(uses_.begin(), uses_.end()); }
+    size_t num_uses() const { return uses().size(); }
+    ///@}
+
+    /// @name dependence checks
+    ///@{
+    /// @see Dep.
+
+    unsigned dep() const { return dep_; }
+    bool no_dep() const { return dep() == Dep::Bot; }
+    bool has_dep(unsigned dep) const { return (dep_ & dep) != 0; }
+    bool contains_proxy() const { return proxy_; }
+    ///@}
+
+    /// @name proj
+    ///@{
+    /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
+
+    /// @return yields arity if a Lit or `1` otherwise.
+    size_t num_projs() const {
+        if (auto a = isa_lit(arity())) return *a;
+        return 1;
+    }
+    /// Similar to World::extract while assuming an arity of @p a but also works on Sigma%s, and Arr%ays.
+    /// If `this` is a Sort::Term (see Def::sort), Def::proj resorts to World::extract.
+    const Def* proj(nat_t a, nat_t i, const Def* dbg = {}) const;
+
+    /// Same as above but takes Def::num_projs as arity.
+    const Def* proj(nat_t i, const Def* dbg = {}) const { return proj(num_projs(), i, dbg); }
+
+    /// Splits this Def via Def::proj%ections into an Arr%ay (if `A == -1_s`) or `std::array` (otherwise).
+    /// Applies @p f to each element.
+    /// ```
+    /// std::array<const Def*, 2> ab = def->projs<2>();
+    /// std::array<u64, 2>        xy = def->projs<2>(as_lit<nat_t>);
+    /// auto [a, b] = def->projs<2>();
+    /// auto [x, y] = def->projs<2>(as_lit<nat_t>);
+    /// Array<const Def*> projs = def->projs();               // projs has def->num_projs() many elements
+    /// Array<const Def*> projs = def->projs(n);              // projs has n elements - asserts if incorrect
+    /// Array<const Lit*> lits = def->projs(as_lit<nat_t>);   // same as above but applies as_lit<nat_t> to each element
+    /// Array<const Lit*> lits = def->projs(n, as_lit<nat_t>);// same as above but applies as_lit<nat_t> to each element
+    /// ```
+    template<size_t A = -1_s, class F>
+    auto projs(F f, Defs dbgs = {}) const {
+        using R = std::decay_t<decltype(f(this))>;
+        if constexpr (A == -1_s) {
+            return projs(num_projs(), f, dbgs);
+        } else {
+            assert(A == as_lit(arity()));
+            std::array<R, A> array;
+            for (size_t i = 0; i != A; ++i) array[i] = f(proj(A, i, dbgs.empty() ? nullptr : dbgs[i]));
+            return array;
+        }
+    }
+
+    template<class F>
+    auto projs(size_t a, F f, Defs dbgs = {}) const {
+        using R = std::decay_t<decltype(f(this))>;
+        return Array<R>(a, [&](size_t i) { return f(proj(a, i, dbgs.empty() ? nullptr : dbgs[i])); });
+    }
+
+    template<size_t A = -1_s>
+    auto projs(Defs dbgs = {}) const {
+        return projs<A>([](const Def* def) { return def; }, dbgs);
+    }
+    auto projs(size_t a, Defs dbgs = {}) const {
+        return projs(
+            a, [](const Def* def) { return def; }, dbgs);
+    }
+    ///@}
+
+    /// @name externals
+    ///@{
+    bool is_external() const;
+    bool is_internal() const { return !is_external(); } ///< *Not* Def::is_external.
+    void make_external();
+    void make_internal();
+    ///@}
+
+    /// @name debug
+    ///@{
+    const Def* dbg() const { return dbg_; } ///< Returns debug information as Def.
+    Debug debug() const { return dbg_; }    ///< Returns the debug information as Debug.
+    std::string name() const { return debug().name; }
+    Loc loc() const { return debug().loc; }
+    const Def* meta() const { return debug().meta; }
+    void set_dbg(const Def* dbg) const { dbg_ = dbg; }
+    /// Set Def::name in Debug build only; does nothing in Release build.
+#ifndef NDEBUG
+    void set_debug_name(std::string_view) const;
+#else
+    void set_debug_name(std::string_view) const {}
+#endif
+    /// In `Debug` build if World::enable_history is `true`, this thing keeps the Def::gid to track a history of gids.
+    const Def* debug_history() const;
+    std::string unique_name() const; ///< name + "_" + Def::gid
+    ///@}
+
+    /// @name casts
+    ///@{
+    template<class T = Def>
+    const T* isa_structural() const {
+        return isa_nom<T, true>();
+    }
+    template<class T = Def>
+    const T* as_structural() const {
+        return as_nom<T, true>();
+    }
+
+    /// If `this` is *nom*inal, it will cast constness away and perform a dynamic cast to @p T.
+    template<class T = Def, bool invert = false>
+    T* isa_nom() const {
+        if constexpr (std::is_same<T, Def>::value)
+            return nom_ ^ invert ? const_cast<Def*>(this) : nullptr;
+        else
+            return nom_ ^ invert ? const_cast<Def*>(this)->template isa<T>() : nullptr;
+    }
+
+    /// Asserts that @c this is a *nom*inal, casts constness away and performs a static cast to @p T (checked in Debug
+    /// build).
+    template<class T = Def, bool invert = false>
+    T* as_nom() const {
+        assert(nom_ ^ invert);
+        if constexpr (std::is_same<T, Def>::value)
+            return const_cast<Def*>(this);
+        else
+            return const_cast<Def*>(this)->template as<T>();
+    }
+    ///@}
+
+    /// @name var
+    ///@{
+    /// Retrieve Var for *nominals*.
+
+    /// Only returns ap Var for this *nom*inal if it has ever been created.
+    const Var* has_var() { return var_ ? var() : nullptr; }
+    const Var* var(const Def* dbg = {});
+    THORIN_PROJ(var, )
+    ///@}
+
+    /// @name reduce
+    ///@{
+    /// Rewrites Def::ops by substituting `this` nominal's Var with @p arg.
+    DefArray reduce(const Def* arg) const;
+    DefArray reduce(const Def* arg);
+    /// Transitively Def::reduce Lam%s, if `this` is an App.
+    /// @return the reduced body
+    const Def* reduce_rec() const;
+    ///@}
+
+    /// @name rebuild & friends
+    ///@{
+    virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
+    /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
+    const Def* refine(size_t i, const Def* new_op) const;
+    virtual Def* stub(World&, const Def*, const Def*) { unreachable(); }
+    virtual const Def* restructure() { return nullptr; }
+    ///@}
+
+    /// @name stream
+    ///@{
+    Stream& stream(Stream& s) const;
+    Stream& stream(Stream& s, size_t max) const;
+    Stream& let(Stream&) const;
+    Stream& unwrap(Stream&) const;
+    bool unwrap() const;
+    void dump() const;
+    void dump(size_t) const;
+    ///@}
+
+protected:
+    const Def** ops_ptr() const {
+        return reinterpret_cast<const Def**>(reinterpret_cast<char*>(const_cast<Def*>(this + 1)));
+    }
+    void finalize();
+    bool equal(const Def* other) const;
+
+    union {
+        NormalizeFn normalizer_; ///< Axiom%s use this member to store their normalizer.
+        const Axiom* axiom_;     /// Curried App%s of Axiom%s use this member to propagate the Axiom.
+    };
+
+    fields_t fields_;
+    uint8_t node_;
+    unsigned nom_    : 1;
+    unsigned var_    : 1;
+    unsigned dep_    : 2;
+    unsigned proxy_  : 1;
+    unsigned pading_ : 3;
+    u16 curry_;
+    hash_t hash_;
+    u32 gid_;
+    u32 num_ops_;
+    mutable Uses uses_;
+    mutable const Def* dbg_;
+    union {
+        const Def* type_;
+        mutable World* world_;
+    };
+
+    friend class World;
+    friend void swap(World&, World&);
+};
+
+template<class T>
+const T* isa(fields_t f, const Def* def) {
+    if (auto d = def->template isa<T>(); d && d->fields() == f) return d;
+    return nullptr;
+}
+
+template<class T>
+const T* as([[maybe_unused]] fields_t f, const Def* def) {
+    assert(isa<T>(f, def));
+    return def;
+}
+
+//------------------------------------------------------------------------------
+
+template<class To>
+using DefMap  = GIDMap<const Def*, To>;
+using DefSet  = GIDSet<const Def*>;
+using Def2Def = DefMap<const Def*>;
+using DefDef  = std::tuple<const Def*, const Def*>;
+using DefVec  = std::vector<const Def*>;
+
+struct DefDefHash {
+    hash_t operator()(DefDef pair) const {
+        hash_t hash = std::get<0>(pair)->gid();
+        hash        = murmur3(hash, std::get<1>(pair)->gid());
+        hash        = murmur3_finalize(hash, 8);
+        return hash;
+    }
+};
+
+struct DefDefEq {
+    bool operator()(DefDef p1, DefDef p2) const { return p1 == p2; }
+};
+
+template<class To>
+using DefDefMap = absl::flat_hash_map<DefDef, To, DefDefHash, DefDefEq>;
+using DefDefSet = absl::flat_hash_set<DefDef, DefDefHash, DefDefEq>;
+
+template<class To>
+using NomMap  = GIDMap<Def*, To>;
+using NomSet  = GIDSet<Def*>;
+using Nom2Nom = NomMap<Def*>;
+
+//------------------------------------------------------------------------------
+
+class Var : public Def {
+private:
+    Var(const Def* type, Def* nom, const Def* dbg)
+        : Def(Node, type, Defs{nom}, 0, dbg) {}
+
+public:
+    /// @name ops
+    ///@{
+    Def* nom() const { return op(0)->as_nom(); }
+    ///@}
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Var;
+    friend class World;
+};
+
+template<class To>
+using VarMap  = GIDMap<const Var*, To>;
+using VarSet  = GIDSet<const Var*>;
+using Var2Var = VarMap<const Var*>;
+
+class Space : public Def {
+private:
+    Space(World& world)
+        : Def(Node, reinterpret_cast<const Def*>(&world), Defs{}, 0, nullptr) {}
+
+public:
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Space;
+    friend class World;
+};
+
+class Kind : public Def {
+private:
+    Kind(World&);
+
+public:
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Kind;
+    friend class World;
+};
+
+class Lit : public Def {
+private:
+    Lit(const Def* type, fields_t val, const Def* dbg)
+        : Def(Node, type, Defs{}, val, dbg) {}
+
+public:
+    template<class T = fields_t>
+    T get() const {
+        static_assert(sizeof(T) <= 8);
+        return bitcast<T>(fields_);
+    }
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Lit;
+    friend class World;
+};
+
+template<class T>
+std::optional<T> isa_lit(const Def* def) {
+    if (def == nullptr) return {};
+    if (auto lit = def->isa<Lit>()) return lit->get<T>();
+    return {};
+}
+
+template<class T>
+T as_lit(const Def* def) {
+    return def->as<Lit>()->get<T>();
+}
+
+class Nat : public Def {
+private:
+    Nat(World& world);
+
+public:
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Nat;
+    friend class World;
+};
+
+class Proxy : public Def {
+private:
+    Proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg)
+        : Def(Node, type, ops, (nat_t(index) << 32_u64) | nat_t(flags), dbg) {}
+
+public:
+    /// @name misc getters
+    ///@{
+    tag_t index() const { return tag_t(fields() >> 32_u64); }
+    flags_t flags() const { return flags_t(fields()); }
+    ///@}
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Proxy;
+    friend class World;
+};
+
+/// @deprecated A global variable in the data segment.
+/// A Global may be mutable or immutable.
+/// @attention WILL BE REMOVED.
+class Global : public Def {
+private:
+    Global(const Def* type, bool is_mutable, const Def* dbg)
+        : Def(Node, type, 1, is_mutable, dbg) {}
+
+public:
+    /// @name ops
+    ///@{
+    /// This thing's sole purpose is to differentiate on global from another.
+    const Def* init() const { return op(0); }
+    void set(const Def* init) { Def::set(0, init); }
+    ///@}
+
+    /// @name type
+    ///@{
+    const App* type() const;
+    const Def* alloced_type() const;
+    ///@}
+
+    /// @name misc getters
+    ///@{
+    bool is_mutable() const { return fields(); }
+    ///@}
+
+    /// @name virtual methods
+    ///@{
+    Global* stub(World&, const Def*, const Def*) override;
+    ///@}
+
+    static constexpr auto Node = Node::Global;
+    friend class World;
+};
+
+// TODO use friedn Absl magic
+hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
+
+Stream& operator<<(Stream&, const Def* def);
+Stream& operator<<(Stream&, std::pair<const Def*, const Def*>);
+
+//------------------------------------------------------------------------------
+
+} // namespace thorin
+
+#endif
