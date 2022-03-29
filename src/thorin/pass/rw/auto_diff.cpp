@@ -53,9 +53,20 @@ bool isFatPtrType(World& world_,const Def* type) {
 Array<const Def*> flat_tuple(Array<const Def*> defs, bool preserveFatPtr=false) {
     // or use concat
     std::vector<const Def*> v;
+
+//    auto isMemTuple = defs->size()>0 && isa<Tag::Mem>(defs[0]->type());
+//    auto isRetTuple = isMemTuple && defs->size()>1 && defs.back()->type()->isa<Pi>();
+//    if(isRetTuple) {
+//        v.push_back(defs[0]);
+//
+//
+//        v.push_back(defs.back());
+//    }
+
     for(int i=0;i<defs.size();i++) {
         auto def=defs[i];
-        if(auto tup=def->isa<Tuple>(); tup && (!isFatPtrType(def->world(), def->type()) || !preserveFatPtr)) {
+        if(auto tup=def->isa<Tuple>()) {
+//            if(auto tup=def->isa<Tuple>(); tup && (!isFatPtrType(def->world(), def->type()) || !preserveFatPtr)) {
             auto dim = tup->num_ops();
             for (int j = 0; j < dim; j++) { v.push_back(tup->op(j)); }
 //        } else if(auto ext = def->isa<Extract>()) {
@@ -999,11 +1010,11 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract, const Def* tuple) {
 
         auto [rmem, ohv] = oneHot(world_,pb->mem_var(), idx,world_.tangent_type(tuple_ty,false),nullptr,pb->var(1,world_.dbg("s")));
         pb_args=
-            {
+            flat_tuple({
                 rmem,
                 ohv,
                 pb->ret_var()
-            };
+            });
     }
 
     dlog(world_,"    pb {}",pb);
@@ -1016,7 +1027,7 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract, const Def* tuple) {
 
     pb->set_body(world_.app(
         tuple_pb,
-        flat_tuple(pb_args,true)
+        pb_args
         ));
 //    THORIN_UNREACHABLE;
     return pb;
