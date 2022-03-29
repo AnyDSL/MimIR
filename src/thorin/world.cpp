@@ -345,54 +345,25 @@ const Def* World::tangent_type(const Def* A,bool left) {
 
     if(auto pidef = A->isa<Pi>();pidef && left) {
         s2.fmt("A is pi\n");
-//        s2.fmt("A exists?\n");
-//
-//        s2.fmt("V0 {}\n",pidef->dom(0));
-//        s2.fmt("V1 {}\n",pidef->dom(1));
-//        s2.fmt("V2 {}\n",pidef->dom(2)->as<Pi>()->dom(1));
-
-//        s2.fmt("pidef {}\n ",pidef);
-//        s2.fmt("ops {}\n ",pidef->num_ops());
-//        s2.fmt("out {}\n ",pidef->num_outs());
-//        s2.fmt("doms {}\n ",pidef->num_doms());
-//        s2.fmt("codoms {}\n ",pidef->num_codoms());
         if(pidef->num_doms()==1) {
             //cn :mem
-//            return pidef;
             return cn(tangent_type(pidef->dom(1),left));
-            // or cn(type_mem) if mem
         }
 
-        // TODO: multiple variables
-        auto A = pidef->dom(1);
-        auto B = pidef->dom(2)->as<Pi>()->dom(1);
+        auto A = params_without_return_continuation(pidef);
+
+        auto B = sigma(pidef->doms().back()->as<Pi>()->dom()->ops().skip_font());
         auto AL = tangent_type(A,true);
-        auto BL = tangent_type(A,true);
+        auto BL = tangent_type(B,true);
 
         auto pullback = cn_mem_ret(tangent_type(B,false), tangent_type(A,false));
-        auto diffd = cn({
+        auto diffd = cn_flat({
                             type_mem(),
                             AL,
-                            cn({type_mem(), BL, pullback})
+                            cn_flat({type_mem(), BL, pullback})
                         });
-//        auto diffd= cn_mem_ret_flat(A,tuple({B,pullback}));
 
         return diffd;
-
-//        THORIN_UNREACHABLE;
-
-//        auto diffd = cn({
-//                            type_mem(),
-//                            A,
-//                            cn({type_mem(), B, pullback})
-//                        });
-//        auto Xi = pi(cn_mem_ret(A, B), diffd);
-
-//        auto dom = pidef->dom();
-//        s2.fmt("dom {} \n",dom);
-//        auto codom = pidef->codom();
-//        s2.fmt("codom {} \n",codom);
-//        return pi(tangent_type(codom), tangent_type(dom),pidef->dbg());
     }
     if(auto ptr = isa<Tag::Ptr>(A)) {
         s2.fmt("A is ptr\n");
@@ -541,6 +512,18 @@ const Pi* World::cn_mem_half_flat(const Def* dom, const Def* codom, const Def* d
 //    }
 
     return cn(merge(type_mem(), {dom, ret}), dbg);
+}
+
+const Pi* World::cn_flat(Defs doms, const Def* dbg) {
+    std::vector<const Def*> ops;
+    for (auto& d : dom) {
+        if(d->isa<Sigma>()) {
+            for (auto& op : d->ops()) ops.push_back(op);
+        }else {
+            ops.push_back(d);
+        }
+    }
+    return cn(ops,dbg);
 }
 
 const Pi* World::cn_mem_flat(const Def* dom, const Def* dbg) {
