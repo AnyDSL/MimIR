@@ -309,17 +309,22 @@ ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
 
 /* Free variable analysis */
 
+static bool ignore_fd(const Def* fd) {
+    return fd->no_dep()
+        || fd->isa_nom<Global>()
+        || fd->isa<Axiom>()
+        || fd->level() != Sort::Term
+        || isa<Tag::Mem>(fd->type());
+}
+
 void FreeDefAna::split_fd(Node* node, const Def* fv, bool& init_node, NodeQueue& worklist) {
+    if (ignore_fd(fv))
+        return;
     if (auto [var, lam] = ca_isa_var<Lam>(fv); var && lam) {
         if (var != lam->ret_var()) node->fvs.emplace(fv);
-        return;
-    }
-    if (auto q = isa<Tag::ClosKind>(ClosKind::freeBB, fv)) {
+    } else if (auto q = isa<Tag::ClosKind>(ClosKind::freeBB, fv)) {
         node->fvs.emplace(q);
-        return;
-    }
-    if (fv->no_dep() || fv->isa<Global>() || fv->isa<Axiom>()) return;
-    if (auto pred = fv->isa_nom()) {
+    } else if (auto pred = fv->isa_nom()) {
         if (pred != node->nom) {
             auto [pnode, inserted] = build_node(pred, worklist);
             node->preds.push_back(pnode);
@@ -329,6 +334,8 @@ void FreeDefAna::split_fd(Node* node, const Def* fv, bool& init_node, NodeQueue&
     } else if (fv->dep() == Dep::Var && !fv->isa<Tuple>()) {
         // Var's can still have Def::Top, if their type is a nom!
         // So the first case is *not* redundant
+        node->fvs.emplace(fv);
+    } else if (isa<Tag::Store>(fv) || isa<Tag::Slot>(fv) || isa<Tag::Load>(fv)) {
         node->fvs.emplace(fv);
     } else {
         for (auto op : fv->ops()) split_fd(node, op, init_node, worklist);
