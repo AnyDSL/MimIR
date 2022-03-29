@@ -911,12 +911,13 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract, const Def* tuple) {
 
     const Def* idx=extract->index();
 //    auto tuple = extract->tuple();
-    auto tuple_ty = tuple->type();
-    auto tuple_pb = pullbacks_[extract->tuple()];
-
     type_dump(world_,"  extract of tup: ",tuple);
+    type_dump(world_,"  idx: ",idx);
+    auto tuple_ty = tuple->type();
+    auto tuple_pb = pullbacks_[tuple];
+
     dlog(world_,"  pb of tuple: {}",tuple_pb);
-    dlog(world_,"  pb of tuple type: {}",tuple_pb->type());
+    dlog(world_,"  type pb of tuple: {}",tuple_pb->type());
 
 
 //    const Def* trimmed_ty;
@@ -1989,6 +1990,11 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
                     pointer_map[dst]=pb_ptr; // for mem tuple extract
                     pointer_map[dst_ptr]=pb_ptr;
+                    // to prevent error in load for tuple pb
+//                    pullbacks_[dst]=zero_pb;
+                    auto [nmem,pb_loaded]=reloadPtrPb(dst_mem,dst_ptr,world_.dbg("ptr_slot_pb_loadL"),true);
+                    dst_mem=nmem;
+                    pullbacks_[dst]=pb_loaded;
 
                     type_dump(world_,"  result slot ",dst);
                     type_dump(world_,"  pb slot ptr ",pb_ptr);
