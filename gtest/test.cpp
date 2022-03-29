@@ -42,6 +42,19 @@ TEST(Error, app) {
     EXPECT_THROW(w.app(a, {r, i}), TypeError);
 }
 
+TEST(World, simplify_one_tuple) {
+    World w;
+
+    ASSERT_EQ(w.lit_false(), w.tuple({w.lit_false()})) << "constant fold (false) -> false";
+
+    auto type = w.nom_sigma(w.kind(), 2);
+    type->set({w.type_int(), w.type_int()});
+    ASSERT_EQ(type, w.sigma({type})) << "constant fold [nom] -> nom";
+
+    auto v = w.tuple(type, {w.lit_int(42), w.lit_int(1337)});
+    ASSERT_EQ(v, w.tuple({v})) << "constant fold ({42, 1337}) -> {42, 1337}";
+}
+
 TEST(Main, ll) {
     World w;
     auto mem_t  = w.type_mem();
