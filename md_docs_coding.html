@@ -105,18 +105,18 @@ $(document).ready(function(){initNavTree('md_docs_coding.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md27">Coding Style</a></li>
-<li class="level1"><a href="#autotoc_md28">Debugging</a><ul><li class="level2"><a href="#autotoc_md29">Logging</a></li>
-<li class="level2"><a href="#autotoc_md30">Breakpoints</a></li>
-<li class="level2"><a href="#autotoc_md31">VS Code</a></li>
-<li class="level2"><a href="#autotoc_md32">GoogleTest</a></li>
-<li class="level2"><a href="#autotoc_md33">Valgrind &amp; GDB</a></li>
+<ul><li class="level1"><a href="#autotoc_md26">Coding Style</a></li>
+<li class="level1"><a href="#autotoc_md27">Debugging</a><ul><li class="level2"><a href="#autotoc_md28">Logging</a></li>
+<li class="level2"><a href="#autotoc_md29">Breakpoints</a></li>
+<li class="level2"><a href="#autotoc_md30">VS Code</a></li>
+<li class="level2"><a href="#autotoc_md31">GoogleTest</a></li>
+<li class="level2"><a href="#autotoc_md32">Valgrind &amp; GDB</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p >This document comprises some information that is related to coding but does not directly deals with the API.</p>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 Coding Style</h1>
 <p >Use the following coding conventions:</p><ul>
 <li>class/type names in <code>CamelCase</code></li>
@@ -138,21 +138,21 @@ Coding Style</h1>
 </ul>
 <p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. In order to run <code>clang-format</code> automatically on all changed files, switch to the provided pre-commit hook: </p><div class="fragment"><div class="line">git config --local core.hooksPath .githooks/</div>
 </div><!-- fragment --><p> Note that you can <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a>. In addition, you might want to check out plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a>.</p>
-<h1><a class="anchor" id="autotoc_md28"></a>
+<h1><a class="anchor" id="autotoc_md27"></a>
 Debugging</h1>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Logging</h2>
-<h2><a class="anchor" id="autotoc_md30"></a>
+<h2><a class="anchor" id="autotoc_md29"></a>
 Breakpoints</h2>
-<h2><a class="anchor" id="autotoc_md31"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 VS Code</h2>
 <p >As a utility to make debugging Thorin itself less painful with certain debuggers, the <code>thorin.natvis</code> file can be loaded for getting more expressive value inspection. In VS Code you can do so by adding the following to the <code>launch.json</code> configurations. When launching from VS Code via CMake, put it in <code>settings.json</code>'s <code>"cmake.debugConfig":</code>: </p><div class="fragment"><div class="line">&quot;visualizerFile&quot;: &quot;${workspaceFolder}/thorin.natvis&quot;,</div>
 <div class="line">&quot;showDisplayString&quot;: true,</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md31"></a>
 GoogleTest</h2>
 <p >Thorin's unit test suite uses <a href="https://google.github.io/googletest/">GoogleTest</a>. During debugging you probably only want to run a specifig test case. You can <a href="https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests">filter</a> the test cases like this: </p><div class="fragment"><div class="line">./thorin-gtest --gtest_filter=&quot;*Loc*&quot;</div>
 </div><!-- fragment --><p> This command lists all available tests: </p><div class="fragment"><div class="line">./thorin-gtest --gtest_list_tests</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md33"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md32"></a>
 Valgrind &amp; GDB</h2>
 <p >If you encounter memory related problems, you might want to run the program with <a href="https://valgrind.org/docs/manual/manual-core-adv.html">Valgrind's GDB server</a>. Simply launch the program like this </p><div class="fragment"><div class="line">valgrind --vgdb=yes --vgdb-error=0 thorin-gtest</div>
 </div><!-- fragment --><p> and follow the instructions. </p>

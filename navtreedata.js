@@ -30,45 +30,43 @@ var NAVTREE =
         [ "Tests", "index.html#autotoc_md2", null ],
         [ "Documentation", "index.html#autotoc_md3", null ]
       ] ],
-      [ "Dependencies", "index.html#autotoc_md4", [
-        [ "Deployed as a Git Submodule", "index.html#autotoc_md5", null ]
-      ] ]
+      [ "Dependencies", "index.html#autotoc_md4", null ]
     ] ],
     [ "Language Reference", "md_docs_langref.html", null ],
     [ "Command-Line Interface", "md_docs_cli.html", [
-      [ "Usage", "md_docs_cli.html#autotoc_md8", null ]
+      [ "Usage", "md_docs_cli.html#autotoc_md7", null ]
     ] ],
     [ "Developer Guide", "md_docs_dev.html", [
-      [ "Compiling and Executing", "md_docs_dev.html#autotoc_md10", null ],
-      [ "Defs and the World", "md_docs_dev.html#autotoc_md11", [
-        [ "Hash Consing", "md_docs_dev.html#autotoc_md12", null ]
+      [ "Compiling and Executing", "md_docs_dev.html#autotoc_md9", null ],
+      [ "Defs and the World", "md_docs_dev.html#autotoc_md10", [
+        [ "Hash Consing", "md_docs_dev.html#autotoc_md11", null ]
       ] ],
-      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md13", null ],
-      [ "Matching IR", "md_docs_dev.html#autotoc_md14", null ],
-      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md15", null ]
+      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md12", null ],
+      [ "Matching IR", "md_docs_dev.html#autotoc_md13", null ],
+      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md14", null ]
     ] ],
     [ "Passes", "md_docs_passes.html", [
-      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md17", null ],
-      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md18", [
-        [ "Rewrite", "md_docs_passes.html#autotoc_md19", [
-          [ "Proxy", "md_docs_passes.html#autotoc_md20", null ]
+      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md16", null ],
+      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md17", [
+        [ "Rewrite", "md_docs_passes.html#autotoc_md18", [
+          [ "Proxy", "md_docs_passes.html#autotoc_md19", null ]
         ] ],
-        [ "Analyze", "md_docs_passes.html#autotoc_md21", null ],
-        [ "Other Hooks", "md_docs_passes.html#autotoc_md22", null ]
+        [ "Analyze", "md_docs_passes.html#autotoc_md20", null ],
+        [ "Other Hooks", "md_docs_passes.html#autotoc_md21", null ]
       ] ],
-      [ "Caveats", "md_docs_passes.html#autotoc_md23", [
-        [ "Construct Valid Programs", "md_docs_passes.html#autotoc_md24", null ],
-        [ "Creating Nominals", "md_docs_passes.html#autotoc_md25", null ]
+      [ "Caveats", "md_docs_passes.html#autotoc_md22", [
+        [ "Construct Valid Programs", "md_docs_passes.html#autotoc_md23", null ],
+        [ "Creating Nominals", "md_docs_passes.html#autotoc_md24", null ]
       ] ]
     ] ],
     [ "Coding & Debugging", "md_docs_coding.html", [
-      [ "Coding Style", "md_docs_coding.html#autotoc_md27", null ],
-      [ "Debugging", "md_docs_coding.html#autotoc_md28", [
-        [ "Logging", "md_docs_coding.html#autotoc_md29", null ],
-        [ "Breakpoints", "md_docs_coding.html#autotoc_md30", null ],
-        [ "VS Code", "md_docs_coding.html#autotoc_md31", null ],
-        [ "GoogleTest", "md_docs_coding.html#autotoc_md32", null ],
-        [ "Valgrind & GDB", "md_docs_coding.html#autotoc_md33", null ]
+      [ "Coding Style", "md_docs_coding.html#autotoc_md26", null ],
+      [ "Debugging", "md_docs_coding.html#autotoc_md27", [
+        [ "Logging", "md_docs_coding.html#autotoc_md28", null ],
+        [ "Breakpoints", "md_docs_coding.html#autotoc_md29", null ],
+        [ "VS Code", "md_docs_coding.html#autotoc_md30", null ],
+        [ "GoogleTest", "md_docs_coding.html#autotoc_md31", null ],
+        [ "Valgrind & GDB", "md_docs_coding.html#autotoc_md32", null ]
       ] ]
     ] ],
     [ "Deprecated List", "deprecated.html", null ],
@@ -123,11 +121,11 @@ var NAVTREEINDEX =
 "classthorin_1_1World.html#a62ddee91d07a2e77c0d161723b7a2340",
 "classthorin_1_1World.html#ae3e9f40e2738a65a227e4f695400c900",
 "functions_func_p.html",
-"namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6",
-"namespacethorin.html#ae09ad713f008c88390acd966418726a2",
-"rewrite_8h.html#aae14ac541e8de18c5c705ac427c8bcc1",
-"structthorin_1_1World_1_1SeaEq.html#a137877da98df3449ab2b0cb595d4dcd7",
-"tuple_8h.html#abe0176edb854a9982662e5bdfe0038a3"
+"namespacethorin.html#a3a2fb7fcec1f4e0b791f34d5f3d302cc",
+"namespacethorin.html#ae0e621eb1be011dcdfe11e5171fd7dd4",
+"rewrite_8h.html#ad84a15f8bc76f87a6d971973debca52e",
+"structthorin_1_1World_1_1SeaHash.html",
+"tuple_8h.html#abf42540454f2067831c8d4424d18a1ad"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

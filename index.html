@@ -109,13 +109,11 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <li class="level2"><a href="#autotoc_md3">Documentation</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md4">Dependencies</a><ul><li class="level2"><a href="#autotoc_md5">Deployed as a Git Submodule</a></li>
-</ul>
-</li>
+<li class="level1"><a href="#autotoc_md4">Dependencies</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_docs_README"></a></p>
-<p ><a href="https://anydsl.github.io/thorin2"><img src="https://img.shields.io/badge/doc-master-blue" alt="doc" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2" alt="GitHub" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master" alt="build-and-test" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master" alt="doxygen" style="pointer-events: none;" class="inline"/></a></p>
+<p >| Docs | <a href="https://anydsl.github.io/thorin2"><img src="https://img.shields.io/badge/docs-master-yellowgreen?logo=gitbook&amp;logoColor=white" alt="Documentation" class="inline"/></a> | | License | <a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2" alt="License" class="inline"/></a> | | Requirements | <a href="https://cmake.org/"><img src="https://img.shields.io/badge/cmake-3.4.4-blue.svg?logo=cmake" alt="CMake" style="pointer-events: none;" class="inline"/></a> <a href="https://isocpp.org/"><img src="https://img.shields.io/badge/standard-C%2B%2B%2020-blue.svg?logo=C%2B%2B" alt="C++" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/tree/master/modules"><img src="https://img.shields.io/badge/submodules-5-blue?logo=git&amp;logoColor=white" alt="Submodules" class="inline"/></a> | | Tests | <a href="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master" alt="Build & Test" style="pointer-events: none;" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master" alt="Doxygen" style="pointer-events: none;" class="inline"/></a> |</p>
 <p >Thorin is an extensible compiler intermediate representation that is based upon the <a href="https://en.wikipedia.org/wiki/Calculus_of_constructions">Calculus of Constructions (CoC)</a>. This means:</p><ul>
 <li><a href="https://en.wikipedia.org/wiki/Pure_type_system">pure type system (PTS)</a></li>
 <li><a href="https://en.wikipedia.org/wiki/Higher-order_function">higher-order functions</a></li>
@@ -141,28 +139,12 @@ Documentation</h2>
 <p >You can build the documentation locally from the root folder with: </p><div class="fragment"><div class="line">doxygen</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
 Dependencies</h1>
+<p >In addition to the provided submodules:</p>
 <ul>
 <li>Recent version of <a href="https://cmake.org/">CMake</a></li>
 <li>A C++20-compatible C++ compiler.</li>
 <li><p class="startli">While Thorin emits <a href="https://llvm.org/">LLVM</a>, it does <em>not</em> link against LLVM.</p>
-<p class="startli">Simply toss the emitted <code>*.ll</code> file to your system's LLVM toolchain. But techincally, you don't need LLVM.</p>
-</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md5"></a>
-Deployed as a Git Submodule</h2>
-<p >The following dependencies are deployed via a <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">git submodule</a>:</p>
-<ul>
-<li><p class="startli"><a href="https://sourceforge.net/projects/half/">Half library</a></p>
-<p class="startli">This <em>header-only</em> library provides a <code>half</code> type that mimics the builtin types <code>float</code> or <code>double</code>. It originally resides in a subversion repository on Sourceforge. For this reason, we use a <a href="https://github.com/AnyDSL/half">git mirror</a> to deploy it as a git submodule.</p>
-</li>
-<li><p class="startli"><a href="https://www.bfgroup.xyz/Lyra/">Lyra</a></p>
-<p class="startli"><em>Header-only</em> library for parsing command line arguments.</p>
-</li>
-<li><p class="startli"><a href="https://github.com/google/googletest">GoogleTest</a></p>
-<p class="startli">This is optional for running the unit tests.</p>
-</li>
-<li><p class="startli"><a href="https://www.doxygen.nl/index.html">Doxygen</a> and <a href="https://jothepro.github.io/doxygen-awesome-css/">Doxygen Awesome</a></p>
-<p class="startli">This is optional for building the documentation. </p>
+<p class="startli">Simply toss the emitted <code>*.ll</code> file to your system's LLVM toolchain. But techincally, you don't need LLVM. </p>
 </li>
 </ul>
 </div></div><!-- PageDoc -->
