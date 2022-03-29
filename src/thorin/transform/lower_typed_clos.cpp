@@ -54,7 +54,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         new_lam->make_external();
     }
     const Def* lcm = new_lam->mem_var();
-    const Def* env = new_lam->var(Clos_Env_Param, w.dbg("closure_env"));
+    const Def* env = new_lam->var(Clos_Env_Param, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
     if (mode == Box) {
         auto env_mem = w.op_load(lcm, env);
         lcm          = w.extract(env_mem, 0_u64, w.dbg("mem"));
@@ -112,7 +112,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
 
     if (auto c = isa_clos_lit(def)) {
         auto env      = rewrite(c.env());
-        auto mode     = isa<Tag::Int>(env->type()) ? Unbox : Box;
+        auto mode     = (isa<Tag::Int>(env->type()) || isa<Tag::Ptr>(env->type())) ? Unbox : Box;
         const Def* fn = make_stub(c.fnc_as_lam(), mode, true);
         if (env->type() == w.sigma()) {
             // Optimize empty env
