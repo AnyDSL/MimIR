@@ -352,7 +352,7 @@ const Def* World::tangent_type(const Def* A,bool left) {
 
         auto A = params_without_return_continuation(pidef);
 
-        auto B = sigma(pidef->doms().back()->as<Pi>()->dom()->ops().skip_font());
+        auto B = sigma(pidef->doms().back()->as<Pi>()->dom()->ops().skip_front());
         auto AL = tangent_type(A,true);
         auto BL = tangent_type(B,true);
 
@@ -516,7 +516,7 @@ const Pi* World::cn_mem_half_flat(const Def* dom, const Def* codom, const Def* d
 
 const Pi* World::cn_flat(Defs doms, const Def* dbg) {
     std::vector<const Def*> ops;
-    for (auto& d : dom) {
+    for (auto& d : doms) {
         if(d->isa<Sigma>()) {
             for (auto& op : d->ops()) ops.push_back(op);
         }else {
