@@ -76,6 +76,9 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::M_id:        return parse_sym().def();
+        case Tok::Tag::L_s:
+        case Tok::Tag::L_u:
+        case Tok::Tag::L_r:         return parse_lit();
         default:                    err("primary def", ctxt);
             // clang-format on
     }
@@ -107,6 +110,25 @@ const Def* Parser::parse_sigma() {
 
 const Def* Parser::parse_block() {
     return nullptr; // TODO
+}
+
+const Def* Parser::parse_lit() {
+    auto track = tracker();
+    auto lit = lex();
+    expect(Tok::Tag::P_colon_colon, "literal");
+    auto type = parse_def("literal", Tok::Prec::Lit);
+
+    const Def* meta = nullptr;
+    switch (lit.tag()) {
+        // clang-format off
+        case Tok::Tag::L_s: meta = world().lit_nat('s'); break;
+        case Tok::Tag::L_u: meta = world().lit_nat('u'); break;
+        case Tok::Tag::L_r: meta = world().lit_nat('r'); break;
+        default: unreachable();
+        // clang-format on;
+    }
+
+    return world().lit(type, lit.u(), world().dbg({"", track.loc(), meta}));
 }
 
 } // namespace thorin

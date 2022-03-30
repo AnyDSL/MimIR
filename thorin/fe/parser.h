@@ -42,6 +42,7 @@ private:
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();
+    const Def* parse_lit();
     ///@}
 
     template<class F>
@@ -69,9 +70,8 @@ private:
             : parser_(parser)
             , pos_(pos) {}
 
-        operator const Def*() const {
-            return parser_.world().dbg(Debug("", Loc(parser_.prev_.file, pos_, parser_.prev_.finis)));
-        }
+        Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
+        operator const Def*() const { return parser_.world().dbg({"", loc()}); }
 
     private:
         Parser& parser_;

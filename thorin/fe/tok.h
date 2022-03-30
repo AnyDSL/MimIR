@@ -2,6 +2,7 @@
 #define THORIN_TOK_H
 
 #include "thorin/debug.h"
+#include "thorin/util/types.h"
 
 namespace thorin {
 
@@ -18,7 +19,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 #define THORIN_LIT(m)                   \
     m(L_s,  "<signed integer literal>") \
     m(L_u,  "<integer literal>")        \
-    m(L_f,  "<floating-point literal>")
+    m(L_r,  "<floating-point literal>")
 
 #define THORIN_TOK(m)                   \
     /* misc */                          \
@@ -65,7 +66,7 @@ public:
 
     enum class Tag {
 #define CODE(t, str) t,
-        THORIN_KEY(CODE) THORIN_TOK(CODE)
+        THORIN_KEY(CODE) THORIN_LIT(CODE) THORIN_TOK(CODE)
 #undef CODE
 #define CODE(t, str, prec_l, prec_r) t,
             THORIN_OP(CODE)
@@ -80,14 +81,26 @@ public:
         : loc_(loc)
         , tag_(Tag::M_id)
         , sym_(sym) {}
+    Tok(Loc loc, u64 u)
+        : loc_(loc)
+        , tag_(Tag::L_u)
+        , u_(u) {}
+    Tok(Loc loc, s64 s)
+        : loc_(loc)
+        , tag_(Tag::L_s)
+        , u_(std::bit_cast<u64>(s)) {}
+    Tok(Loc loc, r64 r)
+        : loc_(loc)
+        , tag_(Tag::L_r)
+        , u_(std::bit_cast<r64>(r)) {}
 
     Loc loc() const { return loc_; }
     Tag tag() const { return tag_; }
     bool isa(Tag tag) const { return tag == tag_; }
-    Sym sym() const {
-        assert(isa(Tag::M_id));
-        return sym_;
-    }
+    // clang-format off
+    Sym sym() const { assert(isa(Tag::M_id)); return sym_; }
+    u64 u()   const { assert(isa(Tag::L_u) || isa(Tag::L_s) || isa(Tag::L_r)); return u_; }
+    // clang-format on
     Stream& stream(Stream& s) const;
 
     static std::string_view tag2str(Tok::Tag);
@@ -98,7 +111,10 @@ public:
 private:
     Loc loc_;
     Tag tag_;
-    Sym sym_;
+    union {
+        Sym sym_;
+        u64 u_;
+    };
 };
 
 } // namespace thorin

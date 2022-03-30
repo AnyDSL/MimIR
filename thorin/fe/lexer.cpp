@@ -4,6 +4,8 @@
 
 namespace thorin {
 
+bool issign(int i) { return i == '+' || i == '-'; }
+
 Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
     : world_(world)
     , loc_{filename, {1, 1}, {1, 1}}
@@ -20,42 +22,42 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
 
 char32_t Lexer::next() {
     for (bool ok = true; true; ok = true) {
-        char32_t result = peek_.char_;
-        peek_.char_     = stream_.get();
-        loc_.finis      = peek_.pos_;
+        char32_t result = peek_.c32;
+        peek_.c32       = stream_.get();
+        loc_.finis      = peek_.pos;
 
         if (eof()) return result;
 
-        switch (auto n = utf8::num_bytes(peek_.char_)) {
+        switch (auto n = utf8::num_bytes(peek_.c32)) {
             case 0: ok = false; break;
             case 1: /*do nothing*/ break;
             default:
-                peek_.char_ = utf8::first(peek_.char_, n);
+                peek_.c32 = utf8::first(peek_.c32, n);
 
                 for (size_t i = 1; ok && i != n; ++i) {
                     if (auto x = utf8::is_valid(stream_.get()))
-                        peek_.char_ = utf8::append(peek_.char_, *x);
+                        peek_.c32 = utf8::append(peek_.c32, *x);
                     else
                         ok = false;
                 }
         }
 
-        if (peek_.char_ == '\n') {
-            ++peek_.pos_.row;
-            peek_.pos_.col = 0;
+        if (peek_.c32 == '\n') {
+            ++peek_.pos.row;
+            peek_.pos.col = 0;
         } else {
-            ++peek_.pos_.col;
+            ++peek_.pos.col;
         }
 
         if (ok) return result;
 
-        errln("{}, invalid UTF-8 character", peek_.pos_);
+        errln("{}, invalid UTF-8 character", peek_.pos);
     }
 }
 
 Tok Lexer::lex() {
     while (true) {
-        loc_.begin = peek_.pos_;
+        loc_.begin = peek_.pos;
         str_.clear();
 
         if (eof()) return tok(Tok::Tag::M_eof);
@@ -73,10 +75,16 @@ Tok Lexer::lex() {
         if (accept(U'»')) return tok(Tok::Tag::D_quote_r);
         if (accept(U'‹')) return tok(Tok::Tag::D_angle_l);
         if (accept(U'›')) return tok(Tok::Tag::D_angle_r);
+
+        // Punctuators
         if (accept( '=')) return tok(Tok::Tag::P_assign);
-        if (accept( ':')) return tok(Tok::Tag::P_colon);
         if (accept( ',')) return tok(Tok::Tag::P_comma);
         if (accept( '.')) return tok(Tok::Tag::P_dot);
+        if (accept(U'∷')) return tok(Tok::Tag::P_colon_colon);
+        if (accept( ':')) {
+            if (accept(':')) return tok(Tok::Tag::P_colon_colon);
+            return tok(Tok::Tag::P_colon);
+        }
 
         // binder
         if (accept(U'λ')) return tok(Tok::Tag::B_lam);
@@ -93,11 +101,11 @@ Tok Lexer::lex() {
                 continue;
             }
             if (accept('/')) {
-                while (!eof() && peek_.char_ != '\n') next();
+                while (!eof() && peek_.c32 != '\n') next();
                 continue;
             }
 
-            errln("{}:{}: invalid input char '/'; maybe you wanted to start a comment?", loc_.file, peek_.pos_);
+            errln("{}:{}: invalid input char '/'; maybe you wanted to start a comment?", loc_.file, peek_.pos);
             continue;
         }
 
@@ -108,14 +116,63 @@ Tok Lexer::lex() {
             return {loc(), world_.sym(str_, world_.dbg(loc()))};                            // identifier
         }
 
-        errln("{}:{}: invalid input char '{}'", loc_.file, peek_.pos_, (char)peek_.char_);
+        if (isdigit(peek_.c32) || issign(peek_.c32)) return lex_lit();
+
+
+        errln("{}:{}: invalid input char '{}'", loc_.file, peek_.pos, (char)peek_.c32);
         next();
     }
 }
 
+Tok Lexer::lex_lit() {
+    int base = 10;
+
+    auto parse_digits = [&] () {
+        switch (base) {
+            case  2: while (accept_if([](int i) { return '0' <= i && i <= '1'; })) {} break;
+            case  8: while (accept_if([](int i) { return '0' <= i && i <= '7'; })) {} break;
+            case 10: while (accept_if(isdigit)) {} break;
+            case 16: while (accept_if(isxdigit)) {} break;
+        }
+    };
+
+    bool sign = accept_if(issign);
+
+    // prefix starting with '0'
+    if (accept('0', false)) {
+        if      (accept('b', false)) base = 2;
+        else if (accept('x', false)) base = 16;
+        else if (accept('o', false)) base = 8;
+    }
+
+    parse_digits();
+
+    bool is_float = false;
+    if (base == 10) {
+        // parse fractional part
+        if (accept('.')) {
+            is_float = true;
+            parse_digits();
+        }
+
+        // parse exponent
+        if (accept_if([](int i) { return i == 'e' || i == 'E'; })) {
+            is_float = true;
+            if (accept_if(issign)) {}
+            parse_digits();
+        }
+    }
+
+    // clang-format off
+    if (is_float) return {loc_, r64(strtod  (str_.c_str(), nullptr      ))};
+    if (sign)     return {loc_, u64(strtoll (str_.c_str(), nullptr, base))};
+    else          return {loc_, u64(strtoull(str_.c_str(), nullptr, base))};
+    // clang-format on
+}
+
 void Lexer::eat_comments() {
     while (true) {
-        while (!eof() && peek_.char_ != '*') next();
+        while (!eof() && peek_.c32 != '*') next();
         if (eof()) {
             errln("{}:{}: non-terminated multiline comment", loc_);
             return;
