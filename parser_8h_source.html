@@ -193,7 +193,7 @@ $(document).ready(function(){initNavTree('parser_8h_source.html',''); initResiza
 <div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment"></span>    Tok lex();</div>
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment"></span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">    /// Get lookahead.</span></div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment"></span>    Tok ahead()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ahead_; }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment"></span>    Tok ahead(<span class="keywordtype">size_t</span> i = 0)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ahead_[i]; }</div>
 <div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment"></span> </div>
 <div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">    /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.</span></div>
 <div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment"></span>    <span class="keywordtype">bool</span> accept(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag);</div>
@@ -229,35 +229,34 @@ $(document).ready(function(){initNavTree('parser_8h_source.html',''); initResiza
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> i = scope.find(sym); i != scope.end()) <span class="keywordflow">return</span> i-&gt;second;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
 <div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    }</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordtype">bool</span> insert(Sym sym, <span class="keyword">const</span> Def* def) {</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keyword">auto</span> [_, ins] = scopes_.back().emplace(sym, def);</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">if</span> (!ins) {</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <a class="code hl_function" href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">errln</a>(<span class="stringliteral">&quot;symbol {} already declared in the current scope&quot;</span>, sym);</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>            <span class="comment">//errln(&quot;previous location here&quot;, what, tok, ctxt);</span></div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        }</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keywordflow">return</span> ins;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }<span class="comment"></span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">    ///@}</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment"></span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    Lexer lexer_;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    Loc prev_;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    Tok ahead_;</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    std::deque&lt;Scope&gt; scopes_;</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>};</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>} <span class="comment">// namespace thorin</span></div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordtype">void</span> insert(Sym sym, <span class="keyword">const</span> Def* def) {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> [_, ins] = scopes_.back().emplace(sym, def); !ins) {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            <a class="code hl_function" href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">errln</a>(<span class="stringliteral">&quot;symbol {} already declared in the current scope&quot;</span>, sym);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <span class="comment">//errln(&quot;previous location here&quot;, what, tok, ctxt);</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        }</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }<span class="comment"></span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">    ///@}</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="comment"></span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    Lexer lexer_;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    Loc prev_;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> Max_Ahead = 2; <span class="comment">///&lt; maximum lookahead</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    std::array&lt;Tok, Max_Ahead&gt; ahead_;  <span class="comment">///&lt; SLL look ahead</span></div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    std::deque&lt;Scope&gt; scopes_;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>};</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_aed7d9d0cd682bd7d98eef0019ed9a33e"><div class="ttname"><a href="classthorin_1_1Lexer.html#aed7d9d0cd682bd7d98eef0019ed9a33e">thorin::Lexer::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8h_source.html#l00019">lexer.h:19</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Parser_html"><div class="ttname"><a href="classthorin_1_1Parser.html">thorin::Parser</a></div><div class="ttdoc">Parses Thorin code into the provided World.</div><div class="ttdef"><b>Definition:</b> <a href="parser_8h_source.html#l00026">parser.h:26</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Parser_html_a47cabbad8ff8d81aff910a0354807f26"><div class="ttname"><a href="classthorin_1_1Parser.html#a47cabbad8ff8d81aff910a0354807f26">thorin::Parser::Parser</a></div><div class="ttdeci">Parser(World &amp;, std::string_view, std::istream &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8cpp_source.html#l00005">parser.cpp:5</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Parser_html_acd545f2b14786e73e995e7df438c4baf"><div class="ttname"><a href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">thorin::Parser::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition:</b> <a href="parser_8h_source.html#l00030">parser.h:30</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Parser_html_ad456197984ae5995361c73fb5574ce27"><div class="ttname"><a href="classthorin_1_1Parser.html#ad456197984ae5995361c73fb5574ce27">thorin::Parser::parse_module</a></div><div class="ttdeci">void parse_module()</div><div class="ttdef"><b>Definition:</b> <a href="parser_8cpp_source.html#l00034">parser.cpp:34</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Parser_html_ad456197984ae5995361c73fb5574ce27"><div class="ttname"><a href="classthorin_1_1Parser.html#ad456197984ae5995361c73fb5574ce27">thorin::Parser::parse_module</a></div><div class="ttdeci">void parse_module()</div><div class="ttdef"><b>Definition:</b> <a href="parser_8cpp_source.html#l00039">parser.cpp:39</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Sym_html"><div class="ttname"><a href="classthorin_1_1Sym.html">thorin::Sym</a></div><div class="ttdef"><b>Definition:</b> <a href="debug_8h_source.html#l00074">debug.h:74</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Tok_html_a2b38ddc0634b228ae22e6c43b0f23038"><div class="ttname"><a href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">thorin::Tok::Tag</a></div><div class="ttdeci">Tag</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00068">tok.h:68</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Tok_html_a2b38ddc0634b228ae22e6c43b0f23038"><div class="ttname"><a href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">thorin::Tok::Tag</a></div><div class="ttdeci">Tag</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00069">tok.h:69</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Tok_html_a2b38ddc0634b228ae22e6c43b0f23038adafb56089dc7f2a7f84b600e1615e75c"><div class="ttname"><a href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038adafb56089dc7f2a7f84b600e1615e75c">thorin::Tok::Tag::P_comma</a></div><div class="ttdeci">@ P_comma</div></div>
-<div class="ttc" id="aclassthorin_1_1Tok_html_a523827e88e4b5fb93c4be8db570fdd60"><div class="ttname"><a href="classthorin_1_1Tok.html#a523827e88e4b5fb93c4be8db570fdd60">thorin::Tok::delim_l2r</a></div><div class="ttdeci">static Tok::Tag delim_l2r(Tag tag)</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00109">tok.h:109</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Tok_html_afdc0f701e0b635d379f16d20957532a2"><div class="ttname"><a href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">thorin::Tok::Prec</a></div><div class="ttdeci">Prec</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00059">tok.h:59</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Tok_html_a523827e88e4b5fb93c4be8db570fdd60"><div class="ttname"><a href="classthorin_1_1Tok.html#a523827e88e4b5fb93c4be8db570fdd60">thorin::Tok::delim_l2r</a></div><div class="ttdeci">static Tok::Tag delim_l2r(Tag tag)</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00110">tok.h:110</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Tok_html_afdc0f701e0b635d379f16d20957532a2"><div class="ttname"><a href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">thorin::Tok::Prec</a></div><div class="ttdeci">Prec</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00060">tok.h:60</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Tok_html_afdc0f701e0b635d379f16d20957532a2a2ad9d63b69c4a10a5cc9cad923133bc4"><div class="ttname"><a href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2a2ad9d63b69c4a10a5cc9cad923133bc4">thorin::Tok::Prec::Bottom</a></div><div class="ttdeci">@ Bottom</div></div>
 <div class="ttc" id="aclassthorin_1_1World_html"><div class="ttname"><a href="classthorin_1_1World.html">thorin::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of Thorin nodes (Defs).</div><div class="ttdef"><b>Definition:</b> <a href="world_8h_source.html#l00037">world.h:37</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html_a7de00f50ba0c790aa0e67f3a4d065c89"><div class="ttname"><a href="classthorin_1_1World.html#a7de00f50ba0c790aa0e67f3a4d065c89">thorin::World::dbg</a></div><div class="ttdeci">const Def * dbg(Debug)</div><div class="ttdef"><b>Definition:</b> <a href="world_8cpp_source.html#l00691">world.cpp:691</a></div></div>
