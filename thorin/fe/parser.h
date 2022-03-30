@@ -43,6 +43,7 @@ private:
     const Def* parse_sigma();
     const Def* parse_tuple();
     const Def* parse_lit();
+    const Def* parse_let();
     ///@}
 
     template<class F>
@@ -108,9 +109,34 @@ private:
     /// Same above but uses @p ahead() as @p tok.
     void err(std::string_view what, std::string_view ctxt) { err(what, ahead(), ctxt); }
 
+    /// @name Scope
+    ///@{
+    using Scope = SymMap<const Def*>;
+
+    void push() { scopes_.emplace_back(); }
+    void pop() {
+        assert(!scopes_.empty());
+        scopes_.pop_back();
+    }
+    const Def* find(Sym sym) const {
+        for (auto& scope : scopes_ | std::ranges::views::reverse)
+            if (auto i = scope.find(sym); i != scope.end()) return i->second;
+        return nullptr;
+    }
+    bool insert(Sym sym, const Def* def) {
+        auto [_, ins] = scopes_.back().emplace(sym, def);
+        if (!ins) {
+            errln("symbol {} already declared in the current scope", sym);
+            //errln("previous location here", what, tok, ctxt);
+        }
+        return ins;
+    }
+    ///@}
+
     Lexer lexer_;
     Loc prev_;
     Tok ahead_;
+    std::deque<Scope> scopes_;
 };
 
 } // namespace thorin

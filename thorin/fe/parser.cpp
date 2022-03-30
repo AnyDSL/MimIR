@@ -109,7 +109,10 @@ const Def* Parser::parse_sigma() {
 }
 
 const Def* Parser::parse_block() {
-    return nullptr; // TODO
+    eat(Tok::Tag::D_brace_l);
+    auto res = parse_def("block expression");
+    expect(Tok::Tag::D_brace_r, "block expression");
+    return res;
 }
 
 const Def* Parser::parse_lit() {
@@ -129,6 +132,14 @@ const Def* Parser::parse_lit() {
     }
 
     return world().lit(type, lit.u(), world().dbg({"", track.loc(), meta}));
+}
+
+const Def* Parser::parse_let() {
+    auto sym = parse_sym();
+    eat(Tok::Tag::P_colon);
+    eat(Tok::Tag::P_assign);
+    auto body = parse_def("body of a let expression");
+    eat(Tok::Tag::P_semicolon);
 }
 
 } // namespace thorin
