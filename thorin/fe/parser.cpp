@@ -4,12 +4,17 @@ namespace thorin {
 
 Parser::Parser(World& world, std::string_view file, std::istream& stream)
     : lexer_(world, file, stream)
-    , prev_(lexer_.loc())
-    , ahead_(lexer_.lex()) {}
+    , prev_(lexer_.loc()) {
+    for (size_t i = 0; i != Max_Ahead; ++i) lex();
+    prev_ = Loc(file, {1, 1}, {1, 1});
+    push(); // root scope
+}
 
 Tok Parser::lex() {
     auto result = ahead();
-    ahead_      = lexer_.lex();
+    prev_ = ahead_[0].loc();
+    for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead_[i] = ahead_[i + 1];
+    ahead_.back() = lexer_.lex();
     return result;
 }
 
@@ -75,7 +80,13 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
         case Tok::Tag::D_paren_l:   return parse_tuple();
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_brace_l:   return parse_block();
-        case Tok::Tag::M_id:        return parse_sym().def();
+        case Tok::Tag::K_Nat:       lex(); return world().type_nat();
+        case Tok::Tag::P_star:      lex(); return world().kind();
+        case Tok::Tag::M_id: {
+            if (ahead(1).isa(Tok::Tag::P_assign)) return parse_let();
+            auto sym = parse_sym();
+            return find(sym);
+        }
         case Tok::Tag::L_s:
         case Tok::Tag::L_u:
         case Tok::Tag::L_r:         return parse_lit();
@@ -98,7 +109,9 @@ const Def* Parser::parse_pack_or_array(bool pack) {
 
 const Def* Parser::parse_tuple() {
     auto ops = parse_list("tuple", Tok::Tag::D_paren_l, [this]() { return parse_def("tuple element"); });
-    return world().tuple(ops);
+    auto t = world().tuple(ops);
+    t->dump(0);
+    return t;
 }
 
 const Def* Parser::parse_sigma() {
@@ -136,10 +149,11 @@ const Def* Parser::parse_lit() {
 
 const Def* Parser::parse_let() {
     auto sym = parse_sym();
-    eat(Tok::Tag::P_colon);
     eat(Tok::Tag::P_assign);
     auto body = parse_def("body of a let expression");
+    insert(sym, body);
     eat(Tok::Tag::P_semicolon);
+    return parse_def("argument of a let expression");
 }
 
 } // namespace thorin

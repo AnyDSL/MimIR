@@ -87,7 +87,7 @@ private:
     Tok lex();
 
     /// Get lookahead.
-    Tok ahead() const { return ahead_; }
+    Tok ahead(size_t i = 0) const { return ahead_[i]; }
 
     /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.
     bool accept(Tok::Tag tag);
@@ -123,19 +123,18 @@ private:
             if (auto i = scope.find(sym); i != scope.end()) return i->second;
         return nullptr;
     }
-    bool insert(Sym sym, const Def* def) {
-        auto [_, ins] = scopes_.back().emplace(sym, def);
-        if (!ins) {
+    void insert(Sym sym, const Def* def) {
+        if (auto [_, ins] = scopes_.back().emplace(sym, def); !ins) {
             errln("symbol {} already declared in the current scope", sym);
             //errln("previous location here", what, tok, ctxt);
         }
-        return ins;
     }
     ///@}
 
     Lexer lexer_;
     Loc prev_;
-    Tok ahead_;
+    static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
+    std::array<Tok, Max_Ahead> ahead_;  ///< SLL look ahead
     std::deque<Scope> scopes_;
 };
 

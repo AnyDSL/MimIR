@@ -9,7 +9,7 @@ namespace thorin {
 
 // clang-format off
 #define THORIN_KEY(m)                   \
-    m(K_in,  "nom" )                    \
+    m(K_Nat, "Nat" )                    \
     m(K_lam, "lam")                     \
     m(K_let, "let")
 
@@ -27,12 +27,13 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(M_eof, "<eof>")                   \
     m(M_id,  "<identifier>")            \
     /* punctuators */                   \
+    m(P_assign,       "=")              \
     m(P_colon,        ":")              \
     m(P_colon_colon,  "::")             \
     m(P_comma,        ",")              \
     m(P_dot,          ".")              \
     m(P_semicolon,    ";")              \
-    m(P_assign,       "=")              \
+    m(P_star,         "*")              \
     /* delimiters */                    \
     m(D_angle_l,      "‹")              \
     m(D_angle_r,      "›")              \

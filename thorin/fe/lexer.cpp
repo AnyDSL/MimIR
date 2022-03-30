@@ -85,6 +85,8 @@ Tok Lexer::lex() {
             if (accept(':')) return tok(Tok::Tag::P_colon_colon);
             return tok(Tok::Tag::P_colon);
         }
+        if (accept( ';')) return tok(Tok::Tag::P_semicolon);
+        if (accept( '*')) return tok(Tok::Tag::P_star);
 
         // binder
         if (accept(U'λ')) return tok(Tok::Tag::B_lam);
