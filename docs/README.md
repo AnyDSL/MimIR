@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td>License</td>
-        <td><a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2" alt="License"></a></td>
+        <td><a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2?logo=LibreOffice" alt="License"></a></td>
     </tr>
     <tr>
         <td>Requirements</td>
