@@ -12,7 +12,7 @@ Parser::Parser(World& world, std::string_view file, std::istream& stream)
 
 Tok Parser::lex() {
     auto result = ahead();
-    prev_ = ahead_[0].loc();
+    prev_       = ahead_[0].loc();
     for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead_[i] = ahead_[i + 1];
     ahead_.back() = lexer_.lex();
     return result;
@@ -109,7 +109,7 @@ const Def* Parser::parse_pack_or_array(bool pack) {
 
 const Def* Parser::parse_tuple() {
     auto ops = parse_list("tuple", Tok::Tag::D_paren_l, [this]() { return parse_def("tuple element"); });
-    auto t = world().tuple(ops);
+    auto t   = world().tuple(ops);
     t->dump(0);
     return t;
 }

@@ -126,7 +126,7 @@ private:
     void insert(Sym sym, const Def* def) {
         if (auto [_, ins] = scopes_.back().emplace(sym, def); !ins) {
             errln("symbol {} already declared in the current scope", sym);
-            //errln("previous location here", what, tok, ctxt);
+            // errln("previous location here", what, tok, ctxt);
         }
     }
     ///@}
@@ -134,7 +134,7 @@ private:
     Lexer lexer_;
     Loc prev_;
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
-    std::array<Tok, Max_Ahead> ahead_;  ///< SLL look ahead
+    std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
     std::deque<Scope> scopes_;
 };
 
