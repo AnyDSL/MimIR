@@ -23,8 +23,8 @@
     <tr>
         <td>Tests</td>
         <td>
-            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml/badge.svg?branch=master" alt="Build & Test"></a>
-            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml/badge.svg?branch=master" alt="Doxygen"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/build-and-test.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/build-and-test?logo=github&label=build-and-test" alt="Build & Test"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/doxygen?logo=github&label=doxygen" alt="Doxygen"></a>
         </td>
     </tr>
 </table>
