@@ -232,7 +232,7 @@ $(document).ready(function(){initNavTree('parser_8h_source.html',''); initResiza
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    <span class="keywordtype">void</span> insert(Sym sym, <span class="keyword">const</span> Def* def) {</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> [_, ins] = scopes_.back().emplace(sym, def); !ins) {</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            <a class="code hl_function" href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">errln</a>(<span class="stringliteral">&quot;symbol {} already declared in the current scope&quot;</span>, sym);</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <span class="comment">//errln(&quot;previous location here&quot;, what, tok, ctxt);</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <span class="comment">// errln(&quot;previous location here&quot;, what, tok, ctxt);</span></div>
 <div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        }</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }<span class="comment"></span></div>
 <div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="comment">    ///@}</span></div>
@@ -240,7 +240,7 @@ $(document).ready(function(){initNavTree('parser_8h_source.html',''); initResiza
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    Lexer lexer_;</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    Loc prev_;</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> Max_Ahead = 2; <span class="comment">///&lt; maximum lookahead</span></div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    std::array&lt;Tok, Max_Ahead&gt; ahead_;  <span class="comment">///&lt; SLL look ahead</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    std::array&lt;Tok, Max_Ahead&gt; ahead_;     <span class="comment">///&lt; SLL look ahead</span></div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    std::deque&lt;Scope&gt; scopes_;</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>};</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
