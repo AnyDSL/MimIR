@@ -29,10 +29,11 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     /* punctuators */                   \
     m(P_assign,       "=")              \
     m(P_colon,        ":")              \
-    m(P_colon_colon,  "::")             \
+    m(P_colon_colon,  "∷")              \
     m(P_comma,        ",")              \
     m(P_dot,          ".")              \
     m(P_semicolon,    ";")              \
+    m(P_space,        "□")              \
     m(P_star,         "*")              \
     /* delimiters */                    \
     m(D_angle_l,      "‹")              \

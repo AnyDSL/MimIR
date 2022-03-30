@@ -75,18 +75,26 @@ Tok Lexer::lex() {
         if (accept(U'»')) return tok(Tok::Tag::D_quote_r);
         if (accept(U'‹')) return tok(Tok::Tag::D_angle_l);
         if (accept(U'›')) return tok(Tok::Tag::D_angle_r);
+        if (accept( '<')) {
+            if (accept( '<')) return tok(Tok::Tag::D_quote_l);
+            return tok(Tok::Tag::D_angle_l);
+        }
+        if (accept( '>')) {
+            if (accept( '>')) return tok(Tok::Tag::D_quote_r);
+            return tok(Tok::Tag::D_angle_r);
+        }
 
         // Punctuators
         if (accept( '=')) return tok(Tok::Tag::P_assign);
         if (accept( ',')) return tok(Tok::Tag::P_comma);
         if (accept( '.')) return tok(Tok::Tag::P_dot);
         if (accept(U'∷')) return tok(Tok::Tag::P_colon_colon);
+        if (accept( ';')) return tok(Tok::Tag::P_semicolon);
+        if (accept( '*')) return tok(Tok::Tag::P_star);
         if (accept( ':')) {
             if (accept(':')) return tok(Tok::Tag::P_colon_colon);
             return tok(Tok::Tag::P_colon);
         }
-        if (accept( ';')) return tok(Tok::Tag::P_semicolon);
-        if (accept( '*')) return tok(Tok::Tag::P_star);
 
         // binder
         if (accept(U'λ')) return tok(Tok::Tag::B_lam);

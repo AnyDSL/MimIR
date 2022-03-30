@@ -73,8 +73,8 @@ const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::B
 }
 
 const Def* Parser::parse_primary_def(std::string_view ctxt) {
+    // clang-format off
     switch (ahead().tag()) {
-        // clang-format off
         case Tok::Tag::D_angle_l:   return parse_pack_or_array(true);
         case Tok::Tag::D_quote_l:   return parse_pack_or_array(false);
         case Tok::Tag::D_paren_l:   return parse_tuple();
@@ -83,7 +83,7 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
         case Tok::Tag::P_star:      lex(); return world().kind();
         case Tok::Tag::M_id: {
-            if (ahead(1).isa(Tok::Tag::P_assign)) return parse_let();
+            if (ahead(1).isa(Tok::Tag::P_assign) || ahead(1).isa(Tok::Tag::P_colon)) return parse_let();
             auto sym = parse_sym();
             return find(sym);
         }
@@ -91,8 +91,8 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
         case Tok::Tag::L_u:
         case Tok::Tag::L_r:         return parse_lit();
         default:                    err("primary def", ctxt);
-            // clang-format on
     }
+    // clang-format on
     return nullptr;
 }
 
@@ -149,6 +149,10 @@ const Def* Parser::parse_lit() {
 
 const Def* Parser::parse_let() {
     auto sym = parse_sym();
+    if (accept(Tok::Tag::P_colon)) {
+        /*auto type = */parse_def("type of a let binding");
+        // do sth with type
+    }
     eat(Tok::Tag::P_assign);
     auto body = parse_def("body of a let expression");
     insert(sym, body);
