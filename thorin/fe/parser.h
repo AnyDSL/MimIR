@@ -7,17 +7,60 @@
 
 namespace thorin {
 
+/// Parses Thorin code into the provided World.
+///
+/// The behind the various parse methods is as follows:
+/// 1. The `parse_*` method does **not** have a `std::string_view ctxt` parameter:
+///
+///     It's the **caller's responsibility** to first make appropriate
+///     [FIRST/FOLLOW](https://www.cs.uaf.edu/~cs331/notes/FirstFollow.pdf) checks.
+///     Otherwise, an assertion will be triggered in the case of a syntax error.
+/// 2. The `parse_*` method does have a `std::string_view ctxt` parameter:
+///
+///      The **called method** checks this and spits out an appropriate error message using `ctxt` in the case of a
+///      syntax error.
+/// 3. The `parse_* method does have a `std::string_view ctxt = {}` parameter **with default argument**:
+///
+///      * If default argument is **elided** we have the same behavior as in 1.
+///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
     Parser(World&, std::string_view, std::istream&);
+
     World& world() { return lexer_.world(); }
+    void parse_module();
 
 private:
-    Sym parse_sym(std::string_view ctxt);
-    const Def* parse_def(std::string_view ctxt, Tok::Prec);
+    Sym parse_sym(std::string_view ctxt = {});
+    const Def* parse_def(std::string_view ctxt, Tok::Prec = Tok::Prec::Bottom);
     const Def* parse_primary_def(std::string_view ctxt);
-    const Def* parse_primary_def();
     const Def* parse_extract();
+
+    /// @name primary defs
+    ///@{
+    const Def* parse_pack_or_array(bool pack);
+    const Def* parse_block();
+    const Def* parse_sigma();
+    const Def* parse_tuple();
+    ///@}
+
+    template<class F>
+    auto parse_list(Tok::Tag delim_r, F f, Tok::Tag sep = Tok::Tag::P_comma) {
+        DefVec result;
+        if (!ahead().isa(delim_r)) {
+            do { result.emplace_back(f()); } while (accept(sep) && !ahead().isa(delim_r));
+        }
+        return result;
+    }
+
+    template<class F>
+    auto parse_list(const char* ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::P_comma) {
+        eat(delim_l);
+        auto delim_r = Tok::delim_l2r(delim_l);
+        auto result  = parse_list(delim_r, f, sep);
+        expect(delim_r, ctxt);
+        return result;
+    }
 
     /// Trick to easily keep track of Loc%ations.
     class Tracker {
@@ -26,7 +69,9 @@ private:
             : parser_(parser)
             , pos_(pos) {}
 
-        operator Loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
+        operator const Def*() const {
+            return parser_.world().dbg(Debug("", Loc(parser_.prev_.file, pos_, parser_.prev_.finis)));
+        }
 
     private:
         Parser& parser_;

@@ -93,6 +93,7 @@ public:
     static std::string_view tag2str(Tok::Tag);
     static Prec tag2prec_l(Tag);
     static Prec tag2prec_r(Tag);
+    static Tok::Tag delim_l2r(Tag tag) { return Tok::Tag(int(tag) + 1); }
 
 private:
     Loc loc_;

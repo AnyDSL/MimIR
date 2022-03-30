@@ -31,6 +31,8 @@ bool Parser::expect(Tok::Tag tag, std::string_view ctxt) {
     return false;
 }
 
+void Parser::parse_module() { parse_def("world"); };
+
 void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
     errln("expected {}, got '{}' while parsing {}", what, tok, ctxt);
 }
@@ -62,9 +64,49 @@ const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::B
         // lhs = mk_ptr<InfixExpr>(track, std::move(lhs), tag, std::move(rhs));
     }
 
+    return lhs;
+}
+
+const Def* Parser::parse_primary_def(std::string_view ctxt) {
+    switch (ahead().tag()) {
+        // clang-format off
+        case Tok::Tag::D_angle_l:   return parse_pack_or_array(true);
+        case Tok::Tag::D_quote_l:   return parse_pack_or_array(false);
+        case Tok::Tag::D_paren_l:   return parse_tuple();
+        case Tok::Tag::D_bracket_l: return parse_sigma();
+        case Tok::Tag::D_brace_l:   return parse_block();
+        case Tok::Tag::M_id:        return parse_sym().def();
+        default:                    err("primary def", ctxt);
+            // clang-format on
+    }
     return nullptr;
 }
 
-const Def* Parser::parse_primary_def(std::string_view) { return nullptr; }
+const Def* Parser::parse_pack_or_array(bool pack) {
+    auto track = tracker();
+    // TODO get rid of "pack or array"
+    eat(pack ? Tok::Tag::D_angle_l : Tok::Tag::D_quote_l);
+    auto shape = parse_def("shape of a pack or array");
+    expect(Tok::Tag::P_semicolon, "pack or array");
+    auto body = parse_def("body of a pack or array");
+    expect(pack ? Tok::Tag::D_angle_r : Tok::Tag::D_quote_r, "closing delimiter of a pack or array");
+    return world().arr(shape, body, track);
+}
+
+const Def* Parser::parse_tuple() {
+    auto ops = parse_list("tuple", Tok::Tag::D_paren_l, [this]() { return parse_def("tuple element"); });
+    return world().tuple(ops);
+}
+
+const Def* Parser::parse_sigma() {
+    auto ops = parse_list("sigma", Tok::Tag::D_bracket_l, [this]() { return parse_def("sigma element"); });
+    auto s   = world().sigma(ops);
+    s->dump(0);
+    return s;
+}
+
+const Def* Parser::parse_block() {
+    return nullptr; // TODO
+}
 
 } // namespace thorin
