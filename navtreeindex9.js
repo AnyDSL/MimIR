@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"classthorin_1_1World.html#ada8eb818139833cdc0e96280ab8457bb":[9,0,0,151,116],
+"classthorin_1_1World.html#adaedbf583dc3aac832683ea3fd660a44":[9,0,0,151,185],
 "classthorin_1_1World.html#adaedbf583dc3aac832683ea3fd660a44":[7,0,0,158,185],
 "classthorin_1_1World.html#adc77db23cd65308c2c11e759b70c9875":[9,0,0,151,11],
 "classthorin_1_1World.html#adc77db23cd65308c2c11e759b70c9875":[7,0,0,158,11],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "files.html":[10,0],
 "functions.html":[9,3,0,0],
 "functions.html":[9,3,0],
-"functions_b.html":[9,3,0,1],
-"functions_c.html":[9,3,0,2],
-"functions_d.html":[9,3,0,3]
+"functions_b.html":[9,3,0,1]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX14 =
 {
+"structthorin_1_1Pos.html#aa7a1746c9047bfb3335fe8f3b7ab596d":[9,0,0,88,1],
+"structthorin_1_1Pos.html#aa7a1746c9047bfb3335fe8f3b7ab596d":[7,0,0,95,1],
 "structthorin_1_1Pos.html#af96fe1b7effe294140f1051ca3a1ff13":[9,0,0,88,4],
 "structthorin_1_1Pos.html#af96fe1b7effe294140f1051ca3a1ff13":[7,0,0,95,4],
 "structthorin_1_1SymEq.html":[9,0,0,108],
@@ -247,7 +249,5 @@ var NAVTREEINDEX14 =
 "tok_8h.html#a92dceaeb9235c0acf0df67d690b439c3":[10,0,2,2,5,4],
 "tok_8h.html#aa8cf24f3863a3214f02d9e37a68c7b0e":[10,0,2,2,5,8],
 "tok_8h.html#acf85c215badfba27aee55c9cd3af719a":[10,0,2,2,5,7],
-"tok_8h.html#afdaf67aed035a83636d672aae1505a32":[10,0,2,2,5,5],
-"tok_8h_source.html":[10,0,2,2,5],
-"tuple_8cpp.html":[10,0,2,26]
+"tok_8h.html#afdaf67aed035a83636d672aae1505a32":[10,0,2,2,5,5]
 };
