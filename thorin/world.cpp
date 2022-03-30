@@ -283,6 +283,13 @@ World::~World() {
     for (auto def : data_.defs_) def->~Def();
 }
 
+World World::stub() {
+    World w(name());
+    w.stream_ = stream_;
+    w.state_  = state_;
+    return w;
+}
+
 /*
  * core calculus
  */

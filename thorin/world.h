@@ -36,17 +36,17 @@ class Scope;
 /// Note that types are also just Def%s and will be hashed as well.
 class World : public Streamable<World> {
 public:
-    World(World&&) = delete;
     World& operator=(const World&) = delete;
 
     explicit World(std::string_view name = {});
-    /// Inherits the World::state_ of the @p other World but does *not* perform a copy.
-    explicit World(const World& other)
-        : World(other.name()) {
-        stream_ = other.stream_;
-        state_  = other.state_;
+    World(World&& other)
+        : World() {
+        swap(*this, other);
     }
     ~World();
+
+    /// Inherits the World::state_ of the @p other World.
+    World stub();
 
     /// @name Sea of Nodes
     ///@{
