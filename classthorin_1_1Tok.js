@@ -38,6 +38,7 @@ var classthorin_1_1Tok =
     [ "Tok", "classthorin_1_1Tok.html#ab96cbe83a40186a1becbf1e99bb33c5b", null ],
     [ "Tok", "classthorin_1_1Tok.html#a197b6cd7caa11b685f2c0f64323cb3b4", null ],
     [ "Tok", "classthorin_1_1Tok.html#ab2212cb3737713a7d19a9c9da710398b", null ],
+    [ "delim_l2r", "classthorin_1_1Tok.html#a523827e88e4b5fb93c4be8db570fdd60", null ],
     [ "isa", "classthorin_1_1Tok.html#a3bf30d6bc9b8ca772098449f4b73e274", null ],
     [ "loc", "classthorin_1_1Tok.html#a6e45a93b5e96f909166e338ce3f48060", null ],
     [ "stream", "classthorin_1_1Tok.html#a8fe5202e743a95a61ae502c7641d7b81", null ],
