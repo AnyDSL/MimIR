@@ -448,6 +448,7 @@ var namespacethorin =
     [ "isa_lit", "namespacethorin.html#a196c8dd3968fd28a00dc082c191feee6", null ],
     [ "isa_sized_type", "namespacethorin.html#a8f906c3bc0a760e4d037bcc6597fd2bd", null ],
     [ "isa_workable", "namespacethorin.html#afbcb1bda3428d2211797b024635936ee", null ],
+    [ "issign", "namespacethorin.html#ab2fa0a39c131e7a61b19b406c886d470", null ],
     [ "lazy_init", "namespacethorin.html#aee2f56c5529fe06f8a103083f64d13f4", null ],
     [ "make_array", "namespacethorin.html#a6737a390d5f1205e580d3e9f32c1a266", null ],
     [ "make_truth_table", "namespacethorin.html#a1aa84e35a44dd22fe2d00f0d63016425", null ],

@@ -53,5 +53,6 @@ var searchData=
   ['isa_5fproxy_50',['isa_proxy',['../classthorin_1_1Pass.html#a078bbc8ba934284599d415abe113bc93',1,'thorin::Pass']]],
   ['isa_5fsized_5ftype_51',['isa_sized_type',['../namespacethorin.html#a8f906c3bc0a760e4d037bcc6597fd2bd',1,'thorin']]],
   ['isa_5fstructural_52',['isa_structural',['../classthorin_1_1Def.html#ac2017047b0b25ea75b038cb2427ea164',1,'thorin::Def']]],
-  ['isa_5fworkable_53',['isa_workable',['../namespacethorin.html#afbcb1bda3428d2211797b024635936ee',1,'thorin']]]
+  ['isa_5fworkable_53',['isa_workable',['../namespacethorin.html#afbcb1bda3428d2211797b024635936ee',1,'thorin']]],
+  ['issign_54',['issign',['../namespacethorin.html#ab2fa0a39c131e7a61b19b406c886d470',1,'thorin']]]
 ];

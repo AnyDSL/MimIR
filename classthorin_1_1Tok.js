@@ -13,6 +13,9 @@ var classthorin_1_1Tok =
       [ "K_in", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a94336bc2150b7a781dbc26b354ea29b8", null ],
       [ "K_lam", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a27379c42e77c7e30bdc81db7c988058f", null ],
       [ "K_let", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038abc3b81567a2120d32858af82e3a5fcea", null ],
+      [ "L_s", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a210614a1117e89a255b9d0b39516b604", null ],
+      [ "L_u", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a7e6dfe77ddaaa4a0c994660de2d38ead", null ],
+      [ "L_r", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aff4732a008160f463364cd4285d4bc9f", null ],
       [ "M_eof", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa5958f3529ffa5352df7abb68e3d6e94", null ],
       [ "M_id", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad43558618211347eb1e180a76a011d7a", null ],
       [ "P_colon", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa6ede4dcd8033565c9aa3f50c3a7920a", null ],
@@ -38,6 +41,9 @@ var classthorin_1_1Tok =
     [ "Tok", "classthorin_1_1Tok.html#ab96cbe83a40186a1becbf1e99bb33c5b", null ],
     [ "Tok", "classthorin_1_1Tok.html#a197b6cd7caa11b685f2c0f64323cb3b4", null ],
     [ "Tok", "classthorin_1_1Tok.html#ab2212cb3737713a7d19a9c9da710398b", null ],
+    [ "Tok", "classthorin_1_1Tok.html#a8f28726c7b4a494afe5f8461543f0304", null ],
+    [ "Tok", "classthorin_1_1Tok.html#a19c39bff433502a76f4a480612433eee", null ],
+    [ "Tok", "classthorin_1_1Tok.html#afe09ef6d4af20eb81a9132e8279678ec", null ],
     [ "delim_l2r", "classthorin_1_1Tok.html#a523827e88e4b5fb93c4be8db570fdd60", null ],
     [ "isa", "classthorin_1_1Tok.html#a3bf30d6bc9b8ca772098449f4b73e274", null ],
     [ "loc", "classthorin_1_1Tok.html#a6e45a93b5e96f909166e338ce3f48060", null ],
@@ -46,5 +52,6 @@ var classthorin_1_1Tok =
     [ "tag", "classthorin_1_1Tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b", null ],
     [ "tag2prec_l", "classthorin_1_1Tok.html#a9c5c236562f7835da20bd8a51cf2c10e", null ],
     [ "tag2prec_r", "classthorin_1_1Tok.html#a47d52f308d3b23208a6fd4a7bb117c77", null ],
-    [ "tag2str", "classthorin_1_1Tok.html#a722601fad046ebe11dfcdc29ee675a6c", null ]
+    [ "tag2str", "classthorin_1_1Tok.html#a722601fad046ebe11dfcdc29ee675a6c", null ],
+    [ "u", "classthorin_1_1Tok.html#a45ea45a18052d23d65cdd4f533368ed1", null ]
 ];

@@ -26,7 +26,7 @@ var searchData=
   ['world_2ecpp_23',['world.cpp',['../world_8cpp.html',1,'']]],
   ['world_2eh_24',['world.h',['../world_8h.html',1,'']]],
   ['world_5f_25',['world_',['../classthorin_1_1Emitter.html#ac4f44cc50d493193ce7f439eba04abfd',1,'thorin::Emitter']]],
-  ['wrap_26',['Wrap',['../namespacethorin_1_1Tag.html#ad1aca2cd5162a2610cb52c28df8f2d55a273d69af71900cf0558affc4a04d31ef',1,'thorin::Tag::Wrap()'],['../namespacethorin.html#af3d5ac78a410ae219775ffd1989e0a40',1,'thorin::Wrap()']]],
+  ['wrap_26',['Wrap',['../namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a273d69af71900cf0558affc4a04d31ef',1,'thorin::Tag::Wrap()'],['../namespacethorin.html#af3d5ac78a410ae219775ffd1989e0a40',1,'thorin::Wrap()']]],
   ['writable_27',['writable',['../classthorin_1_1SSAConstr.html#a8640798450a1343fdaf4839bfadd34e1',1,'thorin::SSAConstr::Info']]],
   ['write_28',['write',['../classthorin_1_1Streamable.html#a238c0829edb6b1f9e0101a5a905af2db',1,'thorin::Streamable']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['icmp_0',['ICmp',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3',1,'thorin::ICmp()'],['../namespacethorin_1_1Tag.html#ad1aca2cd5162a2610cb52c28df8f2d55ab14d0d6f2c53b4f8ce5c33ba81c961f2',1,'thorin::Tag::ICmp()']]],
+  ['icmp_0',['ICmp',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3',1,'thorin::ICmp()'],['../namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628ab14d0d6f2c53b4f8ce5c33ba81c961f2',1,'thorin::Tag::ICmp()']]],
   ['idef_1',['idef',['../classthorin_1_1World.html#afdb8011c0a6868e6611b39531c61121a',1,'thorin::World']]],
   ['idom_2',['idom',['../classthorin_1_1DomTreeBase.html#a4221dc4eda86e282cdb1cc54714bfc62',1,'thorin::DomTreeBase']]],
   ['iff_3',['iff',['../namespacethorin.html#a89d67b04557e416d256c0cc75a55accea202291f5fb00d2c32c1b5a6c0cc622ee',1,'thorin']]],
@@ -22,10 +22,10 @@ var searchData=
   ['init_19',['init',['../classthorin_1_1Global.html#ab580e7ecdb7ad0e3281aaf982f0bc869',1,'thorin::Global']]],
   ['inscc_20',['InSCC',['../namespacethorin.html#abbe6403e7194c1ab97cc564c9e47919eaee490fa1322be222cf1ef08344d22f8a',1,'thorin']]],
   ['insert_21',['insert',['../classthorin_1_1IndexSet.html#ac45c4ecb30c0a5ec0b6b9c9a0b9d7eae',1,'thorin::IndexSet::insert()'],['../classthorin_1_1World.html#a61c9c10f84384eb4ebb1066fdf73026e',1,'thorin::World::insert(const Def *tup, const Def *i, const Def *val, const Def *dbg={})'],['../classthorin_1_1World.html#ace18bc458b7e6aa143e7fd7fabddf9c5',1,'thorin::World::insert(const Def *tup, u64 a, u64 i, const Def *val, const Def *dbg={})'],['../classthorin_1_1World.html#ae33a3569ee82a15a94f17664b9a67e7e',1,'thorin::World::insert(const Def *tup, u64 i, const Def *val, const Def *dbg={})']]],
-  ['insert_22',['Insert',['../namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8ba5d47f4021a0e2f797e8232d6e4b29cc4',1,'thorin::Node::Insert()'],['../classthorin_1_1Insert.html',1,'thorin::Insert']]],
+  ['insert_22',['Insert',['../namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a5d47f4021a0e2f797e8232d6e4b29cc4',1,'thorin::Node::Insert()'],['../classthorin_1_1Insert.html',1,'thorin::Insert']]],
   ['insert_5funsafe_23',['insert_unsafe',['../classthorin_1_1World.html#aabd01ffc29009a5d0231e43818badee9',1,'thorin::World::insert_unsafe(const Def *tup, u64 i, const Def *val, const Def *dbg={})'],['../classthorin_1_1World.html#aa6120631d8d577256d0a66c2883b50a7',1,'thorin::World::insert_unsafe(const Def *tup, const Def *i, const Def *val, const Def *dbg={})']]],
   ['inspect_24',['inspect',['../classthorin_1_1RWPass.html#a316be5140752b8e78ea9858d18586333',1,'thorin::RWPass::inspect()'],['../classthorin_1_1Pass.html#a16826350f9adc391d5b18172d21208ad',1,'thorin::Pass::inspect()']]],
-  ['int_25',['Int',['../namespacethorin_1_1Tag.html#ad1aca2cd5162a2610cb52c28df8f2d55a326e6c6e907a407a9a6b99cb241f6763',1,'thorin::Tag']]],
+  ['int_25',['Int',['../namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a326e6c6e907a407a9a6b99cb241f6763',1,'thorin::Tag']]],
   ['introduction_26',['Introduction',['../index.html',1,'']]],
   ['ipass_27',['IPass',['../classthorin_1_1IPass.html#a81936ee0fb7415705c886e92cdbf1eb7',1,'thorin::IPass::IPass()'],['../classthorin_1_1IPass.html',1,'thorin::IPass']]],
   ['irreducible_28',['Irreducible',['../classthorin_1_1EtaRed.html#a4ac1f54e62bd9e356510aa0b4520553fa9f35b4d3a8fe44b235df5e1da941d410',1,'thorin::EtaRed']]],
@@ -55,7 +55,7 @@ var searchData=
   ['is_5fused_5fas_5ftype_52',['is_used_as_type',['../classthorin_1_1Use.html#ab0b035140ec21ad63e360f32d5321672',1,'thorin::Use']]],
   ['is_5fvalid_53',['is_valid',['../classthorin_1_1ll_1_1CodeGen.html#ad490fd67ad94dd25dabb81c34287e215',1,'thorin::ll::CodeGen::is_valid()'],['../namespacethorin_1_1utf8.html#a50d67a2652dfa25b33bc6128f2a49437',1,'thorin::utf8::is_valid()']]],
   ['is_5fvar_54',['is_var',['../namespacethorin.html#a4bf19bc148d17bf9334eedd5bd184781',1,'thorin']]],
-  ['isa_55',['isa',['../classthorin_1_1Tok.html#a3bf30d6bc9b8ca772098449f4b73e274',1,'thorin::Tok::isa()'],['../classthorin_1_1RuntimeCast.html#ae48ccd2ab9e4b674f069c5ae6a3a361f',1,'thorin::RuntimeCast::isa()'],['../namespacethorin.html#abc03433e6b2efb1c4ad7d0c5dd690b10',1,'thorin::isa(fields_t f, const Def *def)'],['../namespacethorin.html#a42871a77f69d4effae41df9c24b613d2',1,'thorin::isa(Tag2Enum&lt; tag &gt; flags, const Def *def)'],['../classthorin_1_1RuntimeCast.html#a8349f459f29da96575216355e8589882',1,'thorin::RuntimeCast::isa()'],['../namespacethorin.html#a13393e92527438ff4529ebe0834a84c3',1,'thorin::isa(const Def *def)']]],
+  ['isa_55',['isa',['../namespacethorin.html#a13393e92527438ff4529ebe0834a84c3',1,'thorin::isa(const Def *def)'],['../namespacethorin.html#abc03433e6b2efb1c4ad7d0c5dd690b10',1,'thorin::isa(fields_t f, const Def *def)'],['../namespacethorin.html#a42871a77f69d4effae41df9c24b613d2',1,'thorin::isa(Tag2Enum&lt; tag &gt; flags, const Def *def)'],['../classthorin_1_1RuntimeCast.html#a8349f459f29da96575216355e8589882',1,'thorin::RuntimeCast::isa()'],['../classthorin_1_1Tok.html#a3bf30d6bc9b8ca772098449f4b73e274',1,'thorin::Tok::isa()'],['../classthorin_1_1RuntimeCast.html#ae48ccd2ab9e4b674f069c5ae6a3a361f',1,'thorin::RuntimeCast::isa()']]],
   ['isa_5fapped_5fnom_5flam_56',['isa_apped_nom_lam',['../namespacethorin.html#ae9f4e318b3cd862946a82d5903417a03',1,'thorin']]],
   ['isa_5fbound_57',['isa_bound',['../namespacethorin.html#acf74d6ffc9168d125bb73ff17c3b8395',1,'thorin']]],
   ['isa_5fcallee_58',['isa_callee',['../namespacethorin.html#ad9eaf597de3eb9f0abdfad6e1d60d40b',1,'thorin']]],
@@ -67,5 +67,6 @@ var searchData=
   ['isa_5fstructural_64',['isa_structural',['../classthorin_1_1Def.html#ac2017047b0b25ea75b038cb2427ea164',1,'thorin::Def']]],
   ['isa_5fworkable_65',['isa_workable',['../namespacethorin.html#afbcb1bda3428d2211797b024635936ee',1,'thorin']]],
   ['ishead_66',['IsHead',['../namespacethorin.html#abbe6403e7194c1ab97cc564c9e47919ea7ce81f1104f8e8d604b9595e990db44a',1,'thorin']]],
-  ['iterator_67',['iterator',['../classthorin_1_1Array.html#adccaeb8835d1b969fbfeb99ad52d2e90',1,'thorin::Array']]]
+  ['issign_67',['issign',['../namespacethorin.html#ab2fa0a39c131e7a61b19b406c886d470',1,'thorin']]],
+  ['iterator_68',['iterator',['../classthorin_1_1Array.html#adccaeb8835d1b969fbfeb99ad52d2e90',1,'thorin::Array']]]
 ];

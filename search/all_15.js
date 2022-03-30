@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['u_0',['u',['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a7b774effe4a349c6dd82ad4f4f21d34c',1,'thorin']]],
+  ['u_0',['u',['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a7b774effe4a349c6dd82ad4f4f21d34c',1,'thorin::u()'],['../classthorin_1_1Tok.html#a45ea45a18052d23d65cdd4f533368ed1',1,'thorin::Tok::u()']]],
   ['u1_1',['u1',['../namespacethorin.html#aa540ae7ab9303fdd42fd43309ab1f465',1,'thorin']]],
   ['u16_2',['u16',['../namespacethorin.html#ad695e536510da2b86815473a33feca75',1,'thorin']]],
   ['u2r_3',['u2r',['../namespacethorin.html#af46278ec1dc091418ec3fe6bc7317561ac200b49958a50fdd99489e6423235d58',1,'thorin']]],
@@ -12,7 +12,7 @@ var searchData=
   ['ue_9',['ue',['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a31f644026e4c96dee546c228a1894c68',1,'thorin']]],
   ['ug_10',['ug',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3a2a0617accf8bb8625c43e2ffeb5b8d5b',1,'thorin::ug()'],['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a2a0617accf8bb8625c43e2ffeb5b8d5b',1,'thorin::ug()']]],
   ['uge_11',['uge',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3a4eb31516a4986c34fa297e5e5f4045a9',1,'thorin::uge()'],['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a4eb31516a4986c34fa297e5e5f4045a9',1,'thorin::uge()']]],
-  ['ul_12',['ul',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3a738a656e8e8ec272ca17cd51e12f558b',1,'thorin::ul()'],['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a738a656e8e8ec272ca17cd51e12f558b',1,'thorin::ul()']]],
+  ['ul_12',['ul',['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a738a656e8e8ec272ca17cd51e12f558b',1,'thorin::ul()'],['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3a738a656e8e8ec272ca17cd51e12f558b',1,'thorin::ul()']]],
   ['ule_13',['ule',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3a76cf56920355319ad148e25a340b0f18',1,'thorin::ule()'],['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a76cf56920355319ad148e25a340b0f18',1,'thorin::ule()']]],
   ['undo_5fenter_14',['undo_enter',['../classthorin_1_1FPPass.html#a992db753a80b89fb6bcce0dc6154dd8b',1,'thorin::FPPass']]],
   ['undo_5ft_15',['undo_t',['../namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e',1,'thorin']]],

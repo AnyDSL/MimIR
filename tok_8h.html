@@ -110,10 +110,11 @@ $(document).ready(function(){initNavTree('tok_8h.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="debug_8h_source.html">thorin/debug.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="types_8h_source.html">thorin/util/types.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for tok.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="tok_8h__incl.svg" width="875" height="351"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="tok_8h__incl.svg" width="1067" height="351"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -184,7 +185,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00069">69</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00071">71</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -214,7 +215,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00069">69</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00071">71</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -256,7 +257,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00069">69</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00071">71</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -279,7 +280,7 @@ Variables</h2></td></tr>
 <div class="line">    m(K_lam, <span class="stringliteral">&quot;lam&quot;</span>)                     \</div>
 <div class="line">    m(K_let, <span class="stringliteral">&quot;let&quot;</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00009">9</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00011">11</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -300,9 +301,9 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    m(L_s,  <span class="stringliteral">&quot;&lt;signed integer literal&gt;&quot;</span>) \</div>
 <div class="line">    m(L_u,  <span class="stringliteral">&quot;&lt;integer literal&gt;&quot;</span>)        \</div>
-<div class="line">    m(L_f,  <span class="stringliteral">&quot;&lt;floating-point literal&gt;&quot;</span>)</div>
+<div class="line">    m(L_r,  <span class="stringliteral">&quot;&lt;floating-point literal&gt;&quot;</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00018">18</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00020">20</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -321,15 +322,15 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    m(O_pi,      <span class="stringliteral">&quot;→&quot;</span>, <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8bad26ed8ccf9be433863b45140f88c43ff">App</a>,      <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8bacc524d86ec74bf18ee3f5a5ec4d36b6d">Pi</a>)     \</div>
-<div class="line">    m(O_extract, <span class="stringliteral">&quot;#&quot;</span>, <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8ba257bf2499ed2c21151ca373f7c4c0307">Extract</a>,  <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8ba8a318b95f9e4e08fd5b5cbcadcd93b7e">Lit</a>)    \</div>
-<div class="line">    m(O_lit,     <span class="stringliteral">&quot;∷&quot;</span>, Error,    <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8ba8a318b95f9e4e08fd5b5cbcadcd93b7e">Lit</a>)</div>
-<div class="ttc" id="anamespacethorin_1_1Node_html_abc81787f032eaf9cdcec4e5dcadd9d8ba257bf2499ed2c21151ca373f7c4c0307"><div class="ttname"><a href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8ba257bf2499ed2c21151ca373f7c4c0307">thorin::Node::Extract</a></div><div class="ttdeci">@ Extract</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1Node_html_abc81787f032eaf9cdcec4e5dcadd9d8ba8a318b95f9e4e08fd5b5cbcadcd93b7e"><div class="ttname"><a href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8ba8a318b95f9e4e08fd5b5cbcadcd93b7e">thorin::Node::Lit</a></div><div class="ttdeci">@ Lit</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1Node_html_abc81787f032eaf9cdcec4e5dcadd9d8bacc524d86ec74bf18ee3f5a5ec4d36b6d"><div class="ttname"><a href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8bacc524d86ec74bf18ee3f5a5ec4d36b6d">thorin::Node::Pi</a></div><div class="ttdeci">@ Pi</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1Node_html_abc81787f032eaf9cdcec4e5dcadd9d8bad26ed8ccf9be433863b45140f88c43ff"><div class="ttname"><a href="namespacethorin_1_1Node.html#abc81787f032eaf9cdcec4e5dcadd9d8bad26ed8ccf9be433863b45140f88c43ff">thorin::Node::App</a></div><div class="ttdeci">@ App</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
+<b>Value:</b><div class="fragment"><div class="line">    m(O_pi,      <span class="stringliteral">&quot;→&quot;</span>, <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0ad26ed8ccf9be433863b45140f88c43ff">App</a>,      <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0acc524d86ec74bf18ee3f5a5ec4d36b6d">Pi</a>)     \</div>
+<div class="line">    m(O_extract, <span class="stringliteral">&quot;#&quot;</span>, <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a257bf2499ed2c21151ca373f7c4c0307">Extract</a>,  <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a8a318b95f9e4e08fd5b5cbcadcd93b7e">Lit</a>)    \</div>
+<div class="line">    m(O_lit,     <span class="stringliteral">&quot;∷&quot;</span>, Error,    <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a8a318b95f9e4e08fd5b5cbcadcd93b7e">Lit</a>)</div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a6a87d766b1a71f8904a23bb3c792c3c0a257bf2499ed2c21151ca373f7c4c0307"><div class="ttname"><a href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a257bf2499ed2c21151ca373f7c4c0307">thorin::Node::Extract</a></div><div class="ttdeci">@ Extract</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a6a87d766b1a71f8904a23bb3c792c3c0a8a318b95f9e4e08fd5b5cbcadcd93b7e"><div class="ttname"><a href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a8a318b95f9e4e08fd5b5cbcadcd93b7e">thorin::Node::Lit</a></div><div class="ttdeci">@ Lit</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a6a87d766b1a71f8904a23bb3c792c3c0acc524d86ec74bf18ee3f5a5ec4d36b6d"><div class="ttname"><a href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0acc524d86ec74bf18ee3f5a5ec4d36b6d">thorin::Node::Pi</a></div><div class="ttdeci">@ Pi</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a6a87d766b1a71f8904a23bb3c792c3c0ad26ed8ccf9be433863b45140f88c43ff"><div class="ttname"><a href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0ad26ed8ccf9be433863b45140f88c43ff">thorin::Node::App</a></div><div class="ttdeci">@ App</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00049">49</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00051">51</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -373,7 +374,7 @@ Variables</h2></td></tr>
 <div class="line">    m(B_lam,          <span class="stringliteral">&quot;λ&quot;</span>)              \</div>
 <div class="line">    m(B_forall,       <span class="stringliteral">&quot;∀&quot;</span>)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00023">23</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00025">25</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
