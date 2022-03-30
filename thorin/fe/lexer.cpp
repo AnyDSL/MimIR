@@ -118,7 +118,6 @@ Tok Lexer::lex() {
 
         if (isdigit(peek_.c32) || issign(peek_.c32)) return lex_lit();
 
-
         errln("{}:{}: invalid input char '{}'", loc_.file, peek_.pos, (char)peek_.c32);
         next();
     }
@@ -127,7 +126,8 @@ Tok Lexer::lex() {
 Tok Lexer::lex_lit() {
     int base = 10;
 
-    auto parse_digits = [&] () {
+    // clang-format off
+    auto parse_digits = [&]() {
         switch (base) {
             case  2: while (accept_if([](int i) { return '0' <= i && i <= '1'; })) {} break;
             case  8: while (accept_if([](int i) { return '0' <= i && i <= '7'; })) {} break;
@@ -163,7 +163,6 @@ Tok Lexer::lex_lit() {
         }
     }
 
-    // clang-format off
     if (is_float) return {loc_, r64(strtod  (str_.c_str(), nullptr      ))};
     if (sign)     return {loc_, u64(strtoll (str_.c_str(), nullptr, base))};
     else          return {loc_, u64(strtoull(str_.c_str(), nullptr, base))};

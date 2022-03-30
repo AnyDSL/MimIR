@@ -114,7 +114,7 @@ const Def* Parser::parse_block() {
 
 const Def* Parser::parse_lit() {
     auto track = tracker();
-    auto lit = lex();
+    auto lit   = lex();
     expect(Tok::Tag::P_colon_colon, "literal");
     auto type = parse_def("literal", Tok::Prec::Lit);
 

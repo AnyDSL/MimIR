@@ -2,6 +2,7 @@
 #define THORIN_TOK_H
 
 #include "thorin/debug.h"
+
 #include "thorin/util/types.h"
 
 namespace thorin {
