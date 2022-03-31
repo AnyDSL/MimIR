@@ -137,7 +137,6 @@ Tok Lexer::lex() {
     }
 }
 
-
 bool Lexer::lex_id() {
     if (accept_if([](int i) { return i == '_' || isalpha(i); })) {
         while (accept_if([](int i) { return i == '_' || i == '.' || isalpha(i) || isdigit(i); })) {}
