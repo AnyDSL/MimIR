@@ -100,7 +100,7 @@ Tok Lexer::lex() {
         if (accept( '.')) {
             if (lex_id()) {
                 if (auto i = keywords_.find(str_); i != keywords_.end()) return tok(i->second);
-                errln("{}:{}: unknown keywords '{}'", loc_.file, peek_.pos, str_);
+                errln("{}:{}: unknown keyword '{}'", loc_.file, peek_.pos, str_);
                 continue;
             }
             return tok(Tok::Tag::P_dot);
@@ -142,6 +142,7 @@ bool Lexer::lex_id() {
         while (accept_if([](int i) { return i == '_' || i == '.' || isalpha(i) || isdigit(i); })) {}
         return true;
     }
+    return false;
 }
 
 Tok Lexer::lex_lit() {
