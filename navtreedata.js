@@ -117,7 +117,7 @@ var NAVTREEINDEX =
 "classthorin_1_1IndexMap.html#adc89c1b2dfaf4c9828296fb7bfad9cf0",
 "classthorin_1_1Nat.html",
 "classthorin_1_1SSAConstr.html#a58b6c4f375ee1aab763d892b97ae0225",
-"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa60139f10427cd234d823ade0ac648c8",
+"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa5958f3529ffa5352df7abb68e3d6e94",
 "classthorin_1_1World.html#a567ded09ffd06e673945fad2646636e8",
 "classthorin_1_1World.html#ada8eb818139833cdc0e96280ab8457bb",
 "functions_c.html",

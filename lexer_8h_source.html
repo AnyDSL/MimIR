@@ -147,23 +147,24 @@ $(document).ready(function(){initNavTree('lexer_8h_source.html',''); initResizab
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"></span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">    /// Get next utf8-char in @p stream_ and increase @p loc_ / @p peek_.pos.</span></div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment"></span>    <span class="keywordtype">char32_t</span> next();</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    Tok lex_lit();</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">void</span> eat_comments();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    World&amp; world_;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    Loc loc_; <span class="comment">///&lt; @p Loc%ation of the @p Tok%en we are currently constructing within @p str_,</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keyword">struct </span>{</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordtype">char32_t</span> c32;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        Pos pos;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    } peek_;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    std::istream&amp; stream_;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    std::string str_;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    absl::flat_hash_map&lt;std::string, Tok::Tag&gt; keywords_;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>};</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>} <span class="comment">// namespace thorin</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordtype">bool</span> lex_id();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    Tok lex_lit();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordtype">void</span> eat_comments();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    World&amp; world_;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    Loc loc_; <span class="comment">///&lt; @p Loc%ation of the @p Tok%en we are currently constructing within @p str_,</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <span class="keywordtype">char32_t</span> c32;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        Pos pos;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    } peek_;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    std::istream&amp; stream_;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    std::string str_;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    absl::flat_hash_map&lt;std::string, Tok::Tag&gt; keywords_;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>};</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html"><div class="ttname"><a href="classthorin_1_1Lexer.html">thorin::Lexer</a></div><div class="ttdef"><b>Definition:</b> <a href="lexer_8h_source.html#l00015">lexer.h:15</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_a6bd719c30ca4ab054c3e94dee0870e45"><div class="ttname"><a href="classthorin_1_1Lexer.html#a6bd719c30ca4ab054c3e94dee0870e45">thorin::Lexer::loc</a></div><div class="ttdeci">Loc loc() const</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8h_source.html#l00020">lexer.h:20</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_aa21d77442a7d24a9e4333648c8ce6ca5"><div class="ttname"><a href="classthorin_1_1Lexer.html#aa21d77442a7d24a9e4333648c8ce6ca5">thorin::Lexer::lex</a></div><div class="ttdeci">Tok lex()</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8cpp_source.html#l00057">lexer.cpp:57</a></div></div>
