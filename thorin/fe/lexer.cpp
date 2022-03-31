@@ -87,13 +87,23 @@ Tok Lexer::lex() {
         // Punctuators
         if (accept( '=')) return tok(Tok::Tag::P_assign);
         if (accept( ',')) return tok(Tok::Tag::P_comma);
-        if (accept( '.')) return tok(Tok::Tag::P_dot);
         if (accept(U'∷')) return tok(Tok::Tag::P_colon_colon);
         if (accept( ';')) return tok(Tok::Tag::P_semicolon);
         if (accept( '*')) return tok(Tok::Tag::P_star);
+
         if (accept( ':')) {
             if (accept(':')) return tok(Tok::Tag::P_colon_colon);
+            if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_, world_.dbg(loc()))};
             return tok(Tok::Tag::P_colon);
+        }
+
+        if (accept( '.')) {
+            if (lex_id()) {
+                if (auto i = keywords_.find(str_); i != keywords_.end()) return tok(i->second);
+                errln("{}:{}: unknown keywords '{}'", loc_.file, peek_.pos, str_);
+                continue;
+            }
+            return tok(Tok::Tag::P_dot);
         }
 
         // binder
@@ -119,17 +129,19 @@ Tok Lexer::lex() {
             continue;
         }
 
-        // identifier or keyword
-        if (accept_if([](int i) { return i == '_' || isalpha(i); })) {
-            while (accept_if([](int i) { return i == '_' || isalpha(i) || isdigit(i); })) {}
-            if (auto i = keywords_.find(str_); i != keywords_.end()) return tok(i->second); // keyword
-            return {loc(), world_.sym(str_, world_.dbg(loc()))};                            // identifier
-        }
-
         if (isdigit(peek_.c32) || issign(peek_.c32)) return lex_lit();
+        if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_, world_.dbg(loc()))};
 
         errln("{}:{}: invalid input char '{}'", loc_.file, peek_.pos, (char)peek_.c32);
         next();
+    }
+}
+
+
+bool Lexer::lex_id() {
+    if (accept_if([](int i) { return i == '_' || isalpha(i); })) {
+        while (accept_if([](int i) { return i == '_' || i == '.' || isalpha(i) || isdigit(i); })) {}
+        return true;
     }
 }
 

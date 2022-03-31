@@ -41,6 +41,7 @@ private:
 
     /// Get next utf8-char in @p stream_ and increase @p loc_ / @p peek_.pos.
     char32_t next();
+    bool lex_id();
     Tok lex_lit();
     void eat_comments();
 

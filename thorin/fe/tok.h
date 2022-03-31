@@ -9,9 +9,8 @@ namespace thorin {
 
 // clang-format off
 #define THORIN_KEY(m)                   \
-    m(K_Nat, "Nat" )                    \
-    m(K_lam, "lam")                     \
-    m(K_let, "let")
+    m(K_Nat, ".Nat" )                   \
+    m(K_lam, ".lam")
 
 #define CODE(t, str) +size_t(1)
 constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
@@ -26,6 +25,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     /* misc */                          \
     m(M_eof, "<eof>")                   \
     m(M_id,  "<identifier>")            \
+    m(M_ax,  "<axiom name>")            \
     /* punctuators */                   \
     m(P_assign,       "=")              \
     m(P_colon,        ":")              \
@@ -80,10 +80,12 @@ public:
     Tok(Loc loc, Tag tag)
         : loc_(loc)
         , tag_(tag) {}
-    Tok(Loc loc, Sym sym)
+    Tok(Loc loc, Tag tag, Sym sym)
         : loc_(loc)
-        , tag_(Tag::M_id)
-        , sym_(sym) {}
+        , tag_(tag)
+        , sym_(sym) {
+        assert(tag == Tag::M_id || tag == Tag::M_ax);
+    }
     Tok(Loc loc, u64 u)
         : loc_(loc)
         , tag_(Tag::L_u)
@@ -101,7 +103,7 @@ public:
     Tag tag() const { return tag_; }
     bool isa(Tag tag) const { return tag == tag_; }
     // clang-format off
-    Sym sym() const { assert(isa(Tag::M_id)); return sym_; }
+    Sym sym() const { assert(isa(Tag::M_id) || isa(Tag::M_ax)); return sym_; }
     u64 u()   const { assert(isa(Tag::L_u) || isa(Tag::L_s) || isa(Tag::L_r)); return u_; }
     // clang-format on
     Stream& stream(Stream& s) const;

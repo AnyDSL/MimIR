@@ -82,10 +82,22 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
         case Tok::Tag::P_star:      lex(); return world().kind();
+        case Tok::Tag::M_ax: {
+            // HACK hard-coded wome built-in axioms
+            auto tok = lex();
+            auto s = tok.sym().to_string();
+            if (s == ":Int") return world().type_int();
+            if (s == ":Real") return world().type_real();
+            if (s == ":Wrap_add") return world().ax(Wrap::add);
+            if (s == ":Wrap_sub") return world().ax(Wrap::sub);
+            assert(false && "TODO");
+        }
         case Tok::Tag::M_id: {
             if (ahead(1).isa(Tok::Tag::P_assign) || ahead(1).isa(Tok::Tag::P_colon)) return parse_let();
             auto sym = parse_sym();
-            return find(sym);
+            if (auto def = find(sym)) return def;
+            errln("symbol '{}' not found", sym);
+            return nullptr;
         }
         case Tok::Tag::L_s:
         case Tok::Tag::L_u:
@@ -131,20 +143,29 @@ const Def* Parser::parse_block() {
 const Def* Parser::parse_lit() {
     auto track = tracker();
     auto lit   = lex();
-    expect(Tok::Tag::P_colon_colon, "literal");
-    auto type = parse_def("literal", Tok::Prec::Lit);
 
-    const Def* meta = nullptr;
-    switch (lit.tag()) {
-        // clang-format off
-        case Tok::Tag::L_s: meta = world().lit_nat('s'); break;
-        case Tok::Tag::L_u: meta = world().lit_nat('u'); break;
-        case Tok::Tag::L_r: meta = world().lit_nat('r'); break;
-        default: unreachable();
-        // clang-format on;
+    if (accept(Tok::Tag::P_colon_colon)) {
+        auto type = parse_def("literal", Tok::Prec::Lit);
+
+        const Def* meta = nullptr;
+        switch (lit.tag()) {
+            // clang-format off
+            case Tok::Tag::L_s: meta = world().lit_nat('s'); break;
+            case Tok::Tag::L_u: meta = world().lit_nat('u'); break;
+            case Tok::Tag::L_r: meta = world().lit_nat('r'); break;
+            default: unreachable();
+            // clang-format on;
+        }
+
+        return world().lit(type, lit.u(), world().dbg({"", track.loc(), meta}));
     }
 
-    return world().lit(type, lit.u(), world().dbg({"", track.loc(), meta}));
+    if (lit.tag() == Tok::Tag::L_s)
+        errln(":Nat literal specified as signed but must be unsigned");
+    else if (lit.tag() == Tok::Tag::L_r)
+        errln(":Nat literal specified as floating-point but must be unsigned");
+
+    return world().lit_nat(lit.u(), world().dbg({"", track.loc()}));
 }
 
 const Def* Parser::parse_let() {

@@ -41,7 +41,7 @@ Tok::Prec Tok::tag2prec_r(Tag tag) {
 }
 
 Stream& Tok::stream(Stream& s) const {
-    if (isa(Tok::Tag::M_id)) return s << sym();
+    if (isa(Tok::Tag::M_id) || isa(Tok::Tag::M_ax)) return s << sym();
     return s << Tok::tag2str(tag());
 }
 
