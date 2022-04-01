@@ -1,10 +1,11 @@
-#include <gtest/gtest.h>
+#include "thorin/fe/lexer.h"
 
 #include <sstream>
 #include <string>
 
+#include <gtest/gtest.h>
+
 #include "thorin/world.h"
-#include "thorin/fe/lexer.h"
 
 using namespace std::literals;
 using namespace thorin;
@@ -80,8 +81,7 @@ TEST(Lexer, Eof) {
     std::istringstream is("");
 
     Lexer lexer(world, "<is>", is);
-    for (int i = 0; i < 10; i++)
-        EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
+    for (int i = 0; i < 10; i++) EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
 }
 
 class Real : public testing::TestWithParam<int> {};
