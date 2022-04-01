@@ -60,9 +60,10 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(O_lit,     "∷", Error,    Lit)
 
 #define THORIN_SUBST(m)                 \
-    m(".bot", C_bot)                    \
-    m(".top", C_top)                    \
-    m(".lam", B_lam)
+    m(".bot",   C_bot)                    \
+    m(".top",   C_top)                    \
+    m(".space", C_top)                    \
+    m(".lam",   B_lam)
 
 class Tok : public Streamable<Tok> {
 public:
@@ -107,7 +108,7 @@ public:
     Tok(Loc loc, r64 r)
         : loc_(loc)
         , tag_(Tag::L_r)
-        , u_(std::bit_cast<r64>(r)) {}
+        , u_(std::bit_cast<u64>(r)) {}
 
     Loc loc() const { return loc_; }
     Tag tag() const { return tag_; }

@@ -2,6 +2,8 @@
 
 #include "thorin/world.h"
 
+using namespace std::literals;
+
 namespace thorin {
 
 bool issign(int i) { return i == '+' || i == '-'; }
@@ -24,13 +26,13 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
 #undef CODE
 }
 
-char32_t Lexer::next() {
+void Lexer::next() {
     for (bool ok = true; true; ok = true) {
-        char32_t result = peek_.c32;
-        peek_.c32       = stream_.get();
-        loc_.finis      = peek_.pos;
+        // char32_t result = peek_.c32;
+        peek_.c32  = stream_.get();
+        loc_.finis = peek_.pos;
 
-        if (eof()) return result;
+        if (eof()) return;
 
         switch (auto n = utf8::num_bytes(peek_.c32)) {
             case 0: ok = false; break;
@@ -53,8 +55,7 @@ char32_t Lexer::next() {
             ++peek_.pos.col;
         }
 
-        if (ok) return result;
-
+        if (ok) return;
         errln("{}, invalid UTF-8 character", peek_.pos);
     }
 }
@@ -77,10 +78,11 @@ Tok Lexer::lex() {
         }
 
         // constants
-        if (accept( '*')) return tok(Tok::Tag::C_space);
-        if (accept( '*')) return tok(Tok::Tag::C_star);
         if (accept(U'⊥')) return tok(Tok::Tag::C_bot);
         if (accept(U'⊤')) return tok(Tok::Tag::C_top);
+        if (accept(U'□')) return tok(Tok::Tag::C_space);
+        if (accept(U'★')) return tok(Tok::Tag::C_star);
+        if (accept( '*')) return tok(Tok::Tag::C_star);
 
         // delimiters
         if (accept( '(')) return tok(Tok::Tag::D_paren_l);
@@ -107,26 +109,31 @@ Tok Lexer::lex() {
         if (accept( ',')) return tok(Tok::Tag::P_comma);
         if (accept(U'∷')) return tok(Tok::Tag::P_colon_colon);
         if (accept( ';')) return tok(Tok::Tag::P_semicolon);
+        // clang-format on
 
-        if (accept( ':')) {
+        if (accept(':')) {
             if (accept(':')) return tok(Tok::Tag::P_colon_colon);
             if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_, world_.dbg(loc()))};
             return tok(Tok::Tag::P_colon);
         }
 
-        if (accept( '.')) {
+        if (accept('.')) {
             if (lex_id()) {
-                if (auto i = keywords_.find(str_); i != keywords_.end()) {
-                    return tok(i->second);
-                }
+                if (auto i = keywords_.find(str_); i != keywords_.end()) { return tok(i->second); }
                 errln("{}:{}: unknown keyword '{}'", loc_.file, peek_.pos, str_);
                 continue;
             }
+
+            if (accept_if(isdigit)) {
+                parse_digits();
+                parse_exp();
+                return {loc_, r64(strtod(str_.c_str(), nullptr))};
+            }
+
             return tok(Tok::Tag::P_dot);
         }
-        // clang-format on
 
-        if (isdigit(peek_.c32) || issign(peek_.c32)) return lex_lit();
+        if (isdigit(peek_.c32) || issign(peek_.c32)) return parse_lit();
         if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_, world_.dbg(loc()))};
 
         // comments
@@ -151,63 +158,78 @@ Tok Lexer::lex() {
 
 bool Lexer::lex_id() {
     if (accept_if([](int i) { return i == '_' || isalpha(i); })) {
-        while (accept_if([](int i) { return i == '_' || i == '.' || isalpha(i) || isdigit(i); })) {}
+        while (accept_if([](int i) { return i == '_' || isalnum(i); })) {}
         return true;
     }
     return false;
 }
 
-Tok Lexer::lex_lit() {
+// clang-format off
+Tok Lexer::parse_lit() {
     int base = 10;
+    std::optional<bool> sign;
 
-    // clang-format off
-    auto parse_digits = [&]() {
-        switch (base) {
-            case  2: while (accept_if([](int i) { return '0' <= i && i <= '1'; })) {} break;
-            case  8: while (accept_if([](int i) { return '0' <= i && i <= '7'; })) {} break;
-            case 10: while (accept_if(isdigit)) {} break;
-            case 16: while (accept_if(isxdigit)) {} break;
-        }
-    };
-
-    bool sign = accept_if(issign);
+    if (false) {}
+    else if (accept('+', false)) sign = false;
+    else if (accept('-', false)) sign = true;
 
     // prefix starting with '0'
     if (accept('0', false)) {
-        if      (accept('b', false)) base = 2;
+        if      (accept('b', false)) base =  2;
+        else if (accept('o', false)) base =  8;
         else if (accept('x', false)) base = 16;
-        else if (accept('o', false)) base = 8;
     }
 
-    parse_digits();
+    parse_digits(base);
 
     bool is_float = false;
-    if (base == 10) {
+    if (base == 10 || base == 16) {
         // parse fractional part
         if (accept('.')) {
             is_float = true;
-            parse_digits();
+            parse_digits(base);
         }
 
-        // parse exponent
-        if (accept_if([](int i) { return i == 'e' || i == 'E'; })) {
-            is_float = true;
-            if (accept_if(issign)) {}
-            parse_digits();
-        }
+        is_float |= parse_exp(base);
     }
+
+    if (is_float && base == 16) str_.insert(0, "0x"sv);
+    if (sign && *sign) str_.insert(0, "-"sv);
 
     if (is_float) return {loc_, r64(strtod  (str_.c_str(), nullptr      ))};
     if (sign)     return {loc_, u64(strtoll (str_.c_str(), nullptr, base))};
     else          return {loc_, u64(strtoull(str_.c_str(), nullptr, base))};
-    // clang-format on
 }
+
+void Lexer::parse_digits(int base /*= 10*/) {
+    switch (base) {
+        case  2: while (accept_if([](int i) { return '0' <= i && i <= '1'; })) {} break;
+        case  8: while (accept_if([](int i) { return '0' <= i && i <= '7'; })) {} break;
+        case 10: while (accept_if(isdigit)) {} break;
+        case 16: while (accept_if(isxdigit)) {} break;
+        default: unreachable();
+    }
+};
+
+bool Lexer::parse_exp(int base /*= 10*/) {
+    if (accept_if(base == 10 ? [](int i) { return i == 'e' || i == 'E'; }
+                             : [](int i) { return i == 'p' || i == 'P'; })) {
+        accept_if(issign);
+        if (!isdigit(peek_.c32)) errln("{}: exponent has no digits", loc_);
+        parse_digits();
+        return true;
+    }
+
+    if (base == 16) errln("{}: hexadecimal floating constants require an exponent", loc_);
+    return false;
+}
+// clang-format on
 
 void Lexer::eat_comments() {
     while (true) {
         while (!eof() && peek_.c32 != '*') next();
         if (eof()) {
-            errln("{}:{}: non-terminated multiline comment", loc_);
+            errln("{}: non-terminated multiline comment", loc_);
             return;
         }
         next();
