@@ -18,7 +18,8 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
     THORIN_KEY(CODE)
 #undef CODE
 
-#define CODE(str, t) if (Tok::Tag::t != Tok::Tag::Nil) keywords_[str] = Tok::Tag::t;
+#define CODE(str, t) \
+    if (Tok::Tag::t != Tok::Tag::Nil) keywords_[str] = Tok::Tag::t;
     THORIN_SUBST(CODE)
 #undef CODE
 }

@@ -63,7 +63,6 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(".bot", C_bot)                    \
     m(".top", C_top)                    \
     m(".lam", B_lam)
-// clang-format on
 
 class Tok : public Streamable<Tok> {
 public:
@@ -81,10 +80,11 @@ public:
         THORIN_KEY(CODE) THORIN_LIT(CODE) THORIN_TOK(CODE)
 #undef CODE
 #define CODE(t, str, prec_l, prec_r) t,
-            THORIN_OP(CODE)
+        THORIN_OP(CODE)
 #undef CODE
         Nil
     };
+    // clang-format on
 
     Tok() {}
     Tok(Loc loc, Tag tag)

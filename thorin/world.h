@@ -295,7 +295,9 @@ public:
     ///@{
     template<bool up>
     const Def* ext(const Def* type, const Def* dbg = {});
-    const Def* ext(bool is_top, const Def* type, const Def* dbg = {}) { return is_top ? top(type, dbg) : bot(type, dbg); }
+    const Def* ext(bool is_top, const Def* type, const Def* dbg = {}) {
+        return is_top ? top(type, dbg) : bot(type, dbg);
+    }
     const Def* bot(const Def* type, const Def* dbg = {}) { return ext<false>(type, dbg); }
     const Def* top(const Def* type, const Def* dbg = {}) { return ext<true>(type, dbg); }
     const Def* bot_kind() { return data_.bot_kind_; }
