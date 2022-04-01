@@ -39,7 +39,7 @@ bool Parser::expect(Tok::Tag tag, std::string_view ctxt) {
 void Parser::parse_module() { parse_def("world"); };
 
 void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
-    errln("expected {}, got '{}' while parsing {}", what, tok, ctxt);
+    errln("{}: expected {}, got '{}' while parsing {}", tok.loc(), what, tok, ctxt);
 }
 
 Sym Parser::parse_sym(std::string_view ctxt) {
@@ -75,19 +75,22 @@ const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::B
 const Def* Parser::parse_primary_def(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
+        case Tok::Tag::C_space:     lex(); return world().space();
+        case Tok::Tag::C_star:      lex(); return world().kind();
+        case Tok::Tag::C_bot:       return parse_ext(false);
+        case Tok::Tag::C_top:       return parse_ext(true);
         case Tok::Tag::D_angle_l:   return parse_pack_or_array(true);
         case Tok::Tag::D_quote_l:   return parse_pack_or_array(false);
         case Tok::Tag::D_paren_l:   return parse_tuple();
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
-        case Tok::Tag::P_star:      lex(); return world().kind();
         case Tok::Tag::M_ax: {
-            // HACK hard-coded wome built-in axioms
+            // HACK hard-coded some built-in axioms
             auto tok = lex();
             auto s = tok.sym().to_string();
-            if (s == ":Int") return world().type_int();
-            if (s == ":Real") return world().type_real();
+            if (s == ":Int"     ) return world().type_int();
+            if (s == ":Real"    ) return world().type_real();
             if (s == ":Wrap_add") return world().ax(Wrap::add);
             if (s == ":Wrap_sub") return world().ax(Wrap::sub);
             assert(false && "TODO");
@@ -102,7 +105,9 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
         case Tok::Tag::L_s:
         case Tok::Tag::L_u:
         case Tok::Tag::L_r:         return parse_lit();
-        default:                    err("primary def", ctxt);
+        default:
+            if (ctxt.empty()) return nullptr;
+            err("primary def", ctxt);
     }
     // clang-format on
     return nullptr;
@@ -140,6 +145,13 @@ const Def* Parser::parse_block() {
     return res;
 }
 
+const Def* Parser::parse_ext(bool top) {
+    auto track = tracker();
+    auto lit   = lex();
+    auto type  = accept(Tok::Tag::P_colon) ? parse_def("literal", Tok::Prec::Lit) : world().kind();
+    return world().ext(top, type, track);
+}
+
 const Def* Parser::parse_lit() {
     auto track = tracker();
     auto lit   = lex();
@@ -157,7 +169,7 @@ const Def* Parser::parse_lit() {
             // clang-format on;
         }
 
-        return world().lit(type, lit.u(), world().dbg({"", track.loc(), meta}));
+        return world().lit(type, lit.u(), track.meta(meta));
     }
 
     if (lit.tag() == Tok::Tag::L_s)
@@ -165,7 +177,7 @@ const Def* Parser::parse_lit() {
     else if (lit.tag() == Tok::Tag::L_r)
         errln(":Nat literal specified as floating-point but must be unsigned");
 
-    return world().lit_nat(lit.u(), world().dbg({"", track.loc()}));
+    return world().lit_nat(lit.u(), track);
 }
 
 const Def* Parser::parse_let() {

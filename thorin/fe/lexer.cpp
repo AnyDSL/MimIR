@@ -10,13 +10,16 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
     : world_(world)
     , loc_{filename, {1, 1}, {1, 1}}
     , peek_({0, Pos(1, 0)})
-    , stream_(stream)
-{
+    , stream_(stream) {
     next();            // fill peek
     accept(utf8::BOM); // eat utf-8 BOM if present
 
 #define CODE(t, str) keywords_[str] = Tok::Tag::t;
     THORIN_KEY(CODE)
+#undef CODE
+
+#define CODE(str, t) if (Tok::Tag::t != Tok::Tag::Nil) keywords_[str] = Tok::Tag::t;
+    THORIN_SUBST(CODE)
 #undef CODE
 }
 
@@ -64,6 +67,20 @@ Tok Lexer::lex() {
         if (accept_if(isspace)) continue;
 
         // clang-format off
+        // binder
+        if (accept(U'λ')) return tok(Tok::Tag::B_lam);
+        if (accept(U'∀')) return tok(Tok::Tag::B_forall);
+        if (accept('\\')) {
+            if (accept('/')) return tok(Tok::Tag::B_forall);
+            return tok(Tok::Tag::B_lam);
+        }
+
+        // constants
+        if (accept( '*')) return tok(Tok::Tag::C_space);
+        if (accept( '*')) return tok(Tok::Tag::C_star);
+        if (accept(U'⊥')) return tok(Tok::Tag::C_bot);
+        if (accept(U'⊤')) return tok(Tok::Tag::C_top);
+
         // delimiters
         if (accept( '(')) return tok(Tok::Tag::D_paren_l);
         if (accept( ')')) return tok(Tok::Tag::D_paren_r);
@@ -84,12 +101,11 @@ Tok Lexer::lex() {
             return tok(Tok::Tag::D_angle_r);
         }
 
-        // Punctuators
+        // punctuators
         if (accept( '=')) return tok(Tok::Tag::P_assign);
         if (accept( ',')) return tok(Tok::Tag::P_comma);
         if (accept(U'∷')) return tok(Tok::Tag::P_colon_colon);
         if (accept( ';')) return tok(Tok::Tag::P_semicolon);
-        if (accept( '*')) return tok(Tok::Tag::P_star);
 
         if (accept( ':')) {
             if (accept(':')) return tok(Tok::Tag::P_colon_colon);
@@ -99,22 +115,20 @@ Tok Lexer::lex() {
 
         if (accept( '.')) {
             if (lex_id()) {
-                if (auto i = keywords_.find(str_); i != keywords_.end()) return tok(i->second);
+                if (auto i = keywords_.find(str_); i != keywords_.end()) {
+                    return tok(i->second);
+                }
                 errln("{}:{}: unknown keyword '{}'", loc_.file, peek_.pos, str_);
                 continue;
             }
             return tok(Tok::Tag::P_dot);
         }
-
-        // binder
-        if (accept(U'λ')) return tok(Tok::Tag::B_lam);
-        if (accept(U'∀')) return tok(Tok::Tag::B_forall);
-        if (accept('\\')) {
-            if (accept('/')) return tok(Tok::Tag::B_forall);
-            return tok(Tok::Tag::B_lam);
-        }
         // clang-format on
 
+        if (isdigit(peek_.c32) || issign(peek_.c32)) return lex_lit();
+        if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_, world_.dbg(loc()))};
+
+        // comments
         if (accept('/')) {
             if (accept('*')) {
                 eat_comments();
@@ -128,9 +142,6 @@ Tok Lexer::lex() {
             errln("{}:{}: invalid input char '/'; maybe you wanted to start a comment?", loc_.file, peek_.pos);
             continue;
         }
-
-        if (isdigit(peek_.c32) || issign(peek_.c32)) return lex_lit();
-        if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_, world_.dbg(loc()))};
 
         errln("{}:{}: invalid input char '{}'", loc_.file, peek_.pos, (char)peek_.c32);
         next();

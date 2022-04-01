@@ -10,7 +10,8 @@ namespace thorin {
 // clang-format off
 #define THORIN_KEY(m)                   \
     m(K_Nat, ".Nat" )                   \
-    m(K_lam, ".lam")
+    m(K_tt ,   ".tt")                   \
+    m(K_ff ,   ".ff")
 
 #define CODE(t, str) +size_t(1)
 constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
@@ -26,15 +27,14 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(M_eof, "<eof>")                   \
     m(M_id,  "<identifier>")            \
     m(M_ax,  "<axiom name>")            \
-    /* punctuators */                   \
-    m(P_assign,       "=")              \
-    m(P_colon,        ":")              \
-    m(P_colon_colon,  "∷")              \
-    m(P_comma,        ",")              \
-    m(P_dot,          ".")              \
-    m(P_semicolon,    ";")              \
-    m(P_space,        "□")              \
-    m(P_star,         "*")              \
+    /* binder */                        \
+    m(B_lam,          "λ")              \
+    m(B_forall,       "∀")              \
+    /* constants */                     \
+    m(C_space,        "□")              \
+    m(C_star,         "*")              \
+    m(C_bot,          "⊥")              \
+    m(C_top,          "⊤")              \
     /* delimiters */                    \
     m(D_angle_l,      "‹")              \
     m(D_angle_r,      "›")              \
@@ -46,14 +46,23 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(D_paren_r,      ")")              \
     m(D_quote_l,      "«")              \
     m(D_quote_r,      "»")              \
-    /* binder */                        \
-    m(B_lam,          "λ")              \
-    m(B_forall,       "∀")
+    /* punctuators */                   \
+    m(P_assign,       "=")              \
+    m(P_colon,        ":")              \
+    m(P_colon_colon,  "∷")              \
+    m(P_comma,        ",")              \
+    m(P_dot,          ".")              \
+    m(P_semicolon,    ";")
 
 #define THORIN_OP(m)                    \
     m(O_pi,      "→", App,      Pi)     \
     m(O_extract, "#", Extract,  Lit)    \
     m(O_lit,     "∷", Error,    Lit)
+
+#define THORIN_SUBST(m)                 \
+    m(".bot", C_bot)                    \
+    m(".top", C_top)                    \
+    m(".lam", B_lam)
 // clang-format on
 
 class Tok : public Streamable<Tok> {
@@ -74,6 +83,7 @@ public:
 #define CODE(t, str, prec_l, prec_r) t,
             THORIN_OP(CODE)
 #undef CODE
+        Nil
     };
 
     Tok() {}

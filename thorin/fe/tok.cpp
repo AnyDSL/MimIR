@@ -16,6 +16,7 @@ std::string_view Tok::tag2str(Tok::Tag tag) {
     case Tag::t: return str;
         THORIN_OP(CODE)
 #undef CODE
+    case Tag::Nil: unreachable();
     }
     unreachable();
 }

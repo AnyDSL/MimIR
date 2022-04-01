@@ -39,6 +39,7 @@ private:
     /// @name primary defs
     ///@{
     const Def* parse_pack_or_array(bool pack);
+    const Def* parse_ext(bool);
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();
@@ -73,6 +74,7 @@ private:
 
         Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
         operator const Def*() const { return parser_.world().dbg({"", loc()}); }
+        const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
 
     private:
         Parser& parser_;
