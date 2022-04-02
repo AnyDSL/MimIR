@@ -4,7 +4,9 @@
 
 ## Lexical Structure {#lex}
 
-Thorin files are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) encoded.
+Thorin files are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) encoded and [lexed](https://en.wikipedia.org/wiki/Lexical_analysis) from left to right.
+The [maximal munch](https://en.wikipedia.org/wiki/Maximal_munch) strategy resolves any ambiguities in the lexical rules below.
+For Example, `<<<` is lexed as `<<` and `<`.
 
 ### Definitions
 
@@ -27,7 +29,7 @@ We use the following rules specified via [regular expressions](https://en.wikipe
 
 ### Terminals {#terminals}
 
-The actual *[terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)* are specified in the following two tables:
+The actual *[terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)* are specified in the following tables:
 
 | Primary Terminals               | Secondary Terminals                      | Comment              |
 |---------------------------------|------------------------------------------|----------------------|
@@ -36,8 +38,8 @@ The actual *[terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_s
 | `→` `∷` `⊥` `⊤` `★` `□` `λ` `∀` | `->` `::` `.bot` `.top` `*` `.` `\` `\/` | further UTF-8 tokens |
 | `=` `,` `;` `.` `#`             |                                          | further tokens       |
 
-The [grammatical rules](#productions) will directly reference these *[terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)* via the *primary token*.
-*Secondary terminals* are [ASCII](https://en.wikipedia.org/wiki/ASCII)-only tokens that represent the **same** lexical element.
+The [grammatical rules](#productions) will directly reference these *primary [terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)*.
+*Secondary terminals* are [ASCII](https://en.wikipedia.org/wiki/ASCII)-only tokens that represent the **same** lexical element as its corresponding *primary token*.
 For example, the lexer doesn't care, if you use `⊥` or `.bot`.
 Both tokens are identified as `⊥`.
 
@@ -61,10 +63,18 @@ Both tokens are identified as `⊥`.
 | L        | sign? 0x hex\* `.` hex+ pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | I        | dec+ sub+                            | integer literal of type `:Int mod`                                                                |
 | I        | dec+ `_` dec+                        | integer literal of type `:Int mod`                                                                |
-| I        | `.ff` `.tt`                          | just an alias for `0₂` and `1₂`                                                                   |
 
-Lexical elements follow the [maximal munch](https://en.wikipedia.org/wiki/Maximal_munch) strategy to resolve ambiguities.
-For Example, `<<<` is lexed as `<<` and `<`.
+In addition the following keywords are terminals:
+
+| Terminal    | Comment                   |
+|-------------|---------------------------|
+| `.external` | marks nominal as external |
+| `.module`   | starts a module           |
+| `.Nat`      | thorin::Nat               |
+| `.ff`       | alias for `0₂`            |
+| `.tt`       | alias for `1₂`            |
+
+They all start with a `.` to prevent name clashes with identifiers.
 
 ## Grammar
 
