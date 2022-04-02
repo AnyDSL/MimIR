@@ -39,6 +39,7 @@ private:
     /// @name primary defs
     ///@{
     const Def* parse_pack_or_array(bool pack);
+    const Def* parse_ext(bool);
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();
@@ -47,7 +48,7 @@ private:
     ///@}
 
     template<class F>
-    auto parse_list(Tok::Tag delim_r, F f, Tok::Tag sep = Tok::Tag::P_comma) {
+    auto parse_list(Tok::Tag delim_r, F f, Tok::Tag sep = Tok::Tag::T_comma) {
         DefVec result;
         if (!ahead().isa(delim_r)) {
             do { result.emplace_back(f()); } while (accept(sep) && !ahead().isa(delim_r));
@@ -56,7 +57,7 @@ private:
     }
 
     template<class F>
-    auto parse_list(const char* ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::P_comma) {
+    auto parse_list(const char* ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
         eat(delim_l);
         auto delim_r = Tok::delim_l2r(delim_l);
         auto result  = parse_list(delim_r, f, sep);
@@ -73,6 +74,7 @@ private:
 
         Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
         operator const Def*() const { return parser_.world().dbg({"", loc()}); }
+        const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
 
     private:
         Parser& parser_;

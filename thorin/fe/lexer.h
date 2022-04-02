@@ -29,7 +29,8 @@ private:
     template<class Pred>
     bool accept_if(Pred pred, bool append = true) {
         if (pred(peek_.c32)) {
-            if (append) str_ += next();
+            if (append) str_ += peek_.c32;
+            next();
             return true;
         }
         return false;
@@ -39,10 +40,12 @@ private:
         return accept_if([val](char32_t p) { return p == val; }, append);
     }
 
-    /// Get next utf8-char in @p stream_ and increase @p loc_ / @p peek_.pos.
-    char32_t next();
+    /// Put next utf8-char in Lexer::stream_ into Lexer::peek_.pos and increase Lexer::loc_/Lexer::peek_.pos.
+    void next();
     bool lex_id();
-    Tok lex_lit();
+    std::optional<Tok> parse_lit();
+    void parse_digits(int base = 10);
+    bool parse_exp(int base = 10);
     void eat_comments();
 
     World& world_;

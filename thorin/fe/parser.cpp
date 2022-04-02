@@ -36,11 +36,17 @@ bool Parser::expect(Tok::Tag tag, std::string_view ctxt) {
     return false;
 }
 
-void Parser::parse_module() { parse_def("world"); };
-
 void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
-    errln("expected {}, got '{}' while parsing {}", what, tok, ctxt);
+    errln("{}: expected {}, got '{}' while parsing {}", tok.loc(), what, tok, ctxt);
 }
+
+void Parser::parse_module() {
+    expect(Tok::Tag::K_module, "module");
+    world().set_name(parse_sym("name of module").to_string());
+    expect(Tok::Tag::D_brace_l, "module");
+    parse_def("module");
+    expect(Tok::Tag::D_brace_r, "module");
+};
 
 Sym Parser::parse_sym(std::string_view ctxt) {
     auto track = tracker();
@@ -54,19 +60,23 @@ const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::B
     auto lhs   = parse_primary_def(ctxt);
 
     while (true) {
-        // If operator in ahead has less left precedence: reduce.
-        // If ahead isn't a valid infix operator, we will see Prec::Error.
-        // This is less than all other prec levels.
-        if (auto q = Tok::tag2prec_l(ahead().tag()); q < p) break;
-
-        auto tag = lex().tag();
-        auto rhs = parse_def("right-hand side of a binary expression", Tok::tag2prec_r(tag));
-
-        switch (tag) {
-            case Tok::Tag::O_extract: lhs = world().extract(lhs, rhs, dbg(track)); break;
-            default: unreachable();
+        // If operator in ahead has less left precedence: reduce (break).
+        if (accept(Tok::Tag::T_extract)) {
+            if (Tok::Prec::Extract < p) break;
+            auto rhs = parse_def("right-hand side of an extract", Tok::Prec::Lit);
+            lhs      = world().extract(lhs, rhs, track);
+        } else if (accept(Tok::Tag::T_arrow)) {
+            if (Tok::Prec::App < p) break;
+            auto rhs = parse_def("right-hand side of an function type", Tok::Prec::Pi);
+            lhs      = world().pi(lhs, rhs, track);
+        } else {
+            if (Tok::Prec::App < p) break;
+            if (auto rhs = parse_def({}, Tok::Prec::Extract)) {
+                lhs = world().app(lhs, rhs, track); // if we can parse an expression, it's an App
+            } else {
+                return lhs;
+            }
         }
-        // lhs = mk_ptr<InfixExpr>(track, std::move(lhs), tag, std::move(rhs));
     }
 
     return lhs;
@@ -76,24 +86,28 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
         case Tok::Tag::D_angle_l:   return parse_pack_or_array(true);
-        case Tok::Tag::D_quote_l:   return parse_pack_or_array(false);
-        case Tok::Tag::D_paren_l:   return parse_tuple();
-        case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_brace_l:   return parse_block();
+        case Tok::Tag::D_bracket_l: return parse_sigma();
+        case Tok::Tag::D_paren_l:   return parse_tuple();
+        case Tok::Tag::D_quote_l:   return parse_pack_or_array(false);
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
-        case Tok::Tag::P_star:      lex(); return world().kind();
+        case Tok::Tag::T_bot:       return parse_ext(false);
+        case Tok::Tag::T_space:     lex(); return world().space();
+        case Tok::Tag::T_star:      lex(); return world().kind();
+        case Tok::Tag::T_top:       return parse_ext(true);
+        case Tok::Tag::M_i:         return lex().index();
         case Tok::Tag::M_ax: {
-            // HACK hard-coded wome built-in axioms
+            // HACK hard-coded some built-in axioms
             auto tok = lex();
             auto s = tok.sym().to_string();
-            if (s == ":Int") return world().type_int();
-            if (s == ":Real") return world().type_real();
+            if (s == ":Int"     ) return world().type_int();
+            if (s == ":Real"    ) return world().type_real();
             if (s == ":Wrap_add") return world().ax(Wrap::add);
             if (s == ":Wrap_sub") return world().ax(Wrap::sub);
             assert(false && "TODO");
         }
         case Tok::Tag::M_id: {
-            if (ahead(1).isa(Tok::Tag::P_assign) || ahead(1).isa(Tok::Tag::P_colon)) return parse_let();
+            if (ahead(1).isa(Tok::Tag::T_assign) || ahead(1).isa(Tok::Tag::T_colon)) return parse_let();
             auto sym = parse_sym();
             if (auto def = find(sym)) return def;
             errln("symbol '{}' not found", sym);
@@ -102,7 +116,9 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
         case Tok::Tag::L_s:
         case Tok::Tag::L_u:
         case Tok::Tag::L_r:         return parse_lit();
-        default:                    err("primary def", ctxt);
+        default:
+            if (ctxt.empty()) return nullptr;
+            err("primary def", ctxt);
     }
     // clang-format on
     return nullptr;
@@ -113,7 +129,7 @@ const Def* Parser::parse_pack_or_array(bool pack) {
     // TODO get rid of "pack or array"
     eat(pack ? Tok::Tag::D_angle_l : Tok::Tag::D_quote_l);
     auto shape = parse_def("shape of a pack or array");
-    expect(Tok::Tag::P_semicolon, "pack or array");
+    expect(Tok::Tag::T_semicolon, "pack or array");
     auto body = parse_def("body of a pack or array");
     expect(pack ? Tok::Tag::D_angle_r : Tok::Tag::D_quote_r, "closing delimiter of a pack or array");
     return world().arr(shape, body, track);
@@ -140,11 +156,18 @@ const Def* Parser::parse_block() {
     return res;
 }
 
+const Def* Parser::parse_ext(bool top) {
+    auto track = tracker();
+    auto lit   = lex();
+    auto type  = accept(Tok::Tag::T_colon) ? parse_def("literal", Tok::Prec::Lit) : world().kind();
+    return world().ext(top, type, track);
+}
+
 const Def* Parser::parse_lit() {
     auto track = tracker();
     auto lit   = lex();
 
-    if (accept(Tok::Tag::P_colon_colon)) {
+    if (accept(Tok::Tag::T_colon_colon)) {
         auto type = parse_def("literal", Tok::Prec::Lit);
 
         const Def* meta = nullptr;
@@ -157,27 +180,27 @@ const Def* Parser::parse_lit() {
             // clang-format on;
         }
 
-        return world().lit(type, lit.u(), world().dbg({"", track.loc(), meta}));
+        return world().lit(type, lit.u(), track.meta(meta));
     }
 
     if (lit.tag() == Tok::Tag::L_s)
-        errln(":Nat literal specified as signed but must be unsigned");
+        errln(".Nat literal specified as signed but must be unsigned");
     else if (lit.tag() == Tok::Tag::L_r)
-        errln(":Nat literal specified as floating-point but must be unsigned");
+        errln(".Nat literal specified as floating-point but must be unsigned");
 
-    return world().lit_nat(lit.u(), world().dbg({"", track.loc()}));
+    return world().lit_nat(lit.u(), track);
 }
 
 const Def* Parser::parse_let() {
     auto sym = parse_sym();
-    if (accept(Tok::Tag::P_colon)) {
+    if (accept(Tok::Tag::T_colon)) {
         /*auto type = */parse_def("type of a let binding");
         // do sth with type
     }
-    eat(Tok::Tag::P_assign);
+    eat(Tok::Tag::T_assign);
     auto body = parse_def("body of a let expression");
     insert(sym, body);
-    eat(Tok::Tag::P_semicolon);
+    eat(Tok::Tag::T_semicolon);
     return parse_def("argument of a let expression");
 }
 
