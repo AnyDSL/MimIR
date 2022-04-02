@@ -181,8 +181,11 @@ std::optional<Tok> Lexer::parse_lit() {
     // prefix starting with '0'
     if (accept('0', false)) {
         if      (accept('b', false)) base =  2;
+        else if (accept('B', false)) base =  2;
         else if (accept('o', false)) base =  8;
+        else if (accept('O', false)) base =  8;
         else if (accept('x', false)) base = 16;
+        else if (accept('X', false)) base = 16;
     }
 
     parse_digits(base);
