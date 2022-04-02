@@ -27,6 +27,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(M_eof, "<eof>")                   \
     m(M_id,  "<identifier>")            \
     m(M_ax,  "<axiom name>")            \
+    m(M_i,   "<index>")                 \
     /* delimiters */                    \
     m(D_angle_l,      "‹")              \
     m(D_angle_r,      "›")              \
@@ -103,13 +104,18 @@ public:
         : loc_(loc)
         , tag_(Tag::L_r)
         , u_(std::bit_cast<u64>(r)) {}
+    Tok(Loc loc, const Def* index)
+        : loc_(loc)
+        , tag_(Tag::M_i)
+        , index_(index) {}
 
     Loc loc() const { return loc_; }
     Tag tag() const { return tag_; }
     bool isa(Tag tag) const { return tag == tag_; }
     // clang-format off
-    Sym sym() const { assert(isa(Tag::M_id) || isa(Tag::M_ax)); return sym_; }
-    u64 u()   const { assert(isa(Tag::L_u) || isa(Tag::L_s) || isa(Tag::L_r)); return u_; }
+    u64 u()            const { assert(isa(Tag::L_u ) || isa(Tag::L_s) || isa(Tag::L_r)); return u_; }
+    Sym sym()          const { assert(isa(Tag::M_id) || isa(Tag::M_ax)); return sym_; }
+    const Def* index() const { assert(isa(Tag::M_i)); return index_; }
     // clang-format on
     Stream& stream(Stream& s) const;
 
@@ -122,6 +128,7 @@ private:
     union {
         Sym sym_;
         u64 u_;
+        const Def* index_;
     };
 };
 

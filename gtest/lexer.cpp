@@ -62,7 +62,9 @@ TEST(Lexer, Loc) {
     // clang-format on
 }
 
-TEST(Lexer, InvalidUTF8) {
+TEST(Lexer, Errors) {
+    // TODO catch error
+
     World world;
     std::istringstream is1("asdf \xc0\xc0");
     Lexer l1(world, "<is1>", is1);
@@ -73,7 +75,8 @@ TEST(Lexer, InvalidUTF8) {
     Lexer l2(world, "<is2>", is2);
     l2.lex();
     l2.lex();
-    // TODO catch error
+
+    // stray +/-
 }
 
 TEST(Lexer, Eof) {

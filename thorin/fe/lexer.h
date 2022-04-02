@@ -43,7 +43,7 @@ private:
     /// Put next utf8-char in Lexer::stream_ into Lexer::peek_.pos and increase Lexer::loc_/Lexer::peek_.pos.
     void next();
     bool lex_id();
-    Tok parse_lit();
+    std::optional<Tok> parse_lit();
     void parse_digits(int base = 10);
     bool parse_exp(int base = 10);
     void eat_comments();

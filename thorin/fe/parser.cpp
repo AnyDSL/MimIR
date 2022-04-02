@@ -55,11 +55,11 @@ const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::B
 
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
-        if (ahead().isa(Tok::Tag::T_extract)) {
+        if (accept(Tok::Tag::T_extract)) {
             if (Tok::Prec::Extract < p) break;
             auto rhs = parse_def("right-hand side of an extract", Tok::Prec::Lit);
             lhs      = world().extract(lhs, rhs, track);
-        } else if (ahead().isa(Tok::Tag::T_arrow)) {
+        } else if (accept(Tok::Tag::T_arrow)) {
             if (Tok::Prec::App < p) break;
             auto rhs = parse_def("right-hand side of an function type", Tok::Prec::Pi);
             lhs      = world().pi(lhs, rhs, track);
@@ -89,6 +89,7 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
         case Tok::Tag::T_space:     lex(); return world().space();
         case Tok::Tag::T_star:      lex(); return world().kind();
         case Tok::Tag::T_top:       return parse_ext(true);
+        case Tok::Tag::M_i:         return lex().index();
         case Tok::Tag::M_ax: {
             // HACK hard-coded some built-in axioms
             auto tok = lex();
