@@ -23,7 +23,7 @@ jobs:
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1
         with:
-          version: "13.0.1"
+          version: "14.0.0"
 
       - name: Prepare LLVM
         run: |
