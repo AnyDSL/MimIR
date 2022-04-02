@@ -9,7 +9,7 @@ on:
 jobs:
   build-and-test:
     name: Build and test ${{matrix.build-type}} mode
-    runs-on: ${{matrix.os}}
+    runs-on: windows-2022
     strategy:
       matrix:
         build-type: [Debug, Release]
