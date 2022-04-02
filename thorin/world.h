@@ -63,10 +63,10 @@ public:
     const Sea& defs() const { return data_.defs_; }
     ///@}
 
-    /// @name getters
+    /// @name name
     ///@{
     std::string_view name() const { return data_.name_; }
-    std::vector<Lam*> copy_lams() const; // TODO remove this
+    void set_name(std::string_view name) { data_.name_ = name; }
     ///@}
 
     /// @name manage global identifier - a unique number for each Def
