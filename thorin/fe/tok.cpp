@@ -12,33 +12,9 @@ std::string_view Tok::tag2str(Tok::Tag tag) {
         THORIN_LIT(CODE)
         THORIN_TOK(CODE)
 #undef CODE
-#define CODE(t, str, prec_l, prec_r) \
-    case Tag::t: return str;
-        THORIN_OP(CODE)
-#undef CODE
         case Tag::Nil: unreachable();
     }
     unreachable();
-}
-
-Tok::Prec Tok::tag2prec_l(Tag tag) {
-    switch (tag) {
-#define CODE(t, str, prec_l, prec_r) \
-    case Tag::t: return Prec::prec_l;
-        THORIN_OP(CODE)
-#undef CODE
-        default: return Prec::Error;
-    }
-}
-
-Tok::Prec Tok::tag2prec_r(Tag tag) {
-    switch (tag) {
-#define CODE(t, str, prec_l, prec_r) \
-    case Tag::t: return Prec::prec_r;
-        THORIN_OP(CODE)
-#undef CODE
-        default: return Prec::Error;
-    }
 }
 
 Stream& Tok::stream(Stream& s) const {

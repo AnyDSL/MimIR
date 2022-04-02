@@ -25,13 +25,13 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_angle_r));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_quote_l));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_quote_r));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::P_colon));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::P_comma));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::P_dot));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::B_lam));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::B_forall));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::B_lam));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::B_forall));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_colon));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_comma));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_dot));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lam));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_forall));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lam));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_forall));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
 }
 

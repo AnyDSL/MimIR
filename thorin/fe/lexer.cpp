@@ -69,21 +69,6 @@ Tok Lexer::lex() {
         if (accept_if(isspace)) continue;
 
         // clang-format off
-        // binder
-        if (accept(U'λ')) return tok(Tok::Tag::B_lam);
-        if (accept(U'∀')) return tok(Tok::Tag::B_forall);
-        if (accept('\\')) {
-            if (accept('/')) return tok(Tok::Tag::B_forall);
-            return tok(Tok::Tag::B_lam);
-        }
-
-        // constants
-        if (accept(U'⊥')) return tok(Tok::Tag::C_bot);
-        if (accept(U'⊤')) return tok(Tok::Tag::C_top);
-        if (accept(U'□')) return tok(Tok::Tag::C_space);
-        if (accept(U'★')) return tok(Tok::Tag::C_star);
-        if (accept( '*')) return tok(Tok::Tag::C_star);
-
         // delimiters
         if (accept( '(')) return tok(Tok::Tag::D_paren_l);
         if (accept( ')')) return tok(Tok::Tag::D_paren_r);
@@ -103,18 +88,30 @@ Tok Lexer::lex() {
             if (accept( '>')) return tok(Tok::Tag::D_quote_r);
             return tok(Tok::Tag::D_angle_r);
         }
-
-        // punctuators
-        if (accept( '=')) return tok(Tok::Tag::P_assign);
-        if (accept( ',')) return tok(Tok::Tag::P_comma);
-        if (accept(U'∷')) return tok(Tok::Tag::P_colon_colon);
-        if (accept( ';')) return tok(Tok::Tag::P_semicolon);
+        // further tokens
+        if (accept(U'→')) return tok(Tok::Tag::T_arrow);
+        if (accept( '=')) return tok(Tok::Tag::T_assign);
+        if (accept(U'⊥')) return tok(Tok::Tag::T_bot);
+        if (accept(U'⊤')) return tok(Tok::Tag::T_top);
+        if (accept(U'∷')) return tok(Tok::Tag::T_colon_colon);
+        if (accept( ',')) return tok(Tok::Tag::T_comma);
+        if (accept( '#')) return tok(Tok::Tag::T_extract);
+        if (accept(U'λ')) return tok(Tok::Tag::T_lam);
+        if (accept(U'∀')) return tok(Tok::Tag::T_forall);
+        if (accept('\\')) {
+            if (accept('/')) return tok(Tok::Tag::T_forall);
+            return tok(Tok::Tag::T_lam);
+        }
+        if (accept( ';')) return tok(Tok::Tag::T_semicolon);
+        if (accept(U'□')) return tok(Tok::Tag::T_space);
+        if (accept(U'★')) return tok(Tok::Tag::T_star);
+        if (accept( '*')) return tok(Tok::Tag::T_star);
         // clang-format on
 
         if (accept(':')) {
-            if (accept(':')) return tok(Tok::Tag::P_colon_colon);
+            if (accept(':')) return tok(Tok::Tag::T_colon_colon);
             if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_, world_.dbg(loc()))};
-            return tok(Tok::Tag::P_colon);
+            return tok(Tok::Tag::T_colon);
         }
 
         if (accept('.')) {
@@ -130,7 +127,7 @@ Tok Lexer::lex() {
                 return {loc_, r64(strtod(str_.c_str(), nullptr))};
             }
 
-            return tok(Tok::Tag::P_dot);
+            return tok(Tok::Tag::T_dot);
         }
 
         if (isdigit(peek_.c32) || issign(peek_.c32)) return parse_lit();

@@ -20,21 +20,13 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 #define THORIN_LIT(m)                   \
     m(L_s,  "<signed integer literal>") \
     m(L_u,  "<integer literal>")        \
-    m(L_r,  "<floating-point literal>")
+    m(L_r,  "<floating-point literal>") \
 
 #define THORIN_TOK(m)                   \
     /* misc */                          \
     m(M_eof, "<eof>")                   \
     m(M_id,  "<identifier>")            \
     m(M_ax,  "<axiom name>")            \
-    /* binder */                        \
-    m(B_lam,          "λ")              \
-    m(B_forall,       "∀")              \
-    /* constants */                     \
-    m(C_space,        "□")              \
-    m(C_star,         "*")              \
-    m(C_bot,          "⊥")              \
-    m(C_top,          "⊤")              \
     /* delimiters */                    \
     m(D_angle_l,      "‹")              \
     m(D_angle_r,      "›")              \
@@ -46,24 +38,29 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(D_paren_r,      ")")              \
     m(D_quote_l,      "«")              \
     m(D_quote_r,      "»")              \
-    /* punctuators */                   \
-    m(P_assign,       "=")              \
-    m(P_colon,        ":")              \
-    m(P_colon_colon,  "∷")              \
-    m(P_comma,        ",")              \
-    m(P_dot,          ".")              \
-    m(P_semicolon,    ";")
-
-#define THORIN_OP(m)                    \
-    m(O_pi,      "→", App,      Pi)     \
-    m(O_extract, "#", Extract,  Lit)    \
-    m(O_lit,     "∷", Error,    Lit)
+    /* further tokens */                \
+    m(T_arrow,        "→")              \
+    m(T_assign,       "=")              \
+    m(T_bot,          "⊥")              \
+    m(T_top,          "⊤")              \
+    m(T_colon,        ":")              \
+    m(T_colon_colon,  "∷")              \
+    m(T_comma,        ",")              \
+    m(T_dot,          ".")              \
+    m(T_extract,      "#")              \
+    m(T_forall,       "∀")              \
+    m(T_lam,          "λ")              \
+    m(T_semicolon,    ";")              \
+    m(T_space,        "□")              \
+    m(T_star,         "*")              \
 
 #define THORIN_SUBST(m)                 \
-    m(".bot",   C_bot)                    \
-    m(".top",   C_top)                    \
-    m(".space", C_top)                    \
-    m(".lam",   B_lam)
+    m("->",     T_arrow )               \
+    m(".bot",   T_bot   )               \
+    m(".top",   T_top   )               \
+    m(".space", T_top   )               \
+    m("\\",     T_lam   )               \
+    m("\\/",    T_forall)               \
 
 class Tok : public Streamable<Tok> {
 public:
@@ -79,9 +76,6 @@ public:
     enum class Tag {
 #define CODE(t, str) t,
         THORIN_KEY(CODE) THORIN_LIT(CODE) THORIN_TOK(CODE)
-#undef CODE
-#define CODE(t, str, prec_l, prec_r) t,
-        THORIN_OP(CODE)
 #undef CODE
         Nil
     };
@@ -120,8 +114,6 @@ public:
     Stream& stream(Stream& s) const;
 
     static std::string_view tag2str(Tok::Tag);
-    static Prec tag2prec_l(Tag);
-    static Prec tag2prec_r(Tag);
     static Tok::Tag delim_l2r(Tag tag) { return Tok::Tag(int(tag) + 1); }
 
 private:
