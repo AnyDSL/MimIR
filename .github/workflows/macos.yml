@@ -1,4 +1,4 @@
-name: linux
+name: macos
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   build-and-test:
     name: Build and test ${{matrix.build-type}} mode
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       matrix:
         build-type: [Debug, Release]
@@ -25,16 +25,8 @@ jobs:
         with:
           version: "13.0.1"
 
-      - name: Install newest g++
-        run: |
-          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 
-          sudo apt-get update
-          sudo apt-get install g++-11
-          sudo apt-get install valgrind
-          export CXX=g++-11
-
       - name: Configure
-        run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v --target thorin-gtest thorin thorin_foo
