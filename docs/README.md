@@ -23,8 +23,8 @@
     <tr>
         <td>Tests</td>
         <td>
-            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/windows.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/windows?logo=windows&label=build-and-test" alt="Windows"></a>
-            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/linux.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/linux?logo=linux&label=build-and-test" alt="Linux"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/windows.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/windows?logo=windows&label=windows" alt="Windows"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/linux.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/linux?logo=linux&label=linux&logoColor=white" alt="Linux"></a>
             <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/doxygen?logo=github&label=doxygen" alt="Doxygen"></a>
         </td>
     </tr>
