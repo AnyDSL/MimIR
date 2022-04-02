@@ -58,11 +58,11 @@ const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::B
         if (ahead().isa(Tok::Tag::T_extract)) {
             if (Tok::Prec::Extract < p) break;
             auto rhs = parse_def("right-hand side of an extract", Tok::Prec::Lit);
-            lhs = world().extract(lhs, rhs, track);
+            lhs      = world().extract(lhs, rhs, track);
         } else if (ahead().isa(Tok::Tag::T_arrow)) {
             if (Tok::Prec::App < p) break;
             auto rhs = parse_def("right-hand side of an function type", Tok::Prec::Pi);
-            lhs = world().pi(lhs, rhs, track);
+            lhs      = world().pi(lhs, rhs, track);
         } else {
             if (Tok::Prec::App < p) break;
             if (auto rhs = parse_def({}, Tok::Prec::Extract)) {
