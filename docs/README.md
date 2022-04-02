@@ -2,27 +2,35 @@
 
 [TOC]
 
-<table>
-    <tr>
+<table  class="markdownTable">
+    <tr class="markdownTableRowOdd">
         <td>Documentation</td>
         <td><a href=https://anydsl.github.io/thorin2><img src="https://img.shields.io/badge/docs-master-yellowgreen?logo=gitbook&logoColor=white" alt="Documentation"></a></td>
     </tr>
-    <tr>
-        <td>License</td>
-        <td><a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2?logo=LibreOffice" alt="License"></a></td>
+    <tr class="markdownTableRowEven">
+        <td class="markdownTableBodyNone">
+            License
+        </td>
+        <td class="markdownTableBodyNone">
+            <a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2?logo=LibreOffice" alt="License"></a>
+        </td>
     </tr>
-    <tr>
-        <td>Requirements</td>
-        <td>
+    <tr class="markdownTableRowOdd">
+        <td class="markdownTableBodyNone">
+            Requirements
+        </td>
+        <td class="markdownTableBodyNone">
             <a href="https://cmake.org/"><img src="https://img.shields.io/badge/cmake-3.7-blue.svg?logo=cmake" alt="CMake"></a>
             <a href="https://isocpp.org/"><img src="https://img.shields.io/badge/standard-C%2B%2B%2020-blue.svg?logo=C%2B%2B" alt="C++"></a>
             <a href="https://llvm.org/"><img src="https://img.shields.io/badge/LLVM%2FClang-13-blue?logo=llvm" alt="LLVM/Clang"></a>
             <a href="https://github.com/AnyDSL/thorin2/tree/master/modules"><img src="https://img.shields.io/badge/submodules-5-blue?logo=git&logoColor=white" alt="Submodules"></a>
         </td>
     </tr>
-    <tr>
-        <td>Tests</td>
-        <td>
+    <tr class="markdownTableRowEven">
+        <td class="markdownTableBodyNone">
+            Tests
+        </td>
+        <td class="markdownTableBodyNone">
             <a href="https://github.com/AnyDSL/thorin2/actions/workflows/windows.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/windows?logo=windows&label=windows" alt="Windows"></a>
             <a href="https://github.com/AnyDSL/thorin2/actions/workflows/linux.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/linux?logo=linux&label=linux&logoColor=white" alt="Linux"></a>
             <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/doxygen?logo=github&label=doxygen" alt="Doxygen"></a>
