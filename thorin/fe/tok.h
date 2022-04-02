@@ -9,9 +9,12 @@ namespace thorin {
 
 // clang-format off
 #define THORIN_KEY(m)                   \
-    m(K_Nat, ".Nat" )                   \
-    m(K_tt ,   ".tt")                   \
-    m(K_ff ,   ".ff")
+    m(K_Cn,     ".Cn"     )             \
+    m(K_cn,     ".cn"     )             \
+    m(K_module, ".module" )             \
+    m(K_Nat,    ".Nat"    )             \
+    m(K_tt,     ".tt"     )             \
+    m(K_ff,     ".ff"     )             \
 
 #define CODE(t, str) +size_t(1)
 constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
@@ -24,10 +27,10 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 
 #define THORIN_TOK(m)                   \
     /* misc */                          \
-    m(M_eof, "<eof>")                   \
+    m(M_eof, "<eof>"       )            \
     m(M_id,  "<identifier>")            \
     m(M_ax,  "<axiom name>")            \
-    m(M_i,   "<index>")                 \
+    m(M_i,   "<index>"     )            \
     /* delimiters */                    \
     m(D_angle_l,      "‹")              \
     m(D_angle_r,      "›")              \

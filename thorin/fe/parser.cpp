@@ -36,11 +36,17 @@ bool Parser::expect(Tok::Tag tag, std::string_view ctxt) {
     return false;
 }
 
-void Parser::parse_module() { parse_def("world"); };
-
 void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
     errln("{}: expected {}, got '{}' while parsing {}", tok.loc(), what, tok, ctxt);
 }
+
+void Parser::parse_module() {
+    expect(Tok::Tag::K_module, "module");
+    world().set_name(parse_sym("name of module").to_string());
+    expect(Tok::Tag::D_brace_l, "module");
+    parse_def("module");
+    expect(Tok::Tag::D_brace_r, "module");
+};
 
 Sym Parser::parse_sym(std::string_view ctxt) {
     auto track = tracker();

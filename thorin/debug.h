@@ -78,6 +78,8 @@ public:
         : def_(def) {}
 
     const Def* def() const { return def_; }
+    std::string to_string() const;
+    operator std::string() const { return to_string(); }
     bool operator==(Sym other) const { return this->def() == other.def(); }
     Stream& stream(Stream& s) const;
 
