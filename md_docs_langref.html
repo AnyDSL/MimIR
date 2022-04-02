@@ -104,17 +104,172 @@ $(document).ready(function(){initNavTree('md_docs_langref.html',''); initResizab
   <div class="headertitle"><div class="title">Language Reference </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div class="fragment"><div class="line">(* nominals *)</div>
-<div class="line">n = lam ID &quot;:&quot; e [&quot;=&quot; e &quot;,&quot; e] &quot;;&quot;</div>
-<div class="line">  | sig ID &quot;:&quot; e ([&quot;=&quot; e &quot;,&quot; ... &quot;,&quot; e]) | (&quot;(&quot; N &quot;)&quot;) &quot;;&quot;</div>
-<div class="line"> </div>
-<div class="line">e = e e                             (* application *)</div>
-<div class="line">  | e#e                             (* extract *)</div>
-<div class="line">  | .ins(e, e, e)                   (* insert *)</div>
-<div class="line">  | &quot;[&quot; e &quot;,&quot; ... &quot;,&quot; e &quot;]&quot;         (* sigma *)</div>
-<div class="line">  | &quot;(&quot; e &quot;,&quot; ... &quot;,&quot; e&quot;)&quot; [&quot;:&quot; e]  (* tuple *)</div>
-<div class="line">  | ID: e = e; e                    (* let *)</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#lex">Lexical Structure</a><ul><li class="level2"><a href="#autotoc_md6">Definitions</a></li>
+<li class="level2"><a href="#terminals">Terminals</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md7">Grammar</a><ul><li class="level2"><a href="#productions">Productions</a></li>
+<li class="level2"><a href="#autotoc_md8">Precedence</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><h1><a class="anchor" id="lex"></a>
+Lexical Structure</h1>
+<p >Thorin files are <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a> encoded and <a href="https://en.wikipedia.org/wiki/Lexical_analysis">lexed</a> from left to right. The <a href="https://en.wikipedia.org/wiki/Maximal_munch">maximal munch</a> strategy resolves any ambiguities in the lexical rules below. For Example, <code>&lt;&lt;&lt;</code> is lexed as <code>&lt;&lt;</code> and <code>&lt;</code>.</p>
+<h2><a class="anchor" id="autotoc_md6"></a>
+Definitions</h2>
+<p >We use the following rules specified via <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expressions</a> as shorthand:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Name   </th><th class="markdownTableHeadNone">Regular Expression   </th><th class="markdownTableHeadNone">Comment    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0b   </td><td class="markdownTableBodyNone"><code>0</code> [ <code>b</code><code>B</code> ]   </td><td class="markdownTableBodyNone">prefix for binary literals    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">0o   </td><td class="markdownTableBodyNone"><code>0</code> [ <code>o</code><code>O</code> ]   </td><td class="markdownTableBodyNone">prefix for octal literals    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">0x   </td><td class="markdownTableBodyNone"><code>0</code> [ <code>x</code><code>X</code> ]   </td><td class="markdownTableBodyNone">prefix for hexadecimal literals    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">bin   </td><td class="markdownTableBodyNone">[ <code>0</code><code>1</code> ]   </td><td class="markdownTableBodyNone">binary digit    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">oct   </td><td class="markdownTableBodyNone">[ <code>0</code>-<code>7</code> ]   </td><td class="markdownTableBodyNone">octal digit    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">dec   </td><td class="markdownTableBodyNone">[ <code>0</code>-<code>9</code> ]   </td><td class="markdownTableBodyNone">decimal digit    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">sub   </td><td class="markdownTableBodyNone">[ <code>₀</code>-<code>₉</code> ]   </td><td class="markdownTableBodyNone">subscript digit (always decimal)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">hex   </td><td class="markdownTableBodyNone">[ <code>0</code>-<code>9</code><code>a</code>-<code>f</code><code>A</code>-<code>F</code> ]   </td><td class="markdownTableBodyNone">hexadecimal digit    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">eE   </td><td class="markdownTableBodyNone">[ <code>e</code> <code>E</code> ]   </td><td class="markdownTableBodyNone">exponent in floating point literals    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">pP   </td><td class="markdownTableBodyNone">[ <code>p</code> <code>P</code> ]   </td><td class="markdownTableBodyNone">exponent in floating point hexadecimal literals    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">sign   </td><td class="markdownTableBodyNone">[ <code>+</code> <code>-</code> ]   </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">sym   </td><td class="markdownTableBodyNone">[ <code>_</code><code>a</code>-<code>z</code><code>A</code>-<code>Z</code> ][ <code>_</code><code>0</code>-<code>9</code><code>a</code>-<code>z</code><code>A</code>-<code>Z</code> ]*   </td><td class="markdownTableBodyNone">symbol   </td></tr>
+</table>
+<h2><a class="anchor" id="terminals"></a>
+Terminals</h2>
+<p >The actual <em><a href="https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols">terminals</a></em> are specified in the following tables:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Primary Terminals   </th><th class="markdownTableHeadNone">Secondary Terminals   </th><th class="markdownTableHeadNone">Comment    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>(</code> <code>)</code> <code>[</code> <code>]</code> <code>{</code> <code>}</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">delimiters    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>‹</code> <code>›</code> <code>«</code> <code>»</code>   </td><td class="markdownTableBodyNone"><code>&lt;&lt;</code> <code>&gt;&gt;</code> <code>&lt;</code> <code>&gt;</code>   </td><td class="markdownTableBodyNone">UTF-8 delimiters    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>→</code> <code>∷</code> <code>⊥</code> <code>⊤</code> <code>★</code> <code>□</code> <code>λ</code> <code>∀</code>   </td><td class="markdownTableBodyNone"><code>-&gt;</code> <code>::</code> <code>.bot</code> <code>.top</code> <code>*</code> <code>.</code> <code>\</code> <code>\/</code>   </td><td class="markdownTableBodyNone">further UTF-8 tokens    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>=</code> <code>,</code> <code>;</code> <code>.</code> <code>#</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">further tokens   </td></tr>
+</table>
+<p >The <a class="el" href="md_docs_langref.html#productions">grammatical rules</a> will directly reference these <em>primary <a href="https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols">terminals</a></em>. <em>Secondary terminals</em> are <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>-only tokens that represent the <b>same</b> lexical element as its corresponding <em>primary token</em>. For example, the lexer doesn't care, if you use <code>⊥</code> or <code>.bot</code>. Both tokens are identified as <code>⊥</code>.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Terminal   </th><th class="markdownTableHeadNone">Regular Expression   </th><th class="markdownTableHeadNone">Comment    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Id   </td><td class="markdownTableBodyNone">sym   </td><td class="markdownTableBodyNone">identifier    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">Ax   </td><td class="markdownTableBodyNone"><code>:</code> sym <code>.</code> sym ( <code>.</code> sym)?   </td><td class="markdownTableBodyNone">Axiom    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">dec+   </td><td class="markdownTableBodyNone">unsigned decimal literal    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">0b bin+   </td><td class="markdownTableBodyNone">unsigned binary literal    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">0o oct+   </td><td class="markdownTableBodyNone">unsigned octal literal    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">0x hex+   </td><td class="markdownTableBodyNone">unsigned hexadecimal literal    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">sign dec+   </td><td class="markdownTableBodyNone">signed decimal literal    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">sign 0b bin+   </td><td class="markdownTableBodyNone">signed binary literal    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">sign 0o oct+   </td><td class="markdownTableBodyNone">signed octal literal    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">sign 0x hex+   </td><td class="markdownTableBodyNone">signed hexadecimal literal    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">sign? dec+ eE sign dec+   </td><td class="markdownTableBodyNone">floating-point literal    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">sign? dec+ <code>.</code> dec* (eE sign dec+)?   </td><td class="markdownTableBodyNone">floating-point literal    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">sign? dec* <code>.</code> dec+ (eE sign dec+)?   </td><td class="markdownTableBodyNone">floating-point literal    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">sign? 0x hex+ pP sign dec+   </td><td class="markdownTableBodyNone"><a href="https://en.cppreference.com/w/cpp/language/floating_literal">floating-point hexadecimal</a> literal    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">sign? 0x hex+ <code>.</code> hex* pP sign dec+   </td><td class="markdownTableBodyNone"><a href="https://en.cppreference.com/w/cpp/language/floating_literal">floating-point hexadecimal</a> literal    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">sign? 0x hex* <code>.</code> hex+ pP sign dec+   </td><td class="markdownTableBodyNone"><a href="https://en.cppreference.com/w/cpp/language/floating_literal">floating-point hexadecimal</a> literal    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">I   </td><td class="markdownTableBodyNone">dec+ sub+   </td><td class="markdownTableBodyNone">integer literal of type <code>:Int mod</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">I   </td><td class="markdownTableBodyNone">dec+ <code>_</code> dec+   </td><td class="markdownTableBodyNone">integer literal of type <code>:Int mod</code>   </td></tr>
+</table>
+<p >In addition the following keywords are terminals:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Terminal   </th><th class="markdownTableHeadNone">Comment    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.external</code>   </td><td class="markdownTableBodyNone">marks nominal as external    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.module</code>   </td><td class="markdownTableBodyNone">starts a module    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.Nat</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Nat.html">thorin::Nat</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.ff</code>   </td><td class="markdownTableBodyNone">alias for <code>0₂</code>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone">alias for <code>1₂</code>   </td></tr>
+</table>
+<p >They all start with a <code>.</code> to prevent name clashes with identifiers.</p>
+<h1><a class="anchor" id="autotoc_md7"></a>
+Grammar</h1>
+<p >Thorin's grammar is defined as a <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context-free grammar</a> that consists of the <em>terminals</em> defined <a class="el" href="md_docs_langref.html#terminals">above</a> as well as the <em>nonterminals</em> and <em>productions</em> defined <a class="el" href="md_docs_langref.html#productions">below</a>. The start symbol is "m" (module).</p>
+<h2><a class="anchor" id="productions"></a>
+Productions</h2>
+<p >The following table comprises all produciton rules:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Nonterminal   </th><th class="markdownTableHeadNone">Right-Hand Side   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">Thorin Class    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">m   </td><td class="markdownTableBodyNone"><code>.module</code> Id <code>{</code> e <code>}</code>   </td><td class="markdownTableBodyNone">module   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">thorin::World</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">L <code>∷</code> e   </td><td class="markdownTableBodyNone">literal   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lit.html">thorin::Lit</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">e e   </td><td class="markdownTableBodyNone">application   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1App.html">thorin::App</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>λ</code> Id <code>:</code> e <code>.</code> e <code>→</code> e   </td><td class="markdownTableBodyNone">lambda   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">thorin::Lam</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">e <code>→</code> e   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html" title="A function type AKA Pi type.">thorin::Pi</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>∀</code> Id <code>:</code> e <code>.</code> e <code>→</code> e   </td><td class="markdownTableBodyNone">dependent function type   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html" title="A function type AKA Pi type.">thorin::Pi</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">e <code>#</code> e   </td><td class="markdownTableBodyNone">extract   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.">thorin::Extract</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.ins</code> <code>(</code> e <code>,</code> e <code>,</code> e <code>)</code>   </td><td class="markdownTableBodyNone">insert   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">thorin::Insert</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>(</code> e <code>,</code> ... <code>,</code> e<code>)</code> ( <code>:</code> e )?   </td><td class="markdownTableBodyNone">tuple with optional type ascription   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Tuple.html" title="Data constructor for a Sigma.">thorin::Tuple</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>[</code> e <code>,</code> ... <code>,</code> e <code>]</code>   </td><td class="markdownTableBodyNone">sigma   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Sigma.html">thorin::Sigma</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">Id <code>:</code> e <code>=</code> e <code>;</code> e   </td><td class="markdownTableBodyNone">let   </td><td class="markdownTableBodyNone">-   </td></tr>
+</table>
+<p >TODO</p>
+<h2><a class="anchor" id="autotoc_md8"></a>
+Precedence</h2>
+<p >Expressions nesting is disambiguated according to the following precedence table:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Operator   </th><th class="markdownTableHeadNone">Description   </th><th class="markdownTableHeadNone">Associativity    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">L <code>∷</code> e   </td><td class="markdownTableBodyNone">type ascription of a literal   </td><td class="markdownTableBodyNone">-    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e <code>#</code> e   </td><td class="markdownTableBodyNone">extract   </td><td class="markdownTableBodyNone">left-to-right    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e e   </td><td class="markdownTableBodyNone">application   </td><td class="markdownTableBodyNone">left-to-right    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e <code>→</code> e   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone">right-to-left   </td></tr>
+</table>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

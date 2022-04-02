@@ -133,8 +133,13 @@ Public Types</h2></td></tr>
 <tr class="separator:afdc0f701e0b635d379f16d20957532a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b38ddc0634b228ae22e6c43b0f23038"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a> { <br />
 &#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a8e8e97f0a5efc333f823cf9417d32d3f">CODE</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aefffde19d56073e2539eb8c5b2d51296">K_Nat</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a27379c42e77c7e30bdc81db7c988058f">K_lam</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4aa27e923156d5664fbee502e9e43058">K_Cn</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a46fcc8fd8ad0c1e6779cbba4421498fe">K_cn</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ab47f1334f10c60f51233f889228de333">K_module</a>
+, <br />
+&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aefffde19d56073e2539eb8c5b2d51296">K_Nat</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2879fcb4320671691958f7a455aa82bd">K_tt</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a43aa688adfb4f405337a57b6a878aef4">K_ff</a>
 , <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a210614a1117e89a255b9d0b39516b604">L_s</a>
 , <br />
 &#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a7e6dfe77ddaaa4a0c994660de2d38ead">L_u</a>
@@ -143,32 +148,38 @@ Public Types</h2></td></tr>
 , <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad43558618211347eb1e180a76a011d7a">M_id</a>
 , <br />
 &#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a1ef8e7607bcf243cfc0c820569e1ff3d">M_ax</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2cb3b705eec7f0c3017367245b8ac4e4">P_assign</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa6ede4dcd8033565c9aa3f50c3a7920a">P_colon</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa73f947629db335833d4b19b5ad45847">P_colon_colon</a>
-, <br />
-&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038adafb56089dc7f2a7f84b600e1615e75c">P_comma</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a583f2c1fa754c7459d78f071c9b5f751">P_dot</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038af9423b3491626daacc451712510275d2">P_semicolon</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4cee33d151253071bfba882b217a99d3">P_space</a>
-, <br />
-&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa60139f10427cd234d823ade0ac648c8">P_star</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038acf02c22fc164faf4976cae168d7d73bd">M_i</a>
 , <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6">D_angle_l</a>
 , <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aecbf83ec5b71cc1fabb68b9b29602913">D_angle_r</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038af85fb01799db87e4794e759cd80ab24a">D_brace_l</a>
 , <br />
-&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9ce34fa305fe754b53b83132fa7f6755">D_brace_r</a>
+&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038af85fb01799db87e4794e759cd80ab24a">D_brace_l</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9ce34fa305fe754b53b83132fa7f6755">D_brace_r</a>
 , <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a53091fa0e2472f50caed45e35582ccf9">D_bracket_l</a>
 , <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9ad29629b50d3cc6dff258d5b83a2dda">D_bracket_r</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038acd04ba93e71e6eb0d2a73e17a67a90cf">D_paren_l</a>
 , <br />
-&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aee4f36d19b140744668c52ea6444ef44">D_paren_r</a>
+&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038acd04ba93e71e6eb0d2a73e17a67a90cf">D_paren_l</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aee4f36d19b140744668c52ea6444ef44">D_paren_r</a>
 , <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5be9fecd8fb8ece5f3217942ae9f6c4a">D_quote_l</a>
 , <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038add7e7307bb61b436ebfaff2f7f0e0e29">D_quote_r</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038acea5dc65c7461c55ad4662dfe1fe9c23">B_lam</a>
 , <br />
-&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5">B_forall</a>
-, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5b5f13d10c2ea409324e7e6f12a20df4">CODE</a>
+&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2ab208dbb70e7df673fbabe32bb142eb">T_arrow</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5cde09f8e1c778aeb1790bb89e72982b">T_assign</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aee3aae0dddbaf29b850c9b7bbbbe779f">T_bot</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aebb1f15fad917162106ecb82540f245a">T_top</a>
+, <br />
+&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4e9e215aa0e27db0493d465ff6f4f079">T_colon</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a20a8dfb26fc5c23a0575d0b1ad1ac3b3">T_colon_colon</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad8cf2c14f3943743fbaee862495fb5d2">T_comma</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a51a67177e84f2fb92010658b1662dfd5">T_dot</a>
+, <br />
+&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad494648389b32437ec4c60490cc61341">T_extract</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038afa3c226050ae12190d52413e07d29cf9">T_forall</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a6b3f90024b8d3e244e0be45f1aaba414">T_lam</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038adab652135089c23c5b48db9b0d22754d">T_semicolon</a>
+, <br />
+&#160;&#160;<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4d17ce8199e3086ab9f376b4d906caae">T_space</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038adffb83ae407bb72e9b9ac7f79028bb7e">T_star</a>
+, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4da8b7eb2c3f2007cf8238334401ef51">Nil</a>
 <br />
  }</td></tr>
 <tr class="separator:a2b38ddc0634b228ae22e6c43b0f23038"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,16 +198,20 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a19c39bff433502a76f4a480612433eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe09ef6d4af20eb81a9132e8279678ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#afe09ef6d4af20eb81a9132e8279678ec">Tok</a> (<a class="el" href="structthorin_1_1Loc.html">Loc</a> <a class="el" href="classthorin_1_1Tok.html#a6e45a93b5e96f909166e338ce3f48060">loc</a>, <a class="el" href="namespacethorin.html#ab1ed0de0e01b65bb1ae173a42333ec6b">r64</a> r)</td></tr>
 <tr class="separator:afe09ef6d4af20eb81a9132e8279678ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0033a1eabffc8b9383b8e930c7dffe5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#ac0033a1eabffc8b9383b8e930c7dffe5">Tok</a> (<a class="el" href="structthorin_1_1Loc.html">Loc</a> <a class="el" href="classthorin_1_1Tok.html#a6e45a93b5e96f909166e338ce3f48060">loc</a>, const <a class="el" href="classthorin_1_1Def.html">Def</a> *<a class="el" href="classthorin_1_1Tok.html#af5540def069d9dddbfc8d2081b279ccf">index</a>)</td></tr>
+<tr class="separator:ac0033a1eabffc8b9383b8e930c7dffe5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e45a93b5e96f909166e338ce3f48060"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structthorin_1_1Loc.html">Loc</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a6e45a93b5e96f909166e338ce3f48060">loc</a> () const</td></tr>
 <tr class="separator:a6e45a93b5e96f909166e338ce3f48060"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae16ac33a4d82cddfdb1ecf0f0e40489b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b">tag</a> () const</td></tr>
 <tr class="separator:ae16ac33a4d82cddfdb1ecf0f0e40489b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3bf30d6bc9b8ca772098449f4b73e274"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a3bf30d6bc9b8ca772098449f4b73e274">isa</a> (<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a> <a class="el" href="classthorin_1_1Tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b">tag</a>) const</td></tr>
 <tr class="separator:a3bf30d6bc9b8ca772098449f4b73e274"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a237307d0c79f2a973e0a624b050de445"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a237307d0c79f2a973e0a624b050de445">sym</a> () const</td></tr>
-<tr class="separator:a237307d0c79f2a973e0a624b050de445"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45ea45a18052d23d65cdd4f533368ed1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#aa4a9df41658521fb2f8a6842c377f13d">u64</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a45ea45a18052d23d65cdd4f533368ed1">u</a> () const</td></tr>
 <tr class="separator:a45ea45a18052d23d65cdd4f533368ed1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a237307d0c79f2a973e0a624b050de445"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Sym.html">Sym</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a237307d0c79f2a973e0a624b050de445">sym</a> () const</td></tr>
+<tr class="separator:a237307d0c79f2a973e0a624b050de445"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5540def069d9dddbfc8d2081b279ccf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#af5540def069d9dddbfc8d2081b279ccf">index</a> () const</td></tr>
+<tr class="separator:af5540def069d9dddbfc8d2081b279ccf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fe5202e743a95a61ae502c7641d7b81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a8fe5202e743a95a61ae502c7641d7b81">stream</a> (<a class="el" href="classthorin_1_1Stream.html">Stream</a> &amp;s) const</td></tr>
 <tr class="separator:a8fe5202e743a95a61ae502c7641d7b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classthorin_1_1Streamable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1Streamable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1Streamable.html">thorin::Streamable&lt; Tok &gt;</a></td></tr>
@@ -214,16 +229,12 @@ Public Member Functions</h2></td></tr>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a722601fad046ebe11dfcdc29ee675a6c"><td class="memItemLeft" align="right" valign="top">static std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a722601fad046ebe11dfcdc29ee675a6c">tag2str</a> (<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a>)</td></tr>
 <tr class="separator:a722601fad046ebe11dfcdc29ee675a6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c5c236562f7835da20bd8a51cf2c10e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">Prec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a9c5c236562f7835da20bd8a51cf2c10e">tag2prec_l</a> (<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a>)</td></tr>
-<tr class="separator:a9c5c236562f7835da20bd8a51cf2c10e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47d52f308d3b23208a6fd4a7bb117c77"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">Prec</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a47d52f308d3b23208a6fd4a7bb117c77">tag2prec_r</a> (<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a>)</td></tr>
-<tr class="separator:a47d52f308d3b23208a6fd4a7bb117c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a523827e88e4b5fb93c4be8db570fdd60"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tok.html#a523827e88e4b5fb93c4be8db570fdd60">delim_l2r</a> (<a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a> <a class="el" href="classthorin_1_1Tok.html#ae16ac33a4d82cddfdb1ecf0f0e40489b">tag</a>)</td></tr>
 <tr class="separator:a523827e88e4b5fb93c4be8db570fdd60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00059">59</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00069">69</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a id="afdc0f701e0b635d379f16d20957532a2" name="afdc0f701e0b635d379f16d20957532a2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afdc0f701e0b635d379f16d20957532a2">&#9670;&nbsp;</a></span>Prec</h2>
@@ -253,7 +264,7 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="afdc0f701e0b635d379f16d20957532a2ae5e556ecf935270736f5e46e73db06e4" name="afdc0f701e0b635d379f16d20957532a2ae5e556ecf935270736f5e46e73db06e4"></a>Lit&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00061">61</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00071">71</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -278,22 +289,19 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a8e8e97f0a5efc333f823cf9417d32d3f" name="a2b38ddc0634b228ae22e6c43b0f23038a8e8e97f0a5efc333f823cf9417d32d3f"></a>CODE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a4aa27e923156d5664fbee502e9e43058" name="a2b38ddc0634b228ae22e6c43b0f23038a4aa27e923156d5664fbee502e9e43058"></a>K_Cn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a46fcc8fd8ad0c1e6779cbba4421498fe" name="a2b38ddc0634b228ae22e6c43b0f23038a46fcc8fd8ad0c1e6779cbba4421498fe"></a>K_cn&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038ab47f1334f10c60f51233f889228de333" name="a2b38ddc0634b228ae22e6c43b0f23038ab47f1334f10c60f51233f889228de333"></a>K_module&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aefffde19d56073e2539eb8c5b2d51296" name="a2b38ddc0634b228ae22e6c43b0f23038aefffde19d56073e2539eb8c5b2d51296"></a>K_Nat&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a27379c42e77c7e30bdc81db7c988058f" name="a2b38ddc0634b228ae22e6c43b0f23038a27379c42e77c7e30bdc81db7c988058f"></a>K_lam&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a2879fcb4320671691958f7a455aa82bd" name="a2b38ddc0634b228ae22e6c43b0f23038a2879fcb4320671691958f7a455aa82bd"></a>K_tt&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a43aa688adfb4f405337a57b6a878aef4" name="a2b38ddc0634b228ae22e6c43b0f23038a43aa688adfb4f405337a57b6a878aef4"></a>K_ff&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a210614a1117e89a255b9d0b39516b604" name="a2b38ddc0634b228ae22e6c43b0f23038a210614a1117e89a255b9d0b39516b604"></a>L_s&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a7e6dfe77ddaaa4a0c994660de2d38ead" name="a2b38ddc0634b228ae22e6c43b0f23038a7e6dfe77ddaaa4a0c994660de2d38ead"></a>L_u&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aff4732a008160f463364cd4285d4bc9f" name="a2b38ddc0634b228ae22e6c43b0f23038aff4732a008160f463364cd4285d4bc9f"></a>L_r&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aa5958f3529ffa5352df7abb68e3d6e94" name="a2b38ddc0634b228ae22e6c43b0f23038aa5958f3529ffa5352df7abb68e3d6e94"></a>M_eof&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038ad43558618211347eb1e180a76a011d7a" name="a2b38ddc0634b228ae22e6c43b0f23038ad43558618211347eb1e180a76a011d7a"></a>M_id&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a1ef8e7607bcf243cfc0c820569e1ff3d" name="a2b38ddc0634b228ae22e6c43b0f23038a1ef8e7607bcf243cfc0c820569e1ff3d"></a>M_ax&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a2cb3b705eec7f0c3017367245b8ac4e4" name="a2b38ddc0634b228ae22e6c43b0f23038a2cb3b705eec7f0c3017367245b8ac4e4"></a>P_assign&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aa6ede4dcd8033565c9aa3f50c3a7920a" name="a2b38ddc0634b228ae22e6c43b0f23038aa6ede4dcd8033565c9aa3f50c3a7920a"></a>P_colon&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aa73f947629db335833d4b19b5ad45847" name="a2b38ddc0634b228ae22e6c43b0f23038aa73f947629db335833d4b19b5ad45847"></a>P_colon_colon&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038adafb56089dc7f2a7f84b600e1615e75c" name="a2b38ddc0634b228ae22e6c43b0f23038adafb56089dc7f2a7f84b600e1615e75c"></a>P_comma&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a583f2c1fa754c7459d78f071c9b5f751" name="a2b38ddc0634b228ae22e6c43b0f23038a583f2c1fa754c7459d78f071c9b5f751"></a>P_dot&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038af9423b3491626daacc451712510275d2" name="a2b38ddc0634b228ae22e6c43b0f23038af9423b3491626daacc451712510275d2"></a>P_semicolon&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a4cee33d151253071bfba882b217a99d3" name="a2b38ddc0634b228ae22e6c43b0f23038a4cee33d151253071bfba882b217a99d3"></a>P_space&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aa60139f10427cd234d823ade0ac648c8" name="a2b38ddc0634b228ae22e6c43b0f23038aa60139f10427cd234d823ade0ac648c8"></a>P_star&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038acf02c22fc164faf4976cae168d7d73bd" name="a2b38ddc0634b228ae22e6c43b0f23038acf02c22fc164faf4976cae168d7d73bd"></a>M_i&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6" name="a2b38ddc0634b228ae22e6c43b0f23038a9d7c25a7ee8d79c920901fb0b4bae0b6"></a>D_angle_l&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aecbf83ec5b71cc1fabb68b9b29602913" name="a2b38ddc0634b228ae22e6c43b0f23038aecbf83ec5b71cc1fabb68b9b29602913"></a>D_angle_r&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038af85fb01799db87e4794e759cd80ab24a" name="a2b38ddc0634b228ae22e6c43b0f23038af85fb01799db87e4794e759cd80ab24a"></a>D_brace_l&#160;</td><td class="fielddoc"></td></tr>
@@ -304,18 +312,30 @@ Static Public Member Functions</h2></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aee4f36d19b140744668c52ea6444ef44" name="a2b38ddc0634b228ae22e6c43b0f23038aee4f36d19b140744668c52ea6444ef44"></a>D_paren_r&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a5be9fecd8fb8ece5f3217942ae9f6c4a" name="a2b38ddc0634b228ae22e6c43b0f23038a5be9fecd8fb8ece5f3217942ae9f6c4a"></a>D_quote_l&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038add7e7307bb61b436ebfaff2f7f0e0e29" name="a2b38ddc0634b228ae22e6c43b0f23038add7e7307bb61b436ebfaff2f7f0e0e29"></a>D_quote_r&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038acea5dc65c7461c55ad4662dfe1fe9c23" name="a2b38ddc0634b228ae22e6c43b0f23038acea5dc65c7461c55ad4662dfe1fe9c23"></a>B_lam&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5" name="a2b38ddc0634b228ae22e6c43b0f23038aec43f94b57c704f76ecdc33f7a3ea0a5"></a>B_forall&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a5b5f13d10c2ea409324e7e6f12a20df4" name="a2b38ddc0634b228ae22e6c43b0f23038a5b5f13d10c2ea409324e7e6f12a20df4"></a>CODE&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a2ab208dbb70e7df673fbabe32bb142eb" name="a2b38ddc0634b228ae22e6c43b0f23038a2ab208dbb70e7df673fbabe32bb142eb"></a>T_arrow&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a5cde09f8e1c778aeb1790bb89e72982b" name="a2b38ddc0634b228ae22e6c43b0f23038a5cde09f8e1c778aeb1790bb89e72982b"></a>T_assign&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aee3aae0dddbaf29b850c9b7bbbbe779f" name="a2b38ddc0634b228ae22e6c43b0f23038aee3aae0dddbaf29b850c9b7bbbbe779f"></a>T_bot&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038aebb1f15fad917162106ecb82540f245a" name="a2b38ddc0634b228ae22e6c43b0f23038aebb1f15fad917162106ecb82540f245a"></a>T_top&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a4e9e215aa0e27db0493d465ff6f4f079" name="a2b38ddc0634b228ae22e6c43b0f23038a4e9e215aa0e27db0493d465ff6f4f079"></a>T_colon&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a20a8dfb26fc5c23a0575d0b1ad1ac3b3" name="a2b38ddc0634b228ae22e6c43b0f23038a20a8dfb26fc5c23a0575d0b1ad1ac3b3"></a>T_colon_colon&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038ad8cf2c14f3943743fbaee862495fb5d2" name="a2b38ddc0634b228ae22e6c43b0f23038ad8cf2c14f3943743fbaee862495fb5d2"></a>T_comma&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a51a67177e84f2fb92010658b1662dfd5" name="a2b38ddc0634b228ae22e6c43b0f23038a51a67177e84f2fb92010658b1662dfd5"></a>T_dot&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038ad494648389b32437ec4c60490cc61341" name="a2b38ddc0634b228ae22e6c43b0f23038ad494648389b32437ec4c60490cc61341"></a>T_extract&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038afa3c226050ae12190d52413e07d29cf9" name="a2b38ddc0634b228ae22e6c43b0f23038afa3c226050ae12190d52413e07d29cf9"></a>T_forall&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a6b3f90024b8d3e244e0be45f1aaba414" name="a2b38ddc0634b228ae22e6c43b0f23038a6b3f90024b8d3e244e0be45f1aaba414"></a>T_lam&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038adab652135089c23c5b48db9b0d22754d" name="a2b38ddc0634b228ae22e6c43b0f23038adab652135089c23c5b48db9b0d22754d"></a>T_semicolon&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a4d17ce8199e3086ab9f376b4d906caae" name="a2b38ddc0634b228ae22e6c43b0f23038a4d17ce8199e3086ab9f376b4d906caae"></a>T_space&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038adffb83ae407bb72e9b9ac7f79028bb7e" name="a2b38ddc0634b228ae22e6c43b0f23038adffb83ae407bb72e9b9ac7f79028bb7e"></a>T_star&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a2b38ddc0634b228ae22e6c43b0f23038a4da8b7eb2c3f2007cf8238334401ef51" name="a2b38ddc0634b228ae22e6c43b0f23038a4da8b7eb2c3f2007cf8238334401ef51"></a>Nil&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00070">70</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00080">80</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab96cbe83a40186a1becbf1e99bb33c5b" name="ab96cbe83a40186a1becbf1e99bb33c5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab96cbe83a40186a1becbf1e99bb33c5b">&#9670;&nbsp;</a></span>Tok() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab96cbe83a40186a1becbf1e99bb33c5b">&#9670;&nbsp;</a></span>Tok() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -337,12 +357,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00078">78</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00087">87</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
 <a id="a197b6cd7caa11b685f2c0f64323cb3b4" name="a197b6cd7caa11b685f2c0f64323cb3b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a197b6cd7caa11b685f2c0f64323cb3b4">&#9670;&nbsp;</a></span>Tok() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a197b6cd7caa11b685f2c0f64323cb3b4">&#9670;&nbsp;</a></span>Tok() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -375,12 +395,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00079">79</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00088">88</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
 <a id="ac3aab9020aae11dabc8ff15751582535" name="ac3aab9020aae11dabc8ff15751582535"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3aab9020aae11dabc8ff15751582535">&#9670;&nbsp;</a></span>Tok() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3aab9020aae11dabc8ff15751582535">&#9670;&nbsp;</a></span>Tok() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -419,12 +439,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00082">82</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00091">91</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
 <a id="a8f28726c7b4a494afe5f8461543f0304" name="a8f28726c7b4a494afe5f8461543f0304"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8f28726c7b4a494afe5f8461543f0304">&#9670;&nbsp;</a></span>Tok() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f28726c7b4a494afe5f8461543f0304">&#9670;&nbsp;</a></span>Tok() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -457,12 +477,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00088">88</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00097">97</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
 <a id="a19c39bff433502a76f4a480612433eee" name="a19c39bff433502a76f4a480612433eee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19c39bff433502a76f4a480612433eee">&#9670;&nbsp;</a></span>Tok() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a19c39bff433502a76f4a480612433eee">&#9670;&nbsp;</a></span>Tok() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -495,12 +515,12 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00092">92</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00101">101</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
 <a id="afe09ef6d4af20eb81a9132e8279678ec" name="afe09ef6d4af20eb81a9132e8279678ec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe09ef6d4af20eb81a9132e8279678ec">&#9670;&nbsp;</a></span>Tok() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#afe09ef6d4af20eb81a9132e8279678ec">&#9670;&nbsp;</a></span>Tok() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -533,7 +553,45 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00096">96</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00105">105</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+</div>
+</div>
+<a id="ac0033a1eabffc8b9383b8e930c7dffe5" name="ac0033a1eabffc8b9383b8e930c7dffe5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0033a1eabffc8b9383b8e930c7dffe5">&#9670;&nbsp;</a></span>Tok() <span class="overload">[7/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">thorin::Tok::Tok </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structthorin_1_1Loc.html">Loc</a>&#160;</td>
+          <td class="paramname"><em>loc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00109">109</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -562,7 +620,36 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00113">113</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00125">125</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+</div>
+</div>
+<a id="af5540def069d9dddbfc8d2081b279ccf" name="af5540def069d9dddbfc8d2081b279ccf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5540def069d9dddbfc8d2081b279ccf">&#9670;&nbsp;</a></span>index()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classthorin_1_1Def.html">Def</a> * thorin::Tok::index </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00120">120</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+<p class="reference">References <a class="el" href="tok_8h_source.html#l00116">isa()</a>, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a1ef8e7607bcf243cfc0c820569e1ff3d">M_ax</a>, and <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad43558618211347eb1e180a76a011d7a">M_id</a>.</p>
 
 </div>
 </div>
@@ -590,9 +677,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00103">103</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00116">116</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="tok_8cpp_source.html#l00043">stream()</a>, and <a class="el" href="tok_8h_source.html#l00106">u()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="tok_8h_source.html#l00120">index()</a>, <a class="el" href="tok_8cpp_source.html#l00020">stream()</a>, and <a class="el" href="tok_8h_source.html#l00119">sym()</a>.</p>
 
 </div>
 </div>
@@ -619,7 +706,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00101">101</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00114">114</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -639,9 +726,9 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8cpp_source.html#l00043">43</a> of file <a class="el" href="tok_8cpp_source.html">tok.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8cpp_source.html#l00020">20</a> of file <a class="el" href="tok_8cpp_source.html">tok.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tok_8h_source.html#l00103">isa()</a>, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a1ef8e7607bcf243cfc0c820569e1ff3d">M_ax</a>, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad43558618211347eb1e180a76a011d7a">M_id</a>, <a class="el" href="tok_8h_source.html#l00105">sym()</a>, <a class="el" href="tok_8h_source.html#l00102">tag()</a>, and <a class="el" href="tok_8cpp_source.html#l00007">tag2str()</a>.</p>
+<p class="reference">References <a class="el" href="tok_8h_source.html#l00116">isa()</a>, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a1ef8e7607bcf243cfc0c820569e1ff3d">M_ax</a>, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad43558618211347eb1e180a76a011d7a">M_id</a>, <a class="el" href="tok_8h_source.html#l00119">sym()</a>, <a class="el" href="tok_8h_source.html#l00115">tag()</a>, and <a class="el" href="tok_8cpp_source.html#l00007">tag2str()</a>.</p>
 
 </div>
 </div>
@@ -668,9 +755,11 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00105">105</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00119">119</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="tok_8cpp_source.html#l00043">stream()</a>.</p>
+<p class="reference">References <a class="el" href="tok_8h_source.html#l00116">isa()</a>, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aff4732a008160f463364cd4285d4bc9f">L_r</a>, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a210614a1117e89a255b9d0b39516b604">L_s</a>, and <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a7e6dfe77ddaaa4a0c994660de2d38ead">L_u</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="tok_8cpp_source.html#l00020">stream()</a>.</p>
 
 </div>
 </div>
@@ -697,69 +786,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00102">102</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00115">115</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="tok_8cpp_source.html#l00043">stream()</a>, <a class="el" href="tok_8cpp_source.html#l00023">tag2prec_l()</a>, <a class="el" href="tok_8cpp_source.html#l00033">tag2prec_r()</a>, and <a class="el" href="tok_8cpp_source.html#l00007">tag2str()</a>.</p>
-
-</div>
-</div>
-<a id="a9c5c236562f7835da20bd8a51cf2c10e" name="a9c5c236562f7835da20bd8a51cf2c10e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c5c236562f7835da20bd8a51cf2c10e">&#9670;&nbsp;</a></span>tag2prec_l()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">Tok::Prec</a> thorin::Tok::tag2prec_l </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a>&#160;</td>
-          <td class="paramname"><em>tag</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tok_8cpp_source.html#l00023">23</a> of file <a class="el" href="tok_8cpp_source.html">tok.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="def_8cpp.html#ad1b9941e8e846944b557818490f2d94b">CODE</a>, <a class="el" href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2a902b0d55fddef6f8d651fe1035b7d4bd">Error</a>, <a class="el" href="tok_8h_source.html#l00102">tag()</a>, and <a class="el" href="tok_8h_source.html#l00053">THORIN_OP</a>.</p>
-
-</div>
-</div>
-<a id="a47d52f308d3b23208a6fd4a7bb117c77" name="a47d52f308d3b23208a6fd4a7bb117c77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47d52f308d3b23208a6fd4a7bb117c77">&#9670;&nbsp;</a></span>tag2prec_r()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">Tok::Prec</a> thorin::Tok::tag2prec_r </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tag</a>&#160;</td>
-          <td class="paramname"><em>tag</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="tok_8cpp_source.html#l00033">33</a> of file <a class="el" href="tok_8cpp_source.html">tok.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="def_8cpp.html#ad1b9941e8e846944b557818490f2d94b">CODE</a>, <a class="el" href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2a902b0d55fddef6f8d651fe1035b7d4bd">Error</a>, <a class="el" href="tok_8h_source.html#l00102">tag()</a>, and <a class="el" href="tok_8h_source.html#l00053">THORIN_OP</a>.</p>
+<p class="reference">Referenced by <a class="el" href="tok_8cpp_source.html#l00020">stream()</a>, and <a class="el" href="tok_8cpp_source.html#l00007">tag2str()</a>.</p>
 
 </div>
 </div>
@@ -789,9 +818,9 @@ Static Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="tok_8cpp_source.html#l00007">7</a> of file <a class="el" href="tok_8cpp_source.html">tok.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp.html#ad1b9941e8e846944b557818490f2d94b">CODE</a>, <a class="el" href="tok_8h_source.html#l00102">tag()</a>, <a class="el" href="tok_8h_source.html#l00011">THORIN_KEY</a>, <a class="el" href="tok_8h_source.html#l00019">THORIN_LIT</a>, <a class="el" href="tok_8h_source.html#l00053">THORIN_OP</a>, <a class="el" href="tok_8h_source.html#l00024">THORIN_TOK</a>, and <a class="el" href="assert_8h_source.html#l00022">thorin::unreachable()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp.html#ad1b9941e8e846944b557818490f2d94b">CODE</a>, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4da8b7eb2c3f2007cf8238334401ef51">Nil</a>, <a class="el" href="tok_8h_source.html#l00115">tag()</a>, <a class="el" href="tok_8h_source.html#l00011">THORIN_KEY</a>, <a class="el" href="tok_8h_source.html#l00023">THORIN_LIT</a>, <a class="el" href="tok_8h_source.html#l00028">THORIN_TOK</a>, and <a class="el" href="assert_8h_source.html#l00022">thorin::unreachable()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="tok_8cpp_source.html#l00043">stream()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="tok_8cpp_source.html#l00020">stream()</a>.</p>
 
 </div>
 </div>
@@ -818,9 +847,7 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00106">106</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
-
-<p class="reference">References <a class="el" href="tok_8h_source.html#l00103">isa()</a>, <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a1ef8e7607bcf243cfc0c820569e1ff3d">M_ax</a>, and <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad43558618211347eb1e180a76a011d7a">M_id</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00118">118</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
