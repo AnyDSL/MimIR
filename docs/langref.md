@@ -8,7 +8,7 @@ Thorin files are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) encoded and [lexed
 The [maximal munch](https://en.wikipedia.org/wiki/Maximal_munch) strategy resolves any ambiguities in the lexical rules below.
 For Example, `<<<` is lexed as `<<` and `<`.
 
-### Definitions
+### Definitions {#def}
 
 We use the following rules specified via [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) as shorthand:
 
@@ -29,23 +29,30 @@ We use the following rules specified via [regular expressions](https://en.wikipe
 
 ### Terminals {#terminals}
 
-The actual *[terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)* are specified in the following tables:
+The actual *[terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)* are specified in the following tables.
 
-| Primary Terminals               | Secondary Terminals                      | Comment              |
-|---------------------------------|------------------------------------------|----------------------|
-| `(` `)` `[` `]` `{` `}`         |                                          | delimiters           |
-| `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                        | UTF-8 delimiters     |
-| `→` `∷` `⊥` `⊤` `★` `□` `λ` `∀` | `->` `::` `.bot` `.top` `*` `.` `\` `\/` | further UTF-8 tokens |
-| `=` `,` `;` `.` `#`             |                                          | further tokens       |
+#### Primary Terminals
 
 The [grammatical rules](#productions) will directly reference these *primary [terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)*.
 *Secondary terminals* are [ASCII](https://en.wikipedia.org/wiki/ASCII)-only tokens that represent the **same** lexical element as its corresponding *primary token*.
 For example, the lexer doesn't care, if you use `⊥` or `.bot`.
 Both tokens are identified as `⊥`.
 
+| Primary Terminals               | Secondary Terminals                               | Comment                   |
+|---------------------------------|---------------------------------------------------|---------------------------|
+| `(` `)` `[` `]` `{` `}`         |                                                   | delimiters                |
+| `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                                 | UTF-8 delimiters          |
+| `→` `∷` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `::` `.bot` `.top` `*` `.space` `.lam` `.Pi` | further UTF-8 tokens      |
+| `=` `,` `;` `.` `#`             |                                                   | further tokens            |
+| `<EoF>`                         |                                                   | marks the end of the file |
+
+#### Regular Expressions
+
+The following *terminals* comprise more complicated patterns that are specified via [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) and the [definitions](#def) above:
+
 | Terminal | Regular Expression                   | Comment                                                                                           |
 |----------|--------------------------------------|---------------------------------------------------------------------------------------------------|
-| Id       | sym                                  | identifier                                                                                        |
+| Sym      | sym                                  | symbol                                                                                            |
 | Ax       | `:` sym `.` sym ( `.` sym)?          | Axiom                                                                                             |
 | L        | dec+                                 | unsigned decimal literal                                                                          |
 | L        | 0b bin+                              | unsigned binary literal                                                                           |
@@ -64,6 +71,9 @@ Both tokens are identified as `⊥`.
 | I        | dec+ sub+                            | integer literal of type `:Int mod`                                                                |
 | I        | dec+ `_` dec+                        | integer literal of type `:Int mod`                                                                |
 
+#### Keywords
+
+Keywords start with a `.` to prevent name clashes with identifiers.
 In addition the following keywords are terminals:
 
 | Terminal    | Comment                   |
@@ -73,8 +83,6 @@ In addition the following keywords are terminals:
 | `.Nat`      | thorin::Nat               |
 | `.ff`       | alias for `0₂`            |
 | `.tt`       | alias for `1₂`            |
-
-They all start with a `.` to prevent name clashes with identifiers.
 
 ## Grammar
 
@@ -87,17 +95,19 @@ The following table comprises all produciton rules:
 
 | Nonterminal | Right-Hand Side                   | Comment                             | Thorin Class    |
 |-------------|-----------------------------------|-------------------------------------|-----------------|
-| m           | `.module` Id `{` e `}`            | module                              | thorin::World   |
+| m           | `.module` Sym `{` e `}` `<EoF>`   | module                              | thorin::World   |
 | e           | L `∷` e                           | literal                             | thorin::Lit     |
+| e           | Sym                               | identifier                          | -               |
+| e           | Ax                                | use of an axiom                     | -               |
 | e           | e e                               | application                         | thorin::App     |
-| e           | `λ` Id `:` e `.` e `→` e          | lambda                              | thorin::Lam     |
+| e           | `λ` Sym `:` e `→` e  `.` e        | lambda                              | thorin::Lam     |
 | e           | e `→` e                           | function type                       | thorin::Pi      |
-| e           | `∀` Id `:` e `.` e `→` e          | dependent function type             | thorin::Pi      |
+| e           | `Π` Sym `:` e `→` e               | dependent function type             | thorin::Pi      |
 | e           | e `#` e                           | extract                             | thorin::Extract |
 | e           | `.ins` `(` e `,` e `,` e `)`      | insert                              | thorin::Insert  |
 | e           | `(` e `,` ... `,` e`)` ( `:` e )? | tuple with optional type ascription | thorin::Tuple   |
 | e           | `[` e `,` ... `,` e `]`           | sigma                               | thorin::Sigma   |
-| e           | Id `:` e `=` e `;` e              | let                                 | -               |
+| e           | Sym `:` e `=` e `;` e             | let                                 | -               |
 
 TODO
 

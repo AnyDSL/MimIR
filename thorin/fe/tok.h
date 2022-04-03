@@ -52,37 +52,63 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_comma,        ",")              \
     m(T_dot,          ".")              \
     m(T_extract,      "#")              \
-    m(T_forall,       "∀")              \
+    m(T_Pi,           "Π")              \
     m(T_lam,          "λ")              \
     m(T_semicolon,    ";")              \
     m(T_space,        "□")              \
     m(T_star,         "*")              \
 
 #define THORIN_SUBST(m)                 \
-    m("->",     T_arrow )               \
-    m(".bot",   T_bot   )               \
-    m(".top",   T_top   )               \
-    m(".space", T_top   )               \
-    m("\\",     T_lam   )               \
-    m("\\/",    T_forall)               \
+    m("->",     T_arrow)                \
+    m(".bot",   T_bot  )                \
+    m(".top",   T_top  )                \
+    m(".lam",   T_lam  )                \
+    m(".Pi",    T_Pi   )                \
+    m(".space", T_top  )                \
+
+#define THORIN_PREC(m)                  \
+    /* left     prec,       right  */   \
+    m(Nil,      Bottom,     Nil     )   \
+    m(Nil,      Nil,        Nil     )   \
+    m(Pi,       Arrow,      Arrow   )   \
+    m(Nil,      Pi,         App     )   \
+    m(App,      App,        Extract )   \
+    m(Extract,  Extract,    Lit     )   \
+    m(Nil,      Lit,        Lit     )   \
 
 class Tok : public Streamable<Tok> {
 public:
-    enum class Prec { //  left    right
-        Error,        //  -       -       <- If lookahead isn't a valid operator.
-        Bottom,       //  Bottom  Bottom
-        Pi,           //  App     Pi
-        App,          //  App     Extract
-        Extract,      //  Extract Lit
-        Lit,          //  -       Lit
+    /// @name Precedence
+    ///@{
+    enum class Prec {
+#define CODE(l, p, r) p,
+        THORIN_PREC(CODE)
+#undef CODE
     };
 
+    static constexpr std::array<Prec, 2> prec(Prec p) {
+        switch (p) {
+#define CODE(l, p, r) \
+            case Prec::p: return {Prec::l, Prec::r};
+        THORIN_PREC(CODE)
+#undef CODE
+        }
+    }
+    ///@}
+
+    /// @name Tag
+    ///@{
     enum class Tag {
 #define CODE(t, str) t,
         THORIN_KEY(CODE) THORIN_LIT(CODE) THORIN_TOK(CODE)
 #undef CODE
         Nil
     };
+
+    static std::string_view tag2str(Tok::Tag);
+    static constexpr Tok::Tag delim_l2r(Tag tag) { return Tok::Tag(int(tag) + 1); }
+    ///@}
+
     // clang-format on
 
     Tok() {}
@@ -121,9 +147,6 @@ public:
     const Def* index() const { assert(isa(Tag::M_i)); return index_; }
     // clang-format on
     Stream& stream(Stream& s) const;
-
-    static std::string_view tag2str(Tok::Tag);
-    static Tok::Tag delim_l2r(Tag tag) { return Tok::Tag(int(tag) + 1); }
 
 private:
     Loc loc_;
