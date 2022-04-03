@@ -138,128 +138,129 @@ $(document).ready(function(){initNavTree('parser_8h_source.html',''); initResiza
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">private</span>:</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <a class="code hl_class" href="classthorin_1_1Sym.html">Sym</a> parse_sym(std::string_view ctxt = {});</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">const</span> Def* parse_def(std::string_view ctxt, <a class="code hl_enumeration" href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">Tok::Prec</a> = <a class="code hl_enumvalue" href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2a2ad9d63b69c4a10a5cc9cad923133bc4">Tok::Prec::Bottom</a>);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">const</span> Def* parse_def(std::string_view ctxt, <a class="code hl_enumeration" href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">Tok::Prec</a> = Tok::Prec::Bottom);</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">const</span> Def* parse_primary_def(std::string_view ctxt);</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">const</span> Def* parse_extract();</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment"></span> </div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">    /// @name primary defs</span></div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment">    ///@{</span></div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment"></span>    <span class="keyword">const</span> Def* parse_pack_or_array(<span class="keywordtype">bool</span> pack);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">const</span> Def* parse_ext(<span class="keywordtype">bool</span>);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">const</span> Def* parse_block();</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">const</span> Def* parse_sigma();</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">const</span> Def* parse_tuple();</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">const</span> Def* parse_lit();</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">const</span> Def* parse_let();<span class="comment"></span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="comment">    ///@}</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="comment"></span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> F&gt;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">auto</span> parse_list(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> delim_r, F f, <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> sep = <a class="code hl_enumvalue" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad8cf2c14f3943743fbaee862495fb5d2">Tok::Tag::T_comma</a>) {</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <a class="code hl_typedef" href="namespacethorin.html#a79fff1449ba1eaecead8f607520f8574">DefVec</a> result;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <span class="keywordflow">if</span> (!ahead().<a class="code hl_function" href="namespacethorin.html#a13393e92527438ff4529ebe0834a84c3">isa</a>(delim_r)) {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            <span class="keywordflow">do</span> { result.emplace_back(f()); } <span class="keywordflow">while</span> (accept(sep) &amp;&amp; !ahead().<a class="code hl_function" href="namespacethorin.html#a13393e92527438ff4529ebe0834a84c3">isa</a>(delim_r));</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        }</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> F&gt;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">auto</span> parse_list(<span class="keyword">const</span> <span class="keywordtype">char</span>* ctxt, <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> delim_l, F f, <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> sep = <a class="code hl_enumvalue" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad8cf2c14f3943743fbaee862495fb5d2">Tok::Tag::T_comma</a>) {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        eat(delim_l);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keyword">auto</span> delim_r = <a class="code hl_function" href="classthorin_1_1Tok.html#a523827e88e4b5fb93c4be8db570fdd60">Tok::delim_l2r</a>(delim_l);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="keyword">auto</span> result  = parse_list(delim_r, f, sep);</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        expect(delim_r, ctxt);</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment"></span> </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">    /// Trick to easily keep track of Loc%ations.</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment"></span>    <span class="keyword">class </span>Tracker {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        Tracker(<a class="code hl_function" href="classthorin_1_1Parser.html#a47cabbad8ff8d81aff910a0354807f26">Parser</a>&amp; parser, <span class="keyword">const</span> Pos&amp; pos)</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>            : parser_(parser)</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>            , pos_(pos) {}</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        Loc loc()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> {parser_.prev_.file, pos_, parser_.prev_.finis}; }</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keyword">operator</span> <span class="keyword">const</span> Def*() <span class="keyword">const</span> { <span class="keywordflow">return</span> parser_.world().dbg({<span class="stringliteral">&quot;&quot;</span>, loc()}); }</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keyword">const</span> Def* meta(<span class="keyword">const</span> Def* m)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> parser_.world().dbg({<span class="stringliteral">&quot;&quot;</span>, loc(), m}); }</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <a class="code hl_function" href="classthorin_1_1Parser.html#a47cabbad8ff8d81aff910a0354807f26">Parser</a>&amp; parser_;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        Pos pos_;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    };</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="comment"></span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span><span class="comment">    /// Factory method to build a Parser::Tracker.</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment"></span>    Tracker tracker() { <span class="keywordflow">return</span> Tracker(*<span class="keyword">this</span>, ahead().loc().begin); }</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keyword">const</span> Def* dbg(Tracker t) { <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#a7de00f50ba0c790aa0e67f3a4d065c89">dbg</a>((Loc)t); }</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment"></span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span><span class="comment">    /// Invoke Lexer to retrieve next Tok%en.</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment"></span>    Tok lex();</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment"></span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment">    /// Get lookahead.</span></div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment"></span>    Tok ahead(<span class="keywordtype">size_t</span> i = 0)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ahead_[i]; }</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment"></span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment">    /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.</span></div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment"></span>    <span class="keywordtype">bool</span> accept(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag);</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment"></span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment">    /// Parser::lex Parser::ahead() which must be a @p tag.</span></div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment">    /// Issue err%or with @p ctxt otherwise.</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment"></span>    <span class="keywordtype">bool</span> expect(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag, std::string_view ctxt);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment"></span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">    /// Consume Parser::ahead which must be a @p tag; asserts otherwise.</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment"></span>    Tok eat([[maybe_unused]] <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag) {</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        assert(tag == ahead().tag() &amp;&amp; <span class="stringliteral">&quot;internal parser error&quot;</span>);</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">return</span> lex();</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="comment"></span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">    /// Issue an error message of the form:</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment">    /// &quot;expected &lt;what&gt;, got &#39;&lt;tok&gt;\&#39; while parsing &lt;ctxt&gt;&quot;</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment"></span>    <span class="keywordtype">void</span> err(std::string_view what, <span class="keyword">const</span> Tok&amp; tok, std::string_view ctxt);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment"></span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment">    /// Same above but uses @p ahead() as @p tok.</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment"></span>    <span class="keywordtype">void</span> err(std::string_view what, std::string_view ctxt) { err(what, ahead(), ctxt); }</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment"></span> </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment">    /// @name Scope</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment">    ///@{</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="comment"></span>    <span class="keyword">using</span> Scope = SymMap&lt;const Def*&gt;;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    <span class="keywordtype">void</span> push() { scopes_.emplace_back(); }</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordtype">void</span> pop() {</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        assert(!scopes_.empty());</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        scopes_.pop_back();</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    }</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keyword">const</span> Def* find(Sym sym)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; scope : scopes_ | std::ranges::views::reverse)</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> i = scope.find(sym); i != scope.end()) <span class="keywordflow">return</span> i-&gt;second;</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keywordtype">void</span> insert(Sym sym, <span class="keyword">const</span> Def* def) {</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> [_, ins] = scopes_.back().emplace(sym, def); !ins) {</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>            <a class="code hl_function" href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">errln</a>(<span class="stringliteral">&quot;symbol {} already declared in the current scope&quot;</span>, sym);</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>            <span class="comment">// errln(&quot;previous location here&quot;, what, tok, ctxt);</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        }</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }<span class="comment"></span></div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">    ///@}</span></div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment"></span> </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    Lexer lexer_;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    Loc prev_;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> Max_Ahead = 2; <span class="comment">///&lt; maximum lookahead</span></div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    std::array&lt;Tok, Max_Ahead&gt; ahead_;     <span class="comment">///&lt; SLL look ahead</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    std::deque&lt;Scope&gt; scopes_;</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>};</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">const</span> Def* parse_block();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">const</span> Def* parse_sigma();</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keyword">const</span> Def* parse_tuple();</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keyword">const</span> Def* parse_ext(<span class="keywordtype">bool</span>);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">const</span> Def* parse_lam();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">const</span> Def* parse_Pi();</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">const</span> Def* parse_lit();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keyword">const</span> Def* parse_let();<span class="comment"></span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment">    ///@}</span></div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment"></span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> F&gt;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keyword">auto</span> parse_list(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> delim_r, F f, <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> sep = <a class="code hl_enumvalue" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad8cf2c14f3943743fbaee862495fb5d2">Tok::Tag::T_comma</a>) {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <a class="code hl_typedef" href="namespacethorin.html#a79fff1449ba1eaecead8f607520f8574">DefVec</a> result;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <span class="keywordflow">if</span> (!ahead().<a class="code hl_function" href="namespacethorin.html#a13393e92527438ff4529ebe0834a84c3">isa</a>(delim_r)) {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <span class="keywordflow">do</span> { result.emplace_back(f()); } <span class="keywordflow">while</span> (accept(sep) &amp;&amp; !ahead().<a class="code hl_function" href="namespacethorin.html#a13393e92527438ff4529ebe0834a84c3">isa</a>(delim_r));</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> F&gt;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keyword">auto</span> parse_list(<span class="keyword">const</span> <span class="keywordtype">char</span>* ctxt, <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> delim_l, F f, <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> sep = <a class="code hl_enumvalue" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad8cf2c14f3943743fbaee862495fb5d2">Tok::Tag::T_comma</a>) {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        eat(delim_l);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keyword">auto</span> delim_r = <a class="code hl_function" href="classthorin_1_1Tok.html#a79c1841c28341d3939fb264e406f0fb1">Tok::delim_l2r</a>(delim_l);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keyword">auto</span> result  = parse_list(delim_r, f, sep);</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        expect(delim_r, ctxt);</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment"></span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="comment">    /// Trick to easily keep track of Loc%ations.</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment"></span>    <span class="keyword">class </span>Tracker {</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        Tracker(<a class="code hl_function" href="classthorin_1_1Parser.html#a47cabbad8ff8d81aff910a0354807f26">Parser</a>&amp; parser, <span class="keyword">const</span> Pos&amp; pos)</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>            : parser_(parser)</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            , pos_(pos) {}</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        Loc loc()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> {parser_.prev_.file, pos_, parser_.prev_.finis}; }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keyword">operator</span> <span class="keyword">const</span> Def*() <span class="keyword">const</span> { <span class="keywordflow">return</span> parser_.world().dbg({<span class="stringliteral">&quot;&quot;</span>, loc()}); }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="keyword">const</span> Def* meta(<span class="keyword">const</span> Def* m)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> parser_.world().dbg({<span class="stringliteral">&quot;&quot;</span>, loc(), m}); }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <a class="code hl_function" href="classthorin_1_1Parser.html#a47cabbad8ff8d81aff910a0354807f26">Parser</a>&amp; parser_;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        Pos pos_;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    };</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span><span class="comment"></span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="comment">    /// Factory method to build a Parser::Tracker.</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span><span class="comment"></span>    Tracker tracker() { <span class="keywordflow">return</span> Tracker(*<span class="keyword">this</span>, ahead().loc().begin); }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    <span class="keyword">const</span> Def* dbg(Tracker t) { <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">world</a>().<a class="code hl_function" href="classthorin_1_1World.html#a7de00f50ba0c790aa0e67f3a4d065c89">dbg</a>((Loc)t); }</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment"></span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span><span class="comment">    /// Invoke Lexer to retrieve next Tok%en.</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span><span class="comment"></span>    Tok lex();</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment"></span> </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="comment">    /// Get lookahead.</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="comment"></span>    Tok ahead(<span class="keywordtype">size_t</span> i = 0)<span class="keyword"> const </span>{ <span class="keywordflow">return</span> ahead_[i]; }</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment"></span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="comment">    /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span><span class="comment"></span>    <span class="keywordtype">bool</span> accept(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag);</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="comment"></span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="comment">    /// Parser::lex Parser::ahead() which must be a @p tag.</span></div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="comment">    /// Issue err%or with @p ctxt otherwise.</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment"></span>    <span class="keywordtype">bool</span> expect(<a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag, std::string_view ctxt);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="comment"></span> </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="comment">    /// Consume Parser::ahead which must be a @p tag; asserts otherwise.</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="comment"></span>    Tok eat([[maybe_unused]] <a class="code hl_enumeration" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">Tok::Tag</a> tag) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        assert(tag == ahead().tag() &amp;&amp; <span class="stringliteral">&quot;internal parser error&quot;</span>);</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keywordflow">return</span> lex();</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span><span class="comment"></span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="comment">    /// Issue an error message of the form:</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="comment">    /// &quot;expected &lt;what&gt;, got &#39;&lt;tok&gt;\&#39; while parsing &lt;ctxt&gt;&quot;</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="comment"></span>    <span class="keywordtype">void</span> err(std::string_view what, <span class="keyword">const</span> Tok&amp; tok, std::string_view ctxt);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="comment"></span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="comment">    /// Same above but uses @p ahead() as @p tok.</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="comment"></span>    <span class="keywordtype">void</span> err(std::string_view what, std::string_view ctxt) { err(what, ahead(), ctxt); }</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="comment"></span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="comment">    /// @name Scope</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="comment">    ///@{</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span><span class="comment"></span>    <span class="keyword">using</span> Scope = SymMap&lt;const Def*&gt;;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keywordtype">void</span> push() { scopes_.emplace_back(); }</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordtype">void</span> pop() {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        assert(!scopes_.empty());</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        scopes_.pop_back();</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    }</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keyword">const</span> Def* find(Sym sym)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; scope : scopes_ | std::ranges::views::reverse)</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>            <span class="keywordflow">if</span> (<span class="keyword">auto</span> i = scope.find(sym); i != scope.end()) <span class="keywordflow">return</span> i-&gt;second;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keywordtype">void</span> insert(Sym sym, <span class="keyword">const</span> Def* def) {</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> [_, ins] = scopes_.back().emplace(sym, def); !ins) {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            <a class="code hl_function" href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">errln</a>(<span class="stringliteral">&quot;symbol {} already declared in the current scope&quot;</span>, sym);</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>            <span class="comment">// errln(&quot;previous location here&quot;, what, tok, ctxt);</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        }</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    }<span class="comment"></span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment">    ///@}</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="comment"></span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    Lexer lexer_;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    Loc prev_;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keywordtype">size_t</span> Max_Ahead = 2; <span class="comment">///&lt; maximum lookahead</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    std::array&lt;Tok, Max_Ahead&gt; ahead_;     <span class="comment">///&lt; SLL look ahead</span></div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    std::deque&lt;Scope&gt; scopes_;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>};</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_aed7d9d0cd682bd7d98eef0019ed9a33e"><div class="ttname"><a href="classthorin_1_1Lexer.html#aed7d9d0cd682bd7d98eef0019ed9a33e">thorin::Lexer::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8h_source.html#l00019">lexer.h:19</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Parser_html"><div class="ttname"><a href="classthorin_1_1Parser.html">thorin::Parser</a></div><div class="ttdoc">Parses Thorin code into the provided World.</div><div class="ttdef"><b>Definition:</b> <a href="parser_8h_source.html#l00026">parser.h:26</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Parser_html_a47cabbad8ff8d81aff910a0354807f26"><div class="ttname"><a href="classthorin_1_1Parser.html#a47cabbad8ff8d81aff910a0354807f26">thorin::Parser::Parser</a></div><div class="ttdeci">Parser(World &amp;, std::string_view, std::istream &amp;)</div><div class="ttdef"><b>Definition:</b> <a href="parser_8cpp_source.html#l00005">parser.cpp:5</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Parser_html_acd545f2b14786e73e995e7df438c4baf"><div class="ttname"><a href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">thorin::Parser::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition:</b> <a href="parser_8h_source.html#l00030">parser.h:30</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Parser_html_ad456197984ae5995361c73fb5574ce27"><div class="ttname"><a href="classthorin_1_1Parser.html#ad456197984ae5995361c73fb5574ce27">thorin::Parser::parse_module</a></div><div class="ttdeci">void parse_module()</div><div class="ttdef"><b>Definition:</b> <a href="parser_8cpp_source.html#l00043">parser.cpp:43</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Sym_html"><div class="ttname"><a href="classthorin_1_1Sym.html">thorin::Sym</a></div><div class="ttdef"><b>Definition:</b> <a href="debug_8h_source.html#l00074">debug.h:74</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Tok_html_a2b38ddc0634b228ae22e6c43b0f23038"><div class="ttname"><a href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">thorin::Tok::Tag</a></div><div class="ttdeci">Tag</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00080">tok.h:80</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Tok_html_a2b38ddc0634b228ae22e6c43b0f23038"><div class="ttname"><a href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">thorin::Tok::Tag</a></div><div class="ttdeci">Tag</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00101">tok.h:101</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Tok_html_a2b38ddc0634b228ae22e6c43b0f23038ad8cf2c14f3943743fbaee862495fb5d2"><div class="ttname"><a href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad8cf2c14f3943743fbaee862495fb5d2">thorin::Tok::Tag::T_comma</a></div><div class="ttdeci">@ T_comma</div></div>
-<div class="ttc" id="aclassthorin_1_1Tok_html_a523827e88e4b5fb93c4be8db570fdd60"><div class="ttname"><a href="classthorin_1_1Tok.html#a523827e88e4b5fb93c4be8db570fdd60">thorin::Tok::delim_l2r</a></div><div class="ttdeci">static Tok::Tag delim_l2r(Tag tag)</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00125">tok.h:125</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Tok_html_afdc0f701e0b635d379f16d20957532a2"><div class="ttname"><a href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">thorin::Tok::Prec</a></div><div class="ttdeci">Prec</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00071">tok.h:71</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Tok_html_afdc0f701e0b635d379f16d20957532a2a2ad9d63b69c4a10a5cc9cad923133bc4"><div class="ttname"><a href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2a2ad9d63b69c4a10a5cc9cad923133bc4">thorin::Tok::Prec::Bottom</a></div><div class="ttdeci">@ Bottom</div></div>
+<div class="ttc" id="aclassthorin_1_1Tok_html_a79c1841c28341d3939fb264e406f0fb1"><div class="ttname"><a href="classthorin_1_1Tok.html#a79c1841c28341d3939fb264e406f0fb1">thorin::Tok::delim_l2r</a></div><div class="ttdeci">static constexpr Tok::Tag delim_l2r(Tag tag)</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00108">tok.h:108</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Tok_html_afdc0f701e0b635d379f16d20957532a2"><div class="ttname"><a href="classthorin_1_1Tok.html#afdc0f701e0b635d379f16d20957532a2">thorin::Tok::Prec</a></div><div class="ttdeci">Prec</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00083">tok.h:83</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html"><div class="ttname"><a href="classthorin_1_1World.html">thorin::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of Thorin nodes (Defs).</div><div class="ttdef"><b>Definition:</b> <a href="world_8h_source.html#l00037">world.h:37</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html_a7de00f50ba0c790aa0e67f3a4d065c89"><div class="ttname"><a href="classthorin_1_1World.html#a7de00f50ba0c790aa0e67f3a4d065c89">thorin::World::dbg</a></div><div class="ttdeci">const Def * dbg(Debug)</div><div class="ttdef"><b>Definition:</b> <a href="world_8cpp_source.html#l00681">world.cpp:681</a></div></div>
 <div class="ttc" id="alexer_8h_html"><div class="ttname"><a href="lexer_8h.html">lexer.h</a></div></div>

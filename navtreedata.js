@@ -34,48 +34,52 @@ var NAVTREE =
     ] ],
     [ "Language Reference", "md_docs_langref.html", [
       [ "Lexical Structure", "md_docs_langref.html#lex", [
-        [ "Definitions", "md_docs_langref.html#autotoc_md6", null ],
-        [ "Terminals", "md_docs_langref.html#terminals", null ]
+        [ "Definitions", "md_docs_langref.html#def", null ],
+        [ "Terminals", "md_docs_langref.html#terminals", [
+          [ "Primary Terminals", "md_docs_langref.html#autotoc_md6", null ],
+          [ "Regular Expressions", "md_docs_langref.html#autotoc_md7", null ],
+          [ "Keywords", "md_docs_langref.html#autotoc_md8", null ]
+        ] ]
       ] ],
-      [ "Grammar", "md_docs_langref.html#autotoc_md7", [
+      [ "Grammar", "md_docs_langref.html#autotoc_md9", [
         [ "Productions", "md_docs_langref.html#productions", null ],
-        [ "Precedence", "md_docs_langref.html#autotoc_md8", null ]
+        [ "Precedence", "md_docs_langref.html#autotoc_md10", null ]
       ] ]
     ] ],
     [ "Command-Line Interface", "md_docs_cli.html", [
-      [ "Usage", "md_docs_cli.html#autotoc_md10", null ]
+      [ "Usage", "md_docs_cli.html#autotoc_md12", null ]
     ] ],
     [ "Developer Guide", "md_docs_dev.html", [
-      [ "Compiling and Executing", "md_docs_dev.html#autotoc_md12", null ],
-      [ "Defs and the World", "md_docs_dev.html#autotoc_md13", [
-        [ "Hash Consing", "md_docs_dev.html#autotoc_md14", null ]
+      [ "Compiling and Executing", "md_docs_dev.html#autotoc_md14", null ],
+      [ "Defs and the World", "md_docs_dev.html#autotoc_md15", [
+        [ "Hash Consing", "md_docs_dev.html#autotoc_md16", null ]
       ] ],
-      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md15", null ],
-      [ "Matching IR", "md_docs_dev.html#autotoc_md16", null ],
-      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md17", null ]
+      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md17", null ],
+      [ "Matching IR", "md_docs_dev.html#autotoc_md18", null ],
+      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md19", null ]
     ] ],
     [ "Passes", "md_docs_passes.html", [
-      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md19", null ],
-      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md20", [
-        [ "Rewrite", "md_docs_passes.html#autotoc_md21", [
-          [ "Proxy", "md_docs_passes.html#autotoc_md22", null ]
+      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md21", null ],
+      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md22", [
+        [ "Rewrite", "md_docs_passes.html#autotoc_md23", [
+          [ "Proxy", "md_docs_passes.html#autotoc_md24", null ]
         ] ],
-        [ "Analyze", "md_docs_passes.html#autotoc_md23", null ],
-        [ "Other Hooks", "md_docs_passes.html#autotoc_md24", null ]
+        [ "Analyze", "md_docs_passes.html#autotoc_md25", null ],
+        [ "Other Hooks", "md_docs_passes.html#autotoc_md26", null ]
       ] ],
-      [ "Caveats", "md_docs_passes.html#autotoc_md25", [
-        [ "Construct Valid Programs", "md_docs_passes.html#autotoc_md26", null ],
-        [ "Creating Nominals", "md_docs_passes.html#autotoc_md27", null ]
+      [ "Caveats", "md_docs_passes.html#autotoc_md27", [
+        [ "Construct Valid Programs", "md_docs_passes.html#autotoc_md28", null ],
+        [ "Creating Nominals", "md_docs_passes.html#autotoc_md29", null ]
       ] ]
     ] ],
     [ "Coding & Debugging", "md_docs_coding.html", [
-      [ "Coding Style", "md_docs_coding.html#autotoc_md29", null ],
-      [ "Debugging", "md_docs_coding.html#autotoc_md30", [
-        [ "Logging", "md_docs_coding.html#autotoc_md31", null ],
-        [ "Breakpoints", "md_docs_coding.html#autotoc_md32", null ],
-        [ "VS Code", "md_docs_coding.html#autotoc_md33", null ],
-        [ "GoogleTest", "md_docs_coding.html#autotoc_md34", null ],
-        [ "Valgrind & GDB", "md_docs_coding.html#autotoc_md35", null ]
+      [ "Coding Style", "md_docs_coding.html#autotoc_md31", null ],
+      [ "Debugging", "md_docs_coding.html#autotoc_md32", [
+        [ "Logging", "md_docs_coding.html#autotoc_md33", null ],
+        [ "Breakpoints", "md_docs_coding.html#autotoc_md34", null ],
+        [ "VS Code", "md_docs_coding.html#autotoc_md35", null ],
+        [ "GoogleTest", "md_docs_coding.html#autotoc_md36", null ],
+        [ "Valgrind & GDB", "md_docs_coding.html#autotoc_md37", null ]
       ] ]
     ] ],
     [ "Deprecated List", "deprecated.html", null ],
@@ -126,15 +130,15 @@ var NAVTREEINDEX =
 "classthorin_1_1IndexMap.html#adc89c1b2dfaf4c9828296fb7bfad9cf0",
 "classthorin_1_1Nat.html",
 "classthorin_1_1SSAConstr.html#a58b6c4f375ee1aab763d892b97ae0225",
-"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a53091fa0e2472f50caed45e35582ccf9",
-"classthorin_1_1World.html#a4243f154058e0aa75b458fa3d3468b99",
-"classthorin_1_1World.html#ad317f2bccd297f81243f0e5057174d7d",
-"domtree_8h.html#a27a76a1f311546f00c650982da319cb5",
-"namespacethorin.html#a0ff05ea830ab281bb1893bd81f023423",
-"namespacethorin.html#aba227b3ba0e6cb0a398abeef94c5ddef",
-"normalize_8h.html#a672b399db3625cad14476a6eca8fc6a0",
-"structthorin_1_1LRPrec.html#a5ffc48cce103dfc021da68def8275401",
-"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a15bd4502d3a7637c7bb048db810fcc26"
+"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a51a67177e84f2fb92010658b1662dfd5",
+"classthorin_1_1World.html#a466ea83c06e590328383a2b29a418a53",
+"classthorin_1_1World.html#ad602893f4c42eac1464770141b90a06f",
+"error_8cpp.html#a8bd418a99edf51fa3f752019e1d48d51",
+"namespacethorin.html#a11d9f60317a743a4384f429a270db9de",
+"namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508",
+"normalize_8h.html#a9dea96748c32d7e675ee36c955025f19",
+"structthorin_1_1Loc.html",
+"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a58fcbdf02d7d580039bfbe6c6d82a70b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

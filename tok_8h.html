@@ -148,6 +148,12 @@ Macros</h2></td></tr>
 <tr class="separator:acf85c215badfba27aee55c9cd3af719a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3d2da954389db5acfc86380a482ee87d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#a3d2da954389db5acfc86380a482ee87d">THORIN_SUBST</a>(m)</td></tr>
 <tr class="separator:a3d2da954389db5acfc86380a482ee87d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac29f384be3c6b33c3b9beded2bd1df1c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#ac29f384be3c6b33c3b9beded2bd1df1c">THORIN_PREC</a>(m)</td></tr>
+<tr class="separator:ac29f384be3c6b33c3b9beded2bd1df1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa59a5f5a821ce31b222873b1c8a06eda"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#aa59a5f5a821ce31b222873b1c8a06eda">CODE</a>(l,  p,  r)&#160;&#160;&#160;p,</td></tr>
+<tr class="separator:aa59a5f5a821ce31b222873b1c8a06eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa59a5f5a821ce31b222873b1c8a06eda"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#aa59a5f5a821ce31b222873b1c8a06eda">CODE</a>(l,  p,  r)&#160;&#160;&#160;            case Prec::p: return {Prec::l, Prec::r};</td></tr>
+<tr class="separator:aa59a5f5a821ce31b222873b1c8a06eda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tok_8h.html#a7d12cc9e30e6f91e9135feb7a67bb4df">CODE</a>(t,  str)&#160;&#160;&#160;t,</td></tr>
 <tr class="separator:a7d12cc9e30e6f91e9135feb7a67bb4df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -157,8 +163,80 @@ Variables</h2></td></tr>
 <tr class="separator:aa8cf24f3863a3214f02d9e37a68c7b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="aa59a5f5a821ce31b222873b1c8a06eda" name="aa59a5f5a821ce31b222873b1c8a06eda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa59a5f5a821ce31b222873b1c8a06eda">&#9670;&nbsp;</a></span>CODE <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">l, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">p, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">r&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;p,</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00102">102</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+</div>
+</div>
+<a id="aa59a5f5a821ce31b222873b1c8a06eda" name="aa59a5f5a821ce31b222873b1c8a06eda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa59a5f5a821ce31b222873b1c8a06eda">&#9670;&nbsp;</a></span>CODE <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">l, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">p, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">r&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;            case Prec::p: return {Prec::l, Prec::r};</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00102">102</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+</div>
+</div>
 <a id="a7d12cc9e30e6f91e9135feb7a67bb4df" name="a7d12cc9e30e6f91e9135feb7a67bb4df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d12cc9e30e6f91e9135feb7a67bb4df">&#9670;&nbsp;</a></span>CODE <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d12cc9e30e6f91e9135feb7a67bb4df">&#9670;&nbsp;</a></span>CODE <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -183,12 +261,12 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00081">81</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00102">102</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
 <a id="a7d12cc9e30e6f91e9135feb7a67bb4df" name="a7d12cc9e30e6f91e9135feb7a67bb4df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7d12cc9e30e6f91e9135feb7a67bb4df">&#9670;&nbsp;</a></span>CODE <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d12cc9e30e6f91e9135feb7a67bb4df">&#9670;&nbsp;</a></span>CODE <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -213,7 +291,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00081">81</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00102">102</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
 </div>
 </div>
@@ -266,6 +344,38 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ac29f384be3c6b33c3b9beded2bd1df1c" name="ac29f384be3c6b33c3b9beded2bd1df1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac29f384be3c6b33c3b9beded2bd1df1c">&#9670;&nbsp;</a></span>THORIN_PREC</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define THORIN_PREC</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">m</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <span class="comment">/* left     prec,       right  */</span>   \</div>
+<div class="line">    m(Nil,      Bottom,     Nil     )   \</div>
+<div class="line">    m(Nil,      Nil,        Nil     )   \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0acc524d86ec74bf18ee3f5a5ec4d36b6d">Pi</a>,       Arrow,      Arrow   )   \</div>
+<div class="line">    m(Nil,      <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0acc524d86ec74bf18ee3f5a5ec4d36b6d">Pi</a>,         <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0ad26ed8ccf9be433863b45140f88c43ff">App</a>     )   \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0ad26ed8ccf9be433863b45140f88c43ff">App</a>,      <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0ad26ed8ccf9be433863b45140f88c43ff">App</a>,        <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a257bf2499ed2c21151ca373f7c4c0307">Extract</a> )   \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a257bf2499ed2c21151ca373f7c4c0307">Extract</a>,  <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a257bf2499ed2c21151ca373f7c4c0307">Extract</a>,    <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a8a318b95f9e4e08fd5b5cbcadcd93b7e">Lit</a>     )   \</div>
+<div class="line">    m(Nil,      <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a8a318b95f9e4e08fd5b5cbcadcd93b7e">Lit</a>,        <a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a8a318b95f9e4e08fd5b5cbcadcd93b7e">Lit</a>     )   \</div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a6a87d766b1a71f8904a23bb3c792c3c0a257bf2499ed2c21151ca373f7c4c0307"><div class="ttname"><a href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a257bf2499ed2c21151ca373f7c4c0307">thorin::Node::Extract</a></div><div class="ttdeci">@ Extract</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a6a87d766b1a71f8904a23bb3c792c3c0a8a318b95f9e4e08fd5b5cbcadcd93b7e"><div class="ttname"><a href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a8a318b95f9e4e08fd5b5cbcadcd93b7e">thorin::Node::Lit</a></div><div class="ttdeci">@ Lit</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a6a87d766b1a71f8904a23bb3c792c3c0acc524d86ec74bf18ee3f5a5ec4d36b6d"><div class="ttname"><a href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0acc524d86ec74bf18ee3f5a5ec4d36b6d">thorin::Node::Pi</a></div><div class="ttdeci">@ Pi</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a6a87d766b1a71f8904a23bb3c792c3c0ad26ed8ccf9be433863b45140f88c43ff"><div class="ttname"><a href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0ad26ed8ccf9be433863b45140f88c43ff">thorin::Node::App</a></div><div class="ttdeci">@ App</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00182">tables.h:182</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00069">69</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
+
+</div>
+</div>
 <a id="a3d2da954389db5acfc86380a482ee87d" name="a3d2da954389db5acfc86380a482ee87d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3d2da954389db5acfc86380a482ee87d">&#9670;&nbsp;</a></span>THORIN_SUBST</h2>
 
@@ -281,12 +391,12 @@ Variables</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    m(<span class="stringliteral">&quot;-&gt;&quot;</span>,     T_arrow )               \</div>
-<div class="line">    m(<span class="stringliteral">&quot;.bot&quot;</span>,   T_bot   )               \</div>
-<div class="line">    m(<span class="stringliteral">&quot;.top&quot;</span>,   T_top   )               \</div>
-<div class="line">    m(<span class="stringliteral">&quot;.space&quot;</span>, T_top   )               \</div>
-<div class="line">    m(<span class="stringliteral">&quot;\\&quot;</span>,     T_lam   )               \</div>
-<div class="line">    m(<span class="stringliteral">&quot;\\/&quot;</span>,    T_forall)               \</div>
+<b>Value:</b><div class="fragment"><div class="line">    m(<span class="stringliteral">&quot;-&gt;&quot;</span>,     T_arrow)                \</div>
+<div class="line">    m(<span class="stringliteral">&quot;.bot&quot;</span>,   T_bot  )                \</div>
+<div class="line">    m(<span class="stringliteral">&quot;.top&quot;</span>,   T_top  )                \</div>
+<div class="line">    m(<span class="stringliteral">&quot;.lam&quot;</span>,   T_lam  )                \</div>
+<div class="line">    m(<span class="stringliteral">&quot;.Pi&quot;</span>,    T_Pi   )                \</div>
+<div class="line">    m(<span class="stringliteral">&quot;.space&quot;</span>, T_top  )                \</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="tok_8h_source.html#l00061">61</a> of file <a class="el" href="tok_8h_source.html">tok.h</a>.</p>
 
