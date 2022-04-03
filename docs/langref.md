@@ -120,7 +120,7 @@ Expressions nesting is disambiguated according to the following precedence table
 | L `∷` e       | type ascription of a literal        | -             |
 | e `#` e       | extract                             | left-to-right |
 | e e           | application                         | left-to-right |
-| `Π` Sym `:` e | domain of a dependent function type | left-to-right |
+| `Π` Sym `:` e | domain of a dependent function type | -             |
 | e `→` e       | function type                       | right-to-left |
 
 Note that the domain of a dependent function type binds slightly stronger than `→`.
