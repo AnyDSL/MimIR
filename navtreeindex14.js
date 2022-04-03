@@ -1,6 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"structthorin_1_1Loc.html":[9,0,0,75],
 "structthorin_1_1Loc.html":[7,0,0,82],
 "structthorin_1_1Loc.html#a2801619c99a72f74d25ed4542a66be6b":[7,0,0,82,0],
 "structthorin_1_1Loc.html#a2801619c99a72f74d25ed4542a66be6b":[9,0,0,75,0],
@@ -249,5 +248,6 @@ var NAVTREEINDEX14 =
 "tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a13d9573ef23af91a95b15899f5c778c1":[10,0,2,25,43,11],
 "tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a15bd4502d3a7637c7bb048db810fcc26":[10,0,2,25,43,10],
 "tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a28dc2fc52d3a0320b51c41958abe631d":[10,0,2,25,43,3],
-"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a2c0cb058903c4db1685b91732d047226":[10,0,2,25,43,7]
+"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a2c0cb058903c4db1685b91732d047226":[10,0,2,25,43,7],
+"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a58fcbdf02d7d580039bfbe6c6d82a70b":[10,0,2,25,43,8]
 };

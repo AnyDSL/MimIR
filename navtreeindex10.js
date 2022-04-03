@@ -186,14 +186,13 @@ var NAVTREEINDEX10 =
 "md_docs_dev.html#autotoc_md19":[3,4],
 "md_docs_langref.html":[1],
 "md_docs_langref.html#autotoc_md10":[1,1,1],
-"md_docs_langref.html#autotoc_md6":[1,0,1,0],
-"md_docs_langref.html#autotoc_md7":[1,0,1,1],
-"md_docs_langref.html#autotoc_md8":[1,0,1,2],
+"md_docs_langref.html#autotoc_md6":[1,0,0,0],
+"md_docs_langref.html#autotoc_md7":[1,0,0,1],
+"md_docs_langref.html#autotoc_md8":[1,0,0,2],
 "md_docs_langref.html#autotoc_md9":[1,1],
-"md_docs_langref.html#def":[1,0,0],
 "md_docs_langref.html#lex":[1,0],
 "md_docs_langref.html#productions":[1,1,0],
-"md_docs_langref.html#terminals":[1,0,1],
+"md_docs_langref.html#terminals":[1,0,0],
 "md_docs_passes.html":[4],
 "md_docs_passes.html#autotoc_md21":[4,0],
 "md_docs_passes.html#autotoc_md22":[4,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX10 =
 "namespacethorin.html#a0f354f300565433d3e4302eca39d95d4":[7,0,0,325],
 "namespacethorin.html#a0ff05ea830ab281bb1893bd81f023423":[7,0,0,356],
 "namespacethorin.html#a10a4048d7bc36053f84f2811a43999c6":[7,0,0,344],
-"namespacethorin.html#a1146751cff4360b9409462e9ab5c1294":[10,0,2,5,12,12,0]
+"namespacethorin.html#a1146751cff4360b9409462e9ab5c1294":[10,0,2,5,12,12,0],
+"namespacethorin.html#a11d9f60317a743a4384f429a270db9de":[7,0,0,321]
 };

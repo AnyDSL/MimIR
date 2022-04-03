@@ -34,11 +34,10 @@ var NAVTREE =
     ] ],
     [ "Language Reference", "md_docs_langref.html", [
       [ "Lexical Structure", "md_docs_langref.html#lex", [
-        [ "Definitions", "md_docs_langref.html#def", null ],
         [ "Terminals", "md_docs_langref.html#terminals", [
           [ "Primary Terminals", "md_docs_langref.html#autotoc_md6", null ],
-          [ "Regular Expressions", "md_docs_langref.html#autotoc_md7", null ],
-          [ "Keywords", "md_docs_langref.html#autotoc_md8", null ]
+          [ "Keywords", "md_docs_langref.html#autotoc_md7", null ],
+          [ "Regular Expressions", "md_docs_langref.html#autotoc_md8", null ]
         ] ]
       ] ],
       [ "Grammar", "md_docs_langref.html#autotoc_md9", [
@@ -134,11 +133,11 @@ var NAVTREEINDEX =
 "classthorin_1_1World.html#a466ea83c06e590328383a2b29a418a53",
 "classthorin_1_1World.html#ad602893f4c42eac1464770141b90a06f",
 "error_8cpp.html#a8bd418a99edf51fa3f752019e1d48d51",
-"namespacethorin.html#a11d9f60317a743a4384f429a270db9de",
-"namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508",
-"normalize_8h.html#a9dea96748c32d7e675ee36c955025f19",
+"namespacethorin.html#a12cc65a06abfcbcae824f6128f3b7a65",
+"namespacethorin.html#abb917bebc699083d990fc4592abcc50eacf5f3091e30dee6597885d8c0e0c357f",
+"normalize_8h.html#aa171f9cec4330ed2febd4c8d59c9d4e7",
 "structthorin_1_1Loc.html",
-"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a58fcbdf02d7d580039bfbe6c6d82a70b"
+"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a5e16374bc0b446b61bf30dfecc1c845b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
