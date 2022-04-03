@@ -39,10 +39,12 @@ private:
     /// @name primary defs
     ///@{
     const Def* parse_pack_or_array(bool pack);
-    const Def* parse_ext(bool);
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();
+    const Def* parse_ext(bool);
+    const Def* parse_lam();
+    const Def* parse_Pi();
     const Def* parse_lit();
     const Def* parse_let();
     ///@}

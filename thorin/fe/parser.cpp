@@ -46,6 +46,7 @@ void Parser::parse_module() {
     expect(Tok::Tag::D_brace_l, "module");
     parse_def("module");
     expect(Tok::Tag::D_brace_r, "module");
+    expect(Tok::Tag::M_eof, "module");
 };
 
 Sym Parser::parse_sym(std::string_view ctxt) {
@@ -61,17 +62,23 @@ const Def* Parser::parse_def(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::B
 
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
-        if (accept(Tok::Tag::T_extract)) {
-            if (Tok::Prec::Extract < p) break;
-            auto rhs = parse_def("right-hand side of an extract", Tok::Prec::Lit);
+        if (ahead().isa(Tok::Tag::T_extract)) {
+            auto [l, r] = Tok::prec(Tok::Prec::Extract);
+            if (l < p) break;
+            lex();
+            auto rhs = parse_def("right-hand side of an extract", r);
             lhs      = world().extract(lhs, rhs, track);
-        } else if (accept(Tok::Tag::T_arrow)) {
-            if (Tok::Prec::App < p) break;
-            auto rhs = parse_def("right-hand side of an function type", Tok::Prec::Pi);
+        } else if (ahead().isa(Tok::Tag::T_arrow)) {
+            auto [l, r] = Tok::prec(Tok::Prec::Arrow);
+            if (l < p) break;
+            lex();
+            auto rhs = parse_def("right-hand side of an function type", r);
             lhs      = world().pi(lhs, rhs, track);
+            lhs->dump(0);
         } else {
-            if (Tok::Prec::App < p) break;
-            if (auto rhs = parse_def({}, Tok::Prec::Extract)) {
+            auto [l, r] = Tok::prec(Tok::Prec::App);
+            if (l < p) break;
+            if (auto rhs = parse_def({}, r)) {
                 lhs = world().app(lhs, rhs, track); // if we can parse an expression, it's an App
             } else {
                 return lhs;
@@ -86,15 +93,20 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
         case Tok::Tag::D_angle_l:   return parse_pack_or_array(true);
+        case Tok::Tag::D_quote_l:   return parse_pack_or_array(false);
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_paren_l:   return parse_tuple();
-        case Tok::Tag::D_quote_l:   return parse_pack_or_array(false);
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
         case Tok::Tag::T_bot:       return parse_ext(false);
+        case Tok::Tag::T_top:       return parse_ext(true);
+        case Tok::Tag::T_Pi:        return parse_Pi();
+        case Tok::Tag::T_lam:       return parse_lam();
         case Tok::Tag::T_space:     lex(); return world().space();
         case Tok::Tag::T_star:      lex(); return world().kind();
-        case Tok::Tag::T_top:       return parse_ext(true);
+        case Tok::Tag::L_s:
+        case Tok::Tag::L_u:
+        case Tok::Tag::L_r:         return parse_lit();
         case Tok::Tag::M_i:         return lex().index();
         case Tok::Tag::M_ax: {
             // HACK hard-coded some built-in axioms
@@ -113,9 +125,6 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
             errln("symbol '{}' not found", sym);
             return nullptr;
         }
-        case Tok::Tag::L_s:
-        case Tok::Tag::L_u:
-        case Tok::Tag::L_r:         return parse_lit();
         default:
             if (ctxt.empty()) return nullptr;
             err("primary def", ctxt);
@@ -135,11 +144,11 @@ const Def* Parser::parse_pack_or_array(bool pack) {
     return world().arr(shape, body, track);
 }
 
-const Def* Parser::parse_tuple() {
-    auto ops = parse_list("tuple", Tok::Tag::D_paren_l, [this]() { return parse_def("tuple element"); });
-    auto t   = world().tuple(ops);
-    t->dump(0);
-    return t;
+const Def* Parser::parse_block() {
+    eat(Tok::Tag::D_brace_l);
+    auto res = parse_def("block expression");
+    expect(Tok::Tag::D_brace_r, "block expression");
+    return res;
 }
 
 const Def* Parser::parse_sigma() {
@@ -149,18 +158,49 @@ const Def* Parser::parse_sigma() {
     return s;
 }
 
-const Def* Parser::parse_block() {
-    eat(Tok::Tag::D_brace_l);
-    auto res = parse_def("block expression");
-    expect(Tok::Tag::D_brace_r, "block expression");
-    return res;
+const Def* Parser::parse_tuple() {
+    auto ops = parse_list("tuple", Tok::Tag::D_paren_l, [this]() { return parse_def("tuple element"); });
+    auto t   = world().tuple(ops);
+    t->dump(0);
+    return t;
 }
 
 const Def* Parser::parse_ext(bool top) {
-    auto track = tracker();
-    auto lit   = lex();
-    auto type  = accept(Tok::Tag::T_colon) ? parse_def("literal", Tok::Prec::Lit) : world().kind();
+    auto track  = tracker();
+    auto lit    = lex();
+    auto [_, r] = Tok::prec(Tok::Prec::Lit);
+    auto type   = accept(Tok::Tag::T_colon) ? parse_def("literal", r) : world().kind();
     return world().ext(top, type, track);
+}
+
+const Def* Parser::parse_Pi() {
+    auto track = tracker();
+    eat(Tok::Tag::T_Pi);
+    auto var = parse_sym("variable of a dependent function type");
+    expect(Tok::Tag::T_colon, "domain of a dependent function type");
+    auto dom = parse_def("domain of a dependent function type", Tok::Prec::App);
+    expect(Tok::Tag::T_arrow, "dependent function type");
+    auto pi = world().nom_pi(world().kind()); // HACK
+    pi->set_dom(dom);
+    push();
+    insert(var, pi->var()); // TODO set location
+    pi->set_codom(parse_def("codomain of a dependent function type", Tok::Prec::Arrow));
+    pi->set_dbg(track);
+    pop();
+    pi->dump(1);
+    return pi;
+}
+
+const Def* Parser::parse_lam() {
+#if 0
+    auto track = tracker();
+    eat(Tok::Tag::T_lam);
+    auto var = parse_sym("variable of a lambda abstraction");
+    expect(Tok::Tag::T_semicolon, "lambda abstraction");
+    auto type = parse_def("type of a lambda abstraction");
+#endif
+
+    return nullptr;
 }
 
 const Def* Parser::parse_lit() {

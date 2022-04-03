@@ -12,7 +12,7 @@ using namespace thorin;
 
 TEST(Lexer, Toks) {
     World world;
-    std::istringstream is("{ } ( ) [ ] ‹ › « » : , . \\ \\/ λ ∀");
+    std::istringstream is("{ } ( ) [ ] ‹ › « » : , . .lam .Pi λ Π");
     Lexer lexer(world, "<is>", is);
 
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brace_l));
@@ -29,9 +29,9 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_comma));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_dot));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lam));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_forall));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_Pi));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lam));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_forall));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_Pi));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
 }
 
