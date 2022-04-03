@@ -8,25 +8,6 @@ Thorin files are [UTF-8](https://en.wikipedia.org/wiki/UTF-8) encoded and [lexed
 The [maximal munch](https://en.wikipedia.org/wiki/Maximal_munch) strategy resolves any ambiguities in the lexical rules below.
 For Example, `<<<` is lexed as `<<` and `<`.
 
-### Definitions {#def}
-
-We use the following rules specified via [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) as shorthand:
-
-| Name | Regular Expression                                      | Comment                                         |
-|------|---------------------------------------------------------|-------------------------------------------------|
-| 0b   | `0` \[ `b``B` \]                                        | prefix for binary literals                      |
-| 0o   | `0` \[ `o``O` \]                                        | prefix for octal literals                       |
-| 0x   | `0` \[ `x``X` \]                                        | prefix for hexadecimal literals                 |
-| bin  | \[ `0``1` \]                                            | binary digit                                    |
-| oct  | \[ `0`-`7` \]                                           | octal digit                                     |
-| dec  | \[ `0`-`9` \]                                           | decimal digit                                   |
-| sub  | \[ `₀`-`₉` \]                                           | subscript digit (always decimal)                |
-| hex  | \[ `0`-`9``a`-`f``A`-`F` \]                             | hexadecimal digit                               |
-| eE   | \[ `e` `E` \]                                           | exponent in floating point literals             |
-| pP   | \[ `p` `P` \]                                           | exponent in floating point hexadecimal literals |
-| sign | \[ `+` `-` \]                                           |                                                 |
-| sym  | \[ `_``a`-`z``A`-`Z` \]\[ `_``0`-`9``a`-`z``A`-`Z` \]\* | symbol                                          |
-
 ### Terminals {#terminals}
 
 The actual *[terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)* are specified in the following tables.
@@ -46,9 +27,23 @@ Both tokens are identified as `⊥`.
 | `=` `,` `;` `.` `#`             |                                                   | further tokens            |
 | `<EoF>`                         |                                                   | marks the end of the file |
 
+#### Keywords
+
+In addition the following keywords are *terminals*:
+
+| Terminal    | Comment                   |
+|-------------|---------------------------|
+| `.external` | marks nominal as external |
+| `.module`   | starts a module           |
+| `.Nat`      | thorin::Nat               |
+| `.ff`       | alias for `0₂`            |
+| `.tt`       | alias for `1₂`            |
+
+All keywords start with a `.` to prevent name clashes with identifiers.
+
 #### Regular Expressions
 
-The following *terminals* comprise more complicated patterns that are specified via [regular expressions](https://en.wikipedia.org/wiki/Regular_expression) and the [definitions](#def) above:
+The following *terminals* comprise more complicated patterns that are specified via [regular expressions](https://en.wikipedia.org/wiki/Regular_expression):
 
 | Terminal | Regular Expression                   | Comment                                                                                           |
 |----------|--------------------------------------|---------------------------------------------------------------------------------------------------|
@@ -71,18 +66,25 @@ The following *terminals* comprise more complicated patterns that are specified 
 | I        | dec+ sub+                            | integer literal of type `:Int mod`                                                                |
 | I        | dec+ `_` dec+                        | integer literal of type `:Int mod`                                                                |
 
-#### Keywords
+The previous table resorts to the following definitions as shorthand:
 
-Keywords start with a `.` to prevent name clashes with identifiers.
-In addition the following keywords are terminals:
+| Name | Regular Expression                                      | Comment                                         |
+|------|---------------------------------------------------------|-------------------------------------------------|
+| 0b   | `0` \[ `b``B` \]                                        | prefix for binary literals                      |
+| 0o   | `0` \[ `o``O` \]                                        | prefix for octal literals                       |
+| 0x   | `0` \[ `x``X` \]                                        | prefix for hexadecimal literals                 |
+| bin  | \[ `0``1` \]                                            | binary digit                                    |
+| oct  | \[ `0`-`7` \]                                           | octal digit                                     |
+| dec  | \[ `0`-`9` \]                                           | decimal digit                                   |
+| sub  | \[ `₀`-`₉` \]                                           | subscript digit (always decimal)                |
+| hex  | \[ `0`-`9``a`-`f``A`-`F` \]                             | hexadecimal digit                               |
+| eE   | \[ `e` `E` \]                                           | exponent in floating point literals             |
+| pP   | \[ `p` `P` \]                                           | exponent in floating point hexadecimal literals |
+| sign | \[ `+` `-` \]                                           |                                                 |
+| sym  | \[ `_``a`-`z``A`-`Z` \]\[ `_``0`-`9``a`-`z``A`-`Z` \]\* | symbol                                          |
 
-| Terminal    | Comment                   |
-|-------------|---------------------------|
-| `.external` | marks nominal as external |
-| `.module`   | starts a module           |
-| `.Nat`      | thorin::Nat               |
-| `.ff`       | alias for `0₂`            |
-| `.tt`       | alias for `1₂`            |
+So, *sym* referes to the shorthand rule while *Sym* refers to the *terminal* that is identical to *sym*.
+However, the terminal *Ax* also uses the shorthand rule *sym*.
 
 ## Grammar
 
