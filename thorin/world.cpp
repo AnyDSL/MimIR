@@ -64,8 +64,7 @@ World::World(std::string_view name)
         data_.type_ptr_ = axiom(nullptr, pi({type(), nat}, type()), Tag::Ptr, 0, dbg("ptr"));
     }
     {
-#define CODE(T, o) \
-    data_.T##_[size_t(T::o)] = axiom(normalize_##T<T::o>, ty, Tag::T, flags_t(T::o), dbg(op2str(T::o)));
+#define CODE(T, o) data_.T##_[size_t(T::o)] = axiom(normalize_##T<T::o>, ty, Tag::T, flags_t(T::o), dbg(op2str(T::o)));
     }
     { // bit: w: nat -> [int w, int w] -> int w
         auto ty    = nom_pi(type())->set_dom(nat);
@@ -142,10 +141,8 @@ World::World(std::string_view name)
         auto ty = nom_pi(type())->set_dom(type());
         auto T  = ty->var(dbg("T"));
         ty->set_codom(pi(T, T));
-        data_.PE_[size_t(PE::hlt)] =
-            axiom(normalize_PE<PE::hlt>, ty, Tag::PE, flags_t(PE::hlt), dbg(op2str(PE::hlt)));
-        data_.PE_[size_t(PE::run)] =
-            axiom(normalize_PE<PE::run>, ty, Tag::PE, flags_t(PE::run), dbg(op2str(PE::run)));
+        data_.PE_[size_t(PE::hlt)] = axiom(normalize_PE<PE::hlt>, ty, Tag::PE, flags_t(PE::hlt), dbg(op2str(PE::hlt)));
+        data_.PE_[size_t(PE::run)] = axiom(normalize_PE<PE::run>, ty, Tag::PE, flags_t(PE::run), dbg(op2str(PE::run)));
     }
     { // known: T: * -> T -> bool
         auto ty = nom_pi(type())->set_dom(type());

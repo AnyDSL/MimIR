@@ -79,10 +79,14 @@ public:
     ///@{
     const Univ* univ() { return data_.univ_; }
     const Type* type(const Def* level) { return unify<Type>(1, level)->as<Type>(); }
-    template<level_t level = 0> const Type* type() {
-        if constexpr (level == 0) return data_.type_0_;
-        else if constexpr (level == 1) return data_.type_1_;
-        else return type(lit_univ(level));
+    template<level_t level = 0>
+    const Type* type() {
+        if constexpr (level == 0)
+            return data_.type_0_;
+        else if constexpr (level == 1)
+            return data_.type_1_;
+        else
+            return type(lit_univ(level));
     }
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg = {}) {
@@ -173,7 +177,9 @@ public:
     ///@{
     Arr* nom_arr(const Def* type, const Def* shape, const Def* dbg = {}) { return insert<Arr>(2, type, shape, dbg); }
     template<level_t level = 0>
-    Arr* nom_arr(const Def* shape, const Def* dbg = {}) { return nom_arr(type<level>(), shape, dbg); }
+    Arr* nom_arr(const Def* shape, const Def* dbg = {}) {
+        return nom_arr(type<level>(), shape, dbg);
+    }
     const Def* arr(const Def* shape, const Def* body, const Def* dbg = {});
     const Def* arr(Defs shape, const Def* body, const Def* dbg = {});
     const Def* arr(u64 n, const Def* body, const Def* dbg = {}) { return arr(lit_nat(n), body, dbg); }
@@ -297,10 +303,9 @@ public:
         else if constexpr (sizeof(R) == 8) return lit(type_real(64), thorin::bitcast<u64>(val), dbg);
         else unreachable();
     }
-    // clang-format on
     ///@}
 
-    /// @name set operations
+    /// @name lattice
     ///@{
     template<bool up>
     const Def* ext(const Def* type, const Def* dbg = {});
@@ -309,21 +314,14 @@ public:
     const Def* top(const Def* type, const Def* dbg = {}) { return ext<true>(type, dbg); }
     const Def* bot_type() { return data_.bot_type_; }
     const Def* top_nat() { return data_.top_nat_; }
-    template<bool up>
-    TBound<up>* nom_bound(const Def* type, size_t size, const Def* dbg = {}) {
-        return insert<TBound<up>>(size, type, size, dbg);
-    }
-    /// A *nom*inal Bound of type level.
-    template<bool up, level_t level = 0>
-    TBound<up>* nom_bound(size_t size, const Def* dbg = {}) {
-        return nom_bound<up>(type<level>(), size, dbg);
-    }
-    template<bool up>
-    const Def* bound(Defs ops, const Def* dbg = {});
+    template<bool up> TBound<up>* nom_bound(const Def* type, size_t size, const Def* dbg = {}) { return insert<TBound<up>>(size, type, size, dbg); }
+    /// A *nom*inal Bound of Type @p l%evel.
+    template<bool up, level_t l = 0> TBound<up>* nom_bound(size_t size, const Def* dbg = {}) { return nom_bound<up>(type<l>(), size, dbg); }
+    template<bool up> const Def* bound(Defs ops, const Def* dbg = {});
     Join* nom_join(const Def* type, size_t size, const Def* dbg = {}) { return nom_bound<true>(type, size, dbg); }
     Meet* nom_meet(const Def* type, size_t size, const Def* dbg = {}) { return nom_bound<false>(type, size, dbg); }
-    template<level_t l = 0>Join* nom_join(size_t size, const Def* dbg = {}) { return nom_join(type<l>(), size, dbg); }
-    template<level_t l = 0>Meet* nom_meet(size_t size, const Def* dbg = {}) { return nom_meet(type<l>(), size, dbg); }
+    template<level_t l = 0> Join* nom_join(size_t size, const Def* dbg = {}) { return nom_join(type<l>(), size, dbg); }
+    template<level_t l = 0> Meet* nom_meet(size_t size, const Def* dbg = {}) { return nom_meet(type<l>(), size, dbg); }
     const Def* join(Defs ops, const Def* dbg = {}) { return bound<true>(ops, dbg); }
     const Def* meet(Defs ops, const Def* dbg = {}) { return bound<false>(ops, dbg); }
     const Def* et(const Def* type, Defs ops, const Def* dbg = {});
@@ -336,11 +334,10 @@ public:
 
     /// @name globals -- depdrecated; will be removed
     ///@{
-    Global* global(const Def* type, bool is_mutable = true, const Def* dbg = {}) {
-        return insert<Global>(1, type, is_mutable, dbg);
-    }
+    Global* global(const Def* type, bool is_mutable = true, const Def* dbg = {}) { return insert<Global>(1, type, is_mutable, dbg); }
     Global* global_immutable_string(std::string_view str, const Def* dbg = {});
     ///@}
+    // clang-format on
 
     /// @name types
     ///@{

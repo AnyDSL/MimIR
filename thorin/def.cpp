@@ -135,7 +135,6 @@ World& Def::world() const {
     return type()->world(); // TODO unroll
 }
 
-
 const Def* Def::inf_type() const {
     if (type_) return type_;
     if (auto t = isa<Type>()) return world().type(world().lit_univ(as_lit(t->level()) + 1));
