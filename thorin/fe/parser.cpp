@@ -102,8 +102,8 @@ const Def* Parser::parse_primary_def(std::string_view ctxt) {
         case Tok::Tag::T_top:       return parse_ext(true);
         case Tok::Tag::T_Pi:        return parse_Pi();
         case Tok::Tag::T_lam:       return parse_lam();
-        case Tok::Tag::T_space:     lex(); return world().space();
-        case Tok::Tag::T_star:      lex(); return world().kind();
+        case Tok::Tag::T_star:      lex(); return world().type();
+        case Tok::Tag::T_space:     lex(); return world().type<1>();
         case Tok::Tag::L_s:
         case Tok::Tag::L_u:
         case Tok::Tag::L_r:         return parse_lit();
@@ -169,7 +169,7 @@ const Def* Parser::parse_ext(bool top) {
     auto track  = tracker();
     auto lit    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
-    auto type   = accept(Tok::Tag::T_colon) ? parse_def("literal", r) : world().kind();
+    auto type   = accept(Tok::Tag::T_colon) ? parse_def("literal", r) : world().type();
     return world().ext(top, type, track);
 }
 
@@ -180,7 +180,7 @@ const Def* Parser::parse_Pi() {
     expect(Tok::Tag::T_colon, "domain of a dependent function type");
     auto dom = parse_def("domain of a dependent function type", Tok::Prec::App);
     expect(Tok::Tag::T_arrow, "dependent function type");
-    auto pi = world().nom_pi(world().kind()); // HACK
+    auto pi = world().nom_pi(world().type()); // HACK
     pi->set_dom(dom);
     push();
     insert(var, pi->var()); // TODO set location

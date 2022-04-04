@@ -16,7 +16,7 @@ using fields_t = u64;
 using nat_t    = u64;
 
 #define THORIN_NODE(m)                                                        \
-    m(Space, space)     m(Kind, kind)                                         \
+    m(Type, type)       m(Univ, univ)                                         \
     m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
     m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
     m(Arr, arr)         m(Pack, pack)                                         \

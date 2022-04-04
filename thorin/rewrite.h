@@ -13,9 +13,7 @@ public:
     Rewriter(World& old_world, World& new_world, const Scope* scope = nullptr)
         : old_world(old_world)
         , new_world(new_world)
-        , scope(scope) {
-        old2new[old_world.space()] = new_world.space();
-    }
+        , scope(scope) {}
     Rewriter(World& world, const Scope* scope = nullptr)
         : Rewriter(world, world, scope) {}
 
