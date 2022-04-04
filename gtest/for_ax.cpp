@@ -55,18 +55,15 @@ TEST_P(ForAxiomTest, for) {
             auto [mem, acctpl] = brk->vars<2>();
             brk->app(false, ret, {mem, w.extract(acctpl, 0_s)});
             main->set_filter(false);
-            main->set_body(w.op_for({i32_t, i64_t}, main_mem, lit_begin, lit_end, lit_step,
-                                    {w.lit_int(0), w.lit_int(i64_t, 5)}, body, brk));
+            main->set_body(
+                w.op_for(main_mem, lit_begin, lit_end, lit_step, {w.lit_int(0), w.lit_int(i64_t, 5)}, body, brk));
         }
     }
 
     main->make_external();
 
-    PassMan man{w};
-    man.add<LowerFor>();
-    man.run();
-
     PassMan opt{w};
+    opt.add<LowerFor>();
     auto br = opt.add<BetaRed>();
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);
@@ -153,18 +150,14 @@ TEST_P(ForAxiomTest, for_dynamic_iters) {
             auto end              = atoi_end->var(1, w.dbg("end"));
             auto [step_mem, step] = atoi_step->vars<2>({w.dbg("mem"), w.dbg("step")});
             atoi_step->set_filter(false);
-            atoi_step->set_body(
-                w.op_for({i32_t, i64_t}, step_mem, begin, end, step, {w.lit_int(0), w.lit_int(i64_t, 5)}, body, brk));
+            atoi_step->set_body(w.op_for(step_mem, begin, end, step, {w.lit_int(0), w.lit_int(i64_t, 5)}, body, brk));
         }
     }
 
     main->make_external();
 
-    PassMan man{w};
-    man.add<LowerFor>();
-    man.run();
-
     PassMan opt{w};
+    opt.add<LowerFor>();
     auto br = opt.add<BetaRed>();
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);

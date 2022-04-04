@@ -44,3 +44,29 @@ In VS Code you can do so by adding the following to the `launch.json` configurat
 "visualizerFile": "${workspaceFolder}/thorin.natvis",
 "showDisplayString": true,
 ```
+
+## GoogleTest
+
+Thorin's unit test suite uses [GoogleTest](https://google.github.io/googletest/).
+During debugging you probably only want to run a specifig test case.
+You can [filter](https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests) the test cases like this:
+```sh
+./thorin-gtest --gtest_filter="*Loc*"
+```
+This command lists all available tests:
+```sh
+./thorin-gtest --gtest_list_tests
+```
+In addition, you may find it helpful to turn assertion failures into debugger break-points:
+```sh
+./thorin-test --gtest_break_on_failure
+```
+
+## Valgrind & GDB
+
+If you encounter memory related problems, you might want to run the program with [Valgrind's GDB server](https://valgrind.org/docs/manual/manual-core-adv.html).
+Simply launch the program like this
+```sh
+valgrind --vgdb=yes --vgdb-error=0 thorin-gtest
+```
+and follow the instructions.
