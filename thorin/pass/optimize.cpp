@@ -26,10 +26,14 @@
 
 namespace thorin {
 
+
+void graph_print(std::ofstream& ofs, DefSet& done, const Def* def, int maxDepth);
+
 void optimize(World& world) {
     PassMan::run<Scalerize>(world, nullptr);
     PassMan::run<EtaRed>(world);
     PassMan::run<TailRecElim>(world, nullptr);
+    printf("Getting started\n");
 
     world.set(LogLevel::Debug);
     // world.set(std::make_unique<ErrorHandler>());
@@ -89,9 +93,9 @@ void optimize(World& world) {
     printf("Finished Simpl Opti\n");
 
 
-    PassMan optB(world);
-    optB.add<Peephole>();
-    optB.run();
+//    PassMan optB(world);
+//    optB.add<Peephole>();
+//    optB.run();
     printf("Finished Peephole Opti\n");
 
 
@@ -109,6 +113,40 @@ void optimize(World& world) {
     codgen_prep.add<Alloc2Malloc>();
     codgen_prep.add<RetWrap>();
     codgen_prep.run();
+
+    // create a file graph.dot
+//    std::ofstream ofs("graph.dot");
+//    ofs << "digraph G {\n";
+
+
+//    DefSet done;
+//    for (const auto& [_, nom] : world.externals())
+//        graph_print(ofs,done, nom, 4000);
+//    ofs << "}\n";
+//    ofs.close();
 }
+
+
+void graph_print(std::ofstream& ofs, DefSet& done, const Def* def, int maxDepth) {
+    if (maxDepth < 0) return;
+    if (!done.emplace(def).second) return;
+
+//    do_sth(def);
+
+    u32 id = def->gid();
+//    const char *content=def->to_string().c_str();
+
+    ofs << "  " << id << " [label=\"" << def->to_string().c_str() << "\"];\n";
+    printf("%d: %s\n", def->gid(), def->to_string().c_str());
+
+    for (auto op : def->ops()) {
+//        for (auto op : def->extended_ops()) {
+        u32 op_id = op->gid();
+        ofs << "  " << id << " -> " << op_id << ";\n";
+        graph_print(ofs,done, op, maxDepth-1);
+    }
+}
+
+
 
 } // namespace thorin

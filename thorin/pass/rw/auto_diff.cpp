@@ -255,7 +255,6 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         sum_pb->set_filter(true);
 
         return sum_pb;
-
     }
 
 
@@ -1005,6 +1004,7 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract, const Def* tuple) {
                 args[i]=v;
             }
         }
+        args[0]=mem;
         pb_args=args;
 
 //        pb_args = Array<const Def*>(
@@ -1507,11 +1507,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         auto last_mem=current_mem;
 
-        auto back_order=-1;//lam->type()->as<Pi>()->doms().back()->order();
-        auto returning = back_order>0;
+//        auto back_order=-1;//lam->type()->as<Pi>()->doms().back()->order();
+//        auto back_order = lam->type()->as<Pi>()->doms().back()->
+//        auto returning = back_order>0;
+        auto returning = lam->type()->is_returning();
         dlog(world_,"  lam ret pi: {}", lam->type()->ret_pi() ? 1 : 0);
 //        dlog(world_,"  lam returning2: {}", returning);
-        dlog(world_,"  order: {}", back_order);
+//        dlog(world_,"  order: {}", back_order);
+                dlog(world_,"  back: {}", lam->type()->as<Pi>()->doms().back());
         if(lam->type()->ret_pi() || returning) {
             auto dst = world_.op_rev_diff(lam);
             type_dump(world_,"  new lam",dst);
@@ -2096,8 +2099,9 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // a returning call is transformed using rev_diff with another rewrite pass
         // a non-returning call is transformed directly and augmented using pullbacks for its arguments
 
-        auto back_order=-1;//callee->type()->as<Pi>()->doms().back()->order();
-        auto returning = back_order>0;
+//        auto back_order=-1;//callee->type()->as<Pi>()->doms().back()->order();
+//        auto returning = back_order>0;
+        auto returning = callee->type()->as<Pi>()->is_returning();
         if (callee->type()->as<Pi>()->ret_pi() || returning) {
             dlog(world_,"  FYI returning callee");
 
