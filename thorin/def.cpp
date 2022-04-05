@@ -289,13 +289,15 @@ void Def::unset(size_t i) {
 
 bool Def::is_set() const {
     if (!isa_nom()) {
-        assert(std::all_of(ops().begin(), ops().end(), [](auto op) { return op != nullptr; }) && "structurals must be always set");
+        assert(std::all_of(ops().begin(), ops().end(), [](auto op) { return op != nullptr; }) &&
+               "structurals must be always set");
         return true;
     }
 
     if (std::all_of(ops().begin(), ops().end(), [](auto op) { return op != nullptr; })) return true;
 
-    assert(std::all_of(ops().begin(), ops().end(), [](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
+    assert(std::all_of(ops().begin(), ops().end(), [](auto op) { return op == nullptr; }) &&
+           "some operands are set, others aren't");
     return false;
 }
 
