@@ -62,9 +62,11 @@ TEST(Main, ll) {
 
 #ifndef _MSC_VER
     // TODO make sure that proper clang is in path on Windows
-    std::system("clang test.ll -o test -Wno-override-module");
-    EXPECT_EQ(4, WEXITSTATUS(std::system("./test a b c")));
-    EXPECT_EQ(7, WEXITSTATUS(std::system("./test a b c d e f")));
+    int status = std::system("clang test.ll -o test -Wno-override-module");
+    EXPECT_EQ(4, WEXITSTATUS());
+    status = std::system("./test a b c");
+    status = std::system("./test a b c d e f");
+    EXPECT_EQ(7, WEXITSTATUS(status));
 #endif
 }
 
