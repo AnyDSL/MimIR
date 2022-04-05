@@ -21,7 +21,9 @@ jobs:
           submodules: recursive
 
       - name: Install valgrind
-        run: brew install valgrind
+        run: |
+          brew tap LouisBrunner/valgrind
+          brew install --HEAD LouisBrunner/valgrind/valgrind
 
       - name: Configure
         run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
