@@ -86,15 +86,25 @@ static const Def* to_fat_ptr(World& world, const Def* ptr, const Def* size){
     auto dst_fat_ptr=world.tuple({int_size, ptr});
 }
 
-Array<const Def*> vars_without_mem_cont(World& world, Lam* lam) {
+const Pi* isReturning(const Pi* pi){
+    if (pi->is_cn() && pi->num_doms() > 0) {
+        auto ret = pi->dom(pi->num_doms() - 1);
+        if (auto ret_pi = ret->isa<Pi>(); ret_pi != nullptr && ret_pi->is_cn()) return ret_pi;
+    }
+
+    return nullptr;
+}
+
+DefArray vars_without_mem_cont(World& world, Lam* lam) {
     type_dump(world,"  get vars of",lam);
     dlog(world,"  has ret_var {}",lam->ret_var());
     //    if(lam->ret_var())
-    return Array<const Def*>(
-        lam->num_vars()-(lam->ret_var()==nullptr ? 1 : 2),
+    return {
+        lam->num_vars()-( isReturning(lam->type()) == nullptr ? 1 : 2),
         [&](auto i) {
           return lam->var(i+1);
-        });
+        }
+    };
 }
 
 
@@ -527,10 +537,6 @@ std::pair<const Def*,const Def*> oneHot(World& world_, const Def* mem, const Def
     }
 }
 
-
-
-
-
 namespace {
 
 class AutoDiffer {
@@ -589,14 +595,6 @@ private:
     const Def* chain(const Def* a, const Def* b);
     const Pi* createPbType(const Def* A, const Def* B);
     const Def* extract_pb(const Def* j_extract, const Def* tuple);
-    const Def* isReturning(const Pi* def){
-        if (def->is_cn() && def->num_doms() > 0) {
-            auto ret = def->dom(def->num_doms() - 1);
-            if (auto pi = ret->isa<Pi>(); pi != nullptr && pi->is_cn()) return pi;
-        }
-
-        return nullptr;
-    }
 
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
@@ -2253,7 +2251,8 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
             auto arg_pb = pullbacks_[d_arg]; // Lam
             type_dump(world_,"  arg pb",arg_pb);
-            auto ret_pb = chained->ret_var(); // extract
+
+            auto ret_pb = chained->var(chained->num_vars() - 1);
             type_dump(world_,"  ret var pb",ret_pb);
             auto chain_pb = chain(ret_pb,arg_pb);
             type_dump(world_,"  chain pb",chain_pb);
