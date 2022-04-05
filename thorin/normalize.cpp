@@ -968,10 +968,10 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
     if (lr && ls && *lr == 1 && *ls == 1) return w.app(f, arg, dbg);
 
     if (auto l_in = isa_lit(n_i)) {
-        auto args = arg->projs(*l_in);
+        auto args = arg->projs((size_t)*l_in);
 
         if (lr && std::ranges::all_of(args, [](auto arg) { return is_tuple_or_pack(arg); })) {
-            auto shapes = s->projs(*lr);
+            auto shapes = s->projs((size_t)*lr);
             auto s_n    = isa_lit(shapes.front());
 
             if (s_n) {
