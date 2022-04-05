@@ -20,9 +20,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install newest g++
-        run: brew install gcc
-
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1.5.2
         with:
