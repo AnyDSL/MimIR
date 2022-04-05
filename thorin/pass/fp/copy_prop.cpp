@@ -16,7 +16,7 @@ const Def* CopyProp::rewrite(const Def* def) {
     auto& [lattice, prop_lam, old_args] = it->second;
 
     if (var_lam->mem_var()) lattice[0] = Lattice::Keep;
-    if (std::ranges::all_of(lattice, [](auto l) { return l == Lattice::Keep; })) return app;
+    if (std::all_of(lattice.begin(), lattice.end(), [](auto l) { return l == Lattice::Keep; })) return app;
 
     DefVec new_args, new_doms, appxy_ops = {var_lam};
     auto& args = data(var_lam);

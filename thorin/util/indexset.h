@@ -74,7 +74,7 @@ public:
     bool insert(Key key) { return set<true>(key); } ///< Inserts \p key and returns true if successful.
     bool erase(Key key) { return set<false>(key); } ///< Erase \p key and returns true if successful.
     bool contains(Key key) const { return (*this)[key]; }
-    void clear() { std::ranges::fill(bits_, 0u); }
+    void clear() { std::fill(bits_.begin(), bits_.end(), 0u); }
 
     template<class Op>
     IndexSet& transform(const IndexSet& other, Op op) {

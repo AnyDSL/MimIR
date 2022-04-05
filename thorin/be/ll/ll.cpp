@@ -29,7 +29,7 @@ static bool is_const(const Def* def) {
 
     if (auto tuple = def->isa<Tuple>()) {
         auto ops = tuple->ops();
-        return std::ranges::all_of(ops, [](auto def) { return is_const(def); });
+        return std::all_of(ops.begin(), ops.end(), [](auto def) { return is_const(def); });
     }
 
     return false;

@@ -16,7 +16,7 @@ Lam* EtaExp::new2old(Lam* new_lam) {
 }
 
 const Def* EtaExp::rewrite(const Def* def) {
-    if (std::ranges::none_of(def->ops(), [](const Def* def) { return def->isa<Lam>(); })) return def;
+    if (std::none_of(def->ops().begin(), def->ops().end(), [](const Def* def) { return def->isa<Lam>(); })) return def;
     if (auto i = old2new().find(def); i != old2new().end()) return i->second;
 
     auto& [_, new_ops] = *def2new_ops_.emplace(def, def->ops()).first;
