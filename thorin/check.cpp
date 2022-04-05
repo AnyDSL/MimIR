@@ -46,7 +46,8 @@ bool Checker::equiv(const Def* d1, const Def* d2) {
         return false;
 
     auto ops1 = d1->ops();
-    return std::equal(ops1.begin(), ops1.end(), d2->ops(), [this](auto op1, auto op2) { return equiv(op1, op2); });
+    auto ops2 = d2->ops();
+    return std::equal(ops1.begin(), ops1.end(), ops2.begin(), [this](auto op1, auto op2) { return equiv(op1, op2); });
 }
 
 bool Checker::assignable(const Def* type, const Def* val) {

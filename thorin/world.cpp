@@ -566,7 +566,7 @@ const Def* World::bound(Defs ops, const Def* dbg) {
 
     // ignore: ext<!up>
     DefArray cpy(ops);
-    auto [_, end] = std::copy_if(ops.begin(), ops.end(), cpy.begin(), [&](const Def* op) { return !isa_ext(op); });
+    auto end = std::copy_if(ops.begin(), ops.end(), cpy.begin(), [&](const Def* op) { return !isa_ext(op); });
 
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
