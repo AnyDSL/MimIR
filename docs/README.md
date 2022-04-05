@@ -4,15 +4,18 @@
 
 <table  class="markdownTable">
     <tr class="markdownTableRowOdd">
-        <td>Documentation</td>
-        <td><a href=https://anydsl.github.io/thorin2><img src="https://img.shields.io/badge/docs-master-yellowgreen?logo=gitbook&logoColor=white" alt="Documentation"></a></td>
+        <td>Support</td>
+        <td>
+            <a href=https://anydsl.github.io/thorin2><img src="https://img.shields.io/badge/docs-master-green?logo=gitbook&logoColor=white" alt="Documentation"></a>
+            <a href=https://discord.gg/FPp7hdj3fQ><img src="https://img.shields.io/discord/960975142459179068?color=green&logo=discord&logoColor=white" alt="Discord"></a>
+        </td>
     </tr>
     <tr class="markdownTableRowEven">
         <td class="markdownTableBodyNone">
             License
         </td>
         <td class="markdownTableBodyNone">
-            <a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAQCAQAAACxD+fXAAAACXBIWXMAAAAvAAAALwEOg5kqAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAQlJREFUGBmFwbFK1HEAB/Bv3v1NuDvNwiuhREicurUXqA5bIu4Ip6bCBkFcHKygIRxCEbGlIKhd7AUOoTV6hXoH3+DTr+uEsMzPJ6e5527OY8d2zuOF5zmbMUve+uG7PV0X8jcd7/RN+OCTK5Z91MmfdO17pp7CipUUKqveu5MTFt3KiPuWMuK2xfym5arrJjNk2aMMaVkwo5Ff3FA3ZTZDnnicIde01cwm0TStMq3lUgprnqYwqamtbkoj5hMXXU7cTGHTagrzibbxxFxsGzjyxcB+Ci9tpLDjs4EjA29izAOvvNZXpbBnN4VxD23Z0lPPaQ4d5H9Uer75qqvKv6hZd+zEsTW1jPwEaIytGOF7PsEAAAAASUVORK5CYII=" alt="License"></a>
+            <a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAQCAQAAACxD+fXAAAACXBIWXMAAAAvAAAALwEOg5kqAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAQlJREFUGBmFwbFK1HEAB/Bv3v1NuDvNwiuhREicurUXqA5bIu4Ip6bCBkFcHKygIRxCEbGlIKhd7AUOoTV6hXoH3+DTr+uEsMzPJ6e5527OY8d2zuOF5zmbMUve+uG7PV0X8jcd7/RN+OCTK5Z91MmfdO17pp7CipUUKqveu5MTFt3KiPuWMuK2xfym5arrJjNk2aMMaVkwo5Ff3FA3ZTZDnnicIde01cwm0TStMq3lUgprnqYwqamtbkoj5hMXXU7cTGHTagrzibbxxFxsGzjyxcB+Ci9tpLDjs4EjA29izAOvvNZXpbBnN4VxD23Z0lPPaQ4d5H9Uer75qqvKv6hZd+zEsTW1jPwEaIytGOF7PsEAAAAASUVORK5CYII=&color=yellowgreen" alt="License"></a>
         </td>
     </tr>
     <tr class="markdownTableRowOdd">
@@ -22,7 +25,7 @@
         <td class="markdownTableBodyNone">
             <a href="https://cmake.org/"><img src="https://img.shields.io/badge/cmake-3.7-blue.svg?logo=cmake" alt="CMake"></a>
             <a href="https://isocpp.org/"><img src="https://img.shields.io/badge/standard-C%2B%2B%2020-blue.svg?logo=C%2B%2B" alt="C++"></a>
-            <a href="https://llvm.org/"><img src="https://img.shields.io/badge/LLVM%2FClang-13-blue?logo=llvm" alt="LLVM/Clang"></a>
+            <a href="https://llvm.org/"><img src="https://img.shields.io/badge/LLVM%2FClang-13.x--14.x-blue?logo=llvm" alt="LLVM/Clang"></a>
             <a href="https://github.com/AnyDSL/thorin2/tree/master/modules"><img src="https://img.shields.io/badge/submodules-5-blue?logo=git&logoColor=white" alt="Submodules"></a>
         </td>
     </tr>
@@ -33,6 +36,7 @@
         <td class="markdownTableBodyNone">
             <a href="https://github.com/AnyDSL/thorin2/actions/workflows/windows.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/windows?logo=windows&label=windows" alt="Windows"></a>
             <a href="https://github.com/AnyDSL/thorin2/actions/workflows/linux.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/linux?logo=linux&label=linux&logoColor=white" alt="Linux"></a>
+            <a href="https://github.com/AnyDSL/thorin2/actions/workflows/macos.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/macos?logo=apple&label=macos" alt="MacOS"></a>
             <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/doxygen?logo=github&label=doxygen" alt="Doxygen"></a>
         </td>
     </tr>
