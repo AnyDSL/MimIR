@@ -20,8 +20,8 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install gcc-11
-        run: brew install gcc@11
+      - name: Configure
+        run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
 
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1.5.2
@@ -38,9 +38,6 @@ jobs:
           echo "CPPFLAGS=-I$LLVM_PATH/include" >> $GITHUB_ENV
           echo "CC=$LLVM_PATH/bin/clang" >> $GITHUB_ENV
           echo "CXX=$LLVM_PATH/bin/clang++" >> $GITHUB_ENV
-
-      - name: Configure
-        run: CXX=/opt/homebrew/Cellar/gcc/11.2.0_3/bin/g++-11 CC=/opt/homebrew/Cellar/gcc/11.2.0_3/bin/gcc-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v --target thorin-gtest thorin thorin_foo
