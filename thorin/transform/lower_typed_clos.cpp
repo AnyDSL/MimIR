@@ -25,7 +25,7 @@ void LowerTypedClos::run() {
 static const Def* insert_ret(const Def* def, const Def* ret) {
     auto new_ops = DefArray(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
     auto& w      = def->world();
-    return (def->level() == Sort::Term) ? w.tuple(new_ops) : w.sigma(new_ops);
+    return (def->sort() == Sort::Term) ? w.tuple(new_ops) : w.sigma(new_ops);
 }
 
 Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
@@ -76,8 +76,8 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
     switch (def->node()) {
         case Node::Bot:
         case Node::Top:
-        case Node::Kind:
-        case Node::Space:
+        case Node::Type:
+        case Node::Univ:
         case Node::Nat: return def;
     }
 

@@ -10,7 +10,7 @@ const Def* Rewriter::rewrite(const Def* old_def) {
     if (auto i = old2new.find(old_def); i != old2new.end()) return i->second;
     if (scope != nullptr && !scope->bound(old_def)) return old_def;
 
-    auto new_type = rewrite(old_def->type());
+    auto new_type = old_def->type() ? rewrite(old_def->type()) : nullptr;
     auto new_dbg  = old_def->dbg() ? rewrite(old_def->dbg()) : nullptr;
 
     if (auto old_nom = old_def->isa_nom()) {

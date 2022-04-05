@@ -22,8 +22,8 @@ const Def* clos_remove_env(size_t i, std::function<const Def*(size_t)> f) { retu
 
 static const Def* ctype(World& w, Defs doms, const Def* env_type = nullptr) {
     if (!env_type) {
-        auto sigma = w.nom_sigma(w.kind(), 3_u64, w.dbg("closure_type"));
-        sigma->set(0_u64, w.kind());
+        auto sigma = w.nom_sigma(w.type(), 3_u64, w.dbg("closure_type"));
+        sigma->set(0_u64, w.type());
         sigma->set(1_u64, ctype(w, doms, sigma->var(0_u64)));
         sigma->set(2_u64, sigma->var(0_u64));
         return sigma;
@@ -46,7 +46,7 @@ const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
 const Sigma* isa_clos_type(const Def* def) {
     auto& w  = def->world();
     auto sig = def->isa_nom<Sigma>();
-    if (!sig || sig->num_ops() < 3 || sig->op(0_u64) != w.kind()) return nullptr;
+    if (!sig || sig->num_ops() < 3 || sig->op(0_u64) != w.type()) return nullptr;
     auto var = sig->var(0_u64);
     if (sig->op(2_u64) != var) return nullptr;
     auto pi = sig->op(1_u64)->isa<Pi>();
@@ -165,8 +165,8 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
 
 const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
     switch (def->node()) {
-        case Node::Kind:
-        case Node::Space:
+        case Node::Type:
+        case Node::Univ:
         case Node::Nat:
         case Node::Bot: // TODO This is used by the AD stuff????
         case Node::Top: return def;
@@ -313,7 +313,7 @@ static bool ignore_fd(const Def* fd) {
     return fd->no_dep()
         || fd->isa_nom<Global>()
         || fd->isa<Axiom>()
-        || fd->level() != Sort::Term
+        || fd->sort() != Sort::Term
         || isa<Tag::Mem>(fd->type());
 }
 

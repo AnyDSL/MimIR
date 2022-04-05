@@ -65,7 +65,8 @@ struct UseEq {
 
 using Uses = absl::flat_hash_set<Use, UseHash, UseEq>;
 
-enum class Sort { Term, Type, Kind, Space };
+// TODO remove or fix this
+enum class Sort { Term, Type, Kind, Space, Univ };
 
 //------------------------------------------------------------------------------
 
@@ -113,7 +114,7 @@ private:
     Def(const Def&)            = delete;
 
 protected:
-    /// Constructor for a *structural* Def.
+    /// Constructor for a structural Def.
     Def(node_t, const Def* type, Defs ops, fields_t fields, const Def* dbg);
     /// Constructor for a *nom*inal Def.
     Def(node_t, const Def* type, size_t num_ops, fields_t fields, const Def* dbg);
@@ -122,13 +123,7 @@ protected:
 public:
     /// @name getters
     ///@{
-    World& world() const {
-        if (node() == Node::Space) return *world_;
-        if (type()->node() == Node::Space) return *type()->world_;
-        if (type()->type()->node() == Node::Space) return *type()->type()->world_;
-        assert(type()->type()->type()->node() == Node::Space);
-        return *type()->type()->type()->world_;
-    }
+    World& world() const;
     fields_t fields() const { return fields_; }
     u32 gid() const { return gid_; }
     hash_t hash() const { return hash_; }
@@ -138,11 +133,8 @@ public:
 
     /// @name type
     ///@{
-    const Def* type() const {
-        assert(node() != Node::Space);
-        return type_;
-    }
-    Sort level() const;
+    const Def* type() const { return type_; }
+    const Def* inf_type() const;
     Sort sort() const;
     const Def* arity() const;
     ///@}
@@ -159,7 +151,7 @@ public:
     }
     const Def* op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
-    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not `Space`),
+    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not Type or Type),
     /// and then the other Def::ops() (if Def::is_set) in this order.
     Defs extended_ops() const;
     const Def* extended_op(size_t i) const { return extended_ops()[i]; }
@@ -457,9 +449,9 @@ using VarMap  = GIDMap<const Var*, To>;
 using VarSet  = GIDSet<const Var*>;
 using Var2Var = VarMap<const Var*>;
 
-class Space : public Def {
+class Univ : public Def {
 private:
-    Space(World& world)
+    Univ(World& world)
         : Def(Node, reinterpret_cast<const Def*>(&world), Defs{}, 0, nullptr) {}
 
 public:
@@ -468,21 +460,26 @@ public:
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     ///@}
 
-    static constexpr auto Node = Node::Space;
+    static constexpr auto Node = Node::Univ;
     friend class World;
 };
 
-class Kind : public Def {
+using level_t = u64;
+
+class Type : public Def {
 private:
-    Kind(World&);
+    Type(const Def* level)
+        : Def(Node, nullptr, {level}, 0, nullptr) {}
 
 public:
+    const Def* level() const { return op(0); }
+
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     ///@}
 
-    static constexpr auto Node = Node::Kind;
+    static constexpr auto Node = Node::Type;
     friend class World;
 };
 
@@ -551,6 +548,30 @@ public:
     ///@}
 
     static constexpr auto Node = Node::Proxy;
+    friend class World;
+};
+
+/// This node is a hole in the IR that is inferred by its context later on.
+/// It is modelled as a *nom*inal Def.
+/// If inference was successful,
+class Infer : public Def {
+private:
+    Infer(const Def* type, const Def* dbg)
+        : Def(Node, type, 1, 0, dbg) {}
+
+public:
+    /// @name op
+    ///@{
+    const Def* op() const { return Def::op(0); }
+    void set(const Def* op) { Def::set(0, op); }
+    ///@}
+
+    /// @name virtual methods
+    ///@{
+    Infer* stub(World&, const Def*, const Def*) override;
+    ///@}
+
+    static constexpr auto Node = Node::Infer;
     friend class World;
 };
 
