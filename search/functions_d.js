@@ -48,8 +48,8 @@ var searchData=
   ['num_5fextended_5fops_45',['num_extended_ops',['../classthorin_1_1Def.html#a3ebe9d99ce68d3f011d3d1f8a0c09626',1,'thorin::Def']]],
   ['num_5fops_46',['num_ops',['../classthorin_1_1Def.html#a96e3d175d17912547aba1d116620f813',1,'thorin::Def']]],
   ['num_5fpreds_47',['num_preds',['../classthorin_1_1CFG.html#a395426d2a2d91edcdbb79ff203cedd96',1,'thorin::CFG::num_preds(Def *nom) const'],['../classthorin_1_1CFG.html#aa832903ceb0c9d92dcdf40a3d27cfaeb',1,'thorin::CFG::num_preds(const CFNode *n) const']]],
-  ['num_5fprojs_48',['num_projs',['../classthorin_1_1Def.html#a2b517dfdc4aa7da7d6430608e41210a0',1,'thorin::Def']]],
+  ['num_5fprojs_48',['num_projs',['../classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2',1,'thorin::Def']]],
   ['num_5fsuccs_49',['num_succs',['../classthorin_1_1CFG.html#a5e38ee04a873e3636867ffd5e446da5e',1,'thorin::CFG::num_succs(Def *nom) const'],['../classthorin_1_1CFG.html#aff3e017f448a2f3c0203939ebc794052',1,'thorin::CFG::num_succs(const CFNode *n) const']]],
   ['num_5fuses_50',['num_uses',['../classthorin_1_1Def.html#ac3de60bf9485ec1a2adc35ff9742b725',1,'thorin::Def']]],
-  ['num_5fvars_51',['num_vars',['../classthorin_1_1Def.html#a35058e54f00c027631a08bd7b185a199',1,'thorin::Def']]]
+  ['num_5fvars_51',['num_vars',['../classthorin_1_1Def.html#a23a7c2d6b85662ea07d653f6b2caadf7',1,'thorin::Def']]]
 ];
