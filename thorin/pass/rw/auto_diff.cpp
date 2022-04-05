@@ -589,6 +589,14 @@ private:
     const Def* chain(const Def* a, const Def* b);
     const Pi* createPbType(const Def* A, const Def* B);
     const Def* extract_pb(const Def* j_extract, const Def* tuple);
+    const Def* isReturning(const Pi* def){
+        if (def->is_cn() && def->num_doms() > 0) {
+            auto ret = def->dom(def->num_doms() - 1);
+            if (auto pi = ret->isa<Pi>(); pi != nullptr && pi->is_cn()) return pi;
+        }
+
+        return nullptr;
+    }
 
     World& world_;
     Def2Def src_to_dst_; // mapping old def to new def
@@ -1507,15 +1515,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
         auto last_mem=current_mem;
 
-//        auto back_order=-1;//lam->type()->as<Pi>()->doms().back()->order();
-//        auto back_order = lam->type()->as<Pi>()->doms().back()->
-//        auto returning = back_order>0;
-        auto returning = lam->type()->is_returning();
-        dlog(world_,"  lam ret pi: {}", lam->type()->ret_pi() ? 1 : 0);
-//        dlog(world_,"  lam returning2: {}", returning);
-//        dlog(world_,"  order: {}", back_order);
-                dlog(world_,"  back: {}", lam->type()->as<Pi>()->doms().back());
-        if(lam->type()->ret_pi() || returning) {
+        if( isReturning(lam->type())) {
             auto dst = world_.op_rev_diff(lam);
             type_dump(world_,"  new lam",dst);
 //            THORIN_UNREACHABLE;
@@ -2101,8 +2101,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
 
 //        auto back_order=-1;//callee->type()->as<Pi>()->doms().back()->order();
 //        auto returning = back_order>0;
-        auto returning = callee->type()->as<Pi>()->is_returning();
-        if (callee->type()->as<Pi>()->ret_pi() || returning) {
+        if (isReturning(callee->type()->as<Pi>())) {
             dlog(world_,"  FYI returning callee");
 
             const Def* dst_callee;
@@ -2546,6 +2545,7 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
 
             pb->set_body(world_.app(apb, {pb->mem_var(), pb->var(1), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), pb->var(1), end}));
+            break;
         }
         // ∇(a - b) = λz.∂a(z * (0 + 1)) - ∂b(z * (0 + 1))
         case ROp::sub: {
@@ -2564,6 +2564,8 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto [rmem,one] = ONE(world_,middle->mem_var(), o_type);
             middle->set_body(world_.app(bpb, {rmem, world_.op(ROp::mul, (nat_t)0, pb->var(1), world_.op_rminus((nat_t)0, one)), end}));
             // all args 1..n as tuple => vector for addition
+            break;
+
         }
             // ∇(a * b) = λz.∂a(z * (1 * b + a * 0)) + ∂b(z * (0 * b + a * 1))
             //          potential opt: if ∂a = ∂b, do: ∂a(z * (a + b))
@@ -2584,6 +2586,8 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
 
             pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), b), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), a), end}));
+            break;
+
         }
             // ∇(a / b) = λz. (g* (z * h) - h* (z * g))/h²
         case ROp::div: {
@@ -2596,6 +2600,7 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto za=world_.op(ROp::mul, (nat_t)0, pb->var(1), a);
             auto bsq=world_.op(ROp::mul, (nat_t)0, b, b);
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op_rminus((nat_t)0, world_.op(ROp::div, (nat_t)0, za, bsq)), end}));
+            break;
         }
         default:
             // only +, -, *, / are implemented as basic operations
