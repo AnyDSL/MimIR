@@ -75,14 +75,24 @@ public:
     u32 next_gid() { return ++state_.curr_gid; }
     ///@}
 
-    /// @name Space, Kind, Var, Proxy
+    /// @name Universe, Type, Var, Proxy, Infer
     ///@{
-    const Space* space() const { return data_.space_; }
-    const Kind* kind() const { return data_.kind_; }
+    const Univ* univ() { return data_.univ_; }
+    const Type* type(const Def* level) { return unify<Type>(1, level)->as<Type>(); }
+    template<level_t level = 0>
+    const Type* type() {
+        if constexpr (level == 0)
+            return data_.type_0_;
+        else if constexpr (level == 1)
+            return data_.type_1_;
+        else
+            return type(lit_univ(level));
+    }
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, flags, dbg);
     }
+    Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
     ///@}
 
     /// @name Axiom
@@ -104,7 +114,7 @@ public:
     /// @name Pi
     ///@{
     const Pi* pi(const Def* dom, const Def* codom, const Def* dbg = {}) {
-        return unify<Pi>(2, codom->type(), dom, codom, dbg);
+        return unify<Pi>(2, codom->inf_type(), dom, codom, dbg);
     }
     const Pi* pi(Defs dom, const Def* codom, const Def* dbg = {}) { return pi(sigma(dom), codom, dbg); }
     Pi* nom_pi(const Def* type, const Def* dbg = {}) { return insert<Pi>(2, type, dbg); }
@@ -113,7 +123,7 @@ public:
     /// @name Pi: continuation type (cn), i.e., Pi type with codom Bottom
     ///@{
     const Pi* cn() { return cn(sigma()); }
-    const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, bot_kind(), dbg); }
+    const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, bot_type(), dbg); }
     const Pi* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
     /// Same as World::cn / World::pi but adds a World::type_mem-typed Var to each Pi.
     const Pi* cn_mem(const Def* dom, const Def* dbg = {}) { return cn({type_mem(), dom}, dbg); }
@@ -155,16 +165,22 @@ public:
     /// @name Sigma
     ///@{
     Sigma* nom_sigma(const Def* type, size_t size, const Def* dbg = {}) { return insert<Sigma>(size, type, size, dbg); }
-    /// A *nom*inal Sigma of type Kind.
-    Sigma* nom_sigma(size_t size, const Def* dbg = {}) { return nom_sigma(kind(), size, dbg); }
+    /// A *nom*inal Sigma of type @p level.
+    template<level_t level = 0>
+    Sigma* nom_sigma(size_t size, const Def* dbg = {}) {
+        return nom_sigma(type<level>(), size, dbg);
+    }
     const Def* sigma(Defs ops, const Def* dbg = {});
-    const Sigma* sigma() { return data_.sigma_; } ///< The unit type within Kind.
+    const Sigma* sigma() { return data_.sigma_; } ///< The unit type within Type 0.
     ///@}
 
     /// @name Arr
     ///@{
     Arr* nom_arr(const Def* type, const Def* shape, const Def* dbg = {}) { return insert<Arr>(2, type, shape, dbg); }
-    Arr* nom_arr(const Def* shape, const Def* dbg = {}) { return nom_arr(kind(), shape, dbg); }
+    template<level_t level = 0>
+    Arr* nom_arr(const Def* shape, const Def* dbg = {}) {
+        return nom_arr(type<level>(), shape, dbg);
+    }
     const Def* arr(const Def* shape, const Def* body, const Def* dbg = {});
     const Def* arr(Defs shape, const Def* body, const Def* dbg = {});
     const Def* arr(u64 n, const Def* body, const Def* dbg = {}) { return arr(lit_nat(n), body, dbg); }
@@ -237,15 +253,15 @@ public:
 
     /// @name Lit
     ///@{
-    const Lit* lit(const Def* type, u64 val, const Def* dbg = {}) {
-        assert(type->level() == Sort::Type);
-        return unify<Lit>(0, type, val, dbg);
-    }
+    const Lit* lit(const Def* type, u64 val, const Def* dbg = {}) { return unify<Lit>(0, type, val, dbg); }
     const Lit* lit_nat(nat_t a, const Def* dbg = {}) { return lit(type_nat(), a, dbg); }
     const Lit* lit_nat_0() { return data_.lit_nat_0_; }
     const Lit* lit_nat_1() { return data_.lit_nat_1_; }
     const Lit* lit_nat_max() { return data_.lit_nat_max_; }
     const Lit* lit_int(const Def* type, u64 val, const Def* dbg = {});
+    const Lit* lit_univ(u64 level, const Def* dbg = {}) { return lit(univ(), level, dbg); }
+    const Lit* lit_univ_0() { return data_.lit_univ_0_; }
+    const Lit* lit_univ_1() { return data_.lit_univ_1_; }
 
     /// Constructs Tag::Int Lit @p val via @p width, i.e. converts from *width* to *internal* *mod* value.
     const Lit* lit_int_width(nat_t width, u64 val, const Def* dbg = {}) {
@@ -288,38 +304,30 @@ public:
         else if constexpr (sizeof(R) == 8) return lit(type_real(64), thorin::bitcast<u64>(val), dbg);
         else unreachable();
     }
-    // clang-format on
     ///@}
 
-    /// @name set operations
+    /// @name lattice
     ///@{
     template<bool up>
     const Def* ext(const Def* type, const Def* dbg = {});
     const Def* ext(bool up, const Def* type, const Def* dbg = {}) { return up ? top(type, dbg) : bot(type, dbg); }
     const Def* bot(const Def* type, const Def* dbg = {}) { return ext<false>(type, dbg); }
     const Def* top(const Def* type, const Def* dbg = {}) { return ext<true>(type, dbg); }
-    const Def* bot_kind() { return data_.bot_kind_; }
+    const Def* bot_type() { return data_.bot_type_; }
     const Def* top_nat() { return data_.top_nat_; }
-    template<bool up>
-    TBound<up>* nom_bound(const Def* type, size_t size, const Def* dbg = {}) {
-        return insert<TBound<up>>(size, type, size, dbg);
-    }
-    /// A *nom* Bound of type Kind.
-    template<bool up>
-    TBound<up>* nom_bound(size_t size, const Def* dbg = {}) {
-        return nom_bound<up>(kind(), size, dbg);
-    }
-    template<bool up>
-    const Def* bound(Defs ops, const Def* dbg = {});
+    template<bool up> TBound<up>* nom_bound(const Def* type, size_t size, const Def* dbg = {}) { return insert<TBound<up>>(size, type, size, dbg); }
+    /// A *nom*inal Bound of Type @p l%evel.
+    template<bool up, level_t l = 0> TBound<up>* nom_bound(size_t size, const Def* dbg = {}) { return nom_bound<up>(type<l>(), size, dbg); }
+    template<bool up> const Def* bound(Defs ops, const Def* dbg = {});
     Join* nom_join(const Def* type, size_t size, const Def* dbg = {}) { return nom_bound<true>(type, size, dbg); }
     Meet* nom_meet(const Def* type, size_t size, const Def* dbg = {}) { return nom_bound<false>(type, size, dbg); }
-    Join* nom_join(size_t size, const Def* dbg = {}) { return nom_join(kind(), size, dbg); }
-    Meet* nom_meet(size_t size, const Def* dbg = {}) { return nom_meet(kind(), size, dbg); }
+    template<level_t l = 0> Join* nom_join(size_t size, const Def* dbg = {}) { return nom_join(type<l>(), size, dbg); }
+    template<level_t l = 0> Meet* nom_meet(size_t size, const Def* dbg = {}) { return nom_meet(type<l>(), size, dbg); }
     const Def* join(Defs ops, const Def* dbg = {}) { return bound<true>(ops, dbg); }
     const Def* meet(Defs ops, const Def* dbg = {}) { return bound<false>(ops, dbg); }
     const Def* et(const Def* type, Defs ops, const Def* dbg = {});
     /// Infers the type using a *structural* Meet.
-    const Def* et(Defs ops, const Def* dbg = {}) { return et(infer_kind(ops), ops, dbg); }
+    const Def* et(Defs ops, const Def* dbg = {}) { return et(infer_type(ops), ops, dbg); }
     const Def* vel(const Def* type, const Def* value, const Def* dbg = {});
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg = {});
@@ -327,11 +335,10 @@ public:
 
     /// @name globals -- depdrecated; will be removed
     ///@{
-    Global* global(const Def* type, bool is_mutable = true, const Def* dbg = {}) {
-        return insert<Global>(1, type, is_mutable, dbg);
-    }
+    Global* global(const Def* type, bool is_mutable = true, const Def* dbg = {}) { return insert<Global>(1, type, is_mutable, dbg); }
     Global* global_immutable_string(std::string_view str, const Def* dbg = {});
     ///@}
+    // clang-format on
 
     /// @name types
     ///@{
@@ -501,7 +508,7 @@ public:
     ///@{
     const Def* dbg(Debug);
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
-    const Def* infer_kind(Defs) const;
+    const Def* infer_type(Defs);
     ///@}
 
     /// @name partial evaluation done?
@@ -602,9 +609,9 @@ public:
         swap(w1.err_,     w2.err_);
         // clang-format on
 
-        swap(w1.data_.space_->world_, w2.data_.space_->world_);
-        assert(&w1.space()->world() == &w1);
-        assert(&w2.space()->world() == &w2);
+        swap(w1.data_.univ_->world_, w2.data_.univ_->world_);
+        assert(&w1.univ()->world() == &w1);
+        assert(&w2.univ()->world() == &w2);
     }
 
 private:
@@ -726,9 +733,10 @@ private:
     } state_;
 
     struct Data {
-        Space* space_;
-        const Kind* kind_;
-        const Bot* bot_kind_;
+        const Univ* univ_;
+        const Type* type_0_;
+        const Type* type_1_;
+        const Bot* bot_type_;
         const App* type_bool_;
         const Top* top_nat_;
         const Sigma* sigma_;
@@ -753,6 +761,8 @@ private:
         const Lit* lit_nat_0_;
         const Lit* lit_nat_1_;
         const Lit* lit_nat_max_;
+        const Lit* lit_univ_0_;
+        const Lit* lit_univ_1_;
         const Axiom* alloc_;
         const Axiom* atomic_;
         const Axiom* bitcast_;

@@ -24,13 +24,13 @@ Def::Def(node_t node, const Def* type, Defs ops, fields_t fields, const Def* dbg
     , num_ops_(ops.size())
     , dbg_(dbg)
     , type_(type) {
-    gid_ = world().next_gid();
     std::ranges::copy(ops, ops_ptr());
+    gid_ = world().next_gid();
 
-    if (node == Node::Space) {
+    if (node == Node::Univ) {
         hash_ = murmur3(gid());
     } else {
-        hash_ = type->gid();
+        hash_ = type ? type->gid() : 0;
         for (auto op : ops) hash_ = murmur3(hash_, u32(op->gid()));
         hash_ = murmur3(hash_, fields_);
         hash_ = murmur3_rest(hash_, u8(node));
@@ -54,11 +54,8 @@ Def::Def(node_t node, const Def* type, size_t num_ops, fields_t fields, const De
     if (!type->no_dep()) type->uses_.emplace(this, -1);
 }
 
-Kind::Kind(World& world)
-    : Def(Node, (const Def*)world.space(), Defs{}, 0, nullptr) {}
-
 Nat::Nat(World& world)
-    : Def(Node, world.kind(), Defs{}, 0, nullptr) {}
+    : Def(Node, world.type(), Defs{}, 0, nullptr) {}
 
 // clang-format off
 
@@ -71,7 +68,6 @@ const Def* Arr    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) cons
 const Def* Et     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.et(t, o, dbg); }
 const Def* Extract::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.extract_(t, o[0], o[1], dbg); }
 const Def* Insert ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.insert(o[0], o[1], o[2], dbg); }
-const Def* Kind   ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.kind(); }
 const Def* Lam    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.lam(t->as<Pi>(), o[0], o[1], dbg); }
 const Def* Lit    ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.lit(t, get(), dbg); }
 const Def* Nat    ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_nat(); }
@@ -80,9 +76,10 @@ const Def* Pi     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) cons
 const Def* Pick   ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pick(t, o[0], dbg); }
 const Def* Proxy  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->index(), as<Proxy>()->flags(), dbg); }
 const Def* Sigma  ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.sigma(o, dbg); }
-const Def* Space  ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.space(); }
+const Def* Type   ::rebuild(World& w, const Def*  , Defs o, const Def*    ) const { return w.type(o[0]); }
 const Def* Test   ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.test(o[0], o[1], o[2], o[3], dbg); }
 const Def* Tuple  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.tuple(t, o, dbg); }
+const Def* Univ   ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.univ(); }
 const Def* Var    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.var(t, o[0]->as_nom(), dbg); }
 const Def* Vel    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
 
@@ -103,6 +100,7 @@ Lam*    Lam   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_lam 
 Pi*     Pi    ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pi   (t, dbg); }
 Sigma*  Sigma ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_sigma(t, num_ops(), dbg); }
 Arr*    Arr   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_arr  (t, shape(), dbg); }
+Infer*  Infer ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_infer(t, dbg); }
 Global* Global::stub(World& w, const Def* t, const Def* dbg) { return w.global(t, is_mutable(), dbg); }
 
 // clang-format on
@@ -132,6 +130,20 @@ const Def* Arr::restructure() {
  * Def
  */
 
+World& Def::world() const {
+    if (isa<Univ>()) return *world_;
+    if (auto type = isa<Type>()) return type->level()->world();
+    return type()->world(); // TODO unroll
+}
+
+const Def* Def::inf_type() const {
+    if (type_) return type_;
+    if (auto t = isa<Type>()) return world().type(world().lit_univ(as_lit(t->level()) + 1));
+
+    assert(isa<Univ>());
+    return nullptr;
+}
+
 std::string_view Def::node_name() const {
     switch (node()) {
 #define CODE(op, abbr) \
@@ -143,8 +155,7 @@ std::string_view Def::node_name() const {
 }
 
 Defs Def::extended_ops() const {
-    if (isa<Space>()) return Defs();
-
+    if (isa<Type>() || isa<Univ>()) return Defs();
     size_t offset = dbg() ? 2 : 1;
     return Defs((is_set() ? num_ops_ : 0) + offset, ops_ptr() - offset);
 }
@@ -162,17 +173,14 @@ const Var* Def::var(const Def* dbg) {
     unreachable();
 }
 
-Sort Def::level() const {
-    if (                isa<Space>()) return Sort::Space;
-    if (        type()->isa<Space>()) return Sort::Kind;
-    if (type()->type()->isa<Space>()) return Sort::Type;
-    return Sort::Term;
-}
-
 Sort Def::sort() const {
+    if (auto type = isa<Type>()) {
+        auto level = as_lit(type->level()); // TODO other levels
+        return level == 0 ? Sort::Kind : Sort::Space;
+    }
+
     switch (node()) {
-        case Node::Space: return Sort::Space;
-        case Node::Kind:  return Sort::Kind;
+        case Node::Univ:  return Sort::Univ;
         case Node::Arr:
         case Node::Nat:
         case Node::Pi:
@@ -199,7 +207,7 @@ const Def* Def::arity() const {
 // clang-format on
 
 bool Def::equal(const Def* other) const {
-    if (isa<Space>() || this->isa_nom() || other->isa_nom()) return this == other;
+    if (isa<Univ>() || this->isa_nom() || other->isa_nom()) return this == other;
 
     bool result = this->node() == other->node() && this->fields() == other->fields() &&
                   this->num_ops() == other->num_ops() && this->type() == other->type();
@@ -227,7 +235,7 @@ void Def::set_debug_name(std::string_view n) const {
         auto file  = w.tuple_str("");
         auto begin = w.lit_nat_max();
         auto finis = w.lit_nat_max();
-        auto meta  = w.bot(w.bot_kind());
+        auto meta  = w.bot(w.bot_type());
         dbg_       = w.tuple({name, w.tuple({file, begin, finis}), meta});
     } else {
         dbg_ = w.insert(dbg_, 3_s, 0_s, name);
@@ -244,7 +252,7 @@ void Def::finalize() {
         }
     }
 
-    if (!isa<Space>() && !isa<Axiom>()) {
+    if (!isa<Univ>() && !isa<Type>() && !isa<Axiom>()) {
         if (auto dep = type()->dep(); dep != Dep::Bot) {
             dep_ |= dep;
             const auto& p = type()->uses_.emplace(this, -1);

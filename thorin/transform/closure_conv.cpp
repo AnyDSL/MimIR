@@ -59,8 +59,8 @@ void ClosureConv::run() {
 
 const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
     switch (def->node()) {
-        case Node::Kind:
-        case Node::Space:
+        case Node::Univ:
+        case Node::Type:
         case Node::Nat:
         case Node::Bot:
         case Node::Top:
@@ -119,7 +119,7 @@ const Def* ClosureConv::rewrite(const Def* def, Def2Def& subst) {
 const Def* ClosureConv::closure_type(const Pi* pi, Def2Def& subst, const Def* env_type) {
     if (!env_type) {
         if (auto i = closure_types_.find(pi); i != closure_types_.end()) return i->second;
-        auto sigma  = world().nom_sigma(world().kind(), 2_u64, world().dbg("cc_pct"));
+        auto sigma  = world().nom_sigma(world().type(), 2_u64, world().dbg("cc_pct"));
         auto new_pi = closure_type(pi, subst, sigma->var());
         sigma->set(0, sigma->var());
         sigma->set(1, new_pi);
