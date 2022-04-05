@@ -20,8 +20,8 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install newest g++
-        run: sudo brew install gcc
+      - name: Install gcc-11
+        run: brew install gcc@11
 
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1.5.2
@@ -40,7 +40,7 @@ jobs:
           echo "CXX=$LLVM_PATH/bin/clang++" >> $GITHUB_ENV
 
       - name: Configure
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+        run: CXX=CXX=/opt/homebrew/Cellar/gcc/11.2.0_3/bin/g++-11 CC=/opt/homebrew/Cellar/gcc/11.2.0_3/bin/gcc-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v --target thorin-gtest thorin thorin_foo
