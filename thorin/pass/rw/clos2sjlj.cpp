@@ -67,13 +67,13 @@ static std::array<const Def*, 3> split(const Def* def) {
 }
 
 static const Def* rebuild(const Def* mem, const Def* env, Defs remaining) {
-    auto& w       = mem->world();
-    auto new_ops  = DefArray(remaining.size() + 2, [&](auto i) {
+    auto& w      = mem->world();
+    auto new_ops = DefArray(remaining.size() + 2, [&](auto i) {
         static_assert(Clos_Env_Param == 1);
         if (i == 0) return mem;
         if (i == 1) return env;
         return remaining[i - 2];
-     });
+    });
     return w.tuple(new_ops);
 }
 
@@ -109,9 +109,7 @@ Lam* Clos2SJLJ::get_lpad(Lam* lam, const Def* rb) {
         auto [m1, arg_ptr]      = w.op_load(m, rb)->projs<2>();
         arg_ptr                 = w.op_bitcast(w.type_ptr(dom), arg_ptr);
         auto [m2, args]         = w.op_load(m1, arg_ptr)->projs<2>();
-        auto full_args = (lam->num_doms() == 3)
-             ? rebuild(m2, env, {args})
-             : rebuild(m2, env, args->ops());
+        auto full_args          = (lam->num_doms() == 3) ? rebuild(m2, env, {args}) : rebuild(m2, env, args->ops());
         lpad->app(false, lam, full_args);
         ignore_.emplace(lpad);
     }

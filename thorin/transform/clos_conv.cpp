@@ -310,16 +310,12 @@ ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
 /* Free variable analysis */
 
 static bool ignore_fd(const Def* fd) {
-    return fd->no_dep()
-        || fd->isa_nom<Global>()
-        || fd->isa<Axiom>()
-        || fd->sort() != Sort::Term
-        || isa<Tag::Mem>(fd->type());
+    return fd->no_dep() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term ||
+           isa<Tag::Mem>(fd->type());
 }
 
 void FreeDefAna::split_fd(Node* node, const Def* fv, bool& init_node, NodeQueue& worklist) {
-    if (ignore_fd(fv))
-        return;
+    if (ignore_fd(fv)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fv); var && lam) {
         if (var != lam->ret_var()) node->fvs.emplace(fv);
     } else if (auto q = isa<Tag::ClosKind>(ClosKind::freeBB, fv)) {
