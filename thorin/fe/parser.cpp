@@ -180,7 +180,7 @@ const Def* Parser::parse_Pi() {
     expect(Tok::Tag::T_colon, "domain of a dependent function type");
     auto dom = parse_def("domain of a dependent function type", Tok::Prec::App);
     expect(Tok::Tag::T_arrow, "dependent function type");
-    auto pi = world().nom_pi(world().type()); // HACK
+    auto pi = world().nom_pi(world().nom_infer(world().univ()));
     pi->set_dom(dom);
     push();
     insert(var, pi->var()); // TODO set location

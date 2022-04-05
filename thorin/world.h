@@ -75,7 +75,7 @@ public:
     u32 next_gid() { return ++state_.curr_gid; }
     ///@}
 
-    /// @name Universe, Type, Var, Proxy
+    /// @name Universe, Type, Var, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
     const Type* type(const Def* level) { return unify<Type>(1, level)->as<Type>(); }
@@ -92,6 +92,7 @@ public:
     const Proxy* proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, flags, dbg);
     }
+    Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
     ///@}
 
     /// @name Axiom
