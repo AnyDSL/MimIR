@@ -21,9 +21,9 @@ jobs:
           submodules: recursive
 
       - name: Install LLVM and Clang
-        uses: KyleMayes/install-llvm-action@v1
+        uses: KyleMayes/install-llvm-action@v1.5.2
         with:
-          version: "13.0.1"
+          version: "14.0.0"
 
       - name: Install newest g++
         run: |
