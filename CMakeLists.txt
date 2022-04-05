@@ -12,10 +12,6 @@ else()
     set(CMAKE_CXX_STANDARD 20) # -std=c++20 for everyone else
 endif()
 
-if(APPLE)
-    add_compile_options(-stdlib=libstdc++) # libc++ doesn't support ranges that well
-endif()
-
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)

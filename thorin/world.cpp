@@ -459,7 +459,7 @@ bool is_shape(const Def* s) {
     if (s->isa<Nat>()) return true;
     if (auto arr = s->isa<Arr>()) return arr->body()->isa<Nat>();
     if (auto sig = s->isa_structural<Sigma>())
-        return std::ranges::all_of(sig->ops(), [](const Def* op) { return op->isa<Nat>(); });
+        return std::all_of(sig->ops().begin(), sig->ops().end(), [](const Def* op) { return op->isa<Nat>(); });
 
     return false;
 }
@@ -560,12 +560,13 @@ const Def* World::bound(Defs ops, const Def* dbg) {
     auto kind = infer_kind(ops);
 
     // has ext<up> value?
-    if (std::ranges::any_of(ops, [&](const Def* op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
+    if (std::any_of(ops.begin(), ops.end(),
+                    [&](const Def* op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
         return ext<up>(kind);
 
     // ignore: ext<!up>
     DefArray cpy(ops);
-    auto [_, end] = std::ranges::copy_if(ops, cpy.begin(), [&](const Def* op) { return !isa_ext(op); });
+    auto end = std::copy_if(ops.begin(), ops.end(), cpy.begin(), [&](const Def* op) { return !isa_ext(op); });
 
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
@@ -667,7 +668,7 @@ void World::enable_history(bool flag) { state_.track_history = flag; }
 bool World::track_history() const { return state_.track_history; }
 
 const Def* World::gid2def(u32 gid) {
-    auto i = std::ranges::find_if(data_.defs_, [=](auto def) { return def->gid() == gid; });
+    auto i = std::find_if(data_.defs_.begin(), data_.defs_.end(), [=](auto def) { return def->gid() == gid; });
     if (i == data_.defs_.end()) return nullptr;
     return *i;
 }

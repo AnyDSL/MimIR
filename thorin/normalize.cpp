@@ -945,7 +945,8 @@ const Def* normalize_store(const Def* type, const Def* callee, const Def* arg, c
     if (ptr->isa<Bot>() || val->isa<Bot>()) return mem;
     if (auto pack = val->isa<Pack>(); pack && pack->body()->isa<Bot>()) return mem;
     if (auto tuple = val->isa<Tuple>()) {
-        if (std::ranges::all_of(tuple->ops(), [](const Def* op) { return op->isa<Bot>(); })) return mem;
+        if (std::all_of(tuple->ops().begin(), tuple->ops().end(), [](const Def* op) { return op->isa<Bot>(); }))
+            return mem;
     }
 
     return world.raw_app(callee, {mem, ptr, val}, dbg);
@@ -970,7 +971,7 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
     if (auto l_in = isa_lit(n_i)) {
         auto args = arg->projs(*l_in);
 
-        if (lr && std::ranges::all_of(args, [](auto arg) { return is_tuple_or_pack(arg); })) {
+        if (lr && std::all_of(args.begin(), args.end(), [](auto arg) { return is_tuple_or_pack(arg); })) {
             auto shapes = s->projs(*lr);
             auto s_n    = isa_lit(shapes.front());
 

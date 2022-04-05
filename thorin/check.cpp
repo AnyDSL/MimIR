@@ -45,7 +45,9 @@ bool Checker::equiv(const Def* d1, const Def* d2) {
         d1->is_set() != d2->is_set())
         return false;
 
-    return std::ranges::equal(d1->ops(), d2->ops(), [this](auto op1, auto op2) { return equiv(op1, op2); });
+    auto ops1 = d1->ops();
+    auto ops2 = d2->ops();
+    return std::equal(ops1.begin(), ops1.end(), ops2.begin(), [this](auto op1, auto op2) { return equiv(op1, op2); });
 }
 
 bool Checker::assignable(const Def* type, const Def* val) {

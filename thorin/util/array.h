@@ -57,7 +57,7 @@ public:
         : size_(N)
         , ptr_(array.data()) {}
     ArrayRef(std::initializer_list<T> list)
-        : size_(std::ranges::distance(list))
+        : size_(std::distance(list.begin(), list.end()))
         , ptr_(std::begin(list)) {}
     ArrayRef(const std::vector<T>& vector)
         : size_(vector.size())
@@ -75,7 +75,7 @@ public:
     std::array<T, N> to_array() const {
         assert(size() == N);
         std::array<T, N> result;
-        std::ranges::copy(*this, result.begin());
+        std::copy(begin(), end(), result.begin());
         return result;
     }
     ///@}
@@ -259,21 +259,21 @@ public:
     }
     Array(size_t size, const T& val)
         : storage_(size) {
-        std::ranges::fill(*this, val);
+        std::fill(begin(), end(), val);
     }
     Array(ArrayRef<T> ref)
         : storage_(ref.size()) {
-        std::ranges::copy(ref, begin());
+        std::copy(ref.begin(), ref.end(), begin());
     }
     Array(Array&& other)
         : storage_(std::move(other.storage_)) {}
     Array(const Array& other)
         : storage_(other.size()) {
-        std::ranges::copy(other, begin());
+        std::copy(other.begin(), other.end(), begin());
     }
     Array(const std::vector<T>& other)
         : storage_(other.size()) {
-        std::ranges::copy(other, begin());
+        std::copy(other.begin(), other.end(), begin());
     }
     template<class I>
     Array(const I begin, const I end)
@@ -281,8 +281,8 @@ public:
         std::copy(begin, end, data());
     }
     Array(std::initializer_list<T> list)
-        : storage_(std::ranges::distance(list)) {
-        std::ranges::copy(list, data());
+        : storage_(std::distance(list.begin(), list.end())) {
+        std::copy(list.begin(), list.end(), data());
     }
     Array(size_t size, std::function<T(size_t)> f)
         : storage_(size) {
@@ -406,14 +406,14 @@ Array<T> ArrayRef<T>::cut(ArrayRef<size_t> indices, size_t reserve) const {
 template<class T, class U>
 auto concat(const T& a, const U& b) -> Array<typename T::value_type> {
     Array<typename T::value_type> result(a.size() + b.size());
-    std::ranges::copy(b, std::ranges::copy(a, result.begin()));
+    std::copy(b.begin(), b.end(), std::copy(a.begin(), a.end(), result.begin()));
     return result;
 }
 
 template<class T>
 auto concat(const T& val, ArrayRef<T> a) -> Array<T> {
     Array<T> result(a.size() + 1);
-    std::ranges::copy(a, result.begin() + 1);
+    std::copy(a.begin(), a.end(), result.begin() + 1);
     result.front() = val;
     return result;
 }
@@ -421,7 +421,7 @@ auto concat(const T& val, ArrayRef<T> a) -> Array<T> {
 template<class T>
 auto concat(ArrayRef<T> a, const T& val) -> Array<T> {
     Array<T> result(a.size() + 1);
-    std::ranges::copy(a, result.begin());
+    std::copy(a.begin(), a.end(), result.begin());
     result.back() = val;
     return result;
 }

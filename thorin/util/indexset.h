@@ -51,8 +51,7 @@ public:
     size_t capacity() const { return indexer().size(); }
     size_t next(size_t pos = 0) {
         for (size_t i = pos, e = capacity(); i != e; ++i) {
-            if (bits_[i])
-                return i;
+            if (bits_[i]) return i;
         }
         return pos;
     }
@@ -68,25 +67,27 @@ public:
     bool set(Key key) {
         auto ref = (*this)[key];
         auto old = ref.word();
-        ref = flag;
+        ref      = flag;
         return old != ref.word();
     }
     bool insert(Key key) { return set<true>(key); } ///< Inserts \p key and returns true if successful.
     bool erase(Key key) { return set<false>(key); } ///< Erase \p key and returns true if successful.
     bool contains(Key key) const { return (*this)[key]; }
-    void clear() { std::ranges::fill(bits_, 0u); }
+    void clear() { std::fill(bits_.begin(), bits_.end(), 0u); }
 
     template<class Op>
     IndexSet& transform(const IndexSet& other, Op op) {
         assert(this->size() == other.size());
-        for (size_t i = 0, e = capacity(); i != e; ++i)
-            this->bits_[i] = op(this->bits_[i], other.bits_[i]);
+        for (size_t i = 0, e = capacity(); i != e; ++i) this->bits_[i] = op(this->bits_[i], other.bits_[i]);
         return *this;
     }
     IndexSet& operator&=(const IndexSet& other) { return transform(other, std::bit_and<uint64_t>()); }
-    IndexSet& operator|=(const IndexSet& other) { return transform(other, std::bit_or <uint64_t>()); }
+    IndexSet& operator|=(const IndexSet& other) { return transform(other, std::bit_or<uint64_t>()); }
     IndexSet& operator^=(const IndexSet& other) { return transform(other, std::bit_xor<uint64_t>()); }
-    IndexSet& operator =(IndexSet other) { swap(*this, other); return *this; }
+    IndexSet& operator=(IndexSet other) {
+        swap(*this, other);
+        return *this;
+    }
     friend void swap(IndexSet& set1, IndexSet& set2) {
         using std::swap;
         assert(&set1.indexer() == &set2.indexer());
@@ -109,6 +110,6 @@ void visit_first(IndexSet<Indexer, Key>& set, const Key& key) {
     visit(set, key);
 }
 
-}
+} // namespace thorin
 
 #endif
