@@ -15,7 +15,7 @@
             License
         </td>
         <td class="markdownTableBodyNone">
-            <a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAQCAQAAACxD+fXAAAACXBIWXMAAAAvAAAALwEOg5kqAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAQlJREFUGBmFwbFK1HEAB/Bv3v1NuDvNwiuhREicurUXqA5bIu4Ip6bCBkFcHKygIRxCEbGlIKhd7AUOoTV6hXoH3+DTr+uEsMzPJ6e5527OY8d2zuOF5zmbMUve+uG7PV0X8jcd7/RN+OCTK5Z91MmfdO17pp7CipUUKqveu5MTFt3KiPuWMuK2xfym5arrJjNk2aMMaVkwo5Ff3FA3ZTZDnnicIde01cwm0TStMq3lUgprnqYwqamtbkoj5hMXXU7cTGHTagrzibbxxFxsGzjyxcB+Ci9tpLDjs4EjA29izAOvvNZXpbBnN4VxD23Z0lPPaQ4d5H9Uer75qqvKv6hZd+zEsTW1jPwEaIytGOF7PsEAAAAASUVORK5CYII=" alt="License"></a>
+            <a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2?logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAQCAQAAACxD+fXAAAACXBIWXMAAAAvAAAALwEOg5kqAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAAAQlJREFUGBmFwbFK1HEAB/Bv3v1NuDvNwiuhREicurUXqA5bIu4Ip6bCBkFcHKygIRxCEbGlIKhd7AUOoTV6hXoH3+DTr+uEsMzPJ6e5527OY8d2zuOF5zmbMUve+uG7PV0X8jcd7/RN+OCTK5Z91MmfdO17pp7CipUUKqveu5MTFt3KiPuWMuK2xfym5arrJjNk2aMMaVkwo5Ff3FA3ZTZDnnicIde01cwm0TStMq3lUgprnqYwqamtbkoj5hMXXU7cTGHTagrzibbxxFxsGzjyxcB+Ci9tpLDjs4EjA29izAOvvNZXpbBnN4VxD23Z0lPPaQ4d5H9Uer75qqvKv6hZd+zEsTW1jPwEaIytGOF7PsEAAAAASUVORK5CYII=&color=yellowgreen" alt="License"></a>
         </td>
     </tr>
     <tr class="markdownTableRowOdd">
