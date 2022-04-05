@@ -20,11 +20,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install valgrind
-        run: |
-          brew tap LouisBrunner/valgrind
-          brew install --HEAD LouisBrunner/valgrind/valgrind
-
       - name: Configure
         run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
 
@@ -47,6 +42,6 @@ jobs:
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v --target thorin-gtest thorin thorin_foo
 
-      - name: Test with Valgrind
+      - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure -T memcheck
+        run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure
