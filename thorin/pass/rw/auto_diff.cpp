@@ -2605,8 +2605,6 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto adiff = world_.tuple(vars_without_mem_cont(world_,middle));
             auto bdiff = world_.tuple(vars_without_mem_cont(world_,end));
 
-//            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
-//            end->set_body(world_.app(pb->ret_var(), flat_tuple({ smem, sum})));
             auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
             end->set_body(world_.app(sum_pb, end->mem_var()));
             pullbacks_[dst] = pb;
@@ -2623,11 +2621,8 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto za=world_.op(ROp::mul, (nat_t)0, pb->var(1), a);
             auto bsq=world_.op(ROp::mul, (nat_t)0, b, b);
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op_rminus((nat_t)0, world_.op(ROp::div, (nat_t)0, za, bsq)), end}));
-            auto adiff = middle->var(1);
-            auto bdiff = end->var(1);
-
-//            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
-//            end->set_body(world_.app(pb->ret_var(), { smem, sum}));
+            auto adiff = world_.tuple(vars_without_mem_cont(world_,middle));
+            auto bdiff = world_.tuple(vars_without_mem_cont(world_,end));
             auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
             end->set_body(world_.app(sum_pb, end->mem_var()));
             pullbacks_[dst] = pb;
