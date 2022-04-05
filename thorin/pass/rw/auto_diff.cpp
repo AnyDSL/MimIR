@@ -2529,6 +2529,7 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
     // pullbacks of the arguments
     auto apb = pullbacks_[a];
     auto bpb = pullbacks_[b];
+    const Def* dst;
     // compute the pullback for each operation
     // general procedure:
     //  pb  computes a*(...) continues in mid
@@ -2540,24 +2541,11 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
     switch (op) {
         // ∇(a + b) = λz.∂a(z * (1 + 0)) + ∂b(z * (0 + 1))
         case ROp::add: {
-            auto dst = world_.op(ROp::add, (nat_t)0, a, b);
+            dst = world_.op(ROp::add, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "+"));
 
             pb->set_body(world_.app(apb, {pb->mem_var(), pb->var(1), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), pb->var(1), end}));
-//            auto adiff = middle->var(1);
-//            auto bdiff = end->var(1);
-            auto adiff = world_.tuple(vars_without_mem_cont(world_,middle));
-            auto bdiff = world_.tuple(vars_without_mem_cont(world_,end));
-
-
-//            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
-//            end->set_body(world_.app(pb->ret_var(), flat_tuple({ smem, sum})));
-            auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
-            end->set_body(world_.app(sum_pb, end->mem_var()));
-            pullbacks_[dst] = pb;
-
-            return dst;
         }
         // ∇(a - b) = λz.∂a(z * (0 + 1)) - ∂b(z * (0 + 1))
         case ROp::sub: {
@@ -2569,19 +2557,13 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             //  ret(x+y)
             //
             // a*(z)+b*(-z)
-            auto dst = world_.op(ROp::sub, (nat_t)0, a, b);
+            dst = world_.op(ROp::sub, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "-"));
 
             pb->set_body(world_.app(apb, {pb->mem_var(), pb->var(1), middle}));
             auto [rmem,one] = ONE(world_,middle->mem_var(), o_type);
             middle->set_body(world_.app(bpb, {rmem, world_.op(ROp::mul, (nat_t)0, pb->var(1), world_.op_rminus((nat_t)0, one)), end}));
             // all args 1..n as tuple => vector for addition
-            auto adiff = world_.tuple(vars_without_mem_cont(world_,middle));
-            auto bdiff = world_.tuple(vars_without_mem_cont(world_,end));
-            auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
-            end->set_body(world_.app(sum_pb, end->mem_var()));
-            pullbacks_[dst] = pb;
-            return dst;
         }
             // ∇(a * b) = λz.∂a(z * (1 * b + a * 0)) + ∂b(z * (0 * b + a * 1))
             //          potential opt: if ∂a = ∂b, do: ∂a(z * (a + b))
@@ -2597,41 +2579,35 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             //  ret(x+y)
             //
             // a*(zb)+b*(za)
-            auto dst = world_.op(ROp::mul, (nat_t)0, a, b);
+            dst = world_.op(ROp::mul, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "*"));
 
             pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), b), middle}));
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op(ROp::mul, (nat_t)0, pb->var(1), a), end}));
-            auto adiff = world_.tuple(vars_without_mem_cont(world_,middle));
-            auto bdiff = world_.tuple(vars_without_mem_cont(world_,end));
-
-            auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
-            end->set_body(world_.app(sum_pb, end->mem_var()));
-            pullbacks_[dst] = pb;
-            return dst;
         }
             // ∇(a / b) = λz. (g* (z * h) - h* (z * g))/h²
         case ROp::div: {
             //    a*(1/b * z)          => a*(z/b)
             //  + b*(a * -b^(-2) * z)  => b*(-z*a/(b*b))
-            auto dst = world_.op(ROp::div, (nat_t)0, a, b);
+            dst = world_.op(ROp::div, (nat_t)0, a, b);
             pb->set_dbg(world_.dbg(pb->name() + "/"));
 
             pb->set_body(world_.app(apb, {pb->mem_var(), world_.op(ROp::div, (nat_t)0, pb->var(1), b), middle}));
             auto za=world_.op(ROp::mul, (nat_t)0, pb->var(1), a);
             auto bsq=world_.op(ROp::mul, (nat_t)0, b, b);
             middle->set_body(world_.app(bpb, {middle->mem_var(), world_.op_rminus((nat_t)0, world_.op(ROp::div, (nat_t)0, za, bsq)), end}));
-            auto adiff = world_.tuple(vars_without_mem_cont(world_,middle));
-            auto bdiff = world_.tuple(vars_without_mem_cont(world_,end));
-            auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
-            end->set_body(world_.app(sum_pb, end->mem_var()));
-            pullbacks_[dst] = pb;
-            return dst;
         }
         default:
             // only +, -, *, / are implemented as basic operations
             THORIN_UNREACHABLE;
     }
+
+    auto adiff = world_.tuple(vars_without_mem_cont(world_,middle));
+    auto bdiff = world_.tuple(vars_without_mem_cont(world_,end));
+    auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
+    end->set_body(world_.app(sum_pb, end->mem_var()));
+    pullbacks_[dst] = pb;
+    return dst;
 }
 
 // seen is a simple lookup in the src_to_dst mapping
