@@ -80,8 +80,10 @@ TEST_P(ForAxiomTest, for) {
     unsigned gt = 0;
     for (int i = cbegin; i < cend; i += cstep) { gt += i; }
 
-    EXPECT_EQ(0, WEXITSTATUS(std::system("clang test.ll -o `pwd`/test -Wno-override-module")));
-    EXPECT_EQ(gt % 256, WEXITSTATUS(std::system("./test")));
+    int status = std::system("clang test.ll -o `pwd`/test -Wno-override-module");
+    EXPECT_EQ(0, WEXITSTATUS(status));
+    status = std::system("./test");
+    EXPECT_EQ(gt % 256, WEXITSTATUS(status));
 #endif
 }
 
@@ -177,8 +179,10 @@ TEST_P(ForAxiomTest, for_dynamic_iters) {
     std::stringstream cmdStream;
     cmdStream << "./test " << cbegin << " " << cend << " " << cstep;
 
-    EXPECT_EQ(0, WEXITSTATUS(std::system("clang test.ll -o `pwd`/test -Wno-override-module")));
-    EXPECT_EQ(gt % 256, WEXITSTATUS(std::system(cmdStream.str().c_str())));
+    int status = std::system("clang test.ll -o `pwd`/test -Wno-override-module");
+    EXPECT_EQ(0, WEXITSTATUS(status));
+    status = std::system(cmdStream.str().c_str());
+    EXPECT_EQ(gt % 256, WEXITSTATUS(status));
 #endif
 }
 
