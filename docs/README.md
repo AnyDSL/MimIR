@@ -5,8 +5,10 @@
 <table  class="markdownTable">
     <tr class="markdownTableRowOdd">
         <td>Support</td>
-        <td><a href=https://anydsl.github.io/thorin2><img src="https://img.shields.io/badge/docs-master-green?logo=gitbook&logoColor=white" alt="Documentation"></a></td>
-        <td><a href=https://discord.gg/FPp7hdj3fQ><img src="https://img.shields.io/discord/960975142459179068?color=green&logo=discord&logoColor=white" alt="Discord"></a></td>
+        <td>
+            <a href=https://anydsl.github.io/thorin2><img src="https://img.shields.io/badge/docs-master-green?logo=gitbook&logoColor=white" alt="Documentation"></a>
+            <a href=https://discord.gg/FPp7hdj3fQ><img src="https://img.shields.io/discord/960975142459179068?color=green&logo=discord&logoColor=white" alt="Discord"></a>
+        </td>
     </tr>
     <tr class="markdownTableRowEven">
         <td class="markdownTableBodyNone">
