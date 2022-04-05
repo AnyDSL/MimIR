@@ -36,17 +36,17 @@ class Scope;
 /// Note that types are also just Def%s and will be hashed as well.
 class World : public Streamable<World> {
 public:
-    World(World&&) = delete;
     World& operator=(const World&) = delete;
 
     explicit World(std::string_view name = {});
-    /// Inherits the World::state_ of the @p other World but does *not* perform a copy.
-    explicit World(const World& other)
-        : World(other.name()) {
-        stream_ = other.stream_;
-        state_  = other.state_;
+    World(World&& other)
+        : World() {
+        swap(*this, other);
     }
     ~World();
+
+    /// Inherits the World::state_ of the @p other World.
+    World stub();
 
     /// @name Sea of Nodes
     ///@{
@@ -63,10 +63,10 @@ public:
     const Sea& defs() const { return data_.defs_; }
     ///@}
 
-    /// @name getters
+    /// @name name
     ///@{
     std::string_view name() const { return data_.name_; }
-    std::vector<Lam*> copy_lams() const; // TODO remove this
+    void set_name(std::string_view name) { data_.name_ = name; }
     ///@}
 
     /// @name manage global identifier - a unique number for each Def
@@ -295,6 +295,7 @@ public:
     ///@{
     template<bool up>
     const Def* ext(const Def* type, const Def* dbg = {});
+    const Def* ext(bool up, const Def* type, const Def* dbg = {}) { return up ? top(type, dbg) : bot(type, dbg); }
     const Def* bot(const Def* type, const Def* dbg = {}) { return ext<false>(type, dbg); }
     const Def* top(const Def* type, const Def* dbg = {}) { return ext<true>(type, dbg); }
     const Def* bot_kind() { return data_.bot_kind_; }

@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
         World world;
         if (file == "-") {
             Parser parser(world, "<stdin>", std::cin);
-            // exp = parser.parse_prg();
+            parser.parse_module();
         } else {
             std::ifstream ifs(file);
             if (!ifs) {
@@ -92,7 +92,7 @@ int main(int argc, char** argv) {
                 return EXIT_FAILURE;
             }
             Parser parser(world, file, ifs);
-            // exp = parser.parse_prg();
+            parser.parse_module();
         }
 
         // if (num_errors != 0) {

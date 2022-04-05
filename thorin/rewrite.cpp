@@ -57,7 +57,7 @@ DefArray rewrite(Def* nom, const Def* arg) {
 }
 
 void cleanup(World& old_world) {
-    World new_world(old_world);
+    auto new_world = old_world.stub();
 
     Rewriter rewriter(old_world, new_world);
     // rewriter.old2new.rehash(old_world.defs().capacity());

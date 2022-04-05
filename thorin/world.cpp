@@ -300,6 +300,13 @@ World::~World() {
     for (auto def : data_.defs_) def->~Def();
 }
 
+World World::stub() {
+    World w(name());
+    w.stream_ = stream_;
+    w.state_  = state_;
+    return w;
+}
+
 /*
  * core calculus
  */
@@ -666,18 +673,8 @@ const Def* World::op_for(const Def* mem,
 }
 
 /*
- * misc
+ * debugging
  */
-
-std::vector<Lam*> World::copy_lams() const {
-    std::vector<Lam*> result;
-
-    for (auto def : data_.defs_) {
-        if (auto lam = def->isa_nom<Lam>()) result.emplace_back(lam);
-    }
-
-    return result;
-}
 
 #if THORIN_ENABLE_CHECKS
 

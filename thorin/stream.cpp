@@ -28,7 +28,7 @@ bool Def::unwrap() const {
 }
 
 static Tok::Prec prec(const Def* def) {
-    if (def->isa<Pi>()) return Tok::Prec::Pi;
+    if (def->isa<Pi>()) return Tok::Prec::Arrow;
     if (def->isa<App>()) return Tok::Prec::App;
     if (def->isa<Extract>()) return Tok::Prec::Extract;
     if (def->isa<Lit>()) return Tok::Prec::Lit;
@@ -44,7 +44,7 @@ static Tok::Prec prec_l(const Def* def) {
 }
 
 static Tok::Prec prec_r(const Def* def) {
-    if (def->isa<Pi>()) return Tok::Prec::Pi;
+    if (def->isa<Pi>()) return Tok::Prec::Arrow;
     if (def->isa<App>()) return Tok::Prec::Extract;
     if (def->isa<Extract>()) return Tok::Prec::Lit;
     return Tok::Prec::Bottom;
@@ -102,7 +102,7 @@ Stream& Def::unwrap(Stream& s) const {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return s.fmt("{}", ex->unique_name());
         return s.fmt("{}#{}", ex->tuple(), ex->index());
     } else if (auto var = isa<Var>()) {
-        if (var->nom()->num_vars() == 1) return s.fmt("{}", var->unique_name());
+        if (var->nom()->num_vars() == 1) return s.fmt("@{}", var->unique_name());
         return s.fmt("@{}", var->nom());
     } else if (auto pi = isa<Pi>()) {
         if (pi->is_cn()) {
