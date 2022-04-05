@@ -80,19 +80,19 @@ enum : unsigned {
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define THORIN_PROJ(NAME, CONST)                                                                                   \
-    nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                     \
+    nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                      \
     const Def* NAME(nat_t a, nat_t i, const Def* dbg = {}) CONST { return ((const Def*)NAME())->proj(a, i, dbg); } \
     const Def* NAME(nat_t i, const Def* dbg = {}) CONST { return ((const Def*)NAME())->proj(i, dbg); }             \
-    template<nat_t A = -1_s, class F>                                                                             \
+    template<nat_t A = -1_s, class F>                                                                              \
     auto NAME##s(F f, Defs dbgs = {}) CONST {                                                                      \
         return ((const Def*)NAME())->projs<A, F>(f, dbgs);                                                         \
     }                                                                                                              \
-    template<nat_t A = -1_s>                                                                                      \
+    template<nat_t A = -1_s>                                                                                       \
     auto NAME##s(Defs dbgs = {}) CONST {                                                                           \
         return ((const Def*)NAME())->projs<A>(dbgs);                                                               \
     }                                                                                                              \
     template<class F>                                                                                              \
-    auto NAME##s(nat_t a, F f, Defs dbgs = {}) CONST {                                                            \
+    auto NAME##s(nat_t a, F f, Defs dbgs = {}) CONST {                                                             \
         return ((const Def*)NAME())->projs<F>(a, f, dbgs);                                                         \
     }                                                                                                              \
     auto NAME##s(nat_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
