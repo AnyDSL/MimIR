@@ -153,15 +153,18 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Var.html">thorin::Var</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Space.html">thorin::Space</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Univ.html">thorin::Univ</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Kind.html">thorin::Kind</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Lit.html">thorin::Lit</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Nat.html">thorin::Nat</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Proxy.html">thorin::Proxy</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Infer.html">thorin::Infer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This node is a hole in the IR that is inferred by its context later on.  <a href="classthorin_1_1Infer.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Global.html">thorin::Global</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,13 +220,19 @@ Typedefs</h2></td></tr>
 <tr class="separator:a229e892ca840ebda9ce60cfad90ae1b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a574519644134310f7123469cf121d0a2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a574519644134310f7123469cf121d0a2">thorin::Var2Var</a> = VarMap&lt; const Var * &gt;</td></tr>
 <tr class="separator:a574519644134310f7123469cf121d0a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2b9a3abaa277c7852b0f465240b0dd7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f465240b0dd7">thorin::level_t</a> = u64</td></tr>
+<tr class="separator:ae2b9a3abaa277c7852b0f465240b0dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:abb917bebc699083d990fc4592abcc50e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50e">thorin::Sort</a> { <a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eacf5f3091e30dee6597885d8c0e0c357f">thorin::Term</a>
+<tr class="memitem:abb917bebc699083d990fc4592abcc50e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50e">thorin::Sort</a> { <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eacf5f3091e30dee6597885d8c0e0c357f">thorin::Term</a>
 , <a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508">thorin::Type</a>
 , <a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771">thorin::Kind</a>
 , <a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394">thorin::Space</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946">thorin::Univ</a>
+<br />
  }</td></tr>
 <tr class="separator:abb917bebc699083d990fc4592abcc50e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a026486402019f9c00df8e98fe04f8d1f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: unsigned { <a class="el" href="namespacethorin_1_1Dep.html#a026486402019f9c00df8e98fe04f8d1fac8193e33d363a6e35b8e3fbfd246c23b">thorin::Dep::Bot</a>
@@ -301,7 +310,7 @@ Functions</h2></td></tr>
 </div><!-- fragment -->
 <p>Use as mixin to wrap all kind of Def::proj and Def::projs variants. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00082">82</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00083">83</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

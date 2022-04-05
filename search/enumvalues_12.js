@@ -14,7 +14,7 @@ var searchData=
   ['sle_11',['sle',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3aaa7c2f8b74458aeae4e388c376197581',1,'thorin']]],
   ['slot_12',['Slot',['../namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a10e78fc601c6cb2d71e7ec1a273bf84e',1,'thorin::Tag']]],
   ['sloxy_13',['Sloxy',['../classthorin_1_1SSAConstr.html#a139836f76370e72becca5ed358d0e085abcaef4bb721e14e6891b29a89d7961bb',1,'thorin::SSAConstr']]],
-  ['space_14',['Space',['../namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a8f2b1029ddd83596cdf4689709e85aaa',1,'thorin::Node::Space()'],['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394',1,'thorin::Space()']]],
+  ['space_14',['Space',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394',1,'thorin']]],
   ['srem_15',['srem',['../namespacethorin.html#aab48efce9aa14b70a78aff291a41e361a6dcaf449415765e1fc8503e76318736b',1,'thorin']]],
   ['store_16',['Store',['../namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a617635d8295c3800871d2fba4985aa04',1,'thorin::Tag']]],
   ['sub_17',['sub',['../namespacethorin.html#af3d5ac78a410ae219775ffd1989e0a40a8a68dc3e925eacf92633be230722a140',1,'thorin::sub()'],['../namespacethorin.html#a4ade87d234831fccb4c6e71b7eb18348a8a68dc3e925eacf92633be230722a140',1,'thorin::sub()']]]

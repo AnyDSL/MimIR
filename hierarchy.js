@@ -138,8 +138,8 @@ var hierarchy =
         ] ],
         [ "thorin::Extract", "classthorin_1_1Extract.html", null ],
         [ "thorin::Global", "classthorin_1_1Global.html", null ],
+        [ "thorin::Infer", "classthorin_1_1Infer.html", null ],
         [ "thorin::Insert", "classthorin_1_1Insert.html", null ],
-        [ "thorin::Kind", "classthorin_1_1Kind.html", null ],
         [ "thorin::Lam", "classthorin_1_1Lam.html", null ],
         [ "thorin::Lit", "classthorin_1_1Lit.html", null ],
         [ "thorin::Nat", "classthorin_1_1Nat.html", null ],
@@ -148,9 +148,10 @@ var hierarchy =
         [ "thorin::Pick", "classthorin_1_1Pick.html", null ],
         [ "thorin::Proxy", "classthorin_1_1Proxy.html", null ],
         [ "thorin::Sigma", "classthorin_1_1Sigma.html", null ],
-        [ "thorin::Space", "classthorin_1_1Space.html", null ],
         [ "thorin::Test", "classthorin_1_1Test.html", null ],
         [ "thorin::Tuple", "classthorin_1_1Tuple.html", null ],
+        [ "thorin::Type", "classthorin_1_1Type.html", null ],
+        [ "thorin::Univ", "classthorin_1_1Univ.html", null ],
         [ "thorin::Var", "classthorin_1_1Var.html", null ],
         [ "thorin::Vel", "classthorin_1_1Vel.html", null ]
       ] ]
@@ -225,6 +226,7 @@ var hierarchy =
     [ "thorin::World::Arena::Zone", "structthorin_1_1World_1_1Arena_1_1Zone.html", null ],
     [ "bool", "namespace_3globalScope_4.html#classbool", null ],
     [ "DefMap< std::string >", "namespace_3globalScope_4.html#classDefMap_3_01std_1_1string_01_4", null ],
+    [ "DefMap< thorin::Type >", "namespace_3globalScope_4.html#classDefMap_3_01thorin_1_1Type_01_4", null ],
     [ "LamMap< BB >", "namespace_3globalScope_4.html#classLamMap_3_01BB_01_4", null ],
     [ "NomSet", "namespace_3globalScope_4.html#classNomSet", null ],
     [ "size_t", "namespace_3globalScope_4.html#classsize__t", null ]

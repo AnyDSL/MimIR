@@ -24,5 +24,5 @@ var searchData=
   ['trait_21',['Trait',['../namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a42227a93c15d744e373610e95cacd351',1,'thorin::Tag']]],
   ['traxy_22',['Traxy',['../classthorin_1_1SSAConstr.html#a139836f76370e72becca5ed358d0e085ac6afdf202d56604ea83504826746547b',1,'thorin::SSAConstr']]],
   ['tuple_23',['Tuple',['../namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0adebbca699bf3e5ae3338dd01934423bc',1,'thorin::Node']]],
-  ['type_24',['Type',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508',1,'thorin']]]
+  ['type_24',['Type',['../namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a921d97e8cfab1f7c0026e2d98995d14c',1,'thorin::Node::Type()'],['../namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508',1,'thorin::Type()']]]
 ];
