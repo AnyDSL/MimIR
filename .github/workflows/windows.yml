@@ -23,10 +23,10 @@ jobs:
       - name: Configure 
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
 
-      - name: Install LLVM and Clang
-        uses: KyleMayes/install-llvm-action@v1.5.2
-        with:
-          version: "14.0.0"
+      #- name: Install LLVM and Clang
+        #uses: KyleMayes/install-llvm-action@v1.5.2
+        #with:
+          #version: "14.0.0"
 
       - name: Build
         run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v --target thorin-gtest thorin thorin_foo
