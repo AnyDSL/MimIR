@@ -333,6 +333,8 @@ static const Def* infer_sigma(World& world, Defs ops) {
 }
 
 const Def* World::tuple(Defs ops, const Def* dbg) {
+    if (ops.size() == 1) return ops[0];
+
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops, dbg);
     if (err() && !checker_->assignable(sigma, t)) { assert(false && "TODO: error msg"); }
