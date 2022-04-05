@@ -2576,15 +2576,11 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
             auto [rmem,one] = ONE(world_,middle->mem_var(), o_type);
             middle->set_body(world_.app(bpb, {rmem, world_.op(ROp::mul, (nat_t)0, pb->var(1), world_.op_rminus((nat_t)0, one)), end}));
             // all args 1..n as tuple => vector for addition
-            auto adiff = middle->var(1);
-            auto bdiff = end->var(1);
-
-//            auto [smem, sum] = vec_add(world_, end->mem_var(), adiff, bdiff);
-//            end->set_body(world_.app(pb->ret_var(), { smem, sum}));
+            auto adiff = world_.tuple(vars_without_mem_cont(world_,middle));
+            auto bdiff = world_.tuple(vars_without_mem_cont(world_,end));
             auto sum_pb=vec_add(world_,adiff,bdiff,pb->ret_var());
             end->set_body(world_.app(sum_pb, end->mem_var()));
             pullbacks_[dst] = pb;
-
             return dst;
         }
             // ∇(a * b) = λz.∂a(z * (1 * b + a * 0)) + ∂b(z * (0 * b + a * 1))
