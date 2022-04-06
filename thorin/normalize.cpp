@@ -994,6 +994,8 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
     return w.raw_app(callee, arg, dbg);
 }
 
+const Def* normalize_clos_bot(const Def*, const Def*, const Def* arg, const Def*) { return arg; }
+
 /*
  * instantiate templates
  */

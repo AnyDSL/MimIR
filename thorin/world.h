@@ -366,6 +366,7 @@ public:
     // clang-format off
     const Axiom* ax(Acc   o)  const { return data_.Acc_  [size_t(o)]; }
     const Axiom* ax(Bit   o)  const { return data_.Bit_  [size_t(o)]; }
+    const Axiom* ax(Clos  o)  const { return data_.Clos_ [size_t(o)]; }
     const Axiom* ax(Conv  o)  const { return data_.Conv_ [size_t(o)]; }
     const Axiom* ax(Div   o)  const { return data_.Div_  [size_t(o)]; }
     const Axiom* ax(ICmp  o)  const { return data_.ICmp_ [size_t(o)]; }
@@ -440,6 +441,7 @@ public:
     const Def* op(Wrap o, const Def* wmode, const Def* a, const Def* b, const Def* dbg = {}) {
         return app(fn(o, wmode, infer(a)), {a, b}, dbg);
     }
+    const Def* op(Clos o, const Def* def, const Def* dbg = {}) { return app(app(ax(o), def->type()), def, dbg); }
     template<class O>
     const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) {
         return op(o, lit_nat(mode), a, b, dbg);
@@ -512,16 +514,6 @@ public:
     const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) { return op_rminus(lit_nat(rmode), a, dbg); }
     const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) { return op_wminus(lit_nat(wmode), a, dbg); }
     ///@}
-
-    const Def* op(Clos a, const Def* def, const Def* dbg = {}) {
-        switch (a) {
-#define CODE(T, o) \
-    case T::o: return app(app(data_.clos_##o##_, def->type()), def, dbg);
-            THORIN_CLOS_KIND(CODE)
-#undef CODE
-            default: return def;
-        }
-    }
 
     /// @name helpers
     ///@{
@@ -776,6 +768,7 @@ private:
         std::array<const Axiom*, Num<Conv >> Conv_;
         std::array<const Axiom*, Num<PE   >> PE_;
         std::array<const Axiom*, Num<Acc  >> Acc_;
+        std::array<const Axiom*, Num<Clos >> Clos_;
         // clang-format on
         const Lit* lit_nat_0_;
         const Lit* lit_nat_1_;
@@ -797,10 +790,6 @@ private:
         const Axiom* type_ptr_;
         const Axiom* type_real_;
         const Axiom* zip_;
-        const Axiom* clos_ret_;
-        const Axiom* clos_freeBB_;
-        const Axiom* clos_fstclassBB_;
-        const Axiom* clos_esc_;
         const Axiom* sjlj_alloc_jmpbuf;
         const Axiom* sjlj_setjmp_;
         const Axiom* sjlj_longjmp_;

@@ -260,8 +260,10 @@ World::World(std::string_view name)
         auto id_type = nom_pi(type())->set_dom(type());
         auto var     = id_type->var(0_u64);
         id_type->set_codom(pi(var, var));
-#define CODE(T, o) data_.clos_##o##_ = axiom(id_type, Tag::T, (flags_t)T::o, dbg(op2str(T::o)));
-        THORIN_CLOS_KIND(CODE)
+#define CODE(T, o)              \
+    data_.Clos_[size_t(T::o)] = \
+        axiom(T::o == Clos::bot ? normalize_clos_bot : nullptr, id_type, Tag::T, (flags_t)T::o, dbg(op2str(T::o)));
+        THORIN_CLOS(CODE)
 #undef CODE
     }
     {

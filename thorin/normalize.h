@@ -12,6 +12,7 @@ const Def* normalize_load(const Def*, const Def*, const Def*, const Def*);
 const Def* normalize_remem(const Def*, const Def*, const Def*, const Def*);
 const Def* normalize_store(const Def*, const Def*, const Def*, const Def*);
 const Def* normalize_zip(const Def*, const Def*, const Def*, const Def*);
+const Def* normalize_clos_bot(const Def*, const Def*, const Def*, const Def*);
 
 template<Bit>
 const Def* normalize_Bit(const Def*, const Def*, const Def*, const Def*);
