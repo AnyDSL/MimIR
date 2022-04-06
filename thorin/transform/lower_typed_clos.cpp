@@ -119,8 +119,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
             // Optimize empty env
             env = w.bot(env_type());
         } else if (!mode) {
-            auto mem_ptr =
-                (c.clos() == Clos::esc) ? w.op_alloc(env->type(), lcm_) : w.op_slot(env->type(), lcm_);
+            auto mem_ptr = (c.clos() == Clos::esc) ? w.op_alloc(env->type(), lcm_) : w.op_slot(env->type(), lcm_);
             auto mem     = w.extract(mem_ptr, 0_u64);
             auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
             lcm_         = w.op_store(mem, env_ptr, env);

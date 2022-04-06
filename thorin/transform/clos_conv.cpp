@@ -206,8 +206,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             }
             return new_lam;
         }
-    } else if (auto q = isa<Tag::Clos>(def);
-               q && (q.flags() == Clos::fstclassBB || q.flags() == Clos::freeBB)) {
+    } else if (auto q = isa<Tag::Clos>(def); q && (q.flags() == Clos::fstclassBB || q.flags() == Clos::freeBB)) {
         // Note: Same thing about η-conversion applies here
         auto bb_lam = q->arg()->isa_nom<Lam>();
         assert(bb_lam && bb_lam->is_basicblock());
