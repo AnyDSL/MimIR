@@ -154,7 +154,7 @@ const Def* Parser::parse_Cn() {
 }
 
 const Def* Parser::parse_var() {
-    auto track  = tracker();
+    auto track = tracker();
     eat(Tok::Tag::T_at);
     auto sym = parse_sym("variable");
     auto nom = find(sym)->isa_nom();
