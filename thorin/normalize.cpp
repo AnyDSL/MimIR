@@ -994,7 +994,11 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
     return w.raw_app(callee, arg, dbg);
 }
 
-const Def* normalize_clos_bot(const Def*, const Def*, const Def* arg, const Def*) { return arg; }
+template<Clos o>
+const Def* normalize_Clos(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& w = type->world();
+    return o == Clos::bot ? arg : w.raw_app(callee, arg, dbg);
+}
 
 /*
  * instantiate templates
@@ -1013,6 +1017,7 @@ THORIN_TRAIT(CODE)
 THORIN_CONV (CODE)
 THORIN_PE   (CODE)
 THORIN_ACC  (CODE)
+THORIN_CLOS (CODE)
 #undef CODE
 // clang-format on
 

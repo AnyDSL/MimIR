@@ -122,6 +122,12 @@ World::World(std::string_view name)
         ty->set_codom(cn_mem_ret(type_int(n), sigma()));
         THORIN_ACC(CODE)
     }
+    {
+        auto ty  = nom_pi(type())->set_dom(type());
+        auto var = ty->var(0_u64);
+        ty->set_codom(pi(var, var));
+        THORIN_CLOS(CODE)
+    }
 #undef CODE
     { // Conv: [dw: nat, sw: nat] -> i/r sw -> i/r dw
         auto make_type = [&](Conv o) {
@@ -255,16 +261,6 @@ World::World(std::string_view name)
         rs_pi->set_codom(is_os_pi);
 
         data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
-    }
-    {
-        auto id_type = nom_pi(type())->set_dom(type());
-        auto var     = id_type->var(0_u64);
-        id_type->set_codom(pi(var, var));
-#define CODE(T, o)              \
-    data_.Clos_[size_t(T::o)] = \
-        axiom(T::o == Clos::bot ? normalize_clos_bot : nullptr, id_type, Tag::T, (flags_t)T::o, dbg(op2str(T::o)));
-        THORIN_CLOS(CODE)
-#undef CODE
     }
     {
         auto buf_ptr_t          = type_ptr(type_int_width(8));
