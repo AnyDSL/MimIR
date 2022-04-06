@@ -175,7 +175,9 @@ const Def* Parser::parse_pack_or_array(bool pack) {
 
 const Def* Parser::parse_block() {
     eat(Tok::Tag::D_brace_l);
+    push();
     auto res = parse_expr("block expression");
+    pop();
     expect(Tok::Tag::D_brace_r, "block expression");
     return res;
 }
