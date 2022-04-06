@@ -191,9 +191,9 @@ const Def* Parser::parse_sigma() {
             if (auto id = accept(Tok::Tag::M_id)) {
                 if (accept(Tok::Tag::T_colon)) {
                     assert(false && "TODO");
-                    //ops.emplace_back(find(id->sym()));
-                    //ops.emplace_back(parse_expr("element of a sigma"));
-                    // TODO
+                    // ops.emplace_back(find(id->sym()));
+                    // ops.emplace_back(parse_expr("element of a sigma"));
+                    //  TODO
                 } else {
                     ops.emplace_back(find(id->sym()));
                 }
@@ -209,7 +209,7 @@ const Def* Parser::parse_sigma() {
 
 const Def* Parser::parse_tuple() {
     auto track = tracker();
-    auto ops = parse_list("tuple", Tok::Tag::D_paren_l, [this]() { return parse_expr("tuple element"); });
+    auto ops   = parse_list("tuple", Tok::Tag::D_paren_l, [this]() { return parse_expr("tuple element"); });
     return world().tuple(ops, track);
 }
 
@@ -242,7 +242,7 @@ const Def* Parser::parse_lam() {
 }
 
 const Def* Parser::parse_lit() {
-    auto track = tracker();
+    auto track  = tracker();
     auto lit    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
 
