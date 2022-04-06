@@ -25,7 +25,7 @@ Both tokens are identified as `⊥`.
 | `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                                 | UTF-8 delimiters          |
 | `→` `∷` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `::` `.bot` `.top` `*` `.space` `.lam` `.Pi` | further UTF-8 tokens      |
 | `=` `,` `;` `.` `#`             |                                                   | further tokens            |
-| `<EoF>`                         |                                                   | marks the end of the file |
+| `<eof>`                         |                                                   | marks the end of the file |
 
 #### Keywords
 
@@ -95,23 +95,37 @@ The start symbol is "m" (module).
 
 The following table comprises all produciton rules:
 
-| Nonterminal | Right-Hand Side                   | Comment                             | Thorin Class    |
-|-------------|-----------------------------------|-------------------------------------|-----------------|
-| m           | `.module` Sym `{` e `}` `<EoF>`   | module                              | thorin::World   |
-| e           | L `∷` e                           | literal                             | thorin::Lit     |
-| e           | Sym                               | identifier                          | -               |
-| e           | Ax                                | use of an axiom                     | -               |
-| e           | e e                               | application                         | thorin::App     |
-| e           | `λ` Sym `:` e `→` e  `.` e        | lambda                              | thorin::Lam     |
-| e           | e `→` e                           | function type                       | thorin::Pi      |
-| e           | `Π` Sym `:` e `→` e               | dependent function type             | thorin::Pi      |
-| e           | e `#` e                           | extract                             | thorin::Extract |
-| e           | `.ins` `(` e `,` e `,` e `)`      | insert                              | thorin::Insert  |
-| e           | `(` e `,` ... `,` e`)` ( `:` e )? | tuple with optional type ascription | thorin::Tuple   |
-| e           | `[` e `,` ... `,` e `]`           | sigma                               | thorin::Sigma   |
-| e           | Sym `:` e `=` e `;` e             | let                                 | -               |
+| Nonterminal | Right-Hand Side                                               | Comment                             | Thorin Class    |
+|-------------|---------------------------------------------------------------|-------------------------------------|-----------------|
+| m           | `.module` Sym `{` e `}` `<EoF>`                               | module                              | thorin::World   |
+| e           | L `∷` e                                                       | literal                             | thorin::Lit     |
+| e           | ( `.bot` or `.top` ) ( `∷` e )?                               | bottom/top                          | thorin::TExt    |
+| e           | Sym                                                           | identifier                          | -               |
+| e           | Ax                                                            | use of an axiom                     | -               |
+| e           | e e                                                           | application                         | thorin::App     |
+| e           | `λ` Sym `:` e `→` e  `.` e                                    | lambda                              | thorin::Lam     |
+| e           | e `→` e                                                       | function type                       | thorin::Pi      |
+| e           | `Π` Sym `:` e `→` e                                           | dependent function type             | thorin::Pi      |
+| e           | e `#` e                                                       | extract                             | thorin::Extract |
+| e           | `.ins` `(` e `,` e `,` e ` )`                                 | insert                              | thorin::Insert  |
+| e           | `(` e `,` ... `,` e` )` ( `:` e )?                            | tuple with optional type ascription | thorin::Tuple   |
+| e           | `[` e `,` ... `,` e `]`                                       | sigma                               | thorin::Sigma   |
+| e           | `.let` Sym `:` e<sub>type</sub> n                             | let                                 | -               |
+| e           | `.ax` Sym `:` e<sub>type</sub> `;` e                          | axiom                               | thorin::Axiom   |
+| e           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n      | nominal Pi                          | thorin::Pi      |
+| e           | `.lam` Sym `,` e<sub>type</sub> `;` e                         | nominal lambda declaration          | thorin::Lam     |
+| e           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n   | nominal array declaration           | thorin::Arr     |
+| e           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n  | nominal pack declaration            | thorin::Pack    |
+| e           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> n | nominal sigma declaration           | thorin::Sigma   |
+| e           | `.def` Sym `=` d                                              | nominal definition                  | nominals        |
+| n           | ( `;` e )  or d                                               | nominal definition                  | -               |
+| d           | `=` e `;` e                                                   | operand of nominal definition       | -               |
+| d           | `=` `{` e `,` ... `,` e  `}` `;` e                            | operands of nominal definition      | -               |
 
-TODO
+An elided type of
+* a literal defaults to `.Nat`,
+* a bottom/top defaults to `*`,
+* a nominals defaults to `*`.
 
 ### Precedence
 

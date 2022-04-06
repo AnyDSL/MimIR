@@ -24,7 +24,7 @@ bool Parser::accept(Tok::Tag tag) {
     return true;
 }
 
-std::optional<Tok> Parser::expect(Tok::Tag tag, std::string_view ctxt) {
+Tok Parser::expect(Tok::Tag tag, std::string_view ctxt) {
     if (ahead().tag() == tag) return lex();
 
     std::string msg("'");
@@ -93,6 +93,9 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_paren_l:   return parse_tuple();
+        case Tok::Tag::K_ax:        return parse_ax();
+        case Tok::Tag::K_Cn:        return parse_Cn();
+        case Tok::Tag::K_let:       return parse_let();
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
         case Tok::Tag::K_ff:        lex(); return world().lit_false();
         case Tok::Tag::K_tt:        lex(); return world().lit_true();
@@ -104,6 +107,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::K_def:       return parse_def();
         case Tok::Tag::T_Pi:        return parse_pi();
         case Tok::Tag::T_lam:       return parse_lam();
+        case Tok::Tag::T_at:        return parse_var();
         case Tok::Tag::T_star:      lex(); return world().type();
         case Tok::Tag::T_space:     lex(); return world().type<1>();
         case Tok::Tag::T_bot:
@@ -111,21 +115,18 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::L_s:
         case Tok::Tag::L_u:
         case Tok::Tag::L_r:         return parse_lit();
+        case Tok::Tag::M_id:        return find(parse_sym());
         case Tok::Tag::M_i:         return lex().index();
         case Tok::Tag::M_ax: {
             // HACK hard-coded some built-in axioms
             auto tok = lex();
             auto s = tok.sym().to_string();
+            if (s == ":Mem")      return world().type_mem();
             if (s == ":Int"     ) return world().type_int();
             if (s == ":Real"    ) return world().type_real();
             if (s == ":Wrap_add") return world().ax(Wrap::add);
             if (s == ":Wrap_sub") return world().ax(Wrap::sub);
             assert(false && "TODO");
-        }
-        case Tok::Tag::M_id: {
-            if (ahead(1).isa(Tok::Tag::T_assign) || ahead(1).isa(Tok::Tag::T_colon)) return parse_let();
-            auto sym = parse_sym();
-            return find(sym);
         }
         default:
             if (ctxt.empty()) return nullptr;
@@ -133,6 +134,32 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
     }
     // clang-format on
     return nullptr;
+}
+
+const Def* Parser::parse_ax() {
+    auto track = tracker();
+    eat(Tok::Tag::K_ax);
+    auto ax = expect(Tok::Tag::M_ax, "name of an axiom");
+    expect(Tok::Tag::T_colon, "axiom");
+    auto type = parse_expr("type of an axiom");
+    world().axiom(type, track.named(ax.sym()));
+    expect(Tok::Tag::T_semicolon, "end of an axiom");
+    return parse_expr("scope of an axiom");
+}
+
+const Def* Parser::parse_Cn() {
+    auto track = tracker();
+    eat(Tok::Tag::K_Cn);
+    return world().cn(parse_expr("domain of a continuation type"), track);
+}
+
+const Def* Parser::parse_var() {
+    auto track  = tracker();
+    eat(Tok::Tag::T_at);
+    auto sym = parse_sym("variable");
+    auto nom = find(sym)->isa_nom();
+    if (!nom) err(prev_, "variable must reference a nominal");
+    return nom->var(track.named(sym));
 }
 
 const Def* Parser::parse_pack_or_array(bool pack) {
@@ -223,6 +250,7 @@ const Def* Parser::parse_lit() {
 }
 
 const Def* Parser::parse_let() {
+    eat(Tok::Tag::K_let);
     auto sym = parse_sym();
     if (accept(Tok::Tag::T_colon)) {
         /*auto type = */parse_expr("type of a let binding");
@@ -251,7 +279,7 @@ const Def* Parser::parse_nom() {
         case Tok::Tag::K_Sigma: {
             expect(Tok::Tag::T_comma, "nominal Sigma");
             auto arity = expect(Tok::Tag::L_u, "arity of a nominal Sigma");
-            nom = world().nom_sigma(type, arity ? arity->u() : 0, track.named(sym));
+            nom = world().nom_sigma(type, arity.u(), track.named(sym));
             break;
         }
         case Tok::Tag::K_Arr: {
@@ -263,9 +291,12 @@ const Def* Parser::parse_nom() {
         case Tok::Tag::K_pack:
             nom = world().nom_pack(type, track.named(sym));
             break;
-        case Tok::Tag::K_Pi:
-            nom = world().nom_pi(type, track.named(sym));
+        case Tok::Tag::K_Pi: {
+            expect(Tok::Tag::T_comma, "nominal Pi");
+            auto dom = parse_expr("domain of a nominal Pi");
+            nom = world().nom_pi(type, track.named(sym))->set_dom(dom);
             break;
+        }
         case Tok::Tag::K_lam: {
             const Pi* pi = type->isa<Pi>();
             if (!pi) err(type->loc(), "type of lambda must be a Pi");
@@ -280,7 +311,7 @@ const Def* Parser::parse_nom() {
 
     if (ahead().isa(Tok::Tag::T_assign)) return parse_def(sym);
 
-    expect(Tok::Tag::T_semicolon, "nominal");
+    expect(Tok::Tag::T_semicolon, "end of a nominal");
     return parse_expr("scope of a nominal");
 }
 
@@ -292,15 +323,32 @@ const Def* Parser::parse_def(Sym sym /*= {}*/) {
 
     auto nom = find(sym)->as_nom();
     expect(Tok::Tag::T_assign, "nominal definition");
-    expect(Tok::Tag::D_brace_l, "nominal definition");
-    size_t i = 0;
-    if (!ahead().isa(Tok::Tag::D_brace_l)) {
+
+    size_t i, e;
+    // clang-format off
+    switch (nom->node()) {
+        case Node::Sigma: i = 0; e = nom->num_ops(); break;
+        case Node::Pi:    i = 1; e = 2; break;
+        case Node::Lam:   i = 0; e = 2; break;
+        case Node::Arr:   i = 1; e = 2; break;
+        case Node::Pack:  i = 0; e = 1; break;
+        default: unreachable();
+    }
+    // clang-format on
+
+    if (accept(Tok::Tag::D_brace_l)) {
         do {
+            if (i == e) err(prev_, "too many operands");
             nom->set(i++, parse_expr("operand of a nominal"));
         } while (accept(Tok::Tag::T_comma) && !ahead().isa(Tok::Tag::D_brace_r));
+        expect(Tok::Tag::D_brace_r, "nominal definition");
+    } else if (e - i == 1) {
+        nom->set(i, parse_expr("operand of a nominal"));
+    } else {
+        err(prev_, "expected operands for nominal definition");
     }
-    expect(Tok::Tag::D_brace_r, "nominal definition");
-    expect(Tok::Tag::T_semicolon, "nominal definition");
+    nom->dump(0);
+    expect(Tok::Tag::T_semicolon, "end of a nominal definition");
     return parse_expr("scope of a nominal definition");
 }
 

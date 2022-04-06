@@ -38,6 +38,7 @@ private:
 
     /// @name primary exprs
     ///@{
+    const Def* parse_Cn();
     const Def* parse_pack_or_array(bool pack);
     const Def* parse_block();
     const Def* parse_sigma();
@@ -47,6 +48,8 @@ private:
     const Def* parse_lit();
     const Def* parse_let();
     const Def* parse_nom();
+    const Def* parse_var();
+    const Def* parse_ax();
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
     const Def* parse_def(Sym sym = {});
@@ -107,7 +110,7 @@ private:
 
     /// Parser::lex Parser::ahead() which must be a @p tag.
     /// Issue err%or with @p ctxt otherwise.
-    std::optional<Tok> expect(Tok::Tag tag, std::string_view ctxt);
+    Tok expect(Tok::Tag tag, std::string_view ctxt);
 
     /// Consume Parser::ahead which must be a @p tag; asserts otherwise.
     Tok eat([[maybe_unused]] Tok::Tag tag) {
@@ -143,13 +146,13 @@ private:
     const Def* find(Sym sym) const {
         for (auto& scope : scopes_ | std::ranges::views::reverse)
             if (auto i = scope.find(sym); i != scope.end()) return i->second;
-        thorin::err<ScopeError>(sym->loc(), "symbol {} not found");
+        thorin::err<ScopeError>(sym.loc(), "symbol '{}' not found", sym);
     }
     void insert(Sym sym, const Def* def) {
         if (auto [i, ins] = scopes_.back().emplace(sym, def); !ins) {
-            auto curr = sym->loc();
-            auto prev = i->first->loc();
-            thorin::err<ScopeError>(curr, "symbol {} already declared in the current scope here: {}", prev);
+            auto curr = sym.loc();
+            auto prev = i->first.loc();
+            thorin::err<ScopeError>(curr, "symbol '{}' already declared in the current scope here: {}", sym, prev);
         }
     }
     ///@}

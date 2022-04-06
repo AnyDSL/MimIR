@@ -22,6 +22,8 @@ Debug::Debug(const Def* dbg)
 
 size_t SymHash::operator()(Sym sym) const { return murmur3(sym.def()->gid()); }
 
+Loc Sym::loc() const { return def()->loc(); }
+
 Stream& Pos::stream(Stream& s) const { return s.fmt("{}:{}", row, col); }
 
 Stream& Loc::stream(Stream& s) const {

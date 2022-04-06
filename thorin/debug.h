@@ -78,9 +78,8 @@ public:
         : def_(def) {}
 
     const Def* def() const { return def_; }
-    Debug debug();
+    Loc loc() const;
     std::string to_string() const;
-    const Def* operator->() const { return def_; }
     operator bool() const { return def_; }
     operator std::string() const { return to_string(); }
     bool operator==(Sym other) const { return this->def() == other.def(); }

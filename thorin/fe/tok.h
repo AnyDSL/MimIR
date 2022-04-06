@@ -10,7 +10,9 @@ namespace thorin {
 // clang-format off
 #define THORIN_KEY(m)                  \
     m(K_module, ".module")             \
-    m(K_def,    ".def")                \
+    m(K_ax,     ".ax"    )             \
+    m(K_def,    ".def"   )             \
+    m(K_let,    ".let"   )             \
     m(K_Nat,    ".Nat"   )             \
     m(K_extern, ".extern")             \
     m(K_Sigma,  ".Sigma" )             \
@@ -20,6 +22,8 @@ namespace thorin {
     m(K_lam,    ".lam"   )             \
     m(K_Cn,     ".Cn"    )             \
     m(K_cn,     ".cn"    )             \
+    m(K_Fn,     ".Fn"    )             \
+    m(K_fn,     ".fn"    )             \
     m(K_ff,     ".ff"    )             \
     m(K_tt,     ".tt"    )             \
 
@@ -50,20 +54,21 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(D_quote_l,      "«")              \
     m(D_quote_r,      "»")              \
     /* further tokens */                \
+    m(T_Pi,           "Π")              \
     m(T_arrow,        "→")              \
     m(T_assign,       "=")              \
+    m(T_at,           "@")              \
     m(T_bot,          "⊥")              \
-    m(T_top,          "⊤")              \
     m(T_colon,        ":")              \
     m(T_colon_colon,  "∷")              \
     m(T_comma,        ",")              \
     m(T_dot,          ".")              \
     m(T_extract,      "#")              \
-    m(T_Pi,           "Π")              \
     m(T_lam,          "λ")              \
     m(T_semicolon,    ";")              \
     m(T_space,        "□")              \
     m(T_star,         "*")              \
+    m(T_top,          "⊤")              \
 
 #define THORIN_SUBST(m)                 \
     m("->",     T_arrow)                \
