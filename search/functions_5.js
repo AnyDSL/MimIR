@@ -22,6 +22,5 @@ var searchData=
   ['free_5fdefs_19',['free_defs',['../classthorin_1_1Scope.html#a546abdb4b59161b1ba6094ec0a5e4b86',1,'thorin::Scope']]],
   ['free_5fnoms_20',['free_noms',['../classthorin_1_1Scope.html#a3b967377bae646cbd9b148947558cb47',1,'thorin::Scope']]],
   ['free_5fvars_21',['free_vars',['../classthorin_1_1Scope.html#ad1382b17547a92c8e469ddf4fd5f11b3',1,'thorin::Scope']]],
-  ['front_22',['front',['../classthorin_1_1unique__queue.html#aa5cb6efdf0387545a73e968d076f56d0',1,'thorin::unique_queue::front()'],['../classthorin_1_1Array.html#aa820fca7c6f7c785f1bfa18786a8ff68',1,'thorin::Array::front() const'],['../classthorin_1_1Array.html#ad8561aef9d4eb3c6dee457b9ae4a0d05',1,'thorin::Array::front()'],['../classthorin_1_1ArrayRef.html#ae90aa33866ab681469b7e0ec8a68ca98',1,'thorin::ArrayRef::front()']]],
-  ['fva_23',['FVA',['../classthorin_1_1FVA.html#ad8fd8fcb99019f7924eea7aa962b6eec',1,'thorin::FVA']]]
+  ['front_22',['front',['../classthorin_1_1unique__queue.html#aa5cb6efdf0387545a73e968d076f56d0',1,'thorin::unique_queue::front()'],['../classthorin_1_1Array.html#aa820fca7c6f7c785f1bfa18786a8ff68',1,'thorin::Array::front() const'],['../classthorin_1_1Array.html#ad8561aef9d4eb3c6dee457b9ae4a0d05',1,'thorin::Array::front()'],['../classthorin_1_1ArrayRef.html#ae90aa33866ab681469b7e0ec8a68ca98',1,'thorin::ArrayRef::front()']]]
 ];
