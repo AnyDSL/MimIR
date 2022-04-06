@@ -2,6 +2,7 @@ var namespacethorin =
 [
     [ "AddrSpace", "namespacethorin_1_1AddrSpace.html", null ],
     [ "Dep", "namespacethorin_1_1Dep.html", null ],
+    [ "dot", "namespacethorin_1_1dot.html", "namespacethorin_1_1dot" ],
     [ "ll", "namespacethorin_1_1ll.html", "namespacethorin_1_1ll" ],
     [ "Node", "namespacethorin_1_1Node.html", null ],
     [ "RMode", "namespacethorin_1_1RMode.html", [

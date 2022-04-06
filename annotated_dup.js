@@ -1,6 +1,10 @@
 var annotated_dup =
 [
     [ "thorin", "namespacethorin.html", [
+      [ "dot", "namespacethorin_1_1dot.html", [
+        [ "BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
+        [ "DotEmitter", "classthorin_1_1dot_1_1DotEmitter.html", "classthorin_1_1dot_1_1DotEmitter" ]
+      ] ],
       [ "ll", "namespacethorin_1_1ll.html", [
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
         [ "CodeGen", "classthorin_1_1ll_1_1CodeGen.html", "classthorin_1_1ll_1_1CodeGen" ]

@@ -13,6 +13,7 @@ var hierarchy =
     [ "thorin::ArrayStorage< uint64_t, std::is_trivial< uint64_t >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::ArrayStorage< Value, std::is_trivial< Value >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::ArrayStorage< void *, std::is_trivial< void * >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
+    [ "thorin::dot::BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
     [ "thorin::ll::BB", "structthorin_1_1ll_1_1BB.html", null ],
     [ "thorin::BitSet", "classthorin_1_1BitSet.html", null ],
     [ "thorin::CFA", "classthorin_1_1CFA.html", null ],
@@ -29,6 +30,9 @@ var hierarchy =
     [ "thorin::Emitter< Value, Type, BB, Child >", "classthorin_1_1Emitter.html", null ],
     [ "thorin::Emitter< std::string, std::string, BB, CodeGen >", "classthorin_1_1Emitter.html", [
       [ "thorin::ll::CodeGen", "classthorin_1_1ll_1_1CodeGen.html", null ]
+    ] ],
+    [ "thorin::Emitter< std::string, std::string, BB, DotEmitter >", "classthorin_1_1Emitter.html", [
+      [ "thorin::dot::DotEmitter", "classthorin_1_1dot_1_1DotEmitter.html", null ]
     ] ],
     [ "thorin::ErrorHandler", "classthorin_1_1ErrorHandler.html", null ],
     [ "thorin::FNV1", "structthorin_1_1FNV1.html", null ],

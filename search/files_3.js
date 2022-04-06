@@ -12,5 +12,7 @@ var searchData=
   ['domfrontier_2ecpp_9',['domfrontier.cpp',['../domfrontier_8cpp.html',1,'']]],
   ['domfrontier_2eh_10',['domfrontier.h',['../domfrontier_8h.html',1,'']]],
   ['domtree_2ecpp_11',['domtree.cpp',['../domtree_8cpp.html',1,'']]],
-  ['domtree_2eh_12',['domtree.h',['../domtree_8h.html',1,'']]]
+  ['domtree_2eh_12',['domtree.h',['../domtree_8h.html',1,'']]],
+  ['dot_2ecpp_13',['dot.cpp',['../dot_8cpp.html',1,'']]],
+  ['dot_2eh_14',['dot.h',['../dot_8h.html',1,'']]]
 ];
