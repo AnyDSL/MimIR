@@ -56,6 +56,8 @@ add_library(libthorin
     pass/fp/beta_red.h
     pass/fp/copy_prop.cpp
     pass/fp/copy_prop.h
+    pass/fp/split_slots.cpp
+    pass/fp/split_slots.h
     pass/fp/ssa_constr.cpp
     pass/fp/ssa_constr.h
     pass/fp/tail_rec_elim.cpp

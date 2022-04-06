@@ -4,6 +4,7 @@
 #include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
+#include "thorin/pass/fp/split_slots.h"
 #include "thorin/pass/fp/ssa_constr.h"
 #include "thorin/pass/fp/tail_rec_elim.h"
 #include "thorin/pass/rw/alloc2malloc.h"
@@ -26,6 +27,7 @@ void optimize(World& world) {
     auto br = opt.add<BetaRed>();
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);
+    opt.add<SplitSlots>();
     opt.add<SSAConstr>(ee);
     opt.add<Scalerize>(ee);
     opt.add<CopyProp>(br, ee);
