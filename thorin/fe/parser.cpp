@@ -34,7 +34,7 @@ std::optional<Tok> Parser::expect(Tok::Tag tag, std::string_view ctxt) {
 }
 
 void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
-    errln("{}: expected {}, got '{}' while parsing {}", tok.loc(), what, tok, ctxt);
+    err(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
 }
 
 void Parser::parse_module() {
@@ -102,12 +102,12 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::K_Pi:
         case Tok::Tag::K_lam:       return parse_nom();
         case Tok::Tag::K_def:       return parse_def();
-        case Tok::Tag::T_bot:       return parse_ext(false);
-        case Tok::Tag::T_top:       return parse_ext(true);
         case Tok::Tag::T_Pi:        return parse_pi();
         case Tok::Tag::T_lam:       return parse_lam();
         case Tok::Tag::T_star:      lex(); return world().type();
         case Tok::Tag::T_space:     lex(); return world().type<1>();
+        case Tok::Tag::T_bot:
+        case Tok::Tag::T_top:
         case Tok::Tag::L_s:
         case Tok::Tag::L_u:
         case Tok::Tag::L_r:         return parse_lit();
@@ -125,9 +125,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::M_id: {
             if (ahead(1).isa(Tok::Tag::T_assign) || ahead(1).isa(Tok::Tag::T_colon)) return parse_let();
             auto sym = parse_sym();
-            if (auto def = find(sym)) return def;
-            errln("symbol '{}' not found", sym);
-            return nullptr;
+            return find(sym);
         }
         default:
             if (ctxt.empty()) return nullptr;
@@ -165,14 +163,6 @@ const Def* Parser::parse_tuple() {
     return world().tuple(ops);
 }
 
-const Def* Parser::parse_ext(bool top) {
-    auto track  = tracker();
-    auto lit    = lex();
-    auto [_, r] = Tok::prec(Tok::Prec::Lit);
-    auto type   = accept(Tok::Tag::T_colon_colon) ? parse_expr("literal", r) : world().type();
-    return world().ext(top, type, track);
-}
-
 const Def* Parser::parse_pi() {
     auto track = tracker();
     eat(Tok::Tag::T_Pi);
@@ -204,9 +194,10 @@ const Def* Parser::parse_lam() {
 const Def* Parser::parse_lit() {
     auto track = tracker();
     auto lit   = lex();
+    auto [_, r] = Tok::prec(Tok::Prec::Lit);
 
     if (accept(Tok::Tag::T_colon_colon)) {
-        auto type = parse_expr("literal", Tok::Prec::Lit);
+        auto type = parse_expr("literal", r);
 
         const Def* meta = nullptr;
         switch (lit.tag()) {
@@ -214,6 +205,8 @@ const Def* Parser::parse_lit() {
             case Tok::Tag::L_s: meta = world().lit_nat('s'); break;
             case Tok::Tag::L_u: meta = world().lit_nat('u'); break;
             case Tok::Tag::L_r: meta = world().lit_nat('r'); break;
+            case Tok::Tag::T_bot: return world().bot(type, track);
+            case Tok::Tag::T_top: return world().top(type, track);
             default: unreachable();
             // clang-format on;
         }
@@ -221,10 +214,10 @@ const Def* Parser::parse_lit() {
         return world().lit(type, lit.u(), track.meta(meta));
     }
 
-    if (lit.tag() == Tok::Tag::L_s)
-        errln(".Nat literal specified as signed but must be unsigned");
-    else if (lit.tag() == Tok::Tag::L_r)
-        errln(".Nat literal specified as floating-point but must be unsigned");
+    if (lit.tag() == Tok::Tag::T_bot) return world().bot(world().type(), track);
+    if (lit.tag() == Tok::Tag::T_top) return world().top(world().type(), track);
+    if (lit.tag() == Tok::Tag::L_s) err(prev_, ".Nat literal specified as signed but must be unsigned");
+    if (lit.tag() == Tok::Tag::L_r) err(prev_, ".Nat literal specified as floating-point but must be unsigned");
 
     return world().lit_nat(lit.u(), track);
 }
@@ -275,7 +268,7 @@ const Def* Parser::parse_nom() {
             break;
         case Tok::Tag::K_lam: {
             const Pi* pi = type->isa<Pi>();
-            if (!pi) errln("type of lambda must be a Pi");
+            if (!pi) err(type->loc(), "type of lambda must be a Pi");
             nom = world().nom_lam(pi, track.named(sym));
             break;
         }
@@ -284,6 +277,9 @@ const Def* Parser::parse_nom() {
 
     insert(sym, nom);
     if (external) nom->make_external();
+
+    if (ahead().isa(Tok::Tag::T_assign)) return parse_def(sym);
+
     expect(Tok::Tag::T_semicolon, "nominal");
     return parse_expr("scope of a nominal");
 }

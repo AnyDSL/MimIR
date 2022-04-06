@@ -110,7 +110,7 @@ int main(int argc, char** argv) {
             ll::emit(world, s);
         }
     } catch (const std::exception& e) {
-        errln("error: {}", e.what());
+        errln("{}", e.what());
         return EXIT_FAILURE;
     } catch (...) {
         std::cerr << "error: unknown exception" << std::endl;

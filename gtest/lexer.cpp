@@ -28,8 +28,8 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_colon));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_comma));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_dot));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lam));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_Pi));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_lam));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::K_Pi));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_lam));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::T_Pi));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::M_eof));
@@ -63,20 +63,24 @@ TEST(Lexer, Loc) {
 }
 
 TEST(Lexer, Errors) {
-    // TODO catch error
-
     World world;
     std::istringstream is1("asdf \xc0\xc0");
     Lexer l1(world, "<is1>", is1);
     l1.lex();
-    l1.lex();
+    EXPECT_THROW(l1.lex(), LexError);
 
     std::istringstream is2("foo \xaa");
     Lexer l2(world, "<is2>", is2);
     l2.lex();
-    l2.lex();
+    EXPECT_THROW(l2.lex(), LexError);
 
-    // stray +/-
+    std::istringstream is3("+");
+    Lexer l3(world, "<is3>", is3);
+    EXPECT_THROW(l3.lex(), LexError);
+
+    std::istringstream is4("-");
+    Lexer l4(world, "<is4>", is4);
+    EXPECT_THROW(l4.lex(), LexError);
 }
 
 TEST(Lexer, Eof) {
@@ -121,8 +125,13 @@ TEST_P(Real, sign) {
     check("0x2.3p-4", 0x2.3p-4); check("0x2.3P4", 0x2.3P4);
     // clang-format on
 
-    // TODO check for error: 0x2.34
-    // TODO check for error: 2.34e
+    std::istringstream is1("0x2.34");
+    Lexer l1(w, "<is1>", is1);
+    EXPECT_THROW(l1.lex(), LexError);
+
+    std::istringstream is2("2.34e");
+    Lexer l2(w, "<is2>", is2);
+    EXPECT_THROW(l2.lex(), LexError);
 }
 
 INSTANTIATE_TEST_SUITE_P(Lexer, Real, testing::Range(0, 3));

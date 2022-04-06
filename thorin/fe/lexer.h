@@ -4,6 +4,7 @@
 #include <absl/container/flat_hash_map.h>
 
 #include "thorin/debug.h"
+#include "thorin/error.h"
 
 #include "thorin/fe/tok.h"
 #include "thorin/util/utf8.h"
@@ -23,6 +24,11 @@ public:
 private:
     Tok tok(Tok::Tag tag) { return {loc(), tag}; }
     bool eof() const { return peek_.c32 == (char32_t)std::istream::traits_type::eof(); }
+
+    template<class... Args>
+    [[noreturn]] void err(Loc loc, const char* fmt, Args&&... args) {
+        thorin::err<LexError>(loc, fmt, std::forward<Args&&>(args)...);
+    }
 
     /// @return @c true if @p pred holds.
     /// In this case invoke @p next() and append to @p str_;

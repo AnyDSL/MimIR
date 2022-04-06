@@ -57,7 +57,7 @@ void Lexer::next() {
         }
 
         if (ok) return;
-        errln("{}, invalid UTF-8 character", peek_.pos);
+        err({loc_.file, peek_.pos}, "invalid UTF-8 character");
     }
 }
 
@@ -114,7 +114,7 @@ Tok Lexer::lex() {
         if (accept('.')) {
             if (lex_id()) {
                 if (auto i = keywords_.find(str_); i != keywords_.end()) { return tok(i->second); }
-                errln("{}:{}: unknown keyword '{}'", loc_.file, peek_.pos, str_);
+                err({loc_.file, peek_.pos}, "unknown keyword '{}'", str_);
                 continue;
             }
 
@@ -145,11 +145,11 @@ Tok Lexer::lex() {
                 continue;
             }
 
-            errln("{}:{}: invalid input char '/'; maybe you wanted to start a comment?", loc_.file, peek_.pos);
+            err({loc_.file, peek_.pos}, "invalid input char '/'; maybe you wanted to start a comment?");
             continue;
         }
 
-        errln("{}:{}: invalid input char '{}'", loc_.file, peek_.pos, (char)peek_.c32);
+        err({loc_.file, peek_.pos}, "invalid input char '{}'", (char)peek_.c32);
         next();
     }
 }
@@ -204,7 +204,7 @@ std::optional<Tok> Lexer::parse_lit() {
                 auto m = strtoull(str_.c_str(), nullptr, 10);
                 return Tok{loc_, world().lit_int_mod(m, i)};
             } else {
-                errln("{}: stray underscore in unsigned literal", loc_);
+                err(loc_, "stray underscore in unsigned literal");
                 auto i = strtoull(str_.c_str(), nullptr, 10);
                 return Tok{loc_, u64(i)};
             }
@@ -222,13 +222,13 @@ std::optional<Tok> Lexer::parse_lit() {
         is_float |= parse_exp(base);
     }
 
-    if (is_float && base == 16) str_.insert(0, "0x"sv);
-    if (sign && *sign) str_.insert(0, "-"sv);
-
-    if (str_ == "+" || str_ == "-") {
-        errln("{}: stray '{}'", loc_, str_);
+    if (sign && str_.empty()) {
+        err(loc_, "stray '{}'", *sign ? "-" : "+");
         return {};
     }
+
+    if (is_float && base == 16) str_.insert(0, "0x"sv);
+    if (sign && *sign) str_.insert(0, "-"sv);
 
     if (is_float) return Tok{loc_, r64(strtod  (str_.c_str(), nullptr      ))};
     if (sign)     return Tok{loc_, u64(strtoll (str_.c_str(), nullptr, base))};
@@ -249,13 +249,13 @@ bool Lexer::parse_exp(int base /*= 10*/) {
     if (accept_if(base == 10 ? [](int i) { return i == 'e' || i == 'E'; }
                              : [](int i) { return i == 'p' || i == 'P'; })) {
         accept_if(issign);
-        if (!isdigit(peek_.c32)) errln("{}: exponent has no digits", loc_);
+        if (!isdigit(peek_.c32)) err(loc_, "exponent has no digits");
         parse_digits();
         return true;
     }
 
     if (base == 16) {
-        errln("{}: hexadecimal floating constants require an exponent", loc_);
+        err(loc_, "hexadecimal floating constants require an exponent");
         return {};
     }
     return false;
@@ -266,7 +266,7 @@ void Lexer::eat_comments() {
     while (true) {
         while (!eof() && peek_.c32 != '*') next();
         if (eof()) {
-            errln("{}: non-terminated multiline comment", loc_);
+            err(loc_, "non-terminated multiline comment");
             return;
         }
         next();

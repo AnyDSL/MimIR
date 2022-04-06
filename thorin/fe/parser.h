@@ -42,7 +42,6 @@ private:
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();
-    const Def* parse_ext(bool);
     const Def* parse_pi();
     const Def* parse_lam();
     const Def* parse_lit();
@@ -71,6 +70,8 @@ private:
         return result;
     }
 
+    /// @name Tracker
+    ///@{
     /// Trick to easily keep track of Loc%ations.
     class Tracker {
     public:
@@ -91,12 +92,15 @@ private:
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
     const Def* dbg(Tracker t) { return world().dbg((Loc)t); }
+    ///@}
+
+    /// @name get next Tok
+    ///@{
+    /// Get lookahead.
+    Tok ahead(size_t i = 0) const { return ahead_[i]; }
 
     /// Invoke Lexer to retrieve next Tok%en.
     Tok lex();
-
-    /// Get lookahead.
-    Tok ahead(size_t i = 0) const { return ahead_[i]; }
 
     /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.
     bool accept(Tok::Tag tag);
@@ -110,13 +114,23 @@ private:
         assert(tag == ahead().tag() && "internal parser error");
         return lex();
     }
+    ///@}
+
+    /// @name error messages
+    ///@{
+    template<class... Args>
+    [[noreturn]] void err(Loc loc, const char* fmt, Args&&... args) {
+        thorin::err<ParseError>(loc, fmt, std::forward<Args&&>(args)...);
+    }
+
 
     /// Issue an error message of the form:
     /// "expected \<what\>, got '\<tok>\' while parsing \<ctxt\>"
-    void err(std::string_view what, const Tok& tok, std::string_view ctxt);
+    [[noreturn]] void err(std::string_view what, const Tok& tok, std::string_view ctxt);
 
     /// Same above but uses @p ahead() as @p tok.
-    void err(std::string_view what, std::string_view ctxt) { err(what, ahead(), ctxt); }
+    [[noreturn]] void err(std::string_view what, std::string_view ctxt) { err(what, ahead(), ctxt); }
+    ///@}
 
     /// @name Scope
     ///@{
@@ -130,12 +144,13 @@ private:
     const Def* find(Sym sym) const {
         for (auto& scope : scopes_ | std::ranges::views::reverse)
             if (auto i = scope.find(sym); i != scope.end()) return i->second;
-        return nullptr;
+        thorin::err<ScopeError>(sym->loc(), "symbol {} not found");
     }
     void insert(Sym sym, const Def* def) {
-        if (auto [_, ins] = scopes_.back().emplace(sym, def); !ins) {
-            errln("symbol {} already declared in the current scope", sym);
-            // errln("previous location here", what, tok, ctxt);
+        if (auto [i, ins] = scopes_.back().emplace(sym, def); !ins) {
+            auto curr = sym->loc();
+            auto prev = i->first->loc();
+            thorin::err<ScopeError>(curr, "symbol {} already declared in the current scope here: {}", prev);
         }
     }
     ///@}
