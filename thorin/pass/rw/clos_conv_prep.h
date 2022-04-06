@@ -24,7 +24,7 @@ public:
 
     bool from_outer_scope(Lam* lam) { return scope(lam) && scope(lam) != scope(curr_nom()); }
 
-    const Def* eta_wrap(const Def* def, ClosKind kind, const std::string& dbg) {
+    const Def* eta_wrap(const Def* def, Clos clos, const std::string& dbg) {
         auto& w                = world();
         auto [entry, inserted] = old2wrapper_.emplace(def, nullptr);
         auto& wrapper          = entry->second;
@@ -34,7 +34,7 @@ public:
             lam2fscope_[wrapper] = scope(curr_nom());
             wrapper_.emplace(wrapper);
         }
-        return w.clos_kind(wrapper, kind);
+        return w.op(clos, wrapper);
     }
 
 private:

@@ -83,15 +83,15 @@ const Def* clos_apply(const Def* closure, const Def* args) {
 ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_clos_type(def->type())) {
-        auto cc  = ClosKind::bot;
+        auto cc  = Clos::bot;
         auto fnc = std::get<1_u64>(clos_unpack(tpl));
-        if (auto q = isa<Tag::ClosKind>(fnc)) {
+        if (auto q = isa<Tag::Clos>(fnc)) {
             fnc = q->arg();
             cc  = q.flags();
         }
         if (!lambda_or_branch || fnc->isa<Lam>()) return ClosLit(tpl, cc);
     }
-    return ClosLit(nullptr, ClosKind::bot);
+    return ClosLit(nullptr, Clos::bot);
 }
 
 const Def* ClosLit::env() {
@@ -106,7 +106,7 @@ const Def* ClosLit::fnc() {
 
 Lam* ClosLit::fnc_as_lam() {
     auto f = fnc();
-    if (auto q = isa<Tag::ClosKind>(f)) f = q->arg();
+    if (auto q = isa<Tag::Clos>(f)) f = q->arg();
     return f->isa_nom<Lam>();
 }
 
@@ -192,7 +192,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         auto closure                  = clos_pack(env, new_lam, closure_type);
         w.DLOG("RW: pack {} ~> {} : {}", lam, closure, closure_type);
         return map(closure);
-    } else if (auto q = isa<Tag::ClosKind>(ClosKind::ret, def)) {
+    } else if (auto q = isa<Tag::Clos>(Clos::ret, def)) {
         if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
             assert(ret_lam && ret_lam->is_basicblock());
             // Note: This should be cont_lam's only occurance after η-expansion, so its okay to
@@ -206,8 +206,8 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             }
             return new_lam;
         }
-    } else if (auto q = isa<Tag::ClosKind>(def);
-               q && (q.flags() == ClosKind::fstclassBB || q.flags() == ClosKind::freeBB)) {
+    } else if (auto q = isa<Tag::Clos>(def);
+               q && (q.flags() == Clos::fstclassBB || q.flags() == Clos::freeBB)) {
         // Note: Same thing about η-conversion applies here
         auto bb_lam = q->arg()->isa_nom<Lam>();
         assert(bb_lam && bb_lam->is_basicblock());
@@ -318,7 +318,7 @@ void FreeDefAna::split_fd(Node* node, const Def* fv, bool& init_node, NodeQueue&
     if (ignore_fd(fv)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fv); var && lam) {
         if (var != lam->ret_var()) node->fvs.emplace(fv);
-    } else if (auto q = isa<Tag::ClosKind>(ClosKind::freeBB, fv)) {
+    } else if (auto q = isa<Tag::Clos>(Clos::freeBB, fv)) {
         node->fvs.emplace(q);
     } else if (auto pred = fv->isa_nom()) {
         if (pred != node->nom) {

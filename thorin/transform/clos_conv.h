@@ -21,8 +21,8 @@ public:
         , lam2nodes_(){};
 
     /// FreeDefAna::run will compute free defs (FD) that appear in @p lam%s body.
-    /// Nominal Def%s are only considered free if they are annotated with ClosKind::freeBB or
-    /// ClosKind::fstclassBB.
+    /// Nominal Def%s are only considered free if they are annotated with Clos::freeBB or
+    /// Clos::fstclassBB.
     /// Otherwise, we add a nom's free defs in order to build a closure for it.
     /// Structural Def%s containing nominals are broken up if necessary.
     DefSet& run(Lam* lam);
@@ -173,16 +173,16 @@ public:
     /// @{
     bool is_returning() { return fnc_type()->is_returning(); }
     bool is_basicblock() { return fnc_type()->is_basicblock(); }
-    ClosKind kind() { return kind_; } ///< ClosKind annotation. These should appear in front of the code-part.
+    Clos clos() { return clos_; } ///< Clos annotation. These should appear in front of the code-part.
     /// @}
 
 private:
-    ClosLit(const Tuple* def, ClosKind kind = ClosKind::bot)
+    ClosLit(const Tuple* def, Clos clos = Clos::bot)
         : def_(def)
-        , kind_(kind){};
+        , clos_(clos){};
 
     const Tuple* def_;
-    const ClosKind kind_;
+    const Clos clos_;
 
     friend ClosLit isa_clos_lit(const Def*, bool);
 };

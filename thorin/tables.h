@@ -41,7 +41,7 @@ using nat_t    = u64;
     m(Atomic, atomic)                                                     \
     m(Zip, zip) m(For, affine_for)                                        \
     m(RevDiff, rev_diff) m(TangentVector, tangent_vector)                 \
-    m(ClosKind, ClosKind)                                                 \
+    m(Clos, clos)                                                         \
     m(AllocJmpBuf, alloc_jmpbuf) m(SetJmp, set_jmp) m(LongJmp, long_jmp)
 
 namespace WMode {
@@ -87,8 +87,8 @@ enum RMode : nat_t {
 /// Accelerators
 #define THORIN_ACC(m) m(Acc, vecotrize) m(Acc, parallel) m(Acc, opencl) m(Acc, cuda) m(Acc, nvvm) m (Acc, amdgpu)
 /// ClosureAnalysis annotations, THORIN_CA_BOT includes a ⊥ node for convinience
-#define THORIN_CLOS_KIND(m) m(ClosKind, ret) m(ClosKind, freeBB) m(ClosKind, fstclassBB) m(ClosKind, escaping)
-#define THORIN_CLOS_KIND_BOT(m) m(ClosKind, bot) THORIN_CLOS_KIND(m)
+#define THORIN_CLOS_KIND(m) m(Clos, ret) m(Clos, freeBB) m(Clos, fstclassBB) m(Clos, esc)
+#define THORIN_CLOS_KIND_BOT(m) m(Clos, bot) THORIN_CLOS_KIND(m)
 
 
 /// The 5 relations are disjoint and are organized as follows:
@@ -208,7 +208,7 @@ enum class Trait    : flags_t { THORIN_TRAIT         (CODE) };
 enum class Conv     : flags_t { THORIN_CONV          (CODE) };
 enum class PE       : flags_t { THORIN_PE            (CODE) };
 enum class Acc      : flags_t { THORIN_ACC           (CODE) };
-enum class ClosKind : flags_t { THORIN_CLOS_KIND_BOT (CODE) };
+enum class Clos     : flags_t { THORIN_CLOS_KIND_BOT (CODE) };
 #undef CODE
 
 constexpr ICmp operator|(ICmp a, ICmp b) { return ICmp(flags_t(a) | flags_t(b)); }
@@ -231,7 +231,7 @@ constexpr std::string_view op2str(Trait    o) { switch (o) { THORIN_TRAIT       
 constexpr std::string_view op2str(Conv     o) { switch (o) { THORIN_CONV          (CODE) default: unreachable(); } }
 constexpr std::string_view op2str(PE       o) { switch (o) { THORIN_PE            (CODE) default: unreachable(); } }
 constexpr std::string_view op2str(Acc      o) { switch (o) { THORIN_ACC           (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(ClosKind o) { switch (o) { THORIN_CLOS_KIND_BOT (CODE) default: unreachable(); } }
+constexpr std::string_view op2str(Clos o) { switch (o) { THORIN_CLOS_KIND_BOT (CODE) default: unreachable(); } }
 #undef CODE
 
 namespace AddrSpace {
@@ -263,19 +263,19 @@ template<> inline constexpr size_t Num<PE   > = 0_s THORIN_PE   (CODE);
 template<> inline constexpr size_t Num<Acc  > = 0_s THORIN_ACC  (CODE);
 #undef CODE
 
-template<tag_t tag> struct Tag2Enum_        { using type = tag_t;       };
-template<> struct Tag2Enum_<Tag::Bit      > { using type = Bit;         };
-template<> struct Tag2Enum_<Tag::Shr      > { using type = Shr;         };
-template<> struct Tag2Enum_<Tag::Wrap     > { using type = Wrap;        };
-template<> struct Tag2Enum_<Tag::Div      > { using type = Div;         };
-template<> struct Tag2Enum_<Tag::ROp      > { using type = ROp;         };
-template<> struct Tag2Enum_<Tag::ICmp     > { using type = ICmp;        };
-template<> struct Tag2Enum_<Tag::RCmp     > { using type = RCmp;        };
-template<> struct Tag2Enum_<Tag::Trait    > { using type = Trait;       };
-template<> struct Tag2Enum_<Tag::Conv     > { using type = Conv;        };
-template<> struct Tag2Enum_<Tag::PE       > { using type = PE;          };
-template<> struct Tag2Enum_<Tag::Acc      > { using type = Acc;         };
-template<> struct Tag2Enum_<Tag::ClosKind> { using type = ClosKind; };
+template<tag_t tag> struct Tag2Enum_    { using type = tag_t;       };
+template<> struct Tag2Enum_<Tag::Bit  > { using type = Bit;         };
+template<> struct Tag2Enum_<Tag::Shr  > { using type = Shr;         };
+template<> struct Tag2Enum_<Tag::Wrap > { using type = Wrap;        };
+template<> struct Tag2Enum_<Tag::Div  > { using type = Div;         };
+template<> struct Tag2Enum_<Tag::ROp  > { using type = ROp;         };
+template<> struct Tag2Enum_<Tag::ICmp > { using type = ICmp;        };
+template<> struct Tag2Enum_<Tag::RCmp > { using type = RCmp;        };
+template<> struct Tag2Enum_<Tag::Trait> { using type = Trait;       };
+template<> struct Tag2Enum_<Tag::Conv > { using type = Conv;        };
+template<> struct Tag2Enum_<Tag::PE   > { using type = PE;          };
+template<> struct Tag2Enum_<Tag::Acc  > { using type = Acc;         };
+template<> struct Tag2Enum_<Tag::Clos > { using type = Clos;        };
 template<tag_t tag> using Tag2Enum = typename Tag2Enum_<tag>::type;
 
 // clang-format on

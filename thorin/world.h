@@ -513,7 +513,7 @@ public:
     const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) { return op_wminus(lit_nat(wmode), a, dbg); }
     ///@}
 
-    const Def* clos_kind(const Def* def, ClosKind a, const Def* dbg = {}) {
+    const Def* op(Clos a, const Def* def, const Def* dbg = {}) {
         switch (a) {
 #define CODE(T, o) \
     case T::o: return app(app(data_.clos_##o##_, def->type()), def, dbg);
@@ -800,7 +800,7 @@ private:
         const Axiom* clos_ret_;
         const Axiom* clos_freeBB_;
         const Axiom* clos_fstclassBB_;
-        const Axiom* clos_escaping_;
+        const Axiom* clos_esc_;
         const Axiom* sjlj_alloc_jmpbuf;
         const Axiom* sjlj_setjmp_;
         const Axiom* sjlj_longjmp_;
