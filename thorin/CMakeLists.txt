@@ -78,8 +78,6 @@ add_library(libthorin
     pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
-    transform/closure_conv.h
-    transform/closure_conv.cpp
     util/array.h
     util/assert.h
     util/bitset.cpp
