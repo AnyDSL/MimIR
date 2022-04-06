@@ -50,6 +50,13 @@ static void emit_cluster_start(Stream& stream, Lam* lam) {
     stream.fmt("shape=square;\n");
     stream.fmt("label=\"{}\";\n", lam->unique_name());
     stream.fmt("\"{}:{}\" [shape=rect];\n", lam->node_name(), lam->unique_name());
+    if (auto body = lam->body())
+        stream.fmt("\"{}:{}\"->\"{}:{}\" [style=dashed];\n", lam->node_name(), lam->unique_name(), body->node_name(),
+                   body->unique_name());
+}
+
+static void emit_node_attributes(Stream& stream, const Def* def) {
+    if (def->isa<Var>()) { stream << ", color=blue"; }
 }
 
 void DotEmitter::emit_imported(Lam* lam) {
@@ -75,7 +82,9 @@ std::string DotEmitter::emit_bb(BB&, const Def* def) {
 
     stream_.fmt("\"{}:{}\" [label=\"", def->node_name(), def->unique_name());
     stream_def_(stream_, def);
-    stream_.fmt("\"];\n");
+    stream_ << "\"";
+    emit_node_attributes(stream_, def);
+    stream_ << "];\n";
 
     for (auto op : def->ops()) {
         emit_unsafe(op);
