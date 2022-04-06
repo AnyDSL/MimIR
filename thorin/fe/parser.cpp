@@ -192,8 +192,8 @@ const Def* Parser::parse_lam() {
 }
 
 const Def* Parser::parse_lit() {
-    auto track = tracker();
-    auto lit   = lex();
+    auto track  = tracker();
+    auto lit    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
 
     if (accept(Tok::Tag::T_colon_colon)) {

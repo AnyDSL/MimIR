@@ -123,7 +123,6 @@ private:
         thorin::err<ParseError>(loc, fmt, std::forward<Args&&>(args)...);
     }
 
-
     /// Issue an error message of the form:
     /// "expected \<what\>, got '\<tok>\' while parsing \<ctxt\>"
     [[noreturn]] void err(std::string_view what, const Tok& tok, std::string_view ctxt);
