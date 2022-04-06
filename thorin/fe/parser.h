@@ -106,7 +106,7 @@ private:
     Tok lex();
 
     /// If Parser::ahead() is a @p tag, Parser::lex(), and return `true`.
-    bool accept(Tok::Tag tag);
+    std::optional<Tok> accept(Tok::Tag tag);
 
     /// Parser::lex Parser::ahead() which must be a @p tag.
     /// Issue err%or with @p ctxt otherwise.

@@ -18,10 +18,9 @@ Tok Parser::lex() {
     return result;
 }
 
-bool Parser::accept(Tok::Tag tag) {
-    if (tag != ahead().tag()) return false;
-    lex();
-    return true;
+std::optional<Tok> Parser::accept(Tok::Tag tag) {
+    if (tag != ahead().tag()) return {};
+    return lex();
 }
 
 Tok Parser::expect(Tok::Tag tag, std::string_view ctxt) {
@@ -48,7 +47,7 @@ void Parser::parse_module() {
 
 Sym Parser::parse_sym(std::string_view ctxt) {
     auto track = tracker();
-    if (ahead().isa(Tok::Tag::M_id)) return lex().sym();
+    if (auto id = accept(Tok::Tag::M_id)) return id->sym();
     err("identifier", ctxt);
     return world().sym("<error>", world().dbg((Loc)track));
 }
@@ -183,13 +182,35 @@ const Def* Parser::parse_block() {
 }
 
 const Def* Parser::parse_sigma() {
-    auto ops = parse_list("sigma", Tok::Tag::D_bracket_l, [this]() { return parse_expr("sigma element"); });
-    return world().sigma(ops);
+    auto track = tracker();
+    eat(Tok::Tag::D_bracket_l);
+
+    DefVec ops;
+    if (!ahead().isa(Tok::Tag::D_brace_r)) {
+        do {
+            if (auto id = accept(Tok::Tag::M_id)) {
+                if (accept(Tok::Tag::T_colon)) {
+                    assert(false && "TODO");
+                    //ops.emplace_back(find(id->sym()));
+                    //ops.emplace_back(parse_expr("element of a sigma"));
+                    // TODO
+                } else {
+                    ops.emplace_back(find(id->sym()));
+                }
+            } else {
+                ops.emplace_back(parse_expr("element of a sigma"));
+            }
+        } while (accept(Tok::Tag::T_comma) && !ahead().isa(Tok::Tag::D_bracket_r));
+        expect(Tok::Tag::D_bracket_r, "closing delimiter of a sigma");
+    }
+
+    return world().sigma(ops, track);
 }
 
 const Def* Parser::parse_tuple() {
+    auto track = tracker();
     auto ops = parse_list("tuple", Tok::Tag::D_paren_l, [this]() { return parse_expr("tuple element"); });
-    return world().tuple(ops);
+    return world().tuple(ops, track);
 }
 
 const Def* Parser::parse_pi() {
@@ -221,7 +242,7 @@ const Def* Parser::parse_lam() {
 }
 
 const Def* Parser::parse_lit() {
-    auto track  = tracker();
+    auto track = tracker();
     auto lit    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
 
@@ -270,9 +291,9 @@ const Def* Parser::parse_let() {
  */
 
 const Def* Parser::parse_nom() {
-    auto track  = tracker();
+    auto track = tracker();
     auto tag = lex().tag();
-    bool external = accept(Tok::Tag::K_extern);
+    bool external = accept(Tok::Tag::K_extern).has_value();
     auto sym = parse_sym("nominal");
     auto type = accept(Tok::Tag::T_colon) ? parse_expr("type of a nominal") : world().type();
 
