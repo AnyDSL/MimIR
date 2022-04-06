@@ -80,12 +80,13 @@ public:
     const Def* def() const { return def_; }
     Debug debug();
     std::string to_string() const;
+    operator bool() const { return def_; }
     operator std::string() const { return to_string(); }
     bool operator==(Sym other) const { return this->def() == other.def(); }
     Stream& stream(Stream& s) const;
 
 private:
-    const Def* def_;
+    const Def* def_ = nullptr;
 };
 
 struct SymHash {

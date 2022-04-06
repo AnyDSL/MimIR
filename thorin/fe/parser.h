@@ -32,21 +32,25 @@ public:
 
 private:
     Sym parse_sym(std::string_view ctxt = {});
-    const Def* parse_def(std::string_view ctxt, Tok::Prec = Tok::Prec::Bottom);
-    const Def* parse_primary_def(std::string_view ctxt);
+    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bottom);
+    const Def* parse_primary_expr(std::string_view ctxt);
     const Def* parse_extract();
 
-    /// @name primary defs
+    /// @name primary exprs
     ///@{
     const Def* parse_pack_or_array(bool pack);
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();
     const Def* parse_ext(bool);
+    const Def* parse_pi();
     const Def* parse_lam();
-    const Def* parse_Pi();
     const Def* parse_lit();
     const Def* parse_let();
+    const Def* parse_nom();
+    /// If @p sym is **not** empty, this is an inline definition of @p sym,
+    /// otherwise it's a standalone definition.
+    const Def* parse_def(Sym sym = {});
     ///@}
 
     template<class F>
@@ -77,6 +81,7 @@ private:
         Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
         operator const Def*() const { return parser_.world().dbg({"", loc()}); }
         const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
+        const Def* named(Sym sym) const { return parser_.world().dbg({sym, loc()}); }
 
     private:
         Parser& parser_;
@@ -98,7 +103,7 @@ private:
 
     /// Parser::lex Parser::ahead() which must be a @p tag.
     /// Issue err%or with @p ctxt otherwise.
-    bool expect(Tok::Tag tag, std::string_view ctxt);
+    std::optional<Tok> expect(Tok::Tag tag, std::string_view ctxt);
 
     /// Consume Parser::ahead which must be a @p tag; asserts otherwise.
     Tok eat([[maybe_unused]] Tok::Tag tag) {

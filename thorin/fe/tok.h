@@ -8,13 +8,20 @@
 namespace thorin {
 
 // clang-format off
-#define THORIN_KEY(m)                   \
-    m(K_Cn,     ".Cn"     )             \
-    m(K_cn,     ".cn"     )             \
-    m(K_module, ".module" )             \
-    m(K_Nat,    ".Nat"    )             \
-    m(K_tt,     ".tt"     )             \
-    m(K_ff,     ".ff"     )             \
+#define THORIN_KEY(m)                  \
+    m(K_module, ".module")             \
+    m(K_def,    ".def")                \
+    m(K_Nat,    ".Nat"   )             \
+    m(K_extern, ".extern")             \
+    m(K_Sigma,  ".Sigma" )             \
+    m(K_Arr,    ".Arr"   )             \
+    m(K_pack,   ".pack"  )             \
+    m(K_Pi,     ".Pi"    )             \
+    m(K_lam,    ".lam"   )             \
+    m(K_Cn,     ".Cn"    )             \
+    m(K_cn,     ".cn"    )             \
+    m(K_ff,     ".ff"    )             \
+    m(K_tt,     ".tt"    )             \
 
 #define CODE(t, str) +size_t(1)
 constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
@@ -62,8 +69,6 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m("->",     T_arrow)                \
     m(".bot",   T_bot  )                \
     m(".top",   T_top  )                \
-    m(".lam",   T_lam  )                \
-    m(".Pi",    T_Pi   )                \
     m(".space", T_top  )                \
 
 #define THORIN_PREC(m)                  \

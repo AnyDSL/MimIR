@@ -94,6 +94,7 @@ int main(int argc, char** argv) {
             Parser parser(world, file, ifs);
             parser.parse_module();
         }
+        world.dump();
 
         // if (num_errors != 0) {
         // std::cerr << num_errors << " error(s) encountered" << std::endl;

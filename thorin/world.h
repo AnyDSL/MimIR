@@ -176,10 +176,10 @@ public:
 
     /// @name Arr
     ///@{
-    Arr* nom_arr(const Def* type, const Def* shape, const Def* dbg = {}) { return insert<Arr>(2, type, shape, dbg); }
+    Arr* nom_arr(const Def* type, const Def* dbg = {}) { return insert<Arr>(2, type, dbg); }
     template<level_t level = 0>
-    Arr* nom_arr(const Def* shape, const Def* dbg = {}) {
-        return nom_arr(type<level>(), shape, dbg);
+    Arr* nom_arr(const Def* dbg = {}) {
+        return nom_arr(type<level>(), dbg);
     }
     const Def* arr(const Def* shape, const Def* body, const Def* dbg = {});
     const Def* arr(Defs shape, const Def* body, const Def* dbg = {});
@@ -202,6 +202,7 @@ public:
 
     /// @name Pack
     ///@{
+    Pack* nom_pack(const Def* type, const Def* dbg = {}) { return insert<Pack>(1, type, dbg); }
     const Def* pack(const Def* arity, const Def* body, const Def* dbg = {});
     const Def* pack(Defs shape, const Def* body, const Def* dbg = {});
     const Def* pack(u64 n, const Def* body, const Def* dbg = {}) { return pack(lit_nat(n), body, dbg); }
