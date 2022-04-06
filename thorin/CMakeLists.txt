@@ -38,6 +38,8 @@ add_library(libthorin
     analyses/scope.cpp
     analyses/scope.h
     be/emitter.h
+    be/dot/dot.cpp
+    be/dot/dot.h
     be/ll/ll.cpp
     be/ll/ll.h
     fe/lexer.cpp
