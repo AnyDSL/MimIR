@@ -98,9 +98,8 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
     type_dump(world,"add cont",cont);
     if(auto arr = a->type()->isa<Arr>(); arr && !(arr->shape()->isa<Lit>())) { THORIN_UNREACHABLE; }
 
-    auto sum_pb = world.nom_lam(world.cn(world.type_mem()), world.dbg("sum_pb"));
+    auto sum_pb = world.nom_filter_lam(world.cn(world.type_mem()), world.dbg("sum_pb"));
     type_dump(world,"  pb (sum)",sum_pb);
-    sum_pb->set_filter(world.lit_true());
 
     if (auto aptr = isa<Tag::Ptr>(a->type())) {
         auto [ty,addr_space] = aptr->arg()->projs<2>();
@@ -111,11 +110,10 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         auto [mem3,b_v] = world.op_load(mem2,b)->projs<2>();
 
         auto res_cont_type = world.cn_mem_flat(a_v->type());
-        auto res_cont = world.nom_lam(res_cont_type,world.dbg("ptr_add_cont"));
+        auto res_cont = world.nom_filter_lam(res_cont_type,world.dbg("ptr_add_cont"));
         type_dump(world,"  result cont",res_cont);
         auto sum_cont = vec_add(world,a_v,b_v,res_cont);
         sum_pb->set_body(world.app(sum_cont, mem3));
-        sum_pb->set_filter(true);
         type_dump(world,"  sum cont",sum_cont);
 
         auto rmem=res_cont->mem_var();
@@ -132,7 +130,6 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
                 sum_ptr
             })
         ));
-        res_cont->set_filter(true);
 
         return sum_pb;
     }
@@ -161,8 +158,8 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
 
         // TODO: replace with for loop
         auto loop_head = world.nom_lam(world.cn_mem(world.type_int_width(64)),world.dbg("add_loop_head"));
-        auto loop = world.nom_lam(world.cn(world.type_mem()),world.dbg("add_loop_body"));
-        auto loop_end = world.nom_lam(world.cn(world.type_mem()),world.dbg("add_loop_exit"));
+        auto loop = world.nom_filter_lam(world.cn(world.type_mem()),world.dbg("add_loop_body"));
+        auto loop_end = world.nom_filter_lam(world.cn(world.type_mem()),world.dbg("add_loop_exit"));
 
         type_dump(world," loop head",loop_head);
         type_dump(world," loop",loop);
@@ -200,7 +197,7 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         // load values manually to allow for easy (and direct) storage into c
 //        auto elem_res_cont_type = world.cn_mem(a_v->type());
         auto elem_res_cont_type = world.cn_mem_flat(a_v->type());
-        auto elem_res_cont = world.nom_lam(elem_res_cont_type,world.dbg("tuple_add_cont"));
+        auto elem_res_cont = world.nom_filter_lam(elem_res_cont_type,world.dbg("tuple_add_cont"));
         auto element_sum_pb = vec_add(world,a_v,b_v,elem_res_cont);
         auto c_v = world.tuple(vars_without_mem_cont(world,elem_res_cont));
         type_dump(world," elem_res_cont",elem_res_cont);
@@ -212,7 +209,6 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
 
 //        set loop
         loop->set_body(world.app(element_sum_pb, loop_mem));
-        loop->set_filter(true);
 
         elem_res_cont->set_body(world.app(
             loop_head,
@@ -221,7 +217,6 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
                 inc
             }
         ));
-        elem_res_cont->set_filter(true);
 
         loop_end->set_body(world.app(
             cont,
@@ -229,7 +224,6 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
                         world.tuple({size_a,arr_c})
                        })
         ));
-        loop_end->set_filter(true);
 
 
         sum_pb->set_body(world.app(
@@ -239,7 +233,6 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
                 world.lit_int_width(64,0)
             }
         ));
-        sum_pb->set_filter(true);
 
         return sum_pb;
     }
@@ -255,10 +248,8 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
                 world.op(ROp::add,(nat_t)0,a,b)
             })
         ));
-        sum_pb->set_filter(true);
         return sum_pb;
     }
-
 
     DefArray ops{dim};
     auto ret_cont_type = cont->type()->as<Pi>();
@@ -270,7 +261,7 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         auto bi=world.extract(b,i);
         dlog(world,"  {}th: {}:{} + {}:{}",i,ai,ai->type(),bi,bi->type());
         auto res_cont_type = world.cn_mem_flat(ai->type());
-        auto res_cont = world.nom_lam(res_cont_type,world.dbg("tuple_add_cont"));
+        auto res_cont = world.nom_filter_lam(res_cont_type,world.dbg("tuple_add_cont"));
         type_dump(world,"  result cont",res_cont);
         auto sum_call=vec_add(world,ai,bi,res_cont);
         ops[i]=world.tuple(vars_without_mem_cont(world,res_cont));
@@ -279,7 +270,6 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
             sum_call,
             current_cont->mem_var()
         ));
-        current_cont->set_filter(true);
 
         current_cont=res_cont;
     }
@@ -288,7 +278,6 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         cont,
         flat_tuple({current_cont->mem_var(), world.tuple(ops)})
     ));
-    current_cont->set_filter(true);
 
     return sum_pb;
 
@@ -589,17 +578,15 @@ const Def* AutoDiffer::j_wrap_tuple(DefArray tuple) {
 
 
     auto pi = createPbType(A,trimmed_ty);
-    auto pb = world_.nom_lam(pi, world_.dbg("tuple_pb"));
+    auto pb = world_.nom_filter_lam(pi, world_.dbg("tuple_pb"));
     dlog(world_,"  complete tuple pb type: {}",pi);
-    pb->set_filter(world_.lit_true());
 
     type_dump(world_,"  A:",A);
     auto pbT = pi->as<Pi>()->doms().back()->as<Pi>();
     dlog(world_,"  intermediate tuple pb type: {}",pbT);
     dlog(world_,"  should be cn_mem of {}",A);
 
-    auto current_sum_pb = world_.nom_lam(pbT, world_.dbg("tuple_sum_pb"));
-    current_sum_pb->set_filter(world_.lit_true());
+    auto current_sum_pb = world_.nom_filter_lam(pbT, world_.dbg("tuple_sum_pb"));
     type_dump(world_,"  sum 0 pb {}",current_sum_pb);
 
     pb->set_body(world_.app(
@@ -638,8 +625,7 @@ const Def* AutoDiffer::j_wrap_tuple(DefArray tuple) {
              scalar,
              scalar->type());
 
-        auto res_pb = world_.nom_lam(pbT, world_.dbg("res_pb"));
-        res_pb->set_filter(world_.lit_true());
+        auto res_pb = world_.nom_filter_lam(pbT, world_.dbg("res_pb"));
         type_dump(world_,"  result pb {}",res_pb);
 
         current_sum_pb->set_body(world_.app(
@@ -650,8 +636,7 @@ const Def* AutoDiffer::j_wrap_tuple(DefArray tuple) {
                 res_pb
         })));
 
-        auto next_current_sum_pb = world_.nom_lam(pbT, world_.dbg("tuple_sum_pb"));
-        next_current_sum_pb->set_filter(world_.lit_true());
+        auto next_current_sum_pb = world_.nom_filter_lam(pbT, world_.dbg("tuple_sum_pb"));
 
         auto sum_cont_pb = vec_add(world_,
                                    world_.tuple(vars_without_mem_cont(world_,current_sum_pb)),
@@ -702,16 +687,13 @@ const Def* AutoDiffer::chain(const Def* a, const Def* b) {
     dlog(world_,"   B2 {}",B2);
 
     auto pi = world_.cn_mem_ret_flat(A, C);
-    auto toplevel = world_.nom_lam(pi, world_.dbg("chain"));
+    auto toplevel = world_.nom_filter_lam(pi, world_.dbg("chain"));
 
     auto middlepi = world_.cn_mem_flat(B);
-    auto middle = world_.nom_lam(middlepi, world_.dbg("chain_2"));
+    auto middle = world_.nom_filter_lam(middlepi, world_.dbg("chain_2"));
 
     toplevel->set_body(world_.app(a, flat_tuple({toplevel->mem_var(), world_.tuple(vars_without_mem_cont(world_,toplevel)), middle})));
     middle->set_body(world_.app(b, flat_tuple({middle->mem_var(), world_.tuple(vars_without_mem_cont(world_,middle)), toplevel->ret_var()})));
-
-    toplevel->set_filter(world_.lit_true());
-    middle->set_filter(world_.lit_true());
 
     return toplevel;
 }
@@ -743,8 +725,7 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract, const Def* tuple) {
         extract_type;
 
     auto pi = createPbType(A, tangent_type);
-    auto pb = world_.nom_lam(pi, world_.dbg("extract_pb"));
-    pb->set_filter(world_.lit_true());
+    auto pb = world_.nom_filter_lam(pi, world_.dbg("extract_pb"));
     type_dump(world_,"  pb of extract: ",pb);
     type_dump(world_,"  extract: ",extract);
 
@@ -857,7 +838,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     dlog(world_,"trimmed var sigma: {}", trimmed_var_sigma); // A?
 
     auto idpi = createPbType(A,trimmed_var_sigma);
-    auto idpb = world_.nom_lam(idpi, world_.dbg("param_id"));
+    auto idpb = world_.nom_filter_lam(idpi, world_.dbg("param_id"));
 
     type_dump(world_,"idpb",idpb);
 
@@ -885,7 +866,6 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
           return idpb->var(i);
         });
     idpb->set_body(world_.app(idpb->ret_var(), args));
-    idpb->set_filter(world_.lit_true());
 
 
     type_dump(world_,"idpb body",idpb->body());
@@ -973,23 +953,19 @@ void AutoDiffer::derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 d
     auto [mem2, half_delta_lit] = lit_of_type(world_, lam_d->mem_var(), type, nullptr, delta/2, nullptr);
     auto [mem3, delta_lit] = lit_of_type(world_, lam_d->mem_var(), type, nullptr,delta, nullptr);
 
-    auto high = world_.nom_lam(funType,world_.dbg("high"));
+    auto high = world_.nom_filter_lam(funType,world_.dbg("high"));
     lam_d->set_body(world_.app(fun, {
             mem3,
             world_.op(ROp::sub, (nat_t)0, x, half_delta_lit),
             high
     }));
-    lam_d->set_filter(world_.lit_true());
 
-
-    auto diff = world_.nom_lam(funType,world_.dbg("low"));
+    auto diff = world_.nom_filter_lam(funType,world_.dbg("low"));
     high->set_body(world_.app(fun, {
             lam_d->mem_var(),
             world_.op(ROp::add, (nat_t)0, x, half_delta_lit),
             diff
     }));
-    high->set_filter(world_.lit_true());
-
 
     diff->set_body(world_.app(lam_d->ret_var(), {
             high->mem_var(),
@@ -1001,7 +977,6 @@ void AutoDiffer::derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 d
                 lam_d->var(1)
             )
     }));
-    diff->set_filter(world_.lit_true());
 }
 
 
@@ -1026,8 +1001,7 @@ void AutoDiffer::derive_external(const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam)
     auto user_defined_diff = world_.lookup(name + "_diff");
 
     // wrapper to add times s around it
-    auto scal_mul_wrap =world_.nom_lam(pb->ret_var()->type()->as<Pi>(),world_.dbg("scal_mul"));
-    scal_mul_wrap->set_filter(world_.lit_true());
+    auto scal_mul_wrap =world_.nom_filter_lam(pb->ret_var()->type()->as<Pi>(),world_.dbg("scal_mul"));
     scal_mul_wrap->set_body(
         world_.app(
             pb->ret_var(),
@@ -1090,31 +1064,29 @@ void AutoDiffer::derive_external(const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam)
         }
 
         auto fun_return_type = fun->doms().back()->as<Pi>();
-        auto negate = world_.nom_lam(fun_return_type,world_.dbg("negate"));
+        auto negate = world_.nom_filter_lam(fun_return_type,world_.dbg("negate"));
 
         // -s * return of cos
         negate->set_body(world_.app(pb->ret_var(), {
             sin->mem_var(),
             world_.op(ROp::mul, (nat_t)0, negate->var(1), world_.op_rminus((nat_t)0, scal))
         }));
-        negate->set_filter(true);
 
         pb->set_body(world_.app(sin, {pb->mem_var(), fun_arg, negate}));
     }else{
         derive_numeric(fun, pb, fun_arg, 0.001);
     }
-    pb->set_filter(world_.lit_true());
 }
 
 const Def* AutoDiffer::zero_pb(const Def* type, const Def* dbg) {
     auto zeropi = createPbType(A,type);
     dlog(world_,"  zero_pi ty: {}",zeropi);
-    auto zeropb = world_.nom_lam(zeropi, world_.dbg(dbg));
+    dlog(world_,"  zero_pi ty: {}",A);
+    auto zeropb = world_.nom_filter_lam(zeropi, world_.dbg(dbg));
     type_dump(world_,"  pb (zero)",zeropb);
-    zeropb->set_filter(world_.lit_true());
 
-    auto rmem=zeropb->mem_var();
-    auto zero = zero_grad;//ZERO(world_,zeropb->mem_var(), A);
+    auto rmem = zeropb->mem_var();
+    auto zero = zero_grad;
 
     type_dump(world_," zero:",zero);
 
@@ -1208,7 +1180,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         }else{
             pi = world_.cn({world_.type_mem(), old_pi->doms()[1], createPbType(A,old_pi->doms()[1])});
         }
-        auto dst = world_.nom_lam(pi, world_.dbg(lam->name()));
+        auto dst = world_.nom_filter_lam(pi, lam->filter(), world_.dbg(lam->name()));
         type_dump(world_,"  => ",dst);
         src_to_dst_[lam->var()] = dst->var();
         type_dump(world_,"  dst var: ",dst->var());
@@ -1216,7 +1188,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             pullbacks_[dst->var()] = dst->var(dst->num_vars() - 1); // pullback (for var) is the last argument
             type_dump(world_,"  dst var pb: ",pullbacks_[dst->var()]);
         }
-        dst->set_filter(lam->filter());
 
         current_mem=dst->mem_var();
         dlog(world_,"  set current mem for LamNM {} to {} ", lam,current_mem);
@@ -1344,8 +1315,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto pb_ty = createPbType(A,dst_pb_org_ty);
         type_dump(world_,"  pb_ty",pb_ty);
 
-        auto pb = world_.nom_lam(pb_ty, world_.dbg("pb_bitcast"));
-        pb->set_filter(world_.lit_true());
+        auto pb = world_.nom_filter_lam(pb_ty, world_.dbg("pb_bitcast"));
 
         type_dump(world_,"  pb_var 1",pb->var(1));
         type_dump(world_,"  pb_var 2",pb->var(2));
@@ -1486,8 +1456,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         dlog(world_,"  arr_ty_node_name: {}",arr_ty->node_name());
         auto pi = createPbType(A,ty);
         type_dump(world_,"  lea pi: ",pi);
-        auto pb = world_.nom_lam(pi, world_.dbg("pb_lea"));
-        pb->set_filter(world_.lit_true());
+        auto pb = world_.nom_filter_lam(pi, world_.dbg("pb_lea"));
         type_dump(world_,"  lea pb: ",pb);
 
         type_dump(world_,"  arr size",arr_size);
@@ -1764,13 +1733,13 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 dlog(world_,"  pullback type {}", pbTy);
 
                 // f*
-                auto gradlam=world_.nom_lam(pbTy, world_.dbg("dummy"));
+                auto gradlam=world_.nom_filter_lam(pbTy, world_.dbg("dummy"));
 
                 // new augmented lam f' to replace old one
-                auto lam=world_.nom_lam(augTy,world_.dbg("dummy"));
+                auto lam=world_.nom_filter_lam(augTy,world_.dbg("dummy"));
                 dlog(world_,"lam2 ty {}",cal_lam->doms().back());
                 dlog(world_,"lam2 ty {}",cal_lam->doms().back()->as<Pi>());
-                auto lam2 = world_.nom_lam(cal_lam->doms().back()->as<Pi>(),world_.dbg("dummy"));
+                auto lam2 = world_.nom_filter_lam(cal_lam->doms().back()->as<Pi>(),world_.dbg("dummy"));
 
                 derive_external(cal_lam, gradlam, lam, lam2);
 
@@ -1787,7 +1756,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                         lam2
                     }
                 ));
-                lam->set_filter(world_.lit_true());
 
                 lam2->set_body( world_.app(
                     lam->ret_var(),
@@ -1797,8 +1765,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                         gradlam
                     }
                 ));
-                lam2->set_filter(world_.lit_true());
-
 
                 type_dump(world_,"new lam",lam);
                 type_dump(world_,"aux lam",lam2);
@@ -1852,7 +1818,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             type_dump(world_,"  split wrapped args into: ret: ",ret_arg);
 
             auto pbT = dst_callee->type()->as<Pi>()->doms().back()->as<Pi>();
-            auto chained = world_.nom_lam(pbT, world_.dbg("φchain"));
+            auto chained = world_.nom_filter_lam(pbT, world_.dbg("φchain"));
             type_dump(world_,"  orig callee",callee);
             type_dump(world_,"  dst callee",dst_callee);
             type_dump(world_,"  chained pb will be (app pb) ",chained);
@@ -1877,7 +1843,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     chain_pb
                 })
                 ));
-            chained->set_filter(world_.lit_true());
             type_dump(world_,"  build chained (app pb) ",chained);
 
             // TODO ?
@@ -2038,16 +2003,12 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
     auto o_type = a->type(); // type of the operation
     auto pbpi = createPbType(A,o_type);
     auto pbT = pullbacks_[a]->type()->as<Pi>()->doms().back()->as<Pi>(); // TODO: create using A
-    auto pb = world_.nom_lam(pbpi, world_.dbg("φ"));
+    auto pb = world_.nom_filter_lam(pbpi, world_.dbg("φ"));
 
     // shortened pullback type => takes pullback result (A) And continues
-    auto middle = world_.nom_lam(pbT, world_.dbg("φmiddle"));
-    auto end = world_.nom_lam(pbT, world_.dbg("φend"));
-
     // always expand operation pullbacks
-    pb->set_filter(world_.lit_true());
-    middle->set_filter(world_.lit_true());
-    end->set_filter(world_.lit_true());
+    auto middle = world_.nom_filter_lam(pbT, world_.dbg("φmiddle"));
+    auto end = world_.nom_filter_lam(pbT, world_.dbg("φend"));
 
     // constant for calculations
     // Grab argument pullbacks
@@ -2143,6 +2104,7 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
     return dst;
 }
 
+
 // seen is a simple lookup in the src_to_dst mapping
 const Def* AutoDiffer::seen(const Def* src) { return src_to_dst_.contains(src) ? src_to_dst_[src] : nullptr; }
 
@@ -2181,8 +2143,7 @@ const Def* AutoDiff::rewrite(const Def* def) {
             dst_pi = app->type()->op(1)->as<Pi>();
         else
             dst_pi = app->type()->as<Pi>(); // multi dim as array
-        auto dst_lam = world.nom_lam(dst_pi, world.dbg("top_level_rev_diff_" + src_lam->name()));
-        dst_lam->set_filter(src_lam->filter()); // copy the unfold filter
+        auto dst_lam = world.nom_filter_lam(dst_pi, src_lam->filter(), world.dbg("top_level_rev_diff_" + src_lam->name())); // copy the unfold filter
         // use src to not dilute tangent transformation with left type transformation (only matters for arrays)
         auto A = world.params_without_return_continuation(src_pi); // input variable(s) => possible a pi type (array)
 
