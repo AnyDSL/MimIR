@@ -383,6 +383,7 @@ public:
     const Def* reverse_diff(Lam* src); // top level function to compute the reverse differentiation of a function
 private:
     const Def* j_wrap(const Def* def); // 'identity' (except for lambdas, functions, and applications) traversal annotating the pullbacks
+    const Def* j_wrap_convert(const Def* def);
     const Def* j_wrap_rop(ROp op, const Def* a, const Def* b); // pullback computation for predefined functions, specifically operations like +, -, *, /
     void derive_external( const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam);
     void derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta );
@@ -888,6 +889,7 @@ const Def* AutoDiffer::zero_pb(const Def* type, const Def* dbg) {
 //  Each `x` gets transformed to a `<x, λδz. δz * (δz / δx)>`
 //
 // return src_to_dst[src] => dst
+
 const Def* AutoDiffer::j_wrap(const Def* def) {
     if (auto dst = seen(def)) {
         // we have converted def and already have a pullback
@@ -901,6 +903,14 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"replacement:",dst);
         return dst;
     }
+
+    auto dst = j_wrap_convert(def);
+    src_to_dst_[def]=dst;
+    return dst;
+}
+
+
+const Def* AutoDiffer::j_wrap_convert(const Def* def) {
 
     if (auto var = def->isa<Var>()) {
         // variable like whole lambda var should not appear here
@@ -965,7 +975,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             auto [pbt_mem,pbt_pb]= reloadPtrPb(pb_mem2,dst,world_.dbg("ptr_slot_pb_loadS"),false);
 
             current_mem=pbt_mem;
-            src_to_dst_[glob]=dst;
             return dst;
         }
     }
@@ -980,7 +989,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             pullbacks_[b]= extract_pb(b,ab);
         }
         auto dst = j_wrap_rop(ROp(rop.flags()), a, b);
-        src_to_dst_[rop] = dst;
         return dst;
     }
     // conditionals are transformed by the identity (no pullback needed)
@@ -988,7 +996,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto ab = j_wrap(rcmp->arg());
         auto [a, b] = ab->projs<2>();
         auto dst = world_.op(RCmp(rcmp.flags()), nat_t(0), a, b);
-        src_to_dst_[rcmp] = dst;
         return dst;
     }
 
@@ -1058,7 +1065,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto ab = j_wrap(icmp->arg());
         auto [a, b] = ab->projs<2>();
         auto dst = world_.op(ICmp(icmp.flags()), a, b);
-        src_to_dst_[icmp] = dst;
         return dst;
     }
     if (auto alloc = isa<Tag::Alloc>(def)) {
@@ -1076,7 +1082,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto dst_fat_ptr=world_.tuple({int_size,arr});
         auto dst=world_.tuple({r_mem,dst_fat_ptr});
         current_mem = r_mem;
-        src_to_dst_[alloc] = dst;
 
         // no shadow needed
         // TODO: shadow if one handles alloc like a ptr (for definite)
@@ -1148,8 +1153,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         //   meaning diff of tuple is tuple, ...
         //   this would be a lea
 
-        src_to_dst_[lea]=dst;
-
         return dst;
     }
 
@@ -1185,9 +1188,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto fn = inner->arg(); // function to diff
                     // inner2_app = rev_diff <...>
                     // callee = rev_diff ... fun
-                    auto dst = world_.app(callee,d_arg);
-                    src_to_dst_[app]=dst;
-                    return dst;
+                    return world_.app(callee,d_arg);
                 }
             }
 
@@ -1207,7 +1208,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto [nmem,pb_loaded]=reloadPtrPb(dst_mem,dst_ptr,world_.dbg("ptr_slot_pb_loadL"),true);
                     dst_mem=nmem;
                     pullbacks_[dst]=pb_loaded;
-                    src_to_dst_[app] = dst; // not needed
                     current_mem=dst_mem;
                     return dst;
                 }
@@ -1224,7 +1224,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto [pbt_mem,pbt_pb]= reloadPtrPb(pb_mem,ptr,world_.dbg("ptr_slot_pb_loadS"),false);
                     auto dst = world_.op_store(pbt_mem,ptr,val);
                     pullbacks_[dst]=pb; // should be unused
-                    src_to_dst_[app] = dst; // not needed
                     current_mem=dst;
                     return dst;
                 }
@@ -1238,7 +1237,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                     auto dst = world_.op_load(mem,ptr);
                     auto [dst_mem,dst_val] = dst->projs<2>();
                     pullbacks_[dst]=pb_loaded; // tuple extract [mem,...]
-                    src_to_dst_[app] = dst; // not needed except
                     current_mem=dst_mem;
                     return dst;
                 }
@@ -1400,9 +1398,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
                 // var (lambda completely with all arguments) and other (non tuple)
                 ad_args = d_arg;
             }
-            auto dst = world_.app(d_callee, ad_args);
-            src_to_dst_[app] = dst;
-            return dst;
+            return world_.app(d_callee, ad_args);
         }
     }
 
@@ -1410,7 +1406,6 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto tuple_dim=getDim(tuple->type());
         DefArray ops{tuple_dim, [&](auto i) { return tuple->proj(i); }};
         auto dst = j_wrap_tuple(ops);
-        src_to_dst_[tuple] = dst;
         return dst;
     }
 
@@ -1422,9 +1417,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
             [&](auto i) {
               return pack->body();
             });
-        auto dst= j_wrap_tuple(tup);
-        src_to_dst_[pack] = dst;
-        return dst;
+        return j_wrap_tuple(tup);
     }
 
     if (auto extract = def->isa<Extract>()) {
@@ -1442,9 +1435,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         auto jeidx= j_wrap(extract->index());
         auto jtup = j_wrap(extract->tuple());
         auto dst = world_.extract_unsafe(jtup, jeidx,extract->dbg());
-        src_to_dst_[extract] = dst;
-        if(isa<Tag::Mem>(dst->type())) {
-        }else{
+        if(!isa<Tag::Mem>(dst->type())) {
             pullbacks_[dst] = extract_pb(dst,jtup);
         }
         return dst;
@@ -1455,9 +1446,7 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         // important note: we need the pullback w.r. to the tuple and element
         // construction needs careful consideration of modular basic pullbacks
         // see notes on paper for correct code
-        auto dst = world_.insert(j_wrap(insert->tuple()), insert->index(), j_wrap(insert->value()));
-        src_to_dst_[insert] = dst;
-        return dst;
+        return world_.insert(j_wrap(insert->tuple()), insert->index(), j_wrap(insert->value()));
     }
 
     if (auto lit = def->isa<Lit>()) {
