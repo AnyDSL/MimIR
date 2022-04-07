@@ -87,8 +87,8 @@ const Def* Parser::parse_expr(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::
 const Def* Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
-        case Tok::Tag::D_angle_l:   return parse_pack_or_array(true);
-        case Tok::Tag::D_quote_l:   return parse_pack_or_array(false);
+        case Tok::Tag::D_angle_l:   return parse_pack_or_arr(true);
+        case Tok::Tag::D_quote_l:   return parse_pack_or_arr(false);
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_paren_l:   return parse_tuple();
@@ -161,11 +161,23 @@ const Def* Parser::parse_var() {
     return nom->var(track.named(sym));
 }
 
-const Def* Parser::parse_pack_or_array(bool pack) {
+const Def* Parser::parse_pack_or_arr(bool pack) {
     auto track = tracker();
     // TODO get rid of "pack or array"
     eat(pack ? Tok::Tag::D_angle_l : Tok::Tag::D_quote_l);
-    auto shape = parse_expr("shape of a pack or array");
+
+    const Def* shape;
+    if (auto id = accept(Tok::Tag::M_id)) {
+        if (accept(Tok::Tag::T_colon)) {
+            shape = parse_expr("shape of a pack or array");
+            insert(id->sym(), shape);
+        } else  {
+            shape = find(id->sym());
+        }
+    } else {
+        shape = parse_expr("shape of a pack or array");
+    }
+
     expect(Tok::Tag::T_semicolon, "pack or array");
     auto body = parse_expr("body of a pack or array");
     expect(pack ? Tok::Tag::D_angle_r : Tok::Tag::D_quote_r, "closing delimiter of a pack or array");
@@ -190,10 +202,10 @@ const Def* Parser::parse_sigma() {
         do {
             if (auto id = accept(Tok::Tag::M_id)) {
                 if (accept(Tok::Tag::T_colon)) {
-                    assert(false && "TODO");
-                    // ops.emplace_back(find(id->sym()));
-                    // ops.emplace_back(parse_expr("element of a sigma"));
-                    //  TODO
+                    auto type = parse_expr("type of a sigma element");
+                    auto infer = world().nom_infer(type, world().dbg({id->sym(), id->loc()}));
+                    insert(id->sym(), infer);
+                    ops.emplace_back(type);
                 } else {
                     ops.emplace_back(find(id->sym()));
                 }

@@ -39,7 +39,7 @@ private:
     /// @name primary exprs
     ///@{
     const Def* parse_Cn();
-    const Def* parse_pack_or_array(bool pack);
+    const Def* parse_pack_or_arr(bool pack);
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();
