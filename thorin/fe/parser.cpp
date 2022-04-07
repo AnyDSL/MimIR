@@ -171,7 +171,7 @@ const Def* Parser::parse_pack_or_arr(bool pack) {
         if (accept(Tok::Tag::T_colon)) {
             shape = parse_expr("shape of a pack or array");
             insert(id->sym(), shape);
-        } else  {
+        } else {
             shape = find(id->sym());
         }
     } else {
@@ -202,7 +202,7 @@ const Def* Parser::parse_sigma() {
         do {
             if (auto id = accept(Tok::Tag::M_id)) {
                 if (accept(Tok::Tag::T_colon)) {
-                    auto type = parse_expr("type of a sigma element");
+                    auto type  = parse_expr("type of a sigma element");
                     auto infer = world().nom_infer(type, world().dbg({id->sym(), id->loc()}));
                     insert(id->sym(), infer);
                     ops.emplace_back(type);
