@@ -113,8 +113,8 @@ public:
     /// @name slice
     ///@{
     ArrayRef<T> skip(size_t front = 1, size_t back = 1) const { return ArrayRef<T>(size() - ( front + back ), ptr_ + front); }
-    ArrayRef<T> skip_front(size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_ + num); }
-    ArrayRef<T> skip_back(size_t num = 1) const { return ArrayRef<T>(size() - num, ptr_); }
+    ArrayRef<T> skip_front(size_t num = 1) const { return skip(num,0); }
+    ArrayRef<T> skip_back(size_t num = 1) const { return skip(0,num); }
     ArrayRef<T> get_front(size_t num = 1) const {
         assert(num <= size());
         return ArrayRef<T>(num, ptr_);

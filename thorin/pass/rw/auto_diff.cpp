@@ -70,7 +70,8 @@ const Pi* isReturning(const Pi* pi){
 }
 
 DefArray vars_without_mem_cont(Lam* lam) {
-    return lam->vars().skip(1, isReturning(lam->type()) != nullptr);
+    // ? 1 : 0 is superfluous (see 7.8.4 in C++ 20 standard) but increases readability
+    return lam->vars().skip(1, isReturning(lam->type()) != nullptr ? 1 : 0);
 }
 // multidimensional addition of values
 // needed for operation differentiation
@@ -618,11 +619,11 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     auto dst_var = src_to_dst_[src_var];
     auto var_sigma = src_var->type()->as<Sigma>();
 
-    DefArray trimmed_var_ty = var_sigma->ops().skip();
+    DefArray trimmed_var_ty = var_sigma->ops().skip(1,1);
     auto trimmed_var_sigma = world_.sigma(trimmed_var_ty);
     auto idpi = createPbType(A,trimmed_var_sigma);
     auto idpb = world_.nom_filter_lam(idpi, world_.dbg("param_id"));
-    auto real_params = dst_lam->vars().skip();
+    auto real_params = dst_lam->vars().skip(1,1);
     auto [current_mem_,zero_grad_] = ZERO(world_,current_mem,A,world_.tuple(real_params));
     current_mem=current_mem_;
     zero_grad=zero_grad_;
@@ -630,7 +631,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     auto args = idpb->vars().skip_back();
     idpb->set_body(world_.app(idpb->ret_var(), args));
     pullbacks_[dst_var] = idpb;
-    for(auto dvar : src->vars().skip()) {
+    for(auto dvar : src->vars().skip(1,1)) {
         // solve the problem of inital array pb in extract pb
         pullbacks_[dvar]= extract_pb(dvar, dst_lam->var());
         initArg(dvar);
@@ -1296,7 +1297,7 @@ const Def* AutoDiffer::j_wrap_convert(const Def* def) {
             auto num_projs = d_arg->num_projs();
             auto ret_arg = d_arg->proj(num_projs-1);
             auto arg= world_.tuple(
-                d_arg->projs().skip()
+                d_arg->projs().skip(1,1)
             );
             auto pbT = dst_callee->type()->as<Pi>()->doms().back()->as<Pi>();
             auto chained = world_.nom_filter_lam(pbT, world_.dbg("φchain"));
