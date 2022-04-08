@@ -8,8 +8,8 @@
 #include "thorin/config.h"
 
 #include "cli/dialects.h"
-#include "thorin/be/ll/ll.h"
 #include "thorin/be/dot/dot.h"
+#include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/pass.h"
 #include "thorin/util/stream.h"
@@ -63,36 +63,28 @@ int main(int argc, char** argv) {
     std::vector<std::string> dialects, dialect_paths;
     std::vector<size_t> breakpoints;
     std::string log_level = "error";
-    std::string log_name = "error";
+    std::string log_name  = "error";
 
     auto print_version = [](bool) {
         std::cerr << version;
         std::exit(EXIT_SUCCESS);
     };
 
-#ifndef NDEBUG
-#    define LOG_LEVEL(m, sep) m(error) sep m(warn) sep m(info) sep m(verbose) sep m(debug)
-#else
-#    define LOG_LEVEL(m, sep) m(error) sep m(warn) sep m(info)
-#endif
-
+    constexpr const char* Levels = "error|warn|info|verbose|debug";
     // clang-format off
     auto cli = lyra::cli()
         | lyra::help(show_help)
-        | lyra::opt(clang,      "clang")   ["-c"]["--clang"]        ("path to clang executable (default: " + clang + ")")
-        | lyra::opt(emit_dot)                    ["--emit-dot"]     ("emit Graphviz DOT")
-        | lyra::opt(emit_llvm)                   ["--emit-llvm"]    ("emit LLVM")
-        | lyra::opt(emit_thorin)                 ["--emit-thorin"]  ("emit Thorin")
-        | lyra::opt(print_version)         ["-v"]["--version"]      ("display version info and exit")
-        | lyra::opt(dialects, "dialect")   ["-d"]["--dialect"]      ("dynamically load dialect [WIP]")
-        | lyra::opt(dialect_paths, "path") ["-D"]["--dialect-path"] ("path to search dialects in")
-#define COMMA ,
-#define CODE(level) #level
-        | lyra::opt(log_level, "error|warn|info|verbose|debug")["--log-level"]("set log level").choices("error", "warn", "info", "verbose", "debug")
-#undef CODE
-        | lyra::opt(log_name,  "log name")       ["--log"]          ("file name of the output log; use '-' to output to stdout")
+        | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("path to clang executable (default: " + clang + ")")
+        | lyra::opt(emit_dot                 )      ["--emit-dot"    ]("emit Graphviz DOT")
+        | lyra::opt(emit_llvm                )      ["--emit-llvm"   ]("emit LLVM")
+        | lyra::opt(emit_thorin              )      ["--emit-thorin" ]("emit Thorin")
+        | lyra::opt(print_version            )["-v"]["--version"     ]("display version info and exit")
+        | lyra::opt(dialects,      "dialect" )["-d"]["--dialect"     ]("dynamically load dialect [WIP]")
+        | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("path to search dialects in")
+        | lyra::opt(log_level,     Levels    )      ["--log-level"   ]("set log level").choices("error", "warn", "info", "verbose", "debug")
+        | lyra::opt(log_name,      "log name")      ["--log"         ]("file name of the output log; use '-' to output to stdout")
 #ifndef NDEBUG
-        | lyra::opt(breakpoints, "gid")["-b"]["--break"]("trigger break-point upon construction of node with global id <gid>")
+        | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("trigger break-point upon construction of node with global id <gid>")
 #endif
         | lyra::arg(file, "input file")("input file; use '-' to read from stdin");
     // clang-format off

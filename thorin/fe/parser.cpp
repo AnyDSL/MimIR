@@ -169,10 +169,10 @@ const Def* Parser::parse_pack_or_arr(bool pack) {
     eat(pack ? Tok::Tag::D_angle_l : Tok::Tag::D_quote_l);
 
     const Def* shape;
-    //bool nom = false;
+    // bool nom = false;
     if (auto id = accept(Tok::Tag::M_id)) {
         if (accept(Tok::Tag::T_colon)) {
-            shape = parse_expr("shape of a pack or array");
+            shape      = parse_expr("shape of a pack or array");
             auto infer = world().nom_infer(world().type_int(shape), id->sym(), id->loc());
             insert(id->sym(), infer);
         } else {
@@ -200,14 +200,14 @@ const Def* Parser::parse_block() {
 
 const Def* Parser::parse_sigma() {
     auto track = tracker();
-    bool nom = false;
+    bool nom   = false;
     DefVec ops;
     parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
         if (auto id = accept(Tok::Tag::M_id)) {
             if (accept(Tok::Tag::T_colon)) {
                 auto type  = parse_expr("type of a sigma element");
                 auto infer = world().nom_infer(type, id->sym(), id->loc());
-                nom = true;
+                nom        = true;
                 insert(id->sym(), infer);
                 ops.emplace_back(type);
             } else {
