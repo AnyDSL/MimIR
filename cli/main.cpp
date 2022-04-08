@@ -48,101 +48,106 @@ static std::string get_clang_from_path() {
     return clang;
 }
 
-static std::ostream* open(std::ofstream& stream, const std::string& name) {
-    if (name == "-") return &std::cout;
-    stream.open(name);
-    return &stream;
-}
 int main(int argc, char** argv) {
-    std::string clang = get_clang_from_path();
-    std::string file;
-    bool emit_llvm   = false;
-    bool emit_dot    = false;
-    bool emit_thorin = false;
-    bool show_help   = false;
-    std::vector<std::string> dialects, dialect_paths;
-    std::vector<size_t> breakpoints;
-    std::string log_level = "error";
-    std::string log_name  = "error";
-
-    auto print_version = [](bool) {
-        std::cerr << version;
-        std::exit(EXIT_SUCCESS);
-    };
-
-    constexpr const char* Levels = "error|warn|info|verbose|debug";
-    // clang-format off
-    auto cli = lyra::cli()
-        | lyra::help(show_help)
-        | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("path to clang executable (default: " + clang + ")")
-        | lyra::opt(emit_dot                 )      ["--emit-dot"    ]("emit Graphviz DOT")
-        | lyra::opt(emit_llvm                )      ["--emit-llvm"   ]("emit LLVM")
-        | lyra::opt(emit_thorin              )      ["--emit-thorin" ]("emit Thorin")
-        | lyra::opt(print_version            )["-v"]["--version"     ]("display version info and exit")
-        | lyra::opt(dialects,      "dialect" )["-d"]["--dialect"     ]("dynamically load dialect [WIP]")
-        | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("path to search dialects in")
-        | lyra::opt(log_level,     Levels    )      ["--log-level"   ]("set log level").choices("error", "warn", "info", "verbose", "debug")
-        | lyra::opt(log_name,      "log name")      ["--log"         ]("file name of the output log; use '-' to output to stdout")
-#ifndef NDEBUG
-        | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("trigger break-point upon construction of node with global id <gid>")
-#endif
-        | lyra::arg(file, "input file")("input file; use '-' to read from stdin");
-    // clang-format off
-
-    if (auto result = cli.parse({argc, argv}); !result) {
-        std::cerr << "Error in command line: " << result.message() << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    if (show_help) std::cerr << cli << "\n";
-
     try {
+        std::string input, prefix;
+        std::string clang     = get_clang_from_path();
+        std::string log_level = "error";
+
+        bool emit_ll     = false;
+        bool emit_md     = false;
+        bool emit_dot    = false;
+        bool emit_thorin = false;
+        bool show_help   = false;
+
+        std::vector<std::string> dialects, dialect_paths, emitters;
+        std::vector<size_t> breakpoints;
+
+        auto print_version = [](bool) {
+            std::cerr << version;
+            std::exit(EXIT_SUCCESS);
+        };
+
+        static constexpr const char* Levels   = "error|warn|info|verbose|debug";
+        static constexpr const char* Backends = "thorin|md|ll|dot";
+        // clang-format off
+        auto cli = lyra::cli()
+            | lyra::help(show_help)
+            | lyra::opt(print_version            )["-v"]["--version"     ]("display version info and exit")
+            | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("path to clang executable (default: " + clang + ")")
+            | lyra::opt(dialects,      "dialect" )["-d"]["--dialect"     ]("dynamically load dialect [WIP]")
+            | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("path to search dialects in")
+            | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("select emitter").choices("thorin", "md", "ll", "dot")
+            | lyra::opt(log_level,     Levels    )      ["--log-level"   ]("set log level" ).choices("error", "warn", "info", "verbose", "debug")
+#ifndef NDEBUG
+            | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("trigger break-point upon construction of node with global id <gid>")
+#endif
+            | lyra::opt(prefix,        "prefix"  )["-o"]["--output"      ]("prefix used for various output files")
+            | lyra::arg(input, "input file")("input file; use '-' to read from stdin");
+
+        if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
+
+        for (const auto& e : emitters) {
+            if (false) {}
+            else if (e == "thorin") emit_thorin = true;
+            else if (e == "ll")     emit_ll     = true;
+            else if (e == "md")     emit_md     = true;
+            else if (e == "dot")    emit_dot    = true;
+            else unreachable();
+        }
+        // clang-format on
+
+        if (show_help) std::cerr << cli << "\n";
+
         if (!dialects.empty()) {
             for (const auto& dialect : dialects) test_plugin(dialect, dialect_paths);
             return EXIT_SUCCESS;
         }
 
-        if (file.empty()) throw std::logic_error("no input file given");
+        if (input.empty()) throw std::invalid_argument("no input input given");
+        if (prefix.empty()) {
+            auto i = input.rfind('.');
+            if (i == std::string::npos) throw std::invalid_argument("cannot derive prefix for output files");
+            prefix = input.substr(0, i);
+        }
 
         World world;
+        world.set_log_stream(std::make_shared<thorin::Stream>(std::cerr));
+        world.set_log_level(log_level);
 #ifndef NDEBUG
         for (auto b : breakpoints) world.breakpoint(b);
 #endif
 
-        std::ofstream log_stream;
-        if (!log_name.empty()) world.set_log_stream(std::make_shared<thorin::Stream>(*open(log_stream, log_name)));
-        world.set_log_level(log_level);
-
-        if (file == "-") {
+        if (input == "-") {
             Parser parser(world, "<stdin>", std::cin);
             parser.parse_module();
         } else {
-            std::ifstream ifs(file);
+            std::ifstream ifs(input);
             if (!ifs) {
-                errln("error: cannot read file '{}'", file);
+                errln("error: cannot read file '{}'", input);
                 return EXIT_FAILURE;
             }
-            Parser parser(world, file, ifs);
+            Parser parser(world, input, ifs);
             parser.parse_module();
         }
 
         if (emit_thorin) world.dump();
 
         if (emit_dot) {
-            std::ofstream of("test.dot");
+            std::ofstream of(prefix + ".dot");
             Stream s(of);
             dot::emit(world, s);
         }
-        if (emit_llvm) {
-            std::ofstream of("test.ll");
+        if (emit_ll) {
+            std::ofstream of(prefix + ".ll");
             Stream s(of);
             ll::emit(world, s);
         }
     } catch (const std::exception& e) {
-        errln("{}", e.what());
+        errln("error: {}", e.what());
         return EXIT_FAILURE;
     } catch (...) {
-        std::cerr << "error: unknown exception" << std::endl;
+        errln("error: unknown exception");
         return EXIT_FAILURE;
     }
 
