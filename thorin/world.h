@@ -141,6 +141,17 @@ public:
         return lam;
     }
     Lam* nom_lam(const Pi* cn, const Def* dbg = {}) { return nom_lam(cn, Lam::CC::C, dbg); }
+
+    Lam* nom_filter_lam(const Pi* cn, const Def* dbg){
+        return nom_filter_lam(cn, lit_true(), dbg);
+    }
+
+    Lam* nom_filter_lam(const Pi* cn, const Def* filter, const Def* dbg){
+        Lam* lam = nom_lam(cn, dbg);
+        lam->set_filter(filter);
+        return lam;
+    }
+
     const Lam* lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg) {
         return unify<Lam>(2, pi, filter, body, dbg);
     }
