@@ -731,34 +731,42 @@ void World::visit(VisitFn f) const {
 }
 
 /*
- * misc
+ * logging
  */
 
-std::string_view World::level2string(LogLevel level) {
+// clang-format off
+std::string_view World::level2acro(LogLevel level) {
     switch (level) {
-        // clang-format off
-        case LogLevel::Error:   return "E";
-        case LogLevel::Warn:    return "W";
-        case LogLevel::Info:    return "I";
-        case LogLevel::Verbose: return "V";
         case LogLevel::Debug:   return "D";
-        // clang-format on
+        case LogLevel::Verbose: return "V";
+        case LogLevel::Info:    return "I";
+        case LogLevel::Warn:    return "W";
+        case LogLevel::Error:   return "E";
         default: unreachable();
     }
+}
+
+LogLevel World::str2level(std::string_view s) {
+    if (false) {}
+    else if (s == "debug"  ) return LogLevel::Debug;
+    else if (s == "verbose") return LogLevel::Verbose;
+    else if (s == "info"   ) return LogLevel::Info;
+    else if (s == "warn"   ) return LogLevel::Warn;
+    else if (s == "error"  ) return LogLevel::Error;
+    else throw std::invalid_argument("invalid log level");
 }
 
 int World::level2color(LogLevel level) {
     switch (level) {
-        // clang-format off
-        case LogLevel::Error:   return 1;
-        case LogLevel::Warn:    return 3;
-        case LogLevel::Info:    return 2;
-        case LogLevel::Verbose: return 4;
         case LogLevel::Debug:   return 4;
-        // clang-format on
+        case LogLevel::Verbose: return 4;
+        case LogLevel::Info:    return 2;
+        case LogLevel::Warn:    return 3;
+        case LogLevel::Error:   return 1;
         default: unreachable();
     }
 }
+// clang-format on
 
 #ifdef THORIN_COLOR_TERM
 std::string World::colorize(std::string_view str, int color) {
@@ -772,7 +780,7 @@ std::string World::colorize(std::string_view str, int color) {
 std::string World::colorize(std::string_view str, int) { return std::string(str); }
 #endif
 
-void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
+void World::set_error_handler(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
 
 /*
  * instantiate templates

@@ -68,20 +68,20 @@ The following *terminals* comprise more complicated patterns that are specified 
 
 The previous table resorts to the following definitions as shorthand:
 
-| Name | Regular Expression                                      | Comment                                         |
-|------|---------------------------------------------------------|-------------------------------------------------|
-| 0b   | `0` \[ `b``B` \]                                        | prefix for binary literals                      |
-| 0o   | `0` \[ `o``O` \]                                        | prefix for octal literals                       |
-| 0x   | `0` \[ `x``X` \]                                        | prefix for hexadecimal literals                 |
-| bin  | \[ `0``1` \]                                            | binary digit                                    |
-| oct  | \[ `0`-`7` \]                                           | octal digit                                     |
-| dec  | \[ `0`-`9` \]                                           | decimal digit                                   |
-| sub  | \[ `₀`-`₉` \]                                           | subscript digit (always decimal)                |
-| hex  | \[ `0`-`9``a`-`f``A`-`F` \]                             | hexadecimal digit                               |
-| eE   | \[ `e` `E` \]                                           | exponent in floating point literals             |
-| pP   | \[ `p` `P` \]                                           | exponent in floating point hexadecimal literals |
-| sign | \[ `+` `-` \]                                           |                                                 |
-| sym  | \[ `_``a`-`z``A`-`Z` \]\[ `_``0`-`9``a`-`z``A`-`Z` \]\* | symbol                                          |
+| Name | Regular Expression                                         | Comment                                         |
+|------|------------------------------------------------------------|-------------------------------------------------|
+| 0b   | `0` \[ `b``B` \]                                           | prefix for binary literals                      |
+| 0o   | `0` \[ `o``O` \]                                           | prefix for octal literals                       |
+| 0x   | `0` \[ `x``X` \]                                           | prefix for hexadecimal literals                 |
+| bin  | \[ `0``1` \]                                               | binary digit                                    |
+| oct  | \[ `0`-`7` \]                                              | octal digit                                     |
+| dec  | \[ `0`-`9` \]                                              | decimal digit                                   |
+| sub  | \[ `₀`-`₉` \]                                              | subscript digit (always decimal)                |
+| hex  | \[ `0`-`9``a`-`f``A`-`F` \]                                | hexadecimal digit                               |
+| eE   | \[ `e` `E` \]                                              | exponent in floating point literals             |
+| pP   | \[ `p` `P` \]                                              | exponent in floating point hexadecimal literals |
+| sign | \[ `+` `-` \]                                              |                                                 |
+| sym  | \[ `_``a`-`z``A`-`Z` \]\[ `.``_``0`-`9``a`-`z``A`-`Z` \]\* | symbol                                          |
 
 So, *sym* referes to the shorthand rule while *Sym* refers to the *terminal* that is identical to *sym*.
 However, the terminal *Ax* also uses the shorthand rule *sym*.

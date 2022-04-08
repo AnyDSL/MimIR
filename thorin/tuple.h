@@ -67,6 +67,7 @@ public:
 
     /// @name virtual methods
     ///@{
+    size_t first_dependend_op() override { return 1; }
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Arr* stub(World&, const Def*, const Def*) override;
     const Def* restructure() override;

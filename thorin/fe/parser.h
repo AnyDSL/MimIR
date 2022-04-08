@@ -56,21 +56,13 @@ private:
     ///@}
 
     template<class F>
-    auto parse_list(Tok::Tag delim_r, F f, Tok::Tag sep = Tok::Tag::T_comma) {
-        DefVec result;
-        if (!ahead().isa(delim_r)) {
-            do { result.emplace_back(f()); } while (accept(sep) && !ahead().isa(delim_r));
-        }
-        return result;
-    }
-
-    template<class F>
-    auto parse_list(const char* ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
-        eat(delim_l);
+    void parse_list(std::string ctxt, Tok::Tag delim_l, F f, Tok::Tag sep = Tok::Tag::T_comma) {
+        expect(delim_l, ctxt);
         auto delim_r = Tok::delim_l2r(delim_l);
-        auto result  = parse_list(delim_r, f, sep);
-        expect(delim_r, ctxt);
-        return result;
+        if (!ahead().isa(delim_r)) {
+            do { f(); } while (accept(sep) && !ahead().isa(delim_r));
+        }
+        expect(delim_r, std::string("closing delimiter of a ") + ctxt);
     }
 
     /// @name Tracker

@@ -50,27 +50,6 @@ struct Loc : public Streamable<Loc> {
 inline bool operator==(Pos p1, Pos p2) { return p1.row == p2.row && p1.col == p2.col; }
 inline bool operator==(Loc l1, Loc l2) { return l1.begin == l2.begin && l1.finis == l2.finis && l1.file == l2.file; }
 
-class Debug {
-public:
-    Debug(std::string_view name, Loc loc = {}, const Def* meta = nullptr)
-        : name(name)
-        , loc(loc)
-        , meta(meta) {}
-    Debug(std::string name, Loc loc = {}, const Def* meta = nullptr)
-        : name(name)
-        , loc(loc)
-        , meta(meta) {}
-    Debug(const char* name, Loc loc = {}, const Def* meta = nullptr)
-        : Debug(std::string(name), loc, meta) {}
-    Debug(Loc loc)
-        : Debug(std::string(), loc) {}
-    Debug(const Def*);
-
-    std::string name;
-    Loc loc;
-    const Def* meta = nullptr;
-};
-
 class Sym : public Streamable<Sym> {
 public:
     Sym() {}
@@ -100,6 +79,29 @@ struct SymEq {
 template<class Val>
 using SymMap = absl::flat_hash_map<Sym, Val, SymHash, SymEq>;
 using SymSet = absl::flat_hash_set<Sym, SymHash, SymEq>;
+
+class Debug {
+public:
+    Debug(std::string_view name, Loc loc = {}, const Def* meta = nullptr)
+        : name(name)
+        , loc(loc)
+        , meta(meta) {}
+    Debug(std::string name, Loc loc = {}, const Def* meta = nullptr)
+        : name(name)
+        , loc(loc)
+        , meta(meta) {}
+    Debug(const char* name, Loc loc = {}, const Def* meta = nullptr)
+        : Debug(std::string(name), loc, meta) {}
+    Debug(Sym sym, Loc loc = {}, const Def* meta = nullptr)
+        : Debug(sym.to_string(), loc, meta) {}
+    Debug(Loc loc)
+        : Debug(std::string(), loc) {}
+    Debug(const Def*);
+
+    std::string name;
+    Loc loc;
+    const Def* meta = nullptr;
+};
 
 } // namespace thorin
 

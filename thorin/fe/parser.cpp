@@ -37,6 +37,7 @@ void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
 }
 
 void Parser::parse_module() {
+    world().DLOG("asdf");
     expect(Tok::Tag::K_module, "module");
     world().set_name(parse_sym("name of module").to_string());
     expect(Tok::Tag::D_brace_l, "module");
@@ -162,15 +163,18 @@ const Def* Parser::parse_var() {
 }
 
 const Def* Parser::parse_pack_or_arr(bool pack) {
+    push();
     auto track = tracker();
     // TODO get rid of "pack or array"
     eat(pack ? Tok::Tag::D_angle_l : Tok::Tag::D_quote_l);
 
     const Def* shape;
+    //bool nom = false;
     if (auto id = accept(Tok::Tag::M_id)) {
         if (accept(Tok::Tag::T_colon)) {
             shape = parse_expr("shape of a pack or array");
-            insert(id->sym(), shape);
+            auto infer = world().nom_infer(world().type_int(shape), id->sym(), id->loc());
+            insert(id->sym(), infer);
         } else {
             shape = find(id->sym());
         }
@@ -181,6 +185,7 @@ const Def* Parser::parse_pack_or_arr(bool pack) {
     expect(Tok::Tag::T_semicolon, "pack or array");
     auto body = parse_expr("body of a pack or array");
     expect(pack ? Tok::Tag::D_angle_r : Tok::Tag::D_quote_r, "closing delimiter of a pack or array");
+    pop();
     return world().arr(shape, body, track);
 }
 
@@ -195,33 +200,34 @@ const Def* Parser::parse_block() {
 
 const Def* Parser::parse_sigma() {
     auto track = tracker();
-    eat(Tok::Tag::D_bracket_l);
-
+    bool nom = false;
     DefVec ops;
-    if (!ahead().isa(Tok::Tag::D_brace_r)) {
-        do {
-            if (auto id = accept(Tok::Tag::M_id)) {
-                if (accept(Tok::Tag::T_colon)) {
-                    auto type  = parse_expr("type of a sigma element");
-                    auto infer = world().nom_infer(type, world().dbg({id->sym(), id->loc()}));
-                    insert(id->sym(), infer);
-                    ops.emplace_back(type);
-                } else {
-                    ops.emplace_back(find(id->sym()));
-                }
+    parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
+        if (auto id = accept(Tok::Tag::M_id)) {
+            if (accept(Tok::Tag::T_colon)) {
+                auto type  = parse_expr("type of a sigma element");
+                auto infer = world().nom_infer(type, id->sym(), id->loc());
+                nom = true;
+                insert(id->sym(), infer);
+                ops.emplace_back(type);
             } else {
-                ops.emplace_back(parse_expr("element of a sigma"));
+                ops.emplace_back(find(id->sym()));
             }
-        } while (accept(Tok::Tag::T_comma) && !ahead().isa(Tok::Tag::D_bracket_r));
-        expect(Tok::Tag::D_bracket_r, "closing delimiter of a sigma");
-    }
+        } else {
+            ops.emplace_back(parse_expr("element of a sigma"));
+        }
+    });
 
-    return world().sigma(ops, track);
+    if (!nom) return world().sigma(ops, track);
+    auto sigma = world().nom_sigma(world().nom_infer_univ(), ops.size(), track);
+    sigma->set(ops);
+    return sigma;
 }
 
 const Def* Parser::parse_tuple() {
     auto track = tracker();
-    auto ops   = parse_list("tuple", Tok::Tag::D_paren_l, [this]() { return parse_expr("tuple element"); });
+    DefVec ops;
+    parse_list("tuple", Tok::Tag::D_paren_l, [&]() { ops.emplace_back(parse_expr("tuple element")); });
     return world().tuple(ops, track);
 }
 
@@ -232,7 +238,7 @@ const Def* Parser::parse_pi() {
     expect(Tok::Tag::T_colon, "domain of a dependent function type");
     auto dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
     expect(Tok::Tag::T_arrow, "dependent function type");
-    auto pi = world().nom_pi(world().nom_infer(world().univ()), dom);
+    auto pi = world().nom_pi(world().nom_infer_univ(), dom);
     push();
     insert(var, pi->var()); // TODO set location
     pi->set_codom(parse_expr("codomain of a dependent function type", Tok::Prec::Arrow));
@@ -359,29 +365,20 @@ const Def* Parser::parse_def(Sym sym /*= {}*/) {
     auto nom = find(sym)->as_nom();
     expect(Tok::Tag::T_assign, "nominal definition");
 
-    size_t i, e;
-    // clang-format off
-    switch (nom->node()) {
-        case Node::Sigma: i = 0; e = nom->num_ops(); break;
-        case Node::Pi:    i = 1; e = 2; break;
-        case Node::Lam:   i = 0; e = 2; break;
-        case Node::Arr:   i = 1; e = 2; break;
-        case Node::Pack:  i = 0; e = 1; break;
-        default: unreachable();
-    }
-    // clang-format on
+    size_t i = nom->first_dependend_op();
+    size_t n = nom->num_ops();
 
-    if (accept(Tok::Tag::D_brace_l)) {
-        do {
-            if (i == e) err(prev_, "too many operands");
+    if (ahead().isa(Tok::Tag::D_brace_l)) {
+        parse_list("nominal definition", Tok::Tag::D_brace_l, [&]() {
+            if (i == n) err(prev_, "too many operands");
             nom->set(i++, parse_expr("operand of a nominal"));
-        } while (accept(Tok::Tag::T_comma) && !ahead().isa(Tok::Tag::D_brace_r));
-        expect(Tok::Tag::D_brace_r, "nominal definition");
-    } else if (e - i == 1) {
+        });
+    } else if (n - i == 1) {
         nom->set(i, parse_expr("operand of a nominal"));
     } else {
         err(prev_, "expected operands for nominal definition");
     }
+
     nom->dump(0);
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");
     return parse_expr("scope of a nominal definition");
