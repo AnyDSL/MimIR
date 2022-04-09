@@ -34,7 +34,7 @@ std::optional<char32_t> encode(std::istream& is) {
 }
 
 // and, or
-static std::ostream& ao(std::ostream& os, char32_t c32, char32_t a = char32_t(0b00111111), char32_t o = char32_t(0b10000000)) {
+static std::ostream& ao(std::ostream& os, char32_t c32, char32_t a = 0b00111111, char32_t o = 0b10000000) {
     return os << char((c32 & a) | o);
 }
 
