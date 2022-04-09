@@ -565,7 +565,9 @@ public:
     template<class... Args>
     void log(LogLevel level, Loc loc, const char* fmt, Args&&... args) {
         if (stream_ && int(min_level()) <= int(level)) {
-            stream().fmt("{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(loc.to_string(), 7));
+            std::ostringstream oss;
+            oss << loc;
+            stream().fmt("{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
             stream().fmt(fmt, std::forward<Args&&>(args)...).endl().flush();
         }
     }
