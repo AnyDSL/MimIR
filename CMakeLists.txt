@@ -33,6 +33,7 @@ if(WIN32)
     add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
 else()
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" TRUE)
+    add_compile_options(-Wall -Wextra)
 endif()
 
 find_program(MEMORYCHECK_COMMAND valgrind)

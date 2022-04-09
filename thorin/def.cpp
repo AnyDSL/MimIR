@@ -99,7 +99,8 @@ template<bool up> const Def* TBound<up>::rebuild(World& w, const Def*  , Defs o,
 Lam*    Lam   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_lam  (t->as<Pi>(), cc(), dbg); }
 Pi*     Pi    ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pi   (t, dbg); }
 Sigma*  Sigma ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_sigma(t, num_ops(), dbg); }
-Arr*    Arr   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_arr  (t, shape(), dbg); }
+Arr*    Arr   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_arr  (t, dbg); }
+Pack*   Pack  ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pack (t, dbg); }
 Infer*  Infer ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_infer(t, dbg); }
 Global* Global::stub(World& w, const Def* t, const Def* dbg) { return w.global(t, is_mutable(), dbg); }
 
@@ -123,6 +124,13 @@ const Def* Arr::restructure() {
     auto& w = world();
     if (auto n = isa_lit(shape()))
         return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)).back(); }));
+    return nullptr;
+}
+
+const Def* Pack::restructure() {
+    auto& w = world();
+    if (auto n = isa_lit(shape()))
+        return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)).back(); }));
     return nullptr;
 }
 

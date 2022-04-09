@@ -164,8 +164,8 @@ World::World(std::string_view name)
         dom->set(2, nat);
         auto pi1         = nom_pi(type())->set_dom(dom);
         auto [n, Ts, as] = pi1->vars<3>({dbg("n"), dbg("Ts"), dbg("as")});
-        auto in          = nom_arr(n);
-        in->set(extract(Ts, in->var(dbg("j"))));
+        auto in          = nom_arr()->set_shape(n);
+        in->set_body(extract(Ts, in->var(dbg("j"))));
         auto pi2 = nom_pi(type())->set_dom({type_ptr(in, as), type_int(n)});
         pi2->set_codom(type_ptr(extract(Ts, pi2->var(1, dbg("i"))), as));
         pi1->set_codom(pi2);
@@ -238,18 +238,18 @@ World::World(std::string_view name)
         is_os->set(1, arr(is_os->var(0, dbg("n_i")), type()));
         is_os->set(2, nat);
         is_os->set(3, arr(is_os->var(2, dbg("n_o")), type()));
-        auto f_i = nom_arr(is_os->var(0_u64));
-        auto f_o = nom_arr(is_os->var(2_u64));
-        f_i->set(extract(is_os->var(1, dbg("Is")), f_i->var()));
-        f_o->set(extract(is_os->var(3, dbg("Os")), f_o->var()));
+        auto f_i = nom_arr()->set_shape(is_os->var(0_u64));
+        auto f_o = nom_arr()->set_shape(is_os->var(2_u64));
+        f_i->set_body(extract(is_os->var(1, dbg("Is")), f_i->var()));
+        f_o->set_body(extract(is_os->var(3, dbg("Os")), f_o->var()));
         is_os->set(4, pi(f_i, f_o));
         auto is_os_pi = nom_pi(type())->set_dom(is_os);
 
         // «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
-        auto dom = nom_arr(is_os_pi->var(0_u64, dbg("n_i")));
-        auto cod = nom_arr(is_os_pi->var(2_u64, dbg("n_o")));
-        dom->set(arr(s, extract(is_os_pi->var(1, dbg("Is")), dom->var())));
-        cod->set(arr(s, extract(is_os_pi->var(3, dbg("Os")), cod->var())));
+        auto dom = nom_arr()->set_shape(is_os_pi->var(0_u64, dbg("n_i")));
+        auto cod = nom_arr()->set_shape(is_os_pi->var(2_u64, dbg("n_o")));
+        dom->set_body(arr(s, extract(is_os_pi->var(1, dbg("Is")), dom->var())));
+        cod->set_body(arr(s, extract(is_os_pi->var(3, dbg("Os")), cod->var())));
 
         is_os_pi->set_codom(pi(dom, cod));
         rs_pi->set_codom(is_os_pi);
@@ -268,8 +268,8 @@ World::World(std::string_view name)
         auto [mod, type_shape, types] = ltp->vars<3>({dbg("iter_modulo"), dbg("types_shape"), dbg("types")});
 
         auto it_type  = type_int(mod);
-        auto type_arr = nom_arr(type_shape);
-        type_arr->set(extract(types, type_arr->var()));
+        auto type_arr = nom_arr()->set_shape(type_shape);
+        type_arr->set_body(extract(types, type_arr->var()));
 
         ltp->set_codom(cn({mem, it_type, it_type, it_type, type_arr,
                            cn({mem, it_type, type_arr, cn({mem, type_arr}, dbg("continue"))}, dbg("body")),
@@ -731,34 +731,42 @@ void World::visit(VisitFn f) const {
 }
 
 /*
- * misc
+ * logging
  */
 
-std::string_view World::level2string(LogLevel level) {
+// clang-format off
+std::string_view World::level2acro(LogLevel level) {
     switch (level) {
-        // clang-format off
-        case LogLevel::Error:   return "E";
-        case LogLevel::Warn:    return "W";
-        case LogLevel::Info:    return "I";
-        case LogLevel::Verbose: return "V";
         case LogLevel::Debug:   return "D";
-        // clang-format on
+        case LogLevel::Verbose: return "V";
+        case LogLevel::Info:    return "I";
+        case LogLevel::Warn:    return "W";
+        case LogLevel::Error:   return "E";
         default: unreachable();
     }
+}
+
+LogLevel World::str2level(std::string_view s) {
+    if (false) {}
+    else if (s == "debug"  ) return LogLevel::Debug;
+    else if (s == "verbose") return LogLevel::Verbose;
+    else if (s == "info"   ) return LogLevel::Info;
+    else if (s == "warn"   ) return LogLevel::Warn;
+    else if (s == "error"  ) return LogLevel::Error;
+    else throw std::invalid_argument("invalid log level");
 }
 
 int World::level2color(LogLevel level) {
     switch (level) {
-        // clang-format off
-        case LogLevel::Error:   return 1;
-        case LogLevel::Warn:    return 3;
-        case LogLevel::Info:    return 2;
-        case LogLevel::Verbose: return 4;
         case LogLevel::Debug:   return 4;
-        // clang-format on
+        case LogLevel::Verbose: return 4;
+        case LogLevel::Info:    return 2;
+        case LogLevel::Warn:    return 3;
+        case LogLevel::Error:   return 1;
         default: unreachable();
     }
 }
+// clang-format on
 
 #ifdef THORIN_COLOR_TERM
 std::string World::colorize(std::string_view str, int color) {
@@ -772,7 +780,7 @@ std::string World::colorize(std::string_view str, int color) {
 std::string World::colorize(std::string_view str, int) { return std::string(str); }
 #endif
 
-void World::set(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
+void World::set_error_handler(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
 
 /*
  * instantiate templates

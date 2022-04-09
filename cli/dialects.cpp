@@ -26,7 +26,7 @@ void* load_library(const std::string& filename) {
         return static_cast<void*>(handle);
     } else {
         std::stringstream ss;
-        ss << "Could not load dialect plugin: " << filename << " with: " << GetLastError()
+        ss << "error: could not load dialect plugin: " << filename << " with: " << GetLastError()
            << "(see https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes)" << std::endl;
         throw std::runtime_error{ss.str()};
     }
@@ -35,7 +35,7 @@ void* load_library(const std::string& filename) {
         return handle;
     } else {
         std::stringstream ss;
-        ss << "Could not load dialect plugin: " << filename << std::endl;
+        ss << "error: could not load dialect plugin: " << filename << std::endl;
         if (char* err = dlerror()) { ss << err << std::endl; }
         throw std::runtime_error{ss.str()};
     }
@@ -48,7 +48,7 @@ void* get_symbol_from_library(void* handle, const std::string& symbol_name) {
         return reinterpret_cast<void*>(symbol);
     } else {
         std::stringstream ss;
-        ss << "Could not find symbol name in dialect plugin: " << symbol_name << " with: " << GetLastError()
+        ss << "error: could not find symbol name in dialect plugin: " << symbol_name << " with: " << GetLastError()
            << " (https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes)" << std::endl;
         throw std::runtime_error{ss.str()};
     }
@@ -57,7 +57,7 @@ void* get_symbol_from_library(void* handle, const std::string& symbol_name) {
     void* symbol = dlsym(handle, symbol_name.c_str());
     if (char* err = dlerror()) {
         std::stringstream ss;
-        ss << "Could not find symbol name in dialect plugin: " << symbol_name << std::endl;
+        ss << "error: could not find symbol name in dialect plugin: " << symbol_name << std::endl;
         ss << err << std::endl;
         throw std::runtime_error{ss.str()};
     } else {
@@ -138,13 +138,13 @@ void close_library(void* handle) {
 #ifdef _WIN32
     if (!FreeLibrary(static_cast<HMODULE>(handle))) {
         std::stringstream ss;
-        ss << "FreeLibrary() failed" << std::endl;
+        ss << "error: FreeLibrary() failed" << std::endl;
         throw std::runtime_error{ss.str()};
     }
 #else
     if (int err = dlclose(handle)) {
         std::stringstream ss;
-        ss << "dlclose() failed (" << err << ")" << std::endl;
+        ss << "error: dlclose() failed (" << err << ")" << std::endl;
         throw std::runtime_error{ss.str()};
     }
 #endif
@@ -168,12 +168,12 @@ void test_plugin(const std::string& name, const std::vector<std::string>& search
         }
     }
 
-    if (!handle) throw std::runtime_error("cannot open plugin");
+    if (!handle) throw std::runtime_error("error: cannot open plugin");
 
     auto create  = (CreateIPass)get_symbol_from_library(handle.get(), "create");
     auto destroy = (DestroyIPass)get_symbol_from_library(handle.get(), "destroy");
 
-    if (!create || !destroy) throw std::runtime_error("cannot find symbol");
+    if (!create || !destroy) throw std::runtime_error("error: cannot find symbol");
 
     World world;
     PassMan man(world);

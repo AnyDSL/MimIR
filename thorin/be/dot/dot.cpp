@@ -66,8 +66,6 @@ void DotEmitter::emit_epilogue(Lam* lam) {
     if (visited_noms_.contains(lam)) return;
     visited_noms_.insert(lam);
 
-    auto body = lam->body()->as<App>();
-
     if (lam != entry_) {
         emit_cluster_start(stream_, lam);
         emit(lam->body());

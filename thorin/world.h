@@ -93,6 +93,8 @@ public:
         return unify<Proxy>(ops.size(), type, ops, index, flags, dbg);
     }
     Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
+    Infer* nom_infer(const Def* type, Sym sym, Loc loc) { return insert<Infer>(1, type, dbg({sym, loc})); }
+    Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
     ///@}
 
     /// @name Axiom
@@ -176,10 +178,10 @@ public:
 
     /// @name Arr
     ///@{
-    Arr* nom_arr(const Def* type, const Def* shape, const Def* dbg = {}) { return insert<Arr>(2, type, shape, dbg); }
+    Arr* nom_arr(const Def* type, const Def* dbg = {}) { return insert<Arr>(2, type, dbg); }
     template<level_t level = 0>
-    Arr* nom_arr(const Def* shape, const Def* dbg = {}) {
-        return nom_arr(type<level>(), shape, dbg);
+    Arr* nom_arr(const Def* dbg = {}) {
+        return nom_arr(type<level>(), dbg);
     }
     const Def* arr(const Def* shape, const Def* body, const Def* dbg = {});
     const Def* arr(Defs shape, const Def* body, const Def* dbg = {});
@@ -202,6 +204,7 @@ public:
 
     /// @name Pack
     ///@{
+    Pack* nom_pack(const Def* type, const Def* dbg = {}) { return insert<Pack>(1, type, dbg); }
     const Def* pack(const Def* arity, const Def* body, const Def* dbg = {});
     const Def* pack(Defs shape, const Def* body, const Def* dbg = {});
     const Def* pack(u64 n, const Def* body, const Def* dbg = {}) { return pack(lit_nat(n), body, dbg); }
@@ -310,7 +313,6 @@ public:
     ///@{
     template<bool up>
     const Def* ext(const Def* type, const Def* dbg = {});
-    const Def* ext(bool up, const Def* type, const Def* dbg = {}) { return up ? top(type, dbg) : bot(type, dbg); }
     const Def* bot(const Def* type, const Def* dbg = {}) { return ext<false>(type, dbg); }
     const Def* top(const Def* type, const Def* dbg = {}) { return ext<true>(type, dbg); }
     const Def* bot_type() { return data_.bot_type_; }
@@ -524,7 +526,7 @@ public:
     bool empty() { return data_.externals_.empty(); }
     void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
     void make_internal(Def* def) { data_.externals_.erase(def->name()); }
-    bool is_external(const Def* def) { return data_.externals_.contains(def->debug().name); }
+    bool is_external(const Def* def) { return data_.externals_.contains(def->name()); }
     Def* lookup(std::string_view name) {
         auto i = data_.externals_.find(name);
         return i != data_.externals_.end() ? i->second : nullptr;
@@ -556,13 +558,16 @@ public:
     Stream& stream() { return *stream_; }
     LogLevel min_level() const { return state_.min_level; }
 
-    void set(LogLevel min_level) { state_.min_level = min_level; }
-    void set(std::shared_ptr<Stream> stream) { stream_ = stream; }
+    void set_log_level(LogLevel min_level) { state_.min_level = min_level; }
+    void set_log_level(std::string_view min_level) { set_log_level(str2level(min_level)); }
+    void set_log_stream(std::shared_ptr<Stream> stream) { stream_ = stream; }
 
     template<class... Args>
     void log(LogLevel level, Loc loc, const char* fmt, Args&&... args) {
         if (stream_ && int(min_level()) <= int(level)) {
-            stream().fmt("{}:{}: ", colorize(level2string(level), level2color(level)), colorize(loc.to_string(), 7));
+            std::ostringstream oss;
+            oss << loc;
+            stream().fmt("{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
             stream().fmt(fmt, std::forward<Args&&>(args)...).endl().flush();
         }
     }
@@ -575,12 +580,13 @@ public:
     }
 
     // clang-format off
-    template<class... Args> void idef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Info, def->debug().loc, fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> void wdef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Warn, def->debug().loc, fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> void edef(const Def* def, const char* fmt, Args&&... args) { error(def->debug().loc, fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> void idef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Info, def->loc(), fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> void wdef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Warn, def->loc(), fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> void edef(const Def* def, const char* fmt, Args&&... args) { error(def->loc(), fmt, std::forward<Args&&>(args)...); }
     // clang-format on
 
-    static std::string_view level2string(LogLevel level);
+    static std::string_view level2acro(LogLevel);
+    static LogLevel str2level(std::string_view);
     static int level2color(LogLevel level);
     static std::string colorize(std::string_view str, int color);
     ///@}
@@ -589,12 +595,12 @@ public:
     ///@{
     Stream& stream(Stream&) const;
     Stream& stream(RecStreamer&, const DepNode*) const;
-    void debug_stream(); ///< Stream thorin if World::State::min_level is LogLevel::Debug.
+    void debug_stream(); ///< Stream thorin if World::State::min_level is LogLevel::debug.
     ///@}
 
     /// @name error handling
     ///@{
-    void set(std::unique_ptr<ErrorHandler>&& err);
+    void set_error_handler(std::unique_ptr<ErrorHandler>&& err);
     ErrorHandler* err() { return err_.get(); }
     ///@}
 
