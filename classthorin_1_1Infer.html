@@ -288,6 +288,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6e4f7e30889bb5fdda61f235a5e40b9 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aa6e4f7e30889bb5fdda61f235a5e40b9">reduce_rec</a> () const</td></tr>
 <tr class="memdesc:aa6e4f7e30889bb5fdda61f235a5e40b9 inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively <a class="el" href="classthorin_1_1Def.html#a161ef8f8df446d49f85f94844a118aa2">Def::reduce</a> <a class="el" href="classthorin_1_1Lam.html">Lam</a>s, if <code>this</code> is an <a class="el" href="classthorin_1_1App.html">App</a>.  <a href="classthorin_1_1Def.html#aa6e4f7e30889bb5fdda61f235a5e40b9">More...</a><br /></td></tr>
 <tr class="separator:aa6e4f7e30889bb5fdda61f235a5e40b9 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14950247501c4664c25556f82d732e1e inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a14950247501c4664c25556f82d732e1e">first_dependend_op</a> ()</td></tr>
+<tr class="separator:a14950247501c4664c25556f82d732e1e inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a894b8738ff236f12a06b113777877d7f inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a894b8738ff236f12a06b113777877d7f">rebuild</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, const <a class="el" href="classthorin_1_1Def.html">Def</a> *, <a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a>, const <a class="el" href="classthorin_1_1Def.html">Def</a> *) const</td></tr>
 <tr class="separator:a894b8738ff236f12a06b113777877d7f inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21a604f6ac783871af333a53b5520303 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a21a604f6ac783871af333a53b5520303">refine</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i, const <a class="el" href="classthorin_1_1Def.html">Def</a> *new_op) const</td></tr>
@@ -335,7 +337,7 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a01819fbb2af79ba53a18b0e03507b86f"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Infer.html#a01819fbb2af79ba53a18b0e03507b86f">Node</a> = <a class="el" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a8d94437120ef9485341077ce00c86443">Node::Infer</a></td></tr>
+<tr class="memitem:a01819fbb2af79ba53a18b0e03507b86f"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Infer.html#a01819fbb2af79ba53a18b0e03507b86f">Node</a> = <a class="el" href="namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a8d94437120ef9485341077ce00c86443">Node::Infer</a></td></tr>
 <tr class="separator:a01819fbb2af79ba53a18b0e03507b86f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
@@ -410,7 +412,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p >This node is a hole in the IR that is inferred by its context later on. </p>
 <p >It is modelled as a *nom*inal <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>. If inference was successful, </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00557">557</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00558">558</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a72096cb953dac16f9505b0d1f44483ef" name="a72096cb953dac16f9505b0d1f44483ef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a72096cb953dac16f9505b0d1f44483ef">&#9670;&nbsp;</a></span>op()</h2>
@@ -435,11 +437,11 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00565">565</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00566">566</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00152">thorin::Def::op()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00566">set()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8h_source.html#l00567">set()</a>.</p>
 
 </div>
 </div>
@@ -467,9 +469,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00566">566</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00567">567</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00565">op()</a>, and <a class="el" href="def_8cpp_source.html#l00276">thorin::Def::set()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00566">op()</a>, and <a class="el" href="def_8cpp_source.html#l00284">thorin::Def::set()</a>.</p>
 
 </div>
 </div>
@@ -515,7 +517,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p>Reimplemented from <a class="el" href="classthorin_1_1Def.html#a88360b7240d92f32c6be01e52123bd0d">thorin::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00103">103</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00104">104</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00260">thorin::Def::dbg()</a>, <a class="el" href="world_8h_source.html#l00095">thorin::World::nom_infer()</a>, and <a class="el" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55acceae358efa489f58062f10dd7316b65649e">thorin::t</a>.</p>
 
@@ -542,7 +544,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00575">575</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00576">576</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -557,7 +559,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto thorin::Infer::Node = <a class="el" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a8d94437120ef9485341077ce00c86443">Node::Infer</a></td>
+          <td class="memname">constexpr auto thorin::Infer::Node = <a class="el" href="namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a8d94437120ef9485341077ce00c86443">Node::Infer</a></td>
         </tr>
       </table>
   </td>
@@ -567,7 +569,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00574">574</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00575">575</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

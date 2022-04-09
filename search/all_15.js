@@ -25,7 +25,7 @@ var searchData=
   ['unique_5fstack_22',['unique_stack',['../classthorin_1_1unique__stack.html',1,'thorin']]],
   ['univ_23',['Univ',['../classthorin_1_1Univ.html',1,'thorin']]],
   ['univ_24',['univ',['../classthorin_1_1World.html#af5dccad9055934bc02d775b1744441e1',1,'thorin::World']]],
-  ['univ_25',['Univ',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946',1,'thorin::Univ()'],['../namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0ae882a8f030afe817e8f82f3a2bc2710a',1,'thorin::Node::Univ()']]],
+  ['univ_25',['Univ',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946',1,'thorin::Univ()'],['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253ae882a8f030afe817e8f82f3a2bc2710a',1,'thorin::Node::Univ()']]],
   ['unreachable_26',['unreachable',['../namespacethorin.html#ae28200e453f278e083c9350e8dbeda0d',1,'thorin']]],
   ['unsafe_27',['unsafe',['../namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719aade1a883d771d5d2688d6da503f0a8cb',1,'thorin::RMode']]],
   ['unset_28',['unset',['../classthorin_1_1Def.html#a2f616ff4efad73f2589e6161d6b4f10f',1,'thorin::Def::unset()'],['../classthorin_1_1Def.html#ad0ea206ded848435dadac1aa06483782',1,'thorin::Def::unset(size_t i)']]],

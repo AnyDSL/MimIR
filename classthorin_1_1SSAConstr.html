@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1SSAConstr.html',''); in
 </div><!--header-->
 <div class="contents">
 
-<p>SSA construction algorithm that promotes <a class="el" href="namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a10e78fc601c6cb2d71e7ec1a273bf84e">Tag::Slot</a>s, <a class="el" href="namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a3fa48428576bbf714933120bcde71526">Tag::Load</a>s, and <a class="el" href="namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a617635d8295c3800871d2fba4985aa04">Tag::Store</a>s to SSA values.  
+<p>SSA construction algorithm that promotes <a class="el" href="namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa10e78fc601c6cb2d71e7ec1a273bf84e">Tag::Slot</a>s, <a class="el" href="namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa3fa48428576bbf714933120bcde71526">Tag::Load</a>s, and <a class="el" href="namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa617635d8295c3800871d2fba4985aa04">Tag::Store</a>s to SSA values.  
  <a href="classthorin_1_1SSAConstr.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="ssa__constr_8h_source.html">thorin/pass/fp/ssa_constr.h</a>&gt;</code></p>
@@ -128,11 +128,11 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:a139836f76370e72becca5ed358d0e085"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: flags_t { <a class="el" href="classthorin_1_1SSAConstr.html#a139836f76370e72becca5ed358d0e085aa153e62ee4241996e7781a055c98e62f">Phixy</a>
-, <a class="el" href="classthorin_1_1SSAConstr.html#a139836f76370e72becca5ed358d0e085abcaef4bb721e14e6891b29a89d7961bb">Sloxy</a>
-, <a class="el" href="classthorin_1_1SSAConstr.html#a139836f76370e72becca5ed358d0e085ac6afdf202d56604ea83504826746547b">Traxy</a>
+<tr class="memitem:a5dff55da1bf0b22328fe9a8dd262728b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: flags_t { <a class="el" href="classthorin_1_1SSAConstr.html#a5dff55da1bf0b22328fe9a8dd262728baa153e62ee4241996e7781a055c98e62f">Phixy</a>
+, <a class="el" href="classthorin_1_1SSAConstr.html#a5dff55da1bf0b22328fe9a8dd262728babcaef4bb721e14e6891b29a89d7961bb">Sloxy</a>
+, <a class="el" href="classthorin_1_1SSAConstr.html#a5dff55da1bf0b22328fe9a8dd262728bac6afdf202d56604ea83504826746547b">Traxy</a>
  }</td></tr>
-<tr class="separator:a139836f76370e72becca5ed358d0e085"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a5dff55da1bf0b22328fe9a8dd262728b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58b6c4f375ee1aab763d892b97ae0225"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1SSAConstr.html#a58b6c4f375ee1aab763d892b97ae0225">Data</a> = <a class="el" href="namespacethorin.html#abbb08512ded2c0a47698a71177d29217">GIDNodeMap</a>&lt; <a class="el" href="classthorin_1_1Lam.html">Lam</a> *, <a class="el" href="classthorin_1_1SSAConstr.html#structthorin_1_1SSAConstr_1_1Info">Info</a> &gt;</td></tr>
 <tr class="separator:a58b6c4f375ee1aab763d892b97ae0225"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classthorin_1_1FPPass"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classthorin_1_1FPPass')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classthorin_1_1FPPass.html">thorin::FPPass&lt; SSAConstr, Lam &gt;</a></td></tr>
@@ -216,7 +216,7 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:a992db753a80b89fb6bcce0dc6154dd8b inherit pro_methods_classthorin_1_1FPPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >SSA construction algorithm that promotes <a class="el" href="namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a10e78fc601c6cb2d71e7ec1a273bf84e">Tag::Slot</a>s, <a class="el" href="namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a3fa48428576bbf714933120bcde71526">Tag::Load</a>s, and <a class="el" href="namespacethorin_1_1Tag.html#a7d019d5ddc40d540656215f35d5a7628a617635d8295c3800871d2fba4985aa04">Tag::Store</a>s to SSA values. </p>
+<div class="textblock"><p >SSA construction algorithm that promotes <a class="el" href="namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa10e78fc601c6cb2d71e7ec1a273bf84e">Tag::Slot</a>s, <a class="el" href="namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa3fa48428576bbf714933120bcde71526">Tag::Load</a>s, and <a class="el" href="namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa617635d8295c3800871d2fba4985aa04">Tag::Store</a>s to SSA values. </p>
 <p >This is loosely based upon: "Simple and Efficient Construction of Static Single Assignment Form" by Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau. </p>
 
 <p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00015">15</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
@@ -270,8 +270,8 @@ writable</td>
 </div>
 </div>
 <h2 class="groupheader">Member Enumeration Documentation</h2>
-<a id="a139836f76370e72becca5ed358d0e085" name="a139836f76370e72becca5ed358d0e085"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a139836f76370e72becca5ed358d0e085">&#9670;&nbsp;</a></span>anonymous enum</h2>
+<a id="a5dff55da1bf0b22328fe9a8dd262728b" name="a5dff55da1bf0b22328fe9a8dd262728b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dff55da1bf0b22328fe9a8dd262728b">&#9670;&nbsp;</a></span>anonymous enum</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,9 +282,9 @@ writable</td>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a139836f76370e72becca5ed358d0e085aa153e62ee4241996e7781a055c98e62f" name="a139836f76370e72becca5ed358d0e085aa153e62ee4241996e7781a055c98e62f"></a>Phixy&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a139836f76370e72becca5ed358d0e085abcaef4bb721e14e6891b29a89d7961bb" name="a139836f76370e72becca5ed358d0e085abcaef4bb721e14e6891b29a89d7961bb"></a>Sloxy&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a139836f76370e72becca5ed358d0e085ac6afdf202d56604ea83504826746547b" name="a139836f76370e72becca5ed358d0e085ac6afdf202d56604ea83504826746547b"></a>Traxy&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5dff55da1bf0b22328fe9a8dd262728baa153e62ee4241996e7781a055c98e62f" name="a5dff55da1bf0b22328fe9a8dd262728baa153e62ee4241996e7781a055c98e62f"></a>Phixy&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dff55da1bf0b22328fe9a8dd262728babcaef4bb721e14e6891b29a89d7961bb" name="a5dff55da1bf0b22328fe9a8dd262728babcaef4bb721e14e6891b29a89d7961bb"></a>Sloxy&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dff55da1bf0b22328fe9a8dd262728bac6afdf202d56604ea83504826746547b" name="a5dff55da1bf0b22328fe9a8dd262728bac6afdf202d56604ea83504826746547b"></a>Traxy&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 <p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00021">21</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>

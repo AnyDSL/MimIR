@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['gid_5f_0',['gid_',['../classthorin_1_1Def.html#ad787194dde14538ab209e0003318c0cd',1,'thorin::Def']]],
-  ['globals_5f_1',['globals_',['../classthorin_1_1Emitter.html#ae6996cbfe877290dc33a25c67a5e3cee',1,'thorin::Emitter']]]
+  ['fields_5f_0',['fields_',['../classthorin_1_1Def.html#a91277ddcc8a17161aa2c0a1fa1abf790',1,'thorin::Def']]],
+  ['file_1',['file',['../structthorin_1_1Loc.html#a6ef660df5af4231418b1ab49aab1f092',1,'thorin::Loc']]],
+  ['finis_2',['finis',['../structthorin_1_1Loc.html#a4e9c5322ad9d09bd66f51752d1c29c97',1,'thorin::Loc']]]
 ];

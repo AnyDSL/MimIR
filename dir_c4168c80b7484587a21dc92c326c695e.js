@@ -11,15 +11,12 @@ var dir_c4168c80b7484587a21dc92c326c695e =
     [ "check.h", "check_8h.html", [
       [ "thorin::Checker", "classthorin_1_1Checker.html", "classthorin_1_1Checker" ]
     ] ],
-    [ "debug.cpp", "debug_8cpp.html", null ],
+    [ "debug.cpp", "debug_8cpp.html", "debug_8cpp" ],
     [ "debug.h", "debug_8h.html", "debug_8h" ],
     [ "def.cpp", "def_8cpp.html", "def_8cpp" ],
     [ "def.h", "def_8h.html", "def_8h" ],
     [ "error.cpp", "error_8cpp.html", "error_8cpp" ],
-    [ "error.h", "error_8h.html", [
-      [ "thorin::TypeError", "classthorin_1_1TypeError.html", "classthorin_1_1TypeError" ],
-      [ "thorin::ErrorHandler", "classthorin_1_1ErrorHandler.html", "classthorin_1_1ErrorHandler" ]
-    ] ],
+    [ "error.h", "error_8h.html", "error_8h" ],
     [ "lam.cpp", "lam_8cpp.html", "lam_8cpp" ],
     [ "lam.h", "lam_8h.html", "lam_8h" ],
     [ "lattice.cpp", "lattice_8cpp.html", null ],

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['cf_5fnodes_5f_0',['cf_nodes_',['../classthorin_1_1LoopTree_1_1Base.html#a2679000e3aae6a349da4241e3b942ee4',1,'thorin::LoopTree::Base']]],
-  ['col_1',['col',['../structthorin_1_1Pos.html#a7ea3f1b1492b717c7037053ba8e6b32b',1,'thorin::Pos']]],
-  ['curry_5f_2',['curry_',['../classthorin_1_1Def.html#a7cb5e9ae59ac1650ad99dc710f18e999',1,'thorin::Def']]]
+  ['begin_0',['begin',['../structthorin_1_1Loc.html#ad1fdf23d819fbbc0d01d0bcf3a728284',1,'thorin::Loc']]],
+  ['bom_1',['BOM',['../namespacethorin_1_1utf8.html#ac779262d791a964e365ba7ff793aa0a5',1,'thorin::utf8']]],
+  ['buffer_2',['buffer',['../structthorin_1_1World_1_1Arena_1_1Zone.html#a275f87582ac62338fc4d1387ba5415f0',1,'thorin::World::Arena::Zone']]]
 ];

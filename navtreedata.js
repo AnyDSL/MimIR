@@ -123,21 +123,22 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "alloc2malloc_8cpp.html",
-"classthorin_1_1ArrayRef.html#adf4aaa6e43f0c1a35baa724fb2c3188e",
-"classthorin_1_1Checker.html#a1f10a53ffc87e0cee5dd0007ff2edff6",
-"classthorin_1_1DepTree.html#af68ff75a39f11dff09df913afe1e1f18",
-"classthorin_1_1IndexSet.html#a245aada796530949db5a5c38410debae",
-"classthorin_1_1Pack.html",
-"classthorin_1_1SSAConstr.html#a8c700e1acb4b1a3060a07a46fb472ba9",
-"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a9ad29629b50d3cc6dff258d5b83a2dda",
-"classthorin_1_1World.html#a466ea83c06e590328383a2b29a418a53",
-"classthorin_1_1World.html#ad317f2bccd297f81243f0e5057174d7d",
-"dialects_8h.html#a1ed6fc404fb6d7a9d8f18fd8b2c181a5",
-"namespacemembers_f.html",
-"namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921a4f4000d921968b9665f52e88333007da",
-"normalize_8cpp.html#a2ab8d8623a2a2fb97412cf4b05d18811",
-"structthorin_1_1Fold_3_01ROp_00_01ROp_1_1sub_00_01w_01_4.html#a2649f6a768fdd88386b1f4d25d3e8220",
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3a3e932611809e2b55152a9c0d50fde604"
+"classthorin_1_1ArrayRef.html#ac6ba23f4f7bb9a4c8655946667f7163a",
+"classthorin_1_1Checker.html#a12019b577e7c78f5691a1cbca39b3942",
+"classthorin_1_1DepTree.html#a62f4d7ed09ceb27f0346e091c1117867",
+"classthorin_1_1IndexSet.html",
+"classthorin_1_1LowerFor.html#a7a0a369ca4582023c2c934b1b254d403",
+"classthorin_1_1Rewriter.html#a739eafef359052ceb40920e773abe3f3",
+"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2879fcb4320671691958f7a455aa82bd",
+"classthorin_1_1World.html#a24eea52f5936ba048853cfdd9b476043",
+"classthorin_1_1World.html#ab68312b4fab76b13437ca784b74c3924",
+"classthorin_1_1utf8_1_1Lexer.html#ae15c4c0f955cb984d0035a9d6b6ed12b",
+"lam__spec_8cpp.html#afe55cb6b936b3de14b79b554d8fa1026",
+"namespacethorin.html#a692d6d54b6b359b4e75fe7f0aed06f2c",
+"namespacethorin.html#af46278ec1dc091418ec3fe6bc7317561a746a49b2e21a5bcacd046f0c02ab6022",
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#a64b01c683e146fe246c8b19346fa6600",
+"tables_8h.html#a3180e04977dc089be7fc960eebe7009f",
+"utf8_8cpp.html#aa839bcd82c527a47ea17280b40307d1f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

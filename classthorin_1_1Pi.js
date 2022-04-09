@@ -4,6 +4,7 @@ var classthorin_1_1Pi =
     [ "Pi", "classthorin_1_1Pi.html#aa99739fe957c917a1ec2fd38efabd4b4", null ],
     [ "codom", "classthorin_1_1Pi.html#a3b30de4543d20c85955e970879a54fe2", null ],
     [ "dom", "classthorin_1_1Pi.html#a20d8a96fb7cccc26b8e9bac78adeb3f3", null ],
+    [ "first_dependend_op", "classthorin_1_1Pi.html#a8d122d2ba26683944d002246fa477ece", null ],
     [ "is_basicblock", "classthorin_1_1Pi.html#a116138b6c56c0f3cf2afa27a3077ce12", null ],
     [ "is_cn", "classthorin_1_1Pi.html#a0e7aabaac67c503372016139b7cc4ee2", null ],
     [ "is_returning", "classthorin_1_1Pi.html#ab792079b1db71b8fb496fcd740f8b2bf", null ],

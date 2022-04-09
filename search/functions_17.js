@@ -8,8 +8,9 @@ var searchData=
   ['_7edotemitter_5',['~DotEmitter',['../classthorin_1_1dot_1_1DotEmitter.html#ad616ea9c49b3215cec8e506653f4a454',1,'thorin::dot::DotEmitter']]],
   ['_7eerrorhandler_6',['~ErrorHandler',['../classthorin_1_1ErrorHandler.html#ad7556ea8ffcd07c36a8386b146cf68ec',1,'thorin::ErrorHandler']]],
   ['_7eipass_7',['~IPass',['../classthorin_1_1IPass.html#aaa9538a515e496cdb5245001e1fd1c43',1,'thorin::IPass']]],
-  ['_7elock_8',['~Lock',['../structthorin_1_1World_1_1Arena_1_1Lock.html#afa07a5bf3efdfaa263b3806aae4f93fe',1,'thorin::World::Arena::Lock']]],
-  ['_7epass_9',['~Pass',['../classthorin_1_1Pass.html#a1422445ab9812219a993c61c2c6842b1',1,'thorin::Pass']]],
-  ['_7escope_10',['~Scope',['../classthorin_1_1Scope.html#a4c8115844a60de40c7b8f949b4bb6434',1,'thorin::Scope']]],
-  ['_7eworld_11',['~World',['../classthorin_1_1World.html#a957e6e5bec2d46e8095f442bd027cd0b',1,'thorin::World']]]
+  ['_7elexer_8',['~Lexer',['../classthorin_1_1utf8_1_1Lexer.html#a6e287bb44b69d962efb2940be5738b7b',1,'thorin::utf8::Lexer']]],
+  ['_7elock_9',['~Lock',['../structthorin_1_1World_1_1Arena_1_1Lock.html#afa07a5bf3efdfaa263b3806aae4f93fe',1,'thorin::World::Arena::Lock']]],
+  ['_7epass_10',['~Pass',['../classthorin_1_1Pass.html#a1422445ab9812219a993c61c2c6842b1',1,'thorin::Pass']]],
+  ['_7escope_11',['~Scope',['../classthorin_1_1Scope.html#a4c8115844a60de40c7b8f949b4bb6434',1,'thorin::Scope']]],
+  ['_7eworld_12',['~World',['../classthorin_1_1World.html#a957e6e5bec2d46e8095f442bd027cd0b',1,'thorin::World']]]
 ];

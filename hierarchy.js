@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "thorin::utf8::Lexer< Max_Ahead >::Ahead", "structthorin_1_1utf8_1_1Lexer_1_1Ahead.html", null ],
     [ "thorin::Array< T >", "classthorin_1_1Array.html", null ],
     [ "thorin::Array< const Def * >", "classthorin_1_1Array.html", null ],
     [ "thorin::Array< uint64_t >", "classthorin_1_1Array.html", null ],
@@ -104,9 +105,16 @@ var hierarchy =
         ] ]
       ] ]
     ] ],
-    [ "thorin::Lexer", "classthorin_1_1Lexer.html", null ],
+    [ "thorin::utf8::Lexer< Max_Ahead >", "classthorin_1_1utf8_1_1Lexer.html", null ],
+    [ "thorin::utf8::Lexer< 3 >", "classthorin_1_1utf8_1_1Lexer.html", [
+      [ "thorin::Lexer", "classthorin_1_1Lexer.html", null ]
+    ] ],
+    [ "thorin::Loc", "structthorin_1_1Loc.html", null ],
     [ "thorin::World::Arena::Lock", "structthorin_1_1World_1_1Arena_1_1Lock.html", null ],
     [ "std::logic_error", null, [
+      [ "thorin::LexError", "classthorin_1_1LexError.html", null ],
+      [ "thorin::ParseError", "classthorin_1_1ParseError.html", null ],
+      [ "thorin::ScopeError", "classthorin_1_1ScopeError.html", null ],
       [ "thorin::TypeError", "classthorin_1_1TypeError.html", null ]
     ] ],
     [ "thorin::LoopTree< forward >", "classthorin_1_1LoopTree.html", null ],
@@ -114,6 +122,7 @@ var hierarchy =
     [ "thorin::LRPrec< L >", "structthorin_1_1LRPrec.html", null ],
     [ "thorin::Parser", "classthorin_1_1Parser.html", null ],
     [ "thorin::PassMan", "classthorin_1_1PassMan.html", null ],
+    [ "thorin::Pos", "structthorin_1_1Pos.html", null ],
     [ "thorin::Query< F, D >", "classthorin_1_1Query.html", null ],
     [ "thorin::RecStreamer", "classthorin_1_1RecStreamer.html", null ],
     [ "thorin::BitSet::reference", "classthorin_1_1BitSet_1_1reference.html", null ],
@@ -172,25 +181,13 @@ var hierarchy =
     [ "thorin::Streamable< Def >", "classthorin_1_1Streamable.html", [
       [ "thorin::Def", "classthorin_1_1Def.html", null ]
     ] ],
-    [ "thorin::Streamable< Loc >", "classthorin_1_1Streamable.html", [
-      [ "thorin::Loc", "structthorin_1_1Loc.html", null ]
-    ] ],
     [ "thorin::Streamable< LoopTree< forward > >", "classthorin_1_1Streamable.html", [
       [ "thorin::LoopTree< forward >::Base", "classthorin_1_1LoopTree_1_1Base.html", null ]
-    ] ],
-    [ "thorin::Streamable< Pos >", "classthorin_1_1Streamable.html", [
-      [ "thorin::Pos", "structthorin_1_1Pos.html", null ]
-    ] ],
-    [ "thorin::Streamable< Sym >", "classthorin_1_1Streamable.html", [
-      [ "thorin::Sym", "classthorin_1_1Sym.html", null ]
-    ] ],
-    [ "thorin::Streamable< Tok >", "classthorin_1_1Streamable.html", [
-      [ "thorin::Tok", "classthorin_1_1Tok.html", null ]
     ] ],
     [ "thorin::Streamable< World >", "classthorin_1_1Streamable.html", [
       [ "thorin::World", "classthorin_1_1World.html", null ]
     ] ],
-    [ "thorin::SymEq", "structthorin_1_1SymEq.html", null ],
+    [ "thorin::Sym", "classthorin_1_1Sym.html", null ],
     [ "thorin::SymHash", "structthorin_1_1SymHash.html", null ],
     [ "thorin::Tag2Def_< tag >", "namespacethorin.html#structthorin_1_1Tag2Def__", null ],
     [ "thorin::Tag2Def_< Tag::Mem >", "namespacethorin.html#structthorin_1_1Tag2Def___3_01Tag_1_1Mem_01_4", null ],
@@ -206,6 +203,7 @@ var hierarchy =
     [ "thorin::Tag2Enum_< Tag::Shr >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Shr_01_4", null ],
     [ "thorin::Tag2Enum_< Tag::Trait >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Trait_01_4", null ],
     [ "thorin::Tag2Enum_< Tag::Wrap >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Wrap_01_4", null ],
+    [ "thorin::Tok", "classthorin_1_1Tok.html", null ],
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_queue< NomSet >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_stack< Set >", "classthorin_1_1unique__stack.html", null ],

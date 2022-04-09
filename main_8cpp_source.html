@@ -114,131 +114,180 @@ $(document).ready(function(){initNavTree('main_8cpp_source.html',''); initResiza
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;thorin/config.h&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="dialects_8h.html">cli/dialects.h</a>&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="ll_8h.html">thorin/be/ll/ll.h</a>&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="parser_8h.html">thorin/fe/parser.h</a>&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="pass_8h.html">thorin/pass/pass.h</a>&quot;</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="stream_8h.html">thorin/util/stream.h</a>&quot;</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#ifdef _WIN32</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#    include &lt;windows.h&gt;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#    define popen  _popen</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#    define pclose _pclose</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#    include &lt;dlfcn.h&gt;</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec">   26</a></span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec">version</a> = <span class="stringliteral">&quot;thorin command-line utility version &quot;</span> THORIN_VER <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="comment"></span> </div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="comment">/// see https://stackoverflow.com/a/478960</span></div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="main_8cpp.html#a43b669bccb8bce8ea862a58a9dc116bd">   29</a></span><span class="comment"></span>std::string <a class="code hl_function" href="main_8cpp.html#a43b669bccb8bce8ea862a58a9dc116bd">exec</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* cmd) {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    std::array&lt;char, 128&gt; buffer;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    std::string result;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    std::unique_ptr&lt;FILE, <span class="keyword">decltype</span>(&amp;pclose)&gt; pipe(popen(cmd, <span class="stringliteral">&quot;r&quot;</span>), pclose);</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keywordflow">if</span> (!pipe) { <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;popen() failed!&quot;</span>); }</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keywordflow">while</span> (fgets(buffer.data(), buffer.size(), pipe.get()) != <span class="keyword">nullptr</span>) { result += buffer.data(); }</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>}</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="main_8cpp.html#a17946612b4a9cd40393b605b8c36e6fc">   38</a></span>std::string <a class="code hl_function" href="main_8cpp.html#a17946612b4a9cd40393b605b8c36e6fc">get_clang_from_path</a>() {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    std::string clang;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#ifndef _WIN32</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    clang = <a class="code hl_function" href="main_8cpp.html#a43b669bccb8bce8ea862a58a9dc116bd">exec</a>(<span class="stringliteral">&quot;which clang&quot;</span>);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    clang = <a class="code hl_function" href="main_8cpp.html#a43b669bccb8bce8ea862a58a9dc116bd">exec</a>(<span class="stringliteral">&quot;where clang&quot;</span>);</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    clang.erase(std::remove(clang.begin(), clang.end(), <span class="charliteral">&#39;\n&#39;</span>), clang.end());</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordflow">return</span> clang;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">   49</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    std::string clang = <a class="code hl_function" href="main_8cpp.html#a17946612b4a9cd40393b605b8c36e6fc">get_clang_from_path</a>();</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    std::string file;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">bool</span> emit_llvm = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordtype">bool</span> show_help = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    std::vector&lt;std::string&gt; dialects, dialect_paths;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keyword">auto</span> print_version = [](<a class="code hl_class" href="namespace_3globalScope_4.html#classbool">bool</a>) {</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        std::cerr &lt;&lt; <a class="code hl_variable" href="main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec">version</a>;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        std::exit(EXIT_SUCCESS);</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    };</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keyword">auto</span> cli = lyra::cli() | lyra::help(show_help) |</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>               lyra::opt(clang, <span class="stringliteral">&quot;clang&quot;</span>)[<span class="stringliteral">&quot;-c&quot;</span>][<span class="stringliteral">&quot;--clang&quot;</span>](<span class="stringliteral">&quot;path to clang executable (default: &quot;</span> + clang + <span class="stringliteral">&quot;)&quot;</span>) |</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>               lyra::opt(emit_llvm)[<span class="stringliteral">&quot;-l&quot;</span>][<span class="stringliteral">&quot;--emit-llvm&quot;</span>](<span class="stringliteral">&quot;emit LLVM&quot;</span>) |</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>               lyra::opt(print_version)[<span class="stringliteral">&quot;-v&quot;</span>][<span class="stringliteral">&quot;--version&quot;</span>](<span class="stringliteral">&quot;display version info and exit&quot;</span>) |</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>               lyra::opt(dialects, <span class="stringliteral">&quot;dialect&quot;</span>)[<span class="stringliteral">&quot;-d&quot;</span>][<span class="stringliteral">&quot;--dialect&quot;</span>](<span class="stringliteral">&quot;dynamically load dialect [WIP]&quot;</span>) |</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>               lyra::opt(dialect_paths, <span class="stringliteral">&quot;path&quot;</span>)[<span class="stringliteral">&quot;-D&quot;</span>][<span class="stringliteral">&quot;--dialect-path&quot;</span>](<span class="stringliteral">&quot;path to search dialects in&quot;</span>) |</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>               lyra::arg(file, <span class="stringliteral">&quot;input file&quot;</span>)(<span class="stringliteral">&quot;The input file. Use &#39;-&#39; to read from stdin.&quot;</span>);</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    <span class="keyword">auto</span> result = cli.parse({argc, argv});</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    <span class="keywordflow">if</span> (!result) {</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;Error in command line: &quot;</span> &lt;&lt; result.message() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">if</span> (show_help) std::cerr &lt;&lt; cli &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <span class="keywordflow">if</span> (!dialects.empty()) {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; dialect : dialects) <a class="code hl_function" href="dialects_8cpp.html#a1ed6fc404fb6d7a9d8f18fd8b2c181a5">test_plugin</a>(dialect, dialect_paths);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keywordflow">if</span> (file.empty()) <span class="keywordflow">throw</span> std::logic_error(<span class="stringliteral">&quot;no input file given&quot;</span>);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <a class="code hl_class" href="classthorin_1_1World.html">World</a> world;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="keywordflow">if</span> (file == <span class="stringliteral">&quot;-&quot;</span>) {</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            <a class="code hl_class" href="classthorin_1_1Parser.html">Parser</a> parser(world, <span class="stringliteral">&quot;&lt;stdin&gt;&quot;</span>, std::cin);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            parser.<a class="code hl_function" href="classthorin_1_1Parser.html#ad456197984ae5995361c73fb5574ce27">parse_module</a>();</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>            std::ifstream ifs(file);</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>            <span class="keywordflow">if</span> (!ifs) {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                <a class="code hl_function" href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">errln</a>(<span class="stringliteral">&quot;error: cannot read file &#39;{}&#39;&quot;</span>, file);</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>                <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            }</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <a class="code hl_class" href="classthorin_1_1Parser.html">Parser</a> parser(world, file, ifs);</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            parser.<a class="code hl_function" href="classthorin_1_1Parser.html#ad456197984ae5995361c73fb5574ce27">parse_module</a>();</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        }</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="comment">// if (num_errors != 0) {</span></div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="comment">// std::cerr &lt;&lt; num_errors &lt;&lt; &quot; error(s) encountered&quot; &lt;&lt; std::endl;</span></div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="comment">// return EXIT_FAILURE;</span></div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="comment">//}</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="comment">// if (eval) exp = exp-&gt;eval();</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="comment">// exp-&gt;dump();</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keywordflow">if</span> (emit_llvm) {</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            std::ofstream of(<span class="stringliteral">&quot;test.ll&quot;</span>);</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>            <a class="code hl_class" href="classthorin_1_1Stream.html">Stream</a> s(of);</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <a class="code hl_function" href="namespacethorin_1_1dot.html#aaf1b7a7efc602d66cfa4fa381334f63b">ll::emit</a>(world, s);</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        }</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; <a class="code hl_enumvalue" href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">e</a>) {</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <a class="code hl_function" href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">errln</a>(<span class="stringliteral">&quot;error: {}&quot;</span>, <a class="code hl_enumvalue" href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">e</a>.what());</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    } <span class="keywordflow">catch</span> (...) {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        std::cerr &lt;&lt; <span class="stringliteral">&quot;error: unknown exception&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordflow">return</span> EXIT_FAILURE;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    }</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>}</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="dot_8h.html">thorin/be/dot/dot.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="ll_8h.html">thorin/be/ll/ll.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="parser_8h.html">thorin/fe/parser.h</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="pass_8h.html">thorin/pass/pass.h</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="stream_8h.html">thorin/util/stream.h</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#ifdef _WIN32</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#    include &lt;windows.h&gt;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#    define popen  _popen</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#    define pclose _pclose</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#    include &lt;dlfcn.h&gt;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">using namespace </span>std::literals;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec">   28</a></span><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec">version</a> = <span class="stringliteral">&quot;thorin command-line utility version &quot;</span> THORIN_VER <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"></span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment">/// see https://stackoverflow.com/a/478960</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="main_8cpp.html#aac3055347c401cb1bc312d49ab4b5e9c">   31</a></span><span class="comment"></span><span class="keyword">static</span> std::string <a class="code hl_function" href="main_8cpp.html#aac3055347c401cb1bc312d49ab4b5e9c">exec</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* cmd) {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    std::array&lt;char, 128&gt; buffer;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    std::string result;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    std::unique_ptr&lt;FILE, <span class="keyword">decltype</span>(&amp;pclose)&gt; pipe(popen(cmd, <span class="stringliteral">&quot;r&quot;</span>), pclose);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">if</span> (!pipe) { <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;error: popen() failed!&quot;</span>); }</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordflow">while</span> (fgets(buffer.data(), buffer.size(), pipe.get()) != <span class="keyword">nullptr</span>) { result += buffer.data(); }</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="main_8cpp.html#a840ade622930dc79f2ea15e89f7f4900">   40</a></span><span class="keyword">static</span> std::string <a class="code hl_function" href="main_8cpp.html#a840ade622930dc79f2ea15e89f7f4900">get_clang_from_path</a>() {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    std::string clang;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#ifndef _WIN32</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    clang = <a class="code hl_function" href="main_8cpp.html#aac3055347c401cb1bc312d49ab4b5e9c">exec</a>(<span class="stringliteral">&quot;which clang&quot;</span>);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    clang = <a class="code hl_function" href="main_8cpp.html#aac3055347c401cb1bc312d49ab4b5e9c">exec</a>(<span class="stringliteral">&quot;where clang&quot;</span>);</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    clang.erase(std::remove(clang.begin(), clang.end(), <span class="charliteral">&#39;\n&#39;</span>), clang.end());</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">return</span> clang;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">   51</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        std::string input, prefix;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        std::string clang     = <a class="code hl_function" href="main_8cpp.html#a840ade622930dc79f2ea15e89f7f4900">get_clang_from_path</a>();</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        std::string log_level = <span class="stringliteral">&quot;error&quot;</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="keywordtype">bool</span> emit_ll     = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="keywordtype">bool</span> emit_md     = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keywordtype">bool</span> emit_dot    = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordtype">bool</span> emit_thorin = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keywordtype">bool</span> show_help   = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        std::vector&lt;std::string&gt; dialects, dialect_paths, emitters;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        std::vector&lt;size_t&gt; breakpoints;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        <span class="keyword">auto</span> print_version = [](<a class="code hl_class" href="namespace_3globalScope_4.html#classbool">bool</a>) {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>            std::cerr &lt;&lt; <a class="code hl_variable" href="main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec">version</a>;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>            std::exit(EXIT_SUCCESS);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        };</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* Levels   = <span class="stringliteral">&quot;error|warn|info|verbose|debug&quot;</span>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">const</span> <span class="keywordtype">char</span>* Backends = <span class="stringliteral">&quot;thorin|md|ll|dot&quot;</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keyword">auto</span> cli = lyra::cli()</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            | lyra::help(show_help)</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            | lyra::opt(print_version            )[<span class="stringliteral">&quot;-v&quot;</span>][<span class="stringliteral">&quot;--version&quot;</span>     ](<span class="stringliteral">&quot;display version info and exit&quot;</span>)</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            | lyra::opt(clang,         <span class="stringliteral">&quot;clang&quot;</span>   )[<span class="stringliteral">&quot;-c&quot;</span>][<span class="stringliteral">&quot;--clang&quot;</span>       ](<span class="stringliteral">&quot;path to clang executable (default: &quot;</span> + clang + <span class="stringliteral">&quot;)&quot;</span>)</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>            | lyra::opt(dialects,      <span class="stringliteral">&quot;dialect&quot;</span> )[<span class="stringliteral">&quot;-d&quot;</span>][<span class="stringliteral">&quot;--dialect&quot;</span>     ](<span class="stringliteral">&quot;dynamically load dialect [WIP]&quot;</span>)</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            | lyra::opt(dialect_paths, <span class="stringliteral">&quot;path&quot;</span>    )[<span class="stringliteral">&quot;-D&quot;</span>][<span class="stringliteral">&quot;--dialect-path&quot;</span>](<span class="stringliteral">&quot;path to search dialects in&quot;</span>)</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            | lyra::opt(emitters,      Backends  )[<span class="stringliteral">&quot;-e&quot;</span>][<span class="stringliteral">&quot;--emit&quot;</span>        ](<span class="stringliteral">&quot;select emitter&quot;</span>).choices(<span class="stringliteral">&quot;thorin&quot;</span>, <span class="stringliteral">&quot;md&quot;</span>, <span class="stringliteral">&quot;ll&quot;</span>, <span class="stringliteral">&quot;dot&quot;</span>)</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            | lyra::opt(log_level,     Levels    )      [<span class="stringliteral">&quot;--log-level&quot;</span>   ](<span class="stringliteral">&quot;set log level&quot;</span> ).choices(<span class="stringliteral">&quot;error&quot;</span>, <span class="stringliteral">&quot;warn&quot;</span>, <span class="stringliteral">&quot;info&quot;</span>, <span class="stringliteral">&quot;verbose&quot;</span>, <span class="stringliteral">&quot;debug&quot;</span>)</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            | lyra::opt(breakpoints,   <span class="stringliteral">&quot;gid&quot;</span>     )[<span class="stringliteral">&quot;-b&quot;</span>][<span class="stringliteral">&quot;--break&quot;</span>       ](<span class="stringliteral">&quot;trigger break-point upon construction of node with global id &lt;gid&gt;&quot;</span>)</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>#endif</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            | lyra::opt(prefix,        <span class="stringliteral">&quot;prefix&quot;</span>  )[<span class="stringliteral">&quot;-o&quot;</span>][<span class="stringliteral">&quot;--output&quot;</span>      ](<span class="stringliteral">&quot;prefix used for various output files&quot;</span>)</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            | lyra::arg(input, <span class="stringliteral">&quot;input file&quot;</span>)(<span class="stringliteral">&quot;input file; use &#39;-&#39; to read from stdin&quot;</span>);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> result = cli.parse({argc, argv}); !result) <span class="keywordflow">throw</span> std::invalid_argument(result.message());</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; <a class="code hl_enumvalue" href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">e</a> : emitters) {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>            <span class="keywordflow">if</span> (<span class="keyword">false</span>) {}</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">e</a> == <span class="stringliteral">&quot;thorin&quot;</span>) emit_thorin = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">e</a> == <span class="stringliteral">&quot;ll&quot;</span>)     emit_ll     = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">e</a> == <span class="stringliteral">&quot;md&quot;</span>)     emit_md     = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (<a class="code hl_enumvalue" href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">e</a> == <span class="stringliteral">&quot;dot&quot;</span>)    emit_dot    = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordflow">else</span> <a class="code hl_function" href="namespacethorin.html#ae28200e453f278e083c9350e8dbeda0d">unreachable</a>();</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        }</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        <span class="comment">// clang-format on</span></div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keywordflow">if</span> (show_help) std::cerr &lt;&lt; cli &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span>;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">if</span> (!dialects.empty()) {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; dialect : dialects) <a class="code hl_function" href="dialects_8cpp.html#a1ed6fc404fb6d7a9d8f18fd8b2c181a5">test_plugin</a>(dialect, dialect_paths);</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        }</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keywordflow">if</span> (input.empty()) <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;error: no input input given&quot;</span>);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keywordflow">if</span> (prefix.empty()) {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keyword">auto</span> i = input.rfind(<span class="charliteral">&#39;.&#39;</span>);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            <span class="keywordflow">if</span> (i == std::string::npos) <span class="keywordflow">throw</span> std::invalid_argument(<span class="stringliteral">&quot;error: cannot derive prefix for output files&quot;</span>);</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            prefix = input.substr(0, i);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        }</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <a class="code hl_class" href="classthorin_1_1World.html">World</a> world;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        world.<a class="code hl_function" href="classthorin_1_1World.html#a99b349bd13f2e0855ecda7e5a3e12276">set_log_stream</a>(std::make_shared&lt;thorin::Stream&gt;(std::cerr));</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        world.<a class="code hl_function" href="classthorin_1_1World.html#ac587196bdd46779161226a2ba9084e0d">set_log_level</a>(log_level);</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#ifndef NDEBUG</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> <a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">b</a> : breakpoints) world.<a class="code hl_function" href="classthorin_1_1World.html#af3f8df5247a26f483260eb5a96d3870a">breakpoint</a>(<a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">b</a>);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        std::ifstream ifs;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        std::istream* pis = &amp;ifs;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">if</span> (input == <span class="stringliteral">&quot;-&quot;</span>) {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            input = <span class="stringliteral">&quot;&lt;stdin&gt;&quot;</span>;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>            pis   = &amp;std::cin;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            ifs.open(input);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <span class="keywordflow">if</span> (!ifs) {</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                <a class="code hl_function" href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">errln</a>(<span class="stringliteral">&quot;error: cannot read file &#39;{}&#39;&quot;</span>, input);</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>                <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>            }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        }</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        std::ofstream ofs;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="keywordflow">if</span> (emit_md) ofs.open(prefix + <span class="stringliteral">&quot;.md&quot;</span>);</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <a class="code hl_class" href="classthorin_1_1Parser.html">Parser</a> parser(world, input, *pis, emit_md ? &amp;ofs : <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        parser.<a class="code hl_function" href="classthorin_1_1Parser.html#ad456197984ae5995361c73fb5574ce27">parse_module</a>();</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        <span class="keywordflow">if</span> (emit_thorin) world.<a class="code hl_function" href="classthorin_1_1Streamable.html#a0f2459fdabbc821751a8e82dd5313119">dump</a>();</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        <span class="keywordflow">if</span> (emit_dot) {</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            std::ofstream of(prefix + <span class="stringliteral">&quot;.dot&quot;</span>);</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            <a class="code hl_class" href="classthorin_1_1Stream.html">Stream</a> s(of);</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>            <a class="code hl_function" href="namespacethorin_1_1dot.html#aaf1b7a7efc602d66cfa4fa381334f63b">dot::emit</a>(world, s);</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        }</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="keywordflow">if</span> (emit_ll) {</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            std::ofstream of(prefix + <span class="stringliteral">&quot;.ll&quot;</span>);</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>            <a class="code hl_class" href="classthorin_1_1Stream.html">Stream</a> s(of);</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>            <a class="code hl_function" href="namespacethorin_1_1dot.html#aaf1b7a7efc602d66cfa4fa381334f63b">ll::emit</a>(world, s);</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        }</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <a class="code hl_function" href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">errln</a>(<span class="stringliteral">&quot;{}&quot;</span>, <a class="code hl_enumvalue" href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">e</a>.what());</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    } <span class="keywordflow">catch</span> (...) {</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        <a class="code hl_function" href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">errln</a>(<span class="stringliteral">&quot;error: unknown exception&quot;</span>);</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        <span class="keywordflow">return</span> EXIT_FAILURE;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    }</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    <span class="keywordflow">return</span> EXIT_SUCCESS;</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>}</div>
 <div class="ttc" id="aclassthorin_1_1Parser_html"><div class="ttname"><a href="classthorin_1_1Parser.html">thorin::Parser</a></div><div class="ttdoc">Parses Thorin code into the provided World.</div><div class="ttdef"><b>Definition:</b> <a href="parser_8h_source.html#l00026">parser.h:26</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Parser_html_ad456197984ae5995361c73fb5574ce27"><div class="ttname"><a href="classthorin_1_1Parser.html#ad456197984ae5995361c73fb5574ce27">thorin::Parser::parse_module</a></div><div class="ttdeci">void parse_module()</div><div class="ttdef"><b>Definition:</b> <a href="parser_8cpp_source.html#l00043">parser.cpp:43</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Parser_html_ad456197984ae5995361c73fb5574ce27"><div class="ttname"><a href="classthorin_1_1Parser.html#ad456197984ae5995361c73fb5574ce27">thorin::Parser::parse_module</a></div><div class="ttdeci">void parse_module()</div><div class="ttdef"><b>Definition:</b> <a href="parser_8cpp_source.html#l00039">parser.cpp:39</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Stream_html"><div class="ttname"><a href="classthorin_1_1Stream.html">thorin::Stream</a></div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00018">stream.h:18</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Streamable_html_a0f2459fdabbc821751a8e82dd5313119"><div class="ttname"><a href="classthorin_1_1Streamable.html#a0f2459fdabbc821751a8e82dd5313119">thorin::Streamable::dump</a></div><div class="ttdeci">void dump() const</div><div class="ttdoc">Writes to stdout.</div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00153">stream.h:153</a></div></div>
 <div class="ttc" id="aclassthorin_1_1World_html"><div class="ttname"><a href="classthorin_1_1World.html">thorin::World</a></div><div class="ttdoc">The World represents the whole program and manages creation of Thorin nodes (Defs).</div><div class="ttdef"><b>Definition:</b> <a href="world_8h_source.html#l00037">world.h:37</a></div></div>
+<div class="ttc" id="aclassthorin_1_1World_html_a99b349bd13f2e0855ecda7e5a3e12276"><div class="ttname"><a href="classthorin_1_1World.html#a99b349bd13f2e0855ecda7e5a3e12276">thorin::World::set_log_stream</a></div><div class="ttdeci">void set_log_stream(std::shared_ptr&lt; Stream &gt; stream)</div><div class="ttdef"><b>Definition:</b> <a href="world_8h_source.html#l00563">world.h:563</a></div></div>
+<div class="ttc" id="aclassthorin_1_1World_html_ac587196bdd46779161226a2ba9084e0d"><div class="ttname"><a href="classthorin_1_1World.html#ac587196bdd46779161226a2ba9084e0d">thorin::World::set_log_level</a></div><div class="ttdeci">void set_log_level(LogLevel min_level)</div><div class="ttdef"><b>Definition:</b> <a href="world_8h_source.html#l00561">world.h:561</a></div></div>
+<div class="ttc" id="aclassthorin_1_1World_html_af3f8df5247a26f483260eb5a96d3870a"><div class="ttname"><a href="classthorin_1_1World.html#af3f8df5247a26f483260eb5a96d3870a">thorin::World::breakpoint</a></div><div class="ttdeci">void breakpoint(size_t number)</div><div class="ttdef"><b>Definition:</b> <a href="world_8cpp_source.html#l00666">world.cpp:666</a></div></div>
 <div class="ttc" id="adialects_8cpp_html_a1ed6fc404fb6d7a9d8f18fd8b2c181a5"><div class="ttname"><a href="dialects_8cpp.html#a1ed6fc404fb6d7a9d8f18fd8b2c181a5">test_plugin</a></div><div class="ttdeci">void test_plugin(const std::string &amp;name, const std::vector&lt; std::string &gt; &amp;search_paths)</div><div class="ttdef"><b>Definition:</b> <a href="dialects_8cpp_source.html#l00153">dialects.cpp:153</a></div></div>
 <div class="ttc" id="adialects_8h_html"><div class="ttname"><a href="dialects_8h.html">dialects.h</a></div></div>
+<div class="ttc" id="adot_8h_html"><div class="ttname"><a href="dot_8h.html">dot.h</a></div></div>
 <div class="ttc" id="all_8h_html"><div class="ttname"><a href="ll_8h.html">ll.h</a></div></div>
-<div class="ttc" id="amain_8cpp_html_a058be9232928fb1f2def6a06b3d87aec"><div class="ttname"><a href="main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec">version</a></div><div class="ttdeci">static const auto version</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00026">main.cpp:26</a></div></div>
-<div class="ttc" id="amain_8cpp_html_a17946612b4a9cd40393b605b8c36e6fc"><div class="ttname"><a href="main_8cpp.html#a17946612b4a9cd40393b605b8c36e6fc">get_clang_from_path</a></div><div class="ttdeci">std::string get_clang_from_path()</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00038">main.cpp:38</a></div></div>
-<div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00049">main.cpp:49</a></div></div>
-<div class="ttc" id="amain_8cpp_html_a43b669bccb8bce8ea862a58a9dc116bd"><div class="ttname"><a href="main_8cpp.html#a43b669bccb8bce8ea862a58a9dc116bd">exec</a></div><div class="ttdeci">std::string exec(const char *cmd)</div><div class="ttdoc">see https://stackoverflow.com/a/478960</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00029">main.cpp:29</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a058be9232928fb1f2def6a06b3d87aec"><div class="ttname"><a href="main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec">version</a></div><div class="ttdeci">static const auto version</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00028">main.cpp:28</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a3c04138a5bfe5d72780bb7e82a18e627"><div class="ttname"><a href="main_8cpp.html#a3c04138a5bfe5d72780bb7e82a18e627">main</a></div><div class="ttdeci">int main(int argc, char **argv)</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00051">main.cpp:51</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a840ade622930dc79f2ea15e89f7f4900"><div class="ttname"><a href="main_8cpp.html#a840ade622930dc79f2ea15e89f7f4900">get_clang_from_path</a></div><div class="ttdeci">static std::string get_clang_from_path()</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00040">main.cpp:40</a></div></div>
+<div class="ttc" id="amain_8cpp_html_aac3055347c401cb1bc312d49ab4b5e9c"><div class="ttname"><a href="main_8cpp.html#aac3055347c401cb1bc312d49ab4b5e9c">exec</a></div><div class="ttdeci">static std::string exec(const char *cmd)</div><div class="ttdoc">see https://stackoverflow.com/a/478960</div><div class="ttdef"><b>Definition:</b> <a href="main_8cpp_source.html#l00031">main.cpp:31</a></div></div>
 <div class="ttc" id="anamespace_3globalScope_4_html_classbool"><div class="ttname"><a href="namespace_3globalScope_4.html#classbool">bool</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1dot_html_aaf1b7a7efc602d66cfa4fa381334f63b"><div class="ttname"><a href="namespacethorin_1_1dot.html#aaf1b7a7efc602d66cfa4fa381334f63b">thorin::dot::emit</a></div><div class="ttdeci">void emit(World &amp;w, Stream &amp;s, std::function&lt; void(Stream &amp;, const Def *)&gt; stream_def)</div><div class="ttdef"><b>Definition:</b> <a href="dot_8cpp_source.html#l00043">dot.cpp:43</a></div></div>
 <div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition:</b> <a href="cfg_8cpp_source.html#l00014">cfg.cpp:14</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a4e16c91a75c7486cd36fa99ef4b3f018"><div class="ttname"><a href="namespacethorin.html#a4e16c91a75c7486cd36fa99ef4b3f018">thorin::errln</a></div><div class="ttdeci">auto errln(const char *fmt, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="stream_8h_source.html#l00136">stream.h:136</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f"><div class="ttname"><a href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">thorin::Bit::b</a></div><div class="ttdeci">@ b</div></div>
+<div class="ttc" id="anamespacethorin_html_ae28200e453f278e083c9350e8dbeda0d"><div class="ttname"><a href="namespacethorin.html#ae28200e453f278e083c9350e8dbeda0d">thorin::unreachable</a></div><div class="ttdeci">void unreachable(const char *s)</div><div class="ttdef"><b>Definition:</b> <a href="assert_8h_source.html#l00022">assert.h:22</a></div></div>
 <div class="ttc" id="anamespacethorin_html_aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32"><div class="ttname"><a href="namespacethorin.html#aec7c9c368dda260071936391c37a72e3ae1671797c52e15f763380b45e841ec32">thorin::ICmp::e</a></div><div class="ttdeci">@ e</div></div>
 <div class="ttc" id="aparser_8h_html"><div class="ttname"><a href="parser_8h.html">parser.h</a></div></div>
 <div class="ttc" id="apass_8h_html"><div class="ttname"><a href="pass_8h.html">pass.h</a></div></div>

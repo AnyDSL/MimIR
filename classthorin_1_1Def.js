@@ -20,6 +20,7 @@ var classthorin_1_1Def =
     [ "extended_ops", "classthorin_1_1Def.html#a543cbdcb17d574373aa65244dcead8f8", null ],
     [ "fields", "classthorin_1_1Def.html#afa52329b52c3ad9bddc13df8a77d68a1", null ],
     [ "finalize", "classthorin_1_1Def.html#a3717421752dcb88f0c58773c85c09fa7", null ],
+    [ "first_dependend_op", "classthorin_1_1Def.html#a14950247501c4664c25556f82d732e1e", null ],
     [ "gid", "classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb", null ],
     [ "has_dep", "classthorin_1_1Def.html#aab761545cca86c2cb9835e7a94649907", null ],
     [ "has_var", "classthorin_1_1Def.html#acf2d9b7a9181faa538aad4c0237f6f36", null ],

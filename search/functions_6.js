@@ -2,7 +2,7 @@ var searchData=
 [
   ['get_0',['get',['../classthorin_1_1Lit.html#abf185284f04c1b1aba69cc7e02c8e1ae',1,'thorin::Lit::get()'],['../classthorin_1_1Bound.html#a678ea9bfe29f48a6a891eafb5f8da722',1,'thorin::Bound::get()'],['../classthorin_1_1Axiom.html#acbd0e670843d77165d24ce1f6583d35c',1,'thorin::Axiom::get()'],['../namespacethorin.html#a2ab8d8623a2a2fb97412cf4b05d18811',1,'thorin::get()']]],
   ['get_5fback_1',['get_back',['../classthorin_1_1ArrayRef.html#a123232f34db5f7d09b56e7609e08aaa9',1,'thorin::ArrayRef::get_back()'],['../classthorin_1_1Array.html#ae7613d729573d17e2049bbc7a2951aee',1,'thorin::Array::get_back()']]],
-  ['get_5fclang_5ffrom_5fpath_2',['get_clang_from_path',['../main_8cpp.html#a17946612b4a9cd40393b605b8c36e6fc',1,'main.cpp']]],
+  ['get_5fclang_5ffrom_5fpath_2',['get_clang_from_path',['../main_8cpp.html#a840ade622930dc79f2ea15e89f7f4900',1,'main.cpp']]],
   ['get_5ffront_3',['get_front',['../classthorin_1_1ArrayRef.html#a4752647bdfc52b5eda127a7a8aff6db8',1,'thorin::ArrayRef::get_front()'],['../classthorin_1_1Array.html#a1be996ebda89c350c042756cd47acd23',1,'thorin::Array::get_front()']]],
   ['get_5fplugin_5fname_5fvariants_4',['get_plugin_name_variants',['../dialects_8cpp.html#ae47e9678a4537e6ea76948a7f35d55c2',1,'dialects.cpp']]],
   ['get_5fplugin_5fsearch_5fpaths_5',['get_plugin_search_paths',['../dialects_8cpp.html#af3668117dc7b04d7290c06246dee26c5',1,'dialects.cpp']]],

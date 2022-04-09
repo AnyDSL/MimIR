@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['offset_0',['offset',['../structthorin_1_1FNV1.html#a5f45f7a10a2980f0d2171e79aabf7b8a',1,'thorin::FNV1']]],
-  ['old2new_1',['old2new',['../classthorin_1_1Rewriter.html#a43763f4b1da4026338efabd1c0ef9be2',1,'thorin::Rewriter']]],
-  ['old_5fworld_2',['old_world',['../classthorin_1_1Rewriter.html#a30f487c4537a940ff672c5f3cbab7f8d',1,'thorin::Rewriter']]],
-  ['ostream_5f_3',['ostream_',['../classthorin_1_1Stream.html#aed54130070b1aed20fc0f50ea767d154',1,'thorin::Stream']]]
+  ['max_0',['max',['../classthorin_1_1RecStreamer.html#a4f162bed6c5484fe03e4223092d9def0',1,'thorin::RecStreamer']]],
+  ['max_1',['Max',['../namespacethorin_1_1utf8.html#a25bc821db221db9aad00c895e937c9bb',1,'thorin::utf8']]],
+  ['max_5fdialect_5fsize_2',['Max_Dialect_Size',['../classthorin_1_1Axiom.html#a939bf893516cb849960e09442f2edb7f',1,'thorin::Axiom']]],
+  ['meta_3',['meta',['../classthorin_1_1Debug.html#a1a2381046065095c09048cb961c3a169',1,'thorin::Debug']]]
 ];

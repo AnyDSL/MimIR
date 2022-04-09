@@ -110,20 +110,18 @@ $(document).ready(function(){initNavTree('debug_8h.html',''); initResizable(); }
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;string&gt;</code><br />
-<code>#include &lt;tuple&gt;</code><br />
 <code>#include &lt;absl/container/flat_hash_map.h&gt;</code><br />
 <code>#include &lt;absl/container/flat_hash_set.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="stream_8h_source.html">thorin/util/stream.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for debug.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="debug_8h__incl.svg" width="875" height="276"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="debug_8h__incl.svg" width="362" height="127"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="debug_8h__dep__incl.svg" width="4068" height="544"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="debug_8h__dep__incl.svg" width="3899" height="544"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -135,13 +133,11 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Debug.html">thorin::Debug</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sym.html">thorin::Sym</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1SymHash.html">thorin::SymHash</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1SymEq.html">thorin::SymEq</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Debug.html">thorin::Debug</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
@@ -151,11 +147,11 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ac6c83ff26c54719de4466900fd016c6e"><td class="memTemplParams" colspan="2">template&lt;class Val &gt; </td></tr>
-<tr class="memitem:ac6c83ff26c54719de4466900fd016c6e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ac6c83ff26c54719de4466900fd016c6e">thorin::SymMap</a> = absl::flat_hash_map&lt; Sym, Val, SymHash, SymEq &gt;</td></tr>
-<tr class="separator:ac6c83ff26c54719de4466900fd016c6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6833c83dc97a46b82490af26f9d532c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae6833c83dc97a46b82490af26f9d532c">thorin::SymSet</a> = absl::flat_hash_set&lt; Sym, SymHash, SymEq &gt;</td></tr>
-<tr class="separator:ae6833c83dc97a46b82490af26f9d532c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3368507549c1c606d305c18939d17943"><td class="memTemplParams" colspan="2">template&lt;class Val &gt; </td></tr>
+<tr class="memitem:a3368507549c1c606d305c18939d17943"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a3368507549c1c606d305c18939d17943">thorin::SymMap</a> = absl::flat_hash_map&lt; Sym, Val, SymHash &gt;</td></tr>
+<tr class="separator:a3368507549c1c606d305c18939d17943"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae26bd525ba720c363612327d2d927c72"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae26bd525ba720c363612327d2d927c72">thorin::SymSet</a> = absl::flat_hash_set&lt; Sym, SymHash &gt;</td></tr>
+<tr class="separator:ae26bd525ba720c363612327d2d927c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -163,6 +159,12 @@ Functions</h2></td></tr>
 <tr class="separator:a5207b75bc2b0b46621df4adabaa55f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac61d02cc44f6d51285905bd3ff39c069"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ac61d02cc44f6d51285905bd3ff39c069">thorin::operator==</a> (Loc l1, Loc l2)</td></tr>
 <tr class="separator:ac61d02cc44f6d51285905bd3ff39c069"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49109a7ac6192579b86068a0ed22206e"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a49109a7ac6192579b86068a0ed22206e">thorin::operator&lt;&lt;</a> (std::ostream &amp;os, const Pos pos)</td></tr>
+<tr class="separator:a49109a7ac6192579b86068a0ed22206e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d63c0df0c916ee9469f630edccd6984"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a8d63c0df0c916ee9469f630edccd6984">thorin::operator&lt;&lt;</a> (std::ostream &amp;os, const Loc loc)</td></tr>
+<tr class="separator:a8d63c0df0c916ee9469f630edccd6984"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4941c3b3c1510b2577c5c063df622ea8"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a4941c3b3c1510b2577c5c063df622ea8">thorin::operator&lt;&lt;</a> (std::ostream &amp;os, const Sym sym)</td></tr>
+<tr class="separator:a4941c3b3c1510b2577c5c063df622ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

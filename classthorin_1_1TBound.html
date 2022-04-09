@@ -297,6 +297,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6e4f7e30889bb5fdda61f235a5e40b9 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aa6e4f7e30889bb5fdda61f235a5e40b9">reduce_rec</a> () const</td></tr>
 <tr class="memdesc:aa6e4f7e30889bb5fdda61f235a5e40b9 inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively <a class="el" href="classthorin_1_1Def.html#a161ef8f8df446d49f85f94844a118aa2">Def::reduce</a> <a class="el" href="classthorin_1_1Lam.html">Lam</a>s, if <code>this</code> is an <a class="el" href="classthorin_1_1App.html">App</a>.  <a href="classthorin_1_1Def.html#aa6e4f7e30889bb5fdda61f235a5e40b9">More...</a><br /></td></tr>
 <tr class="separator:aa6e4f7e30889bb5fdda61f235a5e40b9 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14950247501c4664c25556f82d732e1e inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a14950247501c4664c25556f82d732e1e">first_dependend_op</a> ()</td></tr>
+<tr class="separator:a14950247501c4664c25556f82d732e1e inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a21a604f6ac783871af333a53b5520303 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a21a604f6ac783871af333a53b5520303">refine</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i, const <a class="el" href="classthorin_1_1Def.html">Def</a> *new_op) const</td></tr>
 <tr class="memdesc:a21a604f6ac783871af333a53b5520303 inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Def.html#a894b8738ff236f12a06b113777877d7f">Def::rebuild</a>s this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> while using <code>new_op</code> as substitute for its <code>i'th</code> <a class="el" href="classthorin_1_1Def.html#a894a90e599eaaf5e48ee2f2431585b2c">Def::op</a>.  <a href="classthorin_1_1Def.html#a21a604f6ac783871af333a53b5520303">More...</a><br /></td></tr>
 <tr class="separator:a21a604f6ac783871af333a53b5520303 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -342,7 +344,7 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a63f7ae5da182d72d0469d6614eeb7d51"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1TBound.html#a63f7ae5da182d72d0469d6614eeb7d51">Node</a> = up ? <a class="el" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0ac41543bb0ee7c88b2ca13e9f72de28dc">Node::Join</a> : <a class="el" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a1176c238713240939d0ce7767f2c83fd">Node::Meet</a></td></tr>
+<tr class="memitem:a63f7ae5da182d72d0469d6614eeb7d51"><td class="memItemLeft" align="right" valign="top">static constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1TBound.html#a63f7ae5da182d72d0469d6614eeb7d51">Node</a> = up ? <a class="el" href="namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253ac41543bb0ee7c88b2ca13e9f72de28dc">Node::Join</a> : <a class="el" href="namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a1176c238713240939d0ce7767f2c83fd">Node::Meet</a></td></tr>
 <tr class="separator:a63f7ae5da182d72d0469d6614eeb7d51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
@@ -424,8 +426,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> up&gt;<br />
 class thorin::TBound&lt; up &gt;</div><p >Specific <a href="https://en.wikipedia.org/wiki/Join_and_meet">Bound</a> depending on <code>up</code>. </p>
 <p >The name <code>up</code> refers to the property that a Join <b>ascends</b> in the underlying <a href="https://en.wikipedia.org/wiki/Lattice_(order)">lattice</a>:</p><ul>
-<li>@up = <code>true</code>: Join (aka least upper bound/supremum/union)</li>
-<li>@up = <code>false</code>: Meet (aka geratest lower bound/infimum/intersection) </li>
+<li><code>up</code> = <code>true</code>: Join (aka least upper bound/supremum/union)</li>
+<li><code>up</code> = <code>false</code>: Meet (aka geratest lower bound/infimum/intersection) </li>
 </ul>
 
 <p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00034">34</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
@@ -449,7 +451,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="lattice_8cpp_source.html#l00020">20</a> of file <a class="el" href="lattice_8cpp_source.html">lattice.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="namespacethorin.html#a252c586d22f57e1aaff3b53a3634bfb2af792d1afb0399dce47533bead9d71a8a">thorin::align</a>, <a class="el" href="def_8h_source.html#l00508">thorin::isa_lit()</a>, and <a class="el" href="namespacethorin.html#a252c586d22f57e1aaff3b53a3634bfb2af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="namespacethorin.html#a252c586d22f57e1aaff3b53a3634bfb2af792d1afb0399dce47533bead9d71a8a">thorin::align</a>, <a class="el" href="def_8h_source.html#l00509">thorin::isa_lit()</a>, and <a class="el" href="namespacethorin.html#a252c586d22f57e1aaff3b53a3634bfb2af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>.</p>
 
 </div>
 </div>
@@ -553,9 +555,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p>Reimplemented from <a class="el" href="classthorin_1_1Def.html#a88360b7240d92f32c6be01e52123bd0d">thorin::Def</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00109">109</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00110">110</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00318">thorin::World::nom_bound()</a>, and <a class="el" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55acceae358efa489f58062f10dd7316b65649e">thorin::t</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00320">thorin::World::nom_bound()</a>, and <a class="el" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55acceae358efa489f58062f10dd7316b65649e">thorin::t</a>.</p>
 
 </div>
 </div>
@@ -599,7 +601,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto <a class="el" href="classthorin_1_1TBound.html">thorin::TBound</a>&lt; up &gt;::Node = up ? <a class="el" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0ac41543bb0ee7c88b2ca13e9f72de28dc">Node::Join</a> : <a class="el" href="namespacethorin_1_1Node.html#a6a87d766b1a71f8904a23bb3c792c3c0a1176c238713240939d0ce7767f2c83fd">Node::Meet</a></td>
+          <td class="memname">constexpr auto <a class="el" href="classthorin_1_1TBound.html">thorin::TBound</a>&lt; up &gt;::Node = up ? <a class="el" href="namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253ac41543bb0ee7c88b2ca13e9f72de28dc">Node::Join</a> : <a class="el" href="namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a1176c238713240939d0ce7767f2c83fd">Node::Meet</a></td>
         </tr>
       </table>
   </td>

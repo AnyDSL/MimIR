@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['var_5f_0',['var_',['../classthorin_1_1Def.html#a2b6c0b12aef635dd84112af27d9ecb08',1,'thorin::Def']]],
-  ['version_1',['version',['../main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec',1,'main.cpp']]]
+  ['tab_5f_0',['tab_',['../classthorin_1_1Stream.html#a0508a63eff37f45630b17e5ac0e7e775',1,'thorin::Stream']]],
+  ['types_5f_1',['types_',['../classthorin_1_1Emitter.html#a26b70a223d3a2b08c3a236ef32743d1a',1,'thorin::Emitter']]]
 ];
