@@ -15,6 +15,7 @@ class World;
 
 class Lexer : public utf8::Lexer<3> {
     using Super = utf8::Lexer<3>;
+
 public:
     /// Creates a lexer to read Thorin files (see #lex).
     /// If @p ostream is not `nullptr`, a Markdown output will be generated.

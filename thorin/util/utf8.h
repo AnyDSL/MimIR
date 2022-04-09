@@ -39,7 +39,7 @@ class Lexer {
 public:
     Lexer(std::string_view filename, std::istream& istream)
         : istream_(istream)
-        , loc_(filename, {0,  0}) {
+        , loc_(filename, {0, 0}) {
         ahead_.back().pos = {1, 0};
         for (size_t i = 0; i != Max_Ahead; ++i) next();
         accept(BOM); // eat utf-8 BOM if present
@@ -65,11 +65,11 @@ protected:
 
     virtual Ahead next() {
         auto result = ahead();
-        auto prev = ahead_.back().pos;
+        auto prev   = ahead_.back().pos;
 
         for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead_[i] = ahead_[i + 1];
         auto& back = ahead_.back();
-        back.pos = prev;
+        back.pos   = prev;
 
         if (auto opt = utf8::encode(istream_)) {
             back.c32 = *opt;
