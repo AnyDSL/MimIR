@@ -1,4 +1,5 @@
 #include "thorin/util/utf8.h"
+
 #include "thorin/util/assert.h"
 
 namespace thorin::utf8 {
@@ -27,7 +28,7 @@ std::array<char, 5> decode(char32_t c32) {
 }
 
 std::optional<char32_t> Reader::encode() {
-    char32_t result  = istream_.get();
+    char32_t result = istream_.get();
     if (result == (char32_t)std::istream::traits_type::eof()) return result;
 
     switch (auto n = utf8::num_bytes(result)) {
@@ -47,4 +48,4 @@ std::optional<char32_t> Reader::encode() {
     return result;
 }
 
-}
+} // namespace thorin::utf8

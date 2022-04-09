@@ -124,7 +124,7 @@ int main(int argc, char** argv) {
 
         if (input == "-") {
             input = "<stdin>";
-            pis = &std::cin;
+            pis   = &std::cin;
         } else {
             ifs.open(input);
             if (!ifs) {

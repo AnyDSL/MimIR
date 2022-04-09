@@ -4,8 +4,7 @@ namespace thorin {
 
 MDConverter::MDConverter(std::istream& istream, std::ostream& ostream)
     : utf8::Reader(istream)
-    , ostream_(ostream)
-{
+    , ostream_(ostream) {
     for (size_t i = 0; i != Max_Ahead; ++i) next();
 }
 
@@ -45,4 +44,4 @@ void MDConverter::run() {
     }
 }
 
-}
+} // namespace thorin

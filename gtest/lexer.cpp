@@ -143,8 +143,7 @@ TEST(Lexer, utf8) {
     as[4] = utf8::decode(U'𐀮');
 
     std::string s;
-    for (const auto& a : as)
-        std::copy(a.begin(), std::find(a.begin(), a.end(), '\0'), std::back_inserter(s));
+    for (const auto& a : as) std::copy(a.begin(), std::find(a.begin(), a.end(), '\0'), std::back_inserter(s));
 
     EXPECT_EQ(s, "a£λ𐄂𐀮");
 }

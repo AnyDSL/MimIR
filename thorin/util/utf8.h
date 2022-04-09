@@ -2,14 +2,14 @@
 #define THORIN_UTIL_UTF8_H
 
 #include <array>
-#include <optional>
 #include <istream>
+#include <optional>
 
 #include "thorin/util/types.h"
 
 namespace thorin::utf8 {
 
-static constexpr size_t Max = 4;
+static constexpr size_t Max   = 4;
 static constexpr char32_t BOM = 0xfeff;
 
 /// Returns the expected number of bytes for an utf8 char sequence by inspecting the first byte.
@@ -40,6 +40,6 @@ protected:
     std::istream& istream_;
 };
 
-}
+} // namespace thorin::utf8
 
 #endif
