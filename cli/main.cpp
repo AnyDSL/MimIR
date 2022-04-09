@@ -8,7 +8,6 @@
 #include "thorin/config.h"
 
 #include "cli/dialects.h"
-#include "cli/md_converter.h"
 #include "thorin/be/dot/dot.h"
 #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"

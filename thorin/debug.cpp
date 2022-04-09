@@ -33,20 +33,9 @@ std::ostream& operator<<(std::ostream& os, const Pos pos) { return os << pos.row
 std::ostream& operator<<(std::ostream& os, const Sym sym) { return os << tuple2str(sym.def()); }
 
 std::ostream& operator<<(std::ostream& os, const Loc loc) {
-    os << loc.file << ':';
-
-    if (loc.begin.col == u32(-1) || loc.finis.col == u32(-1)) {
-        if (loc.begin.row != loc.finis.row)
-            return os << loc.begin.row << '_' << loc.finis.row;
-        else
-            return os << loc.begin.row;
-    } else if (loc.begin.row != loc.finis.row) {
-        return os << loc.begin << '-' << loc.finis;
-    } else if (loc.begin.col != loc.finis.col) {
-        return os << loc.begin << '-' << loc.finis.col;
-    } else {
-        return os << loc.begin;
-    }
+    os << loc.file << ':' << loc.begin;
+    if (loc.begin != loc.finis) os << '-' << loc.finis;
+    return os;
 }
 
 std::string Sym::to_string() const { return tuple2str(def()); }

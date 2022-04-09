@@ -10,14 +10,9 @@ static bool issign(char32_t i) { return i == '+' || i == '-'; }
 static bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
 
 Lexer::Lexer(World& world, std::string_view filename, std::istream& istream, std::ostream* ostream /*= nullptr*/)
-    : world_(world)
-    , loc_{filename, {1, 1}, {1, 1}}
-    , istream_(istream)
-    , ostream_(ostream)
-    , peek_({0, Pos(1, 0)}) {
-    next();            // fill peek
-    accept(utf8::BOM); // eat utf-8 BOM if present
-
+    : Super(filename, istream)
+    , world_(world)
+    , ostream_(ostream) {
 #define CODE(t, str) keywords_[str] = Tok::Tag::t;
     THORIN_KEY(CODE)
 #undef CODE
@@ -26,33 +21,23 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& istream, std
     if (Tok::Tag::t != Tok::Tag::Nil) keywords_[str] = Tok::Tag::t;
     THORIN_SUBST(CODE)
 #undef CODE
-}
 
-void Lexer::next() {
-    if (auto opt = utf8::encode(istream_)) {
-        peek_.c32  = *opt;
-        loc_.finis = peek_.pos;
-        if (eof()) return;
-
-        if (peek_.c32 == '\n') {
-            ++peek_.pos.row;
-            peek_.pos.col = 0;
-        } else {
-            ++peek_.pos.col;
-        }
-    } else {
-        ++peek_.pos.col;
-        err({loc_.file, peek_.pos}, "invalid UTF-8 character");
+    if (ostream_) {
+        if (start_md())
+            emit_md(true);
+        else
+            md_fence();
     }
 }
 
 Tok Lexer::lex() {
     while (true) {
-        loc_.begin = peek_.pos;
+        loc_.begin = ahead().pos;
         str_.clear();
 
-        if (eof()) return tok(Tok::Tag::M_eof);
         if (accept_if(isspace)) continue;
+        if (accept(utf8::Err)) err(loc_, "invalid UTF-8 character");
+        if (accept(utf8::EoF)) return tok(Tok::Tag::M_eof);
 
         // clang-format off
         // delimiters
@@ -100,7 +85,7 @@ Tok Lexer::lex() {
         if (accept('.')) {
             if (lex_id()) {
                 if (auto i = keywords_.find(str_); i != keywords_.end()) { return tok(i->second); }
-                err({loc_.file, peek_.pos}, "unknown keyword '{}'", str_);
+                err({loc_.file, ahead().pos}, "unknown keyword '{}'", str_);
                 continue;
             }
 
@@ -115,8 +100,13 @@ Tok Lexer::lex() {
 
         if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_, world_.dbg(loc()))};
 
-        if (isdigit(peek_.c32) || issign(peek_.c32)) {
+        if (isdigit(ahead()) || issign(ahead())) {
             if (auto lit = parse_lit()) return *lit;
+            continue;
+        }
+
+        if (start_md()) {
+            if (ostream_) emit_md();
             continue;
         }
 
@@ -127,15 +117,15 @@ Tok Lexer::lex() {
                 continue;
             }
             if (accept('/')) {
-                while (!eof() && peek_.c32 != '\n') next();
+                while (ahead() != utf8::EoF && ahead() != '\n') next();
                 continue;
             }
 
-            err({loc_.file, peek_.pos}, "invalid input char '/'; maybe you wanted to start a comment?");
+            err({loc_.file, ahead().pos}, "invalid input char '/'; maybe you wanted to start a comment?");
             continue;
         }
 
-        err({loc_.file, peek_.pos}, "invalid input char '{}'", (char)peek_.c32);
+        err({loc_.file, ahead().pos}, "invalid input char '{}'", (char)ahead());
         next();
     }
 }
@@ -173,11 +163,11 @@ std::optional<Tok> Lexer::parse_lit() {
     parse_digits(base);
 
     if (!sign && base == 10) {
-        if (issubscsr(peek_.c32)) {
+        if (issubscsr(ahead())) {
             auto i = strtoull(str_.c_str(), nullptr, 10);
             std::string mod;
-            while (issubscsr(peek_.c32)) {
-                mod += peek_.c32 - U'₀' + '0';
+            while (issubscsr(ahead())) {
+                mod += ahead() - U'₀' + '0';
                 next();
             }
             auto m = strtoull(mod.c_str(), nullptr, 10);
@@ -235,7 +225,7 @@ bool Lexer::parse_exp(int base /*= 10*/) {
     if (accept_if(base == 10 ? [](int i) { return i == 'e' || i == 'E'; }
                              : [](int i) { return i == 'p' || i == 'P'; })) {
         accept_if(issign);
-        if (!isdigit(peek_.c32)) err(loc_, "exponent has no digits");
+        if (!isdigit(ahead())) err(loc_, "exponent has no digits");
         parse_digits();
         return true;
     }
@@ -250,13 +240,43 @@ bool Lexer::parse_exp(int base /*= 10*/) {
 
 void Lexer::eat_comments() {
     while (true) {
-        while (!eof() && peek_.c32 != '*') next();
-        if (eof()) {
+        while (ahead() != utf8::EoF && ahead() != '*') next();
+        if (accept(utf8::EoF)) {
             err(loc_, "non-terminated multiline comment");
             return;
         }
         next();
         if (accept('/')) break;
+    }
+}
+
+void Lexer::emit_md(bool start_of_file) {
+    if (!start_of_file) md_fence();
+
+    out_ = false;
+    for (int i = 0; i < 3; ++i) next();
+    int gobble = 0;
+    while (accept(' ')) ++gobble;
+    out_ = true;
+
+    while (ahead() != utf8::EoF && ahead() != '\n') next();
+    accept('\n');
+
+    while (start_md()) {
+        out_ = false;
+        for (int i = 0; i < 3; ++i) next();
+        for (int i = 0; i < gobble; ++i) accept(' ');
+        out_ = true;
+
+        while (ahead() != utf8::EoF && ahead() != '\n') next();
+        accept('\n');
+    }
+
+    std::cout << (int)ahead().c32 << std::endl;
+    if (ahead() == utf8::EoF) {
+        out_ = false;
+    } else {
+        md_fence();
     }
 }
 

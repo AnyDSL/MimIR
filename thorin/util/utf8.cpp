@@ -14,7 +14,7 @@ size_t num_bytes(char8_t c) {
 
 std::optional<char32_t> encode(std::istream& is) {
     char32_t result = is.get();
-    if (result == (char32_t)std::istream::traits_type::eof()) return result;
+    if (result == EoF) return result;
 
     switch (auto n = utf8::num_bytes(result)) {
         case 0: return {};
