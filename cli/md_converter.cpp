@@ -34,10 +34,8 @@ void MDConverter::run() {
             next(2);
             eat_whitespace();
 
-            while (ahead(0) != '*' || ahead(1) != '/') {
-                auto a = utf8::decode(next());
-                ostream_ << a.data();
-            }
+            while (ahead(0) != '*' || ahead(1) != '/')
+                utf8::decode(ostream_, next());
         } else {
             next();
         }

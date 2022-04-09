@@ -27,14 +27,15 @@ inline std::optional<char8_t> is_valid(char8_t c) {
     return (c & 0b11000000_u8) == 0b10000000_u8 ? (c & 0b00111111_u8) : std::optional<char8_t>();
 }
 
-std::array<char, 5> decode(char32_t);
+std::optional<char32_t> encode(std::istream&);
+std::ostream& decode(std::ostream&, char32_t);
 
 class Reader {
 public:
     Reader(std::istream& istream)
         : istream_(istream) {}
 
-    std::optional<char32_t> encode();
+    std::optional<char32_t> encode() { return thorin::utf8::encode(istream_); }
 
 protected:
     std::istream& istream_;
