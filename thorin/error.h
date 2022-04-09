@@ -4,6 +4,7 @@
 #include <stdexcept>
 
 #include "thorin/debug.h"
+
 #include "thorin/util/stream.h"
 
 namespace thorin {
