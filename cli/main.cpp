@@ -8,6 +8,7 @@
 #include "thorin/config.h"
 
 #include "cli/dialects.h"
+#include "cli/md_converter.h"
 #include "thorin/be/dot/dot.h"
 #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
@@ -32,7 +33,7 @@ static std::string exec(const char* cmd) {
     std::array<char, 128> buffer;
     std::string result;
     std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) { throw std::runtime_error("popen() failed!"); }
+    if (!pipe) { throw std::runtime_error("error: popen() failed!"); }
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) { result += buffer.data(); }
     return result;
 }
@@ -104,10 +105,10 @@ int main(int argc, char** argv) {
             return EXIT_SUCCESS;
         }
 
-        if (input.empty()) throw std::invalid_argument("no input input given");
+        if (input.empty()) throw std::invalid_argument("error: no input input given");
         if (prefix.empty()) {
             auto i = input.rfind('.');
-            if (i == std::string::npos) throw std::invalid_argument("cannot derive prefix for output files");
+            if (i == std::string::npos) throw std::invalid_argument("error: cannot derive prefix for output files");
             prefix = input.substr(0, i);
         }
 
@@ -118,18 +119,31 @@ int main(int argc, char** argv) {
         for (auto b : breakpoints) world.breakpoint(b);
 #endif
 
+        std::ifstream ifs;
+        std::istream* pis = &ifs;
+
         if (input == "-") {
-            Parser parser(world, "<stdin>", std::cin);
-            parser.parse_module();
+            input = "<stdin>";
+            pis = &std::cin;
         } else {
-            std::ifstream ifs(input);
+            ifs.open(input);
             if (!ifs) {
                 errln("error: cannot read file '{}'", input);
                 return EXIT_FAILURE;
             }
-            Parser parser(world, input, ifs);
-            parser.parse_module();
         }
+
+        if (emit_md) {
+            std::ofstream of(prefix + ".md");
+            MDConverter md_converter(*pis, of);
+            md_converter.run();
+            ifs.close();
+            ifs.clear();
+            ifs.open(input);
+        }
+
+        Parser parser(world, input, *pis);
+        parser.parse_module();
 
         if (emit_thorin) world.dump();
 
@@ -144,7 +158,7 @@ int main(int argc, char** argv) {
             ll::emit(world, s);
         }
     } catch (const std::exception& e) {
-        errln("error: {}", e.what());
+        errln("{}", e.what());
         return EXIT_FAILURE;
     } catch (...) {
         errln("error: unknown exception");

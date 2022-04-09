@@ -10,10 +10,10 @@ static bool issign(char32_t i) { return i == '+' || i == '-'; }
 static bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
 
 Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
-    : world_(world)
+    : utf8::Reader(stream)
+    , world_(world)
     , loc_{filename, {1, 1}, {1, 1}}
-    , peek_({0, Pos(1, 0)})
-    , stream_(stream) {
+    , peek_({0, Pos(1, 0)}) {
     next();            // fill peek
     accept(utf8::BOM); // eat utf-8 BOM if present
 
@@ -28,26 +28,10 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
 }
 
 void Lexer::next() {
-    for (bool ok = true; true; ok = true) {
-        // char32_t result = peek_.c32;
-        peek_.c32  = stream_.get();
+    if (auto opt = encode()) {
+        peek_.c32  = *opt;
         loc_.finis = peek_.pos;
-
-        if (eof()) return;
-
-        switch (auto n = utf8::num_bytes(peek_.c32)) {
-            case 0: ok = false; break;
-            case 1: /*do nothing*/ break;
-            default:
-                peek_.c32 = utf8::first(peek_.c32, n);
-
-                for (size_t i = 1; ok && i != n; ++i) {
-                    if (auto x = utf8::is_valid(stream_.get()))
-                        peek_.c32 = utf8::append(peek_.c32, *x);
-                    else
-                        ok = false;
-                }
-        }
+        if (peek_.c32 == eof()) return;
 
         if (peek_.c32 == '\n') {
             ++peek_.pos.row;
@@ -55,8 +39,8 @@ void Lexer::next() {
         } else {
             ++peek_.pos.col;
         }
-
-        if (ok) return;
+    } else {
+        ++peek_.pos.col;
         err({loc_.file, peek_.pos}, "invalid UTF-8 character");
     }
 }

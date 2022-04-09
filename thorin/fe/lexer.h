@@ -13,7 +13,7 @@ namespace thorin {
 
 class World;
 
-class Lexer {
+class Lexer : public utf8::Reader {
 public:
     Lexer(World&, std::string_view, std::istream&);
 
@@ -46,7 +46,7 @@ private:
         return accept_if([val](char32_t p) { return p == val; }, append);
     }
 
-    /// Put next utf8-char in Lexer::stream_ into Lexer::peek_.pos and increase Lexer::loc_/Lexer::peek_.pos.
+    /// Put next utf8-char in utf8::Reader::stream_ into Lexer::peek_.pos and increase Lexer::loc_/Lexer::peek_.pos.
     void next();
     bool lex_id();
     std::optional<Tok> parse_lit();
@@ -60,7 +60,6 @@ private:
         char32_t c32;
         Pos pos;
     } peek_;
-    std::istream& stream_;
     std::string str_;
     absl::flat_hash_map<std::string, Tok::Tag> keywords_;
 };

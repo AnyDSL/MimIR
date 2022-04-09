@@ -134,4 +134,19 @@ TEST_P(Real, sign) {
     EXPECT_THROW(l2.lex(), LexError);
 }
 
+TEST(Lexer, utf8) {
+    std::array<std::array<char, 5>, 5> as;
+    as[0] = utf8::decode(U'a');
+    as[1] = utf8::decode(U'£');
+    as[2] = utf8::decode(U'λ');
+    as[3] = utf8::decode(U'𐄂');
+    as[4] = utf8::decode(U'𐀮');
+
+    std::string s;
+    for (const auto& a : as)
+        std::copy(a.begin(), std::find(a.begin(), a.end(), '\0'), std::back_inserter(s));
+
+    EXPECT_EQ(s, "a£λ𐄂𐀮");
+}
+
 INSTANTIATE_TEST_SUITE_P(Lexer, Real, testing::Range(0, 3));
