@@ -25,7 +25,7 @@ namespace thorin {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, std::string_view, std::istream&);
+    Parser(World&, std::string_view, std::istream&, std::ostream*);
 
     World& world() { return lexer_.world(); }
     void parse_module();

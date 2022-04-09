@@ -1,6 +1,7 @@
 #include "cli/md_converter.h"
 
 namespace thorin {
+#if 0
 
 MDConverter::MDConverter(std::istream& istream, std::ostream& ostream)
     : utf8::Reader(istream)
@@ -40,5 +41,6 @@ void MDConverter::run() {
         }
     }
 }
+#endif
 
 } // namespace thorin

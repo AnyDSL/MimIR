@@ -9,10 +9,11 @@ namespace thorin {
 static bool issign(char32_t i) { return i == '+' || i == '-'; }
 static bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
 
-Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
-    : utf8::Reader(stream)
-    , world_(world)
+Lexer::Lexer(World& world, std::string_view filename, std::istream& istream, std::ostream* ostream /*= nullptr*/)
+    : world_(world)
     , loc_{filename, {1, 1}, {1, 1}}
+    , istream_(istream)
+    , ostream_(ostream)
     , peek_({0, Pos(1, 0)}) {
     next();            // fill peek
     accept(utf8::BOM); // eat utf-8 BOM if present
@@ -28,10 +29,10 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& stream)
 }
 
 void Lexer::next() {
-    if (auto opt = encode()) {
+    if (auto opt = utf8::encode(istream_)) {
         peek_.c32  = *opt;
         loc_.finis = peek_.pos;
-        if (peek_.c32 == eof()) return;
+        if (eof()) return;
 
         if (peek_.c32 == '\n') {
             ++peek_.pos.row;

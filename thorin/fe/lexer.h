@@ -13,9 +13,9 @@ namespace thorin {
 
 class World;
 
-class Lexer : public utf8::Reader {
+class Lexer {
 public:
-    Lexer(World&, std::string_view, std::istream&);
+    Lexer(World&, std::string_view, std::istream&, std::ostream* = nullptr);
 
     World& world() { return world_; }
     Loc loc() const { return loc_; }
@@ -56,6 +56,8 @@ private:
 
     World& world_;
     Loc loc_; ///< @p Loc%ation of the @p Tok%en we are currently constructing within @p str_,
+    std::istream& istream_;
+    std::ostream* ostream_;
     struct {
         char32_t c32;
         Pos pos;

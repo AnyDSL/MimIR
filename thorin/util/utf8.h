@@ -30,7 +30,9 @@ inline std::optional<char8_t> is_valid(char8_t c) {
 std::optional<char32_t> encode(std::istream&);
 std::ostream& decode(std::ostream&, char32_t);
 
-class Reader {
+#if 0
+template<size_t Max_Ahead>
+class Lexer {
 public:
     Reader(std::istream& istream)
         : istream_(istream) {}
@@ -38,8 +40,15 @@ public:
     std::optional<char32_t> encode() { return thorin::utf8::encode(istream_); }
 
 protected:
+    char32_t ahead(size_t i = 0) const {
+        assert(i < Max_Ahead);
+        return ahead_[i];
+    }
+
     std::istream& istream_;
+    std::array<std::pair<char32_t, Pos>, Max_Ahead> ahead_;
 };
+#endif
 
 } // namespace thorin::utf8
 

@@ -2,8 +2,8 @@
 
 namespace thorin {
 
-Parser::Parser(World& world, std::string_view file, std::istream& stream)
-    : lexer_(world, file, stream)
+Parser::Parser(World& world, std::string_view file, std::istream& istream, std::ostream* ostream)
+    : lexer_(world, file, istream, ostream)
     , prev_(lexer_.loc()) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});

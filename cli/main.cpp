@@ -133,16 +133,10 @@ int main(int argc, char** argv) {
             }
         }
 
-        if (emit_md) {
-            std::ofstream of(prefix + ".md");
-            MDConverter md_converter(*pis, of);
-            md_converter.run();
-            ifs.close();
-            ifs.clear();
-            ifs.open(input);
-        }
+        std::ofstream ofs;
+        if (emit_md) ofs.open(prefix + ".md");
 
-        Parser parser(world, input, *pis);
+        Parser parser(world, input, *pis, emit_md ? &ofs : nullptr);
         parser.parse_module();
 
         if (emit_thorin) world.dump();
