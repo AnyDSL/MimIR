@@ -1,15 +1,17 @@
 USAGE:
-  thorin [-?|-h|--help] [-c|--clang <clang>] [-l|--emit-llvm] [-v|--version] [-d|--dialect <dialect>] [-D|--dialect-search-path <path>] [<input file>]
+  thorin [-?|-h|--help] [-v|--version] [-c|--clang <clang>] [-d|--dialect <dialect>] [-D|--dialect-path <path>] [-e|--emit <thorin|md|ll|dot>] [-V|--verbose] [-b|--break <gid>] [-o|--output <prefix>] [<file>]
 
 Display usage information.
 
 OPTIONS, ARGUMENTS:
-  -?, -h, --help          
-  -c, --clang <clang>     path to clang executable (default: {})
-  -l, --emit-llvm         emit LLVM
-  -v, --version           display version info and exit
-  -d, --dialect <dialect> dynamically load dialect [WIP]
-  -D, --dialect-search-path <path>
-                          path to search dialects in
-  <input file>            The input file. Use '-' to read from stdin.
-
+  -?, -h, --help
+  -v, --version           Display version info and exit.
+  -c, --clang <clang>     Path to clang executable (default: "which clang").
+  -d, --dialect <dialect> Dynamically load dialect [WIP].
+  -D, --dialect-path <path>
+                          Path to search dialects in.
+  -e, --emit <thorin|md|ll|dot>
+                          Select emitter. Multiple emitters can be specified simultaneously.
+  -V, --verbose           Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.
+  -b, --break <gid>       Trigger break-point upon construction of node with global id <gid>. Useful when running in a debugger.
+  -o, --output <prefix>   Prefix used for various output files.

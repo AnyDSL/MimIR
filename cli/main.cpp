@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
             | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: " + clang + ").")
             | lyra::opt(dialects,      "dialect" )["-d"]["--dialect"     ]("Dynamically load dialect [WIP].")
             | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("Path to search dialects in.")
-            | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter.").choices("thorin", "md", "ll", "dot")
+            | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("thorin", "md", "ll", "dot")
             | lyra::opt(inc_verbose              )["-V"]["--verbose"     ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
 #ifndef NDEBUG
             | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("Trigger break-point upon construction of node with global id <gid>. Useful when running in a debugger.")
