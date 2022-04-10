@@ -110,7 +110,8 @@ int main(int argc, char** argv) {
         }
 
         if (input.empty()) throw std::invalid_argument("error: no input given");
-        if (input[0] == '-' || input.substr(0, 2) == "--") throw std::invalid_argument("error: unknown option " + input);
+        if (input[0] == '-' || input.substr(0, 2) == "--")
+            throw std::invalid_argument("error: unknown option " + input);
 
         auto dot_i = input.rfind('.');
         if (dot_i == std::string::npos || input.substr(dot_i) != ".thorin")
