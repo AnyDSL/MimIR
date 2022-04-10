@@ -50,31 +50,27 @@ static std::string get_clang_from_path() {
 
 int main(int argc, char** argv) {
     try {
+        static constexpr const char* Backends = "thorin|md|ll|dot";
+
         std::string input, prefix;
-        std::string clang     = get_clang_from_path();
-
-        bool emit_ll     = false;
-        bool emit_md     = false;
-        bool emit_dot    = false;
-        bool emit_thorin = false;
-        bool show_help   = false;
-
+        std::string clang = get_clang_from_path();
         std::vector<std::string> dialects, dialect_paths, emitters;
         std::vector<size_t> breakpoints;
 
-        auto print_version = [](bool) {
-            std::cerr << version;
-            std::exit(EXIT_SUCCESS);
-        };
+        bool emit_ll      = false;
+        bool emit_md      = false;
+        bool emit_dot     = false;
+        bool emit_thorin  = false;
+        bool show_help    = false;
+        bool show_version = false;
 
-        int verbose = 0;
-        auto inc_verbose = [&](bool) { ++verbose; };
-        static constexpr const char* Backends = "thorin|md|ll|dot";
+        int verbose       = 0;
+        auto inc_verbose  = [&](bool) { ++verbose; };
 
         // clang-format off
         auto cli = lyra::cli()
             | lyra::help(show_help)
-            | lyra::opt(print_version            )["-v"]["--version"     ]("Display version info and exit.")
+            | lyra::opt(show_version             )["-v"]["--version"     ]("Display version info and exit.")
             | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: " + clang + ").")
             | lyra::opt(dialects,      "dialect" )["-d"]["--dialect"     ]("Dynamically load dialect [WIP].")
             | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("Path to search dialects in.")
@@ -89,8 +85,13 @@ int main(int argc, char** argv) {
         if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
 
         if (show_help) {
-            std::cerr << cli << "\n";
+            std::cerr << cli << std::endl;
             return EXIT_SUCCESS;
+        }
+
+        if (show_version) {
+            std::cerr << version << std::endl;
+            std::exit(EXIT_SUCCESS);
         }
 
         for (const auto& e : emitters) {
