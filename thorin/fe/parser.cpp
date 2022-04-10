@@ -1,5 +1,17 @@
 #include "thorin/fe/parser.h"
 
+// clang-format off
+#define DECL                \
+         Tok::Tag::K_ax:    \
+    case Tok::Tag::K_let:   \
+    case Tok::Tag::K_Sigma: \
+    case Tok::Tag::K_Arr:   \
+    case Tok::Tag::K_pack:  \
+    case Tok::Tag::K_Pi:    \
+    case Tok::Tag::K_lam:   \
+    case Tok::Tag::K_def
+// clang-format on
+
 namespace thorin {
 
 Parser::Parser(World& world, std::string_view file, std::istream& istream, std::ostream* ostream)
@@ -37,12 +49,7 @@ void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
 }
 
 void Parser::parse_module() {
-    world().DLOG("asdf");
-    expect(Tok::Tag::K_module, "module");
-    world().set_name(parse_sym("name of module").to_string());
-    expect(Tok::Tag::D_brace_l, "module");
-    parse_expr("module");
-    expect(Tok::Tag::D_brace_r, "module");
+    parse_decls(false);
     expect(Tok::Tag::M_eof, "module");
 };
 
@@ -88,23 +95,16 @@ const Def* Parser::parse_expr(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::
 const Def* Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
+        case DECL:                  return parse_decls();
         case Tok::Tag::D_angle_l:   return parse_pack_or_arr(true);
         case Tok::Tag::D_quote_l:   return parse_pack_or_arr(false);
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_paren_l:   return parse_tuple();
-        case Tok::Tag::K_ax:        return parse_ax();
         case Tok::Tag::K_Cn:        return parse_Cn();
-        case Tok::Tag::K_let:       return parse_let();
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
         case Tok::Tag::K_ff:        lex(); return world().lit_false();
         case Tok::Tag::K_tt:        lex(); return world().lit_true();
-        case Tok::Tag::K_Sigma:
-        case Tok::Tag::K_Arr:
-        case Tok::Tag::K_pack:
-        case Tok::Tag::K_Pi:
-        case Tok::Tag::K_lam:       return parse_nom();
-        case Tok::Tag::K_def:       return parse_def();
         case Tok::Tag::T_Pi:        return parse_pi();
         case Tok::Tag::T_lam:       return parse_lam();
         case Tok::Tag::T_at:        return parse_var();
@@ -134,17 +134,6 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
     }
     // clang-format on
     return nullptr;
-}
-
-const Def* Parser::parse_ax() {
-    auto track = tracker();
-    eat(Tok::Tag::K_ax);
-    auto ax = expect(Tok::Tag::M_ax, "name of an axiom");
-    expect(Tok::Tag::T_colon, "axiom");
-    auto type = parse_expr("type of an axiom");
-    world().axiom(type, track.named(ax.sym()));
-    expect(Tok::Tag::T_semicolon, "end of an axiom");
-    return parse_expr("scope of an axiom");
 }
 
 const Def* Parser::parse_Cn() {
@@ -276,7 +265,7 @@ const Def* Parser::parse_lit() {
             case Tok::Tag::T_bot: return world().bot(type, track);
             case Tok::Tag::T_top: return world().top(type, track);
             default: unreachable();
-            // clang-format on;
+            // clang-format on
         }
 
         return world().lit(type, lit.u(), track.meta(meta));
@@ -290,7 +279,39 @@ const Def* Parser::parse_lit() {
     return world().lit_nat(lit.u(), track);
 }
 
-const Def* Parser::parse_let() {
+/*
+ * decls
+ */
+
+const Def* Parser::parse_decls(bool expr /*= true*/) {
+    while (true) {
+        // clang-format off
+        switch (ahead().tag()) {
+            case Tok::Tag::K_ax:    parse_ax();  break;
+            case Tok::Tag::K_let:   parse_let(); break;
+            case Tok::Tag::K_Sigma:
+            case Tok::Tag::K_Arr:
+            case Tok::Tag::K_pack:
+            case Tok::Tag::K_Pi:
+            case Tok::Tag::K_lam:   parse_nom(); break;
+            case Tok::Tag::K_def:   parse_def(); break;
+            default:                return expr ? parse_expr("scpoe of a declaration") : nullptr;
+        }
+        // clang-format on
+    }
+}
+
+void Parser::parse_ax() {
+    auto track = tracker();
+    eat(Tok::Tag::K_ax);
+    auto ax = expect(Tok::Tag::M_ax, "name of an axiom");
+    expect(Tok::Tag::T_colon, "axiom");
+    auto type = parse_expr("type of an axiom");
+    world().axiom(type, track.named(ax.sym()));
+    expect(Tok::Tag::T_semicolon, "end of an axiom");
+}
+
+void Parser::parse_let() {
     eat(Tok::Tag::K_let);
     auto sym = parse_sym();
     if (accept(Tok::Tag::T_colon)) {
@@ -301,14 +322,9 @@ const Def* Parser::parse_let() {
     auto body = parse_expr("body of a let expression");
     insert(sym, body);
     eat(Tok::Tag::T_semicolon);
-    return parse_expr("scope of a let expression");
 }
 
-/*
- * nominals
- */
-
-const Def* Parser::parse_nom() {
+void Parser::parse_nom() {
     auto track = tracker();
     auto tag = lex().tag();
     bool external = accept(Tok::Tag::K_extern).has_value();
@@ -353,10 +369,9 @@ const Def* Parser::parse_nom() {
     if (ahead().isa(Tok::Tag::T_assign)) return parse_def(sym);
 
     expect(Tok::Tag::T_semicolon, "end of a nominal");
-    return parse_expr("scope of a nominal");
 }
 
-const Def* Parser::parse_def(Sym sym /*= {}*/) {
+void Parser::parse_def(Sym sym /*= {}*/) {
     if (!sym) {
         eat(Tok::Tag::K_def);
         sym = parse_sym("nominal definition");
@@ -381,7 +396,6 @@ const Def* Parser::parse_def(Sym sym /*= {}*/) {
 
     nom->dump(0);
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");
-    return parse_expr("scope of a nominal definition");
 }
 
 } // namespace thorin

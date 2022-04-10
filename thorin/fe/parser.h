@@ -32,9 +32,13 @@ public:
 
 private:
     Sym parse_sym(std::string_view ctxt = {});
+
+    /// @name exprs
+    ///@{
     const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bottom);
     const Def* parse_primary_expr(std::string_view ctxt);
     const Def* parse_extract();
+    ///@}
 
     /// @name primary exprs
     ///@{
@@ -46,13 +50,18 @@ private:
     const Def* parse_pi();
     const Def* parse_lam();
     const Def* parse_lit();
-    const Def* parse_let();
-    const Def* parse_nom();
     const Def* parse_var();
-    const Def* parse_ax();
+    ///@}
+
+    /// @name decls
+    ///@{
+    const Def* parse_decls(bool expr = true);
+    void parse_ax();
+    void parse_let();
+    void parse_nom();
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
-    const Def* parse_def(Sym sym = {});
+    void parse_def(Sym sym = {});
     ///@}
 
     template<class F>
