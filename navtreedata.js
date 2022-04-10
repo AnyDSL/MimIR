@@ -131,7 +131,7 @@ var NAVTREEINDEX =
 "classthorin_1_1Rewriter.html#a739eafef359052ceb40920e773abe3f3",
 "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2879fcb4320671691958f7a455aa82bd",
 "classthorin_1_1World.html#a24eea52f5936ba048853cfdd9b476043",
-"classthorin_1_1World.html#ab68312b4fab76b13437ca784b74c3924",
+"classthorin_1_1World.html#ab2b4b3ed8f15ed97e0df04f550589f54",
 "classthorin_1_1utf8_1_1Lexer.html#ae15c4c0f955cb984d0035a9d6b6ed12b",
 "lam__spec_8cpp.html#afe55cb6b936b3de14b79b554d8fa1026",
 "namespacethorin.html#a692d6d54b6b359b4e75fe7f0aed06f2c",

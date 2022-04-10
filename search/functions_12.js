@@ -16,7 +16,7 @@ var searchData=
   ['set_5fdom_13',['set_dom',['../classthorin_1_1Pi.html#a916737075d5ddb769683d9f9c300faff',1,'thorin::Pi::set_dom(const Def *dom)'],['../classthorin_1_1Pi.html#ab231053458d250b44464adeeb09772bf',1,'thorin::Pi::set_dom(Defs doms)']]],
   ['set_5ferror_5fhandler_14',['set_error_handler',['../classthorin_1_1World.html#a404ea40168f3fe1028f5a508d312d1da',1,'thorin::World']]],
   ['set_5ffilter_15',['set_filter',['../classthorin_1_1Lam.html#abd57571b6654ad789b663d3cbd93bfd3',1,'thorin::Lam']]],
-  ['set_5flog_5flevel_16',['set_log_level',['../classthorin_1_1World.html#ac587196bdd46779161226a2ba9084e0d',1,'thorin::World::set_log_level(LogLevel min_level)'],['../classthorin_1_1World.html#affd0ff4bdc5693c51a878fb1bdd7dea2',1,'thorin::World::set_log_level(std::string_view min_level)']]],
+  ['set_5flog_5flevel_16',['set_log_level',['../classthorin_1_1World.html#ab182c317de5135c6c4378dd2177a65d1',1,'thorin::World::set_log_level(LogLevel max_level)'],['../classthorin_1_1World.html#a8b8c296fb16d4dcbb2523c603000ee60',1,'thorin::World::set_log_level(std::string_view max_level)']]],
   ['set_5flog_5fstream_17',['set_log_stream',['../classthorin_1_1World.html#a99b349bd13f2e0855ecda7e5a3e12276',1,'thorin::World']]],
   ['set_5fname_18',['set_name',['../classthorin_1_1World.html#a81628ab0fd6c2744a326e44a73c45d4b',1,'thorin::World']]],
   ['set_5fshape_19',['set_shape',['../classthorin_1_1Arr.html#a75e797b30ee19ff42cd7030b129df180',1,'thorin::Arr']]],

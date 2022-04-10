@@ -321,11 +321,11 @@ var namespacethorin =
       [ "_t", "namespacethorin.html#aec7c9c368dda260071936391c37a72e3a05cb7dc333ca611d0a8969704e39a9f0", null ]
     ] ],
     [ "LogLevel", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426", [
-      [ "Debug", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba", null ],
-      [ "Verbose", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf", null ],
-      [ "Info", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875", null ],
+      [ "Error", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd", null ],
       [ "Warn", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a56525ae64d370c0b448ac0d60710ef17", null ],
-      [ "Error", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd", null ]
+      [ "Info", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875", null ],
+      [ "Verbose", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf", null ],
+      [ "Debug", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba", null ]
     ] ],
     [ "PE", "namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921", [
       [ "hlt", "namespacethorin.html#aa92c47f6697b836d37fdbdb8454ea921a4f4000d921968b9665f52e88333007da", null ],

@@ -578,7 +578,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0017602514a3704462e2827324b0ba33"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a0017602514a3704462e2827324b0ba33">stream</a> (<a class="el" href="classthorin_1_1RecStreamer.html">RecStreamer</a> &amp;, const <a class="el" href="classthorin_1_1DepNode.html">DepNode</a> *) const</td></tr>
 <tr class="separator:a0017602514a3704462e2827324b0ba33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62ddee91d07a2e77c0d161723b7a2340"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a62ddee91d07a2e77c0d161723b7a2340">debug_stream</a> ()</td></tr>
-<tr class="memdesc:a62ddee91d07a2e77c0d161723b7a2340"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Stream.html">Stream</a> thorin if World::State::min_level is LogLevel::debug.  <a href="classthorin_1_1World.html#a62ddee91d07a2e77c0d161723b7a2340">More...</a><br /></td></tr>
+<tr class="memdesc:a62ddee91d07a2e77c0d161723b7a2340"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Stream.html">Stream</a> thorin if World::State::max_level is LogLevel::debug.  <a href="classthorin_1_1World.html#a62ddee91d07a2e77c0d161723b7a2340">More...</a><br /></td></tr>
 <tr class="separator:a62ddee91d07a2e77c0d161723b7a2340"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">error handling</div></td></tr>
 <tr class="memitem:a404ea40168f3fe1028f5a508d312d1da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a404ea40168f3fe1028f5a508d312d1da">set_error_handler</a> (std::unique_ptr&lt; <a class="el" href="classthorin_1_1ErrorHandler.html">ErrorHandler</a> &gt; &amp;&amp;<a class="el" href="classthorin_1_1World.html#a7836aadcfca5fde714c1af95e525ec40">err</a>)</td></tr>
@@ -649,12 +649,12 @@ Friends</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Logging</h2></td></tr>
 <tr class="memitem:a810964b0fe25a5b3f5cde969ab471f1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Stream.html">Stream</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a810964b0fe25a5b3f5cde969ab471f1d">stream</a> ()</td></tr>
 <tr class="separator:a810964b0fe25a5b3f5cde969ab471f1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d52c93b522494c794cb6c01e616c569"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426">LogLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a8d52c93b522494c794cb6c01e616c569">min_level</a> () const</td></tr>
-<tr class="separator:a8d52c93b522494c794cb6c01e616c569"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac587196bdd46779161226a2ba9084e0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#ac587196bdd46779161226a2ba9084e0d">set_log_level</a> (<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426">LogLevel</a> <a class="el" href="classthorin_1_1World.html#a8d52c93b522494c794cb6c01e616c569">min_level</a>)</td></tr>
-<tr class="separator:ac587196bdd46779161226a2ba9084e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:affd0ff4bdc5693c51a878fb1bdd7dea2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#affd0ff4bdc5693c51a878fb1bdd7dea2">set_log_level</a> (std::string_view <a class="el" href="classthorin_1_1World.html#a8d52c93b522494c794cb6c01e616c569">min_level</a>)</td></tr>
-<tr class="separator:affd0ff4bdc5693c51a878fb1bdd7dea2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63da1c3903a614e33fabea89d77b7a58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426">LogLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a63da1c3903a614e33fabea89d77b7a58">max_level</a> () const</td></tr>
+<tr class="separator:a63da1c3903a614e33fabea89d77b7a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab182c317de5135c6c4378dd2177a65d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#ab182c317de5135c6c4378dd2177a65d1">set_log_level</a> (<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426">LogLevel</a> <a class="el" href="classthorin_1_1World.html#a63da1c3903a614e33fabea89d77b7a58">max_level</a>)</td></tr>
+<tr class="separator:ab182c317de5135c6c4378dd2177a65d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b8c296fb16d4dcbb2523c603000ee60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a8b8c296fb16d4dcbb2523c603000ee60">set_log_level</a> (std::string_view <a class="el" href="classthorin_1_1World.html#a63da1c3903a614e33fabea89d77b7a58">max_level</a>)</td></tr>
+<tr class="separator:a8b8c296fb16d4dcbb2523c603000ee60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a99b349bd13f2e0855ecda7e5a3e12276"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a99b349bd13f2e0855ecda7e5a3e12276">set_log_stream</a> (std::shared_ptr&lt; <a class="el" href="classthorin_1_1Stream.html">Stream</a> &gt; <a class="el" href="classthorin_1_1World.html#a810964b0fe25a5b3f5cde969ab471f1d">stream</a>)</td></tr>
 <tr class="separator:a99b349bd13f2e0855ecda7e5a3e12276"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a352a26e0abf5dcc0e62120a7ce3a8b3d"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
@@ -2345,7 +2345,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="reference">References <a class="el" href="debug_8h_source.html#l00037">thorin::Loc::begin</a>, <a class="el" href="world_8h_source.html#l00316">bot()</a>, <a class="el" href="world_8h_source.html#l00318">bot_type()</a>, <a class="el" href="debug_8h_source.html#l00036">thorin::Loc::file</a>, <a class="el" href="debug_8h_source.html#l00038">thorin::Loc::finis</a>, <a class="el" href="world_8h_source.html#l00260">lit_nat()</a>, <a class="el" href="debug_8h_source.html#l00094">thorin::Debug::loc</a>, <a class="el" href="debug_8h_source.html#l00095">thorin::Debug::meta</a>, <a class="el" href="debug_8h_source.html#l00093">thorin::Debug::name</a>, <a class="el" href="world_8h_source.html#l00068">name()</a>, <a class="el" href="world_8h_source.html#l00202">tuple()</a>, and <a class="el" href="world_8cpp_source.html#l00383">tuple_str()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00297">app()</a>, <a class="el" href="world_8cpp_source.html#l00469">arr()</a>, <a class="el" href="world_8cpp_source.html#l00561">bound()</a>, <a class="el" href="world_8cpp_source.html#l00585">et()</a>, <a class="el" href="world_8cpp_source.html#l00553">ext()</a>, <a class="el" href="world_8cpp_source.html#l00389">extract_()</a>, <a class="el" href="world_8cpp_source.html#l00535">global_immutable_string()</a>, <a class="el" href="world_8cpp_source.html#l00431">insert()</a>, <a class="el" href="world_8h_source.html#l00151">lam()</a>, <a class="el" href="lexer_8cpp_source.html#l00032">thorin::Lexer::lex()</a>, <a class="el" href="world_8cpp_source.html#l00522">lit_int()</a>, <a class="el" href="world_8h_source.html#l00096">nom_infer()</a>, <a class="el" href="world_8cpp_source.html#l00633">op_lea()</a>, <a class="el" href="world_8cpp_source.html#l00639">op_malloc()</a>, <a class="el" href="world_8cpp_source.html#l00644">op_mslot()</a>, <a class="el" href="world_8cpp_source.html#l00490">pack()</a>, <a class="el" href="world_8cpp_source.html#l00600">pick()</a>, <a class="el" href="world_8cpp_source.html#l00313">raw_app()</a>, <a class="el" href="world_8cpp_source.html#l00320">sigma()</a>, <a class="el" href="world_8cpp_source.html#l00602">test()</a>, <a class="el" href="world_8cpp_source.html#l00335">tuple()</a>, <a class="el" href="world_8cpp_source.html#l00383">tuple_str()</a>, <a class="el" href="world_8cpp_source.html#l00595">vel()</a>, and <a class="el" href="world_8cpp_source.html#l00033">World()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00297">app()</a>, <a class="el" href="world_8cpp_source.html#l00469">arr()</a>, <a class="el" href="world_8cpp_source.html#l00561">bound()</a>, <a class="el" href="world_8cpp_source.html#l00585">et()</a>, <a class="el" href="world_8cpp_source.html#l00553">ext()</a>, <a class="el" href="world_8cpp_source.html#l00389">extract_()</a>, <a class="el" href="world_8cpp_source.html#l00535">global_immutable_string()</a>, <a class="el" href="world_8cpp_source.html#l00431">insert()</a>, <a class="el" href="world_8h_source.html#l00151">lam()</a>, <a class="el" href="lexer_8cpp_source.html#l00030">thorin::Lexer::lex()</a>, <a class="el" href="world_8cpp_source.html#l00522">lit_int()</a>, <a class="el" href="world_8h_source.html#l00096">nom_infer()</a>, <a class="el" href="world_8cpp_source.html#l00633">op_lea()</a>, <a class="el" href="world_8cpp_source.html#l00639">op_malloc()</a>, <a class="el" href="world_8cpp_source.html#l00644">op_mslot()</a>, <a class="el" href="world_8cpp_source.html#l00490">pack()</a>, <a class="el" href="world_8cpp_source.html#l00600">pick()</a>, <a class="el" href="world_8cpp_source.html#l00313">raw_app()</a>, <a class="el" href="world_8cpp_source.html#l00320">sigma()</a>, <a class="el" href="world_8cpp_source.html#l00602">test()</a>, <a class="el" href="world_8cpp_source.html#l00335">tuple()</a>, <a class="el" href="world_8cpp_source.html#l00383">tuple_str()</a>, <a class="el" href="world_8cpp_source.html#l00595">vel()</a>, and <a class="el" href="world_8cpp_source.html#l00033">World()</a>.</p>
 
 </div>
 </div>
@@ -2364,11 +2364,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
       </table>
 </div><div class="memdoc">
 
-<p><a class="el" href="classthorin_1_1Stream.html">Stream</a> thorin if World::State::min_level is LogLevel::debug. </p>
+<p><a class="el" href="classthorin_1_1Stream.html">Stream</a> thorin if World::State::max_level is LogLevel::debug. </p>
 
 <p class="definition">Definition at line <a class="el" href="stream_8cpp_source.html#l00286">286</a> of file <a class="el" href="stream_8cpp_source.html">stream.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba">thorin::Debug</a>, <a class="el" href="world_8h_source.html#l00559">min_level()</a>, and <a class="el" href="world_8h_source.html#l00558">stream()</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba">thorin::Debug</a>, <a class="el" href="world_8h_source.html#l00559">max_level()</a>, and <a class="el" href="world_8h_source.html#l00558">stream()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="pass_8cpp_source.html#l00040">thorin::PassMan::run()</a>.</p>
 
@@ -5077,7 +5077,7 @@ template&lt;class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00566">566</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00780">colorize()</a>, <a class="el" href="util_2stream_8cpp_source.html#l00005">thorin::Stream::endl()</a>, <a class="el" href="stream_8h_source.html#l00044">thorin::Stream::flush()</a>, <a class="el" href="util_2stream_8cpp_source.html#l00011">thorin::Stream::fmt()</a>, <a class="el" href="world_8cpp_source.html#l00738">level2acro()</a>, <a class="el" href="world_8cpp_source.html#l00759">level2color()</a>, <a class="el" href="world_8h_source.html#l00559">min_level()</a>, and <a class="el" href="world_8h_source.html#l00558">stream()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00780">colorize()</a>, <a class="el" href="util_2stream_8cpp_source.html#l00005">thorin::Stream::endl()</a>, <a class="el" href="stream_8h_source.html#l00044">thorin::Stream::flush()</a>, <a class="el" href="util_2stream_8cpp_source.html#l00011">thorin::Stream::fmt()</a>, <a class="el" href="world_8cpp_source.html#l00738">level2acro()</a>, <a class="el" href="world_8cpp_source.html#l00759">level2color()</a>, <a class="el" href="world_8h_source.html#l00559">max_level()</a>, and <a class="el" href="world_8h_source.html#l00558">stream()</a>.</p>
 
 </div>
 </div>
@@ -5203,6 +5203,35 @@ template&lt;class... Args&gt; </div>
 
 </div>
 </div>
+<a id="a63da1c3903a614e33fabea89d77b7a58" name="a63da1c3903a614e33fabea89d77b7a58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63da1c3903a614e33fabea89d77b7a58">&#9670;&nbsp;</a></span>max_level()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426">LogLevel</a> thorin::World::max_level </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00559">559</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="stream_8cpp_source.html#l00286">debug_stream()</a>, <a class="el" href="world_8h_source.html#l00566">log()</a>, and <a class="el" href="world_8h_source.html#l00561">set_log_level()</a>.</p>
+
+</div>
+</div>
 <a id="ae8b7b1a42808e32aba86c2d0d5681a5d" name="ae8b7b1a42808e32aba86c2d0d5681a5d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae8b7b1a42808e32aba86c2d0d5681a5d">&#9670;&nbsp;</a></span>meet()</h2>
 
@@ -5240,35 +5269,6 @@ template&lt;class... Args&gt; </div>
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00329">329</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00585">et()</a>.</p>
-
-</div>
-</div>
-<a id="a8d52c93b522494c794cb6c01e616c569" name="a8d52c93b522494c794cb6c01e616c569"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d52c93b522494c794cb6c01e616c569">&#9670;&nbsp;</a></span>min_level()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426">LogLevel</a> thorin::World::min_level </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00559">559</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="stream_8cpp_source.html#l00286">debug_stream()</a>, <a class="el" href="world_8h_source.html#l00566">log()</a>, and <a class="el" href="world_8h_source.html#l00561">set_log_level()</a>.</p>
 
 </div>
 </div>
@@ -8035,8 +8035,8 @@ template&lt;class O &gt; </div>
 
 </div>
 </div>
-<a id="ac587196bdd46779161226a2ba9084e0d" name="ac587196bdd46779161226a2ba9084e0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac587196bdd46779161226a2ba9084e0d">&#9670;&nbsp;</a></span>set_log_level() <span class="overload">[1/2]</span></h2>
+<a id="ab182c317de5135c6c4378dd2177a65d1" name="ab182c317de5135c6c4378dd2177a65d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab182c317de5135c6c4378dd2177a65d1">&#9670;&nbsp;</a></span>set_log_level() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8048,7 +8048,7 @@ template&lt;class O &gt; </div>
           <td class="memname">void thorin::World::set_log_level </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426">LogLevel</a>&#160;</td>
-          <td class="paramname"><em>min_level</em></td><td>)</td>
+          <td class="paramname"><em>max_level</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -8061,14 +8061,14 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00561">561</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00559">min_level()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00559">max_level()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="main_8cpp_source.html#l00051">main()</a>.</p>
 
 </div>
 </div>
-<a id="affd0ff4bdc5693c51a878fb1bdd7dea2" name="affd0ff4bdc5693c51a878fb1bdd7dea2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#affd0ff4bdc5693c51a878fb1bdd7dea2">&#9670;&nbsp;</a></span>set_log_level() <span class="overload">[2/2]</span></h2>
+<a id="a8b8c296fb16d4dcbb2523c603000ee60" name="a8b8c296fb16d4dcbb2523c603000ee60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b8c296fb16d4dcbb2523c603000ee60">&#9670;&nbsp;</a></span>set_log_level() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -8080,7 +8080,7 @@ template&lt;class O &gt; </div>
           <td class="memname">void thorin::World::set_log_level </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>min_level</em></td><td>)</td>
+          <td class="paramname"><em>max_level</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -8093,7 +8093,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00562">562</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00559">min_level()</a>, <a class="el" href="world_8h_source.html#l00562">set_log_level()</a>, and <a class="el" href="world_8cpp_source.html#l00749">str2level()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00559">max_level()</a>, <a class="el" href="world_8h_source.html#l00562">set_log_level()</a>, and <a class="el" href="world_8cpp_source.html#l00749">str2level()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00562">set_log_level()</a>.</p>
 
@@ -8404,7 +8404,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00201">201</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lexer_8cpp_source.html#l00032">thorin::Lexer::lex()</a>, and <a class="el" href="world_8h_source.html#l00096">nom_infer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lexer_8cpp_source.html#l00030">thorin::Lexer::lex()</a>, and <a class="el" href="world_8h_source.html#l00096">nom_infer()</a>.</p>
 
 </div>
 </div>

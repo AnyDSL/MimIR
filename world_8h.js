@@ -11,10 +11,10 @@ var world_8h =
     [ "VLOG", "world_8h.html#a35e71de09dfd64892a48e3f7c56c5619", null ],
     [ "WLOG", "world_8h.html#a32648fc31390d09eaa0cc2ef0afeb02a", null ],
     [ "LogLevel", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426", [
-      [ "Debug", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba", null ],
-      [ "Verbose", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf", null ],
-      [ "Info", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875", null ],
+      [ "Error", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd", null ],
       [ "Warn", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426a56525ae64d370c0b448ac0d60710ef17", null ],
-      [ "Error", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd", null ]
+      [ "Info", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875", null ],
+      [ "Verbose", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf", null ],
+      [ "Debug", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba", null ]
     ] ]
 ];

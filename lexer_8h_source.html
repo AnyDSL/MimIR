@@ -158,21 +158,23 @@ $(document).ready(function(){initNavTree('lexer_8h_source.html',''); initResizab
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">void</span> eat_comments();</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordtype">bool</span> start_md()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>(0).c32 == <span class="charliteral">&#39;/&#39;</span> &amp;&amp; <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>(1).c32 == <span class="charliteral">&#39;/&#39;</span> &amp;&amp; <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>(2).c32 == <span class="charliteral">&#39;/&#39;</span>; }</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keywordtype">void</span> emit_md(<span class="keywordtype">bool</span> start_of_file = <span class="keyword">false</span>);</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordtype">void</span> md_fence() { *ostream_ &lt;&lt; <span class="stringliteral">&quot;```\n&quot;</span>; }</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    World&amp; world_;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    std::ostream* ostream_;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keywordtype">bool</span> out_ = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    absl::flat_hash_map&lt;std::string, Tok::Tag&gt; keywords_;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>};</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keywordtype">void</span> md_fence() {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">if</span> (ostream_) *ostream_ &lt;&lt; <span class="stringliteral">&quot;```\n&quot;</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    World&amp; world_;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    std::ostream* ostream_;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="keywordtype">bool</span> out_ = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    absl::flat_hash_map&lt;std::string, Tok::Tag&gt; keywords_;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>};</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html"><div class="ttname"><a href="classthorin_1_1Lexer.html">thorin::Lexer</a></div><div class="ttdef"><b>Definition:</b> <a href="lexer_8h_source.html#l00016">lexer.h:16</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_a5577d9ea464727f9694e797ae7a7e1ea"><div class="ttname"><a href="classthorin_1_1Lexer.html#a5577d9ea464727f9694e797ae7a7e1ea">thorin::Lexer::Lexer</a></div><div class="ttdeci">Lexer(World &amp;world, std::string_view file, std::istream &amp;istream, std::ostream *ostream=nullptr)</div><div class="ttdoc">Creates a lexer to read Thorin files (see lex).</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8cpp_source.html#l00012">lexer.cpp:12</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_a6bd719c30ca4ab054c3e94dee0870e45"><div class="ttname"><a href="classthorin_1_1Lexer.html#a6bd719c30ca4ab054c3e94dee0870e45">thorin::Lexer::loc</a></div><div class="ttdeci">Loc loc() const</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8h_source.html#l00025">lexer.h:25</a></div></div>
-<div class="ttc" id="aclassthorin_1_1Lexer_html_aa21d77442a7d24a9e4333648c8ce6ca5"><div class="ttname"><a href="classthorin_1_1Lexer.html#aa21d77442a7d24a9e4333648c8ce6ca5">thorin::Lexer::lex</a></div><div class="ttdeci">Tok lex()</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8cpp_source.html#l00032">lexer.cpp:32</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Lexer_html_aa21d77442a7d24a9e4333648c8ce6ca5"><div class="ttname"><a href="classthorin_1_1Lexer.html#aa21d77442a7d24a9e4333648c8ce6ca5">thorin::Lexer::lex</a></div><div class="ttdeci">Tok lex()</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8cpp_source.html#l00030">lexer.cpp:30</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_aed7d9d0cd682bd7d98eef0019ed9a33e"><div class="ttname"><a href="classthorin_1_1Lexer.html#aed7d9d0cd682bd7d98eef0019ed9a33e">thorin::Lexer::world</a></div><div class="ttdeci">World &amp; world()</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8h_source.html#l00024">lexer.h:24</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Tok_html"><div class="ttname"><a href="classthorin_1_1Tok.html">thorin::Tok</a></div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00089">tok.h:89</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Tok_html_a2b38ddc0634b228ae22e6c43b0f23038"><div class="ttname"><a href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038">thorin::Tok::Tag</a></div><div class="ttdeci">Tag</div><div class="ttdef"><b>Definition:</b> <a href="tok_8h_source.html#l00111">tok.h:111</a></div></div>
