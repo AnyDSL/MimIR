@@ -64,8 +64,8 @@ int main(int argc, char** argv) {
         bool show_help    = false;
         bool show_version = false;
 
-        int verbose       = 0;
-        auto inc_verbose  = [&](bool) { ++verbose; };
+        int verbose      = 0;
+        auto inc_verbose = [&](bool) { ++verbose; };
 
         // clang-format off
         auto cli = lyra::cli()
