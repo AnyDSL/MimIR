@@ -85,12 +85,12 @@ int main(int argc, char** argv) {
         if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
 
         if (show_help) {
-            std::cerr << cli << std::endl;
+            std::cerr << cli;
             return EXIT_SUCCESS;
         }
 
         if (show_version) {
-            std::cerr << version << std::endl;
+            std::cerr << version;
             std::exit(EXIT_SUCCESS);
         }
 
@@ -110,11 +110,12 @@ int main(int argc, char** argv) {
         }
 
         if (input.empty()) throw std::invalid_argument("error: no input given");
-        if (prefix.empty()) {
-            auto i = input.rfind('.');
-            if (i == std::string::npos) throw std::invalid_argument("error: cannot derive prefix for output files");
-            prefix = input.substr(0, i);
-        }
+        if (input[0] == '-' || input.substr(0, 2) == "--") throw std::invalid_argument("error: unknown option " + input);
+
+        auto dot_i = input.rfind('.');
+        if (dot_i == std::string::npos || input.substr(dot_i) != ".thorin")
+            throw std::invalid_argument("error: invalid file name '" + input + "'");
+        prefix = input.substr(0, dot_i);
 
         World world;
         world.set_log_stream(std::make_shared<thorin::Stream>(std::cerr));
@@ -142,6 +143,7 @@ int main(int argc, char** argv) {
             Stream s(of);
             dot::emit(world, s);
         }
+
         if (emit_ll) {
             std::ofstream of(prefix + ".ll");
             Stream s(of);
