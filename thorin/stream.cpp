@@ -284,7 +284,7 @@ Stream& World::stream(RecStreamer& rec, const DepNode* n) const {
 }
 
 void World::debug_stream() {
-    if (min_level() == LogLevel::Debug) stream(stream());
+    if (max_level() == LogLevel::Debug) stream(stream());
 }
 
 template void Streamable<Def>::dump() const;

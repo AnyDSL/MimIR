@@ -22,12 +22,10 @@ Lexer::Lexer(World& world, std::string_view filename, std::istream& istream, std
     THORIN_SUBST(CODE)
 #undef CODE
 
-    if (ostream_) {
-        if (start_md())
-            emit_md(true);
-        else
-            md_fence();
-    }
+    if (start_md())
+        emit_md(true);
+    else
+        md_fence();
 }
 
 Tok Lexer::lex() {
@@ -106,7 +104,7 @@ Tok Lexer::lex() {
         }
 
         if (start_md()) {
-            if (ostream_) emit_md();
+            emit_md();
             continue;
         }
 
@@ -272,7 +270,6 @@ void Lexer::emit_md(bool start_of_file) {
         accept('\n');
     }
 
-    std::cout << (int)ahead().c32 << std::endl;
     if (ahead() == utf8::EoF) {
         out_ = false;
     } else {

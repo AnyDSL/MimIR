@@ -17,7 +17,7 @@
 
 namespace thorin {
 
-enum class LogLevel { Debug, Verbose, Info, Warn, Error };
+enum class LogLevel { Error, Warn, Info, Verbose, Debug };
 
 class Checker;
 class DepNode;
@@ -556,15 +556,15 @@ public:
     /// @name Logging
     ///@{
     Stream& stream() { return *stream_; }
-    LogLevel min_level() const { return state_.min_level; }
+    LogLevel max_level() const { return state_.max_level; }
 
-    void set_log_level(LogLevel min_level) { state_.min_level = min_level; }
-    void set_log_level(std::string_view min_level) { set_log_level(str2level(min_level)); }
+    void set_log_level(LogLevel max_level) { state_.max_level = max_level; }
+    void set_log_level(std::string_view max_level) { set_log_level(str2level(max_level)); }
     void set_log_stream(std::shared_ptr<Stream> stream) { stream_ = stream; }
 
     template<class... Args>
     void log(LogLevel level, Loc loc, const char* fmt, Args&&... args) {
-        if (stream_ && int(min_level()) <= int(level)) {
+        if (stream_ && int(level) <= int(max_level())) {
             std::ostringstream oss;
             oss << loc;
             stream().fmt("{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
@@ -595,7 +595,7 @@ public:
     ///@{
     Stream& stream(Stream&) const;
     Stream& stream(RecStreamer&, const DepNode*) const;
-    void debug_stream(); ///< Stream thorin if World::State::min_level is LogLevel::debug.
+    void debug_stream(); ///< Stream thorin if World::State::max_level is LogLevel::debug.
     ///@}
 
     /// @name error handling
@@ -727,7 +727,7 @@ private:
     } arena_;
 
     struct State {
-        LogLevel min_level = LogLevel::Error;
+        LogLevel max_level = LogLevel::Error;
         u32 curr_gid       = 0;
         u32 curr_tag       = tag_t(-1);
         bool pe_done       = false;
