@@ -1,8 +1,8 @@
 var NAVTREEINDEX10 =
 {
-"classthorin_1_1utf8_1_1Lexer.html#ae15c4c0f955cb984d0035a9d6b6ed12b":[9,0,0,2,0,1],
-"classthorin_1_1utf8_1_1Lexer.html#aeb6b8061e55497b8da23fb1f5e11288f":[7,0,0,7,0,8],
+"classthorin_1_1utf8_1_1Lexer.html#ae15c4c0f955cb984d0035a9d6b6ed12b":[7,0,0,7,0,1],
 "classthorin_1_1utf8_1_1Lexer.html#aeb6b8061e55497b8da23fb1f5e11288f":[9,0,0,2,0,8],
+"classthorin_1_1utf8_1_1Lexer.html#aeb6b8061e55497b8da23fb1f5e11288f":[7,0,0,7,0,8],
 "concepts.html":[8],
 "conceptthorin_1_1PtrStream.html":[7,0,0,161],
 "conceptthorin_1_1PtrStream.html":[8,0,0],
@@ -141,8 +141,8 @@ var NAVTREEINDEX10 =
 "eta__red_8h.html":[10,0,2,3,0,7],
 "eta__red_8h_source.html":[10,0,2,3,0,7],
 "files.html":[10,0],
-"functions.html":[9,3,0,0],
 "functions.html":[9,3,0],
+"functions.html":[9,3,0,0],
 "functions_b.html":[9,3,0,1],
 "functions_c.html":[9,3,0,2],
 "functions_d.html":[9,3,0,3],
