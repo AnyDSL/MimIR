@@ -111,20 +111,22 @@ $(document).ready(function(){initNavTree('md_docs_cli.html',''); initResizable()
 <div class="textblock"><h1><a class="anchor" id="autotoc_md12"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  thorin [-?|-h|--help] [-c|--clang &lt;clang&gt;] [-l|--emit-llvm] [-v|--version] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-search-path &lt;path&gt;] [&lt;input file&gt;]</div>
+<div class="line">  thorin [-?|-h|--help] [-v|--version] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-e|--emit &lt;thorin|md|ll|dot&gt;] [-V|--verbose] [-b|--break &lt;gid&gt;] [-o|--output &lt;prefix&gt;] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
 <div class="line">OPTIONS, ARGUMENTS:</div>
-<div class="line">  -?, -h, --help          </div>
-<div class="line">  -c, --clang &lt;clang&gt;     path to clang executable (default: {})</div>
-<div class="line">  -l, --emit-llvm         emit LLVM</div>
-<div class="line">  -v, --version           display version info and exit</div>
-<div class="line">  -d, --dialect &lt;dialect&gt; dynamically load dialect [WIP]</div>
-<div class="line">  -D, --dialect-search-path &lt;path&gt;</div>
-<div class="line">                          path to search dialects in</div>
-<div class="line">  &lt;input file&gt;            The input file. Use &#39;-&#39; to read from stdin.</div>
-<div class="line"> </div>
+<div class="line">  -?, -h, --help</div>
+<div class="line">  -v, --version           Display version info and exit.</div>
+<div class="line">  -c, --clang &lt;clang&gt;     Path to clang executable (default: &quot;which clang&quot;).</div>
+<div class="line">  -d, --dialect &lt;dialect&gt; Dynamically load dialect [WIP].</div>
+<div class="line">  -D, --dialect-path &lt;path&gt;</div>
+<div class="line">                          Path to search dialects in.</div>
+<div class="line">  -e, --emit &lt;thorin|md|ll|dot&gt;</div>
+<div class="line">                          Select emitter. Multiple emitters can be specified simultaneously.</div>
+<div class="line">  -V, --verbose           Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.</div>
+<div class="line">  -b, --break &lt;gid&gt;       Trigger break-point upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</div>
+<div class="line">  -o, --output &lt;prefix&gt;   Prefix used for various output files.</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
