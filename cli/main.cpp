@@ -52,7 +52,6 @@ int main(int argc, char** argv) {
     try {
         std::string input, prefix;
         std::string clang     = get_clang_from_path();
-        std::string log_level = "error";
 
         bool emit_ll     = false;
         bool emit_md     = false;
@@ -68,24 +67,31 @@ int main(int argc, char** argv) {
             std::exit(EXIT_SUCCESS);
         };
 
-        static constexpr const char* Levels   = "error|warn|info|verbose|debug";
+        int verbose = 0;
+        auto inc_verbose = [&](bool) { ++verbose; };
         static constexpr const char* Backends = "thorin|md|ll|dot";
+
         // clang-format off
         auto cli = lyra::cli()
             | lyra::help(show_help)
-            | lyra::opt(print_version            )["-v"]["--version"     ]("display version info and exit")
-            | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("path to clang executable (default: " + clang + ")")
-            | lyra::opt(dialects,      "dialect" )["-d"]["--dialect"     ]("dynamically load dialect [WIP]")
-            | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("path to search dialects in")
-            | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("select emitter").choices("thorin", "md", "ll", "dot")
-            | lyra::opt(log_level,     Levels    )      ["--log-level"   ]("set log level" ).choices("error", "warn", "info", "verbose", "debug")
+            | lyra::opt(print_version            )["-v"]["--version"     ]("Display version info and exit.")
+            | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: " + clang + ").")
+            | lyra::opt(dialects,      "dialect" )["-d"]["--dialect"     ]("Dynamically load dialect [WIP].")
+            | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("Path to search dialects in.")
+            | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter.").choices("thorin", "md", "ll", "dot")
+            | lyra::opt(inc_verbose              )["-V"]["--verbose"     ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
 #ifndef NDEBUG
-            | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("trigger break-point upon construction of node with global id <gid>")
+            | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("Trigger break-point upon construction of node with global id <gid>. Useful when running in a debugger.")
 #endif
-            | lyra::opt(prefix,        "prefix"  )["-o"]["--output"      ]("prefix used for various output files")
-            | lyra::arg(input, "input file")("input file; use '-' to read from stdin");
+            | lyra::opt(prefix,        "prefix"  )["-o"]["--output"      ]("Prefix used for various output files.")
+            | lyra::arg(input,         "file"    )                        ("Input file.");
 
         if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
+
+        if (show_help) {
+            std::cerr << cli << "\n";
+            return EXIT_SUCCESS;
+        }
 
         for (const auto& e : emitters) {
             if (false) {}
@@ -97,14 +103,12 @@ int main(int argc, char** argv) {
         }
         // clang-format on
 
-        if (show_help) std::cerr << cli << "\n";
-
         if (!dialects.empty()) {
             for (const auto& dialect : dialects) test_plugin(dialect, dialect_paths);
             return EXIT_SUCCESS;
         }
 
-        if (input.empty()) throw std::invalid_argument("error: no input input given");
+        if (input.empty()) throw std::invalid_argument("error: no input given");
         if (prefix.empty()) {
             auto i = input.rfind('.');
             if (i == std::string::npos) throw std::invalid_argument("error: cannot derive prefix for output files");
@@ -113,29 +117,21 @@ int main(int argc, char** argv) {
 
         World world;
         world.set_log_stream(std::make_shared<thorin::Stream>(std::cerr));
-        world.set_log_level(log_level);
+        world.set_log_level((LogLevel)verbose);
 #ifndef NDEBUG
         for (auto b : breakpoints) world.breakpoint(b);
 #endif
 
-        std::ifstream ifs;
-        std::istream* pis = &ifs;
-
-        if (input == "-") {
-            input = "<stdin>";
-            pis   = &std::cin;
-        } else {
-            ifs.open(input);
-            if (!ifs) {
-                errln("error: cannot read file '{}'", input);
-                return EXIT_FAILURE;
-            }
+        std::ifstream ifs(input);
+        if (!ifs) {
+            errln("error: cannot read file '{}'", input);
+            return EXIT_FAILURE;
         }
 
         std::ofstream ofs;
         if (emit_md) ofs.open(prefix + ".md");
 
-        Parser parser(world, input, *pis, emit_md ? &ofs : nullptr);
+        Parser parser(world, input, ifs, emit_md ? &ofs : nullptr);
         parser.parse_module();
 
         if (emit_thorin) world.dump();

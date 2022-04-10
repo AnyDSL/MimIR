@@ -29,14 +29,18 @@ Loc Sym::loc() const { return def()->loc(); }
  * ostream
  */
 
-std::ostream& operator<<(std::ostream& os, const Pos pos) { return os << pos.row << ':' << pos.col; }
-std::ostream& operator<<(std::ostream& os, const Sym sym) { return os << tuple2str(sym.def()); }
+std::ostream& operator<<(std::ostream& os, const Pos pos) {
+    if (pos.col != uint32_t(-1)) return os << pos.row << ':' << pos.col;
+    return os << pos.row;
+}
 
 std::ostream& operator<<(std::ostream& os, const Loc loc) {
     os << loc.file << ':' << loc.begin;
     if (loc.begin != loc.finis) os << '-' << loc.finis;
     return os;
 }
+
+std::ostream& operator<<(std::ostream& os, const Sym sym) { return os << tuple2str(sym.def()); }
 
 std::string Sym::to_string() const { return tuple2str(def()); }
 

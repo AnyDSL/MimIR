@@ -52,7 +52,9 @@ private:
     void eat_comments();
     bool start_md() const { return ahead(0).c32 == '/' && ahead(1).c32 == '/' && ahead(2).c32 == '/'; }
     void emit_md(bool start_of_file = false);
-    void md_fence() { *ostream_ << "```\n"; }
+    void md_fence() {
+        if (ostream_) *ostream_ << "```\n";
+    }
 
     World& world_;
     std::ostream* ostream_;
