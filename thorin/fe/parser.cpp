@@ -257,17 +257,16 @@ const Def* Parser::parse_lit() {
         auto type = parse_expr("literal", r);
 
         const Def* meta = nullptr;
+        // clang-format off
         switch (lit.tag()) {
-            // clang-format off
             case Tok::Tag::L_s: meta = world().lit_nat('s'); break;
             case Tok::Tag::L_u: meta = world().lit_nat('u'); break;
             case Tok::Tag::L_r: meta = world().lit_nat('r'); break;
             case Tok::Tag::T_bot: return world().bot(type, track);
             case Tok::Tag::T_top: return world().top(type, track);
             default: unreachable();
-            // clang-format on
         }
-
+        // clang-format on
         return world().lit(type, lit.u(), track.meta(meta));
     }
 
@@ -315,7 +314,7 @@ void Parser::parse_let() {
     eat(Tok::Tag::K_let);
     auto sym = parse_sym();
     if (accept(Tok::Tag::T_colon)) {
-        /*auto type = */parse_expr("type of a let binding");
+        /*auto type = */ parse_expr("type of a let binding");
         // do sth with type
     }
     eat(Tok::Tag::T_assign);
@@ -325,33 +324,31 @@ void Parser::parse_let() {
 }
 
 void Parser::parse_nom() {
-    auto track = tracker();
-    auto tag = lex().tag();
+    auto track    = tracker();
+    auto tag      = lex().tag();
     bool external = accept(Tok::Tag::K_extern).has_value();
-    auto sym = parse_sym("nominal");
-    auto type = accept(Tok::Tag::T_colon) ? parse_expr("type of a nominal") : world().type();
+    auto sym      = parse_sym("nominal");
+    auto type     = accept(Tok::Tag::T_colon) ? parse_expr("type of a nominal") : world().type();
 
     Def* nom;
     switch (tag) {
         case Tok::Tag::K_Sigma: {
             expect(Tok::Tag::T_comma, "nominal Sigma");
             auto arity = expect(Tok::Tag::L_u, "arity of a nominal Sigma");
-            nom = world().nom_sigma(type, arity.u(), track.named(sym));
+            nom        = world().nom_sigma(type, arity.u(), track.named(sym));
             break;
         }
         case Tok::Tag::K_Arr: {
             expect(Tok::Tag::T_comma, "nominal array");
             auto shape = parse_expr("shape of a nominal array");
-            nom = world().nom_arr(type, track)->set_shape(shape);
+            nom        = world().nom_arr(type, track)->set_shape(shape);
             break;
         }
-        case Tok::Tag::K_pack:
-            nom = world().nom_pack(type, track.named(sym));
-            break;
+        case Tok::Tag::K_pack: nom = world().nom_pack(type, track.named(sym)); break;
         case Tok::Tag::K_Pi: {
             expect(Tok::Tag::T_comma, "nominal Pi");
             auto dom = parse_expr("domain of a nominal Pi");
-            nom = world().nom_pi(type, track.named(sym))->set_dom(dom);
+            nom      = world().nom_pi(type, track.named(sym))->set_dom(dom);
             break;
         }
         case Tok::Tag::K_lam: {
@@ -365,9 +362,7 @@ void Parser::parse_nom() {
 
     insert(sym, nom);
     if (external) nom->make_external();
-
     if (ahead().isa(Tok::Tag::T_assign)) return parse_def(sym);
-
     expect(Tok::Tag::T_semicolon, "end of a nominal");
 }
 
