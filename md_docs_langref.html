@@ -110,14 +110,15 @@ $(document).ready(function(){initNavTree('md_docs_langref.html',''); initResizab
 <li class="level3"><a href="#autotoc_md8">Regular Expressions</a></li>
 </ul>
 </li>
+<li class="level2"><a href="#autotoc_md9">Comments</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md9">Grammar</a><ul><li class="level2"><a href="#productions">Productions</a><ul><li class="level3"><a href="#autotoc_md10">Module</a></li>
-<li class="level3"><a href="#autotoc_md11">Declaration</a></li>
-<li class="level3"><a href="#autotoc_md12">Expressions</a></li>
+<li class="level1"><a href="#autotoc_md10">Grammar</a><ul><li class="level2"><a href="#productions">Productions</a><ul><li class="level3"><a href="#autotoc_md11">Module</a></li>
+<li class="level3"><a href="#autotoc_md12">Declaration</a></li>
+<li class="level3"><a href="#autotoc_md13">Expressions</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md13">Precedence</a></li>
+<li class="level2"><a href="#autotoc_md14">Precedence</a></li>
 </ul>
 </li>
 </ul>
@@ -236,13 +237,20 @@ Regular Expressions</h3>
 <td class="markdownTableBodyNone">sym   </td><td class="markdownTableBodyNone">[ <code>_</code><code>a</code>-<code>z</code><code>A</code>-<code>Z</code> ][ <code>.</code><code>_</code><code>0</code>-<code>9</code><code>a</code>-<code>z</code><code>A</code>-<code>Z</code> ]*   </td><td class="markdownTableBodyNone">symbol   </td></tr>
 </table>
 <p >So, <em>sym</em> referes to the shorthand rule while <em>Sym</em> refers to the <em>terminal</em> that is identical to <em>sym</em>. However, the terminal <em>Ax</em> also uses the shorthand rule <em>sym</em>.</p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md9"></a>
+Comments</h2>
+<p >In addition, the following comments are avaiable:</p><ul>
+<li><code>/* ... */</code> multi-line comment</li>
+<li><code>//</code> single-line comment</li>
+<li><code>///</code> single-line comment that is put into the Markdown output (see <a class="el" href="md_docs_cli.html#emitters">Emitters</a>)</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md10"></a>
 Grammar</h1>
 <p >Thorin's grammar is defined as a <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context-free grammar</a> that consists of the <em>terminals</em> defined <a class="el" href="md_docs_langref.html#terminals">above</a> as well as the <em>nonterminals</em> and <em>productions</em> defined <a class="el" href="md_docs_langref.html#productions">below</a>. The start symbol is "m" (module).</p>
 <h2><a class="anchor" id="productions"></a>
 Productions</h2>
 <p >The following tables comprise all produciton rules:</p>
-<h3><a class="anchor" id="autotoc_md10"></a>
+<h3><a class="anchor" id="autotoc_md11"></a>
 Module</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -250,7 +258,7 @@ Module</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">m   </td><td class="markdownTableBodyNone">d ... d   </td><td class="markdownTableBodyNone">module   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">thorin::World</a>   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md11"></a>
+<h3><a class="anchor" id="autotoc_md12"></a>
 Declaration</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -278,7 +286,7 @@ Declaration</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"><code>=</code> <code>{</code> e <code>,</code> ... <code>,</code> e <code>}</code> <code>;</code>   </td><td class="markdownTableBodyNone">operands of nominal definition   </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md12"></a>
+<h3><a class="anchor" id="autotoc_md13"></a>
 Expressions</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -317,7 +325,7 @@ Expressions</h3>
 <li>a bottom/top defaults to <code>*</code>,</li>
 <li>a nominals defaults to <code>*</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Precedence</h2>
 <p >Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):</p>
 <table class="markdownTable">

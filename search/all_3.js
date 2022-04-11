@@ -42,7 +42,7 @@ var searchData=
   ['codom_39',['codom',['../classthorin_1_1Pi.html#a3b30de4543d20c85955e970879a54fe2',1,'thorin::Pi::codom()'],['../classthorin_1_1Lam.html#a6bc5bc4cd6161c40fca0f5c351882f9c',1,'thorin::Lam::codom()']]],
   ['col_40',['col',['../structthorin_1_1Pos.html#a7ea3f1b1492b717c7037053ba8e6b32b',1,'thorin::Pos']]],
   ['colorize_41',['colorize',['../classthorin_1_1World.html#a1136556d04f526ad42a17206472a271d',1,'thorin::World']]],
-  ['command_2dline_20interface_42',['Command-Line Interface',['../md_docs_cli.html',1,'']]],
+  ['command_2dline_20reference_42',['Command-Line Reference',['../md_docs_cli.html',1,'']]],
   ['commute_43',['commute',['../namespacethorin.html#ac1caf9dde31a5705cfdf7d70e1f9a96d',1,'thorin']]],
   ['concat_44',['concat',['../namespacethorin.html#a3871d8e6d247d00a69094936175c20e1',1,'thorin::concat(const T &amp;a, const U &amp;b) -&gt; Array&lt; typename T::value_type &gt;'],['../namespacethorin.html#a6a5fe614398a8848c84a14253a2a1497',1,'thorin::concat(const T &amp;val, ArrayRef&lt; T &gt; a) -&gt; Array&lt; T &gt;'],['../namespacethorin.html#a78f69bd0bad07415aba080f4cdb39a89',1,'thorin::concat(ArrayRef&lt; T &gt; a, const T &amp;val) -&gt; Array&lt; T &gt;']]],
   ['const_5fiterator_45',['const_iterator',['../classthorin_1_1ArrayRef.html#a152d25808d043bd74889fbfedea15dcd',1,'thorin::ArrayRef::const_iterator()'],['../classthorin_1_1Array.html#a91289b25680b9439535a816dae687d9b',1,'thorin::Array::const_iterator()']]],
