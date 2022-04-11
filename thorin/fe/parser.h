@@ -9,7 +9,7 @@ namespace thorin {
 
 /// Parses Thorin code into the provided World.
 ///
-/// The behind the various parse methods is as follows:
+/// The logic behind the various parse methods is as follows:
 /// 1. The `parse_*` method does **not** have a `std::string_view ctxt` parameter:
 ///
 ///     It's the **caller's responsibility** to first make appropriate

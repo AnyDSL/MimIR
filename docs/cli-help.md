@@ -13,5 +13,5 @@ OPTIONS, ARGUMENTS:
   -e, --emit <thorin|md|ll|dot>
                           Select emitter. Multiple emitters can be specified simultaneously.
   -V, --verbose           Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.
-  -b, --break <gid>       Trigger break-point upon construction of node with global id <gid>. Useful when running in a debugger.
+  -b, --break <gid>       Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.
   -o, --output <prefix>   Prefix used for various output files.

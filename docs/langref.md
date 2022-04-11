@@ -86,6 +86,13 @@ The previous table resorts to the following definitions as shorthand:
 So, *sym* referes to the shorthand rule while *Sym* refers to the *terminal* that is identical to *sym*.
 However, the terminal *Ax* also uses the shorthand rule *sym*.
 
+### Comments
+
+In addition, the following comments are avaiable:
+* `/* ... */` multi-line comment
+* `//` single-line comment
+* `///` single-line comment that is put into the Markdown output (see [Emitters](@ref emitters))
+
 ## Grammar
 
 Thorin's grammar is defined as a [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) that consists of the *terminals* defined [above](#terminals) as well as the *nonterminals* and *productions* defined [below](#productions).
