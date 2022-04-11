@@ -77,7 +77,7 @@ int main(int argc, char** argv) {
             | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("thorin", "md", "ll", "dot")
             | lyra::opt(inc_verbose              )["-V"]["--verbose"     ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
 #ifndef NDEBUG
-            | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("Trigger break-point upon construction of node with global id <gid>. Useful when running in a debugger.")
+            | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
 #endif
             | lyra::opt(prefix,        "prefix"  )["-o"]["--output"      ]("Prefix used for various output files.")
             | lyra::arg(input,         "file"    )                        ("Input file.");
