@@ -3,7 +3,7 @@
 
 #include "thorin/def.h"
 
-#include "thorin/util/stream.h"
+#include "thorin/util/print.h"
 
 namespace thorin {
 
@@ -55,8 +55,6 @@ public:
     const F_CFG& f_cfg() const;
     const B_CFG& b_cfg() const;
     ///@}
-
-    Stream& stream(Stream&) const;
 
 private:
     void run();

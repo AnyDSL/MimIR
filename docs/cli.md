@@ -9,6 +9,7 @@
 ## Emitters {#emitters}
 
 * `-e thorin` emits Thorin code again.
+* `-e h` emits a header file to be used to interface with a dialect in C++.
 * `-e md` emits the input formatted as [Markdown](https://www.doxygen.nl/manual/markdown.html).
     * Single-line `/// xxx` comments will put `xxx` directly into the Markdown output.
         You can put spaces after the `///`.

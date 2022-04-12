@@ -65,6 +65,29 @@ std::string Axiom::demangle(u64 u) {
     return result;
 }
 
+static std::string_view sub_view(std::string_view s, size_t i, size_t n = std::string_view::npos) {
+    n = std::min(n, s.size());
+    return {s.data() + i, n - i};
+}
+
+std::optional<std::pair<std::string_view, std::string_view>> Axiom::dialect_and_group(std::string_view s) {
+    if (s.empty()) return {};
+    if (s[0] != ':') return {};
+    s = sub_view(s, 1);
+
+    auto dot = s.find('.');
+    if (dot == std::string_view::npos) return {};
+
+    auto dialect = sub_view(s, 0, dot);
+    if (!mangle(dialect)) return {};
+
+    auto group = sub_view(s, dot + 1);
+    if (group.empty()) return {};
+
+    // TODO check that group is valid
+    return std::pair(dialect, group);
+}
+
 std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {
     if (auto axiom = def->isa<Axiom>()) return {axiom, axiom->curry()};
     if (auto app = def->isa<App>()) return {app->axiom(), app->curry()};

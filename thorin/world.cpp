@@ -285,8 +285,8 @@ World::~World() {
 
 World World::stub() {
     World w(name());
-    w.stream_ = stream_;
-    w.state_  = state_;
+    w.ostream_ = ostream_;
+    w.state_   = state_;
     return w;
 }
 
@@ -786,8 +786,6 @@ void World::set_error_handler(std::unique_ptr<ErrorHandler>&& err) { err_ = std:
  * instantiate templates
  */
 
-template void Streamable<World>::write(std::string_view filename) const;
-template void Streamable<World>::dump() const;
 template void World::visit<true>(VisitFn) const;
 template void World::visit<false>(VisitFn) const;
 template const Def* World::ext<true>(const Def*, const Def*);

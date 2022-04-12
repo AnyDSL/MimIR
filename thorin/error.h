@@ -1,11 +1,12 @@
 #ifndef THORIN_ERROR_H
 #define THORIN_ERROR_H
 
+#include <sstream>
 #include <stdexcept>
 
 #include "thorin/debug.h"
 
-#include "thorin/util/stream.h"
+#include "thorin/util/print.h"
 
 namespace thorin {
 
@@ -37,9 +38,10 @@ public:
 
 template<class T, class... Args>
 [[noreturn]] void err(Loc loc, const char* fmt, Args&&... args) {
-    StringStream s;
-    s.fmt("{}: error: ", loc).fmt(fmt, std::forward<Args&&>(args)...);
-    throw T(s.str());
+    std::ostringstream oss;
+    print(oss, "{}: error: ", loc);
+    print(oss, fmt, std::forward<Args&&>(args)...);
+    throw T(oss.str());
 }
 
 class ErrorHandler {

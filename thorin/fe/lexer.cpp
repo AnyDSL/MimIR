@@ -9,10 +9,10 @@ namespace thorin {
 static bool issign(char32_t i) { return i == '+' || i == '-'; }
 static bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
 
-Lexer::Lexer(World& world, std::string_view filename, std::istream& istream, std::ostream* ostream /*= nullptr*/)
+Lexer::Lexer(World& world, std::string_view filename, std::istream& istream, std::ostream* md /*= nullptr*/)
     : Super(filename, istream)
     , world_(world)
-    , ostream_(ostream) {
+    , md_(md) {
 #define CODE(t, str) keywords_[str] = Tok::Tag::t;
     THORIN_KEY(CODE)
 #undef CODE

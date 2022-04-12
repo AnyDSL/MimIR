@@ -3,6 +3,7 @@
 
 #include "thorin/world.h"
 
+#include "thorin/be/h/h.h"
 #include "thorin/fe/lexer.h"
 
 namespace thorin {
@@ -25,10 +26,11 @@ namespace thorin {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, std::string_view, std::istream&, std::ostream*);
+    Parser(World&, std::string_view, std::istream&, std::ostream* md = nullptr);
 
     World& world() { return lexer_.world(); }
     void parse_module();
+    void bootstrap(std::ostream&);
 
 private:
     Sym parse_sym(std::string_view ctxt = {});
@@ -163,9 +165,11 @@ private:
 
     Lexer lexer_;
     Loc prev_;
+    std::string dialect_;
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
     std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
     std::deque<Scope> scopes_;
+    h::Bootstrapper bootstrapper_;
 };
 
 } // namespace thorin

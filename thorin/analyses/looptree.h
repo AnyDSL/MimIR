@@ -1,7 +1,6 @@
 #ifndef THORIN_ANALYSES_LOOPTREE_H
 #define THORIN_ANALYSES_LOOPTREE_H
 
-#include <sstream>
 #include <vector>
 
 #include "thorin/analyses/cfg.h"
@@ -26,7 +25,7 @@ public:
     /// The header CFNode%s are the set of CFNode%s not dominated by any other CFNode within the loop.
     /// The root node is a LoopTree::Head without any CFNode%s but further children and `depth_ -1`.
     /// Thus, the forest is pooled into a tree.
-    class Base : public RuntimeCast<Base>, public Streamable<LoopTree<forward>> {
+    class Base : public RuntimeCast<Base> {
     public:
         enum class Node { Head, Leaf };
 
@@ -38,7 +37,6 @@ public:
         const Head* parent() const { return parent_; }
         ArrayRef<const CFNode*> cf_nodes() const { return cf_nodes_; }
         size_t num_cf_nodes() const { return cf_nodes().size(); }
-        virtual Stream& stream(Stream&) const = 0;
 
     protected:
         Node node_;
@@ -58,7 +56,6 @@ public:
         const Base* child(size_t i) const { return children_[i].get(); }
         size_t num_children() const { return children().size(); }
         bool is_root() const { return Base::parent_ == 0; }
-        Stream& stream(Stream&) const override;
 
         static constexpr auto Node = Base::Node::Head;
 
@@ -82,7 +79,6 @@ public:
         const CFNode* cf_node() const { return Leaf::cf_nodes().front(); }
         /// Index of a DFS of LoopTree::Leaf%s.
         size_t index() const { return index_; }
-        Stream& stream(Stream&) const override;
 
         static constexpr auto Node = Base::Node::Leaf;
 
@@ -114,6 +110,9 @@ private:
 
     friend class LoopTreeBuilder<forward>;
 };
+
+template<bool forward>
+std::ostream operator<<(std::ostream&, const typename LoopTree<forward>::Base*);
 
 } // namespace thorin
 

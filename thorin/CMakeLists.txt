@@ -40,6 +40,8 @@ add_library(libthorin
     be/emitter.h
     be/dot/dot.cpp
     be/dot/dot.h
+    be/h/h.cpp
+    be/h/h.h
     be/ll/ll.cpp
     be/ll/ll.h
     fe/lexer.cpp
@@ -88,8 +90,8 @@ add_library(libthorin
     util/hash.h
     util/indexmap.h
     util/indexset.h
-    util/stream.cpp
-    util/stream.h
+    util/print.cpp
+    util/print.h
     util/types.h
     util/utf8.cpp
     util/utf8.h

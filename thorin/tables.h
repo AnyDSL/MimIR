@@ -3,7 +3,7 @@
 
 #include <string_view>
 
-#include "thorin/util/assert.h"
+#include "thorin/util/print.h"
 #include "thorin/util/types.h"
 
 // clang-format off
