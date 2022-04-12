@@ -707,7 +707,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
                   "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, tup_t);
             print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", tup_t, ll_tup, tup_t, name);
             print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, i64 {}", name,
-                                         tup_t, tup_t, name, ll_idx);
+                  tup_t, tup_t, name, ll_idx);
             return bb.assign(name, "load {}, {}* {}.gep", elem_t, elem_t, name);
         }
     } else if (auto insert = def->isa<Insert>()) {

@@ -1,8 +1,8 @@
 #ifndef THORIN_BE_DOT_DOT_H
 #define THORIN_BE_DOT_DOT_H
 
-#include <ostream>
 #include <functional>
+#include <ostream>
 
 namespace thorin {
 class World;

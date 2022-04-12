@@ -3,8 +3,8 @@
 
 #include "thorin/world.h"
 
-#include "thorin/fe/lexer.h"
 #include "thorin/be/h/h.h"
+#include "thorin/fe/lexer.h"
 
 namespace thorin {
 

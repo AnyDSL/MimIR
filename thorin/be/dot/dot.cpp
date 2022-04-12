@@ -52,7 +52,7 @@ static void emit_cluster_start(std::ostream& os, Lam* lam) {
     print(os, "\"{}:{}\" [shape=rect];\n", lam->node_name(), lam->unique_name());
     if (auto body = lam->body())
         print(os, "\"{}:{}\"->\"{}:{}\" [style=dashed];\n", lam->node_name(), lam->unique_name(), body->node_name(),
-                   body->unique_name());
+              body->unique_name());
 }
 
 static void emit_node_attributes(std::ostream& stream, const Def* def) {
@@ -88,7 +88,7 @@ std::string DotEmitter::emit_bb(BB&, const Def* def) {
     for (auto op : def->ops()) {
         emit_unsafe(op);
         print(connections_, "\"{}:{}\"->\"{}:{}\";\n", def->node_name(), def->unique_name(), op->node_name(),
-                         op->unique_name());
+              op->unique_name());
     }
 
     return {def->unique_name()};

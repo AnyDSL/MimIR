@@ -85,7 +85,7 @@ std::optional<std::pair<std::string_view, std::string_view>> Axiom::dialect_and_
     if (group.empty()) return {};
 
     // TODO check that group is valid
-    return {{dialect, group}};
+    return std::pair(dialect, group);
 }
 
 std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {

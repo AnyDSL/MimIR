@@ -12,7 +12,8 @@ namespace thorin {
 
 template<class R>
 std::ostream& range(std::ostream& os, const R& r, const char* sep = ", ") {
-    return range(os, r, [&os](const auto& x) { os << x; }, sep);
+    return range(
+        os, r, [&os](const auto& x) { os << x; }, sep);
 }
 
 template<class R, class F>
@@ -49,8 +50,9 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
                     os << t;
                 }
 
-                ++s;                                                // skip closing brace '}'
-                return print(os, s, std::forward<Args&&>(args)...); // call even when *s == '\0' to detect extra arguments
+                ++s; // skip closing brace '}'
+                // call even when *s == '\0' to detect extra arguments
+                return print(os, s, std::forward<Args&&>(args)...);
             }
             case '}':
                 if (match2nd(os, next, s, '}')) continue;

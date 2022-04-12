@@ -219,8 +219,8 @@ LoopTree<forward>::LoopTree(const CFG<forward>& cfg)
 
 template class LoopTree<true>;
 template class LoopTree<false>;
-template std::ostream& operator<< <true>(std::ostream&, const typename LoopTree<true>::Base*);
-template std::ostream& operator<< <false>(std::ostream&, const typename LoopTree<false>::Base*);
+template std::ostream& operator<<<true>(std::ostream&, const typename LoopTree<true>::Base*);
+template std::ostream& operator<<<false>(std::ostream&, const typename LoopTree<false>::Base*);
 
 //------------------------------------------------------------------------------
 

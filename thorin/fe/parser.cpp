@@ -23,9 +23,7 @@ Parser::Parser(World& world, std::string_view file, std::istream& istream, std::
     push(); // root scope
 }
 
-void Parser::bootstrap(std::ostream& h) {
-    bootstrapper_.emit(h);
-}
+void Parser::bootstrap(std::ostream& h) { bootstrapper_.emit(h); }
 
 Tok Parser::lex() {
     auto result = ahead();

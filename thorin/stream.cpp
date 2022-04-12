@@ -8,8 +8,7 @@ namespace thorin {
 
 struct Unwrap {
     Unwrap(const Def* def)
-        : def(def)
-    {}
+        : def(def) {}
 
     const Def* operator->() const { return def; };
     const Def* operator*() const { return def; };
@@ -243,7 +242,9 @@ std::ostream& Def::let(std::ostream& os, Tab& tab) const {
 
 //------------------------------------------------------------------------------
 
-std::ostream& operator<<(std::ostream& os, std::pair<const Def*, const Def*> p) { return print(os, "({}, {})", p.first, p.second); }
+std::ostream& operator<<(std::ostream& os, std::pair<const Def*, const Def*> p) {
+    return print(os, "({}, {})", p.first, p.second);
+}
 
 void Def::dump() const { std::cout << this << std::endl; }
 void Def::dump(size_t max) const { stream(std::cout, max) << std::endl; }
