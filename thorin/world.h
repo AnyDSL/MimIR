@@ -790,7 +790,7 @@ private:
 
     std::unique_ptr<Checker> checker_;
     std::unique_ptr<ErrorHandler> err_;
-    mutable std::ostream* ostream_;
+    mutable std::ostream* ostream_ = nullptr;
 
     friend DefArray Def::reduce(const Def*);
 };

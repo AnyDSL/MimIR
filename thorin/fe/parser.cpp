@@ -130,7 +130,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
             if (s == ":Real"    ) return world().type_real();
             if (s == ":Wrap_add") return world().ax(Wrap::add);
             if (s == ":Wrap_sub") return world().ax(Wrap::sub);
-            assert(false && "TODO");
+            return find(tok.sym());
         }
         default:
             if (ctxt.empty()) return nullptr;
@@ -332,8 +332,9 @@ void Parser::parse_ax() {
     }
 
     expect(Tok::Tag::T_colon, "axiom");
-    auto type = parse_expr("type of an axiom");
-    world().axiom(type, track.named(ax.sym()));
+    auto type  = parse_expr("type of an axiom");
+    auto axiom = world().axiom(type, track.named(ax.sym()));
+    insert(ax.sym(), axiom);
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
     expect(Tok::Tag::T_semicolon, "end of an axiom");
 }
