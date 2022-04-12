@@ -7,11 +7,12 @@ namespace thorin {
 Loc::Loc(const Def* dbg) {
     if (dbg != nullptr) {
         auto [d_file, d_begin, d_finis] = dbg->proj(1)->projs<3>();
-        file                            = tuple2str(d_file);
-        begin.row                       = u32(as_lit(d_begin) >> 32_u64);
-        begin.col                       = u32(as_lit(d_begin));
-        finis.row                       = u32(as_lit(d_finis) >> 32_u64);
-        finis.col                       = u32(as_lit(d_finis));
+
+        file      = tuple2str(d_file);
+        begin.row = u32(as_lit(d_begin) >> 32_u64);
+        begin.col = u32(as_lit(d_begin));
+        finis.row = u32(as_lit(d_finis) >> 32_u64);
+        finis.col = u32(as_lit(d_finis));
     }
 }
 
@@ -22,28 +23,25 @@ Debug::Debug(const Def* dbg)
 
 size_t SymHash::operator()(Sym sym) const { return murmur3(sym.def()->gid()); }
 
-Stream& Pos::stream(Stream& s) const { return s.fmt("{}:{}", row, col); }
+Loc Sym::loc() const { return def()->loc(); }
 
-Stream& Loc::stream(Stream& s) const {
-    s.fmt("{}:", file);
+/*
+ * ostream
+ */
 
-    if (begin.col == u32(-1) || finis.col == u32(-1)) {
-        if (begin.row != finis.row)
-            s.fmt("{}-{}", begin.row, finis.row);
-        else
-            s.fmt("{}", begin.row);
-    } else if (begin.row != finis.row) {
-        s.fmt("{}-{}", begin, finis);
-    } else if (begin.col != finis.col) {
-        s.fmt("{}-{}", begin, finis.col);
-    } else {
-        begin.stream(s);
-    }
-
-    return s;
+std::ostream& operator<<(std::ostream& os, const Pos pos) {
+    if (pos.col != uint32_t(-1)) return os << pos.row << ':' << pos.col;
+    return os << pos.row;
 }
 
+std::ostream& operator<<(std::ostream& os, const Loc loc) {
+    os << loc.file << ':' << loc.begin;
+    if (loc.begin != loc.finis) os << '-' << loc.finis;
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const Sym sym) { return os << tuple2str(sym.def()); }
+
 std::string Sym::to_string() const { return tuple2str(def()); }
-Stream& Sym::stream(Stream& s) const { return s << tuple2str(def()); }
 
 } // namespace thorin

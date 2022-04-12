@@ -25,7 +25,7 @@ Both tokens are identified as `⊥`.
 | `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                                 | UTF-8 delimiters          |
 | `→` `∷` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `::` `.bot` `.top` `*` `.space` `.lam` `.Pi` | further UTF-8 tokens      |
 | `=` `,` `;` `.` `#`             |                                                   | further tokens            |
-| `<EoF>`                         |                                                   | marks the end of the file |
+| `<eof>`                         |                                                   | marks the end of the file |
 
 #### Keywords
 
@@ -68,23 +68,30 @@ The following *terminals* comprise more complicated patterns that are specified 
 
 The previous table resorts to the following definitions as shorthand:
 
-| Name | Regular Expression                                      | Comment                                         |
-|------|---------------------------------------------------------|-------------------------------------------------|
-| 0b   | `0` \[ `b``B` \]                                        | prefix for binary literals                      |
-| 0o   | `0` \[ `o``O` \]                                        | prefix for octal literals                       |
-| 0x   | `0` \[ `x``X` \]                                        | prefix for hexadecimal literals                 |
-| bin  | \[ `0``1` \]                                            | binary digit                                    |
-| oct  | \[ `0`-`7` \]                                           | octal digit                                     |
-| dec  | \[ `0`-`9` \]                                           | decimal digit                                   |
-| sub  | \[ `₀`-`₉` \]                                           | subscript digit (always decimal)                |
-| hex  | \[ `0`-`9``a`-`f``A`-`F` \]                             | hexadecimal digit                               |
-| eE   | \[ `e` `E` \]                                           | exponent in floating point literals             |
-| pP   | \[ `p` `P` \]                                           | exponent in floating point hexadecimal literals |
-| sign | \[ `+` `-` \]                                           |                                                 |
-| sym  | \[ `_``a`-`z``A`-`Z` \]\[ `_``0`-`9``a`-`z``A`-`Z` \]\* | symbol                                          |
+| Name | Regular Expression                                         | Comment                                         |
+|------|------------------------------------------------------------|-------------------------------------------------|
+| 0b   | `0` \[ `b``B` \]                                           | prefix for binary literals                      |
+| 0o   | `0` \[ `o``O` \]                                           | prefix for octal literals                       |
+| 0x   | `0` \[ `x``X` \]                                           | prefix for hexadecimal literals                 |
+| bin  | \[ `0``1` \]                                               | binary digit                                    |
+| oct  | \[ `0`-`7` \]                                              | octal digit                                     |
+| dec  | \[ `0`-`9` \]                                              | decimal digit                                   |
+| sub  | \[ `₀`-`₉` \]                                              | subscript digit (always decimal)                |
+| hex  | \[ `0`-`9``a`-`f``A`-`F` \]                                | hexadecimal digit                               |
+| eE   | \[ `e` `E` \]                                              | exponent in floating point literals             |
+| pP   | \[ `p` `P` \]                                              | exponent in floating point hexadecimal literals |
+| sign | \[ `+` `-` \]                                              |                                                 |
+| sym  | \[ `_``a`-`z``A`-`Z` \]\[ `.``_``0`-`9``a`-`z``A`-`Z` \]\* | symbol                                          |
 
 So, *sym* referes to the shorthand rule while *Sym* refers to the *terminal* that is identical to *sym*.
 However, the terminal *Ax* also uses the shorthand rule *sym*.
+
+### Comments
+
+In addition, the following comments are avaiable:
+* `/* ... */` multi-line comment
+* `//` single-line comment
+* `///` single-line comment that is put into the Markdown output (see [Emitters](@ref emitters))
 
 ## Grammar
 
@@ -93,25 +100,53 @@ The start symbol is "m" (module).
 
 ### Productions {#productions}
 
-The following table comprises all produciton rules:
+The following tables comprise all produciton rules:
 
-| Nonterminal | Right-Hand Side                   | Comment                             | Thorin Class    |
-|-------------|-----------------------------------|-------------------------------------|-----------------|
-| m           | `.module` Sym `{` e `}` `<EoF>`   | module                              | thorin::World   |
-| e           | L `∷` e                           | literal                             | thorin::Lit     |
-| e           | Sym                               | identifier                          | -               |
-| e           | Ax                                | use of an axiom                     | -               |
-| e           | e e                               | application                         | thorin::App     |
-| e           | `λ` Sym `:` e `→` e  `.` e        | lambda                              | thorin::Lam     |
-| e           | e `→` e                           | function type                       | thorin::Pi      |
-| e           | `Π` Sym `:` e `→` e               | dependent function type             | thorin::Pi      |
-| e           | e `#` e                           | extract                             | thorin::Extract |
-| e           | `.ins` `(` e `,` e `,` e `)`      | insert                              | thorin::Insert  |
-| e           | `(` e `,` ... `,` e`)` ( `:` e )? | tuple with optional type ascription | thorin::Tuple   |
-| e           | `[` e `,` ... `,` e `]`           | sigma                               | thorin::Sigma   |
-| e           | Sym `:` e `=` e `;` e             | let                                 | -               |
+#### Module
 
-TODO
+| Nonterminal | Right-Hand Side | Comment | Thorin Class  |
+|-------------|-----------------|---------|---------------|
+| m           | d ... d         | module  | thorin::World |
+
+#### Declaration
+
+| Nonterminal | Right-Hand Side                                                | Comment                        | Thorin Class  |
+|-------------|----------------------------------------------------------------|--------------------------------|---------------|
+| d           | `.ax` Sym `:` e<sub>type</sub> `;`                             | axiom                          | thorin::Axiom |
+| d           | `.let` Sym `:` e<sub>type</sub> `;`                            | let                            | -             |
+| d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n      | nominal Pi declaration         | thorin::Pi    |
+| d           | `.lam` Sym `,` e<sub>type</sub> n                              | nominal lambda declaration     | thorin::Lam   |
+| d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n   | nominal array declaration      | thorin::Arr   |
+| d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n  | nominal pack declaration       | thorin::Pack  |
+| d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> n | nominal sigma declaration      | thorin::Sigma |
+| d           | `.def` Sym n                                                   | nominal definition             | nominals      |
+| n           | `;` \| o                                                       | nominal definition             | -             |
+| o           | `=` e `;`                                                      | operand of nominal definition  | -             |
+| o           | `=` `{` e `,` ... `,` e  `}` `;`                               | operands of nominal definition | -             |
+
+#### Expressions
+
+| Nonterminal | Right-Hand Side                    | Comment                             | Thorin Class    |
+|-------------|------------------------------------|-------------------------------------|-----------------|
+| e           | `*`                                | type                                | thorin::Type    |
+| e           | L `∷` e                            | literal                             | thorin::Lit     |
+| e           | ( `.bot` \| `.top` ) ( `∷` e )?    | bottom/top                          | thorin::TExt    |
+| e           | Sym                                | identifier                          | -               |
+| e           | Ax                                 | use of an axiom                     | -               |
+| e           | e e                                | application                         | thorin::App     |
+| e           | `λ` Sym `:` e `→` e  `.` e         | lambda                              | thorin::Lam     |
+| e           | e `→` e                            | function type                       | thorin::Pi      |
+| e           | `Π` Sym `:` e `→` e                | dependent function type             | thorin::Pi      |
+| e           | e `#` e                            | extract                             | thorin::Extract |
+| e           | `.ins` `(` e `,` e `,` e ` )`      | insert                              | thorin::Insert  |
+| e           | `(` e `,` ... `,` e` )` ( `:` e )? | tuple with optional type ascription | thorin::Tuple   |
+| e           | `[` e `,` ... `,` e `]`            | sigma                               | thorin::Sigma   |
+| e           | d ... d e                          | declaration block                   | -               |
+
+An elided type of
+* a literal defaults to `.Nat`,
+* a bottom/top defaults to `*`,
+* a nominals defaults to `*`.
 
 ### Precedence
 

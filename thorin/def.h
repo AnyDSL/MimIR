@@ -11,7 +11,7 @@
 #include "thorin/util/cast.h"
 #include "thorin/util/container.h"
 #include "thorin/util/hash.h"
-#include "thorin/util/stream.h"
+#include "thorin/util/print.h"
 
 namespace thorin {
 
@@ -19,7 +19,6 @@ class App;
 class Axiom;
 class Var;
 class Def;
-class Stream;
 class World;
 
 using Defs     = ArrayRef<const Def*>;
@@ -65,7 +64,8 @@ struct UseEq {
 
 using Uses = absl::flat_hash_set<Use, UseHash, UseEq>;
 
-enum class Sort { Term, Type, Kind, Space };
+// TODO remove or fix this
+enum class Sort { Term, Type, Kind, Space, Univ };
 
 //------------------------------------------------------------------------------
 
@@ -80,22 +80,22 @@ enum : unsigned {
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define THORIN_PROJ(NAME, CONST)                                                                                   \
-    size_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                     \
+    nat_t num_##NAME##s() CONST { return ((const Def*)NAME())->num_projs(); }                                      \
     const Def* NAME(nat_t a, nat_t i, const Def* dbg = {}) CONST { return ((const Def*)NAME())->proj(a, i, dbg); } \
     const Def* NAME(nat_t i, const Def* dbg = {}) CONST { return ((const Def*)NAME())->proj(i, dbg); }             \
-    template<size_t A = -1_s, class F>                                                                             \
+    template<nat_t A = -1_s, class F>                                                                              \
     auto NAME##s(F f, Defs dbgs = {}) CONST {                                                                      \
         return ((const Def*)NAME())->projs<A, F>(f, dbgs);                                                         \
     }                                                                                                              \
-    template<size_t A = -1_s>                                                                                      \
+    template<nat_t A = -1_s>                                                                                       \
     auto NAME##s(Defs dbgs = {}) CONST {                                                                           \
         return ((const Def*)NAME())->projs<A>(dbgs);                                                               \
     }                                                                                                              \
     template<class F>                                                                                              \
-    auto NAME##s(size_t a, F f, Defs dbgs = {}) CONST {                                                            \
+    auto NAME##s(nat_t a, F f, Defs dbgs = {}) CONST {                                                             \
         return ((const Def*)NAME())->projs<F>(a, f, dbgs);                                                         \
     }                                                                                                              \
-    auto NAME##s(size_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
+    auto NAME##s(nat_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
 
 /// Base class for all Def%s.
 /// The data layout (see World::alloc and Def::extended_ops) looks like this:
@@ -104,7 +104,7 @@ enum : unsigned {
 ///    |-------------extended_ops-------------|
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
-class Def : public RuntimeCast<Def>, public Streamable<Def> {
+class Def : public RuntimeCast<Def> {
 public:
     using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*, const Def*);
 
@@ -113,7 +113,7 @@ private:
     Def(const Def&)            = delete;
 
 protected:
-    /// Constructor for a *structural* Def.
+    /// Constructor for a structural Def.
     Def(node_t, const Def* type, Defs ops, fields_t fields, const Def* dbg);
     /// Constructor for a *nom*inal Def.
     Def(node_t, const Def* type, size_t num_ops, fields_t fields, const Def* dbg);
@@ -122,13 +122,7 @@ protected:
 public:
     /// @name getters
     ///@{
-    World& world() const {
-        if (node() == Node::Space) return *world_;
-        if (type()->node() == Node::Space) return *type()->world_;
-        if (type()->type()->node() == Node::Space) return *type()->type()->world_;
-        assert(type()->type()->type()->node() == Node::Space);
-        return *type()->type()->type()->world_;
-    }
+    World& world() const;
     fields_t fields() const { return fields_; }
     u32 gid() const { return gid_; }
     hash_t hash() const { return hash_; }
@@ -138,11 +132,8 @@ public:
 
     /// @name type
     ///@{
-    const Def* type() const {
-        assert(node() != Node::Space);
-        return type_;
-    }
-    Sort level() const;
+    const Def* type() const { return type_; }
+    const Def* inf_type() const;
     Sort sort() const;
     const Def* arity() const;
     ///@}
@@ -159,7 +150,7 @@ public:
     }
     const Def* op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
-    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not `Space`),
+    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not Type or Type),
     /// and then the other Def::ops() (if Def::is_set) in this order.
     Defs extended_ops() const;
     const Def* extended_op(size_t i) const { return extended_ops()[i]; }
@@ -203,7 +194,7 @@ public:
     /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
 
     /// @return yields arity if a Lit or `1` otherwise.
-    size_t num_projs() const {
+    nat_t num_projs() const {
         if (auto a = isa_lit(arity())) return *a;
         return 1;
     }
@@ -226,7 +217,7 @@ public:
     /// Array<const Lit*> lits = def->projs(as_lit<nat_t>);   // same as above but applies as_lit<nat_t> to each element
     /// Array<const Lit*> lits = def->projs(n, as_lit<nat_t>);// same as above but applies as_lit<nat_t> to each element
     /// ```
-    template<size_t A = -1_s, class F>
+    template<nat_t A = -1_s, class F>
     auto projs(F f, Defs dbgs = {}) const {
         using R = std::decay_t<decltype(f(this))>;
         if constexpr (A == -1_s) {
@@ -234,22 +225,22 @@ public:
         } else {
             assert(A == as_lit(arity()));
             std::array<R, A> array;
-            for (size_t i = 0; i != A; ++i) array[i] = f(proj(A, i, dbgs.empty() ? nullptr : dbgs[i]));
+            for (nat_t i = 0; i != A; ++i) array[i] = f(proj(A, i, dbgs.empty() ? nullptr : dbgs[i]));
             return array;
         }
     }
 
     template<class F>
-    auto projs(size_t a, F f, Defs dbgs = {}) const {
+    auto projs(nat_t a, F f, Defs dbgs = {}) const {
         using R = std::decay_t<decltype(f(this))>;
-        return Array<R>(a, [&](size_t i) { return f(proj(a, i, dbgs.empty() ? nullptr : dbgs[i])); });
+        return Array<R>(a, [&](nat_t i) { return f(proj(a, i, dbgs.empty() ? nullptr : dbgs[i])); });
     }
 
-    template<size_t A = -1_s>
+    template<nat_t A = -1_s>
     auto projs(Defs dbgs = {}) const {
         return projs<A>([](const Def* def) { return def; }, dbgs);
     }
-    auto projs(size_t a, Defs dbgs = {}) const {
+    auto projs(nat_t a, Defs dbgs = {}) const {
         return projs(
             a, [](const Def* def) { return def; }, dbgs);
     }
@@ -336,6 +327,7 @@ public:
 
     /// @name rebuild & friends
     ///@{
+    virtual size_t first_dependend_op() { return 0; }
     virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
     const Def* refine(size_t i, const Def* new_op) const;
@@ -345,11 +337,9 @@ public:
 
     /// @name stream
     ///@{
-    Stream& stream(Stream& s) const;
-    Stream& stream(Stream& s, size_t max) const;
-    Stream& let(Stream&) const;
-    Stream& unwrap(Stream&) const;
-    bool unwrap() const;
+    std::ostream& stream(std::ostream&, Tab&) const;
+    std::ostream& stream(std::ostream&, size_t max) const;
+    std::ostream& let(std::ostream&, Tab&) const;
     void dump() const;
     void dump(size_t) const;
     ///@}
@@ -388,6 +378,8 @@ protected:
     friend void swap(World&, World&);
 };
 
+std::ostream& operator<<(std::ostream&, const Def* def);
+
 template<class T>
 const T* isa(fields_t f, const Def* def) {
     if (auto d = def->template isa<T>(); d && d->fields() == f) return d;
@@ -408,6 +400,8 @@ using DefSet  = GIDSet<const Def*>;
 using Def2Def = DefMap<const Def*>;
 using DefDef  = std::tuple<const Def*, const Def*>;
 using DefVec  = std::vector<const Def*>;
+
+std::ostream& operator<<(std::ostream&, std::pair<const Def*, const Def*>);
 
 struct DefDefHash {
     hash_t operator()(DefDef pair) const {
@@ -457,9 +451,9 @@ using VarMap  = GIDMap<const Var*, To>;
 using VarSet  = GIDSet<const Var*>;
 using Var2Var = VarMap<const Var*>;
 
-class Space : public Def {
+class Univ : public Def {
 private:
-    Space(World& world)
+    Univ(World& world)
         : Def(Node, reinterpret_cast<const Def*>(&world), Defs{}, 0, nullptr) {}
 
 public:
@@ -468,21 +462,26 @@ public:
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     ///@}
 
-    static constexpr auto Node = Node::Space;
+    static constexpr auto Node = Node::Univ;
     friend class World;
 };
 
-class Kind : public Def {
+using level_t = u64;
+
+class Type : public Def {
 private:
-    Kind(World&);
+    Type(const Def* level)
+        : Def(Node, nullptr, {level}, 0, nullptr) {}
 
 public:
+    const Def* level() const { return op(0); }
+
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     ///@}
 
-    static constexpr auto Node = Node::Kind;
+    static constexpr auto Node = Node::Type;
     friend class World;
 };
 
@@ -554,6 +553,30 @@ public:
     friend class World;
 };
 
+/// This node is a hole in the IR that is inferred by its context later on.
+/// It is modelled as a *nom*inal Def.
+/// If inference was successful,
+class Infer : public Def {
+private:
+    Infer(const Def* type, const Def* dbg)
+        : Def(Node, type, 1, 0, dbg) {}
+
+public:
+    /// @name op
+    ///@{
+    const Def* op() const { return Def::op(0); }
+    void set(const Def* op) { Def::set(0, op); }
+    ///@}
+
+    /// @name virtual methods
+    ///@{
+    Infer* stub(World&, const Def*, const Def*) override;
+    ///@}
+
+    static constexpr auto Node = Node::Infer;
+    friend class World;
+};
+
 /// @deprecated A global variable in the data segment.
 /// A Global may be mutable or immutable.
 /// @attention WILL BE REMOVED.
@@ -590,11 +613,7 @@ public:
     friend class World;
 };
 
-// TODO use friedn Absl magic
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
-
-Stream& operator<<(Stream&, const Def* def);
-Stream& operator<<(Stream&, std::pair<const Def*, const Def*>);
 
 //------------------------------------------------------------------------------
 

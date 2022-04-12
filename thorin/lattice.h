@@ -25,7 +25,11 @@ public:
     const Sigma* convert() const;
 };
 
-/// Either Join (union - @p up = `true`) or Meet (intersection - up = `false`).
+/// Specific [Bound](https://en.wikipedia.org/wiki/Join_and_meet) depending on @p up.
+/// The name @p up refers to the property that a Join **ascends** in the underlying
+/// [lattice](https://en.wikipedia.org/wiki/Lattice_(order)):
+/// * @p up = `true`: Join (aka least upper bound/supremum/union)
+/// * @p up = `false`: Meet (aka geratest lower bound/infimum/intersection)
 template<bool up>
 class TBound : public Bound {
 private:

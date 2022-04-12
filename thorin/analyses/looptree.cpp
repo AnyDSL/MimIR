@@ -201,13 +201,11 @@ LoopTree<forward>::Base::Base(Node node, Head* parent, int depth, const std::vec
 }
 
 template<bool forward>
-Stream& LoopTree<forward>::Leaf::stream(Stream& s) const {
-    return s.fmt("<{} | dfs: {}", cf_node(), index());
-}
-
-template<bool forward>
-Stream& LoopTree<forward>::Head::stream(Stream& s) const {
-    return s.fmt("[{, }]", this->cf_nodes());
+std::ostream& operator<<(std::ostream& os, const typename LoopTree<forward>::Base* n) {
+    using LT = LoopTree<forward>;
+    if (auto l = n->template isa<typename LT::Leaf>()) return print(os, "<{} | dfs: {}", l->cf_node(), l->index());
+    if (auto h = n->template isa<typename LT::Head>()) return print(os, "[{, }]", h->cf_nodes());
+    unreachable();
 }
 
 //------------------------------------------------------------------------------
@@ -221,6 +219,8 @@ LoopTree<forward>::LoopTree(const CFG<forward>& cfg)
 
 template class LoopTree<true>;
 template class LoopTree<false>;
+template std::ostream& operator<<<true>(std::ostream&, const typename LoopTree<true>::Base*);
+template std::ostream& operator<<<false>(std::ostream&, const typename LoopTree<false>::Base*);
 
 //------------------------------------------------------------------------------
 

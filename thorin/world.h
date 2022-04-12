@@ -1,15 +1,12 @@
 #ifndef THORIN_WORLD_H
 #define THORIN_WORLD_H
 
-#include <cassert>
-
-#include <functional>
-#include <initializer_list>
-#include <iostream>
+#include <sstream>
 #include <string>
 
 #include "thorin/axiom.h"
 #include "thorin/config.h"
+#include "thorin/debug.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
@@ -17,7 +14,7 @@
 
 namespace thorin {
 
-enum class LogLevel { Debug, Verbose, Info, Warn, Error };
+enum class LogLevel { Error, Warn, Info, Verbose, Debug };
 
 class Checker;
 class DepNode;
@@ -34,7 +31,7 @@ class Scope;
 /// All worlds are completely independent from each other.
 ///
 /// Note that types are also just Def%s and will be hashed as well.
-class World : public Streamable<World> {
+class World {
 public:
     World& operator=(const World&) = delete;
 
@@ -75,14 +72,26 @@ public:
     u32 next_gid() { return ++state_.curr_gid; }
     ///@}
 
-    /// @name Space, Kind, Var, Proxy
+    /// @name Universe, Type, Var, Proxy, Infer
     ///@{
-    const Space* space() const { return data_.space_; }
-    const Kind* kind() const { return data_.kind_; }
+    const Univ* univ() { return data_.univ_; }
+    const Type* type(const Def* level) { return unify<Type>(1, level)->as<Type>(); }
+    template<level_t level = 0>
+    const Type* type() {
+        if constexpr (level == 0)
+            return data_.type_0_;
+        else if constexpr (level == 1)
+            return data_.type_1_;
+        else
+            return type(lit_univ(level));
+    }
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, flags, dbg);
     }
+    Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
+    Infer* nom_infer(const Def* type, Sym sym, Loc loc) { return insert<Infer>(1, type, dbg({sym, loc})); }
+    Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
     ///@}
 
     /// @name Axiom
@@ -104,7 +113,7 @@ public:
     /// @name Pi
     ///@{
     const Pi* pi(const Def* dom, const Def* codom, const Def* dbg = {}) {
-        return unify<Pi>(2, codom->type(), dom, codom, dbg);
+        return unify<Pi>(2, codom->inf_type(), dom, codom, dbg);
     }
     const Pi* pi(Defs dom, const Def* codom, const Def* dbg = {}) { return pi(sigma(dom), codom, dbg); }
     Pi* nom_pi(const Def* type, const Def* dbg = {}) { return insert<Pi>(2, type, dbg); }
@@ -113,7 +122,7 @@ public:
     /// @name Pi: continuation type (cn), i.e., Pi type with codom Bottom
     ///@{
     const Pi* cn() { return cn(sigma()); }
-    const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, bot_kind(), dbg); }
+    const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, bot_type(), dbg); }
     const Pi* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
     /// Same as @p cn/@p pi but adds a @p mem @p Var to each @p Pi
     const Pi* cn_flat(Defs dom, const Def* dbg = {});
@@ -173,16 +182,22 @@ public:
     /// @name Sigma
     ///@{
     Sigma* nom_sigma(const Def* type, size_t size, const Def* dbg = {}) { return insert<Sigma>(size, type, size, dbg); }
-    /// A *nom*inal Sigma of type Kind.
-    Sigma* nom_sigma(size_t size, const Def* dbg = {}) { return nom_sigma(kind(), size, dbg); }
+    /// A *nom*inal Sigma of type @p level.
+    template<level_t level = 0>
+    Sigma* nom_sigma(size_t size, const Def* dbg = {}) {
+        return nom_sigma(type<level>(), size, dbg);
+    }
     const Def* sigma(Defs ops, const Def* dbg = {});
-    const Sigma* sigma() { return data_.sigma_; } ///< The unit type within Kind.
+    const Sigma* sigma() { return data_.sigma_; } ///< The unit type within Type 0.
     ///@}
 
     /// @name Arr
     ///@{
-    Arr* nom_arr(const Def* type, const Def* shape, const Def* dbg = {}) { return insert<Arr>(2, type, shape, dbg); }
-    Arr* nom_arr(const Def* shape, const Def* dbg = {}) { return nom_arr(kind(), shape, dbg); }
+    Arr* nom_arr(const Def* type, const Def* dbg = {}) { return insert<Arr>(2, type, dbg); }
+    template<level_t level = 0>
+    Arr* nom_arr(const Def* dbg = {}) {
+        return nom_arr(type<level>(), dbg);
+    }
     const Def* arr(const Def* shape, const Def* body, const Def* dbg = {});
     const Def* arr(Defs shape, const Def* body, const Def* dbg = {});
     const Def* arr(u64 n, const Def* body, const Def* dbg = {}) { return arr(lit_nat(n), body, dbg); }
@@ -204,6 +219,7 @@ public:
 
     /// @name Pack
     ///@{
+    Pack* nom_pack(const Def* type, const Def* dbg = {}) { return insert<Pack>(1, type, dbg); }
     const Def* pack(const Def* arity, const Def* body, const Def* dbg = {});
     const Def* pack(Defs shape, const Def* body, const Def* dbg = {});
     const Def* pack(u64 n, const Def* body, const Def* dbg = {}) { return pack(lit_nat(n), body, dbg); }
@@ -255,15 +271,15 @@ public:
 
     /// @name Lit
     ///@{
-    const Lit* lit(const Def* type, u64 val, const Def* dbg = {}) {
-        assert(type->level() == Sort::Type);
-        return unify<Lit>(0, type, val, dbg);
-    }
+    const Lit* lit(const Def* type, u64 val, const Def* dbg = {}) { return unify<Lit>(0, type, val, dbg); }
     const Lit* lit_nat(nat_t a, const Def* dbg = {}) { return lit(type_nat(), a, dbg); }
     const Lit* lit_nat_0() { return data_.lit_nat_0_; }
     const Lit* lit_nat_1() { return data_.lit_nat_1_; }
     const Lit* lit_nat_max() { return data_.lit_nat_max_; }
     const Lit* lit_int(const Def* type, u64 val, const Def* dbg = {});
+    const Lit* lit_univ(u64 level, const Def* dbg = {}) { return lit(univ(), level, dbg); }
+    const Lit* lit_univ_0() { return data_.lit_univ_0_; }
+    const Lit* lit_univ_1() { return data_.lit_univ_1_; }
 
     /// Constructs Tag::Int Lit @p val via @p width, i.e. converts from *width* to *internal* *mod* value.
     const Lit* lit_int_width(nat_t width, u64 val, const Def* dbg = {}) {
@@ -306,38 +322,29 @@ public:
         else if constexpr (sizeof(R) == 8) return lit(type_real(64), thorin::bitcast<u64>(val), dbg);
         else unreachable();
     }
-    // clang-format on
     ///@}
 
-    /// @name set operations
+    /// @name lattice
     ///@{
     template<bool up>
     const Def* ext(const Def* type, const Def* dbg = {});
-    const Def* ext(bool up, const Def* type, const Def* dbg = {}) { return up ? top(type, dbg) : bot(type, dbg); }
     const Def* bot(const Def* type, const Def* dbg = {}) { return ext<false>(type, dbg); }
     const Def* top(const Def* type, const Def* dbg = {}) { return ext<true>(type, dbg); }
-    const Def* bot_kind() { return data_.bot_kind_; }
+    const Def* bot_type() { return data_.bot_type_; }
     const Def* top_nat() { return data_.top_nat_; }
-    template<bool up>
-    TBound<up>* nom_bound(const Def* type, size_t size, const Def* dbg = {}) {
-        return insert<TBound<up>>(size, type, size, dbg);
-    }
-    /// A *nom* Bound of type Kind.
-    template<bool up>
-    TBound<up>* nom_bound(size_t size, const Def* dbg = {}) {
-        return nom_bound<up>(kind(), size, dbg);
-    }
-    template<bool up>
-    const Def* bound(Defs ops, const Def* dbg = {});
+    template<bool up> TBound<up>* nom_bound(const Def* type, size_t size, const Def* dbg = {}) { return insert<TBound<up>>(size, type, size, dbg); }
+    /// A *nom*inal Bound of Type @p l%evel.
+    template<bool up, level_t l = 0> TBound<up>* nom_bound(size_t size, const Def* dbg = {}) { return nom_bound<up>(type<l>(), size, dbg); }
+    template<bool up> const Def* bound(Defs ops, const Def* dbg = {});
     Join* nom_join(const Def* type, size_t size, const Def* dbg = {}) { return nom_bound<true>(type, size, dbg); }
     Meet* nom_meet(const Def* type, size_t size, const Def* dbg = {}) { return nom_bound<false>(type, size, dbg); }
-    Join* nom_join(size_t size, const Def* dbg = {}) { return nom_join(kind(), size, dbg); }
-    Meet* nom_meet(size_t size, const Def* dbg = {}) { return nom_meet(kind(), size, dbg); }
+    template<level_t l = 0> Join* nom_join(size_t size, const Def* dbg = {}) { return nom_join(type<l>(), size, dbg); }
+    template<level_t l = 0> Meet* nom_meet(size_t size, const Def* dbg = {}) { return nom_meet(type<l>(), size, dbg); }
     const Def* join(Defs ops, const Def* dbg = {}) { return bound<true>(ops, dbg); }
     const Def* meet(Defs ops, const Def* dbg = {}) { return bound<false>(ops, dbg); }
     const Def* et(const Def* type, Defs ops, const Def* dbg = {});
     /// Infers the type using a *structural* Meet.
-    const Def* et(Defs ops, const Def* dbg = {}) { return et(infer_kind(ops), ops, dbg); }
+    const Def* et(Defs ops, const Def* dbg = {}) { return et(infer_type(ops), ops, dbg); }
     const Def* vel(const Def* type, const Def* value, const Def* dbg = {});
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg = {});
@@ -345,11 +352,10 @@ public:
 
     /// @name globals -- depdrecated; will be removed
     ///@{
-    Global* global(const Def* type, bool is_mutable = true, const Def* dbg = {}) {
-        return insert<Global>(1, type, is_mutable, dbg);
-    }
+    Global* global(const Def* type, bool is_mutable = true, const Def* dbg = {}) { return insert<Global>(1, type, is_mutable, dbg); }
     Global* global_immutable_string(std::string_view str, const Def* dbg = {});
     ///@}
+    // clang-format on
 
     /// @name types
     ///@{
@@ -526,7 +532,7 @@ public:
     ///@{
     const Def* dbg(Debug);
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
-    const Def* infer_kind(Defs) const;
+    const Def* infer_type(Defs);
     ///@}
 
     /// @name partial evaluation done?
@@ -542,7 +548,7 @@ public:
     bool empty() { return data_.externals_.empty(); }
     void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
     void make_internal(Def* def) { data_.externals_.erase(def->name()); }
-    bool is_external(const Def* def) { return data_.externals_.contains(def->debug().name); }
+    bool is_external(const Def* def) { return data_.externals_.contains(def->name()); }
     Def* lookup(std::string_view name) {
         auto i = data_.externals_.find(name);
         return i != data_.externals_.end() ? i->second : nullptr;
@@ -571,17 +577,20 @@ public:
 
     /// @name Logging
     ///@{
-    Stream& stream() { return *stream_; }
-    LogLevel min_level() const { return state_.min_level; }
+    std::ostream& ostream() const { return *ostream_; }
+    LogLevel max_level() const { return state_.max_level; }
 
-    void set(LogLevel min_level) { state_.min_level = min_level; }
-    void set(std::shared_ptr<Stream> stream) { stream_ = stream; }
+    void set_log_level(LogLevel max_level) { state_.max_level = max_level; }
+    void set_log_level(std::string_view max_level) { set_log_level(str2level(max_level)); }
+    void set_log_ostream(std::ostream* ostream) { ostream_ = ostream; }
 
     template<class... Args>
     void log(LogLevel level, Loc loc, const char* fmt, Args&&... args) {
-        if (stream_ && int(min_level()) <= int(level)) {
-            stream().fmt("{}:{}: ", colorize(level2string(level), level2color(level)), colorize(loc.to_string(), 7));
-            stream().fmt(fmt, std::forward<Args&&>(args)...).endl().flush();
+        if (ostream_ && int(level) <= int(max_level())) {
+            std::ostringstream oss;
+            oss << loc;
+            print(ostream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
+            print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
         }
     }
     void log() const {} ///< for DLOG in Release build.
@@ -593,43 +602,44 @@ public:
     }
 
     // clang-format off
-    template<class... Args> void idef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Info, def->debug().loc, fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> void wdef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Warn, def->debug().loc, fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> void edef(const Def* def, const char* fmt, Args&&... args) { error(def->debug().loc, fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> void idef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Info, def->loc(), fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> void wdef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Warn, def->loc(), fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> void edef(const Def* def, const char* fmt, Args&&... args) { error(def->loc(), fmt, std::forward<Args&&>(args)...); }
     // clang-format on
 
-    static std::string_view level2string(LogLevel level);
+    static std::string_view level2acro(LogLevel);
+    static LogLevel str2level(std::string_view);
     static int level2color(LogLevel level);
     static std::string colorize(std::string_view str, int color);
     ///@}
 
     /// @name stream
     ///@{
-    Stream& stream(Stream&) const;
-    Stream& stream(RecStreamer&, const DepNode*) const;
-    void debug_stream(); ///< Stream thorin if World::State::min_level is LogLevel::Debug.
+    std::ostream& stream(RecStreamer&, const DepNode*) const;
+    void debug_stream() const; ///< Stream thorin if World::State::max_level is LogLevel::debug.
+    void dump() const;
     ///@}
 
     /// @name error handling
     ///@{
-    void set(std::unique_ptr<ErrorHandler>&& err);
+    void set_error_handler(std::unique_ptr<ErrorHandler>&& err);
     ErrorHandler* err() { return err_.get(); }
     ///@}
 
     friend void swap(World& w1, World& w2) {
         using std::swap;
         // clang-format off
-        swap(w1.arena_,   w2.arena_);
-        swap(w1.data_,    w2.data_);
-        swap(w1.state_,   w2.state_);
-        swap(w1.stream_,  w2.stream_);
-        swap(w1.checker_, w2.checker_);
-        swap(w1.err_,     w2.err_);
+        swap(w1.arena_,    w2.arena_);
+        swap(w1.data_,     w2.data_);
+        swap(w1.state_,    w2.state_);
+        swap(w1.ostream_,  w2.ostream_);
+        swap(w1.checker_,  w2.checker_);
+        swap(w1.err_,      w2.err_);
         // clang-format on
 
-        swap(w1.data_.space_->world_, w2.data_.space_->world_);
-        assert(&w1.space()->world() == &w1);
-        assert(&w2.space()->world() == &w2);
+        swap(w1.data_.univ_->world_, w2.data_.univ_->world_);
+        assert(&w1.univ()->world() == &w1);
+        assert(&w2.univ()->world() == &w2);
     }
 
 private:
@@ -739,7 +749,7 @@ private:
     } arena_;
 
     struct State {
-        LogLevel min_level = LogLevel::Error;
+        LogLevel max_level = LogLevel::Error;
         u32 curr_gid       = 0;
         u32 curr_tag       = tag_t(-1);
         bool pe_done       = false;
@@ -751,9 +761,10 @@ private:
     } state_;
 
     struct Data {
-        Space* space_;
-        const Kind* kind_;
-        const Bot* bot_kind_;
+        const Univ* univ_;
+        const Type* type_0_;
+        const Type* type_1_;
+        const Bot* bot_type_;
         const App* type_bool_;
         const Top* top_nat_;
         const Sigma* sigma_;
@@ -778,6 +789,8 @@ private:
         const Lit* lit_nat_0_;
         const Lit* lit_nat_1_;
         const Lit* lit_nat_max_;
+        const Lit* lit_univ_0_;
+        const Lit* lit_univ_1_;
         const Axiom* alloc_;
         const Axiom* atomic_;
         const Axiom* bitcast_;
@@ -803,10 +816,12 @@ private:
 
     std::unique_ptr<Checker> checker_;
     std::unique_ptr<ErrorHandler> err_;
-    std::shared_ptr<Stream> stream_;
+    mutable std::ostream* ostream_ = nullptr;
 
     friend DefArray Def::reduce(const Def*);
 };
+
+std::ostream& operator<<(std::ostream&, const World&);
 
 // clang-format off
 #define ELOG(...) log(thorin::LogLevel::Error,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)

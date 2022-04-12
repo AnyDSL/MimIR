@@ -102,7 +102,7 @@ const Def* PassMan::rewrite(const Def* old_def) {
             return map(old_def, rewrite(*new_def));
     }
 
-    auto new_type = rewrite(old_def->type());
+    auto new_type = old_def->type() ? rewrite(old_def->type()) : nullptr;
     auto new_dbg  = old_def->dbg() ? rewrite(old_def->dbg()) : nullptr;
 
     DefArray new_ops(old_def->num_ops(), [&](size_t i) { return rewrite(old_def->op(i)); });

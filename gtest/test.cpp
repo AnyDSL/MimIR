@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include <gtest/gtest.h>
 
 #include "thorin/error.h"
@@ -42,6 +44,19 @@ TEST(Error, app) {
     EXPECT_THROW(w.app(a, {r, i}), TypeError);
 }
 
+TEST(World, simplify_one_tuple) {
+    World w;
+
+    ASSERT_EQ(w.lit_false(), w.tuple({w.lit_false()})) << "constant fold (false) -> false";
+
+    auto type = w.nom_sigma(w.type(), 2);
+    type->set({w.type_int(), w.type_int()});
+    ASSERT_EQ(type, w.sigma({type})) << "constant fold [nom] -> nom";
+
+    auto v = w.tuple(type, {w.lit_int(42), w.lit_int(1337)});
+    ASSERT_EQ(v, w.tuple({v})) << "constant fold ({42, 1337}) -> {42, 1337}";
+}
+
 TEST(Main, ll) {
     World w;
     auto mem_t  = w.type_mem();
@@ -55,16 +70,18 @@ TEST(Main, ll) {
     main->app(false, ret, {mem, argc});
     main->make_external();
 
-    std::ofstream file("test.ll");
-    Stream s(file);
-    ll::emit(w, s);
-    file.close();
+    std::ofstream ofs("test.ll");
+    ll::emit(w, ofs);
+    ofs.close();
 
 #ifndef _MSC_VER
     // TODO make sure that proper clang is in path on Windows
-    std::system("clang test.ll -o test -Wno-override-module");
-    EXPECT_EQ(4, WEXITSTATUS(std::system("./test a b c")));
-    EXPECT_EQ(7, WEXITSTATUS(std::system("./test a b c d e f")));
+    int status = std::system("clang test.ll -o test -Wno-override-module");
+    EXPECT_EQ(0, WEXITSTATUS(status));
+    status = std::system("./test a b c");
+    EXPECT_EQ(4, WEXITSTATUS(status));
+    status = std::system("./test a b c d e f");
+    EXPECT_EQ(7, WEXITSTATUS(status));
 #endif
 }
 
@@ -121,15 +138,17 @@ TEST(Main, loop) {
     main->app(false, loop, {mem, w.lit_int(0), w.lit_int(0)});
     main->make_external();
 
-    std::ofstream file("test.ll");
-    Stream s(file);
-    thorin::ll::emit(w, s);
-    file.close();
+    std::ofstream ofs("test.ll");
+    thorin::ll::emit(w, ofs);
+    ofs.close();
 
     // TODO make sure that proper clang is in path on Windows
 #ifndef _MSC_VER
-    EXPECT_EQ(0, WEXITSTATUS(std::system("clang test.ll -o `pwd`/test -Wno-override-module")));
-    EXPECT_EQ(6, WEXITSTATUS(std::system("./test a b c")));
-    EXPECT_EQ(10, WEXITSTATUS(std::system("./test a b c d")));
+    int status = std::system("clang test.ll -o `pwd`/test -Wno-override-module");
+    EXPECT_EQ(0, WEXITSTATUS(status));
+    status = std::system("./test a b c");
+    EXPECT_EQ(6, WEXITSTATUS(status));
+    status = std::system("./test a b c d");
+    EXPECT_EQ(10, WEXITSTATUS(status));
 #endif
 }

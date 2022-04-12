@@ -38,6 +38,10 @@ add_library(libthorin
     analyses/scope.cpp
     analyses/scope.h
     be/emitter.h
+    be/dot/dot.cpp
+    be/dot/dot.h
+    be/h/h.cpp
+    be/h/h.h
     be/ll/ll.cpp
     be/ll/ll.h
     fe/lexer.cpp
@@ -80,8 +84,6 @@ add_library(libthorin
     pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
-    transform/closure_conv.h
-    transform/closure_conv.cpp
     util/array.h
     util/assert.h
     util/bitset.cpp
@@ -92,8 +94,8 @@ add_library(libthorin
     util/hash.h
     util/indexmap.h
     util/indexset.h
-    util/stream.cpp
-    util/stream.h
+    util/print.cpp
+    util/print.h
     util/types.h
     util/utf8.cpp
     util/utf8.h

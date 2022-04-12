@@ -35,8 +35,10 @@ void optimize(World& world) {
     PassMan::run<TailRecElim>(world, nullptr);
     printf("Getting started\n");
 
-    world.set(LogLevel::Debug);
+    // world.set(LogLevel::Debug);
+    // world.dbg(LogLevel::Debug);
     // world.set(std::make_unique<ErrorHandler>());
+    world.set_log_level(LogLevel::Debug);
 //    std::unique_ptr<ErrorHandler> err;
 //    ErrorHandler* err;
 //    world.set((std::unique_ptr<ErrorHandler>&&) nullptr);
@@ -127,25 +129,25 @@ void optimize(World& world) {
 }
 
 
-void graph_print(std::ofstream& ofs, DefSet& done, const Def* def, int maxDepth) {
-    if (maxDepth < 0) return;
-    if (!done.emplace(def).second) return;
+// void graph_print(std::ofstream& ofs, DefSet& done, const Def* def, int maxDepth) {
+//     if (maxDepth < 0) return;
+//     if (!done.emplace(def).second) return;
 
-//    do_sth(def);
+// //    do_sth(def);
 
-    u32 id = def->gid();
-//    const char *content=def->to_string().c_str();
+//     u32 id = def->gid();
+// //    const char *content=def->to_string().c_str();
 
-    ofs << "  " << id << " [label=\"" << def->to_string().c_str() << "\"];\n";
-    printf("%d: %s\n", def->gid(), def->to_string().c_str());
+//     ofs << "  " << id << " [label=\"" << def->to_string().c_str() << "\"];\n";
+//     printf("%d: %s\n", def->gid(), def->to_string().c_str());
 
-    for (auto op : def->ops()) {
-//        for (auto op : def->extended_ops()) {
-        u32 op_id = op->gid();
-        ofs << "  " << id << " -> " << op_id << ";\n";
-        graph_print(ofs,done, op, maxDepth-1);
-    }
-}
+//     for (auto op : def->ops()) {
+// //        for (auto op : def->extended_ops()) {
+//         u32 op_id = op->gid();
+//         ofs << "  " << id << " -> " << op_id << ";\n";
+//         graph_print(ofs,done, op, maxDepth-1);
+//     }
+// }
 
 
 

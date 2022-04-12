@@ -1,3 +1,4 @@
+#include <fstream>
 #include <sstream>
 
 #include <gtest/gtest-param-test.h>
@@ -70,18 +71,19 @@ TEST_P(ForAxiomTest, for) {
     opt.add<CopyProp>(br, ee);
     opt.run();
 
-    std::ofstream file("test.ll");
-    Stream s(file);
-    ll::emit(w, s);
-    file.close();
+    std::ofstream ofs("test.ll");
+    ll::emit(w, ofs);
+    ofs.close();
 
     // TODO make sure that proper clang is in path on Windows
 #ifndef _MSC_VER
     unsigned gt = 0;
     for (int i = cbegin; i < cend; i += cstep) { gt += i; }
 
-    EXPECT_EQ(0, WEXITSTATUS(std::system("clang test.ll -o `pwd`/test -Wno-override-module")));
-    EXPECT_EQ(gt % 256, WEXITSTATUS(std::system("./test")));
+    int status = std::system("clang test.ll -o `pwd`/test -Wno-override-module");
+    EXPECT_EQ(0, WEXITSTATUS(status));
+    status = std::system("./test");
+    EXPECT_EQ(gt % 256, WEXITSTATUS(status));
 #endif
 }
 
@@ -164,21 +166,22 @@ TEST_P(ForAxiomTest, for_dynamic_iters) {
     opt.add<CopyProp>(br, ee);
     opt.run();
 
-    std::ofstream file("test.ll");
-    Stream s(file);
-    ll::emit(w, s);
-    file.close();
+    std::ofstream ofs("test.ll");
+    ll::emit(w, ofs);
+    ofs.close();
 
     // TODO make sure that proper clang is in path on Windows
 #ifndef _MSC_VER
     unsigned gt = 0;
     for (int i = cbegin; i < cend; i += cstep) { gt += i; }
 
-    std::stringstream cmdStream;
-    cmdStream << "./test " << cbegin << " " << cend << " " << cstep;
+    std::ostringstream cmd;
+    cmd << "./test " << cbegin << " " << cend << " " << cstep;
 
-    EXPECT_EQ(0, WEXITSTATUS(std::system("clang test.ll -o `pwd`/test -Wno-override-module")));
-    EXPECT_EQ(gt % 256, WEXITSTATUS(std::system(cmdStream.str().c_str())));
+    int status = std::system("clang test.ll -o `pwd`/test -Wno-override-module");
+    EXPECT_EQ(0, WEXITSTATUS(status));
+    status = std::system(cmd.str().c_str());
+    EXPECT_EQ(gt % 256, WEXITSTATUS(status));
 #endif
 }
 
