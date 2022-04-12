@@ -397,6 +397,20 @@ public:
 
     friend void swap(Array& a, Array& b) { swap(a.storage_, b.storage_); }
 
+    template<typename Result = T >
+    Array<Result> map(std::function<Result(T, size_t)> f){
+        auto result = Array<Result>(size());
+
+        for (size_t i = 0; i < size(); ++i){
+            result[i] = f((*this)[i], i);
+        }
+
+        return result;
+    }
+
+    Array<T> map(std::function<T(T, size_t)> f){
+        return map<T>(f);
+    }
 private:
     ArrayStorage<T, std::is_trivial<T>::value ? 5 : 0> storage_;
 };
