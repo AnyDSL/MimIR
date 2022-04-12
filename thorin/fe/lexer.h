@@ -19,21 +19,22 @@ class Lexer : public utf8::Lexer<3> {
 public:
     /// Creates a lexer to read Thorin files (see [Lexical Structure](@ref lex)).
     /// If @p ostream is not `nullptr`, a Markdown output will be generated.
-    Lexer(World& world, std::string_view file, std::istream& istream, std::ostream* ostream = nullptr);
+    Lexer(World& world, std::string_view file, std::istream& istream, std::ostream* md = nullptr);
 
     World& world() { return world_; }
+    std::string_view file() const { return loc_.file; }
     Loc loc() const { return loc_; }
     Tok lex();
 
 private:
     Ahead next() override {
         auto res = Super::next();
-        if (ostream_ && out_) {
+        if (md_ && out_) {
             if (res.c32 == utf8::EoF) {
-                *ostream_ << "\n```\n";
+                *md_ << "\n```\n";
                 out_ = false;
             } else if (res.c32 != utf8::Err) {
-                utf8::decode(*ostream_, res.c32);
+                utf8::decode(*md_, res.c32);
             }
         }
         return res;
@@ -53,11 +54,11 @@ private:
     bool start_md() const { return ahead(0).c32 == '/' && ahead(1).c32 == '/' && ahead(2).c32 == '/'; }
     void emit_md(bool start_of_file = false);
     void md_fence() {
-        if (ostream_) *ostream_ << "```\n";
+        if (md_) *md_ << "```\n";
     }
 
     World& world_;
-    std::ostream* ostream_;
+    std::ostream* md_;
     bool out_ = true;
     absl::flat_hash_map<std::string, Tok::Tag> keywords_;
 };

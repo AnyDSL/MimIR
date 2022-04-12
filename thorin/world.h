@@ -1,15 +1,12 @@
 #ifndef THORIN_WORLD_H
 #define THORIN_WORLD_H
 
-#include <cassert>
-
-#include <functional>
-#include <initializer_list>
-#include <iostream>
+#include <sstream>
 #include <string>
 
 #include "thorin/axiom.h"
 #include "thorin/config.h"
+#include "thorin/debug.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
@@ -34,7 +31,7 @@ class Scope;
 /// All worlds are completely independent from each other.
 ///
 /// Note that types are also just Def%s and will be hashed as well.
-class World : public Streamable<World> {
+class World {
 public:
     World& operator=(const World&) = delete;
 
@@ -555,20 +552,20 @@ public:
 
     /// @name Logging
     ///@{
-    Stream& stream() { return *stream_; }
+    std::ostream& ostream() const { return *ostream_; }
     LogLevel max_level() const { return state_.max_level; }
 
     void set_log_level(LogLevel max_level) { state_.max_level = max_level; }
     void set_log_level(std::string_view max_level) { set_log_level(str2level(max_level)); }
-    void set_log_stream(std::shared_ptr<Stream> stream) { stream_ = stream; }
+    void set_log_ostream(std::ostream* ostream) { ostream_ = ostream; }
 
     template<class... Args>
     void log(LogLevel level, Loc loc, const char* fmt, Args&&... args) {
-        if (stream_ && int(level) <= int(max_level())) {
+        if (ostream_ && int(level) <= int(max_level())) {
             std::ostringstream oss;
             oss << loc;
-            stream().fmt("{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
-            stream().fmt(fmt, std::forward<Args&&>(args)...).endl().flush();
+            print(ostream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
+            print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
         }
     }
     void log() const {} ///< for DLOG in Release build.
@@ -593,9 +590,9 @@ public:
 
     /// @name stream
     ///@{
-    Stream& stream(Stream&) const;
-    Stream& stream(RecStreamer&, const DepNode*) const;
-    void debug_stream(); ///< Stream thorin if World::State::max_level is LogLevel::debug.
+    std::ostream& stream(RecStreamer&, const DepNode*) const;
+    void debug_stream() const; ///< Stream thorin if World::State::max_level is LogLevel::debug.
+    void dump() const;
     ///@}
 
     /// @name error handling
@@ -607,12 +604,12 @@ public:
     friend void swap(World& w1, World& w2) {
         using std::swap;
         // clang-format off
-        swap(w1.arena_,   w2.arena_);
-        swap(w1.data_,    w2.data_);
-        swap(w1.state_,   w2.state_);
-        swap(w1.stream_,  w2.stream_);
-        swap(w1.checker_, w2.checker_);
-        swap(w1.err_,     w2.err_);
+        swap(w1.arena_,    w2.arena_);
+        swap(w1.data_,     w2.data_);
+        swap(w1.state_,    w2.state_);
+        swap(w1.ostream_,  w2.ostream_);
+        swap(w1.checker_,  w2.checker_);
+        swap(w1.err_,      w2.err_);
         // clang-format on
 
         swap(w1.data_.univ_->world_, w2.data_.univ_->world_);
@@ -793,10 +790,12 @@ private:
 
     std::unique_ptr<Checker> checker_;
     std::unique_ptr<ErrorHandler> err_;
-    std::shared_ptr<Stream> stream_;
+    mutable std::ostream* ostream_;
 
     friend DefArray Def::reduce(const Def*);
 };
+
+std::ostream& operator<<(std::ostream&, const World&);
 
 // clang-format off
 #define ELOG(...) log(thorin::LogLevel::Error,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)

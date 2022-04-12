@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include <gtest/gtest.h>
 
 #include "thorin/error.h"
@@ -68,10 +70,9 @@ TEST(Main, ll) {
     main->app(false, ret, {mem, argc});
     main->make_external();
 
-    std::ofstream file("test.ll");
-    Stream s(file);
-    ll::emit(w, s);
-    file.close();
+    std::ofstream ofs("test.ll");
+    ll::emit(w, ofs);
+    ofs.close();
 
 #ifndef _MSC_VER
     // TODO make sure that proper clang is in path on Windows
@@ -137,10 +138,9 @@ TEST(Main, loop) {
     main->app(false, loop, {mem, w.lit_int(0), w.lit_int(0)});
     main->make_external();
 
-    std::ofstream file("test.ll");
-    Stream s(file);
-    thorin::ll::emit(w, s);
-    file.close();
+    std::ofstream ofs("test.ll");
+    thorin::ll::emit(w, ofs);
+    ofs.close();
 
     // TODO make sure that proper clang is in path on Windows
 #ifndef _MSC_VER

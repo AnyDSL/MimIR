@@ -7,7 +7,7 @@
 #include "thorin/util/array.h"
 #include "thorin/util/indexmap.h"
 #include "thorin/util/indexset.h"
-#include "thorin/util/stream.h"
+#include "thorin/util/print.h"
 
 namespace thorin {
 
@@ -22,7 +22,7 @@ using CFNodes = GIDSet<const CFNode*>;
 
 /// A Control-Flow Node.
 /// Managed by CFA.
-class CFNode : public Streamable<CFNode> {
+class CFNode {
 public:
     CFNode(Def* nom)
         : nom_(nom)
@@ -30,7 +30,6 @@ public:
 
     uint64_t gid() const { return gid_; }
     Def* nom() const { return nom_; }
-    Stream& stream(Stream&) const;
 
 private:
     const CFNodes& preds() const { return preds_; }
@@ -50,6 +49,8 @@ private:
     template<bool>
     friend class CFG;
 };
+
+std::ostream& operator<<(std::ostream&, const CFNode*);
 
 //------------------------------------------------------------------------------
 

@@ -20,14 +20,17 @@ private:
         return child().emit_bb(bb, def);
     }
 
+public:
+    Tab tab;
+
 protected:
-    Emitter(World& world, Stream& stream)
+    Emitter(World& world, std::ostream& ostream)
         : world_(world)
-        , stream_(stream) {}
+        , ostream_(ostream) {}
 
     World& world() const { return world_; }
     const Scope& scope() const { return *scope_; }
-    Stream& stream() const { return stream_; }
+    std::ostream& ostream() const { return ostream_; }
 
     /// Recursively emits code. @c mem -typed @p Def%s return sth that is @c !child().is_valid(value) - this variant
     /// asserts in this case.
@@ -89,7 +92,7 @@ protected:
 
     World& world_;
     const Scope* scope_ = nullptr;
-    Stream& stream_;
+    std::ostream& ostream_;
     Scheduler scheduler_;
     DefMap<Value> locals_;
     DefMap<Value> globals_;

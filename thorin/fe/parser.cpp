@@ -14,12 +14,17 @@
 
 namespace thorin {
 
-Parser::Parser(World& world, std::string_view file, std::istream& istream, std::ostream* ostream)
-    : lexer_(world, file, istream, ostream)
-    , prev_(lexer_.loc()) {
+Parser::Parser(World& world, std::string_view file, std::istream& istream, std::ostream* md)
+    : lexer_(world, file, istream, md)
+    , prev_(lexer_.loc())
+    , bootstrapper_(file.substr(0, file.rfind('.'))) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
     push(); // root scope
+}
+
+void Parser::bootstrap(std::ostream& h) {
+    bootstrapper_.emit(h);
 }
 
 Tok Parser::lex() {
@@ -102,6 +107,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_paren_l:   return parse_tuple();
         case Tok::Tag::K_Cn:        return parse_Cn();
+        case Tok::Tag::K_Bool:      lex(); return world().type_bool();
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
         case Tok::Tag::K_ff:        lex(); return world().lit_false();
         case Tok::Tag::K_tt:        lex(); return world().lit_true();
@@ -228,6 +234,7 @@ const Def* Parser::parse_pi() {
     auto dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
     expect(Tok::Tag::T_arrow, "dependent function type");
     auto pi = world().nom_pi(world().nom_infer_univ(), dom);
+    pi->set_dom(dom);
     push();
     insert(var, pi->var()); // TODO set location
     pi->set_codom(parse_expr("codomain of a dependent function type", Tok::Prec::Arrow));
@@ -303,10 +310,33 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
 void Parser::parse_ax() {
     auto track = tracker();
     eat(Tok::Tag::K_ax);
-    auto ax = expect(Tok::Tag::M_ax, "name of an axiom");
+    auto& info = bootstrapper_.axioms.emplace_back();
+
+    auto ax     = expect(Tok::Tag::M_ax, "name of an axiom");
+    auto ax_str = ax.sym().to_string();
+
+    auto dialect_and_group = Axiom::dialect_and_group(ax_str);
+    if (!dialect_and_group) err(ax.loc(), "invalid axiom name '{}'", ax);
+    info.dialect = dialect_and_group->first;
+    info.group   = dialect_and_group->second;
+
+    if (info.dialect != bootstrapper_.dialect()) {
+        err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax, info.dialect,
+            lexer_.file());
+    }
+
+    if (ahead().isa(Tok::Tag::D_paren_l)) {
+        parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
+            auto& aliases = info.tags.emplace_back();
+            aliases.emplace_back(parse_sym("tag of an axiom"));
+            while (accept(Tok::Tag::T_assign)) aliases.emplace_back(parse_sym("alias of an axiom tag"));
+        });
+    }
+
     expect(Tok::Tag::T_colon, "axiom");
     auto type = parse_expr("type of an axiom");
     world().axiom(type, track.named(ax.sym()));
+    info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
     expect(Tok::Tag::T_semicolon, "end of an axiom");
 }
 

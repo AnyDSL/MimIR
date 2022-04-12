@@ -50,6 +50,8 @@ public:
     /// Reverts an Axiom::mangle%d string to a `std::string`.
     /// Ignores lower 16-bit of @p u.
     static std::string demangle(u64 u);
+
+    static std::optional<std::pair<std::string_view, std::string_view>> dialect_and_group(std::string_view);
     ///@}
 
     static std::tuple<const Axiom*, u16> get(const Def*);

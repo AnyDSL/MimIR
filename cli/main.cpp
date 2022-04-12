@@ -12,7 +12,6 @@
 #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/pass.h"
-#include "thorin/util/stream.h"
 
 #ifdef _WIN32
 #    include <windows.h>
@@ -50,17 +49,18 @@ static std::string get_clang_from_path() {
 
 int main(int argc, char** argv) {
     try {
-        static constexpr const char* Backends = "thorin|md|ll|dot";
+        static constexpr const char* Backends = "thorin|h|md|ll|dot";
 
         std::string input, prefix;
         std::string clang = get_clang_from_path();
         std::vector<std::string> dialects, dialect_paths, emitters;
         std::vector<size_t> breakpoints;
 
-        bool emit_ll      = false;
-        bool emit_md      = false;
-        bool emit_dot     = false;
         bool emit_thorin  = false;
+        bool emit_h       = false;
+        bool emit_md      = false;
+        bool emit_ll      = false;
+        bool emit_dot     = false;
         bool show_help    = false;
         bool show_version = false;
 
@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
             | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: " + clang + ").")
             | lyra::opt(dialects,      "dialect" )["-d"]["--dialect"     ]("Dynamically load dialect [WIP].")
             | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("Path to search dialects in.")
-            | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("thorin", "md", "ll", "dot")
+            | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("thorin", "h", "md", "ll", "dot")
             | lyra::opt(inc_verbose              )["-V"]["--verbose"     ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
 #ifndef NDEBUG
             | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
@@ -97,8 +97,9 @@ int main(int argc, char** argv) {
         for (const auto& e : emitters) {
             if (false) {}
             else if (e == "thorin") emit_thorin = true;
-            else if (e == "ll")     emit_ll     = true;
+            else if (e == "h" )     emit_h      = true;
             else if (e == "md")     emit_md     = true;
+            else if (e == "ll")     emit_ll     = true;
             else if (e == "dot")    emit_dot    = true;
             else unreachable();
         }
@@ -119,7 +120,7 @@ int main(int argc, char** argv) {
         prefix = input.substr(0, dot_i);
 
         World world;
-        world.set_log_stream(std::make_shared<thorin::Stream>(std::cerr));
+        world.set_log_ostream(&std::cerr);
         world.set_log_level((LogLevel)verbose);
 #ifndef NDEBUG
         for (auto b : breakpoints) world.breakpoint(b);
@@ -131,24 +132,26 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
 
-        std::ofstream ofs;
-        if (emit_md) ofs.open(prefix + ".md");
-
-        Parser parser(world, input, ifs, emit_md ? &ofs : nullptr);
+        std::ofstream md;
+        if (emit_md) md.open(prefix + ".md");
+        Parser parser(world, input, ifs, emit_md ? &md : nullptr);
         parser.parse_module();
+
+        if (emit_h) {
+            std::ofstream h(prefix + ".h");
+            parser.bootstrap(h);
+        }
 
         if (emit_thorin) world.dump();
 
         if (emit_dot) {
-            std::ofstream of(prefix + ".dot");
-            Stream s(of);
-            dot::emit(world, s);
+            std::ofstream ofs(prefix + ".dot");
+            dot::emit(world, ofs);
         }
 
         if (emit_ll) {
-            std::ofstream of(prefix + ".ll");
-            Stream s(of);
-            ll::emit(world, s);
+            std::ofstream ofs(prefix + ".ll");
+            ll::emit(world, ofs);
         }
     } catch (const std::exception& e) {
         errln("{}", e.what());

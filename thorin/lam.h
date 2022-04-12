@@ -172,7 +172,7 @@ public:
     friend class World;
 };
 
-inline Stream& operator<<(Stream& s, std::pair<Lam*, Lam*> p) {
+inline std::ostream& operator<<(std::ostream& s, std::pair<Lam*, Lam*> p) {
     return operator<<(s, std::pair<const Def*, const Def*>(p));
 }
 

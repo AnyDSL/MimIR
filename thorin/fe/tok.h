@@ -13,6 +13,7 @@ namespace thorin {
     m(K_ax,     ".ax"    )             \
     m(K_def,    ".def"   )             \
     m(K_let,    ".let"   )             \
+    m(K_Bool,   ".Bool"  )             \
     m(K_Nat,    ".Nat"   )             \
     m(K_extern, ".extern")             \
     m(K_Sigma,  ".Sigma" )             \
