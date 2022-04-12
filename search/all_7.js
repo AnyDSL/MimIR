@@ -27,5 +27,6 @@ var searchData=
   ['global_24',['global',['../classthorin_1_1World.html#a76965a47c1b49afec2aa3978ac9bc86b',1,'thorin::World']]],
   ['global_25',['Global',['../classthorin_1_1Global.html',1,'thorin']]],
   ['global_5fimmutable_5fstring_26',['global_immutable_string',['../classthorin_1_1World.html#ad8366e9cf977a271904b513802d5a560',1,'thorin::World']]],
-  ['globals_5f_27',['globals_',['../classthorin_1_1Emitter.html#ae6996cbfe877290dc33a25c67a5e3cee',1,'thorin::Emitter']]]
+  ['globals_5f_27',['globals_',['../classthorin_1_1Emitter.html#ae6996cbfe877290dc33a25c67a5e3cee',1,'thorin::Emitter']]],
+  ['group_28',['group',['../namespacethorin_1_1h.html#a6513e4db1201990385f6a955cd66b17a',1,'thorin::h::AxiomInfo']]]
 ];

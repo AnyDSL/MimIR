@@ -1,33 +1,31 @@
 <map id="thorin::Def" name="thorin::Def">
-<area shape="rect" id="node1" title="Base class for all Defs." alt="" coords="440,588,520,615"/>
-<area shape="rect" id="node6" href="$classthorin_1_1App.html" title=" " alt="" coords="578,5,661,32"/>
-<area shape="rect" id="node7" href="$classthorin_1_1Arr.html" title=" " alt="" coords="581,56,658,83"/>
-<area shape="rect" id="node8" href="$classthorin_1_1Axiom.html" title=" " alt="" coords="571,107,667,133"/>
-<area shape="rect" id="node9" href="$classthorin_1_1Bound.html" title="Common base for TBound." alt="" coords="571,157,668,184"/>
-<area shape="rect" id="node11" href="$classthorin_1_1Et.html" title="Constructs a Meet value." alt="" coords="583,208,655,235"/>
-<area shape="rect" id="node12" href="$classthorin_1_1Ext.html" title="Common base for TExtremum." alt="" coords="580,259,659,285"/>
-<area shape="rect" id="node14" href="$classthorin_1_1Extract.html" title="Extracts from a Sigma or Arr&#45;typed Extract::tuple the element at position Extract::index." alt="" coords="569,309,669,336"/>
-<area shape="rect" id="node15" href="$classthorin_1_1Global.html" title=" " alt="" coords="571,360,668,387"/>
-<area shape="rect" id="node16" href="$classthorin_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on." alt="" coords="576,411,663,437"/>
-<area shape="rect" id="node17" href="$classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple." alt="" coords="573,461,666,488"/>
-<area shape="rect" id="node18" href="$classthorin_1_1Lam.html" title=" " alt="" coords="576,512,663,539"/>
-<area shape="rect" id="node19" href="$classthorin_1_1Lit.html" title=" " alt="" coords="582,563,657,589"/>
-<area shape="rect" id="node20" href="$classthorin_1_1Nat.html" title=" " alt="" coords="579,613,660,640"/>
-<area shape="rect" id="node21" href="$classthorin_1_1Pack.html" title=" " alt="" coords="574,664,665,691"/>
-<area shape="rect" id="node22" href="$classthorin_1_1Pi.html" title="A function type AKA Pi type." alt="" coords="583,715,655,741"/>
-<area shape="rect" id="node23" href="$classthorin_1_1Pick.html" title="Picks the aspect of a Meet Pick::value by its Def::type." alt="" coords="576,765,663,792"/>
-<area shape="rect" id="node24" href="$classthorin_1_1Proxy.html" title=" " alt="" coords="573,816,665,843"/>
-<area shape="rect" id="node25" href="$classthorin_1_1Sigma.html" title=" " alt="" coords="571,867,668,893"/>
-<area shape="rect" id="node26" href="$classthorin_1_1Test.html" title="Tests the Test::value of type Join whether it currently holds type Test::probe." alt="" coords="576,917,663,944"/>
-<area shape="rect" id="node27" href="$classthorin_1_1Tuple.html" title="Data constructor for a Sigma." alt="" coords="573,968,665,995"/>
-<area shape="rect" id="node28" href="$classthorin_1_1Type.html" title=" " alt="" coords="575,1019,663,1045"/>
-<area shape="rect" id="node29" href="$classthorin_1_1Univ.html" title=" " alt="" coords="576,1069,663,1096"/>
-<area shape="rect" id="node30" href="$classthorin_1_1Var.html" title=" " alt="" coords="579,1120,659,1147"/>
-<area shape="rect" id="node31" href="$classthorin_1_1Vel.html" title="Constructs a Join value." alt="" coords="580,1171,659,1197"/>
-<area shape="rect" id="node2" href="$classthorin_1_1RuntimeCast.html" title=" " alt="" coords="256,547,391,589"/>
-<area shape="rect" id="node3" href="$classthorin_1_1RuntimeCast.html" title="Provides a dynamic_cast &#45;like feature without resorting to RTTI." alt="" coords="17,547,151,589"/>
-<area shape="rect" id="node4" href="$classthorin_1_1Streamable.html" title=" " alt="" coords="260,613,387,654"/>
-<area shape="rect" id="node5" href="$classthorin_1_1Streamable.html" title=" " alt="" coords="5,620,163,647"/>
-<area shape="rect" id="node10" href="$classthorin_1_1TBound.html" title="Specific Bound depending on up." alt="" coords="719,157,860,184"/>
-<area shape="rect" id="node13" href="$classthorin_1_1TExt.html" title="Extremum. Either Top (up) or Bottom." alt="" coords="728,259,851,285"/>
+<area shape="rect" id="node1" title="Base class for all Defs." alt="" coords="417,588,497,615"/>
+<area shape="rect" id="node4" href="$classthorin_1_1App.html" title=" " alt="" coords="555,5,638,32"/>
+<area shape="rect" id="node5" href="$classthorin_1_1Arr.html" title=" " alt="" coords="558,56,635,83"/>
+<area shape="rect" id="node6" href="$classthorin_1_1Axiom.html" title=" " alt="" coords="549,107,645,133"/>
+<area shape="rect" id="node7" href="$classthorin_1_1Bound.html" title="Common base for TBound." alt="" coords="548,157,645,184"/>
+<area shape="rect" id="node9" href="$classthorin_1_1Et.html" title="Constructs a Meet value." alt="" coords="561,208,633,235"/>
+<area shape="rect" id="node10" href="$classthorin_1_1Ext.html" title="Common base for TExtremum." alt="" coords="557,259,636,285"/>
+<area shape="rect" id="node12" href="$classthorin_1_1Extract.html" title="Extracts from a Sigma or Arr&#45;typed Extract::tuple the element at position Extract::index." alt="" coords="547,309,647,336"/>
+<area shape="rect" id="node13" href="$classthorin_1_1Global.html" title=" " alt="" coords="548,360,645,387"/>
+<area shape="rect" id="node14" href="$classthorin_1_1Infer.html" title="This node is a hole in the IR that is inferred by its context later on." alt="" coords="553,411,640,437"/>
+<area shape="rect" id="node15" href="$classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple." alt="" coords="550,461,643,488"/>
+<area shape="rect" id="node16" href="$classthorin_1_1Lam.html" title=" " alt="" coords="553,512,640,539"/>
+<area shape="rect" id="node17" href="$classthorin_1_1Lit.html" title=" " alt="" coords="559,563,634,589"/>
+<area shape="rect" id="node18" href="$classthorin_1_1Nat.html" title=" " alt="" coords="556,613,637,640"/>
+<area shape="rect" id="node19" href="$classthorin_1_1Pack.html" title=" " alt="" coords="551,664,642,691"/>
+<area shape="rect" id="node20" href="$classthorin_1_1Pi.html" title="A function type AKA Pi type." alt="" coords="561,715,633,741"/>
+<area shape="rect" id="node21" href="$classthorin_1_1Pick.html" title="Picks the aspect of a Meet Pick::value by its Def::type." alt="" coords="553,765,640,792"/>
+<area shape="rect" id="node22" href="$classthorin_1_1Proxy.html" title=" " alt="" coords="551,816,643,843"/>
+<area shape="rect" id="node23" href="$classthorin_1_1Sigma.html" title=" " alt="" coords="548,867,645,893"/>
+<area shape="rect" id="node24" href="$classthorin_1_1Test.html" title="Tests the Test::value of type Join whether it currently holds type Test::probe." alt="" coords="553,917,640,944"/>
+<area shape="rect" id="node25" href="$classthorin_1_1Tuple.html" title="Data constructor for a Sigma." alt="" coords="551,968,643,995"/>
+<area shape="rect" id="node26" href="$classthorin_1_1Type.html" title=" " alt="" coords="553,1019,641,1045"/>
+<area shape="rect" id="node27" href="$classthorin_1_1Univ.html" title=" " alt="" coords="553,1069,640,1096"/>
+<area shape="rect" id="node28" href="$classthorin_1_1Var.html" title=" " alt="" coords="557,1120,637,1147"/>
+<area shape="rect" id="node29" href="$classthorin_1_1Vel.html" title="Constructs a Join value." alt="" coords="557,1171,636,1197"/>
+<area shape="rect" id="node2" href="$classthorin_1_1RuntimeCast.html" title=" " alt="" coords="233,581,368,622"/>
+<area shape="rect" id="node3" href="$classthorin_1_1RuntimeCast.html" title="Provides a dynamic_cast &#45;like feature without resorting to RTTI." alt="" coords="5,581,140,622"/>
+<area shape="rect" id="node8" href="$classthorin_1_1TBound.html" title="Specific Bound depending on up." alt="" coords="696,157,837,184"/>
+<area shape="rect" id="node11" href="$classthorin_1_1TExt.html" title="Extremum. Either Top (up) or Bottom." alt="" coords="705,259,828,285"/>
 </map>

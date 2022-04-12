@@ -1,6 +1,6 @@
 var classthorin_1_1dot_1_1DotEmitter =
 [
-    [ "DotEmitter", "classthorin_1_1dot_1_1DotEmitter.html#a636b9c2d821240cf36aab1e36d286e79", null ],
+    [ "DotEmitter", "classthorin_1_1dot_1_1DotEmitter.html#a3f281dd331121d718bab9fdb62a1d652", null ],
     [ "~DotEmitter", "classthorin_1_1dot_1_1DotEmitter.html#ad616ea9c49b3215cec8e506653f4a454", null ],
     [ "emit_bb", "classthorin_1_1dot_1_1DotEmitter.html#abca79972849a83152aded7127e78337b", null ],
     [ "emit_epilogue", "classthorin_1_1dot_1_1DotEmitter.html#a3d971b70843edffa3ae2d433907c94aa", null ],

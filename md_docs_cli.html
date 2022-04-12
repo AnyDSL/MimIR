@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('md_docs_cli.html',''); initResizable()
 <div class="textblock"><h1><a class="anchor" id="autotoc_md16"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  thorin [-?|-h|--help] [-v|--version] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-e|--emit &lt;thorin|md|ll|dot&gt;] [-V|--verbose] [-b|--break &lt;gid&gt;] [-o|--output &lt;prefix&gt;] [&lt;file&gt;]</div>
+<div class="line">  thorin [-?|-h|--help] [-v|--version] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-e|--emit &lt;thorin|h|md|ll|dot&gt;] [-V|--verbose] [-b|--break &lt;gid&gt;] [-o|--output &lt;prefix&gt;] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -124,7 +124,7 @@ Usage</h1>
 <div class="line">  -d, --dialect &lt;dialect&gt; Dynamically load dialect [WIP].</div>
 <div class="line">  -D, --dialect-path &lt;path&gt;</div>
 <div class="line">                          Path to search dialects in.</div>
-<div class="line">  -e, --emit &lt;thorin|md|ll|dot&gt;</div>
+<div class="line">  -e, --emit &lt;thorin|h|md|ll|dot&gt;</div>
 <div class="line">                          Select emitter. Multiple emitters can be specified simultaneously.</div>
 <div class="line">  -V, --verbose           Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.</div>
 <div class="line">  -b, --break &lt;gid&gt;       Trigger breakpoint upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</div>
@@ -133,6 +133,7 @@ Usage</h1>
 Emitters</h1>
 <ul>
 <li><code>-e thorin</code> emits Thorin code again.</li>
+<li><code>-e h</code> emits a header file to be used to interface with a dialect in C++.</li>
 <li><code>-e md</code> emits the input formatted as <a href="https://www.doxygen.nl/manual/markdown.html">Markdown</a>.<ul>
 <li>Single-line <code>/// xxx</code> comments will put <code>xxx</code> directly into the Markdown output. You can put spaces after the <code>///</code>. This number of spaces will be used as <em>gobble</em> for this and all subsequent lines. This <em>gobble</em> will be elided in the output as well.</li>
 <li>Everything else will be put verbatim within a <a href="https://www.doxygen.nl/manual/markdown.html#md_fenced">fenced code block</a>.</li>

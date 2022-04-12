@@ -115,17 +115,17 @@ $(document).ready(function(){initNavTree('assert_8h_source.html',''); initResiza
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">// see https://stackoverflow.com/a/65258501</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#ifdef __GNUC__ </span><span class="comment">// GCC 4.8+, Clang, Intel and other compilers compatible with GCC (-std=c++0x or above)</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>[[noreturn]] <span class="keyword">inline</span> __attribute__((always_inline)) <span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#ae28200e453f278e083c9350e8dbeda0d">unreachable</a>([[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">char</span>* s = {}) {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    assert(<span class="keyword">false</span> &amp;&amp; s);</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>[[noreturn]] <span class="keyword">inline</span> __attribute__((always_inline)) <span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9">unreachable</a>() {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    assert(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    __builtin_unreachable();</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>}</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#elif defined(_MSC_VER) </span><span class="comment">// MSVC</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>[[noreturn]] __forceinline <span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#ae28200e453f278e083c9350e8dbeda0d">unreachable</a>([[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">char</span>* s = {}) {</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    assert(<span class="keyword">false</span> &amp;&amp; s);</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>[[noreturn]] __forceinline <span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9">unreachable</a>() {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    assert(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    __assume(<span class="keyword">false</span>);</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>}</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#else                   </span><span class="comment">// ???</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="namespacethorin.html#ae28200e453f278e083c9350e8dbeda0d">   22</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#ae28200e453f278e083c9350e8dbeda0d">unreachable</a>([[maybe_unused]] <span class="keyword">const</span> <span class="keywordtype">char</span>* s) { assert(<span class="keyword">false</span> &amp;&amp; s); }</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9">   22</a></span><span class="keyword">inline</span> <span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9">unreachable</a>() { assert(<span class="keyword">false</span>); }</div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#if (defined(__clang__) || defined(__GNUC__)) &amp;&amp; (defined(__x86_64__) || defined(__i386__))</span></div>
@@ -147,8 +147,8 @@ $(document).ready(function(){initNavTree('assert_8h_source.html',''); initResiza
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#endif</span></div>
 <div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition:</b> <a href="cfg_8cpp_source.html#l00014">cfg.cpp:14</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a37d16cd32e773f40b5989147bd9bcbc9"><div class="ttname"><a href="namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9">thorin::unreachable</a></div><div class="ttdeci">void unreachable()</div><div class="ttdef"><b>Definition:</b> <a href="assert_8h_source.html#l00022">assert.h:22</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a7ec2df0cc38989e607e76de0491ef48b"><div class="ttname"><a href="namespacethorin.html#a7ec2df0cc38989e607e76de0491ef48b">thorin::breakpoint</a></div><div class="ttdeci">void breakpoint()</div><div class="ttdef"><b>Definition:</b> <a href="assert_8h_source.html#l00028">assert.h:28</a></div></div>
-<div class="ttc" id="anamespacethorin_html_ae28200e453f278e083c9350e8dbeda0d"><div class="ttname"><a href="namespacethorin.html#ae28200e453f278e083c9350e8dbeda0d">thorin::unreachable</a></div><div class="ttdeci">void unreachable(const char *s)</div><div class="ttdef"><b>Definition:</b> <a href="assert_8h_source.html#l00022">assert.h:22</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

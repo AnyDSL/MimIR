@@ -119,11 +119,11 @@ $(document).ready(function(){initNavTree('def_8h.html',''); initResizable(); });
 <code>#include &quot;<a class="el" href="cast_8h_source.html">thorin/util/cast.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="container_8h_source.html">thorin/util/container.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hash_8h_source.html">thorin/util/hash.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="stream_8h_source.html">thorin/util/stream.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="print_8h_source.html">thorin/util/print.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for def.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="2626" height="351"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="1814" height="351"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -250,16 +250,16 @@ Functions</h2></td></tr>
 <tr class="memitem:a4784a7ada8e2badb49500623824d79e5"><td class="memTemplParams" colspan="2">template&lt;class T  = u64&gt; </td></tr>
 <tr class="memitem:a4784a7ada8e2badb49500623824d79e5"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a4784a7ada8e2badb49500623824d79e5">thorin::as_lit</a> (const Def *def)</td></tr>
 <tr class="separator:a4784a7ada8e2badb49500623824d79e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3254a6c04a58f143d50134756ccb85c"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad3254a6c04a58f143d50134756ccb85c">thorin::operator&lt;&lt;</a> (std::ostream &amp;, const Def *def)</td></tr>
+<tr class="separator:ad3254a6c04a58f143d50134756ccb85c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc03433e6b2efb1c4ad7d0c5dd690b10"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:abc03433e6b2efb1c4ad7d0c5dd690b10"><td class="memTemplItemLeft" align="right" valign="top">const T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#abc03433e6b2efb1c4ad7d0c5dd690b10">thorin::isa</a> (fields_t f, const Def *def)</td></tr>
 <tr class="separator:abc03433e6b2efb1c4ad7d0c5dd690b10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa78a06105f27e02c56892a8ed4dd563f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:aa78a06105f27e02c56892a8ed4dd563f"><td class="memTemplItemLeft" align="right" valign="top">const T *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aa78a06105f27e02c56892a8ed4dd563f">thorin::as</a> (fields_t f, const Def *def)</td></tr>
 <tr class="separator:aa78a06105f27e02c56892a8ed4dd563f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6bd93f689a50c956269ba837af35945d"><td class="memItemLeft" align="right" valign="top">Stream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a6bd93f689a50c956269ba837af35945d">thorin::operator&lt;&lt;</a> (Stream &amp;, const Def *def)</td></tr>
-<tr class="separator:a6bd93f689a50c956269ba837af35945d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8f246cfc8c473dab34f7419c3f58990"><td class="memItemLeft" align="right" valign="top">Stream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab8f246cfc8c473dab34f7419c3f58990">thorin::operator&lt;&lt;</a> (Stream &amp;, std::pair&lt; const Def *, const Def * &gt;)</td></tr>
-<tr class="separator:ab8f246cfc8c473dab34f7419c3f58990"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ee0fe26ac95507b80f3db27942bf892"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a5ee0fe26ac95507b80f3db27942bf892">thorin::operator&lt;&lt;</a> (std::ostream &amp;, std::pair&lt; const Def *, const Def * &gt;)</td></tr>
+<tr class="separator:a5ee0fe26ac95507b80f3db27942bf892"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="adf5d1a62a53cfba7b0dcd4caac0090ab" name="adf5d1a62a53cfba7b0dcd4caac0090ab"></a>
@@ -303,14 +303,14 @@ Functions</h2></td></tr>
 <div class="line">        return ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;F&gt;(<a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661">a</a>, <a class="code hl_enumvalue" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea8fa14cdd754f91cc6554c9e71929cce7">f</a>, dbgs);                                                         \</div>
 <div class="line">    }                                                                                                              \</div>
 <div class="line">    auto NAME##s(<a class="code hl_typedef" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> a, <a class="code hl_typedef" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> dbgs = {}) CONST { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;projs(a, dbgs); }</div>
-<div class="ttc" id="anamespacethorin_html_a2d1ba8b5552b3120a6648deb2bf7eb16"><div class="ttname"><a href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">thorin::Defs</a></div><div class="ttdeci">ArrayRef&lt; const Def * &gt; Defs</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00025">def.h:25</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a2d1ba8b5552b3120a6648deb2bf7eb16"><div class="ttname"><a href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">thorin::Defs</a></div><div class="ttdeci">ArrayRef&lt; const Def * &gt; Defs</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00024">def.h:24</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a529e2848fe27ea9f7ccf59bec4fd1e91"><div class="ttname"><a href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">thorin::nat_t</a></div><div class="ttdeci">u64 nat_t</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00016">tables.h:16</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661"><div class="ttname"><a href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea0cc175b9c0f1b6a831c399e269772661">thorin::Bit::a</a></div><div class="ttdeci">@ a</div></div>
 <div class="ttc" id="anamespacethorin_html_a89d67b04557e416d256c0cc75a55accea8fa14cdd754f91cc6554c9e71929cce7"><div class="ttname"><a href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea8fa14cdd754f91cc6554c9e71929cce7">thorin::Bit::f</a></div><div class="ttdeci">@ f</div></div>
 </div><!-- fragment -->
 <p>Use as mixin to wrap all kind of Def::proj and Def::projs variants. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00083">83</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00082">82</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

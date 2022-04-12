@@ -16,5 +16,6 @@ var world_8h =
       [ "Info", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875", null ],
       [ "Verbose", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf", null ],
       [ "Debug", "world_8h.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba", null ]
-    ] ]
+    ] ],
+    [ "operator<<", "world_8h.html#aeaa9638b9a869ca694aaaeaa79e1a521", null ]
 ];

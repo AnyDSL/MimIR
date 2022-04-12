@@ -17,5 +17,6 @@ var searchData=
   ['arraystorage_3c_20uint64_5ft_2c_20std_3a_3ais_5ftrivial_3c_20uint64_5ft_20_3e_3a_3avalue_20_3f_205_20_3a0_20_3e_14',['ArrayStorage&lt; uint64_t, std::is_trivial&lt; uint64_t &gt;::value ? 5 :0 &gt;',['../classthorin_1_1ArrayStorage.html',1,'thorin']]],
   ['arraystorage_3c_20value_2c_20std_3a_3ais_5ftrivial_3c_20value_20_3e_3a_3avalue_20_3f_205_20_3a0_20_3e_15',['ArrayStorage&lt; Value, std::is_trivial&lt; Value &gt;::value ? 5 :0 &gt;',['../classthorin_1_1ArrayStorage.html',1,'thorin']]],
   ['arraystorage_3c_20void_20_2a_2c_20std_3a_3ais_5ftrivial_3c_20void_20_2a_20_3e_3a_3avalue_20_3f_205_20_3a0_20_3e_16',['ArrayStorage&lt; void *, std::is_trivial&lt; void * &gt;::value ? 5 :0 &gt;',['../classthorin_1_1ArrayStorage.html',1,'thorin']]],
-  ['axiom_17',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]]
+  ['axiom_17',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]],
+  ['axiominfo_18',['AxiomInfo',['../namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo',1,'thorin::h']]]
 ];

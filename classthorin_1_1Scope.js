@@ -15,6 +15,5 @@ var classthorin_1_1Scope =
     [ "free_vars", "classthorin_1_1Scope.html#ad1382b17547a92c8e469ddf4fd5f11b3", null ],
     [ "name", "classthorin_1_1Scope.html#a61f82fb1d75c44d95b8876ec3bf16a2c", null ],
     [ "operator=", "classthorin_1_1Scope.html#a3418a230e32861c44b2f8def79a832f9", null ],
-    [ "stream", "classthorin_1_1Scope.html#a6ba9309bd98fc0947f90f09fa419dbde", null ],
     [ "world", "classthorin_1_1Scope.html#a4534823902d5d89abc4464e11bb5f31b", null ]
 ];

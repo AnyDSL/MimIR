@@ -8,6 +8,5 @@ var searchData=
   ['scope_2eh_5',['scope.h',['../scope_8h.html',1,'']]],
   ['ssa_5fconstr_2ecpp_6',['ssa_constr.cpp',['../ssa__constr_8cpp.html',1,'']]],
   ['ssa_5fconstr_2eh_7',['ssa_constr.h',['../ssa__constr_8h.html',1,'']]],
-  ['stream_2ecpp_8',['stream.cpp',['../stream_8cpp.html',1,'(Global Namespace)'],['../util_2stream_8cpp.html',1,'(Global Namespace)']]],
-  ['stream_2eh_9',['stream.h',['../stream_8h.html',1,'']]]
+  ['stream_2ecpp_8',['stream.cpp',['../stream_8cpp.html',1,'']]]
 ];

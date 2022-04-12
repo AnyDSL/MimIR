@@ -5,6 +5,10 @@ var annotated_dup =
         [ "BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
         [ "DotEmitter", "classthorin_1_1dot_1_1DotEmitter.html", "classthorin_1_1dot_1_1DotEmitter" ]
       ] ],
+      [ "h", "namespacethorin_1_1h.html", [
+        [ "AxiomInfo", "namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo", "namespacethorin_1_1h_structthorin_1_1h_1_1AxiomInfo_dup" ],
+        [ "Bootstrapper", "classthorin_1_1h_1_1Bootstrapper.html", "classthorin_1_1h_1_1Bootstrapper" ]
+      ] ],
       [ "ll", "namespacethorin_1_1ll.html", [
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
         [ "CodeGen", "classthorin_1_1ll_1_1CodeGen.html", "classthorin_1_1ll_1_1CodeGen" ]
@@ -115,11 +119,9 @@ var annotated_dup =
       [ "ScopeError", "classthorin_1_1ScopeError.html", "classthorin_1_1ScopeError" ],
       [ "Sigma", "classthorin_1_1Sigma.html", "classthorin_1_1Sigma" ],
       [ "SSAConstr", "classthorin_1_1SSAConstr.html", "classthorin_1_1SSAConstr" ],
-      [ "Stream", "classthorin_1_1Stream.html", "classthorin_1_1Stream" ],
-      [ "Streamable", "classthorin_1_1Streamable.html", "classthorin_1_1Streamable" ],
-      [ "StringStream", "classthorin_1_1StringStream.html", "classthorin_1_1StringStream" ],
       [ "Sym", "classthorin_1_1Sym.html", "classthorin_1_1Sym" ],
       [ "SymHash", "structthorin_1_1SymHash.html", "structthorin_1_1SymHash" ],
+      [ "Tab", "classthorin_1_1Tab.html", "classthorin_1_1Tab" ],
       [ "Tag2Def_", "namespacethorin.html#structthorin_1_1Tag2Def__", "namespacethorin_structthorin_1_1Tag2Def___dup" ],
       [ "Tag2Def_< Tag::Mem >", "namespacethorin.html#structthorin_1_1Tag2Def___3_01Tag_1_1Mem_01_4", "namespacethorin_structthorin_1_1Tag2Def___3_01Tag_1_1Mem_01_4_dup" ],
       [ "Tag2Enum_", "namespacethorin.html#structthorin_1_1Tag2Enum__", "namespacethorin_structthorin_1_1Tag2Enum___dup" ],
@@ -145,6 +147,7 @@ var annotated_dup =
       [ "unique_queue", "classthorin_1_1unique__queue.html", "classthorin_1_1unique__queue" ],
       [ "unique_stack", "classthorin_1_1unique__stack.html", "classthorin_1_1unique__stack" ],
       [ "Univ", "classthorin_1_1Univ.html", "classthorin_1_1Univ" ],
+      [ "Unwrap", "structthorin_1_1Unwrap.html", "structthorin_1_1Unwrap" ],
       [ "Use", "classthorin_1_1Use.html", "classthorin_1_1Use" ],
       [ "UseEq", "structthorin_1_1UseEq.html", "structthorin_1_1UseEq" ],
       [ "UseHash", "structthorin_1_1UseHash.html", "structthorin_1_1UseHash" ],

@@ -1,6 +1,6 @@
 var dir_91cc3e6bd7c42aaa24383bdfa6f52de6 =
 [
-    [ "cfg.cpp", "cfg_8cpp.html", null ],
+    [ "cfg.cpp", "cfg_8cpp.html", "cfg_8cpp" ],
     [ "cfg.h", "cfg_8h.html", "cfg_8h" ],
     [ "deptree.cpp", "deptree_8cpp.html", "deptree_8cpp" ],
     [ "deptree.h", "deptree_8h.html", [
@@ -12,12 +12,7 @@ var dir_91cc3e6bd7c42aaa24383bdfa6f52de6 =
     [ "domtree.cpp", "domtree_8cpp.html", null ],
     [ "domtree.h", "domtree_8h.html", "domtree_8h" ],
     [ "looptree.cpp", "looptree_8cpp.html", "looptree_8cpp" ],
-    [ "looptree.h", "looptree_8h.html", [
-      [ "thorin::LoopTree< forward >", "classthorin_1_1LoopTree.html", "classthorin_1_1LoopTree" ],
-      [ "thorin::LoopTree< forward >::Base", "classthorin_1_1LoopTree_1_1Base.html", "classthorin_1_1LoopTree_1_1Base" ],
-      [ "thorin::LoopTree< forward >::Head", "classthorin_1_1LoopTree_1_1Head.html", "classthorin_1_1LoopTree_1_1Head" ],
-      [ "thorin::LoopTree< forward >::Leaf", "classthorin_1_1LoopTree_1_1Leaf.html", "classthorin_1_1LoopTree_1_1Leaf" ]
-    ] ],
+    [ "looptree.h", "looptree_8h.html", "looptree_8h" ],
     [ "schedule.cpp", "schedule_8cpp.html", "schedule_8cpp" ],
     [ "schedule.h", "schedule_8h.html", "schedule_8h" ],
     [ "scope.cpp", "scope_8cpp.html", "scope_8cpp" ],

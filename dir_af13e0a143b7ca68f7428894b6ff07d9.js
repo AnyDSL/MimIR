@@ -13,8 +13,8 @@ var dir_af13e0a143b7ca68f7428894b6ff07d9 =
     [ "hash.h", "hash_8h.html", "hash_8h" ],
     [ "indexmap.h", "indexmap_8h.html", "indexmap_8h" ],
     [ "indexset.h", "indexset_8h.html", "indexset_8h" ],
-    [ "stream.cpp", "util_2stream_8cpp.html", null ],
-    [ "stream.h", "stream_8h.html", "stream_8h" ],
+    [ "print.cpp", "print_8cpp.html", "print_8cpp" ],
+    [ "print.h", "print_8h.html", "print_8h" ],
     [ "types.h", "types_8h.html", "types_8h" ],
     [ "utf8.cpp", "utf8_8cpp.html", "utf8_8cpp" ],
     [ "utf8.h", "utf8_8h.html", "utf8_8h" ]

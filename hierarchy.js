@@ -14,11 +14,14 @@ var hierarchy =
     [ "thorin::ArrayStorage< uint64_t, std::is_trivial< uint64_t >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::ArrayStorage< Value, std::is_trivial< Value >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
     [ "thorin::ArrayStorage< void *, std::is_trivial< void * >::value ? 5 :0 >", "classthorin_1_1ArrayStorage.html", null ],
+    [ "thorin::h::AxiomInfo", "namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo", null ],
     [ "thorin::dot::BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
     [ "thorin::ll::BB", "structthorin_1_1ll_1_1BB.html", null ],
     [ "thorin::BitSet", "classthorin_1_1BitSet.html", null ],
+    [ "thorin::h::Bootstrapper", "classthorin_1_1h_1_1Bootstrapper.html", null ],
     [ "thorin::CFA", "classthorin_1_1CFA.html", null ],
     [ "thorin::CFG< forward >", "classthorin_1_1CFG.html", null ],
+    [ "thorin::CFNode", "classthorin_1_1CFNode.html", null ],
     [ "thorin::Checker", "classthorin_1_1Checker.html", null ],
     [ "thorin::Debug", "classthorin_1_1Debug.html", null ],
     [ "thorin::DefDefEq", "structthorin_1_1DefDefEq.html", null ],
@@ -171,24 +174,9 @@ var hierarchy =
     [ "thorin::Scope", "classthorin_1_1Scope.html", null ],
     [ "thorin::World::SeaEq", "structthorin_1_1World_1_1SeaEq.html", null ],
     [ "thorin::World::SeaHash", "structthorin_1_1World_1_1SeaHash.html", null ],
-    [ "thorin::Stream", "classthorin_1_1Stream.html", [
-      [ "thorin::StringStream", "classthorin_1_1StringStream.html", null ]
-    ] ],
-    [ "thorin::Streamable< C >", "classthorin_1_1Streamable.html", null ],
-    [ "thorin::Streamable< CFNode >", "classthorin_1_1Streamable.html", [
-      [ "thorin::CFNode", "classthorin_1_1CFNode.html", null ]
-    ] ],
-    [ "thorin::Streamable< Def >", "classthorin_1_1Streamable.html", [
-      [ "thorin::Def", "classthorin_1_1Def.html", null ]
-    ] ],
-    [ "thorin::Streamable< LoopTree< forward > >", "classthorin_1_1Streamable.html", [
-      [ "thorin::LoopTree< forward >::Base", "classthorin_1_1LoopTree_1_1Base.html", null ]
-    ] ],
-    [ "thorin::Streamable< World >", "classthorin_1_1Streamable.html", [
-      [ "thorin::World", "classthorin_1_1World.html", null ]
-    ] ],
     [ "thorin::Sym", "classthorin_1_1Sym.html", null ],
     [ "thorin::SymHash", "structthorin_1_1SymHash.html", null ],
+    [ "thorin::Tab", "classthorin_1_1Tab.html", null ],
     [ "thorin::Tag2Def_< tag >", "namespacethorin.html#structthorin_1_1Tag2Def__", null ],
     [ "thorin::Tag2Def_< Tag::Mem >", "namespacethorin.html#structthorin_1_1Tag2Def___3_01Tag_1_1Mem_01_4", null ],
     [ "thorin::Tag2Enum_< tag >", "namespacethorin.html#structthorin_1_1Tag2Enum__", null ],
@@ -207,6 +195,7 @@ var hierarchy =
     [ "thorin::unique_queue< Set >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_queue< NomSet >", "classthorin_1_1unique__queue.html", null ],
     [ "thorin::unique_stack< Set >", "classthorin_1_1unique__stack.html", null ],
+    [ "thorin::Unwrap", "structthorin_1_1Unwrap.html", null ],
     [ "thorin::Use", "classthorin_1_1Use.html", null ],
     [ "thorin::UseEq", "structthorin_1_1UseEq.html", null ],
     [ "thorin::UseHash", "structthorin_1_1UseHash.html", null ],
@@ -223,6 +212,7 @@ var hierarchy =
     [ "thorin::w2u_< 32 >", "namespacethorin.html#structthorin_1_1w2u___3_0132_01_4", null ],
     [ "thorin::w2u_< 64 >", "namespacethorin.html#structthorin_1_1w2u___3_0164_01_4", null ],
     [ "thorin::w2u_< 8 >", "namespacethorin.html#structthorin_1_1w2u___3_018_01_4", null ],
+    [ "thorin::World", "classthorin_1_1World.html", null ],
     [ "thorin::World::Arena::Zone", "structthorin_1_1World_1_1Arena_1_1Zone.html", null ],
     [ "bool", "namespace_3globalScope_4.html#classbool", null ],
     [ "DefMap< std::string >", "namespace_3globalScope_4.html#classDefMap_3_01std_1_1string_01_4", null ],

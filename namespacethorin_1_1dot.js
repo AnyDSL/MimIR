@@ -2,8 +2,8 @@ var namespacethorin_1_1dot =
 [
     [ "BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
     [ "DotEmitter", "classthorin_1_1dot_1_1DotEmitter.html", "classthorin_1_1dot_1_1DotEmitter" ],
-    [ "default_stream_def", "namespacethorin_1_1dot.html#a40be0dbeb1589c02ec6a03a9377e13f2", null ],
-    [ "emit", "namespacethorin_1_1dot.html#aaf1b7a7efc602d66cfa4fa381334f63b", null ],
-    [ "emit_cluster_start", "namespacethorin_1_1dot.html#ab67fbe1bbf6a6c001c22bfb6be21a05f", null ],
-    [ "emit_node_attributes", "namespacethorin_1_1dot.html#ab197b835d69f8511de44eba79de7a1f6", null ]
+    [ "default_stream_def", "namespacethorin_1_1dot.html#a7bfdd9ee50f8c646fcd11211c81d663c", null ],
+    [ "emit", "namespacethorin_1_1dot.html#a0accd07b6689c0d7eafd53273e630a3b", null ],
+    [ "emit_cluster_start", "namespacethorin_1_1dot.html#a60eef4cef3906b067e5cb3336127afe2", null ],
+    [ "emit_node_attributes", "namespacethorin_1_1dot.html#a61fbd2e53349abdd3410ce1f187f2955", null ]
 ];

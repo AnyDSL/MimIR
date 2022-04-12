@@ -112,11 +112,11 @@ $(document).ready(function(){initNavTree('dot_8cpp.html',''); initResizable(); }
 <code>#include &quot;<a class="el" href="def_8h_source.html">thorin/def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="world_8h_source.html">thorin/world.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="emitter_8h_source.html">thorin/be/emitter.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="stream_8h_source.html">thorin/util/stream.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="print_8h_source.html">thorin/util/print.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for dot.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="dot_8cpp__incl.svg" width="2674" height="724"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="dot_8cpp__incl.svg" width="2450" height="724"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -138,14 +138,14 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a40be0dbeb1589c02ec6a03a9377e13f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#a40be0dbeb1589c02ec6a03a9377e13f2">thorin::dot::default_stream_def</a> (Stream &amp;s, const Def *def)</td></tr>
-<tr class="separator:a40be0dbeb1589c02ec6a03a9377e13f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf1b7a7efc602d66cfa4fa381334f63b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#aaf1b7a7efc602d66cfa4fa381334f63b">thorin::dot::emit</a> (World &amp;w, Stream &amp;s, std::function&lt; void(Stream &amp;, const Def *)&gt; stream_def)</td></tr>
-<tr class="separator:aaf1b7a7efc602d66cfa4fa381334f63b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab67fbe1bbf6a6c001c22bfb6be21a05f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#ab67fbe1bbf6a6c001c22bfb6be21a05f">thorin::dot::emit_cluster_start</a> (Stream &amp;stream, Lam *lam)</td></tr>
-<tr class="separator:ab67fbe1bbf6a6c001c22bfb6be21a05f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab197b835d69f8511de44eba79de7a1f6"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#ab197b835d69f8511de44eba79de7a1f6">thorin::dot::emit_node_attributes</a> (Stream &amp;stream, const Def *def)</td></tr>
-<tr class="separator:ab197b835d69f8511de44eba79de7a1f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bfdd9ee50f8c646fcd11211c81d663c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#a7bfdd9ee50f8c646fcd11211c81d663c">thorin::dot::default_stream_def</a> (std::ostream &amp;s, const Def *def)</td></tr>
+<tr class="separator:a7bfdd9ee50f8c646fcd11211c81d663c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0accd07b6689c0d7eafd53273e630a3b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#a0accd07b6689c0d7eafd53273e630a3b">thorin::dot::emit</a> (World &amp;w, std::ostream &amp;s, std::function&lt; void(std::ostream &amp;, const Def *)&gt; stream_def)</td></tr>
+<tr class="separator:a0accd07b6689c0d7eafd53273e630a3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60eef4cef3906b067e5cb3336127afe2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#a60eef4cef3906b067e5cb3336127afe2">thorin::dot::emit_cluster_start</a> (std::ostream &amp;os, Lam *lam)</td></tr>
+<tr class="separator:a60eef4cef3906b067e5cb3336127afe2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61fbd2e53349abdd3410ce1f187f2955"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dot.html#a61fbd2e53349abdd3410ce1f187f2955">thorin::dot::emit_node_attributes</a> (std::ostream &amp;stream, const Def *def)</td></tr>
+<tr class="separator:a61fbd2e53349abdd3410ce1f187f2955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Class Documentation</h2>
 <a name="classthorin_1_1dot_1_1BB" id="classthorin_1_1dot_1_1BB"></a>

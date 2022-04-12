@@ -2,6 +2,7 @@ var classthorin_1_1Axiom =
 [
     [ "curry", "classthorin_1_1Axiom.html#a6ea6fa10f6be6ecd5f89f2bb0ef3f239", null ],
     [ "demangle", "classthorin_1_1Axiom.html#a90268ef34a15500906ec6715ad2bd4b2", null ],
+    [ "dialect_and_group", "classthorin_1_1Axiom.html#ac2fbb5d076e915684ac1fa74b2b35bbf", null ],
     [ "flags", "classthorin_1_1Axiom.html#a9b62414ed2be19135df83d9c3571f989", null ],
     [ "get", "classthorin_1_1Axiom.html#acbd0e670843d77165d24ce1f6583d35c", null ],
     [ "mangle", "classthorin_1_1Axiom.html#ac22370fdc25307dc58e5a53c0475f388", null ],

@@ -9,6 +9,7 @@ var classthorin_1_1Tok =
       [ "K_ax", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aeaa32cc02c0ea4e8ccee5cf521bfc98b", null ],
       [ "K_def", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ae12060443298f0c9750e3e6210044b66", null ],
       [ "K_let", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038abc3b81567a2120d32858af82e3a5fcea", null ],
+      [ "K_Bool", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa2228465e8e618283c7c6beca8b3a4e6", null ],
       [ "K_Nat", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aefffde19d56073e2539eb8c5b2d51296", null ],
       [ "K_extern", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a8a60817c7b13b75f078509e5e3a32aac", null ],
       [ "K_Sigma", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ae3df2a467ffbdf1e8c8629d62b09efbf", null ],
