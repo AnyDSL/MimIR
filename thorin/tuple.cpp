@@ -51,7 +51,7 @@ const Def* unflatten(Defs defs, const Def* type) {
     return def;
 }
 
-const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs((size_t)as_lit(def->arity())), type); }
+const Def* unflatten(const Def* def, const Def* type) { return unflatten(def->projs(as_lit(def->arity())), type); }
 
 bool is_unit(const Def* def) { return def->type() == def->world().sigma(); }
 
