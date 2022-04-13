@@ -301,9 +301,9 @@ void CodeGen::emit_epilogue(Lam* lam) {
                 std::string prev = "undef";
                 auto type        = convert(world().sigma(types));
                 for (size_t i = 0, n = values.size(); i != n; ++i) {
-                    auto elem = values[i];
+                    auto elem   = values[i];
                     auto elem_t = convert(types[i]);
-                    auto namei = "%ret_val." + std::to_string(i);
+                    auto namei  = "%ret_val." + std::to_string(i);
                     bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, elem_t, elem, i);
                     prev = namei;
                 }
@@ -357,17 +357,16 @@ void CodeGen::emit_epilogue(Lam* lam) {
             bb.tail("{} = call {} {}({, })", name, ret_ty, id(callee), args);
 
             for (size_t i = 1, e = ret_lam->num_vars(); i != e; ++i) {
-                auto phi = ret_lam->var(i);
+                auto phi   = ret_lam->var(i);
                 auto namei = name;
                 if (e > 2) {
-                    namei += '.' + std::to_string(i-1);
+                    namei += '.' + std::to_string(i - 1);
                     bb.tail("{} = extractvalue {} {}, {}", namei, ret_ty, name, i - 1);
                 }
                 assert(!isa<Tag::Mem>(phi->type()));
                 lam2bb_[ret_lam].phis[phi].emplace_back(namei, id(lam, true));
                 locals_[phi] = id(phi);
             }
-
         }
 
         return bb.tail("br label {}", id(ret_lam));
@@ -406,8 +405,8 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             auto e = tuple->proj(n, i);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
                 auto elem_t = convert(e->type());
-                auto namei = name + "." + std::to_string(i);
-                prev = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, i);
+                auto namei  = name + "." + std::to_string(i);
+                prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, i);
             }
         }
         return prev;
