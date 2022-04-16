@@ -357,33 +357,24 @@ $(document).ready(function(){initNavTree('lexer_8cpp_source.html',''); initResiz
 <div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="keywordtype">void</span> Lexer::emit_md(<span class="keywordtype">bool</span> start_of_file) {</div>
 <div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>    <span class="keywordflow">if</span> (!start_of_file) md_fence();</div>
 <div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    out_ = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 3; ++i) next();</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    <span class="keywordtype">int</span> gobble = 0;</div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keywordflow">while</span> (<a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93">accept</a>(<span class="charliteral">&#39; &#39;</span>)) ++gobble;</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    out_ = <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>    <span class="keywordflow">do</span> {</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        out_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 3; ++i) next();</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93">accept</a>(<span class="charliteral">&#39; &#39;</span>);</div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        out_ = <span class="keyword">true</span>;</div>
 <div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <span class="keywordflow">while</span> (<a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>() != <a class="code hl_variable" href="namespacethorin_1_1utf8.html#a5c5126a8e6311260cf8ee8126dd59c39">utf8::EoF</a> &amp;&amp; <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>() != <span class="charliteral">&#39;\n&#39;</span>) next();</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93">accept</a>(<span class="charliteral">&#39;\n&#39;</span>);</div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <span class="keywordflow">while</span> (start_md()) {</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        out_ = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; 3; ++i) next();</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; gobble; ++i) <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93">accept</a>(<span class="charliteral">&#39; &#39;</span>);</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        out_ = <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        <span class="keywordflow">while</span> (<a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>() != <a class="code hl_variable" href="namespacethorin_1_1utf8.html#a5c5126a8e6311260cf8ee8126dd59c39">utf8::EoF</a> &amp;&amp; <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>() != <span class="charliteral">&#39;\n&#39;</span>) next();</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93">accept</a>(<span class="charliteral">&#39;\n&#39;</span>);</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>    }</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span> </div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>() == <a class="code hl_variable" href="namespacethorin_1_1utf8.html#a5c5126a8e6311260cf8ee8126dd59c39">utf8::EoF</a>) {</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        out_ = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        md_fence();</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>    }</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>}</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        <span class="keywordflow">while</span> (<a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>() != <a class="code hl_variable" href="namespacethorin_1_1utf8.html#a5c5126a8e6311260cf8ee8126dd59c39">utf8::EoF</a> &amp;&amp; <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>() != <span class="charliteral">&#39;\n&#39;</span>) next();</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        <a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93">accept</a>(<span class="charliteral">&#39;\n&#39;</span>);</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    } <span class="keywordflow">while</span> (start_md());</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    <span class="keywordflow">if</span> (<a class="code hl_function" href="classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa">ahead</a>() == <a class="code hl_variable" href="namespacethorin_1_1utf8.html#a5c5126a8e6311260cf8ee8126dd59c39">utf8::EoF</a>) {</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        out_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        md_fence();</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    }</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>}</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>} <span class="comment">// namespace thorin</span></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_a68a5bb48f5e13e1e788b81c8edc66712"><div class="ttname"><a href="classthorin_1_1Lexer.html#a68a5bb48f5e13e1e788b81c8edc66712">thorin::Lexer::Lexer</a></div><div class="ttdeci">Lexer(World &amp;world, std::string_view file, std::istream &amp;istream, std::ostream *md=nullptr)</div><div class="ttdoc">Creates a lexer to read Thorin files (see Lexical Structure).</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8cpp_source.html#l00012">lexer.cpp:12</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_a6bd719c30ca4ab054c3e94dee0870e45"><div class="ttname"><a href="classthorin_1_1Lexer.html#a6bd719c30ca4ab054c3e94dee0870e45">thorin::Lexer::loc</a></div><div class="ttdeci">Loc loc() const</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8h_source.html#l00026">lexer.h:26</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Lexer_html_aa21d77442a7d24a9e4333648c8ce6ca5"><div class="ttname"><a href="classthorin_1_1Lexer.html#aa21d77442a7d24a9e4333648c8ce6ca5">thorin::Lexer::lex</a></div><div class="ttdeci">Tok lex()</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8cpp_source.html#l00030">lexer.cpp:30</a></div></div>

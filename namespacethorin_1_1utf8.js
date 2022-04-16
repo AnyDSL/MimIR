@@ -3,7 +3,7 @@ var namespacethorin_1_1utf8 =
     [ "Lexer", "classthorin_1_1utf8_1_1Lexer.html", "classthorin_1_1utf8_1_1Lexer" ],
     [ "ao", "namespacethorin_1_1utf8.html#aa6dceebd5276e97e1147dd786456e666", null ],
     [ "append", "namespacethorin_1_1utf8.html#ab193286524b0df4c5483ae6290004959", null ],
-    [ "decode", "namespacethorin_1_1utf8.html#aa839bcd82c527a47ea17280b40307d1f", null ],
+    [ "decode", "namespacethorin_1_1utf8.html#a6bdcdc4f613413d7621fb3b264fcbc40", null ],
     [ "encode", "namespacethorin_1_1utf8.html#a85bb281829895cd5804924bb7a818a7f", null ],
     [ "first", "namespacethorin_1_1utf8.html#a30e913f3fce1e8c99a655cf021910bf7", null ],
     [ "is_valid", "namespacethorin_1_1utf8.html#a50d67a2652dfa25b33bc6128f2a49437", null ],

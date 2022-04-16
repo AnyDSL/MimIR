@@ -3,7 +3,7 @@ var utf8_8h =
     [ "thorin::utf8::Lexer< Max_Ahead >", "classthorin_1_1utf8_1_1Lexer.html", "classthorin_1_1utf8_1_1Lexer" ],
     [ "thorin::utf8::Lexer< Max_Ahead >::Ahead", "structthorin_1_1utf8_1_1Lexer_1_1Ahead.html", "structthorin_1_1utf8_1_1Lexer_1_1Ahead" ],
     [ "append", "utf8_8h.html#ab193286524b0df4c5483ae6290004959", null ],
-    [ "decode", "utf8_8h.html#aa839bcd82c527a47ea17280b40307d1f", null ],
+    [ "decode", "utf8_8h.html#a6bdcdc4f613413d7621fb3b264fcbc40", null ],
     [ "encode", "utf8_8h.html#a85bb281829895cd5804924bb7a818a7f", null ],
     [ "first", "utf8_8h.html#a30e913f3fce1e8c99a655cf021910bf7", null ],
     [ "is_valid", "utf8_8h.html#a50d67a2652dfa25b33bc6128f2a49437", null ],

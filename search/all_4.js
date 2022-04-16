@@ -23,7 +23,7 @@ var searchData=
   ['debug_5fhistory_20',['debug_history',['../classthorin_1_1Def.html#a619a66d93b95d366a938230834f9b044',1,'thorin::Def']]],
   ['debug_5fstream_21',['debug_stream',['../classthorin_1_1World.html#a431675a15dbbf9e3b2c82f75afe94988',1,'thorin::World']]],
   ['decl_22',['DECL',['../parser_8cpp.html#ad5c7ca0181fea7823b37d06d5f61e9cd',1,'parser.cpp']]],
-  ['decode_23',['decode',['../namespacethorin_1_1utf8.html#aa839bcd82c527a47ea17280b40307d1f',1,'thorin::utf8']]],
+  ['decode_23',['decode',['../namespacethorin_1_1utf8.html#a6bdcdc4f613413d7621fb3b264fcbc40',1,'thorin::utf8']]],
   ['decurry_24',['decurry',['../classthorin_1_1App.html#a53a3f213bce08f36aa352ceebe3e2518',1,'thorin::App']]],
   ['def_25',['Def',['../classthorin_1_1Def.html#abcf88f659116e82282760376ef8a0976',1,'thorin::Def']]],
   ['def_26',['def',['../structthorin_1_1Unwrap.html#a4a8292540cf7c58d16eccd9b9aa73d23',1,'thorin::Unwrap::def()'],['../classthorin_1_1Sym.html#a781822174cd0455f6ba5bb1ce7ed0ead',1,'thorin::Sym::def()'],['../classthorin_1_1Use.html#a139bf58f392a27a021b02993de5d6901',1,'thorin::Use::def()']]],
