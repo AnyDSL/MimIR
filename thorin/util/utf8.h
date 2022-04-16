@@ -32,7 +32,7 @@ inline std::optional<char8_t> is_valid(char8_t c) {
 }
 
 std::optional<char32_t> encode(std::istream&);
-std::ostream& decode(std::ostream&, char32_t);
+bool decode(std::ostream&, char32_t);
 
 template<size_t Max_Ahead>
 class Lexer {

@@ -136,7 +136,11 @@ TEST_P(Real, sign) {
 
 TEST(Lexer, utf8) {
     std::ostringstream oss;
-    utf8::decode(utf8::decode(utf8::decode(utf8::decode(utf8::decode(oss, U'a'), U'£'), U'λ'), U'𐄂'), U'𐀮');
+    utf8::decode(oss, U'a');
+    utf8::decode(oss, U'£');
+    utf8::decode(oss, U'λ');
+    utf8::decode(oss, U'𐄂');
+    utf8::decode(oss, U'𐀮');
     EXPECT_EQ(oss.str(), "a£λ𐄂𐀮");
 }
 

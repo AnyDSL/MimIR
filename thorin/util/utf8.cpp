@@ -38,14 +38,14 @@ static std::ostream& ao(std::ostream& os, char32_t c32, char32_t a = 0b00111111_
     return os << char((c32 & a) | o);
 }
 
-std::ostream& decode(std::ostream& os, char32_t c32) {
+bool decode(std::ostream& os, char32_t c32) {
     // clang-format off
-    if (c32 <= 0x00007f_u32) return          ao(os, c32      , 0b11111111_u32, 0b00000000_u32);
-    if (c32 <= 0x0007ff_u32) return       ao(ao(os, c32 >>  6, 0b00011111_u32, 0b11000000_u32),                        c32);
-    if (c32 <= 0x00ffff_u32) return    ao(ao(ao(os, c32 >> 12, 0b00001111_u32, 0b11100000_u32),             c32 >> 6), c32);
-    if (c32 <= 0x10ffff_u32) return ao(ao(ao(ao(os, c32 >> 18, 0b00000111_u32, 0b11110000_u32), c32 >> 12), c32 >> 6), c32);
+    if (c32 <= 0x00007f_u32) {          ao(os, c32      , 0b11111111_u32, 0b00000000_u32);                              return true; }
+    if (c32 <= 0x0007ff_u32) {       ao(ao(os, c32 >>  6, 0b00011111_u32, 0b11000000_u32),                        c32); return true; }
+    if (c32 <= 0x00ffff_u32) {    ao(ao(ao(os, c32 >> 12, 0b00001111_u32, 0b11100000_u32),             c32 >> 6), c32); return true; }
+    if (c32 <= 0x10ffff_u32) { ao(ao(ao(ao(os, c32 >> 18, 0b00000111_u32, 0b11110000_u32), c32 >> 12), c32 >> 6), c32); return true; }
     // clang-format on
-    unreachable();
+    return false;
 }
 
 } // namespace thorin::utf8
