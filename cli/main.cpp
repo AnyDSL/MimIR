@@ -114,10 +114,12 @@ int main(int argc, char** argv) {
         if (input[0] == '-' || input.substr(0, 2) == "--")
             throw std::invalid_argument("error: unknown option " + input);
 
-        auto dot_i = input.rfind('.');
-        if (dot_i == std::string::npos || input.substr(dot_i) != ".thorin")
-            throw std::invalid_argument("error: invalid file name '" + input + "'");
-        prefix = input.substr(0, dot_i);
+        if (prefix.empty()) {
+            auto dot_i = input.rfind('.');
+            if (dot_i == std::string::npos || input.substr(dot_i) != ".thorin")
+                throw std::invalid_argument("error: invalid file name '" + input + "'");
+            prefix = input.substr(0, dot_i);
+        }
 
         World world;
         world.set_log_ostream(&std::cerr);
