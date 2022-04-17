@@ -139,7 +139,7 @@ Coding Style</h1>
 </div><!-- fragment --><p> Note that you can <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a>. In addition, you might want to check out plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a>.</p>
 <h1><a class="anchor" id="autotoc_md36"></a>
 Debugging</h1>
-<p >For logging and automatic firing of breakpoints refer the <a class="el" href="md_docs_cli.html#clidebug">Command-Line Reference</a>.</p>
+<p >For logging and automatic firing of breakpoints refer to the <a class="el" href="md_docs_cli.html#clidebug">Command-Line Reference</a>.</p>
 <h2><a class="anchor" id="autotoc_md37"></a>
 Conditional Breakpoints</h2>
 <p >Often, you will want to inspect a certain <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">thorin::Def</a> at a particular point within the program. You can use <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html">conditional breakpoints</a> for this. For example, the following GDB command will break, if the <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a> of variable <code>def</code> is <code>666</code> in source code location <code>foo.cpp:23</code>: </p><div class="fragment"><div class="line">break foo.cpp:23 if def-&gt;gid() == 666</div>
