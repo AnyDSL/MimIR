@@ -297,11 +297,19 @@ void CodeGen::emit_epilogue(Lam* lam) {
         switch (values.size()) {
             case 0: return bb.tail("ret void");
             case 1: return bb.tail("ret {} {}", convert(types[0]), values[0]);
-            default:
-                auto tuple = convert(world().sigma(types));
-                bb.tail("{} ret_val\n", tuple);
-                for (size_t i = 0, e = types.size(); i != e; ++i) bb.tail("ret_val.e{} = {};\n", i, values[i]);
-                return bb.tail("ret ret_val");
+            default: {
+                std::string prev = "undef";
+                auto type        = convert(world().sigma(types));
+                for (size_t i = 0, n = values.size(); i != n; ++i) {
+                    auto elem   = values[i];
+                    auto elem_t = convert(types[i]);
+                    auto namei  = "%ret_val." + std::to_string(i);
+                    bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, elem_t, elem, i);
+                    prev = namei;
+                }
+
+                bb.tail("ret {} {}", type, prev);
+            }
         }
     } else if (auto ex = app->callee()->isa<Extract>()) {
         emit_unsafe(app->arg());
@@ -346,11 +354,19 @@ void CodeGen::emit_epilogue(Lam* lam) {
         } else {
             auto name   = "%" + app->unique_name() + ".ret";
             auto ret_ty = convert_ret_pi(ret_lam->type());
-            auto phi    = ret_lam->var(1);
-            assert(!isa<Tag::Mem>(phi->type()));
-            lam2bb_[ret_lam].phis[phi].emplace_back(name, id(lam, true));
-            locals_[phi] = id(phi);
             bb.tail("{} = call {} {}({, })", name, ret_ty, id(callee), args);
+
+            for (size_t i = 1, e = ret_lam->num_vars(); i != e; ++i) {
+                auto phi   = ret_lam->var(i);
+                auto namei = name;
+                if (e > 2) {
+                    namei += '.' + std::to_string(i - 1);
+                    bb.tail("{} = extractvalue {} {}, {}", namei, ret_ty, name, i - 1);
+                }
+                assert(!isa<Tag::Mem>(phi->type()));
+                lam2bb_[ret_lam].phis[phi].emplace_back(namei, id(lam, true));
+                locals_[phi] = id(phi);
+            }
         }
 
         return bb.tail("br label {}", id(ret_lam));
@@ -389,8 +405,8 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             auto e = tuple->proj(n, i);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
                 auto elem_t = convert(e->type());
-                prev =
-                    bb.assign(name + "." + std::to_string(i), "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, i);
+                auto namei  = name + "." + std::to_string(i);
+                prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, i);
             }
         }
         return prev;
@@ -700,6 +716,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
         auto tup_t = convert(tuple->type());
         if (isa_lit(index)) {
+            assert(!ll_tup.empty());
             return bb.assign(name, "extractvalue {} {}, {}", tup_t, ll_tup, ll_idx);
         } else {
             auto elem_t = convert(extract->type());

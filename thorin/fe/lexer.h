@@ -34,7 +34,8 @@ private:
                 *md_ << "\n```\n";
                 out_ = false;
             } else if (res.c32 != utf8::Err) {
-                utf8::decode(*md_, res.c32);
+                bool success = utf8::decode(*md_, res.c32);
+                assert_unused(success);
             }
         }
         return res;

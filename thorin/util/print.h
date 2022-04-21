@@ -94,10 +94,10 @@ public:
     // clang-format off
     /// @name creates a new Tab
     ///@{
-    Tab operator++(int) const {                      return {tab_, indent_ + 1}; }
-    Tab operator--(int) const { assert(indent_ > 0); return {tab_, indent_ - 1}; }
-    Tab operator+(size_t indent) const {                      return {tab_, indent_ + indent}; }
-    Tab operator-(size_t indent) const { assert(indent_ > 0); return {tab_, indent_ - indent}; }
+    [[nodiscard]] Tab operator++(int) const {                      return {tab_, indent_ + 1}; }
+    [[nodiscard]] Tab operator--(int) const { assert(indent_ > 0); return {tab_, indent_ - 1}; }
+    [[nodiscard]] Tab operator+(size_t indent) const {                      return {tab_, indent_ + indent}; }
+    [[nodiscard]] Tab operator-(size_t indent) const { assert(indent_ > 0); return {tab_, indent_ - indent}; }
     ///@}
 
     /// @name modifies this Tab

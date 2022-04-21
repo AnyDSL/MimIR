@@ -32,7 +32,7 @@ In addition, you might want to check out plugins like the [Vim integration](http
 
 # Debugging
 
-For logging and automatic firing of breakpoints refer the  [Command-Line Reference](@ref clidebug).
+For logging and automatic firing of breakpoints refer to the [Command-Line Reference](@ref clidebug).
 
 ## Conditional Breakpoints
 

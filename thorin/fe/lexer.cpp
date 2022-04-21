@@ -251,24 +251,15 @@ void Lexer::eat_comments() {
 void Lexer::emit_md(bool start_of_file) {
     if (!start_of_file) md_fence();
 
-    out_ = false;
-    for (int i = 0; i < 3; ++i) next();
-    int gobble = 0;
-    while (accept(' ')) ++gobble;
-    out_ = true;
-
-    while (ahead() != utf8::EoF && ahead() != '\n') next();
-    accept('\n');
-
-    while (start_md()) {
+    do {
         out_ = false;
         for (int i = 0; i < 3; ++i) next();
-        for (int i = 0; i < gobble; ++i) accept(' ');
+        accept(' ');
         out_ = true;
 
         while (ahead() != utf8::EoF && ahead() != '\n') next();
         accept('\n');
-    }
+    } while (start_md());
 
     if (ahead() == utf8::EoF) {
         out_ = false;
