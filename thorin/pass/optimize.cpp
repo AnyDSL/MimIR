@@ -39,7 +39,11 @@ void optimize(World& world) {
     // world.dbg(LogLevel::Debug);
     // world.set(std::make_unique<ErrorHandler>());
 
-    world.set_log_level(LogLevel::Debug);
+    //world.set_log_level(LogLevel::Debug);
+
+    PassMan pre_auto_opt(world);
+    pre_auto_opt.add<PartialEval>();
+    pre_auto_opt.run();
 
 
 //    std::unique_ptr<ErrorHandler> err;

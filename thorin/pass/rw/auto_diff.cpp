@@ -632,15 +632,18 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
     auto trimmed_var_sigma = world_.sigma(trimmed_var_ty);
     auto idpi = createPbType(A,trimmed_var_sigma);
     auto idpb = world_.nom_filter_lam(idpi, world_.dbg("param_id"));
-    auto real_params = dst_lam->vars().skip(1,1);
+    auto vars = dst_lam->vars();
+    auto real_params = vars.skip(1,1);
     auto [current_mem_,zero_grad_] = ZERO(world_,current_mem,A,world_.tuple(real_params));
     current_mem=current_mem_;
     zero_grad=zero_grad_;
     // ret only resp. non-mem, non-cont
-    auto args = idpb->vars().skip_back();
+    auto idpb_vars = idpb->vars();
+    auto args = idpb_vars.skip_back();
     idpb->set_body(world_.app(idpb->ret_var(), args));
     pullbacks_[dst_var] = idpb;
-    for(auto dvar : src->vars().skip(1,1)) {
+    auto src_vars = src->vars();
+    for(auto dvar : src_vars.skip(1,1)) {
         // solve the problem of inital array pb in extract pb
         pullbacks_[dvar]= extract_pb(dvar, dst_lam->var());
         initArg(dvar);
@@ -652,7 +655,7 @@ const Def* AutoDiffer::reverse_diff(Lam* src) {
 
 void AutoDiffer::initArg(const Def* dst) {
     // TODO: iterate (recursively) over tuple
-    // create shadow slots for pointers
+    // create shadow slots for pointersq
 
     auto arg_ty = dst->type();
     // we need to initialize the shadow ptr slot for
