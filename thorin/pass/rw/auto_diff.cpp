@@ -1319,7 +1319,7 @@ const Def* AutoDiffer::j_wrap_convert(const Def* def) {
                 d_arg->projs().skip(1,1)
             );
             auto pbT = dst_callee->type()->as<Pi>()->doms().back()->as<Pi>();
-            auto chained = world_.nom_filter_lam(pbT, world_.dbg("φchain"));
+            auto chained = world_.nom_filter_lam(pbT, world_.dbg("phi_chain"));
             auto arg_pb = pullbacks_[d_arg]; // Lam
             auto ret_pb = chained->var(chained->num_vars() - 1);
             auto chain_pb = chain(ret_pb,arg_pb);
@@ -1440,12 +1440,12 @@ const Def* AutoDiffer::j_wrap_rop(ROp op, const Def* a, const Def* b) {
     auto o_type = a->type(); // type of the operation
     auto pbpi = createPbType(A,o_type);
     auto pbT = pullbacks_[a]->type()->as<Pi>()->doms().back()->as<Pi>(); // TODO: create using A
-    auto pb = world_.nom_filter_lam(pbpi, world_.dbg("φ"));
+    auto pb = world_.nom_filter_lam(pbpi, world_.dbg("phi_"));
 
     // shortened pullback type => takes pullback result (A) And continues
     // always expand operation pullbacks
-    auto middle = world_.nom_filter_lam(pbT, world_.dbg("φmiddle"));
-    auto end = world_.nom_filter_lam(pbT, world_.dbg("φend"));
+    auto middle = world_.nom_filter_lam(pbT, world_.dbg("phi_middle"));
+    auto end = world_.nom_filter_lam(pbT, world_.dbg("phi_end"));
 
     // constant for calculations
     // Grab argument pullbacks
