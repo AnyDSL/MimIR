@@ -126,6 +126,7 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         auto loop_end = world.nom_filter_lam(world.cn(world.type_mem()),world.dbg("add_loop_exit"));
         auto cond = world.op(ICmp::ul,loop_head->var(1),size_a);
         loop_head->branch(size_a,cond,loop,loop_end,loop_head->mem_var());
+        loop_head->set_filter(false);
 
         auto idx=loop_head->var(1);
         auto inc=world.op(Wrap::add,world.lit_nat(0),world.lit_int_width(64,1),idx);
