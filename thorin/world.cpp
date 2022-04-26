@@ -560,11 +560,13 @@ const Pi* World::cn_mem_flat(const Def* dom, const Def* dbg) {
     return cn(merge(type_mem(), {dom}), dbg);
 }
 
-const Pi* World::cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* dbg) {
+const Pi* World::cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* dbg, bool dom_flat, bool codom_flat) {
     auto ret = cn(sigma({ type_mem(), codom }));
-    if (codom->isa<Sigma>()) {
+    if (codom->isa<Sigma>() && codom_flat) {
         ret = cn(merge_sigma(type_mem(), codom->ops())) ;
     }
+
+    if(!dom_flat) { return cn(merge(type_mem(), {dom, ret}), dbg); }
 
 
 //    if (auto a = codom->isa<Arr>()) {

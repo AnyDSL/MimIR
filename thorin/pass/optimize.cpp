@@ -38,7 +38,10 @@ void optimize(World& world) {
     // world.set(LogLevel::Debug);
     // world.dbg(LogLevel::Debug);
     // world.set(std::make_unique<ErrorHandler>());
+
     world.set_log_level(LogLevel::Debug);
+
+
 //    std::unique_ptr<ErrorHandler> err;
 //    ErrorHandler* err;
 //    world.set((std::unique_ptr<ErrorHandler>&&) nullptr);

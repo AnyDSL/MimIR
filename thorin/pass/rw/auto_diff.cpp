@@ -48,11 +48,10 @@ DefArray flat_tuple(const DefArray& defs, bool preserveFatPtr=false) {
     // or use concat
     std::vector<const Def*> v;
     for( auto def : defs) {
-        if(auto tup=def->isa<Tuple>()) {
-            auto dim = tup->num_ops();
+        if(auto tup=def->type()->isa<Sigma>()) {
+            auto dim = def->num_projs();
             for (size_t j = 0; j < dim; j++) {
-                v.push_back(tup->op(j));
-            }
+                v.push_back(def->proj(j)); }
         }else {
             v.push_back(def);
         }
@@ -531,7 +530,16 @@ const Def* AutoDiffer::chain(const Def* a, const Def* b) {
 const Pi* AutoDiffer::createPbType(const Def* A, const Def* B) {
     // one could keep A "normal" and use tangent type here and at the uses to create a pb ZERO,
 //    return world_.cn_mem_ret(world_.tangent_type(B,false), A);
-    return world_.cn_mem_ret_flat(world_.tangent_type(B, false), A);
+    auto BT = world_.tangent_type(B,false);
+    auto flatten_dom=true;
+    auto flatten_codom=true;
+//    if(isa<Tag::Ptr>(B)) { // for nonflat fat_ptr
+//        flatten_dom=false;
+//    }
+    auto pb_ty= world_.cn_mem_ret_flat(BT, A, {}, flatten_dom, flatten_codom);
+    dlog(world_,"pb_ty {}", pb_ty);
+    dlog(world_,"  tangent B {}", BT);
+    return pb_ty;
 }
 //const Def* AutoDiffer::extract_pb(const Def* j_tuple, const Def* j_idx) {
 
@@ -553,6 +561,7 @@ const Def* AutoDiffer::extract_pb(const Def* j_extract, const Def* tuple) {
 
     auto pi = createPbType(A, tangent_type);
     auto pb = world_.nom_filter_lam(pi, world_.dbg("extract_pb"));
+    dlog(world_,"extract pb {} : {}", pb, pb->type());
     const Def* idx=extract->index();
     auto tuple_ty = tuple->type();
     auto tuple_pb = pullbacks_[tuple];
@@ -859,8 +868,10 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
         type_dump(world_,"replacement:",dst);
         return dst;
     }
+    dlog(world_,"wrap {} of type {} (node {})",def,def->type(),def->node_name());
 
     auto dst = j_wrap_convert(def);
+    dlog(world_,"{} => {} : {}",def,dst,dst->type());
     src_to_dst_[def]=dst;
     return dst;
 }
@@ -1081,9 +1092,14 @@ const Def* AutoDiffer::j_wrap_convert(const Def* def) {
         auto init=world_.pack(shape,body_lit);
         auto mem4=world_.op_store(mem3,ptr_arr,init);
         assert(pullbacks_.count(fat_ptr) && "arr from lea should already have an pullback");
+//        type_dump(world_,"fat_ptr",fat_ptr);
+//        type_dump(world_,"pb of fat_ptr",pullbacks_[fat_ptr]);
         auto ptr_arr_idef = pullbacks_[fat_ptr]->type()->as<Pi>()->dom(2);
+//        auto ptr_arr_idef = pullbacks_[fat_ptr]->type()->as<Pi>()->dom(1)->op(1); // if single fat ptr pb is non_flat
+//        type_dump(world_,"ptr_arr_idef",ptr_arr_idef);
         auto ptr_arr_arg = world_.op_bitcast(ptr_arr_idef,ptr_arr);
         auto fat_ptr_arr_arg = world_.tuple({arr_size,ptr_arr_arg});
+//        dlog(world_,"lea on ptr_arr_arg {} of type {} with idx {} : {}",ptr_arr_arg,ptr_arr_arg->type(),idx,idx->type());
         auto scal_ptr = world_.op_lea(ptr_arr_arg,idx);
         auto v = pb->var(1);
         auto mem5 = world_.op_store(mem4,scal_ptr,v);

@@ -127,7 +127,7 @@ public:
     /// Same as @p cn/@p pi but adds a @p mem @p Var to each @p Pi
     const Pi* cn_flat(Defs dom, const Def* dbg = {});
     const Pi* cn_mem_flat(const Def* dom, const Def* dbg = {});
-    const Pi* cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* dbg = {});
+    const Pi* cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* dbg = {}, bool dom_flat=true, bool codom_flat=true);
     const Pi* cn_mem_half_flat(const Def* domain, const Def* codomain, const Def* dbg = {});
     /// Same as World::cn / World::pi but adds a World::type_mem-typed Var to each Pi.
     const Pi* cn_mem(const Def* dom, const Def* dbg = {}) { return cn({type_mem(), dom}, dbg); }
