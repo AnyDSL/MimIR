@@ -11,28 +11,32 @@
 
 namespace thorin::utf8 {
 
-static constexpr size_t Max   = 4;
-static constexpr char32_t BOM = 0xfeff_u32;
-static constexpr char32_t EoF = (char32_t)std::istream::traits_type::eof();
-static constexpr char32_t Err = (char32_t)-2;
+static constexpr size_t Max   = 4; ///< Maximal number of char
+static constexpr char32_t BOM = 0xfeff_u32; ///< [Byte Order Mark](https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8).
+static constexpr char32_t EoF = (char32_t)std::istream::traits_type::eof(); ///< End of File.
 
-/// Returns the expected number of bytes for an utf8 char sequence by inspecting the first byte.
+/// Returns the expected number of bytes for an UTF-8 char sequence by inspecting the first byte.
 /// Retuns @c 0 if invalid.
 size_t num_bytes(char8_t c);
 
-/// Append @p b to @p c for converting utf-8 to a code.
+/// Append @p b to @p c for converting UTF-8 to UTF-32.
 inline char32_t append(char32_t c, char32_t b) { return (c << 6_u32) | (b & 0b00111111_u32); }
 
-/// Get relevant bits of first utf-8 byte @p c of a @em multi-byte sequence consisting of @p num bytes.
+/// Get relevant bits of first UTF-8 byte @p c of a @em multi-byte sequence consisting of @p num bytes.
 inline char32_t first(char32_t c, char32_t num) { return c & (0b00011111_u32 >> (num - 2_u32)); }
 
-/// Is the 2nd, 3rd, or 4th byte of an utf-8 byte sequence valid?
+/// Is the 2nd, 3rd, or 4th byte of an UTF-8 byte sequence valid?
 inline std::optional<char8_t> is_valid(char8_t c) {
     return (c & 0b11000000_u8) == 0b10000000_u8 ? (c & 0b00111111_u8) : std::optional<char8_t>();
 }
 
-std::optional<char32_t> encode(std::istream&);
-bool decode(std::ostream&, char32_t);
+/// Encodes the next sequence of bytes from @p is as UTF-32.
+/// @returns `std::nullopt` on error.
+std::optional<char32_t> encode(std::istream& is);
+
+/// Decodes the UTF-32 char @p c to UTF-8 and writes the sequence of bytes to @p os.
+/// @returns `false` on error.
+bool decode(std::ostream& os, char32_t c);
 
 template<size_t Max_Ahead>
 class Lexer {
@@ -91,7 +95,7 @@ protected:
         return result;
     }
 
-    /// @return @c true if @p pred holds.
+    /// @return `true` if @p pred holds.
     /// In this case invoke @p next() and append to @p str_;
     template<class Pred>
     bool accept_if(Pred pred, bool append = true) {

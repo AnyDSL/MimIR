@@ -44,7 +44,7 @@ public:
     /// | 28-53:  | `A`-`Z` |
     /// | 54-63:  | `0`-`9` |
     /// The 0 is special and marks the end of the name if the name has less than 8 chars.
-    /// @return returns `std::nullopt` if encoding is not possible.
+    /// @returns `std::nullopt` if encoding is not possible.
     static std::optional<u64> mangle(std::string_view s);
 
     /// Reverts an Axiom::mangle%d string to a `std::string`.
