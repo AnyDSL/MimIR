@@ -11,7 +11,7 @@
 
 namespace thorin::utf8 {
 
-static constexpr size_t Max   = 4; ///< Maximal number of char
+static constexpr size_t Max   = 4;          ///< Maximal number of `char8_t`s of an UTF-8 byte sequence.
 static constexpr char32_t BOM = 0xfeff_u32; ///< [Byte Order Mark](https://en.wikipedia.org/wiki/Byte_order_mark#UTF-8).
 static constexpr char32_t EoF = (char32_t)std::istream::traits_type::eof(); ///< End of File.
 
