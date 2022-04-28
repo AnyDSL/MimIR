@@ -119,9 +119,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a6920d66962b6221e75a9869c1f4da509"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a6920d66962b6221e75a9869c1f4da509">num_bytes</a> (char8_t c)</td></tr>
 <tr class="memdesc:a6920d66962b6221e75a9869c1f4da509"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the expected number of bytes for an UTF-8 char sequence by inspecting the first byte.  <a href="namespacethorin_1_1utf8.html#a6920d66962b6221e75a9869c1f4da509">More...</a><br /></td></tr>
 <tr class="separator:a6920d66962b6221e75a9869c1f4da509"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85bb281829895cd5804924bb7a818a7f"><td class="memItemLeft" align="right" valign="top">std::optional&lt; char32_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a85bb281829895cd5804924bb7a818a7f">encode</a> (std::istream &amp;is)</td></tr>
-<tr class="memdesc:a85bb281829895cd5804924bb7a818a7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes the next sequence of bytes from <code>is</code> as UTF-32.  <a href="namespacethorin_1_1utf8.html#a85bb281829895cd5804924bb7a818a7f">More...</a><br /></td></tr>
-<tr class="separator:a85bb281829895cd5804924bb7a818a7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a420279844f511969229c3af8d8f9435c"><td class="memItemLeft" align="right" valign="top">char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a420279844f511969229c3af8d8f9435c">encode</a> (std::istream &amp;is)</td></tr>
+<tr class="memdesc:a420279844f511969229c3af8d8f9435c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes the next sequence of bytes from <code>is</code> as UTF-32.  <a href="namespacethorin_1_1utf8.html#a420279844f511969229c3af8d8f9435c">More...</a><br /></td></tr>
+<tr class="separator:a420279844f511969229c3af8d8f9435c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6dceebd5276e97e1147dd786456e666"><td class="memItemLeft" align="right" valign="top">static std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#aa6dceebd5276e97e1147dd786456e666">ao</a> (std::ostream &amp;os, char32_t c32, char32_t a=0b00111111_u32, char32_t o=0b10000000_u32)</td></tr>
 <tr class="separator:aa6dceebd5276e97e1147dd786456e666"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a830878e63c9e4b8bf2f73ba457a790ca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1utf8.html#a830878e63c9e4b8bf2f73ba457a790ca">decode</a> (std::ostream &amp;os, char32_t c)</td></tr>
@@ -247,7 +247,7 @@ Variables</h2></td></tr>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#a89d67b04557e416d256c0cc75a55accea92eb5ffee6ae2fec3ad71c777531578f">thorin::b</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="utf8_8h_source.html#l00111">thorin::utf8::Lexer&lt; Max_Ahead &gt;::accept()</a>, <a class="el" href="utf8_8h_source.html#l00102">thorin::utf8::Lexer&lt; Max_Ahead &gt;::accept_if()</a>, and <a class="el" href="utf8_8cpp_source.html#l00015">encode()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utf8_8h_source.html#l00105">thorin::utf8::Lexer&lt; Max_Ahead &gt;::accept()</a>, <a class="el" href="utf8_8h_source.html#l00096">thorin::utf8::Lexer&lt; Max_Ahead &gt;::accept_if()</a>, and <a class="el" href="utf8_8cpp_source.html#l00015">encode()</a>.</p>
 
 </div>
 </div>
@@ -286,14 +286,14 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a85bb281829895cd5804924bb7a818a7f" name="a85bb281829895cd5804924bb7a818a7f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85bb281829895cd5804924bb7a818a7f">&#9670;&nbsp;</a></span>encode()</h2>
+<a id="a420279844f511969229c3af8d8f9435c" name="a420279844f511969229c3af8d8f9435c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a420279844f511969229c3af8d8f9435c">&#9670;&nbsp;</a></span>encode()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; char32_t &gt; thorin::utf8::encode </td>
+          <td class="memname">char32_t thorin::utf8::encode </td>
           <td>(</td>
           <td class="paramtype">std::istream &amp;&#160;</td>
           <td class="paramname"><em>is</em></td><td>)</td>
@@ -307,7 +307,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="utf8_8cpp_source.html#l00015">15</a> of file <a class="el" href="utf8_8cpp_source.html">utf8.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="utf8_8h_source.html#l00024">append()</a>, <a class="el" href="utf8_8h_source.html#l00016">EoF</a>, <a class="el" href="utf8_8h_source.html#l00027">first()</a>, <a class="el" href="utf8_8h_source.html#l00030">is_valid()</a>, and <a class="el" href="utf8_8cpp_source.html#l00007">num_bytes()</a>.</p>
+<p class="reference">References <a class="el" href="utf8_8h_source.html#l00024">append()</a>, <a class="el" href="utf8_8h_source.html#l00016">EoF</a>, <a class="el" href="utf8_8h_source.html#l00017">Err</a>, <a class="el" href="utf8_8h_source.html#l00027">first()</a>, <a class="el" href="utf8_8h_source.html#l00030">is_valid()</a>, and <a class="el" href="utf8_8cpp_source.html#l00007">num_bytes()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="utf8_8h_source.html#l00071">thorin::utf8::Lexer&lt; Max_Ahead &gt;::next()</a>.</p>
 
@@ -491,7 +491,7 @@ Variables</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00017">17</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lexer_8cpp_source.html#l00030">thorin::Lexer::lex()</a>, and <a class="el" href="utf8_8h_source.html#l00071">thorin::utf8::Lexer&lt; Max_Ahead &gt;::next()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="utf8_8cpp_source.html#l00015">encode()</a>, and <a class="el" href="lexer_8cpp_source.html#l00030">thorin::Lexer::lex()</a>.</p>
 
 </div>
 </div>

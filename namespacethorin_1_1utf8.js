@@ -4,7 +4,7 @@ var namespacethorin_1_1utf8 =
     [ "ao", "namespacethorin_1_1utf8.html#aa6dceebd5276e97e1147dd786456e666", null ],
     [ "append", "namespacethorin_1_1utf8.html#ab193286524b0df4c5483ae6290004959", null ],
     [ "decode", "namespacethorin_1_1utf8.html#a830878e63c9e4b8bf2f73ba457a790ca", null ],
-    [ "encode", "namespacethorin_1_1utf8.html#a85bb281829895cd5804924bb7a818a7f", null ],
+    [ "encode", "namespacethorin_1_1utf8.html#a420279844f511969229c3af8d8f9435c", null ],
     [ "first", "namespacethorin_1_1utf8.html#a30e913f3fce1e8c99a655cf021910bf7", null ],
     [ "is_valid", "namespacethorin_1_1utf8.html#a50d67a2652dfa25b33bc6128f2a49437", null ],
     [ "num_bytes", "namespacethorin_1_1utf8.html#a6920d66962b6221e75a9869c1f4da509", null ],
