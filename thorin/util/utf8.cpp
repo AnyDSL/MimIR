@@ -12,7 +12,7 @@ size_t num_bytes(char8_t c) {
     return 0;
 }
 
-std::optional<char32_t> encode(std::istream& is) {
+char32_t encode(std::istream& is) {
     char32_t result = is.get();
     if (result == EoF) return result;
 
@@ -26,7 +26,7 @@ std::optional<char32_t> encode(std::istream& is) {
                 if (auto x = utf8::is_valid(is.get()))
                     result = utf8::append(result, *x);
                 else
-                    return {};
+                    return Err;
             }
     }
 

@@ -33,7 +33,7 @@ inline std::optional<char8_t> is_valid(char8_t c) {
 
 /// Encodes the next sequence of bytes from @p is as UTF-32.
 /// @returns `std::nullopt` on error.
-std::optional<char32_t> encode(std::istream& is);
+char32_t encode(std::istream& is);
 
 /// Decodes the UTF-32 char @p c to UTF-8 and writes the sequence of bytes to @p os.
 /// @returns `false` on error.
@@ -75,21 +75,15 @@ protected:
         for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead_[i] = ahead_[i + 1];
         auto& back = ahead_.back();
         back.pos   = prev;
+        back.c32   = utf8::encode(istream_);
 
-        if (auto opt = utf8::encode(istream_)) {
-            back.c32 = *opt;
-
-            if (back.c32 == '\n') {
-                ++back.pos.row;
-                back.pos.col = 0;
-            } else if (back.c32 == EoF) {
+        if (back.c32 == '\n') {
+            ++back.pos.row;
+            back.pos.col = 0;
+        } else if (back.c32 == EoF) {
                 /* do nothing */
-            } else {
-                ++back.pos.col;
-            }
         } else {
             ++back.pos.col;
-            back.c32 = Err;
         }
 
         loc_.finis = result.pos;
