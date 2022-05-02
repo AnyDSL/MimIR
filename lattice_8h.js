@@ -2,7 +2,7 @@ var lattice_8h =
 [
     [ "thorin::Bound", "classthorin_1_1Bound.html", "classthorin_1_1Bound" ],
     [ "thorin::TBound< up >", "classthorin_1_1TBound.html", "classthorin_1_1TBound" ],
-    [ "thorin::Et", "classthorin_1_1Et.html", "classthorin_1_1Et" ],
+    [ "thorin::Ac", "classthorin_1_1Ac.html", "classthorin_1_1Ac" ],
     [ "thorin::Vel", "classthorin_1_1Vel.html", "classthorin_1_1Vel" ],
     [ "thorin::Pick", "classthorin_1_1Pick.html", "classthorin_1_1Pick" ],
     [ "thorin::Test", "classthorin_1_1Test.html", "classthorin_1_1Test" ],

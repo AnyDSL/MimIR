@@ -128,14 +128,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "alloc2malloc_8cpp.html",
-"classthorin_1_1ArrayRef.html#a886440bba24302f946ac4dedc36bae31",
-"classthorin_1_1CFNode.html#af332da07177456d7353e83e14b602be3",
-"classthorin_1_1DepTree.html#a62f4d7ed09ceb27f0346e091c1117867",
+"classthorin_1_1ArrayRef.html#a779388117ec793090c1422bf4a9f5c5d",
+"classthorin_1_1CFNode.html#a25f18fd39f35fdb4c0789292d96aab0f",
+"classthorin_1_1DepNode.html#a6d1521d2598386f00ac13fec6744c97b",
 "classthorin_1_1IndexMap.html#aed3c25a875eaf9017815b7a1a76a6925",
 "classthorin_1_1LowerFor.html#ae0427d43c6f760971008134b9170d85f",
 "classthorin_1_1Rewriter.html#a64e8ec13a1afa11d757d1a9c5cbe595c",
 "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a6b3f90024b8d3e244e0be45f1aaba414",
-"classthorin_1_1World.html#a3d3d5a06a71bfb985e2775a843d8b2fc",
+"classthorin_1_1World.html#a3d1b56902f69f4a32100e2117d249a0c",
 "classthorin_1_1World.html#ac487137f5af13a62f2ed4a0c34122776",
 "copy__prop_8h_source.html",
 "lexer_8cpp.html#a4735e0a8022984aa488607059a90351d",

@@ -140,13 +140,13 @@ var hierarchy =
     ] ],
     [ "thorin::RuntimeCast< Def >", "classthorin_1_1RuntimeCast.html", [
       [ "thorin::Def", "classthorin_1_1Def.html", [
+        [ "thorin::Ac", "classthorin_1_1Ac.html", null ],
         [ "thorin::App", "classthorin_1_1App.html", null ],
         [ "thorin::Arr", "classthorin_1_1Arr.html", null ],
         [ "thorin::Axiom", "classthorin_1_1Axiom.html", null ],
         [ "thorin::Bound", "classthorin_1_1Bound.html", [
           [ "thorin::TBound< up >", "classthorin_1_1TBound.html", null ]
         ] ],
-        [ "thorin::Et", "classthorin_1_1Et.html", null ],
         [ "thorin::Ext", "classthorin_1_1Ext.html", [
           [ "thorin::TExt< up >", "classthorin_1_1TExt.html", null ]
         ] ],

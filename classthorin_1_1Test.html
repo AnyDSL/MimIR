@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1Test.html',''); initRes
 </div><!--header-->
 <div class="contents">
 
-<p>Tests the <a class="el" href="classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312">Test::value</a> of type Join whether it currently holds <b>type</b> <a class="el" href="classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d">Test::probe</a>.  
+<p><code>test value, probe, match, clash</code> tests whether <a class="el" href="classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312">value</a> currently holds <b>type</b> <a class="el" href="classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d">probe</a>.  
  <a href="classthorin_1_1Test.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="lattice_8h_source.html">thorin/lattice.h</a>&gt;</code></p>
@@ -399,10 +399,21 @@ Additional Inherited Members</h2></td></tr>
 <tr class="separator:ac713afdc2721851a4b0c49bbddfe8824 inherit pro_attribs_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Tests the <a class="el" href="classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312">Test::value</a> of type Join whether it currently holds <b>type</b> <a class="el" href="classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d">Test::probe</a>. </p>
-<p >Note, that <a class="el" href="classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d">Test::probe</a> is a <b>type</b>! Yields <a class="el" href="classthorin_1_1Test.html#a87f38021c859f41caaa12611b7b4fef2">Test::match</a>, if <code>true</code> and <a class="el" href="classthorin_1_1Test.html#aeed2c5c851a0efc3bd773a2ed6cd3ca5">Test::clash</a> otherwise. <a class="el" href="classthorin_1_1Test.html#a87f38021c859f41caaa12611b7b4fef2">Test::match</a> must be of type <code>A -&gt; B</code>. <a class="el" href="classthorin_1_1Test.html#aeed2c5c851a0efc3bd773a2ed6cd3ca5">Test::clash</a> must be of type <code>[A, probe] -&gt; C</code>. This operation is usually known as <code>case</code>. Since this is a keyword in C++, we call it <a class="el" href="classthorin_1_1Test.html" title="Tests the Test::value of type Join whether it currently holds type Test::probe.">Test</a>. </p>
+<div class="textblock"><p ><code>test value, probe, match, clash</code> tests whether <a class="el" href="classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312">value</a> currently holds <b>type</b> <a class="el" href="classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d">probe</a>. </p>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li><a class="el" href="classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d">probe</a> is a <b>type</b>!</li>
+<li>This operation yields <a class="el" href="classthorin_1_1Test.html#a87f38021c859f41caaa12611b7b4fef2">match</a>, if <code>true</code>, and <a class="el" href="classthorin_1_1Test.html#aeed2c5c851a0efc3bd773a2ed6cd3ca5">clash</a> otherwise. </li>
+</ul>
+</dd></dl>
+<dl class="section invariant"><dt>Invariant</dt><dd><ul>
+<li><a class="el" href="classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312">value</a> must be of type <a class="el" href="namespacethorin.html#ae311e26ec0350fe3dbae561de879d594">Join</a>.</li>
+<li><a class="el" href="classthorin_1_1Test.html#a87f38021c859f41caaa12611b7b4fef2">match</a> must be of type <code>A -&gt; B</code>.</li>
+<li><a class="el" href="classthorin_1_1Test.html#aeed2c5c851a0efc3bd773a2ed6cd3ca5">clash</a> must be of type <code>[A, probe] -&gt; C</code>. </li>
+</ul>
+</dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>This operation is usually known as <code>case</code> but named <code><a class="el" href="classthorin_1_1Test.html" title="test value, probe, match, clash tests whether value currently holds type probe.">Test</a></code> since <code>case</code> is a keyword in C++. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00120">120</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00124">124</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="aeed2c5c851a0efc3bd773a2ed6cd3ca5" name="aeed2c5c851a0efc3bd773a2ed6cd3ca5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aeed2c5c851a0efc3bd773a2ed6cd3ca5">&#9670;&nbsp;</a></span>clash()</h2>
@@ -427,7 +438,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00131">131</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00135">135</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00151">thorin::Def::op()</a>.</p>
 
@@ -456,7 +467,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00130">130</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00134">134</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00151">thorin::Def::op()</a>.</p>
 
@@ -485,7 +496,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00129">129</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00133">133</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00151">thorin::Def::op()</a>.</p>
 
@@ -568,7 +579,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00128">128</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00132">132</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00151">thorin::Def::op()</a>.</p>
 
@@ -595,7 +606,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00140">140</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00144">144</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
 
 </div>
 </div>
@@ -620,7 +631,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00139">139</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="lattice_8h_source.html#l00143">143</a> of file <a class="el" href="lattice_8h_source.html">lattice.h</a>.</p>
 
 </div>
 </div>

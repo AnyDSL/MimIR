@@ -216,7 +216,7 @@ Construct Valid Programs</h2>
 <p >It is important to always construct a valid program. Otherwise, bad things might happen as soon as you toss other passes into the mix. The reason is that the very program you are constructing is the <b>only</b> way to communicate with the other passes without directly sharing information.</p>
 <h2><a class="anchor" id="autotoc_md33"></a>
 Creating Nominals</h2>
-<p >Eventually, you will need to create nominals during a <a class="el" href="classthorin_1_1FPPass.html">fixed-point pass</a>. You must be super cautious to remember in which exact context you created said nominal. If you ever come into the same situation again (due to backtracking) you have to make sure that you return the <b>very same</b> nominal. Otherwise, if you create a different nominal, the <a class="el" href="classthorin_1_1PassMan.html">thorin::PassMan</a> will most likely diverge as it will constantly backtrack while creating new nominals that the other passes don't know anything about. </p>
+<p >Eventually, you will need to create nominals during a <a class="el" href="classthorin_1_1FPPass.html">fixed-point pass</a>. You must be super cautious to remember in which exact context you created said nominal. If you ever come into the same situation again (due to backtracking) you have to make sure that you return the <b>very same</b> nominal. Otherwise, if you create a different nominal, the <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> will most likely diverge as it will constantly backtrack while creating new nominals that the other passes don't know anything about. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
