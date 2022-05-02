@@ -93,4 +93,4 @@ The reason is that the very program you are constructing is the **only** way to 
 Eventually, you will need to create nominals during a [fixed-point pass](@ref thorin::FPPass).
 You must be super cautious to remember in which exact context you created said nominal.
 If you ever come into the same situation again (due to backtracking) you have to make sure that you return the **very same** nominal.
-Otherwise, if you create a different nominal, the @ref thorin::PassMan will most likely diverge as it will constantly backtrack while creating new nominals that the other passes don't know anything about.
+Otherwise, if you create a different nominal, the [PassMan](@ref thorin::PassMan) will most likely diverge as it will constantly backtrack while creating new nominals that the other passes don't know anything about.

@@ -324,9 +324,9 @@ public:
     template<level_t l = 0> Meet* nom_meet(size_t size, const Def* dbg = {}) { return nom_meet(type<l>(), size, dbg); }
     const Def* join(Defs ops, const Def* dbg = {}) { return bound<true>(ops, dbg); }
     const Def* meet(Defs ops, const Def* dbg = {}) { return bound<false>(ops, dbg); }
-    const Def* et(const Def* type, Defs ops, const Def* dbg = {});
+    const Def* ac(const Def* type, Defs ops, const Def* dbg = {});
     /// Infers the type using a *structural* Meet.
-    const Def* et(Defs ops, const Def* dbg = {}) { return et(infer_type(ops), ops, dbg); }
+    const Def* ac(Defs ops, const Def* dbg = {}) { return ac(infer_type(ops), ops, dbg); }
     const Def* vel(const Def* type, const Def* value, const Def* dbg = {});
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg = {});
