@@ -75,15 +75,15 @@ public:
     /// @name Universe, Type, Var, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
-    const Type* type(const Def* level) { return unify<Type>(1, level)->as<Type>(); }
+    const Type* type(const Def* level, const Def* dbg = {}) { return unify<Type>(1, level, dbg)->as<Type>(); }
     template<level_t level = 0>
-    const Type* type() {
+    const Type* type(const Def* dbg = {}) {
         if constexpr (level == 0)
             return data_.type_0_;
         else if constexpr (level == 1)
             return data_.type_1_;
         else
-            return type(lit_univ(level));
+            return type(lit_univ(level), dbg);
     }
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg = {}) {

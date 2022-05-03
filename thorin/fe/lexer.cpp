@@ -63,13 +63,13 @@ Tok Lexer::lex() {
         if (accept( '=')) return tok(Tok::Tag::T_assign);
         if (accept(U'⊥')) return tok(Tok::Tag::T_bot);
         if (accept(U'⊤')) return tok(Tok::Tag::T_top);
+        if (accept(U'□')) return tok(Tok::Tag::T_box);
         if (accept(U'∷')) return tok(Tok::Tag::T_colon_colon);
         if (accept( ',')) return tok(Tok::Tag::T_comma);
         if (accept( '#')) return tok(Tok::Tag::T_extract);
         if (accept(U'λ')) return tok(Tok::Tag::T_lam);
         if (accept(U'Π')) return tok(Tok::Tag::T_Pi);
         if (accept( ';')) return tok(Tok::Tag::T_semicolon);
-        if (accept(U'□')) return tok(Tok::Tag::T_space);
         if (accept(U'★')) return tok(Tok::Tag::T_star);
         if (accept( '*')) return tok(Tok::Tag::T_star);
         // clang-format on

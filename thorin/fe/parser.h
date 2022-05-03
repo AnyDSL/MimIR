@@ -49,6 +49,7 @@ private:
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();
+    const Def* parse_type();
     const Def* parse_pi();
     const Def* parse_lam();
     const Def* parse_lit();

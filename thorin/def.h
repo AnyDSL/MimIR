@@ -470,8 +470,8 @@ using level_t = u64;
 
 class Type : public Def {
 private:
-    Type(const Def* level)
-        : Def(Node, nullptr, {level}, 0, nullptr) {}
+    Type(const Def* level, const Def* dbg)
+        : Def(Node, nullptr, {level}, 0, dbg) {}
 
 public:
     const Def* level() const { return op(0); }

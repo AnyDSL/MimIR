@@ -16,8 +16,9 @@ namespace thorin {
     m(K_Bool,   ".Bool"  )             \
     m(K_Nat,    ".Nat"   )             \
     m(K_extern, ".extern")             \
-    m(K_Sigma,  ".Sigma" )             \
     m(K_Arr,    ".Arr"   )             \
+    m(K_Sigma,  ".Sigma" )             \
+    m(K_Type,   ".Type"  )             \
     m(K_pack,   ".pack"  )             \
     m(K_Pi,     ".Pi"    )             \
     m(K_lam,    ".lam"   )             \
@@ -60,6 +61,8 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_assign,       "=")              \
     m(T_at,           "@")              \
     m(T_bot,          "⊥")              \
+    m(T_top,          "⊤")              \
+    m(T_box,          "□")              \
     m(T_colon,        ":")              \
     m(T_colon_colon,  "∷")              \
     m(T_comma,        ",")              \
@@ -67,9 +70,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_extract,      "#")              \
     m(T_lam,          "λ")              \
     m(T_semicolon,    ";")              \
-    m(T_space,        "□")              \
     m(T_star,         "*")              \
-    m(T_top,          "⊤")              \
 
 #define THORIN_SUBST(m)                 \
     m("->",     T_arrow)                \
