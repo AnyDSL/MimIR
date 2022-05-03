@@ -20,7 +20,7 @@ namespace thorin {
 ///
 ///      The **called method** checks this and spits out an appropriate error message using `ctxt` in the case of a
 ///      syntax error.
-/// 3. The `parse_* method does have a `std::string_view ctxt = {}` parameter **with default argument**:
+/// 3. The `parse_*` method does have a `std::string_view ctxt = {}` parameter **with default argument**:
 ///
 ///      * If default argument is **elided** we have the same behavior as in 1.
 ///      * If default argument is **provided** we have the same behavior as in 2.
