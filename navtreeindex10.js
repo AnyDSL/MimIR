@@ -1,5 +1,7 @@
 var NAVTREEINDEX10 =
 {
+"copy__prop_8cpp_source.html":[9,0,2,3,0,2],
+"copy__prop_8h.html":[9,0,2,3,0,3],
 "copy__prop_8h_source.html":[9,0,2,3,0,3],
 "debug_8cpp.html":[9,0,2,9],
 "debug_8cpp.html#a49109a7ac6192579b86068a0ed22206e":[9,0,2,9,1],
@@ -122,8 +124,8 @@ var NAVTREEINDEX10 =
 "eta__red_8h.html":[9,0,2,3,0,7],
 "eta__red_8h_source.html":[9,0,2,3,0,7],
 "files.html":[9,0],
-"functions.html":[8,3,0,0],
 "functions.html":[8,3,0],
+"functions.html":[8,3,0,0],
 "functions_b.html":[8,3,0,1],
 "functions_c.html":[8,3,0,2],
 "functions_d.html":[8,3,0,3],
@@ -207,8 +209,8 @@ var NAVTREEINDEX10 =
 "hash_8h.html#afd6542b4bbcecac2fe7e4e87251a37f6":[9,0,2,4,7,14],
 "hash_8h_source.html":[9,0,2,4,7],
 "hierarchy.html":[8,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "index.html#autotoc_md1":[0,0],
 "index.html#autotoc_md2":[0,0,0],
 "index.html#autotoc_md3":[0,0,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX10 =
 "lattice_8h.html#acf74d6ffc9168d125bb73ff17c3b8395":[9,0,2,18,12],
 "lattice_8h.html#adefa1d05bd6416bf0770c785c9221a02":[9,0,2,18,8],
 "lattice_8h.html#ae311e26ec0350fe3dbae561de879d594":[9,0,2,18,9],
-"lattice_8h.html#ae6638e502eba2c4a1229a5a1af1cfb29":[9,0,2,18,11],
-"lattice_8h_source.html":[9,0,2,18],
-"lexer_8cpp.html":[9,0,2,2,0]
+"lattice_8h.html#ae6638e502eba2c4a1229a5a1af1cfb29":[9,0,2,18,11]
 };
