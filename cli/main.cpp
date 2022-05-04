@@ -116,7 +116,7 @@ int main(int argc, char** argv) {
         if (prefix.empty()) {
             auto filename = std::filesystem::path(input).filename();
             if (filename.extension() != ".thorin") throw std::invalid_argument("error: invalid file name '" + input + "'");
-            prefix = filename.stem();
+            prefix = filename.stem().string();
         }
 
         World world;
