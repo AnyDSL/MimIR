@@ -29,7 +29,7 @@ jobs:
           #version: "14.0.0"
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v --target thorin-gtest thorin thorin_foo
+        run: cmake --build ${{github.workspace}}/build -v --target thorin-gtest thorin thorin_foo
 
       - name: Test
         working-directory: ${{github.workspace}}/build

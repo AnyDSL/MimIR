@@ -28,7 +28,7 @@ jobs:
       run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DTHORIN_BUILD_DOCS=ON
 
     - name: Build
-      run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v --target docs
+      run: cmake --build ${{github.workspace}}/build -v --target docs
 
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
