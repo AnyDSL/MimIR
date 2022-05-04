@@ -17,7 +17,9 @@ function(add_thorin_dialect THORIN_FILE)
     set(DIALECT_MD ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}.md)
     set(DIALECT_H  ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}.h)
 
+    list(APPEND DIALECTS    "${DIALECT}"   )
     list(APPEND DIALECT_MDS "${DIALECT_MD}")
+    set(DIALECTS    ${DIALECTS}    PARENT_SCOPE)
     set(DIALECT_MDS ${DIALECT_MDS} PARENT_SCOPE)
 
     add_custom_command(
@@ -32,4 +34,5 @@ endfunction()
 
 add_thorin_dialect(${CMAKE_CURRENT_SOURCE_DIR}/mem/mem.thorin)
 add_thorin_dialect(${CMAKE_CURRENT_SOURCE_DIR}/std/std.thorin)
-set(DIALECT_MDS ${DIALECT_MDS} PARENT_SCOPE) # TODO is there a way around this?
+set(DIALECTS    ${DIALECTS}    PARENT_SCOPE) # TODO is there a way around this?
+set(DIALECT_MDS ${DIALECT_MDS} PARENT_SCOPE)

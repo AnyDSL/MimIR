@@ -27,4 +27,4 @@ add_custom_command(
     DEPENDS thorin ${DOXY_EXTRA_FILES} ${DOXY_LAYOUT}
     COMMENT "Generating Doxygen HTML documentation")
 
-add_custom_target(docs ALL DEPENDS ${CLI_HELP} ${DOXY_INDEX_HTML})
+add_custom_target(docs ALL DEPENDS ${CLI_HELP} ${DOXY_INDEX_HTML} ${DIALECTS}) # HACK 
