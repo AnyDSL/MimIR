@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: File Members</title>
+<title>Thorin: Coding &amp; Debugging</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('globals_vars.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('coding.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -100,11 +100,65 @@ $(document).ready(function(){initNavTree('globals_vars.html',''); initResizable(
 </iframe>
 </div>
 
+<div><div class="header">
+  <div class="headertitle"><div class="title">Coding &amp; Debugging </div></div>
+</div><!--header-->
 <div class="contents">
-&#160;<ul>
-<li>version&#160;:&#160;<a class="el" href="main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec">main.cpp</a></li>
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md1">Coding Style</a></li>
+<li class="level1"><a href="#autotoc_md2">Debugging</a><ul><li class="level2"><a href="#autotoc_md3">Conditional Breakpoints</a></li>
+<li class="level2"><a href="#autotoc_md4">Valgrind &amp; GDB</a></li>
+<li class="level2"><a href="#autotoc_md5">GoogleTest</a></li>
+<li class="level2"><a href="#autotoc_md6">VS Code</a></li>
 </ul>
-</div><!-- contents -->
+</li>
+</ul>
+</div>
+<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_docs_coding"></a></p>
+<p >This document comprises some information that is related to coding but does not directly deals with the API.</p>
+<h1><a class="anchor" id="autotoc_md1"></a>
+Coding Style</h1>
+<p >Use the following coding conventions:</p><ul>
+<li>class/type names in <code>CamelCase</code></li>
+<li>constants as defined in an <code>enum</code> or via <code>static const</code> in <code>Camel_Snake_Case</code></li>
+<li>macro names in <code>SNAKE_IN_ALL_CAPS</code></li>
+<li>everything else like variables, functions, etc. in <code>snake_case</code></li>
+<li>use a trailing underscore suffix for a <code>private_or_protected_member_variable_</code></li>
+<li>don't do that for a <code>public_member_variable</code></li>
+<li>use <code>struct</code> for <a href="https://en.cppreference.com/w/cpp/named_req/PODType">plain old data</a></li>
+<li>use <code>class</code> for everything else</li>
+<li>visibility groups in this order:<ol type="1">
+<li><code>public</code></li>
+<li><code>protected</code></li>
+<li><code>private</code></li>
+</ol>
+</li>
+<li>prefer <code>// C++-style comments</code> over <code>/* C-style comments */</code></li>
+<li>use <code>/// three slashes for Doxygen</code> and <a href="https://www.doxygen.nl/manual/grouping.html">group</a> your methods into logical units if possible</li>
+</ul>
+<p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. In order to run <code>clang-format</code> automatically on all changed files, switch to the provided pre-commit hook: </p><div class="fragment"><div class="line">git config --local core.hooksPath .githooks/</div>
+</div><!-- fragment --><p> Note that you can <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a>. In addition, you might want to check out plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a>.</p>
+<h1><a class="anchor" id="autotoc_md2"></a>
+Debugging</h1>
+<p >For logging and automatic firing of breakpoints refer to the <a class="el" href="cli.html#clidebug">Command-Line Reference</a>.</p>
+<h2><a class="anchor" id="autotoc_md3"></a>
+Conditional Breakpoints</h2>
+<p >Often, you will want to inspect a certain <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">thorin::Def</a> at a particular point within the program. You can use <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html">conditional breakpoints</a> for this. For example, the following GDB command will break, if the <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">thorin::Def::gid</a> of variable <code>def</code> is <code>666</code> in source code location <code>foo.cpp:23</code>: </p><div class="fragment"><div class="line">break foo.cpp:23 if def-&gt;gid() == 666</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>
+Valgrind &amp; GDB</h2>
+<p >If you encounter memory related problems, you might want to run the program with <a href="https://valgrind.org/docs/manual/manual-core-adv.html">Valgrind's GDB server</a>. Simply launch the program like this </p><div class="fragment"><div class="line">valgrind --vgdb=yes --vgdb-error=0 thorin-gtest</div>
+</div><!-- fragment --><p> and follow the instructions.</p>
+<h2><a class="anchor" id="autotoc_md5"></a>
+GoogleTest</h2>
+<p >Thorin's unit test suite uses <a href="https://google.github.io/googletest/">GoogleTest</a>. During debugging you probably only want to run a specifig test case. You can <a href="https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests">filter</a> the test cases like this: </p><div class="fragment"><div class="line">./thorin-gtest --gtest_filter=&quot;*Loc*&quot;</div>
+</div><!-- fragment --><p> This command lists all available tests: </p><div class="fragment"><div class="line">./thorin-gtest --gtest_list_tests</div>
+</div><!-- fragment --><p> In addition, you may find it helpful to turn assertion failures into debugger breakpoints: </p><div class="fragment"><div class="line">./thorin-test --gtest_break_on_failure</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
+VS Code</h2>
+<p >As a utility to make debugging Thorin itself less painful with certain debuggers, the <code>thorin.natvis</code> file can be loaded for getting more expressive value inspection. In VS Code you can do so by adding the following to the <code>launch.json</code> configurations. When launching from VS Code via CMake, put it in <code>settings.json</code>'s <code>"cmake.debugConfig":</code>: </p><div class="fragment"><div class="line">&quot;visualizerFile&quot;: &quot;${workspaceFolder}/thorin.natvis&quot;,</div>
+<div class="line">&quot;showDisplayString&quot;: true,</div>
+</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

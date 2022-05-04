@@ -82,7 +82,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md_docs_langref.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('langref.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -105,33 +105,34 @@ $(document).ready(function(){initNavTree('md_docs_langref.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#lex">Lexical Structure</a><ul><li class="level2"><a href="#terminals">Terminals</a><ul><li class="level3"><a href="#autotoc_md6">Primary Terminals</a></li>
-<li class="level3"><a href="#autotoc_md7">Keywords</a></li>
-<li class="level3"><a href="#autotoc_md8">Regular Expressions</a></li>
+<ul><li class="level1"><a href="#lex">Lexical Structure</a><ul><li class="level2"><a href="#terminals">Terminals</a><ul><li class="level3"><a href="#autotoc_md13">Primary Terminals</a></li>
+<li class="level3"><a href="#autotoc_md14">Keywords</a></li>
+<li class="level3"><a href="#autotoc_md15">Regular Expressions</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md9">Comments</a></li>
+<li class="level2"><a href="#autotoc_md16">Comments</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md10">Grammar</a><ul><li class="level2"><a href="#productions">Productions</a><ul><li class="level3"><a href="#autotoc_md11">Module</a></li>
-<li class="level3"><a href="#autotoc_md12">Declaration</a></li>
-<li class="level3"><a href="#autotoc_md13">Expressions</a></li>
+<li class="level1"><a href="#autotoc_md17">Grammar</a><ul><li class="level2"><a href="#productions">Productions</a><ul><li class="level3"><a href="#autotoc_md18">Module</a></li>
+<li class="level3"><a href="#autotoc_md19">Declaration</a></li>
+<li class="level3"><a href="#autotoc_md20">Expressions</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md14">Precedence</a></li>
+<li class="level2"><a href="#autotoc_md21">Precedence</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><h1><a class="anchor" id="lex"></a>
+<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_docs_langref"></a></p>
+<h1><a class="anchor" id="lex"></a>
 Lexical Structure</h1>
 <p >Thorin files are <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a> encoded and <a href="https://en.wikipedia.org/wiki/Lexical_analysis">lexed</a> from left to right. The <a href="https://en.wikipedia.org/wiki/Maximal_munch">maximal munch</a> strategy resolves any ambiguities in the lexical rules below. For Example, <code>&lt;&lt;&lt;</code> is lexed as <code>&lt;&lt;</code> and <code>&lt;</code>.</p>
 <h2><a class="anchor" id="terminals"></a>
 Terminals</h2>
 <p >The actual <em><a href="https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols">terminals</a></em> are specified in the following tables.</p>
-<h3><a class="anchor" id="autotoc_md6"></a>
+<h3><a class="anchor" id="autotoc_md13"></a>
 Primary Terminals</h3>
-<p >The <a class="el" href="md_docs_langref.html#productions">grammatical rules</a> will directly reference these <em>primary <a href="https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols">terminals</a></em>. <em>Secondary terminals</em> are <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>-only tokens that represent the <b>same</b> lexical element as its corresponding <em>primary token</em>. For example, the lexer doesn't care, if you use <code>⊥</code> or <code>.bot</code>. Both tokens are identified as <code>⊥</code>.</p>
+<p >The <a class="el" href="langref.html#productions">grammatical rules</a> will directly reference these <em>primary <a href="https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols">terminals</a></em>. <em>Secondary terminals</em> are <a href="https://en.wikipedia.org/wiki/ASCII">ASCII</a>-only tokens that represent the <b>same</b> lexical element as its corresponding <em>primary token</em>. For example, the lexer doesn't care, if you use <code>⊥</code> or <code>.bot</code>. Both tokens are identified as <code>⊥</code>.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Primary Terminals   </th><th class="markdownTableHeadNone">Secondary Terminals   </th><th class="markdownTableHeadNone">Comment    </th></tr>
@@ -146,7 +147,7 @@ Primary Terminals</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>&lt;eof&gt;</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">marks the end of the file   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md7"></a>
+<h3><a class="anchor" id="autotoc_md14"></a>
 Keywords</h3>
 <p >In addition the following keywords are <em>terminals</em>:</p>
 <table class="markdownTable">
@@ -164,7 +165,7 @@ Keywords</h3>
 <td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone">alias for <code>1₂</code>   </td></tr>
 </table>
 <p >All keywords start with a <code>.</code> to prevent name clashes with identifiers.</p>
-<h3><a class="anchor" id="autotoc_md8"></a>
+<h3><a class="anchor" id="autotoc_md15"></a>
 Regular Expressions</h3>
 <p >The following <em>terminals</em> comprise more complicated patterns that are specified via <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expressions</a>:</p>
 <table class="markdownTable">
@@ -237,20 +238,20 @@ Regular Expressions</h3>
 <td class="markdownTableBodyNone">sym   </td><td class="markdownTableBodyNone">[ <code>_</code><code>a</code>-<code>z</code><code>A</code>-<code>Z</code> ][ <code>.</code><code>_</code><code>0</code>-<code>9</code><code>a</code>-<code>z</code><code>A</code>-<code>Z</code> ]*   </td><td class="markdownTableBodyNone">symbol   </td></tr>
 </table>
 <p >So, <em>sym</em> referes to the shorthand rule while <em>Sym</em> refers to the <em>terminal</em> that is identical to <em>sym</em>. However, the terminal <em>Ax</em> also uses the shorthand rule <em>sym</em>.</p>
-<h2><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md16"></a>
 Comments</h2>
 <p >In addition, the following comments are avaiable:</p><ul>
 <li><code>/* ... */</code> multi-line comment</li>
 <li><code>//</code> single-line comment</li>
-<li><code>///</code> single-line comment that is put into the Markdown output (see <a class="el" href="md_docs_cli.html#emitters">Emitters</a>)</li>
+<li><code>///</code> single-line comment that is put into the Markdown output (see <a class="el" href="cli.html#emitters">Emitters</a>)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 Grammar</h1>
-<p >Thorin's grammar is defined as a <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context-free grammar</a> that consists of the <em>terminals</em> defined <a class="el" href="md_docs_langref.html#terminals">above</a> as well as the <em>nonterminals</em> and <em>productions</em> defined <a class="el" href="md_docs_langref.html#productions">below</a>. The start symbol is "m" (module).</p>
+<p >Thorin's grammar is defined as a <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context-free grammar</a> that consists of the <em>terminals</em> defined <a class="el" href="langref.html#terminals">above</a> as well as the <em>nonterminals</em> and <em>productions</em> defined <a class="el" href="langref.html#productions">below</a>. The start symbol is "m" (module).</p>
 <h2><a class="anchor" id="productions"></a>
 Productions</h2>
 <p >The following tables comprise all produciton rules:</p>
-<h3><a class="anchor" id="autotoc_md11"></a>
+<h3><a class="anchor" id="autotoc_md18"></a>
 Module</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -258,7 +259,7 @@ Module</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">m   </td><td class="markdownTableBodyNone">d ... d   </td><td class="markdownTableBodyNone">module   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">thorin::World</a>   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md12"></a>
+<h3><a class="anchor" id="autotoc_md19"></a>
 Declaration</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -286,7 +287,7 @@ Declaration</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"><code>=</code> <code>{</code> e <code>,</code> ... <code>,</code> e <code>}</code> <code>;</code>   </td><td class="markdownTableBodyNone">operands of nominal definition   </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md13"></a>
+<h3><a class="anchor" id="autotoc_md20"></a>
 Expressions</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -325,7 +326,7 @@ Expressions</h3>
 <li>a bottom/top defaults to <code>*</code>,</li>
 <li>a nominals defaults to <code>*</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Precedence</h2>
 <p >Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):</p>
 <table class="markdownTable">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.3"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: cli -&gt; thorin Relation</title>
+<title>Thorin: Command-Line Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('dir_2990d7c532eb7441b74916b8f5365141.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('cli.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -100,13 +100,71 @@ $(document).ready(function(){initNavTree('dir_2990d7c532eb7441b74916b8f5365141.h
 </iframe>
 </div>
 
+<div><div class="header">
+  <div class="headertitle"><div class="title">Command-Line Reference </div></div>
+</div><!--header-->
 <div class="contents">
-<h3>cli &rarr; thorin Relation</h3><table class="dirtab"><tr class="dirtab"><th class="dirtab">File in cli</th><th class="dirtab">Includes file in thorin</th></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="dialects_8cpp.html">dialects.cpp</a></td><td class="dirtab"><a class="el" href="dir_02386abad8cd81366000917a379dc307.html">pass</a>&#160;/&#160;<a class="el" href="pass_8h.html">pass.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="dialects_8cpp.html">dialects.cpp</a></td><td class="dirtab"><a class="el" href="world_8h.html">world.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="main_8cpp.html">main.cpp</a></td><td class="dirtab"><a class="el" href="dir_e925b2e9311ea88d6ed8c8d868701100.html">be</a>&#160;/&#160;<a class="el" href="dir_a37a9f8c5bad72f148d9470d4f595cea.html">dot</a>&#160;/&#160;<a class="el" href="dot_8h.html">dot.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="main_8cpp.html">main.cpp</a></td><td class="dirtab"><a class="el" href="dir_e925b2e9311ea88d6ed8c8d868701100.html">be</a>&#160;/&#160;<a class="el" href="dir_6c8db7bdfb7c9bf22e283b466f914dda.html">ll</a>&#160;/&#160;<a class="el" href="ll_8h.html">ll.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="main_8cpp.html">main.cpp</a></td><td class="dirtab"><a class="el" href="dir_bdc7e8131cbf0032850c465464da8867.html">fe</a>&#160;/&#160;<a class="el" href="parser_8h.html">parser.h</a></td></tr><tr class="dirtab"><td class="dirtab"><a class="el" href="main_8cpp.html">main.cpp</a></td><td class="dirtab"><a class="el" href="dir_02386abad8cd81366000917a379dc307.html">pass</a>&#160;/&#160;<a class="el" href="pass_8h.html">pass.h</a></td></tr></table></div><!-- contents -->
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md0">Usage</a></li>
+<li class="level1"><a href="#emitters">Emitters</a></li>
+<li class="level1"><a href="#clidebug">Debugging Features</a></li>
+</ul>
+</div>
+<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_docs_cli"></a></p>
+<h1><a class="anchor" id="autotoc_md0"></a>
+Usage</h1>
+<div class="fragment"><div class="line">USAGE:</div>
+<div class="line">  thorin [-?|-h|--help] [-v|--version] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-e|--emit &lt;thorin|h|md|ll|dot&gt;] [-V|--verbose] [-b|--break &lt;gid&gt;] [-o|--output &lt;prefix&gt;] [&lt;file&gt;]</div>
+<div class="line"> </div>
+<div class="line">Display usage information.</div>
+<div class="line"> </div>
+<div class="line">OPTIONS, ARGUMENTS:</div>
+<div class="line">  -?, -h, --help          </div>
+<div class="line">  -v, --version           Display version info and exit.</div>
+<div class="line">  -c, --clang &lt;clang&gt;     Path to clang executable (default: &#39;which clang&#39;).</div>
+<div class="line">  -d, --dialect &lt;dialect&gt; Dynamically load dialect [WIP].</div>
+<div class="line">  -D, --dialect-path &lt;path&gt;</div>
+<div class="line">                          Path to search dialects in.</div>
+<div class="line">  -e, --emit &lt;thorin|h|md|ll|dot&gt;</div>
+<div class="line">                          Select emitter. Multiple emitters can be specified simultaneously.</div>
+<div class="line">  -V, --verbose           Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.</div>
+<div class="line">  -b, --break &lt;gid&gt;       Trigger breakpoint upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</div>
+<div class="line">  -o, --output &lt;prefix&gt;   Prefix used for various output files.</div>
+<div class="line">  &lt;file&gt;                  Input file.</div>
+</div><!-- fragment --><h1><a class="anchor" id="emitters"></a>
+Emitters</h1>
+<ul>
+<li><code>-e thorin</code> emits Thorin code again.</li>
+<li><code>-e h</code> emits a header file to be used to interface with a dialect in C++.</li>
+<li><code>-e md</code> emits the input formatted as <a href="https://www.doxygen.nl/manual/markdown.html">Markdown</a>.<ul>
+<li>Single-line <code>/// xxx</code> comments will put <code>xxx</code> directly into the Markdown output. You can put an optional space after the <code>///</code> that will be elided in the Markdown output.</li>
+<li>Everything else will be put verbatim within a <a href="https://www.doxygen.nl/manual/markdown.html#md_fenced">fenced code block</a>.</li>
+</ul>
+</li>
+<li><code>-e dot</code> emit the Thorin program as a graph using <a href="https://graphviz.org/doc/info/lang.html">Graphviz' DOT language</a>.</li>
+<li><code>-e ll</code> compiles the Thorin code to <a href="https://llvm.org/docs/LangRef.html">LLVM</a>.</li>
+</ul>
+<h1><a class="anchor" id="clidebug"></a>
+Debugging Features</h1>
+<ul>
+<li>You can increase the log level with <code>-V</code>.<ul>
+<li>No <code>-V</code> corresponds to <a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd">thorin::LogLevel::Error</a>.</li>
+<li><code>-V</code> corresponds to <a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a56525ae64d370c0b448ac0d60710ef17">thorin::LogLevel::Warn</a>.</li>
+<li><code>-VV</code> corresponds to <a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875">thorin::LogLevel::Info</a>.</li>
+<li><code>-VVV</code> corresponds to <a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf">thorin::LogLevel::Verbose</a>.</li>
+<li><code>-VVVV</code> corresponds to <a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba">thorin::LogLevel::Debug</a>. This output only exists in a Debug build of Thorin.</li>
+</ul>
+</li>
+<li><p class="startli">You can trigger a breakpoint upon construction of a <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">thorin::Def</a> with a specific global id.</p>
+<p class="startli">For example, this will trigger a breakpoint if the <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">thorin::Def</a> with <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">global id</a> <code>666</code> is being created: </p><div class="fragment"><div class="line">thorin -b 666 in.thorin</div>
+</div><!-- fragment --> </li>
+</ul>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_2990d7c532eb7441b74916b8f5365141.html">cli</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.3 </li>
   </ul>
 </div>

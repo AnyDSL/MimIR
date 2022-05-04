@@ -26,68 +26,23 @@ var NAVTREE =
 [
   [ "Thorin", "index.html", [
     [ "Introduction", "index.html", [
-      [ "Building", "index.html#autotoc_md1", [
-        [ "Tests", "index.html#autotoc_md2", null ],
-        [ "Documentation", "index.html#autotoc_md3", null ]
+      [ "Building", "index.html#autotoc_md32", [
+        [ "Build Switches", "index.html#autotoc_md33", null ],
+        [ "Tests", "index.html#autotoc_md34", null ]
       ] ],
-      [ "Dependencies", "index.html#autotoc_md4", null ]
+      [ "Dependencies", "index.html#autotoc_md35", null ]
     ] ],
-    [ "Language Reference", "md_docs_langref.html", [
-      [ "Lexical Structure", "md_docs_langref.html#lex", [
-        [ "Terminals", "md_docs_langref.html#terminals", [
-          [ "Primary Terminals", "md_docs_langref.html#autotoc_md6", null ],
-          [ "Keywords", "md_docs_langref.html#autotoc_md7", null ],
-          [ "Regular Expressions", "md_docs_langref.html#autotoc_md8", null ]
-        ] ],
-        [ "Comments", "md_docs_langref.html#autotoc_md9", null ]
-      ] ],
-      [ "Grammar", "md_docs_langref.html#autotoc_md10", [
-        [ "Productions", "md_docs_langref.html#productions", [
-          [ "Module", "md_docs_langref.html#autotoc_md11", null ],
-          [ "Declaration", "md_docs_langref.html#autotoc_md12", null ],
-          [ "Expressions", "md_docs_langref.html#autotoc_md13", null ]
-        ] ],
-        [ "Precedence", "md_docs_langref.html#autotoc_md14", null ]
-      ] ]
+    [ "Documentation", "usergroup0.html", [
+      [ "Command-Line Reference", "cli.html", null ],
+      [ "Language Reference", "langref.html", null ],
+      [ "Coding & Debugging", "coding.html", null ],
+      [ "Developer Guide", "dev.html", null ],
+      [ "Passes", "passes.html", null ]
     ] ],
-    [ "Command-Line Reference", "md_docs_cli.html", [
-      [ "Usage", "md_docs_cli.html#autotoc_md16", null ],
-      [ "Emitters", "md_docs_cli.html#emitters", null ],
-      [ "Debugging Features", "md_docs_cli.html#clidebug", null ]
+    [ "Dialects", "usergroup1.html", [
+      [ "std", "std.html", null ],
+      [ "mem", "mem.html", null ]
     ] ],
-    [ "Developer Guide", "md_docs_dev.html", [
-      [ "Compiling and Executing", "md_docs_dev.html#autotoc_md18", null ],
-      [ "Defs and the World", "md_docs_dev.html#autotoc_md19", [
-        [ "Hash Consing", "md_docs_dev.html#autotoc_md20", null ]
-      ] ],
-      [ "Structural vs. Nominal", "md_docs_dev.html#autotoc_md21", null ],
-      [ "Matching IR", "md_docs_dev.html#autotoc_md22", null ],
-      [ "Iterating over the Program", "md_docs_dev.html#autotoc_md23", null ]
-    ] ],
-    [ "Passes", "md_docs_passes.html", [
-      [ "Rewrite Pass", "md_docs_passes.html#autotoc_md25", null ],
-      [ "Fixed-Point Pass", "md_docs_passes.html#autotoc_md26", [
-        [ "Rewrite", "md_docs_passes.html#autotoc_md27", [
-          [ "Proxy", "md_docs_passes.html#autotoc_md28", null ]
-        ] ],
-        [ "Analyze", "md_docs_passes.html#autotoc_md29", null ],
-        [ "Other Hooks", "md_docs_passes.html#autotoc_md30", null ]
-      ] ],
-      [ "Caveats", "md_docs_passes.html#autotoc_md31", [
-        [ "Construct Valid Programs", "md_docs_passes.html#autotoc_md32", null ],
-        [ "Creating Nominals", "md_docs_passes.html#autotoc_md33", null ]
-      ] ]
-    ] ],
-    [ "Coding & Debugging", "md_docs_coding.html", [
-      [ "Coding Style", "md_docs_coding.html#autotoc_md35", null ],
-      [ "Debugging", "md_docs_coding.html#autotoc_md36", [
-        [ "Conditional Breakpoints", "md_docs_coding.html#autotoc_md37", null ],
-        [ "Valgrind & GDB", "md_docs_coding.html#autotoc_md38", null ],
-        [ "GoogleTest", "md_docs_coding.html#autotoc_md39", null ],
-        [ "VS Code", "md_docs_coding.html#autotoc_md40", null ]
-      ] ]
-    ] ],
-    [ "Deprecated List", "deprecated.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -117,8 +72,6 @@ var NAVTREE =
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
-        [ "Functions", "globals_func.html", null ],
-        [ "Variables", "globals_vars.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -137,13 +90,13 @@ var NAVTREEINDEX =
 "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a6f445a0b0cd800daf9178be123ce0bed",
 "classthorin_1_1World.html#a3a71dacbc5a5780bb4ba24c7a2b71618",
 "classthorin_1_1World.html#ac3f84d153a4be33297be87599a72f836",
-"copy__prop_8cpp_source.html",
-"lattice_8h_source.html",
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a76cf56920355319ad148e25a340b0f18",
-"namespacethorin.html#aec7c9c368dda260071936391c37a72e3ada94a2d1ca2b8fb5b74068a178054b0b",
-"scalarize_8h_source.html",
-"structthorin_1_1ll_1_1BB.html#a3b03c198eb00e5b6e231295e732f1720",
-"tuple_8h.html#a51e00c5b59d67f48d2b918497cacf0df"
+"container_8h_source.html",
+"ll_8cpp.html#a65f81261af8998285d3076ad85a8f9e5",
+"namespacethorin.html#a86accd63c7f340ac15fcfb923f9ff462",
+"namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1ROp_01_4",
+"structthorin_1_1DefDefEq.html",
+"tables_8h.html#a3543fb5b347ca3087c3943481aee0117",
+"utf8_8cpp.html#aa6dceebd5276e97e1147dd786456e666"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

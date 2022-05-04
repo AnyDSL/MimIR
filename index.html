@@ -105,21 +105,21 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md1">Building</a><ul><li class="level2"><a href="#autotoc_md2">Tests</a></li>
-<li class="level2"><a href="#autotoc_md3">Documentation</a></li>
+<ul><li class="level1"><a href="#autotoc_md32">Building</a><ul><li class="level2"><a href="#autotoc_md33">Build Switches</a></li>
+<li class="level2"><a href="#autotoc_md34">Tests</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md4">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md35">Dependencies</a></li>
 </ul>
 </div>
-<div class="textblock"><p ><a class="anchor" id="md_docs_README"></a></p>
+<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_docs_README"></a></p>
 <table class="markdownTable">
 <tr class="markdownTableRowOdd">
 <td>Support </td><td><a href="https://anydsl.github.io/thorin2"><img src="https://img.shields.io/badge/docs-master-green?logo=gitbook&amp;logoColor=white" alt="Documentation" class="inline"/></a> <a href="https://discord.gg/FPp7hdj3fQ"><img src="https://img.shields.io/discord/960975142459179068?color=green&amp;logo=discord&amp;logoColor=white" alt="Discord" class="inline"/></a>   </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">License  </td><td class="markdownTableBodyNone"><a href="https://github.com/AnyDSL/thorin2/blob/master/LICENSE.TXT"><img src="https://img.shields.io/github/license/anydsl/thorin2?&amp;color=yellowgreen&amp;logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5gQFFyMP+ejbyAAAAVRJREFUOMuNkk0rhGEUhq+jETaajSxEKdvJShayRUlZWbCYjZr/4N+oyVjLwkdWkoWl2ShSllKmZKGZuiwcenuHyV2nzsd9n+e5ex4YAHVb3R7EqfwhnAM6wFbWZ0A1Iu7L3CiIloEVYAG4BWaBpRxfAY9ADbgBziLisnyDSaAHbEREV60CTznbjYiOOgzsJbfPwhvwEhHdrN+BtUJOLn5Jbp/vQ/W8UFfV54xqoX+uHn7XQ9mcALrAtbqYp3WAC+Aic3J2DXRT87UA2AEOgH2gPuDV6sk5SM3PghXgNCIegCl17BeLY8BUck5Tw5C6CbwCNXUeaAMNdaQgHgEaQDs5NeBV3UQ9sh9ttaK2MirZK+MIdVxtqh9qTz1Rp/PkltrKfDpnveQ21fGix2F1tOT7Z0GhN5ofajDUdbWTsc5/oc6oq+pdwetd9mb+s+DYv3Fc5n8Cd+5Qbrzh2X0AAAAASUVORK5CYII=" alt="License" class="inline"/></a>   </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Requirements  </td><td class="markdownTableBodyNone"><a href="https://cmake.org/"><img src="https://img.shields.io/badge/cmake-3.7-blue.svg?logo=cmake" alt="CMake" style="pointer-events: none;" class="inline"/></a> <a href="https://isocpp.org/"><img src="https://img.shields.io/badge/standard-C%2B%2B%2020-blue.svg?logo=C%2B%2B" alt="C++" style="pointer-events: none;" class="inline"/></a> <a href="https://llvm.org/"><img src="https://img.shields.io/badge/LLVM%2FClang-13.x--14.x-blue?logo=llvm" alt="LLVM/Clang" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/tree/master/modules"><img src="https://img.shields.io/badge/submodules-5-blue?logo=git&amp;logoColor=white" alt="Submodules" class="inline"/></a>   </td></tr>
+<td class="markdownTableBodyNone">Requirements  </td><td class="markdownTableBodyNone"><a href="https://cmake.org/"><img src="https://img.shields.io/badge/cmake-3.20-blue.svg?logo=cmake" alt="CMake" style="pointer-events: none;" class="inline"/></a> <a href="https://isocpp.org/"><img src="https://img.shields.io/badge/standard-C%2B%2B%2020-blue.svg?logo=C%2B%2B" alt="C++" style="pointer-events: none;" class="inline"/></a> <a href="https://llvm.org/"><img src="https://img.shields.io/badge/LLVM%2FClang-13.x--14.x-blue?logo=llvm" alt="LLVM/Clang" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/tree/master/modules"><img src="https://img.shields.io/badge/submodules-5-blue?logo=git&amp;logoColor=white" alt="Submodules" class="inline"/></a>   </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">Tests  </td><td class="markdownTableBodyNone"><a href="https://github.com/AnyDSL/thorin2/actions/workflows/linux.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/linux?logo=linux&amp;label=linux&amp;logoColor=white" alt="Linux" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/actions/workflows/windows.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/windows?logo=windows&amp;label=windows" alt="Windows" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/actions/workflows/macos.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/macos?logo=apple&amp;label=macos" alt="MacOS" class="inline"/></a> <a href="https://github.com/AnyDSL/thorin2/actions/workflows/doxygen.yml"><img src="https://img.shields.io/github/workflow/status/anydsl/thorin2/doxygen?logo=github&amp;label=doxygen" alt="Doxygen" class="inline"/></a>   </td></tr>
 </table>
@@ -129,8 +129,8 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <li><a href="https://en.wikipedia.org/wiki/Dependent_type">dependent types</a></li>
 </ul>
 <p >In contrast to other CoC-based program representations such as <a href="https://coq.inria.fr/">Coq</a> or <a href="https://leanprover.github.io/">Lean</a>, Thorin is <em>not</em> a theorem prover but focuses on generating efficient code. For this reason, Thorin explicitly features mutable state and models imperative control flow with <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style (CPS)</a>.</p>
-<p >You can use Thorin either via it's C++-API or the <a class="el" href="md_docs_cli.html">command-line utility</a>.</p>
-<h1><a class="anchor" id="autotoc_md1"></a>
+<p >You can use Thorin either via it's C++-API or the <a class="el" href="cli.html#md__home_runner_work_thorin2_thorin2_docs_cli">command-line utility</a>.</p>
+<h1><a class="anchor" id="autotoc_md32"></a>
 Building</h1>
 <p >If you have a <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub account setup with SSH</a>, just do this: </p><div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:AnyDSL/thorin2.git</div>
 </div><!-- fragment --><p> Otherwise, clone via HTTPS: </p><div class="fragment"><div class="line">git clone --recurse-submodules https://github.com/AnyDSL/thorin2.git</div>
@@ -139,14 +139,25 @@ Building</h1>
 <div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug</div>
 <div class="line">cmake --build build -j $(nproc)</div>
 </div><!-- fragment --><p> For a <code>Release</code> build simply use <code>-DCMAKE_BUILD_TYPE=Release</code>.</p>
-<h2><a class="anchor" id="autotoc_md2"></a>
+<h2><a class="anchor" id="autotoc_md33"></a>
+Build Switches</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">CMake Switch   </th><th class="markdownTableHeadNone">Options   </th><th class="markdownTableHeadNone">Comment    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>CMAKE_BUILD_TYPE</code>   </td><td class="markdownTableBodyNone"><code>Debug</code> | <code>Release</code> | <code>RelWithDebInfo</code>   </td><td class="markdownTableBodyNone">Build type (default is <code>Debug</code>)    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>THORIN_BUILD_DOCS</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone">If ON, Thorin will build the documentation (requires Doxygen).    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>THORIN_BUILD_TESTING</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone">If ON, Thorin will build all of Thorin's own tests.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>THORIN_ENABLE_CHECKS</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone">If ON, enables expensive runtime checks (requires <code>CMAKE_BUILD_TYPE=Debug</code>).   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md34"></a>
 Tests</h2>
 <p >Run the tests within the <code>build</code> folder with: </p><div class="fragment"><div class="line">ctest</div>
 </div><!-- fragment --><p> In addition, you can enable <a href="https://valgrind.org/">Valgrind</a> with: </p><div class="fragment"><div class="line">ctest -T memcheck</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md3"></a>
-Documentation</h2>
-<p >You can build the documentation locally from the root folder with: </p><div class="fragment"><div class="line">doxygen</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md4"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md35"></a>
 Dependencies</h1>
 <p >In addition to the provided submodules:</p>
 <ul>

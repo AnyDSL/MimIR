@@ -16,9 +16,8 @@ var searchData=
   ['vel_13',['vel',['../classthorin_1_1World.html#aa73afcb4099190ef420e3073b98600dc',1,'thorin::World']]],
   ['vel_14',['Vel',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a8488f8c3464a90aa07238d6ae0bce35d',1,'thorin::Node']]],
   ['verbose_15',['Verbose',['../namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf',1,'thorin']]],
-  ['version_16',['version',['../main_8cpp.html#a058be9232928fb1f2def6a06b3d87aec',1,'main.cpp']]],
-  ['visit_17',['visit',['../classthorin_1_1World.html#a35687817089d85315d46a391dd75e320',1,'thorin::World::visit()'],['../namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c',1,'thorin::visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)']]],
-  ['visit_5ffirst_18',['visit_first',['../namespacethorin.html#a02f88714441141b4cafcf80c5e49f554',1,'thorin']]],
-  ['visitfn_19',['VisitFn',['../classthorin_1_1World.html#af4e2bf1374dd2af475980465c654b903',1,'thorin::World']]],
-  ['vlog_20',['VLOG',['../world_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'world.h']]]
+  ['visit_16',['visit',['../classthorin_1_1World.html#a35687817089d85315d46a391dd75e320',1,'thorin::World::visit()'],['../namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c',1,'thorin::visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)']]],
+  ['visit_5ffirst_17',['visit_first',['../namespacethorin.html#a02f88714441141b4cafcf80c5e49f554',1,'thorin']]],
+  ['visitfn_18',['VisitFn',['../classthorin_1_1World.html#af4e2bf1374dd2af475980465c654b903',1,'thorin::World']]],
+  ['vlog_19',['VLOG',['../world_8h.html#a35e71de09dfd64892a48e3f7c56c5619',1,'world.h']]]
 ];
