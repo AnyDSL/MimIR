@@ -74,12 +74,12 @@ For a `Release` build simply use `-DCMAKE_BUILD_TYPE=Release`.
 
 ### Build Switches
 
-| CMake Switch           | Options                                  | Comment                                                                      |
-|------------------------|------------------------------------------|------------------------------------------------------------------------------|
-| `CMAKE_BUILD_TYPE`     | `Debug` \| `Release` \| `RelWithDebInfo` | Build type (default is `Debug`)                                              |
-| `THORIN_BUILD_DOCS`    | `ON` \| `OFF`                            | If ON, Thorin will build the documentation (requires Doxygen).               |
-| `THORIN_BUILD_TESTING` | `ON` \| `OFF`                            | If ON, Thorin will build all of Thorin's own tests.                          |
-| `THORIN_ENABLE_CHECKS` | `ON` \| `OFF`                            | If ON, enables expensive runtime checks (requires `CMAKE_BUILD_TYPE=Debug`). |
+| CMake Switch           | Options                                  | Default | Comment                                                                        |
+|------------------------|------------------------------------------|---------|--------------------------------------------------------------------------------|
+| `CMAKE_BUILD_TYPE`     | `Debug` \| `Release` \| `RelWithDebInfo` | `Debug` | Build type                                                                     |
+| `THORIN_BUILD_DOCS`    | `ON` \| `OFF`                            | `OFF`   | If `ON`, Thorin will build the documentation (requires Doxygen).               |
+| `THORIN_BUILD_TESTING` | `ON` \| `OFF`                            | `OFF`   | If `ON`, Thorin will build all of Thorin's own tests.                          |
+| `THORIN_ENABLE_CHECKS` | `ON` \| `OFF`                            | `ON`    | If `ON`, enables expensive runtime checks (requires `CMAKE_BUILD_TYPE=Debug`). |
 
 ### Tests
 
