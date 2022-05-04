@@ -11,18 +11,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-        
-    - name: Doxygen Action
-      uses: mattnotmitt/doxygen-action@v1.1.0
-      with:
-        doxyfile-path: "./doxyfile"
-    
+      - name: Clone recursively
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Install newest g++
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 
+          sudo apt-get update
+          sudo apt-get install g++-11
+          sudo apt-get install valgrind
+          export CXX=g++-11
+
+      - name: Configure
+        run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DTHORIN_BUILD_DOCS=ON
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v --target docs
+
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       if: ${{ github.ref == 'refs/heads/master' }}
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./html
+        publish_dir: ${{github.workspace}}/build/html
