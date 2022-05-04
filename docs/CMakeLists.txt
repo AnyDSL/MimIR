@@ -2,7 +2,7 @@ set(CLI_HELP ${CMAKE_CURRENT_BINARY_DIR}/cli-help.md)
 
 add_custom_command(
     OUTPUT ${CLI_HELP}
-    COMMAND thorin --help &> ${CLI_HELP}
+    COMMAND thorin --help > ${CLI_HELP}
     DEPENDS thorin 
     COMMENT "Generating help text of Thorin's CLI")
 
