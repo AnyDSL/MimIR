@@ -25,12 +25,11 @@ jobs:
         with:
           version: "14.0.0"
 
-      - name: Install newest g++
+      - name: Install newest g++, valgrind
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 
           sudo apt-get update
-          sudo apt-get install g++-11
-          sudo apt-get install valgrind
+          sudo apt-get install g++-11 valgrind
           export CXX=g++-11
 
       - name: Configure

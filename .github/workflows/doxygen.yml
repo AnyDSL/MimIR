@@ -17,12 +17,11 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install newest g++
+    - name: Install newest g++, doxygen, graphviz
       run: |
         sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 
         sudo apt-get update
-        sudo apt-get install g++-11
-        sudo apt-get install valgrind
+        sudo apt-get install g++-11 doxygen graphviz
         export CXX=g++-11
 
     - name: Configure
