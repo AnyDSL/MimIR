@@ -239,12 +239,13 @@ const Def* Parser::parse_pi() {
     auto var = parse_sym("variable of a dependent function type");
     expect(Tok::Tag::T_colon, "domain of a dependent function type");
     auto dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
-    expect(Tok::Tag::T_arrow, "dependent function type");
     auto pi = world().nom_pi(world().nom_infer_univ(), dom);
     pi->set_dom(dom);
     push();
     insert(var, pi->var()); // TODO set location
-    pi->set_codom(parse_expr("codomain of a dependent function type", Tok::Prec::Arrow));
+    expect(Tok::Tag::T_arrow, "dependent function type");
+    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
+    pi->set_codom(codom);
     pi->set_dbg(track);
     pop();
     return pi;
@@ -328,8 +329,9 @@ void Parser::parse_ax() {
     info.group   = dialect_and_group->second;
 
     if (info.dialect != bootstrapper_.dialect()) {
-        err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax, info.dialect,
-            lexer_.file());
+        // TODO
+        //err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax, info.dialect,
+            //lexer_.file());
     }
 
     if (ahead().isa(Tok::Tag::D_paren_l)) {

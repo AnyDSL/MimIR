@@ -1,0 +1,54 @@
+/// # The std Dialect {#std}
+///
+/// ## Types
+///
+/// ## Operations
+///
+/// ### std.icmp
+///
+/// Integer comparison is made of 5 distinct relations:
+///     * X: first operand plus, second minus
+///     * Y: first operand minus, second plus
+///     * G: greater with same sign
+///     * L: less with same sign
+///     * E: equal
+///
+/// | Tag     | Aliases | X | Y | G | L | E | Meaning                                         |
+/// |---------|---------| --|---|---|---|---|-------------------------------------------------|
+/// | `xygle` |  `f`    | o | o | o | o | o | always false                                    |
+/// | `xyglE` |  `e`    | o | o | o | o | x | equal                                           |
+/// | `xygLe` |         | o | o | o | x | o | less (same sign)                                |
+/// | `xyglE` |         | o | o | o | x | x | less or equal                                   |
+/// | `xyGle` |         | o | o | x | o | o | greater (same sign)                             |
+/// | `xyGlE` |         | o | o | x | o | x | greater or equal                                |
+/// | `xyGLe` |         | o | o | x | x | o | greater or less                                 |
+/// | `xyGLE` |         | o | o | x | x | x | greater or less or equal == same sign           |
+/// | `xYgle` |         | o | x | o | o | o | minus plus                                      |
+/// | `xYglE` |         | o | x | o | o | x | minus plus or equal                             |
+/// | `xYgLe` |  `sl`   | o | x | o | x | o | signed less                                     |
+/// | `xYglE` |  `sle`  | o | x | o | x | x | signed less or equal                            |
+/// | `xYGle` |  `ug`   | o | x | x | o | o | unsigned greater                                |
+/// | `xYGlE` |  `uge`  | o | x | x | o | x | unsigned greater or equal                       |
+/// | `xYGLe` |         | o | x | x | x | o | minus plus or greater or less                   |
+/// | `xYGLE` |         | o | x | x | x | x | not plus minus                                  |
+/// | `Xygle` |         | x | o | o | o | o | plus minus                                      |
+/// | `XyglE` |         | x | o | o | o | x | plus minus or equal                             |
+/// | `XygLe` |  `ul`   | x | o | o | x | o | unsigned less                                   |
+/// | `XyglE` |  `ule`  | x | o | o | x | x | unsigned less or equal                          |
+/// | `XyGle` |  `sg`   | x | o | x | o | o | signed greater                                  |
+/// | `XyGlE` |  `sge`  | x | o | x | o | x | signed greater or equal                         |
+/// | `XyGLe` |         | x | o | x | x | o | greater or less or plus minus                   |
+/// | `XyGLE` |         | x | o | x | x | x | not minus plus                                  |
+/// | `XYgle` |         | x | x | o | o | o | different sign                                  |
+/// | `XYglE` |         | x | x | o | o | x | different sign or equal                         |
+/// | `XYgLe` |         | x | x | o | x | o | signed or unsigned less                         |
+/// | `XYglE` |         | x | x | o | x | x | signed or unsigned less or equal == not greater |
+/// | `XYGle` |         | x | x | x | o | o | signed or unsigned greater                      |
+/// | `XYGlE` |         | x | x | x | o | x | signed or unsigned greater or equal == not less |
+/// | `XYGLe` |  `ne`   | x | x | x | x | o | not equal                                       |
+/// | `XYGLE` |  `t`    | x | x | x | x | x | always true                                     |
+.ax :std.icmp(xygle = f, xyglE, xygLe,      xyglE,       xyGle,      xyGlE,       xyGLe,      xyGLE, 
+              xYgle,     xYglE, xYgLe = sl, xYglE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE, 
+              Xygle,     XyglE, XygLe = ul, XyglE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE, 
+              XYgle,     XYglE, XYgLe,      XYglE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t): 
+    Π w: .Nat -> [:Int w, :Int w] -> .Bool , normalize_icmp;

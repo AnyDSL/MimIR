@@ -102,8 +102,7 @@ configure_file(config.h.in config.h)
 target_include_directories(libthorin PUBLIC 
     ${CMAKE_CURRENT_BINARY_DIR}/.. # for config.h
     ${CMAKE_CURRENT_SOURCE_DIR}/..
-    ${PROJECT_SOURCE_DIR}/modules/half/include
-)
+    ${PROJECT_SOURCE_DIR}/modules/half/include)
 target_link_libraries(libthorin PUBLIC absl::flat_hash_map absl::flat_hash_set
                                        absl::node_hash_map absl::node_hash_set)
 if(MSVC AND BUILD_SHARED_LIBS)

@@ -25,19 +25,18 @@ jobs:
         with:
           version: "14.0.0"
 
-      - name: Install newest g++
+      - name: Install newest g++, valgrind
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 
           sudo apt-get update
-          sudo apt-get install g++-11
-          sudo apt-get install valgrind
+          sudo apt-get install g++-11 valgrind
           export CXX=g++-11
 
       - name: Configure
-        run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+        run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{matrix.build-type}} -v --target thorin-gtest thorin thorin_foo
+        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_foo
 
       - name: Test with Valgrind
         working-directory: ${{github.workspace}}/build

@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <cstring>
 
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <lyra/lyra.hpp>
@@ -17,8 +18,10 @@
 #    include <windows.h>
 #    define popen  _popen
 #    define pclose _pclose
+#    define WHICH_CLANG "where clang"
 #else
 #    include <dlfcn.h>
+#    define WHICH_CLANG "which clang"
 #endif
 
 using namespace thorin;
@@ -38,11 +41,7 @@ static std::string exec(const char* cmd) {
 
 static std::string get_clang_from_path() {
     std::string clang;
-#ifndef _WIN32
-    clang = exec("which clang");
-#else
-    clang = exec("where clang");
-#endif
+    clang = exec(WHICH_CLANG);
     clang.erase(std::remove(clang.begin(), clang.end(), '\n'), clang.end());
     return clang;
 }
@@ -71,7 +70,7 @@ int main(int argc, char** argv) {
         auto cli = lyra::cli()
             | lyra::help(show_help)
             | lyra::opt(show_version             )["-v"]["--version"     ]("Display version info and exit.")
-            | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: " + clang + ").")
+            | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: '" WHICH_CLANG "').")
             | lyra::opt(dialects,      "dialect" )["-d"]["--dialect"     ]("Dynamically load dialect [WIP].")
             | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("Path to search dialects in.")
             | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("thorin", "h", "md", "ll", "dot")
@@ -85,7 +84,7 @@ int main(int argc, char** argv) {
         if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
 
         if (show_help) {
-            std::cerr << cli;
+            std::cout << cli;
             return EXIT_SUCCESS;
         }
 
@@ -115,10 +114,9 @@ int main(int argc, char** argv) {
             throw std::invalid_argument("error: unknown option " + input);
 
         if (prefix.empty()) {
-            auto dot_i = input.rfind('.');
-            if (dot_i == std::string::npos || input.substr(dot_i) != ".thorin")
-                throw std::invalid_argument("error: invalid file name '" + input + "'");
-            prefix = input.substr(0, dot_i);
+            auto filename = std::filesystem::path(input).filename();
+            if (filename.extension() != ".thorin") throw std::invalid_argument("error: invalid file name '" + input + "'");
+            prefix = filename.stem().string();
         }
 
         World world;

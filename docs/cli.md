@@ -1,4 +1,4 @@
-# Command-Line Reference
+# Command-Line Reference {#cli}
 
 [TOC]
 
