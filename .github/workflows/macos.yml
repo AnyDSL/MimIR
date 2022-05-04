@@ -21,7 +21,7 @@ jobs:
           submodules: recursive
 
       - name: Configure
-        run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}}
+        run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON
 
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1.5.2
