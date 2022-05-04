@@ -485,6 +485,23 @@ public:
     friend class World;
 };
 
+class Singleton : public Def {
+private:
+    Singleton(const Def* type, const Def* inner_type, const Def* dbg)
+        : Def(Node, type, {inner_type}, 0, dbg) {}
+
+public:
+    const Def* inhabitant() const { return op(0); }
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Singleton;
+    friend class World;
+};
+
 class Lit : public Def {
 private:
     Lit(const Def* type, fields_t val, const Def* dbg)

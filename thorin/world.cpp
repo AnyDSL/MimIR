@@ -572,7 +572,7 @@ const Def* World::bound(Defs ops, const Def* dbg) {
     // sort and remove duplicates
     std::sort(cpy.begin(), end, GIDLt<const Def*>());
     end = std::unique(cpy.begin(), end);
-    cpy.shrink(cpy.begin() - end);
+    cpy.shrink(std::distance(cpy.begin(), end));
 
     if (cpy.size() == 0) return ext<!up>(kind, dbg);
     if (cpy.size() == 1) return cpy[0];
@@ -606,13 +606,17 @@ const Def* World::test(const Def* value, const Def* probe, const Def* match, con
     if (err()) {
         // TODO proper error msg
         assert(m_pi && c_pi);
-        auto a = isa_lit(m_pi->dom()->arity());
+        auto a = isa_lit(c_pi->dom()->arity());
         assert(a && *a == 2);
-        assert(checker_->equiv(m_pi->dom(2, 0_s), c_pi->dom()));
+        assert(checker_->equiv(c_pi->dom(2, 0_s), m_pi->dom()));
     }
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
-    return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash, dbg);
+    return unify<Test>(4, pi(m_pi->dom(), codom), value, probe, match, clash, dbg);
+}
+
+const Def* World::singleton(const Def* inner_type, const Def* dbg) {
+    return unify<Singleton>(1, this->type<1>(), inner_type, dbg);
 }
 
 const Def* World::fn_for(Defs params) {
@@ -697,8 +701,10 @@ const Def* World::infer_type(Defs defs) {
     for (auto def : defs) {
         // TODO deal with non-lit levels
         if (auto type = def->isa<Type>()) {
-            level = std::max(level, as_lit(type->level())) + 1;
-        } else if (auto type = def->type()->as<Type>()) {
+            level = std::max(level, as_lit(type->level()) + 1);
+        } else if (auto type = def->type()->isa<Type>()) {
+            level = std::max(level, as_lit(type->level()));
+        } else if (auto type = def->type()->type()->as<Type>()) {
             level = std::max(level, as_lit(type->level()));
         }
     }

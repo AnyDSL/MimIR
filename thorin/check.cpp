@@ -5,6 +5,8 @@
 namespace thorin {
 
 bool Checker::equiv(const Def* d1, const Def* d2) {
+    if (!d1 || !d2) return false;
+
     if (d1 == d2 || (d1->is_unset() && d2->is_unset())) return true;
 
     // normalize: always put smaller gid to the left
@@ -70,6 +72,8 @@ bool Checker::assignable(const Def* type, const Def* val) {
 
             return true;
         }
+    } else if (auto vel = val->isa<Vel>()) {
+        if (assignable(type, vel->value())) return true;
     }
 
     return equiv(type, val->type());

@@ -28,7 +28,8 @@ using nat_t    = u64;
     m(Nat, nat)                                                               \
     m(Var, var)                                                               \
     m(Infer, infer)                                                           \
-    m(Global, global)
+    m(Global, global)                                                         \
+    m(Singleton, singleton)
 
 #define THORIN_TAG(m)                                               \
     m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)               \
