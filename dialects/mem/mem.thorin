@@ -1,0 +1,18 @@
+/// # The mem Dialect {#mem}
+///
+/// ## Types
+///
+/// This type tracks all kind of side-effects.
+.ax :mem.M: *; 
+///
+/// This is a pointer type with an address space.
+.ax :mem.Ptr: [*, .Nat] -> *;
+///
+/// ## Operations
+///
+/// Memory-related operations:
+.ax :mem.load:  Π _: [T: *, a: .Nat] -> [:mem.M, :mem.Ptr(T, a)] -> [:mem.M, T], normalize_load;
+.ax :mem.store: Π _: [U: *, b: .Nat] -> [:mem.M, :mem.Ptr(U, b), U] -> :mem.M, normalize_store;
+///
+/// Load effective address. Performs address computation.
+.ax :mem.lea: [n: .Nat, Ts: «n; *», as: .Nat] -> [:mem.Ptr(«j: n; Ts#j», as), i: :Int n] -> :mem.Ptr(Ts#i, as);

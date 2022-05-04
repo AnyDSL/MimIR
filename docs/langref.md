@@ -1,4 +1,4 @@
-# Language Reference
+# Language Reference {#langref}
 
 [TOC]
 
