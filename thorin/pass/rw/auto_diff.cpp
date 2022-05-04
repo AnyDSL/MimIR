@@ -842,7 +842,7 @@ void AutoDiffer::derive_external(const Lam *fun, Lam *pb, Lam *fw, Lam *res_lam)
         pb->set_body(log_d);
     } else if (name == "sin") {
         // sin(x) |-> (sin(x), lambda s. s*cos(x))
-        auto cos = world_.lookup("sin");
+        auto cos = world_.lookup("cos");
 
         if (cos == nullptr) {
             dlog(world_, "Error: no cos implementation found");
