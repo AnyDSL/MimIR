@@ -358,7 +358,17 @@ const Def* World::tangent_type(const Def* A,bool left) {
         auto AL = tangent_type(A,true);
         auto BL = tangent_type(B,true);
 
-        auto pullback = cn_mem_ret(tangent_type(B,false), tangent_type(A,false));
+        auto AT = tangent_type(A,false);
+        auto BT = tangent_type(B,false);
+
+        auto pullback = cn_flat({
+            type_mem(),
+            BT,
+            cn_flat({
+                type_mem(),
+                AT
+            })
+        });
         auto diffd = cn_flat({
                             type_mem(),
                             AL,
