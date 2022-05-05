@@ -693,7 +693,10 @@ void AutoDiffer::derive_numeric(const Lam *fun, Lam *source, const Lam *target, 
     // # Numeric differentiation    for general case
 
     // d/dx f(x) ≈ (f(x+h/2)-f(x-h/2))/h     (local tangent)
-    // or more efficient in multidim: (f(x+h)-f(x))/h
+    // TODO: use more efficient in multidim: (f(x+h)-f(x))/h
+
+
+    // TODO: make it work for multiple outputs
 
     auto fun_result_pi = fun->doms().back()->as<Pi>();
     auto fun_result_type = fun_result_pi->dom(1);
@@ -706,6 +709,9 @@ void AutoDiffer::derive_numeric(const Lam *fun, Lam *source, const Lam *target, 
 
     DefArray result_ops{max_dimensions + 1};
 
+    // TODO: use vec_add with one_hot instead of manually code duplication (also allows for more general types)
+
+    // TODO: this function binds nothing from the current scope => move it outside or inline it completely
     auto helper = [&]( u32 current_dim, const Def* mem, Lam* lam, const Def* half_delta, ROp op, const Lam* return_cont ){
         DefArray ops{max_dimensions + 2};
         ops[0] = mem;
@@ -736,14 +742,14 @@ void AutoDiffer::derive_numeric(const Lam *fun, Lam *source, const Lam *target, 
 
             auto high = world_.nom_filter_lam(fun_result_pi, world_.dbg("high"));
 
-            auto ops = helper( dim, current_mem, fw, half_delta_lit,
+            auto ops = helper( dim, last_lam->mem_var(), fw, half_delta_lit,
                                              ROp::sub, high);
 
             last_lam->set_body(world_.app(fun, ops));
 
             auto diff = world_.nom_filter_lam(fun_result_pi, world_.dbg("diff"));
 
-            ops = helper(dim, last_lam->mem_var(), fw, half_delta_lit,
+            ops = helper(dim, high->mem_var(), fw, half_delta_lit,
                                         ROp::add, diff);
 
             high->set_body(world_.app(fun, ops));
@@ -758,7 +764,7 @@ void AutoDiffer::derive_numeric(const Lam *fun, Lam *source, const Lam *target, 
                     );
 
             last_lam = diff;
-            last_mem = high->mem_var();
+            last_mem = diff->mem_var();
         }
     }
 
