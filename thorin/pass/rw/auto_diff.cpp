@@ -379,7 +379,7 @@ private:
     const Def* j_wrap_convert(const Def* def);
     const Def* j_wrap_rop(ROp op, const Def* a, const Def* b); // pullback computation for predefined functions, specifically operations like +, -, *, /
     void derive_external( const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam);
-    void derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta );
+    void derive_numeric(const Lam *fun, Lam *source, const Lam *target, Lam *fw, r32 delta);
 
     const Def* zero_pb(const Def* type, const Def* dbg);
     const Def* j_wrap_tuple(DefArray tuple);
@@ -687,137 +687,190 @@ const Def* AutoDiffer::ptrSlot(const Def* ty, const Def* mem) {
     return pb_slot; // split into pb_mem, pb_ptr
 }
 
-void AutoDiffer::derive_numeric( const Lam* fun, Lam* lam_d, const Def* x, r64 delta ){
+
+void AutoDiffer::derive_numeric(const Lam *fun, Lam *source, const Lam *target, Lam *fw, r32 delta) {
     // https://www.overleaf.com/read/gdpfxvzqpfjf
     // # Numeric differentiation    for general case
 
     // d/dx f(x) ≈ (f(x+h/2)-f(x-h/2))/h     (local tangent)
     // or more efficient in multidim: (f(x+h)-f(x))/h
 
-    auto type = x->type();
-    auto funType = fun->doms().back()->as<Pi>();
-    // TODO: like
-    auto [mem2, half_delta_lit] = lit_of_type(world_, lam_d->mem_var(), type, nullptr, delta/2, nullptr);
-    auto [mem3, delta_lit] = lit_of_type(world_, lam_d->mem_var(), type, nullptr,delta, nullptr);
+    auto fun_result_pi = fun->doms().back()->as<Pi>();
+    auto fun_result_type = fun_result_pi->dom(1);
 
-    auto high = world_.nom_filter_lam(funType,world_.dbg("high"));
-    lam_d->set_body(world_.app(fun, {
-            mem3,
-            world_.op(ROp::sub, (nat_t)0, x, half_delta_lit),
-            high
-    }));
 
-    auto diff = world_.nom_filter_lam(funType,world_.dbg("low"));
-    high->set_body(world_.app(fun, {
-            lam_d->mem_var(),
-            world_.op(ROp::add, (nat_t)0, x, half_delta_lit),
-            diff
-    }));
+    Lam *last_lam = source;
+    const Def *last_mem = source->mem_var();
 
-    diff->set_body(world_.app(lam_d->ret_var(), {
-            high->mem_var(),
-            world_.op(ROp::mul, (nat_t)0,
-                world_.op(ROp::div, (nat_t)0,
-                        world_.op(ROp::sub, (nat_t)0, diff->var(1), high->var(1)),
-                        delta_lit
-                ),
-                lam_d->var(1)
-            )
-    }));
+    u32 max_dimensions = fw->type()->op(0)->num_ops() - 2;
+
+    DefArray result_ops{max_dimensions + 1};
+
+    auto helper = [&]( u32 current_dim, const Def* mem, Lam* lam, const Def* half_delta, ROp op, const Lam* return_cont ){
+        DefArray ops{max_dimensions + 2};
+        ops[0] = mem;
+        for( u64 i = 0 ; i < max_dimensions ; i++ ){
+            const Def* x = lam->var(i + 1);
+            ops[i + 1] = i == current_dim ?
+                         world_.op(op, (nat_t)0, x, half_delta) :
+                         x;
+        }
+
+        ops[ops.size() - 1] = return_cont;
+
+        return ops;
+    };
+
+    for (u32 dim = 0; dim < max_dimensions; dim++) {
+        const Def *x = fw->var(dim + 1);
+
+        auto type = x->type();
+
+        if (isa<Tag::Int>(type)) {
+            result_ops[dim + 1] = world_.lit_real(64, 0.0);
+        } else {
+            auto[mem_temp, half_delta_lit] = lit_of_type(world_, last_mem, type, nullptr, delta / 2, nullptr);
+            auto[mem_temp2, delta_lit] = lit_of_type(world_, mem_temp, type, nullptr, delta, nullptr);
+
+            last_mem = mem_temp2;
+
+            auto high = world_.nom_filter_lam(fun_result_pi, world_.dbg("high"));
+
+            auto ops = helper( dim, current_mem, fw, half_delta_lit,
+                                             ROp::sub, high);
+
+            last_lam->set_body(world_.app(fun, ops));
+
+            auto diff = world_.nom_filter_lam(fun_result_pi, world_.dbg("diff"));
+
+            ops = helper(dim, last_lam->mem_var(), fw, half_delta_lit,
+                                        ROp::add, diff);
+
+            high->set_body(world_.app(fun, ops));
+
+            result_ops[dim + 1] =
+                    world_.op(ROp::div, (nat_t) 0,
+                              world_.op(Conv::r2r,
+                                        type,
+                                        world_.op(ROp::sub, (nat_t) 0, diff->var(1), high->var(1))
+                              ),
+                              delta_lit
+                    );
+
+            last_lam = diff;
+            last_mem = high->mem_var();
+        }
+    }
+
+    result_ops[0] = last_mem;
+    last_lam->set_body(world_.app(target, result_ops));
 }
+
+
 // fills in the body of pb (below called gradlam) which stands for f* the pullback function
 // the pullback function takes a tangent scalar and returns the derivative
 // fun is the original called external function (like exp, sin, ...) : A->B
 // pb is the pullback B->A that might use the argument of fw in its computation
 // fw is the new toplevel called function that invokes fun and hands over control to res_lam
 // res_lam is a helper function that takes the result f(x) as argument and returns the result together with the pullback
-void AutoDiffer::derive_external(const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam){
+void AutoDiffer::derive_external(const Lam *fun, Lam *pb, Lam *fw, Lam *res_lam) {
     std::string name = fun->name();
     // d/dx f(g(x)) = g'(x) f'(g(x))
     // => times s at front
 
     // x
-    const Def* fun_arg = fw->var(1);
+    const Def *fun_arg = fw->var(1);
     // f(x)
-    const Def* res = res_lam->var(1);
+    const Def *res = res_lam->var(1);
     // s (in an isolated environment s=1 -> f*(s) = df/dx)
-    const Def* scal = pb->var(1);
+    const Def *scal = pb->var(1);
 
     auto user_defined_diff = world_.lookup(name + "_diff");
 
     // wrapper to add times s around it
-    auto scal_mul_wrap =world_.nom_filter_lam(pb->ret_var()->type()->as<Pi>(),world_.dbg("scal_mul"));
+
+    auto return_type = pb->ret_var()->type()->as<Pi>();
+    auto return_pi = return_type->op(0);
+
+    auto scal_mul_wrap = world_.nom_filter_lam(return_type, world_.dbg("scal_mul"));
+
     scal_mul_wrap->set_body(
         world_.app(
             pb->ret_var(),
-            {scal_mul_wrap->mem_var(),
-                world_.op(ROp::mul, (nat_t) 0, scal, scal_mul_wrap->var(1))
-            }
+            scal_mul_wrap->vars().map([&](auto var, size_t i) {
+                if (i == 0) {
+                    return var;
+                } else {
+                    return world_.op(ROp::mul, (nat_t) 0,
+                        world_.op_bitcast(var->type(), scal),
+                        var
+                    );
+                }
+            })
         )
     );
 
-    if(user_defined_diff != nullptr){
+    if (user_defined_diff != nullptr) {
         pb->set_body(world_.app(user_defined_diff, {pb->mem_var(), fun_arg, scal_mul_wrap}));
-    }else if( name == "log" ){
-        const Def* log_type = scal->type();
-        auto [rmem,one] = ONE(world_, pb->mem_var(), log_type);
-
-        const Def* log_d = world_.app(pb->ret_var(), {
-                rmem,
-                world_.op(ROp::div, (nat_t)0, scal, fun_arg)
+    } else if (name == "log") {
+        const Def *log_d = world_.app(pb->ret_var(), {
+                pb->mem_var(),
+                world_.op(ROp::div, (nat_t) 0, scal, fun_arg)
         });
 
         pb->set_body(log_d);
-    }else if(name == "exp"){
+    } else if (name == "exp") {
         // d exp(x)/d y = d/dy x * exp(x)
         pb->set_body(
-            world_.app(pb->ret_var(),
-                {pb->mem_var(),
-                    world_.op(ROp::mul, (nat_t)0, res, scal)
-               }));
-    }else if(name == "sqrt"){
+                world_.app(pb->ret_var(),
+                           {pb->mem_var(),
+                            world_.op(ROp::mul, (nat_t) 0, res, scal)
+                           }));
+    } else if (name == "sqrt") {
         // d/dx g(sqrt(f(x))) = g'(sqrt(f(x))) * 1/(2sqrt(f(x))) * f'(x)
         // => sqrt(x) |-> lambda s. s/(2res) with res = sqrt(x)
-        const Def* real_type = scal->type();
+        const Def *real_type = scal->type();
         // TODO:
-        auto [mem2, two] = lit_of_type(world_,pb->mem_var(), real_type, nullptr,2.0,nullptr);
-        const Def* log_d = world_.app(pb->ret_var(), {mem2,
-              world_.op(ROp::div, (nat_t)0,
-                        scal,
-                        world_.op(ROp::mul, (nat_t)0, two, res)
-                         )
+        auto[mem2, two] = lit_of_type(world_, pb->mem_var(), real_type, nullptr, 2.0, nullptr);
+        const Def *log_d = world_.app(pb->ret_var(), {mem2,
+                      world_.op(ROp::div, (nat_t) 0,
+                                scal,
+                                world_.op(ROp::mul, (nat_t) 0, two, res)
+                      )
         });
 
         pb->set_body(log_d);
-    }else if(name == "sin"){
+    } else if (name == "sin") {
         // sin(x) |-> (sin(x), lambda s. s*cos(x))
         auto cos = world_.lookup("cos");
 
-        if(cos == nullptr){
-          THORIN_UNREACHABLE;
+        if (cos == nullptr) {
+            dlog(world_, "Error: no cos implementation found");
+            THORIN_UNREACHABLE;
         }
 
         pb->set_body(world_.app(cos, {pb->mem_var(), fun_arg, scal_mul_wrap}));
-    }else if(name == "cos"){
+    } else if (name == "cos") {
         // lambda s. -s * sin(x)
-        Lam *sin = (Lam*)world_.lookup("sin");
+        Lam *sin = (Lam *) world_.lookup("sin");
 
-        if(sin == nullptr){
-          THORIN_UNREACHABLE;
+        if (sin == nullptr) {
+            dlog(world_, "Error: no sin implementation found");
+            THORIN_UNREACHABLE;
         }
 
         auto fun_return_type = fun->doms().back()->as<Pi>();
-        auto negate = world_.nom_filter_lam(fun_return_type,world_.dbg("negate"));
+        auto negate = world_.nom_filter_lam(fun_return_type, world_.dbg("negate"));
 
         // -s * return of cos
         negate->set_body(world_.app(pb->ret_var(), {
-            sin->mem_var(),
-            world_.op(ROp::mul, (nat_t)0, negate->var(1), world_.op_rminus((nat_t)0, scal))
+                sin->mem_var(),
+                world_.op(ROp::mul, (nat_t) 0, negate->var(1), world_.op_rminus((nat_t) 0, scal))
         }));
 
         pb->set_body(world_.app(sin, {pb->mem_var(), fun_arg, negate}));
-    }else{
-        derive_numeric(fun, pb, fun_arg, 0.001);
+    } else {
+        derive_numeric(fun, pb, scal_mul_wrap, fw, 0.001);
     }
 }
 
@@ -1277,11 +1330,11 @@ const Def* AutoDiffer::j_wrap_convert(const Def* def) {
                 gradlam->set_debug_name(cal_lam->name() + "_pb");
                 lam->set_body( world_.app(
                     callee,
-                    {
+                    flat_tuple({
                         lam->mem_var(),
-                        lam->var(1),
+                        world_.tuple(vars_without_mem_cont(lam)),
                         lam2
-                    }
+                    })
                 ));
 
                 lam2->set_body( world_.app(
