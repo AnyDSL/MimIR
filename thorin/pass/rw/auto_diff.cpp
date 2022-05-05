@@ -1347,7 +1347,7 @@ const Def* AutoDiffer::j_wrap_convert(const Def* def) {
                     lam->ret_var(),
                     {
                         lam2->mem_var(),
-                        lam2->var(1),
+                        world_.tuple(vars_without_mem_cont(lam2)),
                         gradlam
                     }
                 ));
