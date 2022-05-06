@@ -732,6 +732,10 @@ void AutoDiffer::derive_numeric(const Lam *fun, Lam *source, const Lam *target, 
 
         auto type = x->type();
 
+        // TODO: the comparison should be the other way around
+        //       (i.e. tuple, array, ... is the special case and everything else becomes dummy 0 : r64)
+        // this problem should be mostly solved by the using vec_add
+
         if (isa<Tag::Int>(type)) {
             result_ops[dim + 1] = world_.lit_real(64, 0.0);
         } else {
@@ -785,13 +789,40 @@ void AutoDiffer::derive_external(const Lam *fun, Lam *pb, Lam *fw, Lam *res_lam)
     // => times s at front
 
     // x
-    const Def *fun_arg = fw->var(1);
+//    const Def *fun_arg = fw->var(1);
+    const Def *fun_arg = world_.tuple(vars_without_mem_cont(fw));
     // f(x)
-    const Def *res = res_lam->var(1);
+    const Def *res = world_.tuple(vars_without_mem_cont(res_lam));
     // s (in an isolated environment s=1 -> f*(s) = df/dx)
-    const Def *scal = pb->var(1);
+    const Def *scal = world_.tuple(vars_without_mem_cont(pb));
 
-    auto user_defined_diff = world_.lookup(name + "_diff");
+    auto diff_name = name + "_diff";
+    const Def* user_defined_diff = world_.lookup(diff_name);
+    dlog(world_,"look for function {}",diff_name);
+
+
+    dlog(world_,"externals: ");
+    for( auto x : world_.externals() ){
+        dlog(world_,x.first.c_str());
+    }
+
+    dlog(world_,"sea: ");
+    auto sea=world_.defs();
+    for( auto x : sea ){
+        if(diff_name == x->name()){
+//            dlog(world_,x->name().c_str());
+            user_defined_diff = x;
+            break;
+        }
+        if(x->name().find(diff_name) != std::string::npos){
+            dlog(world_,x->name().c_str());
+        }
+//        if(x->isa<Lam>()) {
+//            dlog(world_, x->name().c_str());
+//        }
+    }
+
+
 
     // wrapper to add times s around it
 
@@ -816,8 +847,13 @@ void AutoDiffer::derive_external(const Lam *fun, Lam *pb, Lam *fw, Lam *res_lam)
         )
     );
 
+    auto pb_diff_args=world_.tuple({pb->mem_var(), fun_arg, scal_mul_wrap});
+    type_dump(world_,"pb_diff_args: ",pb_diff_args);
+
+
     if (user_defined_diff != nullptr) {
-        pb->set_body(world_.app(user_defined_diff, {pb->mem_var(), fun_arg, scal_mul_wrap}));
+        type_dump(world_,"found user diffed function",user_defined_diff);
+        pb->set_body(world_.app(user_defined_diff, flat_tuple({pb->mem_var(), fun_arg, scal_mul_wrap})));
     } else if (name == "log") {
         const Def *log_d = world_.app(pb->ret_var(), {
                 pb->mem_var(),
