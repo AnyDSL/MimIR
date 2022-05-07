@@ -236,13 +236,24 @@ const Def* Parser::parse_type() {
 const Def* Parser::parse_pi() {
     auto track = tracker();
     eat(Tok::Tag::T_Pi);
-    auto var = parse_sym("variable of a dependent function type");
-    expect(Tok::Tag::T_colon, "domain of a dependent function type");
-    auto dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
+
+    std::optional<Tok> id;
+    const Def* dom;
+    if (id = accept(Tok::Tag::M_id)) {
+        if (accept(Tok::Tag::T_colon)) {
+            dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
+        } else {
+            dom = find(id->sym());
+            id.reset();
+        }
+    } else {
+        dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
+    }
+
     auto pi = world().nom_pi(world().nom_infer_univ(), dom);
     pi->set_dom(dom);
     push();
-    insert(var, pi->var()); // TODO set location
+    if (id) insert(id->sym(), pi->var()); // TODO location/name
     expect(Tok::Tag::T_arrow, "dependent function type");
     auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
     pi->set_codom(codom);
