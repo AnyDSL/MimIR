@@ -772,7 +772,7 @@ FILE_VERSION_FILTER    =
 # DoxygenLayout.xml, doxygen will parse it automatically even if the LAYOUT_FILE
 # tag is left empty.
 
-LAYOUT_FILE            = @PROJECT_SOURCE_DIR@/docs/DoxygenLayout.xml
+LAYOUT_FILE            = @CMAKE_CURRENT_SOURCE_DIR@/DoxygenLayout.xml
 
 # The CITE_BIB_FILES tag can be used to specify one or more bib files containing
 # the reference definitions. This must be a list of .bib files. The .bib
@@ -874,7 +874,7 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = @PROJECT_SOURCE_DIR@/thorin \
+INPUT                  = @CMAKE_CURRENT_SOURCE_DIR@/../thorin \
                          @DOXY_EXTRA_FILES_CONFIG@
 
 # This tag can be used to specify the character encoding of the source files
@@ -997,7 +997,7 @@ EXCLUDE_SYMBOLS        =
 # that contain example code fragments that are included (see the \include
 # command).
 
-EXAMPLE_PATH           = @PROJECT_SOURCE_DIR@/thorin @CMAKE_BINARY_DIR@/docs
+EXAMPLE_PATH           = @CMAKE_CURRENT_SOURCE_DIR@/../thorin @CMAKE_CURRENT_BINARY_DIR@
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp and
@@ -1073,7 +1073,7 @@ FILTER_SOURCE_PATTERNS =
 # (index.html). This can be useful if you have a project on for instance GitHub
 # and want to reuse the introduction page also for the doxygen output.
 
-USE_MDFILE_AS_MAINPAGE = @PROJECT_SOURCE_DIR@/docs/README.md
+USE_MDFILE_AS_MAINPAGE = @CMAKE_CURRENT_SOURCE_DIR@/README.md
 
 #---------------------------------------------------------------------------
 # Configuration options related to source browsing
@@ -1222,7 +1222,7 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_HEADER            = @PROJECT_SOURCE_DIR@/docs/header.html
+HTML_HEADER            = @CMAKE_CURRENT_SOURCE_DIR@/header.html
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
 # generated HTML page. If the tag is left blank doxygen will generate a standard
@@ -1257,10 +1257,10 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  = @PROJECT_SOURCE_DIR@/modules/doxygen-awesome-css/doxygen-awesome.css \
-                         @PROJECT_SOURCE_DIR@/modules/doxygen-awesome-css/doxygen-awesome-sidebar-only.css \
-                         @PROJECT_SOURCE_DIR@/modules/doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css \
-                         @PROJECT_SOURCE_DIR@/modules/doxygen-awesome-css/doxygen-custom/custom.css
+HTML_EXTRA_STYLESHEET  = @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-awesome.css \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-awesome-sidebar-only.css \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-custom/custom.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1270,9 +1270,9 @@ HTML_EXTRA_STYLESHEET  = @PROJECT_SOURCE_DIR@/modules/doxygen-awesome-css/doxyge
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = @PROJECT_SOURCE_DIR@/modules/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js \
-                         @PROJECT_SOURCE_DIR@/modules/doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js \
-                         @PROJECT_SOURCE_DIR@/modules/doxygen-awesome-css/doxygen-awesome-paragraph-link.js
+HTML_EXTRA_FILES       = @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-awesome-paragraph-link.js
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
@@ -1811,7 +1811,7 @@ EXTERNAL_SEARCH_ID     =
 # all added to the same external search index. Each project needs to have a
 # unique id set via EXTERNAL_SEARCH_ID. The search mapping then maps the id of
 # to a relative location where the documentation can be found. The format is:
-# EXTRA_SEARCH_MAPPINGS = tagname1=loc1 tagname2=loc2 ...
+# EXTRA_SEARCH_MAPPINGS = tagname1=loc1 tagname2=loc2 ..
 # This tag requires that the tag SEARCHENGINE is set to YES.
 
 EXTRA_SEARCH_MAPPINGS  =

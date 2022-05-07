@@ -8,12 +8,31 @@
 ///
 /// ### std.icmp
 ///
-/// Integer comparison is made of 5 distinct relations:
-///     * X: first operand plus, second minus
-///     * Y: first operand minus, second plus
-///     * G: greater with same sign
-///     * L: less with same sign
-///     * E: equal
+/// Integer comparison is made of 5 disjoint relations:
+///     * `X`: first operand plus, second minus
+///     * `Y`: first operand minus, second plus
+///     * `G`: greater with same sign
+///     * `L`: less with same sign
+///     * `E`: equal
+///
+/// Here is the complete picture for `:std.icmp xygle x, y` for 3 wide integers:
+///
+/// |        | x        |        |       |       |       | y     |       |       |       |       |
+/// |--------|----------|--------|-------|-------|-------|-------|-------|-------|-------|-------|
+/// | binary |          |        |  000  |  001  |  010  |  011  |  100  |  101  |  110  |  111  |
+/// |        | unsigned |        |  0    |  1    |  2    |  3    |   4   |   5   |   6   |   7   |
+/// |        |          | signed |  0    |  1    |  2    |  3    |  -4   |  -3   |  -2   |  -1   |
+/// |  000   |  0       |   0    | `E`   | `L`   | `L`   | `L`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  001   |  1       |   1    | `G`   | `E`   | `L`   | `L`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  010   |  2       |   2    | `G`   | `G`   | `E`   | `L`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  011   |  3       |   3    | `G`   | `G`   | `G`   | `E`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  100   |  4       |  -4    | `Y`   | `Y`   | `Y`   | `Y`   | `E`   | `L`   |  `L`  |  `L`  |
+/// |  101   |  5       |  -3    | `Y`   | `Y`   | `Y`   | `Y`   | `G`   | `E`   |  `L`  |  `L`  |
+/// |  110   |  6       |  -2    | `Y`   | `Y`   | `Y`   | `Y`   | `G`   | `G`   |  `E`  |  `L`  |
+/// |  111   |  7       |  -1    | `Y`   | `Y`   | `Y`   | `Y`   | `G`   | `G`   |  `G`  |  `E`  |
+///
+/// And here is the overview of all possible combinations of relations.
+/// Note the aliases you can use for the common integer comparisions front-ends typically want to use:
 ///
 /// | Tag     | Aliases | X | Y | G | L | E | Meaning                                         |
 /// |---------|---------| --|---|---|---|---|-------------------------------------------------|
