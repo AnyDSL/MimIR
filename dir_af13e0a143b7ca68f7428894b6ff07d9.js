@@ -3,10 +3,7 @@ var dir_af13e0a143b7ca68f7428894b6ff07d9 =
     [ "array.h", "array_8h.html", "array_8h" ],
     [ "assert.h", "assert_8h.html", "assert_8h" ],
     [ "bitset.cpp", "bitset_8cpp.html", "bitset_8cpp" ],
-    [ "bitset.h", "bitset_8h.html", [
-      [ "thorin::BitSet", "classthorin_1_1BitSet.html", "classthorin_1_1BitSet" ],
-      [ "thorin::BitSet::reference", "classthorin_1_1BitSet_1_1reference.html", "classthorin_1_1BitSet_1_1reference" ]
-    ] ],
+    [ "bitset.h", "bitset_8h.html", "bitset_8h" ],
     [ "cast.h", "cast_8h.html", "cast_8h" ],
     [ "container.h", "container_8h.html", "container_8h" ],
     [ "hash.cpp", "hash_8cpp.html", "hash_8cpp" ],

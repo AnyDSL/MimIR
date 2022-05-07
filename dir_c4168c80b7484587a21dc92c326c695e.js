@@ -8,9 +8,7 @@ var dir_c4168c80b7484587a21dc92c326c695e =
     [ "axiom.cpp", "axiom_8cpp.html", "axiom_8cpp" ],
     [ "axiom.h", "axiom_8h.html", "axiom_8h" ],
     [ "check.cpp", "check_8cpp.html", null ],
-    [ "check.h", "check_8h.html", [
-      [ "thorin::Checker", "classthorin_1_1Checker.html", "classthorin_1_1Checker" ]
-    ] ],
+    [ "check.h", "check_8h.html", "check_8h" ],
     [ "debug.cpp", "debug_8cpp.html", "debug_8cpp" ],
     [ "debug.h", "debug_8h.html", "debug_8h" ],
     [ "def.cpp", "def_8cpp.html", "def_8cpp" ],

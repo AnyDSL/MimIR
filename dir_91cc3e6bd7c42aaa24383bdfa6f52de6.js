@@ -3,10 +3,7 @@ var dir_91cc3e6bd7c42aaa24383bdfa6f52de6 =
     [ "cfg.cpp", "cfg_8cpp.html", "cfg_8cpp" ],
     [ "cfg.h", "cfg_8h.html", "cfg_8h" ],
     [ "deptree.cpp", "deptree_8cpp.html", "deptree_8cpp" ],
-    [ "deptree.h", "deptree_8h.html", [
-      [ "thorin::DepNode", "classthorin_1_1DepNode.html", "classthorin_1_1DepNode" ],
-      [ "thorin::DepTree", "classthorin_1_1DepTree.html", "classthorin_1_1DepTree" ]
-    ] ],
+    [ "deptree.h", "deptree_8h.html", "deptree_8h" ],
     [ "domfrontier.cpp", "domfrontier_8cpp.html", null ],
     [ "domfrontier.h", "domfrontier_8h.html", "domfrontier_8h" ],
     [ "domtree.cpp", "domtree_8cpp.html", null ],
