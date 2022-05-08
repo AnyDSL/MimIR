@@ -139,20 +139,31 @@ Primary Terminals</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>(</code> <code>)</code> <code>[</code> <code>]</code> <code>{</code> <code>}</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">delimiters    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>‹</code> <code>›</code> <code>«</code> <code>»</code>   </td><td class="markdownTableBodyNone"><code>&lt;&lt;</code> <code>&gt;&gt;</code> <code>&lt;</code> <code>&gt;</code>   </td><td class="markdownTableBodyNone">UTF-8 delimiters    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>→</code> <code>∷</code> <code>⊥</code> <code>⊤</code> <code>★</code> <code>□</code> <code>λ</code> <code>Π</code>   </td><td class="markdownTableBodyNone"><code>-&gt;</code> <code>::</code> <code>.bot</code> <code>.top</code> <code>*</code> <code>.space</code> <code>.lam</code> <code>.Pi</code>   </td><td class="markdownTableBodyNone">further UTF-8 tokens    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>=</code> <code>,</code> <code>;</code> <code>.</code> <code>#</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">further tokens    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>&lt;eof&gt;</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">marks the end of the file   </td></tr>
+<td class="markdownTableBodyNone"><code>‹</code> <code>›</code> <code>«</code> <code>»</code>   </td><td class="markdownTableBodyNone"><code>&lt;&lt;</code> <code>&gt;&gt;</code> <code>&lt;</code> <code>&gt;</code>   </td><td class="markdownTableBodyNone">UTF-8 delimiters   </td></tr>
 </table>
+<p>| <code>→</code> <code>∷</code> <code>⊥</code> <code>⊤</code> <code>★</code> <code>□</code> <code>λ</code> <code>Π</code> | <code>-&gt;</code> <code>::</code> <code>.bot</code> <code>.top</code> <code>*</code> <code>\</code> <code>|~|</code> | further UTF-8 tokens | | <code>=</code> <code>,</code> <code>;</code> <code>.</code> <code>#</code> | | further tokens | | <code>&lt;eof&gt;</code> | | marks the end of the file |</p>
 <h3><a class="anchor" id="autotoc_md14"></a>
 Keywords</h3>
 <p >In addition the following keywords are <em>terminals</em>:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Terminal   </th><th class="markdownTableHeadNone">Comment    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.ax</code>   </td><td class="markdownTableBodyNone">axiom    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.let</code>   </td><td class="markdownTableBodyNone">let expression    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.Pi</code>   </td><td class="markdownTableBodyNone">nominal Pi    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.lam</code>   </td><td class="markdownTableBodyNone">nominal lam    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.Arr</code>   </td><td class="markdownTableBodyNone">nominal Arr    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.pack</code>   </td><td class="markdownTableBodyNone">nominal pack    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.Sigma</code>   </td><td class="markdownTableBodyNone">nominal Sigma    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.def</code>   </td><td class="markdownTableBodyNone">nominal definition    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.external</code>   </td><td class="markdownTableBodyNone">marks nominal as external    </td></tr>
 <tr class="markdownTableRowEven">
