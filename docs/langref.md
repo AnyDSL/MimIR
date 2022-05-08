@@ -19,13 +19,15 @@ The [grammatical rules](#productions) will directly reference these *primary [te
 For example, the lexer doesn't care, if you use `⊥` or `.bot`.
 Both tokens are identified as `⊥`.
 
-| Primary Terminals               | Secondary Terminals                   | Comment                   |
-|---------------------------------|---------------------------------------|---------------------------|
-| `(` `)` `[` `]` `{` `}`         |                                       | delimiters                |
-| `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                     | UTF-8 delimiters          |
-| `→` `∷` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `::` `.bot` `.top` `*` `\` `|~|` | further UTF-8 tokens      |
-| `=` `,` `;` `.` `#`             |                                       | further tokens            |
-| `<eof>`                         |                                       | marks the end of the file |
+| Primary Terminals               | Secondary Terminals                             | Comment                   |
+|---------------------------------|-------------------------------------------------|---------------------------|
+| `(` `)` `[` `]` `{` `}`         |                                                 | delimiters                |
+| `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                               | UTF-8 delimiters          |
+| `→` `∷` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `::` `.bot` `.top` `*` `\`  <tt>\|~\|</tt> | further UTF-8 tokens      |
+| `=` `,` `;` `.` `#`             |                                                 | further tokens            |
+| `<eof>`                         |                                                 | marks the end of the file |
+
+
 
 #### Keywords
 
