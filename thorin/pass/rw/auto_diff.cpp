@@ -919,8 +919,7 @@ void AutoDiffer::derive_numeric(const Lam *fun, Lam *source, const Def *target, 
     // https://www.overleaf.com/read/gdpfxvzqpfjf
     // # Numeric differentiation    for general case
 
-    // d/dx f(x) ≈ (f(x+h/2)-f(x-h/2))/h     (local tangent)
-    // or more efficient in multidim: (f(x+h)-f(x))/h
+    // d/dx f(x) ≈ (f(x+h)-f(x))/h
 
     auto x = world_.tuple(vars_without_mem_cont(fw));
 
