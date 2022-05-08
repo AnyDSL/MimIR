@@ -76,6 +76,35 @@ DefArray vars_without_mem_cont(Lam* lam) {
 // needed for operation differentiation
 // we only need a multidimensional addition
 
+const Lam* repeatLam(World& world, const Def* count, const Lam* body){
+    auto loop_entry = world.nom_filter_lam(world.cn({world.type_mem(), world.cn(world.type_mem())}),world.dbg("loop_entry"));
+    auto loop_head = world.nom_lam(world.cn_mem(world.type_int_width(64)),world.dbg("loop_head"));
+    auto loop = world.nom_filter_lam(world.cn(world.type_mem()),world.dbg("loop"));
+    auto loop_end = world.nom_filter_lam(world.cn(world.type_mem()),world.dbg("loop_exit"));
+    auto loop_continue = world.nom_filter_lam(world.cn(world.type_mem()),world.dbg("loop_continue"));
+    auto cond = world.op(ICmp::ul,loop_head->var(1),count);
+
+    loop_entry->set_body(world.app(loop_head, {loop_entry->mem_var(), world.lit_int_width(64,0)}));
+
+    loop_head->branch(world.lit_false(),cond,loop,loop_end,loop_head->mem_var());
+
+    auto idx = loop_head->var(1);
+    auto inc = world.op(Wrap::add,world.lit_nat(0),world.lit_int_width(64,1),idx);
+
+    loop->set_body(world.app(body, {loop->mem_var(), idx, loop_continue}));
+
+    loop_continue->set_body(world.app( loop_head, { loop_continue->mem_var(), inc } ));
+    loop_end->set_body(world.app( loop_entry->ret_var(), loop_end->mem_var() ));
+
+    return loop_entry;
+}
+
+std::pair<const Lam*, Lam*> repeatLam(World& world, const Def* count){
+    Lam* body = world.nom_filter_lam(world.cn({world.type_mem(), world.type_int_width(64), world.cn(world.type_mem())}), world.dbg("loop_body"));
+    const Lam* loop = repeatLam(world, count, body);
+    return {loop, body};
+}
+
 // TODO: Currently: sum takes mem, adds a and b and calls cont
 // TODO: possible: sum := \lambda mem a b cont. cont(mem, a+b)
 const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
@@ -109,6 +138,7 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
 
         return sum_pb;
     }
+
     if(isFatPtrType(world,a->type())){
         auto [size_a, arr_a] = a->projs<2>();
         auto [size_b, arr_b] = b->projs<2>();
@@ -120,16 +150,13 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         auto arr_c = world.op_bitcast(arr_a->type(),arr_c_def);
 //        THORIN_UNREACHABLE;
 
-        // TODO: replace with for loop
-        auto loop_head = world.nom_lam(world.cn_mem(world.type_int_width(64)),world.dbg("add_loop_head"));
-        auto loop = world.nom_filter_lam(world.cn(world.type_mem()),world.dbg("add_loop_body"));
-        auto loop_end = world.nom_filter_lam(world.cn(world.type_mem()),world.dbg("add_loop_exit"));
-        auto cond = world.op(ICmp::ul,loop_head->var(1),size_a);
-        loop_head->branch(size_a,cond,loop,loop_end,loop_head->mem_var());
-//        loop_head->set_filter(false);
+        auto [loop, loop_body] = repeatLam(world, size_a);
 
-        auto idx=loop_head->var(1);
-        auto inc=world.op(Wrap::add,world.lit_nat(0),world.lit_int_width(64,1),idx);
+        auto loop_mem = loop_body->mem_var();
+        auto idx = loop_body->var(1);
+        auto continue_loop = loop_body->ret_var();
+
+        // TODO: replace with for loop
         // store into c
         auto a_p=world.op_lea(arr_a,idx,world.dbg("a_p"));
         auto b_p=world.op_lea(arr_b,idx,world.dbg("b_p"));
@@ -137,44 +164,29 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         // add pointers using vec_add
         // lea c, store into c
 
-        auto loop_mem = loop->mem_var();
-
-        auto [lmem2,a_v] = world.op_load(loop_mem,a_p)->projs<2>();
-        auto [lmem3,b_v] = world.op_load(lmem2,   b_p)->projs<2>();
-        loop_mem=lmem3;
+        auto [left_load_mem,a_v] = world.op_load(loop_mem,a_p)->projs<2>();
+        auto [right_load_mem,b_v] = world.op_load(left_load_mem,   b_p)->projs<2>();
         // load values manually to allow for easy (and direct) storage into c
-//        auto elem_res_cont_type = world.cn_mem(a_v->type());
         auto elem_res_cont_type = world.cn_mem_flat(a_v->type());
         auto elem_res_cont = world.nom_filter_lam(elem_res_cont_type,world.dbg("tuple_add_cont"));
         auto element_sum_pb = vec_add(world,a_v,b_v,elem_res_cont);
         auto c_v = world.tuple(vars_without_mem_cont(elem_res_cont));
         auto res_mem=elem_res_cont->mem_var();
-        res_mem=world.op_store(res_mem,c_p,c_v);
+        auto store_addition = res_mem=world.op_store(res_mem,c_p,c_v);
+
+        auto end = world.nom_filter_lam(world.cn(world.type_mem()), world.dbg("sum_pb"));
+        end->set_body(world.app(
+            cont,
+            flat_tuple({
+                end->mem_var(),
+                world.tuple({size_a,arr_a})
+            })
+        ));
 
 //        set loop
-        loop->set_body(world.app(element_sum_pb, loop_mem));
-
-        elem_res_cont->set_body(world.app(
-            loop_head,
-            {
-                res_mem,
-                inc
-            }
-        ));
-
-        loop_end->set_body(world.app(
-            cont,
-            flat_tuple({loop_end->mem_var(),
-                        world.tuple({size_a,arr_c})
-                       })
-        ));
-        sum_pb->set_body(world.app(
-            loop_head,
-            {
-                mem2,
-                world.lit_int_width(64,0)
-            }
-        ));
+        loop_body->set_body(world.app(element_sum_pb, right_load_mem));
+        elem_res_cont->set_body(world.app(continue_loop, store_addition));
+        sum_pb->set_body(world.app(loop, {sum_pb->mem_var(), end}));
 
         return sum_pb;
     }
@@ -222,6 +234,221 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
     return sum_pb;
 
 }
+
+const Def* copy(World& world, const Def* inputArr, const Def* outputArr, const Def* size){
+    auto [loop, loop_body] = repeatLam(world, size);
+
+    auto idx = loop_body->var(1);
+
+    auto input_p = world.op_lea(inputArr,idx,world.dbg("a_p"));
+    auto output_p = world.op_lea(outputArr,idx,world.dbg("stencil_p"));
+
+    auto loop_mem = loop_body->mem_var();
+
+    auto [load_mem, loadedValue] = world.op_load(loop_mem, input_p )->projs<2>();
+    auto storeMem = world.op_store(load_mem, output_p, loadedValue );
+
+    loop_body->set_body(world.app(loop_body->ret_var(), storeMem));
+
+    return loop;
+}
+
+class Flow{
+    Lam* lam_ = nullptr;
+    Lam* init_;
+    const Def* mem_;
+    World& world_;
+    u32 length = 0;
+public:
+    Flow(World& world) : world_(world){
+        init_ = world_.nom_filter_lam(world_.cn(world_.type_mem()), world_.dbg("flow_init_11"));
+        assign(init_);
+    }
+
+    Flow(World& world, Lam* init) : world_(world){
+        init_ = init;
+        assign(init_);
+    }
+
+    void assign(Lam* lam){
+        assert(lam_ == nullptr || lam_->is_set());
+        assert(!lam->body());
+        lam_ = lam;
+        mem_ = lam->mem_var();
+    }
+
+    void runAfter(const Lam* enter, Lam* leave){
+        lam_->set_body(world_.app(enter, mem_));
+        assign(leave);
+    }
+
+    const Lam* runAfter(const Lam* enter){
+        return runAfter(enter, mem_);
+    }
+
+    const Lam* runAfter(const Lam* enter, const Def* mem){
+        assert(lam_);
+        length++;
+        auto callback = world_.nom_filter_lam(world_.cn(world_.type_mem()), world_.dbg("flow_init"));
+        if(auto lam = enter->doms().back()->isa<Pi>()){
+            lam_->set_body(world_.app(enter, {mem, callback}));
+        }else{
+            lam_->set_body(world_.app(enter, mem));
+        }
+
+        assign(callback);
+        return callback;
+    }
+
+    void finish(const Def* enter, Defs args = {}){
+        length++;
+        auto arguments = world_.tuple(flat_tuple({mem_, world_.tuple(args)}));
+        lam_->set_body(world_.app(enter, arguments));
+        lam_ = nullptr;
+    }
+
+    const Lam* getInit(){
+        return init_;
+    }
+};
+
+const Def* derive_numeric_walk(World& world, const Def* ref, const Def* h, const Lam* f, const Def* fx, const Def* s, Flow& flow) {
+    auto fun_result_pi = f->doms().back()->as<Pi>();
+
+    if (auto ptr = isa<Tag::Ptr>(ref->type())) {
+        auto [ty,addr_space] = ptr->arg()->projs<2>();
+
+        auto offset_param = world.nom_filter_lam(world.cn(world.type_mem()), world.dbg("offset_param"));
+
+        //save value for restore later
+        auto [save_mem,save] = world.op_load( offset_param->mem_var(), ref )->projs<2>();
+        auto returnLam = flow.runAfter(offset_param);
+        offset_param->set_body(world.app(returnLam, save_mem));
+
+        auto masked_f = world.nom_filter_lam(world.cn({world.type_mem(), save->type(), fun_result_pi}), world.dbg("offset_param"));
+
+        //change value at ptr location to *p + h
+        auto store_mem = world.op_store(masked_f->mem_var(), ref, masked_f->var(1));
+
+        //restore value at ptr location back to original value
+        auto restoreLam = world.nom_filter_lam(fun_result_pi, world.dbg("clean_up"));
+        auto retored_mem = world.op_store(restoreLam->mem_var(), ref, save);
+
+        restoreLam->set_body(world.app(masked_f->ret_var(), {retored_mem, restoreLam->var(1)}));
+        masked_f->set_body(world.app(f, {store_mem, ref, restoreLam}));
+
+        return derive_numeric_walk(world, save, h, masked_f, fx, s, flow);
+    }
+
+    if(isFatPtrType(world,ref->type())){
+        auto [size_a, arr_ref] = ref->projs<2>();
+
+        //allocate array for resulting gradients
+        auto alloc_gradients = world.nom_filter_lam(world.cn(world.type_mem()), world.dbg("alloc_gradients"));
+
+        auto arr_size_nat = world.op_bitcast(world.type_nat(), size_a);
+        auto [arr_ty, arr_addr_space] = as<Tag::Ptr>(arr_ref->type())->arg()->projs<2>();
+        auto arr_sized_ty = world.arr(arr_size_nat, arr_ty->as<Arr>()->body())->as<Arr>();
+        auto [gradient_mem,gradient_arr] = world.op_alloc(arr_sized_ty, alloc_gradients->mem_var())->projs<2>();
+        gradient_arr = world.op_bitcast(arr_ref->type(), gradient_arr);
+
+        const Lam* returnLam = flow.runAfter(alloc_gradients);
+        alloc_gradients->set_body(world.app(returnLam, gradient_mem));
+
+        auto [loop, loop_body] = repeatLam(world, size_a);
+
+        flow.runAfter(loop);
+
+        auto loop_mem = loop_body->mem_var();
+        auto idx = loop_body->var(1);
+        auto continue_loop = loop_body->ret_var();
+
+        auto ref_p = world.op_lea(arr_ref,idx,world.dbg("ref_p"));
+
+        auto masked_f = world.nom_filter_lam(world.cn({world.type_mem(), ref_p->type(), fun_result_pi}), world.dbg("masked_f"));
+        masked_f->set_body(world.app(f, {masked_f->mem_var(), ref, masked_f->ret_var()}));
+
+        Flow loopFlow{world, loop_body};
+        auto result = derive_numeric_walk(world, ref_p, h, masked_f, fx, s, loopFlow);
+        auto continue_loop_lam = world.nom_filter_lam(world.cn(world.type_mem()), world.dbg("continue_loop_lam"));
+
+        auto lea_gradient = world.op_lea(gradient_arr, idx);
+        auto store_gradient_mem = world.op_store(continue_loop_lam->mem_var(), lea_gradient, result);
+
+        continue_loop_lam->set_body(world.app(continue_loop, store_gradient_mem));
+
+        loopFlow.finish(continue_loop_lam);
+
+        return world.tuple({size_a, gradient_arr});
+    }
+
+    auto dim = getDim(ref);
+
+    if(dim==1){
+        if (isa<Tag::Int>(ref->type())) {
+            return world.lit_real(64, 0.0);
+        }else{
+            auto f_call = world.nom_filter_lam(world.cn(world.type_mem()), world.dbg("f_call"));
+
+            auto quotient = world.nom_filter_lam(fun_result_pi, world.dbg("quotient"));
+            auto result = world.nom_filter_lam(fun_result_pi, world.dbg("result"));
+
+            //call function with value offset
+            f_call->set_body(world.app(
+                f,
+                {
+                    f_call->mem_var(),
+                    world.op(ROp::add, (nat_t)0, ref, h),
+                    quotient
+                }
+            ));
+
+            //differential quotient
+            auto gradient = world.op(ROp::mul, (nat_t) 0,
+                 world.op(ROp::div, (nat_t) 0,
+                          world.op(Conv::r2r,
+                                   ref->type(),
+                                   world.op(ROp::sub, (nat_t) 0, quotient->var(1), fx)
+                          ),
+                          h
+                 ),
+                 s
+            );
+
+            quotient->set_body(world.app(result, {quotient->mem_var(), gradient}));
+            flow.runAfter(f_call, result);
+            return result->var(1);
+        }
+    }
+
+    DefArray tuple_result{dim};
+
+    for (size_t i = 0; i < dim; ++i) {
+        // adds component-wise both vectors
+         // use op?
+        auto current = world.extract(ref, i);
+
+        DefArray ops{dim + 2};
+        auto masked_f = world.nom_filter_lam(world.cn({world.type_mem(), current->type(), fun_result_pi}), world.dbg("masked_f"));
+
+        for( size_t j = 0; j < dim; ++j  ){
+            if(j != i){
+                ops[j + 1] = world.extract(ref, j);
+            }
+        }
+
+        ops[0] = masked_f->mem_var();
+        ops[i + 1] = masked_f->var(1);
+        ops[dim + 1] = masked_f->ret_var();
+
+        masked_f->set_body(world.app(f, ops));
+
+        tuple_result[i] = derive_numeric_walk(world, current, h, masked_f, fx, s, flow);
+    }
+
+    return world.tuple(tuple_result);
+}
+
 std::pair<const Def*,const Def*> lit_of_type(World& world, const Def* mem, const Def* type, const Def* like, r64 lit, const Def* dummy) {
     // TODO: a monad would be easier for memory
     if(like){
@@ -379,7 +606,7 @@ private:
     const Def* j_wrap_convert(const Def* def);
     const Def* j_wrap_rop(ROp op, const Def* a, const Def* b); // pullback computation for predefined functions, specifically operations like +, -, *, /
     void derive_external( const Lam* fun, Lam* pb, Lam* fw, Lam* res_lam);
-    void derive_numeric(const Lam *fun, Lam *source, const Lam *target, Lam *fw, r32 delta);
+    void derive_numeric(const Lam *fun, Lam *source, const Def *target, Lam *fw, const Def* fx, const Def* s, r32 delta);
 
     const Def* zero_pb(const Def* type, const Def* dbg);
     const Def* j_wrap_tuple(DefArray tuple);
@@ -688,92 +915,21 @@ const Def* AutoDiffer::ptrSlot(const Def* ty, const Def* mem) {
 }
 
 
-void AutoDiffer::derive_numeric(const Lam *fun, Lam *source, const Lam *target, Lam *fw, r32 delta) {
+void AutoDiffer::derive_numeric(const Lam *fun, Lam *source, const Def *target, Lam *fw, const Def* fx, const Def* s, r32 delta) {
     // https://www.overleaf.com/read/gdpfxvzqpfjf
     // # Numeric differentiation    for general case
 
     // d/dx f(x) ≈ (f(x+h/2)-f(x-h/2))/h     (local tangent)
-    // TODO: use more efficient in multidim: (f(x+h)-f(x))/h
+    // or more efficient in multidim: (f(x+h)-f(x))/h
 
+    auto x = world_.tuple(vars_without_mem_cont(fw));
 
-    // TODO: make it work for multiple outputs
+    Flow flow{world_, source};
+    auto h = world_.lit_real(64, delta);
 
-    auto fun_result_pi = fun->doms().back()->as<Pi>();
-    auto fun_result_type = fun_result_pi->dom(1);
+    const Def* result = derive_numeric_walk(world_, x, h, fun, fx, s, flow);
 
-
-    Lam *last_lam = source;
-    const Def *last_mem = source->mem_var();
-
-    u32 max_dimensions = fw->type()->op(0)->num_ops() - 2;
-
-    DefArray result_ops{max_dimensions + 1};
-
-    // TODO: use vec_add with one_hot instead of manually code duplication (also allows for more general types)
-
-    // TODO: this function binds nothing from the current scope => move it outside or inline it completely
-    auto helper = [&]( u32 current_dim, const Def* mem, Lam* lam, const Def* half_delta, ROp op, const Lam* return_cont ){
-        DefArray ops{max_dimensions + 2};
-        ops[0] = mem;
-        for( u64 i = 0 ; i < max_dimensions ; i++ ){
-            const Def* x = lam->var(i + 1);
-            ops[i + 1] = i == current_dim ?
-                         world_.op(op, (nat_t)0, x, half_delta) :
-                         x;
-        }
-
-        ops[ops.size() - 1] = return_cont;
-
-        return ops;
-    };
-
-    for (u32 dim = 0; dim < max_dimensions; dim++) {
-        const Def *x = fw->var(dim + 1);
-
-        auto type = x->type();
-
-        // TODO: the comparison should be the other way around
-        //       (i.e. tuple, array, ... is the special case and everything else becomes dummy 0 : r64)
-        // this problem should be mostly solved by the using vec_add
-
-        if (isa<Tag::Int>(type)) {
-            result_ops[dim + 1] = world_.lit_real(64, 0.0);
-        } else {
-            auto[mem_temp, half_delta_lit] = lit_of_type(world_, last_mem, type, nullptr, delta / 2, nullptr);
-            auto[mem_temp2, delta_lit] = lit_of_type(world_, mem_temp, type, nullptr, delta, nullptr);
-
-            last_mem = mem_temp2;
-
-            auto high = world_.nom_filter_lam(fun_result_pi, world_.dbg("high"));
-
-            auto ops = helper( dim, last_lam->mem_var(), fw, half_delta_lit,
-                                             ROp::sub, high);
-
-            last_lam->set_body(world_.app(fun, ops));
-
-            auto diff = world_.nom_filter_lam(fun_result_pi, world_.dbg("diff"));
-
-            ops = helper(dim, high->mem_var(), fw, half_delta_lit,
-                                        ROp::add, diff);
-
-            high->set_body(world_.app(fun, ops));
-
-            result_ops[dim + 1] =
-                    world_.op(ROp::div, (nat_t) 0,
-                              world_.op(Conv::r2r,
-                                        type,
-                                        world_.op(ROp::sub, (nat_t) 0, diff->var(1), high->var(1))
-                              ),
-                              delta_lit
-                    );
-
-            last_lam = diff;
-            last_mem = diff->mem_var();
-        }
-    }
-
-    result_ops[0] = last_mem;
-    last_lam->set_body(world_.app(target, result_ops));
+    flow.finish(target, {result});
 }
 
 
@@ -825,33 +981,30 @@ void AutoDiffer::derive_external(const Lam *fun, Lam *pb, Lam *fw, Lam *res_lam)
 
 
     // wrapper to add times s around it
-
     auto return_type = pb->ret_var()->type()->as<Pi>();
     auto return_pi = return_type->op(0);
 
-    auto scal_mul_wrap = world_.nom_filter_lam(return_type, world_.dbg("scal_mul"));
-
-    scal_mul_wrap->set_body(
-        world_.app(
-            pb->ret_var(),
-            scal_mul_wrap->vars().map([&](auto var, size_t i) {
-                if (i == 0) {
-                    return var;
-                } else {
-                    return world_.op(ROp::mul, (nat_t) 0,
-                        world_.op_bitcast(var->type(), scal),
-                        var
-                    );
-                }
-            })
-        )
-    );
-
-    auto pb_diff_args=world_.tuple({pb->mem_var(), fun_arg, scal_mul_wrap});
-    type_dump(world_,"pb_diff_args: ",pb_diff_args);
-
+    auto returnCont = pb->ret_var();
 
     if (user_defined_diff != nullptr) {
+        auto scal_mul_wrap = world_.nom_filter_lam(return_type, world_.dbg("scal_mul"));
+
+        scal_mul_wrap->set_body(
+                world_.app(
+                        pb->ret_var(),
+                        scal_mul_wrap->vars().map([&](auto var, size_t i) {
+                            if (i == 0) {
+                                return var;
+                            } else {
+                                return world_.op(ROp::mul, (nat_t) 0,
+                                                 world_.op_bitcast(var->type(), scal),
+                                                 var
+                                );
+                            }
+                        })
+                )
+        );
+
         type_dump(world_,"found user diffed function",user_defined_diff);
         pb->set_body(world_.app(user_defined_diff, flat_tuple({pb->mem_var(), fun_arg, scal_mul_wrap})));
     } else if (name == "log") {
@@ -874,7 +1027,7 @@ void AutoDiffer::derive_external(const Lam *fun, Lam *pb, Lam *fw, Lam *res_lam)
         const Def *real_type = scal->type();
         // TODO:
         auto[mem2, two] = lit_of_type(world_, pb->mem_var(), real_type, nullptr, 2.0, nullptr);
-        const Def *log_d = world_.app(pb->ret_var(), {mem2,
+        const Def *log_d = world_.app(returnCont, {mem2,
                       world_.op(ROp::div, (nat_t) 0,
                                 scal,
                                 world_.op(ROp::mul, (nat_t) 0, two, res)
@@ -891,7 +1044,15 @@ void AutoDiffer::derive_external(const Lam *fun, Lam *pb, Lam *fw, Lam *res_lam)
             THORIN_UNREACHABLE;
         }
 
-        pb->set_body(world_.app(cos, {pb->mem_var(), fun_arg, scal_mul_wrap}));
+        auto fun_return_type = fun->doms().back()->as<Pi>();
+        auto fun_result = world_.nom_filter_lam(fun_return_type, world_.dbg("negate"));
+
+        fun_result->set_body(world_.app(returnCont, {
+            fun_result->mem_var(),
+            world_.op(ROp::mul, (nat_t) 0, fun_result->var(1), scal)
+        }));
+
+        pb->set_body(world_.app(cos, {pb->mem_var(), fun_arg, fun_result}));
     } else if (name == "cos") {
         // lambda s. -s * sin(x)
         Lam *sin = (Lam *) world_.lookup("sin");
@@ -905,14 +1066,14 @@ void AutoDiffer::derive_external(const Lam *fun, Lam *pb, Lam *fw, Lam *res_lam)
         auto negate = world_.nom_filter_lam(fun_return_type, world_.dbg("negate"));
 
         // -s * return of cos
-        negate->set_body(world_.app(pb->ret_var(), {
-                sin->mem_var(),
-                world_.op(ROp::mul, (nat_t) 0, negate->var(1), world_.op_rminus((nat_t) 0, scal))
+        negate->set_body(world_.app(returnCont, {
+            sin->mem_var(),
+            world_.op(ROp::mul, (nat_t) 0, negate->var(1), world_.op_rminus((nat_t) 0, scal))
         }));
 
         pb->set_body(world_.app(sin, {pb->mem_var(), fun_arg, negate}));
     } else {
-        derive_numeric(fun, pb, scal_mul_wrap, fw, 0.001);
+        derive_numeric(fun, pb, returnCont, fw, res, pb->var(1), 0.001);
     }
 }
 
@@ -973,6 +1134,52 @@ const Def* AutoDiffer::j_wrap(const Def* def) {
     dlog(world_,"{} => {} : {}",def,dst,dst->type());
     src_to_dst_[def]=dst;
     return dst;
+}
+
+const Lam* lam_fat_ptr_wrap(World& world, const Lam* lam){
+    bool changed = false;
+    DefArray doms{lam->num_doms()};
+    DefArray src_doms = lam->doms();
+    size_t i = 0;
+    for(auto dom: src_doms){
+        if(auto ptr = isa<Tag::Ptr>(dom)){
+            changed = true;
+            doms[i] = world.sigma({world.type_int_width(64), ptr});
+        }else{
+            doms[i] = dom;
+        }
+
+        doms[i]->dump();
+
+        i++;
+    }
+
+    if(changed){
+        auto cn = world.cn(doms);
+        Lam* wrapper = world.nom_filter_lam(cn, world.dbg("wrapper"));
+
+        i = 0;
+        DefArray arguments{lam->num_doms()};
+
+        for(auto dom: src_doms){
+            auto var = wrapper->var(i);
+            if(auto ptr = isa<Tag::Ptr>(dom)){
+                auto [size, arr] = var->projs<2>();
+                arguments[i] = arr;
+            }else{
+                arguments[i] = var;
+            }
+
+            i++;
+        }
+
+        wrapper->set_body(world.app(lam, arguments));
+
+        return wrapper;
+    }
+
+
+    return lam;
 }
 
 
@@ -1365,18 +1572,21 @@ const Def* AutoDiffer::j_wrap_convert(const Def* def) {
                 auto lam=world_.nom_filter_lam(augTy,world_.dbg("dummy"));
                 auto lam2 = world_.nom_filter_lam(cal_lam->doms().back()->as<Pi>(),world_.dbg("dummy"));
 
-                derive_external(cal_lam, gradlam, lam, lam2);
+                auto wrapped_cal_lam = lam_fat_ptr_wrap(world_, cal_lam);
+                derive_external(wrapped_cal_lam, gradlam, lam, lam2);
 
                 lam->set_debug_name(cal_lam->name() + "_diff_impl");
                 lam2->set_debug_name(lam->name() + "_cont");
                 gradlam->set_debug_name(cal_lam->name() + "_pb");
+                auto callee_arguments = world_.tuple( flat_tuple({
+                     lam->mem_var(),
+                     world_.tuple(vars_without_mem_cont(lam)),
+                     lam2
+                }));
+
                 lam->set_body( world_.app(
-                    callee,
-                    flat_tuple({
-                        lam->mem_var(),
-                        world_.tuple(vars_without_mem_cont(lam)),
-                        lam2
-                    })
+                    wrapped_cal_lam,
+                    callee_arguments
                 ));
 
                 lam2->set_body( world_.app(
