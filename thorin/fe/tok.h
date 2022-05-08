@@ -76,7 +76,6 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m("->",     T_arrow)                \
     m(".bot",   T_bot  )                \
     m(".top",   T_top  )                \
-    m(".space", T_top  )                \
 
 #define THORIN_PREC(m)                  \
     /* left     prec,       right  */   \

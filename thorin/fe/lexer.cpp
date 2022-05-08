@@ -68,7 +68,15 @@ Tok Lexer::lex() {
         if (accept( ',')) return tok(Tok::Tag::T_comma);
         if (accept( '#')) return tok(Tok::Tag::T_extract);
         if (accept(U'λ')) return tok(Tok::Tag::T_lam);
+        if (accept('\\')) return tok(Tok::Tag::T_lam);
         if (accept(U'Π')) return tok(Tok::Tag::T_Pi);
+        if (accept( '|')) {
+            if (accept('~')) {
+                if (accept('|')) return tok(Tok::Tag::T_Pi);
+            }
+            err(loc_, "invalid input char {}; maybe you wanted to use '|~|'?", str_);
+            continue;
+        }
         if (accept( ';')) return tok(Tok::Tag::T_semicolon);
         if (accept(U'★')) return tok(Tok::Tag::T_star);
         if (accept( '*')) return tok(Tok::Tag::T_star);
