@@ -17,6 +17,7 @@ namespace thorin {
 Parser::Parser(World& world, std::string_view file, std::istream& istream, std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
+    , anonymous_(world.tuple_str("_"))
     , bootstrapper_(file.substr(0, file.rfind('.'))) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
@@ -229,7 +230,7 @@ const Def* Parser::parse_type() {
     auto track = tracker();
     eat(Tok::Tag::K_Type);
     auto [l, r] = Tok::prec(Tok::Prec::App);
-    auto level = parse_expr("type level", r);
+    auto level  = parse_expr("type level", r);
     return world().type(level, track);
 }
 
@@ -341,8 +342,8 @@ void Parser::parse_ax() {
 
     if (info.dialect != bootstrapper_.dialect()) {
         // TODO
-        //err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax, info.dialect,
-            //lexer_.file());
+        // err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax,
+        // info.dialect, lexer_.file());
     }
 
     if (ahead().isa(Tok::Tag::D_paren_l)) {

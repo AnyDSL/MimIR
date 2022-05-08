@@ -146,16 +146,25 @@ private:
     using Scope = SymMap<const Def*>;
 
     void push() { scopes_.emplace_back(); }
+
     void pop() {
         assert(!scopes_.empty());
         scopes_.pop_back();
     }
+
     const Def* find(Sym sym) const {
+        if (sym == anonymous_)
+            thorin::err<ScopeError>(sym.loc(), "the symbol '_' is special and never binds to anything", sym);
+
         for (auto& scope : scopes_ | std::ranges::views::reverse)
             if (auto i = scope.find(sym); i != scope.end()) return i->second;
+
         thorin::err<ScopeError>(sym.loc(), "symbol '{}' not found", sym);
     }
+
     void insert(Sym sym, const Def* def) {
+        if (sym == anonymous_) return; // don't do anything with '_'
+
         if (auto [i, ins] = scopes_.back().emplace(sym, def); !ins) {
             auto curr = sym.loc();
             auto prev = i->first.loc();
@@ -170,6 +179,7 @@ private:
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
     std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
     std::deque<Scope> scopes_;
+    const Def* anonymous_;
     h::Bootstrapper bootstrapper_;
 };
 
