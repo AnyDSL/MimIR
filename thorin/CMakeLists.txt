@@ -86,6 +86,8 @@ add_library(libthorin
     util/bitset.h
     util/cast.h
     util/container.h
+    util/dlopen.cpp
+    util/dlopen.h
     util/hash.cpp
     util/hash.h
     util/indexmap.h
@@ -98,6 +100,11 @@ add_library(libthorin
 )
 
 set_target_properties(libthorin PROPERTIES PREFIX "")
+
+if(NOT WIN32)
+target_link_libraries(libthorin PRIVATE dl)
+endif()
+
 configure_file(config.h.in config.h)
 target_include_directories(libthorin PUBLIC 
     ${CMAKE_CURRENT_BINARY_DIR}/.. # for config.h
