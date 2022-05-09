@@ -37,7 +37,7 @@ std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std
 
     // add path/to/thorin.exe/../../lib
     if(auto path = get_path_to_current_executable())
-        path.emplace(*path);
+        paths.emplace_back(*path);
 
     // add default install path
     const auto install_prefixed_path = std::filesystem::path{THORIN_INSTALL_PREFIX} / "lib";
