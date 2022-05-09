@@ -39,6 +39,9 @@ else()
     add_compile_options(-Wall -Wextra)
 endif()
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+include(Thorin)
+
 find_program(MEMORYCHECK_COMMAND valgrind)
 set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1") # needs to be BEFORE "include(CTest)"
 include(CTest)

@@ -12,9 +12,7 @@
         <tab type="user" url="@ref passes" title="Passes"/>
     </tab>
     <tab type="usergroup" title="Dialects">
-        <!--TODO automate this with cmake magic-->
-        <tab type="user" url="@ref std" title="std"/>
-        <tab type="user" url="@ref mem" title="mem"/>
+        @THORIN_DIALECT_LAYOUT@
     </tab>
     <tab type="modules" visible="yes" title="" intro=""/>
     <tab type="namespaces" visible="yes" title="">
