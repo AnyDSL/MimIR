@@ -100,6 +100,11 @@ add_library(libthorin
 )
 
 set_target_properties(libthorin PROPERTIES PREFIX "")
+
+if(NOT WIN32)
+target_link_libraries(libthorin PRIVATE dl)
+endif()
+
 configure_file(config.h.in config.h)
 target_include_directories(libthorin PUBLIC 
     ${CMAKE_CURRENT_BINARY_DIR}/.. # for config.h
