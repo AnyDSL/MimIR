@@ -1151,6 +1151,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplParams" colspan="2">template&lt;class I , class T , class Cmp &gt; </td></tr>
 <tr class="memitem:a437c6f50faf6e57f126429d5a0ce9642"><td class="memTemplItemLeft" align="right" valign="top">I&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a437c6f50faf6e57f126429d5a0ce9642">binary_find</a> (I begin, I end, T val, Cmp cmp)</td></tr>
 <tr class="separator:a437c6f50faf6e57f126429d5a0ce9642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e2cd1b0080ec8dab429833f82b02910"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1e2cd1b0080ec8dab429833f82b02910">load_library</a> (const std::string &amp;filename)</td></tr>
+<tr class="separator:a1e2cd1b0080ec8dab429833f82b02910"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a334c0afc31c9291c177a8eca7b0debf0"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a334c0afc31c9291c177a8eca7b0debf0">get_symbol_from_library</a> (void *handle, const std::string &amp;symbol_name)</td></tr>
+<tr class="separator:a334c0afc31c9291c177a8eca7b0debf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae311255afb7827c1068962cc8fd7b4fd"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::filesystem::path &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae311255afb7827c1068962cc8fd7b4fd">get_path_to_current_executable</a> ()</td></tr>
+<tr class="separator:ae311255afb7827c1068962cc8fd7b4fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9627869f5532213afb672e5f28910929"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a9627869f5532213afb672e5f28910929">close_library</a> (void *handle)</td></tr>
+<tr class="separator:a9627869f5532213afb672e5f28910929"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0a62994b63462d082addeddb1c92029"><td class="memTemplParams" colspan="2">template&lt;class Indexer , class Key , class Value &gt; </td></tr>
 <tr class="memitem:aa0a62994b63462d082addeddb1c92029"><td class="memTemplItemLeft" align="right" valign="top">Value *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aa0a62994b63462d082addeddb1c92029">find</a> (<a class="el" href="classthorin_1_1IndexMap.html">IndexMap</a>&lt; Indexer, Key, Value * &gt; &amp;map, Key key)</td></tr>
 <tr class="separator:aa0a62994b63462d082addeddb1c92029"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3881,6 +3889,28 @@ template&lt;class D , class S &gt; </div>
 
 </div>
 </div>
+<a id="a9627869f5532213afb672e5f28910929" name="a9627869f5532213afb672e5f28910929"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9627869f5532213afb672e5f28910929">&#9670;&nbsp;</a></span>close_library()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::close_library </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>handle</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dlopen_8cpp_source.html#l00083">83</a> of file <a class="el" href="dlopen_8cpp_source.html">dlopen.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="error_8cpp_source.html#l00010">err()</a>.</p>
+
+</div>
+</div>
 <a id="ac1caf9dde31a5705cfdf7d70e1f9a96d" name="ac1caf9dde31a5705cfdf7d70e1f9a96d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac1caf9dde31a5705cfdf7d70e1f9a96d">&#9670;&nbsp;</a></span>commute()</h2>
 
@@ -4099,7 +4129,7 @@ template&lt;class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="error_8cpp_source.html#l00010">10</a> of file <a class="el" href="error_8cpp_source.html">error.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="error_8cpp_source.html#l00014">thorin::ErrorHandler::expected_shape()</a>, <a class="el" href="error_8cpp_source.html#l00022">thorin::ErrorHandler::ill_typed_app()</a>, and <a class="el" href="error_8cpp_source.html#l00018">thorin::ErrorHandler::index_out_of_range()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dlopen_8cpp_source.html#l00083">close_library()</a>, <a class="el" href="error_8cpp_source.html#l00014">thorin::ErrorHandler::expected_shape()</a>, <a class="el" href="dlopen_8cpp_source.html#l00036">get_symbol_from_library()</a>, <a class="el" href="error_8cpp_source.html#l00022">thorin::ErrorHandler::ill_typed_app()</a>, <a class="el" href="error_8cpp_source.html#l00018">thorin::ErrorHandler::index_out_of_range()</a>, and <a class="el" href="dlopen_8cpp_source.html#l00014">load_library()</a>.</p>
 
 </div>
 </div>
@@ -4550,6 +4580,29 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
+<a id="ae311255afb7827c1068962cc8fd7b4fd" name="ae311255afb7827c1068962cc8fd7b4fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae311255afb7827c1068962cc8fd7b4fd">&#9670;&nbsp;</a></span>get_path_to_current_executable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; std::filesystem::path &gt; thorin::get_path_to_current_executable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dlopen_8cpp_source.html#l00060">60</a> of file <a class="el" href="dlopen_8cpp_source.html">dlopen.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="dlopen_8cpp_source.html#l00060">get_path_to_current_executable()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="dlopen_8cpp_source.html#l00060">get_path_to_current_executable()</a>.</p>
+
+</div>
+</div>
 <a id="ac76b51109303662a47f30fa874337254" name="ac76b51109303662a47f30fa874337254"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac76b51109303662a47f30fa874337254">&#9670;&nbsp;</a></span>get_sign()</h2>
 
@@ -4601,6 +4654,38 @@ template&lt;class T &gt; </div>
 <p class="definition">Definition at line <a class="el" href="ssa__constr_8cpp_source.html#l00007">7</a> of file <a class="el" href="ssa__constr_8cpp_source.html">ssa_constr.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="def_8h_source.html#l00135">thorin::Def::type()</a>.</p>
+
+</div>
+</div>
+<a id="a334c0afc31c9291c177a8eca7b0debf0" name="a334c0afc31c9291c177a8eca7b0debf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a334c0afc31c9291c177a8eca7b0debf0">&#9670;&nbsp;</a></span>get_symbol_from_library()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * thorin::get_symbol_from_library </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>symbol_name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dlopen_8cpp_source.html#l00036">36</a> of file <a class="el" href="dlopen_8cpp_source.html">dlopen.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="error_8cpp_source.html#l00010">err()</a>.</p>
 
 </div>
 </div>
@@ -5935,6 +6020,28 @@ template&lt;class This , class T &gt; </div>
 <p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00011">11</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00082">thorin::CFA::b_cfg()</a>, <a class="el" href="scope_8cpp_source.html#l00087">thorin::Scope::cfa()</a>, <a class="el" href="cfg_8cpp_source.html#l00185">thorin::CFG&lt; forward &gt;::domfrontier()</a>, <a class="el" href="cfg_8cpp_source.html#l00183">thorin::CFG&lt; forward &gt;::domtree()</a>, <a class="el" href="cfg_8cpp_source.html#l00081">thorin::CFA::f_cfg()</a>, and <a class="el" href="cfg_8cpp_source.html#l00184">thorin::CFG&lt; forward &gt;::looptree()</a>.</p>
+
+</div>
+</div>
+<a id="a1e2cd1b0080ec8dab429833f82b02910" name="a1e2cd1b0080ec8dab429833f82b02910"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e2cd1b0080ec8dab429833f82b02910">&#9670;&nbsp;</a></span>load_library()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void * thorin::load_library </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dlopen_8cpp_source.html#l00014">14</a> of file <a class="el" href="dlopen_8cpp_source.html">dlopen.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="error_8cpp_source.html#l00010">err()</a>.</p>
 
 </div>
 </div>

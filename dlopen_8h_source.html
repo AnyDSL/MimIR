@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: The mem Dialect</title>
+<title>Thorin: /home/runner/work/thorin2/thorin2/thorin/util/dlopen.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('mem.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('dlopen_8h_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -100,53 +100,36 @@ $(document).ready(function(){initNavTree('mem.html',''); initResizable(); });
 </iframe>
 </div>
 
-<div><div class="header">
-  <div class="headertitle"><div class="title">The mem Dialect </div></div>
+<div class="header">
+  <div class="headertitle"><div class="title">dlopen.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md39">Types</a><ul><li class="level2"><a href="#autotoc_md40">:mem.M</a></li>
-<li class="level2"><a href="#autotoc_md41">:mem.Ptr</a></li>
-</ul>
-</li>
-<li class="level1"><a href="#autotoc_md42">Operations with Side Effects</a><ul><li class="level2"><a href="#autotoc_md43">:mem.load</a></li>
-<li class="level2"><a href="#autotoc_md44">:mem.store</a></li>
-</ul>
-</li>
-<li class="level1"><a href="#autotoc_md45">Operations without Side Effects</a><ul><li class="level2"><a href="#autotoc_md46">:mem.lea</a></li>
-</ul>
-</li>
-</ul>
-</div>
-<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_build_dialects_mem"></a></p>
-<h1><a class="anchor" id="autotoc_md39"></a>
-Types</h1>
-<h2><a class="anchor" id="autotoc_md40"></a>
-:mem.M</h2>
-<p >This type tracks all kind of side-effects. </p><div class="fragment"><div class="line">.ax :mem.M: *; </div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md41"></a>
-:mem.Ptr</h2>
-<p >Pointer type with <em>pointee</em> type <code>T</code> and <em>address space</em> <code>as</code>. At the moment, the <em>address space</em> is not really used and a placeholder for future work. </p><div class="fragment"><div class="line">.ax :mem.Ptr: [*, .Nat] -&gt; *;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md42"></a>
-Operations with Side Effects</h1>
-<p >The following operations have side effects. For this reason, they consume a <code>:mem.M</code> and yield a new <code>:mem.M</code>.</p>
-<h2><a class="anchor" id="autotoc_md43"></a>
-:mem.load</h2>
-<p >Loads from a pointer <code>ptr (T, as)</code> the pointed value of type <code>T</code>. </p><div class="fragment"><div class="line">.ax :mem.load:  Π [T: *, a: .Nat] -&gt; [:mem.M, :mem.Ptr(T, a)] -&gt; [:mem.M, T], normalize_load;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md44"></a>
-:mem.store</h2>
-<p >Stores a value of type <code>T</code> to a pointer <code>ptr (T, as)</code>, </p><div class="fragment"><div class="line">.ax :mem.store: Π [U: *, b: .Nat] -&gt; [:mem.M, :mem.Ptr(U, b), U] -&gt; :mem.M, normalize_store;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md45"></a>
-Operations without Side Effects</h1>
-<h2><a class="anchor" id="autotoc_md46"></a>
-:mem.lea</h2>
-<p >Load effective address. Performs address computation. </p><div class="fragment"><div class="line">.ax :mem.lea: [n: .Nat, Ts: «n; *», as: .Nat] -&gt; [:mem.Ptr(«j: n; Ts#j», as), i: :Int n] -&gt; :mem.Ptr(Ts#i, as);</div>
-</div><!-- fragment --> </div></div><!-- contents -->
-</div><!-- PageDoc -->
+<a href="dlopen_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef THORIN_UTIL_DLOPEN_H</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define THORIN_UTIL_DLOPEN_H</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin.html#a1e2cd1b0080ec8dab429833f82b02910">load_library</a>(<span class="keyword">const</span> std::string&amp; filename);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin.html#a334c0afc31c9291c177a8eca7b0debf0">get_symbol_from_library</a>(<span class="keywordtype">void</span>* handle, <span class="keyword">const</span> std::string&amp; symbol_name);</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>std::optional&lt;std::filesystem::path&gt; <a class="code hl_function" href="namespacethorin.html#ae311255afb7827c1068962cc8fd7b4fd">get_path_to_current_executable</a>();</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#a9627869f5532213afb672e5f28910929">close_library</a>(<span class="keywordtype">void</span>* handle);</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>}</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif </span><span class="comment">// THORIN_UTIL_DLOPEN_H</span></div>
+<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition:</b> <a href="cfg_8cpp_source.html#l00014">cfg.cpp:14</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a1e2cd1b0080ec8dab429833f82b02910"><div class="ttname"><a href="namespacethorin.html#a1e2cd1b0080ec8dab429833f82b02910">thorin::load_library</a></div><div class="ttdeci">void * load_library(const std::string &amp;filename)</div><div class="ttdef"><b>Definition:</b> <a href="dlopen_8cpp_source.html#l00014">dlopen.cpp:14</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a334c0afc31c9291c177a8eca7b0debf0"><div class="ttname"><a href="namespacethorin.html#a334c0afc31c9291c177a8eca7b0debf0">thorin::get_symbol_from_library</a></div><div class="ttdeci">void * get_symbol_from_library(void *handle, const std::string &amp;symbol_name)</div><div class="ttdef"><b>Definition:</b> <a href="dlopen_8cpp_source.html#l00036">dlopen.cpp:36</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a9627869f5532213afb672e5f28910929"><div class="ttname"><a href="namespacethorin.html#a9627869f5532213afb672e5f28910929">thorin::close_library</a></div><div class="ttdeci">void close_library(void *handle)</div><div class="ttdef"><b>Definition:</b> <a href="dlopen_8cpp_source.html#l00083">dlopen.cpp:83</a></div></div>
+<div class="ttc" id="anamespacethorin_html_ae311255afb7827c1068962cc8fd7b4fd"><div class="ttname"><a href="namespacethorin.html#ae311255afb7827c1068962cc8fd7b4fd">thorin::get_path_to_current_executable</a></div><div class="ttdeci">std::optional&lt; std::filesystem::path &gt; get_path_to_current_executable()</div><div class="ttdef"><b>Definition:</b> <a href="dlopen_8cpp_source.html#l00060">dlopen.cpp:60</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="dlopen_8h.html">dlopen.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
