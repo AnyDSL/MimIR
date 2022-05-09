@@ -10,5 +10,5 @@ set_target_properties(thorin_foo
 )
 target_link_libraries(thorin_foo libthorin)
 
-add_thorin_dialect(mem)
 add_thorin_dialect(std)
+add_thorin_dialect(mem)

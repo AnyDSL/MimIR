@@ -18,6 +18,7 @@ set(DOXY_EXTRA_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/README.md
     ${THORIN_DIALECT_MD_LIST}
 )
+message("THORIN_DIALECT_MD_LIST: ${THORIN_DIALECT_MD_LIST}")
 string(REPLACE ";" " " DOXY_EXTRA_FILES_CONFIG "${DOXY_EXTRA_FILES}")
 configure_file(Doxyfile.in ${DOXYFILE} @ONLY)
 configure_file(DoxygenLayout.xml.in ${DOXY_LAYOUT} @ONLY)
@@ -29,4 +30,5 @@ add_custom_command(
     DEPENDS thorin ${CLI_HELP} ${DOXY_EXTRA_FILES} ${DOXY_LAYOUT}
     COMMENT "Generating Doxygen HTML documentation"
 )
-add_custom_target(docs ALL DEPENDS ${DOXY_INDEX_HTML})
+
+add_custom_target(docs ALL DEPENDS ${DOXY_INDEX_HTML} ${THORIN_DIALECT_LIST})
