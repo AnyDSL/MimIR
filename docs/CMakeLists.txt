@@ -18,7 +18,6 @@ set(DOXY_EXTRA_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/README.md
     ${THORIN_DIALECT_MD_LIST}
 )
-message("THORIN_DIALECT_MD_LIST: ${THORIN_DIALECT_MD_LIST}")
 string(REPLACE ";" " " DOXY_EXTRA_FILES_CONFIG "${DOXY_EXTRA_FILES}")
 configure_file(Doxyfile.in ${DOXYFILE} @ONLY)
 configure_file(DoxygenLayout.xml.in ${DOXY_LAYOUT} @ONLY)
