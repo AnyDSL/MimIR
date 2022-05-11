@@ -57,6 +57,15 @@ TEST(World, simplify_one_tuple) {
     ASSERT_EQ(v, w.tuple({v})) << "constant fold ({42, 1337}) -> {42, 1337}";
 }
 
+TEST(World, dependent_extract) {
+    World w;
+    auto sig = w.nom_sigma(w.type<1>(), 2); // sig = [T: *, T]
+    sig->set(0, w.type<0>());
+    sig->set(1, sig->var(0_u64));
+    auto a = w.axiom(sig);
+    ASSERT_EQ(a->proj(2, 1)->type(), a->proj(2, 0_u64)); // type_of(a#1_2) == a#0_1
+}
+
 TEST(Main, ll) {
     World w;
     auto mem_t  = w.type_mem();
