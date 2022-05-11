@@ -76,6 +76,7 @@ DefArray vars_without_mem_cont(Lam* lam) {
 // needed for operation differentiation
 // we only need a multidimensional addition
 
+// TODO: replace with for axiom
 const Lam* repeatLam(World& world, const Def* count, const Lam* body){
     auto loop_entry = world.nom_filter_lam(world.cn({world.type_mem(), world.cn(world.type_mem())}),world.dbg("loop_entry"));
     auto loop_head = world.nom_lam(world.cn_mem(world.type_int_width(64)),world.dbg("loop_head"));
@@ -235,6 +236,7 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
 
 }
 
+// TODO: comment
 const Def* copy(World& world, const Def* inputArr, const Def* outputArr, const Def* size){
     auto [loop, loop_body] = repeatLam(world, size);
 
@@ -253,6 +255,7 @@ const Def* copy(World& world, const Def* inputArr, const Def* outputArr, const D
     return loop;
 }
 
+// TODO: comment
 class Flow{
     Lam* lam_ = nullptr;
     Lam* init_;
@@ -313,6 +316,8 @@ public:
 };
 
 const Def* derive_numeric_walk(World& world, const Def* ref, const Def* h, const Lam* f, const Def* fx, const Def* s, Flow& flow) {
+    // TODO: use vec_add + OH to avoid code duplication
+    // it will be slower for arrays but in general arrays have to be copied
     auto fun_result_pi = f->doms().back()->as<Pi>();
 
     if (auto ptr = isa<Tag::Ptr>(ref->type())) {
