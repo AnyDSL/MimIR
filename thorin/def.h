@@ -150,26 +150,46 @@ public:
     }
     const Def* op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
-    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not Type or Type),
-    /// and then the other Def::ops() (if Def::is_set) in this order.
-    Defs extended_ops() const;
-    const Def* extended_op(size_t i) const { return extended_ops()[i]; }
-    size_t num_extended_ops() const { return extended_ops().size(); }
+    ///@}
+
+    /// @name set/unset ops
+    ///@{
     Def* set(size_t i, const Def* def);
     Def* set(Defs ops) {
         for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
         return this;
     }
+
     void unset(size_t i);
     void unset() {
         for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);
     }
+
     /// Are all Def::ops set?
     /// * `true` if all operands are set or Def::num_ops` == 0`.
     /// * `false` if all operands are `nullptr`.
     /// * `assert`s otherwise.
     bool is_set() const;
     bool is_unset() const { return !is_set(); } ///< *Not* Def::is_set.
+    ///@}
+
+    /// @name extended_ops
+    ///@{
+    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not Type or Type),
+    /// and then the other Def::ops() (if Def::is_set) in this order.
+    Defs extended_ops() const;
+    const Def* extended_op(size_t i) const { return extended_ops()[i]; }
+    size_t num_extended_ops() const { return extended_ops().size(); }
+    ///@}
+
+    /// @name all_ops
+    ///@{
+    /// Includes Def::ops as well as Def::type and Def::dbg.
+    /// Also works with partially set Def%s and doesn't assert.
+    /// Unset operands are `nullptr`.
+    Defs all_ops() const { return Defs(num_ops_ + 2, ops_ptr() - 2); }
+    const Def* all_op(size_t i) const { return all_ops()[i]; }
+    size_t num_all_ops() const { return all_ops().size(); }
     ///@}
 
     /// @name uses
