@@ -149,15 +149,13 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         auto arr_sized_ty=world.arr(arr_size_nat,arr_ty->as<Arr>()->body())->as<Arr>();
         auto [mem2,arr_c_def]=world.op_alloc(arr_sized_ty,sum_pb->mem_var())->projs<2>();
         auto arr_c = world.op_bitcast(arr_a->type(),arr_c_def);
-//        THORIN_UNREACHABLE;
-
         auto [loop, loop_body] = repeatLam(world, size_a);
 
-        auto loop_mem = loop_body->mem_var();
-        auto idx = loop_body->var(1);
-        auto continue_loop = loop_body->ret_var();
-
         // TODO: replace with for loop
+        auto loop_mem=loop_body->mem_var();
+        auto idx=loop_body->var(1);
+        auto loopContinue=loop_body->ret_var();
+        auto inc=world.op(Wrap::add,world.lit_nat(0),world.lit_int_width(64,1),idx);
         // store into c
         auto a_p=world.op_lea(arr_a,idx,world.dbg("a_p"));
         auto b_p=world.op_lea(arr_b,idx,world.dbg("b_p"));
@@ -165,29 +163,29 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         // add pointers using vec_add
         // lea c, store into c
 
-        auto [left_load_mem,a_v] = world.op_load(loop_mem,a_p)->projs<2>();
-        auto [right_load_mem,b_v] = world.op_load(left_load_mem,   b_p)->projs<2>();
+        auto [lmem2,a_v] = world.op_load(loop_mem,a_p)->projs<2>();
+        auto [lmem3,b_v] = world.op_load(lmem2,   b_p)->projs<2>();
+        loop_mem=lmem3;
         // load values manually to allow for easy (and direct) storage into c
+//        auto elem_res_cont_type = world.cn_mem(a_v->type());
         auto elem_res_cont_type = world.cn_mem_flat(a_v->type());
         auto elem_res_cont = world.nom_filter_lam(elem_res_cont_type,world.dbg("tuple_add_cont"));
         auto element_sum_pb = vec_add(world,a_v,b_v,elem_res_cont);
         auto c_v = world.tuple(vars_without_mem_cont(elem_res_cont));
         auto res_mem=elem_res_cont->mem_var();
-        auto store_addition = res_mem=world.op_store(res_mem,c_p,c_v);
-
-        auto end = world.nom_filter_lam(world.cn(world.type_mem()), world.dbg("sum_pb"));
-        end->set_body(world.app(
-            cont,
-            flat_tuple({
-                end->mem_var(),
-                world.tuple({size_a,arr_a})
-            })
-        ));
+        res_mem=world.op_store(res_mem,c_p,c_v);
 
 //        set loop
-        loop_body->set_body(world.app(element_sum_pb, right_load_mem));
-        elem_res_cont->set_body(world.app(continue_loop, store_addition));
-        sum_pb->set_body(world.app(loop, {sum_pb->mem_var(), end}));
+        loop_body->set_body(world.app(element_sum_pb, loop_mem));
+        elem_res_cont->set_body(world.app( loopContinue, res_mem ));
+        auto loop_end = world.nom_filter_lam(world.cn(world.type_mem()),world.dbg("add_loop_exit"));
+        loop_end->set_body(world.app(
+                cont,
+                flat_tuple({loop_end->mem_var(),
+                            world.tuple({size_a,arr_c})
+                           })
+        ));
+        sum_pb->set_body(world.app( loop, {mem2, loop_end} ));
 
         return sum_pb;
     }
@@ -198,10 +196,10 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
 
     if(dim==1){
         sum_pb->set_body(world.app(
-            cont,
-            flat_tuple({sum_pb->mem_var(),
-                world.op(ROp::add,(nat_t)0,a,b)
-            })
+                cont,
+                flat_tuple({sum_pb->mem_var(),
+                            world.op(ROp::add,(nat_t)0,a,b)
+                           })
         ));
         return sum_pb;
     }
@@ -220,16 +218,16 @@ const Lam* vec_add(World& world, const Def* a, const Def* b, const Def* cont) {
         ops[i]=world.tuple(vars_without_mem_cont(res_cont));
 
         current_cont->set_body(world.app(
-            sum_call,
-            current_cont->mem_var()
+                sum_call,
+                current_cont->mem_var()
         ));
 
         current_cont=res_cont;
     }
 
     current_cont->set_body(world.app(
-        cont,
-        flat_tuple({current_cont->mem_var(), world.tuple(ops)})
+            cont,
+            flat_tuple({current_cont->mem_var(), world.tuple(ops)})
     ));
 
     return sum_pb;
