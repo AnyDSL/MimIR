@@ -82,11 +82,10 @@ var searchData=
   ['succs_79',['succs',['../classthorin_1_1CFG.html#ada7df7890bc4099a7b87e0c63b9ce975',1,'thorin::CFG::succs()'],['../classthorin_1_1DomFrontierBase.html#a2aec5566b6c1697071902085bb4b9803',1,'thorin::DomFrontierBase::succs()'],['../classthorin_1_1CFG.html#a4ab2c62c5cc4cbc2572c0dc7009b2213',1,'thorin::CFG::succs()']]],
   ['super_80',['Super',['../classthorin_1_1FPPass.html#ab5b9529e4bddbda40f241c4e4be942c6',1,'thorin::FPPass']]],
   ['swap_81',['swap',['../classthorin_1_1World.html#ab6b27c20d41025c4bc9ddf15adf01f96',1,'thorin::World::swap()'],['../classthorin_1_1IndexSet.html#a245aada796530949db5a5c38410debae',1,'thorin::IndexSet::swap()'],['../classthorin_1_1IndexMap.html#aed3c25a875eaf9017815b7a1a76a6925',1,'thorin::IndexMap::swap()'],['../classthorin_1_1BitSet.html#aa577861df219851e6060c6fa2aa376d8',1,'thorin::BitSet::swap()'],['../classthorin_1_1Array.html#ad8f888963f8bc4939796defba4791cb0',1,'thorin::Array::swap()'],['../structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac80d660438b4842b825631b2f3d637b1',1,'thorin::ArrayStorage&lt; T, 0 &gt;::swap()'],['../classthorin_1_1ArrayStorage.html#ac80d660438b4842b825631b2f3d637b1',1,'thorin::ArrayStorage::swap()'],['../classthorin_1_1ArrayRef.html#a3e743a8ad8740b42ceaa356664a24df2',1,'thorin::ArrayRef::swap()'],['../classthorin_1_1Def.html#ac16087b25da85305adb283de20b2342d',1,'thorin::Def::swap()'],['../structthorin_1_1ll_1_1BB.html#a89bbe278d11d78b7f380426fd1c89178',1,'thorin::ll::BB::swap()'],['../classthorin_1_1Scheduler.html#a0b9902dabc8c2162b719b2c05f1a0153',1,'thorin::Scheduler::swap()']]],
-  ['sym_82',['sym',['../classthorin_1_1Tok.html#a237307d0c79f2a973e0a624b050de445',1,'thorin::Tok']]],
-  ['sym_83',['Sym',['../classthorin_1_1Sym.html#a80d4cf2feffc3714ea733d97eddf9697',1,'thorin::Sym::Sym(const Def *def)'],['../classthorin_1_1Sym.html#a4835a8e93b67876f72e81d03c8b2ec43',1,'thorin::Sym::Sym()']]],
-  ['sym_84',['sym',['../classthorin_1_1World.html#a7d7c6362bdaa0ea54b1515f29935774f',1,'thorin::World']]],
-  ['sym_85',['Sym',['../classthorin_1_1Sym.html',1,'thorin']]],
-  ['symhash_86',['SymHash',['../structthorin_1_1SymHash.html',1,'thorin']]],
-  ['symmap_87',['SymMap',['../namespacethorin.html#a3368507549c1c606d305c18939d17943',1,'thorin']]],
-  ['symset_88',['SymSet',['../namespacethorin.html#ae26bd525ba720c363612327d2d927c72',1,'thorin']]]
+  ['sym_82',['Sym',['../classthorin_1_1Sym.html#a4835a8e93b67876f72e81d03c8b2ec43',1,'thorin::Sym']]],
+  ['sym_83',['sym',['../classthorin_1_1World.html#a7d7c6362bdaa0ea54b1515f29935774f',1,'thorin::World::sym()'],['../classthorin_1_1Tok.html#a237307d0c79f2a973e0a624b050de445',1,'thorin::Tok::sym()']]],
+  ['sym_84',['Sym',['../classthorin_1_1Sym.html#a80d4cf2feffc3714ea733d97eddf9697',1,'thorin::Sym::Sym()'],['../classthorin_1_1Sym.html',1,'thorin::Sym']]],
+  ['symhash_85',['SymHash',['../structthorin_1_1SymHash.html',1,'thorin']]],
+  ['symmap_86',['SymMap',['../namespacethorin.html#a3368507549c1c606d305c18939d17943',1,'thorin']]],
+  ['symset_87',['SymSet',['../namespacethorin.html#ae26bd525ba720c363612327d2d927c72',1,'thorin']]]
 ];

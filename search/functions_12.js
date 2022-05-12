@@ -40,6 +40,6 @@ var searchData=
   ['sub_5fview_37',['sub_view',['../namespacethorin.html#a1e02df3b598c738a2864a076f4d9002c',1,'thorin']]],
   ['succs_38',['succs',['../classthorin_1_1CFG.html#ada7df7890bc4099a7b87e0c63b9ce975',1,'thorin::CFG::succs(const CFNode *n) const'],['../classthorin_1_1CFG.html#a4ab2c62c5cc4cbc2572c0dc7009b2213',1,'thorin::CFG::succs(Def *nom) const'],['../classthorin_1_1DomFrontierBase.html#a2aec5566b6c1697071902085bb4b9803',1,'thorin::DomFrontierBase::succs()']]],
   ['swap_39',['swap',['../classthorin_1_1BitSet.html#aa577861df219851e6060c6fa2aa376d8',1,'thorin::BitSet']]],
-  ['sym_40',['sym',['../classthorin_1_1Tok.html#a237307d0c79f2a973e0a624b050de445',1,'thorin::Tok::sym()'],['../classthorin_1_1World.html#a7d7c6362bdaa0ea54b1515f29935774f',1,'thorin::World::sym()']]],
-  ['sym_41',['Sym',['../classthorin_1_1Sym.html#a4835a8e93b67876f72e81d03c8b2ec43',1,'thorin::Sym::Sym()'],['../classthorin_1_1Sym.html#a80d4cf2feffc3714ea733d97eddf9697',1,'thorin::Sym::Sym(const Def *def)']]]
+  ['sym_40',['Sym',['../classthorin_1_1Sym.html#a4835a8e93b67876f72e81d03c8b2ec43',1,'thorin::Sym::Sym()'],['../classthorin_1_1Sym.html#a80d4cf2feffc3714ea733d97eddf9697',1,'thorin::Sym::Sym(const Def *def)']]],
+  ['sym_41',['sym',['../classthorin_1_1Tok.html#a237307d0c79f2a973e0a624b050de445',1,'thorin::Tok::sym()'],['../classthorin_1_1World.html#a7d7c6362bdaa0ea54b1515f29935774f',1,'thorin::World::sym()']]]
 ];
