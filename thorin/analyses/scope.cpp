@@ -43,7 +43,7 @@ void Scope::calc_bound() const {
     unique_queue<DefSet&> queue(live);
 
     auto enqueue = [&](const Def* def) {
-        if (def->no_dep()) return;
+        if (def == nullptr || def->no_dep()) return;
 
         if (bound_.contains(def))
             queue.push(def);
@@ -51,10 +51,10 @@ void Scope::calc_bound() const {
             free_defs_.emplace(def);
     };
 
-    for (auto op : entry()->extended_ops()) enqueue(op);
+    for (auto op : entry()->all_ops()) enqueue(op);
 
     while (!queue.empty()) {
-        for (auto op : queue.pop()->extended_ops()) enqueue(op);
+        for (auto op : queue.pop()->all_ops()) enqueue(op);
     }
 
     swap(live, bound_);
