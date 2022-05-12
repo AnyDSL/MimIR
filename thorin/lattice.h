@@ -26,10 +26,10 @@ public:
 };
 
 /// Specific [Bound](https://en.wikipedia.org/wiki/Join_and_meet) depending on @p up.
-/// The name @p up refers to the property that a Join **ascends** in the underlying
-/// [lattice](https://en.wikipedia.org/wiki/Lattice_(order)):
-/// * @p up = `true`: Join (aka least upper bound/supremum/union)
-/// * @p up = `false`: Meet (aka geratest lower bound/infimum/intersection)
+/// The name @p up refers to the property that a [Join](@ref thorin::Join) **ascends** in the underlying
+/// [lattice](https://en.wikipedia.org/wiki/Lattice_(order)) while a [Meet](@ref thorin::Meet) descends.
+/// * @p up = `true`: [Join](@ref thorin::Join) (aka least upper bound/supremum/union)
+/// * @p up = `false`: [Meet](@ref thorin::Meet) (aka greatest lower bound/infimum/intersection)
 template<bool up>
 class TBound : public Bound {
 private:
@@ -53,10 +53,11 @@ public:
     friend class World;
 };
 
-/// Constructs a Meet value.
-class Et : public Def {
+/// Constructs a [Meet](@ref thorin::Meet) **value**.
+/// @remark [Ac](https://en.wikipedia.org/wiki/Wedge_(symbol)) is Latin and means *and*.
+class Ac : public Def {
 private:
-    Et(const Def* type, Defs defs, const Def* dbg)
+    Ac(const Def* type, Defs defs, const Def* dbg)
         : Def(Node, type, defs, 0, dbg) {}
 
 public:
@@ -65,11 +66,12 @@ public:
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     ///@}
 
-    static constexpr auto Node = Node::Et;
+    static constexpr auto Node = Node::Ac;
     friend class World;
 };
 
-/// Constructs a Join value.
+/// Constructs a [Join](@ref thorin::Join) **value**.
+/// @remark [Vel](https://en.wikipedia.org/wiki/Wedge_(symbol)) is Latin and means *or*.
 class Vel : public Def {
 private:
     Vel(const Def* type, const Def* value, const Def* dbg)
@@ -90,7 +92,7 @@ public:
     friend class World;
 };
 
-/// Picks the aspect of a Meet Pick::value by its Def::type.
+/// Picks the aspect of a Meet [value](Pick::value) by its [type](Def::type).
 class Pick : public Def {
 private:
     Pick(const Def* type, const Def* value, const Def* dbg)
@@ -110,13 +112,15 @@ public:
     friend class World;
 };
 
-/// Tests the Test::value of type Join whether it currently holds **type** Test::probe.
-/// Note, that Test::probe is a **type**!
-/// Yields Test::match, if `true` and Test::clash otherwise.
-/// Test::match must be of type `A -> B`.
-/// Test::clash must be of type `[A, probe] -> C`.
-/// This operation is usually known as `case`.
-/// Since this is a keyword in C++, we call it Test.
+/// `test value, probe, match, clash` tests whether [value](@ref Test::value) currently holds **type** [probe](@ref Test::probe).
+/// @note
+/// * [probe](@ref Test::probe) is a **type**!
+/// * This operation yields [match](@ref Test::match), if `true`, and [clash](@ref Test::clash) otherwise.
+/// @invariant
+/// * [value](@ref Test::value) must be of type [Join](@ref thorin::Join).
+/// * [match](@ref Test::match) must be of type `A -> B`.
+/// * [clash](@ref Test::clash) must be of type `[A, probe] -> C`.
+/// @remark This operation is usually known as `case` but named `Test` since `case` is a keyword in C++.
 class Test : public Def {
 private:
     Test(const Def* type, const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg)

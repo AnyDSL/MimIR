@@ -974,10 +974,10 @@ const Def* World::bound(Defs ops, const Def* dbg) {
     return unify<TBound<up>>(cpy.size(), kind, cpy, dbg);
 }
 
-const Def* World::et(const Def* type, Defs ops, const Def* dbg) {
+const Def* World::ac(const Def* type, Defs ops, const Def* dbg) {
     if (type->isa<Meet>()) {
         DefArray types(ops.size(), [&](size_t i) { return ops[i]->type(); });
-        return unify<Et>(ops.size(), meet(types), ops, dbg);
+        return unify<Ac>(ops.size(), meet(types), ops, dbg);
     }
 
     assert(ops.size() == 1);

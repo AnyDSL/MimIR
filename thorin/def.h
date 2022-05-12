@@ -193,7 +193,7 @@ public:
     ///@{
     /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
 
-    /// @return yields arity if a Lit or `1` otherwise.
+    /// @returns Def::arity as_lit, if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const {
         if (auto a = isa_lit(arity())) return *a;
         return 1;
@@ -321,7 +321,7 @@ public:
     DefArray reduce(const Def* arg) const;
     DefArray reduce(const Def* arg);
     /// Transitively Def::reduce Lam%s, if `this` is an App.
-    /// @return the reduced body
+    /// @returns the reduced body.
     const Def* reduce_rec() const;
     ///@}
 
@@ -470,8 +470,8 @@ using level_t = u64;
 
 class Type : public Def {
 private:
-    Type(const Def* level)
-        : Def(Node, nullptr, {level}, 0, nullptr) {}
+    Type(const Def* level, const Def* dbg)
+        : Def(Node, nullptr, {level}, 0, dbg) {}
 
 public:
     const Def* level() const { return op(0); }

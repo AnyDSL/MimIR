@@ -1,4 +1,4 @@
-# Language Reference
+# Language Reference {#langref}
 
 [TOC]
 
@@ -19,13 +19,15 @@ The [grammatical rules](#productions) will directly reference these *primary [te
 For example, the lexer doesn't care, if you use `⊥` or `.bot`.
 Both tokens are identified as `⊥`.
 
-| Primary Terminals               | Secondary Terminals                               | Comment                   |
-|---------------------------------|---------------------------------------------------|---------------------------|
-| `(` `)` `[` `]` `{` `}`         |                                                   | delimiters                |
-| `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                                 | UTF-8 delimiters          |
-| `→` `∷` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `::` `.bot` `.top` `*` `.space` `.lam` `.Pi` | further UTF-8 tokens      |
-| `=` `,` `;` `.` `#`             |                                                   | further tokens            |
-| `<eof>`                         |                                                   | marks the end of the file |
+| Primary Terminals               | Secondary Terminals                             | Comment                   |
+|---------------------------------|-------------------------------------------------|---------------------------|
+| `(` `)` `[` `]` `{` `}`         |                                                 | delimiters                |
+| `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                               | UTF-8 delimiters          |
+| `→` `∷` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `::` `.bot` `.top` `*` `\`  <tt>\|~\|</tt> | further UTF-8 tokens      |
+| `=` `,` `;` `.` `#`             |                                                 | further tokens            |
+| `<eof>`                         |                                                 | marks the end of the file |
+
+
 
 #### Keywords
 
@@ -33,6 +35,14 @@ In addition the following keywords are *terminals*:
 
 | Terminal    | Comment                   |
 |-------------|---------------------------|
+| `.ax`       | axiom                     |
+| `.let`      | let expression            |
+| `.Pi`       | nominal Pi                |
+| `.lam`      | nominal lam               |
+| `.Arr`      | nominal Arr               |
+| `.pack`     | nominal pack              |
+| `.Sigma`    | nominal Sigma             |
+| `.def`      | nominal definition        |
 | `.external` | marks nominal as external |
 | `.module`   | starts a module           |
 | `.Nat`      | thorin::Nat               |

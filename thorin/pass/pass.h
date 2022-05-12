@@ -51,7 +51,7 @@ public:
     /// @name Rewrite Hook for the PassMan
     ///@{
     /// Rewrites a *structural* @p def within PassMan::curr_nom.
-    /// @return the replacement.
+    /// @returns the replacement.
     virtual const Def* rewrite(const Def* def) { return def; }
     virtual const Def* rewrite(const Var* var) { return var; }
     virtual const Def* rewrite(const Proxy* proxy) { return proxy; }
@@ -61,7 +61,7 @@ public:
     ///@{
     /// Invoked after the PassMan has finished Pass::rewrite%ing PassMan::curr_nom to analyze the Def.
     /// Will only be invoked if Pass::fixed_point() yields `true` - which will be the case for FPPass%es.
-    /// @return No_Undo or the state to roll back to.
+    /// @returns thorin::No_Undo or the state to roll back to.
     virtual undo_t analyze(const Def*) { return No_Undo; }
     virtual undo_t analyze(const Var*) { return No_Undo; }
     virtual undo_t analyze(const Proxy*) { return No_Undo; }

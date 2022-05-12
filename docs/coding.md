@@ -1,4 +1,4 @@
-# Coding & Debugging
+# Coding & Debugging {#coding}
 
 [TOC]
 
