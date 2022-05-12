@@ -51,10 +51,10 @@ void Scope::calc_bound() const {
             free_defs_.emplace(def);
     };
 
-    for (auto op : entry()->all_ops()) enqueue(op);
+    for (auto op : entry()->partial_ops()) enqueue(op);
 
     while (!queue.empty()) {
-        for (auto op : queue.pop()->all_ops()) enqueue(op);
+        for (auto op : queue.pop()->partial_ops()) enqueue(op);
     }
 
     swap(live, bound_);

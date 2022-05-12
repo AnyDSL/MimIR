@@ -175,21 +175,21 @@ public:
 
     /// @name extended_ops
     ///@{
-    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not Type or Type),
+    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not `nullptr`),
     /// and then the other Def::ops() (if Def::is_set) in this order.
     Defs extended_ops() const;
     const Def* extended_op(size_t i) const { return extended_ops()[i]; }
     size_t num_extended_ops() const { return extended_ops().size(); }
     ///@}
 
-    /// @name all_ops
+    /// @name partial_ops
     ///@{
-    /// Includes Def::ops as well as Def::type and Def::dbg.
+    /// Includes Def::dbg, Def::type, and Def::ops (in this order).
     /// Also works with partially set Def%s and doesn't assert.
     /// Unset operands are `nullptr`.
-    Defs all_ops() const { return Defs(num_ops_ + 2, ops_ptr() - 2); }
-    const Def* all_op(size_t i) const { return all_ops()[i]; }
-    size_t num_all_ops() const { return all_ops().size(); }
+    Defs partial_ops() const { return Defs(num_ops_ + 2, ops_ptr() - 2); }
+    const Def* all_op(size_t i) const { return partial_ops()[i]; }
+    size_t num_partial_ops() const { return partial_ops().size(); }
     ///@}
 
     /// @name uses
