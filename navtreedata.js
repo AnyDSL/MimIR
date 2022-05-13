@@ -40,8 +40,8 @@ var NAVTREE =
       [ "Passes", "passes.html", null ]
     ] ],
     [ "Dialects", "usergroup1.html", [
-      [ "std", "std.html", null ],
-      [ "mem", "mem.html", null ]
+      [ "std", "@ref std", null ],
+      [ "mem", "@ref mem", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -80,23 +80,23 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"alloc2malloc_8cpp.html",
-"classthorin_1_1ArrayRef.html#a779388117ec793090c1422bf4a9f5c5d",
-"classthorin_1_1CFNode.html#a25f18fd39f35fdb4c0789292d96aab0f",
-"classthorin_1_1DepNode.html#a187444a0eb968f4154a1322d0b0ccf04",
-"classthorin_1_1IndexMap.html#aa72d83e1d05a3037fe43435e4ea6b628",
-"classthorin_1_1LoopTree_1_1Leaf.html#aa79e55da57c644a32055241c75cd334a",
-"classthorin_1_1Rewriter.html#a31e292678bd8a9a00d41f1dcb66f695d",
-"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5cde09f8e1c778aeb1790bb89e72982b",
-"classthorin_1_1World.html#a352a26e0abf5dcc0e62120a7ce3a8b3d",
-"classthorin_1_1World.html#abe8c73fbff7e8f342406e03f69096626",
-"container_8h.html#a56063a2d17c29f75d2e405b36278df32",
-"lattice_8h.html",
-"namespacethorin.html#a79fff1449ba1eaecead8f607520f8574",
-"namespacethorin.html#afbcb1bda3428d2211797b024635936ee",
-"stream_8cpp_source.html",
-"tables_8h.html#a0d966c506a7e321a180379f2f793cbca",
-"types_8h.html#ab492d5bf259b9311be082f83c78b6a77"
+"@ref mem",
+"classthorin_1_1ArrayRef.html#a6b5d9c72d372660b98a0de0f5840bf18",
+"classthorin_1_1CFNode.html",
+"classthorin_1_1DepNode.html",
+"classthorin_1_1IndexMap.html#aa34f6f4febc42c33e9ccd190b326a597",
+"classthorin_1_1LoopTree_1_1Leaf.html#aa330c71df3f890444bceecc765d02194",
+"classthorin_1_1Rewriter.html#a30f487c4537a940ff672c5f3cbab7f8d",
+"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a5be9fecd8fb8ece5f3217942ae9f6c4a",
+"classthorin_1_1World.html#a321f6e3321dabccd619c7b289fc350e5",
+"classthorin_1_1World.html#abcb8da84b7bab7d2dc94d9b5a90db961",
+"classthorin_1_1utf8_1_1Lexer.html#aeb6b8061e55497b8da23fb1f5e11288f",
+"lam_8h_source.html",
+"namespacethorin.html#a72fc99d5c04f3932ba954f5d859ffb0a",
+"namespacethorin.html#af87a9053c48a88d6b364e2fb1bbd15fb",
+"ssa__constr_8h.html",
+"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html#a439449a21b4cd10ceb84c0ba151fa8ab",
+"types_8h.html#a5bdf209d006051cf78afb63e49fca4b7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

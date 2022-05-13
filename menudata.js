@@ -31,8 +31,8 @@ var menudata={children:[
 {text:"Developer Guide",url:"dev.html"},
 {text:"Passes",url:"passes.html"}]},
 {text:"Dialects",url:"usergroup1.html",children:[
-{text:"std",url:"std.html"},
-{text:"mem",url:"mem.html"}]},
+{text:"std",url:"@ref std"},
+{text:"mem",url:"@ref mem"}]},
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[

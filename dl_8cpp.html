@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: The mem Dialect</title>
+<title>Thorin: /home/runner/work/thorin2/thorin2/thorin/util/dl.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('mem.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('dl_8cpp.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -100,53 +100,59 @@ $(document).ready(function(){initNavTree('mem.html',''); initResizable(); });
 </iframe>
 </div>
 
-<div><div class="header">
-  <div class="headertitle"><div class="title">The mem Dialect </div></div>
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">dl.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md39">Types</a><ul><li class="level2"><a href="#autotoc_md40">:mem.M</a></li>
-<li class="level2"><a href="#autotoc_md41">:mem.Ptr</a></li>
-</ul>
-</li>
-<li class="level1"><a href="#autotoc_md42">Operations with Side Effects</a><ul><li class="level2"><a href="#autotoc_md43">:mem.load</a></li>
-<li class="level2"><a href="#autotoc_md44">:mem.store</a></li>
-</ul>
-</li>
-<li class="level1"><a href="#autotoc_md45">Operations without Side Effects</a><ul><li class="level2"><a href="#autotoc_md46">:mem.lea</a></li>
-</ul>
-</li>
-</ul>
+<div class="textblock"><code>#include &quot;<a class="el" href="dl_8h_source.html">thorin/util/dl.h</a>&quot;</code><br />
+<code>#include &lt;cstdlib&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
+<code>#include &lt;dlfcn.h&gt;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for dl.cpp:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="dl_8cpp__incl.svg" width="1094" height="440"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
-<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_build_dialects_mem"></a></p>
-<h1><a class="anchor" id="autotoc_md39"></a>
-Types</h1>
-<h2><a class="anchor" id="autotoc_md40"></a>
-:mem.M</h2>
-<p >This type tracks all kind of side-effects. </p><div class="fragment"><div class="line">.ax :mem.M: *; </div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md41"></a>
-:mem.Ptr</h2>
-<p >Pointer type with <em>pointee</em> type <code>T</code> and <em>address space</em> <code>as</code>. At the moment, the <em>address space</em> is not really used and a placeholder for future work. </p><div class="fragment"><div class="line">.ax :mem.Ptr: [*, .Nat] -&gt; *;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md42"></a>
-Operations with Side Effects</h1>
-<p >The following operations have side effects. For this reason, they consume a <code>:mem.M</code> and yield a new <code>:mem.M</code>.</p>
-<h2><a class="anchor" id="autotoc_md43"></a>
-:mem.load</h2>
-<p >Loads from a pointer <code>ptr (T, as)</code> the pointed value of type <code>T</code>. </p><div class="fragment"><div class="line">.ax :mem.load:  Π [T: *, a: .Nat] -&gt; [:mem.M, :mem.Ptr(T, a)] -&gt; [:mem.M, T], normalize_load;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md44"></a>
-:mem.store</h2>
-<p >Stores a value of type <code>T</code> to a pointer <code>ptr (T, as)</code>, </p><div class="fragment"><div class="line">.ax :mem.store: Π [U: *, b: .Nat] -&gt; [:mem.M, :mem.Ptr(U, b), U] -&gt; :mem.M, normalize_store;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md45"></a>
-Operations without Side Effects</h1>
-<h2><a class="anchor" id="autotoc_md46"></a>
-:mem.lea</h2>
-<p >Load effective address. Performs address computation. </p><div class="fragment"><div class="line">.ax :mem.lea: [n: .Nat, Ts: «n; *», as: .Nat] -&gt; [:mem.Ptr(«j: n; Ts#j», as), i: :Int n] -&gt; :mem.Ptr(Ts#i, as);</div>
-</div><!-- fragment --> </div></div><!-- contents -->
-</div><!-- PageDoc -->
+</div>
+</div>
+<p><a href="dl_8cpp_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacethorin_1_1dl"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html">thorin::dl</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a5f2fa9f6d36145b360434906650434ee"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#a5f2fa9f6d36145b360434906650434ee">thorin::dl::prefix</a> ()</td></tr>
+<tr class="memdesc:a5f2fa9f6d36145b360434906650434ee"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>"lib"</code> or <code>""</code>  <a href="namespacethorin_1_1dl.html#a5f2fa9f6d36145b360434906650434ee">More...</a><br /></td></tr>
+<tr class="separator:a5f2fa9f6d36145b360434906650434ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a974cb548b7ca48762ca7ee40e30b37b8"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8">thorin::dl::extension</a> ()</td></tr>
+<tr class="memdesc:a974cb548b7ca48762ca7ee40e30b37b8"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>".dll"</code>, <code>".dylib"</code>, or <code>".so"</code>  <a href="namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8">More...</a><br /></td></tr>
+<tr class="separator:a974cb548b7ca48762ca7ee40e30b37b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af40487a5a6a330a23d22b9c077168b81"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
+<tr class="memitem:af40487a5a6a330a23d22b9c077168b81"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#af40487a5a6a330a23d22b9c077168b81">thorin::dl::err</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
+<tr class="separator:af40487a5a6a330a23d22b9c077168b81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53dbb43985f05a46b12161ec7523c528"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#a53dbb43985f05a46b12161ec7523c528">thorin::dl::open</a> (const std::string &amp;file)</td></tr>
+<tr class="separator:a53dbb43985f05a46b12161ec7523c528"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58750a888f128e15b49e86b418596eab"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#a58750a888f128e15b49e86b418596eab">thorin::dl::get</a> (void *handle, const std::string &amp;symbol)</td></tr>
+<tr class="separator:a58750a888f128e15b49e86b418596eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7026fc7143db82fe92f2eae107a1027"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#aa7026fc7143db82fe92f2eae107a1027">thorin::dl::close</a> (void *handle)</td></tr>
+<tr class="separator:aa7026fc7143db82fe92f2eae107a1027"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe85913deb79d47253071950f6906790"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::filesystem::path &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1dl.html#abe85913deb79d47253071950f6906790">thorin::dl::get_path_to_current_executable</a> ()</td></tr>
+<tr class="separator:abe85913deb79d47253071950f6906790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="dl_8cpp.html">dl.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>

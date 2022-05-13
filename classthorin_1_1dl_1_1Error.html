@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: /home/runner/work/thorin2/thorin2/thorin/util/dlopen.h Source File</title>
+<title>Thorin: thorin::dl::Error Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('dlopen_8h_source.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('classthorin_1_1dl_1_1Error.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -101,35 +101,67 @@ $(document).ready(function(){initNavTree('dlopen_8h_source.html',''); initResiza
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">dlopen.h</div></div>
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classthorin_1_1dl_1_1Error-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">thorin::dl::Error Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="dlopen_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef THORIN_UTIL_DLOPEN_H</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define THORIN_UTIL_DLOPEN_H</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin.html#a1e2cd1b0080ec8dab429833f82b02910">load_library</a>(<span class="keyword">const</span> std::string&amp; filename);</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keywordtype">void</span>* <a class="code hl_function" href="namespacethorin.html#a334c0afc31c9291c177a8eca7b0debf0">get_symbol_from_library</a>(<span class="keywordtype">void</span>* handle, <span class="keyword">const</span> std::string&amp; symbol_name);</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>std::optional&lt;std::filesystem::path&gt; <a class="code hl_function" href="namespacethorin.html#ae311255afb7827c1068962cc8fd7b4fd">get_path_to_current_executable</a>();</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin.html#a9627869f5532213afb672e5f28910929">close_library</a>(<span class="keywordtype">void</span>* handle);</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>}</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif </span><span class="comment">// THORIN_UTIL_DLOPEN_H</span></div>
-<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition:</b> <a href="cfg_8cpp_source.html#l00014">cfg.cpp:14</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a1e2cd1b0080ec8dab429833f82b02910"><div class="ttname"><a href="namespacethorin.html#a1e2cd1b0080ec8dab429833f82b02910">thorin::load_library</a></div><div class="ttdeci">void * load_library(const std::string &amp;filename)</div><div class="ttdef"><b>Definition:</b> <a href="dlopen_8cpp_source.html#l00014">dlopen.cpp:14</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a334c0afc31c9291c177a8eca7b0debf0"><div class="ttname"><a href="namespacethorin.html#a334c0afc31c9291c177a8eca7b0debf0">thorin::get_symbol_from_library</a></div><div class="ttdeci">void * get_symbol_from_library(void *handle, const std::string &amp;symbol_name)</div><div class="ttdef"><b>Definition:</b> <a href="dlopen_8cpp_source.html#l00036">dlopen.cpp:36</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a9627869f5532213afb672e5f28910929"><div class="ttname"><a href="namespacethorin.html#a9627869f5532213afb672e5f28910929">thorin::close_library</a></div><div class="ttdeci">void close_library(void *handle)</div><div class="ttdef"><b>Definition:</b> <a href="dlopen_8cpp_source.html#l00083">dlopen.cpp:83</a></div></div>
-<div class="ttc" id="anamespacethorin_html_ae311255afb7827c1068962cc8fd7b4fd"><div class="ttname"><a href="namespacethorin.html#ae311255afb7827c1068962cc8fd7b4fd">thorin::get_path_to_current_executable</a></div><div class="ttdeci">std::optional&lt; std::filesystem::path &gt; get_path_to_current_executable()</div><div class="ttdef"><b>Definition:</b> <a href="dlopen_8cpp_source.html#l00060">dlopen.cpp:60</a></div></div>
-</div><!-- fragment --></div><!-- contents -->
+
+<p><code>#include &lt;<a class="el" href="dl_8h_source.html">/home/runner/work/thorin2/thorin2/thorin/util/dl.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for thorin::dl::Error:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1dl_1_1Error__inherit__graph.svg" width="150" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a6d7e38d59acfedda2f73e4dc38e1a59b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1dl_1_1Error.html#a6d7e38d59acfedda2f73e4dc38e1a59b">Error</a> (const std::string &amp;what_arg)</td></tr>
+<tr class="separator:a6d7e38d59acfedda2f73e4dc38e1a59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="dl_8h_source.html#l00012">12</a> of file <a class="el" href="dl_8h_source.html">dl.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a6d7e38d59acfedda2f73e4dc38e1a59b" name="a6d7e38d59acfedda2f73e4dc38e1a59b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d7e38d59acfedda2f73e4dc38e1a59b">&#9670;&nbsp;</a></span>Error()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">thorin::dl::Error::Error </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>what_arg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="dl_8h_source.html#l00014">14</a> of file <a class="el" href="dl_8h_source.html">dl.h</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>/home/runner/work/thorin2/thorin2/thorin/util/<a class="el" href="dl_8h_source.html">dl.h</a></li>
+</ul>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_af13e0a143b7ca68f7428894b6ff07d9.html">util</a></li><li class="navelem"><a class="el" href="dlopen_8h.html">dlopen.h</a></li>
+    <li class="navelem"><a class="el" href="namespacethorin.html">thorin</a></li><li class="navelem"><a class="el" href="namespacethorin_1_1dl.html">dl</a></li><li class="navelem"><a class="el" href="classthorin_1_1dl_1_1Error.html">Error</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>

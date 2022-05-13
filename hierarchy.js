@@ -132,6 +132,9 @@ var hierarchy =
     [ "thorin::IndexSet< Indexer, Key >::reference", "classthorin_1_1IndexSet_1_1reference.html", null ],
     [ "thorin::Res", "classthorin_1_1Res.html", null ],
     [ "thorin::Rewriter", "classthorin_1_1Rewriter.html", null ],
+    [ "std::runtime_error", null, [
+      [ "thorin::dl::Error", "classthorin_1_1dl_1_1Error.html", null ]
+    ] ],
     [ "thorin::RuntimeCast< Base >", "classthorin_1_1RuntimeCast.html", [
       [ "thorin::LoopTree< forward >::Base", "classthorin_1_1LoopTree_1_1Base.html", [
         [ "thorin::LoopTree< forward >::Head", "classthorin_1_1LoopTree_1_1Head.html", null ],
