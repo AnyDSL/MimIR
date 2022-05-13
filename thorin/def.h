@@ -98,10 +98,11 @@ enum : unsigned {
     auto NAME##s(nat_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
 
 /// Base class for all Def%s.
-/// The data layout (see World::alloc and Def::extended_ops) looks like this:
+/// The data layout (see World::alloc and Def::partial_ops) looks like this:
 /// ```
-/// Def debug type | op(0) ... op(num_ops-1) ||
-///    |-------------extended_ops-------------|
+/// Def| dbg |type | op(0) ... op(num_ops-1) |
+///    |--------------partial_ops------------|
+///                |-------extended_ops------|
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
 class Def : public RuntimeCast<Def> {
@@ -188,7 +189,7 @@ public:
     /// Also works with partially set Def%s and doesn't assert.
     /// Unset operands are `nullptr`.
     Defs partial_ops() const { return Defs(num_ops_ + 2, ops_ptr() - 2); }
-    const Def* all_op(size_t i) const { return partial_ops()[i]; }
+    const Def* partial_op(size_t i) const { return partial_ops()[i]; }
     size_t num_partial_ops() const { return partial_ops().size(); }
     ///@}
 
