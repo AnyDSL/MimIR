@@ -86,8 +86,8 @@ add_library(libthorin
     util/bitset.h
     util/cast.h
     util/container.h
-    util/dlopen.cpp
-    util/dlopen.h
+    util/dl.cpp
+    util/dl.h
     util/hash.cpp
     util/hash.h
     util/indexmap.h
