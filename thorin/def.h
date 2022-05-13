@@ -98,10 +98,11 @@ enum : unsigned {
     auto NAME##s(nat_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
 
 /// Base class for all Def%s.
-/// The data layout (see World::alloc and Def::extended_ops) looks like this:
+/// The data layout (see World::alloc and Def::partial_ops) looks like this:
 /// ```
-/// Def debug type | op(0) ... op(num_ops-1) ||
-///    |-------------extended_ops-------------|
+/// Def| dbg |type | op(0) ... op(num_ops-1) |
+///    |--------------partial_ops------------|
+///                |-------extended_ops------|
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
 class Def : public RuntimeCast<Def> {
@@ -150,26 +151,46 @@ public:
     }
     const Def* op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
-    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not Type or Type),
-    /// and then the other Def::ops() (if Def::is_set) in this order.
-    Defs extended_ops() const;
-    const Def* extended_op(size_t i) const { return extended_ops()[i]; }
-    size_t num_extended_ops() const { return extended_ops().size(); }
+    ///@}
+
+    /// @name set/unset ops
+    ///@{
     Def* set(size_t i, const Def* def);
     Def* set(Defs ops) {
         for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
         return this;
     }
+
     void unset(size_t i);
     void unset() {
         for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);
     }
+
     /// Are all Def::ops set?
     /// * `true` if all operands are set or Def::num_ops` == 0`.
     /// * `false` if all operands are `nullptr`.
     /// * `assert`s otherwise.
     bool is_set() const;
     bool is_unset() const { return !is_set(); } ///< *Not* Def::is_set.
+    ///@}
+
+    /// @name extended_ops
+    ///@{
+    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not `nullptr`),
+    /// and then the other Def::ops() (if Def::is_set) in this order.
+    Defs extended_ops() const;
+    const Def* extended_op(size_t i) const { return extended_ops()[i]; }
+    size_t num_extended_ops() const { return extended_ops().size(); }
+    ///@}
+
+    /// @name partial_ops
+    ///@{
+    /// Includes Def::dbg, Def::type, and Def::ops (in this order).
+    /// Also works with partially set Def%s and doesn't assert.
+    /// Unset operands are `nullptr`.
+    Defs partial_ops() const { return Defs(num_ops_ + 2, ops_ptr() - 2); }
+    const Def* partial_op(size_t i) const { return partial_ops()[i]; }
+    size_t num_partial_ops() const { return partial_ops().size(); }
     ///@}
 
     /// @name uses
