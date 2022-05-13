@@ -14,7 +14,6 @@
 #include "thorin/pass/rw/remem_elim.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
-#include "thorin/pass/rw/peephole.h"
 
 // old stuff
 // #include "thorin/transform/cleanup_world.h"
@@ -102,10 +101,6 @@ void optimize(World& world) {
     printf("Finished Simpl Opti\n");
 
 
-//    PassMan optB(world);
-//    optB.add<Peephole>();
-//    optB.run();
-    printf("Finished Peephole Opti\n");
 
 
 //         cleanup_world(world);

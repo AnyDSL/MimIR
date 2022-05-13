@@ -41,6 +41,7 @@ template<class T, class... Args>
     std::ostringstream oss;
     print(oss, "{}: error: ", loc);
     print(oss, fmt, std::forward<Args&&>(args)...);
+//    assert(0);
     throw T(oss.str());
 }
 
