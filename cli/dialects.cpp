@@ -11,60 +11,9 @@
 #include "thorin/world.h"
 
 #include "thorin/pass/pass.h"
-
-#ifdef _WIN32
-#    include <windows.h>
-#else
-#    include <dlfcn.h>
-#endif
+#include "thorin/util/dlopen.h"
 
 using namespace thorin;
-
-void* load_library(const std::string& filename) {
-#ifdef _WIN32
-    if (HMODULE handle = LoadLibraryA(filename.c_str())) {
-        return static_cast<void*>(handle);
-    } else {
-        std::stringstream ss;
-        ss << "error: could not load dialect plugin: " << filename << " with: " << GetLastError()
-           << "(see https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes)" << std::endl;
-        throw std::runtime_error{ss.str()};
-    }
-#else
-    if (void* handle = dlopen(filename.c_str(), RTLD_NOW)) {
-        return handle;
-    } else {
-        std::stringstream ss;
-        ss << "error: could not load dialect plugin: " << filename << std::endl;
-        if (char* err = dlerror()) { ss << err << std::endl; }
-        throw std::runtime_error{ss.str()};
-    }
-#endif
-}
-
-void* get_symbol_from_library(void* handle, const std::string& symbol_name) {
-#ifdef _WIN32
-    if (auto symbol = GetProcAddress(static_cast<HMODULE>(handle), symbol_name.c_str())) {
-        return reinterpret_cast<void*>(symbol);
-    } else {
-        std::stringstream ss;
-        ss << "error: could not find symbol name in dialect plugin: " << symbol_name << " with: " << GetLastError()
-           << " (https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes)" << std::endl;
-        throw std::runtime_error{ss.str()};
-    }
-#else
-    dlerror(); // clear error state
-    void* symbol = dlsym(handle, symbol_name.c_str());
-    if (char* err = dlerror()) {
-        std::stringstream ss;
-        ss << "error: could not find symbol name in dialect plugin: " << symbol_name << std::endl;
-        ss << err << std::endl;
-        throw std::runtime_error{ss.str()};
-    } else {
-        return symbol;
-    }
-#endif
-}
 
 void add_paths_from_env(std::vector<std::filesystem::path>& paths) {
     if (const char* env_path = std::getenv("THORIN_DIALECT_PATH")) {
@@ -87,24 +36,8 @@ std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std
     std::ranges::transform(paths, paths.begin(), [&](auto path) { return path.is_relative() ? cwd / path : path; });
 
     // add path/to/thorin.exe/../../lib
-#ifdef _WIN32
-    std::vector<char> path_buffer;
-    size_t read = 0;
-    do {
-        // start with 256 (almost MAX_PATH) and grow exp
-        path_buffer.resize(std::max(path_buffer.size(), static_cast<size_t>(128)) * 2);
-        read = GetModuleFileNameA(nullptr, path_buffer.data(), static_cast<DWORD>(path_buffer.size()));
-    } while (read == path_buffer.size()); // if equal, the buffer was too small.
-    if (read != 0) {
-        path_buffer.resize(read);
-        paths.emplace_back(std::filesystem::path{path_buffer.data()}.parent_path().parent_path() / "lib");
-    }
-#else
-    Dl_info info;
-    if (dladdr(reinterpret_cast<void*>(&get_plugin_search_paths), &info)) {
-        paths.emplace_back(std::filesystem::path{info.dli_fname}.parent_path().parent_path() / "lib");
-    }
-#endif
+    if(auto path = get_path_to_current_executable())
+        paths.emplace_back(*path);
 
     // add default install path
     const auto install_prefixed_path = std::filesystem::path{THORIN_INSTALL_PREFIX} / "lib";
@@ -132,22 +65,6 @@ std::vector<std::filesystem::path> get_plugin_name_variants(std::string_view nam
 #endif
     names.push_back(libName.str());
     return names;
-}
-
-void close_library(void* handle) {
-#ifdef _WIN32
-    if (!FreeLibrary(static_cast<HMODULE>(handle))) {
-        std::stringstream ss;
-        ss << "error: FreeLibrary() failed" << std::endl;
-        throw std::runtime_error{ss.str()};
-    }
-#else
-    if (int err = dlclose(handle)) {
-        std::stringstream ss;
-        ss << "error: dlclose() failed (" << err << ")" << std::endl;
-        throw std::runtime_error{ss.str()};
-    }
-#endif
 }
 
 void test_plugin(const std::string& name, const std::vector<std::string>& search_paths) {

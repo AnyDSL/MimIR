@@ -17,6 +17,7 @@ namespace thorin {
 Parser::Parser(World& world, std::string_view file, std::istream& istream, std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
+    , anonymous_(world.tuple_str("_"))
     , bootstrapper_(file.substr(0, file.rfind('.'))) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
@@ -105,6 +106,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_paren_l:   return parse_tuple();
         case Tok::Tag::K_Cn:        return parse_Cn();
+        case Tok::Tag::K_Type:      return parse_type();
         case Tok::Tag::K_Bool:      lex(); return world().type_bool();
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
         case Tok::Tag::K_ff:        lex(); return world().lit_false();
@@ -113,7 +115,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::T_lam:       return parse_lam();
         case Tok::Tag::T_at:        return parse_var();
         case Tok::Tag::T_star:      lex(); return world().type();
-        case Tok::Tag::T_space:     lex(); return world().type<1>();
+        case Tok::Tag::T_box:       lex(); return world().type<1>();
         case Tok::Tag::T_bot:
         case Tok::Tag::T_top:
         case Tok::Tag::L_s:
@@ -224,18 +226,38 @@ const Def* Parser::parse_tuple() {
     return world().tuple(ops, track);
 }
 
+const Def* Parser::parse_type() {
+    auto track = tracker();
+    eat(Tok::Tag::K_Type);
+    auto [l, r] = Tok::prec(Tok::Prec::App);
+    auto level  = parse_expr("type level", r);
+    return world().type(level, track);
+}
+
 const Def* Parser::parse_pi() {
     auto track = tracker();
     eat(Tok::Tag::T_Pi);
-    auto var = parse_sym("variable of a dependent function type");
-    expect(Tok::Tag::T_colon, "domain of a dependent function type");
-    auto dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
-    expect(Tok::Tag::T_arrow, "dependent function type");
+
+    std::optional<Tok> id;
+    const Def* dom;
+    if (id = accept(Tok::Tag::M_id)) {
+        if (accept(Tok::Tag::T_colon)) {
+            dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
+        } else {
+            dom = find(id->sym());
+            id.reset();
+        }
+    } else {
+        dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
+    }
+
     auto pi = world().nom_pi(world().nom_infer_univ(), dom);
     pi->set_dom(dom);
     push();
-    insert(var, pi->var()); // TODO set location
-    pi->set_codom(parse_expr("codomain of a dependent function type", Tok::Prec::Arrow));
+    if (id) insert(id->sym(), pi->var()); // TODO location/name
+    expect(Tok::Tag::T_arrow, "dependent function type");
+    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
+    pi->set_codom(codom);
     pi->set_dbg(track);
     pop();
     return pi;
@@ -319,8 +341,9 @@ void Parser::parse_ax() {
     info.group   = dialect_and_group->second;
 
     if (info.dialect != bootstrapper_.dialect()) {
-        err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax, info.dialect,
-            lexer_.file());
+        // TODO
+        // err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax,
+        // info.dialect, lexer_.file());
     }
 
     if (ahead().isa(Tok::Tag::D_paren_l)) {

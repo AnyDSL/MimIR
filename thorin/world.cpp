@@ -421,7 +421,15 @@ const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index,
             if (insert->index()->isa<Lit>()) return extract(insert->tuple(), index, dbg);
         }
 
-        if (type->isa<Sigma>()) return unify<Extract>(2, ex_type ? ex_type : type->op(*i), tup, index, dbg);
+        if (auto sigma = type->isa<Sigma>()) {
+            if (auto nom_sigma = sigma->isa_nom<Sigma>()) {
+                Scope scope(nom_sigma);
+                auto t = rewrite(sigma->op(*i), nom_sigma->var(), tup, scope);
+                return unify<Extract>(2, ex_type ? ex_type : t, tup, index, dbg);
+            }
+
+            return unify<Extract>(2, ex_type ? ex_type : sigma->op(*i), tup, index, dbg);
+        }
     }
 
     type = type->as<Arr>()->body();
@@ -582,10 +590,10 @@ const Def* World::bound(Defs ops, const Def* dbg) {
     return unify<TBound<up>>(cpy.size(), kind, cpy, dbg);
 }
 
-const Def* World::et(const Def* type, Defs ops, const Def* dbg) {
+const Def* World::ac(const Def* type, Defs ops, const Def* dbg) {
     if (type->isa<Meet>()) {
         DefArray types(ops.size(), [&](size_t i) { return ops[i]->type(); });
-        return unify<Et>(ops.size(), meet(types), ops, dbg);
+        return unify<Ac>(ops.size(), meet(types), ops, dbg);
     }
 
     assert(ops.size() == 1);

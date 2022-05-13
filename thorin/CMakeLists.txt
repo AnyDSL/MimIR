@@ -86,6 +86,8 @@ add_library(libthorin
     util/bitset.h
     util/cast.h
     util/container.h
+    util/dlopen.cpp
+    util/dlopen.h
     util/hash.cpp
     util/hash.h
     util/indexmap.h
@@ -98,14 +100,20 @@ add_library(libthorin
 )
 
 set_target_properties(libthorin PROPERTIES PREFIX "")
+
 configure_file(config.h.in config.h)
 target_include_directories(libthorin PUBLIC 
     ${CMAKE_CURRENT_BINARY_DIR}/.. # for config.h
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${PROJECT_SOURCE_DIR}/modules/half/include
 )
-target_link_libraries(libthorin PUBLIC absl::flat_hash_map absl::flat_hash_set
-                                       absl::node_hash_map absl::node_hash_set)
+target_link_libraries(libthorin 
+    PUBLIC 
+        absl::flat_hash_map absl::flat_hash_set
+        absl::node_hash_map absl::node_hash_set
+        ${CMAKE_DL_LIBS}
+)
+
 if(MSVC AND BUILD_SHARED_LIBS)
     target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
 endif()

@@ -75,15 +75,15 @@ public:
     /// @name Universe, Type, Var, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
-    const Type* type(const Def* level) { return unify<Type>(1, level)->as<Type>(); }
+    const Type* type(const Def* level, const Def* dbg = {}) { return unify<Type>(1, level, dbg)->as<Type>(); }
     template<level_t level = 0>
-    const Type* type() {
+    const Type* type(const Def* dbg = {}) {
         if constexpr (level == 0)
             return data_.type_0_;
         else if constexpr (level == 1)
             return data_.type_1_;
         else
-            return type(lit_univ(level));
+            return type(lit_univ(level), dbg);
     }
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg = {}) {
@@ -324,9 +324,9 @@ public:
     template<level_t l = 0> Meet* nom_meet(size_t size, const Def* dbg = {}) { return nom_meet(type<l>(), size, dbg); }
     const Def* join(Defs ops, const Def* dbg = {}) { return bound<true>(ops, dbg); }
     const Def* meet(Defs ops, const Def* dbg = {}) { return bound<false>(ops, dbg); }
-    const Def* et(const Def* type, Defs ops, const Def* dbg = {});
+    const Def* ac(const Def* type, Defs ops, const Def* dbg = {});
     /// Infers the type using a *structural* Meet.
-    const Def* et(Defs ops, const Def* dbg = {}) { return et(infer_type(ops), ops, dbg); }
+    const Def* ac(Defs ops, const Def* dbg = {}) { return ac(infer_type(ops), ops, dbg); }
     const Def* vel(const Def* type, const Def* value, const Def* dbg = {});
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg = {});
