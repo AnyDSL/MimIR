@@ -65,7 +65,7 @@ void* get(void* handle, const std::string& symbol) {
         return reinterpret_cast<void*>(addr);
     } else {
         err("could not find symbol '{}' in plugin due to error '{}'\n"
-            "see (https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes)\n"
+            "see (https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes)\n",
             symbol, GetLastError());
     }
 #else
@@ -81,7 +81,7 @@ void* get(void* handle, const std::string& symbol) {
 
 void close(void* handle) {
 #ifdef _WIN32
-    if (!FreeLibrary(static_cast<HMODULE>(handle))) err("FreeLibrary() failed");
+    if (!FreeLibrary(static_cast<HMODULE>(handle))) err("FreeLibrary() failed\n");
 #else
     if (int error = dlclose(handle)) err("error: dlclose() failed with error code '{}'\n", error);
 #endif
