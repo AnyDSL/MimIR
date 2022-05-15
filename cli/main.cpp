@@ -104,8 +104,10 @@ int main(int argc, char** argv) {
         }
         // clang-format on
 
-        for (const auto& dialect : dialects) cli::test_plugin(dialect, dialect_paths);
-        return EXIT_SUCCESS;
+        if (!dialects.empty()) {
+            for (const auto& dialect : dialects) cli::test_plugin(dialect, dialect_paths);
+            return EXIT_SUCCESS;
+        }
 
         if (input.empty()) throw std::invalid_argument("error: no input given");
         if (input[0] == '-' || input.substr(0, 2) == "--")
