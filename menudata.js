@@ -31,8 +31,8 @@ var menudata={children:[
 {text:"Developer Guide",url:"dev.html"},
 {text:"Passes",url:"passes.html"}]},
 {text:"Dialects",url:"usergroup1.html",children:[
-{text:"std",url:"@ref std"},
-{text:"mem",url:"@ref mem"}]},
+{text:"std",url:"std.html"},
+{text:"mem",url:"mem.html"}]},
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[
@@ -58,6 +58,7 @@ var menudata={children:[
 {text:"u",url:"namespacemembers_u.html#index_u"},
 {text:"v",url:"namespacemembers_v.html#index_v"},
 {text:"w",url:"namespacemembers_w.html#index_w"},
+{text:"x",url:"namespacemembers_x.html#index_x"},
 {text:"z",url:"namespacemembers_z.html#index_z"}]},
 {text:"Functions",url:"namespacemembers_func.html",children:[
 {text:"a",url:"namespacemembers_func.html#index_a"},
@@ -80,7 +81,16 @@ var menudata={children:[
 {text:"u",url:"namespacemembers_func_u.html#index_u"},
 {text:"v",url:"namespacemembers_func_v.html#index_v"},
 {text:"w",url:"namespacemembers_func_w.html#index_w"}]},
-{text:"Variables",url:"namespacemembers_vars.html"},
+{text:"Variables",url:"namespacemembers_vars.html",children:[
+{text:"b",url:"namespacemembers_vars.html#index_b"},
+{text:"e",url:"namespacemembers_vars.html#index_e"},
+{text:"f",url:"namespacemembers_vars.html#index_f"},
+{text:"m",url:"namespacemembers_vars.html#index_m"},
+{text:"n",url:"namespacemembers_vars.html#index_n"},
+{text:"s",url:"namespacemembers_vars.html#index_s"},
+{text:"t",url:"namespacemembers_vars.html#index_t"},
+{text:"u",url:"namespacemembers_vars.html#index_u"},
+{text:"x",url:"namespacemembers_vars.html#index_x"}]},
 {text:"Typedefs",url:"namespacemembers_type.html",children:[
 {text:"b",url:"namespacemembers_type.html#index_b"},
 {text:"c",url:"namespacemembers_type.html#index_c"},
