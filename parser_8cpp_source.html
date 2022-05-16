@@ -590,24 +590,23 @@ $(document).ready(function(){initNavTree('parser_8cpp_source.html',''); initResi
 <div class="line"><a id="l00484" name="l00484"></a><span class="lineno">  484</span>    eat(<a class="code hl_enumvalue" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a86d887ab52987c7cae217900a37da7c0">Tok::Tag::K_import</a>);</div>
 <div class="line"><a id="l00485" name="l00485"></a><span class="lineno">  485</span>    <span class="keyword">auto</span> name = expect(<a class="code hl_enumvalue" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad43558618211347eb1e180a76a011d7a">Tok::Tag::M_id</a>, <span class="stringliteral">&quot;import name&quot;</span>);</div>
 <div class="line"><a id="l00486" name="l00486"></a><span class="lineno">  486</span>    expect(<a class="code hl_enumvalue" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038adab652135089c23c5b48db9b0d22754d">Tok::Tag::T_semicolon</a>, <span class="stringliteral">&quot;end of import&quot;</span>);</div>
-<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span>    std::cout &lt;&lt; name.sym().to_string() &lt;&lt; std::endl;</div>
-<div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span>    <span class="keyword">auto</span> name_str = name.sym().to_string();</div>
-<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span> </div>
-<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>    std::ostringstream input_stream;</div>
-<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>    <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(input_stream, <span class="stringliteral">&quot;{}.thorin&quot;</span>, name_str);</div>
-<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>    <span class="keyword">auto</span> input =</div>
-<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>        (std::filesystem::path{lexer_.<a class="code hl_function" href="classthorin_1_1Lexer.html#af4df7a194885f5cef2827d11c10d131a">file</a>()}.parent_path().parent_path() / name_str / input_stream.str()).<span class="keywordtype">string</span>();</div>
-<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span>    std::ifstream ifs(input);</div>
-<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span> </div>
-<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span>    <span class="keywordflow">if</span> (!ifs) err(<span class="stringliteral">&quot;error: cannot import file &#39;{}&#39;&quot;</span>, input);</div>
-<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span> </div>
-<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>    <a class="code hl_function" href="classthorin_1_1Parser.html#ab8a5af19b2a1b82ca354154049646dc0">Parser</a> parser(<a class="code hl_function" href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">world</a>(), input, ifs);</div>
-<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>    parser.parse_module();</div>
-<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>    assert(parser.scopes_.size() == 1 &amp;&amp; scopes_.size() == 1);</div>
-<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>    scopes_.front().merge(parser.scopes_.back());</div>
-<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span>}</div>
-<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span> </div>
-<div class="line"><a id="l00504" name="l00504"></a><span class="lineno">  504</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00487" name="l00487"></a><span class="lineno">  487</span>    <span class="keyword">auto</span> name_str = name.sym().to_string();</div>
+<div class="line"><a id="l00488" name="l00488"></a><span class="lineno">  488</span> </div>
+<div class="line"><a id="l00489" name="l00489"></a><span class="lineno">  489</span>    std::ostringstream input_stream;</div>
+<div class="line"><a id="l00490" name="l00490"></a><span class="lineno">  490</span>    <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(input_stream, <span class="stringliteral">&quot;{}.thorin&quot;</span>, name_str);</div>
+<div class="line"><a id="l00491" name="l00491"></a><span class="lineno">  491</span>    <span class="keyword">auto</span> input =</div>
+<div class="line"><a id="l00492" name="l00492"></a><span class="lineno">  492</span>        (std::filesystem::path{lexer_.<a class="code hl_function" href="classthorin_1_1Lexer.html#af4df7a194885f5cef2827d11c10d131a">file</a>()}.parent_path().parent_path() / name_str / input_stream.str()).<span class="keywordtype">string</span>();</div>
+<div class="line"><a id="l00493" name="l00493"></a><span class="lineno">  493</span>    std::ifstream ifs(input);</div>
+<div class="line"><a id="l00494" name="l00494"></a><span class="lineno">  494</span> </div>
+<div class="line"><a id="l00495" name="l00495"></a><span class="lineno">  495</span>    <span class="keywordflow">if</span> (!ifs) err(<span class="stringliteral">&quot;error: cannot import file &#39;{}&#39;&quot;</span>, input);</div>
+<div class="line"><a id="l00496" name="l00496"></a><span class="lineno">  496</span> </div>
+<div class="line"><a id="l00497" name="l00497"></a><span class="lineno">  497</span>    <a class="code hl_function" href="classthorin_1_1Parser.html#ab8a5af19b2a1b82ca354154049646dc0">Parser</a> parser(<a class="code hl_function" href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">world</a>(), input, ifs);</div>
+<div class="line"><a id="l00498" name="l00498"></a><span class="lineno">  498</span>    parser.parse_module();</div>
+<div class="line"><a id="l00499" name="l00499"></a><span class="lineno">  499</span>    assert(parser.scopes_.size() == 1 &amp;&amp; scopes_.size() == 1);</div>
+<div class="line"><a id="l00500" name="l00500"></a><span class="lineno">  500</span>    scopes_.front().merge(parser.scopes_.back());</div>
+<div class="line"><a id="l00501" name="l00501"></a><span class="lineno">  501</span>}</div>
+<div class="line"><a id="l00502" name="l00502"></a><span class="lineno">  502</span> </div>
+<div class="line"><a id="l00503" name="l00503"></a><span class="lineno">  503</span>} <span class="comment">// namespace thorin</span></div>
 <div class="ttc" id="aclassthorin_1_1Arr_html_a75e797b30ee19ff42cd7030b129df180"><div class="ttname"><a href="classthorin_1_1Arr.html#a75e797b30ee19ff42cd7030b129df180">thorin::Arr::set_shape</a></div><div class="ttdeci">Arr * set_shape(const Def *shape)</div><div class="ttdef"><b>Definition:</b> <a href="tuple_8h_source.html#l00065">tuple.h:65</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Axiom_html_ac2fbb5d076e915684ac1fa74b2b35bbf"><div class="ttname"><a href="classthorin_1_1Axiom.html#ac2fbb5d076e915684ac1fa74b2b35bbf">thorin::Axiom::dialect_and_group</a></div><div class="ttdeci">static std::optional&lt; std::pair&lt; std::string_view, std::string_view &gt; &gt; dialect_and_group(std::string_view)</div><div class="ttdef"><b>Definition:</b> <a href="axiom_8cpp_source.html#l00073">axiom.cpp:73</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html_a1e009bced6c7f37b6316d81ead2ad27e"><div class="ttname"><a href="classthorin_1_1Def.html#a1e009bced6c7f37b6316d81ead2ad27e">thorin::Def::as_nom</a></div><div class="ttdeci">T * as_nom() const</div><div class="ttdoc">Asserts that this is a *nom*inal, casts constness away and performs a static cast to T (checked in De...</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00322">def.h:322</a></div></div>
