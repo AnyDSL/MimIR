@@ -484,7 +484,6 @@ void Parser::parse_import() {
     eat(Tok::Tag::K_import);
     auto name = expect(Tok::Tag::M_id, "import name");
     expect(Tok::Tag::T_semicolon, "end of import");
-    std::cout << name.sym().to_string() << std::endl;
     auto name_str = name.sym().to_string();
 
     std::ostringstream input_stream;
