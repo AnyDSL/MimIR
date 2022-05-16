@@ -2,7 +2,7 @@
 
 [TOC]
 
-This document comprises some information that is related to coding but does not directly deals with the API.
+This document comprises some information that is related to coding but does not directly related to the API.
 
 ## Coding Style
 
