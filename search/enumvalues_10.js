@@ -7,5 +7,5 @@ var searchData=
   ['pi_4',['Pi',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253acc524d86ec74bf18ee3f5a5ec4d36b6d',1,'thorin::Node']]],
   ['pick_5',['Pick',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a32daf84d1b553daef38b172edace4d9c',1,'thorin::Node']]],
   ['proxy_6',['Proxy',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253aad888bbf600987dd2d6f78a8e50c88b7',1,'thorin::Node']]],
-  ['ptr_7',['Ptr',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa0d15c3f4996a83bc4544a89616c1602c',1,'thorin::Tag::Ptr()'],['../namespacethorin.html#ac10bc4621591d7d3e244f02b4d725aeea08d97769dc916a176a0003546f7a6505',1,'thorin::Ptr()']]]
+  ['ptr_7',['Ptr',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa0d15c3f4996a83bc4544a89616c1602c',1,'thorin::Tag::Ptr()'],['../namespacethorin_1_1mem.html#af449fca7e2cf0f5919c3610cca879949a489b2e1768a06164eac71c62993c12f2',1,'thorin::mem::Ptr()']]]
 ];

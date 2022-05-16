@@ -88,15 +88,15 @@ var NAVTREEINDEX =
 "classthorin_1_1LoopTree_1_1Leaf.html",
 "classthorin_1_1RetWrap.html#aa9a31d88a64f935f99d2cc21cfd5c5a7",
 "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4e9e215aa0e27db0493d465ff6f4f079",
-"classthorin_1_1World.html#a2e9417359989eb2dce13aaa9cc38f36b",
-"classthorin_1_1World.html#ab7c47a0ea25e27f50060ea6603e4101b",
-"classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa",
-"lam_8cpp_source.html",
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9",
-"namespacethorin.html#ae6638e502eba2c4a1229a5a1af1cfb29",
-"partial__eval_8h_source.html",
-"structthorin_1_1Fold_3_01Shr_00_01Shr_1_1lshr_00_01w_01_4.html#a94a80b87fbdde7be7e5159d550a29c13",
-"tables_8h.html#aec7c9c368dda260071936391c37a72e3a13e9f0f7ec00ce86e65f26031d80b7ba"
+"classthorin_1_1World.html#a2e6b235facae4b0584ee55d8c2fad15f",
+"classthorin_1_1World.html#ab73ab54ae387bee661eec51133bdccb9",
+"classthorin_1_1utf8_1_1Lexer.html#a8501db85f043276bad22a6fb4e90df77",
+"lam_8cpp.html",
+"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9ae358efa489f58062f10dd7316b65649e",
+"namespacethorin.html#af122652e0676e66b0c0aa02a0b3dfbe0",
+"pass_8h.html#a13419c0e67f8ea50a5640636f752e7d4",
+"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1shl_00_01w_01_4.html",
+"tables_8h.html#aec7c9c368dda260071936391c37a72e3a5dae429688af1c521ad87ac394192c6d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

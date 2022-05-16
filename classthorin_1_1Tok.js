@@ -6,6 +6,7 @@ var classthorin_1_1Tok =
     [ "Tag", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038", [
       [ "CODE", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a8e8e97f0a5efc333f823cf9417d32d3f", null ],
       [ "K_module", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ab47f1334f10c60f51233f889228de333", null ],
+      [ "K_import", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a86d887ab52987c7cae217900a37da7c0", null ],
       [ "K_ax", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aeaa32cc02c0ea4e8ccee5cf521bfc98b", null ],
       [ "K_def", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ae12060443298f0c9750e3e6210044b66", null ],
       [ "K_let", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038abc3b81567a2120d32858af82e3a5fcea", null ],

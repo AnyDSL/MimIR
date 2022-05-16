@@ -16,7 +16,7 @@ var searchData=
   ['sloxy_13',['Sloxy',['../classthorin_1_1SSAConstr.html#a5dff55da1bf0b22328fe9a8dd262728babcaef4bb721e14e6891b29a89d7961bb',1,'thorin::SSAConstr']]],
   ['space_14',['Space',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394',1,'thorin']]],
   ['srem_15',['srem',['../namespacethorin.html#aab48efce9aa14b70a78aff291a41e361a6dcaf449415765e1fc8503e76318736b',1,'thorin']]],
-  ['store_16',['Store',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa617635d8295c3800871d2fba4985aa04',1,'thorin::Tag']]],
-  ['store_17',['store',['../namespacethorin.html#ac10bc4621591d7d3e244f02b4d725aeeabbeefc3a5f558f8a819d9fb41d6d8fa2',1,'thorin']]],
+  ['store_16',['store',['../namespacethorin_1_1mem.html#af449fca7e2cf0f5919c3610cca879949aedd8332664b0faa26d6ccf5175249f5d',1,'thorin::mem']]],
+  ['store_17',['Store',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa617635d8295c3800871d2fba4985aa04',1,'thorin::Tag']]],
   ['sub_18',['sub',['../namespacethorin.html#af3d5ac78a410ae219775ffd1989e0a40a8a68dc3e925eacf92633be230722a140',1,'thorin::sub()'],['../namespacethorin.html#a4ade87d234831fccb4c6e71b7eb18348a8a68dc3e925eacf92633be230722a140',1,'thorin::sub()']]]
 ];

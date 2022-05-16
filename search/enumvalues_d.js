@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['m_0',['M',['../namespacethorin.html#ac10bc4621591d7d3e244f02b4d725aeeacd84a636419da7216e77d4013e7ffa48',1,'thorin']]],
+  ['m_0',['M',['../namespacethorin_1_1mem.html#af449fca7e2cf0f5919c3610cca879949a377d65288be8e6e2ecc0c463e7ba6ee8',1,'thorin::mem']]],
   ['m_5fax_1',['M_ax',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a1ef8e7607bcf243cfc0c820569e1ff3d',1,'thorin::Tok']]],
   ['m_5feof_2',['M_eof',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa5958f3529ffa5352df7abb68e3d6e94',1,'thorin::Tok']]],
   ['m_5fi_3',['M_i',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038acf02c22fc164faf4976cae168d7d73bd',1,'thorin::Tok']]],
