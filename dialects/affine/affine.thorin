@@ -1,0 +1,5 @@
+.import mem;
+
+.ax :affine.for: Π [m: .Nat , n: .Nat , Ts: «n; *»] ->
+    [memory : :mem.M, start : :Int m, stop : :Int m, step : :Int m, accumulators : «i: n; Ts#i»,
+    body : .Cn [:mem.M , «i: n; Ts#i», continue : .Cn [:mem.M , «i: n; Ts#i»]], exit : .Cn [:mem.M , «i: n; Ts#i»]];
