@@ -78,6 +78,9 @@ private:
         expect(delim_r, std::string("closing delimiter of a ") + ctxt);
     }
 
+    // parse import statement
+    void parse_import();
+
     /// @name Tracker
     ///@{
     /// Trick to easily keep track of Loc%ations.

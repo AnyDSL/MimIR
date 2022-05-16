@@ -10,6 +10,7 @@ namespace thorin {
 // clang-format off
 #define THORIN_KEY(m)                  \
     m(K_module, ".module")             \
+    m(K_import, ".import")             \
     m(K_ax,     ".ax"    )             \
     m(K_def,    ".def"   )             \
     m(K_let,    ".let"   )             \
