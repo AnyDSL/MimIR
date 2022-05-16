@@ -1,5 +1,6 @@
 var classthorin_1_1Sigma =
 [
+    [ "check", "classthorin_1_1Sigma.html#a5041e0483d9cce552fa1fb29ab3b5cbd", null ],
     [ "rebuild", "classthorin_1_1Sigma.html#a1a9b2495ae2884daf614122f135ebaf8", null ],
     [ "set", "classthorin_1_1Sigma.html#af3247a904da040af13df964419d93b4a", null ],
     [ "set", "classthorin_1_1Sigma.html#a091082369cfed9d6f15cdf1211054e3b", null ],

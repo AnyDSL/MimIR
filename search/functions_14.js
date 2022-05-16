@@ -9,8 +9,9 @@ var searchData=
   ['univ_6',['univ',['../classthorin_1_1World.html#af5dccad9055934bc02d775b1744441e1',1,'thorin::World']]],
   ['unreachable_7',['unreachable',['../namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9',1,'thorin']]],
   ['unset_8',['unset',['../classthorin_1_1Def.html#a2f616ff4efad73f2589e6161d6b4f10f',1,'thorin::Def::unset()'],['../classthorin_1_1Def.html#ad0ea206ded848435dadac1aa06483782',1,'thorin::Def::unset(size_t i)']]],
-  ['unwrap_9',['Unwrap',['../structthorin_1_1Unwrap.html#a8a507f4d854fa648ead0b731ee3f1f91',1,'thorin::Unwrap']]],
-  ['use_10',['Use',['../classthorin_1_1Use.html#ab04c9352606031636db45fe943262462',1,'thorin::Use::Use(const Def *def, size_t index)'],['../classthorin_1_1Use.html#a0d49bf17bfb4d916e5b655fcf1c1be95',1,'thorin::Use::Use()']]],
-  ['use_5fbreakpoint_11',['use_breakpoint',['../classthorin_1_1World.html#ab2b4b3ed8f15ed97e0df04f550589f54',1,'thorin::World']]],
-  ['uses_12',['uses',['../classthorin_1_1Scheduler.html#a2de2f46e34c2d7061d4c967a8ba26791',1,'thorin::Scheduler::uses()'],['../classthorin_1_1Def.html#a8f66f1a1cfbfce39608ca318288866d4',1,'thorin::Def::uses()']]]
+  ['unset_5ftype_9',['unset_type',['../classthorin_1_1Def.html#acadf49a1136933dd351dd5780c5ee96f',1,'thorin::Def']]],
+  ['unwrap_10',['Unwrap',['../structthorin_1_1Unwrap.html#a8a507f4d854fa648ead0b731ee3f1f91',1,'thorin::Unwrap']]],
+  ['use_11',['Use',['../classthorin_1_1Use.html#a0d49bf17bfb4d916e5b655fcf1c1be95',1,'thorin::Use::Use()'],['../classthorin_1_1Use.html#ab04c9352606031636db45fe943262462',1,'thorin::Use::Use(const Def *def, size_t index)']]],
+  ['use_5fbreakpoint_12',['use_breakpoint',['../classthorin_1_1World.html#ab2b4b3ed8f15ed97e0df04f550589f54',1,'thorin::World']]],
+  ['uses_13',['uses',['../classthorin_1_1Scheduler.html#a2de2f46e34c2d7061d4c967a8ba26791',1,'thorin::Scheduler::uses()'],['../classthorin_1_1Def.html#a8f66f1a1cfbfce39608ca318288866d4',1,'thorin::Def::uses()']]]
 ];

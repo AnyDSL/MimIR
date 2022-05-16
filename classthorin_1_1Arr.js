@@ -1,6 +1,7 @@
 var classthorin_1_1Arr =
 [
     [ "body", "classthorin_1_1Arr.html#a1740f9273698eb572e4ffe1b478ee430", null ],
+    [ "check", "classthorin_1_1Arr.html#a4b58a2a986be43283c32ddda6346c0d9", null ],
     [ "first_dependend_op", "classthorin_1_1Arr.html#abd9ea4793c96a6ac3cb593cb0e8e6fcc", null ],
     [ "rebuild", "classthorin_1_1Arr.html#a000218d92f0b2058a68724e50083e62f", null ],
     [ "restructure", "classthorin_1_1Arr.html#acfff71a2fb2c4876ef6e5c86c084cddb", null ],
