@@ -601,7 +601,9 @@ const Def* World::ac(const Def* type, Defs ops, const Def* dbg) {
 }
 
 const Def* World::vel(const Def* type, const Def* value, const Def* dbg) {
-    if (type->isa<Join>()) return unify<Vel>(1, type, value, dbg);
+    if (type->isa<Join>()) {
+        return unify<Vel>(1, type, value, dbg);
+    }
     return value;
 }
 
@@ -614,13 +616,13 @@ const Def* World::test(const Def* value, const Def* probe, const Def* match, con
     if (err()) {
         // TODO proper error msg
         assert(m_pi && c_pi);
-        auto a = isa_lit(c_pi->dom()->arity());
+        auto a = isa_lit(m_pi->dom()->arity());
         assert(a && *a == 2);
-        assert(checker_->equiv(c_pi->dom(2, 0_s), m_pi->dom()));
+        assert(checker_->equiv(m_pi->dom(2, 0_s), c_pi->dom()));
     }
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
-    return unify<Test>(4, pi(m_pi->dom(), codom), value, probe, match, clash, dbg);
+    return unify<Test>(4, pi(c_pi->dom(), codom), value, probe, match, clash, dbg);
 }
 
 const Def* World::singleton(const Def* inner_type, const Def* dbg) {
@@ -711,8 +713,6 @@ const Def* World::infer_type(Defs defs) {
         if (auto type = def->isa<Type>()) {
             level = std::max(level, as_lit(type->level()) + 1);
         } else if (auto type = def->type()->isa<Type>()) {
-            level = std::max(level, as_lit(type->level()));
-        } else if (auto type = def->type()->type()->as<Type>()) {
             level = std::max(level, as_lit(type->level()));
         }
     }
