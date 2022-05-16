@@ -290,6 +290,8 @@ Def* Def::set(size_t i, const Def* def) {
         ops_ptr()[i]  = def;
         const auto& p = def->uses_.emplace(this, i);
         assert_unused(p.second);
+
+        if (i == num_ops() - 1) check();
     }
     return this;
 }
@@ -301,6 +303,20 @@ void Def::unset(size_t i) {
     def->uses_.erase(Use(this, i));
     assert(!def->uses_.contains(Use(this, i)));
     ops_ptr()[i] = nullptr;
+}
+
+Def* Def::set_type(const Def* type) {
+    if (type_ != nullptr) unset_type();
+    type_ = type;
+    type->uses_.emplace(this, -1);
+    return this;
+}
+
+void Def::unset_type() {
+    assert(type_->uses_.contains(Use(this, size_t(-1))));
+    type_->uses_.erase(Use(this, size_t(-1)));
+    assert(!type_->uses_.contains(Use(this, size_t(-1))));
+    type_ = nullptr;
 }
 
 bool Def::is_set() const {

@@ -158,17 +158,18 @@ const Def* Parser::parse_var() {
 }
 
 const Def* Parser::parse_arr() {
-    push();
     auto track = tracker();
+    push();
     eat(Tok::Tag::D_quote_l);
 
-    const Def* shape;
-    // bool nom = false;
+    const Def* shape = nullptr;
+    Arr* arr         = nullptr;
     if (auto id = accept(Tok::Tag::M_id)) {
         if (accept(Tok::Tag::T_colon)) {
-            shape      = parse_expr("shape of an array");
-            auto infer = world().nom_infer(world().type_int(shape), id->sym(), id->loc());
-            insert(id->sym(), infer);
+            auto shape = parse_expr("shape of an array");
+            auto type  = world().nom_infer_univ();
+            arr        = world().nom_arr(type)->set_shape(shape);
+            insert(id->sym(), arr->var());
         } else {
             shape = find(id->sym());
         }
@@ -180,6 +181,8 @@ const Def* Parser::parse_arr() {
     auto body = parse_expr("body of an array");
     expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
     pop();
+
+    if (arr) return arr->set_body(body);
     return world().arr(shape, body, track);
 }
 

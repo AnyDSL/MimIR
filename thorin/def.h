@@ -165,6 +165,8 @@ public:
     void unset() {
         for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);
     }
+    Def* set_type(const Def*);
+    void unset_type();
 
     /// Are all Def::ops set?
     /// * `true` if all operands are set or Def::num_ops` == 0`.
@@ -346,8 +348,9 @@ public:
     const Def* reduce_rec() const;
     ///@}
 
-    /// @name rebuild & friends
+    /// @name virtual methods
     ///@{
+    virtual bool check() { return true; }
     virtual size_t first_dependend_op() { return 0; }
     virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
