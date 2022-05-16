@@ -100,8 +100,8 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
         case DECL:                  return parse_decls();
-        case Tok::Tag::D_angle_l:   return parse_pack_or_arr(true);
-        case Tok::Tag::D_quote_l:   return parse_pack_or_arr(false);
+        case Tok::Tag::D_quote_l:   return parse_arr();
+        case Tok::Tag::D_angle_l:   return parse_pack();
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_paren_l:   return parse_tuple();
@@ -157,31 +157,56 @@ const Def* Parser::parse_var() {
     return nom->var(track.named(sym));
 }
 
-const Def* Parser::parse_pack_or_arr(bool pack) {
+const Def* Parser::parse_arr() {
     push();
     auto track = tracker();
-    // TODO get rid of "pack or array"
-    eat(pack ? Tok::Tag::D_angle_l : Tok::Tag::D_quote_l);
+    eat(Tok::Tag::D_quote_l);
 
     const Def* shape;
     // bool nom = false;
     if (auto id = accept(Tok::Tag::M_id)) {
         if (accept(Tok::Tag::T_colon)) {
-            shape      = parse_expr("shape of a pack or array");
+            shape      = parse_expr("shape of an array");
             auto infer = world().nom_infer(world().type_int(shape), id->sym(), id->loc());
             insert(id->sym(), infer);
         } else {
             shape = find(id->sym());
         }
     } else {
-        shape = parse_expr("shape of a pack or array");
+        shape = parse_expr("shape of an array");
     }
 
-    expect(Tok::Tag::T_semicolon, "pack or array");
-    auto body = parse_expr("body of a pack or array");
-    expect(pack ? Tok::Tag::D_angle_r : Tok::Tag::D_quote_r, "closing delimiter of a pack or array");
+    expect(Tok::Tag::T_semicolon, "array");
+    auto body = parse_expr("body of an array");
+    expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
     pop();
     return world().arr(shape, body, track);
+}
+
+const Def* Parser::parse_pack() {
+    push();
+    auto track = tracker();
+    eat(Tok::Tag::D_angle_l);
+
+    const Def* shape;
+    // bool nom = false;
+    if (auto id = accept(Tok::Tag::M_id)) {
+        if (accept(Tok::Tag::T_colon)) {
+            shape      = parse_expr("shape of a pack");
+            auto infer = world().nom_infer(world().type_int(shape), id->sym(), id->loc());
+            insert(id->sym(), infer);
+        } else {
+            shape = find(id->sym());
+        }
+    } else {
+        shape = parse_expr("shape of a pack");
+    }
+
+    expect(Tok::Tag::T_semicolon, "pack");
+    auto body = parse_expr("body of a pack");
+    expect(Tok::Tag::D_angle_r, "closing delimiter of a pack");
+    pop();
+    return world().pack(shape, body, track);
 }
 
 const Def* Parser::parse_block() {
