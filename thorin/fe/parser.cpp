@@ -480,7 +480,6 @@ void Parser::parse_def(Sym sym /*= {}*/) {
 }
 
 void Parser::parse_import() {
-    auto track = tracker();
     eat(Tok::Tag::K_import);
     auto name = expect(Tok::Tag::M_id, "import name");
     expect(Tok::Tag::T_semicolon, "end of import");

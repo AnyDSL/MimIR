@@ -7,13 +7,15 @@ namespace thorin::h {
 void Bootstrapper::emit(std::ostream& h) {
     tab.print(h, "#ifndef THORIN_{}_H\n", dialect_);
     tab.print(h, "#define THORIN_{}_H\n\n", dialect_);
+    tab.print(h, "#include \"thorin/tables.h\"\n\n");
+    
     tab.print(h, "namespace thorin::{} {{\n\n", dialect_);
 
     tab.print(h, "enum Tag : tag_t {{\n");
     ++tab;
-    for (const auto& ax : axioms) tab.print(h, "{},\n", ax.group);
+    for (const auto& ax : axioms) tab.print(h, "{}_{},\n", ax.dialect, ax.group);
     --tab;
-    tab.print(h, "}}\n\n");
+    tab.print(h, "}};\n\n");
 
     for (const auto& ax : axioms) {
         if (auto& tags = ax.tags; !tags.empty()) {
@@ -25,11 +27,12 @@ void Bootstrapper::emit(std::ostream& h) {
                 for (size_t i = 1; i < aliases.size(); ++i) tab.print(h, "{} = {},\n", aliases[i], tag);
             }
             --tab;
-            tab.print(h, "}}\n\n");
+            tab.print(h, "}};\n\n");
         }
     }
 
-    tab.print(h, "}} // namespace thorin::{}\n", dialect_);
+    tab.print(h, "}} // namespace thorin::{}\n\n", dialect_);
+    tab.print(h, "#endif\n");
 }
 
 } // namespace thorin::h
