@@ -3,6 +3,7 @@ add_executable(thorin-gtest
     test.cpp
     for_ax.cpp
     ad_test.cpp
+    restricted_dep_types.cpp
 )
 
 target_link_libraries(thorin-gtest gtest_main libthorin)
