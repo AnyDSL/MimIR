@@ -174,10 +174,12 @@ Keywords</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>.module</code>   </td><td class="markdownTableBodyNone">starts a module    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>.Nat</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Nat.html">thorin::Nat</a>    </td></tr>
+<td class="markdownTableBodyNone"><code>.import</code>   </td><td class="markdownTableBodyNone">imports a dialect    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.ff</code>   </td><td class="markdownTableBodyNone">alias for <code>0₂</code>    </td></tr>
+<td class="markdownTableBodyNone"><code>.Nat</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Nat.html">thorin::Nat</a>    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.ff</code>   </td><td class="markdownTableBodyNone">alias for <code>0₂</code>    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone">alias for <code>1₂</code>   </td></tr>
 </table>
 <p >All keywords start with a <code>.</code> to prevent name clashes with identifiers.</p>
@@ -253,10 +255,10 @@ Regular Expressions</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">sym   </td><td class="markdownTableBodyNone">[ <code>_</code><code>a</code>-<code>z</code><code>A</code>-<code>Z</code> ][ <code>.</code><code>_</code><code>0</code>-<code>9</code><code>a</code>-<code>z</code><code>A</code>-<code>Z</code> ]*   </td><td class="markdownTableBodyNone">symbol   </td></tr>
 </table>
-<p >So, <em>sym</em> referes to the shorthand rule while <em>Sym</em> refers to the <em>terminal</em> that is identical to <em>sym</em>. However, the terminal <em>Ax</em> also uses the shorthand rule <em>sym</em>.</p>
+<p >So, <em>sym</em> refers to the shorthand rule while <em>Sym</em> refers to the <em>terminal</em> that is identical to <em>sym</em>. However, the terminal <em>Ax</em> also uses the shorthand rule <em>sym</em>.</p>
 <h2><a class="anchor" id="autotoc_md16"></a>
 Comments</h2>
-<p >In addition, the following comments are avaiable:</p><ul>
+<p >In addition, the following comments are available:</p><ul>
 <li><code>/* ... */</code> multi-line comment</li>
 <li><code>//</code> single-line comment</li>
 <li><code>///</code> single-line comment that is put into the Markdown output (see <a class="el" href="cli.html#emitters">Emitters</a>)</li>
@@ -266,14 +268,16 @@ Grammar</h1>
 <p >Thorin's grammar is defined as a <a href="https://en.wikipedia.org/wiki/Context-free_grammar">context-free grammar</a> that consists of the <em>terminals</em> defined <a class="el" href="langref.html#terminals">above</a> as well as the <em>nonterminals</em> and <em>productions</em> defined <a class="el" href="langref.html#productions">below</a>. The start symbol is "m" (module).</p>
 <h2><a class="anchor" id="productions"></a>
 Productions</h2>
-<p >The following tables comprise all produciton rules:</p>
+<p >The following tables comprise all production rules:</p>
 <h3><a class="anchor" id="autotoc_md18"></a>
 Module</h3>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Nonterminal   </th><th class="markdownTableHeadNone">Right-Hand Side   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">Thorin Class    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">m   </td><td class="markdownTableBodyNone">d ... d   </td><td class="markdownTableBodyNone">module   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">thorin::World</a>   </td></tr>
+<td class="markdownTableBodyNone">m   </td><td class="markdownTableBodyNone">i* d ... d   </td><td class="markdownTableBodyNone">module   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">thorin::World</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">i   </td><td class="markdownTableBodyNone"><code>.import</code> Sym <code>;</code>   </td><td class="markdownTableBodyNone">import   </td><td class="markdownTableBodyNone"></td></tr>
 </table>
 <h3><a class="anchor" id="autotoc_md19"></a>
 Declaration</h3>
@@ -287,7 +291,7 @@ Declaration</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.Pi</code> Sym ( <code>:</code> e<sub>type</sub> )? <code>,</code> e<sub>dom</sub> n   </td><td class="markdownTableBodyNone">nominal Pi declaration   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html" title="A function type AKA Pi type.">thorin::Pi</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.lam</code> Sym <code>,</code> e<sub>type</sub> n   </td><td class="markdownTableBodyNone">nominal lambda declaration   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">thorin::Lam</a>    </td></tr>
+<td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.lam</code> Sym <code>:</code> e<sub>type</sub> n   </td><td class="markdownTableBodyNone">nominal lambda declaration   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">thorin::Lam</a>    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.Arr</code> Sym ( <code>:</code> e<sub>type</sub> )? <code>,</code> e<sub>shape</sub> n   </td><td class="markdownTableBodyNone">nominal array declaration   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Arr.html">thorin::Arr</a>    </td></tr>
 <tr class="markdownTableRowEven">
@@ -359,7 +363,7 @@ Precedence</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e <code>→</code> e   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone">right-to-left   </td></tr>
 </table>
-<p >Note that the domain of a dependent function type binds slightly stronger than <code>→</code>. This has the effect that, e.g., <code>Π T: * → T -&gt; T</code> has the exepcted binding like this: (<code>Π T: *</code>) <code>→</code> (<code>T → T</code>). Otherwise, <code>→</code> would be consumed by the domain: <code>Π T:</code> (<code>* →</code> (<code>T → T</code>)) ↯. </p>
+<p >Note that the domain of a dependent function type binds slightly stronger than <code>→</code>. This has the effect that, e.g., <code>Π T: * → T -&gt; T</code> has the expected binding like this: (<code>Π T: *</code>) <code>→</code> (<code>T → T</code>). Otherwise, <code>→</code> would be consumed by the domain: <code>Π T:</code> (<code>* →</code> (<code>T → T</code>)) ↯. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
