@@ -57,6 +57,8 @@ void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
 }
 
 void Parser::parse_module() {
+    while (ahead().tag() == Tok::Tag::K_import) parse_import();
+
     parse_decls(false);
     expect(Tok::Tag::M_eof, "module");
 };
@@ -346,7 +348,6 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
     while (true) {
         // clang-format off
         switch (ahead().tag()) {
-            case Tok::Tag::K_import: parse_import(); break;
             case Tok::Tag::K_ax:     parse_ax();     break;
             case Tok::Tag::K_let:    parse_let();    break;
             case Tok::Tag::K_Sigma:

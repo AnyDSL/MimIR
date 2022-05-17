@@ -45,6 +45,7 @@ In addition the following keywords are *terminals*:
 | `.def`      | nominal definition        |
 | `.external` | marks nominal as external |
 | `.module`   | starts a module           |
+| `.import`   | imports a dialect         |
 | `.Nat`      | thorin::Nat               |
 | `.ff`       | alias for `0₂`            |
 | `.tt`       | alias for `1₂`            |
@@ -93,12 +94,12 @@ The previous table resorts to the following definitions as shorthand:
 | sign | \[ `+` `-` \]                                              |                                                 |
 | sym  | \[ `_``a`-`z``A`-`Z` \]\[ `.``_``0`-`9``a`-`z``A`-`Z` \]\* | symbol                                          |
 
-So, *sym* referes to the shorthand rule while *Sym* refers to the *terminal* that is identical to *sym*.
+So, *sym* refers to the shorthand rule while *Sym* refers to the *terminal* that is identical to *sym*.
 However, the terminal *Ax* also uses the shorthand rule *sym*.
 
 ### Comments
 
-In addition, the following comments are avaiable:
+In addition, the following comments are available:
 * `/* ... */` multi-line comment
 * `//` single-line comment
 * `///` single-line comment that is put into the Markdown output (see [Emitters](@ref emitters))
@@ -110,13 +111,14 @@ The start symbol is "m" (module).
 
 ### Productions {#productions}
 
-The following tables comprise all produciton rules:
+The following tables comprise all production rules:
 
 #### Module
 
-| Nonterminal | Right-Hand Side | Comment | Thorin Class  |
-|-------------|-----------------|---------|---------------|
-| m           | d ... d         | module  | thorin::World |
+| Nonterminal | Right-Hand Side   | Comment | Thorin Class  |
+|-------------|-------------------|---------|---------------|
+| m           | i\* d ... d       | module  | thorin::World |
+| i           | `.import` Sym `;` | import  |               |
 
 #### Declaration
 
@@ -125,7 +127,7 @@ The following tables comprise all produciton rules:
 | d           | `.ax` Sym `:` e<sub>type</sub> `;`                             | axiom                          | thorin::Axiom |
 | d           | `.let` Sym `:` e<sub>type</sub> `;`                            | let                            | -             |
 | d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n      | nominal Pi declaration         | thorin::Pi    |
-| d           | `.lam` Sym `,` e<sub>type</sub> n                              | nominal lambda declaration     | thorin::Lam   |
+| d           | `.lam` Sym `:` e<sub>type</sub> n                              | nominal lambda declaration     | thorin::Lam   |
 | d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n   | nominal array declaration      | thorin::Arr   |
 | d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n  | nominal pack declaration       | thorin::Pack  |
 | d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> n | nominal sigma declaration      | thorin::Sigma |
@@ -171,5 +173,5 @@ Expressions nesting is disambiguated according to the following precedence table
 | e `→` e       | function type                       | right-to-left |
 
 Note that the domain of a dependent function type binds slightly stronger than `→`.
-This has the effect that, e.g., `Π T: * → T -> T` has the exepcted binding like this: (`Π T: *`) `→` (`T → T`).
+This has the effect that, e.g., `Π T: * → T -> T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
 Otherwise, `→` would be consumed by the domain: `Π T:` (`* →` (`T → T`)) ↯.
