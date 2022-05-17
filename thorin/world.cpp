@@ -464,13 +464,9 @@ const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
 
 const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
-
-//    stream s2;
-//    s2.fmt("sigma [{, }] dbg: {}\n",ops,dbg);
-
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (ops[0]->isa<Pi>() && std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
     return unify<Sigma>(ops.size(), infer_type(ops), ops, dbg);
 }
 
@@ -724,8 +720,7 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     if (!type->isa_nom<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        // propagated problem from sigma
-//        if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return pack(n, ops[0]);
+        if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return pack(n, ops[0]);
     }
 
     // eta rule for tuples:
@@ -761,12 +756,6 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
 }
 
 const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index, const Def* dbg) {
-//    stream s2;
-//    s2.fmt("extract\n");
-//    s2.fmt("  ex_type {}\n",ex_type);
-//    s2.fmt("  tup {} : {}\n",tup, tup->type());
-//    s2.fmt("  index {} : {}\n",index,index->type());
-
     if (index->isa<Arr>() || index->isa<Pack>()) {
         DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(tup, index->ops().back()); });
         return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);
@@ -778,7 +767,6 @@ const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index,
             return sigma(ops,dbg);
         else
             return tuple(ops,dbg);
-//        return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
     }
 
     auto type = tup->type()->reduce_rec();
@@ -816,15 +804,7 @@ const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index,
         }
     }
 
-//    s2.fmt("  type (should be array): {}\n",type);
-    if(auto arr = type->isa<Arr>()){
-        type=arr->body();
-    }else {
-        type=type->op(0);
-    }
-//    s2.fmt("  inner type: {}\n",type);
-//    type = type->as<Arr>()->body();
-//    THORIN_UNREACHABLE;
+    type = type->as<Arr>()->body();
     return unify<Extract>(2, type, tup, index, dbg);
 }
 

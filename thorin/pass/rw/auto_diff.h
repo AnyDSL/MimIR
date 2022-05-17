@@ -5,6 +5,30 @@
 
 namespace thorin {
 
+// for multiple arguments, AD currently expects always flat elements instead of arrays
+// ([mem, r64, r64, cn[...]] instead of cn[mem, <2;r64>, cn [...]]
+//
+//    if (ops[0]->isa<Pi>() && std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+// in const Def* World::sigma(Defs ops, const Def* dbg);
+
+// also remove
+//if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return pack(n, ops[0]);
+// in const Def* World::tuple(const Def* type, Defs ops, const Def* dbg)
+
+/*
+if(auto arr = type->isa<Arr>()){
+    type=arr->body();
+}else {
+    type=type->op(0);
+}
+
+instead of
+
+type = type->as<Arr>()->body();
+ */
+
+
+
 /*
 Automatic Differentiation based on
 Backpropagation in the Simply Typed Lambda-Calculus with Linear Negation
