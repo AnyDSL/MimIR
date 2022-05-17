@@ -864,7 +864,7 @@ const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
         if (auto s = isa_lit(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body), dbg);
     }
 
-    return unify<Arr>(2, type(), shape, body, dbg);
+    return unify<Arr>(2, body->inf_type(), shape, body, dbg);
 }
 
 const Def* World::pack(const Def* shape, const Def* body, const Def* dbg) {

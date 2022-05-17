@@ -11,9 +11,9 @@
 #include "thorin/world.h"
 
 #include "thorin/pass/pass.h"
-#include "thorin/util/dlopen.h"
+#include "thorin/util/dl.h"
 
-using namespace thorin;
+namespace thorin::cli {
 
 void add_paths_from_env(std::vector<std::filesystem::path>& paths) {
     if (const char* env_path = std::getenv("THORIN_DIALECT_PATH")) {
@@ -36,7 +36,7 @@ std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std
     std::ranges::transform(paths, paths.begin(), [&](auto path) { return path.is_relative() ? cwd / path : path; });
 
     // add path/to/thorin.exe/../../lib
-    if(auto path = get_path_to_current_executable())
+    if(auto path = dl::get_path_to_current_executable())
         paths.emplace_back(*path);
 
     // add default install path
@@ -55,22 +55,16 @@ std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std
 std::vector<std::filesystem::path> get_plugin_name_variants(std::string_view name) {
     std::vector<std::filesystem::path> names;
     names.push_back(name); // if the user gives "libthorin_foo.so"
-    std::stringstream libName;
-#ifdef _WIN32
-    libName << "thorin_" << name << ".dll";
-#elif defined(__APPLE__)
-    libName << "libthorin_" << name << ".dylib";
-#else
-    libName << "libthorin_" << name << ".so";
-#endif
-    names.push_back(libName.str());
+    std::ostringstream lib;
+    print(lib, "{}thorin_{}{}", dl::prefix(), name, dl::extension());
+    names.push_back(lib.str());
     return names;
 }
 
 void test_plugin(const std::string& name, const std::vector<std::string>& search_paths) {
-    std::unique_ptr<void, decltype(&close_library)> handle{nullptr, close_library};
+    std::unique_ptr<void, decltype(&dl::close)> handle{nullptr, dl::close};
     if (auto path = std::filesystem::path{name}; path.is_absolute() && std::filesystem::is_regular_file(path))
-        handle.reset(load_library(name));
+        handle.reset(dl::open(name));
     if (!handle) {
         auto paths         = get_plugin_search_paths(search_paths);
         auto name_variants = get_plugin_name_variants(name);
@@ -79,7 +73,7 @@ void test_plugin(const std::string& name, const std::vector<std::string>& search
                 auto full_path = path / name_variant;
                 std::error_code ignore;
                 if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore)
-                    if (handle.reset(load_library(full_path.string())); handle) break;
+                    if (handle.reset(dl::open(full_path.string())); handle) break;
             }
             if (handle) break;
         }
@@ -87,8 +81,8 @@ void test_plugin(const std::string& name, const std::vector<std::string>& search
 
     if (!handle) throw std::runtime_error("error: cannot open plugin");
 
-    auto create  = (CreateIPass)get_symbol_from_library(handle.get(), "create");
-    auto destroy = (DestroyIPass)get_symbol_from_library(handle.get(), "destroy");
+    auto create  = (CreateIPass)dl::get(handle.get(), "create");
+    auto destroy = (DestroyIPass)dl::get(handle.get(), "destroy");
 
     if (!create || !destroy) throw std::runtime_error("error: cannot find symbol");
 
@@ -97,3 +91,5 @@ void test_plugin(const std::string& name, const std::vector<std::string>& search
     std::unique_ptr<IPass, DestroyIPass> pass{create(man), destroy};
     outln("hi from: '{}'", pass->name());
 }
+
+} // namespace thorin::cli

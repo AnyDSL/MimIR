@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
         // clang-format on
 
         if (!dialects.empty()) {
-            for (const auto& dialect : dialects) test_plugin(dialect, dialect_paths);
+            for (const auto& dialect : dialects) cli::test_plugin(dialect, dialect_paths);
             return EXIT_SUCCESS;
         }
 

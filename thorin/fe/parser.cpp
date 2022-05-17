@@ -1,5 +1,9 @@
 #include "thorin/fe/parser.h"
 
+#include <filesystem>
+#include <fstream>
+#include <sstream>
+
 // clang-format off
 #define DECL                \
          Tok::Tag::K_ax:    \
@@ -18,7 +22,7 @@ Parser::Parser(World& world, std::string_view file, std::istream& istream, std::
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
     , anonymous_(world.tuple_str("_"))
-    , bootstrapper_(file.substr(0, file.rfind('.'))) {
+    , bootstrapper_(std::filesystem::path{file}.filename().replace_extension("").string()) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
     push(); // root scope
@@ -100,8 +104,8 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
         case DECL:                  return parse_decls();
-        case Tok::Tag::D_angle_l:   return parse_pack_or_arr(true);
-        case Tok::Tag::D_quote_l:   return parse_pack_or_arr(false);
+        case Tok::Tag::D_quote_l:   return parse_arr();
+        case Tok::Tag::D_angle_l:   return parse_pack();
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::D_bracket_l: return parse_sigma();
         case Tok::Tag::D_paren_l:   return parse_tuple();
@@ -157,31 +161,59 @@ const Def* Parser::parse_var() {
     return nom->var(track.named(sym));
 }
 
-const Def* Parser::parse_pack_or_arr(bool pack) {
+const Def* Parser::parse_arr() {
+    auto track = tracker();
+    push();
+    eat(Tok::Tag::D_quote_l);
+
+    const Def* shape = nullptr;
+    Arr* arr         = nullptr;
+    if (auto id = accept(Tok::Tag::M_id)) {
+        if (accept(Tok::Tag::T_colon)) {
+            auto shape = parse_expr("shape of an array");
+            auto type  = world().nom_infer_univ();
+            arr        = world().nom_arr(type)->set_shape(shape);
+            insert(id->sym(), arr->var());
+        } else {
+            shape = find(id->sym());
+        }
+    } else {
+        shape = parse_expr("shape of an array");
+    }
+
+    expect(Tok::Tag::T_semicolon, "array");
+    auto body = parse_expr("body of an array");
+    expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
+    pop();
+
+    if (arr) return arr->set_body(body);
+    return world().arr(shape, body, track);
+}
+
+const Def* Parser::parse_pack() {
     push();
     auto track = tracker();
-    // TODO get rid of "pack or array"
-    eat(pack ? Tok::Tag::D_angle_l : Tok::Tag::D_quote_l);
+    eat(Tok::Tag::D_angle_l);
 
     const Def* shape;
     // bool nom = false;
     if (auto id = accept(Tok::Tag::M_id)) {
         if (accept(Tok::Tag::T_colon)) {
-            shape      = parse_expr("shape of a pack or array");
+            shape      = parse_expr("shape of a pack");
             auto infer = world().nom_infer(world().type_int(shape), id->sym(), id->loc());
             insert(id->sym(), infer);
         } else {
             shape = find(id->sym());
         }
     } else {
-        shape = parse_expr("shape of a pack or array");
+        shape = parse_expr("shape of a pack");
     }
 
-    expect(Tok::Tag::T_semicolon, "pack or array");
-    auto body = parse_expr("body of a pack or array");
-    expect(pack ? Tok::Tag::D_angle_r : Tok::Tag::D_quote_r, "closing delimiter of a pack or array");
+    expect(Tok::Tag::T_semicolon, "pack");
+    auto body = parse_expr("body of a pack");
+    expect(Tok::Tag::D_angle_r, "closing delimiter of a pack");
     pop();
-    return world().arr(shape, body, track);
+    return world().pack(shape, body, track);
 }
 
 const Def* Parser::parse_block() {
@@ -237,7 +269,7 @@ const Def* Parser::parse_type() {
 const Def* Parser::parse_pi() {
     auto track = tracker();
     eat(Tok::Tag::T_Pi);
-
+    push();
     std::optional<Tok> id;
     const Def* dom;
     if (id = accept(Tok::Tag::M_id)) {
@@ -259,6 +291,7 @@ const Def* Parser::parse_pi() {
     auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
     pi->set_codom(codom);
     pi->set_dbg(track);
+    pop();
     pop();
     return pi;
 }
@@ -313,15 +346,16 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
     while (true) {
         // clang-format off
         switch (ahead().tag()) {
-            case Tok::Tag::K_ax:    parse_ax();  break;
-            case Tok::Tag::K_let:   parse_let(); break;
+            case Tok::Tag::K_import: parse_import(); break;
+            case Tok::Tag::K_ax:     parse_ax();     break;
+            case Tok::Tag::K_let:    parse_let();    break;
             case Tok::Tag::K_Sigma:
             case Tok::Tag::K_Arr:
             case Tok::Tag::K_pack:
             case Tok::Tag::K_Pi:
-            case Tok::Tag::K_lam:   parse_nom(); break;
-            case Tok::Tag::K_def:   parse_def(); break;
-            default:                return expr ? parse_expr("scpoe of a declaration") : nullptr;
+            case Tok::Tag::K_lam:    parse_nom();    break;
+            case Tok::Tag::K_def:    parse_def();    break;
+            default:                 return expr ? parse_expr("scope of a declaration") : nullptr;
         }
         // clang-format on
     }
@@ -443,6 +477,26 @@ void Parser::parse_def(Sym sym /*= {}*/) {
 
     nom->dump(0);
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");
+}
+
+void Parser::parse_import() {
+    eat(Tok::Tag::K_import);
+    auto name = expect(Tok::Tag::M_id, "import name");
+    expect(Tok::Tag::T_semicolon, "end of import");
+    auto name_str = name.sym().to_string();
+
+    std::ostringstream input_stream;
+    print(input_stream, "{}.thorin", name_str);
+    auto input =
+        (std::filesystem::path{lexer_.file()}.parent_path().parent_path() / name_str / input_stream.str()).string();
+    std::ifstream ifs(input);
+
+    if (!ifs) err("error: cannot import file '{}'", input);
+
+    Parser parser(world(), input, ifs);
+    parser.parse_module();
+    assert(parser.scopes_.size() == 1 && scopes_.size() == 1);
+    scopes_.front().merge(parser.scopes_.back());
 }
 
 } // namespace thorin
