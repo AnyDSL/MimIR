@@ -330,6 +330,7 @@ public:
     const Def* vel(const Def* type, const Def* value, const Def* dbg = {});
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg = {});
+    const Def* singleton(const Def* inner_type, const Def* dbg = {});
     ///@}
 
     /// @name globals -- depdrecated; will be removed

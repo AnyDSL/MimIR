@@ -63,27 +63,28 @@ Nat::Nat(World& world)
  * rebuild
  */
 
-const Def* App    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.app(o[0], o[1], dbg); }
-const Def* Arr    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.arr(o[0], o[1], dbg); }
-const Def* Ac     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.ac(t, o, dbg); }
-const Def* Extract::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.extract_(t, o[0], o[1], dbg); }
-const Def* Insert ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.insert(o[0], o[1], o[2], dbg); }
-const Def* Lam    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.lam(t->as<Pi>(), o[0], o[1], dbg); }
-const Def* Lit    ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.lit(t, get(), dbg); }
-const Def* Nat    ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_nat(); }
-const Def* Pack   ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pack(t->arity(), o[0], dbg); }
-const Def* Pi     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.pi(o[0], o[1], dbg); }
-const Def* Pick   ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pick(t, o[0], dbg); }
-const Def* Proxy  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->index(), as<Proxy>()->flags(), dbg); }
-const Def* Sigma  ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.sigma(o, dbg); }
-const Def* Type   ::rebuild(World& w, const Def*  , Defs o, const Def*    ) const { return w.type(o[0]); }
-const Def* Test   ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.test(o[0], o[1], o[2], o[3], dbg); }
-const Def* Tuple  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.tuple(t, o, dbg); }
-const Def* Univ   ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.univ(); }
-const Def* Var    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.var(t, o[0]->as_nom(), dbg); }
-const Def* Vel    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
+const Def* Ac       ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.ac(t, o, dbg); }
+const Def* App      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.app(o[0], o[1], dbg); }
+const Def* Arr      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.arr(o[0], o[1], dbg); }
+const Def* Extract  ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.extract_(t, o[0], o[1], dbg); }
+const Def* Insert   ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.insert(o[0], o[1], o[2], dbg); }
+const Def* Lam      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.lam(t->as<Pi>(), o[0], o[1], dbg); }
+const Def* Lit      ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.lit(t, get(), dbg); }
+const Def* Nat      ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_nat(); }
+const Def* Pack     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pack(t->arity(), o[0], dbg); }
+const Def* Pi       ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.pi(o[0], o[1], dbg); }
+const Def* Pick     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pick(t, o[0], dbg); }
+const Def* Proxy    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->index(), as<Proxy>()->flags(), dbg); }
+const Def* Sigma    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.sigma(o, dbg); }
+const Def* Singleton::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.singleton(o[0], dbg); }
+const Def* Type     ::rebuild(World& w, const Def*  , Defs o, const Def*    ) const { return w.type(o[0]); }
+const Def* Test     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.test(o[0], o[1], o[2], o[3], dbg); }
+const Def* Tuple    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.tuple(t, o, dbg); }
+const Def* Univ     ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.univ(); }
+const Def* Var      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.var(t, o[0]->as_nom(), dbg); }
+const Def* Vel      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
 
-const Def* Axiom  ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const {
+const Def* Axiom    ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const {
     auto res = w.axiom(normalizer(), t, tag(), flags(), dbg);
     assert(&w != &world() || gid() == res->gid());
     return res;
