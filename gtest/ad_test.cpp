@@ -39,7 +39,6 @@ TEST(ADTest, square) {
 
     // Cn [mem, i32, Cn [mem, i32]]
     auto main_t                 = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
-//    auto main_t = w.cn({mem_t, w.cn({mem_t, i32_t})});
     auto main = w.nom_lam(main_t, w.dbg("main"));
 
     auto f_t = w.cn({mem_t, r32_t, w.cn({mem_t, r32_t})});
@@ -117,24 +116,9 @@ TEST(ADTest, square) {
         }
     );
 
-//    printf("DONE");
-//    fprintf(stderr,"ERR");
-
-//    Lam* Lam::branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg) {
-
-//
-//
-//
-//
-//    auto [mem, ret] = main->vars<2>();
-//    main->app(ret, {mem, argc});
     main->make_external();
 
 
-//    std::ofstream file("test.ll");
-//    Stream s(file);
-//    ll::emit(w, s);
-//    file.close();
 
 
     std::ofstream ofs("test_ad.thorin");
