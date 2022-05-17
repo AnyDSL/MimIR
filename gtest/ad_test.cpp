@@ -28,6 +28,7 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 
+#define verbose
 
 using namespace thorin;
 TEST(ADTest, square) {
@@ -119,18 +120,20 @@ TEST(ADTest, square) {
     main->make_external();
 
 
-
-
+#ifdef verbose
     std::ofstream ofs("test_ad.thorin");
     ofs << w;
     ofs.close();
+#endif
 
     // replace rev_diff axiom => perform AD
     PassMan::run<AutoDiff>(w);
 
+#ifdef verbose
     std::ofstream ofs2("test_ad_2.thorin");
     ofs2 << w;
     ofs2.close();
+#endif
 
     PassMan opt(w);
     opt.add<PartialEval>();
@@ -152,9 +155,11 @@ TEST(ADTest, square) {
     codgen_prep.add<RetWrap>();
     codgen_prep.run();
 
+#ifdef verbose
     std::ofstream ofs3("test_ad_3.thorin");
     ofs3 << w;
     ofs3.close();
+#endif
 
     std::ofstream ofs_ll("test_ad.ll");
     ll::emit(w, ofs_ll);
@@ -163,3 +168,5 @@ TEST(ADTest, square) {
     std::system("clang test_ad.ll -o test_ad");
     assert(0 == WEXITSTATUS(std::system("./test_ad")));
 }
+
+#undef verbose
