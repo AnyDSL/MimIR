@@ -165,6 +165,7 @@ var hierarchy =
         [ "thorin::Pick", "classthorin_1_1Pick.html", null ],
         [ "thorin::Proxy", "classthorin_1_1Proxy.html", null ],
         [ "thorin::Sigma", "classthorin_1_1Sigma.html", null ],
+        [ "thorin::Singleton", "classthorin_1_1Singleton.html", null ],
         [ "thorin::Test", "classthorin_1_1Test.html", null ],
         [ "thorin::Tuple", "classthorin_1_1Tuple.html", null ],
         [ "thorin::Type", "classthorin_1_1Type.html", null ],

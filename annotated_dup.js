@@ -121,6 +121,7 @@ var annotated_dup =
       [ "Scope", "classthorin_1_1Scope.html", "classthorin_1_1Scope" ],
       [ "ScopeError", "classthorin_1_1ScopeError.html", "classthorin_1_1ScopeError" ],
       [ "Sigma", "classthorin_1_1Sigma.html", "classthorin_1_1Sigma" ],
+      [ "Singleton", "classthorin_1_1Singleton.html", "classthorin_1_1Singleton" ],
       [ "SSAConstr", "classthorin_1_1SSAConstr.html", "classthorin_1_1SSAConstr" ],
       [ "Sym", "classthorin_1_1Sym.html", "classthorin_1_1Sym" ],
       [ "SymHash", "structthorin_1_1SymHash.html", "structthorin_1_1SymHash" ],

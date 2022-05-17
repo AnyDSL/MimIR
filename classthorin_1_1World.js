@@ -200,6 +200,7 @@ var classthorin_1_1World =
     [ "set_name", "classthorin_1_1World.html#a81628ab0fd6c2744a326e44a73c45d4b", null ],
     [ "sigma", "classthorin_1_1World.html#afd30139d6909256a67bfbb64eb78d777", null ],
     [ "sigma", "classthorin_1_1World.html#a01eb3ba9b7cac35c7870a931ac87fd2b", null ],
+    [ "singleton", "classthorin_1_1World.html#a611a9eca4eab99d82245b3e221922101", null ],
     [ "str2level", "classthorin_1_1World.html#ae91b0a8134e79db40ba17cd288962a91", null ],
     [ "stream", "classthorin_1_1World.html#a7893710374a78bed4a982ef6d90ed911", null ],
     [ "stub", "classthorin_1_1World.html#a054b898a795f58d4448776b97c27b4bc", null ],
