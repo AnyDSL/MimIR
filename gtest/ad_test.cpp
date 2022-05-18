@@ -13,12 +13,7 @@
 #include "thorin/pass/pass.h"
 #include "thorin/pass/rw/auto_diff.h"
 
-//#include "thorin/pass/fp/beta_red.h"
-//#include "thorin/pass/fp/copy_prop.h"
-//#include "thorin/pass/fp/eta_exp.h"
-//#include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/ssa_constr.h"
-#include "thorin/pass/rw/auto_diff.h"
 #include "thorin/pass/fp/tail_rec_elim.h"
 #include "thorin/pass/rw/alloc2malloc.h"
 #include "thorin/pass/rw/bound_elim.h"
@@ -28,7 +23,7 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 
-#define verbose
+//#define verbose
 
 using namespace thorin;
 TEST(ADTest, square) {
@@ -166,7 +161,8 @@ TEST(ADTest, square) {
     ofs_ll.close();
 
     std::system("clang test_ad.ll -o test_ad");
-    EXPECT_EQ(0, WEXITSTATUS(std::system("./test_ad")));
+    int status = std::system("./test_ad");
+    EXPECT_EQ(0, WEXITSTATUS(status));
 }
 
 #undef verbose
