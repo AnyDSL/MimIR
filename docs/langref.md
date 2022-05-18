@@ -117,7 +117,7 @@ The following tables comprise all production rules:
 
 | Nonterminal | Right-Hand Side   | Comment | Thorin Class  |
 |-------------|-------------------|---------|---------------|
-| m           | i\* d ... d       | module  | thorin::World |
+| m           | i\* d\*           | module  | thorin::World |
 | i           | `.import` Sym `;` | import  |               |
 
 #### Declaration
@@ -125,7 +125,7 @@ The following tables comprise all production rules:
 | Nonterminal | Right-Hand Side                                                | Comment                        | Thorin Class  |
 |-------------|----------------------------------------------------------------|--------------------------------|---------------|
 | d           | `.ax` Sym `:` e<sub>type</sub> `;`                             | axiom                          | thorin::Axiom |
-| d           | `.let` Sym `:` e<sub>type</sub> `;`                            | let                            | -             |
+| d           | `.let` Sym `:` e<sub>type</sub> `=` e `;`                      | let                            | -             |
 | d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n      | nominal Pi declaration         | thorin::Pi    |
 | d           | `.lam` Sym `:` e<sub>type</sub> n                              | nominal lambda declaration     | thorin::Lam   |
 | d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n   | nominal array declaration      | thorin::Arr   |
@@ -153,7 +153,7 @@ The following tables comprise all production rules:
 | e           | `.ins` `(` e `,` e `,` e ` )`      | insert                              | thorin::Insert  |
 | e           | `(` e `,` ... `,` e` )` ( `:` e )? | tuple with optional type ascription | thorin::Tuple   |
 | e           | `[` e `,` ... `,` e `]`            | sigma                               | thorin::Sigma   |
-| e           | d ... d e                          | declaration block                   | -               |
+| e           | d\* e                              | declaration block                   | -               |
 
 An elided type of
 * a literal defaults to `.Nat`,
