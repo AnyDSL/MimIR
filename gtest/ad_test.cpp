@@ -166,7 +166,7 @@ TEST(ADTest, square) {
     ofs_ll.close();
 
     std::system("clang test_ad.ll -o test_ad");
-    assert(0 == WEXITSTATUS(std::system("./test_ad")));
+    EXPECT_EQ(0, WEXITSTATUS(std::system("./test_ad")));
 }
 
 #undef verbose
