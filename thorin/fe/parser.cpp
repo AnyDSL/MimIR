@@ -70,9 +70,9 @@ Sym Parser::parse_sym(std::string_view ctxt) {
     return world().sym("<error>", world().dbg((Loc)track));
 }
 
-const Def* Parser::parse_expr(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::Bottom*/) {
+const Def* Parser::parse_dep_expr(std::string_view ctxt, Binders* binders, Tok::Prec p /*= Tok::Prec::Bot*/) {
     auto track = tracker();
-    auto lhs   = parse_primary_expr(ctxt);
+    auto lhs   = parse_primary_expr(ctxt, binders);
 
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
@@ -102,14 +102,14 @@ const Def* Parser::parse_expr(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::
     return lhs;
 }
 
-const Def* Parser::parse_primary_expr(std::string_view ctxt) {
+const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
     // clang-format off
     switch (ahead().tag()) {
         case DECL:                  return parse_decls();
         case Tok::Tag::D_quote_l:   return parse_arr();
         case Tok::Tag::D_angle_l:   return parse_pack();
         case Tok::Tag::D_brace_l:   return parse_block();
-        case Tok::Tag::D_bracket_l: return parse_sigma();
+        case Tok::Tag::D_bracket_l: return parse_sigma(binders);
         case Tok::Tag::D_paren_l:   return parse_tuple();
         case Tok::Tag::K_Cn:        return parse_Cn();
         case Tok::Tag::K_Type:      return parse_type();
@@ -227,30 +227,36 @@ const Def* Parser::parse_block() {
     return res;
 }
 
-const Def* Parser::parse_sigma() {
+const Def* Parser::parse_sigma(Binders* binders) {
     auto track = tracker();
-    bool nom   = false;
+    push();
+    bool nom = false;
     DefVec ops;
+    size_t i = 0;
     parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
         if (auto id = accept(Tok::Tag::M_id)) {
+            auto sym = id->sym();
             if (accept(Tok::Tag::T_colon)) {
-                auto type  = parse_expr("type of a sigma element");
-                auto infer = world().nom_infer(type, id->sym(), id->loc());
+                Binders inner;
+                auto type  = parse_dep_expr("type of a sigma element", &inner);
+                auto infer = world().nom_infer(type, sym, id->loc());
                 nom        = true;
-                insert(id->sym(), infer);
+                insert(sym, infer);
                 ops.emplace_back(type);
+
+                if (binders) binders->emplace_back(sym, i);
             } else {
-                ops.emplace_back(find(id->sym()));
+                ops.emplace_back(find(sym));
             }
         } else {
             ops.emplace_back(parse_expr("element of a sigma"));
         }
+        ++i;
     });
 
-    if (!nom) return world().sigma(ops, track);
-    auto sigma = world().nom_sigma(world().nom_infer_univ(), ops.size(), track);
-    sigma->set(ops);
-    return sigma;
+    pop();
+    if (nom) world().nom_sigma(world().nom_infer_univ(), ops.size(), track)->set(ops);
+    return world().sigma(ops, track);
 }
 
 const Def* Parser::parse_tuple() {
@@ -274,6 +280,7 @@ const Def* Parser::parse_pi() {
     push();
     std::optional<Tok> id;
     const Def* dom;
+    Binders binders;
     if (id = accept(Tok::Tag::M_id)) {
         if (accept(Tok::Tag::T_colon)) {
             dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
@@ -282,18 +289,17 @@ const Def* Parser::parse_pi() {
             id.reset();
         }
     } else {
-        dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
+        dom = parse_dep_expr("domain of a dependent function type", &binders, Tok::Prec::App);
     }
 
-    auto pi = world().nom_pi(world().nom_infer_univ(), dom);
-    pi->set_dom(dom);
-    push();
+    auto pi = world().nom_pi(world().nom_infer_univ(), dom)->set_dom(dom);
     if (id) insert(id->sym(), pi->var()); // TODO location/name
+    for (auto [sym, i] : binders) insert(sym, pi->var(i));
+
     expect(Tok::Tag::T_arrow, "dependent function type");
     auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
     pi->set_codom(codom);
     pi->set_dbg(track);
-    pop();
     pop();
     return pi;
 }

@@ -23,12 +23,12 @@
 /// ### :mem.load
 ///
 /// Loads from a pointer `ptr (T, as)` the pointed value of type `T`.
-.ax :mem.load:  Π [T: *, a: .Nat] -> [:mem.M, :mem.Ptr(T, a)] -> [:mem.M, T], normalize_load;
+.ax :mem.load:  Π [T: *, as: .Nat] -> [:mem.M, :mem.Ptr(T, as)] -> [:mem.M, T], normalize_load;
 ///
 /// ### :mem.store
 ///
 /// Stores a value of type `T` to a pointer `ptr (T, as)`,
-.ax :mem.store: Π [U: *, b: .Nat] -> [:mem.M, :mem.Ptr(U, b), U] -> :mem.M, normalize_store;
+.ax :mem.store: Π [T: *, as: .Nat] -> [:mem.M, :mem.Ptr(T, as), T] -> :mem.M, normalize_store;
 ///
 /// ## Operations without Side Effects
 ///

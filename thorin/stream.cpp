@@ -33,7 +33,7 @@ static Tok::Prec prec(const Def* def) {
     if (def->isa<App>()) return Tok::Prec::App;
     if (def->isa<Extract>()) return Tok::Prec::Extract;
     if (def->isa<Lit>()) return Tok::Prec::Lit;
-    return Tok::Prec::Bottom;
+    return Tok::Prec::Bot;
 }
 
 static Tok::Prec prec_l(const Def* def) {
@@ -41,14 +41,14 @@ static Tok::Prec prec_l(const Def* def) {
     if (def->isa<Pi>()) return Tok::Prec::App;
     if (def->isa<App>()) return Tok::Prec::App;
     if (def->isa<Extract>()) return Tok::Prec::Extract;
-    return Tok::Prec::Bottom;
+    return Tok::Prec::Bot;
 }
 
 static Tok::Prec prec_r(const Def* def) {
     if (def->isa<Pi>()) return Tok::Prec::Arrow;
     if (def->isa<App>()) return Tok::Prec::Extract;
     if (def->isa<Extract>()) return Tok::Prec::Lit;
-    return Tok::Prec::Bottom;
+    return Tok::Prec::Bot;
 }
 
 template<bool L>

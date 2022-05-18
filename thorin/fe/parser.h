@@ -16,16 +16,20 @@ namespace thorin {
 ///     It's the **caller's responsibility** to first make appropriate
 ///     [FIRST/FOLLOW](https://www.cs.uaf.edu/~cs331/notes/FirstFollow.pdf) checks.
 ///     Otherwise, an assertion will be triggered in the case of a syntax error.
+///
 /// 2. The `parse_*` method does have a `std::string_view ctxt` parameter:
 ///
 ///      The **called method** checks this and spits out an appropriate error message using `ctxt` in the case of a
 ///      syntax error.
+///
 /// 3. The `parse_*` method does have a `std::string_view ctxt = {}` parameter **with default argument**:
 ///
 ///      * If default argument is **elided** we have the same behavior as in 1.
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
+    using Binders = std::deque<std::pair<Sym, size_t>>;
+
     Parser(World&, std::string_view, std::istream&, std::ostream* md = nullptr);
 
     World& world() { return lexer_.world(); }
@@ -37,8 +41,9 @@ private:
 
     /// @name exprs
     ///@{
-    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bottom);
-    const Def* parse_primary_expr(std::string_view ctxt);
+    const Def* parse_dep_expr(std::string_view ctxt, Binders*, Tok::Prec = Tok::Prec::Bot);
+    const Def* parse_expr(std::string_view c, Tok::Prec p = Tok::Prec::Bot) { return parse_dep_expr(c, nullptr, p); }
+    const Def* parse_primary_expr(std::string_view ctxt, Binders*);
     const Def* parse_extract();
     ///@}
 
@@ -48,7 +53,7 @@ private:
     const Def* parse_arr();
     const Def* parse_pack();
     const Def* parse_block();
-    const Def* parse_sigma();
+    const Def* parse_sigma(Binders*);
     const Def* parse_tuple();
     const Def* parse_type();
     const Def* parse_pi();
