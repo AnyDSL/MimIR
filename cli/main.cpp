@@ -43,7 +43,7 @@ static std::string exec(const char* cmd) {
 static std::string get_clang_from_path() {
     std::string clang;
     clang = exec(WHICH_CLANG);
-    clang.erase(std::remove(clang.begin(), clang.end(), '\n'), clang.end());
+    clang.erase(std::find(clang.begin(), clang.end(), '\n'), clang.end());
     return clang;
 }
 
