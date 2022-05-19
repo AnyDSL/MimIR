@@ -88,24 +88,25 @@ void close(void* handle) {
 }
 
 std::optional<std::filesystem::path> get_path_to_current_executable() {
-#ifdef _WIN32
     std::vector<char> path_buffer;
     size_t read = 0;
     do {
         // start with 256 (almost MAX_PATH) and grow exp
         path_buffer.resize(std::max(path_buffer.size(), static_cast<size_t>(128)) * 2);
+#ifdef _WIN32
         read = GetModuleFileNameA(nullptr, path_buffer.data(), static_cast<DWORD>(path_buffer.size()));
-    } while (read == path_buffer.size()); // if equal, the buffer was too small.
-    if (read != 0) {
+#else
+        read = readlink("/proc/self/exe", path_buffer.data(), path_buffer.size());
+#endif
+    } while (read != size_t(-1) && read == path_buffer.size()); // if equal, the buffer was too small.
+    if (read != 0 && read != size_t(-1)) {
+#ifndef _WIN32
+        read++;
+#endif
         path_buffer.resize(read);
+        path_buffer.back() = 0;
         return std::filesystem::path{path_buffer.data()}.parent_path().parent_path() / "lib";
     }
-#else
-    Dl_info info;
-    if (dladdr(reinterpret_cast<void*>(&get_path_to_current_executable), &info)) {
-        return std::filesystem::path{info.dli_fname}.parent_path().parent_path() / "lib";
-    }
-#endif
     return {};
 }
 
