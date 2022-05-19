@@ -39,11 +39,14 @@ public:
     /// 1. \a search_paths, 2. env var \em THORIN_DIALECT_PATH, 3. "/path/to/executable"
     static Dialect load(const std::string& name, const std::vector<std::string>& search_paths);
 
+    /// Name of the dialect.
     std::string name() const { return info_.plugin_name; }
 
+    /// Shared object handle. Can be used with the functions from \ref dl.
     void* handle() { return handle_.get(); }
 
-    void register_passes(PipelineBuilder& man) const { info_.register_passes(man); }
+    /// Registers callbacks in the \a builder that extend the exposed PassMan's.
+    void register_passes(PipelineBuilder& builder) const { info_.register_passes(builder); }
 
 private:
     explicit Dialect(const std::string& plugin_path, std::unique_ptr<void, void (*)(void*)>&& handle);
