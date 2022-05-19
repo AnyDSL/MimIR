@@ -37,6 +37,25 @@ public:
     void bootstrap(std::ostream&);
 
 private:
+    /// @name Tracker
+    ///@{
+    /// Trick to easily keep track of Loc%ations.
+    class Tracker {
+    public:
+        Tracker(Parser& parser, const Pos& pos)
+            : parser_(parser)
+            , pos_(pos) {}
+
+        Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
+        operator const Def*() const { return parser_.world().dbg({"", loc()}); }
+        const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
+        const Def* named(Sym sym) const { return parser_.world().dbg({sym, loc()}); }
+
+    private:
+        Parser& parser_;
+        Pos pos_;
+    };
+
     Sym parse_sym(std::string_view ctxt = {});
 
     /// @name exprs
@@ -44,7 +63,7 @@ private:
     const Def* parse_dep_expr(std::string_view ctxt, Binders*, Tok::Prec = Tok::Prec::Bot);
     const Def* parse_expr(std::string_view c, Tok::Prec p = Tok::Prec::Bot) { return parse_dep_expr(c, nullptr, p); }
     const Def* parse_primary_expr(std::string_view ctxt, Binders*);
-    const Def* parse_extract();
+    const Def* parse_extract(Tracker, const Def*, Tok::Prec);
     ///@}
 
     /// @name primary exprs
@@ -85,25 +104,6 @@ private:
 
     // parse import statement
     void parse_import();
-
-    /// @name Tracker
-    ///@{
-    /// Trick to easily keep track of Loc%ations.
-    class Tracker {
-    public:
-        Tracker(Parser& parser, const Pos& pos)
-            : parser_(parser)
-            , pos_(pos) {}
-
-        Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
-        operator const Def*() const { return parser_.world().dbg({"", loc()}); }
-        const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
-        const Def* named(Sym sym) const { return parser_.world().dbg({sym, loc()}); }
-
-    private:
-        Parser& parser_;
-        Pos pos_;
-    };
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }

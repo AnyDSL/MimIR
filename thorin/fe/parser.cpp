@@ -77,11 +77,10 @@ const Def* Parser::parse_dep_expr(std::string_view ctxt, Binders* binders, Tok::
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         if (ahead().isa(Tok::Tag::T_extract)) {
-            auto [l, r] = Tok::prec(Tok::Prec::Extract);
-            if (l < p) break;
-            lex();
-            auto rhs = parse_expr("right-hand side of an extract", r);
-            lhs      = world().extract(lhs, rhs, track);
+            if (auto extract = parse_extract(track, lhs, p))
+                lhs = extract;
+            else
+                break;
         } else if (ahead().isa(Tok::Tag::T_arrow)) {
             auto [l, r] = Tok::prec(Tok::Prec::Arrow);
             if (l < p) break;
@@ -100,6 +99,31 @@ const Def* Parser::parse_dep_expr(std::string_view ctxt, Binders* binders, Tok::
     }
 
     return lhs;
+}
+
+
+const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
+    auto [l, r] = Tok::prec(Tok::Prec::Extract);
+    if (l < p) return nullptr;
+    lex();
+
+    if (ahead().isa(Tok::Tag::M_id)) {
+        if (auto sigma = lhs->type()->isa_nom<Sigma>()) {
+            auto id   = eat(Tok::Tag::M_id);
+            auto sym  = id.sym();
+            auto meta = sigma->meta();
+            if (meta->arity() == sigma->arity()) {
+                size_t a = sigma->num_ops();
+                for (size_t i = 0; i != a; ++i) {
+                    if (meta->proj(a, i) == sym) return world().extract(lhs, a, i, track);
+                }
+            }
+            err(id.loc(), "could not find elemement '{}' to extract from '{} of type '{}'", id.sym(), lhs, sigma);
+        }
+    }
+
+    auto rhs = parse_expr("right-hand side of an extract", r);
+    return world().extract(lhs, rhs, track);
 }
 
 const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
@@ -229,25 +253,27 @@ const Def* Parser::parse_block() {
 
 const Def* Parser::parse_sigma(Binders* binders) {
     auto track = tracker();
-    push();
-    bool nom = false;
-    DefVec ops;
-    size_t i = 0;
-    parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
-        if (auto id = accept(Tok::Tag::M_id)) {
-            auto sym = id->sym();
-            if (accept(Tok::Tag::T_colon)) {
-                Binders inner;
-                auto type  = parse_dep_expr("type of a sigma element", &inner);
-                auto infer = world().nom_infer(type, sym, id->loc());
-                nom        = true;
-                insert(sym, infer);
-                ops.emplace_back(type);
+    bool nom   = false;
+    size_t i   = 0;
+    auto bot   = world().bot(world().type_nat());
 
-                if (binders) binders->emplace_back(sym, i);
-            } else {
-                ops.emplace_back(find(sym));
-            }
+    push();
+    DefVec ops;
+    std::vector<const Def*> fields;
+    parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
+        fields.emplace_back(bot);
+        if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+            auto id  = eat(Tok::Tag::M_id);
+            auto sym = id.sym();
+            eat(Tok::Tag::T_colon);
+            auto type  = parse_expr("type of a sigma element");
+            auto infer = world().nom_infer(type, sym, id.loc());
+            nom        = true;
+            insert(sym, infer);
+            ops.emplace_back(type);
+
+            if (binders) binders->emplace_back(sym, i);
+                fields.back() = sym.def();
         } else {
             ops.emplace_back(parse_expr("element of a sigma"));
         }
@@ -255,7 +281,10 @@ const Def* Parser::parse_sigma(Binders* binders) {
     });
 
     pop();
-    if (nom) world().nom_sigma(world().nom_infer_univ(), ops.size(), track)->set(ops);
+    if (nom) {
+        auto meta = world().tuple(fields);
+        return world().nom_sigma(world().nom_infer_univ(), ops.size(), track.meta(meta))->set(ops);
+    }
     return world().sigma(ops, track);
 }
 
