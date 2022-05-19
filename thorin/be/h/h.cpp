@@ -28,13 +28,22 @@ void Bootstrapper::emit(std::ostream& h) {
     tab.print(h, "template<fields_t tag>\n"
                  "struct Tag2Def_ {{\n"
                  "    using type = App;\n"
-                 "}};\n\n"
+                 "}};\n\n");
 
-                 "template<fields_t tag>\n"
+    for (const auto& ax : axioms)
+        if (!ax.pi)
+            tab.print(h,
+                      "template<>\n"
+                      "struct Tag2Def_<Tag::{}_{}> {{"
+                      "    using type = Axiom;"
+                      "}};",
+                      ax.dialect, ax.group);
+
+    tab.print(h, "template<fields_t tag>\n"
                  "using Tag2Def = typename Tag2Def_<tag>::type;\n\n"
 
                  "template<fields_t tag>\n"
-                 "struct Tag2Enum_ {{ using type = tag_t; }};\n\n");
+                 "struct Tag2Enum_ {{ using type = fields_t; }};\n\n");
 
     for (const auto& ax : axioms) {
         if (auto& tags = ax.tags; !tags.empty()) {
@@ -57,10 +66,13 @@ void Bootstrapper::emit(std::ostream& h) {
 
     tab.print(
         h,
+        "template<fields_t tag> using Tag2Enum = typename Tag2Enum_<tag>::type;\n\n"
+
         "template<fields_t tag>\n"
         "Query<Tag2Enum<tag>, Tag2Def<tag>> isa(const Def* def) {{\n"
         "    auto [axiom, curry] = Axiom::get(def);\n"
-        "    if (axiom && axiom->fields() >> 8u == tag >> 8u && curry == 0) return {{axiom, def->as<Tag2Def<tag>>()}};\n"
+        "    if (axiom && axiom->fields() >> 8u == tag >> 8u && curry == 0) return {{axiom, "
+        "def->as<Tag2Def<tag>>()}};\n"
         "    return {{}};\n"
         "}}\n\n"
 
@@ -73,13 +85,13 @@ void Bootstrapper::emit(std::ostream& h) {
         "    return {{}};\n"
         "}}\n\n"
 
-        "template<tag_t t>\n"
+        "template<fields_t t>\n"
         "Query<Tag2Enum<t>, Tag2Def<t>> as(const Def* d) {{\n"
         "    assert(isa<t>(d));\n"
         "    return {{std::get<0>(Axiom::get(d)), d->as<App>()}};\n"
         "}}\n\n"
-        
-        "template<tag_t t>\n"
+
+        "template<fields_t t>\n"
         "Query<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {{\n"
         "    assert((isa<t>(f, d)));\n"
         "    return {{std::get<0>(Axiom::get(d)), d->as<App>()}};\n"

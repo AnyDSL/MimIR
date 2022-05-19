@@ -399,7 +399,9 @@ void Parser::parse_ax() {
     }
 
     expect(Tok::Tag::T_colon, "axiom");
-    auto type  = parse_expr("type of an axiom");
+    auto type = parse_expr("type of an axiom");
+    info.pi   = type->isa<Pi>() != nullptr;
+
     auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t(info.id & u32(-1)), track.named(ax.sym()));
     insert(ax.sym(), axiom);
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
