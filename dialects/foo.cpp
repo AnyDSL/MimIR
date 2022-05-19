@@ -1,7 +1,7 @@
 #include "foo.h"
 
 #include <thorin/config.h>
-#include <thorin/dialect.h>
+#include <thorin/dialects.h>
 
 #include "thorin/pass/pipelinebuilder.h"
 

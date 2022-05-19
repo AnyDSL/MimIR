@@ -7,8 +7,8 @@
 #include <lyra/lyra.hpp>
 
 #include "thorin/config.h"
+#include "thorin/dialects.h"
 
-#include "cli/dialects.h"
 #include "thorin/be/dot/dot.h"
 #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
@@ -107,9 +107,7 @@ int main(int argc, char** argv) {
 
         std::vector<Dialect> dialects;
         if (!dialect_names.empty()) {
-            for (const auto& dialect : dialect_names) {
-                dialects.push_back(Dialect::load_dialect_library(dialect, dialect_paths));
-            }
+            for (const auto& dialect : dialect_names) { dialects.push_back(Dialect::load(dialect, dialect_paths)); }
         }
 
         if (input.empty()) throw std::invalid_argument("error: no input given");
@@ -148,7 +146,7 @@ int main(int argc, char** argv) {
 
         PipelineBuilder builder;
         for (const auto& dialect : dialects) { dialect.register_passes(builder); }
-        
+
         auto opt = builder.opt_phase(world);
         opt.run();
         auto codegen_prep = builder.codegen_prep_phase(world);

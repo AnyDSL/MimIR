@@ -1,4 +1,4 @@
-#include "cli/dialects.h"
+#include "thorin/dialects.h"
 
 #include <cstdlib>
 
@@ -13,9 +13,9 @@
 #include "thorin/pass/pass.h"
 #include "thorin/util/dl.h"
 
-namespace thorin::cli {
+using namespace thorin;
 
-void add_paths_from_env(std::vector<std::filesystem::path>& paths) {
+static void add_paths_from_env(std::vector<std::filesystem::path>& paths) {
     if (const char* env_path = std::getenv("THORIN_DIALECT_PATH")) {
         std::stringstream env_path_stream{env_path};
         std::string sub_path;
@@ -26,7 +26,7 @@ void add_paths_from_env(std::vector<std::filesystem::path>& paths) {
     }
 }
 
-std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std::string>& user_paths) {
+static std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std::string>& user_paths) {
     std::vector<std::filesystem::path> paths{user_paths.begin(), user_paths.end()};
 
     add_paths_from_env(paths);
@@ -51,7 +51,7 @@ std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std
     return paths;
 }
 
-std::vector<std::filesystem::path> get_plugin_name_variants(std::string_view name) {
+static std::vector<std::filesystem::path> get_plugin_name_variants(std::string_view name) {
     std::vector<std::filesystem::path> names;
     names.push_back(name); // if the user gives "libthorin_foo.so"
     std::ostringstream lib;
@@ -60,34 +60,7 @@ std::vector<std::filesystem::path> get_plugin_name_variants(std::string_view nam
     return names;
 }
 
-} // namespace thorin::cli
-
-// todo: remove me again:
 namespace thorin {
-void test_world(World& w) {
-    auto mem_t  = w.type_mem();
-    auto i32_t  = w.type_int_width(32);
-    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
-
-    // Cn [mem, i32, Cn [mem, i32]]
-    auto main_t                 = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
-    auto main                   = w.nom_lam(main_t, w.dbg("main"));
-    auto [mem, argc, argv, ret] = main->vars<4>();
-    main->app(false, ret, {mem, argc});
-    main->make_external();
-}
-
-void test_plugin(Dialect& dialect) {
-    World world;
-    test_world(world);
-    PipelineBuilder builder{};
-    dialect.register_passes(builder);
-
-    auto man = builder.opt_phase(world);
-    for (auto& pass : man.passes()) std::cout << "pass: " << pass->name() << std::endl;
-    man.run();
-}
-
 Dialect::Dialect(const std::string& plugin_path, std::unique_ptr<void, decltype(&dl::close)>&& handle)
     : plugin_path_(plugin_path)
     , handle_(std::move(handle)) {
@@ -98,14 +71,14 @@ Dialect::Dialect(const std::string& plugin_path, std::unique_ptr<void, decltype(
     info_ = get_info();
 }
 
-Dialect Dialect::load_dialect_library(const std::string& name, const std::vector<std::string>& search_paths) {
+Dialect Dialect::load(const std::string& name, const std::vector<std::string>& search_paths) {
     std::unique_ptr<void, decltype(&dl::close)> handle{nullptr, dl::close};
     std::string plugin_path = name;
     if (auto path = std::filesystem::path{name}; path.is_absolute() && std::filesystem::is_regular_file(path))
         handle.reset(dl::open(name));
     if (!handle) {
-        auto paths         = cli::get_plugin_search_paths(search_paths);
-        auto name_variants = cli::get_plugin_name_variants(name);
+        auto paths         = get_plugin_search_paths(search_paths);
+        auto name_variants = get_plugin_name_variants(name);
         for (const auto& path : paths) {
             for (const auto& name_variant : name_variants) {
                 auto full_path = path / name_variant;

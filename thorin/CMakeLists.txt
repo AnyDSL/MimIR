@@ -7,6 +7,8 @@ add_library(libthorin
     debug.h
     def.cpp
     def.h
+    dialects.cpp
+    dialects.h
     error.cpp
     error.h
     lam.cpp
