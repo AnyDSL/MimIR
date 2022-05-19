@@ -2,7 +2,10 @@
 
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <sstream>
+
+#include "thorin/tables.h"
 
 // clang-format off
 #define DECL                \
@@ -381,6 +384,12 @@ void Parser::parse_ax() {
         // info.dialect, lexer_.file());
     }
 
+    // 6 bytes dialect name, 1 byte axiom group (tag), 1 byte flags
+    assert(bootstrapper_.axioms.size() < std::numeric_limits<u8>::max());
+
+    // dialect_and_group already tried mangling, so we know it's valid.
+    info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
+
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
             auto& aliases = info.tags.emplace_back();
@@ -391,7 +400,7 @@ void Parser::parse_ax() {
 
     expect(Tok::Tag::T_colon, "axiom");
     auto type  = parse_expr("type of an axiom");
-    auto axiom = world().axiom(type, track.named(ax.sym()));
+    auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t(info.id & u32(-1)), track.named(ax.sym()));
     insert(ax.sym(), axiom);
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
     expect(Tok::Tag::T_semicolon, "end of an axiom");
