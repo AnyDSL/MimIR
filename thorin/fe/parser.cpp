@@ -101,7 +101,6 @@ const Def* Parser::parse_dep_expr(std::string_view ctxt, Binders* binders, Tok::
     return lhs;
 }
 
-
 const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     auto [l, r] = Tok::prec(Tok::Prec::Extract);
     if (l < p) return nullptr;
@@ -273,14 +272,14 @@ const Def* Parser::parse_sigma(Binders* binders) {
             ops.emplace_back(type);
 
             if (binders) binders->emplace_back(sym, i);
-                fields.back() = sym.def();
+            fields.back() = sym.def();
         } else {
             ops.emplace_back(parse_expr("element of a sigma"));
         }
         ++i;
     });
-
     pop();
+
     if (nom) {
         auto meta = world().tuple(fields);
         return world().nom_sigma(world().nom_infer_univ(), ops.size(), track.meta(meta))->set(ops);

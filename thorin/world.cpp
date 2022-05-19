@@ -601,9 +601,7 @@ const Def* World::ac(const Def* type, Defs ops, const Def* dbg) {
 }
 
 const Def* World::vel(const Def* type, const Def* value, const Def* dbg) {
-    if (type->isa<Join>()) {
-        return unify<Vel>(1, type, value, dbg);
-    }
+    if (type->isa<Join>()) return unify<Vel>(1, type, value, dbg);
     return value;
 }
 
