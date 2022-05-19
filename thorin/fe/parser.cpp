@@ -194,13 +194,13 @@ const Def* Parser::parse_arr() {
     const Def* shape = nullptr;
     Arr* arr         = nullptr;
     if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
-        auto sym = eat(Tok::Tag::M_id).sym();
+        auto id = eat(Tok::Tag::M_id);
         eat(Tok::Tag::T_colon);
 
         auto shape = parse_expr("shape of an array");
         auto type  = world().nom_infer_univ();
         arr        = world().nom_arr(type)->set_shape(shape);
-        insert(sym, arr->var());
+        insert(id.sym(), arr->var(world().dbg({id.sym(), id.loc()})));
     } else {
         shape = parse_expr("shape of an array");
     }
@@ -216,8 +216,8 @@ const Def* Parser::parse_arr() {
 
 const Def* Parser::parse_pack() {
     // TODO This doesn't work. Rework this!
-    push();
     auto track = tracker();
+    push();
     eat(Tok::Tag::D_angle_l);
 
     const Def* shape;
@@ -241,11 +241,11 @@ const Def* Parser::parse_pack() {
 }
 
 const Def* Parser::parse_block() {
-    eat(Tok::Tag::D_brace_l);
     push();
+    eat(Tok::Tag::D_brace_l);
     auto res = parse_expr("block expression");
-    pop();
     expect(Tok::Tag::D_brace_r, "block expression");
+    pop();
     return res;
 }
 
@@ -255,9 +255,9 @@ const Def* Parser::parse_sigma(Binders* binders) {
     size_t i   = 0;
     auto bot   = world().bot(world().type_nat());
 
-    push();
     DefVec ops;
     std::vector<const Def*> fields;
+    push();
     parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
         fields.emplace_back(bot);
         if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
@@ -309,24 +309,20 @@ const Def* Parser::parse_pi() {
     std::optional<Tok> id;
     const Def* dom;
     Binders binders;
-    if (id = accept(Tok::Tag::M_id)) {
-        if (accept(Tok::Tag::T_colon)) {
-            dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
-        } else {
-            dom = find(id->sym());
-            id.reset();
-        }
+    if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+        id = eat(Tok::Tag::M_id);
+        eat(Tok::Tag::T_colon);
+        dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
     } else {
         dom = parse_dep_expr("domain of a dependent function type", &binders, Tok::Prec::App);
     }
 
     auto pi = world().nom_pi(world().nom_infer_univ(), dom)->set_dom(dom);
-    if (id) insert(id->sym(), pi->var()); // TODO location/name
-    for (auto [sym, i] : binders) insert(sym, pi->var(i));
+    if (id) insert(id->sym(), pi->var(world().dbg({id->sym(), id->loc()})));
+    for (auto [sym, i] : binders) insert(sym, pi->var(i)); // TODO location
 
     expect(Tok::Tag::T_arrow, "dependent function type");
-    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
-    pi->set_codom(codom);
+    pi->set_codom(parse_expr("codomain of a dependent function type", Tok::Prec::Arrow));
     pi->set_dbg(track);
     pop();
     return pi;
