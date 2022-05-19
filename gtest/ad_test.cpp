@@ -1,5 +1,7 @@
 #include <fstream>
+#include <sstream>
 
+#include <gtest/gtest-param-test.h>
 #include <gtest/gtest.h>
 
 #include "thorin/error.h"
