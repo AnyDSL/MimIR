@@ -194,15 +194,14 @@ const Def* Parser::parse_arr() {
 
     const Def* shape = nullptr;
     Arr* arr         = nullptr;
-    if (auto id = accept(Tok::Tag::M_id)) {
-        if (accept(Tok::Tag::T_colon)) {
-            auto shape = parse_expr("shape of an array");
-            auto type  = world().nom_infer_univ();
-            arr        = world().nom_arr(type)->set_shape(shape);
-            insert(id->sym(), arr->var());
-        } else {
-            shape = find(id->sym());
-        }
+    if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+        auto sym = eat(Tok::Tag::M_id).sym();
+        eat(Tok::Tag::T_colon);
+
+        auto shape = parse_expr("shape of an array");
+        auto type  = world().nom_infer_univ();
+        arr        = world().nom_arr(type)->set_shape(shape);
+        insert(sym, arr->var());
     } else {
         shape = parse_expr("shape of an array");
     }
@@ -217,20 +216,20 @@ const Def* Parser::parse_arr() {
 }
 
 const Def* Parser::parse_pack() {
+    // TODO This doesn't work. Rework this!
     push();
     auto track = tracker();
     eat(Tok::Tag::D_angle_l);
 
     const Def* shape;
     // bool nom = false;
-    if (auto id = accept(Tok::Tag::M_id)) {
-        if (accept(Tok::Tag::T_colon)) {
-            shape      = parse_expr("shape of a pack");
-            auto infer = world().nom_infer(world().type_int(shape), id->sym(), id->loc());
-            insert(id->sym(), infer);
-        } else {
-            shape = find(id->sym());
-        }
+    if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+        auto id = eat(Tok::Tag::M_id);
+        eat(Tok::Tag::T_colon);
+
+        shape      = parse_expr("shape of a pack");
+        auto infer = world().nom_infer(world().type_int(shape), id.sym(), id.loc());
+        insert(id.sym(), infer);
     } else {
         shape = parse_expr("shape of a pack");
     }
@@ -266,6 +265,7 @@ const Def* Parser::parse_sigma(Binders* binders) {
             auto id  = eat(Tok::Tag::M_id);
             auto sym = id.sym();
             eat(Tok::Tag::T_colon);
+
             auto type  = parse_expr("type of a sigma element");
             auto infer = world().nom_infer(type, sym, id.loc());
             nom        = true;
