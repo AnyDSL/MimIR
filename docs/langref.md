@@ -120,7 +120,7 @@ The following tables comprise all production rules:
 | m           | i\* d\*           | module  | thorin::World |
 | i           | `.import` Sym `;` | import  |               |
 
-#### Declaration
+#### Declarations
 
 | Nonterminal | Right-Hand Side                                                | Comment                        | Thorin Class  |
 |-------------|----------------------------------------------------------------|--------------------------------|---------------|
@@ -153,7 +153,7 @@ The following tables comprise all production rules:
 | e           | `.ins` `(` e `,` e `,` e ` )`      | insert                              | thorin::Insert  |
 | e           | `(` e `,` ... `,` e` )` ( `:` e )? | tuple with optional type ascription | thorin::Tuple   |
 | e           | `[` e `,` ... `,` e `]`            | sigma                               | thorin::Sigma   |
-| e           | d\* e                              | declaration block                   | -               |
+| e           | d e                                | declaration                         | -               |
 
 An elided type of
 * a literal defaults to `.Nat`,
