@@ -712,7 +712,7 @@ const Def* World::infer_type(Defs defs) {
         // TODO deal with non-lit levels
         if (auto type = def->isa<Type>()) {
             level = std::max(level, as_lit(type->level()) + 1);
-        } else if (auto type = def->type()->isa<Type>()) {
+        } else if (auto type = def->type()->as<Type>()) {
             level = std::max(level, as_lit(type->level()));
         }
     }
