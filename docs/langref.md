@@ -27,8 +27,6 @@ Both tokens are identified as `⊥`.
 | `=` `,` `;` `.` `#`             |                                                 | further tokens            |
 | `<eof>`                         |                                                 | marks the end of the file |
 
-
-
 #### Keywords
 
 In addition the following keywords are *terminals*:
@@ -149,6 +147,7 @@ The following tables comprise all production rules:
 | e           | `λ` Sym `:` e `→` e  `.` e         | lambda                              | thorin::Lam     |
 | e           | e `→` e                            | function type                       | thorin::Pi      |
 | e           | `Π` Sym `:` e `→` e                | dependent function type             | thorin::Pi      |
+| e           | e `#` Sym                          | extract via field "Sym"             | thorin::Extract |
 | e           | e `#` e                            | extract                             | thorin::Extract |
 | e           | `.ins` `(` e `,` e `,` e ` )`      | insert                              | thorin::Insert  |
 | e           | `(` e `,` ... `,` e` )` ( `:` e )? | tuple with optional type ascription | thorin::Tuple   |
@@ -160,7 +159,7 @@ An elided type of
 * a bottom/top defaults to `*`,
 * a nominals defaults to `*`.
 
-### Precedence
+##### Precedence
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
 
