@@ -94,6 +94,8 @@ add_library(libthorin
     util/indexset.h
     util/print.cpp
     util/print.h
+    util/sys.cpp
+    util/sys.h
     util/types.h
     util/utf8.cpp
     util/utf8.h

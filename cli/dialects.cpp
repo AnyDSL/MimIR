@@ -12,6 +12,7 @@
 
 #include "thorin/pass/pass.h"
 #include "thorin/util/dl.h"
+#include "thorin/util/sys.h"
 
 namespace thorin::cli {
 
@@ -36,8 +37,7 @@ std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std
     std::ranges::transform(paths, paths.begin(), [&](auto path) { return path.is_relative() ? cwd / path : path; });
 
     // add path/to/thorin.exe/../../lib
-    if(auto path = dl::get_path_to_current_executable())
-        paths.emplace_back(*path);
+    if (auto path = sys::path_to_curr_exe()) paths.emplace_back(*path);
 
     // add default install path
     const auto install_prefixed_path = std::filesystem::path{THORIN_INSTALL_PREFIX} / "lib";
