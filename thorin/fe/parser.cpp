@@ -259,6 +259,30 @@ const Def* Parser::parse_block() {
     return res;
 }
 
+class InferRewriter {
+public:
+    InferRewriter(World& world) { old2new_[world.univ()] = world.univ(); }
+    const Def* rewrite(const Def* op) {
+        if (!op || op->isa<Univ>() || op->isa<Type>()) return op;
+
+        if (auto i = old2new_.find(op); i != old2new_.end()) return i->second;
+        old2new_[op] = op; // stop recursion
+
+        if (auto infer = op->isa_nom<Infer>()) {
+            if (infer->is_set()) return old2new_[infer] = infer->op();
+            return infer;
+        }
+        if (op->isa_nom()) return op;
+
+        auto new_type = op->type() ? rewrite(op->type()) : nullptr;
+        DefArray new_ops{op->num_ops(), [&](int i) { return rewrite(op->op(i)); }};
+        return old2new_[op] = op->rebuild(op->world(), new_type, new_ops, op->dbg());
+    }
+
+private:
+    Def2Def old2new_;
+};
+
 const Def* Parser::parse_sigma(Binders* binders) {
     auto track = tracker();
     bool nom   = false;
@@ -266,6 +290,7 @@ const Def* Parser::parse_sigma(Binders* binders) {
     auto bot   = world().bot(world().type_nat());
 
     DefVec ops;
+    DefVec infers;
     std::vector<const Def*> fields;
     push();
     parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
@@ -280,19 +305,31 @@ const Def* Parser::parse_sigma(Binders* binders) {
             nom        = true;
             insert(sym, infer);
             ops.emplace_back(type);
+            infers.emplace_back(infer);
 
             if (binders) binders->emplace_back(sym, i);
             fields.back() = sym.def();
         } else {
             ops.emplace_back(parse_expr("element of a sigma"));
+            infers.emplace_back(nullptr);
         }
         ++i;
     });
     pop();
 
     if (nom) {
-        auto meta = world().tuple(fields);
-        return world().nom_sigma(world().nom_infer_univ(), ops.size(), track.meta(meta))->set(ops);
+        auto meta  = world().tuple(fields);
+        auto sigma = world().nom_sigma(world().nom_infer_univ(), ops.size(), track.meta(meta))->set(ops);
+
+        // replace infer nodes with the sigma#i they stand for
+        // todo: probably should be refactored into Sigma::check?
+        // we could use `meta` there to find the corresponding sigma#i
+        for (DefVec::size_type i = 0; i < infers.size(); ++i)
+            if (infers[i]) { infers[i]->as_nom<Infer>()->set(sigma->var(i)); }
+        InferRewriter rewriter{world()};
+        for (DefVec::size_type i = 0; i < infers.size(); ++i) { sigma->set(i, rewriter.rewrite(sigma->op(i))); }
+        sigma->set_type(world().infer_type(sigma->ops()));
+        return sigma;
     }
     return world().sigma(ops, track);
 }
