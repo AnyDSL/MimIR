@@ -14,7 +14,7 @@
 namespace thorin::sys {
 
 /// @returns `std::nullopt` if an error occurred.
-std::optional<std::filesystem::path> path_to_cur_exe();
+std::optional<std::filesystem::path> path_to_curr_exe();
 
 /// Executes command @p cmd. @returns the output as string.
 std::string exec(const char* cmd);

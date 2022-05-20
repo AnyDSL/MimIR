@@ -10,7 +10,7 @@
 
 namespace thorin::sys {
 
-std::optional<std::filesystem::path> path_to_cur_exe() {
+std::optional<std::filesystem::path> path_to_curr_exe() {
 #ifdef _WIN32
     std::vector<char> path_buffer;
     size_t read = 0;
@@ -25,7 +25,7 @@ std::optional<std::filesystem::path> path_to_cur_exe() {
     }
 #else
     Dl_info info;
-    if (dladdr(reinterpret_cast<void*>(&path_to_cur_exe), &info)) {
+    if (dladdr(reinterpret_cast<void*>(&path_to_curr_exe), &info)) {
         return std::filesystem::path{info.dli_fname}.parent_path().parent_path() / "lib";
     }
 #endif
