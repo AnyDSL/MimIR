@@ -589,7 +589,7 @@ public:
     /// @name op
     ///@{
     const Def* op() const { return Def::op(0); }
-    void set(const Def* op) { Def::set(0, op); }
+    Infer* set(const Def* op) { return Def::set(0, op)->as<Infer>(); }
     ///@}
 
     /// @name virtual methods

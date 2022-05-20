@@ -27,8 +27,6 @@ Both tokens are identified as `⊥`.
 | `=` `,` `;` `.` `#`             |                                                 | further tokens            |
 | `<eof>`                         |                                                 | marks the end of the file |
 
-
-
 #### Keywords
 
 In addition the following keywords are *terminals*:
@@ -117,15 +115,15 @@ The following tables comprise all production rules:
 
 | Nonterminal | Right-Hand Side   | Comment | Thorin Class  |
 |-------------|-------------------|---------|---------------|
-| m           | i\* d ... d       | module  | thorin::World |
+| m           | i\* d\*           | module  | thorin::World |
 | i           | `.import` Sym `;` | import  |               |
 
-#### Declaration
+#### Declarations
 
 | Nonterminal | Right-Hand Side                                                | Comment                        | Thorin Class  |
 |-------------|----------------------------------------------------------------|--------------------------------|---------------|
 | d           | `.ax` Sym `:` e<sub>type</sub> `;`                             | axiom                          | thorin::Axiom |
-| d           | `.let` Sym `:` e<sub>type</sub> `;`                            | let                            | -             |
+| d           | `.let` Sym `:` e<sub>type</sub> `=` e `;`                      | let                            | -             |
 | d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n      | nominal Pi declaration         | thorin::Pi    |
 | d           | `.lam` Sym `:` e<sub>type</sub> n                              | nominal lambda declaration     | thorin::Lam   |
 | d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n   | nominal array declaration      | thorin::Arr   |
@@ -149,18 +147,19 @@ The following tables comprise all production rules:
 | e           | `λ` Sym `:` e `→` e  `.` e         | lambda                              | thorin::Lam     |
 | e           | e `→` e                            | function type                       | thorin::Pi      |
 | e           | `Π` Sym `:` e `→` e                | dependent function type             | thorin::Pi      |
+| e           | e `#` Sym                          | extract via field "Sym"             | thorin::Extract |
 | e           | e `#` e                            | extract                             | thorin::Extract |
 | e           | `.ins` `(` e `,` e `,` e ` )`      | insert                              | thorin::Insert  |
 | e           | `(` e `,` ... `,` e` )` ( `:` e )? | tuple with optional type ascription | thorin::Tuple   |
 | e           | `[` e `,` ... `,` e `]`            | sigma                               | thorin::Sigma   |
-| e           | d ... d e                          | declaration block                   | -               |
+| e           | d e                                | declaration                         | -               |
 
 An elided type of
 * a literal defaults to `.Nat`,
 * a bottom/top defaults to `*`,
 * a nominals defaults to `*`.
 
-### Precedence
+##### Precedence
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
 
