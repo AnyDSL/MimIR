@@ -22,5 +22,6 @@ var searchData=
   ['thorin_5ftag_19',['THORIN_TAG',['../tables_8h.html#a0d966c506a7e321a180379f2f793cbca',1,'tables.h']]],
   ['thorin_5ftok_20',['THORIN_TOK',['../tok_8h.html#acf85c215badfba27aee55c9cd3af719a',1,'tok.h']]],
   ['thorin_5ftrait_21',['THORIN_TRAIT',['../tables_8h.html#a238b01e8961ff93e64c4b9be442c1d8f',1,'tables.h']]],
-  ['thorin_5fwrap_22',['THORIN_WRAP',['../tables_8h.html#a7d44f4fba443cbcbd14dcf49908bcdcc',1,'tables.h']]]
+  ['thorin_5fwhich_22',['THORIN_WHICH',['../sys_8h.html#a8c190e94eb07b7ca90ecd8e07bf04ff8',1,'sys.h']]],
+  ['thorin_5fwrap_23',['THORIN_WRAP',['../tables_8h.html#a7d44f4fba443cbcbd14dcf49908bcdcc',1,'tables.h']]]
 ];

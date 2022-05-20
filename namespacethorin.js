@@ -83,6 +83,10 @@ var namespacethorin =
         [ "std_icmp", "namespacethorin_1_1std.html#a3830f440803f700e071ba36b8bd16c12af208a2c5cf27ea963d43b65e10d43bc8", null ]
       ] ]
     ] ],
+    [ "sys", "namespacethorin_1_1sys.html", [
+      [ "exec", "namespacethorin_1_1sys.html#a92af83448a4e8da3900badb8ac9b05ea", null ],
+      [ "path_to_curr_exe", "namespacethorin_1_1sys.html#a96556c7da85943f938569ad30a44fae9", null ]
+    ] ],
     [ "Tag", "namespacethorin_1_1Tag.html", null ],
     [ "utf8", "namespacethorin_1_1utf8.html", "namespacethorin_1_1utf8" ],
     [ "WMode", "namespacethorin_1_1WMode.html", null ],
