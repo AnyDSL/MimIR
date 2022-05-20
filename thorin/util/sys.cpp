@@ -1,5 +1,7 @@
 #include "thorin/util/sys.h"
 
+#include <array>
+
 #ifdef _WIN32
 #    include <windows.h>
 #    define popen  _popen
