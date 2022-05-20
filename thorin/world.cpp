@@ -322,7 +322,7 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
     if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
-    return unify<Sigma>(ops.size(), infer_type(ops), ops, dbg);
+    return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
 }
 
 static const Def* infer_sigma(World& world, Defs ops) {
@@ -567,7 +567,7 @@ const Def* World::ext(const Def* type, const Def* dbg) {
 
 template<bool up>
 const Def* World::bound(Defs ops, const Def* dbg) {
-    auto kind = infer_type(ops);
+    auto kind = infer_type_level(*this, ops);
 
     // has ext<up> value?
     if (std::ranges::any_of(ops, [&](const Def* op) { return up ? bool(op->isa<Top>()) : bool(op->isa<Bot>()); }))
@@ -599,6 +599,8 @@ const Def* World::ac(const Def* type, Defs ops, const Def* dbg) {
     assert(ops.size() == 1);
     return ops[0];
 }
+
+const Def* World::ac(Defs ops, const Def* dbg /*= {}*/) { return ac(infer_type_level(*this, ops), ops, dbg); }
 
 const Def* World::vel(const Def* type, const Def* value, const Def* dbg) {
     if (type->isa<Join>()) return unify<Vel>(1, type, value, dbg);
@@ -702,19 +704,6 @@ const Def* World::dbg(Debug d) {
     auto loc   = tuple({file, begin, finis});
 
     return tuple({name, loc, d.meta ? d.meta : bot(bot_type())});
-}
-
-const Def* World::infer_type(Defs defs) {
-    level_t level = 0;
-    for (auto def : defs) {
-        // TODO deal with non-lit levels
-        if (auto type = def->isa<Type>()) {
-            level = std::max(level, as_lit(type->level()) + 1);
-        } else if (auto type = def->type()->as<Type>()) {
-            level = std::max(level, as_lit(type->level()));
-        }
-    }
-    return type(lit_univ(level));
 }
 
 /*

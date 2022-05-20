@@ -326,7 +326,7 @@ public:
     const Def* meet(Defs ops, const Def* dbg = {}) { return bound<false>(ops, dbg); }
     const Def* ac(const Def* type, Defs ops, const Def* dbg = {});
     /// Infers the type using a *structural* Meet.
-    const Def* ac(Defs ops, const Def* dbg = {}) { return ac(infer_type(ops), ops, dbg); }
+    const Def* ac(Defs ops, const Def* dbg = {});
     const Def* vel(const Def* type, const Def* value, const Def* dbg = {});
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg = {});
@@ -508,7 +508,6 @@ public:
     ///@{
     const Def* dbg(Debug);
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
-    const Def* infer_type(Defs);
     ///@}
 
     /// @name partial evaluation done?
