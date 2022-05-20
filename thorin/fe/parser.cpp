@@ -4,6 +4,9 @@
 #include <fstream>
 #include <sstream>
 
+#include "thorin/check.h"
+#include "thorin/rewrite.h"
+
 // clang-format off
 #define DECL                \
          Tok::Tag::K_ax:    \
@@ -252,38 +255,58 @@ const Def* Parser::parse_block() {
 const Def* Parser::parse_sigma(Binders* binders) {
     auto track = tracker();
     bool nom   = false;
-    size_t i   = 0;
     auto bot   = world().bot(world().type_nat());
+    size_t n   = 0;
 
     DefVec ops;
+    std::vector<Infer*> infers;
     std::vector<const Def*> fields;
+
     push();
     parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
+        infers.emplace_back(nullptr);
         fields.emplace_back(bot);
+
         if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+            nom      = true;
             auto id  = eat(Tok::Tag::M_id);
             auto sym = id.sym();
             eat(Tok::Tag::T_colon);
 
-            auto type  = parse_expr("type of a sigma element");
-            auto infer = world().nom_infer(type, sym, id.loc());
-            nom        = true;
+            auto type     = parse_expr("type of a sigma element");
+            auto infer    = world().nom_infer(type, sym, id.loc());
+            infers.back() = infer;
+            fields.back() = sym.def();
+
             insert(sym, infer);
             ops.emplace_back(type);
-
-            if (binders) binders->emplace_back(sym, i);
-            fields.back() = sym.def();
+            if (binders) binders->emplace_back(sym, n);
         } else {
             ops.emplace_back(parse_expr("element of a sigma"));
         }
-        ++i;
+        ++n;
     });
     pop();
 
     if (nom) {
-        auto meta = world().tuple(fields);
-        return world().nom_sigma(world().nom_infer_univ(), ops.size(), track.meta(meta))->set(ops);
+        auto meta  = world().tuple(fields);
+        auto type  = infer_type_level(world(), ops);
+        auto sigma = world().nom_sigma(type, n, track.meta(meta));
+
+        thorin::Scope scope(sigma);
+        Rewriter rw(world(), &scope);
+
+        sigma->set(0, ops[0]);
+        for (size_t i = 1, e = n; i != e; ++i) {
+            if (auto infer = infers[i - 1]) {
+                auto v            = sigma->var(i - 1);
+                rw.old2new[infer] = infer->set(v);
+            }
+            sigma->set(i, rw.rewrite(ops[i]));
+        }
+        return sigma;
     }
+
     return world().sigma(ops, track);
 }
 
