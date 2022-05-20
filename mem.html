@@ -132,15 +132,15 @@ Operations with Side Effects</h1>
 <p >The following operations have side effects. For this reason, they consume a <code>:mem.M</code> and yield a new <code>:mem.M</code>.</p>
 <h2><a class="anchor" id="autotoc_md40"></a>
 :mem.load</h2>
-<p >Loads from a pointer <code>ptr (T, as)</code> the pointed value of type <code>T</code>. </p><div class="fragment"><div class="line">.ax :mem.load:  Π [T: *, a: .Nat] -&gt; [:mem.M, :mem.Ptr(T, a)] -&gt; [:mem.M, T], normalize_load;</div>
+<p >Loads from a pointer <code>ptr (T, as)</code> the pointed value of type <code>T</code>. </p><div class="fragment"><div class="line">.ax :mem.load:  Π [T: *, as: .Nat] -&gt; [:mem.M, :mem.Ptr(T, as)] -&gt; [:mem.M, T], normalize_load;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md41"></a>
 :mem.store</h2>
-<p >Stores a value of type <code>T</code> to a pointer <code>ptr (T, as)</code>, </p><div class="fragment"><div class="line">.ax :mem.store: Π [U: *, b: .Nat] -&gt; [:mem.M, :mem.Ptr(U, b), U] -&gt; :mem.M, normalize_store;</div>
+<p >Stores a value of type <code>T</code> to a pointer <code>ptr (T, as)</code>, </p><div class="fragment"><div class="line">.ax :mem.store: Π [T: *, as: .Nat] -&gt; [:mem.M, :mem.Ptr(T, as), T] -&gt; :mem.M, normalize_store;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md42"></a>
 Operations without Side Effects</h1>
 <h2><a class="anchor" id="autotoc_md43"></a>
 :mem.lea</h2>
-<p >Load effective address. Performs address computation. </p><div class="fragment"><div class="line">.ax :mem.lea: [n: .Nat, Ts: «n; *», as: .Nat] -&gt; [:mem.Ptr(«j: n; Ts#j», as), i: :Int n] -&gt; :mem.Ptr(Ts#i, as);</div>
+<p >Load effective address. Performs address computation. </p><div class="fragment"><div class="line">.ax :mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -&gt; Π [:mem.Ptr(«j: n; Ts#j», as), i: :Int n] -&gt; :mem.Ptr(Ts#i, as);</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

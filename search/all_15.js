@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['u_0',['u',['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a7b774effe4a349c6dd82ad4f4f21d34c',1,'thorin::u()'],['../classthorin_1_1Tok.html#a45ea45a18052d23d65cdd4f533368ed1',1,'thorin::Tok::u()']]],
+  ['u_0',['u',['../classthorin_1_1Tok.html#a45ea45a18052d23d65cdd4f533368ed1',1,'thorin::Tok::u()'],['../namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a7b774effe4a349c6dd82ad4f4f21d34c',1,'thorin::u()']]],
   ['u1_1',['u1',['../namespacethorin.html#aa540ae7ab9303fdd42fd43309ab1f465',1,'thorin']]],
   ['u16_2',['u16',['../namespacethorin.html#ad695e536510da2b86815473a33feca75',1,'thorin']]],
   ['u2r_3',['u2r',['../namespacethorin.html#af46278ec1dc091418ec3fe6bc7317561ac200b49958a50fdd99489e6423235d58',1,'thorin']]],
@@ -25,7 +25,7 @@ var searchData=
   ['unique_5fstack_22',['unique_stack',['../classthorin_1_1unique__stack.html',1,'thorin']]],
   ['univ_23',['Univ',['../classthorin_1_1Univ.html',1,'thorin']]],
   ['univ_24',['univ',['../classthorin_1_1World.html#af5dccad9055934bc02d775b1744441e1',1,'thorin::World']]],
-  ['univ_25',['Univ',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946',1,'thorin::Univ()'],['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253ae882a8f030afe817e8f82f3a2bc2710a',1,'thorin::Node::Univ()']]],
+  ['univ_25',['Univ',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253ae882a8f030afe817e8f82f3a2bc2710a',1,'thorin::Node::Univ()'],['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946',1,'thorin::Univ()']]],
   ['unreachable_26',['unreachable',['../namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9',1,'thorin']]],
   ['unsafe_27',['unsafe',['../namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719aade1a883d771d5d2688d6da503f0a8cb',1,'thorin::RMode']]],
   ['unset_28',['unset',['../classthorin_1_1Def.html#a2f616ff4efad73f2589e6161d6b4f10f',1,'thorin::Def::unset()'],['../classthorin_1_1Def.html#ad0ea206ded848435dadac1aa06483782',1,'thorin::Def::unset(size_t i)']]],
@@ -33,13 +33,11 @@ var searchData=
   ['unwrap_30',['Unwrap',['../structthorin_1_1Unwrap.html',1,'thorin::Unwrap'],['../structthorin_1_1Unwrap.html#a8a507f4d854fa648ead0b731ee3f1f91',1,'thorin::Unwrap::Unwrap()']]],
   ['urem_31',['urem',['../namespacethorin.html#aab48efce9aa14b70a78aff291a41e361ae1851600007553e51484056678cdb3d1',1,'thorin']]],
   ['use_32',['Use',['../classthorin_1_1Use.html',1,'thorin::Use'],['../classthorin_1_1Use.html#a0d49bf17bfb4d916e5b655fcf1c1be95',1,'thorin::Use::Use()'],['../classthorin_1_1Use.html#ab04c9352606031636db45fe943262462',1,'thorin::Use::Use(const Def *def, size_t index)']]],
-  ['use_5fbreakpoint_33',['use_breakpoint',['../classthorin_1_1World.html#ab2b4b3ed8f15ed97e0df04f550589f54',1,'thorin::World']]],
-  ['useeq_34',['UseEq',['../structthorin_1_1UseEq.html',1,'thorin']]],
-  ['usehash_35',['UseHash',['../structthorin_1_1UseHash.html',1,'thorin']]],
-  ['uses_36',['uses',['../classthorin_1_1Def.html#a8f66f1a1cfbfce39608ca318288866d4',1,'thorin::Def']]],
-  ['uses_37',['Uses',['../namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6',1,'thorin']]],
-  ['uses_38',['uses',['../classthorin_1_1Scheduler.html#a2de2f46e34c2d7061d4c967a8ba26791',1,'thorin::Scheduler']]],
-  ['uses_5f_39',['uses_',['../classthorin_1_1Def.html#abefc385c0d60ba85c5e649598d20fe05',1,'thorin::Def']]],
-  ['utf8_2ecpp_40',['utf8.cpp',['../utf8_8cpp.html',1,'']]],
-  ['utf8_2eh_41',['utf8.h',['../utf8_8h.html',1,'']]]
+  ['useeq_33',['UseEq',['../structthorin_1_1UseEq.html',1,'thorin']]],
+  ['usehash_34',['UseHash',['../structthorin_1_1UseHash.html',1,'thorin']]],
+  ['uses_35',['Uses',['../namespacethorin.html#a39c45420c934930021cbf0784f2ce5a6',1,'thorin']]],
+  ['uses_36',['uses',['../classthorin_1_1Scheduler.html#a2de2f46e34c2d7061d4c967a8ba26791',1,'thorin::Scheduler::uses()'],['../classthorin_1_1Def.html#a8f66f1a1cfbfce39608ca318288866d4',1,'thorin::Def::uses() const']]],
+  ['uses_5f_37',['uses_',['../classthorin_1_1Def.html#abefc385c0d60ba85c5e649598d20fe05',1,'thorin::Def']]],
+  ['utf8_2ecpp_38',['utf8.cpp',['../utf8_8cpp.html',1,'']]],
+  ['utf8_2eh_39',['utf8.h',['../utf8_8h.html',1,'']]]
 ];

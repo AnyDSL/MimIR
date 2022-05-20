@@ -475,6 +475,7 @@ var namespacethorin =
     [ "hash_combine", "namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f", null ],
     [ "hash_combine", "namespacethorin.html#afa8ec846210cd2e5bff23fc963021ca7", null ],
     [ "infer_sigma", "namespacethorin.html#ab00a9a6925103ec81b0aa99c38c00f48", null ],
+    [ "infer_type_level", "namespacethorin.html#ab569c2d6da9167b91cb5ce868a67e06c", null ],
     [ "is_associative", "namespacethorin.html#a45de74e4a09bf550afc43c3fceac5abb", null ],
     [ "is_associative", "namespacethorin.html#af87a9053c48a88d6b364e2fb1bbd15fb", null ],
     [ "is_commutative", "namespacethorin.html#a692d6d54b6b359b4e75fe7f0aed06f2c", null ],

@@ -103,6 +103,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1Parser.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classthorin_1_1Parser-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::Parser Class Reference</div></div>
@@ -114,6 +115,11 @@ $(document).ready(function(){initNavTree('classthorin_1_1Parser.html',''); initR
 
 <p><code>#include &lt;<a class="el" href="parser_8h_source.html">/home/runner/work/thorin2/thorin2/thorin/fe/parser.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:ad970a94c17aa87e7999eff2822be066e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#ad970a94c17aa87e7999eff2822be066e">Binders</a> = std::deque&lt; std::pair&lt; <a class="el" href="classthorin_1_1Sym.html">Sym</a>, <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> &gt; &gt;</td></tr>
+<tr class="separator:ad970a94c17aa87e7999eff2822be066e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab8a5af19b2a1b82ca354154049646dc0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#ab8a5af19b2a1b82ca354154049646dc0">Parser</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, std::string_view, std::istream &amp;, std::ostream *md=nullptr)</td></tr>
@@ -141,8 +147,25 @@ Public Member Functions</h2></td></tr>
 </li>
 </ol>
 
-<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00027">27</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00029">29</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a id="ad970a94c17aa87e7999eff2822be066e" name="ad970a94c17aa87e7999eff2822be066e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad970a94c17aa87e7999eff2822be066e">&#9670;&nbsp;</a></span>Binders</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classthorin_1_1Parser.html#ad970a94c17aa87e7999eff2822be066e">thorin::Parser::Binders</a> =  std::deque&lt;std::pair&lt;<a class="el" href="classthorin_1_1Sym.html">Sym</a>, <a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00031">31</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab8a5af19b2a1b82ca354154049646dc0" name="ab8a5af19b2a1b82ca354154049646dc0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab8a5af19b2a1b82ca354154049646dc0">&#9670;&nbsp;</a></span>Parser()</h2>
 
@@ -181,7 +204,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00021">21</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00024">24</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 </div>
 </div>
@@ -202,7 +225,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00031">31</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00034">34</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="h_8cpp_source.html#l00007">thorin::h::Bootstrapper::emit()</a>.</p>
 
@@ -223,7 +246,7 @@ Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00059">59</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00062">62</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a86d887ab52987c7cae217900a37da7c0">thorin::Tok::K_import</a>, and <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa5958f3529ffa5352df7abb68e3d6e94">thorin::Tok::M_eof</a>.</p>
 
@@ -252,7 +275,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00031">31</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00035">35</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 <p class="reference">References <a class="el" href="lexer_8h_source.html#l00024">thorin::Lexer::world()</a>.</p>
 
