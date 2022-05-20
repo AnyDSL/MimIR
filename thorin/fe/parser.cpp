@@ -28,6 +28,16 @@ Parser::Parser(World& world, std::string_view file, std::istream& istream, std::
     push(); // root scope
 }
 
+Parser::Parser(World& world,
+               std::string_view file,
+               std::istream& istream,
+               const std::deque<Parser::Scope>& inhert_scopes,
+               const SymSet& inhert_imported)
+    : Parser(world, file, istream) {
+    scopes_   = inhert_scopes;
+    imported_ = inhert_imported;
+}
+
 void Parser::bootstrap(std::ostream& h) { bootstrapper_.emit(h); }
 
 Tok Parser::lex() {
@@ -516,6 +526,8 @@ void Parser::parse_import() {
     expect(Tok::Tag::T_semicolon, "end of import");
     auto name_str = name.sym().to_string();
 
+    if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
+
     std::ostringstream input_stream;
     print(input_stream, "{}.thorin", name_str);
     auto input =
@@ -524,10 +536,16 @@ void Parser::parse_import() {
 
     if (!ifs) err("error: cannot import file '{}'", input);
 
-    Parser parser(world(), input, ifs);
+    Parser parser(world(), input, ifs, scopes_, imported_);
     parser.parse_module();
+
+    // merge global scopes
     assert(parser.scopes_.size() == 1 && scopes_.size() == 1);
-    scopes_.front().merge(parser.scopes_.back());
+    scopes_.front().merge(parser.scopes_.front());
+
+    // transitvely remember which files we transitively imported
+    imported_.merge(parser.imported_);
+    imported_.emplace(name.sym());
 }
 
 } // namespace thorin
