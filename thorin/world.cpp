@@ -677,8 +677,7 @@ const Def* World::op_for(const Def* mem,
 
 #if THORIN_ENABLE_CHECKS
 
-void World::breakpoint(size_t number) { state_.breakpoints.insert(number); }
-void World::use_breakpoint(size_t number) { state_.use_breakpoints.insert(number); }
+void World::breakpoint(size_t number) { state_.breakpoints.emplace(number); }
 void World::enable_history(bool flag) { state_.track_history = flag; }
 bool World::track_history() const { return state_.track_history; }
 

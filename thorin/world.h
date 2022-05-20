@@ -543,7 +543,6 @@ public:
     using Breakpoints = absl::flat_hash_set<u32>;
 
     void breakpoint(size_t number);
-    void use_breakpoint(size_t number);
     void enable_history(bool flag = true);
     bool track_history() const;
     const Def* gid2def(u32 gid);
@@ -624,13 +623,10 @@ private:
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
-        auto [i, inserted] = data_.defs_.emplace(def);
-        if (inserted) {
+        auto [i, ins] = data_.defs_.emplace(def);
+        if (ins) {
 #if THORIN_ENABLE_CHECKS
             if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
-            for (auto op : def->ops()) {
-                if (state_.use_breakpoints.contains(op->gid())) thorin::breakpoint();
-            }
 #endif
             def->finalize();
             return def;
@@ -646,8 +642,8 @@ private:
 #if THORIN_ENABLE_CHECKS
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
-        auto p = data_.defs_.emplace(def);
-        assert_unused(p.second);
+        auto [_, ins] = data_.defs_.emplace(def);
+        assert_unused(ins);
         return def;
     }
     ///@}
@@ -731,7 +727,6 @@ private:
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
         Breakpoints breakpoints;
-        Breakpoints use_breakpoints;
 #endif
     } state_;
 
