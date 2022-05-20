@@ -404,8 +404,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
     }
 
     // nom sigmas can be 1-tuples
-    if (auto mod = isa_lit(isa_sized_type(index->type())); mod && *mod == 1 && !d->type()->isa_nom<Sigma>())
-        return d;
+    if (auto mod = isa_lit(isa_sized_type(index->type())); mod && *mod == 1 && !d->type()->isa_nom<Sigma>()) return d;
     if (auto pack = d->isa_structural<Pack>()) return pack->body();
 
     // extract(insert(x, index, val), index) -> val
