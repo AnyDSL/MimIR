@@ -1,7 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"classthorin_1_1unique__stack.html#af95a51fb32d7d3d6797cc3b7913090ad":[4,0,0,135,2],
-"classthorin_1_1unique__stack.html#af95a51fb32d7d3d6797cc3b7913090ad":[3,0,0,143,2],
 "classthorin_1_1utf8_1_1Lexer.html":[3,0,0,11,0],
 "classthorin_1_1utf8_1_1Lexer.html":[4,0,0,4,0],
 "classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93":[3,0,0,11,0,3],
@@ -249,5 +247,7 @@ var NAVTREEINDEX10 =
 "hash_8h_source.html":[5,0,2,4,9],
 "hierarchy.html":[4,2],
 "index.html":[],
-"index.html":[0]
+"index.html":[0],
+"index.html#autotoc_md32":[0,0],
+"index.html#autotoc_md33":[0,0,0]
 };

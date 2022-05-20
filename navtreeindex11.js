@@ -1,7 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"index.html#autotoc_md32":[0,0],
-"index.html#autotoc_md33":[0,0,0],
 "index.html#autotoc_md34":[0,0,1],
 "index.html#autotoc_md35":[0,1],
 "indexmap_8h.html":[5,0,2,4,10],
@@ -249,5 +247,7 @@ var NAVTREEINDEX11 =
 "namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a0ba64a0dea00947916dfb6a66866e1ca":[3,0,0,238,5],
 "namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a2a0617accf8bb8625c43e2ffeb5b8d5b":[3,0,0,238,12],
 "namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a2db95e8e1a9267b7a1188556b2013b33":[3,0,0,238,2],
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a31f644026e4c96dee546c228a1894c68":[3,0,0,238,9]
+"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a31f644026e4c96dee546c228a1894c68":[3,0,0,238,9],
+"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a4eb31516a4986c34fa297e5e5f4045a9":[3,0,0,238,13],
+"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9a738a656e8e8ec272ca17cd51e12f558b":[3,0,0,238,10]
 };
