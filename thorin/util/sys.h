@@ -19,6 +19,6 @@ std::optional<std::filesystem::path> path_to_curr_exe();
 /// Executes command @p cmd. @returns the output as string.
 std::string exec(const char* cmd);
 
-}
+} // namespace thorin::sys
 
 #endif
