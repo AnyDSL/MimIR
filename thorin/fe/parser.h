@@ -68,7 +68,7 @@ private:
 
     /// @name primary exprs
     ///@{
-    const Def* parse_Cn();
+    const Def* parse_Cn(Binders*);
     const Def* parse_arr();
     const Def* parse_pack();
     const Def* parse_block();

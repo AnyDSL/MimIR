@@ -144,7 +144,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::D_bracket_l: return parse_sigma(binders);
         case Tok::Tag::D_paren_l:   return parse_tuple();
-        case Tok::Tag::K_Cn:        return parse_Cn();
+        case Tok::Tag::K_Cn:        return parse_Cn(binders);
         case Tok::Tag::K_Type:      return parse_type();
         case Tok::Tag::K_Bool:      lex(); return world().type_bool();
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
@@ -181,10 +181,10 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
     return nullptr;
 }
 
-const Def* Parser::parse_Cn() {
+const Def* Parser::parse_Cn(Binders* binders) {
     auto track = tracker();
     eat(Tok::Tag::K_Cn);
-    return world().cn(parse_expr("domain of a continuation type"), track);
+    return world().cn(parse_dep_expr("domain of a continuation type", binders), track);
 }
 
 const Def* Parser::parse_var() {
@@ -455,7 +455,8 @@ void Parser::parse_nom() {
     auto tag      = lex().tag();
     bool external = accept(Tok::Tag::K_extern).has_value();
     auto sym      = parse_sym("nominal");
-    auto type     = accept(Tok::Tag::T_colon) ? parse_expr("type of a nominal") : world().type();
+    auto binders  = Binders{};
+    auto type     = accept(Tok::Tag::T_colon) ? parse_dep_expr("type of a nominal", &binders) : world().type();
 
     Def* nom;
     switch (tag) {
@@ -486,11 +487,16 @@ void Parser::parse_nom() {
         }
         default: unreachable();
     }
-
     insert(sym, nom);
+
+    push();
+    for (auto [sym, i] : binders) insert(sym, nom->var(i)); // TODO location
     if (external) nom->make_external();
-    if (ahead().isa(Tok::Tag::T_assign)) return parse_def(sym);
-    expect(Tok::Tag::T_semicolon, "end of a nominal");
+    if (ahead().isa(Tok::Tag::T_assign))
+        parse_def(sym);
+    else
+        expect(Tok::Tag::T_semicolon, "end of a nominal");
+    pop();
 }
 
 void Parser::parse_def(Sym sym /*= {}*/) {
