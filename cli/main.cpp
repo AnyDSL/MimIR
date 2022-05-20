@@ -16,8 +16,8 @@
 
 #ifdef _WIN32
 #    include <windows.h>
-#    define popen  _popen
-#    define pclose _pclose
+#    define popen       _popen
+#    define pclose      _pclose
 #    define WHICH_CLANG "where clang"
 #else
 #    include <dlfcn.h>
@@ -75,7 +75,7 @@ int main(int argc, char** argv) {
             | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("Path to search dialects in.")
             | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("thorin", "h", "md", "ll", "dot")
             | lyra::opt(inc_verbose              )["-V"]["--verbose"     ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
-#ifndef NDEBUG
+#if THORIN_ENABLE_CHECKS
             | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
 #endif
             | lyra::opt(prefix,        "prefix"  )["-o"]["--output"      ]("Prefix used for various output files.")
@@ -115,14 +115,15 @@ int main(int argc, char** argv) {
 
         if (prefix.empty()) {
             auto filename = std::filesystem::path(input).filename();
-            if (filename.extension() != ".thorin") throw std::invalid_argument("error: invalid file name '" + input + "'");
+            if (filename.extension() != ".thorin")
+                throw std::invalid_argument("error: invalid file name '" + input + "'");
             prefix = filename.stem().string();
         }
 
         World world;
         world.set_log_ostream(&std::cerr);
         world.set_log_level((LogLevel)verbose);
-#ifndef NDEBUG
+#if THORIN_ENABLE_CHECKS
         for (auto b : breakpoints) world.breakpoint(b);
 #endif
 

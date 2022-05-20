@@ -4,6 +4,9 @@
 #include <fstream>
 #include <sstream>
 
+#include "thorin/check.h"
+#include "thorin/rewrite.h"
+
 // clang-format off
 #define DECL                \
          Tok::Tag::K_ax:    \
@@ -70,18 +73,17 @@ Sym Parser::parse_sym(std::string_view ctxt) {
     return world().sym("<error>", world().dbg((Loc)track));
 }
 
-const Def* Parser::parse_expr(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::Bottom*/) {
+const Def* Parser::parse_dep_expr(std::string_view ctxt, Binders* binders, Tok::Prec p /*= Tok::Prec::Bot*/) {
     auto track = tracker();
-    auto lhs   = parse_primary_expr(ctxt);
+    auto lhs   = parse_primary_expr(ctxt, binders);
 
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         if (ahead().isa(Tok::Tag::T_extract)) {
-            auto [l, r] = Tok::prec(Tok::Prec::Extract);
-            if (l < p) break;
-            lex();
-            auto rhs = parse_expr("right-hand side of an extract", r);
-            lhs      = world().extract(lhs, rhs, track);
+            if (auto extract = parse_extract(track, lhs, p))
+                lhs = extract;
+            else
+                break;
         } else if (ahead().isa(Tok::Tag::T_arrow)) {
             auto [l, r] = Tok::prec(Tok::Prec::Arrow);
             if (l < p) break;
@@ -102,14 +104,38 @@ const Def* Parser::parse_expr(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::
     return lhs;
 }
 
-const Def* Parser::parse_primary_expr(std::string_view ctxt) {
+const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
+    auto [l, r] = Tok::prec(Tok::Prec::Extract);
+    if (l < p) return nullptr;
+    lex();
+
+    if (ahead().isa(Tok::Tag::M_id)) {
+        if (auto sigma = lhs->type()->isa_nom<Sigma>()) {
+            auto id   = eat(Tok::Tag::M_id);
+            auto sym  = id.sym();
+            auto meta = sigma->meta();
+            if (meta->arity() == sigma->arity()) {
+                size_t a = sigma->num_ops();
+                for (size_t i = 0; i != a; ++i) {
+                    if (meta->proj(a, i) == sym) return world().extract(lhs, a, i, track);
+                }
+            }
+            err(id.loc(), "could not find elemement '{}' to extract from '{} of type '{}'", id.sym(), lhs, sigma);
+        }
+    }
+
+    auto rhs = parse_expr("right-hand side of an extract", r);
+    return world().extract(lhs, rhs, track);
+}
+
+const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
     // clang-format off
     switch (ahead().tag()) {
         case DECL:                  return parse_decls();
         case Tok::Tag::D_quote_l:   return parse_arr();
         case Tok::Tag::D_angle_l:   return parse_pack();
         case Tok::Tag::D_brace_l:   return parse_block();
-        case Tok::Tag::D_bracket_l: return parse_sigma();
+        case Tok::Tag::D_bracket_l: return parse_sigma(binders);
         case Tok::Tag::D_paren_l:   return parse_tuple();
         case Tok::Tag::K_Cn:        return parse_Cn();
         case Tok::Tag::K_Type:      return parse_type();
@@ -170,15 +196,14 @@ const Def* Parser::parse_arr() {
 
     const Def* shape = nullptr;
     Arr* arr         = nullptr;
-    if (auto id = accept(Tok::Tag::M_id)) {
-        if (accept(Tok::Tag::T_colon)) {
-            auto shape = parse_expr("shape of an array");
-            auto type  = world().nom_infer_univ();
-            arr        = world().nom_arr(type)->set_shape(shape);
-            insert(id->sym(), arr->var());
-        } else {
-            shape = find(id->sym());
-        }
+    if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+        auto id = eat(Tok::Tag::M_id);
+        eat(Tok::Tag::T_colon);
+
+        auto shape = parse_expr("shape of an array");
+        auto type  = world().nom_infer_univ();
+        arr        = world().nom_arr(type)->set_shape(shape);
+        insert(id.sym(), arr->var(world().dbg({id.sym(), id.loc()})));
     } else {
         shape = parse_expr("shape of an array");
     }
@@ -193,20 +218,20 @@ const Def* Parser::parse_arr() {
 }
 
 const Def* Parser::parse_pack() {
-    push();
+    // TODO This doesn't work. Rework this!
     auto track = tracker();
+    push();
     eat(Tok::Tag::D_angle_l);
 
     const Def* shape;
     // bool nom = false;
-    if (auto id = accept(Tok::Tag::M_id)) {
-        if (accept(Tok::Tag::T_colon)) {
-            shape      = parse_expr("shape of a pack");
-            auto infer = world().nom_infer(world().type_int(shape), id->sym(), id->loc());
-            insert(id->sym(), infer);
-        } else {
-            shape = find(id->sym());
-        }
+    if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+        auto id = eat(Tok::Tag::M_id);
+        eat(Tok::Tag::T_colon);
+
+        shape      = parse_expr("shape of a pack");
+        auto infer = world().nom_infer(world().type_int(shape), id.sym(), id.loc());
+        insert(id.sym(), infer);
     } else {
         shape = parse_expr("shape of a pack");
     }
@@ -219,38 +244,70 @@ const Def* Parser::parse_pack() {
 }
 
 const Def* Parser::parse_block() {
-    eat(Tok::Tag::D_brace_l);
     push();
+    eat(Tok::Tag::D_brace_l);
     auto res = parse_expr("block expression");
-    pop();
     expect(Tok::Tag::D_brace_r, "block expression");
+    pop();
     return res;
 }
 
-const Def* Parser::parse_sigma() {
+const Def* Parser::parse_sigma(Binders* binders) {
     auto track = tracker();
     bool nom   = false;
+    auto bot   = world().bot(world().type_nat());
+    size_t n   = 0;
+
     DefVec ops;
+    std::vector<Infer*> infers;
+    std::vector<const Def*> fields;
+
+    push();
     parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
-        if (auto id = accept(Tok::Tag::M_id)) {
-            if (accept(Tok::Tag::T_colon)) {
-                auto type  = parse_expr("type of a sigma element");
-                auto infer = world().nom_infer(type, id->sym(), id->loc());
-                nom        = true;
-                insert(id->sym(), infer);
-                ops.emplace_back(type);
-            } else {
-                ops.emplace_back(find(id->sym()));
-            }
+        infers.emplace_back(nullptr);
+        fields.emplace_back(bot);
+
+        if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+            nom      = true;
+            auto id  = eat(Tok::Tag::M_id);
+            auto sym = id.sym();
+            eat(Tok::Tag::T_colon);
+
+            auto type     = parse_expr("type of a sigma element");
+            auto infer    = world().nom_infer(type, sym, id.loc());
+            infers.back() = infer;
+            fields.back() = sym.def();
+
+            insert(sym, infer);
+            ops.emplace_back(type);
+            if (binders) binders->emplace_back(sym, n);
         } else {
             ops.emplace_back(parse_expr("element of a sigma"));
         }
+        ++n;
     });
+    pop();
 
-    if (!nom) return world().sigma(ops, track);
-    auto sigma = world().nom_sigma(world().nom_infer_univ(), ops.size(), track);
-    sigma->set(ops);
-    return sigma;
+    if (nom) {
+        auto meta  = world().tuple(fields);
+        auto type  = infer_type_level(world(), ops);
+        auto sigma = world().nom_sigma(type, n, track.meta(meta));
+
+        thorin::Scope scope(sigma);
+        Rewriter rw(world(), &scope);
+
+        sigma->set(0, ops[0]);
+        for (size_t i = 1, e = n; i != e; ++i) {
+            if (auto infer = infers[i - 1]) {
+                auto v            = sigma->var(i - 1);
+                rw.old2new[infer] = infer->set(v);
+            }
+            sigma->set(i, rw.rewrite(ops[i]));
+        }
+        return sigma;
+    }
+
+    return world().sigma(ops, track);
 }
 
 const Def* Parser::parse_tuple() {
@@ -274,26 +331,22 @@ const Def* Parser::parse_pi() {
     push();
     std::optional<Tok> id;
     const Def* dom;
-    if (id = accept(Tok::Tag::M_id)) {
-        if (accept(Tok::Tag::T_colon)) {
-            dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
-        } else {
-            dom = find(id->sym());
-            id.reset();
-        }
-    } else {
+    Binders binders;
+    if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+        id = eat(Tok::Tag::M_id);
+        eat(Tok::Tag::T_colon);
         dom = parse_expr("domain of a dependent function type", Tok::Prec::App);
+    } else {
+        dom = parse_dep_expr("domain of a dependent function type", &binders, Tok::Prec::App);
     }
 
-    auto pi = world().nom_pi(world().nom_infer_univ(), dom);
-    pi->set_dom(dom);
-    push();
-    if (id) insert(id->sym(), pi->var()); // TODO location/name
+    auto pi = world().nom_pi(world().nom_infer_univ(), dom)->set_dom(dom);
+    if (id) insert(id->sym(), pi->var(world().dbg({id->sym(), id->loc()})));
+    for (auto [sym, i] : binders) insert(sym, pi->var(i)); // TODO location
+
     expect(Tok::Tag::T_arrow, "dependent function type");
-    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
-    pi->set_codom(codom);
+    pi->set_codom(parse_expr("codomain of a dependent function type", Tok::Prec::Arrow));
     pi->set_dbg(track);
-    pop();
     pop();
     return pi;
 }
