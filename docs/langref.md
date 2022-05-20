@@ -120,39 +120,42 @@ The following tables comprise all production rules:
 
 #### Declarations
 
-| Nonterminal | Right-Hand Side                                                | Comment                        | Thorin Class  |
-|-------------|----------------------------------------------------------------|--------------------------------|---------------|
-| d           | `.ax` Sym `:` e<sub>type</sub> `;`                             | axiom                          | thorin::Axiom |
-| d           | `.let` Sym `:` e<sub>type</sub> `=` e `;`                      | let                            | -             |
-| d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n      | nominal Pi declaration         | thorin::Pi    |
-| d           | `.lam` Sym `:` e<sub>type</sub> n                              | nominal lambda declaration     | thorin::Lam   |
-| d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n   | nominal array declaration      | thorin::Arr   |
-| d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n  | nominal pack declaration       | thorin::Pack  |
-| d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> n | nominal sigma declaration      | thorin::Sigma |
-| d           | `.def` Sym n                                                   | nominal definition             | nominals      |
-| n           | `;` \| o                                                       | nominal definition             | -             |
-| o           | `=` e `;`                                                      | operand of nominal definition  | -             |
-| o           | `=` `{` e `,` ... `,` e  `}` `;`                               | operands of nominal definition | -             |
+| Nonterminal | Right-Hand Side                                                | New Scope? | Comment                        | Thorin Class  |
+|-------------|----------------------------------------------------------------|------------|--------------------------------|---------------|
+| d           | `.ax` Sym `:` e<sub>type</sub> `;`                             |            | axiom                          | thorin::Axiom |
+| d           | `.let` Sym `:` e<sub>type</sub> `=` e `;`                      |            | let                            | -             |
+| d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n      |            | nominal Pi declaration         | thorin::Pi    |
+| d           | `.lam` Sym `:` e<sub>type</sub> n                              |            | nominal lambda declaration     | thorin::Lam   |
+| d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n   |            | nominal array declaration      | thorin::Arr   |
+| d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n  |            | nominal pack declaration       | thorin::Pack  |
+| d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> n |            | nominal sigma declaration      | thorin::Sigma |
+| d           | `.def` Sym n                                                   |            | nominal definition             | nominals      |
+| n           | `;` \| o                                                       |            | nominal definition             | -             |
+| o           | `=` e `;`                                                      |            | operand of nominal definition  | -             |
+| o           | `=` `{` e `,` ... `,` e  `}` `;`                               | ✓          | operands of nominal definition | -             |
 
 #### Expressions
 
-| Nonterminal | Right-Hand Side                    | Comment                             | Thorin Class    |
-|-------------|------------------------------------|-------------------------------------|-----------------|
-| e           | `*`                                | type                                | thorin::Type    |
-| e           | L `∷` e                            | literal                             | thorin::Lit     |
-| e           | ( `.bot` \| `.top` ) ( `∷` e )?    | bottom/top                          | thorin::TExt    |
-| e           | Sym                                | identifier                          | -               |
-| e           | Ax                                 | use of an axiom                     | -               |
-| e           | e e                                | application                         | thorin::App     |
-| e           | `λ` Sym `:` e `→` e  `.` e         | lambda                              | thorin::Lam     |
-| e           | e `→` e                            | function type                       | thorin::Pi      |
-| e           | `Π` Sym `:` e `→` e                | dependent function type             | thorin::Pi      |
-| e           | e `#` Sym                          | extract via field "Sym"             | thorin::Extract |
-| e           | e `#` e                            | extract                             | thorin::Extract |
-| e           | `.ins` `(` e `,` e `,` e ` )`      | insert                              | thorin::Insert  |
-| e           | `(` e `,` ... `,` e` )` ( `:` e )? | tuple with optional type ascription | thorin::Tuple   |
-| e           | `[` e `,` ... `,` e `]`            | sigma                               | thorin::Sigma   |
-| e           | d e                                | declaration                         | -               |
+| Nonterminal | Right-Hand Side                               | New Scope? | Comment                             | Thorin Class    |
+|-------------|-----------------------------------------------|------------|-------------------------------------|-----------------|
+| e           | `{` e `}`                                     | ✓          | block                               | -               |
+| e           | `*`                                           |            | type                                | thorin::Type    |
+| e           | L `∷` e                                       |            | literal                             | thorin::Lit     |
+| e           | ( `.bot` \| `.top` ) ( `∷` e )?               |            | bottom/top                          | thorin::TExt    |
+| e           | Sym                                           |            | identifier                          | -               |
+| e           | Ax                                            |            | use of an axiom                     | -               |
+| e           | e e                                           |            | application                         | thorin::App     |
+| e           | `λ` Sym `:` e `→` e  `.` e                    | ✓          | lambda                              | thorin::Lam     |
+| e           | e `→` e                                       |            | function type                       | thorin::Pi      |
+| e           | `Π` (Sym `:`)? e `→` e                        | ✓          | dependent function type             | thorin::Pi      |
+| e           | e `#` Sym                                     |            | extract via field "Sym"             | thorin::Extract |
+| e           | e `#` e                                       |            | extract                             | thorin::Extract |
+| e           | `.ins` `(` e `,` e `,` e ` )`                 |            | insert                              | thorin::Insert  |
+| e           | `(` e `,` ... `,` e` )` ( `:` e )?            |            | tuple with optional type ascription | thorin::Tuple   |
+| e           | `[` (Sym `:` e)? `,` ... `,` (Sym `:`)? e `]` | ✓          | sigma                               | thorin::Sigma   |
+| e           | `‹` (Sym `:`)? e `;` e`›`                     | ✓          | pack                                | thorin::Pack    |
+| e           | `«` (Sym `:`)? e `;` e`»`                     | ✓          | array                               | thorin::Pack    |
+| e           | d e                                           |            | declaration                         | -               |
 
 An elided type of
 * a literal defaults to `.Nat`,
@@ -174,3 +177,42 @@ Expressions nesting is disambiguated according to the following precedence table
 Note that the domain of a dependent function type binds slightly stronger than `→`.
 This has the effect that, e.g., `Π T: * → T -> T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
 Otherwise, `→` would be consumed by the domain: `Π T:` (`* →` (`T → T`)) ↯.
+
+## Scoping
+
+Thorin uses [_lexical scoping_](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope) where all names live within the same namespace - with a few exceptions noted below.
+The grammar tables above also indiciate which constructs open new scopes.
+
+### Underscore
+
+The symbol `_` is special and never binds to an entity.
+For this reason, `_` can be bound over and over again within the same scope (without effect).
+Hence, using the symbol `_` will always result in a [scoping error](@ref thorin::ScopeError).
+
+### Pis
+
+Note that _only_ `Π x: e → e` introduces a new scope.
+`x: e → e` is a syntax error.
+If the name of a Pi is elided and the domain is a sigma, it's elemented will be imported into the Pi's scope to make these elements available in the Pi's codomain:
+```
+Π [T: *, U: *] → [T, U]
+```
+
+### Axioms
+
+The names of axioms are special and live in a global namespace.
+
+### Field Names of Sigmas
+
+Named elements of nominal sigmas are avaiable for extracts/inserts.
+These names take precedence over the usual scope.
+In the following example, `i` refers to the first element `i` of `X` and **not** to the `i` introduced via `.let`:
+```
+.let i = 1_2;
+Π X: [i: .Nat, j: .Nat] -> f X#i;
+```
+Use parentheses to refer to the `.let`-bounded `i`:
+```
+.let i = 1_2;
+Π X: [i: .Nat, j: .Nat] -> f X#(i);
+```
