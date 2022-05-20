@@ -386,7 +386,7 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
     return tuple(ops, dbg);
 }
 
-const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index, const Def* dbg) {
+const Def* World::extract(const Def* tup, const Def* index, const Def* dbg) {
     if (index->isa<Arr>() || index->isa<Pack>()) {
         DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(tup, index->ops().back()); });
         return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);
@@ -425,10 +425,10 @@ const Def* World::extract_(const Def* ex_type, const Def* tup, const Def* index,
             if (auto nom_sigma = sigma->isa_nom<Sigma>()) {
                 Scope scope(nom_sigma);
                 auto t = rewrite(sigma->op(*i), nom_sigma->var(), tup, scope);
-                return unify<Extract>(2, ex_type ? ex_type : t, tup, index, dbg);
+                return unify<Extract>(2, t, tup, index, dbg);
             }
 
-            return unify<Extract>(2, ex_type ? ex_type : sigma->op(*i), tup, index, dbg);
+            return unify<Extract>(2, sigma->op(*i), tup, index, dbg);
         }
     }
 
