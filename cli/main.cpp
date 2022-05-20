@@ -16,8 +16,8 @@
 
 #ifdef _WIN32
 #    include <windows.h>
-#    define popen  _popen
-#    define pclose _pclose
+#    define popen       _popen
+#    define pclose      _pclose
 #    define WHICH_CLANG "where clang"
 #else
 #    include <dlfcn.h>
@@ -115,7 +115,8 @@ int main(int argc, char** argv) {
 
         if (prefix.empty()) {
             auto filename = std::filesystem::path(input).filename();
-            if (filename.extension() != ".thorin") throw std::invalid_argument("error: invalid file name '" + input + "'");
+            if (filename.extension() != ".thorin")
+                throw std::invalid_argument("error: invalid file name '" + input + "'");
             prefix = filename.stem().string();
         }
 
