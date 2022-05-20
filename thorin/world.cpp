@@ -256,7 +256,7 @@ World::World(std::string_view name)
 
         data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
     }
-    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , «i: n; Is#i», Cn
+    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i: n; Is#i», Cn
         // [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];
 
         auto input_sigma = nom_sigma(type<1>(), 3);
