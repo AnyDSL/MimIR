@@ -381,13 +381,13 @@ Precedence</h4>
 <p >Note that the domain of a dependent function type binds slightly stronger than <code>→</code>. This has the effect that, e.g., <code>Π T: * → T -&gt; T</code> has the expected binding like this: (<code>Π T: *</code>) <code>→</code> (<code>T → T</code>). Otherwise, <code>→</code> would be consumed by the domain: <code>Π T:</code> (<code>* →</code> (<code>T → T</code>)) ↯.</p>
 <h1><a class="anchor" id="autotoc_md22"></a>
 Scoping</h1>
-<p >Thorin uses <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope"><em>lexical scoping</em></a> where all names live within the same namespace - with a few exceptions noted below. The grammar tables above also indiciate which constructs open new scopes.</p>
+<p >Thorin uses <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope"><em>lexical scoping</em></a> where all names live within the same namespace - with a few exceptions noted below. The grammar tables above also indiciate which constructs open new scopes (and close them again).</p>
 <h2><a class="anchor" id="autotoc_md23"></a>
 Underscore</h2>
 <p >The symbol <code>_</code> is special and never binds to an entity. For this reason, <code>_</code> can be bound over and over again within the same scope (without effect). Hence, using the symbol <code>_</code> will always result in a <a class="el" href="classthorin_1_1ScopeError.html">scoping error</a>.</p>
 <h2><a class="anchor" id="autotoc_md24"></a>
 Pis</h2>
-<p >Note that <em>only</em> <code>Π x: e → e</code> introduces a new scope. <code>x: e → e</code> is a syntax error. If the name of a Pi is elided and the domain is a sigma, it's elemented will be imported into the Pi's scope to make these elements available in the Pi's codomain: </p><div class="fragment"><div class="line">Π [T: *, U: *] → [T, U]</div>
+<p >Note that <em>only</em> <code>Π x: e → e</code> introduces a new scope. <code>x: e → e</code> is a syntax error. If the variable name of a Pi's domain is elided and the domain is a sigma, its elements will be imported into the Pi's scope to make these elements available in the Pi's codomain: </p><div class="fragment"><div class="line">Π [T: *, U: *] → [T, U]</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md25"></a>
 Axioms</h2>
 <p >The names of axioms are special and live in a global namespace.</p>
