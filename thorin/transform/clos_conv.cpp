@@ -228,13 +228,16 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
     auto new_dbg  = (def->dbg()) ? rewrite(def->dbg(), subst) : nullptr;
 
     if (auto nom = def->isa_nom()) {
+        if (auto global = def->isa_nom<Global>()) {
+            if (auto i = glob_noms_.find(global); i != glob_noms_.end())
+                return i->second;
+            auto subst = Def2Def();
+            return glob_noms_[nom] = rewrite_nom(global, new_type, new_dbg, subst);
+        }
         assert(!isa_clos_type(nom));
         w.DLOG("RW: nom {}", nom);
-        auto new_nom = nom->stub(w, new_type, new_dbg);
-        subst.emplace(nom, new_nom);
-        for (size_t i = 0; i < nom->num_ops(); i++) {
-            if (def->op(i)) new_nom->set(i, rewrite(def->op(i), subst));
-        }
+        auto new_nom = rewrite_nom(nom, new_type, new_dbg, subst);
+        // Try to reduce the amount of noms that are created
         if (!nom->isa_nom<Global>() && Checker(w).equiv(nom, new_nom)) return map(nom);
         if (auto restruct = new_nom->restructure()) return map(restruct);
         return map(new_nom);
@@ -247,6 +250,17 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
     }
 }
 
+Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, Def2Def& subst) {
+    auto& w = world();
+    auto new_nom = nom->stub(w, new_type, new_dbg);
+    subst.emplace(nom, new_nom);
+    for (size_t i = 0; i < nom->num_ops(); i++) {
+        if (nom->op(i)) new_nom->set(i, rewrite(nom->op(i), subst));
+    }
+    return new_nom;
+}
+
+
 const Pi* ClosConv::rewrite_cont_type(const Pi* pi, Def2Def& subst) {
     assert(pi->is_basicblock());
     auto new_ops = DefArray(pi->num_doms(), [&](auto i) { return rewrite(pi->dom(i), subst); });
@@ -254,7 +268,7 @@ const Pi* ClosConv::rewrite_cont_type(const Pi* pi, Def2Def& subst) {
 }
 
 const Def* ClosConv::closure_type(const Pi* pi, Def2Def& subst, const Def* env_type) {
-    if (auto i = closure_types_.find(pi); i != closure_types_.end() && !env_type) return i->second;
+    if (auto i = glob_noms_.find(pi); i != glob_noms_.end() && !env_type) return i->second;
     auto& w       = world();
     auto new_doms = DefArray(pi->num_doms(), [&](auto i) {
         return (i == pi->num_doms() - 1 && pi->is_returning()) ? rewrite_cont_type(pi->ret_pi(), subst)
@@ -262,7 +276,7 @@ const Def* ClosConv::closure_type(const Pi* pi, Def2Def& subst, const Def* env_t
     });
     auto ct       = ctype(w, new_doms, env_type);
     if (!env_type) {
-        closure_types_.emplace(pi, ct);
+        glob_noms_.emplace(pi, ct);
         w.DLOG("C-TYPE: pct {} ~~> {}", pi, ct);
     } else {
         w.DLOG("C-TYPE: ct {}, env = {} ~~> {}", pi, env_type, ct);

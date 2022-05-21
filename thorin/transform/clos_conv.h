@@ -89,7 +89,7 @@ public:
         : world_(world)
         , fva_(world)
         , closures_()
-        , closure_types_()
+        , glob_noms_()
         , worklist_(){};
 
     void run();
@@ -112,6 +112,7 @@ private:
     /// @{
     void rewrite_body(Lam* lam, Def2Def& subst);
     const Def* rewrite(const Def* old_def, Def2Def& subst);
+    Def* rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, Def2Def& subst);
     const Pi* rewrite_cont_type(const Pi*, Def2Def& subst);
     const Def* closure_type(const Pi* pi, Def2Def& subst, const Def* ent_type = nullptr);
     /// @}
@@ -121,7 +122,12 @@ private:
     World& world_;
     FreeDefAna fva_;
     DefMap<ClosureStub> closures_;
-    Def2Def closure_types_;
+
+    // Noms that must be re rewritten uniformly across the whole module:
+    // Currently, this includes globals and closure types (for typechecking to go through).
+    // Such noms must not depend on defs that live inside the scope of a continuation!
+    Def2Def glob_noms_;
+
     std::queue<const Def*> worklist_;
 };
 
