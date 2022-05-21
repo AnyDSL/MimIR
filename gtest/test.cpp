@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include <gtest/gtest.h>
 
 #include "thorin/error.h"
@@ -55,6 +57,15 @@ TEST(World, simplify_one_tuple) {
     ASSERT_EQ(v, w.tuple({v})) << "constant fold ({42, 1337}) -> {42, 1337}";
 }
 
+TEST(World, dependent_extract) {
+    World w;
+    auto sig = w.nom_sigma(w.type<1>(), 2); // sig = [T: *, T]
+    sig->set(0, w.type<0>());
+    sig->set(1, sig->var(0_u64));
+    auto a = w.axiom(sig);
+    ASSERT_EQ(a->proj(2, 1)->type(), a->proj(2, 0_u64)); // type_of(a#1_2) == a#0_1
+}
+
 TEST(Main, ll) {
     World w;
     auto mem_t  = w.type_mem();
@@ -68,10 +79,9 @@ TEST(Main, ll) {
     main->app(false, ret, {mem, argc});
     main->make_external();
 
-    std::ofstream file("test.ll");
-    Stream s(file);
-    ll::emit(w, s);
-    file.close();
+    std::ofstream ofs("test.ll");
+    ll::emit(w, ofs);
+    ofs.close();
 
 #ifndef _MSC_VER
     // TODO make sure that proper clang is in path on Windows
@@ -137,10 +147,9 @@ TEST(Main, loop) {
     main->app(false, loop, {mem, w.lit_int(0), w.lit_int(0)});
     main->make_external();
 
-    std::ofstream file("test.ll");
-    Stream s(file);
-    thorin::ll::emit(w, s);
-    file.close();
+    std::ofstream ofs("test.ll");
+    thorin::ll::emit(w, ofs);
+    ofs.close();
 
     // TODO make sure that proper clang is in path on Windows
 #ifndef _MSC_VER

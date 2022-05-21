@@ -65,12 +65,14 @@ const Def* clos_pack_dbg(const Def* env, const Def* lam, const Def* dbg, const D
 
 std::tuple<const Def*, const Def*, const Def*> clos_unpack(const Def* c) {
     assert(c && isa_clos_type(c->type()));
-    auto& w       = c->world();
-    auto env_type = c->proj(0_u64);
-    auto pi       = clos_type_to_pi(c->type(), env_type);
-    auto fn       = w.extract_(pi, c, w.lit_int(3, 1));
-    auto env      = w.extract_(env_type, c, w.lit_int(3, 2));
-    return {env_type, fn, env};
+    // auto& w       = c->world();
+    // auto env_type = c->proj(0_u64);
+    // // auto pi       = clos_type_to_pi(c->type(), env_type);
+    // auto fn       = w.extract(c, w.lit_int(3, 1));
+    // auto env      = w.extract(c, w.lit_int(3, 2));
+    // return {env_type, fn, env};
+    auto [ty, pi, env] = c->projs<3>();
+    return {ty, pi, env};
 }
 
 const Def* clos_apply(const Def* closure, const Def* args) {

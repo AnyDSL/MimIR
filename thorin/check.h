@@ -7,6 +7,8 @@
 
 namespace thorin {
 
+const Def* infer_type_level(World&, Defs);
+
 class Checker {
 public:
     Checker(World& world)

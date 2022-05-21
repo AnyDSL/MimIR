@@ -1,4 +1,4 @@
-# Passes
+# Passes {#passes}
 
 [TOC]
 
@@ -36,12 +36,12 @@ The main hook to the [PassMan](@ref thorin::PassMan), is the [rewrite](@ref thor
 As an example, let's have a look at the [Alloc2Malloc](@ref thorin::Alloc2Malloc) pass.
 It rewrites `alloc`/`slot` calls into their more verbose siblings `malloc`/`mslot` that make the size of the alloc'ed type explicit:
 This is `alloc2malloc.h`:
-\include "../thorin/pass/rw/alloc2malloc.h"
+\include "thorin/pass/rw/alloc2malloc.h"
 
 The actual `rewrite` simply inspects the current `def`.
 If this happens to be a `alloc`/`slot`, it will simply return the more explicit counterpart.
 This is `alloc2malloc.cpp`:
-\include "../thorin/pass/rw/alloc2malloc.cpp"
+\include "thorin/pass/rw/alloc2malloc.cpp"
 
 ## Fixed-Point Pass
 
@@ -93,4 +93,4 @@ The reason is that the very program you are constructing is the **only** way to 
 Eventually, you will need to create nominals during a [fixed-point pass](@ref thorin::FPPass).
 You must be super cautious to remember in which exact context you created said nominal.
 If you ever come into the same situation again (due to backtracking) you have to make sure that you return the **very same** nominal.
-Otherwise, if you create a different nominal, the @ref thorin::PassMan will most likely diverge as it will constantly backtrack while creating new nominals that the other passes don't know anything about.
+Otherwise, if you create a different nominal, the [PassMan](@ref thorin::PassMan) will most likely diverge as it will constantly backtrack while creating new nominals that the other passes don't know anything about.

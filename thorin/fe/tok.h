@@ -8,13 +8,27 @@
 namespace thorin {
 
 // clang-format off
-#define THORIN_KEY(m)                   \
-    m(K_Cn,     ".Cn"     )             \
-    m(K_cn,     ".cn"     )             \
-    m(K_module, ".module" )             \
-    m(K_Nat,    ".Nat"    )             \
-    m(K_tt,     ".tt"     )             \
-    m(K_ff,     ".ff"     )             \
+#define THORIN_KEY(m)                  \
+    m(K_module, ".module")             \
+    m(K_import, ".import")             \
+    m(K_ax,     ".ax"    )             \
+    m(K_def,    ".def"   )             \
+    m(K_let,    ".let"   )             \
+    m(K_Bool,   ".Bool"  )             \
+    m(K_Nat,    ".Nat"   )             \
+    m(K_extern, ".extern")             \
+    m(K_Arr,    ".Arr"   )             \
+    m(K_Sigma,  ".Sigma" )             \
+    m(K_Type,   ".Type"  )             \
+    m(K_pack,   ".pack"  )             \
+    m(K_Pi,     ".Pi"    )             \
+    m(K_lam,    ".lam"   )             \
+    m(K_Cn,     ".Cn"    )             \
+    m(K_cn,     ".cn"    )             \
+    m(K_Fn,     ".Fn"    )             \
+    m(K_fn,     ".fn"    )             \
+    m(K_ff,     ".ff"    )             \
+    m(K_tt,     ".tt"    )             \
 
 #define CODE(t, str) +size_t(1)
 constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
@@ -43,40 +57,38 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(D_quote_l,      "«")              \
     m(D_quote_r,      "»")              \
     /* further tokens */                \
+    m(T_Pi,           "Π")              \
     m(T_arrow,        "→")              \
     m(T_assign,       "=")              \
+    m(T_at,           "@")              \
     m(T_bot,          "⊥")              \
     m(T_top,          "⊤")              \
+    m(T_box,          "□")              \
     m(T_colon,        ":")              \
     m(T_colon_colon,  "∷")              \
     m(T_comma,        ",")              \
     m(T_dot,          ".")              \
     m(T_extract,      "#")              \
-    m(T_Pi,           "Π")              \
     m(T_lam,          "λ")              \
     m(T_semicolon,    ";")              \
-    m(T_space,        "□")              \
     m(T_star,         "*")              \
 
 #define THORIN_SUBST(m)                 \
     m("->",     T_arrow)                \
     m(".bot",   T_bot  )                \
     m(".top",   T_top  )                \
-    m(".lam",   T_lam  )                \
-    m(".Pi",    T_Pi   )                \
-    m(".space", T_top  )                \
 
 #define THORIN_PREC(m)                  \
     /* left     prec,       right  */   \
-    m(Nil,      Bottom,     Nil     )   \
-    m(Nil,      Nil,        Nil     )   \
-    m(Pi,       Arrow,      Arrow   )   \
-    m(Nil,      Pi,         App     )   \
-    m(App,      App,        Extract )   \
-    m(Extract,  Extract,    Lit     )   \
-    m(Nil,      Lit,        Lit     )   \
+    m(Nil,      Bot,     Nil     )      \
+    m(Nil,      Nil,     Nil     )      \
+    m(Pi,       Arrow,   Arrow   )      \
+    m(Nil,      Pi,      App     )      \
+    m(App,      App,     Extract )      \
+    m(Extract,  Extract, Lit     )      \
+    m(Nil,      Lit,     Lit     )      \
 
-class Tok : public Streamable<Tok> {
+class Tok {
 public:
     /// @name Precedence
     ///@{
@@ -146,7 +158,6 @@ public:
     Sym sym()          const { assert(isa(Tag::M_id) || isa(Tag::M_ax)); return sym_; }
     const Def* index() const { assert(isa(Tag::M_i)); return index_; }
     // clang-format on
-    Stream& stream(Stream& s) const;
 
 private:
     Loc loc_;
@@ -157,6 +168,8 @@ private:
         const Def* index_;
     };
 };
+
+std::ostream& operator<<(std::ostream& os, const Tok tok);
 
 } // namespace thorin
 

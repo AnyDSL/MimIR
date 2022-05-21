@@ -39,6 +39,7 @@ public:
 
     /// @name virtual methods
     ///@{
+    size_t first_dependend_op() { return 1; }
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Pi* stub(World&, const Def*, const Def*) override;
     const Pi* restructure() override;
@@ -172,7 +173,7 @@ public:
     friend class World;
 };
 
-inline Stream& operator<<(Stream& s, std::pair<Lam*, Lam*> p) {
+inline std::ostream& operator<<(std::ostream& s, std::pair<Lam*, Lam*> p) {
     return operator<<(s, std::pair<const Def*, const Def*>(p));
 }
 

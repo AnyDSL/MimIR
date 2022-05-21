@@ -3,4 +3,4 @@ add_executable(thorin
     dialects.cpp
     dialects.h)
 
-target_link_libraries(thorin libthorin ${CMAKE_DL_LIBS} lyra)
+target_link_libraries(thorin libthorin lyra)

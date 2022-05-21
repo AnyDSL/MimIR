@@ -17,9 +17,9 @@ std::string_view Tok::tag2str(Tok::Tag tag) {
     unreachable();
 }
 
-Stream& Tok::stream(Stream& s) const {
-    if (isa(Tok::Tag::M_id) || isa(Tok::Tag::M_ax)) return s << sym();
-    return s << Tok::tag2str(tag());
+std::ostream& operator<<(std::ostream& os, const Tok tok) {
+    if (tok.isa(Tok::Tag::M_id) || tok.isa(Tok::Tag::M_ax)) return os << tok.sym();
+    return os << Tok::tag2str(tok.tag());
 }
 
 } // namespace thorin

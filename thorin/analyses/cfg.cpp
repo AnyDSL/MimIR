@@ -22,7 +22,7 @@ void CFNode::link(const CFNode* other) const {
     other->preds_.emplace(this);
 }
 
-Stream& CFNode::stream(Stream& s) const { return s << nom(); }
+std::ostream& operator<<(std::ostream& os, const CFNode* n) { return os << n->nom(); }
 
 //------------------------------------------------------------------------------
 

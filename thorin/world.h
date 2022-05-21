@@ -1,15 +1,12 @@
 #ifndef THORIN_WORLD_H
 #define THORIN_WORLD_H
 
-#include <cassert>
-
-#include <functional>
-#include <initializer_list>
-#include <iostream>
+#include <sstream>
 #include <string>
 
 #include "thorin/axiom.h"
 #include "thorin/config.h"
+#include "thorin/debug.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
@@ -17,7 +14,7 @@
 
 namespace thorin {
 
-enum class LogLevel { Debug, Verbose, Info, Warn, Error };
+enum class LogLevel { Error, Warn, Info, Verbose, Debug };
 
 class Checker;
 class DepNode;
@@ -34,7 +31,7 @@ class Scope;
 /// All worlds are completely independent from each other.
 ///
 /// Note that types are also just Def%s and will be hashed as well.
-class World : public Streamable<World> {
+class World {
 public:
     World& operator=(const World&) = delete;
 
@@ -78,21 +75,23 @@ public:
     /// @name Universe, Type, Var, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
-    const Type* type(const Def* level) { return unify<Type>(1, level)->as<Type>(); }
+    const Type* type(const Def* level, const Def* dbg = {}) { return unify<Type>(1, level, dbg)->as<Type>(); }
     template<level_t level = 0>
-    const Type* type() {
+    const Type* type(const Def* dbg = {}) {
         if constexpr (level == 0)
             return data_.type_0_;
         else if constexpr (level == 1)
             return data_.type_1_;
         else
-            return type(lit_univ(level));
+            return type(lit_univ(level), dbg);
     }
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, flags, dbg);
     }
     Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
+    Infer* nom_infer(const Def* type, Sym sym, Loc loc) { return insert<Infer>(1, type, dbg({sym, loc})); }
+    Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
     ///@}
 
     /// @name Axiom
@@ -176,10 +175,10 @@ public:
 
     /// @name Arr
     ///@{
-    Arr* nom_arr(const Def* type, const Def* shape, const Def* dbg = {}) { return insert<Arr>(2, type, shape, dbg); }
+    Arr* nom_arr(const Def* type, const Def* dbg = {}) { return insert<Arr>(2, type, dbg); }
     template<level_t level = 0>
-    Arr* nom_arr(const Def* shape, const Def* dbg = {}) {
-        return nom_arr(type<level>(), shape, dbg);
+    Arr* nom_arr(const Def* dbg = {}) {
+        return nom_arr(type<level>(), dbg);
     }
     const Def* arr(const Def* shape, const Def* body, const Def* dbg = {});
     const Def* arr(Defs shape, const Def* body, const Def* dbg = {});
@@ -202,6 +201,7 @@ public:
 
     /// @name Pack
     ///@{
+    Pack* nom_pack(const Def* type, const Def* dbg = {}) { return insert<Pack>(1, type, dbg); }
     const Def* pack(const Def* arity, const Def* body, const Def* dbg = {});
     const Def* pack(Defs shape, const Def* body, const Def* dbg = {});
     const Def* pack(u64 n, const Def* body, const Def* dbg = {}) { return pack(lit_nat(n), body, dbg); }
@@ -212,21 +212,15 @@ public:
 
     /// @name Extract
     ///@{
-    const Def* extract(const Def* tup, const Def* i, const Def* dbg = {}) { return extract_(nullptr, tup, i, dbg); }
-    const Def* extract(const Def* tup, u64 a, u64 i, const Def* dbg = {}) {
-        return extract_(nullptr, tup, lit_int(a, i), dbg);
+    const Def* extract(const Def* d, const Def* i, const Def* dbg = {});
+    const Def* extract(const Def* d, u64 a, u64 i, const Def* dbg = {}) { return extract(d, lit_int(a, i), dbg); }
+    const Def* extract(const Def* d, u64 i, const Def* dbg = {}) { return extract(d, as_lit(d->arity()), i, dbg); }
+    const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
+        return extract_unsafe(d, lit_int(0_u64, i), dbg);
     }
-    const Def* extract(const Def* tup, u64 i, const Def* dbg = {}) {
-        return extract(tup, as_lit(tup->arity()), i, dbg);
+    const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
+        return extract(d, op(Conv::u2u, type_int(as_lit(d->type()->reduce_rec()->arity())), i, dbg), dbg);
     }
-    const Def* extract_unsafe(const Def* tup, u64 i, const Def* dbg = {}) {
-        return extract_unsafe(tup, lit_int(0_u64, i), dbg);
-    }
-    const Def* extract_unsafe(const Def* tup, const Def* i, const Def* dbg = {}) {
-        return extract(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce_rec()->arity())), i, dbg), dbg);
-    }
-    /// During a rebuild we cannot infer the type if it is not set yet; in this case we rely on @p ex_type.
-    const Def* extract_(const Def* ex_type, const Def* tup, const Def* i, const Def* dbg = {});
     /// Builds `(f, t)cond`.
     /// **Note** that select expects @p t as first argument and @p f as second one.
     const Def* select(const Def* t, const Def* f, const Def* cond, const Def* dbg = {}) {
@@ -236,18 +230,18 @@ public:
 
     /// @name Insert
     ///@{
-    const Def* insert(const Def* tup, const Def* i, const Def* val, const Def* dbg = {});
-    const Def* insert(const Def* tup, u64 a, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, lit_int(a, i), val, dbg);
+    const Def* insert(const Def* d, const Def* i, const Def* val, const Def* dbg = {});
+    const Def* insert(const Def* d, u64 a, u64 i, const Def* val, const Def* dbg = {}) {
+        return insert(d, lit_int(a, i), val, dbg);
     }
-    const Def* insert(const Def* tup, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, as_lit(tup->arity()), i, val, dbg);
+    const Def* insert(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
+        return insert(d, as_lit(d->arity()), i, val, dbg);
     }
-    const Def* insert_unsafe(const Def* tup, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert_unsafe(tup, lit_int(0_u64, i), val, dbg);
+    const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
+        return insert_unsafe(d, lit_int(0_u64, i), val, dbg);
     }
-    const Def* insert_unsafe(const Def* tup, const Def* i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce_rec()->arity())), i), val, dbg);
+    const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
+        return insert(d, op(Conv::u2u, type_int(as_lit(d->type()->reduce_rec()->arity())), i), val, dbg);
     }
     ///@}
 
@@ -310,7 +304,6 @@ public:
     ///@{
     template<bool up>
     const Def* ext(const Def* type, const Def* dbg = {});
-    const Def* ext(bool up, const Def* type, const Def* dbg = {}) { return up ? top(type, dbg) : bot(type, dbg); }
     const Def* bot(const Def* type, const Def* dbg = {}) { return ext<false>(type, dbg); }
     const Def* top(const Def* type, const Def* dbg = {}) { return ext<true>(type, dbg); }
     const Def* bot_type() { return data_.bot_type_; }
@@ -325,12 +318,13 @@ public:
     template<level_t l = 0> Meet* nom_meet(size_t size, const Def* dbg = {}) { return nom_meet(type<l>(), size, dbg); }
     const Def* join(Defs ops, const Def* dbg = {}) { return bound<true>(ops, dbg); }
     const Def* meet(Defs ops, const Def* dbg = {}) { return bound<false>(ops, dbg); }
-    const Def* et(const Def* type, Defs ops, const Def* dbg = {});
+    const Def* ac(const Def* type, Defs ops, const Def* dbg = {});
     /// Infers the type using a *structural* Meet.
-    const Def* et(Defs ops, const Def* dbg = {}) { return et(infer_type(ops), ops, dbg); }
+    const Def* ac(Defs ops, const Def* dbg = {});
     const Def* vel(const Def* type, const Def* value, const Def* dbg = {});
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg = {});
+    const Def* singleton(const Def* inner_type, const Def* dbg = {});
     ///@}
 
     /// @name globals -- depdrecated; will be removed
@@ -519,7 +513,6 @@ public:
     ///@{
     const Def* dbg(Debug);
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
-    const Def* infer_type(Defs);
     ///@}
 
     /// @name partial evaluation done?
@@ -535,7 +528,7 @@ public:
     bool empty() { return data_.externals_.empty(); }
     void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
     void make_internal(Def* def) { data_.externals_.erase(def->name()); }
-    bool is_external(const Def* def) { return data_.externals_.contains(def->debug().name); }
+    bool is_external(const Def* def) { return data_.externals_.contains(def->name()); }
     Def* lookup(std::string_view name) {
         auto i = data_.externals_.find(name);
         return i != data_.externals_.end() ? i->second : nullptr;
@@ -555,7 +548,6 @@ public:
     using Breakpoints = absl::flat_hash_set<u32>;
 
     void breakpoint(size_t number);
-    void use_breakpoint(size_t number);
     void enable_history(bool flag = true);
     bool track_history() const;
     const Def* gid2def(u32 gid);
@@ -564,17 +556,20 @@ public:
 
     /// @name Logging
     ///@{
-    Stream& stream() { return *stream_; }
-    LogLevel min_level() const { return state_.min_level; }
+    std::ostream& ostream() const { return *ostream_; }
+    LogLevel max_level() const { return state_.max_level; }
 
-    void set(LogLevel min_level) { state_.min_level = min_level; }
-    void set(std::shared_ptr<Stream> stream) { stream_ = stream; }
+    void set_log_level(LogLevel max_level) { state_.max_level = max_level; }
+    void set_log_level(std::string_view max_level) { set_log_level(str2level(max_level)); }
+    void set_log_ostream(std::ostream* ostream) { ostream_ = ostream; }
 
     template<class... Args>
     void log(LogLevel level, Loc loc, const char* fmt, Args&&... args) {
-        if (stream_ && int(min_level()) <= int(level)) {
-            stream().fmt("{}:{}: ", colorize(level2string(level), level2color(level)), colorize(loc.to_string(), 7));
-            stream().fmt(fmt, std::forward<Args&&>(args)...).endl().flush();
+        if (ostream_ && int(level) <= int(max_level())) {
+            std::ostringstream oss;
+            oss << loc;
+            print(ostream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
+            print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
         }
     }
     void log() const {} ///< for DLOG in Release build.
@@ -586,38 +581,39 @@ public:
     }
 
     // clang-format off
-    template<class... Args> void idef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Info, def->debug().loc, fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> void wdef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Warn, def->debug().loc, fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> void edef(const Def* def, const char* fmt, Args&&... args) { error(def->debug().loc, fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> void idef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Info, def->loc(), fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> void wdef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Warn, def->loc(), fmt, std::forward<Args&&>(args)...); }
+    template<class... Args> void edef(const Def* def, const char* fmt, Args&&... args) { error(def->loc(), fmt, std::forward<Args&&>(args)...); }
     // clang-format on
 
-    static std::string_view level2string(LogLevel level);
+    static std::string_view level2acro(LogLevel);
+    static LogLevel str2level(std::string_view);
     static int level2color(LogLevel level);
     static std::string colorize(std::string_view str, int color);
     ///@}
 
     /// @name stream
     ///@{
-    Stream& stream(Stream&) const;
-    Stream& stream(RecStreamer&, const DepNode*) const;
-    void debug_stream(); ///< Stream thorin if World::State::min_level is LogLevel::Debug.
+    std::ostream& stream(RecStreamer&, const DepNode*) const;
+    void debug_stream() const; ///< Stream thorin if World::State::max_level is LogLevel::debug.
+    void dump() const;
     ///@}
 
     /// @name error handling
     ///@{
-    void set(std::unique_ptr<ErrorHandler>&& err);
+    void set_error_handler(std::unique_ptr<ErrorHandler>&& err);
     ErrorHandler* err() { return err_.get(); }
     ///@}
 
     friend void swap(World& w1, World& w2) {
         using std::swap;
         // clang-format off
-        swap(w1.arena_,   w2.arena_);
-        swap(w1.data_,    w2.data_);
-        swap(w1.state_,   w2.state_);
-        swap(w1.stream_,  w2.stream_);
-        swap(w1.checker_, w2.checker_);
-        swap(w1.err_,     w2.err_);
+        swap(w1.arena_,    w2.arena_);
+        swap(w1.data_,     w2.data_);
+        swap(w1.state_,    w2.state_);
+        swap(w1.ostream_,  w2.ostream_);
+        swap(w1.checker_,  w2.checker_);
+        swap(w1.err_,      w2.err_);
         // clang-format on
 
         swap(w1.data_.univ_->world_, w2.data_.univ_->world_);
@@ -632,13 +628,10 @@ private:
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
-        auto [i, inserted] = data_.defs_.emplace(def);
-        if (inserted) {
+        auto [i, ins] = data_.defs_.emplace(def);
+        if (ins) {
 #if THORIN_ENABLE_CHECKS
             if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
-            for (auto op : def->ops()) {
-                if (state_.use_breakpoints.contains(op->gid())) thorin::breakpoint();
-            }
 #endif
             def->finalize();
             return def;
@@ -654,8 +647,8 @@ private:
 #if THORIN_ENABLE_CHECKS
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
-        auto p = data_.defs_.emplace(def);
-        assert_unused(p.second);
+        auto [_, ins] = data_.defs_.emplace(def);
+        assert_unused(ins);
         return def;
     }
     ///@}
@@ -732,14 +725,13 @@ private:
     } arena_;
 
     struct State {
-        LogLevel min_level = LogLevel::Error;
+        LogLevel max_level = LogLevel::Error;
         u32 curr_gid       = 0;
         u32 curr_tag       = tag_t(-1);
         bool pe_done       = false;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
         Breakpoints breakpoints;
-        Breakpoints use_breakpoints;
 #endif
     } state_;
 
@@ -803,10 +795,12 @@ private:
 
     std::unique_ptr<Checker> checker_;
     std::unique_ptr<ErrorHandler> err_;
-    std::shared_ptr<Stream> stream_;
+    mutable std::ostream* ostream_ = nullptr;
 
     friend DefArray Def::reduce(const Def*);
 };
+
+std::ostream& operator<<(std::ostream&, const World&);
 
 // clang-format off
 #define ELOG(...) log(thorin::LogLevel::Error,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)

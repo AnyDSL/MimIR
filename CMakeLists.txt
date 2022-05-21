@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.7 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 project(Thorin VERSION 1.9.0)
 
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -19,7 +19,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(BUILD_SHARED_LIBS "Build shared libraries." ON)
+option(THORIN_BUILD_DOCS "If ON, Thorin will build the documentation (requires Doxygen)." OFF) 
+option(THORIN_BUILD_TESTING "If ON, Thorin will build all of Thorin's own tests." OFF) 
+
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}; shared libs: ${BUILD_SHARED_LIBS}")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -33,12 +36,16 @@ if(WIN32)
     add_compile_definitions(NOMINMAX) # prevents windows.h defining min/max macros
 else()
     option(THORIN_COLOR_TERM "Use colored output (doesn't work in Windows terminal)" TRUE)
+    add_compile_options(-Wall -Wextra)
 endif()
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+include(Thorin)
 
 find_program(MEMORYCHECK_COMMAND valgrind)
 set(VALGRIND_COMMAND_OPTIONS "--leak-check=full --error-exitcode=1") # needs to be BEFORE "include(CTest)"
 include(CTest)
-if(BUILD_TESTING)
+if(BUILD_TESTING AND THORIN_BUILD_TESTING)
     include(GoogleTest)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
     add_subdirectory(modules/googletest)
@@ -53,6 +60,13 @@ add_subdirectory(thorin)
 add_subdirectory(cli)
 add_subdirectory(dialects)
 
-if(BUILD_TESTING)
+if(BUILD_TESTING AND THORIN_BUILD_TESTING)
     add_subdirectory(gtest)
+endif()
+
+if(THORIN_BUILD_DOCS)
+    find_package(Doxygen REQUIRED dot)
+    if(DOXYGEN_FOUND)
+        add_subdirectory(docs)
+    endif()
 endif()

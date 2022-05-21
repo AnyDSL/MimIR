@@ -40,6 +40,8 @@ add_library(libthorin
     be/emitter.h
     be/dot/dot.cpp
     be/dot/dot.h
+    be/h/h.cpp
+    be/h/h.h
     be/ll/ll.cpp
     be/ll/ll.h
     fe/lexer.cpp
@@ -96,26 +98,36 @@ add_library(libthorin
     util/bitset.h
     util/cast.h
     util/container.h
+    util/dl.cpp
+    util/dl.h
     util/hash.cpp
     util/hash.h
     util/indexmap.h
     util/indexset.h
-    util/stream.cpp
-    util/stream.h
+    util/print.cpp
+    util/print.h
+    util/sys.cpp
+    util/sys.h
     util/types.h
     util/utf8.cpp
     util/utf8.h
 )
 
 set_target_properties(libthorin PROPERTIES PREFIX "")
+
 configure_file(config.h.in config.h)
 target_include_directories(libthorin PUBLIC 
     ${CMAKE_CURRENT_BINARY_DIR}/.. # for config.h
     ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${PROJECT_SOURCE_DIR}/modules/half/include
 )
-target_link_libraries(libthorin PUBLIC absl::flat_hash_map absl::flat_hash_set
-                                       absl::node_hash_map absl::node_hash_set)
+target_link_libraries(libthorin 
+    PUBLIC 
+        absl::flat_hash_map absl::flat_hash_set
+        absl::node_hash_map absl::node_hash_set
+        ${CMAKE_DL_LIBS}
+)
+
 if(MSVC AND BUILD_SHARED_LIBS)
     target_compile_definitions(libthorin PUBLIC ABSL_CONSUME_DLL)
 endif()

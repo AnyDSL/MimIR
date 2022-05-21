@@ -1,8 +1,8 @@
-# Coding & Debugging
+# Coding & Debugging {#coding}
 
 [TOC]
 
-This document comprises some information that is related to coding but does not directly deals with the API.
+This document comprises some information that is related to coding but does not directly related to the API.
 
 ## Coding Style
 
@@ -32,18 +32,25 @@ In addition, you might want to check out plugins like the [Vim integration](http
 
 # Debugging
 
-## Logging
+For logging and automatic firing of breakpoints refer to the [Command-Line Reference](@ref clidebug).
 
-## Breakpoints
+## Conditional Breakpoints
 
-## VS Code
-
-As a utility to make debugging Thorin itself less painful with certain debuggers, the `thorin.natvis` file can be loaded for getting more expressive value inspection.
-In VS Code you can do so by adding the following to the `launch.json` configurations. When launching from VS Code via CMake, put it in `settings.json`'s `"cmake.debugConfig":`:
-```json
-"visualizerFile": "${workspaceFolder}/thorin.natvis",
-"showDisplayString": true,
+Often, you will want to inspect a certain thorin::Def at a particular point within the program.
+You can use [conditional breakpoints](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html) for this.
+For example, the following GDB command will break, if the thorin::Def::gid of variable `def` is `666` in source code location `foo.cpp:23`:
+```gdb
+break foo.cpp:23 if def->gid() == 666
 ```
+
+## Valgrind & GDB
+
+If you encounter memory related problems, you might want to run the program with [Valgrind's GDB server](https://valgrind.org/docs/manual/manual-core-adv.html).
+Simply launch the program like this
+```sh
+valgrind --vgdb=yes --vgdb-error=0 thorin-gtest
+```
+and follow the instructions.
 
 ## GoogleTest
 
@@ -57,16 +64,16 @@ This command lists all available tests:
 ```sh
 ./thorin-gtest --gtest_list_tests
 ```
-In addition, you may find it helpful to turn assertion failures into debugger break-points:
+In addition, you may find it helpful to turn assertion failures into debugger breakpoints:
 ```sh
 ./thorin-test --gtest_break_on_failure
 ```
 
-## Valgrind & GDB
+## VS Code
 
-If you encounter memory related problems, you might want to run the program with [Valgrind's GDB server](https://valgrind.org/docs/manual/manual-core-adv.html).
-Simply launch the program like this
-```sh
-valgrind --vgdb=yes --vgdb-error=0 thorin-gtest
+As a utility to make debugging Thorin itself less painful with certain debuggers, the `thorin.natvis` file can be loaded for getting more expressive value inspection.
+In VS Code you can do so by adding the following to the `launch.json` configurations. When launching from VS Code via CMake, put it in `settings.json`'s `"cmake.debugConfig":`:
+```json
+"visualizerFile": "${workspaceFolder}/thorin.natvis",
+"showDisplayString": true,
 ```
-and follow the instructions.

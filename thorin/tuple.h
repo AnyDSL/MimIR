@@ -23,6 +23,7 @@ public:
 
     /// @name virtual methods
     ///@{
+    bool check() override;
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Sigma* stub(World&, const Def*, const Def*) override;
     ///@}
@@ -53,25 +54,22 @@ private:
     Arr(const Def* type, const Def* shape, const Def* body, const Def* dbg)
         : Def(Node, type, {shape, body}, 0, dbg) {}
     /// Constructor for a *nom*inaml Arr.
-    Arr(const Def* type, const Def* shape, const Def* dbg)
-        : Def(Node, type, 2, 0, dbg) {
-        Def::set(0, shape);
-    }
+    Arr(const Def* type, const Def* dbg)
+        : Def(Node, type, 2, 0, dbg) {}
 
 public:
     /// @name ops
     ///@{
     const Def* shape() const { return op(0); }
     const Def* body() const { return op(1); }
-    ///@}
-
-    /// @name methods for noms
-    ///@{
-    Arr* set(const Def* body) { return Def::set(1, body)->as<Arr>(); }
+    Arr* set_shape(const Def* shape) { return Def::set(0, shape)->as<Arr>(); }
+    Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
     ///@}
 
     /// @name virtual methods
     ///@{
+    bool check() override;
+    size_t first_dependend_op() override { return 1; }
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Arr* stub(World&, const Def*, const Def*) override;
     const Def* restructure() override;
@@ -83,20 +81,27 @@ public:
 
 class Pack : public Def {
 private:
+    /// Constructor for a *structural* Pack.
     Pack(const Def* type, const Def* body, const Def* dbg)
         : Def(Node, type, {body}, 0, dbg) {}
+    /// Constructor for a *nom*inaml Pack.
+    Pack(const Def* type, const Def* dbg)
+        : Def(Node, type, 1, 0, dbg) {}
 
 public:
-    /// @name getters
+    /// @name ops
     ///@{
     const Def* body() const { return op(0); }
     const Arr* type() const { return Def::type()->as<Arr>(); }
     const Def* shape() const { return type()->shape(); }
+    Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
     ///@}
 
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    Pack* stub(World&, const Def*, const Def*) override;
+    const Def* restructure() override;
     ///@}
 
     static constexpr auto Node = Node::Pack;

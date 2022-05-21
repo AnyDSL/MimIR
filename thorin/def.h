@@ -11,7 +11,7 @@
 #include "thorin/util/cast.h"
 #include "thorin/util/container.h"
 #include "thorin/util/hash.h"
-#include "thorin/util/stream.h"
+#include "thorin/util/print.h"
 
 namespace thorin {
 
@@ -19,7 +19,6 @@ class App;
 class Axiom;
 class Var;
 class Def;
-class Stream;
 class World;
 
 using Defs     = ArrayRef<const Def*>;
@@ -99,13 +98,14 @@ enum : unsigned {
     auto NAME##s(nat_t a, Defs dbgs = {}) CONST { return ((const Def*)NAME())->projs(a, dbgs); }
 
 /// Base class for all Def%s.
-/// The data layout (see World::alloc and Def::extended_ops) looks like this:
+/// The data layout (see World::alloc and Def::partial_ops) looks like this:
 /// ```
-/// Def debug type | op(0) ... op(num_ops-1) ||
-///    |-------------extended_ops-------------|
+/// Def| dbg |type | op(0) ... op(num_ops-1) |
+///    |--------------partial_ops------------|
+///                |-------extended_ops------|
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
-class Def : public RuntimeCast<Def>, public Streamable<Def> {
+class Def : public RuntimeCast<Def> {
 public:
     using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*, const Def*);
 
@@ -151,26 +151,48 @@ public:
     }
     const Def* op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
-    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not Type or Type),
-    /// and then the other Def::ops() (if Def::is_set) in this order.
-    Defs extended_ops() const;
-    const Def* extended_op(size_t i) const { return extended_ops()[i]; }
-    size_t num_extended_ops() const { return extended_ops().size(); }
+    ///@}
+
+    /// @name set/unset ops
+    ///@{
     Def* set(size_t i, const Def* def);
     Def* set(Defs ops) {
         for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
         return this;
     }
+
     void unset(size_t i);
     void unset() {
         for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);
     }
+    Def* set_type(const Def*);
+    void unset_type();
+
     /// Are all Def::ops set?
     /// * `true` if all operands are set or Def::num_ops ` == 0`.
     /// * `false` if all operands are `nullptr`.
     /// * `assert`s otherwise.
     bool is_set() const;
     bool is_unset() const { return !is_set(); } ///< *Not* Def::is_set.
+    ///@}
+
+    /// @name extended_ops
+    ///@{
+    /// Includes Def::dbg (if not `nullptr`), Def::type() (if not `nullptr`),
+    /// and then the other Def::ops() (if Def::is_set) in this order.
+    Defs extended_ops() const;
+    const Def* extended_op(size_t i) const { return extended_ops()[i]; }
+    size_t num_extended_ops() const { return extended_ops().size(); }
+    ///@}
+
+    /// @name partial_ops
+    ///@{
+    /// Includes Def::dbg, Def::type, and Def::ops (in this order).
+    /// Also works with partially set Def%s and doesn't assert.
+    /// Unset operands are `nullptr`.
+    Defs partial_ops() const { return Defs(num_ops_ + 2, ops_ptr() - 2); }
+    const Def* partial_op(size_t i) const { return partial_ops()[i]; }
+    size_t num_partial_ops() const { return partial_ops().size(); }
     ///@}
 
     /// @name uses
@@ -194,7 +216,7 @@ public:
     ///@{
     /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
 
-    /// @return yields arity if a Lit or `1` otherwise.
+    /// @returns Def::arity as_lit, if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const {
         if (auto a = isa_lit(arity())) return *a;
         return 1;
@@ -322,12 +344,14 @@ public:
     DefArray reduce(const Def* arg) const;
     DefArray reduce(const Def* arg);
     /// Transitively Def::reduce Lam%s, if `this` is an App.
-    /// @return the reduced body
+    /// @returns the reduced body.
     const Def* reduce_rec() const;
     ///@}
 
-    /// @name rebuild & friends
+    /// @name virtual methods
     ///@{
+    virtual bool check() { return true; }
+    virtual size_t first_dependend_op() { return 0; }
     virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
     const Def* refine(size_t i, const Def* new_op) const;
@@ -337,11 +361,9 @@ public:
 
     /// @name stream
     ///@{
-    Stream& stream(Stream& s) const;
-    Stream& stream(Stream& s, size_t max) const;
-    Stream& let(Stream&) const;
-    Stream& unwrap(Stream&) const;
-    bool unwrap() const;
+    std::ostream& stream(std::ostream&, Tab&) const;
+    std::ostream& stream(std::ostream&, size_t max) const;
+    std::ostream& let(std::ostream&, Tab&) const;
     void dump() const;
     void dump(size_t) const;
     ///@}
@@ -380,6 +402,8 @@ protected:
     friend void swap(World&, World&);
 };
 
+std::ostream& operator<<(std::ostream&, const Def* def);
+
 template<class T>
 const T* isa(fields_t f, const Def* def) {
     if (auto d = def->template isa<T>(); d && d->fields() == f) return d;
@@ -400,6 +424,8 @@ using DefSet  = GIDSet<const Def*>;
 using Def2Def = DefMap<const Def*>;
 using DefDef  = std::tuple<const Def*, const Def*>;
 using DefVec  = std::vector<const Def*>;
+
+std::ostream& operator<<(std::ostream&, std::pair<const Def*, const Def*>);
 
 struct DefDefHash {
     hash_t operator()(DefDef pair) const {
@@ -468,8 +494,8 @@ using level_t = u64;
 
 class Type : public Def {
 private:
-    Type(const Def* level)
-        : Def(Node, nullptr, {level}, 0, nullptr) {}
+    Type(const Def* level, const Def* dbg)
+        : Def(Node, nullptr, {level}, 0, dbg) {}
 
 public:
     const Def* level() const { return op(0); }
@@ -563,7 +589,7 @@ public:
     /// @name op
     ///@{
     const Def* op() const { return Def::op(0); }
-    void set(const Def* op) { Def::set(0, op); }
+    Infer* set(const Def* op) { return Def::set(0, op)->as<Infer>(); }
     ///@}
 
     /// @name virtual methods
@@ -611,11 +637,7 @@ public:
     friend class World;
 };
 
-// TODO use friedn Absl magic
 hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(use.index())), hash_t(use->gid())); }
-
-Stream& operator<<(Stream&, const Def* def);
-Stream& operator<<(Stream&, std::pair<const Def*, const Def*>);
 
 //------------------------------------------------------------------------------
 
