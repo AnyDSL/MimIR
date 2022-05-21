@@ -181,7 +181,7 @@ Otherwise, `→` would be consumed by the domain: `Π T:` (`* →` (`T → T`)) 
 ## Scoping
 
 Thorin uses [_lexical scoping_](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope) where all names live within the same namespace - with a few exceptions noted below.
-The grammar tables above also indiciate which constructs open new scopes.
+The grammar tables above also indiciate which constructs open new scopes (and close them again).
 
 ### Underscore
 
@@ -193,7 +193,7 @@ Hence, using the symbol `_` will always result in a [scoping error](@ref thorin:
 
 Note that _only_ `Π x: e → e` introduces a new scope.
 `x: e → e` is a syntax error.
-If the name of a Pi is elided and the domain is a sigma, it's elemented will be imported into the Pi's scope to make these elements available in the Pi's codomain:
+If the variable name of a Pi's domain is elided and the domain is a sigma, its elements will be imported into the Pi's scope to make these elements available in the Pi's codomain:
 ```
 Π [T: *, U: *] → [T, U]
 ```
