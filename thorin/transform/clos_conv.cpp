@@ -324,32 +324,40 @@ ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
 
 /* Free variable analysis */
 
-static bool ignore_fd(const Def* fd) {
-    return fd->no_dep() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term ||
-           isa<Tag::Mem>(fd->type());
+static bool is_toplevel(const Def* fd) {
+    return fd->no_dep() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term;
 }
 
-void FreeDefAna::split_fd(Node* node, const Def* fv, bool& init_node, NodeQueue& worklist) {
-    if (ignore_fd(fv)) return;
-    if (auto [var, lam] = ca_isa_var<Lam>(fv); var && lam) {
-        if (var != lam->ret_var()) node->fvs.emplace(fv);
-    } else if (auto q = isa<Tag::Clos>(Clos::freeBB, fv)) {
+static bool is_memop_res(const Def* fd) {
+    auto proj = fd->isa<Extract>();
+    if (!proj) return false;
+    auto types = proj->tuple()->type()->ops();
+    return std::any_of(types.begin(), types.end(), [](auto d) { return isa<Tag::Mem>(d); });
+}
+
+void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue& worklist) {
+    assert(!isa<Tag::Mem>(fd) && "mem tokens must not be free");
+    if (is_toplevel(fd)) return;
+    if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
+        if (var != lam->ret_var()) node->fvs.emplace(fd);
+    } else if (auto q = isa<Tag::Clos>(Clos::freeBB, fd)) {
         node->fvs.emplace(q);
-    } else if (auto pred = fv->isa_nom()) {
+    } else if (auto pred = fd->isa_nom()) {
         if (pred != node->nom) {
             auto [pnode, inserted] = build_node(pred, worklist);
             node->preds.push_back(pnode);
             pnode->succs.push_back(node);
             init_node |= inserted;
         }
-    } else if (fv->dep() == Dep::Var && !fv->isa<Tuple>()) {
-        // Var's can still have Def::Top, if their type is a nom!
+    } else if (fd->dep() == Dep::Var && !fd->isa<Tuple>()) {
+        // Note: Var's can still have Def::Top, if their type is a nom!
         // So the first case is *not* redundant
-        node->fvs.emplace(fv);
-    } else if (isa<Tag::Store>(fv) || isa<Tag::Slot>(fv) || isa<Tag::Load>(fv)) {
-        node->fvs.emplace(fv);
+        node->fvs.emplace(fd);
+    } else if (is_memop_res(fd)) {
+        // Results of memops must not be floated down
+        node->fvs.emplace(fd);
     } else {
-        for (auto op : fv->ops()) split_fd(node, op, init_node, worklist);
+        for (auto op : fd->ops()) split_fd(node, op, init_node, worklist);
     }
 }
 
