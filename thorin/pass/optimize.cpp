@@ -23,16 +23,14 @@
 namespace thorin {
 
 static void closure_conv(World& world) {
-    PassMan prepare(world);
-    auto ee = prepare.add<EtaExp>(nullptr);
-    prepare.add<ClosConvPrep>(ee);
-    prepare.run();
+    PassMan::run<ClosConvPrep>(world, nullptr);
+    PassMan::run<EtaExp>(world, nullptr);
 
     ClosConv(world).run();
 
     PassMan cleanup(world);
     auto er = cleanup.add<EtaRed>(true); // We only want to eta-reduce things in callee position away at this point!
-    ee      = cleanup.add<EtaExp>(er);
+    auto ee = cleanup.add<EtaExp>(er);
     cleanup.add<Scalerize>(ee);
     cleanup.run();
 }
@@ -50,17 +48,17 @@ static void lower_closures(World& world) {
 }
 
 void optimize(World& world) {
-    PassMan::run<Scalerize>(world, nullptr);
-    PassMan::run<EtaRed>(world);
-    PassMan::run<TailRecElim>(world, nullptr);
+    // PassMan::run<Scalerize>(world, nullptr);
+    // PassMan::run<EtaRed>(world);
+    // PassMan::run<TailRecElim>(world, nullptr);
 
     PassMan opt(world);
     // opt.add<PartialEval>();
     // auto br = opt.add<BetaRed>();
     auto er = opt.add<EtaRed>();
     auto ee = opt.add<EtaExp>(er);
-    // opt.add<SSAConstr>(ee);
-    // opt.add<Scalerize>(ee);
+    opt.add<SSAConstr>(ee);
+    opt.add<Scalerize>(ee);
     // opt.add<CopyProp>(br, ee);
     // opt.add<TailRecElim>(er);
     opt.run();
