@@ -459,7 +459,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
                     case 32: return std::to_string(lit->get<u32>());
                     case 64: return std::to_string(lit->get<u64>());
                     // clang-format on
-                    default: unreachable();
+                    default: return std::to_string(lit->get<u64>());
                 }
             } else {
                 return std::to_string(lit->get<u64>());
