@@ -171,7 +171,7 @@ STRIP_FROM_PATH        =
 # specify the list of include paths that are normally passed to the compiler
 # using the -I flag.
 
-STRIP_FROM_INC_PATH    = 
+STRIP_FROM_INC_PATH    = .
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
@@ -843,7 +843,7 @@ WARN_NO_PARAMDOC       = NO
 # Possible values are: NO, YES and FAIL_ON_WARNINGS.
 # The default value is: NO.
 
-WARN_AS_ERROR          = YES
+WARN_AS_ERROR          = NO
 
 # The WARN_FORMAT tag determines the format of the warning messages that doxygen
 # can produce. The string should contain the $file, $line, and $text tags, which
@@ -1238,7 +1238,7 @@ HTML_HEADER            = docs/doxygen-custom/header.html
 # that doxygen normally uses.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_FOOTER            = docs/doxygen-custom/footer.html
+HTML_FOOTER            = 
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading style
 # sheet that is used by each HTML page. It can be used to fine-tune the look of
@@ -1266,7 +1266,7 @@ HTML_STYLESHEET        =
 HTML_EXTRA_STYLESHEET  = modules/doxygen-awesome-css/doxygen-awesome.css \
                          modules/doxygen-awesome-css/doxygen-awesome-sidebar-only.css \
                          modules/doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css \
-                         modules/doxygen-awesome-css/docs/doxygen-custom/custom.css
+                         modules/doxygen-awesome-css/doxygen-custom/custom.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1276,7 +1276,9 @@ HTML_EXTRA_STYLESHEET  = modules/doxygen-awesome-css/doxygen-awesome.css \
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = modules/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js
+HTML_EXTRA_FILES       = modules/doxygen-awesome-css/doxygen-awesome-darkmode-toggle.js \
+                         modules/doxygen-awesome-css/doxygen-awesome-fragment-copy-button.js \
+                         modules/doxygen-awesome-css/doxygen-awesome-paragraph-link.js
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to

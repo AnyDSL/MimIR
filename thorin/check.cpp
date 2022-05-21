@@ -5,8 +5,7 @@
 namespace thorin {
 
 bool Checker::equiv(const Def* d1, const Def* d2) {
-    if (d1 == d2 || (d1->is_unset() && d2->is_unset()) || (d1->isa<Space>() && d2->isa<Space>())) return true;
-    if (d1->level() != d2->level()) return false;
+    if (d1 == d2 || (d1->is_unset() && d2->is_unset())) return true;
 
     // normalize: always put smaller gid to the left
     if (d1->gid() > d2->gid()) std::swap(d1, d2);

@@ -23,7 +23,7 @@ namespace thorin {
 /// Further, first class continuations are rewritten to returning functions. They receive `⊥` as a dummy continuation.
 /// Therefore Clos2SJLJ should have taken place prior to this pass.
 ///
-/// This pass will heap-allocate closures if they are annotated with ClosKind::escaping and stack-allocate everything
+/// This pass will heap-allocate closures if they are annotated with ClosKind::esc and stack-allocate everything
 /// else. These annotations are introduced by LowerTypedClosPrep.
 
 class LowerTypedClos {

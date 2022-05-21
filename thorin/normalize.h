@@ -35,6 +35,8 @@ template<PE>
 const Def* normalize_PE(const Def*, const Def*, const Def*, const Def*);
 template<Acc>
 const Def* normalize_Acc(const Def*, const Def*, const Def*, const Def*);
+template<Clos>
+const Def* normalize_Clos(const Def*, const Def*, const Def*, const Def*);
 
 } // namespace thorin
 

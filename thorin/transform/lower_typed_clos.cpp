@@ -25,7 +25,7 @@ void LowerTypedClos::run() {
 static const Def* insert_ret(const Def* def, const Def* ret) {
     auto new_ops = DefArray(def->num_projs() + 1, [&](auto i) { return (i == def->num_projs()) ? ret : def->proj(i); });
     auto& w      = def->world();
-    return (def->level() == Sort::Term) ? w.tuple(new_ops) : w.sigma(new_ops);
+    return (def->sort() == Sort::Term) ? w.tuple(new_ops) : w.sigma(new_ops);
 }
 
 Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
@@ -54,7 +54,8 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         new_lam->make_external();
     }
     const Def* lcm = new_lam->mem_var();
-    const Def* env = new_lam->var(Clos_Env_Param, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
+    const Def* env =
+        new_lam->var(Clos_Env_Param, (mode != No_Env) ? w.dbg("closure_env") : lam->var(Clos_Env_Param)->dbg());
     if (mode == Box) {
         auto env_mem = w.op_load(lcm, env);
         lcm          = w.extract(env_mem, 0_u64, w.dbg("mem"));
@@ -76,8 +77,8 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
     switch (def->node()) {
         case Node::Bot:
         case Node::Top:
-        case Node::Kind:
-        case Node::Space:
+        case Node::Type:
+        case Node::Univ:
         case Node::Nat: return def;
     }
 
@@ -118,8 +119,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
             // Optimize empty env
             env = w.bot(env_type());
         } else if (!mode) {
-            auto mem_ptr =
-                (c.kind() == ClosKind::escaping) ? w.op_alloc(env->type(), lcm_) : w.op_slot(env->type(), lcm_);
+            auto mem_ptr = (c.clos() == Clos::esc) ? w.op_alloc(env->type(), lcm_) : w.op_slot(env->type(), lcm_);
             auto mem     = w.extract(mem_ptr, 0_u64);
             auto env_ptr = mem_ptr->proj(1_u64, w.dbg(fn->name() + "_env"));
             lcm_         = w.op_store(mem, env_ptr, env);

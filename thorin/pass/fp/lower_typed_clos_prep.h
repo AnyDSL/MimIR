@@ -12,7 +12,7 @@ class LowerTypedClosPrep : public FPPass<LowerTypedClosPrep, Lam> {
 public:
     LowerTypedClosPrep(PassMan& man)
         : FPPass<LowerTypedClosPrep, Lam>(man, "closure_analysis")
-        , escaping_() {}
+        , esc_() {}
 
     using Data = int; // Dummy
 
@@ -20,13 +20,13 @@ private:
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Def*) override;
 
-    bool is_escaping(const Def* def) {
+    bool is_esc(const Def* def) {
         if (auto [_, lam] = ca_isa_var<Lam>(def); lam && !lam->is_set()) return true;
-        return escaping_.contains(def);
+        return esc_.contains(def);
     }
-    undo_t set_escaping(const Def*);
+    undo_t set_esc(const Def*);
 
-    DefSet escaping_;
+    DefSet esc_;
 };
 
 } // namespace thorin

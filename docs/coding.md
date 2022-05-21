@@ -57,6 +57,10 @@ This command lists all available tests:
 ```sh
 ./thorin-gtest --gtest_list_tests
 ```
+In addition, you may find it helpful to turn assertion failures into debugger break-points:
+```sh
+./thorin-test --gtest_break_on_failure
+```
 
 ## Valgrind & GDB
 

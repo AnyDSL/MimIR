@@ -20,7 +20,7 @@ bool Def::unwrap() const {
     // if (def->no_dep()) return true;
     if (auto app = isa<App>()) {
         if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
-        if (app->type()->isa<Kind>() || app->type()->isa<Space>()) return true;
+        if (app->type()->isa<Type>()) return true;
         if (app->callee()->isa<Axiom>()) { return app->callee_type()->num_doms() <= 1; }
         return false;
     }
@@ -28,7 +28,7 @@ bool Def::unwrap() const {
 }
 
 static Tok::Prec prec(const Def* def) {
-    if (def->isa<Pi>()) return Tok::Prec::Pi;
+    if (def->isa<Pi>()) return Tok::Prec::Arrow;
     if (def->isa<App>()) return Tok::Prec::App;
     if (def->isa<Extract>()) return Tok::Prec::Extract;
     if (def->isa<Lit>()) return Tok::Prec::Lit;
@@ -44,7 +44,7 @@ static Tok::Prec prec_l(const Def* def) {
 }
 
 static Tok::Prec prec_r(const Def* def) {
-    if (def->isa<Pi>()) return Tok::Prec::Pi;
+    if (def->isa<Pi>()) return Tok::Prec::Arrow;
     if (def->isa<App>()) return Tok::Prec::Extract;
     if (def->isa<Extract>()) return Tok::Prec::Lit;
     return Tok::Prec::Bottom;
@@ -75,20 +75,18 @@ using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
 Stream& Def::unwrap(Stream& s) const {
-    if (false) {
-    } else if (isa<Space>())
-        return s.fmt("□");
-    else if (isa<Kind>())
-        return s.fmt("★");
-    else if (isa<Nat>())
+    if (auto type = isa<Type>()) {
+        auto level = as_lit(type->level()); // TODO other levels
+        return s.fmt(level == 0 ? "★" : "□");
+    } else if (isa<Nat>()) {
         return s.fmt("nat");
-    else if (auto bot = isa<Bot>())
+    } else if (auto bot = isa<Bot>()) {
         return s.fmt("⊥∷{}", bot->type());
-    else if (auto top = isa<Top>())
+    } else if (auto top = isa<Top>()) {
         return s.fmt("⊤∷{}", top->type());
-    else if (auto axiom = isa<Axiom>())
+    } else if (auto axiom = isa<Axiom>()) {
         return s.fmt(":{}", axiom->debug().name);
-    else if (auto lit = isa<Lit>()) {
+    } else if (auto lit = isa<Lit>()) {
         if (auto real = thorin::isa<Tag::Real>(lit->type())) {
             switch (as_lit(real->arg())) {
                 case 16: return s.fmt("{}∷r16", lit->get<r16>());
@@ -102,7 +100,7 @@ Stream& Def::unwrap(Stream& s) const {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return s.fmt("{}", ex->unique_name());
         return s.fmt("{}#{}", ex->tuple(), ex->index());
     } else if (auto var = isa<Var>()) {
-        if (var->nom()->num_vars() == 1) return s.fmt("{}", var->unique_name());
+        if (var->nom()->num_vars() == 1) return s.fmt("@{}", var->unique_name());
         return s.fmt("@{}", var->nom());
     } else if (auto pi = isa<Pi>()) {
         if (pi->is_cn()) {
@@ -142,7 +140,7 @@ Stream& Def::unwrap(Stream& s) const {
         return s.fmt(".proxy#{}#{} {, }", proxy->index(), proxy->flags(), proxy->ops());
     } else if (auto bound = isa_bound(this)) {
         auto op = bound->isa<Join>() ? "∪" : "∩";
-        if (isa_nom()) s.fmt("{}{}: {}", op, unique_name(), type());
+        if (isa_nom()) s.fmt("{}{}: {}", op, unique_name(), this->type());
         return s.fmt("{}({, })", op, ops());
     }
 

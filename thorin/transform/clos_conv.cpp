@@ -22,8 +22,8 @@ const Def* clos_remove_env(size_t i, std::function<const Def*(size_t)> f) { retu
 
 static const Def* ctype(World& w, Defs doms, const Def* env_type = nullptr) {
     if (!env_type) {
-        auto sigma = w.nom_sigma(w.kind(), 3_u64, w.dbg("closure_type"));
-        sigma->set(0_u64, w.kind());
+        auto sigma = w.nom_sigma(w.type(), 3_u64, w.dbg("closure_type"));
+        sigma->set(0_u64, w.type());
         sigma->set(1_u64, ctype(w, doms, sigma->var(0_u64)));
         sigma->set(2_u64, sigma->var(0_u64));
         return sigma;
@@ -46,7 +46,7 @@ const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
 const Sigma* isa_clos_type(const Def* def) {
     auto& w  = def->world();
     auto sig = def->isa_nom<Sigma>();
-    if (!sig || sig->num_ops() < 3 || sig->op(0_u64) != w.kind()) return nullptr;
+    if (!sig || sig->num_ops() < 3 || sig->op(0_u64) != w.type()) return nullptr;
     auto var = sig->var(0_u64);
     if (sig->op(2_u64) != var) return nullptr;
     auto pi = sig->op(1_u64)->isa<Pi>();
@@ -83,15 +83,15 @@ const Def* clos_apply(const Def* closure, const Def* args) {
 ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_clos_type(def->type())) {
-        auto cc  = ClosKind::bot;
+        auto cc  = Clos::bot;
         auto fnc = std::get<1_u64>(clos_unpack(tpl));
-        if (auto q = isa<Tag::ClosKind>(fnc)) {
+        if (auto q = isa<Tag::Clos>(fnc)) {
             fnc = q->arg();
             cc  = q.flags();
         }
         if (!lambda_or_branch || fnc->isa<Lam>()) return ClosLit(tpl, cc);
     }
-    return ClosLit(nullptr, ClosKind::bot);
+    return ClosLit(nullptr, Clos::bot);
 }
 
 const Def* ClosLit::env() {
@@ -106,7 +106,7 @@ const Def* ClosLit::fnc() {
 
 Lam* ClosLit::fnc_as_lam() {
     auto f = fnc();
-    if (auto q = isa<Tag::ClosKind>(f)) f = q->arg();
+    if (auto q = isa<Tag::Clos>(f)) f = q->arg();
     return f->isa_nom<Lam>();
 }
 
@@ -165,8 +165,8 @@ void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {
 
 const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
     switch (def->node()) {
-        case Node::Kind:
-        case Node::Space:
+        case Node::Type:
+        case Node::Univ:
         case Node::Nat:
         case Node::Bot: // TODO This is used by the AD stuff????
         case Node::Top: return def;
@@ -192,7 +192,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         auto closure                  = clos_pack(env, new_lam, closure_type);
         w.DLOG("RW: pack {} ~> {} : {}", lam, closure, closure_type);
         return map(closure);
-    } else if (auto q = isa<Tag::ClosKind>(ClosKind::ret, def)) {
+    } else if (auto q = isa<Tag::Clos>(Clos::ret, def)) {
         if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
             assert(ret_lam && ret_lam->is_basicblock());
             // Note: This should be cont_lam's only occurance after η-expansion, so its okay to
@@ -206,8 +206,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             }
             return new_lam;
         }
-    } else if (auto q = isa<Tag::ClosKind>(def);
-               q && (q.flags() == ClosKind::fstclassBB || q.flags() == ClosKind::freeBB)) {
+    } else if (auto q = isa<Tag::Clos>(def); q && (q.flags() == Clos::fstclassBB || q.flags() == Clos::freeBB)) {
         // Note: Same thing about η-conversion applies here
         auto bb_lam = q->arg()->isa_nom<Lam>();
         assert(bb_lam && bb_lam->is_basicblock());
@@ -310,19 +309,15 @@ ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
 /* Free variable analysis */
 
 static bool ignore_fd(const Def* fd) {
-    return fd->no_dep()
-        || fd->isa_nom<Global>()
-        || fd->isa<Axiom>()
-        || fd->level() != Sort::Term
-        || isa<Tag::Mem>(fd->type());
+    return fd->no_dep() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term ||
+           isa<Tag::Mem>(fd->type());
 }
 
 void FreeDefAna::split_fd(Node* node, const Def* fv, bool& init_node, NodeQueue& worklist) {
-    if (ignore_fd(fv))
-        return;
+    if (ignore_fd(fv)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fv); var && lam) {
         if (var != lam->ret_var()) node->fvs.emplace(fv);
-    } else if (auto q = isa<Tag::ClosKind>(ClosKind::freeBB, fv)) {
+    } else if (auto q = isa<Tag::Clos>(Clos::freeBB, fv)) {
         node->fvs.emplace(q);
     } else if (auto pred = fv->isa_nom()) {
         if (pred != node->nom) {
