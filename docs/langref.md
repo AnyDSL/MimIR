@@ -130,7 +130,7 @@ The following tables comprise all production rules:
 | d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n  |            | nominal pack declaration       | thorin::Pack  |
 | d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> n |            | nominal sigma declaration      | thorin::Sigma |
 | d           | `.def` Sym n                                                   |            | nominal definition             | nominals      |
-| n           | `;` &vert; o                                                   |            | nominal definition             | -             |
+| n           | `;` \| o                                                       |            | nominal definition             | -             |
 | o           | `=` e `;`                                                      |            | operand of nominal definition  | -             |
 | o           | `=` `{` e `,` ... `,` e  `}` `;`                               | ✓          | operands of nominal definition | -             |
 
@@ -141,7 +141,7 @@ The following tables comprise all production rules:
 | e           | `{` e `}`                                                               | ✓          | block                               | -               |
 | e           | `*`                                                                     |            | type                                | thorin::Type    |
 | e           | L `∷` e<sub>type</sub>                                                  |            | literal                             | thorin::Lit     |
-| e           | ( `.bot` &vert; `.top` ) ( `∷` e<sub>type</sub> )?                      |            | bottom/top                          | thorin::TExt    |
+| e           | ( `.bot` \| `.top` ) ( `∷` e<sub>type</sub> )?                          |            | bottom/top                          | thorin::TExt    |
 | e           | Sym                                                                     |            | identifier                          | -               |
 | e           | Ax                                                                      |            | use of an axiom                     | -               |
 | e           | e e                                                                     |            | application                         | thorin::App     |
