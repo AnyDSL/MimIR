@@ -368,7 +368,7 @@ const Def* Parser::parse_lit() {
     auto lit    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
 
-    if (accept(Tok::Tag::T_colon_colon)) {
+    if (accept(Tok::Tag::T_colon)) {
         auto type = parse_expr("literal", r);
 
         const Def* meta = nullptr;
