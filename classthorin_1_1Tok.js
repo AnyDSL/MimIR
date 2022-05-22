@@ -50,7 +50,6 @@ var classthorin_1_1Tok =
       [ "T_top", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aebb1f15fad917162106ecb82540f245a", null ],
       [ "T_box", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a6f445a0b0cd800daf9178be123ce0bed", null ],
       [ "T_colon", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a4e9e215aa0e27db0493d465ff6f4f079", null ],
-      [ "T_colon_colon", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a20a8dfb26fc5c23a0575d0b1ad1ac3b3", null ],
       [ "T_comma", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad8cf2c14f3943743fbaee862495fb5d2", null ],
       [ "T_dot", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a51a67177e84f2fb92010658b1662dfd5", null ],
       [ "T_extract", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038ad494648389b32437ec4c60490cc61341", null ],

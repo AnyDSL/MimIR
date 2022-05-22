@@ -1,7 +1,5 @@
 var NAVTREEINDEX10 =
 {
-"classthorin_1_1utf8_1_1Lexer.html":[3,0,0,12,0],
-"classthorin_1_1utf8_1_1Lexer.html":[4,0,0,4,0],
 "classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93":[4,0,0,4,0,3],
 "classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93":[3,0,0,12,0,3],
 "classthorin_1_1utf8_1_1Lexer.html#a3847117273fe64049e2a970180d3b9d6":[4,0,0,4,0,7],
@@ -249,5 +247,7 @@ var NAVTREEINDEX10 =
 "index.html#autotoc_md37":[0,0],
 "index.html#autotoc_md38":[0,0,0],
 "index.html#autotoc_md39":[0,0,1],
-"index.html#autotoc_md40":[0,1]
+"index.html#autotoc_md40":[0,1],
+"indexmap_8h.html":[5,0,2,4,10],
+"indexmap_8h.html#a9ada650270dac66b3f87bca30593dc5e":[5,0,2,4,10,1]
 };
