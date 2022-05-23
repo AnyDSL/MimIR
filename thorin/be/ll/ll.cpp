@@ -751,7 +751,13 @@ void emit(World& world, std::ostream& ostream) {
     cg.run();
 }
 
-int compile(World& world, const std::string& stem) { return compile(world, stem + ".ll", stem); }
+int compile(World& world, const std::string& stem) {
+    const auto& exe = stem;
+#ifdef _WIN32
+    auto exe = steam + ".exe";
+#endif
+    return compile(world, stem + ".ll", exe);
+}
 
 int compile(World& world, const std::string& ll, const std::string& out) {
     std::ofstream ofs(ll);

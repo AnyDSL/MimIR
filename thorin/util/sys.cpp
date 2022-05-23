@@ -1,6 +1,7 @@
 #include "thorin/util/sys.h"
 
 #include <array>
+#include <iostream>
 #include <vector>
 
 #ifdef _WIN32
@@ -51,6 +52,7 @@ std::string exec(const std::string& cmd) {
 }
 
 int system(const std::string& cmd) {
+    std::cout << cmd << std::endl;
     int status = std::system(cmd.c_str());
     return WEXITSTATUS(status);
 }
