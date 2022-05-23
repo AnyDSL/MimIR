@@ -6,7 +6,7 @@
 ///
 /// ## Operations
 ///
-/// ### :std.icmp
+/// ### %std.icmp
 ///
 /// Integer comparison is made of 5 disjoint relations:
 ///     * `X`: first operand plus, second minus
@@ -15,7 +15,7 @@
 ///     * `L`: less with same sign
 ///     * `E`: equal
 ///
-/// Here is the complete picture for `:std.icmp xygle x, y` for 3 wide integers:
+/// Here is the complete picture for `%std.icmp xygle x, y` for 3 wide integers:
 ///
 /// |        | x        |        |       |       |       | y     |       |       |       |       |
 /// |--------|----------|--------|-------|-------|-------|-------|-------|-------|-------|-------|
@@ -68,8 +68,8 @@
 /// | `XYGlE` |         | x | x | x | o | x | signed or unsigned greater or equal == not less |
 /// | `XYGLe` |  `ne`   | x | x | x | x | o | not equal                                       |
 /// | `XYGLE` |  `t`    | x | x | x | x | x | always true                                     |
-.ax :std.icmp(xygle = f, xyglE, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE, 
+.ax %std.icmp(xygle = f, xyglE, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE, 
               xYgle,     xYglE, xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE, 
               Xygle,     XyglE, XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE, 
               XYgle,     XYglE, XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t): 
-    Π w: .Nat -> [:Int w, :Int w] -> .Bool , normalize_icmp;
+    Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_icmp;

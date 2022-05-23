@@ -19,13 +19,13 @@ The [grammatical rules](#productions) will directly reference these *primary [te
 For example, the lexer doesn't care, if you use `⊥` or `.bot`.
 Both tokens are identified as `⊥`.
 
-| Primary Terminals               | Secondary Terminals                             | Comment                   |
-|---------------------------------|-------------------------------------------------|---------------------------|
-| `(` `)` `[` `]` `{` `}`         |                                                 | delimiters                |
-| `‹` `›` `«` `»`                 | `<<` `>>` `<` `>`                               | UTF-8 delimiters          |
-| `→` `:` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `.bot` `.top` `*` `\`  <tt>\|~\|</tt>      | further UTF-8 tokens      |
-| `=` `,` `;` `.` `#`             |                                                 | further tokens            |
-| `<eof>`                         |                                                 | marks the end of the file |
+| Primary Terminals           | Secondary Terminals                        | Comment                   |
+|-----------------------------|--------------------------------------------|---------------------------|
+| `(` `)` `[` `]` `{` `}`     |                                            | delimiters                |
+| `‹` `›` `«` `»`             | `<<` `>>` `<` `>`                          | UTF-8 delimiters          |
+| `→` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `.bot` `.top` `*` `\`  <tt>\|~\|</tt> | further UTF-8 tokens      |
+| `=` `,` `;` `.` `#` `:` `@` |                                            | further tokens            |
+| `<eof>`                     |                                            | marks the end of the file |
 
 #### Keywords
 
@@ -57,7 +57,7 @@ The following *terminals* comprise more complicated patterns that are specified 
 | Terminal | Regular Expression                   | Comment                                                                                           |
 |----------|--------------------------------------|---------------------------------------------------------------------------------------------------|
 | Sym      | sym                                  | symbol                                                                                            |
-| Ax       | `:` sym `.` sym ( `.` sym)?          | Axiom                                                                                             |
+| Ax       | `@` sym `.` sym ( `.` sym)?          | Axiom                                                                                             |
 | L        | dec+                                 | unsigned decimal literal                                                                          |
 | L        | 0b bin+                              | unsigned binary literal                                                                           |
 | L        | 0o oct+                              | unsigned octal literal                                                                            |
@@ -122,7 +122,7 @@ The following tables comprise all production rules:
 
 | Nonterminal | Right-Hand Side                                                | New Scope? | Comment                        | Thorin Class  |
 |-------------|----------------------------------------------------------------|------------|--------------------------------|---------------|
-| d           | `.ax` Sym `:` e<sub>type</sub> `;`                             |            | axiom                          | thorin::Axiom |
+| d           | `.ax` Ax `:` e<sub>type</sub> `;`                              |            | axiom                          | thorin::Axiom |
 | d           | `.let` Sym `:` e<sub>type</sub> `=` e `;`                      |            | let                            | -             |
 | d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n      |            | nominal Pi declaration         | thorin::Pi    |
 | d           | `.lam` Sym `:` e<sub>type</sub> n                              |            | nominal lambda declaration     | thorin::Lam   |
