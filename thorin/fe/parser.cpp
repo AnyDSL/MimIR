@@ -301,19 +301,20 @@ const Def* Parser::parse_sigma(Binders* binders) {
     pop();
 
     if (nom) {
+        assert(n > 0);
         auto meta  = world().tuple(fields);
         auto type  = infer_type_level(world(), ops);
         auto sigma = world().nom_sigma(type, n, track.meta(meta));
 
         sigma->set(0, ops[0]);
-        for (size_t i = 1, e = n; i != e; ++i) {
+        for (size_t i = 1; i != n; ++i) {
             if (auto infer = infers[i - 1]) infer->set(sigma->var(i - 1));
             sigma->set(i, ops[i]);
         }
 
         thorin::Scope scope(sigma);
         Rewriter rw(world(), &scope);
-        for (size_t i = 1, e = n; i != e; ++i) sigma->set(i, rw.rewrite(ops[i]));
+        for (size_t i = 1; i != n; ++i) sigma->set(i, rw.rewrite(ops[i]));
 
         return sigma;
     }
