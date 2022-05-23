@@ -178,7 +178,7 @@ $(document).ready(function(){initNavTree('axiom_8cpp_source.html',''); initResiz
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classthorin_1_1Axiom.html#ac2fbb5d076e915684ac1fa74b2b35bbf">   73</a></span>std::optional&lt;std::pair&lt;std::string_view, std::string_view&gt;&gt; Axiom::dialect_and_group(std::string_view s) {</div>
 <div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    <span class="keywordflow">if</span> (s.empty()) <span class="keywordflow">return</span> {};</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">if</span> (s[0] != <span class="charliteral">&#39;:&#39;</span>) <span class="keywordflow">return</span> {};</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    <span class="keywordflow">if</span> (s[0] != <span class="charliteral">&#39;%&#39;</span>) <span class="keywordflow">return</span> {};</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    s = <a class="code hl_function" href="namespacethorin.html#a1e02df3b598c738a2864a076f4d9002c">sub_view</a>(s, 1);</div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
 <div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keyword">auto</span> dot = s.find(<span class="charliteral">&#39;.&#39;</span>);</div>

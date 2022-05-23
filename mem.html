@@ -105,42 +105,42 @@ $(document).ready(function(){initNavTree('mem.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md44">Types</a><ul><li class="level2"><a href="#autotoc_md45">:mem.M</a></li>
-<li class="level2"><a href="#autotoc_md46">:mem.Ptr</a></li>
+<ul><li class="level1"><a href="#autotoc_md45">Types</a><ul><li class="level2"><a href="#autotoc_md46">%mem.M</a></li>
+<li class="level2"><a href="#autotoc_md47">%mem.Ptr</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md47">Operations with Side Effects</a><ul><li class="level2"><a href="#autotoc_md48">:mem.load</a></li>
-<li class="level2"><a href="#autotoc_md49">:mem.store</a></li>
+<li class="level1"><a href="#autotoc_md48">Operations with Side Effects</a><ul><li class="level2"><a href="#autotoc_md49">%mem.load</a></li>
+<li class="level2"><a href="#autotoc_md50">%mem.store</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md50">Operations without Side Effects</a><ul><li class="level2"><a href="#autotoc_md51">:mem.lea</a></li>
+<li class="level1"><a href="#autotoc_md51">Operations without Side Effects</a><ul><li class="level2"><a href="#autotoc_md52">%mem.lea</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_build_dialects_mem"></a></p>
-<h1><a class="anchor" id="autotoc_md44"></a>
+<h1><a class="anchor" id="autotoc_md45"></a>
 Types</h1>
-<h2><a class="anchor" id="autotoc_md45"></a>
-:mem.M</h2>
-<p >This type tracks all kind of side-effects. </p><div class="fragment"><div class="line">.ax :mem.M: *; </div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md46"></a>
-:mem.Ptr</h2>
-<p >Pointer type with <em>pointee</em> type <code>T</code> and <em>address space</em> <code>as</code>. At the moment, the <em>address space</em> is not really used and a placeholder for future work. </p><div class="fragment"><div class="line">.ax :mem.Ptr: [*, .Nat] -&gt; *;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md47"></a>
+<h2><a class="anchor" id="autotoc_md46"></a>
+%mem.M</h2>
+<p >This type tracks all kind of side-effects. </p><div class="fragment"><div class="line">.ax %mem.M: *; </div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md47"></a>
+%mem.Ptr</h2>
+<p >Pointer type with <em>pointee</em> type <code>T</code> and <em>address space</em> <code>as</code>. At the moment, the <em>address space</em> is not really used and a placeholder for future work. </p><div class="fragment"><div class="line">.ax %mem.Ptr: [*, .Nat] -&gt; *;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md48"></a>
 Operations with Side Effects</h1>
-<p >The following operations have side effects. For this reason, they consume a <code>:mem.M</code> and yield a new <code>:mem.M</code>.</p>
-<h2><a class="anchor" id="autotoc_md48"></a>
-:mem.load</h2>
-<p >Loads from a pointer <code>ptr (T, as)</code> the pointed value of type <code>T</code>. </p><div class="fragment"><div class="line">.ax :mem.load:  Π [T: *, as: .Nat] -&gt; [:mem.M, :mem.Ptr(T, as)] -&gt; [:mem.M, T], normalize_load;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md49"></a>
-:mem.store</h2>
-<p >Stores a value of type <code>T</code> to a pointer <code>ptr (T, as)</code>, </p><div class="fragment"><div class="line">.ax :mem.store: Π [T: *, as: .Nat] -&gt; [:mem.M, :mem.Ptr(T, as), T] -&gt; :mem.M, normalize_store;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md50"></a>
+<p >The following operations have side effects. For this reason, they consume a <code>mem.M</code> and yield a new <code>mem.M</code>.</p>
+<h2><a class="anchor" id="autotoc_md49"></a>
+%mem.load</h2>
+<p >Loads from a pointer <code>ptr (T, as)</code> the pointed value of type <code>T</code>. </p><div class="fragment"><div class="line">.ax %mem.load:  Π [T: *, as: .Nat] -&gt; [%mem.M, %mem.Ptr(T, as)] -&gt; [%mem.M, T], normalize_load;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md50"></a>
+%mem.store</h2>
+<p >Stores a value of type <code>T</code> to a pointer <code>ptr (T, as)</code>, </p><div class="fragment"><div class="line">.ax %mem.store: Π [T: *, as: .Nat] -&gt; [%mem.M, %mem.Ptr(T, as), T] -&gt; %mem.M, normalize_store;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md51"></a>
 Operations without Side Effects</h1>
-<h2><a class="anchor" id="autotoc_md51"></a>
-:mem.lea</h2>
-<p >Load effective address. Performs address computation. </p><div class="fragment"><div class="line">.ax :mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -&gt; Π [:mem.Ptr(«j: n; Ts#j», as), i: :Int n] -&gt; :mem.Ptr(Ts#i, as);</div>
+<h2><a class="anchor" id="autotoc_md52"></a>
+%mem.lea</h2>
+<p >Load effective address. Performs address computation. </p><div class="fragment"><div class="line">.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -&gt; Π [%mem.Ptr(«j: n; Ts#j», as), i: %Int n] -&gt; %mem.Ptr(Ts#i, as);</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

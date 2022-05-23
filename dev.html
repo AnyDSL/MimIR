@@ -105,18 +105,18 @@ $(document).ready(function(){initNavTree('dev.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md7">Compiling and Executing</a></li>
-<li class="level1"><a href="#autotoc_md8">Defs and the World</a><ul><li class="level2"><a href="#autotoc_md9">Hash Consing</a></li>
+<ul><li class="level1"><a href="#autotoc_md8">Compiling and Executing</a></li>
+<li class="level1"><a href="#autotoc_md9">Defs and the World</a><ul><li class="level2"><a href="#autotoc_md10">Hash Consing</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md10">Structural vs. Nominal</a></li>
-<li class="level1"><a href="#autotoc_md11">Matching IR</a></li>
-<li class="level1"><a href="#autotoc_md12">Iterating over the Program</a></li>
+<li class="level1"><a href="#autotoc_md11">Structural vs. Nominal</a></li>
+<li class="level1"><a href="#autotoc_md12">Matching IR</a></li>
+<li class="level1"><a href="#autotoc_md13">Iterating over the Program</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_docs_dev"></a></p>
 <p >This guide summaries typicical idioms you want to use when working with Thorin as a developer.</p>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Compiling and Executing</h1>
 <p >Here is a small example that first constructs a <code>main</code> function and simply returns the <code>argc</code>: </p><div class="fragment"><div class="line">World w;</div>
 <div class="line"><span class="keyword">auto</span> mem_t  = w.type_mem();</div>
@@ -139,13 +139,13 @@ Compiling and Executing</h1>
 <div class="line">assert(4 == WEXITSTATUS(std::system(<span class="stringliteral">&quot;./test a b c&quot;</span>)));</div>
 <div class="ttc" id="anamespacethorin_1_1dot_html_a0accd07b6689c0d7eafd53273e630a3b"><div class="ttname"><a href="namespacethorin_1_1dot.html#a0accd07b6689c0d7eafd53273e630a3b">thorin::dot::emit</a></div><div class="ttdeci">void emit(World &amp;w, std::ostream &amp;s, std::function&lt; void(std::ostream &amp;, const Def *)&gt; stream_def)</div><div class="ttdef"><b>Definition:</b> <a href="dot_8cpp_source.html#l00043">dot.cpp:43</a></div></div>
 </div><!-- fragment --><p> TODO explain</p>
-<h1><a class="anchor" id="autotoc_md8"></a>
+<h1><a class="anchor" id="autotoc_md9"></a>
 Defs and the World</h1>
 <p ><a class="el" href="classthorin_1_1Def.html">Def</a> is the base class for <em>all</em> nodes/expressions in Thorin. TODO</p>
-<h2><a class="anchor" id="autotoc_md9"></a>
+<h2><a class="anchor" id="autotoc_md10"></a>
 Hash Consing</h2>
 <p >Each <code>Def</code> is a node in a graph which is maintained in the <a class="el" href="classthorin_1_1World.html">World</a>. <a href="https://en.wikipedia.org/wiki/Hash_consing">Hash consing</a> TODO</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Structural vs. Nominal</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -195,9 +195,9 @@ Structural vs. Nominal</h1>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="ttc" id="anamespacethorin_1_1Node_html_a53d4449ebf801c23f600bdc49e99a253ac1fb2543759c1fd49ae0fea3855ea812"><div class="ttname"><a href="namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253ac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a></div><div class="ttdeci">@ Sigma</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00184">tables.h:184</a></div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md12"></a>
 Matching IR</h1>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Iterating over the Program</h1>
 <p >There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classthorin_1_1World.html#ad066f14a09e1d3897199d1a6743ae195">World::externals</a> and recursively run over <a class="el" href="classthorin_1_1Def.html#a543cbdcb17d574373aa65244dcead8f8">Def::extended_ops</a> like this: </p><div class="fragment"><div class="line"><a class="code hl_typedef" href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">DefSet</a> done;</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, nom] : world.externals())</div>
