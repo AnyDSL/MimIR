@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name_0',['name',['../classthorin_1_1Def.html#a518e9dc3ad4658e41b962364ce960bd8',1,'thorin::Def::name()'],['../classthorin_1_1Scope.html#a61f82fb1d75c44d95b8876ec3bf16a2c',1,'thorin::Scope::name()'],['../classthorin_1_1World.html#ae83bc7243281c049c2760bd4598fdfb1',1,'thorin::World::name()'],['../classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632',1,'thorin::IPass::name()']]],
+  ['name_0',['name',['../classthorin_1_1Def.html#a518e9dc3ad4658e41b962364ce960bd8',1,'thorin::Def::name()'],['../classthorin_1_1Scope.html#a61f82fb1d75c44d95b8876ec3bf16a2c',1,'thorin::Scope::name()'],['../classthorin_1_1World.html#ae83bc7243281c049c2760bd4598fdfb1',1,'thorin::World::name()'],['../classthorin_1_1Dialect.html#aa02d8267f263c8ce21cea4ee3194afc2',1,'thorin::Dialect::name()'],['../classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632',1,'thorin::IPass::name()']]],
   ['new2old_1',['new2old',['../classthorin_1_1EtaExp.html#a89a0e4f570f590e713eb6cf484b2c983',1,'thorin::EtaExp::new2old(Lam *new_lam, Lam *old_lam)'],['../classthorin_1_1EtaExp.html#ac2fe363e7302200b737fd85676c94da2',1,'thorin::EtaExp::new2old(Lam *new_lam)']]],
   ['next_2',['next',['../classthorin_1_1IndexSet.html#a6f998927823164840c08109f8b7a3a9c',1,'thorin::IndexSet::next()'],['../classthorin_1_1utf8_1_1Lexer.html#ad29428b48f635a4f5d0f29b91d9c0c3f',1,'thorin::utf8::Lexer::next()']]],
   ['next_5fgid_3',['next_gid',['../classthorin_1_1World.html#a9181b4f353d2de94f34704d18dc0b21e',1,'thorin::World']]],
@@ -10,7 +10,7 @@ var searchData=
   ['nodes_7',['nodes',['../classthorin_1_1CFA.html#a43f9b6459e38a25f32ae5bfffe155c35',1,'thorin::CFA']]],
   ['nom_8',['nom',['../classthorin_1_1CFNode.html#ae627026aca00319042375565e5a53e0c',1,'thorin::CFNode::nom()'],['../classthorin_1_1DepNode.html#a6d1521d2598386f00ac13fec6744c97b',1,'thorin::DepNode::nom()'],['../classthorin_1_1Var.html#a27aeb666b311530b6a0b6cbe1a2f9d11',1,'thorin::Var::nom()']]],
   ['nom2node_9',['nom2node',['../classthorin_1_1DepTree.html#af68ff75a39f11dff09df913afe1e1f18',1,'thorin::DepTree']]],
-  ['nom_5farr_10',['nom_arr',['../classthorin_1_1World.html#a12925c82d613d10c6c348016b8e61465',1,'thorin::World::nom_arr(const Def *dbg={})'],['../classthorin_1_1World.html#aec18e6baba00b043d2c2f24187fdb635',1,'thorin::World::nom_arr(const Def *type, const Def *dbg={})']]],
+  ['nom_5farr_10',['nom_arr',['../classthorin_1_1World.html#aec18e6baba00b043d2c2f24187fdb635',1,'thorin::World::nom_arr(const Def *type, const Def *dbg={})'],['../classthorin_1_1World.html#a12925c82d613d10c6c348016b8e61465',1,'thorin::World::nom_arr(const Def *dbg={})']]],
   ['nom_5fbound_11',['nom_bound',['../classthorin_1_1World.html#acc2004b31278a43411f786764251e5ae',1,'thorin::World::nom_bound(const Def *type, size_t size, const Def *dbg={})'],['../classthorin_1_1World.html#aa89779c61bfa91dbdbc4c77e00a49d3b',1,'thorin::World::nom_bound(size_t size, const Def *dbg={})']]],
   ['nom_5finfer_12',['nom_infer',['../classthorin_1_1World.html#acf89cba1cfa2e7da2dd356842cf4e972',1,'thorin::World::nom_infer(const Def *type, const Def *dbg={})'],['../classthorin_1_1World.html#a432fa067fb9d2046a1856487f6fd49cc',1,'thorin::World::nom_infer(const Def *type, Sym sym, Loc loc)']]],
   ['nom_5finfer_5funiv_13',['nom_infer_univ',['../classthorin_1_1World.html#a3d1b56902f69f4a32100e2117d249a0c',1,'thorin::World']]],

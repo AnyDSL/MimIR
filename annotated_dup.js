@@ -1,6 +1,10 @@
 var annotated_dup =
 [
     [ "thorin", "namespacethorin.html", [
+      [ "affine", "namespacethorin_1_1affine.html", [
+        [ "Tag2Def_", "namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Def__", "namespacethorin_1_1affine_structthorin_1_1affine_1_1Tag2Def___dup" ],
+        [ "Tag2Enum_", "namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Enum__", "namespacethorin_1_1affine_structthorin_1_1affine_1_1Tag2Enum___dup" ]
+      ] ],
       [ "dl", "namespacethorin_1_1dl.html", [
         [ "Error", "classthorin_1_1dl_1_1Error.html", "classthorin_1_1dl_1_1Error" ]
       ] ],
@@ -15,6 +19,16 @@ var annotated_dup =
       [ "ll", "namespacethorin_1_1ll.html", [
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
         [ "CodeGen", "classthorin_1_1ll_1_1CodeGen.html", "classthorin_1_1ll_1_1CodeGen" ]
+      ] ],
+      [ "mem", "namespacethorin_1_1mem.html", [
+        [ "Tag2Def_", "namespacethorin_1_1mem.html#structthorin_1_1mem_1_1Tag2Def__", "namespacethorin_1_1mem_structthorin_1_1mem_1_1Tag2Def___dup" ],
+        [ "Tag2Def_< Tag::mem_M >", "namespacethorin_1_1mem.html#structthorin_1_1mem_1_1Tag2Def___3_01Tag_1_1mem__M_01_4", "namespacethorin_1_1mem_structthorin_1_1mem_1_1Tag2Def___3_01Tag_1_1mem__M_01_4_dup" ],
+        [ "Tag2Enum_", "namespacethorin_1_1mem.html#structthorin_1_1mem_1_1Tag2Enum__", "namespacethorin_1_1mem_structthorin_1_1mem_1_1Tag2Enum___dup" ]
+      ] ],
+      [ "std", "namespacethorin_1_1std.html", [
+        [ "Tag2Def_", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Def__", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Def___dup" ],
+        [ "Tag2Enum_", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum__", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___dup" ],
+        [ "Tag2Enum_< Tag::std_icmp >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4_dup" ]
       ] ],
       [ "utf8", "namespacethorin_1_1utf8.html", [
         [ "Lexer", "classthorin_1_1utf8_1_1Lexer.html", "classthorin_1_1utf8_1_1Lexer" ]
@@ -42,6 +56,8 @@ var annotated_dup =
       [ "DefDefHash", "structthorin_1_1DefDefHash.html", "structthorin_1_1DefDefHash" ],
       [ "DepNode", "classthorin_1_1DepNode.html", "classthorin_1_1DepNode" ],
       [ "DepTree", "classthorin_1_1DepTree.html", "classthorin_1_1DepTree" ],
+      [ "Dialect", "classthorin_1_1Dialect.html", "classthorin_1_1Dialect" ],
+      [ "DialectInfo", "structthorin_1_1DialectInfo.html", "structthorin_1_1DialectInfo" ],
       [ "DomFrontierBase", "classthorin_1_1DomFrontierBase.html", "classthorin_1_1DomFrontierBase" ],
       [ "DomTreeBase", "classthorin_1_1DomTreeBase.html", "classthorin_1_1DomTreeBase" ],
       [ "Emitter", "classthorin_1_1Emitter.html", "classthorin_1_1Emitter" ],
@@ -106,6 +122,7 @@ var annotated_dup =
       [ "PassMan", "classthorin_1_1PassMan.html", "classthorin_1_1PassMan" ],
       [ "Pi", "classthorin_1_1Pi.html", "classthorin_1_1Pi" ],
       [ "Pick", "classthorin_1_1Pick.html", "classthorin_1_1Pick" ],
+      [ "PipelineBuilder", "classthorin_1_1PipelineBuilder.html", "classthorin_1_1PipelineBuilder" ],
       [ "Pos", "structthorin_1_1Pos.html", "structthorin_1_1Pos" ],
       [ "Proxy", "classthorin_1_1Proxy.html", "classthorin_1_1Proxy" ],
       [ "Query", "classthorin_1_1Query.html", "classthorin_1_1Query" ],

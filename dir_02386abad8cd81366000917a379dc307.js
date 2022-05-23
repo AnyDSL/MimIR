@@ -5,5 +5,7 @@ var dir_02386abad8cd81366000917a379dc307 =
     [ "optimize.cpp", "optimize_8cpp.html", "optimize_8cpp" ],
     [ "optimize.h", "optimize_8h.html", "optimize_8h" ],
     [ "pass.cpp", "pass_8cpp.html", null ],
-    [ "pass.h", "pass_8h.html", "pass_8h" ]
+    [ "pass.h", "pass_8h.html", "pass_8h" ],
+    [ "pipelinebuilder.cpp", "pipelinebuilder_8cpp.html", null ],
+    [ "pipelinebuilder.h", "pipelinebuilder_8h.html", "pipelinebuilder_8h" ]
 ];

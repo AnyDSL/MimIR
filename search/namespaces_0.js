@@ -1,18 +1,19 @@
 var searchData=
 [
   ['addrspace_0',['AddrSpace',['../namespacethorin_1_1AddrSpace.html',1,'thorin']]],
-  ['dep_1',['Dep',['../namespacethorin_1_1Dep.html',1,'thorin']]],
-  ['dl_2',['dl',['../namespacethorin_1_1dl.html',1,'thorin']]],
-  ['dot_3',['dot',['../namespacethorin_1_1dot.html',1,'thorin']]],
-  ['h_4',['h',['../namespacethorin_1_1h.html',1,'thorin']]],
-  ['ll_5',['ll',['../namespacethorin_1_1ll.html',1,'thorin']]],
-  ['mem_6',['mem',['../namespacethorin_1_1mem.html',1,'thorin']]],
-  ['node_7',['Node',['../namespacethorin_1_1Node.html',1,'thorin']]],
-  ['rmode_8',['RMode',['../namespacethorin_1_1RMode.html',1,'thorin']]],
-  ['std_9',['std',['../namespacethorin_1_1std.html',1,'thorin']]],
-  ['sys_10',['sys',['../namespacethorin_1_1sys.html',1,'thorin']]],
-  ['tag_11',['Tag',['../namespacethorin_1_1Tag.html',1,'thorin']]],
-  ['thorin_12',['thorin',['../namespacethorin.html',1,'']]],
-  ['utf8_13',['utf8',['../namespacethorin_1_1utf8.html',1,'thorin']]],
-  ['wmode_14',['WMode',['../namespacethorin_1_1WMode.html',1,'thorin']]]
+  ['affine_1',['affine',['../namespacethorin_1_1affine.html',1,'thorin']]],
+  ['dep_2',['Dep',['../namespacethorin_1_1Dep.html',1,'thorin']]],
+  ['dl_3',['dl',['../namespacethorin_1_1dl.html',1,'thorin']]],
+  ['dot_4',['dot',['../namespacethorin_1_1dot.html',1,'thorin']]],
+  ['h_5',['h',['../namespacethorin_1_1h.html',1,'thorin']]],
+  ['ll_6',['ll',['../namespacethorin_1_1ll.html',1,'thorin']]],
+  ['mem_7',['mem',['../namespacethorin_1_1mem.html',1,'thorin']]],
+  ['node_8',['Node',['../namespacethorin_1_1Node.html',1,'thorin']]],
+  ['rmode_9',['RMode',['../namespacethorin_1_1RMode.html',1,'thorin']]],
+  ['std_10',['std',['../namespacethorin_1_1std.html',1,'thorin']]],
+  ['sys_11',['sys',['../namespacethorin_1_1sys.html',1,'thorin']]],
+  ['tag_12',['Tag',['../namespacethorin_1_1Tag.html',1,'thorin']]],
+  ['thorin_13',['thorin',['../namespacethorin.html',1,'']]],
+  ['utf8_14',['utf8',['../namespacethorin_1_1utf8.html',1,'thorin']]],
+  ['wmode_15',['WMode',['../namespacethorin_1_1WMode.html',1,'thorin']]]
 ];

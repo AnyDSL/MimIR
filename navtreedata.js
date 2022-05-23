@@ -41,7 +41,8 @@ var NAVTREE =
     ] ],
     [ "Dialects", "usergroup1.html", [
       [ "std", "std.html", null ],
-      [ "mem", "mem.html", null ]
+      [ "mem", "mem.html", null ],
+      [ "affine", "affine.html", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -72,6 +73,7 @@ var NAVTREE =
       [ "File List", "files.html", "files_dup" ],
       [ "File Members", "globals.html", [
         [ "All", "globals.html", null ],
+        [ "Functions", "globals_func.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -80,23 +82,24 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"alloc2malloc_8cpp.html",
-"classthorin_1_1ArrayRef.html#a5f25f3cabb3ba043e5873c1cd9c30449",
-"classthorin_1_1CFG.html#aff3e017f448a2f3c0203939ebc794052",
-"classthorin_1_1Def.html#af401dbc2a8092cdc438507614174f792",
-"classthorin_1_1IndexMap.html#a823a20bd995b817a52883ce4222e6e1b",
-"classthorin_1_1LoopTree_1_1Head.html#af0fc34095725e5385d5b631a8f7c4abf",
-"classthorin_1_1RetWrap.html",
-"classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2ab208dbb70e7df673fbabe32bb142eb",
-"classthorin_1_1World.html#a2580155172942910821bc6a8a98f4934",
-"classthorin_1_1World.html#ab182c317de5135c6c4378dd2177a65d1",
-"classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93",
-"indexmap_8h.html#aa0a62994b63462d082addeddb1c92029",
-"namespacethorin.html#a59b973b9765a3464d068b1413d3da0a9ab2f5ff47436671b6e533d8dc3614845d",
-"namespacethorin.html#aec7c9c368dda260071936391c37a72e3afc0bff96320187c50961a6822914c567",
-"pages.html",
-"structthorin_1_1Fold_3_01ROp_00_01ROp_1_1sub_00_01w_01_4.html#a2649f6a768fdd88386b1f4d25d3e8220",
-"tables_8h.html#aad267447b8d7ddf7130fea04727b81a5"
+"affine.html",
+"classthorin_1_1ArrayRef.html#a3e743a8ad8740b42ceaa356664a24df2",
+"classthorin_1_1CFG.html#ada7df7890bc4099a7b87e0c63b9ce975",
+"classthorin_1_1Def.html#ae09607d6f4c2b847199f2cb2a3b2ca81",
+"classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632",
+"classthorin_1_1LoopTree_1_1Base.html#ac29bcf64d3179e1beeebe66e38c0f459",
+"classthorin_1_1RecStreamer.html#a1ceaa44415636ed5cbbfb0a7cf08f75d",
+"classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d",
+"classthorin_1_1World.html#a10d68710a145107da2a86a4650eb3eb6",
+"classthorin_1_1World.html#a995237369ff0d02d54437301b91c9ab4",
+"classthorin_1_1unique__queue.html#a226f67717d2a9c893eaecf8da6a2f52d",
+"functions_u.html",
+"namespacethorin.html#a46d3e3387a3e3d4a694afda6d4d6b9a1",
+"namespacethorin.html#ae0ec74d835ce935c637499bea15e74f2",
+"namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Def__",
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#aaf47fe605aab18bf373e3ee9db286ae0",
+"tables_8h.html",
+"types_8h.html#ab0c3c06432f0247f22594abe3df0ebfe"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

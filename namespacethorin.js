@@ -1,20 +1,13 @@
 var namespacethorin =
 [
     [ "AddrSpace", "namespacethorin_1_1AddrSpace.html", null ],
+    [ "affine", "namespacethorin_1_1affine.html", "namespacethorin_1_1affine" ],
     [ "Dep", "namespacethorin_1_1Dep.html", null ],
     [ "dl", "namespacethorin_1_1dl.html", "namespacethorin_1_1dl" ],
     [ "dot", "namespacethorin_1_1dot.html", "namespacethorin_1_1dot" ],
     [ "h", "namespacethorin_1_1h.html", "namespacethorin_1_1h" ],
     [ "ll", "namespacethorin_1_1ll.html", "namespacethorin_1_1ll" ],
-    [ "mem", "namespacethorin_1_1mem.html", [
-      [ "Tag", "namespacethorin_1_1mem.html#af449fca7e2cf0f5919c3610cca879949", [
-        [ "mem_M", "namespacethorin_1_1mem.html#af449fca7e2cf0f5919c3610cca879949a80c29fea542dd765397434c87b5441cd", null ],
-        [ "mem_Ptr", "namespacethorin_1_1mem.html#af449fca7e2cf0f5919c3610cca879949ad8dce431f258749d5a50a9e5434a4d04", null ],
-        [ "mem_load", "namespacethorin_1_1mem.html#af449fca7e2cf0f5919c3610cca879949ad8d8a5578f8d75b5664b0e46380388d0", null ],
-        [ "mem_store", "namespacethorin_1_1mem.html#af449fca7e2cf0f5919c3610cca879949a54600416bb45cf57e1a7fff99d7f24ac", null ],
-        [ "mem_lea", "namespacethorin_1_1mem.html#af449fca7e2cf0f5919c3610cca879949ae6e531522631af75376c9c4c8b122ea5", null ]
-      ] ]
-    ] ],
+    [ "mem", "namespacethorin_1_1mem.html", "namespacethorin_1_1mem" ],
     [ "Node", "namespacethorin_1_1Node.html", null ],
     [ "RMode", "namespacethorin_1_1RMode.html", [
       [ "RMode", "namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719", [
@@ -33,56 +26,7 @@ var namespacethorin =
         [ "top", "namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719a7924df23a1e99bf4a9f0d9de329b5baf", null ]
       ] ]
     ] ],
-    [ "std", "namespacethorin_1_1std.html", [
-      [ "icmp", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cb", [
-        [ "xygle", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba653f836235a27b289bf318bc8730fb7e", null ],
-        [ "f", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba8fa14cdd754f91cc6554c9e71929cce7", null ],
-        [ "xyglE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba5bf8820b7f741b5e3326b175f03a2141", null ],
-        [ "xygLe", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba961398139c7ae3a810df1098163d1062", null ],
-        [ "xyglE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba5bf8820b7f741b5e3326b175f03a2141", null ],
-        [ "xyGle", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba5e9d1e8eae47831e54006a91d2e8c7c7", null ],
-        [ "xyGlE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba7ccc249988b0ccd2e50d93bd51bc229c", null ],
-        [ "xyGLe", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba2c329549105725cd746ce1df26a5e2f1", null ],
-        [ "xyGLE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba8c1f9e6057ac0b482162e016b3513da3", null ],
-        [ "xYgle", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba4eaa2ed9361238492debe19d4127f9b0", null ],
-        [ "xYglE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbacca4a82742e8385a2a2546965f208113", null ],
-        [ "xYgLe", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbafc6b41d0d392685b651406b87893212d", null ],
-        [ "sl", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba54a2bf8c09ace67d3513aaa1aa7aa0f3", null ],
-        [ "xYglE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbacca4a82742e8385a2a2546965f208113", null ],
-        [ "sle", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaaa7c2f8b74458aeae4e388c376197581", null ],
-        [ "xYGle", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbabff10ac08aad7c8bd635dba9fe51017a", null ],
-        [ "ug", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba2a0617accf8bb8625c43e2ffeb5b8d5b", null ],
-        [ "xYGlE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba138a953595139b0fc6804f15d50f00ce", null ],
-        [ "uge", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba4eb31516a4986c34fa297e5e5f4045a9", null ],
-        [ "xYGLe", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba4542ec873d92a4a1c4cefc412902e589", null ],
-        [ "xYGLE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba573f2977117a8549478f364acb6c0652", null ],
-        [ "Xygle", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaf4e34c879c89192fcf3b851dddc46899", null ],
-        [ "XyglE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba097c210d2319c82d79a90bf2d2ce9acf", null ],
-        [ "XygLe", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaba7f9bec09f5a106aa1dae94601a68b2", null ],
-        [ "ul", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba738a656e8e8ec272ca17cd51e12f558b", null ],
-        [ "XyglE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba097c210d2319c82d79a90bf2d2ce9acf", null ],
-        [ "ule", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba76cf56920355319ad148e25a340b0f18", null ],
-        [ "XyGle", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbafff42ff6481bdc176d011d471ad98f94", null ],
-        [ "sg", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba5dae429688af1c521ad87ac394192c6d", null ],
-        [ "XyGlE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba2f79651931c30dfc0c7109b0d0720272", null ],
-        [ "sge", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba2a2ab400d355ac301859e4abb5432138", null ],
-        [ "XyGLe", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba96fba3ee0d996e39a23c8328c93a67d0", null ],
-        [ "XyGLE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba7665cfab6c3b34cb3791dc3edb5557b2", null ],
-        [ "XYgle", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba48538b9a49768c315d128192241eb5c4", null ],
-        [ "XYglE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaf79db5f5ed7a623224a6d3bbf4d96185", null ],
-        [ "XYgLe", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba74a706f8793c5d160e392c899991556d", null ],
-        [ "XYglE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaf79db5f5ed7a623224a6d3bbf4d96185", null ],
-        [ "XYGle", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba3d4edf0d7f5c3d484e823746ca870591", null ],
-        [ "XYGlE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba4d8a741c45a28690efcf836ff847ab4f", null ],
-        [ "XYGLe", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba5d322f15cb06ab5b8ad60e5923ce2c88", null ],
-        [ "ne", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbad4f917633649a3c47c7ab917fa990146", null ],
-        [ "XYGLE", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaa6ee9e715fd30e1b8e95843be4b2a9c8", null ],
-        [ "t", "namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbae358efa489f58062f10dd7316b65649e", null ]
-      ] ],
-      [ "Tag", "namespacethorin_1_1std.html#a3830f440803f700e071ba36b8bd16c12", [
-        [ "std_icmp", "namespacethorin_1_1std.html#a3830f440803f700e071ba36b8bd16c12af208a2c5cf27ea963d43b65e10d43bc8", null ]
-      ] ]
-    ] ],
+    [ "std", "namespacethorin_1_1std.html", "namespacethorin_1_1std" ],
     [ "sys", "namespacethorin_1_1sys.html", [
       [ "exec", "namespacethorin_1_1sys.html#a92af83448a4e8da3900badb8ac9b05ea", null ],
       [ "path_to_curr_exe", "namespacethorin_1_1sys.html#a96556c7da85943f938569ad30a44fae9", null ]
@@ -113,6 +57,8 @@ var namespacethorin =
     [ "DefDefHash", "structthorin_1_1DefDefHash.html", "structthorin_1_1DefDefHash" ],
     [ "DepNode", "classthorin_1_1DepNode.html", "classthorin_1_1DepNode" ],
     [ "DepTree", "classthorin_1_1DepTree.html", "classthorin_1_1DepTree" ],
+    [ "Dialect", "classthorin_1_1Dialect.html", "classthorin_1_1Dialect" ],
+    [ "DialectInfo", "structthorin_1_1DialectInfo.html", "structthorin_1_1DialectInfo" ],
     [ "DomFrontierBase", "classthorin_1_1DomFrontierBase.html", "classthorin_1_1DomFrontierBase" ],
     [ "DomTreeBase", "classthorin_1_1DomTreeBase.html", "classthorin_1_1DomTreeBase" ],
     [ "Emitter", "classthorin_1_1Emitter.html", "classthorin_1_1Emitter" ],
@@ -177,6 +123,7 @@ var namespacethorin =
     [ "PassMan", "classthorin_1_1PassMan.html", "classthorin_1_1PassMan" ],
     [ "Pi", "classthorin_1_1Pi.html", "classthorin_1_1Pi" ],
     [ "Pick", "classthorin_1_1Pick.html", "classthorin_1_1Pick" ],
+    [ "PipelineBuilder", "classthorin_1_1PipelineBuilder.html", "classthorin_1_1PipelineBuilder" ],
     [ "Pos", "structthorin_1_1Pos.html", "structthorin_1_1Pos" ],
     [ "Proxy", "classthorin_1_1Proxy.html", "classthorin_1_1Proxy" ],
     [ "Query", "classthorin_1_1Query.html", "classthorin_1_1Query" ],
@@ -246,7 +193,6 @@ var namespacethorin =
     [ "Bot", "namespacethorin.html#adefa1d05bd6416bf0770c785c9221a02", null ],
     [ "CFNodes", "namespacethorin.html#a94b098a4c3b6ff1a8a9522e626d83e2b", null ],
     [ "ControlDeps", "namespacethorin.html#ae06bba681d8d0c4022d03b1f20b5718a", null ],
-    [ "CreateIPass", "namespacethorin.html#a13419c0e67f8ea50a5640636f752e7d4", null ],
     [ "Def2Def", "namespacethorin.html#a7907156065ecc2f7a8ad6d0c4b48752d", null ],
     [ "DefArray", "namespacethorin.html#a81c6780cfdf58e5be888c4c16c68476d", null ],
     [ "DefDef", "namespacethorin.html#a1c686b5d4a914909b3433cae517ec294", null ],
@@ -256,7 +202,6 @@ var namespacethorin =
     [ "Defs", "namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16", null ],
     [ "DefSet", "namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46", null ],
     [ "DefVec", "namespacethorin.html#a79fff1449ba1eaecead8f607520f8574", null ],
-    [ "DestroyIPass", "namespacethorin.html#a181603f6479c823fe5d75e729635ef35", null ],
     [ "DomFrontiers", "namespacethorin.html#a8a90b869bd49f86b0ee4b3b37503d33f", null ],
     [ "DomTree", "namespacethorin.html#a27a76a1f311546f00c650982da319cb5", null ],
     [ "F_CFG", "namespacethorin.html#afd74630831fc44cb2fc4a0615cc60c0a", null ],
@@ -621,6 +566,7 @@ var namespacethorin =
     [ "should_flatten", "namespacethorin.html#a9b43aff9c9bc9b0b4bda21985c91bc41", null ],
     [ "split_phixy", "namespacethorin.html#a03d8a63b7fcd8e75dd6c3bb8a906e07b", null ],
     [ "sub_view", "namespacethorin.html#a1e02df3b598c738a2864a076f4d9002c", null ],
+    [ "thorin_get_dialect_info", "namespacethorin.html#ad64a18507465904296ceed7c776bf75a", null ],
     [ "tuple2str", "namespacethorin.html#aea00f96e150831aba073fce80ce0080a", null ],
     [ "tuple_of_types", "namespacethorin.html#a0c9aa9c890f64ffc1d214f34e0f122b6", null ],
     [ "unflatten", "namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f", null ],

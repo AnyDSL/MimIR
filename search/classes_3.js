@@ -6,7 +6,9 @@ var searchData=
   ['defdefhash_3',['DefDefHash',['../structthorin_1_1DefDefHash.html',1,'thorin']]],
   ['depnode_4',['DepNode',['../classthorin_1_1DepNode.html',1,'thorin']]],
   ['deptree_5',['DepTree',['../classthorin_1_1DepTree.html',1,'thorin']]],
-  ['domfrontierbase_6',['DomFrontierBase',['../classthorin_1_1DomFrontierBase.html',1,'thorin']]],
-  ['domtreebase_7',['DomTreeBase',['../classthorin_1_1DomTreeBase.html',1,'thorin']]],
-  ['dotemitter_8',['DotEmitter',['../classthorin_1_1dot_1_1DotEmitter.html',1,'thorin::dot']]]
+  ['dialect_6',['Dialect',['../classthorin_1_1Dialect.html',1,'thorin']]],
+  ['dialectinfo_7',['DialectInfo',['../structthorin_1_1DialectInfo.html',1,'thorin']]],
+  ['domfrontierbase_8',['DomFrontierBase',['../classthorin_1_1DomFrontierBase.html',1,'thorin']]],
+  ['domtreebase_9',['DomTreeBase',['../classthorin_1_1DomTreeBase.html',1,'thorin']]],
+  ['dotemitter_10',['DotEmitter',['../classthorin_1_1dot_1_1DotEmitter.html',1,'thorin::dot']]]
 ];

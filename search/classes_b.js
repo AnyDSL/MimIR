@@ -8,6 +8,7 @@ var searchData=
   ['passman_5',['PassMan',['../classthorin_1_1PassMan.html',1,'thorin']]],
   ['pi_6',['Pi',['../classthorin_1_1Pi.html',1,'thorin']]],
   ['pick_7',['Pick',['../classthorin_1_1Pick.html',1,'thorin']]],
-  ['pos_8',['Pos',['../structthorin_1_1Pos.html',1,'thorin']]],
-  ['proxy_9',['Proxy',['../classthorin_1_1Proxy.html',1,'thorin']]]
+  ['pipelinebuilder_8',['PipelineBuilder',['../classthorin_1_1PipelineBuilder.html',1,'thorin']]],
+  ['pos_9',['Pos',['../structthorin_1_1Pos.html',1,'thorin']]],
+  ['proxy_10',['Proxy',['../classthorin_1_1Proxy.html',1,'thorin']]]
 ];

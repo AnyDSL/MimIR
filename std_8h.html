@@ -102,21 +102,34 @@ $(document).ready(function(){initNavTree('std_8h.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">std.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="tables_8h_source.html">thorin/tables.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="axiom_8h_source.html">thorin/axiom.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for std.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="std_8h__incl.svg" width="1007" height="351"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="std_8h__incl.svg" width="1856" height="590"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
 <p><a href="std_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:structthorin_1_1std_1_1Tag2Def__"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Def__">thorin::std::Tag2Def_&lt; tag &gt;</a></td></tr>
+<tr class="separator:structthorin_1_1std_1_1Tag2Def__"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structthorin_1_1std_1_1Tag2Enum__"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum__">thorin::std::Tag2Enum_&lt; tag &gt;</a></td></tr>
+<tr class="separator:structthorin_1_1std_1_1Tag2Enum__"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4">thorin::std::Tag2Enum_&lt; Tag::std_icmp &gt;</a></td></tr>
+<tr class="separator:structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
@@ -124,69 +137,171 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin_1_1std"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html">thorin::std</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a6c08350cd8151cba53dcec05457c5efd"><td class="memTemplParams" colspan="2">template&lt;fields_t tag&gt; </td></tr>
+<tr class="memitem:a6c08350cd8151cba53dcec05457c5efd"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#a6c08350cd8151cba53dcec05457c5efd">thorin::std::Tag2Def</a> = typename Tag2Def_&lt; tag &gt;::type</td></tr>
+<tr class="separator:a6c08350cd8151cba53dcec05457c5efd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1faf31c571825de7b0c88bf3843bf203"><td class="memTemplParams" colspan="2">template&lt;fields_t tag&gt; </td></tr>
+<tr class="memitem:a1faf31c571825de7b0c88bf3843bf203"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#a1faf31c571825de7b0c88bf3843bf203">thorin::std::Tag2Enum</a> = typename Tag2Enum_&lt; tag &gt;::type</td></tr>
+<tr class="separator:a1faf31c571825de7b0c88bf3843bf203"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a3830f440803f700e071ba36b8bd16c12"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#a3830f440803f700e071ba36b8bd16c12">thorin::std::Tag</a> : tag_t { <a class="el" href="namespacethorin_1_1std.html#a3830f440803f700e071ba36b8bd16c12af208a2c5cf27ea963d43b65e10d43bc8">thorin::std::std_icmp</a>
+<tr class="memitem:a1cd8381a0dc91aafb139d5e70c82ac4c"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#a1cd8381a0dc91aafb139d5e70c82ac4c">thorin::std::Tag</a> : u64 { <a class="el" href="namespacethorin_1_1std.html#a1cd8381a0dc91aafb139d5e70c82ac4caf208a2c5cf27ea963d43b65e10d43bc8">thorin::std::std_icmp</a> = 0x5151400000000000
  }</td></tr>
-<tr class="separator:a3830f440803f700e071ba36b8bd16c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad576e1ac60266dace078ed1fd41e93cb"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cb">thorin::std::icmp</a> : flags_t { <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba653f836235a27b289bf318bc8730fb7e">thorin::std::xygle</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba8fa14cdd754f91cc6554c9e71929cce7">thorin::std::f</a> = xygle
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba5bf8820b7f741b5e3326b175f03a2141">thorin::std::xyglE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba961398139c7ae3a810df1098163d1062">thorin::std::xygLe</a>
+<tr class="separator:a1cd8381a0dc91aafb139d5e70c82ac4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a7c8b244bcdbef7928869100b909edd"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edd">thorin::std::icmp</a> : u8 { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda653f836235a27b289bf318bc8730fb7e">thorin::std::xygle</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda8fa14cdd754f91cc6554c9e71929cce7">thorin::std::f</a> = xygle
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda5bf8820b7f741b5e3326b175f03a2141">thorin::std::xyglE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda961398139c7ae3a810df1098163d1062">thorin::std::xygLe</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba5bf8820b7f741b5e3326b175f03a2141">thorin::std::xyglE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba5e9d1e8eae47831e54006a91d2e8c7c7">thorin::std::xyGle</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba7ccc249988b0ccd2e50d93bd51bc229c">thorin::std::xyGlE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba2c329549105725cd746ce1df26a5e2f1">thorin::std::xyGLe</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddaf66234c5f1c1d4daede0a2189df4bb65">thorin::std::xygLE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda5e9d1e8eae47831e54006a91d2e8c7c7">thorin::std::xyGle</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda7ccc249988b0ccd2e50d93bd51bc229c">thorin::std::xyGlE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda2c329549105725cd746ce1df26a5e2f1">thorin::std::xyGLe</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba8c1f9e6057ac0b482162e016b3513da3">thorin::std::xyGLE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba4eaa2ed9361238492debe19d4127f9b0">thorin::std::xYgle</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbacca4a82742e8385a2a2546965f208113">thorin::std::xYglE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbafc6b41d0d392685b651406b87893212d">thorin::std::xYgLe</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda8c1f9e6057ac0b482162e016b3513da3">thorin::std::xyGLE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda4eaa2ed9361238492debe19d4127f9b0">thorin::std::xYgle</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddacca4a82742e8385a2a2546965f208113">thorin::std::xYglE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddafc6b41d0d392685b651406b87893212d">thorin::std::xYgLe</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba54a2bf8c09ace67d3513aaa1aa7aa0f3">thorin::std::sl</a> = xYgLe
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbacca4a82742e8385a2a2546965f208113">thorin::std::xYglE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaaa7c2f8b74458aeae4e388c376197581">thorin::std::sle</a> = xYglE
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbabff10ac08aad7c8bd635dba9fe51017a">thorin::std::xYGle</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda54a2bf8c09ace67d3513aaa1aa7aa0f3">thorin::std::sl</a> = xYgLe
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda33f16a4b6abe7d911af8baaceaebea57">thorin::std::xYgLE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddaaa7c2f8b74458aeae4e388c376197581">thorin::std::sle</a> = xYgLE
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddabff10ac08aad7c8bd635dba9fe51017a">thorin::std::xYGle</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba2a0617accf8bb8625c43e2ffeb5b8d5b">thorin::std::ug</a> = xYGle
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba138a953595139b0fc6804f15d50f00ce">thorin::std::xYGlE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba4eb31516a4986c34fa297e5e5f4045a9">thorin::std::uge</a> = xYGlE
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba4542ec873d92a4a1c4cefc412902e589">thorin::std::xYGLe</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda2a0617accf8bb8625c43e2ffeb5b8d5b">thorin::std::ug</a> = xYGle
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda138a953595139b0fc6804f15d50f00ce">thorin::std::xYGlE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda4eb31516a4986c34fa297e5e5f4045a9">thorin::std::uge</a> = xYGlE
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda4542ec873d92a4a1c4cefc412902e589">thorin::std::xYGLe</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba573f2977117a8549478f364acb6c0652">thorin::std::xYGLE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaf4e34c879c89192fcf3b851dddc46899">thorin::std::Xygle</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba097c210d2319c82d79a90bf2d2ce9acf">thorin::std::XyglE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaba7f9bec09f5a106aa1dae94601a68b2">thorin::std::XygLe</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda573f2977117a8549478f364acb6c0652">thorin::std::xYGLE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddaf4e34c879c89192fcf3b851dddc46899">thorin::std::Xygle</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda097c210d2319c82d79a90bf2d2ce9acf">thorin::std::XyglE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddaba7f9bec09f5a106aa1dae94601a68b2">thorin::std::XygLe</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba738a656e8e8ec272ca17cd51e12f558b">thorin::std::ul</a> = XygLe
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba097c210d2319c82d79a90bf2d2ce9acf">thorin::std::XyglE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba76cf56920355319ad148e25a340b0f18">thorin::std::ule</a> = XyglE
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbafff42ff6481bdc176d011d471ad98f94">thorin::std::XyGle</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda738a656e8e8ec272ca17cd51e12f558b">thorin::std::ul</a> = XygLe
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda49816419dfca7f4c63e1c22bd2e9d857">thorin::std::XygLE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda76cf56920355319ad148e25a340b0f18">thorin::std::ule</a> = XygLE
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddafff42ff6481bdc176d011d471ad98f94">thorin::std::XyGle</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba5dae429688af1c521ad87ac394192c6d">thorin::std::sg</a> = XyGle
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba2f79651931c30dfc0c7109b0d0720272">thorin::std::XyGlE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba2a2ab400d355ac301859e4abb5432138">thorin::std::sge</a> = XyGlE
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba96fba3ee0d996e39a23c8328c93a67d0">thorin::std::XyGLe</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda5dae429688af1c521ad87ac394192c6d">thorin::std::sg</a> = XyGle
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda2f79651931c30dfc0c7109b0d0720272">thorin::std::XyGlE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda2a2ab400d355ac301859e4abb5432138">thorin::std::sge</a> = XyGlE
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda96fba3ee0d996e39a23c8328c93a67d0">thorin::std::XyGLe</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba7665cfab6c3b34cb3791dc3edb5557b2">thorin::std::XyGLE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba48538b9a49768c315d128192241eb5c4">thorin::std::XYgle</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaf79db5f5ed7a623224a6d3bbf4d96185">thorin::std::XYglE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba74a706f8793c5d160e392c899991556d">thorin::std::XYgLe</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda7665cfab6c3b34cb3791dc3edb5557b2">thorin::std::XyGLE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda48538b9a49768c315d128192241eb5c4">thorin::std::XYgle</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddaf79db5f5ed7a623224a6d3bbf4d96185">thorin::std::XYglE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda74a706f8793c5d160e392c899991556d">thorin::std::XYgLe</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaf79db5f5ed7a623224a6d3bbf4d96185">thorin::std::XYglE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba3d4edf0d7f5c3d484e823746ca870591">thorin::std::XYGle</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba4d8a741c45a28690efcf836ff847ab4f">thorin::std::XYGlE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cba5d322f15cb06ab5b8ad60e5923ce2c88">thorin::std::XYGLe</a>
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda1515e7f7d9a1253dcc7f7bba92d63a85">thorin::std::XYgLE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda3d4edf0d7f5c3d484e823746ca870591">thorin::std::XYGle</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda4d8a741c45a28690efcf836ff847ab4f">thorin::std::XYGlE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edda5d322f15cb06ab5b8ad60e5923ce2c88">thorin::std::XYGLe</a>
 , <br />
-&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbad4f917633649a3c47c7ab917fa990146">thorin::std::ne</a> = XYGLe
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbaa6ee9e715fd30e1b8e95843be4b2a9c8">thorin::std::XYGLE</a>
-, <a class="el" href="namespacethorin_1_1std.html#ad576e1ac60266dace078ed1fd41e93cbae358efa489f58062f10dd7316b65649e">thorin::std::t</a> = XYGLE
+&#160;&#160;<a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddad4f917633649a3c47c7ab917fa990146">thorin::std::ne</a> = XYGLe
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddaa6ee9e715fd30e1b8e95843be4b2a9c8">thorin::std::XYGLE</a>
+, <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddae358efa489f58062f10dd7316b65649e">thorin::std::t</a> = XYGLE
 <br />
  }</td></tr>
-<tr class="separator:ad576e1ac60266dace078ed1fd41e93cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a2a7c8b244bcdbef7928869100b909edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aef6199bcd8c63fe5f78ca9dd0d7ab7bb"><td class="memTemplParams" colspan="2">template&lt;fields_t tag&gt; </td></tr>
+<tr class="memitem:aef6199bcd8c63fe5f78ca9dd0d7ab7bb"><td class="memTemplItemLeft" align="right" valign="top">Query&lt; Tag2Enum&lt; tag &gt;, Tag2Def&lt; tag &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#aef6199bcd8c63fe5f78ca9dd0d7ab7bb">thorin::std::isa</a> (const Def *def)</td></tr>
+<tr class="separator:aef6199bcd8c63fe5f78ca9dd0d7ab7bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53b5bf1e680b7897569149b2566a4754"><td class="memTemplParams" colspan="2">template&lt;fields_t tag&gt; </td></tr>
+<tr class="memitem:a53b5bf1e680b7897569149b2566a4754"><td class="memTemplItemLeft" align="right" valign="top">Query&lt; Tag2Enum&lt; tag &gt;, Tag2Def&lt; tag &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#a53b5bf1e680b7897569149b2566a4754">thorin::std::isa</a> (Tag2Enum&lt; tag &gt; flags, const Def *def)</td></tr>
+<tr class="separator:a53b5bf1e680b7897569149b2566a4754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28c96f1ca38bee2c95ddb1a6b73cb60f"><td class="memTemplParams" colspan="2">template&lt;fields_t t&gt; </td></tr>
+<tr class="memitem:a28c96f1ca38bee2c95ddb1a6b73cb60f"><td class="memTemplItemLeft" align="right" valign="top">Query&lt; Tag2Enum&lt; t &gt;, Tag2Def&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#a28c96f1ca38bee2c95ddb1a6b73cb60f">thorin::std::as</a> (const Def *d)</td></tr>
+<tr class="separator:a28c96f1ca38bee2c95ddb1a6b73cb60f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf6ffab771463676ccbdd5cc646ac231"><td class="memTemplParams" colspan="2">template&lt;fields_t t&gt; </td></tr>
+<tr class="memitem:adf6ffab771463676ccbdd5cc646ac231"><td class="memTemplItemLeft" align="right" valign="top">Query&lt; Tag2Enum&lt; t &gt;, Tag2Def&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1std.html#adf6ffab771463676ccbdd5cc646ac231">thorin::std::as</a> (Tag2Enum&lt; t &gt; f, const Def *d)</td></tr>
+<tr class="separator:adf6ffab771463676ccbdd5cc646ac231"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<hr/><h2 class="groupheader">Class Documentation</h2>
+<a name="structthorin_1_1std_1_1Tag2Def__" id="structthorin_1_1std_1_1Tag2Def__"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structthorin_1_1std_1_1Tag2Def__">&#9670;&nbsp;</a></span>thorin::std::Tag2Def_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct thorin::std::Tag2Def_</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="namespacethorin.html#af3760d05397d4f4e64db45d9b2f96a9b">fields_t</a> tag&gt;<br />
+struct thorin::std::Tag2Def_&lt; tag &gt;</div>
+<p class="definition">Definition at line <a class="el" href="std_8h_source.html#l00014">14</a> of file <a class="el" href="std_8h_source.html">std.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="afdae4fc675a0bd85b01f95c9a887c8bc" name="afdae4fc675a0bd85b01f95c9a887c8bc"></a>typedef <a class="el" href="classthorin_1_1App.html">App</a></td>
+<td class="fieldname">
+type</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="structthorin_1_1std_1_1Tag2Enum__" id="structthorin_1_1std_1_1Tag2Enum__"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structthorin_1_1std_1_1Tag2Enum__">&#9670;&nbsp;</a></span>thorin::std::Tag2Enum_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct thorin::std::Tag2Enum_</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="namespacethorin.html#af3760d05397d4f4e64db45d9b2f96a9b">fields_t</a> tag&gt;<br />
+struct thorin::std::Tag2Enum_&lt; tag &gt;</div>
+<p class="definition">Definition at line <a class="el" href="std_8h_source.html#l00022">22</a> of file <a class="el" href="std_8h_source.html">std.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="aad8858ea560223946ad27e6949965572" name="aad8858ea560223946ad27e6949965572"></a>typedef <a class="el" href="namespacethorin.html#af3760d05397d4f4e64db45d9b2f96a9b">fields_t</a></td>
+<td class="fieldname">
+type</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+<a name="structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4" id="structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4">&#9670;&nbsp;</a></span>thorin::std::Tag2Enum_&lt; Tag::std_icmp &gt;</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct thorin::std::Tag2Enum_&lt; Tag::std_icmp &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock">
+<p class="definition">Definition at line <a class="el" href="std_8h_source.html#l00071">71</a> of file <a class="el" href="std_8h_source.html">std.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="aa1a351bc247f82371b18f591f78f7d1f" name="aa1a351bc247f82371b18f591f78f7d1f"></a>typedef <a class="el" href="namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edd">icmp</a></td>
+<td class="fieldname">
+type</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
