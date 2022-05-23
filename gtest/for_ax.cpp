@@ -76,7 +76,7 @@ TEST_P(ForAxiomTest, for) {
     for (int i = cbegin; i < cend; i += cstep) { gt += i; }
 
     EXPECT_EQ(0, ll::compile(w, "test"));
-    EXPECT_EQ(gt % 256, sys::dot_slash("test"));
+    EXPECT_EQ(gt % 256, sys::run("test"));
 }
 
 TEST_P(ForAxiomTest, for_dynamic_iters) {
@@ -162,7 +162,7 @@ TEST_P(ForAxiomTest, for_dynamic_iters) {
     for (int i = cbegin; i < cend; i += cstep) { gt += i; }
 
     EXPECT_EQ(0, ll::compile(w, "test"));
-    EXPECT_EQ(gt % 256, sys::dot_slash(fmt("test {} {} {}", cbegin, cend, cstep)));
+    EXPECT_EQ(gt % 256, sys::run("test", fmt("{} {} {}", cbegin, cend, cstep)));
 }
 
 // test with these begin, end, step combinations:

@@ -55,11 +55,13 @@ int system(const std::string& cmd) {
     return WEXITSTATUS(status);
 }
 
-int dot_slash(std::string cmd) {
-#ifndef _WIN32
+int run(std::string cmd, const std::string& args/* = {}*/) {
+#ifdef _WIN32
+    cmd += ".exe";
+#else
     cmd = "./"s + cmd;
 #endif
-    return system(cmd);
+    return system(cmd + " "s + args);
 }
 
 std::string find_cmd(const std::string& cmd) {

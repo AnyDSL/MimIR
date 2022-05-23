@@ -81,8 +81,8 @@ TEST(Main, ll) {
     main->make_external();
 
     EXPECT_EQ(0, ll::compile(w, "test"));
-    EXPECT_EQ(4, sys::dot_slash("test a b c"));
-    EXPECT_EQ(7, sys::dot_slash("test a b c d e f"));
+    EXPECT_EQ(4, sys::run("test", "a b c"));
+    EXPECT_EQ(7, sys::run("test", "a b c d e f"));
 }
 
 TEST(Axiom, mangle) {
@@ -139,6 +139,6 @@ TEST(Main, loop) {
     main->make_external();
 
     EXPECT_EQ(0, ll::compile(w, "test"));
-    EXPECT_EQ(6, sys::dot_slash("test a b c"));
-    EXPECT_EQ(10, sys::dot_slash("test a b c d"));
+    EXPECT_EQ(6, sys::run("test", "a b c"));
+    EXPECT_EQ(10, sys::run("test", "a b c d"));
 }

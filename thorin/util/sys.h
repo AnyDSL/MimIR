@@ -22,8 +22,8 @@ std::string exec(std::string& cmd);
 /// Wraps `std::system` and makes the return value usable.
 int system(const std::string&);
 
-/// Wraps sys::system and puts `./` in front of @p cmd if not Windows.
-int dot_slash(std::string cmd);
+/// Wraps sys::system and puts `.exe` at the back (Windows) and `./` at the front (otherwise) of @p cmd.
+int run(std::string cmd, const std::string& args = {});
 
 std::string find_cmd(const std::string&);
 
