@@ -751,13 +751,13 @@ void emit(World& world, std::ostream& ostream) {
     cg.run();
 }
 
-int compile(World& world, std::string stem) { return compile(world, stem + ".ll", stem); }
+int compile(World& world, const std::string& stem) { return compile(world, stem + ".ll", stem); }
 
-int compile(World& world, std::string ll, std::string out) {
+int compile(World& world, const std::string& ll, const std::string& out) {
     std::ofstream ofs(ll);
     emit(world, ofs);
     ofs.close();
-    auto cmd = fmt("{}  {} -o {} -Wno-override-module", sys::find_cmd("clang"), ll, out);
+    auto cmd = fmt("clang \"{}\" -o \"{}\" -Wno-override-module", ll, out);
     return sys::system(cmd);
 }
 

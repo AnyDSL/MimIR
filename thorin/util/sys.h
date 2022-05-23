@@ -22,6 +22,9 @@ std::string exec(std::string& cmd);
 /// Wraps `std::system` and makes the return value usable.
 int system(const std::string&);
 
+/// Wraps sys::system and puts `./` in front of @p cmd if not Windows.
+int dot_slash(std::string cmd);
+
 std::string find_cmd(const std::string&);
 
 } // namespace thorin::sys

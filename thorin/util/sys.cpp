@@ -45,7 +45,7 @@ std::string exec(const std::string& cmd) {
     std::array<char, 128> buffer;
     std::string result;
     std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
-    if (!pipe) { throw std::runtime_error("error: popen() failed!"); }
+    if (!pipe) throw std::runtime_error("error: popen() failed!");
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) { result += buffer.data(); }
     return result;
 }
@@ -53,6 +53,13 @@ std::string exec(const std::string& cmd) {
 int system(const std::string& cmd) {
     int status = std::system(cmd.c_str());
     return WEXITSTATUS(status);
+}
+
+int dot_slash(std::string cmd) {
+#ifndef _WIN32
+    cmd = "./"s + cmd;
+#endif
+    return system(cmd);
 }
 
 std::string find_cmd(const std::string& cmd) {
