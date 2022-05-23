@@ -55,7 +55,7 @@ int system(const std::string& cmd) {
     return WEXITSTATUS(status);
 }
 
-int run(std::string cmd, const std::string& args/* = {}*/) {
+int run(std::string cmd, const std::string& args /* = {}*/) {
 #ifdef _WIN32
     cmd += ".exe";
 #else
