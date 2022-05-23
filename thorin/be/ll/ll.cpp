@@ -752,9 +752,10 @@ void emit(World& world, std::ostream& ostream) {
 }
 
 int compile(World& world, const std::string& stem) {
-    auto exe = stem;
 #ifdef _WIN32
     auto exe = stem + ".exe";
+#else
+    auto exe = stem;
 #endif
     return compile(world, stem + ".ll", exe);
 }
