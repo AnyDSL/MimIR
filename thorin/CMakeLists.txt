@@ -7,6 +7,8 @@ add_library(libthorin
     debug.h
     def.cpp
     def.h
+    dialects.cpp
+    dialects.h
     error.cpp
     error.h
     lam.cpp
@@ -52,6 +54,8 @@ add_library(libthorin
     fe/tok.h
     pass/optimize.cpp
     pass/pass.cpp
+    pass/pipelinebuilder.cpp
+    pass/pipelinebuilder.h
     pass/fp/eta_exp.cpp
     pass/fp/eta_exp.h
     pass/fp/eta_red.cpp
@@ -94,6 +98,8 @@ add_library(libthorin
     util/indexset.h
     util/print.cpp
     util/print.h
+    util/sys.cpp
+    util/sys.h
     util/types.h
     util/utf8.cpp
     util/utf8.h

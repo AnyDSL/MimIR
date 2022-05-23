@@ -42,15 +42,13 @@ TEST(RestrictedDependentTypes, join_singleton) {
         std::vector<std::function<void(World&, const Def*, const Def*, const Def*, const Def*, const Def*, const Def*,
                                        const Def*, const Def*)>>
             cases;
-        cases.emplace_back(
-            [](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
+        cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NO_THROW( // no type error
                 w.app(exp_lam,
                       {i32_t, R, w.op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, R)}), w.lit(i32_t, 1000)),
                        w.nom_lam(w.cn(i32_t), nullptr)}));
         });
-        cases.emplace_back(
-            [](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
+        cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NO_THROW( // no type error
                 w.app(exp_lam,
                       {i32_t, W, w.op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
@@ -70,49 +68,49 @@ TEST(RestrictedDependentTypes, join_singleton) {
                       {i64_t, W, w.op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
                        w.nom_lam(w.cn(i64_t), nullptr)}));
         });
-        cases.emplace_back(
-            [](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
+        cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float
                         w.app(exp_lam,
-                              {w.type_real(32), R, w.op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, R)}), w.lit(i32_t, 1000)),
+                              {w.type_real(32), R,
+                               w.op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, R)}), w.lit(i32_t, 1000)),
                                w.nom_lam(w.cn(w.type_real(32)), nullptr)}),
                         TypeError);
                 },
                 "TypeError");
         });
-        cases.emplace_back(
-            [](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
+        cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float
                         w.app(exp_lam,
-                              {w.type_real(32), W, w.op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, W)}), w.lit(i32_t, 1000)),
+                              {w.type_real(32), W,
+                               w.op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, W)}), w.lit(i32_t, 1000)),
                                w.nom_lam(w.cn(w.type_real(32)), nullptr)}),
                         TypeError);
                 },
                 "TypeError");
         });
-        cases.emplace_back(
-            [](World& w, auto, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
+        cases.emplace_back([](World& w, auto, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // RW fail
                         w.app(exp_lam,
-                              {i32_t, i32_t, w.op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, i32_t)}), w.lit(i32_t, 1000)),
+                              {i32_t, i32_t,
+                               w.op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, i32_t)}), w.lit(i32_t, 1000)),
                                w.nom_lam(w.cn(i32_t), nullptr)}),
                         TypeError);
                 },
                 "TypeError");
         });
-        cases.emplace_back(
-            [](World& w, auto, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto i64_t) {
+        cases.emplace_back([](World& w, auto, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto i64_t) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // RW fail
                         w.app(exp_lam,
-                              {i64_t, i64_t, w.op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, i64_t)}), w.lit(i32_t, 1000)),
+                              {i64_t, i64_t,
+                               w.op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, i64_t)}), w.lit(i32_t, 1000)),
                                w.nom_lam(w.cn(i64_t), nullptr)}),
                         TypeError);
                 },
@@ -143,20 +141,17 @@ TEST(RestrictedDependentTypes, join_singleton) {
         std::vector<std::function<void(World&, const Def*, const Def*, const Def*, const Def*, const Def*, const Def*,
                                        const Def*, const Def*)>>
             cases;
-        cases.emplace_back(
-            [](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
+        cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NO_THROW( // no type error
                 w.app(exp_lam, {i32_t, w.op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, R)}), w.lit(i32_t, 1000)),
                                 w.nom_lam(w.cn(i32_t), nullptr)}));
         });
-        cases.emplace_back(
-            [](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto, auto i64_t) {
+        cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto, auto i64_t) {
             EXPECT_NO_THROW( // no type error
                 w.app(exp_lam, {i64_t, w.op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, R)}), w.lit(i64_t, 1000)),
                                 w.nom_lam(w.cn(i64_t), nullptr)}));
         });
-        cases.emplace_back(
-            [](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
+        cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float type error
@@ -168,8 +163,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                 },
                 "TypeError");
         });
-        cases.emplace_back(
-            [](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
+        cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_THROW( // W type error
                 w.app(exp_lam, {i32_t, w.op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
                                 w.nom_lam(w.cn(i32_t), nullptr)}),
@@ -182,8 +176,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
                                 w.nom_lam(w.cn(i64_t), nullptr)}),
                 TypeError);
         });
-        cases.emplace_back(
-            [](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto, auto) {
+        cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto, auto) {
             EXPECT_THROW( // float + W type error (note, the float is not yet what triggers the issue..)
                 w.app(exp_lam, {w.type_real(32),
                                 w.op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, W)}),

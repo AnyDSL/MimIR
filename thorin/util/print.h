@@ -82,7 +82,7 @@ public:
     template<class... Args>
     std::ostream& print(std::ostream& os, const char* s, Args&&... args) {
         for (size_t i = 0; i < indent_; ++i) os << tab_;
-        return thorin::print(os, s, std::forward<Args&&>(args)...);
+        return thorin::print(os, s, std::forward<Args>(args)...);
     }
 
     /// @name getters

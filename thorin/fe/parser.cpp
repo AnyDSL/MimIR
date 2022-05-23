@@ -2,7 +2,11 @@
 
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <sstream>
+
+#include "thorin/check.h"
+#include "thorin/rewrite.h"
 
 // clang-format off
 #define DECL                \
@@ -286,51 +290,59 @@ private:
 const Def* Parser::parse_sigma(Binders* binders) {
     auto track = tracker();
     bool nom   = false;
-    size_t i   = 0;
     auto bot   = world().bot(world().type_nat());
+    size_t n   = 0;
 
     DefVec ops;
-    DefVec infers;
+    std::vector<Infer*> infers;
     std::vector<const Def*> fields;
+
     push();
     parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
+        infers.emplace_back(nullptr);
         fields.emplace_back(bot);
+
         if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+            nom      = true;
             auto id  = eat(Tok::Tag::M_id);
             auto sym = id.sym();
             eat(Tok::Tag::T_colon);
 
-            auto type  = parse_expr("type of a sigma element");
-            auto infer = world().nom_infer(type, sym, id.loc());
-            nom        = true;
+            auto type     = parse_expr("type of a sigma element");
+            auto infer    = world().nom_infer(type, sym, id.loc());
+            infers.back() = infer;
+            fields.back() = sym.def();
+
             insert(sym, infer);
             ops.emplace_back(type);
-            infers.emplace_back(infer);
-
-            if (binders) binders->emplace_back(sym, i);
-            fields.back() = sym.def();
+            if (binders) binders->emplace_back(sym, n);
         } else {
             ops.emplace_back(parse_expr("element of a sigma"));
             infers.emplace_back(nullptr);
         }
-        ++i;
+        ++n;
     });
     pop();
 
     if (nom) {
         auto meta  = world().tuple(fields);
-        auto sigma = world().nom_sigma(world().nom_infer_univ(), ops.size(), track.meta(meta))->set(ops);
+        auto type  = infer_type_level(world(), ops);
+        auto sigma = world().nom_sigma(type, n, track.meta(meta));
 
-        // replace infer nodes with the sigma#i they stand for
-        // todo: probably should be refactored into Sigma::check?
-        // we could use `meta` there to find the corresponding sigma#i
-        for (DefVec::size_type i = 0; i < infers.size(); ++i)
-            if (infers[i]) { infers[i]->as_nom<Infer>()->set(sigma->var(i)); }
-        InferRewriter rewriter{world()};
-        for (DefVec::size_type i = 0; i < infers.size(); ++i) { sigma->set(i, rewriter.rewrite(sigma->op(i))); }
-        sigma->set_type(world().infer_type(sigma->ops()));
+        thorin::Scope scope(sigma);
+        Rewriter rw(world(), &scope);
+
+        sigma->set(0, ops[0]);
+        for (size_t i = 1, e = n; i != e; ++i) {
+            if (auto infer = infers[i - 1]) {
+                auto v            = sigma->var(i - 1);
+                rw.old2new[infer] = infer->set(v);
+            }
+            sigma->set(i, rw.rewrite(ops[i]));
+        }
         return sigma;
     }
+
     return world().sigma(ops, track);
 }
 
@@ -392,7 +404,7 @@ const Def* Parser::parse_lit() {
     auto lit    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
 
-    if (accept(Tok::Tag::T_colon_colon)) {
+    if (accept(Tok::Tag::T_colon)) {
         auto type = parse_expr("literal", r);
 
         const Def* meta = nullptr;
@@ -458,6 +470,12 @@ void Parser::parse_ax() {
         // info.dialect, lexer_.file());
     }
 
+    // 6 bytes dialect name, 1 byte axiom group (tag), 1 byte flags
+    assert(bootstrapper_.axioms.size() < std::numeric_limits<u8>::max());
+
+    // dialect_and_group already tried mangling, so we know it's valid.
+    info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
+
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
             auto& aliases = info.tags.emplace_back();
@@ -467,8 +485,10 @@ void Parser::parse_ax() {
     }
 
     expect(Tok::Tag::T_colon, "axiom");
-    auto type  = parse_expr("type of an axiom");
-    auto axiom = world().axiom(type, track.named(ax.sym()));
+    auto type = parse_expr("type of an axiom");
+    info.pi   = type->isa<Pi>() != nullptr;
+
+    auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t(info.id & u32(-1)), track.named(ax.sym()));
     insert(ax.sym(), axiom);
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
     expect(Tok::Tag::T_semicolon, "end of an axiom");
@@ -549,10 +569,12 @@ void Parser::parse_def(Sym sym /*= {}*/) {
     size_t n = nom->num_ops();
 
     if (ahead().isa(Tok::Tag::D_brace_l)) {
+        push();
         parse_list("nominal definition", Tok::Tag::D_brace_l, [&]() {
             if (i == n) err(prev_, "too many operands");
             nom->set(i++, parse_expr("operand of a nominal"));
         });
+        pop();
     } else if (n - i == 1) {
         nom->set(i, parse_expr("operand of a nominal"));
     } else {

@@ -212,21 +212,15 @@ public:
 
     /// @name Extract
     ///@{
-    const Def* extract(const Def* tup, const Def* i, const Def* dbg = {}) { return extract_(nullptr, tup, i, dbg); }
-    const Def* extract(const Def* tup, u64 a, u64 i, const Def* dbg = {}) {
-        return extract_(nullptr, tup, lit_int(a, i), dbg);
+    const Def* extract(const Def* d, const Def* i, const Def* dbg = {});
+    const Def* extract(const Def* d, u64 a, u64 i, const Def* dbg = {}) { return extract(d, lit_int(a, i), dbg); }
+    const Def* extract(const Def* d, u64 i, const Def* dbg = {}) { return extract(d, as_lit(d->arity()), i, dbg); }
+    const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
+        return extract_unsafe(d, lit_int(0_u64, i), dbg);
     }
-    const Def* extract(const Def* tup, u64 i, const Def* dbg = {}) {
-        return extract(tup, as_lit(tup->arity()), i, dbg);
+    const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
+        return extract(d, op(Conv::u2u, type_int(as_lit(d->type()->reduce_rec()->arity())), i, dbg), dbg);
     }
-    const Def* extract_unsafe(const Def* tup, u64 i, const Def* dbg = {}) {
-        return extract_unsafe(tup, lit_int(0_u64, i), dbg);
-    }
-    const Def* extract_unsafe(const Def* tup, const Def* i, const Def* dbg = {}) {
-        return extract(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce_rec()->arity())), i, dbg), dbg);
-    }
-    /// During a rebuild we cannot infer the type if it is not set yet; in this case we rely on @p ex_type.
-    const Def* extract_(const Def* ex_type, const Def* tup, const Def* i, const Def* dbg = {});
     /// Builds `(f, t)cond`.
     /// **Note** that select expects @p t as first argument and @p f as second one.
     const Def* select(const Def* t, const Def* f, const Def* cond, const Def* dbg = {}) {
@@ -236,18 +230,18 @@ public:
 
     /// @name Insert
     ///@{
-    const Def* insert(const Def* tup, const Def* i, const Def* val, const Def* dbg = {});
-    const Def* insert(const Def* tup, u64 a, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, lit_int(a, i), val, dbg);
+    const Def* insert(const Def* d, const Def* i, const Def* val, const Def* dbg = {});
+    const Def* insert(const Def* d, u64 a, u64 i, const Def* val, const Def* dbg = {}) {
+        return insert(d, lit_int(a, i), val, dbg);
     }
-    const Def* insert(const Def* tup, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, as_lit(tup->arity()), i, val, dbg);
+    const Def* insert(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
+        return insert(d, as_lit(d->arity()), i, val, dbg);
     }
-    const Def* insert_unsafe(const Def* tup, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert_unsafe(tup, lit_int(0_u64, i), val, dbg);
+    const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
+        return insert_unsafe(d, lit_int(0_u64, i), val, dbg);
     }
-    const Def* insert_unsafe(const Def* tup, const Def* i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce_rec()->arity())), i), val, dbg);
+    const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
+        return insert(d, op(Conv::u2u, type_int(as_lit(d->type()->reduce_rec()->arity())), i), val, dbg);
     }
     ///@}
 
@@ -326,7 +320,7 @@ public:
     const Def* meet(Defs ops, const Def* dbg = {}) { return bound<false>(ops, dbg); }
     const Def* ac(const Def* type, Defs ops, const Def* dbg = {});
     /// Infers the type using a *structural* Meet.
-    const Def* ac(Defs ops, const Def* dbg = {}) { return ac(infer_type(ops), ops, dbg); }
+    const Def* ac(Defs ops, const Def* dbg = {});
     const Def* vel(const Def* type, const Def* value, const Def* dbg = {});
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg = {});
@@ -508,7 +502,6 @@ public:
     ///@{
     const Def* dbg(Debug);
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
-    const Def* infer_type(Defs);
     ///@}
 
     /// @name partial evaluation done?
@@ -544,7 +537,6 @@ public:
     using Breakpoints = absl::flat_hash_set<u32>;
 
     void breakpoint(size_t number);
-    void use_breakpoint(size_t number);
     void enable_history(bool flag = true);
     bool track_history() const;
     const Def* gid2def(u32 gid);
@@ -625,13 +617,10 @@ private:
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
-        auto [i, inserted] = data_.defs_.emplace(def);
-        if (inserted) {
+        auto [i, ins] = data_.defs_.emplace(def);
+        if (ins) {
 #if THORIN_ENABLE_CHECKS
             if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
-            for (auto op : def->ops()) {
-                if (state_.use_breakpoints.contains(op->gid())) thorin::breakpoint();
-            }
 #endif
             def->finalize();
             return def;
@@ -647,8 +636,8 @@ private:
 #if THORIN_ENABLE_CHECKS
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
-        auto p = data_.defs_.emplace(def);
-        assert_unused(p.second);
+        auto [_, ins] = data_.defs_.emplace(def);
+        assert_unused(ins);
         return def;
     }
     ///@}
@@ -732,7 +721,6 @@ private:
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
         Breakpoints breakpoints;
-        Breakpoints use_breakpoints;
 #endif
     } state_;
 

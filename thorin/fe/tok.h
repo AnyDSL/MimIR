@@ -65,7 +65,6 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_top,          "⊤")              \
     m(T_box,          "□")              \
     m(T_colon,        ":")              \
-    m(T_colon_colon,  "∷")              \
     m(T_comma,        ",")              \
     m(T_dot,          ".")              \
     m(T_extract,      "#")              \
