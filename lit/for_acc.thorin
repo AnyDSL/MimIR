@@ -1,0 +1,21 @@
+// RUN: %thorin -d affine -e thorin %s -o %t
+
+.import affine;
+.import mem;
+
+.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
+    0: (%Int 2), 
+    .lam for_exit: .Cn [mem : %mem.M , acc : %Int 4294967296] = {
+        0: (%Int 2),
+        return (mem, acc)
+    };
+
+    .lam for_body: .Cn [mem : %mem.M , i : %Int 4294967296, acc : %Int 4294967296, continue : .Cn [%mem.M , %Int 4294967296]] = {
+        0: (%Int 2),
+        continue (mem, %Wrap_add (0:.Nat, 4294967296:.Nat) (i, acc))
+    };
+    %affine.for (4294967296, 1, (%Int 4294967296)) (mem, 0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296)), for_body, for_exit)
+};
+
+// CHECK-NOT: %affine.for
+

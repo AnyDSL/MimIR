@@ -8,6 +8,8 @@
 #include "thorin/check.h"
 #include "thorin/rewrite.h"
 
+#include "thorin/util/sys.h"
+
 // clang-format off
 #define DECL                \
          Tok::Tag::K_ax:    \
@@ -571,7 +573,13 @@ void Parser::parse_import() {
 
     std::ostringstream os;
     print(os, "{}.thorin", name_str);
-    auto input = (std::filesystem::path{lexer_.file()}.parent_path().parent_path() / name_str / os.str()).string();
+
+    auto exe_path = sys::path_to_curr_exe();
+    if (!exe_path) err(name.loc(), "cannot determine search paths for import '{}'", name_str);
+
+    // default dialect path
+    // todo: make import search paths more sophisticated..
+    auto input = (exe_path->parent_path().parent_path() / "lib" / "thorin" / os.str()).string();
     std::ifstream ifs(input);
 
     if (!ifs) err(name.loc(), "cannot import file '{}'", input);

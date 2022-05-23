@@ -36,8 +36,8 @@ static std::vector<std::filesystem::path> get_plugin_search_paths(const std::vec
     const auto cwd = std::filesystem::current_path();
     std::ranges::transform(paths, paths.begin(), [&](auto path) { return path.is_relative() ? cwd / path : path; });
 
-    // add path/to/thorin.exe/../../lib
-    if (auto path = sys::path_to_curr_exe()) paths.emplace_back(*path);
+    // add path/to/thorin.exe/../../lib/thorin
+    if (auto path = sys::path_to_curr_exe()) paths.emplace_back(path->parent_path().parent_path() / "lib" / "thorin");
 
     // add default install path
     const auto install_prefixed_path = std::filesystem::path{THORIN_INSTALL_PREFIX} / "lib";

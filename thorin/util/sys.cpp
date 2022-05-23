@@ -32,7 +32,7 @@ std::optional<std::filesystem::path> path_to_curr_exe() {
 #endif
         path_buffer.resize(read);
         path_buffer.back() = 0;
-        return std::filesystem::path{path_buffer.data()}.parent_path().parent_path() / "lib";
+        return std::filesystem::path{path_buffer.data()};
     }
     return {};
 }
