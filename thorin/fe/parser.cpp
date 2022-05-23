@@ -599,7 +599,7 @@ void Parser::parse_import() {
         (std::filesystem::path{lexer_.file()}.parent_path().parent_path() / name_str / input_stream.str()).string();
     std::ifstream ifs(input);
 
-    if (!ifs) err("error: cannot import file '{}'", input);
+    if (!ifs) err(name.loc(), "cannot import file '{}'", input);
 
     Parser parser(world(), input, ifs, scopes_, imported_);
     parser.parse_module();
