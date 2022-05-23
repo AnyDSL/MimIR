@@ -3,14 +3,13 @@
 #include <array>
 #include <vector>
 
-#include <unistd.h>
-
 #ifdef _WIN32
 #    include <windows.h>
 #    define popen  _popen
 #    define pclose _pclose
 #else
 #    include <dlfcn.h>
+#    include <unistd.h>
 #endif
 
 namespace thorin::sys {
