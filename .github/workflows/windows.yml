@@ -18,18 +18,51 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
-
-      - name: Configure 
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON
-
+      - name: Install Ninja
+        uses: turtlesec-no/get-ninja@main
+      - name: Install LIT
+        shell: cmd
+        run: python -m pip install lit
+      - name: Install FileCheck
+        uses: i3h/download-release-asset@v1
+        with:
+          owner: fodinabor
+          repo: FileCheckBuild
+          tag: latest
+          file: FileCheck-x86_64-win.exe
+          path: ${{github.workspace}}/bin
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Configure
+        shell: cmd
+        run: |
+          cmake -E copy ${{github.workspace}}/bin/FileCheck-x86_64-win.exe ${{github.workspace}}/bin/FileCheck
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          set CC=cl.exe
+          set CXX=cl.exe
+          cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON
+      
       #- name: Install LLVM and Clang
         #uses: KyleMayes/install-llvm-action@v1.5.2
         #with:
           #version: "14.0.0"
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_foo
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_foo thorin_affine
+
+      - name: Run lit test suite
+        working-directory: ${{github.workspace}}/build
+        shell: cmd
+        run: |
+          set PATH=${{github.workspace}}/bin;%PATH%
+          ninja check
 
       - name: Test
         working-directory: ${{github.workspace}}/build
-        run: ctest --verbose -C ${{matrix.build-type}} --output-on-failure
+        shell: cmd
+        run: |
+          set PATH=${{github.workspace}}/bin;%PATH%
+          ctest --verbose -C ${{matrix.build-type}} --output-on-failure
+ 

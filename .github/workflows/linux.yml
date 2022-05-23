@@ -23,19 +23,34 @@ jobs:
         uses: KyleMayes/install-llvm-action@v1.5.2
         with:
           version: "14.0.0"
-
+      - name: Install FileCheck
+        uses: i3h/download-release-asset@v1
+        with:
+          owner: fodinabor
+          repo: FileCheckBuild
+          tag: latest
+          file: FileCheck-x86_64-ubuntu
+          path: ${{github.workspace}}/bin
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Install newest g++, valgrind
         run: |
           sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 
           sudo apt-get update
           sudo apt-get install g++-11 valgrind
           export CXX=g++-11
+          sudo python -m pip install lit
+          sudo ln -s ${{github.workspace}}/bin/FileCheck-x86_64-ubuntu /usr/bin/FileCheck
+          sudo chmod +x /usr/bin/FileCheck
 
       - name: Configure
         run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_foo
+        run: cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_foo thorin_affine
+
+      - name: Run lit test suite
+        working-directory: ${{github.workspace}}/build
+        run: cmake --build --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target check
 
       - name: Test with Valgrind
         working-directory: ${{github.workspace}}/build

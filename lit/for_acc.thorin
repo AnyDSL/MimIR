@@ -1,3 +1,4 @@
+// RUN: %thorin -d affine -e thorin %s -o %t
 // RUN: %thorin -d affine -e thorin %s -o %t | FileCheck %s
 
 .import affine;
