@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <limits>
 #include <sstream>
 
 #include "thorin/check.h"
@@ -29,6 +30,16 @@ Parser::Parser(World& world, std::string_view file, std::istream& istream, std::
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
     push(); // root scope
+}
+
+Parser::Parser(World& world,
+               std::string_view file,
+               std::istream& istream,
+               const std::deque<Parser::Scope>& inhert_scopes,
+               const SymSet& inhert_imported)
+    : Parser(world, file, istream) {
+    scopes_   = inhert_scopes;
+    imported_ = inhert_imported;
 }
 
 void Parser::bootstrap(std::ostream& h) { bootstrapper_.emit(h); }
@@ -137,7 +148,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
         case Tok::Tag::D_brace_l:   return parse_block();
         case Tok::Tag::D_bracket_l: return parse_sigma(binders);
         case Tok::Tag::D_paren_l:   return parse_tuple();
-        case Tok::Tag::K_Cn:        return parse_Cn();
+        case Tok::Tag::K_Cn:        return parse_Cn(binders);
         case Tok::Tag::K_Type:      return parse_type();
         case Tok::Tag::K_Bool:      lex(); return world().type_bool();
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
@@ -174,10 +185,10 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
     return nullptr;
 }
 
-const Def* Parser::parse_Cn() {
+const Def* Parser::parse_Cn(Binders* binders) {
     auto track = tracker();
     eat(Tok::Tag::K_Cn);
-    return world().cn(parse_expr("domain of a continuation type"), track);
+    return world().cn(parse_dep_expr("domain of a continuation type", binders), track);
 }
 
 const Def* Parser::parse_var() {
@@ -283,27 +294,28 @@ const Def* Parser::parse_sigma(Binders* binders) {
             if (binders) binders->emplace_back(sym, n);
         } else {
             ops.emplace_back(parse_expr("element of a sigma"));
+            infers.emplace_back(nullptr);
         }
         ++n;
     });
     pop();
 
     if (nom) {
+        assert(n > 0);
         auto meta  = world().tuple(fields);
         auto type  = infer_type_level(world(), ops);
         auto sigma = world().nom_sigma(type, n, track.meta(meta));
 
+        sigma->set(0, ops[0]);
+        for (size_t i = 1; i != n; ++i) {
+            if (auto infer = infers[i - 1]) infer->set(sigma->var(i - 1));
+            sigma->set(i, ops[i]);
+        }
+
         thorin::Scope scope(sigma);
         Rewriter rw(world(), &scope);
+        for (size_t i = 1; i != n; ++i) sigma->set(i, rw.rewrite(ops[i]));
 
-        sigma->set(0, ops[0]);
-        for (size_t i = 1, e = n; i != e; ++i) {
-            if (auto infer = infers[i - 1]) {
-                auto v            = sigma->var(i - 1);
-                rw.old2new[infer] = infer->set(v);
-            }
-            sigma->set(i, rw.rewrite(ops[i]));
-        }
         return sigma;
     }
 
@@ -434,6 +446,12 @@ void Parser::parse_ax() {
         // info.dialect, lexer_.file());
     }
 
+    // 6 bytes dialect name, 1 byte axiom group (tag), 1 byte flags
+    assert(bootstrapper_.axioms.size() < std::numeric_limits<u8>::max());
+
+    // dialect_and_group already tried mangling, so we know it's valid.
+    info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
+
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
             auto& aliases = info.tags.emplace_back();
@@ -443,8 +461,10 @@ void Parser::parse_ax() {
     }
 
     expect(Tok::Tag::T_colon, "axiom");
-    auto type  = parse_expr("type of an axiom");
-    auto axiom = world().axiom(type, track.named(ax.sym()));
+    auto type = parse_expr("type of an axiom");
+    info.pi   = type->isa<Pi>() != nullptr;
+
+    auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t(info.id & u32(-1)), track.named(ax.sym()));
     insert(ax.sym(), axiom);
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
     expect(Tok::Tag::T_semicolon, "end of an axiom");
@@ -468,7 +488,8 @@ void Parser::parse_nom() {
     auto tag      = lex().tag();
     bool external = accept(Tok::Tag::K_extern).has_value();
     auto sym      = parse_sym("nominal");
-    auto type     = accept(Tok::Tag::T_colon) ? parse_expr("type of a nominal") : world().type();
+    auto binders  = Binders{};
+    auto type     = accept(Tok::Tag::T_colon) ? parse_dep_expr("type of a nominal", &binders) : world().type();
 
     Def* nom;
     switch (tag) {
@@ -499,11 +520,16 @@ void Parser::parse_nom() {
         }
         default: unreachable();
     }
-
     insert(sym, nom);
+
+    push();
+    for (auto [sym, i] : binders) insert(sym, nom->var(i)); // TODO location
     if (external) nom->make_external();
-    if (ahead().isa(Tok::Tag::T_assign)) return parse_def(sym);
-    expect(Tok::Tag::T_semicolon, "end of a nominal");
+    if (ahead().isa(Tok::Tag::T_assign))
+        parse_def(sym);
+    else
+        expect(Tok::Tag::T_semicolon, "end of a nominal");
+    pop();
 }
 
 void Parser::parse_def(Sym sym /*= {}*/) {
@@ -541,18 +567,25 @@ void Parser::parse_import() {
     expect(Tok::Tag::T_semicolon, "end of import");
     auto name_str = name.sym().to_string();
 
-    std::ostringstream input_stream;
-    print(input_stream, "{}.thorin", name_str);
-    auto input =
-        (std::filesystem::path{lexer_.file()}.parent_path().parent_path() / name_str / input_stream.str()).string();
+    if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
+
+    std::ostringstream os;
+    print(os, "{}.thorin", name_str);
+    auto input = (std::filesystem::path{lexer_.file()}.parent_path().parent_path() / name_str / os.str()).string();
     std::ifstream ifs(input);
 
-    if (!ifs) err("error: cannot import file '{}'", input);
+    if (!ifs) err(name.loc(), "cannot import file '{}'", input);
 
-    Parser parser(world(), input, ifs);
+    Parser parser(world(), input, ifs, scopes_, imported_);
     parser.parse_module();
+
+    // merge global scopes
     assert(parser.scopes_.size() == 1 && scopes_.size() == 1);
-    scopes_.front().merge(parser.scopes_.back());
+    scopes_.front().merge(parser.scopes_.front());
+
+    // transitvely remember which files we transitively imported
+    imported_.merge(parser.imported_);
+    imported_.emplace(name.sym());
 }
 
 } // namespace thorin

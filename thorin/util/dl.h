@@ -1,9 +1,9 @@
 #ifndef THORIN_UTIL_DL_H
 #define THORIN_UTIL_DL_H
 
-#include <string>
 #include <filesystem>
 #include <optional>
+#include <string>
 
 #include "thorin/error.h"
 
