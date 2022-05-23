@@ -97,7 +97,7 @@ public:
     /// @name Axiom
     ///@{
     const Axiom* axiom(Def::NormalizeFn normalize, const Def* type, tag_t tag, flags_t flags, const Def* dbg = {}) {
-        return unify<Axiom>(0, normalize, type, tag, flags, dbg);
+        return data_.axioms_[(u64(tag) << 32_u64) | u64(flags)] = unify<Axiom>(0, normalize, type, tag, flags, dbg);
     }
     const Axiom* axiom(const Def* type, tag_t tag, flags_t flags, const Def* dbg = {}) {
         return axiom(nullptr, type, tag, flags, dbg);
@@ -376,13 +376,15 @@ public:
     const Axiom* ax_malloc()  const { return data_.malloc_;  }
     const Axiom* ax_mslot()   const { return data_.mslot_;   }
     const Axiom* ax_zip()     const { return data_.zip_;     }
-    const Axiom* ax_for()     const { return data_.for_;     }
     const Axiom* ax_load()    const { return data_.load_;    }
     const Axiom* ax_remem()   const { return data_.remem_;   }
     const Axiom* ax_slot()    const { return data_.slot_;    }
     const Axiom* ax_store()   const { return data_.store_;   }
     // clang-format on
     ///@}
+
+    /// Get axioms from dialects.
+    const Axiom* ax(u64 tag) const;
 
     /// @name fn - these guys yield the final function to be invoked for the various operations
     ///@{
@@ -770,7 +772,7 @@ private:
         const Axiom* type_ptr_;
         const Axiom* type_real_;
         const Axiom* zip_;
-        const Axiom* for_;
+        absl::flat_hash_map<u64, const Axiom*> axioms_;
         std::string name_;
         Externals externals_;
         Sea defs_;

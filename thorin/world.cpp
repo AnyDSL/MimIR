@@ -256,27 +256,6 @@ World::World(std::string_view name)
 
         data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
     }
-    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i: n; Is#i», Cn
-        // [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];
-
-        auto input_sigma = nom_sigma(type<1>(), 3);
-        input_sigma->set(0, nat);
-        input_sigma->set(1, nat);
-        input_sigma->set(2, arr(input_sigma->var(1), type()));
-
-        auto ltp                      = nom_pi(type())->set_dom(input_sigma);
-        auto [mod, type_shape, types] = ltp->vars<3>({dbg("iter_modulo"), dbg("types_shape"), dbg("types")});
-
-        auto it_type  = type_int(mod);
-        auto type_arr = nom_arr()->set_shape(type_shape);
-        type_arr->set_body(extract(types, type_arr->var()));
-
-        ltp->set_codom(cn({mem, it_type, it_type, it_type, type_arr,
-                           cn({mem, it_type, type_arr, cn({mem, type_arr}, dbg("continue"))}, dbg("body")),
-                           cn({mem, type_arr}, dbg("exit"))}));
-
-        data_.for_ = axiom(nullptr, ltp, Tag::For, 0, dbg("for"));
-    }
 }
 
 World::~World() {
@@ -293,6 +272,13 @@ World World::stub() {
 /*
  * core calculus
  */
+
+const Axiom* World::ax(u64 tag) const {
+    auto it = data_.axioms_.find(tag);
+    if (it == data_.axioms_.end())
+        thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", tag);
+    return it->second;
+}
 
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->as<Pi>();
@@ -628,10 +614,6 @@ const Def* World::singleton(const Def* inner_type, const Def* dbg) {
     return unify<Singleton>(1, this->type<1>(), inner_type, dbg);
 }
 
-const Def* World::fn_for(Defs params) {
-    return app(ax_for(), {lit_nat(width2mod(32)), lit_nat(params.size()), tuple(params)});
-}
-
 /*
  * ops
  */
@@ -657,17 +639,6 @@ const Def* World::op_malloc(const Def* type, const Def* mem, const Def* dbg /*= 
 const Def* World::op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg /*= {}*/) {
     auto size = op(Trait::size, type);
     return app(app(ax_mslot(), {type, lit_nat_0()}), {mem, size, id}, dbg);
-}
-
-const Def* World::op_for(const Def* mem,
-                         const Def* begin,
-                         const Def* end,
-                         const Def* step,
-                         Defs inits,
-                         const Def* body,
-                         const Def* brk) {
-    DefArray types(inits.size(), [&](size_t i) { return inits[i]->type(); });
-    return app(fn_for(types), {mem, begin, end, step, tuple(inits), body, brk});
 }
 
 /*
