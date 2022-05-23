@@ -57,9 +57,6 @@ int system(const std::string& cmd) {
 
 std::string find_cmd(const std::string& cmd) {
     auto out = exec(THORIN_WHICH " "s + cmd);
-#ifdef _WIN32
-    out += cmd + ".exe";
-#endif
     out.erase(std::find(out.begin(), out.end(), '\n'), out.end());
     return out;
 }
