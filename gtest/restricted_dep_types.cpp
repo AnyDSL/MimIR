@@ -16,7 +16,6 @@
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/pass.h"
-#include "thorin/pass/rw/lower_for.h"
 
 using namespace thorin;
 
