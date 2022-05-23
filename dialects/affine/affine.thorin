@@ -18,6 +18,6 @@
 ///
 /// After termination of the loop `exit` is invoked.
 .ax :affine.for: Π [m: .Nat , n: .Nat , Ts: «n; *»] ->
-    .Cn [mem: :mem.M, begin: :Int m, stop: :Int m, step: :Int m, init: «i: n; Ts#i»,
+    .Cn [mem: :mem.M, start: :Int m, stop: :Int m, step: :Int m, init: «i: n; Ts#i»,
         body: .Cn [:mem.M , :Int m, acc: «i: n; Ts#i», yield: .Cn [:mem.M , «i: n; Ts#i»]], 
         exit: .Cn [:mem.M , «i: n; Ts#i»]];
