@@ -1,12 +1,14 @@
 #include "thorin/be/ll/ll.h"
 
 #include <deque>
+#include <fstream>
 #include <iomanip>
 #include <limits>
 
 #include "thorin/analyses/cfg.h"
 #include "thorin/be/emitter.h"
 #include "thorin/util/print.h"
+#include "thorin/util/sys.h"
 
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.
@@ -747,6 +749,16 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 void emit(World& world, std::ostream& ostream) {
     CodeGen cg(world, ostream);
     cg.run();
+}
+
+int compile(World& world, std::string stem) { return compile(world, stem + ".ll", stem); }
+
+int compile(World& world, std::string ll, std::string out) {
+    std::ofstream ofs(ll);
+    emit(world, ofs);
+    ofs.close();
+    auto cmd = fmt("{}  {} -o {} -Wno-override-module", sys::find_cmd("clang"), ll, out);
+    return sys::system(cmd);
 }
 
 } // namespace thorin::ll

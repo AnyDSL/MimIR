@@ -569,9 +569,8 @@ void Parser::parse_import() {
 
     if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
 
-    std::ostringstream os;
-    print(os, "{}.thorin", name_str);
-    auto input = (std::filesystem::path{lexer_.file()}.parent_path().parent_path() / name_str / os.str()).string();
+    auto thorin_file = fmt("{}.thorin", name_str);
+    auto input = (std::filesystem::path{lexer_.file()}.parent_path().parent_path() / name_str / thorin_file).string();
     std::ifstream ifs(input);
 
     if (!ifs) err(name.loc(), "cannot import file '{}'", input);

@@ -7,10 +7,13 @@
 #    include <windows.h>
 #    define popen  _popen
 #    define pclose _pclose
+#    define WEXITSTATUS
 #else
 #    include <dlfcn.h>
 #    include <unistd.h>
 #endif
+
+using namespace std::string_literals;
 
 namespace thorin::sys {
 
@@ -38,13 +41,24 @@ std::optional<std::filesystem::path> path_to_curr_exe() {
 }
 
 // see https://stackoverflow.com/a/478960
-std::string exec(const char* cmd) {
+std::string exec(const std::string& cmd) {
     std::array<char, 128> buffer;
     std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
     if (!pipe) { throw std::runtime_error("error: popen() failed!"); }
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) { result += buffer.data(); }
     return result;
+}
+
+int system(const std::string& cmd) {
+    int status = std::system(cmd.c_str());
+    return WEXITSTATUS(status);
+}
+
+std::string find_cmd(const std::string& cmd) {
+    auto out = exec(THORIN_WHICH " "s + cmd);
+    out.erase(std::find(out.begin(), out.end(), '\n'), out.end());
+    return out;
 }
 
 } // namespace thorin::sys

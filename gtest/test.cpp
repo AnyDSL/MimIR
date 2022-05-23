@@ -6,6 +6,7 @@
 #include "thorin/world.h"
 
 #include "thorin/be/ll/ll.h"
+#include "thorin/util/sys.h"
 
 using namespace thorin;
 
@@ -79,19 +80,9 @@ TEST(Main, ll) {
     main->app(false, ret, {mem, argc});
     main->make_external();
 
-    std::ofstream ofs("test.ll");
-    ll::emit(w, ofs);
-    ofs.close();
-
-#ifndef _MSC_VER
-    // TODO make sure that proper clang is in path on Windows
-    int status = std::system("clang test.ll -o test -Wno-override-module");
-    EXPECT_EQ(0, WEXITSTATUS(status));
-    status = std::system("./test a b c");
-    EXPECT_EQ(4, WEXITSTATUS(status));
-    status = std::system("./test a b c d e f");
-    EXPECT_EQ(7, WEXITSTATUS(status));
-#endif
+    EXPECT_EQ(0, ll::compile(w, "test"));
+    EXPECT_EQ(4, sys::system("./test a b c"));
+    EXPECT_EQ(7, sys::system("./test a b c d e f"));
 }
 
 TEST(Axiom, mangle) {
@@ -147,17 +138,7 @@ TEST(Main, loop) {
     main->app(false, loop, {mem, w.lit_int(0), w.lit_int(0)});
     main->make_external();
 
-    std::ofstream ofs("test.ll");
-    thorin::ll::emit(w, ofs);
-    ofs.close();
-
-    // TODO make sure that proper clang is in path on Windows
-#ifndef _MSC_VER
-    int status = std::system("clang test.ll -o `pwd`/test -Wno-override-module");
-    EXPECT_EQ(0, WEXITSTATUS(status));
-    status = std::system("./test a b c");
-    EXPECT_EQ(6, WEXITSTATUS(status));
-    status = std::system("./test a b c d");
-    EXPECT_EQ(10, WEXITSTATUS(status));
-#endif
+    EXPECT_EQ(0, ll::compile(w, "test"));
+    EXPECT_EQ(6, sys::system("./test a b c"));
+    EXPECT_EQ(10, sys::system("./test a b c d"));
 }

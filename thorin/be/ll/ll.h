@@ -2,6 +2,7 @@
 #define THORIN_BE_LL_LL_H
 
 #include <ostream>
+#include <string>
 
 namespace thorin {
 
@@ -11,7 +12,11 @@ namespace ll {
 
 void emit(World&, std::ostream&);
 
-}
+int compile(World&, std::string stem);
+int compile(World&, std::string ll, std::string out);
+
+} // namespace ll
+
 } // namespace thorin
 
 #endif
