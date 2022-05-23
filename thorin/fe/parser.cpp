@@ -263,30 +263,6 @@ const Def* Parser::parse_block() {
     return res;
 }
 
-class InferRewriter {
-public:
-    InferRewriter(World& world) { old2new_[world.univ()] = world.univ(); }
-    const Def* rewrite(const Def* op) {
-        if (!op || op->isa<Univ>() || op->isa<Type>()) return op;
-
-        if (auto i = old2new_.find(op); i != old2new_.end()) return i->second;
-        old2new_[op] = op; // stop recursion
-
-        if (auto infer = op->isa_nom<Infer>()) {
-            if (infer->is_set()) return old2new_[infer] = infer->op();
-            return infer;
-        }
-        if (op->isa_nom()) return op;
-
-        auto new_type = op->type() ? rewrite(op->type()) : nullptr;
-        DefArray new_ops{op->num_ops(), [&](int i) { return rewrite(op->op(i)); }};
-        return old2new_[op] = op->rebuild(op->world(), new_type, new_ops, op->dbg());
-    }
-
-private:
-    Def2Def old2new_;
-};
-
 const Def* Parser::parse_sigma(Binders* binders) {
     auto track = tracker();
     bool nom   = false;
@@ -329,17 +305,16 @@ const Def* Parser::parse_sigma(Binders* binders) {
         auto type  = infer_type_level(world(), ops);
         auto sigma = world().nom_sigma(type, n, track.meta(meta));
 
-        thorin::Scope scope(sigma);
-        Rewriter rw(world(), &scope);
-
         sigma->set(0, ops[0]);
         for (size_t i = 1, e = n; i != e; ++i) {
-            if (auto infer = infers[i - 1]) {
-                auto v            = sigma->var(i - 1);
-                rw.old2new[infer] = infer->set(v);
-            }
-            sigma->set(i, rw.rewrite(ops[i]));
+            if (auto infer = infers[i - 1]) infer->set(sigma->var(i - 1));
+            sigma->set(i, ops[i]);
         }
+
+        thorin::Scope scope(sigma);
+        Rewriter rw(world(), &scope);
+        for (size_t i = 1, e = n; i != e; ++i) sigma->set(i, rw.rewrite(ops[i]));
+
         return sigma;
     }
 
