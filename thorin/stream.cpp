@@ -86,7 +86,7 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     } else if (auto top = u->isa<Top>()) {
         return print(os, "⊤:{}", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
-        return print(os, ":{}", axiom->debug().name);
+        return print(os, "{}", axiom->debug().name);
     } else if (auto lit = u->isa<Lit>()) {
         if (auto real = thorin::isa<Tag::Real>(lit->type())) {
             switch (as_lit(real->arg())) {
