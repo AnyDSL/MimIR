@@ -82,21 +82,21 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     } else if (u->isa<Nat>()) {
         return print(os, "nat");
     } else if (auto bot = u->isa<Bot>()) {
-        return print(os, "⊥∷{}", bot->type());
+        return print(os, "⊥:{}", bot->type());
     } else if (auto top = u->isa<Top>()) {
-        return print(os, "⊤∷{}", top->type());
+        return print(os, "⊤:{}", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
         return print(os, ":{}", axiom->debug().name);
     } else if (auto lit = u->isa<Lit>()) {
         if (auto real = thorin::isa<Tag::Real>(lit->type())) {
             switch (as_lit(real->arg())) {
-                case 16: return print(os, "{}∷r16", lit->get<r16>());
-                case 32: return print(os, "{}∷r32", lit->get<r32>());
-                case 64: return print(os, "{}∷r64", lit->get<r64>());
+                case 16: return print(os, "{}:r16", lit->get<r16>());
+                case 32: return print(os, "{}:r32", lit->get<r32>());
+                case 64: return print(os, "{}:r64", lit->get<r64>());
                 default: unreachable();
             }
         }
-        return print(os, "{}∷{}", lit->get(), lit->type());
+        return print(os, "{}:{}", lit->get(), lit->type());
     } else if (auto ex = u->isa<Extract>()) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
         return print(os, "{}#{}", ex->tuple(), ex->index());
@@ -132,7 +132,7 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
         return print(os, "[{, }]", sigma->ops());
     } else if (auto tuple = u->isa<Tuple>()) {
         print(os, "({, })", tuple->ops());
-        return tuple->type()->isa_nom() ? print(os, "∷{}", tuple->type()) : os;
+        return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
     } else if (auto arr = u->isa<Arr>()) {
         return print(os, "«{}; {}»", arr->shape(), arr->body());
     } else if (auto pack = u->isa<Pack>()) {
