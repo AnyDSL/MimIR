@@ -64,7 +64,6 @@ Tok Lexer::lex() {
         if (accept(U'⊥')) return tok(Tok::Tag::T_bot);
         if (accept(U'⊤')) return tok(Tok::Tag::T_top);
         if (accept(U'□')) return tok(Tok::Tag::T_box);
-        if (accept(U'∷')) return tok(Tok::Tag::T_colon_colon);
         if (accept( ',')) return tok(Tok::Tag::T_comma);
         if (accept( '#')) return tok(Tok::Tag::T_extract);
         if (accept(U'λ')) return tok(Tok::Tag::T_lam);
@@ -83,7 +82,6 @@ Tok Lexer::lex() {
         // clang-format on
 
         if (accept(':')) {
-            if (accept(':')) return tok(Tok::Tag::T_colon_colon);
             if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_, world_.dbg(loc()))};
             return tok(Tok::Tag::T_colon);
         }

@@ -14,35 +14,15 @@
 #include "thorin/fe/parser.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
-
-#ifdef _WIN32
-#    include <windows.h>
-#    define popen       _popen
-#    define pclose      _pclose
-#    define WHICH_CLANG "where clang"
-#else
-#    include <dlfcn.h>
-#    define WHICH_CLANG "which clang"
-#endif
+#include "thorin/util/sys.h"
 
 using namespace thorin;
 using namespace std::literals;
 
 static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
-/// see https://stackoverflow.com/a/478960
-static std::string exec(const char* cmd) {
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) { throw std::runtime_error("error: popen() failed!"); }
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) { result += buffer.data(); }
-    return result;
-}
-
 static std::string get_clang_from_path() {
-    std::string clang;
-    clang = exec(WHICH_CLANG);
+    auto clang = sys::exec(THORIN_WHICH " clang");
     clang.erase(std::find(clang.begin(), clang.end(), '\n'), clang.end());
     return clang;
 }
@@ -71,7 +51,7 @@ int main(int argc, char** argv) {
         auto cli = lyra::cli()
             | lyra::help(show_help)
             | lyra::opt(show_version             )["-v"]["--version"     ]("Display version info and exit.")
-            | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: '" WHICH_CLANG "').")
+            | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
             | lyra::opt(dialect_names, "dialect" )["-d"]["--dialect"     ]("Dynamically load dialect [WIP].")
             | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("Path to search dialects in.")
             | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("thorin", "h", "md", "ll", "dot")

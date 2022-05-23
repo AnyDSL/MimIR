@@ -369,7 +369,7 @@ const Def* Parser::parse_lit() {
     auto lit    = lex();
     auto [_, r] = Tok::prec(Tok::Prec::Lit);
 
-    if (accept(Tok::Tag::T_colon_colon)) {
+    if (accept(Tok::Tag::T_colon)) {
         auto type = parse_expr("literal", r);
 
         const Def* meta = nullptr;
@@ -528,10 +528,12 @@ void Parser::parse_def(Sym sym /*= {}*/) {
     size_t n = nom->num_ops();
 
     if (ahead().isa(Tok::Tag::D_brace_l)) {
+        push();
         parse_list("nominal definition", Tok::Tag::D_brace_l, [&]() {
             if (i == n) err(prev_, "too many operands");
             nom->set(i++, parse_expr("operand of a nominal"));
         });
+        pop();
     } else if (n - i == 1) {
         nom->set(i, parse_expr("operand of a nominal"));
     } else {
