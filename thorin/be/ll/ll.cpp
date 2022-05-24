@@ -1,5 +1,6 @@
 #include "thorin/be/ll/ll.h"
 
+#include <atomic>
 #include <deque>
 #include <fstream>
 #include <iomanip>
@@ -21,6 +22,8 @@
 //      * LLVM:   {0, -1} = i1
 //   This is a problem when, e.g., using an index of type i1 as LLVM thinks like this:
 //   getelementptr ..., i1 1 == getelementptr .., i1 -1
+
+using namespace std::string_literals;
 
 namespace thorin::ll {
 
@@ -751,21 +754,33 @@ void emit(World& world, std::ostream& ostream) {
     cg.run();
 }
 
-int compile(World& world, const std::string& stem) {
+int compile(World& world, std::string stem) {
 #ifdef _WIN32
-    auto exe = stem + ".exe";
+    auto exe = stem + ".exe"s;
 #else
     auto exe = stem;
 #endif
-    return compile(world, stem + ".ll", exe);
+    return compile(world, stem + ".ll"s, exe);
 }
 
-int compile(World& world, const std::string& ll, const std::string& out) {
+int compile(World& world, std::string ll, std::string out) {
     std::ofstream ofs(ll);
     emit(world, ofs);
     ofs.close();
     auto cmd = fmt("clang \"{}\" -o \"{}\" -Wno-override-module", ll, out);
     return sys::system(cmd);
+}
+
+std::string compile(World& world) {
+    // Make tmp unique and prevent data races via atomic global counter.
+    static std::atomic<int> counter = 0;
+    auto stem = fmt("tmp{}", counter++);
+    if (compile(world, stem) == 0) return stem;
+    throw std::runtime_error("compilation failed");
+}
+
+int compile_and_run(World& world, std::string args) {
+    return sys::run(compile(world), args);
 }
 
 } // namespace thorin::ll

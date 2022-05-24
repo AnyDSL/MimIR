@@ -12,8 +12,9 @@ namespace ll {
 
 void emit(World&, std::ostream&);
 
-int compile(World&, const std::string& stem);
-int compile(World&, const std::string& ll, const std::string& out);
+int compile(World&, std::string stem);
+int compile(World&, std::string ll, std::string out);
+int compile_and_run(World&, std::string stem, std::string args = {});
 
 } // namespace ll
 
