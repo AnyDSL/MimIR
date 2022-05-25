@@ -14,8 +14,8 @@ namespace thorin {
  * constructors
  */
 
-Def::Def(node_t node, const Def* type, Defs ops, fields_t fields, const Def* dbg)
-    : fields_(fields)
+Def::Def(node_t node, const Def* type, Defs ops, flags_t flags, const Def* dbg)
+    : flags_(flags)
     , node_(unsigned(node))
     , nom_(false)
     , var_(false)
@@ -32,14 +32,14 @@ Def::Def(node_t node, const Def* type, Defs ops, fields_t fields, const Def* dbg
     } else {
         hash_ = type ? type->gid() : 0;
         for (auto op : ops) hash_ = murmur3(hash_, u32(op->gid()));
-        hash_ = murmur3(hash_, fields_);
+        hash_ = murmur3(hash_, flags_);
         hash_ = murmur3_rest(hash_, u8(node));
         hash_ = murmur3_finalize(hash_, num_ops());
     }
 }
 
-Def::Def(node_t node, const Def* type, size_t num_ops, fields_t fields, const Def* dbg)
-    : fields_(fields)
+Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def* dbg)
+    : flags_(flags)
     , node_(node)
     , nom_(true)
     , var_(false)
@@ -85,7 +85,7 @@ const Def* Var      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) co
 const Def* Vel      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
 
 const Def* Axiom    ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const {
-    auto res = w.axiom(normalizer(), t, tag(), flags(), dbg);
+    auto res = w.axiom(normalizer(), t, dialect(), group(), tag(), dbg);
     assert(&w != &world() || gid() == res->gid());
     return res;
 }
@@ -218,7 +218,7 @@ const Def* Def::arity() const {
 bool Def::equal(const Def* other) const {
     if (isa<Univ>() || this->isa_nom() || other->isa_nom()) return this == other;
 
-    bool result = this->node() == other->node() && this->fields() == other->fields() &&
+    bool result = this->node() == other->node() && this->flags() == other->flags() &&
                   this->num_ops() == other->num_ops() && this->type() == other->type();
 
     for (size_t i = 0, e = num_ops(); result && i != e; ++i) result &= this->op(i) == other->op(i);
@@ -392,7 +392,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
  * Global
  */
 
-const App* Global::type() const { return thorin::as<Tag::Ptr>(Def::type()); }
+const App* Global::type() const { return thorin::as<Group::Ptr>(Def::type()); }
 const Def* Global::alloced_type() const { return type()->arg(0); }
 
 /*

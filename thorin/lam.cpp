@@ -24,7 +24,7 @@ bool Pi::is_cn() const { return codom()->isa<Bot>(); }
  * Lam
  */
 
-const Def* Lam::mem_var(const Def* dbg) { return thorin::isa<Tag::Mem>(var(0_s)->type()) ? var(0, dbg) : nullptr; }
+const Def* Lam::mem_var(const Def* dbg) { return thorin::isa<Group::Mem>(var(0_s)->type()) ? var(0, dbg) : nullptr; }
 const Def* Lam::ret_var(const Def* dbg) { return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr; }
 
 Lam* Lam::set_filter(Filter filter) {

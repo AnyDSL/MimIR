@@ -115,16 +115,16 @@ private:
 
 protected:
     /// Constructor for a structural Def.
-    Def(node_t, const Def* type, Defs ops, fields_t fields, const Def* dbg);
+    Def(node_t, const Def* type, Defs ops, flags_t flags, const Def* dbg);
     /// Constructor for a *nom*inal Def.
-    Def(node_t, const Def* type, size_t num_ops, fields_t fields, const Def* dbg);
+    Def(node_t, const Def* type, size_t num_ops, flags_t flags, const Def* dbg);
     virtual ~Def() = default;
 
 public:
     /// @name getters
     ///@{
     World& world() const;
-    fields_t fields() const { return fields_; }
+    flags_t flags() const { return flags_; }
     u32 gid() const { return gid_; }
     hash_t hash() const { return hash_; }
     node_t node() const { return node_; }
@@ -380,7 +380,7 @@ protected:
         const Axiom* axiom_;     /// Curried App%s of Axiom%s use this member to propagate the Axiom.
     };
 
-    fields_t fields_;
+    flags_t flags_;
     uint8_t node_;
     unsigned nom_    : 1;
     unsigned var_    : 1;
@@ -405,13 +405,13 @@ protected:
 std::ostream& operator<<(std::ostream&, const Def* def);
 
 template<class T>
-const T* isa(fields_t f, const Def* def) {
-    if (auto d = def->template isa<T>(); d && d->fields() == f) return d;
+const T* isa(flags_t f, const Def* def) {
+    if (auto d = def->template isa<T>(); d && d->flags() == f) return d;
     return nullptr;
 }
 
 template<class T>
-const T* as([[maybe_unused]] fields_t f, const Def* def) {
+const T* as([[maybe_unused]] flags_t f, const Def* def) {
     assert(isa<T>(f, def));
     return def;
 }
@@ -511,14 +511,14 @@ public:
 
 class Lit : public Def {
 private:
-    Lit(const Def* type, fields_t val, const Def* dbg)
+    Lit(const Def* type, flags_t val, const Def* dbg)
         : Def(Node, type, Defs{}, val, dbg) {}
 
 public:
-    template<class T = fields_t>
+    template<class T = flags_t>
     T get() const {
         static_assert(sizeof(T) <= 8);
-        return bitcast<T>(fields_);
+        return bitcast<T>(flags_);
     }
 
     /// @name virtual methods
@@ -558,14 +558,14 @@ public:
 
 class Proxy : public Def {
 private:
-    Proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg)
-        : Def(Node, type, ops, (nat_t(index) << 32_u64) | nat_t(flags), dbg) {}
+    Proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg)
+        : Def(Node, type, ops, ((u64)index << 32_u64) | (u64)tag, dbg) {}
 
 public:
     /// @name misc getters
     ///@{
-    tag_t index() const { return tag_t(fields() >> 32_u64); }
-    flags_t flags() const { return flags_t(fields()); }
+    u32 index() const { return u32(flags() >> 32_u64); }
+    u32 tag() const { return u32(flags()); }
     ///@}
 
     /// @name virtual methods
@@ -625,7 +625,7 @@ public:
 
     /// @name misc getters
     ///@{
-    bool is_mutable() const { return fields(); }
+    bool is_mutable() const { return flags(); }
     ///@}
 
     /// @name virtual methods

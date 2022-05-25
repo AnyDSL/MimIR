@@ -2,8 +2,8 @@
 
 namespace thorin {
 
-Axiom::Axiom(NormalizeFn normalizer, const Def* type, u32 tag, u32 flags, const Def* dbg)
-    : Def(Node, type, Defs{}, (nat_t(tag) << 32_u64) | nat_t(flags), dbg) {
+Axiom::Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, group_t group, tag_t tag, const Def* dbg)
+    : Def(Node, type, Defs{}, dialect | (flags_t(group) << 8_u64) | flags_t(tag), dbg) {
     u16 curry = 0;
     while (auto pi = type->isa<Pi>()) {
         ++curry;
@@ -14,7 +14,7 @@ Axiom::Axiom(NormalizeFn normalizer, const Def* type, u32 tag, u32 flags, const 
     curry_      = curry;
 }
 
-std::optional<u64> Axiom::mangle(std::string_view s) {
+std::optional<dialect_t> Axiom::mangle(std::string_view s) {
     auto n = s.size();
     if (n > Max_Dialect_Size) return {};
 
@@ -43,7 +43,7 @@ std::optional<u64> Axiom::mangle(std::string_view s) {
     return result << 16_u64;
 }
 
-std::string Axiom::demangle(u64 u) {
+std::string Axiom::demangle(dialect_t u) {
     std::string result;
     for (size_t i = 0; i != Max_Dialect_Size; ++i) {
         u64 c = (u & 0xfc00000000000000_u64) >> 58_u64;
@@ -94,6 +94,6 @@ std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {
     return {nullptr, u16(-1)};
 }
 
-bool is_memop(const Def* def) { return def->isa<App>() && isa<Tag::Mem>(def->proj(0)->type()); }
+bool is_memop(const Def* def) { return def->isa<App>() && isa<Group::Mem>(def->proj(0)->type()); }
 
 } // namespace thorin

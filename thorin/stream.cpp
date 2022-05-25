@@ -88,7 +88,7 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     } else if (auto axiom = u->isa<Axiom>()) {
         return print(os, "{}", axiom->debug().name);
     } else if (auto lit = u->isa<Lit>()) {
-        if (auto real = thorin::isa<Tag::Real>(lit->type())) {
+        if (auto real = thorin::isa<Group::Real>(lit->type())) {
             switch (as_lit(real->arg())) {
                 case 16: return print(os, "{}:r16", lit->get<r16>());
                 case 32: return print(os, "{}:r32", lit->get<r32>());
@@ -113,8 +113,8 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
         return print(os, "λ@({}) {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
         if (auto size = isa_lit(isa_sized_type(app))) {
-            if (auto real = thorin::isa<Tag::Real>(app)) return print(os, "r{}", *size);
-            if (auto _int = thorin::isa<Tag::Int>(app)) {
+            if (auto real = thorin::isa<Group::Real>(app)) return print(os, "r{}", *size);
+            if (auto _int = thorin::isa<Group::Int>(app)) {
                 if (auto width = mod2width(*size)) return print(os, "i{}", *width);
 
                 // append utf-8 subscripts in reverse order
@@ -146,8 +146,8 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     }
 
     // other
-    if (u->fields() == 0) return print(os, ".{} {, }", u->node_name(), u->ops());
-    return print(os, ".{}#{} {, }", u->node_name(), u->fields(), u->ops());
+    if (u->flags() == 0) return print(os, ".{} {, }", u->node_name(), u->ops());
+    return print(os, ".{}#{} {, }", u->node_name(), u->flags(), u->ops());
 }
 
 //------------------------------------------------------------------------------

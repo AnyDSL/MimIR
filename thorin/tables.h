@@ -9,11 +9,12 @@
 // clang-format off
 namespace thorin {
 
-using node_t   = u8;
-using tag_t    = u32;
-using flags_t  = u32;
-using fields_t = u64;
-using nat_t    = u64;
+using nat_t      = u64;
+using node_t     = u8;
+using flags_t    = u64;
+using dialect_t  = u64;
+using group_t    = u8;
+using tag_t      = u8;
 
 #define THORIN_NODE(m)                                                        \
     m(Type, type)       m(Univ, univ)                                         \
@@ -31,7 +32,7 @@ using nat_t    = u64;
     m(Global, global)                                                         \
     m(Singleton, singleton)
 
-#define THORIN_TAG(m)                                               \
+#define THORIN_GROUP(m)                                             \
     m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)               \
     m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(Div, div) m(ROp, rop)   \
     m(ICmp, icmp) m(RCmp, rcmp)                                     \
@@ -185,33 +186,33 @@ enum : node_t { THORIN_NODE(CODE) Max };
 #undef CODE
 }
 
-namespace Tag {
+namespace Group {
 #define CODE(tag, name) tag,
-enum : tag_t { THORIN_TAG(CODE) Max };
+enum : group_t { THORIN_GROUP(CODE) Max };
 #undef CODE
 }
 
 #define CODE(T, o) o,
-enum class Bit    : flags_t { THORIN_BIT  (CODE) };
-enum class Shr    : flags_t { THORIN_SHR  (CODE) };
-enum class Wrap   : flags_t { THORIN_WRAP (CODE) };
-enum class Div    : flags_t { THORIN_DIV  (CODE) };
-enum class ROp    : flags_t { THORIN_R_OP (CODE) };
-enum class ICmp   : flags_t { THORIN_I_CMP(CODE) };
-enum class RCmp   : flags_t { THORIN_R_CMP(CODE) };
-enum class Trait  : flags_t { THORIN_TRAIT(CODE) };
-enum class Conv   : flags_t { THORIN_CONV (CODE) };
-enum class PE     : flags_t { THORIN_PE   (CODE) };
-enum class Acc    : flags_t { THORIN_ACC  (CODE) };
+enum class Bit    : tag_t { THORIN_BIT  (CODE) };
+enum class Shr    : tag_t { THORIN_SHR  (CODE) };
+enum class Wrap   : tag_t { THORIN_WRAP (CODE) };
+enum class Div    : tag_t { THORIN_DIV  (CODE) };
+enum class ROp    : tag_t { THORIN_R_OP (CODE) };
+enum class ICmp   : tag_t { THORIN_I_CMP(CODE) };
+enum class RCmp   : tag_t { THORIN_R_CMP(CODE) };
+enum class Trait  : tag_t { THORIN_TRAIT(CODE) };
+enum class Conv   : tag_t { THORIN_CONV (CODE) };
+enum class PE     : tag_t { THORIN_PE   (CODE) };
+enum class Acc    : tag_t { THORIN_ACC  (CODE) };
 #undef CODE
 
-constexpr ICmp operator|(ICmp a, ICmp b) { return ICmp(flags_t(a) | flags_t(b)); }
-constexpr ICmp operator&(ICmp a, ICmp b) { return ICmp(flags_t(a) & flags_t(b)); }
-constexpr ICmp operator^(ICmp a, ICmp b) { return ICmp(flags_t(a) ^ flags_t(b)); }
+constexpr ICmp operator|(ICmp a, ICmp b) { return ICmp(tag_t(a) | tag_t(b)); }
+constexpr ICmp operator&(ICmp a, ICmp b) { return ICmp(tag_t(a) & tag_t(b)); }
+constexpr ICmp operator^(ICmp a, ICmp b) { return ICmp(tag_t(a) ^ tag_t(b)); }
 
-constexpr RCmp operator|(RCmp a, RCmp b) { return RCmp(flags_t(a) | flags_t(b)); }
-constexpr RCmp operator&(RCmp a, RCmp b) { return RCmp(flags_t(a) & flags_t(b)); }
-constexpr RCmp operator^(RCmp a, RCmp b) { return RCmp(flags_t(a) ^ flags_t(b)); }
+constexpr RCmp operator|(RCmp a, RCmp b) { return RCmp(tag_t(a) | tag_t(b)); }
+constexpr RCmp operator&(RCmp a, RCmp b) { return RCmp(tag_t(a) & tag_t(b)); }
+constexpr RCmp operator^(RCmp a, RCmp b) { return RCmp(tag_t(a) ^ tag_t(b)); }
 
 #define CODE(T, o) case T::o: return #T "_" #o;
 constexpr std::string_view op2str(Bit   o) { switch (o) { THORIN_BIT  (CODE) default: unreachable(); } }
@@ -241,8 +242,8 @@ namespace AddrSpace {
 template<class T> constexpr size_t Num = size_t(-1);
 
 #define CODE(T, o) + 1_s
-constexpr size_t Num_Nodes = 0_s THORIN_NODE(CODE);
-constexpr size_t Num_Tags  = 0_s THORIN_TAG (CODE);
+constexpr size_t Num_Nodes  = 0_s THORIN_NODE (CODE);
+constexpr size_t Num_Groups = 0_s THORIN_GROUP(CODE);
 template<> inline constexpr size_t Num<Bit  > = 0_s THORIN_BIT  (CODE);
 template<> inline constexpr size_t Num<Shr  > = 0_s THORIN_SHR  (CODE);
 template<> inline constexpr size_t Num<Wrap > = 0_s THORIN_WRAP (CODE);
@@ -256,19 +257,19 @@ template<> inline constexpr size_t Num<PE   > = 0_s THORIN_PE   (CODE);
 template<> inline constexpr size_t Num<Acc  > = 0_s THORIN_ACC  (CODE);
 #undef CODE
 
-template<tag_t tag> struct Tag2Enum_    { using type = tag_t; };
-template<> struct Tag2Enum_<Tag::Bit  > { using type = Bit;   };
-template<> struct Tag2Enum_<Tag::Shr  > { using type = Shr;   };
-template<> struct Tag2Enum_<Tag::Wrap > { using type = Wrap;  };
-template<> struct Tag2Enum_<Tag::Div  > { using type = Div;   };
-template<> struct Tag2Enum_<Tag::ROp  > { using type = ROp;   };
-template<> struct Tag2Enum_<Tag::ICmp > { using type = ICmp;  };
-template<> struct Tag2Enum_<Tag::RCmp > { using type = RCmp;  };
-template<> struct Tag2Enum_<Tag::Trait> { using type = Trait; };
-template<> struct Tag2Enum_<Tag::Conv > { using type = Conv;  };
-template<> struct Tag2Enum_<Tag::PE   > { using type = PE;    };
-template<> struct Tag2Enum_<Tag::Acc  > { using type = Acc;   };
-template<tag_t tag> using Tag2Enum = typename Tag2Enum_<tag>::type;
+template<group_t g> struct Group2Enum_      { using type = group_t; };
+template<> struct Group2Enum_<Group::Bit  > { using type = Bit;     };
+template<> struct Group2Enum_<Group::Shr  > { using type = Shr;     };
+template<> struct Group2Enum_<Group::Wrap > { using type = Wrap;    };
+template<> struct Group2Enum_<Group::Div  > { using type = Div;     };
+template<> struct Group2Enum_<Group::ROp  > { using type = ROp;     };
+template<> struct Group2Enum_<Group::ICmp > { using type = ICmp;    };
+template<> struct Group2Enum_<Group::RCmp > { using type = RCmp;    };
+template<> struct Group2Enum_<Group::Trait> { using type = Trait;   };
+template<> struct Group2Enum_<Group::Conv > { using type = Conv;    };
+template<> struct Group2Enum_<Group::PE   > { using type = PE;      };
+template<> struct Group2Enum_<Group::Acc  > { using type = Acc;     };
+template<group_t g> using Group2Enum = typename Group2Enum_<g>::type;
 
 // clang-format on
 } // namespace thorin

@@ -96,18 +96,18 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom* axiom(Def::NormalizeFn normalize, const Def* type, tag_t tag, flags_t flags, const Def* dbg = {}) {
-        return unify<Axiom>(0, normalize, type, tag, flags, dbg);
+    const Axiom* axiom(Def::NormalizeFn n, const Def* type, dialect_t d, group_t g, tag_t t, const Def* dbg = {}) {
+        return unify<Axiom>(0, n, type, d, g, t, dbg);
     }
-    const Axiom* axiom(const Def* type, tag_t tag, flags_t flags, const Def* dbg = {}) {
-        return axiom(nullptr, type, tag, flags, dbg);
+    const Axiom* axiom(const Def* type, dialect_t d, group_t g, tag_t t, const Def* dbg = {}) {
+        return axiom(nullptr, type, d, g, t, dbg);
     }
 
     /// Builds a fresh Axiom with descending tag.
     /// This is useful during testing to come up with some entitiy of a specific type.
-    /// It starts with `tag_t(-1)` (aka max) for Axiom::tag and counts down from there.
-    /// The Axiom::flags are set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(const Def* type, const Def* dbg = {}) { return axiom(nullptr, type, state_.curr_tag--, 0, dbg); }
+    /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::tag and counts up from there.
+    /// The Axiom::group is set to `0` and the Axiom::normalizer to `nullptr`.
+    const Axiom* axiom(const Def* type, const Def* dbg = {}) { return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.curr_tag++, dbg); }
     ///@}
 
     /// @name Pi
@@ -257,18 +257,18 @@ public:
     const Lit* lit_univ_0() { return data_.lit_univ_0_; }
     const Lit* lit_univ_1() { return data_.lit_univ_1_; }
 
-    /// Constructs Tag::Int Lit @p val via @p width, i.e. converts from *width* to *internal* *mod* value.
+    /// Constructs Group::Int Lit @p val via @p width, i.e. converts from *width* to *internal* *mod* value.
     const Lit* lit_int_width(nat_t width, u64 val, const Def* dbg = {}) {
         return lit_int(type_int_width(width), val, dbg);
     }
 
-    /// Constructs Tag::Int Lit @p val with *external* *mod*.
+    /// Constructs Group::Int Lit @p val with *external* *mod*.
     /// I.e. if `mod == 0`, it will be adjusted to `uint_t(-1)` (special case for `2^64`).
     const Lit* lit_int_mod(nat_t mod, u64 val, const Def* dbg = {}) {
         return lit_int(type_int(mod), mod == 0 ? val : (val % mod), dbg);
     }
 
-    /// Constructs Tag::Int Lit @p val with *internal* *mod*, i.e. without any conversions - `mod = 0` means `2^64`.
+    /// Constructs Group::Int Lit @p val with *internal* *mod*, i.e. without any conversions - `mod = 0` means `2^64`.
     /// Use this version if you directly receive an *internal* `mod` which is already converted.
     const Lit* lit_int(nat_t mod, u64 val, const Def* dbg = {}) { return lit_int(type_int(mod), val, dbg); }
     template<class I>
@@ -455,16 +455,16 @@ public:
     const Def* op_lea(const Def* ptr, const Def* index, const Def* dbg = {});
     const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) { return op_lea_unsafe(ptr, lit_int(i), dbg); }
     const Def* op_lea_unsafe(const Def* ptr, const Def* i, const Def* dbg = {}) {
-        auto safe_int = type_int(as<Tag::Ptr>(ptr->type())->arg(0)->arity());
+        auto safe_int = type_int(as<Group::Ptr>(ptr->type())->arg(0)->arity());
         return op_lea(ptr, op(Conv::u2u, safe_int, i), dbg);
     }
     const Def* op_remem(const Def* mem, const Def* dbg = {}) { return app(ax_remem(), mem, dbg); }
     const Def* op_load(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-        auto [T, a] = as<Tag::Ptr>(ptr->type())->args<2>();
+        auto [T, a] = as<Group::Ptr>(ptr->type())->args<2>();
         return app(app(ax_load(), {T, a}), {mem, ptr}, dbg);
     }
     const Def* op_store(const Def* mem, const Def* ptr, const Def* val, const Def* dbg = {}) {
-        auto [T, a] = as<Tag::Ptr>(ptr->type())->args<2>();
+        auto [T, a] = as<Group::Ptr>(ptr->type())->args<2>();
         return app(app(ax_store(), {T, a}), {mem, ptr, val}, dbg);
     }
     const Def* op_alloc(const Def* type, const Def* mem, const Def* dbg = {}) {
@@ -716,7 +716,7 @@ private:
     struct State {
         LogLevel max_level = LogLevel::Error;
         u32 curr_gid       = 0;
-        u32 curr_tag       = tag_t(-1);
+        u32 curr_tag       = 0;
         bool pe_done       = false;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;

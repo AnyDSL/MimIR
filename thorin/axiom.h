@@ -7,13 +7,14 @@ namespace thorin {
 
 class Axiom : public Def {
 private:
-    Axiom(NormalizeFn normalizer, const Def* type, tag_t tag, flags_t flags, const Def* dbg);
+    Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, group_t group, tag_t tag, const Def* dbg);
 
 public:
     /// @name getters
     ///@{
-    tag_t tag() const { return tag_t(fields() >> 32_u64); }
-    flags_t flags() const { return flags_t(fields()); }
+    dialect_t dialect() const { return flags() | Global_Dialect; }
+    group_t group() const { return group_t((flags() | 0x000000ff_u64) >> 56_u64); }
+    tag_t tag() const { return tag_t(flags() | 0x000000ff_u64); }
     NormalizeFn normalizer() const { return normalizer_; }
     u16 curry() const { return curry_; }
     ///@}
@@ -26,6 +27,7 @@ public:
     /// @name Mangling Dialect Name
     ///@{
     static constexpr size_t Max_Dialect_Size = 8;
+    static constexpr dialect_t Global_Dialect = 0xffffff00_u64;
 
     /// Mangles @p s into a dense 48-bit representation.
     /// The layout is as follows:
@@ -45,11 +47,11 @@ public:
     /// | 54-63:  | `0`-`9` |
     /// The 0 is special and marks the end of the name if the name has less than 8 chars.
     /// @returns `std::nullopt` if encoding is not possible.
-    static std::optional<u64> mangle(std::string_view s);
+    static std::optional<dialect_t> mangle(std::string_view s);
 
     /// Reverts an Axiom::mangle%d string to a `std::string`.
     /// Ignores lower 16-bit of @p u.
-    static std::string demangle(u64 u);
+    static std::string demangle(dialect_t u);
 
     static std::optional<std::pair<std::string_view, std::string_view>> dialect_and_group(std::string_view);
     ///@}
@@ -92,47 +94,47 @@ private:
     const D* def_;
 };
 
-template<tag_t tag>
-struct Tag2Def_ {
+template<group_t>
+struct Group2Def_ {
     using type = App;
 };
 template<>
-struct Tag2Def_<Tag::Mem> {
+struct Group2Def_<Group::Mem> {
     using type = Axiom;
 };
-template<tag_t tag>
-using Tag2Def = typename Tag2Def_<tag>::type;
+template<group_t g>
+using Group2Def = typename Group2Def_<g>::type;
 
-template<tag_t tag>
-Query<Tag2Enum<tag>, Tag2Def<tag>> isa(const Def* def) {
+template<group_t g>
+Query<Group2Enum<g>, Group2Def<g>> isa(const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
-    if (axiom && axiom->tag() == tag && curry == 0) return {axiom, def->as<Tag2Def<tag>>()};
+    if (axiom && axiom->group() == g && curry == 0) return {axiom, def->as<Group2Def<g>>()};
     return {};
 }
 
-template<tag_t tag>
-Query<Tag2Enum<tag>, Tag2Def<tag>> isa(Tag2Enum<tag> flags, const Def* def) {
+template<group_t g>
+Query<Group2Enum<g>, Group2Def<g>> isa(Group2Enum<g> flags, const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
-    if (axiom && axiom->tag() == tag && axiom->flags() == flags_t(flags) && curry == 0)
-        return {axiom, def->as<Tag2Def<tag>>()};
+    if (axiom && axiom->group() == g && axiom->flags() == flags_t(flags) && curry == 0)
+        return {axiom, def->as<Group2Def<g>>()};
     return {};
 }
 
-template<tag_t t>
-Query<Tag2Enum<t>, Tag2Def<t>> as(const Def* d) {
-    assert(isa<t>(d));
+template<group_t g>
+Query<Group2Enum<g>, Group2Def<g>> as(const Def* d) {
+    assert(isa<g>(d));
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
-template<tag_t t>
-Query<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
-    assert((isa<t>(f, d)));
+template<group_t g>
+Query<Group2Enum<g>, Group2Def<g>> as(Group2Enum<g> f, const Def* d) {
+    assert((isa<g>(f, d)));
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
 
-/// Checks whether @p type is an Tag::Int or a Tag::Real and returns its mod or width, respectively.
+/// Checks whether @p type is an Group::Int or a Group::Real and returns its mod or width, respectively.
 inline const Def* isa_sized_type(const Def* type) {
-    if (auto int_ = isa<Tag::Int>(type)) return int_->arg();
-    if (auto real = isa<Tag::Real>(type)) return real->arg();
+    if (auto int_ = isa<Group::Int>(type)) return int_->arg();
+    if (auto real = isa<Group::Real>(type)) return real->arg();
     return nullptr;
 }
 
