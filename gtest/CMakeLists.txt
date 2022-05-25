@@ -1,4 +1,6 @@
 add_executable(thorin-gtest
+    helpers.cpp
+    helpers.h
     lexer.cpp
     test.cpp
     for_ax.cpp

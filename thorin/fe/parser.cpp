@@ -571,15 +571,14 @@ void Parser::parse_import() {
 
     if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
 
-    std::ostringstream os;
-    print(os, "{}.thorin", name_str);
+    auto thorin_file = fmt("{}.thorin", name_str);
 
     auto exe_path = sys::path_to_curr_exe();
     if (!exe_path) err(name.loc(), "cannot determine search paths for import '{}'", name_str);
 
     // default dialect path
     // todo: make import search paths more sophisticated..
-    auto input = (exe_path->parent_path().parent_path() / "lib" / "thorin" / os.str()).string();
+    auto input = (exe_path->parent_path().parent_path() / "lib" / "thorin" / thorin_file).string();
     std::ifstream ifs(input);
 
     if (!ifs) err(name.loc(), "cannot import file '{}'", input);

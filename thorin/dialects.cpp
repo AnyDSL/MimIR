@@ -55,9 +55,7 @@ static std::vector<std::filesystem::path> get_plugin_search_paths(const std::vec
 static std::vector<std::filesystem::path> get_plugin_name_variants(std::string_view name) {
     std::vector<std::filesystem::path> names;
     names.push_back(name); // if the user gives "libthorin_foo.so"
-    std::ostringstream lib;
-    print(lib, "{}thorin_{}{}", dl::prefix(), name, dl::extension());
-    names.push_back(lib.str());
+    names.push_back(fmt("{}thorin_{}{}", dl::prefix(), name, dl::extension()));
     return names;
 }
 

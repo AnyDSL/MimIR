@@ -43,19 +43,11 @@ jobs:
           python -c "import sys; import os; print(os.path.dirname(sys.executable))" > tmpPath
           set /p PYTHON_PATH= < tmpPath
           cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DPython3_ROOT_DIR=%PYTHON_PATH%
-      
-      # - name: Cache LLVM and Clang
-      #   id: cache-llvm
-      #   uses: actions/cache@v2
-      #   with:
-      #     path: |
-      #       C:/Program Files/LLVM
-      #     key: llvm-14.0.0-win
-      # - name: Install LLVM and Clang
-      #   uses: KyleMayes/install-llvm-action@v1.5.2
-      #   with:
-      #     version: "14.0.0"
-      #     cached: ${{ steps.cache-llvm.outputs.cache-hit }}
+
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v1.5.3
+        with:
+          version: "14.0.0"
 
       - name: Build
         shell: cmd

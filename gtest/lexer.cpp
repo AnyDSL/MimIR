@@ -47,9 +47,8 @@ TEST(Lexer, Loc) {
     auto t6 = lexer.lex();
     auto t7 = lexer.lex();
     auto t8 = lexer.lex();
-    std::ostringstream oss;
-    print(oss, "{} {} {} {} {} {} {} {}", t1, t2, t3, t4, t5, t6, t7, t8);
-    EXPECT_EQ(oss.str(), "test abc def if while λ foo <eof>");
+    EXPECT_EQ(fmt("{} {} {} {} {} {} {} {}", t1, t2, t3, t4, t5, t6, t7, t8), "test abc def if while λ foo <eof>");
+
     // clang-format off
     EXPECT_EQ(t1.loc(), Loc("<is>", {1,  2}, {1,  5}));
     EXPECT_EQ(t2.loc(), Loc("<is>", {1,  8}, {1, 10}));
