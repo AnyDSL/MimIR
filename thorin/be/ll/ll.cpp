@@ -754,13 +754,13 @@ void emit(World& world, std::ostream& ostream) {
     cg.run();
 }
 
-int compile(World& world, std::string stem) {
+int compile(World& world, std::string name) {
 #ifdef _WIN32
-    auto exe = stem + ".exe"s;
+    auto exe = name + ".exe"s;
 #else
-    auto exe = stem;
+    auto exe = name;
 #endif
-    return compile(world, stem + ".ll"s, exe);
+    return compile(world, name + ".ll"s, exe);
 }
 
 int compile(World& world, std::string ll, std::string out) {
@@ -771,16 +771,9 @@ int compile(World& world, std::string ll, std::string out) {
     return sys::system(cmd);
 }
 
-std::string compile(World& world) {
-    // Make tmp unique and prevent data races via atomic global counter.
-    static std::atomic<int> counter = 0;
-    auto stem = fmt("tmp{}", counter++);
-    if (compile(world, stem) == 0) return stem;
+int compile_and_run(World& world, std::string name, std::string args) {
+    if (compile(world, name) == 0) return sys::run(name, args);
     throw std::runtime_error("compilation failed");
-}
-
-int compile_and_run(World& world, std::string args) {
-    return sys::run(compile(world), args);
 }
 
 } // namespace thorin::ll

@@ -2,7 +2,6 @@
 #include <sstream>
 
 #include <gtest/gtest-param-test.h>
-#include <gtest/gtest.h>
 
 #include "thorin/error.h"
 #include "thorin/world.h"
@@ -15,6 +14,8 @@
 #include "thorin/pass/pass.h"
 #include "thorin/pass/rw/lower_for.h"
 #include "thorin/util/sys.h"
+
+#include "helpers.h"
 
 using namespace thorin;
 
@@ -75,8 +76,7 @@ TEST_P(ForAxiomTest, for) {
     unsigned gt = 0;
     for (int i = cbegin; i < cend; i += cstep) { gt += i; }
 
-    EXPECT_EQ(0, ll::compile(w, "test"));
-    EXPECT_EQ(gt % 256, sys::run("test"));
+    EXPECT_EQ(gt % 256, ll::compile_and_run(w, gtest::test_name()));
 }
 
 TEST_P(ForAxiomTest, for_dynamic_iters) {
@@ -161,8 +161,7 @@ TEST_P(ForAxiomTest, for_dynamic_iters) {
     unsigned gt = 0;
     for (int i = cbegin; i < cend; i += cstep) { gt += i; }
 
-    EXPECT_EQ(0, ll::compile(w, "test"));
-    EXPECT_EQ(gt % 256, sys::run("test", fmt("{} {} {}", cbegin, cend, cstep)));
+    EXPECT_EQ(gt % 256, ll::compile_and_run(w, gtest::test_name(), fmt("{} {} {}", cbegin, cend, cstep)));
 }
 
 // test with these begin, end, step combinations:

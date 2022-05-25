@@ -1,12 +1,15 @@
-#include <fstream>
+#include <cstdio>
 
-#include <gtest/gtest.h>
+#include <fstream>
+#include <ranges>
 
 #include "thorin/error.h"
 #include "thorin/world.h"
 
 #include "thorin/be/ll/ll.h"
 #include "thorin/util/sys.h"
+
+#include "helpers.h"
 
 using namespace thorin;
 
@@ -80,9 +83,10 @@ TEST(Main, ll) {
     main->app(false, ret, {mem, argc});
     main->make_external();
 
-    EXPECT_EQ(0, ll::compile(w, "test"));
-    EXPECT_EQ(4, sys::run("test", "a b c"));
-    EXPECT_EQ(7, sys::run("test", "a b c d e f"));
+    auto name = gtest::test_name();
+    EXPECT_EQ(0, ll::compile(w, name));
+    EXPECT_EQ(4, sys::run(name, "a b c"));
+    EXPECT_EQ(7, sys::run(name, "a b c d e f"));
 }
 
 TEST(Axiom, mangle) {
@@ -138,7 +142,8 @@ TEST(Main, loop) {
     main->app(false, loop, {mem, w.lit_int(0), w.lit_int(0)});
     main->make_external();
 
-    EXPECT_EQ(0, ll::compile(w, "test"));
-    EXPECT_EQ(6, sys::run("test", "a b c"));
-    EXPECT_EQ(10, sys::run("test", "a b c d"));
+    auto name = gtest::test_name();
+    EXPECT_EQ(0, ll::compile(w, name));
+    EXPECT_EQ(6, sys::run(name, "a b c"));
+    EXPECT_EQ(10, sys::run(name, "a b c d"));
 }

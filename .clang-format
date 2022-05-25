@@ -85,10 +85,10 @@ IncludeCategories:
     Priority:        2
   - Regex:           '<.*>'
     Priority:        3
-  - Regex:           '"thorin/[a-zA-Z0-9_]+\.h"'
+  - Regex:           '"thorin/[[:alnum:]]+\.h"'
+    Priority:        4
+  - Regex:           '"thorin/[[:alnum:]]+/.*"'
     Priority:        5
-  - Regex:           '"thorin/\.*"'
-    Priority:        6
 IncludeIsMainRegex: '(XXX)?$'
 IncludeIsMainSourceRegex: ''
 IndentAccessModifiers: false
