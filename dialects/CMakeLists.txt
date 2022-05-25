@@ -23,7 +23,6 @@ add_library(thorin_affine MODULE
     affine/passes/lower_for.cpp
     affine/passes/lower_for.h
 )
-add_dependencies(thorin_affine std mem)
 
 set_target_properties(thorin_affine
     PROPERTIES 
