@@ -5,10 +5,13 @@
 #include <string>
 #include <vector>
 
+#include "thorin/be/emitter.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
 
 namespace thorin {
+
+using Backends = std::map<std::string, std::function<void(World&, std::ostream&)>>;
 
 extern "C" {
 /// Basic info and registration function pointer to be returned from a dialect plugin.
@@ -19,6 +22,8 @@ struct DialectInfo {
 
     /// Callback for registering the dialects' callbacks for the pipeline extension points.
     void (*register_passes)(PipelineBuilder& builder);
+
+    void (*register_backends)(Backends& backends);
 };
 }
 
@@ -47,6 +52,11 @@ public:
 
     /// Registers callbacks in the \a builder that extend the exposed PassMan's.
     void register_passes(PipelineBuilder& builder) const { info_.register_passes(builder); }
+
+    /// Registers the mapping from backend names to emission functions in the given \a backends map.
+    void register_backends(Backends& backends) const {
+        if (info_.register_backends) info_.register_backends(backends);
+    }
 
 private:
     explicit Dialect(const std::string& plugin_path, std::unique_ptr<void, void (*)(void*)>&& handle);

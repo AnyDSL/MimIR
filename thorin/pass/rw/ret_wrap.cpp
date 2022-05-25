@@ -18,4 +18,6 @@ void RetWrap::enter() {
     curr_nom()->set(curr_nom()->reduce(new_var));
 }
 
+PassTag RetWrap::ID{};
+
 } // namespace thorin

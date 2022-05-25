@@ -13,10 +13,14 @@ const Def* Foo::rewrite(const Def* def) {
     return def;
 }
 
+PassTag Foo::ID{};
+
 } // namespace thorin
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
-    return {"foo", [](thorin::PipelineBuilder& builder) {
-                builder.extend_opt_phase([](thorin::PassMan& man) { man.add<thorin::Foo>(); });
-            }};
+    return {"foo",
+            [](thorin::PipelineBuilder& builder) {
+        builder.extend_opt_phase([](thorin::PassMan& man) { man.add<thorin::Foo>(); });
+            },
+            nullptr};
 }

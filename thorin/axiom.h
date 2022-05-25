@@ -147,8 +147,6 @@ constexpr std::optional<uint64_t> mod2width(uint64_t n) {
     return {};
 }
 
-bool is_memop(const Def* def);
-
 } // namespace thorin
 
 #endif

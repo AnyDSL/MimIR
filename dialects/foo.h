@@ -11,6 +11,8 @@ public:
         : RWPass(man, "foo") {}
 
     const Def* rewrite(const Def*) override;
+
+    static PassTag ID;
 };
 
 } // namespace thorin

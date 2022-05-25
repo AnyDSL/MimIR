@@ -87,4 +87,6 @@ undo_t EtaExp::analyze(const Def* def) {
     return undo;
 }
 
+PassTag EtaExp::ID{};
+
 } // namespace thorin

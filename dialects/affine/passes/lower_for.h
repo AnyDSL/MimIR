@@ -15,6 +15,8 @@ public:
 
     const Def* rewrite(const Def*) override;
 
+    static PassTag ID;
+
 private:
     Def2Def rewritten_;
 };

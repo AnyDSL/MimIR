@@ -67,4 +67,6 @@ const Def* Scalerize::rewrite(const Def* def) {
     return def;
 }
 
+PassTag Scalerize::ID{};
+
 } // namespace thorin

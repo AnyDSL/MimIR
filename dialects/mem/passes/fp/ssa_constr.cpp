@@ -1,10 +1,12 @@
-#include "thorin/pass/fp/ssa_constr.h"
+#include "dialects/mem/passes/fp/ssa_constr.h"
 
 #include "thorin/pass/fp/eta_exp.h"
 
-namespace thorin {
+#include "dialects/mem.h"
 
-static const Def* get_sloxy_type(const Proxy* sloxy) { return as<Tag::Ptr>(sloxy->type())->arg(0); }
+namespace thorin::mem {
+
+static const Def* get_sloxy_type(const Proxy* sloxy) { return mem::as<mem::mem_Ptr>(sloxy->type())->arg(0); }
 static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
     return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_nom<Lam>()};
 }
@@ -23,7 +25,8 @@ const Def* SSAConstr::rewrite(const Proxy* proxy) {
 }
 
 const Def* SSAConstr::rewrite(const Def* def) {
-    if (auto slot = isa<Tag::Slot>(def)) {
+    // todo: move slot to dialect.
+    if (auto slot = thorin::isa<thorin::Tag::Slot>(def)) {
         auto [mem, id] = slot->args<2>();
         auto [_, ptr]  = slot->projs<2>();
         auto sloxy     = proxy(ptr->type(), {curr_nom(), id}, Sloxy, slot->dbg());
@@ -33,10 +36,10 @@ const Def* SSAConstr::rewrite(const Def* def) {
             data(curr_nom()).writable.emplace(sloxy);
             return world().tuple({mem, sloxy});
         }
-    } else if (auto load = isa<Tag::Load>(def)) {
+    } else if (auto load = mem::isa<mem::mem_load>(def)) {
         auto [mem, ptr] = load->args<2>();
         if (auto sloxy = isa_proxy(ptr, Sloxy)) return world().tuple({mem, get_val(curr_nom(), sloxy)});
-    } else if (auto store = isa<Tag::Store>(def)) {
+    } else if (auto store = mem::isa<mem::mem_store>(def)) {
         auto [mem, ptr, val] = store->args<3>();
         if (auto sloxy = isa_proxy(ptr, Sloxy)) {
             if (data(curr_nom()).writable.contains(sloxy)) {
@@ -179,4 +182,6 @@ undo_t SSAConstr::analyze(const Def* def) {
     return No_Undo;
 }
 
-} // namespace thorin
+PassTag SSAConstr::ID{};
+
+} // namespace thorin::mem

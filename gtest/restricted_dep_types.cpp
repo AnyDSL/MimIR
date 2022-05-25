@@ -10,9 +10,8 @@
 #include "thorin/tables.h"
 #include "thorin/world.h"
 
-#include "thorin/be/ll/ll.h"
+// #include "thorin/be/ll/ll.h"
 #include "thorin/pass/fp/beta_red.h"
-#include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/pass.h"
@@ -244,12 +243,12 @@ TEST(RestrictedDependentTypes, ll) {
 
         main->app(false, exp_lam, {main->var(0_s), i32_t, R, w.op_bitcast(app_exp, main->var(1)), main->var(3)});
     }
-    PassMan opt{w};
-    auto br = opt.add<BetaRed>();
-    auto er = opt.add<EtaRed>();
-    auto ee = opt.add<EtaExp>(er);
-    opt.add<CopyProp>(br, ee);
-    opt.run();
+    // PassMan opt{w};
+    // auto br = opt.add<BetaRed>();
+    // auto er = opt.add<EtaRed>();
+    // auto ee = opt.add<EtaExp>(er);
+    // opt.add<CopyProp>(br, ee);
+    // opt.run();
 
-    ll::emit(w, std::cout);
+    // ll::emit(w, std::cout);
 }

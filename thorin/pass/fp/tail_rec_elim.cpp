@@ -51,4 +51,6 @@ undo_t TailRecElim::analyze(const Def* def) {
     return No_Undo;
 }
 
+PassTag TailRecElim::ID{};
+
 } // namespace thorin

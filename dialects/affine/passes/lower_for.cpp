@@ -54,4 +54,6 @@ const Def* LowerFor::rewrite(const Def* def) {
     return def;
 }
 
+PassTag LowerFor::ID{};
+
 } // namespace thorin::affine

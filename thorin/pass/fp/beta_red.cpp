@@ -42,4 +42,6 @@ undo_t BetaRed::analyze(const Def* def) {
     return undo;
 }
 
+PassTag BetaRed::ID{};
+
 } // namespace thorin

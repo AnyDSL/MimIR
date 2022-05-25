@@ -1,6 +1,5 @@
-#include "thorin/be/ll/ll.h"
+#include "dialects/mem/be/ll/ll.h"
 
-#include <atomic>
 #include <deque>
 #include <fstream>
 #include <iomanip>
@@ -10,6 +9,8 @@
 #include "thorin/be/emitter.h"
 #include "thorin/util/print.h"
 #include "thorin/util/sys.h"
+
+#include "dialects/mem.h"
 
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.
@@ -22,7 +23,6 @@
 //      * LLVM:   {0, -1} = i1
 //   This is a problem when, e.g., using an index of type i1 as LLVM thinks like this:
 //   getelementptr ..., i1 1 == getelementptr .., i1 -1
-
 using namespace std::string_literals;
 
 namespace thorin::ll {
@@ -116,7 +116,7 @@ std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
 std::string CodeGen::convert(const Def* type) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
-    assert(!isa<Tag::Mem>(type));
+    assert(!mem::isa<mem::mem_M>(type));
     std::ostringstream s;
     std::string name;
 
@@ -148,7 +148,7 @@ std::string CodeGen::convert(const Def* type) {
             case 64: return types_[type] = "double";
             default: unreachable();
         }
-    } else if (auto ptr = isa<Tag::Ptr>(type)) {
+    } else if (auto ptr = mem::isa<mem::mem_Ptr>(type)) {
         auto [pointee, addr_space] = ptr->args<2>();
         // TODO addr_space
         print(s, "{}*", convert(pointee));
@@ -163,7 +163,7 @@ std::string CodeGen::convert(const Def* type) {
         std::string_view sep = "";
         auto doms            = pi->doms();
         for (auto dom : doms.skip_back()) {
-            if (isa<Tag::Mem>(dom)) continue;
+            if (mem::isa<mem::mem_M>(dom)) continue;
             s << sep << convert(dom);
             sep = ", ";
         }
@@ -176,7 +176,7 @@ std::string CodeGen::convert(const Def* type) {
         print(s, "{{");
         std::string_view sep = "";
         for (auto t : sigma->ops()) {
-            if (isa<Tag::Mem>(t)) continue;
+            if (mem::isa<mem::mem_M>(t)) continue;
             s << sep << convert(t);
             sep = ", ";
         }
@@ -196,11 +196,11 @@ std::string CodeGen::convert_ret_pi(const Pi* pi) {
     switch (pi->num_doms()) {
         case 0: return "void";
         case 1:
-            if (isa<Tag::Mem>(pi->dom())) return "void";
+            if (mem::isa<mem::mem_M>(pi->dom())) return "void";
             return convert(pi->dom());
         case 2:
-            if (isa<Tag::Mem>(pi->dom(0))) return convert(pi->dom(1));
-            if (isa<Tag::Mem>(pi->dom(1))) return convert(pi->dom(0));
+            if (mem::isa<mem::mem_M>(pi->dom(0))) return convert(pi->dom(1));
+            if (mem::isa<mem::mem_M>(pi->dom(1))) return convert(pi->dom(0));
             [[fallthrough]];
         default: return convert(pi->dom());
     }
@@ -226,7 +226,7 @@ void CodeGen::emit_imported(Lam* lam) {
     auto sep  = "";
     auto doms = lam->doms();
     for (auto dom : doms.skip_back()) {
-        if (isa<Tag::Mem>(dom)) continue;
+        if (mem::isa<mem::mem_M>(dom)) continue;
         print(func_decls_, "{}{}", sep, convert(dom));
         sep = ", ";
     }
@@ -242,7 +242,7 @@ std::string CodeGen::prepare(const Scope& scope) {
     auto sep  = "";
     auto vars = lam->vars();
     for (auto var : vars.skip_back()) {
-        if (isa<Tag::Mem>(var->type())) continue;
+        if (mem::isa<mem::mem_M>(var->type())) continue;
         auto name    = id(var);
         locals_[var] = name;
         print(func_impls_, "{}{} {}", sep, convert(var->type()), name);
@@ -327,7 +327,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
                 auto phi = callee->var(i);
-                assert(!isa<Tag::Mem>(phi->type()));
+                assert(!mem::isa<mem::mem_M>(phi->type()));
                 lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
                 locals_[phi] = id(phi);
             }
@@ -348,7 +348,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         Array<const Def*> values(num_vars);
         Array<const Def*> types(num_vars);
         for (auto var : ret_lam->vars()) {
-            if (isa<Tag::Mem>(var->type())) continue;
+            if (mem::isa<mem::mem_M>(var->type())) continue;
             values[n] = var;
             types[n]  = var->type();
             ++n;
@@ -368,7 +368,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
                     namei += '.' + std::to_string(i - 1);
                     bb.tail("{} = extractvalue {} {}, {}", namei, ret_ty, name, i - 1);
                 }
-                assert(!isa<Tag::Mem>(phi->type()));
+                assert(!mem::isa<mem::mem_M>(phi->type()));
                 lam2bb_[ret_lam].phis[phi].emplace_back(namei, id(lam, true));
                 locals_[phi] = id(phi);
             }
@@ -636,8 +636,8 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
     } else if (auto bitcast = isa<Tag::Bitcast>(def)) {
-        auto dst_type_ptr = isa<Tag::Ptr>(bitcast->type());
-        auto src_type_ptr = isa<Tag::Ptr>(bitcast->arg()->type());
+        auto dst_type_ptr = mem::isa<mem::mem_Ptr>(bitcast->type());
+        auto src_type_ptr = mem::isa<mem::mem_Ptr>(bitcast->arg()->type());
         auto src          = emit(bitcast->arg());
         auto src_t        = convert(bitcast->arg()->type());
         auto dst_t        = convert(bitcast->type());
@@ -652,7 +652,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     } else if (auto lea = isa<Tag::LEA>(def)) {
         auto [ptr, idx] = lea->args<2>();
         auto ll_ptr     = emit(ptr);
-        auto pointee    = as<Tag::Ptr>(ptr->type())->arg(0);
+        auto pointee    = mem::as<mem::mem_Ptr>(ptr->type())->arg(0);
         auto t          = convert(pointee);
         auto p          = convert(ptr->type());
         if (pointee->isa<Sigma>())
@@ -676,7 +676,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     } else if (auto malloc = isa<Tag::Malloc>(def)) {
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
-        auto ptr_t = convert(as<Tag::Ptr>(def->proj(1)->type()));
+        auto ptr_t = convert(mem::as<mem::mem_Ptr>(def->proj(1)->type()));
         bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
         return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
     } else if (auto mslot = isa<Tag::Mslot>(def)) {
@@ -690,7 +690,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(load->arg(0));
         auto ptr       = emit(load->arg(1));
         auto ptr_t     = convert(load->arg(1)->type());
-        auto pointee_t = convert(as<Tag::Ptr>(load->arg(1)->type())->arg(0));
+        auto pointee_t = convert(mem::as<mem::mem_Ptr>(load->arg(1)->type())->arg(0));
         return bb.assign(name, "load {}, {} {}", pointee_t, ptr_t, ptr);
     } else if (auto store = isa<Tag::Store>(def)) {
         emit_unsafe(store->arg(0));
@@ -712,11 +712,11 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto ll_tup = emit_unsafe(tuple);
         auto ll_idx = emit(index);
 
-        if (isa<Tag::Mem>(extract->type())) return {};
+        if (mem::isa<mem::mem_M>(extract->type())) return {};
 
         if (tuple->num_projs() == 2) {
-            if (isa<Tag::Mem>(tuple->proj(2, 0_s)->type())) return ll_tup;
-            if (isa<Tag::Mem>(tuple->proj(2, 1_s)->type())) return ll_tup;
+            if (mem::isa<mem::mem_M>(tuple->proj(2, 0_s)->type())) return ll_tup;
+            if (mem::isa<mem::mem_M>(tuple->proj(2, 1_s)->type())) return ll_tup;
         }
 
         auto tup_t = convert(tuple->type());
@@ -741,7 +741,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "insertvalue {} {}, {} {}, {}", tup_t, tuple, val_t, value, index);
     } else if (auto global = def->isa<Global>()) {
         auto init                  = emit(global->init());
-        auto [pointee, addr_space] = as<Tag::Ptr>(global->type())->args<2>();
+        auto [pointee, addr_space] = mem::as<mem::mem_Ptr>(global->type())->args<2>();
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
         return globals_[global] = name;
     }

@@ -11,6 +11,7 @@ public:
         : RWPass(man, "partial_eval") {}
 
     const Def* rewrite(const Def*) override;
+    static PassTag ID;
 };
 
 }

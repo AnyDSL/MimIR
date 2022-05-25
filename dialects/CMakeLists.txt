@@ -15,6 +15,28 @@ target_link_libraries(thorin_foo libthorin)
 add_thorin_dialect(std)
 add_thorin_dialect(mem)
 
+add_library(thorin_mem MODULE
+    mem/passes/fp/copy_prop.cpp
+    mem/passes/fp/copy_prop.h
+    mem/passes/fp/ssa_constr.cpp
+    mem/passes/fp/ssa_constr.h
+    mem/passes/rw/alloc2malloc.cpp
+    mem/passes/rw/alloc2malloc.h
+    mem/passes/rw/remem_elim.cpp
+    mem/passes/rw/remem_elim.h
+    mem/be/ll/ll.cpp
+    mem/be/ll/ll.h
+    mem/mem.cpp
+)
+
+set_target_properties(thorin_mem
+    PROPERTIES 
+        CXX_VISIBILITY_PRESET hidden
+        VISIBILITY_INLINES_HIDDEN 1
+        WINDOWS_EXPORT_ALL_SYMBOLS OFF
+)
+target_link_libraries(thorin_mem libthorin)
+
 add_thorin_dialect(affine)
 
 add_library(thorin_affine MODULE
@@ -23,7 +45,6 @@ add_library(thorin_affine MODULE
     affine/passes/lower_for.cpp
     affine/passes/lower_for.h
 )
-add_dependencies(thorin_affine std mem)
 
 set_target_properties(thorin_affine
     PROPERTIES 

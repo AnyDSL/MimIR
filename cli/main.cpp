@@ -10,7 +10,6 @@
 #include "thorin/dialects.h"
 
 #include "thorin/be/dot/dot.h"
-#include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
@@ -79,9 +78,16 @@ int main(int argc, char** argv) {
         }
         // clang-format on
 
+        // we always need mem, as long as we are not in bootstrap mode..
+        if (!emit_h) dialect_names.push_back("mem");
+
         std::vector<Dialect> dialects;
+        thorin::Backends backends;
         if (!dialect_names.empty()) {
-            for (const auto& dialect : dialect_names) { dialects.push_back(Dialect::load(dialect, dialect_paths)); }
+            for (const auto& dialect : dialect_names) {
+                dialects.push_back(Dialect::load(dialect, dialect_paths));
+                dialects.back().register_backends(backends);
+            }
         }
 
         if (input.empty()) throw std::invalid_argument("error: no input given");
@@ -134,8 +140,11 @@ int main(int argc, char** argv) {
         }
 
         if (emit_ll) {
-            std::ofstream ofs(prefix + ".ll");
-            ll::emit(world, ofs);
+            if (auto it = backends.find("ll"); it != backends.end()) {
+                std::ofstream ofs(prefix + ".ll");
+                it->second(world, ofs);
+            } else
+                errln("error: 'll' emitter not loaded. Try loading 'mem' dialect.");
         }
     } catch (const std::exception& e) {
         errln("{}", e.what());

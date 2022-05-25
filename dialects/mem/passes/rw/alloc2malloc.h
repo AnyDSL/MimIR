@@ -3,7 +3,7 @@
 
 #include "thorin/pass/pass.h"
 
-namespace thorin {
+namespace thorin::mem {
 
 class Alloc2Malloc : public RWPass<Lam> {
 public:
@@ -11,8 +11,10 @@ public:
         : RWPass(man, "alloc2malloc") {}
 
     const Def* rewrite(const Def*) override;
+
+    static PassTag ID;
 };
 
-}
+} // namespace thorin::mem
 
 #endif
