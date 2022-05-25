@@ -39,7 +39,9 @@ jobs:
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           set CC=cl.exe
           set CXX=cl.exe
-          cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON
+          python -c "import sys; import os; print(os.path.dirname(sys.executable))" > tmpPath
+          set /p PYTHON_PATH= < tmpPath
+          cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON -DPython3_ROOT_DIR=%PYTHON_PATH%
       
       #- name: Install LLVM and Clang
         #uses: KyleMayes/install-llvm-action@v1.5.2
@@ -50,14 +52,14 @@ jobs:
         shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-          cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_foo thorin_affine
+          cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target thorin-gtest thorin thorin_foo std mem affine thorin_affine
 
       - name: Run lit test suite
         working-directory: ${{github.workspace}}/build
         shell: cmd
         run: |
           set PATH=${{github.workspace}}/bin;%PATH%
-          ninja check
+          cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target check
 
       - name: Test
         working-directory: ${{github.workspace}}/build

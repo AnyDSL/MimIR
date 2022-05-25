@@ -1,6 +1,14 @@
+if ("${CMAKE_VERSION}" VERSION_LESS "3.12.0")
+  find_package(PythonInterp 3)
+else()
+  find_package(Python3 COMPONENTS Interpreter)
+  set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
+endif()
+
 configure_file(lit.site.cfg.py.in lit.site.cfg.py @ONLY)
 add_custom_target(check
-        COMMAND python3 "${CMAKE_CURRENT_SOURCE_DIR}/lit" "${CMAKE_CURRENT_BINARY_DIR}" -v
+        COMMAND ${PYTHON_EXECUTABLE} "${CMAKE_CURRENT_SOURCE_DIR}/lit" "${CMAKE_CURRENT_BINARY_DIR}" -v
         DEPENDS thorin thorin_affine)
 
-add_test(NAME lit COMMAND python3 "${CMAKE_CURRENT_SOURCE_DIR}/lit" "${CMAKE_CURRENT_BINARY_DIR}" -v)
+# We don't want to test python for memory leaks.. :/
+# add_test(NAME lit COMMAND python3 "${CMAKE_CURRENT_SOURCE_DIR}/lit" "${CMAKE_CURRENT_BINARY_DIR}" -v)

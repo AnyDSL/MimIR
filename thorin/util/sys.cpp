@@ -7,6 +7,9 @@
 #    include <windows.h>
 #    define popen  _popen
 #    define pclose _pclose
+#elif defined(__APPLE__)
+#    include <mach-o/dyld.h>
+#    include <unistd.h>
 #else
 #    include <dlfcn.h>
 #    include <unistd.h>
@@ -16,31 +19,30 @@ namespace thorin::sys {
 
 std::optional<std::filesystem::path> path_to_curr_exe() {
     std::vector<char> path_buffer;
-    size_t read = 0;
 #ifdef __APPLE__
+    uint32_t read = 0;
     _NSGetExecutablePath(nullptr, &read); // get size
-    path_buffer.resize(read);
-    if(_NSGetExecutablePath(path_buffer.data(), &read) == 0)
+    path_buffer.resize(read + 1);
+    if(_NSGetExecutablePath(path_buffer.data(), &read) != 0)
         return {};
-#else
+    return std::filesystem::path{path_buffer.data()};
+#elif defined(_WIN32)
+    size_t read = 0;
     do {
         // start with 256 (almost MAX_PATH) and grow exp
-        path_buffer.resize(std::max(path_buffer.size(), 128) * 2);
-#ifdef _WIN32
+        path_buffer.resize(std::max(path_buffer.size(), static_cast<size_t>(128)) * 2);
         read = GetModuleFileNameA(nullptr, path_buffer.data(), static_cast<DWORD>(path_buffer.size()));
-#else
-        read = readlink("/proc/self/exe", path_buffer.data(), path_buffer.size());
-#endif
-    } while (read != size_t(-1) && read == path_buffer.size()); // if equal, the buffer was too small.
-#endif // __APPLE__
-    if (read != 0 && read != size_t(-1)) {
-#ifndef _WIN32
-        read++;
-#endif
-        path_buffer.resize(read);
+    } while (read == path_buffer.size()); // if equal, the buffer was too small.
+
+    if (read != 0) {
+        path_buffer.resize(read + 1);
         path_buffer.back() = 0;
         return std::filesystem::path{path_buffer.data()};
     }
+#else // Linux only..
+    if(std::filesystem::exists("/proc/self/exe"))
+        return std::filesystem::canonical("/proc/self/exe");
+#endif // __APPLE__
     return {};
 }
 

@@ -18,7 +18,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
-
+      - name: Setup ccache
+        uses: Chocobo1/setup-ccache-action@v1
       - name: Configure
         run: CC=gcc-11 CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{matrix.build-type}} -DTHORIN_BUILD_TESTING=ON
 
@@ -59,7 +60,7 @@ jobs:
         working-directory: ${{github.workspace}}/build
         run: |
           export PATH=${{github.workspace}}/bin:$PATH
-          ninja check
+          cmake --build ${{github.workspace}}/build -v --config ${{matrix.build-type}} --target check
 
       - name: Test
         working-directory: ${{github.workspace}}/build

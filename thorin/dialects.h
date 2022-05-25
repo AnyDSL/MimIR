@@ -34,7 +34,7 @@ class Dialect {
 public:
     /// Finds and loads a shared object file that implements the \a name thorin dialect.
     /// If \a name is an absolute path to a .so/.dll file, this is used.
-    /// Otherwise, "name", "libthorin_name.so" (Linux), "thorin_name.dll" (Win), "libthorin_name.dylib" (Mac)
+    /// Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win)
     /// are searched for in the search paths:
     /// 1. \a search_paths, 2. env var \em THORIN_DIALECT_PATH, 3. "/path/to/executable"
     static Dialect load(const std::string& name, const std::vector<std::string>& search_paths);
