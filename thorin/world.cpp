@@ -64,7 +64,8 @@ World::World(std::string_view name)
         data_.type_ptr_ = axiom(nullptr, pi({type(), nat}, type()), 0, Group::Ptr, 0, dbg("ptr"));
     }
     {
-#define CODE(T, o) data_.T##_[size_t(T::o)] = axiom(normalize_##T<T::o>, ty, 0, Group::T, tag_t(T::o), dbg(op2str(T::o)));
+#define CODE(T, o) \
+    data_.T##_[size_t(T::o)] = axiom(normalize_##T<T::o>, ty, 0, Group::T, tag_t(T::o), dbg(op2str(T::o)));
     }
     { // bit: w: nat -> [int w, int w] -> int w
         auto ty    = nom_pi(type())->set_dom(nat);
@@ -141,8 +142,10 @@ World::World(std::string_view name)
         auto ty = nom_pi(type())->set_dom(type());
         auto T  = ty->var(dbg("T"));
         ty->set_codom(pi(T, T));
-        data_.PE_[size_t(PE::hlt)] = axiom(normalize_PE<PE::hlt>, ty, 0, Group::PE, tag_t(PE::hlt), dbg(op2str(PE::hlt)));
-        data_.PE_[size_t(PE::run)] = axiom(normalize_PE<PE::run>, ty, 0, Group::PE, tag_t(PE::run), dbg(op2str(PE::run)));
+        data_.PE_[size_t(PE::hlt)] =
+            axiom(normalize_PE<PE::hlt>, ty, 0, Group::PE, tag_t(PE::hlt), dbg(op2str(PE::hlt)));
+        data_.PE_[size_t(PE::run)] =
+            axiom(normalize_PE<PE::run>, ty, 0, Group::PE, tag_t(PE::run), dbg(op2str(PE::run)));
     }
     { // known: T: * -> T -> bool
         auto ty = nom_pi(type())->set_dom(type());
@@ -256,7 +259,8 @@ World::World(std::string_view name)
 
         data_.zip_ = axiom(normalize_zip, rs_pi, 0, Group::Zip, 0, dbg("zip"));
     }
-    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i: n; Is#i», Cn
+    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i:
+      // n; Is#i», Cn
         // [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];
 
         auto input_sigma = nom_sigma(type<1>(), 3);
