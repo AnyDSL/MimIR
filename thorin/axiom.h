@@ -26,7 +26,7 @@ public:
 
     /// @name Mangling Dialect Name
     ///@{
-    static constexpr size_t Max_Dialect_Size = 8;
+    static constexpr size_t Max_Dialect_Size  = 8;
     static constexpr dialect_t Global_Dialect = 0xffffff00_u64;
 
     /// Mangles @p s into a dense 48-bit representation.
@@ -53,7 +53,7 @@ public:
     /// Ignores lower 16-bit of @p u.
     static std::string demangle(dialect_t u);
 
-    static std::optional<std::pair<std::string_view, std::string_view>> dialect_and_group(std::string_view);
+    static std::optional<std::array<std::string_view, 3>> split_name(std::string_view);
     ///@}
 
     static std::tuple<const Axiom*, u16> get(const Def*);

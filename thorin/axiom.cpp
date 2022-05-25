@@ -1,5 +1,7 @@
 #include "thorin/axiom.h"
 
+using namespace std::literals;
+
 namespace thorin {
 
 Axiom::Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, group_t group, tag_t tag, const Def* dbg)
@@ -70,7 +72,7 @@ static std::string_view sub_view(std::string_view s, size_t i, size_t n = std::s
     return {s.data() + i, n - i};
 }
 
-std::optional<std::pair<std::string_view, std::string_view>> Axiom::dialect_and_group(std::string_view s) {
+std::optional<std::array<std::string_view, 3>> Axiom::split_name(std::string_view s) {
     if (s.empty()) return {};
     if (s[0] != '%') return {};
     s = sub_view(s, 1);
@@ -81,11 +83,21 @@ std::optional<std::pair<std::string_view, std::string_view>> Axiom::dialect_and_
     auto dialect = sub_view(s, 0, dot);
     if (!mangle(dialect)) return {};
 
-    auto group = sub_view(s, dot + 1);
-    if (group.empty()) return {};
+    s = sub_view(s, dot + 1);
+    if (auto dot = s.find('.')) {
+        auto group = sub_view(s, 0, dot);
+        auto tag   = sub_view(s, dot + 1);
+        return {
+            {dialect, group, tag}
+        };
+    }
 
-    // TODO check that group is valid
-    return std::pair(dialect, group);
+    auto tag = sub_view(s, dot + 1);
+    if (tag.empty()) return {};
+
+    return {
+        {dialect, ""sv, tag}
+    };
 }
 
 std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {

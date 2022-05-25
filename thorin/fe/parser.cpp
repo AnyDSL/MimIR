@@ -428,6 +428,7 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
 }
 
 void Parser::parse_ax() {
+#if 0
     auto track = tracker();
     eat(Tok::Tag::K_ax);
     auto& info = bootstrapper_.axioms.emplace_back();
@@ -435,22 +436,26 @@ void Parser::parse_ax() {
     auto ax     = expect(Tok::Tag::M_ax, "name of an axiom");
     auto ax_str = ax.sym().to_string();
 
-    auto dialect_and_group = Axiom::dialect_and_group(ax_str);
-    if (!dialect_and_group) err(ax.loc(), "invalid axiom name '{}'", ax);
-    info.dialect = dialect_and_group->first;
-    info.group   = dialect_and_group->second;
+    auto split = Axiom::split_name(ax_str);
+    if (!split) err(ax.loc(), "invalid axiom name '{}'", ax);
 
-    if (info.dialect != bootstrapper_.dialect()) {
+    auto [dialect, group, tag] = *split;
+    info.dialect = dialect;
+    info.group   = group;
+
+    if (dialect != bootstrapper_.dialect()) {
         // TODO
         // err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax,
         // info.dialect, lexer_.file());
     }
 
-    // 6 bytes dialect name, 1 byte axiom group (tag), 1 byte flags
+    // 6 bytes dialect name, 1 byte group, 1 byte tag
     assert(bootstrapper_.axioms.size() < std::numeric_limits<u8>::max());
 
-    // dialect_and_group already tried mangling, so we know it's valid.
+    // split_name already tried mangling, so we know it's valid.
     info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
+    auto id_dialect = Axiom::mangle(dialect);
+    auto id_group = bootstreapper_.axioms.size() - 1;
 
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
@@ -464,10 +469,11 @@ void Parser::parse_ax() {
     auto type = parse_expr("type of an axiom");
     info.pi   = type->isa<Pi>() != nullptr;
 
-    auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t(info.id & u32(-1)), track.named(ax.sym()));
+    auto axiom = world().axiom(type, id_dialect, id_group, id_tag, track.named(ax.sym()));
     insert(ax.sym(), axiom);
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
     expect(Tok::Tag::T_semicolon, "end of an axiom");
+#endif
 }
 
 void Parser::parse_let() {

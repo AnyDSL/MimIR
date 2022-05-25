@@ -4,7 +4,7 @@
 
 namespace thorin {
 
-static const Def* get_sloxy_type(const Proxy* sloxy) { return as<Tag::Ptr>(sloxy->type())->arg(0); }
+static const Def* get_sloxy_type(const Proxy* sloxy) { return as<Group::Ptr>(sloxy->type())->arg(0); }
 static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
     return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_nom<Lam>()};
 }
@@ -23,7 +23,7 @@ const Def* SSAConstr::rewrite(const Proxy* proxy) {
 }
 
 const Def* SSAConstr::rewrite(const Def* def) {
-    if (auto slot = isa<Tag::Slot>(def)) {
+    if (auto slot = isa<Group::Slot>(def)) {
         auto [mem, id] = slot->args<2>();
         auto [_, ptr]  = slot->projs<2>();
         auto sloxy     = proxy(ptr->type(), {curr_nom(), id}, Sloxy, slot->dbg());
@@ -33,10 +33,10 @@ const Def* SSAConstr::rewrite(const Def* def) {
             data(curr_nom()).writable.emplace(sloxy);
             return world().tuple({mem, sloxy});
         }
-    } else if (auto load = isa<Tag::Load>(def)) {
+    } else if (auto load = isa<Group::Load>(def)) {
         auto [mem, ptr] = load->args<2>();
         if (auto sloxy = isa_proxy(ptr, Sloxy)) return world().tuple({mem, get_val(curr_nom(), sloxy)});
-    } else if (auto store = isa<Tag::Store>(def)) {
+    } else if (auto store = isa<Group::Store>(def)) {
         auto [mem, ptr, val] = store->args<3>();
         if (auto sloxy = isa_proxy(ptr, Sloxy)) {
             if (data(curr_nom()).writable.contains(sloxy)) {
