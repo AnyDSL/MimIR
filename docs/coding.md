@@ -43,6 +43,14 @@ For example, the following GDB command will break, if the thorin::Def::gid of va
 break foo.cpp:23 if def->gid() == 666
 ```
 
+## Catching Throw
+
+For several things like errors in Thorin's front end, Thorin relies on C++ exceptions for error handling.
+Simply, do this to encounter them within [GDB]https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html]:
+```gdb
+catch throw
+```
+
 ## Valgrind & GDB
 
 If you encounter memory related problems, you might want to run the program with [Valgrind's GDB server](https://valgrind.org/docs/manual/manual-core-adv.html).

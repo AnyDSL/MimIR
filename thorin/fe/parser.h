@@ -68,7 +68,7 @@ private:
 
     /// @name primary exprs
     ///@{
-    const Def* parse_Cn();
+    const Def* parse_Cn(Binders*);
     const Def* parse_arr();
     const Def* parse_pack();
     const Def* parse_block();
@@ -182,12 +182,15 @@ private:
     }
     ///@}
 
+    Parser(World&, std::string_view, std::istream&, const std::deque<Parser::Scope>&, const SymSet&);
+
     Lexer lexer_;
     Loc prev_;
     std::string dialect_;
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
     std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
     std::deque<Scope> scopes_;
+    SymSet imported_;
     const Def* anonymous_;
     h::Bootstrapper bootstrapper_;
 };

@@ -271,7 +271,7 @@ World::World(std::string_view name)
         data_.sjlj_longjmp_ =
             axiom(cn({type_mem(), buf_ptr_t, type_int_width(32)}), Tag::LongJmp, (flags_t)0, dbg("long_jmp"));
     }
-    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , «i: n; Is#i», Cn
+    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i: n; Is#i», Cn
         // [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];
 
         auto input_sigma = nom_sigma(type<1>(), 3);
