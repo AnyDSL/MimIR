@@ -128,9 +128,9 @@ int main(int argc, char** argv) {
         for (const auto& dialect : dialects) { dialect.register_passes(builder); }
 
         auto opt = builder.opt_phase(world);
-        opt.run();
+        opt->run();
         auto codegen_prep = builder.codegen_prep_phase(world);
-        codegen_prep.run();
+        codegen_prep->run();
 
         if (emit_thorin) world.dump();
 
