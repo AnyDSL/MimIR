@@ -112,18 +112,19 @@ $(document).ready(function(){initNavTree('print_8h.html',''); initResizable(); }
 <div class="textblock"><code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;ostream&gt;</code><br />
 <code>#include &lt;ranges&gt;</code><br />
+<code>#include &lt;sstream&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &quot;<a class="el" href="assert_8h_source.html">thorin/util/assert.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for print.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="print_8h__incl.svg" width="531" height="202"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="print_8h__incl.svg" width="630" height="202"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="print_8h__dep__incl.svg" width="5492" height="751"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="print_8h__dep__incl.svg" width="4276" height="766"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -159,6 +160,9 @@ Functions</h2></td></tr>
 <tr class="memitem:acdd5a2cf60c9be78d38baa06024fb860"><td class="memTemplParams" colspan="2">template&lt;class T , class... Args&gt; </td></tr>
 <tr class="memitem:acdd5a2cf60c9be78d38baa06024fb860"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#acdd5a2cf60c9be78d38baa06024fb860">thorin::print</a> (std::ostream &amp;os, const char *s, T &amp;&amp;t, Args &amp;&amp;... args)</td></tr>
 <tr class="separator:acdd5a2cf60c9be78d38baa06024fb860"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac2a988f71a64a048c61d5a2238269ea8"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
+<tr class="memitem:ac2a988f71a64a048c61d5a2238269ea8"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8">thorin::fmt</a> (const char *s, Args &amp;&amp;... args)</td></tr>
+<tr class="separator:ac2a988f71a64a048c61d5a2238269ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e961804cf2964efea4388ebe218f496"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
 <tr class="memitem:a1e961804cf2964efea4388ebe218f496"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1e961804cf2964efea4388ebe218f496">thorin::outf</a> (const char *fmt, Args &amp;&amp;... args)</td></tr>
 <tr class="separator:a1e961804cf2964efea4388ebe218f496"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,11 +209,11 @@ Functions</h2></td></tr>
 <div class="line"><a class="code hl_function" href="namespacethorin.html#a7ec2df0cc38989e607e76de0491ef48b">                thorin::breakpoint</a>();                                   \</div>
 <div class="line">            }                                                           \</div>
 <div class="line">        } <span class="keywordflow">while</span> (<span class="keyword">false</span>)</div>
-<div class="ttc" id="anamespacethorin_html_a01d195c52d754394a58dec37e2913430"><div class="ttname"><a href="namespacethorin.html#a01d195c52d754394a58dec37e2913430">thorin::errln</a></div><div class="ttdeci">std::ostream &amp; errln(const char *fmt, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="print_8h_source.html#l00073">print.h:73</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a01d195c52d754394a58dec37e2913430"><div class="ttname"><a href="namespacethorin.html#a01d195c52d754394a58dec37e2913430">thorin::errln</a></div><div class="ttdeci">std::ostream &amp; errln(const char *fmt, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="print_8h_source.html#l00081">print.h:81</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a7ec2df0cc38989e607e76de0491ef48b"><div class="ttname"><a href="namespacethorin.html#a7ec2df0cc38989e607e76de0491ef48b">thorin::breakpoint</a></div><div class="ttdeci">void breakpoint()</div><div class="ttdef"><b>Definition:</b> <a href="assert_8h_source.html#l00028">assert.h:28</a></div></div>
-<div class="ttc" id="anamespacethorin_html_af538a45dc8c0c242b9a51f2ea1e6afea"><div class="ttname"><a href="namespacethorin.html#af538a45dc8c0c242b9a51f2ea1e6afea">thorin::errf</a></div><div class="ttdeci">std::ostream &amp; errf(const char *fmt, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="print_8h_source.html#l00071">print.h:71</a></div></div>
+<div class="ttc" id="anamespacethorin_html_af538a45dc8c0c242b9a51f2ea1e6afea"><div class="ttname"><a href="namespacethorin.html#af538a45dc8c0c242b9a51f2ea1e6afea">thorin::errf</a></div><div class="ttdeci">std::ostream &amp; errf(const char *fmt, Args &amp;&amp;... args)</div><div class="ttdef"><b>Definition:</b> <a href="print_8h_source.html#l00079">print.h:79</a></div></div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00123">123</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00131">131</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 </div>
 </div>

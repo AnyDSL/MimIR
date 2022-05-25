@@ -121,8 +121,124 @@ Functions</h2></td></tr>
 <tr class="separator:a4db0e39a0bec9a7d496e2fbeb481877f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65f81261af8998285d3076ad85a8f9e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ll.html#a65f81261af8998285d3076ad85a8f9e5">emit</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world, std::ostream &amp;ostream)</td></tr>
 <tr class="separator:a65f81261af8998285d3076ad85a8f9e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a709e16be24f45303689dbe7b7575fc12"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ll.html#a709e16be24f45303689dbe7b7575fc12">compile</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world, std::string name)</td></tr>
+<tr class="separator:a709e16be24f45303689dbe7b7575fc12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7729bb12e2e6ec7d0f2e34af12838bb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ll.html#aa7729bb12e2e6ec7d0f2e34af12838bb">compile</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world, std::string ll, std::string out)</td></tr>
+<tr class="separator:aa7729bb12e2e6ec7d0f2e34af12838bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af25d6d9d636f8feb823248a6c09d02b9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ll.html#af25d6d9d636f8feb823248a6c09d02b9">compile_and_run</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world, std::string name, std::string args)</td></tr>
+<tr class="separator:af25d6d9d636f8feb823248a6c09d02b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="aa7729bb12e2e6ec7d0f2e34af12838bb" name="aa7729bb12e2e6ec7d0f2e34af12838bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7729bb12e2e6ec7d0f2e34af12838bb">&#9670;&nbsp;</a></span>compile() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int thorin::ll::compile </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>ll</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00766">766</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="ll_8cpp_source.html#l00752">emit()</a>, <a class="el" href="print_8h_source.html#l00071">thorin::fmt()</a>, and <a class="el" href="sys_8cpp_source.html#l00062">thorin::sys::system()</a>.</p>
+
+</div>
+</div>
+<a id="a709e16be24f45303689dbe7b7575fc12" name="a709e16be24f45303689dbe7b7575fc12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a709e16be24f45303689dbe7b7575fc12">&#9670;&nbsp;</a></span>compile() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int thorin::ll::compile </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00757">757</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="ll_8cpp_source.html#l00757">compile()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00757">compile()</a>, and <a class="el" href="ll_8cpp_source.html#l00774">compile_and_run()</a>.</p>
+
+</div>
+</div>
+<a id="af25d6d9d636f8feb823248a6c09d02b9" name="af25d6d9d636f8feb823248a6c09d02b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af25d6d9d636f8feb823248a6c09d02b9">&#9670;&nbsp;</a></span>compile_and_run()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int thorin::ll::compile_and_run </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>world</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00774">774</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="ll_8cpp_source.html#l00757">compile()</a>, and <a class="el" href="sys_8cpp_source.html#l00068">thorin::sys::run()</a>.</p>
+
+</div>
+</div>
 <a id="a65f81261af8998285d3076ad85a8f9e5" name="a65f81261af8998285d3076ad85a8f9e5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a65f81261af8998285d3076ad85a8f9e5">&#9670;&nbsp;</a></span>emit()</h2>
 
@@ -149,9 +265,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00747">747</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00752">752</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ll_8cpp_source.html#l00208">thorin::ll::CodeGen::run()</a>.</p>
+<p class="reference">References <a class="el" href="ll_8cpp_source.html#l00213">thorin::ll::CodeGen::run()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00766">compile()</a>.</p>
 
 </div>
 </div>
@@ -179,11 +297,11 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00025">25</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ll_8cpp_source.html#l00030">30</a> of file <a class="el" href="ll_8cpp_source.html">ll.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="ll_8cpp_source.html#l00025">is_const()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, and <a class="el" href="def_8h_source.html#l00302">thorin::Def::isa_structural()</a>.</p>
+<p class="reference">References <a class="el" href="ll_8cpp_source.html#l00030">is_const()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, and <a class="el" href="def_8h_source.html#l00302">thorin::Def::isa_structural()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00376">thorin::ll::CodeGen::emit_bb()</a>, and <a class="el" href="ll_8cpp_source.html#l00025">is_const()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00381">thorin::ll::CodeGen::emit_bb()</a>, and <a class="el" href="ll_8cpp_source.html#l00030">is_const()</a>.</p>
 
 </div>
 </div>

@@ -135,9 +135,10 @@ Compiling and Executing</h1>
 <div class="line"><a class="code hl_function" href="namespacethorin_1_1dot.html#a0accd07b6689c0d7eafd53273e630a3b">ll::emit</a>(w, s);</div>
 <div class="line">file.close();</div>
 <div class="line"> </div>
-<div class="line">std::system(<span class="stringliteral">&quot;clang test.ll -o test&quot;</span>);</div>
-<div class="line">assert(4 == WEXITSTATUS(std::system(<span class="stringliteral">&quot;./test a b c&quot;</span>)));</div>
+<div class="line"><a class="code hl_function" href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">std::system</a>(<span class="stringliteral">&quot;clang test.ll -o test&quot;</span>);</div>
+<div class="line">assert(4 == WEXITSTATUS(<a class="code hl_function" href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">std::system</a>(<span class="stringliteral">&quot;./test a b c&quot;</span>)));</div>
 <div class="ttc" id="anamespacethorin_1_1dot_html_a0accd07b6689c0d7eafd53273e630a3b"><div class="ttname"><a href="namespacethorin_1_1dot.html#a0accd07b6689c0d7eafd53273e630a3b">thorin::dot::emit</a></div><div class="ttdeci">void emit(World &amp;w, std::ostream &amp;s, std::function&lt; void(std::ostream &amp;, const Def *)&gt; stream_def)</div><div class="ttdef"><b>Definition:</b> <a href="dot_8cpp_source.html#l00043">dot.cpp:43</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html_a932508f0d5bde98eb7127e4f2533776f"><div class="ttname"><a href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">thorin::sys::system</a></div><div class="ttdeci">int system(std::string cmd)</div><div class="ttdoc">Wraps std::system and makes the return value usable.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00062">sys.cpp:62</a></div></div>
 </div><!-- fragment --><p> TODO explain</p>
 <h1><a class="anchor" id="autotoc_md9"></a>
 Defs and the World</h1>

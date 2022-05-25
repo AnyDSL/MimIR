@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('normalize_8cpp.html',''); initResizabl
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for normalize.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="normalize_8cpp__incl.svg" width="1864" height="664"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="normalize_8cpp__incl.svg" width="2352" height="664"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -346,13 +346,14 @@ struct thorin::FoldConv&lt; op, nat_t, nat_t &gt;</div>
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">case</span> i:                                                                 \</div>
 <div class="line">        if <span class="keyword">constexpr</span> (i &gt;= min_w) {                                         \</div>
 <div class="line">            if <span class="keyword">constexpr</span> (std::is_same_v&lt;Op, Wrap&gt;)                         \</div>
-<div class="line">                res = Fold&lt;Op, op, i&gt;::run(la-&gt;get(), lb-&gt;get(), <a class="code hl_enumvalue" href="namespacethorin_1_1WMode.html#a43e8119b107e2d335bf46c0706611e16ade43029d5b7caff52b12f62f304e5f31">nsw</a>, <a class="code hl_enumvalue" href="namespacethorin_1_1WMode.html#a43e8119b107e2d335bf46c0706611e16aa3923d6dc93d93b254f08e39d51aef36">nuw</a>); \</div>
+<div class="line">                res = <a class="code hl_function" href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">Fold&lt;Op, op, i&gt;::run</a>(la-&gt;get(), lb-&gt;get(), <a class="code hl_enumvalue" href="namespacethorin_1_1WMode.html#a43e8119b107e2d335bf46c0706611e16ade43029d5b7caff52b12f62f304e5f31">nsw</a>, <a class="code hl_enumvalue" href="namespacethorin_1_1WMode.html#a43e8119b107e2d335bf46c0706611e16aa3923d6dc93d93b254f08e39d51aef36">nuw</a>); \</div>
 <div class="line">            else                                                            \</div>
-<div class="line">                res = Fold&lt;Op, op, i&gt;::run(la-&gt;get(), lb-&gt;get());           \</div>
+<div class="line">                res = <a class="code hl_function" href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">Fold&lt;Op, op, i&gt;::run</a>(la-&gt;get(), lb-&gt;get());           \</div>
 <div class="line">        }                                                                   \</div>
 <div class="line">        break;</div>
 <div class="ttc" id="anamespacethorin_1_1WMode_html_a43e8119b107e2d335bf46c0706611e16aa3923d6dc93d93b254f08e39d51aef36"><div class="ttname"><a href="namespacethorin_1_1WMode.html#a43e8119b107e2d335bf46c0706611e16aa3923d6dc93d93b254f08e39d51aef36">thorin::WMode::nuw</a></div><div class="ttdeci">@ nuw</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00050">tables.h:50</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1WMode_html_a43e8119b107e2d335bf46c0706611e16ade43029d5b7caff52b12f62f304e5f31"><div class="ttname"><a href="namespacethorin_1_1WMode.html#a43e8119b107e2d335bf46c0706611e16ade43029d5b7caff52b12f62f304e5f31">thorin::WMode::nsw</a></div><div class="ttdeci">@ nsw</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00049">tables.h:49</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1sys_html_ac7f063860c3477d428af8c6387ef38ee"><div class="ttname"><a href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">thorin::sys::run</a></div><div class="ttdeci">int run(std::string cmd, std::string args)</div><div class="ttdoc">Wraps sys::system and puts .exe at the back (Windows) and ./ at the front (otherwise) of cmd.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00068">sys.cpp:68</a></div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l01000">1000</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
@@ -384,7 +385,7 @@ struct thorin::FoldConv&lt; op, nat_t, nat_t &gt;</div>
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line">    <span class="keywordflow">else</span> <span class="keywordflow">if</span> (*lit_dw == dw &amp;&amp; *lit_sw == sw) {                                                       \</div>
-<div class="line">        if <span class="keyword">constexpr</span> (dw &gt;= min_dw &amp;&amp; sw &gt;= min_sw) res = FoldConv&lt;op, dw, sw&gt;::run(lit_src-&gt;get()); \</div>
+<div class="line">        if <span class="keyword">constexpr</span> (dw &gt;= min_dw &amp;&amp; sw &gt;= min_sw) res = <a class="code hl_function" href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">FoldConv&lt;op, dw, sw&gt;::run</a>(lit_src-&gt;get()); \</div>
 <div class="line">    }</div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l01000">1000</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>

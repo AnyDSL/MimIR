@@ -28,8 +28,11 @@ var namespacethorin =
     ] ],
     [ "std", "namespacethorin_1_1std.html", "namespacethorin_1_1std" ],
     [ "sys", "namespacethorin_1_1sys.html", [
-      [ "exec", "namespacethorin_1_1sys.html#a92af83448a4e8da3900badb8ac9b05ea", null ],
-      [ "path_to_curr_exe", "namespacethorin_1_1sys.html#a96556c7da85943f938569ad30a44fae9", null ]
+      [ "exec", "namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962", null ],
+      [ "find_cmd", "namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733", null ],
+      [ "path_to_curr_exe", "namespacethorin_1_1sys.html#a96556c7da85943f938569ad30a44fae9", null ],
+      [ "run", "namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee", null ],
+      [ "system", "namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f", null ]
     ] ],
     [ "Tag", "namespacethorin_1_1Tag.html", null ],
     [ "utf8", "namespacethorin_1_1utf8.html", "namespacethorin_1_1utf8" ],
@@ -409,6 +412,7 @@ var namespacethorin =
     [ "find", "namespacethorin.html#aa0a62994b63462d082addeddb1c92029", null ],
     [ "flatten", "namespacethorin.html#a4e087368518f24e3174721f3f993b20e", null ],
     [ "flatten", "namespacethorin.html#a3c8f47ae3611992a68b885cfe1b513c8", null ],
+    [ "fmt", "namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8", null ],
     [ "fold", "namespacethorin.html#ac73cd2add4d040102d8d0570c1db1f3f", null ],
     [ "fold_Conv", "namespacethorin.html#a9936b95c92a3cbd2712e329d3af5f0c7", null ],
     [ "get", "namespacethorin.html#a2ab8d8623a2a2fb97412cf4b05d18811", null ],

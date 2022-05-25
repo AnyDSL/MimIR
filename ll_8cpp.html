@@ -109,16 +109,19 @@ $(document).ready(function(){initNavTree('ll_8cpp.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="ll_8h_source.html">thorin/be/ll/ll.h</a>&quot;</code><br />
+<code>#include &lt;atomic&gt;</code><br />
 <code>#include &lt;deque&gt;</code><br />
+<code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;iomanip&gt;</code><br />
 <code>#include &lt;limits&gt;</code><br />
 <code>#include &quot;<a class="el" href="cfg_8h_source.html">thorin/analyses/cfg.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="emitter_8h_source.html">thorin/be/emitter.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="print_8h_source.html">thorin/util/print.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="sys_8h_source.html">thorin/util/sys.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ll.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ll_8cpp__incl.svg" width="2454" height="739"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ll_8cpp__incl.svg" width="2764" height="739"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -144,6 +147,12 @@ Functions</h2></td></tr>
 <tr class="separator:a4db0e39a0bec9a7d496e2fbeb481877f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65f81261af8998285d3076ad85a8f9e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ll.html#a65f81261af8998285d3076ad85a8f9e5">thorin::ll::emit</a> (World &amp;world, std::ostream &amp;ostream)</td></tr>
 <tr class="separator:a65f81261af8998285d3076ad85a8f9e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a709e16be24f45303689dbe7b7575fc12"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ll.html#a709e16be24f45303689dbe7b7575fc12">thorin::ll::compile</a> (World &amp;world, std::string name)</td></tr>
+<tr class="separator:a709e16be24f45303689dbe7b7575fc12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7729bb12e2e6ec7d0f2e34af12838bb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ll.html#aa7729bb12e2e6ec7d0f2e34af12838bb">thorin::ll::compile</a> (World &amp;world, std::string ll, std::string out)</td></tr>
+<tr class="separator:aa7729bb12e2e6ec7d0f2e34af12838bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af25d6d9d636f8feb823248a6c09d02b9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1ll.html#af25d6d9d636f8feb823248a6c09d02b9">thorin::ll::compile_and_run</a> (World &amp;world, std::string name, std::string args)</td></tr>
+<tr class="separator:af25d6d9d636f8feb823248a6c09d02b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -4,6 +4,7 @@ var print_8h =
     [ "assertf", "print_8h.html#a7bc6143638d489bb640260462bf07777", null ],
     [ "errf", "print_8h.html#af538a45dc8c0c242b9a51f2ea1e6afea", null ],
     [ "errln", "print_8h.html#a01d195c52d754394a58dec37e2913430", null ],
+    [ "fmt", "print_8h.html#ac2a988f71a64a048c61d5a2238269ea8", null ],
     [ "match2nd", "print_8h.html#ac0d831bfdacd42a8ebdcc48663680f95", null ],
     [ "outf", "print_8h.html#a1e961804cf2964efea4388ebe218f496", null ],
     [ "outln", "print_8h.html#af7ec5537fa7b52e17905ef114e40a765", null ],

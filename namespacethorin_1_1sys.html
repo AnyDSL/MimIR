@@ -111,13 +111,21 @@ $(document).ready(function(){initNavTree('namespacethorin_1_1sys.html',''); init
 Functions</h2></td></tr>
 <tr class="memitem:a96556c7da85943f938569ad30a44fae9"><td class="memItemLeft" align="right" valign="top">std::optional&lt; std::filesystem::path &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1sys.html#a96556c7da85943f938569ad30a44fae9">path_to_curr_exe</a> ()</td></tr>
 <tr class="separator:a96556c7da85943f938569ad30a44fae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92af83448a4e8da3900badb8ac9b05ea"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1sys.html#a92af83448a4e8da3900badb8ac9b05ea">exec</a> (const char *cmd)</td></tr>
-<tr class="memdesc:a92af83448a4e8da3900badb8ac9b05ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes command <code>cmd</code>.  <a href="namespacethorin_1_1sys.html#a92af83448a4e8da3900badb8ac9b05ea">More...</a><br /></td></tr>
-<tr class="separator:a92af83448a4e8da3900badb8ac9b05ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4dd1156a86eb6db52f2cd93fec5a962"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962">exec</a> (std::string cmd)</td></tr>
+<tr class="memdesc:ac4dd1156a86eb6db52f2cd93fec5a962"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes command <code>cmd</code>.  <a href="namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962">More...</a><br /></td></tr>
+<tr class="separator:ac4dd1156a86eb6db52f2cd93fec5a962"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2eda434a3eb1dcbf48dd570d8d2f7733"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733">find_cmd</a> (std::string cmd)</td></tr>
+<tr class="separator:a2eda434a3eb1dcbf48dd570d8d2f7733"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a932508f0d5bde98eb7127e4f2533776f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">system</a> (std::string)</td></tr>
+<tr class="memdesc:a932508f0d5bde98eb7127e4f2533776f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <code>std::system</code> and makes the return value usable.  <a href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">More...</a><br /></td></tr>
+<tr class="separator:a932508f0d5bde98eb7127e4f2533776f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7f063860c3477d428af8c6387ef38ee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">run</a> (std::string cmd, std::string args={})</td></tr>
+<tr class="memdesc:ac7f063860c3477d428af8c6387ef38ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f" title="Wraps std::system and makes the return value usable.">sys::system</a> and puts <code>.exe</code> at the back (Windows) and <code>./</code> at the front (otherwise) of <code>cmd</code>.  <a href="namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee">More...</a><br /></td></tr>
+<tr class="separator:ac7f063860c3477d428af8c6387ef38ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a92af83448a4e8da3900badb8ac9b05ea" name="a92af83448a4e8da3900badb8ac9b05ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92af83448a4e8da3900badb8ac9b05ea">&#9670;&nbsp;</a></span>exec()</h2>
+<a id="ac4dd1156a86eb6db52f2cd93fec5a962" name="ac4dd1156a86eb6db52f2cd93fec5a962"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4dd1156a86eb6db52f2cd93fec5a962">&#9670;&nbsp;</a></span>exec()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -125,7 +133,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">std::string thorin::sys::exec </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
+          <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>cmd</em></td><td>)</td>
           <td></td>
         </tr>
@@ -135,7 +143,31 @@ Functions</h2></td></tr>
 <p>Executes command <code>cmd</code>. </p>
 <dl class="section return"><dt>Returns</dt><dd>the output as string. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sys_8cpp_source.html#l00041">41</a> of file <a class="el" href="sys_8cpp_source.html">sys.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sys_8cpp_source.html#l00047">47</a> of file <a class="el" href="sys_8cpp_source.html">sys.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="sys_8cpp_source.html#l00056">find_cmd()</a>.</p>
+
+</div>
+</div>
+<a id="a2eda434a3eb1dcbf48dd570d8d2f7733" name="a2eda434a3eb1dcbf48dd570d8d2f7733"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2eda434a3eb1dcbf48dd570d8d2f7733">&#9670;&nbsp;</a></span>find_cmd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string thorin::sys::find_cmd </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>cmd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="sys_8cpp_source.html#l00056">56</a> of file <a class="el" href="sys_8cpp_source.html">sys.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="sys_8cpp_source.html#l00047">exec()</a>, <a class="el" href="indexmap_8h_source.html#l00065">thorin::find()</a>, and <a class="el" href="sys_8h_source.html#l00007">THORIN_WHICH</a>.</p>
 
 </div>
 </div>
@@ -155,9 +187,71 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd><code>std::nullopt</code> if an error occurred. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="sys_8cpp_source.html#l00017">17</a> of file <a class="el" href="sys_8cpp_source.html">sys.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="sys_8cpp_source.html#l00023">23</a> of file <a class="el" href="sys_8cpp_source.html">sys.cpp</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="dialects_8cpp_source.html#l00030">get_plugin_search_paths()</a>.</p>
+
+</div>
+</div>
+<a id="ac7f063860c3477d428af8c6387ef38ee" name="ac7f063860c3477d428af8c6387ef38ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7f063860c3477d428af8c6387ef38ee">&#9670;&nbsp;</a></span>run()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int thorin::sys::run </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>cmd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wraps <a class="el" href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f" title="Wraps std::system and makes the return value usable.">sys::system</a> and puts <code>.exe</code> at the back (Windows) and <code>./</code> at the front (otherwise) of <code>cmd</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="sys_8cpp_source.html#l00068">68</a> of file <a class="el" href="sys_8cpp_source.html">sys.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="sys_8cpp_source.html#l00062">system()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00774">thorin::ll::compile_and_run()</a>.</p>
+
+</div>
+</div>
+<a id="a932508f0d5bde98eb7127e4f2533776f" name="a932508f0d5bde98eb7127e4f2533776f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a932508f0d5bde98eb7127e4f2533776f">&#9670;&nbsp;</a></span>system()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int thorin::sys::system </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>cmd</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wraps <code>std::system</code> and makes the return value usable. </p>
+
+<p class="definition">Definition at line <a class="el" href="sys_8cpp_source.html#l00062">62</a> of file <a class="el" href="sys_8cpp_source.html">sys.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="sys_8cpp_source.html#l00062">system()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00766">thorin::ll::compile()</a>, <a class="el" href="sys_8cpp_source.html#l00068">run()</a>, and <a class="el" href="sys_8cpp_source.html#l00062">system()</a>.</p>
 
 </div>
 </div>

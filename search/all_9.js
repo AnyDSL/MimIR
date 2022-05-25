@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['icmp_0',['icmp',['../namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edd',1,'thorin::std']]],
-  ['icmp_1',['ICmp',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3',1,'thorin::ICmp()'],['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafab14d0d6f2c53b4f8ce5c33ba81c961f2',1,'thorin::Tag::ICmp()']]],
+  ['icmp_0',['ICmp',['../namespacethorin.html#aec7c9c368dda260071936391c37a72e3',1,'thorin::ICmp()'],['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafab14d0d6f2c53b4f8ce5c33ba81c961f2',1,'thorin::Tag::ICmp()']]],
+  ['icmp_1',['icmp',['../namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909edd',1,'thorin::std']]],
   ['id_2',['id',['../namespacethorin_1_1h.html#a2b8c884f159d24f59b5283ca605fe083',1,'thorin::h::AxiomInfo']]],
   ['idef_3',['idef',['../classthorin_1_1World.html#afdb8011c0a6868e6611b39531c61121a',1,'thorin::World']]],
   ['idom_4',['idom',['../classthorin_1_1DomTreeBase.html#a4221dc4eda86e282cdb1cc54714bfc62',1,'thorin::DomTreeBase']]],
