@@ -1,16 +1,22 @@
 #include "thorin/util/sys.h"
 
 #include <array>
+#include <iostream>
 #include <vector>
+
+#include "thorin/util/print.h"
 
 #ifdef _WIN32
 #    include <windows.h>
 #    define popen  _popen
 #    define pclose _pclose
+#    define WEXITSTATUS
 #else
 #    include <dlfcn.h>
 #    include <unistd.h>
 #endif
+
+using namespace std::string_literals;
 
 namespace thorin::sys {
 
@@ -38,13 +44,34 @@ std::optional<std::filesystem::path> path_to_curr_exe() {
 }
 
 // see https://stackoverflow.com/a/478960
-std::string exec(const char* cmd) {
+std::string exec(std::string cmd) {
     std::array<char, 128> buffer;
     std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) { throw std::runtime_error("error: popen() failed!"); }
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
+    if (!pipe) throw std::runtime_error("error: popen() failed!");
     while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) { result += buffer.data(); }
     return result;
+}
+
+std::string find_cmd(std::string cmd) {
+    auto out = exec(THORIN_WHICH " "s + cmd);
+    out.erase(std::find(out.begin(), out.end(), '\n'), out.end());
+    return out;
+}
+
+int system(std::string cmd) {
+    std::cout << cmd << std::endl;
+    int status = std::system(cmd.c_str());
+    return WEXITSTATUS(status);
+}
+
+int run(std::string cmd, std::string args /* = {}*/) {
+#ifdef _WIN32
+    cmd += ".exe";
+#else
+    cmd = "./"s + cmd;
+#endif
+    return sys::system(cmd + " "s + args);
 }
 
 } // namespace thorin::sys

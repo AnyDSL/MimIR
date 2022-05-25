@@ -1,12 +1,15 @@
 #include "thorin/be/ll/ll.h"
 
+#include <atomic>
 #include <deque>
+#include <fstream>
 #include <iomanip>
 #include <limits>
 
 #include "thorin/analyses/cfg.h"
 #include "thorin/be/emitter.h"
 #include "thorin/util/print.h"
+#include "thorin/util/sys.h"
 
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.
@@ -19,6 +22,8 @@
 //      * LLVM:   {0, -1} = i1
 //   This is a problem when, e.g., using an index of type i1 as LLVM thinks like this:
 //   getelementptr ..., i1 1 == getelementptr .., i1 -1
+
+using namespace std::string_literals;
 
 namespace thorin::ll {
 
@@ -747,6 +752,28 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 void emit(World& world, std::ostream& ostream) {
     CodeGen cg(world, ostream);
     cg.run();
+}
+
+int compile(World& world, std::string name) {
+#ifdef _WIN32
+    auto exe = name + ".exe"s;
+#else
+    auto exe = name;
+#endif
+    return compile(world, name + ".ll"s, exe);
+}
+
+int compile(World& world, std::string ll, std::string out) {
+    std::ofstream ofs(ll);
+    emit(world, ofs);
+    ofs.close();
+    auto cmd = fmt("clang \"{}\" -o \"{}\" -Wno-override-module", ll, out);
+    return sys::system(cmd);
+}
+
+int compile_and_run(World& world, std::string name, std::string args) {
+    if (compile(world, name) == 0) return sys::run(name, args);
+    throw std::runtime_error("compilation failed");
 }
 
 } // namespace thorin::ll

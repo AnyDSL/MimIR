@@ -2,7 +2,6 @@
 #include <sstream>
 
 #include <gtest/gtest-param-test.h>
-#include <gtest/gtest.h>
 
 #include "thorin/error.h"
 #include "thorin/world.h"
@@ -14,6 +13,9 @@
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/rw/lower_for.h"
+#include "thorin/util/sys.h"
+
+#include "helpers.h"
 
 using namespace thorin;
 
@@ -71,20 +73,10 @@ TEST_P(ForAxiomTest, for) {
     opt.add<CopyProp>(br, ee);
     opt.run();
 
-    std::ofstream ofs("test.ll");
-    ll::emit(w, ofs);
-    ofs.close();
-
-    // TODO make sure that proper clang is in path on Windows
-#ifndef _MSC_VER
     unsigned gt = 0;
     for (int i = cbegin; i < cend; i += cstep) { gt += i; }
 
-    int status = std::system("clang test.ll -o `pwd`/test -Wno-override-module");
-    EXPECT_EQ(0, WEXITSTATUS(status));
-    status = std::system("./test");
-    EXPECT_EQ(gt % 256, WEXITSTATUS(status));
-#endif
+    EXPECT_EQ(gt % 256, ll::compile_and_run(w, gtest::test_name()));
 }
 
 TEST_P(ForAxiomTest, for_dynamic_iters) {
@@ -166,23 +158,10 @@ TEST_P(ForAxiomTest, for_dynamic_iters) {
     opt.add<CopyProp>(br, ee);
     opt.run();
 
-    std::ofstream ofs("test.ll");
-    ll::emit(w, ofs);
-    ofs.close();
-
-    // TODO make sure that proper clang is in path on Windows
-#ifndef _MSC_VER
     unsigned gt = 0;
     for (int i = cbegin; i < cend; i += cstep) { gt += i; }
 
-    std::ostringstream cmd;
-    cmd << "./test " << cbegin << " " << cend << " " << cstep;
-
-    int status = std::system("clang test.ll -o `pwd`/test -Wno-override-module");
-    EXPECT_EQ(0, WEXITSTATUS(status));
-    status = std::system(cmd.str().c_str());
-    EXPECT_EQ(gt % 256, WEXITSTATUS(status));
-#endif
+    EXPECT_EQ(gt % 256, ll::compile_and_run(w, gtest::test_name(), fmt("{} {} {}", cbegin, cend, cstep)));
 }
 
 // test with these begin, end, step combinations:

@@ -21,18 +21,12 @@ using namespace std::literals;
 
 static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
-static std::string get_clang_from_path() {
-    auto clang = sys::exec(THORIN_WHICH " clang");
-    clang.erase(std::find(clang.begin(), clang.end(), '\n'), clang.end());
-    return clang;
-}
-
 int main(int argc, char** argv) {
     try {
         static constexpr const char* Backends = "thorin|h|md|ll|dot";
 
         std::string input, prefix;
-        std::string clang = get_clang_from_path();
+        std::string clang = sys::find_cmd("clang");
         std::vector<std::string> dialect_names, dialect_paths, emitters;
         std::vector<size_t> breakpoints;
 
