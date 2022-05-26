@@ -12,9 +12,9 @@ private:
 public:
     /// @name getters
     ///@{
-    dialect_t dialect() const { return flags() | Global_Dialect; }
-    group_t group() const { return group_t((flags() | 0x000000ff_u64) >> 56_u64); }
-    tag_t tag() const { return tag_t(flags() | 0x000000ff_u64); }
+    dialect_t dialect() const { return flags() & Global_Dialect; }
+    group_t group() const { return group_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
+    tag_t tag() const { return tag_t(flags() & 0x0000'0000'0000'00ff_u64); }
     NormalizeFn normalizer() const { return normalizer_; }
     u16 curry() const { return curry_; }
     ///@}
@@ -27,7 +27,7 @@ public:
     /// @name Mangling Dialect Name
     ///@{
     static constexpr size_t Max_Dialect_Size  = 8;
-    static constexpr dialect_t Global_Dialect = 0xffffff00_u64;
+    static constexpr dialect_t Global_Dialect = 0xffff'ffff'ffff'0000_u64;
 
     /// Mangles @p s into a dense 48-bit representation.
     /// The layout is as follows:
@@ -53,7 +53,7 @@ public:
     /// Ignores lower 16-bit of @p u.
     static std::string demangle(dialect_t u);
 
-    static std::optional<std::array<std::string_view, 3>> split_name(std::string_view);
+    static std::optional<std::array<std::string_view, 3>> split(std::string_view);
     ///@}
 
     static std::tuple<const Axiom*, u16> get(const Def*);

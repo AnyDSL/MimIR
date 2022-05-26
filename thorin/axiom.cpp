@@ -72,7 +72,7 @@ static std::string_view sub_view(std::string_view s, size_t i, size_t n = std::s
     return {s.data() + i, n - i};
 }
 
-std::optional<std::array<std::string_view, 3>> Axiom::split_name(std::string_view s) {
+std::optional<std::array<std::string_view, 3>> Axiom::split(std::string_view s) {
     if (s.empty()) return {};
     if (s[0] != '%') return {};
     s = sub_view(s, 1);
@@ -83,21 +83,15 @@ std::optional<std::array<std::string_view, 3>> Axiom::split_name(std::string_vie
     auto dialect = sub_view(s, 0, dot);
     if (!mangle(dialect)) return {};
 
-    s = sub_view(s, dot + 1);
-    if (auto dot = s.find('.')) {
-        auto group = sub_view(s, 0, dot);
-        auto tag   = sub_view(s, dot + 1);
-        return {
-            {dialect, group, tag}
-        };
+    auto group = sub_view(s, dot + 1);
+    if (auto dot = group.find('.')) {
+        auto tag   = sub_view(group, dot + 1);
+        group = sub_view(group, 0, dot);
+        return {{dialect, group, tag}};
     }
 
-    auto tag = sub_view(s, dot + 1);
-    if (tag.empty()) return {};
-
-    return {
-        {dialect, ""sv, tag}
-    };
+    if (group.empty()) return {};
+    return {{dialect, group, ""sv}};
 }
 
 std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {

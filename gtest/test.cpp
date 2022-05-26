@@ -101,7 +101,7 @@ TEST(Axiom, mangle) {
 }
 
 TEST(Axiom, split) {
-    auto [dialect, group, tag] = Axiom::split_name("%foo.bar.baz");
+    auto [dialect, group, tag] = *Axiom::split("%foo.bar.baz");
     EXPECT_EQ(dialect, "foo");
     EXPECT_EQ(group, "bar");
     EXPECT_EQ(tag, "baz");
