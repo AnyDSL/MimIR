@@ -158,13 +158,7 @@ TEST(ADTest, square) {
     ofs3.close();
 #endif
 
-    std::ofstream ofs_ll("test_ad.ll");
-    ll::emit(w, ofs_ll);
-    ofs_ll.close();
-
-    std::system("clang test_ad.ll -o test_ad");
-    int status = std::system("./test_ad");
-    EXPECT_EQ(0, WEXITSTATUS(status));
+    EXPECT_EQ(0, ll::compile_and_run(w, gtest::test_name()));
 }
 
 #undef verbose
