@@ -25,6 +25,8 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 
+#include "helpers.h"
+
 //#define verbose
 
 using namespace thorin;
