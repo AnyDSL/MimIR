@@ -27,6 +27,8 @@ add_library(thorin_mem MODULE
     mem/be/ll/ll.cpp
     mem/be/ll/ll.h
     mem/mem.cpp
+    mem/mem.h
+    ${CMAKE_CURRENT_BINARY_DIR}/mem.h
 )
 
 set_target_properties(thorin_mem
@@ -41,6 +43,7 @@ add_thorin_dialect(affine)
 
 add_library(thorin_affine MODULE
     affine/affine.cpp
+    affine/affine.h
     ${CMAKE_CURRENT_BINARY_DIR}/affine.h
     affine/passes/lower_for.cpp
     affine/passes/lower_for.h
