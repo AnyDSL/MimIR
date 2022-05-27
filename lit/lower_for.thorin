@@ -1,4 +1,8 @@
-// RUN: %thorin -d affine -e thorin %s -o %t | FileCheck %s
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d affine -e thorin %s -e ll -o %t | FileCheck %s
+// RUN: clang %t.ll -o %t
+// RUN: %t ; test $? -eq 0
+// RUN: %t 1 2 3 ; test $? -eq 6
 
 .import affine;
 .import mem;
@@ -33,7 +37,7 @@
 // CHECK-DAG: λ@(0:i1) _[[appIdExit]]
 
 
-// CHECK-DAG: for_body_[[forBodyId:[0-9]+]]: Cn []
+// CHECK-DAG: for_body_[[forBodyId:[0-9]+]]: Cn %mem.M:
 // CHECK-DAG: = Wrap_add
 // CHECK-DAG: = Wrap_add
 // CHECK-DAG: _[[appIdFor:[0-9]+]]: ⊥:★ = for_[[forId]]
@@ -42,6 +46,3 @@
 // CHECK-DAG: _{{[0-9]+}}: Cn %mem.M: _{{[0-9]+}} = {
 // CHECK-DAG: _[[appIdBody:[0-9]+]]: ⊥:★ = for_body_[[forBodyId]]
 // CHECK-DAG: λ@(0:i1) _[[appIdBody]]
-
-
-// CHECs-NOT: %affine.for

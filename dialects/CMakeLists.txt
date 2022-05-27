@@ -53,3 +53,4 @@ set_target_properties(thorin_affine
         WINDOWS_EXPORT_ALL_SYMBOLS OFF
 )
 target_link_libraries(thorin_affine libthorin)
+add_dependencies(thorin_affine thorin_mem)
