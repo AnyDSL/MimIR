@@ -4,6 +4,19 @@
 
 namespace thorin {
 
+const Def* infer_type_level(World& world, Defs defs) {
+    // TODO deal with non-lit levels
+    level_t level = 0;
+    for (auto def : defs) {
+        if (auto type = def->isa<Type>()) {
+            level = std::max(level, as_lit(type->level()) + 1);
+        } else if (auto type = def->type()->as<Type>()) {
+            level = std::max(level, as_lit(type->level()));
+        }
+    }
+    return world.type(world.lit_univ(level));
+}
+
 bool Checker::equiv(const Def* d1, const Def* d2) {
     if (!d1 || !d2) return false;
 

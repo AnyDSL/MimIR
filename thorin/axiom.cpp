@@ -72,7 +72,7 @@ static std::string_view sub_view(std::string_view s, size_t i, size_t n = std::s
 
 std::optional<std::pair<std::string_view, std::string_view>> Axiom::dialect_and_group(std::string_view s) {
     if (s.empty()) return {};
-    if (s[0] != ':') return {};
+    if (s[0] != '%') return {};
     s = sub_view(s, 1);
 
     auto dot = s.find('.');

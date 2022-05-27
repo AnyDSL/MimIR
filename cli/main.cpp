@@ -7,52 +7,27 @@
 #include <lyra/lyra.hpp>
 
 #include "thorin/config.h"
+#include "thorin/dialects.h"
 
-#include "cli/dialects.h"
 #include "thorin/be/dot/dot.h"
 #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/pass.h"
-
-#ifdef _WIN32
-#    include <windows.h>
-#    define popen  _popen
-#    define pclose _pclose
-#    define WHICH_CLANG "where clang"
-#else
-#    include <dlfcn.h>
-#    define WHICH_CLANG "which clang"
-#endif
+#include "thorin/pass/pipelinebuilder.h"
+#include "thorin/util/sys.h"
 
 using namespace thorin;
 using namespace std::literals;
 
 static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
-/// see https://stackoverflow.com/a/478960
-static std::string exec(const char* cmd) {
-    std::array<char, 128> buffer;
-    std::string result;
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
-    if (!pipe) { throw std::runtime_error("error: popen() failed!"); }
-    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) { result += buffer.data(); }
-    return result;
-}
-
-static std::string get_clang_from_path() {
-    std::string clang;
-    clang = exec(WHICH_CLANG);
-    clang.erase(std::remove(clang.begin(), clang.end(), '\n'), clang.end());
-    return clang;
-}
-
 int main(int argc, char** argv) {
     try {
         static constexpr const char* Backends = "thorin|h|md|ll|dot";
 
         std::string input, prefix;
-        std::string clang = get_clang_from_path();
-        std::vector<std::string> dialects, dialect_paths, emitters;
+        std::string clang = sys::find_cmd("clang");
+        std::vector<std::string> dialect_names, dialect_paths, emitters;
         std::vector<size_t> breakpoints;
 
         bool emit_thorin  = false;
@@ -70,12 +45,12 @@ int main(int argc, char** argv) {
         auto cli = lyra::cli()
             | lyra::help(show_help)
             | lyra::opt(show_version             )["-v"]["--version"     ]("Display version info and exit.")
-            | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: '" WHICH_CLANG "').")
-            | lyra::opt(dialects,      "dialect" )["-d"]["--dialect"     ]("Dynamically load dialect [WIP].")
+            | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
+            | lyra::opt(dialect_names, "dialect" )["-d"]["--dialect"     ]("Dynamically load dialect [WIP].")
             | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("Path to search dialects in.")
             | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("thorin", "h", "md", "ll", "dot")
             | lyra::opt(inc_verbose              )["-V"]["--verbose"     ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
-#ifndef NDEBUG
+#if THORIN_ENABLE_CHECKS
             | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
 #endif
             | lyra::opt(prefix,        "prefix"  )["-o"]["--output"      ]("Prefix used for various output files.")
@@ -104,9 +79,9 @@ int main(int argc, char** argv) {
         }
         // clang-format on
 
-        if (!dialects.empty()) {
-            for (const auto& dialect : dialects) cli::test_plugin(dialect, dialect_paths);
-            return EXIT_SUCCESS;
+        std::vector<Dialect> dialects;
+        if (!dialect_names.empty()) {
+            for (const auto& dialect : dialect_names) { dialects.push_back(Dialect::load(dialect, dialect_paths)); }
         }
 
         if (input.empty()) throw std::invalid_argument("error: no input given");
@@ -115,14 +90,15 @@ int main(int argc, char** argv) {
 
         if (prefix.empty()) {
             auto filename = std::filesystem::path(input).filename();
-            if (filename.extension() != ".thorin") throw std::invalid_argument("error: invalid file name '" + input + "'");
+            if (filename.extension() != ".thorin")
+                throw std::invalid_argument("error: invalid file name '" + input + "'");
             prefix = filename.stem().string();
         }
 
         World world;
         world.set_log_ostream(&std::cerr);
         world.set_log_level((LogLevel)verbose);
-#ifndef NDEBUG
+#if THORIN_ENABLE_CHECKS
         for (auto b : breakpoints) world.breakpoint(b);
 #endif
 
@@ -141,6 +117,14 @@ int main(int argc, char** argv) {
             std::ofstream h(prefix + ".h");
             parser.bootstrap(h);
         }
+
+        PipelineBuilder builder;
+        for (const auto& dialect : dialects) { dialect.register_passes(builder); }
+
+        auto opt = builder.opt_phase(world);
+        opt.run();
+        auto codegen_prep = builder.codegen_prep_phase(world);
+        codegen_prep.run();
 
         if (emit_thorin) world.dump();
 

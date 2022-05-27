@@ -65,7 +65,6 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_top,          "⊤")              \
     m(T_box,          "□")              \
     m(T_colon,        ":")              \
-    m(T_colon_colon,  "∷")              \
     m(T_comma,        ",")              \
     m(T_dot,          ".")              \
     m(T_extract,      "#")              \
@@ -80,13 +79,13 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
 
 #define THORIN_PREC(m)                  \
     /* left     prec,       right  */   \
-    m(Nil,      Bottom,     Nil     )   \
-    m(Nil,      Nil,        Nil     )   \
-    m(Pi,       Arrow,      Arrow   )   \
-    m(Nil,      Pi,         App     )   \
-    m(App,      App,        Extract )   \
-    m(Extract,  Extract,    Lit     )   \
-    m(Nil,      Lit,        Lit     )   \
+    m(Nil,      Bot,     Nil     )      \
+    m(Nil,      Nil,     Nil     )      \
+    m(Pi,       Arrow,   Arrow   )      \
+    m(Nil,      Pi,      App     )      \
+    m(App,      App,     Extract )      \
+    m(Extract,  Extract, Lit     )      \
+    m(Nil,      Lit,     Lit     )      \
 
 class Tok {
 public:

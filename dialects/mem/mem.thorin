@@ -4,36 +4,36 @@
 ///
 /// ## Types
 ///
-/// ### :mem.M
+/// ### %mem.M
 ///
 /// This type tracks all kind of side-effects.
-.ax :mem.M: *; 
+.ax %mem.M: *; 
 ///
-/// ### :mem.Ptr
+/// ### %mem.Ptr
 ///
 /// Pointer type with *pointee* type `T` and *address space* `as`.
 /// At the moment, the *address space* is not really used and a placeholder for future work.
-.ax :mem.Ptr: [*, .Nat] -> *;
+.ax %mem.Ptr: [*, .Nat] -> *;
 ///
 /// ## Operations with Side Effects
 ///
 /// The following operations have side effects.
-/// For this reason, they consume a `:mem.M` and yield a new `:mem.M`.
+/// For this reason, they consume a `%mem.M` and yield a new `%mem.M`.
 ///
-/// ### :mem.load
+/// ### %mem.load
 ///
 /// Loads from a pointer `ptr (T, as)` the pointed value of type `T`.
-.ax :mem.load:  Π [T: *, a: .Nat] -> [:mem.M, :mem.Ptr(T, a)] -> [:mem.M, T], normalize_load;
+.ax %mem.load:  Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as)] -> [%mem.M, T], normalize_load;
 ///
-/// ### :mem.store
+/// ### %mem.store
 ///
 /// Stores a value of type `T` to a pointer `ptr (T, as)`,
-.ax :mem.store: Π [U: *, b: .Nat] -> [:mem.M, :mem.Ptr(U, b), U] -> :mem.M, normalize_store;
+.ax %mem.store: Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as), T] -> %mem.M, normalize_store;
 ///
 /// ## Operations without Side Effects
 ///
-/// ### :mem.lea
+/// ### %mem.lea
 ///
 /// Load effective address. 
 /// Performs address computation.
-.ax :mem.lea: [n: .Nat, Ts: «n; *», as: .Nat] -> [:mem.Ptr(«j: n; Ts#j», as), i: :Int n] -> :mem.Ptr(Ts#i, as);
+.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -> Π [%mem.Ptr(«j: n; Ts#j», as), i: %Int n] -> %mem.Ptr(Ts#i, as);
