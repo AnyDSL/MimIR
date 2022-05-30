@@ -6,7 +6,8 @@
 
 namespace thorin::mem {
 
-static const Def* get_sloxy_type(const Proxy* sloxy) { return mem::as<mem::mem_Ptr>(sloxy->type())->arg(0); }
+static const Def* get_sloxy_type(const Proxy* sloxy) { return mem::as<Tag::mem_Ptr>(sloxy->type())->arg(0); }
+
 static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
     return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_nom<Lam>()};
 }

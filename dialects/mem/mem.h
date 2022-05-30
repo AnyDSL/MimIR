@@ -50,14 +50,14 @@ static inline const Def* tuple_of_types(const Def* t) {
 
 inline const Def* op_lea(const Def* ptr, const Def* index, const Def* dbg = {}) {
     World& w                   = ptr->world();
-    auto [pointee, addr_space] = as<Tag::mem_Ptr>(ptr->type())->args<2>();
+    auto [pointee, addr_space] = mem::as<Tag::mem_Ptr>(ptr->type())->args<2>();
     auto Ts                    = tuple_of_types(pointee);
     return w.app(w.app(w.ax(Tag::mem_lea), {pointee->arity(), Ts, addr_space}), {ptr, index}, dbg);
 }
 
 inline const Def* op_lea_unsafe(const Def* ptr, const Def* i, const Def* dbg = {}) {
     World& w      = ptr->world();
-    auto safe_int = w.type_int(as<Tag::mem_Ptr>(ptr->type())->arg(0)->arity());
+    auto safe_int = w.type_int(mem::as<Tag::mem_Ptr>(ptr->type())->arg(0)->arity());
     return op_lea(ptr, w.op(Conv::u2u, safe_int, i), dbg);
 }
 
@@ -67,19 +67,19 @@ inline const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) {
 }
 
 inline const Def* op_load(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-    World& w = mem->world();
-    auto [T, a] = as<Tag::mem_Ptr>(ptr->type())->args<2>();
+    World& w    = mem->world();
+    auto [T, a] = mem::as<Tag::mem_Ptr>(ptr->type())->args<2>();
     return w.app(w.app(w.ax(Tag::mem_load), {T, a}), {mem, ptr}, dbg);
 }
 
 inline const Def* op_store(const Def* mem, const Def* ptr, const Def* val, const Def* dbg = {}) {
-    World& w = mem->world();
-    auto [T, a] = as<Tag::mem_Ptr>(ptr->type())->args<2>();
+    World& w    = mem->world();
+    auto [T, a] = mem::as<Tag::mem_Ptr>(ptr->type())->args<2>();
     return w.app(w.app(w.ax(Tag::mem_store), {T, a}), {mem, ptr, val}, dbg);
 }
 
 inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
-    return mem::isa<mem::mem_M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;
+    return mem::isa<Tag::mem_M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;
 }
 } // namespace thorin::mem
 

@@ -11,10 +11,12 @@
 #include "thorin/world.h"
 
 // #include "thorin/be/ll/ll.h"
+#include "thorin/fe/parser.h"
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/pass.h"
+#include "thorin/util/sys.h"
 
 #include "dialects/mem/mem.h"
 
@@ -208,6 +210,13 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     World w;
+    {
+        auto path = (sys::path_to_curr_exe()->parent_path().parent_path() / "lib" / "thorin" / "mem.thorin").string();
+        std::ifstream ifs{path};
+
+        Parser parser(w, path, ifs);
+        parser.parse_module();
+    }
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int_width(32);
     auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
