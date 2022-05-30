@@ -13,7 +13,10 @@ const Def* Foo::rewrite(const Def* def) {
     return def;
 }
 
-PassTag Foo::ID{};
+PassTag* Foo::ID() {
+    static PassTag Key;
+    return &Key;
+}
 
 } // namespace thorin
 

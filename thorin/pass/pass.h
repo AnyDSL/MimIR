@@ -128,13 +128,13 @@ public:
     /// If a pass of the same class has been added already, returns the earlier added instance.
     template<class P, class... Args>
     P* add(Args&&... args) {
-        if (auto it = registered_passes_.find(reinterpret_cast<u64>(&P::ID)); it != registered_passes_.end())
+        if (auto it = registered_passes_.find(reinterpret_cast<u64>(P::ID())); it != registered_passes_.end())
             return static_cast<P*>(it->second);
         auto p   = std::make_unique<P>(*this, std::forward<Args>(args)...);
         auto res = p.get();
         fixed_point_ |= res->fixed_point();
         passes_.emplace_back(std::move(p));
-        registered_passes_.emplace(reinterpret_cast<u64>(&P::ID), res);
+        registered_passes_.emplace(reinterpret_cast<u64>(P::ID()), res);
         return res;
     }
 

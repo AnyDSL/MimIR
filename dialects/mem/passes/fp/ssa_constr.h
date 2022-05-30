@@ -29,7 +29,7 @@ public:
 
     using Data = GIDNodeMap<Lam*, Info>;
 
-    static PassTag ID;
+    static PassTag* ID();;
 
 private:
     /// @name PassMan hooks

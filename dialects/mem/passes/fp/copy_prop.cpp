@@ -117,6 +117,6 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     return No_Undo;
 }
 
-PassTag CopyProp::ID{};
+PassTag* CopyProp::ID() { static PassTag Key; return &Key; }
 
 } // namespace thorin
