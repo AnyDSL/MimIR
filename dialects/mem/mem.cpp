@@ -39,9 +39,3 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
             },
             [](Backends& backends) { backends["ll"] = &ll::emit; }};
 }
-
-namespace thorin::mem {
-const Def* mem_var(Lam* lam, const Def* dbg) {
-    return mem::isa<mem::mem_M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;
-}
-} // namespace thorin::mem

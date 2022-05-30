@@ -16,6 +16,8 @@
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/pass.h"
 
+#include "dialects/mem/mem.h"
+
 using namespace thorin;
 
 TEST(RestrictedDependentTypes, join_singleton) {
@@ -206,9 +208,9 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     World w;
-    auto mem_t  = w.type_mem();
+    auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int_width(32);
-    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
+    auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
 
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]
     auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});

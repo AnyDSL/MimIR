@@ -649,7 +649,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
         // clang-format on
         return bb.assign(name, "bitcast {} {} to {}", src_t, src, dst_t);
-    } else if (auto lea = isa<Tag::LEA>(def)) {
+    } else if (auto lea = mem::isa<mem::mem_lea>(def)) {
         auto [ptr, idx] = lea->args<2>();
         auto ll_ptr     = emit(ptr);
         auto pointee    = mem::as<mem::mem_Ptr>(ptr->type())->arg(0);
@@ -686,13 +686,13 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto [pointee, addr_space] = mslot->decurry()->args<2>();
         print(lam2bb_[entry_].body().emplace_front(), "{} = alloca {}", name, convert(pointee));
         return name;
-    } else if (auto load = isa<Tag::Load>(def)) {
+    } else if (auto load = mem::isa<mem::mem_load>(def)) {
         emit_unsafe(load->arg(0));
         auto ptr       = emit(load->arg(1));
         auto ptr_t     = convert(load->arg(1)->type());
         auto pointee_t = convert(mem::as<mem::mem_Ptr>(load->arg(1)->type())->arg(0));
         return bb.assign(name, "load {}, {} {}", pointee_t, ptr_t, ptr);
-    } else if (auto store = isa<Tag::Store>(def)) {
+    } else if (auto store = mem::isa<mem::mem_store>(def)) {
         emit_unsafe(store->arg(0));
         auto ptr   = emit(store->arg(1));
         auto val   = emit(store->arg(2));

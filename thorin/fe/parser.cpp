@@ -172,7 +172,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
             // HACK hard-coded some built-in axioms
             auto tok = lex();
             auto s = tok.sym().to_string();
-            if (s == "%Mem")      return world().type_mem();
+            // if (s == "%Mem")      return world().ax();
             if (s == "%Int"     ) return world().type_int();
             if (s == "%Real"    ) return world().type_real();
             if (s == "%Wrap_add") return world().ax(Wrap::add);
