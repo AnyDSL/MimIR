@@ -12,7 +12,7 @@ public:
 
     const Def* rewrite(const Def*) override;
 
-    static PassTag* ID();;
+    static PassTag* ID();
 };
 
 } // namespace thorin::mem

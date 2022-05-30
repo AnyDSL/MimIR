@@ -16,7 +16,7 @@ public:
 
     void keep(Lam* lam) { keep_.emplace(lam); }
 
-    static PassTag* ID();;
+    static PassTag* ID();
 
 private:
     const Def* rewrite(const Def*) override;
