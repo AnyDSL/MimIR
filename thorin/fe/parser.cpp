@@ -20,6 +20,8 @@
     case Tok::Tag::K_def
 // clang-format on
 
+using namespace std::string_literals;
+
 namespace thorin {
 
 Parser::Parser(World& world, std::string_view file, std::istream& istream, std::ostream* md)
@@ -428,18 +430,16 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
 }
 
 void Parser::parse_ax() {
-#if 0
     auto track = tracker();
     eat(Tok::Tag::K_ax);
-    auto& info = bootstrapper_.axioms.emplace_back();
-
-    auto ax     = expect(Tok::Tag::M_ax, "name of an axiom");
+    auto ax    = expect(Tok::Tag::M_ax, "name of an axiom");
     auto ax_str = ax.sym().to_string();
-
-    auto split = Axiom::split_name(ax_str);
+    auto split = Axiom::split(ax_str);
     if (!split) err(ax.loc(), "invalid axiom name '{}'", ax);
 
     auto [dialect, group, tag] = *split;
+
+    auto& info   = bootstrapper_.axioms.emplace_back();
     info.dialect = dialect;
     info.group   = group;
 
@@ -452,10 +452,8 @@ void Parser::parse_ax() {
     // 6 bytes dialect name, 1 byte group, 1 byte tag
     assert(bootstrapper_.axioms.size() < std::numeric_limits<u8>::max());
 
-    // split_name already tried mangling, so we know it's valid.
-    info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
-    auto id_dialect = Axiom::mangle(dialect);
-    auto id_group = bootstreapper_.axioms.size() - 1;
+    // split already tried mangling, so we know it's valid.
+    //info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
 
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
@@ -466,14 +464,26 @@ void Parser::parse_ax() {
     }
 
     expect(Tok::Tag::T_colon, "axiom");
-    auto type = parse_expr("type of an axiom");
-    info.pi   = type->isa<Pi>() != nullptr;
-
-    auto axiom = world().axiom(type, id_dialect, id_group, id_tag, track.named(ax.sym()));
-    insert(ax.sym(), axiom);
+    auto type       = parse_expr("type of an axiom");
+    info.pi         = type->isa<Pi>() != nullptr;
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
+
+    dialect_t d = *Axiom::mangle(dialect);
+    group_t g = bootstrapper_.axioms.size() - 1;
+    tag_t t = 0;
+    if (info.tags.empty()) {
+        auto axiom = world().axiom(type, d, g, 0, track.named(ax.sym()));
+        insert(ax.sym(), axiom);
+    } else {
+        for (const auto& tag : info.tags) {
+            auto axiom = world().axiom(type, d, g, t++, track);
+            for (auto& alias : tag) {
+                Sym name = world().tuple_str(ax_str + "."s + alias);
+                insert(name, axiom);
+            }
+        }
+    }
     expect(Tok::Tag::T_semicolon, "end of an axiom");
-#endif
 }
 
 void Parser::parse_let() {

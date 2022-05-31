@@ -4,6 +4,10 @@
 ///
 /// ## Types
 ///
+/// ### %std.Int
+///
+.ax %std.Int: .Nat -> *;
+///
 /// ## Operations
 ///
 /// ### %std.icmp
@@ -68,8 +72,42 @@
 /// | `XYGlE` |         | x | x | x | o | x | signed or unsigned greater or equal == not less |
 /// | `XYGLe` |  `ne`   | x | x | x | x | o | not equal                                       |
 /// | `XYGLE` |  `t`    | x | x | x | x | x | always true                                     |
-.ax %std.icmp(xygle = f, xyglE, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE, 
-              xYgle,     xYglE, xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE, 
-              Xygle,     XyglE, XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE, 
-              XYgle,     XYglE, XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t): 
+.ax %std.icmp(xygle = f, xyglE, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,
+              xYgle,     xYglE, xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
+              Xygle,     XyglE, XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
+              XYgle,     XYglE, XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
     Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_icmp;
+///
+/// ### %std.bit
+///
+/// | Tag  | Alias  | B | B | A | A | Comment
+/// |------|--------|---|---|---|---|------------------------------|
+/// | bbaa | f      | o | o | o | o | always false                 |
+/// | bbaA | nor    | o | o | o | x |                              |
+/// | bbAa | nciff  | o | o | x | o | not converse implication     |
+/// | bbAA | na     | o | o | x | x | not first argument           |
+/// | bBaa | niff   | o | x | o | o | not implication              |
+/// | bBaA | nb     | o | x | o | x | not second argument          |
+/// | bBAa | _xor   | o | x | x | o |                              |
+/// | bBAA | nand   | o | x | x | x |                              |
+/// | Bbaa | _and   | x | o | o | o |                              |
+/// | BbaA | nxor   | x | o | o | x |                              |
+/// | BbAa | b      | x | o | x | o | second argument              |
+/// | BbAA | iff    | x | o | x | x | implication (if and only if) |
+/// | BBaa | a      | x | x | o | o | first argment                |
+/// | BBaA | ciff   | x | x | o | x | converse implication         |
+/// | BBAa | _or    | x | x | x | o |                              |
+/// | BBAA | t      | x | x | x | x | always true                  |
+.ax %std.bit(bbaa = f,     bbaA = nor,  bbAa = nciff,  bbAA = na,
+             bBaa = niff,  bBaA = nb,   bBAa = _xor,   bBAA = nand,
+             Bbaa = _and,  BbaA = nxor, BbAa = b,      BbAA = iff,
+             BBaa = a,     BBaA = ciff, BBAa = _or,    BBAA = t):
+    Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_bit;
+///
+/// ### %std.shr
+///
+.ax %std.shr(ashr, lshr): Π w: .Nat -> [%Int w, %Int w] -> %Int w, normalize_shr;
+///
+/// ### %std.wrap
+///
+.ax %std.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [%Int w, %Int w] -> %Int w, normalize_wrap;

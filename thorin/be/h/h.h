@@ -15,7 +15,6 @@ struct AxiomInfo {
     std::string group;
     std::deque<std::deque<std::string>> tags;
     std::string normalizer;
-    std::size_t id;
     bool pi;
 };
 

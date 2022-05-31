@@ -559,7 +559,7 @@ public:
 class Proxy : public Def {
 private:
     Proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg)
-        : Def(Node, type, ops, ((u64)index << 32_u64) | (u64)tag, dbg) {}
+        : Def(Node, type, ops, (u64(index) << 32_u64) | u64(tag), dbg) {}
 
 public:
     /// @name misc getters

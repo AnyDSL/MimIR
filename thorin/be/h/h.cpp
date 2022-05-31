@@ -20,7 +20,7 @@ void Bootstrapper::emit(std::ostream& h) {
     tab.print(h, "enum Tag : u64 {{\n");
     ++tab;
     h << std::hex;
-    for (const auto& ax : axioms) { tab.print(h, "{}_{} = 0x{},\n", ax.dialect, ax.group, ax.id); }
+    //for (const auto& ax : axioms) { tab.print(h, "{}_{} = 0x{},\n", ax.dialect, ax.group, ax.id); }
     h << std::dec;
     --tab;
     tab.print(h, "}};\n\n");

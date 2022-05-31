@@ -85,13 +85,17 @@ std::optional<std::array<std::string_view, 3>> Axiom::split(std::string_view s) 
 
     auto group = sub_view(s, dot + 1);
     if (auto dot = group.find('.')) {
-        auto tag   = sub_view(group, dot + 1);
-        group = sub_view(group, 0, dot);
-        return {{dialect, group, tag}};
+        auto tag = sub_view(group, dot + 1);
+        group    = sub_view(group, 0, dot);
+        return {
+            {dialect, group, tag}
+        };
     }
 
     if (group.empty()) return {};
-    return {{dialect, group, ""sv}};
+    return {
+        {dialect, group, ""sv}
+    };
 }
 
 std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {

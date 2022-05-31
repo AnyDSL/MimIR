@@ -86,8 +86,8 @@ public:
             return type(lit_univ(level), dbg);
     }
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
-    const Proxy* proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg = {}) {
-        return unify<Proxy>(ops.size(), type, ops, index, flags, dbg);
+    const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg = {}) {
+        return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }
     Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
     Infer* nom_infer(const Def* type, Sym sym, Loc loc) { return insert<Infer>(1, type, dbg({sym, loc})); }
