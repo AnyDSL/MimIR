@@ -1,0 +1,54 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -e thorin %s -e ll -o %t | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t ; test $? -eq 0
+// RUN: %t 1 2 3 ; test $? -eq 6
+
+.import std;
+.import mem;
+
+.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
+    .ff,
+    .lam loop: .Cn [mem: %mem.M, i: %Int 4294967296, acc: %Int 4294967296] = {
+        .ff,
+        .let cond: (%Int 2) = %std.icmp.ul 4294967296:.Nat (i, argc);
+
+        .lam exit: .Cn %mem.M = {
+            .ff,
+            return (@exit, acc)
+        };
+
+        .lam body: .Cn %mem.M = {
+            .ff,
+            .let inc: (%Int 4294967296) = %Wrap_add (0:.Nat, 4294967296:.Nat) (1:(%Int 4294967296), i);
+            .let acci: (%Int 4294967296) = %Wrap_add (0:.Nat, 4294967296:.Nat) (i, acc);
+            loop (@body, inc, acci)
+        };
+        (exit, body)#cond mem
+    };
+    loop (mem, 0:(%Int 4294967296), 0:(%Int 4294967296))
+};
+
+
+// CHECK-DAG: main_{{[0-9]+}}: Cn _{{[0-9]+}}: (_[[memId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
+// CHECK-DAG: _[[appLoopId:[0-9]+]]: ⊥:★ = loop_[[loopId:[0-9]+]] (_[[memId]], 0:i32, 0:i32);
+// CHECK-DAG: λ@(0:i1) _[[appLoopId]]
+
+// CHECK-DAG: _[[exitEtaId:[0-9]+]]: Cn [%mem.M, i32]: (_{{[0-9]+}}, _{{[0-9]+}}) = {
+// CHECK-DAG:    _[[appReturnId:[0-9]+]]: ⊥:★ = _[[returnId]] @_[[exitEtaId]];
+// CHECK-DAG:    λ@(0:i1) _[[appReturnId:[0-9]+]]
+
+// CHECK-DAG: loop_[[loopId]]: Cn _{{[0-9]+}}: (_[[loopMemId:[0-9]+]], _[[iterId:[0-9]+]], _[[accId:[0-9]+]]) = {
+// CHECK-DAG: _[[condId:[0-9]+]]: i1 = %std.icmp.XygLe 4294967296:nat (_[[iterId]], _[[argcId]]);
+// CHECK-DAG: _[[appCondId:[0-9]+]]: ⊥:★ = (exit_[[exitId:[0-9]+]], body_[[bodyId:[0-9]+]])#_[[condId]] _[[loopMemId]];
+// CHECK-DAG: λ@(0:i1) _[[appCondId]]
+
+// CHECK-DAG: exit_[[exitId]]: Cn %mem.M: exit_[[exitVarId:[0-9]+]] = {
+// CHECK-DAG: _[[appExitEtaId:[0-9]+]]: ⊥:★ = _[[exitEtaId]] (@exit_[[exitVarId]], _[[accId]]);
+// CHECK-DAG: λ@(0:i1) _[[appExitEtaId]]
+
+// CHECK-DAG: body_[[bodyId]]: Cn %mem.M: body_[[bodyVarId:[0-9]+]] = {
+// CHECK-DAG: _[[addIterId:[0-9]+]]: i32 = Wrap_add (0:nat, 4294967296:nat) (1:i32, _[[iterId]]);
+// CHECK-DAG: _[[addAccId:[0-9]+]]: i32 = Wrap_add (0:nat, 4294967296:nat) (_[[accId]], _[[iterId]]);
+// CHECK-DAG: _[[appLoopIdBody:[0-9]+]]: ⊥:★ = loop_[[loopId]] (@body_[[bodyVarId]], _[[addIterId]], _[[addAccId]]);
+// CHECK-DAG: λ@(0:i1) _[[appLoopIdBody]]
