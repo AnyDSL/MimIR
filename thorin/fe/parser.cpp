@@ -473,13 +473,12 @@ void Parser::parse_ax() {
         size_t tag_id = 0;
         for (auto& tag : info.tags) {
             assert(tag_id < 0xFF && "at most 256 tags allowed for a single axiom");
+            auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t((info.id & u32(-1)) | tag_id++),
+                                       track.named(world().sym(ax.sym().to_string() + "." + tag.front())));
             for (auto& alias : tag) {
                 auto sym = world().sym(ax.sym().to_string() + "." + alias);
-                auto axiom =
-                    world().axiom(type, tag_t(info.id >> 32u), flags_t((info.id & u32(-1)) | tag_id), track.named(sym));
                 insert(sym, axiom);
             }
-            tag_id++;
         }
     }
 
