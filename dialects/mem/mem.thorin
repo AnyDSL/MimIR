@@ -30,6 +30,13 @@
 /// Stores a value of type `T` to a pointer `ptr (T, as)`,
 .ax %mem.store: Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as), T] -> %mem.M, normalize_store;
 ///
+/// ### %mem.mslot
+///
+/// Reserves a memory slot for type `T` in address space `as`.
+/// The reserved slot will be `size` bytes large.
+/// `id` has to be provided an unique id.
+.ax %mem.mslot: Π [T: *, as: .Nat] -> [%mem.M, size: .Nat, id: .Nat] -> [%mem.M, %mem.Ptr(T, as)];
+///
 /// ## Operations without Side Effects
 ///
 /// ### %mem.lea

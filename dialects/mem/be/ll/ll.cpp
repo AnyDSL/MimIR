@@ -703,7 +703,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto ptr_t = convert(mem::as<mem::mem_Ptr>(def->proj(1)->type()));
         bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
         return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
-    } else if (auto mslot = isa<Tag::Mslot>(def)) {
+    } else if (auto mslot = mem::isa<mem::mem_mslot>(def)) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
         // auto size = emit(mslot->arg(1));

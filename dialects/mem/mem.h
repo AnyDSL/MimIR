@@ -78,6 +78,12 @@ inline const Def* op_store(const Def* mem, const Def* ptr, const Def* val, const
     return w.app(w.app(w.ax(Tag::mem_store), {T, a}), {mem, ptr, val}, dbg);
 }
 
+inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg /*= {}*/) {
+    World& w  = type->world();
+    auto size = w.op(Trait::size, type);
+    return w.app(w.app(w.ax(Tag::mem_mslot), {type, w.lit_nat_0()}), {mem, size, id}, dbg);
+}
+
 inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
     return mem::isa<Tag::mem_M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;
 }
