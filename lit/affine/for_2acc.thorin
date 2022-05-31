@@ -1,6 +1,6 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin -d affine -e thorin %s -e ll -o %t | FileCheck %s
-// RUN: clang %t.ll -o %t
+// RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t ; test $? -eq 0
 // RUN: %t 1 2 3 ; test $? -eq 6
 
