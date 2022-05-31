@@ -1,0 +1,27 @@
+// XFAIL: *
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d affine -e thorin %s -e ll -o %t | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t ; test $? -eq 0
+// RUN: %t 1 2 3 ; test $? -eq 6
+
+.import affine;
+.import mem;
+
+.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
+    0: (%Int 2), 
+    .lam for_exit: .Cn [mem : %mem.M , acc : [%Int 4294967296, %Int 0]] = {
+        0: (%Int 2),
+        return (mem, acc#.ff)
+    };
+
+    .lam for_body: .Cn [mem : %mem.M , i : %Int 4294967296, acc : [%Int 4294967296, %Int 0], continue : .Cn [%mem.M , [%Int 4294967296, %Int 0]]] = {
+        0: (%Int 2),
+        .let a : %Int 4294967296 = %Wrap_add (0:.Nat, 4294967296:.Nat) (i, acc#.ff);
+        .let b : %Int 0 = %Wrap_sub (0:.Nat, 0:.Nat) (%std.conv.u2u (0, 4294967296) i, acc#.tt);
+        continue (mem, (a, b))
+    };
+    %affine.for (4294967296, 2, (%Int 4294967296, %Int 0)) (mem, 0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296), 0:(%Int 0)), for_body, for_exit)
+};
+
+// CHECK-NOT: affine.for
