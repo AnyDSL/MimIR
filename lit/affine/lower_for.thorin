@@ -23,7 +23,7 @@
 
 // CHECK-DAG: main_[[mainId:[0-9]+]]: Cn _{{[0-9]+}}: (_{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}) = {
 // CHECK-DAG: for_[[forId:[0-9]+]]
-// CcHECK-NOT: %affine.for
+// CHECK-NOT: %affine.for
 
 // CHECK-DAG: _[[exitId:[0-9]+]]: Cn [%mem.M, i32]
 
