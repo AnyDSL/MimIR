@@ -432,9 +432,9 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
 void Parser::parse_ax() {
     auto track = tracker();
     eat(Tok::Tag::K_ax);
-    auto ax    = expect(Tok::Tag::M_ax, "name of an axiom");
+    auto ax     = expect(Tok::Tag::M_ax, "name of an axiom");
     auto ax_str = ax.sym().to_string();
-    auto split = Axiom::split(ax_str);
+    auto split  = Axiom::split(ax_str);
     if (!split) err(ax.loc(), "invalid axiom name '{}'", ax);
 
     auto [dialect, group, tag] = *split;
@@ -453,7 +453,7 @@ void Parser::parse_ax() {
     assert(bootstrapper_.axioms.size() < std::numeric_limits<u8>::max());
 
     // split already tried mangling, so we know it's valid.
-    //info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
+    // info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
 
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
@@ -469,8 +469,8 @@ void Parser::parse_ax() {
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
 
     dialect_t d = *Axiom::mangle(dialect);
-    group_t g = bootstrapper_.axioms.size() - 1;
-    tag_t t = 0;
+    group_t g   = bootstrapper_.axioms.size() - 1;
+    tag_t t     = 0;
     if (info.tags.empty()) {
         auto axiom = world().axiom(type, d, g, 0, track.named(ax.sym()));
         insert(ax.sym(), axiom);

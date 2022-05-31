@@ -107,7 +107,9 @@ public:
     /// This is useful during testing to come up with some entitiy of a specific type.
     /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::tag and counts up from there.
     /// The Axiom::group is set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(const Def* type, const Def* dbg = {}) { return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.curr_tag++, dbg); }
+    const Axiom* axiom(const Def* type, const Def* dbg = {}) {
+        return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.curr_tag++, dbg);
+    }
     ///@}
 
     /// @name Pi
