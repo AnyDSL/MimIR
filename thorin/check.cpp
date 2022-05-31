@@ -17,6 +17,7 @@ const Def* infer_type_level(World& world, Defs defs) {
     return world.type(world.lit_univ(level));
 }
 
+template<bool EmplaceCache>
 bool Checker::equiv(const Def* d1, const Def* d2) {
     if (!d1 || !d2) return false;
 
@@ -25,29 +26,39 @@ bool Checker::equiv(const Def* d1, const Def* d2) {
     // normalize: always put smaller gid to the left
     if (d1->gid() > d2->gid()) std::swap(d1, d2);
 
-    // this assumption will either hold true - or we will bail out with false anyway
-    auto [_, inserted] = equiv_.emplace(d1, d2);
-    if (!inserted) return true;
+    if constexpr (EmplaceCache) {
+        // this assumption will either hold true - or we will bail out with false anyway
+        auto [_, inserted] = equiv_.emplace(d1, d2);
+        if (!inserted) return true;
+    } else if (equiv_.find(DefDef{d1, d2}) != equiv_.end())
+        return true;
 
-    if (!equiv(d1->type(), d2->type())) return false;
+    if (!equiv<EmplaceCache>(d1->type(), d2->type())) return false;
 
-    if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type());
+    if (d1->isa<Top>() || d2->isa<Top>()) return equiv<EmplaceCache>(d1->type(), d2->type());
 
     if (is_sigma_or_arr(d1)) {
-        if (!equiv(d1->arity(), d2->arity())) return false;
+        if (!equiv<EmplaceCache>(d1->arity(), d2->arity())) return false;
 
         if (auto a = isa_lit(d1->arity())) {
             for (size_t i = 0; i != a; ++i) {
-                if (!equiv(d1->proj(*a, i), d2->proj(*a, i))) return false;
+                if (!equiv<EmplaceCache>(d1->proj(*a, i), d2->proj(*a, i))) return false;
             }
-
+            if constexpr (!EmplaceCache) equiv_.emplace(d1, d2);
             return true;
         }
     } else if (auto p1 = d1->isa<Var>()) {
         // vars are equal if they appeared under the same binder
         for (auto [q1, q2] : vars_) {
-            if (p1 == q1) return d2->as<Var>() == q2;
+            if (p1 == q1) {
+                auto result = d2->as<Var>() == q2;
+                if constexpr (!EmplaceCache)
+                    if (result) equiv_.emplace(d1, d2);
+                return result;
+            }
         }
+
+        if constexpr (!EmplaceCache) equiv_.emplace(d1, d2);
         return true;
     }
 
@@ -59,8 +70,15 @@ bool Checker::equiv(const Def* d1, const Def* d2) {
         d1->is_set() != d2->is_set())
         return false;
 
-    return std::ranges::equal(d1->ops(), d2->ops(), [this](auto op1, auto op2) { return equiv(op1, op2); });
+    bool result =
+        std::ranges::equal(d1->ops(), d2->ops(), [this](auto op1, auto op2) { return equiv<EmplaceCache>(op1, op2); });
+    if constexpr (!EmplaceCache)
+        if (result) equiv_.emplace(d1, d2);
+    return result;
 }
+
+template bool Checker::equiv<true>(const Def*, const Def*);
+template bool Checker::equiv<false>(const Def*, const Def*);
 
 bool Checker::assignable(const Def* type, const Def* val) {
     if (type == val->type()) return true;
