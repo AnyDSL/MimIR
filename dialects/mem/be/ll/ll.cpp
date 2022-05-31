@@ -427,6 +427,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
             if (auto mod = mod2width(as_lit(size))) {
                 switch (*mod) {
                     // clang-format off
+                    case  0: return {};
                     case  1: return ::std::to_string(lit->get< u1>());
                     case  2:
                     case  4:
@@ -733,7 +734,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto tuple  = extract->tuple();
         auto index  = extract->index();
         auto ll_tup = emit_unsafe(tuple);
-        auto ll_idx = emit(index);
+        auto ll_idx = emit_unsafe(index);
 
         if (mem::isa<mem::mem_M>(extract->type())) return {};
 

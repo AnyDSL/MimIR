@@ -51,6 +51,7 @@ World::World(std::string_view name)
 
     { // int/real: w: Nat -> *
         auto p             = pi(nat, type());
+        data_.type_int_    = nullptr; // hack for alpha equiv check of sigma (dbg..)
         data_.type_int_    = axiom(p, Tag::Int, 0, dbg("Int"));
         data_.type_real_   = axiom(p, Tag::Real, 0, dbg("Real"));
         data_.type_bool_   = type_int(2);
@@ -307,7 +308,7 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return checker_->equiv<false>(ops[0], op); })) return arr(n, ops[0]);
     return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
 }
 

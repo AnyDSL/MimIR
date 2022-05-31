@@ -377,6 +377,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
+        if (!world().type_int()) return arr->op(i); // hack for alpha equiv check of sigma (dbg of %Int..)
         return arr->reduce(world().lit_int(as_lit(arr->arity()), i)).back();
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
