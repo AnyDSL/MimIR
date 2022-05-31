@@ -88,13 +88,13 @@ void Bootstrapper::emit(std::ostream& h) {
         "template<fields_t t>\n"
         "Query<Tag2Enum<t>, Tag2Def<t>> as(const Def* d) {{\n"
         "    assert({}::isa<t>(d));\n"
-        "    return {{std::get<0>(Axiom::get(d)), d->as<App>()}};\n"
+        "    return {{::std::get<0>(Axiom::get(d)), d->as<App>()}};\n"
         "}}\n\n"
 
         "template<fields_t t>\n"
         "Query<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {{\n"
         "    assert(({}::isa<t>(f, d)));\n"
-        "    return {{std::get<0>(Axiom::get(d)), d->as<App>()}};\n"
+        "    return {{::std::get<0>(Axiom::get(d)), d->as<App>()}};\n"
         "}}\n",
         dialect_, dialect_);
 

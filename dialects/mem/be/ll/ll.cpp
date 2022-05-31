@@ -11,6 +11,7 @@
 #include "thorin/util/sys.h"
 
 #include "dialects/mem.h"
+#include "dialects/std.h"
 
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.
@@ -23,7 +24,7 @@
 //      * LLVM:   {0, -1} = i1
 //   This is a problem when, e.g., using an index of type i1 as LLVM thinks like this:
 //   getelementptr ..., i1 1 == getelementptr .., i1 -1
-using namespace std::string_literals;
+using namespace ::std::string_literals;
 
 namespace thorin::ll {
 
@@ -34,7 +35,7 @@ static bool is_const(const Def* def) {
 
     if (auto tuple = def->isa<Tuple>()) {
         auto ops = tuple->ops();
-        return std::ranges::all_of(ops, [](auto def) { return is_const(def); });
+        return ::std::ranges::all_of(ops, [](auto def) { return is_const(def); });
     }
 
     return false;
@@ -45,61 +46,61 @@ struct BB {
     BB(const BB&) = delete;
     BB(BB&& other) { swap(*this, other); }
 
-    std::deque<std::ostringstream>& head() { return parts[0]; }
-    std::deque<std::ostringstream>& body() { return parts[1]; }
-    std::deque<std::ostringstream>& tail() { return parts[2]; }
+    ::std::deque<::std::ostringstream>& head() { return parts[0]; }
+    ::std::deque<::std::ostringstream>& body() { return parts[1]; }
+    ::std::deque<::std::ostringstream>& tail() { return parts[2]; }
 
     template<class... Args>
-    std::string assign(std::string_view name, const char* s, Args&&... args) {
-        print(print(body().emplace_back(), "{} = ", name), s, std::forward<Args&&>(args)...);
-        return std::string(name);
+    ::std::string assign(::std::string_view name, const char* s, Args&&... args) {
+        print(print(body().emplace_back(), "{} = ", name), s, ::std::forward<Args&&>(args)...);
+        return ::std::string(name);
     }
 
     template<class... Args>
     void tail(const char* s, Args&&... args) {
-        print(tail().emplace_back(), s, std::forward<Args&&>(args)...);
+        print(tail().emplace_back(), s, ::std::forward<Args&&>(args)...);
     }
 
     friend void swap(BB& a, BB& b) {
-        using std::swap;
+        using ::std::swap;
         swap(a.phis, b.phis);
         swap(a.parts, b.parts);
     }
 
-    DefMap<std::vector<std::pair<std::string, std::string>>> phis;
-    std::array<std::deque<std::ostringstream>, 3> parts;
+    DefMap<::std::vector<::std::pair<::std::string, ::std::string>>> phis;
+    ::std::array<::std::deque<::std::ostringstream>, 3> parts;
 };
 
-class CodeGen : public Emitter<std::string, std::string, BB, CodeGen> {
+class CodeGen : public Emitter<::std::string, ::std::string, BB, CodeGen> {
 public:
-    CodeGen(World& world, std::ostream& ostream)
+    CodeGen(World& world, ::std::ostream& ostream)
         : Emitter(world, ostream) {}
 
-    bool is_valid(std::string_view s) { return !s.empty(); }
+    bool is_valid(::std::string_view s) { return !s.empty(); }
     void run();
     void emit_imported(Lam*);
     void emit_epilogue(Lam*);
-    std::string emit_bb(BB&, const Def*);
-    std::string prepare(const Scope&);
-    void prepare(Lam*, std::string_view);
+    ::std::string emit_bb(BB&, const Def*);
+    ::std::string prepare(const Scope&);
+    void prepare(Lam*, ::std::string_view);
     void finalize(const Scope&);
 
 private:
-    std::string id(const Def*, bool force_bb = false) const;
-    std::string convert(const Def*);
-    std::string convert_ret_pi(const Pi*);
+    ::std::string id(const Def*, bool force_bb = false) const;
+    ::std::string convert(const Def*);
+    ::std::string convert_ret_pi(const Pi*);
 
-    std::ostringstream type_decls_;
-    std::ostringstream vars_decls_;
-    std::ostringstream func_decls_;
-    std::ostringstream func_impls_;
+    ::std::ostringstream type_decls_;
+    ::std::ostringstream vars_decls_;
+    ::std::ostringstream func_decls_;
+    ::std::ostringstream func_impls_;
 };
 
 /*
  * convert
  */
 
-std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
+::std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
     if (auto global = def->isa<Global>()) return "@" + global->unique_name();
 
     if (auto lam = def->isa_nom<Lam>(); lam && !force_bb) {
@@ -113,12 +114,12 @@ std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
     return "%" + def->unique_name();
 }
 
-std::string CodeGen::convert(const Def* type) {
+::std::string CodeGen::convert(const Def* type) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
     assert(!mem::isa<mem::mem_M>(type));
-    std::ostringstream s;
-    std::string name;
+    ::std::ostringstream s;
+    ::std::string name;
 
     if (type->isa<Nat>()) {
         return types_[type] = "i64";
@@ -160,7 +161,7 @@ std::string CodeGen::convert(const Def* type) {
     } else if (auto pi = type->isa<Pi>()) {
         print(s, "{} (", convert(pi->doms().back()->as<Pi>()->dom()));
 
-        std::string_view sep = "";
+        ::std::string_view sep = "";
         auto doms            = pi->doms();
         for (auto dom : doms.skip_back()) {
             if (mem::isa<mem::mem_M>(dom)) continue;
@@ -174,7 +175,7 @@ std::string CodeGen::convert(const Def* type) {
             print(s, "{} = type", name);
         }
         print(s, "{{");
-        std::string_view sep = "";
+        ::std::string_view sep = "";
         for (auto t : sigma->ops()) {
             if (mem::isa<mem::mem_M>(t)) continue;
             s << sep << convert(t);
@@ -192,7 +193,7 @@ std::string CodeGen::convert(const Def* type) {
     return types_[type] = name;
 }
 
-std::string CodeGen::convert_ret_pi(const Pi* pi) {
+::std::string CodeGen::convert_ret_pi(const Pi* pi) {
     switch (pi->num_doms()) {
         case 0: return "void";
         case 1:
@@ -234,7 +235,7 @@ void CodeGen::emit_imported(Lam* lam) {
     print(func_decls_, ")\n");
 }
 
-std::string CodeGen::prepare(const Scope& scope) {
+::std::string CodeGen::prepare(const Scope& scope) {
     auto lam = scope.entry()->as_nom<Lam>();
 
     print(func_impls_, "define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
@@ -277,7 +278,7 @@ void CodeGen::finalize(const Scope& scope) {
                 for (const auto& line : part) tab.print(func_impls_, "{}\n", line.str());
             }
             --tab;
-            func_impls_ << std::endl;
+            func_impls_ << ::std::endl;
         }
     }
 
@@ -289,8 +290,8 @@ void CodeGen::emit_epilogue(Lam* lam) {
     auto& bb = lam2bb_[lam];
 
     if (app->callee() == entry_->ret_var()) { // return
-        std::vector<std::string> values;
-        std::vector<const Def*> types;
+        ::std::vector<::std::string> values;
+        ::std::vector<const Def*> types;
 
         for (auto arg : app->args()) {
             if (auto val = emit_unsafe(arg); !val.empty()) {
@@ -303,12 +304,12 @@ void CodeGen::emit_epilogue(Lam* lam) {
             case 0: return bb.tail("ret void");
             case 1: return bb.tail("ret {} {}", convert(types[0]), values[0]);
             default: {
-                std::string prev = "undef";
+                ::std::string prev = "undef";
                 auto type        = convert(world().sigma(types));
                 for (size_t i = 0, n = values.size(); i != n; ++i) {
                     auto elem   = values[i];
                     auto elem_t = convert(types[i]);
-                    auto namei  = "%ret_val." + std::to_string(i);
+                    auto namei  = "%ret_val." + ::std::to_string(i);
                     bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, elem_t, elem, i);
                     prev = namei;
                 }
@@ -336,7 +337,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
     } else if (auto callee = app->callee()->isa_nom<Lam>()) { // function call
         auto ret_lam = app->args().back()->as_nom<Lam>();
 
-        std::vector<std::string> args;
+        ::std::vector<::std::string> args;
         auto app_args = app->args();
         for (auto arg : app_args.skip_back()) {
             if (auto emitted_arg = emit_unsafe(arg); !emitted_arg.empty())
@@ -365,7 +366,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
                 auto phi   = ret_lam->var(i);
                 auto namei = name;
                 if (e > 2) {
-                    namei += '.' + std::to_string(i - 1);
+                    namei += '.' + ::std::to_string(i - 1);
                     bb.tail("{} = extractvalue {} {}, {}", namei, ret_ty, name, i - 1);
                 }
                 assert(!mem::isa<mem::mem_M>(phi->type()));
@@ -378,18 +379,18 @@ void CodeGen::emit_epilogue(Lam* lam) {
     }
 }
 
-std::string CodeGen::emit_bb(BB& bb, const Def* def) {
+::std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     if (def->isa<Var>()) return {};
     if (auto lam = def->isa<Lam>()) return id(lam);
 
     auto name = id(def);
-    std::string op;
+    ::std::string op;
 
     auto emit_tuple = [&](const Def* tuple) {
         if (is_const(tuple)) {
             bool is_array = tuple->type()->isa<Arr>();
 
-            std::string s;
+            ::std::string s;
             s += is_array ? "[" : "{";
             auto sep = "";
             for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
@@ -404,13 +405,13 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             return s += is_array ? "]" : "}";
         }
 
-        std::string prev = "undef";
+        ::std::string prev = "undef";
         auto t           = convert(tuple->type());
         for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
             auto e = tuple->proj(n, i);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
                 auto elem_t = convert(e->type());
-                auto namei  = name + "." + std::to_string(i);
+                auto namei  = name + "." + ::std::to_string(i);
                 prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, i);
             }
         }
@@ -419,43 +420,43 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
     if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
-            return std::to_string(lit->get<nat_t>());
+            return ::std::to_string(lit->get<nat_t>());
         } else if (isa<Tag::Int>(lit->type())) {
             auto size = isa_sized_type(lit->type());
-            if (size->isa<Top>()) return std::to_string(lit->get<nat_t>());
+            if (size->isa<Top>()) return ::std::to_string(lit->get<nat_t>());
             if (auto mod = mod2width(as_lit(size))) {
                 switch (*mod) {
                     // clang-format off
-                    case  1: return std::to_string(lit->get< u1>());
+                    case  1: return ::std::to_string(lit->get< u1>());
                     case  2:
                     case  4:
-                    case  8: return std::to_string(lit->get< u8>());
-                    case 16: return std::to_string(lit->get<u16>());
-                    case 32: return std::to_string(lit->get<u32>());
-                    case 64: return std::to_string(lit->get<u64>());
+                    case  8: return ::std::to_string(lit->get< u8>());
+                    case 16: return ::std::to_string(lit->get<u16>());
+                    case 32: return ::std::to_string(lit->get<u32>());
+                    case 64: return ::std::to_string(lit->get<u64>());
                     // clang-format on
                     default: unreachable();
                 }
             } else {
-                return std::to_string(lit->get<u64>());
+                return ::std::to_string(lit->get<u64>());
             }
         } else if (auto real = isa<Tag::Real>(lit->type())) {
-            std::stringstream s;
+            ::std::stringstream s;
             u64 hex;
 
             switch (as_lit<nat_t>(real->arg())) {
                 case 16:
-                    s << "0xH" << std::setfill('0') << std::setw(4) << std::right << std::hex << lit->get<u16>();
+                    s << "0xH" << ::std::setfill('0') << ::std::setw(4) << ::std::right << ::std::hex << lit->get<u16>();
                     return s.str();
                 case 32: {
-                    hex = std::bit_cast<u64>(r64(lit->get<r32>()));
+                    hex = ::std::bit_cast<u64>(r64(lit->get<r32>()));
                     break;
                 }
                 case 64: hex = lit->get<u64>(); break;
                 default: unreachable();
             }
 
-            s << "0x" << std::setfill('0') << std::setw(16) << std::right << std::hex << hex;
+            s << "0x" << ::std::setfill('0') << ::std::setw(16) << ::std::right << ::std::hex << hex;
             return s.str();
         }
         unreachable();
@@ -465,7 +466,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto [a, b] = bit->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(bit->type());
 
-        auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} 0, {}", t, x); };
+        auto neg = [&](::std::string_view x) { return bb.assign(name + ".neg", "xor {} 0, {}", t, x); };
 
         switch (bit.flags()) {
             // clang-format off
@@ -570,6 +571,28 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             case ICmp::uge: op += "uge"; break;
             case ICmp::ul:  op += "ult"; break;
             case ICmp::ule: op += "ule"; break;
+            // clang-format on
+            default: unreachable();
+        }
+
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
+    }else if (auto icmp = thorin::std::isa<std::Tag::std_icmp>(def)) {
+        auto [a, b] = icmp->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(icmp->arg(0)->type());
+        op          = "icmp ";
+
+        switch (std::icmp(icmp->axiom()->flags() & 0xFF)) {
+            // clang-format off
+            case thorin::std::icmp::e:   op += "eq" ; break;
+            case thorin::std::icmp::ne:  op += "ne" ; break;
+            case thorin::std::icmp::sg:  op += "sgt"; break;
+            case thorin::std::icmp::sge: op += "sge"; break;
+            case thorin::std::icmp::sl:  op += "slt"; break;
+            case thorin::std::icmp::sle: op += "sle"; break;
+            case thorin::std::icmp::ug:  op += "ugt"; break;
+            case thorin::std::icmp::uge: op += "uge"; break;
+            case thorin::std::icmp::ul:  op += "ult"; break;
+            case thorin::std::icmp::ule: op += "ule"; break;
             // clang-format on
             default: unreachable();
         }
@@ -749,12 +772,12 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
     assert(false && "not yet implemented");
 }
 
-void emit(World& world, std::ostream& ostream) {
+void emit(World& world, ::std::ostream& ostream) {
     CodeGen cg(world, ostream);
     cg.run();
 }
 
-int compile(World& world, std::string name) {
+int compile(World& world, ::std::string name) {
 #ifdef _WIN32
     auto exe = name + ".exe"s;
 #else
@@ -763,17 +786,17 @@ int compile(World& world, std::string name) {
     return compile(world, name + ".ll"s, exe);
 }
 
-int compile(World& world, std::string ll, std::string out) {
-    std::ofstream ofs(ll);
+int compile(World& world, ::std::string ll, ::std::string out) {
+    ::std::ofstream ofs(ll);
     emit(world, ofs);
     ofs.close();
     auto cmd = fmt("clang \"{}\" -o \"{}\" -Wno-override-module", ll, out);
     return sys::system(cmd);
 }
 
-int compile_and_run(World& world, std::string name, std::string args) {
+int compile_and_run(World& world, ::std::string name, ::std::string args) {
     if (compile(world, name) == 0) return sys::run(name, args);
-    throw std::runtime_error("compilation failed");
+    throw ::std::runtime_error("compilation failed");
 }
 
 } // namespace thorin::ll

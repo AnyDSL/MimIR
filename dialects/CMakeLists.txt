@@ -29,6 +29,7 @@ add_library(thorin_mem MODULE
     mem/mem.cpp
     mem/mem.h
     ${CMAKE_CURRENT_BINARY_DIR}/mem.h
+    ${CMAKE_CURRENT_BINARY_DIR}/std.h
 )
 
 set_target_properties(thorin_mem

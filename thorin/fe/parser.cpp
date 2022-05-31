@@ -466,8 +466,23 @@ void Parser::parse_ax() {
     auto type = parse_expr("type of an axiom");
     info.pi   = type->isa<Pi>() != nullptr;
 
-    auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t(info.id & u32(-1)), track.named(ax.sym()));
-    insert(ax.sym(), axiom);
+    if (info.tags.empty()) {
+        auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t(info.id & u32(-1)), track.named(ax.sym()));
+        insert(ax.sym(), axiom);
+    } else {
+        size_t tag_id = 0;
+        for (auto& tag : info.tags) {
+            assert(tag_id < 0xFF && "at most 256 tags allowed for a single axiom");
+            for (auto& alias : tag) {
+                auto sym = world().sym(ax.sym().to_string() + "." + alias);
+                auto axiom =
+                    world().axiom(type, tag_t(info.id >> 32u), flags_t((info.id & u32(-1)) | tag_id), track.named(sym));
+                insert(sym, axiom);
+            }
+            tag_id++;
+        }
+    }
+
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
     expect(Tok::Tag::T_semicolon, "end of an axiom");
 }
