@@ -6,6 +6,7 @@
 #include <gtest/gtest.h>
 
 #include "thorin/def.h"
+#include "thorin/dialects.h"
 #include "thorin/error.h"
 #include "thorin/tables.h"
 #include "thorin/world.h"
@@ -210,13 +211,7 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     World w;
-    {
-        auto path = (sys::path_to_curr_exe()->parent_path().parent_path() / "lib" / "thorin" / "mem.thorin").string();
-        std::ifstream ifs{path};
-
-        Parser parser(w, path, ifs);
-        parser.parse_module();
-    }
+    Parser::import_module(w, "mem");
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int_width(32);
     auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));

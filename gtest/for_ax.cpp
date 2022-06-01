@@ -25,11 +25,11 @@ class ForAxiomTest : public testing::TestWithParam<std::tuple<int, int, int>> {}
 TEST_P(ForAxiomTest, for) {
     World w;
     {
-        auto path =
-            (sys::path_to_curr_exe()->parent_path().parent_path() / "lib" / "thorin" / "affine.thorin").string();
-        std::ifstream ifs{path};
+        auto path = sys::path_to_curr_exe()->parent_path().parent_path() / "lib" / "thorin";
+        std::ifstream ifs{(path / "affine.thorin").string()};
+        std::vector<std::string> search_paths{path.string()};
 
-        Parser parser(w, path, ifs);
+        Parser parser(w, (path / "affine.thorin").string(), ifs, thorin::get_plugin_search_paths({path.string()}));
         parser.parse_module();
     }
     auto mem_t  = mem::type_mem(w);
@@ -94,11 +94,10 @@ TEST_P(ForAxiomTest, for_dynamic_iters) {
     World w;
 
     {
-        auto path =
-            (sys::path_to_curr_exe()->parent_path().parent_path() / "lib" / "thorin" / "affine.thorin").string();
-        std::ifstream ifs{path};
+        auto path = sys::path_to_curr_exe()->parent_path().parent_path() / "lib" / "thorin";
+        std::ifstream ifs{(path / "affine.thorin").string()};
 
-        Parser parser(w, path, ifs);
+        Parser parser(w, (path / "affine.thorin").string(), ifs, thorin::get_plugin_search_paths({path.string()}));
         parser.parse_module();
     }
 
