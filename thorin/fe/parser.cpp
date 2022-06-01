@@ -451,11 +451,8 @@ void Parser::parse_ax() {
         // info.dialect, lexer_.file());
     }
 
-    // 6 bytes dialect name, 1 byte tag, 1 byte sub
-    assert(bootstrapper_.axioms.size() < std::numeric_limits<u8>::max());
-
-    // split already tried mangling, so we know it's valid.
-    // info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
+    if (bootstrapper_.axioms.size() >= std::numeric_limits<tag_t>::max())
+        err(ax.loc(), "exceeded maxinum number of axioms in current dialect");
 
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
@@ -478,7 +475,7 @@ void Parser::parse_ax() {
         insert(ax.sym(), axiom);
     } else {
         for (const auto& sub : info.subs) {
-            auto axiom = world().axiom(type, d, t++, s, track);
+            auto axiom = world().axiom(type, d, t, s++, track);
             for (auto& alias : sub) {
                 Sym name = world().tuple_str(ax_str + "."s + alias);
                 insert(name, axiom);
