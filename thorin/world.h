@@ -165,8 +165,6 @@ public:
         return unify<Lam>(2, pi, filter, body, dbg);
     }
     const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_true(), body, dbg); }
-    const Lam* flatten_lam(Lam* lam);
-    const Lam* unflatten_lam(Lam* lam);
     ///@}
 
     /// @name App
