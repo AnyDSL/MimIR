@@ -63,7 +63,7 @@ std::string exec(std::string cmd) {
 
 std::string find_cmd(std::string cmd) {
     auto out = exec(THORIN_WHICH " "s + cmd);
-    out.erase(std::find(out.begin(), out.end(), '\n'), out.end());
+    out.erase(out.find('\n'));
     return out;
 }
 
