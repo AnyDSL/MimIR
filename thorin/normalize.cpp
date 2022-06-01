@@ -33,10 +33,10 @@ static T get(u64 u) {
 
 /// Use like this:
 /// `a op b = tab[a][b]`
-constexpr std::array<std::array<uint64_t, 2>, 2> make_truth_table(Bit op) {
+constexpr std::array<std::array<u64, 2>, 2> make_truth_table(Bit op) {
     return {
-        {{tag_t(op) & tag_t(0b0001) ? u64(-1) : 0, tag_t(op) & tag_t(0b0100) ? u64(-1) : 0},
-         {tag_t(op) & tag_t(0b0010) ? u64(-1) : 0, tag_t(op) & tag_t(0b1000) ? u64(-1) : 0}}
+        {{sub_t(op) & sub_t(0b0001) ? u64(-1) : 0, sub_t(op) & sub_t(0b0100) ? u64(-1) : 0},
+         {sub_t(op) & sub_t(0b0010) ? u64(-1) : 0, sub_t(op) & sub_t(0b1000) ? u64(-1) : 0}}
     };
 }
 
@@ -234,8 +234,8 @@ static void commute(O op, const Def*& a, const Def*& b) {
 /// (3)      a    op (lz op w) ->  lz op (a op w)
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
-template<tag_t tag>
-static const Def* reassociate(Tag2Enum<tag> op,
+template<sub_t sub>
+static const Def* reassociate(Tag2Enum<sub> op,
                               World& world,
                               [[maybe_unused]] const App* ab,
                               const Def* a,
@@ -244,8 +244,8 @@ static const Def* reassociate(Tag2Enum<tag> op,
     if (!is_associative(op)) return nullptr;
 
     auto la = a->isa<Lit>();
-    auto xy = isa<tag>(op, a);
-    auto zw = isa<tag>(op, b);
+    auto xy = isa<sub>(op, a);
+    auto zw = isa<sub>(op, b);
     auto lx = xy ? xy->arg(0)->template isa<Lit>() : nullptr;
     auto lz = zw ? zw->arg(0)->template isa<Lit>() : nullptr;
     auto y  = xy ? xy->arg(1) : nullptr;
@@ -253,12 +253,12 @@ static const Def* reassociate(Tag2Enum<tag> op,
 
     std::function<const Def*(const Def*, const Def*)> make_op;
 
-    if constexpr (tag == Tag::ROp) {
+    if constexpr (sub == Tag::ROp) {
         // build rmode for all new ops by using the least upper bound of all involved apps
         nat_t rmode     = RMode::bot;
         auto check_mode = [&](const App* app) {
             auto app_m = isa_lit(app->arg(0));
-            if (!app_m || !has(*app_m, RMode::reassoc)) return false;
+            if (!app_m || !(*app_m & RMode::reassoc)) return false;
             rmode &= *app_m; // least upper bound
             return true;
         };
@@ -268,7 +268,7 @@ static const Def* reassociate(Tag2Enum<tag> op,
         if (lz && !check_mode(zw->decurry())) return nullptr;
 
         make_op = [&](const Def* a, const Def* b) { return world.op(op, rmode, a, b, dbg); };
-    } else if constexpr (tag == Tag::Wrap) {
+    } else if constexpr (sub == Tag::Wrap) {
         // if we reassociate Wraps, we have to forget about nsw/nuw
         make_op = [&](const Def* a, const Def* b) { return world.op(op, WMode::none, a, b, dbg); };
     } else {
@@ -333,21 +333,21 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
  */
 
 template<tag_t tag>
-static const Def* merge_cmps(std::array<std::array<uint64_t, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
-    static_assert(sizeof(flags_t) == 4, "if this ever changes, please adjust the logic below");
+static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
+    static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
     static constexpr size_t num_bits = std::bit_width(Num<Tag2Enum<tag>> - 1_u64);
 
     auto a_cmp = isa<tag>(a);
     auto b_cmp = isa<tag>(b);
 
     if (a_cmp && b_cmp && a_cmp->args() == b_cmp->args()) {
-        // push flags of a_cmp and b_cmp through truth table
-        flags_t res     = 0;
-        flags_t a_flags = a_cmp.axiom()->flags();
-        flags_t b_flags = b_cmp.axiom()->flags();
-        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_flags >>= 1, b_flags >>= 1)
-            res |= tab[a_flags & 1][b_flags & 1] << 31_u32;
-        res >>= (31_u32 - u32(num_bits));
+        // push sub bits of a_cmp and b_cmp through truth table
+        sub_t res   = 0;
+        sub_t a_sub = a_cmp.axiom()->sub();
+        sub_t b_sub = b_cmp.axiom()->sub();
+        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_sub >>= 1, b_sub >>= 1)
+            res |= tab[a_sub & 1][b_sub & 1] << 7_u8;
+        res >>= (7_u8 - u8(num_bits));
 
         auto& world = a->world();
         if constexpr (tag == Tag::RCmp)

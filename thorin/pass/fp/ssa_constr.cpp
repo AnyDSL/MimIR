@@ -12,7 +12,7 @@ static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
 void SSAConstr::enter() { lam2sloxy2val_[curr_nom()].clear(); }
 
 const Def* SSAConstr::rewrite(const Proxy* proxy) {
-    if (proxy->flags() == Traxy) {
+    if (proxy->tag() == Traxy) {
         world().DLOG("traxy '{}'", proxy);
         for (size_t i = 1, e = proxy->num_ops(); i != e; i += 2)
             set_val(curr_nom(), as_proxy(proxy->op(i), Sloxy), proxy->op(i + 1));
@@ -134,7 +134,7 @@ const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
 }
 
 undo_t SSAConstr::analyze(const Proxy* proxy) {
-    if (proxy->flags() == Sloxy) {
+    if (proxy->tag() == Sloxy) {
         auto sloxy_lam = proxy->op(0)->as_nom<Lam>();
 
         if (keep_.emplace(proxy).second) {
@@ -143,7 +143,7 @@ undo_t SSAConstr::analyze(const Proxy* proxy) {
         }
     }
 
-    assert(proxy->flags() == Phixy);
+    assert(proxy->tag() == Phixy);
     auto [sloxy, mem_lam] = split_phixy(proxy);
     if (lam2sloxys_[mem_lam].emplace(sloxy).second) {
         world().DLOG("phi needed: phixy '{}' for sloxy '{}' for mem_lam '{}'", proxy, sloxy, mem_lam);

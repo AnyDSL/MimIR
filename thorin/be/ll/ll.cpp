@@ -467,7 +467,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
         auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} 0, {}", t, x); };
 
-        switch (bit.flags()) {
+        switch (bit.sub()) {
             // clang-format off
             case Bit::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
             case Bit:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);
@@ -484,7 +484,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(shr->type());
 
-        switch (shr.flags()) {
+        switch (shr.sub()) {
             case Shr::ashr: op = "ashr"; break;
             case Shr::lshr: op = "lshr"; break;
             default: unreachable();
@@ -496,7 +496,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto t             = convert(wrap->type());
         auto [mode, width] = wrap->decurry()->args<2>(as_lit<nat_t>);
 
-        switch (wrap.flags()) {
+        switch (wrap.sub()) {
             case Wrap::add: op = "add"; break;
             case Wrap::sub: op = "sub"; break;
             case Wrap::mul: op = "mul"; break;
@@ -515,7 +515,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto a = emit(x);
         auto b = emit(y);
 
-        switch (div.flags()) {
+        switch (div.sub()) {
             case Div::sdiv: op = "sdiv"; break;
             case Div::udiv: op = "udiv"; break;
             case Div::srem: op = "srem"; break;
@@ -529,7 +529,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto t             = convert(rop->type());
         auto [mode, width] = rop->decurry()->args<2>(as_lit<nat_t>);
 
-        switch (rop.flags()) {
+        switch (rop.sub()) {
             case ROp::add: op = "fadd"; break;
             case ROp::sub: op = "fsub"; break;
             case ROp::mul: op = "fmul"; break;
@@ -558,7 +558,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto t      = convert(icmp->arg(0)->type());
         op          = "icmp ";
 
-        switch (icmp.flags()) {
+        switch (icmp.sub()) {
             // clang-format off
             case ICmp::e:   op += "eq" ; break;
             case ICmp::ne:  op += "ne" ; break;
@@ -580,7 +580,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto t      = convert(rcmp->arg(0)->type());
         op          = "fcmp ";
 
-        switch (rcmp.flags()) {
+        switch (rcmp.sub()) {
             // clang-format off
             case RCmp::  e: op += "oeq"; break;
             case RCmp::  l: op += "olt"; break;
@@ -619,9 +619,9 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         nat_t s_dst = size2width(conv->type());
 
         // this might happen when casting from int top to i64
-        if (s_src == s_dst && (conv.flags() == Conv::s2s || conv.flags() == Conv::u2u)) return src;
+        if (s_src == s_dst && (conv.sub() == Conv::s2s || conv.sub() == Conv::u2u)) return src;
 
-        switch (conv.flags()) {
+        switch (conv.sub()) {
             // clang-format off
             case Conv::s2s: op = s_src < s_dst ? "sext"  : "trunc";   break;
             case Conv::u2u: op = s_src < s_dst ? "zext"  : "trunc";   break;

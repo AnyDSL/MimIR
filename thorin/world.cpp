@@ -51,20 +51,20 @@ World::World(std::string_view name)
 
     { // int/real: w: Nat -> *
         auto p             = pi(nat, type());
-        data_.type_int_    = axiom(p, Tag::Int, 0, dbg("Int"));
-        data_.type_real_   = axiom(p, Tag::Real, 0, dbg("Real"));
+        data_.type_int_    = axiom(p, 0, Tag::Int, 0, dbg("Int"));
+        data_.type_real_   = axiom(p, 0, Tag::Real, 0, dbg("Real"));
         data_.type_bool_   = type_int(2);
         data_.lit_bool_[0] = lit_int(2, 0_u64);
         data_.lit_bool_[1] = lit_int(2, 1_u64);
     }
 
-    auto mem = data_.type_mem_ = axiom(type(), Tag::Mem, 0, dbg("mem"));
+    auto mem = data_.type_mem_ = axiom(type(), 0, Tag::Mem, 0, dbg("mem"));
 
     { // ptr: [T: *, as: nat] -> *
-        data_.type_ptr_ = axiom(nullptr, pi({type(), nat}, type()), Tag::Ptr, 0, dbg("ptr"));
+        data_.type_ptr_ = axiom(nullptr, pi({type(), nat}, type()), 0, Tag::Ptr, 0, dbg("ptr"));
     }
     {
-#define CODE(T, o) data_.T##_[size_t(T::o)] = axiom(normalize_##T<T::o>, ty, Tag::T, flags_t(T::o), dbg(op2str(T::o)));
+#define CODE(T, o) data_.T##_[size_t(T::o)] = axiom(normalize_##T<T::o>, ty, 0, Tag::T, sub_t(T::o), dbg(op2str(T::o)));
     }
     { // bit: w: nat -> [int w, int w] -> int w
         auto ty    = nom_pi(type())->set_dom(nat);
@@ -133,7 +133,7 @@ World::World(std::string_view name)
         };
 #define CODE(T, o)              \
     data_.Conv_[size_t(T::o)] = \
-        axiom(normalize_Conv<T::o>, make_type(T::o), Tag::Conv, flags_t(T::o), dbg(op2str(T::o)));
+        axiom(normalize_Conv<T::o>, make_type(T::o), 0, Tag::Conv, sub_t(T::o), dbg(op2str(T::o)));
         THORIN_CONV(CODE)
 #undef Code
     }
@@ -141,21 +141,21 @@ World::World(std::string_view name)
         auto ty = nom_pi(type())->set_dom(type());
         auto T  = ty->var(dbg("T"));
         ty->set_codom(pi(T, T));
-        data_.PE_[size_t(PE::hlt)] = axiom(normalize_PE<PE::hlt>, ty, Tag::PE, flags_t(PE::hlt), dbg(op2str(PE::hlt)));
-        data_.PE_[size_t(PE::run)] = axiom(normalize_PE<PE::run>, ty, Tag::PE, flags_t(PE::run), dbg(op2str(PE::run)));
+        data_.PE_[size_t(PE::hlt)] = axiom(normalize_PE<PE::hlt>, ty, 0, Tag::PE, sub_t(PE::hlt), dbg(op2str(PE::hlt)));
+        data_.PE_[size_t(PE::run)] = axiom(normalize_PE<PE::run>, ty, 0, Tag::PE, sub_t(PE::run), dbg(op2str(PE::run)));
     }
     { // known: T: * -> T -> bool
         auto ty = nom_pi(type())->set_dom(type());
         auto T  = ty->var(dbg("T"));
         ty->set_codom(pi(T, type_bool()));
         data_.PE_[size_t(PE::known)] =
-            axiom(normalize_PE<PE::known>, ty, Tag::PE, flags_t(PE::known), dbg(op2str(PE::known)));
+            axiom(normalize_PE<PE::known>, ty, 0, Tag::PE, sub_t(PE::known), dbg(op2str(PE::known)));
     }
     { // bitcast: [D: *, S: *] -> S -> D
         auto ty     = nom_pi(type())->set_dom({type(), type()});
         auto [D, S] = ty->vars<2>({dbg("D"), dbg("S")});
         ty->set_codom(pi(S, D));
-        data_.bitcast_ = axiom(normalize_bitcast, ty, Tag::Bitcast, 0, dbg("bitcast"));
+        data_.bitcast_ = axiom(normalize_bitcast, ty, 0, Tag::Bitcast, 0, dbg("bitcast"));
     }
     { // lea: [n: nat, Ts: «n; *», as: nat] -> [ptr(«j: n; Ts#j», as), i: int n] -> ptr(Ts#i, as)
         auto dom = nom_sigma(type<1>(), 3);
@@ -169,59 +169,59 @@ World::World(std::string_view name)
         auto pi2 = nom_pi(type())->set_dom({type_ptr(in, as), type_int(n)});
         pi2->set_codom(type_ptr(extract(Ts, pi2->var(1, dbg("i"))), as));
         pi1->set_codom(pi2);
-        data_.lea_ = axiom(normalize_lea, pi1, Tag::LEA, 0, dbg("lea"));
+        data_.lea_ = axiom(normalize_lea, pi1, 0, Tag::LEA, 0, dbg("lea"));
     }
     { // load: [T: *, as: nat] -> [M, ptr(T, as)] -> [M, T]
         auto ty      = nom_pi(type())->set_dom({type(), nat});
         auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
         auto ptr     = type_ptr(T, as);
         ty->set_codom(pi({mem, ptr}, sigma({mem, T})));
-        data_.load_ = axiom(normalize_load, ty, Tag::Load, 0, dbg("load"));
+        data_.load_ = axiom(normalize_load, ty, 0, Tag::Load, 0, dbg("load"));
     }
     { // remem: M -> M
         auto ty      = pi(mem, mem);
-        data_.remem_ = axiom(normalize_remem, ty, Tag::Remem, 0, dbg("remem"));
+        data_.remem_ = axiom(normalize_remem, ty, 0, Tag::Remem, 0, dbg("remem"));
     }
     { // store: [T: *, as: nat] -> [M, ptr(T, as), T] -> M
         auto ty      = nom_pi(type())->set_dom({type(), nat});
         auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
         auto ptr     = type_ptr(T, as);
         ty->set_codom(pi({mem, ptr, T}, mem));
-        data_.store_ = axiom(normalize_store, ty, Tag::Store, 0, dbg("store"));
+        data_.store_ = axiom(normalize_store, ty, 0, Tag::Store, 0, dbg("store"));
     }
     { // alloc: [T: *, as: nat] -> M -> [M, ptr(T, as)]
         auto ty      = nom_pi(type())->set_dom({type(), nat});
         auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
         auto ptr     = type_ptr(T, as);
         ty->set_codom(pi(mem, sigma({mem, ptr})));
-        data_.alloc_ = axiom(nullptr, ty, Tag::Alloc, 0, dbg("alloc"));
+        data_.alloc_ = axiom(nullptr, ty, 0, Tag::Alloc, 0, dbg("alloc"));
     }
     { // slot: [T: *, as: nat] -> [M, nat] -> [M, ptr(T, as)]
         auto ty      = nom_pi(type())->set_dom({type(), nat});
         auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
         auto ptr     = type_ptr(T, as);
         ty->set_codom(pi({mem, nat}, sigma({mem, ptr})));
-        data_.slot_ = axiom(nullptr, ty, Tag::Slot, 0, dbg("slot"));
+        data_.slot_ = axiom(nullptr, ty, 0, Tag::Slot, 0, dbg("slot"));
     }
     { // malloc: [T: *, as: nat] -> [M, nat] -> [M, ptr(T, as)]
         auto ty      = nom_pi(type())->set_dom({type(), nat});
         auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
         auto ptr     = type_ptr(T, as);
         ty->set_codom(pi({mem, nat}, sigma({mem, ptr})));
-        data_.malloc_ = axiom(nullptr, ty, Tag::Malloc, 0, dbg("malloc"));
+        data_.malloc_ = axiom(nullptr, ty, 0, Tag::Malloc, 0, dbg("malloc"));
     }
     { // mslot: [T: *, as: nat] -> [M, nat, nat] -> [M, ptr(T, as)]
         auto ty      = nom_pi(type())->set_dom({type(), nat});
         auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
         auto ptr     = type_ptr(T, as);
         ty->set_codom(pi({mem, nat, nat}, sigma({mem, ptr})));
-        data_.mslot_ = axiom(nullptr, ty, Tag::Mslot, 0, dbg("mslot"));
+        data_.mslot_ = axiom(nullptr, ty, 0, Tag::Mslot, 0, dbg("mslot"));
     }
     { // atomic: [T: *, R: *] -> T -> R
         auto ty     = nom_pi(type())->set_dom({type(), type()});
         auto [T, R] = ty->vars<2>({dbg("T"), dbg("R")});
         ty->set_codom(pi(T, R));
-        data_.atomic_ = axiom(nullptr, ty, Tag::Atomic, 0, dbg("atomic"));
+        data_.atomic_ = axiom(nullptr, ty, 0, Tag::Atomic, 0, dbg("atomic"));
     }
     { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i»
         // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
@@ -254,9 +254,10 @@ World::World(std::string_view name)
         is_os_pi->set_codom(pi(dom, cod));
         rs_pi->set_codom(is_os_pi);
 
-        data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
+        data_.zip_ = axiom(normalize_zip, rs_pi, 0, Tag::Zip, 0, dbg("zip"));
     }
-    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i: n; Is#i», Cn
+    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i:
+      // n; Is#i», Cn
         // [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];
 
         auto input_sigma = nom_sigma(type<1>(), 3);
@@ -275,7 +276,7 @@ World::World(std::string_view name)
                            cn({mem, it_type, type_arr, cn({mem, type_arr}, dbg("continue"))}, dbg("body")),
                            cn({mem, type_arr}, dbg("exit"))}));
 
-        data_.for_ = axiom(nullptr, ltp, Tag::For, 0, dbg("for"));
+        data_.for_ = axiom(nullptr, ltp, 0, Tag::For, 0, dbg("for"));
     }
 }
 
