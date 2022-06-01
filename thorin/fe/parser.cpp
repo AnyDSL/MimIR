@@ -475,7 +475,8 @@ void Parser::parse_ax() {
         insert(ax.sym(), axiom);
     } else {
         for (const auto& sub : info.subs) {
-            auto axiom = world().axiom(type, d, t, s++, track);
+            auto dbg = track.named(world().tuple_str(ax_str + "."s + sub.front()));
+            auto axiom = world().axiom(type, d, t, s++, dbg);
             for (auto& alias : sub) {
                 Sym name = world().tuple_str(ax_str + "."s + alias);
                 insert(name, axiom);
