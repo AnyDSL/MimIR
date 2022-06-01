@@ -112,9 +112,11 @@ public:
 
     /// @name slice
     ///@{
-    ArrayRef<T> skip(size_t front = 1, size_t back = 1) const { return ArrayRef<T>(size() - ( front + back ), ptr_ + front); }
-    ArrayRef<T> skip_front(size_t num = 1) const { return skip(num,0); }
-    ArrayRef<T> skip_back(size_t num = 1) const { return skip(0,num); }
+    ArrayRef<T> skip(size_t front = 1, size_t back = 1) const {
+        return ArrayRef<T>(size() - (front + back), ptr_ + front);
+    }
+    ArrayRef<T> skip_front(size_t num = 1) const { return skip(num, 0); }
+    ArrayRef<T> skip_back(size_t num = 1) const { return skip(0, num); }
     ArrayRef<T> get_front(size_t num = 1) const {
         assert(num <= size());
         return ArrayRef<T>(num, ptr_);
@@ -144,20 +146,17 @@ public:
         swap(a1.ptr_, a2.ptr_);
     }
 
-    template<typename Result = T >
-    Array<Result> map(std::function<Result(T, size_t)> f){
+    template<typename Result = T>
+    Array<Result> map(std::function<Result(T, size_t)> f) {
         auto result = Array<Result>(size());
 
-        for (size_t i = 0; i < size(); ++i){
-            result[i] = f((*this)[i], i);
-        }
+        for (size_t i = 0; i < size(); ++i) { result[i] = f((*this)[i], i); }
 
         return result;
     }
 
-    Array<T> map(std::function<T(T, size_t)> f){
-        return map<T>(f);
-    }
+    Array<T> map(std::function<T(T, size_t)> f) { return map<T>(f); }
+
 private:
     size_t size_;
     const T* ptr_;
@@ -364,7 +363,9 @@ public:
 
     /// @name slice
     ///@{
-    ArrayRef<T> skip(size_t front = 1, size_t back = 1) const { return ArrayRef<T>(size() - ( front + back ), data() + front); }
+    ArrayRef<T> skip(size_t front = 1, size_t back = 1) const {
+        return ArrayRef<T>(size() - (front + back), data() + front);
+    }
     ArrayRef<T> skip_front(size_t num = 1) const { return ArrayRef<T>(size() - num, data() + num); }
     ArrayRef<T> skip_back(size_t num = 1) const { return ArrayRef<T>(size() - num, data()); }
     ArrayRef<T> get_front(size_t num = 1) const {
@@ -397,20 +398,17 @@ public:
 
     friend void swap(Array& a, Array& b) { swap(a.storage_, b.storage_); }
 
-    template<typename Result = T >
-    Array<Result> map(std::function<Result(T, size_t)> f){
+    template<typename Result = T>
+    Array<Result> map(std::function<Result(T, size_t)> f) {
         auto result = Array<Result>(size());
 
-        for (size_t i = 0; i < size(); ++i){
-            result[i] = f((*this)[i], i);
-        }
+        for (size_t i = 0; i < size(); ++i) { result[i] = f((*this)[i], i); }
 
         return result;
     }
 
-    Array<T> map(std::function<T(T, size_t)> f){
-        return map<T>(f);
-    }
+    Array<T> map(std::function<T(T, size_t)> f) { return map<T>(f); }
+
 private:
     ArrayStorage<T, std::is_trivial<T>::value ? 5 : 0> storage_;
 };

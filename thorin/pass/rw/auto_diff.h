@@ -5,7 +5,6 @@
 
 namespace thorin {
 
-
 /// # Automatic Differentiation in Thorin2
 ///
 /// This pass implements automatic differentiation for the following dialects:
@@ -19,7 +18,8 @@ namespace thorin {
 ///
 /// Each expression is augmented with a pullback function that constructs the derivates of the expression.
 /// A function f: A -> B is translated by invokation of the rev_diff axiom to a function f': A -> B * (B -> A)
-/// the second part of the result is the pullback function that expects the output tangent and returns the input tangent.
+/// the second part of the result is the pullback function that expects the output tangent and returns the input
+/// tangent.
 ///
 /// Example call:
 /// ```

@@ -127,7 +127,11 @@ public:
     /// Same as @p cn/@p pi but adds a @p mem @p Var to each @p Pi
     const Pi* cn_flat(Defs dom, const Def* dbg = {});
     const Pi* cn_mem_flat(const Def* dom, const Def* dbg = {});
-    const Pi* cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* dbg = {}, bool dom_flat=true, bool codom_flat=true);
+    const Pi* cn_mem_ret_flat(const Def* dom,
+                              const Def* codom,
+                              const Def* dbg  = {},
+                              bool dom_flat   = true,
+                              bool codom_flat = true);
     const Pi* cn_mem_half_flat(const Def* domain, const Def* codomain, const Def* dbg = {});
     /// Same as World::cn / World::pi but adds a World::type_mem-typed Var to each Pi.
     const Pi* cn_mem(const Def* dom, const Def* dbg = {}) { return cn({type_mem(), dom}, dbg); }
@@ -151,11 +155,9 @@ public:
     }
     Lam* nom_lam(const Pi* cn, const Def* dbg = {}) { return nom_lam(cn, Lam::CC::C, dbg); }
 
-    Lam* nom_filter_lam(const Pi* cn, const Def* dbg){
-        return nom_filter_lam(cn, lit_true(), dbg);
-    }
+    Lam* nom_filter_lam(const Pi* cn, const Def* dbg) { return nom_filter_lam(cn, lit_true(), dbg); }
 
-    Lam* nom_filter_lam(const Pi* cn, const Def* filter, const Def* dbg){
+    Lam* nom_filter_lam(const Pi* cn, const Def* filter, const Def* dbg) {
         Lam* lam = nom_lam(cn, dbg);
         lam->set_filter(filter);
         return lam;
@@ -518,7 +520,7 @@ public:
     //@{
     const Def* params_without_return_continuation(const Pi* pi);
     const Def* op_rev_diff(const Def* fn, const Def* dbg = {});
-    const Def* tangent_type(const Def* A, bool left=false);
+    const Def* tangent_type(const Def* A, bool left = false);
     //@}
 
     /// @name helpers

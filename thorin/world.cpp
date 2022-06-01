@@ -255,7 +255,8 @@ World::World(std::string_view name)
         rs_pi->set_codom(is_os_pi);
 
         data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
-    } { // op_rev_diff: Π[I:*.O:*]. ΠI. O
+    }
+    { // op_rev_diff: Π[I:*.O:*]. ΠI. O
         // DS: I can't figure out how to give it the correct type…
         // pullback assumes that:
         //     I = Π[mem, T₁, …, Tₙ, Π[mem, R₁, …, Rₙ].⊥].⊥
@@ -289,32 +290,33 @@ World::World(std::string_view name)
         type->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
         */
-//        auto type = nom_pi(kind())->set_dom({kind(), kind(), kind(), kind(), kind(), kind()});
-//        auto [A, B, C, D,E,F] = type->vars<6>({dbg("A"), dbg("B"),dbg("C"),dbg("D"),dbg("E"),dbg("F")});
-//
-//        auto pullback = cn_mem_ret(E,F);
-//        auto diffd = cn({
-//          type_mem(),
-//          C,
-////          flatten(A),
-//          cn({type_mem(), D, pullback})
-//        });
-////        auto diffd= cn_mem_ret_flat(A,tuple({B,pullback}));
-//        // TODO: flattening at this point is useless as we handle abstract kinds here
-//        auto Xi = pi(cn_mem_ret(A, B), diffd);
-//        //        auto Xi = pi(cn_mem_ret(flatten(A), B), diffd);
-////        auto Xi = pi(cn_mem_ret_flat(A, B), diffd);
-//        type->set_codom(Xi);
-//        data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
+        //        auto type = nom_pi(kind())->set_dom({kind(), kind(), kind(), kind(), kind(), kind()});
+        //        auto [A, B, C, D,E,F] = type->vars<6>({dbg("A"), dbg("B"),dbg("C"),dbg("D"),dbg("E"),dbg("F")});
+        //
+        //        auto pullback = cn_mem_ret(E,F);
+        //        auto diffd = cn({
+        //          type_mem(),
+        //          C,
+        ////          flatten(A),
+        //          cn({type_mem(), D, pullback})
+        //        });
+        ////        auto diffd= cn_mem_ret_flat(A,tuple({B,pullback}));
+        //        // TODO: flattening at this point is useless as we handle abstract kinds here
+        //        auto Xi = pi(cn_mem_ret(A, B), diffd);
+        //        //        auto Xi = pi(cn_mem_ret(flatten(A), B), diffd);
+        ////        auto Xi = pi(cn_mem_ret_flat(A, B), diffd);
+        //        type->set_codom(Xi);
+        //        data_.op_rev_diff_ = axiom(nullptr, type, Tag::RevDiff, 0, dbg("rev_diff"));
 
-        auto typ = nom_pi(type())->set_dom({type(), type()});
-        auto [X,Y] = typ->vars<2>({dbg("X"), dbg("Y")});
+        auto typ    = nom_pi(type())->set_dom({type(), type()});
+        auto [X, Y] = typ->vars<2>({dbg("X"), dbg("Y")});
 
-        auto Xi = pi(X,Y);
+        auto Xi = pi(X, Y);
         typ->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, typ, Tag::RevDiff, 0, dbg("rev_diff"));
     }
-    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i: n; Is#i», Cn
+    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i:
+      // n; Is#i», Cn
         // [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];
 
         auto input_sigma = nom_sigma(type<1>(), 3);
@@ -337,75 +339,55 @@ World::World(std::string_view name)
     }
 }
 
-
 // reflect impala tangent type
-const Def* World::tangent_type(const Def* A,bool left) {
-    if(auto pidef = A->isa<Pi>();pidef && left) {
-        if(pidef->num_doms()==1) {
-            return cn(tangent_type(pidef->dom(1),left));
-        }
+const Def* World::tangent_type(const Def* A, bool left) {
+    if (auto pidef = A->isa<Pi>(); pidef && left) {
+        if (pidef->num_doms() == 1) { return cn(tangent_type(pidef->dom(1), left)); }
 
         auto A = params_without_return_continuation(pidef);
 
-        auto B = sigma(pidef->doms().back()->as<Pi>()->dom()->ops().skip_front());
-        auto AL = tangent_type(A,true);
-        auto BL = tangent_type(B,true);
+        auto B  = sigma(pidef->doms().back()->as<Pi>()->dom()->ops().skip_front());
+        auto AL = tangent_type(A, true);
+        auto BL = tangent_type(B, true);
 
-        auto AT = tangent_type(A,false);
-        auto BT = tangent_type(B,false);
+        auto AT = tangent_type(A, false);
+        auto BT = tangent_type(B, false);
 
-        auto pullback = cn_flat({
-            type_mem(),
-            BT,
-            cn_flat({
-                type_mem(),
-                AT
-            })
-        });
-        auto diffd = cn_flat({
-                            type_mem(),
-                            AL,
-                            cn_flat({type_mem(), BL, pullback})
-                        });
+        auto pullback = cn_flat({type_mem(), BT, cn_flat({type_mem(), AT})});
+        auto diffd    = cn_flat({type_mem(), AL, cn_flat({type_mem(), BL, pullback})});
 
         return diffd;
     }
-    if(auto ptr = isa<Tag::Ptr>(A)) {
+    if (auto ptr = isa<Tag::Ptr>(A)) {
         auto [pointee, addr_space] = ptr->arg()->projs<2>();
-        auto inner=tangent_type(pointee,left);
-        auto ptr_wrap=type_ptr(inner,addr_space);
-        auto isArr = pointee->isa<Arr>();
-        if(isArr) {
-            return sigma({type_int_width(64),ptr_wrap});
-        }else if(left) {
+        auto inner                 = tangent_type(pointee, left);
+        auto ptr_wrap              = type_ptr(inner, addr_space);
+        auto isArr                 = pointee->isa<Arr>();
+        if (isArr) {
+            return sigma({type_int_width(64), ptr_wrap});
+        } else if (left) {
             // no array, left type
             return ptr_wrap;
-        }else {
+        } else {
             // no array, compute tangent type by removing ptr => as content
             return inner;
         }
     }
-    if(auto arrdef = A->isa<Arr>()) {
-        return arr(arrdef->shape(), tangent_type(arrdef->body(),left),arrdef->dbg());
-    }
-    if(auto sig = A->isa<Sigma>()) {
+    if (auto arrdef = A->isa<Arr>()) { return arr(arrdef->shape(), tangent_type(arrdef->body(), left), arrdef->dbg()); }
+    if (auto sig = A->isa<Sigma>()) {
         // TODO: handle structs
         auto ops = sig->ops();
-        Array<const Def*> tan_ops_arr{ops.size() ,[&](auto i) {
-                return tangent_type(ops[i],left);
-        }};
+        Array<const Def*> tan_ops_arr{ops.size(), [&](auto i) { return tangent_type(ops[i], left); }};
         Defs tan_ops{tan_ops_arr};
-        return sigma(tan_ops,sig->dbg());
+        return sigma(tan_ops, sig->dbg());
     }
-    if(auto real = isa<Tag::Real>(A)) {
+    if (auto real = isa<Tag::Real>(A)) {
         return A;
-    }else {
+    } else {
         // dummy deriv
-       return left ? A : type_real(64);
+        return left ? A : type_real(64);
     }
 }
-
-
 
 World::~World() {
     for (auto def : data_.defs_) def->~Def();
@@ -460,9 +442,8 @@ static const Def* infer_sigma(World& world, Defs ops) {
     return world.sigma(elems);
 }
 
-
 const Pi* World::cn_mem_half_flat(const Def* dom, const Def* codom, const Def* dbg) {
-    auto ret = cn(sigma({ type_mem(), codom }));
+    auto ret = cn(sigma({type_mem(), codom}));
 
     if (dom->isa<Sigma>()) {
         auto size = dom->num_ops() + 2;
@@ -486,13 +467,13 @@ const Pi* World::cn_mem_half_flat(const Def* dom, const Def* codom, const Def* d
 const Pi* World::cn_flat(Defs doms, const Def* dbg) {
     std::vector<const Def*> ops;
     for (auto& d : doms) {
-        if(d->isa<Sigma>()) {
+        if (d->isa<Sigma>()) {
             for (auto& op : d->ops()) ops.push_back(op);
-        }else {
+        } else {
             ops.push_back(d);
         }
     }
-    return cn(ops,dbg);
+    return cn(ops, dbg);
 }
 
 const Pi* World::cn_mem_flat(const Def* dom, const Def* dbg) {
@@ -510,10 +491,9 @@ const Pi* World::cn_mem_flat(const Def* dom, const Def* dbg) {
         return cn(defs);
     }
 
-
     // for local tupel of same type
     if (auto a = dom->isa<Arr>()) {
-        if(auto lit_size=a->shape()->isa<Lit>()) {
+        if (auto lit_size = a->shape()->isa<Lit>()) {
             auto size = lit_size->get<uint8_t>() + 1;
             DefArray defs(size);
             for (uint8_t i = 0; i < size; ++i) {
@@ -532,12 +512,10 @@ const Pi* World::cn_mem_flat(const Def* dom, const Def* dbg) {
 }
 
 const Pi* World::cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* dbg, bool dom_flat, bool codom_flat) {
-    auto ret = cn(sigma({ type_mem(), codom }));
-    if (codom->isa<Sigma>() && codom_flat) {
-        ret = cn(merge_sigma(type_mem(), codom->ops())) ;
-    }
+    auto ret = cn(sigma({type_mem(), codom}));
+    if (codom->isa<Sigma>() && codom_flat) { ret = cn(merge_sigma(type_mem(), codom->ops())); }
 
-    if(!dom_flat) { return cn(merge(type_mem(), {dom, ret}), dbg); }
+    if (!dom_flat) { return cn(merge(type_mem(), {dom, ret}), dbg); }
 
     if (dom->isa<Sigma>()) {
         auto size = dom->num_ops() + 2;
@@ -555,10 +533,9 @@ const Pi* World::cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* db
         return cn(defs);
     }
 
-
     // for local tupel of same type
     if (auto a = dom->isa<Arr>()) {
-        if(auto lit_size=a->shape()->isa<Lit>()) {
+        if (auto lit_size = a->shape()->isa<Lit>()) {
             auto size = lit_size->get<uint8_t>() + 2;
             DefArray defs(size);
             for (uint8_t i = 0; i < size; ++i) {
@@ -983,26 +960,25 @@ const Def* World::params_without_return_continuation(const Pi* pi) {
     return sigma(pi->dom()->ops().skip_front().skip_back());
 }
 
-const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
+const Def* World::op_rev_diff(const Def* fn, const Def* dbg) {
     if (auto pi = fn->type()->isa<Pi>()) {
         assert(pi->is_cn());
 
-        auto dom = params_without_return_continuation(pi);
-        auto ret_cont = pi->dom()->ops().back();
-        auto codom = sigma(ret_cont->as<Pi>()->dom()->ops().skip_front());
-        auto deriv_dom = tangent_type(dom,true);
-        auto deriv_codom = tangent_type(codom,true);
+        auto dom         = params_without_return_continuation(pi);
+        auto ret_cont    = pi->dom()->ops().back();
+        auto codom       = sigma(ret_cont->as<Pi>()->dom()->ops().skip_front());
+        auto deriv_dom   = tangent_type(dom, true);
+        auto deriv_codom = tangent_type(codom, true);
 
-        auto tan_dom = tangent_type(dom,false);
-        auto tan_codom = tangent_type(codom,false);
+        auto tan_dom   = tangent_type(dom, false);
+        auto tan_codom = tangent_type(codom, false);
 
         auto fn_ty = cn_mem_ret_flat(dom, codom);
         auto pb_ty = cn_mem_ret_flat(tan_codom, tan_dom);
         const Def* deriv_pb_codom;
 
-
         // merge but the other way around
-        if(deriv_codom->isa<Sigma>()) {
+        if (deriv_codom->isa<Sigma>()) {
             auto size = deriv_codom->num_ops() + 1;
             DefArray defs(size);
             for (size_t i = 0; i < size; ++i) {
@@ -1012,21 +988,20 @@ const Def* World::op_rev_diff(const Def* fn, const Def* dbg){
                     defs[i] = deriv_codom->op(i);
                 }
             }
-            deriv_pb_codom=sigma(defs);
-        }else {
-            deriv_pb_codom=sigma({deriv_codom,pb_ty});
+            deriv_pb_codom = sigma(defs);
+        } else {
+            deriv_pb_codom = sigma({deriv_codom, pb_ty});
         }
         auto diff_ty = cn_mem_ret_flat(deriv_dom, deriv_pb_codom);
 
-        auto mk_pullback = app(data_.op_rev_diff_, tuple({fn_ty,diff_ty}), this->dbg("mk_pullback"));
-        auto pullback = app(mk_pullback, fn, dbg);
+        auto mk_pullback = app(data_.op_rev_diff_, tuple({fn_ty, diff_ty}), this->dbg("mk_pullback"));
+        auto pullback    = app(mk_pullback, fn, dbg);
 
         return pullback;
     }
 
     return nullptr;
 }
-
 
 /*
  * misc
