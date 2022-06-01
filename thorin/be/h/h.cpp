@@ -20,7 +20,8 @@ void Bootstrapper::emit(std::ostream& h) {
     tab.print(h, "enum Tag : u64 {{\n");
     ++tab;
     h << std::hex;
-    for (const auto& ax : axioms) { tab.print(h, "{}_{} = 0x{},\n", ax.dialect, ax.group, ax.id); }
+    // TODO
+    // for (const auto& ax : axioms) { tab.print(h, "{}_{} = 0x{},\n", ax.dialect, ax.tag, ax.id); }
     h << std::dec;
     --tab;
     tab.print(h, "}};\n\n");
@@ -37,7 +38,7 @@ void Bootstrapper::emit(std::ostream& h) {
                       "struct Tag2Def_<Tag::{}_{}> {{"
                       "    using type = Axiom;"
                       "}};",
-                      ax.dialect, ax.group);
+                      ax.dialect, ax.tag);
 
     tab.print(h, "template<fields_t tag>\n"
                  "using Tag2Def = typename Tag2Def_<tag>::type;\n\n"
@@ -46,13 +47,13 @@ void Bootstrapper::emit(std::ostream& h) {
                  "struct Tag2Enum_ {{ using type = fields_t; }};\n\n");
 
     for (const auto& ax : axioms) {
-        if (auto& tags = ax.tags; !tags.empty()) {
-            tab.print(h, "enum class {} : u8 {{\n", ax.group);
+        if (auto& subs = ax.subs; !subs.empty()) {
+            tab.print(h, "enum class {} : u8 {{\n", ax.tag);
             ++tab;
-            for (const auto& aliases : tags) {
-                const auto& tag = aliases.front();
-                tab.print(h, "{},\n", tag);
-                for (size_t i = 1; i < aliases.size(); ++i) tab.print(h, "{} = {},\n", aliases[i], tag);
+            for (const auto& aliases : subs) {
+                const auto& sub = aliases.front();
+                tab.print(h, "{},\n", sub);
+                for (size_t i = 1; i < aliases.size(); ++i) tab.print(h, "{} = {},\n", aliases[i], sub);
             }
             --tab;
             tab.print(h, "}};\n\n");
@@ -60,7 +61,7 @@ void Bootstrapper::emit(std::ostream& h) {
             tab.print(h,
                       "template<>\n"
                       "struct Tag2Enum_<Tag::{}_{}> {{ using type = {}; }};\n",
-                      ax.dialect, ax.group, ax.group);
+                      ax.dialect, ax.tag, ax.tag);
         }
     }
 

@@ -124,10 +124,10 @@ public:
     Lam* stub(World&, const Def*, const Def*) override;
     ///@}
 
-    /// @name get/set fields - CC
+    /// @name get/set flags - CC
     ///@{
-    CC cc() const { return CC(fields()); }
-    void set_cc(CC cc) { fields_ = u64(cc); }
+    CC cc() const { return CC(flags()); }
+    void set_cc(CC cc) { flags_ = u64(cc); }
     ///@}
 
     static constexpr auto Node = Node::Lam;

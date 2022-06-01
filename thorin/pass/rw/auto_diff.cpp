@@ -1183,14 +1183,14 @@ const Def* AutoDiffer::j_wrap_convert(const Def* def) {
             pullbacks_[a] = extract_pb(a, ab);
             pullbacks_[b] = extract_pb(b, ab);
         }
-        auto dst = j_wrap_rop(ROp(rop.flags()), a, b);
+        auto dst = j_wrap_rop(ROp(rop.sub()), a, b);
         return dst;
     }
     // conditionals are transformed by the identity (no pullback needed)
     if (auto rcmp = isa<Tag::RCmp>(def)) {
         auto ab     = j_wrap(rcmp->arg());
         auto [a, b] = ab->projs<2>();
-        auto dst    = world_.op(RCmp(rcmp.flags()), nat_t(0), a, b);
+        auto dst    = world_.op(RCmp(rcmp.sub()), nat_t(0), a, b);
         return dst;
     }
 
@@ -1255,7 +1255,7 @@ const Def* AutoDiffer::j_wrap_convert(const Def* def) {
     if (auto icmp = isa<Tag::ICmp>(def)) {
         auto ab     = j_wrap(icmp->arg());
         auto [a, b] = ab->projs<2>();
-        auto dst    = world_.op(ICmp(icmp.flags()), a, b);
+        auto dst    = world_.op(ICmp(icmp.sub()), a, b);
         return dst;
     }
     if (auto alloc = isa<Tag::Alloc>(def)) {

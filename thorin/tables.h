@@ -9,11 +9,12 @@
 // clang-format off
 namespace thorin {
 
-using node_t   = u8;
-using tag_t    = u32;
-using flags_t  = u32;
-using fields_t = u64;
-using nat_t    = u64;
+using nat_t     = u64;
+using node_t    = u8;
+using flags_t   = u64;
+using dialect_t = u64;
+using tag_t     = u8;
+using sub_t     = u8;
 
 #define THORIN_NODE(m)                                                        \
     m(Type, type)       m(Univ, univ)                                         \
@@ -186,32 +187,32 @@ enum : node_t { THORIN_NODE(CODE) Max };
 }
 
 namespace Tag {
-#define CODE(tag, name) tag,
+#define CODE(sub, name) sub,
 enum : tag_t { THORIN_TAG(CODE) Max };
 #undef CODE
 }
 
 #define CODE(T, o) o,
-enum class Bit    : flags_t { THORIN_BIT  (CODE) };
-enum class Shr    : flags_t { THORIN_SHR  (CODE) };
-enum class Wrap   : flags_t { THORIN_WRAP (CODE) };
-enum class Div    : flags_t { THORIN_DIV  (CODE) };
-enum class ROp    : flags_t { THORIN_R_OP (CODE) };
-enum class ICmp   : flags_t { THORIN_I_CMP(CODE) };
-enum class RCmp   : flags_t { THORIN_R_CMP(CODE) };
-enum class Trait  : flags_t { THORIN_TRAIT(CODE) };
-enum class Conv   : flags_t { THORIN_CONV (CODE) };
-enum class PE     : flags_t { THORIN_PE   (CODE) };
-enum class Acc    : flags_t { THORIN_ACC  (CODE) };
+enum class Bit    : sub_t { THORIN_BIT  (CODE) };
+enum class Shr    : sub_t { THORIN_SHR  (CODE) };
+enum class Wrap   : sub_t { THORIN_WRAP (CODE) };
+enum class Div    : sub_t { THORIN_DIV  (CODE) };
+enum class ROp    : sub_t { THORIN_R_OP (CODE) };
+enum class ICmp   : sub_t { THORIN_I_CMP(CODE) };
+enum class RCmp   : sub_t { THORIN_R_CMP(CODE) };
+enum class Trait  : sub_t { THORIN_TRAIT(CODE) };
+enum class Conv   : sub_t { THORIN_CONV (CODE) };
+enum class PE     : sub_t { THORIN_PE   (CODE) };
+enum class Acc    : sub_t { THORIN_ACC  (CODE) };
 #undef CODE
 
-constexpr ICmp operator|(ICmp a, ICmp b) { return ICmp(flags_t(a) | flags_t(b)); }
-constexpr ICmp operator&(ICmp a, ICmp b) { return ICmp(flags_t(a) & flags_t(b)); }
-constexpr ICmp operator^(ICmp a, ICmp b) { return ICmp(flags_t(a) ^ flags_t(b)); }
+constexpr ICmp operator|(ICmp a, ICmp b) { return ICmp(sub_t(a) | sub_t(b)); }
+constexpr ICmp operator&(ICmp a, ICmp b) { return ICmp(sub_t(a) & sub_t(b)); }
+constexpr ICmp operator^(ICmp a, ICmp b) { return ICmp(sub_t(a) ^ sub_t(b)); }
 
-constexpr RCmp operator|(RCmp a, RCmp b) { return RCmp(flags_t(a) | flags_t(b)); }
-constexpr RCmp operator&(RCmp a, RCmp b) { return RCmp(flags_t(a) & flags_t(b)); }
-constexpr RCmp operator^(RCmp a, RCmp b) { return RCmp(flags_t(a) ^ flags_t(b)); }
+constexpr RCmp operator|(RCmp a, RCmp b) { return RCmp(sub_t(a) | sub_t(b)); }
+constexpr RCmp operator&(RCmp a, RCmp b) { return RCmp(sub_t(a) & sub_t(b)); }
+constexpr RCmp operator^(RCmp a, RCmp b) { return RCmp(sub_t(a) ^ sub_t(b)); }
 
 #define CODE(T, o) case T::o: return #T "_" #o;
 constexpr std::string_view op2str(Bit   o) { switch (o) { THORIN_BIT  (CODE) default: unreachable(); } }
@@ -256,19 +257,19 @@ template<> inline constexpr size_t Num<PE   > = 0_s THORIN_PE   (CODE);
 template<> inline constexpr size_t Num<Acc  > = 0_s THORIN_ACC  (CODE);
 #undef CODE
 
-template<tag_t tag> struct Tag2Enum_    { using type = tag_t; };
-template<> struct Tag2Enum_<Tag::Bit  > { using type = Bit;   };
-template<> struct Tag2Enum_<Tag::Shr  > { using type = Shr;   };
-template<> struct Tag2Enum_<Tag::Wrap > { using type = Wrap;  };
-template<> struct Tag2Enum_<Tag::Div  > { using type = Div;   };
-template<> struct Tag2Enum_<Tag::ROp  > { using type = ROp;   };
-template<> struct Tag2Enum_<Tag::ICmp > { using type = ICmp;  };
-template<> struct Tag2Enum_<Tag::RCmp > { using type = RCmp;  };
-template<> struct Tag2Enum_<Tag::Trait> { using type = Trait; };
-template<> struct Tag2Enum_<Tag::Conv > { using type = Conv;  };
-template<> struct Tag2Enum_<Tag::PE   > { using type = PE;    };
-template<> struct Tag2Enum_<Tag::Acc  > { using type = Acc;   };
-template<tag_t tag> using Tag2Enum = typename Tag2Enum_<tag>::type;
+template<tag_t t> struct Tag2Enum_      { using type = tag_t; };
+template<> struct Tag2Enum_<Tag::Bit  > { using type = Bit;     };
+template<> struct Tag2Enum_<Tag::Shr  > { using type = Shr;     };
+template<> struct Tag2Enum_<Tag::Wrap > { using type = Wrap;    };
+template<> struct Tag2Enum_<Tag::Div  > { using type = Div;     };
+template<> struct Tag2Enum_<Tag::ROp  > { using type = ROp;     };
+template<> struct Tag2Enum_<Tag::ICmp > { using type = ICmp;    };
+template<> struct Tag2Enum_<Tag::RCmp > { using type = RCmp;    };
+template<> struct Tag2Enum_<Tag::Trait> { using type = Trait;   };
+template<> struct Tag2Enum_<Tag::Conv > { using type = Conv;    };
+template<> struct Tag2Enum_<Tag::PE   > { using type = PE;      };
+template<> struct Tag2Enum_<Tag::Acc  > { using type = Acc;     };
+template<tag_t t> using Tag2Enum = typename Tag2Enum_<t>::type;
 
 // clang-format on
 } // namespace thorin
