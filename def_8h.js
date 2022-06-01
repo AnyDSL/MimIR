@@ -39,9 +39,9 @@ var def_8h =
       [ "Space", "def_8h.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394", null ],
       [ "Univ", "def_8h.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946", null ]
     ] ],
-    [ "as", "def_8h.html#aa78a06105f27e02c56892a8ed4dd563f", null ],
+    [ "as", "def_8h.html#a77128b6187ea06fcc6b07e5e34efcc3d", null ],
     [ "as_lit", "def_8h.html#a4784a7ada8e2badb49500623824d79e5", null ],
-    [ "isa", "def_8h.html#abc03433e6b2efb1c4ad7d0c5dd690b10", null ],
+    [ "isa", "def_8h.html#a4ee21e07e5bfcf99d87cf5b3effb1ba1", null ],
     [ "isa_lit", "def_8h.html#a196c8dd3968fd28a00dc082c191feee6", null ],
     [ "operator<<", "def_8h.html#ad3254a6c04a58f143d50134756ccb85c", null ],
     [ "operator<<", "def_8h.html#a5ee0fe26ac95507b80f3db27942bf892", null ]

@@ -83,23 +83,23 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "affine.html",
-"classthorin_1_1ArrayRef.html#a3e743a8ad8740b42ceaa356664a24df2",
-"classthorin_1_1CFG.html#ada7df7890bc4099a7b87e0c63b9ce975",
+"classthorin_1_1ArrayRef.html#a40377dfc3fd43093c0df551f3d5a211d",
+"classthorin_1_1CFG.html#ad848d7c3d392e58d6407d1c92bf7b720",
 "classthorin_1_1Def.html#ae09607d6f4c2b847199f2cb2a3b2ca81",
-"classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632",
-"classthorin_1_1LoopTree_1_1Base.html#ac29bcf64d3179e1beeebe66e38c0f459",
-"classthorin_1_1RecStreamer.html#a1ceaa44415636ed5cbbfb0a7cf08f75d",
-"classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d",
-"classthorin_1_1World.html#a10d68710a145107da2a86a4650eb3eb6",
-"classthorin_1_1World.html#a995237369ff0d02d54437301b91c9ab4",
-"classthorin_1_1unique__queue.html#a226f67717d2a9c893eaecf8da6a2f52d",
-"functions_u.html",
-"namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f",
-"namespacethorin.html#ad9eaf597de3eb9f0abdfad6e1d60d40b",
-"namespacethorin_1_1std.html#a2a7c8b244bcdbef7928869100b909eddaf79db5f5ed7a623224a6d3bbf4d96185",
-"stream_8cpp.html#ad3254a6c04a58f143d50134756ccb85c",
-"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html#a507f0bbc8c13302f3b14c1f0446e324f",
-"types_8h.html#a0ff05ea830ab281bb1893bd81f023423"
+"classthorin_1_1IPass.html#aaa9538a515e496cdb5245001e1fd1c43",
+"classthorin_1_1LoopTree_1_1Base.html#aa5c3865ef27a1b4ad5020304e4d9e2f6",
+"classthorin_1_1RecStreamer.html#a06ccf5d930f1abd10c16fce20f4d1542",
+"classthorin_1_1Test.html",
+"classthorin_1_1World.html#a0eedd08743b630e231af89f337799e47",
+"classthorin_1_1World.html#a9961b927bf2eb9d73be07d6a452c5213",
+"classthorin_1_1unique__queue.html",
+"functions_t.html",
+"namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785b",
+"namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9a0cfbf5552b05198ef58e3b99c407e4a7",
+"namespacethorin_1_1std.html#a827340ebd70843c60ef815ef94d0d56fa14ea3babd6bd2d41cf3c16d90c376588",
+"std_8h.html#a2a7c8b244bcdbef7928869100b909edda653f836235a27b289bf318bc8730fb7e",
+"structthorin_1_1Loc.html#ab3498f210f94e517178f93269b549e97",
+"tables_8h.html#ae0379be856253deabcafe1fcdc0785a9ab2f5ff47436671b6e533d8dc3614845d"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

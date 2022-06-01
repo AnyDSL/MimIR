@@ -1,7 +1,7 @@
 var searchData=
 [
   ['icmp_0',['ICmp',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafab14d0d6f2c53b4f8ce5c33ba81c961f2',1,'thorin::Tag']]],
-  ['iff_1',['iff',['../namespacethorin.html#a89d67b04557e416d256c0cc75a55accea202291f5fb00d2c32c1b5a6c0cc622ee',1,'thorin']]],
+  ['iff_1',['iff',['../namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba202291f5fb00d2c32c1b5a6c0cc622ee',1,'thorin::iff()'],['../namespacethorin_1_1std.html#a827340ebd70843c60ef815ef94d0d56fa202291f5fb00d2c32c1b5a6c0cc622ee',1,'thorin::std::iff()']]],
   ['infer_2',['Infer',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a8d94437120ef9485341077ce00c86443',1,'thorin::Node']]],
   ['info_3',['Info',['../namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875',1,'thorin']]],
   ['inscc_4',['InSCC',['../namespacethorin.html#abbe6403e7194c1ab97cc564c9e47919eaee490fa1322be222cf1ef08344d22f8a',1,'thorin']]],

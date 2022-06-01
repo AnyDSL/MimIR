@@ -11,7 +11,7 @@ var searchData=
   ['varmap_8',['VarMap',['../namespacethorin.html#af280f2e34b689af6206dfb9756aa1df5',1,'thorin']]],
   ['vars_9',['vars',['../classthorin_1_1Def.html#a1ca2812efecd7b159192dde57ea987c4',1,'thorin::Def::vars(F f, Defs dbgs={})'],['../classthorin_1_1Def.html#a8dbfe2f896210936825d2db122b41e27',1,'thorin::Def::vars(Defs dbgs={})'],['../classthorin_1_1Def.html#aa73e8238c351ee23be5d74cdbb4b9d47',1,'thorin::Def::vars(nat_t a, F f, Defs dbgs={})'],['../classthorin_1_1Def.html#a59046f082f834cd74cab2a65be397f0e',1,'thorin::Def::vars(nat_t a, Defs dbgs={})']]],
   ['varset_10',['VarSet',['../namespacethorin.html#a229e892ca840ebda9ce60cfad90ae1b0',1,'thorin']]],
-  ['vecotrize_11',['vecotrize',['../namespacethorin.html#a2845183b889a0b1ba1256dc2ea7c6e48abce5439b1dc3f93342028c4fd2687cb3',1,'thorin']]],
+  ['vecotrize_11',['vecotrize',['../namespacethorin.html#a51bd156a3d4d49cc12150d1ada2e7c5fabce5439b1dc3f93342028c4fd2687cb3',1,'thorin']]],
   ['vel_12',['Vel',['../classthorin_1_1Vel.html',1,'thorin']]],
   ['vel_13',['vel',['../classthorin_1_1World.html#aa73afcb4099190ef420e3073b98600dc',1,'thorin::World']]],
   ['vel_14',['Vel',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a8488f8c3464a90aa07238d6ae0bce35d',1,'thorin::Node']]],

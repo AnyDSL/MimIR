@@ -46,8 +46,8 @@ var normalize_8cpp =
     [ "is_int", "normalize_8cpp.html#a57f3fc8dc501e3b04e1c6523e32aad64", null ],
     [ "is_int< RCmp >", "normalize_8cpp.html#afa67e352ee77d2e4d643fc256d7a2559", null ],
     [ "is_int< ROp >", "normalize_8cpp.html#ae233018238984c56b1db26ff3c79fc7f", null ],
-    [ "make_truth_table", "normalize_8cpp.html#a1aa84e35a44dd22fe2d00f0d63016425", null ],
-    [ "merge_cmps", "normalize_8cpp.html#a3e3e439b4e0bbacc00b22ea4df465786", null ],
+    [ "make_truth_table", "normalize_8cpp.html#a973858355d7cb6f516c4a676e44c27b0", null ],
+    [ "merge_cmps", "normalize_8cpp.html#a0f3840d069df2563e55cf2d60909d5c7", null ],
     [ "normalize_Acc", "normalize_8cpp.html#ac5bfac7920f93ad995b9541acf209563", null ],
     [ "normalize_Bit", "normalize_8cpp.html#a26e12d469ce048d581f65c424e1a1485", null ],
     [ "normalize_bitcast", "normalize_8cpp.html#aca6c2c2c35f79f944855e950ee08ea61", null ],
@@ -66,5 +66,5 @@ var normalize_8cpp =
     [ "normalize_Wrap", "normalize_8cpp.html#ab1296b3aacd3bc151b5589a9d276bd8d", null ],
     [ "normalize_zip", "normalize_8cpp.html#aa171f9cec4330ed2febd4c8d59c9d4e7", null ],
     [ "pad", "normalize_8cpp.html#ac0939197f6f85434871b98845c13c9a0", null ],
-    [ "reassociate", "normalize_8cpp.html#a7a14bb2032b4f47477d1fd642eb868e1", null ]
+    [ "reassociate", "normalize_8cpp.html#acaa5fb6ae4a01c9dff6656b4af840394", null ]
 ];

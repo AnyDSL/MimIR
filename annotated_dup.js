@@ -28,7 +28,10 @@ var annotated_dup =
       [ "std", "namespacethorin_1_1std.html", [
         [ "Tag2Def_", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Def__", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Def___dup" ],
         [ "Tag2Enum_", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum__", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___dup" ],
-        [ "Tag2Enum_< Tag::std_icmp >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4_dup" ]
+        [ "Tag2Enum_< Tag::std_bit2 >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__bit2_01_4", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__bit2_01_4_dup" ],
+        [ "Tag2Enum_< Tag::std_icmp >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4_dup" ],
+        [ "Tag2Enum_< Tag::std_shr >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__shr_01_4", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__shr_01_4_dup" ],
+        [ "Tag2Enum_< Tag::std_wrap >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__wrap_01_4", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__wrap_01_4_dup" ]
       ] ],
       [ "utf8", "namespacethorin_1_1utf8.html", [
         [ "Lexer", "classthorin_1_1utf8_1_1Lexer.html", "classthorin_1_1utf8_1_1Lexer" ]

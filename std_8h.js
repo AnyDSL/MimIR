@@ -9,8 +9,51 @@ var std_8h =
     [ "thorin::std::Tag2Enum_< Tag::std_icmp >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4", [
       [ "type", "namespacethorin_1_1std.html#aa1a351bc247f82371b18f591f78f7d1f", null ]
     ] ],
+    [ "thorin::std::Tag2Enum_< Tag::std_bit2 >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__bit2_01_4", [
+      [ "type", "namespacethorin_1_1std.html#a754a3f9d1f1fee6af641548e7a2a01da", null ]
+    ] ],
+    [ "thorin::std::Tag2Enum_< Tag::std_shr >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__shr_01_4", [
+      [ "type", "namespacethorin_1_1std.html#a1e831915cd54cb93f940aa8f869fd3e7", null ]
+    ] ],
+    [ "thorin::std::Tag2Enum_< Tag::std_wrap >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__wrap_01_4", [
+      [ "type", "namespacethorin_1_1std.html#ac30cf75f9dbb202b94b5423c95baa2f0", null ]
+    ] ],
     [ "Tag2Def", "std_8h.html#a6c08350cd8151cba53dcec05457c5efd", null ],
     [ "Tag2Enum", "std_8h.html#a1faf31c571825de7b0c88bf3843bf203", null ],
+    [ "bit2", "std_8h.html#a827340ebd70843c60ef815ef94d0d56f", [
+      [ "bbaa", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fabd7204446aa4e4713b1c47b33f18c1f1", null ],
+      [ "f", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa8fa14cdd754f91cc6554c9e71929cce7", null ],
+      [ "bbaA", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa31536995930c36be62c82bc357b49afa", null ],
+      [ "nor", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa57c7d11cd49333e3f722204c63016da9", null ],
+      [ "bbAa", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa5c1b2d6e24ad5c7f0a879e87b4daab36", null ],
+      [ "nciff", "std_8h.html#a827340ebd70843c60ef815ef94d0d56faeffa8ffb6de709887fb7ed786629cbfa", null ],
+      [ "bbAA", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa9efa1d477e5ff30daa65569456981ef3", null ],
+      [ "na", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa6ec66e124fb93c190e9207b0b82f542a", null ],
+      [ "bBaa", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa291565de005bda2243ee6976bab8da8c", null ],
+      [ "niff", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa9f55314dfb4d78a2ccc362618a05a9c4", null ],
+      [ "bBaA", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fab4a2e0f5dca733e59004cda13d49b5ae", null ],
+      [ "nb", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa9c59153d22d9f7cc021b17b425cc31c5", null ],
+      [ "bBAa", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa118d3d55d086a9e3d5ed3cf5bc96da3b", null ],
+      [ "_xor", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa8605487a4cfe036dafbb16f65457be22", null ],
+      [ "bBAA", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fac9d0978a95f4f7a1279bf0c611fa6d28", null ],
+      [ "nand", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fac657344463ff1b32bf1ad9bbdb3ef20b", null ],
+      [ "Bbaa", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa75535e24938562ecda2730911c6eb350", null ],
+      [ "_and", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa8f9ec7bc75263ac5cedfb031698d345e", null ],
+      [ "BbaA", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa14ea3babd6bd2d41cf3c16d90c376588", null ],
+      [ "nxor", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa4091386482235077ea5a3357d7b5c62b", null ],
+      [ "BbAa", "std_8h.html#a827340ebd70843c60ef815ef94d0d56faa5bde218cb364be5605805f590496496", null ],
+      [ "b", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa92eb5ffee6ae2fec3ad71c777531578f", null ],
+      [ "BbAA", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa6f83bac2219e56477696b80d567f5a50", null ],
+      [ "iff", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa202291f5fb00d2c32c1b5a6c0cc622ee", null ],
+      [ "BBaa", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa202c281eb2b345b88bd8061bd67d709f", null ],
+      [ "a", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa0cc175b9c0f1b6a831c399e269772661", null ],
+      [ "BBaA", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa6b68ff90636d0a7dfdc48db13f455c44", null ],
+      [ "ciff", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa870ac2c5fac99933ec00d76e9c6ab759", null ],
+      [ "BBAa", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa0e63a7f6a9599f1e55e282dcb8fa9499", null ],
+      [ "_or", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fac342b4a20db36ff629c69ebad289ea76", null ],
+      [ "BBAA", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fa629f7a0c3ae9f79a4548d3d5d9f56836", null ],
+      [ "t", "std_8h.html#a827340ebd70843c60ef815ef94d0d56fae358efa489f58062f10dd7316b65649e", null ]
+    ] ],
     [ "icmp", "std_8h.html#a2a7c8b244bcdbef7928869100b909edd", [
       [ "xygle", "std_8h.html#a2a7c8b244bcdbef7928869100b909edda653f836235a27b289bf318bc8730fb7e", null ],
       [ "f", "std_8h.html#a2a7c8b244bcdbef7928869100b909edda8fa14cdd754f91cc6554c9e71929cce7", null ],
@@ -56,8 +99,16 @@ var std_8h =
       [ "XYGLE", "std_8h.html#a2a7c8b244bcdbef7928869100b909eddaa6ee9e715fd30e1b8e95843be4b2a9c8", null ],
       [ "t", "std_8h.html#a2a7c8b244bcdbef7928869100b909eddae358efa489f58062f10dd7316b65649e", null ]
     ] ],
-    [ "Tag", "std_8h.html#a1cd8381a0dc91aafb139d5e70c82ac4c", [
-      [ "std_icmp", "std_8h.html#a1cd8381a0dc91aafb139d5e70c82ac4caf208a2c5cf27ea963d43b65e10d43bc8", null ]
+    [ "shr", "std_8h.html#af8d05ab10b2b04f4ad9879c835673889", [
+      [ "ashr", "std_8h.html#af8d05ab10b2b04f4ad9879c835673889a3857931f2d0d28d57442421a45989bb2", null ],
+      [ "lshr", "std_8h.html#af8d05ab10b2b04f4ad9879c835673889a9d3827a838a5eeb8061fd0380d582ede", null ]
+    ] ],
+    [ "Tag", "std_8h.html#a1cd8381a0dc91aafb139d5e70c82ac4c", null ],
+    [ "wrap", "std_8h.html#a846eaf0590ddcacf0d008e31110b3c38", [
+      [ "add", "std_8h.html#a846eaf0590ddcacf0d008e31110b3c38a34ec78fcc91ffb1e54cd85e4a0924332", null ],
+      [ "sub", "std_8h.html#a846eaf0590ddcacf0d008e31110b3c38a8a68dc3e925eacf92633be230722a140", null ],
+      [ "mul", "std_8h.html#a846eaf0590ddcacf0d008e31110b3c38a353942263d1bedfbe06b7bfa78226253", null ],
+      [ "shl", "std_8h.html#a846eaf0590ddcacf0d008e31110b3c38abc192716b0e1d5c96a67961dd0d3f9da", null ]
     ] ],
     [ "as", "std_8h.html#a28c96f1ca38bee2c95ddb1a6b73cb60f", null ],
     [ "as", "std_8h.html#adf6ffab771463676ccbdd5cc646ac231", null ],
