@@ -315,8 +315,8 @@ World::World(std::string_view name)
         typ->set_codom(Xi);
         data_.op_rev_diff_ = axiom(nullptr, typ, 0, Tag::RevDiff, 0, dbg("rev_diff"));
     }
-    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i: n; Is#i»,
-      // Cn [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];
+    { // for :: [m: Nat , n: Nat , Ts: «n; *»] → Cn [Mem , Int m, Int m, Int m, «i: n; Is#i», Cn [Mem , i : Int m, «i:
+      // n; Is#i», Cn [Mem , «i: n; Is#i»]], Cn [Mem , «i: n; Is#i»]];
 
         auto input_sigma = nom_sigma(type<1>(), 3);
         input_sigma->set(0, nat);
