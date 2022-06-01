@@ -110,7 +110,8 @@ int main(int argc, char** argv) {
 
         std::ofstream md;
         if (emit_md) md.open(prefix + ".md");
-        Parser parser(world, input, ifs, emit_md ? &md : nullptr);
+
+        Parser parser(world, input, ifs, dialect_paths, emit_md ? &md : nullptr);
         parser.parse_module();
 
         if (emit_h) {

@@ -6,8 +6,11 @@
 #include <sstream>
 
 #include "thorin/check.h"
+#include "thorin/def.h"
+#include "thorin/dialects.h"
 #include "thorin/rewrite.h"
 
+#include "thorin/util/array.h"
 #include "thorin/util/sys.h"
 
 // clang-format off
@@ -26,11 +29,16 @@ using namespace std::string_literals;
 
 namespace thorin {
 
-Parser::Parser(World& world, std::string_view file, std::istream& istream, std::ostream* md)
+Parser::Parser(World& world,
+               std::string_view file,
+               std::istream& istream,
+               ArrayRef<std::string> import_search_paths,
+               std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
     , anonymous_(world.tuple_str("_"))
-    , bootstrapper_(std::filesystem::path{file}.filename().replace_extension("").string()) {
+    , bootstrapper_(std::filesystem::path{file}.filename().replace_extension("").string())
+    , user_search_paths_(import_search_paths.begin(), import_search_paths.end()) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
     push(); // root scope
@@ -39,11 +47,36 @@ Parser::Parser(World& world, std::string_view file, std::istream& istream, std::
 Parser::Parser(World& world,
                std::string_view file,
                std::istream& istream,
+               ArrayRef<std::string> import_search_paths,
                const std::deque<Parser::Scope>& inhert_scopes,
                const SymSet& inhert_imported)
-    : Parser(world, file, istream) {
+    : Parser(world, file, istream, import_search_paths) {
     scopes_   = inhert_scopes;
     imported_ = inhert_imported;
+}
+
+Parser Parser::import_module(World& world, std::string_view name, ArrayRef<std::string> user_search_paths) {
+    auto search_paths = get_plugin_search_paths(user_search_paths);
+
+    auto file_name = std::string(name) + ".thorin";
+
+    std::string input_path{};
+    for (const auto& path : search_paths) {
+        auto full_path = path / file_name;
+
+        std::error_code ignore;
+        if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore) {
+            input_path = full_path.string();
+            break;
+        }
+    }
+    std::ifstream ifs(input_path);
+
+    if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
+
+    thorin::Parser parser(world, input_path, ifs, user_search_paths);
+    parser.parse_module();
+    return parser;
 }
 
 void Parser::bootstrap(std::ostream& h) { bootstrapper_.emit(h); }
@@ -585,20 +618,8 @@ void Parser::parse_import() {
 
     if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
 
-    auto thorin_file = fmt("{}.thorin", name_str);
-
-    auto exe_path = sys::path_to_curr_exe();
-    if (!exe_path) err(name.loc(), "cannot determine search paths for import '{}'", name_str);
-
-    // default dialect path
-    // todo: make import search paths more sophisticated..
-    auto input = (exe_path->parent_path().parent_path() / "lib" / "thorin" / thorin_file).string();
-    std::ifstream ifs(input);
-
-    if (!ifs) err(name.loc(), "cannot import file '{}'", input);
-
-    Parser parser(world(), input, ifs, scopes_, imported_);
-    parser.parse_module();
+    // search file and import
+    auto parser = Parser::import_module(world(), name_str, user_search_paths_);
 
     // merge global scopes
     assert(parser.scopes_.size() == 1 && scopes_.size() == 1);

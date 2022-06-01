@@ -6,11 +6,13 @@
 #include <gtest/gtest.h>
 
 #include "thorin/def.h"
+#include "thorin/dialects.h"
 #include "thorin/error.h"
 #include "thorin/tables.h"
 #include "thorin/world.h"
 
 #include "thorin/be/ll/ll.h"
+#include "thorin/fe/parser.h"
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/eta_exp.h"
@@ -207,6 +209,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     World w;
+    Parser::import_module(w, "mem");
+
     auto mem_t  = w.type_mem();
     auto i32_t  = w.type_int_width(32);
     auto argv_t = w.type_ptr(w.type_ptr(i32_t));

@@ -24,6 +24,8 @@ class ForAxiomTest : public testing::TestWithParam<std::tuple<int, int, int>> {}
 
 TEST_P(ForAxiomTest, for) {
     World w;
+    Parser::import_module(w, "affine");
+
     auto mem_t  = w.type_mem();
     auto i32_t  = w.type_int_width(32);
     auto i64_t  = w.type_int_width(64);
@@ -82,6 +84,8 @@ TEST_P(ForAxiomTest, for) {
 
 TEST_P(ForAxiomTest, for_dynamic_iters) {
     World w;
+    Parser::import_module(w, "affine");
+
     auto mem_t  = w.type_mem();
     auto i8_t   = w.type_int_width(8);
     auto i32_t  = w.type_int_width(32);

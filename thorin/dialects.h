@@ -1,6 +1,7 @@
 #ifndef THORIN_DIALECTS_H
 #define THORIN_DIALECTS_H
 
+#include <filesystem>
 #include <memory>
 #include <string>
 #include <vector>
@@ -37,7 +38,7 @@ public:
     /// Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win)
     /// are searched for in the search paths:
     /// 1. \a search_paths, 2. env var \em THORIN_DIALECT_PATH, 3. "/path/to/executable"
-    static Dialect load(const std::string& name, const std::vector<std::string>& search_paths);
+    static Dialect load(const std::string& name, ArrayRef<std::string> search_paths);
 
     /// Name of the dialect.
     std::string name() const { return info_.plugin_name; }
@@ -55,6 +56,8 @@ private:
     std::string plugin_path_;
     std::unique_ptr<void, void (*)(void*)> handle_;
 };
+
+std::vector<std::filesystem::path> get_plugin_search_paths(ArrayRef<std::string> user_paths);
 
 } // namespace thorin
 #endif
