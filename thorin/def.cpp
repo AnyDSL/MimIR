@@ -74,7 +74,7 @@ const Def* Nat      ::rebuild(World& w, const Def*  , Defs  , const Def*    ) co
 const Def* Pack     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pack(t->arity(), o[0], dbg); }
 const Def* Pi       ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.pi(o[0], o[1], dbg); }
 const Def* Pick     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pick(t, o[0], dbg); }
-const Def* Proxy    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->index(), as<Proxy>()->tag(), dbg); }
+const Def* Proxy    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->pass(), as<Proxy>()->tag(), dbg); }
 const Def* Sigma    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.sigma(o, dbg); }
 const Def* Singleton::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.singleton(o[0], dbg); }
 const Def* Type     ::rebuild(World& w, const Def*  , Defs o, const Def*    ) const { return w.type(o[0]); }
@@ -85,7 +85,7 @@ const Def* Var      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) co
 const Def* Vel      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.vel(t, o[0], dbg); }
 
 const Def* Axiom    ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const {
-    auto res = w.axiom(normalizer(), t, dialect(), group(), tag(), dbg);
+    auto res = w.axiom(normalizer(), t, dialect(), tag(), sub(), dbg);
     assert(&w != &world() || gid() == res->gid());
     return res;
 }
@@ -392,7 +392,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
  * Global
  */
 
-const App* Global::type() const { return thorin::as<Group::Ptr>(Def::type()); }
+const App* Global::type() const { return thorin::as<Tag::Ptr>(Def::type()); }
 const Def* Global::alloced_type() const { return type()->arg(0); }
 
 /*

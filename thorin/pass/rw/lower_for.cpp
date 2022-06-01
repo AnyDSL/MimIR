@@ -7,7 +7,7 @@ namespace thorin {
 const Def* LowerFor::rewrite(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
-    if (auto for_ax = isa<Group::For>(def)) {
+    if (auto for_ax = isa<Tag::For>(def)) {
         auto& w = world();
         w.DLOG("rewriting for axiom: {} within {}", for_ax, curr_nom());
 

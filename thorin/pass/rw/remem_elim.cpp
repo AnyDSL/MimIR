@@ -3,7 +3,7 @@
 namespace thorin {
 
 const Def* RememElim::rewrite(const Def* def) {
-    if (auto remem = isa<Group::Remem>(def)) return remem->arg();
+    if (auto remem = isa<Tag::Remem>(def)) return remem->arg();
     return def;
 }
 

@@ -437,11 +437,11 @@ void Parser::parse_ax() {
     auto split  = Axiom::split(ax_str);
     if (!split) err(ax.loc(), "invalid axiom name '{}'", ax);
 
-    auto [dialect, group, tag] = *split;
+    auto [dialect, tag, sub] = *split;
 
     auto& info   = bootstrapper_.axioms.emplace_back();
     info.dialect = dialect;
-    info.group   = group;
+    info.tag     = tag;
 
     if (dialect != bootstrapper_.dialect()) {
         // TODO
@@ -449,7 +449,7 @@ void Parser::parse_ax() {
         // info.dialect, lexer_.file());
     }
 
-    // 6 bytes dialect name, 1 byte group, 1 byte tag
+    // 6 bytes dialect name, 1 byte tag, 1 byte sub
     assert(bootstrapper_.axioms.size() < std::numeric_limits<u8>::max());
 
     // split already tried mangling, so we know it's valid.
@@ -457,7 +457,7 @@ void Parser::parse_ax() {
 
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
-            auto& aliases = info.tags.emplace_back();
+            auto& aliases = info.subs.emplace_back();
             aliases.emplace_back(parse_sym("tag of an axiom"));
             while (accept(Tok::Tag::T_assign)) aliases.emplace_back(parse_sym("alias of an axiom tag"));
         });
@@ -469,15 +469,15 @@ void Parser::parse_ax() {
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
 
     dialect_t d = *Axiom::mangle(dialect);
-    group_t g   = bootstrapper_.axioms.size() - 1;
-    tag_t t     = 0;
-    if (info.tags.empty()) {
-        auto axiom = world().axiom(type, d, g, 0, track.named(ax.sym()));
+    tag_t t     = bootstrapper_.axioms.size() - 1;
+    sub_t s     = 0;
+    if (info.subs.empty()) {
+        auto axiom = world().axiom(type, d, t, 0, track.named(ax.sym()));
         insert(ax.sym(), axiom);
     } else {
-        for (const auto& tag : info.tags) {
-            auto axiom = world().axiom(type, d, g, t++, track);
-            for (auto& alias : tag) {
+        for (const auto& sub : info.subs) {
+            auto axiom = world().axiom(type, d, t++, s, track);
+            for (auto& alias : sub) {
                 Sym name = world().tuple_str(ax_str + "."s + alias);
                 insert(name, axiom);
             }

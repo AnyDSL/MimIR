@@ -558,13 +558,13 @@ public:
 
 class Proxy : public Def {
 private:
-    Proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg)
-        : Def(Node, type, ops, (u64(index) << 32_u64) | u64(tag), dbg) {}
+    Proxy(const Def* type, Defs ops, u32 pass, u32 tag, const Def* dbg)
+        : Def(Node, type, ops, (u64(pass) << 32_u64) | u64(tag), dbg) {}
 
 public:
     /// @name misc getters
     ///@{
-    u32 index() const { return u32(flags() >> 32_u64); }
+    u32 pass() const { return u32(flags() >> 32_u64); } ///< IPass::index within PassMan.
     u32 tag() const { return u32(flags()); }
     ///@}
 

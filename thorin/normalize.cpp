@@ -18,7 +18,7 @@ template<>        constexpr bool is_int<RCmp>() { return false; }
 
 #if 0
 static const Def* is_not(const Def* def) {
-    if (auto ixor = isa<Group::Bit>(Bit::_xor, def)) {
+    if (auto ixor = isa<Tag::Bit>(Bit::_xor, def)) {
         auto [x, y] = ixor->args<2>();
         if (auto lit = isa_lit(x); lit && lit == as_lit(isa_sized_type(x->type())) - 1_u64) return y;
     }
@@ -33,10 +33,10 @@ static T get(u64 u) {
 
 /// Use like this:
 /// `a op b = tab[a][b]`
-constexpr std::array<std::array<uint64_t, 2>, 2> make_truth_table(Bit op) {
+constexpr std::array<std::array<u64, 2>, 2> make_truth_table(Bit op) {
     return {
-        {{tag_t(op) & tag_t(0b0001) ? u64(-1) : 0, tag_t(op) & tag_t(0b0100) ? u64(-1) : 0},
-         {tag_t(op) & tag_t(0b0010) ? u64(-1) : 0, tag_t(op) & tag_t(0b1000) ? u64(-1) : 0}}
+        {{sub_t(op) & sub_t(0b0001) ? u64(-1) : 0, sub_t(op) & sub_t(0b0100) ? u64(-1) : 0},
+         {sub_t(op) & sub_t(0b0010) ? u64(-1) : 0, sub_t(op) & sub_t(0b1000) ? u64(-1) : 0}}
     };
 }
 
@@ -234,8 +234,8 @@ static void commute(O op, const Def*& a, const Def*& b) {
 /// (3)      a    op (lz op w) ->  lz op (a op w)
 /// (4) (lx op y) op      b    ->  lx op (y op b)
 /// ```
-template<tag_t tag>
-static const Def* reassociate(Group2Enum<tag> op,
+template<sub_t sub>
+static const Def* reassociate(Tag2Enum<sub> op,
                               World& world,
                               [[maybe_unused]] const App* ab,
                               const Def* a,
@@ -244,8 +244,8 @@ static const Def* reassociate(Group2Enum<tag> op,
     if (!is_associative(op)) return nullptr;
 
     auto la = a->isa<Lit>();
-    auto xy = isa<tag>(op, a);
-    auto zw = isa<tag>(op, b);
+    auto xy = isa<sub>(op, a);
+    auto zw = isa<sub>(op, b);
     auto lx = xy ? xy->arg(0)->template isa<Lit>() : nullptr;
     auto lz = zw ? zw->arg(0)->template isa<Lit>() : nullptr;
     auto y  = xy ? xy->arg(1) : nullptr;
@@ -253,12 +253,12 @@ static const Def* reassociate(Group2Enum<tag> op,
 
     std::function<const Def*(const Def*, const Def*)> make_op;
 
-    if constexpr (tag == Group::ROp) {
+    if constexpr (sub == Tag::ROp) {
         // build rmode for all new ops by using the least upper bound of all involved apps
         nat_t rmode     = RMode::bot;
         auto check_mode = [&](const App* app) {
             auto app_m = isa_lit(app->arg(0));
-            if (!app_m || !has(*app_m, RMode::reassoc)) return false;
+            if (!app_m || !(*app_m & RMode::reassoc)) return false;
             rmode &= *app_m; // least upper bound
             return true;
         };
@@ -268,7 +268,7 @@ static const Def* reassociate(Group2Enum<tag> op,
         if (lz && !check_mode(zw->decurry())) return nullptr;
 
         make_op = [&](const Def* a, const Def* b) { return world.op(op, rmode, a, b, dbg); };
-    } else if constexpr (tag == Group::Wrap) {
+    } else if constexpr (sub == Tag::Wrap) {
         // if we reassociate Wraps, we have to forget about nsw/nuw
         make_op = [&](const Def* a, const Def* b) { return world.op(op, WMode::none, a, b, dbg); };
     } else {
@@ -332,25 +332,25 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
  * normalize
  */
 
-template<group_t group>
-static const Def* merge_cmps(std::array<std::array<uint64_t, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
-    static_assert(sizeof(tag_t) == 1, "if this ever changes, please adjust the logic below");
-    static constexpr size_t num_bits = std::bit_width(Num<Group2Enum<group>> - 1_u64);
+template<tag_t tag>
+static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
+    static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
+    static constexpr size_t num_bits = std::bit_width(Num<Tag2Enum<tag>> - 1_u64);
 
-    auto a_cmp = isa<group>(a);
-    auto b_cmp = isa<group>(b);
+    auto a_cmp = isa<tag>(a);
+    auto b_cmp = isa<tag>(b);
 
     if (a_cmp && b_cmp && a_cmp->args() == b_cmp->args()) {
-        // push tag bits of a_cmp and b_cmp through truth table
-        tag_t res     = 0;
-        tag_t a_tag = a_cmp.axiom()->tag();
-        tag_t b_tag = b_cmp.axiom()->tag();
-        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_tag >>= 1, b_tag >>= 1)
-            res |= tab[a_tag & 1][b_tag & 1] << 7_u8;
+        // push sub bits of a_cmp and b_cmp through truth table
+        sub_t res   = 0;
+        sub_t a_sub = a_cmp.axiom()->sub();
+        sub_t b_sub = b_cmp.axiom()->sub();
+        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_sub >>= 1, b_sub >>= 1)
+            res |= tab[a_sub & 1][b_sub & 1] << 7_u8;
         res >>= (7_u8 - u8(num_bits));
 
         auto& world = a->world();
-        if constexpr (group == Group::RCmp)
+        if constexpr (tag == Tag::RCmp)
             return world.op(RCmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
         else
             return world.op(ICmp(res), a_cmp->arg(0), a_cmp->arg(1), dbg);
@@ -369,8 +369,8 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
     commute(op, a, b);
 
     auto tab = make_truth_table(op);
-    if (auto res = merge_cmps<Group::ICmp>(tab, a, b, dbg)) return res;
-    if (auto res = merge_cmps<Group::RCmp>(tab, a, b, dbg)) return res;
+    if (auto res = merge_cmps<Tag::ICmp>(tab, a, b, dbg)) return res;
+    if (auto res = merge_cmps<Tag::RCmp>(tab, a, b, dbg)) return res;
 
     auto la = isa_lit(a);
     auto lb = isa_lit(b);
@@ -447,13 +447,13 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
 
     auto absorption = [&](IOp op1, IOp op2) -> const Def* {
         if (op == op1) {
-            if (auto xy = isa<Group::IOp>(op2, a)) {
+            if (auto xy = isa<Tag::IOp>(op2, a)) {
                 auto [x, y] = xy->args<2>();
                 if (x == b) return y; // (b op2 y) op1 b -> y
                 if (y == b) return x; // (x op2 b) op1 b -> x
             }
 
-            if (auto zw = isa<Group::IOp>(op2, b)) {
+            if (auto zw = isa<Tag::IOp>(op2, b)) {
                 auto [z, w] = zw->args<2>();
                 if (z == a) return w; // a op1 (a op2 w) -> w
                 if (w == a) return z; // a op1 (z op2 a) -> z
@@ -464,12 +464,12 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
 
     auto simplify1 = [&](IOp op1, IOp op2) -> const Def* { // AFAIK this guy has no name
         if (op == op1) {
-            if (auto xy = isa<Group::IOp>(op2, a)) {
+            if (auto xy = isa<Tag::IOp>(op2, a)) {
                 auto [x, y] = xy->args<2>();
                 if (auto yy = is_not(y); yy && yy == b) return world.op(op1, x, b, dbg); // (x op2 not b) op1 b -> x op1 y
             }
 
-            if (auto zw = isa<Group::IOp>(op2, b)) {
+            if (auto zw = isa<Tag::IOp>(op2, b)) {
                 auto [z, w] = zw->args<2>();
                 if (auto ww = is_not(w); ww && ww == a) return world.op(op1, a, z, dbg); // a op1 (z op2 not a) -> a op1 z
             }
@@ -479,8 +479,8 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
 
     auto simplify2 = [&](IOp op1, IOp op2) -> const Def* { // AFAIK this guy has no name
         if (op == op1) {
-            if (auto xy = isa<Group::IOp>(op2, a)) {
-                if (auto zw = isa<Group::IOp>(op2, b)) {
+            if (auto xy = isa<Tag::IOp>(op2, a)) {
+                if (auto zw = isa<Tag::IOp>(op2, b)) {
                     auto [x, y] = xy->args<2>();
                     auto [z, w] = zw->args<2>();
                     if (auto yy = is_not(y); yy && x == z && yy == w) return x; // (z op2 not w) op1 (z op2 w) -> x
@@ -499,7 +499,7 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
     if (auto res = simplify2 (IOp::ior , IOp::iand)) return res;
     if (auto res = simplify2 (IOp::iand, IOp::ior )) return res;
 #endif
-    if (auto res = reassociate<Group::Bit>(op, world, callee, a, b, dbg)) return res;
+    if (auto res = reassociate<Tag::Bit>(op, world, callee, a, b, dbg)) return res;
 
     return world.raw_app(callee, {a, b}, dbg);
 }
@@ -597,7 +597,7 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
     }
     // clang-format on
 
-    if (auto res = reassociate<Group::Wrap>(op, world, callee, a, b, dbg)) return res;
+    if (auto res = reassociate<Tag::Wrap>(op, world, callee, a, b, dbg)) return res;
 
     return world.raw_app(callee, {a, b}, dbg);
 }
@@ -705,7 +705,7 @@ const Def* normalize_ROp(const Def* type, const Def* c, const Def* arg, const De
     }
     // clang-format on
 
-    if (auto res = reassociate<Group::ROp>(op, world, callee, a, b, dbg)) return res;
+    if (auto res = reassociate<Tag::ROp>(op, world, callee, a, b, dbg)) return res;
 
     return world.raw_app(callee, {a, b}, dbg);
 }
@@ -755,9 +755,9 @@ template<Trait op>
 const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const Def* dbg) {
     auto& world = type->world();
 
-    if (auto ptr = isa<Group::Ptr>(type)) {
+    if (auto ptr = isa<Tag::Ptr>(type)) {
         return world.lit_nat(8);
-    } else if (auto int_ = isa<Group::Int>(type)) {
+    } else if (auto int_ = isa<Tag::Int>(type)) {
         if (int_->type()->isa<Top>()) return world.lit_nat(8);
         if (auto w = isa_lit(int_->arg())) {
             if (*w == 0) return world.lit_nat(8);
@@ -766,7 +766,7 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
             if (*w <= 0x0000'0001'0000'0000_u64) return world.lit_nat(4);
             return world.lit_nat(8);
         }
-    } else if (auto real = isa<Group::Real>(type)) {
+    } else if (auto real = isa<Tag::Real>(type)) {
         if (auto w = isa_lit(real->arg())) {
             switch (*w) {
                 case 16: return world.lit_nat(2);
@@ -833,8 +833,8 @@ static const Def* fold_Conv(const Def* dst_type, const App* callee, const Def* s
             return world.lit(dst_type, as_lit(lit_src) % *lit_dw);
         }
 
-        if (isa<Group::Int>(src->type())) *lit_sw = *mod2width(*lit_sw);
-        if (isa<Group::Int>(dst_type)) *lit_dw = *mod2width(*lit_dw);
+        if (isa<Tag::Int>(src->type())) *lit_sw = *mod2width(*lit_sw);
+        if (isa<Tag::Int>(dst_type)) *lit_dw = *mod2width(*lit_dw);
 
         Res res;
 #define CODE(sw, dw)                                                                                 \
@@ -875,7 +875,7 @@ const Def* normalize_PE(const Def* type, const Def* callee, const Def* arg, cons
     auto& world = type->world();
 
     if constexpr (op == PE::known) {
-        if (world.is_pe_done() || isa<Group::PE>(PE::hlt, arg)) return world.lit_false();
+        if (world.is_pe_done() || isa<Tag::PE>(PE::hlt, arg)) return world.lit_false();
         if (arg->no_dep()) return world.lit_true();
     } else {
         if (world.is_pe_done()) return arg;
@@ -895,7 +895,7 @@ const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* 
     if (src->isa<Bot>()) return world.bot(dst_type);
     if (src->type() == dst_type) return src;
 
-    if (auto other = isa<Group::Bitcast>(src))
+    if (auto other = isa<Tag::Bitcast>(src))
         return other->arg()->type() == dst_type ? other->arg() : world.op_bitcast(dst_type, other->arg(), dbg);
 
     if (auto lit = src->isa<Lit>()) {
@@ -909,7 +909,7 @@ const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* 
 const Def* normalize_lea(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world                = type->world();
     auto [ptr, index]          = arg->projs<2>();
-    auto [pointee, addr_space] = as<Group::Ptr>(ptr->type())->args<2>();
+    auto [pointee, addr_space] = as<Tag::Ptr>(ptr->type())->args<2>();
 
     if (auto a = isa_lit(pointee->arity()); a && *a == 1) return ptr;
     // TODO
@@ -920,7 +920,7 @@ const Def* normalize_lea(const Def* type, const Def* callee, const Def* arg, con
 const Def* normalize_load(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world                = type->world();
     auto [mem, ptr]            = arg->projs<2>();
-    auto [pointee, addr_space] = as<Group::Ptr>(ptr->type())->args<2>();
+    auto [pointee, addr_space] = as<Tag::Ptr>(ptr->type())->args<2>();
 
     if (ptr->isa<Bot>()) return world.tuple({mem, world.bot(type->as<Sigma>()->op(1))}, dbg);
 
@@ -934,7 +934,7 @@ const Def* normalize_load(const Def* type, const Def* callee, const Def* arg, co
 const Def* normalize_remem(const Def* type, const Def* callee, const Def* mem, const Def* dbg) {
     auto& world = type->world();
 
-    // if (auto m = isa<Group::Remem>(mem)) mem = m;
+    // if (auto m = isa<Tag::Remem>(mem)) mem = m;
     return world.raw_app(callee, mem, dbg);
 }
 

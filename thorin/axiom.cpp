@@ -4,8 +4,8 @@ using namespace std::literals;
 
 namespace thorin {
 
-Axiom::Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, group_t group, tag_t tag, const Def* dbg)
-    : Def(Node, type, Defs{}, dialect | (flags_t(group) << 8_u64) | flags_t(tag), dbg) {
+Axiom::Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, tag_t tag, sub_t sub, const Def* dbg)
+    : Def(Node, type, Defs{}, dialect | (flags_t(tag) << 8_u64) | flags_t(sub), dbg) {
     u16 curry = 0;
     while (auto pi = type->isa<Pi>()) {
         ++curry;
@@ -83,18 +83,18 @@ std::optional<std::array<std::string_view, 3>> Axiom::split(std::string_view s) 
     auto dialect = sub_view(s, 0, dot);
     if (!mangle(dialect)) return {};
 
-    auto group = sub_view(s, dot + 1);
-    if (auto dot = group.find('.')) {
-        auto tag = sub_view(group, dot + 1);
-        group    = sub_view(group, 0, dot);
+    auto tag = sub_view(s, dot + 1);
+    if (auto dot = tag.find('.')) {
+        auto sub = sub_view(tag, dot + 1);
+        tag      = sub_view(tag, 0, dot);
         return {
-            {dialect, group, tag}
+            {dialect, tag, sub}
         };
     }
 
-    if (group.empty()) return {};
+    if (tag.empty()) return {};
     return {
-        {dialect, group, ""sv}
+        {dialect, tag, ""sv}
     };
 }
 
@@ -104,6 +104,6 @@ std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {
     return {nullptr, u16(-1)};
 }
 
-bool is_memop(const Def* def) { return def->isa<App>() && isa<Group::Mem>(def->proj(0)->type()); }
+bool is_memop(const Def* def) { return def->isa<App>() && isa<Tag::Mem>(def->proj(0)->type()); }
 
 } // namespace thorin

@@ -78,30 +78,34 @@
               XYgle,     XYglE, XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
     Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_icmp;
 ///
-/// ### %std.bit
+/// ### %std.bit2
 ///
-/// | Tag  | Alias  | B | B | A | A | Comment
-/// |------|--------|---|---|---|---|------------------------------|
-/// | bbaa | f      | o | o | o | o | always false                 |
-/// | bbaA | nor    | o | o | o | x |                              |
-/// | bbAa | nciff  | o | o | x | o | not converse implication     |
-/// | bbAA | na     | o | o | x | x | not first argument           |
-/// | bBaa | niff   | o | x | o | o | not implication              |
-/// | bBaA | nb     | o | x | o | x | not second argument          |
-/// | bBAa | _xor   | o | x | x | o |                              |
-/// | bBAA | nand   | o | x | x | x |                              |
-/// | Bbaa | _and   | x | o | o | o |                              |
-/// | BbaA | nxor   | x | o | o | x |                              |
-/// | BbAa | b      | x | o | x | o | second argument              |
-/// | BbAA | iff    | x | o | x | x | implication (if and only if) |
-/// | BBaa | a      | x | x | o | o | first argment                |
-/// | BBaA | ciff   | x | x | o | x | converse implication         |
-/// | BBAa | _or    | x | x | x | o |                              |
-/// | BBAA | t      | x | x | x | x | always true                  |
-.ax %std.bit(bbaa = f,     bbaA = nor,  bbAa = nciff,  bbAA = na,
-             bBaa = niff,  bBaA = nb,   bBAa = _xor,   bBAA = nand,
-             Bbaa = _and,  BbaA = nxor, BbAa = b,      BbAA = iff,
-             BBaa = a,     BBaA = ciff, BBAa = _or,    BBAA = t):
+/// This binary bitwise operations offers all [16 possible operations](https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators) as summarized in the following table:
+///
+/// | Tag  | Alias  | AB | Ab | aB | ab | Comment                      |
+/// |------|--------|----|----|----|----|------------------------------|
+/// | bbaa | f      |  o |  o |  o |  o | always false                 |
+/// | bbaA | nor    |  o |  o |  o |  x |                              |
+/// | bbAa | nciff  |  o |  o |  x |  o | not converse implication     |
+/// | bbAA | na     |  o |  o |  x |  x | not first argument           |
+/// | bBaa | niff   |  o |  x |  o |  o | not implication              |
+/// | bBaA | nb     |  o |  x |  o |  x | not second argument          |
+/// | bBAa | _xor   |  o |  x |  x |  o |                              |
+/// | bBAA | nand   |  o |  x |  x |  x |                              |
+/// | Bbaa | _and   |  x |  o |  o |  o |                              |
+/// | BbaA | nxor   |  x |  o |  o |  x |                              |
+/// | BbAa | b      |  x |  o |  x |  o | second argument              |
+/// | BbAA | iff    |  x |  o |  x |  x | implication (if and only if) |
+/// | BBaa | a      |  x |  x |  o |  o | first argment                |
+/// | BBaA | ciff   |  x |  x |  o |  x | converse implication         |
+/// | BBAa | _or    |  x |  x |  x |  o |                              |
+/// | BBAA | t      |  x |  x |  x |  x | always true                  |
+///
+/// TODO rework tag: This doesn't make sense
+.ax %std.bit2(bbaa = f,     bbaA = nor,  bbAa = nciff,  bbAA = na,
+              bBaa = niff,  bBaA = nb,   bBAa = _xor,   bBAA = nand,
+              Bbaa = _and,  BbaA = nxor, BbAa = b,      BbAA = iff,
+              BBaa = a,     BBaA = ciff, BBAa = _or,    BBAA = t):
     Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_bit;
 ///
 /// ### %std.shr

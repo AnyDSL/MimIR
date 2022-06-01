@@ -7,14 +7,14 @@ namespace thorin {
 
 class Axiom : public Def {
 private:
-    Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, group_t group, tag_t tag, const Def* dbg);
+    Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, tag_t tag, sub_t sub, const Def* dbg);
 
 public:
     /// @name getters
     ///@{
     dialect_t dialect() const { return flags() & Global_Dialect; }
-    group_t group() const { return group_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
-    tag_t tag() const { return tag_t(flags() & 0x0000'0000'0000'00ff_u64); }
+    tag_t tag() const { return tag_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
+    sub_t sub() const { return sub_t(flags() & 0x0000'0000'0000'00ff_u64); }
     NormalizeFn normalizer() const { return normalizer_; }
     u16 curry() const { return curry_; }
     ///@}
@@ -36,7 +36,7 @@ public:
     /// 7654321076543210765432107654321076543210765432107654321076543210
     /// Char67Char66Char65Char64Char63Char62Char61Char60|---reserved---|
     /// ```
-    /// The `reserved` part is used for the Axiom::tag and the Axiom::flags.
+    /// The `reserved` part is used for the Axiom::tag and the Axiom::sub.
     /// Each `Char6x` is 6-bit wide and hence a dialect name has at most Axiom::Max_Dialect_Size = 8 chars.
     /// It uses this encoding:
     /// | `Char6` | ASCII   |
@@ -62,12 +62,7 @@ public:
     friend class World;
 };
 
-template<class T, class U>
-bool has(T flags, U option) {
-    return (flags & option) == option;
-}
-
-template<class F, class D>
+template<class T, class D>
 class Query {
 public:
     Query()
@@ -79,7 +74,7 @@ public:
 
     const Axiom* axiom() const { return axiom_; }
     tag_t tag() const { return axiom()->tag(); }
-    F flags() const { return F(axiom()->flags()); }
+    T sub() const { return T(axiom()->sub()); }
     void clear() {
         axiom_ = nullptr;
         def_   = nullptr;
@@ -94,47 +89,46 @@ private:
     const D* def_;
 };
 
-template<group_t>
-struct Group2Def_ {
+template<tag_t>
+struct Tag2Def_ {
     using type = App;
 };
 template<>
-struct Group2Def_<Group::Mem> {
+struct Tag2Def_<Tag::Mem> {
     using type = Axiom;
 };
-template<group_t g>
-using Group2Def = typename Group2Def_<g>::type;
+template<tag_t t>
+using Tag2Def = typename Tag2Def_<t>::type;
 
-template<group_t g>
-Query<Group2Enum<g>, Group2Def<g>> isa(const Def* def) {
+template<tag_t t>
+Query<Tag2Enum<t>, Tag2Def<t>> isa(const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
-    if (axiom && axiom->group() == g && curry == 0) return {axiom, def->as<Group2Def<g>>()};
+    if (axiom && axiom->tag() == t && curry == 0) return {axiom, def->as<Tag2Def<t>>()};
     return {};
 }
 
-template<group_t g>
-Query<Group2Enum<g>, Group2Def<g>> isa(Group2Enum<g> flags, const Def* def) {
+template<tag_t t>
+Query<Tag2Enum<t>, Tag2Def<t>> isa(Tag2Enum<t> tag, const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
-    if (axiom && axiom->group() == g && axiom->flags() == flags_t(flags) && curry == 0)
-        return {axiom, def->as<Group2Def<g>>()};
+    if (axiom && axiom->tag() == t && axiom->tag() == tag_t(tag) && curry == 0) return {axiom, def->as<Tag2Def<t>>()};
     return {};
 }
 
-template<group_t g>
-Query<Group2Enum<g>, Group2Def<g>> as(const Def* d) {
-    assert(isa<g>(d));
+template<tag_t t>
+Query<Tag2Enum<t>, Tag2Def<t>> as(const Def* d) {
+    assert(isa<t>(d));
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
-template<group_t g>
-Query<Group2Enum<g>, Group2Def<g>> as(Group2Enum<g> f, const Def* d) {
-    assert((isa<g>(f, d)));
+template<tag_t t>
+Query<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
+    assert((isa<t>(f, d)));
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
 
-/// Checks whether @p type is an Group::Int or a Group::Real and returns its mod or width, respectively.
+/// Checks whether @p type is an Tag::Int or a Tag::Real and returns its mod or width, respectively.
 inline const Def* isa_sized_type(const Def* type) {
-    if (auto int_ = isa<Group::Int>(type)) return int_->arg();
-    if (auto real = isa<Group::Real>(type)) return real->arg();
+    if (auto int_ = isa<Tag::Int>(type)) return int_->arg();
+    if (auto real = isa<Tag::Real>(type)) return real->arg();
     return nullptr;
 }
 
