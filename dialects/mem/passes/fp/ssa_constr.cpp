@@ -3,6 +3,7 @@
 #include "thorin/pass/fp/eta_exp.h"
 
 #include "dialects/mem.h"
+#include "dialects/mem/mem.h"
 
 namespace thorin::mem {
 
@@ -26,8 +27,7 @@ const Def* SSAConstr::rewrite(const Proxy* proxy) {
 }
 
 const Def* SSAConstr::rewrite(const Def* def) {
-    // todo: move slot to dialect.
-    if (auto slot = thorin::isa<thorin::Tag::Slot>(def)) {
+    if (auto slot = mem::isa<mem::mem_slot>(def)) {
         auto [mem, id] = slot->args<2>();
         auto [_, ptr]  = slot->projs<2>();
         auto sloxy     = proxy(ptr->type(), {curr_nom(), id}, Sloxy, slot->dbg());
@@ -45,7 +45,7 @@ const Def* SSAConstr::rewrite(const Def* def) {
         if (auto sloxy = isa_proxy(ptr, Sloxy)) {
             if (data(curr_nom()).writable.contains(sloxy)) {
                 set_val(curr_nom(), sloxy, val);
-                return world().op_remem(mem, store->dbg());
+                return op_remem(mem, store->dbg());
             }
         }
     } else if (auto [app, mem_lam] = isa_apped_nom_lam(def); isa_workable(mem_lam)) {
@@ -183,6 +183,9 @@ undo_t SSAConstr::analyze(const Def* def) {
     return No_Undo;
 }
 
-PassTag* SSAConstr::ID() { static PassTag Key; return &Key; }
+PassTag* SSAConstr::ID() {
+    static PassTag Key;
+    return &Key;
+}
 
 } // namespace thorin::mem

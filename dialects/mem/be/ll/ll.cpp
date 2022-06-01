@@ -697,7 +697,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t, p, ll_ptr, idx_t, ll_idx);
     } else if (auto trait = isa<Tag::Trait>(def)) {
         unreachable();
-    } else if (auto malloc = isa<Tag::Malloc>(def)) {
+    } else if (auto malloc = mem::isa<mem::mem_malloc>(def)) {
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
         auto ptr_t = convert(mem::as<mem::mem_Ptr>(def->proj(1)->type()));

@@ -78,7 +78,28 @@ inline const Def* op_store(const Def* mem, const Def* ptr, const Def* val, const
     return w.app(w.app(w.ax(Tag::mem_store), {T, a}), {mem, ptr, val}, dbg);
 }
 
-inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg /*= {}*/) {
+inline const Def* op_remem(const Def* mem, const Def* dbg = {}) {
+    World& w = mem->world();
+    return w.app(w.ax(Tag::mem_remem), mem, dbg);
+}
+
+inline const Def* op_alloc(const Def* type, const Def* mem, const Def* dbg = {}) {
+    World& w = type->world();
+    return w.app(w.app(w.ax(Tag::mem_alloc), {type, w.lit_nat_0()}), mem, dbg);
+}
+
+inline const Def* op_slot(const Def* type, const Def* mem, const Def* dbg = {}) {
+    World& w = type->world();
+    return w.app(w.app(w.ax(Tag::mem_slot), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())}, dbg);
+}
+
+inline const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {}) {
+    World& w  = type->world();
+    auto size = w.op(Trait::size, type);
+    return w.app(w.app(w.ax(Tag::mem_malloc), {type, w.lit_nat_0()}), {mem, size}, dbg);
+}
+
+inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {}) {
     World& w  = type->world();
     auto size = w.op(Trait::size, type);
     return w.app(w.app(w.ax(Tag::mem_mslot), {type, w.lit_nat_0()}), {mem, size, id}, dbg);

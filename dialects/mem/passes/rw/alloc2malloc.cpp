@@ -5,11 +5,10 @@
 namespace thorin::mem {
 
 const Def* Alloc2Malloc::rewrite(const Def* def) {
-    // todo: move alloc and slot to dialect
-    if (auto alloc = thorin::isa<thorin::Tag::Alloc>(def)) {
+    if (auto alloc = mem::isa<mem::mem_alloc>(def)) {
         auto [pointee, addr_space] = alloc->decurry()->args<2>();
-        return world().op_malloc(pointee, alloc->arg(), alloc->dbg());
-    } else if (auto slot = thorin::isa<thorin::Tag::Slot>(def)) {
+        return op_malloc(pointee, alloc->arg(), alloc->dbg());
+    } else if (auto slot = mem::isa<mem::mem_slot>(def)) {
         auto [pointee, addr_space] = slot->decurry()->args<2>();
         auto [mem, id]             = slot->args<2>();
         return op_mslot(pointee, mem, id, slot->dbg());

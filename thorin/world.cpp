@@ -269,6 +269,11 @@ World World::stub() {
     World w(name());
     w.ostream_ = ostream_;
     w.state_   = state_;
+    
+    // bring dialects' axioms into new world.
+    Rewriter rewriter{w};
+    for (const auto& ax : data_.axioms_) rewriter.rewrite(ax.second);
+
     return w;
 }
 
