@@ -61,11 +61,6 @@ World::World(std::string_view name)
         data_.lit_bool_[1] = lit_int(2, 1_u64);
     }
 
-    auto mem = data_.type_mem_ = axiom(type(), Tag::Mem, 0, dbg("mem"));
-
-    { // ptr: [T: *, as: nat] -> *
-        data_.type_ptr_ = axiom(nullptr, pi({type(), nat}, type()), Tag::Ptr, 0, dbg("ptr"));
-    }
     {
 #define CODE(T, o) data_.T##_[size_t(T::o)] = axiom(normalize_##T<T::o>, ty, Tag::T, flags_t(T::o), dbg(op2str(T::o)));
     }
@@ -88,12 +83,13 @@ World::World(std::string_view name)
         ty->set_codom(pi({int_w, int_w}, int_w));
         THORIN_WRAP(CODE)
     }
-    { // Div: w: nat -> [mem, int w, int w] -> [mem, int w]
-        auto ty    = nom_pi(type())->set_dom(nat);
-        auto int_w = type_int(ty->var(dbg("w")));
-        ty->set_codom(pi({mem, int_w, int_w}, sigma({mem, int_w})));
-        THORIN_DIV(CODE)
-    }
+    // todo: move to some dialect..
+    // { // Div: w: nat -> [mem, int w, int w] -> [mem, int w]
+    //     auto ty    = nom_pi(type())->set_dom(nat);
+    //     auto int_w = type_int(ty->var(dbg("w")));
+    //     ty->set_codom(pi({mem, int_w, int_w}, sigma({mem, int_w})));
+    //     THORIN_DIV(CODE)
+    // }
     { // ROp: [m: nat, w: nat] -> [real w, real w] -> real w
         auto ty     = nom_pi(type())->set_dom({nat, nat});
         auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
@@ -118,13 +114,14 @@ World::World(std::string_view name)
         auto ty = pi(type(), nat);
         THORIN_TRAIT(CODE)
     }
-    { // acc: n: nat -> cn[M, cn[M, int w n, cn[M, []]]]
-        // TODO this is more a proof of concept
-        auto ty = nom_pi(type())->set_dom(nat);
-        auto n  = ty->var(0, dbg("n"));
-        ty->set_codom(cn_mem_ret(type_int(n), sigma()));
-        THORIN_ACC(CODE)
-    }
+    // todo: move to some dialect..
+    // { // acc: n: nat -> cn[M, cn[M, int w n, cn[M, []]]]
+    //     // TODO this is more a proof of concept
+    //     auto ty = nom_pi(type())->set_dom(nat);
+    //     auto n  = ty->var(0, dbg("n"));
+    //     ty->set_codom(cn_mem_ret(type_int(n), sigma()));
+    //     THORIN_ACC(CODE)
+    // }
 #undef CODE
     { // Conv: [dw: nat, sw: nat] -> i/r sw -> i/r dw
         auto make_type = [&](Conv o) {
@@ -159,66 +156,6 @@ World::World(std::string_view name)
         auto [D, S] = ty->vars<2>({dbg("D"), dbg("S")});
         ty->set_codom(pi(S, D));
         data_.bitcast_ = axiom(normalize_bitcast, ty, Tag::Bitcast, 0, dbg("bitcast"));
-    }
-    { // lea: [n: nat, Ts: «n; *», as: nat] -> [ptr(«j: n; Ts#j», as), i: int n] -> ptr(Ts#i, as)
-        auto dom = nom_sigma(type<1>(), 3);
-        dom->set(0, nat);
-        dom->set(1, arr(dom->var(0, dbg("n")), type()));
-        dom->set(2, nat);
-        auto pi1         = nom_pi(type())->set_dom(dom);
-        auto [n, Ts, as] = pi1->vars<3>({dbg("n"), dbg("Ts"), dbg("as")});
-        auto in          = nom_arr()->set_shape(n);
-        in->set_body(extract(Ts, in->var(dbg("j"))));
-        auto pi2 = nom_pi(type())->set_dom({type_ptr(in, as), type_int(n)});
-        pi2->set_codom(type_ptr(extract(Ts, pi2->var(1, dbg("i"))), as));
-        pi1->set_codom(pi2);
-        data_.lea_ = axiom(normalize_lea, pi1, Tag::LEA, 0, dbg("lea"));
-    }
-    { // load: [T: *, as: nat] -> [M, ptr(T, as)] -> [M, T]
-        auto ty      = nom_pi(type())->set_dom({type(), nat});
-        auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
-        auto ptr     = type_ptr(T, as);
-        ty->set_codom(pi({mem, ptr}, sigma({mem, T})));
-        data_.load_ = axiom(normalize_load, ty, Tag::Load, 0, dbg("load"));
-    }
-    { // remem: M -> M
-        auto ty      = pi(mem, mem);
-        data_.remem_ = axiom(normalize_remem, ty, Tag::Remem, 0, dbg("remem"));
-    }
-    { // store: [T: *, as: nat] -> [M, ptr(T, as), T] -> M
-        auto ty      = nom_pi(type())->set_dom({type(), nat});
-        auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
-        auto ptr     = type_ptr(T, as);
-        ty->set_codom(pi({mem, ptr, T}, mem));
-        data_.store_ = axiom(normalize_store, ty, Tag::Store, 0, dbg("store"));
-    }
-    { // alloc: [T: *, as: nat] -> M -> [M, ptr(T, as)]
-        auto ty      = nom_pi(type())->set_dom({type(), nat});
-        auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
-        auto ptr     = type_ptr(T, as);
-        ty->set_codom(pi(mem, sigma({mem, ptr})));
-        data_.alloc_ = axiom(nullptr, ty, Tag::Alloc, 0, dbg("alloc"));
-    }
-    { // slot: [T: *, as: nat] -> [M, nat] -> [M, ptr(T, as)]
-        auto ty      = nom_pi(type())->set_dom({type(), nat});
-        auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
-        auto ptr     = type_ptr(T, as);
-        ty->set_codom(pi({mem, nat}, sigma({mem, ptr})));
-        data_.slot_ = axiom(nullptr, ty, Tag::Slot, 0, dbg("slot"));
-    }
-    { // malloc: [T: *, as: nat] -> [M, nat] -> [M, ptr(T, as)]
-        auto ty      = nom_pi(type())->set_dom({type(), nat});
-        auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
-        auto ptr     = type_ptr(T, as);
-        ty->set_codom(pi({mem, nat}, sigma({mem, ptr})));
-        data_.malloc_ = axiom(nullptr, ty, Tag::Malloc, 0, dbg("malloc"));
-    }
-    { // mslot: [T: *, as: nat] -> [M, nat, nat] -> [M, ptr(T, as)]
-        auto ty      = nom_pi(type())->set_dom({type(), nat});
-        auto [T, as] = ty->vars<2>({dbg("T"), dbg("as")});
-        auto ptr     = type_ptr(T, as);
-        ty->set_codom(pi({mem, nat, nat}, sigma({mem, ptr})));
-        data_.mslot_ = axiom(nullptr, ty, Tag::Mslot, 0, dbg("mslot"));
     }
     { // atomic: [T: *, R: *] -> T -> R
         auto ty     = nom_pi(type())->set_dom({type(), type()});
@@ -540,19 +477,6 @@ const Lit* World::lit_int(const Def* type, u64 i, const Def* dbg) {
     return l;
 }
 
-Global* World::global_immutable_string(std::string_view str, const Def* dbg) {
-    size_t size = str.size() + 1;
-
-    DefArray str_array(size);
-    for (size_t i = 0; i != size - 1; ++i) str_array[i] = lit_nat(str[i], dbg);
-    str_array.back() = lit_nat('\0', dbg);
-    auto s           = tuple(str_array, dbg);
-
-    auto glob = global(type_ptr(s->type()), false, dbg);
-    glob->set(s);
-    return glob;
-}
-
 /*
  * set
  */
@@ -627,33 +551,6 @@ const Def* World::test(const Def* value, const Def* probe, const Def* match, con
 
 const Def* World::singleton(const Def* inner_type, const Def* dbg) {
     return unify<Singleton>(1, this->type<1>(), inner_type, dbg);
-}
-
-/*
- * ops
- */
-
-static const Def* tuple_of_types(const Def* t) {
-    auto& world = t->world();
-    if (auto sigma = t->isa<Sigma>()) return world.tuple(sigma->ops());
-    if (auto arr = t->isa<Arr>()) return world.pack(arr->shape(), arr->body());
-    return t;
-}
-
-const Def* World::op_lea(const Def* ptr, const Def* index, const Def* dbg) {
-    auto [pointee, addr_space] = as<Tag::Ptr>(ptr->type())->args<2>();
-    auto Ts                    = tuple_of_types(pointee);
-    return app(app(ax_lea(), {pointee->arity(), Ts, addr_space}), {ptr, index}, dbg);
-}
-
-const Def* World::op_malloc(const Def* type, const Def* mem, const Def* dbg /*= {}*/) {
-    auto size = op(Trait::size, type);
-    return app(app(ax_malloc(), {type, lit_nat_0()}), {mem, size}, dbg);
-}
-
-const Def* World::op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg /*= {}*/) {
-    auto size = op(Trait::size, type);
-    return app(app(ax_mslot(), {type, lit_nat_0()}), {mem, size, id}, dbg);
 }
 
 /*
