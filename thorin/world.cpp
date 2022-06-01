@@ -1,5 +1,7 @@
 #include "thorin/world.h"
 
+#include "thorin/tuple.h"
+
 // for colored output
 #ifdef _WIN32
 #    include <io.h>
@@ -308,7 +310,7 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return checker_->equiv<false>(ops[0], op); })) return arr(n, ops[0]);
+    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
     return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
 }
 
@@ -417,6 +419,13 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
             return unify<Extract>(2, sigma->op(*i), d, index, dbg);
         }
     }
+
+    // e.g. (t, f)#cond, where t&f's types contain nominals but still are alpha-equiv
+    // for now just use t's type.
+    if (auto sigma = type->isa<Sigma>();
+        sigma && std::all_of(sigma->ops().begin() + 1, sigma->ops().end(),
+                             [&](auto op) { return checker_->equiv<false>(sigma->op(0), op); }))
+        return unify<Extract>(2, sigma->op(0), d, index, dbg);
 
     type = type->as<Arr>()->body();
     return unify<Extract>(2, type, d, index, dbg);

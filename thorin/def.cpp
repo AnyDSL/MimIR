@@ -1,6 +1,7 @@
 #include "thorin/def.h"
 
 #include <algorithm>
+#include <ranges>
 #include <stack>
 
 #include "thorin/rewrite.h"
@@ -118,6 +119,12 @@ TBound<up>* TBound<up>::stub(World& w, const Def* t, const Def* dbg) {
 
 const Pi* Pi::restructure() {
     if (!is_free(var(), codom())) return world().pi(dom(), codom(), dbg());
+    return nullptr;
+}
+
+const Sigma* Sigma::restructure() {
+    if (std::ranges::none_of(ops(), [this](auto op) { return is_free(var(), op); }))
+        return static_cast<const Sigma*>(world().sigma(ops(), dbg()));
     return nullptr;
 }
 

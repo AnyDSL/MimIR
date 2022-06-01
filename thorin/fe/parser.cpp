@@ -6,6 +6,7 @@
 #include <sstream>
 
 #include "thorin/check.h"
+#include "thorin/def.h"
 #include "thorin/rewrite.h"
 
 #include "thorin/util/sys.h"
@@ -472,7 +473,7 @@ void Parser::parse_ax() {
     } else {
         size_t tag_id = 0;
         for (auto& tag : info.tags) {
-            assert(tag_id < 0xFF && "at most 256 tags allowed for a single axiom");
+            assert(tag_id <= 0xFF && "at most 256 tags allowed for a single axiom");
             auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t((info.id & u32(-1)) | tag_id++),
                                        track.named(world().sym(ax.sym().to_string() + "." + tag.front())));
             for (auto& alias : tag) {

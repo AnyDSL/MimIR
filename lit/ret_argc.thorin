@@ -7,12 +7,12 @@
 
 .import mem;
 
-.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
+.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
     0: (%Int 2),
     return (mem, argc)
 };
 
-// CHECK-DAG: main_[[mainId:[0-9]*]]: Cn _{{[0-9]*}}: (_[[memId:[0-9]*]], _[[argcId:[0-9]*]], _{{[0-9]*}}, _[[returnId:[0-9]*]]) = {
+// CHECK-DAG: main_[[mainId:[0-9]*]]: Cn [%mem.M, i32, %mem.Ptr (%mem.Ptr (i8, 0:nat), 0:nat), Cn [%mem.M, i32]]: (_[[memId:[0-9]*]], _[[argcId:[0-9]*]], _{{[0-9]*}}, _[[returnId:[0-9]*]]) = {
 // CHECK-DAG: _[[appId:[0-9]*]]: ⊥:★ = _[[returnEtaId:[0-9]*]] (_[[memId]], _[[argcId]]);
 // CHECK-DAG: λ@(0:i1) _[[appId]]
 
