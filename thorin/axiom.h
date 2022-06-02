@@ -2,6 +2,7 @@
 #define THORIN_AXIOM_H
 
 #include "thorin/lam.h"
+#include "thorin/util/assert.h"
 
 namespace thorin {
 
@@ -164,7 +165,7 @@ namespace detail {
 
     template<class AxTag>
     constexpr AxTag base_value() {
-        if constexpr (requires(AxTag t) { requires axiom_has_sub_tags<AxTag>(t); })
+        if constexpr (axiom_has_sub_tags<AxTag>)
             return AxTag::id_;
         else
             return AxTag::base_;
