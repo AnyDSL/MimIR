@@ -7,6 +7,7 @@
 #include "thorin/axiom.h"
 #include "thorin/config.h"
 #include "thorin/debug.h"
+#include "thorin/error.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
@@ -109,6 +110,27 @@ public:
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
     const Axiom* axiom(const Def* type, const Def* dbg = {}) {
         return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.curr_sub++, dbg);
+    }
+
+    /// Get axiom from a dialect.
+    ///
+    /// Use this to get an axiom with sub-tags.
+    template<class AxTag>
+    const Axiom* ax(AxTag sub) const {
+        u64 int_sub = static_cast<u64>(sub);
+        auto it = data_.axioms_.find(int_sub);
+        if (it == data_.axioms_.end())
+            thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", int_sub);
+        return it->second;
+    }
+
+    /// Get axiom from a dialect.
+    ///
+    /// Can be used to get an axiom without sub-tags.
+    /// E.g. use `w.ax<mem::M>();` to get the %mem.M axiom.
+    template<axiom_has_sub_tags AxTag>
+    const Axiom* ax() const {
+        return ax(AxTag::id_);
     }
     ///@}
 
@@ -384,9 +406,6 @@ public:
     const Axiom* ax_store()   const { return data_.store_;   }
     // clang-format on
     ///@}
-
-    /// Get axioms from dialects.
-    const Axiom* ax(u64 tag) const;
 
     /// @name fn - these guys yield the final function to be invoked for the various operations
     ///@{

@@ -273,13 +273,6 @@ World World::stub() {
  * core calculus
  */
 
-const Axiom* World::ax(u64 tag) const {
-    auto it = data_.axioms_.find(tag);
-    if (it == data_.axioms_.end())
-        thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", tag);
-    return it->second;
-}
-
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->as<Pi>();
 
