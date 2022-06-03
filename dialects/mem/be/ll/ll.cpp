@@ -677,7 +677,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
     } else if (auto lea = match<mem::lea>(def)) {
         auto [ptr, idx] = lea->args<2>();
         auto ll_ptr     = emit(ptr);
-        auto pointee    = match<mem::Ptr, true>(ptr->type())->arg(0);
+        auto pointee    = match<mem::Ptr, false>(ptr->type())->arg(0);
         auto t          = convert(pointee);
         auto p          = convert(ptr->type());
         if (pointee->isa<Sigma>())
@@ -701,7 +701,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
     } else if (auto malloc = match<mem::malloc>(def)) {
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
-        auto ptr_t = convert(match<mem::Ptr, true>(def->proj(1)->type()));
+        auto ptr_t = convert(match<mem::Ptr, false>(def->proj(1)->type()));
         bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
         return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
     } else if (auto mslot = match<mem::mslot>(def)) {
@@ -715,7 +715,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         emit_unsafe(load->arg(0));
         auto ptr       = emit(load->arg(1));
         auto ptr_t     = convert(load->arg(1)->type());
-        auto pointee_t = convert(match<mem::Ptr, true>(load->arg(1)->type())->arg(0));
+        auto pointee_t = convert(match<mem::Ptr, false>(load->arg(1)->type())->arg(0));
         return bb.assign(name, "load {}, {} {}", pointee_t, ptr_t, ptr);
     } else if (auto store = match<mem::store>(def)) {
         emit_unsafe(store->arg(0));
@@ -766,7 +766,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         return bb.assign(name, "insertvalue {} {}, {} {}, {}", tup_t, tuple, val_t, value, index);
     } else if (auto global = def->isa<Global>()) {
         auto init                  = emit(global->init());
-        auto [pointee, addr_space] = match<mem::Ptr, true>(global->type())->args<2>();
+        auto [pointee, addr_space] = match<mem::Ptr, false>(global->type())->args<2>();
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
         return globals_[global] = name;
     }
