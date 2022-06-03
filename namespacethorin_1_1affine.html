@@ -103,200 +103,90 @@ $(document).ready(function(){initNavTree('namespacethorin_1_1affine.html',''); i
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">thorin::affine Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:structthorin_1_1affine_1_1Tag2Def__"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Def__">Tag2Def_</a></td></tr>
-<tr class="separator:structthorin_1_1affine_1_1Tag2Def__"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:structthorin_1_1affine_1_1Tag2Enum__"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Enum__">Tag2Enum_</a></td></tr>
-<tr class="separator:structthorin_1_1affine_1_1Tag2Enum__"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:ae2ee1c883053b2cb2b946000cba69438"><td class="memTemplParams" colspan="2">template&lt;fields_t tag&gt; </td></tr>
-<tr class="memitem:ae2ee1c883053b2cb2b946000cba69438"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#ae2ee1c883053b2cb2b946000cba69438">Tag2Def</a> = typename <a class="el" href="namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Def__">Tag2Def_</a>&lt; tag &gt;::type</td></tr>
-<tr class="separator:ae2ee1c883053b2cb2b946000cba69438"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbefca3af14d1f0b618404ceed427d1a"><td class="memTemplParams" colspan="2">template&lt;fields_t tag&gt; </td></tr>
-<tr class="memitem:acbefca3af14d1f0b618404ceed427d1a"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a> = typename <a class="el" href="namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Enum__">Tag2Enum_</a>&lt; tag &gt;::type</td></tr>
-<tr class="separator:acbefca3af14d1f0b618404ceed427d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1affine_1_1LowerFor.html">LowerFor</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lowers the for axiom to actual control flow in CPS style Requires <a class="el" href="classthorin_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP).">CopyProp</a> to cleanup afterwards.  <a href="classthorin_1_1affine_1_1LowerFor.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a9ad76c86cbf3829eaaa63019bcf72b9b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#a9ad76c86cbf3829eaaa63019bcf72b9b">Tag</a> : u64 </td></tr>
-<tr class="separator:a9ad76c86cbf3829eaaa63019bcf72b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9bd5d8f8b435003df098cc8f09b30d6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#ae9bd5d8f8b435003df098cc8f09b30d6">For</a> : flags_t { <a class="el" href="namespacethorin_1_1affine.html#ae9bd5d8f8b435003df098cc8f09b30d6a4c48644347196b5a640c3aabbc95d417">id_</a> = 0x871ca3c60000000
+ }</td></tr>
+<tr class="separator:ae9bd5d8f8b435003df098cc8f09b30d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a9dc73c17422038c4037c9a40a8b955d3"><td class="memTemplParams" colspan="2">template&lt;fields_t tag&gt; </td></tr>
-<tr class="memitem:a9dc73c17422038c4037c9a40a8b955d3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; tag &gt;, <a class="el" href="namespacethorin_1_1affine.html#ae2ee1c883053b2cb2b946000cba69438">Tag2Def</a>&lt; tag &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#a9dc73c17422038c4037c9a40a8b955d3">isa</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
-<tr class="separator:a9dc73c17422038c4037c9a40a8b955d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a529bea34b42b76f34273ccc861a418a4"><td class="memTemplParams" colspan="2">template&lt;fields_t tag&gt; </td></tr>
-<tr class="memitem:a529bea34b42b76f34273ccc861a418a4"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; tag &gt;, <a class="el" href="namespacethorin_1_1affine.html#ae2ee1c883053b2cb2b946000cba69438">Tag2Def</a>&lt; tag &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#a529bea34b42b76f34273ccc861a418a4">isa</a> (<a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; tag &gt; flags, const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
-<tr class="separator:a529bea34b42b76f34273ccc861a418a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a547f05be16117b712917137bf2fb601d"><td class="memTemplParams" colspan="2">template&lt;fields_t t&gt; </td></tr>
-<tr class="memitem:a547f05be16117b712917137bf2fb601d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin_1_1affine.html#ae2ee1c883053b2cb2b946000cba69438">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#a547f05be16117b712917137bf2fb601d">as</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *d)</td></tr>
-<tr class="separator:a547f05be16117b712917137bf2fb601d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd84ae76d22b30dd9cd931f4aa83012e"><td class="memTemplParams" colspan="2">template&lt;fields_t t&gt; </td></tr>
-<tr class="memitem:afd84ae76d22b30dd9cd931f4aa83012e"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin_1_1affine.html#ae2ee1c883053b2cb2b946000cba69438">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#afd84ae76d22b30dd9cd931f4aa83012e">as</a> (<a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; t &gt; f, const <a class="el" href="classthorin_1_1Def.html">Def</a> *d)</td></tr>
-<tr class="separator:afd84ae76d22b30dd9cd931f4aa83012e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0372be693375257bfadf6679323e6a32"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#a0372be693375257bfadf6679323e6a32">fn_for</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;w, <a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> params)</td></tr>
+<tr class="memdesc:a0372be693375257bfadf6679323e6a32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the affine_for axiom applied with <em>params</em>.  <a href="namespacethorin_1_1affine.html#a0372be693375257bfadf6679323e6a32">More...</a><br /></td></tr>
+<tr class="separator:a0372be693375257bfadf6679323e6a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae796de3592113354bb2c7fadf2a15caf"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#ae796de3592113354bb2c7fadf2a15caf">op_for</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;w, const <a class="el" href="classthorin_1_1Def.html">Def</a> *mem, const <a class="el" href="classthorin_1_1Def.html">Def</a> *begin, const <a class="el" href="classthorin_1_1Def.html">Def</a> *end, const <a class="el" href="classthorin_1_1Def.html">Def</a> *step, <a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> inits, const <a class="el" href="classthorin_1_1Def.html">Def</a> *body, const <a class="el" href="classthorin_1_1Def.html">Def</a> *brk)</td></tr>
+<tr class="memdesc:ae796de3592113354bb2c7fadf2a15caf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a fully applied affine_for axiom.  <a href="namespacethorin_1_1affine.html#ae796de3592113354bb2c7fadf2a15caf">More...</a><br /></td></tr>
+<tr class="separator:ae796de3592113354bb2c7fadf2a15caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65d98ad1ef48d80572021ebecd4f2343"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#a65d98ad1ef48d80572021ebecd4f2343">operator==</a> (<a class="el" href="namespacethorin_1_1affine.html#ae9bd5d8f8b435003df098cc8f09b30d6">For</a> enm, <a class="el" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">flags_t</a> flags)</td></tr>
+<tr class="separator:a65d98ad1ef48d80572021ebecd4f2343"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ae5162b565e104f4ff1ab15e54c94f035"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">dialect_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1affine.html#ae5162b565e104f4ff1ab15e54c94f035">id</a> = 0x871ca3c60000000</td></tr>
+<tr class="separator:ae5162b565e104f4ff1ab15e54c94f035"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/><h2 class="groupheader">Class Documentation</h2>
-<a name="structthorin_1_1affine_1_1Tag2Def__" id="structthorin_1_1affine_1_1Tag2Def__"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structthorin_1_1affine_1_1Tag2Def__">&#9670;&nbsp;</a></span>thorin::affine::Tag2Def_</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct thorin::affine::Tag2Def_</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="textblock"><div class="compoundTemplParams">template&lt;fields_t tag&gt;<br />
-struct thorin::affine::Tag2Def_&lt; tag &gt;</div>
-<p class="definition">Definition at line <a class="el" href="affine_8h_source.html#l00013">13</a> of file <a class="el" href="affine_8h_source.html">affine.h</a>.</p>
-</div><table class="fieldtable">
-<tr><th colspan="3">Class Members</th></tr>
-<tr><td class="fieldtype">
-<a id="a665fc751116495460656ab56cb1ddc11" name="a665fc751116495460656ab56cb1ddc11"></a>typedef <a class="el" href="classthorin_1_1App.html">App</a></td>
-<td class="fieldname">
-type</td>
-<td class="fielddoc">
-</td></tr>
-</table>
-
-</div>
-</div>
-<a name="structthorin_1_1affine_1_1Tag2Enum__" id="structthorin_1_1affine_1_1Tag2Enum__"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structthorin_1_1affine_1_1Tag2Enum__">&#9670;&nbsp;</a></span>thorin::affine::Tag2Enum_</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct thorin::affine::Tag2Enum_</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="textblock"><div class="compoundTemplParams">template&lt;fields_t tag&gt;<br />
-struct thorin::affine::Tag2Enum_&lt; tag &gt;</div>
-<p class="definition">Definition at line <a class="el" href="affine_8h_source.html#l00021">21</a> of file <a class="el" href="affine_8h_source.html">affine.h</a>.</p>
-</div><table class="fieldtable">
-<tr><th colspan="3">Class Members</th></tr>
-<tr><td class="fieldtype">
-<a id="aadbfc26e74257456afa1c13467388031" name="aadbfc26e74257456afa1c13467388031"></a>typedef fields_t</td>
-<td class="fieldname">
-type</td>
-<td class="fielddoc">
-</td></tr>
-</table>
-
-</div>
-</div>
-<h2 class="groupheader">Typedef Documentation</h2>
-<a id="ae2ee1c883053b2cb2b946000cba69438" name="ae2ee1c883053b2cb2b946000cba69438"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2ee1c883053b2cb2b946000cba69438">&#9670;&nbsp;</a></span>Tag2Def</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;fields_t tag&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacethorin_1_1affine.html#ae2ee1c883053b2cb2b946000cba69438">thorin::affine::Tag2Def</a> = typedef typename <a class="el" href="namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Def__">Tag2Def_</a>&lt;tag&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="affine_8h_source.html#l00018">18</a> of file <a class="el" href="affine_8h_source.html">affine.h</a>.</p>
-
-</div>
-</div>
-<a id="acbefca3af14d1f0b618404ceed427d1a" name="acbefca3af14d1f0b618404ceed427d1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbefca3af14d1f0b618404ceed427d1a">&#9670;&nbsp;</a></span>Tag2Enum</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;fields_t tag&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">thorin::affine::Tag2Enum</a> = typedef typename <a class="el" href="namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Enum__">Tag2Enum_</a>&lt;tag&gt;::type</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="affine_8h_source.html#l00023">23</a> of file <a class="el" href="affine_8h_source.html">affine.h</a>.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a9ad76c86cbf3829eaaa63019bcf72b9b" name="a9ad76c86cbf3829eaaa63019bcf72b9b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ad76c86cbf3829eaaa63019bcf72b9b">&#9670;&nbsp;</a></span>Tag</h2>
+<a id="ae9bd5d8f8b435003df098cc8f09b30d6" name="ae9bd5d8f8b435003df098cc8f09b30d6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9bd5d8f8b435003df098cc8f09b30d6">&#9670;&nbsp;</a></span>For</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="namespacethorin_1_1affine.html#a9ad76c86cbf3829eaaa63019bcf72b9b">thorin::affine::Tag</a> : <a class="el" href="namespacethorin.html#aa4a9df41658521fb2f8a6842c377f13d">u64</a></td>
+          <td class="memname">enum class <a class="el" href="namespacethorin_1_1affine.html#ae9bd5d8f8b435003df098cc8f09b30d6">thorin::affine::For</a> : <a class="el" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">flags_t</a></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae9bd5d8f8b435003df098cc8f09b30d6a4c48644347196b5a640c3aabbc95d417" name="ae9bd5d8f8b435003df098cc8f09b30d6a4c48644347196b5a640c3aabbc95d417"></a>id_&#160;</td><td class="fielddoc"></td></tr>
+</table>
 
-<p class="definition">Definition at line <a class="el" href="affine_8h_source.html#l00009">9</a> of file <a class="el" href="affine_8h_source.html">affine.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="build_2dialects_2affine_8h_source.html#l00012">12</a> of file <a class="el" href="build_2dialects_2affine_8h_source.html">affine.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a547f05be16117b712917137bf2fb601d" name="a547f05be16117b712917137bf2fb601d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a547f05be16117b712917137bf2fb601d">&#9670;&nbsp;</a></span>as() <span class="overload">[1/2]</span></h2>
+<a id="a0372be693375257bfadf6679323e6a32" name="a0372be693375257bfadf6679323e6a32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0372be693375257bfadf6679323e6a32">&#9670;&nbsp;</a></span>fn_for()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;fields_t t&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin_1_1affine.html#ae2ee1c883053b2cb2b946000cba69438">Tag2Def</a>&lt; t &gt; &gt; thorin::affine::as </td>
+          <td class="memname">const <a class="el" href="classthorin_1_1Def.html">Def</a> * thorin::affine::fn_for </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
-          <td class="paramname"><em>d</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="affine_8h_source.html#l00041">41</a> of file <a class="el" href="affine_8h_source.html">affine.h</a>.</p>
-
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00031">thorin::RuntimeCast&lt; Base &gt;::as()</a>, and <a class="el" href="axiom_8cpp_source.html#l00101">thorin::Axiom::get()</a>.</p>
-
-</div>
-</div>
-<a id="afd84ae76d22b30dd9cd931f4aa83012e" name="afd84ae76d22b30dd9cd931f4aa83012e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afd84ae76d22b30dd9cd931f4aa83012e">&#9670;&nbsp;</a></span>as() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;fields_t t&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin_1_1affine.html#ae2ee1c883053b2cb2b946000cba69438">Tag2Def</a>&lt; t &gt; &gt; thorin::affine::as </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; t &gt;&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
-          <td class="paramname"><em>d</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a>&#160;</td>
+          <td class="paramname"><em>params</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -304,57 +194,80 @@ template&lt;fields_t t&gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="affine_8h_source.html#l00047">47</a> of file <a class="el" href="affine_8h_source.html">affine.h</a>.</p>
+<p>Returns the affine_for axiom applied with <em>params</em>. </p>
+<p >See documentation for affine.For axiom in <a class="el" href="affine.html">The affine Dialect</a>. </p>
 
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00031">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">thorin::f</a>, and <a class="el" href="axiom_8cpp_source.html#l00101">thorin::Axiom::get()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dialects_2affine_2affine_8h_source.html#l00012">12</a> of file <a class="el" href="dialects_2affine_2affine_8h_source.html">affine.h</a>.</p>
+
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00276">thorin::World::app()</a>, and <a class="el" href="world_8h_source.html#l00119">thorin::World::ax()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="dialects_2affine_2affine_8h_source.html#l00018">op_for()</a>.</p>
 
 </div>
 </div>
-<a id="a9dc73c17422038c4037c9a40a8b955d3" name="a9dc73c17422038c4037c9a40a8b955d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9dc73c17422038c4037c9a40a8b955d3">&#9670;&nbsp;</a></span>isa() <span class="overload">[1/2]</span></h2>
+<a id="ae796de3592113354bb2c7fadf2a15caf" name="ae796de3592113354bb2c7fadf2a15caf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae796de3592113354bb2c7fadf2a15caf">&#9670;&nbsp;</a></span>op_for()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;fields_t tag&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; tag &gt;, <a class="el" href="namespacethorin_1_1affine.html#ae2ee1c883053b2cb2b946000cba69438">Tag2Def</a>&lt; tag &gt; &gt; thorin::affine::isa </td>
+          <td class="memname">const <a class="el" href="classthorin_1_1Def.html">Def</a> * thorin::affine::op_for </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
-          <td class="paramname"><em>def</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="affine_8h_source.html#l00026">26</a> of file <a class="el" href="affine_8h_source.html">affine.h</a>.</p>
-
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00031">thorin::RuntimeCast&lt; Base &gt;::as()</a>, and <a class="el" href="axiom_8cpp_source.html#l00101">thorin::Axiom::get()</a>.</p>
-
-</div>
-</div>
-<a id="a529bea34b42b76f34273ccc861a418a4" name="a529bea34b42b76f34273ccc861a418a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a529bea34b42b76f34273ccc861a418a4">&#9670;&nbsp;</a></span>isa() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;fields_t tag&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; tag &gt;, <a class="el" href="namespacethorin_1_1affine.html#ae2ee1c883053b2cb2b946000cba69438">Tag2Def</a>&lt; tag &gt; &gt; thorin::affine::isa </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacethorin_1_1affine.html#acbefca3af14d1f0b618404ceed427d1a">Tag2Enum</a>&lt; tag &gt;&#160;</td>
-          <td class="paramname"><em>flags</em>, </td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
+          <td class="paramname"><em>w</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
-          <td class="paramname"><em>def</em>&#160;</td>
+          <td class="paramname"><em>mem</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>begin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>end</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>step</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a>&#160;</td>
+          <td class="paramname"><em>inits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>body</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>brk</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -362,11 +275,84 @@ template&lt;fields_t tag&gt; </div>
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="affine_8h_source.html#l00033">33</a> of file <a class="el" href="affine_8h_source.html">affine.h</a>.</p>
+<p>Returns a fully applied affine_for axiom. </p>
+<p >See documentation for affine.For axiom in <a class="el" href="affine.html">The affine Dialect</a>. </p>
 
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00031">thorin::RuntimeCast&lt; Base &gt;::as()</a>, and <a class="el" href="axiom_8cpp_source.html#l00101">thorin::Axiom::get()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dialects_2affine_2affine_8h_source.html#l00018">18</a> of file <a class="el" href="dialects_2affine_2affine_8h_source.html">affine.h</a>.</p>
+
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00276">thorin::World::app()</a>, <a class="el" href="dialects_2affine_2affine_8h_source.html#l00012">fn_for()</a>, <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::size()</a>, and <a class="el" href="world_8cpp_source.html#l00314">thorin::World::tuple()</a>.</p>
+
+</div>
+</div>
+<a id="a65d98ad1ef48d80572021ebecd4f2343" name="a65d98ad1ef48d80572021ebecd4f2343"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65d98ad1ef48d80572021ebecd4f2343">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> thorin::affine::operator== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin_1_1affine.html#ae9bd5d8f8b435003df098cc8f09b30d6">For</a>&#160;</td>
+          <td class="paramname"><em>enm</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">flags_t</a>&#160;</td>
+          <td class="paramname"><em>flags</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="build_2dialects_2affine_8h_source.html#l00016">16</a> of file <a class="el" href="build_2dialects_2affine_8h_source.html">affine.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ae5162b565e104f4ff1ab15e54c94f035" name="ae5162b565e104f4ff1ab15e54c94f035"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5162b565e104f4ff1ab15e54c94f035">&#9670;&nbsp;</a></span>id</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">dialect_t</a> thorin::affine::id = 0x871ca3c60000000</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="build_2dialects_2affine_8h_source.html#l00010">10</a> of file <a class="el" href="build_2dialects_2affine_8h_source.html">affine.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="alloc2malloc_8cpp_source.html#l00005">thorin::Alloc2Malloc::rewrite()</a>.</p>
 
 </div>
 </div>

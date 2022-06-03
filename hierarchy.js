@@ -39,6 +39,8 @@ var hierarchy =
     [ "thorin::Emitter< std::string, std::string, BB, DotEmitter >", "classthorin_1_1Emitter.html", [
       [ "thorin::dot::DotEmitter", "classthorin_1_1dot_1_1DotEmitter.html", null ]
     ] ],
+    [ "thorin::detail::Enum2DefImpl< AxTag >", "namespacethorin_1_1detail.html#structthorin_1_1detail_1_1Enum2DefImpl", null ],
+    [ "thorin::detail::Enum2DefImpl< mem::M >", "namespacethorin_1_1detail.html#structthorin_1_1detail_1_1Enum2DefImpl_3_01mem_1_1M_01_4", null ],
     [ "thorin::ErrorHandler", "classthorin_1_1ErrorHandler.html", null ],
     [ "thorin::FNV1", "structthorin_1_1FNV1.html", null ],
     [ "thorin::Fold< T, T, nat_t >", "namespacethorin.html#structthorin_1_1Fold", null ],
@@ -90,11 +92,12 @@ var hierarchy =
             [ "thorin::TailRecElim", "classthorin_1_1TailRecElim.html", null ]
           ] ],
           [ "thorin::Alloc2Malloc", "classthorin_1_1Alloc2Malloc.html", null ],
+          [ "thorin::Foo", "classthorin_1_1Foo.html", null ],
           [ "thorin::LamSpec", "classthorin_1_1LamSpec.html", null ],
-          [ "thorin::LowerFor", "classthorin_1_1LowerFor.html", null ],
           [ "thorin::RememElim", "classthorin_1_1RememElim.html", null ],
           [ "thorin::RetWrap", "classthorin_1_1RetWrap.html", null ],
-          [ "thorin::Scalerize", "classthorin_1_1Scalerize.html", null ]
+          [ "thorin::Scalerize", "classthorin_1_1Scalerize.html", null ],
+          [ "thorin::affine::LowerFor", "classthorin_1_1affine_1_1LowerFor.html", null ]
         ] ],
         [ "thorin::RWPass< Def >", "classthorin_1_1RWPass.html", [
           [ "thorin::FPPass< BetaRed >", "classthorin_1_1FPPass.html", [
@@ -117,6 +120,7 @@ var hierarchy =
     [ "thorin::Loc", "structthorin_1_1Loc.html", null ],
     [ "thorin::World::Arena::Lock", "structthorin_1_1World_1_1Arena_1_1Lock.html", null ],
     [ "std::logic_error", null, [
+      [ "thorin::AxiomNotFoundError", "classthorin_1_1AxiomNotFoundError.html", null ],
       [ "thorin::LexError", "classthorin_1_1LexError.html", null ],
       [ "thorin::ParseError", "classthorin_1_1ParseError.html", null ],
       [ "thorin::ScopeError", "classthorin_1_1ScopeError.html", null ],
@@ -184,15 +188,8 @@ var hierarchy =
     [ "thorin::Sym", "classthorin_1_1Sym.html", null ],
     [ "thorin::SymHash", "structthorin_1_1SymHash.html", null ],
     [ "thorin::Tab", "classthorin_1_1Tab.html", null ],
-    [ "thorin::affine::Tag2Def_< tag >", "namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Def__", null ],
-    [ "thorin::mem::Tag2Def_< tag >", "namespacethorin_1_1mem.html#structthorin_1_1mem_1_1Tag2Def__", null ],
-    [ "thorin::std::Tag2Def_< tag >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Def__", null ],
     [ "thorin::Tag2Def_< tag_t >", "namespacethorin.html#structthorin_1_1Tag2Def__", null ],
     [ "thorin::Tag2Def_< Tag::Mem >", "namespacethorin.html#structthorin_1_1Tag2Def___3_01Tag_1_1Mem_01_4", null ],
-    [ "thorin::mem::Tag2Def_< Tag::mem_M >", "namespacethorin_1_1mem.html#structthorin_1_1mem_1_1Tag2Def___3_01Tag_1_1mem__M_01_4", null ],
-    [ "thorin::affine::Tag2Enum_< tag >", "namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Enum__", null ],
-    [ "thorin::mem::Tag2Enum_< tag >", "namespacethorin_1_1mem.html#structthorin_1_1mem_1_1Tag2Enum__", null ],
-    [ "thorin::std::Tag2Enum_< tag >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum__", null ],
     [ "thorin::Tag2Enum_< t >", "namespacethorin.html#structthorin_1_1Tag2Enum__", null ],
     [ "thorin::Tag2Enum_< Tag::Acc >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Acc_01_4", null ],
     [ "thorin::Tag2Enum_< Tag::Bit >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Bit_01_4", null ],
@@ -203,10 +200,6 @@ var hierarchy =
     [ "thorin::Tag2Enum_< Tag::RCmp >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1RCmp_01_4", null ],
     [ "thorin::Tag2Enum_< Tag::ROp >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1ROp_01_4", null ],
     [ "thorin::Tag2Enum_< Tag::Shr >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Shr_01_4", null ],
-    [ "thorin::std::Tag2Enum_< Tag::std_bit2 >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__bit2_01_4", null ],
-    [ "thorin::std::Tag2Enum_< Tag::std_icmp >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4", null ],
-    [ "thorin::std::Tag2Enum_< Tag::std_shr >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__shr_01_4", null ],
-    [ "thorin::std::Tag2Enum_< Tag::std_wrap >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__wrap_01_4", null ],
     [ "thorin::Tag2Enum_< Tag::Trait >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Trait_01_4", null ],
     [ "thorin::Tag2Enum_< Tag::Wrap >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Wrap_01_4", null ],
     [ "thorin::Tok", "classthorin_1_1Tok.html", null ],

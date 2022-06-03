@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['tag_0',['Tag',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038',1,'thorin::Tok::Tag()'],['../namespacethorin_1_1affine.html#a9ad76c86cbf3829eaaa63019bcf72b9b',1,'thorin::affine::Tag()'],['../namespacethorin_1_1mem.html#a1e5cddd713860c7061b6d8019249cad2',1,'thorin::mem::Tag()'],['../namespacethorin_1_1std.html#a1cd8381a0dc91aafb139d5e70c82ac4c',1,'thorin::std::Tag()']]],
-  ['trait_1',['Trait',['../namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84',1,'thorin']]]
+  ['rcmp_0',['RCmp',['../namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9',1,'thorin']]],
+  ['rmode_1',['RMode',['../namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719',1,'thorin::RMode']]],
+  ['rop_2',['ROp',['../namespacethorin.html#a0712e5b90b0610c0027e69b3d6ca690c',1,'thorin']]]
 ];

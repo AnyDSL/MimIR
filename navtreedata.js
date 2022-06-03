@@ -55,6 +55,7 @@ var NAVTREE =
         [ "Enumerator", "namespacemembers_eval.html", null ]
       ] ]
     ] ],
+    [ "Concepts", "concepts.html", "concepts" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -83,23 +84,23 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "affine.html",
-"classthorin_1_1ArrayRef.html#a40377dfc3fd43093c0df551f3d5a211d",
-"classthorin_1_1CFG.html#ad848d7c3d392e58d6407d1c92bf7b720",
-"classthorin_1_1Def.html#ae09607d6f4c2b847199f2cb2a3b2ca81",
-"classthorin_1_1IPass.html#aaa9538a515e496cdb5245001e1fd1c43",
-"classthorin_1_1LoopTree_1_1Base.html#aa5c3865ef27a1b4ad5020304e4d9e2f6",
-"classthorin_1_1RecStreamer.html#a06ccf5d930f1abd10c16fce20f4d1542",
-"classthorin_1_1Test.html",
-"classthorin_1_1World.html#a0eedd08743b630e231af89f337799e47",
-"classthorin_1_1World.html#a9961b927bf2eb9d73be07d6a452c5213",
-"classthorin_1_1unique__queue.html",
-"functions_t.html",
-"namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785b",
-"namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9a0cfbf5552b05198ef58e3b99c407e4a7",
-"namespacethorin_1_1std.html#a827340ebd70843c60ef815ef94d0d56fa14ea3babd6bd2d41cf3c16d90c376588",
-"std_8h.html#a2a7c8b244bcdbef7928869100b909edda653f836235a27b289bf318bc8730fb7e",
-"structthorin_1_1Loc.html#ab3498f210f94e517178f93269b549e97",
-"tables_8h.html#ae0379be856253deabcafe1fcdc0785a9ab2f5ff47436671b6e533d8dc3614845d"
+"classthorin_1_1ArrayRef.html#a3661436e00adac2d18e3ca858701c209",
+"classthorin_1_1CFG.html#a8a7072452720f8df22ecb885d470168b",
+"classthorin_1_1Def.html#ad80387c2b8b00161b6285241cc1c64ed",
+"classthorin_1_1Global.html#ab1b95fb1bd35ad607dff8f98a97626fc",
+"classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cb",
+"classthorin_1_1Query.html#afde38b27de422e46f828b616d23779bb",
+"classthorin_1_1Tab.html#acd051c9a9f1158c665b9c654175d14d4",
+"classthorin_1_1World.html#a05c33b95924d589e2a0935ac45240225",
+"classthorin_1_1World.html#a8ecc67a47dd67845e8af75bf71ab752f",
+"classthorin_1_1ll_1_1CodeGen.html#a1474c73017044bf724604b5dccb1dc7e",
+"functions_func_d.html",
+"namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84",
+"namespacethorin.html#abfbc9a6d77679cea92739b6b8987cbc3",
+"namespacethorin_1_1std.html#a2d586f3cc9b104341679f2bffcc77adda9d3827a838a5eeb8061fd0380d582ede",
+"schedule_8h.html",
+"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1add_00_01w_01_4.html",
+"tables_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -118,10 +118,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a688a1a1c0222e370120934b1f5329a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6524c05ee15a1f50863cc531ea8c318"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#ae6524c05ee15a1f50863cc531ea8c318">extend_codegen_prep_phase</a> (std::function&lt; void(<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;)&gt;)</td></tr>
 <tr class="separator:ae6524c05ee15a1f50863cc531ea8c318"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45ce6da61a188f8df3718f9edb788505"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1PassMan.html">PassMan</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a45ce6da61a188f8df3718f9edb788505">opt_phase</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world)</td></tr>
-<tr class="separator:a45ce6da61a188f8df3718f9edb788505"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61da7d94ff3d83681cd50bd92ad9d2c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1PassMan.html">PassMan</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a61da7d94ff3d83681cd50bd92ad9d2c3">codegen_prep_phase</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world)</td></tr>
-<tr class="separator:a61da7d94ff3d83681cd50bd92ad9d2c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae27147fd8970689819168253182a4390"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#ae27147fd8970689819168253182a4390">opt_phase</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world)</td></tr>
+<tr class="separator:ae27147fd8970689819168253182a4390"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a503f6016b6a68d03d657f9cd8af0f8ca"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html#a503f6016b6a68d03d657f9cd8af0f8ca">codegen_prep_phase</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world)</td></tr>
+<tr class="separator:a503f6016b6a68d03d657f9cd8af0f8ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
@@ -155,14 +155,14 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a61da7d94ff3d83681cd50bd92ad9d2c3" name="a61da7d94ff3d83681cd50bd92ad9d2c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61da7d94ff3d83681cd50bd92ad9d2c3">&#9670;&nbsp;</a></span>codegen_prep_phase()</h2>
+<a id="a503f6016b6a68d03d657f9cd8af0f8ca" name="a503f6016b6a68d03d657f9cd8af0f8ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a503f6016b6a68d03d657f9cd8af0f8ca">&#9670;&nbsp;</a></span>codegen_prep_phase()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1PassMan.html">PassMan</a> PipelineBuilder::codegen_prep_phase </td>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &gt; PipelineBuilder::codegen_prep_phase </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
           <td class="paramname"><em>world</em></td><td>)</td>
@@ -219,14 +219,14 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a45ce6da61a188f8df3718f9edb788505" name="a45ce6da61a188f8df3718f9edb788505"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a45ce6da61a188f8df3718f9edb788505">&#9670;&nbsp;</a></span>opt_phase()</h2>
+<a id="ae27147fd8970689819168253182a4390" name="ae27147fd8970689819168253182a4390"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae27147fd8970689819168253182a4390">&#9670;&nbsp;</a></span>opt_phase()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1PassMan.html">PassMan</a> PipelineBuilder::opt_phase </td>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &gt; PipelineBuilder::opt_phase </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
           <td class="paramname"><em>world</em></td><td>)</td>

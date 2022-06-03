@@ -11,6 +11,6 @@ var searchData=
   ['lock_8',['Lock',['../structthorin_1_1World_1_1Arena_1_1Lock.html',1,'thorin::World::Arena']]],
   ['looptree_9',['LoopTree',['../classthorin_1_1LoopTree.html',1,'thorin']]],
   ['looptreebuilder_10',['LoopTreeBuilder',['../classthorin_1_1LoopTreeBuilder.html',1,'thorin']]],
-  ['lowerfor_11',['LowerFor',['../classthorin_1_1LowerFor.html',1,'thorin']]],
+  ['lowerfor_11',['LowerFor',['../classthorin_1_1affine_1_1LowerFor.html',1,'thorin::affine']]],
   ['lrprec_12',['LRPrec',['../structthorin_1_1LRPrec.html',1,'thorin']]]
 ];

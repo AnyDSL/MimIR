@@ -128,16 +128,16 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7234f77965ea855165dc29819664b8ea"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1Dialect.html">Dialect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Dialect.html#a7234f77965ea855165dc29819664b8ea">load</a> (const std::string &amp;<a class="el" href="classthorin_1_1Dialect.html#aa02d8267f263c8ce21cea4ee3194afc2">name</a>, const std::vector&lt; std::string &gt; &amp;search_paths)</td></tr>
-<tr class="memdesc:a7234f77965ea855165dc29819664b8ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds and loads a shared object file that implements the <em>name</em> thorin dialect.  <a href="classthorin_1_1Dialect.html#a7234f77965ea855165dc29819664b8ea">More...</a><br /></td></tr>
-<tr class="separator:a7234f77965ea855165dc29819664b8ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab687abd995355cf570a212e8f47aebbb"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1Dialect.html">Dialect</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Dialect.html#ab687abd995355cf570a212e8f47aebbb">load</a> (const std::string &amp;<a class="el" href="classthorin_1_1Dialect.html#aa02d8267f263c8ce21cea4ee3194afc2">name</a>, <a class="el" href="classthorin_1_1ArrayRef.html">ArrayRef</a>&lt; std::string &gt; search_paths)</td></tr>
+<tr class="memdesc:ab687abd995355cf570a212e8f47aebbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds and loads a shared object file that implements the <em>name</em> thorin dialect.  <a href="classthorin_1_1Dialect.html#ab687abd995355cf570a212e8f47aebbb">More...</a><br /></td></tr>
+<tr class="separator:ab687abd995355cf570a212e8f47aebbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >A thorin dialect. </p>
 <p >This is used to load and manage a thorin dialect.</p>
 <p >A plugin implementor should implement <a class="el" href="namespacethorin.html#ad64a18507465904296ceed7c776bf75a">thorin_get_dialect_info</a> and <a class="el" href="structthorin_1_1DialectInfo.html">DialectInfo</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00033">33</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00034">34</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ab5a5d872e346885588efdc6bc5a1d625" name="ab5a5d872e346885588efdc6bc5a1d625"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab5a5d872e346885588efdc6bc5a1d625">&#9670;&nbsp;</a></span>handle()</h2>
@@ -164,14 +164,14 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Shared object handle. Can be used with the functions from <a class="el" href="namespacethorin_1_1dl.html">dl</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00046">46</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00047">47</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="dialects_8cpp_source.html#l00073">load()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dialects_8cpp_source.html#l00074">load()</a>.</p>
 
 </div>
 </div>
-<a id="a7234f77965ea855165dc29819664b8ea" name="a7234f77965ea855165dc29819664b8ea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7234f77965ea855165dc29819664b8ea">&#9670;&nbsp;</a></span>load()</h2>
+<a id="ab687abd995355cf570a212e8f47aebbb" name="ab687abd995355cf570a212e8f47aebbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab687abd995355cf570a212e8f47aebbb">&#9670;&nbsp;</a></span>load()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -188,7 +188,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1ArrayRef.html">ArrayRef</a>&lt; std::string &gt;&#160;</td>
           <td class="paramname"><em>search_paths</em>&#160;</td>
         </tr>
         <tr>
@@ -205,13 +205,13 @@ Static Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Finds and loads a shared object file that implements the <em>name</em> thorin dialect. </p>
-<p >If <em>name</em> is an absolute path to a .so/.dll file, this is used. Otherwise, "name", "libthorin_name.so" (Linux), "thorin_name.dll" (Win), "libthorin_name.dylib" (Mac) are searched for in the search paths:</p><ol type="1">
+<p >If <em>name</em> is an absolute path to a .so/.dll file, this is used. Otherwise, "name", "libthorin_name.so" (Linux, Mac), "thorin_name.dll" (Win) are searched for in the search paths:</p><ol type="1">
 <li><em>search_paths</em>, 2. env var <em>THORIN_DIALECT_PATH</em>, 3. "/path/to/executable" </li>
 </ol>
 
-<p class="definition">Definition at line <a class="el" href="dialects_8cpp_source.html#l00073">73</a> of file <a class="el" href="dialects_8cpp_source.html">dialects.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dialects_8cpp_source.html#l00074">74</a> of file <a class="el" href="dialects_8cpp_source.html">dialects.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="dl_8cpp_source.html#l00082">thorin::dl::close()</a>, <a class="el" href="dialects_8cpp_source.html#l00055">get_plugin_name_variants()</a>, <a class="el" href="dialects_8cpp_source.html#l00030">get_plugin_search_paths()</a>, <a class="el" href="dialects_8h_source.html#l00046">handle()</a>, <a class="el" href="dialects_8h_source.html#l00043">name()</a>, and <a class="el" href="dl_8cpp_source.html#l00041">thorin::dl::open()</a>.</p>
+<p class="reference">References <a class="el" href="dl_8cpp_source.html#l00080">thorin::dl::close()</a>, <a class="el" href="dialects_8cpp_source.html#l00030">get_plugin_name_variants()</a>, <a class="el" href="dialects_8cpp_source.html#l00039">thorin::get_plugin_search_paths()</a>, <a class="el" href="dialects_8h_source.html#l00047">handle()</a>, <a class="el" href="dialects_8h_source.html#l00044">name()</a>, and <a class="el" href="dl_8cpp_source.html#l00039">thorin::dl::open()</a>.</p>
 
 </div>
 </div>
@@ -240,11 +240,11 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Name of the dialect. </p>
 
-<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00043">43</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00044">44</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
 
-<p class="reference">References <a class="el" href="dialects_8h_source.html#l00018">thorin::DialectInfo::plugin_name</a>.</p>
+<p class="reference">References <a class="el" href="dialects_8h_source.html#l00019">thorin::DialectInfo::plugin_name</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="dialects_8cpp_source.html#l00073">load()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dialects_8cpp_source.html#l00074">load()</a>.</p>
 
 </div>
 </div>
@@ -274,9 +274,9 @@ Static Public Member Functions</h2></td></tr>
 
 <p>Registers callbacks in the <em>builder</em> that extend the exposed <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a>'s. </p>
 
-<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00049">49</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00050">50</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
 
-<p class="reference">References <a class="el" href="dialects_8h_source.html#l00021">thorin::DialectInfo::register_passes</a>.</p>
+<p class="reference">References <a class="el" href="dialects_8h_source.html#l00022">thorin::DialectInfo::register_passes</a>.</p>
 
 </div>
 </div>

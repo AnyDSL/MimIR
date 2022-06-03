@@ -9,5 +9,5 @@ var searchData=
   ['meet_6',['Meet',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a1176c238713240939d0ce7767f2c83fd',1,'thorin::Node']]],
   ['mem_7',['Mem',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafaeec7e25eed3a85eb782a8e8be3921a49',1,'thorin::Tag']]],
   ['mslot_8',['Mslot',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa8718fcdac57d90710148d04345d180cd',1,'thorin::Tag']]],
-  ['mul_9',['mul',['../namespacethorin.html#a65b28a70b601ee7898841af6af02d56fa353942263d1bedfbe06b7bfa78226253',1,'thorin::mul()'],['../namespacethorin.html#a0712e5b90b0610c0027e69b3d6ca690ca353942263d1bedfbe06b7bfa78226253',1,'thorin::mul()'],['../namespacethorin_1_1std.html#a846eaf0590ddcacf0d008e31110b3c38a353942263d1bedfbe06b7bfa78226253',1,'thorin::std::mul()']]]
+  ['mul_9',['mul',['../namespacethorin.html#a65b28a70b601ee7898841af6af02d56fa353942263d1bedfbe06b7bfa78226253',1,'thorin::mul()'],['../namespacethorin.html#a0712e5b90b0610c0027e69b3d6ca690ca353942263d1bedfbe06b7bfa78226253',1,'thorin::mul()'],['../namespacethorin_1_1std.html#a6580c4b79960616017719449549bc441a353942263d1bedfbe06b7bfa78226253',1,'thorin::std::mul()']]]
 ];

@@ -2,8 +2,11 @@ var annotated_dup =
 [
     [ "thorin", "namespacethorin.html", [
       [ "affine", "namespacethorin_1_1affine.html", [
-        [ "Tag2Def_", "namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Def__", "namespacethorin_1_1affine_structthorin_1_1affine_1_1Tag2Def___dup" ],
-        [ "Tag2Enum_", "namespacethorin_1_1affine.html#structthorin_1_1affine_1_1Tag2Enum__", "namespacethorin_1_1affine_structthorin_1_1affine_1_1Tag2Enum___dup" ]
+        [ "LowerFor", "classthorin_1_1affine_1_1LowerFor.html", "classthorin_1_1affine_1_1LowerFor" ]
+      ] ],
+      [ "detail", "namespacethorin_1_1detail.html", [
+        [ "Enum2DefImpl", "namespacethorin_1_1detail.html#structthorin_1_1detail_1_1Enum2DefImpl", "namespacethorin_1_1detail_structthorin_1_1detail_1_1Enum2DefImpl_dup" ],
+        [ "Enum2DefImpl< mem::M >", "namespacethorin_1_1detail.html#structthorin_1_1detail_1_1Enum2DefImpl_3_01mem_1_1M_01_4", "namespacethorin_1_1detail_structthorin_1_1detail_1_1Enum2DefImpl_3_01mem_1_1M_01_4_dup" ]
       ] ],
       [ "dl", "namespacethorin_1_1dl.html", [
         [ "Error", "classthorin_1_1dl_1_1Error.html", "classthorin_1_1dl_1_1Error" ]
@@ -20,19 +23,6 @@ var annotated_dup =
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
         [ "CodeGen", "classthorin_1_1ll_1_1CodeGen.html", "classthorin_1_1ll_1_1CodeGen" ]
       ] ],
-      [ "mem", "namespacethorin_1_1mem.html", [
-        [ "Tag2Def_", "namespacethorin_1_1mem.html#structthorin_1_1mem_1_1Tag2Def__", "namespacethorin_1_1mem_structthorin_1_1mem_1_1Tag2Def___dup" ],
-        [ "Tag2Def_< Tag::mem_M >", "namespacethorin_1_1mem.html#structthorin_1_1mem_1_1Tag2Def___3_01Tag_1_1mem__M_01_4", "namespacethorin_1_1mem_structthorin_1_1mem_1_1Tag2Def___3_01Tag_1_1mem__M_01_4_dup" ],
-        [ "Tag2Enum_", "namespacethorin_1_1mem.html#structthorin_1_1mem_1_1Tag2Enum__", "namespacethorin_1_1mem_structthorin_1_1mem_1_1Tag2Enum___dup" ]
-      ] ],
-      [ "std", "namespacethorin_1_1std.html", [
-        [ "Tag2Def_", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Def__", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Def___dup" ],
-        [ "Tag2Enum_", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum__", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___dup" ],
-        [ "Tag2Enum_< Tag::std_bit2 >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__bit2_01_4", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__bit2_01_4_dup" ],
-        [ "Tag2Enum_< Tag::std_icmp >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__icmp_01_4_dup" ],
-        [ "Tag2Enum_< Tag::std_shr >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__shr_01_4", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__shr_01_4_dup" ],
-        [ "Tag2Enum_< Tag::std_wrap >", "namespacethorin_1_1std.html#structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__wrap_01_4", "namespacethorin_1_1std_structthorin_1_1std_1_1Tag2Enum___3_01Tag_1_1std__wrap_01_4_dup" ]
-      ] ],
       [ "utf8", "namespacethorin_1_1utf8.html", [
         [ "Lexer", "classthorin_1_1utf8_1_1Lexer.html", "classthorin_1_1utf8_1_1Lexer" ]
       ] ],
@@ -45,6 +35,7 @@ var annotated_dup =
       [ "ArrayStorage", "classthorin_1_1ArrayStorage.html", "classthorin_1_1ArrayStorage" ],
       [ "ArrayStorage< T, 0 >", "structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html", "structthorin_1_1ArrayStorage_3_01T_00_010_01_4" ],
       [ "Axiom", "classthorin_1_1Axiom.html", "classthorin_1_1Axiom" ],
+      [ "AxiomNotFoundError", "classthorin_1_1AxiomNotFoundError.html", "classthorin_1_1AxiomNotFoundError" ],
       [ "BetaRed", "classthorin_1_1BetaRed.html", "classthorin_1_1BetaRed" ],
       [ "BitSet", "classthorin_1_1BitSet.html", "classthorin_1_1BitSet" ],
       [ "Bound", "classthorin_1_1Bound.html", "classthorin_1_1Bound" ],
@@ -96,6 +87,7 @@ var annotated_dup =
       [ "FoldConv< Conv::s2s, dw, sw >", "structthorin_1_1FoldConv_3_01Conv_1_1s2s_00_01dw_00_01sw_01_4.html", "structthorin_1_1FoldConv_3_01Conv_1_1s2s_00_01dw_00_01sw_01_4" ],
       [ "FoldConv< Conv::u2r, dw, sw >", "structthorin_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4.html", "structthorin_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4" ],
       [ "FoldConv< Conv::u2u, dw, sw >", "structthorin_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4.html", "structthorin_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4" ],
+      [ "Foo", "classthorin_1_1Foo.html", "classthorin_1_1Foo" ],
       [ "FPPass", "classthorin_1_1FPPass.html", "classthorin_1_1FPPass" ],
       [ "GIDEq", "structthorin_1_1GIDEq.html", "structthorin_1_1GIDEq" ],
       [ "GIDHash", "structthorin_1_1GIDHash.html", "structthorin_1_1GIDHash" ],
@@ -114,7 +106,6 @@ var annotated_dup =
       [ "Loc", "structthorin_1_1Loc.html", "structthorin_1_1Loc" ],
       [ "LoopTree", "classthorin_1_1LoopTree.html", "classthorin_1_1LoopTree" ],
       [ "LoopTreeBuilder", "classthorin_1_1LoopTreeBuilder.html", "classthorin_1_1LoopTreeBuilder" ],
-      [ "LowerFor", "classthorin_1_1LowerFor.html", "classthorin_1_1LowerFor" ],
       [ "LRPrec", "structthorin_1_1LRPrec.html", "structthorin_1_1LRPrec" ],
       [ "Nat", "classthorin_1_1Nat.html", "classthorin_1_1Nat" ],
       [ "Pack", "classthorin_1_1Pack.html", "classthorin_1_1Pack" ],

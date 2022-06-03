@@ -1,16 +1,10 @@
 var searchData=
 [
-  ['scalarize_2ecpp_0',['scalarize.cpp',['../scalarize_8cpp.html',1,'']]],
-  ['scalarize_2eh_1',['scalarize.h',['../scalarize_8h.html',1,'']]],
-  ['schedule_2ecpp_2',['schedule.cpp',['../schedule_8cpp.html',1,'']]],
-  ['schedule_2eh_3',['schedule.h',['../schedule_8h.html',1,'']]],
-  ['scope_2ecpp_4',['scope.cpp',['../scope_8cpp.html',1,'']]],
-  ['scope_2eh_5',['scope.h',['../scope_8h.html',1,'']]],
-  ['ssa_5fconstr_2ecpp_6',['ssa_constr.cpp',['../ssa__constr_8cpp.html',1,'']]],
-  ['ssa_5fconstr_2eh_7',['ssa_constr.h',['../ssa__constr_8h.html',1,'']]],
-  ['std_2eh_8',['std.h',['../std_8h.html',1,'']]],
-  ['std_2emd_9',['std.md',['../std_8md.html',1,'']]],
-  ['stream_2ecpp_10',['stream.cpp',['../stream_8cpp.html',1,'']]],
-  ['sys_2ecpp_11',['sys.cpp',['../sys_8cpp.html',1,'']]],
-  ['sys_2eh_12',['sys.h',['../sys_8h.html',1,'']]]
+  ['readme_2emd_0',['README.md',['../README_8md.html',1,'']]],
+  ['remem_5felim_2ecpp_1',['remem_elim.cpp',['../remem__elim_8cpp.html',1,'']]],
+  ['remem_5felim_2eh_2',['remem_elim.h',['../remem__elim_8h.html',1,'']]],
+  ['ret_5fwrap_2ecpp_3',['ret_wrap.cpp',['../ret__wrap_8cpp.html',1,'']]],
+  ['ret_5fwrap_2eh_4',['ret_wrap.h',['../ret__wrap_8h.html',1,'']]],
+  ['rewrite_2ecpp_5',['rewrite.cpp',['../rewrite_8cpp.html',1,'']]],
+  ['rewrite_2eh_6',['rewrite.h',['../rewrite_8h.html',1,'']]]
 ];

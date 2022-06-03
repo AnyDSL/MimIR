@@ -111,13 +111,13 @@ Types</h1>
 <h1><a class="anchor" id="autotoc_md43"></a>
 Operations</h1>
 <h2><a class="anchor" id="autotoc_md44"></a>
-%affine.for</h2>
+%affine.For</h2>
 <p >This operation ranges from (including) <code>start</code> to (excluding) <code>stop</code> using <code>step</code> as stride. In addition, this loop manages <code>n</code> loop accumulators whose initial values <code>init</code> must be given. Each iteration the given <code>body</code> is invoked which receives</p><ul>
 <li>the current <code>mem.M</code>,</li>
 <li>the current values of the loop accumulators <code>acc</code>, and</li>
 <li>a <code>yield</code> continuation to prematurely continue with the next iteration.</li>
 </ul>
-<p >After termination of the loop <code>exit</code> is invoked. </p><div class="fragment"><div class="line">.ax %affine.for: Π [m: .Nat , n: .Nat , Ts: «n; *»] -&gt;</div>
+<p >After termination of the loop <code>exit</code> is invoked. </p><div class="fragment"><div class="line">.ax %affine.For: Π [m: .Nat , n: .Nat , Ts: «n; *»] -&gt;</div>
 <div class="line">    .Cn [mem: %mem.M, start: %Int m, stop: %Int m, step: %Int m, init: «i: n; Ts#i»,</div>
 <div class="line">        body: .Cn [%mem.M , %Int m, acc: «i: n; Ts#i», yield: .Cn [%mem.M , «i: n; Ts#i»]], </div>
 <div class="line">        exit: .Cn [%mem.M , «i: n; Ts#i»]];</div>

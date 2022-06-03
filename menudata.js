@@ -86,6 +86,7 @@ var menudata={children:[
 {text:"b",url:"namespacemembers_type.html#index_b"},
 {text:"c",url:"namespacemembers_type.html#index_c"},
 {text:"d",url:"namespacemembers_type.html#index_d"},
+{text:"e",url:"namespacemembers_type.html#index_e"},
 {text:"f",url:"namespacemembers_type.html#index_f"},
 {text:"g",url:"namespacemembers_type.html#index_g"},
 {text:"h",url:"namespacemembers_type.html#index_h"},
@@ -123,6 +124,7 @@ var menudata={children:[
 {text:"v",url:"namespacemembers_eval.html#index_v"},
 {text:"w",url:"namespacemembers_eval.html#index_w"},
 {text:"z",url:"namespacemembers_eval.html#index_z"}]}]}]},
+{text:"Concepts",url:"concepts.html"},
 {text:"Classes",url:"annotated.html",children:[
 {text:"Class List",url:"annotated.html"},
 {text:"Class Index",url:"classes.html"},

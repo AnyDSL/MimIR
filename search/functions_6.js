@@ -4,7 +4,7 @@ var searchData=
   ['get_5fback_1',['get_back',['../classthorin_1_1ArrayRef.html#a123232f34db5f7d09b56e7609e08aaa9',1,'thorin::ArrayRef::get_back()'],['../classthorin_1_1Array.html#ae7613d729573d17e2049bbc7a2951aee',1,'thorin::Array::get_back()']]],
   ['get_5ffront_2',['get_front',['../classthorin_1_1ArrayRef.html#a4752647bdfc52b5eda127a7a8aff6db8',1,'thorin::ArrayRef::get_front()'],['../classthorin_1_1Array.html#a1be996ebda89c350c042756cd47acd23',1,'thorin::Array::get_front()']]],
   ['get_5fplugin_5fname_5fvariants_3',['get_plugin_name_variants',['../dialects_8cpp.html#a49212dd422133bcdea8cb79cd90bb975',1,'dialects.cpp']]],
-  ['get_5fplugin_5fsearch_5fpaths_4',['get_plugin_search_paths',['../dialects_8cpp.html#a10c08a715a792c4695ae3673459785f0',1,'dialects.cpp']]],
+  ['get_5fplugin_5fsearch_5fpaths_4',['get_plugin_search_paths',['../namespacethorin.html#aa3b59dc6bf2e5b086b84f2d4a6be00d5',1,'thorin']]],
   ['get_5fsign_5',['get_sign',['../namespacethorin.html#ac76b51109303662a47f30fa874337254',1,'thorin']]],
   ['get_5fsloxy_5ftype_6',['get_sloxy_type',['../namespacethorin.html#aaf8d0bd8f1f063544ef1ea45782003aa',1,'thorin']]],
   ['get_5fvar_5flam_7',['get_var_lam',['../namespacethorin.html#afa219845413436ebd217a971fb700df5',1,'thorin']]],

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['istream_5f_0',['istream_',['../classthorin_1_1utf8_1_1Lexer.html#aeb6b8061e55497b8da23fb1f5e11288f',1,'thorin::utf8::Lexer']]]
+  ['id_0',['id',['../namespacethorin_1_1affine.html#ae5162b565e104f4ff1ab15e54c94f035',1,'thorin::affine::id()'],['../namespacethorin_1_1mem.html#a519388b2bb3c8c8f650154e92188a684',1,'thorin::mem::id()'],['../namespacethorin_1_1std.html#a648ac9a790fe15b48273bff5849ee804',1,'thorin::std::id()']]],
+  ['istream_5f_1',['istream_',['../classthorin_1_1utf8_1_1Lexer.html#aeb6b8061e55497b8da23fb1f5e11288f',1,'thorin::utf8::Lexer']]]
 ];
