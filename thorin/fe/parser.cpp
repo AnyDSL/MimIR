@@ -25,6 +25,8 @@
     case Tok::Tag::K_def
 // clang-format on
 
+using namespace std::string_literals;
+
 namespace thorin {
 
 Parser::Parser(World& world,
@@ -465,57 +467,55 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
 void Parser::parse_ax() {
     auto track = tracker();
     eat(Tok::Tag::K_ax);
-    auto& info = bootstrapper_.axioms.emplace_back();
-
     auto ax     = expect(Tok::Tag::M_ax, "name of an axiom");
     auto ax_str = ax.sym().to_string();
+    auto split  = Axiom::split(ax_str);
+    if (!split) err(ax.loc(), "invalid axiom name '{}'", ax);
 
-    auto dialect_and_group = Axiom::dialect_and_group(ax_str);
-    if (!dialect_and_group) err(ax.loc(), "invalid axiom name '{}'", ax);
-    info.dialect = dialect_and_group->first;
-    info.group   = dialect_and_group->second;
+    auto [dialect, tag, sub] = *split;
 
-    if (info.dialect != bootstrapper_.dialect()) {
+    auto& info   = bootstrapper_.axioms.emplace_back();
+    info.dialect = dialect;
+    info.tag     = tag;
+
+    if (dialect != bootstrapper_.dialect()) {
         // TODO
         // err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax,
         // info.dialect, lexer_.file());
     }
 
-    // 6 bytes dialect name, 1 byte axiom group (tag), 1 byte flags
-    assert(bootstrapper_.axioms.size() < std::numeric_limits<u8>::max());
-
-    // dialect_and_group already tried mangling, so we know it's valid.
-    info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
+    if (bootstrapper_.axioms.size() >= std::numeric_limits<tag_t>::max())
+        err(ax.loc(), "exceeded maxinum number of axioms in current dialect");
 
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
-            auto& aliases = info.tags.emplace_back();
+            auto& aliases = info.subs.emplace_back();
             aliases.emplace_back(parse_sym("tag of an axiom"));
             while (accept(Tok::Tag::T_assign)) aliases.emplace_back(parse_sym("alias of an axiom tag"));
         });
     }
 
     expect(Tok::Tag::T_colon, "axiom");
-    auto type = parse_expr("type of an axiom");
-    info.pi   = type->isa<Pi>() != nullptr;
+    auto type       = parse_expr("type of an axiom");
+    info.pi         = type->isa<Pi>() != nullptr;
+    info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
 
-    if (info.tags.empty()) {
-        auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t(info.id & u32(-1)), track.named(ax.sym()));
+    dialect_t d = *Axiom::mangle(dialect);
+    tag_t t     = bootstrapper_.axioms.size() - 1;
+    sub_t s     = 0;
+    if (info.subs.empty()) {
+        auto axiom = world().axiom(type, d, t, 0, track.named(ax.sym()));
         insert(ax.sym(), axiom);
     } else {
-        size_t tag_id = 0;
-        for (auto& tag : info.tags) {
-            assert(tag_id <= 0xFF && "at most 256 tags allowed for a single axiom");
-            auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t((info.id & u32(-1)) | tag_id++),
-                                       track.named(world().sym(ax.sym().to_string() + "." + tag.front())));
-            for (auto& alias : tag) {
-                auto sym = world().sym(ax.sym().to_string() + "." + alias);
-                insert(sym, axiom);
+        for (const auto& sub : info.subs) {
+            auto dbg = track.named(world().tuple_str(ax_str + "."s + sub.front()));
+            auto axiom = world().axiom(type, d, t, s++, dbg);
+            for (auto& alias : sub) {
+                Sym name = world().tuple_str(ax_str + "."s + alias);
+                insert(name, axiom);
             }
         }
     }
-
-    info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
     expect(Tok::Tag::T_semicolon, "end of an axiom");
 }
 

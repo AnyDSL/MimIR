@@ -54,15 +54,15 @@ World::World(std::string_view name)
     { // int/real: w: Nat -> *
         auto p             = pi(nat, type());
         data_.type_int_    = nullptr; // hack for alpha equiv check of sigma (dbg..)
-        data_.type_int_    = axiom(p, Tag::Int, 0, dbg("Int"));
-        data_.type_real_   = axiom(p, Tag::Real, 0, dbg("Real"));
+        data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0, dbg("Int"));
+        data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0, dbg("Real"));
         data_.type_bool_   = type_int(2);
         data_.lit_bool_[0] = lit_int(2, 0_u64);
         data_.lit_bool_[1] = lit_int(2, 1_u64);
     }
 
     {
-#define CODE(T, o) data_.T##_[size_t(T::o)] = axiom(normalize_##T<T::o>, ty, Tag::T, flags_t(T::o), dbg(op2str(T::o)));
+#define CODE(T, o) data_.T##_[size_t(T::o)] = axiom(normalize_##T<T::o>, ty, Axiom::Global_Dialect, Tag::T, sub_t(T::o), dbg(op2str(T::o)));
     }
     { // bit: w: nat -> [int w, int w] -> int w
         auto ty    = nom_pi(type())->set_dom(nat);
@@ -133,7 +133,7 @@ World::World(std::string_view name)
         };
 #define CODE(T, o)              \
     data_.Conv_[size_t(T::o)] = \
-        axiom(normalize_Conv<T::o>, make_type(T::o), Tag::Conv, flags_t(T::o), dbg(op2str(T::o)));
+        axiom(normalize_Conv<T::o>, make_type(T::o), Axiom::Global_Dialect, Tag::Conv, sub_t(T::o), dbg(op2str(T::o)));
         THORIN_CONV(CODE)
 #undef Code
     }
@@ -141,27 +141,27 @@ World::World(std::string_view name)
         auto ty = nom_pi(type())->set_dom(type());
         auto T  = ty->var(dbg("T"));
         ty->set_codom(pi(T, T));
-        data_.PE_[size_t(PE::hlt)] = axiom(normalize_PE<PE::hlt>, ty, Tag::PE, flags_t(PE::hlt), dbg(op2str(PE::hlt)));
-        data_.PE_[size_t(PE::run)] = axiom(normalize_PE<PE::run>, ty, Tag::PE, flags_t(PE::run), dbg(op2str(PE::run)));
+        data_.PE_[size_t(PE::hlt)] = axiom(normalize_PE<PE::hlt>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::hlt), dbg(op2str(PE::hlt)));
+        data_.PE_[size_t(PE::run)] = axiom(normalize_PE<PE::run>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::run), dbg(op2str(PE::run)));
     }
     { // known: T: * -> T -> bool
         auto ty = nom_pi(type())->set_dom(type());
         auto T  = ty->var(dbg("T"));
         ty->set_codom(pi(T, type_bool()));
         data_.PE_[size_t(PE::known)] =
-            axiom(normalize_PE<PE::known>, ty, Tag::PE, flags_t(PE::known), dbg(op2str(PE::known)));
+            axiom(normalize_PE<PE::known>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::known), dbg(op2str(PE::known)));
     }
     { // bitcast: [D: *, S: *] -> S -> D
         auto ty     = nom_pi(type())->set_dom({type(), type()});
         auto [D, S] = ty->vars<2>({dbg("D"), dbg("S")});
         ty->set_codom(pi(S, D));
-        data_.bitcast_ = axiom(normalize_bitcast, ty, Tag::Bitcast, 0, dbg("bitcast"));
+        data_.bitcast_ = axiom(normalize_bitcast, ty, Axiom::Global_Dialect, Tag::Bitcast, 0, dbg("bitcast"));
     }
     { // atomic: [T: *, R: *] -> T -> R
         auto ty     = nom_pi(type())->set_dom({type(), type()});
         auto [T, R] = ty->vars<2>({dbg("T"), dbg("R")});
         ty->set_codom(pi(T, R));
-        data_.atomic_ = axiom(nullptr, ty, Tag::Atomic, 0, dbg("atomic"));
+        data_.atomic_ = axiom(nullptr, ty, Axiom::Global_Dialect, Tag::Atomic, 0, dbg("atomic"));
     }
     { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i»
         // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
@@ -194,7 +194,7 @@ World::World(std::string_view name)
         is_os_pi->set_codom(pi(dom, cod));
         rs_pi->set_codom(is_os_pi);
 
-        data_.zip_ = axiom(normalize_zip, rs_pi, Tag::Zip, 0, dbg("zip"));
+        data_.zip_ = axiom(normalize_zip, rs_pi, Axiom::Global_Dialect, Tag::Zip, 0, dbg("zip"));
     }
 }
 
@@ -217,13 +217,6 @@ World World::stub() {
 /*
  * core calculus
  */
-
-const Axiom* World::ax(u64 tag) const {
-    auto it = data_.axioms_.find(tag);
-    if (it == data_.axioms_.end())
-        thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", tag);
-    return it->second;
-}
 
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->as<Pi>();

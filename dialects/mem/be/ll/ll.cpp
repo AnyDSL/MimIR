@@ -117,7 +117,7 @@ private:
 ::std::string CodeGen::convert(const Def* type) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
-    assert(!mem::isa<mem::mem_M>(type));
+    assert(!match<mem::M>(type));
     ::std::ostringstream s;
     ::std::string name;
 
@@ -149,7 +149,7 @@ private:
             case 64: return types_[type] = "double";
             default: unreachable();
         }
-    } else if (auto ptr = mem::isa<mem::mem_Ptr>(type)) {
+    } else if (auto ptr = match<mem::Ptr>(type)) {
         auto [pointee, addr_space] = ptr->args<2>();
         // TODO addr_space
         print(s, "{}*", convert(pointee));
@@ -162,9 +162,9 @@ private:
         print(s, "{} (", convert(pi->doms().back()->as<Pi>()->dom()));
 
         ::std::string_view sep = "";
-        auto doms            = pi->doms();
+        auto doms              = pi->doms();
         for (auto dom : doms.skip_back()) {
-            if (mem::isa<mem::mem_M>(dom)) continue;
+            if (match<mem::M>(dom)) continue;
             s << sep << convert(dom);
             sep = ", ";
         }
@@ -177,7 +177,7 @@ private:
         print(s, "{{");
         ::std::string_view sep = "";
         for (auto t : sigma->ops()) {
-            if (mem::isa<mem::mem_M>(t)) continue;
+            if (match<mem::M>(t)) continue;
             s << sep << convert(t);
             sep = ", ";
         }
@@ -197,11 +197,11 @@ private:
     switch (pi->num_doms()) {
         case 0: return "void";
         case 1:
-            if (mem::isa<mem::mem_M>(pi->dom())) return "void";
+            if (match<mem::M>(pi->dom())) return "void";
             return convert(pi->dom());
         case 2:
-            if (mem::isa<mem::mem_M>(pi->dom(0))) return convert(pi->dom(1));
-            if (mem::isa<mem::mem_M>(pi->dom(1))) return convert(pi->dom(0));
+            if (match<mem::M>(pi->dom(0))) return convert(pi->dom(1));
+            if (match<mem::M>(pi->dom(1))) return convert(pi->dom(0));
             [[fallthrough]];
         default: return convert(pi->dom());
     }
@@ -227,7 +227,7 @@ void CodeGen::emit_imported(Lam* lam) {
     auto sep  = "";
     auto doms = lam->doms();
     for (auto dom : doms.skip_back()) {
-        if (mem::isa<mem::mem_M>(dom)) continue;
+        if (match<mem::M>(dom)) continue;
         print(func_decls_, "{}{}", sep, convert(dom));
         sep = ", ";
     }
@@ -243,7 +243,7 @@ void CodeGen::emit_imported(Lam* lam) {
     auto sep  = "";
     auto vars = lam->vars();
     for (auto var : vars.skip_back()) {
-        if (mem::isa<mem::mem_M>(var->type())) continue;
+        if (match<mem::M>(var->type())) continue;
         auto name    = id(var);
         locals_[var] = name;
         print(func_impls_, "{}{} {}", sep, convert(var->type()), name);
@@ -305,7 +305,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
             case 1: return bb.tail("ret {} {}", convert(types[0]), values[0]);
             default: {
                 ::std::string prev = "undef";
-                auto type        = convert(world().sigma(types));
+                auto type          = convert(world().sigma(types));
                 for (size_t i = 0, n = values.size(); i != n; ++i) {
                     auto elem   = values[i];
                     auto elem_t = convert(types[i]);
@@ -328,7 +328,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
                 auto phi = callee->var(i);
-                assert(!mem::isa<mem::mem_M>(phi->type()));
+                assert(!match<mem::M>(phi->type()));
                 lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
                 locals_[phi] = id(phi);
             }
@@ -349,7 +349,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         Array<const Def*> values(num_vars);
         Array<const Def*> types(num_vars);
         for (auto var : ret_lam->vars()) {
-            if (mem::isa<mem::mem_M>(var->type())) continue;
+            if (match<mem::M>(var->type())) continue;
             values[n] = var;
             types[n]  = var->type();
             ++n;
@@ -369,7 +369,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
                     namei += '.' + ::std::to_string(i - 1);
                     bb.tail("{} = extractvalue {} {}, {}", namei, ret_ty, name, i - 1);
                 }
-                assert(!mem::isa<mem::mem_M>(phi->type()));
+                assert(!match<mem::M>(phi->type()));
                 lam2bb_[ret_lam].phis[phi].emplace_back(namei, id(lam, true));
                 locals_[phi] = id(phi);
             }
@@ -406,7 +406,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         }
 
         ::std::string prev = "undef";
-        auto t           = convert(tuple->type());
+        auto t             = convert(tuple->type());
         for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
             auto e = tuple->proj(n, i);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
@@ -447,7 +447,8 @@ void CodeGen::emit_epilogue(Lam* lam) {
 
             switch (as_lit<nat_t>(real->arg())) {
                 case 16:
-                    s << "0xH" << ::std::setfill('0') << ::std::setw(4) << ::std::right << ::std::hex << lit->get<u16>();
+                    s << "0xH" << ::std::setfill('0') << ::std::setw(4) << ::std::right << ::std::hex
+                      << lit->get<u16>();
                     return s.str();
                 case 32: {
                     hex = ::std::bit_cast<u64>(r64(lit->get<r32>()));
@@ -469,7 +470,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
 
         auto neg = [&](::std::string_view x) { return bb.assign(name + ".neg", "xor {} 0, {}", t, x); };
 
-        switch (bit.flags()) {
+        switch (bit.sub()) {
             // clang-format off
             case Bit::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
             case Bit:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);
@@ -486,7 +487,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(shr->type());
 
-        switch (shr.flags()) {
+        switch (shr.sub()) {
             case Shr::ashr: op = "ashr"; break;
             case Shr::lshr: op = "lshr"; break;
             default: unreachable();
@@ -498,7 +499,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto t             = convert(wrap->type());
         auto [mode, width] = wrap->decurry()->args<2>(as_lit<nat_t>);
 
-        switch (wrap.flags()) {
+        switch (wrap.sub()) {
             case Wrap::add: op = "add"; break;
             case Wrap::sub: op = "sub"; break;
             case Wrap::mul: op = "mul"; break;
@@ -517,7 +518,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto a = emit(x);
         auto b = emit(y);
 
-        switch (div.flags()) {
+        switch (div.sub()) {
             case Div::sdiv: op = "sdiv"; break;
             case Div::udiv: op = "udiv"; break;
             case Div::srem: op = "srem"; break;
@@ -531,7 +532,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto t             = convert(rop->type());
         auto [mode, width] = rop->decurry()->args<2>(as_lit<nat_t>);
 
-        switch (rop.flags()) {
+        switch (rop.sub()) {
             case ROp::add: op = "fadd"; break;
             case ROp::sub: op = "fsub"; break;
             case ROp::mul: op = "fmul"; break;
@@ -560,7 +561,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto t      = convert(icmp->arg(0)->type());
         op          = "icmp ";
 
-        switch (icmp.flags()) {
+        switch (icmp.sub()) {
             // clang-format off
             case ICmp::e:   op += "eq" ; break;
             case ICmp::ne:  op += "ne" ; break;
@@ -577,12 +578,12 @@ void CodeGen::emit_epilogue(Lam* lam) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    }else if (auto icmp = thorin::std::isa<std::Tag::std_icmp>(def)) {
+    } else if (auto icmp = match<thorin::std::icmp>(def)) {
         auto [a, b] = icmp->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(icmp->arg(0)->type());
         op          = "icmp ";
 
-        switch (std::icmp(icmp->axiom()->flags() & 0xFF)) {
+        switch (icmp.flags()) {
             // clang-format off
             case thorin::std::icmp::e:   op += "eq" ; break;
             case thorin::std::icmp::ne:  op += "ne" ; break;
@@ -604,7 +605,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto t      = convert(rcmp->arg(0)->type());
         op          = "fcmp ";
 
-        switch (rcmp.flags()) {
+        switch (rcmp.sub()) {
             // clang-format off
             case RCmp::  e: op += "oeq"; break;
             case RCmp::  l: op += "olt"; break;
@@ -643,9 +644,9 @@ void CodeGen::emit_epilogue(Lam* lam) {
         nat_t s_dst = size2width(conv->type());
 
         // this might happen when casting from int top to i64
-        if (s_src == s_dst && (conv.flags() == Conv::s2s || conv.flags() == Conv::u2u)) return src;
+        if (s_src == s_dst && (conv.sub() == Conv::s2s || conv.sub() == Conv::u2u)) return src;
 
-        switch (conv.flags()) {
+        switch (conv.sub()) {
             // clang-format off
             case Conv::s2s: op = s_src < s_dst ? "sext"  : "trunc";   break;
             case Conv::u2u: op = s_src < s_dst ? "zext"  : "trunc";   break;
@@ -660,8 +661,8 @@ void CodeGen::emit_epilogue(Lam* lam) {
 
         return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
     } else if (auto bitcast = isa<Tag::Bitcast>(def)) {
-        auto dst_type_ptr = mem::isa<mem::mem_Ptr>(bitcast->type());
-        auto src_type_ptr = mem::isa<mem::mem_Ptr>(bitcast->arg()->type());
+        auto dst_type_ptr = match<mem::Ptr>(bitcast->type());
+        auto src_type_ptr = match<mem::Ptr>(bitcast->arg()->type());
         auto src          = emit(bitcast->arg());
         auto src_t        = convert(bitcast->arg()->type());
         auto dst_t        = convert(bitcast->type());
@@ -673,10 +674,10 @@ void CodeGen::emit_epilogue(Lam* lam) {
         if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
         // clang-format on
         return bb.assign(name, "bitcast {} {} to {}", src_t, src, dst_t);
-    } else if (auto lea = mem::isa<mem::mem_lea>(def)) {
+    } else if (auto lea = match<mem::lea>(def)) {
         auto [ptr, idx] = lea->args<2>();
         auto ll_ptr     = emit(ptr);
-        auto pointee    = mem::as<mem::mem_Ptr>(ptr->type())->arg(0);
+        auto pointee    = match<mem::Ptr, true>(ptr->type())->arg(0);
         auto t          = convert(pointee);
         auto p          = convert(ptr->type());
         if (pointee->isa<Sigma>())
@@ -697,26 +698,26 @@ void CodeGen::emit_epilogue(Lam* lam) {
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t, p, ll_ptr, idx_t, ll_idx);
     } else if (auto trait = isa<Tag::Trait>(def)) {
         unreachable();
-    } else if (auto malloc = mem::isa<mem::mem_malloc>(def)) {
+    } else if (auto malloc = match<mem::malloc>(def)) {
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
-        auto ptr_t = convert(mem::as<mem::mem_Ptr>(def->proj(1)->type()));
+        auto ptr_t = convert(match<mem::Ptr, true>(def->proj(1)->type()));
         bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
         return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
-    } else if (auto mslot = mem::isa<mem::mem_mslot>(def)) {
+    } else if (auto mslot = match<mem::mslot>(def)) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
         // auto size = emit(mslot->arg(1));
         auto [pointee, addr_space] = mslot->decurry()->args<2>();
         print(lam2bb_[entry_].body().emplace_front(), "{} = alloca {}", name, convert(pointee));
         return name;
-    } else if (auto load = mem::isa<mem::mem_load>(def)) {
+    } else if (auto load = match<mem::load>(def)) {
         emit_unsafe(load->arg(0));
         auto ptr       = emit(load->arg(1));
         auto ptr_t     = convert(load->arg(1)->type());
-        auto pointee_t = convert(mem::as<mem::mem_Ptr>(load->arg(1)->type())->arg(0));
+        auto pointee_t = convert(match<mem::Ptr, true>(load->arg(1)->type())->arg(0));
         return bb.assign(name, "load {}, {} {}", pointee_t, ptr_t, ptr);
-    } else if (auto store = mem::isa<mem::mem_store>(def)) {
+    } else if (auto store = match<mem::store>(def)) {
         emit_unsafe(store->arg(0));
         auto ptr   = emit(store->arg(1));
         auto val   = emit(store->arg(2));
@@ -736,11 +737,11 @@ void CodeGen::emit_epilogue(Lam* lam) {
         auto ll_tup = emit_unsafe(tuple);
         auto ll_idx = emit_unsafe(index);
 
-        if (mem::isa<mem::mem_M>(extract->type())) return {};
+        if (match<mem::M>(extract->type())) return {};
 
         if (tuple->num_projs() == 2) {
-            if (mem::isa<mem::mem_M>(tuple->proj(2, 0_s)->type())) return ll_tup;
-            if (mem::isa<mem::mem_M>(tuple->proj(2, 1_s)->type())) return ll_tup;
+            if (match<mem::M>(tuple->proj(2, 0_s)->type())) return ll_tup;
+            if (match<mem::M>(tuple->proj(2, 1_s)->type())) return ll_tup;
         }
 
         auto tup_t = convert(tuple->type());
@@ -765,7 +766,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         return bb.assign(name, "insertvalue {} {}, {} {}, {}", tup_t, tuple, val_t, value, index);
     } else if (auto global = def->isa<Global>()) {
         auto init                  = emit(global->init());
-        auto [pointee, addr_space] = mem::as<mem::mem_Ptr>(global->type())->args<2>();
+        auto [pointee, addr_space] = match<mem::Ptr, true>(global->type())->args<2>();
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
         return globals_[global] = name;
     }

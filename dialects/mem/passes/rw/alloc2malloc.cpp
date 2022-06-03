@@ -5,10 +5,10 @@
 namespace thorin::mem {
 
 const Def* Alloc2Malloc::rewrite(const Def* def) {
-    if (auto alloc = mem::isa<mem::mem_alloc>(def)) {
+    if (auto alloc = match<mem::alloc>(def)) {
         auto [pointee, addr_space] = alloc->decurry()->args<2>();
         return op_malloc(pointee, alloc->arg(), alloc->dbg());
-    } else if (auto slot = mem::isa<mem::mem_slot>(def)) {
+    } else if (auto slot = match<mem::slot>(def)) {
         auto [pointee, addr_space] = slot->decurry()->args<2>();
         auto [mem, id]             = slot->args<2>();
         return op_mslot(pointee, mem, id, slot->dbg());

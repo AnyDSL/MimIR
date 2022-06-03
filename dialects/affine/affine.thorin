@@ -7,7 +7,7 @@
 ///
 /// ## Operations
 ///
-/// ### %affine.for
+/// ### %affine.For
 ///
 /// This operation ranges from (including) `start` to (excluding) `stop` using `step` as stride.
 /// In addition, this loop manages `n` loop accumulators whose initial values `init` must be given.
@@ -17,7 +17,7 @@
 /// * a `yield` continuation to prematurely continue with the next iteration.
 ///
 /// After termination of the loop `exit` is invoked.
-.ax %affine.for: Π [m: .Nat , n: .Nat , Ts: «n; *»] ->
+.ax %affine.For: Π [m: .Nat , n: .Nat , Ts: «n; *»] ->
     .Cn [mem: %mem.M, start: %Int m, stop: %Int m, step: %Int m, init: «i: n; Ts#i»,
         body: .Cn [%mem.M , %Int m, acc: «i: n; Ts#i», yield: .Cn [%mem.M , «i: n; Ts#i»]], 
         exit: .Cn [%mem.M , «i: n; Ts#i»]];

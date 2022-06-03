@@ -12,10 +12,9 @@ namespace thorin::h {
 
 struct AxiomInfo {
     std::string dialect;
-    std::string group;
-    std::deque<std::deque<std::string>> tags;
+    std::string tag;
+    std::deque<std::deque<std::string>> subs;
     std::string normalizer;
-    std::size_t id;
     bool pi;
 };
 

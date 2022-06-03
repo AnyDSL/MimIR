@@ -138,7 +138,7 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     } else if (auto pack = u->isa<Pack>()) {
         return print(os, "‹{}; {}›", pack->shape(), pack->body());
     } else if (auto proxy = u->isa<Proxy>()) {
-        return print(os, ".proxy#{}#{} {, }", proxy->index(), proxy->flags(), proxy->ops());
+        return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
     } else if (auto bound = isa_bound(*u)) {
         auto op = bound->isa<Join>() ? "∪" : "∩";
         if (auto nom = u->isa_nom()) print(os, "{}{}: {}", op, nom->unique_name(), nom->type());
@@ -146,8 +146,8 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     }
 
     // other
-    if (u->fields() == 0) return print(os, ".{} {, }", u->node_name(), u->ops());
-    return print(os, ".{}#{} {, }", u->node_name(), u->fields(), u->ops());
+    if (u->flags() == 0) return print(os, ".{} {, }", u->node_name(), u->ops());
+    return print(os, ".{}#{} {, }", u->node_name(), u->flags(), u->ops());
 }
 
 //------------------------------------------------------------------------------

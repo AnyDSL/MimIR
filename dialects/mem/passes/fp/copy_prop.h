@@ -35,7 +35,7 @@ private:
     ///  Dead    <-- Var is dead.
     /// ```
     enum Lattice : u8 { Dead, Prop, Keep };
-    enum : flags_t { Varxy, Appxy };
+    enum : u32 { Varxy, Appxy };
     using Lattices = Array<Lattice>;
 
     /// @name PassMan hooks

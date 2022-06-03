@@ -10,9 +10,9 @@
 namespace thorin::mem {
 
 // constructors
-inline const Axiom* type_mem(World& w) { return w.ax(Tag::mem_M); }
+inline const Axiom* type_mem(World& w) { return w.ax<mem::M>(); }
 
-inline const Axiom* type_ptr(World& w) { return w.ax(Tag::mem_Ptr); }
+inline const Axiom* type_ptr(World& w) { return w.ax<mem::Ptr>(); }
 inline const App* type_ptr(const Def* pointee, const Def* addr_space, const Def* dbg = {}) {
     World& w = pointee->world();
     return w.app(type_ptr(w), {pointee, addr_space}, dbg)->as<App>();
@@ -50,14 +50,14 @@ static inline const Def* tuple_of_types(const Def* t) {
 
 inline const Def* op_lea(const Def* ptr, const Def* index, const Def* dbg = {}) {
     World& w                   = ptr->world();
-    auto [pointee, addr_space] = mem::as<Tag::mem_Ptr>(ptr->type())->args<2>();
+    auto [pointee, addr_space] = match<mem::Ptr, true>(ptr->type())->args<2>();
     auto Ts                    = tuple_of_types(pointee);
-    return w.app(w.app(w.ax(Tag::mem_lea), {pointee->arity(), Ts, addr_space}), {ptr, index}, dbg);
+    return w.app(w.app(w.ax<mem::lea>(), {pointee->arity(), Ts, addr_space}), {ptr, index}, dbg);
 }
 
 inline const Def* op_lea_unsafe(const Def* ptr, const Def* i, const Def* dbg = {}) {
     World& w      = ptr->world();
-    auto safe_int = w.type_int(mem::as<Tag::mem_Ptr>(ptr->type())->arg(0)->arity());
+    auto safe_int = w.type_int(match<mem::Ptr, true>(ptr->type())->arg(0)->arity());
     return op_lea(ptr, w.op(Conv::u2u, safe_int, i), dbg);
 }
 
@@ -68,45 +68,45 @@ inline const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) {
 
 inline const Def* op_load(const Def* mem, const Def* ptr, const Def* dbg = {}) {
     World& w    = mem->world();
-    auto [T, a] = mem::as<Tag::mem_Ptr>(ptr->type())->args<2>();
-    return w.app(w.app(w.ax(Tag::mem_load), {T, a}), {mem, ptr}, dbg);
+    auto [T, a] = match<mem::Ptr, true>(ptr->type())->args<2>();
+    return w.app(w.app(w.ax<mem::load>(), {T, a}), {mem, ptr}, dbg);
 }
 
 inline const Def* op_store(const Def* mem, const Def* ptr, const Def* val, const Def* dbg = {}) {
     World& w    = mem->world();
-    auto [T, a] = mem::as<Tag::mem_Ptr>(ptr->type())->args<2>();
-    return w.app(w.app(w.ax(Tag::mem_store), {T, a}), {mem, ptr, val}, dbg);
+    auto [T, a] = match<mem::Ptr, true>(ptr->type())->args<2>();
+    return w.app(w.app(w.ax<mem::store>(), {T, a}), {mem, ptr, val}, dbg);
 }
 
 inline const Def* op_remem(const Def* mem, const Def* dbg = {}) {
     World& w = mem->world();
-    return w.app(w.ax(Tag::mem_remem), mem, dbg);
+    return w.app(w.ax<mem::remem>(), mem, dbg);
 }
 
 inline const Def* op_alloc(const Def* type, const Def* mem, const Def* dbg = {}) {
     World& w = type->world();
-    return w.app(w.app(w.ax(Tag::mem_alloc), {type, w.lit_nat_0()}), mem, dbg);
+    return w.app(w.app(w.ax<mem::alloc>(), {type, w.lit_nat_0()}), mem, dbg);
 }
 
 inline const Def* op_slot(const Def* type, const Def* mem, const Def* dbg = {}) {
     World& w = type->world();
-    return w.app(w.app(w.ax(Tag::mem_slot), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())}, dbg);
+    return w.app(w.app(w.ax<mem::slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())}, dbg);
 }
 
 inline const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {}) {
     World& w  = type->world();
     auto size = w.op(Trait::size, type);
-    return w.app(w.app(w.ax(Tag::mem_malloc), {type, w.lit_nat_0()}), {mem, size}, dbg);
+    return w.app(w.app(w.ax<mem::malloc>(), {type, w.lit_nat_0()}), {mem, size}, dbg);
 }
 
 inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {}) {
     World& w  = type->world();
     auto size = w.op(Trait::size, type);
-    return w.app(w.app(w.ax(Tag::mem_mslot), {type, w.lit_nat_0()}), {mem, size, id}, dbg);
+    return w.app(w.app(w.ax<mem::mslot>(), {type, w.lit_nat_0()}), {mem, size, id}, dbg);
 }
 
 inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
-    return mem::isa<Tag::mem_M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;
+    return match<mem::M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;
 }
 } // namespace thorin::mem
 

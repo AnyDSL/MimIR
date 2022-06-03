@@ -7,7 +7,7 @@
 
 namespace thorin::mem {
 
-static const Def* get_sloxy_type(const Proxy* sloxy) { return mem::as<Tag::mem_Ptr>(sloxy->type())->arg(0); }
+static const Def* get_sloxy_type(const Proxy* sloxy) { return match<mem::Ptr, true>(sloxy->type())->arg(0); }
 
 static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
     return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_nom<Lam>()};
@@ -16,7 +16,7 @@ static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
 void SSAConstr::enter() { lam2sloxy2val_[curr_nom()].clear(); }
 
 const Def* SSAConstr::rewrite(const Proxy* proxy) {
-    if (proxy->flags() == Traxy) {
+    if (proxy->tag() == Traxy) {
         world().DLOG("traxy '{}'", proxy);
         for (size_t i = 1, e = proxy->num_ops(); i != e; i += 2)
             set_val(curr_nom(), as_proxy(proxy->op(i), Sloxy), proxy->op(i + 1));
@@ -27,7 +27,7 @@ const Def* SSAConstr::rewrite(const Proxy* proxy) {
 }
 
 const Def* SSAConstr::rewrite(const Def* def) {
-    if (auto slot = mem::isa<mem::mem_slot>(def)) {
+    if (auto slot = match<mem::slot>(def)) {
         auto [mem, id] = slot->args<2>();
         auto [_, ptr]  = slot->projs<2>();
         auto sloxy     = proxy(ptr->type(), {curr_nom(), id}, Sloxy, slot->dbg());
@@ -37,10 +37,10 @@ const Def* SSAConstr::rewrite(const Def* def) {
             data(curr_nom()).writable.emplace(sloxy);
             return world().tuple({mem, sloxy});
         }
-    } else if (auto load = mem::isa<mem::mem_load>(def)) {
+    } else if (auto load = match<mem::load>(def)) {
         auto [mem, ptr] = load->args<2>();
         if (auto sloxy = isa_proxy(ptr, Sloxy)) return world().tuple({mem, get_val(curr_nom(), sloxy)});
-    } else if (auto store = mem::isa<mem::mem_store>(def)) {
+    } else if (auto store = match<mem::store>(def)) {
         auto [mem, ptr, val] = store->args<3>();
         if (auto sloxy = isa_proxy(ptr, Sloxy)) {
             if (data(curr_nom()).writable.contains(sloxy)) {
@@ -138,7 +138,7 @@ const Def* SSAConstr::mem2phi(const App* app, Lam* mem_lam) {
 }
 
 undo_t SSAConstr::analyze(const Proxy* proxy) {
-    if (proxy->flags() == Sloxy) {
+    if (proxy->tag() == Sloxy) {
         auto sloxy_lam = proxy->op(0)->as_nom<Lam>();
 
         if (keep_.emplace(proxy).second) {
@@ -147,7 +147,7 @@ undo_t SSAConstr::analyze(const Proxy* proxy) {
         }
     }
 
-    assert(proxy->flags() == Phixy);
+    assert(proxy->tag() == Phixy);
     auto [sloxy, mem_lam] = split_phixy(proxy);
     if (lam2sloxys_[mem_lam].emplace(sloxy).second) {
         world().DLOG("phi needed: phixy '{}' for sloxy '{}' for mem_lam '{}'", proxy, sloxy, mem_lam);

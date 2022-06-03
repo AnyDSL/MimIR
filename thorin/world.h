@@ -7,6 +7,7 @@
 #include "thorin/axiom.h"
 #include "thorin/config.h"
 #include "thorin/debug.h"
+#include "thorin/error.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
@@ -86,8 +87,8 @@ public:
             return type(lit_univ(level), dbg);
     }
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
-    const Proxy* proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg = {}) {
-        return unify<Proxy>(ops.size(), type, ops, index, flags, dbg);
+    const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg = {}) {
+        return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }
     Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
     Infer* nom_infer(const Def* type, Sym sym, Loc loc) { return insert<Infer>(1, type, dbg({sym, loc})); }
@@ -96,18 +97,41 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom* axiom(Def::NormalizeFn normalize, const Def* type, tag_t tag, flags_t flags, const Def* dbg = {}) {
-        return data_.axioms_[(u64(tag) << 32_u64) | u64(flags)] = unify<Axiom>(0, normalize, type, tag, flags, dbg);
+    const Axiom* axiom(Def::NormalizeFn n, const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
+        return data_.axioms_[d | (t << 8u) | s] = unify<Axiom>(0, n, type, d, t, s, dbg);
     }
-    const Axiom* axiom(const Def* type, tag_t tag, flags_t flags, const Def* dbg = {}) {
-        return axiom(nullptr, type, tag, flags, dbg);
+    const Axiom* axiom(const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
+        return axiom(nullptr, type, d, t, s, dbg);
     }
 
-    /// Builds a fresh Axiom with descending tag.
+    /// Builds a fresh Axiom with descending Axiom::sub.
     /// This is useful during testing to come up with some entitiy of a specific type.
-    /// It starts with `tag_t(-1)` (aka max) for Axiom::tag and counts down from there.
-    /// The Axiom::flags are set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(const Def* type, const Def* dbg = {}) { return axiom(nullptr, type, state_.curr_tag--, 0, dbg); }
+    /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
+    /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
+    const Axiom* axiom(const Def* type, const Def* dbg = {}) {
+        return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.curr_sub++, dbg);
+    }
+
+    /// Get axiom from a dialect.
+    ///
+    /// Use this to get an axiom with sub-tags.
+    template<class AxTag>
+    const Axiom* ax(AxTag sub) const {
+        u64 int_sub = static_cast<u64>(sub);
+        auto it     = data_.axioms_.find(int_sub);
+        if (it == data_.axioms_.end())
+            thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", int_sub);
+        return it->second;
+    }
+
+    /// Get axiom from a dialect.
+    ///
+    /// Can be used to get an axiom without sub-tags.
+    /// E.g. use `w.ax<mem::M>();` to get the %mem.M axiom.
+    template<axiom_has_sub_tags AxTag>
+    const Axiom* ax() const {
+        return ax(AxTag::id_);
+    }
     ///@}
 
     /// @name Pi
@@ -353,9 +377,6 @@ public:
     const Axiom* ax_zip()     const { return data_.zip_;     }
     // clang-format on
     ///@}
-
-    /// Get axioms from dialects.
-    const Axiom* ax(u64 tag) const;
 
     /// @name fn - these guys yield the final function to be invoked for the various operations
     ///@{
@@ -663,7 +684,7 @@ private:
     struct State {
         LogLevel max_level = LogLevel::Error;
         u32 curr_gid       = 0;
-        u32 curr_tag       = tag_t(-1);
+        u32 curr_sub       = 0;
         bool pe_done       = false;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;

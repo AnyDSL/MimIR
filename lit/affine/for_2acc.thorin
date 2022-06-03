@@ -20,7 +20,7 @@
         .let b : %Int 4294967296 = %Wrap_sub (0:.Nat, 4294967296:.Nat) (i, acc#.tt);
         continue (mem, (a, b))
     };
-    %affine.for (4294967296, 2, (%Int 4294967296, %Int 4294967296)) (mem, 0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296), 0:(%Int 4294967296)), for_body, for_exit)
+    %affine.For (4294967296, 2, (%Int 4294967296, %Int 4294967296)) (mem, 0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296), 0:(%Int 4294967296)), for_body, for_exit)
 };
 
 // CHECK-NOT: affine.for

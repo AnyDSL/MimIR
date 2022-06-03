@@ -8,13 +8,13 @@
 namespace thorin::affine {
 
 /// Returns the affine_for axiom applied with \a params.
-/// See documentation for %affine.for axiom in @ref affine.
+/// See documentation for %affine.For axiom in @ref affine.
 inline const Def* fn_for(World& w, Defs params) {
-    return w.app(w.ax(Tag::affine_for), {w.lit_nat(width2mod(32)), w.lit_nat(params.size()), w.tuple(params)});
+    return w.app(w.ax<affine::For>(), {w.lit_nat(width2mod(32)), w.lit_nat(params.size()), w.tuple(params)});
 }
 
 /// Returns a fully applied affine_for axiom.
-/// See documentation for %affine.for axiom in @ref affine.
+/// See documentation for %affine.For axiom in @ref affine.
 inline const Def* op_for(World& w,
                          const Def* mem,
                          const Def* begin,

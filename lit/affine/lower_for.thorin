@@ -18,12 +18,12 @@
         0: (%Int 2),
         continue (mem, %Wrap_add (0:.Nat, 4294967296:.Nat) (i, acc))
     };
-    %affine.for (4294967296, 1, (%Int 4294967296)) (mem, 0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296)), for_body, for_exit)
+    %affine.For (4294967296, 1, (%Int 4294967296)) (mem, 0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296)), for_body, for_exit)
 };
 
 // CHECK-DAG: main_[[mainId:[0-9]+]]: Cn [%mem.M, i32, %mem.Ptr (%mem.Ptr (i8, 0:nat), 0:nat), Cn [%mem.M, i32]]: (_{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}) = {
 // CHECK-DAG: for_[[forId:[0-9]+]]
-// CHECK-NOT: %affine.for
+// CHECK-NOT: %affine.For
 
 // CHECK-DAG: _[[exitId:[0-9]+]]: Cn [%mem.M, i32]
 

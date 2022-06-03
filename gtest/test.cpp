@@ -80,3 +80,10 @@ TEST(Axiom, mangle) {
     EXPECT_EQ(Axiom::demangle(*Axiom::mangle("test") | 0xFF_u64), "test");
     EXPECT_EQ(Axiom::demangle(*Axiom::mangle("01234567") | 0xFF_u64), "01234567");
 }
+
+TEST(Axiom, split) {
+    auto [dialect, group, tag] = *Axiom::split("%foo.bar.baz");
+    EXPECT_EQ(dialect, "foo");
+    EXPECT_EQ(group, "bar");
+    EXPECT_EQ(tag, "baz");
+}

@@ -94,7 +94,7 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     auto var_lam                        = proxy->op(0)->as_nom<Lam>();
     auto& [lattice, prop_lam, old_args] = lam2info_[var_lam];
 
-    if (proxy->flags() == Varxy) {
+    if (proxy->tag() == Varxy) {
         auto i = as_lit(proxy->op(1));
         if (auto& l = lattice[i]; l == Lattice::Dead) {
             l = Lattice::Prop;
@@ -102,7 +102,7 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
             return undo_visit(var_lam);
         }
     } else {
-        assert(proxy->flags() == Appxy);
+        assert(proxy->tag() == Appxy);
         for (auto op : proxy->ops().skip_front()) {
             auto i = as_lit(op);
             if (auto& l = lattice[i]; l != Lattice::Keep) {

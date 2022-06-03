@@ -20,7 +20,7 @@ public:
         : FPPass(man, "ssa_constr")
         , eta_exp_(eta_exp) {}
 
-    enum : flags_t { Phixy, Sloxy, Traxy };
+    enum : u32 { Phixy, Sloxy, Traxy };
 
     struct Info {
         Lam* pred = nullptr;

@@ -34,7 +34,7 @@
             .let _19331: [%mem.M, %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)] = %mem.load (%mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat), 0:.Nat) (mem, _19318);
             .lam atoi_cont_step: .Cn [mem : %mem.M, step : %Int 4294967296] = {
                 .ff,
-                %affine.for (4294967296:.Nat, 2:.Nat, (%Int 4294967296, %Int 4294967296)) (mem, start, stop, step, (0:(%Int 4294967296), 5:(%Int 4294967296)), for_body, for_exit)
+                %affine.For (4294967296:.Nat, 2:.Nat, (%Int 4294967296, %Int 4294967296)) (mem, start, stop, step, (0:(%Int 4294967296), 5:(%Int 4294967296)), for_body, for_exit)
             };
             atoi (_19331#.ff, _19331#.tt, atoi_cont_step)
         };

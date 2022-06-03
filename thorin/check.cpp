@@ -66,7 +66,7 @@ bool Checker::equiv(const Def* d1, const Def* d2) {
         if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1->var(), n2->var());
     }
 
-    if (d1->node() != d2->node() || d1->fields() != d2->fields() || d1->num_ops() != d2->num_ops() ||
+    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops() ||
         d1->is_set() != d2->is_set())
         return false;
 
