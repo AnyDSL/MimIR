@@ -1,13 +1,16 @@
-#include "thorin/pass/rw/lower_for.h"
+#include "dialects/affine/passes/lower_for.h"
 
-#include "thorin/lam.h"
+#include <thorin/lam.h>
+#include <thorin/tables.h>
 
-namespace thorin {
+#include "dialects/affine.h"
+
+namespace thorin::affine {
 
 const Def* LowerFor::rewrite(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
-    if (auto for_ax = isa<Tag::For>(def)) {
+    if (auto for_ax = match<affine::For>(def)) {
         auto& w = world();
         w.DLOG("rewriting for axiom: {} within {}", for_ax, curr_nom());
 
@@ -32,14 +35,14 @@ const Def* LowerFor::rewrite(const Def* def) {
             auto [mem, iter, end, step, acc, body, brk] = for_lam->vars<7>();
 
             // continue
-            auto if_then_cn = w.cn(w.type_mem());
+            auto if_then_cn = w.cn(mem->type());
             auto if_then    = w.nom_lam(if_then_cn, nullptr);
-            if_then->app(false, body, {if_then->mem_var(w.dbg("mem")), iter, acc, yield_lam});
+            if_then->app(false, body, {if_then->var(0, w.dbg("mem")), iter, acc, yield_lam});
 
             // break
-            auto if_else_cn = w.cn(w.type_mem());
+            auto if_else_cn = w.cn(mem->type());
             auto if_else    = w.nom_lam(if_else_cn, nullptr);
-            if_else->app(false, brk, {if_else->mem_var(w.dbg("mem")), acc});
+            if_else->app(false, brk, {if_else->var(0, w.dbg("mem")), acc});
 
             auto cmp = w.op(ICmp::ul, iter, end);
             for_lam->branch(false, cmp, if_then, if_else, mem);
@@ -51,4 +54,4 @@ const Def* LowerFor::rewrite(const Def* def) {
     return def;
 }
 
-} // namespace thorin
+} // namespace thorin::affine

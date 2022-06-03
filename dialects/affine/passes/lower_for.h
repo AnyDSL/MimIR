@@ -1,11 +1,10 @@
 #ifndef THORIN_PASS_RW_LOWER_FOR_H
 #define THORIN_PASS_RW_LOWER_FOR_H
 
-#include "thorin/def.h"
+#include <thorin/def.h>
+#include <thorin/pass/pass.h>
 
-#include "thorin/pass/pass.h"
-
-namespace thorin {
+namespace thorin::affine {
 
 /// Lowers the for axiom to actual control flow in CPS style
 /// Requires CopyProp to cleanup afterwards.
@@ -20,6 +19,6 @@ private:
     Def2Def rewritten_;
 };
 
-} // namespace thorin
+} // namespace thorin::affine
 
 #endif

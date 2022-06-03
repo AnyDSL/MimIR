@@ -110,7 +110,8 @@ int main(int argc, char** argv) {
 
         std::ofstream md;
         if (emit_md) md.open(prefix + ".md");
-        Parser parser(world, input, ifs, emit_md ? &md : nullptr);
+
+        Parser parser(world, input, ifs, dialect_paths, emit_md ? &md : nullptr);
         parser.parse_module();
 
         if (emit_h) {
@@ -122,9 +123,9 @@ int main(int argc, char** argv) {
         for (const auto& dialect : dialects) { dialect.register_passes(builder); }
 
         auto opt = builder.opt_phase(world);
-        opt.run();
+        opt->run();
         auto codegen_prep = builder.codegen_prep_phase(world);
-        codegen_prep.run();
+        codegen_prep->run();
 
         if (emit_thorin) world.dump();
 

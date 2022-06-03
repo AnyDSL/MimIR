@@ -62,6 +62,7 @@ add_subdirectory(dialects)
 
 if(BUILD_TESTING AND THORIN_BUILD_TESTING)
     add_subdirectory(gtest)
+    add_subdirectory(lit)
 endif()
 
 if(THORIN_BUILD_DOCS)
