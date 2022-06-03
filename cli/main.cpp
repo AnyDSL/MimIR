@@ -83,10 +83,12 @@ int main(int argc, char** argv) {
 
         std::vector<Dialect> dialects;
         thorin::Backends backends;
+        thorin::Normalizers normalizers;
         if (!dialect_names.empty()) {
             for (const auto& dialect : dialect_names) {
                 dialects.push_back(Dialect::load(dialect, dialect_paths));
                 dialects.back().register_backends(backends);
+                dialects.back().register_normalizers(normalizers);
             }
         }
 
@@ -117,7 +119,7 @@ int main(int argc, char** argv) {
         std::ofstream md;
         if (emit_md) md.open(prefix + ".md");
 
-        Parser parser(world, input, ifs, dialect_paths, emit_md ? &md : nullptr);
+        Parser parser(world, input, ifs, dialect_paths, &normalizers, emit_md ? &md : nullptr);
         parser.parse_module();
 
         if (emit_h) {

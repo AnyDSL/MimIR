@@ -37,5 +37,6 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
             man.add<mem::Alloc2Malloc>();
         });
             },
-            [](Backends& backends) { backends["ll"] = &ll::emit; }};
+            [](Backends& backends) { backends["ll"] = &ll::emit; },
+            [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
 }

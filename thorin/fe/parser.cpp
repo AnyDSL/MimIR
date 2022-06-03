@@ -33,12 +33,14 @@ Parser::Parser(World& world,
                std::string_view file,
                std::istream& istream,
                ArrayRef<std::string> import_search_paths,
+               const Normalizers* normalizers,
                std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
     , anonymous_(world.tuple_str("_"))
     , bootstrapper_(std::filesystem::path{file}.filename().replace_extension("").string())
-    , user_search_paths_(import_search_paths.begin(), import_search_paths.end()) {
+    , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
+    , normalizers_(normalizers) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
     push(); // root scope
@@ -48,14 +50,18 @@ Parser::Parser(World& world,
                std::string_view file,
                std::istream& istream,
                ArrayRef<std::string> import_search_paths,
+               const Normalizers* normalizers,
                const std::deque<Parser::Scope>& inhert_scopes,
                const SymSet& inhert_imported)
-    : Parser(world, file, istream, import_search_paths) {
+    : Parser(world, file, istream, import_search_paths, normalizers) {
     scopes_   = inhert_scopes;
     imported_ = inhert_imported;
 }
 
-Parser Parser::import_module(World& world, std::string_view name, ArrayRef<std::string> user_search_paths) {
+Parser Parser::import_module(World& world,
+                             std::string_view name,
+                             ArrayRef<std::string> user_search_paths,
+                             const Normalizers* normalizers) {
     auto search_paths = get_plugin_search_paths(user_search_paths);
 
     auto file_name = std::string(name) + ".thorin";
@@ -74,7 +80,8 @@ Parser Parser::import_module(World& world, std::string_view name, ArrayRef<std::
 
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
 
-    thorin::Parser parser(world, input_path, ifs, user_search_paths);
+    // fixme: no normalizers?
+    thorin::Parser parser(world, input_path, ifs, user_search_paths, normalizers);
     parser.parse_module();
     return parser;
 }
@@ -500,20 +507,27 @@ void Parser::parse_ax() {
     info.pi         = type->isa<Pi>() != nullptr;
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
 
+    auto normalizer = [this](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {
+        if (normalizers_)
+            if (auto it = normalizers_->find(d | flags_t(t << 8u) | s); it != normalizers_->end()) return it->second;
+        return nullptr;
+    };
+
     dialect_t d = *Axiom::mangle(dialect);
     tag_t t     = bootstrapper_.axioms.size() - 1;
     sub_t s     = 0;
     if (info.subs.empty()) {
-        auto axiom = world().axiom(type, d, t, 0, track.named(ax.sym()));
+        auto axiom = world().axiom(normalizer(d, t, 0), type, d, t, 0, track.named(ax.sym()));
         insert(ax.sym(), axiom);
     } else {
         for (const auto& sub : info.subs) {
-            auto dbg = track.named(world().tuple_str(ax_str + "."s + sub.front()));
-            auto axiom = world().axiom(type, d, t, s++, dbg);
+            auto dbg   = track.named(world().tuple_str(ax_str + "."s + sub.front()));
+            auto axiom = world().axiom(normalizer(d, t, s), type, d, t, s, dbg);
             for (auto& alias : sub) {
                 Sym name = world().tuple_str(ax_str + "."s + alias);
                 insert(name, axiom);
             }
+            ++s;
         }
     }
     expect(Tok::Tag::T_semicolon, "end of an axiom");
@@ -619,7 +633,7 @@ void Parser::parse_import() {
     if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
 
     // search file and import
-    auto parser = Parser::import_module(world(), name_str, user_search_paths_);
+    auto parser = Parser::import_module(world(), name_str, user_search_paths_, normalizers_);
 
     // merge global scopes
     assert(parser.scopes_.size() == 1 && scopes_.size() == 1);

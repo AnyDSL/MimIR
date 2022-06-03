@@ -28,6 +28,7 @@ add_library(thorin_mem MODULE
     mem/be/ll/ll.h
     mem/mem.cpp
     mem/mem.h
+    mem/normalizers.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/mem.h
     ${CMAKE_CURRENT_BINARY_DIR}/std.h
 )
