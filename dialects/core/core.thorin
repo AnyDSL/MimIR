@@ -110,7 +110,7 @@
 /// | iff    |  x |  o |  x |  x | implication (if and only if) |
 /// | a      |  x |  x |  o |  o | first argment                |
 /// | ciff   |  x |  x |  o |  x | converse implication         |
-/// | _or    |  x |  x |  x |  o |                              |
+/// | _or    |  x |  x |  x |  o | or                           |
 /// | t      |  x |  x |  x |  x | always true                  |
 .ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
                 _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
