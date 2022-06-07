@@ -1,16 +1,16 @@
-/// # The std Dialect {#std}
+/// # The core Dialect {#core}
 ///
 /// [TOC]
 ///
 /// ## Types
 ///
-/// ### %std.Int
+/// ### %core.Int
 ///
-.ax %std.Int: .Nat -> *;
+.ax %core.Int: .Nat -> *;
 ///
 /// ## Operations
 ///
-/// ### %std.icmp
+/// ### %core.icmp
 ///
 /// Integer comparison is made of 5 disjoint relations:
 ///     * `X`: first operand plus, second minus
@@ -19,7 +19,7 @@
 ///     * `L`: less with same sign
 ///     * `E`: equal
 ///
-/// Here is the complete picture for `%std.icmp xygle x, y` for 3 wide integers:
+/// Here is the complete picture for `%core.icmp.xygle x, y` for 3 wide integers:
 ///
 /// |        | x        |        |       |       |       | y     |       |       |       |       |
 /// |--------|----------|--------|-------|-------|-------|-------|-------|-------|-------|-------|
@@ -72,13 +72,13 @@
 /// | `XYGlE` |         | x | x | x | o | x | signed or unsigned greater or equal == not less |
 /// | `XYGLe` |  `ne`   | x | x | x | x | o | not equal                                       |
 /// | `XYGLE` |  `t`    | x | x | x | x | x | always true                                     |
-.ax %std.icmp(xygle = f, xyglE = e, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,
-              xYgle,     xYglE,     xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
-              Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
-              XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
+.ax %core.icmp(xygle = f, xyglE = e, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,
+               xYgle,     xYglE,     xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
+               Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
+               XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
     Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_icmp;
 ///
-/// ### %std.bit2
+/// ### %core.bit2
 ///
 /// This binary bitwise operations offers all [16 possible operations](https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators) as summarized in the following table:
 ///
@@ -102,16 +102,16 @@
 /// | BBAA | t      |  x |  x |  x |  x | always true                  |
 ///
 /// TODO rework tag: This doesn't make sense
-.ax %std.bit2(bbaa = f,     bbaA = nor,  bbAa = nciff,  bbAA = na,
-              bBaa = niff,  bBaA = nb,   bBAa = _xor,   bBAA = nand,
-              Bbaa = _and,  BbaA = nxor, BbAa = b,      BbAA = iff,
-              BBaa = a,     BBaA = ciff, BBAa = _or,    BBAA = t):
-    Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_bit;
+.ax %core.bit2(bbaa = f,     bbaA = nor,  bbAa = nciff,  bbAA = na,
+               bBaa = niff,  bBaA = nb,   bBAa = _xor,   bBAA = nand,
+               Bbaa = _and,  BbaA = nxor, BbAa = b,      BbAA = iff,
+               BBaa = a,     BBaA = ciff, BBAa = _or,    BBAA = t):
+    Π w: .Nat -> [%Int w, %Int w] -> %Int w , normalize_bit;
 ///
-/// ### %std.shr
+/// ### %core.shr
 ///
-.ax %std.shr(ashr, lshr): Π w: .Nat -> [%Int w, %Int w] -> %Int w, normalize_shr;
+.ax %core.shr(ashr, lshr): Π w: .Nat -> [%Int w, %Int w] -> %Int w, normalize_shr;
 ///
-/// ### %std.wrap
+/// ### %core.wrap
 ///
-.ax %std.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [%Int w, %Int w] -> %Int w, normalize_wrap;
+.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [%Int w, %Int w] -> %Int w, normalize_wrap;

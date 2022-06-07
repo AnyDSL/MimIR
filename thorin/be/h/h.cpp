@@ -1,5 +1,6 @@
 #include "thorin/be/h/h.h"
 
+#include <ranges>
 #include <sstream>
 
 #include "thorin/axiom.h"
@@ -18,9 +19,8 @@ void Bootstrapper::emit(std::ostream& h) {
 
     tab.print(h, "namespace thorin {{\nnamespace {} {{\n\n", dialect_);
 
-    // todo: can we assume mangle is successful?
     dialect_t dialect_id = *Axiom::mangle(dialect_);
-    std::vector<std::ostringstream> normalizers;
+    std::vector<std::ostringstream> normalizers, outer_namespace;
 
     h << std::hex;
     tab.print(h, "static constexpr dialect_t id = 0x{};\n\n", dialect_id);
@@ -38,21 +38,35 @@ void Bootstrapper::emit(std::ostream& h) {
                 for (size_t i = 1; i < aliases.size(); ++i) tab.print(h, "{} = {},\n", aliases[i], sub);
 
                 if (!ax.normalizer.empty())
-                    print(normalizers.emplace_back(), "normalizers[flags_t({}::{})] = &{}<{}::{}>;\n", ax.tag, sub,
+                    print(normalizers.emplace_back(), "normalizers[flags_t({}::{})] = &{}<{}::{}>;", ax.tag, sub,
                           ax.normalizer, ax.tag, sub);
             }
         } else {
             tab.print(h, "id_ = 0x{},\n", ax_id);
 
             if (!ax.normalizer.empty())
-                print(normalizers.emplace_back(), "normalizers[flags_t({}::id_)] = &{};\n", ax.tag, ax.normalizer);
+                print(normalizers.emplace_back(), "normalizers[flags_t({}::id_)] = &{};", ax.tag, ax.normalizer);
         }
         --tab;
         tab.print(h, "}};\n\n");
 
-        tab.print(h,
-                  "inline bool operator==({} enm, flags_t flags) {{ return static_cast<flags_t>(enm) == flags; }}\n\n",
+        tab.print(h, "inline bool operator==({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) == rhs; }}\n",
                   ax.tag);
+        tab.print(h, "inline bool operator&({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) & rhs; }}\n",
+                  ax.tag);
+        tab.print(h,
+                  "inline bool operator&({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) & "
+                  "static_cast<flags_t>(rhs); }}\n",
+                  ax.tag, ax.tag);
+        tab.print(h, "inline bool operator|({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) | rhs; }}\n",
+                  ax.tag);
+        tab.print(h,
+                  "inline bool operator|({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) | "
+                  "static_cast<flags_t>(rhs); }}\n\n",
+                  ax.tag, ax.tag);
+
+        print(outer_namespace.emplace_back(), "template<> inline constexpr size_t Num<{}::{}> = {};\n", dialect_,
+              ax.tag, ax.subs.size());
 
         if (!ax.normalizer.empty()) {
             if (auto& subs = ax.subs; !subs.empty()) {
@@ -65,26 +79,37 @@ void Bootstrapper::emit(std::ostream& h) {
     }
 
     if (!normalizers.empty()) {
-        tab.print(h, "inline void register_normalizers(Normalizers& normalizers) {{\n");
+        tab.print(h, "void register_normalizers(Normalizers& normalizers);\n\n");
+        tab.print(h, "#define THORIN_{}_NORMALIZER_IMPL \\\n", dialect_);
         ++tab;
-        for (const auto& normalizer : normalizers) tab.print(h, "{}", normalizer.str());
+        tab.print(h, "void register_normalizers(Normalizers& normalizers) {{\\\n");
+        ++tab;
+        for (const auto& normalizer : normalizers) tab.print(h, "{} \\\n", normalizer.str());
         --tab;
-        tab.print(h, "}}\n\n");
+        tab.print(h, "}}\n");
+        --tab;
     }
 
     tab.print(h, "}} // namespace {}\n\n", dialect_);
-    tab.print(h, "namespace detail {{\n");
 
-    for (const auto& ax : axioms)
-        if (!ax.pi)
-            tab.print(h,
-                      "template<>\n"
-                      "struct Enum2DefImpl<{}::{}> {{\n"
-                      "    using type = Axiom;\n"
-                      "}};\n",
-                      ax.dialect, ax.tag);
+    for (const auto& line : outer_namespace) { tab.print(h, "{}", line.str()); }
+    tab.print(h, "\n");
 
-    tab.print(h, "}} // namespace detail\n");
+    if (std::ranges::any_of(axioms, [](const auto& ax) { return !ax.pi; })) {
+        tab.print(h, "namespace detail {{\n");
+
+        for (const auto& ax : axioms)
+            if (!ax.pi)
+                tab.print(h,
+                          "template<>\n"
+                          "struct Enum2DefImpl<{}::{}> {{\n"
+                          "    using type = Axiom;\n"
+                          "}};\n",
+                          ax.dialect, ax.tag);
+
+        tab.print(h, "}} // namespace detail\n");
+    }
+
     tab.print(h, "}} // namespace thorin\n\n");
 
     tab.print(h, "#endif\n");

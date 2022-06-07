@@ -135,7 +135,7 @@ World::World(std::string_view name)
     data_.Conv_[size_t(T::o)] = \
         axiom(normalize_Conv<T::o>, make_type(T::o), Axiom::Global_Dialect, Tag::Conv, sub_t(T::o), dbg(op2str(T::o)));
         THORIN_CONV(CODE)
-#undef Code
+#undef CODE
     }
     { // hlt/run: T: * -> T -> T
         auto ty = nom_pi(type())->set_dom(type());

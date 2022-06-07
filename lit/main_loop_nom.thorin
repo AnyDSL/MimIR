@@ -4,14 +4,14 @@
 // RUN: %t ; test $? -eq 0
 // RUN: %t 1 2 3 ; test $? -eq 6
 
-.import std;
+.import core;
 .import mem;
 
 .lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
     .ff,
     .lam loop: .Cn [mem: %mem.M, i: %Int 4294967296, acc: %Int 4294967296] = {
         .ff,
-        .let cond: (%Int 2) = %std.icmp.ul 4294967296:.Nat (i, argc);
+        .let cond: (%Int 2) = %core.icmp.ul 4294967296:.Nat (i, argc);
 
         .lam exit: .Cn [mem: %mem.M] = {
             .ff,
@@ -39,7 +39,7 @@
 // CHECK-DAG:    λ@(0:i1) _[[appReturnId:[0-9]+]]
 
 // CHECK-DAG: loop_[[loopId]]: Cn [%mem.M, i32, i32]: (_[[loopMemId:[0-9]+]], _[[iterId:[0-9]+]], _[[accId:[0-9]+]]) = {
-// CHECK-DAG: _[[condId:[0-9]+]]: i1 = %std.icmp.XygLe 4294967296:nat (_[[iterId]], _[[argcId]]);
+// CHECK-DAG: _[[condId:[0-9]+]]: i1 = %core.icmp.XygLe 4294967296:nat (_[[iterId]], _[[argcId]]);
 // CHECK-DAG: _[[appCondId:[0-9]+]]: ⊥:★ = (exit_[[exitId:[0-9]+]], body_[[bodyId:[0-9]+]])#_[[condId]] _[[loopMemId]];
 // CHECK-DAG: λ@(0:i1) _[[appCondId]]
 

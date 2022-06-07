@@ -78,8 +78,8 @@ int main(int argc, char** argv) {
         }
         // clang-format on
 
-        // we always need mem, as long as we are not in bootstrap mode..
-        if (!emit_h) dialect_names.push_back("mem");
+        // we always need core and mem, as long as we are not in bootstrap mode..
+        if (!emit_h) dialect_names.insert(dialect_names.end(), {"core", "mem"});
 
         std::vector<Dialect> dialects;
         thorin::Backends backends;

@@ -49,4 +49,6 @@ const Def* normalize_store(const Def* type, const Def* callee, const Def* arg, c
     return world.raw_app(callee, {mem, ptr, val}, dbg);
 }
 
+THORIN_mem_NORMALIZER_IMPL
+
 } // namespace thorin::mem

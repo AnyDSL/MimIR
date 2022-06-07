@@ -12,7 +12,23 @@ set_target_properties(thorin_foo
 )
 target_link_libraries(thorin_foo libthorin)
 
-add_thorin_dialect(std)
+add_thorin_dialect(core)
+
+add_library(thorin_core MODULE
+    core/core.cpp
+    core/core.h
+    core/normalizers.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/core.h
+)
+
+set_target_properties(thorin_core
+    PROPERTIES 
+        CXX_VISIBILITY_PRESET hidden
+        VISIBILITY_INLINES_HIDDEN 1
+        WINDOWS_EXPORT_ALL_SYMBOLS OFF
+)
+target_link_libraries(thorin_core libthorin)
+
 add_thorin_dialect(mem)
 
 add_library(thorin_mem MODULE
@@ -30,7 +46,7 @@ add_library(thorin_mem MODULE
     mem/mem.h
     mem/normalizers.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/mem.h
-    ${CMAKE_CURRENT_BINARY_DIR}/std.h
+    ${CMAKE_CURRENT_BINARY_DIR}/core.h
 )
 
 set_target_properties(thorin_mem
@@ -58,4 +74,4 @@ set_target_properties(thorin_affine
         WINDOWS_EXPORT_ALL_SYMBOLS OFF
 )
 target_link_libraries(thorin_affine libthorin)
-add_dependencies(thorin_affine thorin_mem)
+add_dependencies(thorin_affine thorin_core thorin_mem)

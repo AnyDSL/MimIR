@@ -61,7 +61,9 @@ public:
     void* handle() { return handle_.get(); }
 
     /// Registers callbacks in the \a builder that extend the exposed PassMan's.
-    void register_passes(PipelineBuilder& builder) const { info_.register_passes(builder); }
+    void register_passes(PipelineBuilder& builder) const {
+        if (info_.register_passes) info_.register_passes(builder);
+    }
 
     /// Registers the mapping from backend names to emission functions in the given \a backends map.
     void register_backends(Backends& backends) const {
