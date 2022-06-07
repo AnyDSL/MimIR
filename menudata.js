@@ -31,7 +31,7 @@ var menudata={children:[
 {text:"Developer Guide",url:"dev.html"},
 {text:"Passes",url:"passes.html"}]},
 {text:"Dialects",url:"usergroup1.html",children:[
-{text:"std",url:"std.html"},
+{text:"core",url:"core.html"},
 {text:"mem",url:"mem.html"},
 {text:"affine",url:"affine.html"}]},
 {text:"Namespaces",url:"namespaces.html",children:[

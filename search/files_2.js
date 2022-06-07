@@ -9,5 +9,7 @@ var searchData=
   ['coding_2emd_6',['coding.md',['../coding_8md.html',1,'']]],
   ['container_2eh_7',['container.h',['../container_8h.html',1,'']]],
   ['copy_5fprop_2ecpp_8',['copy_prop.cpp',['../copy__prop_8cpp.html',1,'']]],
-  ['copy_5fprop_2eh_9',['copy_prop.h',['../copy__prop_8h.html',1,'']]]
+  ['copy_5fprop_2eh_9',['copy_prop.h',['../copy__prop_8h.html',1,'']]],
+  ['core_2eh_10',['core.h',['../core_8h.html',1,'']]],
+  ['core_2emd_11',['core.md',['../core_8md.html',1,'']]]
 ];

@@ -27,12 +27,11 @@ var searchData=
   ['foldconv_3c_20conv_3a_3as2s_2c_20dw_2c_20sw_20_3e_24',['FoldConv&lt; Conv::s2s, dw, sw &gt;',['../structthorin_1_1FoldConv_3_01Conv_1_1s2s_00_01dw_00_01sw_01_4.html',1,'thorin']]],
   ['foldconv_3c_20conv_3a_3au2r_2c_20dw_2c_20sw_20_3e_25',['FoldConv&lt; Conv::u2r, dw, sw &gt;',['../structthorin_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4.html',1,'thorin']]],
   ['foldconv_3c_20conv_3a_3au2u_2c_20dw_2c_20sw_20_3e_26',['FoldConv&lt; Conv::u2u, dw, sw &gt;',['../structthorin_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4.html',1,'thorin']]],
-  ['foo_27',['Foo',['../classthorin_1_1Foo.html',1,'thorin']]],
-  ['fppass_28',['FPPass',['../classthorin_1_1FPPass.html',1,'thorin']]],
-  ['fppass_3c_20betared_20_3e_29',['FPPass&lt; BetaRed &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
-  ['fppass_3c_20copyprop_2c_20lam_20_3e_30',['FPPass&lt; CopyProp, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
-  ['fppass_3c_20etaexp_2c_20lam_20_3e_31',['FPPass&lt; EtaExp, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
-  ['fppass_3c_20etared_20_3e_32',['FPPass&lt; EtaRed &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
-  ['fppass_3c_20ssaconstr_2c_20lam_20_3e_33',['FPPass&lt; SSAConstr, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
-  ['fppass_3c_20tailrecelim_2c_20lam_20_3e_34',['FPPass&lt; TailRecElim, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]]
+  ['fppass_27',['FPPass',['../classthorin_1_1FPPass.html',1,'thorin']]],
+  ['fppass_3c_20betared_20_3e_28',['FPPass&lt; BetaRed &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
+  ['fppass_3c_20copyprop_2c_20lam_20_3e_29',['FPPass&lt; CopyProp, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
+  ['fppass_3c_20etaexp_2c_20lam_20_3e_30',['FPPass&lt; EtaExp, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
+  ['fppass_3c_20etared_20_3e_31',['FPPass&lt; EtaRed &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
+  ['fppass_3c_20ssaconstr_2c_20lam_20_3e_32',['FPPass&lt; SSAConstr, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
+  ['fppass_3c_20tailrecelim_2c_20lam_20_3e_33',['FPPass&lt; TailRecElim, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]]
 ];

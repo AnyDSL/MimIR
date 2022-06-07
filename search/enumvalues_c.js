@@ -10,5 +10,5 @@ var searchData=
   ['leaf_7',['Leaf',['../classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cbac3b5e1f7de11d645fb1da6c5415b1fa5',1,'thorin::LoopTree::Base']]],
   ['lit_8',['Lit',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a8a318b95f9e4e08fd5b5cbcadcd93b7e',1,'thorin::Node']]],
   ['load_9',['Load',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa3fa48428576bbf714933120bcde71526',1,'thorin::Tag']]],
-  ['lshr_10',['lshr',['../namespacethorin.html#a7827708358ccf95a922ca015ce1513e1a9d3827a838a5eeb8061fd0380d582ede',1,'thorin::lshr()'],['../namespacethorin_1_1std.html#a2d586f3cc9b104341679f2bffcc77adda9d3827a838a5eeb8061fd0380d582ede',1,'thorin::std::lshr()']]]
+  ['lshr_10',['lshr',['../namespacethorin.html#a7827708358ccf95a922ca015ce1513e1a9d3827a838a5eeb8061fd0380d582ede',1,'thorin::lshr()'],['../namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a9d3827a838a5eeb8061fd0380d582ede',1,'thorin::core::lshr()']]]
 ];

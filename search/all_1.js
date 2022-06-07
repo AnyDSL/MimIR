@@ -1,12 +1,12 @@
 var searchData=
 [
-  ['a_0',['a',['../namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661',1,'thorin::a()'],['../namespacethorin_1_1std.html#adc137a579b53f28cc247448ec70f2ad7a0cc175b9c0f1b6a831c399e269772661',1,'thorin::std::a()']]],
+  ['a_0',['a',['../namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661',1,'thorin::a()'],['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a0cc175b9c0f1b6a831c399e269772661',1,'thorin::core::a()']]],
   ['ac_1',['ac',['../classthorin_1_1World.html#a8b6e12c92f39b33501810cd5399c7122',1,'thorin::World::ac(Defs ops, const Def *dbg={})'],['../classthorin_1_1World.html#a3a71dacbc5a5780bb4ba24c7a2b71618',1,'thorin::World::ac(const Def *type, Defs ops, const Def *dbg={})']]],
   ['ac_2',['Ac',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a756f26cda5f2e0caa8254e8e9aa11e49',1,'thorin::Node::Ac()'],['../classthorin_1_1Ac.html',1,'thorin::Ac']]],
   ['acc_3',['Acc',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa0d83a8b191c207c219a45259b9fc1d66',1,'thorin::Tag::Acc()'],['../namespacethorin.html#a51bd156a3d4d49cc12150d1ada2e7c5f',1,'thorin::Acc()']]],
   ['accept_4',['accept',['../classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93',1,'thorin::utf8::Lexer']]],
   ['accept_5fif_5',['accept_if',['../classthorin_1_1utf8_1_1Lexer.html#a8501db85f043276bad22a6fb4e90df77',1,'thorin::utf8::Lexer']]],
-  ['add_6',['add',['../namespacethorin.html#a65b28a70b601ee7898841af6af02d56fa34ec78fcc91ffb1e54cd85e4a0924332',1,'thorin::add()'],['../namespacethorin_1_1std.html#a6580c4b79960616017719449549bc441a34ec78fcc91ffb1e54cd85e4a0924332',1,'thorin::std::add()'],['../classthorin_1_1PassMan.html#ac9820d74411d7c8462b6b055bbacea3c',1,'thorin::PassMan::add()'],['../namespacethorin.html#a0712e5b90b0610c0027e69b3d6ca690ca34ec78fcc91ffb1e54cd85e4a0924332',1,'thorin::add()']]],
+  ['add_6',['add',['../namespacethorin.html#a65b28a70b601ee7898841af6af02d56fa34ec78fcc91ffb1e54cd85e4a0924332',1,'thorin::add()'],['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa34ec78fcc91ffb1e54cd85e4a0924332',1,'thorin::core::add()'],['../classthorin_1_1PassMan.html#ac9820d74411d7c8462b6b055bbacea3c',1,'thorin::PassMan::add()'],['../namespacethorin.html#a0712e5b90b0610c0027e69b3d6ca690ca34ec78fcc91ffb1e54cd85e4a0924332',1,'thorin::add()']]],
   ['add_5fpaths_5ffrom_5fenv_7',['add_paths_from_env',['../dialects_8cpp.html#a5ccbd280e82a0383c90916617721ca41',1,'dialects.cpp']]],
   ['affine_2ecpp_8',['affine.cpp',['../affine_8cpp.html',1,'']]],
   ['affine_2eh_9',['affine.h',['../build_2dialects_2affine_8h.html',1,'(Global Namespace)'],['../dialects_2affine_2affine_8h.html',1,'(Global Namespace)']]],
@@ -63,7 +63,7 @@ var searchData=
   ['as_5fnom_60',['as_nom',['../classthorin_1_1Def.html#a1e009bced6c7f37b6316d81ead2ad27e',1,'thorin::Def']]],
   ['as_5fproxy_61',['as_proxy',['../classthorin_1_1Pass.html#a2f18625607a805b62025f41319ed9055',1,'thorin::Pass']]],
   ['as_5fstructural_62',['as_structural',['../classthorin_1_1Def.html#a5e049ff76ca81146b2c4c166aa45ba0d',1,'thorin::Def']]],
-  ['ashr_63',['ashr',['../namespacethorin.html#a7827708358ccf95a922ca015ce1513e1a3857931f2d0d28d57442421a45989bb2',1,'thorin::ashr()'],['../namespacethorin_1_1std.html#a2d586f3cc9b104341679f2bffcc77adda3857931f2d0d28d57442421a45989bb2',1,'thorin::std::ashr()']]],
+  ['ashr_63',['ashr',['../namespacethorin.html#a7827708358ccf95a922ca015ce1513e1a3857931f2d0d28d57442421a45989bb2',1,'thorin::ashr()'],['../namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a3857931f2d0d28d57442421a45989bb2',1,'thorin::core::ashr()']]],
   ['assert_2eh_64',['assert.h',['../assert_8h.html',1,'']]],
   ['assert_5funused_65',['assert_unused',['../assert_8h.html#a1bf507325593e1ed7b3acc75596bd525',1,'assert.h']]],
   ['assertf_66',['assertf',['../print_8h.html#a7bc6143638d489bb640260462bf07777',1,'print.h']]],

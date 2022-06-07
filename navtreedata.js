@@ -40,7 +40,7 @@ var NAVTREE =
       [ "Passes", "passes.html", null ]
     ] ],
     [ "Dialects", "usergroup1.html", [
-      [ "std", "std.html", null ],
+      [ "core", "core.html", null ],
       [ "mem", "mem.html", null ],
       [ "affine", "affine.html", null ]
     ] ],
@@ -87,20 +87,20 @@ var NAVTREEINDEX =
 "classthorin_1_1ArrayRef.html#a3661436e00adac2d18e3ca858701c209",
 "classthorin_1_1CFG.html#a8a7072452720f8df22ecb885d470168b",
 "classthorin_1_1Def.html#ad80387c2b8b00161b6285241cc1c64ed",
-"classthorin_1_1Global.html#ab1b95fb1bd35ad607dff8f98a97626fc",
-"classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cb",
-"classthorin_1_1Query.html#afde38b27de422e46f828b616d23779bb",
-"classthorin_1_1Tab.html#acd051c9a9f1158c665b9c654175d14d4",
-"classthorin_1_1World.html#a05c33b95924d589e2a0935ac45240225",
-"classthorin_1_1World.html#a8ecc67a47dd67845e8af75bf71ab752f",
-"classthorin_1_1ll_1_1CodeGen.html#a1474c73017044bf724604b5dccb1dc7e",
-"functions_func_d.html",
-"namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84",
-"namespacethorin.html#abfbc9a6d77679cea92739b6b8987cbc3",
-"namespacethorin_1_1std.html#a2d586f3cc9b104341679f2bffcc77adda9d3827a838a5eeb8061fd0380d582ede",
-"schedule_8h.html",
-"structthorin_1_1Fold_3_01Wrap_00_01Wrap_1_1add_00_01w_01_4.html",
-"tables_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb"
+"classthorin_1_1Global.html#ae0ada60b830db732bf52025822d7d09a",
+"classthorin_1_1LoopTree_1_1Base.html#a4fe978aebae974b1f6998fe8de617934",
+"classthorin_1_1RWPass.html#a316be5140752b8e78ea9858d18586333",
+"classthorin_1_1TailRecElim.html",
+"classthorin_1_1World.html#a08a506b85bbdd9e8fba24b93281bac12",
+"classthorin_1_1World.html#a93c924d00a53af313f88285c592d5ddf",
+"classthorin_1_1ll_1_1CodeGen.html#a65a72ebb16913424330a9155c2146964",
+"dir_6c8db7bdfb7c9bf22e283b466f914dda.html",
+"namespacemembers_d.html",
+"namespacethorin.html#a85d359a40aef5ef0148d3fc6880b8a00",
+"namespacethorin_1_1AddrSpace.html",
+"optimize_8h.html#a9e64c2e92ce1a1166c536644960116c2",
+"structthorin_1_1LRPrec.html",
+"tables_8h.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9aa0554b168cb784a1dda5015939699ae5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

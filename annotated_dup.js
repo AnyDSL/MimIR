@@ -87,7 +87,6 @@ var annotated_dup =
       [ "FoldConv< Conv::s2s, dw, sw >", "structthorin_1_1FoldConv_3_01Conv_1_1s2s_00_01dw_00_01sw_01_4.html", "structthorin_1_1FoldConv_3_01Conv_1_1s2s_00_01dw_00_01sw_01_4" ],
       [ "FoldConv< Conv::u2r, dw, sw >", "structthorin_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4.html", "structthorin_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4" ],
       [ "FoldConv< Conv::u2u, dw, sw >", "structthorin_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4.html", "structthorin_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4" ],
-      [ "Foo", "classthorin_1_1Foo.html", "classthorin_1_1Foo" ],
       [ "FPPass", "classthorin_1_1FPPass.html", "classthorin_1_1FPPass" ],
       [ "GIDEq", "structthorin_1_1GIDEq.html", "structthorin_1_1GIDEq" ],
       [ "GIDHash", "structthorin_1_1GIDHash.html", "structthorin_1_1GIDHash" ],

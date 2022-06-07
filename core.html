@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: The std Dialect</title>
+<title>Thorin: The core Dialect</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -82,7 +82,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('std.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('core.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -101,31 +101,32 @@ $(document).ready(function(){initNavTree('std.html',''); initResizable(); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">The std Dialect </div></div>
+  <div class="headertitle"><div class="title">The core Dialect </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md53">Types</a><ul><li class="level2"><a href="#autotoc_md54">%std.Int</a></li>
+<ul><li class="level1"><a href="#autotoc_md45">Types</a><ul><li class="level2"><a href="#autotoc_md46">%core.Int</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md55">Operations</a><ul><li class="level2"><a href="#autotoc_md56">%std.icmp</a></li>
-<li class="level2"><a href="#autotoc_md57">%std.bit2</a></li>
-<li class="level2"><a href="#autotoc_md58">%std.shr</a></li>
-<li class="level2"><a href="#autotoc_md59">%std.wrap</a></li>
+<li class="level1"><a href="#autotoc_md47">Operations</a><ul><li class="level2"><a href="#autotoc_md48">%core.icmp</a></li>
+<li class="level2"><a href="#autotoc_md49">%core.bit1</a></li>
+<li class="level2"><a href="#autotoc_md50">%core.bit2</a></li>
+<li class="level2"><a href="#autotoc_md51">%core.shr</a></li>
+<li class="level2"><a href="#autotoc_md52">%core.wrap</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_build_dialects_std"></a></p>
-<h1><a class="anchor" id="autotoc_md53"></a>
+<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_build_dialects_core"></a></p>
+<h1><a class="anchor" id="autotoc_md45"></a>
 Types</h1>
-<h2><a class="anchor" id="autotoc_md54"></a>
-%std.Int</h2>
-<div class="fragment"><div class="line">.ax %std.Int: .Nat -&gt; *;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md55"></a>
+<h2><a class="anchor" id="autotoc_md46"></a>
+%core.Int</h2>
+<div class="fragment"><div class="line">.ax %core.Int: .Nat -&gt; *;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md47"></a>
 Operations</h1>
-<h2><a class="anchor" id="autotoc_md56"></a>
-%std.icmp</h2>
+<h2><a class="anchor" id="autotoc_md48"></a>
+%core.icmp</h2>
 <p >Integer comparison is made of 5 disjoint relations:</p><ul>
 <li><code>X</code>: first operand plus, second minus</li>
 <li><code>Y</code>: first operand minus, second plus</li>
@@ -133,7 +134,7 @@ Operations</h1>
 <li><code>L</code>: less with same sign</li>
 <li><code>E</code>: equal</li>
 </ul>
-<p >Here is the complete picture for <code>std.icmp xygle x, y</code> for 3 wide integers:</p>
+<p >Here is the complete picture for <code>core.icmp xygle x, y</code> for 3 bit wide integers:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone"></th><th class="markdownTableHeadNone">x   </th><th class="markdownTableHeadNone"></th><th class="markdownTableHeadNone"></th><th class="markdownTableHeadNone"></th><th class="markdownTableHeadNone"></th><th class="markdownTableHeadNone">y   </th><th class="markdownTableHeadNone"></th><th class="markdownTableHeadNone"></th><th class="markdownTableHeadNone"></th><th class="markdownTableHeadNone"></th></tr>
@@ -163,7 +164,7 @@ Operations</h1>
 <p >And here is the overview of all possible combinations of relations. Note the aliases you can use for the common integer comparisions front-ends typically want to use:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Tag   </th><th class="markdownTableHeadNone">Aliases   </th><th class="markdownTableHeadNone">X   </th><th class="markdownTableHeadNone">Y   </th><th class="markdownTableHeadNone">G   </th><th class="markdownTableHeadNone">L   </th><th class="markdownTableHeadNone">E   </th><th class="markdownTableHeadNone">Meaning    </th></tr>
+<th class="markdownTableHeadNone">Subtag   </th><th class="markdownTableHeadNone">Aliases   </th><th class="markdownTableHeadNone">X   </th><th class="markdownTableHeadNone">Y   </th><th class="markdownTableHeadNone">G   </th><th class="markdownTableHeadNone">L   </th><th class="markdownTableHeadNone">E   </th><th class="markdownTableHeadNone">Meaning    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>xygle</code>   </td><td class="markdownTableBodyNone"><code>f</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">always false    </td></tr>
 <tr class="markdownTableRowEven">
@@ -229,61 +230,75 @@ Operations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>XYGLE</code>   </td><td class="markdownTableBodyNone"><code>t</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
 </table>
-<div class="fragment"><div class="line">.ax %std.icmp(xygle = f, xyglE, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,</div>
-<div class="line">              xYgle,     xYglE, xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,</div>
-<div class="line">              Xygle,     XyglE, XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,</div>
-<div class="line">              XYgle,     XYglE, XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):</div>
+<div class="fragment"><div class="line">.ax %core.icmp(xygle = f, xyglE, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,</div>
+<div class="line">               xYgle,     xYglE, xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,</div>
+<div class="line">               Xygle,     XyglE, XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,</div>
+<div class="line">               XYgle,     XYglE, XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):</div>
 <div class="line">    Π w: .Nat -&gt; [%Int w, %Int w] -&gt; .Bool , normalize_icmp;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md57"></a>
-%std.bit2</h2>
-<p >This binary bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators">16 possible operations</a> as summarized in the following table:</p>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md49"></a>
+%core.bit1</h2>
+<p >This <em>unary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Unary_operations">4 possible operations</a> as summarized in the following table:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
-<th class="markdownTableHeadNone">Tag   </th><th class="markdownTableHeadNone">Alias   </th><th class="markdownTableHeadNone">AB   </th><th class="markdownTableHeadNone">Ab   </th><th class="markdownTableHeadNone">aB   </th><th class="markdownTableHeadNone">ab   </th><th class="markdownTableHeadNone">Comment    </th></tr>
+<th class="markdownTableHeadNone">Subtag   </th><th class="markdownTableHeadNone">A   </th><th class="markdownTableHeadNone">a   </th><th class="markdownTableHeadNone">Comment    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">bbaa   </td><td class="markdownTableBodyNone">f   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">always false    </td></tr>
+<td class="markdownTableBodyNone">f   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">always false    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">bbaA   </td><td class="markdownTableBodyNone">nor   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone"></td></tr>
+<td class="markdownTableBodyNone">neg   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">negate    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">bbAa   </td><td class="markdownTableBodyNone">nciff   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">not converse implication    </td></tr>
+<td class="markdownTableBodyNone">id   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">identity    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">bbAA   </td><td class="markdownTableBodyNone">na   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">not first argument    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">bBaa   </td><td class="markdownTableBodyNone">niff   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">not implication    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">bBaA   </td><td class="markdownTableBodyNone">nb   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">not second argument    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">bBAa   </td><td class="markdownTableBodyNone">_xor   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">bBAA   </td><td class="markdownTableBodyNone">nand   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">Bbaa   </td><td class="markdownTableBodyNone">_and   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">BbaA   </td><td class="markdownTableBodyNone">nxor   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">BbAa   </td><td class="markdownTableBodyNone">b   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">second argument    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">BbAA   </td><td class="markdownTableBodyNone">iff   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">implication (if and only if)    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">BBaa   </td><td class="markdownTableBodyNone">a   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">first argment    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">BBaA   </td><td class="markdownTableBodyNone">ciff   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">converse implication    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">BBAa   </td><td class="markdownTableBodyNone">_or   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"></td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">BBAA   </td><td class="markdownTableBodyNone">t   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
+<td class="markdownTableBodyNone">t   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
 </table>
-<p >TODO rework tag: This doesn't make sense </p><div class="fragment"><div class="line">.ax %std.bit2(bbaa = f,     bbaA = nor,  bbAa = nciff,  bbAA = na,</div>
-<div class="line">              bBaa = niff,  bBaA = nb,   bBAa = _xor,   bBAA = nand,</div>
-<div class="line">              Bbaa = _and,  BbaA = nxor, BbAa = b,      BbAA = iff,</div>
-<div class="line">              BBaa = a,     BBaA = ciff, BBAa = _or,    BBAA = t):</div>
-<div class="line">    Π w: .Nat -&gt; [%Int w, %Int w] -&gt; .Bool , normalize_bit;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md58"></a>
-%std.shr</h2>
-<div class="fragment"><div class="line">.ax %std.shr(ashr, lshr): Π w: .Nat -&gt; [%Int w, %Int w] -&gt; %Int w, normalize_shr;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md59"></a>
-%std.wrap</h2>
-<div class="fragment"><div class="line">.ax %std.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -&gt; [%Int w, %Int w] -&gt; %Int w, normalize_wrap;</div>
+<div class="fragment"><div class="line">.ax %core.bit1(f, neg, id, t): Π w: .Nat -&gt; %Int w -&gt; .Bool , normalize_bit1;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md50"></a>
+%core.bit2</h2>
+<p >This <em>binary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators">16 possible operations</a> as summarized in the following table:</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Subtag   </th><th class="markdownTableHeadNone">AB   </th><th class="markdownTableHeadNone">Ab   </th><th class="markdownTableHeadNone">aB   </th><th class="markdownTableHeadNone">ab   </th><th class="markdownTableHeadNone">Comment    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">f   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">always false    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">nor   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">not or    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">nciff   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">not converse implication    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">na   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">not first argument    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">niff   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">not implication    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">nb   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">not second argument    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">_xor   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">exclusive or    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">nand   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">not and    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">_and   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">and    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">nxor   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">not exclusive or    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">b   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">second argument    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">iff   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">implication (if and only if)    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">a   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">first argment    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">ciff   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">converse implication    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">_or   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">t   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
+</table>
+<div class="fragment"><div class="line">.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,</div>
+<div class="line">                _and,  nxor,    b,      iff,    a,      ciff, _or,  t):</div>
+<div class="line">    Π w: .Nat -&gt; [%Int w, %Int w] -&gt; .Bool , normalize_bit2;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md51"></a>
+%core.shr</h2>
+<div class="fragment"><div class="line">.ax %core.shr(ashr, lshr): Π w: .Nat -&gt; [%Int w, %Int w] -&gt; %Int w, normalize_shr;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md52"></a>
+%core.wrap</h2>
+<div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -&gt; [%Int w, %Int w] -&gt; %Int w, normalize_wrap;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
