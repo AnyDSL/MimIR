@@ -1,16 +1,9 @@
 var searchData=
 [
-  ['u_0',['u',['../classthorin_1_1Tok.html#a45ea45a18052d23d65cdd4f533368ed1',1,'thorin::Tok']]],
-  ['undo_5fenter_1',['undo_enter',['../classthorin_1_1FPPass.html#a992db753a80b89fb6bcce0dc6154dd8b',1,'thorin::FPPass']]],
-  ['undo_5fvisit_2',['undo_visit',['../classthorin_1_1FPPass.html#ad68f7d1dcf6986dcf22b465b740f706e',1,'thorin::FPPass']]],
-  ['unflatten_3',['unflatten',['../namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f',1,'thorin::unflatten(const Def *def, const Def *type)'],['../namespacethorin.html#abe0176edb854a9982662e5bdfe0038a3',1,'thorin::unflatten(Defs ops, const Def *type)'],['../namespacethorin.html#a5c1d830f54f2759f11f77e5e0d8355f8',1,'thorin::unflatten(Defs defs, const Def *type, size_t &amp;j)']]],
-  ['unique_5fname_4',['unique_name',['../classthorin_1_1Def.html#a3ac75e1e0ee7e47c4c348a11f05bca8d',1,'thorin::Def']]],
-  ['unique_5fqueue_5',['unique_queue',['../classthorin_1_1unique__queue.html#a88c87fbc964625fc09245844a9e680d7',1,'thorin::unique_queue::unique_queue()=default'],['../classthorin_1_1unique__queue.html#a292a78863316276e6713cf2b5997dea6',1,'thorin::unique_queue::unique_queue(Set set)']]],
-  ['univ_6',['univ',['../classthorin_1_1World.html#af5dccad9055934bc02d775b1744441e1',1,'thorin::World']]],
-  ['unreachable_7',['unreachable',['../namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9',1,'thorin']]],
-  ['unset_8',['unset',['../classthorin_1_1Def.html#a2f616ff4efad73f2589e6161d6b4f10f',1,'thorin::Def::unset()'],['../classthorin_1_1Def.html#ad0ea206ded848435dadac1aa06483782',1,'thorin::Def::unset(size_t i)']]],
-  ['unset_5ftype_9',['unset_type',['../classthorin_1_1Def.html#acadf49a1136933dd351dd5780c5ee96f',1,'thorin::Def']]],
-  ['unwrap_10',['Unwrap',['../structthorin_1_1Unwrap.html#a8a507f4d854fa648ead0b731ee3f1f91',1,'thorin::Unwrap']]],
-  ['use_11',['Use',['../classthorin_1_1Use.html#a0d49bf17bfb4d916e5b655fcf1c1be95',1,'thorin::Use::Use()'],['../classthorin_1_1Use.html#ab04c9352606031636db45fe943262462',1,'thorin::Use::Use(const Def *def, size_t index)']]],
-  ['uses_12',['uses',['../classthorin_1_1Scheduler.html#a2de2f46e34c2d7061d4c967a8ba26791',1,'thorin::Scheduler::uses()'],['../classthorin_1_1Def.html#a8f66f1a1cfbfce39608ca318288866d4',1,'thorin::Def::uses()']]]
+  ['value_0',['value',['../classthorin_1_1Vel.html#a4206734bc2a95641bad59ac6bd0e5113',1,'thorin::Vel::value()'],['../classthorin_1_1Pick.html#ad1ab799d5781001c3dcd6b0f0cdbc1a2',1,'thorin::Pick::value()'],['../classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312',1,'thorin::Test::value()'],['../classthorin_1_1Insert.html#a665da72feeff8ecdc0d56e2d0b330ba9',1,'thorin::Insert::value()']]],
+  ['var_1',['var',['../classthorin_1_1Def.html#a18924dc54286147f46fe53e52a8b34ac',1,'thorin::Def::var(const Def *dbg={})'],['../classthorin_1_1Def.html#a1f647fe5b33b2159215fe5f13948445f',1,'thorin::Def::var(nat_t a, nat_t i, const Def *dbg={})'],['../classthorin_1_1Def.html#a00bb392cbbe33c24d15f8d97e29b0c4c',1,'thorin::Def::var(nat_t i, const Def *dbg={})'],['../classthorin_1_1World.html#a810c183757ff3fa8dfb4cb616b5c82b3',1,'thorin::World::var()']]],
+  ['vars_2',['vars',['../classthorin_1_1Def.html#a1ca2812efecd7b159192dde57ea987c4',1,'thorin::Def::vars(F f, Defs dbgs={})'],['../classthorin_1_1Def.html#a8dbfe2f896210936825d2db122b41e27',1,'thorin::Def::vars(Defs dbgs={})'],['../classthorin_1_1Def.html#aa73e8238c351ee23be5d74cdbb4b9d47',1,'thorin::Def::vars(nat_t a, F f, Defs dbgs={})'],['../classthorin_1_1Def.html#a59046f082f834cd74cab2a65be397f0e',1,'thorin::Def::vars(nat_t a, Defs dbgs={})']]],
+  ['vel_3',['vel',['../classthorin_1_1World.html#aa73afcb4099190ef420e3073b98600dc',1,'thorin::World']]],
+  ['visit_4',['visit',['../classthorin_1_1World.html#a35687817089d85315d46a391dd75e320',1,'thorin::World::visit()'],['../namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c',1,'thorin::visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)']]],
+  ['visit_5ffirst_5',['visit_first',['../namespacethorin.html#a02f88714441141b4cafcf80c5e49f554',1,'thorin']]]
 ];

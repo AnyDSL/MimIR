@@ -1,7 +1,16 @@
 var searchData=
 [
-  ['wdef_0',['wdef',['../classthorin_1_1World.html#aede1cabe21f6568907ff39c5240c5c48',1,'thorin::World']]],
-  ['width2mod_1',['width2mod',['../namespacethorin.html#a8e98aa9b8a5cb1f54a30eb334422b7a6',1,'thorin']]],
-  ['world_2',['World',['../classthorin_1_1World.html#a10d68710a145107da2a86a4650eb3eb6',1,'thorin::World::World(std::string_view name={})'],['../classthorin_1_1World.html#a659421567913fe78ea2d935b3dff769b',1,'thorin::World::World(World &amp;&amp;other)']]],
-  ['world_3',['world',['../classthorin_1_1CFA.html#a5b53423b0507b0954b360f5cc80df239',1,'thorin::CFA::world()'],['../classthorin_1_1DepTree.html#acd5dda7a5287787af5b7378a0fedd3ca',1,'thorin::DepTree::world()'],['../classthorin_1_1Scope.html#a4534823902d5d89abc4464e11bb5f31b',1,'thorin::Scope::world()'],['../classthorin_1_1Emitter.html#abebb4f4363dbe117de7e655f5876818d',1,'thorin::Emitter::world()'],['../classthorin_1_1Checker.html#a1f10a53ffc87e0cee5dd0007ff2edff6',1,'thorin::Checker::world()'],['../classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2',1,'thorin::Def::world()'],['../classthorin_1_1Lexer.html#aed7d9d0cd682bd7d98eef0019ed9a33e',1,'thorin::Lexer::world()'],['../classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf',1,'thorin::Parser::world()'],['../classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7',1,'thorin::Pass::world()'],['../classthorin_1_1PassMan.html#a845ba5d9f4f2e78fca3efd25f73fc454',1,'thorin::PassMan::world()'],['../classthorin_1_1Rewriter.html#a02e6136af63730146609ef84a373f890',1,'thorin::Rewriter::world()']]]
+  ['_7earraystorage_0',['~ArrayStorage',['../classthorin_1_1ArrayStorage.html#ac978ff3440e13c8907447ccc966bae94',1,'thorin::ArrayStorage::~ArrayStorage()'],['../structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#a79aae431450eb531e1403fa22de48a90',1,'thorin::ArrayStorage&lt; T, 0 &gt;::~ArrayStorage()']]],
+  ['_7ebase_1',['~Base',['../classthorin_1_1LoopTree_1_1Base.html#a4fe978aebae974b1f6998fe8de617934',1,'thorin::LoopTree::Base']]],
+  ['_7ebitset_2',['~BitSet',['../classthorin_1_1BitSet.html#a5891a4a749eae534bc71794dad82927e',1,'thorin::BitSet']]],
+  ['_7ecfa_3',['~CFA',['../classthorin_1_1CFA.html#aaeb54a501388340fc34ee73647127144',1,'thorin::CFA']]],
+  ['_7edef_4',['~Def',['../classthorin_1_1Def.html#a90ff289edea985bf55aa4b55c8f691e6',1,'thorin::Def']]],
+  ['_7edotemitter_5',['~DotEmitter',['../classthorin_1_1dot_1_1DotEmitter.html#ad616ea9c49b3215cec8e506653f4a454',1,'thorin::dot::DotEmitter']]],
+  ['_7eerrorhandler_6',['~ErrorHandler',['../classthorin_1_1ErrorHandler.html#ad7556ea8ffcd07c36a8386b146cf68ec',1,'thorin::ErrorHandler']]],
+  ['_7eipass_7',['~IPass',['../classthorin_1_1IPass.html#aaa9538a515e496cdb5245001e1fd1c43',1,'thorin::IPass']]],
+  ['_7elexer_8',['~Lexer',['../classthorin_1_1utf8_1_1Lexer.html#a6e287bb44b69d962efb2940be5738b7b',1,'thorin::utf8::Lexer']]],
+  ['_7elock_9',['~Lock',['../structthorin_1_1World_1_1Arena_1_1Lock.html#afa07a5bf3efdfaa263b3806aae4f93fe',1,'thorin::World::Arena::Lock']]],
+  ['_7epass_10',['~Pass',['../classthorin_1_1Pass.html#a1422445ab9812219a993c61c2c6842b1',1,'thorin::Pass']]],
+  ['_7escope_11',['~Scope',['../classthorin_1_1Scope.html#a4c8115844a60de40c7b8f949b4bb6434',1,'thorin::Scope']]],
+  ['_7eworld_12',['~World',['../classthorin_1_1World.html#a957e6e5bec2d46e8095f442bd027cd0b',1,'thorin::World']]]
 ];

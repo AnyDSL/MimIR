@@ -334,6 +334,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1LRPrec.html">LRPrec</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Match.html">Match</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Nat.html">Nat</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pack.html">Pack</a></td></tr>
@@ -362,8 +364,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1Pos.html">Pos</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Proxy.html">Proxy</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Query.html">Query</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RecStreamer.html">RecStreamer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -530,9 +530,6 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a1d07abb89c85326dcfaa5f0291a4c33c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </td></tr>
 <tr class="memitem:a1d07abb89c85326dcfaa5f0291a4c33c"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a> = typename <a class="el" href="namespacethorin.html#structthorin_1_1Tag2Def__">Tag2Def_</a>&lt; t &gt;::type</td></tr>
 <tr class="separator:a1d07abb89c85326dcfaa5f0291a4c33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1a3b3ba1590eb39f964ee2404e07ab2"><td class="memTemplParams" colspan="2">template&lt;class AxTag , class D &gt; </td></tr>
-<tr class="memitem:aa1a3b3ba1590eb39f964ee2404e07ab2"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aa1a3b3ba1590eb39f964ee2404e07ab2">Match</a> = <a class="el" href="classthorin_1_1Query.html">Query</a>&lt; AxTag, D &gt;</td></tr>
-<tr class="separator:aa1a3b3ba1590eb39f964ee2404e07ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3368507549c1c606d305c18939d17943"><td class="memTemplParams" colspan="2">template&lt;class Val &gt; </td></tr>
 <tr class="memitem:a3368507549c1c606d305c18939d17943"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a3368507549c1c606d305c18939d17943">SymMap</a> = absl::flat_hash_map&lt; <a class="el" href="classthorin_1_1Sym.html">Sym</a>, Val, <a class="el" href="structthorin_1_1SymHash.html">SymHash</a> &gt;</td></tr>
 <tr class="separator:a3368507549c1c606d305c18939d17943"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -864,18 +861,18 @@ Functions</h2></td></tr>
 <tr class="separator:a1e02df3b598c738a2864a076f4d9002c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ac399ee95f8f3bfb41b4fc13528f2f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1ac399ee95f8f3bfb41b4fc13528f2f0">is_memop</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="separator:a1ac399ee95f8f3bfb41b4fc13528f2f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48cda886c5913db30b05286c6f2abed3"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </td></tr>
-<tr class="memitem:a48cda886c5913db30b05286c6f2abed3"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a48cda886c5913db30b05286c6f2abed3">isa</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
-<tr class="separator:a48cda886c5913db30b05286c6f2abed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94a33c7f447c16d3dabee2b4ce6e9ca0"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </td></tr>
-<tr class="memitem:a94a33c7f447c16d3dabee2b4ce6e9ca0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a94a33c7f447c16d3dabee2b4ce6e9ca0">isa</a> (<a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt; tag, const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
-<tr class="separator:a94a33c7f447c16d3dabee2b4ce6e9ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a668f7b8adb8ba4f34d75ea5ae605c930"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </td></tr>
-<tr class="memitem:a668f7b8adb8ba4f34d75ea5ae605c930"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a668f7b8adb8ba4f34d75ea5ae605c930">as</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *d)</td></tr>
-<tr class="separator:a668f7b8adb8ba4f34d75ea5ae605c930"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ab8d710962bce89c7ea01e394c43dc6"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </td></tr>
-<tr class="memitem:a7ab8d710962bce89c7ea01e394c43dc6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a7ab8d710962bce89c7ea01e394c43dc6">as</a> (<a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt; f, const <a class="el" href="classthorin_1_1Def.html">Def</a> *d)</td></tr>
-<tr class="separator:a7ab8d710962bce89c7ea01e394c43dc6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57dfb1cbd8e3aced975ba276020a4c61"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </td></tr>
+<tr class="memitem:a57dfb1cbd8e3aced975ba276020a4c61"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a57dfb1cbd8e3aced975ba276020a4c61">isa</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:a57dfb1cbd8e3aced975ba276020a4c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a140dce6ed0b95d67cb652c739c6be1ec"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </td></tr>
+<tr class="memitem:a140dce6ed0b95d67cb652c739c6be1ec"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a140dce6ed0b95d67cb652c739c6be1ec">isa</a> (<a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt; tag, const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:a140dce6ed0b95d67cb652c739c6be1ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebc69de3550b550ff1283c2ad8527ac1"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </td></tr>
+<tr class="memitem:aebc69de3550b550ff1283c2ad8527ac1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aebc69de3550b550ff1283c2ad8527ac1">as</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *d)</td></tr>
+<tr class="separator:aebc69de3550b550ff1283c2ad8527ac1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a492304706f15fd7209393ad3241045c0"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </td></tr>
+<tr class="memitem:a492304706f15fd7209393ad3241045c0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a492304706f15fd7209393ad3241045c0">as</a> (<a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt; f, const <a class="el" href="classthorin_1_1Def.html">Def</a> *d)</td></tr>
+<tr class="separator:a492304706f15fd7209393ad3241045c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f906c3bc0a760e4d037bcc6597fd2bd"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a8f906c3bc0a760e4d037bcc6597fd2bd">isa_sized_type</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *type)</td></tr>
 <tr class="memdesc:a8f906c3bc0a760e4d037bcc6597fd2bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks whether <code>type</code> is an <a class="el" href="namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa326e6c6e907a407a9a6b99cb241f6763">Tag::Int</a> or a <a class="el" href="namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafab90c1fca5e786eedb46673bf6c7aba76">Tag::Real</a> and returns its mod or width, respectively.  <a href="namespacethorin.html#a8f906c3bc0a760e4d037bcc6597fd2bd">More...</a><br /></td></tr>
 <tr class="separator:a8f906c3bc0a760e4d037bcc6597fd2bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -884,10 +881,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a9b06ff5c2fceb4208a93b550fbc4ffd5"><td class="memItemLeft" align="right" valign="top">constexpr std::optional&lt; uint64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a9b06ff5c2fceb4208a93b550fbc4ffd5">mod2width</a> (uint64_t n)</td></tr>
 <tr class="separator:a9b06ff5c2fceb4208a93b550fbc4ffd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1dad9519878ee5b3a1a4ad717c1160f2"><td class="memTemplParams" colspan="2">template&lt;class AxTag &gt; </td></tr>
-<tr class="memitem:a1dad9519878ee5b3a1a4ad717c1160f2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#aa1a3b3ba1590eb39f964ee2404e07ab2">Match</a>&lt; AxTag, <a class="el" href="namespacethorin_1_1detail.html#aa9db23848d73489a61ce1028e246ba84">detail::Enum2Def</a>&lt; AxTag &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1dad9519878ee5b3a1a4ad717c1160f2">match</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="memitem:a1dad9519878ee5b3a1a4ad717c1160f2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; AxTag, <a class="el" href="namespacethorin_1_1detail.html#aa9db23848d73489a61ce1028e246ba84">detail::Enum2Def</a>&lt; AxTag &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1dad9519878ee5b3a1a4ad717c1160f2">match</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="separator:a1dad9519878ee5b3a1a4ad717c1160f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a194822dec2aa78eda851921ac76f9bf9"><td class="memTemplParams" colspan="2">template&lt;class AxTag &gt; </td></tr>
-<tr class="memitem:a194822dec2aa78eda851921ac76f9bf9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#aa1a3b3ba1590eb39f964ee2404e07ab2">Match</a>&lt; AxTag, <a class="el" href="namespacethorin_1_1detail.html#aa9db23848d73489a61ce1028e246ba84">detail::Enum2Def</a>&lt; AxTag &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a194822dec2aa78eda851921ac76f9bf9">match</a> (AxTag sub, const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="memitem:a194822dec2aa78eda851921ac76f9bf9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; AxTag, <a class="el" href="namespacethorin_1_1detail.html#aa9db23848d73489a61ce1028e246ba84">detail::Enum2Def</a>&lt; AxTag &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a194822dec2aa78eda851921ac76f9bf9">match</a> (AxTag sub, const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="separator:a194822dec2aa78eda851921ac76f9bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab569c2d6da9167b91cb5ce868a67e06c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab569c2d6da9167b91cb5ce868a67e06c">infer_type_level</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world, <a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> defs)</td></tr>
 <tr class="separator:ab569c2d6da9167b91cb5ce868a67e06c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2564,24 +2561,6 @@ template&lt;class To &gt; </div>
 
 </div>
 </div>
-<a id="aa1a3b3ba1590eb39f964ee2404e07ab2" name="aa1a3b3ba1590eb39f964ee2404e07ab2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1a3b3ba1590eb39f964ee2404e07ab2">&#9670;&nbsp;</a></span>Match</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class AxTag , class D &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="namespacethorin.html#aa1a3b3ba1590eb39f964ee2404e07ab2">thorin::Match</a> = typedef <a class="el" href="classthorin_1_1Query.html">Query</a>&lt;AxTag, D&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00150">150</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-</div>
-</div>
 <a id="a62e7b6eac5be14e5d20aafbf32e4ec8c" name="a62e7b6eac5be14e5d20aafbf32e4ec8c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a62e7b6eac5be14e5d20aafbf32e4ec8c">&#9670;&nbsp;</a></span>Meet</h2>
 
@@ -3642,8 +3621,8 @@ template&lt;int w&gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a668f7b8adb8ba4f34d75ea5ae605c930" name="a668f7b8adb8ba4f34d75ea5ae605c930"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a668f7b8adb8ba4f34d75ea5ae605c930">&#9670;&nbsp;</a></span>as() <span class="overload">[1/3]</span></h2>
+<a id="aebc69de3550b550ff1283c2ad8527ac1" name="aebc69de3550b550ff1283c2ad8527ac1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebc69de3550b550ff1283c2ad8527ac1">&#9670;&nbsp;</a></span>as() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3651,7 +3630,7 @@ template&lt;int w&gt; </div>
 template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt; thorin::as </td>
+          <td class="memname"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt; thorin::as </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
           <td class="paramname"><em>d</em></td><td>)</td>
@@ -3702,8 +3681,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a7ab8d710962bce89c7ea01e394c43dc6" name="a7ab8d710962bce89c7ea01e394c43dc6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ab8d710962bce89c7ea01e394c43dc6">&#9670;&nbsp;</a></span>as() <span class="overload">[3/3]</span></h2>
+<a id="a492304706f15fd7209393ad3241045c0" name="a492304706f15fd7209393ad3241045c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a492304706f15fd7209393ad3241045c0">&#9670;&nbsp;</a></span>as() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3711,7 +3690,7 @@ template&lt;class T &gt; </div>
 template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt; thorin::as </td>
+          <td class="memname"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt; thorin::as </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;&#160;</td>
           <td class="paramname"><em>f</em>, </td>
@@ -5626,8 +5605,8 @@ template&lt;&gt; </div>
 
 </div>
 </div>
-<a id="a48cda886c5913db30b05286c6f2abed3" name="a48cda886c5913db30b05286c6f2abed3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48cda886c5913db30b05286c6f2abed3">&#9670;&nbsp;</a></span>isa() <span class="overload">[1/3]</span></h2>
+<a id="a57dfb1cbd8e3aced975ba276020a4c61" name="a57dfb1cbd8e3aced975ba276020a4c61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57dfb1cbd8e3aced975ba276020a4c61">&#9670;&nbsp;</a></span>isa() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5635,7 +5614,7 @@ template&lt;&gt; </div>
 template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt; thorin::isa </td>
+          <td class="memname"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt; thorin::isa </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
           <td class="paramname"><em>def</em></td><td>)</td>
@@ -5684,8 +5663,8 @@ template&lt;class T &gt; </div>
 
 </div>
 </div>
-<a id="a94a33c7f447c16d3dabee2b4ce6e9ca0" name="a94a33c7f447c16d3dabee2b4ce6e9ca0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a94a33c7f447c16d3dabee2b4ce6e9ca0">&#9670;&nbsp;</a></span>isa() <span class="overload">[3/3]</span></h2>
+<a id="a140dce6ed0b95d67cb652c739c6be1ec" name="a140dce6ed0b95d67cb652c739c6be1ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a140dce6ed0b95d67cb652c739c6be1ec">&#9670;&nbsp;</a></span>isa() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -5693,7 +5672,7 @@ template&lt;class T &gt; </div>
 template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1Query.html">Query</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt; thorin::isa </td>
+          <td class="memname"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt; thorin::isa </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;&#160;</td>
           <td class="paramname"><em>tag</em>, </td>
@@ -6107,7 +6086,7 @@ template&lt;class T &gt; </div>
 template&lt;class AxTag &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacethorin.html#aa1a3b3ba1590eb39f964ee2404e07ab2">Match</a>&lt; AxTag, <a class="el" href="namespacethorin_1_1detail.html#aa9db23848d73489a61ce1028e246ba84">detail::Enum2Def</a>&lt; AxTag &gt; &gt; thorin::match </td>
+          <td class="memname"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; AxTag, <a class="el" href="namespacethorin_1_1detail.html#aa9db23848d73489a61ce1028e246ba84">detail::Enum2Def</a>&lt; AxTag &gt; &gt; thorin::match </td>
           <td>(</td>
           <td class="paramtype">AxTag&#160;</td>
           <td class="paramname"><em>sub</em>, </td>
@@ -6126,7 +6105,7 @@ template&lt;class AxTag &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00185">185</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00182">182</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00031">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="axiom_8cpp_source.html#l00101">thorin::Axiom::get()</a>, and <a class="el" href="namespacethorin.html#a65b28a70b601ee7898841af6af02d56fa8a68dc3e925eacf92633be230722a140">sub</a>.</p>
 
@@ -6141,7 +6120,7 @@ template&lt;class AxTag &gt; </div>
 template&lt;class AxTag &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacethorin.html#aa1a3b3ba1590eb39f964ee2404e07ab2">Match</a>&lt; AxTag, <a class="el" href="namespacethorin_1_1detail.html#aa9db23848d73489a61ce1028e246ba84">detail::Enum2Def</a>&lt; AxTag &gt; &gt; thorin::match </td>
+          <td class="memname"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; AxTag, <a class="el" href="namespacethorin_1_1detail.html#aa9db23848d73489a61ce1028e246ba84">detail::Enum2Def</a>&lt; AxTag &gt; &gt; thorin::match </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
           <td class="paramname"><em>def</em></td><td>)</td>
@@ -6150,7 +6129,7 @@ template&lt;class AxTag &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00177">177</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00174">174</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00031">thorin::RuntimeCast&lt; Base &gt;::as()</a>, and <a class="el" href="axiom_8cpp_source.html#l00101">thorin::Axiom::get()</a>.</p>
 

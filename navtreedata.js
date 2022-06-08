@@ -84,23 +84,23 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "affine.html",
-"classthorin_1_1ArrayRef.html#a3661436e00adac2d18e3ca858701c209",
-"classthorin_1_1CFG.html#a8a7072452720f8df22ecb885d470168b",
-"classthorin_1_1Def.html#ad80387c2b8b00161b6285241cc1c64ed",
-"classthorin_1_1Global.html#ae0ada60b830db732bf52025822d7d09a",
-"classthorin_1_1LoopTree_1_1Base.html#a4fe978aebae974b1f6998fe8de617934",
-"classthorin_1_1RWPass.html#a316be5140752b8e78ea9858d18586333",
+"classthorin_1_1ArrayRef.html#a3cb60f0546b9ae7f94eb755435b28141",
+"classthorin_1_1CFG.html#a961b890cac82269a9ea0e6575149e109",
+"classthorin_1_1Def.html#adcfcbebeb558a91e5e3a3e8c933e482b",
+"classthorin_1_1IPass.html",
+"classthorin_1_1LoopTree_1_1Base.html#a598e322ef660ed5e6d4cca6979bada43",
+"classthorin_1_1RWPass.html#aa1b92447f41f06b88e03f68bde2bdd44",
 "classthorin_1_1TailRecElim.html",
 "classthorin_1_1World.html#a08a506b85bbdd9e8fba24b93281bac12",
 "classthorin_1_1World.html#a93c924d00a53af313f88285c592d5ddf",
 "classthorin_1_1ll_1_1CodeGen.html#a65a72ebb16913424330a9155c2146964",
-"dir_6c8db7bdfb7c9bf22e283b466f914dda.html",
-"namespacemembers_d.html",
-"namespacethorin.html#a85d359a40aef5ef0148d3fc6880b8a00",
-"namespacethorin_1_1AddrSpace.html",
-"optimize_8h.html#a9e64c2e92ce1a1166c536644960116c2",
-"structthorin_1_1LRPrec.html",
-"tables_8h.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9aa0554b168cb784a1dda5015939699ae5"
+"dir_91cc3e6bd7c42aaa24383bdfa6f52de6.html",
+"namespacemembers_eval.html",
+"namespacethorin.html#a86accd63c7f340ac15fcfb923f9ff462",
+"namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719",
+"parser_8cpp.html#ad5c7ca0181fea7823b37d06d5f61e9cd",
+"structthorin_1_1LRPrec.html#a87ee8b22d48e8dc95f22b8c2c0a880d4",
+"tables_8h.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9ad4f917633649a3c47c7ab917fa990146"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

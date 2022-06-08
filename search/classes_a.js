@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nat_0',['Nat',['../classthorin_1_1Nat.html',1,'thorin']]]
+  ['match_0',['Match',['../classthorin_1_1Match.html',1,'thorin']]]
 ];
