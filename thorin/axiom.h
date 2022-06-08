@@ -64,12 +64,12 @@ public:
 };
 
 template<class T, class D>
-class Query {
+class Match {
 public:
-    Query()
+    Match()
         : axiom_(nullptr)
         , def_(nullptr) {}
-    Query(const Axiom* axiom, const D* def)
+    Match(const Axiom* axiom, const D* def)
         : axiom_(axiom)
         , def_(def) {}
 
@@ -102,26 +102,26 @@ template<tag_t t>
 using Tag2Def = typename Tag2Def_<t>::type;
 
 template<tag_t t>
-Query<Tag2Enum<t>, Tag2Def<t>> isa(const Def* def) {
+Match<Tag2Enum<t>, Tag2Def<t>> isa(const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
     if (axiom && axiom->tag() == t && curry == 0) return {axiom, def->as<Tag2Def<t>>()};
     return {};
 }
 
 template<tag_t t>
-Query<Tag2Enum<t>, Tag2Def<t>> isa(Tag2Enum<t> tag, const Def* def) {
+Match<Tag2Enum<t>, Tag2Def<t>> isa(Tag2Enum<t> tag, const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
     if (axiom && axiom->tag() == t && axiom->tag() == tag_t(tag) && curry == 0) return {axiom, def->as<Tag2Def<t>>()};
     return {};
 }
 
 template<tag_t t>
-Query<Tag2Enum<t>, Tag2Def<t>> as(const Def* d) {
+Match<Tag2Enum<t>, Tag2Def<t>> as(const Def* d) {
     assert(isa<t>(d));
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
 template<tag_t t>
-Query<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
+Match<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
     assert((isa<t>(f, d)));
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
@@ -145,9 +145,6 @@ constexpr std::optional<uint64_t> mod2width(uint64_t n) {
 }
 
 bool is_memop(const Def* def);
-
-template<class AxTag, class D>
-using Match = Query<AxTag, D>;
 
 template<class AxTag>
 concept axiom_has_sub_tags = requires(AxTag t) {
