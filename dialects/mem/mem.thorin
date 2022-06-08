@@ -69,4 +69,4 @@
 ///
 /// ## Misc, shouldn't be here..
 /// 
-.ax %mem.Div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, %Int w, %Int w] -> [%mem.M, %Int w];
+.ax %mem.Div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, %Int w, %Int w] -> [%mem.M, %Int w], normalize_div;

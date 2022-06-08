@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iomanip>
 #include <limits>
+#include <ranges>
 
 #include "thorin/analyses/cfg.h"
 #include "thorin/be/emitter.h"
@@ -162,7 +163,7 @@ std::string CodeGen::convert(const Def* type) {
         print(s, "{} (", convert(pi->doms().back()->as<Pi>()->dom()));
 
         std::string_view sep = "";
-        auto doms              = pi->doms();
+        auto doms            = pi->doms();
         for (auto dom : doms.skip_back()) {
             if (match<mem::M>(dom)) continue;
             s << sep << convert(dom);
@@ -305,7 +306,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
             case 1: return bb.tail("ret {} {}", convert(types[0]), values[0]);
             default: {
                 std::string prev = "undef";
-                auto type          = convert(world().sigma(types));
+                auto type        = convert(world().sigma(types));
                 for (size_t i = 0, n = values.size(); i != n; ++i) {
                     auto elem   = values[i];
                     auto elem_t = convert(types[i]);
@@ -406,7 +407,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         }
 
         std::string prev = "undef";
-        auto t             = convert(tuple->type());
+        auto t           = convert(tuple->type());
         for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
             auto e = tuple->proj(n, i);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
@@ -447,8 +448,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
             switch (as_lit<nat_t>(real->arg())) {
                 case 16:
-                    s << "0xH" << std::setfill('0') << std::setw(4) << std::right << std::hex
-                      << lit->get<u16>();
+                    s << "0xH" << std::setfill('0') << std::setw(4) << std::right << std::hex << lit->get<u16>();
                     return s.str();
                 case 32: {
                     hex = std::bit_cast<u64>(r64(lit->get<r32>()));
@@ -558,18 +558,18 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         if (mode & WMode::nsw) op += " nsw";
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto div = isa<Tag::Div>(def)) {
+    } else if (auto div = match<mem::Div>(def)) {
         auto [m, x, y] = div->args<3>();
         auto t         = convert(x->type());
         emit_unsafe(m);
         auto a = emit(x);
         auto b = emit(y);
 
-        switch (div.sub()) {
-            case Div::sdiv: op = "sdiv"; break;
-            case Div::udiv: op = "udiv"; break;
-            case Div::srem: op = "srem"; break;
-            case Div::urem: op = "urem"; break;
+        switch (div.flags()) {
+            case mem::Div::sdiv: op = "sdiv"; break;
+            case mem::Div::udiv: op = "udiv"; break;
+            case mem::Div::srem: op = "srem"; break;
+            case mem::Div::urem: op = "urem"; break;
             default: unreachable();
         }
 
@@ -782,9 +782,12 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto tuple  = extract->tuple();
         auto index  = extract->index();
         auto ll_tup = emit_unsafe(tuple);
-        auto ll_idx = emit_unsafe(index);
 
+        // this exact location is important: after emitting the tuple -> ordering of mem ops
+        // before emitting the index, as it might be a weird value for mem vars.
         if (match<mem::M>(extract->type())) return {};
+
+        auto ll_idx = emit_unsafe(index);
 
         if (tuple->num_projs() == 2) {
             if (match<mem::M>(tuple->proj(2, 0_s)->type())) return ll_tup;

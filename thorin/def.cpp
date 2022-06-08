@@ -400,7 +400,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
  * Global
  */
 
-const App* Global::type() const { return thorin::as<Tag::Ptr>(Def::type()); }
+const App* Global::type() const { return Def::type()->as<App>(); }
 const Def* Global::alloced_type() const { return type()->arg(0); }
 
 /*
