@@ -10,7 +10,7 @@ class EtaExp;
 
 namespace mem {
 
-/// SSA construction algorithm that promotes Tag::Slot%s, Tag::Load%s, and Tag::Store%s to SSA values.
+/// SSA construction algorithm that promotes slot%s, load%s, and store%s to SSA values.
 /// This is loosely based upon:
 /// "Simple and Efficient Construction of Static Single Assignment Form"
 /// by Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau.
