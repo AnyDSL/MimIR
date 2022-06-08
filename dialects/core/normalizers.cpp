@@ -250,7 +250,7 @@ const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg, const D
 }
 
 template<bit2 sub>
-const Def* normalize_bit(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();

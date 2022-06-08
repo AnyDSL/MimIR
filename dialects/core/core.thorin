@@ -19,7 +19,7 @@
 ///     * `L`: less with same sign
 ///     * `E`: equal
 ///
-/// Here is the complete picture for `%core.icmp.xygle x, y` for 3 wide integers:
+/// Here is the complete picture for `%core.icmp.xygle x, y` for 3 bit wide integers:
 ///
 /// |        | x        |        |       |       |       | y     |       |       |       |       |
 /// |--------|----------|--------|-------|-------|-------|-------|-------|-------|-------|-------|
@@ -38,7 +38,7 @@
 /// And here is the overview of all possible combinations of relations.
 /// Note the aliases you can use for the common integer comparisions front-ends typically want to use:
 ///
-/// | Tag     | Aliases | X | Y | G | L | E | Meaning                                         |
+/// | Subtag  | Aliases | X | Y | G | L | E | Meaning                                         |
 /// |---------|---------| --|---|---|---|---|-------------------------------------------------|
 /// | `xygle` |  `f`    | o | o | o | o | o | always false                                    |
 /// | `xyglE` |  `e`    | o | o | o | o | x | equal                                           |
@@ -78,35 +78,43 @@
                XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
     Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_icmp;
 ///
+/// ### %core.bit1
+///
+/// This *unary* bitwise operations offers all [4 possible operations](https://en.wikipedia.org/wiki/Truth_table#Unary_operations) as summarized in the following table:
+///
+/// | Subtag | A | a | Comment                      |
+/// |--------|---|---|------------------------------|
+/// | f      | o | o | always false                 |
+/// | neg    | o | x | negate                       |
+/// | id     | x | o | identity                     |
+/// | t      | x | x | always true                  |
+.ax %core.bit1(f, neg, id, t): Π w: .Nat -> %Int w -> %Int w;
+///
 /// ### %core.bit2
 ///
-/// This binary bitwise operations offers all [16 possible operations](https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators) as summarized in the following table:
+/// This *binary* bitwise operations offers all [16 possible operations](https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators) as summarized in the following table:
 ///
-/// | Tag  | Alias  | AB | Ab | aB | ab | Comment                      |
-/// |------|--------|----|----|----|----|------------------------------|
-/// | bbaa | f      |  o |  o |  o |  o | always false                 |
-/// | bbaA | nor    |  o |  o |  o |  x |                              |
-/// | bbAa | nciff  |  o |  o |  x |  o | not converse implication     |
-/// | bbAA | na     |  o |  o |  x |  x | not first argument           |
-/// | bBaa | niff   |  o |  x |  o |  o | not implication              |
-/// | bBaA | nb     |  o |  x |  o |  x | not second argument          |
-/// | bBAa | _xor   |  o |  x |  x |  o |                              |
-/// | bBAA | nand   |  o |  x |  x |  x |                              |
-/// | Bbaa | _and   |  x |  o |  o |  o |                              |
-/// | BbaA | nxor   |  x |  o |  o |  x |                              |
-/// | BbAa | b      |  x |  o |  x |  o | second argument              |
-/// | BbAA | iff    |  x |  o |  x |  x | implication (if and only if) |
-/// | BBaa | a      |  x |  x |  o |  o | first argment                |
-/// | BBaA | ciff   |  x |  x |  o |  x | converse implication         |
-/// | BBAa | _or    |  x |  x |  x |  o |                              |
-/// | BBAA | t      |  x |  x |  x |  x | always true                  |
-///
-/// TODO rework tag: This doesn't make sense
-.ax %core.bit2(bbaa = f,     bbaA = nor,  bbAa = nciff,  bbAA = na,
-               bBaa = niff,  bBaA = nb,   bBAa = _xor,   bBAA = nand,
-               Bbaa = _and,  BbaA = nxor, BbAa = b,      BbAA = iff,
-               BBaa = a,     BBaA = ciff, BBAa = _or,    BBAA = t):
-    Π w: .Nat -> [%Int w, %Int w] -> %Int w , normalize_bit;
+/// | Subtag | AB | Ab | aB | ab | Comment                      |
+/// |--------|----|----|----|----|------------------------------|
+/// | f      |  o |  o |  o |  o | always false                 |
+/// | nor    |  o |  o |  o |  x | not or                       |
+/// | nciff  |  o |  o |  x |  o | not converse implication     |
+/// | na     |  o |  o |  x |  x | not first argument           |
+/// | niff   |  o |  x |  o |  o | not implication              |
+/// | nb     |  o |  x |  o |  x | not second argument          |
+/// | _xor   |  o |  x |  x |  o | exclusive or                 |
+/// | nand   |  o |  x |  x |  x | not and                      |
+/// | _and   |  x |  o |  o |  o | and                          |
+/// | nxor   |  x |  o |  o |  x | not exclusive or             |
+/// | b      |  x |  o |  x |  o | second argument              |
+/// | iff    |  x |  o |  x |  x | implication (if and only if) |
+/// | a      |  x |  x |  o |  o | first argment                |
+/// | ciff   |  x |  x |  o |  x | converse implication         |
+/// | _or    |  x |  x |  x |  o | or                           |
+/// | t      |  x |  x |  x |  x | always true                  |
+.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
+                _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
+    Π w: .Nat -> [%Int w, %Int w] -> %Int w , normalize_bit2;
 ///
 /// ### %core.shr
 ///

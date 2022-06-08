@@ -64,19 +64,47 @@ public:
     friend class World;
 };
 
+template<class AxTag>
+concept axiom_with_sub_tags = requires(AxTag t) {
+    AxTag::base_;
+};
+
+template<class AxTag>
+concept axiom_without_sub_tags = requires(AxTag t) {
+    AxTag::id_;
+};
+
+template<class AxTag>
+concept axiom_from_dialect = axiom_with_sub_tags<AxTag> || axiom_without_sub_tags<AxTag>;
+
+
+template<class AxTag>
+concept axiom_from_thorin = !axiom_from_dialect<AxTag>;
+
 template<class T, class D>
-class Query {
+class Match {
 public:
-    Query()
+    Match()
         : axiom_(nullptr)
         , def_(nullptr) {}
-    Query(const Axiom* axiom, const D* def)
+    Match(const Axiom* axiom, const D* def)
         : axiom_(axiom)
         , def_(def) {}
 
     const Axiom* axiom() const { return axiom_; }
     tag_t tag() const { return axiom()->tag(); }
-    T sub() const { return T(axiom()->sub()); }
+    auto sub() const {
+        if constexpr (axiom_from_dialect<T>)
+            return axiom()->sub();
+        else
+            return T(axiom()->sub());
+    }
+    auto flags() const {
+        if constexpr (axiom_from_dialect<T>)
+            return T(axiom()->flags());
+        else
+            return axiom()->flags();
+    }
     void clear() {
         axiom_ = nullptr;
         def_   = nullptr;
@@ -103,7 +131,7 @@ template<tag_t t>
 using Tag2Def = typename Tag2Def_<t>::type;
 
 template<tag_t t>
-Query<Tag2Enum<t>, Tag2Def<t>> isa(const Def* def) {
+Match<Tag2Enum<t>, Tag2Def<t>> isa(const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
     if (axiom && axiom->dialect() == Axiom::Global_Dialect && axiom->tag() == t && curry == 0)
         return {axiom, def->as<Tag2Def<t>>()};
@@ -111,7 +139,7 @@ Query<Tag2Enum<t>, Tag2Def<t>> isa(const Def* def) {
 }
 
 template<tag_t t>
-Query<Tag2Enum<t>, Tag2Def<t>> isa(Tag2Enum<t> tag, const Def* def) {
+Match<Tag2Enum<t>, Tag2Def<t>> isa(Tag2Enum<t> tag, const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
     if (axiom && axiom->dialect() == Axiom::Global_Dialect && axiom->tag() == t && axiom->tag() == tag_t(tag) &&
         curry == 0)
@@ -120,12 +148,12 @@ Query<Tag2Enum<t>, Tag2Def<t>> isa(Tag2Enum<t> tag, const Def* def) {
 }
 
 template<tag_t t>
-Query<Tag2Enum<t>, Tag2Def<t>> as(const Def* d) {
+Match<Tag2Enum<t>, Tag2Def<t>> as(const Def* d) {
     assert(isa<t>(d));
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
 template<tag_t t>
-Query<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
+Match<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
     assert((isa<t>(f, d)));
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
@@ -148,56 +176,22 @@ constexpr std::optional<uint64_t> mod2width(uint64_t n) {
     return {};
 }
 
-template<class T, class D>
-class Match {
-public:
-    Match()
-        : axiom_(nullptr)
-        , def_(nullptr) {}
-    Match(const Axiom* axiom, const D* def)
-        : axiom_(axiom)
-        , def_(def) {}
-
-    const Axiom* axiom() const { return axiom_; }
-    tag_t tag() const { return axiom()->tag(); }
-    sub_t sub() const { return axiom()->sub(); }
-    T flags() const { return T(axiom()->flags()); }
-    void clear() {
-        axiom_ = nullptr;
-        def_   = nullptr;
-    }
-
-    const D* operator->() const { return def_; }
-    operator const D*() const { return def_; }
-    explicit operator bool() { return axiom_ != nullptr; }
-
-private:
-    const Axiom* axiom_;
-    const D* def_;
+namespace detail {
+template<class AxTag>
+struct Enum2DefImpl {
+    using type = App;
 };
-
 
 template<class AxTag>
-concept axiom_has_sub_tags = requires(AxTag t) {
-    AxTag::id_;
-};
+using Enum2Def = typename Enum2DefImpl<AxTag>::type;
 
-namespace detail {
-    template<class AxTag>
-    struct Enum2DefImpl {
-        using type = App;
-    };
-
-    template<class AxTag>
-    using Enum2Def = typename Enum2DefImpl<AxTag>::type;
-
-    template<class AxTag>
-    constexpr AxTag base_value() {
-        if constexpr (axiom_has_sub_tags<AxTag>)
-            return AxTag::id_;
-        else
-            return AxTag::base_;
-    }
+template<class AxTag>
+constexpr AxTag base_value() {
+    if constexpr (axiom_with_sub_tags<AxTag>)
+        return AxTag::base_;
+    else
+        return AxTag::id_;
+}
 
 } // namespace detail
 
