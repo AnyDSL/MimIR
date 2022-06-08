@@ -11,6 +11,7 @@
 
 #include "thorin/be/dot/dot.h"
 #include "thorin/fe/parser.h"
+#include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
 #include "thorin/util/sys.h"
@@ -130,10 +131,7 @@ int main(int argc, char** argv) {
         PipelineBuilder builder;
         for (const auto& dialect : dialects) { dialect.register_passes(builder); }
 
-        auto opt = builder.opt_phase(world);
-        opt->run();
-        auto codegen_prep = builder.codegen_prep_phase(world);
-        codegen_prep->run();
+        optimize(world, builder);
 
         if (emit_thorin) world.dump();
 
