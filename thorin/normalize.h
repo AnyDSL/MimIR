@@ -18,8 +18,6 @@ template<Shr>
 const Def* normalize_Shr(const Def*, const Def*, const Def*, const Def*);
 template<Wrap>
 const Def* normalize_Wrap(const Def*, const Def*, const Def*, const Def*);
-template<Div>
-const Def* normalize_Div(const Def*, const Def*, const Def*, const Def*);
 template<ROp>
 const Def* normalize_ROp(const Def*, const Def*, const Def*, const Def*);
 template<ICmp>

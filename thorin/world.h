@@ -364,7 +364,6 @@ public:
     const Axiom* ax(Acc   o)  const { return data_.Acc_  [size_t(o)]; }
     const Axiom* ax(Bit   o)  const { return data_.Bit_  [size_t(o)]; }
     const Axiom* ax(Conv  o)  const { return data_.Conv_ [size_t(o)]; }
-    const Axiom* ax(Div   o)  const { return data_.Div_  [size_t(o)]; }
     const Axiom* ax(ICmp  o)  const { return data_.ICmp_ [size_t(o)]; }
     const Axiom* ax(PE    o)  const { return data_.PE_   [size_t(o)]; }
     const Axiom* ax(RCmp  o)  const { return data_.RCmp_ [size_t(o)]; }
@@ -384,7 +383,6 @@ public:
     const Def* fn(Conv o, const Def* dst_w, const Def* src_w, const Def* dbg = {}) {
         return app(ax(o), {dst_w, src_w}, dbg);
     }
-    const Def* fn(Div o, const Def* mod, const Def* dbg = {}) { return app(ax(o), mod, dbg); }
     const Def* fn(ICmp o, const Def* mod, const Def* dbg = {}) { return app(ax(o), mod, dbg); }
     const Def* fn(RCmp o, const Def* rmode, const Def* width, const Def* dbg = {}) {
         return app(ax(o), {rmode, width}, dbg);
@@ -414,9 +412,6 @@ public:
     /// @name op - these guys build the final function application for the various operations
     ///@{
     const Def* op(Bit o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, infer(a)), {a, b}, dbg); }
-    const Def* op(Div o, const Def* mem, const Def* a, const Def* b, const Def* dbg = {}) {
-        return app(fn(o, infer(a)), {mem, a, b}, dbg);
-    }
     const Def* op(ICmp o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, infer(a)), {a, b}, dbg); }
     const Def* op(RCmp o, const Def* rmode, const Def* a, const Def* b, const Def* dbg = {}) {
         return app(fn(o, rmode, infer(a)), {a, b}, dbg);
@@ -709,7 +704,6 @@ private:
         std::array<const Axiom*, Num<Bit  >> Bit_;
         std::array<const Axiom*, Num<Shr  >> Shr_;
         std::array<const Axiom*, Num<Wrap >> Wrap_;
-        std::array<const Axiom*, Num<Div  >> Div_;
         std::array<const Axiom*, Num<ROp  >> ROp_;
         std::array<const Axiom*, Num<ICmp >> ICmp_;
         std::array<const Axiom*, Num<RCmp >> RCmp_;

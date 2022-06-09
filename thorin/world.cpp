@@ -83,13 +83,6 @@ World::World(std::string_view name)
         ty->set_codom(pi({int_w, int_w}, int_w));
         THORIN_WRAP(CODE)
     }
-    // todo: move to some dialect..
-    // { // Div: w: nat -> [mem, int w, int w] -> [mem, int w]
-    //     auto ty    = nom_pi(type())->set_dom(nat);
-    //     auto int_w = type_int(ty->var(dbg("w")));
-    //     ty->set_codom(pi({mem, int_w, int_w}, sigma({mem, int_w})));
-    //     THORIN_DIV(CODE)
-    // }
     { // ROp: [m: nat, w: nat] -> [real w, real w] -> real w
         auto ty     = nom_pi(type())->set_dom({nat, nat});
         auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
@@ -206,7 +199,7 @@ World World::stub() {
     World w(name());
     w.ostream_ = ostream_;
     w.state_   = state_;
-    
+
     // bring dialects' axioms into new world.
     Rewriter rewriter{w};
     for (const auto& ax : data_.axioms_) rewriter.rewrite(ax.second);
