@@ -13,12 +13,14 @@ function(add_thorin_dialect)
         ${UNPARSED}         # arguments of the function to parse, here we take the all original ones
     )
 
+    list(TRANSFORM PARSED_DEPENDS       PREPEND ${CMAKE_CURRENT_BINARY_DIR}/../lib/thorin/ OUTPUT_VARIABLE DEPENDS_THORIN_FILES)
+    list(TRANSFORM DEPENDS_THORIN_FILES  APPEND .thorin)
+
     set(THORIN_FILE     ${CMAKE_CURRENT_SOURCE_DIR}/${DIALECT}/${DIALECT}.thorin)
     set(THORIN_FILE_BIN ${CMAKE_CURRENT_BINARY_DIR}/../lib/thorin/${DIALECT}.thorin)
     set(DIALECT_H       ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}.h)
     set(DIALECT_MD      ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}.md)
 
-    list(LENGTH THORIN_DIALECT_LIST NUM_DIALECTS)
     list(APPEND THORIN_DIALECT_LIST "${DIALECT}")
     string(APPEND THORIN_DIALECT_LAYOUT "<tab type=\"user\" url=\"@ref ${DIALECT}\" title=\"${DIALECT}\"/>")
 
@@ -32,33 +34,19 @@ function(add_thorin_dialect)
         DEPENDS ${THORIN_FILE}
     )
 
-    # establish dependency tree - all dialects can depend on all other dialects via .import
-    if(NUM_DIALECTS GREATER 0)
-        add_custom_command(OUTPUT copy_dialects APPEND
-            DEPENDS ${THORIN_FILE_BIN}
-        )
-    else()
-        add_custom_command(OUTPUT copy_dialects
-            DEPENDS ${THORIN_FILE_BIN}
-        )
-        set_source_files_properties(copy_dialects PROPERTIES SYMBOLIC TRUE)
-    endif()
-    
     add_custom_command(
         OUTPUT ${DIALECT_MD} ${DIALECT_H}
         COMMAND thorin -e md -e h ${THORIN_FILE_BIN} -D ${CMAKE_CURRENT_BINARY_DIR}/../lib/thorin/
-        DEPENDS thorin copy_dialects
+        DEPENDS thorin ${DEPENDS_THORIN_FILES}
         COMMENT "Bootstrapping Thorin dialect '${DIALECT}' from '${THORIN_FILE}'"
     )
     add_custom_target(${DIALECT} ALL DEPENDS ${DIALECT_MD} ${DIALECT_H})
 
-    list(TRANSFORM PARSED_DEPENDS PREPEND ${CMAKE_CURRENT_BINARY_DIR}/)
-    list(TRANSFORM PARSED_DEPENDS  APPEND .h)
     add_library(thorin_${DIALECT} 
         MODULE 
-            ${PARSED_SOURCES}   # original sources passed to add_thorin_dialect
-            ${DIALECT_H}        # the generated header of this dialect
-            ${PARSED_DEPENDS}   # the generated headers of the dialects we depend on
+            ${PARSED_SOURCES}       # original sources passed to add_thorin_dialect
+            ${DIALECT_H}            # the generated header of this dialect
+            ${DEPENDS_THORIN_FILES} # the generated headers of the dialects we depend on
     )
 
     set_target_properties(thorin_${DIALECT}
