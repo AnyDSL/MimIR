@@ -37,7 +37,7 @@ function(add_thorin_dialect)
     add_custom_command(
         OUTPUT ${DIALECT_MD} ${DIALECT_H}
         COMMAND thorin -e md -e h ${THORIN_FILE_BIN} -D ${CMAKE_CURRENT_BINARY_DIR}/../lib/thorin/
-        DEPENDS thorin ${DEPENDS_THORIN_FILES}
+        DEPENDS thorin ${THORIN_FILE_BIN} ${DEPENDS_THORIN_FILES}
         COMMENT "Bootstrapping Thorin dialect '${DIALECT}' from '${THORIN_FILE}'"
     )
     add_custom_target(${DIALECT} ALL DEPENDS ${DIALECT_MD} ${DIALECT_H})
