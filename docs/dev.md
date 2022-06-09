@@ -30,8 +30,9 @@ Here is a small example that first constructs a `main` function and simply retur
     mem_d.register_passes(builder);
     optimize(w, builder);
 
+    auto core_d = Dialect::load("core", {});
     Backends backends;
-    mem_d.register_backends(backends);
+    core_d.register_backends(backends);
 
     std::ofstream file("test.ll");
     Stream s(file);

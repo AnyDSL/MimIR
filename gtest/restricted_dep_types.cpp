@@ -261,7 +261,8 @@ TEST(RestrictedDependentTypes, ll) {
     mem_d.register_passes(builder);
     optimize(w, builder);
 
+    auto core_d = Dialect::load("core", {});
     Backends backends;
-    mem_d.register_backends(backends);
+    core_d.register_backends(backends);
     backends["ll"](w, std::cout);
 }
