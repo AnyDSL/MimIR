@@ -52,7 +52,7 @@ function(add_thorin_dialect)
     )
     add_custom_target(${DIALECT} ALL DEPENDS ${DIALECT_MD} ${DIALECT_H})
 
-    add_library(thorin_${DIALECT} MODULE ${PARSED_SOURCES})
+    add_library(thorin_${DIALECT} MODULE ${PARSED_SOURCES} ${DIALECT_H})
     set_target_properties(thorin_${DIALECT}
         PROPERTIES 
             CXX_VISIBILITY_PRESET hidden
