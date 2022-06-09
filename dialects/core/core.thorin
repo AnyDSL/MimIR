@@ -2,6 +2,10 @@
 ///
 /// [TOC]
 ///
+/// ## Dependencies
+///
+.import mem;
+///
 /// ## Types
 ///
 /// ### %core.Int
@@ -19,7 +23,7 @@
 ///     * `L`: less with same sign
 ///     * `E`: equal
 ///
-/// Here is the complete picture for `%core.icmp xygle x, y` for 3 bit wide integers:
+/// Here is the complete picture for `%core.icmp.xygle x, y` for 3 bit wide integers:
 ///
 /// |        | x        |        |       |       |       | y     |       |       |       |       |
 /// |--------|----------|--------|-------|-------|-------|-------|-------|-------|-------|-------|
@@ -72,10 +76,10 @@
 /// | `XYGlE` |         | x | x | x | o | x | signed or unsigned greater or equal == not less |
 /// | `XYGLe` |  `ne`   | x | x | x | x | o | not equal                                       |
 /// | `XYGLE` |  `t`    | x | x | x | x | x | always true                                     |
-.ax %core.icmp(xygle = f, xyglE, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,
-               xYgle,     xYglE, xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
-               Xygle,     XyglE, XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
-               XYgle,     XYglE, XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
+.ax %core.icmp(xygle = f, xyglE = e, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,
+               xYgle,     xYglE,     xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
+               Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
+               XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
     Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_icmp;
 ///
 /// ### %core.bit1
@@ -88,7 +92,7 @@
 /// | neg    | o | x | negate                       |
 /// | id     | x | o | identity                     |
 /// | t      | x | x | always true                  |
-.ax %core.bit1(f, neg, id, t): Π w: .Nat -> %Int w -> .Bool , normalize_bit1;
+.ax %core.bit1(f, neg, id, t): Π w: .Nat -> %Int w -> %Int w;
 ///
 /// ### %core.bit2
 ///
@@ -114,7 +118,7 @@
 /// | t      |  x |  x |  x |  x | always true                  |
 .ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
                 _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
-    Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_bit2;
+    Π w: .Nat -> [%Int w, %Int w] -> %Int w , normalize_bit2;
 ///
 /// ### %core.shr
 ///
@@ -123,3 +127,7 @@
 /// ### %core.wrap
 ///
 .ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [%Int w, %Int w] -> %Int w, normalize_wrap;
+///
+/// ### %core.wrap
+///
+.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, %Int w, %Int w] -> [%mem.M, %Int w], normalize_div;

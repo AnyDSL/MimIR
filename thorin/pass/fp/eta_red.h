@@ -21,6 +21,8 @@ public:
     using Data = LamMap<Lattice>;
     void mark_irreducible(Lam* lam) { irreducible_.emplace(lam); }
 
+    static PassTag* ID();
+
 private:
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Var*) override;

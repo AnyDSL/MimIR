@@ -26,6 +26,7 @@ public:
     bool check() override;
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Sigma* stub(World&, const Def*, const Def*) override;
+    const Sigma* restructure() override;
     ///@}
 
     static constexpr auto Node = Node::Sigma;

@@ -2,6 +2,7 @@
 #define THORIN_AXIOM_H
 
 #include "thorin/lam.h"
+
 #include "thorin/util/assert.h"
 
 namespace thorin {
@@ -63,6 +64,23 @@ public:
     friend class World;
 };
 
+template<class AxTag>
+concept axiom_with_sub_tags = requires(AxTag t) {
+    AxTag::base_;
+};
+
+template<class AxTag>
+concept axiom_without_sub_tags = requires(AxTag t) {
+    AxTag::id_;
+};
+
+template<class AxTag>
+concept axiom_from_dialect = axiom_with_sub_tags<AxTag> || axiom_without_sub_tags<AxTag>;
+
+
+template<class AxTag>
+concept axiom_from_thorin = !axiom_from_dialect<AxTag>;
+
 template<class T, class D>
 class Match {
 public:
@@ -75,7 +93,18 @@ public:
 
     const Axiom* axiom() const { return axiom_; }
     tag_t tag() const { return axiom()->tag(); }
-    T sub() const { return T(axiom()->sub()); }
+    auto sub() const {
+        if constexpr (axiom_from_dialect<T>)
+            return axiom()->sub();
+        else
+            return T(axiom()->sub());
+    }
+    auto flags() const {
+        if constexpr (axiom_from_dialect<T>)
+            return T(axiom()->flags());
+        else
+            return axiom()->flags();
+    }
     void clear() {
         axiom_ = nullptr;
         def_   = nullptr;
@@ -104,14 +133,17 @@ using Tag2Def = typename Tag2Def_<t>::type;
 template<tag_t t>
 Match<Tag2Enum<t>, Tag2Def<t>> isa(const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
-    if (axiom && axiom->tag() == t && curry == 0) return {axiom, def->as<Tag2Def<t>>()};
+    if (axiom && axiom->dialect() == Axiom::Global_Dialect && axiom->tag() == t && curry == 0)
+        return {axiom, def->as<Tag2Def<t>>()};
     return {};
 }
 
 template<tag_t t>
 Match<Tag2Enum<t>, Tag2Def<t>> isa(Tag2Enum<t> tag, const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
-    if (axiom && axiom->tag() == t && axiom->tag() == tag_t(tag) && curry == 0) return {axiom, def->as<Tag2Def<t>>()};
+    if (axiom && axiom->dialect() == Axiom::Global_Dialect && axiom->tag() == t && axiom->tag() == tag_t(tag) &&
+        curry == 0)
+        return {axiom, def->as<Tag2Def<t>>()};
     return {};
 }
 
@@ -144,45 +176,47 @@ constexpr std::optional<uint64_t> mod2width(uint64_t n) {
     return {};
 }
 
-bool is_memop(const Def* def);
-
+namespace detail {
 template<class AxTag>
-concept axiom_has_sub_tags = requires(AxTag t) {
-    AxTag::id_;
+struct Enum2DefImpl {
+    using type = App;
 };
 
-namespace detail {
-    template<class AxTag>
-    struct Enum2DefImpl {
-        using type = App;
-    };
+template<class AxTag>
+using Enum2Def = typename Enum2DefImpl<AxTag>::type;
 
-    template<class AxTag>
-    using Enum2Def = typename Enum2DefImpl<AxTag>::type;
-
-    template<class AxTag>
-    constexpr AxTag base_value() {
-        if constexpr (axiom_has_sub_tags<AxTag>)
-            return AxTag::id_;
-        else
-            return AxTag::base_;
-    }
+template<class AxTag>
+constexpr AxTag base_value() {
+    if constexpr (axiom_with_sub_tags<AxTag>)
+        return AxTag::base_;
+    else
+        return AxTag::id_;
+}
 
 } // namespace detail
 
-template<class AxTag>
+template<class AxTag, bool Check = true>
 Match<AxTag, detail::Enum2Def<AxTag>> match(const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
-    if (axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>() && curry == 0)
-        return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-    return {};
+    if constexpr (Check) {
+        if (axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>() && curry == 0)
+            return {axiom, def->as<detail::Enum2Def<AxTag>>()};
+        return {};
+    }
+    assert(axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>() && curry == 0 &&
+           "assumed to be correct axiom");
+    return {axiom, def->as<detail::Enum2Def<AxTag>>()};
 }
 
-template<class AxTag>
+template<class AxTag, bool Check = true>
 Match<AxTag, detail::Enum2Def<AxTag>> match(AxTag sub, const Def* def) {
     auto [axiom, curry] = Axiom::get(def);
-    if (axiom && axiom->flags() == sub && curry == 0) return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-    return {};
+    if constexpr (Check) {
+        if (axiom && axiom->flags() == sub && curry == 0) return {axiom, def->as<detail::Enum2Def<AxTag>>()};
+        return {};
+    }
+    assert(axiom && axiom->flags() == sub && curry == 0 && "assumed to be correct axiom");
+    return {axiom, def->as<detail::Enum2Def<AxTag>>()};
 }
 
 } // namespace thorin

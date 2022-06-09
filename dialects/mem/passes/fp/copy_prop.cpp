@@ -1,9 +1,10 @@
-#include "thorin/pass/fp/copy_prop.h"
+#include "dialects/mem/passes/fp/copy_prop.h"
 
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
+#include "dialects/mem/mem.h"
 
-namespace thorin {
+namespace thorin::mem {
 
 const Def* CopyProp::rewrite(const Def* def) {
     auto [app, var_lam] = isa_apped_nom_lam(def);
@@ -15,7 +16,7 @@ const Def* CopyProp::rewrite(const Def* def) {
     auto [it, _] = lam2info_.emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefArray(n)));
     auto& [lattice, prop_lam, old_args] = it->second;
 
-    if (var_lam->mem_var()) lattice[0] = Lattice::Keep;
+    if (mem::mem_var(var_lam)) lattice[0] = Lattice::Keep;
     if (std::ranges::all_of(lattice, [](auto l) { return l == Lattice::Keep; })) return app;
 
     DefVec new_args, new_doms, appxy_ops = {var_lam};
@@ -102,7 +103,8 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
         }
     } else {
         assert(proxy->tag() == Appxy);
-        for (auto op : proxy->ops().skip_front()) {
+        auto ops = proxy->ops();
+        for (auto op : ops.skip_front()) {
             auto i = as_lit(op);
             if (auto& l = lattice[i]; l != Lattice::Keep) {
                 l = Lattice::Keep;
@@ -115,5 +117,7 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
 
     return No_Undo;
 }
+
+PassTag* CopyProp::ID() { static PassTag Key; return &Key; }
 
 } // namespace thorin

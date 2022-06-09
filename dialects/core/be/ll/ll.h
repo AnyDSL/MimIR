@@ -2,7 +2,6 @@
 #define THORIN_BE_LL_LL_H
 
 #include <ostream>
-#include <string>
 
 namespace thorin {
 
@@ -17,7 +16,6 @@ int compile(World&, std::string ll, std::string out);
 int compile_and_run(World&, std::string name, std::string args = {});
 
 } // namespace ll
-
 } // namespace thorin
 
 #endif

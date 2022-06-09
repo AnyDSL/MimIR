@@ -3,7 +3,7 @@
 
 #include "thorin/pass/pass.h"
 
-namespace thorin {
+namespace thorin::mem {
 
 class RememElim : public RWPass<Lam> {
 public:
@@ -11,8 +11,10 @@ public:
         : RWPass(man, "remem_elim") {}
 
     const Def* rewrite(const Def*) override;
+
+    static PassTag* ID();
 };
 
-}
+} // namespace thorin::mem
 
 #endif

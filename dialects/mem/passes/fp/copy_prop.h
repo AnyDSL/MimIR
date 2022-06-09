@@ -8,6 +8,8 @@ namespace thorin {
 class BetaRed;
 class EtaExp;
 
+namespace mem {
+
 /// This FPPass is similar to sparse conditional constant propagation (SCCP).
 /// However, this optmization also works on all Lam%s alike and does not only consider basic blocks as opposed to
 /// traditional SCCP. What is more, this optimization will also propagate arbitrary Def%s and not only constants.
@@ -20,6 +22,8 @@ public:
         , eta_exp_(eta_exp) {}
 
     using Data = LamMap<DefVec>;
+
+    static PassTag* ID();
 
 private:
     /// Lattice used for this Pass:
@@ -45,6 +49,7 @@ private:
     LamMap<std::tuple<Lattices, Lam*, DefArray>> lam2info_;
 };
 
+} // namespace mem
 } // namespace thorin
 
 #endif

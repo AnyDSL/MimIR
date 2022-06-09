@@ -1,3 +1,5 @@
+#include "thorin/normalize.h"
+
 #include "thorin/def.h"
 #include "thorin/world.h"
 
@@ -5,12 +7,7 @@
 // This would also remove a lot of template magic.
 
 namespace thorin {
-
-// clang-format off
-template<class O> constexpr bool is_int      () { return true;  }
-template<>        constexpr bool is_int<ROp >() { return false; }
-template<>        constexpr bool is_int<RCmp>() { return false; }
-// clang-format on
+namespace normalize {
 
 /*
  * small helpers
@@ -26,11 +23,6 @@ static const Def* is_not(const Def* def) {
 }
 #endif
 
-template<class T>
-static T get(u64 u) {
-    return bitcast<T>(u);
-}
-
 /// Use like this:
 /// `a op b = tab[a][b]`
 constexpr std::array<std::array<u64, 2>, 2> make_truth_table(Bit op) {
@@ -40,26 +32,27 @@ constexpr std::array<std::array<u64, 2>, 2> make_truth_table(Bit op) {
     };
 }
 
-template<class T>
-constexpr bool is_commutative(T) {
-    return false;
-}
-
 // clang-format off
+// we rely on dependent lookup, so these cannot be overloads, but instead have to be
+// template specializations
+template <>
 constexpr bool is_commutative(Wrap op) { return op == Wrap:: add || op == Wrap::mul; }
+template <>
 constexpr bool is_commutative(ROp  op) { return op == ROp :: add || op == ROp ::mul; }
+template <>
 constexpr bool is_commutative(ICmp op) { return op == ICmp::   e || op == ICmp:: ne; }
+template <>
 constexpr bool is_commutative(RCmp op) { return op == RCmp::   e || op == RCmp:: ne; }
+template <>
 constexpr bool is_commutative(Bit  op) {
     auto tab = make_truth_table(op);
     return tab[0][1] == tab[1][0];
 }
 // clang-format off
 
-template<class T>
-constexpr bool is_associative(T op) {
-    return is_commutative(op);
-}
+// we rely on dependent lookup, so these cannot be overloads, but instead have to be
+// template specializations
+template <>
 constexpr bool is_associative(Bit op) {
     switch (op) {
         case Bit::t:
@@ -80,25 +73,6 @@ constexpr bool is_associative(Bit op) {
 
 // This code assumes two-complement arithmetic for unsigned operations.
 // This is *implementation-defined* but *NOT* *undefined behavior*.
-
-class Res {
-public:
-    Res()
-        : data_{} {}
-    template<class T>
-    Res(T val)
-        : data_(bitcast<u64>(val)) {}
-
-    constexpr const u64& operator*() const& { return *data_; }
-    constexpr u64& operator*() & { return *data_; }
-    explicit operator bool() const { return data_.has_value(); }
-
-private:
-    std::optional<u64> data_;
-};
-
-template<class T, T, nat_t>
-struct Fold {};
 
 template<nat_t w>
 struct Fold<Wrap, Wrap::add, w> {
@@ -154,11 +128,6 @@ struct Fold<Wrap, Wrap::shl, w> {
 };
 
 // clang-format off
-template<nat_t w> struct Fold<Div, Div::sdiv, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
-template<nat_t w> struct Fold<Div, Div::udiv, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
-template<nat_t w> struct Fold<Div, Div::srem, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
-template<nat_t w> struct Fold<Div, Div::urem, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
-
 template<nat_t w> struct Fold<Shr, Shr::ashr, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
 template<nat_t w> struct Fold<Shr, Shr::lshr, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
 
@@ -214,14 +183,6 @@ template<nat_t dw, nat_t sw> struct FoldConv<Conv::r2r, dw, sw> { static Res run
 /*
  * bigger logic used by several ops
  */
-
-template<class O>
-static void commute(O op, const Def*& a, const Def*& b) {
-    if (is_commutative(op)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
-            std::swap(a, b); // swap lit to left, or smaller gid to left if no lit present
-    }
-}
 
 /// Reassociates @p a und @p b according to following rules.
 /// We use the following naming convention while literals are prefixed with an 'l':
@@ -283,51 +244,6 @@ static const Def* reassociate(Tag2Enum<sub> op,
     return nullptr;
 }
 
-/// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. See commute().
-template<class Op, Op op>
-static const Def* fold(World& world, const Def* type, const App* callee, const Def*& a, const Def*& b, const Def* dbg) {
-    static constexpr int min_w = std::is_same_v<Op, ROp> || std::is_same_v<Op, RCmp> ? 16 : 1;
-    auto la = a->isa<Lit>(), lb = b->isa<Lit>();
-
-    if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type, dbg);
-
-    if (la && lb) {
-        nat_t width;
-        [[maybe_unused]] bool nsw = false, nuw = false;
-        if constexpr (std::is_same_v<Op, Wrap>) {
-            auto [mode, w] = callee->args<2>(as_lit<nat_t>);
-            nsw            = mode & WMode::nsw;
-            nuw            = mode & WMode::nuw;
-            width          = w;
-        } else {
-            width = as_lit(a->type()->as<App>()->arg());
-        }
-
-        if (is_int<Op>()) width = *mod2width(width);
-
-        Res res;
-        switch (width) {
-#define CODE(i)                                                             \
-    case i:                                                                 \
-        if constexpr (i >= min_w) {                                         \
-            if constexpr (std::is_same_v<Op, Wrap>)                         \
-                res = Fold<Op, op, i>::run(la->get(), lb->get(), nsw, nuw); \
-            else                                                            \
-                res = Fold<Op, op, i>::run(la->get(), lb->get());           \
-        }                                                                   \
-        break;
-            THORIN_1_8_16_32_64(CODE)
-#undef CODE
-            default: unreachable();
-        }
-
-        return res ? world.lit(type, *res, dbg) : world.bot(type, dbg);
-    }
-
-    commute(op, a, b);
-    return nullptr;
-}
-
 /*
  * normalize
  */
@@ -358,6 +274,9 @@ static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a
 
     return nullptr;
 }
+} // namespace normalize
+
+using namespace normalize;
 
 template<Bit op>
 const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
@@ -602,48 +521,6 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
     return world.raw_app(callee, {a, b}, dbg);
 }
 
-template<Div op>
-const Def* normalize_Div(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    auto& world      = type->world();
-    auto callee      = c->as<App>();
-    auto [mem, a, b] = arg->projs<3>();
-    auto w           = isa_lit(callee->arg());
-    type             = type->as<Sigma>()->op(1); // peel of actual type
-    auto make_res    = [&, mem = mem](const Def* res) { return world.tuple({mem, res}, dbg); };
-
-    if (auto result = fold<Div, op>(world, type, callee, a, b, dbg)) return make_res(result);
-
-    if (auto la = a->isa<Lit>()) {
-        if (la == world.lit_int(*w, 0)) return make_res(la); // 0 / b -> 0 and 0 % b -> 0
-    }
-
-    if (auto lb = b->isa<Lit>()) {
-        if (lb == world.lit_int(*w, 0)) return make_res(world.bot(type)); // a / 0 -> ⊥ and a % 0 -> ⊥
-
-        if (lb == world.lit_int(*w, 1)) {
-            switch (op) {
-                case Div::sdiv: return make_res(a);                    // a / 1 -> a
-                case Div::udiv: return make_res(a);                    // a / 1 -> a
-                case Div::srem: return make_res(world.lit_int(*w, 0)); // a % 1 -> 0
-                case Div::urem: return make_res(world.lit_int(*w, 0)); // a % 1 -> 0
-                default: unreachable();
-            }
-        }
-    }
-
-    if (a == b) {
-        switch (op) {
-            case Div::sdiv: return make_res(world.lit_int(*w, 1)); // a / a -> 1
-            case Div::udiv: return make_res(world.lit_int(*w, 1)); // a / a -> 1
-            case Div::srem: return make_res(world.lit_int(*w, 0)); // a % a -> 0
-            case Div::urem: return make_res(world.lit_int(*w, 0)); // a % a -> 0
-            default: unreachable();
-        }
-    }
-
-    return world.raw_app(callee, {mem, a, b}, dbg);
-}
-
 template<ROp op>
 const Def* normalize_ROp(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
@@ -755,6 +632,7 @@ template<Trait op>
 const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const Def* dbg) {
     auto& world = type->world();
 
+    // todo: figure out a way to normalize traits on dialect types..
     if (auto ptr = isa<Tag::Ptr>(type)) {
         return world.lit_nat(8);
     } else if (auto int_ = isa<Tag::Int>(type)) {
@@ -906,51 +784,6 @@ const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* 
     return world.raw_app(callee, src, dbg);
 }
 
-const Def* normalize_lea(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world                = type->world();
-    auto [ptr, index]          = arg->projs<2>();
-    auto [pointee, addr_space] = as<Tag::Ptr>(ptr->type())->args<2>();
-
-    if (auto a = isa_lit(pointee->arity()); a && *a == 1) return ptr;
-    // TODO
-
-    return world.raw_app(callee, {ptr, index}, dbg);
-}
-
-const Def* normalize_load(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world                = type->world();
-    auto [mem, ptr]            = arg->projs<2>();
-    auto [pointee, addr_space] = as<Tag::Ptr>(ptr->type())->args<2>();
-
-    if (ptr->isa<Bot>()) return world.tuple({mem, world.bot(type->as<Sigma>()->op(1))}, dbg);
-
-    // loading an empty tuple can only result in an empty tuple
-    if (auto sigma = pointee->isa<Sigma>(); sigma && sigma->num_ops() == 0)
-        return world.tuple({mem, world.tuple(sigma->type(), {}, dbg)});
-
-    return world.raw_app(callee, {mem, ptr}, dbg);
-}
-
-const Def* normalize_remem(const Def* type, const Def* callee, const Def* mem, const Def* dbg) {
-    auto& world = type->world();
-
-    // if (auto m = isa<Tag::Remem>(mem)) mem = m;
-    return world.raw_app(callee, mem, dbg);
-}
-
-const Def* normalize_store(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world          = type->world();
-    auto [mem, ptr, val] = arg->projs<3>();
-
-    if (ptr->isa<Bot>() || val->isa<Bot>()) return mem;
-    if (auto pack = val->isa<Pack>(); pack && pack->body()->isa<Bot>()) return mem;
-    if (auto tuple = val->isa<Tuple>()) {
-        if (std::ranges::all_of(tuple->ops(), [](const Def* op) { return op->isa<Bot>(); })) return mem;
-    }
-
-    return world.raw_app(callee, {mem, ptr, val}, dbg);
-}
-
 const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& w                    = type->world();
     auto callee                = c->as<App>();
@@ -1001,7 +834,6 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
 THORIN_BIT  (CODE)
 THORIN_SHR  (CODE)
 THORIN_WRAP (CODE)
-THORIN_DIV  (CODE)
 THORIN_R_OP (CODE)
 THORIN_I_CMP(CODE)
 THORIN_R_CMP(CODE)

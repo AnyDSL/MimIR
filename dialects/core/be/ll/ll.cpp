@@ -1,15 +1,18 @@
-#include "thorin/be/ll/ll.h"
+#include "dialects/core/be/ll/ll.h"
 
-#include <atomic>
 #include <deque>
 #include <fstream>
 #include <iomanip>
 #include <limits>
+#include <ranges>
 
 #include "thorin/analyses/cfg.h"
 #include "thorin/be/emitter.h"
 #include "thorin/util/print.h"
 #include "thorin/util/sys.h"
+
+#include "dialects/core.h"
+#include "dialects/mem.h"
 
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.
@@ -22,7 +25,6 @@
 //      * LLVM:   {0, -1} = i1
 //   This is a problem when, e.g., using an index of type i1 as LLVM thinks like this:
 //   getelementptr ..., i1 1 == getelementptr .., i1 -1
-
 using namespace std::string_literals;
 
 namespace thorin::ll {
@@ -116,7 +118,7 @@ std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
 std::string CodeGen::convert(const Def* type) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
-    assert(!isa<Tag::Mem>(type));
+    assert(!match<mem::M>(type));
     std::ostringstream s;
     std::string name;
 
@@ -148,7 +150,7 @@ std::string CodeGen::convert(const Def* type) {
             case 64: return types_[type] = "double";
             default: unreachable();
         }
-    } else if (auto ptr = isa<Tag::Ptr>(type)) {
+    } else if (auto ptr = match<mem::Ptr>(type)) {
         auto [pointee, addr_space] = ptr->args<2>();
         // TODO addr_space
         print(s, "{}*", convert(pointee));
@@ -163,7 +165,7 @@ std::string CodeGen::convert(const Def* type) {
         std::string_view sep = "";
         auto doms            = pi->doms();
         for (auto dom : doms.skip_back()) {
-            if (isa<Tag::Mem>(dom)) continue;
+            if (match<mem::M>(dom)) continue;
             s << sep << convert(dom);
             sep = ", ";
         }
@@ -176,7 +178,7 @@ std::string CodeGen::convert(const Def* type) {
         print(s, "{{");
         std::string_view sep = "";
         for (auto t : sigma->ops()) {
-            if (isa<Tag::Mem>(t)) continue;
+            if (match<mem::M>(t)) continue;
             s << sep << convert(t);
             sep = ", ";
         }
@@ -196,11 +198,11 @@ std::string CodeGen::convert_ret_pi(const Pi* pi) {
     switch (pi->num_doms()) {
         case 0: return "void";
         case 1:
-            if (isa<Tag::Mem>(pi->dom())) return "void";
+            if (match<mem::M>(pi->dom())) return "void";
             return convert(pi->dom());
         case 2:
-            if (isa<Tag::Mem>(pi->dom(0))) return convert(pi->dom(1));
-            if (isa<Tag::Mem>(pi->dom(1))) return convert(pi->dom(0));
+            if (match<mem::M>(pi->dom(0))) return convert(pi->dom(1));
+            if (match<mem::M>(pi->dom(1))) return convert(pi->dom(0));
             [[fallthrough]];
         default: return convert(pi->dom());
     }
@@ -226,7 +228,7 @@ void CodeGen::emit_imported(Lam* lam) {
     auto sep  = "";
     auto doms = lam->doms();
     for (auto dom : doms.skip_back()) {
-        if (isa<Tag::Mem>(dom)) continue;
+        if (match<mem::M>(dom)) continue;
         print(func_decls_, "{}{}", sep, convert(dom));
         sep = ", ";
     }
@@ -242,7 +244,7 @@ std::string CodeGen::prepare(const Scope& scope) {
     auto sep  = "";
     auto vars = lam->vars();
     for (auto var : vars.skip_back()) {
-        if (isa<Tag::Mem>(var->type())) continue;
+        if (match<mem::M>(var->type())) continue;
         auto name    = id(var);
         locals_[var] = name;
         print(func_impls_, "{}{} {}", sep, convert(var->type()), name);
@@ -327,7 +329,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
             if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
                 auto phi = callee->var(i);
-                assert(!isa<Tag::Mem>(phi->type()));
+                assert(!match<mem::M>(phi->type()));
                 lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
                 locals_[phi] = id(phi);
             }
@@ -348,7 +350,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
         Array<const Def*> values(num_vars);
         Array<const Def*> types(num_vars);
         for (auto var : ret_lam->vars()) {
-            if (isa<Tag::Mem>(var->type())) continue;
+            if (match<mem::M>(var->type())) continue;
             values[n] = var;
             types[n]  = var->type();
             ++n;
@@ -368,7 +370,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
                     namei += '.' + std::to_string(i - 1);
                     bb.tail("{} = extractvalue {} {}, {}", namei, ret_ty, name, i - 1);
                 }
-                assert(!isa<Tag::Mem>(phi->type()));
+                assert(!match<mem::M>(phi->type()));
                 lam2bb_[ret_lam].phis[phi].emplace_back(namei, id(lam, true));
                 locals_[phi] = id(phi);
             }
@@ -426,6 +428,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             if (auto mod = mod2width(as_lit(size))) {
                 switch (*mod) {
                     // clang-format off
+                    case  0: return {};
                     case  1: return std::to_string(lit->get< u1>());
                     case  2:
                     case  4:
@@ -480,6 +483,25 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             // clang-format on
             default: unreachable();
         }
+    } else if (auto bit = match<core::bit2>(def)) {
+        auto [a, b] = bit->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(bit->type());
+
+        auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} 0, {}", t, x); };
+
+        switch (bit.flags()) {
+            // clang-format off
+            case core::bit2::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
+            case core::bit2:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);
+            case core::bit2::_xor: return bb.assign(name, "xor {} {}, {}", t, a, b);
+            case core::bit2::nand: return neg(bb.assign(name, "and {} {}, {}", t, a, b));
+            case core::bit2:: nor: return neg(bb.assign(name, "or  {} {}, {}", t, a, b));
+            case core::bit2::nxor: return neg(bb.assign(name, "xor {} {}, {}", t, a, b));
+            case core::bit2:: iff: return bb.assign(name, "and {} {}, {}", neg(a), b);
+            case core::bit2::niff: return bb.assign(name, "or  {} {}, {}", neg(a), b);
+            // clang-format on
+            default: unreachable();
+        }
     } else if (auto shr = isa<Tag::Shr>(def)) {
         auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(shr->type());
@@ -487,6 +509,17 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         switch (shr.sub()) {
             case Shr::ashr: op = "ashr"; break;
             case Shr::lshr: op = "lshr"; break;
+            default: unreachable();
+        }
+
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
+    } else if (auto shr = match<core::shr>(def)) {
+        auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(shr->type());
+
+        switch (shr.flags()) {
+            case core::shr::ashr: op = "ashr"; break;
+            case core::shr::lshr: op = "lshr"; break;
             default: unreachable();
         }
 
@@ -508,18 +541,35 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         if (mode & WMode::nsw) op += " nsw";
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto div = isa<Tag::Div>(def)) {
+    } else if (auto wrap = match<core::wrap>(def)) {
+        auto [a, b]        = wrap->args<2>([this](auto def) { return emit(def); });
+        auto t             = convert(wrap->type());
+        auto [mode, width] = wrap->decurry()->args<2>(as_lit<nat_t>);
+
+        switch (wrap.flags()) {
+            case core::wrap::add: op = "add"; break;
+            case core::wrap::sub: op = "sub"; break;
+            case core::wrap::mul: op = "mul"; break;
+            case core::wrap::shl: op = "shl"; break;
+            default: unreachable();
+        }
+
+        if (mode & WMode::nuw) op += " nuw";
+        if (mode & WMode::nsw) op += " nsw";
+
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
+    } else if (auto div = match<core::div>(def)) {
         auto [m, x, y] = div->args<3>();
         auto t         = convert(x->type());
         emit_unsafe(m);
         auto a = emit(x);
         auto b = emit(y);
 
-        switch (div.sub()) {
-            case Div::sdiv: op = "sdiv"; break;
-            case Div::udiv: op = "udiv"; break;
-            case Div::srem: op = "srem"; break;
-            case Div::urem: op = "urem"; break;
+        switch (div.flags()) {
+            case core::div::sdiv: op = "sdiv"; break;
+            case core::div::udiv: op = "udiv"; break;
+            case core::div::srem: op = "srem"; break;
+            case core::div::urem: op = "urem"; break;
             default: unreachable();
         }
 
@@ -570,6 +620,28 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
             case ICmp::uge: op += "uge"; break;
             case ICmp::ul:  op += "ult"; break;
             case ICmp::ule: op += "ule"; break;
+            // clang-format on
+            default: unreachable();
+        }
+
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
+    } else if (auto icmp = match<core::icmp>(def)) {
+        auto [a, b] = icmp->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(icmp->arg(0)->type());
+        op          = "icmp ";
+
+        switch (icmp.flags()) {
+            // clang-format off
+            case core::icmp::e:   op += "eq" ; break;
+            case core::icmp::ne:  op += "ne" ; break;
+            case core::icmp::sg:  op += "sgt"; break;
+            case core::icmp::sge: op += "sge"; break;
+            case core::icmp::sl:  op += "slt"; break;
+            case core::icmp::sle: op += "sle"; break;
+            case core::icmp::ug:  op += "ugt"; break;
+            case core::icmp::uge: op += "uge"; break;
+            case core::icmp::ul:  op += "ult"; break;
+            case core::icmp::ule: op += "ule"; break;
             // clang-format on
             default: unreachable();
         }
@@ -636,8 +708,8 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
     } else if (auto bitcast = isa<Tag::Bitcast>(def)) {
-        auto dst_type_ptr = isa<Tag::Ptr>(bitcast->type());
-        auto src_type_ptr = isa<Tag::Ptr>(bitcast->arg()->type());
+        auto dst_type_ptr = match<mem::Ptr>(bitcast->type());
+        auto src_type_ptr = match<mem::Ptr>(bitcast->arg()->type());
         auto src          = emit(bitcast->arg());
         auto src_t        = convert(bitcast->arg()->type());
         auto dst_t        = convert(bitcast->type());
@@ -649,10 +721,10 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
         // clang-format on
         return bb.assign(name, "bitcast {} {} to {}", src_t, src, dst_t);
-    } else if (auto lea = isa<Tag::LEA>(def)) {
+    } else if (auto lea = match<mem::lea>(def)) {
         auto [ptr, idx] = lea->args<2>();
         auto ll_ptr     = emit(ptr);
-        auto pointee    = as<Tag::Ptr>(ptr->type())->arg(0);
+        auto pointee    = match<mem::Ptr, false>(ptr->type())->arg(0);
         auto t          = convert(pointee);
         auto p          = convert(ptr->type());
         if (pointee->isa<Sigma>())
@@ -673,26 +745,26 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t, p, ll_ptr, idx_t, ll_idx);
     } else if (auto trait = isa<Tag::Trait>(def)) {
         unreachable();
-    } else if (auto malloc = isa<Tag::Malloc>(def)) {
+    } else if (auto malloc = match<mem::malloc>(def)) {
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
-        auto ptr_t = convert(as<Tag::Ptr>(def->proj(1)->type()));
+        auto ptr_t = convert(match<mem::Ptr, false>(def->proj(1)->type()));
         bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
         return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
-    } else if (auto mslot = isa<Tag::Mslot>(def)) {
+    } else if (auto mslot = match<mem::mslot>(def)) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
         // auto size = emit(mslot->arg(1));
         auto [pointee, addr_space] = mslot->decurry()->args<2>();
         print(lam2bb_[entry_].body().emplace_front(), "{} = alloca {}", name, convert(pointee));
         return name;
-    } else if (auto load = isa<Tag::Load>(def)) {
+    } else if (auto load = match<mem::load>(def)) {
         emit_unsafe(load->arg(0));
         auto ptr       = emit(load->arg(1));
         auto ptr_t     = convert(load->arg(1)->type());
-        auto pointee_t = convert(as<Tag::Ptr>(load->arg(1)->type())->arg(0));
+        auto pointee_t = convert(match<mem::Ptr, false>(load->arg(1)->type())->arg(0));
         return bb.assign(name, "load {}, {} {}", pointee_t, ptr_t, ptr);
-    } else if (auto store = isa<Tag::Store>(def)) {
+    } else if (auto store = match<mem::store>(def)) {
         emit_unsafe(store->arg(0));
         auto ptr   = emit(store->arg(1));
         auto val   = emit(store->arg(2));
@@ -710,13 +782,16 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto tuple  = extract->tuple();
         auto index  = extract->index();
         auto ll_tup = emit_unsafe(tuple);
-        auto ll_idx = emit(index);
 
-        if (isa<Tag::Mem>(extract->type())) return {};
+        // this exact location is important: after emitting the tuple -> ordering of mem ops
+        // before emitting the index, as it might be a weird value for mem vars.
+        if (match<mem::M>(extract->type())) return {};
+
+        auto ll_idx = emit_unsafe(index);
 
         if (tuple->num_projs() == 2) {
-            if (isa<Tag::Mem>(tuple->proj(2, 0_s)->type())) return ll_tup;
-            if (isa<Tag::Mem>(tuple->proj(2, 1_s)->type())) return ll_tup;
+            if (match<mem::M>(tuple->proj(2, 0_s)->type())) return ll_tup;
+            if (match<mem::M>(tuple->proj(2, 1_s)->type())) return ll_tup;
         }
 
         auto tup_t = convert(tuple->type());
@@ -741,7 +816,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "insertvalue {} {}, {} {}, {}", tup_t, tuple, val_t, value, index);
     } else if (auto global = def->isa<Global>()) {
         auto init                  = emit(global->init());
-        auto [pointee, addr_space] = as<Tag::Ptr>(global->type())->args<2>();
+        auto [pointee, addr_space] = match<mem::Ptr, false>(global->type())->args<2>();
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
         return globals_[global] = name;
     }

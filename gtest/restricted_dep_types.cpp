@@ -11,13 +11,17 @@
 #include "thorin/tables.h"
 #include "thorin/world.h"
 
-#include "thorin/be/ll/ll.h"
+// #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/fp/beta_red.h"
-#include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
+#include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"
+#include "thorin/pass/pipelinebuilder.h"
+#include "thorin/util/sys.h"
+
+#include "dialects/mem/mem.h"
 
 using namespace thorin;
 
@@ -209,11 +213,15 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     World w;
-    Parser::import_module(w, "mem");
 
-    auto mem_t  = w.type_mem();
+    auto mem_d = Dialect::load("mem", {});
+    Normalizers normalizers;
+    mem_d.register_normalizers(normalizers);
+    Parser::import_module(w, "mem", {}, &normalizers);
+
+    auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int_width(32);
-    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
+    auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
 
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]
     auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
@@ -248,12 +256,13 @@ TEST(RestrictedDependentTypes, ll) {
 
         main->app(false, exp_lam, {main->var(0_s), i32_t, R, w.op_bitcast(app_exp, main->var(1)), main->var(3)});
     }
-    PassMan opt{w};
-    auto br = opt.add<BetaRed>();
-    auto er = opt.add<EtaRed>();
-    auto ee = opt.add<EtaExp>(er);
-    opt.add<CopyProp>(br, ee);
-    opt.run();
 
-    ll::emit(w, std::cout);
+    PipelineBuilder builder;
+    mem_d.register_passes(builder);
+    optimize(w, builder);
+
+    auto core_d = Dialect::load("core", {});
+    Backends backends;
+    core_d.register_backends(backends);
+    backends["ll"](w, std::cout);
 }

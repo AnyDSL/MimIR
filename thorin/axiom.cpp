@@ -104,6 +104,4 @@ std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {
     return {nullptr, u16(-1)};
 }
 
-bool is_memop(const Def* def) { return def->isa<App>() && isa<Tag::Mem>(def->proj(0)->type()); }
-
 } // namespace thorin

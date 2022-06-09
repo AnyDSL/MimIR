@@ -83,7 +83,6 @@ public:
 
     /// @name vars
     ///@{
-    const Def* mem_var(const Def* dbg = {});
     const Def* ret_var(const Def* dbg = {});
     ///@}
 

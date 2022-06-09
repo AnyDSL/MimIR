@@ -1,0 +1,38 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -e thorin %s -e ll -o %t | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t 3 1 ; test $? -eq 1
+// RUN: %t 7 5 ; test $? -eq 5
+
+.import core;
+.import mem;
+
+.lam atoi: .Cn [%mem.M, %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat), .Cn [%mem.M, %Int 4294967296]];
+
+.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
+    0: (%Int 2),
+
+    .lam atoi_cont_a: .Cn [mem : %mem.M, a : %Int 4294967296] = {
+        .ff,
+        .lam atoi_cont_b: .Cn [mem : %mem.M, b : %Int 4294967296] = {
+            .ff,
+            return (mem, %core.bit2._and (4294967296) (a, b))
+        };
+
+        .let argv_ptr_b = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)›, 0:.Nat) (argv, 2:(%Int 4294967296));
+        .let argv_load_b = %mem.load (%mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat), 0:.Nat) (mem, argv_ptr_b);
+        atoi (argv_load_b#.ff, argv_load_b#.tt, atoi_cont_b)
+    };
+
+    .let argv_ptr_a = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)›, 0:.Nat) (argv, 1:(%Int 4294967296));
+    .let argv_load_a = %mem.load (%mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat), 0:.Nat) (mem, argv_ptr_a);
+    atoi (argv_load_a#.ff, argv_load_a#.tt, atoi_cont_a)
+};
+
+// CHECK-DAG: main_[[mainId:[0-9]+]]: Cn [%mem.M, i32, %mem.Ptr («⊤:nat; %mem.Ptr («⊤:nat; i8», 0:nat)», 0:nat), Cn [%mem.M, i32]]: (_[[memId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
+
+// CHECK-DAG: atoi_cont_a_[[aContId:[0-9]+]]: Cn [%mem.M, i32]: (_{{[0-9]+}}, _[[aId:[0-9]+]])
+
+// CHECK-DAG: atoi_cont_b_[[bContId:[0-9]+]]: Cn [%mem.M, i32]: (_{{[0-9]+}}, _[[bId:[0-9]+]])
+// CHECK-DAG: _[[andId:[0-9]+]]: i32 = %core.bit2._and 4294967296:nat (_[[aId]], _[[bId]]);
+// CHECK-DAG: _{{[0-9]+}}: ⊥:★ = _{{[0-9]+}} (_{{[0-9]+}}, _[[andId]]);

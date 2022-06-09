@@ -8,7 +8,9 @@ namespace thorin {
 
 class EtaExp;
 
-/// SSA construction algorithm that promotes Tag::Slot%s, Tag::Load%s, and Tag::Store%s to SSA values.
+namespace mem {
+
+/// SSA construction algorithm that promotes slot%s, load%s, and store%s to SSA values.
 /// This is loosely based upon:
 /// "Simple and Efficient Construction of Static Single Assignment Form"
 /// by Braun, Buchwald, Hack, Leißa, Mallon, Zwinkau.
@@ -26,6 +28,8 @@ public:
     };
 
     using Data = GIDNodeMap<Lam*, Info>;
+
+    static PassTag* ID();
 
 private:
     /// @name PassMan hooks
@@ -57,6 +61,7 @@ private:
     GIDSet<const Proxy*> keep_;
 };
 
+} // namespace mem
 } // namespace thorin
 
 #endif

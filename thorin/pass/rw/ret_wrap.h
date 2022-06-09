@@ -11,6 +11,7 @@ public:
         : RWPass(man, "ret_wrap") {}
 
     void enter() override;
+    static PassTag* ID();
 };
 
 }

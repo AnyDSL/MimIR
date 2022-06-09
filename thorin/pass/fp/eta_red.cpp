@@ -44,4 +44,5 @@ undo_t EtaRed::analyze(const Var* var) {
     return No_Undo;
 }
 
+PassTag* EtaRed::ID() { static PassTag Key; return &Key; }
 } // namespace thorin

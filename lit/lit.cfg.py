@@ -10,3 +10,6 @@ config.test_source_root = os.path.dirname(__file__)
 config.test_exec_root = os.path.join(config.my_obj_root, 'test')
 
 config.substitutions.append(('%thorin', config.thorin))
+
+# inhert env vars..
+config.environment = os.environ

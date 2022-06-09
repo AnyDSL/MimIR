@@ -6,10 +6,18 @@
 #include <string>
 #include <vector>
 
+#include "thorin/tables.h"
+
+#include "thorin/be/emitter.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
 
+#include "absl/container/flat_hash_map.h"
+
 namespace thorin {
+
+using Backends    = std::map<std::string, std::function<void(World&, std::ostream&)>>;
+using Normalizers = absl::flat_hash_map<flags_t, Def::NormalizeFn>;
 
 extern "C" {
 /// Basic info and registration function pointer to be returned from a dialect plugin.
@@ -20,6 +28,12 @@ struct DialectInfo {
 
     /// Callback for registering the dialects' callbacks for the pipeline extension points.
     void (*register_passes)(PipelineBuilder& builder);
+
+    /// Callback for registering the mapping from backend names to emission functions in the given \a backends map.
+    void (*register_backends)(Backends& backends);
+
+    /// Callback for registering the mapping from axiom ids to normalizer functions in the given \a normalizers map.
+    void (*register_normalizers)(Normalizers& normalizers);
 };
 }
 
@@ -47,7 +61,19 @@ public:
     void* handle() { return handle_.get(); }
 
     /// Registers callbacks in the \a builder that extend the exposed PassMan's.
-    void register_passes(PipelineBuilder& builder) const { info_.register_passes(builder); }
+    void register_passes(PipelineBuilder& builder) const {
+        if (info_.register_passes) info_.register_passes(builder);
+    }
+
+    /// Registers the mapping from backend names to emission functions in the given \a backends map.
+    void register_backends(Backends& backends) const {
+        if (info_.register_backends) info_.register_backends(backends);
+    }
+
+    /// Registers the mapping from axiom ids to normalizer functions in the given \a normalizers map.
+    void register_normalizers(Normalizers& normalizers) const {
+        if (info_.register_normalizers) info_.register_normalizers(normalizers);
+    }
 
 private:
     explicit Dialect(const std::string& plugin_path, std::unique_ptr<void, void (*)(void*)>&& handle);

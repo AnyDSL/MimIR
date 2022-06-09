@@ -44,8 +44,6 @@ add_library(libthorin
     be/dot/dot.h
     be/h/h.cpp
     be/h/h.h
-    be/ll/ll.cpp
-    be/ll/ll.h
     fe/lexer.cpp
     fe/lexer.h
     fe/parser.cpp
@@ -62,20 +60,12 @@ add_library(libthorin
     pass/fp/eta_red.h
     pass/fp/beta_red.cpp
     pass/fp/beta_red.h
-    pass/fp/copy_prop.cpp
-    pass/fp/copy_prop.h
-    pass/fp/ssa_constr.cpp
-    pass/fp/ssa_constr.h
     pass/fp/tail_rec_elim.cpp
     pass/fp/tail_rec_elim.h
-    pass/rw/alloc2malloc.cpp
-    pass/rw/alloc2malloc.h
     pass/rw/lam_spec.cpp
     pass/rw/lam_spec.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
-    pass/rw/remem_elim.cpp
-    pass/rw/remem_elim.h
     pass/rw/ret_wrap.cpp
     pass/rw/ret_wrap.h
     pass/rw/bound_elim.cpp

@@ -1,6 +1,7 @@
 #include "thorin/def.h"
 
 #include <algorithm>
+#include <ranges>
 #include <stack>
 
 #include "thorin/rewrite.h"
@@ -118,6 +119,12 @@ TBound<up>* TBound<up>::stub(World& w, const Def* t, const Def* dbg) {
 
 const Pi* Pi::restructure() {
     if (!is_free(var(), codom())) return world().pi(dom(), codom(), dbg());
+    return nullptr;
+}
+
+const Sigma* Sigma::restructure() {
+    if (std::ranges::none_of(ops(), [this](auto op) { return is_free(var(), op); }))
+        return static_cast<const Sigma*>(world().sigma(ops(), dbg()));
     return nullptr;
 }
 
@@ -377,6 +384,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
+        if (!world().type_int()) return arr->op(i); // hack for alpha equiv check of sigma (dbg of %Int..)
         return arr->reduce(world().lit_int(as_lit(arr->arity()), i)).back();
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
@@ -392,7 +400,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
  * Global
  */
 
-const App* Global::type() const { return thorin::as<Tag::Ptr>(Def::type()); }
+const App* Global::type() const { return Def::type()->as<App>(); }
 const Def* Global::alloced_type() const { return type()->arg(0); }
 
 /*

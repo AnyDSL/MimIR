@@ -1,0 +1,29 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -e thorin %s -e ll -o %t | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t; test $? -eq 1
+// RUN: %t 1 2 3; test $? -eq 4
+// RUN: %t 1 2 3 4 5; test $? -eq 6
+
+.import mem;
+
+
+.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
+    0: (%Int 2),
+    .let Tas = (%Int 4294967296, 0);
+    .let slot = %mem.mslot Tas (mem, 4, 0);
+    .let store = %mem.store Tas (slot#0:(%Int 2), slot#1:(%Int 2), argc);
+    .let load = %mem.load Tas (store, slot#1:(%Int 2));
+    return load
+};
+
+// CHECK-DAG: main_[[mainId:[0-9]+]]: Cn [%mem.M, i32, %mem.Ptr («⊤:nat; %mem.Ptr («⊤:nat; i8», 0:nat)», 0:nat), Cn [%mem.M, i32]]: (_[[mainMemId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
+// CHECK-DAG: _[[appMSlotId:[0-9]+]]: [%mem.M, %mem.Ptr (i32, 0:nat)] = %mem.mslot (i32, 0:nat) (_[[mainMemId]], 4:nat, 0:nat);
+// CHECK-DAG: _[[appStoreId:[0-9]+]]: %mem.M = %mem.store (i32, 0:nat) (_[[appMSlotId]]#0:i1, _[[appMSlotId]]#1:i1, _[[argcId]]);
+// CHECK-DAG: _[[appLoadId:[0-9]+]]: [%mem.M, i32] = %mem.load (i32, 0:nat) (_[[appStoreId]], _[[appMSlotId]]#1:i1);
+// CHECK-DAG: _[[appExitId:[0-9]+]]: ⊥:★ = _[[exitId:[0-9]+]] _[[appLoadId]];
+// CHECK-DAG: λ@(0:i1) _[[appExitId]]
+
+// CHECK-DAG: _[[exitId]]: Cn [%mem.M, i32]: (_{{[0-9]+}}, _{{[0-9]+}}) = {
+// CHECK-DAG: _[[appReturnId:[0-9]+]]: ⊥:★ = _[[returnId]] @_[[exitId]];
+// CHECK-DAG: λ@(0:i1) _[[appReturnId]]

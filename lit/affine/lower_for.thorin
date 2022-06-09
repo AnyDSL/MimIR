@@ -1,9 +1,13 @@
-// RUN: %thorin -d affine -e thorin %s -o %t | FileCheck %s
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d affine -e thorin %s -e ll -o %t | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t ; test $? -eq 0
+// RUN: %t 1 2 3 ; test $? -eq 6
 
 .import affine;
 .import mem;
 
-.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
+.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
     0: (%Int 2), 
     .lam for_exit: .Cn [mem : %mem.M , acc : %Int 4294967296] = {
         0: (%Int 2),
@@ -17,7 +21,7 @@
     %affine.For (4294967296, 1, (%Int 4294967296)) (mem, 0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296)), for_body, for_exit)
 };
 
-// CHECK-DAG: main_[[mainId:[0-9]+]]: Cn _{{[0-9]+}}: (_{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}) = {
+// CHECK-DAG: main_[[mainId:[0-9]+]]: Cn [%mem.M, i32, %mem.Ptr (%mem.Ptr (i8, 0:nat), 0:nat), Cn [%mem.M, i32]]: (_{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}) = {
 // CHECK-DAG: for_[[forId:[0-9]+]]
 // CHECK-NOT: %affine.For
 
@@ -32,7 +36,8 @@
 // CHECK-DAG: _[[appIdExit:[0-9]+]]: ⊥:★ = _[[exitId]] (@_{{[0-9]+}}, _{{[0-9]+}});
 // CHECK-DAG: λ@(0:i1) _[[appIdExit]]
 
-// CHECK-DAG: for_body_[[forBodyId:[0-9]+]]: Cn %mem.M: _{{[0-9]+}} = {
+
+// CHECK-DAG: for_body_[[forBodyId:[0-9]+]]: Cn %mem.M:
 // CHECK-DAG: = Wrap_add
 // CHECK-DAG: = Wrap_add
 // CHECK-DAG: _[[appIdFor:[0-9]+]]: ⊥:★ = for_[[forId]]
@@ -41,4 +46,3 @@
 // CHECK-DAG: _{{[0-9]+}}: Cn %mem.M: _{{[0-9]+}} = {
 // CHECK-DAG: _[[appIdBody:[0-9]+]]: ⊥:★ = for_body_[[forBodyId]]
 // CHECK-DAG: λ@(0:i1) _[[appIdBody]]
-

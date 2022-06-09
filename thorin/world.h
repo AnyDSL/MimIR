@@ -98,7 +98,7 @@ public:
     /// @name Axiom
     ///@{
     const Axiom* axiom(Def::NormalizeFn n, const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
-        return unify<Axiom>(0, n, type, d, t, s, dbg);
+        return data_.axioms_[d | (t << 8u) | s] = unify<Axiom>(0, n, type, d, t, s, dbg);
     }
     const Axiom* axiom(const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
         return axiom(nullptr, type, d, t, s, dbg);
@@ -118,7 +118,7 @@ public:
     template<class AxTag>
     const Axiom* ax(AxTag sub) const {
         u64 int_sub = static_cast<u64>(sub);
-        auto it = data_.axioms_.find(int_sub);
+        auto it     = data_.axioms_.find(int_sub);
         if (it == data_.axioms_.end())
             thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", int_sub);
         return it->second;
@@ -128,7 +128,7 @@ public:
     ///
     /// Can be used to get an axiom without sub-tags.
     /// E.g. use `w.ax<mem::M>();` to get the %mem.M axiom.
-    template<axiom_has_sub_tags AxTag>
+    template<axiom_without_sub_tags AxTag>
     const Axiom* ax() const {
         return ax(AxTag::id_);
     }
@@ -148,18 +148,6 @@ public:
     const Pi* cn() { return cn(sigma()); }
     const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, bot_type(), dbg); }
     const Pi* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
-    /// Same as World::cn / World::pi but adds a World::type_mem-typed Var to each Pi.
-    const Pi* cn_mem(const Def* dom, const Def* dbg = {}) { return cn({type_mem(), dom}, dbg); }
-    const Pi* cn_mem_ret(const Def* dom, const Def* ret_dom, const Def* dbg = {}) {
-        return cn({type_mem(), dom, cn_mem(ret_dom)}, dbg);
-    }
-    const Pi* pi_mem(const Def* domain, const Def* codomain, const Def* dbg = {}) {
-        auto d = sigma({type_mem(), domain});
-        return pi(d, sigma({type_mem(), codomain}), dbg);
-    }
-    const Pi* fn_mem(const Def* domain, const Def* codomain, const Def* dbg = {}) {
-        return cn({type_mem(), domain, cn_mem(codomain)}, dbg);
-    }
     ///@}
 
     /// @name Lam%bda
@@ -354,29 +342,20 @@ public:
     /// @name globals -- depdrecated; will be removed
     ///@{
     Global* global(const Def* type, bool is_mutable = true, const Def* dbg = {}) { return insert<Global>(1, type, is_mutable, dbg); }
-    Global* global_immutable_string(std::string_view str, const Def* dbg = {});
     ///@}
     // clang-format on
 
     /// @name types
     ///@{
     const Nat* type_nat() { return data_.type_nat_; }
-    const Axiom* type_mem() { return data_.type_mem_; }
     const Axiom* type_int() { return data_.type_int_; }
     const Axiom* type_real() { return data_.type_real_; }
-    const Axiom* type_ptr() { return data_.type_ptr_; }
     const App* type_bool() { return data_.type_bool_; }
     const App* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
     const App* type_int(nat_t mod) { return type_int(lit_nat(mod)); }
     const App* type_real(nat_t width) { return type_real(lit_nat(width)); }
     const App* type_int(const Def* mod) { return app(type_int(), mod)->as<App>(); }
     const App* type_real(const Def* width) { return app(type_real(), width)->as<App>(); }
-    const App* type_ptr(const Def* pointee, nat_t addr_space = AddrSpace::Generic, const Def* dbg = {}) {
-        return type_ptr(pointee, lit_nat(addr_space), dbg);
-    }
-    const App* type_ptr(const Def* pointee, const Def* addr_space, const Def* dbg = {}) {
-        return app(type_ptr(), {pointee, addr_space}, dbg)->as<App>();
-    }
     ///@}
 
     /// @name bulitin axioms
@@ -385,7 +364,6 @@ public:
     const Axiom* ax(Acc   o)  const { return data_.Acc_  [size_t(o)]; }
     const Axiom* ax(Bit   o)  const { return data_.Bit_  [size_t(o)]; }
     const Axiom* ax(Conv  o)  const { return data_.Conv_ [size_t(o)]; }
-    const Axiom* ax(Div   o)  const { return data_.Div_  [size_t(o)]; }
     const Axiom* ax(ICmp  o)  const { return data_.ICmp_ [size_t(o)]; }
     const Axiom* ax(PE    o)  const { return data_.PE_   [size_t(o)]; }
     const Axiom* ax(RCmp  o)  const { return data_.RCmp_ [size_t(o)]; }
@@ -393,17 +371,9 @@ public:
     const Axiom* ax(Shr   o)  const { return data_.Shr_  [size_t(o)]; }
     const Axiom* ax(Trait o)  const { return data_.Trait_[size_t(o)]; }
     const Axiom* ax(Wrap  o)  const { return data_.Wrap_ [size_t(o)]; }
-    const Axiom* ax_alloc()   const { return data_.alloc_;   }
     const Axiom* ax_atomic()  const { return data_.atomic_;  }
     const Axiom* ax_bitcast() const { return data_.bitcast_; }
-    const Axiom* ax_lea()     const { return data_.lea_;     }
-    const Axiom* ax_malloc()  const { return data_.malloc_;  }
-    const Axiom* ax_mslot()   const { return data_.mslot_;   }
     const Axiom* ax_zip()     const { return data_.zip_;     }
-    const Axiom* ax_load()    const { return data_.load_;    }
-    const Axiom* ax_remem()   const { return data_.remem_;   }
-    const Axiom* ax_slot()    const { return data_.slot_;    }
-    const Axiom* ax_store()   const { return data_.store_;   }
     // clang-format on
     ///@}
 
@@ -413,7 +383,6 @@ public:
     const Def* fn(Conv o, const Def* dst_w, const Def* src_w, const Def* dbg = {}) {
         return app(ax(o), {dst_w, src_w}, dbg);
     }
-    const Def* fn(Div o, const Def* mod, const Def* dbg = {}) { return app(ax(o), mod, dbg); }
     const Def* fn(ICmp o, const Def* mod, const Def* dbg = {}) { return app(ax(o), mod, dbg); }
     const Def* fn(RCmp o, const Def* rmode, const Def* width, const Def* dbg = {}) {
         return app(ax(o), {rmode, width}, dbg);
@@ -443,9 +412,6 @@ public:
     /// @name op - these guys build the final function application for the various operations
     ///@{
     const Def* op(Bit o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, infer(a)), {a, b}, dbg); }
-    const Def* op(Div o, const Def* mem, const Def* a, const Def* b, const Def* dbg = {}) {
-        return app(fn(o, infer(a)), {mem, a, b}, dbg);
-    }
     const Def* op(ICmp o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, infer(a)), {a, b}, dbg); }
     const Def* op(RCmp o, const Def* rmode, const Def* a, const Def* b, const Def* dbg = {}) {
         return app(fn(o, rmode, infer(a)), {a, b}, dbg);
@@ -475,32 +441,6 @@ public:
     const Def* op_bitcast(const Def* dst_type, const Def* src, const Def* dbg = {}) {
         return app(fn_bitcast(dst_type, src->type()), src, dbg);
     }
-    const Def* op_lea(const Def* ptr, const Def* index, const Def* dbg = {});
-    const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) { return op_lea_unsafe(ptr, lit_int(i), dbg); }
-    const Def* op_lea_unsafe(const Def* ptr, const Def* i, const Def* dbg = {}) {
-        auto safe_int = type_int(as<Tag::Ptr>(ptr->type())->arg(0)->arity());
-        return op_lea(ptr, op(Conv::u2u, safe_int, i), dbg);
-    }
-    const Def* op_remem(const Def* mem, const Def* dbg = {}) { return app(ax_remem(), mem, dbg); }
-    const Def* op_load(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-        auto [T, a] = as<Tag::Ptr>(ptr->type())->args<2>();
-        return app(app(ax_load(), {T, a}), {mem, ptr}, dbg);
-    }
-    const Def* op_store(const Def* mem, const Def* ptr, const Def* val, const Def* dbg = {}) {
-        auto [T, a] = as<Tag::Ptr>(ptr->type())->args<2>();
-        return app(app(ax_store(), {T, a}), {mem, ptr, val}, dbg);
-    }
-    const Def* op_alloc(const Def* type, const Def* mem, const Def* dbg = {}) {
-        return app(app(ax_alloc(), {type, lit_nat_0()}), mem, dbg);
-    }
-    const Def* op_slot(const Def* type, const Def* mem, const Def* dbg = {}) {
-        return app(app(ax_slot(), {type, lit_nat_0()}), {mem, lit_nat(curr_gid())}, dbg);
-    }
-    const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
-    const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
-    // clang-format off
-    const Def* op_for(const Def* mem, const Def* start, const Def* stop, const Def* step, Defs inits, const Def* body, const Def* brk);
-    // clang-format on
     ///@}
 
     /// @name wrappers for unary operations
@@ -764,7 +704,6 @@ private:
         std::array<const Axiom*, Num<Bit  >> Bit_;
         std::array<const Axiom*, Num<Shr  >> Shr_;
         std::array<const Axiom*, Num<Wrap >> Wrap_;
-        std::array<const Axiom*, Num<Div  >> Div_;
         std::array<const Axiom*, Num<ROp  >> ROp_;
         std::array<const Axiom*, Num<ICmp >> ICmp_;
         std::array<const Axiom*, Num<RCmp >> RCmp_;
@@ -778,19 +717,9 @@ private:
         const Lit* lit_nat_max_;
         const Lit* lit_univ_0_;
         const Lit* lit_univ_1_;
-        const Axiom* alloc_;
         const Axiom* atomic_;
         const Axiom* bitcast_;
-        const Axiom* lea_;
-        const Axiom* load_;
-        const Axiom* malloc_;
-        const Axiom* mslot_;
-        const Axiom* remem_;
-        const Axiom* slot_;
-        const Axiom* store_;
         const Axiom* type_int_;
-        const Axiom* type_mem_;
-        const Axiom* type_ptr_;
         const Axiom* type_real_;
         const Axiom* zip_;
         absl::flat_hash_map<u64, const Axiom*> axioms_;

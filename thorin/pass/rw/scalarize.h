@@ -25,6 +25,7 @@ public:
 
     const Def* rewrite(const Def*) override;
 
+    static PassTag* ID();
 private:
     bool should_expand(Lam *lam);
     Lam* make_scalar(Lam *lam);

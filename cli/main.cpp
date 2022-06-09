@@ -10,8 +10,8 @@
 #include "thorin/dialects.h"
 
 #include "thorin/be/dot/dot.h"
-#include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
+#include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
 #include "thorin/util/sys.h"
@@ -79,9 +79,18 @@ int main(int argc, char** argv) {
         }
         // clang-format on
 
+        // we always need core and mem, as long as we are not in bootstrap mode..
+        if (!emit_h) dialect_names.insert(dialect_names.end(), {"core", "mem"});
+
         std::vector<Dialect> dialects;
+        thorin::Backends backends;
+        thorin::Normalizers normalizers;
         if (!dialect_names.empty()) {
-            for (const auto& dialect : dialect_names) { dialects.push_back(Dialect::load(dialect, dialect_paths)); }
+            for (const auto& dialect : dialect_names) {
+                dialects.push_back(Dialect::load(dialect, dialect_paths));
+                dialects.back().register_backends(backends);
+                dialects.back().register_normalizers(normalizers);
+            }
         }
 
         if (input.empty()) throw std::invalid_argument("error: no input given");
@@ -111,7 +120,7 @@ int main(int argc, char** argv) {
         std::ofstream md;
         if (emit_md) md.open(prefix + ".md");
 
-        Parser parser(world, input, ifs, dialect_paths, emit_md ? &md : nullptr);
+        Parser parser(world, input, ifs, dialect_paths, &normalizers, emit_md ? &md : nullptr);
         parser.parse_module();
 
         if (emit_h) {
@@ -122,10 +131,7 @@ int main(int argc, char** argv) {
         PipelineBuilder builder;
         for (const auto& dialect : dialects) { dialect.register_passes(builder); }
 
-        auto opt = builder.opt_phase(world);
-        opt->run();
-        auto codegen_prep = builder.codegen_prep_phase(world);
-        codegen_prep->run();
+        optimize(world, builder);
 
         if (emit_thorin) world.dump();
 
@@ -135,8 +141,11 @@ int main(int argc, char** argv) {
         }
 
         if (emit_ll) {
-            std::ofstream ofs(prefix + ".ll");
-            ll::emit(world, ofs);
+            if (auto it = backends.find("ll"); it != backends.end()) {
+                std::ofstream ofs(prefix + ".ll");
+                it->second(world, ofs);
+            } else
+                errln("error: 'll' emitter not loaded. Try loading 'mem' dialect.");
         }
     } catch (const std::exception& e) {
         errln("{}", e.what());
