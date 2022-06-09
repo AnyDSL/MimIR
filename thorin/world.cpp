@@ -62,7 +62,9 @@ World::World(std::string_view name)
     }
 
     {
-#define CODE(T, o) data_.T##_[size_t(T::o)] = axiom(normalize_##T<T::o>, ty, Axiom::Global_Dialect, Tag::T, sub_t(T::o), dbg(op2str(T::o)));
+#define CODE(T, o)             \
+    data_.T##_[size_t(T::o)] = \
+        axiom(normalize_##T<T::o>, ty, Axiom::Global_Dialect, Tag::T, sub_t(T::o), dbg(op2str(T::o)));
     }
     { // bit: w: nat -> [int w, int w] -> int w
         auto ty    = nom_pi(type())->set_dom(nat);
@@ -124,9 +126,9 @@ World::World(std::string_view name)
             auto type_sw  = o == Conv::r2s || o == Conv::r2u || o == Conv::r2r ? type_real(sw) : type_int(sw);
             return ty->set_codom(pi(type_sw, type_dw));
         };
-#define CODE(T, o)              \
-    data_.Conv_[size_t(T::o)] = \
-        axiom(normalize_Conv<T::o>, make_type(T::o), Axiom::Global_Dialect, Tag::Conv, sub_t(T::o), dbg(op2str(T::o)));
+#define CODE(T, o)                                                                                             \
+    data_.Conv_[size_t(T::o)] = axiom(normalize_Conv<T::o>, make_type(T::o), Axiom::Global_Dialect, Tag::Conv, \
+                                      sub_t(T::o), dbg(op2str(T::o)));
         THORIN_CONV(CODE)
 #undef CODE
     }
@@ -134,15 +136,17 @@ World::World(std::string_view name)
         auto ty = nom_pi(type())->set_dom(type());
         auto T  = ty->var(dbg("T"));
         ty->set_codom(pi(T, T));
-        data_.PE_[size_t(PE::hlt)] = axiom(normalize_PE<PE::hlt>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::hlt), dbg(op2str(PE::hlt)));
-        data_.PE_[size_t(PE::run)] = axiom(normalize_PE<PE::run>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::run), dbg(op2str(PE::run)));
+        data_.PE_[size_t(PE::hlt)] =
+            axiom(normalize_PE<PE::hlt>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::hlt), dbg(op2str(PE::hlt)));
+        data_.PE_[size_t(PE::run)] =
+            axiom(normalize_PE<PE::run>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::run), dbg(op2str(PE::run)));
     }
     { // known: T: * -> T -> bool
         auto ty = nom_pi(type())->set_dom(type());
         auto T  = ty->var(dbg("T"));
         ty->set_codom(pi(T, type_bool()));
-        data_.PE_[size_t(PE::known)] =
-            axiom(normalize_PE<PE::known>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::known), dbg(op2str(PE::known)));
+        data_.PE_[size_t(PE::known)] = axiom(normalize_PE<PE::known>, ty, Axiom::Global_Dialect, Tag::PE,
+                                             sub_t(PE::known), dbg(op2str(PE::known)));
     }
     { // bitcast: [D: *, S: *] -> S -> D
         auto ty     = nom_pi(type())->set_dom({type(), type()});

@@ -121,7 +121,7 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
 #define CODE(i)                                                             \
     case i:                                                                 \
         if constexpr (i >= min_w) {                                         \
-            if constexpr (isaWrap)                         \
+            if constexpr (isaWrap)                                          \
                 res = Fold<Op, op, i>::run(la->get(), lb->get(), nsw, nuw); \
             else                                                            \
                 res = Fold<Op, op, i>::run(la->get(), lb->get());           \
