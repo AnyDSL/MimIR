@@ -13,7 +13,6 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 
-#include "dialects/mem/be/ll/ll.h"
 #include "dialects/mem/mem.h"
 #include "dialects/mem/passes/fp/copy_prop.h"
 #include "dialects/mem/passes/fp/ssa_constr.h"
@@ -37,6 +36,5 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
             man.add<mem::Alloc2Malloc>();
         });
             },
-            [](Backends& backends) { backends["ll"] = &ll::emit; },
-            [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
+            nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
 }

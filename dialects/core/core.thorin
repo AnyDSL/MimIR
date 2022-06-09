@@ -2,6 +2,10 @@
 ///
 /// [TOC]
 ///
+/// ## Dependencies
+///
+.import mem;
+///
 /// ## Types
 ///
 /// ### %core.Int
@@ -123,3 +127,7 @@
 /// ### %core.wrap
 ///
 .ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [%Int w, %Int w] -> %Int w, normalize_wrap;
+///
+/// ### %core.wrap
+///
+.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, %Int w, %Int w] -> [%mem.M, %Int w], normalize_div;

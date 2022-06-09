@@ -105,15 +105,6 @@ inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const
     return w.app(w.app(w.ax<mem::mslot>(), {type, w.lit_nat_0()}), {mem, size, id}, dbg);
 }
 
-inline const Def* fn(mem::Div o, const Def* mod, const Def* dbg = {}) {
-    World& w = mod->world();
-    return w.app(w.ax(o), mod, dbg);
-}
-inline const Def* op(mem::Div o, const Def* mem, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = mem->world();
-    return w.app(fn(o, w.infer(a)), {mem, a, b}, dbg);
-}
-
 inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
     return match<mem::M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;
 }

@@ -1,4 +1,4 @@
-#include "dialects/mem/be/ll/ll.h"
+#include "dialects/core/be/ll/ll.h"
 
 #include <deque>
 #include <fstream>
@@ -558,7 +558,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         if (mode & WMode::nsw) op += " nsw";
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto div = match<mem::Div>(def)) {
+    } else if (auto div = match<core::div>(def)) {
         auto [m, x, y] = div->args<3>();
         auto t         = convert(x->type());
         emit_unsafe(m);
@@ -566,10 +566,10 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto b = emit(y);
 
         switch (div.flags()) {
-            case mem::Div::sdiv: op = "sdiv"; break;
-            case mem::Div::udiv: op = "udiv"; break;
-            case mem::Div::srem: op = "srem"; break;
-            case mem::Div::urem: op = "urem"; break;
+            case core::div::sdiv: op = "sdiv"; break;
+            case core::div::udiv: op = "udiv"; break;
+            case core::div::srem: op = "srem"; break;
+            case core::div::urem: op = "urem"; break;
             default: unreachable();
         }
 

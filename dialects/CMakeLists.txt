@@ -1,13 +1,6 @@
 # TODO can we get rid of this line?
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/thorin)
 
-add_thorin_dialect(core
-    SOURCES
-        core/core.cpp
-        core/core.h
-        core/normalizers.cpp
-)
-
 add_thorin_dialect(mem
     SOURCES
         mem/passes/fp/copy_prop.cpp
@@ -18,13 +11,20 @@ add_thorin_dialect(mem
         mem/passes/rw/alloc2malloc.h
         mem/passes/rw/remem_elim.cpp
         mem/passes/rw/remem_elim.h
-        mem/be/ll/ll.cpp
-        mem/be/ll/ll.h
         mem/mem.cpp
         mem/mem.h
         mem/normalizers.cpp
+)
+
+add_thorin_dialect(core
+    SOURCES
+        core/core.cpp
+        core/core.h
+        core/normalizers.cpp
+        core/be/ll/ll.cpp
+        core/be/ll/ll.h
     DEPENDS
-        core
+        mem
 )
 
 add_thorin_dialect(affine

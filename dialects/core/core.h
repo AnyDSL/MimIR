@@ -26,6 +26,10 @@ inline const Def* fn(wrap o, const Def* wmode, const Def* mod, const Def* dbg = 
     World& w = mod->world();
     return w.app(w.ax(o), {wmode, mod}, dbg);
 }
+inline const Def* fn(div o, const Def* mod, const Def* dbg = {}) {
+    World& w = mod->world();
+    return w.app(w.ax(o), mod, dbg);
+}
 ///@}
 
 /// @name op - these guys build the final function application for the various operations
@@ -46,6 +50,10 @@ inline const Def* op(shr o, const Def* a, const Def* b, const Def* dbg = {}) {
 inline const Def* op(wrap o, const Def* wmode, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = a->world();
     return w.app(fn(o, wmode, w.infer(a)), {a, b}, dbg);
+}
+inline const Def* op(div o, const Def* mem, const Def* a, const Def* b, const Def* dbg = {}) {
+    World& w = mem->world();
+    return w.app(fn(o, w.infer(a)), {mem, a, b}, dbg);
 }
 
 template<class O>

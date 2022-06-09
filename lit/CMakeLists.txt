@@ -1,9 +1,5 @@
-if ("${CMAKE_VERSION}" VERSION_LESS "3.12.0")
-  find_package(PythonInterp 3)
-else()
-  find_package(Python3 COMPONENTS Interpreter)
-  set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
-endif()
+find_package(Python3 COMPONENTS Interpreter)
+set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
 
 configure_file(lit.site.cfg.py.in lit.site.cfg.py @ONLY)
 add_custom_target(check

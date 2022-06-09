@@ -107,11 +107,10 @@ struct Fold<wrap, wrap::shl, w> {
 };
 
 // clang-format off
-// todo: div op fixme
-// template<nat_t w> struct Fold<Div, Div::sdiv, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
-// template<nat_t w> struct Fold<Div, Div::udiv, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
-// template<nat_t w> struct Fold<Div, Div::srem, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
-// template<nat_t w> struct Fold<Div, Div::urem, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
+ template<nat_t w> struct Fold<div, div::sdiv, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
+ template<nat_t w> struct Fold<div, div::udiv, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
+ template<nat_t w> struct Fold<div, div::srem, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
+ template<nat_t w> struct Fold<div, div::urem, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
 
 template<nat_t w> struct Fold<shr, shr::ashr, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
 template<nat_t w> struct Fold<shr, shr::lshr, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
@@ -182,7 +181,7 @@ static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a
 /// ```
 template<class AxTag>
 static const Def*
-reassociate(AxTag sub, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b, const Def* dbg) {
+reassociate(AxTag sub, World& /*world*/, [[maybe_unused]] const App* ab, const Def* a, const Def* b, const Def* dbg) {
     if (!is_associative(sub)) return nullptr;
 
     auto la = a->isa<Lit>();
@@ -491,6 +490,48 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
     if (auto res = reassociate<wrap>(sub, world, callee, a, b, dbg)) return res;
 
     return world.raw_app(callee, {a, b}, dbg);
+}
+
+template<div op>
+const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+    auto& world      = type->world();
+    auto callee      = c->as<App>();
+    auto [mem, a, b] = arg->projs<3>();
+    auto w           = isa_lit(callee->arg());
+    type             = type->as<Sigma>()->op(1); // peel of actual type
+    auto make_res    = [&, mem = mem](const Def* res) { return world.tuple({mem, res}, dbg); };
+
+    if (auto result = normalize::fold<div, op>(world, type, callee, a, b, dbg)) return make_res(result);
+
+    if (auto la = a->isa<Lit>()) {
+        if (la == world.lit_int(*w, 0)) return make_res(la); // 0 / b -> 0 and 0 % b -> 0
+    }
+
+    if (auto lb = b->isa<Lit>()) {
+        if (lb == world.lit_int(*w, 0)) return make_res(world.bot(type)); // a / 0 -> ⊥ and a % 0 -> ⊥
+
+        if (lb == world.lit_int(*w, 1)) {
+            switch (op) {
+                case div::sdiv: return make_res(a);                    // a / 1 -> a
+                case div::udiv: return make_res(a);                    // a / 1 -> a
+                case div::srem: return make_res(world.lit_int(*w, 0)); // a % 1 -> 0
+                case div::urem: return make_res(world.lit_int(*w, 0)); // a % 1 -> 0
+                default: unreachable();
+            }
+        }
+    }
+
+    if (a == b) {
+        switch (op) {
+            case div::sdiv: return make_res(world.lit_int(*w, 1)); // a / a -> 1
+            case div::udiv: return make_res(world.lit_int(*w, 1)); // a / a -> 1
+            case div::srem: return make_res(world.lit_int(*w, 0)); // a % a -> 0
+            case div::urem: return make_res(world.lit_int(*w, 0)); // a % a -> 0
+            default: unreachable();
+        }
+    }
+
+    return world.raw_app(callee, {mem, a, b}, dbg);
 }
 
 THORIN_core_NORMALIZER_IMPL
