@@ -15,6 +15,8 @@ function(add_thorin_dialect)
 
     list(TRANSFORM PARSED_DEPENDS       PREPEND ${CMAKE_CURRENT_BINARY_DIR}/../lib/thorin/ OUTPUT_VARIABLE DEPENDS_THORIN_FILES)
     list(TRANSFORM DEPENDS_THORIN_FILES  APPEND .thorin)
+    list(TRANSFORM PARSED_DEPENDS       PREPEND ${CMAKE_CURRENT_BINARY_DIR}/ OUTPUT_VARIABLE DEPENDS_HEADER_FILES)
+    list(TRANSFORM DEPENDS_HEADER_FILES  APPEND .h)
 
     set(THORIN_FILE     ${CMAKE_CURRENT_SOURCE_DIR}/${DIALECT}/${DIALECT}.thorin)
     set(THORIN_FILE_BIN ${CMAKE_CURRENT_BINARY_DIR}/../lib/thorin/${DIALECT}.thorin)
@@ -31,13 +33,13 @@ function(add_thorin_dialect)
     # copy dialect thorin file to lib/thorin/${DIALECT}.thorin
     add_custom_command(OUTPUT ${THORIN_FILE_BIN}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${THORIN_FILE} ${THORIN_FILE_BIN}
-        DEPENDS ${THORIN_FILE}
+        DEPENDS ${THORIN_FILE} ${DEPENDS_THORIN_FILES}
     )
 
     add_custom_command(
         OUTPUT ${DIALECT_MD} ${DIALECT_H}
         COMMAND thorin -e md -e h ${THORIN_FILE_BIN} -D ${CMAKE_CURRENT_BINARY_DIR}/../lib/thorin/
-        DEPENDS thorin ${THORIN_FILE_BIN} ${DEPENDS_THORIN_FILES}
+        DEPENDS thorin ${THORIN_FILE_BIN}
         COMMENT "Bootstrapping Thorin dialect '${DIALECT}' from '${THORIN_FILE}'"
     )
     add_custom_target(${DIALECT} ALL DEPENDS ${DIALECT_MD} ${DIALECT_H})
@@ -46,7 +48,7 @@ function(add_thorin_dialect)
         MODULE 
             ${PARSED_SOURCES}       # original sources passed to add_thorin_dialect
             ${DIALECT_H}            # the generated header of this dialect
-            ${DEPENDS_THORIN_FILES} # the generated headers of the dialects we depend on
+            ${DEPENDS_HEADER_FILES} # the generated headers of the dialects we depend on
     )
 
     set_target_properties(thorin_${DIALECT}
