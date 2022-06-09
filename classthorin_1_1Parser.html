@@ -123,8 +123,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae3382b4ec4793a19b4cd822131d00f76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#ae3382b4ec4793a19b4cd822131d00f76">Parser</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, std::string_view, std::istream &amp;, <a class="el" href="classthorin_1_1ArrayRef.html">ArrayRef</a>&lt; std::string &gt;, std::ostream *md=nullptr)</td></tr>
-<tr class="separator:ae3382b4ec4793a19b4cd822131d00f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2064a0f52b902cce80e19d240de5c6f5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#a2064a0f52b902cce80e19d240de5c6f5">Parser</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, std::string_view, std::istream &amp;, <a class="el" href="classthorin_1_1ArrayRef.html">ArrayRef</a>&lt; std::string &gt;, const <a class="el" href="namespacethorin.html#a286f60254e3f9699ea27cb2bc98b6051">Normalizers</a> *, std::ostream *md=nullptr)</td></tr>
+<tr class="separator:a2064a0f52b902cce80e19d240de5c6f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd545f2b14786e73e995e7df438c4baf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#acd545f2b14786e73e995e7df438c4baf">world</a> ()</td></tr>
 <tr class="separator:acd545f2b14786e73e995e7df438c4baf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad456197984ae5995361c73fb5574ce27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#ad456197984ae5995361c73fb5574ce27">parse_module</a> ()</td></tr>
@@ -134,8 +134,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a5d0024d7ba06f44a5f0567516c295828"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1Parser.html">Parser</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#a5d0024d7ba06f44a5f0567516c295828">import_module</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, std::string_view, <a class="el" href="classthorin_1_1ArrayRef.html">ArrayRef</a>&lt; std::string &gt;={})</td></tr>
-<tr class="separator:a5d0024d7ba06f44a5f0567516c295828"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae337ee7b103e34e5f0e3c151d9f05f12"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classthorin_1_1Parser.html">Parser</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Parser.html#ae337ee7b103e34e5f0e3c151d9f05f12">import_module</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;, std::string_view, <a class="el" href="classthorin_1_1ArrayRef.html">ArrayRef</a>&lt; std::string &gt;={}, const <a class="el" href="namespacethorin.html#a286f60254e3f9699ea27cb2bc98b6051">Normalizers</a> *normalizers=nullptr)</td></tr>
+<tr class="separator:ae337ee7b103e34e5f0e3c151d9f05f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Parses Thorin code into the provided <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a>. </p>
@@ -153,7 +153,7 @@ Static Public Member Functions</h2></td></tr>
 </li>
 </ol>
 
-<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00031">31</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00032">32</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="ad970a94c17aa87e7999eff2822be066e" name="ad970a94c17aa87e7999eff2822be066e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad970a94c17aa87e7999eff2822be066e">&#9670;&nbsp;</a></span>Binders</h2>
@@ -167,13 +167,13 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00033">33</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00034">34</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae3382b4ec4793a19b4cd822131d00f76" name="ae3382b4ec4793a19b4cd822131d00f76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3382b4ec4793a19b4cd822131d00f76">&#9670;&nbsp;</a></span>Parser()</h2>
+<a id="a2064a0f52b902cce80e19d240de5c6f5" name="a2064a0f52b902cce80e19d240de5c6f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2064a0f52b902cce80e19d240de5c6f5">&#9670;&nbsp;</a></span>Parser()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -201,6 +201,12 @@ Static Public Member Functions</h2></td></tr>
           <td></td>
           <td class="paramtype"><a class="el" href="classthorin_1_1ArrayRef.html">ArrayRef</a>&lt; std::string &gt;&#160;</td>
           <td class="paramname"><em>import_search_paths</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacethorin.html#a286f60254e3f9699ea27cb2bc98b6051">Normalizers</a> *&#160;</td>
+          <td class="paramname"><em>normalizers</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -237,14 +243,14 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00082">82</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00089">89</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="h_8cpp_source.html#l00012">thorin::h::Bootstrapper::emit()</a>.</p>
+<p class="reference">References <a class="el" href="h_8cpp_source.html#l00013">thorin::h::Bootstrapper::emit()</a>.</p>
 
 </div>
 </div>
-<a id="a5d0024d7ba06f44a5f0567516c295828" name="a5d0024d7ba06f44a5f0567516c295828"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d0024d7ba06f44a5f0567516c295828">&#9670;&nbsp;</a></span>import_module()</h2>
+<a id="ae337ee7b103e34e5f0e3c151d9f05f12" name="ae337ee7b103e34e5f0e3c151d9f05f12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae337ee7b103e34e5f0e3c151d9f05f12">&#9670;&nbsp;</a></span>import_module()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -268,7 +274,13 @@ Static Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classthorin_1_1ArrayRef.html">ArrayRef</a>&lt; std::string &gt;&#160;</td>
-          <td class="paramname"><em>user_search_paths</em> = <code>{}</code>&#160;</td>
+          <td class="paramname"><em>user_search_paths</em> = <code>{}</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="namespacethorin.html#a286f60254e3f9699ea27cb2bc98b6051">Normalizers</a> *&#160;</td>
+          <td class="paramname"><em>normalizers</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -283,9 +295,9 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00058">58</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00061">61</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="dialects_8cpp_source.html#l00039">thorin::get_plugin_search_paths()</a>, <a class="el" href="parser_8cpp_source.html#l00110">parse_module()</a>, and <a class="el" href="parser_8h_source.html#l00037">world()</a>.</p>
+<p class="reference">References <a class="el" href="dialects_8cpp_source.html#l00039">thorin::get_plugin_search_paths()</a>, <a class="el" href="parser_8cpp_source.html#l00117">parse_module()</a>, and <a class="el" href="parser_8h_source.html#l00043">world()</a>.</p>
 
 </div>
 </div>
@@ -304,11 +316,11 @@ Static Public Member Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00110">110</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8cpp_source.html#l00117">117</a> of file <a class="el" href="parser_8cpp_source.html">parser.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a86d887ab52987c7cae217900a37da7c0">thorin::Tok::K_import</a>, and <a class="el" href="classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aa5958f3529ffa5352df7abb68e3d6e94">thorin::Tok::M_eof</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="parser_8cpp_source.html#l00058">import_module()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="parser_8cpp_source.html#l00061">import_module()</a>.</p>
 
 </div>
 </div>
@@ -335,11 +347,11 @@ Static Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00037">37</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="parser_8h_source.html#l00043">43</a> of file <a class="el" href="parser_8h_source.html">parser.h</a>.</p>
 
 <p class="reference">References <a class="el" href="lexer_8h_source.html#l00024">thorin::Lexer::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="parser_8cpp_source.html#l00058">import_module()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="parser_8cpp_source.html#l00061">import_module()</a>.</p>
 
 </div>
 </div>

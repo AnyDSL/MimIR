@@ -2,7 +2,7 @@ var searchData=
 [
   ['ac_0',['Ac',['../classthorin_1_1Ac.html',1,'thorin']]],
   ['ahead_1',['Ahead',['../structthorin_1_1utf8_1_1Lexer_1_1Ahead.html',1,'thorin::utf8::Lexer']]],
-  ['alloc2malloc_2',['Alloc2Malloc',['../classthorin_1_1Alloc2Malloc.html',1,'thorin']]],
+  ['alloc2malloc_2',['Alloc2Malloc',['../classthorin_1_1mem_1_1Alloc2Malloc.html',1,'thorin::mem']]],
   ['app_3',['App',['../classthorin_1_1App.html',1,'thorin']]],
   ['arr_4',['Arr',['../classthorin_1_1Arr.html',1,'thorin']]],
   ['array_5',['Array',['../classthorin_1_1Array.html',1,'thorin']]],

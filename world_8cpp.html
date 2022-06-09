@@ -109,6 +109,7 @@ $(document).ready(function(){initNavTree('world_8cpp.html',''); initResizable();
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="world_8h_source.html">thorin/world.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="tuple_8h_source.html">thorin/tuple.h</a>&quot;</code><br />
 <code>#include &lt;unistd.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="check_8h_source.html">thorin/check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="def_8h_source.html">thorin/def.h</a>&quot;</code><br />
@@ -122,7 +123,7 @@ $(document).ready(function(){initNavTree('world_8cpp.html',''); initResizable();
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for world.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="world_8cpp__incl.svg" width="2582" height="739"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="world_8cpp__incl.svg" width="2484" height="739"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -135,7 +136,7 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a8160e20af8896b2d63fbdd98dd7425ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="world_8cpp.html#a8160e20af8896b2d63fbdd98dd7425ff">CODE</a>(T,  o)&#160;&#160;&#160;data_.T##_[<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>(T::o)] = axiom(normalize_##T&lt;T::o&gt;, ty, 0, Tag::T, sub_t(T::o), dbg(op2str(T::o)));</td></tr>
+<tr class="memitem:a8160e20af8896b2d63fbdd98dd7425ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="world_8cpp.html#a8160e20af8896b2d63fbdd98dd7425ff">CODE</a>(T,  o)</td></tr>
 <tr class="separator:a8160e20af8896b2d63fbdd98dd7425ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8160e20af8896b2d63fbdd98dd7425ff"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="world_8cpp.html#a8160e20af8896b2d63fbdd98dd7425ff">CODE</a>(T,  o)</td></tr>
 <tr class="separator:a8160e20af8896b2d63fbdd98dd7425ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,8 +147,6 @@ Functions</h2></td></tr>
 <tr class="separator:ab00a9a6925103ec81b0aa99c38c00f48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4e8096218f5bbe9c8076b54793b1342"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab4e8096218f5bbe9c8076b54793b1342">thorin::is_shape</a> (const Def *s)</td></tr>
 <tr class="separator:ab4e8096218f5bbe9c8076b54793b1342"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c9aa9c890f64ffc1d214f34e0f122b6"><td class="memItemLeft" align="right" valign="top">static const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a0c9aa9c890f64ffc1d214f34e0f122b6">thorin::tuple_of_types</a> (const Def *t)</td></tr>
-<tr class="separator:a0c9aa9c890f64ffc1d214f34e0f122b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a8160e20af8896b2d63fbdd98dd7425ff" name="a8160e20af8896b2d63fbdd98dd7425ff"></a>
@@ -171,11 +170,16 @@ Functions</h2></td></tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td>&#160;&#160;&#160;data_.T##_[<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>(T::o)] = axiom(normalize_##T&lt;T::o&gt;, ty, 0, Tag::T, sub_t(T::o), dbg(op2str(T::o)));</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
-
+<b>Value:</b><div class="fragment"><div class="line">    data_.T##_[<a class="code hl_class" href="namespace_3globalScope_4.html#classsize__t">size_t</a>(T::o)] = \</div>
+<div class="line">        axiom(normalize_##T&lt;T::o&gt;, ty, Axiom::Global_Dialect, Tag::T, <a class="code hl_typedef" href="namespacethorin.html#a15ce090292f7ca88b828d15baf109838">sub_t</a>(T::o), dbg(<a class="code hl_function" href="namespacethorin.html#a079485ea039b958632bb4f0551c0546b">op2str</a>(T::o)));</div>
+<div class="ttc" id="anamespace_3globalScope_4_html_classsize__t"><div class="ttname"><a href="namespace_3globalScope_4.html#classsize__t">size_t</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a079485ea039b958632bb4f0551c0546b"><div class="ttname"><a href="namespacethorin.html#a079485ea039b958632bb4f0551c0546b">thorin::op2str</a></div><div class="ttdeci">constexpr std::string_view op2str(Bit o)</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00215">tables.h:215</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a15ce090292f7ca88b828d15baf109838"><div class="ttname"><a href="namespacethorin.html#a15ce090292f7ca88b828d15baf109838">thorin::sub_t</a></div><div class="ttdeci">u8 sub_t</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00017">tables.h:17</a></div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <a id="a8160e20af8896b2d63fbdd98dd7425ff" name="a8160e20af8896b2d63fbdd98dd7425ff"></a>
@@ -203,12 +207,9 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">    data_.Conv_[<a class="code hl_class" href="namespace_3globalScope_4.html#classsize__t">size_t</a>(T::o)] = \</div>
-<div class="line">        axiom(normalize_Conv&lt;T::o&gt;, make_type(T::o), 0, <a class="code hl_enumeration" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4f">Tag::Conv</a>, <a class="code hl_typedef" href="namespacethorin.html#a15ce090292f7ca88b828d15baf109838">sub_t</a>(T::o), dbg(<a class="code hl_function" href="namespacethorin.html#a079485ea039b958632bb4f0551c0546b">op2str</a>(T::o)));</div>
-<div class="ttc" id="anamespace_3globalScope_4_html_classsize__t"><div class="ttname"><a href="namespace_3globalScope_4.html#classsize__t">size_t</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a079485ea039b958632bb4f0551c0546b"><div class="ttname"><a href="namespacethorin.html#a079485ea039b958632bb4f0551c0546b">thorin::op2str</a></div><div class="ttdeci">constexpr std::string_view op2str(Bit o)</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00218">tables.h:218</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a15ce090292f7ca88b828d15baf109838"><div class="ttname"><a href="namespacethorin.html#a15ce090292f7ca88b828d15baf109838">thorin::sub_t</a></div><div class="ttdeci">u8 sub_t</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00017">tables.h:17</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a6216d5351f2eabcae4ab300001103a4f"><div class="ttname"><a href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4f">thorin::Conv</a></div><div class="ttdeci">Conv</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00204">tables.h:204</a></div></div>
+<b>Value:</b><div class="fragment"><div class="line">    data_.Conv_[<a class="code hl_class" href="namespace_3globalScope_4.html#classsize__t">size_t</a>(T::o)] = axiom(normalize_Conv&lt;T::o&gt;, make_type(T::o), Axiom::Global_Dialect, <a class="code hl_enumeration" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4f">Tag::Conv</a>, \</div>
+<div class="line">                                      <a class="code hl_typedef" href="namespacethorin.html#a15ce090292f7ca88b828d15baf109838">sub_t</a>(T::o), dbg(<a class="code hl_function" href="namespacethorin.html#a079485ea039b958632bb4f0551c0546b">op2str</a>(T::o)));</div>
+<div class="ttc" id="anamespacethorin_html_a6216d5351f2eabcae4ab300001103a4f"><div class="ttname"><a href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4f">thorin::Conv</a></div><div class="ttdeci">Conv</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00201">tables.h:201</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

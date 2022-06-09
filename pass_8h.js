@@ -1,5 +1,6 @@
 var pass_8h =
 [
+    [ "thorin::PassTag", "namespacethorin.html#structthorin_1_1PassTag", null ],
     [ "thorin::IPass", "classthorin_1_1IPass.html", "classthorin_1_1IPass" ],
     [ "thorin::Pass", "classthorin_1_1Pass.html", "classthorin_1_1Pass" ],
     [ "thorin::PassMan", "classthorin_1_1PassMan.html", "classthorin_1_1PassMan" ],

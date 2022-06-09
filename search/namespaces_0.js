@@ -11,10 +11,11 @@ var searchData=
   ['ll_8',['ll',['../namespacethorin_1_1ll.html',1,'thorin']]],
   ['mem_9',['mem',['../namespacethorin_1_1mem.html',1,'thorin']]],
   ['node_10',['Node',['../namespacethorin_1_1Node.html',1,'thorin']]],
-  ['rmode_11',['RMode',['../namespacethorin_1_1RMode.html',1,'thorin']]],
-  ['sys_12',['sys',['../namespacethorin_1_1sys.html',1,'thorin']]],
-  ['tag_13',['Tag',['../namespacethorin_1_1Tag.html',1,'thorin']]],
-  ['thorin_14',['thorin',['../namespacethorin.html',1,'']]],
-  ['utf8_15',['utf8',['../namespacethorin_1_1utf8.html',1,'thorin']]],
-  ['wmode_16',['WMode',['../namespacethorin_1_1WMode.html',1,'thorin']]]
+  ['normalize_11',['normalize',['../namespacethorin_1_1normalize.html',1,'thorin']]],
+  ['rmode_12',['RMode',['../namespacethorin_1_1RMode.html',1,'thorin']]],
+  ['sys_13',['sys',['../namespacethorin_1_1sys.html',1,'thorin']]],
+  ['tag_14',['Tag',['../namespacethorin_1_1Tag.html',1,'thorin']]],
+  ['thorin_15',['thorin',['../namespacethorin.html',1,'']]],
+  ['utf8_16',['utf8',['../namespacethorin_1_1utf8.html',1,'thorin']]],
+  ['wmode_17',['WMode',['../namespacethorin_1_1WMode.html',1,'thorin']]]
 ];

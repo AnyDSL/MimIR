@@ -10,6 +10,7 @@ var searchData=
   ['container_2eh_7',['container.h',['../container_8h.html',1,'']]],
   ['copy_5fprop_2ecpp_8',['copy_prop.cpp',['../copy__prop_8cpp.html',1,'']]],
   ['copy_5fprop_2eh_9',['copy_prop.h',['../copy__prop_8h.html',1,'']]],
-  ['core_2eh_10',['core.h',['../core_8h.html',1,'']]],
-  ['core_2emd_11',['core.md',['../core_8md.html',1,'']]]
+  ['core_2ecpp_10',['core.cpp',['../core_8cpp.html',1,'']]],
+  ['core_2eh_11',['core.h',['../build_2dialects_2core_8h.html',1,'(Global Namespace)'],['../dialects_2core_2core_8h.html',1,'(Global Namespace)']]],
+  ['core_2emd_12',['core.md',['../core_8md.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var optimize_8h =
 [
-    [ "optimize", "optimize_8h.html#a9e64c2e92ce1a1166c536644960116c2", null ]
+    [ "optimize", "optimize_8h.html#aafbe7c65f3fb4df3b05a04b70cebe149", null ]
 ];

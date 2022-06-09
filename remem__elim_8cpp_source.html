@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: /home/runner/work/thorin2/thorin2/thorin/pass/rw/remem_elim.cpp Source File</title>
+<title>Thorin: /home/runner/work/thorin2/thorin2/dialects/mem/passes/rw/remem_elim.cpp Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -104,26 +104,37 @@ $(document).ready(function(){initNavTree('remem__elim_8cpp_source.html',''); ini
   <div class="headertitle"><div class="title">remem_elim.cpp</div></div>
 </div><!--header-->
 <div class="contents">
-<a href="remem__elim_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="remem__elim_8h.html">thorin/pass/rw/remem_elim.h</a>&quot;</span></div>
+<a href="remem__elim_8cpp.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &quot;<a class="code" href="remem__elim_8h.html">dialects/mem/passes/rw/remem_elim.h</a>&quot;</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="build_2dialects_2mem_8h.html">dialects/mem.h</a>&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="classthorin_1_1RememElim.html#a0ef4565bbc35c32696b4d31074c6991a">    5</a></span><span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* <a class="code hl_function" href="classthorin_1_1RememElim.html#a0ef4565bbc35c32696b4d31074c6991a">RememElim::rewrite</a>(<span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* def) {</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> remem = isa&lt;Tag::Remem&gt;(def)) <span class="keywordflow">return</span> remem-&gt;arg();</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="keywordflow">return</span> def;</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>}</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>} <span class="comment">// namespace thorin</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin_1_1mem.html">thorin::mem</a> {</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classthorin_1_1mem_1_1RememElim.html#abec89c64d85656f4268f3ab5bfe526c3">    7</a></span><span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* <a class="code hl_function" href="classthorin_1_1mem_1_1RememElim.html#abec89c64d85656f4268f3ab5bfe526c3">RememElim::rewrite</a>(<span class="keyword">const</span> <a class="code hl_class" href="classthorin_1_1Def.html">Def</a>* def) {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    <span class="keywordflow">if</span> (<span class="keyword">auto</span> <a class="code hl_enumeration" href="namespacethorin_1_1mem.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14">remem</a> = match&lt;mem::remem&gt;(def)) <span class="keywordflow">return</span> <a class="code hl_enumeration" href="namespacethorin_1_1mem.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14">remem</a>-&gt;arg();</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keywordflow">return</span> def;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>}</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classthorin_1_1mem_1_1RememElim.html#a370f67c0ee2f347a5b0ae153cda6df12">   12</a></span><a class="code hl_struct" href="namespacethorin.html#structthorin_1_1PassTag">PassTag</a>* <a class="code hl_function" href="classthorin_1_1mem_1_1RememElim.html#a370f67c0ee2f347a5b0ae153cda6df12">RememElim::ID</a>() {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">static</span> <a class="code hl_struct" href="namespacethorin.html#structthorin_1_1PassTag">PassTag</a> Key;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">return</span> &amp;Key;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>}</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>} <span class="comment">// namespace thorin::mem</span></div>
+<div class="ttc" id="abuild_2dialects_2mem_8h_html"><div class="ttname"><a href="build_2dialects_2mem_8h.html">mem.h</a></div></div>
 <div class="ttc" id="aclassthorin_1_1Def_html"><div class="ttname"><a href="classthorin_1_1Def.html">thorin::Def</a></div><div class="ttdoc">Base class for all Defs.</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00108">def.h:108</a></div></div>
-<div class="ttc" id="aclassthorin_1_1RememElim_html_a0ef4565bbc35c32696b4d31074c6991a"><div class="ttname"><a href="classthorin_1_1RememElim.html#a0ef4565bbc35c32696b4d31074c6991a">thorin::RememElim::rewrite</a></div><div class="ttdeci">const Def * rewrite(const Def *) override</div><div class="ttdef"><b>Definition:</b> <a href="remem__elim_8cpp_source.html#l00005">remem_elim.cpp:5</a></div></div>
-<div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition:</b> <a href="cfg_8cpp_source.html#l00014">cfg.cpp:14</a></div></div>
+<div class="ttc" id="aclassthorin_1_1mem_1_1RememElim_html_a370f67c0ee2f347a5b0ae153cda6df12"><div class="ttname"><a href="classthorin_1_1mem_1_1RememElim.html#a370f67c0ee2f347a5b0ae153cda6df12">thorin::mem::RememElim::ID</a></div><div class="ttdeci">static PassTag * ID()</div><div class="ttdef"><b>Definition:</b> <a href="remem__elim_8cpp_source.html#l00012">remem_elim.cpp:12</a></div></div>
+<div class="ttc" id="aclassthorin_1_1mem_1_1RememElim_html_abec89c64d85656f4268f3ab5bfe526c3"><div class="ttname"><a href="classthorin_1_1mem_1_1RememElim.html#abec89c64d85656f4268f3ab5bfe526c3">thorin::mem::RememElim::rewrite</a></div><div class="ttdeci">const Def * rewrite(const Def *) override</div><div class="ttdef"><b>Definition:</b> <a href="remem__elim_8cpp_source.html#l00007">remem_elim.cpp:7</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1mem_html"><div class="ttname"><a href="namespacethorin_1_1mem.html">thorin::mem</a></div><div class="ttdef"><b>Definition:</b> <a href="dialects_2mem_2mem_8h_source.html#l00010">mem.h:10</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1mem_html_a59ec3b6d3bf2ec52f66c9a16aad2ff14"><div class="ttname"><a href="namespacethorin_1_1mem.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14">thorin::mem::remem</a></div><div class="ttdeci">remem</div><div class="ttdef"><b>Definition:</b> <a href="build_2dialects_2mem_8h_source.html#l00057">mem.h:57</a></div></div>
+<div class="ttc" id="anamespacethorin_html_structthorin_1_1PassTag"><div class="ttname"><a href="namespacethorin.html#structthorin_1_1PassTag">thorin::PassTag</a></div><div class="ttdef"><b>Definition:</b> <a href="pass_8h_source.html#l00014">pass.h:14</a></div></div>
 <div class="ttc" id="aremem__elim_8h_html"><div class="ttname"><a href="remem__elim_8h.html">remem_elim.h</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_02386abad8cd81366000917a379dc307.html">pass</a></li><li class="navelem"><a class="el" href="dir_cb1aba955556bf13f27d1bd157c08f5f.html">rw</a></li><li class="navelem"><a class="el" href="remem__elim_8cpp.html">remem_elim.cpp</a></li>
+    <li class="navelem"><a class="el" href="dir_dc7f769b3d5332bd9f89fd345831c3ed.html">dialects</a></li><li class="navelem"><a class="el" href="dir_f4f507027349df35d55005177e6b6800.html">mem</a></li><li class="navelem"><a class="el" href="dir_d856aeb86371cf106d2460357817b00f.html">passes</a></li><li class="navelem"><a class="el" href="dir_67dd3f5d4ec44d56c3907da278adf660.html">rw</a></li><li class="navelem"><a class="el" href="remem__elim_8cpp.html">remem_elim.cpp</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>

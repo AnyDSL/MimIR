@@ -121,12 +121,18 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a11fe0936e06841a3f7f466c10b6b8e43"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1DialectInfo.html#a11fe0936e06841a3f7f466c10b6b8e43">register_passes</a> )(<a class="el" href="classthorin_1_1PipelineBuilder.html">PipelineBuilder</a> &amp;builder)</td></tr>
 <tr class="memdesc:a11fe0936e06841a3f7f466c10b6b8e43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the dialects' callbacks for the pipeline extension points.  <a href="structthorin_1_1DialectInfo.html#a11fe0936e06841a3f7f466c10b6b8e43">More...</a><br /></td></tr>
 <tr class="separator:a11fe0936e06841a3f7f466c10b6b8e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab268d1cb1eb2883c47a3c944307688e"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1DialectInfo.html#aab268d1cb1eb2883c47a3c944307688e">register_backends</a> )(<a class="el" href="namespacethorin.html#ab70a3eb6856bc409f9ed3627fff8ab36">Backends</a> &amp;backends)</td></tr>
+<tr class="memdesc:aab268d1cb1eb2883c47a3c944307688e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the mapping from backend names to emission functions in the given <em>backends</em> map.  <a href="structthorin_1_1DialectInfo.html#aab268d1cb1eb2883c47a3c944307688e">More...</a><br /></td></tr>
+<tr class="separator:aab268d1cb1eb2883c47a3c944307688e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c7b0c9a86e388867f22f9c283b39ef5"><td class="memItemLeft" align="right" valign="top">void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1DialectInfo.html#a5c7b0c9a86e388867f22f9c283b39ef5">register_normalizers</a> )(<a class="el" href="namespacethorin.html#a286f60254e3f9699ea27cb2bc98b6051">Normalizers</a> &amp;normalizers)</td></tr>
+<tr class="memdesc:a5c7b0c9a86e388867f22f9c283b39ef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for registering the mapping from axiom ids to normalizer functions in the given <em>normalizers</em> map.  <a href="structthorin_1_1DialectInfo.html#a5c7b0c9a86e388867f22f9c283b39ef5">More...</a><br /></td></tr>
+<tr class="separator:a5c7b0c9a86e388867f22f9c283b39ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Basic info and registration function pointer to be returned from a dialect plugin. </p>
 <p ><a class="el" href="classthorin_1_1Use.html" title="References a user.">Use</a> <a class="el" href="classthorin_1_1Dialect.html">Dialect</a> to load such a plugin. </p>
 
-<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00017">17</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00025">25</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="a354e5f99f9966eb645f6b62b5b8f8834" name="a354e5f99f9966eb645f6b62b5b8f8834"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a354e5f99f9966eb645f6b62b5b8f8834">&#9670;&nbsp;</a></span>plugin_name</h2>
@@ -142,9 +148,49 @@ Public Attributes</h2></td></tr>
 
 <p>Name of the plugin. </p>
 
-<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00019">19</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00027">27</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="dialects_8h_source.html#l00044">thorin::Dialect::name()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dialects_8h_source.html#l00058">thorin::Dialect::name()</a>.</p>
+
+</div>
+</div>
+<a id="aab268d1cb1eb2883c47a3c944307688e" name="aab268d1cb1eb2883c47a3c944307688e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab268d1cb1eb2883c47a3c944307688e">&#9670;&nbsp;</a></span>register_backends</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(* thorin::DialectInfo::register_backends) (<a class="el" href="namespacethorin.html#ab70a3eb6856bc409f9ed3627fff8ab36">Backends</a> &amp;backends)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback for registering the mapping from backend names to emission functions in the given <em>backends</em> map. </p>
+
+<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00033">33</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="dialects_8h_source.html#l00069">thorin::Dialect::register_backends()</a>.</p>
+
+</div>
+</div>
+<a id="a5c7b0c9a86e388867f22f9c283b39ef5" name="a5c7b0c9a86e388867f22f9c283b39ef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c7b0c9a86e388867f22f9c283b39ef5">&#9670;&nbsp;</a></span>register_normalizers</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void(* thorin::DialectInfo::register_normalizers) (<a class="el" href="namespacethorin.html#a286f60254e3f9699ea27cb2bc98b6051">Normalizers</a> &amp;normalizers)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback for registering the mapping from axiom ids to normalizer functions in the given <em>normalizers</em> map. </p>
+
+<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00036">36</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="dialects_8h_source.html#l00074">thorin::Dialect::register_normalizers()</a>.</p>
 
 </div>
 </div>
@@ -162,9 +208,9 @@ Public Attributes</h2></td></tr>
 
 <p>Callback for registering the dialects' callbacks for the pipeline extension points. </p>
 
-<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00022">22</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="dialects_8h_source.html#l00030">30</a> of file <a class="el" href="dialects_8h_source.html">dialects.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="dialects_8h_source.html#l00050">thorin::Dialect::register_passes()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dialects_8h_source.html#l00064">thorin::Dialect::register_passes()</a>.</p>
 
 </div>
 </div>

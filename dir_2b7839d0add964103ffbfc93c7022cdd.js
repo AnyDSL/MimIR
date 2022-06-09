@@ -2,14 +2,10 @@ var dir_2b7839d0add964103ffbfc93c7022cdd =
 [
     [ "beta_red.cpp", "beta__red_8cpp.html", null ],
     [ "beta_red.h", "beta__red_8h.html", "beta__red_8h" ],
-    [ "copy_prop.cpp", "copy__prop_8cpp.html", null ],
-    [ "copy_prop.h", "copy__prop_8h.html", "copy__prop_8h" ],
     [ "eta_exp.cpp", "eta__exp_8cpp.html", null ],
     [ "eta_exp.h", "eta__exp_8h.html", "eta__exp_8h" ],
     [ "eta_red.cpp", "eta__red_8cpp.html", "eta__red_8cpp" ],
     [ "eta_red.h", "eta__red_8h.html", "eta__red_8h" ],
-    [ "ssa_constr.cpp", "ssa__constr_8cpp.html", "ssa__constr_8cpp" ],
-    [ "ssa_constr.h", "ssa__constr_8h.html", "ssa__constr_8h" ],
     [ "tail_rec_elim.cpp", "tail__rec__elim_8cpp.html", null ],
     [ "tail_rec_elim.h", "tail__rec__elim_8h.html", "tail__rec__elim_8h" ]
 ];

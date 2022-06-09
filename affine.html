@@ -104,13 +104,24 @@ $(document).ready(function(){initNavTree('affine.html',''); initResizable(); });
   <div class="headertitle"><div class="title">The affine Dialect </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_build_dialects_affine"></a></p><div class="fragment"><div class="line">.import mem;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md42"></a>
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md42">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md43">Types</a></li>
+<li class="level1"><a href="#autotoc_md44">Operations</a><ul><li class="level2"><a href="#autotoc_md45">%affine.For</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_build_dialects_affine"></a></p>
+<h1><a class="anchor" id="autotoc_md42"></a>
+Dependencies</h1>
+<div class="fragment"><div class="line">.import mem;</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md43"></a>
 Types</h1>
 <p >TODO</p>
-<h1><a class="anchor" id="autotoc_md43"></a>
+<h1><a class="anchor" id="autotoc_md44"></a>
 Operations</h1>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md45"></a>
 %affine.For</h2>
 <p >This operation ranges from (including) <code>start</code> to (excluding) <code>stop</code> using <code>step</code> as stride. In addition, this loop manages <code>n</code> loop accumulators whose initial values <code>init</code> must be given. Each iteration the given <code>body</code> is invoked which receives</p><ul>
 <li>the current <code>mem.M</code>,</li>

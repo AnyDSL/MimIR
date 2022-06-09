@@ -11,7 +11,7 @@ var searchData=
   ['binary_5ffind_8',['binary_find',['../namespacethorin.html#a437c6f50faf6e57f126429d5a0ce9642',1,'thorin']]],
   ['bitcast_9',['bitcast',['../namespacethorin.html#a35ef19aa33b6c70ef2aca7bf23009527',1,'thorin']]],
   ['bitset_10',['BitSet',['../classthorin_1_1BitSet.html#a4d9b7c65114ef8ce8c379bfaf3da4763',1,'thorin::BitSet::BitSet()'],['../classthorin_1_1BitSet.html#ad6abf7b3a05e68de0f71a34ac2ec6453',1,'thorin::BitSet::BitSet(const BitSet &amp;other)'],['../classthorin_1_1BitSet.html#ad9c6977c68542836923ae8fef53b08b0',1,'thorin::BitSet::BitSet(BitSet &amp;&amp;other)']]],
-  ['body_11',['body',['../classthorin_1_1Lam.html#ad4c385e97860a76d0c239f9733df8c9d',1,'thorin::Lam::body()'],['../classthorin_1_1Pack.html#a933b8506e8b10dd3fea50ab8d62fa291',1,'thorin::Pack::body()'],['../classthorin_1_1Arr.html#a1740f9273698eb572e4ffe1b478ee430',1,'thorin::Arr::body()'],['../structthorin_1_1ll_1_1BB.html#ac701cb02c0d3aba5a62e69225e7284fd',1,'thorin::ll::BB::body()']]],
+  ['body_11',['body',['../classthorin_1_1Arr.html#a1740f9273698eb572e4ffe1b478ee430',1,'thorin::Arr::body()'],['../structthorin_1_1ll_1_1BB.html#ac701cb02c0d3aba5a62e69225e7284fd',1,'thorin::ll::BB::body()'],['../classthorin_1_1Pack.html#a933b8506e8b10dd3fea50ab8d62fa291',1,'thorin::Pack::body()'],['../classthorin_1_1Lam.html#ad4c385e97860a76d0c239f9733df8c9d',1,'thorin::Lam::body()']]],
   ['bootstrap_12',['bootstrap',['../classthorin_1_1Parser.html#ad7e4beb7827c77583ed8de6ffff562c5',1,'thorin::Parser']]],
   ['bootstrapper_13',['Bootstrapper',['../classthorin_1_1h_1_1Bootstrapper.html#a508c511a64d60358db557b360e8edb0b',1,'thorin::h::Bootstrapper']]],
   ['bot_14',['bot',['../classthorin_1_1World.html#a0eedd08743b630e231af89f337799e47',1,'thorin::World']]],

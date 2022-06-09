@@ -12,9 +12,6 @@ var tables_8h =
     [ "thorin::Tag2Enum_< Tag::Wrap >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Wrap_01_4", [
       [ "type", "namespacethorin.html#afe45fcf95804fc7c4ab29c051f04c2ca", null ]
     ] ],
-    [ "thorin::Tag2Enum_< Tag::Div >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1Div_01_4", [
-      [ "type", "namespacethorin.html#ab7223912d2c6b24ada2f503e55499d0e", null ]
-    ] ],
     [ "thorin::Tag2Enum_< Tag::ROp >", "namespacethorin.html#structthorin_1_1Tag2Enum___3_01Tag_1_1ROp_01_4", [
       [ "type", "namespacethorin.html#a86a0c6fdd0873cb8f02d0b2d03d28dde", null ]
     ] ],
@@ -44,7 +41,6 @@ var tables_8h =
     [ "THORIN_ACC", "tables_8h.html#a532b856d3846177f567917bc35c7722c", null ],
     [ "THORIN_BIT", "tables_8h.html#a3543fb5b347ca3087c3943481aee0117", null ],
     [ "THORIN_CONV", "tables_8h.html#ab626ca1c9eb756ce591b70867b024024", null ],
-    [ "THORIN_DIV", "tables_8h.html#ae0239715c3ddf72ad146e6626532d770", null ],
     [ "THORIN_I_CMP", "tables_8h.html#a56c2eb23436cac887f9d77fad4fa9323", null ],
     [ "THORIN_NODE", "tables_8h.html#ad441fba8cfece95e5b9a6bfb4e2c65f1", null ],
     [ "THORIN_PE", "tables_8h.html#af14ab32ec4f1332fef4086ea13d68a93", null ],
@@ -95,12 +91,6 @@ var tables_8h =
       [ "r2s", "tables_8h.html#a6216d5351f2eabcae4ab300001103a4faea350c7fd00b82fa94ce264a386a57cb", null ],
       [ "r2u", "tables_8h.html#a6216d5351f2eabcae4ab300001103a4fa746a49b2e21a5bcacd046f0c02ab6022", null ],
       [ "r2r", "tables_8h.html#a6216d5351f2eabcae4ab300001103a4fa5e8fe2a329c8ef1e555d617feda85540", null ]
-    ] ],
-    [ "Div", "tables_8h.html#a27039a3899fab2b5ad30ab58773cb60b", [
-      [ "sdiv", "tables_8h.html#a27039a3899fab2b5ad30ab58773cb60ba2ccfa40273acf334bf92c6132f66f779", null ],
-      [ "udiv", "tables_8h.html#a27039a3899fab2b5ad30ab58773cb60bac216d1e0c7cd594079079350dc17b506", null ],
-      [ "srem", "tables_8h.html#a27039a3899fab2b5ad30ab58773cb60ba6dcaf449415765e1fc8503e76318736b", null ],
-      [ "urem", "tables_8h.html#a27039a3899fab2b5ad30ab58773cb60bae1851600007553e51484056678cdb3d1", null ]
     ] ],
     [ "ICmp", "tables_8h.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9", [
       [ "_f", "tables_8h.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9ae99036e91302d08b54957cdb59d03e49", null ],
@@ -198,7 +188,6 @@ var tables_8h =
     [ "op2str", "tables_8h.html#a294c9b4da7d20c70a685cfa65cd83e35", null ],
     [ "op2str", "tables_8h.html#a079485ea039b958632bb4f0551c0546b", null ],
     [ "op2str", "tables_8h.html#a2a25454204bec9d314d627682a983523", null ],
-    [ "op2str", "tables_8h.html#a4723c4810257b5841f9aacd9c817cfc3", null ],
     [ "op2str", "tables_8h.html#ac54f29288775f26718be8ee70be1bc7d", null ],
     [ "op2str", "tables_8h.html#abfbc9a6d77679cea92739b6b8987cbc3", null ],
     [ "op2str", "tables_8h.html#a51e804aed2301c447bbf2638d0b7879a", null ],
@@ -216,7 +205,6 @@ var tables_8h =
     [ "Num< Acc >", "tables_8h.html#a74d0f5b744e81079896a0281c0d39c73", null ],
     [ "Num< Bit >", "tables_8h.html#ad47ce2d4f0c22c86e1466c1c0d1bb2a1", null ],
     [ "Num< Conv >", "tables_8h.html#a7a5a66b229dd603498c12f67d535bd1a", null ],
-    [ "Num< Div >", "tables_8h.html#a9ef61018fde767431c8fc685a4fa7b82", null ],
     [ "Num< ICmp >", "tables_8h.html#a719a783528bc7ba05a0fe996ed4016ed", null ],
     [ "Num< PE >", "tables_8h.html#a2eb86c08485341831c703f0efbd51506", null ],
     [ "Num< RCmp >", "tables_8h.html#aad267447b8d7ddf7130fea04727b81a5", null ],

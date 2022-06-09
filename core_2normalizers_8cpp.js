@@ -1,0 +1,26 @@
+var core_2normalizers_8cpp =
+[
+    [ "thorin::normalize::Fold< wrap, wrap::add, w >", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1add_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1add_00_01w_01_4" ],
+    [ "thorin::normalize::Fold< wrap, wrap::sub, w >", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1sub_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1sub_00_01w_01_4" ],
+    [ "thorin::normalize::Fold< wrap, wrap::mul, w >", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1mul_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1mul_00_01w_01_4" ],
+    [ "thorin::normalize::Fold< wrap, wrap::shl, w >", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1shl_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1shl_00_01w_01_4" ],
+    [ "thorin::normalize::Fold< div, div::sdiv, w >", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1sdiv_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1sdiv_00_01w_01_4" ],
+    [ "thorin::normalize::Fold< div, div::udiv, w >", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1udiv_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1udiv_00_01w_01_4" ],
+    [ "thorin::normalize::Fold< div, div::srem, w >", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1srem_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1srem_00_01w_01_4" ],
+    [ "thorin::normalize::Fold< div, div::urem, w >", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1urem_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1urem_00_01w_01_4" ],
+    [ "thorin::normalize::Fold< shr, shr::ashr, w >", "structthorin_1_1normalize_1_1Fold_3_01shr_00_01shr_1_1ashr_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01shr_00_01shr_1_1ashr_00_01w_01_4" ],
+    [ "thorin::normalize::Fold< shr, shr::lshr, w >", "structthorin_1_1normalize_1_1Fold_3_01shr_00_01shr_1_1lshr_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01shr_00_01shr_1_1lshr_00_01w_01_4" ],
+    [ "thorin::normalize::Fold< icmp, cmp, w >", "structthorin_1_1normalize_1_1Fold_3_01icmp_00_01cmp_00_01w_01_4.html", "structthorin_1_1normalize_1_1Fold_3_01icmp_00_01cmp_00_01w_01_4" ],
+    [ "is_associative", "core_2normalizers_8cpp.html#aa3ee8a403e8a002ad378a4517b8a7e90", null ],
+    [ "is_commutative", "core_2normalizers_8cpp.html#acfce18cf9846fb27e6348cf0eb4fb7a6", null ],
+    [ "is_commutative", "core_2normalizers_8cpp.html#a5b09ddba6c3cd34959e914c5caa01095", null ],
+    [ "is_commutative", "core_2normalizers_8cpp.html#a5d65027121abe7271aa0de1a72525c3d", null ],
+    [ "make_truth_table", "core_2normalizers_8cpp.html#a414e1d3d455040291836b133ce0c53bd", null ],
+    [ "merge_cmps", "core_2normalizers_8cpp.html#a08cc1e13d38a852afa38f6385152f9f0", null ],
+    [ "normalize_bit2", "core_2normalizers_8cpp.html#a1ab1c16fd0afc0203da7b84522fd8f32", null ],
+    [ "normalize_div", "core_2normalizers_8cpp.html#a080b2b8489209840d2529047a4d7404c", null ],
+    [ "normalize_icmp", "core_2normalizers_8cpp.html#accc185c1a4e10a22e2a8b619f87b8754", null ],
+    [ "normalize_shr", "core_2normalizers_8cpp.html#a3a1b7ea1e0c793bd5c8bba896d6c8d91", null ],
+    [ "normalize_wrap", "core_2normalizers_8cpp.html#aa2a8519281f2f3630acf8bc6b6b61108", null ],
+    [ "reassociate", "core_2normalizers_8cpp.html#aedc1267fc90feef77490fb71e07e9bf3", null ]
+];

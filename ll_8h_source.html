@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: /home/runner/work/thorin2/thorin2/thorin/be/ll/ll.h Source File</title>
+<title>Thorin: /home/runner/work/thorin2/thorin2/dialects/core/be/ll/ll.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -108,35 +108,33 @@ $(document).ready(function(){initNavTree('ll_8h_source.html',''); initResizable(
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define THORIN_BE_LL_LL_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;ostream&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">class </span>World;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span>ll {</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin_1_1ll.html#a65f81261af8998285d3076ad85a8f9e5">emit</a>(World&amp;, std::ostream&amp;);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keywordtype">int</span> <a class="code hl_function" href="namespacethorin_1_1ll.html#a709e16be24f45303689dbe7b7575fc12">compile</a>(World&amp;, std::string name);</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keywordtype">int</span> <a class="code hl_function" href="namespacethorin_1_1ll.html#a709e16be24f45303689dbe7b7575fc12">compile</a>(World&amp;, std::string ll, std::string out);</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keywordtype">int</span> <a class="code hl_function" href="namespacethorin_1_1ll.html#af25d6d9d636f8feb823248a6c09d02b9">compile_and_run</a>(World&amp;, std::string name, std::string args = {});</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>} <span class="comment">// namespace ll</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacethorin.html">thorin</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">class </span>World;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">namespace </span>ll {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacethorin_1_1ll.html#a65f81261af8998285d3076ad85a8f9e5">emit</a>(World&amp;, std::ostream&amp;);</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keywordtype">int</span> <a class="code hl_function" href="namespacethorin_1_1ll.html#a709e16be24f45303689dbe7b7575fc12">compile</a>(World&amp;, std::string name);</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keywordtype">int</span> <a class="code hl_function" href="namespacethorin_1_1ll.html#a709e16be24f45303689dbe7b7575fc12">compile</a>(World&amp;, std::string ll, std::string out);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keywordtype">int</span> <a class="code hl_function" href="namespacethorin_1_1ll.html#af25d6d9d636f8feb823248a6c09d02b9">compile_and_run</a>(World&amp;, std::string name, std::string args = {});</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>} <span class="comment">// namespace ll</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>} <span class="comment">// namespace thorin</span></div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>} <span class="comment">// namespace thorin</span></div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif</span></div>
-<div class="ttc" id="anamespacethorin_1_1ll_html_a65f81261af8998285d3076ad85a8f9e5"><div class="ttname"><a href="namespacethorin_1_1ll.html#a65f81261af8998285d3076ad85a8f9e5">thorin::ll::emit</a></div><div class="ttdeci">void emit(World &amp;world, std::ostream &amp;ostream)</div><div class="ttdef"><b>Definition:</b> <a href="ll_8cpp_source.html#l00752">ll.cpp:752</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1ll_html_a709e16be24f45303689dbe7b7575fc12"><div class="ttname"><a href="namespacethorin_1_1ll.html#a709e16be24f45303689dbe7b7575fc12">thorin::ll::compile</a></div><div class="ttdeci">int compile(World &amp;world, std::string name)</div><div class="ttdef"><b>Definition:</b> <a href="ll_8cpp_source.html#l00757">ll.cpp:757</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1ll_html_af25d6d9d636f8feb823248a6c09d02b9"><div class="ttname"><a href="namespacethorin_1_1ll.html#af25d6d9d636f8feb823248a6c09d02b9">thorin::ll::compile_and_run</a></div><div class="ttdeci">int compile_and_run(World &amp;world, std::string name, std::string args)</div><div class="ttdef"><b>Definition:</b> <a href="ll_8cpp_source.html#l00774">ll.cpp:774</a></div></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#endif</span></div>
+<div class="ttc" id="anamespacethorin_1_1ll_html_a65f81261af8998285d3076ad85a8f9e5"><div class="ttname"><a href="namespacethorin_1_1ll.html#a65f81261af8998285d3076ad85a8f9e5">thorin::ll::emit</a></div><div class="ttdeci">void emit(World &amp;world, std::ostream &amp;ostream)</div><div class="ttdef"><b>Definition:</b> <a href="ll_8cpp_source.html#l00827">ll.cpp:827</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1ll_html_a709e16be24f45303689dbe7b7575fc12"><div class="ttname"><a href="namespacethorin_1_1ll.html#a709e16be24f45303689dbe7b7575fc12">thorin::ll::compile</a></div><div class="ttdeci">int compile(World &amp;world, std::string name)</div><div class="ttdef"><b>Definition:</b> <a href="ll_8cpp_source.html#l00832">ll.cpp:832</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1ll_html_af25d6d9d636f8feb823248a6c09d02b9"><div class="ttname"><a href="namespacethorin_1_1ll.html#af25d6d9d636f8feb823248a6c09d02b9">thorin::ll::compile_and_run</a></div><div class="ttdeci">int compile_and_run(World &amp;world, std::string name, std::string args)</div><div class="ttdef"><b>Definition:</b> <a href="ll_8cpp_source.html#l00849">ll.cpp:849</a></div></div>
 <div class="ttc" id="anamespacethorin_html"><div class="ttname"><a href="namespacethorin.html">thorin</a></div><div class="ttdef"><b>Definition:</b> <a href="cfg_8cpp_source.html#l00014">cfg.cpp:14</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_c4168c80b7484587a21dc92c326c695e.html">thorin</a></li><li class="navelem"><a class="el" href="dir_e925b2e9311ea88d6ed8c8d868701100.html">be</a></li><li class="navelem"><a class="el" href="dir_6c8db7bdfb7c9bf22e283b466f914dda.html">ll</a></li><li class="navelem"><a class="el" href="ll_8h.html">ll.h</a></li>
+    <li class="navelem"><a class="el" href="dir_dc7f769b3d5332bd9f89fd345831c3ed.html">dialects</a></li><li class="navelem"><a class="el" href="dir_c418730755777f3d7ae8c6bca9740a18.html">core</a></li><li class="navelem"><a class="el" href="dir_185575f823ee6444fe4282b405b7232b.html">be</a></li><li class="navelem"><a class="el" href="dir_31120b9d1f23fa5f1215885e28fd6b0f.html">ll</a></li><li class="navelem"><a class="el" href="ll_8h.html">ll.h</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>

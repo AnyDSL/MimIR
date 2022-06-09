@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['div_0',['Div',['../namespacethorin.html#a27039a3899fab2b5ad30ab58773cb60b',1,'thorin']]]
+  ['div_0',['div',['../namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309e',1,'thorin::core']]]
 ];

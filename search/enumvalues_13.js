@@ -15,14 +15,14 @@ var searchData=
   ['t_5fsemicolon_12',['T_semicolon',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038adab652135089c23c5b48db9b0d22754d',1,'thorin::Tok']]],
   ['t_5fstar_13',['T_star',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038adffb83ae407bb72e9b9ac7f79028bb7e',1,'thorin::Tok']]],
   ['t_5ftop_14',['T_top',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aebb1f15fad917162106ecb82540f245a',1,'thorin::Tok']]],
-  ['tangentvector_15',['TangentVector',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa7477b555b26de342cada9aca9c5deff1',1,'thorin::Tag']]],
+  ['tangentvector_15',['TangentVector',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67a7477b555b26de342cada9aca9c5deff1',1,'thorin::Tag']]],
   ['term_16',['Term',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50eacf5f3091e30dee6597885d8c0e0c357f',1,'thorin']]],
-  ['test_17',['Test',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a2761c4aad624ceedae7edbf3c551c49b',1,'thorin::Node']]],
-  ['texture_18',['Texture',['../namespacethorin_1_1AddrSpace.html#adcb29cf18da90e912a27ba145eed3f44a2d476293e1533defce74646116e059e3',1,'thorin::AddrSpace']]],
+  ['test_17',['Test',['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06a2761c4aad624ceedae7edbf3c551c49b',1,'thorin::Node']]],
+  ['texture_18',['Texture',['../namespacethorin_1_1AddrSpace.html#a3306706adbc856a82f406997e8db0f00a2d476293e1533defce74646116e059e3',1,'thorin::AddrSpace']]],
   ['top_19',['top',['../namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719a7924df23a1e99bf4a9f0d9de329b5baf',1,'thorin::RMode']]],
-  ['top_20',['Top',['../namespacethorin_1_1Dep.html#a026486402019f9c00df8e98fe04f8d1fa47ea3db5dd0344dafe5de89e406fe1f3',1,'thorin::Dep::Top()'],['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253aed6c4ae568966987abe32f7fc9342f3e',1,'thorin::Node::Top()']]],
-  ['trait_21',['Trait',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa42227a93c15d744e373610e95cacd351',1,'thorin::Tag']]],
-  ['traxy_22',['Traxy',['../classthorin_1_1SSAConstr.html#a8b8db20f3f6a486e9ced083580e60aaaac6afdf202d56604ea83504826746547b',1,'thorin::SSAConstr']]],
-  ['tuple_23',['Tuple',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253adebbca699bf3e5ae3338dd01934423bc',1,'thorin::Node']]],
-  ['type_24',['Type',['../namespacethorin_1_1Node.html#a53d4449ebf801c23f600bdc49e99a253a921d97e8cfab1f7c0026e2d98995d14c',1,'thorin::Node::Type()'],['../namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508',1,'thorin::Type()']]]
+  ['top_20',['Top',['../namespacethorin_1_1Dep.html#a026486402019f9c00df8e98fe04f8d1fa47ea3db5dd0344dafe5de89e406fe1f3',1,'thorin::Dep::Top()'],['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06aed6c4ae568966987abe32f7fc9342f3e',1,'thorin::Node::Top()']]],
+  ['trait_21',['Trait',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67a42227a93c15d744e373610e95cacd351',1,'thorin::Tag']]],
+  ['traxy_22',['Traxy',['../classthorin_1_1mem_1_1SSAConstr.html#a49f34f699b37ca0e680c6de95f745473a448827b64332b5626d53fbe2a9b7ed79',1,'thorin::mem::SSAConstr']]],
+  ['tuple_23',['Tuple',['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06adebbca699bf3e5ae3338dd01934423bc',1,'thorin::Node']]],
+  ['type_24',['Type',['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06a921d97e8cfab1f7c0026e2d98995d14c',1,'thorin::Node::Type()'],['../namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508',1,'thorin::Type()']]]
 ];

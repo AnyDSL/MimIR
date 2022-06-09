@@ -12,6 +12,5 @@ var searchData=
   ['d_5fquote_5fr_9',['D_quote_r',['../classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038add7e7307bb61b436ebfaff2f7f0e0e29',1,'thorin::Tok']]],
   ['debug_10',['Debug',['../namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba',1,'thorin']]],
   ['device_11',['Device',['../classthorin_1_1Lam.html#aa847d68653879fa7f7e1eb6531174f90ae0ac20adce6ffee48c7151b070aa5737',1,'thorin::Lam']]],
-  ['div_12',['div',['../namespacethorin.html#a0712e5b90b0610c0027e69b3d6ca690ca38696558dc98494c08d951c052900a2a',1,'thorin']]],
-  ['div_13',['Div',['../namespacethorin_1_1Tag.html#a5aeb7919f1447028b3b75918193fbfafa432b8eae514124f2a49682aee8b436ac',1,'thorin::Tag']]]
+  ['div_12',['div',['../namespacethorin.html#a0712e5b90b0610c0027e69b3d6ca690ca38696558dc98494c08d951c052900a2a',1,'thorin']]]
 ];
