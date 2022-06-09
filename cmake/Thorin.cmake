@@ -2,11 +2,21 @@
 SET(THORIN_DIALECT_LIST    "" CACHE INTERNAL "THORIN_DIALECT_LIST") 
 SET(THORIN_DIALECT_LAYOUT  "" CACHE INTERNAL "THORIN_DIALECT_LAYOUT")
 
-function(add_thorin_dialect DIALECT)
-    set(THORIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${DIALECT}/${DIALECT}.thorin)
+function(add_thorin_dialect)
+    set(DIALECT ${ARGV0})
+    list(SUBLIST ARGV 1 -1 UNPARSED)
+    cmake_parse_arguments(
+        PARSED              # prefix of output variables
+        ""                  # list of names of the boolean arguments (only defined ones will be true)
+        "DIALECT"           # list of names of mono-valued arguments
+        "SOURCES;DEPENDS"   # list of names of multi-valued arguments (output variables are lists)
+        ${UNPARSED}         # arguments of the function to parse, here we take the all original ones
+    )
+
+    set(THORIN_FILE     ${CMAKE_CURRENT_SOURCE_DIR}/${DIALECT}/${DIALECT}.thorin)
     set(THORIN_FILE_BIN ${CMAKE_CURRENT_BINARY_DIR}/../lib/thorin/${DIALECT}.thorin)
-    set(DIALECT_H  ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}.h)
-    set(DIALECT_MD ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}.md)
+    set(DIALECT_H       ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}.h)
+    set(DIALECT_MD      ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}.md)
 
     list(LENGTH THORIN_DIALECT_LIST NUM_DIALECTS)
     list(APPEND THORIN_DIALECT_LIST "${DIALECT}")
@@ -21,6 +31,7 @@ function(add_thorin_dialect DIALECT)
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${THORIN_FILE} ${THORIN_FILE_BIN}
         DEPENDS ${THORIN_FILE}
     )
+
     # establish dependency tree - all dialects can depend on all other dialects via .import
     if(NUM_DIALECTS GREATER 0)
         add_custom_command(OUTPUT copy_dialects APPEND
@@ -40,4 +51,18 @@ function(add_thorin_dialect DIALECT)
         COMMENT "Bootstrapping Thorin dialect '${DIALECT}' from '${THORIN_FILE}'"
     )
     add_custom_target(${DIALECT} ALL DEPENDS ${DIALECT_MD} ${DIALECT_H})
+
+    add_library(thorin_${DIALECT} MODULE ${PARSED_SOURCES})
+    set_target_properties(thorin_${DIALECT}
+        PROPERTIES 
+            CXX_VISIBILITY_PRESET hidden
+            VISIBILITY_INLINES_HIDDEN 1
+            WINDOWS_EXPORT_ALL_SYMBOLS OFF
+    )
+    target_link_libraries(thorin_${DIALECT} libthorin)
+
+    if(PARSED_DEPENDS)
+        list(TRANSFORM PARSED_DEPENDS PREPEND thorin_)
+        add_dependencies(thorin_${DIALECT} ${PARSED_DEPENDS})
+    endif()
 endfunction()
