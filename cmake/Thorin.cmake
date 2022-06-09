@@ -52,17 +52,21 @@ function(add_thorin_dialect)
     )
     add_custom_target(${DIALECT} ALL DEPENDS ${DIALECT_MD} ${DIALECT_H})
 
-    add_library(thorin_${DIALECT} MODULE ${PARSED_SOURCES} ${DIALECT_H})
+    list(TRANSFORM PARSED_DEPENDS PREPEND ${CMAKE_CURRENT_BINARY_DIR}/)
+    list(TRANSFORM PARSED_DEPENDS  APPEND .h)
+    add_library(thorin_${DIALECT} 
+        MODULE 
+            ${PARSED_SOURCES}   # original sources passed to add_thorin_dialect
+            ${DIALECT_H}        # the generated header of this dialect
+            ${PARSED_DEPENDS}   # the generated headers of the dialects we depend on
+    )
+
     set_target_properties(thorin_${DIALECT}
         PROPERTIES 
             CXX_VISIBILITY_PRESET hidden
             VISIBILITY_INLINES_HIDDEN 1
             WINDOWS_EXPORT_ALL_SYMBOLS OFF
     )
-    target_link_libraries(thorin_${DIALECT} libthorin)
 
-    if(PARSED_DEPENDS)
-        list(TRANSFORM PARSED_DEPENDS PREPEND thorin_)
-        add_dependencies(thorin_${DIALECT} ${PARSED_DEPENDS})
-    endif()
+    target_link_libraries(thorin_${DIALECT} libthorin)
 endfunction()

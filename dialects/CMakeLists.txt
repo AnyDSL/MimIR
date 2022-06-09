@@ -23,6 +23,8 @@ add_thorin_dialect(mem
         mem/mem.cpp
         mem/mem.h
         mem/normalizers.cpp
+    DEPENDS
+        core
 )
 
 add_thorin_dialect(affine
