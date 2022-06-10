@@ -9,8 +9,7 @@ namespace thorin {
  */
 
 Pos::Pos(const Def* def)
-    : Pos(as_lit(def))
-{}
+    : Pos(as_lit(def)) {}
 
 Loc::Loc(const Def* def)
     : file(tuple2str(def->proj(3, 0_s)))
@@ -36,9 +35,9 @@ const Def* Loc::def(World& w) const {
 }
 
 const Def* Debug::def(World& w) const {
-    auto d_name  = w.tuple_str(name);
-    auto d_loc   = loc.def(w);
-    auto d_meta  = meta ? meta : w.bot(w.type_bot());
+    auto d_name = w.tuple_str(name);
+    auto d_loc  = loc.def(w);
+    auto d_meta = meta ? meta : w.bot(w.type_bot());
 
     return w.tuple({d_name, d_loc, d_meta});
 }
@@ -47,9 +46,8 @@ const Def* Debug::def(World& w) const {
  * Sym
  */
 
-size_t SymHash::operator()(Sym sym) const { return murmur3(sym.def()->gid()); }
-Loc Sym::loc() const { return def()->loc(); }
-std::string Sym::to_string() const { return tuple2str(def()); }
+size_t SymHash::operator()(Sym sym) const { return murmur3(sym.str()->gid()); }
+std::string Sym::to_string() const { return tuple2str(str()); }
 
 /*
  * ostream
@@ -66,6 +64,6 @@ std::ostream& operator<<(std::ostream& os, const Loc loc) {
     return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Sym sym) { return os << tuple2str(sym.def()); }
+std::ostream& operator<<(std::ostream& os, const Sym sym) { return os << sym.to_string(); }
 
 } // namespace thorin

@@ -207,7 +207,7 @@ public:
     /// Ascribes @p type to this tuple - needed for dependently typed and nominal Sigma%s.
     const Def* tuple(const Def* type, Defs ops, const Def* dbg = {});
     const Def* tuple_str(std::string_view s, const Def* dbg = {});
-    Sym sym(std::string_view s, const Def* dbg = {}) { return tuple_str(s, dbg); }
+    Sym sym(std::string_view s, Loc loc) { return {tuple_str(s, dbg(loc)), loc.def(*this)}; }
     const Tuple* tuple() { return data_.tuple_; } ///< the unit value of type `[]`
     ///@}
 
