@@ -7,12 +7,12 @@
 #include "thorin/pass/rw/scalarize.h"
 
 #if 0
-#include "dialects/clos/clos_conv.h"
-#include "dialects/clos/lower_typed_clos.h"
-#include "dialects/clos/pass/fp/lower_typed_clos_prep.h"
-#include "dialects/clos/pass/rw/branch_clos_elim.h"
-#include "dialects/clos/pass/rw/clos2sjlj.h"
-#include "dialects/clos/pass/rw/clos_conv_prep.h"
+#    include "dialects/clos/clos_conv.h"
+#    include "dialects/clos/lower_typed_clos.h"
+#    include "dialects/clos/pass/fp/lower_typed_clos_prep.h"
+#    include "dialects/clos/pass/rw/branch_clos_elim.h"
+#    include "dialects/clos/pass/rw/clos2sjlj.h"
+#    include "dialects/clos/pass/rw/clos_conv_prep.h"
 #endif
 
 namespace thorin {
@@ -44,8 +44,7 @@ static void lower_closures(World& world) {
 }
 
 #endif
-void optimize(World& world, PipelineBuilder& builder) {
-}
+void optimize(World& world, PipelineBuilder& builder) {}
 #if 0
     // PassMan::run<Scalerize>(world, nullptr);
     // PassMan::run<EtaRed>(world);

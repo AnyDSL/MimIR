@@ -22,6 +22,6 @@ private:
     DefMap<Lam*> branch2dropped_;
 };
 
-}; // namespace thorin
+}; // namespace thorin::clos
 
 #endif

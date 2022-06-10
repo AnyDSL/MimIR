@@ -80,6 +80,9 @@ const Def* Scalerize::rewrite(const Def* def) {
     return def;
 }
 
-PassTag* Scalerize::ID() { static PassTag Key; return &Key; }
+PassTag* Scalerize::ID() {
+    static PassTag Key;
+    return &Key;
+}
 
 } // namespace thorin

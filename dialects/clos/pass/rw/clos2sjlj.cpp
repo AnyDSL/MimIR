@@ -173,4 +173,4 @@ const Def* Clos2SJLJ::rewrite(const Def* def) {
     return def;
 }
 
-} // namespace thorin
+} // namespace thorin::clos

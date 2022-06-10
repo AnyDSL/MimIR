@@ -97,4 +97,4 @@ undo_t LowerTypedClosPrep::analyze(const Def* def) {
     return No_Undo;
 }
 
-} // namespace thorin
+} // namespace thorin::clos

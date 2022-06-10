@@ -229,9 +229,8 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
 
     if (auto nom = def->isa_nom()) {
         if (auto global = def->isa_nom<Global>()) {
-            if (auto i = glob_noms_.find(global); i != glob_noms_.end())
-                return i->second;
-            auto subst = Def2Def();
+            if (auto i = glob_noms_.find(global); i != glob_noms_.end()) return i->second;
+            auto subst             = Def2Def();
             return glob_noms_[nom] = rewrite_nom(global, new_type, new_dbg, subst);
         }
         assert(!isa_clos_type(nom));
@@ -251,7 +250,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
 }
 
 Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, Def2Def& subst) {
-    auto& w = world();
+    auto& w      = world();
     auto new_nom = nom->stub(w, new_type, new_dbg);
     subst.emplace(nom, new_nom);
     for (size_t i = 0; i < nom->num_ops(); i++) {
@@ -259,7 +258,6 @@ Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, De
     }
     return new_nom;
 }
-
 
 const Pi* ClosConv::rewrite_cont_type(const Pi* pi, Def2Def& subst) {
     assert(pi->is_basicblock());
@@ -411,4 +409,4 @@ DefSet& FreeDefAna::run(Lam* lam) {
     return node->fvs;
 }
 
-} // namespace thorin
+} // namespace thorin::clos

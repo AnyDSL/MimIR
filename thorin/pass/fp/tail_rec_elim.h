@@ -14,6 +14,7 @@ public:
         , eta_red_(eta_red) {}
 
     static PassTag* ID();
+
 private:
     /// @name PassMan hooks
     ///@{

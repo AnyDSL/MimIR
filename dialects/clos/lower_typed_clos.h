@@ -85,6 +85,6 @@ private:
     /// @}
 };
 
-} // namespace thorin
+} // namespace thorin::clos
 
 #endif

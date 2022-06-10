@@ -1,22 +1,22 @@
 #if 0
-#include <fstream>
-#include <sstream>
+#    include <fstream>
+#    include <sstream>
 
-#include <gtest/gtest-param-test.h>
+#    include <gtest/gtest-param-test.h>
 
-#include "thorin/error.h"
-#include "thorin/world.h"
+#    include "thorin/error.h"
+#    include "thorin/world.h"
 
-#include "thorin/fe/parser.h"
-#include "thorin/pass/fp/beta_red.h"
-#include "thorin/pass/fp/eta_exp.h"
-#include "thorin/pass/fp/eta_red.h"
-#include "thorin/pass/pass.h"
-#include "thorin/util/sys.h"
+#    include "thorin/fe/parser.h"
+#    include "thorin/pass/fp/beta_red.h"
+#    include "thorin/pass/fp/eta_exp.h"
+#    include "thorin/pass/fp/eta_red.h"
+#    include "thorin/pass/pass.h"
+#    include "thorin/util/sys.h"
 
-#include "dialects/affine/affine.h"
-#include "dialects/mem/mem.h"
-#include "helpers.h"
+#    include "dialects/affine/affine.h"
+#    include "dialects/mem/mem.h"
+#    include "helpers.h"
 
 using namespace thorin;
 

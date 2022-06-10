@@ -48,8 +48,8 @@ private:
     const App* cur_body_;
 };
 
-}
+} // namespace clos
 
-} // namespace thorin::clos
+} // namespace thorin
 
 #endif

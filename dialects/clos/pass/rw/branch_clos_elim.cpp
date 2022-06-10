@@ -46,4 +46,4 @@ const Def* BranchClosElim::rewrite(const Def* def) {
     return def;
 }
 
-}; // namespace thorin
+}; // namespace thorin::clos

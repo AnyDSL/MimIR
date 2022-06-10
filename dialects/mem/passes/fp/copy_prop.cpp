@@ -2,6 +2,7 @@
 
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
+
 #include "dialects/mem/mem.h"
 
 namespace thorin::mem {
@@ -118,6 +119,9 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     return No_Undo;
 }
 
-PassTag* CopyProp::ID() { static PassTag Key; return &Key; }
+PassTag* CopyProp::ID() {
+    static PassTag Key;
+    return &Key;
+}
 
-} // namespace thorin
+} // namespace thorin::mem

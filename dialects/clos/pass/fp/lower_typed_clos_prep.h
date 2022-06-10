@@ -29,6 +29,6 @@ private:
     DefSet esc_;
 };
 
-} // namespace thorin
+} // namespace thorin::clos
 
 #endif

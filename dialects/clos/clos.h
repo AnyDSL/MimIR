@@ -24,6 +24,6 @@ inline const Def* op(clos o, const Def* def, const Def* dbg = {}) {
     return w.app(w.app(w.ax(o), def->type()), def, dbg);
 }
 
-}
+} // namespace thorin::clos
 
 #endif

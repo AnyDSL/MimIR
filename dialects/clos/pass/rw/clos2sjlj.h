@@ -42,6 +42,6 @@ private:
     const Def* cur_jbuf_ = nullptr;
 };
 
-} // namespace thorin
+} // namespace thorin::clos
 
 #endif

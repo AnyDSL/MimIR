@@ -181,4 +181,4 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
     }
 }
 
-} // namespace thorin
+} // namespace thorin::clos

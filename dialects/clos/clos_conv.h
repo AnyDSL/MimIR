@@ -270,6 +270,6 @@ inline const Def* clos_sub_env(const Def* tup_or_sig, const Def* new_env) {
 }
 /// @}
 
-}; // namespace thorin
+}; // namespace thorin::clos
 
 #endif
