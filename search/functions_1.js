@@ -11,13 +11,12 @@ var searchData=
   ['binary_5ffind_8',['binary_find',['../namespacethorin.html#a437c6f50faf6e57f126429d5a0ce9642',1,'thorin']]],
   ['bitcast_9',['bitcast',['../namespacethorin.html#a35ef19aa33b6c70ef2aca7bf23009527',1,'thorin']]],
   ['bitset_10',['BitSet',['../classthorin_1_1BitSet.html#a4d9b7c65114ef8ce8c379bfaf3da4763',1,'thorin::BitSet::BitSet()'],['../classthorin_1_1BitSet.html#ad6abf7b3a05e68de0f71a34ac2ec6453',1,'thorin::BitSet::BitSet(const BitSet &amp;other)'],['../classthorin_1_1BitSet.html#ad9c6977c68542836923ae8fef53b08b0',1,'thorin::BitSet::BitSet(BitSet &amp;&amp;other)']]],
-  ['body_11',['body',['../classthorin_1_1Arr.html#a1740f9273698eb572e4ffe1b478ee430',1,'thorin::Arr::body()'],['../structthorin_1_1ll_1_1BB.html#ac701cb02c0d3aba5a62e69225e7284fd',1,'thorin::ll::BB::body()'],['../classthorin_1_1Pack.html#a933b8506e8b10dd3fea50ab8d62fa291',1,'thorin::Pack::body()'],['../classthorin_1_1Lam.html#ad4c385e97860a76d0c239f9733df8c9d',1,'thorin::Lam::body()']]],
+  ['body_11',['body',['../classthorin_1_1Lam.html#ad4c385e97860a76d0c239f9733df8c9d',1,'thorin::Lam::body()'],['../structthorin_1_1ll_1_1BB.html#ac701cb02c0d3aba5a62e69225e7284fd',1,'thorin::ll::BB::body()'],['../classthorin_1_1Pack.html#a933b8506e8b10dd3fea50ab8d62fa291',1,'thorin::Pack::body()'],['../classthorin_1_1Arr.html#a1740f9273698eb572e4ffe1b478ee430',1,'thorin::Arr::body()']]],
   ['bootstrap_12',['bootstrap',['../classthorin_1_1Parser.html#ad7e4beb7827c77583ed8de6ffff562c5',1,'thorin::Parser']]],
   ['bootstrapper_13',['Bootstrapper',['../classthorin_1_1h_1_1Bootstrapper.html#a508c511a64d60358db557b360e8edb0b',1,'thorin::h::Bootstrapper']]],
   ['bot_14',['bot',['../classthorin_1_1World.html#a0eedd08743b630e231af89f337799e47',1,'thorin::World']]],
-  ['bot_5ftype_15',['bot_type',['../classthorin_1_1World.html#a84dad3eeda53cbe2f1c4c521f5feca6f',1,'thorin::World']]],
+  ['bound_15',['Bound',['../classthorin_1_1Bound.html#a1e58ebc1577c4dcb521a7f18b3ff8e54',1,'thorin::Bound::Bound(node_t node, const Def *type, Defs ops, const Def *dbg)'],['../classthorin_1_1Bound.html#a42f249066795560a0355f6a14ad2c2e7',1,'thorin::Bound::Bound(node_t node, const Def *type, size_t size, const Def *dbg)']]],
   ['bound_16',['bound',['../classthorin_1_1Scope.html#afe87447a90844ef7ccc95eff57ac4720',1,'thorin::Scope::bound(const Def *def) const'],['../classthorin_1_1Scope.html#ab36494ecdcd1afb09ec0f01ea0daec30',1,'thorin::Scope::bound() const'],['../classthorin_1_1World.html#a22b93308e80d36882e9260a5c3cb0ffe',1,'thorin::World::bound()']]],
-  ['bound_17',['Bound',['../classthorin_1_1Bound.html#a1e58ebc1577c4dcb521a7f18b3ff8e54',1,'thorin::Bound::Bound(node_t node, const Def *type, Defs ops, const Def *dbg)'],['../classthorin_1_1Bound.html#a42f249066795560a0355f6a14ad2c2e7',1,'thorin::Bound::Bound(node_t node, const Def *type, size_t size, const Def *dbg)']]],
-  ['branch_18',['branch',['../classthorin_1_1Lam.html#af8197709cf87785a99f637979af5d3ae',1,'thorin::Lam']]],
-  ['breakpoint_19',['breakpoint',['../classthorin_1_1World.html#af3f8df5247a26f483260eb5a96d3870a',1,'thorin::World::breakpoint()'],['../namespacethorin.html#a7ec2df0cc38989e607e76de0491ef48b',1,'thorin::breakpoint()']]]
+  ['branch_17',['branch',['../classthorin_1_1Lam.html#af8197709cf87785a99f637979af5d3ae',1,'thorin::Lam']]],
+  ['breakpoint_18',['breakpoint',['../classthorin_1_1World.html#af3f8df5247a26f483260eb5a96d3870a',1,'thorin::World::breakpoint()'],['../namespacethorin.html#a7ec2df0cc38989e607e76de0491ef48b',1,'thorin::breakpoint()']]]
 ];

@@ -1,6 +1,10 @@
 var NAVTREEINDEX11 =
 {
+"classthorin_1_1utf8_1_1Lexer.html#ad29428b48f635a4f5d0f29b91d9c0c3f":[3,0,0,15,0,6],
+"classthorin_1_1utf8_1_1Lexer.html#ae15c4c0f955cb984d0035a9d6b6ed12b":[3,0,0,15,0,1],
+"classthorin_1_1utf8_1_1Lexer.html#ae15c4c0f955cb984d0035a9d6b6ed12b":[5,0,0,8,0,1],
 "classthorin_1_1utf8_1_1Lexer.html#aeb6b8061e55497b8da23fb1f5e11288f":[3,0,0,15,0,8],
+"classthorin_1_1utf8_1_1Lexer.html#aeb6b8061e55497b8da23fb1f5e11288f":[5,0,0,8,0,8],
 "cli.html":[1,0],
 "coding.html":[1,2],
 "concepts.html":[4],
@@ -8,10 +12,10 @@ var NAVTREEINDEX11 =
 "conceptthorin_1_1axiom__from__dialect.html":[3,0,0,143],
 "conceptthorin_1_1axiom__from__thorin.html":[4,0,3],
 "conceptthorin_1_1axiom__from__thorin.html":[3,0,0,144],
-"conceptthorin_1_1axiom__with__sub__tags.html":[4,0,0],
 "conceptthorin_1_1axiom__with__sub__tags.html":[3,0,0,141],
-"conceptthorin_1_1axiom__without__sub__tags.html":[3,0,0,142],
+"conceptthorin_1_1axiom__with__sub__tags.html":[4,0,0],
 "conceptthorin_1_1axiom__without__sub__tags.html":[4,0,1],
+"conceptthorin_1_1axiom__without__sub__tags.html":[3,0,0,142],
 "container_8h.html":[6,0,3,4,5],
 "container_8h.html#a437c6f50faf6e57f126429d5a0ce9642":[6,0,3,4,5,9],
 "container_8h.html#a56063a2d17c29f75d2e405b36278df32":[6,0,3,4,5,7],
@@ -56,6 +60,7 @@ var NAVTREEINDEX11 =
 "debug_8h.html#a8d63c0df0c916ee9469f630edccd6984":[6,0,3,10,7],
 "debug_8h.html#ac61d02cc44f6d51285905bd3ff39c069":[6,0,3,10,10],
 "debug_8h.html#ae26bd525ba720c363612327d2d927c72":[6,0,3,10,6],
+"debug_8h.html#afd3e784f818262bab2a61346b95dcf34":[6,0,3,10,12],
 "debug_8h_source.html":[6,0,3,10],
 "def_8cpp.html":[6,0,3,11],
 "def_8cpp.html#ad1b9941e8e846944b557818490f2d94b":[6,0,3,11,0],
@@ -244,10 +249,5 @@ var NAVTREEINDEX11 =
 "functions_func_c.html":[5,3,1,2],
 "functions_func_d.html":[5,3,1,3],
 "functions_func_e.html":[5,3,1,4],
-"functions_func_f.html":[5,3,1,5],
-"functions_func_g.html":[5,3,1,6],
-"functions_func_h.html":[5,3,1,7],
-"functions_func_i.html":[5,3,1,8],
-"functions_func_j.html":[5,3,1,9],
-"functions_func_k.html":[5,3,1,10]
+"functions_func_f.html":[5,3,1,5]
 };

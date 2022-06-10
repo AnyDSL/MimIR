@@ -641,6 +641,7 @@ var namespacethorin =
     [ "operator<<<true >", "namespacethorin.html#a3177fedeb15931814650cb856e43fb84", null ],
     [ "operator==", "namespacethorin.html#ac61d02cc44f6d51285905bd3ff39c069", null ],
     [ "operator==", "namespacethorin.html#a5207b75bc2b0b46621df4adabaa55f38", null ],
+    [ "operator==", "namespacethorin.html#afd3e784f818262bab2a61346b95dcf34", null ],
     [ "operator^", "namespacethorin.html#a87f75b772c9bba6c928d6cfce9118d87", null ],
     [ "operator^", "namespacethorin.html#aff67816105a6ede239c520d06a00e169", null ],
     [ "operator|", "namespacethorin.html#a58d95fe3d3e9dd82e7cf856a97a5cbca", null ],
