@@ -146,7 +146,7 @@ public:
     /// @name Pi: continuation type (cn), i.e., Pi type with codom Bottom
     ///@{
     const Pi* cn() { return cn(sigma()); }
-    const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, bot_type(), dbg); }
+    const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, type_bot(), dbg); }
     const Pi* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
     ///@}
 
@@ -318,7 +318,7 @@ public:
     const Def* ext(const Def* type, const Def* dbg = {});
     const Def* bot(const Def* type, const Def* dbg = {}) { return ext<false>(type, dbg); }
     const Def* top(const Def* type, const Def* dbg = {}) { return ext<true>(type, dbg); }
-    const Def* bot_type() { return data_.bot_type_; }
+    const Def* type_bot() { return data_.type_bot_; }
     const Def* top_nat() { return data_.top_nat_; }
     template<bool up> TBound<up>* nom_bound(const Def* type, size_t size, const Def* dbg = {}) { return insert<TBound<up>>(size, type, size, dbg); }
     /// A *nom*inal Bound of Type @p l%evel.
@@ -463,7 +463,7 @@ public:
 
     /// @name helpers
     ///@{
-    const Def* dbg(Debug);
+    const Def* dbg(Debug d) { return d.def(*this); }
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
     ///@}
 
@@ -691,7 +691,7 @@ private:
         const Univ* univ_;
         const Type* type_0_;
         const Type* type_1_;
-        const Bot* bot_type_;
+        const Bot* type_bot_;
         const App* type_bool_;
         const Top* top_nat_;
         const Sigma* sigma_;

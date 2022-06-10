@@ -41,7 +41,7 @@ World::World(std::string_view name)
     data_.lit_univ_1_  = lit_univ(1);
     data_.type_0_      = type(lit_univ_0());
     data_.type_1_      = type(lit_univ_1());
-    data_.bot_type_    = insert<Bot>(0, type(), nullptr);
+    data_.type_bot_    = insert<Bot>(0, type(), nullptr);
     data_.sigma_       = insert<Sigma>(0, type(), Defs{}, nullptr)->as<Sigma>();
     data_.tuple_       = insert<Tuple>(0, sigma(), Defs{}, nullptr)->as<Tuple>();
     data_.type_nat_    = insert<Nat>(0, *this);
@@ -560,22 +560,6 @@ const Def* World::gid2def(u32 gid) {
 }
 
 #endif
-
-/*
- * helpers
- */
-
-const Def* World::dbg(Debug d) {
-    auto pos2def = [&](Pos pos) { return lit_nat((u64(pos.row) << 32_u64) | (u64(pos.col))); };
-
-    auto name  = tuple_str(d.name);
-    auto file  = tuple_str(d.loc.file);
-    auto begin = pos2def(d.loc.begin);
-    auto finis = pos2def(d.loc.finis);
-    auto loc   = tuple({file, begin, finis});
-
-    return tuple({name, loc, d.meta ? d.meta : bot(bot_type())});
-}
 
 /*
  * misc
