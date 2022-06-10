@@ -1,0 +1,22 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -e thorin %s -o %t | FileCheck %s
+
+.import core;
+
+.lam .extern icmp_lit: .Cn [return : .Cn %Int 2] = {
+    .ff,
+    return
+    (%core.icmp.e 2
+        (%core.icmp.uge 2
+            (.tt, .ff),
+         %core.icmp.ug 2
+            (.tt, .ff)))
+};
+
+// CHECK-DAG: icmp_lit_{{[0-9]+}}: Cn Cn i1: _[[retId:[0-9]+]] = {
+// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] 1:i1;
+// CHECK-DAG: λ@(0:i1) _[[appId]]
+
+// CHECK-DAG: _[[etaId]]: Cn i1: _[[etaVar:[0-9]+]] = {
+// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = @_[[retId]] @_[[etaVar]];
+// CHECK-DAG: λ@(0:i1) _[[appRetId]]

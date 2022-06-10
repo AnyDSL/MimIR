@@ -10,6 +10,7 @@ public:
     LamSpec(PassMan& man)
         : RWPass(man, "lam_spec") {}
 
+    static PassTag* ID();
 private:
     /// @name PassMan hooks
     ///@{

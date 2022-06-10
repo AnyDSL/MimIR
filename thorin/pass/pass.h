@@ -11,6 +11,8 @@ class PassMan;
 using undo_t                    = size_t;
 static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 
+struct alignas(8) PassTag {};
+
 /// This is a minimalistic base interface to work with when dynamically loading a Pass.
 class IPass {
 public:
@@ -75,18 +77,18 @@ public:
 
     /// @name proxy
     ///@{
-    const Proxy* proxy(const Def* type, Defs ops, flags_t flags = 0, const Def* dbg = {}) {
-        return world().proxy(type, ops, index(), flags, dbg);
+    const Proxy* proxy(const Def* type, Defs ops, u32 tag = 0, const Def* dbg = {}) {
+        return world().proxy(type, ops, index(), tag, dbg);
     }
-    /// Check whether given @p def is a Proxy whose index matches this Pass's @p index.
-    const Proxy* isa_proxy(const Def* def, flags_t flags = 0) {
-        if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->index() == index() && proxy->flags() == flags)
+    /// Check whether given @p def is a Proxy whose Proxy::pass matches this Pass's @p IPass::index.
+    const Proxy* isa_proxy(const Def* def, u32 tag = 0) {
+        if (auto proxy = def->isa<Proxy>(); proxy != nullptr && proxy->pass() == index() && proxy->tag() == tag)
             return proxy;
         return nullptr;
     }
-    const Proxy* as_proxy(const Def* def, flags_t flags = 0) {
+    const Proxy* as_proxy(const Def* def, u32 tag = 0) {
         auto proxy = def->as<Proxy>();
-        assert(proxy->index() == index() && proxy->flags() == flags);
+        assert(proxy->pass() == index() && proxy->tag() == tag);
         return proxy;
     }
     ///@}
@@ -123,12 +125,16 @@ public:
     void run(); ///< Run all registered passes on the whole World.
 
     /// Add a pass to this PassMan.
+    /// If a pass of the same class has been added already, returns the earlier added instance.
     template<class P, class... Args>
     P* add(Args&&... args) {
+        if (auto it = registered_passes_.find(reinterpret_cast<u64>(P::ID())); it != registered_passes_.end())
+            return static_cast<P*>(it->second);
         auto p   = std::make_unique<P>(*this, std::forward<Args>(args)...);
         auto res = p.get();
         fixed_point_ |= res->fixed_point();
         passes_.emplace_back(std::move(p));
+        registered_passes_.emplace(reinterpret_cast<u64>(P::ID()), res);
         return res;
     }
 
@@ -205,6 +211,7 @@ private:
 
     World& world_;
     std::vector<std::unique_ptr<Pass>> passes_;
+    absl::flat_hash_map<u64, Pass*> registered_passes_;
     std::deque<State> states_;
     Def* curr_nom_    = nullptr;
     bool fixed_point_ = false;

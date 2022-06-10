@@ -16,6 +16,8 @@ public:
 
     void keep(Lam* lam) { keep_.emplace(lam); }
 
+    static PassTag* ID();
+
 private:
     const Def* rewrite(const Def*) override;
     undo_t analyze(const Proxy*) override;

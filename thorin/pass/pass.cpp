@@ -109,7 +109,7 @@ const Def* PassMan::rewrite(const Def* old_def) {
     auto new_def = old_def->rebuild(world(), new_type, new_ops, new_dbg);
 
     if (auto proxy = new_def->isa<Proxy>()) {
-        if (auto&& pass = passes_[proxy->index()]; pass->inspect()) {
+        if (auto&& pass = passes_[proxy->pass()]; pass->inspect()) {
             if (auto rw = pass->rewrite(proxy); rw != proxy) return map(old_def, rewrite(rw));
         }
     } else {
@@ -136,7 +136,7 @@ undo_t PassMan::analyze(const Def* def) {
         curr_state().stack.push(nom);
     } else if (auto proxy = def->isa<Proxy>()) {
         proxy_ = true;
-        undo   = passes_[proxy->index()]->analyze(proxy);
+        undo   = passes_[proxy->pass()]->analyze(proxy);
     } else {
         auto var = def->isa<Var>();
 

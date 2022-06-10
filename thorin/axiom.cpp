@@ -1,9 +1,11 @@
 #include "thorin/axiom.h"
 
+using namespace std::literals;
+
 namespace thorin {
 
-Axiom::Axiom(NormalizeFn normalizer, const Def* type, u32 tag, u32 flags, const Def* dbg)
-    : Def(Node, type, Defs{}, (nat_t(tag) << 32_u64) | nat_t(flags), dbg) {
+Axiom::Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, tag_t tag, sub_t sub, const Def* dbg)
+    : Def(Node, type, Defs{}, dialect | (flags_t(tag) << 8_u64) | flags_t(sub), dbg) {
     u16 curry = 0;
     while (auto pi = type->isa<Pi>()) {
         ++curry;
@@ -14,7 +16,7 @@ Axiom::Axiom(NormalizeFn normalizer, const Def* type, u32 tag, u32 flags, const 
     curry_      = curry;
 }
 
-std::optional<u64> Axiom::mangle(std::string_view s) {
+std::optional<dialect_t> Axiom::mangle(std::string_view s) {
     auto n = s.size();
     if (n > Max_Dialect_Size) return {};
 
@@ -43,7 +45,7 @@ std::optional<u64> Axiom::mangle(std::string_view s) {
     return result << 16_u64;
 }
 
-std::string Axiom::demangle(u64 u) {
+std::string Axiom::demangle(dialect_t u) {
     std::string result;
     for (size_t i = 0; i != Max_Dialect_Size; ++i) {
         u64 c = (u & 0xfc00000000000000_u64) >> 58_u64;
@@ -70,7 +72,7 @@ static std::string_view sub_view(std::string_view s, size_t i, size_t n = std::s
     return {s.data() + i, n - i};
 }
 
-std::optional<std::pair<std::string_view, std::string_view>> Axiom::dialect_and_group(std::string_view s) {
+std::optional<std::array<std::string_view, 3>> Axiom::split(std::string_view s) {
     if (s.empty()) return {};
     if (s[0] != '%') return {};
     s = sub_view(s, 1);
@@ -81,11 +83,19 @@ std::optional<std::pair<std::string_view, std::string_view>> Axiom::dialect_and_
     auto dialect = sub_view(s, 0, dot);
     if (!mangle(dialect)) return {};
 
-    auto group = sub_view(s, dot + 1);
-    if (group.empty()) return {};
+    auto tag = sub_view(s, dot + 1);
+    if (auto dot = tag.find('.')) {
+        auto sub = sub_view(tag, dot + 1);
+        tag      = sub_view(tag, 0, dot);
+        return {
+            {dialect, tag, sub}
+        };
+    }
 
-    // TODO check that group is valid
-    return std::pair(dialect, group);
+    if (tag.empty()) return {};
+    return {
+        {dialect, tag, ""sv}
+    };
 }
 
 std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {
@@ -93,7 +103,5 @@ std::tuple<const Axiom*, u16> Axiom::get(const Def* def) {
     if (auto app = def->isa<App>()) return {app->axiom(), app->curry()};
     return {nullptr, u16(-1)};
 }
-
-bool is_memop(const Def* def) { return def->isa<App>() && isa<Tag::Mem>(def->proj(0)->type()); }
 
 } // namespace thorin

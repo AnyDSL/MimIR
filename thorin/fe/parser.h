@@ -1,6 +1,9 @@
 #ifndef THORIN_FE_PARSER_H
 #define THORIN_FE_PARSER_H
 
+#include <filesystem>
+
+#include "thorin/dialects.h"
 #include "thorin/world.h"
 
 #include "thorin/be/h/h.h"
@@ -30,11 +33,19 @@ class Parser {
 public:
     using Binders = std::deque<std::pair<Sym, size_t>>;
 
-    Parser(World&, std::string_view, std::istream&, std::ostream* md = nullptr);
+    Parser(World&,
+           std::string_view,
+           std::istream&,
+           ArrayRef<std::string>,
+           const Normalizers*,
+           std::ostream* md = nullptr);
 
     World& world() { return lexer_.world(); }
     void parse_module();
     void bootstrap(std::ostream&);
+
+    static Parser
+    import_module(World&, std::string_view, ArrayRef<std::string> = {}, const Normalizers* normalizers = nullptr);
 
 private:
     /// @name Tracker
@@ -182,7 +193,13 @@ private:
     }
     ///@}
 
-    Parser(World&, std::string_view, std::istream&, const std::deque<Parser::Scope>&, const SymSet&);
+    Parser(World&,
+           std::string_view,
+           std::istream&,
+           ArrayRef<std::string>,
+           const Normalizers*,
+           const std::deque<Parser::Scope>&,
+           const SymSet&);
 
     Lexer lexer_;
     Loc prev_;
@@ -193,6 +210,8 @@ private:
     SymSet imported_;
     const Def* anonymous_;
     h::Bootstrapper bootstrapper_;
+    std::vector<std::string> user_search_paths_;
+    const Normalizers* normalizers_;
 };
 
 } // namespace thorin

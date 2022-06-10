@@ -30,10 +30,39 @@
 /// Stores a value of type `T` to a pointer `ptr (T, as)`,
 .ax %mem.store: Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as), T] -> %mem.M, normalize_store;
 ///
+/// ### %mem.remem
+///
+/// Tbd..?
+.ax %mem.remem: %mem.M -> %mem.M, normalize_remem;
+///
+/// ### %mem.alloc
+///
+/// Allocates memory of type `T` in address space `as`.
+.ax %mem.alloc: Π [T: *, as: .Nat] -> %mem.M -> [%mem.M, %mem.Ptr(T, as)];
+///
+/// ### %mem.slot
+///
+/// Reserves a memory slot for type `T` in address space `as`.
+/// `id` has to be provided an unique id.
+.ax %mem.slot: Π [T: *, as: .Nat] -> [%mem.M, id: .Nat] -> [%mem.M, %mem.Ptr(T, as)];
+///
+/// ### %mem.malloc
+///
+/// Allocates memory of type `T` in address space `as`.
+/// The difference to %mem.alloc is that the `size` is automatically inferred.
+.ax %mem.malloc: Π [T: *, as: .Nat] -> [%mem.M, .Nat] -> [%mem.M, %mem.Ptr(T, as)];
+///
+/// ### %mem.mslot
+///
+/// Reserves a memory slot for type `T` in address space `as`.
+/// The reserved slot will be `size` bytes large.
+/// `id` has to be provided an unique id.
+.ax %mem.mslot: Π [T: *, as: .Nat] -> [%mem.M, size: .Nat, id: .Nat] -> [%mem.M, %mem.Ptr(T, as)];
+///
 /// ## Operations without Side Effects
 ///
 /// ### %mem.lea
 ///
 /// Load effective address. 
 /// Performs address computation.
-.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -> Π [%mem.Ptr(«j: n; Ts#j», as), i: %Int n] -> %mem.Ptr(Ts#i, as);
+.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -> Π [%mem.Ptr(«j: n; Ts#j», as), i: %Int n] -> %mem.Ptr(Ts#i, as), normalize_lea;

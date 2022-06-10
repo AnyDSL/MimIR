@@ -1,0 +1,133 @@
+/// # The core Dialect {#core}
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+.import mem;
+///
+/// ## Types
+///
+/// ### %core.Int
+///
+.ax %core.Int: .Nat -> *;
+///
+/// ## Operations
+///
+/// ### %core.icmp
+///
+/// Integer comparison is made of 5 disjoint relations:
+///     * `X`: first operand plus, second minus
+///     * `Y`: first operand minus, second plus
+///     * `G`: greater with same sign
+///     * `L`: less with same sign
+///     * `E`: equal
+///
+/// Here is the complete picture for `%core.icmp.xygle x, y` for 3 bit wide integers:
+///
+/// |        | x        |        |       |       |       | y     |       |       |       |       |
+/// |--------|----------|--------|-------|-------|-------|-------|-------|-------|-------|-------|
+/// | binary |          |        |  000  |  001  |  010  |  011  |  100  |  101  |  110  |  111  |
+/// |        | unsigned |        |  0    |  1    |  2    |  3    |   4   |   5   |   6   |   7   |
+/// |        |          | signed |  0    |  1    |  2    |  3    |  -4   |  -3   |  -2   |  -1   |
+/// |  000   |  0       |   0    | `E`   | `L`   | `L`   | `L`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  001   |  1       |   1    | `G`   | `E`   | `L`   | `L`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  010   |  2       |   2    | `G`   | `G`   | `E`   | `L`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  011   |  3       |   3    | `G`   | `G`   | `G`   | `E`   | `X`   | `X`   |  `X`  |  `X`  |
+/// |  100   |  4       |  -4    | `Y`   | `Y`   | `Y`   | `Y`   | `E`   | `L`   |  `L`  |  `L`  |
+/// |  101   |  5       |  -3    | `Y`   | `Y`   | `Y`   | `Y`   | `G`   | `E`   |  `L`  |  `L`  |
+/// |  110   |  6       |  -2    | `Y`   | `Y`   | `Y`   | `Y`   | `G`   | `G`   |  `E`  |  `L`  |
+/// |  111   |  7       |  -1    | `Y`   | `Y`   | `Y`   | `Y`   | `G`   | `G`   |  `G`  |  `E`  |
+///
+/// And here is the overview of all possible combinations of relations.
+/// Note the aliases you can use for the common integer comparisions front-ends typically want to use:
+///
+/// | Subtag  | Aliases | X | Y | G | L | E | Meaning                                         |
+/// |---------|---------| --|---|---|---|---|-------------------------------------------------|
+/// | `xygle` |  `f`    | o | o | o | o | o | always false                                    |
+/// | `xyglE` |  `e`    | o | o | o | o | x | equal                                           |
+/// | `xygLe` |         | o | o | o | x | o | less (same sign)                                |
+/// | `xyglE` |         | o | o | o | x | x | less or equal                                   |
+/// | `xyGle` |         | o | o | x | o | o | greater (same sign)                             |
+/// | `xyGlE` |         | o | o | x | o | x | greater or equal                                |
+/// | `xyGLe` |         | o | o | x | x | o | greater or less                                 |
+/// | `xyGLE` |         | o | o | x | x | x | greater or less or equal == same sign           |
+/// | `xYgle` |         | o | x | o | o | o | minus plus                                      |
+/// | `xYglE` |         | o | x | o | o | x | minus plus or equal                             |
+/// | `xYgLe` |  `sl`   | o | x | o | x | o | signed less                                     |
+/// | `xYglE` |  `sle`  | o | x | o | x | x | signed less or equal                            |
+/// | `xYGle` |  `ug`   | o | x | x | o | o | unsigned greater                                |
+/// | `xYGlE` |  `uge`  | o | x | x | o | x | unsigned greater or equal                       |
+/// | `xYGLe` |         | o | x | x | x | o | minus plus or greater or less                   |
+/// | `xYGLE` |         | o | x | x | x | x | not plus minus                                  |
+/// | `Xygle` |         | x | o | o | o | o | plus minus                                      |
+/// | `XyglE` |         | x | o | o | o | x | plus minus or equal                             |
+/// | `XygLe` |  `ul`   | x | o | o | x | o | unsigned less                                   |
+/// | `XyglE` |  `ule`  | x | o | o | x | x | unsigned less or equal                          |
+/// | `XyGle` |  `sg`   | x | o | x | o | o | signed greater                                  |
+/// | `XyGlE` |  `sge`  | x | o | x | o | x | signed greater or equal                         |
+/// | `XyGLe` |         | x | o | x | x | o | greater or less or plus minus                   |
+/// | `XyGLE` |         | x | o | x | x | x | not minus plus                                  |
+/// | `XYgle` |         | x | x | o | o | o | different sign                                  |
+/// | `XYglE` |         | x | x | o | o | x | different sign or equal                         |
+/// | `XYgLe` |         | x | x | o | x | o | signed or unsigned less                         |
+/// | `XYglE` |         | x | x | o | x | x | signed or unsigned less or equal == not greater |
+/// | `XYGle` |         | x | x | x | o | o | signed or unsigned greater                      |
+/// | `XYGlE` |         | x | x | x | o | x | signed or unsigned greater or equal == not less |
+/// | `XYGLe` |  `ne`   | x | x | x | x | o | not equal                                       |
+/// | `XYGLE` |  `t`    | x | x | x | x | x | always true                                     |
+.ax %core.icmp(xygle = f, xyglE = e, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,
+               xYgle,     xYglE,     xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
+               Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
+               XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
+    Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_icmp;
+///
+/// ### %core.bit1
+///
+/// This *unary* bitwise operations offers all [4 possible operations](https://en.wikipedia.org/wiki/Truth_table#Unary_operations) as summarized in the following table:
+///
+/// | Subtag | A | a | Comment                      |
+/// |--------|---|---|------------------------------|
+/// | f      | o | o | always false                 |
+/// | neg    | o | x | negate                       |
+/// | id     | x | o | identity                     |
+/// | t      | x | x | always true                  |
+.ax %core.bit1(f, neg, id, t): Π w: .Nat -> %Int w -> %Int w;
+///
+/// ### %core.bit2
+///
+/// This *binary* bitwise operations offers all [16 possible operations](https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators) as summarized in the following table:
+///
+/// | Subtag | AB | Ab | aB | ab | Comment                      |
+/// |--------|----|----|----|----|------------------------------|
+/// | f      |  o |  o |  o |  o | always false                 |
+/// | nor    |  o |  o |  o |  x | not or                       |
+/// | nciff  |  o |  o |  x |  o | not converse implication     |
+/// | na     |  o |  o |  x |  x | not first argument           |
+/// | niff   |  o |  x |  o |  o | not implication              |
+/// | nb     |  o |  x |  o |  x | not second argument          |
+/// | _xor   |  o |  x |  x |  o | exclusive or                 |
+/// | nand   |  o |  x |  x |  x | not and                      |
+/// | _and   |  x |  o |  o |  o | and                          |
+/// | nxor   |  x |  o |  o |  x | not exclusive or             |
+/// | b      |  x |  o |  x |  o | second argument              |
+/// | iff    |  x |  o |  x |  x | implication (if and only if) |
+/// | a      |  x |  x |  o |  o | first argment                |
+/// | ciff   |  x |  x |  o |  x | converse implication         |
+/// | _or    |  x |  x |  x |  o | or                           |
+/// | t      |  x |  x |  x |  x | always true                  |
+.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
+                _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
+    Π w: .Nat -> [%Int w, %Int w] -> %Int w , normalize_bit2;
+///
+/// ### %core.shr
+///
+.ax %core.shr(ashr, lshr): Π w: .Nat -> [%Int w, %Int w] -> %Int w, normalize_shr;
+///
+/// ### %core.wrap
+///
+.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [%Int w, %Int w] -> %Int w, normalize_wrap;
+///
+/// ### %core.wrap
+///
+.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, %Int w, %Int w] -> [%mem.M, %Int w], normalize_div;

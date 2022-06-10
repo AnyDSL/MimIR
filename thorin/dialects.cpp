@@ -27,7 +27,16 @@ static void add_paths_from_env(std::vector<std::filesystem::path>& paths) {
     }
 }
 
-static std::vector<std::filesystem::path> get_plugin_search_paths(const std::vector<std::string>& user_paths) {
+static std::vector<std::filesystem::path> get_plugin_name_variants(std::string_view name) {
+    std::vector<std::filesystem::path> names;
+    names.push_back(name); // if the user gives "libthorin_foo.so"
+    names.push_back(fmt("{}thorin_{}{}", dl::prefix(), name, dl::extension()));
+    return names;
+}
+
+namespace thorin {
+
+std::vector<std::filesystem::path> get_plugin_search_paths(ArrayRef<std::string> user_paths) {
     std::vector<std::filesystem::path> paths{user_paths.begin(), user_paths.end()};
 
     add_paths_from_env(paths);
@@ -36,11 +45,11 @@ static std::vector<std::filesystem::path> get_plugin_search_paths(const std::vec
     const auto cwd = std::filesystem::current_path();
     std::ranges::transform(paths, paths.begin(), [&](auto path) { return path.is_relative() ? cwd / path : path; });
 
-    // add path/to/thorin.exe/../../lib
-    if (auto path = sys::path_to_curr_exe()) paths.emplace_back(*path);
+    // add path/to/thorin.exe/../../lib/thorin
+    if (auto path = sys::path_to_curr_exe()) paths.emplace_back(path->parent_path().parent_path() / "lib" / "thorin");
 
     // add default install path
-    const auto install_prefixed_path = std::filesystem::path{THORIN_INSTALL_PREFIX} / "lib";
+    const auto install_prefixed_path = std::filesystem::path{THORIN_INSTALL_PREFIX} / "lib" / "thorin";
 
     if (paths.empty() ||
         (std::filesystem::is_directory(install_prefixed_path) &&
@@ -52,16 +61,6 @@ static std::vector<std::filesystem::path> get_plugin_search_paths(const std::vec
     return paths;
 }
 
-static std::vector<std::filesystem::path> get_plugin_name_variants(std::string_view name) {
-    std::vector<std::filesystem::path> names;
-    names.push_back(name); // if the user gives "libthorin_foo.so"
-    std::ostringstream lib;
-    print(lib, "{}thorin_{}{}", dl::prefix(), name, dl::extension());
-    names.push_back(lib.str());
-    return names;
-}
-
-namespace thorin {
 Dialect::Dialect(const std::string& plugin_path, std::unique_ptr<void, decltype(&dl::close)>&& handle)
     : plugin_path_(plugin_path)
     , handle_(std::move(handle)) {
@@ -72,7 +71,7 @@ Dialect::Dialect(const std::string& plugin_path, std::unique_ptr<void, decltype(
     info_ = get_info();
 }
 
-Dialect Dialect::load(const std::string& name, const std::vector<std::string>& search_paths) {
+Dialect Dialect::load(const std::string& name, ArrayRef<std::string> search_paths) {
     std::unique_ptr<void, decltype(&dl::close)> handle{nullptr, dl::close};
     std::string plugin_path = name;
     if (auto path = std::filesystem::path{name}; path.is_absolute() && std::filesystem::is_regular_file(path))

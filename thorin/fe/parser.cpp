@@ -6,7 +6,12 @@
 #include <sstream>
 
 #include "thorin/check.h"
+#include "thorin/def.h"
+#include "thorin/dialects.h"
 #include "thorin/rewrite.h"
+
+#include "thorin/util/array.h"
+#include "thorin/util/sys.h"
 
 // clang-format off
 #define DECL                \
@@ -20,13 +25,22 @@
     case Tok::Tag::K_def
 // clang-format on
 
+using namespace std::string_literals;
+
 namespace thorin {
 
-Parser::Parser(World& world, std::string_view file, std::istream& istream, std::ostream* md)
+Parser::Parser(World& world,
+               std::string_view file,
+               std::istream& istream,
+               ArrayRef<std::string> import_search_paths,
+               const Normalizers* normalizers,
+               std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
     , anonymous_(world.tuple_str("_"))
-    , bootstrapper_(std::filesystem::path{file}.filename().replace_extension("").string()) {
+    , bootstrapper_(std::filesystem::path{file}.filename().replace_extension("").string())
+    , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
+    , normalizers_(normalizers) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
     push(); // root scope
@@ -35,11 +49,41 @@ Parser::Parser(World& world, std::string_view file, std::istream& istream, std::
 Parser::Parser(World& world,
                std::string_view file,
                std::istream& istream,
+               ArrayRef<std::string> import_search_paths,
+               const Normalizers* normalizers,
                const std::deque<Parser::Scope>& inhert_scopes,
                const SymSet& inhert_imported)
-    : Parser(world, file, istream) {
+    : Parser(world, file, istream, import_search_paths, normalizers) {
     scopes_   = inhert_scopes;
     imported_ = inhert_imported;
+}
+
+Parser Parser::import_module(World& world,
+                             std::string_view name,
+                             ArrayRef<std::string> user_search_paths,
+                             const Normalizers* normalizers) {
+    auto search_paths = get_plugin_search_paths(user_search_paths);
+
+    auto file_name = std::string(name) + ".thorin";
+
+    std::string input_path{};
+    for (const auto& path : search_paths) {
+        auto full_path = path / file_name;
+
+        std::error_code ignore;
+        if (bool reg_file = std::filesystem::is_regular_file(full_path, ignore); reg_file && !ignore) {
+            input_path = full_path.string();
+            break;
+        }
+    }
+    std::ifstream ifs(input_path);
+
+    if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
+
+    // fixme: no normalizers?
+    thorin::Parser parser(world, input_path, ifs, user_search_paths, normalizers);
+    parser.parse_module();
+    return parser;
 }
 
 void Parser::bootstrap(std::ostream& h) { bootstrapper_.emit(h); }
@@ -170,7 +214,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
             // HACK hard-coded some built-in axioms
             auto tok = lex();
             auto s = tok.sym().to_string();
-            if (s == "%Mem")      return world().type_mem();
+            // if (s == "%Mem")      return world().ax();
             if (s == "%Int"     ) return world().type_int();
             if (s == "%Real"    ) return world().type_real();
             if (s == "%Wrap_add") return world().ax(Wrap::add);
@@ -430,43 +474,62 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
 void Parser::parse_ax() {
     auto track = tracker();
     eat(Tok::Tag::K_ax);
-    auto& info = bootstrapper_.axioms.emplace_back();
-
     auto ax     = expect(Tok::Tag::M_ax, "name of an axiom");
     auto ax_str = ax.sym().to_string();
+    auto split  = Axiom::split(ax_str);
+    if (!split) err(ax.loc(), "invalid axiom name '{}'", ax);
 
-    auto dialect_and_group = Axiom::dialect_and_group(ax_str);
-    if (!dialect_and_group) err(ax.loc(), "invalid axiom name '{}'", ax);
-    info.dialect = dialect_and_group->first;
-    info.group   = dialect_and_group->second;
+    auto [dialect, tag, sub] = *split;
 
-    if (info.dialect != bootstrapper_.dialect()) {
+    auto& info   = bootstrapper_.axioms.emplace_back();
+    info.dialect = dialect;
+    info.tag     = tag;
+
+    if (dialect != bootstrapper_.dialect()) {
         // TODO
         // err(ax.loc(), "axiom name `{}` implies a dialect name of `{}` but input file is named `{}`", ax,
         // info.dialect, lexer_.file());
     }
 
-    // 6 bytes dialect name, 1 byte axiom group (tag), 1 byte flags
-    assert(bootstrapper_.axioms.size() < std::numeric_limits<u8>::max());
-
-    // dialect_and_group already tried mangling, so we know it's valid.
-    info.id = *Axiom::mangle(info.dialect) | ((bootstrapper_.axioms.size() - 1) << 8u);
+    if (bootstrapper_.axioms.size() >= std::numeric_limits<tag_t>::max())
+        err(ax.loc(), "exceeded maxinum number of axioms in current dialect");
 
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
-            auto& aliases = info.tags.emplace_back();
+            auto& aliases = info.subs.emplace_back();
             aliases.emplace_back(parse_sym("tag of an axiom"));
             while (accept(Tok::Tag::T_assign)) aliases.emplace_back(parse_sym("alias of an axiom tag"));
         });
     }
 
     expect(Tok::Tag::T_colon, "axiom");
-    auto type = parse_expr("type of an axiom");
-    info.pi   = type->isa<Pi>() != nullptr;
-
-    auto axiom = world().axiom(type, tag_t(info.id >> 32u), flags_t(info.id & u32(-1)), track.named(ax.sym()));
-    insert(ax.sym(), axiom);
+    auto type       = parse_expr("type of an axiom");
+    info.pi         = type->isa<Pi>() != nullptr;
     info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
+
+    auto normalizer = [this](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {
+        if (normalizers_)
+            if (auto it = normalizers_->find(d | flags_t(t << 8u) | s); it != normalizers_->end()) return it->second;
+        return nullptr;
+    };
+
+    dialect_t d = *Axiom::mangle(dialect);
+    tag_t t     = bootstrapper_.axioms.size() - 1;
+    sub_t s     = 0;
+    if (info.subs.empty()) {
+        auto axiom = world().axiom(normalizer(d, t, 0), type, d, t, 0, track.named(ax.sym()));
+        insert(ax.sym(), axiom);
+    } else {
+        for (const auto& sub : info.subs) {
+            auto dbg   = track.named(world().tuple_str(ax_str + "."s + sub.front()));
+            auto axiom = world().axiom(normalizer(d, t, s), type, d, t, s, dbg);
+            for (auto& alias : sub) {
+                Sym name = world().tuple_str(ax_str + "."s + alias);
+                insert(name, axiom);
+            }
+            ++s;
+        }
+    }
     expect(Tok::Tag::T_semicolon, "end of an axiom");
 }
 
@@ -569,15 +632,8 @@ void Parser::parse_import() {
 
     if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
 
-    std::ostringstream os;
-    print(os, "{}.thorin", name_str);
-    auto input = (std::filesystem::path{lexer_.file()}.parent_path().parent_path() / name_str / os.str()).string();
-    std::ifstream ifs(input);
-
-    if (!ifs) err(name.loc(), "cannot import file '{}'", input);
-
-    Parser parser(world(), input, ifs, scopes_, imported_);
-    parser.parse_module();
+    // search file and import
+    auto parser = Parser::import_module(world(), name_str, user_search_paths_, normalizers_);
 
     // merge global scopes
     assert(parser.scopes_.size() == 1 && scopes_.size() == 1);

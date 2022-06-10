@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ostream>
 #include <ranges>
+#include <sstream>
 #include <string>
 
 #include "thorin/util/assert.h"
@@ -64,6 +65,13 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
 
     assert(false && "invalid format string for 's'");
     unreachable();
+}
+
+template<class... Args>
+std::string fmt(const char* s, Args&&... args) {
+    std::ostringstream os;
+    print(os, s, std::forward<Args&&>(args)...);
+    return os.str();
 }
 
 // clang-format off

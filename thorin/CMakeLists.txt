@@ -44,8 +44,6 @@ add_library(libthorin
     be/dot/dot.h
     be/h/h.cpp
     be/h/h.h
-    be/ll/ll.cpp
-    be/ll/ll.h
     fe/lexer.cpp
     fe/lexer.h
     fe/parser.cpp
@@ -62,40 +60,18 @@ add_library(libthorin
     pass/fp/eta_red.h
     pass/fp/beta_red.cpp
     pass/fp/beta_red.h
-    pass/fp/copy_prop.cpp
-    pass/fp/copy_prop.h
-    pass/fp/ssa_constr.cpp
-    pass/fp/ssa_constr.h
-    pass/fp/lower_typed_clos_prep.h
-    pass/fp/lower_typed_clos_prep.cpp
     pass/fp/tail_rec_elim.cpp
     pass/fp/tail_rec_elim.h
-    pass/rw/alloc2malloc.cpp
-    pass/rw/alloc2malloc.h
     pass/rw/lam_spec.cpp
     pass/rw/lam_spec.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
-    pass/rw/lower_for.cpp
-    pass/rw/lower_for.h
-    pass/rw/remem_elim.cpp
-    pass/rw/remem_elim.h
     pass/rw/ret_wrap.cpp
     pass/rw/ret_wrap.h
     pass/rw/bound_elim.cpp
     pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
-    pass/rw/branch_clos_elim.h
-    pass/rw/branch_clos_elim.cpp
-    pass/rw/clos_conv_prep.h
-    pass/rw/clos_conv_prep.cpp
-    pass/rw/clos2sjlj.h
-    pass/rw/clos2sjlj.cpp
-    transform/clos_conv.h
-    transform/clos_conv.cpp
-    transform/lower_typed_clos.h
-    transform/lower_typed_clos.cpp
     util/array.h
     util/assert.h
     util/bitset.cpp

@@ -64,5 +64,6 @@ const Def* BoundElim::rewrite(const Def* def) {
     return def;
 }
 
+PassTag* BoundElim::ID() { static PassTag Key; return &Key; }
 }
 #endif
