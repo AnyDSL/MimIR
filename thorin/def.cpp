@@ -251,7 +251,7 @@ void Def::set_debug_name(std::string_view n) const {
         auto file  = w.tuple_str("");
         auto begin = w.lit_nat_max();
         auto finis = w.lit_nat_max();
-        auto meta  = w.bot(w.bot_type());
+        auto meta  = w.bot(w.type_bot());
         dbg_       = w.tuple({name, w.tuple({file, begin, finis}), meta});
     } else {
         dbg_ = w.insert(dbg_, 3_s, 0_s, name);

@@ -37,7 +37,7 @@ Parser::Parser(World& world,
                std::ostream* md)
     : lexer_(world, file, istream, md)
     , prev_(lexer_.loc())
-    , anonymous_(world.tuple_str("_"))
+    , anonymous_(world.tuple_str("_"), nullptr)
     , bootstrapper_(std::filesystem::path{file}.filename().replace_extension("").string())
     , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
     , normalizers_(normalizers) {
@@ -331,7 +331,7 @@ const Def* Parser::parse_sigma(Binders* binders) {
             auto type     = parse_expr("type of a sigma element");
             auto infer    = world().nom_infer(type, sym, id.loc());
             infers.back() = infer;
-            fields.back() = sym.def();
+            fields.back() = sym.str();
 
             insert(sym, infer);
             ops.emplace_back(type);
@@ -521,10 +521,10 @@ void Parser::parse_ax() {
         insert(ax.sym(), axiom);
     } else {
         for (const auto& sub : info.subs) {
-            auto dbg   = track.named(world().tuple_str(ax_str + "."s + sub.front()));
+            auto dbg   = track.named(ax_str + "."s + sub.front());
             auto axiom = world().axiom(normalizer(d, t, s), type, d, t, s, dbg);
             for (auto& alias : sub) {
-                Sym name = world().tuple_str(ax_str + "."s + alias);
+                Sym name(world().tuple_str(ax_str + "."s + alias), prev_.def(world()));
                 insert(name, axiom);
             }
             ++s;

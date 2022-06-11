@@ -4,26 +4,50 @@
 
 namespace thorin {
 
-Loc::Loc(const Def* dbg) {
-    if (dbg != nullptr) {
-        auto [d_file, d_begin, d_finis] = dbg->proj(1)->projs<3>();
+/*
+ * c'tor
+ */
 
-        file      = tuple2str(d_file);
-        begin.row = u32(as_lit(d_begin) >> 32_u64);
-        begin.col = u32(as_lit(d_begin));
-        finis.row = u32(as_lit(d_finis) >> 32_u64);
-        finis.col = u32(as_lit(d_finis));
-    }
+Pos::Pos(const Def* def)
+    : Pos(as_lit(def)) {}
+
+Loc::Loc(const Def* def)
+    : file(tuple2str(def->proj(3, 0_s)))
+    , begin(def->proj(3, 1_s))
+    , finis(def->proj(3, 2_s)) {}
+
+Debug::Debug(const Def* def)
+    : name(def ? tuple2str(def->proj(3, 0_s)) : std::string())
+    , loc(def ? def->proj(3, 1_s) : Loc())
+    , meta(def ? def->proj(3, 2_s) : nullptr) {}
+
+/*
+ * conversion
+ */
+
+const Def* Pos::def(World& w) const { return w.lit_nat(rowcol()); }
+
+const Def* Loc::def(World& w) const {
+    auto d_file  = w.tuple_str(file);
+    auto d_begin = begin.def(w);
+    auto d_finis = finis.def(w);
+    return w.tuple({d_file, d_begin, d_finis});
 }
 
-Debug::Debug(const Def* dbg)
-    : name(dbg ? tuple2str(dbg->proj(0)) : std::string{})
-    , loc(dbg)
-    , meta(dbg ? dbg->proj(2) : nullptr) {}
+const Def* Debug::def(World& w) const {
+    auto d_name = w.tuple_str(name);
+    auto d_loc  = loc.def(w);
+    auto d_meta = meta ? meta : w.bot(w.type_bot());
 
-size_t SymHash::operator()(Sym sym) const { return murmur3(sym.def()->gid()); }
+    return w.tuple({d_name, d_loc, d_meta});
+}
 
-Loc Sym::loc() const { return def()->loc(); }
+/*
+ * Sym
+ */
+
+size_t SymHash::operator()(Sym sym) const { return murmur3(sym.str()->gid()); }
+std::string Sym::to_string() const { return tuple2str(str()); }
 
 /*
  * ostream
@@ -40,8 +64,6 @@ std::ostream& operator<<(std::ostream& os, const Loc loc) {
     return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const Sym sym) { return os << tuple2str(sym.def()); }
-
-std::string Sym::to_string() const { return tuple2str(def()); }
+std::ostream& operator<<(std::ostream& os, const Sym sym) { return os << sym.to_string(); }
 
 } // namespace thorin
