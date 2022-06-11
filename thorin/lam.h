@@ -71,6 +71,7 @@ public:
     bool is_returning() const { return type()->is_returning(); }
     const Def* dom() const { return type()->dom(); }
     const Def* codom() const { return type()->codom(); }
+    const Pi* ret_pi() const { return type()->ret_pi(); }
     THORIN_PROJ(dom, const)
     THORIN_PROJ(codom, const)
     ///@}

@@ -16,10 +16,11 @@ namespace mem {
 /// Finally, it will also remove dead Var%s.
 class CopyProp : public FPPass<CopyProp, Lam> {
 public:
-    CopyProp(PassMan& man, BetaRed* beta_red, EtaExp* eta_exp)
+    CopyProp(PassMan& man, BetaRed* beta_red, EtaExp* eta_exp, bool bb_only = false)
         : FPPass(man, "copy_prop")
         , beta_red_(beta_red)
-        , eta_exp_(eta_exp) {}
+        , eta_exp_(eta_exp)
+        , bb_only_(bb_only) {}
 
     using Data = LamMap<DefVec>;
 
@@ -47,6 +48,7 @@ private:
     BetaRed* beta_red_;
     EtaExp* eta_exp_;
     LamMap<std::tuple<Lattices, Lam*, DefArray>> lam2info_;
+    const bool bb_only_;
 };
 
 } // namespace mem

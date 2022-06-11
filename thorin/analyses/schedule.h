@@ -5,7 +5,8 @@
 
 namespace thorin {
 
-template<bool> class DomTreeBase;
+template<bool>
+class DomTreeBase;
 using DomTree = DomTreeBase<true>;
 
 class Scheduler {
@@ -29,18 +30,18 @@ public:
     /// @name compute schedules
     ///@{
     Def* early(const Def*);
-    Def* late (const Def*);
+    Def* late(const Def*);
     Def* smart(const Def*);
     ///@}
 
     friend void swap(Scheduler& s1, Scheduler& s2) {
         using std::swap;
-        swap(s1.scope_,    s2.scope_);
-        swap(s1.cfg_,      s2.cfg_);
-        swap(s1.domtree_,  s2.domtree_);
-        swap(s1.early_,    s2.early_);
-        swap(s1.late_,     s2.late_);
-        swap(s1.smart_,    s2.smart_);
+        swap(s1.scope_, s2.scope_);
+        swap(s1.cfg_, s2.cfg_);
+        swap(s1.domtree_, s2.domtree_);
+        swap(s1.early_, s2.early_);
+        swap(s1.late_, s2.late_);
+        swap(s1.smart_, s2.smart_);
         swap(s1.def2uses_, s2.def2uses_);
     }
 
@@ -57,6 +58,6 @@ private:
 using Schedule = std::vector<Def*>;
 Schedule schedule(const Scope&);
 
-}
+} // namespace thorin
 
 #endif

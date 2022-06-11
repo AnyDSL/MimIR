@@ -16,6 +16,24 @@ add_thorin_dialect(mem
         mem/normalizers.cpp
 )
 
+add_thorin_dialect(clos
+    SOURCES
+        clos/pass/fp/lower_typed_clos_prep.h
+        clos/pass/fp/lower_typed_clos_prep.cpp
+        clos/pass/rw/branch_clos_elim.h
+        clos/pass/rw/branch_clos_elim.cpp
+        clos/pass/rw/clos_conv_prep.h
+        clos/pass/rw/clos_conv_prep.cpp
+        clos/pass/rw/clos2sjlj.h
+        clos/pass/rw/clos2sjlj.cpp
+        clos/clos_conv.h
+        clos/clos_conv.cpp
+        clos/lower_typed_clos.h
+        clos/lower_typed_clos.cpp
+    DEPENDS
+        mem
+)
+
 add_thorin_dialect(core
     SOURCES
         core/core.cpp
@@ -25,6 +43,7 @@ add_thorin_dialect(core
         core/be/ll/ll.h
     DEPENDS
         mem
+        clos
 )
 
 add_thorin_dialect(affine

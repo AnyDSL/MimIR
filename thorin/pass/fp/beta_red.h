@@ -26,6 +26,6 @@ private:
     LamSet keep_;
 };
 
-}
+} // namespace thorin
 
 #endif

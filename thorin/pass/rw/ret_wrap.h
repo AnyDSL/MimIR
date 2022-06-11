@@ -14,6 +14,6 @@ public:
     static PassTag* ID();
 };
 
-}
+} // namespace thorin
 
 #endif

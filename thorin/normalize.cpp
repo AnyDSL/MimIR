@@ -635,6 +635,8 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
     // todo: figure out a way to normalize traits on dialect types..
     if (auto ptr = isa<Tag::Ptr>(type)) {
         return world.lit_nat(8);
+    } else if (type->isa<Pi>()) {
+        return world.lit_nat(8); // Gets lowered to function ptr
     } else if (auto int_ = isa<Tag::Int>(type)) {
         if (int_->type()->isa<Top>()) return world.lit_nat(8);
         if (auto w = isa_lit(int_->arg())) {

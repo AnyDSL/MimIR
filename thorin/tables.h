@@ -32,17 +32,17 @@ using sub_t     = u8;
     m(Global, global)                                                         \
     m(Singleton, singleton)
 
-#define THORIN_TAG(m)                                               \
-    m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)               \
-    m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(ROp, rop)               \
-    m(ICmp, icmp) m(RCmp, rcmp)                                     \
-    m(Trait, trait) m(Conv, conv) m(PE, pe) m(Acc, acc)             \
-    m(Bitcast, bitcast) m(LEA, lea)                                 \
-    m(Alloc, alloc) m(Slot, slot) m(Malloc, malloc) m(Mslot, mslot) \
-    m(Load, load) m(Remem, remem) m(Store, store)                   \
-    m(Atomic, atomic)                                               \
-    m(Zip, zip) m(For, affine_for)                                  \
-    m(RevDiff, rev_diff) m(TangentVector, tangent_vector)
+#define THORIN_TAG(m)                                                      \
+    m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)                      \
+    m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(ROp, rop)                      \
+    m(ICmp, icmp) m(RCmp, rcmp)                                            \
+    m(Trait, trait) m(Conv, conv) m(PE, pe) m(Acc, acc)                    \
+    m(Bitcast, bitcast) m(LEA, lea)                                        \
+    m(Alloc, alloc) m(Slot, slot) m(Malloc, malloc) m(Mslot, mslot)        \
+    m(Load, load) m(Remem, remem) m(Store, store)                          \
+    m(Atomic, atomic)                                                      \
+    m(Zip, zip) m(For, affine_for)                                         \
+    m(RevDiff, rev_diff) m(TangentVector, tangent_vector)                  \
 
 namespace WMode {
 enum : nat_t {
@@ -84,6 +84,7 @@ enum RMode : nat_t {
 #define THORIN_PE(m) m(PE, hlt) m(PE, known) m(PE, run)
 /// Accelerators
 #define THORIN_ACC(m) m(Acc, vecotrize) m(Acc, parallel) m(Acc, opencl) m(Acc, cuda) m(Acc, nvvm) m (Acc, amdgpu)
+
 
 /// The 5 relations are disjoint and are organized as follows:
 /// ```

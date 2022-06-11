@@ -10,7 +10,6 @@
 using namespace thorin;
 
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
-    return {"core", nullptr,
-            [](Backends& backends) { backends["ll"] = &ll::emit; },
+    return {"core", nullptr, [](Backends& backends) { backends["ll"] = &ll::emit; },
             [](Normalizers& normalizers) { core::register_normalizers(normalizers); }};
 }

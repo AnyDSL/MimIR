@@ -13,9 +13,9 @@ inline D bitcast(const S& src) {
     auto s = reinterpret_cast<const void*>(&src);
     auto d = reinterpret_cast<void*>(&dst);
 
-    if constexpr(sizeof(D) == sizeof(S)) memcpy(d, s, sizeof(D));
-    if constexpr(sizeof(D)  < sizeof(S)) memcpy(d, s, sizeof(D));
-    if constexpr(sizeof(D)  > sizeof(S)) {
+    if constexpr (sizeof(D) == sizeof(S)) memcpy(d, s, sizeof(D));
+    if constexpr (sizeof(D) < sizeof(S)) memcpy(d, s, sizeof(D));
+    if constexpr (sizeof(D) > sizeof(S)) {
         memset(d, 0, sizeof(D));
         memcpy(d, s, sizeof(S));
     }
@@ -26,12 +26,26 @@ inline D bitcast(const S& src) {
 template<class Base>
 class RuntimeCast {
 public:
-    template<class T>       T* isa()       { return static_cast<      Base*>(this)->node() == T::Node ? static_cast<      T*>(this) : nullptr; } ///< Dynamic cast.
-    template<class T> const T* isa() const { return static_cast<const Base*>(this)->node() == T::Node ? static_cast<const T*>(this) : nullptr; } ///< Dynamic cast. @c const version.
-    template<class T>       T* as()       { assert(isa<T>()); return static_cast<      T*>(this); }                                              ///< Static cast with debug check.
-    template<class T> const T* as() const { assert(isa<T>()); return static_cast<const T*>(this); }                                              ///< Static cast with debug check. @c const version.
+    template<class T>
+    T* isa() {
+        return static_cast<Base*>(this)->node() == T::Node ? static_cast<T*>(this) : nullptr;
+    } ///< Dynamic cast.
+    template<class T>
+    const T* isa() const {
+        return static_cast<const Base*>(this)->node() == T::Node ? static_cast<const T*>(this) : nullptr;
+    } ///< Dynamic cast. @c const version.
+    template<class T>
+    T* as() {
+        assert(isa<T>());
+        return static_cast<T*>(this);
+    } ///< Static cast with debug check.
+    template<class T>
+    const T* as() const {
+        assert(isa<T>());
+        return static_cast<const T*>(this);
+    } ///< Static cast with debug check. @c const version.
 };
 
-}
+} // namespace thorin
 
 #endif

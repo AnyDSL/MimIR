@@ -12,7 +12,7 @@ void optimize(World& world, PipelineBuilder& builder) {
     PassMan::run<Scalerize>(world, nullptr);
     PassMan::run<EtaRed>(world);
     PassMan::run<TailRecElim>(world, nullptr);
-    
+
     auto opt = builder.opt_phase(world);
     opt->run();
 

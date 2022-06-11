@@ -15,7 +15,7 @@ public:
         : world_(world) {}
 
     World& world() const { return world_; }
-    template <bool EmplaceCache = true>
+    template<bool EmplaceCache = true>
     bool equiv(const Def*, const Def*);
     bool assignable(const Def*, const Def*);
 

@@ -18,7 +18,8 @@ static const App* eta_rule(Lam* lam) {
 
 const Def* EtaRed::rewrite(const Def* def) {
     for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
-        if (auto lam = def->op(i)->isa_nom<Lam>(); lam && lam->is_set()) {
+        // TODO (ClosureConv): Factor this out
+        if (auto lam = def->op(i)->isa_nom<Lam>(); (!callee_only_ || isa_callee(def, i)) && lam && lam->is_set()) {
             if (auto app = eta_rule(lam); app && !irreducible_.contains(lam)) {
                 data().emplace(lam, Lattice::Reduce);
                 auto new_def = def->refine(i, app->callee());
@@ -44,5 +45,8 @@ undo_t EtaRed::analyze(const Var* var) {
     return No_Undo;
 }
 
-PassTag* EtaRed::ID() { static PassTag Key; return &Key; }
+PassTag* EtaRed::ID() {
+    static PassTag Key;
+    return &Key;
+}
 } // namespace thorin

@@ -1,0 +1,8 @@
+.import mem;
+
+.let BufPtr = %Int 8;
+.ax %clos.alloc_jmpbuf: [[], %mem.M] -> [%mem.M, BufPtr];
+.ax %clos.setjmp: [%mem.M, BufPtr] -> [%mem.M, BufPtr, %Int 4294967296];
+.ax %clos.longjmp: .Cn [%mem.M, BufPtr, %Int 4294967296];
+
+.ax %clos.clos(ret, freeBB, fstclassBB, esc, bot): Π T: * -> T -> T;
