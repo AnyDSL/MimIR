@@ -822,11 +822,14 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         auto tuple = extract->tuple();
         auto index = extract->index();
 
+#if 0
+        // TODO this was von closure-conv branch which I need to double-check
         if (tuple->isa<Var>()) {
             // computing the index may crash, so we bail out
             assert(isa<Tag::Mem>(extract->type()) && "only mem-var should not be mapped");
             return {};
         }
+#endif
 
         auto ll_tup = emit_unsafe(tuple);
 
