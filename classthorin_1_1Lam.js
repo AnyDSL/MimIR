@@ -16,6 +16,7 @@ var classthorin_1_1Lam =
     [ "is_basicblock", "classthorin_1_1Lam.html#ad8f4abe37081c565f98e0b0a1543b7dd", null ],
     [ "is_returning", "classthorin_1_1Lam.html#af24c399c1c2431b59f162c57a343fc13", null ],
     [ "rebuild", "classthorin_1_1Lam.html#a095a806216a34eba8554572940cfa0fb", null ],
+    [ "ret_pi", "classthorin_1_1Lam.html#a8f8fc2cae9fd40563a57f8e551e1dd23", null ],
     [ "ret_var", "classthorin_1_1Lam.html#a85b13dea03fc7e6c4d7b6175e29c141a", null ],
     [ "set", "classthorin_1_1Lam.html#a787da95b16a43914cf1d98f65695fa62", null ],
     [ "set", "classthorin_1_1Lam.html#aeef1709d3575d684b57cd9902a14de20", null ],

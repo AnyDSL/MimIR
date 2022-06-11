@@ -16,5 +16,5 @@ var tuple_8h =
     [ "merge_tuple", "tuple_8h.html#a51e00c5b59d67f48d2b918497cacf0df", null ],
     [ "tuple2str", "tuple_8h.html#aea00f96e150831aba073fce80ce0080a", null ],
     [ "unflatten", "tuple_8h.html#a833e2a807b47e7f8a3c67fff75985c6f", null ],
-    [ "unflatten", "tuple_8h.html#abe0176edb854a9982662e5bdfe0038a3", null ]
+    [ "unflatten", "tuple_8h.html#ae982c58cbbf8f50804167dc3697e78cd", null ]
 ];

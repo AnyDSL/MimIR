@@ -2,6 +2,7 @@ var namespacethorin =
 [
     [ "AddrSpace", "namespacethorin_1_1AddrSpace.html", null ],
     [ "affine", "namespacethorin_1_1affine.html", "namespacethorin_1_1affine" ],
+    [ "clos", "namespacethorin_1_1clos.html", "namespacethorin_1_1clos" ],
     [ "core", "namespacethorin_1_1core.html", [
       [ "bit1", "namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349", [
         [ "base_", "namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349af90c909260ee9c593156ee37476f9992", null ],
@@ -674,8 +675,8 @@ var namespacethorin =
     [ "thorin_get_dialect_info", "namespacethorin.html#ad64a18507465904296ceed7c776bf75a", null ],
     [ "tuple2str", "namespacethorin.html#aea00f96e150831aba073fce80ce0080a", null ],
     [ "unflatten", "namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f", null ],
-    [ "unflatten", "namespacethorin.html#a5c1d830f54f2759f11f77e5e0d8355f8", null ],
-    [ "unflatten", "namespacethorin.html#abe0176edb854a9982662e5bdfe0038a3", null ],
+    [ "unflatten", "namespacethorin.html#ab1a9abc89dbfee14f1535dfbcacf5f97", null ],
+    [ "unflatten", "namespacethorin.html#ae982c58cbbf8f50804167dc3697e78cd", null ],
     [ "unreachable", "namespacethorin.html#a37d16cd32e773f40b5989147bd9bcbc9", null ],
     [ "visit", "namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c", null ],
     [ "visit_first", "namespacethorin.html#a02f88714441141b4cafcf80c5e49f554", null ],

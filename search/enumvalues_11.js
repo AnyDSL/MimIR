@@ -9,7 +9,8 @@ var searchData=
   ['reduce_6',['Reduce',['../classthorin_1_1EtaRed.html#a4ac1f54e62bd9e356510aa0b4520553fa9b1bddd7ef27576ea56928fc370ab13a',1,'thorin::EtaRed']]],
   ['rem_7',['rem',['../namespacethorin.html#a0712e5b90b0610c0027e69b3d6ca690ca5cadb523cb6909f92350f70f124adfb8',1,'thorin']]],
   ['remem_8',['Remem',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67ac70b5a9403a9dcc27680a3415b6a074c',1,'thorin::Tag']]],
-  ['revdiff_9',['RevDiff',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67ae46a2150b99bf41d461398f840ab9c54',1,'thorin::Tag']]],
-  ['rop_10',['ROp',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67a1d664ad1e3f549a27a6c82293623cefe',1,'thorin::Tag']]],
-  ['run_11',['run',['../namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfaa53108f7543b75adbb34afc035d4cdf6',1,'thorin']]]
+  ['ret_9',['ret',['../namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293a2cb9df9898e55fd0ad829dc202ddbd1c',1,'thorin::clos']]],
+  ['revdiff_10',['RevDiff',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67ae46a2150b99bf41d461398f840ab9c54',1,'thorin::Tag']]],
+  ['rop_11',['ROp',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67a1d664ad1e3f549a27a6c82293623cefe',1,'thorin::Tag']]],
+  ['run_12',['run',['../namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfaa53108f7543b75adbb34afc035d4cdf6',1,'thorin']]]
 ];

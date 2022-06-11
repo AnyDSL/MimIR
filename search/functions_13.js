@@ -3,7 +3,7 @@ var searchData=
   ['u_0',['u',['../classthorin_1_1Tok.html#a45ea45a18052d23d65cdd4f533368ed1',1,'thorin::Tok']]],
   ['undo_5fenter_1',['undo_enter',['../classthorin_1_1FPPass.html#a992db753a80b89fb6bcce0dc6154dd8b',1,'thorin::FPPass']]],
   ['undo_5fvisit_2',['undo_visit',['../classthorin_1_1FPPass.html#ad68f7d1dcf6986dcf22b465b740f706e',1,'thorin::FPPass']]],
-  ['unflatten_3',['unflatten',['../namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f',1,'thorin::unflatten(const Def *def, const Def *type)'],['../namespacethorin.html#abe0176edb854a9982662e5bdfe0038a3',1,'thorin::unflatten(Defs ops, const Def *type)'],['../namespacethorin.html#a5c1d830f54f2759f11f77e5e0d8355f8',1,'thorin::unflatten(Defs defs, const Def *type, size_t &amp;j)']]],
+  ['unflatten_3',['unflatten',['../namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f',1,'thorin::unflatten(const Def *def, const Def *type)'],['../namespacethorin.html#ae982c58cbbf8f50804167dc3697e78cd',1,'thorin::unflatten(Defs ops, const Def *type, bool flatten_noms=true)'],['../namespacethorin.html#ab1a9abc89dbfee14f1535dfbcacf5f97',1,'thorin::unflatten(Defs defs, const Def *type, size_t &amp;j, bool flatten_noms)']]],
   ['unique_5fname_4',['unique_name',['../classthorin_1_1Def.html#a3ac75e1e0ee7e47c4c348a11f05bca8d',1,'thorin::Def']]],
   ['unique_5fqueue_5',['unique_queue',['../classthorin_1_1unique__queue.html#a88c87fbc964625fc09245844a9e680d7',1,'thorin::unique_queue::unique_queue()=default'],['../classthorin_1_1unique__queue.html#a292a78863316276e6713cf2b5997dea6',1,'thorin::unique_queue::unique_queue(Set set)']]],
   ['univ_6',['univ',['../classthorin_1_1World.html#af5dccad9055934bc02d775b1744441e1',1,'thorin::World']]],

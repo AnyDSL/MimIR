@@ -6,8 +6,8 @@ var searchData=
   ['fold_3c_20div_2c_20div_3a_3asrem_2c_20w_20_3e_3',['Fold&lt; div, div::srem, w &gt;',['../structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1srem_00_01w_01_4.html',1,'thorin::normalize']]],
   ['fold_3c_20div_2c_20div_3a_3audiv_2c_20w_20_3e_4',['Fold&lt; div, div::udiv, w &gt;',['../structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1udiv_00_01w_01_4.html',1,'thorin::normalize']]],
   ['fold_3c_20div_2c_20div_3a_3aurem_2c_20w_20_3e_5',['Fold&lt; div, div::urem, w &gt;',['../structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1urem_00_01w_01_4.html',1,'thorin::normalize']]],
-  ['fold_3c_20icmp_2c_20cmp_2c_20w_20_3e_6',['Fold&lt; icmp, cmp, w &gt;',['../structthorin_1_1normalize_1_1Fold_3_01icmp_00_01cmp_00_01w_01_4.html',1,'thorin::normalize']]],
-  ['fold_3c_20icmp_2c_20cmp_2c_20w_20_3e_7',['Fold&lt; ICmp, cmp, w &gt;',['../structthorin_1_1normalize_1_1Fold_3_01ICmp_00_01cmp_00_01w_01_4.html',1,'thorin::normalize']]],
+  ['fold_3c_20icmp_2c_20cmp_2c_20w_20_3e_6',['Fold&lt; ICmp, cmp, w &gt;',['../structthorin_1_1normalize_1_1Fold_3_01ICmp_00_01cmp_00_01w_01_4.html',1,'thorin::normalize']]],
+  ['fold_3c_20icmp_2c_20cmp_2c_20w_20_3e_7',['Fold&lt; icmp, cmp, w &gt;',['../structthorin_1_1normalize_1_1Fold_3_01icmp_00_01cmp_00_01w_01_4.html',1,'thorin::normalize']]],
   ['fold_3c_20rcmp_2c_20cmp_2c_20w_20_3e_8',['Fold&lt; RCmp, cmp, w &gt;',['../structthorin_1_1normalize_1_1Fold_3_01RCmp_00_01cmp_00_01w_01_4.html',1,'thorin::normalize']]],
   ['fold_3c_20rop_2c_20rop_3a_3aadd_2c_20w_20_3e_9',['Fold&lt; ROp, ROp::add, w &gt;',['../structthorin_1_1normalize_1_1Fold_3_01ROp_00_01ROp_1_1add_00_01w_01_4.html',1,'thorin::normalize']]],
   ['fold_3c_20rop_2c_20rop_3a_3adiv_2c_20w_20_3e_10',['Fold&lt; ROp, ROp::div, w &gt;',['../structthorin_1_1normalize_1_1Fold_3_01ROp_00_01ROp_1_1div_00_01w_01_4.html',1,'thorin::normalize']]],
@@ -39,6 +39,8 @@ var searchData=
   ['fppass_3c_20copyprop_2c_20lam_20_3e_36',['FPPass&lt; CopyProp, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
   ['fppass_3c_20etaexp_2c_20lam_20_3e_37',['FPPass&lt; EtaExp, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
   ['fppass_3c_20etared_20_3e_38',['FPPass&lt; EtaRed &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
-  ['fppass_3c_20ssaconstr_2c_20lam_20_3e_39',['FPPass&lt; SSAConstr, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
-  ['fppass_3c_20tailrecelim_2c_20lam_20_3e_40',['FPPass&lt; TailRecElim, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]]
+  ['fppass_3c_20lowertypedclosprep_2c_20lam_20_3e_39',['FPPass&lt; LowerTypedClosPrep, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
+  ['fppass_3c_20ssaconstr_2c_20lam_20_3e_40',['FPPass&lt; SSAConstr, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
+  ['fppass_3c_20tailrecelim_2c_20lam_20_3e_41',['FPPass&lt; TailRecElim, Lam &gt;',['../classthorin_1_1FPPass.html',1,'thorin']]],
+  ['freedefana_42',['FreeDefAna',['../classthorin_1_1clos_1_1FreeDefAna.html',1,'thorin::clos']]]
 ];

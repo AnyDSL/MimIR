@@ -14,5 +14,9 @@ var searchData=
   ['looptree_2ecpp_11',['looptree.cpp',['../looptree_8cpp.html',1,'']]],
   ['looptree_2eh_12',['looptree.h',['../looptree_8h.html',1,'']]],
   ['lower_5ffor_2ecpp_13',['lower_for.cpp',['../lower__for_8cpp.html',1,'']]],
-  ['lower_5ffor_2eh_14',['lower_for.h',['../lower__for_8h.html',1,'']]]
+  ['lower_5ffor_2eh_14',['lower_for.h',['../lower__for_8h.html',1,'']]],
+  ['lower_5ftyped_5fclos_2ecpp_15',['lower_typed_clos.cpp',['../lower__typed__clos_8cpp.html',1,'']]],
+  ['lower_5ftyped_5fclos_2eh_16',['lower_typed_clos.h',['../lower__typed__clos_8h.html',1,'']]],
+  ['lower_5ftyped_5fclos_5fprep_2ecpp_17',['lower_typed_clos_prep.cpp',['../lower__typed__clos__prep_8cpp.html',1,'']]],
+  ['lower_5ftyped_5fclos_5fprep_2eh_18',['lower_typed_clos_prep.h',['../lower__typed__clos__prep_8h.html',1,'']]]
 ];

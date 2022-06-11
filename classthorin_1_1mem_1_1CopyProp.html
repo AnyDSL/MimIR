@@ -134,8 +134,8 @@ Public Types</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af88f387919ff85fc9f431135846ee814"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1mem_1_1CopyProp.html#af88f387919ff85fc9f431135846ee814">CopyProp</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f">man</a>, <a class="el" href="classthorin_1_1BetaRed.html">BetaRed</a> *beta_red, <a class="el" href="classthorin_1_1EtaExp.html">EtaExp</a> *eta_exp)</td></tr>
-<tr class="separator:af88f387919ff85fc9f431135846ee814"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3098f620e39d4f48798ef69f2849418d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1mem_1_1CopyProp.html#a3098f620e39d4f48798ef69f2849418d">CopyProp</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f">man</a>, <a class="el" href="classthorin_1_1BetaRed.html">BetaRed</a> *beta_red, <a class="el" href="classthorin_1_1EtaExp.html">EtaExp</a> *eta_exp, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> bb_only=false)</td></tr>
+<tr class="separator:a3098f620e39d4f48798ef69f2849418d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classthorin_1_1FPPass"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1FPPass')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1FPPass.html">thorin::FPPass&lt; CopyProp, Lam &gt;</a></td></tr>
 <tr class="memitem:aca3f4ae7d99c6e4d77ba34e853a9233f inherit pub_methods_classthorin_1_1FPPass"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#aca3f4ae7d99c6e4d77ba34e853a9233f">FPPass</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f">man</a>, const char *<a class="el" href="classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632">name</a>)</td></tr>
 <tr class="separator:aca3f4ae7d99c6e4d77ba34e853a9233f inherit pub_methods_classthorin_1_1FPPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,13 +235,13 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="copy__prop_8h_source.html#l00024">24</a> of file <a class="el" href="copy__prop_8h_source.html">copy_prop.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="copy__prop_8h_source.html#l00025">25</a> of file <a class="el" href="copy__prop_8h_source.html">copy_prop.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af88f387919ff85fc9f431135846ee814" name="af88f387919ff85fc9f431135846ee814"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af88f387919ff85fc9f431135846ee814">&#9670;&nbsp;</a></span>CopyProp()</h2>
+<a id="a3098f620e39d4f48798ef69f2849418d" name="a3098f620e39d4f48798ef69f2849418d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3098f620e39d4f48798ef69f2849418d">&#9670;&nbsp;</a></span>CopyProp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -265,7 +265,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classthorin_1_1EtaExp.html">EtaExp</a> *&#160;</td>
-          <td class="paramname"><em>eta_exp</em>&#160;</td>
+          <td class="paramname"><em>eta_exp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td>
+          <td class="paramname"><em>bb_only</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -308,7 +314,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="copy__prop_8cpp_source.html#l00121">121</a> of file <a class="el" href="copy__prop_8cpp_source.html">copy_prop.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="copy__prop_8cpp_source.html#l00122">122</a> of file <a class="el" href="copy__prop_8cpp_source.html">copy_prop.cpp</a>.</p>
 
 </div>
 </div>

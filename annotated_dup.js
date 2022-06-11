@@ -4,6 +4,16 @@ var annotated_dup =
       [ "affine", "namespacethorin_1_1affine.html", [
         [ "LowerFor", "classthorin_1_1affine_1_1LowerFor.html", "classthorin_1_1affine_1_1LowerFor" ]
       ] ],
+      [ "clos", "namespacethorin_1_1clos.html", [
+        [ "BranchClosElim", "classthorin_1_1clos_1_1BranchClosElim.html", "classthorin_1_1clos_1_1BranchClosElim" ],
+        [ "Clos2SJLJ", "classthorin_1_1clos_1_1Clos2SJLJ.html", "classthorin_1_1clos_1_1Clos2SJLJ" ],
+        [ "ClosConv", "classthorin_1_1clos_1_1ClosConv.html", "classthorin_1_1clos_1_1ClosConv" ],
+        [ "ClosConvPrep", "classthorin_1_1clos_1_1ClosConvPrep.html", "classthorin_1_1clos_1_1ClosConvPrep" ],
+        [ "ClosLit", "classthorin_1_1clos_1_1ClosLit.html", "classthorin_1_1clos_1_1ClosLit" ],
+        [ "FreeDefAna", "classthorin_1_1clos_1_1FreeDefAna.html", "classthorin_1_1clos_1_1FreeDefAna" ],
+        [ "LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", "classthorin_1_1clos_1_1LowerTypedClos" ],
+        [ "LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", "classthorin_1_1clos_1_1LowerTypedClosPrep" ]
+      ] ],
       [ "detail", "namespacethorin_1_1detail.html", [
         [ "Enum2DefImpl", "namespacethorin_1_1detail.html#structthorin_1_1detail_1_1Enum2DefImpl", "namespacethorin_1_1detail_structthorin_1_1detail_1_1Enum2DefImpl_dup" ],
         [ "Enum2DefImpl< mem::M >", "namespacethorin_1_1detail.html#structthorin_1_1detail_1_1Enum2DefImpl_3_01mem_1_1M_01_4", "namespacethorin_1_1detail_structthorin_1_1detail_1_1Enum2DefImpl_3_01mem_1_1M_01_4_dup" ]

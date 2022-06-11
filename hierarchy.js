@@ -23,6 +23,8 @@ var hierarchy =
     [ "thorin::CFG< forward >", "classthorin_1_1CFG.html", null ],
     [ "thorin::CFNode", "classthorin_1_1CFNode.html", null ],
     [ "thorin::Checker", "classthorin_1_1Checker.html", null ],
+    [ "thorin::clos::ClosConv", "classthorin_1_1clos_1_1ClosConv.html", null ],
+    [ "thorin::clos::ClosLit", "classthorin_1_1clos_1_1ClosLit.html", null ],
     [ "thorin::Debug", "classthorin_1_1Debug.html", null ],
     [ "thorin::DefDefEq", "structthorin_1_1DefDefEq.html", null ],
     [ "thorin::DefDefHash", "structthorin_1_1DefDefHash.html", null ],
@@ -48,8 +50,8 @@ var hierarchy =
     [ "thorin::normalize::Fold< div, div::srem, w >", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1srem_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< div, div::udiv, w >", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1udiv_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< div, div::urem, w >", "structthorin_1_1normalize_1_1Fold_3_01div_00_01div_1_1urem_00_01w_01_4.html", null ],
-    [ "thorin::normalize::Fold< icmp, cmp, w >", "structthorin_1_1normalize_1_1Fold_3_01icmp_00_01cmp_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< ICmp, cmp, w >", "structthorin_1_1normalize_1_1Fold_3_01ICmp_00_01cmp_00_01w_01_4.html", null ],
+    [ "thorin::normalize::Fold< icmp, cmp, w >", "structthorin_1_1normalize_1_1Fold_3_01icmp_00_01cmp_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< RCmp, cmp, w >", "structthorin_1_1normalize_1_1Fold_3_01RCmp_00_01cmp_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< ROp, ROp::add, w >", "structthorin_1_1normalize_1_1Fold_3_01ROp_00_01ROp_1_1add_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< ROp, ROp::div, w >", "structthorin_1_1normalize_1_1Fold_3_01ROp_00_01ROp_1_1div_00_01w_01_4.html", null ],
@@ -62,8 +64,8 @@ var hierarchy =
     [ "thorin::normalize::Fold< shr, shr::lshr, w >", "structthorin_1_1normalize_1_1Fold_3_01shr_00_01shr_1_1lshr_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< wrap, wrap::add, w >", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1add_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< Wrap, Wrap::add, w >", "structthorin_1_1normalize_1_1Fold_3_01Wrap_00_01Wrap_1_1add_00_01w_01_4.html", null ],
-    [ "thorin::normalize::Fold< wrap, wrap::mul, w >", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1mul_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< Wrap, Wrap::mul, w >", "structthorin_1_1normalize_1_1Fold_3_01Wrap_00_01Wrap_1_1mul_00_01w_01_4.html", null ],
+    [ "thorin::normalize::Fold< wrap, wrap::mul, w >", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1mul_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< Wrap, Wrap::shl, w >", "structthorin_1_1normalize_1_1Fold_3_01Wrap_00_01Wrap_1_1shl_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< wrap, wrap::shl, w >", "structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1shl_00_01w_01_4.html", null ],
     [ "thorin::normalize::Fold< Wrap, Wrap::sub, w >", "structthorin_1_1normalize_1_1Fold_3_01Wrap_00_01Wrap_1_1sub_00_01w_01_4.html", null ],
@@ -76,6 +78,7 @@ var hierarchy =
     [ "thorin::normalize::FoldConv< Conv::s2s, dw, sw >", "structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1s2s_00_01dw_00_01sw_01_4.html", null ],
     [ "thorin::normalize::FoldConv< Conv::u2r, dw, sw >", "structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4.html", null ],
     [ "thorin::normalize::FoldConv< Conv::u2u, dw, sw >", "structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4.html", null ],
+    [ "thorin::clos::FreeDefAna", "classthorin_1_1clos_1_1FreeDefAna.html", null ],
     [ "thorin::GIDEq< T >", "structthorin_1_1GIDEq.html", null ],
     [ "thorin::GIDHash< T >", "structthorin_1_1GIDHash.html", null ],
     [ "thorin::GIDLt< T >", "structthorin_1_1GIDLt.html", null ],
@@ -101,6 +104,9 @@ var hierarchy =
           [ "thorin::FPPass< TailRecElim, Lam >", "classthorin_1_1FPPass.html", [
             [ "thorin::TailRecElim", "classthorin_1_1TailRecElim.html", null ]
           ] ],
+          [ "thorin::FPPass< LowerTypedClosPrep, Lam >", "classthorin_1_1FPPass.html", [
+            [ "thorin::clos::LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", null ]
+          ] ],
           [ "thorin::FPPass< CopyProp, Lam >", "classthorin_1_1FPPass.html", [
             [ "thorin::mem::CopyProp", "classthorin_1_1mem_1_1CopyProp.html", null ]
           ] ],
@@ -111,6 +117,9 @@ var hierarchy =
           [ "thorin::RetWrap", "classthorin_1_1RetWrap.html", null ],
           [ "thorin::Scalerize", "classthorin_1_1Scalerize.html", null ],
           [ "thorin::affine::LowerFor", "classthorin_1_1affine_1_1LowerFor.html", null ],
+          [ "thorin::clos::BranchClosElim", "classthorin_1_1clos_1_1BranchClosElim.html", null ],
+          [ "thorin::clos::Clos2SJLJ", "classthorin_1_1clos_1_1Clos2SJLJ.html", null ],
+          [ "thorin::clos::ClosConvPrep", "classthorin_1_1clos_1_1ClosConvPrep.html", null ],
           [ "thorin::mem::Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", null ],
           [ "thorin::mem::RememElim", "classthorin_1_1mem_1_1RememElim.html", null ]
         ] ],
@@ -134,6 +143,7 @@ var hierarchy =
     ] ],
     [ "thorin::LoopTree< forward >", "classthorin_1_1LoopTree.html", null ],
     [ "thorin::LoopTreeBuilder< forward >", "classthorin_1_1LoopTreeBuilder.html", null ],
+    [ "thorin::clos::LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", null ],
     [ "thorin::LRPrec< L >", "structthorin_1_1LRPrec.html", null ],
     [ "thorin::Match< T, D >", "classthorin_1_1Match.html", null ],
     [ "thorin::Parser", "classthorin_1_1Parser.html", null ],

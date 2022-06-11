@@ -12,5 +12,7 @@ var searchData=
   ['looptree_9',['LoopTree',['../classthorin_1_1LoopTree.html',1,'thorin']]],
   ['looptreebuilder_10',['LoopTreeBuilder',['../classthorin_1_1LoopTreeBuilder.html',1,'thorin']]],
   ['lowerfor_11',['LowerFor',['../classthorin_1_1affine_1_1LowerFor.html',1,'thorin::affine']]],
-  ['lrprec_12',['LRPrec',['../structthorin_1_1LRPrec.html',1,'thorin']]]
+  ['lowertypedclos_12',['LowerTypedClos',['../classthorin_1_1clos_1_1LowerTypedClos.html',1,'thorin::clos']]],
+  ['lowertypedclosprep_13',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html',1,'thorin::clos']]],
+  ['lrprec_14',['LRPrec',['../structthorin_1_1LRPrec.html',1,'thorin']]]
 ];

@@ -6,7 +6,7 @@ var classthorin_1_1EtaRed =
       [ "Reduce", "classthorin_1_1EtaRed.html#a4ac1f54e62bd9e356510aa0b4520553fa9b1bddd7ef27576ea56928fc370ab13a", null ],
       [ "Irreducible", "classthorin_1_1EtaRed.html#a4ac1f54e62bd9e356510aa0b4520553fa9f35b4d3a8fe44b235df5e1da941d410", null ]
     ] ],
-    [ "EtaRed", "classthorin_1_1EtaRed.html#afadd4deea380e54b25a0888f0c99d040", null ],
+    [ "EtaRed", "classthorin_1_1EtaRed.html#ab9824d36682fc137adb2bfe68435bf50", null ],
     [ "ID", "classthorin_1_1EtaRed.html#a986315826a3f2f94fbeead5d25a5c197", null ],
     [ "mark_irreducible", "classthorin_1_1EtaRed.html#a9bc9eea6d540cfd464676b6e3c314900", null ]
 ];

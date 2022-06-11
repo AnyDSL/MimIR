@@ -11,6 +11,6 @@ var tuple_8cpp =
     [ "should_flatten", "tuple_8cpp.html#a9b43aff9c9bc9b0b4bda21985c91bc41", null ],
     [ "tuple2str", "tuple_8cpp.html#aea00f96e150831aba073fce80ce0080a", null ],
     [ "unflatten", "tuple_8cpp.html#a833e2a807b47e7f8a3c67fff75985c6f", null ],
-    [ "unflatten", "tuple_8cpp.html#a5c1d830f54f2759f11f77e5e0d8355f8", null ],
-    [ "unflatten", "tuple_8cpp.html#abe0176edb854a9982662e5bdfe0038a3", null ]
+    [ "unflatten", "tuple_8cpp.html#ab1a9abc89dbfee14f1535dfbcacf5f97", null ],
+    [ "unflatten", "tuple_8cpp.html#ae982c58cbbf8f50804167dc3697e78cd", null ]
 ];

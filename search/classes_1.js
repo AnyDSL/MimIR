@@ -5,5 +5,6 @@ var searchData=
   ['betared_2',['BetaRed',['../classthorin_1_1BetaRed.html',1,'thorin']]],
   ['bitset_3',['BitSet',['../classthorin_1_1BitSet.html',1,'thorin']]],
   ['bootstrapper_4',['Bootstrapper',['../classthorin_1_1h_1_1Bootstrapper.html',1,'thorin::h']]],
-  ['bound_5',['Bound',['../classthorin_1_1Bound.html',1,'thorin']]]
+  ['bound_5',['Bound',['../classthorin_1_1Bound.html',1,'thorin']]],
+  ['branchcloselim_6',['BranchClosElim',['../classthorin_1_1clos_1_1BranchClosElim.html',1,'thorin::clos']]]
 ];
