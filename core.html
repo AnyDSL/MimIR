@@ -105,32 +105,32 @@ $(document).ready(function(){initNavTree('core.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md46">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md47">Types</a><ul><li class="level2"><a href="#autotoc_md48">%core.Int</a></li>
+<ul><li class="level1"><a href="#autotoc_md49">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md50">Types</a><ul><li class="level2"><a href="#autotoc_md51">%core.Int</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md49">Operations</a><ul><li class="level2"><a href="#autotoc_md50">%core.icmp</a></li>
-<li class="level2"><a href="#autotoc_md51">%core.bit1</a></li>
-<li class="level2"><a href="#autotoc_md52">%core.bit2</a></li>
-<li class="level2"><a href="#autotoc_md53">%core.shr</a></li>
-<li class="level2"><a href="#autotoc_md54">%core.wrap</a></li>
-<li class="level2"><a href="#autotoc_md55">%core.wrap</a></li>
+<li class="level1"><a href="#autotoc_md52">Operations</a><ul><li class="level2"><a href="#autotoc_md53">%core.icmp</a></li>
+<li class="level2"><a href="#autotoc_md54">%core.bit1</a></li>
+<li class="level2"><a href="#autotoc_md55">%core.bit2</a></li>
+<li class="level2"><a href="#autotoc_md56">%core.shr</a></li>
+<li class="level2"><a href="#autotoc_md57">%core.wrap</a></li>
+<li class="level2"><a href="#autotoc_md58">%core.wrap</a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_build_dialects_core"></a></p>
-<h1><a class="anchor" id="autotoc_md46"></a>
+<h1><a class="anchor" id="autotoc_md49"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import mem;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md47"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md50"></a>
 Types</h1>
-<h2><a class="anchor" id="autotoc_md48"></a>
+<h2><a class="anchor" id="autotoc_md51"></a>
 %core.Int</h2>
 <div class="fragment"><div class="line">.ax %core.Int: .Nat -&gt; *;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md49"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md52"></a>
 Operations</h1>
-<h2><a class="anchor" id="autotoc_md50"></a>
+<h2><a class="anchor" id="autotoc_md53"></a>
 %core.icmp</h2>
 <p >Integer comparison is made of 5 disjoint relations:</p><ul>
 <li><code>X</code>: first operand plus, second minus</li>
@@ -240,7 +240,7 @@ Operations</h1>
 <div class="line">               Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,</div>
 <div class="line">               XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):</div>
 <div class="line">    Π w: .Nat -&gt; [%Int w, %Int w] -&gt; .Bool , normalize_icmp;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md51"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md54"></a>
 %core.bit1</h2>
 <p >This <em>unary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Unary_operations">4 possible operations</a> as summarized in the following table:</p>
 <table class="markdownTable">
@@ -256,7 +256,7 @@ Operations</h1>
 <td class="markdownTableBodyNone">t   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
 </table>
 <div class="fragment"><div class="line">.ax %core.bit1(f, neg, id, t): Π w: .Nat -&gt; %Int w -&gt; %Int w;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md52"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md55"></a>
 %core.bit2</h2>
 <p >This <em>binary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators">16 possible operations</a> as summarized in the following table:</p>
 <table class="markdownTable">
@@ -298,13 +298,13 @@ Operations</h1>
 <div class="fragment"><div class="line">.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,</div>
 <div class="line">                _and,  nxor,    b,      iff,    a,      ciff, _or,  t):</div>
 <div class="line">    Π w: .Nat -&gt; [%Int w, %Int w] -&gt; %Int w , normalize_bit2;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md53"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md56"></a>
 %core.shr</h2>
 <div class="fragment"><div class="line">.ax %core.shr(ashr, lshr): Π w: .Nat -&gt; [%Int w, %Int w] -&gt; %Int w, normalize_shr;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md54"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md57"></a>
 %core.wrap</h2>
 <div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -&gt; [%Int w, %Int w] -&gt; %Int w, normalize_wrap;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md55"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md58"></a>
 %core.wrap</h2>
 <div class="fragment"><div class="line">.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -&gt; [%mem.M, %Int w, %Int w] -&gt; [%mem.M, %Int w], normalize_div;</div>
 </div><!-- fragment --> </div></div><!-- contents -->

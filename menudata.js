@@ -32,7 +32,7 @@ var menudata={children:[
 {text:"Passes",url:"passes.html"}]},
 {text:"Dialects",url:"usergroup1.html",children:[
 {text:"mem",url:"mem.html"},
-{text:"clos",url:"@ref clos"},
+{text:"clos",url:"clos.html"},
 {text:"core",url:"core.html"},
 {text:"affine",url:"affine.html"}]},
 {text:"Namespaces",url:"namespaces.html",children:[

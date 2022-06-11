@@ -41,7 +41,7 @@ var NAVTREE =
     ] ],
     [ "Dialects", "usergroup1.html", [
       [ "mem", "mem.html", null ],
-      [ "clos", "@ref clos", null ],
+      [ "clos", "clos.html", null ],
       [ "core", "core.html", null ],
       [ "affine", "affine.html", null ]
     ] ],
@@ -84,8 +84,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"@ref clos",
-"build_2dialects_2mem_8h.html#a39cb8e2d0d98f18a81ec7f97c38b02c7",
+"affine.html",
+"build_2dialects_2mem_8h.html#a3b36ca2be3b90fe62bb8c330d545b1bb",
 "classthorin_1_1ArrayRef.html#a3e743a8ad8740b42ceaa356664a24df2",
 "classthorin_1_1CFG.html#a961b890cac82269a9ea0e6575149e109",
 "classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2",
