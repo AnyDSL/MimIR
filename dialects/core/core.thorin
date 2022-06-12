@@ -128,6 +128,6 @@
 ///
 .ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [%Int w, %Int w] -> %Int w, normalize_wrap;
 ///
-/// ### %core.wrap
+/// ### %core.div
 ///
 .ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, %Int w, %Int w] -> [%mem.M, %Int w], normalize_div;
