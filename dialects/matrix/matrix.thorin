@@ -23,6 +23,7 @@
 /// * mutability: mutable by nature vs mutable by its element type (liftet in thorin optimization / codegen)
 /// 
 /// depending on operations, one probably wants matrices to be a transparent definition instead of an opaque axiom
+/// (currently: mat: [T: *] -> *)
 .ax :mat.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *; 
 ///
 /// ## Operations
@@ -43,8 +44,21 @@
 /// takes a m*k matrix, a k*l matrix and returns the product, a m*l matrix
 /// only defined on two-dimensional matrices
 .ax :mat.prod:  Π [m: .Nat, k: .Nat, l: .Nat, T: *] -> [:mat.Mat 2 [m, k] T, :mat.Mat 2 [k, l] T] -> :mat.Mat 2 [m, l] T, normalize_prod;
-
-
+/// 
+/// ### :mat.map
+///
+/// unary elementwise operation
+/// that lifts a function to the matrix level
+/// f can not simply be T->P as thorin code is written in CPS
+/// (currently (comment): Map: [dims: nat, in: *, out: *] -> [mat[] w] -> m64 w)
+/// (currently: map: [mat_type: *, out_sigma: *, f_pi: *] -> [:mem, m: mat_type, f: f_ty] -> [:mem, out: out_sigma])
+/// rewrite: 
+/// - map on constant matrix
+/// - parallel map without effect
+/// - map combination
+.ax :mat.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [:mat.Mat n S T, f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> :mat.Mat n S P, normalize_map;
+.ax :mat.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [:mat.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> :mat.Mat n S P, normalize_map;
+.ax :mat.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [:mat.Mat n S T, f: T -> P ] -> :mat.Mat n S P, normalize_map;
 /// 
 /// matrix operations
 ///   reduce
