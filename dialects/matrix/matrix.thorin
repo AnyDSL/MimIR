@@ -1,18 +1,64 @@
-/// # The matrix Dialect {#matrix}
+/// # The matrix Dialect {#mat}
 ///
 /// [TOC]
 ///
 /// ## Types
+///
+/// ### :mat.Mat
+///
+/// a n-dimensional tensor with elements of type T
+/// can be seen as generalization of Coq's vector type
 ///
 /// matrix = Π [n: .Nat, S: «n; .Nat», T: *] -> *
 /// matrix n S T = «Π_i=0^n S_i; T»
 /// or 
 /// matrix n S T = «S_0; «S_1; ... «S_{n-1}; T» ... »»
 /// => a matrix is a dependend array
+///
+/// Alternative (current implementation):
+/// matrix n S Ty = [i64, ..., i64, ptr(<T, Ty>)]
+/// (currently with mem and as fat pointer without static size association)
+/// * size: dependend vs i64 tuple
+/// * shape: nested vs flat (n0*n1*...) elements
+/// * mutability: mutable by nature vs mutable by its element type (liftet in thorin optimization / codegen)
+/// 
+/// depending on operations, one probably wants matrices to be a transparent definition instead of an opaque axiom
+.ax :mat.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *; 
+///
 /// ## Operations
+///
+/// ### :mat.shape
+/// 
+/// gets the size along the i-th dimension
+/// for a dependent matrix this is a simple projection
+/// returns S(i)
+///
+/// normalization rules: 
+/// * resolve shape calls at construction by replacing them with the size argument
+.ax :mat.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [:mat.Mat n S T, i: :Int n] -> T, normalize_shape;
+///
+/// ### :mat.prod
+///
+/// matrix product
+/// takes a m*k matrix, a k*l matrix and returns the product, a m*l matrix
+/// only defined on two-dimensional matrices
+.ax :mat.prod:  Π [m: .Nat, k: .Nat, l: .Nat, T: *] -> [:mat.Mat 2 [m, k] T, :mat.Mat 2 [k, l] T] -> :mat.Mat 2 [m, l] T, normalize_prod;
+
+
 /// 
 /// matrix operations
+///   reduce
+///   map => elementwise unary
+///   zip => elementwise binary
 /// function lifting
 /// rewriting / normalization properties
 
 
+/*
+* wishes for dialects (not all are sensible):
+* - transparent definitions
+* - holes (wip)
+* - autoquantification / Variable environment
+* - powerful parser
+* - type inference ([m, k] above) if not already possible
+*/
