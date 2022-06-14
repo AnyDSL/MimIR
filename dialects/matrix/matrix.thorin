@@ -17,10 +17,14 @@
 ///
 /// Alternative (current implementation):
 /// matrix n S Ty = [i64, ..., i64, ptr(<T, Ty>)]
-/// (currently with mem and as fat pointer without static size association)
+/// (currently with mem and as fat pointer without static size association:
+///   [bit_field:i32, content:ptr(<T, Ty>), size_0:i64, size_1:i64])
 /// * size: dependend vs i64 tuple
 /// * shape: nested vs flat (n0*n1*...) elements
 /// * mutability: mutable by nature vs mutable by its element type (liftet in thorin optimization / codegen)
+///
+/// advantage of opaque type for matrizes:
+/// * prevent arbitrary read & insertions
 /// 
 /// depending on operations, one probably wants matrices to be a transparent definition instead of an opaque axiom
 /// (currently: mat: [T: *] -> *)
@@ -80,7 +84,24 @@
 ///
 /// a constant zero matrix
 /// (currently: const i32 as bitfield)
-.ax :mat.zero: Π [n: .Nat, S: «n; .Nat», T: *] -> :mat.Mat n S T, normalize_zero;
+.ax :mat.zero: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> :mat.Mat n S (:Int m), normalize_zero;
+/// 
+/// ### :mat.const
+///
+/// a constant matrix
+/// (currently: const i32 as bitfield)
+.ax :mat.const: Π [n: .Nat, S: «n; .Nat», T: *] -> t: T -> :mat.Mat n S T, normalize_const;
+/// 
+/// ### :mat.read
+///
+/// a access to an element of the matrix
+/// (currently: arithmetic pointer access)
+.ax :mat.read: Π [n: .Nat, S: «n; .Nat», T: *] -> [:mat.Mat n S T, idx: «i: n; :Int S#i»] -> T, normalize_read;
+/// 
+/// :mat.write
+/// depending on matrix implementation a function in mem monoid
+/// or handled by element 
+/// (or handled by element and liftet in mem monoid)
 /// 
 
 
