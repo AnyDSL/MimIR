@@ -57,15 +57,31 @@
 /// - parallel map without effect
 /// - map combination
 .ax :mat.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [:mat.Mat n S T, f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> :mat.Mat n S P, normalize_map;
-.ax :mat.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [:mat.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> :mat.Mat n S P, normalize_map;
-.ax :mat.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [:mat.Mat n S T, f: T -> P ] -> :mat.Mat n S P, normalize_map;
+.ax :mat.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [:mat.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> :mat.Mat n S P, normalize_parallel_map;
+.ax :mat.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [:mat.Mat n S T, f: T -> P ] -> :mat.Mat n S P, normalize_meta_map;
 /// 
-/// matrix operations
-///   reduce
-///   map => elementwise unary
-///   zip => elementwise binary
-/// function lifting
-/// rewriting / normalization properties
+/// ### :mat.zip
+///
+/// binary elementwise operation
+/// that lifts a binary function to the matrix level
+/// same as map
+/// rewrite: 
+/// - zip on constant matrices
+/// - parallel zip without effect
+/// - zip combination
+/// - zip with one side constant matrix
+/// - meta_zip add zero m = m
+/// (currently: hardcoded as matrix operations)
+.ax :mat.zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [:mat.Mat n S P, :mat.Mat n S Q, f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> :mat.Mat n S R, normalize_zip;
+.ax :mat.parallel_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [:mat.Mat n S P, :mat.Mat n S Q, f: .Cn [P, Q, .Cn [R] ] ] -> :mat.Mat n S R, normalize_parallel_zip;
+.ax :mat.meta_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [:mat.Mat n S P, :mat.Mat n S Q, f: P -> Q -> R ] -> :mat.Mat n S R, normalize_meta_zip;
+///
+/// ### :mat.zero
+///
+/// a constant zero matrix
+/// (currently: const i32 as bitfield)
+.ax :mat.zero: Π [n: .Nat, S: «n; .Nat», T: *] -> :mat.Mat n S T, normalize_zero;
+/// 
 
 
 /*
@@ -75,4 +91,7 @@
 * - autoquantification / Variable environment
 * - powerful parser
 * - type inference ([m, k] above) if not already possible
+* other points:
+* - the parallel (mem free) version and the meta version (or the other way around)
+*   should be automatically derivable from the other version
 */
