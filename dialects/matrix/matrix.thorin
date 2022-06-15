@@ -98,11 +98,16 @@
 /// (currently: arithmetic pointer access)
 .ax :mat.read: Π [n: .Nat, S: «n; .Nat», T: *] -> [:mat.Mat n S T, idx: «i: n; :Int S#i»] -> T, normalize_read;
 /// 
-/// :mat.write
-/// depending on matrix implementation a function in mem monoid
-/// or handled by element 
-/// (or handled by element and liftet in mem monoid)
-/// 
+/// ### :mat.insert
+///
+/// depending on matrix implementation needs mem monad
+/// as it is implemented as write
+/// for mutable body types, the monad should be liftet
+/// implementation either as write or array insertion
+/// normalization:
+/// * with other inserts
+/// * with initialization
+.ax :mat.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [:mat.Mat n S T, idx: «i: n; :Int S#i», val: T] -> :mat.Mat n S T, normalize_insert;
 
 
 /*
