@@ -1,0 +1,23 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -e thorin %s -o %t | FileCheck %s
+
+.import core;
+
+.lam .extern and: .Cn [a : %Int 2, b : %Int 2, return : .Cn %Int 2] = {
+    .ff,
+    return
+    (%core.bit2._and 2
+        (%core.icmp.uge 2
+            (a, b),
+         %core.icmp.ug 2
+            (a, b)))
+};
+
+// CHECK-DAG: and_{{[0-9]+}}: Cn [i1, i1, Cn i1]: (_[[aId:[0-9]+]], _[[bId:[0-9]+]], _[[retId:[0-9]+]]) = {
+// CHECK-DAG: _[[cmpId:[0-9]+]]: i1 = %core.icmp.xYGle 2:nat (_[[aId]], _[[bId]]);
+// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] _[[cmpId]];
+// CHECK-DAG: λ@(0:i1) _[[appId]]
+
+// CHECK-DAG: _[[etaId]]: Cn i1: _[[etaVar:[0-9]+]] = {
+// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] @_[[etaVar]];
+// CHECK-DAG: λ@(0:i1) _[[appRetId]]

@@ -25,14 +25,16 @@ public:
 
     const Def* rewrite(const Def*) override;
 
+    static PassTag* ID();
+
 private:
-    bool should_expand(Lam *lam);
-    Lam* make_scalar(Lam *lam);
+    bool should_expand(Lam* lam);
+    Lam* make_scalar(const Def* def);
 
     EtaExp* eta_exp_;
     Lam2Lam tup2sca_;
 };
 
-}
+} // namespace thorin
 
 #endif

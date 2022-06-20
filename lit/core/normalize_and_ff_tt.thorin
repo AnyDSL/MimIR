@@ -1,0 +1,18 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -e thorin %s -o %t | FileCheck %s
+
+.import core;
+
+.lam .extern and_lit_ff_tt: .Cn [return : .Cn %Int 2] = {
+    .ff,
+    return (%core.bit2._and 2 (.ff, .tt))
+};
+
+// CHECK-DAG: and_lit_ff_tt_{{[0-9]+}}: Cn Cn i1: _[[retId_ff_tt:[0-9]+]] = {
+// CHECK-DAG: _[[appId_ff_tt:[0-9]+]]: ⊥:★ = _[[etaId_ff_tt:[0-9]+]] 0:i1;
+// CHECK-DAG: λ@(0:i1) _[[appId_ff_tt]]
+
+// CHECK-DAG: _[[etaId_ff_tt]]: Cn i1: _[[etaVar_ff_tt:[0-9]+]] = {
+// CHECK-DAG: _[[appRetId_ff_tt:[0-9]+]]: ⊥:★ = @_[[retId_ff_tt]] @_[[etaVar_ff_tt]];
+// CHECK-DAG: λ@(0:i1) _[[appRetId_ff_tt]]
+

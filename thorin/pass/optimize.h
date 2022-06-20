@@ -4,8 +4,9 @@
 namespace thorin {
 
 class World;
+class PipelineBuilder;
 
-void optimize(World&);
+void optimize(World&, PipelineBuilder&);
 
 } // namespace thorin
 

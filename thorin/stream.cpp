@@ -33,7 +33,7 @@ static Tok::Prec prec(const Def* def) {
     if (def->isa<App>()) return Tok::Prec::App;
     if (def->isa<Extract>()) return Tok::Prec::Extract;
     if (def->isa<Lit>()) return Tok::Prec::Lit;
-    return Tok::Prec::Bottom;
+    return Tok::Prec::Bot;
 }
 
 static Tok::Prec prec_l(const Def* def) {
@@ -41,14 +41,14 @@ static Tok::Prec prec_l(const Def* def) {
     if (def->isa<Pi>()) return Tok::Prec::App;
     if (def->isa<App>()) return Tok::Prec::App;
     if (def->isa<Extract>()) return Tok::Prec::Extract;
-    return Tok::Prec::Bottom;
+    return Tok::Prec::Bot;
 }
 
 static Tok::Prec prec_r(const Def* def) {
     if (def->isa<Pi>()) return Tok::Prec::Arrow;
     if (def->isa<App>()) return Tok::Prec::Extract;
     if (def->isa<Extract>()) return Tok::Prec::Lit;
-    return Tok::Prec::Bottom;
+    return Tok::Prec::Bot;
 }
 
 template<bool L>
@@ -82,21 +82,21 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     } else if (u->isa<Nat>()) {
         return print(os, "nat");
     } else if (auto bot = u->isa<Bot>()) {
-        return print(os, "⊥∷{}", bot->type());
+        return print(os, "⊥:{}", bot->type());
     } else if (auto top = u->isa<Top>()) {
-        return print(os, "⊤∷{}", top->type());
+        return print(os, "⊤:{}", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
-        return print(os, ":{}", axiom->debug().name);
+        return print(os, "{}", axiom->debug().name);
     } else if (auto lit = u->isa<Lit>()) {
         if (auto real = thorin::isa<Tag::Real>(lit->type())) {
             switch (as_lit(real->arg())) {
-                case 16: return print(os, "{}∷r16", lit->get<r16>());
-                case 32: return print(os, "{}∷r32", lit->get<r32>());
-                case 64: return print(os, "{}∷r64", lit->get<r64>());
+                case 16: return print(os, "{}:r16", lit->get<r16>());
+                case 32: return print(os, "{}:r32", lit->get<r32>());
+                case 64: return print(os, "{}:r64", lit->get<r64>());
                 default: unreachable();
             }
         }
-        return print(os, "{}∷{}", lit->get(), lit->type());
+        return print(os, "{}:{}", lit->get(), lit->type());
     } else if (auto ex = u->isa<Extract>()) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
         return print(os, "{}#{}", ex->tuple(), ex->index());
@@ -132,13 +132,13 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
         return print(os, "[{, }]", sigma->ops());
     } else if (auto tuple = u->isa<Tuple>()) {
         print(os, "({, })", tuple->ops());
-        return tuple->type()->isa_nom() ? print(os, "∷{}", tuple->type()) : os;
+        return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
     } else if (auto arr = u->isa<Arr>()) {
         return print(os, "«{}; {}»", arr->shape(), arr->body());
     } else if (auto pack = u->isa<Pack>()) {
         return print(os, "‹{}; {}›", pack->shape(), pack->body());
     } else if (auto proxy = u->isa<Proxy>()) {
-        return print(os, ".proxy#{}#{} {, }", proxy->index(), proxy->flags(), proxy->ops());
+        return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
     } else if (auto bound = isa_bound(*u)) {
         auto op = bound->isa<Join>() ? "∪" : "∩";
         if (auto nom = u->isa_nom()) print(os, "{}{}: {}", op, nom->unique_name(), nom->type());
@@ -146,8 +146,8 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     }
 
     // other
-    if (u->fields() == 0) return print(os, ".{} {, }", u->node_name(), u->ops());
-    return print(os, ".{}#{} {, }", u->node_name(), u->fields(), u->ops());
+    if (u->flags() == 0) return print(os, ".{} {, }", u->node_name(), u->ops());
+    return print(os, ".{}#{} {, }", u->node_name(), u->flags(), u->ops());
 }
 
 //------------------------------------------------------------------------------

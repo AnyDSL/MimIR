@@ -33,20 +33,20 @@ const Def* flatten(const Def* def) {
                                      : def->world().sigma(ops, def->dbg());
 }
 
-static const Def* unflatten(Defs defs, const Def* type, size_t& j) {
+static const Def* unflatten(Defs defs, const Def* type, size_t& j, bool flatten_noms) {
     if (!defs.empty() && defs[0]->type() == type) return defs[j++];
-    if (auto a = isa_lit<nat_t>(type->arity()); a && *a != 1) {
+    if (auto a = isa_lit<nat_t>(type->arity()); flatten_noms == nom_val_or_typ(type) && a && *a != 1) {
         auto& world = type->world();
-        DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j); });
+        DefArray ops(*a, [&](size_t i) { return unflatten(defs, type->proj(*a, i), j, flatten_noms); });
         return world.tuple(type, ops);
     }
 
     return defs[j++];
 }
 
-const Def* unflatten(Defs defs, const Def* type) {
+const Def* unflatten(Defs defs, const Def* type, bool flatten_noms) {
     size_t j = 0;
-    auto def = unflatten(defs, type, j);
+    auto def = unflatten(defs, type, j, flatten_noms);
     assert(j == defs.size());
     return def;
 }
@@ -88,6 +88,25 @@ std::string tuple2str(const Def* def) {
 
     auto array = def->projs(as_lit(def->arity()), as_lit<nat_t>);
     return std::string(array.begin(), array.end());
+}
+
+/*
+ * check
+ */
+
+bool Arr::check() {
+    auto t = body()->inf_type();
+    if (auto infer = type()->isa_nom<Infer>()) {
+        assert(infer->op() == nullptr);
+        infer->set(t);
+        set_type(t);
+    }
+    return true;
+}
+
+bool Sigma::check() {
+    // TODO
+    return true;
 }
 
 } // namespace thorin

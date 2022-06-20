@@ -7,6 +7,7 @@
 #include "thorin/axiom.h"
 #include "thorin/config.h"
 #include "thorin/debug.h"
+#include "thorin/error.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
@@ -86,8 +87,8 @@ public:
             return type(lit_univ(level), dbg);
     }
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
-    const Proxy* proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg = {}) {
-        return unify<Proxy>(ops.size(), type, ops, index, flags, dbg);
+    const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg = {}) {
+        return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }
     Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
     Infer* nom_infer(const Def* type, Sym sym, Loc loc) { return insert<Infer>(1, type, dbg({sym, loc})); }
@@ -96,18 +97,41 @@ public:
 
     /// @name Axiom
     ///@{
-    const Axiom* axiom(Def::NormalizeFn normalize, const Def* type, tag_t tag, flags_t flags, const Def* dbg = {}) {
-        return unify<Axiom>(0, normalize, type, tag, flags, dbg);
+    const Axiom* axiom(Def::NormalizeFn n, const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
+        return data_.axioms_[d | (t << 8u) | s] = unify<Axiom>(0, n, type, d, t, s, dbg);
     }
-    const Axiom* axiom(const Def* type, tag_t tag, flags_t flags, const Def* dbg = {}) {
-        return axiom(nullptr, type, tag, flags, dbg);
+    const Axiom* axiom(const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
+        return axiom(nullptr, type, d, t, s, dbg);
     }
 
-    /// Builds a fresh Axiom with descending tag.
+    /// Builds a fresh Axiom with descending Axiom::sub.
     /// This is useful during testing to come up with some entitiy of a specific type.
-    /// It starts with `tag_t(-1)` (aka max) for Axiom::tag and counts down from there.
-    /// The Axiom::flags are set to `0` and the Axiom::normalizer to `nullptr`.
-    const Axiom* axiom(const Def* type, const Def* dbg = {}) { return axiom(nullptr, type, state_.curr_tag--, 0, dbg); }
+    /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
+    /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
+    const Axiom* axiom(const Def* type, const Def* dbg = {}) {
+        return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.curr_sub++, dbg);
+    }
+
+    /// Get axiom from a dialect.
+    ///
+    /// Use this to get an axiom with sub-tags.
+    template<class AxTag>
+    const Axiom* ax(AxTag sub) const {
+        u64 int_sub = static_cast<u64>(sub);
+        auto it     = data_.axioms_.find(int_sub);
+        if (it == data_.axioms_.end())
+            thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", int_sub);
+        return it->second;
+    }
+
+    /// Get axiom from a dialect.
+    ///
+    /// Can be used to get an axiom without sub-tags.
+    /// E.g. use `w.ax<mem::M>();` to get the %mem.M axiom.
+    template<axiom_without_sub_tags AxTag>
+    const Axiom* ax() const {
+        return ax(AxTag::id_);
+    }
     ///@}
 
     /// @name Pi
@@ -122,25 +146,8 @@ public:
     /// @name Pi: continuation type (cn), i.e., Pi type with codom Bottom
     ///@{
     const Pi* cn() { return cn(sigma()); }
-    const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, bot_type(), dbg); }
+    const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, type_bot(), dbg); }
     const Pi* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
-    /// Same as @p cn/@p pi but adds a @p mem @p Var to each @p Pi
-    const Pi* cn_flat(Defs dom, const Def* dbg = {});
-    const Pi* cn_mem_flat(const Def* dom, const Def* dbg = {});
-    const Pi* cn_mem_ret_flat(const Def* dom, const Def* codom, const Def* dbg = {}, bool dom_flat=true, bool codom_flat=true);
-    const Pi* cn_mem_half_flat(const Def* domain, const Def* codomain, const Def* dbg = {});
-    /// Same as World::cn / World::pi but adds a World::type_mem-typed Var to each Pi.
-    const Pi* cn_mem(const Def* dom, const Def* dbg = {}) { return cn({type_mem(), dom}, dbg); }
-    const Pi* cn_mem_ret(const Def* dom, const Def* ret_dom, const Def* dbg = {}) {
-        return cn({type_mem(), dom, cn_mem(ret_dom)}, dbg);
-    }
-    const Pi* pi_mem(const Def* domain, const Def* codomain, const Def* dbg = {}) {
-        auto d = sigma({type_mem(), domain});
-        return pi(d, sigma({type_mem(), codomain}), dbg);
-    }
-    const Pi* fn_mem(const Def* domain, const Def* codomain, const Def* dbg = {}) {
-        return cn({type_mem(), domain, cn_mem(codomain)}, dbg);
-    }
     ///@}
 
     /// @name Lam%bda
@@ -150,23 +157,10 @@ public:
         return lam;
     }
     Lam* nom_lam(const Pi* cn, const Def* dbg = {}) { return nom_lam(cn, Lam::CC::C, dbg); }
-
-    Lam* nom_filter_lam(const Pi* cn, const Def* dbg){
-        return nom_filter_lam(cn, lit_true(), dbg);
-    }
-
-    Lam* nom_filter_lam(const Pi* cn, const Def* filter, const Def* dbg){
-        Lam* lam = nom_lam(cn, dbg);
-        lam->set_filter(filter);
-        return lam;
-    }
-
     const Lam* lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg) {
         return unify<Lam>(2, pi, filter, body, dbg);
     }
     const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_true(), body, dbg); }
-    const Lam* flatten_lam(Lam* lam);
-    const Lam* unflatten_lam(Lam* lam);
     ///@}
 
     /// @name App
@@ -213,7 +207,7 @@ public:
     /// Ascribes @p type to this tuple - needed for dependently typed and nominal Sigma%s.
     const Def* tuple(const Def* type, Defs ops, const Def* dbg = {});
     const Def* tuple_str(std::string_view s, const Def* dbg = {});
-    Sym sym(std::string_view s, const Def* dbg = {}) { return tuple_str(s, dbg); }
+    Sym sym(std::string_view s, Loc loc) { return {tuple_str(s, dbg(loc)), loc.def(*this)}; }
     const Tuple* tuple() { return data_.tuple_; } ///< the unit value of type `[]`
     ///@}
 
@@ -230,21 +224,15 @@ public:
 
     /// @name Extract
     ///@{
-    const Def* extract(const Def* tup, const Def* i, const Def* dbg = {}) { return extract_(nullptr, tup, i, dbg); }
-    const Def* extract(const Def* tup, u64 a, u64 i, const Def* dbg = {}) {
-        return extract_(nullptr, tup, lit_int(a, i), dbg);
+    const Def* extract(const Def* d, const Def* i, const Def* dbg = {});
+    const Def* extract(const Def* d, u64 a, u64 i, const Def* dbg = {}) { return extract(d, lit_int(a, i), dbg); }
+    const Def* extract(const Def* d, u64 i, const Def* dbg = {}) { return extract(d, as_lit(d->arity()), i, dbg); }
+    const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
+        return extract_unsafe(d, lit_int(0_u64, i), dbg);
     }
-    const Def* extract(const Def* tup, u64 i, const Def* dbg = {}) {
-        return extract(tup, as_lit(tup->arity()), i, dbg);
+    const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
+        return extract(d, op(Conv::u2u, type_int(as_lit(d->type()->reduce_rec()->arity())), i, dbg), dbg);
     }
-    const Def* extract_unsafe(const Def* tup, u64 i, const Def* dbg = {}) {
-        return extract_unsafe(tup, lit_int(0_u64, i), dbg);
-    }
-    const Def* extract_unsafe(const Def* tup, const Def* i, const Def* dbg = {}) {
-        return extract(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce_rec()->arity())), i, dbg), dbg);
-    }
-    /// During a rebuild we cannot infer the type if it is not set yet; in this case we rely on @p ex_type.
-    const Def* extract_(const Def* ex_type, const Def* tup, const Def* i, const Def* dbg = {});
     /// Builds `(f, t)cond`.
     /// **Note** that select expects @p t as first argument and @p f as second one.
     const Def* select(const Def* t, const Def* f, const Def* cond, const Def* dbg = {}) {
@@ -254,18 +242,18 @@ public:
 
     /// @name Insert
     ///@{
-    const Def* insert(const Def* tup, const Def* i, const Def* val, const Def* dbg = {});
-    const Def* insert(const Def* tup, u64 a, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, lit_int(a, i), val, dbg);
+    const Def* insert(const Def* d, const Def* i, const Def* val, const Def* dbg = {});
+    const Def* insert(const Def* d, u64 a, u64 i, const Def* val, const Def* dbg = {}) {
+        return insert(d, lit_int(a, i), val, dbg);
     }
-    const Def* insert(const Def* tup, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, as_lit(tup->arity()), i, val, dbg);
+    const Def* insert(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
+        return insert(d, as_lit(d->arity()), i, val, dbg);
     }
-    const Def* insert_unsafe(const Def* tup, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert_unsafe(tup, lit_int(0_u64, i), val, dbg);
+    const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
+        return insert_unsafe(d, lit_int(0_u64, i), val, dbg);
     }
-    const Def* insert_unsafe(const Def* tup, const Def* i, const Def* val, const Def* dbg = {}) {
-        return insert(tup, op(Conv::u2u, type_int(as_lit(tup->type()->reduce_rec()->arity())), i), val, dbg);
+    const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
+        return insert(d, op(Conv::u2u, type_int(as_lit(d->type()->reduce_rec()->arity())), i), val, dbg);
     }
     ///@}
 
@@ -330,7 +318,7 @@ public:
     const Def* ext(const Def* type, const Def* dbg = {});
     const Def* bot(const Def* type, const Def* dbg = {}) { return ext<false>(type, dbg); }
     const Def* top(const Def* type, const Def* dbg = {}) { return ext<true>(type, dbg); }
-    const Def* bot_type() { return data_.bot_type_; }
+    const Def* type_bot() { return data_.type_bot_; }
     const Def* top_nat() { return data_.top_nat_; }
     template<bool up> TBound<up>* nom_bound(const Def* type, size_t size, const Def* dbg = {}) { return insert<TBound<up>>(size, type, size, dbg); }
     /// A *nom*inal Bound of Type @p l%evel.
@@ -344,38 +332,30 @@ public:
     const Def* meet(Defs ops, const Def* dbg = {}) { return bound<false>(ops, dbg); }
     const Def* ac(const Def* type, Defs ops, const Def* dbg = {});
     /// Infers the type using a *structural* Meet.
-    const Def* ac(Defs ops, const Def* dbg = {}) { return ac(infer_type(ops), ops, dbg); }
+    const Def* ac(Defs ops, const Def* dbg = {});
     const Def* vel(const Def* type, const Def* value, const Def* dbg = {});
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg = {});
+    const Def* singleton(const Def* inner_type, const Def* dbg = {});
     ///@}
 
     /// @name globals -- depdrecated; will be removed
     ///@{
     Global* global(const Def* type, bool is_mutable = true, const Def* dbg = {}) { return insert<Global>(1, type, is_mutable, dbg); }
-    Global* global_immutable_string(std::string_view str, const Def* dbg = {});
     ///@}
     // clang-format on
 
     /// @name types
     ///@{
     const Nat* type_nat() { return data_.type_nat_; }
-    const Axiom* type_mem() { return data_.type_mem_; }
     const Axiom* type_int() { return data_.type_int_; }
     const Axiom* type_real() { return data_.type_real_; }
-    const Axiom* type_ptr() { return data_.type_ptr_; }
     const App* type_bool() { return data_.type_bool_; }
     const App* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
     const App* type_int(nat_t mod) { return type_int(lit_nat(mod)); }
     const App* type_real(nat_t width) { return type_real(lit_nat(width)); }
     const App* type_int(const Def* mod) { return app(type_int(), mod)->as<App>(); }
     const App* type_real(const Def* width) { return app(type_real(), width)->as<App>(); }
-    const App* type_ptr(const Def* pointee, nat_t addr_space = AddrSpace::Generic, const Def* dbg = {}) {
-        return type_ptr(pointee, lit_nat(addr_space), dbg);
-    }
-    const App* type_ptr(const Def* pointee, const Def* addr_space, const Def* dbg = {}) {
-        return app(type_ptr(), {pointee, addr_space}, dbg)->as<App>();
-    }
     ///@}
 
     /// @name bulitin axioms
@@ -384,7 +364,6 @@ public:
     const Axiom* ax(Acc   o)  const { return data_.Acc_  [size_t(o)]; }
     const Axiom* ax(Bit   o)  const { return data_.Bit_  [size_t(o)]; }
     const Axiom* ax(Conv  o)  const { return data_.Conv_ [size_t(o)]; }
-    const Axiom* ax(Div   o)  const { return data_.Div_  [size_t(o)]; }
     const Axiom* ax(ICmp  o)  const { return data_.ICmp_ [size_t(o)]; }
     const Axiom* ax(PE    o)  const { return data_.PE_   [size_t(o)]; }
     const Axiom* ax(RCmp  o)  const { return data_.RCmp_ [size_t(o)]; }
@@ -392,18 +371,9 @@ public:
     const Axiom* ax(Shr   o)  const { return data_.Shr_  [size_t(o)]; }
     const Axiom* ax(Trait o)  const { return data_.Trait_[size_t(o)]; }
     const Axiom* ax(Wrap  o)  const { return data_.Wrap_ [size_t(o)]; }
-    const Axiom* ax_alloc()   const { return data_.alloc_;   }
     const Axiom* ax_atomic()  const { return data_.atomic_;  }
     const Axiom* ax_bitcast() const { return data_.bitcast_; }
-    const Axiom* ax_lea()     const { return data_.lea_;     }
-    const Axiom* ax_malloc()  const { return data_.malloc_;  }
-    const Axiom* ax_mslot()   const { return data_.mslot_;   }
     const Axiom* ax_zip()     const { return data_.zip_;     }
-    const Axiom* ax_for()     const { return data_.for_;     }
-    const Axiom* ax_load()    const { return data_.load_;    }
-    const Axiom* ax_remem()   const { return data_.remem_;   }
-    const Axiom* ax_slot()    const { return data_.slot_;    }
-    const Axiom* ax_store()   const { return data_.store_;   }
     // clang-format on
     ///@}
 
@@ -413,7 +383,6 @@ public:
     const Def* fn(Conv o, const Def* dst_w, const Def* src_w, const Def* dbg = {}) {
         return app(ax(o), {dst_w, src_w}, dbg);
     }
-    const Def* fn(Div o, const Def* mod, const Def* dbg = {}) { return app(ax(o), mod, dbg); }
     const Def* fn(ICmp o, const Def* mod, const Def* dbg = {}) { return app(ax(o), mod, dbg); }
     const Def* fn(RCmp o, const Def* rmode, const Def* width, const Def* dbg = {}) {
         return app(ax(o), {rmode, width}, dbg);
@@ -443,9 +412,6 @@ public:
     /// @name op - these guys build the final function application for the various operations
     ///@{
     const Def* op(Bit o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, infer(a)), {a, b}, dbg); }
-    const Def* op(Div o, const Def* mem, const Def* a, const Def* b, const Def* dbg = {}) {
-        return app(fn(o, infer(a)), {mem, a, b}, dbg);
-    }
     const Def* op(ICmp o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, infer(a)), {a, b}, dbg); }
     const Def* op(RCmp o, const Def* rmode, const Def* a, const Def* b, const Def* dbg = {}) {
         return app(fn(o, rmode, infer(a)), {a, b}, dbg);
@@ -475,32 +441,6 @@ public:
     const Def* op_bitcast(const Def* dst_type, const Def* src, const Def* dbg = {}) {
         return app(fn_bitcast(dst_type, src->type()), src, dbg);
     }
-    const Def* op_lea(const Def* ptr, const Def* index, const Def* dbg = {});
-    const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) { return op_lea_unsafe(ptr, lit_int(i), dbg); }
-    const Def* op_lea_unsafe(const Def* ptr, const Def* i, const Def* dbg = {}) {
-        auto safe_int = type_int(as<Tag::Ptr>(ptr->type())->arg(0)->arity());
-        return op_lea(ptr, op(Conv::u2u, safe_int, i), dbg);
-    }
-    const Def* op_remem(const Def* mem, const Def* dbg = {}) { return app(ax_remem(), mem, dbg); }
-    const Def* op_load(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-        auto [T, a] = as<Tag::Ptr>(ptr->type())->args<2>();
-        return app(app(ax_load(), {T, a}), {mem, ptr}, dbg);
-    }
-    const Def* op_store(const Def* mem, const Def* ptr, const Def* val, const Def* dbg = {}) {
-        auto [T, a] = as<Tag::Ptr>(ptr->type())->args<2>();
-        return app(app(ax_store(), {T, a}), {mem, ptr, val}, dbg);
-    }
-    const Def* op_alloc(const Def* type, const Def* mem, const Def* dbg = {}) {
-        return app(app(ax_alloc(), {type, lit_nat_0()}), mem, dbg);
-    }
-    const Def* op_slot(const Def* type, const Def* mem, const Def* dbg = {}) {
-        return app(app(ax_slot(), {type, lit_nat_0()}), {mem, lit_nat(curr_gid())}, dbg);
-    }
-    const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
-    const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
-    // clang-format off
-    const Def* op_for(const Def* mem, const Def* start, const Def* stop, const Def* step, Defs inits, const Def* body, const Def* brk);
-    // clang-format on
     ///@}
 
     /// @name wrappers for unary operations
@@ -519,20 +459,12 @@ public:
     }
     const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) { return op_rminus(lit_nat(rmode), a, dbg); }
     const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) { return op_wminus(lit_nat(wmode), a, dbg); }
-    //@}
-
-    /// @name AD
-    //@{
-    const Def* params_without_return_continuation(const Pi* pi);
-    const Def* op_rev_diff(const Def* fn, const Def* dbg = {});
-    const Def* tangent_type(const Def* A, bool left=false);
-    //@}
+    ///@}
 
     /// @name helpers
     ///@{
-    const Def* dbg(Debug);
+    const Def* dbg(Debug d) { return d.def(*this); }
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
-    const Def* infer_type(Defs);
     ///@}
 
     /// @name partial evaluation done?
@@ -568,7 +500,6 @@ public:
     using Breakpoints = absl::flat_hash_set<u32>;
 
     void breakpoint(size_t number);
-    void use_breakpoint(size_t number);
     void enable_history(bool flag = true);
     bool track_history() const;
     const Def* gid2def(u32 gid);
@@ -649,13 +580,10 @@ private:
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
-        auto [i, inserted] = data_.defs_.emplace(def);
-        if (inserted) {
+        auto [i, ins] = data_.defs_.emplace(def);
+        if (ins) {
 #if THORIN_ENABLE_CHECKS
             if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
-            for (auto op : def->ops()) {
-                if (state_.use_breakpoints.contains(op->gid())) thorin::breakpoint();
-            }
 #endif
             def->finalize();
             return def;
@@ -671,8 +599,8 @@ private:
 #if THORIN_ENABLE_CHECKS
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
-        auto p = data_.defs_.emplace(def);
-        assert_unused(p.second);
+        auto [_, ins] = data_.defs_.emplace(def);
+        assert_unused(ins);
         return def;
     }
     ///@}
@@ -751,12 +679,11 @@ private:
     struct State {
         LogLevel max_level = LogLevel::Error;
         u32 curr_gid       = 0;
-        u32 curr_tag       = tag_t(-1);
+        u32 curr_sub       = 0;
         bool pe_done       = false;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
         Breakpoints breakpoints;
-        Breakpoints use_breakpoints;
 #endif
     } state_;
 
@@ -764,7 +691,7 @@ private:
         const Univ* univ_;
         const Type* type_0_;
         const Type* type_1_;
-        const Bot* bot_type_;
+        const Bot* type_bot_;
         const App* type_bool_;
         const Top* top_nat_;
         const Sigma* sigma_;
@@ -777,7 +704,6 @@ private:
         std::array<const Axiom*, Num<Bit  >> Bit_;
         std::array<const Axiom*, Num<Shr  >> Shr_;
         std::array<const Axiom*, Num<Wrap >> Wrap_;
-        std::array<const Axiom*, Num<Div  >> Div_;
         std::array<const Axiom*, Num<ROp  >> ROp_;
         std::array<const Axiom*, Num<ICmp >> ICmp_;
         std::array<const Axiom*, Num<RCmp >> RCmp_;
@@ -791,23 +717,12 @@ private:
         const Lit* lit_nat_max_;
         const Lit* lit_univ_0_;
         const Lit* lit_univ_1_;
-        const Axiom* alloc_;
         const Axiom* atomic_;
         const Axiom* bitcast_;
-        const Axiom* lea_;
-        const Axiom* load_;
-        const Axiom* malloc_;
-        const Axiom* mslot_;
-        const Axiom* remem_;
-        const Axiom* slot_;
-        const Axiom* store_;
         const Axiom* type_int_;
-        const Axiom* type_mem_;
-        const Axiom* type_ptr_;
         const Axiom* type_real_;
-        const Axiom* op_rev_diff_;
         const Axiom* zip_;
-        const Axiom* for_;
+        absl::flat_hash_map<u64, const Axiom*> axioms_;
         std::string name_;
         Externals externals_;
         Sea defs_;

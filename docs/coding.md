@@ -2,7 +2,7 @@
 
 [TOC]
 
-This document comprises some information that is related to coding but does not directly deals with the API.
+This document comprises some information that is related to coding but does not directly related to the API.
 
 ## Coding Style
 
@@ -41,6 +41,14 @@ You can use [conditional breakpoints](https://ftp.gnu.org/old-gnu/Manuals/gdb/ht
 For example, the following GDB command will break, if the thorin::Def::gid of variable `def` is `666` in source code location `foo.cpp:23`:
 ```gdb
 break foo.cpp:23 if def->gid() == 666
+```
+
+## Catching Throw
+
+For several things like errors in Thorin's front end, Thorin relies on C++ exceptions for error handling.
+Simply, do this to encounter them within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
+```gdb
+catch throw
 ```
 
 ## Valgrind & GDB

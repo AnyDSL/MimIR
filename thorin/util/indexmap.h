@@ -40,7 +40,11 @@ public:
 
     const Indexer& indexer() const { return indexer_; }
     size_t capacity() const { return array_.size(); }
-    Value& operator[](Key key) { auto i = indexer().index(key); assert(i != size_t(-1)); return array_[i]; }
+    Value& operator[](Key key) {
+        auto i = indexer().index(key);
+        assert(i != size_t(-1));
+        return array_[i];
+    }
     const Value& operator[](Key key) const { return const_cast<IndexMap*>(this)->operator[](key); }
     Array<Value>& array() { return array_; }
     const Array<Value>& array() const { return array_; }
@@ -72,6 +76,6 @@ inline const Value* find(const IndexMap<Indexer, Key, Value*>& map, Key key) {
     return find(const_cast<IndexMap<Indexer, Key, Value*>&>(map), key);
 }
 
-}
+} // namespace thorin
 
 #endif

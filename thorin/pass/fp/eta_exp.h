@@ -46,6 +46,8 @@ public:
     auto& pos() { return data<1>(); }
     ///@}
 
+    static PassTag* ID();
+
 private:
     /// @name PassMan hooks
     ///@{

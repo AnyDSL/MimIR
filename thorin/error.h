@@ -36,12 +36,17 @@ public:
         : std::logic_error(what_arg) {}
 };
 
+class AxiomNotFoundError : public std::logic_error {
+public:
+    AxiomNotFoundError(const std::string& what_arg)
+        : std::logic_error(what_arg) {}
+};
+
 template<class T, class... Args>
 [[noreturn]] void err(Loc loc, const char* fmt, Args&&... args) {
     std::ostringstream oss;
     print(oss, "{}: error: ", loc);
     print(oss, fmt, std::forward<Args&&>(args)...);
-//    assert(0);
     throw T(oss.str());
 }
 

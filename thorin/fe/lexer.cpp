@@ -33,7 +33,11 @@ Tok Lexer::lex() {
         loc_.begin = ahead().pos;
         str_.clear();
 
+#if defined(_WIN32) && !defined(NDEBUG) // isspace asserts otherwise
+        if (accept_if([](int c) { return (c & ~0xFF) == 0 ? isspace(c) : false; })) continue;
+#else
         if (accept_if(isspace)) continue;
+#endif
         if (accept(utf8::Err)) err(loc_, "invalid UTF-8 character");
         if (accept(utf8::EoF)) return tok(Tok::Tag::M_eof);
 
@@ -64,7 +68,7 @@ Tok Lexer::lex() {
         if (accept(U'⊥')) return tok(Tok::Tag::T_bot);
         if (accept(U'⊤')) return tok(Tok::Tag::T_top);
         if (accept(U'□')) return tok(Tok::Tag::T_box);
-        if (accept(U'∷')) return tok(Tok::Tag::T_colon_colon);
+        if (accept( ':')) return tok(Tok::Tag::T_colon);
         if (accept( ',')) return tok(Tok::Tag::T_comma);
         if (accept( '#')) return tok(Tok::Tag::T_extract);
         if (accept(U'λ')) return tok(Tok::Tag::T_lam);
@@ -74,7 +78,7 @@ Tok Lexer::lex() {
             if (accept('~')) {
                 if (accept('|')) return tok(Tok::Tag::T_Pi);
             }
-            err(loc_, "invalid input char {}; maybe you wanted to use '|~|'?", str_);
+            err(loc_, "invalid input char '{}'; maybe you wanted to use '|~|'?", str_);
             continue;
         }
         if (accept( ';')) return tok(Tok::Tag::T_semicolon);
@@ -82,10 +86,9 @@ Tok Lexer::lex() {
         if (accept( '*')) return tok(Tok::Tag::T_star);
         // clang-format on
 
-        if (accept(':')) {
-            if (accept(':')) return tok(Tok::Tag::T_colon_colon);
-            if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_, world_.dbg(loc()))};
-            return tok(Tok::Tag::T_colon);
+        if (accept('%')) {
+            if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_, loc())};
+            err(loc_, "invalid axiom name '{}'", str_);
         }
 
         if (accept('.')) {
@@ -104,7 +107,7 @@ Tok Lexer::lex() {
             return tok(Tok::Tag::T_dot);
         }
 
-        if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_, world_.dbg(loc()))};
+        if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_, loc())};
 
         if (isdigit(ahead()) || issign(ahead())) {
             if (auto lit = parse_lit()) return *lit;

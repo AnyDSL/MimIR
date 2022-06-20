@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 project(Thorin VERSION 1.9.0)
 
-if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Build type (default Debug)" FORCE)
 endif()
 
@@ -62,6 +62,7 @@ add_subdirectory(dialects)
 
 if(BUILD_TESTING AND THORIN_BUILD_TESTING)
     add_subdirectory(gtest)
+    add_subdirectory(lit)
 endif()
 
 if(THORIN_BUILD_DOCS)

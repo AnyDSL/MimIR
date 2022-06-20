@@ -7,6 +7,8 @@ add_library(libthorin
     debug.h
     def.cpp
     def.h
+    dialects.cpp
+    dialects.h
     error.cpp
     error.h
     lam.cpp
@@ -42,8 +44,6 @@ add_library(libthorin
     be/dot/dot.h
     be/h/h.cpp
     be/h/h.h
-    be/ll/ll.cpp
-    be/ll/ll.h
     fe/lexer.cpp
     fe/lexer.h
     fe/parser.cpp
@@ -52,30 +52,20 @@ add_library(libthorin
     fe/tok.h
     pass/optimize.cpp
     pass/pass.cpp
+    pass/pipelinebuilder.cpp
+    pass/pipelinebuilder.h
     pass/fp/eta_exp.cpp
     pass/fp/eta_exp.h
     pass/fp/eta_red.cpp
     pass/fp/eta_red.h
     pass/fp/beta_red.cpp
     pass/fp/beta_red.h
-    pass/fp/copy_prop.cpp
-    pass/fp/copy_prop.h
-    pass/fp/ssa_constr.cpp
-    pass/fp/ssa_constr.h
-    pass/rw/auto_diff.cpp
-    pass/rw/auto_diff.h
     pass/fp/tail_rec_elim.cpp
     pass/fp/tail_rec_elim.h
-    pass/rw/alloc2malloc.cpp
-    pass/rw/alloc2malloc.h
     pass/rw/lam_spec.cpp
     pass/rw/lam_spec.h
     pass/rw/partial_eval.cpp
     pass/rw/partial_eval.h
-    pass/rw/lower_for.cpp
-    pass/rw/lower_for.h
-    pass/rw/remem_elim.cpp
-    pass/rw/remem_elim.h
     pass/rw/ret_wrap.cpp
     pass/rw/ret_wrap.h
     pass/rw/bound_elim.cpp
@@ -88,14 +78,16 @@ add_library(libthorin
     util/bitset.h
     util/cast.h
     util/container.h
-    util/dlopen.cpp
-    util/dlopen.h
+    util/dl.cpp
+    util/dl.h
     util/hash.cpp
     util/hash.h
     util/indexmap.h
     util/indexset.h
     util/print.cpp
     util/print.h
+    util/sys.cpp
+    util/sys.h
     util/types.h
     util/utf8.cpp
     util/utf8.h

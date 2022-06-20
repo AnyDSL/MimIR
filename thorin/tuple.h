@@ -23,10 +23,11 @@ public:
 
     /// @name virtual methods
     ///@{
+    bool check() override;
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Sigma* stub(World&, const Def*, const Def*) override;
+    const Sigma* restructure() override;
     ///@}
-
 
     static constexpr auto Node = Node::Sigma;
     friend class World;
@@ -68,6 +69,7 @@ public:
 
     /// @name virtual methods
     ///@{
+    bool check() override;
     size_t first_dependend_op() override { return 1; }
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Arr* stub(World&, const Def*, const Def*) override;
@@ -165,7 +167,7 @@ size_t flatten(DefVec& ops, const Def* def, bool flatten_sigmas = true);
 /// Applies the reverse transformation on a pack/tuple, given the original type.
 const Def* unflatten(const Def* def, const Def* type);
 /// Same as unflatten, but uses the operands of a flattened pack/tuple directly.
-const Def* unflatten(Defs ops, const Def* type);
+const Def* unflatten(Defs ops, const Def* type, bool flatten_noms = true);
 
 DefArray merge(const Def* def, Defs defs);
 const Def* merge_sigma(const Def* def, Defs defs);

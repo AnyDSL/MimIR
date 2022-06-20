@@ -1,0 +1,31 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -e thorin %s -o %t | FileCheck %s
+
+.import core;
+
+.lam .extern add0: .Cn [i :%Int 256, return : .Cn %Int 256] = {
+    .ff,
+    return (%core.wrap.add (0, 256) (i, 0 : (%Int 256)))
+};
+
+// CHECK-DAG: add0_{{[0-9]+}}: Cn [i8, Cn i8]: (_[[valId:[0-9]+]], _[[retId:[0-9]+]]) = {
+// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] _[[valId]];
+// CHECK-DAG: λ@(0:i1) _[[appId]]
+
+// CHECK-DAG: _[[etaId]]: Cn i8: _[[etaVar:[0-9]+]] = {
+// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] @_[[etaVar]];
+// CHECK-DAG: λ@(0:i1) _[[appRetId]]
+
+.lam .extern add_lit: .Cn [return : .Cn %Int 256] = {
+    .ff,
+    return (%core.wrap.add (0, 256) (6 : (%Int 256), 0 : (%Int 256)))
+};
+
+// CHECK-DAG: add_lit_{{[0-9]+}}: Cn Cn i8: _[[retId:[0-9]+]] = {
+// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] 6:i8;
+// CHECK-DAG: λ@(0:i1) _[[appId]]
+
+// CHECK-DAG: _[[etaId]]: Cn i8: _[[etaVar:[0-9]+]] = {
+// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = @_[[retId]] @_[[etaVar]];
+// CHECK-DAG: λ@(0:i1) _[[appRetId]]
+

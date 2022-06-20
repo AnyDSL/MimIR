@@ -1,6 +1,9 @@
 #ifndef THORIN_FE_PARSER_H
 #define THORIN_FE_PARSER_H
 
+#include <filesystem>
+
+#include "thorin/dialects.h"
 #include "thorin/world.h"
 
 #include "thorin/be/h/h.h"
@@ -16,38 +19,72 @@ namespace thorin {
 ///     It's the **caller's responsibility** to first make appropriate
 ///     [FIRST/FOLLOW](https://www.cs.uaf.edu/~cs331/notes/FirstFollow.pdf) checks.
 ///     Otherwise, an assertion will be triggered in the case of a syntax error.
+///
 /// 2. The `parse_*` method does have a `std::string_view ctxt` parameter:
 ///
 ///      The **called method** checks this and spits out an appropriate error message using `ctxt` in the case of a
 ///      syntax error.
+///
 /// 3. The `parse_*` method does have a `std::string_view ctxt = {}` parameter **with default argument**:
 ///
 ///      * If default argument is **elided** we have the same behavior as in 1.
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&, std::string_view, std::istream&, std::ostream* md = nullptr);
+    using Binders = std::deque<std::pair<Sym, size_t>>;
+
+    Parser(World&,
+           std::string_view,
+           std::istream&,
+           ArrayRef<std::string>,
+           const Normalizers*,
+           std::ostream* md = nullptr);
 
     World& world() { return lexer_.world(); }
     void parse_module();
     void bootstrap(std::ostream&);
 
+    static Parser
+    import_module(World&, std::string_view, ArrayRef<std::string> = {}, const Normalizers* normalizers = nullptr);
+
 private:
+    /// @name Tracker
+    ///@{
+    /// Trick to easily keep track of Loc%ations.
+    class Tracker {
+    public:
+        Tracker(Parser& parser, const Pos& pos)
+            : parser_(parser)
+            , pos_(pos) {}
+
+        Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
+        operator const Def*() const { return parser_.world().dbg({"", loc()}); }
+        const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
+        const Def* named(Sym sym) const { return parser_.world().dbg({sym.to_string(), loc()}); }
+        const Def* named(const std::string& str) const { return parser_.world().dbg({str, loc()}); }
+
+    private:
+        Parser& parser_;
+        Pos pos_;
+    };
+
     Sym parse_sym(std::string_view ctxt = {});
 
     /// @name exprs
     ///@{
-    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bottom);
-    const Def* parse_primary_expr(std::string_view ctxt);
-    const Def* parse_extract();
+    const Def* parse_dep_expr(std::string_view ctxt, Binders*, Tok::Prec = Tok::Prec::Bot);
+    const Def* parse_expr(std::string_view c, Tok::Prec p = Tok::Prec::Bot) { return parse_dep_expr(c, nullptr, p); }
+    const Def* parse_primary_expr(std::string_view ctxt, Binders*);
+    const Def* parse_extract(Tracker, const Def*, Tok::Prec);
     ///@}
 
     /// @name primary exprs
     ///@{
-    const Def* parse_Cn();
-    const Def* parse_pack_or_arr(bool pack);
+    const Def* parse_Cn(Binders*);
+    const Def* parse_arr();
+    const Def* parse_pack();
     const Def* parse_block();
-    const Def* parse_sigma();
+    const Def* parse_sigma(Binders*);
     const Def* parse_tuple();
     const Def* parse_type();
     const Def* parse_pi();
@@ -77,24 +114,8 @@ private:
         expect(delim_r, std::string("closing delimiter of a ") + ctxt);
     }
 
-    /// @name Tracker
-    ///@{
-    /// Trick to easily keep track of Loc%ations.
-    class Tracker {
-    public:
-        Tracker(Parser& parser, const Pos& pos)
-            : parser_(parser)
-            , pos_(pos) {}
-
-        Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
-        operator const Def*() const { return parser_.world().dbg({"", loc()}); }
-        const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
-        const Def* named(Sym sym) const { return parser_.world().dbg({sym, loc()}); }
-
-    private:
-        Parser& parser_;
-        Pos pos_;
-    };
+    // parse import statement
+    void parse_import();
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
@@ -167,11 +188,19 @@ private:
 
         if (auto [i, ins] = scopes_.back().emplace(sym, def); !ins) {
             auto curr = sym.loc();
-            auto prev = i->first.loc();
+            auto prev = i->first.to_loc();
             thorin::err<ScopeError>(curr, "symbol '{}' already declared in the current scope here: {}", sym, prev);
         }
     }
     ///@}
+
+    Parser(World&,
+           std::string_view,
+           std::istream&,
+           ArrayRef<std::string>,
+           const Normalizers*,
+           const std::deque<Parser::Scope>&,
+           const SymSet&);
 
     Lexer lexer_;
     Loc prev_;
@@ -179,8 +208,11 @@ private:
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
     std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
     std::deque<Scope> scopes_;
-    const Def* anonymous_;
+    SymSet imported_;
+    Sym anonymous_;
     h::Bootstrapper bootstrapper_;
+    std::vector<std::string> user_search_paths_;
+    const Normalizers* normalizers_;
 };
 
 } // namespace thorin

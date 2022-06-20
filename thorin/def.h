@@ -115,16 +115,16 @@ private:
 
 protected:
     /// Constructor for a structural Def.
-    Def(node_t, const Def* type, Defs ops, fields_t fields, const Def* dbg);
+    Def(node_t, const Def* type, Defs ops, flags_t flags, const Def* dbg);
     /// Constructor for a *nom*inal Def.
-    Def(node_t, const Def* type, size_t num_ops, fields_t fields, const Def* dbg);
+    Def(node_t, const Def* type, size_t num_ops, flags_t flags, const Def* dbg);
     virtual ~Def() = default;
 
 public:
     /// @name getters
     ///@{
     World& world() const;
-    fields_t fields() const { return fields_; }
+    flags_t flags() const { return flags_; }
     u32 gid() const { return gid_; }
     hash_t hash() const { return hash_; }
     node_t node() const { return node_; }
@@ -165,9 +165,11 @@ public:
     void unset() {
         for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);
     }
+    Def* set_type(const Def*);
+    void unset_type();
 
     /// Are all Def::ops set?
-    /// * `true` if all operands are set or Def::num_ops` == 0`.
+    /// * `true` if all operands are set or Def::num_ops ` == 0`.
     /// * `false` if all operands are `nullptr`.
     /// * `assert`s otherwise.
     bool is_set() const;
@@ -346,8 +348,9 @@ public:
     const Def* reduce_rec() const;
     ///@}
 
-    /// @name rebuild & friends
+    /// @name virtual methods
     ///@{
+    virtual bool check() { return true; }
     virtual size_t first_dependend_op() { return 0; }
     virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
@@ -377,7 +380,7 @@ protected:
         const Axiom* axiom_;     /// Curried App%s of Axiom%s use this member to propagate the Axiom.
     };
 
-    fields_t fields_;
+    flags_t flags_;
     uint8_t node_;
     unsigned nom_    : 1;
     unsigned var_    : 1;
@@ -402,13 +405,13 @@ protected:
 std::ostream& operator<<(std::ostream&, const Def* def);
 
 template<class T>
-const T* isa(fields_t f, const Def* def) {
-    if (auto d = def->template isa<T>(); d && d->fields() == f) return d;
+const T* isa(flags_t f, const Def* def) {
+    if (auto d = def->template isa<T>(); d && d->flags() == f) return d;
     return nullptr;
 }
 
 template<class T>
-const T* as([[maybe_unused]] fields_t f, const Def* def) {
+const T* as([[maybe_unused]] flags_t f, const Def* def) {
     assert(isa<T>(f, def));
     return def;
 }
@@ -508,14 +511,14 @@ public:
 
 class Lit : public Def {
 private:
-    Lit(const Def* type, fields_t val, const Def* dbg)
+    Lit(const Def* type, flags_t val, const Def* dbg)
         : Def(Node, type, Defs{}, val, dbg) {}
 
 public:
-    template<class T = fields_t>
+    template<class T = flags_t>
     T get() const {
         static_assert(sizeof(T) <= 8);
-        return bitcast<T>(fields_);
+        return bitcast<T>(flags_);
     }
 
     /// @name virtual methods
@@ -555,14 +558,14 @@ public:
 
 class Proxy : public Def {
 private:
-    Proxy(const Def* type, Defs ops, tag_t index, flags_t flags, const Def* dbg)
-        : Def(Node, type, ops, (nat_t(index) << 32_u64) | nat_t(flags), dbg) {}
+    Proxy(const Def* type, Defs ops, u32 pass, u32 tag, const Def* dbg)
+        : Def(Node, type, ops, (u64(pass) << 32_u64) | u64(tag), dbg) {}
 
 public:
     /// @name misc getters
     ///@{
-    tag_t index() const { return tag_t(fields() >> 32_u64); }
-    flags_t flags() const { return flags_t(fields()); }
+    u32 pass() const { return u32(flags() >> 32_u64); } ///< IPass::index within PassMan.
+    u32 tag() const { return u32(flags()); }
     ///@}
 
     /// @name virtual methods
@@ -586,7 +589,7 @@ public:
     /// @name op
     ///@{
     const Def* op() const { return Def::op(0); }
-    void set(const Def* op) { Def::set(0, op); }
+    Infer* set(const Def* op) { return Def::set(0, op)->as<Infer>(); }
     ///@}
 
     /// @name virtual methods
@@ -622,7 +625,7 @@ public:
 
     /// @name misc getters
     ///@{
-    bool is_mutable() const { return fields(); }
+    bool is_mutable() const { return flags(); }
     ///@}
 
     /// @name virtual methods

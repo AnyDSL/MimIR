@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ostream>
 #include <ranges>
+#include <sstream>
 #include <string>
 
 #include "thorin/util/assert.h"
@@ -66,6 +67,13 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
     unreachable();
 }
 
+template<class... Args>
+std::string fmt(const char* s, Args&&... args) {
+    std::ostringstream os;
+    print(os, s, std::forward<Args&&>(args)...);
+    return os.str();
+}
+
 // clang-format off
 template<class... Args> std::ostream& outf (const char* fmt, Args&&... args) { return print(std::cout, fmt, std::forward<Args&&>(args)...); }
 template<class... Args> std::ostream& errf (const char* fmt, Args&&... args) { return print(std::cerr, fmt, std::forward<Args&&>(args)...); }
@@ -82,7 +90,7 @@ public:
     template<class... Args>
     std::ostream& print(std::ostream& os, const char* s, Args&&... args) {
         for (size_t i = 0; i < indent_; ++i) os << tab_;
-        return thorin::print(os, s, std::forward<Args&&>(args)...);
+        return thorin::print(os, s, std::forward<Args>(args)...);
     }
 
     /// @name getters

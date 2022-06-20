@@ -11,6 +11,7 @@ namespace thorin {
 
 // TODO merge with make_scalar
 bool Scalerize::should_expand(Lam* lam) {
+    if (!isa_workable(lam)) return false;
     if (auto i = tup2sca_.find(lam); i != tup2sca_.end() && i->second && i->second == lam) return false;
 
     auto pi = lam->type();
@@ -20,7 +21,9 @@ bool Scalerize::should_expand(Lam* lam) {
     return false;
 }
 
-Lam* Scalerize::make_scalar(Lam* tup_lam) {
+Lam* Scalerize::make_scalar(const Def* def) {
+    auto tup_lam = def->isa_nom<Lam>();
+    assert(tup_lam);
     if (auto i = tup2sca_.find(tup_lam); i != tup2sca_.end()) return i->second;
 
     auto types  = DefVec();
@@ -29,7 +32,7 @@ Lam* Scalerize::make_scalar(Lam* tup_lam) {
     for (size_t i = 0, e = tup_lam->num_doms(); i != e; ++i) {
         auto n = flatten(types, tup_lam->dom(i), false);
         arg_sz.push_back(n);
-        todo |= n != 1;
+        todo |= n != 1 || types.back() != tup_lam->dom(i);
     }
 
     if (!todo) return tup2sca_[tup_lam] = tup_lam;
@@ -40,31 +43,46 @@ Lam* Scalerize::make_scalar(Lam* tup_lam) {
     size_t n = 0;
     world().DLOG("type {} ~> {}", tup_lam->type(), pi);
     auto new_vars = world().tuple(DefArray(tup_lam->num_doms(), [&](auto i) {
-        auto new_args = DefArray(arg_sz.at(i), [&](auto j) { return sca_lam->var(n + j); });
-        n += arg_sz.at(i);
-        return unflatten(new_args, tup_lam->dom(i));
+        auto tuple = DefArray(arg_sz.at(i), [&](auto) { return sca_lam->var(n++); });
+        return unflatten(tuple, tup_lam->dom(i), false);
     }));
     sca_lam->set(tup_lam->reduce(new_vars));
     tup2sca_[sca_lam] = sca_lam;
     tup2sca_.emplace(tup_lam, sca_lam);
-
+    world().DLOG("lambda {} : {} ~> {} : {}", tup_lam, tup_lam->type(), sca_lam, sca_lam->type());
     return sca_lam;
 }
 
 const Def* Scalerize::rewrite(const Def* def) {
-    if (auto [app, tup_lam] = isa_apped_nom_lam(def); isa_workable(tup_lam)) {
-        if (!should_expand(tup_lam)) return app;
+    auto& w = world();
+    if (auto app = def->isa<App>()) {
+        const Def* sca_callee = app->callee();
 
-        if (auto sca_lam = make_scalar(tup_lam); sca_lam != tup_lam) {
-            world().DLOG("lambda {} : {} ~> {} : {}", tup_lam, tup_lam->type(), sca_lam, sca_lam->type());
+        if (auto tup_lam = sca_callee->isa_nom<Lam>(); should_expand(tup_lam)) {
+            sca_callee = make_scalar(tup_lam);
+
+        } else if (auto proj = sca_callee->isa<Extract>()) {
+            auto tuple = proj->tuple()->isa<Tuple>();
+            if (tuple && std::all_of(tuple->ops().begin(), tuple->ops().end(),
+                                     [&](const Def* op) { return should_expand(op->isa_nom<Lam>()); })) {
+                auto new_tuple = w.tuple(DefArray(tuple->num_ops(), [&](auto i) { return make_scalar(tuple->op(i)); }));
+                sca_callee     = w.extract(new_tuple, proj->index());
+                w.DLOG("Expand tuple: {, } ~> {, }", tuple->ops(), new_tuple->ops());
+            }
+        }
+
+        if (sca_callee != app->callee()) {
             auto new_args = DefVec();
             flatten(new_args, app->arg(), false);
-
-            return world().app(sca_lam, new_args);
+            return world().app(sca_callee, new_args);
         }
     }
-
     return def;
+}
+
+PassTag* Scalerize::ID() {
+    static PassTag Key;
+    return &Key;
 }
 
 } // namespace thorin
