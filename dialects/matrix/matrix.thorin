@@ -117,6 +117,7 @@
 * - autoquantification / Variable environment
 * - powerful parser
 * - type inference ([m, k] above) if not already possible
+* - better error messages (:4294967295: error: symbol 'n' already declared in the current scope here: :4294967295)
 * other points:
 * - the parallel (mem free) version and the meta version (or the other way around)
 *   should be automatically derivable from the other version
