@@ -55,3 +55,10 @@ add_thorin_dialect(affine
     DEPENDS
         core
 )
+
+
+add_thorin_dialect(matrix
+    SOURCES
+    DEPENDS
+        core
+)
