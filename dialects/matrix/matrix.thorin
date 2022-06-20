@@ -83,6 +83,10 @@
 .ax %mat.zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%mat.Mat(n,S,P), %mat.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %mat.Mat(n,S,R), normalize_zip;
 // .ax %mat.parallel_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%mat.Mat n S P, %mat.Mat n S Q, f: .Cn [P, Q, .Cn [R] ] ] -> %mat.Mat n S R, normalize_parallel_zip;
 // .ax %mat.meta_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%mat.Mat n S P, %mat.Mat n S Q, f: P -> Q -> R ] -> %mat.Mat n S R, normalize_meta_zip;
+/// 
+/// ### %mat.reduce
+///
+.ax %mat.reduce:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%mat.Mat (n,S,T), accu: P, f: .Cn [%mem.M, P, T, .Cn [%mem.M, P] ] ] -> P, normalize_reduce;
 ///
 /// ### %mat.zero
 ///
@@ -95,6 +99,17 @@
 /// a constant matrix
 /// (currently: const i32 as bitfield)
 .ax %mat.const: Π [n: .Nat, S: «n; .Nat», T: *] -> T -> %mat.Mat (n,S,T);
+/// 
+/// ### %mat.transpose
+///
+/// transpose matrix
+.ax %mat.transpose: Π [k: .Nat, l: .Nat, T: *] -> %mat.Mat (2,(k,l),T) -> %mat.Mat (2,(l,k),T), normalize_tranpose;
+/// 
+/// 
+/// ### %mat.id
+///
+/// the idendity matrix
+.ax %mat.id: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %mat.Mat (n,S,(%Int m));
 /// 
 /// ### %mat.read
 ///
