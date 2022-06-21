@@ -162,7 +162,7 @@ static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a
         // if constexpr (std::is_same_v<AxTag, rcmp>)
         // return op(rcmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
         // else
-        return op(icmp(flags_t(icmp::base_) | res), a_cmp->arg(0), a_cmp->arg(1), dbg);
+        return op(icmp(flags_t(icmp::Axiom_Base) | res), a_cmp->arg(0), a_cmp->arg(1), dbg);
     }
 
     return nullptr;
