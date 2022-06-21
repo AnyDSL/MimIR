@@ -13,11 +13,13 @@
             (a, b)))
 };
 
-// CHECK-DAG: and_{{[0-9]+}}: Cn [i1, i1, Cn i1]: (_[[aId:[0-9]+]], _[[bId:[0-9]+]], _[[retId:[0-9]+]]) = {
-// CHECK-DAG: _[[cmpId:[0-9]+]]: i1 = %core.icmp.xYGle 2:nat (_[[aId]], _[[bId]]);
-// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] _[[cmpId]];
-// CHECK-DAG: λ@(0:i1) _[[appId]]
+// CHECK-DAG: .lam .extern and: .Cn [(%Int 2), (%Int 2), .Cn (%Int 2)]: (_[[aId:[0-9]+]], _[[bId:[0-9]+]], _[[retId:[0-9]+]]) = {
+// CHECK-DAG: 0:(%Int 2),
+// CHECK-DAG: .let _[[cmpId:[0-9]+]]: (%Int 2) = %core.icmp.xYGle 2:.Nat (_[[aId]], _[[bId]]);
+// CHECK-DAG: .let _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] _[[cmpId]];
+// CHECK-DAG: _[[appId]]
 
-// CHECK-DAG: _[[etaId]]: Cn i1: _[[etaVar:[0-9]+]] = {
-// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] @_[[etaVar]];
-// CHECK-DAG: λ@(0:i1) _[[appRetId]]
+// CHECK-DAG: .lam _[[etaId]]: .Cn (%Int 2): _[[etaVar:[0-9]+]] = {
+// CHECK-DAG: 0:(%Int 2),
+// CHECK-DAG: .let _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] @_[[etaVar]];
+// CHECK-DAG: _[[appRetId]]

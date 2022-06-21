@@ -30,25 +30,25 @@
 };
 
 
-// CHECK-DAG: main_{{[0-9]+}}: Cn [%mem.M, i32, %mem.Ptr (%mem.Ptr (i8, 0:nat), 0:nat), Cn [%mem.M, i32]]: (_[[memId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
-// CHECK-DAG: _[[appLoopId:[0-9]+]]: ⊥:★ = loop_[[loopId:[0-9]+]] (_[[memId]], 0:i32, 0:i32);
-// CHECK-DAG: λ@(0:i1) _[[appLoopId]]
+// CHECK-DAG: main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]]: (_[[memId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
+// CHECK-DAG: _[[appLoopId:[0-9]+]]: ⊥:★ = loop_[[loopId:[0-9]+]] (_[[memId]], 0:(%Int 4294967296), 0:(%Int 4294967296));
+// CHECK-DAG: _[[appLoopId]]
 
-// CHECK-DAG: _[[exitEtaId:[0-9]+]]: Cn [%mem.M, i32]: (_{{[0-9]+}}, _{{[0-9]+}}) = {
+// CHECK-DAG: _[[exitEtaId:[0-9]+]]: .Cn [%mem.M, (%Int 4294967296)]: (_{{[0-9]+}}, _{{[0-9]+}}) = {
 // CHECK-DAG:    _[[appReturnId:[0-9]+]]: ⊥:★ = _[[returnId]] @_[[exitEtaId]];
-// CHECK-DAG:    λ@(0:i1) _[[appReturnId:[0-9]+]]
+// CHECK-DAG:    _[[appReturnId:[0-9]+]]
 
-// CHECK-DAG: loop_[[loopId]]: Cn [%mem.M, i32, i32]: (_[[loopMemId:[0-9]+]], _[[iterId:[0-9]+]], _[[accId:[0-9]+]]) = {
-// CHECK-DAG: _[[condId:[0-9]+]]: i1 = %core.icmp.XygLe 4294967296:nat (_[[iterId]], _[[argcId]]);
+// CHECK-DAG: loop_[[loopId]]: .Cn [%mem.M, (%Int 4294967296), (%Int 4294967296)]: (_[[loopMemId:[0-9]+]], _[[iterId:[0-9]+]], _[[accId:[0-9]+]]) = {
+// CHECK-DAG: _[[condId:[0-9]+]]: (%Int 2) = %core.icmp.XygLe 4294967296:.Nat (_[[iterId]], _[[argcId]]);
 // CHECK-DAG: _[[appCondId:[0-9]+]]: ⊥:★ = (exit_[[exitId:[0-9]+]], body_[[bodyId:[0-9]+]])#_[[condId]] _[[loopMemId]];
-// CHECK-DAG: λ@(0:i1) _[[appCondId]]
+// CHECK-DAG: _[[appCondId]]
 
-// CHECK-DAG: exit_[[exitId]]: Cn %mem.M: exit_[[exitVarId:[0-9]+]] = {
+// CHECK-DAG: exit_[[exitId]]: .Cn %mem.M: exit_[[exitVarId:[0-9]+]] = {
 // CHECK-DAG: _[[appExitEtaId:[0-9]+]]: ⊥:★ = _[[exitEtaId]] (@exit_[[exitVarId]], _[[accId]]);
-// CHECK-DAG: λ@(0:i1) _[[appExitEtaId]]
+// CHECK-DAG: _[[appExitEtaId]]
 
-// CHECK-DAG: body_[[bodyId]]: Cn %mem.M: body_[[bodyVarId:[0-9]+]] = {
-// CHECK-DAG: _[[addIterId:[0-9]+]]: i32 = Wrap_add (0:nat, 4294967296:nat) (1:i32, _[[iterId]]);
-// CHECK-DAG: _[[addAccId:[0-9]+]]: i32 = Wrap_add (0:nat, 4294967296:nat) (_[[accId]], _[[iterId]]);
+// CHECK-DAG: body_[[bodyId]]: .Cn %mem.M: body_[[bodyVarId:[0-9]+]] = {
+// CHECK-DAG: _[[addIterId:[0-9]+]]: (%Int 4294967296) = %Wrap_add (0:.Nat, 4294967296:.Nat) (1:(%Int 4294967296), _[[iterId]]);
+// CHECK-DAG: _[[addAccId:[0-9]+]]: (%Int 4294967296) = %Wrap_add (0:.Nat, 4294967296:.Nat) (_[[accId]], _[[iterId]]);
 // CHECK-DAG: _[[appLoopIdBody:[0-9]+]]: ⊥:★ = loop_[[loopId]] (@body_[[bodyVarId]], _[[addIterId]], _[[addAccId]]);
-// CHECK-DAG: λ@(0:i1) _[[appLoopIdBody]]
+// CHECK-DAG: _[[appLoopIdBody]]

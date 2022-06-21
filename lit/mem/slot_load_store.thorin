@@ -17,10 +17,10 @@
     return load
 };
 
-// CHECK-DAG: main_[[mainId:[0-9]+]]: Cn [%mem.M, i32, %mem.Ptr («⊤:nat; %mem.Ptr («⊤:nat; i8», 0:nat)», 0:nat), Cn [%mem.M, i32]]: (_[[mainMemId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
+// CHECK-DAG: main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; (%Int 256)», 0:.Nat)», 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]]: (_[[mainMemId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
 // CHECK-DAG: _[[appExitId:[0-9]+]]: ⊥:★ = _[[exitId:[0-9]+]] (_[[mainMemId]], _[[argcId]]);
-// CHECK-DAG: λ@(0:i1) _[[appExitId]]
+// CHECK-DAG: _[[appExitId]]
 
-// CHECK-DAG: _[[exitId]]: Cn [%mem.M, i32]: (_{{[0-9]+}}, _{{[0-9]+}}) = {
+// CHECK-DAG: _[[exitId]]: .Cn [%mem.M, (%Int 4294967296)]: (_{{[0-9]+}}, _{{[0-9]+}}) = {
 // CHECK-DAG: _[[appReturnId:[0-9]+]]: ⊥:★ = _[[returnId]] @_[[exitId]];
-// CHECK-DAG: λ@(0:i1) _[[appReturnId]]
+// CHECK-DAG: _[[appReturnId]]

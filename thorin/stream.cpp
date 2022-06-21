@@ -2,6 +2,7 @@
 
 #include "thorin/analyses/deptree.h"
 #include "thorin/fe/tok.h"
+#include "thorin/util/assert.h"
 #include "thorin/util/container.h"
 
 namespace thorin {
@@ -80,19 +81,20 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
         auto level = as_lit(type->level()); // TODO other levels
         return print(os, level == 0 ? "★" : "□");
     } else if (u->isa<Nat>()) {
-        return print(os, "nat");
+        return print(os, ".Nat");
     } else if (auto bot = u->isa<Bot>()) {
         return print(os, "⊥:{}", bot->type());
     } else if (auto top = u->isa<Top>()) {
         return print(os, "⊤:{}", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
-        return print(os, "{}", axiom->debug().name);
+        const auto& name = axiom->debug().name;
+        return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
         if (auto real = thorin::isa<Tag::Real>(lit->type())) {
             switch (as_lit(real->arg())) {
-                case 16: return print(os, "{}:r16", lit->get<r16>());
-                case 32: return print(os, "{}:r32", lit->get<r32>());
-                case 64: return print(os, "{}:r64", lit->get<r64>());
+                case 16: return print(os, "{}:(%Real 16)", lit->get<r16>());
+                case 32: return print(os, "{}:(%Real 32)", lit->get<r32>());
+                case 64: return print(os, "{}:(%Real 64)", lit->get<r64>());
                 default: unreachable();
             }
         }
@@ -105,26 +107,16 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
         return print(os, "@{}", var->nom());
     } else if (auto pi = u->isa<Pi>()) {
         if (pi->is_cn()) {
-            return print(os, "Cn {}", pi->dom());
+            return print(os, ".Cn {}", pi->dom());
         } else {
             return print(os, "{} -> {}", pi->dom(), pi->codom());
         }
     } else if (auto lam = u->isa<Lam>()) {
-        return print(os, "λ@({}) {}", lam->filter(), lam->body());
+        return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
         if (auto size = isa_lit(isa_sized_type(app))) {
-            if (auto real = thorin::isa<Tag::Real>(app)) return print(os, "r{}", *size);
-            if (auto _int = thorin::isa<Tag::Int>(app)) {
-                if (auto width = mod2width(*size)) return print(os, "i{}", *width);
-
-                // append utf-8 subscripts in reverse order
-                std::string str;
-                for (size_t mod = *size; mod > 0; mod /= 10)
-                    ((str += char(char(0x80) + char(mod % 10))) += char(0x82)) += char(0xe2);
-                std::ranges::reverse(str);
-
-                return print(os, "i{}", str);
-            }
+            if (auto real = thorin::isa<Tag::Real>(app)) return print(os, "(%Real {})", *size);
+            if (auto _int = thorin::isa<Tag::Int>(app)) return print(os, "(%Int {})", *size);
             unreachable();
         }
         return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
@@ -158,7 +150,7 @@ public:
         : os(os)
         , max(max) {}
 
-    void run();
+    void run(const DepNode* node = nullptr);
     void run(const Def*);
 
     std::ostream& os;
@@ -188,13 +180,30 @@ void RecStreamer::run(const Def* def) {
     }
 }
 
-void RecStreamer::run() {
+void RecStreamer::run(const DepNode* node) {
     while (!noms.empty()) {
         auto nom = noms.pop();
         os << std::endl << std::endl;
 
+        auto id = [&](auto* def) {
+            if (def->is_external() || !def->is_set()) return def->name();
+            return def->unique_name();
+        };
+
+        auto nom_prefix = [&](const Def* def) {
+            if (def->isa<Lam>()) return ".lam";
+            if (def->isa<Sigma>()) return ".Sigma";
+            if (def->isa<Arr>()) return ".Arr";
+            if (auto pi = def->isa<Pi>()) {
+                if (pi->is_cn()) return ".Cn";
+                return ".Pi";
+            }
+
+            assert(false && "unknown nominal");
+        };
+
         if (nom->is_set()) {
-            tab.print(os, "{}: {}", nom->unique_name(), nom->type());
+            tab.print(os, "{} {}{}: {}", nom_prefix(nom), nom->is_external() ? ".extern " : "", id(nom), nom->type());
             if (nom->has_var()) {
                 auto e = nom->num_vars();
                 print(os, ": {}", e == 1 ? "" : "(");
@@ -203,11 +212,26 @@ void RecStreamer::run() {
             }
             print(os, " = {{");
             ++tab;
-            run(nom);
+
+            if (auto lam = nom->isa<Lam>()) {
+                run(lam->filter());
+                tab.print(os << std::endl, "{},", lam->filter());
+
+                if (node)
+                    for (auto child : node->children())
+                        if (auto nom = child->nom()) {
+                            noms.push(nom);
+                            run(child);
+                        }
+                run(lam->body());
+                tab.print(os << std::endl, "{}", lam->body());
+            } else
+                run(nom);
+
             --tab;
-            tab.print(os << std::endl, "}}");
+            tab.print(os << std::endl, "}};");
         } else {
-            tab.print(os, "{}: {} = {{ <unset> }}", nom->unique_name(), nom->type());
+            tab.print(os, "{}: {} = {{ <unset> }};", id(nom), nom->type());
         }
     }
 }
@@ -237,7 +261,7 @@ std::ostream& Def::stream(std::ostream& os, size_t max) const {
 }
 
 std::ostream& Def::let(std::ostream& os, Tab& tab) const {
-    return tab.print(os << std::endl, "{}: {} = {};", unique_name(), type(), Unwrap(this));
+    return tab.print(os << std::endl, ".let {}: {} = {};", unique_name(), type(), Unwrap(this));
 }
 
 //------------------------------------------------------------------------------
@@ -256,9 +280,9 @@ std::ostream& operator<<(std::ostream& os, const World& world) {
     DepTree dep(world);
 
     RecStreamer rec(os, 0);
-    print(os, "module {}", world.name());
+    for (auto& import : world.imported()) print(os, ".import {};\n", import);
 
-    world.stream(rec, dep.root()) << std::endl;
+    for (auto child : dep.root()->children()) world.stream(rec, child) << std::endl;
     // assert_unused(old_gid == curr_gid());
     return os;
 #else
@@ -275,15 +299,10 @@ std::ostream& operator<<(std::ostream& os, const World& world) {
 }
 
 std::ostream& World::stream(RecStreamer& rec, const DepNode* n) const {
-    ++rec.tab;
-
     if (auto nom = n->nom()) {
         rec.noms.push(nom);
-        rec.run();
+        rec.run(n);
     }
-
-    for (auto child : n->children()) stream(rec, child);
-    --rec.tab;
 
     return rec.os;
 }

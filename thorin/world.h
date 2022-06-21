@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <string>
+#include <string_view>
 
 #include "thorin/axiom.h"
 #include "thorin/config.h"
@@ -557,6 +558,9 @@ public:
     ErrorHandler* err() { return err_.get(); }
     ///@}
 
+    void add_imported(std::string_view name) { data_.imported_dialects_.emplace(name); }
+    const absl::flat_hash_set<std::string>& imported() const { return data_.imported_dialects_; }
+
     friend void swap(World& w1, World& w2) {
         using std::swap;
         // clang-format off
@@ -568,6 +572,7 @@ public:
         swap(w1.err_,      w2.err_);
         // clang-format on
 
+        swap(w1.data_.imported_dialects_, w2.data_.imported_dialects_);
         swap(w1.data_.univ_->world_, w2.data_.univ_->world_);
         assert(&w1.univ()->world() == &w1);
         assert(&w2.univ()->world() == &w2);
@@ -727,6 +732,7 @@ private:
         Externals externals_;
         Sea defs_;
         DefDefMap<DefArray> cache_;
+        absl::flat_hash_set<std::string> imported_dialects_;
     } data_;
 
     std::unique_ptr<Checker> checker_;

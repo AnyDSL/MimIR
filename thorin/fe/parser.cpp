@@ -80,9 +80,11 @@ Parser Parser::import_module(World& world,
 
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
 
-    // fixme: no normalizers?
     thorin::Parser parser(world, input_path, ifs, user_search_paths, normalizers);
     parser.parse_module();
+
+    world.add_imported(name);
+
     return parser;
 }
 
@@ -586,8 +588,16 @@ void Parser::parse_nom() {
     insert(sym, nom);
 
     push();
-    for (auto [sym, i] : binders) insert(sym, nom->var(i)); // TODO location
+    for (auto [sym, i] : binders) insert(sym, nom->var(i));
     if (external) nom->make_external();
+    binders.clear();
+    if (accept(Tok::Tag::T_colon)) {
+        size_t n = 0;
+        parse_list("variable of nominal", Tok::Tag::D_paren_l,
+                   [&]() { binders.emplace_back(parse_sym("variable element"), n++); });
+        assert(binders.size() == nom->num_vars());
+        for (auto [sym, i] : binders) insert(sym, nom->var(i, world().dbg(sym)));
+    }
     if (ahead().isa(Tok::Tag::T_assign))
         parse_def(sym);
     else
@@ -620,7 +630,6 @@ void Parser::parse_def(Sym sym /*= {}*/) {
         err(prev_, "expected operands for nominal definition");
     }
 
-    nom->dump(0);
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");
 }
 

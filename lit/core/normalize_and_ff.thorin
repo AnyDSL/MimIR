@@ -8,10 +8,12 @@
     return (%core.bit2._and 2 (i, .ff))
 };
 
-// CHECK-DAG: and_ff_{{[0-9]+}}: Cn [i1, Cn i1]: (_[[valId:[0-9]+]], _[[retId:[0-9]+]]) = {
-// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] 0:i1;
-// CHECK-DAG: λ@(0:i1) _[[appId]]
+// CHECK-DAG: .lam .extern and_ff: .Cn [(%Int 2), .Cn (%Int 2)]: (_[[valId:[0-9]+]], _[[retId:[0-9]+]]) = {
+// CHECK-DAG: 0:(%Int 2),
+// CHECK-DAG: .let _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] 0:(%Int 2);
+// CHECK-DAG: _[[appId]]
 
-// CHECK-DAG: _[[etaId]]: Cn i1: _[[etaVar:[0-9]+]] = {
-// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] @_[[etaVar]];
-// CHECK-DAG: λ@(0:i1) _[[appRetId]]
+// CHECK-DAG: .lam _[[etaId]]: .Cn (%Int 2): _[[etaVar:[0-9]+]] = {
+// CHECK-DAG: 0:(%Int 2),
+// CHECK-DAG: .let _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] @_[[etaVar]];
+// CHECK-DAG: _[[appRetId]]
