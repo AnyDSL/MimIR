@@ -12,10 +12,10 @@
     return (mem, argc)
 };
 
-// CHECK-DAG: main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]]: (_[[memId:[0-9]*]], _[[argcId:[0-9]*]], _{{[0-9]*}}, _[[returnId:[0-9]*]]) = {
+// CHECK-DAG: main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_[[memId:[0-9]*]], _[[argcId:[0-9]*]], _{{[0-9]*}}, _[[returnId:[0-9]*]]) = {
 // CHECK-DAG: _[[appId:[0-9]*]]: ⊥:★ = _[[returnEtaId:[0-9]*]] (_[[memId]], _[[argcId]]);
 // CHECK-DAG: _[[appId]]
 
-// CHECK-DAG: _[[returnEtaId]]: .Cn [%mem.M, (%Int 4294967296)]: (_{{[0-9]*}}, _{{[0-9]*}}) = {
+// CHECK-DAG: _[[returnEtaId]]: .Cn [%mem.M, (%Int 4294967296)], @(_{{[0-9]*}}, _{{[0-9]*}}) = {
 // CHECK-DAG: _[[retAppId:[0-9]*]]: ⊥:★ = _[[returnId]] @_[[returnEtaId]];
 // CHECK-DAG: _[[retAppId]]

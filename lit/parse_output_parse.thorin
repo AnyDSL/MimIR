@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -e thorin %s -e ll -o %t > %t.thorin && %thorin -e thorin %t.thorin -e ll -o %t | FileCheck %s
+// RUN: %thorin -e thorin %s > %t.thorin && %thorin -e thorin %t.thorin -e ll -o %t | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t ; test $? -eq 1
 // RUN: %t 1 2 3 ; test $? -eq 4
@@ -7,15 +7,19 @@
 
 .import mem;
 
-.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]]: (var0, var1, var2, var3) = {
+.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]], @(var0, var1, var2, var3) = {
     0: (%Int 2),
-    return (var0, argc)
+    .lam single_arg_parse_test: .Cn %mem.M, @mem = {
+        0: (%Int 2),
+        return (mem, argc)
+    };
+    single_arg_parse_test var0
 };
 
-// CHECK-DAG: .lam .extern main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]]: (_[[memId:[_0-9]*]], _[[argcId:[_0-9]*]], _{{[_0-9]*}}, _[[returnId:[_0-9]*]]) = {
+// CHECK-DAG: .lam .extern main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_[[memId:[_0-9]*]], _[[argcId:[_0-9]*]], _{{[_0-9]*}}, _[[returnId:[_0-9]*]]) = {
 // CHECK-DAG: _[[appId:[_0-9]*]]: ⊥:★ = _[[returnEtaId:[_0-9]*]] (_[[memId]], _[[argcId]]);
 // CHECK-DAG: _[[appId]]
 
-// CHECK-DAG: .lam _[[returnEtaId]]: .Cn [%mem.M, (%Int 4294967296)]: (_{{[_0-9]*}}, _{{[_0-9]*}}) = {
+// CHECK-DAG: .lam _[[returnEtaId]]: .Cn [%mem.M, (%Int 4294967296)], @(_{{[_0-9]*}}, _{{[_0-9]*}}) = {
 // CHECK-DAG: _[[retAppId:[_0-9]*]]: ⊥:★ = _[[returnId]] @_[[returnEtaId]];
 // CHECK-DAG: _[[retAppId]]

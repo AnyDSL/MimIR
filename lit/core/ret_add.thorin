@@ -29,10 +29,10 @@
     atoi (argv_load_a#.ff, argv_load_a#.tt, atoi_cont_a)
 };
 
-// CHECK-DAG: main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; (%Int 256)», 0:.Nat)», 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]]: (_[[memId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
+// CHECK-DAG: main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; (%Int 256)», 0:.Nat)», 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_[[memId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
 
-// CHECK-DAG: atoi_cont_a_[[aContId:[0-9]+]]: .Cn [%mem.M, (%Int 4294967296)]: (_{{[0-9]+}}, _[[aId:[0-9]+]])
+// CHECK-DAG: atoi_cont_a_[[aContId:[0-9]+]]: .Cn [%mem.M, (%Int 4294967296)], @(_{{[0-9]+}}, _[[aId:[0-9]+]])
 
-// CHECK-DAG: atoi_cont_b_[[bContId:[0-9]+]]: .Cn [%mem.M, (%Int 4294967296)]: (_{{[0-9]+}}, _[[bId:[0-9]+]])
+// CHECK-DAG: atoi_cont_b_[[bContId:[0-9]+]]: .Cn [%mem.M, (%Int 4294967296)], @(_{{[0-9]+}}, _[[bId:[0-9]+]])
 // CHECK-DAG: _[[wrapAdd:[0-9]+]]: (%Int 4294967296) = %core.wrap.add (0:.Nat, 4294967296:.Nat) (_[[aId]], _[[bId]]);
 // CHECK-DAG: _{{[0-9]+}}: ⊥:★ = _{{[0-9]+}} (_{{[0-9]+}}, _[[wrapAdd]]);

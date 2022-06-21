@@ -17,13 +17,13 @@
     return load
 };
 
-// CHECK-DAG: main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; (%Int 256)», 0:.Nat)», 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]]: (_[[mainMemId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
+// CHECK-DAG: .lam .extern main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; (%Int 256)», 0:.Nat)», 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_[[mainMemId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
 // CHECK-DAG: _[[appMSlotId:[0-9]+]]: [%mem.M, %mem.Ptr ((%Int 4294967296), 0:.Nat)] = %mem.mslot ((%Int 4294967296), 0:.Nat) (_[[mainMemId]], 4:.Nat, 0:.Nat);
 // CHECK-DAG: _[[appStoreId:[0-9]+]]: %mem.M = %mem.store ((%Int 4294967296), 0:.Nat) (_[[appMSlotId]]#0:(%Int 2), _[[appMSlotId]]#1:(%Int 2), _[[argcId]]);
 // CHECK-DAG: _[[appLoadId:[0-9]+]]: [%mem.M, (%Int 4294967296)] = %mem.load ((%Int 4294967296), 0:.Nat) (_[[appStoreId]], _[[appMSlotId]]#1:(%Int 2));
 // CHECK-DAG: _[[appExitId:[0-9]+]]: ⊥:★ = _[[exitId:[0-9]+]] _[[appLoadId]];
 // CHECK-DAG: _[[appExitId]]
 
-// CHECK-DAG: _[[exitId]]: .Cn [%mem.M, (%Int 4294967296)]: (_{{[0-9]+}}, _{{[0-9]+}}) = {
+// CHECK-DAG: .lam _[[exitId]]: .Cn [%mem.M, (%Int 4294967296)], @(_{{[0-9]+}}, _{{[0-9]+}}) = {
 // CHECK-DAG: _[[appReturnId:[0-9]+]]: ⊥:★ = _[[returnId]] @_[[exitId]];
 // CHECK-DAG: _[[appReturnId]]

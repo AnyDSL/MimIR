@@ -548,6 +548,17 @@ void Parser::parse_let() {
     eat(Tok::Tag::T_semicolon);
 }
 
+void Parser::parse_var_list(Binders& binders) {
+    expect(Tok::Tag::T_at, "variable of nominal");
+
+    size_t n = 0;
+    if (ahead().isa(Tok::Tag::D_paren_l))
+        parse_list("variable of nominal", Tok::Tag::D_paren_l,
+                   [&]() { binders.emplace_back(parse_sym("variable element"), n++); });
+    else
+        binders.emplace_back(parse_sym("variable of nominal"), n++);
+}
+
 void Parser::parse_nom() {
     auto track    = tracker();
     auto tag      = lex().tag();
@@ -590,11 +601,11 @@ void Parser::parse_nom() {
     push();
     for (auto [sym, i] : binders) insert(sym, nom->var(i));
     if (external) nom->make_external();
-    binders.clear();
-    if (accept(Tok::Tag::T_colon)) {
-        size_t n = 0;
-        parse_list("variable of nominal", Tok::Tag::D_paren_l,
-                   [&]() { binders.emplace_back(parse_sym("variable element"), n++); });
+
+    push();
+    if (accept(Tok::Tag::T_comma)) {
+        binders.clear();
+        parse_var_list(binders);
         assert(binders.size() == nom->num_vars());
         for (auto [sym, i] : binders) insert(sym, nom->var(i, world().dbg(sym)));
     }
@@ -602,6 +613,7 @@ void Parser::parse_nom() {
         parse_def(sym);
     else
         expect(Tok::Tag::T_semicolon, "end of a nominal");
+    pop();
     pop();
 }
 

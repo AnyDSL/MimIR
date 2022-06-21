@@ -103,7 +103,7 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
         return print(os, "{}#{}", ex->tuple(), ex->index());
     } else if (auto var = u->isa<Var>()) {
-        if (var->nom()->num_vars() == 1) return print(os, "@{}", var->unique_name());
+        if (var->nom()->num_vars() == 1) return print(os, "{}", var->unique_name());
         return print(os, "@{}", var->nom());
     } else if (auto pi = u->isa<Pi>()) {
         if (pi->is_cn()) {
@@ -194,6 +194,7 @@ void RecStreamer::run(const DepNode* node) {
             if (def->isa<Lam>()) return ".lam";
             if (def->isa<Sigma>()) return ".Sigma";
             if (def->isa<Arr>()) return ".Arr";
+            if (def->isa<Pack>()) return ".pack";
             if (auto pi = def->isa<Pi>()) {
                 if (pi->is_cn()) return ".Cn";
                 return ".Pi";
@@ -202,11 +203,22 @@ void RecStreamer::run(const DepNode* node) {
             assert(false && "unknown nominal");
         };
 
+        auto nom_op0 = [&](const Def* def) -> std::ostream& {
+            if (auto lam = def->isa<Lam>()) return os;
+            if (auto sig = def->isa<Sigma>()) return print(os, ", {}", sig->num_ops());
+            if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
+            if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
+            if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
+
+            assert(false && "unknown nominal");
+        };
+
         if (nom->is_set()) {
             tab.print(os, "{} {}{}: {}", nom_prefix(nom), nom->is_external() ? ".extern " : "", id(nom), nom->type());
+            nom_op0(nom);
             if (nom->has_var()) {
                 auto e = nom->num_vars();
-                print(os, ": {}", e == 1 ? "" : "(");
+                print(os, ", @{}", e == 1 ? "" : "(");
                 range(os, nom->vars(), [&](auto def) { os << def->unique_name(); });
                 if (e != 1) print(os, ")");
             }

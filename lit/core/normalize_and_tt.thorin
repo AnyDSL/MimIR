@@ -8,10 +8,10 @@
     return (%core.bit2._and 2 (i, .tt))
 };
 
-// CHECK-DAG: and_tt: .Cn [(%Int 2), .Cn (%Int 2)]: (_[[valId_tt:[0-9]+]], _[[retId_tt:[0-9]+]]) = {
+// CHECK-DAG: and_tt: .Cn [(%Int 2), .Cn (%Int 2)], @(_[[valId_tt:[0-9]+]], _[[retId_tt:[0-9]+]]) = {
 // CHECK-DAG: _[[appId_tt:[0-9]+]]: ⊥:★ = _[[etaId_tt:[0-9]+]] _[[valId_tt]];
 // CHECK-DAG: _[[appId_tt]]
 
-// CHECK-DAG: _[[etaId_tt]]: .Cn (%Int 2): _[[etaVar_tt:[0-9]+]] = {
-// CHECK-DAG: _[[appRetId_tt:[0-9]+]]: ⊥:★ = _[[retId_tt]] @_[[etaVar_tt]];
+// CHECK-DAG: _[[etaId_tt]]: .Cn (%Int 2), @_[[etaVar_tt:[0-9]+]] = {
+// CHECK-DAG: _[[appRetId_tt:[0-9]+]]: ⊥:★ = _[[retId_tt]] _[[etaVar_tt]];
 // CHECK-DAG: _[[appRetId_tt]]
