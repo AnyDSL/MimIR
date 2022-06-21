@@ -1,10 +1,10 @@
 var build_2dialects_2clos_8h =
 [
     [ "alloc_jmpbuf", "build_2dialects_2clos_8h.html#a0aabdb9a4da6e16afb462b4ce783fec8", [
-      [ "id_", "build_2dialects_2clos_8h.html#a0aabdb9a4da6e16afb462b4ce783fec8a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2clos_8h.html#a0aabdb9a4da6e16afb462b4ce783fec8a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "clos", "build_2dialects_2clos_8h.html#a4f790c1b00df9b8c0c241b5fb060c293", [
-      [ "base_", "build_2dialects_2clos_8h.html#a4f790c1b00df9b8c0c241b5fb060c293af90c909260ee9c593156ee37476f9992", null ],
+      [ "Axiom_Base", "build_2dialects_2clos_8h.html#a4f790c1b00df9b8c0c241b5fb060c293a7ffa3232741894dfa13074c69ef34d64", null ],
       [ "ret", "build_2dialects_2clos_8h.html#a4f790c1b00df9b8c0c241b5fb060c293a2cb9df9898e55fd0ad829dc202ddbd1c", null ],
       [ "freeBB", "build_2dialects_2clos_8h.html#a4f790c1b00df9b8c0c241b5fb060c293afe63353cdfb591c479c9e6076beccb55", null ],
       [ "fstclassBB", "build_2dialects_2clos_8h.html#a4f790c1b00df9b8c0c241b5fb060c293ae948e5de0a4b5744fd5517f9453e380e", null ],
@@ -12,10 +12,10 @@ var build_2dialects_2clos_8h =
       [ "bot", "build_2dialects_2clos_8h.html#a4f790c1b00df9b8c0c241b5fb060c293afabcaa97871555b68aa095335975e613", null ]
     ] ],
     [ "longjmp", "build_2dialects_2clos_8h.html#a6de5a72a27162097768c57a865741a3e", [
-      [ "id_", "build_2dialects_2clos_8h.html#a6de5a72a27162097768c57a865741a3ea4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2clos_8h.html#a6de5a72a27162097768c57a865741a3ea51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "setjmp", "build_2dialects_2clos_8h.html#a553c0b470a1ee42cdae9d1fd3006dec8", [
-      [ "id_", "build_2dialects_2clos_8h.html#a553c0b470a1ee42cdae9d1fd3006dec8a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2clos_8h.html#a553c0b470a1ee42cdae9d1fd3006dec8a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "operator&", "build_2dialects_2clos_8h.html#a9e9e6fec4c328de5334ef0f6bc4b291c", null ],
     [ "operator&", "build_2dialects_2clos_8h.html#ae35250513fe6f60169a197ecb96e62a2", null ],
@@ -37,5 +37,5 @@ var build_2dialects_2clos_8h =
     [ "operator|", "build_2dialects_2clos_8h.html#ae738023437c1b5f91e3d2c42096d7507", null ],
     [ "operator|", "build_2dialects_2clos_8h.html#ae9143e5aa5f920f23bd42fe2348c9a5d", null ],
     [ "operator|", "build_2dialects_2clos_8h.html#afe1c0c8d964034f1dac1e18819079a29", null ],
-    [ "id", "build_2dialects_2clos_8h.html#aab703336ce24ed1ec5043c9132bd6c81", null ]
+    [ "Dialect_Id", "build_2dialects_2clos_8h.html#a825f85d6f84051d8c57118e012949b8e", null ]
 ];

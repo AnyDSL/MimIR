@@ -5,34 +5,34 @@ var build_2dialects_2mem_8h =
     ] ],
     [ "THORIN_mem_NORMALIZER_IMPL", "build_2dialects_2mem_8h.html#aad05e4016c65ad57be606950cefa7140", null ],
     [ "alloc", "build_2dialects_2mem_8h.html#af4043e188d46c7390a04884c0785d51c", [
-      [ "id_", "build_2dialects_2mem_8h.html#af4043e188d46c7390a04884c0785d51ca4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2mem_8h.html#af4043e188d46c7390a04884c0785d51ca51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "lea", "build_2dialects_2mem_8h.html#ad2d2b99586c12a6da32e2aec650a018a", [
-      [ "id_", "build_2dialects_2mem_8h.html#ad2d2b99586c12a6da32e2aec650a018aa4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2mem_8h.html#ad2d2b99586c12a6da32e2aec650a018aa51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "load", "build_2dialects_2mem_8h.html#adb2bf49c45c2574f69f55e237f3f2e8f", [
-      [ "id_", "build_2dialects_2mem_8h.html#adb2bf49c45c2574f69f55e237f3f2e8fa4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2mem_8h.html#adb2bf49c45c2574f69f55e237f3f2e8fa51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "M", "build_2dialects_2mem_8h.html#abab7091b7bb05e14f8f9e7081981fb7c", [
-      [ "id_", "build_2dialects_2mem_8h.html#abab7091b7bb05e14f8f9e7081981fb7ca4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2mem_8h.html#abab7091b7bb05e14f8f9e7081981fb7ca51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "malloc", "build_2dialects_2mem_8h.html#a764c3127556982a3d401d60c743aac7a", [
-      [ "id_", "build_2dialects_2mem_8h.html#a764c3127556982a3d401d60c743aac7aa4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2mem_8h.html#a764c3127556982a3d401d60c743aac7aa51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "mslot", "build_2dialects_2mem_8h.html#a85840c980bb08ec14431b1f0eba6dd77", [
-      [ "id_", "build_2dialects_2mem_8h.html#a85840c980bb08ec14431b1f0eba6dd77a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2mem_8h.html#a85840c980bb08ec14431b1f0eba6dd77a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "Ptr", "build_2dialects_2mem_8h.html#a1e9242c771b97a95fe41b54fbe0385ab", [
-      [ "id_", "build_2dialects_2mem_8h.html#a1e9242c771b97a95fe41b54fbe0385aba4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2mem_8h.html#a1e9242c771b97a95fe41b54fbe0385aba51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "remem", "build_2dialects_2mem_8h.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14", [
-      [ "id_", "build_2dialects_2mem_8h.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2mem_8h.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "slot", "build_2dialects_2mem_8h.html#aaac8560242f619f5ac359bba09f7fd36", [
-      [ "id_", "build_2dialects_2mem_8h.html#aaac8560242f619f5ac359bba09f7fd36a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2mem_8h.html#aaac8560242f619f5ac359bba09f7fd36a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "store", "build_2dialects_2mem_8h.html#aedbbb7c918acd521287b625ed1ae1b42", [
-      [ "id_", "build_2dialects_2mem_8h.html#aedbbb7c918acd521287b625ed1ae1b42a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "build_2dialects_2mem_8h.html#aedbbb7c918acd521287b625ed1ae1b42a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "normalize_lea", "build_2dialects_2mem_8h.html#a1a7566d5229fac3c94f20b7d1ac8d19e", null ],
     [ "normalize_load", "build_2dialects_2mem_8h.html#a94bd5a1774a71fa1a79047d69451774f", null ],
@@ -89,5 +89,5 @@ var build_2dialects_2mem_8h =
     [ "operator|", "build_2dialects_2mem_8h.html#ad26f46af195423069b3f5ca43a0657a0", null ],
     [ "operator|", "build_2dialects_2mem_8h.html#a70388d83ce3090c37da54f6e105f5233", null ],
     [ "register_normalizers", "build_2dialects_2mem_8h.html#a18ce435a82c6dd1841de54648994d037", null ],
-    [ "id", "build_2dialects_2mem_8h.html#a519388b2bb3c8c8f650154e92188a684", null ]
+    [ "Dialect_Id", "build_2dialects_2mem_8h.html#a41b7439a65e69145a9f5f3a85b1d8501", null ]
 ];

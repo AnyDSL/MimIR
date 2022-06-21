@@ -172,12 +172,12 @@ $(document).ready(function(){initNavTree('axiom_8h_source.html',''); initResizab
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
 <div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> AxTag&gt;</div>
 <div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="conceptthorin_1_1axiom__with__sub__tags.html">   68</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptthorin_1_1axiom__with__sub__tags.html">axiom_with_sub_tags</a> = <span class="keyword">requires</span>(AxTag <a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">t</a>) {</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    AxTag::base_;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    AxTag::Axiom_Base;</div>
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>};</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span> </div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> AxTag&gt;</div>
 <div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="conceptthorin_1_1axiom__without__sub__tags.html">   73</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptthorin_1_1axiom__without__sub__tags.html">axiom_without_sub_tags</a> = <span class="keyword">requires</span>(AxTag <a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">t</a>) {</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    AxTag::id_;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    AxTag::Axiom_Id;</div>
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>};</div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> AxTag&gt;</div>
@@ -293,9 +293,9 @@ $(document).ready(function(){initNavTree('axiom_8h_source.html',''); initResizab
 <div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> AxTag&gt;</div>
 <div class="line"><a id="l00188" name="l00188"></a><span class="lineno"><a class="line" href="namespacethorin_1_1detail.html#a50ca9a05f008fef5575476e2a801ebde">  188</a></span><span class="keyword">constexpr</span> AxTag <a class="code hl_function" href="namespacethorin_1_1detail.html#a50ca9a05f008fef5575476e2a801ebde">base_value</a>() {</div>
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (<a class="code hl_concept" href="conceptthorin_1_1axiom__with__sub__tags.html">axiom_with_sub_tags&lt;AxTag&gt;</a>)</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keywordflow">return</span> AxTag::base_;</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keywordflow">return</span> AxTag::Axiom_Base;</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="keywordflow">return</span> AxTag::id_;</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="keywordflow">return</span> AxTag::Axiom_Id;</div>
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>}</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>} <span class="comment">// namespace detail</span></div>

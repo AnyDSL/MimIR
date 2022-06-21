@@ -9,10 +9,10 @@ var namespacethorin_1_1clos =
     [ "LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", "classthorin_1_1clos_1_1LowerTypedClos" ],
     [ "LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", "classthorin_1_1clos_1_1LowerTypedClosPrep" ],
     [ "alloc_jmpbuf", "namespacethorin_1_1clos.html#a0aabdb9a4da6e16afb462b4ce783fec8", [
-      [ "id_", "namespacethorin_1_1clos.html#a0aabdb9a4da6e16afb462b4ce783fec8a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1clos.html#a0aabdb9a4da6e16afb462b4ce783fec8a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "clos", "namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293", [
-      [ "base_", "namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293af90c909260ee9c593156ee37476f9992", null ],
+      [ "Axiom_Base", "namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293a7ffa3232741894dfa13074c69ef34d64", null ],
       [ "ret", "namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293a2cb9df9898e55fd0ad829dc202ddbd1c", null ],
       [ "freeBB", "namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293afe63353cdfb591c479c9e6076beccb55", null ],
       [ "fstclassBB", "namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293ae948e5de0a4b5744fd5517f9453e380e", null ],
@@ -20,10 +20,10 @@ var namespacethorin_1_1clos =
       [ "bot", "namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293afabcaa97871555b68aa095335975e613", null ]
     ] ],
     [ "longjmp", "namespacethorin_1_1clos.html#a6de5a72a27162097768c57a865741a3e", [
-      [ "id_", "namespacethorin_1_1clos.html#a6de5a72a27162097768c57a865741a3ea4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1clos.html#a6de5a72a27162097768c57a865741a3ea51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "setjmp", "namespacethorin_1_1clos.html#a553c0b470a1ee42cdae9d1fd3006dec8", [
-      [ "id_", "namespacethorin_1_1clos.html#a553c0b470a1ee42cdae9d1fd3006dec8a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1clos.html#a553c0b470a1ee42cdae9d1fd3006dec8a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "apply_closure", "namespacethorin_1_1clos.html#a676cb49692dec35b6c56629aa659e6f4", null ],
     [ "ca_isa_var", "namespacethorin_1_1clos.html#a8b6a405996c38f5dc227038dc5e5d480", null ],
@@ -86,5 +86,5 @@ var namespacethorin_1_1clos =
     [ "split", "namespacethorin_1_1clos.html#aafdf4d2b2ec100ee66f833b54786b3aa", null ],
     [ "split", "namespacethorin_1_1clos.html#a57ce28d98e5778910dba8acdb40f3d6b", null ],
     [ "Clos_Env_Param", "namespacethorin_1_1clos.html#aa51c929d191597a0ab8fc83963e41ecd", null ],
-    [ "id", "namespacethorin_1_1clos.html#aab703336ce24ed1ec5043c9132bd6c81", null ]
+    [ "Dialect_Id", "namespacethorin_1_1clos.html#a825f85d6f84051d8c57118e012949b8e", null ]
 ];

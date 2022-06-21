@@ -5,34 +5,34 @@ var namespacethorin_1_1mem =
     [ "RememElim", "classthorin_1_1mem_1_1RememElim.html", "classthorin_1_1mem_1_1RememElim" ],
     [ "SSAConstr", "classthorin_1_1mem_1_1SSAConstr.html", "classthorin_1_1mem_1_1SSAConstr" ],
     [ "alloc", "namespacethorin_1_1mem.html#af4043e188d46c7390a04884c0785d51c", [
-      [ "id_", "namespacethorin_1_1mem.html#af4043e188d46c7390a04884c0785d51ca4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1mem.html#af4043e188d46c7390a04884c0785d51ca51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "lea", "namespacethorin_1_1mem.html#ad2d2b99586c12a6da32e2aec650a018a", [
-      [ "id_", "namespacethorin_1_1mem.html#ad2d2b99586c12a6da32e2aec650a018aa4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1mem.html#ad2d2b99586c12a6da32e2aec650a018aa51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "load", "namespacethorin_1_1mem.html#adb2bf49c45c2574f69f55e237f3f2e8f", [
-      [ "id_", "namespacethorin_1_1mem.html#adb2bf49c45c2574f69f55e237f3f2e8fa4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1mem.html#adb2bf49c45c2574f69f55e237f3f2e8fa51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "M", "namespacethorin_1_1mem.html#abab7091b7bb05e14f8f9e7081981fb7c", [
-      [ "id_", "namespacethorin_1_1mem.html#abab7091b7bb05e14f8f9e7081981fb7ca4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1mem.html#abab7091b7bb05e14f8f9e7081981fb7ca51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "malloc", "namespacethorin_1_1mem.html#a764c3127556982a3d401d60c743aac7a", [
-      [ "id_", "namespacethorin_1_1mem.html#a764c3127556982a3d401d60c743aac7aa4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1mem.html#a764c3127556982a3d401d60c743aac7aa51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "mslot", "namespacethorin_1_1mem.html#a85840c980bb08ec14431b1f0eba6dd77", [
-      [ "id_", "namespacethorin_1_1mem.html#a85840c980bb08ec14431b1f0eba6dd77a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1mem.html#a85840c980bb08ec14431b1f0eba6dd77a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "Ptr", "namespacethorin_1_1mem.html#a1e9242c771b97a95fe41b54fbe0385ab", [
-      [ "id_", "namespacethorin_1_1mem.html#a1e9242c771b97a95fe41b54fbe0385aba4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1mem.html#a1e9242c771b97a95fe41b54fbe0385aba51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "remem", "namespacethorin_1_1mem.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14", [
-      [ "id_", "namespacethorin_1_1mem.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1mem.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "slot", "namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36", [
-      [ "id_", "namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "store", "namespacethorin_1_1mem.html#aedbbb7c918acd521287b625ed1ae1b42", [
-      [ "id_", "namespacethorin_1_1mem.html#aedbbb7c918acd521287b625ed1ae1b42a4c48644347196b5a640c3aabbc95d417", null ]
+      [ "Axiom_Id", "namespacethorin_1_1mem.html#aedbbb7c918acd521287b625ed1ae1b42a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "cn_mem", "namespacethorin_1_1mem.html#a78cb16387598937dff28f6f27d697194", null ],
     [ "cn_mem_ret", "namespacethorin_1_1mem.html#a0c7645945c1ea0b9eb35024eb9cddc3e", null ],
@@ -111,5 +111,5 @@ var namespacethorin_1_1mem =
     [ "type_ptr", "namespacethorin_1_1mem.html#a0e289bc9b1881b62334ac3a361e182cb", null ],
     [ "type_ptr", "namespacethorin_1_1mem.html#a90ffbd2492b54f725dcc64e46dd52c1f", null ],
     [ "type_ptr", "namespacethorin_1_1mem.html#a538c585266aeecfe400ba79cd77145ea", null ],
-    [ "id", "namespacethorin_1_1mem.html#a519388b2bb3c8c8f650154e92188a684", null ]
+    [ "Dialect_Id", "namespacethorin_1_1mem.html#a41b7439a65e69145a9f5f3a85b1d8501", null ]
 ];
