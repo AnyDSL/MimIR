@@ -185,8 +185,8 @@ void RecStreamer::run(const DepNode* node) {
         auto nom = noms.pop();
         os << std::endl << std::endl;
 
-        auto id = [&](auto* def) {
-            if (def->is_external() || !def->is_set()) return def->name();
+        auto id = [&](const Def* def) {
+            if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name();
             return def->unique_name();
         };
 
@@ -195,16 +195,13 @@ void RecStreamer::run(const DepNode* node) {
             if (def->isa<Sigma>()) return ".Sigma";
             if (def->isa<Arr>()) return ".Arr";
             if (def->isa<Pack>()) return ".pack";
-            if (auto pi = def->isa<Pi>()) {
-                if (pi->is_cn()) return ".Cn";
-                return ".Pi";
-            }
+            if (def->isa<Pi>()) return ".Pi";
 
             assert(false && "unknown nominal");
         };
 
         auto nom_op0 = [&](const Def* def) -> std::ostream& {
-            if (auto lam = def->isa<Lam>()) return os;
+            if (def->isa<Lam>()) return os;
             if (auto sig = def->isa<Sigma>()) return print(os, ", {}", sig->num_ops());
             if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
             if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
