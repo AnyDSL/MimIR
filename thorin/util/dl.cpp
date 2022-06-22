@@ -23,8 +23,6 @@ std::string_view prefix() {
 std::string_view extension() {
 #ifdef _WIN32
     return ".dll";
-#elif defined(__APPLE__)
-    return ".dylib";
 #else
     return ".so";
 #endif

@@ -12,8 +12,7 @@ void DomFrontierBase<forward>::create() {
         if (preds.size() > 1) {
             auto idom = domtree.idom(n);
             for (auto pred : preds) {
-                for (auto i = pred; i != idom; i = domtree.idom(i))
-                    link(i, n);
+                for (auto i = pred; i != idom; i = domtree.idom(i)) link(i, n);
             }
         }
     }
@@ -22,4 +21,4 @@ void DomFrontierBase<forward>::create() {
 template class DomFrontierBase<true>;
 template class DomFrontierBase<false>;
 
-}
+} // namespace thorin

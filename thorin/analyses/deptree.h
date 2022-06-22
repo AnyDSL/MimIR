@@ -21,7 +21,7 @@ public:
 private:
     DepNode* set_parent(DepNode* parent) {
         parent_ = parent;
-        depth_ = parent->depth() + 1;
+        depth_  = parent->depth() + 1;
         parent->children_.emplace_back(this);
         return this;
     }
@@ -60,6 +60,6 @@ private:
     std::deque<DepNode*> stack_;
 };
 
-}
+} // namespace thorin
 
 #endif

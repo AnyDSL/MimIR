@@ -6,7 +6,7 @@
 #include "thorin/error.h"
 #include "thorin/world.h"
 
-#include "thorin/be/ll/ll.h"
+// #include "thorin/be/ll/ll.h"
 #include "thorin/util/sys.h"
 
 #include "helpers.h"
@@ -70,25 +70,6 @@ TEST(World, dependent_extract) {
     ASSERT_EQ(a->proj(2, 1)->type(), a->proj(2, 0_u64)); // type_of(a#1_2) == a#0_1
 }
 
-TEST(Main, ll) {
-    World w;
-    auto mem_t  = w.type_mem();
-    auto i32_t  = w.type_int_width(32);
-    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
-
-    // Cn [mem, i32, Cn [mem, i32]]
-    auto main_t                 = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
-    auto main                   = w.nom_lam(main_t, w.dbg("main"));
-    auto [mem, argc, argv, ret] = main->vars<4>();
-    main->app(false, ret, {mem, argc});
-    main->make_external();
-
-    auto name = gtest::test_name();
-    EXPECT_EQ(0, ll::compile(w, name));
-    EXPECT_EQ(4, sys::run(name, "a b c"));
-    EXPECT_EQ(7, sys::run(name, "a b c d e f"));
-}
-
 TEST(Axiom, mangle) {
     EXPECT_EQ(Axiom::demangle(*Axiom::mangle("test")), "test");
     EXPECT_EQ(Axiom::demangle(*Axiom::mangle("azAZ09_")), "azAZ09_");
@@ -105,52 +86,4 @@ TEST(Axiom, split) {
     EXPECT_EQ(dialect, "foo");
     EXPECT_EQ(group, "bar");
     EXPECT_EQ(tag, "baz");
-}
-
-TEST(Main, loop) {
-    World w;
-    auto mem_t  = w.type_mem();
-    auto i32_t  = w.type_int_width(32);
-    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
-    auto i32_w  = w.lit_nat(width2mod(32));
-
-    // Cn [mem, i32, i32**, Cn [mem, i32]]
-    auto main_t                 = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t}, w.dbg("return"))});
-    auto main                   = w.nom_lam(main_t, w.dbg("main"));
-    auto [mem, argc, argv, ret] = main->vars<4>();
-
-    auto body_t = w.cn(mem_t);
-
-    auto lt     = w.fn(ICmp::ul, i32_w);
-    auto loop_t = w.cn({mem_t, i32_t, i32_t});
-    auto loop   = w.nom_lam(loop_t, w.dbg("loop"));
-
-    auto body = w.nom_lam(body_t, w.dbg("body"));
-    auto exit = w.nom_lam(body_t, w.dbg("exit"));
-
-    {
-        auto [lMem, iterVar, accumulator] = loop->vars<3>();
-        loop->app(false, w.select(body, exit, w.app(lt, {iterVar, argc})), lMem);
-    }
-
-    auto add = w.fn(Wrap::add, w.lit_nat(0), i32_w);
-    {
-        auto [lMem, iterVar, accumulator] = loop->vars<3>();
-
-        auto accumAdd = w.app(add, {iterVar, accumulator});
-        auto iterInc  = w.app(add, {iterVar, w.lit_int(1)});
-        body->app(false, loop, {lMem, iterInc, accumAdd});
-    }
-    {
-        auto [lMem, iterVar, accumulator] = loop->vars<3>();
-        exit->app(false, main->var(3), {main->var(0, nullptr), accumulator});
-    }
-
-    main->app(false, loop, {mem, w.lit_int(0), w.lit_int(0)});
-    main->make_external();
-
-    auto name = gtest::test_name();
-    EXPECT_EQ(0, ll::compile(w, name));
-    EXPECT_EQ(6, sys::run(name, "a b c"));
-    EXPECT_EQ(10, sys::run(name, "a b c d"));
 }

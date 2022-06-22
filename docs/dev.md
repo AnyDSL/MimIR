@@ -9,9 +9,15 @@ This guide summaries typicical idioms you want to use when working with Thorin a
 Here is a small example that first constructs a `main` function and simply returns the `argc`:
 ```cpp
     World w;
-    auto mem_t  = w.type_mem();
+    
+    auto mem_d = Dialect::load("mem", {});
+    Normalizers normalizers;
+    mem_d.register_normalizers(normalizers);
+    Parser::import_module(w, "mem", {}, &normalizers);
+
+    auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int_width(32);
-    auto argv_t = w.type_ptr(w.type_ptr(i32_t));
+    auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
 
     // Cn [mem, i32, Cn [mem, i32]]
     auto main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});
@@ -20,9 +26,17 @@ Here is a small example that first constructs a `main` function and simply retur
     main->app(ret, {mem, argc});
     main->make_external();
 
+    PipelineBuilder builder;
+    mem_d.register_passes(builder);
+    optimize(w, builder);
+
+    auto core_d = Dialect::load("core", {});
+    Backends backends;
+    core_d.register_backends(backends);
+
     std::ofstream file("test.ll");
     Stream s(file);
-    ll::emit(w, s);
+    backends["ll"](w, std::cout);
     file.close();
 
     std::system("clang test.ll -o test");

@@ -1,6 +1,9 @@
 #ifndef THORIN_FE_PARSER_H
 #define THORIN_FE_PARSER_H
 
+#include <filesystem>
+
+#include "thorin/dialects.h"
 #include "thorin/world.h"
 
 #include "thorin/be/h/h.h"
@@ -30,11 +33,19 @@ class Parser {
 public:
     using Binders = std::deque<std::pair<Sym, size_t>>;
 
-    Parser(World&, std::string_view, std::istream&, std::ostream* md = nullptr);
+    Parser(World&,
+           std::string_view,
+           std::istream&,
+           ArrayRef<std::string>,
+           const Normalizers*,
+           std::ostream* md = nullptr);
 
     World& world() { return lexer_.world(); }
     void parse_module();
     void bootstrap(std::ostream&);
+
+    static Parser
+    import_module(World&, std::string_view, ArrayRef<std::string> = {}, const Normalizers* normalizers = nullptr);
 
 private:
     /// @name Tracker
@@ -49,7 +60,8 @@ private:
         Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
         operator const Def*() const { return parser_.world().dbg({"", loc()}); }
         const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
-        const Def* named(Sym sym) const { return parser_.world().dbg({sym, loc()}); }
+        const Def* named(Sym sym) const { return parser_.world().dbg({sym.to_string(), loc()}); }
+        const Def* named(const std::string& str) const { return parser_.world().dbg({str, loc()}); }
 
     private:
         Parser& parser_;
@@ -176,13 +188,19 @@ private:
 
         if (auto [i, ins] = scopes_.back().emplace(sym, def); !ins) {
             auto curr = sym.loc();
-            auto prev = i->first.loc();
+            auto prev = i->first.to_loc();
             thorin::err<ScopeError>(curr, "symbol '{}' already declared in the current scope here: {}", sym, prev);
         }
     }
     ///@}
 
-    Parser(World&, std::string_view, std::istream&, const std::deque<Parser::Scope>&, const SymSet&);
+    Parser(World&,
+           std::string_view,
+           std::istream&,
+           ArrayRef<std::string>,
+           const Normalizers*,
+           const std::deque<Parser::Scope>&,
+           const SymSet&);
 
     Lexer lexer_;
     Loc prev_;
@@ -191,8 +209,10 @@ private:
     std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
     std::deque<Scope> scopes_;
     SymSet imported_;
-    const Def* anonymous_;
+    Sym anonymous_;
     h::Bootstrapper bootstrapper_;
+    std::vector<std::string> user_search_paths_;
+    const Normalizers* normalizers_;
 };
 
 } // namespace thorin

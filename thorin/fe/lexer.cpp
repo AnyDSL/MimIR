@@ -33,7 +33,11 @@ Tok Lexer::lex() {
         loc_.begin = ahead().pos;
         str_.clear();
 
+#if defined(_WIN32) && !defined(NDEBUG) // isspace asserts otherwise
+        if (accept_if([](int c) { return (c & ~0xFF) == 0 ? isspace(c) : false; })) continue;
+#else
         if (accept_if(isspace)) continue;
+#endif
         if (accept(utf8::Err)) err(loc_, "invalid UTF-8 character");
         if (accept(utf8::EoF)) return tok(Tok::Tag::M_eof);
 
@@ -83,7 +87,7 @@ Tok Lexer::lex() {
         // clang-format on
 
         if (accept('%')) {
-            if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_, world_.dbg(loc()))};
+            if (lex_id()) return {loc(), Tok::Tag::M_ax, world_.sym(str_, loc())};
             err(loc_, "invalid axiom name '{}'", str_);
         }
 
@@ -103,7 +107,7 @@ Tok Lexer::lex() {
             return tok(Tok::Tag::T_dot);
         }
 
-        if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_, world_.dbg(loc()))};
+        if (lex_id()) return {loc(), Tok::Tag::M_id, world_.sym(str_, loc())};
 
         if (isdigit(ahead()) || issign(ahead())) {
             if (auto lit = parse_lit()) return *lit;

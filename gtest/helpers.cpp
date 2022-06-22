@@ -10,4 +10,4 @@ std::string test_name() {
     return s;
 }
 
-}
+} // namespace thorin::gtest

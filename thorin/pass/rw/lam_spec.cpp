@@ -71,4 +71,9 @@ const Def* LamSpec::rewrite(const Def* def) {
     return old2new_[def] = world().app(new_lam, new_args);
 }
 
+PassTag* LamSpec::ID() {
+    static PassTag Key;
+    return &Key;
+}
+
 } // namespace thorin

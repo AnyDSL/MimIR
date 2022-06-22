@@ -1,5 +1,5 @@
 #if 0
-#include "thorin/pass/rw/bound_elim.h"
+#    include "thorin/pass/rw/bound_elim.h"
 
 namespace thorin {
 
@@ -64,5 +64,6 @@ const Def* BoundElim::rewrite(const Def* def) {
     return def;
 }
 
+PassTag* BoundElim::ID() { static PassTag Key; return &Key; }
 }
 #endif

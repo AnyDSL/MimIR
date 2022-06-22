@@ -2,14 +2,14 @@
 
 #include "thorin/lam.h"
 #include "thorin/world.h"
+
 #include "thorin/util/container.h"
 
 namespace thorin {
 
 size_t Bound::find(const Def* type) const {
-    auto i = isa_nom()
-        ? std::  find(ops().begin(), ops().end(), type)
-        : binary_find(ops().begin(), ops().end(), type, GIDLt<const Def*>());
+    auto i = isa_nom() ? std::find(ops().begin(), ops().end(), type)
+                       : binary_find(ops().begin(), ops().end(), type, GIDLt<const Def*>());
     return i == ops().end() ? size_t(-1) : i - ops().begin();
 }
 
@@ -26,11 +26,11 @@ const Sigma* TBound<up>::convert() const {
 
         for (auto op : ops()) {
             auto a = isa_lit(w.op(Trait::align, op));
-            auto s = isa_lit(w.op(Trait::size , op));
+            auto s = isa_lit(w.op(Trait::size, op));
             if (!a || !s) return nullptr;
 
             align = std::max(align, *a);
-            size  = std::max(size , *s);
+            size  = std::max(size, *s);
         }
 
         assert(size % align == 0);
@@ -43,6 +43,6 @@ const Sigma* TBound<up>::convert() const {
 }
 
 template const Sigma* TBound<false>::convert() const;
-template const Sigma* TBound<true >::convert() const;
+template const Sigma* TBound<true>::convert() const;
 
-}
+} // namespace thorin
