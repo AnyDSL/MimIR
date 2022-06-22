@@ -130,7 +130,7 @@ The following tables comprise all production rules:
 | d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  |            | nominal pack declaration       | thorin::Pack  |
 | d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n |            | nominal sigma declaration      | thorin::Sigma |
 | d           | `.def` Sym n                                                      |            | nominal definition             | nominals      |
-| v           | `:` Sym \| `(` Sym `,` ... `,` Sym `)`                            |            | nominal variable declaration   | nominals      |
+| v           | `,` `@` Sym \| `,` `@` `(` Sym `,` ... `,` Sym `)`                |            | nominal variable declaration   | nominals      |
 | n           | `;` \| o                                                          |            | nominal definition             | -             |
 | o           | `=` e `;`                                                         |            | operand of nominal definition  | -             |
 | o           | `=` `{` e `,` ... `,` e  `}` `;`                                  | ✓          | operands of nominal definition | -             |
