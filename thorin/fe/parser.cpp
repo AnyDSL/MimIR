@@ -270,7 +270,7 @@ const Def* Parser::parse_arr() {
     expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
     pop();
 
-    if (arr) return arr->set_body(body);
+    if (arr) return arr->set_body(body)->set_type(body->inf_type());
     return world().arr(shape, body, track);
 }
 
@@ -403,7 +403,9 @@ const Def* Parser::parse_pi() {
     for (auto [sym, i] : binders) insert(sym, pi->var(i)); // TODO location
 
     expect(Tok::Tag::T_arrow, "dependent function type");
-    pi->set_codom(parse_expr("codomain of a dependent function type", Tok::Prec::Arrow));
+    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
+    pi->set_codom(codom);
+    pi->set_type(codom->inf_type());
     pi->set_dbg(track);
     pop();
     return pi;
