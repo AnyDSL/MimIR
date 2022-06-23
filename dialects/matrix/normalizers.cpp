@@ -8,16 +8,15 @@ namespace thorin::matrix {
 
 const Def* normalize_read(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world                = type->world();
-    return thorin::mem::type_mem(world);
-    // TODO: read(constMat a)=a
+    auto [mat, index]          = arg->projs<2>();
 
-    // auto [ptr, index]          = arg->projs<2>();
-    // auto [pointee, addr_space] = match<Ptr, false>(ptr->type())->args<2>();
+    // read(constMat a)=a
+    if(auto constMat = isa<constMat>(mat)) {
+        auto v = constMat->arg();
+        return v;
+    }
 
-    // if (auto a = isa_lit(pointee->arity()); a && *a == 1) return ptr;
-    // // TODO
-
-    // return world.raw_app(callee, {ptr, index}, dbg);
+    return world.raw_app(callee, arg, dbg);
 }
 
 
