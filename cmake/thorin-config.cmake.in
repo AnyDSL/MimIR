@@ -1,0 +1,8 @@
+@PACKAGE_INIT@
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+
+include(../absl/abslConfig)
+include(thorin-targets)
+set(THORIN_TARGET_NAMESPACE "thorin::")
+include(Thorin)

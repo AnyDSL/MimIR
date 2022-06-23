@@ -14,6 +14,7 @@ add_thorin_dialect(mem
         mem/mem.cpp
         mem/mem.h
         mem/normalizers.cpp
+    INSTALL
 )
 
 add_thorin_dialect(clos
@@ -32,6 +33,7 @@ add_thorin_dialect(clos
         clos/lower_typed_clos.cpp
     DEPENDS
         mem
+    INSTALL
 )
 
 add_thorin_dialect(core
@@ -44,6 +46,7 @@ add_thorin_dialect(core
     DEPENDS
         mem
         clos
+    INSTALL
 )
 
 add_thorin_dialect(affine
@@ -54,4 +57,5 @@ add_thorin_dialect(affine
         affine/passes/lower_for.h
     DEPENDS
         core
+    INSTALL
 )

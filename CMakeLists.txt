@@ -48,13 +48,14 @@ include(CTest)
 if(BUILD_TESTING AND THORIN_BUILD_TESTING)
     include(GoogleTest)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    add_subdirectory(modules/googletest)
+    add_subdirectory(modules/googletest EXCLUDE_FROM_ALL)
 endif()
 
 set(ABSL_PROPAGATE_CXX_STD ON)
 set(ABSL_USE_EXTERNAL_GOOGLETEST ON)
+set(ABSL_ENABLE_INSTALL ON)
 add_subdirectory(modules/abseil-cpp)
-add_subdirectory(modules/lyra)
+add_subdirectory(modules/lyra EXCLUDE_FROM_ALL)
 
 add_subdirectory(thorin)
 add_subdirectory(cli)
@@ -71,3 +72,28 @@ if(THORIN_BUILD_DOCS)
         add_subdirectory(docs)
     endif()
 endif()
+
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+  "${PROJECT_BINARY_DIR}/thorin-config-version.cmake"
+  VERSION ${Thorin_VERSION}
+  COMPATIBILITY SameMajorVersion
+)
+
+set(THORIN_CMAKE_INSTALL_DIR lib/cmake/thorin)
+
+install(FILES cmake/Thorin.cmake DESTINATION ${THORIN_CMAKE_INSTALL_DIR})
+install(EXPORT install_exports FILE "thorin-targets.cmake" NAMESPACE thorin:: DESTINATION ${THORIN_CMAKE_INSTALL_DIR})
+
+configure_package_config_file(
+    ${PROJECT_SOURCE_DIR}/cmake/thorin-config.cmake.in
+    ${PROJECT_BINARY_DIR}/thorin-config.cmake
+    INSTALL_DESTINATION ${THORIN_CMAKE_INSTALL_DIR}
+)
+
+install(FILES
+  ${PROJECT_BINARY_DIR}/thorin-config.cmake
+  ${PROJECT_BINARY_DIR}/thorin-config-version.cmake
+  DESTINATION ${THORIN_CMAKE_INSTALL_DIR}
+)
