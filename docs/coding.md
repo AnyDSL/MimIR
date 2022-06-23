@@ -88,7 +88,7 @@ In VS Code you can do so by adding the following to the `launch.json` configurat
 
 # Third-Party Dialects
 
-After [installing](@ref install), third-party dialects just need to find the `thorin` package:
+After installing Thorin, third-party dialects just need to find the `thorin` package:
 ```cmake
 cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
 project(dialect)
@@ -101,4 +101,8 @@ add_thorin_dialect(dialect
         dialect/dialect.cpp
 )
 ```
-Use `cmake .. -Dthorin_DIR=<THORIN_INSTALL_PREFIX>/lib/cmake/thorin` to configure the project.
+Use
+```cmake
+cmake .. -Dthorin_DIR=<THORIN_INSTALL_PREFIX>/lib/cmake/thorin
+```
+to configure the project.

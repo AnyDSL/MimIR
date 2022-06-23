@@ -72,9 +72,9 @@ cmake --build build -j $(nproc)
 ```
 For a `Release` build simply use `-DCMAKE_BUILD_TYPE=Release`.
 
-### Install {#install}
+### Install
 
-If you want to install Thorin specify an install prefix and build the target `install`:
+If you want to install Thorin, specify an install prefix and build the target `install`:
 ```sh
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix
 cmake --build build -j $(nproc) -t install
