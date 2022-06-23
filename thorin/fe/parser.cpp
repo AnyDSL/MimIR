@@ -185,6 +185,23 @@ const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     return world().extract(lhs, rhs, track);
 }
 
+
+const Def* Parser::parse_insert() {
+    eat(Tok::Tag::K_ins);
+    auto track = tracker();
+    
+    expect(Tok::Tag::D_paren_l, "opening paren for insert arguments");
+
+    auto target = parse_expr("insert target");
+    expect(Tok::Tag::T_comma, "comma after insert target");
+    auto index = parse_expr("insert index");
+    expect(Tok::Tag::T_comma, "comma after insert index");
+    auto value = parse_expr("insert value");
+    expect(Tok::Tag::D_paren_r, "closing paren for insert arguments");
+
+    return world().insert(target, index, value, track);
+}
+
 const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
     // clang-format off
     switch (ahead().tag()) {
@@ -212,6 +229,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
         case Tok::Tag::L_r:         return parse_lit();
         case Tok::Tag::M_id:        return find(parse_sym());
         case Tok::Tag::M_i:         return lex().index();
+        case Tok::Tag::K_ins:       return parse_insert();
         case Tok::Tag::M_ax: {
             // HACK hard-coded some built-in axioms
             auto tok = lex();
