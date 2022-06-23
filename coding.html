@@ -164,7 +164,7 @@ VS Code</h2>
 <div class="line">&quot;showDisplayString&quot;: true,</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md8"></a>
 Third-Party Dialects</h1>
-<p >After <a class="el" href="index.html#install">installing</a>, third-party dialects just need to find the <code>thorin</code> package: </p><div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20 FATAL_ERROR)</div>
+<p >After installing Thorin, third-party dialects just need to find the <code>thorin</code> package: </p><div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20 FATAL_ERROR)</div>
 <div class="line">project(dialect)</div>
 <div class="line"> </div>
 <div class="line">find_package(thorin)</div>
@@ -174,7 +174,8 @@ Third-Party Dialects</h1>
 <div class="line">        dialect/dialect.h</div>
 <div class="line">        dialect/dialect.cpp</div>
 <div class="line">)</div>
-</div><!-- fragment --><p> Use <code>cmake .. -Dthorin_DIR=&lt;THORIN_INSTALL_PREFIX&gt;/lib/cmake/thorin</code> to configure the project. </p>
+</div><!-- fragment --><p> Use </p><div class="fragment"><div class="line">cmake .. -Dthorin_DIR=&lt;THORIN_INSTALL_PREFIX&gt;/lib/cmake/thorin</div>
+</div><!-- fragment --><p> to configure the project. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
