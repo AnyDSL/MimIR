@@ -85,3 +85,20 @@ In VS Code you can do so by adding the following to the `launch.json` configurat
 "visualizerFile": "${workspaceFolder}/thorin.natvis",
 "showDisplayString": true,
 ```
+
+# Third-Party Dialects
+
+After [installing](@ref install), third-party dialects just need to find the `thorin` package:
+```cmake
+cmake_minimum_required(VERSION 3.20 FATAL_ERROR)
+project(dialect)
+
+find_package(thorin)
+
+add_thorin_dialect(dialect
+    SOURCES
+        dialect/dialect.h
+        dialect/dialect.cpp
+)
+```
+Use `cmake .. -Dthorin_DIR=<THORIN_INSTALL_PREFIX>/lib/cmake/thorin` to configure the project.
