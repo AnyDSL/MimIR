@@ -44,14 +44,14 @@
 ///
 /// normalization rules: 
 /// * resolve shape calls at construction by replacing them with the size argument
-.ax %mat.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [%mat.Mat (n,S,T), i: %Int n] -> T, normalize_shape;
+// .ax %mat.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [%mat.Mat (n,S,T), i: %Int n] -> T, normalize_shape;
 ///
 /// ### %mat.prod
 ///
 /// matrix product
 /// takes a m*k matrix, a k*l matrix and returns the product, a m*l matrix
 /// only defined on two-dimensional matrices
-.ax %mat.prod:  Π [m: .Nat, k: .Nat, l: .Nat, T: *] -> [%mat.Mat (2,(m, k),T), %mat.Mat (2,(k, l),T)] -> %mat.Mat (2,(m, l),T), normalize_prod;
+// .ax %mat.prod:  Π [m: .Nat, k: .Nat, l: .Nat, T: *] -> [%mat.Mat (2,(m, k),T), %mat.Mat (2,(k, l),T)] -> %mat.Mat (2,(m, l),T), normalize_prod;
 /// 
 /// ### %mat.map
 ///
@@ -64,7 +64,7 @@
 /// - map on constant matrix
 /// - parallel map without effect
 /// - map combination
-.ax %mat.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%mat.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %mat.Mat (n,S,P), normalize_map;
+// .ax %mat.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%mat.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %mat.Mat (n,S,P), normalize_map;
 // .ax %mat.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%mat.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %mat.Mat n S P, normalize_parallel_map;
 // .ax %mat.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%mat.Mat n S T, f: T -> P ] -> %mat.Mat n S P, normalize_meta_map;
 /// 
@@ -80,36 +80,37 @@
 /// - zip with one side constant matrix
 /// - meta_zip add zero m = m
 /// (currently: hardcoded as matrix operations)
-.ax %mat.zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%mat.Mat(n,S,P), %mat.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %mat.Mat(n,S,R), normalize_zip;
+// .ax %mat.zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%mat.Mat(n,S,P), %mat.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %mat.Mat(n,S,R), normalize_zip;
 // .ax %mat.parallel_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%mat.Mat n S P, %mat.Mat n S Q, f: .Cn [P, Q, .Cn [R] ] ] -> %mat.Mat n S R, normalize_parallel_zip;
 // .ax %mat.meta_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%mat.Mat n S P, %mat.Mat n S Q, f: P -> Q -> R ] -> %mat.Mat n S R, normalize_meta_zip;
 /// 
 /// ### %mat.reduce
 ///
-.ax %mat.reduce:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%mat.Mat (n,S,T), accu: P, f: .Cn [%mem.M, P, T, .Cn [%mem.M, P] ] ] -> P, normalize_reduce;
+// .ax %mat.reduce:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%mat.Mat (n,S,T), accu: P, f: .Cn [%mem.M, P, T, .Cn [%mem.M, P] ] ] -> P, normalize_reduce;
 ///
 /// ### %mat.zero
 ///
 /// a constant zero matrix
 /// (currently: const i32 as bitfield)
-.ax %mat.zero: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %mat.Mat (n,S,(%Int m));
+/// .ax %mat.zero: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %mat.Mat (n,S,(%Int m));
+/// done using a definition of zero as a constant matrix
 /// 
 /// ### %mat.const
 ///
 /// a constant matrix
 /// (currently: const i32 as bitfield)
-.ax %mat.const: Π [n: .Nat, S: «n; .Nat», T: *] -> T -> %mat.Mat (n,S,T);
+.ax %mat.constMat: Π [n: .Nat, S: «n; .Nat», T: *] -> T -> %mat.Mat (n,S,T);
 /// 
 /// ### %mat.transpose
 ///
 /// transpose matrix
-.ax %mat.transpose: Π [k: .Nat, l: .Nat, T: *] -> %mat.Mat (2,(k,l),T) -> %mat.Mat (2,(l,k),T), normalize_tranpose;
+// .ax %mat.transpose: Π [k: .Nat, l: .Nat, T: *] -> %mat.Mat (2,(k,l),T) -> %mat.Mat (2,(l,k),T), normalize_tranpose;
 /// 
 /// 
 /// ### %mat.id
 ///
 /// the idendity matrix
-.ax %mat.id: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %mat.Mat (n,S,(%Int m));
+.ax %mat.id: Π [k: .Nat, m: .Nat] -> %mat.Mat (2,(k,k),(%Int m));
 /// 
 /// ### %mat.read
 ///
@@ -129,7 +130,7 @@
 /// normalization:
 /// * with other inserts
 /// * with initialization
-.ax %mat.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mat.Mat (n,S,T), idx: «i: n; %Int S#i», val: T] -> %mat.Mat (n,S,T), normalize_insert;
+// .ax %mat.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mat.Mat (n,S,T), idx: «i: n; %Int S#i», val: T] -> %mat.Mat (n,S,T), normalize_insert;
 
 
 /*

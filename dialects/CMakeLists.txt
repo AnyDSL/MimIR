@@ -59,3 +59,15 @@ add_thorin_dialect(affine
         core
     INSTALL
 )
+
+add_thorin_dialect(matrix
+    SOURCES
+        matrix/matrix.cpp
+        matrix/matrix.h
+        # matrix/passes/lower_matix.cpp
+        # matrix/passes/lower_matrix.h
+    DEPENDS
+        affine
+        core
+    INSTALL
+)
