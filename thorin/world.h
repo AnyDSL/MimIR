@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <string>
+#include <string_view>
 
 #include "thorin/axiom.h"
 #include "thorin/config.h"
@@ -130,14 +131,14 @@ public:
     /// E.g. use `w.ax<mem::M>();` to get the %mem.M axiom.
     template<axiom_without_sub_tags AxTag>
     const Axiom* ax() const {
-        return ax(AxTag::id_);
+        return ax(AxTag::Axiom_Id);
     }
     ///@}
 
     /// @name Pi
     ///@{
     const Pi* pi(const Def* dom, const Def* codom, const Def* dbg = {}) {
-        return unify<Pi>(2, codom->inf_type(), dom, codom, dbg);
+        return unify<Pi>(2, codom->unfold_type(), dom, codom, dbg);
     }
     const Pi* pi(Defs dom, const Def* codom, const Def* dbg = {}) { return pi(sigma(dom), codom, dbg); }
     Pi* nom_pi(const Def* type, const Def* dbg = {}) { return insert<Pi>(2, type, dbg); }
@@ -231,7 +232,7 @@ public:
         return extract_unsafe(d, lit_int(0_u64, i), dbg);
     }
     const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
-        return extract(d, op(Conv::u2u, type_int(as_lit(d->type()->reduce_rec()->arity())), i, dbg), dbg);
+        return extract(d, op(Conv::u2u, type_int(as_lit(d->unfold_type()->arity())), i, dbg), dbg);
     }
     /// Builds `(f, t)cond`.
     /// **Note** that select expects @p t as first argument and @p f as second one.
@@ -253,7 +254,7 @@ public:
         return insert_unsafe(d, lit_int(0_u64, i), val, dbg);
     }
     const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
-        return insert(d, op(Conv::u2u, type_int(as_lit(d->type()->reduce_rec()->arity())), i), val, dbg);
+        return insert(d, op(Conv::u2u, type_int(as_lit(d->unfold_type()->arity())), i), val, dbg);
     }
     ///@}
 
@@ -557,6 +558,9 @@ public:
     ErrorHandler* err() { return err_.get(); }
     ///@}
 
+    void add_imported(std::string_view name) { data_.imported_dialects_.emplace(name); }
+    const absl::flat_hash_set<std::string>& imported() const { return data_.imported_dialects_; }
+
     friend void swap(World& w1, World& w2) {
         using std::swap;
         // clang-format off
@@ -727,6 +731,7 @@ private:
         Externals externals_;
         Sea defs_;
         DefDefMap<DefArray> cache_;
+        absl::flat_hash_set<std::string> imported_dialects_;
     } data_;
 
     std::unique_ptr<Checker> checker_;

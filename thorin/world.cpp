@@ -201,8 +201,9 @@ World::~World() {
 
 World World::stub() {
     World w(name());
-    w.ostream_ = ostream_;
-    w.state_   = state_;
+    w.ostream_                 = ostream_;
+    w.state_                   = state_;
+    w.data_.imported_dialects_ = data_.imported_dialects_;
 
     // bring dialects' axioms into new world.
     Rewriter rewriter{w};
@@ -318,7 +319,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
         return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
     }
 
-    auto type = d->type()->reduce_rec();
+    auto type = d->unfold_type();
     if (err()) {
         if (!checker_->equiv(type->arity(), isa_sized_type(index->type())))
             err()->index_out_of_range(type->arity(), index);
@@ -364,7 +365,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
 }
 
 const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {
-    auto type = d->type()->reduce_rec();
+    auto type = d->unfold_type();
 
     if (err() && !checker_->equiv(type->arity(), isa_sized_type(index->type())))
         err()->index_out_of_range(type->arity(), index);
@@ -419,7 +420,7 @@ const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
         if (auto s = isa_lit(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body), dbg);
     }
 
-    return unify<Arr>(2, body->inf_type(), shape, body, dbg);
+    return unify<Arr>(2, body->unfold_type(), shape, body, dbg);
 }
 
 const Def* World::pack(const Def* shape, const Def* body, const Def* dbg) {

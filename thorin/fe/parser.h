@@ -113,6 +113,8 @@ private:
         }
         expect(delim_r, std::string("closing delimiter of a ") + ctxt);
     }
+    
+    void parse_var_list(Binders&);
 
     // parse import statement
     void parse_import();

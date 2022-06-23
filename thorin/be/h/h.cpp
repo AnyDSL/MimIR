@@ -23,7 +23,7 @@ void Bootstrapper::emit(std::ostream& h) {
     std::vector<std::ostringstream> normalizers, outer_namespace;
 
     h << std::hex;
-    tab.print(h, "static constexpr dialect_t id = 0x{};\n\n", dialect_id);
+    tab.print(h, "static constexpr dialect_t Dialect_Id = 0x{};\n\n", dialect_id);
 
     tag_t tag = 0;
     for (const auto& ax : axioms) {
@@ -31,7 +31,7 @@ void Bootstrapper::emit(std::ostream& h) {
         ++tab;
         flags_t ax_id = dialect_id | (tag++ << 8u);
         if (auto& subs = ax.subs; !subs.empty()) {
-            tab.print(h, "base_ = 0x{},\n", ax_id);
+            tab.print(h, "Axiom_Base = 0x{},\n", ax_id);
             for (const auto& aliases : subs) {
                 const auto& sub = aliases.front();
                 tab.print(h, "{} = 0x{},\n", sub, ax_id++);
@@ -42,10 +42,10 @@ void Bootstrapper::emit(std::ostream& h) {
                           ax.normalizer, ax.tag, sub);
             }
         } else {
-            tab.print(h, "id_ = 0x{},\n", ax_id);
+            tab.print(h, "Axiom_Id = 0x{},\n", ax_id);
 
             if (!ax.normalizer.empty())
-                print(normalizers.emplace_back(), "normalizers[flags_t({}::id_)] = &{};", ax.tag, ax.normalizer);
+                print(normalizers.emplace_back(), "normalizers[flags_t({}::Axiom_Id)] = &{};", ax.tag, ax.normalizer);
         }
         --tab;
         tab.print(h, "}};\n\n");

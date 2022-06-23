@@ -66,12 +66,12 @@ public:
 
 template<class AxTag>
 concept axiom_with_sub_tags = requires(AxTag t) {
-    AxTag::base_;
+    AxTag::Axiom_Base;
 };
 
 template<class AxTag>
 concept axiom_without_sub_tags = requires(AxTag t) {
-    AxTag::id_;
+    AxTag::Axiom_Id;
 };
 
 template<class AxTag>
@@ -187,9 +187,9 @@ using Enum2Def = typename Enum2DefImpl<AxTag>::type;
 template<class AxTag>
 constexpr AxTag base_value() {
     if constexpr (axiom_with_sub_tags<AxTag>)
-        return AxTag::base_;
+        return AxTag::Axiom_Base;
     else
-        return AxTag::id_;
+        return AxTag::Axiom_Id;
 }
 
 } // namespace detail

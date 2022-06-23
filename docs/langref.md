@@ -120,19 +120,20 @@ The following tables comprise all production rules:
 
 #### Declarations
 
-| Nonterminal | Right-Hand Side                                                | New Scope? | Comment                        | Thorin Class  |
-|-------------|----------------------------------------------------------------|------------|--------------------------------|---------------|
-| d           | `.ax` Ax `:` e<sub>type</sub> `;`                              |            | axiom                          | thorin::Axiom |
-| d           | `.let` Sym `:` e<sub>type</sub> `=` e `;`                      |            | let                            | -             |
-| d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n      |            | nominal Pi declaration         | thorin::Pi    |
-| d           | `.lam` Sym `:` e<sub>type</sub> n                              |            | nominal lambda declaration     | thorin::Lam   |
-| d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n   |            | nominal array declaration      | thorin::Arr   |
-| d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> n  |            | nominal pack declaration       | thorin::Pack  |
-| d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> n |            | nominal sigma declaration      | thorin::Sigma |
-| d           | `.def` Sym n                                                   |            | nominal definition             | nominals      |
-| n           | `;` \| o                                                       |            | nominal definition             | -             |
-| o           | `=` e `;`                                                      |            | operand of nominal definition  | -             |
-| o           | `=` `{` e `,` ... `,` e  `}` `;`                               | ✓          | operands of nominal definition | -             |
+| Nonterminal | Right-Hand Side                                                   | New Scope? | Comment                        | Thorin Class  |
+|-------------|-------------------------------------------------------------------|------------|--------------------------------|---------------|
+| d           | `.ax` Ax `:` e<sub>type</sub> `;`                                 |            | axiom                          | thorin::Axiom |
+| d           | `.let` Sym `:` e<sub>type</sub> `=` e `;`                         |            | let                            | -             |
+| d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n         |            | nominal Pi declaration         | thorin::Pi    |
+| d           | `.lam` Sym `:` e<sub>type</sub> v? n                              |            | nominal lambda declaration     | thorin::Lam   |
+| d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n   |            | nominal array declaration      | thorin::Arr   |
+| d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  |            | nominal pack declaration       | thorin::Pack  |
+| d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n |            | nominal sigma declaration      | thorin::Sigma |
+| d           | `.def` Sym n                                                      |            | nominal definition             | nominals      |
+| v           | `,` `@` Sym \| `,` `@` `(` Sym `,` ... `,` Sym `)`                |            | nominal variable declaration   | nominals      |
+| n           | `;` \| o                                                          |            | nominal definition             | -             |
+| o           | `=` e `;`                                                         |            | operand of nominal definition  | -             |
+| o           | `=` `{` e `,` ... `,` e  `}` `;`                                  | ✓          | operands of nominal definition | -             |
 
 #### Expressions
 
