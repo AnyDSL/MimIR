@@ -138,7 +138,7 @@ public:
     /// @name Pi
     ///@{
     const Pi* pi(const Def* dom, const Def* codom, const Def* dbg = {}) {
-        return unify<Pi>(2, codom->inf_type(), dom, codom, dbg);
+        return unify<Pi>(2, codom->unfold_type(), dom, codom, dbg);
     }
     const Pi* pi(Defs dom, const Def* codom, const Def* dbg = {}) { return pi(sigma(dom), codom, dbg); }
     Pi* nom_pi(const Def* type, const Def* dbg = {}) { return insert<Pi>(2, type, dbg); }
@@ -232,7 +232,7 @@ public:
         return extract_unsafe(d, lit_int(0_u64, i), dbg);
     }
     const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
-        return extract(d, op(Conv::u2u, type_int(as_lit(d->type()->reduce_rec()->arity())), i, dbg), dbg);
+        return extract(d, op(Conv::u2u, type_int(as_lit(d->unfold_type()->arity())), i, dbg), dbg);
     }
     /// Builds `(f, t)cond`.
     /// **Note** that select expects @p t as first argument and @p f as second one.
@@ -254,7 +254,7 @@ public:
         return insert_unsafe(d, lit_int(0_u64, i), val, dbg);
     }
     const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
-        return insert(d, op(Conv::u2u, type_int(as_lit(d->type()->reduce_rec()->arity())), i), val, dbg);
+        return insert(d, op(Conv::u2u, type_int(as_lit(d->unfold_type()->arity())), i), val, dbg);
     }
     ///@}
 

@@ -152,12 +152,14 @@ World& Def::world() const {
     return type()->world(); // TODO unroll
 }
 
-const Def* Def::inf_type() const {
-    if (type_) return type_;
-    if (auto t = isa<Type>()) return world().type(world().lit_univ(as_lit(t->level()) + 1));
+const Def* Def::unfold_type() const {
+    if (!type_) {
+        if (auto t = isa<Type>()) return world().type(world().lit_univ(as_lit(t->level()) + 1)); // TODO non-lit level
+        assert(isa<Univ>());
+        return nullptr;
+    }
 
-    assert(isa<Univ>());
-    return nullptr;
+    return type_->reduce_rec();
 }
 
 std::string_view Def::node_name() const {

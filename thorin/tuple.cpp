@@ -95,7 +95,7 @@ std::string tuple2str(const Def* def) {
  */
 
 bool Arr::check() {
-    auto t = body()->inf_type();
+    auto t = body()->unfold_type();
     if (auto infer = type()->isa_nom<Infer>()) {
         assert(infer->op() == nullptr);
         infer->set(t);
