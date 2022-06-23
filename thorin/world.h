@@ -572,7 +572,6 @@ public:
         swap(w1.err_,      w2.err_);
         // clang-format on
 
-        swap(w1.data_.imported_dialects_, w2.data_.imported_dialects_);
         swap(w1.data_.univ_->world_, w2.data_.univ_->world_);
         assert(&w1.univ()->world() == &w1);
         assert(&w2.univ()->world() == &w2);
