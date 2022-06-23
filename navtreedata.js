@@ -26,11 +26,12 @@ var NAVTREE =
 [
   [ "Thorin", "index.html", [
     [ "Introduction", "index.html", [
-      [ "Building", "index.html#autotoc_md38", [
-        [ "Build Switches", "index.html#autotoc_md39", null ],
-        [ "Tests", "index.html#autotoc_md40", null ]
+      [ "Building", "index.html#autotoc_md39", [
+        [ "Install", "index.html#install", null ],
+        [ "Build Switches", "index.html#autotoc_md40", null ],
+        [ "Tests", "index.html#autotoc_md41", null ]
       ] ],
-      [ "Dependencies", "index.html#autotoc_md41", null ]
+      [ "Dependencies", "index.html#autotoc_md42", null ]
     ] ],
     [ "Documentation", "usergroup0.html", [
       [ "Command-Line Reference", "cli.html", null ],
@@ -98,13 +99,13 @@ var NAVTREEINDEX =
 "classthorin_1_1h_1_1Bootstrapper.html#a1951ea1112e93ea976832467a218cd3b",
 "def_8h.html#a1c686b5d4a914909b3433cae517ec294",
 "hash_8cpp_source.html",
-"namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bac657344463ff1b32bf1ad9bbdb3ef20b",
-"namespacethorin.html#ade15cbb18e97e1b79120cc2a6e0fa8d7",
-"namespacethorin_1_1core.html#a9e7bbf8f2eabdee513df72bc4dac79c6",
-"namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733",
-"structthorin_1_1World_1_1SeaHash.html",
-"tables_8h.html#a66430eff8ba4a2e321f9d492dec39fcfaa53108f7543b75adbb34afc035d4cdf6",
-"utf8_8cpp.html#a420279844f511969229c3af8d8f9435c"
+"namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bac342b4a20db36ff629c69ebad289ea76",
+"namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9afc0bff96320187c50961a6822914c567",
+"namespacethorin_1_1core.html#a97a54d2f272e1b439ff1ffd8572c788c",
+"namespacethorin_1_1sys.html",
+"structthorin_1_1World_1_1SeaEq.html#a137877da98df3449ab2b0cb595d4dcd7",
+"tables_8h.html#a66430eff8ba4a2e321f9d492dec39fcfa4f4000d921968b9665f52e88333007da",
+"utf8_8cpp.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

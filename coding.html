@@ -113,6 +113,7 @@ $(document).ready(function(){initNavTree('coding.html',''); initResizable(); });
 <li class="level2"><a href="#autotoc_md7">VS Code</a></li>
 </ul>
 </li>
+<li class="level1"><a href="#autotoc_md8">Third-Party Dialects</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_docs_coding"></a></p>
@@ -161,7 +162,20 @@ GoogleTest</h2>
 VS Code</h2>
 <p >As a utility to make debugging Thorin itself less painful with certain debuggers, the <code>thorin.natvis</code> file can be loaded for getting more expressive value inspection. In VS Code you can do so by adding the following to the <code>launch.json</code> configurations. When launching from VS Code via CMake, put it in <code>settings.json</code>'s <code>"cmake.debugConfig":</code>: </p><div class="fragment"><div class="line">&quot;visualizerFile&quot;: &quot;${workspaceFolder}/thorin.natvis&quot;,</div>
 <div class="line">&quot;showDisplayString&quot;: true,</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md8"></a>
+Third-Party Dialects</h1>
+<p >After <a class="el" href="index.html#install">installing</a>, third-party dialects just need to find the <code>thorin</code> package: </p><div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.20 FATAL_ERROR)</div>
+<div class="line">project(dialect)</div>
+<div class="line"> </div>
+<div class="line">find_package(thorin)</div>
+<div class="line"> </div>
+<div class="line">add_thorin_dialect(dialect</div>
+<div class="line">    SOURCES</div>
+<div class="line">        dialect/dialect.h</div>
+<div class="line">        dialect/dialect.cpp</div>
+<div class="line">)</div>
+</div><!-- fragment --><p> Use <code>cmake .. -Dthorin_DIR=&lt;THORIN_INSTALL_PREFIX&gt;/lib/cmake/thorin</code> to configure the project. </p>
+</div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
