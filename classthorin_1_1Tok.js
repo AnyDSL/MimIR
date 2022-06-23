@@ -25,6 +25,7 @@ var classthorin_1_1Tok =
       [ "K_fn", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a64e874e70ce7f735f78be094c8a20f3b", null ],
       [ "K_ff", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a43aa688adfb4f405337a57b6a878aef4", null ],
       [ "K_tt", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a2879fcb4320671691958f7a455aa82bd", null ],
+      [ "K_ins", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a0e959407edfc29084af77f4e4448b356", null ],
       [ "L_s", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a210614a1117e89a255b9d0b39516b604", null ],
       [ "L_u", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038a7e6dfe77ddaaa4a0c994660de2d38ead", null ],
       [ "L_r", "classthorin_1_1Tok.html#a2b38ddc0634b228ae22e6c43b0f23038aff4732a008160f463364cd4285d4bc9f", null ],

@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"structthorin_1_1World_1_1SeaEq.html":[3,0,0,141,0],
+"structthorin_1_1World_1_1SeaEq.html#a137877da98df3449ab2b0cb595d4dcd7":[3,0,0,141,0,0],
 "structthorin_1_1World_1_1SeaEq.html#a137877da98df3449ab2b0cb595d4dcd7":[5,0,0,133,0,0],
 "structthorin_1_1World_1_1SeaHash.html":[3,0,0,141,1],
 "structthorin_1_1World_1_1SeaHash.html":[5,0,0,133,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "tables_8h.html#a65b28a70b601ee7898841af6af02d56f":[6,0,3,26,45],
 "tables_8h.html#a65b28a70b601ee7898841af6af02d56fa34ec78fcc91ffb1e54cd85e4a0924332":[6,0,3,26,45,0],
 "tables_8h.html#a65b28a70b601ee7898841af6af02d56fa353942263d1bedfbe06b7bfa78226253":[6,0,3,26,45,2],
-"tables_8h.html#a65b28a70b601ee7898841af6af02d56fa8a68dc3e925eacf92633be230722a140":[6,0,3,26,45,1],
-"tables_8h.html#a65b28a70b601ee7898841af6af02d56fabc192716b0e1d5c96a67961dd0d3f9da":[6,0,3,26,45,3],
-"tables_8h.html#a66430eff8ba4a2e321f9d492dec39fcf":[6,0,3,26,39]
+"tables_8h.html#a65b28a70b601ee7898841af6af02d56fa8a68dc3e925eacf92633be230722a140":[6,0,3,26,45,1]
 };
