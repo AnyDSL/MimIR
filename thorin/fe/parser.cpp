@@ -80,9 +80,11 @@ Parser Parser::import_module(World& world,
 
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
 
-    // fixme: no normalizers?
     thorin::Parser parser(world, input_path, ifs, user_search_paths, normalizers);
     parser.parse_module();
+
+    world.add_imported(name);
+
     return parser;
 }
 
@@ -268,7 +270,7 @@ const Def* Parser::parse_arr() {
     expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
     pop();
 
-    if (arr) return arr->set_body(body);
+    if (arr) return arr->set_body(body)->set_type(body->inf_type());
     return world().arr(shape, body, track);
 }
 
@@ -401,7 +403,9 @@ const Def* Parser::parse_pi() {
     for (auto [sym, i] : binders) insert(sym, pi->var(i)); // TODO location
 
     expect(Tok::Tag::T_arrow, "dependent function type");
-    pi->set_codom(parse_expr("codomain of a dependent function type", Tok::Prec::Arrow));
+    auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
+    pi->set_codom(codom);
+    pi->set_type(codom->inf_type());
     pi->set_dbg(track);
     pop();
     return pi;
@@ -546,6 +550,17 @@ void Parser::parse_let() {
     eat(Tok::Tag::T_semicolon);
 }
 
+void Parser::parse_var_list(Binders& binders) {
+    expect(Tok::Tag::T_at, "variable of nominal");
+
+    size_t n = 0;
+    if (ahead().isa(Tok::Tag::D_paren_l))
+        parse_list("variable of nominal", Tok::Tag::D_paren_l,
+                   [&]() { binders.emplace_back(parse_sym("variable element"), n++); });
+    else
+        binders.emplace_back(parse_sym("variable of nominal"), n++);
+}
+
 void Parser::parse_nom() {
     auto track    = tracker();
     auto tag      = lex().tag();
@@ -586,12 +601,21 @@ void Parser::parse_nom() {
     insert(sym, nom);
 
     push();
-    for (auto [sym, i] : binders) insert(sym, nom->var(i)); // TODO location
+    for (auto [sym, i] : binders) insert(sym, nom->var(i));
     if (external) nom->make_external();
+
+    push();
+    if (accept(Tok::Tag::T_comma)) {
+        binders.clear();
+        parse_var_list(binders);
+        assert(binders.size() == nom->num_vars());
+        for (auto [sym, i] : binders) insert(sym, nom->var(i, world().dbg(sym)));
+    }
     if (ahead().isa(Tok::Tag::T_assign))
         parse_def(sym);
     else
         expect(Tok::Tag::T_semicolon, "end of a nominal");
+    pop();
     pop();
 }
 
@@ -620,7 +644,6 @@ void Parser::parse_def(Sym sym /*= {}*/) {
         err(prev_, "expected operands for nominal definition");
     }
 
-    nom->dump(0);
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");
 }
 

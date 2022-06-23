@@ -21,28 +21,29 @@
     %affine.For (4294967296, 1, (%Int 4294967296)) (mem, 0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296)), for_body, for_exit)
 };
 
-// CHECK-DAG: main_[[mainId:[0-9]+]]: Cn [%mem.M, i32, %mem.Ptr (%mem.Ptr (i8, 0:nat), 0:nat), Cn [%mem.M, i32]]: (_{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}) = {
-// CHECK-DAG: for_[[forId:[0-9]+]]
-// CHECK-NOT: %affine.For
+// CHECK-DAG: .lam .extern main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}, _{{[0-9]+}}) = {
 
-// CHECK-DAG: _[[exitId:[0-9]+]]: Cn [%mem.M, i32]
+// CHECK-DAG: .lam _[[exitId:[0-9]+]]: .Cn [%mem.M, (%Int 4294967296)]
 
-// CHECK-DAG: for_[[forId]]: Cn [%mem.M, i32, i32]:
-// CHECK-DAG: _[[cmpId:[0-9]+]]: i1 = ICmp_ul
+// CHECK-DAG: .lam for_[[forId:[0-9]+]]: .Cn [%mem.M, (%Int 4294967296), (%Int 4294967296)], @
+// CHECK-DAG: _[[cmpId:[0-9]+]]: (%Int 2) = %ICmp_ul
 // CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = (_[[falseId:[0-9]+]], _[[trueId:[0-9]+]])#_[[cmpId]]
-// CHECK-DAG: λ@(0:i1) _[[appId]]
+// CHECK-DAG: _[[appId]]
 
-// CHECK-DAG: _{{[0-9]+}}: Cn %mem.M: _{{[0-9]+}} = {
-// CHECK-DAG: _[[appIdExit:[0-9]+]]: ⊥:★ = _[[exitId]] (@_{{[0-9]+}}, _{{[0-9]+}});
-// CHECK-DAG: λ@(0:i1) _[[appIdExit]]
+// CHECK-DAG: .lam _{{[0-9]+}}: .Cn %mem.M, @_[[exitVarId:[0-9]+]] = {
+// CHECK-DAG: _[[appIdExit:[0-9]+]]: ⊥:★ = _[[exitId]] (_[[exitVarId]], _{{[0-9]+}});
+// CHECK-DAG: _[[appIdExit]]
 
 
-// CHECK-DAG: for_body_[[forBodyId:[0-9]+]]: Cn %mem.M:
-// CHECK-DAG: = Wrap_add
-// CHECK-DAG: = Wrap_add
+// CHECK-DAG: .lam for_body_[[forBodyId:[0-9]+]]: .Cn %mem.M, @
+// CHECK-DAG: = %Wrap_add
+// CHECK-DAG: = %Wrap_add
 // CHECK-DAG: _[[appIdFor:[0-9]+]]: ⊥:★ = for_[[forId]]
-// CHECK-DAG: λ@(0:i1) _[[appIdFor]]
+// CHECK-DAG: _[[appIdFor]]
 
-// CHECK-DAG: _{{[0-9]+}}: Cn %mem.M: _{{[0-9]+}} = {
+// CHECK-DAG: .lam _{{[0-9]+}}: .Cn %mem.M, @_{{[0-9]+}} = {
 // CHECK-DAG: _[[appIdBody:[0-9]+]]: ⊥:★ = for_body_[[forBodyId]]
-// CHECK-DAG: λ@(0:i1) _[[appIdBody]]
+// CHECK-DAG: _[[appIdBody]]
+
+// CHECK-DAG: for_[[forId]]
+// CHECK-NOT: %affine.For
