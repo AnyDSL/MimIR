@@ -1,6 +1,3 @@
-# TODO can we get rid of this line?
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/thorin)
-
 add_thorin_dialect(mem
     SOURCES
         mem/passes/fp/copy_prop.cpp
