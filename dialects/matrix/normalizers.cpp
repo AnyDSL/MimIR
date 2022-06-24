@@ -8,19 +8,20 @@ namespace thorin::matrix {
 
 const Def* normalize_read(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world                = type->world();
-    auto [mat, index]          = arg->projs<2>();
-
-    // auto mcm = match<constMat, false>(mat);
-    auto mcm = match<constMat, true>(mat);
-    // printf("A\n");
-    if(mcm.axiom()) {
-    // printf("B\n");
     return world.lit_int_mod(4294967296,42);
-//        auto v = cm->arg();
-//        return v;
-    }
+//     auto [mat, index]          = arg->projs<2>();
 
-    return world.raw_app(callee, arg, dbg);
+//     // auto mcm = match<constMat, false>(mat);
+//     auto mcm = match<constMat>(mat);
+//     // printf("A\n");
+//     if(mcm || true) {
+//     // printf("B\n");
+//     return world.lit_int_mod(4294967296,42);
+// //        auto v = cm->arg();
+// //        return v;
+//     }
+
+//     return world.raw_app(callee, arg, dbg);
 }
 
 
