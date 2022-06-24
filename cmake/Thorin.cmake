@@ -37,7 +37,8 @@ function(add_thorin_dialect)
     SET(THORIN_DIALECT_LAYOUT "${THORIN_DIALECT_LAYOUT}" CACHE INTERNAL "THORIN_DIALECT_LAYOUT")
 
     # copy dialect thorin file to lib/thorin/${DIALECT}.thorin
-    add_custom_command(OUTPUT ${THORIN_FILE_LIB_DIR}
+    add_custom_command(
+        OUTPUT  ${THORIN_FILE_LIB_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${THORIN_FILE} ${THORIN_FILE_LIB_DIR}
         DEPENDS ${THORIN_FILE} ${DEPENDS_THORIN_FILES}
     )
