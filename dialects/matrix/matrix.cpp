@@ -5,11 +5,16 @@
 
 #include "thorin/dialects.h"
 
+#include "dialects/matrix/matrix.h"
+
+
 // #include "dialects/affine/passes/lower_for.h"
 
-extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
+using namespace thorin;
+
+extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"matrix",
-            [](thorin::PipelineBuilder& builder) {
+            [](PipelineBuilder& builder) {
             },
-            nullptr, nullptr};
+            nullptr, [](Normalizers& normalizers) { matrix::register_normalizers(normalizers); }};
 }

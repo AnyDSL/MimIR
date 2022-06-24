@@ -64,6 +64,7 @@ add_thorin_dialect(matrix
     SOURCES
         matrix/matrix.cpp
         matrix/matrix.h
+        matrix/normalizers.cpp
         # matrix/passes/lower_matix.cpp
         # matrix/passes/lower_matrix.h
     DEPENDS
