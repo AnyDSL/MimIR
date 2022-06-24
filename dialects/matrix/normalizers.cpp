@@ -11,8 +11,8 @@ const Def* normalize_read(const Def* type, const Def* callee, const Def* arg, co
     auto [mat, index]          = arg->projs<2>();
 
     // read(constMat a)=a
-    if(auto constMat = isa<constMat>(mat)) {
-        auto v = constMat->arg();
+    if(auto cm = isa<constMat>(mat)) {
+        auto v = cm->arg();
         return v;
     }
 
