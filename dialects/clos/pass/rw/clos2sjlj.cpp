@@ -1,6 +1,7 @@
 #include "dialects/clos/pass/rw/clos2sjlj.h"
 
 #include "dialects/clos/clos_conv.h"
+#include "dialects/core/core.h"
 
 namespace thorin::clos {
 
@@ -88,7 +89,7 @@ Lam* Clos2SJLJ::get_throw(const Def* dom) {
         auto [jbuf, rbuf, tag] = env->projs<3>();
         auto [m1, r]           = mem::op_alloc(var->type(), m0)->projs<2>();
         auto m2                = mem::op_store(m1, r, var);
-        rbuf                   = w.op_bitcast(mem::type_ptr(mem::type_ptr(var->type())), rbuf);
+        rbuf                   = core::op_bitcast(mem::type_ptr(mem::type_ptr(var->type())), rbuf);
         auto m3                = mem::op_store(m2, rbuf, r);
         tlam->set_body(op_longjmp(m3, jbuf, tag));
         tlam->set_filter(w.lit_false());
@@ -107,7 +108,7 @@ Lam* Clos2SJLJ::get_lpad(Lam* lam, const Def* rb) {
         lpad                    = w.nom_lam(pi, w.dbg("lpad"));
         auto [m, env, __]       = split(lpad->var());
         auto [m1, arg_ptr]      = mem::op_load(m, rb)->projs<2>();
-        arg_ptr                 = w.op_bitcast(mem::type_ptr(dom), arg_ptr);
+        arg_ptr                 = core::op_bitcast(mem::type_ptr(dom), arg_ptr);
         auto [m2, args]         = mem::op_load(m1, arg_ptr)->projs<2>();
         auto full_args          = (lam->num_doms() == 3) ? rebuild(m2, env, {args}) : rebuild(m2, env, args->ops());
         lpad->app(false, lam, full_args);
@@ -158,7 +159,7 @@ void Clos2SJLJ::enter() {
     auto m0 = body->arg(0);
     assert(m0->type() == mem::type_mem(w));
     auto [m1, tag] = op_setjmp(m0, cur_jbuf_)->projs<2>();
-    tag            = w.op(Conv::s2s, w.type_int(branches.size()), tag);
+    tag            = op(core::conv::s2s, w.type_int(branches.size()), tag);
     auto branch    = w.extract(w.tuple(branches), tag);
     curr_nom()->set_body(clos_apply(branch, m1));
 }

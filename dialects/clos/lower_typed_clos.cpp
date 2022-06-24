@@ -61,7 +61,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
         lcm          = w.extract(env_mem, 0_u64, w.dbg("mem"));
         env          = w.extract(env_mem, 1_u64, w.dbg("closure_env"));
     } else if (mode == Unbox) {
-        env = w.op_bitcast(lam->dom(Clos_Env_Param), env, w.dbg("unboxed_env"));
+        env = core::op_bitcast(lam->dom(Clos_Env_Param), env, w.dbg("unboxed_env"));
     }
     auto new_args = w.tuple(Array<const Def*>(lam->num_doms(), [&](auto i) {
         return (i == Clos_Env_Param) ? env : (lam->var(i) == mem::mem_var(lam)) ? lcm : new_lam->var(i);
@@ -126,8 +126,8 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
             map(lvm_, lcm_);
             env = env_ptr;
         }
-        fn  = w.op_bitcast(new_type->op(0), fn);
-        env = w.op_bitcast(new_type->op(1), env);
+        fn  = core::op_bitcast(new_type->op(0), fn);
+        env = core::op_bitcast(new_type->op(1), env);
         return map(def, w.tuple({fn, env}));
     } else if (auto lam = def->isa_nom<Lam>()) {
         return make_stub(lam, No_Env, false);

@@ -30,6 +30,14 @@ inline const Def* fn(div o, const Def* mod, const Def* dbg = {}) {
     World& w = mod->world();
     return w.app(w.ax(o), mod, dbg);
 }
+inline const Def* fn(conv o, const Def* dst_w, const Def* src_w, const Def* dbg = {}) {
+    World& w = dst_w->world();
+    return w.app(w.ax(o), {dst_w, src_w}, dbg);
+}
+inline const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg = {}) {
+    World& w = dst_t->world();
+    return w.app(w.ax<bitcast>(), {dst_t, src_t}, dbg);
+}
 ///@}
 
 /// @name op - these guys build the final function application for the various operations
@@ -61,6 +69,17 @@ const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) 
     World& w = a->world();
     return op(o, w.lit_nat(mode), a, b, dbg);
 }
+
+inline const Def* op(conv o, const Def* dst_type, const Def* src, const Def* dbg = {}) {
+    World& w = dst_type->world();
+    auto d   = dst_type->as<App>()->arg();
+    auto s   = src->type()->as<App>()->arg();
+    return w.app(fn(o, d, s), src, dbg);
+}
+inline const Def* op_bitcast(const Def* dst_type, const Def* src, const Def* dbg = {}) {
+    World& w = dst_type->world();
+    return w.app(fn_bitcast(dst_type, src->type()), src, dbg);
+}
 ///@}
 
 /// @name wrappers for unary operations
@@ -86,6 +105,30 @@ inline const Def* op_wminus(const Def* wmode, const Def* a, const Def* dbg = {})
 inline const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     return op_wminus(w.lit_nat(wmode), a, dbg);
+}
+///@}
+
+/// @name extract helper
+///@{
+inline const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
+    World& w = d->world();
+    return w.extract(d, op(conv::u2u, w.type_int(as_lit(d->unfold_type()->arity())), i, dbg), dbg);
+}
+inline const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
+    World& w = d->world();
+    return extract_unsafe(d, w.lit_int(0_u64, i), dbg);
+}
+///@}
+
+/// @name insert helper
+///@{
+inline const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
+    World& w = d->world();
+    return w.insert(d, op(conv::u2u, w.type_int(as_lit(d->unfold_type()->arity())), i), val, dbg);
+}
+inline const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
+    World& w = d->world();
+    return insert_unsafe(d, w.lit_int(0_u64, i), val, dbg);
 }
 ///@}
 

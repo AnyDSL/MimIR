@@ -6,6 +6,7 @@
 #include "thorin/world.h"
 
 #include "dialects/mem.h"
+#include "dialects/core/core.h"
 
 namespace thorin::mem {
 
@@ -58,7 +59,7 @@ inline const Def* op_lea(const Def* ptr, const Def* index, const Def* dbg = {}) 
 inline const Def* op_lea_unsafe(const Def* ptr, const Def* i, const Def* dbg = {}) {
     World& w      = ptr->world();
     auto safe_int = w.type_int(match<mem::Ptr, false>(ptr->type())->arg(0)->arity());
-    return op_lea(ptr, w.op(Conv::u2u, safe_int, i), dbg);
+    return op_lea(ptr, core::op(core::conv::u2u, safe_int, i), dbg);
 }
 
 inline const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) {
