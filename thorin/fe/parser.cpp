@@ -556,7 +556,7 @@ void Parser::parse_ax() {
 
     dialect_t d = *Axiom::mangle(dialect);
     tag_t t     = info.tag_id;
-    sub_t s     = 0;
+    sub_t s     = info.subs.size();
     if (new_subs.empty()) {
         auto axiom = world().axiom(normalizer(d, t, 0), type, d, t, 0, track.named(ax.sym()));
         insert(ax.sym(), axiom);
