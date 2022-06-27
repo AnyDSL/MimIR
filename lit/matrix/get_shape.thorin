@@ -12,13 +12,12 @@
 .lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
     0: (%Int 2), // this is the filter
     .let I32 = %Int 4294967296;
-    .let MT = (2, (3,3), I32);
+    .let MT = (2, (3,5), I32);
     .let c = 5:I32;
     .let m = %matrix.constMat MT c;
-    .let f = %matrix.read MT;
-    // .let idx : «2; (%Int 3)» = (0, 0);
-    .let idx = ‹2:.Nat; 0:(%Int 3)›;
-    .let d = %matrix.read MT (m, idx);
+    .let idx = 0:(%Int 2);
+    .let d = %matrix.shape MT (m, idx);
+    .let e = .bitcast d;
     return (mem, d)
 };
 

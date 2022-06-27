@@ -6,21 +6,88 @@
 
 namespace thorin::matrix {
 
+/// Normalizer for read opertions
+/// - read(constMat v) -> v
+/// - read(insert m v i, i) -> v (TODO: implement)
+/// - read(insert m v i, j) -> read(m, i) if i <> j (TODO: wanted? useful?)
+/// - read(transpose m, (i,j)) -> read(m, (j,i)) (TODO: implement)
+/// - read(product m1 m2, (i,j)) -> ... (TODO: implement)
 const Def* normalize_read(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world                = type->world();
-    // return world.lit_int_mod(4294967296,42);
     auto [mat, index]          = arg->projs<2>();
 
-    // auto mcm = match<constMat, false>(mat);
     auto mcm = match<constMat>(mat);
-    // printf("A\n");
     if(mcm) {
-    // printf("B\n");
-    // return world.lit_int_mod(4294967296,42);
        auto v = mcm->arg();
        return v;
     }
 
+    return world.raw_app(callee, arg, dbg);
+}
+
+/// Normalizer for write operations
+/// TODO: implement
+const Def* normalize_insert(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& world                = type->world();
+    return world.raw_app(callee, arg, dbg);
+}
+
+/// Normalizer for transpose operations
+/// - transpose (constMat v) -> cosntMat v (TODO: implement)
+/// - transpose (insert m v (i,j)) -> insert (transpose m) v (j,i) (TODO: implement, maybe other way around?)
+/// - transpose (tranpose m) -> m (TODO: implement)
+const Def* normalize_tranpose(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& world                = type->world();
+    return world.raw_app(callee, arg, dbg);
+}
+
+/// - shape (@mat n (k1,k2,...,kn) i) -> (k1,k2,...,kn)#i (TODO: implement)
+const Def* normalize_shape(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& world                = type->world();
+    auto [mat, index]          = arg->projs<2>();
+    auto [dims, sizes, body_type] = match<Mat, false>(mat->type())->args<3>();
+
+    return world.extract(sizes, index, dbg);
+}
+
+/// Matrix normalizer for product on two-dimensional matrices
+/// - product (constMat v1, constMat v2) -> constMat v1 * v2 * dim (TODO: implement)
+/// - product (constMat v, m) -> ... (TODO: implement)
+/// - product (m, constMat v) -> ... (TODO: implement)
+/// - product (id, m) -> m 
+/// - product (m, id) -> m 
+const Def* normalize_prod(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& world                = type->world();
+    auto [left, right]          = arg->projs<2>();
+
+    auto mleft = match<id>(left);
+    auto mright = match<id>(right);
+    if(mleft) {
+        return right;
+    }
+    if(mright) {
+        return left;
+    }
+
+    return world.raw_app(callee, arg, dbg);
+}
+
+/// - map(constMat v, f) -> constMat f(v) (TODO: implement)
+/// - map f (map g m) -> map (f . g) m (TODO: implement)
+const Def* normalize_map(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& world                = type->world();
+    return world.raw_app(callee, arg, dbg);
+}
+
+/// TODO: implement
+const Def* normalize_zip(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& world                = type->world();
+    return world.raw_app(callee, arg, dbg);
+}
+
+/// TODO: implement
+const Def* normalize_fold(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& world                = type->world();
     return world.raw_app(callee, arg, dbg);
 }
 

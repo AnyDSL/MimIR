@@ -44,14 +44,14 @@
 ///
 /// normalization rules: 
 /// * resolve shape calls at construction by replacing them with the size argument
-// .ax %matrix.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), i: %Int n] -> T, normalize_shape;
+.ax %matrix.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), i: %Int n] -> .Nat, normalize_shape;
 ///
 /// ### %matrix.prod
 ///
 /// matrix product
 /// takes a m*k matrix, a k*l matrix and returns the product, a m*l matrix
 /// only defined on two-dimensional matrices
-// .ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, T: *] -> [%matrix.Mat (2,(m, k),T), %matrix.Mat (2,(k, l),T)] -> %matrix.Mat (2,(m, l),T), normalize_prod;
+.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, T: *] -> [%matrix.Mat (2,(m, k),T), %matrix.Mat (2,(k, l),T)] -> %matrix.Mat (2,(m, l),T), normalize_prod;
 /// 
 /// ### %matrix.map
 ///
@@ -64,7 +64,7 @@
 /// - map on constant matrix
 /// - parallel map without effect
 /// - map combination
-// .ax %matrix.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P), normalize_map;
+.ax %matrix.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P), normalize_map;
 // .ax %matrix.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %matrix.Mat n S P, normalize_parallel_map;
 // .ax %matrix.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: T -> P ] -> %matrix.Mat n S P, normalize_meta_map;
 /// 
@@ -80,20 +80,13 @@
 /// - zip with one side constant matrix
 /// - meta_zip add zero m = m
 /// (currently: hardcoded as matrix operations)
-// .ax %matrix.zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat(n,S,P), %matrix.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %matrix.Mat(n,S,R), normalize_zip;
+.ax %matrix.zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat(n,S,P), %matrix.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %matrix.Mat(n,S,R), normalize_zip;
 // .ax %matrix.parallel_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: .Cn [P, Q, .Cn [R] ] ] -> %matrix.Mat n S R, normalize_parallel_zip;
 // .ax %matrix.meta_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: P -> Q -> R ] -> %matrix.Mat n S R, normalize_meta_zip;
 /// 
-/// ### %matrix.reduce
+/// ### %matrix.fold
 ///
-// .ax %matrix.reduce:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), accu: P, f: .Cn [%mem.M, P, T, .Cn [%mem.M, P] ] ] -> P, normalize_reduce;
-///
-/// ### %matrix.zero
-///
-/// a constant zero matrix
-/// (currently: const i32 as bitfield)
-/// .ax %matrix.zero: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(%Int m));
-/// done using a definition of zero as a constant matrix
+.ax %matrix.fold:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), accu: P, f: .Cn [%mem.M, P, T, .Cn [%mem.M, P] ] ] -> P, normalize_fold;
 /// 
 /// ### %matrix.const
 ///
@@ -103,16 +96,22 @@
 /// 
 /// ### %matrix.transpose
 ///
+/// transpose _ (m:@mat _ k*l T) : @mat _ l*k T
+///
 /// transpose matrix
-// .ax %matrix.transpose: Π [k: .Nat, l: .Nat, T: *] -> %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_tranpose;
+.ax %matrix.transpose: Π [k: .Nat, l: .Nat, T: *] -> %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_tranpose;
 /// 
 /// 
 /// ### %matrix.id
+///
+/// id (k, m) : @mat _ (k,k) (Int m)
 ///
 /// the idendity matrix
 .ax %matrix.id: Π [k: .Nat, m: .Nat] -> %matrix.Mat (2,(k,k),(%Int m));
 /// 
 /// ### %matrix.read
+///
+/// read _ (mat, idx) : body_type
 ///
 /// a access to an element of the matrix
 /// (currently: arithmetic pointer access)
@@ -123,6 +122,8 @@
 /// 
 /// ### %matrix.insert
 ///
+/// insert (dims, sizes, type) (mat, idx, val) : mat
+///
 /// depending on matrix implementation needs mem monad
 /// as it is implemented as write
 /// for mutable body types, the monad should be liftet
@@ -130,7 +131,7 @@
 /// normalization:
 /// * with other inserts
 /// * with initialization
-// .ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), idx: «i: n; %Int S#i», val: T] -> %matrix.Mat (n,S,T), normalize_insert;
+.ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), idx: «i: n; %Int S#i», val: T] -> %matrix.Mat (n,S,T), normalize_insert;
 
 
 /*
