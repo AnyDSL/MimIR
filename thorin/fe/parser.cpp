@@ -215,8 +215,8 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
         case Tok::Tag::K_Type:      return parse_type();
         case Tok::Tag::K_Bool:      lex(); return world().type_bool();
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
-        case Tok::Tag::K_ff:        lex(); return world().lit_false();
-        case Tok::Tag::K_tt:        lex(); return world().lit_true();
+        case Tok::Tag::K_ff:        lex(); return world().lit_ff();
+        case Tok::Tag::K_tt:        lex(); return world().lit_tt();
         case Tok::Tag::T_Pi:        return parse_pi();
         case Tok::Tag::T_lam:       return parse_lam();
         case Tok::Tag::T_at:        return parse_var();
