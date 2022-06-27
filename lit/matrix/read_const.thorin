@@ -14,11 +14,11 @@
     .let I32 = %Int 4294967296;
     .let MT = (2, (3,3), I32);
     .let c = 5:I32;
-    .let m = %mat.constMat MT c;
-    .let f = %mat.read MT;
+    .let m = %matrix.constMat MT c;
+    .let f = %matrix.read MT;
     // .let idx : «2; (%Int 3)» = (0, 0);
     .let idx = ‹2:.Nat; 0:(%Int 3)›;
-    .let d = %mat.read MT (m, idx);
+    .let d = %matrix.read MT (m, idx);
     return (mem, d)
 };
 
