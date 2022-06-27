@@ -249,11 +249,11 @@ const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg, const D
     auto [a, b] = arg->projs<2>();
 
     if (auto result = fold<icmp, sub>(world, type, callee, a, b, dbg)) return result;
-    if (sub == icmp::f) return world.lit_false();
-    if (sub == icmp::t) return world.lit_true();
+    if (sub == icmp::f) return world.lit_ff();
+    if (sub == icmp::t) return world.lit_tt();
     if (a == b) {
-        if (sub == icmp::e) return world.lit_true();
-        if (sub == icmp::ne) return world.lit_false();
+        if (sub == icmp::e) return world.lit_tt();
+        if (sub == icmp::ne) return world.lit_ff();
     }
 
     return world.raw_app(callee, {a, b}, dbg);

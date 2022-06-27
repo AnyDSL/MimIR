@@ -91,8 +91,7 @@ Lam* Clos2SJLJ::get_throw(const Def* dom) {
         auto m2                = mem::op_store(m1, r, var);
         rbuf                   = core::op_bitcast(mem::type_ptr(mem::type_ptr(var->type())), rbuf);
         auto m3                = mem::op_store(m2, rbuf, r);
-        tlam->set_body(op_longjmp(m3, jbuf, tag));
-        tlam->set_filter(w.lit_false());
+        tlam->set(false, op_longjmp(m3, jbuf, tag));
         ignore_.emplace(tlam);
     }
     return tlam;

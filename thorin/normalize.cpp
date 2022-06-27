@@ -594,11 +594,11 @@ const Def* normalize_ICmp(const Def* type, const Def* c, const Def* arg, const D
     auto [a, b] = arg->projs<2>();
 
     if (auto result = fold<ICmp, op>(world, type, callee, a, b, dbg)) return result;
-    if (op == ICmp::_f) return world.lit_false();
-    if (op == ICmp::_t) return world.lit_true();
+    if (op == ICmp::_f) return world.lit_ff();
+    if (op == ICmp::_t) return world.lit_tt();
     if (a == b) {
-        if (op == ICmp::e) return world.lit_true();
-        if (op == ICmp::ne) return world.lit_false();
+        if (op == ICmp::e) return world.lit_tt();
+        if (op == ICmp::ne) return world.lit_ff();
     }
 
     return world.raw_app(callee, {a, b}, dbg);
@@ -611,8 +611,8 @@ const Def* normalize_RCmp(const Def* type, const Def* c, const Def* arg, const D
     auto [a, b] = arg->projs<2>();
 
     if (auto result = fold<RCmp, op>(world, type, callee, a, b, dbg)) return result;
-    if (op == RCmp::f) return world.lit_false();
-    if (op == RCmp::t) return world.lit_true();
+    if (op == RCmp::f) return world.lit_ff();
+    if (op == RCmp::t) return world.lit_tt();
 
     return world.raw_app(callee, {a, b}, dbg);
 }
@@ -755,8 +755,8 @@ const Def* normalize_PE(const Def* type, const Def* callee, const Def* arg, cons
     auto& world = type->world();
 
     if constexpr (op == PE::known) {
-        if (world.is_pe_done() || isa<Tag::PE>(PE::hlt, arg)) return world.lit_false();
-        if (arg->no_dep()) return world.lit_true();
+        if (world.is_pe_done() || isa<Tag::PE>(PE::hlt, arg)) return world.lit_ff();
+        if (arg->no_dep()) return world.lit_tt();
     } else {
         if (world.is_pe_done()) return arg;
     }

@@ -161,7 +161,7 @@ public:
     const Lam* lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg) {
         return unify<Lam>(2, pi, filter, body, dbg);
     }
-    const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_true(), body, dbg); }
+    const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_tt(), body, dbg); }
     ///@}
 
     /// @name App
@@ -282,8 +282,8 @@ public:
     }
 
     const Lit* lit_bool(bool val) { return data_.lit_bool_[size_t(val)]; }
-    const Lit* lit_false() { return data_.lit_bool_[0]; }
-    const Lit* lit_true() { return data_.lit_bool_[1]; }
+    const Lit* lit_ff() { return data_.lit_bool_[0]; }
+    const Lit* lit_tt() { return data_.lit_bool_[1]; }
     // clang-format off
     const Lit* lit_real(nat_t width, r64 val, const Def* dbg = {}) {
         switch (width) {
