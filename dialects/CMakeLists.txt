@@ -11,6 +11,8 @@ add_thorin_dialect(mem
         mem/mem.cpp
         mem/mem.h
         mem/normalizers.cpp
+    HEADER_DEPENDS
+        core
     INSTALL
 )
 
@@ -30,6 +32,8 @@ add_thorin_dialect(clos
         clos/lower_typed_clos.cpp
     DEPENDS
         mem
+    HEADER_DEPENDS
+        core
     INSTALL
 )
 

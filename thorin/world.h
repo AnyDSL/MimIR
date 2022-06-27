@@ -224,16 +224,12 @@ public:
     ///@}
 
     /// @name Extract
+    /// @sa core::extract_unsafe
     ///@{
     const Def* extract(const Def* d, const Def* i, const Def* dbg = {});
     const Def* extract(const Def* d, u64 a, u64 i, const Def* dbg = {}) { return extract(d, lit_int(a, i), dbg); }
     const Def* extract(const Def* d, u64 i, const Def* dbg = {}) { return extract(d, as_lit(d->arity()), i, dbg); }
-    const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
-        return extract_unsafe(d, lit_int(0_u64, i), dbg);
-    }
-    const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
-        return extract(d, op(Conv::u2u, type_int(as_lit(d->unfold_type()->arity())), i, dbg), dbg);
-    }
+
     /// Builds `(f, t)cond`.
     /// **Note** that select expects @p t as first argument and @p f as second one.
     const Def* select(const Def* t, const Def* f, const Def* cond, const Def* dbg = {}) {
@@ -242,6 +238,7 @@ public:
     ///@}
 
     /// @name Insert
+    /// @sa core::insert_unsafe
     ///@{
     const Def* insert(const Def* d, const Def* i, const Def* val, const Def* dbg = {});
     const Def* insert(const Def* d, u64 a, u64 i, const Def* val, const Def* dbg = {}) {
@@ -249,12 +246,6 @@ public:
     }
     const Def* insert(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
         return insert(d, as_lit(d->arity()), i, val, dbg);
-    }
-    const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert_unsafe(d, lit_int(0_u64, i), val, dbg);
-    }
-    const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
-        return insert(d, op(Conv::u2u, type_int(as_lit(d->unfold_type()->arity())), i), val, dbg);
     }
     ///@}
 

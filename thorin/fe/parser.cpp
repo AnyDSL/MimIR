@@ -10,6 +10,7 @@
 #include "thorin/dialects.h"
 #include "thorin/rewrite.h"
 
+#include "thorin/be/h/h.h"
 #include "thorin/util/array.h"
 #include "thorin/util/sys.h"
 
@@ -185,11 +186,10 @@ const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     return world().extract(lhs, rhs, track);
 }
 
-
 const Def* Parser::parse_insert() {
     eat(Tok::Tag::K_ins);
     auto track = tracker();
-    
+
     expect(Tok::Tag::D_paren_l, "opening paren for insert arguments");
 
     auto target = parse_expr("insert target");
@@ -494,6 +494,7 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
 }
 
 void Parser::parse_ax() {
+    using namespace std::string_view_literals;
     auto track = tracker();
     eat(Tok::Tag::K_ax);
     auto ax     = expect(Tok::Tag::M_ax, "name of an axiom");
@@ -503,9 +504,15 @@ void Parser::parse_ax() {
 
     auto [dialect, tag, sub] = *split;
 
-    auto& info   = bootstrapper_.axioms.emplace_back();
-    info.dialect = dialect;
-    info.tag     = tag;
+    if (!sub.empty()) err(ax.loc(), "definition of axiom '{}' must not have sub in tag name", ax);
+
+    auto [it, is_new] = bootstrapper_.axioms.emplace(ax_str, h::AxiomInfo{});
+    auto& [key, info] = *it;
+    if (is_new) {
+        info.dialect = dialect;
+        info.tag     = tag;
+        info.tag_id  = bootstrapper_.axioms.size() - 1;
+    }
 
     if (dialect != bootstrapper_.dialect()) {
         // TODO
@@ -516,18 +523,30 @@ void Parser::parse_ax() {
     if (bootstrapper_.axioms.size() >= std::numeric_limits<tag_t>::max())
         err(ax.loc(), "exceeded maxinum number of axioms in current dialect");
 
+    std::deque<std::deque<std::string>> new_subs;
     if (ahead().isa(Tok::Tag::D_paren_l)) {
         parse_list("tag list of an axiom", Tok::Tag::D_paren_l, [&]() {
-            auto& aliases = info.subs.emplace_back();
+            auto& aliases = new_subs.emplace_back();
             aliases.emplace_back(parse_sym("tag of an axiom"));
             while (accept(Tok::Tag::T_assign)) aliases.emplace_back(parse_sym("alias of an axiom tag"));
         });
     }
 
+    if (!is_new && new_subs.empty() && !info.subs.empty())
+        err(ax.loc(), "redeclaration of axiom '{}' without specifying new subs", ax);
+    else if (!is_new && !new_subs.empty() && info.subs.empty())
+        err(ax.loc(), "cannot extend subs of axiom '{}' which does not have subs", ax);
+
     expect(Tok::Tag::T_colon, "axiom");
-    auto type       = parse_expr("type of an axiom");
-    info.pi         = type->isa<Pi>() != nullptr;
-    info.normalizer = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
+    auto type = parse_expr("type of an axiom");
+    if (!is_new && info.pi != (type->isa<Pi>() != nullptr))
+        err(ax.loc(), "all declarations of axiom '{}' have to be PIs if any is", ax);
+    info.pi = type->isa<Pi>() != nullptr;
+
+    auto normalizer_name = (accept(Tok::Tag::T_comma) ? parse_sym("normalizer of an axiom") : Sym()).to_string();
+    if (!is_new && !(info.normalizer.empty() || normalizer_name.empty()) && info.normalizer != normalizer_name)
+        err(ax.loc(), "all declarations of axiom '{}' have use the same normalizer name", ax);
+    info.normalizer = normalizer_name;
 
     auto normalizer = [this](dialect_t d, tag_t t, sub_t s) -> Def::NormalizeFn {
         if (normalizers_)
@@ -536,13 +555,13 @@ void Parser::parse_ax() {
     };
 
     dialect_t d = *Axiom::mangle(dialect);
-    tag_t t     = bootstrapper_.axioms.size() - 1;
-    sub_t s     = 0;
-    if (info.subs.empty()) {
+    tag_t t     = info.tag_id;
+    sub_t s     = info.subs.size();
+    if (new_subs.empty()) {
         auto axiom = world().axiom(normalizer(d, t, 0), type, d, t, 0, track.named(ax.sym()));
         insert(ax.sym(), axiom);
     } else {
-        for (const auto& sub : info.subs) {
+        for (const auto& sub : new_subs) {
             auto dbg   = track.named(ax_str + "."s + sub.front());
             auto axiom = world().axiom(normalizer(d, t, s), type, d, t, s, dbg);
             for (auto& alias : sub) {
@@ -551,6 +570,7 @@ void Parser::parse_ax() {
             }
             ++s;
         }
+        info.subs.insert(info.subs.end(), new_subs.begin(), new_subs.end());
     }
     expect(Tok::Tag::T_semicolon, "end of an axiom");
 }

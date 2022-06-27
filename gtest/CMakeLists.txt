@@ -3,7 +3,6 @@ add_executable(thorin-gtest
     helpers.h
     lexer.cpp
     test.cpp
-    for_ax.cpp
     restricted_dep_types.cpp
 )
 

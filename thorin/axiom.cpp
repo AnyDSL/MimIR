@@ -84,7 +84,7 @@ std::optional<std::array<std::string_view, 3>> Axiom::split(std::string_view s) 
     if (!mangle(dialect)) return {};
 
     auto tag = sub_view(s, dot + 1);
-    if (auto dot = tag.find('.')) {
+    if (auto dot = tag.find('.'); dot != std::string_view::npos) {
         auto sub = sub_view(tag, dot + 1);
         tag      = sub_view(tag, 0, dot);
         return {

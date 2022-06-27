@@ -1,0 +1,20 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -e thorin %s -o %t -e ll | FileCheck %s
+// RUN: clang -c %t.ll -o %t -Wno-override-module
+
+.import core;
+
+.lam .extern bitcast_bitcast: .Cn [i :%mem.Ptr (%Int 256, 0), return : .Cn %Int 4294967296] = {
+    .ff,
+    return (%core.bitcast (%Int 4294967296, .Nat) (%core.bitcast (.Nat, %mem.Ptr (%Int 256, 0)) i))
+};
+
+// CHECK-DAG: bitcast_bitcast: .Cn [%mem.Ptr ((%Int 256), 0:.Nat), .Cn (%Int 4294967296)], @(_[[valId:[0-9]+]], _[[retId:[0-9]+]]) = {
+// CHECK-DAG: .let _[[castedId:[0-9]+]]: (%Int 4294967296) = %core.bitcast ((%Int 4294967296), %mem.Ptr ((%Int 256), 0:.Nat)) _[[valId]];
+// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] _[[castedId]];
+// CHECK-DAG: _[[appId]]
+
+
+// CHECK-DAG: _[[etaId]]: .Cn (%Int 4294967296), @_[[etaVar:[0-9]+]] = {
+// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] _[[etaVar]];
+// CHECK-DAG: _[[appRetId]]
