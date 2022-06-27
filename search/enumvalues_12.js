@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['s2r_0',['s2r',['../namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa588c850cce77827aeaa0468d9c1c8ff4',1,'thorin']]],
-  ['s2s_1',['s2s',['../namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa56c61ed958d9e124f3c2767637147a0c',1,'thorin']]],
+  ['s2r_0',['s2r',['../namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa588c850cce77827aeaa0468d9c1c8ff4',1,'thorin::s2r()'],['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a588c850cce77827aeaa0468d9c1c8ff4',1,'thorin::core::s2r()']]],
+  ['s2s_1',['s2s',['../namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa56c61ed958d9e124f3c2767637147a0c',1,'thorin::s2s()'],['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a56c61ed958d9e124f3c2767637147a0c',1,'thorin::core::s2s()']]],
   ['sdiv_2',['sdiv',['../namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309ea2ccfa40273acf334bf92c6132f66f779',1,'thorin::core']]],
   ['sg_3',['sg',['../namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9a5dae429688af1c521ad87ac394192c6d',1,'thorin::sg()'],['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5dae429688af1c521ad87ac394192c6d',1,'thorin::core::sg()']]],
   ['sge_4',['sge',['../namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9a2a2ab400d355ac301859e4abb5432138',1,'thorin::sge()'],['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2a2ab400d355ac301859e4abb5432138',1,'thorin::core::sge()']]],

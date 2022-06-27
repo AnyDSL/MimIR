@@ -27,6 +27,19 @@ var build_2dialects_2core_8h =
       [ "_or", "build_2dialects_2core_8h.html#a70895f76bd16fdb3db2c75dd1fd38978ac342b4a20db36ff629c69ebad289ea76", null ],
       [ "t", "build_2dialects_2core_8h.html#a70895f76bd16fdb3db2c75dd1fd38978ae358efa489f58062f10dd7316b65649e", null ]
     ] ],
+    [ "bitcast", "build_2dialects_2core_8h.html#acf483c3cca736fbc9da7818308229c4d", [
+      [ "Axiom_Id", "build_2dialects_2core_8h.html#acf483c3cca736fbc9da7818308229c4da51e0df3ca5c430d39d775ec66f8c6f45", null ]
+    ] ],
+    [ "conv", "build_2dialects_2core_8h.html#a016fae77d6f5857b429ceb5b433c4937", [
+      [ "Axiom_Base", "build_2dialects_2core_8h.html#a016fae77d6f5857b429ceb5b433c4937a7ffa3232741894dfa13074c69ef34d64", null ],
+      [ "s2s", "build_2dialects_2core_8h.html#a016fae77d6f5857b429ceb5b433c4937a56c61ed958d9e124f3c2767637147a0c", null ],
+      [ "u2u", "build_2dialects_2core_8h.html#a016fae77d6f5857b429ceb5b433c4937a67a4340d7a68a1c8f6b8ccc2f4972b64", null ],
+      [ "s2r", "build_2dialects_2core_8h.html#a016fae77d6f5857b429ceb5b433c4937a588c850cce77827aeaa0468d9c1c8ff4", null ],
+      [ "u2r", "build_2dialects_2core_8h.html#a016fae77d6f5857b429ceb5b433c4937ac200b49958a50fdd99489e6423235d58", null ],
+      [ "r2s", "build_2dialects_2core_8h.html#a016fae77d6f5857b429ceb5b433c4937aea350c7fd00b82fa94ce264a386a57cb", null ],
+      [ "r2u", "build_2dialects_2core_8h.html#a016fae77d6f5857b429ceb5b433c4937a746a49b2e21a5bcacd046f0c02ab6022", null ],
+      [ "r2r", "build_2dialects_2core_8h.html#a016fae77d6f5857b429ceb5b433c4937a5e8fe2a329c8ef1e555d617feda85540", null ]
+    ] ],
     [ "div", "build_2dialects_2core_8h.html#abaf61e089dbdb52b9c30b4b166f8309e", [
       [ "Axiom_Base", "build_2dialects_2core_8h.html#abaf61e089dbdb52b9c30b4b166f8309ea7ffa3232741894dfa13074c69ef34d64", null ],
       [ "sdiv", "build_2dialects_2core_8h.html#abaf61e089dbdb52b9c30b4b166f8309ea2ccfa40273acf334bf92c6132f66f779", null ],
@@ -97,6 +110,8 @@ var build_2dialects_2core_8h =
       [ "shl", "build_2dialects_2core_8h.html#ab1f42e21a4de8bd328e18b8006b9f74fabc192716b0e1d5c96a67961dd0d3f9da", null ]
     ] ],
     [ "normalize_bit2", "build_2dialects_2core_8h.html#a1ab1c16fd0afc0203da7b84522fd8f32", null ],
+    [ "normalize_bitcast", "build_2dialects_2core_8h.html#a7e8699bbcdc653aa377018adadbd2473", null ],
+    [ "normalize_conv", "build_2dialects_2core_8h.html#a4a209e310669bbbe6bf282f8f3490618", null ],
     [ "normalize_div", "build_2dialects_2core_8h.html#a080b2b8489209840d2529047a4d7404c", null ],
     [ "normalize_icmp", "build_2dialects_2core_8h.html#accc185c1a4e10a22e2a8b619f87b8754", null ],
     [ "normalize_shr", "build_2dialects_2core_8h.html#a3a1b7ea1e0c793bd5c8bba896d6c8d91", null ],
@@ -105,6 +120,10 @@ var build_2dialects_2core_8h =
     [ "operator&", "build_2dialects_2core_8h.html#a4d8a5cd55b254a365d4e7f01eaa5e676", null ],
     [ "operator&", "build_2dialects_2core_8h.html#a66ed75922fafaac4140ef9fdfdc87cbf", null ],
     [ "operator&", "build_2dialects_2core_8h.html#aeb257a381a67c26c3443427c161e70a7", null ],
+    [ "operator&", "build_2dialects_2core_8h.html#a61aecd50b2cc596187308ec1f35b057d", null ],
+    [ "operator&", "build_2dialects_2core_8h.html#a7d456c49a4abcab10d541aafc729be5e", null ],
+    [ "operator&", "build_2dialects_2core_8h.html#aec5b3d7a3129c16ed10df9b7ecf166ea", null ],
+    [ "operator&", "build_2dialects_2core_8h.html#a2510449975e1e07f92b8a961499b6ad4", null ],
     [ "operator&", "build_2dialects_2core_8h.html#ac6972c6f88bb8ef61fe6f9cc4844f783", null ],
     [ "operator&", "build_2dialects_2core_8h.html#a545051cff523408546107bbcae9c40f0", null ],
     [ "operator&", "build_2dialects_2core_8h.html#a97a54d2f272e1b439ff1ffd8572c788c", null ],
@@ -117,6 +136,8 @@ var build_2dialects_2core_8h =
     [ "operator&", "build_2dialects_2core_8h.html#a88eac373445781545ee70bdb324ae0e2", null ],
     [ "operator==", "build_2dialects_2core_8h.html#aebbcedd88ab50ece08d52b49163afb1b", null ],
     [ "operator==", "build_2dialects_2core_8h.html#aaaa13bb0ba6b6dfe6eff262e605a2c07", null ],
+    [ "operator==", "build_2dialects_2core_8h.html#ae08a1448c1daa7bee15e012ba72504b5", null ],
+    [ "operator==", "build_2dialects_2core_8h.html#a4aec5cf40a455d792a8f9764815326bb", null ],
     [ "operator==", "build_2dialects_2core_8h.html#aeab498f128b5971760b77669353c7546", null ],
     [ "operator==", "build_2dialects_2core_8h.html#af7189a73a7e154dd54e31a45b377d450", null ],
     [ "operator==", "build_2dialects_2core_8h.html#aec9278991bbb51f4965ba7f559779079", null ],
@@ -126,6 +147,10 @@ var build_2dialects_2core_8h =
     [ "operator|", "build_2dialects_2core_8h.html#a1e83e0c5a577921f38160b25979abb0f", null ],
     [ "operator|", "build_2dialects_2core_8h.html#a0f653b62ae72a612ab61a03ec83bfd0a", null ],
     [ "operator|", "build_2dialects_2core_8h.html#ae5e3d158f826773b7f4529c50db84b81", null ],
+    [ "operator|", "build_2dialects_2core_8h.html#a3cf605949fb191290a7990735792187e", null ],
+    [ "operator|", "build_2dialects_2core_8h.html#a1f7a91cba2a005471e4eeda37fac2ff6", null ],
+    [ "operator|", "build_2dialects_2core_8h.html#a9b7bbd3d3b1f66db12683777a737c833", null ],
+    [ "operator|", "build_2dialects_2core_8h.html#a225da658f4bbbd61dbbe048d16a245d7", null ],
     [ "operator|", "build_2dialects_2core_8h.html#abb042804efc7aab7a955c30e67e43f82", null ],
     [ "operator|", "build_2dialects_2core_8h.html#a472aa9a0adbb1409b4f11b32efc5e885", null ],
     [ "operator|", "build_2dialects_2core_8h.html#ad8be529f38b9f99c2613089ad4506bce", null ],

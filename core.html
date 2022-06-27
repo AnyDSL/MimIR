@@ -115,6 +115,8 @@ $(document).ready(function(){initNavTree('core.html',''); initResizable(); });
 <li class="level2"><a href="#autotoc_md58">%core.shr</a></li>
 <li class="level2"><a href="#autotoc_md59">%core.wrap</a></li>
 <li class="level2"><a href="#autotoc_md60">%core.div</a></li>
+<li class="level2"><a href="#autotoc_md61">%core.conv</a></li>
+<li class="level2"><a href="#autotoc_md62">%core.bitcast</a></li>
 </ul>
 </li>
 </ul>
@@ -307,6 +309,17 @@ Operations</h1>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md60"></a>
 %core.div</h2>
 <div class="fragment"><div class="line">.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -&gt; [%mem.M, %Int w, %Int w] -&gt; [%mem.M, %Int w], normalize_div;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md61"></a>
+%core.conv</h2>
+<p >Bit width (and signedness) conversion for <code>Int -&gt; Int</code> and <code>Real -&gt; Real</code> as well as <code>Real -&gt; Int</code> and <code>Int -&gt; Real</code> conversions.</p>
+<div class="fragment"><div class="line">.ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -&gt; %Int sw -&gt; %Int dw, normalize_conv;</div>
+<div class="line">.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -&gt; %Int sw -&gt; %Real dw, normalize_conv;</div>
+<div class="line">.ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -&gt; %Real sw -&gt; %Int dw, normalize_conv;</div>
+<div class="line">.ax %core.conv(r2r): Π [dw: .Nat, sw: .Nat] -&gt; %Real sw -&gt; %Real dw, normalize_conv;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md62"></a>
+%core.bitcast</h2>
+<p >Bitcast to reinterpret a value as another type. Can be used for pointer / integer conversions as well as integer / nat conversions.</p>
+<div class="fragment"><div class="line">.ax %core.bitcast: Π [D: *, S: *] -&gt; S -&gt; D, normalize_bitcast;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
