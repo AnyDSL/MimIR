@@ -23,8 +23,6 @@ enum Backends {
     Dot, H, LL, Md, Thorin, Num_Backends
 };
 
-static const auto version = "thorin command-line utility version " THORIN_VER "\n";
-
 static std::string be2str(size_t be) {
     switch (be) {
         case Dot:    return "dot"s;
@@ -38,6 +36,7 @@ static std::string be2str(size_t be) {
 
 int main(int argc, char** argv) {
     try {
+        static const auto version             = "thorin command-line utility version " THORIN_VER "\n";
         static constexpr const char* Backends = "dot|h|ll|md|thorin";
 
         bool show_help    = false;
@@ -71,6 +70,7 @@ int main(int argc, char** argv) {
             | lyra::opt(output[Md    ], "file"  )      ["--output-md"    ]("Specify the md output file.")
             | lyra::opt(output[Thorin], "file"  )      ["--output-thorin"]("Specify the thorin output file.")
             | lyra::arg(input,          "file"  )                         ("Input file.");
+        // clang-format on
 
         if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
 
@@ -85,15 +85,13 @@ int main(int argc, char** argv) {
         }
 
         for (const auto& e : emitters) {
-            if (false) {}
-            else if (e == "dot")    emit[Dot   ] = true;
-            else if (e == "h" )     emit[H     ] = true;
-            else if (e == "ll")     emit[LL    ] = true;
-            else if (e == "md")     emit[Md    ] = true;
-            else if (e == "thorin") emit[Thorin] = true;
-            else unreachable();
+            for (size_t be = 0; be != Num_Backends; ++be) {
+                if (e == be2str(be)) {
+                    emit[be] = true;
+                    break;
+                }
+            }
         }
-        // clang-format on
 
         // we always need core and mem, as long as we are not in bootstrap mode..
         if (!emit[H]) dialect_names.insert(dialect_names.end(), {"core", "mem"});
