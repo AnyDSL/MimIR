@@ -1,5 +1,12 @@
 var NAVTREEINDEX20 =
 {
+"thorin_2normalize_8h.html#a581ce706121ebc10658edc271e1e73d1":[6,0,4,22,9],
+"thorin_2normalize_8h.html#a7b2c191adcf4003ead9eb40077fcd955":[6,0,4,22,6],
+"thorin_2normalize_8h.html#a882d43a6d2bbb9836e230c0be77fa0ff":[6,0,4,22,17],
+"thorin_2normalize_8h.html#a9dea96748c32d7e675ee36c955025f19":[6,0,4,22,16],
+"thorin_2normalize_8h.html#aa171f9cec4330ed2febd4c8d59c9d4e7":[6,0,4,22,23],
+"thorin_2normalize_8h.html#ab1296b3aacd3bc151b5589a9d276bd8d":[6,0,4,22,22],
+"thorin_2normalize_8h.html#abcee9768daea1d32c3270ecb1fea94da":[6,0,4,22,18],
 "thorin_2normalize_8h.html#ac5bfac7920f93ad995b9541acf209563":[6,0,4,22,11],
 "thorin_2normalize_8h.html#aca6c2c2c35f79f944855e950ee08ea61":[6,0,4,22,14],
 "thorin_2normalize_8h.html#add3fcc6464bc5d53e3e4119b0a16e334":[6,0,4,22,10],

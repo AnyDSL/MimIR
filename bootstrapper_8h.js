@@ -1,4 +1,4 @@
-var h_8h =
+var bootstrapper_8h =
 [
     [ "thorin::h::AxiomInfo", "namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo", [
       [ "dialect", "namespacethorin_1_1h.html#a6fbdd72cee4708e10cfdaa687dc990ed", null ],

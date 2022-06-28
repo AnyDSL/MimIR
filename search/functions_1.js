@@ -17,7 +17,8 @@ var searchData=
   ['bot_14',['bot',['../classthorin_1_1World.html#a0eedd08743b630e231af89f337799e47',1,'thorin::World']]],
   ['bound_15',['bound',['../classthorin_1_1Scope.html#afe87447a90844ef7ccc95eff57ac4720',1,'thorin::Scope::bound(const Def *def) const'],['../classthorin_1_1Scope.html#ab36494ecdcd1afb09ec0f01ea0daec30',1,'thorin::Scope::bound() const'],['../classthorin_1_1World.html#a22b93308e80d36882e9260a5c3cb0ffe',1,'thorin::World::bound()']]],
   ['bound_16',['Bound',['../classthorin_1_1Bound.html#a1e58ebc1577c4dcb521a7f18b3ff8e54',1,'thorin::Bound::Bound(node_t node, const Def *type, Defs ops, const Def *dbg)'],['../classthorin_1_1Bound.html#a42f249066795560a0355f6a14ad2c2e7',1,'thorin::Bound::Bound(node_t node, const Def *type, size_t size, const Def *dbg)']]],
-  ['branch_17',['branch',['../classthorin_1_1Lam.html#af8197709cf87785a99f637979af5d3ae',1,'thorin::Lam']]],
-  ['branchcloselim_18',['BranchClosElim',['../classthorin_1_1clos_1_1BranchClosElim.html#a746d1c1513afab92b721d0ab6f08ce69',1,'thorin::clos::BranchClosElim']]],
-  ['breakpoint_19',['breakpoint',['../classthorin_1_1World.html#af3f8df5247a26f483260eb5a96d3870a',1,'thorin::World::breakpoint()'],['../namespacethorin.html#a7ec2df0cc38989e607e76de0491ef48b',1,'thorin::breakpoint()']]]
+  ['boundelim_17',['BoundElim',['../classthorin_1_1BoundElim.html#ad617a83a2899597b2f27bdf5775763c3',1,'thorin::BoundElim']]],
+  ['branch_18',['branch',['../classthorin_1_1Lam.html#af8197709cf87785a99f637979af5d3ae',1,'thorin::Lam']]],
+  ['branchcloselim_19',['BranchClosElim',['../classthorin_1_1clos_1_1BranchClosElim.html#a746d1c1513afab92b721d0ab6f08ce69',1,'thorin::clos::BranchClosElim']]],
+  ['breakpoint_20',['breakpoint',['../classthorin_1_1World.html#af3f8df5247a26f483260eb5a96d3870a',1,'thorin::World::breakpoint()'],['../namespacethorin.html#a7ec2df0cc38989e607e76de0491ef48b',1,'thorin::breakpoint()']]]
 ];

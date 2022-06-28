@@ -193,8 +193,8 @@ Static Public Member Functions</h2></td></tr>
 <div class="line"><span class="stringliteral">Callee     Non_Callee_1 &lt;-- Pos: Either multiple callees, **or** exactly one non-callee are okay.</span></div>
 <div class="line"><span class="stringliteral">      \   /</span></div>
 <div class="line"><span class="stringliteral">       Bot              &lt;-- Never seen.</span></div>
-<div class="ttc" id="aclassthorin_1_1Lam_html"><div class="ttname"><a href="classthorin_1_1Lam.html">thorin::Lam</a></div><div class="ttdef"><b>Definition:</b> <a href="lam_8h_source.html#l00052">lam.h:52</a></div></div>
-<div class="ttc" id="anamespacethorin_html_aebc69de3550b550ff1283c2ad8527ac1"><div class="ttname"><a href="namespacethorin.html#aebc69de3550b550ff1283c2ad8527ac1">thorin::as</a></div><div class="ttdeci">Match&lt; Tag2Enum&lt; t &gt;, Tag2Def&lt; t &gt; &gt; as(const Def *d)</div><div class="ttdef"><b>Definition:</b> <a href="axiom_8h_source.html#l00150">axiom.h:150</a></div></div>
+<div class="ttc" id="aclassthorin_1_1Lam_html"><div class="ttname"><a href="classthorin_1_1Lam.html">thorin::Lam</a></div><div class="ttdef"><b>Definition:</b> <a href="lam_8h_source.html#l00051">lam.h:51</a></div></div>
+<div class="ttc" id="anamespacethorin_html_aebc69de3550b550ff1283c2ad8527ac1"><div class="ttname"><a href="namespacethorin.html#aebc69de3550b550ff1283c2ad8527ac1">thorin::as</a></div><div class="ttdeci">Match&lt; Tag2Enum&lt; t &gt;, Tag2Def&lt; t &gt; &gt; as(const Def *d)</div><div class="ttdef"><b>Definition:</b> <a href="axiom_8h_source.html#l00149">axiom.h:149</a></div></div>
 </div><!-- fragment --><ul>
 <li>EtaExp::expand_ trackes if a <a class="el" href="classthorin_1_1Lam.html">Lam</a> is the top element.</li>
 <li>If it's not within EtaExp::expand_, it's either <code><a class="el" href="structthorin_1_1Pos.html">Pos</a></code> or <code>Bot</code>. But there is no need to differentiate this any further.</li>
@@ -248,7 +248,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p >Performs η-expansion: <code>f -&gt; λx.f x</code>, if <code>f</code> is a <a class="el" href="classthorin_1_1Lam.html">Lam</a> with more than one user and does not appear in callee position. </p>
 <p >This rule is a generalization of critical edge elimination. It gives other <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>es such as SSAConstr the opportunity to change <code>f</code>'s signature (e.g. adding or removingp <a class="el" href="classthorin_1_1Var.html">Var</a>s). </p>
 
-<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00014">14</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00013">13</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="aebcfee1cdce37b4a88dc59e1fce54b84" name="aebcfee1cdce37b4a88dc59e1fce54b84"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aebcfee1cdce37b4a88dc59e1fce54b84">&#9670;&nbsp;</a></span>Data</h2>
@@ -262,7 +262,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00044">44</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00043">43</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
 
 </div>
 </div>
@@ -283,7 +283,7 @@ Additional Inherited Members</h2></td></tr>
 <tr><td class="fieldname"><a id="a156b61a8e9d0843a3e598adb259c7abda0bd37ac73008a3cf79032139aece82cf" name="a156b61a8e9d0843a3e598adb259c7abda0bd37ac73008a3cf79032139aece82cf"></a>Non_Callee_1&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00041">41</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00040">40</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
 
 </div>
 </div>
@@ -322,7 +322,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00016">16</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00015">15</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
 
 </div>
 </div>
@@ -372,7 +372,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="eta__exp_8cpp_source.html#l00007">7</a> of file <a class="el" href="eta__exp_8cpp_source.html">eta_exp.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="eta__exp_8h_source.html#l00023">new2old()</a>.</p>
+<p class="reference">References <a class="el" href="eta__exp_8h_source.html#l00022">new2old()</a>.</p>
 
 </div>
 </div>
@@ -410,7 +410,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00023">23</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00022">22</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="eta__exp_8cpp_source.html#l00007">new2old()</a>, and <a class="el" href="clos__conv__prep_8cpp_source.html#l00030">thorin::clos::ClosConvPrep::scope()</a>.</p>
 
@@ -439,7 +439,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00045">45</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00044">44</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
 
 </div>
 </div>
@@ -466,9 +466,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00046">46</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00045">45</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="eta__exp_8h_source.html#l00042">pos2str()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="eta__exp_8h_source.html#l00041">pos2str()</a>.</p>
 
 </div>
 </div>
@@ -496,9 +496,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00042">42</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00041">41</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
 
-<p class="reference">References <a class="el" href="eta__exp_8h_source.html#l00041">Callee</a>, and <a class="el" href="eta__exp_8h_source.html#l00046">pos()</a>.</p>
+<p class="reference">References <a class="el" href="eta__exp_8h_source.html#l00040">Callee</a>, and <a class="el" href="eta__exp_8h_source.html#l00045">pos()</a>.</p>
 
 </div>
 </div>
@@ -526,9 +526,9 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00022">22</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="eta__exp_8h_source.html#l00021">21</a> of file <a class="el" href="eta__exp_8h_source.html">eta_exp.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00080">thorin::Pass::proxy()</a>, and <a class="el" href="lam_8h_source.html#l00069">thorin::Lam::type()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00079">thorin::Pass::proxy()</a>, and <a class="el" href="lam_8h_source.html#l00068">thorin::Lam::type()</a>.</p>
 
 </div>
 </div>
