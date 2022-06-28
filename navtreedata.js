@@ -26,12 +26,12 @@ var NAVTREE =
 [
   [ "Thorin", "index.html", [
     [ "Introduction", "index.html", [
-      [ "Building", "index.html#autotoc_md40", [
-        [ "Install", "index.html#autotoc_md41", null ],
-        [ "Build Switches", "index.html#autotoc_md42", null ],
-        [ "Tests", "index.html#autotoc_md43", null ]
+      [ "Building", "index.html#autotoc_md39", [
+        [ "Install", "index.html#autotoc_md40", null ],
+        [ "Build Switches", "index.html#autotoc_md41", null ],
+        [ "Tests", "index.html#autotoc_md42", null ]
       ] ],
-      [ "Dependencies", "index.html#autotoc_md44", null ]
+      [ "Dependencies", "index.html#autotoc_md43", null ]
     ] ],
     [ "Documentation", "usergroup0.html", [
       [ "Command-Line Reference", "cli.html", null ],
@@ -41,10 +41,10 @@ var NAVTREE =
       [ "Passes", "passes.html", null ]
     ] ],
     [ "Dialects", "usergroup1.html", [
-      [ "mem", "mem.html", null ],
+      [ "affine", "affine.html", null ],
       [ "clos", "clos.html", null ],
       [ "core", "core.html", null ],
-      [ "affine", "affine.html", null ]
+      [ "mem", "mem.html", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],

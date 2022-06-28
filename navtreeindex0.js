@@ -1,6 +1,6 @@
 var NAVTREEINDEX0 =
 {
-"affine.html":[2,3],
+"affine.html":[2,0],
 "affine_2autogen_8h.html":[6,0,3,0,0,0],
 "affine_2autogen_8h.html#a073c117a1c8c1d35dfdf6d208ca76692":[6,0,3,0,0,0,2],
 "affine_2autogen_8h.html#a1e14147737b461e2500789f7b6757ad6":[6,0,3,0,0,0,5],
