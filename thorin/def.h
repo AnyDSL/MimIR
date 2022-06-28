@@ -1,5 +1,4 @@
-#ifndef THORIN_DEF_H
-#define THORIN_DEF_H
+#pragma once
 
 #include <optional>
 #include <vector>
@@ -644,5 +643,3 @@ hash_t UseHash::operator()(Use use) const { return hash_combine(hash_begin(u16(u
 //------------------------------------------------------------------------------
 
 } // namespace thorin
-
-#endif
