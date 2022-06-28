@@ -23,9 +23,9 @@ static const auto version = "thorin command-line utility version " THORIN_VER "\
 
 int main(int argc, char** argv) {
     try {
-        static constexpr const char* Backends = "thorin|h|md|ll|dot";
+        static constexpr const char* Backends = "dot|h|ll|md|thorin";
 
-        std::string input, prefix;
+        std::string input, prefix, output_dot, output_h, output_ll, output_md, output_thorin;
         std::string clang = sys::find_cmd("clang");
         std::vector<std::string> dialect_names, dialect_paths, emitters;
         std::vector<size_t> breakpoints;
@@ -44,17 +44,22 @@ int main(int argc, char** argv) {
         // clang-format off
         auto cli = lyra::cli()
             | lyra::help(show_help)
-            | lyra::opt(show_version             )["-v"]["--version"     ]("Display version info and exit.")
-            | lyra::opt(clang,         "clang"   )["-c"]["--clang"       ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
-            | lyra::opt(dialect_names, "dialect" )["-d"]["--dialect"     ]("Dynamically load dialect [WIP].")
-            | lyra::opt(dialect_paths, "path"    )["-D"]["--dialect-path"]("Path to search dialects in.")
-            | lyra::opt(emitters,      Backends  )["-e"]["--emit"        ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("thorin", "h", "md", "ll", "dot")
-            | lyra::opt(inc_verbose              )["-V"]["--verbose"     ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
+            | lyra::opt(show_version            )["-v"]["--version"      ]("Display version info and exit.")
+            | lyra::opt(clang,         "clang"  )["-c"]["--clang"        ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
+            | lyra::opt(dialect_names, "dialect")["-d"]["--dialect"      ]("Dynamically load dialect [WIP].")
+            | lyra::opt(dialect_paths, "path"   )["-D"]["--dialect-path" ]("Path to search dialects in.")
+            | lyra::opt(emitters,      Backends )["-e"]["--emit"         ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("dot", "h", "ll", "md", "thorin")
+            | lyra::opt(inc_verbose             )["-V"]["--verbose"      ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
 #if THORIN_ENABLE_CHECKS
-            | lyra::opt(breakpoints,   "gid"     )["-b"]["--break"       ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
+            | lyra::opt(breakpoints,   "gid"    )["-b"]["--break"        ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
 #endif
-            | lyra::opt(prefix,        "prefix"  )["-o"]["--output"      ]("Prefix used for various output files.")
-            | lyra::arg(input,         "file"    )                        ("Input file.");
+            | lyra::opt(prefix,        "prefix" )["-o"]["--output"       ]("Default prefix used for various output files.")
+            | lyra::opt(output_dot,    "file"   )      ["--output-dot"   ]("Specify the dot output file.")
+            | lyra::opt(output_h,      "file"   )      ["--output-h"     ]("Specify the h output file.")
+            | lyra::opt(output_ll,     "file"   )      ["--output-ll"    ]("Specify the ll output file.")
+            | lyra::opt(output_md,     "file"   )      ["--output-md"    ]("Specify the md output file.")
+            | lyra::opt(output_thorin, "file"   )      ["--output-thorin"]("Specify the thorin output file.")
+            | lyra::arg(input,         "file"   )                         ("Input file.");
 
         if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
 
@@ -118,13 +123,15 @@ int main(int argc, char** argv) {
         }
 
         std::ofstream md;
-        if (emit_md) md.open(prefix + ".md");
+        if (output_md.empty()) output_md = prefix + ".md";
+        if (emit_md) md.open(output_md);
 
         Parser parser(world, input, ifs, dialect_paths, &normalizers, emit_md ? &md : nullptr);
         parser.parse_module();
 
         if (emit_h) {
-            std::ofstream h(prefix + ".h");
+            if (output_h.empty()) output_h = prefix + ".h";
+            std::ofstream h(output_h);
             parser.bootstrap(h);
         }
 
@@ -133,16 +140,22 @@ int main(int argc, char** argv) {
 
         optimize(world, builder);
 
-        if (emit_thorin) world.dump();
+        if (emit_thorin) {
+            if (output_thorin.empty()) output_thorin = prefix + ".thorin";
+            std::ofstream thorin(output_thorin);
+            thorin << world << std::endl;
+        }
 
         if (emit_dot) {
-            std::ofstream ofs(prefix + ".dot");
+            if (output_dot.empty()) output_dot = prefix + ".dot";
+            std::ofstream ofs(output_dot);
             dot::emit(world, ofs);
         }
 
         if (emit_ll) {
+            if (output_ll.empty()) output_ll = prefix + ".ll";
             if (auto it = backends.find("ll"); it != backends.end()) {
-                std::ofstream ofs(prefix + ".ll");
+                std::ofstream ofs(output_ll);
                 it->second(world, ofs);
             } else
                 errln("error: 'll' emitter not loaded. Try loading 'mem' dialect.");
