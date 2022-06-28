@@ -140,6 +140,17 @@ struct Fold<icmp, cmp, w> {
     }
 };
 
+// clang-format off
+template<conv op, nat_t, nat_t> struct FoldConv {};
+template<nat_t dw, nat_t sw> struct FoldConv<conv::s2s, dw, sw> { static Res run(u64 src) { return w2s<dw>(get<w2s<sw>>(src)); } };
+template<nat_t dw, nat_t sw> struct FoldConv<conv::u2u, dw, sw> { static Res run(u64 src) { return w2u<dw>(get<w2u<sw>>(src)); } };
+template<nat_t dw, nat_t sw> struct FoldConv<conv::s2r, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2s<sw>>(src)); } };
+template<nat_t dw, nat_t sw> struct FoldConv<conv::u2r, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2u<sw>>(src)); } };
+template<nat_t dw, nat_t sw> struct FoldConv<conv::r2s, dw, sw> { static Res run(u64 src) { return w2s<dw>(get<w2r<sw>>(src)); } };
+template<nat_t dw, nat_t sw> struct FoldConv<conv::r2u, dw, sw> { static Res run(u64 src) { return w2u<dw>(get<w2r<sw>>(src)); } };
+template<nat_t dw, nat_t sw> struct FoldConv<conv::r2r, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2r<sw>>(src)); } };
+// clang-format on
+
 template<class AxTag>
 static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
     static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
@@ -238,11 +249,11 @@ const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg, const D
     auto [a, b] = arg->projs<2>();
 
     if (auto result = fold<icmp, sub>(world, type, callee, a, b, dbg)) return result;
-    if (sub == icmp::f) return world.lit_false();
-    if (sub == icmp::t) return world.lit_true();
+    if (sub == icmp::f) return world.lit_ff();
+    if (sub == icmp::t) return world.lit_tt();
     if (a == b) {
-        if (sub == icmp::e) return world.lit_true();
-        if (sub == icmp::ne) return world.lit_false();
+        if (sub == icmp::e) return world.lit_tt();
+        if (sub == icmp::ne) return world.lit_ff();
     }
 
     return world.raw_app(callee, {a, b}, dbg);
@@ -532,6 +543,81 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
     }
 
     return world.raw_app(callee, {mem, a, b}, dbg);
+}
+
+// clang-format off
+#define TABLE(m) m( 1,  1) m( 1,  8) m( 1, 16) m( 1, 32) m( 1, 64) \
+                 m( 8,  1) m( 8,  8) m( 8, 16) m( 8, 32) m( 8, 64) \
+                 m(16,  1) m(16,  8) m(16, 16) m(16, 32) m(16, 64) \
+                 m(32,  1) m(32,  8) m(32, 16) m(32, 32) m(32, 64) \
+                 m(64,  1) m(64,  8) m(64, 16) m(64, 32) m(64, 64)
+// clang-format on
+
+template<nat_t min_sw, nat_t min_dw, conv op>
+static const Def* fold_conv(const Def* dst_type, const App* callee, const Def* src, const Def* dbg) {
+    auto& world = dst_type->world();
+    if (src->isa<Bot>()) return world.bot(dst_type, dbg);
+
+    auto [lit_dw, lit_sw] = callee->args<2>(isa_lit<nat_t>);
+    auto lit_src          = src->isa<Lit>();
+    if (lit_src && lit_dw && lit_sw) {
+        if (op == conv::u2u) {
+            if (*lit_dw == 0) return world.lit(dst_type, as_lit(lit_src));
+            return world.lit(dst_type, as_lit(lit_src) % *lit_dw);
+        }
+
+        if (isa<Tag::Int>(src->type())) *lit_sw = *mod2width(*lit_sw);
+        if (isa<Tag::Int>(dst_type)) *lit_dw = *mod2width(*lit_dw);
+
+        Res res;
+#define CODE(sw, dw)                                                                                 \
+    else if (*lit_dw == dw && *lit_sw == sw) {                                                       \
+        if constexpr (dw >= min_dw && sw >= min_sw) res = FoldConv<op, dw, sw>::run(lit_src->get()); \
+    }
+        if (false) {}
+        TABLE(CODE)
+#undef CODE
+        if (res) return world.lit(dst_type, *res, dbg);
+        return world.bot(dst_type, dbg);
+    }
+
+    return nullptr;
+}
+
+template<conv op>
+const Def* normalize_conv(const Def* dst_type, const Def* c, const Def* src, const Def* dbg) {
+    auto& world = dst_type->world();
+    auto callee = c->as<App>();
+
+    static constexpr auto min_sw = op == conv::r2s || op == conv::r2u || op == conv::r2r ? 16 : 1;
+    static constexpr auto min_dw = op == conv::s2r || op == conv::u2r || op == conv::r2r ? 16 : 1;
+    if (auto result = fold_conv<min_sw, min_dw, op>(dst_type, callee, src, dbg)) return result;
+
+    auto [dw, sw] = callee->args<2>(isa_lit<nat_t>);
+    if (sw == dw && dst_type == src->type()) return src;
+
+    if constexpr (op == conv::s2s) {
+        if (sw && dw && *sw < *dw) return core::op(conv::u2u, dst_type, src, dbg);
+    }
+
+    return world.raw_app(callee, src, dbg);
+}
+
+const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* src, const Def* dbg) {
+    auto& world = dst_type->world();
+
+    if (src->isa<Bot>()) return world.bot(dst_type);
+    if (src->type() == dst_type) return src;
+
+    if (auto other = match<bitcast>(src))
+        return other->arg()->type() == dst_type ? other->arg() : op_bitcast(dst_type, other->arg(), dbg);
+
+    if (auto lit = src->isa<Lit>()) {
+        if (dst_type->isa<Nat>()) return world.lit(dst_type, lit->get(), dbg);
+        if (isa_sized_type(dst_type)) return world.lit(dst_type, lit->get(), dbg);
+    }
+
+    return world.raw_app(callee, src, dbg);
 }
 
 THORIN_core_NORMALIZER_IMPL

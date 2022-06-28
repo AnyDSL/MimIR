@@ -738,7 +738,55 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
+    } else if (auto conv = match<core::conv>(def)) {
+        auto src   = emit(conv->arg());
+        auto src_t = convert(conv->arg()->type());
+        auto dst_t = convert(conv->type());
+
+        auto size2width = [&](const Def* type) {
+            if (auto int_ = isa<Tag::Int>(type)) {
+                if (int_->arg()->isa<Top>()) return 64_u64;
+                if (auto width = mod2width(as_lit(int_->arg()))) return *width;
+                return 64_u64;
+            }
+            return as_lit(as<Tag::Real>(type)->arg());
+        };
+
+        nat_t s_src = size2width(conv->arg()->type());
+        nat_t s_dst = size2width(conv->type());
+
+        // this might happen when casting from int top to i64
+        if (s_src == s_dst && (conv.flags() == core::conv::s2s || conv.flags() == core::conv::u2u)) return src;
+
+        switch (conv.flags()) {
+            // clang-format off
+            case core::conv::s2s: op = s_src < s_dst ? "sext"  : "trunc";   break;
+            case core::conv::u2u: op = s_src < s_dst ? "zext"  : "trunc";   break;
+            case core::conv::r2r: op = s_src < s_dst ? "fpext" : "fptrunc"; break;
+            case core::conv::s2r: op = "sitofp"; break;
+            case core::conv::u2r: op = "uitofp"; break;
+            case core::conv::r2s: op = "fptosi"; break;
+            case core::conv::r2u: op = "fptoui"; break;
+            // clang-format on
+            default: unreachable();
+        }
+
+        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
     } else if (auto bitcast = isa<Tag::Bitcast>(def)) {
+        auto dst_type_ptr = match<mem::Ptr>(bitcast->type());
+        auto src_type_ptr = match<mem::Ptr>(bitcast->arg()->type());
+        auto src          = emit(bitcast->arg());
+        auto src_t        = convert(bitcast->arg()->type());
+        auto dst_t        = convert(bitcast->type());
+
+        if (auto lit = isa_lit(bitcast->arg()); lit && *lit == 0) return "zeroinitializer";
+        // clang-format off
+        if (src_type_ptr && dst_type_ptr) return bb.assign(name,  "bitcast {} {} to {}", src_t, src, dst_t);
+        if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", src_t, src, dst_t);
+        if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
+        // clang-format on
+        return bb.assign(name, "bitcast {} {} to {}", src_t, src, dst_t);
+    } else if (auto bitcast = match<core::bitcast>(def)) {
         auto dst_type_ptr = match<mem::Ptr>(bitcast->type());
         auto src_type_ptr = match<mem::Ptr>(bitcast->arg()->type());
         auto src          = emit(bitcast->arg());

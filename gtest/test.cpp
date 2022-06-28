@@ -51,7 +51,7 @@ TEST(Error, app) {
 TEST(World, simplify_one_tuple) {
     World w;
 
-    ASSERT_EQ(w.lit_false(), w.tuple({w.lit_false()})) << "constant fold (false) -> false";
+    ASSERT_EQ(w.lit_ff(), w.tuple({w.lit_ff()})) << "constant fold (false) -> false";
 
     auto type = w.nom_sigma(w.type(), 2);
     type->set({w.type_int(), w.type_int()});

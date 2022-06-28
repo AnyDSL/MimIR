@@ -12,7 +12,7 @@ template<class... Args>
 }
 
 void ErrorHandler::expected_shape(const Def* def) {
-    err(def->loc(), "exptected shape but got '{}' of type '{}'", def, def->type());
+    err(def->loc(), "expected shape but got '{}' of type '{}'", def, def->type());
 }
 
 void ErrorHandler::index_out_of_range(const Def* arity, const Def* index) {

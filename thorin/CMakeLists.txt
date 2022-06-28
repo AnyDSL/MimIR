@@ -99,14 +99,15 @@ get_target_property(libthorin_HEADERS libthorin SOURCES)
 list(FILTER libthorin_HEADERS INCLUDE REGEX ".*\.h")
 
 configure_file(config.h.in config.h)
-target_include_directories(libthorin PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..> # for config.h
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> # for thorin/*
-    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/modules/half/include>
-    $<INSTALL_INTERFACE:include>
+target_include_directories(libthorin
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..> # for config.h
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..> # for thorin/*
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/modules/half/include>
+        $<INSTALL_INTERFACE:include>
 )
-target_link_libraries(libthorin 
-    PUBLIC 
+target_link_libraries(libthorin
+    PUBLIC
         absl::flat_hash_map absl::flat_hash_set
         absl::node_hash_map absl::node_hash_set
         ${CMAKE_DL_LIBS}

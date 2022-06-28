@@ -51,11 +51,16 @@ if(BUILD_TESTING AND THORIN_BUILD_TESTING)
     add_subdirectory(modules/googletest EXCLUDE_FROM_ALL)
 endif()
 
+set(BUILD_TESTING_BACKUP ${BUILD_TESTING})
+set(BUILD_TESTING OFF)
+
 set(ABSL_PROPAGATE_CXX_STD ON)
 set(ABSL_USE_EXTERNAL_GOOGLETEST ON)
 set(ABSL_ENABLE_INSTALL ON)
 add_subdirectory(modules/abseil-cpp)
 add_subdirectory(modules/lyra EXCLUDE_FROM_ALL)
+
+set(BUILD_TESTING ${BUILD_TESTING_BACKUP})
 
 add_subdirectory(thorin)
 add_subdirectory(cli)

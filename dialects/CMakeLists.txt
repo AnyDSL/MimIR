@@ -1,6 +1,3 @@
-# TODO can we get rid of this line?
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib/thorin)
-
 add_thorin_dialect(mem
     SOURCES
         mem/passes/fp/copy_prop.cpp
@@ -14,6 +11,8 @@ add_thorin_dialect(mem
         mem/mem.cpp
         mem/mem.h
         mem/normalizers.cpp
+    HEADER_DEPENDS
+        core
     INSTALL
 )
 
@@ -33,6 +32,8 @@ add_thorin_dialect(clos
         clos/lower_typed_clos.cpp
     DEPENDS
         mem
+    HEADER_DEPENDS
+        core
     INSTALL
 )
 

@@ -72,17 +72,30 @@ cmake --build build -j $(nproc)
 ```
 For a `Release` build simply use `-DCMAKE_BUILD_TYPE=Release`.
 
+### Install
+
+If you want to install Thorin, specify an install prefix and build the target `install`:
+```sh
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix
+cmake --build build -j $(nproc) -t install
+```
+
 ### Build Switches
 
-| CMake Switch           | Options                                  | Default | Comment                                                                             |
-|------------------------|------------------------------------------|---------|-------------------------------------------------------------------------------------|
-| `CMAKE_BUILD_TYPE`     | `Debug` \| `Release` \| `RelWithDebInfo` | `Debug` | Build type.                                                                         |
-| `THORIN_BUILD_DOCS`    | `ON` \| `OFF`                            | `OFF`   | If `ON`, Thorin will build the documentation <br> (requires Doxygen).               |
-| `THORIN_BUILD_TESTING` | `ON` \| `OFF`                            | `OFF`   | If `ON`, Thorin will build all of Thorin's own tests.                               |
-| `THORIN_ENABLE_CHECKS` | `ON` \| `OFF`                            | `ON`    | If `ON`, enables expensive runtime checks <br> (requires `CMAKE_BUILD_TYPE=Debug`). |
+| CMake Switch           | Options                                  | Default      | Comment                                                                             |
+|------------------------|------------------------------------------|--------------|-------------------------------------------------------------------------------------|
+| `CMAKE_BUILD_TYPE`     | `Debug` \| `Release` \| `RelWithDebInfo` | `Debug`      | Build type.                                                                         |
+| `CMAKE_INSTALL_PREFIX` |                                          | `/usr/local` | Install prefix.                                                                     |
+| `THORIN_BUILD_DOCS`    | `ON` \| `OFF`                            | `OFF`        | If `ON`, Thorin will build the documentation <br> (requires Doxygen).               |
+| `THORIN_BUILD_TESTING` | `ON` \| `OFF`                            | `OFF`        | If `ON`, Thorin will build all of Thorin's own tests.                               |
+| `THORIN_ENABLE_CHECKS` | `ON` \| `OFF`                            | `ON`         | If `ON`, enables expensive runtime checks <br> (requires `CMAKE_BUILD_TYPE=Debug`). |
 
 ### Tests
 
+Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) testsuite with:
+```sh
+cmake --build build -t check
+```
 Run the tests within the `build` folder with:
 ```sh
 ctest

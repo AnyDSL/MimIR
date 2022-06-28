@@ -25,11 +25,10 @@ void Bootstrapper::emit(std::ostream& h) {
     h << std::hex;
     tab.print(h, "static constexpr dialect_t Dialect_Id = 0x{};\n\n", dialect_id);
 
-    tag_t tag = 0;
-    for (const auto& ax : axioms) {
+    for (const auto& [key, ax] : axioms) {
         tab.print(h, "enum class {} : flags_t {{\n", ax.tag);
         ++tab;
-        flags_t ax_id = dialect_id | (tag++ << 8u);
+        flags_t ax_id = dialect_id | (ax.tag_id << 8u);
         if (auto& subs = ax.subs; !subs.empty()) {
             tab.print(h, "Axiom_Base = 0x{},\n", ax_id);
             for (const auto& aliases : subs) {
@@ -95,10 +94,10 @@ void Bootstrapper::emit(std::ostream& h) {
     for (const auto& line : outer_namespace) { tab.print(h, "{}", line.str()); }
     tab.print(h, "\n");
 
-    if (std::ranges::any_of(axioms, [](const auto& ax) { return !ax.pi; })) {
+    if (std::ranges::any_of(axioms, [](const auto& ax) { return !ax.second.pi; })) {
         tab.print(h, "namespace detail {{\n");
 
-        for (const auto& ax : axioms)
+        for (const auto& [tag, ax] : axioms)
             if (!ax.pi)
                 tab.print(h,
                           "template<>\n"

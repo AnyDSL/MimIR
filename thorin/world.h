@@ -161,7 +161,7 @@ public:
     const Lam* lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg) {
         return unify<Lam>(2, pi, filter, body, dbg);
     }
-    const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_true(), body, dbg); }
+    const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_tt(), body, dbg); }
     ///@}
 
     /// @name App
@@ -224,16 +224,12 @@ public:
     ///@}
 
     /// @name Extract
+    /// @sa core::extract_unsafe
     ///@{
     const Def* extract(const Def* d, const Def* i, const Def* dbg = {});
     const Def* extract(const Def* d, u64 a, u64 i, const Def* dbg = {}) { return extract(d, lit_int(a, i), dbg); }
     const Def* extract(const Def* d, u64 i, const Def* dbg = {}) { return extract(d, as_lit(d->arity()), i, dbg); }
-    const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
-        return extract_unsafe(d, lit_int(0_u64, i), dbg);
-    }
-    const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
-        return extract(d, op(Conv::u2u, type_int(as_lit(d->unfold_type()->arity())), i, dbg), dbg);
-    }
+
     /// Builds `(f, t)cond`.
     /// **Note** that select expects @p t as first argument and @p f as second one.
     const Def* select(const Def* t, const Def* f, const Def* cond, const Def* dbg = {}) {
@@ -242,6 +238,7 @@ public:
     ///@}
 
     /// @name Insert
+    /// @sa core::insert_unsafe
     ///@{
     const Def* insert(const Def* d, const Def* i, const Def* val, const Def* dbg = {});
     const Def* insert(const Def* d, u64 a, u64 i, const Def* val, const Def* dbg = {}) {
@@ -249,12 +246,6 @@ public:
     }
     const Def* insert(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
         return insert(d, as_lit(d->arity()), i, val, dbg);
-    }
-    const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert_unsafe(d, lit_int(0_u64, i), val, dbg);
-    }
-    const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
-        return insert(d, op(Conv::u2u, type_int(as_lit(d->unfold_type()->arity())), i), val, dbg);
     }
     ///@}
 
@@ -291,8 +282,8 @@ public:
     }
 
     const Lit* lit_bool(bool val) { return data_.lit_bool_[size_t(val)]; }
-    const Lit* lit_false() { return data_.lit_bool_[0]; }
-    const Lit* lit_true() { return data_.lit_bool_[1]; }
+    const Lit* lit_ff() { return data_.lit_bool_[0]; }
+    const Lit* lit_tt() { return data_.lit_bool_[1]; }
     // clang-format off
     const Lit* lit_real(nat_t width, r64 val, const Def* dbg = {}) {
         switch (width) {

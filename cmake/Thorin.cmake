@@ -13,16 +13,19 @@ function(add_thorin_dialect)
         PARSED              # prefix of output variables
         "INSTALL"           # list of names of the boolean arguments (only defined ones will be true)
         "DIALECT"           # list of names of mono-valued arguments
-        "SOURCES;DEPENDS"   # list of names of multi-valued arguments (output variables are lists)
+        "SOURCES;DEPENDS;HEADER_DEPENDS"   # list of names of multi-valued arguments (output variables are lists)
         ${UNPARSED}         # arguments of the function to parse, here we take the all original ones
     )
 
     set(THORIN_LIB_DIR ${CMAKE_BINARY_DIR}/lib/thorin)
 
-    list(TRANSFORM PARSED_DEPENDS       PREPEND ${THORIN_LIB_DIR}/ OUTPUT_VARIABLE DEPENDS_THORIN_FILES)
-    list(TRANSFORM DEPENDS_THORIN_FILES  APPEND .thorin)
-    list(TRANSFORM PARSED_DEPENDS       PREPEND ${CMAKE_CURRENT_BINARY_DIR}/ OUTPUT_VARIABLE DEPENDS_HEADER_FILES)
-    list(TRANSFORM DEPENDS_HEADER_FILES  APPEND .h)
+    list(TRANSFORM PARSED_DEPENDS        PREPEND ${THORIN_LIB_DIR}/ OUTPUT_VARIABLE DEPENDS_THORIN_FILES)
+    list(TRANSFORM DEPENDS_THORIN_FILES   APPEND .thorin)
+    list(TRANSFORM PARSED_DEPENDS        PREPEND ${CMAKE_CURRENT_BINARY_DIR}/ OUTPUT_VARIABLE DEPENDS_HEADER_FILES)
+    list(TRANSFORM DEPENDS_HEADER_FILES   APPEND .h)
+    list(TRANSFORM PARSED_HEADER_DEPENDS PREPEND ${CMAKE_CURRENT_BINARY_DIR}/ OUTPUT_VARIABLE PARSED_HEADER_DEPENDS)
+    list(TRANSFORM PARSED_HEADER_DEPENDS  APPEND .h)
+    list(APPEND DEPENDS_HEADER_FILES ${PARSED_HEADER_DEPENDS})
 
     set(THORIN_FILE     ${CMAKE_CURRENT_SOURCE_DIR}/${DIALECT}/${DIALECT}.thorin)
     set(THORIN_FILE_LIB_DIR ${THORIN_LIB_DIR}/${DIALECT}.thorin)
@@ -37,7 +40,8 @@ function(add_thorin_dialect)
     SET(THORIN_DIALECT_LAYOUT "${THORIN_DIALECT_LAYOUT}" CACHE INTERNAL "THORIN_DIALECT_LAYOUT")
 
     # copy dialect thorin file to lib/thorin/${DIALECT}.thorin
-    add_custom_command(OUTPUT ${THORIN_FILE_LIB_DIR}
+    add_custom_command(
+        OUTPUT  ${THORIN_FILE_LIB_DIR}
         COMMAND ${CMAKE_COMMAND} -E copy_if_different ${THORIN_FILE} ${THORIN_FILE_LIB_DIR}
         DEPENDS ${THORIN_FILE} ${DEPENDS_THORIN_FILES}
     )
