@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_FP_ETA_RED_H
-#define THORIN_PASS_FP_ETA_RED_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 
@@ -33,5 +32,3 @@ private:
 };
 
 } // namespace thorin
-
-#endif

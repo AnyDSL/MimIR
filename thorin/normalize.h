@@ -1,5 +1,4 @@
-#ifndef THORIN_NORMALIZE_H
-#define THORIN_NORMALIZE_H
+#pragma once
 
 #include "thorin/def.h"
 #include "thorin/world.h"
@@ -141,5 +140,3 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
 
 } // namespace normalize
 } // namespace thorin
-
-#endif

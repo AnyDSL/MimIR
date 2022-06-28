@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_OPTIMIZE_H
-#define THORIN_PASS_OPTIMIZE_H
+#pragma once
 
 namespace thorin {
 
@@ -9,5 +8,3 @@ class PipelineBuilder;
 void optimize(World&, PipelineBuilder&);
 
 } // namespace thorin
-
-#endif

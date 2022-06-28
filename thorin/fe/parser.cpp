@@ -10,7 +10,6 @@
 #include "thorin/dialects.h"
 #include "thorin/rewrite.h"
 
-#include "thorin/be/h/h.h"
 #include "thorin/util/array.h"
 #include "thorin/util/sys.h"
 

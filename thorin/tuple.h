@@ -1,5 +1,4 @@
-#ifndef THORIN_TUPLE_H
-#define THORIN_TUPLE_H
+#pragma once
 
 #include "thorin/def.h"
 
@@ -178,5 +177,3 @@ bool is_unit(const Def*);
 std::string tuple2str(const Def*);
 
 } // namespace thorin
-
-#endif

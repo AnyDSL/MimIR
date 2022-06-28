@@ -1,5 +1,4 @@
-#ifndef THORIN_TABLES_H
-#define THORIN_TABLES_H
+#pragma once
 
 #include <string_view>
 
@@ -268,5 +267,3 @@ template<tag_t t> using Tag2Enum = typename Tag2Enum_<t>::type;
 
 // clang-format on
 } // namespace thorin
-
-#endif

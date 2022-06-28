@@ -1,5 +1,4 @@
-#ifndef THORIN_AXIOM_H
-#define THORIN_AXIOM_H
+#pragma once
 
 #include "thorin/lam.h"
 
@@ -219,5 +218,3 @@ Match<AxTag, detail::Enum2Def<AxTag>> match(AxTag sub, const Def* def) {
 }
 
 } // namespace thorin
-
-#endif

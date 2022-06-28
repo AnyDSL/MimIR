@@ -1,5 +1,4 @@
-#ifndef THORIN_DIALECTS_H
-#define THORIN_DIALECTS_H
+#pragma once
 
 #include <filesystem>
 #include <memory>
@@ -86,4 +85,3 @@ private:
 std::vector<std::filesystem::path> get_plugin_search_paths(ArrayRef<std::string> user_paths);
 
 } // namespace thorin
-#endif

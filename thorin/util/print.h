@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_STREAM_H
-#define THORIN_UTIL_STREAM_H
+#pragma once
 
 #include <iostream>
 #include <ostream>
@@ -139,5 +138,3 @@ private:
 #endif
 
 } // namespace thorin
-
-#endif

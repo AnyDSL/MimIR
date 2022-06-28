@@ -1,5 +1,4 @@
-#ifndef THORIN_CHECK_H
-#define THORIN_CHECK_H
+#pragma once
 
 #include <deque>
 
@@ -29,5 +28,3 @@ extern template bool Checker::equiv<true>(const Def*, const Def*);
 extern template bool Checker::equiv<false>(const Def*, const Def*);
 
 } // namespace thorin
-
-#endif

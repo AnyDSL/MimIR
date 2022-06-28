@@ -1,5 +1,4 @@
-#ifndef THORIN_ANALYSES_LOOPTREE_H
-#define THORIN_ANALYSES_LOOPTREE_H
+#pragma once
 
 #include <vector>
 
@@ -115,5 +114,3 @@ template<bool forward>
 std::ostream operator<<(std::ostream&, const typename LoopTree<forward>::Base*);
 
 } // namespace thorin
-
-#endif

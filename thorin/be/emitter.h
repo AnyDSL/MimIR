@@ -1,5 +1,4 @@
-#ifndef THORIN_BE_EMITTER_H
-#define THORIN_BE_EMITTER_H
+#pragma once
 
 #include "thorin/world.h"
 
@@ -102,5 +101,3 @@ protected:
 };
 
 } // namespace thorin
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef THORIN_UNTYPE_CLOSURES_H
-#define THORIN_UNTYPE_CLOSURES_H
+#pragma once
 
 #include <queue>
 
@@ -86,5 +85,3 @@ private:
 };
 
 } // namespace thorin::clos
-
-#endif

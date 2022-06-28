@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_SYS_H
-#define THORIN_UTIL_SYS_H
+#pragma once
 
 #ifdef _WIN32
 #    define THORIN_WHICH "where"
@@ -29,5 +28,3 @@ int system(std::string);
 int run(std::string cmd, std::string args = {});
 
 } // namespace thorin::sys
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_ETA_CONT_H
-#define THORIN_PASS_ETA_CONT_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 
@@ -51,5 +50,3 @@ private:
 } // namespace clos
 
 } // namespace thorin
-
-#endif

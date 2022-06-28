@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_RW_SCALARIZE_H
-#define THORIN_PASS_RW_SCALARIZE_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 
@@ -36,5 +35,3 @@ private:
 };
 
 } // namespace thorin
-
-#endif

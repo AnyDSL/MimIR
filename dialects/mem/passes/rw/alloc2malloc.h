@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_RW_ALLOC2MALLOC_H
-#define THORIN_PASS_RW_ALLOC2MALLOC_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 
@@ -16,5 +15,3 @@ public:
 };
 
 } // namespace thorin::mem
-
-#endif

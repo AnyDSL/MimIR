@@ -1,5 +1,4 @@
-#ifndef DIALECTS_CLOS_CLOS_H
-#define DIALECTS_CLOS_CLOS_H
+#pragma once
 
 #include "thorin/world.h"
 
@@ -25,5 +24,3 @@ inline const Def* op(clos o, const Def* def, const Def* dbg = {}) {
 }
 
 } // namespace thorin::clos
-
-#endif

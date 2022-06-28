@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_FP_SSA_CONSTR_H
-#define THORIN_PASS_FP_SSA_CONSTR_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 #include "thorin/util/bitset.h"
@@ -63,5 +62,3 @@ private:
 
 } // namespace mem
 } // namespace thorin
-
-#endif

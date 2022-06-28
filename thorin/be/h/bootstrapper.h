@@ -1,5 +1,4 @@
-#ifndef THORIN_BE_H_H_H
-#define THORIN_BE_H_H_H
+#pragma once
 
 #include <deque>
 #include <ostream>
@@ -39,5 +38,3 @@ private:
 };
 
 } // namespace thorin::h
-
-#endif

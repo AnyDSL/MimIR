@@ -1,12 +1,11 @@
-#ifndef THORIN_FE_PARSER_H
-#define THORIN_FE_PARSER_H
+#pragma once
 
 #include <filesystem>
 
 #include "thorin/dialects.h"
 #include "thorin/world.h"
 
-#include "thorin/be/h/h.h"
+#include "thorin/be/h/bootstrapper.h"
 #include "thorin/fe/lexer.h"
 
 namespace thorin {
@@ -114,7 +113,7 @@ private:
         }
         expect(delim_r, std::string("closing delimiter of a ") + ctxt);
     }
-    
+
     void parse_var_list(Binders&);
 
     // parse import statement
@@ -219,5 +218,3 @@ private:
 };
 
 } // namespace thorin
-
-#endif

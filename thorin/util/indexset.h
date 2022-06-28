@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_INDEXSET_H
-#define THORIN_UTIL_INDEXSET_H
+#pragma once
 
 #include "thorin/util/array.h"
 
@@ -111,5 +110,3 @@ void visit_first(IndexSet<Indexer, Key>& set, const Key& key) {
 }
 
 } // namespace thorin
-
-#endif

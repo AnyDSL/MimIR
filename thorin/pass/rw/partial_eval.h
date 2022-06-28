@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_PARTIAL_EVAL_H
-#define THORIN_PASS_PARTIAL_EVAL_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 
@@ -15,5 +14,3 @@ public:
 };
 
 } // namespace thorin
-
-#endif

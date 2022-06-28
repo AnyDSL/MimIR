@@ -1,5 +1,4 @@
-#ifndef THORIN_ERROR_H
-#define THORIN_ERROR_H
+#pragma once
 
 #include <sstream>
 #include <stdexcept>
@@ -60,5 +59,3 @@ public:
 };
 
 } // namespace thorin
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_ASSERT_H
-#define THORIN_UTIL_ASSERT_H
+#pragma once
 
 #include <cassert>
 
@@ -37,6 +36,4 @@ inline void breakpoint() {
 #    define assert_unused(x) assert(x)
 #else
 #    define assert_unused(x) ((void)(0 && (x)))
-#endif
-
 #endif

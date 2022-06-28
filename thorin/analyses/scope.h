@@ -1,5 +1,4 @@
-#ifndef THORIN_ANALYSES_SCOPE_H
-#define THORIN_ANALYSES_SCOPE_H
+#pragma once
 
 #include "thorin/def.h"
 
@@ -77,5 +76,3 @@ private:
 bool is_free(const Var* var, const Def* def);
 
 } // namespace thorin
-
-#endif

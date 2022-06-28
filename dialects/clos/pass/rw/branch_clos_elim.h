@@ -1,5 +1,4 @@
-#ifndef THORIN_UNBOX_CLOSURE_H
-#define THORIN_UNBOX_CLOSURE_H
+#pragma once
 
 #include <map>
 #include <tuple>
@@ -23,5 +22,3 @@ private:
 };
 
 }; // namespace thorin::clos
-
-#endif

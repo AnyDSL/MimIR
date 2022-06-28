@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_DL_H
-#define THORIN_UTIL_DL_H
+#pragma once
 
 #include <filesystem>
 #include <optional>
@@ -23,5 +22,3 @@ void* get(void* handle, const std::string& symbol_name);
 void close(void* handle);
 
 } // namespace thorin::dl
-
-#endif // THORIN_UTIL_DL_H

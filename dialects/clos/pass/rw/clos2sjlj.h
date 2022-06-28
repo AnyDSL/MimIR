@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_SJLJ_H
-#define THORIN_PASS_SJLJ_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 
@@ -43,5 +42,3 @@ private:
 };
 
 } // namespace thorin::clos
-
-#endif

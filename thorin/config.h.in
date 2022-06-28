@@ -1,5 +1,4 @@
-#ifndef THORIN_CONFIG_H
-#define THORIN_CONFIG_H
+#pragma once
 
 #cmakedefine01 THORIN_ENABLE_CHECKS
 #cmakedefine01 THORIN_ENABLE_PROFILING
@@ -16,6 +15,4 @@
 #define THORIN_EXPORT __declspec(dllexport)
 #else
 #define THORIN_EXPORT __attribute__((visibility("default")))
-#endif
-
 #endif
