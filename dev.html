@@ -105,18 +105,18 @@ $(document).ready(function(){initNavTree('dev.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md9">Compiling and Executing</a></li>
-<li class="level1"><a href="#autotoc_md10">Defs and the World</a><ul><li class="level2"><a href="#autotoc_md11">Hash Consing</a></li>
+<ul><li class="level1"><a href="#autotoc_md10">Compiling and Executing</a></li>
+<li class="level1"><a href="#autotoc_md11">Defs and the World</a><ul><li class="level2"><a href="#autotoc_md12">Hash Consing</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md12">Structural vs. Nominal</a></li>
-<li class="level1"><a href="#autotoc_md13">Matching IR</a></li>
-<li class="level1"><a href="#autotoc_md14">Iterating over the Program</a></li>
+<li class="level1"><a href="#autotoc_md13">Structural vs. Nominal</a></li>
+<li class="level1"><a href="#autotoc_md14">Matching IR</a></li>
+<li class="level1"><a href="#autotoc_md15">Iterating over the Program</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_docs_dev"></a></p>
 <p >This guide summaries typicical idioms you want to use when working with Thorin as a developer.</p>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md10"></a>
 Compiling and Executing</h1>
 <p >Here is a small example that first constructs a <code>main</code> function and simply returns the <code>argc</code>: </p><div class="fragment"><div class="line">World w;</div>
 <div class="line"> </div>
@@ -152,21 +152,21 @@ Compiling and Executing</h1>
 <div class="line"><a class="code hl_function" href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">std::system</a>(<span class="stringliteral">&quot;clang test.ll -o test&quot;</span>);</div>
 <div class="line">assert(4 == WEXITSTATUS(<a class="code hl_function" href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">std::system</a>(<span class="stringliteral">&quot;./test a b c&quot;</span>)));</div>
 <div class="ttc" id="anamespacethorin_1_1clos_html_a4f790c1b00df9b8c0c241b5fb060c293a2cb9df9898e55fd0ad829dc202ddbd1c"><div class="ttname"><a href="namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293a2cb9df9898e55fd0ad829dc202ddbd1c">thorin::clos::clos::ret</a></div><div class="ttdeci">@ ret</div></div>
-<div class="ttc" id="anamespacethorin_1_1mem_html_a0246ffea30f87b7af8ef581b9aafbdb0"><div class="ttname"><a href="namespacethorin_1_1mem.html#a0246ffea30f87b7af8ef581b9aafbdb0">thorin::mem::type_mem</a></div><div class="ttdeci">const Axiom * type_mem(World &amp;w)</div><div class="ttdef"><b>Definition:</b> <a href="dialects_2mem_2mem_8h_source.html#l00014">mem.h:14</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1mem_html_a538c585266aeecfe400ba79cd77145ea"><div class="ttname"><a href="namespacethorin_1_1mem.html#a538c585266aeecfe400ba79cd77145ea">thorin::mem::type_ptr</a></div><div class="ttdeci">const Axiom * type_ptr(World &amp;w)</div><div class="ttdef"><b>Definition:</b> <a href="dialects_2mem_2mem_8h_source.html#l00016">mem.h:16</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1mem_html_adb2bf49c45c2574f69f55e237f3f2e8f"><div class="ttname"><a href="namespacethorin_1_1mem.html#adb2bf49c45c2574f69f55e237f3f2e8f">thorin::mem::load</a></div><div class="ttdeci">load</div><div class="ttdef"><b>Definition:</b> <a href="build_2dialects_2mem_8h_source.html#l00099">mem.h:99</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1mem_html_a0246ffea30f87b7af8ef581b9aafbdb0"><div class="ttname"><a href="namespacethorin_1_1mem.html#a0246ffea30f87b7af8ef581b9aafbdb0">thorin::mem::type_mem</a></div><div class="ttdeci">const Axiom * type_mem(World &amp;w)</div><div class="ttdef"><b>Definition:</b> <a href="mem_8h_source.html#l00014">mem.h:14</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1mem_html_a538c585266aeecfe400ba79cd77145ea"><div class="ttname"><a href="namespacethorin_1_1mem.html#a538c585266aeecfe400ba79cd77145ea">thorin::mem::type_ptr</a></div><div class="ttdeci">const Axiom * type_ptr(World &amp;w)</div><div class="ttdef"><b>Definition:</b> <a href="mem_8h_source.html#l00016">mem.h:16</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1mem_html_adb2bf49c45c2574f69f55e237f3f2e8f"><div class="ttname"><a href="namespacethorin_1_1mem.html#adb2bf49c45c2574f69f55e237f3f2e8f">thorin::mem::load</a></div><div class="ttdeci">load</div><div class="ttdef"><b>Definition:</b> <a href="mem_2autogen_8h_source.html#l00025">autogen.h:25</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1sys_html_a932508f0d5bde98eb7127e4f2533776f"><div class="ttname"><a href="namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f">thorin::sys::system</a></div><div class="ttdeci">int system(std::string cmd)</div><div class="ttdoc">Wraps std::system and makes the return value usable.</div><div class="ttdef"><b>Definition:</b> <a href="sys_8cpp_source.html#l00070">sys.cpp:70</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a286f60254e3f9699ea27cb2bc98b6051"><div class="ttname"><a href="namespacethorin.html#a286f60254e3f9699ea27cb2bc98b6051">thorin::Normalizers</a></div><div class="ttdeci">absl::flat_hash_map&lt; flags_t, Def::NormalizeFn &gt; Normalizers</div><div class="ttdef"><b>Definition:</b> <a href="dialects_8h_source.html#l00020">dialects.h:20</a></div></div>
 <div class="ttc" id="anamespacethorin_html_aafbe7c65f3fb4df3b05a04b70cebe149"><div class="ttname"><a href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">thorin::optimize</a></div><div class="ttdeci">void optimize(World &amp;world, PipelineBuilder &amp;builder)</div><div class="ttdef"><b>Definition:</b> <a href="optimize_8cpp_source.html#l00011">optimize.cpp:11</a></div></div>
 <div class="ttc" id="anamespacethorin_html_ab70a3eb6856bc409f9ed3627fff8ab36"><div class="ttname"><a href="namespacethorin.html#ab70a3eb6856bc409f9ed3627fff8ab36">thorin::Backends</a></div><div class="ttdeci">std::map&lt; std::string, std::function&lt; void(World &amp;, std::ostream &amp;)&gt; &gt; Backends</div><div class="ttdef"><b>Definition:</b> <a href="dialects_8h_source.html#l00019">dialects.h:19</a></div></div>
 </div><!-- fragment --><p> TODO explain</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
+<h1><a class="anchor" id="autotoc_md11"></a>
 Defs and the World</h1>
 <p ><a class="el" href="classthorin_1_1Def.html">Def</a> is the base class for <em>all</em> nodes/expressions in Thorin. TODO</p>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md12"></a>
 Hash Consing</h2>
 <p >Each <code>Def</code> is a node in a graph which is maintained in the <a class="el" href="classthorin_1_1World.html">World</a>. <a href="https://en.wikipedia.org/wiki/Hash_consing">Hash consing</a> TODO</p>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Structural vs. Nominal</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -216,9 +216,9 @@ Structural vs. Nominal</h1>
 <div class="line">    }</div>
 <div class="line">}</div>
 <div class="ttc" id="anamespacethorin_1_1Node_html_a1e65379a5361d88e84c135355c0a6d06ac1fb2543759c1fd49ae0fea3855ea812"><div class="ttname"><a href="namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06ac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a></div><div class="ttdeci">@ Sigma</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00184">tables.h:184</a></div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md14"></a>
 Matching IR</h1>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md15"></a>
 Iterating over the Program</h1>
 <p >There are several ways of doing this. It depends on what exactly you want to achieve and how much structure you need during the traversal. The simplest way is to kick off with <a class="el" href="classthorin_1_1World.html#ad066f14a09e1d3897199d1a6743ae195">World::externals</a> and recursively run over <a class="el" href="classthorin_1_1Def.html#a543cbdcb17d574373aa65244dcead8f8">Def::extended_ops</a> like this: </p><div class="fragment"><div class="line"><a class="code hl_typedef" href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">DefSet</a> done;</div>
 <div class="line"><span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; [_, nom] : world.externals())</div>
@@ -233,7 +233,7 @@ Iterating over the Program</h1>
 <div class="line">        <a class="code hl_function" href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">visit</a>(done, <a class="code hl_function" href="namespacethorin_1_1clos.html#aad6fd2dc52043560b14b200f972534dc">op</a>);</div>
 <div class="line">}</div>
 <div class="ttc" id="aclassthorin_1_1Def_html_a543cbdcb17d574373aa65244dcead8f8"><div class="ttname"><a href="classthorin_1_1Def.html#a543cbdcb17d574373aa65244dcead8f8">thorin::Def::extended_ops</a></div><div class="ttdeci">Defs extended_ops() const</div><div class="ttdef"><b>Definition:</b> <a href="def_8cpp_source.html#l00175">def.cpp:175</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1clos_html_aad6fd2dc52043560b14b200f972534dc"><div class="ttname"><a href="namespacethorin_1_1clos.html#aad6fd2dc52043560b14b200f972534dc">thorin::clos::op</a></div><div class="ttdeci">const Def * op(clos o, const Def *def, const Def *dbg={})</div><div class="ttdef"><b>Definition:</b> <a href="dialects_2clos_2clos_8h_source.html#l00022">clos.h:22</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1clos_html_aad6fd2dc52043560b14b200f972534dc"><div class="ttname"><a href="namespacethorin_1_1clos.html#aad6fd2dc52043560b14b200f972534dc">thorin::clos::op</a></div><div class="ttdeci">const Def * op(clos o, const Def *def, const Def *dbg={})</div><div class="ttdef"><b>Definition:</b> <a href="clos_8h_source.html#l00022">clos.h:22</a></div></div>
 <div class="ttc" id="anamespacethorin_html_a7fddaff34d4e4927bc748c28b49eef46"><div class="ttname"><a href="namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46">thorin::DefSet</a></div><div class="ttdeci">GIDSet&lt; const Def * &gt; DefSet</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00425">def.h:425</a></div></div>
 <div class="ttc" id="anamespacethorin_html_aca7a0dc87489d726385a61cdc1fde51c"><div class="ttname"><a href="namespacethorin.html#aca7a0dc87489d726385a61cdc1fde51c">thorin::visit</a></div><div class="ttdeci">bool visit(IndexSet&lt; Indexer, Key &gt; &amp;set, const Key &amp;key)</div><div class="ttdef"><b>Definition:</b> <a href="indexset_8h_source.html#l00103">indexset.h:103</a></div></div>
 </div><!-- fragment --><p ><a class="el" href="classthorin_1_1World.html#a35687817089d85315d46a391dd75e320">World::visit</a> allows you to visit all top-level scopes one by one: </p><div class="fragment"><div class="line">world.visit([&amp;](<span class="keyword">const</span> Scope&amp; scope) {</div>

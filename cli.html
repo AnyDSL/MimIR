@@ -114,7 +114,7 @@ $(document).ready(function(){initNavTree('cli.html',''); initResizable(); });
 <h1><a class="anchor" id="autotoc_md0"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  thorin [-?|-h|--help] [-v|--version] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-e|--emit &lt;thorin|h|md|ll|dot&gt;] [-V|--verbose] [-b|--break &lt;gid&gt;] [-o|--output &lt;prefix&gt;] [&lt;file&gt;]</div>
+<div class="line">  thorin [-?|-h|--help] [-v|--version] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-e|--emit &lt;dot|h|ll|md|thorin&gt;] [-V|--verbose] [-b|--break &lt;gid&gt;] [-o|--output &lt;prefix&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [--output-thorin &lt;file&gt;] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -125,11 +125,16 @@ Usage</h1>
 <div class="line">  -d, --dialect &lt;dialect&gt; Dynamically load dialect [WIP].</div>
 <div class="line">  -D, --dialect-path &lt;path&gt;</div>
 <div class="line">                          Path to search dialects in.</div>
-<div class="line">  -e, --emit &lt;thorin|h|md|ll|dot&gt;</div>
+<div class="line">  -e, --emit &lt;dot|h|ll|md|thorin&gt;</div>
 <div class="line">                          Select emitter. Multiple emitters can be specified simultaneously.</div>
 <div class="line">  -V, --verbose           Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.</div>
 <div class="line">  -b, --break &lt;gid&gt;       Trigger breakpoint upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</div>
-<div class="line">  -o, --output &lt;prefix&gt;   Prefix used for various output files.</div>
+<div class="line">  -o, --output &lt;prefix&gt;   Default prefix used for various output files.</div>
+<div class="line">  --output-dot &lt;file&gt;     Specify the dot output file.</div>
+<div class="line">  --output-h &lt;file&gt;       Specify the h output file.</div>
+<div class="line">  --output-ll &lt;file&gt;      Specify the ll output file.</div>
+<div class="line">  --output-md &lt;file&gt;      Specify the md output file.</div>
+<div class="line">  --output-thorin &lt;file&gt;  Specify the thorin output file.</div>
 <div class="line">  &lt;file&gt;                  Input file.</div>
 </div><!-- fragment --><h1><a class="anchor" id="emitters"></a>
 Emitters</h1>

@@ -6,7 +6,7 @@ var searchData=
   ['check_2ecpp_3',['check.cpp',['../check_8cpp.html',1,'']]],
   ['check_2eh_4',['check.h',['../check_8h.html',1,'']]],
   ['cli_2emd_5',['cli.md',['../cli_8md.html',1,'']]],
-  ['clos_2eh_6',['clos.h',['../build_2dialects_2clos_8h.html',1,'(Global Namespace)'],['../dialects_2clos_2clos_8h.html',1,'(Global Namespace)']]],
+  ['clos_2eh_6',['clos.h',['../clos_8h.html',1,'']]],
   ['clos_2emd_7',['clos.md',['../clos_8md.html',1,'']]],
   ['clos2sjlj_2ecpp_8',['clos2sjlj.cpp',['../clos2sjlj_8cpp.html',1,'']]],
   ['clos2sjlj_2eh_9',['clos2sjlj.h',['../clos2sjlj_8h.html',1,'']]],
@@ -19,6 +19,6 @@ var searchData=
   ['copy_5fprop_2ecpp_16',['copy_prop.cpp',['../copy__prop_8cpp.html',1,'']]],
   ['copy_5fprop_2eh_17',['copy_prop.h',['../copy__prop_8h.html',1,'']]],
   ['core_2ecpp_18',['core.cpp',['../core_8cpp.html',1,'']]],
-  ['core_2eh_19',['core.h',['../build_2dialects_2core_8h.html',1,'(Global Namespace)'],['../dialects_2core_2core_8h.html',1,'(Global Namespace)']]],
+  ['core_2eh_19',['core.h',['../core_8h.html',1,'']]],
   ['core_2emd_20',['core.md',['../core_8md.html',1,'']]]
 ];
