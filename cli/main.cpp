@@ -25,20 +25,30 @@ enum Backends {
 
 static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
+static std::string be2str(size_t be) {
+    switch (be) {
+        case Dot:    return "dot"s;
+        case H:      return "h"s;
+        case LL:     return "ll"s;
+        case Md:     return "md"s;
+        case Thorin: return "thorin"s;
+        default: unreachable();
+    }
+}
+
 int main(int argc, char** argv) {
     try {
         static constexpr const char* Backends = "dot|h|ll|md|thorin";
 
-        std::string input, prefix, output_dot, output_h, output_ll, output_md, output_thorin;
+        bool show_help    = false;
+        bool show_version = false;
+        std::string input, prefix;
         std::string clang = sys::find_cmd("clang");
         std::vector<std::string> dialect_names, dialect_paths, emitters;
         std::vector<size_t> breakpoints;
-
         std::array<bool, Num_Backends> emit;
         emit.fill(false);
-        bool show_help    = false;
-        bool show_version = false;
-
+        std::array<std::string, Num_Backends> output;
         int verbose      = 0;
         auto inc_verbose = [&](bool) { ++verbose; };
 
@@ -55,12 +65,12 @@ int main(int argc, char** argv) {
             | lyra::opt(breakpoints,   "gid"    )["-b"]["--break"        ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
 #endif
             | lyra::opt(prefix,        "prefix" )["-o"]["--output"       ]("Default prefix used for various output files.")
-            | lyra::opt(output_dot,    "file"   )      ["--output-dot"   ]("Specify the dot output file.")
-            | lyra::opt(output_h,      "file"   )      ["--output-h"     ]("Specify the h output file.")
-            | lyra::opt(output_ll,     "file"   )      ["--output-ll"    ]("Specify the ll output file.")
-            | lyra::opt(output_md,     "file"   )      ["--output-md"    ]("Specify the md output file.")
-            | lyra::opt(output_thorin, "file"   )      ["--output-thorin"]("Specify the thorin output file.")
-            | lyra::arg(input,         "file"   )                         ("Input file.");
+            | lyra::opt(output[Dot   ], "file"  )      ["--output-dot"   ]("Specify the dot output file.")
+            | lyra::opt(output[H     ], "file"  )      ["--output-h"     ]("Specify the h output file.")
+            | lyra::opt(output[LL    ], "file"  )      ["--output-ll"    ]("Specify the ll output file.")
+            | lyra::opt(output[Md    ], "file"  )      ["--output-md"    ]("Specify the md output file.")
+            | lyra::opt(output[Thorin], "file"  )      ["--output-thorin"]("Specify the thorin output file.")
+            | lyra::arg(input,          "file"  )                         ("Input file.");
 
         if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
 
@@ -123,49 +133,35 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
 
-        std::ofstream md;
-        if (output_md.empty()) output_md = prefix + ".md";
-        if (emit[Md]) md.open(output_md);
+        std::array<std::ofstream, Num_Backends> ofs;
+        std::array<std::ostream*, Num_Backends> os;
 
-        Parser parser(world, input, ifs, dialect_paths, &normalizers, emit[Md] ? &md : nullptr);
+
+        for (size_t be = 0; be != Num_Backends; ++be) {
+            if (output[be].empty()) output[be] = prefix + "."s + be2str(be);
+            if (output[be] == "-") {
+                os[be] = &std::cout;
+            } else {
+                ofs[be].open(output[be]);
+                os[be] = &ofs[be];
+            }
+        }
+
+        Parser parser(world, input, ifs, dialect_paths, &normalizers, emit[Md] ? os[Md] : nullptr);
         parser.parse_module();
 
-        if (emit[H]) {
-            if (output_h.empty()) output_h = prefix + ".h";
-            std::ofstream h(output_h);
-            parser.bootstrap(h);
-        }
+        if (emit[H]) parser.bootstrap(*os[H]);
 
         PipelineBuilder builder;
         for (const auto& dialect : dialects) { dialect.register_passes(builder); }
-
         optimize(world, builder);
 
-        if (emit[Thorin]) {
-            if (output_thorin.empty()) output_thorin = prefix + ".thorin";
-            std::ofstream thorin;
-            std::ostream* o;
-            if (output_thorin == "-") {
-                o = &std::cout;
-            } else {
-                thorin.open(output_thorin);
-                o = &thorin;
-            }
-
-            *o << world << std::endl;
-        }
-
-        if (emit[Dot]) {
-            if (output_dot.empty()) output_dot = prefix + ".dot";
-            std::ofstream ofs(output_dot);
-            dot::emit(world, ofs);
-        }
+        if (emit[Thorin]) *os[Thorin] << world << std::endl;
+        if (emit[Dot]) dot::emit(world, *os[Dot]);
 
         if (emit[LL]) {
-            if (output_ll.empty()) output_ll = prefix + ".ll";
             if (auto it = backends.find("ll"); it != backends.end()) {
-                std::ofstream ofs(output_ll);
-                it->second(world, ofs);
+                it->second(world, *os[LL]);
             } else
                 errln("error: 'll' emitter not loaded. Try loading 'mem' dialect.");
         }
