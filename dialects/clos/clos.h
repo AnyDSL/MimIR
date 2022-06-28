@@ -3,7 +3,7 @@
 
 #include "thorin/world.h"
 
-#include "dialects/clos.h"
+#include "dialects/clos_autogen.h"
 
 namespace thorin::clos {
 

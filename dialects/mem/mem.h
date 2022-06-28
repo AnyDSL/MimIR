@@ -5,7 +5,7 @@
 #include "thorin/lam.h"
 #include "thorin/world.h"
 
-#include "dialects/mem.h"
+#include "dialects/mem_autogen.h"
 #include "dialects/core/core.h"
 
 namespace thorin::mem {

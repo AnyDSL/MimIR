@@ -3,7 +3,7 @@
 
 #include "thorin/world.h"
 
-#include "dialects/core.h"
+#include "dialects/core_autogen.h"
 
 namespace thorin::core {
 

@@ -1,5 +1,5 @@
 # clear globals
-SET(THORIN_DIALECT_LIST    "" CACHE INTERNAL "THORIN_DIALECT_LIST") 
+SET(THORIN_DIALECT_LIST    "" CACHE INTERNAL "THORIN_DIALECT_LIST")
 SET(THORIN_DIALECT_LAYOUT  "" CACHE INTERNAL "THORIN_DIALECT_LAYOUT")
 
 if(NOT THORIN_TARGET_NAMESPACE)
@@ -22,14 +22,14 @@ function(add_thorin_dialect)
     list(TRANSFORM PARSED_DEPENDS        PREPEND ${THORIN_LIB_DIR}/ OUTPUT_VARIABLE DEPENDS_THORIN_FILES)
     list(TRANSFORM DEPENDS_THORIN_FILES   APPEND .thorin)
     list(TRANSFORM PARSED_DEPENDS        PREPEND ${CMAKE_CURRENT_BINARY_DIR}/ OUTPUT_VARIABLE DEPENDS_HEADER_FILES)
-    list(TRANSFORM DEPENDS_HEADER_FILES   APPEND .h)
+    list(TRANSFORM DEPENDS_HEADER_FILES   APPEND _autogen.h)
     list(TRANSFORM PARSED_HEADER_DEPENDS PREPEND ${CMAKE_CURRENT_BINARY_DIR}/ OUTPUT_VARIABLE PARSED_HEADER_DEPENDS)
-    list(TRANSFORM PARSED_HEADER_DEPENDS  APPEND .h)
+    list(TRANSFORM PARSED_HEADER_DEPENDS  APPEND _autogen.h)
     list(APPEND DEPENDS_HEADER_FILES ${PARSED_HEADER_DEPENDS})
 
     set(THORIN_FILE     ${CMAKE_CURRENT_SOURCE_DIR}/${DIALECT}/${DIALECT}.thorin)
     set(THORIN_FILE_LIB_DIR ${THORIN_LIB_DIR}/${DIALECT}.thorin)
-    set(DIALECT_H       ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}.h)
+    set(DIALECT_H       ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}_autogen.h)
     set(DIALECT_MD      ${CMAKE_CURRENT_BINARY_DIR}/${DIALECT}.md)
 
     list(APPEND THORIN_DIALECT_LIST "${DIALECT}")
@@ -48,21 +48,21 @@ function(add_thorin_dialect)
 
     add_custom_command(
         OUTPUT ${DIALECT_MD} ${DIALECT_H}
-        COMMAND $<TARGET_FILE:${THORIN_TARGET_NAMESPACE}thorin> -e md -e h ${THORIN_FILE_LIB_DIR} -D ${THORIN_LIB_DIR}
+        COMMAND $<TARGET_FILE:${THORIN_TARGET_NAMESPACE}thorin> -e md -e h ${THORIN_FILE_LIB_DIR} -D ${THORIN_LIB_DIR} --output-h ${DIALECT_H} --output-md ${DIALECT_MD}
         DEPENDS ${THORIN_TARGET_NAMESPACE}thorin ${THORIN_FILE_LIB_DIR}
         COMMENT "Bootstrapping Thorin dialect '${DIALECT}' from '${THORIN_FILE}'"
     )
     add_custom_target(${DIALECT} ALL DEPENDS ${DIALECT_MD} ${DIALECT_H})
 
-    add_library(thorin_${DIALECT} 
-        MODULE 
+    add_library(thorin_${DIALECT}
+        MODULE
             ${PARSED_SOURCES}       # original sources passed to add_thorin_dialect
             ${DIALECT_H}            # the generated header of this dialect
             ${DEPENDS_HEADER_FILES} # the generated headers of the dialects we depend on
     )
 
     set_target_properties(thorin_${DIALECT}
-        PROPERTIES 
+        PROPERTIES
             CXX_VISIBILITY_PRESET hidden
             VISIBILITY_INLINES_HIDDEN 1
             WINDOWS_EXPORT_ALL_SYMBOLS OFF
