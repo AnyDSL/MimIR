@@ -3,7 +3,6 @@
 #include "thorin/normalize.h"
 #include "thorin/tables.h"
 
-#include "dialects/core.h"
 #include "dialects/core/core.h"
 
 namespace thorin::normalize {

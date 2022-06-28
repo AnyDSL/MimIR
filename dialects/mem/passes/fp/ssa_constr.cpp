@@ -2,7 +2,6 @@
 
 #include "thorin/pass/fp/eta_exp.h"
 
-#include "dialects/mem.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::mem {

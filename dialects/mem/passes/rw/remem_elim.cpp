@@ -1,6 +1,6 @@
 #include "dialects/mem/passes/rw/remem_elim.h"
 
-#include "dialects/mem.h"
+#include "dialects/mem/mem.h"
 
 namespace thorin::mem {
 

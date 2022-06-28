@@ -19,6 +19,10 @@
 using namespace thorin;
 using namespace std::literals;
 
+enum Backends {
+    Dot, H, LL, Md, Thorin, Num_Backends
+};
+
 static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
 int main(int argc, char** argv) {
@@ -30,11 +34,8 @@ int main(int argc, char** argv) {
         std::vector<std::string> dialect_names, dialect_paths, emitters;
         std::vector<size_t> breakpoints;
 
-        bool emit_thorin  = false;
-        bool emit_h       = false;
-        bool emit_md      = false;
-        bool emit_ll      = false;
-        bool emit_dot     = false;
+        std::array<bool, Num_Backends> emit;
+        emit.fill(false);
         bool show_help    = false;
         bool show_version = false;
 
@@ -75,17 +76,17 @@ int main(int argc, char** argv) {
 
         for (const auto& e : emitters) {
             if (false) {}
-            else if (e == "thorin") emit_thorin = true;
-            else if (e == "h" )     emit_h      = true;
-            else if (e == "md")     emit_md     = true;
-            else if (e == "ll")     emit_ll     = true;
-            else if (e == "dot")    emit_dot    = true;
+            else if (e == "dot")    emit[Dot   ] = true;
+            else if (e == "h" )     emit[H     ] = true;
+            else if (e == "ll")     emit[LL    ] = true;
+            else if (e == "md")     emit[Md    ] = true;
+            else if (e == "thorin") emit[Thorin] = true;
             else unreachable();
         }
         // clang-format on
 
         // we always need core and mem, as long as we are not in bootstrap mode..
-        if (!emit_h) dialect_names.insert(dialect_names.end(), {"core", "mem"});
+        if (!emit[H]) dialect_names.insert(dialect_names.end(), {"core", "mem"});
 
         std::vector<Dialect> dialects;
         thorin::Backends backends;
@@ -124,12 +125,12 @@ int main(int argc, char** argv) {
 
         std::ofstream md;
         if (output_md.empty()) output_md = prefix + ".md";
-        if (emit_md) md.open(output_md);
+        if (emit[Md]) md.open(output_md);
 
-        Parser parser(world, input, ifs, dialect_paths, &normalizers, emit_md ? &md : nullptr);
+        Parser parser(world, input, ifs, dialect_paths, &normalizers, emit[Md] ? &md : nullptr);
         parser.parse_module();
 
-        if (emit_h) {
+        if (emit[H]) {
             if (output_h.empty()) output_h = prefix + ".h";
             std::ofstream h(output_h);
             parser.bootstrap(h);
@@ -140,7 +141,7 @@ int main(int argc, char** argv) {
 
         optimize(world, builder);
 
-        if (emit_thorin) {
+        if (emit[Thorin]) {
             if (output_thorin.empty()) output_thorin = prefix + ".thorin";
             std::ofstream thorin;
             std::ostream* o;
@@ -154,13 +155,13 @@ int main(int argc, char** argv) {
             *o << world << std::endl;
         }
 
-        if (emit_dot) {
+        if (emit[Dot]) {
             if (output_dot.empty()) output_dot = prefix + ".dot";
             std::ofstream ofs(output_dot);
             dot::emit(world, ofs);
         }
 
-        if (emit_ll) {
+        if (emit[LL]) {
             if (output_ll.empty()) output_ll = prefix + ".ll";
             if (auto it = backends.find("ll"); it != backends.end()) {
                 std::ofstream ofs(output_ll);
