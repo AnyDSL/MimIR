@@ -142,8 +142,16 @@ int main(int argc, char** argv) {
 
         if (emit_thorin) {
             if (output_thorin.empty()) output_thorin = prefix + ".thorin";
-            std::ofstream thorin(output_thorin);
-            thorin << world << std::endl;
+            std::ofstream thorin;
+            std::ostream* o;
+            if (output_thorin == "-") {
+                o = &std::cout;
+            } else {
+                thorin.open(output_thorin);
+                o = &thorin;
+            }
+
+            *o << world << std::endl;
         }
 
         if (emit_dot) {

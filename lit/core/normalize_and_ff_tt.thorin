@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -e thorin %s -o %t | FileCheck %s
+// RUN: %thorin -e thorin %s --output-thorin - | FileCheck %s
 
 .import core;
 
