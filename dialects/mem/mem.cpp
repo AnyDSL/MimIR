@@ -1,5 +1,3 @@
-#include "dialects/mem.h"
-
 #include <thorin/config.h>
 #include <thorin/pass/pass.h>
 

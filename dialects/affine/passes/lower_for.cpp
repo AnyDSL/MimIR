@@ -3,7 +3,7 @@
 #include <thorin/lam.h>
 #include <thorin/tables.h>
 
-#include "dialects/affine.h"
+#include "dialects/affine/affine.h"
 
 namespace thorin::affine {
 

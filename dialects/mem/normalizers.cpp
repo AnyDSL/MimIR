@@ -1,7 +1,7 @@
 #include "thorin/normalize.h"
 #include "thorin/world.h"
 
-#include "dialects/mem.h"
+#include "dialects/mem/mem.h"
 
 namespace thorin::mem {
 

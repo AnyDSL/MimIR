@@ -11,9 +11,9 @@
 #include "thorin/util/print.h"
 #include "thorin/util/sys.h"
 
-#include "dialects/clos.h"
-#include "dialects/core.h"
-#include "dialects/mem.h"
+#include "dialects/clos/clos.h"
+#include "dialects/core/core.h"
+#include "dialects/mem/mem.h"
 
 // Lessons learned:
 // * **Always** follow all ops - even if you actually want to ignore one.

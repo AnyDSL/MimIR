@@ -96,7 +96,7 @@ Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) testsuite with:
 ```sh
 cmake --build build -t check
 ```
-Run the tests within the `build` folder with:
+Run the [GoogleTest units](https://google.github.io/googletest/) tests within the `build` folder with:
 ```sh
 ctest
 ```

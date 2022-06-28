@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -e thorin %s -o %t -e ll | FileCheck %s
+// RUN: %thorin -e thorin %s -o %t -e ll --output-thorin - | FileCheck %s
 // RUN: clang -c %t.ll -o %t -Wno-override-module
 
 .import core;
