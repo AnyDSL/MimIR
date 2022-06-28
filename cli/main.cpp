@@ -136,6 +136,7 @@ int main(int argc, char** argv) {
 
 
         for (size_t be = 0; be != Num_Backends; ++be) {
+            if (!emit[be]) continue;
             if (output[be].empty()) output[be] = prefix + "."s + be2str(be);
             if (output[be] == "-") {
                 os[be] = &std::cout;
