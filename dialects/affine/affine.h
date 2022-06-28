@@ -3,7 +3,7 @@
 
 #include "thorin/world.h"
 
-#include "dialects/affine_autogen.h"
+#include "dialects/affine/autogen.h"
 
 namespace thorin::affine {
 
