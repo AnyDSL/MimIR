@@ -1,17 +1,10 @@
-add_thorin_dialect(mem
+add_thorin_dialect(affine
     SOURCES
-        mem/passes/fp/copy_prop.cpp
-        mem/passes/fp/copy_prop.h
-        mem/passes/fp/ssa_constr.cpp
-        mem/passes/fp/ssa_constr.h
-        mem/passes/rw/alloc2malloc.cpp
-        mem/passes/rw/alloc2malloc.h
-        mem/passes/rw/remem_elim.cpp
-        mem/passes/rw/remem_elim.h
-        mem/mem.cpp
-        mem/mem.h
-        mem/normalizers.cpp
-    HEADER_DEPENDS
+        affine/affine.cpp
+        affine/affine.h
+        affine/passes/lower_for.cpp
+        affine/passes/lower_for.h
+    DEPENDS
         core
     INSTALL
 )
@@ -50,13 +43,20 @@ add_thorin_dialect(core
     INSTALL
 )
 
-add_thorin_dialect(affine
+add_thorin_dialect(mem
     SOURCES
-        affine/affine.cpp
-        affine/affine.h
-        affine/passes/lower_for.cpp
-        affine/passes/lower_for.h
-    DEPENDS
+        mem/passes/fp/copy_prop.cpp
+        mem/passes/fp/copy_prop.h
+        mem/passes/fp/ssa_constr.cpp
+        mem/passes/fp/ssa_constr.h
+        mem/passes/rw/alloc2malloc.cpp
+        mem/passes/rw/alloc2malloc.h
+        mem/passes/rw/remem_elim.cpp
+        mem/passes/rw/remem_elim.h
+        mem/mem.cpp
+        mem/mem.h
+        mem/normalizers.cpp
+    HEADER_DEPENDS
         core
     INSTALL
 )

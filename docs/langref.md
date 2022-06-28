@@ -14,7 +14,7 @@ The actual *[terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_s
 
 #### Primary Terminals
 
-The [grammatical rules](#productions) will directly reference these *primary [terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)*.
+The [grammatical rules](#grammar) will directly reference these *primary [terminals](https://en.wikipedia.org/wiki/Terminal_and_nonterminal_symbols)*.
 *Secondary terminals* are [ASCII](https://en.wikipedia.org/wiki/ASCII)-only tokens that represent the **same** lexical element as its corresponding *primary token*.
 For example, the lexer doesn't care, if you use `⊥` or `.bot`.
 Both tokens are identified as `⊥`.
@@ -102,23 +102,21 @@ In addition, the following comments are available:
 * `//` single-line comment
 * `///` single-line comment that is put into the Markdown output (see [Emitters](@ref emitters))
 
-## Grammar
+## Grammar {#grammar}
 
-Thorin's grammar is defined as a [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) that consists of the *terminals* defined [above](#terminals) as well as the *nonterminals* and *productions* defined [below](#productions).
+Thorin's grammar is defined as a [context-free grammar](https://en.wikipedia.org/wiki/Context-free_grammar) that consists of the *terminals* defined [above](#terminals) as well as the *nonterminals* and *productions* defined below.
 The start symbol is "m" (module).
-
-### Productions {#productions}
 
 The following tables comprise all production rules:
 
-#### Module
+### Module
 
 | Nonterminal | Right-Hand Side   | Comment | Thorin Class  |
 |-------------|-------------------|---------|---------------|
 | m           | i\* d\*           | module  | thorin::World |
 | i           | `.import` Sym `;` | import  |               |
 
-#### Declarations
+### Declarations
 
 | Nonterminal | Right-Hand Side                                                   | New Scope? | Comment                        | Thorin Class  |
 |-------------|-------------------------------------------------------------------|------------|--------------------------------|---------------|
@@ -135,7 +133,7 @@ The following tables comprise all production rules:
 | o           | `=` e `;`                                                         |            | operand of nominal definition  | -             |
 | o           | `=` `{` e `,` ... `,` e  `}` `;`                                  | ✓          | operands of nominal definition | -             |
 
-#### Expressions
+### Expressions
 
 | Nonterminal | Right-Hand Side                                                             | New Scope? | Comment                             | Thorin Class    |
 |-------------|-----------------------------------------------------------------------------|------------|-------------------------------------|-----------------|
@@ -164,7 +162,7 @@ An elided type of
 * a bottom/top defaults to `*`,
 * a nominals defaults to `*`.
 
-##### Precedence
+#### Precedence
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
 
