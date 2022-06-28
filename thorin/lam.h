@@ -1,5 +1,4 @@
-#ifndef THORIN_LAM_H
-#define THORIN_LAM_H
+#pragma once
 
 #include <variant>
 
@@ -189,5 +188,3 @@ inline std::pair<const App*, Lam*> isa_apped_nom_lam(const Def* def) {
 }
 
 } // namespace thorin
-
-#endif

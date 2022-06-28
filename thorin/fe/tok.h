@@ -1,5 +1,4 @@
-#ifndef THORIN_TOK_H
-#define THORIN_TOK_H
+#pragma once
 
 #include "thorin/debug.h"
 
@@ -173,5 +172,3 @@ private:
 std::ostream& operator<<(std::ostream& os, const Tok tok);
 
 } // namespace thorin
-
-#endif

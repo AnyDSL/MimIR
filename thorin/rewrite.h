@@ -1,5 +1,4 @@
-#ifndef THORIN_TRANSFORM_REWRITE_H
-#define THORIN_TRANSFORM_REWRITE_H
+#pragma once
 
 #include "thorin/world.h"
 
@@ -50,5 +49,3 @@ DefArray rewrite(Def* nom, const Def* arg, const Scope& scope);
 void cleanup(World& world);
 
 } // namespace thorin
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef THORIN_ANALYSES_DOMTREE_H
-#define THORIN_ANALYSES_DOMTREE_H
+#pragma once
 
 #include "thorin/analyses/cfg.h"
 
@@ -47,5 +46,3 @@ using DomTree     = DomTreeBase<true>;
 using PostDomTree = DomTreeBase<false>;
 
 } // namespace thorin
-
-#endif

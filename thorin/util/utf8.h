@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_UTF8_H
-#define THORIN_UTIL_UTF8_H
+#pragma once
 
 #include <array>
 #include <istream>
@@ -113,5 +112,3 @@ protected:
 };
 
 } // namespace thorin::utf8
-
-#endif

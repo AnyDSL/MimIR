@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_RET_WRAP_H
-#define THORIN_PASS_RET_WRAP_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 
@@ -15,5 +14,3 @@ public:
 };
 
 } // namespace thorin
-
-#endif

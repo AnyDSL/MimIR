@@ -1,5 +1,4 @@
-#ifndef THORIN_BE_DOT_DOT_H
-#define THORIN_BE_DOT_DOT_H
+#pragma once
 
 #include <functional>
 #include <ostream>
@@ -14,5 +13,3 @@ void emit(World& w, std::ostream& s, std::function<void(std::ostream&, const Def
 
 } // namespace dot
 } // namespace thorin
-
-#endif

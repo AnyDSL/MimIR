@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_FP_COPY_PROP_H
-#define THORIN_PASS_FP_COPY_PROP_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 
@@ -53,5 +52,3 @@ private:
 
 } // namespace mem
 } // namespace thorin
-
-#endif

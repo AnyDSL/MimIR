@@ -1,5 +1,4 @@
-#ifndef THORIN_BE_LL_LL_H
-#define THORIN_BE_LL_LL_H
+#pragma once
 
 #include <ostream>
 
@@ -17,5 +16,3 @@ int compile_and_run(World&, std::string name, std::string args = {});
 
 } // namespace ll
 } // namespace thorin
-
-#endif

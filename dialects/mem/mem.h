@@ -1,5 +1,4 @@
-#ifndef DIALECTS_MEM_MEM_H
-#define DIALECTS_MEM_MEM_H
+#pragma once
 
 #include "thorin/axiom.h"
 #include "thorin/lam.h"
@@ -110,5 +109,3 @@ inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
     return match<mem::M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;
 }
 } // namespace thorin::mem
-
-#endif

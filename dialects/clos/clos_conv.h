@@ -1,5 +1,4 @@
-#ifndef THORIN_CLOSURE_CONV_H
-#define THORIN_CLOSURE_CONV_H
+#pragma once
 
 #include <functional>
 #include <queue>
@@ -271,5 +270,3 @@ inline const Def* clos_sub_env(const Def* tup_or_sig, const Def* new_env) {
 /// @}
 
 }; // namespace thorin::clos
-
-#endif

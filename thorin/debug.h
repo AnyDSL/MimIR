@@ -1,5 +1,4 @@
-#ifndef THORIN_DEBUG_H
-#define THORIN_DEBUG_H
+#pragma once
 
 #include <string>
 
@@ -114,5 +113,3 @@ using SymMap = absl::flat_hash_map<Sym, Val, SymHash>;
 using SymSet = absl::flat_hash_set<Sym, SymHash>;
 
 } // namespace thorin
-
-#endif

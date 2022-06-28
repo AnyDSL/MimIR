@@ -42,8 +42,8 @@ add_library(libthorin
     be/emitter.h
     be/dot/dot.cpp
     be/dot/dot.h
-    be/h/h.cpp
-    be/h/h.h
+    be/h/bootstrapper.cpp
+    be/h/bootstrapper.h
     fe/lexer.cpp
     fe/lexer.h
     fe/parser.cpp

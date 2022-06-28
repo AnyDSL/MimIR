@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_PASS_H
-#define THORIN_PASS_PASS_H
+#pragma once
 
 #include <stack>
 
@@ -308,5 +307,3 @@ private:
 inline World& Pass::world() { return man().world(); }
 
 } // namespace thorin
-
-#endif

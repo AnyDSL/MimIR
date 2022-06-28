@@ -1,5 +1,4 @@
-#ifndef THORIN_WORLD_H
-#define THORIN_WORLD_H
+#pragma once
 
 #include <sstream>
 #include <string>
@@ -747,5 +746,3 @@ std::ostream& operator<<(std::ostream&, const World&);
 // clang-format on
 
 } // namespace thorin
-
-#endif

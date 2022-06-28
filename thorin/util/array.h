@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_ARRAY_H
-#define THORIN_UTIL_ARRAY_H
+#pragma once
 
 #include <cassert>
 #include <cstddef>
@@ -432,5 +431,3 @@ Array<typename T::value_type> make_array(const T& container) {
 }
 
 } // namespace thorin
-
-#endif

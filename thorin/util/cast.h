@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_CAST_H
-#define THORIN_UTIL_CAST_H
+#pragma once
 
 #include <cassert>
 #include <cstring>
@@ -47,5 +46,3 @@ public:
 };
 
 } // namespace thorin
-
-#endif

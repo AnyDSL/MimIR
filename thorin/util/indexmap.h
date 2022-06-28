@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_INDEXMAP_H
-#define THORIN_UTIL_INDEXMAP_H
+#pragma once
 
 #include <ranges>
 
@@ -77,5 +76,3 @@ inline const Value* find(const IndexMap<Indexer, Key, Value*>& map, Key key) {
 }
 
 } // namespace thorin
-
-#endif

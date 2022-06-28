@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_RW_LAM_SPEC_H
-#define THORIN_PASS_RW_LAM_SPEC_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 
@@ -22,5 +21,3 @@ private:
 };
 
 } // namespace thorin
-
-#endif

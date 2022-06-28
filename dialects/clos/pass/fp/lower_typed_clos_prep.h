@@ -1,5 +1,4 @@
-#ifndef THORIN_CLOS_PASS_FP_LOWER_TYPED_CLOS_PREP_H
-#define THORIN_CLOS_PASS_FP_LOWER_TYPED_CLOS_PREP_H
+#pragma once
 
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/pass.h"
@@ -30,5 +29,3 @@ private:
 };
 
 } // namespace thorin::clos
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef THORIN_ANALYSES_SCHEDULE_H
-#define THORIN_ANALYSES_SCHEDULE_H
+#pragma once
 
 #include "thorin/analyses/cfg.h"
 
@@ -59,5 +58,3 @@ using Schedule = std::vector<Def*>;
 Schedule schedule(const Scope&);
 
 } // namespace thorin
-
-#endif

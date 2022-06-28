@@ -1,5 +1,4 @@
-#ifndef THORIN_PASS_FP_TAIL_REC_ELIM_H
-#define THORIN_PASS_FP_TAIL_REC_ELIM_H
+#pragma once
 
 #include "thorin/pass/pass.h"
 
@@ -28,5 +27,3 @@ private:
 };
 
 } // namespace thorin
-
-#endif

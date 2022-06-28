@@ -1,5 +1,4 @@
-#ifndef THORIN_FE_LEXER_H
-#define THORIN_FE_LEXER_H
+#pragma once
 
 #include <absl/container/flat_hash_map.h>
 
@@ -65,5 +64,3 @@ private:
 };
 
 } // namespace thorin
-
-#endif

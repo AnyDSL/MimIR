@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_CONTAINER_H
-#define THORIN_UTIL_CONTAINER_H
+#pragma once
 
 #include <queue>
 #include <stack>
@@ -116,5 +115,3 @@ template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<
 ///@}
 
 } // namespace thorin
-
-#endif

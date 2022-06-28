@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_HASH_H
-#define THORIN_UTIL_HASH_H
+#pragma once
 
 #include "thorin/util/types.h"
 
@@ -116,5 +115,3 @@ hash_t hash(std::string_view);
 ///@}
 
 } // namespace thorin
-
-#endif

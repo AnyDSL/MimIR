@@ -1,5 +1,4 @@
-#ifndef THORIN_ANALYSES_DEPTREE_H
-#define THORIN_ANALYSES_DEPTREE_H
+#pragma once
 
 #include <deque>
 
@@ -61,5 +60,3 @@ private:
 };
 
 } // namespace thorin
-
-#endif

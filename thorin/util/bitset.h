@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_BITSET_H
-#define THORIN_UTIL_BITSET_H
+#pragma once
 
 #include <cstdint>
 
@@ -185,5 +184,3 @@ public:
 static_assert(sizeof(BitSet) == 16);
 
 } // namespace thorin
-
-#endif

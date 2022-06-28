@@ -1,5 +1,4 @@
-#ifndef THORIN_UTIL_TYPES_H
-#define THORIN_UTIL_TYPES_H
+#pragma once
 
 #include <cstdint>
 
@@ -84,5 +83,3 @@ constexpr r64 operator""_r64(long double d) { return r64(d); }
 // clang-format on
 
 } // namespace thorin
-
-#endif

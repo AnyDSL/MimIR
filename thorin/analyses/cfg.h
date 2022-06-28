@@ -1,5 +1,4 @@
-#ifndef THORIN_ANALYSES_CFG_H
-#define THORIN_ANALYSES_CFG_H
+#pragma once
 
 #include <vector>
 
@@ -161,5 +160,3 @@ private:
 //------------------------------------------------------------------------------
 
 } // namespace thorin
-
-#endif

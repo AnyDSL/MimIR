@@ -1,5 +1,4 @@
-#if 0
-#    ifndef THORIN_PASS_BOUND_ELIM_H
+#pragma once
 #        define THORIN_PASS_BOUND_ELIM_H
 
 #        include "thorin/pass/pass.h"
@@ -20,5 +19,3 @@ private:
 
 }
 
-#    endif
-#endif

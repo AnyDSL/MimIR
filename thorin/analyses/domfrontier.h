@@ -1,5 +1,4 @@
-#ifndef THORIN_ANALYSES_DOMFRONTIER_H
-#define THORIN_ANALYSES_DOMFRONTIER_H
+#pragma once
 
 #include "thorin/analyses/cfg.h"
 
@@ -43,5 +42,3 @@ using DomFrontiers = DomFrontierBase<true>;
 using ControlDeps  = DomFrontierBase<false>;
 
 } // namespace thorin
-
-#endif
