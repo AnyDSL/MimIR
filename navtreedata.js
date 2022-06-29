@@ -91,7 +91,7 @@ var NAVTREEINDEX =
 "classthorin_1_1Def.html#acf2d9b7a9181faa538aad4c0237f6f36",
 "classthorin_1_1FPPass.html#aec19110c9b35d32e8025737d4b2ae61f",
 "classthorin_1_1LoopTreeBuilder.html#a1026774c35768d126137b47622093883",
-"classthorin_1_1PipelineBuilder.html#a688a1a1c0222e370120934b1f5329a8b",
+"classthorin_1_1PipelineBuilder.html#aaad8abacc76957c36bec7eb2c1c2a499",
 "classthorin_1_1TailRecElim.html",
 "classthorin_1_1World.html#a05c6774c833bf0afd224f70e3c77fbdf",
 "classthorin_1_1World.html#ab37d948254d9c4e4a5e8447f79a74dd8",
