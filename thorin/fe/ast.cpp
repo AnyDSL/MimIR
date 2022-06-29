@@ -6,9 +6,7 @@
 
 namespace thorin {
 
-void IdPtrn::scrutinize(Binder& binder, const Def* scrutinee) const {
-    binder.bind(sym_, scrutinee);
-}
+void IdPtrn::scrutinize(Binder& binder, const Def* scrutinee) const { binder.bind(sym_, scrutinee); }
 
 void TuplePtrn::scrutinize(Binder& binder, const Def* scrutinee) const {
     size_t n = ptrns_.size();

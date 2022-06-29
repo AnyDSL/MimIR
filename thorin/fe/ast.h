@@ -12,8 +12,7 @@ class Binder;
 class Ptrn {
 public:
     Ptrn(Loc loc)
-        : loc_(loc)
-    {}
+        : loc_(loc) {}
     virtual ~Ptrn() {}
 
     virtual void scrutinize(Binder&, const Def*) const = 0;
@@ -48,4 +47,4 @@ private:
     std::deque<std::unique_ptr<Ptrn>> ptrns_;
 };
 
-}
+} // namespace thorin

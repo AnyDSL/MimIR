@@ -5,8 +5,7 @@
 namespace thorin {
 
 Binder::Binder(World& world)
-    : anonymous_(world.tuple_str("_"), nullptr)
-{
+    : anonymous_(world.tuple_str("_"), nullptr) {
     push(); // root scope
 }
 

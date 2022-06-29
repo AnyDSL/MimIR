@@ -23,4 +23,4 @@ private:
     Sym anonymous_;
 };
 
-}
+} // namespace thorin
