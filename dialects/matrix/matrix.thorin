@@ -97,9 +97,12 @@
 /// ### %matrix.transpose
 ///
 /// transpose _ (m:@mat _ k*l T) : @mat _ l*k T
+/// completely resolved during normalization and implicitely rewriting
+/// (for instance: read(transpose m) (i,j) = read m (j,i))
 ///
 /// transpose matrix
-.ax %matrix.transpose: Π [k: .Nat, l: .Nat, T: *] -> %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_tranpose;
+// .ax %matrix.transpose: Π [k: .Nat, l: .Nat, T: *] -> %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_tranpose;
+.ax %matrix.transpose: Π [kl: «2: .Nat; .Nat», T: *] -> %matrix.Mat (2,kl,T) -> %matrix.Mat (2,(kl#(1:(%Int 2)),(kl#(0:(%Int 2)))),T), normalize_tranpose;
 /// 
 /// 
 /// ### %matrix.id
@@ -145,4 +148,7 @@
 * other points:
 * - the parallel (mem free) version and the meta version (or the other way around)
 *   should be automatically derivable from the other version
+* - a : %Int 5 should be a : (%Int 5) and not (a : %Int) 5
+* - dependend destruct pattern [[k:.Nat, l:.Nat], T:*]
+* - do not tell the name of the domain type but the type definition
 */

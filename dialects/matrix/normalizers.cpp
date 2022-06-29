@@ -3,7 +3,7 @@
 #include "thorin/axiom.h"
 
 #include "dialects/matrix.h"
-
+#include <iostream>
 namespace thorin::matrix {
 
 /// Normalizer for read opertions
@@ -21,6 +21,18 @@ const Def* normalize_read(const Def* type, const Def* callee, const Def* arg, co
        auto v = mcm->arg();
        return v;
     }
+    auto mtrans = match<transpose>(mat);
+    if(mtrans) {
+        // TODO: need easier decomposition and recomposition of args
+        auto [i, j] = index->projs<2>();
+        auto [dims, size, ty] = callee->as<App>()->arg()->projs<3>();
+        auto [k,l] = size->projs<2>();
+        auto m = mtrans->arg();
+        auto idx = world.tuple({j, i});
+        auto access = world.tuple({m,idx});
+        auto v = world.app(world.app(world.ax<read>(), world.tuple({dims, world.tuple({l,k}), ty})), access,dbg);
+        return v;
+    }
 
     return world.raw_app(callee, arg, dbg);
 }
@@ -29,6 +41,23 @@ const Def* normalize_read(const Def* type, const Def* callee, const Def* arg, co
 /// TODO: implement
 const Def* normalize_insert(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world                = type->world();
+    auto [mat, index, val]          = arg->projs<3>();
+
+    // same as read
+    // TODO: eliminate duplicate code
+    auto mtrans = match<transpose>(mat);
+    if(mtrans) {
+        // TODO: need easier decomposition and recomposition of args
+        auto [i, j] = index->projs<2>();
+        auto [dims, size, ty] = callee->as<App>()->arg()->projs<3>();
+        auto [k,l] = size->projs<2>();
+        auto m = mtrans->arg();
+        auto idx = world.tuple({j, i});
+        auto access = world.tuple({m,idx, val});
+        auto v = world.app(world.app(world.ax<insert>(), world.tuple({dims, world.tuple({l,k}), ty})), access,dbg);
+        return v;
+    }
+
     return world.raw_app(callee, arg, dbg);
 }
 

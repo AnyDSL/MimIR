@@ -9,20 +9,31 @@
 .import mem;
 .import matrix;
 
+.let I32 = %Int 4294967296;
+.let MT = (2, (2,4), I32);
+.let MT2 = (2, (4,2), I32);
+
+.lam .extern cont: .Cn [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, I32]] = {
+    .ff,
+    .let m2 = %matrix.transpose ((2,4), I32) m;
+    .let idx2 = (3:(%Int 4),1:(%Int 2));
+    .let d = %matrix.read MT2 (m2, idx2);
+
+    // .let idx = (1:(%Int 2),3:(%Int 4));
+    // .let d = %matrix.read MT (m, idx);
+    return (mem, d)
+};
+
+
 .lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
-    0: (%Int 2), // this is the filter
-    .let I32 = %Int 4294967296;
-    .let MT = (2, (3,5), I32);
+    .ff, // this is the filter
     .let c = 5:I32;
     .let m = %matrix.constMat MT c;
-    .let idx = 0:(%Int 2);
-    .let d = %matrix.shape MT (m, idx);
-    .let e = %core.bitcast (%Int 4294967296, .Nat) d;
-    return (mem, e)
+    cont (mem, m, return)
 };
 
 // CHECK-DAG: main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_[[memId:[0-9]*]], _[[argcId:[0-9]*]], _{{[0-9]*}}, _[[returnId:[0-9]*]]) = {
-// CHECK-DAG: _[[appId:[0-9]*]]: ⊥:★ = _[[returnEtaId:[0-9]*]] (_[[memId]], 3:(%Int 4294967296));
+// CHECK-DAG: _[[appId:[0-9]*]]: ⊥:★ = _[[returnEtaId:[0-9]*]] (_[[memId]], 5:(%Int 4294967296));
 // CHECK-DAG: _[[appId]]
 
 // CHECK-DAG: _[[returnEtaId]]: .Cn [%mem.M, (%Int 4294967296)], @(_{{[0-9]*}}, _{{[0-9]*}}) = {
@@ -30,20 +41,20 @@
 // CHECK-DAG: _[[retAppId]]
 
 /*
-.import core;
 .import matrix;
 .import mem;
+.import core;
 
 
-.lam .extern main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_253793, _253825, _253830, _253785) = {
+.lam .extern main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_176473, _176505, _176510, _176465) = {
     0:(%Int 2),
 
-    .lam _253780: .Cn [%mem.M, (%Int 4294967296)], @(_253845, _253850) = {
+    .lam _176460: .Cn [%mem.M, (%Int 4294967296)], @(_176525, _176530) = {
         0:(%Int 2),
-        .let _253787: ⊥:★ = _253785 @_253780;
-        _253787
+        .let _176467: ⊥:★ = _176465 @_176460;
+        _176467
     };
-    .let _253803: ⊥:★ = _253780 (_253793, 3:(%Int 4294967296));
-    _253803
+    .let _176483: ⊥:★ = _176460 (_176473, 5:(%Int 4294967296));
+    _176483
 };
 */
