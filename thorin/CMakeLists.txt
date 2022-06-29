@@ -44,6 +44,10 @@ add_library(libthorin
     be/dot/dot.h
     be/h/bootstrapper.cpp
     be/h/bootstrapper.h
+    fe/ast.cpp
+    fe/ast.h
+    fe/binder.cpp
+    fe/binder.h
     fe/lexer.cpp
     fe/lexer.h
     fe/parser.cpp
