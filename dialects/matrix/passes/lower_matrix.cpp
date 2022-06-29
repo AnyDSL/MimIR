@@ -4,15 +4,26 @@
 #include <thorin/tables.h>
 
 #include "dialects/matrix.h"
+#include <iostream>
 
 namespace thorin::matrix {
 
-const Def* LowerMatrix::rewrite(const Def* def) {
+void LowerMatrix::enter() {
+    Lam* prev = currentLambda;
+    currentLambda = curr_nom();
+
+    currentLambda->set_body(rewrite_(currentLambda->body()));
+    
+    currentLambda = prev;
+}
+
+const Def* LowerMatrix::rewrite_(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
+    std::cout << "rewriting " << def << " within " << currentLambda << std::endl;
 
+    if (auto for_ax = match<matrix::map>(def)) {
 
-    if (auto for_ax = match<matrix::Mat>(def)) {
         // auto& w = world();
         // w.DLOG("rewriting for axiom: {} within {}", for_ax, curr_nom());
 
@@ -52,6 +63,8 @@ const Def* LowerMatrix::rewrite(const Def* def) {
 
         // return rewritten_[def] = w.app(for_lam, for_ax->arg(), for_ax->dbg());
     }
+
+    // TODO: content agnostic traversal
 
     return def;
 }
