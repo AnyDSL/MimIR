@@ -3,13 +3,13 @@
 
 #include "thorin/dialects.h"
 
-#include "dialects/direct_style/direct_style.h"
-#include "dialects/direct_style/passes/lower_for.h"
+#include "dialects/direct/direct.h"
+#include "dialects/direct/passes/lower_for.h"
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
-    return {"direct_style",
+    return {"direct",
             [](thorin::PipelineBuilder& builder) {
-        builder.extend_opt_phase([](thorin::PassMan& man) { man.add<thorin::direct_style::DS2CPS>(); });
+        builder.extend_opt_phase([](thorin::PassMan& man) { man.add<thorin::direct::DS2CPS>(); });
             },
             nullptr, nullptr};
 }

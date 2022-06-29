@@ -1,4 +1,4 @@
-/// # The direct style dialect {#direct_style}
+/// # The direct style dialect {#direct}
 ///
 /// [TOC]
 ///
@@ -17,10 +17,10 @@
 ///
 /// ## Operations
 ///
-/// ### %direct_style.ds2cps
+/// ### %direct.ds2cps
 ///
-.ax %direct_style.ds2cps: Π [T: *, U: *] -> [T -> U] -> .Cn [T, .Cn U]
+.ax %direct.ds2cps: Π [T: *, U: *] -> [T -> U] -> .Cn [T, .Cn U];
 ///
-/// ### %direct_style.cps2ds
+/// ### %direct.cps2ds
 ///
-.ax %direct_style.cps2ds: Π [T: *, U: *] -> .Cn [T, .Cn U] -> [T -> U]
+.ax %direct.cps2ds: Π [T: *, U: *] -> .Cn [T, .Cn U] -> [T -> U];
