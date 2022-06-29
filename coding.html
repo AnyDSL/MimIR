@@ -139,6 +139,7 @@ Coding Style</h1>
 </li>
 <li>prefer <code>// C++-style comments</code> over <code>/* C-style comments */</code></li>
 <li>use <code>/// three slashes for Doxygen</code> and <a href="https://www.doxygen.nl/manual/grouping.html">group</a> your methods into logical units if possible</li>
+<li>use <a href="https://doxygen.nl/manual/markdown.html">Markdown-style</a> Doxygen comments</li>
 </ul>
 <p >For all the other minute details like indentation width etc. use <a href="https://clang.llvm.org/docs/ClangFormat.html">clang-format</a> and the provided <code>.clang-format</code> file in the root of the repository. In order to run <code>clang-format</code> automatically on all changed files, switch to the provided pre-commit hook: </p><div class="fragment"><div class="line">git config --local core.hooksPath .githooks/</div>
 </div><!-- fragment --><p> Note that you can <a href="https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code">disable clang-format for a piece of code</a>. In addition, you might want to check out plugins like the <a href="https://clang.llvm.org/docs/ClangFormat.html#vim-integration">Vim integration</a>.</p>
