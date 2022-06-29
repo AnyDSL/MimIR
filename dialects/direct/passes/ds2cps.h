@@ -3,7 +3,7 @@
 #include <thorin/def.h>
 #include <thorin/pass/pass.h>
 
-namespace thorin::affine {
+namespace thorin::direct {
 
 class DS2CPS : public RWPass<Lam> {
 public:
@@ -20,4 +20,4 @@ private:
     Lam* currentLambda;
 };
 
-} // namespace thorin::affine
+} // namespace thorin::direct
