@@ -106,7 +106,6 @@ $(document).ready(function(){initNavTree('cli.html',''); initResizable(); });
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md0">Usage</a></li>
-<li class="level1"><a href="#emitters">Emitters</a></li>
 <li class="level1"><a href="#clidebug">Debugging Features</a></li>
 </ul>
 </div>
@@ -114,7 +113,7 @@ $(document).ready(function(){initNavTree('cli.html',''); initResizable(); });
 <h1><a class="anchor" id="autotoc_md0"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  thorin [-?|-h|--help] [-v|--version] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-e|--emit &lt;dot|h|ll|md|thorin&gt;] [-V|--verbose] [-b|--break &lt;gid&gt;] [-o|--output &lt;prefix&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [--output-thorin &lt;file&gt;] [&lt;file&gt;]</div>
+<div class="line">  thorin [-?|-h|--help] [-v|--version] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-V|--verbose] [-b|--break &lt;gid&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [--output-thorin &lt;file&gt;] [&lt;file&gt;]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -125,33 +124,17 @@ Usage</h1>
 <div class="line">  -d, --dialect &lt;dialect&gt; Dynamically load dialect [WIP].</div>
 <div class="line">  -D, --dialect-path &lt;path&gt;</div>
 <div class="line">                          Path to search dialects in.</div>
-<div class="line">  -e, --emit &lt;dot|h|ll|md|thorin&gt;</div>
-<div class="line">                          Select emitter. Multiple emitters can be specified simultaneously.</div>
 <div class="line">  -V, --verbose           Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.</div>
 <div class="line">  -b, --break &lt;gid&gt;       Trigger breakpoint upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</div>
-<div class="line">  -o, --output &lt;prefix&gt;   Default prefix used for various output files.</div>
-<div class="line">  --output-dot &lt;file&gt;     Specify the dot output file.</div>
-<div class="line">  --output-h &lt;file&gt;       Specify the h output file.</div>
-<div class="line">  --output-ll &lt;file&gt;      Specify the ll output file.</div>
-<div class="line">  --output-md &lt;file&gt;      Specify the md output file.</div>
-<div class="line">  --output-thorin &lt;file&gt;  Specify the thorin output file.</div>
+<div class="line">  --output-dot &lt;file&gt;     Emits the Thorin program as a graph using Graphviz&#39; DOT language.</div>
+<div class="line">  --output-h &lt;file&gt;       Emits a header file to be used to interface with a dialect in C++.</div>
+<div class="line">  --output-ll &lt;file&gt;      Compiles the Thorin program to LLVM.</div>
+<div class="line">  --output-md &lt;file&gt;      Emits the input formatted as Markdown.</div>
+<div class="line">  --output-thorin &lt;file&gt;  Emits the Thorin program again.</div>
 <div class="line">  &lt;file&gt;                  Input file.</div>
 <div class="line"> </div>
 <div class="line">Use &quot;-&quot; as &lt;file&gt; to output to stdout.</div>
-</div><!-- fragment --><h1><a class="anchor" id="emitters"></a>
-Emitters</h1>
-<ul>
-<li><code>-e thorin</code> emits Thorin code again.</li>
-<li><code>-e h</code> emits a header file to be used to interface with a dialect in C++.</li>
-<li><code>-e md</code> emits the input formatted as <a href="https://www.doxygen.nl/manual/markdown.html">Markdown</a>.<ul>
-<li>Single-line <code>/// xxx</code> comments will put <code>xxx</code> directly into the Markdown output. You can put an optional space after the <code>///</code> that will be elided in the Markdown output.</li>
-<li>Everything else will be put verbatim within a <a href="https://www.doxygen.nl/manual/markdown.html#md_fenced">fenced code block</a>.</li>
-</ul>
-</li>
-<li><code>-e dot</code> emit the Thorin program as a graph using <a href="https://graphviz.org/doc/info/lang.html">Graphviz' DOT language</a>.</li>
-<li><code>-e ll</code> compiles the Thorin code to <a href="https://llvm.org/docs/LangRef.html">LLVM</a>.</li>
-</ul>
-<h1><a class="anchor" id="clidebug"></a>
+</div><!-- fragment --><h1><a class="anchor" id="clidebug"></a>
 Debugging Features</h1>
 <ul>
 <li>You can increase the log level with <code>-V</code>.<ul>
