@@ -6,17 +6,6 @@
 
 \include "cli-help.md"
 
-## Emitters {#emitters}
-
-* `-e thorin` emits Thorin code again.
-* `-e h` emits a header file to be used to interface with a dialect in C++.
-* `-e md` emits the input formatted as [Markdown](https://www.doxygen.nl/manual/markdown.html).
-    * Single-line `/// xxx` comments will put `xxx` directly into the Markdown output.
-        You can put an optional space after the `///` that will be elided in the Markdown output.
-    * Everything else will be put verbatim within a [fenced code block](https://www.doxygen.nl/manual/markdown.html#md_fenced).
-* `-e dot` emit the Thorin program as a graph using [Graphviz' DOT language](https://graphviz.org/doc/info/lang.html).
-* `-e ll` compiles the Thorin code to [LLVM](https://llvm.org/docs/LangRef.html).
-
 ## Debugging Features {#clidebug}
 
 * You can increase the log level with `-V`.

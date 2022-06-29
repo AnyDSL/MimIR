@@ -19,34 +19,18 @@
 using namespace thorin;
 using namespace std::literals;
 
-enum Backends {
-    Dot, H, LL, Md, Thorin, Num_Backends
-};
-
-static std::string be2str(size_t be) {
-    switch (be) {
-        case Dot:    return "dot"s;
-        case H:      return "h"s;
-        case LL:     return "ll"s;
-        case Md:     return "md"s;
-        case Thorin: return "thorin"s;
-        default: unreachable();
-    }
-}
+enum Backends { Dot, H, LL, Md, Thorin, Num_Backends };
 
 int main(int argc, char** argv) {
     try {
-        static const auto version             = "thorin command-line utility version " THORIN_VER "\n";
-        static constexpr const char* Backends = "dot|h|ll|md|thorin";
+        static const auto version = "thorin command-line utility version " THORIN_VER "\n";
 
         bool show_help    = false;
         bool show_version = false;
         std::string input, prefix;
         std::string clang = sys::find_cmd("clang");
-        std::vector<std::string> dialect_names, dialect_paths, emitters;
+        std::vector<std::string> dialect_names, dialect_paths;
         std::vector<size_t> breakpoints;
-        std::array<bool, Num_Backends> emit;
-        emit.fill(false);
         std::array<std::string, Num_Backends> output;
         int verbose      = 0;
         auto inc_verbose = [&](bool) { ++verbose; };
@@ -58,17 +42,15 @@ int main(int argc, char** argv) {
             | lyra::opt(clang,         "clang"  )["-c"]["--clang"        ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
             | lyra::opt(dialect_names, "dialect")["-d"]["--dialect"      ]("Dynamically load dialect [WIP].")
             | lyra::opt(dialect_paths, "path"   )["-D"]["--dialect-path" ]("Path to search dialects in.")
-            | lyra::opt(emitters,      Backends )["-e"]["--emit"         ]("Select emitter. Multiple emitters can be specified simultaneously.").choices("dot", "h", "ll", "md", "thorin")
             | lyra::opt(inc_verbose             )["-V"]["--verbose"      ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
 #if THORIN_ENABLE_CHECKS
             | lyra::opt(breakpoints,   "gid"    )["-b"]["--break"        ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
 #endif
-            | lyra::opt(prefix,        "prefix" )["-o"]["--output"       ]("Default prefix used for various output files.")
-            | lyra::opt(output[Dot   ], "file"  )      ["--output-dot"   ]("Specify the dot output file.")
-            | lyra::opt(output[H     ], "file"  )      ["--output-h"     ]("Specify the h output file.")
-            | lyra::opt(output[LL    ], "file"  )      ["--output-ll"    ]("Specify the ll output file.")
-            | lyra::opt(output[Md    ], "file"  )      ["--output-md"    ]("Specify the md output file.")
-            | lyra::opt(output[Thorin], "file"  )      ["--output-thorin"]("Specify the thorin output file.")
+            | lyra::opt(output[Dot   ], "file"  )      ["--output-dot"   ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
+            | lyra::opt(output[H     ], "file"  )      ["--output-h"     ]("Emits a header file to be used to interface with a dialect in C++.")
+            | lyra::opt(output[LL    ], "file"  )      ["--output-ll"    ]("Compiles the Thorin program to LLVM.")
+            | lyra::opt(output[Md    ], "file"  )      ["--output-md"    ]("Emits the input formatted as Markdown.")
+            | lyra::opt(output[Thorin], "file"  )      ["--output-thorin"]("Emits the Thorin program again.")
             | lyra::arg(input,          "file"  )                         ("Input file.");
         // clang-format on
 
@@ -85,17 +67,22 @@ int main(int argc, char** argv) {
             std::exit(EXIT_SUCCESS);
         }
 
-        for (const auto& e : emitters) {
-            for (size_t be = 0; be != Num_Backends; ++be) {
-                if (e == be2str(be)) {
-                    emit[be] = true;
-                    break;
-                }
+        // prepare output files and streams
+        std::array<std::ofstream, Num_Backends> ofs;
+        std::array<std::ostream*, Num_Backends> os;
+        os.fill(nullptr);
+        for (size_t be = 0; be != Num_Backends; ++be) {
+            if (output[be].empty()) continue;
+            if (output[be] == "-") {
+                os[be] = &std::cout;
+            } else {
+                ofs[be].open(output[be]);
+                os[be] = &ofs[be];
             }
         }
 
         // we always need core and mem, as long as we are not in bootstrap mode..
-        if (!emit[H]) dialect_names.insert(dialect_names.end(), {"core", "mem"});
+        if (!os[H]) dialect_names.insert(dialect_names.end(), {"core", "mem"});
 
         std::vector<Dialect> dialects;
         thorin::Backends backends;
@@ -112,13 +99,6 @@ int main(int argc, char** argv) {
         if (input[0] == '-' || input.substr(0, 2) == "--")
             throw std::invalid_argument("error: unknown option " + input);
 
-        if (prefix.empty()) {
-            auto filename = std::filesystem::path(input).filename();
-            if (filename.extension() != ".thorin")
-                throw std::invalid_argument("error: invalid file name '" + input + "'");
-            prefix = filename.stem().string();
-        }
-
         World world;
         world.set_log_ostream(&std::cerr);
         world.set_log_level((LogLevel)verbose);
@@ -132,34 +112,19 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
 
-        std::array<std::ofstream, Num_Backends> ofs;
-        std::array<std::ostream*, Num_Backends> os;
-
-
-        for (size_t be = 0; be != Num_Backends; ++be) {
-            if (!emit[be]) continue;
-            if (output[be].empty()) output[be] = prefix + "."s + be2str(be);
-            if (output[be] == "-") {
-                os[be] = &std::cout;
-            } else {
-                ofs[be].open(output[be]);
-                os[be] = &ofs[be];
-            }
-        }
-
-        Parser parser(world, input, ifs, dialect_paths, &normalizers, emit[Md] ? os[Md] : nullptr);
+        Parser parser(world, input, ifs, dialect_paths, &normalizers, os[Md]);
         parser.parse_module();
 
-        if (emit[H]) parser.bootstrap(*os[H]);
+        if (os[H]) parser.bootstrap(*os[H]);
 
         PipelineBuilder builder;
         for (const auto& dialect : dialects) { dialect.register_passes(builder); }
         optimize(world, builder);
 
-        if (emit[Thorin]) *os[Thorin] << world << std::endl;
-        if (emit[Dot]) dot::emit(world, *os[Dot]);
+        if (os[Thorin]) *os[Thorin] << world << std::endl;
+        if (os[Dot]) dot::emit(world, *os[Dot]);
 
-        if (emit[LL]) {
+        if (os[LL]) {
             if (auto it = backends.find("ll"); it != backends.end()) {
                 it->second(world, *os[LL]);
             } else

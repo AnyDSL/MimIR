@@ -98,9 +98,12 @@ However, the terminal *Ax* also uses the shorthand rule *sym*.
 ### Comments
 
 In addition, the following comments are available:
-* `/* ... */` multi-line comment
-* `//` single-line comment
-* `///` single-line comment that is put into the Markdown output (see [Emitters](@ref emitters))
+* `/* ... */`: multi-line comment
+* `//`: single-line comment
+* `///`: single-line comment for [Markdown](https://www.doxygen.nl/manual/markdown.html) [output](@ref cli):
+    - Single-line `/// xxx` comments will put `xxx` directly into the Markdown output.
+        You can put an optional space after the `///` that will be elided in the Markdown output.
+    - Everything else will be put verbatim within a [fenced code block](https://www.doxygen.nl/manual/markdown.html#md_fenced).
 
 ## Grammar {#grammar}
 

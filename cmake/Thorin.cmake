@@ -97,7 +97,7 @@ function(add_thorin_dialect)
 
     add_custom_command(
         OUTPUT ${DIALECT_MD} ${DIALECT_H}
-        COMMAND $<TARGET_FILE:${THORIN_TARGET_NAMESPACE}thorin> -e md -e h ${THORIN_FILE_LIB_DIR} -D ${THORIN_LIB_DIR} --output-h ${DIALECT_H} --output-md ${DIALECT_MD}
+        COMMAND $<TARGET_FILE:${THORIN_TARGET_NAMESPACE}thorin> ${THORIN_FILE_LIB_DIR} -D ${THORIN_LIB_DIR} --output-h ${DIALECT_H} --output-md ${DIALECT_MD}
         DEPENDS ${THORIN_TARGET_NAMESPACE}thorin ${THORIN_FILE_LIB_DIR}
         COMMENT "Bootstrapping Thorin dialect '${DIALECT}' from '${THORIN_FILE}'"
     )
