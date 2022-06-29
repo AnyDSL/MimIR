@@ -1,7 +1,6 @@
 #include "dialects/affine/passes/lower_for.h"
 
 #include <thorin/lam.h>
-#include <thorin/tables.h>
 
 #include "dialects/affine/affine.h"
 

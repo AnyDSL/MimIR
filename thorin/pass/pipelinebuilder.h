@@ -21,4 +21,5 @@ private:
     std::vector<std::function<void(PassMan&)>> opt_phase_extensions_;
     std::vector<std::function<void(PassMan&)>> codegen_prep_phase_extensions_;
 };
+
 } // namespace thorin
