@@ -60,3 +60,14 @@ add_thorin_dialect(mem
         core
     INSTALL
 )
+
+add_thorin_dialect(direct_style
+    SOURCES
+        direct_style/direct_style.cpp
+        direct_style/direct_style.h
+        direct_style/passes/ds2cps.cpp
+        direct_style/passes/ds2cps.h
+    DEPENDS
+        core
+    INSTALL
+)
