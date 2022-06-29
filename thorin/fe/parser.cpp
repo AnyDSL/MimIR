@@ -512,7 +512,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(std::string_view ctxt) {
         case Tok::Tag::M_id:      return parse_id_ptrn();
         default:
             if (ctxt.empty()) return nullptr;
-            err("primary expression", ctxt);
+            err("pattern", ctxt);
     }
     // clang-format on
     return nullptr;
@@ -638,14 +638,10 @@ void Parser::parse_ax() {
 
 void Parser::parse_let() {
     eat(Tok::Tag::K_let);
-    auto sym = parse_sym();
-    if (accept(Tok::Tag::T_colon)) {
-        /*auto type = */ parse_expr("type of a let binding");
-        // do sth with type
-    }
+    auto ptrn = parse_ptrn("binding pattern of a let expression");
     eat(Tok::Tag::T_assign);
     auto body = parse_expr("body of a let expression");
-    binder_.bind(sym, body);
+    ptrn->scrutinize(binder_, body);
     eat(Tok::Tag::T_semicolon);
 }
 

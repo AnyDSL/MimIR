@@ -10,7 +10,7 @@ void IdPtrn::scrutinize(Binder& binder, const Def* scrutinee) const { binder.bin
 
 void TuplePtrn::scrutinize(Binder& binder, const Def* scrutinee) const {
     size_t n = ptrns_.size();
-    for (size_t i = 0; i != n; ++i) scrutinize(binder, scrutinee->proj(n, i));
+    for (size_t i = 0; i != n; ++i) ptrns_[i]->scrutinize(binder, scrutinee->proj(n, i));
 }
 
 } // namespace thorin
