@@ -123,12 +123,36 @@ void Parser::parse_module() {
     expect(Tok::Tag::M_eof, "module");
 };
 
+void Parser::parse_import() {
+    eat(Tok::Tag::K_import);
+    auto name = expect(Tok::Tag::M_id, "import name");
+    expect(Tok::Tag::T_semicolon, "end of import");
+    auto name_str = name.sym().to_string();
+
+    if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
+
+    // search file and import
+    auto parser = Parser::import_module(world(), name_str, user_search_paths_, normalizers_);
+
+    // merge global scopes
+    assert(parser.scopes_.size() == 1 && scopes_.size() == 1);
+    scopes_.front().merge(parser.scopes_.front());
+
+    // transitvely remember which files we transitively imported
+    imported_.merge(parser.imported_);
+    imported_.emplace(name.sym());
+}
+
 Sym Parser::parse_sym(std::string_view ctxt) {
     auto track = tracker();
     if (auto id = accept(Tok::Tag::M_id)) return id->sym();
     err("identifier", ctxt);
     return world().sym("<error>", world().dbg((Loc)track));
 }
+
+/*
+ * exprs
+ */
 
 const Def* Parser::parse_dep_expr(std::string_view ctxt, Binders* binders, Tok::Prec p /*= Tok::Prec::Bot*/) {
     auto track = tracker();
@@ -190,15 +214,14 @@ const Def* Parser::parse_insert() {
     auto track = tracker();
 
     expect(Tok::Tag::D_paren_l, "opening paren for insert arguments");
-
-    auto target = parse_expr("insert target");
-    expect(Tok::Tag::T_comma, "comma after insert target");
+    auto tuple = parse_expr("the tuple to insert into");
+    expect(Tok::Tag::T_comma, "comma after tuple to insert into");
     auto index = parse_expr("insert index");
     expect(Tok::Tag::T_comma, "comma after insert index");
     auto value = parse_expr("insert value");
     expect(Tok::Tag::D_paren_r, "closing paren for insert arguments");
 
-    return world().insert(target, index, value, track);
+    return world().insert(tuple, index, value, track);
 }
 
 const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
@@ -682,26 +705,6 @@ void Parser::parse_def(Sym sym /*= {}*/) {
     }
 
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");
-}
-
-void Parser::parse_import() {
-    eat(Tok::Tag::K_import);
-    auto name = expect(Tok::Tag::M_id, "import name");
-    expect(Tok::Tag::T_semicolon, "end of import");
-    auto name_str = name.sym().to_string();
-
-    if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
-
-    // search file and import
-    auto parser = Parser::import_module(world(), name_str, user_search_paths_, normalizers_);
-
-    // merge global scopes
-    assert(parser.scopes_.size() == 1 && scopes_.size() == 1);
-    scopes_.front().merge(parser.scopes_.front());
-
-    // transitvely remember which files we transitively imported
-    imported_.merge(parser.imported_);
-    imported_.emplace(name.sym());
 }
 
 } // namespace thorin

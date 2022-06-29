@@ -68,6 +68,7 @@ private:
     };
 
     Sym parse_sym(std::string_view ctxt = {});
+    void parse_import();
 
     /// @name exprs
     ///@{
@@ -115,9 +116,6 @@ private:
     }
 
     void parse_var_list(Binders&);
-
-    // parse import statement
-    void parse_import();
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }

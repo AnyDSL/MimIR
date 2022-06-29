@@ -17,7 +17,7 @@ class Lexer : public utf8::Lexer<3> {
 
 public:
     /// Creates a lexer to read Thorin files (see [Lexical Structure](@ref lex)).
-    /// If @p ostream is not `nullptr`, a Markdown output will be generated.
+    /// If @p md is not `nullptr`, a Markdown output will be generated.
     Lexer(World& world, std::string_view file, std::istream& istream, std::ostream* md = nullptr);
 
     World& world() { return world_; }
