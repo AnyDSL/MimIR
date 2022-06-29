@@ -148,7 +148,7 @@ Primary Terminals</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>→</code> <code>⊥</code> <code>⊤</code> <code>★</code> <code>□</code> <code>λ</code> <code>Π</code>   </td><td class="markdownTableBodyNone"><code>-&gt;</code> <code>.bot</code> <code>.top</code> <code>*</code> <code>\</code> <code>|~|</code>   </td><td class="markdownTableBodyNone">further UTF-8 tokens    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>=</code> <code>,</code> <code>;</code> <code>.</code> <code>#</code> <code>:</code> <code>@</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">further tokens    </td></tr>
+<td class="markdownTableBodyNone"><code>=</code> <code>,</code> <code>;</code> <code>.</code> <code>#</code> <code>:</code> <code>%</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">further tokens    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>&lt;eof&gt;</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">marks the end of the file   </td></tr>
 </table>
@@ -177,6 +177,10 @@ Keywords</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.external</code>   </td><td class="markdownTableBodyNone">marks nominal as external    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.ins</code>   </td><td class="markdownTableBodyNone">insert expression    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.insert</code>   </td><td class="markdownTableBodyNone">alias for <code>.ins</code>    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>.module</code>   </td><td class="markdownTableBodyNone">starts a module    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.import</code>   </td><td class="markdownTableBodyNone">imports a dialect    </td></tr>
@@ -197,7 +201,7 @@ Regular Expressions</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">Sym   </td><td class="markdownTableBodyNone">sym   </td><td class="markdownTableBodyNone">symbol    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">Ax   </td><td class="markdownTableBodyNone"><code>@</code> sym <code>.</code> sym ( <code>.</code> sym)?   </td><td class="markdownTableBodyNone">Axiom    </td></tr>
+<td class="markdownTableBodyNone">Ax   </td><td class="markdownTableBodyNone"><code>%</code> sym <code>.</code> sym ( <code>.</code> sym)?   </td><td class="markdownTableBodyNone">Axiom    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">L   </td><td class="markdownTableBodyNone">dec+   </td><td class="markdownTableBodyNone">unsigned decimal literal    </td></tr>
 <tr class="markdownTableRowEven">
@@ -346,7 +350,7 @@ Expressions</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">e <code>#</code> e<sub>index</sub>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">extract   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.">thorin::Extract</a>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.ins</code> <code>(</code> e <code>,</code> e <code>,</code> e <code>)</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">insert   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">thorin::Insert</a>    </td></tr>
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.ins</code> <code>(</code> e<sub>tuple</sub> <code>,</code> e<sub>index</sub> <code>,</code> e<sub>value</sub> <code>)</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">insert   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">thorin::Insert</a>    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>(</code> e<sub>0</sub> <code>,</code> ... <code>,</code> e<sub>n-1</sub><code>)</code> ( <code>:</code> e<sub>type</sub> )?   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">tuple with optional type ascription   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Tuple.html" title="Data constructor for a Sigma.">thorin::Tuple</a>    </td></tr>
 <tr class="markdownTableRowOdd">
