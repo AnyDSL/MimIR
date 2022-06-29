@@ -4,7 +4,7 @@
 #include "thorin/dialects.h"
 
 #include "dialects/direct/direct.h"
-#include "dialects/direct/passes/lower_for.h"
+#include "dialects/direct/passes/ds2cps.h"
 
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"direct",
