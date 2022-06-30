@@ -18,6 +18,13 @@ void DS2CPS::enter() {
     rewrite_lam(lam);
 }
 
+bool isDS(Lam* lam) {
+    auto ty     = lam->type()->as<Pi>();
+    auto codom_ty = ty->codom();
+    return !(codom_ty->isa<Bot>());
+
+}
+
 /// switches context to new lambda
 /// replaces the body
 /// note: if the lambda contains a ds call, the body will be replaced
@@ -29,7 +36,10 @@ void DS2CPS::rewrite_lam(Lam* lam) {
     Lam* prev     = currentLambda;
     currentLambda = lam;
 
-    std::cout << "DS2CPS: " << lam->name() << std::endl;
+    auto ty     = lam->type()->as<Pi>();
+    auto arg_ty = ty->dom();
+    auto ret_ty = ty->codom();
+    std::cout << "DS2CPS: " << lam->name() << " : " << ty << " = " << arg_ty << " => " << ret_ty << std::endl;
 
     // overwrite lam body (or new lambda)
     auto result = rewrite_(currentLambda->body());
@@ -66,8 +76,7 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
         auto args   = app->args();
-        if (auto lam = callee->isa_nom<Lam>()) {
-            // TODO: check if the lambda is a ds function
+        if (auto lam = callee->isa_nom<Lam>(); lam && isDS(lam)) {
             /*
             h:
               b = f a
@@ -86,7 +95,7 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
             */
 
 #ifdef verbose_rewrite
-            std::cout << "  lam callee " << lam << " : " << lam->type() << std::endl;
+            std::cout << "  lam callee " << lam << " : " << lam->type() << " DS? " << isDS(lam) << std::endl;
 #endif
 
             auto ty     = lam->type();
