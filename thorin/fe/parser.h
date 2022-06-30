@@ -6,6 +6,8 @@
 #include "thorin/world.h"
 
 #include "thorin/be/h/bootstrapper.h"
+#include "thorin/fe/ast.h"
+#include "thorin/fe/binder.h"
 #include "thorin/fe/lexer.h"
 
 namespace thorin {
@@ -40,11 +42,14 @@ public:
            std::ostream* md = nullptr);
 
     World& world() { return lexer_.world(); }
-    void parse_module();
-    void bootstrap(std::ostream&);
 
+    /// @name entry points
+    ///@{
     static Parser
     import_module(World&, std::string_view, ArrayRef<std::string> = {}, const Normalizers* normalizers = nullptr);
+    void parse_module();
+    void bootstrap(std::ostream&);
+    ///@}
 
 private:
     /// @name Tracker
@@ -92,6 +97,13 @@ private:
     const Def* parse_lit();
     const Def* parse_var();
     const Def* parse_insert();
+    ///@}
+
+    /// @name ptrns
+    ///@{
+    std::unique_ptr<Ptrn> parse_ptrn(std::string_view ctxt);
+    std::unique_ptr<IdPtrn> parse_id_ptrn();
+    std::unique_ptr<TuplePtrn> parse_tuple_ptrn();
     ///@}
 
     /// @name decls
@@ -162,54 +174,21 @@ private:
     [[noreturn]] void err(std::string_view what, std::string_view ctxt) { err(what, ahead(), ctxt); }
     ///@}
 
-    /// @name Scope
-    ///@{
-    using Scope = SymMap<const Def*>;
-
-    void push() { scopes_.emplace_back(); }
-
-    void pop() {
-        assert(!scopes_.empty());
-        scopes_.pop_back();
-    }
-
-    const Def* find(Sym sym) const {
-        if (sym == anonymous_)
-            thorin::err<ScopeError>(sym.loc(), "the symbol '_' is special and never binds to anything", sym);
-
-        for (auto& scope : scopes_ | std::ranges::views::reverse)
-            if (auto i = scope.find(sym); i != scope.end()) return i->second;
-
-        thorin::err<ScopeError>(sym.loc(), "symbol '{}' not found", sym);
-    }
-
-    void insert(Sym sym, const Def* def) {
-        if (sym == anonymous_) return; // don't do anything with '_'
-
-        if (auto [i, ins] = scopes_.back().emplace(sym, def); !ins) {
-            auto curr = sym.loc();
-            auto prev = i->first.to_loc();
-            thorin::err<ScopeError>(curr, "symbol '{}' already declared in the current scope here: {}", sym, prev);
-        }
-    }
-    ///@}
-
     Parser(World&,
            std::string_view,
            std::istream&,
            ArrayRef<std::string>,
            const Normalizers*,
-           const std::deque<Parser::Scope>&,
+           const Binder&,
            const SymSet&);
 
     Lexer lexer_;
+    Binder binder_;
     Loc prev_;
     std::string dialect_;
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
     std::array<Tok, Max_Ahead> ahead_;     ///< SLL look ahead
-    std::deque<Scope> scopes_;
     SymSet imported_;
-    Sym anonymous_;
     h::Bootstrapper bootstrapper_;
     std::vector<std::string> user_search_paths_;
     const Normalizers* normalizers_;
