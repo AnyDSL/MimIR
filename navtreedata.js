@@ -26,12 +26,12 @@ var NAVTREE =
 [
   [ "Thorin", "index.html", [
     [ "Introduction", "index.html", [
-      [ "Building", "index.html#autotoc_md39", [
-        [ "Install", "index.html#autotoc_md40", null ],
-        [ "Build Switches", "index.html#autotoc_md41", null ],
-        [ "Tests", "index.html#autotoc_md42", null ]
+      [ "Building", "index.html#autotoc_md40", [
+        [ "Install", "index.html#autotoc_md41", null ],
+        [ "Build Switches", "index.html#autotoc_md42", null ],
+        [ "Tests", "index.html#autotoc_md43", null ]
       ] ],
-      [ "Dependencies", "index.html#autotoc_md43", null ]
+      [ "Dependencies", "index.html#autotoc_md44", null ]
     ] ],
     [ "Documentation", "usergroup0.html", [
       [ "Command-Line Reference", "cli.html", null ],
@@ -86,26 +86,26 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "affine.html",
-"classthorin_1_1ArrayRef.html#a2a6828a3ee980d848690c8dfa74a503f",
-"classthorin_1_1CFG.html#a4be7bf931bf9471d78c464c9d3559f3b",
-"classthorin_1_1Def.html#acf2d9b7a9181faa538aad4c0237f6f36",
-"classthorin_1_1FPPass.html#aec19110c9b35d32e8025737d4b2ae61f",
-"classthorin_1_1LoopTreeBuilder.html#a1026774c35768d126137b47622093883",
-"classthorin_1_1PipelineBuilder.html#aaad8abacc76957c36bec7eb2c1c2a499",
-"classthorin_1_1TailRecElim.html",
-"classthorin_1_1World.html#a05c6774c833bf0afd224f70e3c77fbdf",
-"classthorin_1_1World.html#ab37d948254d9c4e4a5e8447f79a74dd8",
-"classthorin_1_1dot_1_1DotEmitter.html#ad616ea9c49b3215cec8e506653f4a454",
-"conceptthorin_1_1axiom__without__sub__tags.html",
-"def_8h.html#a79fff1449ba1eaecead8f607520f8574",
-"lattice_8h.html#acf74d6ffc9168d125bb73ff17c3b8395",
-"namespacethorin.html#a25e65e2898328d7df97d05cbe8263220",
-"namespacethorin.html#ad50213d9c15d1b83b31b6bb415d7989d",
-"namespacethorin_1_1core.html#a0f653b62ae72a612ab61a03ec83bfd0a",
-"namespacethorin_1_1mem.html#a85f6dddc05019ffa4d67a0d4c84dc258",
-"structthorin_1_1GIDLt.html",
-"structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1shl_00_01w_01_4.html",
-"thorin_2normalize_8h.html#a581ce706121ebc10658edc271e1e73d1"
+"classthorin_1_1ArrayRef.html#a10434b1d54447f50caa905cb3fefb357",
+"classthorin_1_1CFA.html#ae4a109ef76a97fb3ab65511cab7140df",
+"classthorin_1_1Def.html#ac2017047b0b25ea75b038cb2427ea164",
+"classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403",
+"classthorin_1_1Lit.html",
+"classthorin_1_1Pi.html#a916737075d5ddb769683d9f9c300faff",
+"classthorin_1_1TExt.html#a14884781b8e90c28a922bf9aea07f833",
+"classthorin_1_1Use.html#a7e6e8c16ac0626c8b9d3b66f315791cf",
+"classthorin_1_1World.html#a93c924d00a53af313f88285c592d5ddf",
+"classthorin_1_1clos_1_1ClosLit.html#ad3dbbc1a4cbef0c377c2e72fe139b88f",
+"clos__conv_8cpp.html#aa870d5cda29752b22314c750f90cc52c",
+"core_8h.html#a9e7bbf8f2eabdee513df72bc4dac79c6",
+"hash_8h.html#afd6542b4bbcecac2fe7e4e87251a37f6",
+"namespacemembers_w.html",
+"namespacethorin.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946",
+"namespacethorin_1_1clos.html#a8d8a02b90cafe149d84a99ebb7532e78",
+"namespacethorin_1_1mem.html#a0c7645945c1ea0b9eb35024eb9cddc3e",
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#aaf47fe605aab18bf373e3ee9db286ae0",
+"structthorin_1_1normalize_1_1Fold_3_01Wrap_00_01Wrap_1_1shl_00_01w_01_4.html#ac6e1a0ff4a32776a0e866f876ba04102",
+"tail__rec__elim_8cpp_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

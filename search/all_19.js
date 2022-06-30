@@ -11,6 +11,7 @@ var searchData=
   ['_7elexer_8',['~Lexer',['../classthorin_1_1utf8_1_1Lexer.html#a6e287bb44b69d962efb2940be5738b7b',1,'thorin::utf8::Lexer']]],
   ['_7elock_9',['~Lock',['../structthorin_1_1World_1_1Arena_1_1Lock.html#afa07a5bf3efdfaa263b3806aae4f93fe',1,'thorin::World::Arena::Lock']]],
   ['_7epass_10',['~Pass',['../classthorin_1_1Pass.html#a1422445ab9812219a993c61c2c6842b1',1,'thorin::Pass']]],
-  ['_7escope_11',['~Scope',['../classthorin_1_1Scope.html#a4c8115844a60de40c7b8f949b4bb6434',1,'thorin::Scope']]],
-  ['_7eworld_12',['~World',['../classthorin_1_1World.html#a957e6e5bec2d46e8095f442bd027cd0b',1,'thorin::World']]]
+  ['_7eptrn_11',['~Ptrn',['../classthorin_1_1Ptrn.html#a5f5d301640a745c60d8857ab3abdbaf4',1,'thorin::Ptrn']]],
+  ['_7escope_12',['~Scope',['../classthorin_1_1Scope.html#a4c8115844a60de40c7b8f949b4bb6434',1,'thorin::Scope']]],
+  ['_7eworld_13',['~World',['../classthorin_1_1World.html#a957e6e5bec2d46e8095f442bd027cd0b',1,'thorin::World']]]
 ];
