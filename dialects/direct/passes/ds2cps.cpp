@@ -19,10 +19,9 @@ void DS2CPS::enter() {
 }
 
 bool isDS(Lam* lam) {
-    auto ty     = lam->type()->as<Pi>();
+    auto ty       = lam->type()->as<Pi>();
     auto codom_ty = ty->codom();
     return !(codom_ty->isa<Bot>());
-
 }
 
 /// switches context to new lambda
@@ -57,6 +56,15 @@ void DS2CPS::rewrite_lam(Lam* lam) {
 /// and return the memoized result if available
 const Def* DS2CPS::rewrite_(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
+
+    if (auto lam = def->isa_nom<Lam>()) {
+        // or check below at app
+        // or at another point
+        // not strictly necessary as enter will reach the lam eventually
+        rewrite_lam(lam);
+        return lam;
+    }
+
     auto result     = rewrite_inner(def);
     rewritten_[def] = result;
     return result;
@@ -71,7 +79,7 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
     std::cout << "rewrite " << def << " : " << def->type() << std::endl;
 #endif
 
-    rewritten_[def] = def;
+    // rewritten_[def] = def;
 
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
@@ -176,15 +184,11 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
         // + app calle/arg rewrites
         // all possible combinations?
 
-        // non lam call
-        if (auto app = def->isa<App>()) {
-            auto arg            = app->arg();
-            auto args_rewritten = rewrite_(arg);
-            auto arg_proj       = args_rewritten->projs();
-            const Def* res;
-            res = world.app(rewrite_(callee), arg_proj);
-            return res;
-        }
+        // non lam call (handled above)
+        auto arg            = app->arg();
+        auto args_rewritten = rewrite_(arg);
+        auto res            = world.app(rewrite_(callee), args_rewritten);
+        return res;
     }
 
     // TODO: check if lam is necessary or var is enough

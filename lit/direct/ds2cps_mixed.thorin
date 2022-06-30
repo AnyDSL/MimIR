@@ -13,8 +13,13 @@
     %Wrap_add (0:.Nat, 4294967296:.Nat) (2:I32, a)
 };
 
+.lam h: .Cn [mem : %mem.M, a : I32, return : .Cn [%mem.M, I32]] = {
+    0: (%Int 2),
+    .let c = f a;
+    return (mem, c)
+};
+
 .lam .extern main: .Cn [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
     0: (%Int 2),
-    .let c = f (40:I32);
-    return (mem, c)
+    h (mem, 40:I32, return)
 };
