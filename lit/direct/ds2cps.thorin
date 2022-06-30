@@ -8,15 +8,14 @@
 
 .let I32 = %Int 4294967296;
 
+// for some reason, .extern is needed here
 .lam .extern f: [a:I32] -> I32 = {
     .ff,
     %Wrap_add (0:.Nat, 4294967296:.Nat) (2:I32, a)
-    // (42:I32) 
 };
 
 .lam .extern main: .Cn [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
     0: (%Int 2),
-    // .let c = 42:(%Int 4294967296);
     .let c = f (40:I32);
     return (mem, c)
 };
