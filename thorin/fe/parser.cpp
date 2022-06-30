@@ -522,14 +522,14 @@ std::unique_ptr<IdPtrn> Parser::parse_id_ptrn() {
     auto track = tracker();
     auto sym   = parse_sym();
     auto type  = accept(Tok::Tag::T_colon) ? parse_expr("type of an identifier pattern") : nullptr;
-    return std::make_unique<IdPtrn>(track, sym, type);
+    return std::make_unique<IdPtrn>(track.loc(), sym, type);
 }
 
 std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
     auto track = tracker();
     std::deque<std::unique_ptr<Ptrn>> ptrns;
     parse_list("tuple pattern", Tok::Tag::D_paren_l, [&]() { ptrns.emplace_back(parse_ptrn("tuple pattern")); });
-    return std::make_unique<TuplePtrn>(track, std::move(ptrns));
+    return std::make_unique<TuplePtrn>(track.loc(), std::move(ptrns));
 }
 
 /*
