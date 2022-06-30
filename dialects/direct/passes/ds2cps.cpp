@@ -84,7 +84,32 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
         auto args   = app->args();
-        if (auto lam = callee->isa_nom<Lam>(); lam && isDS(lam)) {
+
+        #ifdef verbose_rewrite
+        std::cout << "  callee: " << callee << " : " << callee->type() << std::endl;
+        std::cout << "  args: ";
+        for (auto arg : args) {
+            std::cout << arg << " : " << arg->type() << ",   ";
+        }
+        std::cout << std::endl;
+        #endif
+
+        auto lam = callee->isa_nom<Lam>();
+
+        // manual unfolding instead of match<cps2ds>(callee)
+        // due to currying
+        Lam* conv_cps=nullptr;
+        auto [axiom, curry] = Axiom::get(callee);
+        if(axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<cps2ds>())
+            conv_cps = callee->as<App>()->arg()->as_nom<Lam>();
+        #ifdef verbose_rewrite
+        std::cout << "  conv_cps: " << conv_cps << std::endl;
+        #endif
+
+        if (
+            (lam && isDS(lam)) ||
+            conv_cps
+            ) {
             /*
             h:
               b = f a
@@ -103,10 +128,13 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
             */
 
 #ifdef verbose_rewrite
-            std::cout << "  lam callee " << lam << " : " << lam->type() << " DS? " << isDS(lam) << std::endl;
+            if(lam)
+                std::cout << "  lam callee " << lam << " : " << lam->type() << " DS? " << isDS(lam) << std::endl;
+            else
+                std::cout << "  cps2ds callee " << callee << " : " << callee->type() << std::endl;
 #endif
 
-            auto ty     = lam->type();
+            auto ty     = callee->type();
             auto arg_ty = ty->as<Pi>()->dom();
             auto ret_ty = ty->as<Pi>()->codom();
 #if 0
@@ -124,9 +152,33 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
                 }
             });
 
-            // cps version of function
-            auto lam_cps = world.nom_lam(world.cn(cps_dom), world.dbg(lam->name() + "_cps"));
-            lam_cps->set_filter(lam->filter());
+            Lam* lam_cps;
+            if(conv_cps) {
+                lam_cps = conv_cps;
+            }else {
+                // "real" ds function
+
+                // cps version of function
+                auto lam_cps = world.nom_lam(world.cn(cps_dom), world.dbg(lam->name() + "_cps"));
+                lam_cps->set_filter(lam->filter());
+
+                // each argument is linked to its corresponding argument in the cps function
+                for (size_t i = 0; i < lam->num_vars(); ++i) { rewritten_[lam->var((nat_t)i)] = lam_cps->var(i); }
+                // reconstruct var -> tuple of var without cont
+                // @fun -> (@fun_cps#0,...,@fun_cps#n)
+                DefArray real_vars(lam->num_vars(), [&](size_t i) { return lam_cps->var((nat_t)i); });
+                rewritten_[lam->var()] = world.tuple(real_vars);
+                rewritten_[lam]        = lam_cps;
+
+                // the body of the ds function is the computation result
+                lam_cps->set_body(world.app(lam_cps->ret_var(world.dbg("cps_return")), lam->body()));
+                // rewrite body directly
+                // for correct parameter references (not old ones)
+                // ds calls in the function will also be replaced
+                // but that would also happen otherwise later on
+                rewrite_lam(lam_cps);
+            }
+
             // continuation of call site to receive result
             auto fun_cont = world.nom_lam(world.cn(ret_ty), world.dbg(currentLambda->name() + "_cont"));
             fun_cont->set_filter(currentLambda->filter());
@@ -147,22 +199,6 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
             std::cout << "  overwrote body of " << currentLambda << " : " << currentLambda->type() << " with "
                       << cps_call << " : " << cps_call->type() << std::endl;
 #endif
-
-            // each argument is linked to its corresponding argument in the cps function
-            for (size_t i = 0; i < lam->num_vars(); ++i) { rewritten_[lam->var((nat_t)i)] = lam_cps->var(i); }
-            // reconstruct var -> tuple of var without cont
-            // @fun -> (@fun_cps#0,...,@fun_cps#n)
-            DefArray real_vars(lam->num_vars(), [&](size_t i) { return lam_cps->var((nat_t)i); });
-            rewritten_[lam->var()] = world.tuple(real_vars);
-            rewritten_[lam]        = lam_cps;
-
-            // the body of the ds function is the computation result
-            lam_cps->set_body(world.app(lam_cps->ret_var(world.dbg("cps_return")), lam->body()));
-            // rewrite body directly
-            // for correct parameter references (not old ones)
-            // ds calls in the function will also be replaced
-            // but that would also happen otherwise later on
-            rewrite_lam(lam_cps);
 
             // write the body context in the newly created continuation
             // that has access to the result (as its argument)

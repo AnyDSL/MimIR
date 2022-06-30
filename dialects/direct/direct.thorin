@@ -19,8 +19,8 @@
 ///
 /// ### %direct.ds2cps
 ///
-.ax %direct.ds2cps: Π [T: *, U: *] -> [T -> U] -> .Cn [T, .Cn U];
+.ax %direct.ds2cps: Π [T: *, U: *] -> (T -> U) -> .Cn [T, .Cn U];
 ///
 /// ### %direct.cps2ds
 ///
-.ax %direct.cps2ds: Π [T: *, U: *] -> .Cn [T, .Cn U] -> [T -> U];
+.ax %direct.cps2ds: Π [T: *, U: *] -> (.Cn [T, .Cn U]) -> (T -> U);
