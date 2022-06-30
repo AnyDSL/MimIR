@@ -126,7 +126,7 @@ The following tables comprise all production rules:
 | Nonterminal | Right-Hand Side                                                   | New Scope? | Comment                        | Thorin Class  |
 |-------------|-------------------------------------------------------------------|------------|--------------------------------|---------------|
 | d           | `.ax` Ax `:` e<sub>type</sub> `;`                                 |            | axiom                          | thorin::Axiom |
-| d           | `.let` Sym `:` e<sub>type</sub> `=` e `;`                         |            | let                            | -             |
+| d           | `.let` p  `=` e `;`                                               |            | let                            | -             |
 | d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n         |            | nominal Pi declaration         | thorin::Pi    |
 | d           | `.lam` Sym `:` e<sub>type</sub> v? n                              |            | nominal lambda declaration     | thorin::Lam   |
 | d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n   |            | nominal array declaration      | thorin::Arr   |
@@ -137,6 +137,13 @@ The following tables comprise all production rules:
 | n           | `;` \| o                                                          |            | nominal definition             | -             |
 | o           | `=` e `;`                                                         |            | operand of nominal definition  | -             |
 | o           | `=` `{` e `,` ... `,` e  `}` `;`                                  | ✓          | operands of nominal definition | -             |
+
+### Patterns
+
+| Nonterminal | Right-Hand Side               | New Scope? | Comment            |
+|-------------|-------------------------------|------------|--------------------|
+| p           | Sym ( `:` e<sub>type</sub> )? |            | identifier pattern |
+| p           | `(` p `,` ... `,` p `)`       |            | tuple pattern      |
 
 ### Expressions
 
