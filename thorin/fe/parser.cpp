@@ -247,7 +247,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
         case Tok::Tag::K_ff:        lex(); return world().lit_ff();
         case Tok::Tag::K_tt:        lex(); return world().lit_tt();
-        case Tok::Tag::T_Pi:        return parse_pi();
+        case Tok::Tag::T_Pi:        return parse_pi(binders);
         case Tok::Tag::T_lam:       return parse_lam();
         case Tok::Tag::T_at:        return parse_var();
         case Tok::Tag::T_star:      lex(); return world().type();
@@ -431,10 +431,11 @@ const Def* Parser::parse_type() {
     return world().type(level, track);
 }
 
-const Def* Parser::parse_pi() {
+const Def* Parser::parse_pi(Binders* outer) {
     auto track = tracker();
     eat(Tok::Tag::T_Pi);
     binder_.push();
+
     std::optional<Tok> id;
     const Def* dom;
     Binders binders;
@@ -455,7 +456,10 @@ const Def* Parser::parse_pi() {
     pi->set_codom(codom);
     pi->set_type(codom->unfold_type());
     pi->set_dbg(track);
+
+    if (outer) *outer = binders;
     binder_.pop();
+
     return pi;
 }
 
@@ -706,10 +710,12 @@ void Parser::parse_nom() {
         assert(binders.size() == nom->num_vars());
         for (auto [sym, i] : binders) binder_.bind(sym, nom->var(i, world().dbg(sym)));
     }
+
     if (ahead().isa(Tok::Tag::T_assign))
         parse_def(sym);
     else
         expect(Tok::Tag::T_semicolon, "end of a nominal");
+
     binder_.pop();
     binder_.pop();
 }

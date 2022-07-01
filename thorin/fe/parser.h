@@ -32,8 +32,6 @@ namespace thorin {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    using Binders = std::deque<std::pair<Sym, size_t>>;
-
     Parser(World&,
            std::string_view,
            std::istream&,
@@ -92,7 +90,7 @@ private:
     const Def* parse_sigma(Binders*);
     const Def* parse_tuple();
     const Def* parse_type();
-    const Def* parse_pi();
+    const Def* parse_pi(Binders*);
     const Def* parse_lam();
     const Def* parse_lit();
     const Def* parse_var();

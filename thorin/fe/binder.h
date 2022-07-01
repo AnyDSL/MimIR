@@ -23,4 +23,6 @@ private:
     Sym anonymous_;
 };
 
+using Binders = std::deque<std::pair<Sym, size_t>>;
+
 } // namespace thorin
