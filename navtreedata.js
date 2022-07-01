@@ -96,16 +96,16 @@ var NAVTREEINDEX =
 "classthorin_1_1Use.html#a7e6e8c16ac0626c8b9d3b66f315791cf",
 "classthorin_1_1World.html#a93c924d00a53af313f88285c592d5ddf",
 "classthorin_1_1clos_1_1ClosLit.html#ad3dbbc1a4cbef0c377c2e72fe139b88f",
-"clos__conv_8cpp.html#abd17e5f0a3f813c31eaac630cb0be063",
-"core_8h.html#a9ff673603febb97c37fd36773bae0f40",
-"hash_8h_source.html",
-"namespacemembers_z.html",
-"namespacethorin.html#abb917bebc699083d990fc4592abcc50ea143bb06341e537e7143fb33624517946",
-"namespacethorin_1_1clos.html#a8d8a02b90cafe149d84a99ebb7532e78",
-"namespacethorin_1_1mem.html#a0c7645945c1ea0b9eb35024eb9cddc3e",
-"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#aaf47fe605aab18bf373e3ee9db286ae0",
-"structthorin_1_1normalize_1_1Fold_3_01Wrap_00_01Wrap_1_1shl_00_01w_01_4.html#ac6e1a0ff4a32776a0e866f876ba04102",
-"tail__rec__elim_8cpp_source.html"
+"clos__conv_8cpp.html#a24fed2ec22c1aaf1108c47205d4ac25a",
+"core_8h.html#a508b56d335a59fe9405c914f2f318de9",
+"hash_8h.html#af7a988abfdb3962f8db0c32f2a4a0110",
+"namespacemembers_v.html",
+"namespacethorin.html#aba227b3ba0e6cb0a398abeef94c5ddef",
+"namespacethorin_1_1clos.html#a852ba328ba8d45ec5bc708aa434306b3",
+"namespacethorin_1_1mem.html#a09a41d5002120a0ef1000c5ff8f07ec5",
+"rewrite_8cpp_source.html",
+"structthorin_1_1normalize_1_1FoldConv_3_01conv_1_1s2s_00_01dw_00_01sw_01_4.html#a7924bce6c4e96ae698d93d4ae36d7cb3",
+"tables_8h.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9a6e0167be28786243e986f6cef621c39b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

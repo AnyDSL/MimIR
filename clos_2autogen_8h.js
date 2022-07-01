@@ -1,5 +1,6 @@
 var clos_2autogen_8h =
 [
+    [ "THORIN_clos_NORMALIZER_IMPL", "clos_2autogen_8h.html#a2e487041387471b14c1a874a4453fbec", null ],
     [ "alloc_jmpbuf", "clos_2autogen_8h.html#a0aabdb9a4da6e16afb462b4ce783fec8", [
       [ "Axiom_Id", "clos_2autogen_8h.html#a0aabdb9a4da6e16afb462b4ce783fec8a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
@@ -17,6 +18,7 @@ var clos_2autogen_8h =
     [ "setjmp", "clos_2autogen_8h.html#a553c0b470a1ee42cdae9d1fd3006dec8", [
       [ "Axiom_Id", "clos_2autogen_8h.html#a553c0b470a1ee42cdae9d1fd3006dec8a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
+    [ "normalize_clos", "clos_2autogen_8h.html#a55dab78e3533d57471a9a3c7399df6ce", null ],
     [ "operator&", "clos_2autogen_8h.html#a9e9e6fec4c328de5334ef0f6bc4b291c", null ],
     [ "operator&", "clos_2autogen_8h.html#ae35250513fe6f60169a197ecb96e62a2", null ],
     [ "operator&", "clos_2autogen_8h.html#a5944bbbd938a8a58d512dba53e478bd5", null ],
@@ -37,5 +39,6 @@ var clos_2autogen_8h =
     [ "operator|", "clos_2autogen_8h.html#ae738023437c1b5f91e3d2c42096d7507", null ],
     [ "operator|", "clos_2autogen_8h.html#ae9143e5aa5f920f23bd42fe2348c9a5d", null ],
     [ "operator|", "clos_2autogen_8h.html#afe1c0c8d964034f1dac1e18819079a29", null ],
+    [ "register_normalizers", "clos_2autogen_8h.html#ab4e2702acfbe14c56bc38803308aae1f", null ],
     [ "Dialect_Id", "clos_2autogen_8h.html#a825f85d6f84051d8c57118e012949b8e", null ]
 ];

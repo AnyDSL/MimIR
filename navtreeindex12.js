@@ -1,5 +1,14 @@
 var NAVTREEINDEX12 =
 {
+"core_8h.html#a508b56d335a59fe9405c914f2f318de9":[6,0,1,2,2,0],
+"core_8h.html#a561959758b4a4ed846e4c6c3f6f03a89":[6,0,1,2,2,13],
+"core_8h.html#a5ac0499ebda62172f8b5883b5a47bc48":[6,0,1,2,2,12],
+"core_8h.html#a6c40978b78ad940490edb9963f64f619":[6,0,1,2,2,14],
+"core_8h.html#a7a88808fc52e8a71485e80ff7816c016":[6,0,1,2,2,2],
+"core_8h.html#a81eef9e98d98fc3d5829db1c5db247bf":[6,0,1,2,2,9],
+"core_8h.html#a82132fff4e1716c67b6e3917a515a421":[6,0,1,2,2,18],
+"core_8h.html#a8b78e205340ab0ab8d5a8650db07bbaf":[6,0,1,2,2,21],
+"core_8h.html#a9e7bbf8f2eabdee513df72bc4dac79c6":[6,0,1,2,2,7],
 "core_8h.html#a9ff673603febb97c37fd36773bae0f40":[6,0,1,2,2,4],
 "core_8h.html#ab68f4719b25dd30504f65e144bc36a25":[6,0,1,2,2,6],
 "core_8h.html#abf4f6259b271d810101d16c18cbbe614":[6,0,1,2,2,3],
@@ -65,12 +74,6 @@ var NAVTREEINDEX12 =
 "deptree_8h.html":[6,0,4,0,3],
 "deptree_8h_source.html":[6,0,4,0,3],
 "dev.html":[1,3],
-"dialects_2clos_2normalize_8cpp.html":[6,0,1,1,6],
-"dialects_2clos_2normalize_8cpp.html#a78caed03378408516dd775ba15264a8e":[6,0,1,1,6,0],
-"dialects_2clos_2normalize_8cpp_source.html":[6,0,1,1,6],
-"dialects_2clos_2normalize_8h.html":[6,0,1,1,7],
-"dialects_2clos_2normalize_8h.html#a78caed03378408516dd775ba15264a8e":[6,0,1,1,7,0],
-"dialects_2clos_2normalize_8h_source.html":[6,0,1,1,7],
 "dialects_2mem_2passes_2rw_2alloc2malloc_8cpp.html":[6,0,1,3,0,1,0],
 "dialects_2mem_2passes_2rw_2alloc2malloc_8cpp_source.html":[6,0,1,3,0,1,0],
 "dialects_2mem_2passes_2rw_2remem__elim_8cpp.html":[6,0,1,3,0,1,2],
@@ -246,8 +249,5 @@ var NAVTREEINDEX12 =
 "hash_8h.html#a8a5c4e987f83e9076f9d3d70b1022663":[6,0,4,4,9,15],
 "hash_8h.html#aa8858444c651d4782136a10c4562574b":[6,0,4,4,9,10],
 "hash_8h.html#acf896db08a5279cdb1f61589607f055b":[6,0,4,4,9,6],
-"hash_8h.html#ae0e621eb1be011dcdfe11e5171fd7dd4":[6,0,4,4,9,2],
-"hash_8h.html#af7a988abfdb3962f8db0c32f2a4a0110":[6,0,4,4,9,9],
-"hash_8h.html#afa8ec846210cd2e5bff23fc963021ca7":[6,0,4,4,9,8],
-"hash_8h.html#afd6542b4bbcecac2fe7e4e87251a37f6":[6,0,4,4,9,14]
+"hash_8h.html#ae0e621eb1be011dcdfe11e5171fd7dd4":[6,0,4,4,9,2]
 };
