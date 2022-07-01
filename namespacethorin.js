@@ -361,6 +361,7 @@ var namespacethorin =
     [ "axiom_from_thorin", "conceptthorin_1_1axiom__from__thorin.html", null ],
     [ "B_CFG", "namespacethorin.html#af1f71555d0d56905937ef1c9a5bc2c96", null ],
     [ "Backends", "namespacethorin.html#ab70a3eb6856bc409f9ed3627fff8ab36", null ],
+    [ "Binders", "namespacethorin.html#a5d0060ab5c8ab25ec560dfd446d80e97", null ],
     [ "Bot", "namespacethorin.html#adefa1d05bd6416bf0770c785c9221a02", null ],
     [ "CFNodes", "namespacethorin.html#a94b098a4c3b6ff1a8a9522e626d83e2b", null ],
     [ "ControlDeps", "namespacethorin.html#ae06bba681d8d0c4022d03b1f20b5718a", null ],
