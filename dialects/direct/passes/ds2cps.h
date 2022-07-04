@@ -26,7 +26,7 @@ namespace thorin::direct {
 /// f': .Cn [A, ret: .Cn[B]]
 /// ```
 /// The idea is to create a cps function for each ds function
-/// invoke the cps function with a continuation that takes the 
+/// invoke the cps function with a continuation that takes the
 /// computation result and uses it in the original context.
 /// For each ds function, a new cps function is introduced.
 /// For each ds call site, a new continuation is introduced.
@@ -41,7 +41,7 @@ public:
 
 private:
     Def2Def rewritten_;
-    Lam* currentLambda=nullptr;
+    Lam* curr_lam = nullptr;
 
     void rewrite_lam(Lam* lam);
     const Def* rewrite_(const Def*);
