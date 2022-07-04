@@ -29,27 +29,28 @@ struct Unwrap {
     const Def* def;
 };
 
-static Tok::Prec prec(const Def* def) {
-    if (def->isa<Pi>()) return Tok::Prec::Arrow;
-    if (def->isa<App>()) return Tok::Prec::App;
-    if (def->isa<Extract>()) return Tok::Prec::Extract;
-    if (def->isa<Lit>()) return Tok::Prec::Lit;
-    return Tok::Prec::Bot;
+// TODO can we get rid off this?
+static fe::Tok::Prec prec(const Def* def) {
+    if (def->isa<Pi>()) return fe::Tok::Prec::Arrow;
+    if (def->isa<App>()) return fe::Tok::Prec::App;
+    if (def->isa<Extract>()) return fe::Tok::Prec::Extract;
+    if (def->isa<Lit>()) return fe::Tok::Prec::Lit;
+    return fe::Tok::Prec::Bot;
 }
 
-static Tok::Prec prec_l(const Def* def) {
+static fe::Tok::Prec prec_l(const Def* def) {
     assert(!def->isa<Lit>());
-    if (def->isa<Pi>()) return Tok::Prec::App;
-    if (def->isa<App>()) return Tok::Prec::App;
-    if (def->isa<Extract>()) return Tok::Prec::Extract;
-    return Tok::Prec::Bot;
+    if (def->isa<Pi>()) return fe::Tok::Prec::App;
+    if (def->isa<App>()) return fe::Tok::Prec::App;
+    if (def->isa<Extract>()) return fe::Tok::Prec::Extract;
+    return fe::Tok::Prec::Bot;
 }
 
-static Tok::Prec prec_r(const Def* def) {
-    if (def->isa<Pi>()) return Tok::Prec::Arrow;
-    if (def->isa<App>()) return Tok::Prec::Extract;
-    if (def->isa<Extract>()) return Tok::Prec::Lit;
-    return Tok::Prec::Bot;
+static fe::Tok::Prec prec_r(const Def* def) {
+    if (def->isa<Pi>()) return fe::Tok::Prec::Arrow;
+    if (def->isa<App>()) return fe::Tok::Prec::Extract;
+    if (def->isa<Extract>()) return fe::Tok::Prec::Lit;
+    return fe::Tok::Prec::Bot;
 }
 
 template<bool L>

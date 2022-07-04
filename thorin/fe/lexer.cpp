@@ -4,7 +4,7 @@
 
 using namespace std::literals;
 
-namespace thorin {
+namespace thorin::fe {
 
 static bool issign(char32_t i) { return i == '+' || i == '-'; }
 static bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
@@ -279,4 +279,4 @@ void Lexer::emit_md(bool start_of_file) {
     }
 }
 
-} // namespace thorin
+} // namespace thorin::fe

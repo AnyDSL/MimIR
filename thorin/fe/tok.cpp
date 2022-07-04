@@ -2,7 +2,7 @@
 
 #include "thorin/util/assert.h"
 
-namespace thorin {
+namespace thorin::fe {
 
 std::string_view Tok::tag2str(Tok::Tag tag) {
     switch (tag) {
@@ -22,4 +22,4 @@ std::ostream& operator<<(std::ostream& os, const Tok tok) {
     return os << Tok::tag2str(tok.tag());
 }
 
-} // namespace thorin
+} // namespace thorin::fe

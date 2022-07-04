@@ -4,7 +4,7 @@
 
 #include "thorin/debug.h"
 
-namespace thorin {
+namespace thorin::fe {
 
 class Binder {
 public:
@@ -25,4 +25,4 @@ private:
 
 using Binders = std::deque<std::pair<Sym, size_t>>;
 
-} // namespace thorin
+} // namespace thorin::fe

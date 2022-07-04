@@ -112,7 +112,7 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
 
-        Parser parser(world, input, ifs, dialect_paths, &normalizers, os[Md]);
+        fe::Parser parser(world, input, ifs, dialect_paths, &normalizers, os[Md]);
         parser.parse_module();
 
         if (os[H]) parser.bootstrap(*os[H]);

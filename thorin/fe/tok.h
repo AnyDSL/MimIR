@@ -4,7 +4,7 @@
 
 #include "thorin/util/types.h"
 
-namespace thorin {
+namespace thorin::fe {
 
 // clang-format off
 #define THORIN_KEY(m)                  \
@@ -171,4 +171,4 @@ private:
 
 std::ostream& operator<<(std::ostream& os, const Tok tok);
 
-} // namespace thorin
+} // namespace thorin::fe

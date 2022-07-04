@@ -2,7 +2,7 @@
 
 #include "thorin/world.h"
 
-namespace thorin {
+namespace thorin::fe {
 
 Binder::Binder(World& world)
     : anonymous_(world.tuple_str("_"), nullptr) {
@@ -39,4 +39,4 @@ void Binder::merge(Binder& other) {
     scopes_.front().merge(other.scopes_.front());
 }
 
-} // namespace thorin
+} // namespace thorin::fe

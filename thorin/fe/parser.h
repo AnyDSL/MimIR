@@ -10,7 +10,7 @@
 #include "thorin/fe/binder.h"
 #include "thorin/fe/lexer.h"
 
-namespace thorin {
+namespace thorin::fe {
 
 /// Parses Thorin code into the provided World.
 ///
@@ -192,4 +192,4 @@ private:
     const Normalizers* normalizers_;
 };
 
-} // namespace thorin
+} // namespace thorin::fe

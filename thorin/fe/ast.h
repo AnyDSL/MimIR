@@ -5,7 +5,7 @@
 
 #include "thorin/fe/tok.h"
 
-namespace thorin {
+namespace thorin::fe {
 
 class Binder;
 
@@ -47,4 +47,4 @@ private:
     std::deque<std::unique_ptr<Ptrn>> ptrns_;
 };
 
-} // namespace thorin
+} // namespace thorin::fe

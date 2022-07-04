@@ -9,6 +9,7 @@
 
 using namespace std::literals;
 using namespace thorin;
+using namespace thorin::fe;
 
 TEST(Lexer, Toks) {
     World world;

@@ -27,7 +27,7 @@
 
 using namespace std::string_literals;
 
-namespace thorin {
+namespace thorin::fe {
 
 Parser::Parser(World& world,
                std::string_view file,
@@ -113,7 +113,7 @@ Parser Parser::import_module(World& world,
 
     if (!ifs) throw std::runtime_error("could not find file '" + file_name + "'");
 
-    thorin::Parser parser(world, input_path, ifs, user_search_paths, normalizers);
+    thorin::fe::Parser parser(world, input_path, ifs, user_search_paths, normalizers);
     parser.parse_module();
 
     world.add_imported(name);
@@ -748,4 +748,4 @@ void Parser::parse_def(Sym sym /*= {}*/) {
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");
 }
 
-} // namespace thorin
+} // namespace thorin::fe

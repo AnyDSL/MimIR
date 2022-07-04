@@ -4,7 +4,7 @@
 
 #include "thorin/fe/binder.h"
 
-namespace thorin {
+namespace thorin::fe {
 
 void IdPtrn::scrutinize(Binder& binder, const Def* scrutinee) const { binder.bind(sym_, scrutinee); }
 
@@ -13,4 +13,4 @@ void TuplePtrn::scrutinize(Binder& binder, const Def* scrutinee) const {
     for (size_t i = 0; i != n; ++i) ptrns_[i]->scrutinize(binder, scrutinee->proj(n, i));
 }
 
-} // namespace thorin
+} // namespace thorin::fe
