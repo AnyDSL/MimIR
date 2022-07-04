@@ -18,3 +18,12 @@
     0: (%Int 2),
     h (mem, 40:I32, return)
 };
+
+// CHECK-DAG: .lam .extern main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_[[memId:[_0-9]*]], _[[argcId:[_0-9]*]], _{{[_0-9]*}}, _[[returnId:[_0-9]*]]) = {
+// CHECK-DAG: _[[appId:[_0-9]*]]: ⊥:★ = _[[returnEtaId:[_0-9]*]] (_[[memId]], 40:(%Int 4294967296));
+// CHECK-DAG: _[[appId]]
+
+// CHECK-DAG: .lam _[[returnEtaId]]: .Cn [%mem.M, (%Int 4294967296)], @(_{{[_0-9]*}}, _{{[_0-9]*}}) = {
+// CHECK-DAG: _[[retAppId:[_0-9]*]]: ⊥:★ = _[[returnId]] @_[[returnEtaId]];
+// CHECK-DAG: _[[retAppId]]
+
