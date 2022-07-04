@@ -6,7 +6,7 @@
 
 #include "dialects/direct/direct.h"
 
-#define verbose_rewrite
+// #define verbose_rewrite
 
 namespace thorin::direct {
 
@@ -38,7 +38,9 @@ void DS2CPS::rewrite_lam(Lam* lam) {
     auto ty     = lam->type()->as<Pi>();
     auto arg_ty = ty->dom();
     auto ret_ty = ty->codom();
+#ifdef verbose_rewrite
     std::cout << "DS2CPS: " << lam->name() << " : " << ty << " = " << arg_ty << " => " << ret_ty << std::endl;
+#endif
 
     // overwrite lam body (or new lambda)
     auto result = rewrite_(currentLambda->body());
