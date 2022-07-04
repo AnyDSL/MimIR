@@ -158,7 +158,6 @@ Sym Parser::parse_sym(std::string_view ctxt) {
     return world().sym("<error>", world().dbg((Loc)track));
 }
 
-
 const Def* Parser::parse_type_ascr(std::string_view ctxt /*= {}*/) {
     std::string msg("type ascription of ");
     msg += ctxt;
@@ -562,23 +561,25 @@ std::unique_ptr<Bndr> Parser::parse_bndr(std::string_view ctxt) {
 
     // clang-format off
     switch (ahead().tag()) {
-        case Tok::Tag::M_id: {
-            // id binder
-            auto type  = parse_expr("type of a binder");
-            return std::make_unique<IdBndr>(track.loc(), sym, type);
-        }
-        case Tok::Tag::D_bracket_l: {
-            // sigma binder
-            std::deque<std::unique_ptr<Bndr>> bndrs;
-            parse_list("sigma binder", Tok::Tag::D_bracket_l, [&]() { bndrs.emplace_back(parse_bndr("sigma binder")); });
-            return std::make_unique<SigmaBndr>(track.loc(), sym, std::move(bndrs));
-        }
+        case Tok::Tag::M_id:        return parse_id_bndr(track, sym);
+        case Tok::Tag::D_bracket_l: return parse_sigma_bndr(track, sym);
         default:
             if (ctxt.empty()) return nullptr;
             err("binder", ctxt);
     }
     // clang-format on
     return nullptr;
+}
+
+std::unique_ptr<IdBndr> Parser::parse_id_bndr(Tracker track, Sym sym) {
+    auto type = parse_expr("type of a binder");
+    return std::make_unique<IdBndr>(track.loc(), sym, type);
+}
+
+std::unique_ptr<SigmaBndr> Parser::parse_sigma_bndr(Tracker track, Sym sym) {
+    std::deque<std::unique_ptr<Bndr>> bndrs;
+    parse_list("sigma binder", Tok::Tag::D_bracket_l, [&]() { bndrs.emplace_back(parse_bndr("sigma binder")); });
+    return std::make_unique<SigmaBndr>(track.loc(), sym, std::move(bndrs));
 }
 
 /*

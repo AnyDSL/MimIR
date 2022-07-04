@@ -108,6 +108,8 @@ private:
     /// @name bndrs
     ///@{
     std::unique_ptr<Bndr> parse_bndr(std::string_view ctxt);
+    std::unique_ptr<IdBndr> parse_id_bndr(Tracker, Sym);
+    std::unique_ptr<SigmaBndr> parse_sigma_bndr(Tracker, Sym);
     ///@}
 
     /// @name decls
