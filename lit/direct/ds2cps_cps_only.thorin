@@ -1,7 +1,7 @@
-
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin -d direct %s --output-ll %t.ll --output-thorin - | FileCheck %s
-// ./build/bin/thorin -d direct ./lit/direct/ds2cps.thorin --output-thorin -
+
+// sanity check that the pass do not interfere with normal operation
 
 .import direct;
 .import mem;
