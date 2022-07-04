@@ -158,6 +158,16 @@ Sym Parser::parse_sym(std::string_view ctxt) {
     return world().sym("<error>", world().dbg((Loc)track));
 }
 
+
+const Def* Parser::parse_type_ascr(std::string_view ctxt /*= {}*/) {
+    std::string msg("type ascription of ");
+    msg += ctxt;
+
+    if (accept(Tok::Tag::T_colon)) return parse_expr(msg);
+    if (ctxt.empty()) return nullptr;
+    err(prev_, msg.c_str());
+}
+
 /*
  * exprs
  */
@@ -525,7 +535,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(std::string_view ctxt) {
 std::unique_ptr<IdPtrn> Parser::parse_id_ptrn() {
     auto track = tracker();
     auto sym   = parse_sym();
-    auto type  = accept(Tok::Tag::T_colon) ? parse_expr("type of an identifier pattern") : nullptr;
+    auto type  = parse_type_ascr();
     return std::make_unique<IdPtrn>(track.loc(), sym, type);
 }
 
@@ -533,7 +543,42 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
     auto track = tracker();
     std::deque<std::unique_ptr<Ptrn>> ptrns;
     parse_list("tuple pattern", Tok::Tag::D_paren_l, [&]() { ptrns.emplace_back(parse_ptrn("tuple pattern")); });
-    return std::make_unique<TuplePtrn>(track.loc(), std::move(ptrns));
+    auto type = parse_type_ascr();
+    return std::make_unique<TuplePtrn>(track.loc(), std::move(ptrns), type);
+}
+
+/*
+ * bndrs
+ */
+
+std::unique_ptr<Bndr> Parser::parse_bndr(std::string_view ctxt) {
+    auto track = tracker();
+    Sym sym    = scopes_.anonymous();
+
+    if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
+        sym = eat(Tok::Tag::M_id).sym();
+        eat(Tok::Tag::T_colon);
+    }
+
+    // clang-format off
+    switch (ahead().tag()) {
+        case Tok::Tag::M_id: {
+            // id binder
+            auto type  = parse_expr("type of a binder");
+            return std::make_unique<IdBndr>(track.loc(), sym, type);
+        }
+        case Tok::Tag::D_bracket_l: {
+            // sigma binder
+            std::deque<std::unique_ptr<Bndr>> bndrs;
+            parse_list("sigma binder", Tok::Tag::D_bracket_l, [&]() { bndrs.emplace_back(parse_bndr("sigma binder")); });
+            return std::make_unique<SigmaBndr>(track.loc(), sym, std::move(bndrs));
+        }
+        default:
+            if (ctxt.empty()) return nullptr;
+            err("binder", ctxt);
+    }
+    // clang-format on
+    return nullptr;
 }
 
 /*
@@ -602,8 +647,7 @@ void Parser::parse_ax() {
     else if (!is_new && !new_subs.empty() && info.subs.empty())
         err(ax.loc(), "cannot extend subs of axiom '{}' which does not have subs", ax);
 
-    expect(Tok::Tag::T_colon, "axiom");
-    auto type = parse_expr("type of an axiom");
+    auto type = parse_type_ascr("an axiom");
     if (!is_new && info.pi != (type->isa<Pi>() != nullptr))
         err(ax.loc(), "all declarations of axiom '{}' have to be PIs if any is", ax);
     info.pi = type->isa<Pi>() != nullptr;

@@ -72,6 +72,7 @@ private:
 
     Sym parse_sym(std::string_view ctxt = {});
     void parse_import();
+    const Def* parse_type_ascr(std::string_view ctxt = {});
 
     /// @name exprs
     ///@{
@@ -102,6 +103,11 @@ private:
     std::unique_ptr<Ptrn> parse_ptrn(std::string_view ctxt);
     std::unique_ptr<IdPtrn> parse_id_ptrn();
     std::unique_ptr<TuplePtrn> parse_tuple_ptrn();
+    ///@}
+
+    /// @name bndrs
+    ///@{
+    std::unique_ptr<Bndr> parse_bndr(std::string_view ctxt);
     ///@}
 
     /// @name decls

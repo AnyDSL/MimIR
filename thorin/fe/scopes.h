@@ -15,6 +15,7 @@ public:
     const Def* find(Sym) const;
     void bind(Sym sym, const Def*);
     void merge(Scopes&);
+    Sym anonymous() const { return anonymous_; }
 
 private:
     using Scope = SymMap<const Def*>;
