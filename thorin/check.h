@@ -14,9 +14,9 @@ public:
         : world_(world) {}
 
     World& world() const { return world_; }
-    template<bool EmplaceCache = true>
-    bool equiv(const Def*, const Def*);
-    bool assignable(const Def*, const Def*);
+    template<bool Cache = true>
+    bool equiv(const Def*, const Def*, const Def*);
+    bool assignable(const Def*, const Def*, const Def*);
 
 private:
     World& world_;
@@ -24,7 +24,7 @@ private:
     std::deque<DefDef> vars_;
 };
 
-extern template bool Checker::equiv<true>(const Def*, const Def*);
-extern template bool Checker::equiv<false>(const Def*, const Def*);
+extern template bool Checker::equiv<true>(const Def*, const Def*, const Def*);
+extern template bool Checker::equiv<false>(const Def*, const Def*, const Def*);
 
 } // namespace thorin

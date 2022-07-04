@@ -36,14 +36,13 @@ Parser::Parser(World& world,
                const Normalizers* normalizers,
                std::ostream* md)
     : lexer_(world, file, istream, md)
+    , binder_(world)
     , prev_(lexer_.loc())
-    , anonymous_(world.tuple_str("_"), nullptr)
     , bootstrapper_(std::filesystem::path{file}.filename().replace_extension("").string())
     , user_search_paths_(import_search_paths.begin(), import_search_paths.end())
     , normalizers_(normalizers) {
     for (size_t i = 0; i != Max_Ahead; ++i) lex();
     prev_ = Loc(file, {1, 1}, {1, 1});
-    push(); // root scope
 }
 
 Parser::Parser(World& world,
@@ -51,12 +50,46 @@ Parser::Parser(World& world,
                std::istream& istream,
                ArrayRef<std::string> import_search_paths,
                const Normalizers* normalizers,
-               const std::deque<Parser::Scope>& inhert_scopes,
+               const Binder& inhert_binder,
                const SymSet& inhert_imported)
     : Parser(world, file, istream, import_search_paths, normalizers) {
-    scopes_   = inhert_scopes;
+    binder_   = inhert_binder;
     imported_ = inhert_imported;
 }
+
+/*
+ * helpers
+ */
+
+Tok Parser::lex() {
+    auto result = ahead();
+    prev_       = ahead_[0].loc();
+    for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead_[i] = ahead_[i + 1];
+    ahead_.back() = lexer_.lex();
+    return result;
+}
+
+std::optional<Tok> Parser::accept(Tok::Tag tag) {
+    if (tag != ahead().tag()) return {};
+    return lex();
+}
+
+Tok Parser::expect(Tok::Tag tag, std::string_view ctxt) {
+    if (ahead().tag() == tag) return lex();
+
+    std::string msg("'");
+    msg.append(Tok::tag2str(tag)).append("'");
+    err(msg, ctxt);
+    return {};
+}
+
+void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
+    err(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
+}
+
+/*
+ * entry points
+ */
 
 Parser Parser::import_module(World& world,
                              std::string_view name,
@@ -90,32 +123,6 @@ Parser Parser::import_module(World& world,
 
 void Parser::bootstrap(std::ostream& h) { bootstrapper_.emit(h); }
 
-Tok Parser::lex() {
-    auto result = ahead();
-    prev_       = ahead_[0].loc();
-    for (size_t i = 0; i < Max_Ahead - 1; ++i) ahead_[i] = ahead_[i + 1];
-    ahead_.back() = lexer_.lex();
-    return result;
-}
-
-std::optional<Tok> Parser::accept(Tok::Tag tag) {
-    if (tag != ahead().tag()) return {};
-    return lex();
-}
-
-Tok Parser::expect(Tok::Tag tag, std::string_view ctxt) {
-    if (ahead().tag() == tag) return lex();
-
-    std::string msg("'");
-    msg.append(Tok::tag2str(tag)).append("'");
-    err(msg, ctxt);
-    return {};
-}
-
-void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
-    err(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
-}
-
 void Parser::parse_module() {
     while (ahead().tag() == Tok::Tag::K_import) parse_import();
 
@@ -123,12 +130,37 @@ void Parser::parse_module() {
     expect(Tok::Tag::M_eof, "module");
 };
 
+/*
+ * misc
+ */
+
+void Parser::parse_import() {
+    eat(Tok::Tag::K_import);
+    auto name = expect(Tok::Tag::M_id, "import name");
+    expect(Tok::Tag::T_semicolon, "end of import");
+    auto name_str = name.sym().to_string();
+
+    if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
+
+    // search file and import
+    auto parser = Parser::import_module(world(), name_str, user_search_paths_, normalizers_);
+    binder_.merge(parser.binder_);
+
+    // transitvely remember which files we transitively imported
+    imported_.merge(parser.imported_);
+    imported_.emplace(name.sym());
+}
+
 Sym Parser::parse_sym(std::string_view ctxt) {
     auto track = tracker();
     if (auto id = accept(Tok::Tag::M_id)) return id->sym();
     err("identifier", ctxt);
     return world().sym("<error>", world().dbg((Loc)track));
 }
+
+/*
+ * exprs
+ */
 
 const Def* Parser::parse_dep_expr(std::string_view ctxt, Binders* binders, Tok::Prec p /*= Tok::Prec::Bot*/) {
     auto track = tracker();
@@ -190,15 +222,14 @@ const Def* Parser::parse_insert() {
     auto track = tracker();
 
     expect(Tok::Tag::D_paren_l, "opening paren for insert arguments");
-
-    auto target = parse_expr("insert target");
-    expect(Tok::Tag::T_comma, "comma after insert target");
+    auto tuple = parse_expr("the tuple to insert into");
+    expect(Tok::Tag::T_comma, "comma after tuple to insert into");
     auto index = parse_expr("insert index");
     expect(Tok::Tag::T_comma, "comma after insert index");
     auto value = parse_expr("insert value");
     expect(Tok::Tag::D_paren_r, "closing paren for insert arguments");
 
-    return world().insert(target, index, value, track);
+    return world().insert(tuple, index, value, track);
 }
 
 const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
@@ -216,7 +247,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
         case Tok::Tag::K_Nat:       lex(); return world().type_nat();
         case Tok::Tag::K_ff:        lex(); return world().lit_ff();
         case Tok::Tag::K_tt:        lex(); return world().lit_tt();
-        case Tok::Tag::T_Pi:        return parse_pi();
+        case Tok::Tag::T_Pi:        return parse_pi(binders);
         case Tok::Tag::T_lam:       return parse_lam();
         case Tok::Tag::T_at:        return parse_var();
         case Tok::Tag::T_star:      lex(); return world().type();
@@ -226,7 +257,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
         case Tok::Tag::L_s:
         case Tok::Tag::L_u:
         case Tok::Tag::L_r:         return parse_lit();
-        case Tok::Tag::M_id:        return find(parse_sym());
+        case Tok::Tag::M_id:        return binder_.find(parse_sym());
         case Tok::Tag::M_i:         return lex().index();
         case Tok::Tag::K_ins:       return parse_insert();
         case Tok::Tag::M_ax: {
@@ -238,7 +269,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt, Binders* binders) {
             if (s == "%Real"    ) return world().type_real();
             if (s == "%Wrap_add") return world().ax(Wrap::add);
             if (s == "%Wrap_sub") return world().ax(Wrap::sub);
-            return find(tok.sym());
+            return binder_.find(tok.sym());
         }
         default:
             if (ctxt.empty()) return nullptr;
@@ -258,14 +289,14 @@ const Def* Parser::parse_var() {
     auto track = tracker();
     eat(Tok::Tag::T_at);
     auto sym = parse_sym("variable");
-    auto nom = find(sym)->isa_nom();
+    auto nom = binder_.find(sym)->isa_nom();
     if (!nom) err(prev_, "variable must reference a nominal");
     return nom->var(track.named(sym));
 }
 
 const Def* Parser::parse_arr() {
     auto track = tracker();
-    push();
+    binder_.push();
     eat(Tok::Tag::D_quote_l);
 
     const Def* shape = nullptr;
@@ -277,7 +308,7 @@ const Def* Parser::parse_arr() {
         auto shape = parse_expr("shape of an array");
         auto type  = world().nom_infer_univ();
         arr        = world().nom_arr(type)->set_shape(shape);
-        insert(id.sym(), arr->var(world().dbg({id.sym(), id.loc()})));
+        binder_.bind(id.sym(), arr->var(world().dbg({id.sym(), id.loc()})));
     } else {
         shape = parse_expr("shape of an array");
     }
@@ -285,7 +316,7 @@ const Def* Parser::parse_arr() {
     expect(Tok::Tag::T_semicolon, "array");
     auto body = parse_expr("body of an array");
     expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
-    pop();
+    binder_.pop();
 
     if (arr) return arr->set_body(body)->set_type(body->unfold_type());
     return world().arr(shape, body, track);
@@ -294,7 +325,7 @@ const Def* Parser::parse_arr() {
 const Def* Parser::parse_pack() {
     // TODO This doesn't work. Rework this!
     auto track = tracker();
-    push();
+    binder_.push();
     eat(Tok::Tag::D_angle_l);
 
     const Def* shape;
@@ -305,7 +336,7 @@ const Def* Parser::parse_pack() {
 
         shape      = parse_expr("shape of a pack");
         auto infer = world().nom_infer(world().type_int(shape), id.sym(), id.loc());
-        insert(id.sym(), infer);
+        binder_.bind(id.sym(), infer);
     } else {
         shape = parse_expr("shape of a pack");
     }
@@ -313,16 +344,16 @@ const Def* Parser::parse_pack() {
     expect(Tok::Tag::T_semicolon, "pack");
     auto body = parse_expr("body of a pack");
     expect(Tok::Tag::D_angle_r, "closing delimiter of a pack");
-    pop();
+    binder_.pop();
     return world().pack(shape, body, track);
 }
 
 const Def* Parser::parse_block() {
-    push();
+    binder_.push();
     eat(Tok::Tag::D_brace_l);
     auto res = parse_expr("block expression");
     expect(Tok::Tag::D_brace_r, "block expression");
-    pop();
+    binder_.pop();
     return res;
 }
 
@@ -336,7 +367,7 @@ const Def* Parser::parse_sigma(Binders* binders) {
     std::vector<Infer*> infers;
     std::vector<const Def*> fields;
 
-    push();
+    binder_.push();
     parse_list("sigma", Tok::Tag::D_bracket_l, [&]() {
         infers.emplace_back(nullptr);
         fields.emplace_back(bot);
@@ -352,7 +383,7 @@ const Def* Parser::parse_sigma(Binders* binders) {
             infers.back() = infer;
             fields.back() = sym.str();
 
-            insert(sym, infer);
+            binder_.bind(sym, infer);
             ops.emplace_back(type);
             if (binders) binders->emplace_back(sym, n);
         } else {
@@ -361,7 +392,7 @@ const Def* Parser::parse_sigma(Binders* binders) {
         }
         ++n;
     });
-    pop();
+    binder_.pop();
 
     if (nom) {
         assert(n > 0);
@@ -400,10 +431,11 @@ const Def* Parser::parse_type() {
     return world().type(level, track);
 }
 
-const Def* Parser::parse_pi() {
+const Def* Parser::parse_pi(Binders* outer) {
     auto track = tracker();
     eat(Tok::Tag::T_Pi);
-    push();
+    binder_.push();
+
     std::optional<Tok> id;
     const Def* dom;
     Binders binders;
@@ -416,15 +448,18 @@ const Def* Parser::parse_pi() {
     }
 
     auto pi = world().nom_pi(world().nom_infer_univ(), dom)->set_dom(dom);
-    if (id) insert(id->sym(), pi->var(world().dbg({id->sym(), id->loc()})));
-    for (auto [sym, i] : binders) insert(sym, pi->var(i)); // TODO location
+    if (id) binder_.bind(id->sym(), pi->var(world().dbg({id->sym(), id->loc()})));
+    for (auto [sym, i] : binders) binder_.bind(sym, pi->var(i)); // TODO location
 
     expect(Tok::Tag::T_arrow, "dependent function type");
     auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
     pi->set_codom(codom);
     pi->set_type(codom->unfold_type());
     pi->set_dbg(track);
-    pop();
+
+    if (outer) *outer = binders;
+    binder_.pop();
+
     return pi;
 }
 
@@ -468,6 +503,37 @@ const Def* Parser::parse_lit() {
     if (lit.tag() == Tok::Tag::L_r) err(prev_, ".Nat literal specified as floating-point but must be unsigned");
 
     return world().lit_nat(lit.u(), track);
+}
+
+/*
+ * ptrns
+ */
+
+std::unique_ptr<Ptrn> Parser::parse_ptrn(std::string_view ctxt) {
+    // clang-format off
+    switch (ahead().tag()) {
+        case Tok::Tag::D_paren_l: return parse_tuple_ptrn();
+        case Tok::Tag::M_id:      return parse_id_ptrn();
+        default:
+            if (ctxt.empty()) return nullptr;
+            err("pattern", ctxt);
+    }
+    // clang-format on
+    return nullptr;
+}
+
+std::unique_ptr<IdPtrn> Parser::parse_id_ptrn() {
+    auto track = tracker();
+    auto sym   = parse_sym();
+    auto type  = accept(Tok::Tag::T_colon) ? parse_expr("type of an identifier pattern") : nullptr;
+    return std::make_unique<IdPtrn>(track.loc(), sym, type);
+}
+
+std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
+    auto track = tracker();
+    std::deque<std::unique_ptr<Ptrn>> ptrns;
+    parse_list("tuple pattern", Tok::Tag::D_paren_l, [&]() { ptrns.emplace_back(parse_ptrn("tuple pattern")); });
+    return std::make_unique<TuplePtrn>(track.loc(), std::move(ptrns));
 }
 
 /*
@@ -558,14 +624,14 @@ void Parser::parse_ax() {
     sub_t s     = info.subs.size();
     if (new_subs.empty()) {
         auto axiom = world().axiom(normalizer(d, t, 0), type, d, t, 0, track.named(ax.sym()));
-        insert(ax.sym(), axiom);
+        binder_.bind(ax.sym(), axiom);
     } else {
         for (const auto& sub : new_subs) {
             auto dbg   = track.named(ax_str + "."s + sub.front());
             auto axiom = world().axiom(normalizer(d, t, s), type, d, t, s, dbg);
             for (auto& alias : sub) {
                 Sym name(world().tuple_str(ax_str + "."s + alias), prev_.def(world()));
-                insert(name, axiom);
+                binder_.bind(name, axiom);
             }
             ++s;
         }
@@ -576,14 +642,10 @@ void Parser::parse_ax() {
 
 void Parser::parse_let() {
     eat(Tok::Tag::K_let);
-    auto sym = parse_sym();
-    if (accept(Tok::Tag::T_colon)) {
-        /*auto type = */ parse_expr("type of a let binding");
-        // do sth with type
-    }
+    auto ptrn = parse_ptrn("binding pattern of a let expression");
     eat(Tok::Tag::T_assign);
     auto body = parse_expr("body of a let expression");
-    insert(sym, body);
+    ptrn->scrutinize(binder_, body);
     eat(Tok::Tag::T_semicolon);
 }
 
@@ -635,25 +697,27 @@ void Parser::parse_nom() {
         }
         default: unreachable();
     }
-    insert(sym, nom);
+    binder_.bind(sym, nom);
 
-    push();
-    for (auto [sym, i] : binders) insert(sym, nom->var(i));
+    binder_.push();
+    for (auto [sym, i] : binders) binder_.bind(sym, nom->var(i));
     if (external) nom->make_external();
 
-    push();
+    binder_.push();
     if (accept(Tok::Tag::T_comma)) {
         binders.clear();
         parse_var_list(binders);
         assert(binders.size() == nom->num_vars());
-        for (auto [sym, i] : binders) insert(sym, nom->var(i, world().dbg(sym)));
+        for (auto [sym, i] : binders) binder_.bind(sym, nom->var(i, world().dbg(sym)));
     }
+
     if (ahead().isa(Tok::Tag::T_assign))
         parse_def(sym);
     else
         expect(Tok::Tag::T_semicolon, "end of a nominal");
-    pop();
-    pop();
+
+    binder_.pop();
+    binder_.pop();
 }
 
 void Parser::parse_def(Sym sym /*= {}*/) {
@@ -662,19 +726,19 @@ void Parser::parse_def(Sym sym /*= {}*/) {
         sym = parse_sym("nominal definition");
     }
 
-    auto nom = find(sym)->as_nom();
+    auto nom = binder_.find(sym)->as_nom();
     expect(Tok::Tag::T_assign, "nominal definition");
 
     size_t i = nom->first_dependend_op();
     size_t n = nom->num_ops();
 
     if (ahead().isa(Tok::Tag::D_brace_l)) {
-        push();
+        binder_.push();
         parse_list("nominal definition", Tok::Tag::D_brace_l, [&]() {
             if (i == n) err(prev_, "too many operands");
             nom->set(i++, parse_expr("operand of a nominal"));
         });
-        pop();
+        binder_.pop();
     } else if (n - i == 1) {
         nom->set(i, parse_expr("operand of a nominal"));
     } else {
@@ -682,26 +746,6 @@ void Parser::parse_def(Sym sym /*= {}*/) {
     }
 
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");
-}
-
-void Parser::parse_import() {
-    eat(Tok::Tag::K_import);
-    auto name = expect(Tok::Tag::M_id, "import name");
-    expect(Tok::Tag::T_semicolon, "end of import");
-    auto name_str = name.sym().to_string();
-
-    if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
-
-    // search file and import
-    auto parser = Parser::import_module(world(), name_str, user_search_paths_, normalizers_);
-
-    // merge global scopes
-    assert(parser.scopes_.size() == 1 && scopes_.size() == 1);
-    scopes_.front().merge(parser.scopes_.front());
-
-    // transitvely remember which files we transitively imported
-    imported_.merge(parser.imported_);
-    imported_.emplace(name.sym());
 }
 
 } // namespace thorin
