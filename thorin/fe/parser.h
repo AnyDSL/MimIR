@@ -7,8 +7,8 @@
 
 #include "thorin/be/h/bootstrapper.h"
 #include "thorin/fe/ast.h"
-#include "thorin/fe/binder.h"
 #include "thorin/fe/lexer.h"
+#include "thorin/fe/scopes.h"
 
 namespace thorin::fe {
 
@@ -177,11 +177,11 @@ private:
            std::istream&,
            ArrayRef<std::string>,
            const Normalizers*,
-           const Binder&,
+           const Scopes&,
            const SymSet&);
 
     Lexer lexer_;
-    Binder binder_;
+    Scopes scopes_;
     Loc prev_;
     std::string dialect_;
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead

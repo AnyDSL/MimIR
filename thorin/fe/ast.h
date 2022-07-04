@@ -7,7 +7,7 @@
 
 namespace thorin::fe {
 
-class Binder;
+class Scopes;
 
 class Ptrn {
 public:
@@ -15,7 +15,7 @@ public:
         : loc_(loc) {}
     virtual ~Ptrn() {}
 
-    virtual void scrutinize(Binder&, const Def*) const = 0;
+    virtual void scrutinize(Scopes&, const Def*) const = 0;
 
 private:
     Loc loc_;
@@ -28,7 +28,7 @@ public:
         , sym_(sym)
         , type_(type) {}
 
-    void scrutinize(Binder&, const Def*) const override;
+    void scrutinize(Scopes&, const Def*) const override;
 
 private:
     Sym sym_;
@@ -41,7 +41,7 @@ public:
         : Ptrn(loc)
         , ptrns_(std::move(ptrns)) {}
 
-    void scrutinize(Binder&, const Def*) const override;
+    void scrutinize(Scopes&, const Def*) const override;
 
 private:
     std::deque<std::unique_ptr<Ptrn>> ptrns_;

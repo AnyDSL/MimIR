@@ -6,15 +6,15 @@
 
 namespace thorin::fe {
 
-class Binder {
+class Scopes {
 public:
-    Binder(World&);
+    Scopes(World&);
 
     void push() { scopes_.emplace_back(); }
     void pop();
     const Def* find(Sym) const;
     void bind(Sym sym, const Def*);
-    void merge(Binder&);
+    void merge(Scopes&);
 
 private:
     using Scope = SymMap<const Def*>;

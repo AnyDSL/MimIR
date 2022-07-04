@@ -1,20 +1,20 @@
-#include "thorin/fe/binder.h"
+#include "thorin/fe/scopes.h"
 
 #include "thorin/world.h"
 
 namespace thorin::fe {
 
-Binder::Binder(World& world)
+Scopes::Scopes(World& world)
     : anonymous_(world.tuple_str("_"), nullptr) {
     push(); // root scope
 }
 
-void Binder::pop() {
+void Scopes::pop() {
     assert(!scopes_.empty());
     scopes_.pop_back();
 }
 
-const Def* Binder::find(Sym sym) const {
+const Def* Scopes::find(Sym sym) const {
     if (sym == anonymous_) err<ScopeError>(sym.loc(), "the symbol '_' is special and never binds to anything", sym);
 
     for (auto& scope : scopes_ | std::ranges::views::reverse) {
@@ -24,7 +24,7 @@ const Def* Binder::find(Sym sym) const {
     err<ScopeError>(sym.loc(), "symbol '{}' not found", sym);
 }
 
-void Binder::bind(Sym sym, const Def* def) {
+void Scopes::bind(Sym sym, const Def* def) {
     if (sym == anonymous_) return; // don't do anything with '_'
 
     if (auto [i, ins] = scopes_.back().emplace(sym, def); !ins) {
@@ -34,7 +34,7 @@ void Binder::bind(Sym sym, const Def* def) {
     }
 }
 
-void Binder::merge(Binder& other) {
+void Scopes::merge(Scopes& other) {
     assert(scopes_.size() == 1 && other.scopes_.size() == 1);
     scopes_.front().merge(other.scopes_.front());
 }
