@@ -155,11 +155,14 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
             Lam* lam_cps;
             if(conv_cps) {
                 lam_cps = conv_cps;
+            }else if (auto i = rewritten_.find(def); i != rewritten_.end()) {
+                // already converted lambda available
+                lam_cps = (Lam*) i->second;
             }else {
                 // "real" ds function
 
                 // cps version of function
-                auto lam_cps = world.nom_lam(world.cn(cps_dom), world.dbg(lam->name() + "_cps"));
+                lam_cps = world.nom_lam(world.cn(cps_dom), world.dbg(lam->name() + "_cps"));
                 lam_cps->set_filter(lam->filter());
 
                 // each argument is linked to its corresponding argument in the cps function
@@ -191,6 +194,11 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
                     return args[i];
                 }
             });
+#ifdef verbose_rewrite
+            std::cout << "  cps call " << lam_cps;
+            std::cout << " : " << lam_cps->type() << " with ";
+            std::cout << world.tuple(ext_args) << " : " << world.tuple(ext_args)->type() << std::endl;
+#endif
             auto cps_call = world.app(lam_cps, ext_args, world.dbg("cps_call"));
             currentLambda->set_body(cps_call);
             currentLambda->set_filter(true);
