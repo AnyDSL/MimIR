@@ -69,9 +69,9 @@ function(add_thorin_dialect)
     list(TRANSFORM DEPENDS_THORIN_FILES   APPEND .thorin)
     list(TRANSFORM PARSED_DEPENDS        PREPEND ${DIALECTS_INCLUDE_DIR} OUTPUT_VARIABLE DEPENDS_HEADER_FILES)
     list(TRANSFORM DEPENDS_HEADER_FILES   APPEND /autogen.h)
-    list(TRANSFORM PARSED_HEADER_DEPENDS PREPEND ${DIALECTS_INCLUDE_DIR} OUTPUT_VARIABLE PARSED_HEADER_DEPENDS)
-    list(TRANSFORM PARSED_HEADER_DEPENDS  APPEND /autogen.h)
-    list(APPEND DEPENDS_HEADER_FILES ${PARSED_HEADER_DEPENDS})
+    list(TRANSFORM PARSED_HEADER_DEPENDS PREPEND ${DIALECTS_INCLUDE_DIR} OUTPUT_VARIABLE PARSED_HEADER_DEPENDS_FILES)
+    list(TRANSFORM PARSED_HEADER_DEPENDS_FILES  APPEND /autogen.h)
+    list(APPEND DEPENDS_HEADER_FILES ${PARSED_HEADER_DEPENDS_FILES})
 
     set(THORIN_FILE     ${CMAKE_CURRENT_SOURCE_DIR}/${DIALECT}/${DIALECT}.thorin)
     set(THORIN_FILE_LIB_DIR ${THORIN_LIB_DIR}/${DIALECT}.thorin)
@@ -92,16 +92,18 @@ function(add_thorin_dialect)
         DEPENDS ${THORIN_FILE} ${DEPENDS_THORIN_FILES}
     )
 
+    add_custom_target(internal_thorin_${DIALECT}_thorin DEPENDS ${THORIN_FILE_LIB_DIR})
+
     file(MAKE_DIRECTORY ${DIALECTS_INCLUDE_DIR}${DIALECT})
     file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/docs/dialects/)
 
     add_custom_command(
         OUTPUT ${DIALECT_MD} ${DIALECT_H}
         COMMAND $<TARGET_FILE:${THORIN_TARGET_NAMESPACE}thorin> ${THORIN_FILE_LIB_DIR} -D ${THORIN_LIB_DIR} --output-h ${DIALECT_H} --output-md ${DIALECT_MD}
-        DEPENDS ${THORIN_TARGET_NAMESPACE}thorin ${THORIN_FILE_LIB_DIR}
+        DEPENDS ${THORIN_TARGET_NAMESPACE}thorin internal_thorin_${DIALECT}_thorin ${THORIN_FILE_LIB_DIR}
         COMMENT "Bootstrapping Thorin dialect '${DIALECT}' from '${THORIN_FILE}'"
     )
-    add_custom_target(${DIALECT} ALL DEPENDS ${DIALECT_MD} ${DIALECT_H})
+    add_custom_target(${DIALECT} DEPENDS ${DIALECT_H})
 
     add_library(thorin_${DIALECT}
         MODULE
@@ -109,6 +111,8 @@ function(add_thorin_dialect)
             ${DIALECT_H}            # the generated header of this dialect
             ${DEPENDS_HEADER_FILES} # the generated headers of the dialects we depend on
     )
+
+    add_dependencies(thorin_${DIALECT} ${DIALECT} ${PARSED_DEPENDS} ${PARSED_HEADER_DEPENDS})
 
     set_target_properties(thorin_${DIALECT}
         PROPERTIES
