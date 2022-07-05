@@ -44,7 +44,8 @@ var NAVTREE =
       [ "affine", "affine.html", null ],
       [ "clos", "clos.html", null ],
       [ "core", "core.html", null ],
-      [ "mem", "mem.html", null ]
+      [ "mem", "mem.html", null ],
+      [ "direct", "direct.html", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -96,16 +97,16 @@ var NAVTREEINDEX =
 "classthorin_1_1Use.html#a7e6e8c16ac0626c8b9d3b66f315791cf",
 "classthorin_1_1World.html#a93c924d00a53af313f88285c592d5ddf",
 "classthorin_1_1clos_1_1ClosLit.html#ad3dbbc1a4cbef0c377c2e72fe139b88f",
-"clos__conv_8cpp.html#a24fed2ec22c1aaf1108c47205d4ac25a",
-"core_8h.html#a508b56d335a59fe9405c914f2f318de9",
-"hash_8h.html#af7a988abfdb3962f8db0c32f2a4a0110",
-"namespacemembers_v.html",
-"namespacethorin.html#aba227b3ba0e6cb0a398abeef94c5ddef",
-"namespacethorin_1_1clos.html#a852ba328ba8d45ec5bc708aa434306b3",
-"namespacethorin_1_1mem.html#a09a41d5002120a0ef1000c5ff8f07ec5",
-"rewrite_8cpp_source.html",
-"structthorin_1_1normalize_1_1FoldConv_3_01conv_1_1s2s_00_01dw_00_01sw_01_4.html#a7924bce6c4e96ae698d93d4ae36d7cb3",
-"tables_8h.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9a6e0167be28786243e986f6cef621c39b"
+"clos_8h.html#a67513db74064640169686fc46aa55338",
+"core_8cpp.html#a63090a34caf572bdd21bbe2441bf661d",
+"functions_i.html",
+"namespacemembers_enum.html",
+"namespacethorin.html#a9b43aff9c9bc9b0b4bda21985c91bc41",
+"namespacethorin_1_1clos.html#a0e3631fc456bf06ff74feabdaeeedcfa",
+"namespacethorin_1_1detail.html",
+"optimize_8h.html",
+"structthorin_1_1ll_1_1BB.html#ab2b2409cddbfa98f26f6e258032b64ad",
+"tables_8h.html#a629e02e5ae579987487c9e6a369cc626"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

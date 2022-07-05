@@ -192,6 +192,7 @@ var namespacethorin =
     ] ],
     [ "Dep", "namespacethorin_1_1Dep.html", null ],
     [ "detail", "namespacethorin_1_1detail.html", "namespacethorin_1_1detail" ],
+    [ "direct", "namespacethorin_1_1direct.html", "namespacethorin_1_1direct" ],
     [ "dl", "namespacethorin_1_1dl.html", "namespacethorin_1_1dl" ],
     [ "dot", "namespacethorin_1_1dot.html", "namespacethorin_1_1dot" ],
     [ "h", "namespacethorin_1_1h.html", "namespacethorin_1_1h" ],

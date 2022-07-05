@@ -18,6 +18,9 @@ var annotated_dup =
         [ "Enum2DefImpl", "namespacethorin_1_1detail.html#structthorin_1_1detail_1_1Enum2DefImpl", "namespacethorin_1_1detail_structthorin_1_1detail_1_1Enum2DefImpl_dup" ],
         [ "Enum2DefImpl< mem::M >", "namespacethorin_1_1detail.html#structthorin_1_1detail_1_1Enum2DefImpl_3_01mem_1_1M_01_4", "namespacethorin_1_1detail_structthorin_1_1detail_1_1Enum2DefImpl_3_01mem_1_1M_01_4_dup" ]
       ] ],
+      [ "direct", "namespacethorin_1_1direct.html", [
+        [ "DS2CPS", "classthorin_1_1direct_1_1DS2CPS.html", "classthorin_1_1direct_1_1DS2CPS" ]
+      ] ],
       [ "dl", "namespacethorin_1_1dl.html", [
         [ "Error", "classthorin_1_1dl_1_1Error.html", "classthorin_1_1dl_1_1Error" ]
       ] ],
