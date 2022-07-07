@@ -4,18 +4,13 @@
 
 namespace thorin::fe {
 
-Scopes::Scopes(World& world)
-    : anonymous_(world.tuple_str("_"), nullptr) {
-    push(); // root scope
-}
-
 void Scopes::pop() {
     assert(!scopes_.empty());
     scopes_.pop_back();
 }
 
 const Def* Scopes::find(Sym sym) const {
-    if (sym == anonymous_) err<ScopeError>(sym.loc(), "the symbol '_' is special and never binds to anything", sym);
+    if (sym.is_anonymous()) err<ScopeError>(sym.loc(), "the symbol '_' is special and never binds to anything", sym);
 
     for (auto& scope : scopes_ | std::ranges::views::reverse) {
         if (auto i = scope.find(sym); i != scope.end()) return i->second;
@@ -25,7 +20,7 @@ const Def* Scopes::find(Sym sym) const {
 }
 
 void Scopes::bind(Sym sym, const Def* def) {
-    if (sym == anonymous_) return; // don't do anything with '_'
+    if (sym.is_anonymous()) return; // don't do anything with '_'
 
     if (auto [i, ins] = scopes_.back().emplace(sym, def); !ins) {
         auto curr = sym.loc();

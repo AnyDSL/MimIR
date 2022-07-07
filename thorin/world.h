@@ -91,7 +91,7 @@ public:
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }
     Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
-    Infer* nom_infer(const Def* type, Sym sym, Loc loc) { return insert<Infer>(1, type, dbg({sym, loc})); }
+    Infer* nom_infer(const Def* type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
     Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
     ///@}
 

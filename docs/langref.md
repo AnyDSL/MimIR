@@ -140,10 +140,18 @@ The following tables comprise all production rules:
 
 ### Patterns
 
-| Nonterminal | Right-Hand Side               | New Scope? | Comment            |
-|-------------|-------------------------------|------------|--------------------|
-| p           | Sym ( `:` e<sub>type</sub> )? |            | identifier pattern |
-| p           | `(` p `,` ... `,` p `)`       |            | tuple pattern      |
+| Nonterminal | Right-Hand Side               | New Scope? | Comment                  |
+|-------------|-------------------------------|------------|--------------------------|
+| p           | Sym t                         |            | identifier pattern       |
+| p           | `(` p `,` ... `,` p `)` t     |            | tuple pattern            |
+| t           | ( `:` e<sub>type</sub> )?     |            | optional type ascription |
+
+### Binders
+
+| Nonterminal | Right-Hand Side               | New Scope? | Comment             |
+|-------------|-------------------------------|------------|---------------------|
+| b           | ( Sym `:` )? e<sub>type</sub> |            | identifier binder   |
+| b           | `[` b `,` ... `,` b `]`       |            | sigma binder        |
 
 ### Expressions
 
@@ -158,16 +166,16 @@ The following tables comprise all production rules:
 | e           | e e                                                                           |            | application                         | thorin::App     |
 | e           | `λ` Sym `:` e<sub>dom</sub> `→` e<sub>codom</sub>  `.` e<sub>body</sub>       | ✓          | lambda                              | thorin::Lam     |
 | e           | e<sub>dom</sub> `→` e<sub>codom</sub>                                         |            | function type                       | thorin::Pi      |
-| e           | `Π` b e<sub>dom</sub> `→` e<sub>codom</sub>                                   | ✓          | dependent function type             | thorin::Pi      |
+| e           | `Π` b `→` e<sub>codom</sub>                                                   | ✓          | dependent function type             | thorin::Pi      |
 | e           | e `#` Sym                                                                     |            | extract via field "Sym"             | thorin::Extract |
 | e           | e `#` e<sub>index</sub>                                                       |            | extract                             | thorin::Extract |
 | e           | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` |            | insert                              | thorin::Insert  |
 | e           | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>` )` ( `:` e<sub>type</sub> )?   |            | tuple with optional type ascription | thorin::Tuple   |
-| e           | `[` b e<sub>type 0</sub> `,` ... `,` b e<sub>type n-1</sub> `]`               | ✓          | sigma                               | thorin::Sigma   |
-| e           | `‹` b e<sub>shape</sub> `;` e<sub>body</sub>`›`                               | ✓          | pack                                | thorin::Pack    |
-| e           | `«` b e<sub>shape</sub> `;` e<sub>body</sub>`»`                               | ✓          | array                               | thorin::Arr     |
+| e           | `[` b `,` ... `,` b `]`                                                       | ✓          | sigma                               | thorin::Sigma   |
+| e           | `‹` i e<sub>shape</sub> `;` e<sub>body</sub>`›`                               | ✓          | pack                                | thorin::Pack    |
+| e           | `«` i e<sub>shape</sub> `;` e<sub>body</sub>`»`                               | ✓          | array                               | thorin::Arr     |
 | e           | d e                                                                           |            | declaration                         | -               |
-| b           | ( Sym `:` )?                                                                  |            | optional binder                     | -               |
+| i           | ( Sym `:` )?                                                                  |            | optional index                      | -               |
 
 An elided type of
 * a literal defaults to `.Nat`,

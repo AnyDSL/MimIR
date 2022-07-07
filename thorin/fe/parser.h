@@ -76,22 +76,21 @@ private:
 
     /// @name exprs
     ///@{
-    const Def* parse_dep_expr(std::string_view ctxt, Binders*, Tok::Prec = Tok::Prec::Bot);
-    const Def* parse_expr(std::string_view c, Tok::Prec p = Tok::Prec::Bot) { return parse_dep_expr(c, nullptr, p); }
-    const Def* parse_primary_expr(std::string_view ctxt, Binders*);
+    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+    const Def* parse_primary_expr(std::string_view ctxt);
     const Def* parse_extract(Tracker, const Def*, Tok::Prec);
     ///@}
 
     /// @name primary exprs
     ///@{
-    const Def* parse_Cn(Binders*);
+    const Def* parse_Cn();
     const Def* parse_arr();
     const Def* parse_pack();
     const Def* parse_block();
-    const Def* parse_sigma(Binders*);
+    const Def* parse_sigma();
     const Def* parse_tuple();
     const Def* parse_type();
-    const Def* parse_pi(Binders*);
+    const Def* parse_pi();
     const Def* parse_lam();
     const Def* parse_lit();
     const Def* parse_var();
@@ -107,8 +106,8 @@ private:
 
     /// @name bndrs
     ///@{
-    std::unique_ptr<Bndr> parse_bndr(std::string_view ctxt);
-    std::unique_ptr<IdBndr> parse_id_bndr(Tracker, Sym);
+    std::unique_ptr<Bndr> parse_bndr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+    std::unique_ptr<IdBndr> parse_id_bndr(std::string_view ctxt, Tracker, Sym, Tok::Prec);
     std::unique_ptr<SigmaBndr> parse_sigma_bndr(Tracker, Sym);
     ///@}
 
@@ -132,8 +131,6 @@ private:
         }
         expect(delim_r, std::string("closing delimiter of a ") + ctxt);
     }
-
-    void parse_var_list(Binders&);
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }

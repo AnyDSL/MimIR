@@ -5,7 +5,12 @@
 
 #include "thorin/fe/tok.h"
 
-namespace thorin::fe {
+namespace thorin {
+
+class Infer;
+class Sigma;
+
+namespace fe {
 
 class Scopes;
 
@@ -22,7 +27,7 @@ private:
 };
 
 /*
- * Ptrn
+ * Pattern
  */
 
 class Ptrn : public AST {
@@ -72,7 +77,10 @@ public:
         : AST(loc)
         , sym_(sym) {}
 
-    //virtual void scrutinize(Scopes&, const Def*) const = 0;
+    Sym sym() const { return sym_; }
+    bool is_anonymous() const { return sym_.is_anonymous(); }
+    virtual const Def* type(World&) const = 0;
+    virtual void inject(Scopes&, const Def*) const = 0;
 
 private:
     Sym sym_;
@@ -84,7 +92,8 @@ public:
         : Bndr(loc, sym)
         , type_(type) {}
 
-    //void scrutinize(Scopes&, const Def*) const override;
+    const Def* type(World&) const override { return type_; }
+    void inject(Scopes&, const Def*) const override {}
 
 private:
     const Def* type_;
@@ -92,14 +101,23 @@ private:
 
 class SigmaBndr : public Bndr {
 public:
-    SigmaBndr(Loc loc, Sym sym, std::deque<std::unique_ptr<Bndr>>&& bndrs)
+    SigmaBndr(Loc loc, Sym sym, std::deque<std::unique_ptr<Bndr>>&& bndrs, std::vector<Infer*>&& infers)
         : Bndr(loc, sym)
-        , bndrs_(std::move(bndrs)) {}
+        , bndrs_(std::move(bndrs))
+        , infers_(std::move(infers)) {}
 
-    //void scrutinize(Scopes&, const Def*) const override;
+    const std::deque<std::unique_ptr<Bndr>>& bndrs() const { return bndrs_; }
+    const Bndr* bndr(size_t i) const { return bndrs_[i].get(); }
+    size_t num_bndrs() const { return bndrs().size(); }
+
+    const Def* type(World&) const override;
+    void inject(Scopes&, const Def*) const override;
 
 private:
     std::deque<std::unique_ptr<Bndr>> bndrs_;
+    std::vector<Infer*> infers_;
+    mutable const Def* type_ = nullptr;
 };
 
-} // namespace thorin::fe
+} // namespace fe
+} // namespace thorin
