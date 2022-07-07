@@ -112,6 +112,8 @@ int main(int argc, char** argv) {
             return EXIT_FAILURE;
         }
 
+        for (auto& dialect_name : dialect_names) Parser::import_module(world, dialect_name);
+
         Parser parser(world, input, ifs, dialect_paths, &normalizers, os[Md]);
         parser.parse_module();
 
