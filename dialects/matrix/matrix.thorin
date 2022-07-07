@@ -51,7 +51,7 @@
 /// matrix product
 /// takes a m*k matrix, a k*l matrix and returns the product, a m*l matrix
 /// only defined on two-dimensional matrices
-.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, T: *] -> [%matrix.Mat (2,(m, k),T), %matrix.Mat (2,(k, l),T)] -> %matrix.Mat (2,(m, l),T), normalize_prod;
+.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> [%matrix.Mat (2,(m, k),%Real w), %matrix.Mat (2,(k, l),%Real w)] -> %matrix.Mat (2,(m, l),%Real w), normalize_prod;
 /// 
 /// ### %matrix.map
 ///
@@ -64,6 +64,7 @@
 /// - map on constant matrix
 /// - parallel map without effect
 /// - map combination
+/// - map zipWith
 .ax %matrix.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P), normalize_map;
 // .ax %matrix.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %matrix.Mat n S P, normalize_parallel_map;
 // .ax %matrix.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: T -> P ] -> %matrix.Mat n S P, normalize_meta_map;
@@ -136,20 +137,199 @@
 /// * with other inserts
 /// * with initialization
 .ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), idx: «i: n; %Int S#i», val: T] -> %matrix.Mat (n,S,T), normalize_insert;
+///
+/// ## Internal operations
+/// 
+/// ### %matrix.init
+///
+/// a fresh matrix 
+.ax %matrix.init: Π [n: .Nat, S: «n; .Nat», T: *] -> %matrix.Mat (n,S,T);
+///
+/// ## Definitions and aliases
+/// 
+/// ### zero
+.lam .extern matrix_zero_int: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(%Int m)) = {
+    .tt,
+    %matrix.constMat (n,S,(%Int m)) (0: (%Int m))
+};
+.lam .extern matrix_zero: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(%Real m)) = {
+    .tt,
+    %matrix.constMat (n,S,(%Real m)) (0: (%Real m))
+};
+/// ### zip
+///
+/// zip A B = zipWith id A B
+// .lam .extern matrix_zip: 
+//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
+//     [A: %mem.M, B: %mem.M] -> 
+//     %mem.M = {
+//     .tt,
+//     A
+// };
+// .lam .extern matrix_zip: 
+//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
+//     Π [A: (%matrix.Mat(n,S,P)), B: (%matrix.Mat(n,S,Q))] -> 
+//     %matrix.Mat(n,S,P) = {
+//     .tt,
+//     A
+// };
+// .lam .extern zip: 
+//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
+//     Π [A: (%matrix.Mat(n,S,P)), B: (%matrix.Mat(n,S,Q))] -> 
+//     %matrix.Mat(n,S,[P,Q]) = {
+//     .tt,
+//     .lam zipper: .Cn[mem: %mem.M, p: P, q: Q, ret: .Cn[%mem.M, [P,Q]]] = {
+//         ret (mem,(p,q))
+//     };
+//     %matrix.zipWith (n,S,P,Q,[P,Q]) (A,B,zipper)
+// };
+.lam .extern zip: 
+    Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
+    [(%matrix.Mat(n,S,P)), (%matrix.Mat(n,S,Q))] -> 
+    %matrix.Mat(n,S,[P,Q]) = {
+    .tt,
+    .lam zipper: .Cn[mem: %mem.M, p: P, q: Q, ret: .Cn[%mem.M, [P,Q]]] = {
+        .tt,
+        ret (mem,(p,q))
+    };
+    .lam inner: 
+        Π [A: (%matrix.Mat(n,S,P)), B: (%matrix.Mat(n,S,Q))] -> 
+        %matrix.Mat(n,S,[P,Q]) = {
+        .tt,
+        %matrix.zipWith (n,S,P,Q,[P,Q]) (A,B,zipper)
+    };
+    inner
+};
+
+
+/// ### fst, snd, split
+// .lam .extern matrix_fst: 
+//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
+//     [M: (%matrix.Mat (n,S,[P,Q]))] -> 
+//     %matrix.Mat (n,S,P) = {
+//     .tt,
+//     .lam fst : .Cn[mem: %mem.M, pq: [P,Q], ret: .Cn[%mem.M, P]] = {
+//         .let (p,q) = pq;
+//         ret (mem,p)
+//     };
+//     %matrix.map (n,S,[P,Q],P) (M,fst)
+// };
+// .lam .extern matrix_snd: 
+//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
+//     [M: (%matrix.Mat (n,S,[P,Q]))] -> 
+//     %matrix.Mat (n,S,Q) = {
+//     .tt,
+//     .lam snd : .Cn[mem: %mem.M, pq: [P,Q], ret: .Cn[%mem.M, Q]] = {
+//         .let (p,q) = pq;
+//         ret (mem,q)
+//     };
+//     %matrix.map (n,S,[P,Q],Q) (M,snd)
+// };
+// .lam .extern matrix_split: 
+//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
+//     [M: (%matrix.Mat (n,S,[P,Q]))] -> 
+//     [%matrix.Mat (n,S,P), %matrix.Mat (n,S,Q)] = {
+//     .tt,
+//     (
+//         matrix_fst (n,S,[P,Q]) (M),
+//         matrix_snd (n,S,[P,Q]) (M)
+//     )
+// };
+///
+/// ## Unfolding functions
+/// 
+/// ### product
+/// 
+.lam .extern matrix_prod_unfold: 
+    Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> 
+        [%matrix.Mat (2,(m, k),%Real w), %matrix.Mat (2,(k, l),%Real w)] -> %matrix.Mat (2,(m, l),%Real w)
+        = {
+    .tt,
+    .lam .extern matrix_map_prod_curry: 
+        Π [M: %matrix.Mat (2,(m, k),%Real w), N: %matrix.Mat (2,(k, l),%Real w)] -> 
+        %matrix.Mat (2,(m, l),%Real w) = {
+        .tt,
+
+        .let O = matrix_zero (2,(m, l),w);
+        // normal for loop implementation of matrix multiplication
+        /*
+        for i = 0 to m - 1 do
+            for j = 0 to l - 1 do
+                for k = 0 to k - 1 do
+                    O[i,j] += M[i,k] * N[k,j]
+                end
+            end
+        end
+        */
+        // TODO:
+
+        O
+
+    };
+    matrix_map_prod_curry
+};
+/// 
+/// ### map
+/// 
+.lam .extern matrix_map_unfold: 
+    Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
+    [%matrix.Mat (n,S,P), .Cn [%mem.M, P, .Cn [%mem.M, Q] ] ] -> %matrix.Mat (n,S,Q) = {
+    .tt,
+    .lam .extern matrix_map_unfold_curry: 
+        Π [M: %matrix.Mat (n,S,P), f: .Cn [%mem.M, P, .Cn [%mem.M, Q] ] ] -> 
+        %matrix.Mat (n,S,Q) = {
+        .tt,
+
+
+        .let M2 = %matrix.init (n,S,Q);
+        // for each element (n nested loops) write the element to the matrix
+        // TODO:
+
+        M2
+
+    };
+    matrix_map_unfold_curry
+};
 
 
 /*
 * wishes for dialects (not all are sensible):
-* - transparent definitions
-* - holes (wip)
-* - autoquantification / Variable environment
-* - powerful parser
-* - type inference ([m, k] above) if not already possible
+
+Needed:
 * - better error messages (:4294967295: error: symbol 'n' already declared in the current scope here: :4294967295)
+* - a : %Int 5 should be a : (%Int 5) and not (a : %Int) 5
+* - currying syntax
+
+WIP:
+* - transparent definitions
+* - holes 
+
+Not necessarily needed:
+* - type inference ([m, k] above) if not already possible (subsumed by infer)
+* - dependend destruct pattern [[k:.Nat, l:.Nat], T:*] (done by using lets)
+* - autoquantification / Variable environment
+
 * other points:
 * - the parallel (mem free) version and the meta version (or the other way around)
 *   should be automatically derivable from the other version
-* - a : %Int 5 should be a : (%Int 5) and not (a : %Int) 5
-* - dependend destruct pattern [[k:.Nat, l:.Nat], T:*]
 * - do not tell the name of the domain type but the type definition
 */
+
+
+
+
+// .lam .extern matrix_map_unfold: 
+//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
+//     [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P) = {
+//     .tt,
+//     .lam .extern matrix_map_unfold_curry: 
+//         Π [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> 
+//         %matrix.Mat (n,S,P) = {
+//         .tt,
+
+        
+
+
+//     };
+//     matrix_map_unfold_curry
+// };

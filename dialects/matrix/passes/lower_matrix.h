@@ -6,6 +6,21 @@
 
 namespace thorin::matrix {
 
+/// Resolved by normalizer:
+/// - shape
+/// - transpose
+/// Rewrites into loop:
+/// - product
+/// - map
+/// - zipWith
+/// - fold
+/// - id
+/// - constMat
+/// Left for final phase:
+/// - Mat
+/// - read
+/// - insert
+
 /// Lowers the for axiom to actual control flow in CPS style
 /// Requires CopyProp to cleanup afterwards.
 ///
@@ -17,15 +32,15 @@ namespace thorin::matrix {
 /// Therefore, a custom traversal order is necessary
 /// as the bodys of the functions are replaced and the original body
 /// is simultaneously changed
-/// 
+///
 /// ````
-/// f(...): 
+/// f(...):
 ///   x = map ...
 ///   C[x]
 /// ````
 /// becomes
 /// ````
-/// f(...): 
+/// f(...):
 ///   mapping_call args, g // g as continuation
 ///
 /// g(result):

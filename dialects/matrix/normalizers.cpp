@@ -100,8 +100,11 @@ const Def* normalize_prod(const Def* type, const Def* callee, const Def* arg, co
 
 /// - map(constMat v, f) -> constMat f(v) (TODO: implement)
 /// - map f (map g m) -> map (f . g) m (TODO: implement)
+/// - map f (zipWith g m1 m2) -> zipWith (f . g) m1 m2 (TODO: implement)
 const Def* normalize_map(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
+    auto [m, f] = arg->projs<2>();
+
     return world.raw_app(callee, arg, dbg);
 }
 
