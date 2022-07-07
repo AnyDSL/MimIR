@@ -519,17 +519,18 @@ std::unique_ptr<SigmaBndr> Parser::parse_sigma_bndr(Tracker track, Sym sym) {
     parse_list("sigma binder", Tok::Tag::D_bracket_l, [&]() {
         bndrs.emplace_back(parse_bndr("element of a sigma binder"));
         const auto& bndr = bndrs.back();
+        auto type        = bndr->type(world());
         Infer* infer     = nullptr;
         const Def* field = bot;
         if (!bndr->is_anonymous()) {
             field = bndr->sym().str();
-            infer = world().nom_infer(bndr->type(world()), bndr->sym());
+            infer = world().nom_infer(type, bndr->sym());
             scopes_.bind(bndr->sym(), infer);
         }
 
         infers.emplace_back(infer);
         fields.emplace_back(field);
-        ops.emplace_back(bndr->type(world()));
+        ops.emplace_back(type);
     });
     scopes_.pop();
 
