@@ -1,4 +1,3 @@
-#include "dialects/matrix.h"
 
 #include <thorin/config.h>
 #include <thorin/pass/pass.h>

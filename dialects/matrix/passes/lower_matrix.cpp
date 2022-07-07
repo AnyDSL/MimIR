@@ -1,19 +1,20 @@
 #include "dialects/matrix/passes/lower_matrix.h"
 
+#include <iostream>
+
 #include <thorin/lam.h>
 #include <thorin/tables.h>
 
-#include "dialects/matrix.h"
-#include <iostream>
+#include "dialects/matrix/matrix.h"
 
 namespace thorin::matrix {
 
 void LowerMatrix::enter() {
-    Lam* prev = currentLambda;
+    Lam* prev     = currentLambda;
     currentLambda = curr_nom();
 
     currentLambda->set_body(rewrite_(currentLambda->body()));
-    
+
     currentLambda = prev;
 }
 
@@ -23,7 +24,6 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
     std::cout << "rewriting " << def << " within " << currentLambda << std::endl;
 
     if (auto for_ax = match<matrix::map>(def)) {
-
         // auto& w = world();
         // w.DLOG("rewriting for axiom: {} within {}", for_ax, curr_nom());
 

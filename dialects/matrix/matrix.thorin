@@ -80,7 +80,7 @@
 /// - zip with one side constant matrix
 /// - meta_zip add zero m = m
 /// (currently: hardcoded as matrix operations)
-.ax %matrix.zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat(n,S,P), %matrix.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %matrix.Mat(n,S,R), normalize_zip;
+.ax %matrix.zipWith:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat(n,S,P), %matrix.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %matrix.Mat(n,S,R), normalize_zip;
 // .ax %matrix.parallel_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: .Cn [P, Q, .Cn [R] ] ] -> %matrix.Mat n S R, normalize_parallel_zip;
 // .ax %matrix.meta_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: P -> Q -> R ] -> %matrix.Mat n S R, normalize_meta_zip;
 /// 
@@ -103,6 +103,7 @@
 /// transpose matrix
 // .ax %matrix.transpose: Π [k: .Nat, l: .Nat, T: *] -> %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_tranpose;
 .ax %matrix.transpose: Π [kl: «2: .Nat; .Nat», T: *] -> %matrix.Mat (2,kl,T) -> %matrix.Mat (2,(kl#(1:(%Int 2)),(kl#(0:(%Int 2)))),T), normalize_tranpose;
+// .let (k,l) = kl;
 /// 
 /// 
 /// ### %matrix.id
