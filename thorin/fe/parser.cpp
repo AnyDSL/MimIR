@@ -647,10 +647,10 @@ void Parser::parse_ax() {
 void Parser::parse_let() {
     eat(Tok::Tag::K_let);
     auto ptrn = parse_ptrn("binding pattern of a let expression");
-    eat(Tok::Tag::T_assign);
+    expect(Tok::Tag::T_assign, "let expression");
     auto body = parse_expr("body of a let expression");
     ptrn->scrutinize(scopes_, body);
-    eat(Tok::Tag::T_semicolon);
+    expect(Tok::Tag::T_semicolon, "let expression");
 }
 
 void Parser::parse_nom() {
