@@ -1,0 +1,154 @@
+/// # The matrix Dialect {#mat}
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+.import mem;
+///
+/// ## Types
+///
+/// ### %matrix.Mat
+///
+/// a n-dimensional tensor with elements of type T
+/// can be seen as generalization of Coq's vector type
+///
+/// matrix = Π [n: .Nat, S: «n; .Nat», T: *] -> *
+/// matrix n S T = «Π_i=0^n S_i; T»
+/// or 
+/// matrix n S T = «S_0; «S_1; ... «S_{n-1}; T» ... »»
+/// => a matrix is a dependend array
+///
+/// Alternative (current implementation):
+/// matrix n S Ty = [i64, ..., i64, ptr(<T, Ty>)]
+/// (currently with mem and as fat pointer without static size association:
+///   [bit_field:i32, content:ptr(<T, Ty>), size_0:i64, size_1:i64])
+/// * size: dependend vs i64 tuple
+/// * shape: nested vs flat (n0*n1*...) elements
+/// * mutability: mutable by nature vs mutable by its element type (liftet in thorin optimization / codegen)
+///
+/// advantage of opaque type for matrizes:
+/// * prevent arbitrary read & insertions
+/// 
+/// depending on operations, one probably wants matrices to be a transparent definition instead of an opaque axiom
+/// (currently: mat: [T: *] -> *)
+.ax %matrix.Mat: Π [n: .Nat, S: «n; .Nat», T: *] -> *; 
+///
+/// ## Operations
+///
+/// ### %matrix.shape
+/// 
+/// gets the size along the i-th dimension
+/// for a dependent matrix this is a simple projection
+/// returns S(i)
+///
+/// normalization rules: 
+/// * resolve shape calls at construction by replacing them with the size argument
+.ax %matrix.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), i: %Int n] -> .Nat, normalize_shape;
+///
+/// ### %matrix.prod
+///
+/// matrix product
+/// takes a m*k matrix, a k*l matrix and returns the product, a m*l matrix
+/// only defined on two-dimensional matrices
+.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, T: *] -> [%matrix.Mat (2,(m, k),T), %matrix.Mat (2,(k, l),T)] -> %matrix.Mat (2,(m, l),T), normalize_prod;
+/// 
+/// ### %matrix.map
+///
+/// unary elementwise operation
+/// that lifts a function to the matrix level
+/// f can not simply be T->P as thorin code is written in CPS
+/// (currently (comment): Map: [dims: nat, in: *, out: *] -> [mat[] w] -> m64 w)
+/// (currently: map: [mat_type: *, out_sigma: *, f_pi: *] -> [:mem, m: mat_type, f: f_ty] -> [:mem, out: out_sigma])
+/// rewrite: 
+/// - map on constant matrix
+/// - parallel map without effect
+/// - map combination
+.ax %matrix.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P), normalize_map;
+// .ax %matrix.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %matrix.Mat n S P, normalize_parallel_map;
+// .ax %matrix.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: T -> P ] -> %matrix.Mat n S P, normalize_meta_map;
+/// 
+/// ### %matrix.zip
+///
+/// binary elementwise operation
+/// that lifts a binary function to the matrix level
+/// same as map
+/// rewrite: 
+/// - zip on constant matrices
+/// - parallel zip without effect
+/// - zip combination
+/// - zip with one side constant matrix
+/// - meta_zip add zero m = m
+/// (currently: hardcoded as matrix operations)
+.ax %matrix.zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat(n,S,P), %matrix.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %matrix.Mat(n,S,R), normalize_zip;
+// .ax %matrix.parallel_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: .Cn [P, Q, .Cn [R] ] ] -> %matrix.Mat n S R, normalize_parallel_zip;
+// .ax %matrix.meta_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: P -> Q -> R ] -> %matrix.Mat n S R, normalize_meta_zip;
+/// 
+/// ### %matrix.fold
+///
+.ax %matrix.fold:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), accu: P, f: .Cn [%mem.M, P, T, .Cn [%mem.M, P] ] ] -> P, normalize_fold;
+/// 
+/// ### %matrix.const
+///
+/// a constant matrix
+/// (currently: const i32 as bitfield)
+.ax %matrix.constMat: Π [n: .Nat, S: «n; .Nat», T: *] -> T -> %matrix.Mat (n,S,T);
+/// 
+/// ### %matrix.transpose
+///
+/// transpose _ (m:@mat _ k*l T) : @mat _ l*k T
+/// completely resolved during normalization and implicitely rewriting
+/// (for instance: read(transpose m) (i,j) = read m (j,i))
+///
+/// transpose matrix
+// .ax %matrix.transpose: Π [k: .Nat, l: .Nat, T: *] -> %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_tranpose;
+.ax %matrix.transpose: Π [kl: «2: .Nat; .Nat», T: *] -> %matrix.Mat (2,kl,T) -> %matrix.Mat (2,(kl#(1:(%Int 2)),(kl#(0:(%Int 2)))),T), normalize_tranpose;
+/// 
+/// 
+/// ### %matrix.id
+///
+/// id (k, m) : @mat _ (k,k) (Int m)
+///
+/// the idendity matrix
+.ax %matrix.id: Π [k: .Nat, m: .Nat] -> %matrix.Mat (2,(k,k),(%Int m));
+/// 
+/// ### %matrix.read
+///
+/// read _ (mat, idx) : body_type
+///
+/// a access to an element of the matrix
+/// (currently: arithmetic pointer access)
+/// normalization:
+/// * read(insert)
+/// * read(const)
+.ax %matrix.read: Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), idx: «i: n; %Int S#i»] -> T, normalize_read;
+/// 
+/// ### %matrix.insert
+///
+/// insert (dims, sizes, type) (mat, idx, val) : mat
+///
+/// depending on matrix implementation needs mem monad
+/// as it is implemented as write
+/// for mutable body types, the monad should be liftet
+/// implementation either as write or array insertion
+/// normalization:
+/// * with other inserts
+/// * with initialization
+.ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), idx: «i: n; %Int S#i», val: T] -> %matrix.Mat (n,S,T), normalize_insert;
+
+
+/*
+* wishes for dialects (not all are sensible):
+* - transparent definitions
+* - holes (wip)
+* - autoquantification / Variable environment
+* - powerful parser
+* - type inference ([m, k] above) if not already possible
+* - better error messages (:4294967295: error: symbol 'n' already declared in the current scope here: :4294967295)
+* other points:
+* - the parallel (mem free) version and the meta version (or the other way around)
+*   should be automatically derivable from the other version
+* - a : %Int 5 should be a : (%Int 5) and not (a : %Int) 5
+* - dependend destruct pattern [[k:.Nat, l:.Nat], T:*]
+* - do not tell the name of the domain type but the type definition
+*/

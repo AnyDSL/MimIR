@@ -72,3 +72,17 @@ add_thorin_dialect(direct
         direct/passes/ds2cps.h
     INSTALL
 )
+
+add_thorin_dialect(matrix
+    SOURCES
+        matrix/matrix.cpp
+        matrix/matrix.h
+        matrix/normalizers.cpp
+        matrix/passes/lower_matrix.cpp
+        matrix/passes/lower_matrix.h
+    DEPENDS
+        mem
+        affine
+        direct
+    INSTALL
+)
