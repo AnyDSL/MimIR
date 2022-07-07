@@ -399,7 +399,7 @@ const Def* Parser::parse_pi() {
 
     if (!dom->is_anonymous()) scopes_.bind(dom->sym(), var);
     dom->inject(scopes_, var);
-    //for (auto [sym, i] : binders) scopes_.bind(sym, pi->var(i)); // TODO location
+    // for (auto [sym, i] : binders) scopes_.bind(sym, pi->var(i)); // TODO location
 
     expect(Tok::Tag::T_arrow, "dependent function type");
     auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
@@ -687,7 +687,7 @@ void Parser::parse_nom() {
     scopes_.bind(sym, nom);
 
     scopes_.push();
-    //for (auto [sym, i] : binders) scopes_.bind(sym, nom->var(i));
+    // for (auto [sym, i] : binders) scopes_.bind(sym, nom->var(i));
     if (external) nom->make_external();
 
     scopes_.push();

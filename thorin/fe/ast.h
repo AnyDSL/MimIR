@@ -18,7 +18,7 @@ class AST {
 public:
     AST(Loc loc)
         : loc_(loc) {}
-    virtual ~AST() {};
+    virtual ~AST(){};
 
     Loc loc() const { return loc_; }
 
@@ -79,7 +79,7 @@ public:
 
     Sym sym() const { return sym_; }
     bool is_anonymous() const { return sym_.is_anonymous(); }
-    virtual const Def* type(World&) const = 0;
+    virtual const Def* type(World&) const          = 0;
     virtual void inject(Scopes&, const Def*) const = 0;
 
 private:

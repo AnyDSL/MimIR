@@ -2,8 +2,9 @@
 
 #include "thorin/check.h"
 #include "thorin/def.h"
-#include "thorin/world.h"
 #include "thorin/rewrite.h"
+#include "thorin/world.h"
+
 #include "thorin/fe/scopes.h"
 
 namespace thorin::fe {
