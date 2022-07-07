@@ -517,6 +517,8 @@ std::unique_ptr<SigmaBndr> Parser::parse_sigma_bndr(Tracker track, Sym sym) {
 
     scopes_.push();
     parse_list("sigma binder", Tok::Tag::D_bracket_l, [&]() {
+        if (!bndrs.empty()) bndrs.back()->inject(scopes_, infers.back());
+
         bndrs.emplace_back(parse_bndr("element of a sigma binder"));
         const auto& bndr = bndrs.back();
         auto type        = bndr->type(world());

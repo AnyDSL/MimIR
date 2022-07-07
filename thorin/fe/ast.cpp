@@ -59,8 +59,11 @@ const Def* SigmaBndr::type(World& world) const {
  */
 
 void SigmaBndr::inject(Scopes& scopes, const Def* def) const {
-    size_t n = num_bndrs();
-    for (size_t i = 0; i != n; ++i) scopes.bind(bndr(i)->sym(), def->proj(n, i));
+    for (size_t i = 0, e = num_bndrs(); i != e; ++i) {
+        auto elem = def->proj(e, i);
+        scopes.bind(bndr(i)->sym(), elem);
+        bndr(i)->inject(scopes, elem);
+    }
 }
 
 } // namespace thorin::fe
