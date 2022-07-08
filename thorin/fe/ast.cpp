@@ -24,6 +24,21 @@ void TuplePtrn::scrutinize(Scopes& scopes, const Def* scrutinee) const {
  * type
  */
 
+const Def* IdPtrn::type(World& world) const {
+    if (type_) return type_;
+    return type_ = world.nom_infer_of_infer_level(world.dbg(loc()));
+}
+
+const Def* TuplePtrn::type(World& world) const {
+    if (type_) return type_;
+    Array<const Def*> ops(num_ptrns(), [&](size_t i) { return ptrn(i)->type(world); });
+    return type_ = world.sigma(ops, world.dbg(loc()));
+}
+
+/*
+ * type
+ */
+
 const Def* SigmaBndr::type(World& world) const {
     if (type_) return type_;
 

@@ -19,10 +19,10 @@ const Def* Scopes::find(Sym sym) const {
     err<ScopeError>(sym.loc(), "symbol '{}' not found", sym);
 }
 
-void Scopes::bind(Sym sym, const Def* def) {
+void Scopes::bind(Scope& scope, Sym sym, const Def* def) {
     if (sym.is_anonymous()) return; // don't do anything with '_'
 
-    if (auto [i, ins] = scopes_.back().emplace(sym, def); !ins) {
+    if (auto [i, ins] = scope.emplace(sym, def); !ins) {
         auto curr = sym.loc();
         auto prev = i->first.to_loc();
         err<ScopeError>(curr, "symbol '{}' already declared in the current scope here: {}", sym, prev);

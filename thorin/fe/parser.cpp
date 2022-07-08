@@ -482,7 +482,8 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
     std::deque<std::unique_ptr<Ptrn>> ptrns;
     parse_list("tuple pattern", Tok::Tag::D_paren_l, [&]() { ptrns.emplace_back(parse_ptrn("tuple pattern")); });
     auto type = parse_type_ascr();
-    return std::make_unique<TuplePtrn>(track.loc(), std::move(ptrns), type);
+    auto sym  = Sym(world().lit_nat('_'), nullptr); // TODO
+    return std::make_unique<TuplePtrn>(track.loc(), sym, std::move(ptrns), type);
 }
 
 /*
@@ -547,15 +548,16 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
     while (true) {
         // clang-format off
         switch (ahead().tag()) {
-            case Tok::Tag::K_ax:     parse_ax();     break;
-            case Tok::Tag::K_let:    parse_let();    break;
+            case Tok::Tag::T_semicolon: lex();           break; // eat up stray semicolons
+            case Tok::Tag::K_ax:        parse_ax();      break;
+            case Tok::Tag::K_let:       parse_let();     break;
             case Tok::Tag::K_Sigma:
             case Tok::Tag::K_Arr:
             case Tok::Tag::K_pack:
-            case Tok::Tag::K_Pi:
-            case Tok::Tag::K_lam:    parse_nom();    break;
-            case Tok::Tag::K_def:    parse_def();    break;
-            default:                 return expr ? parse_expr("scope of a declaration") : nullptr;
+            case Tok::Tag::K_Pi:        parse_nom();     break;
+            case Tok::Tag::K_lam:       parse_nom_lam(); break;
+            case Tok::Tag::K_def:       parse_def();     break;
+            default:                    return expr ? parse_expr("scope of a declaration") : nullptr;
         }
         // clang-format on
     }
@@ -679,12 +681,6 @@ void Parser::parse_nom() {
             nom      = world().nom_pi(type, track.named(sym))->set_dom(dom);
             break;
         }
-        case Tok::Tag::K_lam: {
-            const Pi* pi = type->isa<Pi>();
-            if (!pi) err(type->loc(), "type of lambda must be a Pi");
-            nom = world().nom_lam(pi, track.named(sym));
-            break;
-        }
         default: unreachable();
     }
     scopes_.bind(sym, nom);
@@ -709,6 +705,39 @@ void Parser::parse_nom() {
         expect(Tok::Tag::T_semicolon, "end of a nominal");
 
     scopes_.pop();
+    scopes_.pop();
+}
+
+void Parser::parse_nom_lam() {
+    auto track    = tracker();
+    eat(Tok::Tag::K_lam);
+
+    auto outer = scopes_.curr();
+    scopes_.push();
+
+    bool external = accept(Tok::Tag::K_extern).has_value();
+    auto sym      = parse_sym("nominal lambda");
+    auto dom_p    = parse_ptrn("domain pattern of a lambda");
+    auto dom_t    = dom_p->type(world());
+    auto pi       = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
+    auto var      = pi->var(world().dbg({dom_p->sym()}));
+
+    if (!dom_p->is_anonymous()) scopes_.bind(dom_p->sym(), var);
+    dom_p->scrutinize(scopes_, var);
+
+    auto codom = accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
+                                           : world().nom_infer_of_infer_level();
+    pi->set_codom(codom);
+    pi->set_type(codom->unfold_type());
+    pi->set_dbg(track);
+
+    Lam* lam = world().nom_lam(pi, track.named(sym));
+    if (external) lam->make_external();
+    scopes_.bind(outer, sym, lam);
+    expect(Tok::Tag::T_assign, "lambda");
+    auto body = parse_expr("body of a lambda");
+    lam->set(false, body);
+
     scopes_.pop();
 }
 

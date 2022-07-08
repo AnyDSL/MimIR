@@ -32,36 +32,42 @@ private:
 
 class Ptrn : public AST {
 public:
-    Ptrn(Loc loc, const Def* type)
+    Ptrn(Loc loc, Sym sym, const Def* type)
         : AST(loc)
+        , sym_(sym)
         , type_(type) {}
 
+    Sym sym() const { return sym_; }
+    bool is_anonymous() const { return sym_.is_anonymous(); }
     virtual void scrutinize(Scopes&, const Def*) const = 0;
+    virtual const Def* type(World&) const = 0;
 
-private:
-    const Def* type_;
+protected:
+    Sym sym_;
+    mutable const Def* type_;
 };
 
 class IdPtrn : public Ptrn {
 public:
     IdPtrn(Loc loc, Sym sym, const Def* type)
-        : Ptrn(loc, type)
-        , sym_(sym) {}
+        : Ptrn(loc, sym, type) {}
 
     void scrutinize(Scopes&, const Def*) const override;
-
-private:
-    Sym sym_;
-    const Def* type_;
+    const Def* type(World&) const override;
 };
 
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(Loc loc, std::deque<std::unique_ptr<Ptrn>>&& ptrns, const Def* type)
-        : Ptrn(loc, type)
+    TuplePtrn(Loc loc, Sym sym, std::deque<std::unique_ptr<Ptrn>>&& ptrns, const Def* type)
+        : Ptrn(loc, sym, type)
         , ptrns_(std::move(ptrns)) {}
 
+    const std::deque<std::unique_ptr<Ptrn>>& ptrns() const { return ptrns_; }
+    const Ptrn* ptrn(size_t i) const { return ptrns_[i].get(); }
+    size_t num_ptrns() const { return ptrns().size(); }
+
     void scrutinize(Scopes&, const Def*) const override;
+    const Def* type(World&) const override;
 
 private:
     std::deque<std::unique_ptr<Ptrn>> ptrns_;
