@@ -106,9 +106,9 @@ private:
 
     /// @name bndrs
     ///@{
-    std::unique_ptr<Bndr> parse_bndr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
-    std::unique_ptr<IdBndr> parse_id_bndr(std::string_view ctxt, Tracker, Sym, Tok::Prec);
-    std::unique_ptr<SigmaBndr> parse_sigma_bndr(Tracker, Sym);
+    std::unique_ptr<Ptrn> parse_bndr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+    std::unique_ptr<IdPtrn> parse_id_bndr(std::string_view ctxt, Tracker, Sym, Tok::Prec);
+    std::unique_ptr<TuplePtrn> parse_sigma_bndr(bool is_bndr, Tracker, Sym);
     ///@}
 
     /// @name decls

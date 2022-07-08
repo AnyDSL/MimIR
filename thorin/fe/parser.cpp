@@ -369,7 +369,7 @@ const Def* Parser::parse_block() {
 const Def* Parser::parse_sigma() {
     auto track = tracker();
     auto sym   = Sym(world().lit_nat('_'), nullptr);
-    auto bndr  = parse_sigma_bndr(track, sym);
+    auto bndr  = parse_sigma_bndr(true, track, sym);
     return bndr->type(world());
 }
 
@@ -479,18 +479,15 @@ std::unique_ptr<IdPtrn> Parser::parse_id_ptrn() {
 
 std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn() {
     auto track = tracker();
-    std::deque<std::unique_ptr<Ptrn>> ptrns;
-    parse_list("tuple pattern", Tok::Tag::D_paren_l, [&]() { ptrns.emplace_back(parse_ptrn("tuple pattern")); });
-    auto type = parse_type_ascr();
-    auto sym  = Sym(world().lit_nat('_'), nullptr); // TODO
-    return std::make_unique<TuplePtrn>(track.loc(), sym, std::move(ptrns), type);
+    auto sym   = Sym(world().lit_nat('_'), nullptr);
+    return parse_sigma_bndr(false, track, sym);
 }
 
 /*
  * bndrs
  */
 
-std::unique_ptr<Bndr> Parser::parse_bndr(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::Bot*/) {
+std::unique_ptr<Ptrn> Parser::parse_bndr(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::Bot*/) {
     auto track = tracker();
     Sym sym;
     if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
@@ -500,35 +497,36 @@ std::unique_ptr<Bndr> Parser::parse_bndr(std::string_view ctxt, Tok::Prec p /*= 
         sym = Sym(world().lit_nat('_'), nullptr);
     }
 
-    if (ahead().isa(Tok::Tag::D_bracket_l)) return parse_sigma_bndr(track, sym);
+    if (ahead().isa(Tok::Tag::D_bracket_l)) return parse_sigma_bndr(true, track, sym);
     return parse_id_bndr(ctxt, track, sym, p);
 }
 
-std::unique_ptr<IdBndr> Parser::parse_id_bndr(std::string_view ctxt, Tracker track, Sym sym, Tok::Prec p) {
-    if (auto type = parse_expr(ctxt, p)) return std::make_unique<IdBndr>(track.loc(), sym, type);
+std::unique_ptr<IdPtrn> Parser::parse_id_bndr(std::string_view ctxt, Tracker track, Sym sym, Tok::Prec p) {
+    if (auto type = parse_expr(ctxt, p)) return std::make_unique<IdPtrn>(track.loc(), sym, type);
     return nullptr;
 }
 
-std::unique_ptr<SigmaBndr> Parser::parse_sigma_bndr(Tracker track, Sym sym) {
-    std::deque<std::unique_ptr<Bndr>> bndrs;
+std::unique_ptr<TuplePtrn> Parser::parse_sigma_bndr(bool is_bndr, Tracker track, Sym sym) {
+    std::deque<std::unique_ptr<Ptrn>> ptrns;
     std::vector<const Def*> fields;
     std::vector<Infer*> infers;
     DefVec ops;
     auto bot = world().bot(world().type_nat());
+    auto delim_l = is_bndr ? Tok::Tag::D_bracket_l : Tok::Tag::D_paren_l;
 
     scopes_.push();
-    parse_list("sigma binder", Tok::Tag::D_bracket_l, [&]() {
-        if (!bndrs.empty()) bndrs.back()->inject(scopes_, infers.back());
+    parse_list("tuple pattern", delim_l, [&]() {
+        if (!ptrns.empty()) ptrns.back()->inject(scopes_, infers.back());
 
-        bndrs.emplace_back(parse_bndr("element of a sigma binder"));
-        const auto& bndr = bndrs.back();
-        auto type        = bndr->type(world());
+        ptrns.emplace_back(parse_ptrn("element of a sigma binder"));
+        const auto& ptrn = ptrns.back();
+        auto type        = ptrn->type(world());
         Infer* infer     = nullptr;
         const Def* field = bot;
-        if (!bndr->is_anonymous()) {
-            field = bndr->sym().str();
-            infer = world().nom_infer(type, bndr->sym());
-            scopes_.bind(bndr->sym(), infer);
+        if (!ptrn->is_anonymous()) {
+            field = ptrn->sym().str();
+            infer = world().nom_infer(type, ptrn->sym());
+            scopes_.bind(ptrn->sym(), infer);
         }
 
         infers.emplace_back(infer);
@@ -537,7 +535,8 @@ std::unique_ptr<SigmaBndr> Parser::parse_sigma_bndr(Tracker track, Sym sym) {
     });
     scopes_.pop();
 
-    return std::make_unique<SigmaBndr>(track.loc(), sym, std::move(bndrs), std::move(infers));
+    // TODO parse type
+    return std::make_unique<TuplePtrn>(track.loc(), sym, std::move(ptrns), nullptr, std::move(infers));
 }
 
 /*
@@ -649,7 +648,7 @@ void Parser::parse_let() {
     auto ptrn = parse_ptrn("binding pattern of a let expression");
     eat(Tok::Tag::T_assign);
     auto body = parse_expr("body of a let expression");
-    ptrn->scrutinize(scopes_, body);
+    ptrn->bind(scopes_, body);
     eat(Tok::Tag::T_semicolon);
 }
 
@@ -723,7 +722,7 @@ void Parser::parse_nom_lam() {
     auto var      = pi->var(world().dbg({dom_p->sym()}));
 
     if (!dom_p->is_anonymous()) scopes_.bind(dom_p->sym(), var);
-    dom_p->scrutinize(scopes_, var);
+    dom_p->bind(scopes_, var);
 
     auto codom = accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
                                            : world().nom_infer_of_infer_level();
