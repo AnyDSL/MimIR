@@ -138,6 +138,19 @@
 /// * with initialization
 .ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), idx: «i: n; %Int S#i», val: T] -> %matrix.Mat (n,S,T), normalize_insert;
 ///
+/// ## Related operations
+///
+/// ### multiiter
+///
+/// iterated over n dimensions
+/// takes:
+/// * n: number of dimensions
+/// * sizes: shape of the dimensions
+/// * function: mem -> index -> mem
+/// the function is taken in cps style
+.ax %matrix.multiiter: Π [n: .Nat, S: «n; .Nat»] -> 
+    .Cn[mem: %mem.M, body: .Cn[%mem.M, «i: n; %Int (S#i)», .Cn[%mem.M]], .Cn[%mem.M]], normalize_multiiter;
+///
 /// ## Internal operations
 /// 
 /// ### %matrix.init
@@ -159,30 +172,6 @@
 /// ### zip
 ///
 /// zip A B = zipWith id A B
-// .lam .extern matrix_zip: 
-//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
-//     [A: %mem.M, B: %mem.M] -> 
-//     %mem.M = {
-//     .tt,
-//     A
-// };
-// .lam .extern matrix_zip: 
-//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
-//     Π [A: (%matrix.Mat(n,S,P)), B: (%matrix.Mat(n,S,Q))] -> 
-//     %matrix.Mat(n,S,P) = {
-//     .tt,
-//     A
-// };
-// .lam .extern zip: 
-//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
-//     Π [A: (%matrix.Mat(n,S,P)), B: (%matrix.Mat(n,S,Q))] -> 
-//     %matrix.Mat(n,S,[P,Q]) = {
-//     .tt,
-//     .lam zipper: .Cn[mem: %mem.M, p: P, q: Q, ret: .Cn[%mem.M, [P,Q]]] = {
-//         ret (mem,(p,q))
-//     };
-//     %matrix.zipWith (n,S,P,Q,[P,Q]) (A,B,zipper)
-// };
 .lam .extern zip: 
     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
     [(%matrix.Mat(n,S,P)), (%matrix.Mat(n,S,Q))] -> 
@@ -245,7 +234,7 @@
         [%matrix.Mat (2,(m, k),%Real w), %matrix.Mat (2,(k, l),%Real w)] -> %matrix.Mat (2,(m, l),%Real w)
         = {
     .tt,
-    .lam .extern matrix_map_prod_curry: 
+    .lam matrix_map_prod_curry: 
         Π [M: %matrix.Mat (2,(m, k),%Real w), N: %matrix.Mat (2,(k, l),%Real w)] -> 
         %matrix.Mat (2,(m, l),%Real w) = {
         .tt,
@@ -261,6 +250,8 @@
             end
         end
         */
+        // or use external C function call instead 
+        // (cast up to Real 64? = double)
         // TODO:
 
         O
@@ -271,11 +262,12 @@
 /// 
 /// ### map
 /// 
+// TODO: need mem
 .lam .extern matrix_map_unfold: 
     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
     [%matrix.Mat (n,S,P), .Cn [%mem.M, P, .Cn [%mem.M, Q] ] ] -> %matrix.Mat (n,S,Q) = {
     .tt,
-    .lam .extern matrix_map_unfold_curry: 
+    .lam matrix_map_unfold_curry: 
         Π [M: %matrix.Mat (n,S,P), f: .Cn [%mem.M, P, .Cn [%mem.M, Q] ] ] -> 
         %matrix.Mat (n,S,Q) = {
         .tt,
@@ -283,13 +275,53 @@
 
         .let M2 = %matrix.init (n,S,Q);
         // for each element (n nested loops) write the element to the matrix
-        // TODO:
+        // TODO: maybe no mem (depending on read/write)
+
+        .lam map_inner:
+            .Cn[mem:%mem.M, idx«i: n; %Int (S#i)», map_inner_ret: .Cn[%mem.M]] = {
+            .tt,
+
+            .let v = %matrix.read (n,S,P) (M,idx);
+            f (mem, v, map_inner_cont);
+        };
+        .lam map_inner_cont:
+            .Cn[mem:%mem.M, q: Q] = {
+            .tt,
+
+            // TODO: this works only for side effect writes
+            %matrix.write (n,S,Q) (M,idx, q);
+            map_inner_ret mem
+        };
+
+        // TODO: check ds, cps calls
+        .let mem = cps2ds (%matrix.multiiter (n,S)) (mem,
+            inner
+        );
 
         M2
 
     };
     matrix_map_unfold_curry
 };
+/// 
+/// ### multiiter
+/// 
+/*
+let multiiter f n S:=
+    let idx = <0: n>;
+    let inner m :=
+        if m = 0 then
+            f (idx)
+        else
+            for ...
+                (i -> 
+                    insert (idx, m - 1) i;
+                    inner (m - 1)
+                )
+*/
+/// TODO:
+
+
 
 
 /*
