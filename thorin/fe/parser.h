@@ -100,15 +100,9 @@ private:
     /// @name ptrns
     ///@{
     std::unique_ptr<Ptrn> parse_ptrn(std::string_view ctxt);
-    std::unique_ptr<IdPtrn> parse_id_ptrn();
-    std::unique_ptr<TuplePtrn> parse_tuple_ptrn();
-    ///@}
-
-    /// @name bndrs
-    ///@{
     std::unique_ptr<Ptrn> parse_bndr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
     std::unique_ptr<IdPtrn> parse_id_bndr(std::string_view ctxt, Tracker, Sym, Tok::Prec);
-    std::unique_ptr<TuplePtrn> parse_sigma_bndr(bool is_bndr, Tracker, Sym);
+    std::unique_ptr<TuplePtrn> parse_tuple_ptrn(Tracker, Sym);
     ///@}
 
     /// @name decls

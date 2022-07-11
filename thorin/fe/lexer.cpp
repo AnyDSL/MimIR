@@ -45,8 +45,8 @@ Tok Lexer::lex() {
         // delimiters
         if (accept( '(')) return tok(Tok::Tag::D_paren_l);
         if (accept( ')')) return tok(Tok::Tag::D_paren_r);
-        if (accept( '[')) return tok(Tok::Tag::D_bracket_l);
-        if (accept( ']')) return tok(Tok::Tag::D_bracket_r);
+        if (accept( '[')) return tok(Tok::Tag::D_brckt_l);
+        if (accept( ']')) return tok(Tok::Tag::D_brckt_r);
         if (accept( '{')) return tok(Tok::Tag::D_brace_l);
         if (accept( '}')) return tok(Tok::Tag::D_brace_r);
         if (accept(U'«')) return tok(Tok::Tag::D_quote_l);
