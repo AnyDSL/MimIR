@@ -1,5 +1,6 @@
 #include "thorin/check.h"
 
+#include "thorin/error.h"
 #include "thorin/world.h"
 
 namespace thorin {
@@ -10,8 +11,10 @@ const Def* infer_type_level(World& world, Defs defs) {
     for (auto def : defs) {
         if (auto type = def->isa<Type>()) {
             level = std::max(level, as_lit(type->level()) + 1);
-        } else if (auto type = def->type()->as<Type>()) {
+        } else if (auto type = def->type()->isa<Type>()) {
             level = std::max(level, as_lit(type->level()));
+        } else {
+            type_err(def->loc(), "'{}' used as a type but is in fact a term", def);
         }
     }
     return world.type(world.lit_univ(level));

@@ -49,11 +49,18 @@ template<class T, class... Args>
     throw T(oss.str());
 }
 
+template<class... Args>
+[[noreturn]] void type_err(Loc loc, const char* fmt, Args&&... args) {
+    thorin::err<TypeError>(loc, fmt, std::forward<Args&&>(args)...);
+}
+
+// TODO remove this
 class ErrorHandler {
 public:
     virtual ~ErrorHandler() = default;
 
     virtual void expected_shape(const Def* def, const Def* dbg);
+    virtual void expected_type(const Def* def, const Def* dbg);
     virtual void index_out_of_range(const Def* arity, const Def* index, const Def* dbg);
     virtual void ill_typed_app(const Def* callee, const Def* arg, const Def* dbg);
 };

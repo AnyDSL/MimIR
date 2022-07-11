@@ -10,7 +10,7 @@
 .lam atoi: .Cn [%mem.M, %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat), .Cn [%mem.M, %Int 4294967296]];
 
 .lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
-    0: (%Int 2),
+    .ff,
 
     .lam atoi_cont_a: .Cn [mem : %mem.M, a : %Int 4294967296] = {
         .ff,
