@@ -518,7 +518,8 @@ std::unique_ptr<TuplePtrn> Parser::parse_sigma_bndr(bool is_bndr, Tracker track,
     parse_list("tuple pattern", delim_l, [&]() {
         if (!ptrns.empty()) ptrns.back()->inject(scopes_, infers.back());
 
-        ptrns.emplace_back(parse_ptrn("element of a sigma binder"));
+        ptrns.emplace_back(is_bndr ? parse_bndr("element of a sigma binder")
+                                   : parse_ptrn("element of a tuple pattern"));
         const auto& ptrn = ptrns.back();
         auto type        = ptrn->type(world());
         Infer* infer     = nullptr;
