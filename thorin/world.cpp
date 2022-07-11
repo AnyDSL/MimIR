@@ -218,7 +218,7 @@ World World::stub() {
 
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->isa<Pi>();
-    //if (!pi) type_err(dbg, "called expression '{}' is not of function type", callee);
+    if (!pi) type_err(dbg->loc(), "called expression '{}' is not of function type", callee);
 
     if (err()) {
         if (!checker_->assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
