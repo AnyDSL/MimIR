@@ -485,7 +485,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(std::string_view ctxt) {
                 return parse_tuple_ptrn(track, sym);
             } else {
                 // p -> s: e
-                auto type  = parse_expr(ctxt);
+                auto type = parse_expr(ctxt);
                 return std::make_unique<IdPtrn>(track.loc(), sym, type);
             }
         } else {
@@ -530,7 +530,7 @@ std::unique_ptr<Ptrn> Parser::parse_bndr(std::string_view ctxt, Tok::Prec prec /
                 return parse_tuple_ptrn(track, sym);
             } else {
                 // b -> s: e
-                auto type  = parse_expr(ctxt, prec);
+                auto type = parse_expr(ctxt, prec);
                 return std::make_unique<IdPtrn>(track.loc(), sym, type);
             }
         } else {
