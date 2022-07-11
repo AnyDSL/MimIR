@@ -511,7 +511,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_sigma_bndr(bool is_bndr, Tracker track,
     std::vector<const Def*> fields;
     std::vector<Infer*> infers;
     DefVec ops;
-    auto bot = world().bot(world().type_nat());
+    auto bot     = world().bot(world().type_nat());
     auto delim_l = is_bndr ? Tok::Tag::D_bracket_l : Tok::Tag::D_paren_l;
 
     scopes_.push();
@@ -709,7 +709,7 @@ void Parser::parse_nom() {
 }
 
 void Parser::parse_nom_lam() {
-    auto track    = tracker();
+    auto track = tracker();
     eat(Tok::Tag::K_lam);
 
     auto outer = scopes_.curr();
