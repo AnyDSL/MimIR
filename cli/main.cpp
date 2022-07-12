@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
         bool show_version = false;
         std::string input, prefix;
         std::string clang = sys::find_cmd("clang");
-        std::vector<std::string> dialect_names, dialect_paths;
+        std::vector<std::string> dialect_plugins, dialect_paths;
         std::vector<size_t> breakpoints;
         std::array<std::string, Num_Backends> output;
         int verbose      = 0;
@@ -38,20 +38,20 @@ int main(int argc, char** argv) {
         // clang-format off
         auto cli = lyra::cli()
             | lyra::help(show_help)
-            | lyra::opt(show_version            )["-v"]["--version"      ]("Display version info and exit.")
-            | lyra::opt(clang,         "clang"  )["-c"]["--clang"        ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
-            | lyra::opt(dialect_names, "dialect")["-d"]["--dialect"      ]("Dynamically load dialect [WIP].")
-            | lyra::opt(dialect_paths, "path"   )["-D"]["--dialect-path" ]("Path to search dialects in.")
-            | lyra::opt(inc_verbose             )["-V"]["--verbose"      ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
+            | lyra::opt(show_version              )["-v"]["--version"      ]("Display version info and exit.")
+            | lyra::opt(clang,           "clang"  )["-c"]["--clang"        ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
+            | lyra::opt(dialect_plugins, "dialect")["-d"]["--dialect"      ]("Dynamically load dialect [WIP].")
+            | lyra::opt(dialect_paths,   "path"   )["-D"]["--dialect-path" ]("Path to search dialects in.")
+            | lyra::opt(inc_verbose               )["-V"]["--verbose"      ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
 #if THORIN_ENABLE_CHECKS
-            | lyra::opt(breakpoints,   "gid"    )["-b"]["--break"        ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
+            | lyra::opt(breakpoints,     "gid"    )["-b"]["--break"        ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
 #endif
-            | lyra::opt(output[Dot   ], "file"  )      ["--output-dot"   ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
-            | lyra::opt(output[H     ], "file"  )      ["--output-h"     ]("Emits a header file to be used to interface with a dialect in C++.")
-            | lyra::opt(output[LL    ], "file"  )      ["--output-ll"    ]("Compiles the Thorin program to LLVM.")
-            | lyra::opt(output[Md    ], "file"  )      ["--output-md"    ]("Emits the input formatted as Markdown.")
-            | lyra::opt(output[Thorin], "file"  )      ["--output-thorin"]("Emits the Thorin program again.")
-            | lyra::arg(input,          "file"  )                         ("Input file.");
+            | lyra::opt(output[Dot   ],  "file"   )      ["--output-dot"   ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
+            | lyra::opt(output[H     ],  "file"   )      ["--output-h"     ]("Emits a header file to be used to interface with a dialect in C++.")
+            | lyra::opt(output[LL    ],  "file"   )      ["--output-ll"    ]("Compiles the Thorin program to LLVM.")
+            | lyra::opt(output[Md    ],  "file"   )      ["--output-md"    ]("Emits the input formatted as Markdown.")
+            | lyra::opt(output[Thorin],  "file"   )      ["--output-thorin"]("Emits the Thorin program again.")
+            | lyra::arg(input,           "file"   )                         ("Input file.");
         // clang-format on
 
         if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
@@ -82,13 +82,13 @@ int main(int argc, char** argv) {
         }
 
         // we always need core and mem, as long as we are not in bootstrap mode..
-        if (!os[H]) dialect_names.insert(dialect_names.end(), {"core", "mem"});
+        if (!os[H]) dialect_plugins.insert(dialect_plugins.end(), {"core", "mem"});
 
         std::vector<Dialect> dialects;
         thorin::Backends backends;
         thorin::Normalizers normalizers;
-        if (!dialect_names.empty()) {
-            for (const auto& dialect : dialect_names) {
+        if (!dialect_plugins.empty()) {
+            for (const auto& dialect : dialect_plugins) {
                 dialects.push_back(Dialect::load(dialect, dialect_paths));
                 dialects.back().register_backends(backends);
                 dialects.back().register_normalizers(normalizers);
@@ -111,6 +111,9 @@ int main(int argc, char** argv) {
             errln("error: cannot read file '{}'", input);
             return EXIT_FAILURE;
         }
+
+        for (const auto& dialect : dialects)
+            fe::Parser::import_module(world, dialect.name(), dialect_paths, &normalizers);
 
         fe::Parser parser(world, input, ifs, dialect_paths, &normalizers, os[Md]);
         parser.parse_module();

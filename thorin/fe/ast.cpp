@@ -10,14 +10,14 @@
 namespace thorin::fe {
 
 /*
- * scrutinize
+ * bind
  */
 
-void IdPtrn::scrutinize(Scopes& scopes, const Def* scrutinee) const { scopes.bind(sym_, scrutinee); }
+void IdPtrn::bind(Scopes& scopes, const Def* scrutinee) const { scopes.bind(sym_, scrutinee); }
 
-void TuplePtrn::scrutinize(Scopes& scopes, const Def* scrutinee) const {
+void TuplePtrn::bind(Scopes& scopes, const Def* scrutinee) const {
     size_t n = ptrns_.size();
-    for (size_t i = 0; i != n; ++i) ptrns_[i]->scrutinize(scopes, scrutinee->proj(n, i));
+    for (size_t i = 0; i != n; ++i) ptrns_[i]->bind(scopes, scrutinee->proj(n, i));
 }
 
 /*
@@ -31,26 +31,16 @@ const Def* IdPtrn::type(World& world) const {
 
 const Def* TuplePtrn::type(World& world) const {
     if (type_) return type_;
-    Array<const Def*> ops(num_ptrns(), [&](size_t i) { return ptrn(i)->type(world); });
-    return type_ = world.sigma(ops, world.dbg(loc()));
-}
 
-/*
- * type
- */
+    auto n   = num_ptrns();
+    auto ops = Array<const Def*>(n, [&](size_t i) { return ptrn(i)->type(world); });
 
-const Def* SigmaBndr::type(World& world) const {
-    if (type_) return type_;
-
-    auto n   = num_bndrs();
-    auto ops = Array<const Def*>(n, [&](size_t i) { return bndr(i)->type(world); });
-
-    if (std::ranges::all_of(bndrs_, [](auto&& b) { return b->is_anonymous(); }))
+    if (std::ranges::all_of(ptrns_, [](auto&& b) { return b->is_anonymous(); }))
         return type_ = world.sigma(ops, world.dbg(loc()));
 
-    assert(bndrs().size() > 0);
+    assert(ptrns().size() > 0);
 
-    auto fields = Array<const Def*>(n, [&](size_t i) { return bndr(i)->sym().str(); });
+    auto fields = Array<const Def*>(n, [&](size_t i) { return ptrn(i)->sym().str(); });
     auto type   = infer_type_level(world, ops);
     auto meta   = world.tuple(fields);
     auto debug  = Debug(sym(), loc(), meta);
@@ -73,11 +63,11 @@ const Def* SigmaBndr::type(World& world) const {
  * inject
  */
 
-void SigmaBndr::inject(Scopes& scopes, const Def* def) const {
-    for (size_t i = 0, e = num_bndrs(); i != e; ++i) {
+void TuplePtrn::inject(Scopes& scopes, const Def* def) const {
+    for (size_t i = 0, e = num_ptrns(); i != e; ++i) {
         auto elem = def->proj(e, i);
-        scopes.bind(bndr(i)->sym(), elem);
-        bndr(i)->inject(scopes, elem);
+        scopes.bind(ptrn(i)->sym(), elem);
+        ptrn(i)->inject(scopes, elem);
     }
 }
 

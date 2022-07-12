@@ -143,15 +143,14 @@ The following tables comprise all production rules:
 | Nonterminal | Right-Hand Side               | New Scope? | Comment                  |
 |-------------|-------------------------------|------------|--------------------------|
 | p           | Sym t                         |            | identifier pattern       |
-| p           | `(` p `,` ... `,` p `)` t     |            | tuple pattern            |
+| p           | s `(` p `,` ... `,` p `)` t   |            | tuple pattern            |
+| p           | s `[` b `,` ... `,` b `]` t   |            | sigma binder             |
+| b           | s e<sub>type</sub>            |            | identifier binder        |
+| b           | s `(` p `,` ... `,` p `)` t   |            | tuple pattern            |
+| b           | s `[` b `,` ... `,` b `]` t   |            | sigma binder             |
 | t           | ( `:` e<sub>type</sub> )?     |            | optional type ascription |
+| s           | ( Sym `::` )?                 |            | optional symbol          |
 
-### Binders
-
-| Nonterminal | Right-Hand Side               | New Scope? | Comment             |
-|-------------|-------------------------------|------------|---------------------|
-| b           | ( Sym `:` )? e<sub>type</sub> |            | identifier binder   |
-| b           | `[` b `,` ... `,` b `]`       |            | sigma binder        |
 
 ### Expressions
 
@@ -175,7 +174,6 @@ The following tables comprise all production rules:
 | e           | `‹` i e<sub>shape</sub> `;` e<sub>body</sub>`›`                               | ✓          | pack                                | thorin::Pack    |
 | e           | `«` i e<sub>shape</sub> `;` e<sub>body</sub>`»`                               | ✓          | array                               | thorin::Arr     |
 | e           | d e                                                                           |            | declaration                         | -               |
-| i           | ( Sym `:` )?                                                                  |            | optional index                      | -               |
 
 An elided type of
 * a literal defaults to `.Nat`,
