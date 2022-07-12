@@ -747,17 +747,17 @@ void Parser::parse_nom_fun() {
     auto track = tracker();
     auto key   = lex().tag();
 
-    auto outer = scopes_.curr();
-    scopes_.push();
+    scopes_.push(); // pi scope
 
     bool external = accept(Tok::Tag::K_extern).has_value();
     auto sym      = parse_sym("nominal lambda");
     auto dom_p    = parse_ptrn("domain pattern of a lambda");
     auto dom_t    = dom_p->type(world());
     auto pi       = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
-    auto var      = pi->var(world().dbg({dom_p->sym()}));
+    auto var_dbg  = world().dbg({dom_p->sym()});
+    auto pi_var   = pi->var(var_dbg);
 
-    dom_p->bind(scopes_, var);
+    dom_p->bind(scopes_, pi_var);
 
     auto codom = key == Tok::Tag::K_cn     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
@@ -766,14 +766,21 @@ void Parser::parse_nom_fun() {
     pi->set_type(codom->unfold_type());
     pi->set_dbg(track);
 
-    Lam* lam = world().nom_lam(pi, track.named(sym));
+    scopes_.pop(); // pi scope
+
+    auto outer = scopes_.curr();
+    scopes_.push(); // lam scope
+
+    auto lam     = world().nom_lam(pi, track.named(sym));
+    auto lam_var = lam->var(var_dbg);
     if (external) lam->make_external();
     scopes_.bind(outer, sym, lam);
+    dom_p->bind(scopes_, lam_var);
     expect(Tok::Tag::T_assign, "lambda");
     auto body = parse_expr("body of a lambda");
     lam->set(false, body);
 
-    scopes_.pop();
+    scopes_.pop(); // lam scope
 }
 
 void Parser::parse_def(Sym sym /*= {}*/) {

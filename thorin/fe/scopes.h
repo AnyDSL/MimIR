@@ -14,16 +14,14 @@ public:
 
     void push() { scopes_.emplace_back(); }
     void pop();
-    Scope& curr() { return scopes_.back(); }
+    Scope* curr() { return &scopes_.back(); }
     const Def* find(Sym) const;
-    void bind(Scope&, Sym sym, const Def*);
-    void bind(Sym sym, const Def* def) { bind(scopes_.back(), sym, def); }
+    void bind(Scope*, Sym sym, const Def*);
+    void bind(Sym sym, const Def* def) { bind(&scopes_.back(), sym, def); }
     void merge(Scopes&);
 
 private:
     std::deque<Scope> scopes_;
 };
-
-using Binders = std::deque<std::pair<Sym, size_t>>;
 
 } // namespace thorin::fe
