@@ -7,22 +7,16 @@
 .import core;
 .import mem;
 
-.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
-    .ff,
-    .lam loop: .Cn [mem: %mem.M, i: %Int 4294967296, acc: %Int 4294967296] = {
-        .ff,
+.cn .extern main(mem: %mem.M, argc: %Int 4294967296, argv: %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return: .Cn [%mem.M, %Int 4294967296]) = {
+    .cn loop(mem: %mem.M, i: %Int 4294967296, acc: %Int 4294967296) = {
         .let cond: (%Int 2) = %core.icmp.ul 4294967296:.Nat (i, argc);
 
-        .lam exit: .Cn %mem.M = {
-            .ff,
-            return (@exit, acc)
-        };
+        .cn exit m: %mem.M = return (m, acc);
 
-        .lam body: .Cn %mem.M = {
-            .ff,
-            .let inc: (%Int 4294967296) = %Wrap_add (0:.Nat, 4294967296:.Nat) (1:(%Int 4294967296), i);
-            .let acci: (%Int 4294967296) = %Wrap_add (0:.Nat, 4294967296:.Nat) (i, acc);
-            loop (@body, inc, acci)
+        .cn body m: %mem.M = {
+            .let inc: %Int 4294967296 = %Wrap_add (0:.Nat, 4294967296:.Nat) (1:(%Int 4294967296), i);
+            .let acci: %Int 4294967296 = %Wrap_add (0:.Nat, 4294967296:.Nat) (i, acc);
+            loop (m, inc, acci)
         };
         (exit, body)#cond mem
     };
