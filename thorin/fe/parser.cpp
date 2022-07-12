@@ -745,7 +745,7 @@ void Parser::parse_nom() {
 
 void Parser::parse_nom_fun() {
     auto track = tracker();
-    auto key = lex().tag();
+    auto key   = lex().tag();
 
     auto outer = scopes_.curr();
     scopes_.push();
