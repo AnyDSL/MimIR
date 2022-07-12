@@ -111,7 +111,7 @@ private:
     void parse_ax();
     void parse_let();
     void parse_nom();
-    void parse_nom_lam();
+    void parse_nom_fun();
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
     void parse_def(Sym sym = {});
