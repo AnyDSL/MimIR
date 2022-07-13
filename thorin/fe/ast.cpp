@@ -16,6 +16,7 @@ namespace thorin::fe {
 void IdPtrn::bind(Scopes& scopes, const Def* scrutinee) const { scopes.bind(sym_, scrutinee); }
 
 void TuplePtrn::bind(Scopes& scopes, const Def* scrutinee) const {
+    scopes.bind(sym_, scrutinee);
     size_t n = ptrns_.size();
     for (size_t i = 0; i != n; ++i) ptrns_[i]->bind(scopes, scrutinee->proj(n, i));
 }
@@ -57,18 +58,6 @@ const Def* TuplePtrn::type(World& world) const {
     for (size_t i = 1; i != n; ++i) sigma->set(i, rw.rewrite(ops[i]));
 
     return type_ = sigma;
-}
-
-/*
- * inject
- */
-
-void TuplePtrn::inject(Scopes& scopes, const Def* def) const {
-    for (size_t i = 0, e = num_ptrns(); i != e; ++i) {
-        auto elem = def->proj(e, i);
-        scopes.bind(ptrn(i)->sym(), elem);
-        ptrn(i)->inject(scopes, elem);
-    }
 }
 
 } // namespace thorin::fe

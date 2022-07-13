@@ -40,7 +40,6 @@ public:
     Sym sym() const { return sym_; }
     bool is_anonymous() const { return sym_.is_anonymous(); }
     virtual void bind(Scopes&, const Def*) const   = 0;
-    virtual void inject(Scopes&, const Def*) const = 0;
     virtual const Def* type(World&) const          = 0;
 
 protected:
@@ -56,7 +55,6 @@ public:
         : Ptrn(loc, sym, type) {}
 
     void bind(Scopes&, const Def*) const override;
-    void inject(Scopes&, const Def*) const override {}
     const Def* type(World&) const override;
 };
 
@@ -72,7 +70,6 @@ public:
     size_t num_ptrns() const { return ptrns().size(); }
 
     void bind(Scopes&, const Def*) const override;
-    void inject(Scopes&, const Def*) const override;
     const Def* type(World&) const override;
 
 private:
