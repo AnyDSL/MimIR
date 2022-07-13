@@ -39,8 +39,8 @@ public:
 
     Sym sym() const { return sym_; }
     bool is_anonymous() const { return sym_.is_anonymous(); }
-    virtual void bind(Scopes&, const Def*) const   = 0;
-    virtual const Def* type(World&) const          = 0;
+    virtual void bind(Scopes&, const Def*) const = 0;
+    virtual const Def* type(World&) const        = 0;
 
 protected:
     Sym sym_;

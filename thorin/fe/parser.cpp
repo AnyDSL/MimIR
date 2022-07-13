@@ -209,7 +209,7 @@ const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
 
     if (ahead().isa(Tok::Tag::M_id)) {
         if (auto sigma = lhs->type()->isa_nom<Sigma>()) {
-            auto sym  = eat(Tok::Tag::M_id).sym();
+            auto sym = eat(Tok::Tag::M_id).sym();
             if (sym.is_anonymous()) err(sym.loc(), "you cannot use special symbol '_' as field access");
 
             auto meta = sigma->meta();
@@ -493,7 +493,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
                 return std::make_unique<IdPtrn>(track.loc(), sym, type);
             } else {
                 // p -> s
-                sym  = eat(Tok::Tag::M_id).sym();
+                sym = eat(Tok::Tag::M_id).sym();
                 return std::make_unique<IdPtrn>(track.loc(), sym, nullptr);
             }
         }
