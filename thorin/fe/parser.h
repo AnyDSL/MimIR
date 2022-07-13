@@ -99,7 +99,9 @@ private:
 
     /// @name ptrns
     ///@{
-    std::unique_ptr<Ptrn> parse_ptrn(Tok::Tag, std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+
+    /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
+    std::unique_ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
     std::unique_ptr<TuplePtrn> parse_tuple_ptrn(Tracker, Sym);
     ///@}
 
