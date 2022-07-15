@@ -44,6 +44,9 @@ private:
     undo_t analyze(const Proxy*) override;
     ///@}
 
+    const Def* rewrite_conditional(const Def*);
+    std::pair<DefVec, DefVec> rewrite_lam(const App*, Lam*, Lam*&, DefArray&, const Lattices&);
+
     BetaRed* beta_red_;
     EtaExp* eta_exp_;
     LamMap<std::tuple<Lattices, Lam*, DefArray>> lam2info_;
