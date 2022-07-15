@@ -164,7 +164,7 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
             // that has access to the result (as its argument)
             curr_lam_ = fun_cont;
             // result of ds function
-            auto [res] = fun_cont->vars<1>();
+            auto res = fun_cont->var();
 
             world.DLOG("  result {} : {} instead of {} : {}\n", res, res->type(), def, def->type());
             // replace call with the result in the context that will be placed in the continuation
