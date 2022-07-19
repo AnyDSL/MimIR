@@ -23,7 +23,7 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
 
     std::cout << "rewriting " << def << " within " << currentLambda << std::endl;
 
-    if (auto for_ax = match<matrix::map>(def)) {
+    // if (auto for_ax = match<matrix::map>(def)) {
         // auto& w = world();
         // w.DLOG("rewriting for axiom: {} within {}", for_ax, curr_nom());
 
@@ -62,7 +62,7 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         // }
 
         // return rewritten_[def] = w.app(for_lam, for_ax->arg(), for_ax->dbg());
-    }
+    // }
 
     // TODO: content agnostic traversal
 

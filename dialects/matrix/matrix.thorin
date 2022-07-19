@@ -52,7 +52,6 @@
 /// matrix product
 /// takes a m*k matrix, a k*l matrix and returns the product, a m*l matrix
 /// only defined on two-dimensional matrices
-.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> [%matrix.Mat (2,(m, k),%Real w), %matrix.Mat (2,(k, l),%Real w)] -> %matrix.Mat (2,(m, l),%Real w), normalize_prod;
 /// 
 /// ### %matrix.map
 ///
@@ -66,9 +65,6 @@
 /// - parallel map without effect
 /// - map combination
 /// - map zipWith
-.ax %matrix.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P), normalize_map;
-// .ax %matrix.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %matrix.Mat n S P, normalize_parallel_map;
-// .ax %matrix.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: T -> P ] -> %matrix.Mat n S P, normalize_meta_map;
 /// 
 /// ### %matrix.zip
 ///
@@ -82,13 +78,9 @@
 /// - zip with one side constant matrix
 /// - meta_zip add zero m = m
 /// (currently: hardcoded as matrix operations)
-.ax %matrix.zipWith:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat(n,S,P), %matrix.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %matrix.Mat(n,S,R), normalize_zip;
-// .ax %matrix.parallel_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: .Cn [P, Q, .Cn [R] ] ] -> %matrix.Mat n S R, normalize_parallel_zip;
-// .ax %matrix.meta_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: P -> Q -> R ] -> %matrix.Mat n S R, normalize_meta_zip;
 /// 
 /// ### %matrix.fold
 ///
-.ax %matrix.fold:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), accu: P, f: .Cn [%mem.M, P, T, .Cn [%mem.M, P] ] ] -> P, normalize_fold;
 /// 
 /// ### %matrix.const
 ///
@@ -103,9 +95,6 @@
 /// (for instance: read(transpose m) (i,j) = read m (j,i))
 ///
 /// transpose matrix
-.ax %matrix.transpose: Π [kl: «2: .Nat; .Nat», T: *] -> 
-    .let (k,l) = kl;
-    %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_tranpose;
 /// 
 /// 
 /// ### %matrix.id
@@ -113,7 +102,6 @@
 /// id (k, m) : @mat _ (k,k) (Int m)
 ///
 /// the idendity matrix
-.ax %matrix.id: Π [k: .Nat, m: .Nat] -> %matrix.Mat (2,(k,k),(%Int m));
 /// 
 /// ### %matrix.read
 ///
@@ -149,8 +137,8 @@
 /// * sizes: shape of the dimensions
 /// * function: mem -> index -> mem
 /// the function is taken in cps style
-.ax %matrix.multiiter: Π [n: .Nat, S: «n; .Nat»] -> 
-    .Cn[mem: %mem.M, body: .Cn[%mem.M, «i: n; %Int (S#i)», .Cn[%mem.M]], .Cn[%mem.M]], normalize_multiiter;
+// .ax %matrix.multiiter: Π [n: .Nat, S: «n; .Nat»] -> 
+//     .Cn[mem: %mem.M, body: .Cn[%mem.M, «i: n; %Int (S#i)», .Cn[%mem.M]], .Cn[%mem.M]], normalize_multiiter;
 ///
 /// ## Internal operations
 /// 
@@ -173,23 +161,23 @@
 /// ### zip
 ///
 /// zip A B = zipWith id A B
-.lam .extern zip: 
-    Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
-    [(%matrix.Mat(n,S,P)), (%matrix.Mat(n,S,Q))] -> 
-    %matrix.Mat(n,S,[P,Q]) = {
-    .tt,
-    .lam zipper: .Cn[mem: %mem.M, p: P, q: Q, ret: .Cn[%mem.M, [P,Q]]] = {
-        .tt,
-        ret (mem,(p,q))
-    };
-    .lam inner: 
-        Π [A: (%matrix.Mat(n,S,P)), B: (%matrix.Mat(n,S,Q))] -> 
-        %matrix.Mat(n,S,[P,Q]) = {
-        .tt,
-        %matrix.zipWith (n,S,P,Q,[P,Q]) (A,B,zipper)
-    };
-    inner
-};
+// .lam .extern zip: 
+//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
+//     [(%matrix.Mat(n,S,P)), (%matrix.Mat(n,S,Q))] -> 
+//     %matrix.Mat(n,S,[P,Q]) = {
+//     .tt,
+//     .lam zipper: .Cn[mem: %mem.M, p: P, q: Q, ret: .Cn[%mem.M, [P,Q]]] = {
+//         .tt,
+//         ret (mem,(p,q))
+//     };
+//     .lam inner: 
+//         Π [A: (%matrix.Mat(n,S,P)), B: (%matrix.Mat(n,S,Q))] -> 
+//         %matrix.Mat(n,S,[P,Q]) = {
+//         .tt,
+//         %matrix.zipWith (n,S,P,Q,[P,Q]) (A,B,zipper)
+//     };
+//     inner
+// };
 
 
 /// ### fst, snd, split
@@ -230,81 +218,9 @@
 /// 
 /// ### product
 /// 
-.lam .extern matrix_prod_unfold: 
-    Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> 
-        [%matrix.Mat (2,(m, k),%Real w), %matrix.Mat (2,(k, l),%Real w)] -> %matrix.Mat (2,(m, l),%Real w)
-        = {
-    .tt,
-    .lam matrix_map_prod_curry: 
-        Π [M: %matrix.Mat (2,(m, k),%Real w), N: %matrix.Mat (2,(k, l),%Real w)] -> 
-        %matrix.Mat (2,(m, l),%Real w) = {
-        .tt,
-
-        .let O = matrix_zero (2,(m, l),w);
-        // normal for loop implementation of matrix multiplication
-        /*
-        for i = 0 to m - 1 do
-            for j = 0 to l - 1 do
-                for k = 0 to k - 1 do
-                    O[i,j] += M[i,k] * N[k,j]
-                end
-            end
-        end
-        */
-        // or use external C function call instead 
-        // (cast up to Real 64? = double)
-        // TODO:
-
-        O
-
-    };
-    matrix_map_prod_curry
-};
 /// 
 /// ### map
 /// 
-// TODO: need mem
-.lam .extern matrix_map_unfold: 
-    Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
-    [%matrix.Mat (n,S,P), .Cn [%mem.M, P, .Cn [%mem.M, Q] ] ] -> %matrix.Mat (n,S,Q) = {
-    .tt,
-    .lam matrix_map_unfold_curry: 
-        Π [M: %matrix.Mat (n,S,P), f: .Cn [%mem.M, P, .Cn [%mem.M, Q] ] ] -> 
-        %matrix.Mat (n,S,Q) = {
-        .tt,
-
-
-        .let M2 = %matrix.init (n,S,Q);
-        // for each element (n nested loops) write the element to the matrix
-        // TODO: maybe no mem (depending on read/write)
-
-        .lam map_inner:
-            .Cn[mem:%mem.M, idx: «i: n; %Int (S#i)», map_inner_ret: .Cn[%mem.M]] = {
-            .tt,
-
-            .lam map_inner_cont:
-                .Cn[mem:%mem.M, q: Q] = {
-                .tt,
-
-                // TODO: this works only for side effect writes
-                // %matrix.write (n,S,Q) (M,idx, q);
-                map_inner_ret mem
-            };
-
-            .let v = %matrix.read (n,S,P) (M,idx);
-            f (mem, v, map_inner_cont)
-        };
-
-        // TODO: check ds, cps calls
-        // .let mem = %direct.cps2ds (%matrix.multiiter (n,S)) (mem,
-        //     inner
-        // );
-
-        M2
-
-    };
-    matrix_map_unfold_curry
-};
 /// 
 /// ### multiiter
 /// 
@@ -324,18 +240,25 @@ let multiiter f n S:=
 /// TODO:
 
 
-// .let a = %matrix.mapReduceType (2,(3,4),%Real);
-// .let I32 = %Int 4294967296;
-// .ax %matrix.mapReduceType: I32 -> *;
 
-// .let a = %matrix.mapReduceType (2,(3,4),%Real);
-// .let a = %matrix.mapReduceType '5';
-// .lam .extern test:
-//     Π [A: *] -> 
-//     I32 = {
-//     .tt,
-//     (42: I32)
-//     };
+
+// TODO:
+// define alias:
+// * fst, snd, split
+// * zip = zipWith id
+// .ax %matrix.id: Π [k: .Nat, m: .Nat] -> %matrix.Mat (2,(k,k),(%Int m));
+// .ax %matrix.transpose: Π [kl: «2: .Nat; .Nat», T: *] -> 
+//     .let (k,l) = kl;
+//     %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_tranpose;
+// .ax %matrix.fold:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), accu: P, f: .Cn [%mem.M, P, T, .Cn [%mem.M, P] ] ] -> P, normalize_fold;
+// .ax %matrix.zipWith:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat(n,S,P), %matrix.Mat(n,S,Q), f: .Cn [%mem.M, P, Q, .Cn [%mem.M, R] ] ] -> %matrix.Mat(n,S,R), normalize_zip;
+// .ax %matrix.parallel_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: .Cn [P, Q, .Cn [R] ] ] -> %matrix.Mat n S R, normalize_parallel_zip;
+// .ax %matrix.meta_zip:  Π [n: .Nat, S: «n; .Nat», P: *, Q: *, R: *] -> [%matrix.Mat n S P, %matrix.Mat n S Q, f: P -> Q -> R ] -> %matrix.Mat n S R, normalize_meta_zip;
+// .ax %matrix.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P), normalize_map;
+// .ax %matrix.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %matrix.Mat n S P, normalize_parallel_map;
+// .ax %matrix.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: T -> P ] -> %matrix.Mat n S P, normalize_meta_map;
+// .ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> [%matrix.Mat (2,(m, k),%Real w), %matrix.Mat (2,(k, l),%Real w)] -> %matrix.Mat (2,(m, l),%Real w), normalize_prod;
+
 
 
 // TODO: handle reduction case
