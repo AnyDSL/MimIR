@@ -499,20 +499,20 @@ public:
 
     /// @name Logging
     ///@{
-    std::ostream& ostream() const { return *ostream_; }
+    std::ostream& log_stream() const { return *state_.log_stream; }
     LogLevel max_level() const { return state_.max_level; }
 
     void set_log_level(LogLevel max_level) { state_.max_level = max_level; }
     void set_log_level(std::string_view max_level) { set_log_level(str2level(max_level)); }
-    void set_log_ostream(std::ostream* ostream) { ostream_ = ostream; }
+    void set_log_ostream(std::ostream* log_stream) { state_.log_stream = log_stream; }
 
     template<class... Args>
     void log(LogLevel level, Loc loc, const char* fmt, Args&&... args) {
-        if (ostream_ && int(level) <= int(max_level())) {
+        if (state_.log_stream && int(level) <= int(max_level())) {
             std::ostringstream oss;
             oss << loc;
-            print(ostream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
-            print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
+            print(log_stream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
+            print(log_stream(), fmt, std::forward<Args&&>(args)...) << std::endl;
         }
     }
     void log() const {} ///< for DLOG in Release build.
@@ -557,7 +557,6 @@ public:
         swap(w1.arena_,    w2.arena_);
         swap(w1.data_,     w2.data_);
         swap(w1.state_,    w2.state_);
-        swap(w1.ostream_,  w2.ostream_);
         swap(w1.checker_,  w2.checker_);
         swap(w1.err_,      w2.err_);
         // clang-format on
@@ -671,10 +670,11 @@ private:
     } arena_;
 
     struct State {
-        LogLevel max_level = LogLevel::Error;
-        u32 curr_gid       = 0;
-        u32 curr_sub       = 0;
-        bool pe_done       = false;
+        std::ostream* log_stream = nullptr;
+        LogLevel max_level       = LogLevel::Error;
+        u32 curr_gid             = 0;
+        u32 curr_sub             = 0;
+        bool pe_done             = false;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
         Breakpoints breakpoints;
@@ -726,7 +726,6 @@ private:
 
     std::unique_ptr<Checker> checker_;
     std::unique_ptr<ErrorHandler> err_;
-    mutable std::ostream* ostream_ = nullptr;
 
     friend DefArray Def::reduce(const Def*);
 };
