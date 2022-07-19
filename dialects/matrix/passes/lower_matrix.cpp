@@ -9,21 +9,30 @@
 
 namespace thorin::matrix {
 
-void LowerMatrix::enter() {
-    Lam* prev     = currentLambda;
-    currentLambda = curr_nom();
-
-    currentLambda->set_body(rewrite_(currentLambda->body()));
-
-    currentLambda = prev;
+const Def* LowerMatrix::rewrite(const Def* def) {
+    if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
+    rewritten[def] = rewrite_(def);
+    return rewritten[def];
 }
 
 const Def* LowerMatrix::rewrite_(const Def* def) {
-    if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
-    std::cout << "rewriting " << def << " within " << currentLambda << std::endl;
+    // std::cout << "rewriting " << def << std::endl;
 
-    // if (auto for_ax = match<matrix::map>(def)) {
+    auto& world = def->world();
+
+    if (auto mapReduce_ax = match<matrix::mapReduce>(def); mapReduce_ax) {
+        auto mapReduce_pi  = mapReduce_ax->callee_type();
+
+        // auto [n,m,NI,TI,SI]
+        auto [zero,add,mul,input] = mapReduce_ax->args<4>({world.dbg("zero"), world.dbg("add"), world.dbg("mul"), world.dbg("input")});
+        world.DLOG("rewriting mapReduce axiom: {}\n", mapReduce_ax);
+        world.DLOG("  zero: {}\n", zero);
+        world.DLOG("  add: {}\n", add);
+        world.DLOG("  mul: {}\n", mul);
+        world.DLOG("  input: {}\n", input);
+
+
         // auto& w = world();
         // w.DLOG("rewriting for axiom: {} within {}", for_ax, curr_nom());
 
@@ -62,9 +71,8 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         // }
 
         // return rewritten_[def] = w.app(for_lam, for_ax->arg(), for_ax->dbg());
-    // }
+    }
 
-    // TODO: content agnostic traversal
 
     return def;
 }

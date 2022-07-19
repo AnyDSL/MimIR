@@ -150,14 +150,14 @@
 /// ## Definitions and aliases
 /// 
 /// ### zero
-.lam .extern matrix_zero_int: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(%Int m)) = {
-    .tt,
-    %matrix.constMat (n,S,(%Int m)) (0: (%Int m))
-};
-.lam .extern matrix_zero: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(%Real m)) = {
-    .tt,
-    %matrix.constMat (n,S,(%Real m)) (0: (%Real m))
-};
+// .lam .extern matrix_zero_int: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(%Int m)) = {
+//     .tt,
+//     %matrix.constMat (n,S,(%Int m)) (0: (%Int m))
+// };
+// .lam .extern matrix_zero: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(%Real m)) = {
+//     .tt,
+//     %matrix.constMat (n,S,(%Real m)) (0: (%Real m))
+// };
 /// ### zip
 ///
 /// zip A B = zipWith id A B
@@ -316,7 +316,6 @@ let multiiter f n S:=
             »
     ] ->
     %matrix.Mat (n,S,T);
-
 
 
 

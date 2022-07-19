@@ -31,7 +31,7 @@ const Def* normalize_read(const Def* type, const Def* callee, const Def* arg, co
 /// TODO: implement
 const Def* normalize_insert(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world            = type->world();
-    auto [mat, index, val] = arg->projs<3>();
+    // auto [mat, index, val] = arg->projs<3>();
 
     // same as read
     // TODO:
@@ -49,6 +49,7 @@ const Def* normalize_shape(const Def* type, const Def* callee, const Def* arg, c
     auto& world                   = type->world();
     auto [mat, index]             = arg->projs<2>();
     auto [dims, sizes, body_type] = match<Mat, false>(mat->type())->args<3>();
+    (void)callee;
 
     return world.extract(sizes, index, dbg);
 }

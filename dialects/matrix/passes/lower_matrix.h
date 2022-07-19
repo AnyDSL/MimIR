@@ -29,40 +29,21 @@ namespace thorin::matrix {
 ///
 /// matrix operations such as map are in direct calling position
 /// but need to be translated to CPS
-/// Therefore, a custom traversal order is necessary
-/// as the bodys of the functions are replaced and the original body
-/// is simultaneously changed
-///
-/// ````
-/// f(...):
-///   x = map ...
-///   C[x]
-/// ````
-/// becomes
-/// ````
-/// f(...):
-///   mapping_call args, g // g as continuation
-///
-/// g(result):
-///   C[result]
-/// ````
+/// We use the direct style dialect plugin to do this
 class LowerMatrix : public RWPass<Lam> {
 public:
     LowerMatrix(PassMan& man)
         : RWPass(man, "lower_matrix") {}
 
     /// custom rewrite function
+    /// memoized version of rewrite_
+    const Def* rewrite(const Def*) override;
     const Def* rewrite_(const Def*);
-
-    /// main entry point for this pass
-    /// rewrites curr_nom()
-    void enter() override;
 
     static PassTag* ID();
 
 private:
-    Def2Def rewritten_;
-    Lam* currentLambda;
+    Def2Def rewritten;
 };
 
 } // namespace thorin::matrix
