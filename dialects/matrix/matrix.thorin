@@ -352,6 +352,24 @@ let multiiter f n S:=
 // * Einstein Notation
 // * Pytorch DSL
 // https://optimized-einsum.readthedocs.io/en/stable/
+
+// mapReduce application:
+// * einsum(idx, MatrixIndices) = mapReduce(0,+,product,MatrixIndices)
+// * map f M = mapReduce (0,+,f,[(idx,M)])  [TODO: get rid of reduce step if not needed with dummy values]
+// * reduce acc f M = mapReduce (n=0) (acc,f,id,[(idx,M)])  [TODO: see index problem above]
+// einsum application:
+// * tranpose ij->ji  (einsum(,[(1,0),M]))
+// * trace ii->
+// * sum ij ->
+// * col sum ij -> j 
+// * mat vec prod ik,k->i
+// * mat mat prod ik,kj -> ij
+// * dot product i,i ->
+// * dot matrix ij,ij ->
+// * outer product i,j -> ij
+
+// TODO: introduce dummies
+// dummy = has correct type but can not produce code (should always be eliminated)
 .ax %matrix.mapReduce: 
     // out shape depends on in shape but is complex
     Π [n: .Nat, S: «n; .Nat», T: *, // out shape
