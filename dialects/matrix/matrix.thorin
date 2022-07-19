@@ -325,17 +325,61 @@ let multiiter f n S:=
 
 
 // .let a = %matrix.mapReduceType (2,(3,4),%Real);
-.let I32 = %Int 4294967296;
-.ax %matrix.mapReduceType: I32 -> *;
+// .let I32 = %Int 4294967296;
+// .ax %matrix.mapReduceType: I32 -> *;
 
 // .let a = %matrix.mapReduceType (2,(3,4),%Real);
-.let a = %matrix.mapReduceType '5';
+// .let a = %matrix.mapReduceType '5';
 // .lam .extern test:
 //     Π [A: *] -> 
 //     I32 = {
 //     .tt,
 //     (42: I32)
 //     };
+
+
+// TODO: handle reduction case
+//  n=0, S=[] => not empty but scalar
+
+// inspired by einsum
+// reference:
+// * Tensorflow / XLA: einsum
+// * Pytorch: einsum
+// * NumPy: einsum
+// * Halide
+// * Haskell: Tensor DSL
+// * Ricci Calculus
+// * Einstein Notation
+// * Pytorch DSL
+// https://optimized-einsum.readthedocs.io/en/stable/
+.ax %matrix.mapReduce: 
+    // out shape depends on in shape but is complex
+    Π [n: .Nat, S: «n; .Nat», T: *, // out shape
+        m: .Nat, // number of inputs
+        NI: «m; .Nat», // input dimensions
+        TI: «m; *», // input types
+        SI: «i:m; «NI#i; .Nat»» // input shapes
+    ] -> 
+    // main arguments
+    [
+        zero: T, // initial value
+        add: [T,T]->T, // reduction operation
+        mul: TI->T, // inner combination
+        // out_index not needed => always ij (0 ... n) for n dimensions
+        input:
+            «i:m; 
+                [
+                    «NI#i;.Nat»,
+                    %matrix.Mat (NI#i,SI#i,TI#i)
+                ]
+            »
+    ] ->
+    %matrix.Mat (n,S,T);
+
+
+
+
+
 /*
 * wishes for dialects (not all are sensible):
 
