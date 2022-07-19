@@ -548,8 +548,8 @@ public:
     ErrorHandler* err() { return err_.get(); }
     ///@}
 
-    void add_imported(std::string_view name) { data_.imported_dialects_.emplace(name); }
-    const absl::flat_hash_set<std::string>& imported() const { return data_.imported_dialects_; }
+    void add_imported(std::string_view name) { state_.imported_dialects.emplace(name); }
+    const absl::flat_hash_set<std::string>& imported() const { return state_.imported_dialects; }
 
     friend void swap(World& w1, World& w2) {
         using std::swap;
@@ -670,6 +670,7 @@ private:
     } arena_;
 
     struct State {
+        absl::flat_hash_set<std::string> imported_dialects;
         std::ostream* log_stream = nullptr;
         LogLevel max_level       = LogLevel::Error;
         u32 curr_gid             = 0;
@@ -721,7 +722,6 @@ private:
         Externals externals_;
         Sea defs_;
         DefDefMap<DefArray> cache_;
-        absl::flat_hash_set<std::string> imported_dialects_;
     } data_;
 
     std::unique_ptr<Checker> checker_;

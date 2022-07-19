@@ -201,8 +201,7 @@ World::~World() {
 
 World World::stub() {
     World w(name());
-    w.state_                   = state_;
-    w.data_.imported_dialects_ = data_.imported_dialects_;
+    w.state_ = state_;
 
     // bring dialects' axioms into new world.
     Rewriter rewriter{w};
