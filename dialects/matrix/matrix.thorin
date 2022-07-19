@@ -5,6 +5,7 @@
 /// ## Dependencies
 ///
 .import mem;
+.import direct;
 ///
 /// ## Types
 ///
@@ -278,25 +279,26 @@
         // TODO: maybe no mem (depending on read/write)
 
         .lam map_inner:
-            .Cn[mem:%mem.M, idx«i: n; %Int (S#i)», map_inner_ret: .Cn[%mem.M]] = {
+            .Cn[mem:%mem.M, idx: «i: n; %Int (S#i)», map_inner_ret: .Cn[%mem.M]] = {
             .tt,
+
+            .lam map_inner_cont:
+                .Cn[mem:%mem.M, q: Q] = {
+                .tt,
+
+                // TODO: this works only for side effect writes
+                // %matrix.write (n,S,Q) (M,idx, q);
+                map_inner_ret mem
+            };
 
             .let v = %matrix.read (n,S,P) (M,idx);
-            f (mem, v, map_inner_cont);
-        };
-        .lam map_inner_cont:
-            .Cn[mem:%mem.M, q: Q] = {
-            .tt,
-
-            // TODO: this works only for side effect writes
-            %matrix.write (n,S,Q) (M,idx, q);
-            map_inner_ret mem
+            f (mem, v, map_inner_cont)
         };
 
         // TODO: check ds, cps calls
-        .let mem = cps2ds (%matrix.multiiter (n,S)) (mem,
-            inner
-        );
+        // .let mem = %direct.cps2ds (%matrix.multiiter (n,S)) (mem,
+        //     inner
+        // );
 
         M2
 
@@ -322,8 +324,18 @@ let multiiter f n S:=
 /// TODO:
 
 
+// .let a = %matrix.mapReduceType (2,(3,4),%Real);
+.let I32 = %Int 4294967296;
+.ax %matrix.mapReduceType: I32 -> *;
 
-
+// .let a = %matrix.mapReduceType (2,(3,4),%Real);
+.let a = %matrix.mapReduceType '5';
+// .lam .extern test:
+//     Π [A: *] -> 
+//     I32 = {
+//     .tt,
+//     (42: I32)
+//     };
 /*
 * wishes for dialects (not all are sensible):
 
