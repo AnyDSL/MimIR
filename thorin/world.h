@@ -34,20 +34,50 @@ class Scope;
 /// Note that types are also just Def%s and will be hashed as well.
 class World {
 public:
-    struct State;
+#if THORIN_ENABLE_CHECKS
+    /// @name Debugging Features
+    ///@{
+    using Breakpoints = absl::flat_hash_set<u32>;
 
+    void breakpoint(size_t number);
+    void enable_history(bool flag = true);
+    bool track_history() const;
+    const Def* gid2def(u32 gid);
+    ///@}
+#endif
+
+    /// @name state
+    ///@{
+    struct State {
+        std::set<std::string> imported_dialects;
+        std::ostream* log_stream = nullptr;
+        LogLevel max_level       = LogLevel::Error;
+        u32 curr_gid             = 0;
+        u32 curr_sub             = 0;
+        bool pe_done             = false;
+#if THORIN_ENABLE_CHECKS
+        bool track_history = false;
+        Breakpoints breakpoints;
+#endif
+    };
+
+    const State& state() const { return state_; }
+    ///@}
+
+    /// @name c'tor and d'tor
+    ///@{
     World& operator=(const World&) = delete;
 
     /// Inherits the @p state into the new World.
     explicit World(std::string_view name, const State&);
-    explicit World(std::string_view name = {});
+    explicit World(std::string_view name = {})
+        : World(name, State()) {}
     World(World&& other)
         : World() {
         swap(*this, other);
     }
     ~World();
-
-    const State& state() const { return state_; }
+    ///@}
 
     /// @name Sea of Nodes
     ///@{
@@ -488,18 +518,6 @@ public:
     void visit(VisitFn) const;
     ///@}
 
-#if THORIN_ENABLE_CHECKS
-    /// @name Debugging Features
-    ///@{
-    using Breakpoints = absl::flat_hash_set<u32>;
-
-    void breakpoint(size_t number);
-    void enable_history(bool flag = true);
-    bool track_history() const;
-    const Def* gid2def(u32 gid);
-    ///@}
-#endif
-
     /// @name Logging
     ///@{
     std::ostream& log_stream() const { return *state_.log_stream; }
@@ -552,7 +570,7 @@ public:
     ///@}
 
     void add_imported(std::string_view name) { state_.imported_dialects.emplace(name); }
-    const absl::flat_hash_set<std::string>& imported() const { return state_.imported_dialects; }
+    const std::set<std::string>& imported() const { return state_.imported_dialects; }
 
     friend void swap(World& w1, World& w2) {
         using std::swap;
@@ -601,18 +619,7 @@ private:
     }
     ///@}
 
-    struct State {
-        absl::flat_hash_set<std::string> imported_dialects;
-        std::ostream* log_stream = nullptr;
-        LogLevel max_level       = LogLevel::Error;
-        u32 curr_gid             = 0;
-        u32 curr_sub             = 0;
-        bool pe_done             = false;
-#if THORIN_ENABLE_CHECKS
-        bool track_history = false;
-        Breakpoints breakpoints;
-#endif
-    } state_;
+    State state_;
 
     class Arena {
     public:
