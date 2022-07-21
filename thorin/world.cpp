@@ -196,10 +196,8 @@ World::World(std::string_view name, const State& state)
     }
 }
 
-
 World::World(std::string_view name)
-    : World(name, State())
-{}
+    : World(name, State()) {}
 
 World::~World() {
     for (auto def : data_.defs_) def->~Def();
