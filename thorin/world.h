@@ -34,8 +34,12 @@ class Scope;
 /// Note that types are also just Def%s and will be hashed as well.
 class World {
 public:
+    struct State;
+
     World& operator=(const World&) = delete;
 
+    /// Inherits the @p state into the new World.
+    explicit World(std::string_view name, const State&);
     explicit World(std::string_view name = {});
     World(World&& other)
         : World() {
@@ -43,8 +47,7 @@ public:
     }
     ~World();
 
-    /// Inherits the World::state_ of the @p other World.
-    World stub();
+    const State& state() const { return state_; }
 
     /// @name Sea of Nodes
     ///@{
@@ -554,9 +557,9 @@ public:
     friend void swap(World& w1, World& w2) {
         using std::swap;
         // clang-format off
+        swap(w1.state_,    w2.state_);
         swap(w1.arena_,    w2.arena_);
         swap(w1.data_,     w2.data_);
-        swap(w1.state_,    w2.state_);
         swap(w1.checker_,  w2.checker_);
         swap(w1.err_,      w2.err_);
         // clang-format on
@@ -597,6 +600,19 @@ private:
         return def;
     }
     ///@}
+
+    struct State {
+        absl::flat_hash_set<std::string> imported_dialects;
+        std::ostream* log_stream = nullptr;
+        LogLevel max_level       = LogLevel::Error;
+        u32 curr_gid             = 0;
+        u32 curr_sub             = 0;
+        bool pe_done             = false;
+#if THORIN_ENABLE_CHECKS
+        bool track_history = false;
+        Breakpoints breakpoints;
+#endif
+    } state_;
 
     class Arena {
     public:
@@ -668,19 +684,6 @@ private:
         Zone* curr_zone_;
         size_t buffer_index_ = 0;
     } arena_;
-
-    struct State {
-        absl::flat_hash_set<std::string> imported_dialects;
-        std::ostream* log_stream = nullptr;
-        LogLevel max_level       = LogLevel::Error;
-        u32 curr_gid             = 0;
-        u32 curr_sub             = 0;
-        bool pe_done             = false;
-#if THORIN_ENABLE_CHECKS
-        bool track_history = false;
-        Breakpoints breakpoints;
-#endif
-    } state_;
 
     struct Data {
         const Univ* univ_;

@@ -62,10 +62,8 @@ DefArray rewrite(Def* nom, const Def* arg) {
 }
 
 void cleanup(World& old_world) {
-    auto new_world = old_world.stub();
-
+    World new_world(old_world.name(), old_world.state());
     Rewriter rewriter(old_world, new_world);
-    // rewriter.old2new.rehash(old_world.defs().capacity());
 
     for (const auto& [name, nom] : old_world.externals()) rewriter.rewrite(nom)->as_nom()->make_external();
 
