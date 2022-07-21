@@ -37,7 +37,7 @@ public:
 #if THORIN_ENABLE_CHECKS
     /// @name Debugging Features
     ///@{
-    using Breakpoints = absl::flat_hash_set<u32>;
+    using Breakpoints = std::set<u32>;
 
     void breakpoint(size_t number);
     void enable_history(bool flag = true);
