@@ -6,8 +6,6 @@
 #include "thorin/axiom.h"
 #include "thorin/error.h"
 
-#include "thorin/util/print.h"
-
 namespace thorin::h {
 
 void Bootstrapper::emit(std::ostream& h) {
