@@ -919,7 +919,7 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         return globals_[global] = name;
     }
 
-    assert(false && "not yet implemented");
+    unreachable(); // not yet implemented
 }
 
 void emit(World& world, std::ostream& ostream) {
