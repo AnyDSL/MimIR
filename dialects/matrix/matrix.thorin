@@ -315,10 +315,53 @@ let multiiter f n S:=
                 ]
             »
     ] ->
-    %matrix.Mat (n,S,T);
+    %matrix.Mat (n,S,T),
+    normalize_mapReduce;
+
+// .lam .extern snd 
+//     Π [T:*] -> [a:T,b:T] -> T = {.tt, b};
+// .ax %matrix.dummyZero: Π [T:*] -> T;
+// .let dummyAdd = snd;
 
 
+// .let I32 = %Int 4294967296;
+// .let TT = I32;
+// .let test = %matrix.mapReduce 
+//         (2,(4,3),I32,
+//             2,
+//             (2,3),
+//             (I32,I32), // <2;I32>
+//             (
+//                 (0,1),
+//                 (1,0,1)
+//             )
+//         );
 
+
+// .lam .extern transpose:
+//     Π [kl: «2: .Nat; .Nat»] ->
+//     .let (k,l) = kl;
+//     %matrix.Mat (2,(k,l),TT) -> %matrix.Mat (2,(l,k),TT) = {
+//     .tt,
+//     .let (k,l) = kl;
+//     .lam transpose_curry :
+//         [M:%matrix.Mat (2,(k,l),TT)] -> %matrix.Mat (2,(l,k),TT) = {
+//         .tt,
+//         %matrix.mapReduce 
+//             (
+//                 2, (l,k), TT, 
+//                 2,
+//                 <1;2>,
+//                 <1;TT>,
+//                 // <1;(k,l)>
+//                 (k,l)
+//                 // (2,2),
+//                 // (TT,TT),
+//                 // ((k,l),(k,l))
+//             )
+//     };
+//     transpose_curry
+// };
 
 /*
 * wishes for dialects (not all are sensible):

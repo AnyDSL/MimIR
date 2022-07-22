@@ -5,6 +5,7 @@
 #include <thorin/lam.h>
 #include <thorin/tables.h>
 
+#include "dialects/affine/affine.h"
 #include "dialects/matrix/matrix.h"
 
 namespace thorin::matrix {
@@ -16,22 +17,29 @@ const Def* LowerMatrix::rewrite(const Def* def) {
 }
 
 const Def* LowerMatrix::rewrite_(const Def* def) {
-
     // std::cout << "rewriting " << def << std::endl;
 
     auto& world = def->world();
 
     if (auto mapReduce_ax = match<matrix::mapReduce>(def); mapReduce_ax) {
-        auto mapReduce_pi  = mapReduce_ax->callee_type();
+        auto mapReduce_pi = mapReduce_ax->callee_type();
 
-        // auto [n,m,NI,TI,SI]
-        auto [zero,add,mul,input] = mapReduce_ax->args<4>({world.dbg("zero"), world.dbg("add"), world.dbg("mul"), world.dbg("input")});
+        auto [zero, add, mul, input] =
+            mapReduce_ax->args<4>({world.dbg("zero"), world.dbg("add"), world.dbg("mul"), world.dbg("input")});
+
         world.DLOG("rewriting mapReduce axiom: {}\n", mapReduce_ax);
         world.DLOG("  zero: {}\n", zero);
         world.DLOG("  add: {}\n", add);
         world.DLOG("  mul: {}\n", mul);
         world.DLOG("  input: {}\n", input);
 
+        auto inner_callee = mapReduce_ax->callee()->as<App>();
+
+        auto [n, S, T, m, NI, TI, SI] =
+            inner_callee->args<7>({world.dbg("n"), world.dbg("S"), world.dbg("T"), world.dbg("m"), world.dbg("NI"),
+                                   world.dbg("TI"), world.dbg("SI")});
+
+        // affine::op_for
 
         // auto& w = world();
         // w.DLOG("rewriting for axiom: {} within {}", for_ax, curr_nom());
@@ -72,7 +80,6 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
 
         // return rewritten_[def] = w.app(for_lam, for_ax->arg(), for_ax->dbg());
     }
-
 
     return def;
 }
