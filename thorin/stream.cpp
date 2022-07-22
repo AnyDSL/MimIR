@@ -153,6 +153,7 @@ public:
 
     void run(const DepNode* node = nullptr);
     void run(const Def*);
+    void pattern(const Def*);
 
     std::ostream& os;
     Tab tab;
@@ -175,7 +176,7 @@ void RecStreamer::run(const Def* def) {
     }
 
     if (auto nom = def->isa_nom()) {
-        tab.print(os << std::endl, "{}", Unwrap(nom));
+        tab.lnprint(os, "{}", Unwrap(nom));
     } else if (!Unwrap(def)) {
         def->let(os, tab);
     }
@@ -210,37 +211,61 @@ void RecStreamer::run(const DepNode* node) {
         };
 
         if (nom->is_set()) {
-            tab.print(os, "{} {}{}: {}", nom_prefix(nom), nom->is_external() ? ".extern " : "", id(nom), nom->type());
-            nom_op0(nom);
-            if (nom->has_var()) {
-                auto e = nom->num_vars();
-                print(os, ", @{}", e == 1 ? "" : "(");
-                range(os, nom->vars(), [&](auto def) { os << def->unique_name(); });
-                if (e != 1) print(os, ")");
-            }
-            print(os, " = {{");
-            ++tab;
-
             if (auto lam = nom->isa<Lam>()) {
-                run(lam->filter());
-                tab.print(os << std::endl, "{},", lam->filter());
+                tab.print(os, ".lam {} {} ", nom->is_external() ? ".extern " : "", id(nom));
+                pattern(lam->var());
+                print(os, " -> {} = {{", lam->type()->codom());
+                ++tab;
+                tab.lnprint(os, "{}", lam->body());
+                tab.lnprint(os, "}};");
+                --tab;
+            } else {
+                tab.print(os, "{} {}{}: {}", nom_prefix(nom), nom->is_external() ? ".extern " : "", id(nom),
+                          nom->type());
+                nom_op0(nom);
+                if (nom->has_var()) {
+                    auto e = nom->num_vars();
+                    print(os, ", @{}", e == 1 ? "" : "(");
+                    range(os, nom->vars(), [&](auto def) { os << def->unique_name(); });
+                    if (e != 1) print(os, ")");
+                }
+                print(os, " = {{");
+                ++tab;
 
-                if (node)
-                    for (auto child : node->children())
-                        if (auto nom = child->nom()) {
-                            noms.push(nom);
-                            run(child);
-                        }
-                run(lam->body());
-                tab.print(os << std::endl, "{}", lam->body());
-            } else
-                run(nom);
+                if (auto lam = nom->isa<Lam>()) {
+                    run(lam->filter());
+                    tab.lnprint(os, "{},", lam->filter());
 
-            --tab;
-            tab.print(os << std::endl, "}};");
+                    if (node) {
+                        for (auto child : node->children())
+                            if (auto nom = child->nom()) {
+                                noms.push(nom);
+                                run(child);
+                            }
+                    }
+                    run(lam->body());
+                    tab.lnprint(os, "{}", lam->body());
+                } else {
+                    run(nom);
+                }
+
+                --tab;
+                tab.lnprint(os, "}};");
+            }
         } else {
             tab.print(os, "{}: {} = {{ <unset> }};", id(nom), nom->type());
         }
+    }
+}
+
+void RecStreamer::pattern(const Def* def) {
+    if (def->num_projs() == 1) {
+        print(os, "{}: {}", def->unique_name(), def->type());
+    } else {
+        auto projs = def->projs();
+        print(os, "{}::(", def->unique_name());
+        range(os, projs, [&](const Def* proj) { pattern(proj); });
+        print(os, ")");
     }
 }
 
@@ -269,7 +294,7 @@ std::ostream& Def::stream(std::ostream& os, size_t max) const {
 }
 
 std::ostream& Def::let(std::ostream& os, Tab& tab) const {
-    return tab.print(os << std::endl, ".let {}: {} = {};", unique_name(), type(), Unwrap(this));
+    return tab.lnprint(os, ".let {}: {} = {};", unique_name(), type(), Unwrap(this));
 }
 
 //------------------------------------------------------------------------------

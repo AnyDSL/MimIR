@@ -13,12 +13,12 @@ namespace thorin::fe {
  * bind
  */
 
-void IdPtrn::bind(Scopes& scopes, const Def* scrutinee) const { scopes.bind(sym_, scrutinee); }
+void IdPtrn::bind(Scopes& scopes, const Def* def) const { scopes.bind(sym_, def); }
 
-void TuplePtrn::bind(Scopes& scopes, const Def* scrutinee) const {
-    scopes.bind(sym_, scrutinee);
-    size_t n = ptrns_.size();
-    for (size_t i = 0; i != n; ++i) ptrns_[i]->bind(scopes, scrutinee->proj(n, i));
+void TuplePtrn::bind(Scopes& scopes, const Def* def) const {
+    World& w = def->world();
+    scopes.bind(sym_, def);
+    for (size_t i = 0, e = num_ptrns(); i != e; ++i) ptrn(i)->bind(scopes, def->proj(e, i, w.dbg(ptrn(i)->sym())));
 }
 
 /*

@@ -497,6 +497,15 @@ public:
     /// @name helpers
     ///@{
     const Def* dbg(Debug d) { return d.def(*this); }
+    const Def* dbg(Sym sym, Loc loc, const Def* meta = {}) {
+        meta = meta ? meta : bot(type_bot());
+        return tuple({sym.str(), loc.def(*this), meta});
+    }
+    const Def* dbg(Sym sym, const Def* meta = {}) {
+        auto loc = sym.loc() ? sym.loc() : Loc().def(*this);
+        meta     = meta ? meta : bot(type_bot());
+        return tuple({sym.str(), loc, meta});
+    }
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
     ///@}
 

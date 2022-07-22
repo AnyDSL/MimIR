@@ -62,7 +62,7 @@ private:
         Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
         operator const Def*() const { return parser_.world().dbg({"", loc()}); }
         const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
-        const Def* named(Sym sym) const { return parser_.world().dbg({sym.to_string(), loc()}); }
+        const Def* named(Sym sym) const { return parser_.world().dbg(sym, loc()); }
         const Def* named(const std::string& str) const { return parser_.world().dbg({str, loc()}); }
 
     private:

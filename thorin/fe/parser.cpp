@@ -313,13 +313,13 @@ const Def* Parser::parse_arr() {
     const Def* shape = nullptr;
     Arr* arr         = nullptr;
     if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
-        auto id = eat(Tok::Tag::M_id);
+        auto id = eat(Tok::Tag::M_id).sym();
         eat(Tok::Tag::T_colon);
 
         auto shape = parse_expr("shape of an array");
         auto type  = world().nom_infer_univ();
         arr        = world().nom_arr(type)->set_shape(shape);
-        scopes_.bind(id.sym(), arr->var(world().dbg({id.sym(), id.loc()})));
+        scopes_.bind(id, arr->var(world().dbg(id)));
     } else {
         shape = parse_expr("shape of an array");
     }
@@ -397,7 +397,7 @@ const Def* Parser::parse_pi() {
 
     auto dom = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a dependent function type", Tok::Prec::App);
     auto pi  = world().nom_pi(world().nom_infer_univ())->set_dom(dom->type(world()));
-    auto var = pi->var(world().dbg({dom->sym()}));
+    auto var = pi->var(world().dbg(dom->sym()));
     dom->bind(scopes_, var);
 
     expect(Tok::Tag::T_arrow, "dependent function type");
@@ -515,7 +515,6 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
     std::vector<const Def*> fields;
     std::vector<Infer*> infers;
     DefVec ops;
-    auto bot = world().bot(world().type_nat());
 
     scopes_.push();
     parse_list("tuple pattern", delim_l, [&]() {
@@ -524,16 +523,8 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
         ptrns.emplace_back(parse_ptrn(delim_l, "element of a tuple pattern"));
         const auto& ptrn = ptrns.back();
         auto type        = ptrn->type(world());
-        Infer* infer     = nullptr;
-        const Def* field = bot;
-
-        if (!ptrn->is_anonymous()) {
-            field = ptrn->sym().str();
-            infer = world().nom_infer(type, ptrn->sym());
-        }
-
-        infers.emplace_back(infer);
-        fields.emplace_back(field);
+        infers.emplace_back(world().nom_infer(type, ptrn->sym()));
+        fields.emplace_back(ptrn->sym().str());
         ops.emplace_back(type);
     });
     scopes_.pop();
@@ -722,7 +713,7 @@ void Parser::parse_nom_fun() {
     auto dom_p    = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda");
     auto dom_t    = dom_p->type(world());
     auto pi       = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
-    auto var_dbg  = world().dbg({dom_p->sym()});
+    auto var_dbg  = world().dbg(dom_p->sym());
     auto pi_var   = pi->var(var_dbg);
 
     dom_p->bind(scopes_, pi_var);

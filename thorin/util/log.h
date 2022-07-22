@@ -10,11 +10,11 @@ struct Log {
     enum class Level { Error, Warn, Info, Verbose, Debug };
 
     template<class... Args>
-    void log(Level curr, Loc loc, const char* fmt, Args&&... args) {
-        if (ostream && int(curr) <= int(level)) {
+    void log(Level level, Loc loc, const char* fmt, Args&&... args) {
+        if (ostream && int(level) <= int(this->level)) {
             std::ostringstream oss;
             oss << loc;
-            print(*ostream, "{}:{}: ", colorize(level2acro(curr), level2color(curr)), colorize(oss.str(), 7));
+            print(*ostream, "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
             print(*ostream, fmt, std::forward<Args&&>(args)...) << std::endl;
         }
     }

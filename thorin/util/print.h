@@ -91,6 +91,11 @@ public:
         for (size_t i = 0; i < indent_; ++i) os << tab_;
         return thorin::print(os, s, std::forward<Args>(args)...);
     }
+    /// Same as above but first puts a `std::endl` to @p os.
+    template<class... Args>
+    std::ostream& lnprint(std::ostream& os, const char* s, Args&&... args) {
+        return print(os << std::endl, s, std::forward<Args>(args)...);
+    };
 
     /// @name getters
     ///@{
