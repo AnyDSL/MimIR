@@ -93,19 +93,26 @@ public:
     u32 next_gid() { return ++state_.curr_gid; }
     ///@}
 
-    /// @name Sea of Nodes
+    /// @name manage nodes
     ///@{
-    struct SeaHash {
-        size_t operator()(const Def* def) const { return def->hash(); };
-    };
+    const auto& defs() const { return data_.defs_; } ///< **All** nodes.
+    const auto& axioms() const { return data_.axioms_; }
+    const auto& externals() const { return data_.externals_; }
+    bool empty() { return data_.externals_.empty(); }
+    void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
+    void make_internal(Def* def) { data_.externals_.erase(def->name()); }
+    bool is_external(const Def* def) { return data_.externals_.contains(def->name()); }
+    Def* lookup(const std::string& name) {
+        auto i = data_.externals_.find(name);
+        return i != data_.externals_.end() ? i->second : nullptr;
+    }
 
-    struct SeaEq {
-        bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
-    };
-
-    using Sea = absl::flat_hash_set<const Def*, SeaHash, SeaEq>; ///< This HashSet contains Thorin's "sea of nodes".
-
-    const Sea& defs() const { return data_.defs_; }
+    using VisitFn = std::function<void(const Scope&)>;
+    /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
+    /// We call these Scope%s *top-level* Scope%s.
+    /// Select with @p elide_empty whether you want to visit trivial Scope%s of *noms* without body.
+    template<bool elide_empty = true>
+    void visit(VisitFn) const;
     ///@}
 
     /// @name Universe, Type, Var, Proxy, Infer
@@ -499,28 +506,6 @@ public:
     bool is_pe_done() const { return state_.pe_done; }
     ///@}
 
-    /// @name Manage Externals
-    ///@{
-    const auto& externals() const { return data_.externals_; }
-    bool empty() { return data_.externals_.empty(); }
-    void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
-    void make_internal(Def* def) { data_.externals_.erase(def->name()); }
-    bool is_external(const Def* def) { return data_.externals_.contains(def->name()); }
-    Def* lookup(const std::string& name) {
-        auto i = data_.externals_.find(name);
-        return i != data_.externals_.end() ? i->second : nullptr;
-    }
-
-    const auto& axioms() const { return data_.axioms_; }
-
-    using VisitFn = std::function<void(const Scope&)>;
-    /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
-    /// We call these Scope%s *top-level* Scope%s.
-    /// Select with @p elide_empty whether you want to visit trivial Scope%s of *noms* without body.
-    template<bool elide_empty = true>
-    void visit(VisitFn) const;
-    ///@}
-
     /// @name Logging
     ///@{
     std::ostream& log_stream() const { return *state_.log_stream; }
@@ -692,6 +677,14 @@ private:
         size_t buffer_index_ = 0;
     } arena_;
 
+    struct SeaHash {
+        size_t operator()(const Def* def) const { return def->hash(); };
+    };
+
+    struct SeaEq {
+        bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
+    };
+
     struct Data {
         const Univ* univ_;
         const Type* type_0_;
@@ -729,7 +722,7 @@ private:
         const Axiom* zip_;
         absl::flat_hash_map<u64, const Axiom*, U64Hash> axioms_;
         absl::flat_hash_map<std::string, Def*, StrHash> externals_;
-        Sea defs_;
+        absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs_;
         DefDefMap<DefArray> cache_;
     } data_;
 
