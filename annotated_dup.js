@@ -140,6 +140,7 @@ var annotated_dup =
       [ "LexError", "classthorin_1_1LexError.html", "classthorin_1_1LexError" ],
       [ "Lit", "classthorin_1_1Lit.html", "classthorin_1_1Lit" ],
       [ "Loc", "structthorin_1_1Loc.html", "structthorin_1_1Loc" ],
+      [ "Log", "structthorin_1_1Log.html", "structthorin_1_1Log" ],
       [ "LoopTree", "classthorin_1_1LoopTree.html", "classthorin_1_1LoopTree" ],
       [ "LoopTreeBuilder", "classthorin_1_1LoopTreeBuilder.html", "classthorin_1_1LoopTreeBuilder" ],
       [ "LRPrec", "structthorin_1_1LRPrec.html", "structthorin_1_1LRPrec" ],

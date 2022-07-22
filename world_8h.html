@@ -104,8 +104,6 @@ $(document).ready(function(){initNavTree('world_8h.html',''); initResizable(); }
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#define-members">Macros</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">world.h File Reference</div></div>
 </div><!--header-->
@@ -122,10 +120,11 @@ $(document).ready(function(){initNavTree('world_8h.html',''); initResizable(); }
 <code>#include &quot;<a class="el" href="lattice_8h_source.html">thorin/lattice.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tuple_8h_source.html">thorin/tuple.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hash_8h_source.html">thorin/util/hash.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="log_8h_source.html">thorin/util/log.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for world.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="world_8h__incl.svg" width="2550" height="604"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="world_8h__incl.svg" width="2571" height="604"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -154,138 +153,11 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a16e6a53bea50271aa28355f071f7df6b"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="world_8h.html#a16e6a53bea50271aa28355f071f7df6b">ELOG</a>(...)&#160;&#160;&#160;log(<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd">thorin::LogLevel::Error</a>,   <a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a>(__FILE__, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}), __VA_ARGS__)</td></tr>
-<tr class="separator:a16e6a53bea50271aa28355f071f7df6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32648fc31390d09eaa0cc2ef0afeb02a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="world_8h.html#a32648fc31390d09eaa0cc2ef0afeb02a">WLOG</a>(...)&#160;&#160;&#160;log(<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a56525ae64d370c0b448ac0d60710ef17">thorin::LogLevel::Warn</a>,    <a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a>(__FILE__, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}), __VA_ARGS__)</td></tr>
-<tr class="separator:a32648fc31390d09eaa0cc2ef0afeb02a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c221110c77b993968e98cb53c0d652e"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="world_8h.html#a0c221110c77b993968e98cb53c0d652e">ILOG</a>(...)&#160;&#160;&#160;log(<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875">thorin::LogLevel::Info</a>,    <a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a>(__FILE__, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}), __VA_ARGS__)</td></tr>
-<tr class="separator:a0c221110c77b993968e98cb53c0d652e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35e71de09dfd64892a48e3f7c56c5619"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="world_8h.html#a35e71de09dfd64892a48e3f7c56c5619">VLOG</a>(...)&#160;&#160;&#160;log(<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf">thorin::LogLevel::Verbose</a>, <a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a>(__FILE__, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}), __VA_ARGS__)</td></tr>
-<tr class="separator:a35e71de09dfd64892a48e3f7c56c5619"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87fe05eb8767a6b1abf71eea0bdcfcac"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="world_8h.html#a87fe05eb8767a6b1abf71eea0bdcfcac">DLOG</a>(...)&#160;&#160;&#160;log(<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba">thorin::LogLevel::Debug</a>,   <a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a>(__FILE__, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}), __VA_ARGS__)</td></tr>
-<tr class="separator:a87fe05eb8767a6b1abf71eea0bdcfcac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:ad0760f4dc915fa0b12d244fddce5c426"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426">thorin::LogLevel</a> { <br />
-&#160;&#160;<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd">thorin::Error</a>
-, <a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a56525ae64d370c0b448ac0d60710ef17">thorin::Warn</a>
-, <a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875">thorin::Info</a>
-, <a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf">thorin::Verbose</a>
-, <br />
-&#160;&#160;<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba">thorin::Debug</a>
-<br />
- }</td></tr>
-<tr class="separator:ad0760f4dc915fa0b12d244fddce5c426"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aeaa9638b9a869ca694aaaeaa79e1a521"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aeaa9638b9a869ca694aaaeaa79e1a521">thorin::operator&lt;&lt;</a> (std::ostream &amp;os, const World &amp;world)</td></tr>
 <tr class="separator:aeaa9638b9a869ca694aaaeaa79e1a521"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="a87fe05eb8767a6b1abf71eea0bdcfcac" name="a87fe05eb8767a6b1abf71eea0bdcfcac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87fe05eb8767a6b1abf71eea0bdcfcac">&#9670;&nbsp;</a></span>DLOG</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define DLOG</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
-          <td>&#160;&#160;&#160;log(<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba">thorin::LogLevel::Debug</a>,   <a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a>(__FILE__, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}), __VA_ARGS__)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00745">745</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
-
-</div>
-</div>
-<a id="a16e6a53bea50271aa28355f071f7df6b" name="a16e6a53bea50271aa28355f071f7df6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a16e6a53bea50271aa28355f071f7df6b">&#9670;&nbsp;</a></span>ELOG</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ELOG</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
-          <td>&#160;&#160;&#160;log(<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd">thorin::LogLevel::Error</a>,   <a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a>(__FILE__, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}), __VA_ARGS__)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00740">740</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
-
-</div>
-</div>
-<a id="a0c221110c77b993968e98cb53c0d652e" name="a0c221110c77b993968e98cb53c0d652e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c221110c77b993968e98cb53c0d652e">&#9670;&nbsp;</a></span>ILOG</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ILOG</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
-          <td>&#160;&#160;&#160;log(<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875">thorin::LogLevel::Info</a>,    <a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a>(__FILE__, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}), __VA_ARGS__)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00742">742</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
-
-</div>
-</div>
-<a id="a35e71de09dfd64892a48e3f7c56c5619" name="a35e71de09dfd64892a48e3f7c56c5619"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35e71de09dfd64892a48e3f7c56c5619">&#9670;&nbsp;</a></span>VLOG</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define VLOG</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
-          <td>&#160;&#160;&#160;log(<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf">thorin::LogLevel::Verbose</a>, <a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a>(__FILE__, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}), __VA_ARGS__)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00743">743</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
-
-</div>
-</div>
-<a id="a32648fc31390d09eaa0cc2ef0afeb02a" name="a32648fc31390d09eaa0cc2ef0afeb02a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32648fc31390d09eaa0cc2ef0afeb02a">&#9670;&nbsp;</a></span>WLOG</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define WLOG</td>
-          <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>...</em></td><td>)</td>
-          <td>&#160;&#160;&#160;log(<a class="el" href="namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a56525ae64d370c0b448ac0d60710ef17">thorin::LogLevel::Warn</a>,    <a class="el" href="structthorin_1_1Loc.html">thorin::Loc</a>(__FILE__, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}, {__LINE__, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">thorin::u32</a>(-1)}), __VA_ARGS__)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00741">741</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

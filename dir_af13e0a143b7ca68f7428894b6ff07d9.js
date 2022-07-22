@@ -12,6 +12,8 @@ var dir_af13e0a143b7ca68f7428894b6ff07d9 =
     [ "hash.h", "hash_8h.html", "hash_8h" ],
     [ "indexmap.h", "indexmap_8h.html", "indexmap_8h" ],
     [ "indexset.h", "indexset_8h.html", "indexset_8h" ],
+    [ "log.cpp", "log_8cpp.html", null ],
+    [ "log.h", "log_8h.html", "log_8h" ],
     [ "print.cpp", "print_8cpp.html", "print_8cpp" ],
     [ "print.h", "print_8h.html", "print_8h" ],
     [ "sys.cpp", "sys_8cpp.html", "sys_8cpp" ],

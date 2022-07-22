@@ -9,10 +9,11 @@ var searchData=
   ['lit_6',['Lit',['../classthorin_1_1Lit.html',1,'thorin']]],
   ['loc_7',['Loc',['../structthorin_1_1Loc.html',1,'thorin']]],
   ['lock_8',['Lock',['../structthorin_1_1World_1_1Arena_1_1Lock.html',1,'thorin::World::Arena']]],
-  ['looptree_9',['LoopTree',['../classthorin_1_1LoopTree.html',1,'thorin']]],
-  ['looptreebuilder_10',['LoopTreeBuilder',['../classthorin_1_1LoopTreeBuilder.html',1,'thorin']]],
-  ['lowerfor_11',['LowerFor',['../classthorin_1_1affine_1_1LowerFor.html',1,'thorin::affine']]],
-  ['lowertypedclos_12',['LowerTypedClos',['../classthorin_1_1clos_1_1LowerTypedClos.html',1,'thorin::clos']]],
-  ['lowertypedclosprep_13',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html',1,'thorin::clos']]],
-  ['lrprec_14',['LRPrec',['../structthorin_1_1LRPrec.html',1,'thorin']]]
+  ['log_9',['Log',['../structthorin_1_1Log.html',1,'thorin']]],
+  ['looptree_10',['LoopTree',['../classthorin_1_1LoopTree.html',1,'thorin']]],
+  ['looptreebuilder_11',['LoopTreeBuilder',['../classthorin_1_1LoopTreeBuilder.html',1,'thorin']]],
+  ['lowerfor_12',['LowerFor',['../classthorin_1_1affine_1_1LowerFor.html',1,'thorin::affine']]],
+  ['lowertypedclos_13',['LowerTypedClos',['../classthorin_1_1clos_1_1LowerTypedClos.html',1,'thorin::clos']]],
+  ['lowertypedclosprep_14',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html',1,'thorin::clos']]],
+  ['lrprec_15',['LRPrec',['../structthorin_1_1LRPrec.html',1,'thorin']]]
 ];

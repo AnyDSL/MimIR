@@ -279,6 +279,7 @@ var namespacethorin =
     [ "LexError", "classthorin_1_1LexError.html", "classthorin_1_1LexError" ],
     [ "Lit", "classthorin_1_1Lit.html", "classthorin_1_1Lit" ],
     [ "Loc", "structthorin_1_1Loc.html", "structthorin_1_1Loc" ],
+    [ "Log", "structthorin_1_1Log.html", "structthorin_1_1Log" ],
     [ "LoopTree", "classthorin_1_1LoopTree.html", "classthorin_1_1LoopTree" ],
     [ "LoopTreeBuilder", "classthorin_1_1LoopTreeBuilder.html", "classthorin_1_1LoopTreeBuilder" ],
     [ "LRPrec", "structthorin_1_1LRPrec.html", "structthorin_1_1LRPrec" ],
@@ -496,13 +497,6 @@ var namespacethorin =
       [ "_nl", "namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9aa683cf442650defd9bc41ceba6adb8b4", null ],
       [ "ne", "namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9ad4f917633649a3c47c7ab917fa990146", null ],
       [ "_t", "namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9a05cb7dc333ca611d0a8969704e39a9f0", null ]
-    ] ],
-    [ "LogLevel", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426", [
-      [ "Error", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a902b0d55fddef6f8d651fe1035b7d4bd", null ],
-      [ "Warn", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a56525ae64d370c0b448ac0d60710ef17", null ],
-      [ "Info", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426a4059b0251f66a18cb56f544728796875", null ],
-      [ "Verbose", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426ad4a9fa383ab700c5bdd6f31cf7df0faf", null ],
-      [ "Debug", "namespacethorin.html#ad0760f4dc915fa0b12d244fddce5c426aa603905470e2a5b8c13e96b579ef0dba", null ]
     ] ],
     [ "PE", "namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcf", [
       [ "hlt", "namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfa4f4000d921968b9665f52e88333007da", null ],
