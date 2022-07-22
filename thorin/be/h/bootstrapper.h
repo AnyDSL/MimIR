@@ -31,7 +31,7 @@ public:
     void emit(std::ostream&);
     std::string_view dialect() const { return dialect_; }
 
-    absl::flat_hash_map<std::string, AxiomInfo, StrHash> axioms;
+    absl::flat_hash_map<std::string, AxiomInfo> axioms;
     Tab tab;
 
 private:

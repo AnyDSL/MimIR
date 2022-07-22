@@ -4,6 +4,9 @@
 #include <string>
 #include <string_view>
 
+#include <absl/container/btree_map.h>
+#include <absl/container/btree_set.h>
+
 #include "thorin/axiom.h"
 #include "thorin/config.h"
 #include "thorin/debug.h"
@@ -73,10 +76,10 @@ public:
         u32 curr_gid             = 0;
         u32 curr_sub             = 0;
         bool pe_done             = false;
-        absl::flat_hash_set<std::string, StrHash> imported_dialects;
+        absl::btree_set<std::string> imported_dialects;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
-        absl::flat_hash_set<u32, U32Hash> breakpoints;
+        absl::flat_hash_set<u32> breakpoints;
 #endif
     };
 
@@ -140,7 +143,8 @@ public:
     /// @name Axiom
     ///@{
     const Axiom* axiom(Def::NormalizeFn n, const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
-        return data_.axioms_[d | (t << 8u) | s] = unify<Axiom>(0, n, type, d, t, s, dbg);
+        auto ax = unify<Axiom>(0, n, type, d, t, s, dbg);
+        return data_.axioms_[ax->flags()] = ax;
     }
     const Axiom* axiom(const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
         return axiom(nullptr, type, d, t, s, dbg);
@@ -158,12 +162,10 @@ public:
     ///
     /// Use this to get an axiom with sub-tags.
     template<class AxTag>
-    const Axiom* ax(AxTag sub) const {
-        u64 int_sub = static_cast<u64>(sub);
-        auto it     = data_.axioms_.find(int_sub);
-        if (it == data_.axioms_.end())
-            thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", int_sub);
-        return it->second;
+    const Axiom* ax(AxTag tag) const {
+        u64 flags = static_cast<u64>(tag);
+        if (auto i = data_.axioms_.find(flags); i != data_.axioms_.end()) return i->second;
+        thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", flags);
     }
 
     /// Get axiom from a dialect.
@@ -720,8 +722,8 @@ private:
         const Axiom* type_int_;
         const Axiom* type_real_;
         const Axiom* zip_;
-        absl::flat_hash_map<u64, const Axiom*, U64Hash> axioms_;
-        absl::flat_hash_map<std::string, Def*, StrHash> externals_;
+        absl::btree_map<u64, const Axiom*> axioms_;
+        absl::btree_map<std::string, Def*> externals_;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs_;
         DefDefMap<DefArray> cache_;
     } data_;
