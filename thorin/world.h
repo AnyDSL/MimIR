@@ -34,43 +34,85 @@ class Scope;
 /// Note that types are also just Def%s and will be hashed as well.
 class World {
 public:
+    struct State;
+
+    /// @name c'tor and d'tor
+    ///@{
     World& operator=(const World&) = delete;
 
+    /// Inherits the @p state into the new World.
+    explicit World(const State&);
     explicit World(std::string_view name = {});
     World(World&& other)
         : World() {
         swap(*this, other);
     }
     ~World();
-
-    /// Inherits the World::state_ of the @p other World.
-    World stub();
-
-    /// @name Sea of Nodes
-    ///@{
-    struct SeaHash {
-        size_t operator()(const Def* def) const { return def->hash(); };
-    };
-
-    struct SeaEq {
-        bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
-    };
-
-    using Sea = absl::flat_hash_set<const Def*, SeaHash, SeaEq>; ///< This HashSet contains Thorin's "sea of nodes".
-
-    const Sea& defs() const { return data_.defs_; }
     ///@}
 
-    /// @name name
+#if THORIN_ENABLE_CHECKS
+    /// @name Debugging Features
     ///@{
-    std::string_view name() const { return data_.name_; }
-    void set_name(std::string_view name) { data_.name_ = name; }
+    void breakpoint(size_t number);
+    void enable_history(bool flag = true);
+    bool track_history() const;
+    const Def* gid2def(u32 gid);
     ///@}
+#endif
 
-    /// @name manage global identifier - a unique number for each Def
+    /// @name state
     ///@{
+    struct State {
+        State() = default;
+        State(std::string_view name)
+            : name(name) {}
+
+        std::string name;
+        absl::flat_hash_set<std::string, StrHash> imported_dialects;
+        std::ostream* log_stream = nullptr;
+        LogLevel max_level       = LogLevel::Error;
+        u32 curr_gid             = 0;
+        u32 curr_sub             = 0;
+        bool pe_done             = false;
+#if THORIN_ENABLE_CHECKS
+        bool track_history = false;
+        absl::flat_hash_set<u32, U32Hash> breakpoints;
+#endif
+    };
+
+    const State& state() const { return state_; }
+
+    std::string_view name() const { return state_.name; }
+    void set_name(std::string_view name) { state_.name = name; }
+
+    void add_imported(std::string_view name) { state_.imported_dialects.emplace(name); }
+    const auto& imported() const { return state_.imported_dialects; }
+
+    /// Manage global identifier - a unique number for each Def.
     u32 curr_gid() const { return state_.curr_gid; }
     u32 next_gid() { return ++state_.curr_gid; }
+    ///@}
+
+    /// @name manage nodes
+    ///@{
+    const auto& defs() const { return data_.defs_; } ///< **All** nodes.
+    const auto& axioms() const { return data_.axioms_; }
+    const auto& externals() const { return data_.externals_; }
+    bool empty() { return data_.externals_.empty(); }
+    void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
+    void make_internal(Def* def) { data_.externals_.erase(def->name()); }
+    bool is_external(const Def* def) { return data_.externals_.contains(def->name()); }
+    Def* lookup(const std::string& name) {
+        auto i = data_.externals_.find(name);
+        return i != data_.externals_.end() ? i->second : nullptr;
+    }
+
+    using VisitFn = std::function<void(const Scope&)>;
+    /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
+    /// We call these Scope%s *top-level* Scope%s.
+    /// Select with @p elide_empty whether you want to visit trivial Scope%s of *noms* without body.
+    template<bool elide_empty = true>
+    void visit(VisitFn) const;
     ///@}
 
     /// @name Universe, Type, Var, Proxy, Infer
@@ -465,55 +507,22 @@ public:
     bool is_pe_done() const { return state_.pe_done; }
     ///@}
 
-    /// @name Manage Externals
-    ///@{
-    using Externals = absl::flat_hash_map<std::string, Def*>;
-    const Externals& externals() const { return data_.externals_; }
-    bool empty() { return data_.externals_.empty(); }
-    void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
-    void make_internal(Def* def) { data_.externals_.erase(def->name()); }
-    bool is_external(const Def* def) { return data_.externals_.contains(def->name()); }
-    Def* lookup(std::string_view name) {
-        auto i = data_.externals_.find(name);
-        return i != data_.externals_.end() ? i->second : nullptr;
-    }
-
-    using VisitFn = std::function<void(const Scope&)>;
-    /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
-    /// We call these Scope%s *top-level* Scope%s.
-    /// Select with @p elide_empty whether you want to visit trivial Scope%s of *noms* without body.
-    template<bool elide_empty = true>
-    void visit(VisitFn) const;
-    ///@}
-
-#if THORIN_ENABLE_CHECKS
-    /// @name Debugging Features
-    ///@{
-    using Breakpoints = absl::flat_hash_set<u32>;
-
-    void breakpoint(size_t number);
-    void enable_history(bool flag = true);
-    bool track_history() const;
-    const Def* gid2def(u32 gid);
-    ///@}
-#endif
-
     /// @name Logging
     ///@{
-    std::ostream& ostream() const { return *ostream_; }
+    std::ostream& log_stream() const { return *state_.log_stream; }
     LogLevel max_level() const { return state_.max_level; }
 
     void set_log_level(LogLevel max_level) { state_.max_level = max_level; }
     void set_log_level(std::string_view max_level) { set_log_level(str2level(max_level)); }
-    void set_log_ostream(std::ostream* ostream) { ostream_ = ostream; }
+    void set_log_ostream(std::ostream* log_stream) { state_.log_stream = log_stream; }
 
     template<class... Args>
     void log(LogLevel level, Loc loc, const char* fmt, Args&&... args) {
-        if (ostream_ && int(level) <= int(max_level())) {
+        if (state_.log_stream && int(level) <= int(max_level())) {
             std::ostringstream oss;
             oss << loc;
-            print(ostream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
-            print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
+            print(log_stream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
+            print(log_stream(), fmt, std::forward<Args&&>(args)...) << std::endl;
         }
     }
     void log() const {} ///< for DLOG in Release build.
@@ -549,16 +558,12 @@ public:
     ErrorHandler* err() { return err_.get(); }
     ///@}
 
-    void add_imported(std::string_view name) { data_.imported_dialects_.emplace(name); }
-    const absl::flat_hash_set<std::string>& imported() const { return data_.imported_dialects_; }
-
     friend void swap(World& w1, World& w2) {
         using std::swap;
         // clang-format off
+        swap(w1.state_,    w2.state_);
         swap(w1.arena_,    w2.arena_);
         swap(w1.data_,     w2.data_);
-        swap(w1.state_,    w2.state_);
-        swap(w1.ostream_,  w2.ostream_);
         swap(w1.checker_,  w2.checker_);
         swap(w1.err_,      w2.err_);
         // clang-format on
@@ -599,6 +604,8 @@ private:
         return def;
     }
     ///@}
+
+    State state_;
 
     class Arena {
     public:
@@ -671,16 +678,13 @@ private:
         size_t buffer_index_ = 0;
     } arena_;
 
-    struct State {
-        LogLevel max_level = LogLevel::Error;
-        u32 curr_gid       = 0;
-        u32 curr_sub       = 0;
-        bool pe_done       = false;
-#if THORIN_ENABLE_CHECKS
-        bool track_history = false;
-        Breakpoints breakpoints;
-#endif
-    } state_;
+    struct SeaHash {
+        size_t operator()(const Def* def) const { return def->hash(); };
+    };
+
+    struct SeaEq {
+        bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
+    };
 
     struct Data {
         const Univ* univ_;
@@ -717,17 +721,14 @@ private:
         const Axiom* type_int_;
         const Axiom* type_real_;
         const Axiom* zip_;
-        absl::flat_hash_map<u64, const Axiom*> axioms_;
-        std::string name_;
-        Externals externals_;
-        Sea defs_;
+        absl::flat_hash_map<u64, const Axiom*, U64Hash> axioms_;
+        absl::flat_hash_map<std::string, Def*, StrHash> externals_;
+        absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs_;
         DefDefMap<DefArray> cache_;
-        absl::flat_hash_set<std::string> imported_dialects_;
     } data_;
 
     std::unique_ptr<Checker> checker_;
     std::unique_ptr<ErrorHandler> err_;
-    mutable std::ostream* ostream_ = nullptr;
 
     friend DefArray Def::reduce(const Def*);
 };

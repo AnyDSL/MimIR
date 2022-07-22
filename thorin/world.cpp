@@ -32,10 +32,10 @@ namespace thorin {
 bool World::Arena::Lock::guard_ = false;
 #endif
 
-World::World(std::string_view name)
-    : checker_(std::make_unique<Checker>(*this))
+World::World(const State& state)
+    : state_(state)
+    , checker_(std::make_unique<Checker>(*this))
     , err_(std::make_unique<ErrorHandler>()) {
-    data_.name_        = name.empty() ? "module" : name;
     data_.univ_        = insert<Univ>(0, *this);
     data_.lit_univ_0_  = lit_univ(0);
     data_.lit_univ_1_  = lit_univ(1);
@@ -195,21 +195,11 @@ World::World(std::string_view name)
     }
 }
 
+World::World(std::string_view name /* = {}*/)
+    : World(State(name)) {}
+
 World::~World() {
     for (auto def : data_.defs_) def->~Def();
-}
-
-World World::stub() {
-    World w(name());
-    w.ostream_                 = ostream_;
-    w.state_                   = state_;
-    w.data_.imported_dialects_ = data_.imported_dialects_;
-
-    // bring dialects' axioms into new world.
-    Rewriter rewriter{w};
-    for (const auto& ax : data_.axioms_) rewriter.rewrite(ax.second);
-
-    return w;
 }
 
 /*

@@ -55,13 +55,23 @@ inline hash_t murmur3_finalize(hash_t h, hash_t len) {
     return h;
 }
 
-/// use for a single value to hash
+/// Use for a single value to hash.
 inline hash_t murmur3(hash_t h) {
     h ^= h >> 16;
     h *= 0x85ebca6b;
     h ^= h >> 13;
     h *= 0xc2b2ae35;
     h ^= h >> 16;
+    return h;
+}
+
+/// Use for a single `uint64_t` to produce a `uint64_t` again.
+inline uint64_t murmur3(uint64_t h) {
+    h ^= h >> 33_u64;
+    h *= 0xff51afd7ed558ccd_u64;
+    h ^= h >> 33_u64;
+    h *= 0xc4ceb9fe1a85ec53_u64;
+    h ^= h >> 33_u64;
     return h;
 }
 ///@}
@@ -112,6 +122,25 @@ inline hash_t hash_begin() { return FNV1::offset; }
 ///@{
 hash_t hash(const char*);
 hash_t hash(std::string_view);
+///@}
+
+/// @name Use for absl hash containers.
+///@{
+struct U64Hash {
+    u64 operator()(u64 u) const { return murmur3(u); }
+};
+
+struct U32Hash {
+    u32 operator()(u32 u) const { return murmur3(u); }
+};
+
+// TODO make a u32/u64 variant for size_t
+
+struct StrHash {
+    using is_transparent = void;
+    size_t operator()(const std::string& s) const { return hash(s); }
+    size_t operator()(std::string_view& s) const { return hash(s); }
+};
 ///@}
 
 } // namespace thorin
