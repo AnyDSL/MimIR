@@ -100,8 +100,8 @@ int main(int argc, char** argv) {
             throw std::invalid_argument("error: unknown option " + input);
 
         World world;
-        world.set_log_ostream(&std::cerr);
-        world.set_log_level((LogLevel)verbose);
+        world.log.ostream = &std::cerr;
+        world.log.level   = (Log::Level)verbose;
 #if THORIN_ENABLE_CHECKS
         for (auto b : breakpoints) world.breakpoint(b);
 #endif
