@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
             | lyra::opt(output[H     ],  "file"   )      ["--output-h"     ]("Emits a header file to be used to interface with a dialect in C++.")
             | lyra::opt(output[LL    ],  "file"   )      ["--output-ll"    ]("Compiles the Thorin program to LLVM.")
             | lyra::opt(output[Md    ],  "file"   )      ["--output-md"    ]("Emits the input formatted as Markdown.")
-            | lyra::opt(output[Thorin],  "file"   )      ["--output-thorin"]("Emits the Thorin program again.")
+            | lyra::opt(output[Thorin],  "file"   )["-o"]["--output-thorin"]("Emits the Thorin program again.")
             | lyra::arg(input,           "file"   )                         ("Input file.");
         // clang-format on
 
