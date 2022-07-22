@@ -16,7 +16,7 @@
 namespace thorin {
 
 using Backends    = std::map<std::string, std::function<void(World&, std::ostream&)>>;
-using Normalizers = absl::flat_hash_map<flags_t, Def::NormalizeFn>;
+using Normalizers = absl::flat_hash_map<flags_t, Def::NormalizeFn, U64Hash>;
 
 extern "C" {
 /// Basic info and registration function pointer to be returned from a dialect plugin.
