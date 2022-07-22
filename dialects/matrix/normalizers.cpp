@@ -118,7 +118,8 @@ const Def* normalize_mapReduce(const Def* type, const Def* callee, const Def* ar
         if (iadd != add) continue;
 
         auto in_lit = isa_lit(in);
-        if (!isa_lit(iinput->arity())) continue;
+        auto im_lit = isa_lit(im);
+        if (!im_lit) continue;
         if (!in_lit) continue;
         auto iinputs   = iinput->projs();
         auto inner_max = get_max_index(as_lit(in), iinputs);
@@ -127,8 +128,13 @@ const Def* normalize_mapReduce(const Def* type, const Def* callee, const Def* ar
         // => replace i<in with idx[i]
         //    and i>=in with i+max_idx
 
+        DefArray new_inputs(im_lit.value());
+
         bool canReplace = true;
-        for (auto iinp : iinputs) {
+        // for (auto iinp : iinputs) {
+        for (int i = 0; i < iinputs.size(); i++) {
+            auto iinp = iinputs[i];
+
             auto [iindices, imat] = iinp->projs<2>();
             if (!isa_lit(iindices->arity())) {
                 canReplace = false;
@@ -143,10 +149,13 @@ const Def* normalize_mapReduce(const Def* type, const Def* callee, const Def* ar
                 }
                 nat_t new_idx;
                 if (iidx_val < in_lit) {
-                    new_idx = ;
+                    // replace with idx[iidx_val]
+                    new_idx = as_lit(world.extract(idx, iidx_val.value()));
                 } else {
                     new_idx = iidx_val + max_idx;
                 }
+                // new_inputs[i] = world.tuple(world.lit_nat
+                // TODO: build new indices
             }
         }
         if (!canReplace) continue;
