@@ -32,11 +32,10 @@ namespace thorin {
 bool World::Arena::Lock::guard_ = false;
 #endif
 
-World::World(std::string_view name, const State& state)
+World::World(const State& state)
     : state_(state)
     , checker_(std::make_unique<Checker>(*this))
     , err_(std::make_unique<ErrorHandler>()) {
-    data_.name_        = name.empty() ? "module" : name;
     data_.univ_        = insert<Univ>(0, *this);
     data_.lit_univ_0_  = lit_univ(0);
     data_.lit_univ_1_  = lit_univ(1);
@@ -195,6 +194,9 @@ World::World(std::string_view name, const State& state)
         data_.zip_ = axiom(normalize_zip, rs_pi, Axiom::Global_Dialect, Tag::Zip, 0, dbg("zip"));
     }
 }
+
+World::World(std::string_view name/* = {}*/)
+    : World(State(name)) {}
 
 World::~World() {
     for (auto def : data_.defs_) def->~Def();

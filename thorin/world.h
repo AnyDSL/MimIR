@@ -34,11 +34,25 @@ class Scope;
 /// Note that types are also just Def%s and will be hashed as well.
 class World {
 public:
+    struct State;
+
+    /// @name c'tor and d'tor
+    ///@{
+    World& operator=(const World&) = delete;
+
+    /// Inherits the @p state into the new World.
+    explicit World(const State&);
+    explicit World(std::string_view name = {});
+    World(World&& other)
+        : World() {
+        swap(*this, other);
+    }
+    ~World();
+    ///@}
+
 #if THORIN_ENABLE_CHECKS
     /// @name Debugging Features
     ///@{
-    using Breakpoints = std::set<u32>;
-
     void breakpoint(size_t number);
     void enable_history(bool flag = true);
     bool track_history() const;
@@ -49,7 +63,12 @@ public:
     /// @name state
     ///@{
     struct State {
-        std::set<std::string> imported_dialects;
+        State() = default;
+        State(std::string_view name)
+            : name(name) {}
+
+        std::string name;
+        absl::flat_hash_set<std::string, StrHash> imported_dialects;
         std::ostream* log_stream = nullptr;
         LogLevel max_level       = LogLevel::Error;
         u32 curr_gid             = 0;
@@ -57,26 +76,21 @@ public:
         bool pe_done             = false;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
-        Breakpoints breakpoints;
+        absl::flat_hash_set<u32, U32Hash> breakpoints;
 #endif
     };
 
     const State& state() const { return state_; }
-    ///@}
 
-    /// @name c'tor and d'tor
-    ///@{
-    World& operator=(const World&) = delete;
+    std::string_view name() const { return state_.name; }
+    void set_name(std::string_view name) { state_.name = name; }
 
-    /// Inherits the @p state into the new World.
-    explicit World(std::string_view name, const State&);
-    explicit World(std::string_view name = {})
-        : World(name, State()) {}
-    World(World&& other)
-        : World() {
-        swap(*this, other);
-    }
-    ~World();
+    void add_imported(std::string_view name) { state_.imported_dialects.emplace(name); }
+    const auto& imported() const { return state_.imported_dialects; }
+
+    /// Manage global identifier - a unique number for each Def.
+    u32 curr_gid() const { return state_.curr_gid; }
+    u32 next_gid() { return ++state_.curr_gid; }
     ///@}
 
     /// @name Sea of Nodes
@@ -92,18 +106,6 @@ public:
     using Sea = absl::flat_hash_set<const Def*, SeaHash, SeaEq>; ///< This HashSet contains Thorin's "sea of nodes".
 
     const Sea& defs() const { return data_.defs_; }
-    ///@}
-
-    /// @name name
-    ///@{
-    std::string_view name() const { return data_.name_; }
-    void set_name(std::string_view name) { data_.name_ = name; }
-    ///@}
-
-    /// @name manage global identifier - a unique number for each Def
-    ///@{
-    u32 curr_gid() const { return state_.curr_gid; }
-    u32 next_gid() { return ++state_.curr_gid; }
     ///@}
 
     /// @name Universe, Type, Var, Proxy, Infer
@@ -499,16 +501,17 @@ public:
 
     /// @name Manage Externals
     ///@{
-    using Externals = absl::flat_hash_map<std::string, Def*>;
-    const Externals& externals() const { return data_.externals_; }
+    const auto& externals() const { return data_.externals_; }
     bool empty() { return data_.externals_.empty(); }
     void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
     void make_internal(Def* def) { data_.externals_.erase(def->name()); }
     bool is_external(const Def* def) { return data_.externals_.contains(def->name()); }
-    Def* lookup(std::string_view name) {
+    Def* lookup(const std::string& name) {
         auto i = data_.externals_.find(name);
         return i != data_.externals_.end() ? i->second : nullptr;
     }
+
+    const auto& axioms() const { return data_.axioms_; }
 
     using VisitFn = std::function<void(const Scope&)>;
     /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
@@ -568,9 +571,6 @@ public:
     void set_error_handler(std::unique_ptr<ErrorHandler>&& err);
     ErrorHandler* err() { return err_.get(); }
     ///@}
-
-    void add_imported(std::string_view name) { state_.imported_dialects.emplace(name); }
-    const std::set<std::string>& imported() const { return state_.imported_dialects; }
 
     friend void swap(World& w1, World& w2) {
         using std::swap;
@@ -727,9 +727,8 @@ private:
         const Axiom* type_int_;
         const Axiom* type_real_;
         const Axiom* zip_;
-        absl::flat_hash_map<u64, const Axiom*> axioms_;
-        std::string name_;
-        Externals externals_;
+        absl::flat_hash_map<u64, const Axiom*, U64Hash> axioms_;
+        absl::flat_hash_map<std::string, Def*, StrHash> externals_;
         Sea defs_;
         DefDefMap<DefArray> cache_;
     } data_;
