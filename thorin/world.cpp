@@ -195,7 +195,7 @@ World::World(const State& state)
     }
 }
 
-World::World(std::string_view name/* = {}*/)
+World::World(std::string_view name /* = {}*/)
     : World(State(name)) {}
 
 World::~World() {

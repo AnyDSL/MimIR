@@ -124,7 +124,6 @@ hash_t hash(const char*);
 hash_t hash(std::string_view);
 ///@}
 
-
 /// @name Use for absl hash containers.
 ///@{
 struct U64Hash {
