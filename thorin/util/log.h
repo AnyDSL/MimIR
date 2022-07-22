@@ -20,12 +20,6 @@ struct Log {
     }
     void log() {} ///< Dummy for Debug build.
 
-    template<class... Args>
-    [[noreturn]] void error(Loc loc, const char* fmt, Args&&... args) {
-        log(Level::Error, loc, fmt, std::forward<Args&&>(args)...);
-        std::abort();
-    }
-
     static std::string_view level2acro(Level);
     static Level str2level(std::string_view);
     static int level2color(Level level);
