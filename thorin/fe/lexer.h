@@ -6,7 +6,6 @@
 #include "thorin/error.h"
 
 #include "thorin/fe/tok.h"
-#include "thorin/util/hash.h"
 #include "thorin/util/utf8.h"
 
 namespace thorin {

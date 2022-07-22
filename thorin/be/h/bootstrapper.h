@@ -7,7 +7,6 @@
 
 #include "thorin/tables.h"
 
-#include "thorin/util/hash.h"
 #include "thorin/util/print.h"
 
 #include "absl/container/flat_hash_map.h"

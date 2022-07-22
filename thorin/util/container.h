@@ -5,6 +5,8 @@
 
 #include <absl/container/flat_hash_map.h>
 #include <absl/container/flat_hash_set.h>
+#include <absl/container/node_hash_map.h>
+#include <absl/container/node_hash_set.h>
 
 #include "thorin/util/hash.h"
 
@@ -107,6 +109,8 @@ struct GIDLt {
 // clang-format off
 template<class K, class V> using GIDMap     = absl::flat_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
 template<class K>          using GIDSet     = absl::flat_hash_set<K,    GIDHash<K>, GIDEq<K>>;
+template<class K, class V> using GIDNodeMap = absl::node_hash_map<K, V, GIDHash<K>, GIDEq<K>>;
+template<class K>          using GIDNodeSet = absl::node_hash_set<K,    GIDHash<K>, GIDEq<K>>;
 // clang-format on
 ///@}
 
