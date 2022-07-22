@@ -112,8 +112,7 @@ target_include_directories(libthorin
 )
 target_link_libraries(libthorin
     PUBLIC
-        absl::flat_hash_map absl::flat_hash_set
-        absl::btree_map     absl::btree_set
+        absl::flat_hash_map absl::flat_hash_set absl::btree
         ${CMAKE_DL_LIBS}
 )
 
