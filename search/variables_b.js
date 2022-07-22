@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['name_0',['name',['../classthorin_1_1Debug.html#ac9cf5b71c8294f31e2112e7498d57b57',1,'thorin::Debug']]],
+  ['name_0',['name',['../structthorin_1_1World_1_1State.html#a7fbf8218b82d63b1e67a2abdf164f3ab',1,'thorin::World::State::name()'],['../classthorin_1_1Debug.html#ac9cf5b71c8294f31e2112e7498d57b57',1,'thorin::Debug::name()']]],
   ['new_5fworld_1',['new_world',['../classthorin_1_1Rewriter.html#a54b5c3e6a1aa40e6496f15412433878a',1,'thorin::Rewriter']]],
   ['next_2',['next',['../structthorin_1_1World_1_1Arena_1_1Zone.html#a40aad751f4665fe34aa2a493e02c5355',1,'thorin::World::Arena::Zone']]],
   ['no_5fundo_3',['No_Undo',['../namespacethorin.html#a4159c79d6283964f1c81f17da2618eec',1,'thorin']]],

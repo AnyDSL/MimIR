@@ -5,10 +5,9 @@ var searchData=
   ['s64_2',['s64',['../namespacethorin.html#a3a2fb7fcec1f4e0b791f34d5f3d302cc',1,'thorin']]],
   ['s8_3',['s8',['../namespacethorin.html#ab0f99eb12483ec616d52dd577f7ae546',1,'thorin']]],
   ['schedule_4',['Schedule',['../namespacethorin.html#a8aee5aa0e98f35c8d4f186b580f158b7',1,'thorin']]],
-  ['sea_5',['Sea',['../classthorin_1_1World.html#a719f4752866517945dd792ef4d6995cb',1,'thorin::World']]],
-  ['set_6',['Set',['../classthorin_1_1CFG.html#a5627c508042392a0bdad6a46e7326804',1,'thorin::CFG']]],
-  ['sub_5ft_7',['sub_t',['../namespacethorin.html#a15ce090292f7ca88b828d15baf109838',1,'thorin']]],
-  ['super_8',['Super',['../classthorin_1_1FPPass.html#ab5b9529e4bddbda40f241c4e4be942c6',1,'thorin::FPPass']]],
-  ['symmap_9',['SymMap',['../namespacethorin.html#a3368507549c1c606d305c18939d17943',1,'thorin']]],
-  ['symset_10',['SymSet',['../namespacethorin.html#ae26bd525ba720c363612327d2d927c72',1,'thorin']]]
+  ['set_5',['Set',['../classthorin_1_1CFG.html#a5627c508042392a0bdad6a46e7326804',1,'thorin::CFG']]],
+  ['sub_5ft_6',['sub_t',['../namespacethorin.html#a15ce090292f7ca88b828d15baf109838',1,'thorin']]],
+  ['super_7',['Super',['../classthorin_1_1FPPass.html#ab5b9529e4bddbda40f241c4e4be942c6',1,'thorin::FPPass']]],
+  ['symmap_8',['SymMap',['../namespacethorin.html#a3368507549c1c606d305c18939d17943',1,'thorin']]],
+  ['symset_9',['SymSet',['../namespacethorin.html#ae26bd525ba720c363612327d2d927c72',1,'thorin']]]
 ];

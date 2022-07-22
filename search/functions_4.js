@@ -28,8 +28,8 @@ var searchData=
   ['err_25',['err',['../namespacethorin_1_1dl.html#af40487a5a6a330a23d22b9c077168b81',1,'thorin::dl::err()'],['../namespacethorin.html#a76230671e563449407228fa716175097',1,'thorin::err(Loc loc, const char *fmt, Args &amp;&amp;... args)'],['../namespacethorin.html#a98d25002a7ba5bb107f275a50a0cde9d',1,'thorin::err(Loc loc, const char *fmt, Args &amp;&amp;... args)'],['../classthorin_1_1World.html#a7836aadcfca5fde714c1af95e525ec40',1,'thorin::World::err()']]],
   ['errf_26',['errf',['../namespacethorin.html#af538a45dc8c0c242b9a51f2ea1e6afea',1,'thorin']]],
   ['errln_27',['errln',['../namespacethorin.html#a01d195c52d754394a58dec37e2913430',1,'thorin']]],
-  ['error_28',['Error',['../classthorin_1_1dl_1_1Error.html#a6d7e38d59acfedda2f73e4dc38e1a59b',1,'thorin::dl::Error']]],
-  ['error_29',['error',['../classthorin_1_1World.html#aedb109cb89e57597a75eaac9f9059f64',1,'thorin::World']]],
+  ['error_28',['error',['../classthorin_1_1World.html#aedb109cb89e57597a75eaac9f9059f64',1,'thorin::World']]],
+  ['error_29',['Error',['../classthorin_1_1dl_1_1Error.html#a6d7e38d59acfedda2f73e4dc38e1a59b',1,'thorin::dl::Error']]],
   ['eta_5frule_30',['eta_rule',['../namespacethorin.html#a9ad62aaa1872eb162b0da183bb68f3e9',1,'thorin']]],
   ['eta_5fwrap_31',['eta_wrap',['../classthorin_1_1clos_1_1ClosConvPrep.html#a8132a94e9a783a2cf985e6eba99261bc',1,'thorin::clos::ClosConvPrep']]],
   ['etaexp_32',['EtaExp',['../classthorin_1_1EtaExp.html#a8e8a283d4029c423588b839f905c3992',1,'thorin::EtaExp']]],
@@ -44,7 +44,7 @@ var searchData=
   ['extended_5fop_41',['extended_op',['../classthorin_1_1Def.html#aebc6b140f5f56f9697fed5dbefb189d1',1,'thorin::Def']]],
   ['extended_5fops_42',['extended_ops',['../classthorin_1_1Def.html#a543cbdcb17d574373aa65244dcead8f8',1,'thorin::Def']]],
   ['extension_43',['extension',['../namespacethorin_1_1dl.html#a974cb548b7ca48762ca7ee40e30b37b8',1,'thorin::dl']]],
-  ['externals_44',['externals',['../classthorin_1_1World.html#ad066f14a09e1d3897199d1a6743ae195',1,'thorin::World']]],
+  ['externals_44',['externals',['../classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840',1,'thorin::World']]],
   ['extract_45',['extract',['../classthorin_1_1World.html#ac41c5909b850b63a5ba30fae572a5a81',1,'thorin::World::extract(const Def *d, u64 i, const Def *dbg={})'],['../classthorin_1_1World.html#a3330904edf6f76876855b2d8d925accc',1,'thorin::World::extract(const Def *d, u64 a, u64 i, const Def *dbg={})'],['../classthorin_1_1World.html#a44bfd20a5ce5269ebbf3ed939e2ee8ab',1,'thorin::World::extract(const Def *d, const Def *i, const Def *dbg={})']]],
   ['extract_5funsafe_46',['extract_unsafe',['../namespacethorin_1_1core.html#a508b56d335a59fe9405c914f2f318de9',1,'thorin::core::extract_unsafe(const Def *d, const Def *i, const Def *dbg={})'],['../namespacethorin_1_1core.html#ae4dc12a85c453923fa36b40d1fc52bd4',1,'thorin::core::extract_unsafe(const Def *d, u64 i, const Def *dbg={})']]]
 ];

@@ -14,7 +14,7 @@ var searchData=
   ['def_11',['def',['../structthorin_1_1Loc.html#a77e6f2b826dd50f2c135b693c6e97c99',1,'thorin::Loc']]],
   ['def_12',['Def',['../classthorin_1_1Def.html#afe95eabc5da367ff79ed0ab4aa02e871',1,'thorin::Def']]],
   ['default_5fstream_5fdef_13',['default_stream_def',['../namespacethorin_1_1dot.html#a7bfdd9ee50f8c646fcd11211c81d663c',1,'thorin::dot']]],
-  ['defs_14',['defs',['../classthorin_1_1World.html#a7065407d99d5f4af3ced2376ef7b5b13',1,'thorin::World']]],
+  ['defs_14',['defs',['../classthorin_1_1World.html#ab7f391164545b022c56c11c0d5ea5f96',1,'thorin::World']]],
   ['delim_5fl2r_15',['delim_l2r',['../classthorin_1_1Tok.html#a79c1841c28341d3939fb264e406f0fb1',1,'thorin::Tok']]],
   ['demangle_16',['demangle',['../classthorin_1_1Axiom.html#a70e8ce8e01d698bb610ea985c6e696f3',1,'thorin::Axiom']]],
   ['dep_17',['dep',['../classthorin_1_1Def.html#a879263b966092121d459fe61732bf4a8',1,'thorin::Def']]],

@@ -1,11 +1,9 @@
 var NAVTREEINDEX15 =
 {
-"namespacethorin.html#a9b43aff9c9bc9b0b4bda21985c91bc41":[3,0,0,388],
-"namespacethorin.html#a9cdbee60798e445cd7e8d1b563be7fa6":[3,0,0,329],
 "namespacethorin.html#a9dea96748c32d7e675ee36c955025f19":[3,0,0,312],
 "namespacethorin.html#a9e01d5e916eb2f06b25e3f1308cc136d":[6,0,4,4,16,11,0],
-"namespacethorin.html#a9e7428191023b0e110e6c9e9bc7f7bcd":[6,0,4,4,16,6,0],
 "namespacethorin.html#a9e7428191023b0e110e6c9e9bc7f7bcd":[6,0,4,4,16,6,1],
+"namespacethorin.html#a9e7428191023b0e110e6c9e9bc7f7bcd":[6,0,4,4,16,6,0],
 "namespacethorin.html#aa0a62994b63462d082addeddb1c92029":[3,0,0,251],
 "namespacethorin.html#aa0f16553e8ff7a8fee4d5e7352b807fc":[3,0,0,336],
 "namespacethorin.html#aa171f9cec4330ed2febd4c8d59c9d4e7":[3,0,0,319],
@@ -30,8 +28,8 @@ var NAVTREEINDEX15 =
 "namespacethorin.html#ab1a9abc89dbfee14f1535dfbcacf5f97":[3,0,0,393],
 "namespacethorin.html#ab1ed0de0e01b65bb1ae173a42333ec6b":[3,0,0,193],
 "namespacethorin.html#ab31c89d6a2afc9d7693f7fbdd992c7fe":[3,0,0,370],
-"namespacethorin.html#ab4258beb851bb5c09dcc4e661e786bc5":[6,0,4,4,16,9,0],
 "namespacethorin.html#ab4258beb851bb5c09dcc4e661e786bc5":[6,0,4,4,16,9,1],
+"namespacethorin.html#ab4258beb851bb5c09dcc4e661e786bc5":[6,0,4,4,16,9,0],
 "namespacethorin.html#ab43fd39fce621340c65d8ce39abf0574":[6,0,4,4,16,5,0],
 "namespacethorin.html#ab43fd39fce621340c65d8ce39abf0574":[6,0,4,4,16,5,1],
 "namespacethorin.html#ab492d5bf259b9311be082f83c78b6a77":[3,0,0,334],
@@ -249,5 +247,7 @@ var NAVTREEINDEX15 =
 "namespacethorin_1_1clos.html":[3,0,0,2],
 "namespacethorin_1_1clos.html#a0aabdb9a4da6e16afb462b4ce783fec8":[3,0,0,2,8],
 "namespacethorin_1_1clos.html#a0aabdb9a4da6e16afb462b4ce783fec8a51e0df3ca5c430d39d775ec66f8c6f45":[3,0,0,2,8,0],
-"namespacethorin_1_1clos.html#a0bb1919bc2185eaa1418a2865cd2a106":[3,0,0,2,35]
+"namespacethorin_1_1clos.html#a0bb1919bc2185eaa1418a2865cd2a106":[3,0,0,2,35],
+"namespacethorin_1_1clos.html#a0e3631fc456bf06ff74feabdaeeedcfa":[3,0,0,2,26],
+"namespacethorin_1_1clos.html#a1122fce9f35c2c5825e6089b176c53d3":[3,0,0,2,30]
 };

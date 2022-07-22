@@ -40,7 +40,7 @@ var searchData=
   ['defdefset_37',['DefDefSet',['../namespacethorin.html#aaf1a7e310ceb35245e55027593cf1025',1,'thorin']]],
   ['defmap_38',['DefMap',['../namespacethorin.html#ad6fd3e5738182c43950e6e22607a7cd6',1,'thorin']]],
   ['defs_39',['Defs',['../namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16',1,'thorin']]],
-  ['defs_40',['defs',['../classthorin_1_1World.html#a7065407d99d5f4af3ced2376ef7b5b13',1,'thorin::World::defs()'],['../classthorin_1_1RecStreamer.html#a06ccf5d930f1abd10c16fce20f4d1542',1,'thorin::RecStreamer::defs()']]],
+  ['defs_40',['defs',['../classthorin_1_1World.html#ab7f391164545b022c56c11c0d5ea5f96',1,'thorin::World::defs()'],['../classthorin_1_1RecStreamer.html#a06ccf5d930f1abd10c16fce20f4d1542',1,'thorin::RecStreamer::defs()']]],
   ['defset_41',['DefSet',['../namespacethorin.html#a7fddaff34d4e4927bc748c28b49eef46',1,'thorin']]],
   ['defvec_42',['DefVec',['../namespacethorin.html#a79fff1449ba1eaecead8f607520f8574',1,'thorin']]],
   ['delim_5fl2r_43',['delim_l2r',['../classthorin_1_1Tok.html#a79c1841c28341d3939fb264e406f0fb1',1,'thorin::Tok']]],

@@ -24,7 +24,7 @@ var searchData=
   ['max_21',['max',['../classthorin_1_1RecStreamer.html#a4f162bed6c5484fe03e4223092d9def0',1,'thorin::RecStreamer']]],
   ['max_22',['Max',['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06a96995d2f451e6ea4dca3296b37f8b3f2',1,'thorin::Node::Max()'],['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67a0e44f9f96abb266c75e84006ccd66193',1,'thorin::Tag::Max()'],['../namespacethorin_1_1utf8.html#a25bc821db221db9aad00c895e937c9bb',1,'thorin::utf8::Max()']]],
   ['max_5fdialect_5fsize_23',['Max_Dialect_Size',['../classthorin_1_1Axiom.html#a939bf893516cb849960e09442f2edb7f',1,'thorin::Axiom']]],
-  ['max_5flevel_24',['max_level',['../classthorin_1_1World.html#a63da1c3903a614e33fabea89d77b7a58',1,'thorin::World']]],
+  ['max_5flevel_24',['max_level',['../classthorin_1_1World.html#a63da1c3903a614e33fabea89d77b7a58',1,'thorin::World::max_level()'],['../structthorin_1_1World_1_1State.html#a2c27c3dfaccbb913e85234dc9164e082',1,'thorin::World::State::max_level()']]],
   ['meet_25',['Meet',['../namespacethorin_1_1Node.html#a1e65379a5361d88e84c135355c0a6d06a1176c238713240939d0ce7767f2c83fd',1,'thorin::Node::Meet()'],['../namespacethorin.html#a62e7b6eac5be14e5d20aafbf32e4ec8c',1,'thorin::Meet()']]],
   ['meet_26',['meet',['../classthorin_1_1World.html#ae8b7b1a42808e32aba86c2d0d5681a5d',1,'thorin::World']]],
   ['mem_27',['Mem',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67aeec7e25eed3a85eb782a8e8be3921a49',1,'thorin::Tag']]],
