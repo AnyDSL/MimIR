@@ -33,6 +33,7 @@ int main(int argc, char** argv) {
         std::vector<size_t> breakpoints;
         std::array<std::string, Num_Backends> output;
         int verbose      = 0;
+        int opt          = 1;
         auto inc_verbose = [&](bool) { ++verbose; };
 
         // clang-format off
@@ -46,6 +47,7 @@ int main(int argc, char** argv) {
 #if THORIN_ENABLE_CHECKS
             | lyra::opt(breakpoints,     "gid"    )["-b"]["--break"        ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
 #endif
+            | lyra::opt(opt,             "level"  )["-O"]["--optimize"     ]("Optimization level (default: 1).")
             | lyra::opt(output[Dot   ],  "file"   )      ["--output-dot"   ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
             | lyra::opt(output[H     ],  "file"   )      ["--output-h"     ]("Emits a header file to be used to interface with a dialect in C++.")
             | lyra::opt(output[LL    ],  "file"   )      ["--output-ll"    ]("Compiles the Thorin program to LLVM.")
@@ -122,7 +124,7 @@ int main(int argc, char** argv) {
 
         PipelineBuilder builder;
         for (const auto& dialect : dialects) { dialect.register_passes(builder); }
-        optimize(world, builder);
+        if (opt != 0) optimize(world, builder);
 
         if (os[Thorin]) *os[Thorin] << world << std::endl;
         if (os[Dot]) dot::emit(world, *os[Dot]);
