@@ -15,10 +15,9 @@
 #include "thorin/tuple.h"
 
 #include "thorin/util/hash.h"
+#include "thorin/util/log.h"
 
 namespace thorin {
-
-enum class LogLevel { Error, Warn, Info, Verbose, Debug };
 
 class Checker;
 class DepNode;
@@ -70,12 +69,10 @@ public:
         State(std::string_view name)
             : name(name) {}
 
-        std::string name         = "module";
-        std::ostream* log_stream = nullptr;
-        LogLevel max_level       = LogLevel::Error;
-        u32 curr_gid             = 0;
-        u32 curr_sub             = 0;
-        bool pe_done             = false;
+        std::string name = "module";
+        u32 curr_gid     = 0;
+        u32 curr_sub     = 0;
+        bool pe_done     = false;
         absl::btree_set<std::string> imported_dialects;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
@@ -508,60 +505,25 @@ public:
     bool is_pe_done() const { return state_.pe_done; }
     ///@}
 
-    /// @name Logging
-    ///@{
-    std::ostream& log_stream() const { return *state_.log_stream; }
-    LogLevel max_level() const { return state_.max_level; }
-
-    void set_log_level(LogLevel max_level) { state_.max_level = max_level; }
-    void set_log_level(std::string_view max_level) { set_log_level(str2level(max_level)); }
-    void set_log_ostream(std::ostream* log_stream) { state_.log_stream = log_stream; }
-
-    template<class... Args>
-    void log(LogLevel level, Loc loc, const char* fmt, Args&&... args) {
-        if (state_.log_stream && int(level) <= int(max_level())) {
-            std::ostringstream oss;
-            oss << loc;
-            print(log_stream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
-            print(log_stream(), fmt, std::forward<Args&&>(args)...) << std::endl;
-        }
-    }
-    void log() const {} ///< for DLOG in Release build.
-
-    template<class... Args>
-    [[noreturn]] void error(Loc loc, const char* fmt, Args&&... args) {
-        log(LogLevel::Error, loc, fmt, std::forward<Args&&>(args)...);
-        std::abort();
-    }
-
-    // clang-format off
-    template<class... Args> void idef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Info, def->loc(), fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> void wdef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Warn, def->loc(), fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> void edef(const Def* def, const char* fmt, Args&&... args) { error(def->loc(), fmt, std::forward<Args&&>(args)...); }
-    // clang-format on
-
-    static std::string_view level2acro(LogLevel);
-    static LogLevel str2level(std::string_view);
-    static int level2color(LogLevel level);
-    static std::string colorize(std::string_view str, int color);
-    ///@}
-
-    /// @name stream
-    ///@{
-    std::ostream& stream(RecStreamer&, const DepNode*) const;
-    void debug_stream() const; ///< Stream thorin if World::State::max_level is LogLevel::debug.
-    void dump() const;
-    ///@}
-
     /// @name error handling
     ///@{
     void set_error_handler(std::unique_ptr<ErrorHandler>&& err);
     ErrorHandler* err() { return err_.get(); }
     ///@}
 
+    /// @name Logging
+    ///@{
+    std::ostream& stream(RecStreamer&, const DepNode*) const;
+    void debug_stream() const; ///< Stream thorin if World::State::max_level is Log::Level::debug.
+    void dump() const;
+
+    Log log;
+    ///@}
+
     friend void swap(World& w1, World& w2) {
         using std::swap;
         // clang-format off
+        swap(w1.log,       w2.log);
         swap(w1.state_,    w2.state_);
         swap(w1.arena_,    w2.arena_);
         swap(w1.data_,     w2.data_);
@@ -737,14 +699,14 @@ private:
 std::ostream& operator<<(std::ostream&, const World&);
 
 // clang-format off
-#define ELOG(...) log(thorin::LogLevel::Error,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define WLOG(...) log(thorin::LogLevel::Warn,    thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define ILOG(...) log(thorin::LogLevel::Info,    thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define VLOG(...) log(thorin::LogLevel::Verbose, thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
+#define ELOG(...) log.log(thorin::Log::Level::Error,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
+#define WLOG(...) log.log(thorin::Log::Level::Warn,    thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
+#define ILOG(...) log.log(thorin::Log::Level::Info,    thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
+#define VLOG(...) log.log(thorin::Log::Level::Verbose, thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
 #ifndef NDEBUG
-#define DLOG(...) log(thorin::LogLevel::Debug,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
+#define DLOG(...) log.log(thorin::Log::Level::Debug,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
 #else
-#define DLOG(...) log()
+#define DLOG(...)
 #endif
 // clang-format on
 

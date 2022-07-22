@@ -577,56 +577,6 @@ void World::visit(VisitFn f) const {
     }
 }
 
-/*
- * logging
- */
-
-// clang-format off
-std::string_view World::level2acro(LogLevel level) {
-    switch (level) {
-        case LogLevel::Debug:   return "D";
-        case LogLevel::Verbose: return "V";
-        case LogLevel::Info:    return "I";
-        case LogLevel::Warn:    return "W";
-        case LogLevel::Error:   return "E";
-        default: unreachable();
-    }
-}
-
-LogLevel World::str2level(std::string_view s) {
-    if (false) {}
-    else if (s == "debug"  ) return LogLevel::Debug;
-    else if (s == "verbose") return LogLevel::Verbose;
-    else if (s == "info"   ) return LogLevel::Info;
-    else if (s == "warn"   ) return LogLevel::Warn;
-    else if (s == "error"  ) return LogLevel::Error;
-    else throw std::invalid_argument("invalid log level");
-}
-
-int World::level2color(LogLevel level) {
-    switch (level) {
-        case LogLevel::Debug:   return 4;
-        case LogLevel::Verbose: return 4;
-        case LogLevel::Info:    return 2;
-        case LogLevel::Warn:    return 3;
-        case LogLevel::Error:   return 1;
-        default: unreachable();
-    }
-}
-// clang-format on
-
-#ifdef THORIN_COLOR_TERM
-std::string World::colorize(std::string_view str, int color) {
-    if (isatty(fileno(stdout))) {
-        const char c = '0' + color;
-        return "\033[1;3" + (c + ('m' + std::string(str))) + "\033[0m";
-    }
-    return std::string(str);
-}
-#else
-std::string World::colorize(std::string_view str, int) { return std::string(str); }
-#endif
-
 void World::set_error_handler(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
 
 /*

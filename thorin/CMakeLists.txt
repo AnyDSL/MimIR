@@ -88,6 +88,8 @@ add_library(libthorin
     util/hash.h
     util/indexmap.h
     util/indexset.h
+    util/log.cpp
+    util/log.h
     util/print.cpp
     util/print.h
     util/sys.cpp

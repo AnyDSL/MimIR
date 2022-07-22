@@ -317,7 +317,7 @@ std::ostream& World::stream(RecStreamer& rec, const DepNode* n) const {
 }
 
 void World::debug_stream() const {
-    if (max_level() == LogLevel::Debug) log_stream() << *this;
+    if (log.level == Log::Level::Debug) *log.ostream << *this;
 }
 
 void World::dump() const { std::cout << *this; }
