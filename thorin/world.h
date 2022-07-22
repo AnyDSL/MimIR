@@ -67,13 +67,13 @@ public:
         State(std::string_view name)
             : name(name) {}
 
-        std::string name;
-        absl::flat_hash_set<std::string, StrHash> imported_dialects;
+        std::string name         = "module";
         std::ostream* log_stream = nullptr;
         LogLevel max_level       = LogLevel::Error;
         u32 curr_gid             = 0;
         u32 curr_sub             = 0;
         bool pe_done             = false;
+        absl::flat_hash_set<std::string, StrHash> imported_dialects;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
         absl::flat_hash_set<u32, U32Hash> breakpoints;
