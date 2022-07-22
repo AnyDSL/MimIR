@@ -62,11 +62,12 @@ DefArray rewrite(Def* nom, const Def* arg) {
 }
 
 void cleanup(World& old_world) {
-    auto new_world = old_world.stub();
-
+    World new_world(old_world.state());
     Rewriter rewriter(old_world, new_world);
-    // rewriter.old2new.rehash(old_world.defs().capacity());
 
+    // bring dialects' axioms into new world.
+    // TODO making axioms external would render this step superflous
+    for (const auto& [_, ax] : old_world.axioms()) rewriter.rewrite(ax);
     for (const auto& [name, nom] : old_world.externals()) rewriter.rewrite(nom)->as_nom()->make_external();
 
     swap(rewriter.old_world, rewriter.new_world);

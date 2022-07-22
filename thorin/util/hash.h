@@ -55,7 +55,7 @@ inline hash_t murmur3_finalize(hash_t h, hash_t len) {
     return h;
 }
 
-/// use for a single value to hash
+/// Use for a single value to hash.
 inline hash_t murmur3(hash_t h) {
     h ^= h >> 16;
     h *= 0x85ebca6b;
