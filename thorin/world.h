@@ -143,7 +143,7 @@ public:
     /// @name Axiom
     ///@{
     const Axiom* axiom(Def::NormalizeFn n, const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
-        auto ax = unify<Axiom>(0, n, type, d, t, s, dbg);
+        auto ax                           = unify<Axiom>(0, n, type, d, t, s, dbg);
         return data_.axioms_[ax->flags()] = ax;
     }
     const Axiom* axiom(const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
