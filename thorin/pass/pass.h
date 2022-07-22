@@ -87,7 +87,7 @@ public:
     }
     const Proxy* as_proxy(const Def* def, u32 tag = 0) {
         auto proxy = def->as<Proxy>();
-        assert(proxy->pass() == index() && proxy->tag() == tag);
+        assert_unused(proxy->pass() == index() && proxy->tag() == tag);
         return proxy;
     }
     ///@}

@@ -86,7 +86,7 @@ protected:
 
         child().finalize(scope);
         locals_.clear();
-        assert(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
+        assert_unused(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
     }
 
     World& world_;

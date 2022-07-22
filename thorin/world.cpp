@@ -522,7 +522,7 @@ const Def* World::test(const Def* value, const Def* probe, const Def* match, con
         // TODO proper error msg
         assert(m_pi && c_pi);
         auto a = isa_lit(m_pi->dom()->arity());
-        assert(a && *a == 2);
+        assert_unused(a && *a == 2);
         assert(checker_->equiv(m_pi->dom(2, 0_s), c_pi->dom(), nullptr));
     }
 

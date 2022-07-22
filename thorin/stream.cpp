@@ -196,8 +196,7 @@ void RecStreamer::run(const DepNode* node) {
             if (def->isa<Arr>()) return ".Arr";
             if (def->isa<Pack>()) return ".pack";
             if (def->isa<Pi>()) return ".Pi";
-
-            assert(false && "unknown nominal");
+            unreachable();
         };
 
         auto nom_op0 = [&](const Def* def) -> std::ostream& {
@@ -206,8 +205,7 @@ void RecStreamer::run(const DepNode* node) {
             if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
             if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
             if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
-
-            assert(false && "unknown nominal");
+            unreachable();
         };
 
         if (nom->is_set()) {
