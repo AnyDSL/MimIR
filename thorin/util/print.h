@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <iostream>
 #include <ostream>
 #include <ranges>
@@ -46,6 +47,8 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
 
                 if constexpr (std::ranges::range<decltype(t)>) {
                     range(os, t, spec.c_str());
+                } else if constexpr (std::is_invocable_v<decltype(t)>) {
+                    std::invoke(t);
                 } else {
                     os << t;
                 }
@@ -95,7 +98,7 @@ public:
     template<class... Args>
     std::ostream& lnprint(std::ostream& os, const char* s, Args&&... args) {
         return print(os << std::endl, s, std::forward<Args>(args)...);
-    };
+    }
 
     /// @name getters
     ///@{

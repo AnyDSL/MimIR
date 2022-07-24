@@ -220,9 +220,9 @@ void RecDumper::run(const DepNode* node) {
 
         if (nom->is_set()) {
             if (auto lam = nom->isa<Lam>()) {
-                tab.print(os, ".lam {} {} ", nom->is_external() ? ".extern " : "", id(nom));
-                pattern(lam->var());
-                print(os, " -> {} = {{", lam->type()->codom());
+                tab.print(
+                    os, ".lam {} {} {} -> {} = {{", nom->is_external() ? ".extern " : "", id(nom),
+                    [&]() { pattern(lam->var()); }, lam->type()->codom());
                 ++tab;
                 tab.lnprint(os, "{}", lam->body());
                 --tab;
