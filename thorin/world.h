@@ -53,7 +53,7 @@ public:
     ///@}
 
 #if THORIN_ENABLE_CHECKS
-    /// @name Debugging Features
+    /// @name debugging features
     ///@{
     void breakpoint(size_t number);
     void enable_history(bool flag = true);
@@ -69,10 +69,11 @@ public:
         State(std::string_view name)
             : name(name) {}
 
-        std::string name = "module";
-        u32 curr_gid     = 0;
-        u32 curr_sub     = 0;
-        bool pe_done     = false;
+        std::string name    = "module";
+        u32 curr_gid        = 0;
+        u32 curr_sub        = 0;
+        bool pe_done        = false;
+        mutable bool frozen = false;
         absl::btree_set<std::string> imported_dialects;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
@@ -91,6 +92,13 @@ public:
     /// Manage global identifier - a unique number for each Def.
     u32 curr_gid() const { return state_.curr_gid; }
     u32 next_gid() { return ++state_.curr_gid; }
+
+    bool freeze(bool on = true) const {
+        bool old      = state_.frozen;
+        state_.frozen = on;
+        return old;
+    }
+    bool is_frozen() const { return state_.frozen; }
     ///@}
 
     /// @name manage nodes
@@ -553,17 +561,24 @@ private:
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
-        auto [i, ins] = data_.defs_.emplace(def);
-        if (ins) {
-#if THORIN_ENABLE_CHECKS
-            if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
-#endif
-            def->finalize();
-            return def;
+
+        if (is_frozen()) {
+            --state_.curr_gid;
+            auto i = defs().find(def);
+            arena_.deallocate<T>(def);
+            if (i != defs().end()) return static_cast<const T*>(*i);
+            return nullptr;
         }
 
-        arena_.deallocate<T>(def);
-        return static_cast<const T*>(*i);
+        if (auto [i, ins] = data_.defs_.emplace(def); !ins) {
+            arena_.deallocate<T>(def);
+            return static_cast<const T*>(*i);
+        }
+#if THORIN_ENABLE_CHECKS
+        if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+#endif
+        def->finalize();
+        return def;
     }
 
     template<class T, class... Args>

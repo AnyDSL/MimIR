@@ -223,10 +223,15 @@ void RecStreamer::run(const DepNode* node) {
                 tab.print(os, "{} {}{}: {}", nom_prefix(nom), nom->is_external() ? ".extern " : "", id(nom),
                           nom->type());
                 nom_op0(nom);
-                if (nom->has_var()) {
+                if (nom->var()) {
                     auto e = nom->num_vars();
                     print(os, ", @{}", e == 1 ? "" : "(");
-                    range(os, nom->vars(), [&](auto def) { os << def->unique_name(); });
+                    range(os, nom->vars(), [&](auto def) {
+                        if (def)
+                            os << def->unique_name();
+                        else
+                            os << "<TODO>";
+                    });
                     if (e != 1) print(os, ")");
                 }
                 print(os, " = {{");
@@ -259,7 +264,9 @@ void RecStreamer::run(const DepNode* node) {
 }
 
 void RecStreamer::pattern(const Def* def) {
-    if (def->num_projs() == 1) {
+    if (!def) {
+        print(os, "_");
+    } else if (def->num_projs() == 1) {
         print(os, "{}: {}", def->unique_name(), def->type());
     } else {
         auto projs = def->projs();
@@ -308,15 +315,16 @@ void Def::dump(size_t max) const { stream(std::cout, max) << std::endl; }
 
 // TODO polish this
 std::ostream& operator<<(std::ostream& os, const World& world) {
-    // auto old_gid = curr_gid();
+    world.freeze(true);
+    auto old_gid = world.curr_gid();
 #if 1
     DepTree dep(world);
-
     RecStreamer rec(os, 0);
     for (auto& import : world.imported()) print(os, ".import {};\n", import);
 
     for (auto child : dep.root()->children()) world.stream(rec, child) << std::endl;
-    // assert_unused(old_gid == curr_gid());
+    assert_unused(old_gid == world.curr_gid());
+    world.freeze(false);
     return os;
 #else
     RecStreamer rec(s, std::numeric_limits<size_t>::max());

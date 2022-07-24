@@ -333,8 +333,6 @@ public:
     ///@{
     /// Retrieve Var for *nominals*.
 
-    /// Only returns ap Var for this *nom*inal if it has ever been created.
-    const Var* has_var() { return var_ ? var() : nullptr; }
     const Var* var(const Def* dbg = {});
     THORIN_PROJ(var, )
     ///@}
@@ -384,10 +382,9 @@ protected:
     flags_t flags_;
     uint8_t node_;
     unsigned nom_    : 1;
-    unsigned var_    : 1;
     unsigned dep_    : 2;
     unsigned proxy_  : 1;
-    unsigned pading_ : 3;
+    unsigned pading_ : 4;
     u16 curry_;
     hash_t hash_;
     u32 gid_;

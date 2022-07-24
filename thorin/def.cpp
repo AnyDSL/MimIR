@@ -19,7 +19,6 @@ Def::Def(node_t node, const Def* type, Defs ops, flags_t flags, const Def* dbg)
     : flags_(flags)
     , node_(unsigned(node))
     , nom_(false)
-    , var_(false)
     , dep_(Dep::Bot)
     , proxy_(0)
     , num_ops_(ops.size())
@@ -43,7 +42,6 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def*
     : flags_(flags)
     , node_(node)
     , nom_(true)
-    , var_(false)
     , dep_(Dep::Nom)
     , proxy_(0)
     , num_ops_(num_ops)
@@ -279,10 +277,7 @@ void Def::finalize() {
     }
 
     assert(!dbg() || dbg()->no_dep());
-    if (auto var = isa<Var>()) {
-        var->nom()->var_ = true;
-        dep_             = Dep::Var;
-    }
+    if (isa<Var>()) dep_ = Dep::Var;
 
     if (isa<Proxy>()) {
         proxy_ = true;
