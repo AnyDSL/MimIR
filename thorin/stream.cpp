@@ -278,9 +278,7 @@ void RecDumper::pattern(const Def* def) {
         print(os, "{}: {}", def->unique_name(), def->type());
     } else {
         auto projs = def->projs();
-        print(os, "{}::(", def->unique_name());
-        range(os, projs, [&](const Def* proj) { pattern(proj); });
-        print(os, ")");
+        print(os, "{}::({, })", def->unique_name(), Elem(projs, [&](auto proj) { pattern(proj); }));
     }
 }
 

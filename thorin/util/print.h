@@ -28,6 +28,25 @@ std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
     return os;
 }
 
+template<class R, class F>
+struct Elem {
+    static constexpr bool is_elem = true;
+
+    Elem(const R& range, const F& f)
+        : range(range)
+        , f(f) {}
+
+    const R range;
+    const F f;
+};
+
+template<typename T>
+concept Elemable = requires(T elem)
+{
+    elem.range;
+    elem.f;
+};
+
 bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 std::ostream& print(std::ostream& os, const char* s);
 
@@ -45,10 +64,12 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
                 while (*s != '\0' && *s != '}') spec.push_back(*s++);
                 assert(*s == '}' && "unmatched closing brace '}' in format string");
 
-                if constexpr (std::ranges::range<decltype(t)>) {
-                    range(os, t, spec.c_str());
-                } else if constexpr (std::is_invocable_v<decltype(t)>) {
+                if constexpr (std::is_invocable_v<decltype(t)>) {
                     std::invoke(t);
+                } else if constexpr (std::ranges::range<decltype(t)>) {
+                    range(os, t, spec.c_str());
+                } else if constexpr (Elemable<decltype(t)>) {
+                    range(os, t.range, t.f, spec.c_str());
                 } else {
                     os << t;
                 }
