@@ -41,8 +41,7 @@ struct Elem {
 };
 
 template<typename T>
-concept Elemable = requires(T elem)
-{
+concept Elemable = requires(T elem) {
     elem.range;
     elem.f;
 };
