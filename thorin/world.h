@@ -20,9 +20,7 @@
 namespace thorin {
 
 class Checker;
-class DepNode;
 class ErrorHandler;
-class RecStreamer;
 class Scope;
 
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
@@ -529,11 +527,11 @@ public:
     ErrorHandler* err() { return err_.get(); }
     ///@}
 
-    /// @name Logging
+    /// @name dumping/logging
     ///@{
-    std::ostream& stream(RecStreamer&, const DepNode*) const;
-    void debug_stream() const; ///< Stream thorin if World::State::max_level is Log::Level::debug.
+    void dump(std::ostream&) const;
     void dump() const;
+    void debug_dump() const; ///< Dump thorin in Debug build if World::log::level is Log::Level::Debug.
 
     Log log;
     ///@}
@@ -720,7 +718,5 @@ private:
 
     friend DefArray Def::reduce(const Def*);
 };
-
-std::ostream& operator<<(std::ostream&, const World&);
 
 } // namespace thorin

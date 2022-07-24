@@ -145,13 +145,14 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
 
 //------------------------------------------------------------------------------
 
-class RecStreamer {
+class RecDumper {
 public:
-    RecStreamer(std::ostream& os, size_t max)
+    RecDumper(std::ostream& os, size_t max)
         : os(os)
         , max(max) {}
 
     void run(const DepNode* node = nullptr);
+    void asdf(const DepNode* n);
     void run(const Def*);
     void pattern(const Def*);
 
@@ -162,7 +163,7 @@ public:
     DefSet defs;
 };
 
-void RecStreamer::run(const Def* def) {
+void RecDumper::run(const Def* def) {
     if (!defs.emplace(def).second) return;
 
     for (auto op : def->ops()) { // for now, don't include debug info and type
@@ -182,7 +183,14 @@ void RecStreamer::run(const Def* def) {
     }
 }
 
-void RecStreamer::run(const DepNode* node) {
+void RecDumper::asdf(const DepNode* n) {
+    if (auto nom = n->nom()) {
+        noms.push(nom);
+        run(n);
+    }
+}
+
+void RecDumper::run(const DepNode* node) {
     while (!noms.empty()) {
         auto nom = noms.pop();
         os << std::endl << std::endl;
@@ -217,8 +225,8 @@ void RecStreamer::run(const DepNode* node) {
                 print(os, " -> {} = {{", lam->type()->codom());
                 ++tab;
                 tab.lnprint(os, "{}", lam->body());
-                tab.lnprint(os, "}};");
                 --tab;
+                tab.lnprint(os, "}};");
             } else {
                 tab.print(os, "{} {}{}: {}", nom_prefix(nom), nom->is_external() ? ".extern " : "", id(nom),
                           nom->type());
@@ -263,7 +271,7 @@ void RecStreamer::run(const DepNode* node) {
     }
 }
 
-void RecStreamer::pattern(const Def* def) {
+void RecDumper::pattern(const Def* def) {
     if (!def) {
         print(os, "_");
     } else if (def->num_projs() == 1) {
@@ -288,7 +296,7 @@ std::ostream& Def::stream(std::ostream& os, size_t max) const {
         return let(os, tab);
     }
 
-    RecStreamer rec(os, --max);
+    RecDumper rec(os, --max);
     if (auto nom = isa_nom()) {
         rec.noms.push(nom);
         rec.run();
@@ -313,45 +321,27 @@ std::ostream& operator<<(std::ostream& os, std::pair<const Def*, const Def*> p) 
 void Def::dump() const { std::cout << this << std::endl; }
 void Def::dump(size_t max) const { stream(std::cout, max) << std::endl; }
 
-// TODO polish this
-std::ostream& operator<<(std::ostream& os, const World& world) {
-    world.freeze(true);
-    auto old_gid = world.curr_gid();
-#if 1
-    DepTree dep(world);
-    RecStreamer rec(os, 0);
-    for (auto& import : world.imported()) print(os, ".import {};\n", import);
+void World::dump(std::ostream& os) const {
+    freeze(true);
+    auto old_gid = curr_gid();
 
-    for (auto child : dep.root()->children()) world.stream(rec, child) << std::endl;
-    assert_unused(old_gid == world.curr_gid());
-    world.freeze(false);
-    return os;
-#else
-    RecStreamer rec(s, std::numeric_limits<size_t>::max());
-    s << "module '" << name();
+    DepTree dep(*this);
+    RecDumper rec(os, 0);
+    for (auto& import : imported()) print(os, ".import {};\n", import);
 
-    for (const auto& [name, nom] : externals()) {
-        rec.noms.push(nom);
-        rec.run();
+    for (auto child : dep.root()->children()) {
+        rec.asdf(child);
+        os << std::endl;
     }
 
-    return s.endl();
-#endif
+    assert_unused(old_gid == curr_gid());
+    freeze(false);
 }
 
-std::ostream& World::stream(RecStreamer& rec, const DepNode* n) const {
-    if (auto nom = n->nom()) {
-        rec.noms.push(nom);
-        rec.run(n);
-    }
+void World::dump() const { dump(std::cout); }
 
-    return rec.os;
+void World::debug_dump() const {
+    if (log.level == Log::Level::Debug) dump(*log.ostream);
 }
-
-void World::debug_stream() const {
-    if (log.level == Log::Level::Debug) *log.ostream << *this;
-}
-
-void World::dump() const { std::cout << *this; }
 
 } // namespace thorin

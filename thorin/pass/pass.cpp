@@ -45,7 +45,7 @@ void PassMan::run() {
     for (size_t i = 0; i != num; ++i) curr_state().data[i] = passes_[i]->alloc();
 
     for (auto&& pass : passes_) world().ILOG(" + {}", pass->name());
-    world().debug_stream();
+    world().debug_dump();
 
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (const auto& [_, nom] : externals) {
@@ -83,7 +83,7 @@ void PassMan::run() {
     world().ILOG("finished");
     pop_states(0);
 
-    world().debug_stream();
+    world().debug_dump();
     cleanup(world());
 }
 

@@ -126,7 +126,7 @@ int main(int argc, char** argv) {
         for (const auto& dialect : dialects) { dialect.register_passes(builder); }
         if (opt != 0) optimize(world, builder);
 
-        if (os[Thorin]) *os[Thorin] << world << std::endl;
+        if (os[Thorin]) world.dump(*os[Thorin]);
         if (os[Dot]) dot::emit(world, *os[Dot]);
 
         if (os[LL]) {
