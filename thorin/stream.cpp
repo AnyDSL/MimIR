@@ -282,7 +282,7 @@ void RecDumper::dump_ptrn(const Def* def, const Def* type) {
         print(os, "{}: {}", def->unique_name(), def->type());
     } else {
         auto projs = def->projs();
-        size_t i = 0;
+        size_t i   = 0;
         print(os, "{}::({, })", def->unique_name(), Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }));
     }
 }
