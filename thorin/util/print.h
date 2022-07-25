@@ -11,23 +11,6 @@
 
 namespace thorin {
 
-template<class R>
-std::ostream& range(std::ostream& os, const R& r, const char* sep = ", ") {
-    return range(
-        os, r, [&os](const auto& x) { os << x; }, sep);
-}
-
-template<class R, class F>
-std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
-    const char* cur_sep = "";
-    for (const auto& elem : r) {
-        for (auto i = cur_sep; *i != '\0'; ++i) os << *i;
-        f(elem);
-        cur_sep = sep;
-    }
-    return os;
-}
-
 template<class R, class F>
 struct Elem {
     static constexpr bool is_elem = true;
@@ -45,6 +28,27 @@ concept Elemable = requires(T elem) {
     elem.range;
     elem.f;
 };
+
+template<class R>
+std::ostream& range(std::ostream& os, const R& r, const char* sep = ", ") {
+    return range(
+        os, r, [&os](const auto& x) { os << x; }, sep);
+}
+
+template<class R, class F>
+std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
+    const char* cur_sep = "";
+    for (const auto& elem : r) {
+        for (auto i = cur_sep; *i != '\0'; ++i) os << *i;
+            if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>) {
+                std::invoke(f, os, elem);
+            } else {
+                std::invoke(f, elem);
+            }
+        cur_sep = sep;
+    }
+    return os;
+}
 
 bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 std::ostream& print(std::ostream& os, const char* s);
@@ -65,10 +69,12 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
 
                 if constexpr (std::is_invocable_v<decltype(t)>) {
                     std::invoke(t);
-                } else if constexpr (std::ranges::range<decltype(t)>) {
-                    range(os, t, spec.c_str());
+                } else if constexpr (std::is_invocable_v<decltype(t), std::ostream&>) {
+                    std::invoke(t, os);
                 } else if constexpr (Elemable<decltype(t)>) {
                     range(os, t.range, t.f, spec.c_str());
+                } else if constexpr (std::ranges::range<decltype(t)>) {
+                    range(os, t, spec.c_str());
                 } else {
                     os << t;
                 }
