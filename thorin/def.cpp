@@ -186,6 +186,7 @@ const Var* Def::var(const Def* dbg) {
     if (auto arr  = isa<Arr  >()) return w.var(w.type_int(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
     if (auto pack = isa<Pack >()) return w.var(w.type_int(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
     if (isa_bound(this)) return w.var(this, this,  dbg);
+    if (isa<Global>())   return nullptr;
     unreachable();
 }
 
