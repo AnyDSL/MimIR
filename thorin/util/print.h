@@ -30,26 +30,24 @@ concept Elemable = requires(T elem) {
 };
 
 namespace detail {
+    template<class R, class F>
+    std::ostream& range(std::ostream & os, const R& r, F f, const char* sep = ", ") {
+        const char* cur_sep = "";
+        for (const auto& elem : r) {
+            for (auto i = cur_sep; *i != '\0'; ++i) os << *i;
 
-template<class R, class F>
-std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
-    const char* cur_sep = "";
-    for (const auto& elem : r) {
-        for (auto i = cur_sep; *i != '\0'; ++i) os << *i;
-
-        if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>) {
-            std::invoke(f, os, elem);
-        } else {
-            std::invoke(f, elem);
+            if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>) {
+                std::invoke(f, os, elem);
+            } else {
+                std::invoke(f, elem);
+            }
+            cur_sep = sep;
         }
-        cur_sep = sep;
+        return os;
     }
-    return os;
-}
 
-bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
-
-}
+    bool match2nd(std::ostream & os, const char* next, const char*& s, const char c);
+} // namespace detail
 
 /// Base case.
 std::ostream& print(std::ostream& os, const char* s);
@@ -108,7 +106,8 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
                 } else if constexpr (Elemable<decltype(t)>) {
                     detail::range(os, t.range, t.f, spec.c_str());
                 } else if constexpr (std::ranges::range<decltype(t)>) {
-                    detail::range(os, t, [&](const auto& x) { os << x; }, spec.c_str());
+                    detail::range(
+                        os, t, [&](const auto& x) { os << x; }, spec.c_str());
                 } else {
                     os << t;
                 }

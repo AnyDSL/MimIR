@@ -34,6 +34,6 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c) 
     return false;
 }
 
-}
+} // namespace detail
 
 } // namespace thorin
