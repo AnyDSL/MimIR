@@ -40,11 +40,12 @@ std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
     const char* cur_sep = "";
     for (const auto& elem : r) {
         for (auto i = cur_sep; *i != '\0'; ++i) os << *i;
-            if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>) {
-                std::invoke(f, os, elem);
-            } else {
-                std::invoke(f, elem);
-            }
+
+        if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>) {
+            std::invoke(f, os, elem);
+        } else {
+            std::invoke(f, elem);
+        }
         cur_sep = sep;
     }
     return os;
