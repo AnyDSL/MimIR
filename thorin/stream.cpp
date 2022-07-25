@@ -158,7 +158,9 @@ public:
 
     void run(const DepNode* node = nullptr);
     void rec(const Def*);
-    void rec(Defs defs) { for (auto def : defs) rec(def); }
+    void rec(Defs defs) {
+        for (auto def : defs) rec(def);
+    }
     void dump(const DepNode* n);
     void dump_ptrn(const Def*, const Def*);
     void dump(const DepNode*, Lam*);
@@ -287,8 +289,9 @@ void RecDumper::dump_ptrn(const Def* def, const Def* type) {
         if (projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; })) {
             print(os, "{}: {}", def->unique_name(), type);
         } else {
-            size_t i   = 0;
-            print(os, "{}::[{, }]", def->unique_name(), Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }));
+            size_t i = 0;
+            print(os, "{}::[{, }]", def->unique_name(),
+                  Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }));
         }
     }
 }
