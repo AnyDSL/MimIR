@@ -158,7 +158,7 @@ public:
     void run(const DepNode* node = nullptr);
     void dump(const DepNode* n);
     void dump(const Def*);
-    void dump_pattern(const Def*);
+    void dump_ptrn(const Def*, const Def*);
 
     std::ostream& os;
     Tab tab;
@@ -198,8 +198,8 @@ void RecDumper::run(const DepNode* node) {
         if (nom->is_set()) {
             if (auto lam = nom->isa<Lam>()) {
                 tab.print(
-                    os, ".lam {} {} {} -> {} = {{", nom->is_external() ? ".extern " : "", id(nom),
-                    [&]() { dump_pattern(lam->var()); }, lam->type()->codom());
+                    os, ".lam {}{} {} -> {} = {{", nom->is_external() ? ".extern " : " ", id(nom),
+                    [&]() { dump_ptrn(lam->var(), lam->type()->dom()); }, lam->type()->codom());
                 ++tab;
                 tab.lnprint(os, "{}", lam->body());
                 --tab;
@@ -275,14 +275,15 @@ void RecDumper::dump(const Def* def) {
     }
 }
 
-void RecDumper::dump_pattern(const Def* def) {
+void RecDumper::dump_ptrn(const Def* def, const Def* type) {
     if (!def) {
-        print(os, "_");
+        print(os, "_: {}", type);
     } else if (def->num_projs() == 1) {
         print(os, "{}: {}", def->unique_name(), def->type());
     } else {
         auto projs = def->projs();
-        print(os, "{}::({, })", def->unique_name(), Elem(projs, [&](auto proj) { dump_pattern(proj); }));
+        size_t i = 0;
+        print(os, "{}::({, })", def->unique_name(), Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }));
     }
 }
 
