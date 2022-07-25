@@ -298,13 +298,13 @@ void RecDumper::dump_ptrn(const Def* def, const Def* type) {
 
 void RecDumper::dump(const DepNode* node, Lam* lam) {
     // TODO filter
-    bool is_cn = lam->type()->is_cn();
-    tab.print(
-        os, "{} {}{} {} {}= {{", is_cn ? ".cn" : ".lam", external(lam), id(lam),
-        [&]() { dump_ptrn(lam->var(), lam->type()->dom()); },
-        [&]() {
-            if (!is_cn) print(os, "-> {} ", lam->type()->codom());
-        });
+    auto ptrn = [&]() { dump_ptrn(lam->var(), lam->type()->dom()); };
+    if (lam->type()->is_cn()) {
+        tab.print(os, ".cn {}{} {} = {{", external(lam), id(lam), ptrn);
+    } else {
+        tab.print(os, ".lam {}{} {} -> {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
+    }
+
     ++tab;
     if (node) {
         for (auto child : node->children())
