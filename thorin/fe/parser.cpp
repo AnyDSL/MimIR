@@ -735,13 +735,12 @@ void Parser::parse_nom_fun() {
     if (external) lam->make_external();
     scopes_.bind(outer, sym, lam);
     dom_p->bind(scopes_, lam_var);
+
     if (accept(Tok::Tag::T_assign)) {
         auto body = parse_expr("body of a lambda");
         lam->set(false, body);
-    } else {
-        expect(Tok::Tag::T_semicolon, "end of lambda");
-        lam->set(nullptr, nullptr);
     }
+    expect(Tok::Tag::T_semicolon, "end of lambda");
 
     scopes_.pop(); // lam scope
 }
