@@ -49,6 +49,7 @@ World::World(const State& state)
     data_.lit_nat_0_   = lit_nat(0);
     data_.lit_nat_1_   = lit_nat(1);
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
+    data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
     auto nat           = type_nat();
 
     { // int/real: w: Nat -> *

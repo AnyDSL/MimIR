@@ -209,6 +209,7 @@ public:
         return unify<Lam>(2, pi, filter, body, dbg);
     }
     const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_tt(), body, dbg); }
+    Lam* exit() { return data_.exit_; } ///< Used as a dummy exit node within Scope.
     ///@}
 
     /// @name App
@@ -707,6 +708,7 @@ private:
         const Axiom* type_int_;
         const Axiom* type_real_;
         const Axiom* zip_;
+        Lam* exit_;
         absl::btree_map<u64, const Axiom*> axioms_;
         absl::btree_map<std::string, Def*> externals_;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs_;

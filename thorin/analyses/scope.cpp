@@ -16,7 +16,7 @@ namespace thorin {
 Scope::Scope(Def* entry)
     : world_(entry->world())
     , entry_(entry)
-    , exit_(world().nom_lam(world().cn(world().type_bot()), world_.dbg("exit"))) {
+    , exit_(world().exit()) {
     run();
 }
 
