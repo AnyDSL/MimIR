@@ -25,7 +25,7 @@ void DS2CPS::rewrite_lam(Lam* lam) {
     if (auto i = rewritten_.find(lam); i != rewritten_.end()) return;
 
     Lam* prev = curr_lam_;
-    curr_lam_  = lam;
+    curr_lam_ = lam;
 
     auto ty     = lam->type()->as<Pi>();
     auto arg_ty = ty->dom();
@@ -55,6 +55,8 @@ const Def* DS2CPS::rewrite_(const Def* def) {
     if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
 
     if (auto lam = def->isa_nom<Lam>()) {
+        if (!isa_workable(lam)) return lam;
+
         auto ty = lam->type();
         if (!ty->is_cn()) {
             // extend ds function with return continuation
@@ -150,8 +152,9 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
                     return rewrite_(args[i]);
                 }
             });
-            auto cps_call                       = world.app(lam_cps, ext_args, world.dbg("cps_call"));
-            rewritten_bodies_[curr_lam_->body()] = cps_call;
+
+            auto cps_call = world.app(lam_cps, ext_args, world.dbg("cps_call"));
+            if (curr_lam_->body()) rewritten_bodies_[curr_lam_->body()] = cps_call;
             world.DLOG("  overwrite body {} of {} : {} with {} : {}\n", curr_lam_->body(), curr_lam_, curr_lam_->type(),
                        cps_call->unique_name(), cps_call->type());
 
