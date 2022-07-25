@@ -143,6 +143,10 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     return print(os, ".{}#{} ({, })", u->node_name(), u->flags(), u->ops());
 }
 
+std::ostream& let(Tab& tab, std::ostream& os, const Def* def) {
+    return tab.lnprint(os, ".let {}: {} = {};", def->unique_name(), def->type(), Unwrap(def));
+}
+
 //------------------------------------------------------------------------------
 
 class RecDumper {
@@ -152,9 +156,9 @@ public:
         , max(max) {}
 
     void run(const DepNode* node = nullptr);
-    void asdf(const DepNode* n);
-    void run(const Def*);
-    void pattern(const Def*);
+    void dump(const DepNode* n);
+    void dump(const Def*);
+    void dump_pattern(const Def*);
 
     std::ostream& os;
     Tab tab;
@@ -162,33 +166,6 @@ public:
     unique_queue<NomSet> noms;
     DefSet defs;
 };
-
-void RecDumper::run(const Def* def) {
-    if (!defs.emplace(def).second) return;
-
-    for (auto op : def->ops()) { // for now, don't include debug info and type
-        if (auto nom = op->isa_nom()) {
-            if (max != 0) {
-                if (noms.push(nom)) --max;
-            }
-        } else {
-            run(op);
-        }
-    }
-
-    if (auto nom = def->isa_nom()) {
-        tab.lnprint(os, "{}", Unwrap(nom));
-    } else if (!Unwrap(def)) {
-        def->let(os, tab);
-    }
-}
-
-void RecDumper::asdf(const DepNode* n) {
-    if (auto nom = n->nom()) {
-        noms.push(nom);
-        run(n);
-    }
-}
 
 void RecDumper::run(const DepNode* node) {
     while (!noms.empty()) {
@@ -222,7 +199,7 @@ void RecDumper::run(const DepNode* node) {
             if (auto lam = nom->isa<Lam>()) {
                 tab.print(
                     os, ".lam {} {} {} -> {} = {{", nom->is_external() ? ".extern " : "", id(nom),
-                    [&]() { pattern(lam->var()); }, lam->type()->codom());
+                    [&]() { dump_pattern(lam->var()); }, lam->type()->codom());
                 ++tab;
                 tab.lnprint(os, "{}", lam->body());
                 --tab;
@@ -246,7 +223,7 @@ void RecDumper::run(const DepNode* node) {
                 ++tab;
 
                 if (auto lam = nom->isa<Lam>()) {
-                    run(lam->filter());
+                    dump(lam->filter());
                     tab.lnprint(os, "{},", lam->filter());
 
                     if (node) {
@@ -256,10 +233,10 @@ void RecDumper::run(const DepNode* node) {
                                 run(child);
                             }
                     }
-                    run(lam->body());
+                    dump(lam->body());
                     tab.lnprint(os, "{}", lam->body());
                 } else {
-                    run(nom);
+                    dump(nom);
                 }
 
                 --tab;
@@ -271,14 +248,41 @@ void RecDumper::run(const DepNode* node) {
     }
 }
 
-void RecDumper::pattern(const Def* def) {
+void RecDumper::dump(const DepNode* n) {
+    if (auto nom = n->nom()) {
+        noms.push(nom);
+        run(n);
+    }
+}
+
+void RecDumper::dump(const Def* def) {
+    if (!defs.emplace(def).second) return;
+
+    for (auto op : def->ops()) { // for now, don't include debug info and type
+        if (auto nom = op->isa_nom()) {
+            if (max != 0) {
+                if (noms.push(nom)) --max;
+            }
+        } else {
+            dump(op);
+        }
+    }
+
+    if (auto nom = def->isa_nom()) {
+        tab.lnprint(os, "{}", Unwrap(nom));
+    } else if (!Unwrap(def)) {
+        let(tab, os, def);
+    }
+}
+
+void RecDumper::dump_pattern(const Def* def) {
     if (!def) {
         print(os, "_");
     } else if (def->num_projs() == 1) {
         print(os, "{}: {}", def->unique_name(), def->type());
     } else {
         auto projs = def->projs();
-        print(os, "{}::({, })", def->unique_name(), Elem(projs, [&](auto proj) { pattern(proj); }));
+        print(os, "{}::({, })", def->unique_name(), Elem(projs, [&](auto proj) { dump_pattern(proj); }));
     }
 }
 
@@ -291,7 +295,7 @@ std::ostream& operator<<(std::ostream& os, const Def* def) {
 std::ostream& Def::stream(std::ostream& os, size_t max) const {
     if (max == 0) {
         Tab tab;
-        return let(os, tab);
+        return let(tab, os, this);
     }
 
     RecDumper rec(os, --max);
@@ -299,15 +303,11 @@ std::ostream& Def::stream(std::ostream& os, size_t max) const {
         rec.noms.push(nom);
         rec.run();
     } else {
-        rec.run(this);
+        rec.dump(this);
         if (max != 0) rec.run();
     }
 
     return os;
-}
-
-std::ostream& Def::let(std::ostream& os, Tab& tab) const {
-    return tab.lnprint(os, ".let {}: {} = {};", unique_name(), type(), Unwrap(this));
 }
 
 //------------------------------------------------------------------------------
@@ -328,7 +328,7 @@ void World::dump(std::ostream& os) const {
     for (auto& import : imported()) print(os, ".import {};\n", import);
 
     for (auto child : dep.root()->children()) {
-        rec.asdf(child);
+        rec.dump(child);
         os << std::endl;
     }
 

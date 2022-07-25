@@ -358,13 +358,11 @@ public:
     virtual const Def* restructure() { return nullptr; }
     ///@}
 
-    /// @name stream
+    /// @name dump/stream
     ///@{
-    std::ostream& stream(std::ostream&, Tab&) const;
-    std::ostream& stream(std::ostream&, size_t max) const;
-    std::ostream& let(std::ostream&, Tab&) const;
     void dump() const;
     void dump(size_t) const;
+    std::ostream& stream(std::ostream&, size_t max) const;
     ///@}
 
 protected:
