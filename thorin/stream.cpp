@@ -5,6 +5,8 @@
 #include "thorin/util/assert.h"
 #include "thorin/util/container.h"
 
+using namespace std::literals;
+
 namespace thorin {
 
 struct Unwrap {
@@ -104,8 +106,7 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
         return print(os, "{}#{}", ex->tuple(), ex->index());
     } else if (auto var = u->isa<Var>()) {
-        if (var->nom()->num_vars() == 1) return print(os, "{}", var->unique_name());
-        return print(os, "@{}", var->nom());
+        return print(os, "{}", var->unique_name());
     } else if (auto pi = u->isa<Pi>()) {
         if (pi->is_cn()) {
             return print(os, ".Cn {}", pi->dom());
@@ -156,9 +157,21 @@ public:
         , max(max) {}
 
     void run(const DepNode* node = nullptr);
+    void rec(const Def*);
+    void rec(Defs defs) { for (auto def : defs) rec(def); }
     void dump(const DepNode* n);
-    void dump(const Def*);
     void dump_ptrn(const Def*, const Def*);
+    void dump(const DepNode*, Lam*);
+
+    static std::string id(const Def* def) {
+        if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name();
+        return def->unique_name();
+    }
+
+    static std::string_view external(const Def* def) {
+        if (def->is_external()) return ".extern "sv;
+        return ""sv;
+    }
 
     std::ostream& os;
     Tab tab;
@@ -172,10 +185,10 @@ void RecDumper::run(const DepNode* node) {
         auto nom = noms.pop();
         os << std::endl << std::endl;
 
-        auto id = [&](const Def* def) {
-            if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name();
-            return def->unique_name();
-        };
+        if (auto lam = nom->isa<Lam>()) {
+            dump(node, lam);
+            continue;
+        }
 
         auto nom_prefix = [&](const Def* def) {
             if (def->isa<Lam>()) return ".lam";
@@ -195,57 +208,47 @@ void RecDumper::run(const DepNode* node) {
             unreachable();
         };
 
-        if (nom->is_set()) {
-            if (auto lam = nom->isa<Lam>()) {
-                tab.print(
-                    os, ".lam {}{} {} -> {} = {{", nom->is_external() ? ".extern " : " ", id(nom),
-                    [&]() { dump_ptrn(lam->var(), lam->type()->dom()); }, lam->type()->codom());
-                ++tab;
-                tab.lnprint(os, "{}", lam->body());
-                --tab;
-                tab.lnprint(os, "}};");
-            } else {
-                tab.print(os, "{} {}{}: {}", nom_prefix(nom), nom->is_external() ? ".extern " : "", id(nom),
-                          nom->type());
-                nom_op0(nom);
-                if (nom->var()) {
-                    auto e = nom->num_vars();
-                    print(os, ", @{}");
-                    if (e != 1) {
-                        print(os, "{, }", Elem(nom->vars(), [&](auto def) {
-                                  if (def)
-                                      os << def->unique_name();
-                                  else
-                                      os << "<TODO>";
-                              }));
-                    }
-                }
-                print(os, " = {{");
-                ++tab;
-
-                if (auto lam = nom->isa<Lam>()) {
-                    dump(lam->filter());
-                    tab.lnprint(os, "{},", lam->filter());
-
-                    if (node) {
-                        for (auto child : node->children())
-                            if (auto nom = child->nom()) {
-                                noms.push(nom);
-                                run(child);
-                            }
-                    }
-                    dump(lam->body());
-                    tab.lnprint(os, "{}", lam->body());
-                } else {
-                    dump(nom);
-                }
-
-                --tab;
-                tab.lnprint(os, "}};");
-            }
-        } else {
+        if (!nom->is_set()) {
             tab.print(os, "{}: {} = {{ <unset> }};", id(nom), nom->type());
+            continue;
         }
+
+        tab.print(os, "{} {}{}: {}", nom_prefix(nom), external(nom), id(nom), nom->type());
+        nom_op0(nom);
+        if (nom->var()) {
+            if (auto e = nom->num_vars(); e != 1) {
+                print(os, "{, }", Elem(nom->vars(), [&](auto def) {
+                          if (def)
+                              os << def->unique_name();
+                          else
+                              os << "<TODO>";
+                      }));
+            } else {
+                print(os, ", @{}", nom->var()->unique_name());
+            }
+        }
+        print(os, " = {{");
+        ++tab;
+
+        if (auto lam = nom->isa<Lam>()) {
+            rec(lam->filter());
+            tab.lnprint(os, "{},", lam->filter());
+
+            if (node) {
+                for (auto child : node->children())
+                    if (auto nom = child->nom()) {
+                        noms.push(nom);
+                        run(child);
+                    }
+            }
+            rec(lam->body());
+            tab.lnprint(os, "{}", lam->body());
+        } else {
+            rec(nom);
+        }
+
+        --tab;
+        tab.lnprint(os, "}};");
     }
 }
 
@@ -256,7 +259,7 @@ void RecDumper::dump(const DepNode* n) {
     }
 }
 
-void RecDumper::dump(const Def* def) {
+void RecDumper::rec(const Def* def) {
     if (!defs.emplace(def).second) return;
 
     for (auto op : def->ops()) { // for now, don't include debug info and type
@@ -265,7 +268,7 @@ void RecDumper::dump(const Def* def) {
                 if (noms.push(nom)) --max;
             }
         } else {
-            dump(op);
+            rec(op);
         }
     }
 
@@ -278,14 +281,39 @@ void RecDumper::dump(const Def* def) {
 
 void RecDumper::dump_ptrn(const Def* def, const Def* type) {
     if (!def) {
-        print(os, "_: {}", type);
-    } else if (def->num_projs() == 1) {
-        print(os, "{}: {}", def->unique_name(), def->type());
+        os << type;
     } else {
         auto projs = def->projs();
-        size_t i   = 0;
-        print(os, "{}::({, })", def->unique_name(), Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }));
+        if (projs.size() == 1 || std::ranges::all_of(projs, [](auto def) { return !def; })) {
+            print(os, "{}: {}", def->unique_name(), type);
+        } else {
+            size_t i   = 0;
+            print(os, "{}::[{, }]", def->unique_name(), Elem(projs, [&](auto proj) { dump_ptrn(proj, type->proj(i++)); }));
+        }
     }
+}
+
+void RecDumper::dump(const DepNode* node, Lam* lam) {
+    // TODO filter
+    bool is_cn = lam->type()->is_cn();
+    tab.print(
+        os, "{} {}{} {} {}= {{", is_cn ? ".cn" : ".lam", external(lam), id(lam),
+        [&]() { dump_ptrn(lam->var(), lam->type()->dom()); },
+        [&]() {
+            if (!is_cn) print(os, "-> {} ", lam->type()->codom());
+        });
+    ++tab;
+    if (node) {
+        for (auto child : node->children())
+            if (auto nom = child->nom()) {
+                noms.push(nom);
+                run(child);
+            }
+    }
+    rec(lam->ops());
+    tab.lnprint(os, "{}", lam->body());
+    --tab;
+    tab.lnprint(os, "}};");
 }
 
 std::ostream& operator<<(std::ostream& os, const Def* def) {
@@ -305,7 +333,7 @@ std::ostream& Def::stream(std::ostream& os, size_t max) const {
         rec.noms.push(nom);
         rec.run();
     } else {
-        rec.dump(this);
+        rec.rec(this);
         if (max != 0) rec.run();
     }
 
@@ -327,7 +355,7 @@ void World::dump(std::ostream& os) const {
 
     DepTree dep(*this);
     RecDumper rec(os, 0);
-    for (auto& import : imported()) print(os, ".import {};\n", import);
+    for (const auto& import : imported()) print(os, ".import {};\n", import);
 
     for (auto child : dep.root()->children()) {
         rec.dump(child);
