@@ -313,8 +313,12 @@ void RecDumper::dump(const DepNode* node, Lam* lam) {
                 run(child);
             }
     }
-    rec(lam->ops());
-    tab.lnprint(os, "{}", lam->body());
+    if (lam->is_set()) {
+        rec(lam->ops());
+        tab.lnprint(os, "{}", lam->body());
+    } else {
+        tab.lnprint(os, " <unset> ");
+    }
     --tab;
     tab.lnprint(os, "}};");
 }
