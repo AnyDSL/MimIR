@@ -3,29 +3,27 @@
 
 .import core;
 
-.lam .extern add0: .Cn [i :%Int 256, return : .Cn %Int 256] = {
-    .ff,
+.cn .extern add0 [i :%Int 256, return : .Cn %Int 256] = {
     return (%core.wrap.add (0, 256) (i, 0 : (%Int 256)))
 };
 
-// CHECK-DAG: add0: .Cn [(%Int 256), .Cn (%Int 256)], @(_[[valId:[0-9]+]], _[[retId:[0-9]+]]) = {
-// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] _[[valId]];
+// CHECK-DAG: add0 __{{[0-9]+}}::[i_[[valId:[0-9]+]]: (%Int 256), return_[[retId:[0-9]+]]: .Cn (%Int 256)]
+// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = return_[[etaId:[0-9]+]] i_[[valId]];
 // CHECK-DAG: _[[appId]]
 
-// CHECK-DAG: _[[etaId]]: .Cn (%Int 256), @_[[etaVar:[0-9]+]] = {
-// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] _[[etaVar]];
-// CHECK-DAG: _[[appRetId]]
+// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9]+]]: (%Int 256)
+// CHECK-DAG: return_[[appRetId:[0-9]+]]: ⊥:★ = return_[[retId]] _[[etaVar]];
+// CHECK-DAG: return_[[appRetId]]
 
-.lam .extern add_lit: .Cn [return : .Cn %Int 256] = {
-    .ff,
+.cn .extern add_lit [return : .Cn %Int 256] = {
     return (%core.wrap.add (0, 256) (6 : (%Int 256), 0 : (%Int 256)))
 };
 
-// CHECK-DAG: add_lit: .Cn .Cn (%Int 256), @_[[retId:[0-9]+]] = {
-// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] 6:(%Int 256);
+// CHECK-DAG: add_lit __[[retId:[0-9]+]]: .Cn (%Int 256)
+// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = __[[etaId:[0-9]+]] 6:(%Int 256);
 // CHECK-DAG: _[[appId]]
 
-// CHECK-DAG: _[[etaId]]: .Cn (%Int 256), @_[[etaVar:[0-9]+]] = {
-// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] _[[etaVar]];
+// CHECK-DAG: __[[etaId]] _[[etaVar:[0-9]+]]: (%Int 256)
+// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = __[[retId]] _[[etaVar]];
 // CHECK-DAG: _[[appRetId]]
 

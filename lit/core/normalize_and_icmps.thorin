@@ -3,8 +3,7 @@
 
 .import core;
 
-.lam .extern and: .Cn [a : %Int 2, b : %Int 2, return : .Cn %Int 2] = {
-    .ff,
+.cn .extern and [a : %Int 2, b : %Int 2, return : .Cn %Int 2] = {
     return
     (%core.bit2._and 2
         (%core.icmp.uge 2
@@ -13,13 +12,11 @@
             (a, b)))
 };
 
-// CHECK-DAG: .lam .extern and: .Cn [(%Int 2), (%Int 2), .Cn (%Int 2)], @(_[[aId:[0-9]+]], _[[bId:[0-9]+]], _[[retId:[0-9]+]]) = {
-// CHECK-DAG: 0:(%Int 2),
-// CHECK-DAG: .let _[[cmpId:[0-9]+]]: (%Int 2) = %core.icmp.xYGle 2:.Nat (_[[aId]], _[[bId]]);
-// CHECK-DAG: .let _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] _[[cmpId]];
+// CHECK-DAG: .cn .extern and __{{[0-9]+}}::[a_[[aId:[0-9]+]]: (%Int 2), b_[[bId:[0-9]+]]: (%Int 2), return_[[retId:[0-9]+]]: .Cn (%Int 2)]
+// CHECK-DAG: .let _[[cmpId:[0-9]+]]: (%Int 2) = %core.icmp.xYGle 2:.Nat (a_[[aId]], b_[[bId]]);
+// CHECK-DAG: .let _[[appId:[0-9]+]]: ⊥:★ = return_[[etaId:[0-9]+]] _[[cmpId]];
 // CHECK-DAG: _[[appId]]
 
-// CHECK-DAG: .lam _[[etaId]]: .Cn (%Int 2), @_[[etaVar:[0-9]+]] = {
-// CHECK-DAG: 0:(%Int 2),
-// CHECK-DAG: .let _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] _[[etaVar]];
+// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9]+]]: (%Int 2)
+// CHECK-DAG: .let return_[[appRetId:[0-9]+]]: ⊥:★ = return_[[retId]] _[[etaVar]];
 // CHECK-DAG: _[[appRetId]]

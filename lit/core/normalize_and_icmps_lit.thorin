@@ -3,8 +3,7 @@
 
 .import core;
 
-.lam .extern and_lit: .Cn [return : .Cn %Int 2] = {
-    .ff,
+.cn .extern and_lit [return : .Cn %Int 2] = {
     return
     (%core.bit2._and 2
         (%core.icmp.uge 2
@@ -13,10 +12,10 @@
             (.tt, .ff)))
 };
 
-// CHECK-DAG: and_lit: .Cn .Cn (%Int 2), @_[[retId:[0-9]+]] = {
-// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = _[[etaId:[0-9]+]] 1:(%Int 2);
+// CHECK-DAG: and_lit __[[retId:[0-9]+]]: .Cn (%Int 2)
+// CHECK-DAG: _[[appId:[0-9]+]]: ⊥:★ = __[[etaId:[0-9]+]] 1:(%Int 2);
 // CHECK-DAG: _[[appId]]
 
-// CHECK-DAG: _[[etaId]]: .Cn (%Int 2), @_[[etaVar:[0-9]+]] = {
-// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = _[[retId]] _[[etaVar]];
+// CHECK-DAG: _[[etaId]] _[[etaVar:[0-9]+]]: (%Int 2)
+// CHECK-DAG: _[[appRetId:[0-9]+]]: ⊥:★ = __[[retId]] _[[etaVar]];
 // CHECK-DAG: _[[appRetId]]
