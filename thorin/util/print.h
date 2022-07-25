@@ -29,11 +29,7 @@ concept Elemable = requires(T elem) {
     elem.f;
 };
 
-template<class R>
-std::ostream& range(std::ostream& os, const R& r, const char* sep = ", ") {
-    return range(
-        os, r, [&os](const auto& x) { os << x; }, sep);
-}
+namespace detail {
 
 template<class R, class F>
 std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
@@ -52,8 +48,45 @@ std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
 }
 
 bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
+
+}
+
+/// Base case.
 std::ostream& print(std::ostream& os, const char* s);
 
+/// Provides a `printf`-like interface to format @p s with @p args and puts it into @p os.
+/// * Use '{}' as a placeholder within your format string @p s.
+/// * By default, `operator<<(std::ostream&, T)` will be used to stream the appropriate argument:
+/// ```
+/// print(os, "int: {}, float: {}", 23, 42.f);
+/// ```
+/// * You can also place a function as argument to inject arbitrary code:
+/// ```
+/// print(os, "int: {}, fun: {}, float: {}", 23, [&]() { os << "hey :)"}, 42.f);
+/// ```
+/// * There is also a variant to pass @p os to the function, if you don't have easy access to it:
+/// ```
+/// print(os, "int: {}, fun: {}, float: {}", 23, [&](auto& os) { os << "hey :)"}, 42.f);
+/// ```
+/// * You can put a `std::ranges::range` as argument.
+/// This will output a list - using the given specifier as seperator.
+/// Each element will be output via `operator<<(std::ostream&, T)`:
+/// ```
+/// std::vector<int> v = {0, 1, 2, 3};
+/// print(os, "v: {, }", v);
+/// ```
+/// * If you have a `std::ranges::range` that needs to be formatted in a more complicated way, bundle it with an Elem:
+/// ```
+/// std::vector<int> v = {3, 2, 1, 0};
+/// size_t i = 0;
+/// print(os, "v: {, }", Elem(v, [&](auto elem) { print(os, "{}: {}", i++, elem); }));
+/// ```
+/// * You again have the option to pass @p os to the bundled function:
+/// ```
+/// std::vector<int> v = {3, 2, 1, 0};
+/// size_t i = 0;
+/// print(os, "v: {, }", Elem(v, [&](auto& os, auto elem) { print(os, "{}: {}", i++, elem); }));
+/// ```
 template<class T, class... Args>
 std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
     while (*s != '\0') {
@@ -61,7 +94,7 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
 
         switch (*s) {
             case '{': {
-                if (match2nd(os, next, s, '{')) continue;
+                if (detail::match2nd(os, next, s, '{')) continue;
                 s++; // skip opening brace '{'
 
                 std::string spec;
@@ -73,9 +106,9 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
                 } else if constexpr (std::is_invocable_v<decltype(t), std::ostream&>) {
                     std::invoke(t, os);
                 } else if constexpr (Elemable<decltype(t)>) {
-                    range(os, t.range, t.f, spec.c_str());
+                    detail::range(os, t.range, t.f, spec.c_str());
                 } else if constexpr (std::ranges::range<decltype(t)>) {
-                    range(os, t, spec.c_str());
+                    detail::range(os, t, [&](const auto& x) { os << x; }, spec.c_str());
                 } else {
                     os << t;
                 }
@@ -85,7 +118,7 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
                 return print(os, s, std::forward<Args&&>(args)...);
             }
             case '}':
-                if (match2nd(os, next, s, '}')) continue;
+                if (detail::match2nd(os, next, s, '}')) continue;
                 assert(false && "unmatched/unescaped closing brace '}' in format string");
                 unreachable();
             default: os << *s++;
@@ -96,6 +129,7 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
     unreachable();
 }
 
+/// Wraps print to output a formatted `std:string`.
 template<class... Args>
 std::string fmt(const char* s, Args&&... args) {
     std::ostringstream os;
@@ -110,21 +144,28 @@ template<class... Args> std::ostream& outln(const char* fmt, Args&&... args) { r
 template<class... Args> std::ostream& errln(const char* fmt, Args&&... args) { return errf(fmt, std::forward<Args&&>(args)...) << std::endl; }
 // clang-format on
 
+/// Keeps track of indentation level.
 class Tab {
 public:
     Tab(std::string_view tab = {"    "}, size_t indent = 0)
         : tab_(tab)
         , indent_(indent) {}
 
+    /// Wraps thorin::print to prefix is it with indentation.
     template<class... Args>
     std::ostream& print(std::ostream& os, const char* s, Args&&... args) {
         for (size_t i = 0; i < indent_; ++i) os << tab_;
         return thorin::print(os, s, std::forward<Args>(args)...);
     }
-    /// Same as above but first puts a `std::endl` to @p os.
+    /// Same as Tab::print but **prepends** a `std::endl` to @p os.
     template<class... Args>
     std::ostream& lnprint(std::ostream& os, const char* s, Args&&... args) {
         return print(os << std::endl, s, std::forward<Args>(args)...);
+    }
+    /// Same as Tab::print but **appends** a `std::endl` to @p os.
+    template<class... Args>
+    std::ostream& println(std::ostream& os, const char* s, Args&&... args) {
+        return print(os, s, std::forward<Args>(args)...) << std::endl;
     }
 
     /// @name getters

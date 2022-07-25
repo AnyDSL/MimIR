@@ -210,14 +210,15 @@ void RecDumper::run(const DepNode* node) {
                 nom_op0(nom);
                 if (nom->var()) {
                     auto e = nom->num_vars();
-                    print(os, ", @{}", e == 1 ? "" : "(");
-                    range(os, nom->vars(), [&](auto def) {
-                        if (def)
-                            os << def->unique_name();
-                        else
-                            os << "<TODO>";
-                    });
-                    if (e != 1) print(os, ")");
+                    print(os, ", @{}");
+                    if (e != 1) {
+                        print(os, "{, }", Elem(nom->vars(), [&](auto def) {
+                                  if (def)
+                                      os << def->unique_name();
+                                  else
+                                      os << "<TODO>";
+                              }));
+                    }
                 }
                 print(os, " = {{");
                 ++tab;
