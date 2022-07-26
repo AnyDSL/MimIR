@@ -465,9 +465,11 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
     // p -> s::[b, ..., b]      b -> s::[b, ..., b]
     // p -> s: e                b -> s: e
     // p -> s                   b ->    e
-    if (ahead().isa(Tok::Tag::D_paren_l, Tok::Tag::D_brckt_l)) {
-        // p ->    (p, ..., p)      b ->    (p, ..., p)
+    if (ahead().isa(Tok::Tag::D_brckt_l)) {
         // p ->    [b, ..., b]      b ->    [b, ..., b]
+        return parse_tuple_ptrn(track, sym);
+    } else if (delim_l == Tok::Tag::D_paren_l && ahead().isa(Tok::Tag::D_paren_l)) {
+        // p ->    (p, ..., p)
         return parse_tuple_ptrn(track, sym);
     } else if (ahead(0).isa(Tok::Tag::M_id)) {
         // p -> s: e                b -> s::(p, ..., p)
