@@ -376,7 +376,7 @@ void World::dump(std::ostream& os) const {
 void World::dump() const { dump(std::cout); }
 
 void World::debug_dump() const {
-    if (log.level == Log::Level::Debug) dump(*log.ostream);
+    if (log().level == Log::Level::Debug) dump(*log().ostream);
 }
 
 } // namespace thorin

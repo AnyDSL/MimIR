@@ -67,6 +67,7 @@ public:
         State(std::string_view name)
             : name(name) {}
 
+        Log log;
         std::string name    = "module";
         u32 curr_gid        = 0;
         u32 curr_sub        = 0;
@@ -530,17 +531,16 @@ public:
 
     /// @name dumping/logging
     ///@{
+    const Log& log() const { return state_.log; }
+    Log& log() { return state_.log; }
     void dump(std::ostream&) const;
     void dump() const;
     void debug_dump() const; ///< Dump thorin in Debug build if World::log::level is Log::Level::Debug.
-
-    Log log;
     ///@}
 
     friend void swap(World& w1, World& w2) {
         using std::swap;
         // clang-format off
-        swap(w1.log,       w2.log);
         swap(w1.state_,    w2.state_);
         swap(w1.arena_,    w2.arena_);
         swap(w1.data_,     w2.data_);
