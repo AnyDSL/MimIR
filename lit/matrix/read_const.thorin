@@ -5,6 +5,8 @@
 // RUN: %t 1 2 3 ; test $? -eq 5
 // RUN: %t a b c d e f ; test $? -eq 5
 
+// ./build/bin/thorin -d matrix ./lit/matrix/read_const.thorin --output-thorin -
+
 .import core;
 .import mem;
 .import matrix;
@@ -14,12 +16,12 @@
     .let I32 = %Int 4294967296;
     .let MT = (2, (3,3), I32);
     .let c = 5:I32;
-    .let m = %matrix.constMat MT c;
+    .let (mem1,m) = %matrix.constMat MT (mem,c);
     .let f = %matrix.read MT;
     // .let idx : «2; (%Int 3)» = (0, 0);
     .let idx = ‹2:.Nat; 0:(%Int 3)›;
-    .let d = %matrix.read MT (m, idx);
-    return (mem, d)
+    .let (mem2,d) = %matrix.read MT (mem1,m, idx);
+    return (mem2, d)
 };
 
 // CHECK-DAG: main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_[[memId:[0-9]*]], _[[argcId:[0-9]*]], _{{[0-9]*}}, _[[returnId:[0-9]*]]) = {

@@ -86,7 +86,7 @@
 ///
 /// a constant matrix
 /// (currently: const i32 as bitfield)
-.ax %matrix.constMat: Π [n: .Nat, S: «n; .Nat», T: *] -> T -> %matrix.Mat (n,S,T);
+.ax %matrix.constMat: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,T] -> [%mem.M,%matrix.Mat (n,S,T)];
 /// 
 /// ### %matrix.transpose
 ///
@@ -112,7 +112,7 @@
 /// normalization:
 /// * read(insert)
 /// * read(const)
-.ax %matrix.read: Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), idx: «i: n; %Int S#i»] -> T, normalize_read;
+.ax %matrix.read: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M, %matrix.Mat (n,S,T), idx: «i: n; %Int S#i»] -> [%mem.M,T], normalize_read;
 /// 
 /// ### %matrix.insert
 ///
@@ -125,7 +125,7 @@
 /// normalization:
 /// * with other inserts
 /// * with initialization
-.ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), idx: «i: n; %Int S#i», val: T] -> %matrix.Mat (n,S,T), normalize_insert;
+.ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat (n,S,T), idx: «i: n; %Int S#i», val: T] -> [%mem.M,%matrix.Mat (n,S,T)], normalize_insert;
 ///
 /// ## Related operations
 ///
@@ -145,7 +145,7 @@
 /// ### %matrix.init
 ///
 /// a fresh matrix 
-.ax %matrix.init: Π [n: .Nat, S: «n; .Nat», T: *] -> %matrix.Mat (n,S,T);
+.ax %matrix.init: Π [n: .Nat, S: «n; .Nat», %mem.M, T: *] -> [%mem.M,%matrix.Mat (n,S,T)];
 ///
 /// ## Definitions and aliases
 /// 
@@ -303,6 +303,7 @@ let multiiter f n S:=
     ] -> 
     // main arguments
     [
+        mem: %mem.M, // memory
         zero: T, // initial value
         add: [T,T]->T, // reduction operation
         mul: TI->T, // inner combination
@@ -315,7 +316,7 @@ let multiiter f n S:=
                 ]
             »
     ] ->
-    %matrix.Mat (n,S,T),
+    [%mem.M, %matrix.Mat (n,S,T)],
     normalize_mapReduce;
 
 // .lam .extern snd 
