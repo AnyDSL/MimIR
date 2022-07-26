@@ -354,6 +354,8 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
                              [&](auto op) { return checker_->equiv<false>(sigma->op(0), op, dbg); }))
         return unify<Extract>(2, sigma->op(0), d, index, dbg);
 
+    if (!type->isa<Arr>()) type_err(dbg->loc(), "cannot extract from non-homogeneous sigma with non-literal index");
+
     type = type->as<Arr>()->body();
     return unify<Extract>(2, type, d, index, dbg);
 }
