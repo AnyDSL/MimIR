@@ -154,7 +154,6 @@ public:
     Loc loc() const { return loc_; }
     Tag tag() const { return tag_; }
     bool isa(Tag tag) const { return tag == tag_; }
-    bool isa(Tag t1, Tag t2) const { return t1 == tag_ || t2 == tag_; }
     // clang-format off
     u64 u()            const { assert(isa(Tag::L_u ) || isa(Tag::L_s) || isa(Tag::L_r)); return u_; }
     Sym sym()          const { assert(isa(Tag::M_id) || isa(Tag::M_ax)); return sym_; }
