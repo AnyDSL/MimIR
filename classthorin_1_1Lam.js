@@ -20,7 +20,6 @@ var classthorin_1_1Lam =
     [ "ret_var", "classthorin_1_1Lam.html#a85b13dea03fc7e6c4d7b6175e29c141a", null ],
     [ "set", "classthorin_1_1Lam.html#a787da95b16a43914cf1d98f65695fa62", null ],
     [ "set", "classthorin_1_1Lam.html#aeef1709d3575d684b57cd9902a14de20", null ],
-    [ "set", "classthorin_1_1Lam.html#ada2b7dbd09ce3863221259ce4ebc794a", null ],
     [ "set_body", "classthorin_1_1Lam.html#ac65fcbb613e0eb1121774965e0183138", null ],
     [ "set_cc", "classthorin_1_1Lam.html#af20c1c229c39614afa4c6158e94e3dd3", null ],
     [ "set_filter", "classthorin_1_1Lam.html#abd57571b6654ad789b663d3cbd93bfd3", null ],

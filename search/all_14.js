@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['u_0',['u',['../namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9a7b774effe4a349c6dd82ad4f4f21d34c',1,'thorin::u()'],['../classthorin_1_1Tok.html#a45ea45a18052d23d65cdd4f533368ed1',1,'thorin::Tok::u()']]],
+  ['u_0',['u',['../namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9a7b774effe4a349c6dd82ad4f4f21d34c',1,'thorin::u()'],['../classthorin_1_1fe_1_1Tok.html#a12e0844725bcdf270c9650b0211dd39e',1,'thorin::fe::Tok::u()']]],
   ['u1_1',['u1',['../namespacethorin.html#aa540ae7ab9303fdd42fd43309ab1f465',1,'thorin']]],
   ['u16_2',['u16',['../namespacethorin.html#ad695e536510da2b86815473a33feca75',1,'thorin']]],
   ['u2r_3',['u2r',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937ac200b49958a50fdd99489e6423235d58',1,'thorin::core::u2r()'],['../namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fac200b49958a50fdd99489e6423235d58',1,'thorin::u2r()']]],

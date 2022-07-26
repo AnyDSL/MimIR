@@ -2,6 +2,7 @@ var classthorin_1_1Sym =
 [
     [ "Sym", "classthorin_1_1Sym.html#a4835a8e93b67876f72e81d03c8b2ec43", null ],
     [ "Sym", "classthorin_1_1Sym.html#af51b2e0705b83edd3bed0f64129cd9f5", null ],
+    [ "is_anonymous", "classthorin_1_1Sym.html#a8b3802e2d3ea56eb0f94f1f9f4c5641a", null ],
     [ "loc", "classthorin_1_1Sym.html#ac289dab975200929dd4a4fdc5697a34e", null ],
     [ "operator bool", "classthorin_1_1Sym.html#a3bd324985bdadfceb0bf89c6d740550d", null ],
     [ "operator Loc", "classthorin_1_1Sym.html#a07e802cb1176c9649cd4773386c40621", null ],

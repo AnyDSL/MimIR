@@ -127,6 +127,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a50ca9a05f008fef5575476e2a801ebde"><td class="memTemplParams" colspan="2">template&lt;class AxTag &gt; </td></tr>
 <tr class="memitem:a50ca9a05f008fef5575476e2a801ebde"><td class="memTemplItemLeft" align="right" valign="top">constexpr AxTag&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1detail.html#a50ca9a05f008fef5575476e2a801ebde">base_value</a> ()</td></tr>
 <tr class="separator:a50ca9a05f008fef5575476e2a801ebde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a425b2158f0d5c5ea2d8f27542c1f8ec3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1detail.html#a425b2158f0d5c5ea2d8f27542c1f8ec3">match2nd</a> (std::ostream &amp;os, const char *next, const char *&amp;s, const char c)</td></tr>
+<tr class="separator:a425b2158f0d5c5ea2d8f27542c1f8ec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a923e8f4b4842964409d2fbf66c72d0b0"><td class="memTemplParams" colspan="2">template&lt;class R , class F &gt; </td></tr>
+<tr class="memitem:a923e8f4b4842964409d2fbf66c72d0b0"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1detail.html#a923e8f4b4842964409d2fbf66c72d0b0">range</a> (std::ostream &amp;os, const R &amp;r, F f, const char *sep=&quot;, &quot;)</td></tr>
+<tr class="separator:a923e8f4b4842964409d2fbf66c72d0b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/><h2 class="groupheader">Class Documentation</h2>
 <a name="structthorin_1_1detail_1_1Enum2DefImpl" id="structthorin_1_1detail_1_1Enum2DefImpl"></a>
@@ -226,6 +231,98 @@ template&lt;class AxTag &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00187">187</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+
+</div>
+</div>
+<a id="a425b2158f0d5c5ea2d8f27542c1f8ec3" name="a425b2158f0d5c5ea2d8f27542c1f8ec3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a425b2158f0d5c5ea2d8f27542c1f8ec3">&#9670;&nbsp;</a></span>match2nd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> thorin::detail::match2nd </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>next</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&amp;&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char&#160;</td>
+          <td class="paramname"><em>c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="print_8cpp_source.html#l00028">28</a> of file <a class="el" href="print_8cpp_source.html">print.cpp</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="print_8cpp_source.html#l00005">thorin::print()</a>.</p>
+
+</div>
+</div>
+<a id="a923e8f4b4842964409d2fbf66c72d0b0" name="a923e8f4b4842964409d2fbf66c72d0b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a923e8f4b4842964409d2fbf66c72d0b0">&#9670;&nbsp;</a></span>range()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class R , class F &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; thorin::detail::range </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const R &amp;&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">F&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>sep</em> = <code>&quot;,&#160;&quot;</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00034">34</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+
+<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">thorin::f</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00089">thorin::print()</a>.</p>
 
 </div>
 </div>

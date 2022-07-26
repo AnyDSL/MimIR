@@ -24,7 +24,6 @@ var classthorin_1_1Def =
     [ "flags", "classthorin_1_1Def.html#ae5ea4e372acd23fa84ffef357a781084", null ],
     [ "gid", "classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb", null ],
     [ "has_dep", "classthorin_1_1Def.html#aab761545cca86c2cb9835e7a94649907", null ],
-    [ "has_var", "classthorin_1_1Def.html#acf2d9b7a9181faa538aad4c0237f6f36", null ],
     [ "hash", "classthorin_1_1Def.html#ae387f672716d0aecd825f27d48f13e9e", null ],
     [ "is_external", "classthorin_1_1Def.html#a7701ec0e042a91951dcff7bf0b56573c", null ],
     [ "is_internal", "classthorin_1_1Def.html#a89257054c01a40a9c0388cf97eaab282", null ],
@@ -32,7 +31,6 @@ var classthorin_1_1Def =
     [ "is_unset", "classthorin_1_1Def.html#ad80387c2b8b00161b6285241cc1c64ed", null ],
     [ "isa_nom", "classthorin_1_1Def.html#ac79cb2db748fbf0177eb2e6c0fef3fdc", null ],
     [ "isa_structural", "classthorin_1_1Def.html#ac2017047b0b25ea75b038cb2427ea164", null ],
-    [ "let", "classthorin_1_1Def.html#a7f177a19a4aad41f60c2ce36884fea15", null ],
     [ "loc", "classthorin_1_1Def.html#aaa260e29035d724e0f5c4286b93c5f0d", null ],
     [ "make_external", "classthorin_1_1Def.html#a0478725100ec49c9cb03ae02864a78d6", null ],
     [ "make_internal", "classthorin_1_1Def.html#ab0027c07e24d090144365a0857f76d43", null ],
@@ -71,7 +69,6 @@ var classthorin_1_1Def =
     [ "set_type", "classthorin_1_1Def.html#a81d8d6f97ecc9af7eb4398f1f772cc8c", null ],
     [ "sort", "classthorin_1_1Def.html#aa6c3098861fae53f0b0a01e145736eff", null ],
     [ "stream", "classthorin_1_1Def.html#a9714c90bcd5e411c3bef59dd975e5afe", null ],
-    [ "stream", "classthorin_1_1Def.html#adcfcbebeb558a91e5e3a3e8c933e482b", null ],
     [ "stub", "classthorin_1_1Def.html#a88360b7240d92f32c6be01e52123bd0d", null ],
     [ "type", "classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90", null ],
     [ "unfold_type", "classthorin_1_1Def.html#adb0d70b94a20ed10f7385a3c6f9ccd8e", null ],
@@ -101,6 +98,5 @@ var classthorin_1_1Def =
     [ "num_ops_", "classthorin_1_1Def.html#aca8c4b92e68fac58f8c2812cdff26442", null ],
     [ "pading_", "classthorin_1_1Def.html#a92926bb427154c103b0d61db8ceb0d2a", null ],
     [ "proxy_", "classthorin_1_1Def.html#a229770e837d6fff5ea711c1f412a2bc7", null ],
-    [ "uses_", "classthorin_1_1Def.html#abefc385c0d60ba85c5e649598d20fe05", null ],
-    [ "var_", "classthorin_1_1Def.html#a2b6c0b12aef635dd84112af27d9ecb08", null ]
+    [ "uses_", "classthorin_1_1Def.html#abefc385c0d60ba85c5e649598d20fe05", null ]
 ];

@@ -5,6 +5,7 @@ var structthorin_1_1World_1_1State =
     [ "breakpoints", "structthorin_1_1World_1_1State.html#af1643faff9d340bec873f4d6d8d4b50a", null ],
     [ "curr_gid", "structthorin_1_1World_1_1State.html#afeb552a0531602017f6edf0bf84a97f3", null ],
     [ "curr_sub", "structthorin_1_1World_1_1State.html#a45d98fb49bba8b5a4a69a32f87bf2d15", null ],
+    [ "frozen", "structthorin_1_1World_1_1State.html#a14739621e08db2b9c9d4124c9c4407e4", null ],
     [ "imported_dialects", "structthorin_1_1World_1_1State.html#ab4dd2110ba1ecf253f943bf7466a0a6b", null ],
     [ "name", "structthorin_1_1World_1_1State.html#a7fbf8218b82d63b1e67a2abdf164f3ab", null ],
     [ "pe_done", "structthorin_1_1World_1_1State.html#a183dfa7bf4a431cd041f38b5728f5f09", null ],

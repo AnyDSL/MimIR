@@ -15,7 +15,7 @@ var dir_c4168c80b7484587a21dc92c326c695e =
     [ "def.h", "def_8h.html", "def_8h" ],
     [ "dialects.cpp", "dialects_8cpp.html", "dialects_8cpp" ],
     [ "dialects.h", "dialects_8h.html", "dialects_8h" ],
-    [ "error.cpp", "error_8cpp.html", "error_8cpp" ],
+    [ "error.cpp", "error_8cpp.html", null ],
     [ "error.h", "error_8h.html", "error_8h" ],
     [ "lam.cpp", "lam_8cpp.html", "lam_8cpp" ],
     [ "lam.h", "lam_8h.html", "lam_8h" ],

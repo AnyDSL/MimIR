@@ -18,9 +18,9 @@ var searchData=
   ['tbound_15',['TBound',['../classthorin_1_1TBound.html',1,'thorin']]],
   ['test_16',['Test',['../classthorin_1_1Test.html',1,'thorin']]],
   ['text_17',['TExt',['../classthorin_1_1TExt.html',1,'thorin']]],
-  ['tok_18',['Tok',['../classthorin_1_1Tok.html',1,'thorin']]],
+  ['tok_18',['Tok',['../classthorin_1_1fe_1_1Tok.html',1,'thorin::fe']]],
   ['tuple_19',['Tuple',['../classthorin_1_1Tuple.html',1,'thorin']]],
-  ['tupleptrn_20',['TuplePtrn',['../classthorin_1_1TuplePtrn.html',1,'thorin']]],
+  ['tupleptrn_20',['TuplePtrn',['../classthorin_1_1fe_1_1TuplePtrn.html',1,'thorin::fe']]],
   ['type_21',['Type',['../classthorin_1_1Type.html',1,'thorin']]],
   ['typeerror_22',['TypeError',['../classthorin_1_1TypeError.html',1,'thorin']]]
 ];

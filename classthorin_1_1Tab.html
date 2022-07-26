@@ -108,7 +108,10 @@ $(document).ready(function(){initNavTree('classthorin_1_1Tab.html',''); initResi
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="print_8h_source.html">/home/runner/work/thorin2/thorin2/thorin/util/print.h</a>&gt;</code></p>
+<p>Keeps track of indentation level.  
+ <a href="classthorin_1_1Tab.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="print_8h_source.html">thorin/util/print.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -116,7 +119,16 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a90e3e6f9586f056b9ad97c0dfc97b35f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a191ef17ecb136f7334a6dd1165e92a4c"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
 <tr class="memitem:a191ef17ecb136f7334a6dd1165e92a4c"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">print</a> (std::ostream &amp;os, const char *s, Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:a191ef17ecb136f7334a6dd1165e92a4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps <a class="el" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c" title="Base case.">thorin::print</a> to prefix is it with indentation.  <a href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c">More...</a><br /></td></tr>
 <tr class="separator:a191ef17ecb136f7334a6dd1165e92a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca529771d167c2e1ba539a41e06ad71c"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
+<tr class="memitem:aca529771d167c2e1ba539a41e06ad71c"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tab.html#aca529771d167c2e1ba539a41e06ad71c">lnprint</a> (std::ostream &amp;os, const char *s, Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:aca529771d167c2e1ba539a41e06ad71c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <a class="el" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c" title="Wraps thorin::print to prefix is it with indentation.">Tab::print</a> but <b>prepends</b> a <code>std::endl</code> to <code>os</code>.  <a href="classthorin_1_1Tab.html#aca529771d167c2e1ba539a41e06ad71c">More...</a><br /></td></tr>
+<tr class="separator:aca529771d167c2e1ba539a41e06ad71c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac254e3e3bfdd151817b18a05d2799a72"><td class="memTemplParams" colspan="2">template&lt;class... Args&gt; </td></tr>
+<tr class="memitem:ac254e3e3bfdd151817b18a05d2799a72"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tab.html#ac254e3e3bfdd151817b18a05d2799a72">println</a> (std::ostream &amp;os, const char *s, Args &amp;&amp;... args)</td></tr>
+<tr class="memdesc:ac254e3e3bfdd151817b18a05d2799a72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <a class="el" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c" title="Wraps thorin::print to prefix is it with indentation.">Tab::print</a> but <b>appends</b> a <code>std::endl</code> to <code>os</code>.  <a href="classthorin_1_1Tab.html#ac254e3e3bfdd151817b18a05d2799a72">More...</a><br /></td></tr>
+<tr class="separator:ac254e3e3bfdd151817b18a05d2799a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">getters</div></td></tr>
 <tr class="memitem:a8e04672eaa44d3a007da45d5db712ea3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Tab.html#a8e04672eaa44d3a007da45d5db712ea3">indent</a> () const</td></tr>
 <tr class="separator:a8e04672eaa44d3a007da45d5db712ea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,8 +158,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0b547fe7f17dd9492c69855a89734e55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock">
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00083">83</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<div class="textblock"><p >Keeps track of indentation level. </p>
+
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00147">147</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a90e3e6f9586f056b9ad97c0dfc97b35f" name="a90e3e6f9586f056b9ad97c0dfc97b35f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a90e3e6f9586f056b9ad97c0dfc97b35f">&#9670;&nbsp;</a></span>Tab()</h2>
@@ -183,7 +196,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00085">85</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00149">149</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 </div>
 </div>
@@ -211,9 +224,61 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00097">97</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00172">172</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00106">operator+()</a>, <a class="el" href="print_8h_source.html#l00114">operator+=()</a>, <a class="el" href="print_8h_source.html#l00107">operator-()</a>, <a class="el" href="print_8h_source.html#l00115">operator-=()</a>, and <a class="el" href="print_8h_source.html#l00116">operator=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00181">operator+()</a>, <a class="el" href="print_8h_source.html#l00189">operator+=()</a>, <a class="el" href="print_8h_source.html#l00182">operator-()</a>, <a class="el" href="print_8h_source.html#l00190">operator-=()</a>, and <a class="el" href="print_8h_source.html#l00191">operator=()</a>.</p>
+
+</div>
+</div>
+<a id="aca529771d167c2e1ba539a41e06ad71c" name="aca529771d167c2e1ba539a41e06ad71c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca529771d167c2e1ba539a41e06ad71c">&#9670;&nbsp;</a></span>lnprint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; thorin::Tab::lnprint </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Same as <a class="el" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c" title="Wraps thorin::print to prefix is it with indentation.">Tab::print</a> but <b>prepends</b> a <code>std::endl</code> to <code>os</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00161">161</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+
+<p class="reference">References <a class="el" href="print_8h_source.html#l00155">print()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="stream_8cpp_source.html#l00299">thorin::RecDumper::dump()</a>, <a class="el" href="stream_8cpp_source.html#l00147">thorin::let()</a>, <a class="el" href="stream_8cpp_source.html#l00264">thorin::RecDumper::rec()</a>, and <a class="el" href="stream_8cpp_source.html#l00185">thorin::RecDumper::run()</a>.</p>
 
 </div>
 </div>
@@ -241,9 +306,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00106">106</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00181">181</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00097">indent()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00172">indent()</a>.</p>
 
 </div>
 </div>
@@ -270,7 +335,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00112">112</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00187">187</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 </div>
 </div>
@@ -298,7 +363,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00104">104</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00179">179</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 </div>
 </div>
@@ -326,9 +391,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00114">114</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00189">189</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00097">indent()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00172">indent()</a>.</p>
 
 </div>
 </div>
@@ -356,9 +421,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00107">107</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00182">182</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00097">indent()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00172">indent()</a>.</p>
 
 </div>
 </div>
@@ -385,7 +450,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00113">113</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00188">188</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 </div>
 </div>
@@ -413,7 +478,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00105">105</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00180">180</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 </div>
 </div>
@@ -441,9 +506,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00115">115</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00190">190</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00097">indent()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00172">indent()</a>.</p>
 
 </div>
 </div>
@@ -471,9 +536,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00116">116</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00191">191</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00097">indent()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00172">indent()</a>.</p>
 
 </div>
 </div>
@@ -501,9 +566,9 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00117">117</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00192">192</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">References <a class="el" href="print_8h_source.html#l00098">tab()</a>.</p>
+<p class="reference">References <a class="el" href="print_8h_source.html#l00173">tab()</a>.</p>
 
 </div>
 </div>
@@ -549,11 +614,63 @@ template&lt;class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00090">90</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p>Wraps <a class="el" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c" title="Base case.">thorin::print</a> to prefix is it with indentation. </p>
+
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00155">155</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
 <p class="reference">References <a class="el" href="print_8cpp_source.html#l00005">thorin::print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="bootstrapper_8cpp_source.html#l00011">thorin::h::Bootstrapper::emit()</a>, <a class="el" href="ll_8cpp_source.html#l00266">thorin::ll::CodeGen::finalize()</a>, <a class="el" href="stream_8cpp_source.html#l00270">thorin::Def::let()</a>, and <a class="el" href="stream_8cpp_source.html#l00163">thorin::RecStreamer::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="stream_8cpp_source.html#l00299">thorin::RecDumper::dump()</a>, <a class="el" href="bootstrapper_8cpp_source.html#l00011">thorin::h::Bootstrapper::emit()</a>, <a class="el" href="ll_8cpp_source.html#l00266">thorin::ll::CodeGen::finalize()</a>, <a class="el" href="print_8h_source.html#l00161">lnprint()</a>, <a class="el" href="print_8h_source.html#l00166">println()</a>, and <a class="el" href="stream_8cpp_source.html#l00185">thorin::RecDumper::run()</a>.</p>
+
+</div>
+</div>
+<a id="ac254e3e3bfdd151817b18a05d2799a72" name="ac254e3e3bfdd151817b18a05d2799a72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac254e3e3bfdd151817b18a05d2799a72">&#9670;&nbsp;</a></span>println()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class... Args&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; thorin::Tab::println </td>
+          <td>(</td>
+          <td class="paramtype">std::ostream &amp;&#160;</td>
+          <td class="paramname"><em>os</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Same as <a class="el" href="classthorin_1_1Tab.html#a191ef17ecb136f7334a6dd1165e92a4c" title="Wraps thorin::print to prefix is it with indentation.">Tab::print</a> but <b>appends</b> a <code>std::endl</code> to <code>os</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00166">166</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+
+<p class="reference">References <a class="el" href="print_8h_source.html#l00155">print()</a>.</p>
 
 </div>
 </div>
@@ -580,9 +697,9 @@ template&lt;class... Args&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00098">98</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="print_8h_source.html#l00173">173</a> of file <a class="el" href="print_8h_source.html">print.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00117">operator=()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="print_8h_source.html#l00192">operator=()</a>.</p>
 
 </div>
 </div>

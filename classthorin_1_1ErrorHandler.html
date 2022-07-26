@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1ErrorHandler.html','');
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="error_8h_source.html">/home/runner/work/thorin2/thorin2/thorin/error.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="error_8h_source.html">thorin/error.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -116,6 +116,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad7556ea8ffcd07c36a8386b146cf68ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5f50b6581e7aaa90f35fa4146329f888"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ErrorHandler.html#a5f50b6581e7aaa90f35fa4146329f888">expected_shape</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def, const <a class="el" href="classthorin_1_1Def.html">Def</a> *dbg)</td></tr>
 <tr class="separator:a5f50b6581e7aaa90f35fa4146329f888"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff9157aa05e484d1c2edf8e48871af2c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ErrorHandler.html#aff9157aa05e484d1c2edf8e48871af2c">expected_type</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def, const <a class="el" href="classthorin_1_1Def.html">Def</a> *dbg)</td></tr>
+<tr class="separator:aff9157aa05e484d1c2edf8e48871af2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad80d6614aa92ea9420e5ffc05c1038a8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ErrorHandler.html#ad80d6614aa92ea9420e5ffc05c1038a8">index_out_of_range</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *arity, const <a class="el" href="classthorin_1_1Def.html">Def</a> *index, const <a class="el" href="classthorin_1_1Def.html">Def</a> *dbg)</td></tr>
 <tr class="separator:ad80d6614aa92ea9420e5ffc05c1038a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b93560c4bc2455aaf1335f1c3ecb98f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ErrorHandler.html#a7b93560c4bc2455aaf1335f1c3ecb98f">ill_typed_app</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *callee, const <a class="el" href="classthorin_1_1Def.html">Def</a> *arg, const <a class="el" href="classthorin_1_1Def.html">Def</a> *dbg)</td></tr>
@@ -123,7 +125,7 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="error_8h_source.html#l00052">52</a> of file <a class="el" href="error_8h_source.html">error.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="error_8h_source.html#l00058">58</a> of file <a class="el" href="error_8h_source.html">error.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad7556ea8ffcd07c36a8386b146cf68ec" name="ad7556ea8ffcd07c36a8386b146cf68ec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad7556ea8ffcd07c36a8386b146cf68ec">&#9670;&nbsp;</a></span>~ErrorHandler()</h2>
@@ -185,11 +187,51 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="error_8cpp_source.html#l00009">9</a> of file <a class="el" href="error_8cpp_source.html">error.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="def_8h_source.html#l00283">thorin::Def::dbg()</a>, <a class="el" href="debug_8h_source.html#l00097">thorin::Debug::loc</a>, <a class="el" href="def_8h_source.html#l00136">thorin::Def::type()</a>, and <a class="el" href="error_8h_source.html#l00053">thorin::type_err()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00399">thorin::World::arr()</a>, and <a class="el" href="world_8cpp_source.html#l00420">thorin::World::pack()</a>.</p>
+
+</div>
+</div>
+<a id="aff9157aa05e484d1c2edf8e48871af2c" name="aff9157aa05e484d1c2edf8e48871af2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff9157aa05e484d1c2edf8e48871af2c">&#9670;&nbsp;</a></span>expected_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void thorin::ErrorHandler::expected_type </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>def</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>dbg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 <p class="definition">Definition at line <a class="el" href="error_8cpp_source.html#l00014">14</a> of file <a class="el" href="error_8cpp_source.html">error.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00283">thorin::Def::dbg()</a>, <a class="el" href="error_8cpp_source.html#l00010">thorin::err()</a>, <a class="el" href="debug_8h_source.html#l00095">thorin::Debug::loc</a>, and <a class="el" href="def_8h_source.html#l00136">thorin::Def::type()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00395">thorin::World::arr()</a>, and <a class="el" href="world_8cpp_source.html#l00416">thorin::World::pack()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00283">thorin::Def::dbg()</a>, <a class="el" href="debug_8h_source.html#l00097">thorin::Debug::loc</a>, and <a class="el" href="error_8h_source.html#l00053">thorin::type_err()</a>.</p>
 
 </div>
 </div>
@@ -235,9 +277,9 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="error_8cpp_source.html#l00024">24</a> of file <a class="el" href="error_8cpp_source.html">error.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00037">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="def_8h_source.html#l00283">thorin::Def::dbg()</a>, <a class="el" href="lam_8h_source.html#l00022">thorin::Pi::dom()</a>, <a class="el" href="error_8cpp_source.html#l00010">thorin::err()</a>, <a class="el" href="debug_8h_source.html#l00095">thorin::Debug::loc</a>, and <a class="el" href="def_8h_source.html#l00136">thorin::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="cast_8h_source.html#l00037">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="def_8h_source.html#l00283">thorin::Def::dbg()</a>, <a class="el" href="lam_8h_source.html#l00022">thorin::Pi::dom()</a>, <a class="el" href="debug_8h_source.html#l00097">thorin::Debug::loc</a>, <a class="el" href="def_8h_source.html#l00136">thorin::Def::type()</a>, and <a class="el" href="error_8h_source.html#l00053">thorin::type_err()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00209">thorin::World::app()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00210">thorin::World::app()</a>.</p>
 
 </div>
 </div>
@@ -283,9 +325,9 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="error_8cpp_source.html#l00019">19</a> of file <a class="el" href="error_8cpp_source.html">error.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00283">thorin::Def::dbg()</a>, <a class="el" href="error_8cpp_source.html#l00010">thorin::err()</a>, and <a class="el" href="debug_8h_source.html#l00095">thorin::Debug::loc</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00283">thorin::Def::dbg()</a>, <a class="el" href="debug_8h_source.html#l00097">thorin::Debug::loc</a>, and <a class="el" href="error_8h_source.html#l00053">thorin::type_err()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00301">thorin::World::extract()</a>, <a class="el" href="world_8cpp_source.html#l00357">thorin::World::insert()</a>, and <a class="el" href="world_8cpp_source.html#l00448">thorin::World::lit_int()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00303">thorin::World::extract()</a>, <a class="el" href="world_8cpp_source.html#l00361">thorin::World::insert()</a>, and <a class="el" href="world_8cpp_source.html#l00452">thorin::World::lit_int()</a>.</p>
 
 </div>
 </div>

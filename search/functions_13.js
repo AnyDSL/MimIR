@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['u_0',['u',['../classthorin_1_1Tok.html#a45ea45a18052d23d65cdd4f533368ed1',1,'thorin::Tok']]],
+  ['u_0',['u',['../classthorin_1_1fe_1_1Tok.html#a12e0844725bcdf270c9650b0211dd39e',1,'thorin::fe::Tok']]],
   ['undo_5fenter_1',['undo_enter',['../classthorin_1_1FPPass.html#a992db753a80b89fb6bcce0dc6154dd8b',1,'thorin::FPPass']]],
   ['undo_5fvisit_2',['undo_visit',['../classthorin_1_1FPPass.html#ad68f7d1dcf6986dcf22b465b740f706e',1,'thorin::FPPass']]],
   ['unflatten_3',['unflatten',['../namespacethorin.html#a833e2a807b47e7f8a3c67fff75985c6f',1,'thorin::unflatten(const Def *def, const Def *type)'],['../namespacethorin.html#ae982c58cbbf8f50804167dc3697e78cd',1,'thorin::unflatten(Defs ops, const Def *type, bool flatten_noms=true)'],['../namespacethorin.html#ab1a9abc89dbfee14f1535dfbcacf5f97',1,'thorin::unflatten(Defs defs, const Def *type, size_t &amp;j, bool flatten_noms)']]],

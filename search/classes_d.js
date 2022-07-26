@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['recstreamer_0',['RecStreamer',['../classthorin_1_1RecStreamer.html',1,'thorin']]],
+  ['recdumper_0',['RecDumper',['../classthorin_1_1RecDumper.html',1,'thorin']]],
   ['reference_1',['reference',['../classthorin_1_1BitSet_1_1reference.html',1,'thorin::BitSet::reference'],['../classthorin_1_1IndexSet_1_1reference.html',1,'thorin::IndexSet&lt; Indexer, Key &gt;::reference']]],
   ['rememelim_2',['RememElim',['../classthorin_1_1mem_1_1RememElim.html',1,'thorin::mem']]],
   ['res_3',['Res',['../classthorin_1_1normalize_1_1Res.html',1,'thorin::normalize']]],
