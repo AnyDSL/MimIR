@@ -144,13 +144,14 @@ The following tables comprise all production rules:
 |-------------|-------------------------------|------------|--------------------------|
 | p           | Sym t                         |            | identifier pattern       |
 | p           | s `(` p `,` ... `,` p `)` t   |            | tuple pattern            |
-| p           | s `[` b `,` ... `,` b `]` t   |            | sigma binder             |
+| p           | s `[` b `,` ... `,` b `]` t   |            | sigma pattern            |
 | b           | s e<sub>type</sub>            |            | identifier binder        |
-| b           | s `(` p `,` ... `,` p `)` t   |            | tuple pattern            |
 | b           | s `[` b `,` ... `,` b `]` t   |            | sigma binder             |
 | t           | ( `:` e<sub>type</sub> )?     |            | optional type ascription |
 | s           | ( Sym `::` )?                 |            | optional symbol          |
 
+Note that you **can** switch from a pattern to a binder (from `p` to `b` inside a pattern), but not vice versa.
+For this reason there is no rule `b -> s (p, ..., p)`.
 
 ### Expressions
 

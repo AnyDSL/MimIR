@@ -459,9 +459,9 @@ const Def* Parser::parse_lit() {
 std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt, Tok::Prec prec /*= Tok::Prec::Bot*/) {
     auto track = tracker();
     auto sym   = Sym(world().lit_nat('_'), nullptr);
-    // p ->    (p, ..., p)      b -> (p, ..., p)
+    // p ->    (p, ..., p)
     // p ->    [b, ..., b]      b -> [b, ..., b]
-    // p -> s::(p, ..., p)      b -> s::(p, ..., p)
+    // p -> s::(p, ..., p)
     // p -> s::[b, ..., b]      b -> s::[b, ..., b]
     // p -> s: e                b -> s: e
     // p -> s                   b ->    e
@@ -472,7 +472,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
         // p ->    (p, ..., p)
         return parse_tuple_ptrn(track, sym);
     } else if (ahead(0).isa(Tok::Tag::M_id)) {
-        // p -> s: e                b -> s::(p, ..., p)
+        // p -> s: e
         // p -> s::(p, ..., p)      b -> s::[b, ..., b]
         // p -> s::[b, ..., b]      b -> s: e
         // p -> s                   b ->    e    where e == id
@@ -481,6 +481,8 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
             // b -> s::[b, ..., b]      b -> s::[b, ..., b]
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon_colon);
+            if (delim_l == Tok::Tag::D_brckt_l && ahead().isa(Tok::Tag::D_paren_l))
+                err(ahead().loc(), "switching from []-style patterns to ()-style patterns is not allowed");
             return parse_tuple_ptrn(track, sym);
         } else if (ahead(1).isa(Tok::Tag::T_colon)) {
             // p -> s: e                b -> s: e
