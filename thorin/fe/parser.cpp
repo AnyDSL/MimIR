@@ -174,7 +174,10 @@ const Def* Parser::parse_type_ascr(std::string_view ctxt /*= {}*/) {
 const Def* Parser::parse_expr(std::string_view ctxt, Tok::Prec p /*= Tok::Prec::Bot*/) {
     auto track = tracker();
     auto lhs   = parse_primary_expr(ctxt);
+    return parse_infix_expr(track, lhs, p);
+}
 
+const Def* Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p /*= Tok::Prec::Bot*/) {
     while (true) {
         // If operator in ahead has less left precedence: reduce (break).
         if (ahead().isa(Tok::Tag::T_extract)) {
@@ -370,8 +373,7 @@ const Def* Parser::parse_block() {
 
 const Def* Parser::parse_sigma() {
     auto track = tracker();
-    auto sym   = Sym(world().lit_nat('_'), nullptr);
-    auto bndr  = parse_tuple_ptrn(track, sym);
+    auto bndr  = parse_tuple_ptrn(track, anonymous_sym());
     return bndr->type(world());
 }
 
@@ -456,9 +458,9 @@ const Def* Parser::parse_lit() {
  * ptrns
  */
 
-std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt, Tok::Prec prec /*= Tok::Prec::Bot*/) {
+std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt, Tok::Prec p /*= Tok::Prec::Bot*/) {
     auto track = tracker();
-    auto sym   = Sym(world().lit_nat('_'), nullptr);
+    auto sym   = anonymous_sym();
     // p ->    (p, ..., p)
     // p ->    [b, ..., b]      b ->    [b, ..., b]
     // p -> s::(p, ..., p)      b -> s::(e)
@@ -488,12 +490,12 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
             // p -> s: e                b -> s: e
             sym = eat(Tok::Tag::M_id).sym();
             eat(Tok::Tag::T_colon);
-            auto type = parse_expr(ctxt, prec);
+            auto type = parse_expr(ctxt, p);
             return std::make_unique<IdPtrn>(track.loc(), sym, type);
         } else {
             if (delim_l == Tok::Tag::D_brckt_l) {
                 // b ->    e    where e == id
-                auto type = parse_expr(ctxt, prec);
+                auto type = parse_expr(ctxt, p);
                 return std::make_unique<IdPtrn>(track.loc(), sym, type);
             } else {
                 // p -> s
@@ -504,7 +506,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
     } else if (delim_l == Tok::Tag::D_brckt_l) {
         // b ->   (e)
         // b ->    e    where e != id
-        auto type = parse_expr(ctxt, prec);
+        auto type = parse_expr(ctxt, p);
         return std::make_unique<IdPtrn>(track.loc(), sym, type);
     } else if (!ctxt.empty()) {
         // p -> ↯
@@ -523,14 +525,24 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
 
     scopes_.push();
     parse_list("tuple pattern", delim_l, [&]() {
+        auto track = tracker();
         if (!ptrns.empty()) ptrns.back()->bind(scopes_, infers.back());
 
-        ptrns.emplace_back(parse_ptrn(delim_l, "element of a tuple pattern"));
-        const auto& ptrn = ptrns.back();
-        auto type        = ptrn->type(world());
+        auto ptrn = parse_ptrn(delim_l, "element of a tuple pattern");
+        auto type = ptrn->type(world());
+
+        if (delim_l == Tok::Tag::D_brckt_l) {
+            // If we are able to parse more stuff, we got an expression instead of just a binder.
+            if (auto expr = parse_infix_expr(track, type); expr != type) {
+                ptrn = std::make_unique<IdPtrn>(track.loc(), anonymous_sym(), expr);
+                type = ptrn->type(world());
+            }
+        }
+
         infers.emplace_back(world().nom_infer(type, ptrn->sym()));
         fields.emplace_back(ptrn->sym().str());
         ops.emplace_back(type);
+        ptrns.emplace_back(std::move(ptrn));
     });
     scopes_.pop();
 

@@ -41,7 +41,7 @@ In addition the following keywords are *terminals*:
 | `.pack`     | nominal pack              |
 | `.Sigma`    | nominal Sigma             |
 | `.def`      | nominal definition        |
-| `.external` | marks nominal as external |
+| `.extern`   | marks nominal as external |
 | `.ins`      | insert expression         |
 | `.insert`   | alias for `.ins`          |
 | `.module`   | starts a module           |
