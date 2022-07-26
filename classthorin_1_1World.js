@@ -102,6 +102,8 @@ var classthorin_1_1World =
     [ "lit_univ", "classthorin_1_1World.html#a6942e8c8902301ef62be063a912955db", null ],
     [ "lit_univ_0", "classthorin_1_1World.html#a5f7f815be2001a8b6765a2d6c1628f48", null ],
     [ "lit_univ_1", "classthorin_1_1World.html#adc1e909d71e102ae69ec4e28d6628f12", null ],
+    [ "log", "classthorin_1_1World.html#a44b545a88c58fda7f15606002ba6d073", null ],
+    [ "log", "classthorin_1_1World.html#ab0fd127c2bf81aaf93b0ac4ca2746f0e", null ],
     [ "lookup", "classthorin_1_1World.html#a9e395f39f57987d870c34df90ae0f80d", null ],
     [ "make_external", "classthorin_1_1World.html#a5470697c9d2aaa83b01f7a3209d426e3", null ],
     [ "make_internal", "classthorin_1_1World.html#ab73ab54ae387bee661eec51133bdccb9", null ],
@@ -189,6 +191,5 @@ var classthorin_1_1World =
     [ "vel", "classthorin_1_1World.html#aa73afcb4099190ef420e3073b98600dc", null ],
     [ "visit", "classthorin_1_1World.html#a35687817089d85315d46a391dd75e320", null ],
     [ "Def::reduce", "classthorin_1_1World.html#a9385c61b1fb0b1d21be6b9d913ad96a0", null ],
-    [ "swap", "classthorin_1_1World.html#ab6b27c20d41025c4bc9ddf15adf01f96", null ],
-    [ "log", "classthorin_1_1World.html#a34cc8915485f01aa9db073c56eb1b47b", null ]
+    [ "swap", "classthorin_1_1World.html#ab6b27c20d41025c4bc9ddf15adf01f96", null ]
 ];

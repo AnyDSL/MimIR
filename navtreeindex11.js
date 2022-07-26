@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"clos_2autogen_8h.html#a6de5a72a27162097768c57a865741a3e":[6,0,3,0,1,0,3],
+"clos_2autogen_8h.html#a6de5a72a27162097768c57a865741a3ea51e0df3ca5c430d39d775ec66f8c6f45":[6,0,3,0,1,0,3,0],
 "clos_2autogen_8h.html#a825f85d6f84051d8c57118e012949b8e":[6,0,3,0,1,0,27],
 "clos_2autogen_8h.html#a8d8a02b90cafe149d84a99ebb7532e78":[6,0,3,0,1,0,15],
 "clos_2autogen_8h.html#a94c08716d04d1a608f032bc3a398822f":[6,0,3,0,1,0,16],
@@ -78,8 +80,8 @@ var NAVTREEINDEX11 =
 "concepts.html":[4],
 "conceptthorin_1_1Elemable.html":[4,0,4],
 "conceptthorin_1_1Elemable.html":[3,0,0,148],
-"conceptthorin_1_1axiom__from__dialect.html":[3,0,0,146],
 "conceptthorin_1_1axiom__from__dialect.html":[4,0,2],
+"conceptthorin_1_1axiom__from__dialect.html":[3,0,0,146],
 "conceptthorin_1_1axiom__from__thorin.html":[4,0,3],
 "conceptthorin_1_1axiom__from__thorin.html":[3,0,0,147],
 "conceptthorin_1_1axiom__with__sub__tags.html":[4,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6abff10ac08aad7c8bd635dba9fe51017a":[6,0,3,0,2,0,6,17],
 "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6acca4a82742e8385a2a2546965f208113":[6,0,3,0,2,0,6,12],
 "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6ad4f917633649a3c47c7ab917fa990146":[6,0,3,0,2,0,6,42],
-"core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6ae1671797c52e15f763380b45e841ec32":[6,0,3,0,2,0,6,4],
-"core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6ae358efa489f58062f10dd7316b65649e":[6,0,3,0,2,0,6,44],
-"core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6af4e34c879c89192fcf3b851dddc46899":[6,0,3,0,2,0,6,23]
+"core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6ae1671797c52e15f763380b45e841ec32":[6,0,3,0,2,0,6,4]
 };
