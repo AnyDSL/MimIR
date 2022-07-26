@@ -59,11 +59,11 @@ public:
     const Def* loc() const { return loc_; }
 
     std::string to_string() const;
-    Loc to_loc() const { return loc_; }
+    Loc to_loc() const { return loc_ ? loc_ : Loc(); }
+    bool is_anonymous() const;
 
     operator std::string() const { return to_string(); }
     operator Loc() const { return loc_; }
-
     operator bool() const { return str_; }
 
 private:
@@ -85,6 +85,8 @@ public:
         : Debug(std::string(name), loc, meta) {}
     Debug(Sym sym, const Def* meta = nullptr)
         : Debug(sym.to_string(), sym.to_loc(), meta) {}
+    Debug(Sym sym, Loc loc, const Def* meta = nullptr)
+        : Debug(sym.to_string(), loc, meta) {}
     Debug(Loc loc)
         : Debug(std::string(), loc) {}
     Debug(const Def*);

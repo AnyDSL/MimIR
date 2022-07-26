@@ -9,6 +9,7 @@
 
 using namespace std::literals;
 using namespace thorin;
+using namespace thorin::fe;
 
 TEST(Lexer, Toks) {
     World world;
@@ -19,8 +20,8 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brace_r));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_paren_l));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_paren_r));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_bracket_l));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_bracket_r));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brckt_l));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brckt_r));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_angle_l));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_angle_r));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_quote_l));

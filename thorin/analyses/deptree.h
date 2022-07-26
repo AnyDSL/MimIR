@@ -15,7 +15,7 @@ public:
     Def* nom() const { return nom_; }
     size_t depth() const { return depth_; }
     DepNode* parent() const { return parent_; }
-    const std::vector<DepNode*>& children() const { return children_; }
+    const auto& children() const { return children_; }
 
 private:
     DepNode* set_parent(DepNode* parent) {

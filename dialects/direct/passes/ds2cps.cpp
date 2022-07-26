@@ -39,7 +39,7 @@ void DS2CPS::rewrite_lam(Lam* lam) {
     curr_lam->set_body(result);
 
     curr_lam = prev;
-    if (!curr_lam) world().debug_stream();
+    if (!curr_lam) world().debug_dump();
 }
 
 /// wrap rewrite calls to avoid code duplication

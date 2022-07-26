@@ -20,9 +20,7 @@
 namespace thorin {
 
 class Checker;
-class DepNode;
 class ErrorHandler;
-class RecStreamer;
 class Scope;
 
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
@@ -53,7 +51,7 @@ public:
     ///@}
 
 #if THORIN_ENABLE_CHECKS
-    /// @name Debugging Features
+    /// @name debugging features
     ///@{
     void breakpoint(size_t number);
     void enable_history(bool flag = true);
@@ -69,10 +67,11 @@ public:
         State(std::string_view name)
             : name(name) {}
 
-        std::string name = "module";
-        u32 curr_gid     = 0;
-        u32 curr_sub     = 0;
-        bool pe_done     = false;
+        std::string name    = "module";
+        u32 curr_gid        = 0;
+        u32 curr_sub        = 0;
+        bool pe_done        = false;
+        mutable bool frozen = false;
         absl::btree_set<std::string> imported_dialects;
 #if THORIN_ENABLE_CHECKS
         bool track_history = false;
@@ -91,6 +90,13 @@ public:
     /// Manage global identifier - a unique number for each Def.
     u32 curr_gid() const { return state_.curr_gid; }
     u32 next_gid() { return ++state_.curr_gid; }
+
+    bool freeze(bool on = true) const {
+        bool old      = state_.frozen;
+        state_.frozen = on;
+        return old;
+    }
+    bool is_frozen() const { return state_.frozen; }
     ///@}
 
     /// @name manage nodes
@@ -133,8 +139,9 @@ public:
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }
     Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
-    Infer* nom_infer(const Def* type, Sym sym, Loc loc) { return insert<Infer>(1, type, dbg({sym, loc})); }
+    Infer* nom_infer(const Def* type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
     Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
+    Infer* nom_infer_of_infer_level(const Def* dbg = {}) { return nom_infer(nom_infer_univ(dbg), dbg); }
     ///@}
 
     /// @name Axiom
@@ -202,6 +209,7 @@ public:
         return unify<Lam>(2, pi, filter, body, dbg);
     }
     const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_tt(), body, dbg); }
+    Lam* exit() { return data_.exit_; } ///< Used as a dummy exit node within Scope.
     ///@}
 
     /// @name App
@@ -496,6 +504,15 @@ public:
     /// @name helpers
     ///@{
     const Def* dbg(Debug d) { return d.def(*this); }
+    const Def* dbg(Sym sym, Loc loc, const Def* meta = {}) {
+        meta = meta ? meta : bot(type_bot());
+        return tuple({sym.str(), loc.def(*this), meta});
+    }
+    const Def* dbg(Sym sym, const Def* meta = {}) {
+        auto loc = sym.loc() ? sym.loc() : Loc().def(*this);
+        meta     = meta ? meta : bot(type_bot());
+        return tuple({sym.str(), loc, meta});
+    }
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
     ///@}
 
@@ -511,11 +528,11 @@ public:
     ErrorHandler* err() { return err_.get(); }
     ///@}
 
-    /// @name Logging
+    /// @name dumping/logging
     ///@{
-    std::ostream& stream(RecStreamer&, const DepNode*) const;
-    void debug_stream() const; ///< Stream thorin if World::State::max_level is Log::Level::debug.
+    void dump(std::ostream&) const;
     void dump() const;
+    void debug_dump() const; ///< Dump thorin in Debug build if World::log::level is Log::Level::Debug.
 
     Log log;
     ///@}
@@ -543,17 +560,24 @@ private:
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
-        auto [i, ins] = data_.defs_.emplace(def);
-        if (ins) {
-#if THORIN_ENABLE_CHECKS
-            if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
-#endif
-            def->finalize();
-            return def;
+
+        if (is_frozen()) {
+            --state_.curr_gid;
+            auto i = defs().find(def);
+            arena_.deallocate<T>(def);
+            if (i != defs().end()) return static_cast<const T*>(*i);
+            return nullptr;
         }
 
-        arena_.deallocate<T>(def);
-        return static_cast<const T*>(*i);
+        if (auto [i, ins] = data_.defs_.emplace(def); !ins) {
+            arena_.deallocate<T>(def);
+            return static_cast<const T*>(*i);
+        }
+#if THORIN_ENABLE_CHECKS
+        if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+#endif
+        def->finalize();
+        return def;
     }
 
     template<class T, class... Args>
@@ -684,6 +708,7 @@ private:
         const Axiom* type_int_;
         const Axiom* type_real_;
         const Axiom* zip_;
+        Lam* exit_;
         absl::btree_map<u64, const Axiom*> axioms_;
         absl::btree_map<std::string, Def*> externals_;
         absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs_;
@@ -695,7 +720,5 @@ private:
 
     friend DefArray Def::reduce(const Def*);
 };
-
-std::ostream& operator<<(std::ostream&, const World&);
 
 } // namespace thorin

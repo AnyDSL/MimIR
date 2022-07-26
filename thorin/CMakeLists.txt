@@ -46,12 +46,12 @@ add_library(libthorin
     be/h/bootstrapper.h
     fe/ast.cpp
     fe/ast.h
-    fe/binder.cpp
-    fe/binder.h
     fe/lexer.cpp
     fe/lexer.h
     fe/parser.cpp
     fe/parser.h
+    fe/scopes.cpp
+    fe/scopes.h
     fe/tok.cpp
     fe/tok.h
     pass/optimize.cpp

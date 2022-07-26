@@ -45,7 +45,7 @@ VarSet DepTree::run(Def* curr_nom, const Def* def) {
     } else {
         for (auto op : def->extended_ops()) merge(result, run(curr_nom, op));
 
-        if (auto var = curr_nom->has_var()) {
+        if (auto var = curr_nom->var()) {
             if (curr_nom == def) result.erase(var);
         }
     }

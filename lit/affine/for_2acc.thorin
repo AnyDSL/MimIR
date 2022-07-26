@@ -7,15 +7,12 @@
 .import affine;
 .import mem;
 
-.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
-    0: (%Int 2), 
-    .lam for_exit: .Cn [mem : %mem.M , acc : [%Int 4294967296, %Int 4294967296]] = {
-        0: (%Int 2),
+.cn .extern main [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
+    .cn for_exit [mem : %mem.M , acc : [%Int 4294967296, %Int 4294967296]] = {
         return (mem, acc#.ff)
     };
 
-    .lam for_body: .Cn [mem : %mem.M , i : %Int 4294967296, acc : [%Int 4294967296, %Int 4294967296], continue : .Cn [%mem.M , [%Int 4294967296, %Int 4294967296]]] = {
-        0: (%Int 2),
+    .cn for_body [mem : %mem.M , i : %Int 4294967296, acc : [%Int 4294967296, %Int 4294967296], continue : .Cn [%mem.M , [%Int 4294967296, %Int 4294967296]]] = {
         .let a : %Int 4294967296 = %Wrap_add (0:.Nat, 4294967296:.Nat) (i, acc#.ff);
         .let b : %Int 4294967296 = %Wrap_sub (0:.Nat, 4294967296:.Nat) (i, acc#.tt);
         continue (mem, (a, b))

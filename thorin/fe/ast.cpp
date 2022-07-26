@@ -1,16 +1,63 @@
 #include "thorin/fe/ast.h"
 
+#include "thorin/check.h"
 #include "thorin/def.h"
+#include "thorin/rewrite.h"
+#include "thorin/world.h"
 
-#include "thorin/fe/binder.h"
+#include "thorin/fe/scopes.h"
 
-namespace thorin {
+namespace thorin::fe {
 
-void IdPtrn::scrutinize(Binder& binder, const Def* scrutinee) const { binder.bind(sym_, scrutinee); }
+/*
+ * bind
+ */
 
-void TuplePtrn::scrutinize(Binder& binder, const Def* scrutinee) const {
-    size_t n = ptrns_.size();
-    for (size_t i = 0; i != n; ++i) ptrns_[i]->scrutinize(binder, scrutinee->proj(n, i));
+void IdPtrn::bind(Scopes& scopes, const Def* def) const { scopes.bind(sym_, def); }
+
+void TuplePtrn::bind(Scopes& scopes, const Def* def) const {
+    World& w = def->world();
+    scopes.bind(sym_, def);
+    for (size_t i = 0, e = num_ptrns(); i != e; ++i) ptrn(i)->bind(scopes, def->proj(e, i, w.dbg(ptrn(i)->sym())));
 }
 
-} // namespace thorin
+/*
+ * type
+ */
+
+const Def* IdPtrn::type(World& world) const {
+    if (type_) return type_;
+    return type_ = world.nom_infer_of_infer_level(world.dbg(loc()));
+}
+
+const Def* TuplePtrn::type(World& world) const {
+    if (type_) return type_;
+
+    auto n   = num_ptrns();
+    auto ops = Array<const Def*>(n, [&](size_t i) { return ptrn(i)->type(world); });
+
+    if (std::ranges::all_of(ptrns_, [](auto&& b) { return b->is_anonymous(); }))
+        return type_ = world.sigma(ops, world.dbg(loc()));
+
+    assert(ptrns().size() > 0);
+
+    auto fields = Array<const Def*>(n, [&](size_t i) { return ptrn(i)->sym().str(); });
+    auto type   = infer_type_level(world, ops);
+    auto meta   = world.tuple(fields);
+    auto debug  = Debug(sym(), loc(), meta);
+    auto sigma  = world.nom_sigma(type, n, world.dbg(debug));
+
+    sigma->set(0, ops[0]);
+    for (size_t i = 1; i != n; ++i) {
+        if (auto infer = infers_[i - 1]) infer->set(sigma->var(n, i - 1));
+        sigma->set(i, ops[i]);
+    }
+
+    thorin::Scope scope(sigma);
+    Rewriter rw(world, &scope);
+    for (size_t i = 1; i != n; ++i) sigma->set(i, rw.rewrite(ops[i]));
+
+    return type_ = sigma;
+}
+
+} // namespace thorin::fe

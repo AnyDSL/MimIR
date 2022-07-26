@@ -22,6 +22,8 @@ Use the following coding conventions:
 * prefer `// C++-style comments` over `/* C-style comments */`
 * use `/// three slashes for Doxygen` and [group](https://www.doxygen.nl/manual/grouping.html) your methods into logical units if possible
 * use [Markdown-style](https://doxygen.nl/manual/markdown.html) Doxygen comments
+* methods/functions that return a `bool` should be prefixed with `is_`
+* methods/functions that return a `std::optional` or a pointer that may be `nullptr` should be prefixed with `isa_`
 
 For all the other minute details like indentation width etc. use [clang-format](https://clang.llvm.org/docs/ClangFormat.html) and the provided `.clang-format` file in the root of the repository.
 In order to run `clang-format` automatically on all changed files, switch to the provided pre-commit hook:

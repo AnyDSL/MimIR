@@ -4,7 +4,7 @@
 
 #include "thorin/util/types.h"
 
-namespace thorin {
+namespace thorin::fe {
 
 // clang-format off
 #define THORIN_KEY(m)                  \
@@ -46,31 +46,32 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(M_ax,  "<axiom name>")            \
     m(M_i,   "<index>"     )            \
     /* delimiters */                    \
-    m(D_angle_l,      "‹")              \
-    m(D_angle_r,      "›")              \
-    m(D_brace_l,      "{")              \
-    m(D_brace_r,      "}")              \
-    m(D_bracket_l,    "[")              \
-    m(D_bracket_r,    "]")              \
-    m(D_paren_l,      "(")              \
-    m(D_paren_r,      ")")              \
-    m(D_quote_l,      "«")              \
-    m(D_quote_r,      "»")              \
+    m(D_angle_l,    "‹")                \
+    m(D_angle_r,    "›")                \
+    m(D_brace_l,    "{")                \
+    m(D_brace_r,    "}")                \
+    m(D_brckt_l,    "[")                \
+    m(D_brckt_r,    "]")                \
+    m(D_paren_l,    "(")                \
+    m(D_paren_r,    ")")                \
+    m(D_quote_l,    "«")                \
+    m(D_quote_r,    "»")                \
     /* further tokens */                \
-    m(T_Pi,           "Π")              \
-    m(T_arrow,        "→")              \
-    m(T_assign,       "=")              \
-    m(T_at,           "@")              \
-    m(T_bot,          "⊥")              \
-    m(T_top,          "⊤")              \
-    m(T_box,          "□")              \
-    m(T_colon,        ":")              \
-    m(T_comma,        ",")              \
-    m(T_dot,          ".")              \
-    m(T_extract,      "#")              \
-    m(T_lam,          "λ")              \
-    m(T_semicolon,    ";")              \
-    m(T_star,         "*")              \
+    m(T_Pi,         "Π")                \
+    m(T_arrow,      "→")                \
+    m(T_assign,     "=")                \
+    m(T_at,         "@")                \
+    m(T_bot,        "⊥")                \
+    m(T_top,        "⊤")                \
+    m(T_box,        "□")                \
+    m(T_colon,      ":")                \
+    m(T_colon_colon,"::")               \
+    m(T_comma,      ",")                \
+    m(T_dot,        ".")                \
+    m(T_extract,    "#")                \
+    m(T_lam,        "λ")                \
+    m(T_semicolon,  ";")                \
+    m(T_star,       "*")                \
 
 #define THORIN_SUBST(m)                 \
     m("->",      T_arrow)               \
@@ -171,4 +172,4 @@ private:
 
 std::ostream& operator<<(std::ostream& os, const Tok tok);
 
-} // namespace thorin
+} // namespace thorin::fe

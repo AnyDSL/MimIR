@@ -16,7 +16,7 @@ namespace thorin {
 Scope::Scope(Def* entry)
     : world_(entry->world())
     , entry_(entry)
-    , exit_(world().nom_lam(world().cn(world().type_bot()), world_.dbg("exit"))) {
+    , exit_(world().exit()) {
     run();
 }
 
@@ -24,8 +24,8 @@ Scope::~Scope() {}
 
 void Scope::run() {
     unique_queue<DefSet&> queue(bound_);
-    if (entry_->has_var()) {
-        queue.push(entry_->var());
+    if (auto var = entry_->var()) {
+        queue.push(var);
 
         while (!queue.empty()) {
             for (auto use : queue.pop()->uses()) {

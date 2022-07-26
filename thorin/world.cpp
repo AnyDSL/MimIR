@@ -49,6 +49,7 @@ World::World(const State& state)
     data_.lit_nat_0_   = lit_nat(0);
     data_.lit_nat_1_   = lit_nat(1);
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
+    data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
     auto nat           = type_nat();
 
     { // int/real: w: Nat -> *
@@ -207,7 +208,8 @@ World::~World() {
  */
 
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
-    auto pi = callee->type()->as<Pi>();
+    auto pi = callee->type()->isa<Pi>();
+    if (!pi) type_err(dbg->loc(), "called expression '{}' is not of function type", callee);
 
     if (err()) {
         if (!checker_->assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
@@ -299,6 +301,8 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
 }
 
 const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
+    if (!index) return nullptr; // might occur when World is frozen
+
     if (index->isa<Arr>() || index->isa<Pack>()) {
         DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
         return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);

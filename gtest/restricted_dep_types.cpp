@@ -11,7 +11,6 @@
 #include "thorin/tables.h"
 #include "thorin/world.h"
 
-// #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
@@ -33,11 +32,11 @@ TEST(RestrictedDependentTypes, join_singleton) {
         Normalizers normalizers;
         auto mem_d = Dialect::load("mem", {});
         mem_d.register_normalizers(normalizers);
-        Parser::import_module(w, "mem", {}, &normalizers);
+        fe::Parser::import_module(w, "mem", {}, &normalizers);
 
         auto core_d = Dialect::load("core", {});
         core_d.register_normalizers(normalizers);
-        Parser::import_module(w, "core", {}, &normalizers);
+        fe::Parser::import_module(w, "core", {}, &normalizers);
 
         auto i32_t = w.type_int_width(32);
         auto i64_t = w.type_int_width(64);
@@ -228,11 +227,11 @@ TEST(RestrictedDependentTypes, ll) {
     Normalizers normalizers;
     auto mem_d = Dialect::load("mem", {});
     mem_d.register_normalizers(normalizers);
-    Parser::import_module(w, "mem", {}, &normalizers);
+    fe::Parser::import_module(w, "mem", {}, &normalizers);
 
     auto core_d = Dialect::load("core", {});
     core_d.register_normalizers(normalizers);
-    Parser::import_module(w, "core", {}, &normalizers);
+    fe::Parser::import_module(w, "core", {}, &normalizers);
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int_width(32);

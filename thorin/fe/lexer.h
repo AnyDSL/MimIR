@@ -12,6 +12,8 @@ namespace thorin {
 
 class World;
 
+namespace fe {
+
 class Lexer : public utf8::Lexer<3> {
     using Super = utf8::Lexer<3>;
 
@@ -63,4 +65,5 @@ private:
     absl::flat_hash_map<std::string, Tok::Tag> keywords_;
 };
 
+} // namespace fe
 } // namespace thorin
