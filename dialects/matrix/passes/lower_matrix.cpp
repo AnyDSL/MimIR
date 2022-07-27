@@ -19,6 +19,46 @@ const Def* LowerMatrix::rewrite(const Def* def) {
     return rewritten[def];
 }
 
+// TODO: documentation (arguments, functionality, for control flow, for arguments)
+// TODO: generalize to general start, step, accumulators
+Lam* multifor(World& world, Array<const Def*> bounds, const Def* inner_body) {
+    auto count = bounds.size();
+    Array<const Def*> iterators(count);
+    auto I32         = world.type_int_width(32);
+    Defs empty_tuple = {};
+    auto empty_type  = world.tuple(empty_tuple)->type(); // TODO: check
+    auto res_ty      = world.cn({mem::type_mem(world), empty_type});
+    auto iter_ty     = world.cn({mem::type_mem(world), I32, empty_type, res_ty});
+
+    auto outer_ty = world.cn({mem::type_mem(world), empty_type, res_ty});
+
+    auto outer_container   = world.nom_lam(outer_ty, world.dbg("outer"));
+    auto [mem, acc, yield] = outer_container->vars<3>();
+
+    auto zero_lit = world.lit_int_width(32, 0, world.dbg("zero"));
+    auto one_lit  = world.lit_int_width(32, 1, world.dbg("one"));
+
+    Lam* container = outer_container;
+
+    Lam* for_body;
+    for (size_t i = 0; i < count; ++i) {
+        for_body  = world.nom_lam(iter_ty, world.dbg("container_" + std::to_string(i)));
+        auto call = affine::op_for(world, mem, zero_lit, bounds[i], one_lit, empty_tuple, for_body, yield);
+
+        container->set_body(call);
+        container->set_filter(true);
+        container    = for_body;
+        mem          = container->var(0, world.dbg("mem"));
+        auto idx     = container->var(1, world.dbg("idx"));
+        acc          = container->var(2, world.dbg("acc"));
+        yield        = container->var(3, world.dbg("yield"));
+        iterators[i] = idx;
+    }
+    container->app(true, inner_body, {mem::mem_var(container), world.tuple(iterators), acc, yield});
+
+    return outer_container;
+}
+
 // TODO: compare with other impala version (why is one easier than the other?)
 const Def* LowerMatrix::rewrite_(const Def* def) {
     // std::cout << "rewriting " << def << std::endl;
@@ -74,8 +114,89 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         // TODO: check indices
         // TODO: check inner_idxs
 
+        Array<const Def*> out_bounds(n_lit, [&](u64 i) {
+            auto dim_nat = world.extract(S, i);
+            auto dim_int = core::op_bitcast(I32, dim_nat);
+            return dim_int;
+        });
+
+        Array<const Def*> inner_bounds(inner_idxs.size(), [&](u64 i) {
+            auto dim_nat = inner_idxs[i].second;
+            auto dim_int = core::op_bitcast(I32, dim_nat);
+            return dim_int;
+        });
+
+        auto res_ty              = world.cn({mem::type_mem(world), empty_type});
+        auto inner_idx_count_nat = world.lit_nat(inner_idxs.size());
+
+        auto middle_type    = world.cn({mem::type_mem(world), world.arr(n, I32), empty_type, res_ty});
+        auto innermost_type = world.cn({mem::type_mem(world), world.arr(inner_idx_count_nat, I32), empty_type, res_ty});
+
+        auto innermost_body = world.nom_lam(innermost_type, world.dbg("innermost"));
+        auto middle_body    = world.nom_lam(middle_type, world.dbg("middle"));
+
+        // TODO: check types
+
+        auto outer_for = multifor(world, out_bounds, middle_body);
+        auto inner_for = multifor(world, inner_bounds, innermost_body);
+
+        auto [mid_mem, out_idx, mid_acc, mid_yield] = middle_body->vars<4>();
+        auto [inn_mem, inn_idx, inn_acc, inn_yield] = innermost_body->vars<4>();
+
+        // out:
+        // init matrix, call middle, return matrix
+
+        Lam* outer_cont = world.nom_lam(res_ty, world.dbg("outer_cont"));
+
+        // replaces axiom call function
+        // TODO: cn instead of pi
+        Lam* outer_container = world.nom_lam(world.pi(args->type(), def->type()), world.dbg("outer_container"));
+
+        auto outer_mem             = mem::mem_var(outer_container);
+        auto [outer_mem2, out_mat] = world.app(world.ax<matrix::init>(), {n, S, outer_mem, T})->projs<2>();
+
+        // TODO: call outer_for(mem, [], out_cont)
+        // out_cont: return matrix
+
+        outer_container->app(true, outer_for, {outer_mem2, world.tuple(empty_tuple), outer_cont});
+        // TODO: fill outer_cont
+
+        // middle:
+        // init sum, call inner loop, write sum to matrix
+        auto mid_cont                     = world.nom_lam(res_ty, world.dbg("mid_cont"));
+        auto [mid_cont_mem, mid_cont_acc] = mid_cont->vars<2>();
+
+        DefArray out_idxs = out_idx->projs(n_lit);
+        DefArray cast_out_idxs(n_lit);
+        for (int i = 0; i < n_lit; i++) {
+            auto dim_nat     = world.extract(S, i);
+            cast_out_idxs[i] = core::op_bitcast(world.type_int(dim_nat), out_idxs[i]);
+        }
+
+        auto [mmem2, sum_ptr] = mem::op_alloc(zero->type(), mid_mem, world.dbg("sum"))->projs<2>();
+        auto mmem3            = mem::op_store(mmem2, sum_ptr, zero, world.dbg("sum_0"));
+
+        // set middle_body(mem, idxs, yield) to call call inner_for
+        // call inner_for (mem, acc, mid_cont)
+
+        middle_body->app(true, inner_for, {mmem3, mid_acc, mid_cont});
+
+        auto [mid_cont_mem2, out_mat_tmp2] = world
+                                                 .app(world.app(world.ax<matrix::insert>(), {n, S, T}),
+                                                      {mid_cont_mem, out_mat, world.tuple(cast_out_idxs)})
+                                                 ->projs<2>();
+
+        mid_cont->app(true, mid_yield, {mid_cont_mem2, mid_cont_acc});
+
+        // TODO: set inner_body to compute
+
+        // TODO: create out_matrix in outer lam
+
+        return def;
+
+        // auto outer_iteration_call = multifor(world, bounds, inner_body);
+
         // auto iterTy = world.pi({mem::type_mem(), I32, empty_type}, )
-        auto res_ty  = world.cn({mem::type_mem(world), empty_type});
         auto iter_ty = world.cn({mem::type_mem(world), I32, empty_type, res_ty});
         auto iter_pi = iter_ty->as<Pi>();
 
@@ -92,8 +213,6 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         outer_cont->app(true, outer_container->ret_var(), {mem::mem_var(outer_cont), out_mat});
 
         Lam* inner = container;
-
-        DefArray out_idxs(n_lit);
 
         // from inner loop to outer loop due to building restriction
         // output loops
