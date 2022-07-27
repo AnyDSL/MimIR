@@ -60,6 +60,8 @@ Lam* multifor(World& world, Array<const Def*> bounds, const Def* inner_body) {
 }
 
 // TODO: compare with other impala version (why is one easier than the other?)
+// TODO: replace sum_ptr by using sum as accumulator
+// TODO: extract inner loop into function (for read normalizer)
 const Def* LowerMatrix::rewrite_(const Def* def) {
     // std::cout << "rewriting " << def << std::endl;
 
@@ -259,124 +261,6 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         auto ret_def = world.app(ret_def_call, args);
 
         return def;
-
-        // auto outer_iteration_call = multifor(world, bounds, inner_body);
-
-        // auto iterTy = world.pi({mem::type_mem(), I32, empty_type}, )
-        auto iter_ty = world.cn({mem::type_mem(world), I32, empty_type, res_ty});
-        auto iter_pi = iter_ty->as<Pi>();
-
-        Lam* container = world.nom_lam(iter_pi, world.dbg("inner_container"));
-        // end continuation returning the resulting matrix
-        Lam* outer_cont = world.nom_lam(world.pi(res_ty, world.tuple({})), world.dbg("outer_cont"));
-
-        Lam* outer_container = world.nom_lam(world.pi(args->type(), def->type()), world.dbg("outer_container"));
-
-        auto outer_mem             = mem::mem_var(outer_container);
-        auto [outer_mem2, out_mat] = world.app(world.ax<matrix::init>(), {n, S, outer_mem, T})->projs<2>();
-
-        // written in inner_cont
-        outer_cont->app(true, outer_container->ret_var(), {mem::mem_var(outer_cont), out_mat});
-
-        Lam* inner = container;
-
-        // from inner loop to outer loop due to building restriction
-        // output loops
-
-        // TODO: rework when immutable arrays become a thing
-        // TODO: generalize: iterate over index-array with sizes
-        // transport out matrix
-        for (int i = n_lit - 1; i >= 0; i--) {
-            auto dim_nat = world.extract(S, i);
-            auto dim_int = core::op_bitcast(I32, dim_nat);
-            // acc = init
-            // for i = start to end step by step
-            //   acc = body acc
-            // exit acc
-            // TODO: check if exit/break is set up correctly
-            auto fori   = affine::op_for(world, mem::mem_var(inner),
-                                         // start, end, step
-                                         zero_lit, dim_int, one_lit,
-                                         // init, body, exit
-                                         empty_tuple, inner, outer_cont);
-            out_idxs[i] = inner->var(1);
-            // TODO: check iterators
-            if (i == 0) {
-                inner = world.nom_lam(world.pi({mem::type_mem(world)}, {}), world.dbg("iter_" + std::to_string(i)));
-            } else {
-                inner = world.nom_lam(iter_pi, world.dbg("iter_" + std::to_string(i)));
-            }
-            inner->set_body(fori);
-            // out_idxs[i] = world.lit_nat(i);
-        }
-
-        outer_container->app(true, inner, {mem::mem_var(outer_container)});
-
-        // TODO: extract into own function to access in normalizer
-        // or use slot
-        auto [imem2, sum_ptr] = mem::op_alloc(zero->type(), mem::mem_var(container), world.dbg("sum"))->projs<2>();
-        auto imem3            = mem::op_store(imem2, sum_ptr, zero, world.dbg("sum_0"));
-
-        Lam* inner_cont = world.nom_lam(world.pi(res_ty, world.tuple({})), world.dbg("inner_cont"));
-        // TODO: write sum to matrix in inner_cont
-
-        DefArray cast_out_idxs(n_lit);
-        for (int i = 0; i < n_lit; i++) {
-            auto dim_nat     = world.extract(S, i);
-            cast_out_idxs[i] = core::op_bitcast(world.type_int(dim_nat), out_idxs[i]);
-        }
-
-        auto [outer_mem2, out_mat_tmp2] = world
-                                              .app(world.app(world.ax<matrix::insert>(), {n, S, T}),
-                                                   {mem::mem_var(inner_cont), out_mat, world.tuple(cast_out_idxs)})
-                                              ->projs<2>();
-
-        // TODO: set container body to call inner for loop (with imem3)
-
-        auto ret_def_call = direct::op_cps2ds(outer_container);
-        // TODO: check
-        auto ret_def = world.app(ret_def_call, args);
-
-        return def;
-
-        // auto& w = world();
-        // w.DLOG("rewriting for axiom: {} within {}", for_ax, curr_nom());
-
-        // auto for_pi  = for_ax->callee_type();
-        // auto for_lam = w.nom_lam(for_pi, w.dbg("for"));
-
-        // auto org_body  = for_ax->arg(for_ax->num_args() - 2);
-        // auto body_type = org_body->type()->as<Pi>();
-        // auto yield_pi  = body_type->doms().back()->as<Pi>();
-        // auto yield_lam = w.nom_lam(yield_pi, w.dbg("yield"));
-
-        // { // construct yield
-        //     auto [mem, iter, end, step, acc, body, brk] =
-        //         for_lam->vars<7>({w.dbg("mem"), w.dbg("begin"), w.dbg("end"), w.dbg("step"), w.dbg("acc"),
-        //                           w.dbg("body"), w.dbg("break")});
-        //     auto [yield_mem, yield_acc] = yield_lam->vars<2>();
-
-        //     auto add = w.op(Wrap::add, w.lit_nat_0(), iter, step);
-        //     yield_lam->app(false, for_lam, {yield_mem, add, end, step, yield_acc, body, brk});
-        // }
-        // { // construct for
-        //     auto [mem, iter, end, step, acc, body, brk] = for_lam->vars<7>();
-
-        //     // continue
-        //     auto if_then_cn = w.cn(mem->type());
-        //     auto if_then    = w.nom_lam(if_then_cn, nullptr);
-        //     if_then->app(false, body, {if_then->var(0, w.dbg("mem")), iter, acc, yield_lam});
-
-        //     // break
-        //     auto if_else_cn = w.cn(mem->type());
-        //     auto if_else    = w.nom_lam(if_else_cn, nullptr);
-        //     if_else->app(false, brk, {if_else->var(0, w.dbg("mem")), acc});
-
-        //     auto cmp = w.op(ICmp::ul, iter, end);
-        //     for_lam->branch(false, cmp, if_then, if_else, mem);
-        // }
-
-        // return rewritten_[def] = w.app(for_lam, for_ax->arg(), for_ax->dbg());
     }
 
     return def;
