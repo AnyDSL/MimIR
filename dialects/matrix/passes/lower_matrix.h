@@ -8,12 +8,12 @@ namespace thorin::matrix {
 
 /// Resolved by normalizer:
 /// - shape
-/// - transpose
+/// - transpose (mapReduce)
 /// Rewrites into loop:
-/// - product
-/// - map
-/// - zipWith
-/// - fold
+/// - product (mapReduce)
+/// - map (mapReduce)
+/// - zipWith (mapReduce)
+/// - fold (mapReduce)
 /// - id
 /// - constMat
 /// Left for final phase:
@@ -24,13 +24,6 @@ namespace thorin::matrix {
 /// Lowers the for axiom to actual control flow in CPS style
 /// Requires CopyProp to cleanup afterwards.
 ///
-/// lowers all high level matrix operations to low level matrix interactions in loops
-/// for instance, `map` becomes a loop with read and writes
-///
-/// matrix operations such as map are in direct calling position
-/// but need to be translated to CPS
-/// We use the direct style dialect plugin to do this
-
 /// pseudo code to lower mapReduce:
 /// * out indices = (0,1,2, ..., n)
 /// * bounds in S

@@ -306,7 +306,7 @@ let multiiter f n S:=
         mem: %mem.M, // memory
         zero: T, // initial value
         add: [T,T]->T, // reduction operation
-        mul: TI->T, // inner combination
+        mul: [%mem.M,TI]->[%mem.M,T], // inner combination
         // out_index not needed => always ij (0 ... n) for n dimensions
         input:
             «i:m; 

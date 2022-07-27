@@ -98,7 +98,7 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         std::vector<std::pair<u64, const Def*>> inner_idxs;
         // TODO: collect other indices
 
-        Array<Array<u64>> inner_access(m_lit);
+        Array<std::pair<Array<u64>, const Def*>> inner_access(m_lit);
         for (auto i = 0; i < m_lit; i++) {
             auto [access, imat] = input->proj(i)->projs<2>();
             auto access_size    = as_lit(world.extract(NI, i));
@@ -110,6 +110,7 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
                     inner_idxs.push_back({indices[j], max_size});
                 }
             }
+            inner_access[i] = {indices, imat};
         }
         // TODO: check indices
         // TODO: check inner_idxs
@@ -146,20 +147,23 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         // out:
         // init matrix, call middle, return matrix
 
-        Lam* outer_cont = world.nom_lam(res_ty, world.dbg("outer_cont"));
+        Lam* outer_cont                       = world.nom_lam(res_ty, world.dbg("outer_cont"));
+        auto [outer_cont_mem, outer_cont_acc] = outer_cont->vars<2>();
 
         // replaces axiom call function
-        // TODO: cn instead of pi
-        Lam* outer_container = world.nom_lam(world.pi(args->type(), def->type()), world.dbg("outer_container"));
+        Lam* outer_container =
+            world.nom_lam(world.cn(args->type(), world.cn(def->type())), world.dbg("outer_container"));
 
         auto outer_mem             = mem::mem_var(outer_container);
         auto [outer_mem2, out_mat] = world.app(world.ax<matrix::init>(), {n, S, outer_mem, T})->projs<2>();
 
-        // TODO: call outer_for(mem, [], out_cont)
+        // call outer_for(mem, [], out_cont)
         // out_cont: return matrix
 
         outer_container->app(true, outer_for, {outer_mem2, world.tuple(empty_tuple), outer_cont});
-        // TODO: fill outer_cont
+        // return most recent memory and matrix
+
+        outer_cont->app(true, outer_container->ret_var(), {outer_cont_mem, out_mat});
 
         // middle:
         // init sum, call inner loop, write sum to matrix
@@ -188,9 +192,71 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
 
         mid_cont->app(true, mid_yield, {mid_cont_mem2, mid_cont_acc});
 
-        // TODO: set inner_body to compute
+        // inner:
+        // read matrix elements
+        // call function
+        // add result to sum
 
-        // TODO: create out_matrix in outer lam
+        DefArray elements(m_lit);
+
+        auto curr_inner_most_mem = inn_mem;
+
+        for (auto i = 0; i < m_lit; i++) {
+            auto [access, imat] = inner_access[i];
+
+            auto ni = world.extract(NI, i);
+            auto Si = world.extract(SI, i);
+            auto Ti = world.extract(TI, i);
+
+            auto ni_lit = access.size();
+            // TODO: check with ni
+            DefArray idxs(ni_lit);
+            for(auto j = 0; j < ni_lit; j++) {
+                auto access_var = access[j];
+                // get var by first finding position of access_var in inner_idxs.fst
+                auto pos = -1;
+                for (auto k = 0; k < inner_idxs.size(); k++) {
+                    if (inner_idxs[k].first == access_var) {
+                        pos = k;
+                        break;
+                    }
+                }
+                assert(pos != -1);
+                // now get the pos-th variable from the iterators inn_idx
+                auto inner_idx_var = world.extract(inn_idx, pos);
+                // this variable is an I32
+                // need Int (Si#j)
+                auto dim_nat     = world.extract(Si, j);
+                idxs[j] = core::op_bitcast(world.type_int(dim_nat), inner_idx_var);
+            }
+            // TODO: check indices
+
+            auto [new_mem, element] = world
+                                          .app(world.app(world.ax<matrix::read>(), {ni, Si, Ti}),
+                                               {curr_inner_most_mem, imat, world.tuple(idxs)})
+                                          ->projs<2>();
+            curr_inner_most_mem = new_mem;
+            elements[i]         = element;
+        }
+
+        auto [new_mem,result] = world.app(mul,{curr_inner_most_mem,world.tuple(elements)})->projs<2>();
+        curr_inner_most_mem = new_mem;
+        // read from sum,
+        // add
+        // write to sum
+        // TODO: make sum no ptr but accumulator
+        auto [new_mem2,v] = mem::op_load(curr_inner_most_mem, sum_ptr, world.dbg("sum_load"))->projs<2>();
+        curr_inner_most_mem = new_mem2;
+
+        auto new_v=v;
+
+        curr_inner_most_mem = mem::op_store(curr_inner_most_mem, sum_ptr, new_v, world.dbg("sum_store"));
+
+        innermost_body->app(true, inn_yield, {curr_inner_most_mem, inn_acc});
+
+        auto ret_def_call = direct::op_cps2ds(outer_container);
+        // TODO: check
+        auto ret_def = world.app(ret_def_call, args);
 
         return def;
 
