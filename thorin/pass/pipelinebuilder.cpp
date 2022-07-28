@@ -8,11 +8,6 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 
-#include "dialects/mem/passes/fp/copy_prop.h"
-#include "dialects/mem/passes/fp/ssa_constr.h"
-#include "dialects/mem/passes/rw/alloc2malloc.h"
-#include "dialects/mem/passes/rw/remem_elim.h"
-
 namespace thorin {
 
 void PipelineBuilder::extend_opt_phase(std::function<void(PassMan&)> extension) {

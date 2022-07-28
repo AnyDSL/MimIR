@@ -31,24 +31,24 @@
 
 
 // CHECK-DAG: main: .Cn [%mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), .Cn [%mem.M, (%Int 4294967296)]], @(_[[memId:[0-9]+]], _[[argcId:[0-9]+]], _{{[0-9]+}}, _[[returnId:[0-9]+]]) = {
-// CHECK-DAG: _[[appLoopId:[0-9]+]]: ⊥:★ = loop_[[loopId:[0-9]+]] (_[[memId]], 0:(%Int 4294967296), 0:(%Int 4294967296));
+// CHECK-DAG: _[[appLoopId:[0-9]+]]: ⊥:★ = loop_[[loopId:[0-9]+]] ‹2:.Nat; 0:(%Int 4294967296)›;
 // CHECK-DAG: _[[appLoopId]]
 
 // CHECK-DAG: _[[exitEtaId:[0-9]+]]: .Cn [%mem.M, (%Int 4294967296)], @(_{{[0-9]+}}, _{{[0-9]+}}) = {
 // CHECK-DAG:    _[[appReturnId:[0-9]+]]: ⊥:★ = _[[returnId]] @_[[exitEtaId]];
 // CHECK-DAG:    _[[appReturnId:[0-9]+]]
 
-// CHECK-DAG: loop_[[loopId]]: .Cn [%mem.M, (%Int 4294967296), (%Int 4294967296)], @(_[[loopMemId:[0-9]+]], _[[iterId:[0-9]+]], _[[accId:[0-9]+]]) = {
+// CHECK-DAG: loop_[[loopId]]: .Cn «2:.Nat; (%Int 4294967296)», @(_[[iterId:[0-9]+]], _[[accId:[0-9]+]]) = {
 // CHECK-DAG: _[[condId:[0-9]+]]: (%Int 2) = %core.icmp.XygLe 4294967296:.Nat (_[[iterId]], _[[argcId]]);
-// CHECK-DAG: _[[appCondId:[0-9]+]]: ⊥:★ = (exit_[[exitId:[0-9]+]], body_[[bodyId:[0-9]+]])#_[[condId]] _[[loopMemId]];
+// CHECK-DAG: _[[appCondId:[0-9]+]]: ⊥:★ = (exit_[[exitId:[0-9]+]], body_[[bodyId:[0-9]+]])#_[[condId]] ();
 // CHECK-DAG: _[[appCondId]]
 
-// CHECK-DAG: exit_[[exitId]]: .Cn %mem.M, @_[[exitVarId:[0-9]+]] = {
-// CHECK-DAG: _[[appExitEtaId:[0-9]+]]: ⊥:★ = _[[exitEtaId]] (_[[exitVarId]], _[[accId]]);
+// CHECK-DAG: exit_[[exitId]]: .Cn [] = {
+// CHECK-DAG: _[[appExitEtaId:[0-9]+]]: ⊥:★ = _[[exitEtaId]] (_[[memId]], _[[accId]]);
 // CHECK-DAG: _[[appExitEtaId]]
 
-// CHECK-DAG: body_[[bodyId]]: .Cn %mem.M, @_[[bodyVarId:[0-9]+]] = {
+// CHECK-DAG: body_[[bodyId]]: .Cn [] = {
 // CHECK-DAG: _[[addIterId:[0-9]+]]: (%Int 4294967296) = %Wrap_add (0:.Nat, 4294967296:.Nat) (1:(%Int 4294967296), _[[iterId]]);
 // CHECK-DAG: _[[addAccId:[0-9]+]]: (%Int 4294967296) = %Wrap_add (0:.Nat, 4294967296:.Nat) (_[[accId]], _[[iterId]]);
-// CHECK-DAG: _[[appLoopIdBody:[0-9]+]]: ⊥:★ = loop_[[loopId]] (_[[bodyVarId]], _[[addIterId]], _[[addAccId]]);
+// CHECK-DAG: _[[appLoopIdBody:[0-9]+]]: ⊥:★ = loop_[[loopId]] (_[[addIterId]], _[[addAccId]]);
 // CHECK-DAG: _[[appLoopIdBody]]

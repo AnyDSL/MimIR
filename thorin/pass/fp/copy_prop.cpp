@@ -1,4 +1,4 @@
-#include "dialects/mem/passes/fp/copy_prop.h"
+#include "thorin/pass/fp/copy_prop.h"
 
 #include <ranges>
 
@@ -7,9 +7,7 @@
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
 
-#include "dialects/mem/mem.h"
-
-namespace thorin::mem {
+namespace thorin {
 
 static std::pair<const App*, Array<Lam*>> isa_apped_nom_lam_in_tuple(const Def* def) {
     if (auto app = def->isa<App>()) {
@@ -106,7 +104,7 @@ const Def* CopyProp::rewrite_conditional(const Def* def) {
         auto [it, _] = lam2info_.emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefArray(n)));
         auto& [lattice, prop_lam, old_args] = it->second;
 
-        if (mem::mem_var(var_lam)) lattice[0] = Lattice::Keep;
+        // if (mem::mem_var(var_lam)) lattice[0] = Lattice::Keep;
         if (std::ranges::all_of(lattice, [](auto l) { return l == Lattice::Keep; })) return app;
     }
 
@@ -171,7 +169,7 @@ const Def* CopyProp::rewrite(const Def* def) {
     auto [it, _] = lam2info_.emplace(var_lam, std::tuple(Lattices(n), (Lam*)nullptr, DefArray(n)));
     auto& [lattice, prop_lam, old_args] = it->second;
 
-    if (mem::mem_var(var_lam)) lattice[0] = Lattice::Keep;
+    // if (mem::mem_var(var_lam)) lattice[0] = Lattice::Keep;
     if (std::ranges::all_of(lattice, [](auto l) { return l == Lattice::Keep; })) return app;
 
     auto [new_args, appxy_ops] = rewrite_lam(app, var_lam, prop_lam, old_args, lattice);
@@ -227,4 +225,4 @@ PassTag* CopyProp::ID() {
     return &Key;
 }
 
-} // namespace thorin::mem
+} // namespace thorin

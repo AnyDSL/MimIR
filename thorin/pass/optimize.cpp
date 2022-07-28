@@ -1,5 +1,6 @@
 #include "thorin/pass/optimize.h"
 
+#include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/tail_rec_elim.h"
 #include "thorin/pass/pipelinebuilder.h"
@@ -15,6 +16,12 @@ void optimize(World& world, PipelineBuilder& builder) {
 
     auto opt = builder.opt_phase(world);
     opt->run();
+
+    // todo: reintegrate into original opt phase.
+    PassMan::run<CopyProp>(world, nullptr, nullptr);
+
+    auto opt2 = builder.opt_phase(world);
+    opt2->run();
 
     PassMan::run<LamSpec>(world);
 

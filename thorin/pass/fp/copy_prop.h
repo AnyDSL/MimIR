@@ -7,8 +7,6 @@ namespace thorin {
 class BetaRed;
 class EtaExp;
 
-namespace mem {
-
 /// This FPPass is similar to sparse conditional constant propagation (SCCP).
 /// However, this optmization also works on all Lam%s alike and does not only consider basic blocks as opposed to
 /// traditional SCCP. What is more, this optimization will also propagate arbitrary Def%s and not only constants.
@@ -53,5 +51,4 @@ private:
     const bool bb_only_;
 };
 
-} // namespace mem
 } // namespace thorin
