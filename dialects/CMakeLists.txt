@@ -72,3 +72,18 @@ add_thorin_dialect(direct
         direct/passes/ds2cps.h
     INSTALL
 )
+
+add_thorin_dialect(autodiff
+    SOURCES
+        autodiff/autodiff.cpp
+        autodiff/autodiff.h
+        autodiff/passes/autodiff_eval.cpp
+        autodiff/passes/autodiff_eval.h
+        autodiff/normalizers.cpp
+    DEPENDS
+        mem
+        core
+        clos
+        affine
+    INSTALL
+)

@@ -1,0 +1,33 @@
+/// # The automatic differentiation dialect {#autodiff}
+///
+/// [TOC]
+///
+/// <TODO:>
+///
+/// ## Dependencies
+///
+/// none
+///
+/// ## Types
+///
+.ax %autodiff.tangent_type: * -> *, normalize_tangent_type;
+.ax %autodiff.augment_type: * -> *, normalize_augment_type;
+///
+/// ## Operations
+///
+/// ### %autodiff.autodiff
+///
+.ax %autodiff.autodiff: Π [T: *, U: *] -> (.Cn [T, .Cn U]) -> 
+    (.Cn [(%autodiff.augment_type T),         // argument
+        (.Cn [(%autodiff.augment_type U),     // result
+            (.Cn [(%autodiff.tangent_type U), // output tangent
+                (%autodiff.tangent_type T)    // input tangent
+            ])
+        ])
+    ]);
+///
+/// ### %autodiff.zero
+/// 
+/// a universal zero such that (zero T) +_T t = t
+///
+.ax %autodiff.zero: Π [T:*] -> T, normalize_zero;
