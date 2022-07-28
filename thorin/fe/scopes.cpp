@@ -10,13 +10,13 @@ void Scopes::pop() {
 }
 
 const Def* Scopes::find(Sym sym) const {
-    if (sym.is_anonymous()) err<ScopeError>(sym.loc(), "the symbol '_' is special and never binds to anything", sym);
+    if (sym.is_anonymous()) err(sym.loc(), "the symbol '_' is special and never binds to anything", sym);
 
     for (auto& scope : scopes_ | std::ranges::views::reverse) {
         if (auto i = scope.find(sym); i != scope.end()) return i->second;
     }
 
-    err<ScopeError>(sym.loc(), "symbol '{}' not found", sym);
+    err(sym.loc(), "symbol '{}' not found", sym);
 }
 
 void Scopes::bind(Scope* scope, Sym sym, const Def* def) {
@@ -25,7 +25,7 @@ void Scopes::bind(Scope* scope, Sym sym, const Def* def) {
     if (auto [i, ins] = scope->emplace(sym, def); !ins) {
         auto curr = sym.loc();
         auto prev = i->first.to_loc();
-        err<ScopeError>(curr, "symbol '{}' already declared in the current scope here: {}", sym, prev);
+        err(curr, "symbol '{}' already declared in the current scope here: {}", sym, prev);
     }
 }
 

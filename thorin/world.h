@@ -170,7 +170,7 @@ public:
     const Axiom* ax(AxTag tag) const {
         u64 flags = static_cast<u64>(tag);
         if (auto i = data_.axioms_.find(flags); i != data_.axioms_.end()) return i->second;
-        thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", flags);
+        thorin::err("Axiom with tag '{}' not found in world", flags);
     }
 
     /// Get axiom from a dialect.
