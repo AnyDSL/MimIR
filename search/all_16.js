@@ -27,7 +27,7 @@ var searchData=
   ['world_2ecpp_24',['world.cpp',['../world_8cpp.html',1,'']]],
   ['world_2eh_25',['world.h',['../world_8h.html',1,'']]],
   ['world_5f_26',['world_',['../classthorin_1_1Emitter.html#ac4f44cc50d493193ce7f439eba04abfd',1,'thorin::Emitter']]],
-  ['wrap_27',['Wrap',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67a273d69af71900cf0558affc4a04d31ef',1,'thorin::Tag::Wrap()'],['../namespacethorin.html#a65b28a70b601ee7898841af6af02d56f',1,'thorin::Wrap()']]],
-  ['wrap_28',['wrap',['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f',1,'thorin::core']]],
+  ['wrap_27',['wrap',['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f',1,'thorin::core']]],
+  ['wrap_28',['Wrap',['../namespacethorin_1_1Tag.html#a325dd691b607c807e321a82821ad9f67a273d69af71900cf0558affc4a04d31ef',1,'thorin::Tag::Wrap()'],['../namespacethorin.html#a65b28a70b601ee7898841af6af02d56f',1,'thorin::Wrap()']]],
   ['writable_29',['writable',['../classthorin_1_1mem_1_1SSAConstr.html#a77523bbc1cf5687f0de2bfda7508038e',1,'thorin::mem::SSAConstr::Info']]]
 ];
