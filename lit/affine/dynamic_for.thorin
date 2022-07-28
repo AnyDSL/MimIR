@@ -6,18 +6,15 @@
 
 .import affine;
 .import mem;
+.import core;
 
 .cn atoi [%mem.M, %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat), .Cn [%mem.M, %Int 4294967296]];
 
 .cn .extern main [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
-    .cn for_exit [mem : %mem.M , acc : [%Int 4294967296, %Int 4294967296]] = {
-        return (mem, acc#.ff)
-    };
-
-    .cn for_body [mem : %mem.M , i : %Int 4294967296, acc : [%Int 4294967296, %Int 4294967296], continue : .Cn [%mem.M , [%Int 4294967296, %Int 4294967296]]] = {
-        .let a : %Int 4294967296 = %Wrap_add (0:.Nat, 4294967296:.Nat) (i, acc#.ff);
-        .let b : %Int 4294967296 = %Wrap_sub (0:.Nat, 4294967296:.Nat) (i, acc#.tt);
-        continue (mem, (a, b))
+    .cn for_body [i : %Int 4294967296, [acc_a : %Int 4294967296, acc_b : %Int 4294967296], continue : .Cn [%Int 4294967296, %Int 4294967296]] = {
+        .let a : %Int 4294967296 = %core.wrap.add (0:.Nat, 4294967296:.Nat) (i, acc_a);
+        .let b : %Int 4294967296 = %core.wrap.sub (0:.Nat, 4294967296:.Nat) (i, acc_b);
+        continue (a, b)
     };
     
     .cn atoi_cont_begin [mem : %mem.M, start : %Int 4294967296] = {
@@ -28,7 +25,11 @@
             .let _19318: %mem.Ptr (%mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat), 0:.Nat) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)›, 0:.Nat) (argv, 3:(%Int 4294967296));
             .let _19331: [%mem.M, %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)] = %mem.load (%mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat), 0:.Nat) (mem, _19318);
             .cn atoi_cont_step [mem : %mem.M, step : %Int 4294967296] = {
-                %affine.For (4294967296:.Nat, 2:.Nat, (%Int 4294967296, %Int 4294967296)) (mem, start, stop, step, (0:(%Int 4294967296), 5:(%Int 4294967296)), for_body, for_exit)
+                .cn for_exit [acc : [%Int 4294967296, %Int 4294967296]] = {
+                    return (mem, acc#.ff)
+                };
+
+                %affine.For (4294967296:.Nat, 2:.Nat, (%Int 4294967296, %Int 4294967296)) (start, stop, step, (0:(%Int 4294967296), 5:(%Int 4294967296)), for_body, for_exit)
             };
             atoi (_19331#.ff, _19331#.tt, atoi_cont_step)
         };
