@@ -6,41 +6,38 @@
 
 .import affine;
 .import mem;
+.import core;
 
 .cn .extern main (mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]) = {
-    .cn for_exit [mem : %mem.M , acc : %Int 4294967296] = {
+    .cn for_exit [acc : %Int 4294967296] = {
         return (mem, acc)
     };
 
-    .cn for_body [mem : %mem.M , i : %Int 4294967296, acc : %Int 4294967296, continue : .Cn [%mem.M , %Int 4294967296]] = {
-        continue (mem, %Wrap_add (0:.Nat, 4294967296:.Nat) (i, acc))
+    .cn for_body [i : %Int 4294967296, acc : %Int 4294967296, continue : .Cn [%Int 4294967296]] = {
+        continue (%core.wrap.add (0:.Nat, 4294967296:.Nat) (i, acc))
     };
-    %affine.For (4294967296, 1, (%Int 4294967296)) (mem, 0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296)), for_body, for_exit)
+    %affine.For (4294967296, 1, (%Int 4294967296)) (0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296)), for_body, for_exit)
 };
 
 // CHECK-DAG: .cn .extern main _[[mainVar:[0-9_]+]]::[mem_[[memVar:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, (%Int 4294967296)]] = {
 
 // CHECK-DAG: .cn return_[[returnId:[0-9_]+]] _[[returnVarId:[0-9_]+]]: [%mem.M, (%Int 4294967296)]
 
-// CHECK-DAG: .cn for_[[forId:[0-9_]+]] _[[forVarId:[0-9_]+]]::[_[[forMemId:[0-9_]+]]: %mem.M, _[[forIntId:[0-9_]+]]: (%Int 4294967296), _[[forAccId:[0-9_]+]]: (%Int 4294967296)]
-// CHECK-DAG: _[[cmpId:[0-9_]+]]: (%Int 2) = %ICmp_ul
-// CHECK-DAG: _[[appId:[0-9_]+]]: ⊥:★ = (_[[falseId:[0-9_]+]], _[[trueId:[0-9_]+]])#_[[cmpId]]
+// CHECK-DAG: .cn for_[[forId:[0-9_]+]] _[[forVarId:[0-9_]+]]::[_[[forIntId:[0-9_]+]]: (%Int 4294967296), _[[forAccId:[0-9_]+]]: (%Int 4294967296)]
+// CHECK-DAG: _[[cmpId:[0-9_]+]]: (%Int 2) = %core.icmp.XygLe
+// CHECK-DAG: _[[appId:[0-9_]+]]: ⊥:★ = (_[[falseId:[0-9_]+]], for_body_[[bodyId:[0-9_]+]])#_[[cmpId]]
 // CHECK-DAG: _[[appId]]
 
-// CHECK-DAG: .cn _{{[0-9]+}} _[[exitVarId:[0-9_]+]]: %mem.M
-// CHECK-DAG: _[[appIdExit:[0-9_]+]]: ⊥:★ = return_[[returnId]] (_[[exitVarId]], _{{[0-9]+}});
+// CHECK-DAG: .cn _{{[0-9]+}} []
+// CHECK-DAG: _[[appIdExit:[0-9_]+]]: ⊥:★ = return_[[returnId]] (mem_[[memVar]], _{{[0-9]+}});
 // CHECK-DAG: _[[appIdExit]]
 
 
-// CHECK-DAG: .cn for_body_[[forBodyId:[0-9_]+]] _{{[0-9]+}}: %mem.M
-// CHECK-DAG: = %Wrap_add
-// CHECK-DAG: = %Wrap_add
+// CHECK-DAG: .cn for_body_[[bodyId]] []
+// CHECK-DAG: = %core.wrap.add
+// CHECK-DAG: = %core.wrap.add
 // CHECK-DAG: _[[appIdFor:[0-9_]+]]: ⊥:★ = for_[[forId]]
 // CHECK-DAG: _[[appIdFor]]
-
-// CHECK-DAG: .cn _{{[0-9]+}} _{{[0-9]+}}: %mem.M
-// CHECK-DAG: _[[appIdBody:[0-9_]+]]: ⊥:★ = for_body_[[forBodyId]]
-// CHECK-DAG: _[[appIdBody]]
 
 // CHECK-DAG: for_[[forId]]
 // CHECK-NOT: %affine.For

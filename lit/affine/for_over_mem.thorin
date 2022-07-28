@@ -1,0 +1,32 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d affine %s --output-ll %t.ll --output-thorin - | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t 0 1 2 3 ; test $? -eq 1
+// RUN: %t 0 1 2 3 4 5 6 7 ; test $? -eq 15
+
+.import affine;
+.import mem;
+.import core;
+
+.let i32 = %Int 4294967296;
+
+.cn .extern main [mem : %mem.M, argc : i32, argv : %mem.Ptr (%mem.Ptr (i32, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, i32]] = {
+    // .let arr_size = 16;
+    .let arr_size = ⊤:.Nat;
+    .let (alloc_mem, ptr) = %mem.alloc (<<%core.bitcast (.Nat, i32) argc; i32>>, 0) (mem);
+    .cn for_exit acc : [mem : %mem.M, i32, i32] = {
+        .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (ptr, %core.conv.u2u (arr_size, 4294967296) (%core.wrap.sub (0, 4294967296) (argc, 4:i32)));
+        .let (load_mem, val) = %mem.load (i32, 0) (mem, lea);
+        return (load_mem, val)
+    };
+    .cn for_body [i : i32, [mem : %mem.M, acc_a : i32, acc_b : i32], continue : .Cn [%mem.M, i32, i32]] = {
+        .let a : i32 = %core.wrap.add (0:.Nat, 4294967296:.Nat) (i, acc_a);
+        .let b : i32 = %core.wrap.sub (0:.Nat, 4294967296:.Nat) (i, acc_b);
+        .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (ptr, %core.conv.u2u (arr_size, 4294967296) i);
+        .let store_mem = %mem.store (i32, 0) (mem, lea, a);
+        continue (store_mem, a, b)
+    };
+    %affine.For (4294967296, 3, (%mem.M, i32, i32)) (0:(i32), argc, 1:(i32), (alloc_mem, 0:(i32), 0:(i32)), for_body, for_exit)
+};
+
+// CHECK-NOT: affine.For
