@@ -41,7 +41,8 @@ public:
 
 private:
     Def2Def rewritten_;
-    Lam* curr_lam = nullptr;
+    Def2Def rewritten_bodies_;
+    Lam* curr_lam_ = nullptr;
 
     void rewrite_lam(Lam* lam);
     const Def* rewrite_(const Def*);
