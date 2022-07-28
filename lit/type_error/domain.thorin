@@ -1,4 +1,4 @@
-// RUN: not %thorin %s 2>&1 | FileCheck %s 
+// RUN: ! %thorin %s 2>&1 | FileCheck %s 
 
 .let I32 = %Int  4294967296;
 .let R32 = %Real 32;
