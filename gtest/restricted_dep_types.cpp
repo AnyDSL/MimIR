@@ -88,46 +88,50 @@ TEST(RestrictedDependentTypes, join_singleton) {
         cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
-                    EXPECT_ANY_THROW( // float
+                    EXPECT_THROW( // float
                         w.app(exp_lam, {w.type_real(32), R,
                                         core::op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, R)}),
                                                          w.lit(i32_t, 1000)),
-                                        w.nom_lam(w.cn(w.type_real(32)), nullptr)}));
+                                        w.nom_lam(w.cn(w.type_real(32)), nullptr)}),
+                        std::logic_error);
                 },
-                "TypeError");
+                "std::logic_error");
         });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
-                    EXPECT_ANY_THROW( // float
+                    EXPECT_THROW( // float
                         w.app(exp_lam, {w.type_real(32), W,
                                         core::op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, W)}),
                                                          w.lit(i32_t, 1000)),
-                                        w.nom_lam(w.cn(w.type_real(32)), nullptr)}));
+                                        w.nom_lam(w.cn(w.type_real(32)), nullptr)}),
+                        std::logic_error);
                 },
-                "TypeError");
+                "std::logic_error");
         });
         cases.emplace_back([](World& w, auto, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
-                    EXPECT_ANY_THROW( // RW fail
+                    EXPECT_THROW( // RW fail
                         w.app(exp_lam,
                               {i32_t, i32_t,
                                core::op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, i32_t)}), w.lit(i32_t, 1000)),
-                               w.nom_lam(w.cn(i32_t), nullptr)}));
+                               w.nom_lam(w.cn(i32_t), nullptr)}),
+                        std::logic_error);
                 },
-                "TypeError");
+                "std::logic_error");
         });
         cases.emplace_back([](World& w, auto, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto i64_t) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
-                    EXPECT_ANY_THROW( // RW fail
+                    EXPECT_THROW( // RW fail
                         w.app(exp_lam,
                               {i64_t, i64_t,
                                core::op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, i64_t)}), w.lit(i32_t, 1000)),
-                               w.nom_lam(w.cn(i64_t), nullptr)}));
+                               w.nom_lam(w.cn(i64_t), nullptr)}),
+                        std::logic_error);
                 },
-                "TypeError");
+                "std::logic_error");
         });
 
         for (auto&& test : cases) {
@@ -169,13 +173,14 @@ TEST(RestrictedDependentTypes, join_singleton) {
         cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
-                    EXPECT_ANY_THROW( // float type error
+                    EXPECT_THROW( // float type error
                         w.app(exp_lam, {w.type_real(32),
                                         core::op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, R)}),
                                                          w.lit(i32_t, 1000)),
-                                        w.nom_lam(w.cn(w.type_real(32)), nullptr)}));
+                                        w.nom_lam(w.cn(w.type_real(32)), nullptr)}),
+                        std::logic_error);
                 },
-                "TypeError");
+                "std::logic_error");
         });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_ANY_THROW( // W type error
