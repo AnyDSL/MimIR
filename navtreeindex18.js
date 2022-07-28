@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"normalize_8cpp.html#ac0939197f6f85434871b98845c13c9a0":[6,0,4,21,45],
+"normalize_8cpp.html#ac5bfac7920f93ad995b9541acf209563":[6,0,4,21,33],
 "normalize_8cpp.html#aca6c2c2c35f79f944855e950ee08ea61":[6,0,4,21,35],
 "normalize_8cpp.html#ae84c99ac8c916ea2e292bc82b2d9304f":[6,0,4,21,25],
 "normalize_8cpp.html#aefce93521e8a134d9ab10e5205925848":[6,0,4,21,36],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a":[3,0,0,70,0],
 "structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a":[5,0,0,62,0],
 "structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa4059b0251f66a18cb56f544728796875":[3,0,0,70,0,2],
-"structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa4059b0251f66a18cb56f544728796875":[5,0,0,62,0,2],
-"structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa56525ae64d370c0b448ac0d60710ef17":[5,0,0,62,0,1],
-"structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa56525ae64d370c0b448ac0d60710ef17":[3,0,0,70,0,1]
+"structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aa4059b0251f66a18cb56f544728796875":[5,0,0,62,0,2]
 };

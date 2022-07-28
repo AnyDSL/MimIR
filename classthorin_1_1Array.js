@@ -15,6 +15,7 @@ var classthorin_1_1Array =
     [ "Array", "classthorin_1_1Array.html#a16e33a75ad26349d64dd57a31b1f0cd9", null ],
     [ "Array", "classthorin_1_1Array.html#ac3f2e4603169ada57b5358f075e11827", null ],
     [ "Array", "classthorin_1_1Array.html#a47674c97fca9b7ca499b68496660c3fa", null ],
+    [ "Array", "classthorin_1_1Array.html#aa77aa0c30ccfdb610c430e7015931524", null ],
     [ "back", "classthorin_1_1Array.html#ad4ff0ed2a071920bc57aa214265a06ac", null ],
     [ "back", "classthorin_1_1Array.html#a52381cd8b9c8fe75287c50db27679cf4", null ],
     [ "begin", "classthorin_1_1Array.html#a02489c74fc46404f883f5ac2dbcd4be9", null ],

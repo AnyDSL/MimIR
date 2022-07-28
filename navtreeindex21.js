@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"tuple_8h.html#ae79b3c7a7656f77b147095feb289c019":[6,0,4,28,11],
+"tuple_8h.html#ae982c58cbbf8f50804167dc3697e78cd":[6,0,4,28,16],
 "tuple_8h.html#aea00f96e150831aba073fce80ce0080a":[6,0,4,28,14],
 "tuple_8h_source.html":[6,0,4,28],
 "types_8h.html":[6,0,4,4,18],
