@@ -20,6 +20,5 @@ var searchData=
   ['arraystorage_3c_20void_20_2a_2c_20std_3a_3ais_5ftrivial_3c_20void_20_2a_20_3e_3a_3avalue_20_3f_205_20_3a0_20_3e_17',['ArrayStorage&lt; void *, std::is_trivial&lt; void * &gt;::value ? 5 :0 &gt;',['../classthorin_1_1ArrayStorage.html',1,'thorin']]],
   ['ast_18',['AST',['../classthorin_1_1fe_1_1AST.html',1,'thorin::fe']]],
   ['axiom_19',['Axiom',['../classthorin_1_1Axiom.html',1,'thorin']]],
-  ['axiominfo_20',['AxiomInfo',['../namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo',1,'thorin::h']]],
-  ['axiomnotfounderror_21',['AxiomNotFoundError',['../classthorin_1_1AxiomNotFoundError.html',1,'thorin']]]
+  ['axiominfo_20',['AxiomInfo',['../namespacethorin_1_1h.html#structthorin_1_1h_1_1AxiomInfo',1,'thorin::h']]]
 ];
