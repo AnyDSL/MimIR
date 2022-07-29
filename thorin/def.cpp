@@ -15,8 +15,9 @@ namespace thorin {
  * constructors
  */
 
-Def::Def(node_t node, const Def* type, Defs ops, flags_t flags, const Def* dbg)
-    : flags_(flags)
+Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const Def* dbg)
+    : world_(w)
+    , flags_(flags)
     , node_(unsigned(node))
     , nom_(false)
     , dep_(Dep::Bot)

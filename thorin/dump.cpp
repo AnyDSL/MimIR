@@ -9,13 +9,14 @@ using namespace std::literals;
 
 namespace thorin {
 
+/// This is a wrapper to "unwrap" a Def and print it with all of its operands.
 struct Unwrap {
     Unwrap(const Def* def)
         : def(def) {}
 
     const Def* operator->() const { return def; };
     const Def* operator*() const { return def; };
-    operator bool() const {
+    explicit operator bool() const {
         if (def->isa_nom()) return false;
         if (def->isa<Global>()) return false;
         // if (def->no_dep()) return true;
@@ -31,49 +32,35 @@ struct Unwrap {
     const Def* def;
 };
 
-// TODO can we get rid off this?
-static fe::Tok::Prec prec(const Def* def) {
-    if (def->isa<Pi>()) return fe::Tok::Prec::Arrow;
-    if (def->isa<App>()) return fe::Tok::Prec::App;
-    if (def->isa<Extract>()) return fe::Tok::Prec::Extract;
-    if (def->isa<Lit>()) return fe::Tok::Prec::Lit;
-    return fe::Tok::Prec::Bot;
-}
+std::ostream& operator<<(std::ostream&, Unwrap);
 
-static fe::Tok::Prec prec_l(const Def* def) {
-    assert(!def->isa<Lit>());
-    if (def->isa<Pi>()) return fe::Tok::Prec::App;
-    if (def->isa<App>()) return fe::Tok::Prec::App;
-    if (def->isa<Extract>()) return fe::Tok::Prec::Extract;
-    return fe::Tok::Prec::Bot;
-}
-
-static fe::Tok::Prec prec_r(const Def* def) {
-    if (def->isa<Pi>()) return fe::Tok::Prec::Arrow;
-    if (def->isa<App>()) return fe::Tok::Prec::Extract;
-    if (def->isa<Extract>()) return fe::Tok::Prec::Lit;
-    return fe::Tok::Prec::Bot;
+/// This will stream @p def as an operand.
+/// This is usually Def::unique_name, but in some simple cases it will be displayed Unwrap%ed.
+std::ostream& operator<<(std::ostream& os, const Def* def) {
+    if (def == nullptr) return os << "<nullptr>";
+    if (Unwrap(def)) return os << Unwrap(def);
+    return os << def->unique_name();
 }
 
 template<bool L>
 struct LRPrec {
     LRPrec(const Def* l, const Def* r)
-        : l_(l)
-        , r_(r) {}
+        : l(l)
+        , r(r) {}
 
     friend std::ostream& operator<<(std::ostream& os, const LRPrec& p) {
         if constexpr (L) {
-            if (Unwrap(p.l_) && prec_l(p.r_) > prec(p.r_)) return print(os, "({})", p.l_);
-            return print(os, "{}", p.l_);
+            if (Unwrap(p.l) && fe::Tok::prec(fe::Tok::prec(p.r))[0] > fe::Tok::prec(p.r)) return print(os, "({})", p.l);
+            return print(os, "{}", p.l);
         } else {
-            if (Unwrap(p.r_) && prec(p.l_) > prec_r(p.l_)) return print(os, "({})", p.r_);
-            return print(os, "{}", p.r_);
+            if (Unwrap(p.r) && fe::Tok::prec(p.l) > fe::Tok::prec(fe::Tok::prec(p.l))[1]) return print(os, "({})", p.r);
+            return print(os, "{}", p.r);
         }
     }
 
 private:
-    const Def* l_;
-    const Def* r_;
+    const Def* l;
+    const Def* r;
 };
 
 using LPrec = LRPrec<true>;
@@ -150,9 +137,9 @@ std::ostream& let(Tab& tab, std::ostream& os, const Def* def) {
 
 //------------------------------------------------------------------------------
 
-class RecDumper {
+class Dumper {
 public:
-    RecDumper(std::ostream& os, size_t max)
+    Dumper(std::ostream& os, size_t max)
         : os(os)
         , max(max) {}
 
@@ -182,7 +169,7 @@ public:
     DefSet defs;
 };
 
-void RecDumper::run(const DepNode* node) {
+void Dumper::run(const DepNode* node) {
     while (!noms.empty()) {
         auto nom = noms.pop();
         os << std::endl << std::endl;
@@ -254,17 +241,19 @@ void RecDumper::run(const DepNode* node) {
     }
 }
 
-void RecDumper::dump(const DepNode* n) {
+void Dumper::dump(const DepNode* n) {
     if (auto nom = n->nom()) {
         noms.push(nom);
         run(n);
     }
 }
 
-void RecDumper::rec(const Def* def) {
+void Dumper::rec(const Def* def) {
     if (!defs.emplace(def).second) return;
 
-    for (auto op : def->ops()) { // for now, don't include debug info and type
+    for (auto op : def->partial_ops().skip_front()) {
+        if (!op) continue;
+
         if (auto nom = op->isa_nom()) {
             if (max != 0) {
                 if (noms.push(nom)) --max;
@@ -281,7 +270,7 @@ void RecDumper::rec(const Def* def) {
     }
 }
 
-void RecDumper::dump_ptrn(const Def* def, const Def* type) {
+void Dumper::dump_ptrn(const Def* def, const Def* type) {
     if (!def) {
         os << type;
     } else {
@@ -296,9 +285,11 @@ void RecDumper::dump_ptrn(const Def* def, const Def* type) {
     }
 }
 
-void RecDumper::dump(const DepNode* node, Lam* lam) {
+void Dumper::dump(const DepNode* node, Lam* lam) {
     // TODO filter
-    auto ptrn = [&]() { dump_ptrn(lam->var(), lam->type()->dom()); };
+
+    auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
+
     if (lam->type()->is_cn()) {
         tab.print(os, ".cn {}{} {} = {{", external(lam), id(lam), ptrn);
     } else {
@@ -323,25 +314,19 @@ void RecDumper::dump(const DepNode* node, Lam* lam) {
     tab.lnprint(os, "}};");
 }
 
-std::ostream& operator<<(std::ostream& os, const Def* def) {
-    if (def == nullptr) return os << "<nullptr>";
-    if (Unwrap(def)) return os << Unwrap(def);
-    return os << def->unique_name();
-}
-
 std::ostream& Def::stream(std::ostream& os, size_t max) const {
     if (max == 0) {
         Tab tab;
         return let(tab, os, this);
     }
 
-    RecDumper rec(os, --max);
+    Dumper dumper(os, --max);
     if (auto nom = isa_nom()) {
-        rec.noms.push(nom);
-        rec.run();
+        dumper.noms.push(nom);
+        dumper.run();
     } else {
-        rec.rec(this);
-        if (max != 0) rec.run();
+        dumper.rec(this);
+        if (max != 0) dumper.run();
     }
 
     return os;
@@ -361,11 +346,11 @@ void World::dump(std::ostream& os) const {
     auto old_gid = curr_gid();
 
     DepTree dep(*this);
-    RecDumper rec(os, 0);
+    Dumper dumper(os, 0);
     for (const auto& import : imported()) print(os, ".import {};\n", import);
 
     for (auto child : dep.root()->children()) {
-        rec.dump(child);
+        dumper.dump(child);
         os << std::endl;
     }
 
