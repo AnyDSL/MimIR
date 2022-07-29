@@ -351,7 +351,6 @@ var namespacethorin =
     [ "axiom_without_sub_tags", "conceptthorin_1_1axiom__without__sub__tags.html", null ],
     [ "axiom_from_dialect", "conceptthorin_1_1axiom__from__dialect.html", null ],
     [ "axiom_from_thorin", "conceptthorin_1_1axiom__from__thorin.html", null ],
-    [ "Elemable", "conceptthorin_1_1Elemable.html", null ],
     [ "B_CFG", "namespacethorin.html#af1f71555d0d56905937ef1c9a5bc2c96", null ],
     [ "Backends", "namespacethorin.html#ab70a3eb6856bc409f9ed3627fff8ab36", null ],
     [ "Bot", "namespacethorin.html#adefa1d05bd6416bf0770c785c9221a02", null ],
