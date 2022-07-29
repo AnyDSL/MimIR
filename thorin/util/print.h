@@ -149,7 +149,7 @@ public:
         : tab_(tab)
         , indent_(indent) {}
 
-    /// Wraps thorin::print to prefix is it with indentation.
+    /// Wraps thorin::print to prefix it with indentation.
     template<class... Args>
     std::ostream& print(std::ostream& os, const char* s, Args&&... args) {
         for (size_t i = 0; i < indent_; ++i) os << tab_;
