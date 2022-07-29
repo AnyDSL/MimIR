@@ -207,7 +207,7 @@ The grammar tables above also indiciate which constructs open new scopes (and cl
 
 The symbol `_` is special and never binds to an entity.
 For this reason, `_` can be bound over and over again within the same scope (without effect).
-Hence, using the symbol `_` will always result in a [scoping error](@ref thorin::ScopeError).
+Hence, using the symbol `_` will always result in a scoping error.
 
 ### Pis
 

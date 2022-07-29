@@ -14,7 +14,7 @@ const Def* infer_type_level(World& world, Defs defs) {
         } else if (auto type = def->type()->isa<Type>()) {
             level = std::max(level, as_lit(type->level()));
         } else {
-            type_err(def->loc(), "'{}' used as a type but is in fact a term", def);
+            err(def->loc(), "'{}' used as a type but is in fact a term", def);
         }
     }
     return world.type(world.lit_univ(level));
