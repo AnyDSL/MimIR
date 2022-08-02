@@ -23,29 +23,29 @@ struct Elem {
 };
 
 namespace detail {
-    template<typename T>
-    concept Elemable = requires(T elem) {
-        elem.range;
-        elem.f;
-    };
+template<typename T>
+concept Elemable = requires(T elem) {
+    elem.range;
+    elem.f;
+};
 
-    template<class R, class F>
-    std::ostream& range(std::ostream & os, const R& r, F f, const char* sep = ", ") {
-        const char* cur_sep = "";
-        for (const auto& elem : r) {
-            for (auto i = cur_sep; *i != '\0'; ++i) os << *i;
+template<class R, class F>
+std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
+    const char* cur_sep = "";
+    for (const auto& elem : r) {
+        for (auto i = cur_sep; *i != '\0'; ++i) os << *i;
 
-            if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>) {
-                std::invoke(f, os, elem);
-            } else {
-                std::invoke(f, elem);
-            }
-            cur_sep = sep;
+        if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>) {
+            std::invoke(f, os, elem);
+        } else {
+            std::invoke(f, elem);
         }
-        return os;
+        cur_sep = sep;
     }
+    return os;
+}
 
-    bool match2nd(std::ostream & os, const char* next, const char*& s, const char c);
+bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 } // namespace detail
 
 /// Base case.

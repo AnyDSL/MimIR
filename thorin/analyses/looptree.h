@@ -107,7 +107,8 @@ private:
     typename CFG<forward>::template Map<Leaf*> leaves_;
     std::unique_ptr<Head> root_;
 
-    template<bool f> friend std::ostream& operator<<(std::ostream&, const typename LoopTree<f>::Base*);
+    template<bool f>
+    friend std::ostream& operator<<(std::ostream&, const typename LoopTree<f>::Base*);
     friend class LoopTreeBuilder<forward>;
 };
 

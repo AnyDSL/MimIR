@@ -17,7 +17,7 @@ struct Unwrap {
     const Def* operator->() const { return def; };
     const Def* operator*() const { return def; };
     explicit operator bool() const {
-        if (auto arr   = def->isa_nom<Arr  >(); arr   && arr->var())            return true;
+        if (auto arr = def->isa_nom<Arr>(); arr && arr->var()) return true;
         if (auto sigma = def->isa_nom<Sigma>(); sigma && sigma->name().empty()) return true;
         if (def->isa_nom()) return false;
         // if (def->no_dep()) return true;

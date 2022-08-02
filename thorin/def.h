@@ -116,8 +116,7 @@ protected:
     /// Constructor for a structural Def.
     Def(World*, node_t, const Def* type, Defs ops, flags_t flags, const Def* dbg);
     Def(node_t n, const Def* type, Defs ops, flags_t flags, const Def* dbg)
-        : Def(nullptr, n, type, ops, flags, dbg)
-    {}
+        : Def(nullptr, n, type, ops, flags, dbg) {}
     /// Constructor for a *nom*inal Def.
     Def(node_t, const Def* type, size_t num_ops, flags_t flags, const Def* dbg);
     virtual ~Def() = default;

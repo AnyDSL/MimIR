@@ -7,4 +7,4 @@ struct Flags {
     bool dump_gid = false;
 };
 
-}
+} // namespace thorin
