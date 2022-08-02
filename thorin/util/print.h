@@ -52,7 +52,7 @@ namespace detail {
 std::ostream& print(std::ostream& os, const char* s);
 
 /// Provides a `printf`-like interface to format @p s with @p args and puts it into @p os.
-/// * Use `{}` as a placeholder within your format string @p s.
+/// Use `{}` as a placeholder within your format string @p s.
 /// * By default, `os << t`` will be used to stream the appropriate argument:
 /// ```
 /// print(os, "int: {}, float: {}", 23, 42.f);

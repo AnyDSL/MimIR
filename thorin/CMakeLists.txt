@@ -12,6 +12,7 @@ add_library(libthorin
     dump.cpp
     error.cpp
     error.h
+    flags.h
     lam.cpp
     lam.h
     lattice.cpp

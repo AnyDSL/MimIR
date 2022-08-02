@@ -17,8 +17,9 @@ struct Unwrap {
     const Def* operator->() const { return def; };
     const Def* operator*() const { return def; };
     explicit operator bool() const {
+        if (auto arr   = def->isa_nom<Arr  >(); arr   && arr->var())            return true;
+        if (auto sigma = def->isa_nom<Sigma>(); sigma && sigma->name().empty()) return true;
         if (def->isa_nom()) return false;
-        if (def->isa<Global>()) return false;
         // if (def->no_dep()) return true;
         if (auto app = def->isa<App>()) {
             if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
@@ -29,18 +30,10 @@ struct Unwrap {
         return true;
     }
 
+    friend std::ostream& operator<<(std::ostream&, Unwrap);
+
     const Def* def;
 };
-
-std::ostream& operator<<(std::ostream&, Unwrap);
-
-/// This will stream @p def as an operand.
-/// This is usually Def::unique_name, but in some simple cases it will be displayed Unwrap%ed.
-std::ostream& operator<<(std::ostream& os, const Def* def) {
-    if (def == nullptr) return os << "<nullptr>";
-    if (Unwrap(def)) return os << Unwrap(def);
-    return os << def->unique_name();
-}
 
 template<bool L>
 struct LRPrec {
@@ -67,6 +60,8 @@ using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
 std::ostream& operator<<(std::ostream& os, Unwrap u) {
+    if (u->isa_nom() && u->world().flags().dump_gid) print(os, "/*{}*/", u->gid());
+
     if (auto type = u->isa<Type>()) {
         auto level = as_lit(type->level()); // TODO other levels
         return print(os, level == 0 ? "★" : "□");
@@ -115,6 +110,8 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
         print(os, "({, })", tuple->ops());
         return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
     } else if (auto arr = u->isa<Arr>()) {
+        if (auto nom = arr->isa_nom<Arr>(); nom && nom->var())
+            return print(os, "«{}: {}; {}»", nom->var(), nom->shape(), nom->body());
         return print(os, "«{}; {}»", arr->shape(), arr->body());
     } else if (auto pack = u->isa<Pack>()) {
         return print(os, "‹{}; {}›", pack->shape(), pack->body());
@@ -129,6 +126,14 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     // other
     if (u->flags() == 0) return print(os, ".{} ({, })", u->node_name(), u->ops());
     return print(os, ".{}#{} ({, })", u->node_name(), u->flags(), u->ops());
+}
+
+/// This will stream @p def as an operand.
+/// This is usually Def::unique_name, but in some simple cases it will be displayed Unwrap%ed.
+std::ostream& operator<<(std::ostream& os, const Def* def) {
+    if (def == nullptr) return os << "<nullptr>";
+    if (Unwrap(def)) return os << Unwrap(def);
+    return os << def->unique_name();
 }
 
 std::ostream& let(Tab& tab, std::ostream& os, const Def* def) {

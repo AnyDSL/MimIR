@@ -36,25 +36,27 @@ int main(int argc, char** argv) {
         int verbose      = 0;
         int opt          = 2;
         auto inc_verbose = [&](bool) { ++verbose; };
+        World world;
 
         // clang-format off
         auto cli = lyra::cli()
             | lyra::help(show_help)
-            | lyra::opt(show_version              )["-v"]["--version"      ]("Display version info and exit.")
-            | lyra::opt(clang,           "clang"  )["-c"]["--clang"        ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
-            | lyra::opt(dialect_plugins, "dialect")["-d"]["--dialect"      ]("Dynamically load dialect [WIP].")
-            | lyra::opt(dialect_paths,   "path"   )["-D"]["--dialect-path" ]("Path to search dialects in.")
-            | lyra::opt(inc_verbose               )["-V"]["--verbose"      ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
+            | lyra::opt(show_version                     )["-v"]["--version"      ]("Display version info and exit.")
+            | lyra::opt(clang,                  "clang"  )["-c"]["--clang"        ]("Path to clang executable (default: '" THORIN_WHICH " clang').")
+            | lyra::opt(dialect_plugins,        "dialect")["-d"]["--dialect"      ]("Dynamically load dialect [WIP].")
+            | lyra::opt(dialect_paths,          "path"   )["-D"]["--dialect-path" ]("Path to search dialects in.")
+            | lyra::opt(inc_verbose                      )["-V"]["--verbose"      ]("Verbose mode. Multiple -V options increase the verbosity. The maximum is 4.").cardinality(0, 4)
 #if THORIN_ENABLE_CHECKS
-            | lyra::opt(breakpoints,     "gid"    )["-b"]["--break"        ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
+            | lyra::opt(breakpoints,            "gid"    )["-b"]["--break"        ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
 #endif
-            | lyra::opt(opt,             "level"  )["-O"]["--optimize"     ]("Optimization level (default: 2).")
-            | lyra::opt(output[Dot   ],  "file"   )      ["--output-dot"   ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
-            | lyra::opt(output[H     ],  "file"   )      ["--output-h"     ]("Emits a header file to be used to interface with a dialect in C++.")
-            | lyra::opt(output[LL    ],  "file"   )      ["--output-ll"    ]("Compiles the Thorin program to LLVM.")
-            | lyra::opt(output[Md    ],  "file"   )      ["--output-md"    ]("Emits the input formatted as Markdown.")
-            | lyra::opt(output[Thorin],  "file"   )["-o"]["--output-thorin"]("Emits the Thorin program again.")
-            | lyra::arg(input,           "file"   )                         ("Input file.");
+            | lyra::opt(opt,                    "level"  )["-O"]["--optimize"     ]("Optimization level (default: 2).")
+            | lyra::opt(output[Dot   ],         "file"   )      ["--output-dot"   ]("Emits the Thorin program as a graph using Graphviz' DOT language.")
+            | lyra::opt(output[H     ],         "file"   )      ["--output-h"     ]("Emits a header file to be used to interface with a dialect in C++.")
+            | lyra::opt(output[LL    ],         "file"   )      ["--output-ll"    ]("Compiles the Thorin program to LLVM.")
+            | lyra::opt(output[Md    ],         "file"   )      ["--output-md"    ]("Emits the input formatted as Markdown.")
+            | lyra::opt(output[Thorin],         "file"   )["-o"]["--output-thorin"]("Emits the Thorin program again.")
+            | lyra::opt(world.flags().dump_gid           )      ["--dump-gid"     ]("Emits gid in output.")
+            | lyra::arg(input,                  "file"   )                         ("Input file.");
         // clang-format on
 
         if (auto result = cli.parse({argc, argv}); !result) throw std::invalid_argument(result.message());
@@ -102,7 +104,6 @@ int main(int argc, char** argv) {
         if (input[0] == '-' || input.substr(0, 2) == "--")
             throw std::invalid_argument("error: unknown option " + input);
 
-        World world;
         world.log().ostream = &std::cerr;
         world.log().level   = (Log::Level)verbose;
 #if THORIN_ENABLE_CHECKS

@@ -11,6 +11,7 @@
 #include "thorin/config.h"
 #include "thorin/debug.h"
 #include "thorin/error.h"
+#include "thorin/flags.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
@@ -68,6 +69,7 @@ public:
             : name(name) {}
 
         Log log;
+        Flags flags;
         std::string name    = "module";
         u32 curr_gid        = 0;
         u32 curr_sub        = 0;
@@ -98,6 +100,10 @@ public:
         return old;
     }
     bool is_frozen() const { return state_.frozen; }
+
+    /// Retrive compile Flags.
+    const Flags& flags() const { return state_.flags; }
+    Flags& flags() { return state_.flags; }
     ///@}
 
     /// @name manage nodes
@@ -135,7 +141,10 @@ public:
         else
             return type(lit_univ(level), dbg);
     }
-    const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
+    const Var* var(const Def* type, Def* nom, const Def* dbg = {}) {
+        if (type) return unify<Var>(1, type, nom, dbg);
+        return nullptr;
+    }
     const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }
@@ -392,11 +401,11 @@ public:
     const Axiom* type_int() { return data_.type_int_; }
     const Axiom* type_real() { return data_.type_real_; }
     const App* type_bool() { return data_.type_bool_; }
-    const App* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
-    const App* type_int(nat_t mod) { return type_int(lit_nat(mod)); }
-    const App* type_real(nat_t width) { return type_real(lit_nat(width)); }
-    const App* type_int(const Def* mod) { return app(type_int(), mod)->as<App>(); }
-    const App* type_real(const Def* width) { return app(type_real(), width)->as<App>(); }
+    const Def* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
+    const Def* type_int(nat_t mod) { return type_int(lit_nat(mod)); }
+    const Def* type_real(nat_t width) { return type_real(lit_nat(width)); }
+    const Def* type_int(const Def* mod) { return app(type_int(), mod); }
+    const Def* type_real(const Def* width) { return app(type_real(), width); }
     ///@}
 
     /// @name bulitin axioms

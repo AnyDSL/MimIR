@@ -366,6 +366,7 @@ public:
     void dump() const;
     void dump(size_t) const;
     std::ostream& stream(std::ostream&, size_t max) const;
+    friend std::ostream& operator<<(std::ostream&, const Def*);
     ///@}
 
 protected:
@@ -398,8 +399,6 @@ protected:
     friend class World;
     friend void swap(World&, World&);
 };
-
-std::ostream& operator<<(std::ostream&, const Def*);
 
 template<class T>
 const T* isa(flags_t f, const Def* def) {

@@ -162,6 +162,7 @@ public:
     Sym sym()          const { assert(isa(Tag::M_id) || isa(Tag::M_ax)); return sym_; }
     const Def* index() const { assert(isa(Tag::M_i)); return index_; }
     // clang-format on
+    friend std::ostream& operator<<(std::ostream&, Tok);
 
 private:
     Loc loc_;
@@ -172,7 +173,5 @@ private:
         const Def* index_;
     };
 };
-
-std::ostream& operator<<(std::ostream& os, const Tok tok);
 
 } // namespace thorin::fe

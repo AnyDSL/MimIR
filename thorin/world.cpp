@@ -57,7 +57,7 @@ World::World(const State& state)
         data_.type_int_    = nullptr; // hack for alpha equiv check of sigma (dbg..)
         data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0, dbg("Int"));
         data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0, dbg("Real"));
-        data_.type_bool_   = type_int(2);
+        data_.type_bool_   = type_int(2)->as<App>();
         data_.lit_bool_[0] = lit_int(2, 0_u64);
         data_.lit_bool_[1] = lit_int(2, 1_u64);
     }
