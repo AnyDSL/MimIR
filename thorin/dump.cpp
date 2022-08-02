@@ -359,7 +359,7 @@ void World::dump(std::ostream& os) const {
         os << std::endl;
     }
 
-    assert_unused(old_gid == curr_gid());
+    assertf(old_gid == curr_gid(), "new nodes created during dump. old_gid: {}; curr_gid: {}", old_gid, curr_gid());
     freeze(false);
 }
 

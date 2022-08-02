@@ -140,10 +140,7 @@ public:
         else
             return type(lit_univ(level), dbg);
     }
-    const Var* var(const Def* type, Def* nom, const Def* dbg = {}) {
-        if (type) return unify<Var>(1, type, nom, dbg);
-        return nullptr;
-    }
+    const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }

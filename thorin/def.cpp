@@ -181,6 +181,16 @@ Defs Def::extended_ops() const {
 
 const Var* Def::var(const Def* dbg) {
     auto& w = world();
+
+    if (w.is_frozen() || uses().size() < 8) {
+        // Just assuming looking through the uses is faster if uses().size() is small.
+        for (auto u : uses()) {
+            if (auto var = u->isa<Var>()) return var;
+        }
+
+        if (w.is_frozen()) return nullptr;
+    }
+
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam, dbg);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi, dbg);
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig, dbg);
@@ -388,8 +398,19 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
         return arr->reduce(world().lit_int(as_lit(arr->arity()), i)).back();
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
+        assert(!world().is_frozen() && "TODO");
         return pack->reduce(world().lit_int(as_lit(pack->arity()), i)).back();
     } else if (sort() == Sort::Term) {
+        if (world().is_frozen()) {
+            for (auto u : uses()) {
+                if (auto ex = u->isa<Extract>()) {
+                    if (auto index = isa_lit(ex->index()); *index == i) return ex;
+                }
+            }
+
+            return nullptr;
+        }
+
         return world().extract(this, a, i, dbg);
     }
 
