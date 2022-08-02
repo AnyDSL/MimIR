@@ -108,7 +108,6 @@ public:
 
     /// @name manage nodes
     ///@{
-    const auto& defs() const { return data_.defs_; } ///< **All** nodes.
     const auto& axioms() const { return data_.axioms_; }
     const auto& externals() const { return data_.externals_; }
     bool empty() { return data_.externals_.empty(); }
@@ -572,9 +571,9 @@ private:
 
         if (is_frozen()) {
             --state_.curr_gid;
-            auto i = defs().find(def);
+            auto i = data_.defs_.find(def);
             arena_.deallocate<T>(def);
-            if (i != defs().end()) return static_cast<const T*>(*i);
+            if (i != data_.defs_.end()) return static_cast<const T*>(*i);
             return nullptr;
         }
 
