@@ -348,8 +348,6 @@ void World::dump(std::ostream& os) const {
     auto dumper  = Dumper(os, 0);
     for (const auto& import : imported()) print(os, ".import {};\n", import);
 
-    int xxx = dep.root()->children().size();
-    print(os, "num children: {}\n", xxx);
     for (auto child : dep.root()->children()) {
         dumper.dump(child);
         os << std::endl;
