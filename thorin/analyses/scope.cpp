@@ -23,7 +23,9 @@ Scope::Scope(Def* entry)
 Scope::~Scope() {}
 
 void Scope::run() {
+    World::Freezer freezer(world()); // don't create an entry_->var() if not already present
     unique_queue<DefSet&> queue(bound_);
+
     if (auto var = entry_->var()) {
         queue.push(var);
 

@@ -185,7 +185,7 @@ const Var* Def::var(const Def* dbg) {
     if (w.is_frozen() || uses().size() < 8) {
         // Just assuming looking through the uses is faster if uses().size() is small.
         for (auto u : uses()) {
-            if (auto var = u->isa<Var>()) return var;
+            if (auto var = u->isa<Var>(); var && var->nom() == this) return var;
         }
 
         if (w.is_frozen()) return nullptr;
@@ -403,7 +403,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
     } else if (sort() == Sort::Term) {
         if (world().is_frozen()) {
             for (auto u : uses()) {
-                if (auto ex = u->isa<Extract>()) {
+                if (auto ex = u->isa<Extract>(); ex && ex->tuple() == this) {
                     if (auto index = isa_lit(ex->index()); *index == i) return ex;
                 }
             }

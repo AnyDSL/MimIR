@@ -9,30 +9,41 @@ using namespace std::literals;
 
 namespace thorin {
 
+Def* isa_nontrivial_nom(const Def* def) {
+    if (auto nom = def->isa_nom()) {
+        if (!nom->name().empty()) return nom;
+    }
+    return nullptr;
+}
+
 /// This is a wrapper to "unwrap" a Def and print it with all of its operands.
 struct Unwrap {
+    Unwrap(const Def* def, bool dump_gid)
+        : def(def)
+        , dump_gid(dump_gid) {}
     Unwrap(const Def* def)
-        : def(def) {}
+        : Unwrap(def, def->world().flags().dump_gid) {}
 
     const Def* operator->() const { return def; };
     const Def* operator*() const { return def; };
     explicit operator bool() const {
-        if (auto arr = def->isa_nom<Arr>(); arr && arr->var()) return true;
-        if (auto sigma = def->isa_nom<Sigma>(); sigma && sigma->name().empty()) return true;
-        if (def->isa_nom()) return false;
         // if (def->no_dep()) return true;
+        if (auto nom = def->isa_nom()) return nom->name().empty();
+
         if (auto app = def->isa<App>()) {
             if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
             if (app->type()->isa<Type>()) return true;
             if (app->callee()->isa<Axiom>()) { return app->callee_type()->num_doms() <= 1; }
             return false;
         }
+
         return true;
     }
 
     friend std::ostream& operator<<(std::ostream&, Unwrap);
 
     const Def* def;
+    bool dump_gid;
 };
 
 template<bool L>
@@ -60,7 +71,7 @@ using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
 std::ostream& operator<<(std::ostream& os, Unwrap u) {
-    if (u->isa_nom() && u->world().flags().dump_gid) print(os, "/*{}*/", u->gid());
+    if (u.dump_gid) print(os, "/*{}*/", u->gid());
 
     if (auto type = u->isa<Type>()) {
         auto level = as_lit(type->level()); // TODO other levels
@@ -114,6 +125,8 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
             return print(os, "«{}: {}; {}»", nom->var(), nom->shape(), nom->body());
         return print(os, "«{}; {}»", arr->shape(), arr->body());
     } else if (auto pack = u->isa<Pack>()) {
+        if (auto nom = pack->isa_nom<Pack>(); nom && nom->var())
+            return print(os, "‹{}: {}; {}›", nom->var(), nom->shape(), nom->body());
         return print(os, "‹{}; {}›", pack->shape(), pack->body());
     } else if (auto proxy = u->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
@@ -137,7 +150,7 @@ std::ostream& operator<<(std::ostream& os, const Def* def) {
 }
 
 std::ostream& let(Tab& tab, std::ostream& os, const Def* def) {
-    return tab.lnprint(os, ".let {}: {} = {};", def->unique_name(), def->type(), Unwrap(def));
+    return tab.lnprint(os, ".let {}: {} = {};", def->unique_name(), def->type(), Unwrap(def, false));
 }
 
 //------------------------------------------------------------------------------
@@ -185,7 +198,6 @@ void Dumper::run(const DepNode* node) {
         }
 
         auto nom_prefix = [&](const Def* def) {
-            if (def->isa<Lam>()) return ".lam";
             if (def->isa<Sigma>()) return ".Sigma";
             if (def->isa<Arr>()) return ".Arr";
             if (def->isa<Pack>()) return ".pack";
@@ -194,7 +206,6 @@ void Dumper::run(const DepNode* node) {
         };
 
         auto nom_op0 = [&](const Def* def) -> std::ostream& {
-            if (def->isa<Lam>()) return os;
             if (auto sig = def->isa<Sigma>()) return print(os, ", {}", sig->num_ops());
             if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
             if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
@@ -223,24 +234,7 @@ void Dumper::run(const DepNode* node) {
         }
         print(os, " = {{");
         ++tab;
-
-        if (auto lam = nom->isa<Lam>()) {
-            rec(lam->filter());
-            tab.lnprint(os, "{},", lam->filter());
-
-            if (node) {
-                for (auto child : node->children())
-                    if (auto nom = child->nom()) {
-                        noms.push(nom);
-                        run(child);
-                    }
-            }
-            rec(lam->body());
-            tab.lnprint(os, "{}", lam->body());
-        } else {
-            rec(nom);
-        }
-
+        rec(nom);
         --tab;
         tab.lnprint(os, "}};");
     }
@@ -248,7 +242,7 @@ void Dumper::run(const DepNode* node) {
 
 void Dumper::dump(const DepNode* n) {
     if (auto nom = n->nom()) {
-        noms.push(nom);
+        if (isa_nontrivial_nom(nom)) noms.push(nom);
         run(n);
     }
 }
@@ -256,10 +250,10 @@ void Dumper::dump(const DepNode* n) {
 void Dumper::rec(const Def* def) {
     if (!defs.emplace(def).second) return;
 
-    for (auto op : def->partial_ops().skip_front()) {
+    for (auto op : def->partial_ops().skip_front()) { // ignore dbg
         if (!op) continue;
 
-        if (auto nom = op->isa_nom()) {
+        if (auto nom = isa_nontrivial_nom(op)) {
             if (max != 0) {
                 if (noms.push(nom)) --max;
             }
@@ -268,7 +262,7 @@ void Dumper::rec(const Def* def) {
         }
     }
 
-    if (auto nom = def->isa_nom()) {
+    if (auto nom = isa_nontrivial_nom(def)) {
         tab.lnprint(os, "{}", Unwrap(nom));
     } else if (!Unwrap(def)) {
         let(tab, os, def);
@@ -320,6 +314,7 @@ void Dumper::dump(const DepNode* node, Lam* lam) {
 }
 
 std::ostream& Def::stream(std::ostream& os, size_t max) const {
+    World::Freezer freezer(world());
     if (max == 0) {
         Tab tab;
         return let(tab, os, this);
@@ -347,20 +342,20 @@ void Def::dump() const { std::cout << this << std::endl; }
 void Def::dump(size_t max) const { stream(std::cout, max) << std::endl; }
 
 void World::dump(std::ostream& os) const {
-    freeze(true);
+    auto freezer = World::Freezer(*this);
+    auto dep     = DepTree(*this);
     auto old_gid = curr_gid();
-
-    DepTree dep(*this);
-    Dumper dumper(os, 0);
+    auto dumper  = Dumper(os, 0);
     for (const auto& import : imported()) print(os, ".import {};\n", import);
 
+    int xxx = dep.root()->children().size();
+    print(os, "num children: {}\n", xxx);
     for (auto child : dep.root()->children()) {
         dumper.dump(child);
         os << std::endl;
     }
 
     assertf(old_gid == curr_gid(), "new nodes created during dump. old_gid: {}; curr_gid: {}", old_gid, curr_gid());
-    freeze(false);
 }
 
 void World::dump() const { dump(std::cout); }

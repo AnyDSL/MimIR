@@ -94,16 +94,33 @@ public:
     u32 curr_gid() const { return state_.curr_gid; }
     u32 next_gid() { return ++state_.curr_gid; }
 
+    /// Retrive compile Flags.
+    const Flags& flags() const { return state_.flags; }
+    Flags& flags() { return state_.flags; }
+    ///@}
+
+    /// @name freeze
+    ///@{
+    /// In frozen state the World does not create any nodes.
+    bool is_frozen() const { return state_.frozen; }
+
+    /// @returns old frozen state.
     bool freeze(bool on = true) const {
         bool old      = state_.frozen;
         state_.frozen = on;
         return old;
     }
-    bool is_frozen() const { return state_.frozen; }
 
-    /// Retrive compile Flags.
-    const Flags& flags() const { return state_.flags; }
-    Flags& flags() { return state_.flags; }
+    /// Use to World::freeze and automatically unfreeze at the end of scope.
+    struct Freezer {
+        Freezer(const World& world)
+            : world(world)
+            , old(world.freeze(true)) {}
+        ~Freezer() { world.freeze(old); }
+
+        const World& world;
+        bool old;
+    };
     ///@}
 
     /// @name manage nodes
@@ -565,7 +582,10 @@ private:
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
-
+#if THORIN_ENABLE_CHECKS
+        if (flags().trace) outln("{}: {}", def->node_name(), def->gid());
+        if (flags().reeval_breakpoints && state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+#endif
         if (is_frozen()) {
             --state_.curr_gid;
             auto i = data_.defs_.find(def);
@@ -579,7 +599,7 @@ private:
             return static_cast<const T*>(*i);
         }
 #if THORIN_ENABLE_CHECKS
-        if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+        if (!flags().reeval_breakpoints && state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         def->finalize();
         return def;
@@ -589,6 +609,7 @@ private:
     T* insert(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
 #if THORIN_ENABLE_CHECKS
+        if (flags().trace) outln("{}: {}", def->node_name(), def->gid());
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         auto [_, ins] = data_.defs_.emplace(def);
