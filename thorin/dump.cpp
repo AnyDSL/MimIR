@@ -9,9 +9,9 @@ using namespace std::literals;
 
 namespace thorin {
 
-Def* isa_nontrivial_nom(const Def* def) {
+Def* isa_decl(const Def* def) {
     if (auto nom = def->isa_nom()) {
-        if (!nom->name().empty()) return nom;
+        if (nom->isa<Lam>() || !nom->name().empty()) return nom;
     }
     return nullptr;
 }
@@ -19,18 +19,21 @@ Def* isa_nontrivial_nom(const Def* def) {
 /// This is a wrapper to "unwrap" a Def and print it with all of its operands.
 struct Unwrap {
     Unwrap(const Def* def, bool dump_gid)
-        : def(def)
+        : def_(def)
         , dump_gid(dump_gid) {}
     Unwrap(const Def* def)
         : Unwrap(def, def->world().flags().dump_gid) {}
 
-    const Def* operator->() const { return def; };
-    const Def* operator*() const { return def; };
+    const Def* operator->() const { return def_; };
+    const Def* operator*() const { return def_; };
     explicit operator bool() const {
-        // if (def->no_dep()) return true;
-        if (auto nom = def->isa_nom()) return nom->name().empty();
+        // if (def_->no_dep()) return true;
+        if (auto nom = def_->isa_nom()) {
+            if (isa_decl(nom)) return false;
+            return true;
+        }
 
-        if (auto app = def->isa<App>()) {
+        if (auto app = def_->isa<App>()) {
             if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
             if (app->type()->isa<Type>()) return true;
             if (app->callee()->isa<Axiom>()) { return app->callee_type()->num_doms() <= 1; }
@@ -42,8 +45,9 @@ struct Unwrap {
 
     friend std::ostream& operator<<(std::ostream&, Unwrap);
 
-    const Def* def;
-    bool dump_gid;
+private:
+    const Def* def_;
+    const bool dump_gid;
 };
 
 template<bool L>
@@ -162,9 +166,9 @@ public:
         , max(max) {}
 
     void run(const DepNode* node = nullptr);
-    void rec(const Def*);
-    void rec(Defs defs) {
-        for (auto def : defs) rec(def);
+    void recurse(const Def*);
+    void recurse(Defs defs) {
+        for (auto def : defs) recurse(def);
     }
     void dump(const DepNode* n);
     void dump_ptrn(const Def*, const Def*);
@@ -234,7 +238,7 @@ void Dumper::run(const DepNode* node) {
         }
         print(os, " = {{");
         ++tab;
-        rec(nom);
+        recurse(nom);
         --tab;
         tab.lnprint(os, "}};");
     }
@@ -242,27 +246,27 @@ void Dumper::run(const DepNode* node) {
 
 void Dumper::dump(const DepNode* n) {
     if (auto nom = n->nom()) {
-        if (isa_nontrivial_nom(nom)) noms.push(nom);
+        if (isa_decl(nom)) noms.push(nom);
         run(n);
     }
 }
 
-void Dumper::rec(const Def* def) {
+void Dumper::recurse(const Def* def) {
     if (!defs.emplace(def).second) return;
 
     for (auto op : def->partial_ops().skip_front()) { // ignore dbg
         if (!op) continue;
 
-        if (auto nom = isa_nontrivial_nom(op)) {
+        if (auto nom = isa_decl(op)) {
             if (max != 0) {
                 if (noms.push(nom)) --max;
             }
         } else {
-            rec(op);
+            recurse(op);
         }
     }
 
-    if (auto nom = isa_nontrivial_nom(def)) {
+    if (auto nom = isa_decl(def)) {
         tab.lnprint(os, "{}", Unwrap(nom));
     } else if (!Unwrap(def)) {
         let(tab, os, def);
@@ -304,7 +308,7 @@ void Dumper::dump(const DepNode* node, Lam* lam) {
             }
     }
     if (lam->is_set()) {
-        rec(lam->ops());
+        recurse(lam->ops());
         tab.lnprint(os, "{}", lam->body());
     } else {
         tab.lnprint(os, " <unset> ");
@@ -325,7 +329,7 @@ std::ostream& Def::stream(std::ostream& os, size_t max) const {
         dumper.noms.push(nom);
         dumper.run();
     } else {
-        dumper.rec(this);
+        dumper.recurse(this);
         if (max != 0) dumper.run();
     }
 
