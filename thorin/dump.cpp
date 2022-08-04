@@ -18,18 +18,28 @@ static Def* isa_decl(const Def* def) {
     return nullptr;
 }
 
-/// This is a wrapper to "unwrap" a Def and print it with all of its operands.
-struct Unwrap {
-    Unwrap(const Def* def, bool dump_gid)
+static std::string id(const Def* def) {
+    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name();
+    return def->unique_name();
+}
+
+static std::string_view external(const Def* def) {
+    if (def->is_external()) return ".extern "sv;
+    return ""sv;
+}
+
+/// This is a wrapper to dump a Def "inline" and print it with all of its operands.
+struct Inline {
+    Inline(const Def* def, bool dump_gid)
         : def_(def)
         , dump_gid_(dump_gid) {}
-    Unwrap(const Def* def)
-        : Unwrap(def, def->world().flags().dump_gid) {}
+    Inline(const Def* def)
+        : Inline(def, def->world().flags().dump_gid) {}
 
     const Def* operator->() const { return def_; };
     const Def* operator*() const { return def_; };
     explicit operator bool() const {
-        // if (def_->no_dep()) return true;
+        if (def_->no_dep()) return true;
         if (auto nom = def_->isa_nom()) {
             if (isa_decl(nom)) return false;
             return true;
@@ -45,7 +55,7 @@ struct Unwrap {
         return true;
     }
 
-    friend std::ostream& operator<<(std::ostream&, Unwrap);
+    friend std::ostream& operator<<(std::ostream&, Inline);
 
 private:
     const Def* def_;
@@ -60,10 +70,10 @@ struct LRPrec {
 
     friend std::ostream& operator<<(std::ostream& os, const LRPrec& p) {
         if constexpr (L) {
-            if (Unwrap(p.l) && fe::Tok::prec(fe::Tok::prec(p.r))[0] > fe::Tok::prec(p.r)) return print(os, "({})", p.l);
+            if (Inline(p.l) && fe::Tok::prec(fe::Tok::prec(p.r))[0] > fe::Tok::prec(p.r)) return print(os, "({})", p.l);
             return print(os, "{}", p.l);
         } else {
-            if (Unwrap(p.r) && fe::Tok::prec(p.l) > fe::Tok::prec(fe::Tok::prec(p.l))[1]) return print(os, "({})", p.r);
+            if (Inline(p.r) && fe::Tok::prec(p.l) > fe::Tok::prec(fe::Tok::prec(p.l))[1]) return print(os, "({})", p.r);
             return print(os, "{}", p.r);
         }
     }
@@ -76,7 +86,7 @@ private:
 using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
-std::ostream& operator<<(std::ostream& os, Unwrap u) {
+std::ostream& operator<<(std::ostream& os, Inline u) {
     if (u.dump_gid_) print(os, "/*{}*/", u->gid());
 
     if (auto type = u->isa<Type>()) {
@@ -148,15 +158,15 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
 }
 
 /// This will stream @p def as an operand.
-/// This is usually Def::unique_name, but in some simple cases it will be displayed Unwrap%ed.
+/// This is usually Def::unique_name, but in some simple cases it will be displayed Inline%d.
 std::ostream& operator<<(std::ostream& os, const Def* def) {
     if (def == nullptr) return os << "<nullptr>";
-    if (Unwrap(def)) return os << Unwrap(def);
+    if (Inline(def)) return os << Inline(def);
     return os << def->unique_name();
 }
 
 std::ostream& let(Tab& tab, std::ostream& os, const Def* def) {
-    return tab.print(os, ".let {}: {} = {};\n", def->unique_name(), def->type(), Unwrap(def, false));
+    return tab.print(os, ".let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def, false));
 }
 
 //------------------------------------------------------------------------------
@@ -168,23 +178,13 @@ public:
         , max(max) {}
 
     void recurse(const DepNode*);
-    void recurse(const Def*);
-    void recurse(Defs defs) {
+    void recurse(const Def*, bool first = false);
+    void recurse_(Defs defs) {
         for (auto def : defs) recurse(def);
     }
     void dump_decl(const DepNode*);
     void dump_ptrn(const Def*, const Def*);
     void dump(const DepNode*, Lam*);
-
-    static std::string id(const Def* def) {
-        if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name();
-        return def->unique_name();
-    }
-
-    static std::string_view external(const Def* def) {
-        if (def->is_external()) return ".extern "sv;
-        return ""sv;
-    }
 
     std::ostream& os;
     Tab tab;
@@ -224,7 +224,7 @@ void Dumper::dump_decl(const DepNode* node) {
 
     tab.print(os, "{} {}{}: {}", nom_prefix(nom), external(nom), id(nom), nom->type());
     nom_op0(nom);
-    if (nom->var()) {
+    if (nom->var()) { // TODO rewrite with dedicated methods
         if (auto e = nom->num_vars(); e != 1) {
             print(os, "{, }", Elem(nom->vars(), [&](auto def) {
                       if (def)
@@ -259,8 +259,9 @@ void Dumper::dump(const DepNode* node, Lam* lam) {
     ++tab;
     if (lam->is_set()) {
         recurse(node);
-        recurse(lam->ops());
-        tab.print(os, "{}\n", lam->body());
+        recurse(lam->filter());
+        recurse(lam->body(), true);
+        tab.print(os, "{}\n", Inline(lam->body()));
     } else {
         tab.print(os, " <unset>\n");
     }
@@ -276,7 +277,7 @@ void Dumper::recurse(const DepNode* node) {
     }
 }
 
-void Dumper::recurse(const Def* def) {
+void Dumper::recurse(const Def* def, bool first /*= false*/) {
     if (isa_decl(def)) return;
     if (!defs.emplace(def).second) return;
 
@@ -285,7 +286,7 @@ void Dumper::recurse(const Def* def) {
         recurse(op);
     }
 
-    if (!Unwrap(def)) let(tab, os, def);
+    if (!first && !Inline(def)) let(tab, os, def);
 }
 
 void Dumper::dump_ptrn(const Def* def, const Def* type) {
