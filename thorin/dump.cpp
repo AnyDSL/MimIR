@@ -13,7 +13,7 @@ namespace thorin {
 
 static Def* isa_decl(const Def* def) {
     if (auto nom = def->isa_nom()) {
-        if (nom->isa<Lam>() || !nom->name().empty()) return nom;
+        if (nom->isa<Lam>() || (!nom->name().empty() && nom->name() != "_"s)) return nom;
     }
     return nullptr;
 }
@@ -156,7 +156,7 @@ std::ostream& operator<<(std::ostream& os, const Def* def) {
 }
 
 std::ostream& let(Tab& tab, std::ostream& os, const Def* def) {
-    return tab.lnprint(os, ".let {}: {} = {};", def->unique_name(), def->type(), Unwrap(def, false));
+    return tab.print(os, ".let {}: {} = {};\n", def->unique_name(), def->type(), Unwrap(def, false));
 }
 
 //------------------------------------------------------------------------------
@@ -167,12 +167,13 @@ public:
         : os(os)
         , max(max) {}
 
-    void run(const DepNode* node = nullptr);
+
+    void recurse(const DepNode*);
     void recurse(const Def*);
     void recurse(Defs defs) {
         for (auto def : defs) recurse(def);
     }
-    void dump(const DepNode* n);
+    void dump_decl(const DepNode*);
     void dump_ptrn(const Def*, const Def*);
     void dump(const DepNode*, Lam*);
 
@@ -193,86 +194,99 @@ public:
     DefSet defs;
 };
 
-void Dumper::run(const DepNode* node) {
-    while (!noms.empty()) {
-        auto nom = noms.pop();
-        os << std::endl << std::endl;
+void Dumper::dump_decl(const DepNode* node) {
+    auto nom = node->nom();
 
-        if (auto lam = nom->isa<Lam>()) {
-            dump(node, lam);
-            continue;
-        }
-
-        auto nom_prefix = [&](const Def* def) {
-            if (def->isa<Sigma>()) return ".Sigma";
-            if (def->isa<Arr>()) return ".Arr";
-            if (def->isa<Pack>()) return ".pack";
-            if (def->isa<Pi>()) return ".Pi";
-            unreachable();
-        };
-
-        auto nom_op0 = [&](const Def* def) -> std::ostream& {
-            if (auto sig = def->isa<Sigma>()) return print(os, ", {}", sig->num_ops());
-            if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
-            if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
-            if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
-            unreachable();
-        };
-
-        if (!nom->is_set()) {
-            tab.print(os, "{}: {} = {{ <unset> }};", id(nom), nom->type());
-            continue;
-        }
-
-        tab.print(os, "{} {}{}: {}", nom_prefix(nom), external(nom), id(nom), nom->type());
-        nom_op0(nom);
-        if (nom->var()) {
-            if (auto e = nom->num_vars(); e != 1) {
-                print(os, "{, }", Elem(nom->vars(), [&](auto def) {
-                          if (def)
-                              os << def->unique_name();
-                          else
-                              os << "<TODO>";
-                      }));
-            } else {
-                print(os, ", @{}", nom->var()->unique_name());
-            }
-        }
-        print(os, " = {{");
-        ++tab;
-        recurse(nom);
-        --tab;
-        tab.lnprint(os, "}};");
+    if (auto lam = nom->isa<Lam>()) {
+        dump(node, lam);
+        return;
     }
+
+    auto nom_prefix = [&](const Def* def) {
+        if (def->isa<Sigma>()) return ".Sigma";
+        if (def->isa<Arr>()) return ".Arr";
+        if (def->isa<Pack>()) return ".pack";
+        if (def->isa<Pi>()) return ".Pi";
+        unreachable();
+    };
+
+    auto nom_op0 = [&](const Def* def) -> std::ostream& {
+        if (auto sig = def->isa<Sigma>()) return print(os, ", {}", sig->num_ops());
+        if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
+        if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
+        if (auto pi = def->isa<Pi>()) return print(os, ", {}", pi->dom());
+        unreachable();
+    };
+
+    if (!nom->is_set()) {
+        tab.print(os, "{}: {} = {{ <unset> }};", id(nom), nom->type());
+        return;
+    }
+
+    tab.print(os, "{} {}{}: {}", nom_prefix(nom), external(nom), id(nom), nom->type());
+    nom_op0(nom);
+    if (nom->var()) {
+        if (auto e = nom->num_vars(); e != 1) {
+            print(os, "{, }", Elem(nom->vars(), [&](auto def) {
+                        if (def)
+                            os << def->unique_name();
+                        else
+                            os << "<TODO>";
+                    }));
+        } else {
+            print(os, ", @{}", nom->var()->unique_name());
+        }
+    }
+    tab.println(os, " = {{");
+    ++tab;
+    recurse(node);
+    recurse(nom);
+    tab.print(os, "{, }\n", nom->ops());
+    --tab;
+    tab.print(os, "}};\n");
 }
 
-void Dumper::dump(const DepNode* n) {
-    if (auto nom = n->nom()) {
-        if (isa_decl(nom)) noms.push(nom);
-        run(n);
+void Dumper::dump(const DepNode* node, Lam* lam) {
+    // TODO filter
+
+    auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
+
+    if (lam->type()->is_cn()) {
+        tab.println(os, ".cn {}{} {} = {{", external(lam), id(lam), ptrn);
+    } else {
+        tab.println(os, ".lam {}{} {} -> {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
+    }
+
+    ++tab;
+    if (lam->is_set()) {
+        recurse(node);
+        recurse(lam->ops());
+        tab.print(os, "{}\n", lam->body());
+    } else {
+        tab.print(os, " <unset>\n");
+    }
+    --tab;
+    tab.print(os, "}};\n");
+}
+
+void Dumper::recurse(const DepNode* node) {
+    if (node) {
+        for (auto child : node->children()) {
+            if (isa_decl(child->nom())) dump_decl(child);
+        }
     }
 }
 
 void Dumper::recurse(const Def* def) {
+    if (isa_decl(def)) return;
     if (!defs.emplace(def).second) return;
 
     for (auto op : def->partial_ops().skip_front()) { // ignore dbg
         if (!op) continue;
-
-        if (auto nom = isa_decl(op)) {
-            if (max != 0) {
-                if (noms.push(nom)) --max;
-            }
-        } else {
-            recurse(op);
-        }
+        recurse(op);
     }
 
-    if (auto nom = isa_decl(def)) {
-        tab.lnprint(os, "{}", Unwrap(nom));
-    } else if (!Unwrap(def)) {
-        let(tab, os, def);
-    }
+    if (!Unwrap(def)) let(tab, os, def);
 }
 
 void Dumper::dump_ptrn(const Def* def, const Def* type) {
@@ -290,36 +304,8 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
     }
 }
 
-void Dumper::dump(const DepNode* node, Lam* lam) {
-    // TODO filter
-
-    auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
-
-    if (lam->type()->is_cn()) {
-        tab.print(os, ".cn {}{} {} = {{", external(lam), id(lam), ptrn);
-    } else {
-        tab.print(os, ".lam {}{} {} -> {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
-    }
-
-    ++tab;
-    if (node) {
-        for (auto child : node->children())
-            if (auto nom = child->nom()) {
-                noms.push(nom);
-                run(child);
-            }
-    }
-    if (lam->is_set()) {
-        recurse(lam->ops());
-        tab.lnprint(os, "{}", lam->body());
-    } else {
-        tab.lnprint(os, " <unset> ");
-    }
-    --tab;
-    tab.lnprint(os, "}};");
-}
-
-std::ostream& Def::stream(std::ostream& os, size_t max) const {
+std::ostream& Def::stream(std::ostream& os, size_t /*max*/) const {
+#if 0
     World::Freezer freezer(world());
     if (max == 0) {
         Tab tab;
@@ -335,6 +321,7 @@ std::ostream& Def::stream(std::ostream& os, size_t max) const {
         if (max != 0) dumper.run();
     }
 
+#endif
     return os;
 }
 
@@ -349,15 +336,12 @@ void Def::dump(size_t max) const { stream(std::cout, max) << std::endl; }
 
 void World::dump(std::ostream& os) const {
     auto freezer = World::Freezer(*this);
-    auto dep     = DepTree(*this);
     auto old_gid = curr_gid();
+    auto dep     = DepTree(*this);
     auto dumper  = Dumper(os, 0);
-    for (const auto& import : imported()) print(os, ".import {};\n", import);
 
-    for (auto child : dep.root()->children()) {
-        dumper.dump(child);
-        os << std::endl;
-    }
+    for (const auto& import : imported()) print(os, ".import {};\n", import);
+    dumper.recurse(dep.root());
 
     assertf(old_gid == curr_gid(), "new nodes created during dump. old_gid: {}; curr_gid: {}", old_gid, curr_gid());
 }

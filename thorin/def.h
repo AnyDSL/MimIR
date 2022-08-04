@@ -359,7 +359,7 @@ public:
     virtual const Def* restructure() { return nullptr; }
     ///@}
 
-    /// @name dump/stream
+    /// @name dump
     ///@{
     void dump() const;
     void dump(size_t) const;
