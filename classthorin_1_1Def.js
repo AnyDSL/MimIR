@@ -1,7 +1,8 @@
 var classthorin_1_1Def =
 [
     [ "NormalizeFn", "classthorin_1_1Def.html#af282fc4a6b8615c21c73fc2bc9308abe", null ],
-    [ "Def", "classthorin_1_1Def.html#afe95eabc5da367ff79ed0ab4aa02e871", null ],
+    [ "Def", "classthorin_1_1Def.html#a0e292a3349e0c842b1934907e039e4f2", null ],
+    [ "Def", "classthorin_1_1Def.html#a06b743dd12972cd6fc413875ce4832c2", null ],
     [ "Def", "classthorin_1_1Def.html#a6e2f42bdfc442aca13cc5303111decb3", null ],
     [ "~Def", "classthorin_1_1Def.html#a90ff289edea985bf55aa4b55c8f691e6", null ],
     [ "arity", "classthorin_1_1Def.html#a5077873bd4203c0ea099b044b0231d3d", null ],
@@ -85,6 +86,7 @@ var classthorin_1_1Def =
     [ "vars", "classthorin_1_1Def.html#a59046f082f834cd74cab2a65be397f0e", null ],
     [ "vars", "classthorin_1_1Def.html#aa73e8238c351ee23be5d74cdbb4b9d47", null ],
     [ "world", "classthorin_1_1Def.html#affc2d40fbec3022f7b253bd14358dfe2", null ],
+    [ "operator<<", "classthorin_1_1Def.html#af5ab59c94b596ba87afd4298618665aa", null ],
     [ "swap", "classthorin_1_1Def.html#ac16087b25da85305adb283de20b2342d", null ],
     [ "World", "classthorin_1_1Def.html#a7b4bcdf992c21ae83363f25df05b1d25", null ],
     [ "curry_", "classthorin_1_1Def.html#a7cb5e9ae59ac1650ad99dc710f18e999", null ],
@@ -98,5 +100,6 @@ var classthorin_1_1Def =
     [ "num_ops_", "classthorin_1_1Def.html#aca8c4b92e68fac58f8c2812cdff26442", null ],
     [ "pading_", "classthorin_1_1Def.html#a92926bb427154c103b0d61db8ceb0d2a", null ],
     [ "proxy_", "classthorin_1_1Def.html#a229770e837d6fff5ea711c1f412a2bc7", null ],
+    [ "type_", "classthorin_1_1Def.html#aad84fe7b85030681f216dffc81fc20d2", null ],
     [ "uses_", "classthorin_1_1Def.html#abefc385c0d60ba85c5e649598d20fe05", null ]
 ];

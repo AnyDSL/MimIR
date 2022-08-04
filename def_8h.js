@@ -43,6 +43,5 @@ var def_8h =
     [ "as_lit", "def_8h.html#a4784a7ada8e2badb49500623824d79e5", null ],
     [ "isa", "def_8h.html#a4ee21e07e5bfcf99d87cf5b3effb1ba1", null ],
     [ "isa_lit", "def_8h.html#a196c8dd3968fd28a00dc082c191feee6", null ],
-    [ "operator<<", "def_8h.html#ad3254a6c04a58f143d50134756ccb85c", null ],
     [ "operator<<", "def_8h.html#a5ee0fe26ac95507b80f3db27942bf892", null ]
 ];

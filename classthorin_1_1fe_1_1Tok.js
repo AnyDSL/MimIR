@@ -71,9 +71,11 @@ var classthorin_1_1fe_1_1Tok =
     [ "index", "classthorin_1_1fe_1_1Tok.html#aaa4aae31525e9d8b5d7ca98cc7cec575", null ],
     [ "isa", "classthorin_1_1fe_1_1Tok.html#a24090cbe5e4bc59caa86ba90ea02c44c", null ],
     [ "loc", "classthorin_1_1fe_1_1Tok.html#a711173d18041d0aecbee725796ae9322", null ],
+    [ "prec", "classthorin_1_1fe_1_1Tok.html#a6b3029f75a50aaa0f69c0291fcd27766", null ],
     [ "prec", "classthorin_1_1fe_1_1Tok.html#a2675e89f348f0fee12ffdcc6dd184891", null ],
     [ "sym", "classthorin_1_1fe_1_1Tok.html#a4d185bfbdb0361210067d6d7916a4b62", null ],
     [ "tag", "classthorin_1_1fe_1_1Tok.html#abf873630723f154cb493c524b01e9976", null ],
     [ "tag2str", "classthorin_1_1fe_1_1Tok.html#a258aa41adeecb6f25f1bbadad0108be9", null ],
-    [ "u", "classthorin_1_1fe_1_1Tok.html#a12e0844725bcdf270c9650b0211dd39e", null ]
+    [ "u", "classthorin_1_1fe_1_1Tok.html#a12e0844725bcdf270c9650b0211dd39e", null ],
+    [ "operator<<", "classthorin_1_1fe_1_1Tok.html#a437f0dfd350d6fc0175fd6e676b345a0", null ]
 ];

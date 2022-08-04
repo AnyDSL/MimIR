@@ -129,36 +129,36 @@ $(document).ready(function(){initNavTree('print_8h_source.html',''); initResizab
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>};</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
 <div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span>detail {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="conceptthorin_1_1detail_1_1Elemable.html">   27</a></span>    <span class="keyword">concept </span><a class="code hl_concept" href="conceptthorin_1_1detail_1_1Elemable.html">Elemable</a> = <span class="keyword">requires</span>(T elem) {</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        elem.range;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        elem.f;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    };</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="conceptthorin_1_1detail_1_1Elemable.html">   27</a></span><span class="keyword">concept </span><a class="code hl_concept" href="conceptthorin_1_1detail_1_1Elemable.html">Elemable</a> = <span class="keyword">requires</span>(T elem) {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    elem.range;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    elem.f;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>};</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">template</span>&lt;<span class="keyword">class</span> R, <span class="keyword">class</span> F&gt;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacethorin_1_1detail.html#a923e8f4b4842964409d2fbf66c72d0b0">   33</a></span>    std::ostream&amp; <a class="code hl_function" href="namespacethorin_1_1detail.html#a923e8f4b4842964409d2fbf66c72d0b0">range</a>(std::ostream &amp; os, <span class="keyword">const</span> R&amp; r, F f, <span class="keyword">const</span> <span class="keywordtype">char</span>* sep = <span class="stringliteral">&quot;, &quot;</span>) {</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        <span class="keyword">const</span> <span class="keywordtype">char</span>* cur_sep = <span class="stringliteral">&quot;&quot;</span>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; elem : r) {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = cur_sep; *i != <span class="charliteral">&#39;\0&#39;</span>; ++i) os &lt;&lt; *i;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="keyword">template</span>&lt;<span class="keyword">class</span> R, <span class="keyword">class</span> F&gt;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="namespacethorin_1_1detail.html#a923e8f4b4842964409d2fbf66c72d0b0">   33</a></span>std::ostream&amp; <a class="code hl_function" href="namespacethorin_1_1detail.html#a923e8f4b4842964409d2fbf66c72d0b0">range</a>(std::ostream&amp; os, <span class="keyword">const</span> R&amp; r, F f, <span class="keyword">const</span> <span class="keywordtype">char</span>* sep = <span class="stringliteral">&quot;, &quot;</span>) {</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">const</span> <span class="keywordtype">char</span>* cur_sep = <span class="stringliteral">&quot;&quot;</span>;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; elem : r) {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span> i = cur_sep; *i != <span class="charliteral">&#39;\0&#39;</span>; ++i) os &lt;&lt; *i;</div>
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_invocable_v&lt;F, std::ostream&amp;, <span class="keyword">decltype</span>(elem)&gt;) {</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>                std::invoke(<a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a>, os, elem);</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>                std::invoke(<a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a>, elem);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>            }</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            cur_sep = sep;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        }</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keywordflow">return</span> os;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    }</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_invocable_v&lt;F, std::ostream&amp;, <span class="keyword">decltype</span>(elem)&gt;) {</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            std::invoke(<a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a>, os, elem);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            std::invoke(<a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a>, elem);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        cur_sep = sep;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordflow">return</span> os;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>}</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="namespacethorin_1_1detail.html#a425b2158f0d5c5ea2d8f27542c1f8ec3">match2nd</a>(std::ostream &amp; os, <span class="keyword">const</span> <span class="keywordtype">char</span>* next, <span class="keyword">const</span> <span class="keywordtype">char</span>*&amp; s, <span class="keyword">const</span> <span class="keywordtype">char</span> c);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keywordtype">bool</span> <a class="code hl_function" href="namespacethorin_1_1detail.html#a425b2158f0d5c5ea2d8f27542c1f8ec3">match2nd</a>(std::ostream&amp; os, <span class="keyword">const</span> <span class="keywordtype">char</span>* next, <span class="keyword">const</span> <span class="keywordtype">char</span>*&amp; s, <span class="keyword">const</span> <span class="keywordtype">char</span> c);</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>} <span class="comment">// namespace detail</span></div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="comment"></span> </div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="comment">/// Base case.</span></div>
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="comment"></span>std::ostream&amp; <a class="code hl_function" href="namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c">print</a>(std::ostream&amp; os, <span class="keyword">const</span> <span class="keywordtype">char</span>* s);</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="comment"></span> </div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="comment">/// Provides a `printf`-like interface to format @p s with @p args and puts it into @p os.</span></div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">/// * Use `{}` as a placeholder within your format string @p s.</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span><span class="comment">/// Use `{}` as a placeholder within your format string @p s.</span></div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">/// * By default, `os &lt;&lt; t`` will be used to stream the appropriate argument:</span></div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">/// ```</span></div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">/// print(os, &quot;int: {}, float: {}&quot;, 23, 42.f);</span></div>

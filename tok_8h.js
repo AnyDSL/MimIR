@@ -10,6 +10,5 @@ var tok_8h =
     [ "THORIN_PREC", "tok_8h.html#ac29f384be3c6b33c3b9beded2bd1df1c", null ],
     [ "THORIN_SUBST", "tok_8h.html#a3d2da954389db5acfc86380a482ee87d", null ],
     [ "THORIN_TOK", "tok_8h.html#acf85c215badfba27aee55c9cd3af719a", null ],
-    [ "operator<<", "tok_8h.html#a0d8c42967cf1b7467d7db25651610bff", null ],
     [ "Num_Keys", "tok_8h.html#a6260d69793231000822afe60b38892ac", null ]
 ];

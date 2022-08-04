@@ -1,7 +1,7 @@
 var searchData=
 [
   ['id_0',['ID',['../classthorin_1_1BetaRed.html#a27728f5cab14f8b4f0f1fd6d11c2815d',1,'thorin::BetaRed']]],
-  ['id_1',['id',['../classthorin_1_1RecDumper.html#aa4c9b947d3d8e134eecac6f0fa5a58e3',1,'thorin::RecDumper']]],
+  ['id_1',['id',['../classthorin_1_1Dumper.html#a034c2c66d65231fab811722f60621c10',1,'thorin::Dumper']]],
   ['id_2',['ID',['../classthorin_1_1mem_1_1RememElim.html#a370f67c0ee2f347a5b0ae153cda6df12',1,'thorin::mem::RememElim::ID()'],['../classthorin_1_1mem_1_1Alloc2Malloc.html#af8b871d9f1921904a1769dacdfa21642',1,'thorin::mem::Alloc2Malloc::ID()'],['../classthorin_1_1mem_1_1SSAConstr.html#a3ea37a7297ac2610b6c0dad1a77e3aa4',1,'thorin::mem::SSAConstr::ID()'],['../classthorin_1_1mem_1_1CopyProp.html#a3f89dbfd259a31ced7e931475bb23edd',1,'thorin::mem::CopyProp::ID()'],['../classthorin_1_1direct_1_1DS2CPS.html#a518f8d99b932876054ba0195ee428614',1,'thorin::direct::DS2CPS::ID()'],['../classthorin_1_1affine_1_1LowerFor.html#ac8c950737a2e9cdedb6a56cabac34810',1,'thorin::affine::LowerFor::ID()'],['../classthorin_1_1Scalerize.html#af6d07de2718cd89093afd70f518fc4c8',1,'thorin::Scalerize::ID()'],['../classthorin_1_1PartialEval.html#a635623d8e827377069027f0ffc133803',1,'thorin::PartialEval::ID()'],['../classthorin_1_1LamSpec.html#a781bd25e3ebe60439fe10ef2d924dbb3',1,'thorin::LamSpec::ID()'],['../classthorin_1_1BoundElim.html#aaa90d7ebd100e2b37941318853d719ee',1,'thorin::BoundElim::ID()'],['../classthorin_1_1TailRecElim.html#a7076c41fa0bfde0d5c7e54758520088c',1,'thorin::TailRecElim::ID()'],['../classthorin_1_1EtaRed.html#a986315826a3f2f94fbeead5d25a5c197',1,'thorin::EtaRed::ID()'],['../classthorin_1_1EtaExp.html#a007cc69aacdb291068502d75dc13be88',1,'thorin::EtaExp::ID()'],['../classthorin_1_1RetWrap.html#abba79b1099e54a9c2748d147cab505e1',1,'thorin::RetWrap::ID()']]],
   ['idom_3',['idom',['../classthorin_1_1DomTreeBase.html#a4221dc4eda86e282cdb1cc54714bfc62',1,'thorin::DomTreeBase']]],
   ['idptrn_4',['IdPtrn',['../classthorin_1_1fe_1_1IdPtrn.html#aecd084649e58bd4751b63f9bf24e9a0d',1,'thorin::fe::IdPtrn']]],
@@ -54,7 +54,7 @@ var searchData=
   ['is_5fused_5fas_5ftype_51',['is_used_as_type',['../classthorin_1_1Use.html#ab0b035140ec21ad63e360f32d5321672',1,'thorin::Use']]],
   ['is_5fvalid_52',['is_valid',['../classthorin_1_1dot_1_1DotEmitter.html#affd36071768765e0e36476d9f81ca37a',1,'thorin::dot::DotEmitter::is_valid()'],['../classthorin_1_1ll_1_1CodeGen.html#ad490fd67ad94dd25dabb81c34287e215',1,'thorin::ll::CodeGen::is_valid()'],['../namespacethorin_1_1utf8.html#a50d67a2652dfa25b33bc6128f2a49437',1,'thorin::utf8::is_valid()']]],
   ['is_5fvar_53',['is_var',['../namespacethorin.html#a4bf19bc148d17bf9334eedd5bd184781',1,'thorin']]],
-  ['isa_54',['isa',['../namespacethorin.html#a57dfb1cbd8e3aced975ba276020a4c61',1,'thorin::isa()'],['../classthorin_1_1fe_1_1Tok.html#a24090cbe5e4bc59caa86ba90ea02c44c',1,'thorin::fe::Tok::isa()'],['../classthorin_1_1RuntimeCast.html#ae48ccd2ab9e4b674f069c5ae6a3a361f',1,'thorin::RuntimeCast::isa()'],['../classthorin_1_1RuntimeCast.html#a8349f459f29da96575216355e8589882',1,'thorin::RuntimeCast::isa() const'],['../namespacethorin.html#a140dce6ed0b95d67cb652c739c6be1ec',1,'thorin::isa(Tag2Enum&lt; t &gt; tag, const Def *def)'],['../namespacethorin.html#a4ee21e07e5bfcf99d87cf5b3effb1ba1',1,'thorin::isa(flags_t f, const Def *def)']]],
+  ['isa_54',['isa',['../namespacethorin.html#a140dce6ed0b95d67cb652c739c6be1ec',1,'thorin::isa(Tag2Enum&lt; t &gt; tag, const Def *def)'],['../namespacethorin.html#a57dfb1cbd8e3aced975ba276020a4c61',1,'thorin::isa(const Def *def)'],['../classthorin_1_1fe_1_1Tok.html#a24090cbe5e4bc59caa86ba90ea02c44c',1,'thorin::fe::Tok::isa()'],['../classthorin_1_1RuntimeCast.html#ae48ccd2ab9e4b674f069c5ae6a3a361f',1,'thorin::RuntimeCast::isa()'],['../classthorin_1_1RuntimeCast.html#a8349f459f29da96575216355e8589882',1,'thorin::RuntimeCast::isa() const'],['../namespacethorin.html#a4ee21e07e5bfcf99d87cf5b3effb1ba1',1,'thorin::isa(flags_t f, const Def *def)']]],
   ['isa_5fapped_5fnom_5flam_55',['isa_apped_nom_lam',['../namespacethorin.html#ae9f4e318b3cd862946a82d5903417a03',1,'thorin']]],
   ['isa_5fbound_56',['isa_bound',['../namespacethorin.html#acf74d6ffc9168d125bb73ff17c3b8395',1,'thorin']]],
   ['isa_5fbr_57',['isa_br',['../namespacethorin_1_1clos.html#af123e0f218ce989157e2ab24f1e7f97e',1,'thorin::clos']]],
@@ -64,14 +64,15 @@ var searchData=
   ['isa_5fclos_5flit_61',['isa_clos_lit',['../namespacethorin_1_1clos.html#a92b58d7f3f1d2560b80ebf39de3d0ecb',1,'thorin::clos']]],
   ['isa_5fclos_5ftype_62',['isa_clos_type',['../namespacethorin_1_1clos.html#a875e5e478d24d94486a3c33b4f6eb4f8',1,'thorin::clos']]],
   ['isa_5fcont_63',['isa_cont',['../namespacethorin_1_1clos.html#a9ed110255c3cffe8b330e478d9ceb6fa',1,'thorin::clos']]],
-  ['isa_5fext_64',['isa_ext',['../namespacethorin.html#a00ac7dde2670cd6dd5035b081e992386',1,'thorin']]],
-  ['isa_5flit_65',['isa_lit',['../namespacethorin.html#a196c8dd3968fd28a00dc082c191feee6',1,'thorin']]],
-  ['isa_5fnom_66',['isa_nom',['../classthorin_1_1Def.html#ac79cb2db748fbf0177eb2e6c0fef3fdc',1,'thorin::Def']]],
-  ['isa_5fproxy_67',['isa_proxy',['../classthorin_1_1Pass.html#a6b99d034b66f83d34cc497fc74ad9577',1,'thorin::Pass']]],
-  ['isa_5fretvar_68',['isa_retvar',['../namespacethorin_1_1clos.html#a510c91ffb534a33b7ad6c542bbe09aa2',1,'thorin::clos']]],
-  ['isa_5fsized_5ftype_69',['isa_sized_type',['../namespacethorin.html#a8f906c3bc0a760e4d037bcc6597fd2bd',1,'thorin']]],
-  ['isa_5fstructural_70',['isa_structural',['../classthorin_1_1Def.html#ac2017047b0b25ea75b038cb2427ea164',1,'thorin::Def']]],
-  ['isa_5fworkable_71',['isa_workable',['../namespacethorin.html#afbcb1bda3428d2211797b024635936ee',1,'thorin']]],
-  ['issign_72',['issign',['../namespacethorin_1_1fe.html#a92d64b307c3c5a72e83e776515392d6e',1,'thorin::fe']]],
-  ['issubscsr_73',['issubscsr',['../namespacethorin_1_1fe.html#a0d036f1099648b258d0948cfae174039',1,'thorin::fe']]]
+  ['isa_5fdecl_64',['isa_decl',['../namespacethorin.html#a83dd1a97c4b17f7188a981d3036cb717',1,'thorin']]],
+  ['isa_5fext_65',['isa_ext',['../namespacethorin.html#a00ac7dde2670cd6dd5035b081e992386',1,'thorin']]],
+  ['isa_5flit_66',['isa_lit',['../namespacethorin.html#a196c8dd3968fd28a00dc082c191feee6',1,'thorin']]],
+  ['isa_5fnom_67',['isa_nom',['../classthorin_1_1Def.html#ac79cb2db748fbf0177eb2e6c0fef3fdc',1,'thorin::Def']]],
+  ['isa_5fproxy_68',['isa_proxy',['../classthorin_1_1Pass.html#a6b99d034b66f83d34cc497fc74ad9577',1,'thorin::Pass']]],
+  ['isa_5fretvar_69',['isa_retvar',['../namespacethorin_1_1clos.html#a510c91ffb534a33b7ad6c542bbe09aa2',1,'thorin::clos']]],
+  ['isa_5fsized_5ftype_70',['isa_sized_type',['../namespacethorin.html#a8f906c3bc0a760e4d037bcc6597fd2bd',1,'thorin']]],
+  ['isa_5fstructural_71',['isa_structural',['../classthorin_1_1Def.html#ac2017047b0b25ea75b038cb2427ea164',1,'thorin::Def']]],
+  ['isa_5fworkable_72',['isa_workable',['../namespacethorin.html#afbcb1bda3428d2211797b024635936ee',1,'thorin']]],
+  ['issign_73',['issign',['../namespacethorin_1_1fe.html#a92d64b307c3c5a72e83e776515392d6e',1,'thorin::fe']]],
+  ['issubscsr_74',['issubscsr',['../namespacethorin_1_1fe.html#a0d036f1099648b258d0948cfae174039',1,'thorin::fe']]]
 ];

@@ -9,5 +9,6 @@ var classthorin_1_1LoopTree =
     [ "operator=", "classthorin_1_1LoopTree.html#a79ebf8ba8526ea319b69b5791cce16af", null ],
     [ "operator[]", "classthorin_1_1LoopTree.html#ad0d803f47760d30d2f0f2f922bdb732f", null ],
     [ "root", "classthorin_1_1LoopTree.html#acf2656d830593575a29cbd71c920a8e8", null ],
-    [ "LoopTreeBuilder< forward >", "classthorin_1_1LoopTree.html#a0b97215e639132eee69a71502a6a728a", null ]
+    [ "LoopTreeBuilder< forward >", "classthorin_1_1LoopTree.html#a0b97215e639132eee69a71502a6a728a", null ],
+    [ "operator<<", "classthorin_1_1LoopTree.html#a48e5f724bead880dc2af43b9a52f1d93", null ]
 ];
