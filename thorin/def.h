@@ -114,7 +114,8 @@ private:
 
 protected:
     /// Constructor for a structural Def.
-    Def(node_t, const Def* type, Defs ops, flags_t flags, const Def* dbg);
+    Def(World*, node_t, const Def* type, Defs ops, flags_t flags, const Def* dbg);
+    Def(node_t n, const Def* type, Defs ops, flags_t flags, const Def* dbg);
     /// Constructor for a *nom*inal Def.
     Def(node_t, const Def* type, size_t num_ops, flags_t flags, const Def* dbg);
     virtual ~Def() = default;
@@ -363,6 +364,7 @@ public:
     void dump() const;
     void dump(size_t) const;
     std::ostream& stream(std::ostream&, size_t max) const;
+    friend std::ostream& operator<<(std::ostream&, const Def*);
     ///@}
 
 protected:
@@ -375,6 +377,7 @@ protected:
     union {
         NormalizeFn normalizer_; ///< Axiom%s use this member to store their normalizer.
         const Axiom* axiom_;     /// Curried App%s of Axiom%s use this member to propagate the Axiom.
+        mutable World* world_;
     };
 
     flags_t flags_;
@@ -389,16 +392,11 @@ protected:
     u32 num_ops_;
     mutable Uses uses_;
     mutable const Def* dbg_;
-    union {
-        const Def* type_;
-        mutable World* world_;
-    };
+    const Def* type_;
 
     friend class World;
     friend void swap(World&, World&);
 };
-
-std::ostream& operator<<(std::ostream&, const Def* def);
 
 template<class T>
 const T* isa(flags_t f, const Def* def) {
@@ -474,7 +472,7 @@ using Var2Var = VarMap<const Var*>;
 class Univ : public Def {
 private:
     Univ(World& world)
-        : Def(Node, reinterpret_cast<const Def*>(&world), Defs{}, 0, nullptr) {}
+        : Def(&world, Node, nullptr, Defs{}, 0, nullptr) {}
 
 public:
     /// @name virtual methods

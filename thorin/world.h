@@ -11,6 +11,7 @@
 #include "thorin/config.h"
 #include "thorin/debug.h"
 #include "thorin/error.h"
+#include "thorin/flags.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
@@ -68,6 +69,7 @@ public:
             : name(name) {}
 
         Log log;
+        Flags flags;
         std::string name    = "module";
         u32 curr_gid        = 0;
         u32 curr_sub        = 0;
@@ -92,17 +94,37 @@ public:
     u32 curr_gid() const { return state_.curr_gid; }
     u32 next_gid() { return ++state_.curr_gid; }
 
+    /// Retrive compile Flags.
+    const Flags& flags() const { return state_.flags; }
+    Flags& flags() { return state_.flags; }
+    ///@}
+
+    /// @name freeze
+    ///@{
+    /// In frozen state the World does not create any nodes.
+    bool is_frozen() const { return state_.frozen; }
+
+    /// @returns old frozen state.
     bool freeze(bool on = true) const {
         bool old      = state_.frozen;
         state_.frozen = on;
         return old;
     }
-    bool is_frozen() const { return state_.frozen; }
+
+    /// Use to World::freeze and automatically unfreeze at the end of scope.
+    struct Freezer {
+        Freezer(const World& world)
+            : world(world)
+            , old(world.freeze(true)) {}
+        ~Freezer() { world.freeze(old); }
+
+        const World& world;
+        bool old;
+    };
     ///@}
 
     /// @name manage nodes
     ///@{
-    const auto& defs() const { return data_.defs_; } ///< **All** nodes.
     const auto& axioms() const { return data_.axioms_; }
     const auto& externals() const { return data_.externals_; }
     bool empty() { return data_.externals_.empty(); }
@@ -392,11 +414,11 @@ public:
     const Axiom* type_int() { return data_.type_int_; }
     const Axiom* type_real() { return data_.type_real_; }
     const App* type_bool() { return data_.type_bool_; }
-    const App* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
-    const App* type_int(nat_t mod) { return type_int(lit_nat(mod)); }
-    const App* type_real(nat_t width) { return type_real(lit_nat(width)); }
-    const App* type_int(const Def* mod) { return app(type_int(), mod)->as<App>(); }
-    const App* type_real(const Def* width) { return app(type_real(), width)->as<App>(); }
+    const Def* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
+    const Def* type_int(nat_t mod) { return type_int(lit_nat(mod)); }
+    const Def* type_real(nat_t width) { return type_real(lit_nat(width)); }
+    const Def* type_int(const Def* mod) { return app(type_int(), mod); }
+    const Def* type_real(const Def* width) { return app(type_real(), width); }
     ///@}
 
     /// @name bulitin axioms
@@ -560,12 +582,15 @@ private:
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
-
+#if THORIN_ENABLE_CHECKS
+        if (flags().trace) outln("{}: {}", def->node_name(), def->gid());
+        if (flags().reeval_breakpoints && state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+#endif
         if (is_frozen()) {
             --state_.curr_gid;
-            auto i = defs().find(def);
+            auto i = data_.defs_.find(def);
             arena_.deallocate<T>(def);
-            if (i != defs().end()) return static_cast<const T*>(*i);
+            if (i != data_.defs_.end()) return static_cast<const T*>(*i);
             return nullptr;
         }
 
@@ -574,7 +599,7 @@ private:
             return static_cast<const T*>(*i);
         }
 #if THORIN_ENABLE_CHECKS
-        if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+        if (!flags().reeval_breakpoints && state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         def->finalize();
         return def;
@@ -584,6 +609,7 @@ private:
     T* insert(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
 #if THORIN_ENABLE_CHECKS
+        if (flags().trace) outln("{}: {}", def->node_name(), def->gid());
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         auto [_, ins] = data_.defs_.emplace(def);

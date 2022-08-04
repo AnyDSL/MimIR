@@ -2,6 +2,7 @@
 
 #include "thorin/debug.h"
 
+#include "thorin/util/assert.h"
 #include "thorin/util/types.h"
 
 namespace thorin::fe {
@@ -80,7 +81,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(".insert", K_ins  )               \
 
 #define THORIN_PREC(m)                  \
-    /* left     prec,       right  */   \
+    /* left     prec,    right  */      \
     m(Nil,      Bot,     Nil     )      \
     m(Nil,      Nil,     Nil     )      \
     m(Pi,       Arrow,   Arrow   )      \
@@ -103,10 +104,12 @@ public:
         switch (p) {
 #define CODE(l, p, r) \
             case Prec::p: return {Prec::l, Prec::r};
+            default:      unreachable();
         THORIN_PREC(CODE)
 #undef CODE
         }
     }
+    static Prec prec(const Def*);
     ///@}
 
     /// @name Tag
@@ -159,6 +162,7 @@ public:
     Sym sym()          const { assert(isa(Tag::M_id) || isa(Tag::M_ax)); return sym_; }
     const Def* index() const { assert(isa(Tag::M_i)); return index_; }
     // clang-format on
+    friend std::ostream& operator<<(std::ostream&, Tok);
 
 private:
     Loc loc_;
@@ -169,7 +173,5 @@ private:
         const Def* index_;
     };
 };
-
-std::ostream& operator<<(std::ostream& os, const Tok tok);
 
 } // namespace thorin::fe

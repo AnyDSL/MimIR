@@ -9,77 +9,74 @@ using namespace std::literals;
 
 namespace thorin {
 
-struct Unwrap {
-    Unwrap(const Def* def)
-        : def(def) {}
+static Def* isa_decl(const Def* def) {
+    if (auto nom = def->isa_nom()) {
+        if (nom->isa<Lam>() || !nom->name().empty()) return nom;
+    }
+    return nullptr;
+}
 
-    const Def* operator->() const { return def; };
-    const Def* operator*() const { return def; };
-    operator bool() const {
-        if (def->isa_nom()) return false;
-        if (def->isa<Global>()) return false;
-        // if (def->no_dep()) return true;
-        if (auto app = def->isa<App>()) {
+/// This is a wrapper to "unwrap" a Def and print it with all of its operands.
+struct Unwrap {
+    Unwrap(const Def* def, bool dump_gid)
+        : def_(def)
+        , dump_gid(dump_gid) {}
+    Unwrap(const Def* def)
+        : Unwrap(def, def->world().flags().dump_gid) {}
+
+    const Def* operator->() const { return def_; };
+    const Def* operator*() const { return def_; };
+    explicit operator bool() const {
+        // if (def_->no_dep()) return true;
+        if (auto nom = def_->isa_nom()) {
+            if (isa_decl(nom)) return false;
+            return true;
+        }
+
+        if (auto app = def_->isa<App>()) {
             if (app->type()->isa<Pi>()) return true; // curried apps are printed inline
             if (app->type()->isa<Type>()) return true;
             if (app->callee()->isa<Axiom>()) { return app->callee_type()->num_doms() <= 1; }
             return false;
         }
+
         return true;
     }
 
-    const Def* def;
+    friend std::ostream& operator<<(std::ostream&, Unwrap);
+
+private:
+    const Def* def_;
+    const bool dump_gid;
 };
-
-// TODO can we get rid off this?
-static fe::Tok::Prec prec(const Def* def) {
-    if (def->isa<Pi>()) return fe::Tok::Prec::Arrow;
-    if (def->isa<App>()) return fe::Tok::Prec::App;
-    if (def->isa<Extract>()) return fe::Tok::Prec::Extract;
-    if (def->isa<Lit>()) return fe::Tok::Prec::Lit;
-    return fe::Tok::Prec::Bot;
-}
-
-static fe::Tok::Prec prec_l(const Def* def) {
-    assert(!def->isa<Lit>());
-    if (def->isa<Pi>()) return fe::Tok::Prec::App;
-    if (def->isa<App>()) return fe::Tok::Prec::App;
-    if (def->isa<Extract>()) return fe::Tok::Prec::Extract;
-    return fe::Tok::Prec::Bot;
-}
-
-static fe::Tok::Prec prec_r(const Def* def) {
-    if (def->isa<Pi>()) return fe::Tok::Prec::Arrow;
-    if (def->isa<App>()) return fe::Tok::Prec::Extract;
-    if (def->isa<Extract>()) return fe::Tok::Prec::Lit;
-    return fe::Tok::Prec::Bot;
-}
 
 template<bool L>
 struct LRPrec {
     LRPrec(const Def* l, const Def* r)
-        : l_(l)
-        , r_(r) {}
+        : l(l)
+        , r(r) {}
 
     friend std::ostream& operator<<(std::ostream& os, const LRPrec& p) {
         if constexpr (L) {
-            if (Unwrap(p.l_) && prec_l(p.r_) > prec(p.r_)) return print(os, "({})", p.l_);
-            return print(os, "{}", p.l_);
+            if (Unwrap(p.l) && fe::Tok::prec(fe::Tok::prec(p.r))[0] > fe::Tok::prec(p.r)) return print(os, "({})", p.l);
+            return print(os, "{}", p.l);
         } else {
-            if (Unwrap(p.r_) && prec(p.l_) > prec_r(p.l_)) return print(os, "({})", p.r_);
-            return print(os, "{}", p.r_);
+            if (Unwrap(p.r) && fe::Tok::prec(p.l) > fe::Tok::prec(fe::Tok::prec(p.l))[1]) return print(os, "({})", p.r);
+            return print(os, "{}", p.r);
         }
     }
 
 private:
-    const Def* l_;
-    const Def* r_;
+    const Def* l;
+    const Def* r;
 };
 
 using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
 std::ostream& operator<<(std::ostream& os, Unwrap u) {
+    if (u.dump_gid) print(os, "/*{}*/", u->gid());
+
     if (auto type = u->isa<Type>()) {
         auto level = as_lit(type->level()); // TODO other levels
         return print(os, level == 0 ? "★" : "□");
@@ -128,8 +125,12 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
         print(os, "({, })", tuple->ops());
         return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
     } else if (auto arr = u->isa<Arr>()) {
+        if (auto nom = arr->isa_nom<Arr>(); nom && nom->var())
+            return print(os, "«{}: {}; {}»", nom->var(), nom->shape(), nom->body());
         return print(os, "«{}; {}»", arr->shape(), arr->body());
     } else if (auto pack = u->isa<Pack>()) {
+        if (auto nom = pack->isa_nom<Pack>(); nom && nom->var())
+            return print(os, "‹{}: {}; {}›", nom->var(), nom->shape(), nom->body());
         return print(os, "‹{}; {}›", pack->shape(), pack->body());
     } else if (auto proxy = u->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
@@ -144,22 +145,30 @@ std::ostream& operator<<(std::ostream& os, Unwrap u) {
     return print(os, ".{}#{} ({, })", u->node_name(), u->flags(), u->ops());
 }
 
+/// This will stream @p def as an operand.
+/// This is usually Def::unique_name, but in some simple cases it will be displayed Unwrap%ed.
+std::ostream& operator<<(std::ostream& os, const Def* def) {
+    if (def == nullptr) return os << "<nullptr>";
+    if (Unwrap(def)) return os << Unwrap(def);
+    return os << def->unique_name();
+}
+
 std::ostream& let(Tab& tab, std::ostream& os, const Def* def) {
-    return tab.lnprint(os, ".let {}: {} = {};", def->unique_name(), def->type(), Unwrap(def));
+    return tab.lnprint(os, ".let {}: {} = {};", def->unique_name(), def->type(), Unwrap(def, false));
 }
 
 //------------------------------------------------------------------------------
 
-class RecDumper {
+class Dumper {
 public:
-    RecDumper(std::ostream& os, size_t max)
+    Dumper(std::ostream& os, size_t max)
         : os(os)
         , max(max) {}
 
     void run(const DepNode* node = nullptr);
-    void rec(const Def*);
-    void rec(Defs defs) {
-        for (auto def : defs) rec(def);
+    void recurse(const Def*);
+    void recurse(Defs defs) {
+        for (auto def : defs) recurse(def);
     }
     void dump(const DepNode* n);
     void dump_ptrn(const Def*, const Def*);
@@ -182,7 +191,7 @@ public:
     DefSet defs;
 };
 
-void RecDumper::run(const DepNode* node) {
+void Dumper::run(const DepNode* node) {
     while (!noms.empty()) {
         auto nom = noms.pop();
         os << std::endl << std::endl;
@@ -193,7 +202,6 @@ void RecDumper::run(const DepNode* node) {
         }
 
         auto nom_prefix = [&](const Def* def) {
-            if (def->isa<Lam>()) return ".lam";
             if (def->isa<Sigma>()) return ".Sigma";
             if (def->isa<Arr>()) return ".Arr";
             if (def->isa<Pack>()) return ".pack";
@@ -202,7 +210,6 @@ void RecDumper::run(const DepNode* node) {
         };
 
         auto nom_op0 = [&](const Def* def) -> std::ostream& {
-            if (def->isa<Lam>()) return os;
             if (auto sig = def->isa<Sigma>()) return print(os, ", {}", sig->num_ops());
             if (auto arr = def->isa<Arr>()) return print(os, ", {}", arr->shape());
             if (auto pack = def->isa<Pack>()) return print(os, ", {}", pack->shape());
@@ -231,57 +238,42 @@ void RecDumper::run(const DepNode* node) {
         }
         print(os, " = {{");
         ++tab;
-
-        if (auto lam = nom->isa<Lam>()) {
-            rec(lam->filter());
-            tab.lnprint(os, "{},", lam->filter());
-
-            if (node) {
-                for (auto child : node->children())
-                    if (auto nom = child->nom()) {
-                        noms.push(nom);
-                        run(child);
-                    }
-            }
-            rec(lam->body());
-            tab.lnprint(os, "{}", lam->body());
-        } else {
-            rec(nom);
-        }
-
+        recurse(nom);
         --tab;
         tab.lnprint(os, "}};");
     }
 }
 
-void RecDumper::dump(const DepNode* n) {
+void Dumper::dump(const DepNode* n) {
     if (auto nom = n->nom()) {
-        noms.push(nom);
+        if (isa_decl(nom)) noms.push(nom);
         run(n);
     }
 }
 
-void RecDumper::rec(const Def* def) {
+void Dumper::recurse(const Def* def) {
     if (!defs.emplace(def).second) return;
 
-    for (auto op : def->ops()) { // for now, don't include debug info and type
-        if (auto nom = op->isa_nom()) {
+    for (auto op : def->partial_ops().skip_front()) { // ignore dbg
+        if (!op) continue;
+
+        if (auto nom = isa_decl(op)) {
             if (max != 0) {
                 if (noms.push(nom)) --max;
             }
         } else {
-            rec(op);
+            recurse(op);
         }
     }
 
-    if (auto nom = def->isa_nom()) {
+    if (auto nom = isa_decl(def)) {
         tab.lnprint(os, "{}", Unwrap(nom));
     } else if (!Unwrap(def)) {
         let(tab, os, def);
     }
 }
 
-void RecDumper::dump_ptrn(const Def* def, const Def* type) {
+void Dumper::dump_ptrn(const Def* def, const Def* type) {
     if (!def) {
         os << type;
     } else {
@@ -296,9 +288,11 @@ void RecDumper::dump_ptrn(const Def* def, const Def* type) {
     }
 }
 
-void RecDumper::dump(const DepNode* node, Lam* lam) {
+void Dumper::dump(const DepNode* node, Lam* lam) {
     // TODO filter
-    auto ptrn = [&]() { dump_ptrn(lam->var(), lam->type()->dom()); };
+
+    auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
+
     if (lam->type()->is_cn()) {
         tab.print(os, ".cn {}{} {} = {{", external(lam), id(lam), ptrn);
     } else {
@@ -314,7 +308,7 @@ void RecDumper::dump(const DepNode* node, Lam* lam) {
             }
     }
     if (lam->is_set()) {
-        rec(lam->ops());
+        recurse(lam->ops());
         tab.lnprint(os, "{}", lam->body());
     } else {
         tab.lnprint(os, " <unset> ");
@@ -323,25 +317,20 @@ void RecDumper::dump(const DepNode* node, Lam* lam) {
     tab.lnprint(os, "}};");
 }
 
-std::ostream& operator<<(std::ostream& os, const Def* def) {
-    if (def == nullptr) return os << "<nullptr>";
-    if (Unwrap(def)) return os << Unwrap(def);
-    return os << def->unique_name();
-}
-
 std::ostream& Def::stream(std::ostream& os, size_t max) const {
+    World::Freezer freezer(world());
     if (max == 0) {
         Tab tab;
         return let(tab, os, this);
     }
 
-    RecDumper rec(os, --max);
+    Dumper dumper(os, --max);
     if (auto nom = isa_nom()) {
-        rec.noms.push(nom);
-        rec.run();
+        dumper.noms.push(nom);
+        dumper.run();
     } else {
-        rec.rec(this);
-        if (max != 0) rec.run();
+        dumper.recurse(this);
+        if (max != 0) dumper.run();
     }
 
     return os;
@@ -357,20 +346,18 @@ void Def::dump() const { std::cout << this << std::endl; }
 void Def::dump(size_t max) const { stream(std::cout, max) << std::endl; }
 
 void World::dump(std::ostream& os) const {
-    freeze(true);
+    auto freezer = World::Freezer(*this);
+    auto dep     = DepTree(*this);
     auto old_gid = curr_gid();
-
-    DepTree dep(*this);
-    RecDumper rec(os, 0);
+    auto dumper  = Dumper(os, 0);
     for (const auto& import : imported()) print(os, ".import {};\n", import);
 
     for (auto child : dep.root()->children()) {
-        rec.dump(child);
+        dumper.dump(child);
         os << std::endl;
     }
 
-    assert_unused(old_gid == curr_gid());
-    freeze(false);
+    assertf(old_gid == curr_gid(), "new nodes created during dump. old_gid: {}; curr_gid: {}", old_gid, curr_gid());
 }
 
 void World::dump() const { dump(std::cout); }
