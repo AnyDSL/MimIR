@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "thorin/world.h"
 
 #include "thorin/analyses/deptree.h"
@@ -20,7 +22,7 @@ static Def* isa_decl(const Def* def) {
 struct Unwrap {
     Unwrap(const Def* def, bool dump_gid)
         : def_(def)
-        , dump_gid(dump_gid) {}
+        , dump_gid_(dump_gid) {}
     Unwrap(const Def* def)
         : Unwrap(def, def->world().flags().dump_gid) {}
 
@@ -47,7 +49,7 @@ struct Unwrap {
 
 private:
     const Def* def_;
-    const bool dump_gid;
+    const bool dump_gid_;
 };
 
 template<bool L>
@@ -75,7 +77,7 @@ using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
 std::ostream& operator<<(std::ostream& os, Unwrap u) {
-    if (u.dump_gid) print(os, "/*{}*/", u->gid());
+    if (u.dump_gid_) print(os, "/*{}*/", u->gid());
 
     if (auto type = u->isa<Type>()) {
         auto level = as_lit(type->level()); // TODO other levels
@@ -361,6 +363,12 @@ void World::dump(std::ostream& os) const {
 }
 
 void World::dump() const { dump(std::cout); }
+
+void World::dump(std::string_view file /*= {}*/) const {
+    auto s   = std::string(file.empty() ? file : name());
+    auto ofs = std::ofstream(s);
+    dump(ofs);
+}
 
 void World::debug_dump() const {
     if (log().level == Log::Level::Debug) dump(*log().ostream);

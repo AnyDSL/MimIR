@@ -548,9 +548,10 @@ public:
     ///@{
     const Log& log() const { return state_.log; }
     Log& log() { return state_.log; }
-    void dump(std::ostream&) const;
-    void dump() const;
-    void debug_dump() const; ///< Dump thorin in Debug build if World::log::level is Log::Level::Debug.
+    void dump(std::ostream& os) const;           ///< Dump to @p os.
+    void dump(std::string_view file = {}) const; ///< Dump to a file named @p file; defaults to World::name.
+    void dump() const;                           ///< Dump to `std::cout`.
+    void debug_dump() const;                     ///< Dump in Debug build if World::log::level is Log::Level::Debug.
     ///@}
 
     friend void swap(World& w1, World& w2) {
