@@ -95,19 +95,19 @@ var NAVTREEINDEX =
 "classthorin_1_1PipelineBuilder.html",
 "classthorin_1_1Test.html#a7b4bcdf992c21ae83363f25df05b1d25",
 "classthorin_1_1World.html#a7db061f1254682653991b7119d536dcc",
-"classthorin_1_1clos_1_1ClosConvPrep.html#aecf97245e54d570a1b39dfe00a77cadb",
-"classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a86d887ab52987c7cae217900a37da7c0",
-"clos_2autogen_8h.html#a825f85d6f84051d8c57118e012949b8e",
-"core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6af66234c5f1c1d4daede0a2189df4bb65",
-"flags_8h_source.html",
-"mem_2autogen_8h.html#af4043e188d46c7390a04884c0785d51c",
-"namespacethorin.html#a78f69bd0bad07415aba080f4cdb39a89",
-"namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719",
-"namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a54a2bf8c09ace67d3513aaa1aa7aa0f3",
-"normalize_8cpp.html#a9936b95c92a3cbd2712e329d3af5f0c7",
-"structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aad4a9fa383ab700c5bdd6f31cf7df0faf",
-"structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1mul_00_01w_01_4.html#aabb6ad9f367d4ad74421d5b61cb43a7c",
-"tuple_8h.html#a49914b89c55cc74be99001a2875f00d1"
+"classthorin_1_1clos_1_1ClosLit.html",
+"classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a8a60817c7b13b75f078509e5e3a32aac",
+"clos_2autogen_8h.html#a94c08716d04d1a608f032bc3a398822f",
+"core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6afc6b41d0d392685b651406b87893212d",
+"functions.html",
+"mem_2autogen_8h.html#afae5b527aceec4d4f79872b5f4179dcc",
+"namespacethorin.html#a794d305b1d0e0e61a04faa72c5e91897",
+"namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719a15bd4502d3a7637c7bb048db810fcc26",
+"namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5bf8820b7f741b5e3326b175f03a2141",
+"normalize_8cpp.html#aa171f9cec4330ed2febd4c8d59c9d4e7",
+"structthorin_1_1Log.html#aeab0c193c020c0ca157872a74c8f38f6",
+"structthorin_1_1normalize_1_1Fold_3_01wrap_00_01wrap_1_1shl_00_01w_01_4.html#adf676ff1f931be68f384770e3b01f7f7",
+"tuple_8h.html#abf42540454f2067831c8d4424d18a1ad"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

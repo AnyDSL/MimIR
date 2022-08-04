@@ -10,6 +10,5 @@ var structthorin_1_1World_1_1State =
     [ "imported_dialects", "structthorin_1_1World_1_1State.html#ab4dd2110ba1ecf253f943bf7466a0a6b", null ],
     [ "log", "structthorin_1_1World_1_1State.html#af712586a4cc3986aab11a4c764a53432", null ],
     [ "name", "structthorin_1_1World_1_1State.html#a7fbf8218b82d63b1e67a2abdf164f3ab", null ],
-    [ "pe_done", "structthorin_1_1World_1_1State.html#a183dfa7bf4a431cd041f38b5728f5f09", null ],
     [ "track_history", "structthorin_1_1World_1_1State.html#aaed5f4613dc31c57dfe5cf3b88bc03cb", null ]
 ];
