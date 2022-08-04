@@ -73,7 +73,6 @@ public:
         std::string name    = "module";
         u32 curr_gid        = 0;
         u32 curr_sub        = 0;
-        bool pe_done        = false;
         mutable bool frozen = false;
         absl::btree_set<std::string> imported_dialects;
 #if THORIN_ENABLE_CHECKS
@@ -537,12 +536,6 @@ public:
         return tuple({sym.str(), loc, meta});
     }
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
-    ///@}
-
-    /// @name partial evaluation done?
-    ///@{
-    void mark_pe_done(bool flag = true) { state_.pe_done = flag; }
-    bool is_pe_done() const { return state_.pe_done; }
     ///@}
 
     /// @name error handling
