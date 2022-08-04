@@ -39,6 +39,9 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const 
     }
 }
 
+Def::Def(node_t n, const Def* type, Defs ops, flags_t flags, const Def* dbg)
+    : Def(nullptr, n, type, ops, flags, dbg) {}
+
 Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def* dbg)
     : flags_(flags)
     , node_(node)

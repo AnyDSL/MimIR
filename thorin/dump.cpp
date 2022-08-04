@@ -9,7 +9,7 @@ using namespace std::literals;
 
 namespace thorin {
 
-Def* isa_decl(const Def* def) {
+static Def* isa_decl(const Def* def) {
     if (auto nom = def->isa_nom()) {
         if (nom->isa<Lam>() || !nom->name().empty()) return nom;
     }
