@@ -216,7 +216,7 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     }
 
     auto type           = pi->reduce(arg).back();
-    auto [axiom, curry] = Axiom::get(callee); // TODO move down again
+    auto [axiom, curry] = Axiom::get(callee);
     if (axiom && curry == 1) {
         if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
     }
