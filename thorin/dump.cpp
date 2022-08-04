@@ -167,7 +167,6 @@ public:
         : os(os)
         , max(max) {}
 
-
     void recurse(const DepNode*);
     void recurse(const Def*);
     void recurse(Defs defs) {
@@ -228,11 +227,11 @@ void Dumper::dump_decl(const DepNode* node) {
     if (nom->var()) {
         if (auto e = nom->num_vars(); e != 1) {
             print(os, "{, }", Elem(nom->vars(), [&](auto def) {
-                        if (def)
-                            os << def->unique_name();
-                        else
-                            os << "<TODO>";
-                    }));
+                      if (def)
+                          os << def->unique_name();
+                      else
+                          os << "<TODO>";
+                  }));
         } else {
             print(os, ", @{}", nom->var()->unique_name());
         }
