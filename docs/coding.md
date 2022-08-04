@@ -37,6 +37,22 @@ In addition, you might want to check out plugins like the [Vim integration](http
 
 For logging and automatic firing of breakpoints refer to the [Command-Line Reference](@ref clidebug).
 
+## Dumping
+
+Note that you can simply invoke thorin::Def::dump or thorin::World::dump from within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
+```gdb
+call def->dump()
+call def->dump(0)
+call def->dump(3)
+call world().dump("out.thorin")
+```
+In particular, note the different output levels of thorin::Def::dump.
+What is more, you can adjust the output behavior directly from within GDB by modifying thorin::World::flags or thorin::World::log:
+```gdb
+call world.flags().dump_gid = true
+call world.log().level = 4
+```
+
 ## Conditional Breakpoints
 
 Often, you will want to inspect a certain thorin::Def at a particular point within the program.
@@ -49,7 +65,7 @@ break foo.cpp:23 if def->gid() == 666
 ## Catching Throw
 
 For several things like errors in Thorin's front end, Thorin relies on C++ exceptions for error handling.
-Simply, do this to encounter them within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
+Simply, do this to encounter them within GDB:
 ```gdb
 catch throw
 ```
