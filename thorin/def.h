@@ -293,8 +293,6 @@ public:
 #else
     void set_debug_name(std::string_view) const {}
 #endif
-    /// In `Debug` build if World::enable_history is `true`, this thing keeps the Def::gid to track a history of gids.
-    const Def* debug_history() const;
     std::string unique_name() const; ///< name + "_" + Def::gid
     ///@}
 
