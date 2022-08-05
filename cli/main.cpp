@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
             | lyra::opt(output[LL    ], "file"   )      ["--output-ll"         ]("Compiles the Thorin program to LLVM.")
             | lyra::opt(output[Md    ], "file"   )      ["--output-md"         ]("Emits the input formatted as Markdown.")
             | lyra::opt(output[Thorin], "file"   )["-o"]["--output-thorin"     ]("Emits the Thorin program again.")
-            | lyra::opt(flags.dump_gid, "<level>")      ["--dump-gid"          ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
+            | lyra::opt(flags.dump_gid, "level"  )      ["--dump-gid"          ]("Dumps gid of inline expressions as a comment in output if <level> > 0. Use a <level> of 2 to also emit the gid of trivial defs.")
             | lyra::opt(flags.dump_recursive     )      ["--dump-recursive"    ]("Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.")
             | lyra::arg(input,          "file"   )                              ("Input file.")
 #if THORIN_ENABLE_CHECKS
