@@ -249,15 +249,6 @@ bool Def::equal(const Def* other) const {
     return result;
 }
 
-const Def* Def::debug_history() const {
-#if THORIN_ENABLE_CHECKS
-    auto& w = world();
-    if (w.track_history())
-        return dbg() ? w.insert(dbg(), 3_s, 0_s, w.tuple_str(unique_name())) : w.tuple_str(unique_name());
-#endif
-    return dbg();
-}
-
 #ifndef NDEBUG
 void Def::set_debug_name(std::string_view n) const {
     auto& w   = world();
@@ -364,7 +355,7 @@ DefArray Def::reduce(const Def* arg) const {
 }
 
 DefArray Def::reduce(const Def* arg) {
-    auto& cache = world().data_.cache_;
+    auto& cache = world().move_.cache;
     if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
 
     return cache[{this, arg}] = rewrite(this, arg);
