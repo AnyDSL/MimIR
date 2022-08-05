@@ -13,7 +13,6 @@ var classthorin_1_1Def =
     [ "copy_uses", "classthorin_1_1Def.html#a6c585d3cebe35269971de0b1fb993c1b", null ],
     [ "dbg", "classthorin_1_1Def.html#aaee0c31208310b95c932bc0e107816bf", null ],
     [ "debug", "classthorin_1_1Def.html#ac00e260dc42e1c46879e2d22f0ab3310", null ],
-    [ "debug_history", "classthorin_1_1Def.html#a619a66d93b95d366a938230834f9b044", null ],
     [ "dep", "classthorin_1_1Def.html#a879263b966092121d459fe61732bf4a8", null ],
     [ "dump", "classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787", null ],
     [ "dump", "classthorin_1_1Def.html#ae34cc9da3b8dd663a4bd6068035ffb8f", null ],

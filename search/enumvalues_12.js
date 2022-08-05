@@ -14,7 +14,7 @@ var searchData=
   ['sl_11',['sl',['../namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9a54a2bf8c09ace67d3513aaa1aa7aa0f3',1,'thorin::sl()'],['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a54a2bf8c09ace67d3513aaa1aa7aa0f3',1,'thorin::core::sl()']]],
   ['sle_12',['sle',['../namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9aaa7c2f8b74458aeae4e388c376197581',1,'thorin::sle()'],['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aaa7c2f8b74458aeae4e388c376197581',1,'thorin::core::sle()']]],
   ['slot_13',['Slot',['../namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383a10e78fc601c6cb2d71e7ec1a273bf84e',1,'thorin::Tag']]],
-  ['sloxy_14',['Sloxy',['../classthorin_1_1mem_1_1SSAConstr.html#a74945efa38f2a7a750661ede05512660af063dc6bc3d5932e9e2c622b78754004',1,'thorin::mem::SSAConstr']]],
+  ['sloxy_14',['Sloxy',['../classthorin_1_1mem_1_1SSAConstr.html#a775dd91f7c9687f8f31b06a18a714c5baf063dc6bc3d5932e9e2c622b78754004',1,'thorin::mem::SSAConstr']]],
   ['space_15',['Space',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394',1,'thorin']]],
   ['srem_16',['srem',['../namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309ea6dcaf449415765e1fc8503e76318736b',1,'thorin::core']]],
   ['store_17',['Store',['../namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383a617635d8295c3800871d2fba4985aa04',1,'thorin::Tag']]],

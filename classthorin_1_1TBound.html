@@ -257,9 +257,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae09607d6f4c2b847199f2cb2a3b2ca81 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ae09607d6f4c2b847199f2cb2a3b2ca81">set_debug_name</a> (std::string_view) const</td></tr>
 <tr class="memdesc:ae09607d6f4c2b847199f2cb2a3b2ca81 inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set <a class="el" href="classthorin_1_1Def.html#a518e9dc3ad4658e41b962364ce960bd8">Def::name</a> in <a class="el" href="classthorin_1_1Debug.html">Debug</a> build only; does nothing in Release build.  <a href="classthorin_1_1Def.html#ae09607d6f4c2b847199f2cb2a3b2ca81">More...</a><br /></td></tr>
 <tr class="separator:ae09607d6f4c2b847199f2cb2a3b2ca81 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a619a66d93b95d366a938230834f9b044 inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a619a66d93b95d366a938230834f9b044">debug_history</a> () const</td></tr>
-<tr class="memdesc:a619a66d93b95d366a938230834f9b044 inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">In <code><a class="el" href="classthorin_1_1Debug.html">Debug</a></code> build if <a class="el" href="classthorin_1_1World.html#a7f21095165d57a0ad0921ed68b8ce0d9">World::enable_history</a> is <code>true</code>, this thing keeps the <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">Def::gid</a> to track a history of gids.  <a href="classthorin_1_1Def.html#a619a66d93b95d366a938230834f9b044">More...</a><br /></td></tr>
-<tr class="separator:a619a66d93b95d366a938230834f9b044 inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ac75e1e0ee7e47c4c348a11f05bca8d inherit pub_methods_classthorin_1_1Def"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a3ac75e1e0ee7e47c4c348a11f05bca8d">unique_name</a> () const</td></tr>
 <tr class="memdesc:a3ac75e1e0ee7e47c4c348a11f05bca8d inherit pub_methods_classthorin_1_1Def"><td class="mdescLeft">&#160;</td><td class="mdescRight">name + "_" + <a class="el" href="classthorin_1_1Def.html#a7c90241b5fd5ad8fb3bc1eca810b4deb">Def::gid</a>  <a href="classthorin_1_1Def.html#a3ac75e1e0ee7e47c4c348a11f05bca8d">More...</a><br /></td></tr>
 <tr class="separator:a3ac75e1e0ee7e47c4c348a11f05bca8d inherit pub_methods_classthorin_1_1Def"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -443,7 +440,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="lattice_8cpp_source.html#l00020">20</a> of file <a class="el" href="lattice_8cpp_source.html">lattice.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af792d1afb0399dce47533bead9d71a8a">thorin::align</a>, <a class="el" href="def_8h_source.html#l00528">thorin::isa_lit()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, and <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af792d1afb0399dce47533bead9d71a8a">thorin::align</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, and <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>.</p>
 
 </div>
 </div>
@@ -499,7 +496,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00097">97</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00479">thorin::World::bound()</a>, and <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00482">thorin::World::bound()</a>, and <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
 </div>
 </div>
