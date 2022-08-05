@@ -25,7 +25,7 @@ namespace thorin {
 
 static Def* isa_decl(const Def* def) {
     if (auto nom = def->isa_nom()) {
-        if (nom->isa<Lam>() || (!nom->name().empty() && nom->name() != "_"s)) return nom;
+        if (nom->is_external() || nom->isa<Lam>() || (!nom->name().empty() && nom->name() != "_"s)) return nom;
     }
     return nullptr;
 }
@@ -375,11 +375,18 @@ void Def::write(int max) const {
 void World::dump(std::ostream& os) const {
     auto freezer = World::Freezer(*this);
     auto old_gid = curr_gid();
-    auto dep     = DepTree(*this);
-    auto dumper  = Dumper(os, &dep);
 
-    for (const auto& import : imported()) print(os, ".import {};\n", import);
-    dumper.recurse(dep.root());
+    if (flags().dump_recursive) {
+        auto dumper = Dumper(os);
+        for (const auto& [_, nom] : externals()) dumper.noms.push(nom);
+        while (!dumper.noms.empty()) dumper.dump(dumper.noms.pop());
+    } else {
+        auto dep    = DepTree(*this);
+        auto dumper = Dumper(os, &dep);
+
+        for (const auto& import : imported()) print(os, ".import {};\n", import);
+        dumper.recurse(dep.root());
+    }
 
     assertf(old_gid == curr_gid(), "new nodes created during dump. old_gid: {}; curr_gid: {}", old_gid, curr_gid());
 }
