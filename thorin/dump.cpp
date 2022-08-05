@@ -296,7 +296,7 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
 
 void Dumper::recurse(const DepNode* node) {
     for (auto child : node->children()) {
-        if (auto nom =isa_decl(child->nom())) dump(nom);
+        if (auto nom = isa_decl(child->nom())) dump(nom);
     }
 }
 
