@@ -46,7 +46,7 @@ static std::string_view external(const Def* def) {
 
 /// This is a wrapper to dump a Def "inline" and print it with all of its operands.
 struct Inline {
-    Inline(const Def* def, bool dump_gid)
+    Inline(const Def* def, int dump_gid)
         : def_(def)
         , dump_gid_(dump_gid) {}
     Inline(const Def* def)
@@ -76,7 +76,7 @@ struct Inline {
 
 private:
     const Def* def_;
-    const bool dump_gid_;
+    const int dump_gid_;
 };
 
 template<bool L>
@@ -104,7 +104,7 @@ using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
 std::ostream& operator<<(std::ostream& os, Inline u) {
-    if (u.dump_gid_) print(os, "/*{}*/", u->gid());
+    if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
 
     if (auto type = u->isa<Type>()) {
         auto level = as_lit(type->level()); // TODO other levels
@@ -276,7 +276,7 @@ void Dumper::dump(Lam* lam) {
 }
 
 void Dumper::dump_let(const Def* def) {
-    tab.print(os, ".let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def, false));
+    tab.print(os, ".let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def, 0));
 }
 
 void Dumper::dump_ptrn(const Def* def, const Def* type) {

@@ -49,7 +49,7 @@ call world().dump("out.thorin")
 In particular, note the different output levels of thorin::Def::dump.
 What is more, you can adjust the output behavior directly from within GDB by modifying thorin::World::flags or thorin::World::log:
 ```gdb
-call world.flags().dump_gid = true
+call world.flags().dump_gid = 1
 call world.log().level = 4
 ```
 
