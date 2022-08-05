@@ -2,6 +2,7 @@ var structthorin_1_1World_1_1State =
 [
     [ "State", "structthorin_1_1World_1_1State.html#a77ba724f87e9b5fcafbe62e36f909273", null ],
     [ "State", "structthorin_1_1World_1_1State.html#ad5fe1cd9b5cf13284a2c859cd54c191f", null ],
+    [ "swap", "structthorin_1_1World_1_1State.html#abd5bc5c40d9cd0ad896ed53c569911cf", null ],
     [ "breakpoints", "structthorin_1_1World_1_1State.html#af1643faff9d340bec873f4d6d8d4b50a", null ],
     [ "curr_gid", "structthorin_1_1World_1_1State.html#afeb552a0531602017f6edf0bf84a97f3", null ],
     [ "curr_sub", "structthorin_1_1World_1_1State.html#a45d98fb49bba8b5a4a69a32f87bf2d15", null ],

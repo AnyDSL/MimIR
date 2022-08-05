@@ -8,6 +8,5 @@ var lam_8h =
     [ "LamSet", "lam_8h.html#af07839b6df8aeba82f7a923350177c7b", null ],
     [ "isa_apped_nom_lam", "lam_8h.html#ae9f4e318b3cd862946a82d5903417a03", null ],
     [ "isa_callee", "lam_8h.html#ad9eaf597de3eb9f0abdfad6e1d60d40b", null ],
-    [ "isa_workable", "lam_8h.html#afbcb1bda3428d2211797b024635936ee", null ],
-    [ "operator<<", "lam_8h.html#aad63eb3e70b10076226e4ecbe04b3767", null ]
+    [ "isa_workable", "lam_8h.html#afbcb1bda3428d2211797b024635936ee", null ]
 ];

@@ -11,8 +11,8 @@ var searchData=
   ['hash_5fbegin_8',['hash_begin',['../namespacethorin.html#a45953d358ff771ff89168ecc274b7d2b',1,'thorin::hash_begin(T val)'],['../namespacethorin.html#a25e65e2898328d7df97d05cbe8263220',1,'thorin::hash_begin()']]],
   ['hash_5fcombine_9',['hash_combine',['../namespacethorin.html#a3e8bff0379df3f8e717e43f3c1aad22f',1,'thorin::hash_combine(hash_t seed, T v)'],['../namespacethorin.html#acf896db08a5279cdb1f61589607f055b',1,'thorin::hash_combine(hash_t seed, T *val)'],['../namespacethorin.html#afa8ec846210cd2e5bff23fc963021ca7',1,'thorin::hash_combine(hash_t seed, T val, Args &amp;&amp;... args)']]],
   ['hash_5ft_10',['hash_t',['../namespacethorin.html#a63fc98b747386959626beff8195c9910',1,'thorin']]],
-  ['head_11',['Head',['../classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cba98921133d10fbdb0fb6dbb7b2648befe',1,'thorin::LoopTree::Base']]],
+  ['head_11',['Head',['../classthorin_1_1LoopTreeBuilder.html#af2176b1acfc3d10dc70c6e8915000925',1,'thorin::LoopTreeBuilder::Head()'],['../classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cba98921133d10fbdb0fb6dbb7b2648befe',1,'thorin::LoopTree::Base::Head()']]],
   ['head_12',['head',['../structthorin_1_1ll_1_1BB.html#ab6c05d26f3078afff39a6cb5da9d33b2',1,'thorin::ll::BB']]],
-  ['head_13',['Head',['../classthorin_1_1LoopTreeBuilder.html#af2176b1acfc3d10dc70c6e8915000925',1,'thorin::LoopTreeBuilder::Head()'],['../classthorin_1_1LoopTree_1_1Head.html',1,'thorin::LoopTree&lt; forward &gt;::Head']]],
+  ['head_13',['Head',['../classthorin_1_1LoopTree_1_1Head.html',1,'thorin::LoopTree']]],
   ['hlt_14',['hlt',['../namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfa4f4000d921968b9665f52e88333007da',1,'thorin']]]
 ];

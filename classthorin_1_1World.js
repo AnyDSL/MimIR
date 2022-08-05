@@ -49,7 +49,6 @@ var classthorin_1_1World =
     [ "debug_dump", "classthorin_1_1World.html#ab940eae7b3cb63ee0c84dda2ad64a195", null ],
     [ "dump", "classthorin_1_1World.html#ace1140faffc005e7c12b171ce86a3163", null ],
     [ "dump", "classthorin_1_1World.html#a17188e3987d95993181e340e2c92c4cb", null ],
-    [ "dump", "classthorin_1_1World.html#ad24e02505adede2c6fb5404f38d8ed01", null ],
     [ "empty", "classthorin_1_1World.html#a7bdec64edba33088835f8268d49a6d5b", null ],
     [ "enable_history", "classthorin_1_1World.html#a7f21095165d57a0ad0921ed68b8ce0d9", null ],
     [ "err", "classthorin_1_1World.html#a7836aadcfca5fde714c1af95e525ec40", null ],
@@ -191,6 +190,8 @@ var classthorin_1_1World =
     [ "var", "classthorin_1_1World.html#a810c183757ff3fa8dfb4cb616b5c82b3", null ],
     [ "vel", "classthorin_1_1World.html#aa73afcb4099190ef420e3073b98600dc", null ],
     [ "visit", "classthorin_1_1World.html#a35687817089d85315d46a391dd75e320", null ],
+    [ "write", "classthorin_1_1World.html#a4bb914166b99061b5fa226cda7baff79", null ],
+    [ "write", "classthorin_1_1World.html#a112addddb980b3421e404c3588b42ca6", null ],
     [ "Def::reduce", "classthorin_1_1World.html#a9385c61b1fb0b1d21be6b9d913ad96a0", null ],
     [ "swap", "classthorin_1_1World.html#ab6b27c20d41025c4bc9ddf15adf01f96", null ]
 ];
