@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
 #if THORIN_ENABLE_CHECKS
             | lyra::opt(breakpoints,    "gid"         )["-b"]["--break"             ]("Trigger breakpoint upon construction of node with global id <gid>. Useful when running in a debugger.")
             | lyra::opt(state.flags.reeval_breakpoints)      ["--reeval-breakpoints"]("Triggers breakpoint even upon unfying a node that has already been built.")
-            | lyra::opt(state.flags.trace)                   ["--trace"             ]("Output gids during World::unify/insert.")
+            | lyra::opt(state.flags.trace_gids)              ["--trace-gids"        ]("Output gids during World::unify/insert.")
 #endif
             ;
         // clang-format on

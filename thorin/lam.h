@@ -170,10 +170,6 @@ public:
     friend class World;
 };
 
-inline std::ostream& operator<<(std::ostream& s, std::pair<Lam*, Lam*> p) {
-    return operator<<(s, std::pair<const Def*, const Def*>(p));
-}
-
 /// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
 inline Lam* isa_workable(Lam* lam) {
     if (!lam || lam->is_external() || lam->is_unset()) return nullptr;

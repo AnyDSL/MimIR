@@ -9,7 +9,19 @@
 
 using namespace std::literals;
 
+// During dumping, we classify Defs according to the following logic:
+// * Inline: These Defs are *always* displayed with all of its operands "inline".
+//   E.g.: (1, 2, 3).
+// * All other Defs are referenced by its name/unique_name (see id) when they appear as an operand.
+// * Nominals are either classifed as "decl" (see isa_decl).
+//   In this case, recursing through the Defs' operands stops and this particular Decl is dumped as its own thing.
+// * Or - if they are not a "decl" - they are basicallally handled like structurals.
+
 namespace thorin {
+
+/*
+ * helper
+ */
 
 static Def* isa_decl(const Def* def) {
     if (auto nom = def->isa_nom()) {
@@ -28,6 +40,10 @@ static std::string_view external(const Def* def) {
     return ""sv;
 }
 
+/*
+ * Inline + LRPrec
+ */
+
 /// This is a wrapper to dump a Def "inline" and print it with all of its operands.
 struct Inline {
     Inline(const Def* def, bool dump_gid)
@@ -40,6 +56,7 @@ struct Inline {
     const Def* operator*() const { return def_; };
     explicit operator bool() const {
         if (def_->no_dep()) return true;
+
         if (auto nom = def_->isa_nom()) {
             if (isa_decl(nom)) return false;
             return true;
@@ -157,47 +174,37 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     return print(os, ".{}#{} ({, })", u->node_name(), u->flags(), u->ops());
 }
 
-/// This will stream @p def as an operand.
-/// This is usually Def::unique_name, but in some simple cases it will be displayed Inline%d.
-std::ostream& operator<<(std::ostream& os, const Def* def) {
-    if (def == nullptr) return os << "<nullptr>";
-    if (Inline(def)) return os << Inline(def);
-    return os << def->unique_name();
-}
+/*
+ * Dumper
+ */
 
-std::ostream& let(Tab& tab, std::ostream& os, const Def* def) {
-    return tab.print(os, ".let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def, false));
-}
-
-//------------------------------------------------------------------------------
-
+/// This thing operates in two modes:
+/// 1. The output of decls is driven by the DepTree.
+/// 2. Alternatively, decls are output as soon as they appear somewhere during recurse%ing.
+///     Then, they are pushed to Dumper::noms.
 class Dumper {
 public:
-    Dumper(std::ostream& os, size_t max)
+    Dumper(std::ostream& os, const DepTree* dep = nullptr)
         : os(os)
-        , max(max) {}
+        , dep(dep) {}
 
+    void dump(Def*);
+    void dump(Lam*);
+    void dump_let(const Def*);
+    void dump_ptrn(const Def*, const Def*);
     void recurse(const DepNode*);
     void recurse(const Def*, bool first = false);
-    void recurse_(Defs defs) {
-        for (auto def : defs) recurse(def);
-    }
-    void dump_decl(const DepNode*);
-    void dump_ptrn(const Def*, const Def*);
-    void dump(const DepNode*, Lam*);
 
     std::ostream& os;
+    const DepTree* dep;
     Tab tab;
-    size_t max;
     unique_queue<NomSet> noms;
     DefSet defs;
 };
 
-void Dumper::dump_decl(const DepNode* node) {
-    auto nom = node->nom();
-
+void Dumper::dump(Def* nom) {
     if (auto lam = nom->isa<Lam>()) {
-        dump(node, lam);
+        dump(lam);
         return;
     }
 
@@ -238,16 +245,15 @@ void Dumper::dump_decl(const DepNode* node) {
     }
     tab.println(os, " = {{");
     ++tab;
-    recurse(node);
+    if (dep) recurse(dep->nom2node(nom));
     recurse(nom);
     tab.print(os, "{, }\n", nom->ops());
     --tab;
     tab.print(os, "}};\n");
 }
 
-void Dumper::dump(const DepNode* node, Lam* lam) {
+void Dumper::dump(Lam* lam) {
     // TODO filter
-
     auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
 
     if (lam->type()->is_cn()) {
@@ -258,7 +264,7 @@ void Dumper::dump(const DepNode* node, Lam* lam) {
 
     ++tab;
     if (lam->is_set()) {
-        recurse(node);
+        if (dep) recurse(dep->nom2node(lam));
         recurse(lam->filter());
         recurse(lam->body(), true);
         tab.print(os, "{}\n", Inline(lam->body()));
@@ -269,24 +275,8 @@ void Dumper::dump(const DepNode* node, Lam* lam) {
     tab.print(os, "}};\n");
 }
 
-void Dumper::recurse(const DepNode* node) {
-    if (node) {
-        for (auto child : node->children()) {
-            if (isa_decl(child->nom())) dump_decl(child);
-        }
-    }
-}
-
-void Dumper::recurse(const Def* def, bool first /*= false*/) {
-    if (isa_decl(def)) return;
-    if (!defs.emplace(def).second) return;
-
-    for (auto op : def->partial_ops().skip_front()) { // ignore dbg
-        if (!op) continue;
-        recurse(op);
-    }
-
-    if (!first && !Inline(def)) let(tab, os, def);
+void Dumper::dump_let(const Def* def) {
+    tab.print(os, ".let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def, false));
 }
 
 void Dumper::dump_ptrn(const Def* def, const Def* type) {
@@ -304,41 +294,81 @@ void Dumper::dump_ptrn(const Def* def, const Def* type) {
     }
 }
 
-std::ostream& Def::stream(std::ostream& os, size_t /*max*/) const {
-#if 0
-    World::Freezer freezer(world());
-    if (max == 0) {
-        Tab tab;
-        return let(tab, os, this);
+void Dumper::recurse(const DepNode* node) {
+    for (auto child : node->children()) {
+        if (auto nom =isa_decl(child->nom())) dump(nom);
+    }
+}
+
+void Dumper::recurse(const Def* def, bool first /*= false*/) {
+    if (auto nom = isa_decl(def)) {
+        if (!dep) noms.push(nom);
+        return;
     }
 
-    Dumper dumper(os, --max);
-    if (auto nom = isa_nom()) {
+    if (!defs.emplace(def).second) return;
+
+    for (auto op : def->partial_ops().skip_front()) { // ignore dbg
+        if (!op) continue;
+        recurse(op);
+    }
+
+    if (!first && !Inline(def)) dump_let(def);
+}
+
+/*
+ * Def
+ */
+
+/// This will stream @p def as an operand.
+/// This is usually `id(def)` unless it can be displayed Inline.
+std::ostream& operator<<(std::ostream& os, const Def* def) {
+    if (def == nullptr) return os << "<nullptr>";
+    if (Inline(def)) return os << Inline(def);
+    return os << id(def);
+}
+
+std::ostream& Def::stream(std::ostream& os, int max) const {
+    auto freezer = World::Freezer(world());
+    auto dumper  = Dumper(os);
+
+    if (max == 0) {
+        os << this << std::endl;
+    } else if (auto nom = isa_decl(this)) {
         dumper.noms.push(nom);
-        dumper.run();
     } else {
         dumper.recurse(this);
-        if (max != 0) dumper.run();
+        dumper.tab.print(os, "{}\n", Inline(this));
+        --max;
     }
 
-#endif
+    for (; !dumper.noms.empty() && max > 0; --max) dumper.dump(dumper.noms.pop());
+
     return os;
 }
 
-//------------------------------------------------------------------------------
+void Def::dump() const { std::cout << this << std::endl; }
+void Def::dump(int max) const { stream(std::cout, max) << std::endl; }
 
-std::ostream& operator<<(std::ostream& os, std::pair<const Def*, const Def*> p) {
-    return print(os, "({}, {})", p.first, p.second);
+void Def::write(int max, const char* file) const {
+    auto ofs = std::ofstream(file);
+    stream(ofs, max);
 }
 
-void Def::dump() const { std::cout << this << std::endl; }
-void Def::dump(size_t max) const { stream(std::cout, max) << std::endl; }
+void Def::write(int max) const {
+    auto file = id(this) + ".thorin"s;
+    write(max, file.c_str());
+}
+
+/*
+ * World
+ */
 
 void World::dump(std::ostream& os) const {
     auto freezer = World::Freezer(*this);
     auto old_gid = curr_gid();
     auto dep     = DepTree(*this);
-    auto dumper  = Dumper(os, 0);
+    auto dumper  = Dumper(os, &dep);
 
     for (const auto& import : imported()) print(os, ".import {};\n", import);
     dumper.recurse(dep.root());
@@ -348,14 +378,18 @@ void World::dump(std::ostream& os) const {
 
 void World::dump() const { dump(std::cout); }
 
-void World::dump(std::string_view file /*= {}*/) const {
-    auto s   = std::string(file.empty() ? file : name());
-    auto ofs = std::ofstream(s);
+void World::debug_dump() const {
+    if (log().level == Log::Level::Debug) dump(*log().ostream);
+}
+
+void World::write(const char* file) const {
+    auto ofs = std::ofstream(file);
     dump(ofs);
 }
 
-void World::debug_dump() const {
-    if (log().level == Log::Level::Debug) dump(*log().ostream);
+void World::write() const {
+    auto file = std::string(name()) + ".thorin"s;
+    write(file.c_str());
 }
 
 } // namespace thorin
