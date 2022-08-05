@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin %s --output-ll %t.ll --output-thorin - | FileCheck %s
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
 // RUN: clang %t.ll -o %t -Wno-override-module
 // RUN: %t 3 1 ; test $? -eq 1
 // RUN: %t 7 5 ; test $? -eq 5
@@ -30,5 +30,4 @@
 // CHECK-DAG: atoi_cont_a_[[aContId:[0-9_]+]] _{{[0-9_]+}}::[mem_{{[0-9]+}}: %mem.M, a_[[aId:[0-9_]+]]: (%Int 4294967296)]
 
 // CHECK-DAG: atoi_cont_b_[[bContId:[0-9_]+]] _{{[0-9_]+}}::[mem_{{[0-9]+}}: %mem.M, b_[[bId:[0-9_]+]]: (%Int 4294967296)]
-// CHECK-DAG: _[[andId:[0-9_]+]]: (%Int 4294967296) = %core.bit2._and 4294967296:.Nat (a_[[aId]], b_[[bId]]);
-// CHECK-DAG: _{{[0-9]+}}: ⊥:★ = return_{{[0-9]+}} (mem_{{[0-9]+}}, _[[andId]]);
+// CHECK-DAG: %core.bit2._and 4294967296:.Nat (a_[[aId]], b_[[bId]])

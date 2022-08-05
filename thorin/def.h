@@ -359,11 +359,13 @@ public:
     virtual const Def* restructure() { return nullptr; }
     ///@}
 
-    /// @name dump/stream
+    /// @name dump
     ///@{
     void dump() const;
-    void dump(size_t) const;
-    std::ostream& stream(std::ostream&, size_t max) const;
+    void dump(int max) const;
+    void write(int max) const;
+    void write(int max, const char* file) const;
+    std::ostream& stream(std::ostream&, int max) const;
     friend std::ostream& operator<<(std::ostream&, const Def*);
     ///@}
 
@@ -418,8 +420,6 @@ using DefSet  = GIDSet<const Def*>;
 using Def2Def = DefMap<const Def*>;
 using DefDef  = std::tuple<const Def*, const Def*>;
 using DefVec  = std::vector<const Def*>;
-
-std::ostream& operator<<(std::ostream&, std::pair<const Def*, const Def*>);
 
 struct DefDefHash {
     hash_t operator()(DefDef pair) const {

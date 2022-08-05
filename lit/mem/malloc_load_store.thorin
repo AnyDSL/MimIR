@@ -21,9 +21,7 @@
 // CHECK-DAG: _[[appMSlotId:[0-9_]+]]: [%mem.M, %mem.Ptr ((%Int 4294967296), 0:.Nat)] = %mem.malloc ((%Int 4294967296), 0:.Nat) (mem_[[mainMemId]], 4:.Nat);
 // CHECK-DAG: _[[appStoreId:[0-9_]+]]: %mem.M = %mem.store ((%Int 4294967296), 0:.Nat) (_[[appMSlotId]]#0:(%Int 2), _[[appMSlotId]]#1:(%Int 2), argc_[[argcId]]);
 // CHECK-DAG: _[[appLoadId:[0-9_]+]]: [%mem.M, (%Int 4294967296)] = %mem.load ((%Int 4294967296), 0:.Nat) (_[[appStoreId]], _[[appMSlotId]]#1:(%Int 2));
-// CHECK-DAG: _[[appExitId:[0-9_]+]]: ⊥:★ = return_[[returnEtaId:[0-9_]+]] _[[appLoadId]];
-// CHECK-DAG: _[[appExitId]]
+// CHECK-DAG: return_[[returnEtaId:[0-9_]+]] _[[appLoadId]]
 
 // CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (%Int 4294967296)] = {
-// CHECK-DAG: return_[[retAppId:[_0-9]*]]: ⊥:★ = return_[[returnId]] _[[returnEtaVarId]];
-// CHECK-DAG: return_[[retAppId]]
+// CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]

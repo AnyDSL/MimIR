@@ -79,6 +79,22 @@ public:
         bool track_history = false;
         absl::flat_hash_set<u32> breakpoints;
 #endif
+        friend void swap(State& s1, State& s2) {
+            using std::swap;
+            // clang-format off
+            swap(s1.log,                s2.log);
+            swap(s1.flags,              s2.flags);
+            swap(s1.name,               s2.name);
+            swap(s1.curr_gid,           s2.curr_gid);
+            swap(s1.curr_sub,           s2.curr_sub);
+            swap(s1.frozen,             s2.frozen);
+            swap(s1.imported_dialects,  s2.imported_dialects);
+#if THORIN_ENABLE_CHECKS
+            swap(s1.track_history,      s2.track_history);
+            swap(s1.breakpoints,        s2.breakpoints);
+#endif
+            // clang-format on
+        }
     };
 
     const State& state() const { return state_; }
@@ -548,10 +564,11 @@ public:
     ///@{
     const Log& log() const { return state_.log; }
     Log& log() { return state_.log; }
-    void dump(std::ostream& os) const;           ///< Dump to @p os.
-    void dump(std::string_view file = {}) const; ///< Dump to a file named @p file; defaults to World::name.
-    void dump() const;                           ///< Dump to `std::cout`.
-    void debug_dump() const;                     ///< Dump in Debug build if World::log::level is Log::Level::Debug.
+    void dump(std::ostream& os) const;  ///< Dump to @p os.
+    void dump() const;                  ///< Dump to `std::cout`.
+    void debug_dump() const;            ///< Dump in Debug build if World::log::level is Log::Level::Debug.
+    void write(const char* file) const; ///< Write to a file named @p file; defaults to World::name.
+    void write() const;                 ///< Same above but file name defaults to World::name.
     ///@}
 
     friend void swap(World& w1, World& w2) {
@@ -577,7 +594,7 @@ private:
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
 #if THORIN_ENABLE_CHECKS
-        if (flags().trace) outln("{}: {}", def->node_name(), def->gid());
+        if (flags().trace_gids) outln("{}: {}", def->node_name(), def->gid());
         if (flags().reeval_breakpoints && state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         if (is_frozen()) {
@@ -603,7 +620,7 @@ private:
     T* insert(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
 #if THORIN_ENABLE_CHECKS
-        if (flags().trace) outln("{}: {}", def->node_name(), def->gid());
+        if (flags().trace_gids) outln("{}: {}", def->node_name(), def->gid());
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
         auto [_, ins] = data_.defs_.emplace(def);

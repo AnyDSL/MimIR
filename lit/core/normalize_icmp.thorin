@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin %s --output-thorin - | FileCheck %s
+// RUN: %thorin %s -o - | FileCheck %s
 
 .import core;
 
@@ -13,9 +13,7 @@
 };
 
 // CHECK-DAG: icmp_lit _[[retId:[0-9_]+]]: .Cn (%Int 2) = {
-// CHECK-DAG: _[[appId:[0-9_]+]]: ⊥:★ = _[[etaId:[0-9_]+]] 1:(%Int 2);
-// CHECK-DAG: _[[appId]]
+// CHECK-DAG: _[[etaId:[0-9_]+]] 1:(%Int 2)
 
 // CHECK-DAG: _[[etaId]] _[[etaVar:[0-9_]+]]: (%Int 2) = {
-// CHECK-DAG: _[[appRetId:[0-9_]+]]: ⊥:★ = _[[retId]] _[[etaVar]];
-// CHECK-DAG: _[[appRetId]]
+// CHECK-DAG: _[[retId]] _[[etaVar]]
