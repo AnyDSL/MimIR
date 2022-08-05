@@ -46,7 +46,7 @@ static std::string_view external(const Def* def) {
 
 /// This is a wrapper to dump a Def "inline" and print it with all of its operands.
 struct Inline {
-    Inline(const Def* def, bool dump_gid)
+    Inline(const Def* def, int dump_gid)
         : def_(def)
         , dump_gid_(dump_gid) {}
     Inline(const Def* def)
@@ -76,7 +76,7 @@ struct Inline {
 
 private:
     const Def* def_;
-    const bool dump_gid_;
+    const int dump_gid_;
 };
 
 template<bool L>
@@ -104,7 +104,7 @@ using LPrec = LRPrec<true>;
 using RPrec = LRPrec<false>;
 
 std::ostream& operator<<(std::ostream& os, Inline u) {
-    if (u.dump_gid_) print(os, "/*{}*/", u->gid());
+    if (u.dump_gid_ == 2 || (u.dump_gid_ == 1 && !u->isa<Var>() && u->num_ops() != 0)) print(os, "/*{}*/", u->gid());
 
     if (auto type = u->isa<Type>()) {
         auto level = as_lit(type->level()); // TODO other levels
@@ -134,11 +134,10 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto var = u->isa<Var>()) {
         return print(os, "{}", var->unique_name());
     } else if (auto pi = u->isa<Pi>()) {
-        if (pi->is_cn()) {
-            return print(os, ".Cn {}", pi->dom());
-        } else {
-            return print(os, "{} -> {}", pi->dom(), pi->codom());
-        }
+        if (pi->is_cn()) return print(os, ".Cn {}", pi->dom());
+        if (auto nom = pi->isa_nom<Pi>(); nom && nom->var())
+            return print(os, "Π {}: {} → {}", nom->var(), pi->dom(), pi->codom());
+        return print(os, "Π {} → {}", pi->dom(), pi->codom());
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
@@ -149,6 +148,15 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         }
         return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
     } else if (auto sigma = u->isa<Sigma>()) {
+        if (auto nom = sigma->isa_nom<Pi>(); nom && nom->var()) {
+            size_t i = 0;
+            return print(os, "[{, }]", Elem(sigma->ops(), [&](auto op) {
+                             if (auto v = nom->var(i++))
+                                 print(os, "{}: {}", v, op);
+                             else
+                                 os << op;
+                         }));
+        }
         return print(os, "[{, }]", sigma->ops());
     } else if (auto tuple = u->isa<Tuple>()) {
         print(os, "({, })", tuple->ops());
@@ -259,7 +267,7 @@ void Dumper::dump(Lam* lam) {
     if (lam->type()->is_cn()) {
         tab.println(os, ".cn {}{} {} = {{", external(lam), id(lam), ptrn);
     } else {
-        tab.println(os, ".lam {}{} {} -> {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
+        tab.println(os, ".lam {}{} {} → {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
     }
 
     ++tab;
@@ -276,7 +284,7 @@ void Dumper::dump(Lam* lam) {
 }
 
 void Dumper::dump_let(const Def* def) {
-    tab.print(os, ".let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def, false));
+    tab.print(os, ".let {}: {} = {};\n", def->unique_name(), def->type(), Inline(def, 0));
 }
 
 void Dumper::dump_ptrn(const Def* def, const Def* type) {

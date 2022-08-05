@@ -39,17 +39,17 @@ For logging and automatic firing of breakpoints refer to the [Command-Line Refer
 
 ## Dumping
 
-Note that you can simply invoke thorin::Def::dump or thorin::World::dump from within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
+Note that you can simply invoke thorin::Def::dump, thorin::Def::write, thorin::World::dump, or thorin::World::write from within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
 ```gdb
 call def->dump()
 call def->dump(0)
 call def->dump(3)
-call world().dump("out.thorin")
+call world().write("out.thorin")
 ```
 In particular, note the different output levels of thorin::Def::dump.
 What is more, you can adjust the output behavior directly from within GDB by modifying thorin::World::flags or thorin::World::log:
 ```gdb
-call world.flags().dump_gid = true
+call world.flags().dump_gid = 1
 call world.log().level = 4
 ```
 
