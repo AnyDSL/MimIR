@@ -151,11 +151,11 @@ Debugging</h1>
 <p >For logging and automatic firing of breakpoints refer to the <a class="el" href="cli.html#clidebug">Command-Line Reference</a>.</p>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Dumping</h2>
-<p >Note that you can simply invoke <a class="el" href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">thorin::Def::dump</a> or <a class="el" href="classthorin_1_1World.html#a17188e3987d95993181e340e2c92c4cb" title="Dump to os.">thorin::World::dump</a> from within <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html">GDB</a>: </p><div class="fragment"><div class="line">call def-&gt;dump()</div>
+<p >Note that you can simply invoke <a class="el" href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">thorin::Def::dump</a>, <a class="el" href="classthorin_1_1Def.html#a7805eeac4955c9e68103f794c765654c">thorin::Def::write</a>, <a class="el" href="classthorin_1_1World.html#a17188e3987d95993181e340e2c92c4cb" title="Dump to os.">thorin::World::dump</a>, or <a class="el" href="classthorin_1_1World.html#a112addddb980b3421e404c3588b42ca6" title="Write to a file named file; defaults to World::name.">thorin::World::write</a> from within <a href="https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html">GDB</a>: </p><div class="fragment"><div class="line">call def-&gt;dump()</div>
 <div class="line">call def-&gt;dump(0)</div>
 <div class="line">call def-&gt;dump(3)</div>
-<div class="line">call world().dump(&quot;out.thorin&quot;)</div>
-</div><!-- fragment --><p> In particular, note the different output levels of <a class="el" href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">thorin::Def::dump</a>. What is more, you can adjust the output behavior directly from within GDB by modifying <a class="el" href="classthorin_1_1World.html#a4f4d5b45be0693a73705bc0de2fc8f62" title="Retrive compile Flags.">thorin::World::flags</a> or <a class="el" href="classthorin_1_1World.html#ab0fd127c2bf81aaf93b0ac4ca2746f0e">thorin::World::log</a>: </p><div class="fragment"><div class="line">call world.flags().dump_gid = true</div>
+<div class="line">call world().write(&quot;out.thorin&quot;)</div>
+</div><!-- fragment --><p> In particular, note the different output levels of <a class="el" href="classthorin_1_1Def.html#adeb490fdb674323acba48da1ffb28787">thorin::Def::dump</a>. What is more, you can adjust the output behavior directly from within GDB by modifying <a class="el" href="classthorin_1_1World.html#a4f4d5b45be0693a73705bc0de2fc8f62" title="Retrive compile Flags.">thorin::World::flags</a> or <a class="el" href="classthorin_1_1World.html#ab0fd127c2bf81aaf93b0ac4ca2746f0e">thorin::World::log</a>: </p><div class="fragment"><div class="line">call world.flags().dump_gid = 1</div>
 <div class="line">call world.log().level = 4</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>
 Conditional Breakpoints</h2>
