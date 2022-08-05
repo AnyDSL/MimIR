@@ -113,7 +113,7 @@ $(document).ready(function(){initNavTree('cli.html',''); initResizable(); });
 <h1><a class="anchor" id="autotoc_md0"></a>
 Usage</h1>
 <div class="fragment"><div class="line">USAGE:</div>
-<div class="line">  thorin [-?|-h|--help] [-v|--version] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-thorin &lt;file&gt;] [--dump-gid &lt;&lt;level&gt;&gt;] [&lt;file&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--trace-gids]</div>
+<div class="line">  thorin [-?|-h|--help] [-v|--version] [-c|--clang &lt;clang&gt;] [-d|--dialect &lt;dialect&gt;] [-D|--dialect-path &lt;path&gt;] [-V|--verbose] [-O|--optimize &lt;level&gt;] [--output-dot &lt;file&gt;] [--output-h &lt;file&gt;] [--output-ll &lt;file&gt;] [--output-md &lt;file&gt;] [-o|--output-thorin &lt;file&gt;] [--dump-gid &lt;&lt;level&gt;&gt;] [--dump-recursive] [&lt;file&gt;] [-b|--break &lt;gid&gt;] [--reeval-breakpoints] [--trace-gids]</div>
 <div class="line"> </div>
 <div class="line">Display usage information.</div>
 <div class="line"> </div>
@@ -132,7 +132,8 @@ Usage</h1>
 <div class="line">  --output-md &lt;file&gt;      Emits the input formatted as Markdown.</div>
 <div class="line">  -o, --output-thorin &lt;file&gt;</div>
 <div class="line">                          Emits the Thorin program again.</div>
-<div class="line">  --dump-gid &lt;&lt;level&gt;&gt;    Emits gid of inline expressions as a comment in output if &lt;level&gt; &gt; 0. Use a &lt;level&gt; of 2 to also emit the gid of trivial defs.</div>
+<div class="line">  --dump-gid &lt;&lt;level&gt;&gt;    Dumps gid of inline expressions as a comment in output if &lt;level&gt; &gt; 0. Use a &lt;level&gt; of 2 to also emit the gid of trivial defs.</div>
+<div class="line">  --dump-recursive        Dumps Thorin program with a simple recursive algorithm that is not readable again from Thorin but is less fragile and also works for broken Thorin programs.</div>
 <div class="line">  &lt;file&gt;                  Input file.</div>
 <div class="line">  -b, --break &lt;gid&gt;       Trigger breakpoint upon construction of node with global id &lt;gid&gt;. Useful when running in a debugger.</div>
 <div class="line">  --reeval-breakpoints    Triggers breakpoint even upon unfying a node that has already been built.</div>
