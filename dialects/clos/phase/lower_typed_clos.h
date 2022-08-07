@@ -2,7 +2,7 @@
 
 #include <queue>
 
-#include "thorin/world.h"
+#include "thorin/phase/phase.h"
 
 #include "dialects/clos/clos_conv.h"
 #include "dialects/mem/mem.h"
@@ -24,17 +24,13 @@ namespace thorin::clos {
 ///
 /// This pass will heap-allocate closures if they are annotated with ClosKind::esc and stack-allocate everything
 /// else. These annotations are introduced by LowerTypedClosPrep.
-
-class LowerTypedClos {
+class LowerTypedClos : public Phase {
 public:
     LowerTypedClos(World& world)
-        : world_(world)
-        , old2new_()
-        , worklist_()
+        : Phase(world, "lower_typed_clos")
         , dummy_ret_(world.bot(world.cn(mem::type_mem(world)))) {}
 
-    /// This runs the transformation.
-    void run();
+    void start() override;
 
 private:
     using StubQueue = std::queue<std::tuple<const Def*, const Def*, Lam*>>;
@@ -62,8 +58,6 @@ private:
         return new_def;
     }
 
-    World& world() { return world_; }
-
     /// Pointer type used to represent environments
     const Def* env_type() {
         auto& w = world();
@@ -71,7 +65,6 @@ private:
     }
     /// @}
 
-    World& world_;
     Def2Def old2new_;
     StubQueue worklist_;
 
