@@ -73,8 +73,6 @@ add_library(libthorin
     pass/rw/partial_eval.h
     pass/rw/ret_wrap.cpp
     pass/rw/ret_wrap.h
-    pass/rw/bound_elim.cpp
-    pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
     phase/phase.cpp
