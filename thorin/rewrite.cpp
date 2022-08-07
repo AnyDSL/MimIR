@@ -8,7 +8,6 @@ namespace thorin {
 
 const Def* Rewriter::rewrite(const Def* old_def) {
     if (auto i = old2new.find(old_def); i != old2new.end()) return i->second;
-    if (scope != nullptr && !scope->bound(old_def)) return old_def;
 
     if (auto [pre, recurse] = pre_rewrite(old_def); pre) {
         auto new_def        = recurse ? rewrite(pre) : pre;
@@ -47,7 +46,7 @@ const Def* Rewriter::rewrite(const Def* old_def) {
 }
 
 const Def* rewrite(const Def* def, const Def* old_def, const Def* new_def, const Scope& scope) {
-    Rewriter rewriter(def->world(), &scope);
+    ScopeRewriter rewriter(def->world(), scope);
     rewriter.old2new[old_def] = new_def;
     return rewriter.rewrite(def);
 }
@@ -62,7 +61,7 @@ const Def* rewrite(Def* nom, const Def* arg, size_t i) {
 }
 
 DefArray rewrite(Def* nom, const Def* arg, const Scope& scope) {
-    Rewriter rewriter(nom->world(), &scope);
+    ScopeRewriter rewriter(nom->world(), scope);
     rewriter.old2new[nom->var()] = arg;
     return DefArray(nom->num_ops(), [&](size_t i) { return rewriter.rewrite(nom->op(i)); });
 }
