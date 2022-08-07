@@ -195,9 +195,4 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
     return def->rebuild(world, def->type(), new_ops, def->dbg());
 }
 
-PassTag* DS2CPS::ID() {
-    static PassTag Key;
-    return &Key;
-}
-
 } // namespace thorin::direct

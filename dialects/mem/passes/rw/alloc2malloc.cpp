@@ -17,9 +17,4 @@ const Def* Alloc2Malloc::rewrite(const Def* def) {
     return def;
 }
 
-PassTag* Alloc2Malloc::ID() {
-    static PassTag Key;
-    return &Key;
-}
-
 } // namespace thorin::mem

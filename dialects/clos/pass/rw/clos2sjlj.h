@@ -7,10 +7,10 @@
 
 namespace thorin::clos {
 
-class Clos2SJLJ : public RWPass<Lam> {
+class Clos2SJLJ : public RWPass<Clos2SJLJ, Lam> {
 public:
     Clos2SJLJ(PassMan& man)
-        : RWPass<Lam>(man, "closure2sjlj")
+        : RWPass(man, "closure2sjlj")
         , lam2tag_()
         , dom2throw_()
         , lam2lpad_()

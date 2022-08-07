@@ -4,13 +4,12 @@
 
 namespace thorin {
 
-class PartialEval : public RWPass<> {
+class PartialEval : public RWPass<PartialEval, Def> {
 public:
     PartialEval(PassMan& man)
         : RWPass(man, "partial_eval") {}
 
     const Def* rewrite(const Def*) override;
-    static PassTag* ID();
 };
 
 } // namespace thorin

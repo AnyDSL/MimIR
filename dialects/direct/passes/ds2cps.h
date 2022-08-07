@@ -30,14 +30,12 @@ namespace thorin::direct {
 /// computation result and uses it in the original context.
 /// For each ds function, a new cps function is introduced.
 /// For each ds call site, a new continuation is introduced.
-class DS2CPS : public RWPass<Lam> {
+class DS2CPS : public RWPass<DS2CPS, Lam> {
 public:
     DS2CPS(PassMan& man)
         : RWPass(man, "ds2cps") {}
 
     void enter() override;
-
-    static PassTag* ID();
 
 private:
     Def2Def rewritten_;

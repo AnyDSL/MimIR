@@ -10,7 +10,7 @@ class PassMan;
 using undo_t                    = size_t;
 static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 
-struct alignas(8) PassTag {};
+struct PassTag {};
 
 /// All Passes that want to be registered in the PassMan must implement this interface.
 /// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
@@ -115,13 +115,13 @@ public:
     /// If a pass of the same class has been added already, returns the earlier added instance.
     template<class P, class... Args>
     P* add(Args&&... args) {
-        if (auto it = registered_passes_.find(reinterpret_cast<u64>(P::ID())); it != registered_passes_.end())
+        if (auto it = registered_passes_.find(P::ID()); it != registered_passes_.end())
             return static_cast<P*>(it->second);
         auto p   = std::make_unique<P>(*this, std::forward<Args>(args)...);
         auto res = p.get();
         fixed_point_ |= res->fixed_point();
         passes_.emplace_back(std::move(p));
-        registered_passes_.emplace(reinterpret_cast<u64>(P::ID()), res);
+        registered_passes_.emplace(P::ID(), res);
         return res;
     }
 
@@ -138,9 +138,9 @@ private:
     /// @name State
     ///@{
     struct State {
-        State()             = default;
-        State(const State&) = delete;
-        State(State&&)      = delete;
+        State()                 = default;
+        State(const State&)     = delete;
+        State(State&&)          = delete;
         State& operator=(State) = delete;
         State(size_t num)
             : data(num) {}
@@ -198,7 +198,7 @@ private:
 
     World& world_;
     std::deque<std::unique_ptr<Pass>> passes_;
-    absl::flat_hash_map<u64, Pass*> registered_passes_;
+    absl::flat_hash_map<const PassTag*, Pass*> registered_passes_;
     std::deque<State> states_;
     Def* curr_nom_    = nullptr;
     bool fixed_point_ = false;
@@ -209,7 +209,7 @@ private:
 };
 
 /// Inherit from this class if your Pass does **not** need state and a fixed-point iteration.
-template<class N = Def>
+template<class P, class N>
 class RWPass : public Pass {
 public:
     RWPass(PassMan& man, std::string_view name)
@@ -228,14 +228,19 @@ public:
         else
             return man().curr_nom()->template as<N>();
     }
+
+    static const PassTag* ID() {
+        static PassTag Key;
+        return &Key;
+    }
 };
 
 /// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),
 /// if you **do** need a Pass with a state and a fixed-point.
-template<class P, class N = Def>
-class FPPass : public RWPass<N> {
+template<class P, class N>
+class FPPass : public RWPass<P, N> {
 public:
-    using Super = RWPass<N>;
+    using Super = RWPass<P, N>;
     using Data  = std::tuple<>; ///< Default.
 
     FPPass(PassMan& man, std::string_view name)

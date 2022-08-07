@@ -4,13 +4,12 @@
 
 namespace thorin {
 
-class RetWrap : public RWPass<Lam> {
+class RetWrap : public RWPass<RetWrap, Lam> {
 public:
     RetWrap(PassMan& man)
         : RWPass(man, "ret_wrap") {}
 
     void enter() override;
-    static PassTag* ID();
 };
 
 } // namespace thorin

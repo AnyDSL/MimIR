@@ -18,9 +18,4 @@ const Def* PartialEval::rewrite(const Def* def) {
     return def;
 }
 
-PassTag* PartialEval::ID() {
-    static PassTag Key;
-    return &Key;
-}
-
 } // namespace thorin
