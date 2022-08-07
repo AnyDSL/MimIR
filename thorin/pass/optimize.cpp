@@ -5,7 +5,6 @@
 #include "thorin/pass/pipelinebuilder.h"
 #include "thorin/pass/rw/lam_spec.h"
 #include "thorin/pass/rw/scalarize.h"
-
 #include "thorin/phase/phase.h"
 
 namespace thorin {
