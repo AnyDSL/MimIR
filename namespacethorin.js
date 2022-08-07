@@ -239,7 +239,6 @@ var namespacethorin =
     [ "BetaRed", "classthorin_1_1BetaRed.html", "classthorin_1_1BetaRed" ],
     [ "BitSet", "classthorin_1_1BitSet.html", "classthorin_1_1BitSet" ],
     [ "Bound", "classthorin_1_1Bound.html", "classthorin_1_1Bound" ],
-    [ "BoundElim", "classthorin_1_1BoundElim.html", "classthorin_1_1BoundElim" ],
     [ "CFA", "classthorin_1_1CFA.html", "classthorin_1_1CFA" ],
     [ "CFG", "classthorin_1_1CFG.html", "classthorin_1_1CFG" ],
     [ "CFNode", "classthorin_1_1CFNode.html", "classthorin_1_1CFNode" ],

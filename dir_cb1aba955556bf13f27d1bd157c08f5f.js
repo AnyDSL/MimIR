@@ -1,8 +1,6 @@
 var dir_cb1aba955556bf13f27d1bd157c08f5f =
 [
     [ "alloc2malloc.cpp", "thorin_2pass_2rw_2alloc2malloc_8cpp.html", null ],
-    [ "bound_elim.cpp", "bound__elim_8cpp.html", null ],
-    [ "bound_elim.h", "bound__elim_8h.html", "bound__elim_8h" ],
     [ "lam_spec.cpp", "lam__spec_8cpp.html", "lam__spec_8cpp" ],
     [ "lam_spec.h", "lam__spec_8h.html", "lam__spec_8h" ],
     [ "partial_eval.cpp", "partial__eval_8cpp.html", null ],
