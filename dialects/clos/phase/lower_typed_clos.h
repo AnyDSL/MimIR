@@ -27,7 +27,7 @@ namespace thorin::clos {
 class LowerTypedClos : public Phase {
 public:
     LowerTypedClos(World& world)
-        : Phase(world, "lower_typed_clos")
+        : Phase(world, "lower_typed_clos", true)
         , dummy_ret_(world.bot(world.cn(mem::type_mem(world)))) {}
 
     void start() override;

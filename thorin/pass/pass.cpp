@@ -1,7 +1,6 @@
 #include "thorin/pass/pass.h"
 
-#include "thorin/rewrite.h"
-
+#include "thorin/phase/phase.h"
 #include "thorin/util/container.h"
 
 namespace thorin {
@@ -84,7 +83,7 @@ void PassMan::run() {
     pop_states(0);
 
     world().debug_dump();
-    cleanup(world());
+    Phase::run<Cleanup>(world());
 }
 
 const Def* PassMan::rewrite(const Def* old_def) {

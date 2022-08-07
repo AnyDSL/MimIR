@@ -3,22 +3,27 @@
 #include "thorin/def.h"
 #include "thorin/rewrite.h"
 
+#include "thorin/pass/pass.h"
+
 namespace thorin {
 
 class World;
 
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
+/// Phase::dirty indicates whether we may need a Cleanup afterwards.
 class Phase {
 public:
-    Phase(World& world, const char* name)
+    Phase(World& world, const char* name, bool dirty)
         : world_(world)
-        , name_(name) {}
+        , name_(name)
+        , dirty_(dirty) {}
 
     /// @name getters
     ///@{
     World& world() { return world_; }
     const char* name() const { return name_; }
+    bool dirty() const { return dirty_; }
     ///@}
 
     /// @name run/start
@@ -27,29 +32,55 @@ public:
     virtual void start() = 0; ///< Actual entry.
     ///@}
 
+    /// Runs a single Phase.
+    template<class P, class... Args>
+    static void run(Args&&... args) {
+        P p(std::forward<Args>(args)...);
+        p.run();
+    }
+
 protected:
     World& world_;
-    const char* name_;
+    mutable const char* name_;
+    bool dirty_;
+};
+
+/// Wraps a Pass as a Phase.
+class PassPhase : public Phase {
+public:
+    template<class P, class... Args>
+    PassPhase(World& world, Args&&... args)
+        : Phase(world, nullptr, false) {
+        man_.template add(std::forward<Args>(args)...);
+        name_ = man_.passes().back()->name();
+    }
+
+    void start() override { man_.run(); }
+
+protected:
+    PassMan man_;
+};
+
+class RWPhase;
+
+class PhaseRewriter : public Rewriter {
+public:
+    PhaseRewriter(RWPhase& phase, World& old_world, World& new_world)
+        : Rewriter(old_world, new_world)
+        , phase(phase) {}
+
+    std::pair<const Def*, bool> pre_rewrite(const Def*) override;
+    std::pair<const Def*, bool> post_rewrite(const Def*) override;
+
+    RWPhase& phase;
 };
 
 /// Visits the current Phase::world and constructs a new World Phase::new_world along the way.
-/// It recursively rewrites all World::externals().
-class RewritePhase : public Phase {
-protected:
-    class Rewriter : public thorin::Rewriter {
-    public:
-        Rewriter(RewritePhase& phase, World& old_world, World& new_world)
-            : thorin::Rewriter(old_world, new_world)
-            , phase(phase) {}
-
-        std::pair<const Def*, bool> pre_rewrite(const Def* old_def) override { return phase.pre_rewrite(old_def); }
-        std::pair<const Def*, bool> post_rewrite(const Def* old_def) override { return phase.post_rewrite(old_def); }
-
-        RewritePhase& phase;
-    };
-
-    RewritePhase(World& world, const char* name)
-        : Phase(world, name)
+/// It recursively **rewrites** all World::externals().
+class RWPhase : public Phase {
+public:
+    RWPhase(World& world, const char* name)
+        : Phase(world, name, false)
         , new_world_(world.state())
         , rewriter_(*this, world, new_world_) {}
 
@@ -75,13 +106,27 @@ protected:
 
 protected:
     World new_world_;
-    Rewriter rewriter_;
+    PhaseRewriter rewriter_;
 };
 
-class Cleanup : public RewritePhase {
+class Cleanup : public RWPhase {
 public:
     Cleanup(World& world)
-        : RewritePhase(world, "cleanup") {}
+        : RWPhase(world, "cleanup") {}
 };
+
+/// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
+/// Inherit from this one to implement a classic data-flow analysis.
+class FPPhase : public RWPhase {
+public:
+    FPPhase(World& world, const char* name)
+        : RWPhase(world, name) {}
+
+    void start() override;
+    virtual bool analyze() = 0;
+};
+
+/// TODO Organizes several Phase%s as a pipeline.
+class Pipeline : public Phase {};
 
 } // namespace thorin

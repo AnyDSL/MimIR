@@ -66,7 +66,4 @@ DefArray rewrite(Def* nom, const Def* arg);
 /// Same as above but uses @p scope as an optimization instead of computing a new Scope.
 DefArray rewrite(Def* nom, const Def* arg, const Scope& scope);
 
-/// Removes unreachable and dead code by rebuilding the whole @p world into a new World.
-void cleanup(World& world);
-
 } // namespace thorin
