@@ -18,6 +18,7 @@ public:
         : world_(world)
         , name_(name)
         , dirty_(dirty) {}
+    virtual ~Phase() = default;
 
     /// @name getters
     ///@{
