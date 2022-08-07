@@ -25,8 +25,7 @@ class RewritePhase : public Phase {
 protected:
     RewritePhase(World& world, const char* name)
         : Phase(world, name)
-        , new_(world.state())
-    {}
+        , new_(world.state()) {}
 
     void start() override;
     virtual const Def* rewrite(const Def*);
@@ -44,4 +43,4 @@ public:
         : RewritePhase(world, "cleanup") {}
 };
 
-}
+} // namespace thorin
