@@ -10,10 +10,14 @@ const Def* Rewriter::rewrite(const Def* old_def) {
     if (auto i = old2new.find(old_def); i != old2new.end()) return i->second;
     if (scope != nullptr && !scope->bound(old_def)) return old_def;
 
+    if (auto [pre, recurse] = pre_rewrite(old_def); pre) {
+        auto new_def        = recurse ? rewrite(pre) : pre;
+        return old2new[pre] = new_def;
+    }
+
     auto new_type = old_def->type() ? rewrite(old_def->type()) : nullptr;
     auto new_dbg  = old_def->dbg() ? rewrite(old_def->dbg()) : nullptr;
 
-    // TODO double-check that this really makes sense
     if (auto infer = old_def->isa_nom<Infer>()) {
         if (auto op = infer->op()) return op;
     }
@@ -32,7 +36,14 @@ const Def* Rewriter::rewrite(const Def* old_def) {
     }
 
     DefArray new_ops(old_def->num_ops(), [&](auto i) { return rewrite(old_def->op(i)); });
-    return old2new[old_def] = old_def->rebuild(new_world, new_type, new_ops, new_dbg);
+    auto new_def = old_def->rebuild(new_world, new_type, new_ops, new_dbg);
+
+    if (auto [post, recurse] = post_rewrite(new_def); post) {
+        auto new_def         = recurse ? rewrite(post) : post;
+        return old2new[post] = new_def;
+    }
+
+    return old2new[old_def] = new_def;
 }
 
 const Def* rewrite(const Def* def, const Def* old_def, const Def* new_def, const Scope& scope) {

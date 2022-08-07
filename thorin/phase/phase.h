@@ -1,8 +1,11 @@
 #pragma once
 
-#include "thorin/world.h"
+#include "thorin/def.h"
+#include "thorin/rewrite.h"
 
 namespace thorin {
+
+class World;
 
 /// As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phase%s.
 /// They are supposed to classically run one after another.
@@ -33,29 +36,46 @@ protected:
 /// It recursively rewrites all World::externals().
 class RewritePhase : public Phase {
 protected:
+    class Rewriter : public thorin::Rewriter {
+    public:
+        Rewriter(RewritePhase& phase, World& old_world, World& new_world)
+            : thorin::Rewriter(old_world, new_world)
+            , phase(phase) {}
+
+        std::pair<const Def*, bool> pre_rewrite(const Def* old_def) override { return phase.pre_rewrite(old_def); }
+        std::pair<const Def*, bool> post_rewrite(const Def* old_def) override { return phase.post_rewrite(old_def); }
+
+        RewritePhase& phase;
+    };
+
     RewritePhase(World& world, const char* name)
         : Phase(world, name)
-        , new_(world.state()) {}
+        , new_world_(world.state())
+        , rewriter_(*this, world, new_world_) {}
 
     void start() override;
 
-    /// @name hooks
+    /// @name getters
+    ///@{
+    World& old_world() { return world(); }
+    World& new_world() { return new_world_; }
+    Def2Def& old2new() { return rewriter_.old2new; }
+    ///@}
+
+    /// @name rewrite
     ///@{
 
-    /// Recursively rewrites @p old_def.
-    /// Invokes RewritePhase::pre_rewrite at the beginning and RewritePhase::post_rewrite at the end.
-    virtual const Def* rewrite(const Def* old_def);
-    /// Rewrite a given Def in pre-order.
-    /// @return `{nullptr, false}` to do nothing, `{new_def, false}` to return `new_def` **without** recursing on
-    /// `new_def` again, and `{new_def, true}` to return `new_def` **with** recursing on `new_def` again.
+    /// See thorin::Rewriter::rewrite.
+    const Def* rewrite(const Def* old_def) { return rewriter_.rewrite(old_def); }
+    /// See thorin::Rewriter::pre_rewrite.
     virtual std::pair<const Def*, bool> pre_rewrite(const Def*) { return {nullptr, false}; }
-    /// As above but in post-order.
+    /// See thorin::Rewriter::post_rewrite.
     virtual std::pair<const Def*, bool> post_rewrite(const Def*) { return {nullptr, false}; }
     ///@}
 
 protected:
-    World new_;
-    Def2Def old2new_;
+    World new_world_;
+    Rewriter rewriter_;
 };
 
 class Cleanup : public RewritePhase {

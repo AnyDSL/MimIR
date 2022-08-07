@@ -18,11 +18,20 @@ public:
     Rewriter(World& world, const Scope* scope = nullptr)
         : Rewriter(world, world, scope) {}
 
+    /// @name rewrite
+    ///@{
+
+    /// Recursively rewrites @p old_def.
+    /// Invokes Rewriter::pre_rewrite at the beginning and Rewriter::post_rewrite at the end.
     const Def* rewrite(const Def* old_def);
-    World& world() {
-        assert(&old_world == &new_world);
-        return old_world;
-    }
+
+    /// Rewrite a given Def in pre-order.
+    /// @return `{nullptr, false}` to do nothing, `{new_def, false}` to return `new_def` **without** recursing on
+    /// `new_def` again, and `{new_def, true}` to return `new_def` **with** recursing on `new_def` again.
+    virtual std::pair<const Def*, bool> pre_rewrite(const Def*) { return {nullptr, false}; }
+    /// As above but in post-order.
+    virtual std::pair<const Def*, bool> post_rewrite(const Def*) { return {nullptr, false}; }
+    ///@}
 
     World& old_world;
     World& new_world;
