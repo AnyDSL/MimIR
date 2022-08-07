@@ -29,7 +29,7 @@ public:
 
     /// @name run/start
     ///@{
-    virtual void run();       ///< Entry point and generates some debug output; invokes Phase:start.
+    virtual void run();       ///< Entry point and generates some debug output; invokes Phase::start.
     virtual void start() = 0; ///< Actual entry.
     ///@}
 
@@ -149,11 +149,14 @@ public:
     Pipeline(World& world)
         : Phase(world, "pipeline", true) {}
 
-    const auto& phases() const { return phases_; }
-
     void start() override;
 
+    /// @name phases
+    ///@{
+    const auto& phases() const { return phases_; }
     /// Add a Phase.
+    /// You don't need to pass the World to @p args - it will be passed automatically.
+    /// If @p P is a Pass, this method will wrap this in a PassPhase.
     template<class P, class... Args>
     auto add(Args&&... args) {
         if constexpr (std::is_base_of_v<Pass, P>) {
@@ -166,6 +169,7 @@ public:
             return phase;
         }
     }
+    ///@}
 
 private:
     std::deque<std::unique_ptr<Phase>> phases_;
