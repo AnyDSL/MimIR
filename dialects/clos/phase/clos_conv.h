@@ -4,9 +4,8 @@
 #include <queue>
 #include <vector>
 
-#include "thorin/phase/phase.h"
-
 #include "thorin/analyses/scope.h"
+#include "thorin/phase/phase.h"
 
 #include "dialects/clos/clos.h"
 
