@@ -32,7 +32,7 @@ protected:
     const char* name_;
 };
 
-/// Visits the current Phase::world and constructs a new World Phase::new_ along the way.
+/// Visits the current Phase::world and constructs a new World Phase::new_world along the way.
 /// It recursively rewrites all World::externals().
 class RewritePhase : public Phase {
 protected:
