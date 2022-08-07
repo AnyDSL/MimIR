@@ -4,7 +4,7 @@
 
 #include "thorin/phase/phase.h"
 
-#include "dialects/clos/clos_conv.h"
+#include "dialects/clos/clos.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::clos {

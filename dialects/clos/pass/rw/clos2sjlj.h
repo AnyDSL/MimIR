@@ -2,6 +2,7 @@
 
 #include "thorin/pass/pass.h"
 
+#include "dialects/clos/clos.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::clos {

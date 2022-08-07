@@ -1,4 +1,4 @@
-#include "dialects/clos/clos_conv.h"
+#include "dialects/clos/phase/clos_conv.h"
 
 #include "thorin/check.h"
 

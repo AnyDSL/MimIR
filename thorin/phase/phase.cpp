@@ -46,7 +46,7 @@ const Def* RewritePhase::rewrite(const Def* old_def) {
     DefArray new_ops(old_def->num_ops(), [&](auto i) { return rewrite(old_def->op(i)); });
     auto new_def = old_def->rebuild(new_, new_type, new_ops, new_dbg);
 
-    if (auto [post, recurse] = pre_rewrite(old_def); post) {
+    if (auto [post, recurse] = post_rewrite(new_def); post) {
         auto new_def          = recurse ? rewrite(post) : post;
         return old2new_[post] = new_def;
     }
