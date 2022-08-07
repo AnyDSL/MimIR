@@ -45,22 +45,6 @@ protected:
     bool dirty_;
 };
 
-/// Wraps a Pass as a Phase.
-class PassPhase : public Phase {
-public:
-    template<class P, class... Args>
-    PassPhase(World& world, Args&&... args)
-        : Phase(world, nullptr, false) {
-        man_.template add(world, std::forward<Args>(args)...);
-        name_ = std::string(man_.passes().back()->name()) + ".pass_phase";
-    }
-
-    void start() override { man_.run(); }
-
-private:
-    PassMan man_;
-};
-
 class RWPhase;
 
 class PhaseRewriter : public Rewriter {
@@ -126,6 +110,38 @@ public:
     virtual bool analyze() = 0;
 };
 
+/// Wraps a Pass as a Phase.
+template<class P>
+class PassPhase : public Phase {
+public:
+    template<class... Args>
+    PassPhase(World& world, Args&&... args)
+        : Phase(world, {}, false)
+        , man_(world) {
+        man_.template add<P>(std::forward<Args>(args)...);
+        name_ = std::string(man_.passes().back()->name()) + ".pass_phase";
+    }
+
+    void start() override { man_.run(); }
+
+private:
+    PassMan man_;
+};
+
+/// Wraps a PassMan pipeline as a Phase.
+template<class P>
+class PassManPhase : public Phase {
+public:
+    PassManPhase(World& world, PassMan& man)
+        : Phase(world, "pass_man_phase")
+        , man_(man) {}
+
+    void start() override { man_.run(); }
+
+private:
+    PassMan man_;
+};
+
 /// Organizes several Phase%s as a pipeline.
 class Pipeline : public Phase {
 public:
@@ -138,11 +154,16 @@ public:
 
     /// Add a Phase.
     template<class P, class... Args>
-    P* add(Args&&... args) {
-        phases_.emplace_back(std::make_unique<P>(world(), std::forward<Args>(args)...));
-        auto phase = phases_.back().get();
-        if (phase->is_dirty()) phases_.emplace_back(std::make_unique<Cleanup>(world()));
-        return phase;
+    auto add(Args&&... args) {
+        if constexpr (std::is_base_of_v<Pass, P>) {
+            return add<PassPhase<P>>(std::forward<Args>(args)...);
+        } else {
+            auto p     = std::make_unique<P>(world(), std::forward<Args>(args)...);
+            auto phase = p.get();
+            phases_.emplace_back(std::move(p));
+            if (phase->is_dirty()) phases_.emplace_back(std::make_unique<Cleanup>(world()));
+            return phase;
+        }
     }
 
 private:

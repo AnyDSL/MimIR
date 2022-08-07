@@ -6,12 +6,16 @@
 #include "thorin/pass/rw/lam_spec.h"
 #include "thorin/pass/rw/scalarize.h"
 
+#include "thorin/phase/phase.h"
+
 namespace thorin {
 
 void optimize(World& world, PipelineBuilder& builder) {
-    PassMan::run<Scalerize>(world, nullptr);
-    PassMan::run<EtaRed>(world);
-    PassMan::run<TailRecElim>(world, nullptr);
+    Pipeline pipe(world);
+    pipe.add<Scalerize>();
+    pipe.add<EtaRed>();
+    pipe.add<TailRecElim>();
+    pipe.run();
 
     auto opt = builder.opt_phase(world);
     opt->run();

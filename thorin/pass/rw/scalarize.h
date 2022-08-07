@@ -18,7 +18,7 @@ class EtaExp;
 /// It will not flatten nominal @p Sigma%s or @p Arr%ays.
 class Scalerize : public RWPass<Lam> {
 public:
-    Scalerize(PassMan& man, EtaExp* eta_exp)
+    Scalerize(PassMan& man, EtaExp* eta_exp = nullptr)
         : RWPass(man, "scalerize")
         , eta_exp_(eta_exp) {}
 
