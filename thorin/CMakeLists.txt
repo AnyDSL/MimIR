@@ -75,6 +75,8 @@ add_library(libthorin
     pass/rw/ret_wrap.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
+    phase/phase.cpp
+    phase/phase.h
     util/array.h
     util/assert.h
     util/bitset.cpp
