@@ -23,7 +23,7 @@ public:
     ///@{
     World& world() { return world_; }
     const char* name() const { return name_; }
-    bool dirty() const { return dirty_; }
+    bool is_dirty() const { return dirty_; }
     ///@}
 
     /// @name run/start
@@ -41,7 +41,7 @@ public:
 
 protected:
     World& world_;
-    mutable const char* name_;
+    const char* name_;
     bool dirty_;
 };
 
@@ -51,13 +51,13 @@ public:
     template<class P, class... Args>
     PassPhase(World& world, Args&&... args)
         : Phase(world, nullptr, false) {
-        man_.template add(std::forward<Args>(args)...);
+        man_.template add(world, std::forward<Args>(args)...);
         name_ = man_.passes().back()->name();
     }
 
     void start() override { man_.run(); }
 
-protected:
+private:
     PassMan man_;
 };
 
@@ -126,7 +126,27 @@ public:
     virtual bool analyze() = 0;
 };
 
-/// TODO Organizes several Phase%s as a pipeline.
-class Pipeline : public Phase {};
+/// Organizes several Phase%s as a pipeline.
+class Pipeline : public Phase {
+public:
+    Pipeline(World& world)
+        : Phase(world, "pipeline", true) {}
+
+    const auto& phases() const { return phases_; }
+
+    void start() override;
+
+    /// Add a Phase.
+    template<class P, class... Args>
+    P* add(Args&&... args) {
+        phases_.emplace_back(std::make_unique<P>(world(), std::forward<Args>(args)...));
+        auto phase = phases_.back().get();
+        if (phase->is_dirty()) phases_.emplace_back(std::make_unique<Cleanup>(world()));
+        return phase;
+    }
+
+private:
+    std::deque<std::unique_ptr<Phase>> phases_;
+};
 
 } // namespace thorin

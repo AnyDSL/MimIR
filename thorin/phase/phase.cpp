@@ -27,4 +27,8 @@ void FPPhase::start() {
     RWPhase::start();
 }
 
+void Pipeline::start() {
+    for (auto& phase : phases()) phase->run();
+}
+
 } // namespace thorin

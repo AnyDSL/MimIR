@@ -209,7 +209,7 @@ private:
     ///@}
 
     World& world_;
-    std::vector<std::unique_ptr<Pass>> passes_;
+    std::deque<std::unique_ptr<Pass>> passes_;
     absl::flat_hash_map<u64, Pass*> registered_passes_;
     std::deque<State> states_;
     Def* curr_nom_    = nullptr;
