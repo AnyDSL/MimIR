@@ -5,7 +5,7 @@
 
 namespace thorin {
 
-IPass::IPass(PassMan& man, const char* name)
+Pass::Pass(PassMan& man, const char* name)
     : man_(man)
     , name_(name)
     , index_(man.passes().size()) {}

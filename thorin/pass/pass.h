@@ -12,38 +12,22 @@ static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 
 struct alignas(8) PassTag {};
 
-/// This is a minimalistic base interface to work with when dynamically loading a Pass.
-class IPass {
-public:
-    IPass(PassMan& man, const char* name);
-    virtual ~IPass() = default;
-
-    /// @name getters
-    ///@{
-    PassMan& man() { return man_; }
-    const PassMan& man() const { return man_; }
-    const char* name() const { return name_; }
-    size_t index() const { return index_; }
-    ///@}
-
-private:
-    PassMan& man_;
-    const char* name_;
-    size_t index_;
-};
-
 /// All Passes that want to be registered in the PassMan must implement this interface.
 /// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
 /// * Inherit from FPPass if you **do** need state and a fixed-point.
-class Pass : public IPass {
+/// * If you do not need rely on interaction between differen Pass%es, consider using Phase instead.
+class Pass {
 public:
-    Pass(PassMan& man, const char* name)
-        : IPass(man, name) {}
+    Pass(PassMan&, const char* name);
     virtual ~Pass() = default;
 
     /// @name getters
     ///@{
     World& world();
+    PassMan& man() { return man_; }
+    const PassMan& man() const { return man_; }
+    const char* name() const { return name_; }
+    size_t index() const { return index_; }
     ///@}
 
     /// @name Rewrite Hook for the PassMan
@@ -99,6 +83,10 @@ private:
     virtual void* copy(const void*) { return nullptr; } ///< Copy constructor.
     virtual void dealloc(void*) {}                      ///< Destructor.
     ///@}
+
+    PassMan& man_;
+    const char* name_;
+    size_t index_;
 
     friend class PassMan;
 };
