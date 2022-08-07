@@ -31,4 +31,25 @@ void Pipeline::start() {
     for (auto& phase : phases()) phase->run();
 }
 
+void ScopePhase::start() {
+    unique_queue<NomSet> noms;
+    unique_stack<DefSet> defs;
+
+    for (const auto& [name, nom] : world().externals()) {
+        assert(nom->is_set() && "external must not be empty");
+        noms.push(nom);
+    }
+
+    while (!noms.empty()) {
+        auto nom = noms.pop();
+        if (elide_empty_ && nom->is_unset()) continue;
+
+        Scope scope(nom);
+        scope_ = &scope;
+        visit(scope);
+
+        for (auto nom : scope.free_noms()) noms.push(nom);
+    }
+}
+
 } // namespace thorin

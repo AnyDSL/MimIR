@@ -14,7 +14,7 @@ class World;
 /// Phase::dirty indicates whether we may need a Cleanup afterwards.
 class Phase {
 public:
-    Phase(World& world, const char* name, bool dirty)
+    Phase(World& world, std::string_view name, bool dirty)
         : world_(world)
         , name_(name)
         , dirty_(dirty) {}
@@ -22,7 +22,7 @@ public:
     /// @name getters
     ///@{
     World& world() { return world_; }
-    const char* name() const { return name_; }
+    std::string_view name() const { return name_; }
     bool is_dirty() const { return dirty_; }
     ///@}
 
@@ -41,7 +41,7 @@ public:
 
 protected:
     World& world_;
-    const char* name_;
+    std::string name_;
     bool dirty_;
 };
 
@@ -52,7 +52,7 @@ public:
     PassPhase(World& world, Args&&... args)
         : Phase(world, nullptr, false) {
         man_.template add(world, std::forward<Args>(args)...);
-        name_ = man_.passes().back()->name();
+        name_ = std::string(man_.passes().back()->name()) + ".pass_phase";
     }
 
     void start() override { man_.run(); }
@@ -79,7 +79,7 @@ public:
 /// It recursively **rewrites** all World::externals().
 class RWPhase : public Phase {
 public:
-    RWPhase(World& world, const char* name)
+    RWPhase(World& world, std::string_view name)
         : Phase(world, name, false)
         , new_world_(world.state())
         , rewriter_(*this, world, new_world_) {}
@@ -119,7 +119,7 @@ public:
 /// Inherit from this one to implement a classic data-flow analysis.
 class FPPhase : public RWPhase {
 public:
-    FPPhase(World& world, const char* name)
+    FPPhase(World& world, std::string_view name)
         : RWPhase(world, name) {}
 
     void start() override;
@@ -147,6 +147,27 @@ public:
 
 private:
     std::deque<std::unique_ptr<Phase>> phases_;
+};
+
+/// Transitively visits all *reachable* Scope%s in World that do not have free variables.
+/// We call these Scope%s *top-level* Scope%s.
+/// Select with `elide_empty` whether you want to visit trivial Scope%s of *noms* without body.
+/// Assumes that you don't change anything - hence `dirty` flag is set to `false`.
+class ScopePhase : public Phase {
+public:
+    ScopePhase(World& world, std::string_view name, bool elide_empty)
+        : Phase(world, name, false)
+        , elide_empty_(elide_empty) {}
+
+    void start() override;
+    virtual void visit(const Scope&) = 0;
+
+protected:
+    const Scope& scope() const { return *scope_; }
+
+private:
+    bool elide_empty_;
+    const Scope* scope_ = nullptr;
 };
 
 } // namespace thorin

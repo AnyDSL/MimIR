@@ -18,7 +18,7 @@ struct alignas(8) PassTag {};
 /// * If you do not need rely on interaction between differen Pass%es, consider using Phase instead.
 class Pass {
 public:
-    Pass(PassMan&, const char* name);
+    Pass(PassMan&, std::string_view name);
     virtual ~Pass() = default;
 
     /// @name getters
@@ -26,7 +26,7 @@ public:
     World& world();
     PassMan& man() { return man_; }
     const PassMan& man() const { return man_; }
-    const char* name() const { return name_; }
+    std::string_view name() const { return name_; }
     size_t index() const { return index_; }
     ///@}
 
@@ -85,7 +85,7 @@ private:
     ///@}
 
     PassMan& man_;
-    const char* name_;
+    std::string name_;
     size_t index_;
 
     friend class PassMan;
@@ -212,7 +212,7 @@ private:
 template<class N = Def>
 class RWPass : public Pass {
 public:
-    RWPass(PassMan& man, const char* name)
+    RWPass(PassMan& man, std::string_view name)
         : Pass(man, name) {}
 
     bool inspect() const override {
@@ -238,7 +238,7 @@ public:
     using Super = RWPass<N>;
     using Data  = std::tuple<>; ///< Default.
 
-    FPPass(PassMan& man, const char* name)
+    FPPass(PassMan& man, std::string_view name)
         : Super(man, name) {}
 
     bool fixed_point() const override { return true; }

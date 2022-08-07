@@ -150,13 +150,6 @@ public:
         auto i = move_.externals.find(name);
         return i != move_.externals.end() ? i->second : nullptr;
     }
-
-    using VisitFn = std::function<void(const Scope&)>;
-    /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
-    /// We call these Scope%s *top-level* Scope%s.
-    /// Select with @p elide_empty whether you want to visit trivial Scope%s of *noms* without body.
-    template<bool elide_empty = true>
-    void visit(VisitFn) const;
     ///@}
 
     /// @name Universe, Type, Var, Proxy, Infer

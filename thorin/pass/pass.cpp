@@ -5,7 +5,7 @@
 
 namespace thorin {
 
-Pass::Pass(PassMan& man, const char* name)
+Pass::Pass(PassMan& man, std::string_view name)
     : man_(man)
     , name_(name)
     , index_(man.passes().size()) {}
