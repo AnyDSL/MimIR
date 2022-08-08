@@ -73,7 +73,7 @@ public:
 
     /// @name getters
     ///@{
-    World& old_world() { return world(); }
+    const World& old_world() { return world(); }
     World& new_world() { return new_world_; }
     Def2Def& old2new() { return rewriter_.old2new; }
     ///@}
