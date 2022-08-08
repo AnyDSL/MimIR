@@ -131,17 +131,16 @@ private:
 };
 
 /// Wraps a PassMan pipeline as a Phase.
-template<class P>
 class PassManPhase : public Phase {
 public:
-    PassManPhase(World& world, PassMan& man)
-        : Phase(world, "pass_man_phase")
-        , man_(man) {}
+    PassManPhase(World& world, std::unique_ptr<PassMan>&& man)
+        : Phase(world, "pass_man_phase", false)
+        , man_(std::move(man)) {}
 
-    void start() override { man_.run(); }
+    void start() override { man_->run(); }
 
 private:
-    PassMan man_;
+    std::unique_ptr<PassMan> man_;
 };
 
 /// Organizes several Phase%s as a pipeline.
@@ -157,13 +156,13 @@ public:
     const auto& phases() const { return phases_; }
     /// Add a Phase.
     /// You don't need to pass the World to @p args - it will be passed automatically.
-    /// If @p P is a Pass, this method will wrap this in a PassPhase.
+    /// * If @p P is a Pass, this method will wrap this in a PassPhase.
     template<class P, class... Args>
     auto add(Args&&... args) {
         if constexpr (std::is_base_of_v<Pass, P>) {
             return add<PassPhase<P>>(std::forward<Args>(args)...);
         } else {
-            auto p     = std::make_unique<P>(world(), std::forward<Args>(args)...);
+            auto p     = std::make_unique<P>(world(), std::forward<Args&&>(args)...);
             auto phase = p.get();
             phases_.emplace_back(std::move(p));
             if (phase->is_dirty()) phases_.emplace_back(std::make_unique<Cleanup>(world()));

@@ -14,15 +14,10 @@ void optimize(World& world, PipelineBuilder& builder) {
     pipe.add<Scalerize>();
     pipe.add<EtaRed>();
     pipe.add<TailRecElim>();
+    pipe.add<PassManPhase>(builder.opt_phase(world));
+    pipe.add<LamSpec>();
+    pipe.add<PassManPhase>(builder.codegen_prep_phase(world));
     pipe.run();
-
-    auto opt = builder.opt_phase(world);
-    opt->run();
-
-    PassMan::run<LamSpec>(world);
-
-    auto codegen_prep = builder.codegen_prep_phase(world);
-    codegen_prep->run();
 }
 
 } // namespace thorin
