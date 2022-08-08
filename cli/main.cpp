@@ -8,13 +8,13 @@
 
 #include "thorin/config.h"
 #include "thorin/dialects.h"
-#include "thorin/rewrite.h"
 
 #include "thorin/be/dot/dot.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
+#include "thorin/phase/phase.h"
 #include "thorin/util/sys.h"
 
 using namespace thorin;
@@ -134,9 +134,9 @@ int main(int argc, char** argv) {
 
         // clang-format off
         switch (opt) {
-            case 0:                           break;
-            case 1: cleanup(world);           break;
-            case 2: optimize(world, builder); break;
+            case 0:                             break;
+            case 1: Phase::run<Cleanup>(world); break;
+            case 2: optimize(world, builder);   break;
             default: errln("error: illegal optimization level '{}'", opt);
         }
         // clang-format on

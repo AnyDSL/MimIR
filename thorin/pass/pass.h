@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stack>
+#include <typeindex>
 
 #include "thorin/world.h"
 
@@ -10,40 +11,24 @@ class PassMan;
 using undo_t                    = size_t;
 static constexpr undo_t No_Undo = std::numeric_limits<undo_t>::max();
 
-struct alignas(8) PassTag {};
+struct PassTag {};
 
-/// This is a minimalistic base interface to work with when dynamically loading a Pass.
-class IPass {
-public:
-    IPass(PassMan& man, const char* name);
-    virtual ~IPass() = default;
-
-    /// @name getters
-    ///@{
-    PassMan& man() { return man_; }
-    const PassMan& man() const { return man_; }
-    const char* name() const { return name_; }
-    size_t index() const { return index_; }
-    ///@}
-
-private:
-    PassMan& man_;
-    const char* name_;
-    size_t index_;
-};
-
-/// All Passes that want to be registered in the PassMan must implement this interface.
+/// All Pass%es that want to be registered in the PassMan must implement this interface.
 /// * Inherit from RWPass if your pass does **not** need state and a fixed-point iteration.
 /// * Inherit from FPPass if you **do** need state and a fixed-point.
-class Pass : public IPass {
+/// * If you do not rely on interaction between differen Pass%es, consider using Phase instead.
+class Pass {
 public:
-    Pass(PassMan& man, const char* name)
-        : IPass(man, name) {}
+    Pass(PassMan&, std::string_view name);
     virtual ~Pass() = default;
 
     /// @name getters
     ///@{
     World& world();
+    PassMan& man() { return man_; }
+    const PassMan& man() const { return man_; }
+    std::string_view name() const { return name_; }
+    size_t index() const { return index_; }
     ///@}
 
     /// @name Rewrite Hook for the PassMan
@@ -100,6 +85,10 @@ private:
     virtual void dealloc(void*) {}                      ///< Destructor.
     ///@}
 
+    PassMan& man_;
+    std::string name_;
+    size_t index_;
+
     friend class PassMan;
 };
 
@@ -127,13 +116,13 @@ public:
     /// If a pass of the same class has been added already, returns the earlier added instance.
     template<class P, class... Args>
     P* add(Args&&... args) {
-        if (auto it = registered_passes_.find(reinterpret_cast<u64>(P::ID())); it != registered_passes_.end())
-            return static_cast<P*>(it->second);
+        auto key = std::type_index(typeid(P));
+        if (auto it = registry_.find(key); it != registry_.end()) return static_cast<P*>(it->second);
         auto p   = std::make_unique<P>(*this, std::forward<Args>(args)...);
         auto res = p.get();
         fixed_point_ |= res->fixed_point();
         passes_.emplace_back(std::move(p));
-        registered_passes_.emplace(reinterpret_cast<u64>(P::ID()), res);
+        registry_.emplace(key, res);
         return res;
     }
 
@@ -150,9 +139,9 @@ private:
     /// @name State
     ///@{
     struct State {
-        State()             = default;
-        State(const State&) = delete;
-        State(State&&)      = delete;
+        State()                 = default;
+        State(const State&)     = delete;
+        State(State&&)          = delete;
         State& operator=(State) = delete;
         State(size_t num)
             : data(num) {}
@@ -209,8 +198,8 @@ private:
     ///@}
 
     World& world_;
-    std::vector<std::unique_ptr<Pass>> passes_;
-    absl::flat_hash_map<u64, Pass*> registered_passes_;
+    std::deque<std::unique_ptr<Pass>> passes_;
+    absl::flat_hash_map<std::type_index, Pass*> registry_;
     std::deque<State> states_;
     Def* curr_nom_    = nullptr;
     bool fixed_point_ = false;
@@ -221,10 +210,10 @@ private:
 };
 
 /// Inherit from this class if your Pass does **not** need state and a fixed-point iteration.
-template<class N = Def>
+template<class P, class N>
 class RWPass : public Pass {
 public:
-    RWPass(PassMan& man, const char* name)
+    RWPass(PassMan& man, std::string_view name)
         : Pass(man, name) {}
 
     bool inspect() const override {
@@ -244,13 +233,13 @@ public:
 
 /// Inherit from this class using [CRTP](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern),
 /// if you **do** need a Pass with a state and a fixed-point.
-template<class P, class N = Def>
-class FPPass : public RWPass<N> {
+template<class P, class N>
+class FPPass : public RWPass<P, N> {
 public:
-    using Super = RWPass<N>;
+    using Super = RWPass<P, N>;
     using Data  = std::tuple<>; ///< Default.
 
-    FPPass(PassMan& man, const char* name)
+    FPPass(PassMan& man, std::string_view name)
         : Super(man, name) {}
 
     bool fixed_point() const override { return true; }

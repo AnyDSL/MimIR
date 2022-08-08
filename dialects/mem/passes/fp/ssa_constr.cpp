@@ -182,9 +182,4 @@ undo_t SSAConstr::analyze(const Def* def) {
     return No_Undo;
 }
 
-PassTag* SSAConstr::ID() {
-    static PassTag Key;
-    return &Key;
-}
-
 } // namespace thorin::mem

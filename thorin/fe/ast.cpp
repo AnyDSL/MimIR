@@ -54,7 +54,7 @@ const Def* TuplePtrn::type(World& world) const {
     }
 
     thorin::Scope scope(sigma);
-    Rewriter rw(world, &scope);
+    ScopeRewriter rw(world, scope);
     for (size_t i = 1; i != n; ++i) sigma->set(i, rw.rewrite(ops[i]));
 
     if (auto restruct = sigma->restructure()) return type_ = restruct;

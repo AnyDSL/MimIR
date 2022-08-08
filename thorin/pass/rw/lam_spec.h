@@ -4,12 +4,10 @@
 
 namespace thorin {
 
-class LamSpec : public RWPass<Lam> {
+class LamSpec : public RWPass<LamSpec, Lam> {
 public:
     LamSpec(PassMan& man)
         : RWPass(man, "lam_spec") {}
-
-    static PassTag* ID();
 
 private:
     /// @name PassMan hooks

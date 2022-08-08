@@ -9,9 +9,4 @@ const Def* RememElim::rewrite(const Def* def) {
     return def;
 }
 
-PassTag* RememElim::ID() {
-    static PassTag Key;
-    return &Key;
-}
-
 } // namespace thorin::mem

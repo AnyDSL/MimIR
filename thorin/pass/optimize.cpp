@@ -5,21 +5,19 @@
 #include "thorin/pass/pipelinebuilder.h"
 #include "thorin/pass/rw/lam_spec.h"
 #include "thorin/pass/rw/scalarize.h"
+#include "thorin/phase/phase.h"
 
 namespace thorin {
 
 void optimize(World& world, PipelineBuilder& builder) {
-    PassMan::run<Scalerize>(world, nullptr);
-    PassMan::run<EtaRed>(world);
-    PassMan::run<TailRecElim>(world, nullptr);
-
-    auto opt = builder.opt_phase(world);
-    opt->run();
-
-    PassMan::run<LamSpec>(world);
-
-    auto codegen_prep = builder.codegen_prep_phase(world);
-    codegen_prep->run();
+    Pipeline pipe(world);
+    pipe.add<Scalerize>();
+    pipe.add<EtaRed>();
+    pipe.add<TailRecElim>();
+    pipe.add<PassManPhase>(builder.opt_phase(world));
+    pipe.add<LamSpec>();
+    pipe.add<PassManPhase>(builder.codegen_prep_phase(world));
+    pipe.run();
 }
 
 } // namespace thorin

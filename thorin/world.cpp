@@ -559,36 +559,9 @@ const Def* World::gid2def(u32 gid) {
 #endif
 
 /*
- * misc
- */
-
-template<bool elide_empty>
-void World::visit(VisitFn f) const {
-    unique_queue<NomSet> noms;
-    unique_stack<DefSet> defs;
-
-    for (const auto& [name, nom] : externals()) {
-        assert(nom->is_set() && "external must not be empty");
-        noms.push(nom);
-    }
-
-    while (!noms.empty()) {
-        auto nom = noms.pop();
-        if (elide_empty && nom->is_unset()) continue;
-
-        Scope scope(nom);
-        f(scope);
-
-        for (auto nom : scope.free_noms()) noms.push(nom);
-    }
-}
-
-/*
  * instantiate templates
  */
 
-template void World::visit<true>(VisitFn) const;
-template void World::visit<false>(VisitFn) const;
 template const Def* World::ext<true>(const Def*, const Def*);
 template const Def* World::ext<false>(const Def*, const Def*);
 template const Def* World::bound<true>(Defs, const Def*);

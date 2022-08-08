@@ -1,12 +1,11 @@
 #include "thorin/pass/pass.h"
 
-#include "thorin/rewrite.h"
-
+#include "thorin/phase/phase.h"
 #include "thorin/util/container.h"
 
 namespace thorin {
 
-IPass::IPass(PassMan& man, const char* name)
+Pass::Pass(PassMan& man, std::string_view name)
     : man_(man)
     , name_(name)
     , index_(man.passes().size()) {}
@@ -84,7 +83,7 @@ void PassMan::run() {
     pop_states(0);
 
     world().debug_dump();
-    cleanup(world());
+    Phase::run<Cleanup>(world());
 }
 
 const Def* PassMan::rewrite(const Def* old_def) {
