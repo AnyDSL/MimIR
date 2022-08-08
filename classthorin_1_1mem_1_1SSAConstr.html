@@ -105,7 +105,6 @@ $(document).ready(function(){initNavTree('classthorin_1_1mem_1_1SSAConstr.html',
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classthorin_1_1mem_1_1SSAConstr-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::mem::SSAConstr Class Reference</div></div>
 </div><!--header-->
@@ -118,7 +117,7 @@ $(document).ready(function(){initNavTree('classthorin_1_1mem_1_1SSAConstr.html',
 <div class="dynheader">
 Inheritance diagram for thorin::mem::SSAConstr:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1mem_1_1SSAConstr__inherit__graph.svg" width="384" height="535"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1mem_1_1SSAConstr__inherit__graph.svg" width="418" height="398"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -137,36 +136,44 @@ Public Types</h2></td></tr>
 <tr class="memitem:a852075104e7f9c647372c2a2eca41958"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1mem_1_1SSAConstr.html#a852075104e7f9c647372c2a2eca41958">Data</a> = <a class="el" href="namespacethorin.html#abbb08512ded2c0a47698a71177d29217">GIDNodeMap</a>&lt; <a class="el" href="classthorin_1_1Lam.html">Lam</a> *, <a class="el" href="classthorin_1_1mem_1_1SSAConstr.html#structthorin_1_1mem_1_1SSAConstr_1_1Info">Info</a> &gt;</td></tr>
 <tr class="separator:a852075104e7f9c647372c2a2eca41958"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_types_classthorin_1_1FPPass"><td colspan="2" onclick="javascript:toggleInherit('pub_types_classthorin_1_1FPPass')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classthorin_1_1FPPass.html">thorin::FPPass&lt; SSAConstr, Lam &gt;</a></td></tr>
-<tr class="memitem:ab5b9529e4bddbda40f241c4e4be942c6 inherit pub_types_classthorin_1_1FPPass"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#ab5b9529e4bddbda40f241c4e4be942c6">Super</a> = <a class="el" href="classthorin_1_1RWPass.html">RWPass</a>&lt; <a class="el" href="classthorin_1_1Lam.html">Lam</a> &gt;</td></tr>
-<tr class="separator:ab5b9529e4bddbda40f241c4e4be942c6 inherit pub_types_classthorin_1_1FPPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0942944069a8b0603e1e3e4309c1541c inherit pub_types_classthorin_1_1FPPass"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#a0942944069a8b0603e1e3e4309c1541c">Super</a> = <a class="el" href="classthorin_1_1RWPass.html">RWPass</a>&lt; SSAConstr, <a class="el" href="classthorin_1_1Lam.html">Lam</a> &gt;</td></tr>
+<tr class="separator:a0942944069a8b0603e1e3e4309c1541c inherit pub_types_classthorin_1_1FPPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf424bdb0ad497b5b46c020ac6c34363 inherit pub_types_classthorin_1_1FPPass"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#adf424bdb0ad497b5b46c020ac6c34363">Data</a> = std::tuple&lt;&gt;</td></tr>
 <tr class="memdesc:adf424bdb0ad497b5b46c020ac6c34363 inherit pub_types_classthorin_1_1FPPass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default.  <a href="classthorin_1_1FPPass.html#adf424bdb0ad497b5b46c020ac6c34363">More...</a><br /></td></tr>
 <tr class="separator:adf424bdb0ad497b5b46c020ac6c34363 inherit pub_types_classthorin_1_1FPPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a17bc6800dcd2f38e4394c88867aa436d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1mem_1_1SSAConstr.html#a17bc6800dcd2f38e4394c88867aa436d">SSAConstr</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f">man</a>, <a class="el" href="classthorin_1_1EtaExp.html">EtaExp</a> *eta_exp)</td></tr>
+<tr class="memitem:a17bc6800dcd2f38e4394c88867aa436d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1mem_1_1SSAConstr.html#a17bc6800dcd2f38e4394c88867aa436d">SSAConstr</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1Pass.html#a26e4d112cbd5b8b94856988f9dcbb03c">man</a>, <a class="el" href="classthorin_1_1EtaExp.html">EtaExp</a> *eta_exp)</td></tr>
 <tr class="separator:a17bc6800dcd2f38e4394c88867aa436d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classthorin_1_1FPPass"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1FPPass')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1FPPass.html">thorin::FPPass&lt; SSAConstr, Lam &gt;</a></td></tr>
-<tr class="memitem:aca3f4ae7d99c6e4d77ba34e853a9233f inherit pub_methods_classthorin_1_1FPPass"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#aca3f4ae7d99c6e4d77ba34e853a9233f">FPPass</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f">man</a>, const char *<a class="el" href="classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632">name</a>)</td></tr>
-<tr class="separator:aca3f4ae7d99c6e4d77ba34e853a9233f inherit pub_methods_classthorin_1_1FPPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18f70226c4e61e8eaa53233dd312f443 inherit pub_methods_classthorin_1_1FPPass"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#a18f70226c4e61e8eaa53233dd312f443">FPPass</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1Pass.html#a26e4d112cbd5b8b94856988f9dcbb03c">man</a>, std::string_view <a class="el" href="classthorin_1_1Pass.html#adb4b3c1b2145f77898fd1d0c056315e2">name</a>)</td></tr>
+<tr class="separator:a18f70226c4e61e8eaa53233dd312f443 inherit pub_methods_classthorin_1_1FPPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35213ec76ef3bea4362f431837f14403 inherit pub_methods_classthorin_1_1FPPass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#a35213ec76ef3bea4362f431837f14403">fixed_point</a> () const override</td></tr>
 <tr class="separator:a35213ec76ef3bea4362f431837f14403 inherit pub_methods_classthorin_1_1FPPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classthorin_1_1RWPass"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1RWPass')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1RWPass.html">thorin::RWPass&lt; Lam &gt;</a></td></tr>
-<tr class="memitem:a193bd7aae546a9dbfba3b87406b0a672 inherit pub_methods_classthorin_1_1RWPass"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPass.html#a193bd7aae546a9dbfba3b87406b0a672">RWPass</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f">man</a>, const char *<a class="el" href="classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632">name</a>)</td></tr>
-<tr class="separator:a193bd7aae546a9dbfba3b87406b0a672 inherit pub_methods_classthorin_1_1RWPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a316be5140752b8e78ea9858d18586333 inherit pub_methods_classthorin_1_1RWPass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPass.html#a316be5140752b8e78ea9858d18586333">inspect</a> () const override</td></tr>
-<tr class="memdesc:a316be5140752b8e78ea9858d18586333 inherit pub_methods_classthorin_1_1RWPass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should the PassMan even consider this pass?  <a href="classthorin_1_1RWPass.html#a316be5140752b8e78ea9858d18586333">More...</a><br /></td></tr>
-<tr class="separator:a316be5140752b8e78ea9858d18586333 inherit pub_methods_classthorin_1_1RWPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1b92447f41f06b88e03f68bde2bdd44 inherit pub_methods_classthorin_1_1RWPass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Lam.html">Lam</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPass.html#aa1b92447f41f06b88e03f68bde2bdd44">curr_nom</a> () const</td></tr>
-<tr class="separator:aa1b92447f41f06b88e03f68bde2bdd44 inherit pub_methods_classthorin_1_1RWPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classthorin_1_1RWPass"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1RWPass')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1RWPass.html">thorin::RWPass&lt; SSAConstr, Lam &gt;</a></td></tr>
+<tr class="memitem:a1728f88604f0ed69043f9f9d6dcf3ee1 inherit pub_methods_classthorin_1_1RWPass"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPass.html#a1728f88604f0ed69043f9f9d6dcf3ee1">RWPass</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1Pass.html#a26e4d112cbd5b8b94856988f9dcbb03c">man</a>, std::string_view <a class="el" href="classthorin_1_1Pass.html#adb4b3c1b2145f77898fd1d0c056315e2">name</a>)</td></tr>
+<tr class="separator:a1728f88604f0ed69043f9f9d6dcf3ee1 inherit pub_methods_classthorin_1_1RWPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d0a6ccffb1efc8369210396f0eed6de inherit pub_methods_classthorin_1_1RWPass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPass.html#a7d0a6ccffb1efc8369210396f0eed6de">inspect</a> () const override</td></tr>
+<tr class="memdesc:a7d0a6ccffb1efc8369210396f0eed6de inherit pub_methods_classthorin_1_1RWPass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should the PassMan even consider this pass?  <a href="classthorin_1_1RWPass.html#a7d0a6ccffb1efc8369210396f0eed6de">More...</a><br /></td></tr>
+<tr class="separator:a7d0a6ccffb1efc8369210396f0eed6de inherit pub_methods_classthorin_1_1RWPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46887f4f78c089ba4bcc2ce880e394f3 inherit pub_methods_classthorin_1_1RWPass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Lam.html">Lam</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPass.html#a46887f4f78c089ba4bcc2ce880e394f3">curr_nom</a> () const</td></tr>
+<tr class="separator:a46887f4f78c089ba4bcc2ce880e394f3 inherit pub_methods_classthorin_1_1RWPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classthorin_1_1Pass"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1Pass')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1Pass.html">thorin::Pass</a></td></tr>
-<tr class="memitem:a7590468b286a953e04f3d46cc95f453a inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a7590468b286a953e04f3d46cc95f453a">Pass</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f">man</a>, const char *<a class="el" href="classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632">name</a>)</td></tr>
-<tr class="separator:a7590468b286a953e04f3d46cc95f453a inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a3bea6094c9a9dd9839e87d8b0b341d inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a6a3bea6094c9a9dd9839e87d8b0b341d">Pass</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;, std::string_view <a class="el" href="classthorin_1_1Pass.html#adb4b3c1b2145f77898fd1d0c056315e2">name</a>)</td></tr>
+<tr class="separator:a6a3bea6094c9a9dd9839e87d8b0b341d inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1422445ab9812219a993c61c2c6842b1 inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a1422445ab9812219a993c61c2c6842b1">~Pass</a> ()=default</td></tr>
 <tr class="separator:a1422445ab9812219a993c61c2c6842b1 inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3292e2b8dbc86e2664e2bbe934d75e7 inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#aa3292e2b8dbc86e2664e2bbe934d75e7">world</a> ()</td></tr>
 <tr class="separator:aa3292e2b8dbc86e2664e2bbe934d75e7 inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26e4d112cbd5b8b94856988f9dcbb03c inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a26e4d112cbd5b8b94856988f9dcbb03c">man</a> ()</td></tr>
+<tr class="separator:a26e4d112cbd5b8b94856988f9dcbb03c inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a785e44e89a73b844706c412a37a40359 inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a785e44e89a73b844706c412a37a40359">man</a> () const</td></tr>
+<tr class="separator:a785e44e89a73b844706c412a37a40359 inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb4b3c1b2145f77898fd1d0c056315e2 inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#adb4b3c1b2145f77898fd1d0c056315e2">name</a> () const</td></tr>
+<tr class="separator:adb4b3c1b2145f77898fd1d0c056315e2 inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63f5c69818c98b9c04b9090b955c1a08 inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a63f5c69818c98b9c04b9090b955c1a08">index</a> () const</td></tr>
+<tr class="separator:a63f5c69818c98b9c04b9090b955c1a08 inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a684fc6ec621aba9ce278f00a46b43a0f inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a684fc6ec621aba9ce278f00a46b43a0f">rewrite</a> (const <a class="el" href="classthorin_1_1Var.html">Var</a> *var)</td></tr>
 <tr class="separator:a684fc6ec621aba9ce278f00a46b43a0f inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5030802a7af3cfb07fd44da37389116d inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a5030802a7af3cfb07fd44da37389116d">analyze</a> (const <a class="el" href="classthorin_1_1Var.html">Var</a> *)</td></tr>
@@ -174,28 +181,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a852a4e1ad220ef4318443ff90dd1b9c7 inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a852a4e1ad220ef4318443ff90dd1b9c7">proxy</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *type, <a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> ops, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">u32</a> tag=0, const <a class="el" href="classthorin_1_1Def.html">Def</a> *dbg={})</td></tr>
 <tr class="separator:a852a4e1ad220ef4318443ff90dd1b9c7 inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b99d034b66f83d34cc497fc74ad9577 inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a6b99d034b66f83d34cc497fc74ad9577">isa_proxy</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">u32</a> tag=0)</td></tr>
-<tr class="memdesc:a6b99d034b66f83d34cc497fc74ad9577 inherit pub_methods_classthorin_1_1Pass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether given <code>def</code> is a <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> whose <a class="el" href="classthorin_1_1Proxy.html#a93a4ac4b94eae555d07b63702e1ae092" title="IPass::index within PassMan.">Proxy::pass</a> matches this <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>'s <code><a class="el" href="classthorin_1_1IPass.html#ae32bba1a36211d7576896c90e12f8944">IPass::index</a></code>.  <a href="classthorin_1_1Pass.html#a6b99d034b66f83d34cc497fc74ad9577">More...</a><br /></td></tr>
+<tr class="memdesc:a6b99d034b66f83d34cc497fc74ad9577 inherit pub_methods_classthorin_1_1Pass"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether given <code>def</code> is a <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> whose <a class="el" href="classthorin_1_1Proxy.html#a93a4ac4b94eae555d07b63702e1ae092" title="IPass::index within PassMan.">Proxy::pass</a> matches this <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>'s <code>IPass::index</code>.  <a href="classthorin_1_1Pass.html#a6b99d034b66f83d34cc497fc74ad9577">More...</a><br /></td></tr>
 <tr class="separator:a6b99d034b66f83d34cc497fc74ad9577 inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f18625607a805b62025f41319ed9055 inherit pub_methods_classthorin_1_1Pass"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Proxy.html">Proxy</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html#a2f18625607a805b62025f41319ed9055">as_proxy</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def, <a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">u32</a> tag=0)</td></tr>
 <tr class="separator:a2f18625607a805b62025f41319ed9055 inherit pub_methods_classthorin_1_1Pass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classthorin_1_1IPass"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classthorin_1_1IPass')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classthorin_1_1IPass.html">thorin::IPass</a></td></tr>
-<tr class="memitem:a81936ee0fb7415705c886e92cdbf1eb7 inherit pub_methods_classthorin_1_1IPass"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html#a81936ee0fb7415705c886e92cdbf1eb7">IPass</a> (<a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;<a class="el" href="classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f">man</a>, const char *<a class="el" href="classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632">name</a>)</td></tr>
-<tr class="separator:a81936ee0fb7415705c886e92cdbf1eb7 inherit pub_methods_classthorin_1_1IPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa9538a515e496cdb5245001e1fd1c43 inherit pub_methods_classthorin_1_1IPass"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html#aaa9538a515e496cdb5245001e1fd1c43">~IPass</a> ()=default</td></tr>
-<tr class="separator:aaa9538a515e496cdb5245001e1fd1c43 inherit pub_methods_classthorin_1_1IPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e083fbaf76d0c6a5a800ff6f8fb088f inherit pub_methods_classthorin_1_1IPass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f">man</a> ()</td></tr>
-<tr class="separator:a7e083fbaf76d0c6a5a800ff6f8fb088f inherit pub_methods_classthorin_1_1IPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6868a4c90e8682c8f519042212c3ae56 inherit pub_methods_classthorin_1_1IPass"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html#a6868a4c90e8682c8f519042212c3ae56">man</a> () const</td></tr>
-<tr class="separator:a6868a4c90e8682c8f519042212c3ae56 inherit pub_methods_classthorin_1_1IPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1844d29c109244e2d5f7fdce46f0632 inherit pub_methods_classthorin_1_1IPass"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html#ae1844d29c109244e2d5f7fdce46f0632">name</a> () const</td></tr>
-<tr class="separator:ae1844d29c109244e2d5f7fdce46f0632 inherit pub_methods_classthorin_1_1IPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae32bba1a36211d7576896c90e12f8944 inherit pub_methods_classthorin_1_1IPass"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html#ae32bba1a36211d7576896c90e12f8944">index</a> () const</td></tr>
-<tr class="separator:ae32bba1a36211d7576896c90e12f8944 inherit pub_methods_classthorin_1_1IPass"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
-Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a3ea37a7297ac2610b6c0dad1a77e3aa4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespacethorin.html#structthorin_1_1PassTag">PassTag</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1mem_1_1SSAConstr.html#a3ea37a7297ac2610b6c0dad1a77e3aa4">ID</a> ()</td></tr>
-<tr class="separator:a3ea37a7297ac2610b6c0dad1a77e3aa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -333,34 +322,6 @@ writable</td>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="ssa__constr_8h_source.html#l00018">18</a> of file <a class="el" href="ssa__constr_8h_source.html">ssa_constr.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3ea37a7297ac2610b6c0dad1a77e3aa4" name="a3ea37a7297ac2610b6c0dad1a77e3aa4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ea37a7297ac2610b6c0dad1a77e3aa4">&#9670;&nbsp;</a></span>ID()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacethorin.html#structthorin_1_1PassTag">PassTag</a> * thorin::mem::SSAConstr::ID </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="ssa__constr_8cpp_source.html#l00185">185</a> of file <a class="el" href="ssa__constr_8cpp_source.html">ssa_constr.cpp</a>.</p>
 
 </div>
 </div>

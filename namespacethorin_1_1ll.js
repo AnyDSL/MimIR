@@ -1,7 +1,7 @@
 var namespacethorin_1_1ll =
 [
     [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
-    [ "CodeGen", "classthorin_1_1ll_1_1CodeGen.html", "classthorin_1_1ll_1_1CodeGen" ],
+    [ "Emitter", "classthorin_1_1ll_1_1Emitter.html", "classthorin_1_1ll_1_1Emitter" ],
     [ "compile", "namespacethorin_1_1ll.html#aa7729bb12e2e6ec7d0f2e34af12838bb", null ],
     [ "compile", "namespacethorin_1_1ll.html#a709e16be24f45303689dbe7b7575fc12", null ],
     [ "compile_and_run", "namespacethorin_1_1ll.html#af25d6d9d636f8feb823248a6c09d02b9", null ],

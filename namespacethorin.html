@@ -196,6 +196,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Checker.html">Checker</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Cleanup.html">Cleanup</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes unreachable and dead code by rebuilding the whole <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a> into a new one and <code>swapp</code>ing afterwards.  <a href="classthorin_1_1Cleanup.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Debug.html">Debug</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html">Def</a></td></tr>
@@ -251,6 +254,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html">FPPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inherit from this class using <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a>, if you <b>do</b> need a <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a> with a state and a fixed-point.  <a href="classthorin_1_1FPPass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPhase.html">FPPhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like a <a class="el" href="classthorin_1_1RWPhase.html" title="Visits the current Phase::world and constructs a new World Phase::new_world along the way.">RWPhase</a> but starts with a fixed-point loop of <a class="el" href="classthorin_1_1FPPhase.html#aa87efc7b1701a2244872894aace1f667">FPPhase::analyze</a> beforehand.  <a href="classthorin_1_1FPPhase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1GIDEq.html">GIDEq</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1GIDHash.html">GIDHash</a></td></tr>
@@ -271,9 +277,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Insert.html">Insert</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classthorin_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> / <a class="el" href="classthorin_1_1Pack.html">Pack</a> by inserting <a class="el" href="classthorin_1_1Insert.html#a665da72feeff8ecdc0d56e2d0b330ba9">Insert::value</a> at position <a class="el" href="classthorin_1_1Insert.html#af9695a6ae210f32f881025fe01a1e74e">Insert::index</a> into <a class="el" href="classthorin_1_1Insert.html#a4af05722ad5b8700d3d501af6dfac907">Insert::tuple</a>.  <a href="classthorin_1_1Insert.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html">IPass</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a minimalistic base interface to work with when dynamically loading a <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>.  <a href="classthorin_1_1IPass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Lam.html">Lam</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -301,18 +304,32 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PartialEval.html">PartialEval</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html">Pass</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">All Passes that want to be registered in the <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> must implement this interface.  <a href="classthorin_1_1Pass.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">All <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>es that want to be registered in the <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> must implement this interface.  <a href="classthorin_1_1Pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassMan.html">PassMan</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An optimizer that combines several optimizations in an optimal way.  <a href="classthorin_1_1PassMan.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassManPhase.html">PassManPhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps a <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> pipeline as a <a class="el" href="classthorin_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>.  <a href="classthorin_1_1PassManPhase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassPhase.html">PassPhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wraps a <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a> as a <a class="el" href="classthorin_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>.  <a href="classthorin_1_1PassPhase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:structthorin_1_1PassTag"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#structthorin_1_1PassTag">PassTag</a></td></tr>
 <tr class="separator:structthorin_1_1PassTag"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Phase.html">Phase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">As opposed to a <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>, a <a class="el" href="classthorin_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a> does one thing at a time and does not mix with other <a class="el" href="classthorin_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s.  <a href="classthorin_1_1Phase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PhaseRewriter.html">PhaseRewriter</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pi.html">Pi</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function type AKA <a class="el" href="classthorin_1_1Pi.html" title="A function type AKA Pi type.">Pi</a> type.  <a href="classthorin_1_1Pi.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pick.html">Pick</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Picks the aspect of a Meet [value](<a class="el" href="classthorin_1_1Pick.html#ad1ab799d5781001c3dcd6b0f0cdbc1a2">Pick::value</a>) by its [type](<a class="el" href="classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90">Def::type</a>).  <a href="classthorin_1_1Pick.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pipeline.html">Pipeline</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Organizes several <a class="el" href="classthorin_1_1Phase.html" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases.">Phase</a>s as a pipeline.  <a href="classthorin_1_1Pipeline.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html">PipelineBuilder</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -331,6 +348,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPass.html">RWPass</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inherit from this class if your <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a> does <b>not</b> need state and a fixed-point iteration.  <a href="classthorin_1_1RWPass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPhase.html">RWPhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Visits the current <a class="el" href="classthorin_1_1Phase.html#a698a761ac58982720ac3b561adbf6873">Phase::world</a> and constructs a new <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a> Phase::new_world along the way.  <a href="classthorin_1_1RWPhase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Scalerize.html">Scalerize</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform Scalarization (= Argument simplification), i.e.  <a href="classthorin_1_1Scalerize.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,6 +358,11 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Scope.html">Scope</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <code><a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a></code> represents a region of <code><a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s</code> that are live from the view of an <code>entry's</code> <code><a class="el" href="classthorin_1_1Var.html">Var</a></code>.  <a href="classthorin_1_1Scope.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ScopePhase.html">ScopePhase</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively visits all <em>reachable</em> <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s in <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a> that do not have free variables.  <a href="classthorin_1_1ScopePhase.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1ScopeRewriter.html">ScopeRewriter</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Sigma.html">Sigma</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -940,9 +965,6 @@ Functions</h2></td></tr>
 <tr class="memitem:aeaed23abfc215cf29aa0e796d16eeea5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a81c6780cfdf58e5be888c4c16c68476d">DefArray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aeaed23abfc215cf29aa0e796d16eeea5">rewrite</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *nom, const <a class="el" href="classthorin_1_1Def.html">Def</a> *arg)</td></tr>
 <tr class="memdesc:aeaed23abfc215cf29aa0e796d16eeea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rewrites <code>nom's</code> ops by substituting <code>nom's</code> <code><a class="el" href="classthorin_1_1Var.html">Var</a></code> with <code>arg</code> while obeying <code>nom's</code> <code>scope</code>.  <a href="namespacethorin.html#aeaed23abfc215cf29aa0e796d16eeea5">More...</a><br /></td></tr>
 <tr class="separator:aeaed23abfc215cf29aa0e796d16eeea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6048c1976f32e52047f6e7d00c23e01e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a6048c1976f32e52047f6e7d00c23e01e">cleanup</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world)</td></tr>
-<tr class="memdesc:a6048c1976f32e52047f6e7d00c23e01e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes unreachable and dead code by rebuilding the whole <code>world</code> into a new <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a>.  <a href="namespacethorin.html#a6048c1976f32e52047f6e7d00c23e01e">More...</a><br /></td></tr>
-<tr class="separator:a6048c1976f32e52047f6e7d00c23e01e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a58d95fe3d3e9dd82e7cf856a97a5cbca"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9">ICmp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a58d95fe3d3e9dd82e7cf856a97a5cbca">operator|</a> (<a class="el" href="namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9">ICmp</a> a, <a class="el" href="namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9">ICmp</a> b)</td></tr>
 <tr class="separator:a58d95fe3d3e9dd82e7cf856a97a5cbca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accc609b33c031cc07037ef54bdec0660"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9">ICmp</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#accc609b33c031cc07037ef54bdec0660">operator&amp;</a> (<a class="el" href="namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9">ICmp</a> a, <a class="el" href="namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9">ICmp</a> b)</td></tr>
@@ -1256,7 +1278,7 @@ trace_gids</td>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00013">13</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00014">14</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 </div>
 </div>
 </div>
@@ -2903,7 +2925,7 @@ template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664c
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00010">10</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00011">11</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -3548,7 +3570,7 @@ template&lt;class T  = u64&gt; </div>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00037">thorin::RuntimeCast&lt; Base &gt;::as()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00414">thorin::ll::CodeGen::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00306">thorin::World::extract()</a>, <a class="el" href="normalize_8h_source.html#l00098">thorin::normalize::fold()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00556">thorin::core::fold_conv()</a>, <a class="el" href="normalize_8cpp_source.html#l00704">fold_Conv()</a>, <a class="el" href="check_8cpp_source.html#l00008">infer_type_level()</a>, <a class="el" href="world_8cpp_source.html#l00365">thorin::World::insert()</a>, <a class="el" href="def_8cpp_source.html#l00384">thorin::Def::proj()</a>, <a class="el" href="def_8cpp_source.html#l00208">thorin::Def::sort()</a>, <a class="el" href="tuple_8cpp_source.html#l00086">tuple2str()</a>, <a class="el" href="tuple_8cpp_source.html#l00054">unflatten()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::unfold_type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00416">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00306">thorin::World::extract()</a>, <a class="el" href="normalize_8h_source.html#l00098">thorin::normalize::fold()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00556">thorin::core::fold_conv()</a>, <a class="el" href="normalize_8cpp_source.html#l00704">fold_Conv()</a>, <a class="el" href="check_8cpp_source.html#l00008">infer_type_level()</a>, <a class="el" href="world_8cpp_source.html#l00365">thorin::World::insert()</a>, <a class="el" href="def_8cpp_source.html#l00384">thorin::Def::proj()</a>, <a class="el" href="def_8cpp_source.html#l00208">thorin::Def::sort()</a>, <a class="el" href="tuple_8cpp_source.html#l00086">tuple2str()</a>, <a class="el" href="tuple_8cpp_source.html#l00054">unflatten()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::unfold_type()</a>.</p>
 
 </div>
 </div>
@@ -3684,32 +3706,6 @@ template&lt;class D , class S &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="assert_8h_source.html#l00025">25</a> of file <a class="el" href="assert_8h_source.html">assert.h</a>.</p>
-
-</div>
-</div>
-<a id="a6048c1976f32e52047f6e7d00c23e01e" name="a6048c1976f32e52047f6e7d00c23e01e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6048c1976f32e52047f6e7d00c23e01e">&#9670;&nbsp;</a></span>cleanup()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void thorin::cleanup </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
-          <td class="paramname"><em>old_world</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Removes unreachable and dead code by rebuilding the whole <code>world</code> into a new <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a>. </p>
-
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00064">64</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="def_8h_source.html#l00322">thorin::Def::as_nom()</a>, <a class="el" href="world_8h_source.html#l00143">thorin::World::axioms()</a>, <a class="el" href="world_8h_source.html#l00144">thorin::World::externals()</a>, <a class="el" href="rewrite_8h_source.html#l00028">thorin::Rewriter::new_world</a>, <a class="el" href="rewrite_8h_source.html#l00027">thorin::Rewriter::old_world</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">thorin::Rewriter::rewrite()</a>, and <a class="el" href="world_8h_source.html#l00087">thorin::World::state()</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="pass_8cpp_source.html#l00040">thorin::PassMan::run()</a>.</p>
 
 </div>
 </div>
@@ -3877,7 +3873,7 @@ template&lt;class T  = std::logic_error, class... Args&gt; </div>
 
 <p class="reference">References <a class="el" href="print_8h_source.html#l00132">fmt()</a>, and <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00207">thorin::World::ax()</a>, <a class="el" href="scopes_8cpp_source.html#l00022">thorin::fe::Scopes::bind()</a>, <a class="el" href="error_8h_source.html#l00040">thorin::ErrorHandler::err()</a>, <a class="el" href="scopes_8cpp_source.html#l00012">thorin::fe::Scopes::find()</a>, <a class="el" href="check_8cpp_source.html#l00008">infer_type_level()</a>, and <a class="el" href="lexer_8cpp_source.html#l00031">thorin::fe::Lexer::lex()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00200">thorin::World::ax()</a>, <a class="el" href="scopes_8cpp_source.html#l00022">thorin::fe::Scopes::bind()</a>, <a class="el" href="error_8h_source.html#l00040">thorin::ErrorHandler::err()</a>, <a class="el" href="scopes_8cpp_source.html#l00012">thorin::fe::Scopes::find()</a>, <a class="el" href="check_8cpp_source.html#l00008">infer_type_level()</a>, and <a class="el" href="lexer_8cpp_source.html#l00031">thorin::fe::Lexer::lex()</a>.</p>
 
 </div>
 </div>
@@ -4239,7 +4235,7 @@ template&lt;class... Args&gt; </div>
 
 <p class="reference">References <a class="el" href="print_8cpp_source.html#l00005">print()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00977">thorin::ll::compile()</a>, <a class="el" href="error_8h_source.html#l00015">err()</a>, <a class="el" href="dl_8cpp_source.html#l00032">thorin::dl::err()</a>, <a class="el" href="error_8h_source.html#l00040">thorin::ErrorHandler::err()</a>, <a class="el" href="print_8h_source.html#l00140">errf()</a>, <a class="el" href="print_8h_source.html#l00142">errln()</a>, <a class="el" href="dialects_8cpp_source.html#l00030">get_plugin_name_variants()</a>, <a class="el" href="log_8h_source.html#l00013">thorin::Log::log()</a>, <a class="el" href="print_8h_source.html#l00139">outf()</a>, and <a class="el" href="print_8h_source.html#l00141">outln()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00979">thorin::ll::compile()</a>, <a class="el" href="error_8h_source.html#l00015">err()</a>, <a class="el" href="dl_8cpp_source.html#l00032">thorin::dl::err()</a>, <a class="el" href="error_8h_source.html#l00040">thorin::ErrorHandler::err()</a>, <a class="el" href="print_8h_source.html#l00140">errf()</a>, <a class="el" href="print_8h_source.html#l00142">errln()</a>, <a class="el" href="dialects_8cpp_source.html#l00030">get_plugin_name_variants()</a>, <a class="el" href="log_8h_source.html#l00013">thorin::Log::log()</a>, <a class="el" href="print_8h_source.html#l00139">outf()</a>, and <a class="el" href="print_8h_source.html#l00141">outln()</a>.</p>
 
 </div>
 </div>
@@ -4293,7 +4289,7 @@ template&lt;<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4
 
 <p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00704">704</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00533">as_lit()</a>, <a class="el" href="world_8h_source.html#l00397">thorin::World::bot()</a>, <a class="el" href="normalize_8cpp_source.html#l00833">CODE</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="axiom_8h_source.html#l00171">mod2width()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="normalize_8cpp_source.html#l00696">TABLE</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa67a4340d7a68a1c8f6b8ccc2f4972b64">u2u</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00533">as_lit()</a>, <a class="el" href="world_8h_source.html#l00390">thorin::World::bot()</a>, <a class="el" href="normalize_8cpp_source.html#l00833">CODE</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="axiom_8h_source.html#l00171">mod2width()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="normalize_8cpp_source.html#l00696">TABLE</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa67a4340d7a68a1c8f6b8ccc2f4972b64">u2u</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -4608,7 +4604,7 @@ template&lt;class T , class... Args&gt; </div>
 
 <p class="reference">References <a class="el" href="def_8cpp_source.html#l00348">thorin::Def::is_external()</a>, <a class="el" href="def_8cpp_source.html#l00334">thorin::Def::is_set()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00286">thorin::Def::name()</a>, and <a class="el" href="def_8cpp_source.html#l00350">thorin::Def::unique_name()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="thorin_2pass_2rw_2alloc2malloc_8cpp_source.html#l00005">thorin::mem::Alloc2Malloc::rewrite()</a>, and <a class="el" href="dump_8cpp_source.html#l00366">thorin::Def::write()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dump_8cpp_source.html#l00366">thorin::Def::write()</a>.</p>
 
 </div>
 </div>
@@ -4682,7 +4678,7 @@ template&lt;class T , class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00008">8</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00533">as_lit()</a>, <a class="el" href="error_8h_source.html#l00015">err()</a>, <a class="el" href="world_8h_source.html#l00346">thorin::World::lit_univ()</a>, and <a class="el" href="world_8h_source.html#l00165">thorin::World::type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00533">as_lit()</a>, <a class="el" href="error_8h_source.html#l00015">err()</a>, <a class="el" href="world_8h_source.html#l00339">thorin::World::lit_univ()</a>, and <a class="el" href="world_8h_source.html#l00158">thorin::World::type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00516">thorin::World::ac()</a>, <a class="el" href="world_8cpp_source.html#l00482">thorin::World::bound()</a>, <a class="el" href="world_8cpp_source.html#l00237">thorin::World::sigma()</a>, and <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>.</p>
 
@@ -5220,7 +5216,7 @@ template&lt;class T  = u64&gt; </div>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00403">thorin::World::arr()</a>, <a class="el" href="check_8cpp_source.html#l00087">thorin::Checker::assignable()</a>, <a class="el" href="lattice_8cpp_source.html#l00020">thorin::TBound&lt; up &gt;::convert()</a>, <a class="el" href="ll_8cpp_source.html#l00414">thorin::ll::CodeGen::emit_bb()</a>, <a class="el" href="check_8cpp_source.html#l00024">thorin::Checker::equiv()</a>, <a class="el" href="world_8cpp_source.html#l00306">thorin::World::extract()</a>, <a class="el" href="world_8cpp_source.html#l00365">thorin::World::insert()</a>, <a class="el" href="debug_8cpp_source.html#l00052">thorin::Sym::is_anonymous()</a>, <a class="el" href="world_8cpp_source.html#l00456">thorin::World::lit_int()</a>, <a class="el" href="normalize_8cpp_source.html#l00282">normalize_Bit()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00262">thorin::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00506">thorin::core::normalize_div()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00008">thorin::mem::normalize_lea()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00408">thorin::core::normalize_shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00427">normalize_Shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00632">normalize_Trait()</a>, <a class="el" href="normalize_8cpp_source.html#l00787">normalize_zip()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::num_projs()</a>, <a class="el" href="world_8cpp_source.html#l00424">thorin::World::pack()</a>, <a class="el" href="def_8cpp_source.html#l00384">thorin::Def::proj()</a>, <a class="el" href="normalize_8cpp_source.html#l00199">thorin::normalize::reassociate()</a>, <a class="el" href="def_8cpp_source.html#l00133">thorin::Arr::restructure()</a>, <a class="el" href="def_8cpp_source.html#l00140">thorin::Pack::restructure()</a>, <a class="el" href="world_8cpp_source.html#l00525">thorin::World::test()</a>, and <a class="el" href="world_8cpp_source.html#l00262">thorin::World::tuple()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00403">thorin::World::arr()</a>, <a class="el" href="check_8cpp_source.html#l00087">thorin::Checker::assignable()</a>, <a class="el" href="lattice_8cpp_source.html#l00020">thorin::TBound&lt; up &gt;::convert()</a>, <a class="el" href="ll_8cpp_source.html#l00416">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="check_8cpp_source.html#l00024">thorin::Checker::equiv()</a>, <a class="el" href="world_8cpp_source.html#l00306">thorin::World::extract()</a>, <a class="el" href="world_8cpp_source.html#l00365">thorin::World::insert()</a>, <a class="el" href="debug_8cpp_source.html#l00052">thorin::Sym::is_anonymous()</a>, <a class="el" href="world_8cpp_source.html#l00456">thorin::World::lit_int()</a>, <a class="el" href="normalize_8cpp_source.html#l00282">normalize_Bit()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00262">thorin::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00506">thorin::core::normalize_div()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00008">thorin::mem::normalize_lea()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00408">thorin::core::normalize_shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00427">normalize_Shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00632">normalize_Trait()</a>, <a class="el" href="normalize_8cpp_source.html#l00787">normalize_zip()</a>, <a class="el" href="def_8h_source.html#l00222">thorin::Def::num_projs()</a>, <a class="el" href="world_8cpp_source.html#l00424">thorin::World::pack()</a>, <a class="el" href="def_8cpp_source.html#l00384">thorin::Def::proj()</a>, <a class="el" href="normalize_8cpp_source.html#l00199">thorin::normalize::reassociate()</a>, <a class="el" href="def_8cpp_source.html#l00133">thorin::Arr::restructure()</a>, <a class="el" href="def_8cpp_source.html#l00140">thorin::Pack::restructure()</a>, <a class="el" href="world_8cpp_source.html#l00525">thorin::World::test()</a>, and <a class="el" href="world_8cpp_source.html#l00262">thorin::World::tuple()</a>.</p>
 
 </div>
 </div>
@@ -5252,7 +5248,7 @@ template&lt;class T  = u64&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00160">160</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00414">thorin::ll::CodeGen::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00306">thorin::World::extract()</a>, <a class="el" href="world_8h_source.html#l00554">thorin::World::infer()</a>, <a class="el" href="world_8cpp_source.html#l00365">thorin::World::insert()</a>, <a class="el" href="world_8cpp_source.html#l00456">thorin::World::lit_int()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00605">thorin::core::normalize_bitcast()</a>, and <a class="el" href="normalize_8cpp_source.html#l00770">normalize_bitcast()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00416">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00306">thorin::World::extract()</a>, <a class="el" href="world_8h_source.html#l00547">thorin::World::infer()</a>, <a class="el" href="world_8cpp_source.html#l00365">thorin::World::insert()</a>, <a class="el" href="world_8cpp_source.html#l00456">thorin::World::lit_int()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00605">thorin::core::normalize_bitcast()</a>, and <a class="el" href="normalize_8cpp_source.html#l00770">normalize_bitcast()</a>.</p>
 
 </div>
 </div>
@@ -5606,7 +5602,7 @@ template&lt;class AxTag , <a class="el" href="namespace_3globalScope_4.html#clas
 
 <p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00171">171</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00414">thorin::ll::CodeGen::emit_bb()</a>, <a class="el" href="normalize_8h_source.html#l00098">thorin::normalize::fold()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00556">thorin::core::fold_conv()</a>, and <a class="el" href="normalize_8cpp_source.html#l00704">fold_Conv()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00416">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="normalize_8h_source.html#l00098">thorin::normalize::fold()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00556">thorin::core::fold_conv()</a>, and <a class="el" href="normalize_8cpp_source.html#l00704">fold_Conv()</a>.</p>
 
 </div>
 </div>
@@ -6078,7 +6074,7 @@ template&lt;<a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f
 
 <p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00770">770</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00397">thorin::World::bot()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="axiom_8h_source.html#l00160">isa_sized_type()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00390">thorin::World::bot()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="axiom_8h_source.html#l00160">isa_sized_type()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00039">thorin::World::World()</a>.</p>
 
@@ -6218,7 +6214,7 @@ template&lt;<a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492de
 
 <p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00754">754</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfa4f4000d921968b9665f52e88333007da">hlt</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfac90ae688b2a3b1fd0751fd743eb385cd">known</a>, <a class="el" href="world_8h_source.html#l00371">thorin::World::lit_ff()</a>, <a class="el" href="def_8h_source.html#l00212">thorin::Def::no_dep()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfa4f4000d921968b9665f52e88333007da">hlt</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfac90ae688b2a3b1fd0751fd743eb385cd">known</a>, <a class="el" href="world_8h_source.html#l00364">thorin::World::lit_ff()</a>, <a class="el" href="def_8h_source.html#l00212">thorin::Def::no_dep()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -6402,7 +6398,7 @@ template&lt;<a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c5
 
 <p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00632">632</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">a</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af792d1afb0399dce47533bead9d71a8a">align</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba92eb5ffee6ae2fec3ad71c777531578f">b</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">isa_lit()</a>, <a class="el" href="def_8h_source.html#l00302">thorin::Def::isa_structural()</a>, <a class="el" href="world_8h_source.html#l00341">thorin::World::lit_nat()</a>, <a class="el" href="namespacethorin.html#a65b28a70b601ee7898841af6af02d56fa353942263d1bedfbe06b7bfa78226253">mul</a>, <a class="el" href="tables_8h_source.html#l00049">thorin::WMode::nsw</a>, <a class="el" href="tables_8h_source.html#l00050">thorin::WMode::nuw</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="def_8h_source.html#l00147">thorin::Def::ops()</a>, <a class="el" href="normalize_8cpp_source.html#l00621">pad()</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af7bd60b75b29d79b660a2859395c1a24">size</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">t</a>, <a class="el" href="assert_8h_source.html#l00019">unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">a</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af792d1afb0399dce47533bead9d71a8a">align</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba92eb5ffee6ae2fec3ad71c777531578f">b</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">isa_lit()</a>, <a class="el" href="def_8h_source.html#l00302">thorin::Def::isa_structural()</a>, <a class="el" href="world_8h_source.html#l00334">thorin::World::lit_nat()</a>, <a class="el" href="namespacethorin.html#a65b28a70b601ee7898841af6af02d56fa353942263d1bedfbe06b7bfa78226253">mul</a>, <a class="el" href="tables_8h_source.html#l00049">thorin::WMode::nsw</a>, <a class="el" href="tables_8h_source.html#l00050">thorin::WMode::nuw</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="def_8h_source.html#l00147">thorin::Def::ops()</a>, <a class="el" href="normalize_8cpp_source.html#l00621">pad()</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af7bd60b75b29d79b660a2859395c1a24">size</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">t</a>, <a class="el" href="assert_8h_source.html#l00019">unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -7805,9 +7801,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="optimize_8cpp_source.html#l00011">11</a> of file <a class="el" href="optimize_8cpp_source.html">optimize.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="optimize_8cpp_source.html#l00012">12</a> of file <a class="el" href="optimize_8cpp_source.html">optimize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pipelinebuilder_8cpp_source.html#l00041">thorin::PipelineBuilder::codegen_prep_phase()</a>, and <a class="el" href="pipelinebuilder_8cpp_source.html#l00026">thorin::PipelineBuilder::opt_phase()</a>.</p>
+<p class="reference">References <a class="el" href="phase_8h_source.html#l00162">thorin::Pipeline::add()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00041">thorin::PipelineBuilder::codegen_prep_phase()</a>, <a class="el" href="pipelinebuilder_8cpp_source.html#l00026">thorin::PipelineBuilder::opt_phase()</a>, and <a class="el" href="phase_8cpp_source.html#l00008">thorin::Phase::run()</a>.</p>
 
 </div>
 </div>
@@ -7965,7 +7961,7 @@ template&lt;class S &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="container_8h_source.html#l00016">16</a> of file <a class="el" href="container_8h_source.html">container.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00029">thorin::CFA::CFA()</a>, <a class="el" href="container_8h_source.html#l00050">thorin::unique_stack&lt; Set &gt;::pop()</a>, <a class="el" href="container_8h_source.html#l00079">thorin::unique_queue&lt; Set &gt;::pop()</a>, and <a class="el" href="pass_8cpp_source.html#l00040">thorin::PassMan::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="cfg_8cpp_source.html#l00029">thorin::CFA::CFA()</a>, <a class="el" href="container_8h_source.html#l00050">thorin::unique_stack&lt; Set &gt;::pop()</a>, <a class="el" href="container_8h_source.html#l00079">thorin::unique_queue&lt; Set &gt;::pop()</a>, and <a class="el" href="pass_8cpp_source.html#l00039">thorin::PassMan::run()</a>.</p>
 
 </div>
 </div>
@@ -8001,7 +7997,7 @@ template&lt;class S &gt; </div>
 
 <p class="reference">References <a class="el" href="print_8cpp_source.html#l00028">thorin::detail::match2nd()</a>, and <a class="el" href="assert_8h_source.html#l00019">unreachable()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00056">thorin::ll::BB::assign()</a>, <a class="el" href="dump_8cpp_source.html#l00213">thorin::Dumper::dump()</a>, <a class="el" href="dump_8cpp_source.html#l00375">thorin::World::dump()</a>, <a class="el" href="dump_8cpp_source.html#l00290">thorin::Dumper::dump_ptrn()</a>, <a class="el" href="bootstrapper_8cpp_source.html#l00011">thorin::h::Bootstrapper::emit()</a>, <a class="el" href="ll_8cpp_source.html#l00414">thorin::ll::CodeGen::emit_bb()</a>, <a class="el" href="dot_8cpp_source.html#l00079">thorin::dot::DotEmitter::emit_bb()</a>, <a class="el" href="dot_8cpp_source.html#l00048">thorin::dot::emit_cluster_start()</a>, <a class="el" href="ll_8cpp_source.html#l00297">thorin::ll::CodeGen::emit_epilogue()</a>, <a class="el" href="dot_8cpp_source.html#l00066">thorin::dot::DotEmitter::emit_epilogue()</a>, <a class="el" href="ll_8cpp_source.html#l00233">thorin::ll::CodeGen::emit_imported()</a>, <a class="el" href="dot_8cpp_source.html#l00062">thorin::dot::DotEmitter::emit_imported()</a>, <a class="el" href="error_8h_source.html#l00015">err()</a>, <a class="el" href="dl_8cpp_source.html#l00032">thorin::dl::err()</a>, <a class="el" href="print_8h_source.html#l00140">errf()</a>, <a class="el" href="ll_8cpp_source.html#l00266">thorin::ll::CodeGen::finalize()</a>, <a class="el" href="print_8h_source.html#l00132">fmt()</a>, <a class="el" href="log_8h_source.html#l00013">thorin::Log::log()</a>, <a class="el" href="looptree_8cpp_source.html#l00204">operator&lt;&lt;()</a>, <a class="el" href="print_8h_source.html#l00139">outf()</a>, <a class="el" href="ll_8cpp_source.html#l00247">thorin::ll::CodeGen::prepare()</a>, <a class="el" href="print_8h_source.html#l00154">thorin::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00088">print()</a>, and <a class="el" href="ll_8cpp_source.html#l00062">thorin::ll::BB::tail()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00056">thorin::ll::BB::assign()</a>, <a class="el" href="dump_8cpp_source.html#l00213">thorin::Dumper::dump()</a>, <a class="el" href="dump_8cpp_source.html#l00375">thorin::World::dump()</a>, <a class="el" href="dump_8cpp_source.html#l00290">thorin::Dumper::dump_ptrn()</a>, <a class="el" href="bootstrapper_8cpp_source.html#l00011">thorin::h::Bootstrapper::emit()</a>, <a class="el" href="ll_8cpp_source.html#l00416">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="dot_8cpp_source.html#l00080">thorin::dot::Emitter::emit_bb()</a>, <a class="el" href="dot_8cpp_source.html#l00049">thorin::dot::emit_cluster_start()</a>, <a class="el" href="ll_8cpp_source.html#l00299">thorin::ll::Emitter::emit_epilogue()</a>, <a class="el" href="dot_8cpp_source.html#l00067">thorin::dot::Emitter::emit_epilogue()</a>, <a class="el" href="ll_8cpp_source.html#l00235">thorin::ll::Emitter::emit_imported()</a>, <a class="el" href="dot_8cpp_source.html#l00063">thorin::dot::Emitter::emit_imported()</a>, <a class="el" href="error_8h_source.html#l00015">err()</a>, <a class="el" href="dl_8cpp_source.html#l00032">thorin::dl::err()</a>, <a class="el" href="print_8h_source.html#l00140">errf()</a>, <a class="el" href="ll_8cpp_source.html#l00268">thorin::ll::Emitter::finalize()</a>, <a class="el" href="print_8h_source.html#l00132">fmt()</a>, <a class="el" href="log_8h_source.html#l00013">thorin::Log::log()</a>, <a class="el" href="looptree_8cpp_source.html#l00204">operator&lt;&lt;()</a>, <a class="el" href="print_8h_source.html#l00139">outf()</a>, <a class="el" href="ll_8cpp_source.html#l00249">thorin::ll::Emitter::prepare()</a>, <a class="el" href="print_8h_source.html#l00154">thorin::Tab::print()</a>, <a class="el" href="print_8h_source.html#l00088">print()</a>, and <a class="el" href="ll_8cpp_source.html#l00062">thorin::ll::BB::tail()</a>.</p>
 
 </div>
 </div>
@@ -8273,11 +8269,11 @@ template&lt;class T , class... Args&gt; </div>
 
 <p>Rewrites <code>def</code> by mapping <code>old_def</code> to <code>new_def</code> while obeying <code>scope</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00038">38</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00048">48</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00030">thorin::Rewriter::old2new</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">thorin::Rewriter::rewrite()</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00037">thorin::Rewriter::old2new</a>, <a class="el" href="rewrite_8h_source.html#l00046">thorin::ScopeRewriter::rewrite()</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00306">thorin::World::extract()</a>, <a class="el" href="def_8cpp_source.html#l00357">thorin::Def::reduce()</a>, <a class="el" href="rewrite_8cpp_source.html#l00044">rewrite()</a>, and <a class="el" href="clos__conv_8cpp_source.html#l00119">thorin::clos::ClosConv::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00306">thorin::World::extract()</a>, <a class="el" href="def_8cpp_source.html#l00357">thorin::Def::reduce()</a>, <a class="el" href="rewrite_8cpp_source.html#l00054">rewrite()</a>, and <a class="el" href="clos__conv_8cpp_source.html#l00119">thorin::clos::ClosConv::start()</a>.</p>
 
 </div>
 </div>
@@ -8309,9 +8305,9 @@ template&lt;class T , class... Args&gt; </div>
 
 <p>Rewrites <code>nom's</code> ops by substituting <code>nom's</code> <code><a class="el" href="classthorin_1_1Var.html">Var</a></code> with <code>arg</code> while obeying <code>nom's</code> <code>scope</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00059">59</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00069">69</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00038">rewrite()</a>.</p>
+<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00048">rewrite()</a>.</p>
 
 </div>
 </div>
@@ -8349,9 +8345,9 @@ template&lt;class T , class... Args&gt; </div>
 
 <p>Same as above but uses <code>scope</code> as an optimization instead of computing a new <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00053">53</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00063">63</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00155">thorin::Def::num_ops()</a>, <a class="el" href="rewrite_8h_source.html#l00030">thorin::Rewriter::old2new</a>, <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::var()</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00155">thorin::Def::num_ops()</a>, <a class="el" href="rewrite_8h_source.html#l00037">thorin::Rewriter::old2new</a>, <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::var()</a>, and <a class="el" href="def_8cpp_source.html#l00151">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -8389,9 +8385,9 @@ template&lt;class T , class... Args&gt; </div>
 
 <p>Rewrites <code>nom's</code> <code>i^th</code> op by substituting <code>nom's</code> <code><a class="el" href="classthorin_1_1Var.html">Var</a></code> with <code>arg</code> while obeying <code>nom's</code> <code>scope</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00048">48</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00058">58</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00038">rewrite()</a>.</p>
+<p class="reference">References <a class="el" href="rewrite_8cpp_source.html#l00048">rewrite()</a>.</p>
 
 </div>
 </div>
@@ -8435,9 +8431,9 @@ template&lt;class T , class... Args&gt; </div>
 
 <p>Same as above but uses <code>scope</code> as an optimization instead of computing a new <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00044">44</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00054">54</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00154">thorin::Def::op()</a>, <a class="el" href="rewrite_8cpp_source.html#l00038">rewrite()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::var()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00154">thorin::Def::op()</a>, <a class="el" href="rewrite_8cpp_source.html#l00048">rewrite()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::var()</a>.</p>
 
 </div>
 </div>
@@ -8461,7 +8457,7 @@ template&lt;class T , class... Args&gt; </div>
 
 <p class="reference">References <a class="el" href="scope_8cpp_source.html#l00090">thorin::Scope::f_cfg()</a>, and <a class="el" href="cfg_8h_source.html#l00137">thorin::CFG&lt; forward &gt;::reverse_post_order()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="emitter_8h_source.html#l00055">thorin::Emitter&lt; Value, Type, BB, Child &gt;::emit_scope()</a>, and <a class="el" href="ll_8cpp_source.html#l00266">thorin::ll::CodeGen::finalize()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00268">thorin::ll::Emitter::finalize()</a>, and <a class="el" href="emitter_8h_source.html#l00052">thorin::Emitter&lt; Value, Type, BB, Child &gt;::visit()</a>.</p>
 
 </div>
 </div>
@@ -8740,7 +8736,7 @@ template&lt;class T , class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="assert_8h_source.html#l00019">19</a> of file <a class="el" href="assert_8h_source.html">assert.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="dump_8cpp_source.html#l00213">thorin::Dumper::dump()</a>, <a class="el" href="ll_8cpp_source.html#l00414">thorin::ll::CodeGen::emit_bb()</a>, <a class="el" href="normalize_8h_source.html#l00098">thorin::normalize::fold()</a>, <a class="el" href="log_8cpp_source.html#l00006">thorin::Log::level2acro()</a>, <a class="el" href="log_8cpp_source.html#l00027">thorin::Log::level2color()</a>, <a class="el" href="def_8cpp_source.html#l00167">thorin::Def::node_name()</a>, <a class="el" href="normalize_8cpp_source.html#l00282">normalize_Bit()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00262">thorin::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00506">thorin::core::normalize_div()</a>, <a class="el" href="normalize_8cpp_source.html#l00525">normalize_ROp()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00408">thorin::core::normalize_shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00427">normalize_Shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00632">normalize_Trait()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00442">thorin::core::normalize_wrap()</a>, <a class="el" href="normalize_8cpp_source.html#l00461">normalize_Wrap()</a>, <a class="el" href="tables_8h_source.html#l00215">op2str()</a>, <a class="el" href="looptree_8cpp_source.html#l00204">operator&lt;&lt;()</a>, <a class="el" href="tok_8h_source.html#l00103">thorin::fe::Tok::prec()</a>, <a class="el" href="print_8cpp_source.html#l00005">print()</a>, <a class="el" href="def_8h_source.html#l00353">thorin::Def::rebuild()</a>, <a class="el" href="def_8h_source.html#l00356">thorin::Def::stub()</a>, <a class="el" href="tok_8cpp_source.html#l00010">thorin::fe::Tok::tag2str()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::var()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dump_8cpp_source.html#l00213">thorin::Dumper::dump()</a>, <a class="el" href="ll_8cpp_source.html#l00416">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="normalize_8h_source.html#l00098">thorin::normalize::fold()</a>, <a class="el" href="log_8cpp_source.html#l00006">thorin::Log::level2acro()</a>, <a class="el" href="log_8cpp_source.html#l00027">thorin::Log::level2color()</a>, <a class="el" href="def_8cpp_source.html#l00167">thorin::Def::node_name()</a>, <a class="el" href="normalize_8cpp_source.html#l00282">normalize_Bit()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00262">thorin::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00506">thorin::core::normalize_div()</a>, <a class="el" href="normalize_8cpp_source.html#l00525">normalize_ROp()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00408">thorin::core::normalize_shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00427">normalize_Shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00632">normalize_Trait()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00442">thorin::core::normalize_wrap()</a>, <a class="el" href="normalize_8cpp_source.html#l00461">normalize_Wrap()</a>, <a class="el" href="tables_8h_source.html#l00215">op2str()</a>, <a class="el" href="looptree_8cpp_source.html#l00204">operator&lt;&lt;()</a>, <a class="el" href="tok_8h_source.html#l00103">thorin::fe::Tok::prec()</a>, <a class="el" href="print_8cpp_source.html#l00005">print()</a>, <a class="el" href="def_8h_source.html#l00353">thorin::Def::rebuild()</a>, <a class="el" href="def_8h_source.html#l00356">thorin::Def::stub()</a>, <a class="el" href="tok_8cpp_source.html#l00010">thorin::fe::Tok::tag2str()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::var()</a>.</p>
 
 </div>
 </div>
@@ -8840,7 +8836,7 @@ template&lt;class Indexer , class Key &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00166">166</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00432">thorin::World::type_int_width()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00425">thorin::World::type_int_width()</a>.</p>
 
 </div>
 </div>
@@ -8865,9 +8861,9 @@ template&lt;class Indexer , class Key &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00011">11</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00012">12</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00063">thorin::Pass::analyze()</a>, <a class="el" href="pass_8cpp_source.html#l00040">thorin::PassMan::run()</a>, <a class="el" href="pass_8h_source.html#l00291">thorin::FPPass&lt; P, N &gt;::undo_enter()</a>, and <a class="el" href="pass_8h_source.html#l00286">thorin::FPPass&lt; P, N &gt;::undo_visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00048">thorin::Pass::analyze()</a>, <a class="el" href="pass_8cpp_source.html#l00039">thorin::PassMan::run()</a>, <a class="el" href="pass_8h_source.html#l00280">thorin::FPPass&lt; P, N &gt;::undo_enter()</a>, and <a class="el" href="pass_8h_source.html#l00275">thorin::FPPass&lt; P, N &gt;::undo_visit()</a>.</p>
 
 </div>
 </div>

@@ -1,7 +1,7 @@
 var rewrite_8h =
 [
     [ "thorin::Rewriter", "classthorin_1_1Rewriter.html", "classthorin_1_1Rewriter" ],
-    [ "cleanup", "rewrite_8h.html#a6048c1976f32e52047f6e7d00c23e01e", null ],
+    [ "thorin::ScopeRewriter", "classthorin_1_1ScopeRewriter.html", "classthorin_1_1ScopeRewriter" ],
     [ "rewrite", "rewrite_8h.html#aae14ac541e8de18c5c705ac427c8bcc1", null ],
     [ "rewrite", "rewrite_8h.html#aeaed23abfc215cf29aa0e796d16eeea5", null ],
     [ "rewrite", "rewrite_8h.html#a2c5835530bda21339c69faf41db774b5", null ],

@@ -1,8 +1,8 @@
 var classthorin_1_1FPPass =
 [
     [ "Data", "classthorin_1_1FPPass.html#adf424bdb0ad497b5b46c020ac6c34363", null ],
-    [ "Super", "classthorin_1_1FPPass.html#ab5b9529e4bddbda40f241c4e4be942c6", null ],
-    [ "FPPass", "classthorin_1_1FPPass.html#aca3f4ae7d99c6e4d77ba34e853a9233f", null ],
+    [ "Super", "classthorin_1_1FPPass.html#a0942944069a8b0603e1e3e4309c1541c", null ],
+    [ "FPPass", "classthorin_1_1FPPass.html#a18f70226c4e61e8eaa53233dd312f443", null ],
     [ "curr_undo", "classthorin_1_1FPPass.html#aa8c631fee7f930495e475a90d52f6034", null ],
     [ "data", "classthorin_1_1FPPass.html#a6c64befb7287d780c52f4a6284bd9132", null ],
     [ "data", "classthorin_1_1FPPass.html#a2ec5d560852874d2cb352bb6f1b418e1", null ],

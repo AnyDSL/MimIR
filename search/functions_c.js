@@ -4,7 +4,7 @@ var searchData=
   ['make_5fexternal_1',['make_external',['../classthorin_1_1World.html#a5470697c9d2aaa83b01f7a3209d426e3',1,'thorin::World::make_external()'],['../classthorin_1_1Def.html#a0478725100ec49c9cb03ae02864a78d6',1,'thorin::Def::make_external()']]],
   ['make_5finternal_2',['make_internal',['../classthorin_1_1Def.html#ab0027c07e24d090144365a0857f76d43',1,'thorin::Def::make_internal()'],['../classthorin_1_1World.html#ab73ab54ae387bee661eec51133bdccb9',1,'thorin::World::make_internal()']]],
   ['make_5ftruth_5ftable_3',['make_truth_table',['../namespacethorin_1_1normalize.html#a414e1d3d455040291836b133ce0c53bd',1,'thorin::normalize::make_truth_table(bit2 sub)'],['../namespacethorin_1_1normalize.html#ab2e6bec85b5a6605b5e444578067de79',1,'thorin::normalize::make_truth_table(Bit op)']]],
-  ['man_4',['man',['../classthorin_1_1IPass.html#a7e083fbaf76d0c6a5a800ff6f8fb088f',1,'thorin::IPass::man()'],['../classthorin_1_1IPass.html#a6868a4c90e8682c8f519042212c3ae56',1,'thorin::IPass::man() const']]],
+  ['man_4',['man',['../classthorin_1_1Pass.html#a26e4d112cbd5b8b94856988f9dcbb03c',1,'thorin::Pass::man()'],['../classthorin_1_1Pass.html#a785e44e89a73b844706c412a37a40359',1,'thorin::Pass::man() const']]],
   ['mangle_5',['mangle',['../classthorin_1_1Axiom.html#ab6ef63ca140ce780391b1b5d4101aaf0',1,'thorin::Axiom']]],
   ['mark_5firreducible_6',['mark_irreducible',['../classthorin_1_1EtaRed.html#a9bc9eea6d540cfd464676b6e3c314900',1,'thorin::EtaRed']]],
   ['match_7',['match',['../namespacethorin.html#ad936a3edca20ab0e00d98690a7978910',1,'thorin::match(AxTag sub, const Def *def)'],['../namespacethorin.html#a3b535c1405909d0a73b62794748bbf40',1,'thorin::match(const Def *def)']]],

@@ -8,7 +8,7 @@ var searchData=
   ['scope_5',['Scope',['../classthorin_1_1fe_1_1Scopes.html#a2386bcfa2ed0817b2d46df4436c4652a',1,'thorin::fe::Scopes']]],
   ['set_6',['Set',['../classthorin_1_1CFG.html#a5627c508042392a0bdad6a46e7326804',1,'thorin::CFG']]],
   ['sub_5ft_7',['sub_t',['../namespacethorin.html#a15ce090292f7ca88b828d15baf109838',1,'thorin']]],
-  ['super_8',['Super',['../classthorin_1_1FPPass.html#ab5b9529e4bddbda40f241c4e4be942c6',1,'thorin::FPPass']]],
+  ['super_8',['Super',['../classthorin_1_1dot_1_1Emitter.html#a8e1c4f882defe272daeda6cce3c2fe75',1,'thorin::dot::Emitter::Super()'],['../classthorin_1_1FPPass.html#a0942944069a8b0603e1e3e4309c1541c',1,'thorin::FPPass::Super()'],['../classthorin_1_1ll_1_1Emitter.html#abd8c55ae877a2be9af0a6cf53ee2bde9',1,'thorin::ll::Emitter::Super()']]],
   ['symmap_9',['SymMap',['../namespacethorin.html#a3368507549c1c606d305c18939d17943',1,'thorin']]],
   ['symset_10',['SymSet',['../namespacethorin.html#ae26bd525ba720c363612327d2d927c72',1,'thorin']]]
 ];

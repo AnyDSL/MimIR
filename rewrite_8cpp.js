@@ -1,6 +1,5 @@
 var rewrite_8cpp =
 [
-    [ "cleanup", "rewrite_8cpp.html#a6048c1976f32e52047f6e7d00c23e01e", null ],
     [ "rewrite", "rewrite_8cpp.html#aae14ac541e8de18c5c705ac427c8bcc1", null ],
     [ "rewrite", "rewrite_8cpp.html#aeaed23abfc215cf29aa0e796d16eeea5", null ],
     [ "rewrite", "rewrite_8cpp.html#a2c5835530bda21339c69faf41db774b5", null ],

@@ -1,6 +1,6 @@
 var classthorin_1_1Pass =
 [
-    [ "Pass", "classthorin_1_1Pass.html#a7590468b286a953e04f3d46cc95f453a", null ],
+    [ "Pass", "classthorin_1_1Pass.html#a6a3bea6094c9a9dd9839e87d8b0b341d", null ],
     [ "~Pass", "classthorin_1_1Pass.html#a1422445ab9812219a993c61c2c6842b1", null ],
     [ "alloc", "classthorin_1_1Pass.html#a98d4d09fe9b65d060d1c0aeeccadbb7c", null ],
     [ "analyze", "classthorin_1_1Pass.html#a98a139bb6fb6a5b5a6b0f2d52ebc24dd", null ],
@@ -11,8 +11,12 @@ var classthorin_1_1Pass =
     [ "dealloc", "classthorin_1_1Pass.html#a8b3128ceb49efff091029cad66962ed3", null ],
     [ "enter", "classthorin_1_1Pass.html#a7755639735b41838ba324d8d67e00131", null ],
     [ "fixed_point", "classthorin_1_1Pass.html#ad8dfd5398c9c8f8382668dea21a38d51", null ],
+    [ "index", "classthorin_1_1Pass.html#a63f5c69818c98b9c04b9090b955c1a08", null ],
     [ "inspect", "classthorin_1_1Pass.html#a16826350f9adc391d5b18172d21208ad", null ],
     [ "isa_proxy", "classthorin_1_1Pass.html#a6b99d034b66f83d34cc497fc74ad9577", null ],
+    [ "man", "classthorin_1_1Pass.html#a26e4d112cbd5b8b94856988f9dcbb03c", null ],
+    [ "man", "classthorin_1_1Pass.html#a785e44e89a73b844706c412a37a40359", null ],
+    [ "name", "classthorin_1_1Pass.html#adb4b3c1b2145f77898fd1d0c056315e2", null ],
     [ "proxy", "classthorin_1_1Pass.html#a852a4e1ad220ef4318443ff90dd1b9c7", null ],
     [ "rewrite", "classthorin_1_1Pass.html#a76525e5c686c6d515d8ef474489c8d8a", null ],
     [ "rewrite", "classthorin_1_1Pass.html#ab1e228dbe8871f4cd027f9801962b256", null ],

@@ -173,6 +173,21 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:af3f8df5247a26f483260eb5a96d3870a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63364ab75f62f39bf5041710e10701c0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a63364ab75f62f39bf5041710e10701c0">gid2def</a> (<a class="el" href="namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd">u32</a> gid)</td></tr>
 <tr class="separator:a63364ab75f62f39bf5041710e10701c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">manage nodes</div></td></tr>
+<tr class="memitem:a1425780117a2e3422935eb03cafbf213"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a1425780117a2e3422935eb03cafbf213">axioms</a> () const</td></tr>
+<tr class="separator:a1425780117a2e3422935eb03cafbf213"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b40a0d582ba6e1b28bc50dc0ceb0840"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840">externals</a> () const</td></tr>
+<tr class="separator:a5b40a0d582ba6e1b28bc50dc0ceb0840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bdec64edba33088835f8268d49a6d5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a7bdec64edba33088835f8268d49a6d5b">empty</a> ()</td></tr>
+<tr class="separator:a7bdec64edba33088835f8268d49a6d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5470697c9d2aaa83b01f7a3209d426e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a5470697c9d2aaa83b01f7a3209d426e3">make_external</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:a5470697c9d2aaa83b01f7a3209d426e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab73ab54ae387bee661eec51133bdccb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#ab73ab54ae387bee661eec51133bdccb9">make_internal</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:ab73ab54ae387bee661eec51133bdccb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18ec5f64debade6eeda5edb0ee7c8a03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a18ec5f64debade6eeda5edb0ee7c8a03">is_external</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="separator:a18ec5f64debade6eeda5edb0ee7c8a03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e395f39f57987d870c34df90ae0f80d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a9e395f39f57987d870c34df90ae0f80d">lookup</a> (const std::string &amp;<a class="el" href="classthorin_1_1World.html#ae83bc7243281c049c2760bd4598fdfb1">name</a>)</td></tr>
+<tr class="separator:a9e395f39f57987d870c34df90ae0f80d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Universe, Type, Var, Proxy, Infer</div></td></tr>
 <tr class="memitem:af5dccad9055934bc02d775b1744441e1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Univ.html">Univ</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#af5dccad9055934bc02d775b1744441e1">univ</a> ()</td></tr>
 <tr class="separator:af5dccad9055934bc02d775b1744441e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -561,28 +576,6 @@ Friends</h2></td></tr>
 <tr class="separator:ab6b27c20d41025c4bc9ddf15adf01f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9385c61b1fb0b1d21be6b9d913ad96a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a81c6780cfdf58e5be888c4c16c68476d">DefArray</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a9385c61b1fb0b1d21be6b9d913ad96a0">Def::reduce</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
 <tr class="separator:a9385c61b1fb0b1d21be6b9d913ad96a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader">manage nodes</h2></td></tr>
-<tr class="memitem:af4e2bf1374dd2af475980465c654b903"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#af4e2bf1374dd2af475980465c654b903">VisitFn</a> = std::function&lt; void(const <a class="el" href="classthorin_1_1Scope.html">Scope</a> &amp;)&gt;</td></tr>
-<tr class="separator:af4e2bf1374dd2af475980465c654b903"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1425780117a2e3422935eb03cafbf213"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a1425780117a2e3422935eb03cafbf213">axioms</a> () const</td></tr>
-<tr class="separator:a1425780117a2e3422935eb03cafbf213"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b40a0d582ba6e1b28bc50dc0ceb0840"><td class="memItemLeft" align="right" valign="top">const auto &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840">externals</a> () const</td></tr>
-<tr class="separator:a5b40a0d582ba6e1b28bc50dc0ceb0840"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bdec64edba33088835f8268d49a6d5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a7bdec64edba33088835f8268d49a6d5b">empty</a> ()</td></tr>
-<tr class="separator:a7bdec64edba33088835f8268d49a6d5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5470697c9d2aaa83b01f7a3209d426e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a5470697c9d2aaa83b01f7a3209d426e3">make_external</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
-<tr class="separator:a5470697c9d2aaa83b01f7a3209d426e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab73ab54ae387bee661eec51133bdccb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#ab73ab54ae387bee661eec51133bdccb9">make_internal</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
-<tr class="separator:ab73ab54ae387bee661eec51133bdccb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18ec5f64debade6eeda5edb0ee7c8a03"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a18ec5f64debade6eeda5edb0ee7c8a03">is_external</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
-<tr class="separator:a18ec5f64debade6eeda5edb0ee7c8a03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e395f39f57987d870c34df90ae0f80d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a9e395f39f57987d870c34df90ae0f80d">lookup</a> (const std::string &amp;<a class="el" href="classthorin_1_1World.html#ae83bc7243281c049c2760bd4598fdfb1">name</a>)</td></tr>
-<tr class="separator:a9e395f39f57987d870c34df90ae0f80d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35687817089d85315d46a391dd75e320"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> elide_empty = true&gt; </td></tr>
-<tr class="memitem:a35687817089d85315d46a391dd75e320"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1World.html#a35687817089d85315d46a391dd75e320">visit</a> (<a class="el" href="classthorin_1_1World.html#af4e2bf1374dd2af475980465c654b903">VisitFn</a>) const</td></tr>
-<tr class="memdesc:a35687817089d85315d46a391dd75e320"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transitively visits all <em>reachable</em> <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s in this <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a> that do not have free variables.  <a href="classthorin_1_1World.html#a35687817089d85315d46a391dd75e320">More...</a><br /></td></tr>
-<tr class="separator:a35687817089d85315d46a391dd75e320"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >The <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a> represents the whole program and manages creation of Thorin nodes (<a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s). </p>
@@ -591,24 +584,7 @@ Friends</h2></td></tr>
 <p >Note that types are also just <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>s and will be hashed as well. </p>
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00036">36</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="af4e2bf1374dd2af475980465c654b903" name="af4e2bf1374dd2af475980465c654b903"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4e2bf1374dd2af475980465c654b903">&#9670;&nbsp;</a></span>VisitFn</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using <a class="el" href="classthorin_1_1World.html#af4e2bf1374dd2af475980465c654b903">thorin::World::VisitFn</a> =  std::function&lt;void(const <a class="el" href="classthorin_1_1Scope.html">Scope</a>&amp;)&gt;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00154">154</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a117575868c56bf62a961cc865a7435c4" name="a117575868c56bf62a961cc865a7435c4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a117575868c56bf62a961cc865a7435c4">&#9670;&nbsp;</a></span>World() <span class="overload">[1/3]</span></h2>
 
@@ -637,7 +613,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00039">39</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="cast_8h_source.html#l00037">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::Atomic</a>, <a class="el" href="world_8h_source.html#l00187">axiom()</a>, <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::Bitcast</a>, <a class="el" href="world_8h_source.html#l00234">cn()</a>, <a class="el" href="world_8cpp.html#a8160e20af8896b2d63fbdd98dd7425ff">CODE</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="axiom_8h_source.html#l00031">thorin::Axiom::Global_Dialect</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfa4f4000d921968b9665f52e88333007da">thorin::hlt</a>, <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::Int</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfac90ae688b2a3b1fd0751fd743eb385cd">thorin::known</a>, <a class="el" href="world_8cpp_source.html#l00456">lit_int()</a>, <a class="el" href="world_8h_source.html#l00341">lit_nat()</a>, <a class="el" href="world_8h_source.html#l00346">lit_univ()</a>, <a class="el" href="world_8h_source.html#l00347">lit_univ_0()</a>, <a class="el" href="world_8h_source.html#l00348">lit_univ_1()</a>, <a class="el" href="world_8h_source.html#l00277">nom_arr()</a>, <a class="el" href="world_8h_source.html#l00241">nom_lam()</a>, <a class="el" href="world_8h_source.html#l00229">nom_pi()</a>, <a class="el" href="world_8h_source.html#l00265">nom_sigma()</a>, <a class="el" href="normalize_8cpp_source.html#l00770">thorin::normalize_bitcast()</a>, <a class="el" href="normalize_8cpp_source.html#l00787">thorin::normalize_zip()</a>, <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>, <a class="el" href="tables_8h_source.html#l00215">thorin::op2str()</a>, <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::PE</a>, <a class="el" href="world_8h_source.html#l00225">pi()</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa5e8fe2a329c8ef1e555d617feda85540">thorin::r2r</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4faea350c7fd00b82fa94ce264a386a57cb">thorin::r2s</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa746a49b2e21a5bcacd046f0c02ab6022">thorin::r2u</a>, <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::Real</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfaa53108f7543b75adbb34afc035d4cdf6">thorin::run</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa588c850cce77827aeaa0468d9c1c8ff4">thorin::s2r</a>, <a class="el" href="def_8cpp_source.html#l00296">thorin::Def::set()</a>, <a class="el" href="tuple_8h_source.html#l00066">thorin::Arr::set_body()</a>, <a class="el" href="lam_8h_source.html#l00034">thorin::Pi::set_dom()</a>, <a class="el" href="tuple_8h_source.html#l00065">thorin::Arr::set_shape()</a>, <a class="el" href="world_8h_source.html#l00272">sigma()</a>, <a class="el" href="tables_8h_source.html#l00163">THORIN_BIT</a>, <a class="el" href="tables_8h_source.html#l00081">THORIN_CONV</a>, <a class="el" href="tables_8h_source.html#l00109">THORIN_I_CMP</a>, <a class="el" href="tables_8h_source.html#l00143">THORIN_R_CMP</a>, <a class="el" href="tables_8h_source.html#l00077">THORIN_R_OP</a>, <a class="el" href="tables_8h_source.html#l00073">THORIN_SHR</a>, <a class="el" href="tables_8h_source.html#l00079">THORIN_TRAIT</a>, <a class="el" href="tables_8h_source.html#l00075">THORIN_WRAP</a>, <a class="el" href="world_8h_source.html#l00165">type()</a>, <a class="el" href="world_8h_source.html#l00431">type_bool()</a>, <a class="el" href="world_8h_source.html#l00399">type_bot()</a>, <a class="el" href="world_8h_source.html#l00429">type_int()</a>, <a class="el" href="world_8h_source.html#l00428">type_nat()</a>, <a class="el" href="world_8h_source.html#l00430">type_real()</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fac200b49958a50fdd99489e6423235d58">thorin::u2r</a>, <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::var()</a>, <a class="el" href="def_8h_source.html#l00336">thorin::Def::vars()</a>, and <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::Zip</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="cast_8h_source.html#l00037">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::Atomic</a>, <a class="el" href="world_8h_source.html#l00180">axiom()</a>, <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::Bitcast</a>, <a class="el" href="world_8h_source.html#l00227">cn()</a>, <a class="el" href="world_8cpp.html#a8160e20af8896b2d63fbdd98dd7425ff">CODE</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="axiom_8h_source.html#l00031">thorin::Axiom::Global_Dialect</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfa4f4000d921968b9665f52e88333007da">thorin::hlt</a>, <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::Int</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfac90ae688b2a3b1fd0751fd743eb385cd">thorin::known</a>, <a class="el" href="world_8cpp_source.html#l00456">lit_int()</a>, <a class="el" href="world_8h_source.html#l00334">lit_nat()</a>, <a class="el" href="world_8h_source.html#l00339">lit_univ()</a>, <a class="el" href="world_8h_source.html#l00340">lit_univ_0()</a>, <a class="el" href="world_8h_source.html#l00341">lit_univ_1()</a>, <a class="el" href="world_8h_source.html#l00270">nom_arr()</a>, <a class="el" href="world_8h_source.html#l00234">nom_lam()</a>, <a class="el" href="world_8h_source.html#l00222">nom_pi()</a>, <a class="el" href="world_8h_source.html#l00258">nom_sigma()</a>, <a class="el" href="normalize_8cpp_source.html#l00770">thorin::normalize_bitcast()</a>, <a class="el" href="normalize_8cpp_source.html#l00787">thorin::normalize_zip()</a>, <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>, <a class="el" href="tables_8h_source.html#l00215">thorin::op2str()</a>, <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::PE</a>, <a class="el" href="world_8h_source.html#l00218">pi()</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa5e8fe2a329c8ef1e555d617feda85540">thorin::r2r</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4faea350c7fd00b82fa94ce264a386a57cb">thorin::r2s</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa746a49b2e21a5bcacd046f0c02ab6022">thorin::r2u</a>, <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::Real</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfaa53108f7543b75adbb34afc035d4cdf6">thorin::run</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa588c850cce77827aeaa0468d9c1c8ff4">thorin::s2r</a>, <a class="el" href="def_8cpp_source.html#l00296">thorin::Def::set()</a>, <a class="el" href="tuple_8h_source.html#l00066">thorin::Arr::set_body()</a>, <a class="el" href="lam_8h_source.html#l00034">thorin::Pi::set_dom()</a>, <a class="el" href="tuple_8h_source.html#l00065">thorin::Arr::set_shape()</a>, <a class="el" href="world_8h_source.html#l00265">sigma()</a>, <a class="el" href="tables_8h_source.html#l00163">THORIN_BIT</a>, <a class="el" href="tables_8h_source.html#l00081">THORIN_CONV</a>, <a class="el" href="tables_8h_source.html#l00109">THORIN_I_CMP</a>, <a class="el" href="tables_8h_source.html#l00143">THORIN_R_CMP</a>, <a class="el" href="tables_8h_source.html#l00077">THORIN_R_OP</a>, <a class="el" href="tables_8h_source.html#l00073">THORIN_SHR</a>, <a class="el" href="tables_8h_source.html#l00079">THORIN_TRAIT</a>, <a class="el" href="tables_8h_source.html#l00075">THORIN_WRAP</a>, <a class="el" href="world_8h_source.html#l00158">type()</a>, <a class="el" href="world_8h_source.html#l00424">type_bool()</a>, <a class="el" href="world_8h_source.html#l00392">type_bot()</a>, <a class="el" href="world_8h_source.html#l00422">type_int()</a>, <a class="el" href="world_8h_source.html#l00421">type_nat()</a>, <a class="el" href="world_8h_source.html#l00423">type_real()</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fac200b49958a50fdd99489e6423235d58">thorin::u2r</a>, <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::var()</a>, <a class="el" href="def_8h_source.html#l00336">thorin::Def::vars()</a>, and <a class="el" href="tables_8h_source.html#l00189">thorin::Tag::Zip</a>.</p>
 
 </div>
 </div>
@@ -695,7 +671,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00078">78</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00762">swap</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00755">swap</a>.</p>
 
 </div>
 </div>
@@ -753,7 +729,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00506">506</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="world_8h_source.html#l00410">meet()</a>, <a class="el" href="array_8h_source.html#l00084">thorin::ArrayRef&lt; T &gt;::size()</a>, and <a class="el" href="world_8h_source.html#l00165">type()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="world_8h_source.html#l00403">meet()</a>, <a class="el" href="array_8h_source.html#l00084">thorin::ArrayRef&lt; T &gt;::size()</a>, and <a class="el" href="world_8h_source.html#l00158">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00516">ac()</a>, and <a class="el" href="def_8cpp_source.html#l00069">thorin::Ac::rebuild()</a>.</p>
 
@@ -789,7 +765,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00516">516</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00506">ac()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, and <a class="el" href="check_8cpp_source.html#l00008">thorin::infer_type_level()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00506">ac()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, and <a class="el" href="check_8cpp_source.html#l00008">thorin::infer_type_level()</a>.</p>
 
 </div>
 </div>
@@ -859,9 +835,9 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00213">213</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00187">axiom()</a>, <a class="el" href="array_8h_source.html#l00329">thorin::Array&lt; T &gt;::back()</a>, <a class="el" href="world_8h_source.html#l00103">checker()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="lam_8h_source.html#l00022">thorin::Pi::dom()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8h_source.html#l00040">thorin::ErrorHandler::err()</a>, <a class="el" href="axiom_8cpp_source.html#l00101">thorin::Axiom::get()</a>, <a class="el" href="error_8cpp_source.html#l00024">thorin::ErrorHandler::ill_typed_app()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00287">thorin::Def::loc()</a>, <a class="el" href="axiom_8h_source.html#l00019">thorin::Axiom::normalizer()</a>, <a class="el" href="world_8h_source.html#l00225">pi()</a>, <a class="el" href="def_8cpp_source.html#l00352">thorin::Def::reduce()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="world_8h_source.html#l00165">type()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00180">axiom()</a>, <a class="el" href="array_8h_source.html#l00329">thorin::Array&lt; T &gt;::back()</a>, <a class="el" href="world_8h_source.html#l00103">checker()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="lam_8h_source.html#l00022">thorin::Pi::dom()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8h_source.html#l00040">thorin::ErrorHandler::err()</a>, <a class="el" href="axiom_8cpp_source.html#l00101">thorin::Axiom::get()</a>, <a class="el" href="error_8cpp_source.html#l00024">thorin::ErrorHandler::ill_typed_app()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00287">thorin::Def::loc()</a>, <a class="el" href="axiom_8h_source.html#l00019">thorin::Axiom::normalizer()</a>, <a class="el" href="world_8h_source.html#l00218">pi()</a>, <a class="el" href="def_8cpp_source.html#l00352">thorin::Def::reduce()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="world_8h_source.html#l00158">type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="affine_8h_source.html#l00011">thorin::affine::fn_for()</a>, <a class="el" href="affine_8h_source.html#l00017">thorin::affine::op_for()</a>, <a class="el" href="def_8cpp_source.html#l00070">thorin::App::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00364">thorin::Def::reduce_rec()</a>, <a class="el" href="world_8h_source.html#l00435">type_int()</a>, and <a class="el" href="world_8h_source.html#l00436">type_real()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="affine_8h_source.html#l00011">thorin::affine::fn_for()</a>, <a class="el" href="affine_8h_source.html#l00017">thorin::affine::op_for()</a>, <a class="el" href="def_8cpp_source.html#l00070">thorin::App::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00364">thorin::Def::reduce_rec()</a>, <a class="el" href="world_8h_source.html#l00428">type_int()</a>, and <a class="el" href="world_8h_source.html#l00429">type_real()</a>.</p>
 
 </div>
 </div>
@@ -905,7 +881,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00256">256</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00249">249</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -949,7 +925,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00285">285</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00278">278</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -987,7 +963,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00403">403</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8cpp_source.html#l00009">thorin::ErrorHandler::expected_shape()</a>, <a class="el" href="world_8cpp_source.html#l00394">thorin::is_shape()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="def_8h_source.html#l00147">thorin::Def::ops()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8h_source.html#l00272">sigma()</a>, <a class="el" href="world_8h_source.html#l00298">tuple()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::unfold_type()</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8cpp_source.html#l00009">thorin::ErrorHandler::expected_shape()</a>, <a class="el" href="world_8cpp_source.html#l00394">thorin::is_shape()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="def_8h_source.html#l00147">thorin::Def::ops()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8h_source.html#l00265">sigma()</a>, <a class="el" href="world_8h_source.html#l00291">tuple()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::unfold_type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8cpp_source.html#l00474">ext()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="def_8cpp_source.html#l00071">thorin::Arr::rebuild()</a>, <a class="el" href="world_8cpp_source.html#l00237">sigma()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -1027,7 +1003,7 @@ Friends</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00446">446</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="array_8h_source.html#l00106">thorin::ArrayRef&lt; T &gt;::back()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::empty()</a>, and <a class="el" href="array_8h_source.html#l00115">thorin::ArrayRef&lt; T &gt;::skip_back()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="array_8h_source.html#l00106">thorin::ArrayRef&lt; T &gt;::back()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::empty()</a>, and <a class="el" href="array_8h_source.html#l00115">thorin::ArrayRef&lt; T &gt;::skip_back()</a>.</p>
 
 </div>
 </div>
@@ -1071,7 +1047,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00284">284</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00277">277</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -1109,7 +1085,7 @@ Friends</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00288">288</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00281">281</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -1141,11 +1117,11 @@ template&lt;axiom_without_sub_tags AxTag&gt; </div>
 <p>Get axiom from a dialect. </p>
 <p >Can be used to get an axiom without sub-tags. E.g. use <code>w.ax&lt;<a class="el" href="namespacethorin_1_1mem.html#abab7091b7bb05e14f8f9e7081981fb7c">mem::M</a>&gt;();</code> to get the mem.M axiom. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00218">218</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00211">211</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00218">ax()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00211">ax()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00218">ax()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00211">ax()</a>.</p>
 
 </div>
 </div>
@@ -1173,7 +1149,7 @@ template&lt;axiom_without_sub_tags AxTag&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00442">442</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00435">435</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
@@ -1208,7 +1184,7 @@ template&lt;class AxTag &gt; </div>
 <p>Get axiom from a dialect. </p>
 <p ><a class="el" href="classthorin_1_1Use.html" title="References a user.">Use</a> this to get an axiom with sub-tags. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00207">207</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00200">200</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="error_8h_source.html#l00015">thorin::err()</a>, and <a class="el" href="world_8h_source.html#l00100">flags()</a>.</p>
 
@@ -1240,7 +1216,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00443">443</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00436">436</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
@@ -1270,7 +1246,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00444">444</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00437">437</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
@@ -1300,7 +1276,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00445">445</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00438">438</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
@@ -1330,7 +1306,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00446">446</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00439">439</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
@@ -1360,7 +1336,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00447">447</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00440">440</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
@@ -1390,7 +1366,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00448">448</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00441">441</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
@@ -1420,7 +1396,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00449">449</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00442">442</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
@@ -1450,7 +1426,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00450">450</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00443">443</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
@@ -1480,7 +1456,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00451">451</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00444">444</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc">thorin::o</a>.</p>
 
@@ -1509,7 +1485,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00452">452</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00445">445</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -1536,7 +1512,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00453">453</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00446">446</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -1563,7 +1539,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00454">454</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00447">447</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -1604,7 +1580,7 @@ template&lt;class AxTag &gt; </div>
 <p>Builds a fresh <a class="el" href="classthorin_1_1Axiom.html">Axiom</a> with descending <a class="el" href="classthorin_1_1Axiom.html#a9188e87e6a0284c7f0745cafc0bd6e13">Axiom::sub</a>. </p>
 <p >This is useful during testing to come up with some entitiy of a specific type. It uses the dialect <a class="el" href="classthorin_1_1Axiom.html#a5a2d4a4ceb6b5424e316d0c52baea3e3">Axiom::Global_Dialect</a> and starts with <code>0</code> for <a class="el" href="classthorin_1_1Axiom.html#a9188e87e6a0284c7f0745cafc0bd6e13">Axiom::sub</a> and counts up from there. The <a class="el" href="classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534">Axiom::tag</a> is set to <code>0</code> and the <a class="el" href="classthorin_1_1Axiom.html#a05d2e899a18e55005f71c1803da89ae3">Axiom::normalizer</a> to <code>nullptr</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00199">199</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00192">192</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -1660,7 +1636,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00191">191</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00184">184</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -1722,7 +1698,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00187">187</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00180">180</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00213">app()</a>, <a class="el" href="world_8cpp_source.html#l00230">raw_app()</a>, <a class="el" href="def_8cpp_source.html#l00090">thorin::Axiom::rebuild()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -1752,8 +1728,6 @@ template&lt;class AxTag &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00143">143</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00064">thorin::cleanup()</a>.</p>
 
 </div>
 </div>
@@ -1791,7 +1765,7 @@ template&lt;class AxTag &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00397">397</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00390">390</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="debug_8cpp_source.html#l00037">thorin::Debug::def()</a>, <a class="el" href="normalize_8h_source.html#l00098">thorin::normalize::fold()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00556">thorin::core::fold_conv()</a>, <a class="el" href="normalize_8cpp_source.html#l00704">thorin::fold_Conv()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00605">thorin::core::normalize_bitcast()</a>, and <a class="el" href="normalize_8cpp_source.html#l00770">thorin::normalize_bitcast()</a>.</p>
 
@@ -1827,7 +1801,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00482">482</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00313">thorin::Array&lt; T &gt;::begin()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="check_8cpp_source.html#l00008">thorin::infer_type_level()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="world_8h_source.html#l00492">op()</a>, <a class="el" href="array_8h_source.html#l00305">thorin::Array&lt; T &gt;::shrink()</a>, and <a class="el" href="array_8h_source.html#l00303">thorin::Array&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00313">thorin::Array&lt; T &gt;::begin()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="check_8cpp_source.html#l00008">thorin::infer_type_level()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="world_8h_source.html#l00485">op()</a>, <a class="el" href="array_8h_source.html#l00305">thorin::Array&lt; T &gt;::shrink()</a>, and <a class="el" href="array_8h_source.html#l00303">thorin::Array&lt; T &gt;::size()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00097">thorin::TBound&lt; up &gt;::rebuild()</a>.</p>
 
@@ -1907,11 +1881,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00234">234</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00227">227</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00234">cn()</a>, and <a class="el" href="world_8h_source.html#l00272">sigma()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00227">cn()</a>, and <a class="el" href="world_8h_source.html#l00265">sigma()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00234">cn()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00023">thorin::clos::ctype()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00227">cn()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00023">thorin::clos::ctype()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
 </div>
 </div>
@@ -1949,7 +1923,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00235">235</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00228">228</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -1987,7 +1961,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00236">236</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00229">229</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2048,11 +2022,11 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00544">544</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00537">537</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="debug_8cpp_source.html#l00037">thorin::Debug::def()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00506">ac()</a>, <a class="el" href="world_8cpp_source.html#l00213">app()</a>, <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="world_8cpp_source.html#l00482">bound()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00023">thorin::clos::ctype()</a>, <a class="el" href="world_8cpp_source.html#l00474">ext()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, <a class="el" href="world_8h_source.html#l00246">lam()</a>, <a class="el" href="world_8cpp_source.html#l00456">lit_int()</a>, <a class="el" href="world_8h_source.html#l00180">nom_infer()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8cpp_source.html#l00523">pick()</a>, <a class="el" href="world_8cpp_source.html#l00230">raw_app()</a>, <a class="el" href="world_8cpp_source.html#l00237">sigma()</a>, <a class="el" href="world_8cpp_source.html#l00541">singleton()</a>, <a class="el" href="world_8h_source.html#l00297">sym()</a>, <a class="el" href="world_8cpp_source.html#l00525">test()</a>, <a class="el" href="world_8cpp_source.html#l00252">tuple()</a>, <a class="el" href="world_8cpp_source.html#l00300">tuple_str()</a>, <a class="el" href="ast_8cpp_source.html#l00028">thorin::fe::IdPtrn::type()</a>, <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>, <a class="el" href="world_8cpp_source.html#l00518">vel()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00506">ac()</a>, <a class="el" href="world_8cpp_source.html#l00213">app()</a>, <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="ast_8cpp_source.html#l00018">thorin::fe::TuplePtrn::bind()</a>, <a class="el" href="world_8cpp_source.html#l00482">bound()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00023">thorin::clos::ctype()</a>, <a class="el" href="world_8cpp_source.html#l00474">ext()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, <a class="el" href="world_8h_source.html#l00239">lam()</a>, <a class="el" href="world_8cpp_source.html#l00456">lit_int()</a>, <a class="el" href="world_8h_source.html#l00173">nom_infer()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8cpp_source.html#l00523">pick()</a>, <a class="el" href="world_8cpp_source.html#l00230">raw_app()</a>, <a class="el" href="world_8cpp_source.html#l00237">sigma()</a>, <a class="el" href="world_8cpp_source.html#l00541">singleton()</a>, <a class="el" href="world_8h_source.html#l00290">sym()</a>, <a class="el" href="world_8cpp_source.html#l00525">test()</a>, <a class="el" href="world_8cpp_source.html#l00252">tuple()</a>, <a class="el" href="world_8cpp_source.html#l00300">tuple_str()</a>, <a class="el" href="ast_8cpp_source.html#l00028">thorin::fe::IdPtrn::type()</a>, <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>, <a class="el" href="world_8cpp_source.html#l00518">vel()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
 </div>
 </div>
@@ -2090,7 +2064,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00549">549</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00542">542</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2134,7 +2108,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00545">545</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00538">538</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2157,9 +2131,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="dump_8cpp_source.html#l00396">396</a> of file <a class="el" href="dump_8cpp_source.html">dump.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba">thorin::Log::Debug</a>, <a class="el" href="dump_8cpp_source.html#l00394">dump()</a>, and <a class="el" href="world_8h_source.html#l00559">log()</a>.</p>
+<p class="reference">References <a class="el" href="structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba">thorin::Log::Debug</a>, <a class="el" href="dump_8cpp_source.html#l00394">dump()</a>, and <a class="el" href="world_8h_source.html#l00552">log()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8cpp_source.html#l00040">thorin::PassMan::run()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8cpp_source.html#l00039">thorin::PassMan::run()</a>.</p>
 
 </div>
 </div>
@@ -2293,7 +2267,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p>Used as a dummy exit node within <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00250">250</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00243">243</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2327,7 +2301,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00474">474</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00155">thorin::Def::num_ops()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8h_source.html#l00272">sigma()</a>, <a class="el" href="world_8h_source.html#l00298">tuple()</a>, and <a class="el" href="world_8h_source.html#l00165">type()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00155">thorin::Def::num_ops()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8h_source.html#l00265">sigma()</a>, <a class="el" href="world_8h_source.html#l00291">tuple()</a>, and <a class="el" href="world_8h_source.html#l00158">type()</a>.</p>
 
 </div>
 </div>
@@ -2356,7 +2330,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00144">144</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00064">thorin::cleanup()</a>, <a class="el" href="dump_8cpp_source.html#l00375">dump()</a>, and <a class="el" href="world_8cpp_source.html#l00566">visit()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="dump_8cpp_source.html#l00375">dump()</a>.</p>
 
 </div>
 </div>
@@ -2394,7 +2368,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00306">306</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8cpp_source.html#l00232">thorin::Def::arity()</a>, <a class="el" href="cast_8h_source.html#l00037">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="def_8h_source.html#l00533">thorin::as_lit()</a>, <a class="el" href="world_8h_source.html#l00103">checker()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8h_source.html#l00040">thorin::ErrorHandler::err()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="error_8cpp_source.html#l00019">thorin::ErrorHandler::index_out_of_range()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="def_8h_source.html#l00312">thorin::Def::isa_nom()</a>, <a class="el" href="axiom_8h_source.html#l00160">thorin::isa_sized_type()</a>, <a class="el" href="def_8h_source.html#l00302">thorin::Def::isa_structural()</a>, <a class="el" href="def_8h_source.html#l00287">thorin::Def::loc()</a>, <a class="el" href="world_8h_source.html#l00265">nom_sigma()</a>, <a class="el" href="def_8h_source.html#l00155">thorin::Def::num_ops()</a>, <a class="el" href="world_8h_source.html#l00492">op()</a>, <a class="el" href="def_8h_source.html#l00154">thorin::Def::op()</a>, <a class="el" href="def_8h_source.html#l00147">thorin::Def::ops()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="def_8cpp_source.html#l00384">thorin::Def::proj()</a>, <a class="el" href="rewrite_8cpp_source.html#l00038">thorin::rewrite()</a>, <a class="el" href="world_8h_source.html#l00272">sigma()</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">thorin::t</a>, <a class="el" href="world_8h_source.html#l00298">tuple()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, <a class="el" href="world_8h_source.html#l00165">type()</a>, <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::unfold_type()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::var()</a>.</p>
+<p class="reference">References <a class="el" href="def_8cpp_source.html#l00232">thorin::Def::arity()</a>, <a class="el" href="cast_8h_source.html#l00037">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="def_8h_source.html#l00533">thorin::as_lit()</a>, <a class="el" href="world_8h_source.html#l00103">checker()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8h_source.html#l00040">thorin::ErrorHandler::err()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="error_8cpp_source.html#l00019">thorin::ErrorHandler::index_out_of_range()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="def_8h_source.html#l00312">thorin::Def::isa_nom()</a>, <a class="el" href="axiom_8h_source.html#l00160">thorin::isa_sized_type()</a>, <a class="el" href="def_8h_source.html#l00302">thorin::Def::isa_structural()</a>, <a class="el" href="def_8h_source.html#l00287">thorin::Def::loc()</a>, <a class="el" href="world_8h_source.html#l00258">nom_sigma()</a>, <a class="el" href="def_8h_source.html#l00155">thorin::Def::num_ops()</a>, <a class="el" href="world_8h_source.html#l00485">op()</a>, <a class="el" href="def_8h_source.html#l00154">thorin::Def::op()</a>, <a class="el" href="def_8h_source.html#l00147">thorin::Def::ops()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="def_8cpp_source.html#l00384">thorin::Def::proj()</a>, <a class="el" href="rewrite_8cpp_source.html#l00048">thorin::rewrite()</a>, <a class="el" href="world_8h_source.html#l00265">sigma()</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">thorin::t</a>, <a class="el" href="world_8h_source.html#l00291">tuple()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, <a class="el" href="world_8h_source.html#l00158">type()</a>, <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::unfold_type()</a>, and <a class="el" href="def_8cpp_source.html#l00185">thorin::Def::var()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="def_8cpp_source.html#l00384">thorin::Def::proj()</a>, <a class="el" href="def_8cpp_source.html#l00072">thorin::Extract::rebuild()</a>, <a class="el" href="world_8cpp_source.html#l00262">tuple()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -2446,7 +2420,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00316">316</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00309">309</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2490,7 +2464,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00317">317</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00310">310</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2552,7 +2526,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p class="reference">References <a class="el" href="world_8h_source.html#l00047">thorin::World::State::POD::flags</a>, and <a class="el" href="structthorin_1_1World_1_1State.html#a8be30c4cfa20cb0cf4f34ec7dd69c193">thorin::World::State::pod</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00207">ax()</a>, and <a class="el" href="dump_8cpp_source.html#l00375">dump()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00200">ax()</a>, and <a class="el" href="dump_8cpp_source.html#l00375">dump()</a>.</p>
 
 </div>
 </div>
@@ -2596,7 +2570,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00460">460</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00453">453</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2646,7 +2620,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00461">461</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00454">454</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2690,7 +2664,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00464">464</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00457">457</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2742,7 +2716,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00480">480</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00473">473</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2788,7 +2762,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00476">476</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00469">469</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2838,7 +2812,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00465">465</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00458">458</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2888,7 +2862,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00468">468</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00461">461</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2932,7 +2906,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00471">471</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00464">464</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -2982,7 +2956,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00472">472</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00465">465</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -3020,7 +2994,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00483">483</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00476">476</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -3064,7 +3038,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00484">484</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00477">477</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -3179,7 +3153,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00422">422</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00415">415</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00109">thorin::Global::stub()</a>.</p>
 
@@ -3240,7 +3214,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00554">554</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00547">547</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="axiom_8h_source.html#l00160">thorin::isa_sized_type()</a>, and <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>.</p>
 
@@ -3286,7 +3260,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00365">365</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="def_8cpp_source.html#l00232">thorin::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00533">thorin::as_lit()</a>, <a class="el" href="world_8h_source.html#l00103">checker()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8cpp_source.html#l00019">thorin::ErrorHandler::index_out_of_range()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="axiom_8h_source.html#l00160">thorin::isa_sized_type()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">thorin::t</a>, <a class="el" href="world_8h_source.html#l00298">tuple()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, <a class="el" href="world_8h_source.html#l00165">type()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::unfold_type()</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="def_8cpp_source.html#l00232">thorin::Def::arity()</a>, <a class="el" href="def_8h_source.html#l00533">thorin::as_lit()</a>, <a class="el" href="world_8h_source.html#l00103">checker()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8cpp_source.html#l00019">thorin::ErrorHandler::index_out_of_range()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="axiom_8h_source.html#l00160">thorin::isa_sized_type()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">thorin::t</a>, <a class="el" href="world_8h_source.html#l00291">tuple()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, <a class="el" href="world_8h_source.html#l00158">type()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::unfold_type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, and <a class="el" href="def_8cpp_source.html#l00073">thorin::Insert::rebuild()</a>.</p>
 
@@ -3344,7 +3318,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00330">330</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00323">323</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -3394,7 +3368,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00333">333</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00326">326</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -3493,7 +3467,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00409">409</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00402">402</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00525">test()</a>.</p>
 
@@ -3539,11 +3513,11 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00249">249</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00242">242</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="world_8h_source.html#l00249">lam()</a>, <a class="el" href="world_8h_source.html#l00372">lit_tt()</a>, and <a class="el" href="world_8h_source.html#l00225">pi()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="world_8h_source.html#l00242">lam()</a>, <a class="el" href="world_8h_source.html#l00365">lit_tt()</a>, and <a class="el" href="world_8h_source.html#l00218">pi()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00249">lam()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00242">lam()</a>.</p>
 
 </div>
 </div>
@@ -3593,9 +3567,9 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00246">246</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00239">239</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00544">dbg()</a>, and <a class="el" href="world_8h_source.html#l00225">pi()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00537">dbg()</a>, and <a class="el" href="world_8h_source.html#l00218">pi()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00074">thorin::Lam::rebuild()</a>.</p>
 
@@ -3641,7 +3615,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00340">340</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00333">333</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="normalize_8h_source.html#l00098">thorin::normalize::fold()</a>, <a class="el" href="world_8cpp_source.html#l00456">lit_int()</a>, and <a class="el" href="def_8cpp_source.html#l00075">thorin::Lit::rebuild()</a>.</p>
 
@@ -3671,7 +3645,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00370">370</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00363">363</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="lam_8cpp_source.html#l00029">thorin::Lam::set_filter()</a>.</p>
 
@@ -3700,7 +3674,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00371">371</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00364">364</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="normalize_8cpp_source.html#l00754">thorin::normalize_PE()</a>.</p>
 
@@ -3740,7 +3714,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00456">456</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8cpp_source.html#l00019">thorin::ErrorHandler::index_out_of_range()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="axiom_8h_source.html#l00160">thorin::isa_sized_type()</a>, <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9a2db95e8e1a9267b7a1188556b2013b33">thorin::l</a>, <a class="el" href="world_8h_source.html#l00340">lit()</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>, and <a class="el" href="world_8h_source.html#l00165">type()</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8cpp_source.html#l00019">thorin::ErrorHandler::index_out_of_range()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="axiom_8h_source.html#l00160">thorin::isa_sized_type()</a>, <a class="el" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9a2db95e8e1a9267b7a1188556b2013b33">thorin::l</a>, <a class="el" href="world_8h_source.html#l00333">lit()</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>, and <a class="el" href="world_8h_source.html#l00158">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="lattice_8cpp_source.html#l00016">thorin::Bound::index()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -3782,7 +3756,7 @@ template&lt;class I &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00365">365</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00358">358</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -3829,7 +3803,7 @@ template&lt;class I &gt; </div>
 <p>Constructs <a class="el" href="namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383a326e6c6e907a407a9a6b99cb241f6763">Tag::Int</a> <a class="el" href="classthorin_1_1Lit.html">Lit</a> <code>val</code> with <em>internal</em> <em>mod</em>, i.e. </p>
 <p >without any conversions - <code>mod = 0</code> means <code>2^64</code>. <a class="el" href="classthorin_1_1Use.html" title="References a user.">Use</a> this version if you directly receive an <em>internal</em> <code>mod</code> which is already converted. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00363">363</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00356">356</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -3876,7 +3850,7 @@ template&lt;class I &gt; </div>
 <p>Constructs <a class="el" href="namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383a326e6c6e907a407a9a6b99cb241f6763">Tag::Int</a> <a class="el" href="classthorin_1_1Lit.html">Lit</a> <code>val</code> with <em>external</em> <em>mod</em>. </p>
 <p >I.e. if <code>mod == 0</code>, it will be adjusted to <code>uint_t(-1)</code> (special case for <code>2^64</code>). </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00357">357</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00350">350</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -3922,7 +3896,7 @@ template&lt;class I &gt; </div>
 
 <p>Constructs <a class="el" href="namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383a326e6c6e907a407a9a6b99cb241f6763">Tag::Int</a> <a class="el" href="classthorin_1_1Lit.html">Lit</a> <code>val</code> via <code>width</code>, i.e. converts from <em>width</em> to <em>internal</em> <em>mod</em> value. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00351">351</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00344">344</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -3960,9 +3934,9 @@ template&lt;class I &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00341">341</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00334">334</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00232">thorin::Def::arity()</a>, <a class="el" href="debug_8cpp_source.html#l00028">thorin::Pos::def()</a>, <a class="el" href="normalize_8cpp_source.html#l00632">thorin::normalize_Trait()</a>, <a class="el" href="world_8cpp_source.html#l00300">tuple_str()</a>, <a class="el" href="world_8h_source.html#l00433">type_int()</a>, <a class="el" href="world_8h_source.html#l00432">type_int_width()</a>, <a class="el" href="world_8h_source.html#l00434">type_real()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00232">thorin::Def::arity()</a>, <a class="el" href="debug_8cpp_source.html#l00028">thorin::Pos::def()</a>, <a class="el" href="normalize_8cpp_source.html#l00632">thorin::normalize_Trait()</a>, <a class="el" href="world_8cpp_source.html#l00300">tuple_str()</a>, <a class="el" href="world_8h_source.html#l00426">type_int()</a>, <a class="el" href="world_8h_source.html#l00425">type_int_width()</a>, <a class="el" href="world_8h_source.html#l00427">type_real()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
 </div>
 </div>
@@ -3989,7 +3963,7 @@ template&lt;class I &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00342">342</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00335">335</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4016,7 +3990,7 @@ template&lt;class I &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00343">343</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00336">336</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4043,7 +4017,7 @@ template&lt;class I &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00344">344</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00337">337</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4087,7 +4061,7 @@ template&lt;class I &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00374">374</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00367">367</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4127,7 +4101,7 @@ template&lt;class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00383">383</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00376">376</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4154,9 +4128,9 @@ template&lt;class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00372">372</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00365">365</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00249">lam()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00242">lam()</a>.</p>
 
 </div>
 </div>
@@ -4194,7 +4168,7 @@ template&lt;class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00346">346</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00339">339</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="check_8cpp_source.html#l00008">thorin::infer_type_level()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -4223,7 +4197,7 @@ template&lt;class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00347">347</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00340">340</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -4252,7 +4226,7 @@ template&lt;class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00348">348</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00341">341</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -4281,7 +4255,7 @@ template&lt;class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00560">560</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00553">553</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="world_8h_source.html#l00046">thorin::World::State::POD::log</a>, and <a class="el" href="structthorin_1_1World_1_1State.html#a8be30c4cfa20cb0cf4f34ec7dd69c193">thorin::World::State::pod</a>.</p>
 
@@ -4310,7 +4284,7 @@ template&lt;class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00559">559</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00552">552</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">References <a class="el" href="world_8h_source.html#l00046">thorin::World::State::POD::log</a>, and <a class="el" href="structthorin_1_1World_1_1State.html#a8be30c4cfa20cb0cf4f34ec7dd69c193">thorin::World::State::pod</a>.</p>
 
@@ -4446,7 +4420,7 @@ template&lt;class R &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00410">410</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00403">403</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00506">ac()</a>.</p>
 
@@ -4479,7 +4453,7 @@ template&lt;class R &gt; </div>
 
 <p class="reference">References <a class="el" href="world_8h_source.html#l00053">thorin::World::State::name</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00092">add_imported()</a>, <a class="el" href="world_8h_source.html#l00149">lookup()</a>, <a class="el" href="world_8h_source.html#l00090">set_name()</a>, <a class="el" href="world_8cpp_source.html#l00566">visit()</a>, and <a class="el" href="dump_8cpp_source.html#l00405">write()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00092">add_imported()</a>, <a class="el" href="world_8h_source.html#l00149">lookup()</a>, <a class="el" href="world_8h_source.html#l00090">set_name()</a>, and <a class="el" href="dump_8cpp_source.html#l00405">write()</a>.</p>
 
 </div>
 </div>
@@ -4540,7 +4514,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00279">279</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00272">272</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4578,7 +4552,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00277">277</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00270">270</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00106">thorin::Arr::stub()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -4626,7 +4600,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00401">401</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00394">394</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00114">thorin::TBound&lt; up &gt;::stub()</a>.</p>
 
@@ -4670,7 +4644,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 
 <p>A *nom*inal <a class="el" href="classthorin_1_1Bound.html" title="Common base for TBound.">Bound</a> of <a class="el" href="classthorin_1_1Type.html">Type</a> <code>level</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00403">403</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00396">396</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4708,7 +4682,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00179">179</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00172">172</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00108">thorin::Infer::stub()</a>.</p>
 
@@ -4748,9 +4722,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00180">180</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00173">173</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="world_8h_source.html#l00297">sym()</a>, and <a class="el" href="world_8h_source.html#l00165">type()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="world_8h_source.html#l00290">sym()</a>, and <a class="el" href="world_8h_source.html#l00158">type()</a>.</p>
 
 </div>
 </div>
@@ -4778,7 +4752,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00182">182</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00175">175</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ast_8cpp_source.html#l00028">thorin::fe::IdPtrn::type()</a>.</p>
 
@@ -4808,7 +4782,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00181">181</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00174">174</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4852,7 +4826,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00405">405</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00398">398</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4892,7 +4866,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00407">407</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00400">400</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4930,7 +4904,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00245">245</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00238">238</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -4974,7 +4948,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00241">241</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00234">234</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="ret__wrap_8cpp_source.html#l00005">thorin::RetWrap::enter()</a>, <a class="el" href="def_8cpp_source.html#l00103">thorin::Lam::stub()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -5020,7 +4994,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00406">406</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00399">399</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5060,7 +5034,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00408">408</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00401">401</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5098,7 +5072,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00303">303</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00296">296</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00107">thorin::Pack::stub()</a>.</p>
 
@@ -5138,7 +5112,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00229">229</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00222">222</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00104">thorin::Pi::stub()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -5184,7 +5158,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00265">265</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00258">258</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="clos__conv_8cpp_source.html#l00023">thorin::clos::ctype()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="def_8cpp_source.html#l00105">thorin::Sigma::stub()</a>, <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -5228,7 +5202,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 
 <p>A *nom*inal <a class="el" href="classthorin_1_1Sigma.html">Sigma</a> of type <code>level</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00268">268</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00261">261</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5284,7 +5258,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00515">515</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00508">508</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5334,7 +5308,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00492">492</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00485">485</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00482">bound()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="normalize_8cpp_source.html#l00199">thorin::normalize::reassociate()</a>, <a class="el" href="world_8cpp_source.html#l00237">sigma()</a>, and <a class="el" href="world_8cpp_source.html#l00262">tuple()</a>.</p>
 
@@ -5386,7 +5360,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00508">508</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00501">501</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5436,7 +5410,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00493">493</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00486">486</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5494,7 +5468,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00505">505</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00498">498</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5538,7 +5512,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00514">514</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00507">507</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5594,7 +5568,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00494">494</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00487">487</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5650,7 +5624,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00497">497</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00490">490</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5700,7 +5674,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00500">500</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00493">493</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5744,7 +5718,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00513">513</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00506">506</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5800,7 +5774,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00501">501</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00494">494</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5844,7 +5818,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00518">518</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00511">511</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5888,7 +5862,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00519">519</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00512">512</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5926,7 +5900,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00526">526</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00519">519</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -5970,7 +5944,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00530">530</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00523">523</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6014,7 +5988,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00538">538</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00531">531</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6058,7 +6032,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00534">534</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00527">527</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6102,7 +6076,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00539">539</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00532">532</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6172,7 +6146,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00307">307</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00300">300</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6210,7 +6184,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00424">424</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8cpp_source.html#l00009">thorin::ErrorHandler::expected_shape()</a>, <a class="el" href="world_8cpp_source.html#l00394">thorin::is_shape()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="def_8h_source.html#l00147">thorin::Def::ops()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8h_source.html#l00298">tuple()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="world_8h_source.html#l00165">type()</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="error_8cpp_source.html#l00009">thorin::ErrorHandler::expected_shape()</a>, <a class="el" href="world_8cpp_source.html#l00394">thorin::is_shape()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="def_8h_source.html#l00147">thorin::Def::ops()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8h_source.html#l00291">tuple()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="world_8h_source.html#l00158">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8cpp_source.html#l00474">ext()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="def_8cpp_source.html#l00077">thorin::Pack::rebuild()</a>, and <a class="el" href="world_8cpp_source.html#l00262">tuple()</a>.</p>
 
@@ -6250,7 +6224,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00451">451</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00106">thorin::ArrayRef&lt; T &gt;::back()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::empty()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, and <a class="el" href="array_8h_source.html#l00115">thorin::ArrayRef&lt; T &gt;::skip_back()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00106">thorin::ArrayRef&lt; T &gt;::back()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="array_8h_source.html#l00085">thorin::ArrayRef&lt; T &gt;::empty()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, and <a class="el" href="array_8h_source.html#l00115">thorin::ArrayRef&lt; T &gt;::skip_back()</a>.</p>
 
 </div>
 </div>
@@ -6294,7 +6268,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00306">306</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00299">299</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6338,9 +6312,9 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00225">225</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00218">218</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00213">app()</a>, <a class="el" href="world_8h_source.html#l00246">lam()</a>, <a class="el" href="world_8cpp_source.html#l00230">raw_app()</a>, <a class="el" href="def_8cpp_source.html#l00078">thorin::Pi::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00122">thorin::Pi::restructure()</a>, <a class="el" href="world_8cpp_source.html#l00525">test()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00213">app()</a>, <a class="el" href="world_8h_source.html#l00239">lam()</a>, <a class="el" href="world_8cpp_source.html#l00230">raw_app()</a>, <a class="el" href="def_8cpp_source.html#l00078">thorin::Pi::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00122">thorin::Pi::restructure()</a>, <a class="el" href="world_8cpp_source.html#l00525">test()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
 </div>
 </div>
@@ -6384,7 +6358,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00228">228</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00221">221</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6422,7 +6396,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00523">523</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00544">dbg()</a>, and <a class="el" href="world_8h_source.html#l00165">type()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00537">dbg()</a>, and <a class="el" href="world_8h_source.html#l00158">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00079">thorin::Pick::rebuild()</a>.</p>
 
@@ -6480,7 +6454,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00176">176</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00169">169</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00080">thorin::Proxy::rebuild()</a>.</p>
 
@@ -6522,7 +6496,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00230">230</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="cast_8h_source.html#l00037">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="world_8h_source.html#l00187">axiom()</a>, <a class="el" href="array_8h_source.html#l00329">thorin::Array&lt; T &gt;::back()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="axiom_8cpp_source.html#l00101">thorin::Axiom::get()</a>, <a class="el" href="world_8h_source.html#l00225">pi()</a>, <a class="el" href="def_8cpp_source.html#l00352">thorin::Def::reduce()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="world_8h_source.html#l00165">type()</a>.</p>
+<p class="reference">References <a class="el" href="cast_8h_source.html#l00037">thorin::RuntimeCast&lt; Base &gt;::as()</a>, <a class="el" href="world_8h_source.html#l00180">axiom()</a>, <a class="el" href="array_8h_source.html#l00329">thorin::Array&lt; T &gt;::back()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="axiom_8cpp_source.html#l00101">thorin::Axiom::get()</a>, <a class="el" href="world_8h_source.html#l00218">pi()</a>, <a class="el" href="def_8cpp_source.html#l00352">thorin::Def::reduce()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="world_8h_source.html#l00158">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="normalize_8cpp_source.html#l00766">thorin::normalize_Acc()</a>, and <a class="el" href="mem_2normalizers_8cpp_source.html#l00033">thorin::mem::normalize_remem()</a>.</p>
 
@@ -6570,7 +6544,7 @@ template&lt;class O &gt; </div>
 
 <p>Same as <a class="el" href="classthorin_1_1World.html#a1e15a79744a99e7b34015bb230e259d4">World::app</a> but does <em>not</em> apply NormalizeFn. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00260">260</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00253">253</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6623,7 +6597,7 @@ template&lt;class O &gt; </div>
 <p>Builds <code>(f, t)cond</code>. </p>
 <p ><b>Note</b> that select expects <code>t</code> as first argument and <code>f</code> as second one. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00321">321</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00314">314</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6682,9 +6656,9 @@ template&lt;class O &gt; </div>
 
 <p>The unit type within <a class="el" href="classthorin_1_1Type.html">Type</a> 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00272">272</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00265">265</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8h_source.html#l00234">cn()</a>, <a class="el" href="world_8cpp_source.html#l00474">ext()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="world_8cpp_source.html#l00237">sigma()</a>, <a class="el" href="world_8cpp_source.html#l00252">tuple()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8h_source.html#l00227">cn()</a>, <a class="el" href="world_8cpp_source.html#l00474">ext()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="world_8cpp_source.html#l00237">sigma()</a>, <a class="el" href="world_8cpp_source.html#l00252">tuple()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
 </div>
 </div>
@@ -6716,9 +6690,9 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00237">237</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="array_8h_source.html#l00090">thorin::ArrayRef&lt; T &gt;::begin()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="array_8h_source.html#l00091">thorin::ArrayRef&lt; T &gt;::end()</a>, <a class="el" href="check_8cpp_source.html#l00008">thorin::infer_type_level()</a>, <a class="el" href="world_8h_source.html#l00492">op()</a>, <a class="el" href="world_8h_source.html#l00272">sigma()</a>, and <a class="el" href="array_8h_source.html#l00084">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="array_8h_source.html#l00090">thorin::ArrayRef&lt; T &gt;::begin()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="array_8h_source.html#l00091">thorin::ArrayRef&lt; T &gt;::end()</a>, <a class="el" href="check_8cpp_source.html#l00008">thorin::infer_type_level()</a>, <a class="el" href="world_8h_source.html#l00485">op()</a>, <a class="el" href="world_8h_source.html#l00265">sigma()</a>, and <a class="el" href="array_8h_source.html#l00084">thorin::ArrayRef&lt; T &gt;::size()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="tuple_8cpp_source.html#l00028">thorin::flatten()</a>, <a class="el" href="world_8cpp_source.html#l00245">thorin::infer_sigma()</a>, <a class="el" href="tuple_8cpp_source.html#l00056">thorin::is_unit()</a>, <a class="el" href="tuple_8cpp_source.html#l00069">thorin::merge_sigma()</a>, <a class="el" href="def_8cpp_source.html#l00081">thorin::Sigma::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00127">thorin::Sigma::restructure()</a>, and <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="clos_8h_source.html#l00143">thorin::clos::clos_insert_env()</a>, <a class="el" href="clos_8h_source.html#l00153">thorin::clos::clos_remove_env()</a>, <a class="el" href="tuple_8cpp_source.html#l00028">thorin::flatten()</a>, <a class="el" href="world_8cpp_source.html#l00245">thorin::infer_sigma()</a>, <a class="el" href="tuple_8cpp_source.html#l00056">thorin::is_unit()</a>, <a class="el" href="tuple_8cpp_source.html#l00069">thorin::merge_sigma()</a>, <a class="el" href="def_8cpp_source.html#l00081">thorin::Sigma::rebuild()</a>, <a class="el" href="def_8cpp_source.html#l00127">thorin::Sigma::restructure()</a>, and <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>.</p>
 
 </div>
 </div>
@@ -6750,7 +6724,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00541">541</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00544">dbg()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00537">dbg()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00082">thorin::Singleton::rebuild()</a>.</p>
 
@@ -6780,8 +6754,6 @@ template&lt;class O &gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00087">87</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00064">thorin::cleanup()</a>.</p>
 
 </div>
 </div>
@@ -6819,11 +6791,11 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00297">297</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00290">290</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="debug_8cpp_source.html#l00030">thorin::Loc::def()</a>, and <a class="el" href="world_8cpp_source.html#l00300">tuple_str()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="debug_8cpp_source.html#l00030">thorin::Loc::def()</a>, and <a class="el" href="world_8cpp_source.html#l00300">tuple_str()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="lexer_8cpp_source.html#l00031">thorin::fe::Lexer::lex()</a>, and <a class="el" href="world_8h_source.html#l00180">nom_infer()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="lexer_8cpp_source.html#l00031">thorin::fe::Lexer::lex()</a>, and <a class="el" href="world_8h_source.html#l00173">nom_infer()</a>.</p>
 
 </div>
 </div>
@@ -6873,7 +6845,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00525">525</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="assert_8h_source.html#l00034">assert_unused</a>, <a class="el" href="world_8h_source.html#l00103">checker()</a>, <a class="el" href="lam_8h_source.html#l00023">thorin::Pi::codom()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="lam_8h_source.html#l00022">thorin::Pi::dom()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="world_8h_source.html#l00409">join()</a>, <a class="el" href="axiom_8h_source.html#l00197">thorin::match()</a>, <a class="el" href="world_8h_source.html#l00225">pi()</a>, and <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::a</a>, <a class="el" href="assert_8h_source.html#l00034">assert_unused</a>, <a class="el" href="world_8h_source.html#l00103">checker()</a>, <a class="el" href="lam_8h_source.html#l00023">thorin::Pi::codom()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="lam_8h_source.html#l00022">thorin::Pi::dom()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="world_8h_source.html#l00402">join()</a>, <a class="el" href="axiom_8h_source.html#l00197">thorin::match()</a>, <a class="el" href="world_8h_source.html#l00218">pi()</a>, and <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00084">thorin::Test::rebuild()</a>.</p>
 
@@ -6913,7 +6885,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00398">398</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00391">391</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6940,7 +6912,7 @@ template&lt;class O &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00400">400</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00393">393</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -6969,7 +6941,7 @@ template&lt;class O &gt; </div>
 
 <p>the unit value of type <code>[]</code> </p>
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00298">298</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00291">291</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00403">arr()</a>, <a class="el" href="world_8cpp_source.html#l00474">ext()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8cpp_source.html#l00252">tuple()</a>, and <a class="el" href="world_8cpp_source.html#l00300">tuple_str()</a>.</p>
 
@@ -7011,7 +6983,7 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00262">262</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="array_8h_source.html#l00090">thorin::ArrayRef&lt; T &gt;::begin()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="array_8h_source.html#l00091">thorin::ArrayRef&lt; T &gt;::end()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="def_8h_source.html#l00312">thorin::Def::isa_nom()</a>, <a class="el" href="world_8h_source.html#l00492">op()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="array_8h_source.html#l00084">thorin::ArrayRef&lt; T &gt;::size()</a>, <a class="el" href="world_8h_source.html#l00298">tuple()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="world_8h_source.html#l00165">type()</a>.</p>
+<p class="reference">References <a class="el" href="array_8h_source.html#l00090">thorin::ArrayRef&lt; T &gt;::begin()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="array_8h_source.html#l00091">thorin::ArrayRef&lt; T &gt;::end()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="def_8h_source.html#l00526">thorin::isa_lit()</a>, <a class="el" href="def_8h_source.html#l00312">thorin::Def::isa_nom()</a>, <a class="el" href="world_8h_source.html#l00485">op()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="array_8h_source.html#l00084">thorin::ArrayRef&lt; T &gt;::size()</a>, <a class="el" href="world_8h_source.html#l00291">tuple()</a>, <a class="el" href="def_8h_source.html#l00137">thorin::Def::type()</a>, and <a class="el" href="world_8h_source.html#l00158">type()</a>.</p>
 
 </div>
 </div>
@@ -7043,9 +7015,9 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00252">252</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00103">checker()</a>, <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="world_8cpp_source.html#l00245">thorin::infer_sigma()</a>, <a class="el" href="world_8h_source.html#l00272">sigma()</a>, <a class="el" href="array_8h_source.html#l00084">thorin::ArrayRef&lt; T &gt;::size()</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">thorin::t</a>, and <a class="el" href="world_8h_source.html#l00298">tuple()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00103">checker()</a>, <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="world_8h_source.html#l00104">err()</a>, <a class="el" href="world_8cpp_source.html#l00245">thorin::infer_sigma()</a>, <a class="el" href="world_8h_source.html#l00265">sigma()</a>, <a class="el" href="array_8h_source.html#l00084">thorin::ArrayRef&lt; T &gt;::size()</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">thorin::t</a>, and <a class="el" href="world_8h_source.html#l00291">tuple()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="debug_8cpp_source.html#l00030">thorin::Loc::def()</a>, <a class="el" href="debug_8cpp_source.html#l00037">thorin::Debug::def()</a>, <a class="el" href="ret__wrap_8cpp_source.html#l00005">thorin::RetWrap::enter()</a>, <a class="el" href="tuple_8cpp_source.html#l00028">thorin::flatten()</a>, <a class="el" href="lower__typed__clos_8cpp_source.html#l00025">thorin::clos::insert_ret()</a>, <a class="el" href="tuple_8cpp_source.html#l00075">thorin::merge_tuple()</a>, <a class="el" href="affine_8h_source.html#l00017">thorin::affine::op_for()</a>, <a class="el" href="def_8cpp_source.html#l00085">thorin::Tuple::rebuild()</a>, and <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="clos_8h_source.html#l00096">thorin::clos::apply_closure()</a>, <a class="el" href="clos_8h_source.html#l00143">thorin::clos::clos_insert_env()</a>, <a class="el" href="clos_8h_source.html#l00153">thorin::clos::clos_remove_env()</a>, <a class="el" href="debug_8cpp_source.html#l00030">thorin::Loc::def()</a>, <a class="el" href="debug_8cpp_source.html#l00037">thorin::Debug::def()</a>, <a class="el" href="ret__wrap_8cpp_source.html#l00005">thorin::RetWrap::enter()</a>, <a class="el" href="tuple_8cpp_source.html#l00028">thorin::flatten()</a>, <a class="el" href="lower__typed__clos_8cpp_source.html#l00025">thorin::clos::insert_ret()</a>, <a class="el" href="tuple_8cpp_source.html#l00075">thorin::merge_tuple()</a>, <a class="el" href="affine_8h_source.html#l00017">thorin::affine::op_for()</a>, <a class="el" href="def_8cpp_source.html#l00085">thorin::Tuple::rebuild()</a>, and <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>.</p>
 
 </div>
 </div>
@@ -7077,9 +7049,9 @@ template&lt;class O &gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00300">300</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="world_8h_source.html#l00341">lit_nat()</a>, and <a class="el" href="world_8h_source.html#l00298">tuple()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="world_8h_source.html#l00334">lit_nat()</a>, and <a class="el" href="world_8h_source.html#l00291">tuple()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="debug_8cpp_source.html#l00030">thorin::Loc::def()</a>, <a class="el" href="debug_8cpp_source.html#l00037">thorin::Debug::def()</a>, and <a class="el" href="world_8h_source.html#l00297">sym()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="debug_8cpp_source.html#l00030">thorin::Loc::def()</a>, <a class="el" href="debug_8cpp_source.html#l00037">thorin::Debug::def()</a>, and <a class="el" href="world_8h_source.html#l00290">sym()</a>.</p>
 
 </div>
 </div>
@@ -7109,7 +7081,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00167">167</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00160">160</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 </div>
 </div>
@@ -7147,9 +7119,9 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00165">165</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00158">158</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00506">ac()</a>, <a class="el" href="world_8cpp_source.html#l00213">app()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00023">thorin::clos::ctype()</a>, <a class="el" href="world_8cpp_source.html#l00474">ext()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="check_8cpp_source.html#l00008">thorin::infer_type_level()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, <a class="el" href="world_8cpp_source.html#l00456">lit_int()</a>, <a class="el" href="world_8h_source.html#l00180">nom_infer()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8cpp_source.html#l00523">pick()</a>, <a class="el" href="world_8cpp_source.html#l00230">raw_app()</a>, <a class="el" href="def_8cpp_source.html#l00083">thorin::Type::rebuild()</a>, <a class="el" href="world_8cpp_source.html#l00262">tuple()</a>, <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::unfold_type()</a>, <a class="el" href="world_8cpp_source.html#l00518">vel()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00506">ac()</a>, <a class="el" href="world_8cpp_source.html#l00213">app()</a>, <a class="el" href="clos__conv_8cpp_source.html#l00023">thorin::clos::ctype()</a>, <a class="el" href="world_8cpp_source.html#l00474">ext()</a>, <a class="el" href="world_8cpp_source.html#l00306">extract()</a>, <a class="el" href="check_8cpp_source.html#l00008">thorin::infer_type_level()</a>, <a class="el" href="world_8cpp_source.html#l00365">insert()</a>, <a class="el" href="world_8cpp_source.html#l00456">lit_int()</a>, <a class="el" href="world_8h_source.html#l00173">nom_infer()</a>, <a class="el" href="world_8cpp_source.html#l00424">pack()</a>, <a class="el" href="world_8cpp_source.html#l00523">pick()</a>, <a class="el" href="world_8cpp_source.html#l00230">raw_app()</a>, <a class="el" href="def_8cpp_source.html#l00083">thorin::Type::rebuild()</a>, <a class="el" href="world_8cpp_source.html#l00262">tuple()</a>, <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::unfold_type()</a>, <a class="el" href="world_8cpp_source.html#l00518">vel()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
 </div>
 </div>
@@ -7176,7 +7148,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00431">431</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00424">424</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -7205,7 +7177,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00399">399</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00392">392</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="debug_8cpp_source.html#l00037">thorin::Debug::def()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -7234,9 +7206,9 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00429">429</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00422">422</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00432">type_int_width()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00425">type_int_width()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
 </div>
 </div>
@@ -7264,11 +7236,11 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00435">435</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00428">428</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00213">app()</a>, and <a class="el" href="world_8h_source.html#l00435">type_int()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00213">app()</a>, and <a class="el" href="world_8h_source.html#l00428">type_int()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00435">type_int()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00428">type_int()</a>.</p>
 
 </div>
 </div>
@@ -7296,11 +7268,11 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00433">433</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00426">426</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00341">lit_nat()</a>, and <a class="el" href="world_8h_source.html#l00433">type_int()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00334">lit_nat()</a>, and <a class="el" href="world_8h_source.html#l00426">type_int()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00433">type_int()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00426">type_int()</a>.</p>
 
 </div>
 </div>
@@ -7328,9 +7300,9 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00432">432</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00425">425</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00341">lit_nat()</a>, <a class="el" href="world_8h_source.html#l00429">type_int()</a>, and <a class="el" href="axiom_8h_source.html#l00166">thorin::width2mod()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00334">lit_nat()</a>, <a class="el" href="world_8h_source.html#l00422">type_int()</a>, and <a class="el" href="axiom_8h_source.html#l00166">thorin::width2mod()</a>.</p>
 
 </div>
 </div>
@@ -7357,7 +7329,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00428">428</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00421">421</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00076">thorin::Nat::rebuild()</a>, and <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -7386,7 +7358,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00430">430</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00423">423</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00039">World()</a>.</p>
 
@@ -7416,11 +7388,11 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00436">436</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00429">429</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8cpp_source.html#l00213">app()</a>, and <a class="el" href="world_8h_source.html#l00436">type_real()</a>.</p>
+<p class="reference">References <a class="el" href="world_8cpp_source.html#l00213">app()</a>, and <a class="el" href="world_8h_source.html#l00429">type_real()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00436">type_real()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00429">type_real()</a>.</p>
 
 </div>
 </div>
@@ -7448,11 +7420,11 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00434">434</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00427">427</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00341">lit_nat()</a>, and <a class="el" href="world_8h_source.html#l00434">type_real()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00334">lit_nat()</a>, and <a class="el" href="world_8h_source.html#l00427">type_real()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00434">type_real()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00427">type_real()</a>.</p>
 
 </div>
 </div>
@@ -7479,7 +7451,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00164">164</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00157">157</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00086">thorin::Univ::rebuild()</a>, and <a class="el" href="rewrite_8h_source.html#l00012">thorin::Rewriter::Rewriter()</a>.</p>
 
@@ -7525,7 +7497,7 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00175">175</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00168">168</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00087">thorin::Var::rebuild()</a>.</p>
 
@@ -7565,36 +7537,9 @@ template&lt;<a class="el" href="namespacethorin.html#ae2b9a3abaa277c7852b0f46524
 
 <p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00518">518</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00544">dbg()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, and <a class="el" href="world_8h_source.html#l00165">type()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00537">dbg()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, and <a class="el" href="world_8h_source.html#l00158">type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="def_8cpp_source.html#l00088">thorin::Vel::rebuild()</a>.</p>
-
-</div>
-</div>
-<a id="a35687817089d85315d46a391dd75e320" name="a35687817089d85315d46a391dd75e320"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35687817089d85315d46a391dd75e320">&#9670;&nbsp;</a></span>visit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> elide_empty&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">template void thorin::World::visit&lt; false &gt; </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1World.html#af4e2bf1374dd2af475980465c654b903">VisitFn</a>&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Transitively visits all <em>reachable</em> <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s in this <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a> that do not have free variables. </p>
-<p >We call these <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s <em>top-level</em> <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s. Select with <code>elide_empty</code> whether you want to visit trivial <a class="el" href="classthorin_1_1Scope.html" title="A Scope represents a region of Defs that are live from the view of an entry&#39;s Var.">Scope</a>s of <em>noms</em> without body. </p>
-
-<p class="definition">Definition at line <a class="el" href="world_8cpp_source.html#l00566">566</a> of file <a class="el" href="world_8cpp_source.html">world.cpp</a>.</p>
-
-<p class="reference">References <a class="el" href="container_8h_source.html#l00078">thorin::unique_queue&lt; Set &gt;::empty()</a>, <a class="el" href="world_8h_source.html#l00144">externals()</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">thorin::f</a>, <a class="el" href="scope_8h_source.html#l00047">thorin::Scope::free_noms()</a>, <a class="el" href="world_8h_source.html#l00089">name()</a>, <a class="el" href="container_8h_source.html#l00079">thorin::unique_queue&lt; Set &gt;::pop()</a>, and <a class="el" href="container_8h_source.html#l00070">thorin::unique_queue&lt; Set &gt;::push()</a>.</p>
 
 </div>
 </div>
@@ -7708,7 +7653,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00762">762</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="world_8h_source.html#l00755">755</a> of file <a class="el" href="world_8h_source.html">world.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00078">World()</a>.</p>
 

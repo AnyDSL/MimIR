@@ -110,17 +110,18 @@ $(document).ready(function(){initNavTree('pass_8h.html',''); initResizable(); })
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;stack&gt;</code><br />
+<code>#include &lt;typeindex&gt;</code><br />
 <code>#include &quot;<a class="el" href="world_8h_source.html">thorin/world.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for pass.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="pass_8h__incl.svg" width="2055" height="679"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="pass_8h__incl.svg" width="2016" height="679"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="pass_8h__dep__incl.svg" width="5240" height="468"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="pass_8h__dep__incl.svg" width="5154" height="468"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -130,16 +131,13 @@ This graph shows which files directly or indirectly include this file:</div>
 Classes</h2></td></tr>
 <tr class="memitem:structthorin_1_1PassTag"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#structthorin_1_1PassTag">thorin::PassTag</a></td></tr>
 <tr class="separator:structthorin_1_1PassTag"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IPass.html">thorin::IPass</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a minimalistic base interface to work with when dynamically loading a <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>.  <a href="classthorin_1_1IPass.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Pass.html">thorin::Pass</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">All Passes that want to be registered in the <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> must implement this interface.  <a href="classthorin_1_1Pass.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">All <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a>es that want to be registered in the <a class="el" href="classthorin_1_1PassMan.html" title="An optimizer that combines several optimizations in an optimal way.">PassMan</a> must implement this interface.  <a href="classthorin_1_1Pass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PassMan.html">thorin::PassMan</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An optimizer that combines several optimizations in an optimal way.  <a href="classthorin_1_1PassMan.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPass.html">thorin::RWPass&lt; N &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1RWPass.html">thorin::RWPass&lt; P, N &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inherit from this class if your <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a> does <b>not</b> need state and a fixed-point iteration.  <a href="classthorin_1_1RWPass.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html">thorin::FPPass&lt; P, N &gt;</a></td></tr>
@@ -174,7 +172,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00013">13</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00014">14</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 </div>
 </div>
 </div>

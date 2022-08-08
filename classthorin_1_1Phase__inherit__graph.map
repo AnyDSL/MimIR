@@ -1,0 +1,16 @@
+<map id="thorin::Phase" name="thorin::Phase">
+<area shape="rect" id="node1" title="As opposed to a Pass, a Phase does one thing at a time and does not mix with other Phases." alt="" coords="5,157,112,184"/>
+<area shape="rect" id="node2" href="$classthorin_1_1PassManPhase.html" title="Wraps a PassMan pipeline as a Phase." alt="" coords="183,5,347,32"/>
+<area shape="rect" id="node3" href="$classthorin_1_1PassPhase.html" title="Wraps a Pass as a Phase." alt="" coords="177,56,352,83"/>
+<area shape="rect" id="node4" href="$classthorin_1_1Pipeline.html" title="Organizes several Phases as a pipeline." alt="" coords="205,107,325,133"/>
+<area shape="rect" id="node5" href="$classthorin_1_1RWPhase.html" title="Visits the current Phase::world and constructs a new World Phase::new_world along the way." alt="" coords="200,157,329,184"/>
+<area shape="rect" id="node8" href="$classthorin_1_1ScopePhase.html" title="Transitively visits all reachable Scopes in World that do not have free variables." alt="" coords="191,208,338,235"/>
+<area shape="rect" id="node13" href="$classthorin_1_1clos_1_1ClosConv.html" title="Performs typed closure conversion." alt="" coords="183,259,346,285"/>
+<area shape="rect" id="node14" href="$classthorin_1_1clos_1_1LowerTypedClos.html" title="This pass lowers typed closures to untyped closures." alt="" coords="161,309,368,336"/>
+<area shape="rect" id="node6" href="$classthorin_1_1Cleanup.html" title="Removes unreachable and dead code by rebuilding the whole World into a new one and swapping afterward..." alt="" coords="442,107,563,133"/>
+<area shape="rect" id="node7" href="$classthorin_1_1FPPhase.html" title="Like a RWPhase but starts with a fixed&#45;point loop of FPPhase::analyze beforehand." alt="" coords="441,157,564,184"/>
+<area shape="rect" id="node9" href="$classthorin_1_1Emitter.html" title=" " alt="" coords="779,223,929,279"/>
+<area shape="rect" id="node12" href="$classthorin_1_1Emitter.html" title=" " alt="" coords="417,259,588,301"/>
+<area shape="rect" id="node10" href="$classthorin_1_1dot_1_1Emitter.html" title=" " alt="" coords="979,212,1124,239"/>
+<area shape="rect" id="node11" href="$classthorin_1_1ll_1_1Emitter.html" title=" " alt="" coords="985,263,1117,289"/>
+</map>

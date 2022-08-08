@@ -26,7 +26,7 @@ var annotated_dup =
       ] ],
       [ "dot", "namespacethorin_1_1dot.html", [
         [ "BB", "namespacethorin_1_1dot.html#classthorin_1_1dot_1_1BB", null ],
-        [ "DotEmitter", "classthorin_1_1dot_1_1DotEmitter.html", "classthorin_1_1dot_1_1DotEmitter" ]
+        [ "Emitter", "classthorin_1_1dot_1_1Emitter.html", "classthorin_1_1dot_1_1Emitter" ]
       ] ],
       [ "fe", "namespacethorin_1_1fe.html", [
         [ "AST", "classthorin_1_1fe_1_1AST.html", "classthorin_1_1fe_1_1AST" ],
@@ -44,7 +44,7 @@ var annotated_dup =
       ] ],
       [ "ll", "namespacethorin_1_1ll.html", [
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
-        [ "CodeGen", "classthorin_1_1ll_1_1CodeGen.html", "classthorin_1_1ll_1_1CodeGen" ]
+        [ "Emitter", "classthorin_1_1ll_1_1Emitter.html", "classthorin_1_1ll_1_1Emitter" ]
       ] ],
       [ "mem", "namespacethorin_1_1mem.html", [
         [ "Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", "classthorin_1_1mem_1_1Alloc2Malloc" ],
@@ -113,6 +113,7 @@ var annotated_dup =
       [ "CFG", "classthorin_1_1CFG.html", "classthorin_1_1CFG" ],
       [ "CFNode", "classthorin_1_1CFNode.html", "classthorin_1_1CFNode" ],
       [ "Checker", "classthorin_1_1Checker.html", "classthorin_1_1Checker" ],
+      [ "Cleanup", "classthorin_1_1Cleanup.html", "classthorin_1_1Cleanup" ],
       [ "Debug", "classthorin_1_1Debug.html", "classthorin_1_1Debug" ],
       [ "Def", "classthorin_1_1Def.html", "classthorin_1_1Def" ],
       [ "DefDefEq", "structthorin_1_1DefDefEq.html", "structthorin_1_1DefDefEq" ],
@@ -134,6 +135,7 @@ var annotated_dup =
       [ "Flags", "namespacethorin.html#structthorin_1_1Flags", "namespacethorin_structthorin_1_1Flags_dup" ],
       [ "FNV1", "structthorin_1_1FNV1.html", "structthorin_1_1FNV1" ],
       [ "FPPass", "classthorin_1_1FPPass.html", "classthorin_1_1FPPass" ],
+      [ "FPPhase", "classthorin_1_1FPPhase.html", "classthorin_1_1FPPhase" ],
       [ "GIDEq", "structthorin_1_1GIDEq.html", "structthorin_1_1GIDEq" ],
       [ "GIDHash", "structthorin_1_1GIDHash.html", "structthorin_1_1GIDHash" ],
       [ "GIDLt", "structthorin_1_1GIDLt.html", "structthorin_1_1GIDLt" ],
@@ -143,7 +145,6 @@ var annotated_dup =
       [ "Infer", "classthorin_1_1Infer.html", "classthorin_1_1Infer" ],
       [ "Inline", "structthorin_1_1Inline.html", "structthorin_1_1Inline" ],
       [ "Insert", "classthorin_1_1Insert.html", "classthorin_1_1Insert" ],
-      [ "IPass", "classthorin_1_1IPass.html", "classthorin_1_1IPass" ],
       [ "Lam", "classthorin_1_1Lam.html", "classthorin_1_1Lam" ],
       [ "LamSpec", "classthorin_1_1LamSpec.html", "classthorin_1_1LamSpec" ],
       [ "Lit", "classthorin_1_1Lit.html", "classthorin_1_1Lit" ],
@@ -158,9 +159,14 @@ var annotated_dup =
       [ "PartialEval", "classthorin_1_1PartialEval.html", "classthorin_1_1PartialEval" ],
       [ "Pass", "classthorin_1_1Pass.html", "classthorin_1_1Pass" ],
       [ "PassMan", "classthorin_1_1PassMan.html", "classthorin_1_1PassMan" ],
+      [ "PassManPhase", "classthorin_1_1PassManPhase.html", "classthorin_1_1PassManPhase" ],
+      [ "PassPhase", "classthorin_1_1PassPhase.html", "classthorin_1_1PassPhase" ],
       [ "PassTag", "namespacethorin.html#structthorin_1_1PassTag", null ],
+      [ "Phase", "classthorin_1_1Phase.html", "classthorin_1_1Phase" ],
+      [ "PhaseRewriter", "classthorin_1_1PhaseRewriter.html", "classthorin_1_1PhaseRewriter" ],
       [ "Pi", "classthorin_1_1Pi.html", "classthorin_1_1Pi" ],
       [ "Pick", "classthorin_1_1Pick.html", "classthorin_1_1Pick" ],
+      [ "Pipeline", "classthorin_1_1Pipeline.html", "classthorin_1_1Pipeline" ],
       [ "PipelineBuilder", "classthorin_1_1PipelineBuilder.html", "classthorin_1_1PipelineBuilder" ],
       [ "Pos", "structthorin_1_1Pos.html", "structthorin_1_1Pos" ],
       [ "Proxy", "classthorin_1_1Proxy.html", "classthorin_1_1Proxy" ],
@@ -168,9 +174,12 @@ var annotated_dup =
       [ "Rewriter", "classthorin_1_1Rewriter.html", "classthorin_1_1Rewriter" ],
       [ "RuntimeCast", "classthorin_1_1RuntimeCast.html", "classthorin_1_1RuntimeCast" ],
       [ "RWPass", "classthorin_1_1RWPass.html", "classthorin_1_1RWPass" ],
+      [ "RWPhase", "classthorin_1_1RWPhase.html", "classthorin_1_1RWPhase" ],
       [ "Scalerize", "classthorin_1_1Scalerize.html", "classthorin_1_1Scalerize" ],
       [ "Scheduler", "classthorin_1_1Scheduler.html", "classthorin_1_1Scheduler" ],
       [ "Scope", "classthorin_1_1Scope.html", "classthorin_1_1Scope" ],
+      [ "ScopePhase", "classthorin_1_1ScopePhase.html", "classthorin_1_1ScopePhase" ],
+      [ "ScopeRewriter", "classthorin_1_1ScopeRewriter.html", "classthorin_1_1ScopeRewriter" ],
       [ "Sigma", "classthorin_1_1Sigma.html", "classthorin_1_1Sigma" ],
       [ "Singleton", "classthorin_1_1Singleton.html", "classthorin_1_1Singleton" ],
       [ "Sym", "classthorin_1_1Sym.html", "classthorin_1_1Sym" ],

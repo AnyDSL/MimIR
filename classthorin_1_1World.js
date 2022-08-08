@@ -2,7 +2,6 @@ var classthorin_1_1World =
 [
     [ "Freezer", "structthorin_1_1World_1_1Freezer.html", "structthorin_1_1World_1_1Freezer" ],
     [ "State", "structthorin_1_1World_1_1State.html", "structthorin_1_1World_1_1State" ],
-    [ "VisitFn", "classthorin_1_1World.html#af4e2bf1374dd2af475980465c654b903", null ],
     [ "World", "classthorin_1_1World.html#a117575868c56bf62a961cc865a7435c4", null ],
     [ "World", "classthorin_1_1World.html#a10d68710a145107da2a86a4650eb3eb6", null ],
     [ "World", "classthorin_1_1World.html#a659421567913fe78ea2d935b3dff769b", null ],
@@ -187,7 +186,6 @@ var classthorin_1_1World =
     [ "univ", "classthorin_1_1World.html#af5dccad9055934bc02d775b1744441e1", null ],
     [ "var", "classthorin_1_1World.html#a810c183757ff3fa8dfb4cb616b5c82b3", null ],
     [ "vel", "classthorin_1_1World.html#aa73afcb4099190ef420e3073b98600dc", null ],
-    [ "visit", "classthorin_1_1World.html#a35687817089d85315d46a391dd75e320", null ],
     [ "write", "classthorin_1_1World.html#a4bb914166b99061b5fa226cda7baff79", null ],
     [ "write", "classthorin_1_1World.html#a112addddb980b3421e404c3588b42ca6", null ],
     [ "Def::reduce", "classthorin_1_1World.html#a9385c61b1fb0b1d21be6b9d913ad96a0", null ],
