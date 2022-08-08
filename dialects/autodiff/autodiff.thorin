@@ -3,6 +3,25 @@
 /// [TOC]
 ///
 /// <TODO:>
+/// 
+/// Transformations:
+/// - autodiff
+///   - on types
+///     computed the augmented derivation type of a function type
+///     `autodiff (T -> U) = (T -> U × (U -> T))`
+///   - on closed terms (functions, operators, higher-order argument, registered instance, ... (if I forgot something))
+///     replaces the term with the augmented term that computes and simultaneously returns the modular full pullback
+///     `autodiff f = f' = λ args. (f args, f*)` 
+/// - tangent type
+///   remaining type transformation
+///   zero for non-differentiable types
+///   structure preserving functor for non-exponential containers
+/// - partial pullback
+///   pullback computation for non-closed terms
+///   always acts with in a function environment
+///   C++ function (in meta space)
+///   importantly acts on tuples and
+///     (function) applications (uses autodiff here)
 ///
 /// ## Dependencies
 ///
@@ -29,6 +48,12 @@
 ///
 .ax %autodiff.zero: Π [T:*] -> T, normalize_zero;
 ///
+/// ### %autodiff.add
+/// 
+/// a universal add
+///
+.ax %autodiff.add: Π [T:*] -> [T,T] -> T, normalize_add;
+///
 ///
 /// ## Substitution Rules
 /// 
@@ -42,7 +67,7 @@
 .let R32 = %Real 4294967296;
 /// 
 /// 
-/// #### AutoDiff type
+/// #### AutoDiff 
 /// 
 /// TODO: text
 /// 
@@ -85,6 +110,7 @@
 .rule (m:.Nat) (n:.Nat):
     (%ROp_add (m,n)) ->
     %direct.cps2ds (add_deriv (m,n));
+/// `(a,b)ᴬ` ↦ `(a,b)`
 ///
 /// 
 /// #### Tangent type
@@ -101,12 +127,52 @@
 .rule (n:.Nat):
     (%autodiff.tangent_type (.Real n)) ->
     (.Real n);
+/// `(«i: n; T#i»)ᴬ` ↦ `«i: n; (T#i)ᴬ»`
+/// TODO: is this (a/the) normal form of tuples/sigmas
+///     but then T is a tuple?
+///     are there two kinds of tuples? (Meta and Thorin)
+.rule (n:.Nat) (T:«n; *»):
+    (%autodiff.tangent_type («i: n; T#i»)) ->
+    («i: n; %autodiff.tangent_type (T#i)»);
+/// 
+/// #### expressions
 /// 
 /// 
-/// #### AutoDiff expressions
+.rule (T:*) (a:T):
+    (%autodiff.add T (a,%autodiff.zero T)) ->
+    a;
+.rule (T:*) (a:T):
+    (%autodiff.add T (%autodiff.zero T,a)) ->
+    a;
+/// 
+.rule (n:.Nat):
+    (%autodiff.add (.Real n)) ->
+    (%ROp_add (0,n));
+
+
+/// autodiff only applies to closed terms
+/// for instance, functions or operators
+/// for a thorin function f:
+/// autodiff f = λ args. (f args, ppb_f body)
+
+/// partial pullback (ppb) => C++ function that returns the partially applied pullback
+/// ppb applies to open expressions in a function
+/// `ppb (a,b) = ppb a + ppb b` (+ is liftet over arbitrary structure)
+/// ```
+/// ppb (f args) = 
+/// let (res, f*) = autodiff f args in
+///     ppb args . f*
+/// ```
+/// ppb only returns the partially applied pullback, the body remains the same (up to renaming)
 
 
 
+/// TODO: meta
+/// - sigma
+/// - tuple elementwise + sum
+/// - pointer
+/// - function args
+/// - registering
 
 
 
