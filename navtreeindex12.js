@@ -115,6 +115,7 @@ var NAVTREEINDEX12 =
 "debug_8h.html#afd3e784f818262bab2a61346b95dcf34":[6,0,4,11,12],
 "debug_8h_source.html":[6,0,4,11],
 "def_8cpp.html":[6,0,4,12],
+"def_8cpp.html#a8e3202a5ade81bc07faa7a9008f5f042":[6,0,4,12,1],
 "def_8cpp.html#ad1b9941e8e846944b557818490f2d94b":[6,0,4,12,0],
 "def_8cpp_source.html":[6,0,4,12],
 "def_8h.html":[6,0,4,13],
@@ -248,6 +249,5 @@ var NAVTREEINDEX12 =
 "domfrontier_8h.html#ae06bba681d8d0c4022d03b1f20b5718a":[6,0,4,0,5,1],
 "domfrontier_8h_source.html":[6,0,4,0,5],
 "domtree_8cpp.html":[6,0,4,0,6],
-"domtree_8cpp_source.html":[6,0,4,0,6],
-"domtree_8h.html":[6,0,4,0,7]
+"domtree_8cpp_source.html":[6,0,4,0,6]
 };

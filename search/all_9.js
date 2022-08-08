@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['icmp_0',['icmp',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6',1,'thorin::core']]],
-  ['icmp_1',['ICmp',['../namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9',1,'thorin::ICmp()'],['../namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383ab14d0d6f2c53b4f8ce5c33ba81c961f2',1,'thorin::Tag::ICmp()']]],
+  ['icmp_0',['ICmp',['../namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9',1,'thorin::ICmp()'],['../namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383ab14d0d6f2c53b4f8ce5c33ba81c961f2',1,'thorin::Tag::ICmp()']]],
+  ['icmp_1',['icmp',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6',1,'thorin::core']]],
   ['id_2',['id',['../namespacethorin.html#ad96bfe437b4653d610aaaaa36251bdac',1,'thorin::id()'],['../namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349ab80bb7740288fda1f201890375a60c8f',1,'thorin::core::id()']]],
   ['idom_3',['idom',['../classthorin_1_1DomTreeBase.html#a4221dc4eda86e282cdb1cc54714bfc62',1,'thorin::DomTreeBase']]],
   ['idptrn_4',['IdPtrn',['../classthorin_1_1fe_1_1IdPtrn.html#aecd084649e58bd4751b63f9bf24e9a0d',1,'thorin::fe::IdPtrn::IdPtrn()'],['../classthorin_1_1fe_1_1IdPtrn.html',1,'thorin::fe::IdPtrn']]],
@@ -47,7 +47,7 @@ var searchData=
   ['is_5fconst_44',['is_const',['../namespacethorin_1_1ll.html#a4db0e39a0bec9a7d496e2fbeb481877f',1,'thorin::ll']]],
   ['is_5fdirty_45',['is_dirty',['../classthorin_1_1Phase.html#a9c1ca126876415d98a487a1664007910',1,'thorin::Phase']]],
   ['is_5fexternal_46',['is_external',['../classthorin_1_1World.html#a18ec5f64debade6eeda5edb0ee7c8a03',1,'thorin::World::is_external()'],['../classthorin_1_1Def.html#a7701ec0e042a91951dcff7bf0b56573c',1,'thorin::Def::is_external()']]],
-  ['is_5ffree_47',['is_free',['../namespacethorin.html#ac2bea7c67877c34298a245cbc4c41f5b',1,'thorin']]],
+  ['is_5ffree_47',['is_free',['../namespacethorin.html#a6047fecaa815c67296485564a7874bf1',1,'thorin']]],
   ['is_5ffrozen_48',['is_frozen',['../classthorin_1_1World.html#a1097afc3465f90749aeaa4434f763ea0',1,'thorin::World']]],
   ['is_5fint_49',['is_int',['../namespacethorin_1_1normalize.html#a12ee465fca291967708dfab8fbd8d2fa',1,'thorin::normalize']]],
   ['is_5fint_3c_20rcmp_20_3e_50',['is_int&lt; RCmp &gt;',['../namespacethorin_1_1normalize.html#a581ce706121ebc10658edc271e1e73d1',1,'thorin::normalize']]],

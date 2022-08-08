@@ -31,7 +31,7 @@ var searchData=
   ['is_5fconst_28',['is_const',['../namespacethorin_1_1ll.html#a4db0e39a0bec9a7d496e2fbeb481877f',1,'thorin::ll']]],
   ['is_5fdirty_29',['is_dirty',['../classthorin_1_1Phase.html#a9c1ca126876415d98a487a1664007910',1,'thorin::Phase']]],
   ['is_5fexternal_30',['is_external',['../classthorin_1_1World.html#a18ec5f64debade6eeda5edb0ee7c8a03',1,'thorin::World::is_external()'],['../classthorin_1_1Def.html#a7701ec0e042a91951dcff7bf0b56573c',1,'thorin::Def::is_external()']]],
-  ['is_5ffree_31',['is_free',['../namespacethorin.html#ac2bea7c67877c34298a245cbc4c41f5b',1,'thorin']]],
+  ['is_5ffree_31',['is_free',['../namespacethorin.html#a6047fecaa815c67296485564a7874bf1',1,'thorin']]],
   ['is_5ffrozen_32',['is_frozen',['../classthorin_1_1World.html#a1097afc3465f90749aeaa4434f763ea0',1,'thorin::World']]],
   ['is_5fint_33',['is_int',['../namespacethorin_1_1normalize.html#a12ee465fca291967708dfab8fbd8d2fa',1,'thorin::normalize']]],
   ['is_5fint_3c_20rcmp_20_3e_34',['is_int&lt; RCmp &gt;',['../namespacethorin_1_1normalize.html#a581ce706121ebc10658edc271e1e73d1',1,'thorin::normalize']]],

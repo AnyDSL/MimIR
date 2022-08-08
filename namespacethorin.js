@@ -584,7 +584,7 @@ var namespacethorin =
     [ "id", "namespacethorin.html#ad96bfe437b4653d610aaaaa36251bdac", null ],
     [ "infer_sigma", "namespacethorin.html#ab00a9a6925103ec81b0aa99c38c00f48", null ],
     [ "infer_type_level", "namespacethorin.html#ab569c2d6da9167b91cb5ce868a67e06c", null ],
-    [ "is_free", "namespacethorin.html#ac2bea7c67877c34298a245cbc4c41f5b", null ],
+    [ "is_free", "namespacethorin.html#a6047fecaa815c67296485564a7874bf1", null ],
     [ "is_shape", "namespacethorin.html#ab4e8096218f5bbe9c8076b54793b1342", null ],
     [ "is_sigma_or_arr", "namespacethorin.html#ac6eab898b3d47f7bfc303837cbfc25e0", null ],
     [ "is_top_level", "namespacethorin.html#afe55cb6b936b3de14b79b554d8fa1026", null ],
@@ -716,5 +716,6 @@ var namespacethorin =
     [ "Num< Trait >", "namespacethorin.html#a46d3e3387a3e3d4a694afda6d4d6b9a1", null ],
     [ "Num< Wrap >", "namespacethorin.html#a88d2abe3b1f1ae0689c3160557d33251", null ],
     [ "Num_Nodes", "namespacethorin.html#a0733c13c6097071906153e49ca329b89", null ],
-    [ "Num_Tags", "namespacethorin.html#ae3abd341ced474a992feaf5ff8e7229b", null ]
+    [ "Num_Tags", "namespacethorin.html#ae3abd341ced474a992feaf5ff8e7229b", null ],
+    [ "Search_In_Uses_Threshold", "namespacethorin.html#a8e3202a5ade81bc07faa7a9008f5f042", null ]
 ];
