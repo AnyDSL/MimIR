@@ -148,7 +148,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         }
         return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
     } else if (auto sigma = u->isa<Sigma>()) {
-        if (auto nom = sigma->isa_nom<Pi>(); nom && nom->var()) {
+        if (auto nom = sigma->isa_nom<Sigma>(); nom && nom->var()) {
             size_t i = 0;
             return print(os, "[{, }]", Elem(sigma->ops(), [&](auto op) {
                              if (auto v = nom->var(i++))
