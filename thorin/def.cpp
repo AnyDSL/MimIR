@@ -11,6 +11,9 @@
 
 namespace thorin {
 
+// Just assuming looking through the uses is faster if uses().size() is small.
+static constexpr int Search_In_Uses_Threshold = 8;
+
 /*
  * constructors
  */
@@ -120,12 +123,12 @@ TBound<up>* TBound<up>::stub(World& w, const Def* t, const Def* dbg) {
  */
 
 const Pi* Pi::restructure() {
-    if (!is_free(var(), codom())) return world().pi(dom(), codom(), dbg());
+    if (!is_free(this, codom())) return world().pi(dom(), codom(), dbg());
     return nullptr;
 }
 
 const Sigma* Sigma::restructure() {
-    if (std::ranges::none_of(ops(), [this](auto op) { return is_free(var(), op); }))
+    if (std::ranges::none_of(ops(), [this](auto op) { return is_free(this, op); }))
         return static_cast<const Sigma*>(world().sigma(ops(), dbg()));
     return nullptr;
 }
@@ -185,8 +188,7 @@ Defs Def::extended_ops() const {
 const Var* Def::var(const Def* dbg) {
     auto& w = world();
 
-    if (w.is_frozen() || uses().size() < 8) {
-        // Just assuming looking through the uses is faster if uses().size() is small.
+    if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
         for (auto u : uses()) {
             if (auto var = u->isa<Var>(); var && var->nom() == this) return var;
         }
@@ -383,29 +385,30 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
 
 const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
     if (a == 1 && (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>())) return this;
+    World& w = world();
 
     if (isa<Tuple>() || isa<Sigma>()) {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
-        if (!world().type_int()) return arr->op(i); // hack for alpha equiv check of sigma (dbg of %Int..)
-        return arr->reduce(world().lit_int(as_lit(arr->arity()), i)).back();
+        if (!w.type_int()) return arr->op(i); // hack for alpha equiv check of sigma (dbg of %Int..)
+        return arr->reduce(w.lit_int(as_lit(arr->arity()), i)).back();
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
-        assert(!world().is_frozen() && "TODO");
-        return pack->reduce(world().lit_int(as_lit(pack->arity()), i)).back();
+        assert(!w.is_frozen() && "TODO");
+        return pack->reduce(w.lit_int(as_lit(pack->arity()), i)).back();
     } else if (sort() == Sort::Term) {
-        if (world().is_frozen()) {
+        if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
             for (auto u : uses()) {
                 if (auto ex = u->isa<Extract>(); ex && ex->tuple() == this) {
                     if (auto index = isa_lit(ex->index()); *index == i) return ex;
                 }
             }
 
-            return nullptr;
+            if (w.is_frozen()) return nullptr;
         }
 
-        return world().extract(this, a, i, dbg);
+        return w.extract(this, a, i, dbg);
     }
 
     return nullptr;

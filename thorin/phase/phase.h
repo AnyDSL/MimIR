@@ -95,7 +95,7 @@ protected:
     PhaseRewriter rewriter_;
 };
 
-/// Removes unreachable and dead code by rebuilding the whole World into a new one and `swapp`ing afterwards.
+/// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping afterwards.
 class Cleanup : public RWPhase {
 public:
     Cleanup(World& world)
@@ -157,7 +157,7 @@ public:
     const auto& phases() const { return phases_; }
     /// Add a Phase.
     /// You don't need to pass the World to @p args - it will be passed automatically.
-    /// * If @p P is a Pass, this method will wrap this in a PassPhase.
+    /// If @p P is a Pass, this method will wrap this in a PassPhase.
     template<class P, class... Args>
     auto add(Args&&... args) {
         if constexpr (std::is_base_of_v<Pass, P>) {

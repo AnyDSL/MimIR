@@ -49,7 +49,7 @@ const Def* TuplePtrn::type(World& world) const {
 
     sigma->set(0, ops[0]);
     for (size_t i = 1; i != n; ++i) {
-        if (auto infer = infers_[i - 1]) infer->set(sigma->var(n, i - 1));
+        if (auto infer = infers_[i - 1]) infer->set(sigma->var(n, i - 1, world.dbg(ptrn(i - 1)->sym())));
         sigma->set(i, ops[i]);
     }
 
