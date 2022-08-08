@@ -31,3 +31,58 @@
 /// a universal zero such that (zero T) +_T t = t
 ///
 .ax %autodiff.zero: Π [T:*] -> T, normalize_zero;
+///
+///
+/// ## Substitution Rules
+/// 
+/// ### Types
+/// 
+/// #### Auxiliary Definitions
+/// 
+/// some definitions used in the substitution rules below
+/// 
+.let I32 = %Int 4294967296;
+.let R32 = %Real 4294967296;
+/// 
+/// #### Augmented type
+/// 
+/// `(%autodiff.augment_type T)` is the original function input and output type
+/// augmented with general type information needed for automatic differentiation.
+/// For instance, a function type `(T -> U)` is augmented with the pullback to 
+/// `Tᴬ -> Uᴬ × (Uᵀ -> Tᵀ)` 
+// TODO: generalize concept to modular approach
+// are tangent and augment separated or the same with composition
+/// 
+// TODO: check mem
+.rule (T:*) (U:*) :
+    (%autodiff.augment_type .Cn [T, .Cn U]) ->
+    .Cn [(%autodiff.augment_type T),
+         (.Cn [(%autodiff.augment_type U),
+             (.Cn [(%autodiff.tangent_type U),
+                 (%autodiff.tangent_type T)
+             ])
+         ])
+    ];
+/// 
+/// #### Tangent type
+/// 
+/// the tangent is the argument and result of the pullbacks
+/// they hold the gradients
+/// 
+/// the tangent of a function is undefined
+/// TODO: mem tangent
+.rule (T:*) :
+    (%autodiff.augment_type .Cn T) ->
+    R32;
+
+
+
+// notes:
+
+// rule syntax
+// .rule args :
+//     lhs -> rhs
+
+// function convention
+// .Cn [[mem, [args]], .Cn [mem, [outs]]]
+// .Cn [[mem, [A, B, C]], .Cn [mem, [X, Y]]]
