@@ -33,7 +33,6 @@ void Pipeline::start() {
 
 void ScopePhase::start() {
     unique_queue<NomSet> noms;
-    unique_stack<DefSet> defs;
 
     for (const auto& [name, nom] : world().externals()) {
         assert(nom->is_set() && "external must not be empty");
