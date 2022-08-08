@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stack>
+#include <typeindex>
 
 #include "thorin/world.h"
 
@@ -115,12 +116,13 @@ public:
     /// If a pass of the same class has been added already, returns the earlier added instance.
     template<class P, class... Args>
     P* add(Args&&... args) {
-        if (auto it = registry_.find(P::ID()); it != registry_.end()) return static_cast<P*>(it->second);
+        auto key = std::type_index(typeid(P));
+        if (auto it = registry_.find(key); it != registry_.end()) return static_cast<P*>(it->second);
         auto p   = std::make_unique<P>(*this, std::forward<Args>(args)...);
         auto res = p.get();
         fixed_point_ |= res->fixed_point();
         passes_.emplace_back(std::move(p));
-        registry_.emplace(P::ID(), res);
+        registry_.emplace(key, res);
         return res;
     }
 
@@ -197,7 +199,7 @@ private:
 
     World& world_;
     std::deque<std::unique_ptr<Pass>> passes_;
-    absl::flat_hash_map<const PassTag*, Pass*> registry_;
+    absl::flat_hash_map<std::type_index, Pass*> registry_;
     std::deque<State> states_;
     Def* curr_nom_    = nullptr;
     bool fixed_point_ = false;
@@ -226,11 +228,6 @@ public:
             return man().curr_nom();
         else
             return man().curr_nom()->template as<N>();
-    }
-
-    static const PassTag* ID() {
-        static PassTag Key;
-        return &Key;
     }
 };
 
