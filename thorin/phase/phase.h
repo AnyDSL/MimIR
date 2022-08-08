@@ -94,6 +94,7 @@ protected:
     PhaseRewriter rewriter_;
 };
 
+/// Removes unreachable and dead code by rebuilding the whole World into a new one and `swapp`ing afterwards.
 class Cleanup : public RWPhase {
 public:
     Cleanup(World& world)
