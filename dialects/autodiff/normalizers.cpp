@@ -7,7 +7,7 @@
 #include "dialects/autodiff/autodiff.h"
 namespace thorin::autodiff {
 
-const Def* normalize_augment_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_autodiff(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     // auto [mat, index, val] = arg->projs<3>();
 
