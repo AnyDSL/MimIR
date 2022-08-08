@@ -14,8 +14,8 @@ public:
     void extend_opt_phase(std::function<void(PassMan&)>);
     void extend_codegen_prep_phase(std::function<void(PassMan&)>);
 
-    std::unique_ptr<PassMan> opt_phase(World& world);
-    std::unique_ptr<PassMan> codegen_prep_phase(World& world);
+    PassMan opt_phase(World& world);
+    PassMan codegen_prep_phase(World& world);
 
 private:
     std::vector<std::function<void(PassMan&)>> opt_phase_extensions_;
