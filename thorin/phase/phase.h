@@ -27,11 +27,9 @@ public:
     bool is_dirty() const { return dirty_; }
     ///@}
 
-    /// @name run/start
+    /// @name run
     ///@{
-    virtual void run();       ///< Entry point and generates some debug output; invokes Phase::start.
-    virtual void start() = 0; ///< Actual entry.
-    ///@}
+    virtual void run(); ///< Entry point and generates some debug output; invokes Phase::start.
 
     /// Runs a single Phase.
     template<class P, class... Args>
@@ -39,8 +37,11 @@ public:
         P p(std::forward<Args>(args)...);
         p.run();
     }
+    ///@}
 
 protected:
+    virtual void start() = 0; ///< Actual entry.
+
     World& world_;
     std::string name_;
     bool dirty_;
