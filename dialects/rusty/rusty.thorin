@@ -1,0 +1,21 @@
+/// # The direct style dialect {#direct}
+///
+/// [TOC]
+///
+/// interaction between C++ and Rust in the thorin setting
+///
+/// ## Dependencies
+///
+/// none
+///
+/// ## Types
+///
+/// none 
+///
+/// ## Operations
+///
+/// ### %rusty.const
+///
+.let I32 = %Int 4294967296;
+.ax %rusty.constant: I32, normalize_constant;
+.ax %rusty.constant_fun: Π [n:.Nat] -> (%Int n), normalize_constant_fun;

@@ -72,3 +72,11 @@ add_thorin_dialect(direct
         direct/passes/ds2cps.h
     INSTALL
 )
+
+add_thorin_dialect(rusty
+    SOURCES
+        rusty/rusty.cpp
+        rusty/rusty.h
+        rusty/normalizers.cpp
+    INSTALL
+)
