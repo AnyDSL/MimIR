@@ -38,8 +38,10 @@
 /// 
 /// operates on functions and types
 ///
+.ax %autodiff.autodiff_type: * -> *, 
+    normalize_autodiff_type;
 .ax %autodiff.autodiff: Π [T: *] -> T -> 
-    %autodiff.autodiff T, 
+    %autodiff.autodiff_type T, 
     normalize_autodiff;
 ///
 /// ### %autodiff.zero
@@ -55,99 +57,99 @@
 .ax %autodiff.add: Π [T:*] -> [T,T] -> T, normalize_add;
 ///
 ///
-/// ## Substitution Rules
-/// 
-/// ### Types
-/// 
-/// #### Auxiliary Definitions
-/// 
-/// some definitions used in the substitution rules below
-/// 
-.let I32 = %Int 4294967296;
-.let R32 = %Real 4294967296;
-/// 
-/// 
-/// #### AutoDiff 
-/// 
-/// TODO: text
-/// 
-/// `(T -> U)ᴬ` ↦ `Tᴬ -> Uᴬ × (Uᵀ -> Tᵀ)` 
-/// TODO: check memory (in T, U)
-.rule (T:*) (U:*) :
-    (%autodiff.autodiff (.Cn [T, .Cn U])) ->
-    .Cn [(%autodiff.autodiff T),
-         (.Cn [(%autodiff.autodiff U),
-             (.Cn [(%autodiff.tangent_type U),
-                 (%autodiff.tangent_type T)
-             ])
-         ])
-    ];
-/// `r: R` ↦ `r`
-.rule (n:.Nat):
-    (%autodiff.autodiff (.Real n)) ->
-    (.Real n);
-/// `+` ↦ 
-/// ```
-/// λ (a,b). (
-///   + (a,b),
-///   λ s. (s*b, s*a)
-/// )
-/// ``` 
-/// TODO: %core.wrap.add vs %Wrap_add
-/// TODO: direct function vs ds2cps
-/// cascading function = direct call that returns a cps function
-/// (should be handled automatically by the direct dialect)
-.cn add_deriv [m:.Nat, n:.Nat]
-    [[a:(.Real n), b:(.Real n)], ret:(.Cn (.Real n))] = {
-    .let result = %ROp_add (m,n) (a,b);
-    .cn add_pb [s:(.Real n), pb_ret:(.Cn [.Real n, .Real n])] = {
-        .let lhs = %ROp_add (m,n) (s,b);
-        .let rhs = %ROp_add (m,n) (s,a);
-        pb_ret (lhs, rhs)
-    };
-    ret (result,add_pb)
-};
-.rule (m:.Nat) (n:.Nat):
-    (%ROp_add (m,n)) ->
-    %direct.cps2ds (add_deriv (m,n));
-/// `(a,b)ᴬ` ↦ `(a,b)`
-///
-/// 
-/// #### Tangent type
-/// 
-/// the tangent is the argument and result of the pullbacks
-/// they hold the gradients
-/// 
-/// the tangent of a function is undefined
-/// TODO: mem tangent
-.rule (T:*) :
-    (%autodiff.tangent_type .Cn T) ->
-    R32;
-/// `r: R` ↦ `r`
-.rule (n:.Nat):
-    (%autodiff.tangent_type (.Real n)) ->
-    (.Real n);
-/// `(«i: n; T#i»)ᴬ` ↦ `«i: n; (T#i)ᴬ»`
-/// TODO: is this (a/the) normal form of tuples/sigmas
-///     but then T is a tuple?
-///     are there two kinds of tuples? (Meta and Thorin)
-.rule (n:.Nat) (T:«n; *»):
-    (%autodiff.tangent_type («i: n; T#i»)) ->
-    («i: n; %autodiff.tangent_type (T#i)»);
-/// 
-/// #### expressions
-/// 
-/// 
-.rule (T:*) (a:T):
-    (%autodiff.add T (a,%autodiff.zero T)) ->
-    a;
-.rule (T:*) (a:T):
-    (%autodiff.add T (%autodiff.zero T,a)) ->
-    a;
-/// 
-.rule (n:.Nat):
-    (%autodiff.add (.Real n)) ->
-    (%ROp_add (0,n));
+// /// ## Substitution Rules
+// /// 
+// /// ### Types
+// /// 
+// /// #### Auxiliary Definitions
+// /// 
+// /// some definitions used in the substitution rules below
+// /// 
+// .let I32 = %Int 4294967296;
+// .let R32 = %Real 4294967296;
+// /// 
+// /// 
+// /// #### AutoDiff 
+// /// 
+// /// TODO: text
+// /// 
+// /// `(T -> U)ᴬ` ↦ `Tᴬ -> Uᴬ × (Uᵀ -> Tᵀ)` 
+// /// TODO: check memory (in T, U)
+// .rule (T:*) (U:*) :
+//     (%autodiff.autodiff (.Cn [T, .Cn U])) ->
+//     .Cn [(%autodiff.autodiff T),
+//          (.Cn [(%autodiff.autodiff U),
+//              (.Cn [(%autodiff.tangent_type U),
+//                  (%autodiff.tangent_type T)
+//              ])
+//          ])
+//     ];
+// /// `r: R` ↦ `r`
+// .rule (n:.Nat):
+//     (%autodiff.autodiff (.Real n)) ->
+//     (.Real n);
+// /// `+` ↦ 
+// /// ```
+// /// λ (a,b). (
+// ///   + (a,b),
+// ///   λ s. (s*b, s*a)
+// /// )
+// /// ``` 
+// /// TODO: %core.wrap.add vs %Wrap_add
+// /// TODO: direct function vs ds2cps
+// /// cascading function = direct call that returns a cps function
+// /// (should be handled automatically by the direct dialect)
+// .cn add_deriv [m:.Nat, n:.Nat]
+//     [[a:(.Real n), b:(.Real n)], ret:(.Cn (.Real n))] = {
+//     .let result = %ROp_add (m,n) (a,b);
+//     .cn add_pb [s:(.Real n), pb_ret:(.Cn [.Real n, .Real n])] = {
+//         .let lhs = %ROp_add (m,n) (s,b);
+//         .let rhs = %ROp_add (m,n) (s,a);
+//         pb_ret (lhs, rhs)
+//     };
+//     ret (result,add_pb)
+// };
+// .rule (m:.Nat) (n:.Nat):
+//     (%ROp_add (m,n)) ->
+//     %direct.cps2ds (add_deriv (m,n));
+// /// `(a,b)ᴬ` ↦ `(a,b)`
+// ///
+// /// 
+// /// #### Tangent type
+// /// 
+// /// the tangent is the argument and result of the pullbacks
+// /// they hold the gradients
+// /// 
+// /// the tangent of a function is undefined
+// /// TODO: mem tangent
+// .rule (T:*) :
+//     (%autodiff.tangent_type .Cn T) ->
+//     R32;
+// /// `r: R` ↦ `r`
+// .rule (n:.Nat):
+//     (%autodiff.tangent_type (.Real n)) ->
+//     (.Real n);
+// /// `(«i: n; T#i»)ᴬ` ↦ `«i: n; (T#i)ᴬ»`
+// /// TODO: is this (a/the) normal form of tuples/sigmas
+// ///     but then T is a tuple?
+// ///     are there two kinds of tuples? (Meta and Thorin)
+// .rule (n:.Nat) (T:«n; *»):
+//     (%autodiff.tangent_type («i: n; T#i»)) ->
+//     («i: n; %autodiff.tangent_type (T#i)»);
+// /// 
+// /// #### expressions
+// /// 
+// /// 
+// .rule (T:*) (a:T):
+//     (%autodiff.add T (a,%autodiff.zero T)) ->
+//     a;
+// .rule (T:*) (a:T):
+//     (%autodiff.add T (%autodiff.zero T,a)) ->
+//     a;
+// /// 
+// .rule (n:.Nat):
+//     (%autodiff.add (.Real n)) ->
+//     (%ROp_add (0,n));
 
 
 /// autodiff only applies to closed terms
