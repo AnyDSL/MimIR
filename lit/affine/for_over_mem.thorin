@@ -14,7 +14,7 @@
     // .let arr_size = 16;
     .let arr_size = ⊤:.Nat;
     .let (alloc_mem, ptr) = %mem.alloc (<<%core.bitcast (.Nat, i32) argc; i32>>, 0) (mem);
-    .cn for_exit acc : [mem : %mem.M, i32, i32] = {
+    .cn for_exit acc :: [mem : %mem.M, i32, i32] = {
         .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (ptr, %core.conv.u2u (arr_size, 4294967296) (%core.wrap.sub (0, 4294967296) (argc, 4:i32)));
         .let (load_mem, val) = %mem.load (i32, 0) (mem, lea);
         return (load_mem, val)
