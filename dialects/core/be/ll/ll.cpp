@@ -6,8 +6,13 @@
 #include <limits>
 #include <ranges>
 
+#include "thorin/def.h"
+#include "thorin/rewrite.h"
+
 #include "thorin/analyses/cfg.h"
 #include "thorin/be/emitter.h"
+#include "thorin/pass/pipelinebuilder.h"
+#include "thorin/phase/phase.h"
 #include "thorin/util/print.h"
 #include "thorin/util/sys.h"
 
@@ -73,12 +78,93 @@ struct BB {
     std::array<std::deque<std::ostringstream>, 3> parts;
 };
 
+class TargetDetails {
+public:
+    virtual void write_default_decls(std::ostream& stream) const = 0;
+    virtual std::string annotate_func(const Def*) const { return {}; }
+
+    virtual std::string emit_intrinsic(const Def*) const { unreachable(); }
+};
+
+class CPUTargetDetails : public TargetDetails {
+public:
+    void write_default_decls(std::ostream& stream) const override {
+        stream << "declare i8* @malloc(i64)" << '\n'; // HACK
+        // SJLJ intrinsics (GLIBC Versions)
+        stream << "declare i32 @_setjmp(i8*) returns_twice" << '\n';
+        stream << "declare void @longjmp(i8*, i32) noreturn" << '\n';
+        stream << "declare i64 @jmpbuf_size()" << '\n';
+    }
+};
+
+class NVPTXTargetDetails : public TargetDetails {
+public:
+    void write_default_decls(std::ostream& stream) const override {
+        stream << "declare i32 @llvm.nvvm.read.ptx.sreg.ntid.x()\n";
+        stream << "declare i32 @llvm.nvvm.read.ptx.sreg.ntid.y()\n";
+        stream << "declare i32 @llvm.nvvm.read.ptx.sreg.ntid.z()\n";
+        stream << "declare i32 @llvm.nvvm.read.ptx.sreg.ctaid.x()\n";
+        stream << "declare i32 @llvm.nvvm.read.ptx.sreg.ctaid.y()\n";
+        stream << "declare i32 @llvm.nvvm.read.ptx.sreg.ctaid.z()\n";
+        stream << "declare i32 @llvm.nvvm.read.ptx.sreg.tid.x()\n";
+        stream << "declare i32 @llvm.nvvm.read.ptx.sreg.tid.y()\n";
+        stream << "declare i32 @llvm.nvvm.read.ptx.sreg.tid.z()\n";
+    }
+
+    std::string emit_intrinsic(const Def* def) const override {
+        if (auto local_id = match<core::local_id>(def)) {
+            auto dim = as_lit(local_id->arg(0));
+            return std::string{"tail call i32 @llvm.nvvm.read.ptx.sreg.tid."} +
+                   (dim == 0   ? "x"
+                    : dim == 1 ? "y"
+                               : "z") +
+                   "()";
+        }
+        return {};
+    }
+};
+
+class AMDGPUTargetDetails : public TargetDetails {
+public:
+    void write_default_decls(std::ostream& stream) const override {
+        stream << "declare hidden i64 @__ockl_get_local_id(i32 noundef %0) local_unnamed_addr\n";
+        stream << "declare hidden i64 @__ockl_get_group_id(i32 noundef %0) local_unnamed_addr\n";
+        stream << "declare hidden i64 @__ockl_get_local_size(i32 noundef %0) local_unnamed_addr\n";
+        stream << "declare hidden i64 @__ockl_get_num_groups(i32 noundef %0) local_unnamed_addr\n";
+    }
+
+    std::string annotate_func(const Def* def) const override {
+        if (def->is_external())
+            return "protected amdgpu_kernel";
+        else
+            return {};
+    }
+
+    std::string emit_intrinsic(const Def* def) const override {
+        if (auto local_id = match<core::local_id>(def)) {
+            auto dim = as_lit(local_id->arg(0));
+            return std::string{"tail call i64 @__ockl_get_local_id(i32 "} + std::to_string(dim) + ")";
+        } else if (auto group_id = match<core::group_id>(def)) {
+            auto dim = as_lit(group_id->arg(0));
+            return std::string{"tail call i64 @__ockl_get_group_id(i32 "} + std::to_string(dim) + ")";
+        } else if (auto group_size = match<core::group_size>(def)) {
+            auto dim = as_lit(group_size->arg(0));
+            return std::string{"tail call i64 @__ockl_get_local_size(i32 "} + std::to_string(dim) + ")";
+        } else if (auto num_groups = match<core::num_groups>(def)) {
+            auto dim = as_lit(num_groups->arg(0));
+            return std::string{"tail call i64 @__ockl_get_num_groups("} + std::to_string(dim) + ")";
+        }
+        return {};
+    }
+};
+
 class Emitter : public thorin::Emitter<std::string, std::string, BB, Emitter> {
 public:
     using Super = thorin::Emitter<std::string, std::string, BB, Emitter>;
 
-    Emitter(World& world, std::ostream& ostream)
-        : Super(world, "llvm_emitter", ostream) {}
+    Emitter(World& world, TargetDetails& target, std::ostream& ostream)
+        : Super(world, "llvm_emitter", ostream)
+        , target_(target) {}
 
     bool is_valid(std::string_view s) { return !s.empty(); }
     void start() override;
@@ -98,6 +184,8 @@ private:
     std::ostringstream vars_decls_;
     std::ostringstream func_decls_;
     std::ostringstream func_impls_;
+
+    TargetDetails& target_;
 };
 
 /*
@@ -221,11 +309,9 @@ std::string Emitter::convert_ret_pi(const Pi* pi) {
 void Emitter::start() {
     Super::start();
 
-    ostream() << "declare i8* @malloc(i64)" << '\n'; // HACK
-    // SJLJ intrinsics (GLIBC Versions)
-    ostream() << "declare i32 @_setjmp(i8*) returns_twice" << '\n';
-    ostream() << "declare void @longjmp(i8*, i32) noreturn" << '\n';
-    ostream() << "declare i64 @jmpbuf_size()" << '\n';
+    target_.write_default_decls(ostream());
+    ostream() << '\n';
+
     ostream() << type_decls_.str() << '\n';
     ostream() << func_decls_.str() << '\n';
     ostream() << vars_decls_.str() << '\n';
@@ -249,7 +335,7 @@ void Emitter::emit_imported(Lam* lam) {
 std::string Emitter::prepare(const Scope& scope) {
     auto lam = scope.entry()->as_nom<Lam>();
 
-    print(func_impls_, "define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
+    print(func_impls_, "define {} {} {}(", target_.annotate_func(lam), convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
     auto sep  = "";
     auto vars = lam->vars();
@@ -957,13 +1043,89 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto [pointee, addr_space] = match<mem::Ptr, false>(global->type())->args<2>();
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
         return globals_[global] = name;
+    } else if (auto intrinsic = target_.emit_intrinsic(def); !intrinsic.empty()) {
+        return bb.assign(name, intrinsic.c_str());
     }
 
     unreachable(); // not yet implemented
 }
 
+class OutlineKernels : public Phase {
+public:
+    OutlineKernels(World& world)
+        : Phase(world, "outline-kernels", true) {}
+
+    void start() override {
+        unique_queue<DefSet> queue;
+        std::vector<Lam*> kernels;
+        std::vector<Def*> externals{world_.externals().size()};
+        size_t i = 0;
+        for (auto external : world_.externals()) {
+            externals[i++] = external.second;
+            queue.push(external.second);
+        }
+
+        while (!queue.empty()) {
+            auto def = queue.pop();
+            if (auto gpu = match<core::gpu>(def))
+                kernels.push_back(gpu->arg(3)->as_nom<Lam>());
+            else
+                for (auto op : def->ops())
+                    if (op) queue.push(op);
+        }
+        for (auto external : externals) external->make_internal();
+        for (auto kernel : kernels) kernel->make_external();
+    }
+};
+
+class InvokeKernels : public RWPhase {
+public:
+    InvokeKernels(World& world)
+        : RWPhase(world, "invoke-kernels") {}
+
+    std::pair<const Def*, bool> post_rewrite(const Def* def) override {
+        if (auto gpu = match<core::gpu>(def)) {
+            // Todo: replace axiom with call to runtime..
+            // DefArray doms{gpu->arg()->type()->num_ops(), [&](size_t i) -> const Def* {
+            //                   if (i == gpu->arg()->type()->num_projs() - 1)
+            //                       return new_world_.cn(mem::type_mem(new_world_));
+            //                   return gpu->arg()->type()->proj(i);
+            //               }};
+            // auto caller = new_world_.nom_lam(new_world_.cn(doms), new_world_.dbg(gpu->arg(3)->debug().name +
+            // "call"));
+            // caller->app(false, );
+        }
+        return {nullptr, false};
+    }
+};
+
 void emit(World& world, std::ostream& ostream) {
-    Emitter emitter(world, ostream);
+    World acc_world;
+    Rewriter rewriter{world, acc_world};
+    for (const auto& [_, ax] : world.axioms()) rewriter.rewrite(ax);
+    for (const auto& [_, nom] : world.externals()) rewriter.rewrite(nom)->as_nom()->make_external();
+
+    Pipeline acc_pipe{acc_world};
+    acc_pipe.add<OutlineKernels>();
+    acc_pipe.run();
+    acc_pipe.world().dump();
+
+    if (!acc_world.externals().empty()) {
+        AMDGPUTargetDetails amdgpu;
+        Emitter gpu_emitter(acc_world, amdgpu, ostream);
+        gpu_emitter.run();
+
+        auto direct = Dialect::load("direct", {});
+        PipelineBuilder builder;
+        direct.register_passes(builder);
+        Pipeline pipe{world};
+        pipe.add<InvokeKernels>();
+        pipe.add<PassManPhase>(builder.opt_phase(world));
+        pipe.run();
+    }
+
+    CPUTargetDetails cpu;
+    Emitter emitter(world, cpu, ostream);
     emitter.run();
 }
 

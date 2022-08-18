@@ -147,3 +147,14 @@
 /// Can be used for pointer / integer conversions as well as integer / nat conversions.
 ///
 .ax %core.bitcast: Π [D: *, S: *] -> S -> D, normalize_bitcast;
+///
+/// ### %core.gpu
+///
+/// Execute function on GPU.
+///
+.ax %core.gpu: Π [idx_size: .Nat, Args : *] -> [sideffect: %mem.M, num_groups : %Int idx_size, threads_per_group : %Int idx_size, Func : .Cn [%mem.M, Args, .Cn %mem.M]] -> %mem.M;
+
+.ax %core.local_id: Π [dim : .Nat, idx_size: .Nat] -> %Int idx_size;
+.ax %core.group_id: Π [dim : .Nat, idx_size: .Nat] -> %Int idx_size;
+.ax %core.group_size: Π [dim : .Nat, idx_size: .Nat] -> %Int idx_size;
+.ax %core.num_groups: Π [dim : .Nat, idx_size: .Nat] -> %Int idx_size;
