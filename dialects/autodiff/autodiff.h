@@ -120,4 +120,8 @@ inline const Def* op_autodiff(const Def* fun) {
     return world.app(world.app(world.ax<autodiff>(), {dom, codom}), fun);
 }
 
+const Def* tangent_type(const Def*);
+const Def* augment_type(const Def*);
+const Def* autodiff_type(const Def*);
+
 } // namespace thorin::autodiff

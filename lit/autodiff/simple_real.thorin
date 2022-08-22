@@ -8,22 +8,23 @@
 .import mem;
 
 .let I32 = %Int 4294967296;
+.let R32 = %Real 4294967296;
 
-.cn f [a:I32, ret: .Cn [I32]] = {
-    .let b = %Wrap_add (0:.Nat, 4294967296:.Nat) (a, a);
+.cn f [a:R32, ret: .Cn [R32]] = {
+    .let b = %ROp_add (0:.Nat, 4294967296:.Nat) (a, a);
     ret b
 };
 
-.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, R32]] = {
 
     // .cn ret_cont r::[%autodiff.tangent_type I32] = {
-    .cn ret_cont r::[I32] = {
+    .cn ret_cont r::[R32] = {
     // .cn ret_cont [I32] = {
     // .cn ret_cont [r:I32] = {
         return (mem, r)
     };
 
-    .let c = (43:I32);
+    .let c = (43:R32);
     f (c,ret_cont)
 };
 

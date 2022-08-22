@@ -3,7 +3,7 @@
 
 // a call to a autodiff style function
 // ./build/bin/thorin -d autodiff ./lit/autodiff/simple.thorin --output-thorin -
-
+.import core;
 .import autodiff;
 .import mem;
 
@@ -17,14 +17,23 @@
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
 
     // .cn ret_cont r::[%autodiff.tangent_type I32] = {
-    .cn ret_cont r::[I32] = {
+    .cn ret_cont [r:I32,pb:.Cn[I32,.Cn[I32]]] = {
     // .cn ret_cont [I32] = {
     // .cn ret_cont [r:I32] = {
         return (mem, r)
     };
 
+    .let f_diff = %autodiff.autodiff (.Cn [I32,.Cn[I32]]) f;
+    .let f_diff_cast = 
+        %core.bitcast 
+        (
+            .Cn [I32, .Cn[I32, .Cn[I32, .Cn[I32]]]],
+            %autodiff.autodiff_type (.Cn [I32, .Cn[I32]])
+        ) 
+        f_diff;
+
     .let c = (43:I32);
-    f (c,ret_cont)
+    f_diff_cast (c,ret_cont)
 };
 
 

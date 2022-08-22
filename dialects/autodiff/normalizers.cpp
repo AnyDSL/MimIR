@@ -18,20 +18,12 @@ const Def* normalize_autodiff(const Def* type, const Def* callee, const Def* arg
 
 const Def* normalize_autodiff_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // auto [mat, index, val] = arg->projs<3>();
-
-    // TODO:
-
-    return world.raw_app(callee, arg, dbg);
+    return autodiff_type(arg);
 }
 
 const Def* normalize_tangent_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // auto [mat, index, val] = arg->projs<3>();
-
-    // TODO:
-
-    return world.raw_app(callee, arg, dbg);
+    return tangent_type(arg);
 }
 
 // TODO: zero of type Nat, Real, Int -> 0

@@ -4,8 +4,9 @@
 // a call to a autodiff style function
 // ./build/bin/thorin -d autodiff ./lit/autodiff/simple.thorin --output-thorin -
 
-.import autodiff;
+.import core;
 .import mem;
+.import autodiff;
 
 .let I32 = %Int 4294967296;
 
@@ -16,15 +17,21 @@
 
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
 
-    // .cn ret_cont r::[%autodiff.tangent_type I32] = {
-    .cn ret_cont r::[I32] = {
+    .cn ret_cont r::[%autodiff.tangent_type I32] = {
+    // .cn ret_cont r::[I32] = {
     // .cn ret_cont [I32] = {
     // .cn ret_cont [r:I32] = {
-        return (mem, r)
+        .let r2=%core.bitcast (I32,(%autodiff.tangent_type I32)) r;
+        return (mem, r2)
+    };
+
+    .cn ret_wrap r::[I32] = {
+        .let r2=%core.bitcast ((%autodiff.tangent_type I32),I32) r;
+        ret_cont r2
     };
 
     .let c = (43:I32);
-    f (c,ret_cont)
+    f (c,ret_wrap)
 };
 
 
