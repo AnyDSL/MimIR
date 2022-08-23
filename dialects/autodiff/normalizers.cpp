@@ -14,17 +14,17 @@ const Def* normalize_autodiff(const Def* type, const Def* callee, const Def* arg
     // do nothing (everything handled in the rewrite pass)
     // TODO: maybe directly handle operations
 
-        printf("Normalize autodiff\n");
-        return world.lit_int_width(32,42);
-    // return world.raw_app(callee, arg, dbg);
+    return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_autodiff_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-        printf("Normalize autodiff type\n");
         // return arg;
-        return world.lit_int_width(32,42);
-    // return autodiff_type(arg);
+        // return world.lit_int_width(32,42);
+    auto ad_ty= autodiff_type(arg);
+    if(ad_ty)
+        return ad_ty;
+    return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_tangent_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {

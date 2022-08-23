@@ -25,11 +25,11 @@
 
     .let f_diff = %autodiff.autodiff (.Cn [I32,.Cn[I32]]) f;
     .let f_diff_cast = 
-        %core.bitcast 
-        (
-            .Cn [I32, .Cn[I32, .Cn[I32, .Cn[I32]]]],
-            %autodiff.autodiff_type (.Cn [I32, .Cn[I32]])
-        ) 
+        // %core.bitcast 
+        // (
+        //     .Cn [I32, .Cn[I32, .Cn[I32, .Cn[I32]]]],
+        //     %autodiff.autodiff_type (.Cn [I32, .Cn[I32]])
+        // ) 
         f_diff;
 
     .let c = (43:I32);
