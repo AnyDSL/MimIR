@@ -5,7 +5,7 @@
 
 namespace thorin::autodiff {
 
-class AutoDiffEval : public RWPass<AutoDiffEval,Lam> {
+class AutoDiffEval : public RWPass<AutoDiffEval, Lam> {
 public:
     AutoDiffEval(PassMan& man)
         : RWPass(man, "autodiff_eval") {}
@@ -23,9 +23,9 @@ public:
     /// rewrite:
     /// - id up to
     /// - renaming of variables
-    /// - replacement of operations with derivatives (especially functions; operators are beta-equivalent to the original)
-    /// only creates a partial pullback if one exist => not every returning expression has a pullback
-    /// takes the function with respect to which the expression is differentiated
+    /// - replacement of operations with derivatives (especially functions; operators are beta-equivalent to the
+    /// original) only creates a partial pullback if one exist => not every returning expression has a pullback takes
+    /// the function with respect to which the expression is differentiated
     const Def* augment(const Def*, Lam*, Lam*);
     const Def* augment_(const Def*, Lam*, Lam*);
 
@@ -37,7 +37,7 @@ public:
     const Def* mod_pb(const Def* def);
 
 private:
-    /// expr (closed term = lambda, operator) -> derived expr 
+    /// expr (closed term = lambda, operator) -> derived expr
     /// f => f' = λ x. (f x, f*_x)
     /// src Def -> dst Def
     /// R: for continuations the partial derivative (TODO: maybe split? - or move to partial pullback?)

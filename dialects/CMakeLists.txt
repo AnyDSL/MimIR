@@ -73,12 +73,24 @@ add_thorin_dialect(direct
     INSTALL
 )
 
+
+# TODO: make this work
+# file(GLOB autodiff_SRC
+#      "autodiff/passes/*.h"
+#      "autodiff/passes/*.cpp"
+# )
+# ${autodiff_SRC}
+
 add_thorin_dialect(autodiff
     SOURCES
         autodiff/autodiff.cpp
         autodiff/autodiff.h
         autodiff/passes/autodiff_eval.cpp
         autodiff/passes/autodiff_eval.h
+        autodiff/passes/autodiff_aux.cpp
+        autodiff/passes/autodiff_aux.h
+        autodiff/passes/autodiff_rewrite_inner.cpp
+        autodiff/passes/autodiff_rewrite_toplevel.cpp
         autodiff/normalizers.cpp
     DEPENDS
         mem
