@@ -10,12 +10,11 @@
 .let I32 = %Int 4294967296;
 
 .cn f [a:I32, ret: .Cn [I32]] = {
-    .let b = %Wrap_add (0:.Nat, 4294967296:.Nat) (a, a);
+    .let b = a;
     ret b
 };
 
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
-
 
     .cn pb_ret_cont [pr:I32] = {
         return (mem, pr)

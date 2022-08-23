@@ -125,6 +125,11 @@ inline const Def* op_autodiff(const Def* fun) {
     return world.app(world.app(world.ax<autodiff>(), {dom, codom}), fun);
 }
 
+inline const Def* op_zero(const Def* A) {
+    World& world = A->world();
+    return world.app(world.ax<zero>(), A);
+}
+
 const Def* tangent_type(const Def*);
 const Def* augment_type(const Def*);
 const Pi* autodiff_type(const Def*);

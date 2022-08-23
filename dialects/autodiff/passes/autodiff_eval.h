@@ -24,8 +24,13 @@ public:
     /// - id up to
     /// - renaming of variables
     /// - replacement of operations with derivatives (especially functions; operators are beta-equivalent to the original)
-    const Def* augment(const Def*);
-    const Def* augment_(const Def*);
+    /// only creates a partial pullback if one exist => not every returning expression has a pullback
+    /// takes the function with respect to which the expression is differentiated
+    const Def* augment(const Def*, Lam*, Lam*);
+    const Def* augment_(const Def*, Lam*, Lam*);
+
+    /// fills partial_pullback and shadow/structure pullback maps
+    void create_shadow_id_pb(const Def*);
 
     static PassTag* ID();
 
@@ -35,7 +40,8 @@ private:
     /// expr (closed term = lambda, operator) -> derived expr 
     /// f => f' = λ x. (f x, f*_x)
     /// src Def -> dst Def
-    /// for continuations the partial derivative (TODO: maybe split? - or move to partial pullback?)
+    /// R: for continuations the partial derivative (TODO: maybe split? - or move to partial pullback?)
+    ///  ^ not needed (handled by var augmentation)
     Def2Def derived;
     /// rewritten expressions (not necessarily closed) in a functional context
     /// src Def -> dst Def
@@ -45,7 +51,17 @@ private:
     // Def2Def modular_pullbacks;
 
     /// dst Def -> dst Def
-    Def2Def partial_pullbacks;
+    Def2Def partial_pullback;
+    /// shadows the structure of containers for additional auxiliary pullbacks
+    /// a very advanced optimization might be able to recover shadow pullbacks from
+    ///   the partial pullbacks
+    /// example: shadow pullback of a tuple is a tuple of pullbacks
+    /// not modular (composable with other pullbacks)
+    /// the structure pullback only preserves structure shallowly
+    ///     a n-times nested tuple has a tuple of "normal" pullbacks
+    ///     each inner nested tuples should have their own structure pullback by construction
+    /// dst Def -> dst Def
+    Def2Def shadow_pullback;
 
     Def2Def app_pb;
 };
