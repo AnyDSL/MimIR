@@ -25,14 +25,24 @@ const Def* augment_type(const Def* ty) { return ty; }
 // TODO: nothing? function => R? Mem => R?
 const Def* tangent_type(const Def* ty) { return ty; }
 
-const Def* autodiff_type(const Def* arg, const Def* ret) {
+/// computes pb type E* -> A*
+/// E - type of the expression (return type for a function)
+/// A - type of the argument (point of orientation resp. derivative - argument type for partial pullbacks)
+const Pi* pullback_type(const Def* E, const Def* A) {
+    auto& world = E->world();
+    auto tang_arg = tangent_type(A);
+    auto tang_ret = tangent_type(E);
+    auto pb_ty = world.cn({tang_ret, world.cn({tang_arg})});
+    return pb_ty;
+}
+
+// A,R => A'->R' * (R* -> A*)
+const Pi* autodiff_type(const Def* arg, const Def* ret) {
     auto& world = arg->world();
     auto aug_arg = augment_type(arg);
     auto aug_ret = augment_type(ret);
-    auto tang_arg = tangent_type(arg);
-    auto tang_ret = tangent_type(ret);
     // Q* -> P*
-    auto pb_ty = world.cn({tang_ret, world.cn({tang_arg})});
+    auto pb_ty = pullback_type(ret, arg);
     // P' -> Q' * (Q* -> P*)
     auto deriv_ty = 
         world.cn({
@@ -45,8 +55,8 @@ const Def* autodiff_type(const Def* arg, const Def* ret) {
     return deriv_ty;
 }
 
-// TODO: P->Q => P'->Q' * (Q* -> P*)
-const Def* autodiff_type(const Def* ty) {
+// P->Q => P'->Q' * (Q* -> P*)
+const Pi* autodiff_type(const Def* ty) {
     auto& world = ty->world();
     // TODO: handle DS (operators)
     if (auto pi = ty->isa<Pi>()) {
@@ -56,7 +66,7 @@ const Def* autodiff_type(const Def* ty) {
     }
     // TODO: what is this object? (only numbers are printed)
     // possible abstract type from autodiff axiom
-    world.ELOG("AutoDiff on type: {}", ty);
+    world.WLOG("AutoDiff on type: {}", ty);
     // ty->dump(300);
     // world.write("tmp.txt");
     // can not work with

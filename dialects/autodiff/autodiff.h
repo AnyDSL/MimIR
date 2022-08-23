@@ -107,6 +107,11 @@ How do we convert f to f_diff?
     - the partial pullback is the closed pullback for the function
 - return both
 
+
+
+other viewpoint:
+there are no open expressions
+
 */
 
 // inline is important
@@ -122,6 +127,7 @@ inline const Def* op_autodiff(const Def* fun) {
 
 const Def* tangent_type(const Def*);
 const Def* augment_type(const Def*);
-const Def* autodiff_type(const Def*);
+const Pi* autodiff_type(const Def*);
+const Pi* pullback_type(const Def*, const Def*);
 
 } // namespace thorin::autodiff
