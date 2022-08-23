@@ -1,4 +1,4 @@
-#include "dialects/clos/clos_conv.h"
+#include "dialects/clos/phase/clos_conv.h"
 
 #include "thorin/check.h"
 
@@ -116,11 +116,9 @@ const Def* ClosLit::env_var() { return fnc_as_lam()->var(Clos_Env_Param); }
 
 /* Closure Conversion */
 
-void ClosConv::run() {
-    auto& w        = world();
-    auto externals = std::vector(w.externals().begin(), w.externals().end());
+void ClosConv::start() {
+    auto externals = std::vector(world().externals().begin(), world().externals().end());
     auto subst     = Def2Def();
-    w.DLOG("===== ClosureConv: start =====");
     for (auto [_, ext_def] : externals) rewrite(ext_def, subst);
     while (!worklist_.empty()) {
         auto def = worklist_.front();
@@ -129,11 +127,10 @@ void ClosConv::run() {
         if (auto i = closures_.find(def); i != closures_.end()) {
             rewrite_body(i->second.fn, subst);
         } else {
-            w.DLOG("RUN: rewrite def {}", def);
+            world().DLOG("RUN: rewrite def {}", def);
             rewrite(def, subst);
         }
     }
-    w.DLOG("===== ClosureConv: done ======");
 }
 
 void ClosConv::rewrite_body(Lam* new_lam, Def2Def& subst) {

@@ -32,10 +32,13 @@ namespace thorin {
 bool World::Arena::Lock::guard_ = false;
 #endif
 
+World::Move::Move(World& world)
+    : checker(std::make_unique<Checker>(world))
+    , err(std::make_unique<ErrorHandler>()) {}
+
 World::World(const State& state)
     : state_(state)
-    , checker_(std::make_unique<Checker>(*this))
-    , err_(std::make_unique<ErrorHandler>()) {
+    , move_(*this) {
     data_.univ_        = insert<Univ>(0, *this);
     data_.lit_univ_0_  = lit_univ(0);
     data_.lit_univ_1_  = lit_univ(1);
@@ -57,7 +60,7 @@ World::World(const State& state)
         data_.type_int_    = nullptr; // hack for alpha equiv check of sigma (dbg..)
         data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0, dbg("Int"));
         data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0, dbg("Real"));
-        data_.type_bool_   = type_int(2);
+        data_.type_bool_   = type_int(2)->as<App>();
         data_.lit_bool_[0] = lit_int(2, 0_u64);
         data_.lit_bool_[1] = lit_int(2, 1_u64);
     }
@@ -200,7 +203,7 @@ World::World(std::string_view name /* = {}*/)
     : World(State(name)) {}
 
 World::~World() {
-    for (auto def : data_.defs_) def->~Def();
+    for (auto def : move_.defs) def->~Def();
 }
 
 /*
@@ -209,14 +212,14 @@ World::~World() {
 
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->isa<Pi>();
-    if (!pi) type_err(dbg->loc(), "called expression '{}' is not of function type", callee);
 
     if (err()) {
-        if (!checker_->assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
+        if (!pi) err()->err(dbg->loc(), "called expression '{}' is not of function type", callee);
+        if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
     }
 
     auto type           = pi->reduce(arg).back();
-    auto [axiom, curry] = Axiom::get(callee); // TODO move down again
+    auto [axiom, curry] = Axiom::get(callee);
     if (axiom && curry == 1) {
         if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
     }
@@ -251,7 +254,7 @@ const Def* World::tuple(Defs ops, const Def* dbg) {
 
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops, dbg);
-    if (err() && !checker_->assignable(sigma, t, dbg)) { assert(false && "TODO: error msg"); }
+    if (err() && !checker().assignable(sigma, t, dbg)) { assert(false && "TODO: error msg"); }
 
     return t;
 }
@@ -301,8 +304,6 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
 }
 
 const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
-    if (!index) return nullptr; // might occur when World is frozen
-
     if (index->isa<Arr>() || index->isa<Pack>()) {
         DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
         return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);
@@ -315,7 +316,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
 
     auto type = d->unfold_type();
     if (err()) {
-        if (!checker_->equiv(type->arity(), isa_sized_type(index->type()), dbg))
+        if (!checker().equiv(type->arity(), isa_sized_type(index->type()), dbg))
             err()->index_out_of_range(type->arity(), index, dbg);
     }
 
@@ -351,10 +352,11 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
     // for now just use t's type.
     if (auto sigma = type->isa<Sigma>();
         sigma && std::all_of(sigma->ops().begin() + 1, sigma->ops().end(),
-                             [&](auto op) { return checker_->equiv<false>(sigma->op(0), op, dbg); }))
+                             [&](auto op) { return checker().equiv<false>(sigma->op(0), op, dbg); }))
         return unify<Extract>(2, sigma->op(0), d, index, dbg);
 
-    if (!type->isa<Arr>()) type_err(dbg->loc(), "cannot extract from non-homogeneous sigma with non-literal index");
+    if (err() && !type->isa<Arr>())
+        err()->err(dbg->loc(), "cannot extract from non-homogeneous sigma with non-literal index");
 
     type = type->as<Arr>()->body();
     return unify<Extract>(2, type, d, index, dbg);
@@ -363,7 +365,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
 const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {
     auto type = d->unfold_type();
 
-    if (err() && !checker_->equiv(type->arity(), isa_sized_type(index->type()), dbg))
+    if (err() && !checker().equiv(type->arity(), isa_sized_type(index->type()), dbg))
         err()->index_out_of_range(type->arity(), index, dbg);
 
     if (auto mod = isa_lit(isa_sized_type(index->type())); mod && *mod == 1)
@@ -529,7 +531,7 @@ const Def* World::test(const Def* value, const Def* probe, const Def* match, con
         assert(m_pi && c_pi);
         auto a = isa_lit(m_pi->dom()->arity());
         assert_unused(a && *a == 2);
-        assert(checker_->equiv(m_pi->dom(2, 0_s), c_pi->dom(), nullptr));
+        assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom(), nullptr));
     }
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
@@ -547,50 +549,19 @@ const Def* World::singleton(const Def* inner_type, const Def* dbg) {
 #if THORIN_ENABLE_CHECKS
 
 void World::breakpoint(size_t number) { state_.breakpoints.emplace(number); }
-void World::enable_history(bool flag) { state_.track_history = flag; }
-bool World::track_history() const { return state_.track_history; }
 
 const Def* World::gid2def(u32 gid) {
-    auto i = std::ranges::find_if(data_.defs_, [=](auto def) { return def->gid() == gid; });
-    if (i == data_.defs_.end()) return nullptr;
+    auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });
+    if (i == move_.defs.end()) return nullptr;
     return *i;
 }
 
 #endif
 
 /*
- * misc
- */
-
-template<bool elide_empty>
-void World::visit(VisitFn f) const {
-    unique_queue<NomSet> noms;
-    unique_stack<DefSet> defs;
-
-    for (const auto& [name, nom] : externals()) {
-        assert(nom->is_set() && "external must not be empty");
-        noms.push(nom);
-    }
-
-    while (!noms.empty()) {
-        auto nom = noms.pop();
-        if (elide_empty && nom->is_unset()) continue;
-
-        Scope scope(nom);
-        f(scope);
-
-        for (auto nom : scope.free_noms()) noms.push(nom);
-    }
-}
-
-void World::set_error_handler(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
-
-/*
  * instantiate templates
  */
 
-template void World::visit<true>(VisitFn) const;
-template void World::visit<false>(VisitFn) const;
 template const Def* World::ext<true>(const Def*, const Def*);
 template const Def* World::ext<false>(const Def*, const Def*);
 template const Def* World::bound<true>(Defs, const Def*);

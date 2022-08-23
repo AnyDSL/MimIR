@@ -6,15 +6,12 @@
 namespace thorin::affine {
 
 /// Lowers the for axiom to actual control flow in CPS style
-/// Requires CopyProp to cleanup afterwards.
-class LowerFor : public RWPass<Lam> {
+class LowerFor : public RWPass<LowerFor, Lam> {
 public:
     LowerFor(PassMan& man)
         : RWPass(man, "lower_affine_for") {}
 
     const Def* rewrite(const Def*) override;
-
-    static PassTag* ID();
 
 private:
     Def2Def rewritten_;

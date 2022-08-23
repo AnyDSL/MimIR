@@ -23,8 +23,6 @@ public:
 
     using Data = LamMap<DefVec>;
 
-    static PassTag* ID();
-
 private:
     /// Lattice used for this Pass:
     /// ```

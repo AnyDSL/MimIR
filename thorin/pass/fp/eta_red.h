@@ -6,7 +6,7 @@ namespace thorin {
 
 /// Performs η-reduction.
 /// Rewrites `λx.e x` to `e`, whenever `x` does (optimistically) not appear free in `e`.
-class EtaRed : public FPPass<EtaRed> {
+class EtaRed : public FPPass<EtaRed, Def> {
 public:
     EtaRed(PassMan& man, bool callee_only = false)
         : FPPass(man, "eta_red")
@@ -20,8 +20,6 @@ public:
 
     using Data = LamMap<Lattice>;
     void mark_irreducible(Lam* lam) { irreducible_.emplace(lam); }
-
-    static PassTag* ID();
 
 private:
     const bool callee_only_;

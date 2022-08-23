@@ -2,8 +2,6 @@
 
 #include "thorin/util/bitset.h"
 
-#include "dialects/clos/clos_conv.h"
-
 namespace thorin::clos {
 
 static bool interesting_type(const Def* type, DefSet& visited) {

@@ -23,7 +23,9 @@ Scope::Scope(Def* entry)
 Scope::~Scope() {}
 
 void Scope::run() {
+    World::Freezer freezer(world()); // don't create an entry_->var() if not already present
     unique_queue<DefSet&> queue(bound_);
+
     if (auto var = entry_->var()) {
         queue.push(var);
 
@@ -88,14 +90,18 @@ const CFA& Scope::cfa() const { return lazy_init(this, cfa_); }
 const F_CFG& Scope::f_cfg() const { return cfa().f_cfg(); }
 const B_CFG& Scope::b_cfg() const { return cfa().b_cfg(); }
 
-bool is_free(const Var* var, const Def* def) {
+bool is_free(Def* nom, const Def* def) {
     // optimize common cases
-    if (def == var) return true;
-    for (auto p : var->nom()->vars())
-        if (p == var) return true;
+    if (auto var = nom->var()) {
+        if (var == def) return true;
+        for (auto v : var->nom()->vars())
+            if (var == v) return true;
 
-    Scope scope(var->nom());
-    return scope.bound(def);
+        Scope scope(nom);
+        return scope.bound(def);
+    }
+
+    return true;
 }
 
 } // namespace thorin

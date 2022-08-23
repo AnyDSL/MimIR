@@ -16,15 +16,13 @@ class EtaExp;
 /// ```
 /// if `f` appears in callee position only (see @p EtaExp).
 /// It will not flatten nominal @p Sigma%s or @p Arr%ays.
-class Scalerize : public RWPass<Lam> {
+class Scalerize : public RWPass<Scalerize, Lam> {
 public:
-    Scalerize(PassMan& man, EtaExp* eta_exp)
+    Scalerize(PassMan& man, EtaExp* eta_exp = nullptr)
         : RWPass(man, "scalerize")
         , eta_exp_(eta_exp) {}
 
     const Def* rewrite(const Def*) override;
-
-    static PassTag* ID();
 
 private:
     bool should_expand(Lam* lam);

@@ -1,4 +1,4 @@
-#include "dialects/clos/lower_typed_clos.h"
+#include "dialects/clos/phase/lower_typed_clos.h"
 
 #include <functional>
 
@@ -6,7 +6,7 @@
 
 namespace thorin::clos {
 
-void LowerTypedClos::run() {
+void LowerTypedClos::start() {
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (auto [_, n] : externals) rewrite(n);
     while (!worklist_.empty()) {

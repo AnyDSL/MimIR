@@ -10,7 +10,7 @@ class EtaExp;
 
 namespace clos {
 
-class ClosConvPrep : public RWPass<Lam> {
+class ClosConvPrep : public RWPass<ClosConvPrep, Lam> {
 public:
     ClosConvPrep(PassMan& man, EtaExp* eta_exp)
         : RWPass(man, "eta_cont")

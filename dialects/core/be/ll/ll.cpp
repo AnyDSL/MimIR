@@ -73,13 +73,15 @@ struct BB {
     std::array<std::deque<std::ostringstream>, 3> parts;
 };
 
-class CodeGen : public Emitter<std::string, std::string, BB, CodeGen> {
+class Emitter : public thorin::Emitter<std::string, std::string, BB, Emitter> {
 public:
-    CodeGen(World& world, std::ostream& ostream)
-        : Emitter(world, ostream) {}
+    using Super = thorin::Emitter<std::string, std::string, BB, Emitter>;
+
+    Emitter(World& world, std::ostream& ostream)
+        : Super(world, "llvm_emitter", ostream) {}
 
     bool is_valid(std::string_view s) { return !s.empty(); }
-    void run();
+    void start() override;
     void emit_imported(Lam*);
     void emit_epilogue(Lam*);
     std::string emit_bb(BB&, const Def*);
@@ -102,7 +104,7 @@ private:
  * convert
  */
 
-std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
+std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     if (auto global = def->isa<Global>()) return "@" + global->unique_name();
 
     if (auto lam = def->isa_nom<Lam>(); lam && !force_bb) {
@@ -116,7 +118,7 @@ std::string CodeGen::id(const Def* def, bool force_bb /*= false*/) const {
     return "%" + def->unique_name();
 }
 
-std::string CodeGen::convert(const Def* type) {
+std::string Emitter::convert(const Def* type) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
     assert(!match<mem::M>(type));
@@ -198,7 +200,7 @@ std::string CodeGen::convert(const Def* type) {
     return types_[type] = name;
 }
 
-std::string CodeGen::convert_ret_pi(const Pi* pi) {
+std::string Emitter::convert_ret_pi(const Pi* pi) {
     switch (pi->num_doms()) {
         case 0: return "void";
         case 1:
@@ -216,8 +218,8 @@ std::string CodeGen::convert_ret_pi(const Pi* pi) {
  * emit
  */
 
-void CodeGen::run() {
-    emit_module();
+void Emitter::start() {
+    Super::start();
 
     ostream() << "declare i8* @malloc(i64)" << '\n'; // HACK
     // SJLJ intrinsics (GLIBC Versions)
@@ -230,7 +232,7 @@ void CodeGen::run() {
     ostream() << func_impls_.str() << '\n';
 }
 
-void CodeGen::emit_imported(Lam* lam) {
+void Emitter::emit_imported(Lam* lam) {
     print(func_decls_, "declare {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
     auto sep  = "";
@@ -244,7 +246,7 @@ void CodeGen::emit_imported(Lam* lam) {
     print(func_decls_, ")\n");
 }
 
-std::string CodeGen::prepare(const Scope& scope) {
+std::string Emitter::prepare(const Scope& scope) {
     auto lam = scope.entry()->as_nom<Lam>();
 
     print(func_impls_, "define {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
@@ -263,7 +265,7 @@ std::string CodeGen::prepare(const Scope& scope) {
     return lam->unique_name();
 }
 
-void CodeGen::finalize(const Scope& scope) {
+void Emitter::finalize(const Scope& scope) {
     for (auto& [lam, bb] : lam2bb_) {
         for (const auto& [phi, args] : bb.phis) {
             print(bb.head().emplace_back(), "{} = phi {} ", id(phi), convert(phi->type()));
@@ -294,7 +296,7 @@ void CodeGen::finalize(const Scope& scope) {
     print(func_impls_, "}}\n\n");
 }
 
-void CodeGen::emit_epilogue(Lam* lam) {
+void Emitter::emit_epilogue(Lam* lam) {
     auto app = lam->body()->as<App>();
     auto& bb = lam2bb_[lam];
 
@@ -411,7 +413,7 @@ void CodeGen::emit_epilogue(Lam* lam) {
     }
 }
 
-std::string CodeGen::emit_bb(BB& bb, const Def* def) {
+std::string Emitter::emit_bb(BB& bb, const Def* def) {
     if (def->isa<Var>()) return {};
     if (auto lam = def->isa<Lam>()) return id(lam);
 
@@ -785,7 +787,26 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", src_t, src, dst_t);
         if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
         // clang-format on
-        return bb.assign(name, "bitcast {} {} to {}", src_t, src, dst_t);
+
+        auto size2width = [&](const Def* type) {
+            if (type->isa<Nat>()) return 64_u64;
+            if (auto int_ = isa<Tag::Int>(type)) {
+                if (int_->arg()->isa<Top>() || !int_->arg()->isa<Lit>()) return 64_u64;
+                if (auto width = mod2width(as_lit(int_->arg()))) return std::bit_ceil(*width);
+                return 64_u64;
+            }
+            return 0_u64;
+        };
+
+        auto src_size = size2width(bitcast->arg()->type());
+        auto dst_size = size2width(bitcast->type());
+
+        op = "bitcast";
+        if (src_size && dst_size) {
+            if (src_size == dst_size) return src;
+            op = (src_size < dst_size) ? "zext" : "trunc";
+        }
+        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
     } else if (auto bitcast = match<core::bitcast>(def)) {
         auto dst_type_ptr = match<mem::Ptr>(bitcast->type());
         auto src_type_ptr = match<mem::Ptr>(bitcast->arg()->type());
@@ -799,7 +820,26 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
         if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", src_t, src, dst_t);
         if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
         // clang-format on
-        return bb.assign(name, "bitcast {} {} to {}", src_t, src, dst_t);
+
+        auto size2width = [&](const Def* type) {
+            if (type->isa<Nat>()) return 64_u64;
+            if (auto int_ = isa<Tag::Int>(type)) {
+                if (int_->arg()->isa<Top>() || !int_->arg()->isa<Lit>()) return 64_u64;
+                if (auto width = mod2width(as_lit(int_->arg()))) return std::bit_ceil(*width);
+                return 64_u64;
+            }
+            return 0_u64;
+        };
+
+        auto src_size = size2width(bitcast->arg()->type());
+        auto dst_size = size2width(bitcast->type());
+
+        op = "bitcast";
+        if (src_size && dst_size) {
+            if (src_size == dst_size) return src;
+            op = (src_size < dst_size) ? "zext" : "trunc";
+        }
+        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
     } else if (auto lea = match<mem::lea>(def)) {
         auto [ptr, idx] = lea->args<2>();
         auto ll_ptr     = emit(ptr);
@@ -923,8 +963,8 @@ std::string CodeGen::emit_bb(BB& bb, const Def* def) {
 }
 
 void emit(World& world, std::ostream& ostream) {
-    CodeGen cg(world, ostream);
-    cg.run();
+    Emitter emitter(world, ostream);
+    emitter.run();
 }
 
 int compile(World& world, std::string name) {

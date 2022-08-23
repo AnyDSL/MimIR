@@ -11,10 +11,9 @@
 
 namespace thorin {
 
+/// Use with print to output complicated `std::ranges::range`s.
 template<class R, class F>
 struct Elem {
-    static constexpr bool is_elem = true;
-
     Elem(const R& range, const F& f)
         : range(range)
         , f(f) {}
@@ -23,38 +22,38 @@ struct Elem {
     const F f;
 };
 
+namespace detail {
 template<typename T>
 concept Elemable = requires(T elem) {
     elem.range;
     elem.f;
 };
 
-namespace detail {
-    template<class R, class F>
-    std::ostream& range(std::ostream & os, const R& r, F f, const char* sep = ", ") {
-        const char* cur_sep = "";
-        for (const auto& elem : r) {
-            for (auto i = cur_sep; *i != '\0'; ++i) os << *i;
+template<class R, class F>
+std::ostream& range(std::ostream& os, const R& r, F f, const char* sep = ", ") {
+    const char* cur_sep = "";
+    for (const auto& elem : r) {
+        for (auto i = cur_sep; *i != '\0'; ++i) os << *i;
 
-            if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>) {
-                std::invoke(f, os, elem);
-            } else {
-                std::invoke(f, elem);
-            }
-            cur_sep = sep;
+        if constexpr (std::is_invocable_v<F, std::ostream&, decltype(elem)>) {
+            std::invoke(f, os, elem);
+        } else {
+            std::invoke(f, elem);
         }
-        return os;
+        cur_sep = sep;
     }
+    return os;
+}
 
-    bool match2nd(std::ostream & os, const char* next, const char*& s, const char c);
+bool match2nd(std::ostream& os, const char* next, const char*& s, const char c);
 } // namespace detail
 
 /// Base case.
 std::ostream& print(std::ostream& os, const char* s);
 
 /// Provides a `printf`-like interface to format @p s with @p args and puts it into @p os.
-/// * Use '{}' as a placeholder within your format string @p s.
-/// * By default, `operator<<(std::ostream&, T)` will be used to stream the appropriate argument:
+/// Use `{}` as a placeholder within your format string @p s.
+/// * By default, `os << t`` will be used to stream the appropriate argument:
 /// ```
 /// print(os, "int: {}, float: {}", 23, 42.f);
 /// ```
@@ -68,7 +67,7 @@ std::ostream& print(std::ostream& os, const char* s);
 /// ```
 /// * You can put a `std::ranges::range` as argument.
 /// This will output a list - using the given specifier as seperator.
-/// Each element will be output via `operator<<(std::ostream&, T)`:
+/// Each element `elem` of the range will be output via `os << elem`:
 /// ```
 /// std::vector<int> v = {0, 1, 2, 3};
 /// print(os, "v: {, }", v);
@@ -103,7 +102,7 @@ std::ostream& print(std::ostream& os, const char* s, T&& t, Args&&... args) {
                     std::invoke(t);
                 } else if constexpr (std::is_invocable_v<decltype(t), std::ostream&>) {
                     std::invoke(t, os);
-                } else if constexpr (Elemable<decltype(t)>) {
+                } else if constexpr (detail::Elemable<decltype(t)>) {
                     detail::range(os, t.range, t.f, spec.c_str());
                 } else if constexpr (std::ranges::range<decltype(t)>) {
                     detail::range(
@@ -150,7 +149,7 @@ public:
         : tab_(tab)
         , indent_(indent) {}
 
-    /// Wraps thorin::print to prefix is it with indentation.
+    /// Wraps thorin::print to prefix it with indentation.
     template<class... Args>
     std::ostream& print(std::ostream& os, const char* s, Args&&... args) {
         for (size_t i = 0; i < indent_; ++i) os << tab_;
