@@ -11,14 +11,20 @@ const Def* normalize_autodiff(const Def* type, const Def* callee, const Def* arg
     auto& world = type->world();
     // auto [mat, index, val] = arg->projs<3>();
 
-    // TODO:
+    // do nothing (everything handled in the rewrite pass)
+    // TODO: maybe directly handle operations
 
-    return world.raw_app(callee, arg, dbg);
+        printf("Normalize autodiff\n");
+        return world.lit_int_width(32,42);
+    // return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_autodiff_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    return autodiff_type(arg);
+        printf("Normalize autodiff type\n");
+        // return arg;
+        return world.lit_int_width(32,42);
+    // return autodiff_type(arg);
 }
 
 const Def* normalize_tangent_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
