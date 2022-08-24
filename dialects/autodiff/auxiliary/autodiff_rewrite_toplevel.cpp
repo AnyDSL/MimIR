@@ -1,5 +1,5 @@
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/passes/autodiff_aux.h"
+#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 
 namespace thorin::autodiff {
@@ -47,7 +47,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto& world = def->world();
     if (auto lam = def->isa_nom<Lam>()) {
         world.DLOG("Derive lambda: {}", def);
-        auto deriv_ty = autodiff_type(lam->type());
+        auto deriv_ty = autodiff_type_fun(lam->type());
         auto deriv    = world.nom_lam(deriv_ty, world.dbg(lam->name() + "_deriv"));
 
         // pre register derivative
@@ -59,7 +59,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         auto [arg_ty, ret_pi] = lam->type()->doms<2>();
         auto ret_ty           = ret_pi->as<Pi>()->dom();
 
-        // R auto arg_ty_tangent = tangent_type(arg_ty);
+        // R auto arg_ty_tangent = tangent_type_fun(arg_ty);
         //  equal to
         //   deriv->dom(1)->as<Pi>() // return type
         //       ->dom(1)->as<Pi>()  // pb type

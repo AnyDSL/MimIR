@@ -7,7 +7,7 @@
 #include "dialects/core/core.h"
 // #include "dialects/direct/direct.h"
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/passes/autodiff_aux.h"
+#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/mem/mem.h"
 
@@ -42,6 +42,8 @@ const Def* AutoDiffEval::rewrite(const Def* def) {
             // world.DLOG("found a autodiff::autodiff of a lambda");
             return derive(arg);
         }
+
+        // TODO: handle operators analogous 
 
         assert(0);
         return def;

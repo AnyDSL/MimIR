@@ -87,10 +87,12 @@ add_thorin_dialect(autodiff
         autodiff/autodiff.h
         autodiff/passes/autodiff_eval.cpp
         autodiff/passes/autodiff_eval.h
-        autodiff/passes/autodiff_aux.cpp
-        autodiff/passes/autodiff_aux.h
-        autodiff/passes/autodiff_rewrite_inner.cpp
-        autodiff/passes/autodiff_rewrite_toplevel.cpp
+        autodiff/passes/autodiff_zero.cpp
+        autodiff/passes/autodiff_zero.h
+        autodiff/auxiliary/autodiff_aux.cpp
+        autodiff/auxiliary/autodiff_aux.h
+        autodiff/auxiliary/autodiff_rewrite_inner.cpp
+        autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
         autodiff/normalizers.cpp
     DEPENDS
         mem

@@ -60,9 +60,11 @@ private:
     /// the structure pullback only preserves structure shallowly
     ///     a n-times nested tuple has a tuple of "normal" pullbacks
     ///     each inner nested tuples should have their own structure pullback by construction
+    /// TODO: explain [B0->A, ...]
     /// dst Def -> dst Def
     Def2Def shadow_pullback;
 
+    // TODO: remove?
     Def2Def app_pb;
 };
 

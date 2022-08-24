@@ -1,5 +1,5 @@
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/passes/autodiff_aux.h"
+#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 
 namespace thorin::autodiff {
@@ -9,7 +9,7 @@ namespace thorin::autodiff {
 const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     auto& world           = def->world();
     auto f_arg_ty=f->type()->dom(0);
-    // auto f_arg_tangent_ty = tangent_type(f->type()->dom(0));
+    // auto f_arg_tangent_ty = tangent_type_fun(f->type()->dom(0));
     // auto f_arg_tangent_ty =
     //     f_diff->type()->dom(1)->as<Pi>() // return type
     //     ->dom(1)->as<Pi>() // pb type
@@ -88,7 +88,6 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
                 {
                     tuple_tan,
                     pb_fun->var(1) // ret_var but make sure to select correct one
-                    pb_fun->ret_var()
                 }
             );
             pb=pb_fun;

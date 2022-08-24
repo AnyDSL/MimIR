@@ -130,9 +130,4 @@ inline const Def* op_zero(const Def* A) {
     return world.app(world.ax<zero>(), A);
 }
 
-const Def* tangent_type(const Def*);
-const Def* augment_type(const Def*);
-const Pi* autodiff_type(const Def*);
-const Pi* pullback_type(const Def*, const Def*);
-
 } // namespace thorin::autodiff
