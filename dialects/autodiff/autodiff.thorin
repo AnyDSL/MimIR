@@ -55,6 +55,7 @@
 /// a universal add
 ///
 .ax %autodiff.add: Π [T:*] -> [T,T] -> T, normalize_add;
+.ax %autodiff.sum: Π [n:.Nat,T:*] -> «n; T» -> T, normalize_sum;
 ///
 ///
 // /// ## Substitution Rules
