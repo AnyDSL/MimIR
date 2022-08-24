@@ -23,10 +23,11 @@ const Def* id_pullback(const Def* A) {
 
 const Def* zero_pullback(const Def* E, const Def* A) {
     auto& world = A->world();
+    auto A_tangent = tangent_type(A);
     auto pb_ty  = pullback_type(E, A);
     auto pb     = world.nom_lam(pb_ty, world.dbg("zero_pb"));
-    world.DLOG("zero_pullback {} -> {}", E, A);
-    pb->app(true, pb->var(1), op_zero(A));
+    world.DLOG("zero_pullback for {} resp. {} (-> {})", E, A, A_tangent);
+    pb->app(true, pb->var(1), op_zero(A_tangent));
     return pb;
 }
 

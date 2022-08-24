@@ -8,7 +8,8 @@ namespace thorin::autodiff {
 ///
 const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     auto& world           = def->world();
-    auto f_arg_tangent_ty = tangent_type(f->type()->dom(0));
+    auto f_arg_ty=f->type()->dom(0);
+    // auto f_arg_tangent_ty = tangent_type(f->type()->dom(0));
     // auto f_arg_tangent_ty =
     //     f_diff->type()->dom(1)->as<Pi>() // return type
     //     ->dom(1)->as<Pi>() // pb type
@@ -24,7 +25,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
 
         auto aug_arg    = augment(arg, f, f_diff);
         auto aug_callee = augment(callee, f, f_diff);
-        auto arg_ppb    = partial_pullback[aug_arg];
+        // auto arg_ppb    = partial_pullback[aug_arg];
 
         if (!is_closed_function(callee)) {
             // TODO: check if function (not operator)
@@ -57,10 +58,44 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         auto aug_tuple = augment(tuple, f, f_diff);
         auto aug_index = augment(index, f, f_diff);
 
-        auto shadow_tuple_pb = shadow_pullback[aug_tuple];
+        // TODO: if not exists use:
+        // e:T, b:B
+        // b = e#i
+        // b* = \lambda (s:B). e* (insert s at i in (zero T))
+
+        const Def* pb;
+        world.DLOG("tuple was: {} : {}", aug_tuple, aug_tuple->type());
+        if(shadow_pullback.count(aug_tuple)) {
+            auto shadow_tuple_pb = shadow_pullback[aug_tuple];
+            world.DLOG("Shadow pullback: {} : {}", shadow_tuple_pb, shadow_tuple_pb->type());
+            pb                   = world.extract(shadow_tuple_pb, aug_index);
+        }else {
+            assert(partial_pullback.count(aug_tuple));
+            auto tuple_pb = partial_pullback[aug_tuple];
+            auto pb_ty = pullback_type(ext->type(), f_arg_ty);
+            auto pb_fun=world.nom_lam(pb_ty, world.dbg("extract_pb"));
+            world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
+            auto pb_tangent = pb_fun->var((nat_t)0,world.dbg("s"));
+            auto tuple_tan = world.insert(
+                op_zero(aug_tuple->type()),
+                aug_index,
+                pb_tangent,
+                world.dbg("tup_s")
+            );
+            pb_fun->app(
+                true,
+                tuple_pb,
+                {
+                    tuple_tan,
+                    pb_fun->var(1) // ret_var but make sure to select correct one
+                    pb_fun->ret_var()
+                }
+            );
+            pb=pb_fun;
+        }
+
 
         auto aug_ext              = world.extract(aug_tuple, aug_index);
-        auto pb                   = world.extract(shadow_tuple_pb, aug_index);
         partial_pullback[aug_ext] = pb;
 
         return aug_ext;
@@ -89,7 +124,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         world.DLOG("Augment literal: {}", def);
         auto aug_lit = lit;
         // set zero pullback
-        auto pb                   = zero_pullback(lit->type(), f_arg_tangent_ty);
+        auto pb                   = zero_pullback(lit->type(), f_arg_ty);
         partial_pullback[aug_lit] = pb;
         return def;
     }
