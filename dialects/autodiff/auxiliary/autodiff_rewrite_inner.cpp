@@ -2,6 +2,7 @@
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/direct/direct.h"
+#include "dialects/core/core.h"
 
 namespace thorin::autodiff {
 
@@ -130,7 +131,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     auto aug_callee = augment(callee, f, f_diff);
     // auto arg_ppb    = partial_pullback[aug_arg];
 
-    if (!is_closed_function(callee)) {
+    if (is_open_continuation(callee)) {
         // TODO: check if function (not operator)
         // original function = unclosed function (return cont / continuation)
         //   Cn[E]
@@ -207,7 +208,54 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         return augment_tuple(tup, f, f_diff);
     }
 
-    // TODO: remaining
+    //axiom
+    // TODO: move concrete handling to own file, directory
+    else if(auto ax = def->isa<Axiom>()) {
+        world.DLOG("Augment axiom: {}", ax);
+        world.DLOG("axiom curry: {}", ax->curry());
+        world.DLOG("axiom flags: {}", ax->flags());
+        // world.DLOG("core::wrap::AxiomBase: {}", core::wrap::Axiom_Base);
+        // world.DLOG("core::wrap::mul: {}", core::wrap::mul);
+        // world.DLOG("core::wrap::mul: {}", 0x1104c60000000502);
+        // return augment_axiom(ax, f, f_diff);
+
+        // auto mul = match<core::wrap::mul>(ax);
+
+        // does not work
+        auto wrap = match<core::wrap>(ax);
+        if(wrap)
+            world.DLOG("match wrap axiom");
+
+        // does not work
+        auto amul = match<core::wrap>(
+            core::wrap::mul,
+            ax);
+        if(amul)
+            world.DLOG("match mul axiom");
+
+        // error with axiom tags
+        auto amul2 = raw_match<core::wrap>(
+            core::wrap::mul,
+            ax);
+        if(amul2)
+            world.DLOG("raw match mul axiom");
+
+        // if ((ax->flags() & ~0xFF_u64) == detail::base_value<core::wrap::mul>()) {
+
+        // }
+
+        // equivalent to above
+        if(ax->flags()==core::wrap::mul) {
+            world.DLOG("multiplication axiom flags");
+        }
+        // if(ax->flags()==core::wrap::Axiom_Base) {
+        //     world.DLOG("wrap axiom");
+        // }
+
+        assert(false);
+    }
+
+    // TODO: remaining (lambda, axiom)
 
     world.ELOG("did not expect to augment: {} : {}", def, def->type());
     world.ELOG("node: {}", def->node_name());
