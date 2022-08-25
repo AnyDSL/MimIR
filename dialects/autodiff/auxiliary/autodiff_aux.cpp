@@ -31,40 +31,6 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     return pb;
 }
 
-bool is_continuation(const Def* e) {
-    auto& world = e->world();
-    auto E      = e->type();
-
-    if (auto pi = E->isa<Pi>()) { return pi->codom()->isa<Bot>(); }
-    return false;
-}
-
-bool is_closed_function(const Def* e) {
-    auto& world = e->world();
-    auto E      = e->type();
-    if (auto pi = E->isa<Pi>()) {
-        // R world.DLOG("codom is {}", pi->codom());
-        // R world.DLOG("codom kind is {}", pi->codom()->node_name());
-        //  duck-typing applies here
-        //  use short-circuit evaluation to reuse previous results
-        return is_continuation(pi) &&         // continuation
-               pi->num_doms() == 2 &&         // args, return
-               pi->dom(1)->isa<Pi>() != NULL; // return type
-    }
-    return false;
-}
-
-bool is_open_continuation(const Def* e) {
-    auto& world = e->world();
-    return is_continuation(e) && !is_closed_function(e);
-}
-
-bool is_direct_style_function(const Def* e) {
-    auto& world = e->world();
-    // codom != Bot
-    return e->type()->isa<Pi>() && !is_continuation(e);
-}
-
 // P => P'
 // TODO: function => extend
 const Def* augment_type_fun(const Def* ty) { return ty; }
@@ -145,3 +111,116 @@ const Def* zero_def(const Def* T) {
 }
 
 } // namespace thorin::autodiff
+
+
+namespace thorin {
+
+bool is_continuation_type(const Def* E) {
+    if (auto pi = E->isa<Pi>()) { return pi->codom()->isa<Bot>(); }
+    return false;
+}
+
+bool is_continuation(const Def* e) {
+    return is_continuation_type(e->type());
+}
+
+bool is_returning_continuation(const Def* e) {
+    auto& world = e->world();
+    auto E      = e->type();
+    if (auto pi = E->isa<Pi>()) {
+        // R world.DLOG("codom is {}", pi->codom());
+        // R world.DLOG("codom kind is {}", pi->codom()->node_name());
+        //  duck-typing applies here
+        //  use short-circuit evaluation to reuse previous results
+        return is_continuation_type(pi) &&         // continuation
+               pi->num_doms() == 2 &&         // args, return
+               is_continuation_type(pi->dom(1)); // return type
+    }
+    return false;
+}
+
+bool is_open_continuation(const Def* e) {
+    auto& world = e->world();
+    return is_continuation(e) && !is_returning_continuation(e);
+}
+
+bool is_direct_style_function(const Def* e) {
+    auto& world = e->world();
+    // codom != Bot
+    return e->type()->isa<Pi>() && !is_continuation(e);
+}
+
+const Def* continuation_dom(const Def* E) {
+    auto pi = E->as<Pi>();
+    assert(pi != NULL);
+    return pi->dom(0);
+}
+
+const Def* continuation_codom(const Def* E) {
+    auto pi = E->as<Pi>();
+    assert(pi != NULL);
+    return pi->dom(1)->as<Pi>()->dom();
+}
+
+/// high level
+/// f: B -> C
+/// g: A -> B
+/// f o g := λ x. f(g(x)) : A -> C
+/// with cps style
+/// f: cn[B, cn C]
+/// g: cn[A, cn B]
+/// h = f o g
+/// h : cn[A, cn C]
+/// h = λ a ret_h. g(a,h')
+/// h' : cn B
+/// h' = λ b. f(b,ret_h)
+const Def* compose_continuation(const Def* f, const Def* g) {
+    assert(is_continuation(f));
+    assert(is_returning_continuation(f));
+    assert(is_returning_continuation(g));
+
+    auto& world = f->world();
+    auto F      = f->type()->as<Pi>();
+    auto G      = g->type()->as<Pi>();
+
+    auto A = continuation_dom(G);
+    auto B = continuation_codom(G);
+    auto C = continuation_codom(F);
+    // better handled by application type checks
+    // auto B2 = continuation_dom(F);
+    // assert(B == B2);
+
+    world.DLOG("compose f (B->C): {} : {}", f, F);
+    world.DLOG("compose g (A->B): {} : {}", g, G);
+    world.DLOG("  A: {}", A);
+    world.DLOG("  B: {}", B);
+    world.DLOG("  C: {}", C);
+
+    auto H = world.cn({A, world.cn(C)});
+    auto Hcont = world.cn(B);
+
+    auto h = world.nom_lam(H, world.dbg("comp_"+f->name()+"_"+g->name()));
+    auto hcont = world.nom_lam(Hcont, world.dbg("comp_"+f->name()+"_"+g->name()+"_cont"));
+
+    h->app(
+        true,
+        g,
+        {
+            h->var((nat_t)0),
+            hcont
+        }
+    );
+
+    hcont->app(
+        true,
+        f,
+        {
+            hcont->var(), // Warning: not var(0) => only one var => normalization flattens tuples down here
+            h->var(1) // ret_var
+        }
+    );
+
+    return h;
+}
+
+} // namespace thorin

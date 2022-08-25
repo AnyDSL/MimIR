@@ -1,7 +1,6 @@
 #pragma once
 
 #include "thorin/world.h"
-
 #include "dialects/autodiff/autogen.h"
 
 namespace thorin::autodiff {

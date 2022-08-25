@@ -1,8 +1,8 @@
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
-#include "dialects/direct/direct.h"
 #include "dialects/core/core.h"
+#include "dialects/direct/direct.h"
 
 namespace thorin::autodiff {
 
@@ -22,7 +22,6 @@ const Def* op_sum(DefArray defs) {
     auto T      = defs[0]->type();
     return world.raw_app(world.raw_app(world.ax<sum>(), {world.lit_nat(defs.size()), T}), world.tuple(defs));
 }
-
 
 #define f_arg_ty f->type()->dom(0)
 
@@ -131,6 +130,13 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     auto aug_callee = augment(callee, f, f_diff);
     // auto arg_ppb    = partial_pullback[aug_arg];
 
+    // nested (inner application)
+    if(app->type()->isa<Pi>()) {
+        world.DLOG("Nested application: {} : {}", aug_callee, aug_callee->type());
+        world.DLOG("Nested application arg: {} : {}", aug_arg, aug_arg->type());
+        return world.app(aug_callee, aug_arg);
+    }
+
     if (is_open_continuation(callee)) {
         // TODO: check if function (not operator)
         // original function = unclosed function (return cont / continuation)
@@ -149,6 +155,25 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         return aug_app;
     }
 
+    if(!is_continuation(callee)) {
+        // calle is ds function (e.g. operator (or its partial application))
+        auto aug_app = world.app(aug_callee, aug_arg);
+        auto [aug_res,fun_pb] = aug_app->projs<2>();
+        // compose fun_pb with argument_pb to get result pb
+        // TODO: combine case with cps function case
+        auto arg_pb = partial_pullback[aug_arg];
+        assert(arg_pb);
+        // fun_pb: out_tan -> arg_tan
+        // arg_pb: arg_tan -> fun_tan
+        world.DLOG("argument pullback: {} : {}", arg_pb, arg_pb->type());
+        world.DLOG("function pullback: {} : {}", fun_pb, fun_pb->type());
+        auto res_pb = compose_continuation(arg_pb,fun_pb);
+        world.DLOG("result pullback: {} : {}", res_pb, res_pb->type());
+        partial_pullback[aug_res] = res_pb;
+        //R assert(false);
+        return aug_res;
+    }
+
     // TODO: handle cascading functions
     // TODO: handle axiom app before or after augment
 
@@ -160,7 +185,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 /// rewrite the given definition
 ///
 const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
-    auto& world   = def->world();
+    auto& world = def->world();
     // for types holds:
     // we use macros above to avoid recomputation
     // TODO: alternative: use class instance to rewrite inside a function and save such values (f, f_diff, f_arg_ty)
@@ -208,20 +233,48 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         return augment_tuple(tup, f, f_diff);
     }
 
-    //axiom
-    // TODO: move concrete handling to own file, directory
-    else if(auto ax = def->isa<Axiom>()) {
+    // axiom
+    //  TODO: move concrete handling to own file, directory
+    else if (auto ax = def->isa<Axiom>()) {
         world.DLOG("Augment axiom: {} : {}", ax, ax->type());
         world.DLOG("axiom curry: {}", ax->curry());
         world.DLOG("axiom flags: {}", ax->flags());
         // return augment_axiom(ax, f, f_diff);
 
-        if(ax->flags()==core::wrap::mul) {
+        if (ax->flags() == core::wrap::mul) {
             world.DLOG("multiplication axiom flags");
 
+            auto mul_deriv_cps = world.lookup("mul_deriv_cps");
+            auto mul_deriv_ds  = world.lookup("mul_deriv_ds");
+            if (!mul_deriv_cps) {
+                world.ELOG("multiplication derivative in cps not found");
+            } else {
+                world.DLOG("mul deriv cps: {} : {}", mul_deriv_cps, mul_deriv_cps->type());
+            }
+            if (!mul_deriv_ds) {
+                world.ELOG("multiplication derivative in ds not found");
+            } else {
+                world.DLOG("mul deriv ds: {} : {}", mul_deriv_ds, mul_deriv_ds->type());
+            }
+            // we use ds => 
+            // inlining already needed for \Pi arguments => should(/needs to) work
+            // no need for cps2ds axiom insertion in the transformation after \Pi arguments
+            // handling of the difference between ds operations and cps functions 
+            //   already needed for functions vs operators
+            auto mul_deriv_ds2  = world.lookup("mul_deriv_ds_by_cps");
+            assert(mul_deriv_ds2);
+
+
+            world.DLOG("filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
+            mul_deriv_ds->as_nom<Lam>()->set_filter(true);
+            world.DLOG("updated filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
+            world.DLOG("filter of mul_deriv_ds2: {}", mul_deriv_ds2->as<Lam>()->filter());
+            // assert(0);
+
+            return mul_deriv_ds;
         }
 
-        assert(false);
+        assert(false && "unhandled axiom");
     }
 
     // TODO: remaining (lambda, axiom)

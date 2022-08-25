@@ -99,5 +99,6 @@ add_thorin_dialect(autodiff
         core
         clos
         affine
+        direct
     INSTALL
 )
