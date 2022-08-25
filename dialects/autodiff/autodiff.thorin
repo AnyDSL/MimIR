@@ -27,6 +27,7 @@
 ///
 .import direct;
 .import mem;
+.import core;
 ///
 /// ## Types
 ///
@@ -58,6 +59,79 @@
 .ax %autodiff.sum: Π [n:.Nat,T:*] -> «n; T» -> T, normalize_sum;
 ///
 ///
+
+// .cn add_deriv [m:.Nat, n:.Nat]
+//     [[a:(.Real n), b:(.Real n)], ret:(.Cn (.Real n))] = {
+//     .let result = %ROp_add (m,n) (a,b);
+//     .cn add_pb [s:(.Real n), pb_ret:(.Cn [.Real n, .Real n])] = {
+//         .let lhs = %ROp_add (m,n) (s,b);
+//         .let rhs = %ROp_add (m,n) (s,a);
+//         pb_ret (lhs, rhs)
+//     };
+//     ret (result,add_pb)
+// };
+
+
+/// mul' => args -> result*pullback
+/// call: r    = mul  (m,w) (a,b) 
+/// res : r,r* = mul' (m,w) (a,b)
+/// we shorten (Int w) to Int
+/// mul : Π [m:.Nat,w:.Nat] -> [a:Int,b:Int] -> Int
+/// r   : Int
+/// r*  : cn[Int,cn[Int,Int]]
+/// the pullback has to be in cps for compliance
+/// mul* := λ s. (s*b,s*a)
+/// 
+/// version 1: mul' as direct style function
+/// mul'_ds : Π [m:.Nat,w:.Nat] -> [a:Int,b:Int] -> [Int,cn[Int,cn[Int,Int]]]
+/// r,r* = mul'_ds (m,w) (a,b)
+/// 
+/// version 2: mul' as cps style function
+/// mul'_cps : Π [m:.Nat,w:.Nat] -> cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]
+/// r,r* = (cps2ds (mul'_cps (m,w))) (a,b)
+/// 
+/// both are normalizing by one inlining step
+/// the ds version is more direct
+/// but needs a ds handling of inlining
+
+// .lam mul_deriv_ds 
+//     [m:.Nat, w:.Nat] -> 
+//     ([%Int w, %Int w] -> [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]])
+//     = {
+//     .lam inner_mul_deriv_ds 
+//         [a:(%Int w), b:(%Int w)] ->
+//         [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]
+//         = {
+//         .let result = %core.wrap.mul (m,n) (a,b);
+//         .cn mul_pb_ds [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+//             .let lhs = %core.wrap.mul (m,n) (s,b);
+//             .let rhs = %core.wrap.mul (m,n) (s,a);
+//             pb_ret (lhs, rhs)
+//         };
+//         (result,mul_pb_ds)
+//     };
+// };
+
+
+.lam mul_deriv_cps
+    [m:.Nat, w:.Nat] -> 
+    (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
+    = {
+    .cn inner_mul_deriv_ds 
+        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
+        = {
+        .let result = %core.wrap.mul (m,n) (a,b);
+        .cn mul_pb_ds [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+            .let lhs = %core.wrap.mul (m,n) (s,b);
+            .let rhs = %core.wrap.mul (m,n) (s,a);
+            pb_ret (lhs, rhs)
+        };
+        ret (result,mul_pb_ds)
+    };
+};
+
+
+
 // /// ## Substitution Rules
 // /// 
 // /// ### Types

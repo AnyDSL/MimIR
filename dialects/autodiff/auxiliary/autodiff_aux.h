@@ -38,6 +38,7 @@ Match<AxTag, detail::Enum2Def<AxTag>> raw_match(const Def* def) {
 }
 
 // equivalent to flags == given axiom
+// but error with cast
 template<class AxTag, bool Check = true>
 Match<AxTag, detail::Enum2Def<AxTag>> raw_match(AxTag sub, const Def* def) {
     auto [axiom, curry] = Axiom::get(def);

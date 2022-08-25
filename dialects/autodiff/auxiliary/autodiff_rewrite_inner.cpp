@@ -211,46 +211,15 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     //axiom
     // TODO: move concrete handling to own file, directory
     else if(auto ax = def->isa<Axiom>()) {
-        world.DLOG("Augment axiom: {}", ax);
+        world.DLOG("Augment axiom: {} : {}", ax, ax->type());
         world.DLOG("axiom curry: {}", ax->curry());
         world.DLOG("axiom flags: {}", ax->flags());
-        // world.DLOG("core::wrap::AxiomBase: {}", core::wrap::Axiom_Base);
-        // world.DLOG("core::wrap::mul: {}", core::wrap::mul);
-        // world.DLOG("core::wrap::mul: {}", 0x1104c60000000502);
         // return augment_axiom(ax, f, f_diff);
 
-        // auto mul = match<core::wrap::mul>(ax);
-
-        // does not work
-        auto wrap = match<core::wrap>(ax);
-        if(wrap)
-            world.DLOG("match wrap axiom");
-
-        // does not work
-        auto amul = match<core::wrap>(
-            core::wrap::mul,
-            ax);
-        if(amul)
-            world.DLOG("match mul axiom");
-
-        // error with axiom tags
-        auto amul2 = raw_match<core::wrap>(
-            core::wrap::mul,
-            ax);
-        if(amul2)
-            world.DLOG("raw match mul axiom");
-
-        // if ((ax->flags() & ~0xFF_u64) == detail::base_value<core::wrap::mul>()) {
-
-        // }
-
-        // equivalent to above
         if(ax->flags()==core::wrap::mul) {
             world.DLOG("multiplication axiom flags");
+
         }
-        // if(ax->flags()==core::wrap::Axiom_Base) {
-        //     world.DLOG("wrap axiom");
-        // }
 
         assert(false);
     }
