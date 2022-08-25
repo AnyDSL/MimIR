@@ -121,7 +121,7 @@ const Def* zero_def(const Def* T) {
         auto callee = app->callee();
         // auto args = app->args();
         world.DLOG("app callee: {} : {} <{}>", callee, callee->type(), callee->node_name());
-        // auto size = tint-
+        // TODO: can you directly match Tag::Int?
         if(callee==world.type_int()) {
             // auto size = app->arg(0);
             auto zero = world.lit_int(T, 0, world.dbg("zero"));

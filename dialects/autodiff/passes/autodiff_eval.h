@@ -28,6 +28,13 @@ public:
     /// the function with respect to which the expression is differentiated
     const Def* augment(const Def*, Lam*, Lam*);
     const Def* augment_(const Def*, Lam*, Lam*);
+    /// helper functions for augment
+    const Def* augment_var(const Var*, Lam*, Lam*);
+    const Def* augment_extract(const Extract*, Lam*, Lam*);
+    const Def* augment_app(const App*, Lam*, Lam*);
+    const Def* augment_lit(const Lit*, Lam*, Lam*);
+    const Def* augment_tuple(const Tuple*, Lam*, Lam*);
+
 
     /// fills partial_pullback and shadow/structure pullback maps
     void create_shadow_id_pb(const Def*);
