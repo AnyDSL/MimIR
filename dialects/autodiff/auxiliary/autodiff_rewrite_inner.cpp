@@ -261,14 +261,15 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
             // no need for cps2ds axiom insertion in the transformation after \Pi arguments
             // handling of the difference between ds operations and cps functions 
             //   already needed for functions vs operators
-            auto mul_deriv_ds2  = world.lookup("mul_deriv_ds_by_cps");
-            assert(mul_deriv_ds2);
+
+            // auto mul_deriv_ds2  = world.lookup("mul_deriv_ds_by_cps");
+            // assert(mul_deriv_ds2);
 
 
             world.DLOG("filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
             mul_deriv_ds->as_nom<Lam>()->set_filter(true);
             world.DLOG("updated filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
-            world.DLOG("filter of mul_deriv_ds2: {}", mul_deriv_ds2->as<Lam>()->filter());
+            // world.DLOG("filter of mul_deriv_ds2: {}", mul_deriv_ds2->as<Lam>()->filter());
             // assert(0);
 
             return mul_deriv_ds;

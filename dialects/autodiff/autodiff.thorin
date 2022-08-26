@@ -138,27 +138,28 @@
 /// TODO:
 ///   best of both worlds?
 ///   or just use the ds version?
-.lam .extern mul_deriv_ds_by_cps
-    [m:.Nat, w:.Nat] -> 
-    ([%Int w, %Int w] -> [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]])
-    = {
-    .cn inner_mul_deriv_cps
-        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
-        = {
-        .let result = %core.wrap.mul (m,w) (a,b);
-        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
-            .let lhs = %core.wrap.mul (m,w) (s,b);
-            .let rhs = %core.wrap.mul (m,w) (s,a);
-            pb_ret (lhs, rhs)
-        };
-        ret (result,mul_pb)
-    };
-    %direct.cps2ds (
-        [%Int w, %Int w],
-        [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]
-    )
-    inner_mul_deriv_cps
-};
+/// 
+// .lam .extern mul_deriv_ds_by_cps
+//     [m:.Nat, w:.Nat] -> 
+//     ([%Int w, %Int w] -> [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]])
+//     = {
+//     .cn inner_mul_deriv_cps
+//         [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
+//         = {
+//         .let result = %core.wrap.mul (m,w) (a,b);
+//         .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+//             .let lhs = %core.wrap.mul (m,w) (s,b);
+//             .let rhs = %core.wrap.mul (m,w) (s,a);
+//             pb_ret (lhs, rhs)
+//         };
+//         ret (result,mul_pb)
+//     };
+//     %direct.cps2ds (
+//         [%Int w, %Int w],
+//         [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]
+//     )
+//     inner_mul_deriv_cps
+// };
 
 
 // /// ## Substitution Rules
