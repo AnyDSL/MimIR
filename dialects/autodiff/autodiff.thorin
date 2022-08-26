@@ -97,43 +97,57 @@
 /// the ds version is more direct
 /// but needs a ds handling of inlining
 
-.lam .extern mul_deriv_ds 
-    [m:.Nat, w:.Nat] -> 
-    ([%Int w, %Int w] -> [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]])
-    = {
-    .lam inner_mul_deriv_ds 
-        [a:(%Int w), b:(%Int w)] ->
-        [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]
-        = {
-        .let result = %core.wrap.mul (m,w) (a,b);
-        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
-            .let lhs = %core.wrap.mul (m,w) (s,b);
-            .let rhs = %core.wrap.mul (m,w) (s,a);
-            pb_ret (lhs, rhs)
-        };
-        (result,mul_pb)
-    };
-    inner_mul_deriv_ds
-};
+// .lam .extern mul_deriv_ds 
+//     [m:.Nat, w:.Nat] -> 
+//     ([%Int w, %Int w] -> [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]])
+//     = {
+//     .lam inner_mul_deriv_ds 
+//         [a:(%Int w), b:(%Int w)] ->
+//         [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]
+//         = {
+//         .let result = %core.wrap.mul (m,w) (a,b);
+//         .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+//             .let lhs = %core.wrap.mul (m,w) (s,b);
+//             .let rhs = %core.wrap.mul (m,w) (s,a);
+//             pb_ret (lhs, rhs)
+//         };
+//         (result,mul_pb)
+//     };
+//     inner_mul_deriv_ds
+// };
+
+// folded cascading
+// .lam .extern mul_deriv_ds 
+//     _::[m:.Nat, w:.Nat] -> 
+//     Π [a:%Int w, b:%Int w] -> [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]
+//     = {
+//         .let result = %core.wrap.mul (m,w) (a,b);
+//         .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+//             .let lhs = %core.wrap.mul (m,w) (s,b);
+//             .let rhs = %core.wrap.mul (m,w) (s,a);
+//             pb_ret (lhs, rhs)
+//         };
+//         (result,mul_pb)
+// };
 
 
-.lam .extern mul_deriv_cps
-    [m:.Nat, w:.Nat] -> 
-    (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
-    = {
-    .cn inner_mul_deriv_cps
-        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
-        = {
-        .let result = %core.wrap.mul (m,w) (a,b);
-        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
-            .let lhs = %core.wrap.mul (m,w) (s,b);
-            .let rhs = %core.wrap.mul (m,w) (s,a);
-            pb_ret (lhs, rhs)
-        };
-        ret (result,mul_pb)
-    };
-    inner_mul_deriv_cps
-};
+// .lam .extern mul_deriv_cps
+//     [m:.Nat, w:.Nat] -> 
+//     (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
+//     = {
+//     .cn inner_mul_deriv_cps
+//         [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
+//         = {
+//         .let result = %core.wrap.mul (m,w) (a,b);
+//         .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+//             .let lhs = %core.wrap.mul (m,w) (s,b);
+//             .let rhs = %core.wrap.mul (m,w) (s,a);
+//             pb_ret (lhs, rhs)
+//         };
+//         ret (result,mul_pb)
+//     };
+//     inner_mul_deriv_cps
+// };
 
 /// TODO:
 ///   best of both worlds?

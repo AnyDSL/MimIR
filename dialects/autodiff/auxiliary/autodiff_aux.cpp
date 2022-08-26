@@ -106,6 +106,8 @@ const Def* zero_def(const Def* T) {
             return zero;
         }
     }
+
+    // or return bot
     // assert(0);
     return nullptr;
 }

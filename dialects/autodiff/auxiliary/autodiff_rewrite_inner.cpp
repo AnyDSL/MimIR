@@ -132,9 +132,15 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 
     // nested (inner application)
     if(app->type()->isa<Pi>()) {
-        world.DLOG("Nested application: {} : {}", aug_callee, aug_callee->type());
+        world.DLOG("Nested application callee: {} : {}", aug_callee, aug_callee->type());
         world.DLOG("Nested application arg: {} : {}", aug_arg, aug_arg->type());
-        return world.app(aug_callee, aug_arg);
+        auto aug_app = world.app(aug_callee, aug_arg);
+        world.DLOG("Nested application result: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
+        // TODO: rephrase
+        // partial_pullback[aug_app] = partial_pullback[aug_callee];
+        // or app with args
+        // => nothing because we handle pullbacks of callees differently (in term level as they are closed)
+        return aug_app;
     }
 
     if (is_open_continuation(callee)) {
@@ -151,6 +157,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         auto arg_pb  = partial_pullback[aug_arg];
         auto aug_app = world.app(aug_callee, {aug_arg, arg_pb});
         world.DLOG("Augmented application: {} : {}", aug_app, aug_app->type());
+        world.debug_dump();
         // assert(false);
         return aug_app;
     }
@@ -158,6 +165,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     if(!is_continuation(callee)) {
         // calle is ds function (e.g. operator (or its partial application))
         auto aug_app = world.app(aug_callee, aug_arg);
+        world.DLOG("Augmented application: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
         auto [aug_res,fun_pb] = aug_app->projs<2>();
         // compose fun_pb with argument_pb to get result pb
         // TODO: combine case with cps function case
@@ -165,8 +173,8 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         assert(arg_pb);
         // fun_pb: out_tan -> arg_tan
         // arg_pb: arg_tan -> fun_tan
-        world.DLOG("argument pullback: {} : {}", arg_pb, arg_pb->type());
         world.DLOG("function pullback: {} : {}", fun_pb, fun_pb->type());
+        world.DLOG("argument pullback: {} : {}", arg_pb, arg_pb->type());
         auto res_pb = compose_continuation(arg_pb,fun_pb);
         world.DLOG("result pullback: {} : {}", res_pb, res_pb->type());
         partial_pullback[aug_res] = res_pb;
