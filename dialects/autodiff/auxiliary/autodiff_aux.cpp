@@ -81,12 +81,15 @@ const Pi* autodiff_type_fun(const Def* ty) {
 }
 
 const Def* zero_def(const Def* T) {
+    // TODO: we want: zero mem -> zero mem or bot
+    // zero [A,B,C] -> [zero A, zero B, zero C]
     auto& world = T->world();
     world.DLOG("zero_def for type {} <{}>", T, T->node_name());
     if (auto arr = T->isa<Arr>()) {
         auto shape      = arr->shape();
         auto body       = arr->body();
-        auto inner_zero = zero_def(body);
+        // auto inner_zero = zero_def(body);
+        auto inner_zero = world.app(world.ax<zero>(), body);
         auto zero_arr   = world.pack(shape, inner_zero);
         world.DLOG("zero_def for array of shape {} with type {}", shape, body);
         world.DLOG("zero_arr: {}", zero_arr);
@@ -105,10 +108,18 @@ const Def* zero_def(const Def* T) {
             world.DLOG("zero_def for int is {}", zero);
             return zero;
         }
+    } else if(auto sig = T->isa<Sigma>()) {
+        DefArray ops(sig->ops(),
+                     [&](const Def* op) {
+                         return world.app(world.ax<zero>(), op);
+                     });
+        return world.tuple(ops);
     }
 
     // or return bot
     // assert(0);
+    // or id => zero T
+    // return world.app(world.ax<zero>(), T);
     return nullptr;
 }
 

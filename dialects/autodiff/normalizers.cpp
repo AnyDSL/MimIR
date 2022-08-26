@@ -53,16 +53,76 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
     auto& world = type->world();
     // auto [mat, index, val] = arg->projs<3>();
 
-    // TODO:
+    // TODO: add tuple -> tuple of adds
+    // TODO: add zero -> other
+    // TODO: unify mapping over structure with other aspects like zero
+
+    auto T = callee->as<App>()->arg();
+    auto [a,b] = arg->projs<2>();
+
+    world.DLOG("add {} {} {}", T, a, b);
+
+    if(match<zero>(a)) {
+        world.DLOG("0+b");
+        return b;
+    }
+    if(match<zero>(b)) {
+        world.DLOG("0+a");
+        return a;
+    }
+    // TODO: value vs type level match (what is easier)
+    // value level match harder as a tuple might in reality be a var or extract
+    if(auto sig = T->isa<Sigma>()) {
+        world.DLOG("add tuple");
+        auto p = sig->num_ops(); // TODO: or num_projs
+        DefArray ops(
+            p,
+            [&](size_t i) {
+                return world.app(world.app(world.ax<add>(), sig->op(i)),
+                    {a->proj(i), b->proj(i)});
+            }
+        );
+        return world.tuple(ops);
+    }
+    // TODO: Arr / Pack
+    // TODO: mem stays here (only resolved after direct simplification)
+    // assert(0);
+
 
     return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // auto [mat, index, val] = arg->projs<3>();
+    // sum (n,T) arr
 
-    // TODO: convert to add calls (linear chain for now)
+    auto [count,T] = callee->as<App>()->args<2>();
+
+    // world.DLOG("sum {}:{} {}:{}", count, count->type(), T, T->type());
+    if(auto lit = count->isa<Lit>()) {
+        // auto val = lit
+        // auto val=lit->as<nat_t>();
+        auto val = lit->get<nat_t>();
+        world.DLOG("val: {}", val);
+        //R not necessary if sum is evaluated before zero (needs zero as pass)
+        //R if(val == 1)
+        //R     return arg;
+        DefArray args = arg->projs(val);
+        auto sum = world.app(world.ax<zero>(), T);
+        // would also be handled by add zero
+        if(val>=1) {
+            sum = args[0];
+        }
+        for(auto i = 1; i < val; ++i) {
+            sum = world.app(
+                world.app(world.ax<add>(), T),
+                {sum, args[i]}
+            );
+        }
+        return sum;
+    }
+    assert(0);
+    
 
     return world.raw_app(callee, arg, dbg);
 }
