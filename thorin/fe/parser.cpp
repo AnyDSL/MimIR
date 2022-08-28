@@ -727,7 +727,7 @@ void Parser::parse_nom_fun() {
 
     bool external = accept(Tok::Tag::K_extern).has_value();
     auto sym      = parse_sym("nominal lambda");
-    auto dom_p    = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda");
+    auto dom_p    = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", Tok::Prec::Pi);
     auto dom_t    = dom_p->type(world());
     auto pi       = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
     auto var_dbg  = world().dbg(dom_p->sym());

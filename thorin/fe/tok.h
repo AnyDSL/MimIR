@@ -84,7 +84,8 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     /* left     prec,    right  */      \
     m(Nil,      Bot,     Nil     )      \
     m(Nil,      Nil,     Nil     )      \
-    m(Pi,       Arrow,   Arrow   )      \
+    m(Lam,      Arrow,   Arrow   )      \
+    m(Nil,      Lam,     Pi      )      \
     m(Nil,      Pi,      App     )      \
     m(App,      App,     Extract )      \
     m(Extract,  Extract, Lit     )      \
