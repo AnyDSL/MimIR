@@ -36,6 +36,7 @@ const Def* zero_pullback(const Def* E, const Def* A) {
 const Def* augment_type_fun(const Def* ty) { return ty; }
 // P => P*
 // TODO: nothing? function => R? Mem => R?
+// TODO: rename to op_tangent_type
 const Def* tangent_type_fun(const Def* ty) { return ty; }
 
 /// computes pb type E* -> A*
@@ -166,6 +167,9 @@ bool is_direct_style_function(const Def* e) {
 const Def* continuation_dom(const Def* E) {
     auto pi = E->as<Pi>();
     assert(pi != NULL);
+    if(pi->num_doms() == 0) {
+        return pi->dom();
+    }
     return pi->dom(0);
 }
 

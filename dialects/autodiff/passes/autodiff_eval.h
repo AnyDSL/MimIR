@@ -30,6 +30,7 @@ public:
     const Def* augment_(const Def*, Lam*, Lam*);
     /// helper functions for augment
     const Def* augment_var(const Var*, Lam*, Lam*);
+    const Def* augment_lam(Lam*, Lam*, Lam*);
     const Def* augment_extract(const Extract*, Lam*, Lam*);
     const Def* augment_app(const App*, Lam*, Lam*);
     const Def* augment_lit(const Lit*, Lam*, Lam*);

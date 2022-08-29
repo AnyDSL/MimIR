@@ -16,14 +16,13 @@ const Def* op_cps2ds(const Def* f) {
     return world.raw_app(world.raw_app(world.ax<direct::cps2ds>(), {T, U}), f);
 }
 
-const Def* op_sum(DefArray defs) {
+const Def* op_sum(const Def* T, DefArray defs) {
     // TODO: assert all are of type T
-    auto& world = defs[0]->world();
-    auto T      = defs[0]->type();
+    auto& world = T->world();
     return world.raw_app(world.raw_app(world.ax<sum>(), {world.lit_nat(defs.size()), T}), world.tuple(defs));
 }
 
-#define f_arg_ty f->type()->dom(0)
+#define f_arg_ty continuation_dom(f->type())
 
 const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam* f_diff) {
     auto& world = lit->world();
@@ -41,6 +40,49 @@ const Def* AutoDiffEval::augment_var(const Var* var, Lam* f, Lam* f_diff) {
     auto aug_var = augmented[var];
     assert(partial_pullback.count(aug_var));
     return var;
+}
+
+const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
+    auto& world = lam->world();
+    if(augmented.count(lam)) {
+        // includes lam==f, out == f_diff
+        // handle like higher order argument
+        // replace with derived function
+        world.DLOG("already augmented {} : {} to {} : {}", lam, lam->type(), augmented[lam], augmented[lam]->type());
+        return augmented[lam];
+    }
+    if(is_open_continuation(lam)) {
+        // a open continuation is the same as return
+        // cont: Cn[X]
+        // cont': Cn[X,Cn[X,A]] 
+        // dependency on closed function context
+
+        world.DLOG("found an open continuation {} : {}", lam, lam->type());
+        auto cont_dom = continuation_dom(lam->type());
+        auto pb_ty = pullback_type(cont_dom, f_arg_ty);
+        world.DLOG("pb type is {}", pb_ty);
+        auto aug_ty = world.cn({cont_dom, pb_ty});
+        world.DLOG("augmented type is {}", aug_ty);
+        // assert(0);
+        auto aug_lam = world.nom_lam(aug_ty, world.dbg("aug_"+lam->name()));
+        auto aug_var = aug_lam->var((nat_t)0);
+        augmented[lam->var()] = aug_var;
+        augmented[lam]=aug_lam; // TODO: only one of these two
+        derived[lam]=aug_lam;
+        auto pb = aug_lam->var(1);
+        partial_pullback[aug_var] = pb;
+        // still in same closed function
+        auto new_body=augment(lam->body(), f, f_diff);
+        aug_lam->set_filter(lam->filter());
+        aug_lam->set_body(new_body);
+        return aug_lam;
+    }
+    world.DLOG("found a closed function call {} : {}", lam, lam->type());
+    // general function
+    auto aug_lam = op_autodiff(lam);
+    // TODO: directly more association here?
+    world.DLOG("augmented function is {} : {}", aug_lam, aug_lam->type());
+    return aug_lam;
 }
 
 const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff) {
@@ -114,7 +156,7 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     DefArray tangents(pbs.size(), [&](nat_t i) { return world.app(op_cps2ds(pbs[i]), world.extract(pb_tangent, i)); });
     pb->app(true, pb->var(1),
             // summed up tangents
-            op_sum(tangents));
+            op_sum(tangent_type_fun(f_arg_ty), tangents));
     partial_pullback[aug_tup] = pb;
 
     return aug_tup;
@@ -129,6 +171,14 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     auto aug_arg    = augment(arg, f, f_diff);
     auto aug_callee = augment(callee, f, f_diff);
     // auto arg_ppb    = partial_pullback[aug_arg];
+
+    world.DLOG("augmented argument <{}> {} : {}", aug_arg->unique_name(), aug_arg, aug_arg->type());
+    world.DLOG("augmented callee  <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
+    if(!is_continuation(callee) &&
+        is_continuation(aug_callee)) {
+        aug_callee=op_cps2ds(aug_callee);
+        world.DLOG("wrapped augmented callee: <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
+    }
 
     // nested (inner application)
     if(app->type()->isa<Pi>()) {
@@ -178,6 +228,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         auto res_pb = compose_continuation(arg_pb,fun_pb);
         world.DLOG("result pullback: {} : {}", res_pb, res_pb->type());
         partial_pullback[aug_res] = res_pb;
+        assert(0);
         //R assert(false);
         return aug_res;
     }
@@ -229,6 +280,15 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         return augment_var(var, f, f_diff);
     }
 
+    else if (auto lam = def->isa_nom<Lam>()) {
+        world.DLOG("Augment nom lambda: {}", lam);
+        return augment_lam(lam, f, f_diff);
+    }
+    else if (auto lam = def->isa<Lam>()) {
+        world.ELOG("Augment lambda: {}", lam);
+        assert(false && "can not handle non-nominal lambdas");
+    }
+
     // constants
     else if (auto lit = def->isa<Lit>()) {
         world.DLOG("Augment literal: {}", def);
@@ -273,14 +333,18 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
             // auto mul_deriv_ds2  = world.lookup("mul_deriv_ds_by_cps");
             // assert(mul_deriv_ds2);
 
+            world.DLOG("filter of mul_deriv_cps: {}", mul_deriv_cps->as<Lam>()->filter());
+            mul_deriv_cps->as_nom<Lam>()->set_filter(true);
+            world.DLOG("updated filter of mul_deriv_cps: {}", mul_deriv_cps->as<Lam>()->filter());
+            return mul_deriv_cps;
 
-            world.DLOG("filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
-            mul_deriv_ds->as_nom<Lam>()->set_filter(true);
-            world.DLOG("updated filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
-            // world.DLOG("filter of mul_deriv_ds2: {}", mul_deriv_ds2->as<Lam>()->filter());
-            // assert(0);
+            // world.DLOG("filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
+            // mul_deriv_ds->as_nom<Lam>()->set_filter(true);
+            // world.DLOG("updated filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
+            // // world.DLOG("filter of mul_deriv_ds2: {}", mul_deriv_ds2->as<Lam>()->filter());
+            // // assert(0);
 
-            return mul_deriv_ds;
+            // return mul_deriv_ds;
         }
 
         assert(false && "unhandled axiom");

@@ -130,7 +130,6 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         }
         assert(0 && "not handled");
     }
-    // TODO: Arr / Pack
     // TODO: mem stays here (only resolved after direct simplification)
     // assert(0);
 

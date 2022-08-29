@@ -12,7 +12,7 @@ const Def* zero_pullback(const Def* E, const Def* A);
 const Def* tangent_type_fun(const Def*);
 const Def* augment_type_fun(const Def*);
 const Pi* autodiff_type_fun(const Def*);
-const Pi* pullback_type(const Def*, const Def*);
+const Pi* pullback_type(const Def* E, const Def* A);
 
 const Def* zero_def(const Def* T);
 
