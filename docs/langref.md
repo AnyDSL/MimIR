@@ -193,13 +193,12 @@ Expressions nesting is disambiguated according to the following precedence table
 | e e              | application                         | left-to-right |
 | `Π` Sym `:` e    | domain of a dependent function type | -             |
 | `.lam` Sym `:` e | nominal lambda declaration          | -             |
-| `.cn` Sym `:` e  | nominal continuation declaration    | -             |
 | e `→` e          | function type                       | right-to-left |
 
 Note that the domain of a dependent function type binds slightly stronger than `→`.
 This has the effect that, e.g., `Π T: * → T → T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
 Otherwise, `→` would be consumed by the domain: `Π T:` (`* →` (`T → T`)) ↯.
-A similar situation occurs for `.lam`/`.cn` declaration.
+A similar situation occurs for a `.lam` declaration.
 
 ## Scoping
 
