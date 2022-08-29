@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('passes.html',''); initResizable(); });
 </li>
 </ul>
 </div>
-<div class="textblock"><p ><a class="anchor" id="md__home_runner_work_thorin2_thorin2_docs_passes"></a></p>
+<div class="textblock"><p ><a class="anchor" id="md_docs_passes"></a></p>
 <p >Passes in Thorin are the main infrastructure and preferred method when implementing code transformations. However, nothing stops you from manually iterating and transforming the program. This is usually only necessary if you need a very specific iteration behavior for your transformation.</p>
 <p >Passes are managed by the <a class="el" href="classthorin_1_1PassMan.html">PassMan</a>ager. You can put together your optimization pipeline like so: </p><div class="fragment"><div class="line">PassMan opt(world);</div>
 <div class="line">opt.add&lt;PartialEval&gt;();</div>
@@ -183,7 +183,7 @@ Rewrite Pass</h1>
 <div class="ttc" id="aclassthorin_1_1Pass_html_a98d4d09fe9b65d060d1c0aeeccadbb7c"><div class="ttname"><a href="classthorin_1_1Pass.html#a98d4d09fe9b65d060d1c0aeeccadbb7c">thorin::Pass::alloc</a></div><div class="ttdeci">virtual void * alloc()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> <a href="pass_8h_source.html#l00089">pass.h:89</a></div></div>
 <div class="ttc" id="amem_8h_html"><div class="ttname"><a href="mem_8h.html">mem.h</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1mem_html_a7c76d44ac84cfca4fb8d646030023cea"><div class="ttname"><a href="namespacethorin_1_1mem.html#a7c76d44ac84cfca4fb8d646030023cea">thorin::mem::op_mslot</a></div><div class="ttdeci">const Def * op_mslot(const Def *type, const Def *mem, const Def *id, const Def *dbg={})</div><div class="ttdef"><b>Definition:</b> <a href="mem_8h_source.html#l00102">mem.h:102</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1mem_html_aaac8560242f619f5ac359bba09f7fd36"><div class="ttname"><a href="namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36">thorin::mem::slot</a></div><div class="ttdeci">slot</div><div class="ttdef"><b>Definition:</b> <a href="mem_2autogen_8h_source.html#l00042">autogen.h:42</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1mem_html_aaac8560242f619f5ac359bba09f7fd36"><div class="ttname"><a href="namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36">thorin::mem::slot</a></div><div class="ttdeci">slot</div><div class="ttdef"><b>Definition:</b> <a href="mem_2autogen_8h_source.html#l00054">autogen.h:54</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1mem_html_ae43d19be4ee66a983ea74ffb33fa4d7a"><div class="ttname"><a href="namespacethorin_1_1mem.html#ae43d19be4ee66a983ea74ffb33fa4d7a">thorin::mem::op_malloc</a></div><div class="ttdeci">const Def * op_malloc(const Def *type, const Def *mem, const Def *dbg={})</div><div class="ttdef"><b>Definition:</b> <a href="mem_8h_source.html#l00096">mem.h:96</a></div></div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md32"></a>
 Fixed-Point Pass</h1>
