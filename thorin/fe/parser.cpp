@@ -721,7 +721,9 @@ void Parser::parse_nom() {
 
 void Parser::parse_nom_fun() {
     auto track = tracker();
-    auto key   = lex().tag();
+    auto tok   = lex();
+    bool is_cn = tok.isa(Tok::Tag::K_cn);
+    assert(is_cn || tok.isa(Tok::Tag::K_lam));
 
     scopes_.push(); // pi scope
 
@@ -730,8 +732,9 @@ void Parser::parse_nom_fun() {
 
     std::deque<std::unique_ptr<Ptrn>> doms;
     do {
-        doms.emplace_back(parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", Tok::Prec::Pi));
-    } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign));
+        auto prec = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
+        doms.emplace_back(parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec));
+    } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) && !ahead().isa(Tok::Tag::T_semicolon));
 
     // TODO other doms
     auto dom_p   = doms.back().get();
@@ -742,7 +745,7 @@ void Parser::parse_nom_fun() {
 
     dom_p->bind(scopes_, pi_var);
 
-    auto codom = key == Tok::Tag::K_cn     ? world().type_bot()
+    auto codom = is_cn                     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
                                            : world().nom_infer_of_infer_level();
     pi->set_codom(codom);
