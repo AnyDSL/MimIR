@@ -68,14 +68,14 @@ enum class Sort { Term, Type, Kind, Space, Univ };
 
 //------------------------------------------------------------------------------
 
-namespace Dep {
-enum : unsigned {
-    Bot,
-    Nom,
-    Var,
-    Top = Nom | Var,
+struct Dep {
+    enum : unsigned {
+        Bot,
+        Nom,
+        Var,
+        Top = Nom | Var,
+    };
 };
-}
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define THORIN_PROJ(NAME, CONST)                                                                                   \
