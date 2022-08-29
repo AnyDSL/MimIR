@@ -6,6 +6,9 @@
 
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
+
+#include "dialects/core/core.h"
+
 namespace thorin::autodiff {
 
 const Def* normalize_autodiff(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
@@ -83,6 +86,49 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
             }
         );
         return world.tuple(ops);
+    } else if(auto arr=T->isa<Arr>()) {
+        world.DLOG("add arrays {} {} {}", T, a, b);
+        auto pack = world.nom_pack(T);
+        auto body_type=arr->body();
+        world.DLOG("body type {}", body_type);
+        pack->set(
+                world.app(world.app(world.ax<add>(), body_type),
+                    {
+                        world.extract(a, pack->var()),
+                        world.extract(b, pack->var())
+                    })
+        );
+        world.DLOG("pack {}", pack);
+        return pack;
+        // assert(0);
+    } else if(auto app = T->isa<App>()) {
+        auto callee = app->callee();
+        if(callee == world.type_int()) {
+            world.DLOG("add int");
+            auto width = as_lit(world.infer(a));
+            world.DLOG("width {}", width);
+            // auto int_add = core::op(thorin::core::wrap::add, 0, a,b);
+            auto int_add = world.app(
+                world.app(
+                    world.ax(core::wrap::add),
+                    {
+                        world.lit_nat_0(),
+                        world.lit_nat(width)
+                    }
+                ),
+                {
+                    a,
+                    b
+                }
+            );
+            world.DLOG("int add {} : {}", int_add, world.infer(int_add));
+            return int_add;
+            // return 
+            // world.app(world.app(
+            //     world.ax(core::)
+            // ))
+        }
+        assert(0 && "not handled");
     }
     // TODO: Arr / Pack
     // TODO: mem stays here (only resolved after direct simplification)

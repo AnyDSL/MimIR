@@ -7,6 +7,7 @@
 
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/autodiff/passes/autodiff_zero.h"
+#include "dialects/direct/passes/ds2cps.h"
 
 using namespace thorin;
 

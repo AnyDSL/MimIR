@@ -169,8 +169,9 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
 
             auto cps_call = world.app(lam_cps, ext_args, world.dbg("cps_call"));
             if (curr_lam_->body()) rewritten_bodies_[curr_lam_->body()] = cps_call;
-            world.DLOG("  overwrite body {} of {} : {} with {} : {}", curr_lam_->body(), curr_lam_, curr_lam_->type(),
-                       cps_call->unique_name(), cps_call->type());
+            world.DLOG("  curr_lam {}", curr_lam_->name());
+            // world.DLOG("  overwrite body {} of {} : {} with {} : {}", curr_lam_->body(), curr_lam_, curr_lam_->type(),
+            //            cps_call->unique_name(), cps_call->type());
 
             curr_lam_->set_body(cps_call);
             // Fixme: would be great to PE the newly added overhead away..
