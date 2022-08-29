@@ -202,17 +202,20 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ae59656ae21ce830f6ed18bbaf8dfaa87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">undo</div></td></tr>
 <tr class="memitem:aa8c631fee7f930495e475a90d52f6034"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#aa8c631fee7f930495e475a90d52f6034">curr_undo</a> () const</td></tr>
+<tr class="memdesc:aa8c631fee7f930495e475a90d52f6034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Current undo point.  <a href="classthorin_1_1FPPass.html#aa8c631fee7f930495e475a90d52f6034">More...</a><br /></td></tr>
 <tr class="separator:aa8c631fee7f930495e475a90d52f6034"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad68f7d1dcf6986dcf22b465b740f706e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#ad68f7d1dcf6986dcf22b465b740f706e">undo_visit</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *nom) const</td></tr>
+<tr class="memdesc:ad68f7d1dcf6986dcf22b465b740f706e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the point to backtrack to just <b>before</b> <code>nom</code> was seen the very first time.  <a href="classthorin_1_1FPPass.html#ad68f7d1dcf6986dcf22b465b740f706e">More...</a><br /></td></tr>
 <tr class="separator:ad68f7d1dcf6986dcf22b465b740f706e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a992db753a80b89fb6bcce0dc6154dd8b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#aae49afdff4a29ba1d94c3fada6e7b32e">undo_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1FPPass.html#a992db753a80b89fb6bcce0dc6154dd8b">undo_enter</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *nom) const</td></tr>
+<tr class="memdesc:a992db753a80b89fb6bcce0dc6154dd8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the point to backtrack to just <b>before</b> rewriting <code>nom's</code> body.  <a href="classthorin_1_1FPPass.html#a992db753a80b89fb6bcce0dc6154dd8b">More...</a><br /></td></tr>
 <tr class="separator:a992db753a80b89fb6bcce0dc6154dd8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;class P, class N&gt;<br />
 class thorin::FPPass&lt; P, N &gt;</div><p >Inherit from this class using <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a>, if you <b>do</b> need a <a class="el" href="classthorin_1_1Pass.html" title="All Passes that want to be registered in the PassMan must implement this interface.">Pass</a> with a state and a fixed-point. </p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00237">237</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00243">243</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 </div><h2 class="groupheader">Member Typedef Documentation</h2>
 <a id="adf424bdb0ad497b5b46c020ac6c34363" name="adf424bdb0ad497b5b46c020ac6c34363"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adf424bdb0ad497b5b46c020ac6c34363">&#9670;&nbsp;</a></span>Data</h2>
@@ -230,7 +233,7 @@ template&lt;class P , class N &gt; </div>
 
 <p>Default. </p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00240">240</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00246">246</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -248,7 +251,7 @@ template&lt;class P , class N &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00239">239</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00245">245</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -289,7 +292,7 @@ template&lt;class P , class N &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00242">242</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00248">248</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -319,7 +322,9 @@ template&lt;class P , class N &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00274">274</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p>Current undo point. </p>
+
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00280">280</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00028">thorin::Pass::man()</a>.</p>
 
@@ -350,11 +355,11 @@ template&lt;class P , class N &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00252">252</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00258">258</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00031">thorin::Pass::index()</a>, and <a class="el" href="pass_8h_source.html#l00250">thorin::FPPass&lt; P, N &gt;::states()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00031">thorin::Pass::index()</a>, and <a class="el" href="pass_8h_source.html#l00256">thorin::FPPass&lt; P, N &gt;::states()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00257">thorin::FPPass&lt; P, N &gt;::data()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00263">thorin::FPPass&lt; P, N &gt;::data()</a>.</p>
 
 </div>
 </div>
@@ -385,9 +390,9 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00257">257</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00263">263</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00252">thorin::FPPass&lt; P, N &gt;::data()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00258">thorin::FPPass&lt; P, N &gt;::data()</a>.</p>
 
 </div>
 </div>
@@ -421,9 +426,9 @@ template&lt;class K &gt; </div>
 
 <p><a class="el" href="classthorin_1_1Use.html" title="References a user.">Use</a> this for your convenience if <code>P::Data</code> is a map. </p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00262">262</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00268">268</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00252">thorin::FPPass&lt; P, N &gt;::data()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00258">thorin::FPPass&lt; P, N &gt;::data()</a>.</p>
 
 </div>
 </div>
@@ -457,7 +462,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size
 
 <p><a class="el" href="classthorin_1_1Use.html" title="References a user.">Use</a> this for your convenience if <code>P::Data</code> is a map. </p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00267">267</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00273">273</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -488,7 +493,7 @@ template&lt;class P , class N &gt; </div>
 
 <p>Reimplemented from <a class="el" href="classthorin_1_1Pass.html#ad8dfd5398c9c8f8382668dea21a38d51">thorin::Pass</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00245">245</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00251">251</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 </div>
 </div>
@@ -517,7 +522,7 @@ template&lt;class P , class N &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00251">251</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00257">257</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00028">thorin::Pass::man()</a>.</p>
 
@@ -548,11 +553,11 @@ template&lt;class P , class N &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00250">250</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00256">256</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00028">thorin::Pass::man()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00252">thorin::FPPass&lt; P, N &gt;::data()</a>, and <a class="el" href="pass_8h_source.html#l00280">thorin::FPPass&lt; P, N &gt;::undo_enter()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="pass_8h_source.html#l00258">thorin::FPPass&lt; P, N &gt;::data()</a>, and <a class="el" href="pass_8h_source.html#l00290">thorin::FPPass&lt; P, N &gt;::undo_enter()</a>.</p>
 
 </div>
 </div>
@@ -582,9 +587,11 @@ template&lt;class P , class N &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00280">280</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p>Retrieves the point to backtrack to just <b>before</b> rewriting <code>nom's</code> body. </p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00226">thorin::RWPass&lt; P, N &gt;::curr_nom()</a>, <a class="el" href="pass_8h_source.html#l00012">thorin::No_Undo</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>, and <a class="el" href="pass_8h_source.html#l00250">thorin::FPPass&lt; P, N &gt;::states()</a>.</p>
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00290">290</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00232">thorin::RWPass&lt; P, N &gt;::curr_nom()</a>, <a class="el" href="pass_8h_source.html#l00012">thorin::No_Undo</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af7bd60b75b29d79b660a2859395c1a24">thorin::size</a>, and <a class="el" href="pass_8h_source.html#l00256">thorin::FPPass&lt; P, N &gt;::states()</a>.</p>
 
 </div>
 </div>
@@ -614,7 +621,9 @@ template&lt;class P , class N &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00275">275</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
+<p>Retrieves the point to backtrack to just <b>before</b> <code>nom</code> was seen the very first time. </p>
+
+<p class="definition">Definition at line <a class="el" href="pass_8h_source.html#l00283">283</a> of file <a class="el" href="pass_8h_source.html">pass.h</a>.</p>
 
 <p class="reference">References <a class="el" href="pass_8h_source.html#l00028">thorin::Pass::man()</a>, and <a class="el" href="pass_8h_source.html#l00012">thorin::No_Undo</a>.</p>
 
