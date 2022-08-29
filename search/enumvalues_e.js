@@ -11,7 +11,7 @@ var searchData=
   ['nil_8',['Nil',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a4da8b7eb2c3f2007cf8238334401ef51',1,'thorin::fe::Tok']]],
   ['ninf_9',['ninf',['../namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719a736809fda32347619a2e1f3600ce1b4f',1,'thorin::RMode']]],
   ['nnan_10',['nnan',['../namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719a5e16374bc0b446b61bf30dfecc1c845b',1,'thorin::RMode']]],
-  ['nom_11',['Nom',['../namespacethorin_1_1Dep.html#a026486402019f9c00df8e98fe04f8d1fa78c46d6f6db8eeee3bf77793db5bb21e',1,'thorin::Dep']]],
+  ['nom_11',['Nom',['../structthorin_1_1Dep.html#a026486402019f9c00df8e98fe04f8d1fa78c46d6f6db8eeee3bf77793db5bb21e',1,'thorin::Dep']]],
   ['non_5fcallee_5f1_12',['Non_Callee_1',['../classthorin_1_1EtaExp.html#a156b61a8e9d0843a3e598adb259c7abda0bd37ac73008a3cf79032139aece82cf',1,'thorin::EtaExp']]],
   ['none_13',['none',['../namespacethorin_1_1WMode.html#acf40fea81d5ed8215aaf3d8f6a1c3dc4a74a89f74624eb538f08d29cae2623517',1,'thorin::WMode::none()'],['../namespacethorin_1_1RMode.html#afc355b8b0b46ac37ac5b35d2f2f93719acfc85f84b0fa771f3d09653554903aa1',1,'thorin::RMode::none()']]],
   ['nor_14',['nor',['../namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba57c7d11cd49333e3f722204c63016da9',1,'thorin::nor()'],['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a57c7d11cd49333e3f722204c63016da9',1,'thorin::core::nor()']]],

@@ -33,6 +33,7 @@ var hierarchy =
     [ "thorin::Debug", "classthorin_1_1Debug.html", null ],
     [ "thorin::DefDefEq", "structthorin_1_1DefDefEq.html", null ],
     [ "thorin::DefDefHash", "structthorin_1_1DefDefHash.html", null ],
+    [ "thorin::Dep", "structthorin_1_1Dep.html", null ],
     [ "thorin::DepNode", "classthorin_1_1DepNode.html", null ],
     [ "thorin::DepTree", "classthorin_1_1DepTree.html", null ],
     [ "thorin::Dialect", "classthorin_1_1Dialect.html", null ],

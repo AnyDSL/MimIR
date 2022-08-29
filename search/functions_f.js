@@ -8,8 +8,8 @@ var searchData=
   ['partial_5fop_5',['partial_op',['../classthorin_1_1Def.html#ac5e395fa36187af4a30923d55b77832c',1,'thorin::Def']]],
   ['partial_5fops_6',['partial_ops',['../classthorin_1_1Def.html#ac7401927c3c1b78eb6cb2d1e3dd37ca4',1,'thorin::Def']]],
   ['partialeval_7',['PartialEval',['../classthorin_1_1PartialEval.html#a5c05b2dbaf22614c465414064e45304c',1,'thorin::PartialEval']]],
-  ['pass_8',['pass',['../classthorin_1_1Proxy.html#a93a4ac4b94eae555d07b63702e1ae092',1,'thorin::Proxy']]],
-  ['pass_9',['Pass',['../classthorin_1_1Pass.html#a6a3bea6094c9a9dd9839e87d8b0b341d',1,'thorin::Pass']]],
+  ['pass_8',['Pass',['../classthorin_1_1Pass.html#a6a3bea6094c9a9dd9839e87d8b0b341d',1,'thorin::Pass']]],
+  ['pass_9',['pass',['../classthorin_1_1Proxy.html#a93a4ac4b94eae555d07b63702e1ae092',1,'thorin::Proxy']]],
   ['passes_10',['passes',['../classthorin_1_1PassMan.html#a301baaabcbdbd533e6bea26be796cf4f',1,'thorin::PassMan']]],
   ['passman_11',['PassMan',['../classthorin_1_1PassMan.html#a1cb8f55948131ebc7fca850f616d4d2c',1,'thorin::PassMan']]],
   ['passmanphase_12',['PassManPhase',['../classthorin_1_1PassManPhase.html#ad9f3692121e339f4a5ccc271f5be9f0d',1,'thorin::PassManPhase']]],
@@ -42,8 +42,8 @@ var searchData=
   ['proj_39',['proj',['../classthorin_1_1Def.html#a0ea644f59a105983052c886b3b02692b',1,'thorin::Def::proj(nat_t a, nat_t i, const Def *dbg={}) const'],['../classthorin_1_1Def.html#a3ec48303a042839042c5c7f85f496845',1,'thorin::Def::proj(nat_t i, const Def *dbg={}) const']]],
   ['projs_40',['projs',['../classthorin_1_1Def.html#ac5511a1a8c4b05618d84d2aa4cf42c0f',1,'thorin::Def::projs(nat_t a, Defs dbgs={}) const'],['../classthorin_1_1Def.html#ad7440467a9b76cd3cccfd25886615806',1,'thorin::Def::projs(F f, Defs dbgs={}) const'],['../classthorin_1_1Def.html#ac6f6e9ba48e56e5bc9dfec440a6cf8de',1,'thorin::Def::projs(nat_t a, F f, Defs dbgs={}) const'],['../classthorin_1_1Def.html#a10fa4a23589f3ef85c08fe07e8a21812',1,'thorin::Def::projs(Defs dbgs={}) const']]],
   ['proxy_41',['proxy',['../classthorin_1_1EtaExp.html#a35db4dd4600db84d8867a2ca4dbecfdb',1,'thorin::EtaExp::proxy()'],['../classthorin_1_1World.html#ab7194e0fd727f8c26669bdf265ac4a3a',1,'thorin::World::proxy()'],['../classthorin_1_1Pass.html#a852a4e1ad220ef4318443ff90dd1b9c7',1,'thorin::Pass::proxy()']]],
-  ['ptrn_42',['ptrn',['../classthorin_1_1fe_1_1TuplePtrn.html#a5c190eea949b697a57eca8ad6f868490',1,'thorin::fe::TuplePtrn']]],
-  ['ptrn_43',['Ptrn',['../classthorin_1_1fe_1_1Ptrn.html#ae8d29c5d73bd96a158fd0bd93b98bca8',1,'thorin::fe::Ptrn']]],
+  ['ptrn_42',['Ptrn',['../classthorin_1_1fe_1_1Ptrn.html#ae8d29c5d73bd96a158fd0bd93b98bca8',1,'thorin::fe::Ptrn']]],
+  ['ptrn_43',['ptrn',['../classthorin_1_1fe_1_1TuplePtrn.html#a5c190eea949b697a57eca8ad6f868490',1,'thorin::fe::TuplePtrn']]],
   ['ptrns_44',['ptrns',['../classthorin_1_1fe_1_1TuplePtrn.html#a8bdee1edb9b85bda8f81e1772a218345',1,'thorin::fe::TuplePtrn']]],
   ['push_45',['push',['../classthorin_1_1unique__queue.html#a3bf8b02f709f6e80d7b1119341ec68c5',1,'thorin::unique_queue::push()'],['../classthorin_1_1unique__stack.html#a69738c049d6f032000deb25c56bbbf36',1,'thorin::unique_stack::push()'],['../classthorin_1_1fe_1_1Scopes.html#a296a055b0407e4412e0581ad04e67942',1,'thorin::fe::Scopes::push()']]]
 ];

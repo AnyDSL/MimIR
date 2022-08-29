@@ -3,6 +3,7 @@ var def_8h =
     [ "thorin::Use", "classthorin_1_1Use.html", "classthorin_1_1Use" ],
     [ "thorin::UseHash", "structthorin_1_1UseHash.html", "structthorin_1_1UseHash" ],
     [ "thorin::UseEq", "structthorin_1_1UseEq.html", "structthorin_1_1UseEq" ],
+    [ "thorin::Dep", "structthorin_1_1Dep.html", null ],
     [ "thorin::Def", "classthorin_1_1Def.html", "classthorin_1_1Def" ],
     [ "thorin::DefDefHash", "structthorin_1_1DefDefHash.html", "structthorin_1_1DefDefHash" ],
     [ "thorin::DefDefEq", "structthorin_1_1DefDefEq.html", "structthorin_1_1DefDefEq" ],

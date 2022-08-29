@@ -190,7 +190,6 @@ var namespacethorin =
       [ "register_normalizers", "namespacethorin_1_1core.html#aa5565530411d58bb308c6dede7f8785c", null ],
       [ "Dialect_Id", "namespacethorin_1_1core.html#a64b976cf9770ff3de3fd06e9fb17e1ab", null ]
     ] ],
-    [ "Dep", "namespacethorin_1_1Dep.html", null ],
     [ "detail", "namespacethorin_1_1detail.html", "namespacethorin_1_1detail" ],
     [ "direct", "namespacethorin_1_1direct.html", "namespacethorin_1_1direct" ],
     [ "dl", "namespacethorin_1_1dl.html", "namespacethorin_1_1dl" ],
@@ -248,6 +247,7 @@ var namespacethorin =
     [ "Def", "classthorin_1_1Def.html", "classthorin_1_1Def" ],
     [ "DefDefEq", "structthorin_1_1DefDefEq.html", "structthorin_1_1DefDefEq" ],
     [ "DefDefHash", "structthorin_1_1DefDefHash.html", "structthorin_1_1DefDefHash" ],
+    [ "Dep", "structthorin_1_1Dep.html", null ],
     [ "DepNode", "classthorin_1_1DepNode.html", "classthorin_1_1DepNode" ],
     [ "DepTree", "classthorin_1_1DepTree.html", "classthorin_1_1DepTree" ],
     [ "Dialect", "classthorin_1_1Dialect.html", "classthorin_1_1Dialect" ],
