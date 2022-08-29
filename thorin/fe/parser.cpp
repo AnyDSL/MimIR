@@ -734,7 +734,8 @@ void Parser::parse_nom_fun() {
     do {
         auto prec = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
         doms.emplace_back(parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec));
-    } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) && !ahead().isa(Tok::Tag::T_semicolon));
+    } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) &&
+             !ahead().isa(Tok::Tag::T_semicolon));
 
     // TODO other doms
     auto dom_p   = doms.back().get();
