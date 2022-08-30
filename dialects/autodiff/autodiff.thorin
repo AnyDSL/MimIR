@@ -51,6 +51,7 @@
 /// 
 /// a universal zero such that (zero T) +_T t = t
 ///
+// TODO: convert to bot:T at codegen
 .ax %autodiff.zero: Π [T:*] -> T, normalize_zero;
 ///
 /// ### %autodiff.add
@@ -189,6 +190,7 @@
 // fully cps
 
 // s ↦ (s*b, s*a)
+/* 
 .cn .extern mul_deriv_cps
 [
     [m:.Nat, w:.Nat], 
@@ -222,12 +224,12 @@ rcont:.Cn[
         [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
         = {
         .let result = %core.wrap.add (m,w) (a,b);
-        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+        .cn add_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
             pb_ret (s,s)
         };
-        ret (result,mul_pb)
+        ret (result,add_pb)
     };
-    rcont inner_mul_deriv_cps
+    rcont inner_add_deriv_cps
 };
 
 // s ↦ (s, -s)
@@ -237,6 +239,8 @@ rcont:.Cn[
 // div
 
 // compare does not need one
+
+*/
 
 
 // /// ## Substitution Rules

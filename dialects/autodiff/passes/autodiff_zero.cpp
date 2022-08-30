@@ -14,11 +14,11 @@ namespace thorin::autodiff {
 
 const Def* AutoDiffZero::rewrite(const Def* def) {
     auto& world = def->world();
-        world.DLOG("rewrite in zero pass {}", def);
+        world.DLOG("rewrite in zero pass {} : {}", def, def->type());
         // assert(0);
     if(def->isa<Axiom>()) {
         world.DLOG("found a axiom {}", def);
-        assert(0);
+        // assert(0);
     }
 
     // TODO: why does the pass not descent into tuple, axiom applications (wrap_mul)

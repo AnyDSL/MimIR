@@ -87,6 +87,8 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         );
         return world.tuple(ops);
     } else if(auto arr=T->isa<Arr>()) {
+        // TODO: is this working for non-lit (non-tuple)?
+        //   or do we need a loop
         world.DLOG("add arrays {} {} {}", T, a, b);
         auto pack = world.nom_pack(T);
         auto body_type=arr->body();

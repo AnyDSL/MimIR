@@ -110,7 +110,13 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         partial_pullback[deriv_arg] = arg_id_pb;
         // set no pullback to all_arg and return
         // second component has to exist but should not be accessed
-        shadow_pullback[deriv_all_args] = world.tuple({arg_id_pb,world.bot(world.type_bot())});
+        auto ret_var = deriv->var(1);
+        // auto ret_pb=world.bot(world.type_bot());
+        // auto ret_pb = zero_pullback(ret_var->type(), arg_ty);
+        auto ret_pb = zero_pullback(lam->var(1)->type(), arg_ty);
+        partial_pullback[ret_var] = ret_pb;
+
+        shadow_pullback[deriv_all_args] = world.tuple({arg_id_pb,ret_pb});
         world.DLOG("pullback for argument {} : {} is {} : {}", deriv_arg, deriv_arg->type(), arg_id_pb, arg_id_pb->type());
         world.DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args], shadow_pullback[deriv_all_args]->type());
 

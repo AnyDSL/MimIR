@@ -119,9 +119,10 @@ inline const Def* op_autodiff(const Def* fun) {
     World& world = fun->world();
     // we rely on the normalized thorin convention that all arguments in functions are grouped
     // cn[[args], cont?=cn[returns]]
-    auto [dom, codom] = fun->type()->as<Pi>()->doms<2>();
     // TODO: do we need mem special casing?
-    return world.app(world.app(world.ax<autodiff>(), {dom, codom}), fun);
+    // auto [dom, codom] = fun->type()->as<Pi>()->doms<2>();
+    // return world.app(world.app(world.ax<autodiff>(), {dom, codom}), fun);
+    return world.app(world.app(world.ax<autodiff>(), fun->type()), fun);
 }
 
 inline const Def* op_zero(const Def* A) {
