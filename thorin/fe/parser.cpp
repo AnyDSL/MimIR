@@ -733,7 +733,8 @@ void Parser::parse_nom_fun() {
     std::deque<std::tuple<std::unique_ptr<Ptrn>, Pi*, const Def*, Lam*>> doms;
     do {
         auto prec = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
-        doms.emplace_back(parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec), nullptr, nullptr, nullptr);
+        doms.emplace_back(parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec), nullptr, nullptr,
+                          nullptr);
     } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) &&
              !ahead().isa(Tok::Tag::T_semicolon));
 
@@ -749,7 +750,7 @@ void Parser::parse_nom_fun() {
         if (last_pi) {
             last_pi->set_codom(pi);
             last_pi->set_type(pi->unfold_type());
-            //last_pi->set_dbg(track); // TODO
+            // last_pi->set_dbg(track); // TODO
         }
 
         last_pi = pi;
@@ -769,7 +770,7 @@ void Parser::parse_nom_fun() {
 
     Lam* last_lam = nullptr;
     for (auto& [dom_p, pi, var_dbg, lam] : doms) {
-        lam       = world().nom_lam(pi, track.named(sym));
+        lam          = world().nom_lam(pi, track.named(sym));
         auto lam_var = lam->var(var_dbg);
         dom_p->bind(scopes_, lam_var);
 
