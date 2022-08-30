@@ -4,4 +4,8 @@
 
 #include "dialects/direct/autogen.h"
 
-namespace thorin::direct {} // namespace thorin::direct
+namespace thorin::direct {
+
+const Def* op_cps2ds(const Def* f);
+
+} // namespace thorin::direct

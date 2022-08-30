@@ -6,22 +6,6 @@
 
 namespace thorin::autodiff {
 
-const Def* op_cps2ds(const Def* f) {
-    auto& world = f->world();
-    // TODO: assert continuation
-    auto f_ty = f->type()->as<Pi>();
-    auto T    = f_ty->dom(0);
-    auto U    = f_ty->dom(1)->as<Pi>()->dom();
-    // TODO: check if app can be used instead of raw_app
-    return world.raw_app(world.raw_app(world.ax<direct::cps2ds>(), {T, U}), f);
-}
-
-const Def* op_sum(const Def* T, DefArray defs) {
-    // TODO: assert all are of type T
-    auto& world = T->world();
-    return world.raw_app(world.raw_app(world.ax<sum>(), {world.lit_nat(defs.size()), T}), world.tuple(defs));
-}
-
 #define f_arg_ty continuation_dom(f->type())
 
 const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam* f_diff) {
@@ -171,7 +155,7 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     auto pb_tangent = pb->var((nat_t)0, world.dbg("tup_s"));
 
     // TODO: move op_cps2ds to direct dialect and merge then
-    DefArray tangents(pbs.size(), [&](nat_t i) { return world.app(op_cps2ds(pbs[i]), world.extract(pb_tangent, i)); });
+    DefArray tangents(pbs.size(), [&](nat_t i) { return world.app(direct::op_cps2ds(pbs[i]), world.extract(pb_tangent, i)); });
     pb->app(true, pb->var(1),
             // summed up tangents
             op_sum(tangent_type_fun(f_arg_ty), tangents));
@@ -195,7 +179,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     // TODO: move down to if(!is_cont(callee))
     if(!is_continuation(callee) &&
         is_continuation(aug_callee)) {
-        aug_callee=op_cps2ds(aug_callee);
+        aug_callee=direct::op_cps2ds(aug_callee);
         world.DLOG("wrapped augmented callee: <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     }
 

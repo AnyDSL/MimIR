@@ -15,6 +15,7 @@ const Pi* autodiff_type_fun(const Def*);
 const Pi* pullback_type(const Def* E, const Def* A);
 
 const Def* zero_def(const Def* T);
+const Def* op_sum(const Def* T, DefArray defs);
 
 } // namespace thorin::autodiff
 
