@@ -87,7 +87,7 @@ void PassMan::run() {
 }
 
 const Def* PassMan::rewrite(const Def* old_def) {
-    if (!old_def->isa<Axiom>() && old_def->no_dep()) return old_def;
+    if (old_def->dep_bot()) return old_def;
 
     if (auto nom = old_def->isa_nom()) {
         curr_state().nom2visit.emplace(nom, curr_undo());
@@ -129,7 +129,7 @@ const Def* PassMan::rewrite(const Def* old_def) {
 undo_t PassMan::analyze(const Def* def) {
     undo_t undo = No_Undo;
 
-    if (def->no_dep() || analyzed(def)) {
+    if (def->dep_bot() || analyzed(def)) {
         // do nothing
     } else if (auto nom = def->isa_nom()) {
         curr_state().stack.push(nom);

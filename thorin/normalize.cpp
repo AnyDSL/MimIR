@@ -756,7 +756,7 @@ const Def* normalize_PE(const Def* type, const Def* callee, const Def* arg, cons
 
     if constexpr (op == PE::known) {
         if (isa<Tag::PE>(PE::hlt, arg)) return world.lit_ff();
-        if (arg->no_dep()) return world.lit_tt();
+        if (arg->dep_const()) return world.lit_tt();
     }
 
     return world.raw_app(callee, arg, dbg);

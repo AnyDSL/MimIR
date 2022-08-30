@@ -36,12 +36,14 @@ T as_lit(const Def* def);
 /// A Def `u` which uses Def `d` as `i^th` operand is a Use with Use::index `i` of Def `d`.
 class Use {
 public:
+    static constexpr size_t Type = -1_s;
+
     Use() {}
     Use(const Def* def, size_t index)
         : def_(def)
         , index_(index) {}
 
-    bool is_used_as_type() const { return index() == -1_s; }
+    bool is_used_as_type() const { return index() == Type; }
     size_t index() const { return index_; }
     const Def* def() const { return def_; }
     operator const Def*() const { return def_; }
@@ -70,10 +72,11 @@ enum class Sort { Term, Type, Kind, Space, Univ };
 
 struct Dep {
     enum : unsigned {
-        Bot,
-        Nom,
-        Var,
-        Top = Nom | Var,
+        Bot     = 0,
+        Axiom   = 1 << 0,
+        Proxy   = 1 << 1,
+        Nom     = 1 << 2,
+        Var     = 1 << 3,
     };
 };
 
@@ -207,11 +210,10 @@ public:
     /// @name dependence checks
     ///@{
     /// @see Dep.
-
     unsigned dep() const { return dep_; }
-    bool no_dep() const { return dep() == Dep::Bot; }
-    bool has_dep(unsigned dep) const { return (dep_ & dep) != 0; }
-    bool contains_proxy() const { return proxy_; }
+    bool dep_bot() const { return dep() == Dep::Bot; }
+    bool dep_const() const { return !(dep() & (Dep::Nom | Dep::Var)); }
+    bool dep_proxy() const { return dep_ & Dep::Proxy; }
     ///@}
 
     /// @name proj
@@ -383,9 +385,8 @@ protected:
     flags_t flags_;
     uint8_t node_;
     unsigned nom_    : 1;
-    unsigned dep_    : 2;
-    unsigned proxy_  : 1;
-    unsigned pading_ : 4;
+    unsigned dep_    : 4;
+    unsigned pading_ : 3;
     u16 curry_;
     hash_t hash_;
     u32 gid_;
