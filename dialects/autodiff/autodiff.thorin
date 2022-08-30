@@ -187,6 +187,8 @@
 // by its nature the pullback of a tuple needs to be a sum
 
 // fully cps
+
+// s ↦ (s*b, s*a)
 .cn .extern mul_deriv_cps
 [
     [m:.Nat, w:.Nat], 
@@ -208,6 +210,7 @@ rcont:.Cn[
     rcont inner_mul_deriv_cps
 };
 
+// s ↦ (s, s)
 .cn .extern add_deriv_cps
 [
     [m:.Nat, w:.Nat], 
@@ -226,6 +229,14 @@ rcont:.Cn[
     };
     rcont inner_mul_deriv_cps
 };
+
+// s ↦ (s, -s)
+// sub
+
+// s ↦ (s/b, -s*a/(b*b) = -(a/b)* (s/b))
+// div
+
+// compare does not need one
 
 
 // /// ## Substitution Rules
