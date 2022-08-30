@@ -71,7 +71,7 @@ enum class Sort { Term, Type, Kind, Space, Univ };
 
 struct Dep {
     enum : unsigned {
-        Bot   = 0,
+        None  = 0,
         Axiom = 1 << 0,
         Proxy = 1 << 1,
         Nom   = 1 << 2,
@@ -210,7 +210,7 @@ public:
     ///@{
     /// @see Dep.
     unsigned dep() const { return dep_; }
-    bool dep_bot() const { return dep() == Dep::Bot; }
+    bool dep_none() const { return dep() == Dep::None; }
     bool dep_const() const { return !(dep() & (Dep::Nom | Dep::Var)); }
     bool dep_proxy() const { return dep_ & Dep::Proxy; }
     ///@}

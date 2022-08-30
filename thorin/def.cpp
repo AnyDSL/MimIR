@@ -26,7 +26,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const 
     , dep_(node == Node::Axiom   ? Dep::Axiom
            : node == Node::Proxy ? Dep::Proxy
            : node == Node::Var   ? Dep::Var
-                                 : Dep::Bot)
+                                 : Dep::None)
     , num_ops_(ops.size())
     , dbg_(dbg)
     , type_(type) {
@@ -270,7 +270,7 @@ void Def::set_debug_name(std::string_view n) const {
 #endif
 
 void Def::finalize() {
-    assert(!dbg() || dbg()->dep_bot());
+    assert(!dbg() || dbg()->dep_none());
 
     for (size_t i = 0, e = num_ops(); i != e; ++i) {
         dep_ |= op(i)->dep();
