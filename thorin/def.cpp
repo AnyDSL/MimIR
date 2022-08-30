@@ -269,6 +269,8 @@ void Def::set_debug_name(std::string_view n) const {
 #endif
 
 void Def::finalize() {
+    assert(!dbg() || dbg()->no_dep());
+
     for (size_t i = 0, e = num_ops(); i != e; ++i) {
         if (auto dep = op(i)->dep(); dep != Dep::Bot) {
             dep_ |= dep;
@@ -285,7 +287,6 @@ void Def::finalize() {
         }
     }
 
-    assert(!dbg() || dbg()->no_dep());
     if (isa<Var>()) dep_ = Dep::Var;
 
     if (isa<Proxy>()) {

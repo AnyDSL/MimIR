@@ -53,9 +53,15 @@ public:
     /// @name Further Hooks for the PassMan
     ///@{
     virtual bool fixed_point() const { return false; }
+
     /// Should the PassMan even consider this pass?
     virtual bool inspect() const = 0;
+
     /// Invoked just before Pass::rewrite%ing PassMan::curr_nom's body.
+    /// @note This is invoked when seeing the *inside* of a nominal the first time.
+    /// This is often too late, as you usually want to do something when you see a nominal the first time from the
+    /// *outside* This means that this PassMan::curr_nom has already been encountered elsewhere. Otherwise, we wouldn't
+    /// have seen PassMan::curr_nom to begin with (unless it is Def::is_external).
     virtual void enter() {}
     ///@}
 
@@ -271,12 +277,16 @@ protected:
 
     /// @name undo
     ///@{
-    undo_t curr_undo() const { return Super::man().curr_undo(); }
+    undo_t curr_undo() const { return Super::man().curr_undo(); } ///< Current undo point.
+
+    /// Retrieves the point to backtrack to just **before** @p nom was seen the very first time.
     undo_t undo_visit(Def* nom) const {
         const auto& nom2visit = Super::man().curr_state().nom2visit;
         if (auto i = nom2visit.find(nom); i != nom2visit.end()) return i->second;
         return No_Undo;
     }
+
+    /// Retrieves the point to backtrack to just **before** rewriting @p nom%'s body.
     undo_t undo_enter(Def* nom) const {
         for (auto i = states().size(); i-- != 0;)
             if (states()[i].curr_nom == nom) return i;

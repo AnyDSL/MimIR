@@ -87,7 +87,7 @@ void PassMan::run() {
 }
 
 const Def* PassMan::rewrite(const Def* old_def) {
-    if (old_def->no_dep()) return old_def;
+    if (!old_def->isa<Axiom>() && old_def->no_dep()) return old_def;
 
     if (auto nom = old_def->isa_nom()) {
         curr_state().nom2visit.emplace(nom, curr_undo());
