@@ -72,11 +72,11 @@ enum class Sort { Term, Type, Kind, Space, Univ };
 
 struct Dep {
     enum : unsigned {
-        Bot     = 0,
-        Axiom   = 1 << 0,
-        Proxy   = 1 << 1,
-        Nom     = 1 << 2,
-        Var     = 1 << 3,
+        Bot   = 0,
+        Axiom = 1 << 0,
+        Proxy = 1 << 1,
+        Nom   = 1 << 2,
+        Var   = 1 << 3,
     };
 };
 
