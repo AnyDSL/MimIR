@@ -43,7 +43,6 @@ public:
         : def_(def)
         , index_(index) {}
 
-    bool is_used_as_type() const { return index() == Type; }
     size_t index() const { return index_; }
     const Def* def() const { return def_; }
     operator const Def*() const { return def_; }
