@@ -176,6 +176,16 @@
 // };
 
 
+// the pullback is the derivative with respect to the input (weighted with the out tangent)
+// for arithmetic operations, s is simply multiplied to each input tangent
+// as formula: the tuple: ∂_i f(x1,...,xn) * s
+// you will also come to the conclusion that the applied partial pullback needs to be
+// sum x_i*(∂_i f(x1,...,xn) * s)
+// = sum x_i*(•) with • as the formula from above
+// this is a direct result from the chain composition with the partial pullback of a tuple
+// the tuple pullback transports the partial pullbacks of the operands and handles the sums
+// by its nature the pullback of a tuple needs to be a sum
+
 // fully cps
 .cn .extern mul_deriv_cps
 [
@@ -192,6 +202,25 @@ rcont:.Cn[
             .let lhs = %core.wrap.mul (m,w) (s,b);
             .let rhs = %core.wrap.mul (m,w) (s,a);
             pb_ret (lhs, rhs)
+        };
+        ret (result,mul_pb)
+    };
+    rcont inner_mul_deriv_cps
+};
+
+.cn .extern add_deriv_cps
+[
+    [m:.Nat, w:.Nat], 
+rcont:.Cn[
+    (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
+]]
+    = {
+    .cn inner_add_deriv_cps
+        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
+        = {
+        .let result = %core.wrap.add (m,w) (a,b);
+        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+            pb_ret (s,s)
         };
         ret (result,mul_pb)
     };
