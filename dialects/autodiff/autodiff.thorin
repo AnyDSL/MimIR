@@ -240,6 +240,65 @@ rcont:.Cn[
 
 // compare does not need one
 
+
+// load : Mem * Ptr(V) -> Mem * V
+
+r = m2,v = load (m,p)
+r,r* = (m2,v),r* = load' (m,p)
+args = (m,p)
+
+r* : M*V -> M*P(V)
+args* : M*P(V) -> A
+where args* := λ (sm, sp). m*(sm) + p*(sp)
+  m* will most likely be id or zero
+  r*,p* can be chosen
+r* := λ (sm, sv).
+  // or use other memory
+  let (sm2, ps) = slot V sm in
+  let (sm3) = store (sm2,(ps,sv)) in
+  (sm3,sp)
+r* is closed => can not argue about partial pullbacks
+(but could use load arguments)
+v* is necessarily partial
+
+TODO: solve
+idea: p* := unpack ptr => sv => plug into loaded shadow pb
+  question: when to load for correct order
+
+Variant 1: Ptr(V)ᵗ = Ptr(Vᵗ)
+  load' : Mem * Ptr(V) -> (Mem * V) * (Mem * V -> Mem * Ptr(V))
+    // short: M*P(V) -> (M*V) * (M*V -> M*P(V))
+  load' := λ m p.
+    if shadow p then
+        // p_S: Ptr(V -> A)
+        // v* : V -> A
+        let m2, v* = load m p_S in
+        let m3, v = load m2 p;
+        (
+            (m3,v), 
+            λ s_m s_v.
+                let sm2, slot = alloc sm V in
+                v* s_v
+        )
+    else
+
+
+Variant 2: Ptr(V)ᵗ = Vᵗ
+  load' : Mem * Ptr(V) -> (Mem * V) * (Mem * V -> Mem * V)
+  load' := λ m p.
+    if shadow p then
+        // p_S: Ptr(V -> A)
+        // v* : V -> A
+        let m2, v* = load m p_S in
+        let m3, v = load m2 p;
+        (
+            (m3,v), 
+            λ s_m s_v.
+                v* s_v
+        )
+    else
+
+
 */
 
 
