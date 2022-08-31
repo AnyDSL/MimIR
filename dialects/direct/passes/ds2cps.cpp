@@ -119,7 +119,7 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
         // due to currying
         const Lam* conv_cps       = nullptr;
         auto [axiom, curry] = Axiom::get(callee);
-        if (axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<cps2ds>()
+        if (axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<cps2ds_dep>()
             && callee->isa<App>()) {
                 // TODO: check if raw app (cps2ds types) and with higher order app
                 // (cps2ds types fun) (no args)
