@@ -7,5 +7,5 @@
 /// add c++ bindings to call the axioms here
 /// preferably using inlined functions
 namespace thorin::debug {
-    void debug_print(const Def* def);
+void debug_print(const Def* def);
 } // namespace thorin::debug
