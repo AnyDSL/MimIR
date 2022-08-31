@@ -1,7 +1,5 @@
 var NAVTREEINDEX13 =
 {
-"domtree_8cpp.html":[6,0,3,0,6],
-"domtree_8cpp_source.html":[6,0,3,0,6],
 "domtree_8h.html":[6,0,3,0,7],
 "domtree_8h.html#a27a76a1f311546f00c650982da319cb5":[6,0,3,0,7,1],
 "domtree_8h.html#a72fc99d5c04f3932ba954f5d859ffb0a":[6,0,3,0,7,2],
@@ -249,5 +247,7 @@ var NAVTREEINDEX13 =
 "mem_2autogen_8h.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14":[6,0,0,1,0,4,0,9],
 "mem_2autogen_8h.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14a51e0df3ca5c430d39d775ec66f8c6f45":[6,0,0,1,0,4,0,9,0],
 "mem_2autogen_8h.html#a5e8154ca2300b281e9e4b4c81c19e846":[6,0,0,1,0,4,0,24],
-"mem_2autogen_8h.html#a650c586f1e2b8318132e78b123222476":[6,0,0,1,0,4,0,28]
+"mem_2autogen_8h.html#a650c586f1e2b8318132e78b123222476":[6,0,0,1,0,4,0,28],
+"mem_2autogen_8h.html#a6bd15a1c9ef43354f7403516650f83bf":[6,0,0,1,0,4,0,35],
+"mem_2autogen_8h.html#a70388d83ce3090c37da54f6e105f5233":[6,0,0,1,0,4,0,65]
 };

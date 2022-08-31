@@ -11,6 +11,5 @@ var searchData=
   ['pod_8',['pod',['../structthorin_1_1World_1_1State.html#a8be30c4cfa20cb0cf4f34ec7dd69c193',1,'thorin::World::State']]],
   ['pos_9',['pos',['../structthorin_1_1utf8_1_1Lexer_1_1Ahead.html#a507f0bbc8c13302f3b14c1f0446e324f',1,'thorin::utf8::Lexer::Ahead']]],
   ['pred_10',['pred',['../classthorin_1_1mem_1_1SSAConstr.html#a37e017f09f5905fbaa05ecd5c9f5c476',1,'thorin::mem::SSAConstr::Info']]],
-  ['prime_11',['prime',['../structthorin_1_1FNV1.html#a80162d0acdba80bb75d7f3691219f038',1,'thorin::FNV1']]],
-  ['proxy_5f_12',['proxy_',['../classthorin_1_1Def.html#a229770e837d6fff5ea711c1f412a2bc7',1,'thorin::Def']]]
+  ['prime_11',['prime',['../structthorin_1_1FNV1.html#a80162d0acdba80bb75d7f3691219f038',1,'thorin::FNV1']]]
 ];

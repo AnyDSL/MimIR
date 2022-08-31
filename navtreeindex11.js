@@ -1,20 +1,18 @@
 var NAVTREEINDEX11 =
 {
-"classthorin_1_1utf8_1_1Lexer.html#a3847117273fe64049e2a970180d3b9d6":[5,0,0,11,0,7],
 "classthorin_1_1utf8_1_1Lexer.html#a4a18d2046e483888cf970184d418a893":[5,0,0,11,0,10],
-"classthorin_1_1utf8_1_1Lexer.html#a4a18d2046e483888cf970184d418a893":[3,0,0,17,0,10],
-"classthorin_1_1utf8_1_1Lexer.html#a6e287bb44b69d962efb2940be5738b7b":[3,0,0,17,0,2],
 "classthorin_1_1utf8_1_1Lexer.html#a6e287bb44b69d962efb2940be5738b7b":[5,0,0,11,0,2],
+"classthorin_1_1utf8_1_1Lexer.html#a6e287bb44b69d962efb2940be5738b7b":[3,0,0,17,0,2],
 "classthorin_1_1utf8_1_1Lexer.html#a8501db85f043276bad22a6fb4e90df77":[5,0,0,11,0,4],
 "classthorin_1_1utf8_1_1Lexer.html#a8501db85f043276bad22a6fb4e90df77":[3,0,0,17,0,4],
 "classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa":[5,0,0,11,0,5],
 "classthorin_1_1utf8_1_1Lexer.html#aa537f8ba8a1eb2afaab9dc508bb2ccfa":[3,0,0,17,0,5],
-"classthorin_1_1utf8_1_1Lexer.html#abddcf2b8c107fa35d85c5a1e549f4597":[5,0,0,11,0,9],
 "classthorin_1_1utf8_1_1Lexer.html#abddcf2b8c107fa35d85c5a1e549f4597":[3,0,0,17,0,9],
+"classthorin_1_1utf8_1_1Lexer.html#abddcf2b8c107fa35d85c5a1e549f4597":[5,0,0,11,0,9],
 "classthorin_1_1utf8_1_1Lexer.html#ad29428b48f635a4f5d0f29b91d9c0c3f":[3,0,0,17,0,6],
 "classthorin_1_1utf8_1_1Lexer.html#ad29428b48f635a4f5d0f29b91d9c0c3f":[5,0,0,11,0,6],
-"classthorin_1_1utf8_1_1Lexer.html#ae15c4c0f955cb984d0035a9d6b6ed12b":[5,0,0,11,0,1],
 "classthorin_1_1utf8_1_1Lexer.html#ae15c4c0f955cb984d0035a9d6b6ed12b":[3,0,0,17,0,1],
+"classthorin_1_1utf8_1_1Lexer.html#ae15c4c0f955cb984d0035a9d6b6ed12b":[5,0,0,11,0,1],
 "classthorin_1_1utf8_1_1Lexer.html#aeb6b8061e55497b8da23fb1f5e11288f":[5,0,0,11,0,8],
 "classthorin_1_1utf8_1_1Lexer.html#aeb6b8061e55497b8da23fb1f5e11288f":[3,0,0,17,0,8],
 "cli.html":[1,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX11 =
 "core_2autogen_8h.html#ae5e3d158f826773b7f4529c50db84b81":[6,0,0,1,0,2,0,47],
 "core_2autogen_8h.html#ae6cc50d2d17f59ebbed5b82367c89101":[6,0,0,1,0,2,0,58],
 "core_2autogen_8h.html#ae7e9b78a570fb962c12dcade067dc4c5":[6,0,0,1,0,2,0,55],
-"core_2autogen_8h.html#aeab498f128b5971760b77669353c7546":[6,0,0,1,0,2,0,39]
+"core_2autogen_8h.html#aeab498f128b5971760b77669353c7546":[6,0,0,1,0,2,0,39],
+"core_2autogen_8h.html#aeb257a381a67c26c3443427c161e70a7":[6,0,0,1,0,2,0,20],
+"core_2autogen_8h.html#aebbcedd88ab50ece08d52b49163afb1b":[6,0,0,1,0,2,0,35]
 };
