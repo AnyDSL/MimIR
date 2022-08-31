@@ -36,12 +36,13 @@ T as_lit(const Def* def);
 /// A Def `u` which uses Def `d` as `i^th` operand is a Use with Use::index `i` of Def `d`.
 class Use {
 public:
+    static constexpr size_t Type = -1_s;
+
     Use() {}
     Use(const Def* def, size_t index)
         : def_(def)
         , index_(index) {}
 
-    bool is_used_as_type() const { return index() == -1_s; }
     size_t index() const { return index_; }
     const Def* def() const { return def_; }
     operator const Def*() const { return def_; }
@@ -68,14 +69,15 @@ enum class Sort { Term, Type, Kind, Space, Univ };
 
 //------------------------------------------------------------------------------
 
-namespace Dep {
-enum : unsigned {
-    Bot,
-    Nom,
-    Var,
-    Top = Nom | Var,
+struct Dep {
+    enum : unsigned {
+        None  = 0,
+        Axiom = 1 << 0,
+        Proxy = 1 << 1,
+        Nom   = 1 << 2,
+        Var   = 1 << 3,
+    };
 };
-}
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define THORIN_PROJ(NAME, CONST)                                                                                   \
@@ -114,7 +116,8 @@ private:
 
 protected:
     /// Constructor for a structural Def.
-    Def(node_t, const Def* type, Defs ops, flags_t flags, const Def* dbg);
+    Def(World*, node_t, const Def* type, Defs ops, flags_t flags, const Def* dbg);
+    Def(node_t n, const Def* type, Defs ops, flags_t flags, const Def* dbg);
     /// Constructor for a *nom*inal Def.
     Def(node_t, const Def* type, size_t num_ops, flags_t flags, const Def* dbg);
     virtual ~Def() = default;
@@ -206,11 +209,10 @@ public:
     /// @name dependence checks
     ///@{
     /// @see Dep.
-
     unsigned dep() const { return dep_; }
-    bool no_dep() const { return dep() == Dep::Bot; }
-    bool has_dep(unsigned dep) const { return (dep_ & dep) != 0; }
-    bool contains_proxy() const { return proxy_; }
+    bool dep_none() const { return dep() == Dep::None; }
+    bool dep_const() const { return !(dep() & (Dep::Nom | Dep::Var)); }
+    bool dep_proxy() const { return dep_ & Dep::Proxy; }
     ///@}
 
     /// @name proj
@@ -292,8 +294,6 @@ public:
 #else
     void set_debug_name(std::string_view) const {}
 #endif
-    /// In `Debug` build if World::enable_history is `true`, this thing keeps the Def::gid to track a history of gids.
-    const Def* debug_history() const;
     std::string unique_name() const; ///< name + "_" + Def::gid
     ///@}
 
@@ -358,11 +358,14 @@ public:
     virtual const Def* restructure() { return nullptr; }
     ///@}
 
-    /// @name dump/stream
+    /// @name dump
     ///@{
     void dump() const;
-    void dump(size_t) const;
-    std::ostream& stream(std::ostream&, size_t max) const;
+    void dump(int max) const;
+    void write(int max) const;
+    void write(int max, const char* file) const;
+    std::ostream& stream(std::ostream&, int max) const;
+    friend std::ostream& operator<<(std::ostream&, const Def*);
     ///@}
 
 protected:
@@ -375,30 +378,25 @@ protected:
     union {
         NormalizeFn normalizer_; ///< Axiom%s use this member to store their normalizer.
         const Axiom* axiom_;     /// Curried App%s of Axiom%s use this member to propagate the Axiom.
+        mutable World* world_;
     };
 
     flags_t flags_;
     uint8_t node_;
     unsigned nom_    : 1;
-    unsigned dep_    : 2;
-    unsigned proxy_  : 1;
-    unsigned pading_ : 4;
+    unsigned dep_    : 4;
+    unsigned pading_ : 3;
     u16 curry_;
     hash_t hash_;
     u32 gid_;
     u32 num_ops_;
     mutable Uses uses_;
     mutable const Def* dbg_;
-    union {
-        const Def* type_;
-        mutable World* world_;
-    };
+    const Def* type_;
 
     friend class World;
     friend void swap(World&, World&);
 };
-
-std::ostream& operator<<(std::ostream&, const Def* def);
 
 template<class T>
 const T* isa(flags_t f, const Def* def) {
@@ -420,8 +418,6 @@ using DefSet  = GIDSet<const Def*>;
 using Def2Def = DefMap<const Def*>;
 using DefDef  = std::tuple<const Def*, const Def*>;
 using DefVec  = std::vector<const Def*>;
-
-std::ostream& operator<<(std::ostream&, std::pair<const Def*, const Def*>);
 
 struct DefDefHash {
     hash_t operator()(DefDef pair) const {
@@ -474,7 +470,7 @@ using Var2Var = VarMap<const Var*>;
 class Univ : public Def {
 private:
     Univ(World& world)
-        : Def(Node, reinterpret_cast<const Def*>(&world), Defs{}, 0, nullptr) {}
+        : Def(&world, Node, nullptr, Defs{}, 0, nullptr) {}
 
 public:
     /// @name virtual methods

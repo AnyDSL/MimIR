@@ -9,8 +9,10 @@ add_library(libthorin
     def.h
     dialects.cpp
     dialects.h
+    dump.cpp
     error.cpp
     error.h
+    flags.h
     lam.cpp
     lam.h
     lattice.cpp
@@ -19,7 +21,6 @@ add_library(libthorin
     normalize.h
     rewrite.cpp
     rewrite.h
-    stream.cpp
     tuple.cpp
     tuple.h
     tables.h
@@ -72,10 +73,10 @@ add_library(libthorin
     pass/rw/partial_eval.h
     pass/rw/ret_wrap.cpp
     pass/rw/ret_wrap.h
-    pass/rw/bound_elim.cpp
-    pass/rw/bound_elim.h
     pass/rw/scalarize.cpp
     pass/rw/scalarize.h
+    phase/phase.cpp
+    phase/phase.h
     util/array.h
     util/assert.h
     util/bitset.cpp
@@ -115,7 +116,7 @@ target_include_directories(libthorin
 target_link_libraries(libthorin
     PUBLIC
         absl::btree
-        absl::flat_hash_map absl::flat_hash_set 
+        absl::flat_hash_map absl::flat_hash_set
         absl::node_hash_map absl::node_hash_set
         ${CMAKE_DL_LIBS}
 )

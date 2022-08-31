@@ -28,7 +28,7 @@ const Def* CopyProp::rewrite(const Def* def) {
         switch (lattice[i]) {
             case Lattice::Dead: break;
             case Lattice::Prop:
-                if (app->arg(i)->contains_proxy()) {
+                if (app->arg(i)->dep_proxy()) {
                     world().DLOG("found proxy within app: {}@{} - wait till proxy is gone", var_lam, app);
                     return app;
                 } else if (args[i] == nullptr) {
@@ -117,11 +117,6 @@ undo_t CopyProp::analyze(const Proxy* proxy) {
     }
 
     return No_Undo;
-}
-
-PassTag* CopyProp::ID() {
-    static PassTag Key;
-    return &Key;
 }
 
 } // namespace thorin::mem

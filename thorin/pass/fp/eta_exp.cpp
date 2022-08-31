@@ -87,9 +87,4 @@ undo_t EtaExp::analyze(const Def* def) {
     return undo;
 }
 
-PassTag* EtaExp::ID() {
-    static PassTag Key;
-    return &Key;
-}
-
 } // namespace thorin

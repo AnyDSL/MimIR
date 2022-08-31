@@ -10,21 +10,22 @@ namespace thorin::dot {
 
 class BB {};
 
-class DotEmitter : public Emitter<std::string, std::string, BB, DotEmitter> {
+class Emitter : public thorin::Emitter<std::string, std::string, BB, Emitter> {
 public:
-    DotEmitter(World& w, std::ostream& ostream, const std::function<void(std::ostream&, const Def*)>& stream_def)
-        : Emitter(w, ostream)
+    using Super = thorin::Emitter<std::string, std::string, BB, Emitter>;
+
+    Emitter(World& w, std::ostream& ostream, const std::function<void(std::ostream&, const Def*)>& stream_def)
+        : Super(w, "dot_emitter", ostream)
         , stream_def_(stream_def) {
         ostream << "digraph Thorin {\n";
     }
 
-    ~DotEmitter() {
+    ~Emitter() {
         ostream_ << connections_.str();
         ostream_ << "}\n";
     }
 
     bool is_valid(std::string_view s) { return !s.empty(); }
-    void run() { emit_module(); }
     void emit_imported(Lam*);
     void emit_epilogue(Lam*);
 
@@ -41,7 +42,7 @@ private:
 void default_stream_def(std::ostream& s, const Def* def) { def->stream(s, 0); }
 
 void emit(World& w, std::ostream& s, std::function<void(std::ostream&, const Def*)> stream_def) {
-    DotEmitter emitter{w, s, stream_def};
+    Emitter emitter{w, s, stream_def};
     emitter.run();
 }
 
@@ -59,11 +60,11 @@ static void emit_node_attributes(std::ostream& stream, const Def* def) {
     if (def->isa<Var>()) { stream << ", color=blue"; }
 }
 
-void DotEmitter::emit_imported(Lam* lam) {
+void Emitter::emit_imported(Lam* lam) {
     print(ostream_, "\"{}:{}\" [shape=rect];\n", lam->node_name(), lam->unique_name());
 }
 
-void DotEmitter::emit_epilogue(Lam* lam) {
+void Emitter::emit_epilogue(Lam* lam) {
     if (visited_noms_.contains(lam)) return;
     visited_noms_.insert(lam);
 
@@ -76,7 +77,7 @@ void DotEmitter::emit_epilogue(Lam* lam) {
     }
 }
 
-std::string DotEmitter::emit_bb(BB&, const Def* def) {
+std::string Emitter::emit_bb(BB&, const Def* def) {
     if (auto lam = def->isa<Lam>()) return lam->name();
 
     print(ostream_, "\"{}:{}\" [label=\"", def->node_name(), def->unique_name());
@@ -94,7 +95,7 @@ std::string DotEmitter::emit_bb(BB&, const Def* def) {
     return {def->unique_name()};
 }
 
-std::string DotEmitter::prepare(const Scope& scope) {
+std::string Emitter::prepare(const Scope& scope) {
     auto lam = scope.entry()->as_nom<Lam>();
 
     emit_cluster_start(ostream_, lam);
@@ -102,6 +103,6 @@ std::string DotEmitter::prepare(const Scope& scope) {
     return lam->name();
 }
 
-void DotEmitter::finalize(const Scope&) { ostream_ << "}\n"; }
+void Emitter::finalize(const Scope&) { ostream_ << "}\n"; }
 
 } // namespace thorin::dot

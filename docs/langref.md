@@ -186,17 +186,20 @@ An elided type of
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
 
-| Operator      | Description                         | Associativity |
-|---------------|-------------------------------------|---------------|
-| L `:` e       | type ascription of a literal        | -             |
-| e `#` e       | extract                             | left-to-right |
-| e e           | application                         | left-to-right |
-| `Π` Sym `:` e | domain of a dependent function type | -             |
-| e `→` e       | function type                       | right-to-left |
+| Operator         | Description                         | Associativity |
+|------------------|-------------------------------------|---------------|
+| L `:` e          | type ascription of a literal        | -             |
+| e `#` e          | extract                             | left-to-right |
+| e e              | application                         | left-to-right |
+| `Π` Sym `:` e    | domain of a dependent function type | -             |
+| `.lam` Sym `:` e | nominal lambda declaration          | -             |
+| `.cn` Sym `:` e  | nominal continuation declaration    | -             |
+| e `→` e          | function type                       | right-to-left |
 
 Note that the domain of a dependent function type binds slightly stronger than `→`.
-This has the effect that, e.g., `Π T: * → T -> T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
+This has the effect that, e.g., `Π T: * → T → T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
 Otherwise, `→` would be consumed by the domain: `Π T:` (`* →` (`T → T`)) ↯.
+A similar situation occurs for `.lam`/`.cn` declaration.
 
 ## Scoping
 
@@ -207,7 +210,7 @@ The grammar tables above also indiciate which constructs open new scopes (and cl
 
 The symbol `_` is special and never binds to an entity.
 For this reason, `_` can be bound over and over again within the same scope (without effect).
-Hence, using the symbol `_` will always result in a [scoping error](@ref thorin::ScopeError).
+Hence, using the symbol `_` will always result in a scoping error.
 
 ### Pis
 
@@ -229,10 +232,10 @@ These names take precedence over the usual scope.
 In the following example, `i` refers to the first element `i` of `X` and **not** to the `i` introduced via `.let`:
 ```
 .let i = 1_2;
-Π X: [i: .Nat, j: .Nat] -> f X#i;
+Π X: [i: .Nat, j: .Nat] → f X#i;
 ```
 Use parentheses to refer to the `.let`-bounded `i`:
 ```
 .let i = 1_2;
-Π X: [i: .Nat, j: .Nat] -> f X#(i);
+Π X: [i: .Nat, j: .Nat] → f X#(i);
 ```

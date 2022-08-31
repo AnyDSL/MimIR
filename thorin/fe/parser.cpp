@@ -79,11 +79,11 @@ Tok Parser::expect(Tok::Tag tag, std::string_view ctxt) {
 
     std::string msg("'");
     msg.append(Tok::tag2str(tag)).append("'");
-    err(msg, ctxt);
+    syntax_err(msg, ctxt);
     return {};
 }
 
-void Parser::err(std::string_view what, const Tok& tok, std::string_view ctxt) {
+void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt) {
     err(tok.loc(), "expected {}, got '{}' while parsing {}", what, tok, ctxt);
 }
 
@@ -154,7 +154,7 @@ void Parser::parse_import() {
 Sym Parser::parse_sym(std::string_view ctxt) {
     auto track = tracker();
     if (auto id = accept(Tok::Tag::M_id)) return id->sym();
-    err("identifier", ctxt);
+    syntax_err("identifier", ctxt);
     return world().sym("<error>", world().dbg((Loc)track));
 }
 
@@ -286,7 +286,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         }
         default:
             if (ctxt.empty()) return nullptr;
-            err("primary expression", ctxt);
+            syntax_err("primary expression", ctxt);
     }
     // clang-format on
     return nullptr;
@@ -510,7 +510,7 @@ std::unique_ptr<Ptrn> Parser::parse_ptrn(Tok::Tag delim_l, std::string_view ctxt
         return std::make_unique<IdPtrn>(track.loc(), sym, type);
     } else if (!ctxt.empty()) {
         // p -> ↯
-        err("pattern", ctxt);
+        syntax_err("pattern", ctxt);
     }
 
     return nullptr;
@@ -727,7 +727,7 @@ void Parser::parse_nom_fun() {
 
     bool external = accept(Tok::Tag::K_extern).has_value();
     auto sym      = parse_sym("nominal lambda");
-    auto dom_p    = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda");
+    auto dom_p    = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", Tok::Prec::Pi);
     auto dom_t    = dom_p->type(world());
     auto pi       = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
     auto var_dbg  = world().dbg(dom_p->sym());

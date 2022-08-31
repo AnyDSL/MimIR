@@ -1,6 +1,5 @@
 #include "dialects/clos/pass/rw/clos2sjlj.h"
 
-#include "dialects/clos/clos_conv.h"
 #include "dialects/core/core.h"
 
 namespace thorin::clos {

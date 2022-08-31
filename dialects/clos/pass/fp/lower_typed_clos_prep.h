@@ -3,7 +3,7 @@
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/pass.h"
 
-#include "dialects/clos/clos_conv.h"
+#include "dialects/clos/clos.h"
 
 namespace thorin::clos {
 

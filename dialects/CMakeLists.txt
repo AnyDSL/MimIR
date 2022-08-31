@@ -13,10 +13,6 @@ add_thorin_dialect(clos
     SOURCES
         clos/clos.cpp
         clos/clos.h
-        clos/clos_conv.cpp
-        clos/clos_conv.h
-        clos/lower_typed_clos.cpp
-        clos/lower_typed_clos.h
         clos/normalizers.cpp
         clos/pass/fp/lower_typed_clos_prep.cpp
         clos/pass/fp/lower_typed_clos_prep.h
@@ -26,6 +22,10 @@ add_thorin_dialect(clos
         clos/pass/rw/clos2sjlj.h
         clos/pass/rw/clos_conv_prep.cpp
         clos/pass/rw/clos_conv_prep.h
+        clos/phase/clos_conv.cpp
+        clos/phase/clos_conv.h
+        clos/phase/lower_typed_clos.cpp
+        clos/phase/lower_typed_clos.h
     DEPENDS
         mem
     HEADER_DEPENDS
@@ -73,10 +73,10 @@ add_thorin_dialect(direct
     INSTALL
 )
 
-add_thorin_dialect(rusty
+add_thorin_dialect(debug
     SOURCES
-        rusty/rusty.cpp
-        rusty/rusty.h
-        rusty/normalizers.cpp
+        debug/debug.cpp
+        debug/debug.h
+        debug/normalizers.cpp
     INSTALL
 )
