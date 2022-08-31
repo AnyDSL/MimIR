@@ -126,6 +126,8 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
             auto callee_function = callee->as<App>()->arg();
             // world.DLOG("callee function {} : {}", callee_function->unique_name(), callee_function->type());
             conv_cps = callee_function->isa<Lam>();
+            if(conv_cps)
+                world.DLOG("cps2ds of {} : {}", conv_cps, conv_cps->type());
         }
 
         if ((!axiom && !callee->type()->as<Pi>()->is_cn()) || conv_cps) {
@@ -159,7 +161,6 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
 
             // continuation of call site to receive result
             auto fun_cont = world.nom_lam(world.cn(ret_ty), world.dbg(curr_lam_->name() + "_cont"));
-            fun_cont->set_filter(curr_lam_->filter());
 
             // f a -> f_cps(a,cont)
             auto cps_call = world.app(lam_cps, {new_arg, fun_cont}, world.dbg("cps_call"));
@@ -174,6 +175,10 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
             // Fixme: would be great to PE the newly added overhead away..
             // The current PE just does not terminate on loops.. :/
             // curr_lam_->set_filter(true);
+
+            // filter only here as otherwise a debug print causes
+            // the "some operands are set" issue
+            fun_cont->set_filter(curr_lam_->filter());
 
             // write the body context in the newly created continuation
             // that has access to the result (as its argument)
