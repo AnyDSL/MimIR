@@ -45,9 +45,9 @@ const Def* normalize_zero(const Def* type, const Def* callee, const Def* arg, co
     // as add would no longer be able to shortcut them
 
     auto T = arg;
-    auto zero = zero_def(T);
-    if(zero)
-        return zero;
+    // auto zero = zero_def(T);
+    // if(zero)
+    //     return zero;
 
     return world.raw_app(callee, arg, dbg);
 }

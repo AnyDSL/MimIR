@@ -23,8 +23,9 @@ const Def* AutoDiffZeroCleanup::rewrite(const Def* def) {
         world.DLOG("found a remaining autodiff::zero of {}", T);
         // generate ⊥:T
         auto dummy = world.bot(T);
-        assert(0);
-        return dummy;
+        // assert(0);
+        // return dummy;
+        return def;
     }
 
     return def;

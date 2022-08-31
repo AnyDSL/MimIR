@@ -8,6 +8,7 @@
 // #include "dialects/direct/direct.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/passes/autodiff_zero.h"
+#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
@@ -27,7 +28,10 @@ const Def* AutoDiffZero::rewrite(const Def* def) {
         // arg = type T
         auto T = zero_app->arg();
         world.DLOG("found a autodiff::zero of {}", T);
-        assert(0);
+        // assert(0);
+        auto zero = zero_def(T);
+        if(zero)
+            return zero;
         return def;
     }
 
