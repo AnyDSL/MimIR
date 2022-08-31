@@ -50,7 +50,7 @@ Scheduler::Scheduler(const Scope& s)
 
 Def* Scheduler::early(const Def* def) {
     if (auto i = early_.find(def); i != early_.end()) return i->second;
-    if (def->no_dep() || !scope().bound(def)) return early_[def] = scope().entry();
+    if (def->dep_const() || !scope().bound(def)) return early_[def] = scope().entry();
     if (auto var = def->isa<Var>()) return early_[def] = var->nom();
 
     auto result = scope().entry();
@@ -66,7 +66,7 @@ Def* Scheduler::early(const Def* def) {
 
 Def* Scheduler::late(const Def* def) {
     if (auto i = late_.find(def); i != late_.end()) return i->second;
-    if (def->no_dep() || !scope().bound(def)) return early_[def] = scope().entry();
+    if (def->dep_const() || !scope().bound(def)) return early_[def] = scope().entry();
 
     Def* result = nullptr;
     if (auto nom = def->isa_nom()) {

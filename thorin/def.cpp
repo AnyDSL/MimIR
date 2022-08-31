@@ -23,8 +23,10 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const 
     , flags_(flags)
     , node_(unsigned(node))
     , nom_(false)
-    , dep_(Dep::Bot)
-    , proxy_(0)
+    , dep_(node == Node::Axiom   ? Dep::Axiom
+           : node == Node::Proxy ? Dep::Proxy
+           : node == Node::Var   ? Dep::Var
+                                 : Dep::None)
     , num_ops_(ops.size())
     , dbg_(dbg)
     , type_(type) {
@@ -50,14 +52,13 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def*
     , node_(node)
     , nom_(true)
     , dep_(Dep::Nom)
-    , proxy_(0)
     , num_ops_(num_ops)
     , dbg_(dbg)
     , type_(type) {
     gid_  = world().next_gid();
     hash_ = murmur3(gid());
     std::fill_n(ops_ptr(), num_ops, nullptr);
-    if (!type->no_dep()) type->uses_.emplace(this, -1);
+    if (!type->dep_const()) type->uses_.emplace(this, Use::Type);
 }
 
 Nat::Nat(World& world)
@@ -269,29 +270,22 @@ void Def::set_debug_name(std::string_view n) const {
 #endif
 
 void Def::finalize() {
+    assert(!dbg() || dbg()->dep_none());
+
     for (size_t i = 0, e = num_ops(); i != e; ++i) {
-        if (auto dep = op(i)->dep(); dep != Dep::Bot) {
-            dep_ |= dep;
+        dep_ |= op(i)->dep();
+        if (!op(i)->dep_const()) {
             const auto& p = op(i)->uses_.emplace(this, i);
             assert_unused(p.second);
         }
     }
 
-    if (!isa<Univ>() && !isa<Type>() && !isa<Axiom>()) {
-        if (auto dep = type()->dep(); dep != Dep::Bot) {
-            dep_ |= dep;
-            const auto& p = type()->uses_.emplace(this, -1);
+    if (auto t = type()) {
+        dep_ |= t->dep();
+        if (!t->dep_const()) {
+            const auto& p = type()->uses_.emplace(this, Use::Type);
             assert_unused(p.second);
         }
-    }
-
-    assert(!dbg() || dbg()->no_dep());
-    if (isa<Var>()) dep_ = Dep::Var;
-
-    if (isa<Proxy>()) {
-        proxy_ = true;
-    } else {
-        for (auto op : extended_ops()) proxy_ |= op->contains_proxy();
     }
 }
 
@@ -322,14 +316,14 @@ void Def::unset(size_t i) {
 Def* Def::set_type(const Def* type) {
     if (type_ != nullptr) unset_type();
     type_ = type;
-    type->uses_.emplace(this, -1);
+    type->uses_.emplace(this, Use::Type);
     return this;
 }
 
 void Def::unset_type() {
-    assert(type_->uses_.contains(Use(this, size_t(-1))));
-    type_->uses_.erase(Use(this, size_t(-1)));
-    assert(!type_->uses_.contains(Use(this, size_t(-1))));
+    assert(type_->uses_.contains(Use(this, Use::Type)));
+    type_->uses_.erase(Use(this, Use::Type));
+    assert(!type_->uses_.contains(Use(this, Use::Type)));
     type_ = nullptr;
 }
 

@@ -55,7 +55,7 @@ struct Inline {
     const Def* operator->() const { return def_; };
     const Def* operator*() const { return def_; };
     explicit operator bool() const {
-        if (def_->no_dep()) return true;
+        if (def_->dep_const()) return true;
 
         if (auto nom = def_->isa_nom()) {
             if (isa_decl(nom)) return false;

@@ -320,7 +320,7 @@ ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
 /* Free variable analysis */
 
 static bool is_toplevel(const Def* fd) {
-    return fd->no_dep() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term;
+    return fd->dep_const() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term;
 }
 
 static bool is_memop_res(const Def* fd) {
