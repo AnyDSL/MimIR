@@ -75,8 +75,10 @@ add_thorin_dialect(direct
 
 add_thorin_dialect(debug
     SOURCES
-        debug/debug.cpp
         debug/debug.h
+        debug/debug.cpp
+        debug/passes/remove_perm.h
+        debug/passes/remove_perm.cpp
         debug/normalizers.cpp
     INSTALL
 )

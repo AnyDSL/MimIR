@@ -25,3 +25,4 @@
 /// permanently debugs at every construction
 /// gets removed at codegen preparation
 ///
+.ax %debug.dbg_perm: Π [T:*] -> T -> T, normalize_dbg_perm;

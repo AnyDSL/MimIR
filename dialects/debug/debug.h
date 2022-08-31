@@ -4,4 +4,8 @@
 
 #include "dialects/debug/autogen.h"
 
-namespace thorin::debug {} // namespace thorin::debug
+/// add c++ bindings to call the axioms here
+/// preferably using inlined functions
+namespace thorin::debug {
+    void debug_print(const Def* def);
+} // namespace thorin::debug
