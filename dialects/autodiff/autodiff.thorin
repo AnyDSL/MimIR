@@ -261,9 +261,13 @@ r* is closed => can not argue about partial pullbacks
 (but could use load arguments)
 v* is necessarily partial
 
-TODO: solve
 idea: p* := unpack ptr => sv => plug into loaded shadow pb
   question: when to load for correct order
+idea: (assume inner pointer for now)
+  1. augment arguments; shadow pointer exists
+  2. construct load*
+    2.1 set p* using current memory (from args) and shadow pointer
+  3. compose with args* ∋ p*
 
 Variant 1: Ptr(V)ᵗ = Ptr(Vᵗ)
   load' : Mem * Ptr(V) -> (Mem * V) * (Mem * V -> Mem * Ptr(V))
@@ -274,11 +278,12 @@ Variant 1: Ptr(V)ᵗ = Ptr(Vᵗ)
         // v* : V -> A
         let m2, v* = load m p_S in
         let m3, v = load m2 p;
+        // p*: P(V) -> A
+        set p* = (wrapped) v* (load ...)
         (
             (m3,v), 
-            λ s_m s_v.
-                let sm2, slot = alloc sm V in
-                v* s_v
+            // r*: 
+            // see above
         )
     else
 
