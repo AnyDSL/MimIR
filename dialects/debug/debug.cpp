@@ -21,10 +21,13 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
             nullptr, [](Normalizers& normalizers) { debug::register_normalizers(normalizers); }};
 }
 
+#define YELLOW "\033[0;33m"
+#define BLANK "\033[0m"
+
 namespace thorin::debug {
     void debug_print(const Def* def) {
         auto& world = def->world();
-        world.DLOG("\033[0;33mdebug_print: {}\033[0m", def);
+        world.DLOG(YELLOW "debug_print: {}" BLANK, def);
         world.DLOG("def : {}", def);
         world.DLOG("id  : {}", def->unique_name());
         world.DLOG("type: {}", def->type());
