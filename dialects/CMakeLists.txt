@@ -72,3 +72,13 @@ add_thorin_dialect(direct
         direct/passes/ds2cps.h
     INSTALL
 )
+
+add_thorin_dialect(debug
+    SOURCES
+        debug/debug.h
+        debug/debug.cpp
+        debug/passes/remove_perm.h
+        debug/passes/remove_perm.cpp
+        debug/normalizers.cpp
+    INSTALL
+)
