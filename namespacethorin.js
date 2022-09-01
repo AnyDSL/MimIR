@@ -190,6 +190,7 @@ var namespacethorin =
       [ "register_normalizers", "namespacethorin_1_1core.html#aa5565530411d58bb308c6dede7f8785c", null ],
       [ "Dialect_Id", "namespacethorin_1_1core.html#a64b976cf9770ff3de3fd06e9fb17e1ab", null ]
     ] ],
+    [ "debug", "namespacethorin_1_1debug.html", "namespacethorin_1_1debug" ],
     [ "detail", "namespacethorin_1_1detail.html", "namespacethorin_1_1detail" ],
     [ "direct", "namespacethorin_1_1direct.html", "namespacethorin_1_1direct" ],
     [ "dl", "namespacethorin_1_1dl.html", "namespacethorin_1_1dl" ],

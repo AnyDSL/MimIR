@@ -45,7 +45,8 @@ var NAVTREE =
       [ "clos", "clos.html", null ],
       [ "core", "core.html", null ],
       [ "mem", "mem.html", null ],
-      [ "direct", "direct.html", null ]
+      [ "direct", "direct.html", null ],
+      [ "debug", "debug.html", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -96,18 +97,18 @@ var NAVTREEINDEX =
 "classthorin_1_1TBound.html#a17bcc965667807edc5bb1586eca05008",
 "classthorin_1_1World.html#a5b40a0d582ba6e1b28bc50dc0ceb0840",
 "classthorin_1_1World.html#aecbf822376502512975a3d83487ab4d3",
-"classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79",
-"classthorin_1_1utf8_1_1Lexer.html#a4a18d2046e483888cf970184d418a893",
-"core_2autogen_8h.html#aec5b3d7a3129c16ed10df9b7ecf166ea",
-"domtree_8h.html",
-"mem_2autogen_8h.html#a764c3127556982a3d401d60c743aac7a",
-"namespacethorin.html#a5207b75bc2b0b46621df4adabaa55f38",
-"namespacethorin.html#af538a45dc8c0c242b9a51f2ea1e6afea",
-"namespacethorin_1_1core.html#abf4f6259b271d810101d16c18cbbe614",
-"namespacethorin_1_1normalize.html#a7b2c191adcf4003ead9eb40077fcd955",
-"structthorin_1_1Inline.html#a98571644eb0ef7c13174f00e1ca97e59",
-"structthorin_1_1normalize_1_1Fold_3_01Shr_00_01Shr_1_1ashr_00_01w_01_4.html#a74cce0422325c8860c3a3f1ef4f3780d",
-"tables_8h.html#afc355b8b0b46ac37ac5b35d2f2f93719a13d9573ef23af91a95b15899f5c778c1"
+"classthorin_1_1fe_1_1Tok.html#abf873630723f154cb493c524b01e9976",
+"classthorin_1_1utf8_1_1Lexer.html",
+"core_2autogen_8h.html#ae5e3d158f826773b7f4529c50db84b81",
+"direct_2autogen_8h_source.html",
+"lower__typed__clos__prep_8h.html",
+"namespacethorin.html#a45953d358ff771ff89168ecc274b7d2b",
+"namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad95679752134a2d9eb61dbd7b91c4bcc",
+"namespacethorin_1_1core.html#a7e8699bbcdc653aa377018adadbd2473",
+"namespacethorin_1_1mem.html#aad66148a6a1aae3329173e9a23b6045e",
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#af4d672facaede9857960eac8e4746882",
+"structthorin_1_1normalize_1_1FoldConv_3_01conv_1_1r2s_00_01dw_00_01sw_01_4.html",
+"tables_8h.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9a0cfbf5552b05198ef58e3b99c407e4a7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

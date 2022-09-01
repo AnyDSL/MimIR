@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['icmp_0',['ICmp',['../namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9',1,'thorin::ICmp()'],['../namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383ab14d0d6f2c53b4f8ce5c33ba81c961f2',1,'thorin::Tag::ICmp()']]],
-  ['icmp_1',['icmp',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6',1,'thorin::core']]],
+  ['icmp_0',['icmp',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6',1,'thorin::core']]],
+  ['icmp_1',['ICmp',['../namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9',1,'thorin::ICmp()'],['../namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383ab14d0d6f2c53b4f8ce5c33ba81c961f2',1,'thorin::Tag::ICmp()']]],
   ['id_2',['id',['../namespacethorin.html#ad96bfe437b4653d610aaaaa36251bdac',1,'thorin::id()'],['../namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349ab80bb7740288fda1f201890375a60c8f',1,'thorin::core::id()']]],
   ['idom_3',['idom',['../classthorin_1_1DomTreeBase.html#a4221dc4eda86e282cdb1cc54714bfc62',1,'thorin::DomTreeBase']]],
   ['idptrn_4',['IdPtrn',['../classthorin_1_1fe_1_1IdPtrn.html#aecd084649e58bd4751b63f9bf24e9a0d',1,'thorin::fe::IdPtrn::IdPtrn()'],['../classthorin_1_1fe_1_1IdPtrn.html',1,'thorin::fe::IdPtrn']]],

@@ -1,48 +1,50 @@
 <map id="thorin::Pass" name="thorin::Pass">
-<area shape="rect" id="node1" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="5,691,103,718"/>
-<area shape="rect" id="node2" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="562,980,755,1021"/>
-<area shape="rect" id="node5" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="567,605,750,647"/>
-<area shape="rect" id="node8" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="567,764,751,805"/>
-<area shape="rect" id="node11" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="560,5,757,47"/>
-<area shape="rect" id="node13" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="555,72,762,113"/>
-<area shape="rect" id="node15" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="561,140,756,181"/>
-<area shape="rect" id="node17" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="560,219,757,260"/>
-<area shape="rect" id="node19" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="552,684,765,725"/>
-<area shape="rect" id="node22" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="560,297,757,339"/>
-<area shape="rect" id="node24" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="555,381,762,423"/>
-<area shape="rect" id="node26" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="560,459,757,500"/>
-<area shape="rect" id="node28" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="561,533,756,575"/>
-<area shape="rect" id="node30" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="553,901,764,943"/>
-<area shape="rect" id="node33" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="564,1228,753,1269"/>
-<area shape="rect" id="node35" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="548,1311,769,1352"/>
-<area shape="rect" id="node37" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="559,1059,759,1100"/>
-<area shape="rect" id="node40" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="549,1383,768,1424"/>
-<area shape="rect" id="node42" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="555,1137,762,1179"/>
-<area shape="rect" id="node45" href="$classthorin_1_1RWPass.html" title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="152,742,327,769"/>
-<area shape="rect" id="node3" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="985,943,1171,984"/>
-<area shape="rect" id="node4" href="$classthorin_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="1259,950,1381,977"/>
-<area shape="rect" id="node6" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="989,623,1167,664"/>
-<area shape="rect" id="node7" href="$classthorin_1_1EtaExp.html" title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle..." alt="" coords="1263,630,1377,657"/>
-<area shape="rect" id="node9" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="989,791,1167,832"/>
-<area shape="rect" id="node10" href="$classthorin_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="1263,798,1377,825"/>
-<area shape="rect" id="node12" href="$classthorin_1_1LamSpec.html" title=" " alt="" coords="1015,13,1141,39"/>
-<area shape="rect" id="node14" href="$classthorin_1_1PartialEval.html" title=" " alt="" coords="1009,79,1147,106"/>
-<area shape="rect" id="node16" href="$classthorin_1_1RetWrap.html" title=" " alt="" coords="1016,147,1140,174"/>
-<area shape="rect" id="node18" href="$classthorin_1_1Scalerize.html" title="Perform Scalarization (= Argument simplification), i.e." alt="" coords="1015,226,1141,253"/>
-<area shape="rect" id="node20" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="975,704,1181,745"/>
-<area shape="rect" id="node21" href="$classthorin_1_1TailRecElim.html" title=" " alt="" coords="1249,711,1391,738"/>
-<area shape="rect" id="node23" href="$classthorin_1_1affine_1_1LowerFor.html" title="Lowers the for axiom to actual control flow in CPS style." alt="" coords="992,305,1164,331"/>
-<area shape="rect" id="node25" href="$classthorin_1_1clos_1_1BranchClosElim.html" title=" " alt="" coords="976,389,1180,415"/>
-<area shape="rect" id="node27" href="$classthorin_1_1clos_1_1Clos2SJLJ.html" title=" " alt="" coords="997,466,1159,493"/>
-<area shape="rect" id="node29" href="$classthorin_1_1clos_1_1ClosConvPrep.html" title=" " alt="" coords="982,541,1174,567"/>
-<area shape="rect" id="node31" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="975,871,1181,912"/>
-<area shape="rect" id="node32" href="$classthorin_1_1clos_1_1LowerTypedClosPrep.html" title=" " alt="" coords="1231,871,1409,912"/>
-<area shape="rect" id="node34" href="$classthorin_1_1direct_1_1DS2CPS.html" title="This pass converts a direct style functions (abbreviated as ds) into CPS." alt="" coords="996,1235,1160,1262"/>
-<area shape="rect" id="node36" href="$classthorin_1_1mem_1_1Alloc2Malloc.html" title=" " alt="" coords="981,1318,1175,1345"/>
-<area shape="rect" id="node38" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="981,1021,1175,1063"/>
-<area shape="rect" id="node39" href="$classthorin_1_1mem_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="1234,1029,1406,1055"/>
-<area shape="rect" id="node41" href="$classthorin_1_1mem_1_1RememElim.html" title=" " alt="" coords="983,1390,1173,1417"/>
-<area shape="rect" id="node43" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="978,1115,1178,1156"/>
-<area shape="rect" id="node44" href="$classthorin_1_1mem_1_1SSAConstr.html" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="1231,1122,1409,1149"/>
-<area shape="rect" id="node46" href="$classthorin_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="574,839,743,866"/>
+<area shape="rect" id="node1" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="5,814,103,841"/>
+<area shape="rect" id="node2" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="567,603,760,644"/>
+<area shape="rect" id="node5" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,461,755,503"/>
+<area shape="rect" id="node8" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,527,755,568"/>
+<area shape="rect" id="node11" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="565,227,762,268"/>
+<area shape="rect" id="node13" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="560,147,767,188"/>
+<area shape="rect" id="node15" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="566,393,761,435"/>
+<area shape="rect" id="node17" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="565,5,762,47"/>
+<area shape="rect" id="node19" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="557,817,770,859"/>
+<area shape="rect" id="node22" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="565,308,762,349"/>
+<area shape="rect" id="node24" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="560,1231,767,1272"/>
+<area shape="rect" id="node26" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="565,1299,762,1340"/>
+<area shape="rect" id="node28" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="566,1369,761,1411"/>
+<area shape="rect" id="node30" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="558,1041,769,1083"/>
+<area shape="rect" id="node33" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="548,1529,779,1571"/>
+<area shape="rect" id="node35" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="569,1136,758,1177"/>
+<area shape="rect" id="node37" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="553,75,774,116"/>
+<area shape="rect" id="node39" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="563,896,763,937"/>
+<area shape="rect" id="node42" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="554,1444,773,1485"/>
+<area shape="rect" id="node44" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="560,976,767,1017"/>
+<area shape="rect" id="node47" href="$classthorin_1_1RWPass.html" title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="152,769,327,795"/>
+<area shape="rect" id="node3" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1014,677,1201,719"/>
+<area shape="rect" id="node4" href="$classthorin_1_1BetaRed.html" title="Optimistically performs β&#45;reduction (aka inlining)." alt="" coords="1308,685,1431,711"/>
+<area shape="rect" id="node6" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1019,477,1196,519"/>
+<area shape="rect" id="node7" href="$classthorin_1_1EtaExp.html" title="Performs η&#45;expansion: f &#45;&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle..." alt="" coords="1313,485,1426,511"/>
+<area shape="rect" id="node9" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1018,565,1197,607"/>
+<area shape="rect" id="node10" href="$classthorin_1_1EtaRed.html" title="Performs η&#45;reduction." alt="" coords="1312,573,1427,599"/>
+<area shape="rect" id="node12" href="$classthorin_1_1LamSpec.html" title=" " alt="" coords="1044,234,1171,261"/>
+<area shape="rect" id="node14" href="$classthorin_1_1PartialEval.html" title=" " alt="" coords="1039,154,1176,181"/>
+<area shape="rect" id="node16" href="$classthorin_1_1RetWrap.html" title=" " alt="" coords="1045,401,1169,427"/>
+<area shape="rect" id="node18" href="$classthorin_1_1Scalerize.html" title="Perform Scalarization (= Argument simplification), i.e." alt="" coords="1044,13,1171,39"/>
+<area shape="rect" id="node20" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1004,743,1211,784"/>
+<area shape="rect" id="node21" href="$classthorin_1_1TailRecElim.html" title=" " alt="" coords="1298,750,1441,777"/>
+<area shape="rect" id="node23" href="$classthorin_1_1affine_1_1LowerFor.html" title="Lowers the for axiom to actual control flow in CPS style." alt="" coords="1021,315,1193,342"/>
+<area shape="rect" id="node25" href="$classthorin_1_1clos_1_1BranchClosElim.html" title=" " alt="" coords="1005,1238,1209,1265"/>
+<area shape="rect" id="node27" href="$classthorin_1_1clos_1_1Clos2SJLJ.html" title=" " alt="" coords="1027,1306,1188,1333"/>
+<area shape="rect" id="node29" href="$classthorin_1_1clos_1_1ClosConvPrep.html" title=" " alt="" coords="1011,1377,1203,1403"/>
+<area shape="rect" id="node31" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1005,988,1210,1029"/>
+<area shape="rect" id="node32" href="$classthorin_1_1clos_1_1LowerTypedClosPrep.html" title=" " alt="" coords="1280,988,1459,1029"/>
+<area shape="rect" id="node34" href="$classthorin_1_1debug_1_1DebugRemovePerm.html" title="removes all permanent debug markers for code gen" alt="" coords="984,1537,1231,1563"/>
+<area shape="rect" id="node36" href="$classthorin_1_1direct_1_1DS2CPS.html" title="This pass converts a direct style functions (abbreviated as ds) into CPS." alt="" coords="1025,1143,1189,1170"/>
+<area shape="rect" id="node38" href="$classthorin_1_1mem_1_1Alloc2Malloc.html" title=" " alt="" coords="1011,82,1204,109"/>
+<area shape="rect" id="node40" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1010,808,1205,849"/>
+<area shape="rect" id="node41" href="$classthorin_1_1mem_1_1CopyProp.html" title="This FPPass is similar to sparse conditional constant propagation (SCCP)." alt="" coords="1283,815,1455,842"/>
+<area shape="rect" id="node43" href="$classthorin_1_1mem_1_1RememElim.html" title=" " alt="" coords="1012,1451,1203,1478"/>
+<area shape="rect" id="node45" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="1007,873,1207,915"/>
+<area shape="rect" id="node46" href="$classthorin_1_1mem_1_1SSAConstr.html" title="SSA construction algorithm that promotes slots, loads, and stores to SSA values." alt="" coords="1280,881,1459,907"/>
+<area shape="rect" id="node48" href="$classthorin_1_1FPPass.html" title="Inherit from this class using CRTP, if you do need a Pass with a state and a fixed&#45;point." alt="" coords="579,734,748,761"/>
 </map>

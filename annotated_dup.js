@@ -14,6 +14,9 @@ var annotated_dup =
         [ "LowerTypedClos", "classthorin_1_1clos_1_1LowerTypedClos.html", "classthorin_1_1clos_1_1LowerTypedClos" ],
         [ "LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", "classthorin_1_1clos_1_1LowerTypedClosPrep" ]
       ] ],
+      [ "debug", "namespacethorin_1_1debug.html", [
+        [ "DebugRemovePerm", "classthorin_1_1debug_1_1DebugRemovePerm.html", "classthorin_1_1debug_1_1DebugRemovePerm" ]
+      ] ],
       [ "detail", "namespacethorin_1_1detail.html", [
         [ "Enum2DefImpl", "namespacethorin_1_1detail.html#structthorin_1_1detail_1_1Enum2DefImpl", "namespacethorin_1_1detail_structthorin_1_1detail_1_1Enum2DefImpl_dup" ],
         [ "Enum2DefImpl< mem::M >", "namespacethorin_1_1detail.html#structthorin_1_1detail_1_1Enum2DefImpl_3_01mem_1_1M_01_4", "namespacethorin_1_1detail_structthorin_1_1detail_1_1Enum2DefImpl_3_01mem_1_1M_01_4_dup" ]
