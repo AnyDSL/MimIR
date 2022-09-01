@@ -11,12 +11,6 @@ public:
         : RWPass(man, "autodiff_zero_cleanup") {}
 
     const Def* rewrite(const Def*) override;
-
-    static PassTag* ID();
-
-    const Def* mod_pb(const Def* def);
-
-private:
 };
 
 } // namespace thorin::autodiff

@@ -27,15 +27,13 @@ const Def* AutoDiffEval::derive(const Def* def) {
 }
 
 const Def* AutoDiffEval::rewrite(const Def* def) {
-    auto& world = def->world();
-
     if (auto ad_app = match<autodiff>(def); ad_app) {
         // callee = autodiff T
         // arg = function of type T
         //   (or operator)
         // auto callee = ad_app->callee();
         auto arg = ad_app->arg();
-        world.DLOG("found a autodiff::autodiff of {}", arg);
+        world().DLOG("found a autodiff::autodiff of {}", arg);
         // world.DLOG("found a autodiff::autodiff {} to {}",callee,arg);
 
         if (arg->isa<Lam>()) {
@@ -50,11 +48,6 @@ const Def* AutoDiffEval::rewrite(const Def* def) {
     }
 
     return def;
-}
-
-PassTag* AutoDiffEval::ID() {
-    static PassTag Key;
-    return &Key;
 }
 
 } // namespace thorin::autodiff

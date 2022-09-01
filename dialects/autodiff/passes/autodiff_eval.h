@@ -40,10 +40,6 @@ public:
     /// fills partial_pullback and shadow/structure pullback maps
     void create_shadow_id_pb(const Def*);
 
-    static PassTag* ID();
-
-    const Def* mod_pb(const Def* def);
-
 private:
     /// expr (closed term = lambda, operator) -> derived expr
     /// f => f' = λ x. (f x, f*_x)

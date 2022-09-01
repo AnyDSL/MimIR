@@ -13,27 +13,20 @@
 namespace thorin::autodiff {
 
 const Def* AutoDiffZeroCleanup::rewrite(const Def* def) {
-    auto& world = def->world();
-
     // ideally never reached
     if (auto zero_app = match<zero>(def); zero_app) {
         // callee = zero
         // arg = type T
         auto T = zero_app->arg();
-        world.DLOG("found a remaining autodiff::zero of {}", T);
+        world().DLOG("found a remaining autodiff::zero of {}", T);
         // generate ⊥:T
-        auto dummy = world.bot(T);
-        // assert(0);
+        // auto dummy = world().bot(T);
+        // // assert(0);
         // return dummy;
         return def;
     }
 
     return def;
-}
-
-PassTag* AutoDiffZeroCleanup::ID() {
-    static PassTag Key;
-    return &Key;
 }
 
 } // namespace thorin::autodiff
