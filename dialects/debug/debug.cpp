@@ -1,9 +1,8 @@
 #include "dialects/debug/debug.h"
 
 #include <thorin/config.h>
+#include <thorin/dialects.h>
 #include <thorin/pass/pass.h>
-
-#include "thorin/dialects.h"
 
 #include "dialects/debug/passes/remove_perm.h"
 
@@ -20,6 +19,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
             nullptr, [](Normalizers& normalizers) { debug::register_normalizers(normalizers); }};
 }
 
+// TODO: check (and fix) for windows
 #define YELLOW "\033[0;33m"
 #define BLANK  "\033[0m"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "thorin/world.h"
+#include <thorin/world.h>
 
 #include "dialects/debug/autogen.h"
 
