@@ -13,7 +13,7 @@ namespace thorin::direct {
 /// but we need some manual invokation for new lambdas that need urgent care
 void DS2CPS::enter() {
     Lam* lam = curr_nom();
-    if(!lam->isa_nom()) {
+    if (!lam->isa_nom()) {
         lam->world().DLOG("skipped non-nom {}", lam);
         return;
     }
@@ -62,35 +62,54 @@ const Def* DS2CPS::rewrite_(const Def* def) {
         if (!isa_workable(lam)) return lam;
 
         auto ty = lam->type();
-        if (!ty->is_cn()) {
+        auto codom = ty->as<Pi>()->codom();
+        world().DLOG("lam: {} : {}", lam, ty);
+        world().DLOG("codom of lam {} <{}>",codom,codom->node_name());
+
+        // TODO: remove when filters are supported by front end
+        if(ty->as<Pi>()->codom()->isa<Type>()) {
+            lam->set_filter(true);
+            world().DLOG("set filter of {} to true", lam->name());
+            // assert(0);
+        }
+
+        // assert(0);
+        if (!ty->is_cn() && !ty->as<Pi>()->codom()->isa<Type>()) {
             // extend ds function with return continuation
+            // skip type construction functions
             auto doms = ty->as<Pi>()->doms();
-            //R DefArray cps_dom(doms.size() + 1, [&](size_t i) -> const Def* {
-            //R     if (i == doms.size()) {
-            //R         return world().cn(ty->codom());
-            //R     } else {
-            //R         return doms[i];
-            //R     }
-            //R });
+            // R DefArray cps_dom(doms.size() + 1, [&](size_t i) -> const Def* {
+            // R     if (i == doms.size()) {
+            // R         return world().cn(ty->codom());
+            // R     } else {
+            // R         return doms[i];
+            // R     }
+            // R });
 
             // cps version of function
-            auto lam_cps = world().nom_lam(world().cn({
-                ty->as<Pi>()->dom(),
-                world().cn(ty->codom())
-            }), world().dbg(lam->name() + "_cps"));
-            lam_cps->set_filter(lam->filter());
+            auto lam_cps = world().nom_lam(world().cn({ty->as<Pi>()->dom(), world().cn(ty->codom())}),
+                                           world().dbg(lam->name() + "_cps"));
 
             // each argument is linked to its corresponding argument in the cps function
-            //R for (size_t i = 0; i < lam->num_vars(); ++i) { rewritten_[lam->var((nat_t)i)] = lam_cps->var(i); }
+            // R for (size_t i = 0; i < lam->num_vars(); ++i) { rewritten_[lam->var((nat_t)i)] = lam_cps->var(i); }
             rewritten_[lam->var()] = lam_cps->var((nat_t)0);
             // reconstruct var -> tuple of var without cont
             // @fun -> (@fun_cps#0,...,@fun_cps#n)
-            //R DefArray real_vars(lam->num_vars(), [&](size_t i) { return lam_cps->var((nat_t)i); });
-            //R rewritten_[lam->var()] = world().tuple(real_vars);
-            rewritten_[lam]        = lam_cps;
+            // R DefArray real_vars(lam->num_vars(), [&](size_t i) { return lam_cps->var((nat_t)i); });
+            // R rewritten_[lam->var()] = world().tuple(real_vars);
+            rewritten_[lam] = lam_cps;
 
             // the body of the ds function is the computation result
-            lam_cps->set_body(world().app(lam_cps->ret_var(world().dbg("cps_return")), lam->body()));
+            // lam_cps->set_filter(lam->filter());
+            // lam_cps->set_body(world().app(lam_cps->ret_var(world().dbg("cps_return")), lam->body()));
+            world().DLOG("function: {} : {}", lam, lam->type());
+            world().DLOG("lam_cps {} : {}", lam_cps, lam_cps->type());
+            world().DLOG("lam_cps ret {} : {}", lam_cps->ret_var(), lam_cps->ret_var()->type());
+            lam_cps->app(
+                lam->filter(),
+                lam_cps->ret_var(world().dbg("cps_return")),
+                lam->body()
+            );
 
             lam = lam_cps;
         }
@@ -117,20 +136,20 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
 
         // manual unfolding instead of match<cps2ds>(callee)
         // due to currying
-        const Lam* conv_cps       = nullptr;
+        const Lam* conv_cps = nullptr;
         auto [axiom, curry] = Axiom::get(callee);
-        if (axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<cps2ds_dep>()
-            && callee->isa<App>()) {
-                // TODO: check if raw app (cps2ds types) and with higher order app
-                // (cps2ds types fun) (no args)
+        if (axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<cps2ds_dep>() && callee->isa<App>()) {
+            // TODO: check if raw app (cps2ds types) and with higher order app
+            // (cps2ds types fun) (no args)
             auto callee_function = callee->as<App>()->arg();
             // world.DLOG("callee function {} : {}", callee_function->unique_name(), callee_function->type());
             conv_cps = callee_function->isa<Lam>();
-            if(conv_cps)
-                world.DLOG("cps2ds of {} : {}", conv_cps, conv_cps->type());
+            if (conv_cps) world.DLOG("cps2ds of {} : {}", conv_cps, conv_cps->type());
         }
 
-        if ((!axiom && !callee->type()->as<Pi>()->is_cn()) || conv_cps) {
+        if ((!axiom && !callee->type()->as<Pi>()->is_cn()
+            && !(callee->type()->as<Pi>()->codom()->isa<Type>())
+        ) || conv_cps) {
             /*
             h:
               b = f a
@@ -159,15 +178,33 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
                 lam_cps = rewrite_(callee);
             }
 
+            // instantiate ret_ty
+
+            world.DLOG("callee {} : {}", callee, ty);
+            world.DLOG("new arguments {} : {}", new_arg, new_arg->type());
+            world.DLOG("ret_ty {}", ret_ty);
+
+            //R auto to_replace = ret_ty->as<App>()->arg();
+            //R world.DLOG("to_replace {} : {} <{};{}>", to_replace, to_replace->type(), to_replace->unique_name(), to_replace->node_name());
+
+            auto ty_dom = ty->as_nom<Pi>()->var();
+            world.DLOG("replace ty_dom: {} : {} <{};{}>", ty_dom, ty_dom->type(), ty_dom->unique_name(), ty_dom->node_name());
+            //R world.DLOG("equal {} {} => {}", ty_dom, to_replace, ty_dom == to_replace);
+
+            Scope r_scope{ty->as_nom()}; // scope that surrounds ret_ty
+            auto inst_ret_ty = thorin::rewrite(ret_ty, ty_dom, new_arg, r_scope);
+            world.DLOG("inst_ret_ty {}", inst_ret_ty);
+            //R assert(0);
+
             // continuation of call site to receive result
-            auto fun_cont = world.nom_lam(world.cn(ret_ty), world.dbg(curr_lam_->name() + "_cont"));
+            auto fun_cont = world.nom_lam(world.cn(inst_ret_ty), world.dbg(curr_lam_->name() + "_cont"));
 
             // f a -> f_cps(a,cont)
             auto cps_call = world.app(lam_cps, {new_arg, fun_cont}, world.dbg("cps_call"));
             if (curr_lam_->body()) {
                 rewritten_bodies_[curr_lam_->body()] = cps_call;
-                world.DLOG("  overwrite body {} of {} : {} with {} : {}", curr_lam_->body(), curr_lam_, curr_lam_->type(),
-                       cps_call->unique_name(), cps_call->type());
+                world.DLOG("  overwrite body {} of {} : {} with {} : {}", curr_lam_->body(), curr_lam_,
+                           curr_lam_->type(), cps_call->unique_name(), cps_call->type());
             }
             world.DLOG("  curr_lam {}", curr_lam_->name());
 

@@ -2,9 +2,10 @@
 // RUN: %thorin -d direct %s --output-ll %t.ll -o - | FileCheck %s
 
 // tests a direct call to a cps fucntion wrapped in cps2ds
-// ./build/bin/thorin -d direct ./lit/direct/ds2cps_ax_cps2ds_dependent.thorin --output-thorin -
+// ./build/bin/thorin -d direct ./lit/direct/ds2cps_ax_cps2ds_dependent.thorin --output-thorin - -VVVV
 
 .import direct;
+.import core;
 .import mem;
 
 .let I32 = %Int 4294967296;
@@ -19,9 +20,25 @@
 };
 
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
-    .let g = %direct.cps2ds_dep (.Nat,U) f;
-    .let c = g (4294967296);
-    return (mem, c)
+    // .let g = %direct.cps2ds_dep (.Nat,U) f;
+    .let f_cast = 
+        %core.bitcast 
+        (
+            (.Cn [n:.Nat, return: .Cn (U n)]),
+            (.Cn [n:.Nat, return: .Cn (%Int n)])
+        )
+        f;
+    .let g = %direct.cps2ds_dep (.Nat,U) f_cast;
+    .let n = 4294967296;
+    .let c = g n;
+    .let c_cast = 
+        %core.bitcast 
+        (
+            (%Int n),
+            (U n)
+        )
+        c;
+    return (mem, c_cast)
 };
 
 // CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]+]]: %mem.M, (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), return_[[returnId:[_0-9]+]]: .Cn [%mem.M, (%Int 4294967296)]] = {
