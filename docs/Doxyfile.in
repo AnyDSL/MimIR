@@ -1263,6 +1263,7 @@ HTML_STYLESHEET        =
 HTML_EXTRA_STYLESHEET  = @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-awesome.css \
                          @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-awesome-sidebar-only.css \
                          @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-awesome-sidebar-only-darkmode-toggle.css \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-awesome-interactive-toc.js \
                          @CMAKE_CURRENT_SOURCE_DIR@/../modules/doxygen-awesome-css/doxygen-custom/custom.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
