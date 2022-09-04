@@ -46,24 +46,6 @@ add_thorin_dialect(core
     INSTALL
 )
 
-add_thorin_dialect(mem
-    SOURCES
-        mem/mem.cpp
-        mem/mem.h
-        mem/normalizers.cpp
-        mem/passes/fp/copy_prop.cpp
-        mem/passes/fp/copy_prop.h
-        mem/passes/fp/ssa_constr.cpp
-        mem/passes/fp/ssa_constr.h
-        mem/passes/rw/alloc2malloc.cpp
-        mem/passes/rw/alloc2malloc.h
-        mem/passes/rw/remem_elim.cpp
-        mem/passes/rw/remem_elim.h
-    HEADER_DEPENDS
-        core
-    INSTALL
-)
-
 add_thorin_dialect(direct
     SOURCES
         direct/direct.cpp
@@ -80,5 +62,23 @@ add_thorin_dialect(debug
         debug/passes/remove_perm.h
         debug/passes/remove_perm.cpp
         debug/normalizers.cpp
+    INSTALL
+)
+
+add_thorin_dialect(mem
+    SOURCES
+        mem/mem.cpp
+        mem/mem.h
+        mem/normalizers.cpp
+        mem/passes/fp/copy_prop.cpp
+        mem/passes/fp/copy_prop.h
+        mem/passes/fp/ssa_constr.cpp
+        mem/passes/fp/ssa_constr.h
+        mem/passes/rw/alloc2malloc.cpp
+        mem/passes/rw/alloc2malloc.h
+        mem/passes/rw/remem_elim.cpp
+        mem/passes/rw/remem_elim.h
+    HEADER_DEPENDS
+        core
     INSTALL
 )
