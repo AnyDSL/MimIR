@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Thorin: The debugging dialect</title>
+<title>Thorin: The debug dialect</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('debug.html',''); initResizable(); });
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">The debugging dialect </div></div>
+  <div class="headertitle"><div class="title">The debug dialect </div></div>
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('debug.html',''); initResizable(); });
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_debug"></a></p>
-<p >debugs a given expression</p>
+<p >Debugs a given expression.</p>
 <h1><a class="anchor" id="autotoc_md65"></a>
 Dependencies</h1>
 <p >none</p>
@@ -127,12 +127,10 @@ Types</h1>
 Operations</h1>
 <h2><a class="anchor" id="autotoc_md68"></a>
 %debug.dbg</h2>
-<p >prints debug information of a given expression at construction time</p>
-<div class="fragment"><div class="line">.ax %debug.dbg: Π [T:*] -&gt; T -&gt; T, normalize_dbg;</div>
+<p >Prints debug information of a given expression at construction time. </p><div class="fragment"><div class="line">.ax %debug.dbg: Π [T:*] -&gt; T -&gt; T, normalize_dbg;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md69"></a>
 %debug.dbg_perm</h2>
-<p >permanently debugs at every construction gets removed at codegen preparation</p>
-<div class="fragment"><div class="line">.ax %debug.dbg_perm: Π [T:*] -&gt; T -&gt; T, normalize_dbg_perm;</div>
+<p >Permanently debugs at every construction. Gets removed at codegen preparation. </p><div class="fragment"><div class="line">.ax %debug.dbg_perm: Π [T:*] -&gt; T -&gt; T, normalize_dbg_perm;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

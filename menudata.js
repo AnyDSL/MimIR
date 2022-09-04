@@ -34,9 +34,9 @@ var menudata={children:[
 {text:"affine",url:"affine.html"},
 {text:"clos",url:"clos.html"},
 {text:"core",url:"core.html"},
-{text:"mem",url:"mem.html"},
 {text:"direct",url:"direct.html"},
-{text:"debug",url:"debug.html"}]},
+{text:"debug",url:"debug.html"},
+{text:"mem",url:"mem.html"}]},
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[

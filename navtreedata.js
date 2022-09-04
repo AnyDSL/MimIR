@@ -44,9 +44,9 @@ var NAVTREE =
       [ "affine", "affine.html", null ],
       [ "clos", "clos.html", null ],
       [ "core", "core.html", null ],
-      [ "mem", "mem.html", null ],
       [ "direct", "direct.html", null ],
-      [ "debug", "debug.html", null ]
+      [ "debug", "debug.html", null ],
+      [ "mem", "mem.html", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
