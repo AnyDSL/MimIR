@@ -1,0 +1,26 @@
+/// # The debug dialect {#debug}
+///
+/// [TOC]
+///
+/// Debugs a given expression.
+///
+/// ## Dependencies
+///
+/// none
+///
+/// ## Types
+///
+/// none 
+///
+/// ## Operations
+///
+/// ### %debug.dbg
+/// 
+/// Prints debug information of a given expression at construction time.
+.ax %debug.dbg: Π [T:*] -> T -> T, normalize_dbg;
+///
+/// ### %debug.dbg_perm
+/// 
+/// Permanently debugs at every construction.
+/// Gets removed at codegen preparation.
+.ax %debug.dbg_perm: Π [T:*] -> T -> T, normalize_dbg_perm;
