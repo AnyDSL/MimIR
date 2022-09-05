@@ -31,9 +31,9 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     return pb;
 }
 
-// P => P'
-// TODO: function => extend
-const Def* augment_type_fun(const Def* ty) { return ty; }
+//R P => P'
+//R TODO: function => extend
+//R const Def* augment_type_fun(const Def* ty) { return ty; }
 // P => P*
 // TODO: nothing? function => R? Mem => R?
 // TODO: rename to op_tangent_type
@@ -53,8 +53,8 @@ const Pi* pullback_type(const Def* E, const Def* A) {
 // A,R => A'->R' * (R* -> A*)
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     auto& world  = arg->world();
-    auto aug_arg = augment_type_fun(arg);
-    auto aug_ret = augment_type_fun(ret);
+    auto aug_arg = autodiff_type_fun(arg);
+    auto aug_ret = autodiff_type_fun(ret);
     // Q* -> P*
     auto pb_ty = pullback_type(ret, arg);
     // P' -> Q' * (Q* -> P*)

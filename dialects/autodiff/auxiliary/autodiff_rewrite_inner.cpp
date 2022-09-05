@@ -448,6 +448,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         return augment_var(var, f, f_diff);
     }
 
+    // lam
     else if (auto lam = def->isa_nom<Lam>()) {
         world.DLOG("Augment nom lambda: {}", lam);
         return augment_lam(lam, f, f_diff);

@@ -10,7 +10,7 @@ const Def* id_pullback(const Def*);
 const Def* zero_pullback(const Def* E, const Def* A);
 
 const Def* tangent_type_fun(const Def*);
-const Def* augment_type_fun(const Def*);
+//R const Def* augment_type_fun(const Def*);
 const Pi* autodiff_type_fun(const Def*);
 const Pi* pullback_type(const Def* E, const Def* A);
 
@@ -34,7 +34,6 @@ const Def* continuation_codom(const Def* E);
 /// computes λ x. f(g(x))
 /// the given functions are expected to be in cps
 const Def* compose_continuation(const Def* f, const Def* g);
-
 
 /// match without curry check
 template<class AxTag, bool Check = true>
