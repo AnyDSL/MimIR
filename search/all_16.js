@@ -25,8 +25,8 @@ var searchData=
   ['world_2ecpp_22',['world.cpp',['../world_8cpp.html',1,'']]],
   ['world_2eh_23',['world.h',['../world_8h.html',1,'']]],
   ['world_5f_24',['world_',['../classthorin_1_1Phase.html#a56aa69f13d6c0826e4ecdeee3b863f92',1,'thorin::Phase']]],
-  ['wrap_25',['Wrap',['../namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383a273d69af71900cf0558affc4a04d31ef',1,'thorin::Tag::Wrap()'],['../namespacethorin.html#a65b28a70b601ee7898841af6af02d56f',1,'thorin::Wrap()']]],
-  ['wrap_26',['wrap',['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f',1,'thorin::core']]],
+  ['wrap_25',['wrap',['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f',1,'thorin::core']]],
+  ['wrap_26',['Wrap',['../namespacethorin_1_1Tag.html#aeb359bddd4fecf3309173c95d303e383a273d69af71900cf0558affc4a04d31ef',1,'thorin::Tag::Wrap()'],['../namespacethorin.html#a65b28a70b601ee7898841af6af02d56f',1,'thorin::Wrap()']]],
   ['writable_27',['writable',['../classthorin_1_1mem_1_1SSAConstr.html#a77523bbc1cf5687f0de2bfda7508038e',1,'thorin::mem::SSAConstr::Info']]],
   ['write_28',['write',['../classthorin_1_1World.html#a4bb914166b99061b5fa226cda7baff79',1,'thorin::World::write() const'],['../classthorin_1_1World.html#a112addddb980b3421e404c3588b42ca6',1,'thorin::World::write(const char *file) const'],['../classthorin_1_1Def.html#a2ac6e86b54450ae058bbe7a14502c08b',1,'thorin::Def::write(int max, const char *file) const'],['../classthorin_1_1Def.html#a7805eeac4955c9e68103f794c765654c',1,'thorin::Def::write(int max) const']]]
 ];
