@@ -26,12 +26,11 @@ var NAVTREE =
 [
   [ "Thorin", "index.html", [
     [ "Introduction", "index.html", [
-      [ "Building", "index.html#autotoc_md41", [
-        [ "Install", "index.html#autotoc_md42", null ],
-        [ "Build Switches", "index.html#autotoc_md43", null ],
-        [ "Tests", "index.html#autotoc_md44", null ]
+      [ "Building", "index.html#autotoc_md43", [
+        [ "Install", "index.html#autotoc_md44", null ],
+        [ "Build Switches", "index.html#autotoc_md45", null ]
       ] ],
-      [ "Dependencies", "index.html#autotoc_md45", null ]
+      [ "Dependencies", "index.html#autotoc_md46", null ]
     ] ],
     [ "Documentation", "usergroup0.html", [
       [ "Command-Line Reference", "cli.html", null ],
@@ -101,14 +100,14 @@ var NAVTREEINDEX =
 "classthorin_1_1unique__stack.html#af95a51fb32d7d3d6797cc3b7913090ad",
 "core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628a7ffa3232741894dfa13074c69ef34d64",
 "direct_2autogen_8h.html#aeab0e01d05a34b8cbfa758cbec351fca",
-"lower__typed__clos__prep_8cpp.html#aafdf4d2b2ec100ee66f833b54786b3aa",
-"namespacethorin.html#a4159c79d6283964f1c81f17da2618eec",
-"namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad4f917633649a3c47c7ab917fa990146",
-"namespacethorin_1_1core.html#a7a88808fc52e8a71485e80ff7816c016",
-"namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36",
-"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac80d660438b4842b825631b2f3d637b1",
-"structthorin_1_1normalize_1_1FoldConv_3_01conv_1_1r2r_00_01dw_00_01sw_01_4.html#afeb652e53557173c810d26cf6bd608b2",
-"tables_8h.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9"
+"lower__typed__clos__prep_8cpp_source.html",
+"namespacethorin.html#a437c6f50faf6e57f126429d5a0ce9642",
+"namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9ad9180594744f870aeefb086982e980bb",
+"namespacethorin_1_1core.html#a7d456c49a4abcab10d541aafc729be5e",
+"namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36a51e0df3ca5c430d39d775ec66f8c6f45",
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#af4d672facaede9857960eac8e4746882",
+"structthorin_1_1normalize_1_1FoldConv_3_01conv_1_1r2s_00_01dw_00_01sw_01_4.html",
+"tables_8h.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9a05cb7dc333ca611d0a8969704e39a9f0"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

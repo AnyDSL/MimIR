@@ -107,16 +107,16 @@ $(document).ready(function(){initNavTree('passes.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md31">Rewrite Pass</a></li>
-<li class="level1"><a href="#autotoc_md32">Fixed-Point Pass</a><ul><li class="level2"><a href="#autotoc_md33">Rewrite</a><ul><li class="level3"><a href="#autotoc_md34">Proxy</a></li>
+<ul><li class="level1"><a href="#autotoc_md33">Rewrite Pass</a></li>
+<li class="level1"><a href="#autotoc_md34">Fixed-Point Pass</a><ul><li class="level2"><a href="#autotoc_md35">Rewrite</a><ul><li class="level3"><a href="#autotoc_md36">Proxy</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md35">Analyze</a></li>
-<li class="level2"><a href="#autotoc_md36">Other Hooks</a></li>
+<li class="level2"><a href="#autotoc_md37">Analyze</a></li>
+<li class="level2"><a href="#autotoc_md38">Other Hooks</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md37">Caveats</a><ul><li class="level2"><a href="#autotoc_md38">Construct Valid Programs</a></li>
-<li class="level2"><a href="#autotoc_md39">Creating Nominals</a></li>
+<li class="level1"><a href="#autotoc_md39">Caveats</a><ul><li class="level2"><a href="#autotoc_md40">Construct Valid Programs</a></li>
+<li class="level2"><a href="#autotoc_md41">Creating Nominals</a></li>
 </ul>
 </li>
 </ul>
@@ -137,7 +137,7 @@ $(document).ready(function(){initNavTree('passes.html',''); initResizable(); });
 <li><a class="el" href="classthorin_1_1RWPass.html">Rewrite Pass</a></li>
 <li><a class="el" href="classthorin_1_1FPPass.html">Fixed-Point Pass</a></li>
 </ol>
-<h1><a class="anchor" id="autotoc_md31"></a>
+<h1><a class="anchor" id="autotoc_md33"></a>
 Rewrite Pass</h1>
 <p >In order to write a <a class="el" href="classthorin_1_1RWPass.html">rewrite pass</a>, you have to inherit from <a class="el" href="classthorin_1_1RWPass.html">RWPass</a>. Usually, you are only interested in looking for code patterns that only occur in specific nominals - typically <a class="el" href="classthorin_1_1Lam.html">Lam</a>bdas. You can filter for these nominals by passing it as template parameter to <a class="el" href="classthorin_1_1RWPass.html">RWPass</a> when inherting from it. The main hook to the <a class="el" href="classthorin_1_1PassMan.html">PassMan</a>, is the <a class="el" href="classthorin_1_1Pass.html#a76525e5c686c6d515d8ef474489c8d8a">rewrite</a> method. As an example, let's have a look at the <a class="el" href="classthorin_1_1mem_1_1Alloc2Malloc.html">Alloc2Malloc</a> pass. It rewrites <code>alloc</code>/<code>slot</code> calls into their more verbose siblings <code>malloc</code>/<code>mslot</code> that make the size of the alloc'ed type explicit: This is <code><a class="el" href="alloc2malloc_8h.html">alloc2malloc.h</a></code>: </p><div class="fragment"><div class="line"><span class="preprocessor">#pragma once</span></div>
 <div class="line"> </div>
@@ -185,9 +185,9 @@ Rewrite Pass</h1>
 <div class="ttc" id="aclassthorin_1_1Pass_html_a98d4d09fe9b65d060d1c0aeeccadbb7c"><div class="ttname"><a href="classthorin_1_1Pass.html#a98d4d09fe9b65d060d1c0aeeccadbb7c">thorin::Pass::alloc</a></div><div class="ttdeci">virtual void * alloc()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> <a href="pass_8h_source.html#l00089">pass.h:89</a></div></div>
 <div class="ttc" id="amem_8h_html"><div class="ttname"><a href="mem_8h.html">mem.h</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1mem_html_a7c76d44ac84cfca4fb8d646030023cea"><div class="ttname"><a href="namespacethorin_1_1mem.html#a7c76d44ac84cfca4fb8d646030023cea">thorin::mem::op_mslot</a></div><div class="ttdeci">const Def * op_mslot(const Def *type, const Def *mem, const Def *id, const Def *dbg={})</div><div class="ttdef"><b>Definition:</b> <a href="mem_8h_source.html#l00102">mem.h:102</a></div></div>
-<div class="ttc" id="anamespacethorin_1_1mem_html_aaac8560242f619f5ac359bba09f7fd36"><div class="ttname"><a href="namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36">thorin::mem::slot</a></div><div class="ttdeci">slot</div><div class="ttdef"><b>Definition:</b> <a href="mem_2autogen_8h_source.html#l00098">autogen.h:98</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1mem_html_aaac8560242f619f5ac359bba09f7fd36"><div class="ttname"><a href="namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36">thorin::mem::slot</a></div><div class="ttdeci">slot</div><div class="ttdef"><b>Definition:</b> <a href="mem_2autogen_8h_source.html#l00012">autogen.h:12</a></div></div>
 <div class="ttc" id="anamespacethorin_1_1mem_html_ae43d19be4ee66a983ea74ffb33fa4d7a"><div class="ttname"><a href="namespacethorin_1_1mem.html#ae43d19be4ee66a983ea74ffb33fa4d7a">thorin::mem::op_malloc</a></div><div class="ttdeci">const Def * op_malloc(const Def *type, const Def *mem, const Def *dbg={})</div><div class="ttdef"><b>Definition:</b> <a href="mem_8h_source.html#l00096">mem.h:96</a></div></div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md32"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md34"></a>
 Fixed-Point Pass</h1>
 <p >A <a class="el" href="classthorin_1_1FPPass.html">fixed-point pass</a> allows you to implement a data-flow analysis. Traditionally, an optimizations performs</p><ol type="1">
 <li>the analysis and</li>
@@ -202,22 +202,22 @@ Fixed-Point Pass</h1>
 <li>correct your assumption such that you do not make the same mistake over and over again.</li>
 </ol>
 <p >In order to write a <a class="el" href="classthorin_1_1FPPass.html">fixed-point pass</a>, you have to inherit from <a class="el" href="classthorin_1_1FPPass.html">FPPass</a>. This pass expects two template parameters. The first one must be the very class you are currently implementing (this is known as <a href="https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern">CRTP</a> in C++). The second one has the same purpose as the template parameter for <a class="el" href="classthorin_1_1RWPass.html">rewrite passes</a> and will most likely be <a class="el" href="classthorin_1_1Lam.html">Lam</a>.</p>
-<h2><a class="anchor" id="autotoc_md33"></a>
+<h2><a class="anchor" id="autotoc_md35"></a>
 Rewrite</h2>
 <p >The <code>rewrite</code> works exactly as for <a class="el" href="classthorin_1_1RWPass.html">rewrite passes</a>. However, this time around, you are guessing that the most optimistic result will happen. If you prove yourself wrong afterwards, you will gradually ascend in a <a href="https://en.wikipedia.org/wiki/Complete_lattice">lattice</a> until the <a class="el" href="classthorin_1_1FPPass.html">fixed-point pass</a> stabilizes. TODO</p>
-<h3><a class="anchor" id="autotoc_md34"></a>
+<h3><a class="anchor" id="autotoc_md36"></a>
 Proxy</h3>
-<h2><a class="anchor" id="autotoc_md35"></a>
+<h2><a class="anchor" id="autotoc_md37"></a>
 Analyze</h2>
 <p >TODO</p>
-<h2><a class="anchor" id="autotoc_md36"></a>
-Other Hooks</h2>
-<h1><a class="anchor" id="autotoc_md37"></a>
-Caveats</h1>
 <h2><a class="anchor" id="autotoc_md38"></a>
+Other Hooks</h2>
+<h1><a class="anchor" id="autotoc_md39"></a>
+Caveats</h1>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Construct Valid Programs</h2>
 <p >It is important to always construct a valid program. Otherwise, bad things might happen as soon as you toss other passes into the mix. The reason is that the very program you are constructing is the <b>only</b> way to communicate with the other passes without directly sharing information.</p>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md41"></a>
 Creating Nominals</h2>
 <p >Eventually, you will need to create nominals during a <a class="el" href="classthorin_1_1FPPass.html">fixed-point pass</a>. You must be super cautious to remember in which exact context you created said nominal. If you ever come into the same situation again (due to backtracking) you have to make sure that you return the <b>very same</b> nominal. Otherwise, if you create a different nominal, the <a class="el" href="classthorin_1_1PassMan.html">PassMan</a> will most likely diverge as it will constantly backtrack while creating new nominals that the other passes don't know anything about. </p>
 </div></div><!-- contents -->

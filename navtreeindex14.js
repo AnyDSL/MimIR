@@ -1,6 +1,5 @@
 var NAVTREEINDEX14 =
 {
-"lower__typed__clos__prep_8cpp.html#aafdf4d2b2ec100ee66f833b54786b3aa":[6,0,1,1,0,0,0,2],
 "lower__typed__clos__prep_8cpp_source.html":[6,0,1,1,0,0,0],
 "lower__typed__clos__prep_8h.html":[6,0,1,1,0,0,1],
 "lower__typed__clos__prep_8h_source.html":[6,0,1,1,0,0,1],
@@ -115,8 +114,8 @@ var NAVTREEINDEX14 =
 "mem_8h.html#ae8a5d781393114a0e30a2e74c8eea4fe":[6,0,1,5,2,8],
 "mem_8h.html#af3b4daa09fc63060ee413289b0e47fef":[6,0,1,5,2,6],
 "mem_8h_source.html":[6,0,1,5,2],
-"namespacemembers.html":[3,1,0,0],
 "namespacemembers.html":[3,1,0],
+"namespacemembers.html":[3,1,0,0],
 "namespacemembers_b.html":[3,1,0,1],
 "namespacemembers_c.html":[3,1,0,2],
 "namespacemembers_d.html":[3,1,0,3],
@@ -218,8 +217,8 @@ var NAVTREEINDEX14 =
 "namespacethorin.html#a2dc8b949958295761d56cd7956fab683":[3,0,0,357],
 "namespacethorin.html#a2eb86c08485341831c703f0efbd51506":[3,0,0,393],
 "namespacethorin.html#a3177fedeb15931814650cb856e43fb84":[3,0,0,350],
-"namespacethorin.html#a326173261ef168c70c0bfb83f2091a12":[6,0,3,5,18,7,1],
 "namespacethorin.html#a326173261ef168c70c0bfb83f2091a12":[6,0,3,5,18,7,0],
+"namespacethorin.html#a326173261ef168c70c0bfb83f2091a12":[6,0,3,5,18,7,1],
 "namespacethorin.html#a333d04a40eeb7f22675a906e6cbc00af":[3,0,0,259],
 "namespacethorin.html#a3368507549c1c606d305c18939d17943":[3,0,0,201],
 "namespacethorin.html#a3419084dd20b9081f517bb0c62d45e42":[3,0,0,395],
@@ -249,5 +248,6 @@ var NAVTREEINDEX14 =
 "namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bac342b4a20db36ff629c69ebad289ea76":[3,0,0,221,14],
 "namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bac657344463ff1b32bf1ad9bbdb3ef20b":[3,0,0,221,7],
 "namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e":[3,0,0,221,15],
-"namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785baeffa8ffb6de709887fb7ed786629cbfa":[3,0,0,221,2]
+"namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785baeffa8ffb6de709887fb7ed786629cbfa":[3,0,0,221,2],
+"namespacethorin.html#a4159c79d6283964f1c81f17da2618eec":[3,0,0,387]
 };

@@ -107,12 +107,11 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md41">Building</a><ul><li class="level2"><a href="#autotoc_md42">Install</a></li>
-<li class="level2"><a href="#autotoc_md43">Build Switches</a></li>
-<li class="level2"><a href="#autotoc_md44">Tests</a></li>
+<ul><li class="level1"><a href="#autotoc_md43">Building</a><ul><li class="level2"><a href="#autotoc_md44">Install</a></li>
+<li class="level2"><a href="#autotoc_md45">Build Switches</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md45">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md46">Dependencies</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_docs_README"></a></p>
@@ -133,7 +132,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </ul>
 <p >In contrast to other CoC-based program representations such as <a href="https://coq.inria.fr/">Coq</a> or <a href="https://leanprover.github.io/">Lean</a>, Thorin is <em>not</em> a theorem prover but focuses on generating efficient code. For this reason, Thorin explicitly features mutable state and models imperative control flow with <a href="https://en.wikipedia.org/wiki/Continuation-passing_style">continuation-passing style (CPS)</a>.</p>
 <p >You can use Thorin either via it's C++-API or the <a class="el" href="cli.html#md_docs_cli">command-line utility</a>.</p>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md43"></a>
 Building</h1>
 <p >If you have a <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">GitHub account setup with SSH</a>, just do this: </p><div class="fragment"><div class="line">git clone --recurse-submodules git@github.com:AnyDSL/thorin2.git</div>
 </div><!-- fragment --><p> Otherwise, clone via HTTPS: </p><div class="fragment"><div class="line">git clone --recurse-submodules https://github.com/AnyDSL/thorin2.git</div>
@@ -142,11 +141,11 @@ Building</h1>
 <div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug</div>
 <div class="line">cmake --build build -j $(nproc)</div>
 </div><!-- fragment --><p> For a <code>Release</code> build simply use <code>-DCMAKE_BUILD_TYPE=Release</code>.</p>
-<h2><a class="anchor" id="autotoc_md42"></a>
+<h2><a class="anchor" id="autotoc_md44"></a>
 Install</h2>
 <p >If you want to install Thorin, specify an install prefix and build the target <code>install</code>: </p><div class="fragment"><div class="line">cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/my/local/install/prefix</div>
 <div class="line">cmake --build build -j $(nproc) -t install</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md43"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md45"></a>
 Build Switches</h2>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -164,12 +163,7 @@ Build Switches</h2>
 <td class="markdownTableBodyNone"><code>THORIN_ENABLE_CHECKS</code>   </td><td class="markdownTableBodyNone"><code>ON</code> | <code>OFF</code>   </td><td class="markdownTableBodyNone"><code>ON</code>   </td><td class="markdownTableBodyNone">If <code>ON</code>, enables expensive runtime checks <br  />
  (requires <code>CMAKE_BUILD_TYPE=Debug</code>).   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md44"></a>
-Tests</h2>
-<p >Run the <a href="https://llvm.org/docs/CommandGuide/lit.html">lit</a> testsuite with: </p><div class="fragment"><div class="line">cmake --build build -t check</div>
-</div><!-- fragment --><p> Run the <a href="https://google.github.io/googletest/">GoogleTest</a> unit tests within the <code>build</code> folder with: </p><div class="fragment"><div class="line">ctest</div>
-</div><!-- fragment --><p> In addition, you can enable <a href="https://valgrind.org/">Valgrind</a> with: </p><div class="fragment"><div class="line">ctest -T memcheck</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md45"></a>
+<h1><a class="anchor" id="autotoc_md46"></a>
 Dependencies</h1>
 <p >In addition to the provided submodules:</p>
 <ul>
