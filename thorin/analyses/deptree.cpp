@@ -26,6 +26,7 @@ VarSet DepTree::run(Def* nom) {
     auto parent = root_.get();
     for (auto var : result) {
         auto n = nom2node_[var->nom()].get();
+        assert(n != nullptr);
         parent = n->depth() > parent->depth() ? n : parent;
     }
     node->set_parent(parent);

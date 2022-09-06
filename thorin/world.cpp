@@ -215,6 +215,7 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
 
     if (err()) {
         if (!pi) err()->err(dbg->loc(), "called expression '{}' is not of function type", callee);
+        arg->dump();
         if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
     }
 
