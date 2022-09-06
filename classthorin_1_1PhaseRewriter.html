@@ -258,7 +258,12 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Rewrite a given <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> in pre-order. </p>
-<dl class="section return"><dt>Returns</dt><dd><code>{nullptr, false}</code> to do nothing, <code>{new_def, false}</code> to return <code>new_def</code> <b>without</b> recursing on <code>new_def</code> again, and <code>{new_def, true}</code> to return <code>new_def</code> <b>with</b> recursing on <code>new_def</code> again. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><ul>
+<li><code>{nullptr, false}</code> to do nothing</li>
+<li><code>{new_def, false}</code> to return <code>new_def</code> <b>without</b> recursing on <code>new_def</code> again</li>
+<li><code>{new_def, true}</code> to return <code>new_def</code> <b>with</b> recursing on <code>new_def</code> again </li>
+</ul>
+</dd></dl>
 
 <p>Reimplemented from <a class="el" href="classthorin_1_1Rewriter.html#a3a4dcedc0937ff28c3a77caf6749aa18">thorin::Rewriter</a>.</p>
 

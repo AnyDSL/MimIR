@@ -189,7 +189,7 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00012">12</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00036">new_world</a>, <a class="el" href="rewrite_8h_source.html#l00037">old2new</a>, <a class="el" href="rewrite_8h_source.html#l00035">old_world</a>, and <a class="el" href="world_8h_source.html#l00157">thorin::World::univ()</a>.</p>
+<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00038">new_world</a>, <a class="el" href="rewrite_8h_source.html#l00039">old2new</a>, <a class="el" href="rewrite_8h_source.html#l00037">old_world</a>, and <a class="el" href="world_8h_source.html#l00157">thorin::World::univ()</a>.</p>
 
 </div>
 </div>
@@ -250,7 +250,7 @@ Public Attributes</h2></td></tr>
 
 <p>Reimplemented in <a class="el" href="classthorin_1_1PhaseRewriter.html#a0b686832e011a69ac764b78e3e2dcc8e">thorin::PhaseRewriter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00032">32</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00034">34</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>.</p>
 
@@ -281,11 +281,16 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Rewrite a given <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> in pre-order. </p>
-<dl class="section return"><dt>Returns</dt><dd><code>{nullptr, false}</code> to do nothing, <code>{new_def, false}</code> to return <code>new_def</code> <b>without</b> recursing on <code>new_def</code> again, and <code>{new_def, true}</code> to return <code>new_def</code> <b>with</b> recursing on <code>new_def</code> again. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><ul>
+<li><code>{nullptr, false}</code> to do nothing</li>
+<li><code>{new_def, false}</code> to return <code>new_def</code> <b>without</b> recursing on <code>new_def</code> again</li>
+<li><code>{new_def, true}</code> to return <code>new_def</code> <b>with</b> recursing on <code>new_def</code> again </li>
+</ul>
+</dd></dl>
 
 <p>Reimplemented in <a class="el" href="classthorin_1_1PhaseRewriter.html#a49c65233d7972fbf24ff313988e09b1f">thorin::PhaseRewriter</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00030">30</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00032">32</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>.</p>
 
@@ -322,9 +327,9 @@ Public Attributes</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00009">9</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00285">thorin::Def::dbg()</a>, <a class="el" href="namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9ae1671797c52e15f763380b45e841ec32">thorin::e</a>, <a class="el" href="def_8h_source.html#l00313">thorin::Def::isa_nom()</a>, <a class="el" href="rewrite_8h_source.html#l00036">new_world</a>, <a class="el" href="def_8h_source.html#l00157">thorin::Def::num_ops()</a>, <a class="el" href="rewrite_8h_source.html#l00037">old2new</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="def_8h_source.html#l00156">thorin::Def::op()</a>, <a class="el" href="rewrite_8h_source.html#l00032">post_rewrite()</a>, <a class="el" href="rewrite_8h_source.html#l00030">pre_rewrite()</a>, <a class="el" href="def_8h_source.html#l00354">thorin::Def::rebuild()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="def_8h_source.html#l00357">thorin::Def::stub()</a>, and <a class="el" href="def_8h_source.html#l00139">thorin::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00285">thorin::Def::dbg()</a>, <a class="el" href="namespacethorin.html#adc7755f11a3a0f4eadf6e6b3d3ae67e9ae1671797c52e15f763380b45e841ec32">thorin::e</a>, <a class="el" href="def_8h_source.html#l00313">thorin::Def::isa_nom()</a>, <a class="el" href="rewrite_8h_source.html#l00038">new_world</a>, <a class="el" href="def_8h_source.html#l00157">thorin::Def::num_ops()</a>, <a class="el" href="rewrite_8h_source.html#l00039">old2new</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="def_8h_source.html#l00156">thorin::Def::op()</a>, <a class="el" href="rewrite_8h_source.html#l00034">post_rewrite()</a>, <a class="el" href="rewrite_8h_source.html#l00032">pre_rewrite()</a>, <a class="el" href="def_8h_source.html#l00354">thorin::Def::rebuild()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="def_8h_source.html#l00357">thorin::Def::stub()</a>, and <a class="el" href="def_8h_source.html#l00139">thorin::Def::type()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00086">thorin::RWPhase::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00046">thorin::ScopeRewriter::rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00086">thorin::RWPhase::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00048">thorin::ScopeRewriter::rewrite()</a>.</p>
 
 </div>
 </div>
@@ -341,7 +346,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00036">36</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00038">38</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00012">Rewriter()</a>.</p>
 
@@ -359,7 +364,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00037">37</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00039">39</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00079">thorin::RWPhase::old2new()</a>, <a class="el" href="rewrite_8cpp_source.html#l00048">thorin::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00012">Rewriter()</a>.</p>
 
@@ -377,7 +382,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00035">35</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00037">37</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00012">Rewriter()</a>.</p>
 
