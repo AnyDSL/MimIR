@@ -18,7 +18,7 @@ const Def* normalize_dbg_perm(const Def* type, const Def* callee, const Def* arg
 
 const Def* normalize_force_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    debug_print("force_type", arg);
+    // debug_print("force_type", arg);
     if (auto app = arg->isa<App>()) {
         auto callee = app->callee();
         auto args   = app->arg();

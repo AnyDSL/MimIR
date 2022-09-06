@@ -31,44 +31,44 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     // TODO: need partial pullbacks for tuples (higher-order / ret-cont application)
     // also for higher-order args, ret_cont (at another point)
     // the pullback is not important but formally required by tuple rule
-    if(augmented.count(lam)) {
+    if (augmented.count(lam)) {
         // includes lam==f, out == f_diff
         // handle like higher order argument
         // replace with derived function
         world.DLOG("already augmented {} : {} to {} : {}", lam, lam->type(), augmented[lam], augmented[lam]->type());
         return augmented[lam];
     }
-    if(is_open_continuation(lam)) {
+    if (is_open_continuation(lam)) {
         // a open continuation is the same as return
         // cont: Cn[X]
-        // cont': Cn[X,Cn[X,A]] 
+        // cont': Cn[X,Cn[X,A]]
         // dependency on closed function context
 
         world.DLOG("found an open continuation {} : {}", lam, lam->type());
         auto cont_dom = lam->type()->dom(); // not only 0 but all
-        auto pb_ty = pullback_type(cont_dom, f_arg_ty);
+        auto pb_ty    = pullback_type(cont_dom, f_arg_ty);
         world.DLOG("pb type is {}", pb_ty);
         auto aug_ty = world.cn({cont_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
         // assert(0);
-        auto aug_lam = world.nom_lam(aug_ty, world.dbg("aug_"+lam->name()));
-        auto aug_var = aug_lam->var((nat_t)0);
-        augmented[lam->var()] = aug_var;
-        augmented[lam]=aug_lam; // TODO: only one of these two
-        derived[lam]=aug_lam;
-        auto pb = aug_lam->var(1);
+        auto aug_lam              = world.nom_lam(aug_ty, world.dbg("aug_" + lam->name()));
+        auto aug_var              = aug_lam->var((nat_t)0);
+        augmented[lam->var()]     = aug_var;
+        augmented[lam]            = aug_lam; // TODO: only one of these two
+        derived[lam]              = aug_lam;
+        auto pb                   = aug_lam->var(1);
         partial_pullback[aug_var] = pb;
         // still in same closed function
-        auto new_body=augment(lam->body(), f, f_diff);
+        auto new_body = augment(lam->body(), f, f_diff);
         aug_lam->set_filter(lam->filter());
         aug_lam->set_body(new_body);
 
-        //R auto lam_pb_ty = pullback_type(lam->type(), f_arg_ty);
-        //R auto lam_pb = world.cn(lam_pb_ty);
-        //R lam_pb->app(
-          
-        //R )
-        auto lam_pb = zero_pullback(lam->type(), f_arg_ty);
+        // R auto lam_pb_ty = pullback_type(lam->type(), f_arg_ty);
+        // R auto lam_pb = world.cn(lam_pb_ty);
+        // R lam_pb->app(
+
+        // R )
+        auto lam_pb               = zero_pullback(lam->type(), f_arg_ty);
         partial_pullback[aug_lam] = lam_pb;
         world.DLOG("augmented {} : {}", lam, lam->type());
         world.DLOG("to {} : {}", aug_lam, aug_lam->type());
@@ -155,7 +155,8 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     auto pb_tangent = pb->var((nat_t)0, world.dbg("tup_s"));
 
     // TODO: move op_cps2ds to direct dialect and merge then
-    DefArray tangents(pbs.size(), [&](nat_t i) { return world.app(direct::op_cps2ds(pbs[i]), world.extract(pb_tangent, i)); });
+    DefArray tangents(pbs.size(),
+                      [&](nat_t i) { return world.app(direct::op_cps2ds_dep(pbs[i]), world.extract(pb_tangent, i)); });
     pb->app(true, pb->var(1),
             // summed up tangents
             op_sum(tangent_type_fun(f_arg_ty), tangents));
@@ -177,14 +178,13 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     world.DLOG("augmented argument <{}> {} : {}", aug_arg->unique_name(), aug_arg, aug_arg->type());
     world.DLOG("augmented callee  <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     // TODO: move down to if(!is_cont(callee))
-    if(!is_continuation(callee) &&
-        is_continuation(aug_callee)) {
-        aug_callee=direct::op_cps2ds(aug_callee);
+    if (!is_continuation(callee) && is_continuation(aug_callee)) {
+        aug_callee = direct::op_cps2ds_dep(aug_callee);
         world.DLOG("wrapped augmented callee: <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
     }
 
     // nested (inner application)
-    if(app->type()->isa<Pi>()) {
+    if (app->type()->isa<Pi>()) {
         world.DLOG("Nested application callee: {} : {}", aug_callee, aug_callee->type());
         world.DLOG("Nested application arg: {} : {}", aug_arg, aug_arg->type());
         auto aug_app = world.app(aug_callee, aug_arg);
@@ -217,13 +217,13 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     }
 
     // ds function
-    if(!is_continuation(callee)) {
+    if (!is_continuation(callee)) {
         auto aug_app = world.app(aug_callee, aug_arg);
         world.DLOG("Augmented application: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
 
         world.DLOG("ds function: {} : {}", aug_app, aug_app->type());
         // calle is ds function (e.g. operator (or its partial application))
-        auto [aug_res,fun_pb] = aug_app->projs<2>();
+        auto [aug_res, fun_pb] = aug_app->projs<2>();
         // compose fun_pb with argument_pb to get result pb
         // TODO: combine case with cps function case
         auto arg_pb = partial_pullback[aug_arg];
@@ -232,11 +232,11 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         // arg_pb: arg_tan -> fun_tan
         world.DLOG("function pullback: {} : {}", fun_pb, fun_pb->type());
         world.DLOG("argument pullback: {} : {}", arg_pb, arg_pb->type());
-        auto res_pb = compose_continuation(arg_pb,fun_pb);
+        auto res_pb = compose_continuation(arg_pb, fun_pb);
         world.DLOG("result pullback: {} : {}", res_pb, res_pb->type());
         partial_pullback[aug_res] = res_pb;
         assert(0);
-        //R assert(false);
+        // R assert(false);
         return aug_res;
     }
 
@@ -305,10 +305,10 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         e*.r*: cn [X+, cn A+]
         c1 := λ rx r*. cont (rx, e* . r*)
         where . is composition
-    
+
     */
 
-    //TODO: dest with a function such that f args != g args
+    // TODO: dest with a function such that f args != g args
 
     // if(auto g_deriv=aug_callee->isa_nom<Lam>()){
     {
@@ -327,18 +327,12 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         // TODO: better debug names
         auto ret_g_deriv_ty = g_deriv->type()->as<Pi>()->dom(1);
         world.DLOG("ret_g_deriv_ty: {} ", ret_g_deriv_ty);
-        auto c1_ty=ret_g_deriv_ty->as<Pi>();
+        auto c1_ty = ret_g_deriv_ty->as<Pi>();
         world.DLOG("c1_ty: (cn[X, cn[X+, cn E+]]) {}", c1_ty);
-        auto c1 = world.nom_lam(c1_ty,world.dbg("c1"));
-        auto res = c1->var((nat_t)0);
+        auto c1   = world.nom_lam(c1_ty, world.dbg("c1"));
+        auto res  = c1->var((nat_t)0);
         auto r_pb = c1->var(1);
-        c1->app(true,
-            aug_cont,
-            {
-                res,
-                compose_continuation(e_pb,r_pb)
-            }
-        );
+        c1->app(true, aug_cont, {res, compose_continuation(e_pb, r_pb)});
 
         // auto X = continuation_codom(g->type());
         // // auto A = f_diff->var((nat_t)0);
@@ -386,11 +380,8 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         //         c2->var(1)
         //     }
         // );
-        
-        auto aug_app = world.app(aug_callee, {
-            real_aug_args,
-            c1
-        });
+
+        auto aug_app = world.app(aug_callee, {real_aug_args, c1});
         world.DLOG("aug_app: {} : {}", aug_app, aug_app->type());
 
         // assert(0);
@@ -399,7 +390,6 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 
     // result is * => no pb needed, no composition needed
     // TODO: compose pb (currently wrong)
-
 
     // TODO: handle cascading functions
     // TODO: handle axiom app before or after augment
@@ -452,8 +442,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     else if (auto lam = def->isa_nom<Lam>()) {
         world.DLOG("Augment nom lambda: {}", lam);
         return augment_lam(lam, f, f_diff);
-    }
-    else if (auto lam = def->isa<Lam>()) {
+    } else if (auto lam = def->isa<Lam>()) {
         world.ELOG("Augment lambda: {}", lam);
         assert(false && "can not handle non-nominal lambdas");
     }
@@ -493,10 +482,10 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
             } else {
                 world.DLOG("mul deriv ds: {} : {}", mul_deriv_ds, mul_deriv_ds->type());
             }
-            // we use ds => 
+            // we use ds =>
             // inlining already needed for \Pi arguments => should(/needs to) work
             // no need for cps2ds axiom insertion in the transformation after \Pi arguments
-            // handling of the difference between ds operations and cps functions 
+            // handling of the difference between ds operations and cps functions
             //   already needed for functions vs operators
 
             // auto mul_deriv_ds2  = world.lookup("mul_deriv_ds_by_cps");

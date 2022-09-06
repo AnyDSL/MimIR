@@ -60,6 +60,8 @@ add_thorin_dialect(direct
     SOURCES
         direct/direct.cpp
         direct/direct.h
+        direct/passes/ds_call.cpp
+        direct/passes/ds_call.h
         direct/passes/ds2cps.cpp
         direct/passes/ds2cps.h
         direct/normalizers.cpp

@@ -5,8 +5,10 @@
 
 namespace thorin::direct {
 
-const Def* normalize_cps2ds_dep(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_cps2ds(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
+    // TODO: call (op_cps2ds_dep f)
+    assert(false && "not implemented");
     // cps2ds types fun
     // but returns function =>
     // cps2ds types fun arg

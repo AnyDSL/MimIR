@@ -6,14 +6,35 @@
 
 namespace thorin::direct {
 
-inline const Def* op_cps2ds(const Def* f) {
+inline const Def* op_cps2ds_dep(const Def* f) {
     auto& world = f->world();
     // TODO: assert continuation
+    world.DLOG("f: {} : {}", f, f->type());
     auto f_ty = f->type()->as<Pi>();
     auto T    = f_ty->dom(0);
     auto U    = f_ty->dom(1)->as<Pi>()->dom();
+    world.DLOG("T: {}", T);
+    world.DLOG("U: {}", U);
+
+    auto Uf = world.nom_lam(world.pi(T, world.type()), world.dbg("Uf"));
+
+    auto f_ty_sig = f_ty->dom()->as_nom<Sigma>();
+    Scope r_scope{f_ty_sig};
+    auto dom_var = f_ty_sig->var((nat_t)0);
+    world.DLOG("dom_var: {}", dom_var);
+    auto closed_dom_var  = Uf->var();
+    auto rewritten_codom = thorin::rewrite(U, dom_var, closed_dom_var, r_scope);
+    Uf->set_filter(true);
+    Uf->set_body(rewritten_codom);
+
+    auto ax_app = world.raw_app(world.ax<direct::cps2ds_dep>(), {T, Uf});
+
+    world.DLOG("axiom app: {} : {}", ax_app, ax_app->type());
+
+    return world.raw_app(ax_app, f);
+
     // TODO: check if app can be used instead of raw_app
-    return world.raw_app(world.raw_app(world.ax<direct::cps2ds>(), {T, U}), f);
+    // return world.raw_app(world.raw_app(world.ax<direct::cps2ds>(), {T, U}), f);
 }
 
 } // namespace thorin::direct

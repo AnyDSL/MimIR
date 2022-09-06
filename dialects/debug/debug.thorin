@@ -28,3 +28,8 @@
 /// 
 /// Forces beta reduction
 .ax %debug.force_type: * -> *, normalize_force_type;
+///
+/// ### %debug.dbg_poly
+/// 
+/// Prints debug information of a given expression at construction time.
+// .ax %debug.dbg_poly: Π [n:.Nat] -> Π [T:.Type n] -> T -> T, normalize_dbg;
