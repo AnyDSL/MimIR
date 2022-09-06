@@ -64,6 +64,8 @@ add_thorin_dialect(direct
         direct/passes/ds_call.h
         direct/passes/ds2cps.cpp
         direct/passes/ds2cps.h
+        direct/passes/cps2ds.cpp
+        direct/passes/cps2ds.h
         direct/normalizers.cpp
     DEPENDS
         debug
