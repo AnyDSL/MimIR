@@ -17,13 +17,19 @@ inline const Def* op_cps2ds_dep(const Def* f) {
     world.DLOG("U: {}", U);
 
     auto Uf = world.nom_lam(world.pi(T, world.type()), world.dbg("Uf"));
+    world.DLOG("Uf: {} : {}", Uf, Uf->type());
 
-    auto f_ty_sig = f_ty->dom()->as_nom<Sigma>();
-    Scope r_scope{f_ty_sig};
-    auto dom_var = f_ty_sig->var((nat_t)0);
-    world.DLOG("dom_var: {}", dom_var);
-    auto closed_dom_var  = Uf->var();
-    auto rewritten_codom = thorin::rewrite(U, dom_var, closed_dom_var, r_scope);
+    const Def* rewritten_codom;
+
+    if (auto f_ty_sig = f_ty->dom()->isa_nom<Sigma>()) {
+        auto dom_var = f_ty_sig->var((nat_t)0);
+        world.DLOG("dom_var: {}", dom_var);
+        Scope r_scope{f_ty_sig};
+        auto closed_dom_var = Uf->var();
+        rewritten_codom     = thorin::rewrite(U, dom_var, closed_dom_var, r_scope);
+    } else {
+        rewritten_codom = U;
+    }
     Uf->set_filter(true);
     Uf->set_body(rewritten_codom);
 

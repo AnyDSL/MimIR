@@ -2,21 +2,26 @@
 // RUN: %thorin -d direct %s --output-ll %t.ll -o - | FileCheck %s
 
 // tests a direct call to a cps fucntion wrapped in cps2ds
-// ./build/bin/thorin -d direct -d debug ./lit/direct/ds2cps_ax_cps2ds_dependent_short.thorin --output-thorin -
+// ./build/bin/thorin -d direct -d debug ./lit/direct/ds_dependent.thorin --output-thorin - -VVVV
 
 .import direct;
+.import core;
+.import debug;
 .import mem;
 
 .let I32 = %Int 4294967296;
 
-.cn f [n:.Nat, return: .Cn (%Int n)] = {
-    .let b = (42:(%Int n));
-    return b
+.lam U [n:.Nat] -> * = {
+    %Int n
+};
+
+.lam .extern f [n:.Nat] -> (%Int n) = {
+    42:(%Int n)
 };
 
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
-    .let g = %direct.cps2ds_dep (.Nat,%Int) f;
-    .let c = g (4294967296);
+    .let n = 4294967296;
+    .let c = f n;
     return (mem, c)
 };
 

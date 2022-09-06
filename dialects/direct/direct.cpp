@@ -14,7 +14,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
             [](thorin::PipelineBuilder& builder) {
                 builder.extend_opt_phase([](thorin::PassMan& man) {
                     auto ds2cps = man.add<direct::DS2CPS>();
-                    man.add<direct::DSCall>(ds2cps);
+                    // man.add<direct::DSCall>(ds2cps);
                 });
             },
             nullptr, [](Normalizers& normalizers) { direct::register_normalizers(normalizers); }};
