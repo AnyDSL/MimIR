@@ -1,5 +1,7 @@
 var NAVTREEINDEX11 =
 {
+"classthorin_1_1unique__stack.html#af95a51fb32d7d3d6797cc3b7913090ad":[5,0,0,121,2],
+"classthorin_1_1utf8_1_1Lexer.html":[5,0,0,12,0],
 "classthorin_1_1utf8_1_1Lexer.html":[3,0,0,18,0],
 "classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93":[5,0,0,12,0,3],
 "classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93":[3,0,0,18,0,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX11 =
 "core_2autogen_8h.html#adfa6dab6d7a1e3e327268c81a2f46e15":[6,0,0,1,0,2,0,32],
 "core_2autogen_8h.html#ae08a1448c1daa7bee15e012ba72504b5":[6,0,0,1,0,2,0,37],
 "core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628":[6,0,0,1,0,2,0,8],
-"core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628a3857931f2d0d28d57442421a45989bb2":[6,0,0,1,0,2,0,8,1],
-"core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628a7ffa3232741894dfa13074c69ef34d64":[6,0,0,1,0,2,0,8,0],
-"core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628a9d3827a838a5eeb8061fd0380d582ede":[6,0,0,1,0,2,0,8,2]
+"core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628a3857931f2d0d28d57442421a45989bb2":[6,0,0,1,0,2,0,8,1]
 };

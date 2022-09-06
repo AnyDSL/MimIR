@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36":[3,0,0,12,12],
+"namespacethorin_1_1mem.html#aaac8560242f619f5ac359bba09f7fd36a51e0df3ca5c430d39d775ec66f8c6f45":[3,0,0,12,12,0],
 "namespacethorin_1_1mem.html#aad66148a6a1aae3329173e9a23b6045e":[3,0,0,12,85],
 "namespacethorin_1_1mem.html#ab523b78b9f916d301c07153894cbac32":[3,0,0,12,60],
 "namespacethorin_1_1mem.html#ab628da15932087b2c99bc11cd9d2eaf8":[3,0,0,12,31],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#aafd69930df4621be98f4034250f1c10e":[5,0,0,19,7],
 "structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac3795836fbb5eb4edbb139a0343219dc":[3,0,0,26,4],
 "structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac3795836fbb5eb4edbb139a0343219dc":[5,0,0,19,4],
-"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac80d660438b4842b825631b2f3d637b1":[3,0,0,26,8],
-"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac80d660438b4842b825631b2f3d637b1":[5,0,0,19,8],
-"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#af4d672facaede9857960eac8e4746882":[5,0,0,19,0]
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac80d660438b4842b825631b2f3d637b1":[3,0,0,26,8]
 };

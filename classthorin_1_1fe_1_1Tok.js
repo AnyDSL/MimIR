@@ -16,6 +16,7 @@ var classthorin_1_1fe_1_1Tok =
       [ "K_Arr", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a792695ff85171415dd8308db378afdaf", null ],
       [ "K_Sigma", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79ae3df2a467ffbdf1e8c8629d62b09efbf", null ],
       [ "K_Type", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a99c9443b98ae3d0847fdcd64f6600e25", null ],
+      [ "K_Univ", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a49b3d477647d73a29f5821aad9819448", null ],
       [ "K_pack", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a56ac63798d37335301d7e04344bc839f", null ],
       [ "K_Pi", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a12200d43209d8e4947abce31b7a550aa", null ],
       [ "K_lam", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a27379c42e77c7e30bdc81db7c988058f", null ],
