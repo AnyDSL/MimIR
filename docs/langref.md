@@ -38,11 +38,11 @@ In addition the following keywords are *terminals*:
 | `.Pi`       | nominal thorin::Pi        |
 | `.lam`      | nominal thorin::Lam       |
 | `.Arr`      | nominal thorin::Arr       |
-| `.pack`     | nominal thorin::pack      |
+| `.pack`     | nominal thorin::Pack      |
 | `.Sigma`    | nominal thorin::Sigma     |
 | `.def`      | nominal definition        |
 | `.extern`   | marks nominal as external |
-| `.ins`      | insert expression         |
+| `.ins`      | thorin::Insert expression |
 | `.insert`   | alias for `.ins`          |
 | `.module`   | starts a module           |
 | `.import`   | imports a dialect         |
