@@ -24,9 +24,9 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
 #define BLANK  "\033[0m"
 
 namespace thorin::debug {
-void debug_print(const Def* def) {
+void debug_print(const char* head, const Def* def) {
     auto& world = def->world();
-    world.DLOG(YELLOW "debug_print: {}" BLANK, def);
+    world.DLOG(YELLOW "{}: {}" BLANK, head, def);
     world.DLOG("def : {}", def);
     world.DLOG("id  : {}", def->unique_name());
     world.DLOG("type: {}", def->type());
@@ -35,4 +35,7 @@ void debug_print(const Def* def) {
     world.DLOG("proj: {}", def->num_projs());
     world.DLOG("eops: {}", def->num_extended_ops());
 }
+
+void debug_print(const Def* def) { debug_print("debug_print", def); }
+
 } // namespace thorin::debug

@@ -24,3 +24,7 @@
 /// Permanently debugs at every construction.
 /// Gets removed at codegen preparation.
 .ax %debug.dbg_perm: Π [T:*] -> T -> T, normalize_dbg_perm;
+/// ### %debug.force
+/// 
+/// Forces beta reduction
+.ax %debug.force_type: * -> *, normalize_force_type;

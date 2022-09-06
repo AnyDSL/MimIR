@@ -46,6 +46,16 @@ add_thorin_dialect(core
     INSTALL
 )
 
+add_thorin_dialect(debug
+    SOURCES
+        debug/debug.cpp
+        debug/debug.h
+        debug/passes/remove_perm.h
+        debug/passes/remove_perm.cpp
+        debug/normalizers.cpp
+    INSTALL
+)
+
 add_thorin_dialect(direct
     SOURCES
         direct/direct.cpp
@@ -70,26 +80,6 @@ add_thorin_dialect(mem
         mem/passes/rw/remem_elim.h
     HEADER_DEPENDS
         core
-    INSTALL
-)
-
-add_thorin_dialect(debug
-    SOURCES
-        debug/debug.h
-        debug/debug.cpp
-        debug/passes/remove_perm.h
-        debug/passes/remove_perm.cpp
-        debug/normalizers.cpp
-    INSTALL
-)
-
-add_thorin_dialect(direct
-    SOURCES
-        direct/direct.cpp
-        direct/direct.h
-        direct/passes/ds2cps.cpp
-        direct/passes/ds2cps.h
-        direct/normalizers.cpp
     INSTALL
 )
 

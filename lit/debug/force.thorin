@@ -1,15 +1,19 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin -d debug %s --output-ll %t.ll --output-thorin - | FileCheck %s
 
-// ./build/bin/thorin -d debug ./lit/debug/debug.thorin --output-thorin - -VVVV
+// ./build/bin/thorin -d debug ./lit/debug/force.thorin --output-thorin - -VVVV
 
 .import debug;
 .import mem;
 
+
+.lam U [n:.Nat] -> * = {
+    %Int n
+};
+
 .let I32 = %Int 4294967296;
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
-    // .let t = %debug.dbg * I32;
-    .let c = %debug.dbg I32 (42:I32);
+    .let c = (42:(%debug.force_type(U 4294967296)));
     return (mem, c)
 };
 
