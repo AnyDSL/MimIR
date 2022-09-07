@@ -177,6 +177,7 @@ D load =
 
 // nested higher-order application
 // cps (Y=⊥) and non-cps
+// TODO: insert cps2ds if necessary
 .rule (A E X Y:*) (g:E->X->Y) (e:E):
     (%autodiff.inner_autodiff A (g e)) ->
     (
@@ -304,9 +305,48 @@ D load =
 
 /// autodiff (closed axioms)
 
+/// mul
+
+// TODO: cps vs ds higher order
+//   see autodiff.thorin vor variations
+.cn .extern mul_deriv_cps
+[
+    [m:.Nat, w:.Nat], 
+rcont:.Cn[
+    (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
+]]
+    = {
+    .cn inner_mul_deriv_cps
+        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
+        = {
+        .let result = %core.wrap.mul (m,w) (a,b);
+        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+            .let lhs = %core.wrap.mul (m,w) (s,b);
+            .let rhs = %core.wrap.mul (m,w) (s,a);
+            pb_ret (lhs, rhs)
+        };
+        ret (result,mul_pb)
+    };
+    rcont inner_mul_deriv_cps
+};
+
+// TODO: where to put cps2ds axioms (app vs lam)
+.rule:
+    (%autodiff.autodiff A (%core.wrap.mul)) ->
+    mul_deriv_cps;
+
+
+/// load
+// load see autodiff.thorin line 250
+// load deriv:
+//   load pb from shadow into pointer pb holder (non-local)
+//   load value, provide local id pb
+
 
 .rule:
-    (%autodiff.autodiff A (%)) ->
+    (%autodiff.autodiff A (%mem.load)) ->
+    load_deriv;
+
 
 
 /// glue code: 
