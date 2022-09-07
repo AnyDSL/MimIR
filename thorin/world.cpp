@@ -467,6 +467,10 @@ const Lit* World::lit_int(const Def* type, u64 i, const Def* dbg) {
     return l;
 }
 
+const Def* World::rho(const Def* shape, const Def* dbg /*= {}*/) {
+    return unify<Rho>(1, type_int(shape), shape, dbg);
+}
+
 /*
  * set
  */

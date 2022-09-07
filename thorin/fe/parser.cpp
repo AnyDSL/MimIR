@@ -314,13 +314,14 @@ const Def* Parser::parse_arr() {
     scopes_.push();
     eat(Tok::Tag::D_quote_l);
 
+    auto id = std::optional<Sym>();
     if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
-        auto id = eat(Tok::Tag::M_id).sym();
+        id = eat(Tok::Tag::M_id).sym();
         eat(Tok::Tag::T_colon);
-        scopes_.bind(id, world().rho(shape, world().dbg(id)));
     }
 
     auto shape = parse_expr("shape of an array");
+    if (id) scopes_.bind(*id, world().rho(shape, world().dbg(*id)));
     expect(Tok::Tag::T_semicolon, "array");
     auto body = parse_expr("body of an array");
     expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
