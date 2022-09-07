@@ -98,7 +98,15 @@ private:
         : Def(Node, type, {shape}, 0, dbg) {}
 
 public:
+    /// @name ops
+    ///@{
     const Def* shape() const { return op(0); }
+    ///@}
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
 
     static constexpr auto Node = Node::Rho;
     friend class World;
