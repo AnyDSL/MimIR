@@ -314,30 +314,23 @@ const Def* Parser::parse_arr() {
     scopes_.push();
     eat(Tok::Tag::D_quote_l);
 
-    const Def* shape = nullptr;
-    Arr* arr         = nullptr;
     if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
         auto id = eat(Tok::Tag::M_id).sym();
         eat(Tok::Tag::T_colon);
-
-        auto shape = parse_expr("shape of an array");
-        auto type  = world().nom_infer_univ();
-        arr        = world().nom_arr(type)->set_shape(shape);
-        scopes_.bind(id, arr->var(world().dbg(id)));
-    } else {
-        shape = parse_expr("shape of an array");
+        scopes_.bind(id, world().rho(shape, world().dbg(id)));
     }
 
+    auto shape = parse_expr("shape of an array");
     expect(Tok::Tag::T_semicolon, "array");
     auto body = parse_expr("body of an array");
     expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
     scopes_.pop();
 
-    if (arr) return arr->set_body(body)->set_type(body->unfold_type());
     return world().arr(shape, body, track);
 }
 
 const Def* Parser::parse_pack() {
+#if 0
     // TODO This doesn't work. Rework this!
     auto track = tracker();
     scopes_.push();
@@ -361,6 +354,8 @@ const Def* Parser::parse_pack() {
     expect(Tok::Tag::D_angle_r, "closing delimiter of a pack");
     scopes_.pop();
     return world().pack(shape, body, track);
+#endif
+    return nullptr;
 }
 
 const Def* Parser::parse_block() {
@@ -680,13 +675,6 @@ void Parser::parse_nom() {
             nom        = world().nom_sigma(type, arity.u(), track.named(sym));
             break;
         }
-        case Tok::Tag::K_Arr: {
-            expect(Tok::Tag::T_comma, "nominal array");
-            auto shape = parse_expr("shape of a nominal array");
-            nom        = world().nom_arr(type, track)->set_shape(shape);
-            break;
-        }
-        case Tok::Tag::K_pack: nom = world().nom_pack(type, track.named(sym)); break;
         case Tok::Tag::K_Pi: {
             expect(Tok::Tag::T_comma, "nominal Pi");
             auto dom = parse_expr("domain of a nominal Pi");

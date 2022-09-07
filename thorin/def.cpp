@@ -107,8 +107,6 @@ template<bool up> const Def* TBound<up>::rebuild(World& w, const Def*  , Defs o,
 Lam*    Lam   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_lam  (t->as<Pi>(), cc(), dbg); }
 Pi*     Pi    ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pi   (t, dbg); }
 Sigma*  Sigma ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_sigma(t, num_ops(), dbg); }
-Arr*    Arr   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_arr  (t, dbg); }
-Pack*   Pack  ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pack (t, dbg); }
 Infer*  Infer ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_infer(t, dbg); }
 Global* Global::stub(World& w, const Def* t, const Def* dbg) { return w.global(t, is_mutable(), dbg); }
 
@@ -131,20 +129,6 @@ const Pi* Pi::restructure() {
 const Sigma* Sigma::restructure() {
     if (std::ranges::none_of(ops(), [this](auto op) { return is_free(this, op); }))
         return static_cast<const Sigma*>(world().sigma(ops(), dbg()));
-    return nullptr;
-}
-
-const Def* Arr::restructure() {
-    auto& w = world();
-    if (auto n = isa_lit(shape()))
-        return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)).back(); }));
-    return nullptr;
-}
-
-const Def* Pack::restructure() {
-    auto& w = world();
-    if (auto n = isa_lit(shape()))
-        return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)).back(); }));
     return nullptr;
 }
 
@@ -200,8 +184,6 @@ const Var* Def::var(const Def* dbg) {
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam, dbg);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi, dbg);
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig, dbg);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_int(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_int(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
     if (isa_bound(this)) return w.var(this, this,  dbg);
     if (isa<Infer >())   return nullptr;
     if (isa<Global>())   return nullptr;

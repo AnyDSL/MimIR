@@ -179,18 +179,19 @@ World::World(const State& state)
         is_os->set(1, arr(is_os->var(0, dbg("n_i")), type()));
         is_os->set(2, nat);
         is_os->set(3, arr(is_os->var(2, dbg("n_o")), type()));
-        auto f_i = nom_arr()->set_shape(is_os->var(0_u64));
-        auto f_o = nom_arr()->set_shape(is_os->var(2_u64));
-        f_i->set_body(extract(is_os->var(1, dbg("Is")), f_i->var()));
-        f_o->set_body(extract(is_os->var(3, dbg("Os")), f_o->var()));
+
+        auto s_i = is_os->var(0_u64);
+        auto s_o = is_os->var(2_u64);
+        auto f_i = arr(s_i, extract(is_os->var(1, dbg("Is")), rho(s_i)));
+        auto f_o = arr(s_o, extract(is_os->var(3, dbg("Os")), rho(s_o)));
         is_os->set(4, pi(f_i, f_o));
         auto is_os_pi = nom_pi(type())->set_dom(is_os);
 
         // «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
-        auto dom = nom_arr()->set_shape(is_os_pi->var(0_u64, dbg("n_i")));
-        auto cod = nom_arr()->set_shape(is_os_pi->var(2_u64, dbg("n_o")));
-        dom->set_body(arr(s, extract(is_os_pi->var(1, dbg("Is")), dom->var())));
-        cod->set_body(arr(s, extract(is_os_pi->var(3, dbg("Os")), cod->var())));
+        auto s_dom = is_os_pi->var(0_u64, dbg("n_i"));
+        auto s_cod = is_os_pi->var(2_u64, dbg("n_o"));
+        auto dom   = arr(s_dom, arr(s, extract(is_os_pi->var(1, dbg("Is")), rho(s_dom))));
+        auto cod   = arr(s_cod, arr(s, extract(is_os_pi->var(3, dbg("Os")), rho(s_cod))));
 
         is_os_pi->set_codom(pi(dom, cod));
         rs_pi->set_codom(is_os_pi);

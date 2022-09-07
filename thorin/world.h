@@ -152,7 +152,7 @@ public:
     }
     ///@}
 
-    /// @name Universe, Type, Var, Proxy, Infer
+    /// @name Universe, Type, Var, Rho, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
     const Type* type(const Def* level, const Def* dbg = {}) { return unify<Type>(1, level, dbg)->as<Type>(); }
@@ -165,6 +165,8 @@ public:
         else
             return type(lit_univ(level), dbg);
     }
+    const Def* rho(const Def* shape, const Def* dbg = {});
+
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
@@ -267,11 +269,6 @@ public:
 
     /// @name Arr
     ///@{
-    Arr* nom_arr(const Def* type, const Def* dbg = {}) { return insert<Arr>(2, type, dbg); }
-    template<level_t level = 0>
-    Arr* nom_arr(const Def* dbg = {}) {
-        return nom_arr(type<level>(), dbg);
-    }
     const Def* arr(const Def* shape, const Def* body, const Def* dbg = {});
     const Def* arr(Defs shape, const Def* body, const Def* dbg = {});
     const Def* arr(u64 n, const Def* body, const Def* dbg = {}) { return arr(lit_nat(n), body, dbg); }
@@ -293,7 +290,6 @@ public:
 
     /// @name Pack
     ///@{
-    Pack* nom_pack(const Def* type, const Def* dbg = {}) { return insert<Pack>(1, type, dbg); }
     const Def* pack(const Def* arity, const Def* body, const Def* dbg = {});
     const Def* pack(Defs shape, const Def* body, const Def* dbg = {});
     const Def* pack(u64 n, const Def* body, const Def* dbg = {}) { return pack(lit_nat(n), body, dbg); }

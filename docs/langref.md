@@ -37,8 +37,6 @@ In addition the following keywords are *terminals*:
 | `.let`      | let expression            |
 | `.Pi`       | nominal thorin::Pi        |
 | `.lam`      | nominal thorin::Lam       |
-| `.Arr`      | nominal thorin::Arr       |
-| `.pack`     | nominal thorin::Pack      |
 | `.Sigma`    | nominal thorin::Sigma     |
 | `.def`      | nominal definition        |
 | `.extern`   | marks nominal as external |
@@ -132,8 +130,6 @@ The following tables comprise all production rules:
 | d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n         |            | nominal Pi declaration           | thorin::Pi    |
 | d           | `.lam` Sym p `→` e<sub>codom</sub> n                              |            | nominal lambda declaration       | thorin::Lam   |
 | d           | `.cn` Sym p n                                                     |            | nominal continuation declaration | thorin::Lam   |
-| d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n   |            | nominal array declaration        | thorin::Arr   |
-| d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  |            | nominal pack declaration         | thorin::Pack  |
 | d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n |            | nominal sigma declaration        | thorin::Sigma |
 | d           | `.def` Sym n                                                      |            | nominal definition               | nominals      |
 | v           | `,` `@` Sym \| `,` `@` `(` Sym `,` ... `,` Sym `)`                |            | nominal variable declaration     | nominals      |
