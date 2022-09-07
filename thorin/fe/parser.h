@@ -187,6 +187,7 @@ private:
     h::Bootstrapper bootstrapper_;
     std::vector<std::string> user_search_paths_;
     const Normalizers* normalizers_;
+    u64 rho_level_ = 0;
 };
 
 } // namespace thorin::fe

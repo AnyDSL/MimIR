@@ -91,16 +91,17 @@ public:
     friend class World;
 };
 
-/// Primitive recursion operator to construct parametric Pack%s and Arr%ays.
+/// Primitive recursion operator to construct parametric Pack%s or Arr%ays.
 class Rho : public Def {
 private:
-    Rho(const Def* type, const Def* shape, const Def* dbg)
-        : Def(Node, type, {shape}, 0, dbg) {}
+    Rho(const Def* type, const Def* shape, u64 level, const Def* dbg)
+        : Def(Node, type, {shape}, level, dbg) {}
 
 public:
     /// @name ops
     ///@{
     const Def* shape() const { return op(0); }
+    u64 level() const { return flags(); }
     ///@}
 
     /// @name virtual methods

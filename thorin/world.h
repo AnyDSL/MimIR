@@ -165,7 +165,7 @@ public:
         else
             return type(lit_univ(level), dbg);
     }
-    const Def* rho(const Def* shape, const Def* dbg = {});
+    const Def* rho(const Def* shape, u64 level, const Def* dbg = {});
 
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg = {}) {

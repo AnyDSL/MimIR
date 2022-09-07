@@ -82,7 +82,7 @@ const Def* Pack     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) co
 const Def* Pi       ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.pi(o[0], o[1], dbg); }
 const Def* Pick     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pick(t, o[0], dbg); }
 const Def* Proxy    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->pass(), as<Proxy>()->tag(), dbg); }
-const Def* Rho      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.rho(o[0], dbg); }
+const Def* Rho      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.rho(o[0], level(), dbg); }
 const Def* Sigma    ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.sigma(o, dbg); }
 const Def* Singleton::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.singleton(o[0], dbg); }
 const Def* Type     ::rebuild(World& w, const Def*  , Defs o, const Def*    ) const { return w.type(o[0]); }

@@ -311,7 +311,9 @@ const Def* Parser::parse_var() {
 
 const Def* Parser::parse_arr() {
     auto track = tracker();
+
     scopes_.push();
+    ++rho_level_;
     eat(Tok::Tag::D_quote_l);
 
     auto id = std::optional<Sym>();
@@ -321,10 +323,12 @@ const Def* Parser::parse_arr() {
     }
 
     auto shape = parse_expr("shape of an array");
-    if (id) scopes_.bind(*id, world().rho(shape, world().dbg(*id)));
+    if (id) scopes_.bind(*id, world().rho(shape, rho_level_, world().dbg(*id)));
     expect(Tok::Tag::T_semicolon, "array");
     auto body = parse_expr("body of an array");
+
     expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
+    --rho_level_;
     scopes_.pop();
 
     return world().arr(shape, body, track);

@@ -182,16 +182,16 @@ World::World(const State& state)
 
         auto s_i = is_os->var(0_u64);
         auto s_o = is_os->var(2_u64);
-        auto f_i = arr(s_i, extract(is_os->var(1, dbg("Is")), rho(s_i)));
-        auto f_o = arr(s_o, extract(is_os->var(3, dbg("Os")), rho(s_o)));
+        auto f_i = arr(s_i, extract(is_os->var(1, dbg("Is")), rho(s_i, 0)));
+        auto f_o = arr(s_o, extract(is_os->var(3, dbg("Os")), rho(s_o, 0)));
         is_os->set(4, pi(f_i, f_o));
         auto is_os_pi = nom_pi(type())->set_dom(is_os);
 
         // «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
         auto s_dom = is_os_pi->var(0_u64, dbg("n_i"));
         auto s_cod = is_os_pi->var(2_u64, dbg("n_o"));
-        auto dom   = arr(s_dom, arr(s, extract(is_os_pi->var(1, dbg("Is")), rho(s_dom))));
-        auto cod   = arr(s_cod, arr(s, extract(is_os_pi->var(3, dbg("Os")), rho(s_cod))));
+        auto dom   = arr(s_dom, arr(s, extract(is_os_pi->var(1, dbg("Is")), rho(s_dom, 1))));
+        auto cod   = arr(s_cod, arr(s, extract(is_os_pi->var(3, dbg("Os")), rho(s_cod, 1))));
 
         is_os_pi->set_codom(pi(dom, cod));
         rs_pi->set_codom(is_os_pi);
@@ -467,7 +467,9 @@ const Lit* World::lit_int(const Def* type, u64 i, const Def* dbg) {
     return l;
 }
 
-const Def* World::rho(const Def* shape, const Def* dbg /*= {}*/) { return unify<Rho>(1, type_int(shape), shape, dbg); }
+const Def* World::rho(const Def* shape, u64 level, const Def* dbg /*= {}*/) {
+    return unify<Rho>(1, type_int(shape), shape, level, dbg);
+}
 
 /*
  * set
