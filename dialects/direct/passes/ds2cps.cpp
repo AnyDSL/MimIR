@@ -8,34 +8,53 @@
 
 namespace thorin::direct {
 
-void DS2CPS::enter() {
-    Lam* lam = curr_nom();
-    if (!lam->isa_nom()) {
-        lam->world().DLOG("skipped non-nom {}", lam);
-        return;
-    }
-    rewrite_lam(lam);
+// void DS2CPS::enter() {
+//     Lam* lam = curr_nom();
+//     if (!lam->isa_nom()) {
+//         lam->world().DLOG("skipped non-nom {}", lam);
+//         return;
+//     }
+//     rewrite_lam(lam);
 
-    // Scope scope{lam};
-    // ScopeRewriter rewriter(world(), scope);
-    // rewriter.old2new.insert(rewritten_.begin(), rewritten_.end());
-    // auto body = lam->body();
-    // auto b    = rewriter.rewrite(body);
-    // lam->set_body(b);
-    // world().ILOG("rewrote {}", lam);
-    // if (body != b) world().ILOG("changed body of {}", lam);
+//     // Scope scope{lam};
+//     // ScopeRewriter rewriter(world(), scope);
+//     // rewriter.old2new.insert(rewritten_.begin(), rewritten_.end());
+//     // auto body = lam->body();
+//     // auto b    = rewriter.rewrite(body);
+//     // lam->set_body(b);
+//     // world().ILOG("rewrote {}", lam);
+//     // if (body != b) world().ILOG("changed body of {}", lam);
+// }
+
+
+const Def* DS2CPS::rewrite(const Def* def) {
+    auto& world = def->world();
+    if(auto app = def->isa<App>()) {
+        auto callee = app->callee();
+        // world.DLOG("callee {} : {}", callee, callee->type());
+        // world.DLOG("arg {} : {}", app->arg(), app->arg()->type());
+        if(auto lam = callee->isa_nom<Lam>()) {
+            world.DLOG("encountered lam app");
+            auto new_lam = rewrite_lam(lam);
+            auto new_app = world.app(new_lam, app->arg());
+            return new_app;
+        }
+    }
+    return def;
 }
 
 /// generates the cps function `f_cps : cn [a:A, cn B]`
 /// for a ds function `f: Π a : A -> B`
 /// associates the functions in `rewritten_`.
-void DS2CPS::rewrite_lam(Lam* lam) {
-    if (auto i = rewritten_.find(lam); i != rewritten_.end()) return;
+const Def* DS2CPS::rewrite_lam(Lam* lam) {
+    if (auto i = rewritten_.find(lam); i != rewritten_.end()) return i->second;
 
     // only look at lambdas (ds not cps)
-    if (lam->type()->codom()->isa<Bot>()) { return; }
+    if (lam->type()->codom()->isa<Bot>()) { return lam; }
     // ignore ds on type level
-    if (lam->type()->codom()->isa<Type>()) { return; }
+    if (lam->type()->codom()->isa<Type>()) { return lam; }
+    // ignore higher order function
+    if (lam->type()->codom()->isa<Pi>()) { return lam; }
 
     world().DLOG("rewrite DS function {} : {}", lam, lam->type());
 
@@ -76,7 +95,7 @@ void DS2CPS::rewrite_lam(Lam* lam) {
     world().DLOG("replace {} : {}", lam, lam->type());
     world().DLOG("with {} : {}", rewritten_[lam], rewritten_[lam]->type());
 
-    return;
+    return rewritten_[lam];
 }
 
 // const Def* DS2CPS::rewrite(const Def* def) {

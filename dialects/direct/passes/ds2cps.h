@@ -24,15 +24,15 @@ public:
     DS2CPS(PassMan& man)
         : RWPass(man, "ds2cps") {}
 
-    void enter() override;
-    // const Def* rewrite(const Def*) override;
+    // void enter() override;
+    const Def* rewrite(const Def*) override;
 
-    Def2Def get_subst() { return rewritten_; }
+    // Def2Def get_subst() { return rewritten_; }
 
 private:
     Def2Def rewritten_;
 
-    void rewrite_lam(Lam* lam);
+    const Def* rewrite_lam(Lam* lam);
     // const Def* rewrite_inner(const Def*);
 };
 

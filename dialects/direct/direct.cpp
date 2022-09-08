@@ -6,7 +6,6 @@
 
 #include "dialects/direct/passes/cps2ds.h"
 #include "dialects/direct/passes/ds2cps.h"
-#include "dialects/direct/passes/ds_call.h"
 
 using namespace thorin;
 
@@ -14,7 +13,8 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"direct",
             [](thorin::PipelineBuilder& builder) {
                 builder.extend_opt_phase([](thorin::PassMan& man) {
-                    auto ds2cps = man.add<direct::DS2CPS>();
+                    man.add<direct::DS2CPS>();
+                    // auto ds2cps = man.add<direct::DS2CPS>();
                     // man.add<direct::DSCall>(ds2cps);
                     man.add<direct::CPS2DS>();
                 });

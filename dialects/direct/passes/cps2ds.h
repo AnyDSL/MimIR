@@ -4,7 +4,7 @@
 #include <thorin/pass/pass.h>
 
 namespace thorin::direct {
-
+// TODO: fix order: entered before other pass rewrites
 class CPS2DS : public RWPass<CPS2DS, Lam> {
 public:
     CPS2DS(PassMan& man)
