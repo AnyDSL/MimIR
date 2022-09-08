@@ -1,3 +1,5 @@
+#include "thorin/util/assert.h"
+
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
@@ -211,7 +213,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         auto arg_pb  = partial_pullback[aug_arg];
         auto aug_app = world.app(aug_callee, {aug_arg, arg_pb});
         world.DLOG("Augmented application: {} : {}", aug_app, aug_app->type());
-        world.debug_dump();
+        // world.debug_dump();
         // assert(false);
         return aug_app;
     }
@@ -235,7 +237,9 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         auto res_pb = compose_continuation(arg_pb, fun_pb);
         world.DLOG("result pullback: {} : {}", res_pb, res_pb->type());
         partial_pullback[aug_res] = res_pb;
-        assert(0);
+        // assert(0);
+        world.debug_dump();
+        // assert(0);
         // R assert(false);
         return aug_res;
     }
@@ -471,17 +475,17 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
             world.DLOG("multiplication axiom flags");
 
             auto mul_deriv_cps = world.lookup("mul_deriv_cps");
-            auto mul_deriv_ds  = world.lookup("mul_deriv_ds");
+            // auto mul_deriv_ds  = world.lookup("mul_deriv_ds");
             if (!mul_deriv_cps) {
                 world.ELOG("multiplication derivative in cps not found");
             } else {
                 world.DLOG("mul deriv cps: {} : {}", mul_deriv_cps, mul_deriv_cps->type());
             }
-            if (!mul_deriv_ds) {
-                world.ELOG("multiplication derivative in ds not found");
-            } else {
-                world.DLOG("mul deriv ds: {} : {}", mul_deriv_ds, mul_deriv_ds->type());
-            }
+            // if (!mul_deriv_ds) {
+            //     world.ELOG("multiplication derivative in ds not found");
+            // } else {
+            //     world.DLOG("mul deriv ds: {} : {}", mul_deriv_ds, mul_deriv_ds->type());
+            // }
             // we use ds =>
             // inlining already needed for \Pi arguments => should(/needs to) work
             // no need for cps2ds axiom insertion in the transformation after \Pi arguments
@@ -494,13 +498,14 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
             world.DLOG("filter of mul_deriv_cps: {}", mul_deriv_cps->as<Lam>()->filter());
             mul_deriv_cps->as_nom<Lam>()->set_filter(true);
             world.DLOG("updated filter of mul_deriv_cps: {}", mul_deriv_cps->as<Lam>()->filter());
+            // assert(0);
             return mul_deriv_cps;
 
             // world.DLOG("filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
             // mul_deriv_ds->as_nom<Lam>()->set_filter(true);
             // world.DLOG("updated filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
             // // world.DLOG("filter of mul_deriv_ds2: {}", mul_deriv_ds2->as<Lam>()->filter());
-            // // assert(0);
+            // assert(0);
 
             // return mul_deriv_ds;
         }

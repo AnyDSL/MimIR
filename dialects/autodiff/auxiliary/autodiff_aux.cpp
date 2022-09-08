@@ -31,12 +31,12 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     return pb;
 }
 
-//R P => P'
-//R TODO: function => extend
-//R const Def* augment_type_fun(const Def* ty) { return ty; }
-// P => P*
-// TODO: nothing? function => R? Mem => R?
-// TODO: rename to op_tangent_type
+// R P => P'
+// R TODO: function => extend
+// R const Def* augment_type_fun(const Def* ty) { return ty; }
+//  P => P*
+//  TODO: nothing? function => R? Mem => R?
+//  TODO: rename to op_tangent_type
 const Def* tangent_type_fun(const Def* ty) { return ty; }
 
 /// computes pb type E* -> A*
@@ -52,33 +52,48 @@ const Pi* pullback_type(const Def* E, const Def* A) {
 
 // A,R => A'->R' * (R* -> A*)
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
-    auto& world  = arg->world();
+    auto& world = arg->world();
+    world.DLOG("autodiff type for {} => {}", arg, ret);
     auto aug_arg = autodiff_type_fun(arg);
     auto aug_ret = autodiff_type_fun(ret);
+    world.DLOG("augmented types: {} => {}", aug_arg, aug_ret);
+    if (!aug_arg || !aug_ret) return nullptr;
     // Q* -> P*
     auto pb_ty = pullback_type(ret, arg);
+    world.DLOG("pb type: {}", pb_ty);
     // P' -> Q' * (Q* -> P*)
+
     auto deriv_ty = world.cn({aug_arg, world.cn({aug_ret, pb_ty})});
+    world.DLOG("autodiff type: {}", deriv_ty);
     return deriv_ty;
 }
 
+const Pi* autodiff_type_fun_pi(const Pi* pi) {
+    auto& world        = pi->world();
+    auto [arg, ret_pi] = pi->doms<2>();
+    auto ret           = ret_pi->as<Pi>()->dom();
+    world.DLOG("compute AD type for pi");
+    return autodiff_type_fun(arg, ret);
+}
+
 // P->Q => P'->Q' * (Q* -> P*)
-const Pi* autodiff_type_fun(const Def* ty) {
+const Def* autodiff_type_fun(const Def* ty) {
     auto& world = ty->world();
     // TODO: handle DS (operators)
-    if (auto pi = ty->isa<Pi>()) {
-        auto [arg, ret_pi] = pi->doms<2>();
-        auto ret           = ret_pi->as<Pi>()->dom();
-        return autodiff_type_fun(arg, ret);
-    }
+    if (auto pi = ty->isa<Pi>()) { return autodiff_type_fun_pi(pi); }
     // TODO: what is this object? (only numbers are printed)
     // possible abstract type from autodiff axiom
     world.WLOG("AutoDiff on type: {}", ty);
+    if (auto app = ty->isa<App>()) {
+        auto callee = app->callee();
+        if (callee == world.type_int() || callee == world.type_real()) { return ty; }
+    }
     // ty->dump(300);
     // world.write("tmp.txt");
     // can not work with
     // assert(false && "autodiff_type should not be invoked on non-pi types");
-    return NULL;
+    // return ty;
+    return nullptr;
 }
 
 const Def* zero_def(const Def* T) {
@@ -87,8 +102,8 @@ const Def* zero_def(const Def* T) {
     auto& world = T->world();
     world.DLOG("zero_def for type {} <{}>", T, T->node_name());
     if (auto arr = T->isa<Arr>()) {
-        auto shape      = arr->shape();
-        auto body       = arr->body();
+        auto shape = arr->shape();
+        auto body  = arr->body();
         // auto inner_zero = zero_def(body);
         auto inner_zero = world.app(world.ax<zero>(), body);
         auto zero_arr   = world.pack(shape, inner_zero);
@@ -109,11 +124,8 @@ const Def* zero_def(const Def* T) {
             world.DLOG("zero_def for int is {}", zero);
             return zero;
         }
-    } else if(auto sig = T->isa<Sigma>()) {
-        DefArray ops(sig->ops(),
-                     [&](const Def* op) {
-                         return world.app(world.ax<zero>(), op);
-                     });
+    } else if (auto sig = T->isa<Sigma>()) {
+        DefArray ops(sig->ops(), [&](const Def* op) { return world.app(world.ax<zero>(), op); });
         return world.tuple(ops);
     }
 
@@ -132,7 +144,6 @@ const Def* op_sum(const Def* T, DefArray defs) {
 
 } // namespace thorin::autodiff
 
-
 namespace thorin {
 
 bool is_continuation_type(const Def* E) {
@@ -140,9 +151,7 @@ bool is_continuation_type(const Def* E) {
     return false;
 }
 
-bool is_continuation(const Def* e) {
-    return is_continuation_type(e->type());
-}
+bool is_continuation(const Def* e) { return is_continuation_type(e->type()); }
 
 bool is_returning_continuation(const Def* e) {
     auto& world = e->world();
@@ -152,8 +161,8 @@ bool is_returning_continuation(const Def* e) {
         // R world.DLOG("codom kind is {}", pi->codom()->node_name());
         //  duck-typing applies here
         //  use short-circuit evaluation to reuse previous results
-        return is_continuation_type(pi) &&         // continuation
-               pi->num_doms() == 2 &&         // args, return
+        return is_continuation_type(pi) &&       // continuation
+               pi->num_doms() == 2 &&            // args, return
                is_continuation_type(pi->dom(1)); // return type
     }
     return false;
@@ -173,9 +182,7 @@ bool is_direct_style_function(const Def* e) {
 const Def* continuation_dom(const Def* E) {
     auto pi = E->as<Pi>();
     assert(pi != NULL);
-    if(pi->num_doms() == 0) {
-        return pi->dom();
-    }
+    if (pi->num_doms() == 0) { return pi->dom(); }
     return pi->dom(0);
 }
 
@@ -219,29 +226,19 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     world.DLOG("  B: {}", B);
     world.DLOG("  C: {}", C);
 
-    auto H = world.cn({A, world.cn(C)});
+    auto H     = world.cn({A, world.cn(C)});
     auto Hcont = world.cn(B);
 
-    auto h = world.nom_lam(H, world.dbg("comp_"+f->name()+"_"+g->name()));
-    auto hcont = world.nom_lam(Hcont, world.dbg("comp_"+f->name()+"_"+g->name()+"_cont"));
+    auto h     = world.nom_lam(H, world.dbg("comp_" + f->name() + "_" + g->name()));
+    auto hcont = world.nom_lam(Hcont, world.dbg("comp_" + f->name() + "_" + g->name() + "_cont"));
 
-    h->app(
-        true,
-        g,
-        {
-            h->var((nat_t)0),
-            hcont
-        }
-    );
+    h->app(true, g, {h->var((nat_t)0), hcont});
 
-    hcont->app(
-        true,
-        f,
-        {
-            hcont->var(), // Warning: not var(0) => only one var => normalization flattens tuples down here
-            h->var(1) // ret_var
-        }
-    );
+    hcont->app(true, f,
+               {
+                   hcont->var(), // Warning: not var(0) => only one var => normalization flattens tuples down here
+                   h->var(1)     // ret_var
+               });
 
     return h;
 }

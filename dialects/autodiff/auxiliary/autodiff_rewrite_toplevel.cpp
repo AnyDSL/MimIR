@@ -10,7 +10,6 @@ namespace thorin::autodiff {
 
 //     // specialized to main argument
 
-
 // //     // TODO: write down a good explanation for
 // //     // ops vs projs vs type ops
 // //     // example: vars
@@ -47,7 +46,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto& world = def->world();
     if (auto lam = def->isa_nom<Lam>()) {
         world.DLOG("Derive lambda: {}", def);
-        auto deriv_ty = autodiff_type_fun(lam->type());
+        auto deriv_ty = autodiff_type_fun_pi(lam->type());
         auto deriv    = world.nom_lam(deriv_ty, world.dbg(lam->name() + "_deriv"));
 
         // pre register derivative
@@ -79,14 +78,14 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         //     id_pb_scalar
         // );
 
-        auto deriv_all_args = deriv->var();
+        auto deriv_all_args  = deriv->var();
         const Def* deriv_arg = deriv->var((nat_t)0, world.dbg("arg"));
         // R auto deriv_ret = deriv->var((nat_t)1, world.dbg("ret"));
         // R partial_pullback[deriv_arg] = id_pb;
 
-        //R shadow pullback for arguments
-        //R shadow_pullback[deriv_all_args] = build_shadow_id_pb(deriv_all_args->type());
-        // create_shadow_id_pb(deriv_all_args);
+        // R shadow pullback for arguments
+        // R shadow_pullback[deriv_all_args] = build_shadow_id_pb(deriv_all_args->type());
+        //  create_shadow_id_pb(deriv_all_args);
 
         // let shadow pb be created dynamically
         // only handle toplevel [args, ret] specially with a pseudo shadow pb
@@ -98,28 +97,29 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         // b = t#i : Bi
         // b* : Bi -> A
         // b* = t*_S #i (if exists)
-        // equivalent to 
+        // equivalent to
         //    \lambda (s:Bi). t*_S (insert s at i in (zero [B0, ..., Bn]))
-        // 
+        //
         // but the DS/CPS special case has to be handled separately
 
         // TODO: check identity
         // could use identity tangent(arg_ty) = tangent(augment(arg_ty))
         // with deriv_arg->type() = augment(arg_ty)
-        auto arg_id_pb = id_pullback(arg_ty);
+        auto arg_id_pb              = id_pullback(arg_ty);
         partial_pullback[deriv_arg] = arg_id_pb;
         // set no pullback to all_arg and return
         // second component has to exist but should not be accessed
         auto ret_var = deriv->var(1);
         // auto ret_pb=world.bot(world.type_bot());
         // auto ret_pb = zero_pullback(ret_var->type(), arg_ty);
-        auto ret_pb = zero_pullback(lam->var(1)->type(), arg_ty);
+        auto ret_pb               = zero_pullback(lam->var(1)->type(), arg_ty);
         partial_pullback[ret_var] = ret_pb;
 
-        shadow_pullback[deriv_all_args] = world.tuple({arg_id_pb,ret_pb});
-        world.DLOG("pullback for argument {} : {} is {} : {}", deriv_arg, deriv_arg->type(), arg_id_pb, arg_id_pb->type());
-        world.DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args], shadow_pullback[deriv_all_args]->type());
-
+        shadow_pullback[deriv_all_args] = world.tuple({arg_id_pb, ret_pb});
+        world.DLOG("pullback for argument {} : {} is {} : {}", deriv_arg, deriv_arg->type(), arg_id_pb,
+                   arg_id_pb->type());
+        world.DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args],
+                   shadow_pullback[deriv_all_args]->type());
 
         // TODO: remove as this is subsumed by lam->deriv
         // R const Def* lam_ret   = lam->var(1, world.dbg("ret"));
