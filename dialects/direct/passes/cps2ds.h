@@ -5,6 +5,14 @@
 
 namespace thorin::direct {
 // TODO: fix order: entered before other pass rewrites
+
+/// second part of ds2cps
+/// replaces all ds call sites of cps (or ds converted) functions
+/// with cps calls
+/// b = f args
+/// becomes
+/// f (args,cont)
+/// cont : cn b
 class CPS2DS : public RWPass<CPS2DS, Lam> {
 public:
     CPS2DS(PassMan& man)

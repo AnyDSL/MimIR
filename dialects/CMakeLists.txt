@@ -106,6 +106,8 @@ add_thorin_dialect(autodiff
         autodiff/passes/autodiff_zero.h
         autodiff/passes/autodiff_zero_cleanup.cpp
         autodiff/passes/autodiff_zero_cleanup.h
+        autodiff/passes/autodiff_ext_cleanup.cpp
+        autodiff/passes/autodiff_ext_cleanup.h
         autodiff/auxiliary/autodiff_aux.cpp
         autodiff/auxiliary/autodiff_aux.h
         autodiff/auxiliary/autodiff_rewrite_inner.cpp

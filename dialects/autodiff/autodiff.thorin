@@ -132,7 +132,7 @@
 // };
 
 
-.lam .extern mul_deriv_cps
+.lam .extern internal_diff_mul_deriv_cps
     [m:.Nat, w:.Nat] -> 
     (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
     = {

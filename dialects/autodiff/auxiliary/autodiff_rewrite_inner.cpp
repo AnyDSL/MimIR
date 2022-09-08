@@ -474,7 +474,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         if (ax->flags() == core::wrap::mul) {
             world.DLOG("multiplication axiom flags");
 
-            auto mul_deriv_cps = world.lookup("mul_deriv_cps");
+            auto mul_deriv_cps = world.lookup("internal_diff_mul_deriv_cps");
             // auto mul_deriv_ds  = world.lookup("mul_deriv_ds");
             if (!mul_deriv_cps) {
                 world.ELOG("multiplication derivative in cps not found");
