@@ -35,20 +35,22 @@ In addition the following keywords are *terminals*:
 |-------------|---------------------------|
 | `.ax`       | axiom                     |
 | `.let`      | let expression            |
-| `.Pi`       | nominal Pi                |
-| `.lam`      | nominal lam               |
-| `.Arr`      | nominal Arr               |
-| `.pack`     | nominal pack              |
-| `.Sigma`    | nominal Sigma             |
+| `.Pi`       | nominal thorin::Pi        |
+| `.lam`      | nominal thorin::Lam       |
+| `.Arr`      | nominal thorin::Arr       |
+| `.pack`     | nominal thorin::Pack      |
+| `.Sigma`    | nominal thorin::Sigma     |
 | `.def`      | nominal definition        |
 | `.extern`   | marks nominal as external |
-| `.ins`      | insert expression         |
+| `.ins`      | thorin::Insert expression |
 | `.insert`   | alias for `.ins`          |
 | `.module`   | starts a module           |
 | `.import`   | imports a dialect         |
 | `.Nat`      | thorin::Nat               |
 | `.ff`       | alias for `0₂`            |
 | `.tt`       | alias for `1₂`            |
+| `.Type`     | thorin::Type              |
+| `.Univ`     | thorin::Univ              |
 
 All keywords start with a `.` to prevent name clashes with identifiers.
 

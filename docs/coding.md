@@ -33,6 +33,31 @@ git config --local core.hooksPath .githooks/
 Note that you can [disable clang-format for a piece of code](https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code).
 In addition, you might want to check out plugins like the [Vim integration](https://clang.llvm.org/docs/ClangFormat.html#vim-integration).
 
+## Tests {#tests}
+
+### lit Tests
+
+Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) testsuite with:
+```sh
+cmake --build build -t check
+```
+You can manually invoke the lit tests like this and maybe filter for a specific test:
+```sh
+cd lit
+./lit ../build/lit -a --filter foo.thorin
+```
+
+### Unit Tests
+
+Run the [GoogleTest](https://google.github.io/googletest/) unit tests within the `build` folder with:
+```sh
+ctest
+```
+In addition, you can enable [Valgrind](https://valgrind.org/) with:
+```sh
+ctest -T memcheck
+```
+
 # Debugging
 
 For logging and automatic firing of breakpoints refer to the [Command-Line Reference](@ref clidebug).

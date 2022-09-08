@@ -20,6 +20,7 @@ namespace thorin::fe {
     m(K_Arr,    ".Arr"   )             \
     m(K_Sigma,  ".Sigma" )             \
     m(K_Type,   ".Type"  )             \
+    m(K_Univ,   ".Univ"  )             \
     m(K_pack,   ".pack"  )             \
     m(K_Pi,     ".Pi"    )             \
     m(K_lam,    ".lam"   )             \
