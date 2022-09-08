@@ -525,9 +525,7 @@ const Def* World::rho(const Def* shape, u64 level, const Def* dbg) {
     return unify<Rho>(1, type_int(shape), shape, level, dbg);
 }
 
-const Def* World::bundle(Defs ops, u64 level) {
-    return unify<Bundle>(ops.size(), type_nat(), ops, level);
-}
+const Def* World::bundle(Defs ops, u64 level) { return unify<Bundle>(ops.size(), type_nat(), ops, level); }
 
 /*
  * set
