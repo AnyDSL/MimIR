@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "thorin/pass/pass.h"
+#include "thorin/phase/phase.h"
 
 namespace thorin {
 
@@ -14,7 +15,7 @@ public:
     void extend_opt_phase(std::function<void(PassMan&)>);
     void extend_codegen_prep_phase(std::function<void(PassMan&)>);
 
-    std::unique_ptr<PassMan> opt_phase(World& world);
+    void opt_phase(World& world, Pipeline& pipeline) ;
     std::unique_ptr<PassMan> codegen_prep_phase(World& world);
 
 private:

@@ -25,7 +25,7 @@ public:
     ClosConvWrapper(PassMan& man)
             : RWPass(man, "clos_conv") {}
 
-    void enter() override{
+    void prepare() override{
         clos::ClosConv(world()).run();
     }
 };
@@ -35,9 +35,10 @@ public:
     LowerTypedClosWrapper(PassMan& man)
             : RWPass(man, "lower_typed_clos") {}
 
-    void enter() override{
+    void prepare() override{
         clos::LowerTypedClos(world()).run();
     }
+
 };
 
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {

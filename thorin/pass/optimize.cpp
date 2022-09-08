@@ -14,7 +14,7 @@ void optimize(World& world, PipelineBuilder& builder) {
     pipe.add<Scalerize>();
     pipe.add<EtaRed>();
     pipe.add<TailRecElim>();
-    pipe.add<PassManPhase>(builder.opt_phase(world));
+    builder.opt_phase(world, pipe);
     pipe.add<LamSpec>();
     pipe.add<PassManPhase>(builder.codegen_prep_phase(world));
     pipe.run();
