@@ -237,3 +237,20 @@ Use parentheses to refer to the `.let`-bounded `i`:
 .let i = 1_2;
 Π X: [i: .Nat, j: .Nat] → f X#(i);
 ```
+
+## Shape vs Arity
+
+The *arity* refers to the number of elements within an [array](@ref thorin::Arr)/[sigma](@ref thorin::Sigma) or [pack](@ref thorin::Pack)/[tuple](@ref thorin::Tuple), respectively.
+The type of an arity is [`.Nat`](@ref thorin::Nat).
+You can also specify multidimensinal entities.
+For example, a 2 × 3 matrix is defined by the *shape* `(2, 3)`.
+You can use such shapes for arrays.
+Usually, Thorin will immediatly resolve this into nested arrays:
+```
+«(2, 3), T»`  ==>  «2; «3; T»»
+```
+However, if the shape is unknown like in
+```
+.lam f s: [.Nat, .Nat] -> * = «s, T»;
+```
+Thorin cannot normalize the shape into an arity and will keep the shape within the array.

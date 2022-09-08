@@ -19,7 +19,7 @@ using sub_t     = u8;
     m(Type, type)       m(Univ, univ)                                         \
     m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
     m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
-    m(Arr, arr)         m(Pack, pack)   m(Rho, rho)                           \
+    m(Arr, arr)         m(Pack, pack)   m(Rho, rho)         m(Bundle, bundle) \
     m(Join, join)       m(Vel, vel)     m(Test, test)       m(Top, top)       \
     m(Meet, meet)       m(Ac,  ac )     m(Pick, pick)       m(Bot, bot)       \
     m(Proxy, proxy)                                                           \

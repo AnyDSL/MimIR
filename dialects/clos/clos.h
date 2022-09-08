@@ -118,7 +118,7 @@ std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
 const Sigma* isa_clos_type(const Def* def);
 
 /// Creates a typed closure type from @p pi.
-Sigma* clos_type(const Pi* pi);
+Sigma* clos_type(const Def* pi);
 
 /// Convert a closure type to a Pi, where the environment type has been removed or replaced by @p new_env_type
 /// (if @p new_env_type != @c nullptr)

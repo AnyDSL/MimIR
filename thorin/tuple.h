@@ -25,7 +25,7 @@ public:
     bool check() override;
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Sigma* stub(World&, const Def*, const Def*) override;
-    const Sigma* restructure() override;
+    const Def* restructure() override;
     ///@}
 
     static constexpr auto Node = Node::Sigma;
@@ -110,6 +110,27 @@ public:
     ///@}
 
     static constexpr auto Node = Node::Rho;
+    friend class World;
+};
+
+/// This is used during normalization of Rho#s and is considered *extended syntax* that you souldn't use directly.
+/// For this reason, we don't track debug info here.
+/// In addition, a Bundle doesn't really have a type.
+/// For a technical reason (namely in order to access Def::world) it is set to Nat, however.
+class Bundle : public Def {
+private:
+    Bundle(const Def* type, Defs args, u64 level)
+        : Def(Node, type, args, level, nullptr) {}
+
+public:
+    u64 level() const { return flags(); }
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Bundle;
     friend class World;
 };
 

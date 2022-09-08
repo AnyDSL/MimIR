@@ -42,8 +42,8 @@ World::World(const State& state)
     data_.univ_        = insert<Univ>(0, *this);
     data_.lit_univ_0_  = lit_univ(0);
     data_.lit_univ_1_  = lit_univ(1);
-    data_.type_0_      = type(lit_univ_0());
-    data_.type_1_      = type(lit_univ_1());
+    data_.type_0_      = type(lit_univ_0())->as<Type>();
+    data_.type_1_      = type(lit_univ_1())->as<Type>();
     data_.type_bot_    = insert<Bot>(0, type(), nullptr);
     data_.sigma_       = insert<Sigma>(0, type(), Defs{}, nullptr)->as<Sigma>();
     data_.tuple_       = insert<Tuple>(0, sigma(), Defs{}, nullptr)->as<Tuple>();
@@ -52,7 +52,7 @@ World::World(const State& state)
     data_.lit_nat_0_   = lit_nat(0);
     data_.lit_nat_1_   = lit_nat(1);
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
-    data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
+    data_.exit_        = nom_lam(cn(type_bot())->as<Pi>(), dbg("exit"));
     auto nat           = type_nat();
 
     { // int/real: w: Nat -> *
@@ -200,7 +200,7 @@ World::World(const State& state)
     }
 }
 
-World::World(std::string_view name /* = {}*/)
+World::World(std::string_view name)
     : World(State(name)) {}
 
 World::~World() {
@@ -211,9 +211,18 @@ World::~World() {
  * core calculus
  */
 
-const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
-    auto pi = callee->type()->isa<Pi>();
+const Def* World::type(const Def* level, const Def* dbg) {
+    if (auto b = level->isa<Bundle>()) return rebundle(b, [&](auto op) { return type(op, dbg); });
+    return unify<Type>(1, level, dbg)->as<Type>();
+}
 
+const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
+    // clang-format off
+    if (auto b = callee->isa<Bundle>()) return rebundle(b, [&](auto op) { return app(op,    arg, dbg); });
+    if (auto b =    arg->isa<Bundle>()) return rebundle(b, [&](auto op) { return app(callee, op, dbg); });
+    // clang-format on
+
+    auto pi = callee->type()->isa<Pi>();
     if (err()) {
         if (!pi) err()->err(dbg->loc(), "called expression '{}' is not of function type", callee);
         if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
@@ -229,15 +238,36 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
 }
 
 const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
+    // clang-format off
+    if (auto b = callee->isa<Bundle>()) return rebundle(b, [&](auto op) { return app(op,    arg, dbg); });
+    if (auto b =    arg->isa<Bundle>()) return rebundle(b, [&](auto op) { return app(callee, op, dbg); });
+    // clang-format on
+
     auto pi             = callee->type()->as<Pi>();
     auto type           = pi->reduce(arg).back();
     auto [axiom, curry] = Axiom::get(callee);
     return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
 }
 
+const Def* World::pi(const Def* dom, const Def* cod, const Def* dbg) {
+    if (auto b = dom->isa<Bundle>()) return rebundle(b, [&](auto op) { return pi(op, cod, dbg); });
+    if (auto b = cod->isa<Bundle>()) return rebundle(b, [&](auto op) { return pi(dom, op, dbg); });
+    return unify<Pi>(2, cod->unfold_type(), dom, cod, dbg);
+}
+
+const Def* World::lam(const Def* pi, const Def* filter, const Def* body, const Def* dbg) {
+    // clang-format off
+    if (auto b = filter->isa<Bundle>()) return rebundle(b, [&](auto op) { return lam(pi,     op, body, dbg); });
+    if (auto b =   body->isa<Bundle>()) return rebundle(b, [&](auto op) { return lam(pi, filter,   op, dbg); });
+    // clang-format on
+
+    return unify<Lam>(2, pi, filter, body, dbg);
+}
+
 const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
+    // TODO debundle
     if (n == 1) return ops[0];
     if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
     return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
@@ -272,6 +302,8 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
         if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return pack(n, ops[0]);
     }
 
+    // TODO debundle
+
     // eta rule for tuples:
     // (extract(tup, 0), extract(tup, 1), extract(tup, 2)) -> tup
     if (n == 0) goto out;
@@ -305,6 +337,11 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
 }
 
 const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
+    // clang-format off
+    if (auto b =     d->isa<Bundle>()) return rebundle(b, [&](auto op) { return extract(op, index, dbg); });
+    if (auto b = index->isa<Bundle>()) return rebundle(b, [&](auto op) { return extract(d,     op, dbg); });
+    // clang-format on
+
     if (index->isa<Arr>() || index->isa<Pack>()) {
         DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
         return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);
@@ -364,6 +401,12 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
 }
 
 const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {
+    // clang-format off
+    if (auto b =     d->isa<Bundle>()) return rebundle(b, [&](auto op) { return insert(op, index, val, dbg); });
+    if (auto b = index->isa<Bundle>()) return rebundle(b, [&](auto op) { return insert(d,     op, val, dbg); });
+    if (auto b = index->isa<Bundle>()) return rebundle(b, [&](auto op) { return insert(d,  index,  op, dbg); });
+    // clang-format on
+
     auto type = d->unfold_type();
 
     if (err() && !checker().equiv(type->arity(), isa_sized_type(index->type()), dbg))
@@ -404,6 +447,16 @@ bool is_shape(const Def* s) {
 const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
     if (err()) {
         if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
+    }
+
+    if (auto b = shape->isa<Bundle>()) return rebundle(b, [&](auto op) { return arr(op, body, dbg); });
+    if (auto b = body->isa<Bundle>()) {
+        if (b->level() == 0) {
+            assert(as_lit(shape) == b->num_ops());
+            return sigma(b->ops(), dbg);
+        } else {
+            return debundle(b, [&](auto op) { return arr(shape, op, dbg); });
+        }
     }
 
     if (auto a = isa_lit<u64>(shape)) {
@@ -467,8 +520,13 @@ const Lit* World::lit_int(const Def* type, u64 i, const Def* dbg) {
     return l;
 }
 
-const Def* World::rho(const Def* shape, u64 level, const Def* dbg /*= {}*/) {
+const Def* World::rho(const Def* shape, u64 level, const Def* dbg) {
+    if (auto s = isa_lit(shape)) return bundle(DefArray(*s, [this](size_t i) { return lit_nat(i); }), level);
     return unify<Rho>(1, type_int(shape), shape, level, dbg);
+}
+
+const Def* World::bundle(Defs ops, u64 level) {
+    return unify<Bundle>(ops.size(), type_nat(), ops, level);
 }
 
 /*
@@ -518,16 +576,27 @@ const Def* World::ac(const Def* type, Defs ops, const Def* dbg) {
     return ops[0];
 }
 
-const Def* World::ac(Defs ops, const Def* dbg /*= {}*/) { return ac(infer_type_level(*this, ops), ops, dbg); }
+const Def* World::ac(Defs ops, const Def* dbg) { return ac(infer_type_level(*this, ops), ops, dbg); }
 
 const Def* World::vel(const Def* type, const Def* value, const Def* dbg) {
+    if (auto b = value->isa<Bundle>()) return rebundle(b, [&](auto op) { return vel(type, op, dbg); });
     if (type->isa<Join>()) return unify<Vel>(1, type, value, dbg);
     return value;
 }
 
-const Def* World::pick(const Def* type, const Def* value, const Def* dbg) { return unify<Pick>(1, type, value, dbg); }
+const Def* World::pick(const Def* type, const Def* value, const Def* dbg) {
+    if (auto b = value->isa<Bundle>()) return rebundle(b, [&](auto op) { return pick(type, op, dbg); });
+    return unify<Pick>(1, type, value, dbg);
+}
 
 const Def* World::test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg) {
+    // clang-format off
+    if (auto b = value->isa<Bundle>()) return rebundle(b, [&](auto op) { return test(   op, probe, match, clash, dbg); });
+    if (auto b = probe->isa<Bundle>()) return rebundle(b, [&](auto op) { return test(value,    op, match, clash, dbg); });
+    if (auto b = match->isa<Bundle>()) return rebundle(b, [&](auto op) { return test(value, probe,    op, clash, dbg); });
+    if (auto b = clash->isa<Bundle>()) return rebundle(b, [&](auto op) { return test(value, probe, match,    op, dbg); });
+    // clang-format on
+
     auto m_pi = match->type()->isa<Pi>();
     auto c_pi = clash->type()->isa<Pi>();
 

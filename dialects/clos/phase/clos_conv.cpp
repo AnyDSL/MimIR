@@ -32,7 +32,7 @@ static const Def* ctype(World& w, Defs doms, const Def* env_type = nullptr) {
                          [&](auto i) { return clos_insert_env(i, env_type, [&](auto j) { return doms[j]; }); }));
 }
 
-Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)->as_nom<Sigma>(); }
+Sigma* clos_type(const Def* pi) { return ctype(pi->world(), pi->as<Pi>()->doms(), nullptr)->as_nom<Sigma>(); }
 
 const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
     assert(isa_clos_type(ct));
@@ -40,7 +40,7 @@ const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
     auto pi = ct->op(1_u64)->isa<Pi>();
     assert(pi);
     auto new_dom = new_env_type ? clos_sub_env(pi->dom(), new_env_type) : clos_remove_env(pi->dom());
-    return w.cn(new_dom);
+    return w.cn(new_dom)->as<Pi>();
 }
 
 const Sigma* isa_clos_type(const Def* def) {
@@ -259,7 +259,7 @@ Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, De
 const Pi* ClosConv::rewrite_cont_type(const Pi* pi, Def2Def& subst) {
     assert(pi->is_basicblock());
     auto new_ops = DefArray(pi->num_doms(), [&](auto i) { return rewrite(pi->dom(i), subst); });
-    return world().cn(new_ops);
+    return world().cn(new_ops)->as<Pi>();
 }
 
 const Def* ClosConv::closure_type(const Pi* pi, Def2Def& subst, const Def* env_type) {

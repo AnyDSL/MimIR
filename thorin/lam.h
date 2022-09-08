@@ -41,7 +41,7 @@ public:
     size_t first_dependend_op() { return 1; }
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Pi* stub(World&, const Def*, const Def*) override;
-    const Pi* restructure() override;
+    const Def* restructure() override;
     ///@}
 
     static constexpr auto Node = Node::Pi;
@@ -57,9 +57,9 @@ public:
     };
 
 private:
-    Lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg)
+    Lam(const Def* pi, const Def* filter, const Def* body, const Def* dbg)
         : Def(Node, pi, {filter, body}, 0, dbg) {}
-    Lam(const Pi* pi, CC cc, const Def* dbg)
+    Lam(const Def* pi, CC cc, const Def* dbg)
         : Def(Node, pi, 2, u64(cc), dbg) {}
 
 public:

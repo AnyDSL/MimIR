@@ -94,7 +94,7 @@ const Def* LowerTypedClos::rewrite(const Def* def) {
 
     if (auto ct = isa_clos_type(def)) {
         auto pi = rewrite(ct->op(1))->as<Pi>();
-        if (pi->is_basicblock()) pi = w.cn(insert_ret(pi->dom(), dummy_ret_->type()));
+        if (pi->is_basicblock()) pi = w.cn(insert_ret(pi->dom(), dummy_ret_->type()))->as<Pi>();
         auto env_type = rewrite(ct->op(2));
         return map(def, w.sigma({pi, env_type}));
     } else if (auto proj = def->isa<Extract>()) {

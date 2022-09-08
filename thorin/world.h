@@ -152,10 +152,10 @@ public:
     }
     ///@}
 
-    /// @name Universe, Type, Var, Rho, Proxy, Infer
+    /// @name Universe, Type, Var, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
-    const Type* type(const Def* level, const Def* dbg = {}) { return unify<Type>(1, level, dbg)->as<Type>(); }
+    const Def* type(const Def* level, const Def* dbg = {});
     template<level_t level = 0>
     const Type* type(const Def* dbg = {}) {
         if constexpr (level == 0)
@@ -163,10 +163,8 @@ public:
         else if constexpr (level == 1)
             return data_.type_1_;
         else
-            return type(lit_univ(level), dbg);
+            return type(lit_univ(level), dbg)->as<Type>();
     }
-    const Def* rho(const Def* shape, u64 level, const Def* dbg = {});
-
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
@@ -175,6 +173,28 @@ public:
     Infer* nom_infer(const Def* type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
     Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
     Infer* nom_infer_of_infer_level(const Def* dbg = {}) { return nom_infer(nom_infer_univ(dbg), dbg); }
+    ///@}
+
+    /// @name Rho & Bundle
+    ///@{
+    const Def* rho(const Def* shape, u64 level, const Def* dbg = {});
+    const Def* bundle(Defs ops, u64 level);
+    template<class F>
+    const Def* rebundle(const Bundle* b, u64 level, F&& f) {
+        DefArray ops(b->num_ops());
+        for (size_t i = 0, e = b->num_ops(); i != e; ++i) ops[i] = f(b->op(i));
+        return bundle(ops, level);
+    }
+    /// Same as aboe but uses `b->level()` as level.
+    template<class F>
+    const Def* rebundle(const Bundle* b, F f) {
+        return rebundle(b, b->level(), f);
+    }
+    /// Same as aboe but uses `b->level() - 1` as level.
+    template<class F>
+    const Def* debundle(const Bundle* b, F f) {
+        return rebundle(b, b->level() - 1, f);
+    }
     ///@}
 
     /// @name Axiom
@@ -217,31 +237,24 @@ public:
 
     /// @name Pi
     ///@{
-    const Pi* pi(const Def* dom, const Def* codom, const Def* dbg = {}) {
-        return unify<Pi>(2, codom->unfold_type(), dom, codom, dbg);
-    }
-    const Pi* pi(Defs dom, const Def* codom, const Def* dbg = {}) { return pi(sigma(dom), codom, dbg); }
+    const Def* pi(const Def* dom, const Def* codom, const Def* dbg = {});
+    const Def* pi(Defs dom, const Def* codom, const Def* dbg = {}) { return pi(sigma(dom), codom, dbg); }
     Pi* nom_pi(const Def* type, const Def* dbg = {}) { return insert<Pi>(2, type, dbg); }
     ///@}
 
     /// @name Pi: continuation type (cn), i.e., Pi type with codom Bottom
     ///@{
-    const Pi* cn() { return cn(sigma()); }
-    const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, type_bot(), dbg); }
-    const Pi* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
+    const Def* cn() { return cn(sigma()); }
+    const Def* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, type_bot(), dbg); }
+    const Def* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
     ///@}
 
     /// @name Lam%bda
     ///@{
-    Lam* nom_lam(const Pi* cn, Lam::CC cc = Lam::CC::C, const Def* dbg = {}) {
-        auto lam = insert<Lam>(2, cn, cc, dbg);
-        return lam;
-    }
-    Lam* nom_lam(const Pi* cn, const Def* dbg = {}) { return nom_lam(cn, Lam::CC::C, dbg); }
-    const Lam* lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg) {
-        return unify<Lam>(2, pi, filter, body, dbg);
-    }
-    const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_tt(), body, dbg); }
+    const Def* lam(const Def* pi, const Def* filter, const Def* body, const Def* dbg);
+    const Def* lam(const Def* pi, const Def* body, const Def* dbg) { return lam(pi, lit_tt(), body, dbg); }
+    Lam* nom_lam(const Def* cn, Lam::CC cc = Lam::CC::C, const Def* dbg = {}) { return insert<Lam>(2, cn, cc, dbg); }
+    Lam* nom_lam(const Def* cn, const Def* dbg = {}) { return nom_lam(cn, Lam::CC::C, dbg); }
     Lam* exit() { return data_.exit_; } ///< Used as a dummy exit node within Scope.
     ///@}
 

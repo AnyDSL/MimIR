@@ -23,20 +23,20 @@ inline const App* type_ptr(const Def* pointee, nat_t addr_space = AddrSpace::Gen
 }
 
 /// Same as World::cn / World::pi but adds a World::type_mem-typed Var to each Pi.
-inline const Pi* cn_mem(const Def* dom, const Def* dbg = {}) {
+inline const Def* cn_mem(const Def* dom, const Def* dbg = {}) {
     World& w = dom->world();
     return w.cn({type_mem(w), dom}, dbg);
 }
-inline const Pi* cn_mem_ret(const Def* dom, const Def* ret_dom, const Def* dbg = {}) {
+inline const Def* cn_mem_ret(const Def* dom, const Def* ret_dom, const Def* dbg = {}) {
     World& w = dom->world();
     return w.cn({type_mem(w), dom, cn_mem(ret_dom)}, dbg);
 }
-inline const Pi* pi_mem(const Def* domain, const Def* codomain, const Def* dbg = {}) {
+inline const Def* pi_mem(const Def* domain, const Def* codomain, const Def* dbg = {}) {
     World& w = domain->world();
     auto d   = w.sigma({type_mem(w), domain});
     return w.pi(d, w.sigma({type_mem(w), codomain}), dbg);
 }
-inline const Pi* fn_mem(const Def* domain, const Def* codomain, const Def* dbg = {}) {
+inline const Def* fn_mem(const Def* domain, const Def* codomain, const Def* dbg = {}) {
     World& w = domain->world();
     return w.cn({type_mem(w), domain, cn_mem(codomain)}, dbg);
 }
