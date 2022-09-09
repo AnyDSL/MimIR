@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <string>
+
 #include "thorin/util/assert.h"
 
 #include "dialects/autodiff/autodiff.h"
@@ -469,48 +472,21 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         world.DLOG("Augment axiom: {} : {}", ax, ax->type());
         world.DLOG("axiom curry: {}", ax->curry());
         world.DLOG("axiom flags: {}", ax->flags());
-        // return augment_axiom(ax, f, f_diff);
+        std::string diff_name = ax->name();
+        findAndReplaceAll(diff_name, ".", "_");
+        findAndReplaceAll(diff_name, "%", "");
+        diff_name = "internal_diff_" + diff_name;
+        world.DLOG("axiom name: {}", ax->name());
+        world.DLOG("axiom function name: {}", diff_name);
 
-        if (ax->flags() == core::wrap::mul) {
-            world.DLOG("multiplication axiom flags");
-
-            auto mul_deriv_cps = world.lookup("internal_diff_mul_deriv_cps");
-            // auto mul_deriv_ds  = world.lookup("mul_deriv_ds");
-            if (!mul_deriv_cps) {
-                world.ELOG("multiplication derivative in cps not found");
-            } else {
-                world.DLOG("mul deriv cps: {} : {}", mul_deriv_cps, mul_deriv_cps->type());
-            }
-            // if (!mul_deriv_ds) {
-            //     world.ELOG("multiplication derivative in ds not found");
-            // } else {
-            //     world.DLOG("mul deriv ds: {} : {}", mul_deriv_ds, mul_deriv_ds->type());
-            // }
-            // we use ds =>
-            // inlining already needed for \Pi arguments => should(/needs to) work
-            // no need for cps2ds axiom insertion in the transformation after \Pi arguments
-            // handling of the difference between ds operations and cps functions
-            //   already needed for functions vs operators
-
-            // auto mul_deriv_ds2  = world.lookup("mul_deriv_ds_by_cps");
-            // assert(mul_deriv_ds2);
-
-            world.DLOG("filter of mul_deriv_cps: {}", mul_deriv_cps->as<Lam>()->filter());
-            mul_deriv_cps->as_nom<Lam>()->set_filter(true);
-            world.DLOG("updated filter of mul_deriv_cps: {}", mul_deriv_cps->as<Lam>()->filter());
-            // assert(0);
-            return mul_deriv_cps;
-
-            // world.DLOG("filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
-            // mul_deriv_ds->as_nom<Lam>()->set_filter(true);
-            // world.DLOG("updated filter of mul_deriv_ds: {}", mul_deriv_ds->as<Lam>()->filter());
-            // // world.DLOG("filter of mul_deriv_ds2: {}", mul_deriv_ds2->as<Lam>()->filter());
-            // assert(0);
-
-            // return mul_deriv_ds;
+        auto diff_fun = world.lookup(diff_name);
+        if (!diff_fun) {
+            world.ELOG("derivation not found: {}", diff_name);
+            auto expected_type = autodiff_type_fun(ax->type());
+            world.ELOG("expected: {} : {}", diff_name, expected_type);
+            assert(false && "unhandled axiom");
         }
-
-        assert(false && "unhandled axiom");
+        return diff_fun;
     }
 
     // TODO: remaining (lambda, axiom)

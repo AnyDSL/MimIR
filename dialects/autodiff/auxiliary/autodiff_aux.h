@@ -63,3 +63,5 @@ Match<AxTag, detail::Enum2Def<AxTag>> raw_match(AxTag sub, const Def* def) {
 }
 
 } // namespace thorin
+
+void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr);

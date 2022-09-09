@@ -69,7 +69,20 @@ const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
 }
 
 const Pi* autodiff_type_fun_pi(const Pi* pi) {
-    auto& world        = pi->world();
+    auto& world = pi->world();
+    if (!is_continuation_type(pi)) {
+        // TODO: dependency
+        auto arg = pi->dom();
+        auto ret = pi->codom();
+        if (ret->isa<Pi>()) {
+            auto aug_arg = autodiff_type_fun(arg);
+            if (!aug_arg) return nullptr;
+            auto aug_ret = autodiff_type_fun(pi->codom());
+            if (!aug_ret) return nullptr;
+            return world.pi(aug_arg, aug_ret);
+        }
+        return autodiff_type_fun(arg, ret);
+    }
     auto [arg, ret_pi] = pi->doms<2>();
     auto ret           = ret_pi->as<Pi>()->dom();
     world.DLOG("compute AD type for pi");
@@ -83,11 +96,20 @@ const Def* autodiff_type_fun(const Def* ty) {
     if (auto pi = ty->isa<Pi>()) { return autodiff_type_fun_pi(pi); }
     // TODO: what is this object? (only numbers are printed)
     // possible abstract type from autodiff axiom
-    world.WLOG("AutoDiff on type: {}", ty);
+    world.DLOG("AutoDiff on type: {}", ty);
     if (auto app = ty->isa<App>()) {
         auto callee = app->callee();
         if (callee == world.type_int() || callee == world.type_real()) { return ty; }
     }
+    if (ty == world.type_nat()) return ty;
+    if (auto arr = ty->isa<Arr>()) {
+        auto shape   = arr->shape();
+        auto body    = arr->body();
+        auto body_ad = autodiff_type_fun(body);
+        if (!body_ad) return nullptr;
+        return world.arr(shape, body_ad);
+    }
+    world.WLOG("no-diff type: {}", ty);
     // ty->dump(300);
     // world.write("tmp.txt");
     // can not work with
@@ -244,3 +266,11 @@ const Def* compose_continuation(const Def* f, const Def* g) {
 }
 
 } // namespace thorin
+
+void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr) {
+    size_t pos = data.find(toSearch);
+    while (pos != std::string::npos) {
+        data.replace(pos, toSearch.size(), replaceStr);
+        pos = data.find(toSearch, pos + replaceStr.size());
+    }
+}

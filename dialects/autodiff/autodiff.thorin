@@ -132,7 +132,24 @@
 // };
 
 
-.lam .extern internal_diff_mul_deriv_cps
+.lam .extern internal_diff_core_wrap_add
+    [m:.Nat, w:.Nat] -> 
+    (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
+    = {
+    .cn inner_add_deriv_cps
+        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
+        = {
+        .let result = %core.wrap.add (m,w) (a,b);
+        .cn add_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+            pb_ret (s,s)
+        };
+        ret (result,add_pb)
+    };
+    inner_add_deriv_cps
+};
+
+
+.lam .extern internal_diff_core_wrap_mul
     [m:.Nat, w:.Nat] -> 
     (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
     = {
