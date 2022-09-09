@@ -28,6 +28,7 @@ private:
 
     const Def* rewrite_lam(Lam* lam);
     const Def* rewrite_body(const Def*);
+    const Def* rewrite_body_(const Def*);
 
     // void rewrite_lam(Lam* lam);
     // const Def* rewrite_(const Def*);

@@ -31,6 +31,12 @@ const Def* CPS2DS::rewrite_lam(Lam* lam) {
 }
 
 const Def* CPS2DS::rewrite_body(const Def* def) {
+    if (auto i = rewritten_.find(def); i != rewritten_.end()) return i->second;
+    rewritten_[def] = rewrite_body_(def);
+    return rewritten_[def];
+}
+
+const Def* CPS2DS::rewrite_body_(const Def* def) {
     auto& world = def->world();
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
