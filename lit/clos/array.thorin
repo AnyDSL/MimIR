@@ -55,9 +55,9 @@
     .let load2_mem = load2#0:(%Int 2);
     .let load2_val = load2#1:(%Int 2);
 
-    .cn callback (mem: %mem.M, x : i32) = {
+    .cn callback [mem: %mem.M, x : i32] = {
         return (mem, x)
     };
 
-    func(mem, 1:i32, callback)
+    func(load2_mem, 1:i32, callback)
 };
