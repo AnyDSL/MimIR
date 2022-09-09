@@ -215,7 +215,6 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
 
     if (err()) {
         if (!pi) err()->err(dbg->loc(), "called expression '{}' is not of function type", callee);
-        arg->dump();
         if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
     }
 
@@ -352,8 +351,8 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
     // e.g. (t, f)#cond, where t&f's types contain nominals but still are alpha-equiv
     // for now just use t's type.
     if (auto sigma = type->isa<Sigma>();
-        sigma && std::all_of(sigma->ops().begin() + 1, sigma->ops().end(),
-                             [&](auto op) { return checker().equiv<false>(sigma->op(0), op, dbg); }))
+        sigma /*&& std::all_of(sigma->ops().begin() + 1, sigma->ops().end(),
+                             [&](auto op) { return checker().equiv<false>(sigma->op(0), op, dbg); })*/)
         return unify<Extract>(2, sigma->op(0), d, index, dbg);
 
     if (err() && !type->isa<Arr>())

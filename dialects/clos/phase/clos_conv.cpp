@@ -244,6 +244,8 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         else
             return map(def->rebuild(w, new_type, new_ops, new_dbg));
     }
+
+    thorin::unreachable();
 }
 
 Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, Def2Def& subst) {

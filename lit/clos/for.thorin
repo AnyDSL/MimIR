@@ -1,0 +1,16 @@
+
+.import affine;
+.import mem;
+.import core;
+
+.cn .extern main (mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]) = {
+    .cn for_exit [acc : %Int 4294967296] = {
+        return (mem, acc)
+    };
+
+    .cn for_body [i : %Int 4294967296, acc : %Int 4294967296, continue : .Cn [%Int 4294967296]] = {
+        continue (%core.wrap.add (0:.Nat, 4294967296:.Nat) (i, acc))
+    };
+    %affine.For (4294967296, 1, (%Int 4294967296)) (0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296)), for_body, for_exit)
+};
+
