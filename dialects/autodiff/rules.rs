@@ -332,7 +332,7 @@ rcont:.Cn[
 
 // TODO: where to put cps2ds axioms (app vs lam)
 .rule:
-    (%autodiff.autodiff A (%core.wrap.mul)) ->
+    (%autodiff.autodiff (%core.wrap.mul)) ->
     mul_deriv_cps;
 
 
@@ -344,7 +344,7 @@ rcont:.Cn[
 
 
 .rule:
-    (%autodiff.autodiff A (%mem.load)) ->
+    (%autodiff.autodiff (%mem.load)) ->
     load_deriv;
 
 
@@ -352,3 +352,74 @@ rcont:.Cn[
 /// glue code: 
 /// - function creation, association
 /// - variable association
+
+
+
+
+
+
+/*
+
+Matrix:
+
+e = M × N
+
+e* = λS. M*(S × Nᵀ) + N*(Mᵀ × S)
+×* = λS. (S × Nᵀ, Mᵀ × S)
+
+zip f (M,N)
+
+zip' f' (M,N) = ...
+    zip* f'
+
+zip*:
+    λ S.
+    zip f' (M,N)
+    |> map snd
+    |> zip apply S
+    |> split
+
+zip*:
+    λ S. split(
+        mapReduce
+            (λ (m,n,s).
+                let (_, f*) = f' (m,n);
+                f* s
+            )
+            (M,N,S)
+    )
+
+
+N = M1 × M2
+N = mR + mul (M1,M2)
+ik           ij  jk
+
+// TODO: use mul'
+//   mul* = λs. (bs,as)
+M1* = mR + mul (S, M2)
+ij             ik  kj
+M2* = mR + mul (M1, S)
+jk              ji  ik
+
+
+
+N' = mR f' M1...Mn
+(N,N_s*) = split N'
+N* = λS. split (mR ... NS* S)
+
+Mi : Mat (Ei)
+N: Mat(Y)
+f: E1...En -> Y
+N' : Mat(Y × Y -> E1...En)
+N_S* : Nat(Y->E1...En)
+N*: Mat S -> [Mat Ei]
+
+TODO:
+does not work with reduction, dimensions
+
+
+use add f1 f2 = lambda s. add (f1 s) (f2 s)
+?
+
+
+*/

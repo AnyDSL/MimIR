@@ -486,6 +486,8 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
             world.ELOG("expected: {} : {}", diff_name, expected_type);
             assert(false && "unhandled axiom");
         }
+        // TODO: why does this cause a depth error?
+        // if (auto diff_lam = diff_fun->isa_nom<Lam>()) { diff_lam->set_filter(true); }
         return diff_fun;
     }
 
