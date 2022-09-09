@@ -334,32 +334,27 @@ const Def* Parser::parse_arr() {
 }
 
 const Def* Parser::parse_pack() {
-#if 0
-    // TODO This doesn't work. Rework this!
     auto track = tracker();
+
     scopes_.push();
     eat(Tok::Tag::D_angle_l);
 
-    const Def* shape;
-    // bool nom = false;
+    auto id = std::optional<Sym>();
     if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
-        auto sym = eat(Tok::Tag::M_id).sym();
+        id = eat(Tok::Tag::M_id).sym();
         eat(Tok::Tag::T_colon);
-
-        shape      = parse_expr("shape of a pack");
-        auto infer = world().nom_infer(world().type_int(shape), sym);
-        scopes_.bind(sym, infer);
-    } else {
-        shape = parse_expr("shape of a pack");
     }
 
+    auto shape = parse_expr("shape of a pack");
+    if (id) scopes_.bind(*id, world().rho(shape, rho_level_++, world().dbg(*id)));
     expect(Tok::Tag::T_semicolon, "pack");
     auto body = parse_expr("body of a pack");
+
+    --rho_level_;
     expect(Tok::Tag::D_angle_r, "closing delimiter of a pack");
     scopes_.pop();
+
     return world().pack(shape, body, track);
-#endif
-    return nullptr;
 }
 
 const Def* Parser::parse_block() {

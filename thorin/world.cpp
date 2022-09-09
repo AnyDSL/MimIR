@@ -521,7 +521,7 @@ const Lit* World::lit_int(const Def* type, u64 i, const Def* dbg) {
 }
 
 const Def* World::rho(const Def* shape, u64 level, const Def* dbg) {
-    if (auto s = isa_lit(shape)) return bundle(DefArray(*s, [this](size_t i) { return lit_nat(i); }), level);
+    if (auto s = isa_lit(shape)) return bundle(DefArray(*s, [&](size_t i) { return lit_int(*s, i); }), level);
     return unify<Rho>(1, type_int(shape), shape, level, dbg);
 }
 

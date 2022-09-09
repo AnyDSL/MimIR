@@ -185,12 +185,12 @@ public:
         for (size_t i = 0, e = b->num_ops(); i != e; ++i) ops[i] = f(b->op(i));
         return bundle(ops, level);
     }
-    /// Same as aboe but uses `b->level()` as level.
+    /// Same as above but uses `b->level()` as level.
     template<class F>
     const Def* rebundle(const Bundle* b, F f) {
         return rebundle(b, b->level(), f);
     }
-    /// Same as aboe but uses `b->level() - 1` as level.
+    /// Same as above but uses `b->level() - 1` as level.
     template<class F>
     const Def* debundle(const Bundle* b, F f) {
         return rebundle(b, b->level() - 1, f);
