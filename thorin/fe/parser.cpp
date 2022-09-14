@@ -755,8 +755,14 @@ void Parser::parse_nom_fun() {
     dom_p->bind(scopes_, lam_var);
 
     if (accept(Tok::Tag::T_assign)) {
-        auto body = parse_expr("body of a lambda");
-        lam->set(false, body);
+        const Def* filter = world().lit_bool(false);
+        auto body         = parse_expr("filter/body of a lambda");
+        if (ahead().tag() == Tok::Tag::T_comma) {
+            eat(Tok::Tag::T_comma);
+            filter = body;
+            body   = parse_expr("body of a lambda");
+        }
+        lam->set(filter, body);
     }
     expect(Tok::Tag::T_semicolon, "end of lambda");
 
