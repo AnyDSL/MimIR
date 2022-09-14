@@ -17,6 +17,7 @@ void optimize(World& world, PipelineBuilder& builder) {
     pipe.add<PassManPhase>(builder.opt_phase(world));
     pipe.add<LamSpec>();
     pipe.add<PassManPhase>(builder.codegen_prep_phase(world));
+    pipe.add<PassManPhase>(builder.opt_phase2(world));
     pipe.run();
 }
 

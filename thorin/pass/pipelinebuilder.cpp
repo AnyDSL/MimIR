@@ -23,6 +23,19 @@ void PipelineBuilder::extend_codegen_prep_phase(std::function<void(PassMan&)> ex
     codegen_prep_phase_extensions_.push_back(extension);
 }
 
+std::unique_ptr<PassMan> PipelineBuilder::opt_phase2(World& world) {
+    auto man = std::make_unique<PassMan>(world);
+
+    man->add<PartialEval>();
+    man->add<BetaRed>();
+    auto er = man->add<EtaRed>();
+    auto ee = man->add<EtaExp>(er);
+    man->add<Scalerize>(ee);
+    man->add<TailRecElim>(er);
+
+    return man;
+}
+
 std::unique_ptr<PassMan> PipelineBuilder::opt_phase(World& world) {
     auto man = std::make_unique<PassMan>(world);
 
