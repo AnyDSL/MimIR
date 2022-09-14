@@ -23,15 +23,15 @@ eval_thorin $T2 -
 
 .let I32 = %Int 4294967296;
 
-.cn g [a:I32, ret: .Cn [I32]] = {
-    .let b = %core.wrap.add (0:.Nat, 4294967296:.Nat) (3:I32, a);
-    ret b
+.cn g [b:I32, ret: .Cn [I32]] = {
+    .let c = %core.wrap.add (0:.Nat, 4294967296:.Nat) (3:I32, b);
+    ret c
 };
 
 // 4(3+2a)
 .cn f [a:I32, ret: .Cn [I32]] = {
     .cn ret_cont [x:I32] = {
-        .let b = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (4:I32, a);
+        .let b = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (4:I32, x);
         ret b
     };
     .let b = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (2:I32, a);
@@ -51,16 +51,17 @@ eval_thorin $T2 -
     };
 
     .let f_diff = %autodiff.autodiff (.Cn [I32,.Cn[I32]]) f;
-    .let f_diff_cast = 
-        // %core.bitcast 
-        // (
-        //     .Cn [I32, .Cn[I32, .Cn[I32, .Cn[I32]]]],
-        //     %autodiff.autodiff_type (.Cn [I32, .Cn[I32]])
-        // ) 
-        f_diff;
 
     .let c = (42:I32);
-    f_diff_cast (c,ret_cont)
+    f_diff (c,ret_cont)
+
+
+    // .cn ret_cont r::[I32] = {
+    //     return (mem, r)
+    // };
+
+    // .let c = (42:I32);
+    // f (c,ret_cont)
 };
 
 
