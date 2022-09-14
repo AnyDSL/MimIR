@@ -3,7 +3,7 @@
 
 // ./build/bin/thorin -d debug ./lit/debug/force.thorin --output-thorin - -VVVV
 
-.import debug;
+.import tool;
 .import mem;
 
 .lam U [n:.Nat] -> * = {
@@ -12,7 +12,7 @@
 
 .let I32 = %Int 4294967296;
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
-    .let c = (42:(%debug.type_force (U 4294967296)));
+    .let c = (42:(%tool.type_force (U 4294967296)));
     return (mem, c)
 };
 

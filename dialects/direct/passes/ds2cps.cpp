@@ -26,14 +26,13 @@ namespace thorin::direct {
 //     // if (body != b) world().ILOG("changed body of {}", lam);
 // }
 
-
 const Def* DS2CPS::rewrite(const Def* def) {
     auto& world = def->world();
-    if(auto app = def->isa<App>()) {
+    if (auto app = def->isa<App>()) {
         auto callee = app->callee();
         // world.DLOG("callee {} : {}", callee, callee->type());
         // world.DLOG("arg {} : {}", app->arg(), app->arg()->type());
-        if(auto lam = callee->isa_nom<Lam>()) {
+        if (auto lam = callee->isa_nom<Lam>()) {
             world.DLOG("encountered lam app");
             auto new_lam = rewrite_lam(lam);
             auto new_app = world.app(new_lam, app->arg());
@@ -54,7 +53,11 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     // ignore ds on type level
     if (lam->type()->codom()->isa<Type>()) { return lam; }
     // ignore higher order function
-    if (lam->type()->codom()->isa<Pi>()) { return lam; }
+    if (lam->type()->codom()->isa<Pi>()) {
+        // causes segfault in depth
+        // lam->set_filter(true);
+        return lam;
+    }
 
     world().DLOG("rewrite DS function {} : {}", lam, lam->type());
 

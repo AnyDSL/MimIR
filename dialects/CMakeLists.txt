@@ -46,6 +46,16 @@ add_thorin_dialect(core
     INSTALL
 )
 
+add_thorin_dialect(tool
+    SOURCES
+        tool/tool.cpp
+        tool/tool.h
+        tool/passes/set_filter.h
+        tool/passes/set_filter.cpp
+        tool/normalizers.cpp
+    INSTALL
+)
+
 add_thorin_dialect(debug
     SOURCES
         debug/debug.cpp
