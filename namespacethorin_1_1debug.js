@@ -8,7 +8,7 @@ var namespacethorin_1_1debug =
       [ "Axiom_Id", "namespacethorin_1_1debug.html#ac294a117e961a41adb12e63e581192f3a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "debug_print", "namespacethorin_1_1debug.html#a2b2c4cd64c9d4ca11c7c144e3ae4b2f1", null ],
-    [ "normalize_dbg", "namespacethorin_1_1debug.html#ac54444010e8fef5495be91a8a9da842c", null ],
+    [ "normalize_dbg", "namespacethorin_1_1debug.html#abc25d3f93d3a594e1be71cd2fa6523d2", null ],
     [ "normalize_dbg_perm", "namespacethorin_1_1debug.html#a30bd4d575db72a287d44bfc5fe7206f6", null ],
     [ "operator&", "namespacethorin_1_1debug.html#a1ae67a19bc3398aef7e24f5c8631ba74", null ],
     [ "operator&", "namespacethorin_1_1debug.html#a3842eea7b332408000ddaa35d7b883d7", null ],
