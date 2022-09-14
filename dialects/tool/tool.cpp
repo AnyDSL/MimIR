@@ -14,7 +14,7 @@ using namespace thorin;
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"tool",
             [](thorin::PipelineBuilder& builder) {
-                builder.extend_codegen_prep_phase([](PassMan& man) { man.add<thorin::tool::SetFilter>(); });
+                builder.extend_opt_prep_phase2([](PassMan& man) { man.add<thorin::tool::SetFilter>(); });
             },
             nullptr, [](Normalizers& normalizers) { tool::register_normalizers(normalizers); }};
 }
