@@ -31,6 +31,15 @@ void PipelineBuilder::extend_opt_prep_phase2(std::function<void(PassMan&)> exten
     opt_prep_phase2_extensions_.push_back(extension);
 }
 
+void PipelineBuilder::add_opt(PassMan man) {
+    man.add<PartialEval>();
+    man.add<BetaRed>();
+    auto er = man.add<EtaRed>();
+    auto ee = man.add<EtaExp>(er);
+    man.add<Scalerize>(ee);
+    man.add<TailRecElim>(er);
+}
+
 std::unique_ptr<PassMan> PipelineBuilder::opt_phase2(World& world) {
     auto man = std::make_unique<PassMan>(world);
 
