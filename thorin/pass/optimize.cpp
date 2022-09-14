@@ -47,6 +47,9 @@ void optimize(World& world, PipelineBuilder& builder) {
     builder.extend_opt_phase(200, [](thorin::PassMan& man) { man.add<LamSpec>(); });
     builder.extend_opt_phase(300, [](thorin::PassMan& man) { man.add<RetWrap>(); });
 
+    builder.add_opt(110);
+    builder.add_opt(120);
+
     Pipeline pipe(world);
 
     auto passes = builder.passes();

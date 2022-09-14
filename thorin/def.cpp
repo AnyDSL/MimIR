@@ -335,6 +335,11 @@ bool Def::is_set() const {
 
     if (std::ranges::all_of(ops(), [](auto op) { return op != nullptr; })) return true;
 
+    if(!(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }))) {
+        world().ELOG("{} {}", this->unique_name(), this->name());
+        assert(false && "some operands are set, others aren't");
+    }
+
     assert(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
     return false;
 }

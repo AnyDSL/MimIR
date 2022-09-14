@@ -22,6 +22,14 @@
 
 namespace thorin {
 
+void PipelineBuilder::extend_opt_phase(std::function<void(PassMan&)> extension) {
+    extend_opt_phase(100, std::move(extension));
+}
+
+void PipelineBuilder::extend_codegen_prep_phase(std::function<void(PassMan&)> extension) {
+    extend_opt_phase(300, std::move(extension));
+}
+
 void PipelineBuilder::extend_opt_phase(int i, std::function<void(PassMan&)> extension) {
     // adds extension to the i-th optimization phase
     // if the ith phase does not exist, it is created

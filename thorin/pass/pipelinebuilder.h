@@ -12,8 +12,9 @@ public:
     explicit PipelineBuilder() {}
 
     void extend_opt_phase(int i, std::function<void(PassMan&)>);
+    void extend_opt_phase(std::function<void(PassMan&)>);
     void add_opt(int i);
-    // void extend_codegen_prep_phase(std::function<void(PassMan&)>);
+    void extend_codegen_prep_phase(std::function<void(PassMan&)>);
     // void extend_opt_prep_phase1(std::function<void(PassMan&)>);
     // void extend_opt_prep_phase2(std::function<void(PassMan&)>);
 
