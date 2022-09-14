@@ -29,6 +29,7 @@
 /// for derivatives
 .import core;
 .import direct;
+.import tool;
 ///
 ///
 /// ## Types
@@ -153,10 +154,10 @@
 .lam .extern internal_diff_core_wrap_add
     [m:.Nat, w:.Nat] -> 
     (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
-    = {
+    = (1:(%Int 2)),{
     .cn inner_add_deriv_cps
         [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
-        = {
+        = (1:(%Int 2)),{
         .let result = %core.wrap.add (m,w) (a,b);
         .cn add_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
             pb_ret (s,s)
@@ -170,16 +171,17 @@
 .lam .extern internal_diff_core_wrap_mul
     [m:.Nat, w:.Nat] -> 
     (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
-    = {
+    = (1:(%Int 2)),{ 
     .cn inner_mul_deriv_cps
         [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
-        = {
+        = (1:(%Int 2)),{
         .let result = %core.wrap.mul (m,w) (a,b);
         .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
             .let lhs = %core.wrap.mul (m,w) (s,b);
             .let rhs = %core.wrap.mul (m,w) (s,a);
             pb_ret (lhs, rhs)
         };
+        // %tool.set_filter (1:(%Int 2),ret (result,mul_pb))
         ret (result,mul_pb)
     };
     inner_mul_deriv_cps

@@ -16,14 +16,14 @@ using namespace thorin;
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"autodiff",
             [](thorin::PipelineBuilder& builder) {
-                builder.extend_opt_phase([](thorin::PassMan& man) {
-                    man.add<thorin::autodiff::AutoDiffEval>();
+                builder.extend_opt_phase(105, [](thorin::PassMan& man) { man.add<thorin::autodiff::AutoDiffEval>(); });
+                builder.extend_opt_phase(111, [](thorin::PassMan& man) {
                     // in theory only after partial eval (beta, ...)
                     // but before other simplification
                     // zero and add need to be close together
                     man.add<thorin::autodiff::AutoDiffZero>();
                 });
-                builder.extend_codegen_prep_phase([](PassMan& man) {
+                builder.extend_opt_phase(299, [](PassMan& man) {
                     man.add<thorin::autodiff::AutoDiffZeroCleanup>();
                     man.add<thorin::autodiff::AutoDiffExternalCleanup>();
                 });
