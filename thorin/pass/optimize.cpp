@@ -39,62 +39,74 @@
 namespace thorin {
 
 void optimize(World& world, PipelineBuilder& builder) {
-    Pipeline pipe(world);
-    // pipe.add<PassManPhase>(builder.opt_prep_phase1(world));
-    pipe.add<Scalerize>();
-    pipe.add<EtaRed>();
-    pipe.add<TailRecElim>();
+    builder.extend_opt_phase(0, [](thorin::PassMan& man) { man.add<Scalerize>(); });
+    builder.extend_opt_phase(1, [](thorin::PassMan& man) { man.add<EtaRed>(); });
+    builder.extend_opt_phase(2, [](thorin::PassMan& man) { man.add<TailRecElim>(); });
 
-    {
-        auto man = std::make_unique<PassMan>(world);
-        // builder.add_opt(*man);
-        man->add<PartialEval>();
-        man->add<BetaRed>();
-        auto er = man->add<EtaRed>();
-        auto ee = man->add<EtaExp>(er);
-        man->add<Scalerize>(ee);
-        man->add<TailRecElim>(er);
-        pipe.add<PassManPhase>(std::move(man));
-    }
-    // pipe.add<autodiff::AutoDiffEval>();
-    {
-        auto man = std::make_unique<PassMan>(world);
-        // builder.add_opt(*man);
-        man->add<PartialEval>();
-        man->add<BetaRed>();
-        auto er = man->add<EtaRed>();
-        auto ee = man->add<EtaExp>(er);
-        man->add<Scalerize>(ee);
-        man->add<TailRecElim>(er);
-        pipe.add<PassManPhase>(std::move(man));
-    }
-    // pipe.add<autodiff::AutoDiffZero>();
-    // pipe.add<direct::DS2CPS>();
-    // pipe.add<direct::CPS2DS>();
-    {
-        auto man = std::make_unique<PassMan>(world);
-        // builder.add_opt(*man);
-        man->add<PartialEval>();
-        man->add<BetaRed>();
-        auto er = man->add<EtaRed>();
-        auto ee = man->add<EtaExp>(er);
-        man->add<Scalerize>(ee);
-        man->add<TailRecElim>(er);
-        pipe.add<PassManPhase>(std::move(man));
-    }
+    builder.add_opt(100);
+    builder.extend_opt_phase(200, [](thorin::PassMan& man) { man.add<LamSpec>(); });
+    builder.extend_opt_phase(300, [](thorin::PassMan& man) { man.add<RetWrap>(); });
+
+    Pipeline pipe(world);
+
+    auto passes = builder.passes();
+    for (auto p : passes) { pipe.add<PassManPhase>(builder.opt_phase(p, world)); }
+
+    // pipe.add<PassManPhase>(builder.opt_prep_phase1(world));
+    // pipe.add<Scalerize>();
+    // pipe.add<EtaRed>();
+    // pipe.add<TailRecElim>();
+
+    // {
+    //     auto man = std::make_unique<PassMan>(world);
+    //     // builder.add_opt(*man);
+    //     man->add<PartialEval>();
+    //     man->add<BetaRed>();
+    //     auto er = man->add<EtaRed>();
+    //     auto ee = man->add<EtaExp>(er);
+    //     man->add<Scalerize>(ee);
+    //     man->add<TailRecElim>(er);
+    //     pipe.add<PassManPhase>(std::move(man));
+    // }
+    // // pipe.add<autodiff::AutoDiffEval>();
+    // {
+    //     auto man = std::make_unique<PassMan>(world);
+    //     // builder.add_opt(*man);
+    //     man->add<PartialEval>();
+    //     man->add<BetaRed>();
+    //     auto er = man->add<EtaRed>();
+    //     auto ee = man->add<EtaExp>(er);
+    //     man->add<Scalerize>(ee);
+    //     man->add<TailRecElim>(er);
+    //     pipe.add<PassManPhase>(std::move(man));
+    // }
+    // // pipe.add<autodiff::AutoDiffZero>();
+    // // pipe.add<direct::DS2CPS>();
+    // // pipe.add<direct::CPS2DS>();
+    // {
+    //     auto man = std::make_unique<PassMan>(world);
+    //     // builder.add_opt(*man);
+    //     man->add<PartialEval>();
+    //     man->add<BetaRed>();
+    //     auto er = man->add<EtaRed>();
+    //     auto ee = man->add<EtaExp>(er);
+    //     man->add<Scalerize>(ee);
+    //     man->add<TailRecElim>(er);
+    //     pipe.add<PassManPhase>(std::move(man));
+    // }
 
     // pipe.add<PassManPhase>(builder.opt_prep_phase2(world));
     // pipe.add<PassManPhase>(builder.opt_phase(world));
 
-    pipe.add<LamSpec>();
+    // pipe.add<LamSpec>();
 
-    {
-        auto man = std::make_unique<PassMan>(world);
-        man->add<RetWrap>();
-        // zero cleanup
-        // external cleanup
-        pipe.add<PassManPhase>(std::move(man));
-    }
+    // {
+    //     auto man = std::make_unique<PassMan>(world);
+    //     man->add<RetWrap>();
+    //     // zero cleanup
+    //     // external cleanup
+    //     pipe.add<PassManPhase>(std::move(man));
+    // }
 
     // pipe.add<PassManPhase>(builder.codegen_prep_phase(world));
     // pipe.add<PassManPhase>(builder.opt_phase2(world));

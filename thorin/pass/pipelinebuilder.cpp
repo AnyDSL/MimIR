@@ -1,5 +1,12 @@
 #include "thorin/pass/pipelinebuilder.h"
 
+#include <compare>
+
+#include <vector>
+
+#include "thorin/def.h"
+#include "thorin/lattice.h"
+
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
@@ -15,81 +22,40 @@
 
 namespace thorin {
 
-void PipelineBuilder::extend_opt_phase(std::function<void(PassMan&)> extension) {
-    opt_phase_extensions_.push_back(extension);
+void PipelineBuilder::extend_opt_phase(int i, std::function<void(PassMan&)> extension) {
+    // adds extension to the i-th optimization phase
+    // if the ith phase does not exist, it is created
+    if (phase_extensions_.contains(i)) {
+        phase_extensions_[i].push_back(extension);
+    } else {
+        phase_extensions_[i] = {extension};
+    }
 }
 
-void PipelineBuilder::extend_codegen_prep_phase(std::function<void(PassMan&)> extension) {
-    codegen_prep_phase_extensions_.push_back(extension);
+void PipelineBuilder::add_opt(int i) {
+    extend_opt_phase(i, [](thorin::PassMan& man) {
+        man.add<PartialEval>();
+        man.add<BetaRed>();
+        auto er = man.add<EtaRed>();
+        auto ee = man.add<EtaExp>(er);
+        man.add<Scalerize>(ee);
+        man.add<TailRecElim>(er);
+    });
 }
 
-void PipelineBuilder::extend_opt_prep_phase1(std::function<void(PassMan&)> extension) {
-    opt_prep_phase1_extensions_.push_back(extension);
+std::vector<int> PipelineBuilder::passes() {
+    std::vector<int> keys;
+    for (auto iter = phase_extensions_.begin(); iter != phase_extensions_.end(); iter++) {
+        keys.push_back(iter->first);
+    }
+    std::sort(keys.begin(), keys.end());
+    return keys;
 }
 
-void PipelineBuilder::extend_opt_prep_phase2(std::function<void(PassMan&)> extension) {
-    opt_prep_phase2_extensions_.push_back(extension);
-}
-
-void PipelineBuilder::add_opt(PassMan man) {
-    man.add<PartialEval>();
-    man.add<BetaRed>();
-    auto er = man.add<EtaRed>();
-    auto ee = man.add<EtaExp>(er);
-    man.add<Scalerize>(ee);
-    man.add<TailRecElim>(er);
-}
-
-std::unique_ptr<PassMan> PipelineBuilder::opt_phase2(World& world) {
+std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
     auto man = std::make_unique<PassMan>(world);
 
-    man->add<PartialEval>();
-    man->add<BetaRed>();
-    auto er = man->add<EtaRed>();
-    auto ee = man->add<EtaExp>(er);
-    man->add<Scalerize>(ee);
-    man->add<TailRecElim>(er);
-
-    return man;
-}
-
-std::unique_ptr<PassMan> PipelineBuilder::opt_phase(World& world) {
-    auto man = std::make_unique<PassMan>(world);
-
-    man->add<PartialEval>();
-    man->add<BetaRed>();
-    auto er = man->add<EtaRed>();
-    auto ee = man->add<EtaExp>(er);
-    man->add<Scalerize>(ee);
-    man->add<TailRecElim>(er);
-
-    for (const auto& ext : opt_phase_extensions_) ext(*man);
-
-    return man;
-}
-
-std::unique_ptr<PassMan> PipelineBuilder::codegen_prep_phase(World& world) {
-    auto man = std::make_unique<PassMan>(world);
-
-    man->add<RetWrap>();
-
-    for (const auto& ext : codegen_prep_phase_extensions_) ext(*man);
-
-    return man;
-}
-
-std::unique_ptr<PassMan> PipelineBuilder::opt_prep_phase1(World& world) {
-    auto man = std::make_unique<PassMan>(world);
-
-    for (const auto& ext : opt_prep_phase1_extensions_) ext(*man);
-
-    return man;
-}
-
-std::unique_ptr<PassMan> PipelineBuilder::opt_prep_phase2(World& world) {
-    auto man = std::make_unique<PassMan>(world);
-
-    for (const auto& ext : opt_prep_phase2_extensions_) ext(*man);
+    for (const auto& ext : phase_extensions_[i]) ext(*man);
 
     return man;
 }
