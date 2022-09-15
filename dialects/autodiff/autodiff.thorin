@@ -135,13 +135,13 @@
 .lam .extern internal_diff_core_icmp_xYgLE 
     [w: .Nat] ->
     (.Cn[[%Int w, %Int w], .Cn[%Int 2, .Cn[%Int 2, .Cn[%Int w, %Int w]]]])
-    = {
+    = (1:(%Int 2)),{
         .cn inner_cmp 
         [[a: %Int w, b: %Int w], ret:.Cn[%Int 2, .Cn[%Int 2, .Cn[%Int w, %Int w]]]]
-        = {
+        = (1:(%Int 2)),{
             .let result = %core.icmp.sle (w) (a,b);
             .cn cmp_pb [s: %Int 2, pb_ret:.Cn[%Int w, %Int w]]
-            = {
+            = (1:(%Int 2)),{
                 .let z = 0:(%Int w);
                 pb_ret (z, z)
             };
@@ -159,7 +159,7 @@
         [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
         = (1:(%Int 2)),{
         .let result = %core.wrap.add (m,w) (a,b);
-        .cn add_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+        .cn add_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = (1:(%Int 2)),{
             pb_ret (s,s)
         };
         ret (result,add_pb)
@@ -176,7 +176,7 @@
         [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
         = (1:(%Int 2)),{
         .let result = %core.wrap.mul (m,w) (a,b);
-        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
+        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = (1:(%Int 2)),{
             .let lhs = %core.wrap.mul (m,w) (s,b);
             .let rhs = %core.wrap.mul (m,w) (s,a);
             pb_ret (lhs, rhs)

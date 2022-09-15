@@ -1,5 +1,8 @@
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 
+#include "thorin/def.h"
+#include "thorin/tuple.h"
+
 #include "dialects/autodiff/autodiff.h"
 
 namespace thorin::autodiff {
@@ -108,6 +111,11 @@ const Def* autodiff_type_fun(const Def* ty) {
         auto body_ad = autodiff_type_fun(body);
         if (!body_ad) return nullptr;
         return world.arr(shape, body_ad);
+    }
+    if (auto sig = ty->isa<Sigma>()) {
+        // TODO: nom sigma
+        DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
+        return world.sigma(ops);
     }
     world.WLOG("no-diff type: {}", ty);
     // ty->dump(300);
@@ -228,12 +236,14 @@ const Def* continuation_codom(const Def* E) {
 /// h' = λ b. f(b,ret_h)
 const Def* compose_continuation(const Def* f, const Def* g) {
     assert(is_continuation(f));
+    auto& world = f->world();
+    world.DLOG("compose f (B->C): {} : {}", f, f->type());
+    world.DLOG("compose g (A->B): {} : {}", g, g->type());
     assert(is_returning_continuation(f));
     assert(is_returning_continuation(g));
 
-    auto& world = f->world();
-    auto F      = f->type()->as<Pi>();
-    auto G      = g->type()->as<Pi>();
+    auto F = f->type()->as<Pi>();
+    auto G = g->type()->as<Pi>();
 
     auto A = continuation_dom(G);
     auto B = continuation_codom(G);

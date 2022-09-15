@@ -43,7 +43,9 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("already augmented {} : {} to {} : {}", lam, lam->type(), augmented[lam], augmented[lam]->type());
         return augmented[lam];
     }
-    if (is_open_continuation(lam)) {
+    // TODO: better fix (another pass as analysis?)
+    if (is_open_continuation(lam) || lam->name().find("ret") != std::string::npos ||
+        lam->name().find("_cont") != std::string::npos) {
         // a open continuation is the same as return
         // cont: Cn[X]
         // cont': Cn[X,Cn[X,A]]
@@ -52,8 +54,10 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("found an open continuation {} : {}", lam, lam->type());
         auto cont_dom = lam->type()->dom(); // not only 0 but all
         auto pb_ty    = pullback_type(cont_dom, f_arg_ty);
+        auto aug_dom  = autodiff_type_fun(cont_dom);
+        world.DLOG("augmented domain {}", aug_dom);
         world.DLOG("pb type is {}", pb_ty);
-        auto aug_ty = world.cn({cont_dom, pb_ty});
+        auto aug_ty = world.cn({aug_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
         // assert(0);
         auto aug_lam              = world.nom_lam(aug_ty, world.dbg("aug_" + lam->name()));
@@ -490,6 +494,9 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         // if (auto diff_lam = diff_fun->isa_nom<Lam>()) { diff_lam->set_filter(true); }
         return diff_fun;
     }
+    // for axiom app
+    // else if (auto pi = def->isa<Pi>()) {
+    // }
 
     // TODO: remaining (lambda, axiom)
 
