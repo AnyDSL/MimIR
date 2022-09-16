@@ -63,7 +63,7 @@ World::World(const State& state)
         data_.lit_bool_[0] = lit_int(2, 0_u64);
         data_.lit_bool_[1] = lit_int(2, 1_u64);
     }
-    data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
+    data_.exit_ = nom_lam(cn(type_bot()), dbg("exit"));
 
     {
 #define CODE(T, o)             \
@@ -165,8 +165,8 @@ World::World(const State& state)
         data_.atomic_ = axiom(nullptr, ty, Axiom::Global_Dialect, Tag::Atomic, 0, dbg("atomic"));
     }
     { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i»
-        // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
-        // TODO select which Is/Os to zip
+      // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
+      // TODO select which Is/Os to zip
 #if 0
         auto rs = nom_sigma(type(), 2);
         rs->set(0, nat);
