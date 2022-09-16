@@ -52,18 +52,18 @@ World::World(const State& state)
     data_.lit_nat_0_   = lit_nat(0);
     data_.lit_nat_1_   = lit_nat(1);
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
-    data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
     auto nat           = type_nat();
 
     { // int/real: w: Nat -> *
         auto p             = pi(nat, type());
         data_.type_int_    = nullptr; // hack for alpha equiv check of sigma (dbg..)
-        data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0, dbg("Int"));
-        data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0, dbg("Real"));
+        data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0);
+        data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0);
         data_.type_bool_   = type_int(2)->as<App>();
         data_.lit_bool_[0] = lit_int(2, 0_u64);
         data_.lit_bool_[1] = lit_int(2, 1_u64);
     }
+    data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
 
     {
 #define CODE(T, o)             \
@@ -167,6 +167,7 @@ World::World(const State& state)
     { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i»
         // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
         // TODO select which Is/Os to zip
+#if 0
         auto rs = nom_sigma(type(), 2);
         rs->set(0, nat);
         rs->set(1, uniform_arr(rs->var(0, dbg("r")), nat));
@@ -198,6 +199,8 @@ World::World(const State& state)
         rs_pi->set_codom(is_os_pi);
 
         data_.zip_ = axiom(normalize_zip, rs_pi, Axiom::Global_Dialect, Tag::Zip, 0, dbg("zip"));
+#endif
+        data_.zip_ = nullptr;
     }
 }
 
@@ -212,7 +215,7 @@ World::~World() {
  * core calculus
  */
 
-const Def* World::type_shape(const Def* shape, const Def* dbg) {
+const Def* World::type_shape(const Def* shape, const Def*) {
     // TODO support more compplex shapes
     return type_int(shape);
 }

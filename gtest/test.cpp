@@ -29,7 +29,7 @@ TEST(Zip, fold) {
     auto f = w.fn(Wrap::add, w.lit_nat(0), w.lit_nat(width2mod(32)));
     auto i32_t = w.type_int_width(32);
     auto res = w.app(w.app(w.app(w.ax_zip(), {/*r*/w.lit_nat(2), /*s*/w.tuple({w.lit_nat(2), w.lit_nat(3)})}),
-                                             {/*n_i*/ w.lit_nat(2), /*Is*/w.pack(2, i32_t), /*n_o*/w.lit_nat(1), /*Os*/i32_t, f}),
+                                             {/*n_i*/ w.lit_nat(2), /*Is*/w.uniform_pack(2, i32_t), /*n_o*/w.lit_nat(1), /*Os*/i32_t, f}),
                                              {a, b});
     // clang-format on
 

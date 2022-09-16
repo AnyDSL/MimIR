@@ -44,7 +44,7 @@ inline const Pi* fn_mem(const Def* domain, const Def* codomain, const Def* dbg =
 static inline const Def* tuple_of_types(const Def* t) {
     auto& world = t->world();
     if (auto sigma = t->isa<Sigma>()) return world.tuple(sigma->ops());
-    if (auto arr = t->isa<Arr>()) return world.pack(arr->shape(), arr->body());
+    if (auto arr = t->isa<Arr>()) return world.uniform_pack(arr->shape(), arr->body());
     return t;
 }
 

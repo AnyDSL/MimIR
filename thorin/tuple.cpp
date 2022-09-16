@@ -6,7 +6,7 @@
 
 namespace thorin {
 
-const Def* Handle::shape(const Def* def) { return isa_sized_type(def)->type(); }
+const Def* Handle::shape(const Def* def) { return isa_sized_type(def->type()); }
 
 static bool should_flatten(const Def* def) { return is_sigma_or_arr(def->sort() == Sort::Term ? def->type() : def); }
 

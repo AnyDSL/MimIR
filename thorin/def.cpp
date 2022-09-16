@@ -254,7 +254,7 @@ void Def::set_debug_name(std::string_view n) const {
 #endif
 
 void Def::finalize() {
-    assert(!dbg() || dbg()->dep_none());
+    assert(!dbg() || dbg()->dep_const());
 
     for (size_t i = 0, e = num_ops(); i != e; ++i) {
         dep_ |= op(i)->dep();
