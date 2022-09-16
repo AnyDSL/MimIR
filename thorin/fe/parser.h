@@ -86,8 +86,7 @@ private:
     /// @name primary exprs
     ///@{
     const Def* parse_Cn();
-    const Def* parse_arr();
-    const Def* parse_pack();
+    const Def* parse_pack_or_arr();
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();

@@ -169,28 +169,30 @@ World::World(const State& state)
         // TODO select which Is/Os to zip
         auto rs = nom_sigma(type(), 2);
         rs->set(0, nat);
-        rs->set(1, arr(rs->var(0, dbg("r")), nat));
+        rs->set(1, uniform_arr(rs->var(0, dbg("r")), nat));
         auto rs_pi = nom_pi(type())->set_dom(rs);
         auto s     = rs_pi->var(1, dbg("s"));
 
         // [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»,]
         auto is_os = nom_sigma(type<1>(), 5);
         is_os->set(0, nat);
-        is_os->set(1, arr(is_os->var(0, dbg("n_i")), type()));
+        is_os->set(1, uniform_arr(is_os->var(0, dbg("n_i")), type()));
         is_os->set(2, nat);
-        is_os->set(3, arr(is_os->var(2, dbg("n_o")), type()));
-        auto f_i = nom_arr()->set_shape(is_os->var(0_u64));
-        auto f_o = nom_arr()->set_shape(is_os->var(2_u64));
-        f_i->set_body(extract(is_os->var(1, dbg("Is")), f_i->var()));
-        f_o->set_body(extract(is_os->var(3, dbg("Os")), f_o->var()));
+        is_os->set(3, uniform_arr(is_os->var(2, dbg("n_o")), type()));
+        auto s_i = is_os->var(0_u64);
+        auto s_o = is_os->var(2_u64);
+        auto h_i = shape_handle(s_i);
+        auto h_o = shape_handle(s_o);
+        auto f_i = arr_(h_i, extract(is_os->var(1, dbg("Is")), h_i->var()));
+        auto f_o = arr_(h_o, extract(is_os->var(3, dbg("Os")), h_o->var()));
         is_os->set(4, pi(f_i, f_o));
         auto is_os_pi = nom_pi(type())->set_dom(is_os);
 
         // «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
-        auto dom = nom_arr()->set_shape(is_os_pi->var(0_u64, dbg("n_i")));
-        auto cod = nom_arr()->set_shape(is_os_pi->var(2_u64, dbg("n_o")));
-        dom->set_body(arr(s, extract(is_os_pi->var(1, dbg("Is")), dom->var())));
-        cod->set_body(arr(s, extract(is_os_pi->var(3, dbg("Os")), cod->var())));
+        auto h_dom = shape_handle(is_os_pi->var(0_u64, dbg("n_i")));
+        auto h_cod = shape_handle(is_os_pi->var(2_u64, dbg("n_o")));
+        auto dom   = arr_(h_dom, uniform_arr(s, extract(is_os_pi->var(1, dbg("Is")), h_dom->var())));
+        auto cod   = arr_(h_cod, uniform_arr(s, extract(is_os_pi->var(3, dbg("Os")), h_cod->var())));
 
         is_os_pi->set_codom(pi(dom, cod));
         rs_pi->set_codom(is_os_pi);
@@ -209,6 +211,11 @@ World::~World() {
 /*
  * core calculus
  */
+
+const Def* World::type_shape(const Def* shape, const Def* dbg) {
+    // TODO support more compplex shapes
+    return type_int(shape);
+}
 
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->isa<Pi>();
@@ -238,7 +245,8 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; }))
+        return uniform_arr(n, ops[0], dbg);
     return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
 }
 
@@ -268,7 +276,8 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     if (!type->isa_nom<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return pack(n, ops[0]);
+        if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; }))
+            return uniform_pack(n, ops[0], dbg);
     }
 
     // eta rule for tuples:
@@ -400,7 +409,9 @@ bool is_shape(const Def* s) {
     return false;
 }
 
-const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
+const Def* World::arr_(const Def* handle, const Def* body, const Def* dbg) {
+    auto shape = isa_sized_type(handle->type());
+
     if (err()) {
         if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
     }
@@ -410,18 +421,18 @@ const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
         if (*a == 1) return body;
     }
 
+    // TODO
     // «(a, b, c); body» -> «a; «(b, c); body»»
-    if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().skip_front(), body), dbg);
 
+    // TODO
     // «<n; x>; body» -> «x; «<n-1, x>; body»»
-    if (auto p = shape->isa<Pack>()) {
-        if (auto s = isa_lit(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body), dbg);
-    }
 
-    return unify<Arr>(2, body->unfold_type(), shape, body, dbg);
+    return unify<Arr>(2, body->unfold_type(), handle, body, dbg);
 }
 
-const Def* World::pack(const Def* shape, const Def* body, const Def* dbg) {
+const Def* World::pack_(const Def* handle, const Def* body, const Def* dbg) {
+    auto shape = isa_sized_type(handle->type());
+
     if (err()) {
         if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
     }
@@ -431,26 +442,34 @@ const Def* World::pack(const Def* shape, const Def* body, const Def* dbg) {
         if (*a == 1) return body;
     }
 
+    // TODO
     // <(a, b, c); body> -> <a; «(b, c); body>>
-    if (auto tuple = shape->isa<Tuple>()) return pack(tuple->ops().front(), pack(tuple->ops().skip_front(), body), dbg);
 
+    // TODO
     // <<n; x>; body> -> <x; <<n-1, x>; body>>
-    if (auto p = shape->isa<Pack>()) {
-        if (auto s = isa_lit(p->shape())) return pack(*s, pack(pack(*s - 1, p->body()), body), dbg);
-    }
 
-    auto type = arr(shape, body->type());
-    return unify<Pack>(1, type, body, dbg);
+    auto type = uniform_arr(shape, body->type());
+    return unify<Pack>(2, type, handle, body, dbg);
 }
 
-const Def* World::arr(Defs shape, const Def* body, const Def* dbg) {
-    if (shape.empty()) return body;
-    return arr(shape.skip_back(), arr(shape.back(), body, dbg), dbg);
+const Def* World::uniform_arr(const Def* shape, const Def* body, const Def* dbg) {
+    auto handle = bot(type_shape(shape));
+    return arr_(handle, body, dbg);
 }
 
-const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
+const Def* World::uniform_pack(const Def* shape, const Def* body, const Def* dbg) {
+    auto handle = bot(type_shape(shape));
+    return pack_(handle, body, dbg);
+}
+
+const Def* World::uniform_arr(Defs shape, const Def* body, const Def* dbg) {
     if (shape.empty()) return body;
-    return pack(shape.skip_back(), pack(shape.back(), body, dbg), dbg);
+    return uniform_arr(shape.skip_back(), uniform_arr(shape.back(), body, dbg), dbg);
+}
+
+const Def* World::uniform_pack(Defs shape, const Def* body, const Def* dbg) {
+    if (shape.empty()) return body;
+    return uniform_pack(shape.skip_back(), uniform_pack(shape.back(), body, dbg), dbg);
 }
 
 const Lit* World::lit_int(const Def* type, u64 i, const Def* dbg) {
@@ -472,7 +491,7 @@ const Lit* World::lit_int(const Def* type, u64 i, const Def* dbg) {
 
 template<bool up>
 const Def* World::ext(const Def* type, const Def* dbg) {
-    if (auto arr = type->isa<Arr>()) return pack(arr->shape(), ext<up>(arr->body()), dbg);
+    if (auto arr = type->isa<Arr>()) return uniform_pack(arr->shape(), ext<up>(arr->body()), dbg);
     if (auto sigma = type->isa<Sigma>())
         return tuple(sigma, DefArray(sigma->num_ops(), [&](size_t i) { return ext<up>(sigma->op(i), dbg); }), dbg);
     return unify<TExt<up>>(0, type, dbg);

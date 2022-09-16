@@ -26,7 +26,7 @@ using sub_t     = u8;
     m(Axiom, axiom)                                                           \
     m(Lit, lit)                                                               \
     m(Nat, nat)                                                               \
-    m(Var, var)                                                               \
+    m(Var, var)         m(Handle, handle)                                     \
     m(Infer, infer)                                                           \
     m(Global, global)                                                         \
     m(Singleton, singleton)

@@ -249,8 +249,8 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
         case DECL:                return parse_decls();
-        case Tok::Tag::D_quote_l: return parse_arr();
-        case Tok::Tag::D_angle_l: return parse_pack();
+        case Tok::Tag::D_quote_l:
+        case Tok::Tag::D_angle_l: return parse_pack_or_arr();
         case Tok::Tag::D_brace_l: return parse_block();
         case Tok::Tag::D_brckt_l: return parse_sigma();
         case Tok::Tag::D_paren_l: return parse_tuple();
@@ -309,58 +309,35 @@ const Def* Parser::parse_var() {
     return nom->var(track.named(sym));
 }
 
-const Def* Parser::parse_arr() {
-    auto track = tracker();
+const Def* Parser::parse_pack_or_arr() {
+    auto track   = tracker();
+    auto delim_l = lex().tag();
+    bool is_pack = delim_l == Tok::Tag::D_angle_l;
     scopes_.push();
-    eat(Tok::Tag::D_quote_l);
 
-    const Def* shape = nullptr;
-    Arr* arr         = nullptr;
+    auto id           = std::optional<Sym>();
+    const Def* handle = nullptr;
     if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
-        auto id = eat(Tok::Tag::M_id).sym();
+        id = eat(Tok::Tag::M_id).sym();
         eat(Tok::Tag::T_colon);
-
-        auto shape = parse_expr("shape of an array");
-        auto type  = world().nom_infer_univ();
-        arr        = world().nom_arr(type)->set_shape(shape);
-        scopes_.bind(id, arr->var(world().dbg(id)));
-    } else {
-        shape = parse_expr("shape of an array");
     }
 
-    expect(Tok::Tag::T_semicolon, "array");
-    auto body = parse_expr("body of an array");
-    expect(Tok::Tag::D_quote_r, "closing delimiter of an array");
-    scopes_.pop();
+    auto shape = parse_expr(is_pack ? "shape of a pack" : "shape of an array");
 
-    if (arr) return arr->set_body(body)->set_type(body->unfold_type());
-    return world().arr(shape, body, track);
-}
-
-const Def* Parser::parse_pack() {
-    // TODO This doesn't work. Rework this!
-    auto track = tracker();
-    scopes_.push();
-    eat(Tok::Tag::D_angle_l);
-
-    const Def* shape;
-    // bool nom = false;
-    if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
-        auto sym = eat(Tok::Tag::M_id).sym();
-        eat(Tok::Tag::T_colon);
-
-        shape      = parse_expr("shape of a pack");
-        auto infer = world().nom_infer(world().type_int(shape), sym);
-        scopes_.bind(sym, infer);
+    if (id) {
+        handle = world().shape_handle(shape, world().dbg(*id));
+        scopes_.bind(*id, handle);
     } else {
-        shape = parse_expr("shape of a pack");
+        handle = world().shape_bot(shape);
     }
 
-    expect(Tok::Tag::T_semicolon, "pack");
-    auto body = parse_expr("body of a pack");
-    expect(Tok::Tag::D_angle_r, "closing delimiter of a pack");
+    expect(Tok::Tag::T_semicolon, is_pack ? "pack" : "array");
+    auto body = parse_expr(is_pack ? "body of a pack" : "body of an array");
+
     scopes_.pop();
-    return world().pack(shape, body, track);
+    expect(Tok::delim_l2r(delim_l), is_pack ? "closing delimiter of a pack" : "closing delimiter of an array");
+
+    return is_pack ? world().pack_(handle, body, track) : world().arr_(handle, body, track);
 }
 
 const Def* Parser::parse_block() {
@@ -680,13 +657,6 @@ void Parser::parse_nom() {
             nom        = world().nom_sigma(type, arity.u(), track.named(sym));
             break;
         }
-        case Tok::Tag::K_Arr: {
-            expect(Tok::Tag::T_comma, "nominal array");
-            auto shape = parse_expr("shape of a nominal array");
-            nom        = world().nom_arr(type, track)->set_shape(shape);
-            break;
-        }
-        case Tok::Tag::K_pack: nom = world().nom_pack(type, track.named(sym)); break;
         case Tok::Tag::K_Pi: {
             expect(Tok::Tag::T_comma, "nominal Pi");
             auto dom = parse_expr("domain of a nominal Pi");

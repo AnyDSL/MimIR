@@ -6,6 +6,8 @@
 
 namespace thorin {
 
+const Def* Handle::shape(const Def* def) { return isa_sized_type(def)->type(); }
+
 static bool should_flatten(const Def* def) { return is_sigma_or_arr(def->sort() == Sort::Term ? def->type() : def); }
 
 static bool nom_val_or_typ(const Def* def) {
@@ -88,25 +90,6 @@ std::string tuple2str(const Def* def) {
 
     auto array = def->projs(as_lit(def->arity()), as_lit<nat_t>);
     return std::string(array.begin(), array.end());
-}
-
-/*
- * check
- */
-
-bool Arr::check() {
-    auto t = body()->unfold_type();
-    if (auto infer = type()->isa_nom<Infer>()) {
-        assert(infer->op() == nullptr);
-        infer->set(t);
-        set_type(t);
-    }
-    return true;
-}
-
-bool Sigma::check() {
-    // TODO
-    return true;
 }
 
 } // namespace thorin

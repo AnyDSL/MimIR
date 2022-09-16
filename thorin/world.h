@@ -152,7 +152,7 @@ public:
     }
     ///@}
 
-    /// @name Universe, Type, Var, Proxy, Infer
+    /// @name Univ, Type, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
     const Type* type(const Def* level, const Def* dbg = {}) { return unify<Type>(1, level, dbg)->as<Type>(); }
@@ -165,7 +165,6 @@ public:
         else
             return type(lit_univ(level), dbg);
     }
-    const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }
@@ -173,6 +172,14 @@ public:
     Infer* nom_infer(const Def* type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
     Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
     Infer* nom_infer_of_infer_level(const Def* dbg = {}) { return nom_infer(nom_infer_univ(dbg), dbg); }
+    ///@}
+
+    /// @name Var, Handle
+    ///@{
+    const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
+    Handle* handle(const Def* type, const Def* dbg = {}) { return insert<Handle>(0, type, dbg); }
+    Handle* shape_handle(const Def* shape, const Def* dbg = {}) { return handle(type_shape(shape), dbg); }
+    const Def* type_shape(const Def* shape, const Def* dbg = {});
     ///@}
 
     /// @name Axiom
@@ -267,18 +274,14 @@ public:
 
     /// @name Arr
     ///@{
-    Arr* nom_arr(const Def* type, const Def* dbg = {}) { return insert<Arr>(2, type, dbg); }
-    template<level_t level = 0>
-    Arr* nom_arr(const Def* dbg = {}) {
-        return nom_arr(type<level>(), dbg);
+    const Def* arr_(const Def* handle, const Def* body, const Def* dbg = {});
+    const Def* uniform_arr(const Def* shape, const Def* body, const Def* dbg = {});
+    const Def* uniform_arr(Defs shape, const Def* body, const Def* dbg = {});
+    const Def* uniform_arr(u64 n, const Def* body, const Def* dbg = {}) { return uniform_arr(lit_nat(n), body, dbg); }
+    const Def* uniform_arr(ArrayRef<u64> shape, const Def* body, const Def* dbg = {}) {
+        return uniform_arr(DefArray(shape.size(), [&](size_t i) { return lit_nat(shape[i], dbg); }), body, dbg);
     }
-    const Def* arr(const Def* shape, const Def* body, const Def* dbg = {});
-    const Def* arr(Defs shape, const Def* body, const Def* dbg = {});
-    const Def* arr(u64 n, const Def* body, const Def* dbg = {}) { return arr(lit_nat(n), body, dbg); }
-    const Def* arr(ArrayRef<u64> shape, const Def* body, const Def* dbg = {}) {
-        return arr(DefArray(shape.size(), [&](size_t i) { return lit_nat(shape[i], dbg); }), body, dbg);
-    }
-    const Def* arr_unsafe(const Def* body, const Def* dbg = {}) { return arr(top_nat(), body, dbg); }
+    const Def* unsafe_arr(const Def* body, const Def* dbg = {}) { return uniform_arr(top_nat(), body, dbg); }
     ///@}
 
     /// @name Tuple
@@ -293,12 +296,12 @@ public:
 
     /// @name Pack
     ///@{
-    Pack* nom_pack(const Def* type, const Def* dbg = {}) { return insert<Pack>(1, type, dbg); }
-    const Def* pack(const Def* arity, const Def* body, const Def* dbg = {});
-    const Def* pack(Defs shape, const Def* body, const Def* dbg = {});
-    const Def* pack(u64 n, const Def* body, const Def* dbg = {}) { return pack(lit_nat(n), body, dbg); }
-    const Def* pack(ArrayRef<u64> shape, const Def* body, const Def* dbg = {}) {
-        return pack(DefArray(shape.size(), [&](auto i) { return lit_nat(shape[i], dbg); }), body, dbg);
+    const Def* pack_(const Def* handle, const Def* body, const Def* dbg = {});
+    const Def* uniform_pack(const Def* arity, const Def* body, const Def* dbg = {});
+    const Def* uniform_pack(Defs shape, const Def* body, const Def* dbg = {});
+    const Def* uniform_pack(u64 n, const Def* body, const Def* dbg = {}) { return uniform_pack(lit_nat(n), body, dbg); }
+    const Def* uniform_pack(ArrayRef<u64> shape, const Def* body, const Def* dbg = {}) {
+        return uniform_pack(DefArray(shape.size(), [&](auto i) { return lit_nat(shape[i], dbg); }), body, dbg);
     }
     ///@}
 
@@ -390,6 +393,7 @@ public:
     const Def* bot(const Def* type, const Def* dbg = {}) { return ext<false>(type, dbg); }
     const Def* top(const Def* type, const Def* dbg = {}) { return ext<true>(type, dbg); }
     const Def* type_bot() { return data_.type_bot_; }
+    const Def* shape_bot(const Def* shape, const Def* dbg = {}) { return bot(type_shape(shape), dbg); }
     const Def* top_nat() { return data_.top_nat_; }
     template<bool up> TBound<up>* nom_bound(const Def* type, size_t size, const Def* dbg = {}) { return insert<TBound<up>>(size, type, size, dbg); }
     /// A *nom*inal Bound of Type @p l%evel.

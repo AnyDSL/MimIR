@@ -22,7 +22,6 @@ public:
 
     /// @name virtual methods
     ///@{
-    bool check() override;
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     Sigma* stub(World&, const Def*, const Def*) override;
     const Sigma* restructure() override;
@@ -48,31 +47,39 @@ public:
     friend class World;
 };
 
-class Arr : public Def {
+class Handle : public Def {
 private:
-    /// Constructor for a *structural* Arr.
-    Arr(const Def* type, const Def* shape, const Def* body, const Def* dbg)
-        : Def(Node, type, {shape, body}, 0, dbg) {}
-    /// Constructor for a *nom*inaml Arr.
-    Arr(const Def* type, const Def* dbg)
-        : Def(Node, type, 2, 0, dbg) {}
+    Handle(const Def* type, const Def* dbg)
+        : Def(Node, type, 0, 0, dbg) {}
 
 public:
-    /// @name ops
+    /// @name virtual methods
     ///@{
-    const Def* shape() const { return op(0); }
+    Handle* stub(World&, const Def*, const Def*) override;
+    ///@}
+
+    static const Def* shape(const Def*);
+
+    static constexpr auto Node = Node::Handle;
+    friend class World;
+};
+
+class Arr : public Def {
+private:
+    Arr(const Def* type, const Def* handle, const Def* body, const Def* dbg)
+        : Def(Node, type, {handle, body}, 0, dbg) {}
+
+public:
+    /// @name getters
+    ///@{
+    const Def* handle() const { return op(0); }
     const Def* body() const { return op(1); }
-    Arr* set_shape(const Def* shape) { return Def::set(0, shape)->as<Arr>(); }
-    Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
+    const Def* shape() const { return Handle::shape(handle()); }
     ///@}
 
     /// @name virtual methods
     ///@{
-    bool check() override;
-    size_t first_dependend_op() override { return 1; }
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    Arr* stub(World&, const Def*, const Def*) override;
-    const Def* restructure() override;
     ///@}
 
     static constexpr auto Node = Node::Arr;
@@ -81,27 +88,21 @@ public:
 
 class Pack : public Def {
 private:
-    /// Constructor for a *structural* Pack.
-    Pack(const Def* type, const Def* body, const Def* dbg)
-        : Def(Node, type, {body}, 0, dbg) {}
-    /// Constructor for a *nom*inaml Pack.
-    Pack(const Def* type, const Def* dbg)
-        : Def(Node, type, 1, 0, dbg) {}
+    Pack(const Def* type, const Def* handle, const Def* body, const Def* dbg)
+        : Def(Node, type, {handle, body}, 0, dbg) {}
 
 public:
-    /// @name ops
+    /// @name getters
     ///@{
-    const Def* body() const { return op(0); }
+    const Def* handle() const { return op(0); }
+    const Def* body() const { return op(1); }
+    const Def* shape() const { return Handle::shape(handle()); }
     const Arr* type() const { return Def::type()->as<Arr>(); }
-    const Def* shape() const { return type()->shape(); }
-    Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
     ///@}
 
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    Pack* stub(World&, const Def*, const Def*) override;
-    const Def* restructure() override;
     ///@}
 
     static constexpr auto Node = Node::Pack;

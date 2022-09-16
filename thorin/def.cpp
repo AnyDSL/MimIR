@@ -72,13 +72,13 @@ Nat::Nat(World& world)
 
 const Def* Ac       ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.ac(t, o, dbg); }
 const Def* App      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.app(o[0], o[1], dbg); }
-const Def* Arr      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.arr(o[0], o[1], dbg); }
+const Def* Arr      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.arr_(o[0], o[1], dbg); }
 const Def* Extract  ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.extract(o[0], o[1], dbg); }
 const Def* Insert   ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.insert(o[0], o[1], o[2], dbg); }
 const Def* Lam      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.lam(t->as<Pi>(), o[0], o[1], dbg); }
 const Def* Lit      ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.lit(t, get(), dbg); }
 const Def* Nat      ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_nat(); }
-const Def* Pack     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pack(t->arity(), o[0], dbg); }
+const Def* Pack     ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.pack_(o[0], o[1], dbg); }
 const Def* Pi       ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.pi(o[0], o[1], dbg); }
 const Def* Pick     ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.pick(t, o[0], dbg); }
 const Def* Proxy    ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.proxy(t, o, as<Proxy>()->pass(), as<Proxy>()->tag(), dbg); }
@@ -107,8 +107,7 @@ template<bool up> const Def* TBound<up>::rebuild(World& w, const Def*  , Defs o,
 Lam*    Lam   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_lam  (t->as<Pi>(), cc(), dbg); }
 Pi*     Pi    ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pi   (t, dbg); }
 Sigma*  Sigma ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_sigma(t, num_ops(), dbg); }
-Arr*    Arr   ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_arr  (t, dbg); }
-Pack*   Pack  ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_pack (t, dbg); }
+Handle* Handle::stub(World& w, const Def* t, const Def* dbg) { return w.handle(t, dbg); }
 Infer*  Infer ::stub(World& w, const Def* t, const Def* dbg) { return w.nom_infer(t, dbg); }
 Global* Global::stub(World& w, const Def* t, const Def* dbg) { return w.global(t, is_mutable(), dbg); }
 
@@ -131,20 +130,6 @@ const Pi* Pi::restructure() {
 const Sigma* Sigma::restructure() {
     if (std::ranges::none_of(ops(), [this](auto op) { return is_free(this, op); }))
         return static_cast<const Sigma*>(world().sigma(ops(), dbg()));
-    return nullptr;
-}
-
-const Def* Arr::restructure() {
-    auto& w = world();
-    if (auto n = isa_lit(shape()))
-        return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)).back(); }));
-    return nullptr;
-}
-
-const Def* Pack::restructure() {
-    auto& w = world();
-    if (auto n = isa_lit(shape()))
-        return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)).back(); }));
     return nullptr;
 }
 
@@ -197,11 +182,10 @@ const Var* Def::var(const Def* dbg) {
         if (w.is_frozen()) return nullptr;
     }
 
-    if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam, dbg);
-    if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi, dbg);
-    if (auto sig  = isa<Sigma>()) return w.var(sig,         sig, dbg);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_int(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_int(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
+    if (auto lam  = isa<Lam   >()) return w.var(lam ->dom(),  lam,  dbg);
+    if (auto pi   = isa<Pi    >()) return w.var(pi  ->dom(),  pi,   dbg);
+    if (auto sig  = isa<Sigma >()) return w.var(sig,          sig,  dbg);
+    if (auto hand = isa<Handle>()) return w.var(hand->type(), hand, dbg);
     if (isa_bound(this)) return w.var(this, this,  dbg);
     if (isa<Infer >())   return nullptr;
     if (isa<Global>())   return nullptr;
@@ -298,8 +282,6 @@ Def* Def::set(size_t i, const Def* def) {
         ops_ptr()[i]  = def;
         const auto& p = def->uses_.emplace(this, i);
         assert_unused(p.second);
-
-        if (i == num_ops() - 1) check();
     }
     return this;
 }

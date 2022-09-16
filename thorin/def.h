@@ -349,7 +349,6 @@ public:
 
     /// @name virtual methods
     ///@{
-    virtual bool check() { return true; }
     virtual size_t first_dependend_op() { return 0; }
     virtual const Def* rebuild(World&, const Def*, Defs, const Def*) const { unreachable(); }
     /// Def::rebuild%s this Def while using @p new_op as substitute for its @p i'th Def::op
