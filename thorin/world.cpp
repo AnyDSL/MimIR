@@ -413,7 +413,7 @@ bool is_shape(const Def* s) {
 }
 
 const Def* World::arr_(const Def* handle, const Def* body, const Def* dbg) {
-    auto shape = isa_sized_type(handle->type());
+    auto shape = Handle::shape(handle);
 
     if (err()) {
         if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
@@ -422,13 +422,27 @@ const Def* World::arr_(const Def* handle, const Def* body, const Def* dbg) {
     if (auto a = isa_lit<u64>(shape)) {
         if (*a == 0) return sigma();
         if (*a == 1) return body;
+        if (auto nom = handle->isa_nom<Handle>()) {
+            Scope scope(nom);
+            return sigma(DefArray(*a, [&](size_t i) {
+                ScopeRewriter rw(*this, scope);
+                rw.old2new[nom->var()] = lit_int(*a, i);
+                return rw.rewrite(body);
+            }));
+        }
     }
 
-    // TODO
     // «(a, b, c); body» -> «a; «(b, c); body»»
+    if (auto tuple = shape->isa<Tuple>()) {
+        thorin::breakpoint();
+        //return arr(tuple->ops().front(), arr(tuple->ops().skip_front(), body), dbg);
+    }
 
-    // TODO
     // «<n; x>; body» -> «x; «<n-1, x>; body»»
+    if (auto p = shape->isa<Pack>()) {
+        thorin::breakpoint();
+        //if (auto s = isa_lit(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body), dbg);
+    }
 
     return unify<Arr>(2, body->unfold_type(), handle, body, dbg);
 }
@@ -443,6 +457,14 @@ const Def* World::pack_(const Def* handle, const Def* body, const Def* dbg) {
     if (auto a = isa_lit<u64>(shape)) {
         if (*a == 0) return tuple();
         if (*a == 1) return body;
+        if (auto nom = handle->isa_nom<Handle>()) {
+            Scope scope(nom);
+            return tuple(DefArray(*a, [&](size_t i) {
+                ScopeRewriter rw(*this, scope);
+                rw.old2new[nom->var()] = lit_int(*a, i);
+                return rw.rewrite(body);
+            }));
+        }
     }
 
     // TODO

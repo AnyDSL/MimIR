@@ -325,8 +325,10 @@ const Def* Parser::parse_pack_or_arr() {
     auto shape = parse_expr(is_pack ? "shape of a pack" : "shape of an array");
 
     if (id) {
-        handle = world().shape_handle(shape, world().dbg(*id));
-        scopes_.bind(*id, handle);
+        auto dbg = world().dbg(*id);
+        auto nom = world().shape_handle(shape); // TODO dbg
+        scopes_.bind(*id, nom->var(dbg));
+        handle = nom;
     } else {
         handle = world().shape_bot(shape);
     }

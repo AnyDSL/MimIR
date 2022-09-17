@@ -141,9 +141,15 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
-        if (auto size = isa_lit(isa_sized_type(app))) {
-            if (auto real = thorin::isa<Tag::Real>(app)) return print(os, "(%Real {})", *size);
-            if (auto _int = thorin::isa<Tag::Int>(app)) return print(os, "(%Int {})", *size);
+        if (auto size = isa_sized_type(app)) {
+            // TODO remove this
+            if (auto l = isa_lit(size)) {
+                if (auto real = thorin::isa<Tag::Real>(app)) return print(os, "(%Real {})", *l);
+                if (auto _int = thorin::isa<Tag::Int>(app)) return print(os, "(%Int {})", *l);
+            }
+
+            if (auto real = thorin::isa<Tag::Real>(app)) return print(os, "(%Real {})", size);
+            if (auto _int = thorin::isa<Tag::Int>(app)) return print(os, "(%Int {})", size);
             unreachable();
         }
         return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
