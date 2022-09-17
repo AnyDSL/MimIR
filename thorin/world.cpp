@@ -435,13 +435,13 @@ const Def* World::arr_(const Def* handle, const Def* body, const Def* dbg) {
     // «(a, b, c); body» -> «a; «(b, c); body»»
     if (auto tuple = shape->isa<Tuple>()) {
         thorin::breakpoint();
-        //return arr(tuple->ops().front(), arr(tuple->ops().skip_front(), body), dbg);
+        // return arr(tuple->ops().front(), arr(tuple->ops().skip_front(), body), dbg);
     }
 
     // «<n; x>; body» -> «x; «<n-1, x>; body»»
     if (auto p = shape->isa<Pack>()) {
         thorin::breakpoint();
-        //if (auto s = isa_lit(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body), dbg);
+        // if (auto s = isa_lit(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body), dbg);
     }
 
     return unify<Arr>(2, body->unfold_type(), handle, body, dbg);
