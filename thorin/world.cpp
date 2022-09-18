@@ -375,7 +375,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
             Scope scope(nom);
             ScopeRewriter rw(*this, scope);
             rw.old2new[nom->var()] = index;
-            elem_t = rw.rewrite(arr->body());
+            elem_t                 = rw.rewrite(arr->body());
         } else {
             elem_t = arr->body();
         }
