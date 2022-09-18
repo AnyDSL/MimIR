@@ -38,8 +38,7 @@ void Scope::run() {
 }
 
 void Scope::calc_bound() const {
-    // A Handle doesn't have an operand so keep the bound_ as is.
-    if (has_bound_ || entry_->isa<Handle>()) return;
+    if (has_bound_) return;
     has_bound_ = true;
 
     DefSet live;

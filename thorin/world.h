@@ -177,7 +177,7 @@ public:
     /// @name Var, Handle
     ///@{
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
-    Handle* handle(const Def* type, const Def* dbg = {}) { return insert<Handle>(0, type, dbg); }
+    Handle* handle(const Def* type, const Def* dbg = {}) { return insert<Handle>(1, type, dbg); }
     Handle* shape_handle(const Def* shape, const Def* dbg = {}) { return handle(type_shape(shape), dbg); }
     const Def* type_shape(const Def* shape, const Def* dbg = {});
     ///@}

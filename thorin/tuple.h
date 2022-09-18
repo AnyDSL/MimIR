@@ -50,9 +50,15 @@ public:
 class Handle : public Def {
 private:
     Handle(const Def* type, const Def* dbg)
-        : Def(Node, type, 0, 0, dbg) {}
+        : Def(Node, type, 1, 0, dbg) {}
 
 public:
+    /// @name ops
+    ///@{
+    const Def* body() const { return op(0); }
+    Handle* set(const Def* body) { return Def::set(0, body)->as<Handle>(); }
+    ///@}
+
     /// @name virtual methods
     ///@{
     Handle* stub(World&, const Def*, const Def*) override;
