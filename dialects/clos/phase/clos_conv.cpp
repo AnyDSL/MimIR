@@ -3,6 +3,7 @@
 #include "thorin/check.h"
 
 #include "thorin/analyses/scope.h"
+#include "dialects/mem/autogen.h"
 
 namespace thorin::clos {
 
@@ -193,7 +194,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         return map(closure);
     } else if (auto q = match(clos::ret, def)) {
         if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
-            assert(ret_lam && ret_lam->is_basicblock());
+            //assert(ret_lam && ret_lam->is_basicblock());
             // Note: This should be cont_lam's only occurance after η-expansion, so its okay to
             // put into the local subst only
             auto new_doms  = DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
@@ -314,7 +315,11 @@ ClosConv::ClosureStub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2D
 
 ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
     if (auto i = closures_.find(old_lam); i != closures_.end()) return i->second;
-    auto closure = make_stub(fva_.run(old_lam), old_lam, subst);
+    auto fvs = fva_.run(old_lam);
+    for( auto i : fvs){
+        assert(!match<mem::M>(i->type()));
+    }
+    auto closure = make_stub(fvs, old_lam, subst);
     worklist_.emplace(closure.fn);
     return closure;
 }
@@ -329,16 +334,18 @@ static bool is_memop_res(const Def* fd) {
     auto proj = fd->isa<Extract>();
     if (!proj) return false;
     auto types = proj->tuple()->type()->ops();
-    return std::any_of(types.begin(), types.end(), [](auto d) { return isa<Tag::Mem>(d); });
+    return std::any_of(types.begin(), types.end(), [](auto d) { return match<mem::M>(d); });
 }
 
 void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue& worklist) {
-    assert(!isa<Tag::Mem>(fd) && "mem tokens must not be free");
+    assert(!match<mem::M>(fd) && "mem tokens must not be free");
     if (is_toplevel(fd)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
-        if (var != lam->ret_var()) node->fvs.emplace(fd);
+        if (var != lam->ret_var()){
+            node->add_fvs(fd);
+        }
     } else if (auto q = match(clos::freeBB, fd)) {
-        node->fvs.emplace(q);
+        node->add_fvs(q);
     } else if (auto pred = fd->isa_nom()) {
         if (pred != node->nom) {
             auto [pnode, inserted] = build_node(pred, worklist);
@@ -349,10 +356,10 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
     } else if (fd->dep() == Dep::Var && !fd->isa<Tuple>()) {
         // Note: Var's can still have Def::Top, if their type is a nom!
         // So the first case is *not* redundant
-        node->fvs.emplace(fd);
+        node->add_fvs(fd);
     } else if (is_memop_res(fd)) {
         // Results of memops must not be floated down
-        node->fvs.emplace(fd);
+        node->add_fvs(fd);
     } else {
         for (auto op : fd->ops()) split_fd(node, op, init_node, worklist);
     }
@@ -367,7 +374,9 @@ std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* nom, NodeQueue& w
     auto node      = p->second.get();
     auto scope     = Scope(nom);
     bool init_node = false;
-    for (auto v : scope.free_defs()) { split_fd(node, v, init_node, worklist); }
+    for (auto v : scope.free_defs()) {
+        split_fd(node, v, init_node, worklist);
+    }
     if (!init_node) {
         worklist.push(node);
         w.DLOG("FVA: init {}", nom);
@@ -387,11 +396,15 @@ void FreeDefAna::run(NodeQueue& worklist) {
         mark(node);
         for (auto p : node->preds) {
             auto& pfvs = p->fvs;
-            for (auto&& pfv : pfvs) changed |= node->fvs.insert(pfv).second;
+            for (auto&& pfv : pfvs){
+                changed |= node->add_fvs(pfv).second;
+            }
             // w.DLOG("\tFV({}) ∪= FV({}) = {{{, }}}\b", node->nom, p->nom, pfvs);
         }
         if (changed) {
-            for (auto s : node->succs) { worklist.push(s); }
+            for (auto s : node->succs) {
+                worklist.push(s);
+            }
         }
         iter++;
     }
@@ -405,6 +418,7 @@ DefSet& FreeDefAna::run(Lam* lam) {
         cur_pass_id++;
         run(worklist);
     }
+
     return node->fvs;
 }
 

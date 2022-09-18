@@ -17,10 +17,11 @@ public:
         , eta_exp_(eta_exp)
         , old2wrapper_()
         , lam2fscope_()
-        , cur_body_(nullptr) {}
+        , ignore(false) {}
 
     void enter() override;
     const Def* rewrite(const Def*) override;
+    const App* rewriteArgs(const App* app);
 
     Lam* scope(Lam* lam);
 
@@ -44,7 +45,7 @@ private:
     DefMap<Lam*> old2wrapper_;
     DefSet wrapper_;
     Lam2Lam lam2fscope_;
-    const App* cur_body_;
+    bool ignore;
 };
 
 } // namespace clos
