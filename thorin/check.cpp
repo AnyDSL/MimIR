@@ -21,7 +21,7 @@ const Def* infer_type_level(World& world, Defs defs) {
 }
 
 template<bool Cache>
-bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
+bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg) {
     if (!d1 || !d2) return false;
 
     if (d1 == d2 || (d1->is_unset() && d2->is_unset())) return true;
@@ -50,6 +50,11 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
             }
             if constexpr (!Cache) equiv_.emplace(d1, d2);
             return true;
+        }
+
+        if (auto a1 = d1->isa<Arr>()) {
+            if (auto a2 = d2->isa<Arr>())
+                return equiv<Cache>(a1->shape(), a2->shape(), dbg) && equiv<Cache>(a1->body(), a2->body(), dbg);
         }
     } else if (auto var = d1->isa<Var>()) {
         // vars are equal if they appeared under the same binder
