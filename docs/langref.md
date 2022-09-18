@@ -37,8 +37,6 @@ In addition the following keywords are *terminals*:
 | `.let`      | let expression            |
 | `.Pi`       | nominal thorin::Pi        |
 | `.lam`      | nominal thorin::Lam       |
-| `.Arr`      | nominal thorin::Arr       |
-| `.pack`     | nominal thorin::Pack      |
 | `.Sigma`    | nominal thorin::Sigma     |
 | `.def`      | nominal definition        |
 | `.extern`   | marks nominal as external |
@@ -132,8 +130,6 @@ The following tables comprise all production rules:
 | d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n         |            | nominal Pi declaration           | thorin::Pi    |
 | d           | `.lam` Sym p `→` e<sub>codom</sub> n                              |            | nominal lambda declaration       | thorin::Lam   |
 | d           | `.cn` Sym p n                                                     |            | nominal continuation declaration | thorin::Lam   |
-| d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n   |            | nominal array declaration        | thorin::Arr   |
-| d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  |            | nominal pack declaration         | thorin::Pack  |
 | d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n |            | nominal sigma declaration        | thorin::Sigma |
 | d           | `.def` Sym n                                                      |            | nominal definition               | nominals      |
 | v           | `,` `@` Sym \| `,` `@` `(` Sym `,` ... `,` Sym `)`                |            | nominal variable declaration     | nominals      |
@@ -241,3 +237,20 @@ Use parentheses to refer to the `.let`-bounded `i`:
 .let i = 1_2;
 Π X: [i: .Nat, j: .Nat] → f X#(i);
 ```
+
+## Shape vs Arity
+
+The *arity* refers to the number of elements within an [array](@ref thorin::Arr)/[sigma](@ref thorin::Sigma) or [pack](@ref thorin::Pack)/[tuple](@ref thorin::Tuple), respectively.
+The type of an arity is [`.Nat`](@ref thorin::Nat).
+You can also specify multidimensinal entities.
+For example, a 2 × 3 matrix is defined by the *shape* `(2, 3)`.
+You can use such shapes for arrays.
+Usually, Thorin will immediatly resolve this into nested arrays:
+```
+«(2, 3), T»`  ==>  «2; «3; T»»
+```
+However, if the shape is unknown like in
+```
+.lam f s: [.Nat, .Nat] -> * = «s, T»;
+```
+Thorin cannot normalize the shape into an arity and will keep the shape within the array.
