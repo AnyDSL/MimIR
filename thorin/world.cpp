@@ -334,7 +334,16 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
 
     // nom sigmas can be 1-tuples
     if (auto mod = isa_lit(isa_sized_type(index->type())); mod && *mod == 1 && !d->type()->isa_nom<Sigma>()) return d;
-    if (auto pack = d->isa_structural<Pack>()) return pack->body();
+    if (auto pack = d->isa<Pack>()) {
+        if (auto nom = pack->handle()->isa_nom<Handle>()) {
+            Scope scope(nom);
+            ScopeRewriter rw(*this, scope);
+            rw.old2new[nom->var()] = index;
+            return rw.rewrite(pack->body());
+        }
+
+        return pack->body();
+    }
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
@@ -360,18 +369,31 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
         }
     }
 
-    // e.g. (t, f)#cond, where t&f's types contain nominals but still are alpha-equiv
-    // for now just use t's type.
-    if (auto sigma = type->isa<Sigma>();
-        sigma && std::all_of(sigma->ops().begin() + 1, sigma->ops().end(),
-                             [&](auto op) { return checker().equiv<false>(sigma->op(0), op, dbg); }))
+    if (auto arr = type->isa<Arr>()) {
+        const Def* elem_t;
+        if (auto nom = arr->handle()->isa_nom<Handle>()) {
+            Scope scope(nom);
+            ScopeRewriter rw(*this, scope);
+            rw.old2new[nom->var()] = index;
+            elem_t = rw.rewrite(arr->body());
+        } else {
+            elem_t = arr->body();
+        }
+
+        return unify<Extract>(2, elem_t, d, index, dbg);
+    }
+
+    auto sigma = type->as<Sigma>();
+    if (std::all_of(sigma->ops().begin() + 1, sigma->ops().end(),
+                    [&](auto op) { return checker().equiv<false>(sigma->op(0), op, dbg); })) {
+        // e.g. (t, f)#cond, where t&f's types contain nominals but still are alpha-equiv
+        // for now just use t's type.
         return unify<Extract>(2, sigma->op(0), d, index, dbg);
+    }
 
-    if (err() && !type->isa<Arr>())
-        err()->err(dbg->loc(), "cannot extract from non-homogeneous sigma with non-literal index");
-
-    type = type->as<Arr>()->body();
-    return unify<Extract>(2, type, d, index, dbg);
+    // type of (a, b)#i = (A, B)#i
+    auto elem_t = extract(tuple(sigma->ops()), index);
+    return unify<Extract>(2, elem_t, d, index, dbg);
 }
 
 const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {
