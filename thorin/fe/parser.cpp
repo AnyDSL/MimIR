@@ -317,7 +317,7 @@ const Def* Parser::parse_pack_or_arr() {
 
     auto id           = std::optional<Sym>();
     const Def* handle = nullptr;
-    Handle* nom = nullptr;
+    Handle* nom       = nullptr;
     if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
         id = eat(Tok::Tag::M_id).sym();
         eat(Tok::Tag::T_colon);
@@ -327,7 +327,7 @@ const Def* Parser::parse_pack_or_arr() {
 
     if (id) {
         auto dbg = world().dbg(*id);
-        nom = world().shape_handle(shape); // TODO dbg
+        nom      = world().shape_handle(shape); // TODO dbg
         scopes_.bind(*id, nom->var(dbg));
         handle = nom;
     } else {
