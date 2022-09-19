@@ -36,7 +36,7 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
         }
     }
 
-    bool res = equiv_internal(d1, d2, dbg);
+    bool res                  = equiv_internal(d1, d2, dbg);
     equiv_[std::pair(d1, d2)] = res ? Equiv::Equiv : Equiv::Distinct;
     return res;
 }
@@ -107,7 +107,7 @@ bool Checker::assignable(const Def* type, const Def* val, const Def* dbg /*= {}*
 const Def* Checker::is_uniform(Defs defs, const Def* dbg) {
     assert(!defs.empty());
     auto first = defs.front();
-    auto ops = defs.skip_front();
+    auto ops   = defs.skip_front();
     return std::ranges::all_of(ops, [this, first, dbg](auto op) { return equiv(first, op, dbg); }) ? first : nullptr;
 }
 
