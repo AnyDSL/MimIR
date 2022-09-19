@@ -136,15 +136,13 @@ const Sigma* Sigma::restructure() {
 
 const Def* Arr::restructure() {
     auto& w = world();
-    if (auto n = isa_lit(shape()))
-        return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)); }));
+    if (auto n = isa_lit(shape())) return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)); }));
     return nullptr;
 }
 
 const Def* Pack::restructure() {
     auto& w = world();
-    if (auto n = isa_lit(shape()))
-        return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)); }));
+    if (auto n = isa_lit(shape())) return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)); }));
     return nullptr;
 }
 
