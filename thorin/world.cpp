@@ -57,9 +57,8 @@ World::World(const State& state)
 
     { // int/real: w: Nat -> *
         auto p             = pi(nat, type());
-        data_.type_int_    = nullptr; // hack for alpha equiv check of sigma (dbg..)
-        data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0, dbg("Int"));
-        data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0, dbg("Real"));
+        data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0);
+        data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0);
         data_.type_bool_   = type_int(2)->as<App>();
         data_.lit_bool_[0] = lit_int(2, 0_u64);
         data_.lit_bool_[1] = lit_int(2, 1_u64);
@@ -348,12 +347,10 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
         }
     }
 
-    // e.g. (t, f)#cond, where t&f's types contain nominals but still are alpha-equiv
-    // for now just use t's type.
-    if (auto sigma = type->isa<Sigma>();
-        sigma && std::all_of(sigma->ops().begin() + 1, sigma->ops().end(),
-                             [&](auto op) { return checker().equiv<false>(sigma->op(0), op, dbg); }))
-        return unify<Extract>(2, sigma->op(0), d, index, dbg);
+    // e.g. (f, t)#cond, where f's & t's types contain nominals but still are alpha-equiv
+    if (auto sigma = type->isa<Sigma>()) {
+        if (auto uni = checker().is_uniform(sigma->ops(), dbg)) return unify<Extract>(2, uni, d, index, dbg);
+    }
 
     if (err() && !type->isa<Arr>())
         err()->err(dbg->loc(), "cannot extract from non-homogeneous sigma with non-literal index");
