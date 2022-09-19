@@ -633,7 +633,7 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
     auto& world = type->world();
 
     // todo: figure out a way to normalize traits on dialect types..
-    if (auto ptr = isa<Tag::Ptr>(type)) {
+    if (isa<Tag::Ptr>(type)) {
         return world.lit_nat(8);
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
@@ -659,6 +659,7 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
         u64 offset = 0;
         u64 align  = 1;
         for (auto t : type->ops()) {
+            t->dump();
             auto a = isa_lit(world.op(Trait::align, t));
             auto s = isa_lit(world.op(Trait::size, t));
             if (!a || !s) goto out;
@@ -687,7 +688,7 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
     } else if (auto join = type->isa<Join>()) {
         if (auto sigma = join->convert()) return world.op(op, sigma, dbg);
     }
-
+    return world.lit_nat(8);
 out:
     return world.raw_app(callee, type, dbg);
 }

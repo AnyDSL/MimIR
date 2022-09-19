@@ -26,7 +26,10 @@ public:
             : RWPass(man, "clos_conv") {}
 
     void prepare() override{
+        world().dump();
         clos::ClosConv(world()).run();
+        world().dump();
+        world().dump();
     }
 };
 

@@ -59,6 +59,8 @@ const Def* clos_pack_dbg(const Def* env, const Def* lam, const Def* dbg, const D
     assert(!ct || isa_clos_type(ct));
     auto& w = env->world();
     auto pi = lam->type()->isa<Pi>();
+    env->type()->dump();
+    pi->dom(Clos_Env_Param)->dump();
     assert(pi && env->type() == pi->dom(Clos_Env_Param));
     ct = (ct) ? ct : clos_type(w.cn(clos_remove_env(pi->dom())));
     return w.tuple(ct, {env->type(), lam, env}, dbg)->isa<Tuple>();
