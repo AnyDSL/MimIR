@@ -179,7 +179,7 @@ public:
     /// * `assert`s otherwise.
     bool is_set() const;
     bool is_unset() const { return !is_set(); } ///< **Not** Def::is_set.
-    bool is_unfinished() const; ///< Are there still some Def::ops **not** set?
+    bool is_unfinished() const;                 ///< Are there still some Def::ops **not** set?
     ///@}
 
     /// @name extended_ops
