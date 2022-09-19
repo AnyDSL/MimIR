@@ -325,6 +325,8 @@ void Def::unset_type() {
     type_ = nullptr;
 }
 
+// TODO Maybe we can speed is_set/is_unfinished up by setting some flags.
+// These tests can easily explode quadratically.
 bool Def::is_set() const {
     auto all_set = std::ranges::all_of(ops(), [](auto op) { return op != nullptr; });
     assert((!isa_structural() || all_set) && "structurals must be always set");
