@@ -8,8 +8,8 @@
     return (%core.bitcast (%Int 4294967296, .Nat) (%core.bitcast (.Nat, %mem.Ptr (%Int 256, 0)) i))
 };
 
-// CHECK-DAG: bitcast_bitcast _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: %mem.Ptr ((%Int 256), 0:.Nat), return_[[retId:[0-9_]+]]: .Cn (%Int 4294967296)] = {
-// CHECK-DAG: .let _[[castedId:[0-9_]+]]: (%Int 4294967296) = %core.bitcast ((%Int 4294967296), %mem.Ptr ((%Int 256), 0:.Nat)) i_[[valId]];
+// CHECK-DAG: bitcast_bitcast _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: %mem.Ptr ((%Int 256), 0), return_[[retId:[0-9_]+]]: .Cn (%Int 4294967296)] = {
+// CHECK-DAG: .let _[[castedId:[0-9_]+]]: (%Int 4294967296) = %core.bitcast ((%Int 4294967296), %mem.Ptr ((%Int 256), 0)) i_[[valId]];
 // CHECK-DAG: return_[[etaId:[0-9_]+]] _[[castedId]]
 
 // CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: (%Int 4294967296) = {

@@ -309,16 +309,19 @@ void Def::unset_type() {
     type_ = nullptr;
 }
 
+// TODO Maybe we can speed is_set/is_unfinished up by setting some flags.
+// These tests can easily explode quadratically.
 bool Def::is_set() const {
-    if (!isa_nom()) {
-        assert(std::ranges::all_of(ops(), [](auto op) { return op != nullptr; }) && "structurals must be always set");
-        return true;
-    }
+    auto all_set = std::ranges::all_of(ops(), [](auto op) { return op != nullptr; });
+    assert((!isa_structural() || all_set) && "structurals must be always set");
 
-    if (std::ranges::all_of(ops(), [](auto op) { return op != nullptr; })) return true;
-
+    if (all_set) return true;
     assert(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
     return false;
+}
+
+bool Def::is_unfinished() const {
+    return std::ranges::any_of(ops(), [](auto op) { return op == nullptr; });
 }
 
 void Def::make_external() { return world().make_external(this); }
@@ -368,11 +371,11 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
         if (!w.type_int()) return arr->op(i); // hack for alpha equiv check of sigma (dbg of %Int..)
-        return arr->reduce(w.lit_int(as_lit(arr->arity()), i)).back();
+        return arr->reduce(w.lit_int(as_lit(arr->arity()), i));
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
         assert(!w.is_frozen() && "TODO");
-        return pack->reduce(w.lit_int(as_lit(pack->arity()), i)).back();
+        return pack->reduce(w.lit_int(as_lit(pack->arity()), i));
     } else if (sort() == Sort::Term) {
         if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
             for (auto u : uses()) {

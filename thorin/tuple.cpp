@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+#include "thorin/rewrite.h"
 #include "thorin/world.h"
 
 namespace thorin {
@@ -90,6 +91,20 @@ std::string tuple2str(const Def* def) {
 
     auto array = def->projs(as_lit(def->arity()), as_lit<nat_t>);
     return std::string(array.begin(), array.end());
+}
+
+/*
+ * reduce
+ */
+
+const Def* Arr::reduce(const Def* arg) const {
+    if (auto h = handle_()) return rewrite(h, arg, 0);
+    return body();
+}
+
+const Def* Pack::reduce(const Def* arg) const {
+    if (auto h = handle_()) return rewrite(h, arg, 0);
+    return body();
 }
 
 } // namespace thorin

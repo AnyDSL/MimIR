@@ -72,16 +72,19 @@ public:
 
 class Arr : public Def {
 private:
-    Arr(const Def* type, const Def* handle, const Def* body, const Def* dbg)
-        : Def(Node, type, {handle, body}, 0, dbg) {}
+    Arr(const Def* type, const Def* shaper, const Def* body, const Def* dbg)
+        : Def(Node, type, {shaper, body}, 0, dbg) {}
 
 public:
     /// @name getters
     ///@{
-    const Def* handle() const { return op(0); }
+    const Def* shaper() const { return op(0); }
     const Def* body() const { return op(1); }
-    const Def* shape() const { return Handle::shape(handle()); }
+    const Def* shape() const { return Handle::shape(shaper()); }
+    Handle* handle_() const { return shaper()->isa_nom<Handle>(); }
     ///@}
+
+    const Def* reduce(const Def* arg) const;
 
     /// @name virtual methods
     ///@{
@@ -94,17 +97,20 @@ public:
 
 class Pack : public Def {
 private:
-    Pack(const Def* type, const Def* handle, const Def* body, const Def* dbg)
-        : Def(Node, type, {handle, body}, 0, dbg) {}
+    Pack(const Def* type, const Def* shaper, const Def* body, const Def* dbg)
+        : Def(Node, type, {shaper, body}, 0, dbg) {}
 
 public:
     /// @name getters
     ///@{
-    const Def* handle() const { return op(0); }
+    const Def* shaper() const { return op(0); }
     const Def* body() const { return op(1); }
-    const Def* shape() const { return Handle::shape(handle()); }
+    const Def* shape() const { return Handle::shape(shaper()); }
     const Arr* type() const { return Def::type()->as<Arr>(); }
+    Handle* handle_() const { return shaper()->isa_nom<Handle>(); }
     ///@}
+
+    const Def* reduce(const Def* arg) const;
 
     /// @name virtual methods
     ///@{

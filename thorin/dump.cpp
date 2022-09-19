@@ -119,6 +119,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         const auto& name = axiom->debug().name;
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
+        if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());
         if (auto real = thorin::isa<Tag::Real>(lit->type())) {
             switch (as_lit(real->arg())) {
                 case 16: return print(os, "{}:(%Real 16)", lit->get<r16>());
@@ -142,12 +143,6 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
         if (auto size = isa_sized_type(app)) {
-            // TODO remove this
-            if (auto l = isa_lit(size)) {
-                if (auto real = thorin::isa<Tag::Real>(app)) return print(os, "(%Real {})", *l);
-                if (auto _int = thorin::isa<Tag::Int>(app)) return print(os, "(%Int {})", *l);
-            }
-
             if (auto real = thorin::isa<Tag::Real>(app)) return print(os, "(%Real {})", size);
             if (auto _int = thorin::isa<Tag::Int>(app)) return print(os, "(%Int {})", size);
             unreachable();

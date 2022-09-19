@@ -56,7 +56,6 @@ World::World(const State& state)
 
     { // int/real: w: Nat -> *
         auto p             = pi(nat, type());
-        data_.type_int_    = nullptr; // hack for alpha equiv check of sigma (dbg..)
         data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0);
         data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0);
         data_.type_bool_   = type_int(2)->as<App>();
@@ -248,8 +247,7 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; }))
-        return uniform_arr(n, ops[0], dbg);
+    if (auto uni = checker().is_uniform(ops, dbg)) return uniform_arr(n, uni, dbg);
     return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
 }
 
@@ -279,33 +277,31 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     if (!type->isa_nom<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; }))
-            return uniform_pack(n, ops[0], dbg);
+        if (auto uni = checker().is_uniform(ops, dbg)) return uniform_pack(n, uni, dbg);
     }
 
-    // eta rule for tuples:
-    // (extract(tup, 0), extract(tup, 1), extract(tup, 2)) -> tup
-    if (n == 0) goto out;
-
-    if (auto extract = ops[0]->isa<Extract>()) {
-        auto tup = extract->tuple();
-        bool eta = tup->type() == type;
-        for (size_t i = 0; i != n && eta; ++i) {
-            if (auto extract = ops[i]->isa<Extract>()) {
-                if (auto index = isa_lit(extract->index())) {
-                    if (eta &= u64(i) == *index) {
-                        eta &= extract->tuple() == tup;
-                        continue;
+    if (n != 0) {
+        // eta rule for tuples:
+        // (extract(tup, 0), extract(tup, 1), extract(tup, 2)) -> tup
+        if (auto extract = ops[0]->isa<Extract>()) {
+            auto tup = extract->tuple();
+            bool eta = tup->type() == type;
+            for (size_t i = 0; i != n && eta; ++i) {
+                if (auto extract = ops[i]->isa<Extract>()) {
+                    if (auto index = isa_lit(extract->index())) {
+                        if (eta &= u64(i) == *index) {
+                            eta &= extract->tuple() == tup;
+                            continue;
+                        }
                     }
                 }
+                eta = false;
             }
-            eta = false;
-        }
 
-        if (eta) return tup;
+            if (eta) return tup;
+        }
     }
 
-out:
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
@@ -316,14 +312,14 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
 }
 
 const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
-    if (index->isa<Arr>() || index->isa<Pack>()) {
-        DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
-        return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);
-    } else if (index->isa<Sigma>() || index->isa<Tuple>()) {
+    if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
         DefArray ops(n, [&](size_t i) { return d->proj(n, as_lit(idx[i])); });
-        return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
+        return tuple(ops, dbg);
+    } else if (index->isa<Pack>()) {
+        DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
+        return tuple(ops, dbg);
     }
 
     auto type = d->unfold_type();
@@ -334,16 +330,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
 
     // nom sigmas can be 1-tuples
     if (auto mod = isa_lit(isa_sized_type(index->type())); mod && *mod == 1 && !d->type()->isa_nom<Sigma>()) return d;
-    if (auto pack = d->isa<Pack>()) {
-        if (auto nom = pack->handle()->isa_nom<Handle>()) {
-            Scope scope(nom);
-            ScopeRewriter rw(*this, scope);
-            rw.old2new[nom->var()] = index;
-            return rw.rewrite(pack->body());
-        }
-
-        return pack->body();
-    }
+    if (auto pack = d->isa<Pack>()) return pack->reduce(index);
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {
@@ -369,30 +356,12 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
         }
     }
 
-    if (auto arr = type->isa<Arr>()) {
-        const Def* elem_t;
-        if (auto nom = arr->handle()->isa_nom<Handle>()) {
-            Scope scope(nom);
-            ScopeRewriter rw(*this, scope);
-            rw.old2new[nom->var()] = index;
-            elem_t                 = rw.rewrite(arr->body());
-        } else {
-            elem_t = arr->body();
-        }
+    const Def* elem_t;
+    if (auto arr = type->isa<Arr>())
+        elem_t = arr->reduce(index);
+    else
+        elem_t = extract(tuple(type->as<Sigma>()->ops(), dbg), index, dbg);
 
-        return unify<Extract>(2, elem_t, d, index, dbg);
-    }
-
-    auto sigma = type->as<Sigma>();
-    if (std::all_of(sigma->ops().begin() + 1, sigma->ops().end(),
-                    [&](auto op) { return checker().equiv<false>(sigma->op(0), op, dbg); })) {
-        // e.g. (t, f)#cond, where t&f's types contain nominals but still are alpha-equiv
-        // for now just use t's type.
-        return unify<Extract>(2, sigma->op(0), d, index, dbg);
-    }
-
-    // type of (a, b)#i = (A, B)#i
-    auto elem_t = extract(tuple(sigma->ops()), index);
     return unify<Extract>(2, elem_t, d, index, dbg);
 }
 
@@ -434,8 +403,8 @@ bool is_shape(const Def* s) {
     return false;
 }
 
-const Def* World::arr_(const Def* handle, const Def* body, const Def* dbg) {
-    auto shape = Handle::shape(handle);
+const Def* World::arr_(const Def* shaper, const Def* body, const Def* dbg) {
+    auto shape = Handle::shape(shaper);
 
     if (err()) {
         if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
@@ -444,13 +413,25 @@ const Def* World::arr_(const Def* handle, const Def* body, const Def* dbg) {
     if (auto a = isa_lit<u64>(shape)) {
         if (*a == 0) return sigma();
         if (*a == 1) return body;
-        if (auto nom = handle->isa_nom<Handle>()) {
-            Scope scope(nom);
+        if (auto handle = shaper->isa_nom<Handle>()) {
+            Scope scope(handle);
             return sigma(DefArray(*a, [&](size_t i) {
                 ScopeRewriter rw(*this, scope);
-                rw.old2new[nom->var()] = lit_int(*a, i);
+                rw.old2new[handle->var()] = lit_int(*a, i);
                 return rw.rewrite(body);
             }));
+        }
+    }
+
+    if (shaper->isa<Bot>()) {
+        if (auto ex = shape->isa<Extract>()) {
+            if (auto tup = ex->tuple()->isa<Tuple>()) {
+                DefVec arrs;
+                for (size_t i = 0, e = tup->num_ops(); i != e; ++i) {
+                    arrs.emplace_back(uniform_arr(tup->op(i), body));
+                }
+                return extract(tuple(arrs), ex->index(), dbg);
+            }
         }
     }
 
@@ -466,11 +447,11 @@ const Def* World::arr_(const Def* handle, const Def* body, const Def* dbg) {
         // if (auto s = isa_lit(p->shape())) return arr(*s, arr(pack(*s - 1, p->body()), body), dbg);
     }
 
-    return unify<Arr>(2, body->unfold_type(), handle, body, dbg);
+    return unify<Arr>(2, body->unfold_type(), shaper, body, dbg);
 }
 
-const Def* World::pack_(const Def* handle, const Def* body, const Def* dbg) {
-    auto shape = isa_sized_type(handle->type());
+const Def* World::pack_(const Def* shaper, const Def* body, const Def* dbg) {
+    auto shape = Handle::shape(shaper);
 
     if (err()) {
         if (!is_shape(shape->type())) err()->expected_shape(shape, dbg);
@@ -479,11 +460,11 @@ const Def* World::pack_(const Def* handle, const Def* body, const Def* dbg) {
     if (auto a = isa_lit<u64>(shape)) {
         if (*a == 0) return tuple();
         if (*a == 1) return body;
-        if (auto nom = handle->isa_nom<Handle>()) {
-            Scope scope(nom);
+        if (auto handle = shaper->isa_nom<Handle>()) {
+            Scope scope(handle);
             return tuple(DefArray(*a, [&](size_t i) {
                 ScopeRewriter rw(*this, scope);
-                rw.old2new[nom->var()] = lit_int(*a, i);
+                rw.old2new[handle->var()] = lit_int(*a, i);
                 return rw.rewrite(body);
             }));
         }
@@ -496,17 +477,17 @@ const Def* World::pack_(const Def* handle, const Def* body, const Def* dbg) {
     // <<n; x>; body> -> <x; <<n-1, x>; body>>
 
     auto type = uniform_arr(shape, body->type());
-    return unify<Pack>(2, type, handle, body, dbg);
+    return unify<Pack>(2, type, shaper, body, dbg);
 }
 
 const Def* World::uniform_arr(const Def* shape, const Def* body, const Def* dbg) {
-    auto handle = bot(type_shape(shape));
-    return arr_(handle, body, dbg);
+    auto shaper = bot(type_shape(shape));
+    return arr_(shaper, body, dbg);
 }
 
 const Def* World::uniform_pack(const Def* shape, const Def* body, const Def* dbg) {
-    auto handle = bot(type_shape(shape));
-    return pack_(handle, body, dbg);
+    auto shaper = bot(type_shape(shape));
+    return pack_(shaper, body, dbg);
 }
 
 const Def* World::uniform_arr(Defs shape, const Def* body, const Def* dbg) {

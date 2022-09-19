@@ -316,8 +316,8 @@ const Def* Parser::parse_pack_or_arr() {
     scopes_.push();
 
     auto id           = std::optional<Sym>();
-    const Def* handle = nullptr;
-    Handle* nom       = nullptr;
+    const Def* shaper = nullptr;
+    Handle* handle    = nullptr;
     if (ahead(0).isa(Tok::Tag::M_id) && ahead(1).isa(Tok::Tag::T_colon)) {
         id = eat(Tok::Tag::M_id).sym();
         eat(Tok::Tag::T_colon);
@@ -327,22 +327,21 @@ const Def* Parser::parse_pack_or_arr() {
 
     if (id) {
         auto dbg = world().dbg(*id);
-        nom      = world().shape_handle(shape); // TODO dbg
-        scopes_.bind(*id, nom->var(dbg));
-        handle = nom;
+        shaper = handle = world().shape_handle(shape); // TODO dbg
+        scopes_.bind(*id, handle->var(dbg));
     } else {
-        handle = world().shape_bot(shape);
+        shaper = world().shape_bot(shape);
     }
 
     expect(Tok::Tag::T_semicolon, is_pack ? "pack" : "array");
     auto body = parse_expr(is_pack ? "body of a pack" : "body of an array");
 
-    if (nom) nom->set(body);
+    if (handle) handle->set(body);
 
     scopes_.pop();
     expect(Tok::delim_l2r(delim_l), is_pack ? "closing delimiter of a pack" : "closing delimiter of an array");
 
-    return is_pack ? world().pack_(handle, body, track) : world().arr_(handle, body, track);
+    return is_pack ? world().pack_(shaper, body, track) : world().arr_(shaper, body, track);
 }
 
 const Def* Parser::parse_block() {
