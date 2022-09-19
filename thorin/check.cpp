@@ -43,7 +43,6 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
 
 bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
     if (!equiv(d1->type(), d2->type(), dbg)) return false;
-
     if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type(), dbg);
 
     if (is_sigma_or_arr(d1)) {
@@ -55,8 +54,12 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
             }
             return true;
         }
-    } else if (auto var = d1->isa<Var>()) {
-        // vars are equal if they appeared under the same binder
+    }
+
+    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops())
+        return false;
+
+    if (auto var = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
         for (auto [n1, n2] : vars_) {
             if (var->nom() == n1) return d2->as<Var>()->nom() == n2;
         }
@@ -67,10 +70,6 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
     if (auto n1 = d1->isa_nom()) {
         if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1, n2);
     }
-
-    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops() ||
-        d1->is_set() != d2->is_set())
-        return false;
 
     return std::ranges::equal(d1->ops(), d2->ops(), [this, dbg](auto op1, auto op2) { return equiv(op1, op2, dbg); });
 }
