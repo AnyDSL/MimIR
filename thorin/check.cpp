@@ -56,8 +56,7 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
         }
     }
 
-    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops())
-        return false;
+    if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops()) return false;
 
     if (auto var = d1->isa<Var>()) { // vars are equal if they appeared under the same binder
         for (auto [n1, n2] : vars_) {
