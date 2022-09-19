@@ -172,12 +172,14 @@ public:
     Def* set_type(const Def*);
     void unset_type();
 
-    /// Are all Def::ops set?
-    /// * `true` if all operands are set or Def::num_ops ` == 0`.
-    /// * `false` if all operands are `nullptr`.
+    /// Are all Def::ops of this nominal set?
+    /// @returns
+    /// * `true`, if all operands are set or Def::num_ops` == 0`.
+    /// * `false`, if all operands are `nullptr`.
     /// * `assert`s otherwise.
     bool is_set() const;
-    bool is_unset() const { return !is_set(); } ///< *Not* Def::is_set.
+    bool is_unset() const { return !is_set(); } ///< **Not** Def::is_set.
+    bool is_unfinished() const; ///< Are there still some Def::ops **not** set?
     ///@}
 
     /// @name extended_ops

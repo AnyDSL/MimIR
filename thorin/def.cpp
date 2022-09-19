@@ -326,15 +326,16 @@ void Def::unset_type() {
 }
 
 bool Def::is_set() const {
-    if (!isa_nom()) {
-        assert(std::ranges::all_of(ops(), [](auto op) { return op != nullptr; }) && "structurals must be always set");
-        return true;
-    }
+    auto all_set = std::ranges::all_of(ops(), [](auto op) { return op != nullptr; });
+    assert((!isa_structural() || all_set) && "structurals must be always set");
 
-    if (std::ranges::all_of(ops(), [](auto op) { return op != nullptr; })) return true;
-
+    if (all_set) return true;
     assert(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
     return false;
+}
+
+bool Def::is_unfinished() const {
+    return std::ranges::any_of(ops(), [](auto op) { return op == nullptr; });
 }
 
 void Def::make_external() { return world().make_external(this); }
