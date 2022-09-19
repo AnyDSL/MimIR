@@ -29,7 +29,7 @@ var searchData=
   ['env_5fvar_26',['env_var',['../classthorin_1_1clos_1_1ClosLit.html#a06e050bf1424f8911a42ff9283313b02',1,'thorin::clos::ClosLit']]],
   ['eof_27',['EoF',['../namespacethorin_1_1utf8.html#a5c5126a8e6311260cf8ee8126dd59c39',1,'thorin::utf8']]],
   ['equal_28',['equal',['../classthorin_1_1Def.html#a723e4be0f64eac8fbc33aa091038df40',1,'thorin::Def']]],
-  ['equiv_29',['equiv',['../classthorin_1_1Checker.html#ae332e6dd8bcddc3a558198236bcfaa25',1,'thorin::Checker']]],
+  ['equiv_29',['equiv',['../classthorin_1_1Checker.html#a10b7362618471ee73a7a9d25beb4a6de',1,'thorin::Checker']]],
   ['erase_30',['erase',['../classthorin_1_1IndexSet.html#a84889c90abdfa682b44bdd59f0faa291',1,'thorin::IndexSet']]],
   ['err_31',['err',['../classthorin_1_1ErrorHandler.html#ab57c77d6b43d013b315ca4383ae1d323',1,'thorin::ErrorHandler::err()'],['../classthorin_1_1World.html#a7836aadcfca5fde714c1af95e525ec40',1,'thorin::World::err()']]],
   ['err_32',['Err',['../namespacethorin_1_1utf8.html#a52719151c16151f7d70287c5ce19aac5',1,'thorin::utf8']]],

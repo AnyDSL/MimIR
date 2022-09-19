@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['tab_0',['tab',['../classthorin_1_1Tab.html#ac89b5f96935cc8a6eed9ebd32cbf594a',1,'thorin::Tab']]],
-  ['tab_1',['Tab',['../classthorin_1_1Tab.html#a90e3e6f9586f056b9ad97c0dfc97b35f',1,'thorin::Tab']]],
+  ['tab_0',['Tab',['../classthorin_1_1Tab.html#a90e3e6f9586f056b9ad97c0dfc97b35f',1,'thorin::Tab']]],
+  ['tab_1',['tab',['../classthorin_1_1Tab.html#ac89b5f96935cc8a6eed9ebd32cbf594a',1,'thorin::Tab']]],
   ['tag_2',['tag',['../classthorin_1_1Match.html#a14760a6c3dc608e2bdadde94018244b1',1,'thorin::Match::tag()'],['../classthorin_1_1Proxy.html#a33449d4206d2c4ecd374b12afe4e2959',1,'thorin::Proxy::tag()'],['../classthorin_1_1fe_1_1Tok.html#abf873630723f154cb493c524b01e9976',1,'thorin::fe::Tok::tag()'],['../classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534',1,'thorin::Axiom::tag()']]],
   ['tag2str_3',['tag2str',['../classthorin_1_1fe_1_1Tok.html#a258aa41adeecb6f25f1bbadad0108be9',1,'thorin::fe::Tok']]],
   ['tail_4',['tail',['../structthorin_1_1ll_1_1BB.html#a68f2d2cbdaea0a815c52b4533c59e03a',1,'thorin::ll::BB::tail()'],['../structthorin_1_1ll_1_1BB.html#a3b03c198eb00e5b6e231295e732f1720',1,'thorin::ll::BB::tail(const char *s, Args &amp;&amp;... args)']]],

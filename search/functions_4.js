@@ -20,7 +20,7 @@ var searchData=
   ['env_5ftype_17',['env_type',['../classthorin_1_1clos_1_1ClosLit.html#a9c866a0003fcee5aeec9694bc51eed38',1,'thorin::clos::ClosLit']]],
   ['env_5fvar_18',['env_var',['../classthorin_1_1clos_1_1ClosLit.html#a06e050bf1424f8911a42ff9283313b02',1,'thorin::clos::ClosLit']]],
   ['equal_19',['equal',['../classthorin_1_1Def.html#a723e4be0f64eac8fbc33aa091038df40',1,'thorin::Def']]],
-  ['equiv_20',['equiv',['../classthorin_1_1Checker.html#ae332e6dd8bcddc3a558198236bcfaa25',1,'thorin::Checker']]],
+  ['equiv_20',['equiv',['../classthorin_1_1Checker.html#a10b7362618471ee73a7a9d25beb4a6de',1,'thorin::Checker']]],
   ['erase_21',['erase',['../classthorin_1_1IndexSet.html#a84889c90abdfa682b44bdd59f0faa291',1,'thorin::IndexSet']]],
   ['err_22',['err',['../namespacethorin_1_1dl.html#af40487a5a6a330a23d22b9c077168b81',1,'thorin::dl::err()'],['../namespacethorin.html#a76230671e563449407228fa716175097',1,'thorin::err(Loc loc, const char *fmt, Args &amp;&amp;... args)'],['../namespacethorin.html#aac934f1d1e901ba18050dd1302d65507',1,'thorin::err(const char *fmt, Args &amp;&amp;... args)'],['../classthorin_1_1World.html#a7836aadcfca5fde714c1af95e525ec40',1,'thorin::World::err()'],['../classthorin_1_1ErrorHandler.html#ab57c77d6b43d013b315ca4383ae1d323',1,'thorin::ErrorHandler::err()']]],
   ['errf_23',['errf',['../namespacethorin.html#af538a45dc8c0c242b9a51f2ea1e6afea',1,'thorin']]],
