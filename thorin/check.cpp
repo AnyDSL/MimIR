@@ -27,7 +27,7 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
     // normalize: always put smaller gid to the left
     if (d1->gid() > d2->gid()) std::swap(d1, d2);
 
-    if (auto [it, ins] = equiv_.emplace(std::pair(d1, d2), Equiv::Unknown); ins) {
+    if (auto [it, ins] = equiv_.emplace(std::pair(d1, d2), Equiv::Unknown); !ins) {
         switch (it->second) {
             case Equiv::Distinct: return false;
             case Equiv::Unknown:
@@ -36,13 +36,9 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
         }
     }
 
-    if (equiv_internal(d1, d2, dbg)) {
-        equiv_[std::pair(d1, d2)] = Equiv::Equiv;
-        return true;
-    } else {
-        equiv_[std::pair(d1, d2)] = Equiv::Distinct;
-        return false;
-    }
+    bool res = equiv_internal(d1, d2, dbg);
+    equiv_[std::pair(d1, d2)] = res ? Equiv::Equiv : Equiv::Distinct;
+    return res;
 }
 
 bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
@@ -62,9 +58,7 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
     } else if (auto var = d1->isa<Var>()) {
         // vars are equal if they appeared under the same binder
         for (auto [v1, v2] : vars_) {
-            if (var == v1) {
-                return d2->as<Var>() == v2;
-            }
+            if (var == v1) return d2->as<Var>() == v2;
         }
 
         return false;
