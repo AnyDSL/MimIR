@@ -1,5 +1,11 @@
 var NAVTREEINDEX19 =
 {
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#aaf47fe605aab18bf373e3ee9db286ae0":[3,0,0,26,6],
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#aaf47fe605aab18bf373e3ee9db286ae0":[5,0,0,19,6],
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#aafd69930df4621be98f4034250f1c10e":[3,0,0,26,7],
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#aafd69930df4621be98f4034250f1c10e":[5,0,0,19,7],
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac3795836fbb5eb4edbb139a0343219dc":[3,0,0,26,4],
+"structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac3795836fbb5eb4edbb139a0343219dc":[5,0,0,19,4],
 "structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac80d660438b4842b825631b2f3d637b1":[3,0,0,26,8],
 "structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#ac80d660438b4842b825631b2f3d637b1":[5,0,0,19,8],
 "structthorin_1_1ArrayStorage_3_01T_00_010_01_4.html#af4d672facaede9857960eac8e4746882":[5,0,0,19,0],
@@ -243,11 +249,5 @@ var NAVTREEINDEX19 =
 "structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4.html":[3,0,0,14,36],
 "structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4.html":[5,0,0,11,36],
 "structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4.html#ad0094b28b5d66e7a7425c781ea43e723":[5,0,0,11,36,0],
-"structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4.html#ad0094b28b5d66e7a7425c781ea43e723":[3,0,0,14,36,0],
-"structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4.html":[3,0,0,14,38],
-"structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4.html":[5,0,0,11,38],
-"structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4.html#ab7d7fa92091fb7333ea808b2b3100670":[5,0,0,11,38,0],
-"structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2u_00_01dw_00_01sw_01_4.html#ab7d7fa92091fb7333ea808b2b3100670":[3,0,0,14,38,0],
-"structthorin_1_1normalize_1_1FoldConv_3_01conv_1_1r2r_00_01dw_00_01sw_01_4.html":[3,0,0,14,26],
-"structthorin_1_1normalize_1_1FoldConv_3_01conv_1_1r2r_00_01dw_00_01sw_01_4.html":[5,0,0,11,26]
+"structthorin_1_1normalize_1_1FoldConv_3_01Conv_1_1u2r_00_01dw_00_01sw_01_4.html#ad0094b28b5d66e7a7425c781ea43e723":[3,0,0,14,36,0]
 };
