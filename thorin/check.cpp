@@ -62,7 +62,6 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
         for (auto [n1, n2] : vars_) {
             if (var->nom() == n1) return d2->as<Var>()->nom() == n2;
         }
-
         return false;
     }
 
