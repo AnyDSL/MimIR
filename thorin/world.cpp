@@ -237,7 +237,7 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+    if (auto uni = checker().is_uniform(ops, dbg)) return arr(n, uni, dbg);
     return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
 }
 
@@ -267,32 +267,31 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     if (!type->isa_nom<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return pack(n, ops[0]);
+        if (auto uni = checker().is_uniform(ops, dbg)) return pack(n, uni, dbg);
     }
 
-    // eta rule for tuples:
-    // (extract(tup, 0), extract(tup, 1), extract(tup, 2)) -> tup
-    if (n == 0) goto out;
-
-    if (auto extract = ops[0]->isa<Extract>()) {
-        auto tup = extract->tuple();
-        bool eta = tup->type() == type;
-        for (size_t i = 0; i != n && eta; ++i) {
-            if (auto extract = ops[i]->isa<Extract>()) {
-                if (auto index = isa_lit(extract->index())) {
-                    if (eta &= u64(i) == *index) {
-                        eta &= extract->tuple() == tup;
-                        continue;
+    if (n != 0) {
+        // eta rule for tuples:
+        // (extract(tup, 0), extract(tup, 1), extract(tup, 2)) -> tup
+        if (auto extract = ops[0]->isa<Extract>()) {
+            auto tup = extract->tuple();
+            bool eta = tup->type() == type;
+            for (size_t i = 0; i != n && eta; ++i) {
+                if (auto extract = ops[i]->isa<Extract>()) {
+                    if (auto index = isa_lit(extract->index())) {
+                        if (eta &= u64(i) == *index) {
+                            eta &= extract->tuple() == tup;
+                            continue;
+                        }
                     }
                 }
+                eta = false;
             }
-            eta = false;
-        }
 
-        if (eta) return tup;
+            if (eta) return tup;
+        }
     }
 
-out:
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
@@ -303,14 +302,14 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
 }
 
 const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
-    if (index->isa<Arr>() || index->isa<Pack>()) {
-        DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
-        return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);
-    } else if (index->isa<Sigma>() || index->isa<Tuple>()) {
+    if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
         DefArray ops(n, [&](size_t i) { return d->proj(n, as_lit(idx[i])); });
-        return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
+        return tuple(ops, dbg);
+    } else if (index->isa<Pack>()) {
+        DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
+        return tuple(ops, dbg);
     }
 
     auto type = d->unfold_type();
@@ -347,16 +346,13 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
         }
     }
 
-    // e.g. (f, t)#cond, where f's & t's types contain nominals but still are alpha-equiv
-    if (auto sigma = type->isa<Sigma>()) {
-        if (auto uni = checker().is_uniform(sigma->ops(), dbg)) return unify<Extract>(2, uni, d, index, dbg);
-    }
+    const Def* elem_t;
+    if (auto arr = type->isa<Arr>())
+        elem_t = arr->reduce(index);
+    else
+        elem_t = extract(tuple(type->as<Sigma>()->ops(), dbg), index, dbg);
 
-    if (err() && !type->isa<Arr>())
-        err()->err(dbg->loc(), "cannot extract from non-homogeneous sigma with non-literal index");
-
-    type = type->as<Arr>()->body();
-    return unify<Extract>(2, type, d, index, dbg);
+    return unify<Extract>(2, elem_t, d, index, dbg);
 }
 
 const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {

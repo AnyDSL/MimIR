@@ -57,15 +57,15 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
         }
     } else if (auto var = d1->isa<Var>()) {
         // vars are equal if they appeared under the same binder
-        for (auto [v1, v2] : vars_) {
-            if (var == v1) return d2->as<Var>() == v2;
+        for (auto [n1, n2] : vars_) {
+            if (var->nom() == n1) return d2->as<Var>()->nom() == n2;
         }
 
         return false;
     }
 
     if (auto n1 = d1->isa_nom()) {
-        if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1->var(), n2->var());
+        if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1, n2);
     }
 
     if (d1->node() != d2->node() || d1->flags() != d2->flags() || d1->num_ops() != d2->num_ops() ||
