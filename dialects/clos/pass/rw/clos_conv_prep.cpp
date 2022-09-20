@@ -49,6 +49,7 @@ void ClosConvPrep::enter() {
             }
         }
     }
+    curr_nom()->dump();
     if (auto body = curr_nom()->body()->isa<App>();
         !wrapper_.contains(curr_nom()) && body && body->callee_type()->is_cn())
         ignore = false;
@@ -130,10 +131,12 @@ const App* ClosConvPrep::rewriteCallee(const App* app){
             }
 
             if (from_outer_scope(app->callee())) {
-                return app->refine(0, thorin::clos::op(clos::bot, app->callee()))->as<App>();
+                app = app->refine(0, thorin::clos::op(clos::bot, app->callee()))->as<App>();
             }
         }
     }
+
+    return app;
 }
 
 const Def* ClosConvPrep::rewrite(const Def* def) {
