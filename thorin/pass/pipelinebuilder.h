@@ -7,6 +7,7 @@
 
 namespace thorin {
 
+const int DEFAULT_PRIORITY = 100;
 typedef std::function<void(PassMan&)> PassBuilder;
 typedef std::pair<int, PassBuilder> PrioPassBuilder;
 typedef std::vector<PrioPassBuilder> PassList;
@@ -38,11 +39,10 @@ public:
     std::vector<int> passes();
 
 private:
-    std::map<int, std::priority_queue<PrioPassBuilder, PassList, passCmp>> phase_extensions_;
+    std::map<int, PassList> phase_extensions_;
     // std::vector<std::function<void(PassM#an&)>> codegen_prep_phase_extensions_;
     // std::vector<std::function<void(PassMan&)>> opt_prep_phase1_extensions_;
     // std::vector<std::function<void(PassMan&)>> opt_prep_phase2_extensions_;
-    const int DEFAULT_PRIORITY = 100;
 };
 
 } // namespace thorin

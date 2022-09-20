@@ -33,8 +33,11 @@ void PipelineBuilder::extend_codegen_prep_phase(std::function<void(PassMan&)> ex
 void PipelineBuilder::extend_opt_phase(int i, std::function<void(PassMan&)> extension, int priority) {
     // adds extension to the i-th optimization phase
     // if the ith phase does not exist, it is created
-    if (!phase_extensions_.contains(i)) { phase_extensions_.emplace(i, std::vector<std::function<void(PassMan&)>>()); }
-    phase_extensions_[i].push({priority, extension});
+    if (!phase_extensions_.contains(i)) {
+        // phase_extensions_.emplace(i, std::vector<>());
+        phase_extensions_[i] = std::vector<PrioPassBuilder>();
+    }
+    phase_extensions_[i].push_back({priority, extension});
 }
 
 void PipelineBuilder::add_opt(int i) {
@@ -63,7 +66,9 @@ std::vector<int> PipelineBuilder::passes() {
 std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
     auto man = std::make_unique<PassMan>(world);
 
-    for (const auto& ext : phase_extensions_[i]) ext(*man);
+    // std::sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), passCmp());
+
+    for (const auto& ext : phase_extensions_[i]) ext.second(*man);
 
     return man;
 }
