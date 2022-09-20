@@ -403,6 +403,14 @@ const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
         if (*a == 1) return body;
     }
 
+    if (auto ex = shape->isa<Extract>()) {
+        if (auto tup = ex->tuple()->isa<Tuple>()) {
+            DefVec arrs;
+            for (size_t i = 0, e = tup->num_ops(); i != e; ++i) { arrs.emplace_back(arr(tup->op(i), body)); }
+            return extract(tuple(arrs), ex->index(), dbg);
+        }
+    }
+
     // «(a, b, c); body» -> «a; «(b, c); body»»
     if (auto tuple = shape->isa<Tuple>()) return arr(tuple->ops().front(), arr(tuple->ops().skip_front(), body), dbg);
 

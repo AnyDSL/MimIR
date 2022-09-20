@@ -21,8 +21,8 @@ const Def* infer_type_level(World& world, Defs defs) {
 }
 
 bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
-    if (!d1 || !d2 || d1->is_unfinished() || d2->is_unfinished()) return false;
     if (d1 == d2) return true;
+    if (!d1 || !d2 || d1->is_unfinished() || d2->is_unfinished()) return false;
 
     // normalize: always put smaller gid to the left
     if (d1->gid() > d2->gid()) std::swap(d1, d2);
