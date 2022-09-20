@@ -35,7 +35,7 @@ public:
     const Def* augment_app(const App*, Lam*, Lam*);
     const Def* augment_lit(const Lit*, Lam*, Lam*);
     const Def* augment_tuple(const Tuple*, Lam*, Lam*);
-
+    const Def* augment_pack(const Pack* pack, Lam* f, Lam* f_diff);
 
     /// fills partial_pullback and shadow/structure pullback maps
     void create_shadow_id_pb(const Def*);

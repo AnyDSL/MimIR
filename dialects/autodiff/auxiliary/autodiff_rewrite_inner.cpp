@@ -176,6 +176,49 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     return aug_tup;
 }
 
+const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
+    auto& world = pack->world();
+    auto shape  = pack->arity(); // TODO: arity vs shape
+    auto body   = pack->body();
+
+    auto aug_shape = augment_(shape, f, f_diff);
+    auto aug_body  = augment(body, f, f_diff);
+
+    auto aug_pack = world.pack(aug_shape, aug_body);
+
+    assert(partial_pullback[aug_body] && "pack pullback should exists");
+    // TODO: or use scale axiom
+    auto body_pb              = partial_pullback[aug_body];
+    auto pb_pack              = world.pack(aug_shape, body_pb);
+    shadow_pullback[aug_pack] = pb_pack;
+
+    world.DLOG("shadow pb of pack: {} : {}", pb_pack, pb_pack->type());
+
+    auto pb_type = pullback_type(pack->type(), f_arg_ty);
+    auto pb      = world.nom_lam(pb_type, world.dbg("pack_pb"));
+
+    world.DLOG("pb of pack: {} : {}", pb, pb_type);
+
+    auto f_arg_ty_diff = tangent_type_fun(f_arg_ty);
+    auto app_pb        = world.nom_pack(world.arr(aug_shape, f_arg_ty_diff));
+
+    // TODO: special case for const width (special tuple)
+
+    // <i:n, cps2ds body_pb (s#i)
+    app_pb->set(world.raw_app(direct::op_cps2ds_dep(body_pb), world.extract(pb->var((nat_t)0), app_pb->var())));
+
+    world.DLOG("app pb of pack: {} : {}", app_pb, app_pb->type());
+
+    auto sumup = world.raw_app(world.ax<sum>(), {aug_shape, f_arg_ty_diff});
+    world.DLOG("sumup: {} : {}", sumup, sumup->type());
+
+    pb->app(true, pb->var(1), world.raw_app(sumup, app_pb));
+
+    partial_pullback[aug_pack] = pb;
+
+    return aug_pack;
+}
+
 const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     auto& world = app->world();
 
@@ -472,6 +515,15 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         return augment_tuple(tup, f, f_diff);
     }
 
+    // pack
+    else if (auto pack = def->isa<Pack>()) {
+        // TODO: nom pack
+        auto shape = pack->arity(); // TODO: arity vs shape
+        auto body  = pack->body();
+        world.DLOG("Augment pack: {} : {} with {}", shape, shape->type(), body);
+        return augment_pack(pack, f, f_diff);
+    }
+
     // axiom
     //  TODO: move concrete handling to own file, directory
     else if (auto ax = def->isa<Axiom>()) {
@@ -495,50 +547,8 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         // TODO: why does this cause a depth error?
         // if (auto diff_lam = diff_fun->isa_nom<Lam>()) { diff_lam->set_filter(true); }
         return diff_fun;
-    } else if (auto pack = def->isa<Pack>()) {
-        // TODO: nom pack
-        auto shape = pack->arity(); // TODO: arity vs shape
-        auto body  = pack->body();
-        world.DLOG("Augment pack: {} : {} with {}", shape, shape->type(), body);
-        // TODO: refactor into function
-        // return augment_pack(pack, f, f_diff);
-        auto aug_shape = augment_(shape, f, f_diff);
-        auto aug_body  = augment(body, f, f_diff);
-
-        auto aug_pack = world.pack(aug_shape, aug_body);
-
-        assert(partial_pullback[aug_body] && "pack pullback should exists");
-        // TODO: or use scale axiom
-        auto body_pb              = partial_pullback[aug_body];
-        auto pb_pack              = world.pack(aug_shape, body_pb);
-        shadow_pullback[aug_pack] = pb_pack;
-
-        world.DLOG("shadow pb of pack: {} : {}", pb_pack, pb_pack->type());
-
-        auto pb_type = pullback_type(pack->type(), f_arg_ty);
-        auto pb      = world.nom_lam(pb_type, world.dbg("pack_pb"));
-
-        world.DLOG("pb of pack: {} : {}", pb, pb_type);
-
-        auto f_arg_ty_diff = tangent_type_fun(f_arg_ty);
-        auto app_pb        = world.nom_pack(world.arr(aug_shape, f_arg_ty_diff));
-
-        // TODO: special case for const width (special tuple)
-
-        // <i:n, cps2ds body_pb (s#i)
-        app_pb->set(world.raw_app(direct::op_cps2ds_dep(body_pb), world.extract(pb->var((nat_t)0), app_pb->var())));
-
-        world.DLOG("app pb of pack: {} : {}", app_pb, app_pb->type());
-
-        auto sumup = world.raw_app(world.ax<sum>(), {aug_shape, f_arg_ty_diff});
-        world.DLOG("sumup: {} : {}", sumup, sumup->type());
-
-        pb->app(true, pb->var(1), world.raw_app(sumup, app_pb));
-
-        partial_pullback[aug_pack] = pb;
-
-        return aug_pack;
     }
+
     // for axiom app
     // else if (auto pi = def->isa<Pi>()) {
     // }
