@@ -66,9 +66,15 @@ std::vector<int> PipelineBuilder::passes() {
 std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
     auto man = std::make_unique<PassMan>(world);
 
-    // std::sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), passCmp());
+    std::sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), passCmp());
 
-    for (const auto& ext : phase_extensions_[i]) ext.second(*man);
+    // printf("====\n");
+    for (const auto& ext : phase_extensions_[i]) {
+        // printf("add pass with prio %d\n", ext.first);
+        ext.second(*man);
+    }
+    // printf("====\n");
+    // assert(0);
 
     return man;
 }

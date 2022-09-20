@@ -50,7 +50,7 @@ void optimize(World& world, PipelineBuilder& builder) {
 
     auto passes = builder.passes();
     for (auto p : passes) {
-        world.DLOG("Pass {}", p);
+        // world.DLOG("Pass {}", p);
         pipe.add<PassManPhase>(builder.opt_phase(p, world));
     }
 

@@ -14,7 +14,7 @@ typedef std::vector<PrioPassBuilder> PassList;
 
 struct passCmp {
     constexpr bool operator()(PrioPassBuilder const& a, PrioPassBuilder const& b) const noexcept {
-        return a.first > b.first;
+        return a.first < b.first;
     }
 };
 
