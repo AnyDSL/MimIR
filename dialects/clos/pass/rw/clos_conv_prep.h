@@ -22,10 +22,18 @@ public:
     void enter() override;
     const Def* rewrite(const Def*) override;
     const App* rewriteArgs(const App* app);
+    const App* rewriteCallee(const App* app);
 
     Lam* scope(Lam* lam);
 
-    bool from_outer_scope(Lam* lam) { return scope(lam) && scope(lam) != scope(curr_nom()); }
+    bool from_outer_scope(Lam* lam) {
+        //return scope_.free_defs().contains(lam);
+        return scope(lam) && scope(lam) != scope(curr_nom());
+    }
+
+    bool from_outer_scope(const Def* lam) {
+        return scope_->free_defs().contains(lam);
+    }
 
     const Def* eta_wrap(const Def* def, clos c, const std::string& dbg) {
         auto& w                = world();
@@ -45,6 +53,7 @@ private:
     DefMap<Lam*> old2wrapper_;
     DefSet wrapper_;
     Lam2Lam lam2fscope_;
+    std::unique_ptr<Scope> scope_;
     bool ignore;
 };
 

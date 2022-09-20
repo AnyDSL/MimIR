@@ -59,8 +59,6 @@ const Def* clos_pack_dbg(const Def* env, const Def* lam, const Def* dbg, const D
     assert(!ct || isa_clos_type(ct));
     auto& w = env->world();
     auto pi = lam->type()->isa<Pi>();
-    env->type()->dump();
-    pi->dom(Clos_Env_Param)->dump();
     assert(pi && env->type() == pi->dom(Clos_Env_Param));
     ct = (ct) ? ct : clos_type(w.cn(clos_remove_env(pi->dom())));
     return w.tuple(ct, {env->type(), lam, env}, dbg)->isa<Tuple>();
@@ -208,7 +206,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             }
             return new_lam;
         }
-    } else if (auto q = match<clos>(def); q && (q.flags() == clos::fstclassBB || q.flags() == clos::freeBB)) {
+    }else if (auto q = match<clos>(def); q && (q.flags() == clos::fstclassBB || q.flags() == clos::freeBB)) {
         // Note: Same thing about η-conversion applies here
         auto bb_lam = q->arg()->isa_nom<Lam>();
         assert(bb_lam && bb_lam->is_basicblock());
@@ -318,9 +316,6 @@ ClosConv::ClosureStub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2D
 ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
     if (auto i = closures_.find(old_lam); i != closures_.end()) return i->second;
     auto fvs = fva_.run(old_lam);
-    for( auto i : fvs){
-        assert(!match<mem::M>(i->type()));
-    }
     auto closure = make_stub(fvs, old_lam, subst);
     worklist_.emplace(closure.fn);
     return closure;

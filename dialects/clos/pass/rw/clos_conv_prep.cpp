@@ -40,8 +40,8 @@ void ClosConvPrep::enter() {
     if (curr_nom()->type()->is_returning()) {
         lam2fscope_[curr_nom()] = curr_nom();
         world().DLOG("scope {} -> {}", curr_nom(), curr_nom());
-        auto scope = Scope(curr_nom());
-        for (auto def : scope.bound()) {
+        scope_ = std::make_unique<Scope>(curr_nom());
+        for (auto def : scope_->bound()) {
             assert(def);
             if (auto bb_lam = def->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock()) {
                 world().DLOG("scope {} -> {}", bb_lam, curr_nom());
@@ -49,7 +49,6 @@ void ClosConvPrep::enter() {
             }
         }
     }
-    curr_nom()->dump();
     if (auto body = curr_nom()->body()->isa<App>();
         !wrapper_.contains(curr_nom()) && body && body->callee_type()->is_cn())
         ignore = false;
@@ -113,18 +112,13 @@ const App* ClosConvPrep::rewriteArgs(const App* app){
     return app;
 }
 
-const Def* ClosConvPrep::rewrite(const Def* def) {
+const App* ClosConvPrep::rewriteCallee(const App* app){
     auto& w = world();
-    if (ignore || match<clos>(def)) return def;
-
-    if (auto app = def->isa<App>(); app) {
-        app = rewriteArgs(app);
-
-        // Eta-Expand branches
-        if (app->callee_type()->is_cn()) {
-            if (auto br = app->callee()->isa<Extract>()){
-                auto branches = br->tuple();
-                if (!branches->isa<Tuple>() || !branches->type()->isa<Sigma>()) return app;
+    if (app->callee_type()->is_cn()) {
+        if (auto br = app->callee()->isa<Extract>()){
+            auto branches = br->tuple();
+            // Eta-Expand branches
+            if (branches->isa<Tuple>() && branches->type()->isa<Sigma>()) {
                 for (auto i = 0u; i < branches->num_ops(); i++) {
                     if (!branches->op(i)->isa_nom<Lam>()) {
                         auto wrapper = eta_wrap(branches->op(i), clos::bot, "eta_br");
@@ -134,8 +128,21 @@ const Def* ClosConvPrep::rewrite(const Def* def) {
                 }
                 return app->refine(0, app->callee()->refine(0, branches))->as<App>();
             }
-        }
 
+            if (from_outer_scope(app->callee())) {
+                return app->refine(0, thorin::clos::op(clos::bot, app->callee()))->as<App>();
+            }
+        }
+    }
+}
+
+const Def* ClosConvPrep::rewrite(const Def* def) {
+    auto& w = world();
+    if (ignore || match<clos>(def)) return def;
+
+    if (auto app = def->isa<App>(); app) {
+        app = rewriteArgs(app);
+        app = rewriteCallee(app);
         return app;
     }
 
