@@ -29,13 +29,6 @@
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
 
-#include "dialects/autodiff/passes/autodiff_eval.h"
-#include "dialects/autodiff/passes/autodiff_ext_cleanup.h"
-#include "dialects/autodiff/passes/autodiff_zero.h"
-#include "dialects/autodiff/passes/autodiff_zero_cleanup.h"
-#include "dialects/direct/passes/cps2ds.h"
-#include "dialects/direct/passes/ds2cps.h"
-
 namespace thorin {
 
 void optimize(World& world, PipelineBuilder& builder) {
@@ -47,7 +40,8 @@ void optimize(World& world, PipelineBuilder& builder) {
     builder.add_opt(100);
     builder.extend_opt_phase(200, [](thorin::PassMan& man) { man.add<LamSpec>(); });
     // codegen prep phase
-    builder.extend_opt_phase(300, [](thorin::PassMan& man) { man.add<RetWrap>(); });
+    builder.extend_opt_phase(
+        300, [](thorin::PassMan& man) { man.add<RetWrap>(); }, 50);
 
     builder.add_opt(110);
     builder.add_opt(120);
@@ -55,7 +49,12 @@ void optimize(World& world, PipelineBuilder& builder) {
     Pipeline pipe(world);
 
     auto passes = builder.passes();
-    for (auto p : passes) { pipe.add<PassManPhase>(builder.opt_phase(p, world)); }
+    for (auto p : passes) {
+        // world.DLOG("Pass {}", p);
+        pipe.add<PassManPhase>(builder.opt_phase(p, world));
+    }
+
+    // for (auto& p : pipe.phases()) { world.DLOG("Phase {}", p->name()); }
 
     // pipe.add<PassManPhase>(builder.opt_prep_phase1(world));
     // pipe.add<Scalerize>();
