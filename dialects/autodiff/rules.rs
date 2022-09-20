@@ -1,9 +1,26 @@
+// Reference: https://www.overleaf.com/read/gdpfxvzqpfjf
+
+
 // easy readable:
 
 /*
 
 we define two substitutions / translations:
 (and an additional one for helper functions)
+
+we define D as transformation on closed functions
+and D_A as analog for expressions in functions
+
+We interpret a function as composition of intermediate functions (state transformers)
+f(a) = (fₖ ∘ fₖ₋₁ ∘ ... ∘ f₀)(a)
+The intermediate functions fₖ, fₖ₋₁, ..., f₀ correspond to the expressions.
+For e, we define eλ := (fₗ ∘ ... ∘ f₀) where fₗ is the function that corresponds to e.
+
+It holds 
+    eλ = λa. e
+    e  = eλ a
+        with a as arguments of f
+
 
 closed functions:
 D : (A -> B) -> (A' -> B' × (Bᵗ -> Aᵗ))
@@ -13,17 +30,21 @@ especially
 #1 (D f x)   = f x
 #2 (D f x) s = f*ₓ s = s ⋅ ∇ₓf
 
-open expressions (expressions in a function as implicit applied function in its arguments):
-in a function f: A -> ...
+D is defined for $f = λ a. b$ as
+D f = λ a. (b, b*) = λ a. D_A b = D bλ
+    := λ a. D_A b
+
+where D_A e = D eλ a = (e, e*)
+D_A is defined for each constructor of expressions
+
+short:
 D_A : E -> (E' × (Eᵗ -> Aᵗ))
 D_A e = (e⁺, e*)
-e⁺ = e
-
-e_λ = λ a. e
-e   = e_λ a
+    e⁺ = e
 
 #1 (D_A e) = e
 #2 (D_A e) = #2 (D e_λ a)
+
 
 type rules:
 (A -> B)' = A' -> B' × (Bᵗ -> Aᵗ)
@@ -37,20 +58,20 @@ Literal c:E
 D_A c = (c, λ s. (0:A))
 
 Application
-D_A (f e) =
-    let f'        = D f in
+D_A (g e) =
+    let g'        = D g in
     let (e, e*)   = D_A e in
-    let (y, f*_y) = f' e in
-    (y, e* ∘ f*_y)
+    let (y, g*_y) = g' e in
+    (y, e* ∘ g*_y)
 
 Note: we use the more modular appraoch to
-just apply f' with e and separate the pullbacks
+just apply g' with e and separate the pullbacks
 Types:
-f         : E -> Y
-f'        : E' -> Y' × (Yᵗ -> Eᵗ)
+g         : E -> Y
+g'        : E' -> Y' × (Yᵗ -> Eᵗ)
 e         : E
 e*        : Eᵗ -> Aᵗ
-e* ∘ f*_y : Yᵗ -> Aᵗ
+e* ∘ g*_y : Yᵗ -> Aᵗ
 
 D_A (e1, ..., e_n) =
     let (e_i') = D_A ei in
@@ -119,7 +140,7 @@ D load =
 
 
 
-/// inner_autodiff
+/// inner_autodiff = D_A
 
 /// literal
 // first step could be inlined
@@ -205,6 +226,8 @@ D load =
     .let aug_args,         = %autodiff.inner_autodiff A args;
     .let (aug_e, aug_cont) = aug_args;
     .let e_pb              = ... // from augmentation
+    // aug_args_S* #1
+    // or aug_args* (0:...,1:...)
     .cn g_ret_cont [
         y: %autodiff.autodiff_type Y,
         g_pb: .Cn [
@@ -303,49 +326,36 @@ D load =
 
 
 
-/// autodiff (closed axioms)
+/// autodiff (closed axioms) = D
 
+/// automatically replaced
+/// add
+.rule:
+    (%autodiff.autodiff (%core.wrap.add)) ->
+    internal_diff_core_wrap_add;
 /// mul
-
-// TODO: cps vs ds higher order
-//   see autodiff.thorin vor variations
-.cn .extern mul_deriv_cps
-[
-    [m:.Nat, w:.Nat], 
-rcont:.Cn[
-    (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
-]]
-    = {
-    .cn inner_mul_deriv_cps
-        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
-        = {
-        .let result = %core.wrap.mul (m,w) (a,b);
-        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
-            .let lhs = %core.wrap.mul (m,w) (s,b);
-            .let rhs = %core.wrap.mul (m,w) (s,a);
-            pb_ret (lhs, rhs)
-        };
-        ret (result,mul_pb)
-    };
-    rcont inner_mul_deriv_cps
-};
-
-// TODO: where to put cps2ds axioms (app vs lam)
 .rule:
     (%autodiff.autodiff (%core.wrap.mul)) ->
-    mul_deriv_cps;
-
-
-/// load
-// load see autodiff.thorin line 250
-// load deriv:
-//   load pb from shadow into pointer pb holder (non-local)
-//   load value, provide local id pb
-
-
+    internal_diff_core_wrap_mul;
+// cmp
 .rule:
-    (%autodiff.autodiff (%mem.load)) ->
-    load_deriv;
+    (%autodiff.autodiff (%core.icmp.xYgLE)) ->
+    internal_diff_core_icmp_xYgLE;
+
+/*
+simple matrix
+
+e = M × N
+e* = λS. M*(S × Nᵀ) + N*(Mᵀ × S)
+×* = λS. (S × Nᵀ, Mᵀ × S)
+
+transpose
+transpose* := λ S. Sᵀ
+
+sum' = λ s. unit s
+unit' = λ S. sum S
+
+*/
 
 
 
@@ -358,14 +368,79 @@ rcont:.Cn[
 
 
 
+
+
+/// Problem Pullback
+/// load, store, general matrix
+
+/*
+Application
+D_A (g e) =
+    let g'        = D g in
+    let (e, e*)   = D_A e in
+    let (y, g*_y) = g' e in
+    (y, e* ∘ g*_y)
+*/
+
+/// load
+// load see autodiff.thorin line 250
+// load deriv:
+//   load pb from shadow into pointer pb holder (non-local)
+//   load value, provide local id pb
+
+
 /*
 
+idea: (assume inner pointer for now)
+  1. augment arguments; shadow pointer exists
+  2. construct load*
+    2.1 set p* using current memory (from args) and shadow pointer
+  3. compose with args* ∋ p*
+
+
+  load' := λ (m_0, p).
+    let (m_1, p^*) = load (m_0, p^*_S) in
+    let (m_2, v) = load (m_1, p) in
+    ((m_2, v), 
+      λ (s_{m_0}, s_v). 
+      let (s_{m_1}, s_p : Ptr(V^t)) = malloc s_{m_0} in
+      let s_{m_2} = store (s_{m_1}, s_p, s_v) in
+      (s_{m_2}, s_p)
+    )
+*/
+
+
+.rule:
+    (%autodiff.autodiff (%mem.load)) ->
+    load_deriv;
+
+/*
+
+  store' := λ (m_0, p, v).
+    let m_1 = store (m_0, p_S^*, v*) in
+    let m_2 = store (m_1, p, v) in
+    (m_2, 
+      λ s_{m_0}. (s_{m_0}, \vec{0} : Ptr(V^t), \vec{0} : V^t)
+    )
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+more ideas about different stuff
+
+
+
 Matrix:
-
-e = M × N
-
-e* = λS. M*(S × Nᵀ) + N*(Mᵀ × S)
-×* = λS. (S × Nᵀ, Mᵀ × S)
 
 zip f (M,N)
 
