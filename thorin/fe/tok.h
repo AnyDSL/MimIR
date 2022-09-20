@@ -16,6 +16,7 @@ namespace thorin::fe {
     m(K_let,    ".let"   )             \
     m(K_Bool,   ".Bool"  )             \
     m(K_Nat,    ".Nat"   )             \
+    m(K_Int,    ".Int"   )             \
     m(K_extern, ".extern")             \
     m(K_Arr,    ".Arr"   )             \
     m(K_Sigma,  ".Sigma" )             \

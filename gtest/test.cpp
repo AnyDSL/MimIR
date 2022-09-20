@@ -43,7 +43,7 @@ TEST(World, simplify_one_tuple) {
     ASSERT_EQ(w.lit_ff(), w.tuple({w.lit_ff()})) << "constant fold (false) -> false";
 
     auto type = w.nom_sigma(w.type(), 2);
-    type->set({w.type_int(), w.type_int()});
+    type->set({w.type_nat(), w.type_nat()});
     ASSERT_EQ(type, w.sigma({type})) << "constant fold [nom] -> nom";
 
     auto v = w.tuple(type, {w.lit_int(42), w.lit_int(1337)});

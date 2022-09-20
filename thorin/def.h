@@ -550,6 +550,22 @@ public:
     friend class World;
 };
 
+class Int : public Def {
+private:
+    Int(World&, const Def* size);
+
+public:
+    const Def* size() const { return op(0); }
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Int;
+    friend class World;
+};
+
 class Proxy : public Def {
 private:
     Proxy(const Def* type, Defs ops, u32 pass, u32 tag, const Def* dbg)

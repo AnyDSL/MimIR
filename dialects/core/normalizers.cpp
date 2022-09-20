@@ -565,8 +565,8 @@ static const Def* fold_conv(const Def* dst_type, const App* callee, const Def* s
             return world.lit(dst_type, as_lit(lit_src) % *lit_dw);
         }
 
-        if (isa<Tag::Int>(src->type())) *lit_sw = *mod2width(*lit_sw);
-        if (isa<Tag::Int>(dst_type)) *lit_dw = *mod2width(*lit_dw);
+        if (src->type()->isa<Int>()) *lit_sw = *mod2width(*lit_sw);
+        if (dst_type->isa<Int>()) *lit_dw = *mod2width(*lit_dw);
 
         Res res;
 #define CODE(sw, dw)                                                                                 \
@@ -613,7 +613,7 @@ const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* 
 
     if (auto lit = src->isa<Lit>()) {
         if (dst_type->isa<Nat>()) return world.lit(dst_type, lit->get(), dbg);
-        if (isa_sized_type(dst_type)) return world.lit(dst_type, lit->get(), dbg);
+        if (dst_type->isa<Int>()) return world.lit(dst_type, lit->get(), dbg);
     }
 
     return world.raw_app(callee, src, dbg);
