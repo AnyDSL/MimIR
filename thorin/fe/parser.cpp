@@ -395,7 +395,7 @@ const Def* Parser::parse_type() {
 const Def* Parser::parse_int() {
     eat(Tok::Tag::K_Int);
     auto [l, r] = Tok::prec(Tok::Prec::App);
-    auto size  = parse_expr("size of .Int", r);
+    auto size   = parse_expr("size of .Int", r);
     return world().type_int(size);
 }
 

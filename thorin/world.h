@@ -482,7 +482,9 @@ public:
     /// @name op - these guys build the final function application for the various operations
     ///@{
     const Def* op(Bit o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, iinfer(a)), {a, b}, dbg); }
-    const Def* op(ICmp o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, iinfer(a)), {a, b}, dbg); }
+    const Def* op(ICmp o, const Def* a, const Def* b, const Def* dbg = {}) {
+        return app(fn(o, iinfer(a)), {a, b}, dbg);
+    }
     const Def* op(RCmp o, const Def* rmode, const Def* a, const Def* b, const Def* dbg = {}) {
         return app(fn(o, rmode, rinfer(a)), {a, b}, dbg);
     }
