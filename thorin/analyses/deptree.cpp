@@ -27,8 +27,10 @@ VarSet DepTree::run(Def* nom) {
     for (auto var : result) {
         auto n = nom2node_[var->nom()].get();
         if (!n) {
-            const_cast<World&>(world_).DLOG("var {} used before nom {} discovered, old var still around?", var,
+            const_cast<World&>(world_).ELOG("var {} used before nom {} discovered, old var still around?", var,
                                             var->nom());
+            const_cast<World&>(world_).ELOG("var {} : {}", var, var->type());
+            const_cast<World&>(world_).ELOG("var nom {} : {}", var->nom(), var->nom()->type());
         }
         assert(n && "Old var still around?");
 

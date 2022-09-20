@@ -43,8 +43,10 @@ void optimize(World& world, PipelineBuilder& builder) {
     builder.extend_opt_phase(1, [](thorin::PassMan& man) { man.add<EtaRed>(); });
     builder.extend_opt_phase(2, [](thorin::PassMan& man) { man.add<TailRecElim>(); });
 
+    // main phase
     builder.add_opt(100);
     builder.extend_opt_phase(200, [](thorin::PassMan& man) { man.add<LamSpec>(); });
+    // codegen prep phase
     builder.extend_opt_phase(300, [](thorin::PassMan& man) { man.add<RetWrap>(); });
 
     builder.add_opt(110);
