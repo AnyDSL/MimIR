@@ -8,18 +8,18 @@
 .import mem;
 .import core;
 
-.cn .extern main (mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]) = {
+.cn .extern main (mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0), 0), return : .Cn [%mem.M, %Int 4294967296]) = {
     .cn for_exit [acc : %Int 4294967296] = {
         return (mem, acc)
     };
 
     .cn for_body [i : %Int 4294967296, acc : %Int 4294967296, continue : .Cn [%Int 4294967296]] = {
-        continue (%core.wrap.add (0:.Nat, 4294967296:.Nat) (i, acc))
+        continue (%core.wrap.add (0, 4294967296) (i, acc))
     };
     %affine.For (4294967296, 1, (%Int 4294967296)) (0:(%Int 4294967296), argc, 1:(%Int 4294967296), (0:(%Int 4294967296)), for_body, for_exit)
 };
 
-// CHECK-DAG: .cn .extern main _[[mainVar:[0-9_]+]]::[mem_[[memVar:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0:.Nat), 0:.Nat), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, (%Int 4294967296)]] = {
+// CHECK-DAG: .cn .extern main _[[mainVar:[0-9_]+]]::[mem_[[memVar:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: (%Int 4294967296), %mem.Ptr (%mem.Ptr ((%Int 256), 0), 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, (%Int 4294967296)]] = {
 
 // CHECK-DAG: .cn return_[[returnId:[0-9_]+]] _[[returnVarId:[0-9_]+]]: [%mem.M, (%Int 4294967296)]
 
