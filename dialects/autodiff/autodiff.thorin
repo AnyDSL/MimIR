@@ -65,16 +65,6 @@
 ///
 ///
 
-// .cn add_deriv [m:.Nat, n:.Nat]
-//     [[a:(.Real n), b:(.Real n)], ret:(.Cn (.Real n))] = {
-//     .let result = %ROp_add (m,n) (a,b);
-//     .cn add_pb [s:(.Real n), pb_ret:(.Cn [.Real n, .Real n])] = {
-//         .let lhs = %ROp_add (m,n) (s,b);
-//         .let rhs = %ROp_add (m,n) (s,a);
-//         pb_ret (lhs, rhs)
-//     };
-//     ret (result,add_pb)
-// };
 
 
 /// mul' => args -> result*pullback
@@ -99,38 +89,6 @@
 /// the ds version is more direct
 /// but needs a ds handling of inlining
 
-// .lam .extern mul_deriv_ds 
-//     [m:.Nat, w:.Nat] -> 
-//     ([%Int w, %Int w] -> [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]])
-//     = {
-//     .lam inner_mul_deriv_ds 
-//         [a:(%Int w), b:(%Int w)] ->
-//         [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]
-//         = {
-//         .let result = %core.wrap.mul (m,w) (a,b);
-//         .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
-//             .let lhs = %core.wrap.mul (m,w) (s,b);
-//             .let rhs = %core.wrap.mul (m,w) (s,a);
-//             pb_ret (lhs, rhs)
-//         };
-//         (result,mul_pb)
-//     };
-//     inner_mul_deriv_ds
-// };
-
-// folded cascading
-// .lam .extern mul_deriv_ds 
-//     _::[m:.Nat, w:.Nat] -> 
-//     Π [a:%Int w, b:%Int w] -> [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]
-//     = {
-//         .let result = %core.wrap.mul (m,w) (a,b);
-//         .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
-//             .let lhs = %core.wrap.mul (m,w) (s,b);
-//             .let rhs = %core.wrap.mul (m,w) (s,a);
-//             pb_ret (lhs, rhs)
-//         };
-//         (result,mul_pb)
-// };
 
 .lam .extern internal_diff_core_icmp_xYgLE 
     [w: .Nat] ->
@@ -187,31 +145,6 @@
     inner_mul_deriv_cps
 };
 
-/// TODO:
-///   best of both worlds?
-///   or just use the ds version?
-/// 
-// .lam .extern mul_deriv_ds_by_cps
-//     [m:.Nat, w:.Nat] -> 
-//     ([%Int w, %Int w] -> [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]])
-//     = {
-//     .cn inner_mul_deriv_cps
-//         [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
-//         = {
-//         .let result = %core.wrap.mul (m,w) (a,b);
-//         .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
-//             .let lhs = %core.wrap.mul (m,w) (s,b);
-//             .let rhs = %core.wrap.mul (m,w) (s,a);
-//             pb_ret (lhs, rhs)
-//         };
-//         ret (result,mul_pb)
-//     };
-//     %direct.cps2ds (
-//         [%Int w, %Int w],
-//         [%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]
-//     )
-//     inner_mul_deriv_cps
-// };
 
 
 // the pullback is the derivative with respect to the input (weighted with the out tangent)
@@ -227,47 +160,10 @@
 // fully cps
 
 // s ↦ (s*b, s*a)
-/* 
-.cn .extern mul_deriv_cps
-[
-    [m:.Nat, w:.Nat], 
-rcont:.Cn[
-    (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
-]]
-    = {
-    .cn inner_mul_deriv_cps
-        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
-        = {
-        .let result = %core.wrap.mul (m,w) (a,b);
-        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
-            .let lhs = %core.wrap.mul (m,w) (s,b);
-            .let rhs = %core.wrap.mul (m,w) (s,a);
-            pb_ret (lhs, rhs)
-        };
-        ret (result,mul_pb)
-    };
-    rcont inner_mul_deriv_cps
-};
+// mul
 
 // s ↦ (s, s)
-.cn .extern add_deriv_cps
-[
-    [m:.Nat, w:.Nat], 
-rcont:.Cn[
-    (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
-]]
-    = {
-    .cn inner_add_deriv_cps
-        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
-        = {
-        .let result = %core.wrap.add (m,w) (a,b);
-        .cn add_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = {
-            pb_ret (s,s)
-        };
-        ret (result,add_pb)
-    };
-    rcont inner_add_deriv_cps
-};
+// add
 
 // s ↦ (s, -s)
 // sub
@@ -275,11 +171,12 @@ rcont:.Cn[
 // s ↦ (s/b, -s*a/(b*b) = -(a/b)* (s/b))
 // div
 
-// compare does not need one
+// compare does not need one / dummy derivative
 
 
 // load : Mem * Ptr(V) -> Mem * V
 
+/* 
 r = m2,v = load (m,p)
 r,r* = (m2,v),r* = load' (m,p)
 args = (m,p)
@@ -344,119 +241,10 @@ Variant 2: Ptr(V)ᵗ = Vᵗ
 */
 
 
-// /// ## Substitution Rules
-// /// 
-// /// ### Types
-// /// 
-// /// #### Auxiliary Definitions
-// /// 
-// /// some definitions used in the substitution rules below
-// /// 
-// .let I32 = %Int 4294967296;
-// .let R32 = %Real 4294967296;
-// /// 
-// /// 
-// /// #### AutoDiff 
-// /// 
-// /// TODO: text
-// /// 
-// /// `(T -> U)ᴬ` ↦ `Tᴬ -> Uᴬ × (Uᵀ -> Tᵀ)` 
-// /// TODO: check memory (in T, U)
-// .rule (T:*) (U:*) :
-//     (%autodiff.autodiff (.Cn [T, .Cn U])) ->
-//     .Cn [(%autodiff.autodiff T),
-//          (.Cn [(%autodiff.autodiff U),
-//              (.Cn [(%autodiff.tangent_type U),
-//                  (%autodiff.tangent_type T)
-//              ])
-//          ])
-//     ];
-// /// `r: R` ↦ `r`
-// .rule (n:.Nat):
-//     (%autodiff.autodiff (.Real n)) ->
-//     (.Real n);
-// /// `+` ↦ 
-// /// ```
-// /// λ (a,b). (
-// ///   + (a,b),
-// ///   λ s. (s*b, s*a)
-// /// )
-// /// ``` 
-// /// TODO: %core.wrap.add vs %Wrap_add
-// /// TODO: direct function vs ds2cps
-// /// cascading function = direct call that returns a cps function
-// /// (should be handled automatically by the direct dialect)
-// .cn add_deriv [m:.Nat, n:.Nat]
-//     [[a:(.Real n), b:(.Real n)], ret:(.Cn (.Real n))] = {
-//     .let result = %ROp_add (m,n) (a,b);
-//     .cn add_pb [s:(.Real n), pb_ret:(.Cn [.Real n, .Real n])] = {
-//         .let lhs = %ROp_add (m,n) (s,b);
-//         .let rhs = %ROp_add (m,n) (s,a);
-//         pb_ret (lhs, rhs)
-//     };
-//     ret (result,add_pb)
-// };
-// .rule (m:.Nat) (n:.Nat):
-//     (%ROp_add (m,n)) ->
-//     %direct.cps2ds (add_deriv (m,n));
-// /// `(a,b)ᴬ` ↦ `(a,b)`
-// ///
-// /// 
-// /// #### Tangent type
-// /// 
-// /// the tangent is the argument and result of the pullbacks
-// /// they hold the gradients
-// /// 
-// /// the tangent of a function is undefined
-// /// TODO: mem tangent
-// .rule (T:*) :
-//     (%autodiff.tangent_type .Cn T) ->
-//     R32;
-// /// `r: R` ↦ `r`
-// .rule (n:.Nat):
-//     (%autodiff.tangent_type (.Real n)) ->
-//     (.Real n);
-// /// `(«i: n; T#i»)ᴬ` ↦ `«i: n; (T#i)ᴬ»`
-// /// TODO: is this (a/the) normal form of tuples/sigmas
-// ///     but then T is a tuple?
-// ///     are there two kinds of tuples? (Meta and Thorin)
-// .rule (n:.Nat) (T:«n; *»):
-//     (%autodiff.tangent_type («i: n; T#i»)) ->
-//     («i: n; %autodiff.tangent_type (T#i)»);
-// /// 
-// /// #### expressions
-// /// 
-// /// 
-// .rule (T:*) (a:T):
-//     (%autodiff.add T (a,%autodiff.zero T)) ->
-//     a;
-// .rule (T:*) (a:T):
-//     (%autodiff.add T (%autodiff.zero T,a)) ->
-//     a;
-// /// 
-// .rule (n:.Nat):
-//     (%autodiff.add (.Real n)) ->
-//     (%ROp_add (0,n));
-
-
-/// autodiff only applies to closed terms
-/// for instance, functions or operators
-/// for a thorin function f:
-/// autodiff f = λ args. (f args, ppb_f body)
-
-/// partial pullback (ppb) => C++ function that returns the partially applied pullback
-/// ppb applies to open expressions in a function
-/// `ppb (a,b) = ppb a + ppb b` (+ is liftet over arbitrary structure)
-/// ```
-/// ppb (f args) = 
-/// let (res, f*) = autodiff f args in
-///     ppb args . f*
-/// ```
-/// ppb only returns the partially applied pullback, the body remains the same (up to renaming)
 
 
 
-/// TODO: meta
+/// meta:
 /// - sigma
 /// - tuple elementwise + sum
 /// - pointer
