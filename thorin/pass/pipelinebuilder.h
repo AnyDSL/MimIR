@@ -7,11 +7,21 @@
 
 namespace thorin {
 
+typedef std::function<void(PassMan&)> PassBuilder;
+typedef std::pair<int, PassBuilder> PrioPassBuilder;
+typedef std::vector<PrioPassBuilder> PassList;
+
+struct passCmp {
+    constexpr bool operator()(PrioPassBuilder const& a, PrioPassBuilder const& b) const noexcept {
+        return a.first > b.first;
+    }
+};
+
 class PipelineBuilder {
 public:
     explicit PipelineBuilder() {}
 
-    void extend_opt_phase(int i, std::function<void(PassMan&)>);
+    void extend_opt_phase(int i, std::function<void(PassMan&)>, int priority = DEFAULT_PRIORITY);
     void extend_opt_phase(std::function<void(PassMan&)>);
     void add_opt(int i);
     void extend_codegen_prep_phase(std::function<void(PassMan&)>);
@@ -28,10 +38,11 @@ public:
     std::vector<int> passes();
 
 private:
-    std::map<int, std::vector<std::function<void(PassMan&)>>> phase_extensions_;
-    // std::vector<std::function<void(PassMan&)>> codegen_prep_phase_extensions_;
+    std::map<int, std::priority_queue<PrioPassBuilder, PassList, passCmp>> phase_extensions_;
+    // std::vector<std::function<void(PassM#an&)>> codegen_prep_phase_extensions_;
     // std::vector<std::function<void(PassMan&)>> opt_prep_phase1_extensions_;
     // std::vector<std::function<void(PassMan&)>> opt_prep_phase2_extensions_;
+    const int DEFAULT_PRIORITY = 100;
 };
 
 } // namespace thorin

@@ -30,25 +30,25 @@ void PipelineBuilder::extend_codegen_prep_phase(std::function<void(PassMan&)> ex
     extend_opt_phase(300, std::move(extension));
 }
 
-void PipelineBuilder::extend_opt_phase(int i, std::function<void(PassMan&)> extension) {
+void PipelineBuilder::extend_opt_phase(int i, std::function<void(PassMan&)> extension, int priority) {
     // adds extension to the i-th optimization phase
     // if the ith phase does not exist, it is created
-    if (phase_extensions_.contains(i)) {
-        phase_extensions_[i].push_back(extension);
-    } else {
-        phase_extensions_[i] = {extension};
-    }
+    if (!phase_extensions_.contains(i)) { phase_extensions_.emplace(i, std::vector<std::function<void(PassMan&)>>()); }
+    phase_extensions_[i].push({priority, extension});
 }
 
 void PipelineBuilder::add_opt(int i) {
-    extend_opt_phase(i, [](thorin::PassMan& man) {
-        man.add<PartialEval>();
-        man.add<BetaRed>();
-        auto er = man.add<EtaRed>();
-        auto ee = man.add<EtaExp>(er);
-        man.add<Scalerize>(ee);
-        man.add<TailRecElim>(er);
-    });
+    extend_opt_phase(
+        i,
+        [](thorin::PassMan& man) {
+            man.add<PartialEval>();
+            man.add<BetaRed>();
+            auto er = man.add<EtaRed>();
+            auto ee = man.add<EtaExp>(er);
+            man.add<Scalerize>(ee);
+            man.add<TailRecElim>(er);
+        },
+        50); // elevated priority
 }
 
 std::vector<int> PipelineBuilder::passes() {
