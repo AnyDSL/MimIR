@@ -407,6 +407,49 @@ idea: (assume inner pointer for now)
       let s_{m_2} = store (s_{m_1}, s_p, s_v) in
       (s_{m_2}, s_p)
     )
+
+  store' := λ (m_0, p, v).
+    let m_1 = store (m_0, p_S^*, v*) in
+    let m_2 = store (m_1, p, v) in
+    (m_2, 
+      λ s_{m_0}. (s_{m_0}, \vec{0} : Ptr(V^t), \vec{0} : V^t)
+    )
+
+// store only has side effects
+
+
+
+    Alternative:
+    diff of load is value effect => not in pointer but during load & in value
+
+  load' := λ (m_0, p).
+    let (m_1, v^*) = load (m_0, p^*_S) in 
+                                ^____
+    let (m_2, v) = load (m_1, p) in
+    ((m_2, v), 
+      λ (s_{m_0}, s_v). 
+      let (s_{m_1}, s_p : Ptr(V^t)) = malloc s_{m_0} in
+      let s_pv = v^* s_v in
+      let s_{m_2} = store (s_{m_1}, s_p, s_pv) in
+      (s_{m_2}, s_p)
+    )
+
+    (same as above)
+  store' := λ (m_0, p, v).
+    let m_1 = store (m_0, p_S^*, v*) in
+                          ^________
+    let m_2 = store (m_1, p, v) in
+    (m_2, 
+      λ s_{m_0}. (s_{m_0}, \vec{0} : Ptr(V^t), \vec{0} : V^t)
+    )
+
+
+    Solutions:
+        non-local handling
+        find correct formulation
+        take (shadow) pullbacks as additional arguments
+        handle (some) apps together with the calling function
+
 */
 
 
@@ -416,12 +459,6 @@ idea: (assume inner pointer for now)
 
 /*
 
-  store' := λ (m_0, p, v).
-    let m_1 = store (m_0, p_S^*, v*) in
-    let m_2 = store (m_1, p, v) in
-    (m_2, 
-      λ s_{m_0}. (s_{m_0}, \vec{0} : Ptr(V^t), \vec{0} : V^t)
-    )
 */
 
 
