@@ -190,6 +190,10 @@ Keywords</h3>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>.Nat</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Nat.html">thorin::Nat</a>    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>.Int</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Int.html">thorin::Int</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>.Bool</code>   </td><td class="markdownTableBodyNone">alias for <code>.Int 2</code>    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.ff</code>   </td><td class="markdownTableBodyNone">alias for <code>0₂</code>    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone">alias for <code>1₂</code>    </td></tr>
@@ -356,11 +360,27 @@ Expressions</h2>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Nonterminal   </th><th class="markdownTableHeadNone">Right-Hand Side   </th><th class="markdownTableHeadNone">New Scope?   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">Thorin Class    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>{</code> e <code>}</code>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">block   </td><td class="markdownTableBodyNone">-    </td></tr>
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Univ</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">universise: type of a type level   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Univ.html">thorin::Univ</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>*</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">type   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a>    </td></tr>
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Type</code> e   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">type of level e   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>*</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">alias for <code>.Type (0:.Univ)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>□</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">alias for <code>.Type (1:.Univ)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Nat</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">natural number   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Nat.html">thorin::Nat</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Int</code> e   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">integer of size e   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Int.html">thorin::Int</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Bool</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">alias for <code>.Int 2</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Int.html">thorin::Int</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>{</code> e <code>}</code>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">block   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">L <code>:</code> e<sub>type</sub>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">literal   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lit.html">thorin::Lit</a>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.ff</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">alias for <code>0:(.Int 2)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lit.html">thorin::Lit</a>    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">alias for <code>1:(.Int 2)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lit.html">thorin::Lit</a>    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">( <code>.bot</code> or <code>.top</code> ) ( <code>:</code> e<sub>type</sub> )?   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">bottom/top   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1TExt.html" title="Extremum. Either Top (up) or Bottom.">thorin::TExt</a>    </td></tr>
 <tr class="markdownTableRowOdd">
