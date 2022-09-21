@@ -47,6 +47,8 @@ In addition the following keywords are *terminals*:
 | `.module`   | starts a module           |
 | `.import`   | imports a dialect         |
 | `.Nat`      | thorin::Nat               |
+| `.Int`      | thorin::Int               |
+| `.Bool`     | alias for `.Int 2`        |
 | `.ff`       | alias for `0₂`            |
 | `.tt`       | alias for `1₂`            |
 | `.Type`     | thorin::Type              |
@@ -160,9 +162,17 @@ For this reason there is no rule `b -> s (p, ..., p)`.
 
 | Nonterminal | Right-Hand Side                                                               | New Scope? | Comment                             | Thorin Class    |
 |-------------|-------------------------------------------------------------------------------|------------|-------------------------------------|-----------------|
+| e           | `.Univ`                                                                       |            | universise: type of a type level    | thorin::Univ    |
+| e           | `.Type` e                                                                     |            | type of level e                     | thorin::Type    |
+| e           | `*`                                                                           |            | alias for `.Type (0:.Univ)`         | thorin::Type    |
+| e           | `□`                                                                           |            | alias for `.Type (1:.Univ)`         | thorin::Type    |
+| e           | `.Nat`                                                                        |            | natural number                      | thorin::Nat     |
+| e           | `.Int` e                                                                      |            | integer of size e                   | thorin::Int     |
+| e           | `.Bool`                                                                       |            | alias for `.Int 2`                  | thorin::Int     |
 | e           | `{` e `}`                                                                     | ✓          | block                               | -               |
-| e           | `*`                                                                           |            | type                                | thorin::Type    |
 | e           | L `:` e<sub>type</sub>                                                        |            | literal                             | thorin::Lit     |
+| e           | `.ff`                                                                         |            | alias for `0:(.Int 2)`              | thorin::Lit     |
+| e           | `.tt`                                                                         |            | alias for `1:(.Int 2)`              | thorin::Lit     |
 | e           | ( `.bot` or `.top` ) ( `:` e<sub>type</sub> )?                                |            | bottom/top                          | thorin::TExt    |
 | e           | Sym                                                                           |            | identifier                          | -               |
 | e           | Ax                                                                            |            | use of an axiom                     | -               |
