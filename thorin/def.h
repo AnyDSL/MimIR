@@ -550,7 +550,6 @@ public:
     friend class World;
 };
 
-
 /// A type whose inhabitants range from `0`, ..., Idx::size() - 1.
 /// @note `size = 0` is special and actually encodes size $2^64$.
 /// An .Idx `0` (literally) wouldn't have any inhabitants anyway.

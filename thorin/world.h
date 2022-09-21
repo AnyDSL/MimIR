@@ -352,9 +352,7 @@ public:
 
     /// Constructs a Lit @p of type Idx of size $2^width$.
     /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    const Lit* lit_int_(nat_t width, u64 val, const Def* dbg = {}) {
-        return lit_idx(type_int_(width), val, dbg);
-    }
+    const Lit* lit_int_(nat_t width, u64 val, const Def* dbg = {}) { return lit_idx(type_int_(width), val, dbg); }
 
     /// Constructs a Lit of type Idx of size @p mod.
     /// The value @p val will be adjusted modulo @p mod.
