@@ -69,10 +69,16 @@ const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) 
     return op(o, w.lit_nat(mode), a, b, dbg);
 }
 
+inline const Def* get_size(const Def* type) {
+    if (auto int_t = type->isa<Int>()) return int_t->size();
+    if (auto real  = isa<Tag::Real>(type)) return real->arg();
+    unreachable();
+}
+
 inline const Def* op(conv o, const Def* dst_type, const Def* src, const Def* dbg = {}) {
     World& w = dst_type->world();
-    auto d   = dst_type->as<App>()->arg();
-    auto s   = src->type()->as<App>()->arg();
+    auto d   = get_size(dst_type);
+    auto s   = get_size(src->type());
     return w.app(fn(o, d, s), src, dbg);
 }
 inline const Def* op_bitcast(const Def* dst_type, const Def* src, const Def* dbg = {}) {

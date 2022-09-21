@@ -112,7 +112,7 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
         } else if (auto int_t = a->type()->isa<Int>()) {
             width = as_lit(int_t->size());
         } else {
-            width = as_lit(as<Tag::Real>(a)->arg());
+            width = as_lit(as<Tag::Real>(a->type())->arg());
         }
 
         if (is_int<Op>()) width = *mod2width(width);

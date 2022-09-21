@@ -355,7 +355,7 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val, const D
     auto type    = d->unfold_type();
     auto index_t = index->type()->as<Int>();
 
-    if (err() && !checker().equiv(type->arity(), index_t, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
+    if (err() && !checker().equiv(type->arity(), index_t->size(), dbg)) err()->index_out_of_range(type->arity(), index, dbg);
 
     if (auto size = isa_lit(index_t->size()); size && *size == 1)
         return tuple(d, {val}, dbg); // d could be nom - that's why the tuple ctor is needed
