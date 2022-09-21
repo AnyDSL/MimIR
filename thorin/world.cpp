@@ -32,10 +32,13 @@ namespace thorin {
 bool World::Arena::Lock::guard_ = false;
 #endif
 
-World::World(std::string_view name)
-    : checker_(std::make_unique<Checker>(*this))
-    , err_(std::make_unique<ErrorHandler>()) {
-    data_.name_        = name.empty() ? "module" : name;
+World::Move::Move(World& world)
+    : checker(std::make_unique<Checker>(world))
+    , err(std::make_unique<ErrorHandler>()) {}
+
+World::World(const State& state)
+    : state_(state)
+    , move_(*this) {
     data_.univ_        = insert<Univ>(0, *this);
     data_.lit_univ_0_  = lit_univ(0);
     data_.lit_univ_1_  = lit_univ(1);
@@ -49,14 +52,14 @@ World::World(std::string_view name)
     data_.lit_nat_0_   = lit_nat(0);
     data_.lit_nat_1_   = lit_nat(1);
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
+    data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
     auto nat           = type_nat();
 
     { // int/real: w: Nat -> *
         auto p             = pi(nat, type());
-        data_.type_int_    = nullptr; // hack for alpha equiv check of sigma (dbg..)
-        data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0, dbg("Int"));
-        data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0, dbg("Real"));
-        data_.type_bool_   = type_int(2);
+        data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0);
+        data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0);
+        data_.type_bool_   = type_int(2)->as<App>();
         data_.lit_bool_[0] = lit_int(2, 0_u64);
         data_.lit_bool_[1] = lit_int(2, 1_u64);
     }
@@ -195,21 +198,11 @@ World::World(std::string_view name)
     }
 }
 
+World::World(std::string_view name /* = {}*/)
+    : World(State(name)) {}
+
 World::~World() {
-    for (auto def : data_.defs_) def->~Def();
-}
-
-World World::stub() {
-    World w(name());
-    w.ostream_                 = ostream_;
-    w.state_                   = state_;
-    w.data_.imported_dialects_ = data_.imported_dialects_;
-
-    // bring dialects' axioms into new world.
-    Rewriter rewriter{w};
-    for (const auto& ax : data_.axioms_) rewriter.rewrite(ax.second);
-
-    return w;
+    for (auto def : move_.defs) def->~Def();
 }
 
 /*
@@ -217,14 +210,15 @@ World World::stub() {
  */
 
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
-    auto pi = callee->type()->as<Pi>();
+    auto pi = callee->type()->isa<Pi>();
 
     if (err()) {
-        if (!checker_->assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
+        if (!pi) err()->err(dbg->loc(), "called expression '{}' is not of function type", callee);
+        if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
     }
 
     auto type           = pi->reduce(arg).back();
-    auto [axiom, curry] = Axiom::get(callee); // TODO move down again
+    auto [axiom, curry] = Axiom::get(callee);
     if (axiom && curry == 1) {
         if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
     }
@@ -243,7 +237,7 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+    if (auto uni = checker().is_uniform(ops, dbg)) return arr(n, uni, dbg);
     return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
 }
 
@@ -259,7 +253,7 @@ const Def* World::tuple(Defs ops, const Def* dbg) {
 
     auto sigma = infer_sigma(*this, ops);
     auto t     = tuple(sigma, ops, dbg);
-    if (err() && !checker_->assignable(sigma, t, dbg)) { assert(false && "TODO: error msg"); }
+    if (err() && !checker().assignable(sigma, t, dbg)) { assert(false && "TODO: error msg"); }
 
     return t;
 }
@@ -273,32 +267,31 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     if (!type->isa_nom<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return pack(n, ops[0]);
+        if (auto uni = checker().is_uniform(ops, dbg)) return pack(n, uni, dbg);
     }
 
-    // eta rule for tuples:
-    // (extract(tup, 0), extract(tup, 1), extract(tup, 2)) -> tup
-    if (n == 0) goto out;
-
-    if (auto extract = ops[0]->isa<Extract>()) {
-        auto tup = extract->tuple();
-        bool eta = tup->type() == type;
-        for (size_t i = 0; i != n && eta; ++i) {
-            if (auto extract = ops[i]->isa<Extract>()) {
-                if (auto index = isa_lit(extract->index())) {
-                    if (eta &= u64(i) == *index) {
-                        eta &= extract->tuple() == tup;
-                        continue;
+    if (n != 0) {
+        // eta rule for tuples:
+        // (extract(tup, 0), extract(tup, 1), extract(tup, 2)) -> tup
+        if (auto extract = ops[0]->isa<Extract>()) {
+            auto tup = extract->tuple();
+            bool eta = tup->type() == type;
+            for (size_t i = 0; i != n && eta; ++i) {
+                if (auto extract = ops[i]->isa<Extract>()) {
+                    if (auto index = isa_lit(extract->index())) {
+                        if (eta &= u64(i) == *index) {
+                            eta &= extract->tuple() == tup;
+                            continue;
+                        }
                     }
                 }
+                eta = false;
             }
-            eta = false;
-        }
 
-        if (eta) return tup;
+            if (eta) return tup;
+        }
     }
 
-out:
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
@@ -309,19 +302,19 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
 }
 
 const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
-    if (index->isa<Arr>() || index->isa<Pack>()) {
-        DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
-        return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);
-    } else if (index->isa<Sigma>() || index->isa<Tuple>()) {
+    if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
         DefArray ops(n, [&](size_t i) { return d->proj(n, as_lit(idx[i])); });
-        return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
+        return tuple(ops, dbg);
+    } else if (index->isa<Pack>()) {
+        DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
+        return tuple(ops, dbg);
     }
 
     auto type = d->unfold_type();
     if (err()) {
-        if (!checker_->equiv(type->arity(), isa_sized_type(index->type()), dbg))
+        if (!checker().equiv(type->arity(), isa_sized_type(index->type()), dbg))
             err()->index_out_of_range(type->arity(), index, dbg);
     }
 
@@ -353,21 +346,19 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
         }
     }
 
-    // e.g. (t, f)#cond, where t&f's types contain nominals but still are alpha-equiv
-    // for now just use t's type.
-    if (auto sigma = type->isa<Sigma>();
-        sigma && std::all_of(sigma->ops().begin() + 1, sigma->ops().end(),
-                             [&](auto op) { return checker_->equiv<false>(sigma->op(0), op, dbg); }))
-        return unify<Extract>(2, sigma->op(0), d, index, dbg);
+    const Def* elem_t;
+    if (auto arr = type->isa<Arr>())
+        elem_t = arr->reduce(index);
+    else
+        elem_t = extract(tuple(type->as<Sigma>()->ops(), dbg), index, dbg);
 
-    type = type->as<Arr>()->body();
-    return unify<Extract>(2, type, d, index, dbg);
+    return unify<Extract>(2, elem_t, d, index, dbg);
 }
 
 const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {
     auto type = d->unfold_type();
 
-    if (err() && !checker_->equiv(type->arity(), isa_sized_type(index->type()), dbg))
+    if (err() && !checker().equiv(type->arity(), isa_sized_type(index->type()), dbg))
         err()->index_out_of_range(type->arity(), index, dbg);
 
     if (auto mod = isa_lit(isa_sized_type(index->type())); mod && *mod == 1)
@@ -410,6 +401,14 @@ const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
     if (auto a = isa_lit<u64>(shape)) {
         if (*a == 0) return sigma();
         if (*a == 1) return body;
+    }
+
+    // «(a, b)#i; T» -> («a, T», <b, T»)#i
+    if (auto ex = shape->isa<Extract>()) {
+        if (auto tup = ex->tuple()->isa<Tuple>()) {
+            DefArray arrs(tup->num_ops(), [&](size_t i) { return arr(tup->op(i), body); });
+            return extract(tuple(arrs), ex->index(), dbg);
+        }
     }
 
     // «(a, b, c); body» -> «a; «(b, c); body»»
@@ -532,8 +531,8 @@ const Def* World::test(const Def* value, const Def* probe, const Def* match, con
         // TODO proper error msg
         assert(m_pi && c_pi);
         auto a = isa_lit(m_pi->dom()->arity());
-        assert(a && *a == 2);
-        assert(checker_->equiv(m_pi->dom(2, 0_s), c_pi->dom(), nullptr));
+        assert_unused(a && *a == 2);
+        assert(checker().equiv(m_pi->dom(2, 0_s), c_pi->dom(), nullptr));
     }
 
     auto codom = join({m_pi->codom(), c_pi->codom()});
@@ -551,100 +550,19 @@ const Def* World::singleton(const Def* inner_type, const Def* dbg) {
 #if THORIN_ENABLE_CHECKS
 
 void World::breakpoint(size_t number) { state_.breakpoints.emplace(number); }
-void World::enable_history(bool flag) { state_.track_history = flag; }
-bool World::track_history() const { return state_.track_history; }
 
 const Def* World::gid2def(u32 gid) {
-    auto i = std::ranges::find_if(data_.defs_, [=](auto def) { return def->gid() == gid; });
-    if (i == data_.defs_.end()) return nullptr;
+    auto i = std::ranges::find_if(move_.defs, [=](auto def) { return def->gid() == gid; });
+    if (i == move_.defs.end()) return nullptr;
     return *i;
 }
 
 #endif
 
 /*
- * misc
- */
-
-template<bool elide_empty>
-void World::visit(VisitFn f) const {
-    unique_queue<NomSet> noms;
-    unique_stack<DefSet> defs;
-
-    for (const auto& [name, nom] : externals()) {
-        assert(nom->is_set() && "external must not be empty");
-        noms.push(nom);
-    }
-
-    while (!noms.empty()) {
-        auto nom = noms.pop();
-        if (elide_empty && nom->is_unset()) continue;
-
-        Scope scope(nom);
-        f(scope);
-
-        for (auto nom : scope.free_noms()) noms.push(nom);
-    }
-}
-
-/*
- * logging
- */
-
-// clang-format off
-std::string_view World::level2acro(LogLevel level) {
-    switch (level) {
-        case LogLevel::Debug:   return "D";
-        case LogLevel::Verbose: return "V";
-        case LogLevel::Info:    return "I";
-        case LogLevel::Warn:    return "W";
-        case LogLevel::Error:   return "E";
-        default: unreachable();
-    }
-}
-
-LogLevel World::str2level(std::string_view s) {
-    if (false) {}
-    else if (s == "debug"  ) return LogLevel::Debug;
-    else if (s == "verbose") return LogLevel::Verbose;
-    else if (s == "info"   ) return LogLevel::Info;
-    else if (s == "warn"   ) return LogLevel::Warn;
-    else if (s == "error"  ) return LogLevel::Error;
-    else throw std::invalid_argument("invalid log level");
-}
-
-int World::level2color(LogLevel level) {
-    switch (level) {
-        case LogLevel::Debug:   return 4;
-        case LogLevel::Verbose: return 4;
-        case LogLevel::Info:    return 2;
-        case LogLevel::Warn:    return 3;
-        case LogLevel::Error:   return 1;
-        default: unreachable();
-    }
-}
-// clang-format on
-
-#ifdef THORIN_COLOR_TERM
-std::string World::colorize(std::string_view str, int color) {
-    if (isatty(fileno(stdout))) {
-        const char c = '0' + color;
-        return "\033[1;3" + (c + ('m' + std::string(str))) + "\033[0m";
-    }
-    return std::string(str);
-}
-#else
-std::string World::colorize(std::string_view str, int) { return std::string(str); }
-#endif
-
-void World::set_error_handler(std::unique_ptr<ErrorHandler>&& err) { err_ = std::move(err); }
-
-/*
  * instantiate templates
  */
 
-template void World::visit<true>(VisitFn) const;
-template void World::visit<false>(VisitFn) const;
 template const Def* World::ext<true>(const Def*, const Def*);
 template const Def* World::ext<false>(const Def*, const Def*);
 template const Def* World::bound<true>(Defs, const Def*);

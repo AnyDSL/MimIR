@@ -35,7 +35,7 @@ VarSet DepTree::run(Def* nom) {
 }
 
 VarSet DepTree::run(Def* curr_nom, const Def* def) {
-    if (def->no_dep()) return {};
+    if (def->dep_const()) return {};
     if (auto i = def2vars_.find(def); i != def2vars_.end()) return i->second;
     if (auto nom = def->isa_nom(); nom && curr_nom != nom) return run(nom);
 
@@ -45,7 +45,7 @@ VarSet DepTree::run(Def* curr_nom, const Def* def) {
     } else {
         for (auto op : def->extended_ops()) merge(result, run(curr_nom, op));
 
-        if (auto var = curr_nom->has_var()) {
+        if (auto var = curr_nom->var()) {
             if (curr_nom == def) result.erase(var);
         }
     }

@@ -7,26 +7,26 @@
 .import core;
 .import mem;
 
-.lam .extern main: .Cn [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
-    .ff,
-    .lam loop: .Cn [mem: %mem.M, i: %Int 4294967296, acc: %Int 4294967296, cn : .Cn [%mem.M, %Int 4294967296]] = {
-        .ff,
+.cn .extern main (mem: %mem.M, argc: %Int 4294967296, argv: %mem.Ptr (%mem.Ptr (%Int 256, 0:.Nat), 0:.Nat), return: .Cn [%mem.M, %Int 4294967296]) = {
+    .cn loop (mem: %mem.M, i: %Int 4294967296, acc: %Int 4294967296, cn: .Cn [%mem.M, %Int 4294967296]) = {
         .let cond: (%Int 2) = %core.icmp.ul 4294967296:.Nat (i, argc);
 
-        .lam exit: .Cn [mem: %mem.M, cn : .Cn [%mem.M, %Int 4294967296]] = {
-            .ff,
-            cn (mem, acc)
-        };
+        .cn exit (mem: %mem.M, cn: .Cn [%mem.M, %Int 4294967296]) =
+            cn (mem, acc);
 
-        .lam body: .Cn [mem: %mem.M, cn : .Cn [%mem.M, %Int 4294967296]] = {
-            .ff,
+        .cn body (mem: %mem.M, cn: .Cn [%mem.M, %Int 4294967296]) = {
             .let inc: (%Int 4294967296) = %Wrap_add (0:.Nat, 4294967296:.Nat) (1:(%Int 4294967296), i);
             .let acci: (%Int 4294967296) = %Wrap_add (0:.Nat, 4294967296:.Nat) (i, acc);
             loop (mem, inc, acci, cn)
         };
         (exit, body)#cond (mem, cn)
     };
-    loop (mem, 0:(%Int 4294967296), 0:(%Int 4294967296), return)
+
+    .cn second_loop (mem: %mem.M, ret: %Int 4294967296) =
+        loop (mem, 0:(%Int 4294967296), ret, return);
+
+    // using `return` instead of `second_loop` here "resolves" the issue
+    loop (mem, 0:(%Int 4294967296), 0:(%Int 4294967296), second_loop)
 };
 
 

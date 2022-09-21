@@ -11,7 +11,6 @@
 #include "thorin/tables.h"
 #include "thorin/world.h"
 
-// #include "thorin/be/ll/ll.h"
 #include "thorin/fe/parser.h"
 #include "thorin/pass/fp/beta_red.h"
 #include "thorin/pass/fp/eta_exp.h"
@@ -26,6 +25,8 @@
 
 using namespace thorin;
 
+// TODO can we port this to lit testing?
+
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         World w;
@@ -33,11 +34,11 @@ TEST(RestrictedDependentTypes, join_singleton) {
         Normalizers normalizers;
         auto mem_d = Dialect::load("mem", {});
         mem_d.register_normalizers(normalizers);
-        Parser::import_module(w, "mem", {}, &normalizers);
+        fe::Parser::import_module(w, "mem", {}, &normalizers);
 
         auto core_d = Dialect::load("core", {});
         core_d.register_normalizers(normalizers);
-        Parser::import_module(w, "core", {}, &normalizers);
+        fe::Parser::import_module(w, "core", {}, &normalizers);
 
         auto i32_t = w.type_int_width(32);
         auto i64_t = w.type_int_width(64);
@@ -72,18 +73,18 @@ TEST(RestrictedDependentTypes, join_singleton) {
         });
         cases.emplace_back(
             [](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto i64_t) {
-            EXPECT_NO_THROW( // no type error
-                w.app(exp_lam,
-                      {i64_t, R, core::op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, R)}), w.lit(i32_t, 1000)),
-                       w.nom_lam(w.cn(i64_t), nullptr)}));
-        });
+                EXPECT_NO_THROW( // no type error
+                    w.app(exp_lam,
+                          {i64_t, R, core::op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, R)}), w.lit(i32_t, 1000)),
+                           w.nom_lam(w.cn(i64_t), nullptr)}));
+            });
         cases.emplace_back(
             [](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto i64_t) {
-            EXPECT_NO_THROW( // no type error
-                w.app(exp_lam,
-                      {i64_t, W, core::op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
-                       w.nom_lam(w.cn(i64_t), nullptr)}));
-        });
+                EXPECT_NO_THROW( // no type error
+                    w.app(exp_lam,
+                          {i64_t, W, core::op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
+                           w.nom_lam(w.cn(i64_t), nullptr)}));
+            });
         cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
@@ -92,9 +93,9 @@ TEST(RestrictedDependentTypes, join_singleton) {
                                         core::op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, R)}),
                                                          w.lit(i32_t, 1000)),
                                         w.nom_lam(w.cn(w.type_real(32)), nullptr)}),
-                        TypeError);
+                        std::logic_error);
                 },
-                "TypeError");
+                "std::logic_error");
         });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
@@ -104,9 +105,9 @@ TEST(RestrictedDependentTypes, join_singleton) {
                                         core::op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, W)}),
                                                          w.lit(i32_t, 1000)),
                                         w.nom_lam(w.cn(w.type_real(32)), nullptr)}),
-                        TypeError);
+                        std::logic_error);
                 },
-                "TypeError");
+                "std::logic_error");
         });
         cases.emplace_back([](World& w, auto, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
@@ -116,9 +117,9 @@ TEST(RestrictedDependentTypes, join_singleton) {
                               {i32_t, i32_t,
                                core::op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, i32_t)}), w.lit(i32_t, 1000)),
                                w.nom_lam(w.cn(i32_t), nullptr)}),
-                        TypeError);
+                        std::logic_error);
                 },
-                "TypeError");
+                "std::logic_error");
         });
         cases.emplace_back([](World& w, auto, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto i64_t) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
@@ -128,9 +129,9 @@ TEST(RestrictedDependentTypes, join_singleton) {
                               {i64_t, i64_t,
                                core::op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, i64_t)}), w.lit(i32_t, 1000)),
                                w.nom_lam(w.cn(i64_t), nullptr)}),
-                        TypeError);
+                        std::logic_error);
                 },
-                "TypeError");
+                "std::logic_error");
         });
 
         for (auto&& test : cases) {
@@ -159,46 +160,47 @@ TEST(RestrictedDependentTypes, join_singleton) {
             cases;
         cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NO_THROW( // no type error
-                w.app(exp_lam, {i32_t, core::op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, R)}), w.lit(i32_t, 1000)),
-                                w.nom_lam(w.cn(i32_t), nullptr)}));
+                w.app(exp_lam,
+                      {i32_t, core::op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, R)}), w.lit(i32_t, 1000)),
+                       w.nom_lam(w.cn(i32_t), nullptr)}));
         });
         cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto, auto i64_t) {
             EXPECT_NO_THROW( // no type error
-                w.app(exp_lam, {i64_t, core::op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, R)}), w.lit(i64_t, 1000)),
-                                w.nom_lam(w.cn(i64_t), nullptr)}));
+                w.app(exp_lam,
+                      {i64_t, core::op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, R)}), w.lit(i64_t, 1000)),
+                       w.nom_lam(w.cn(i64_t), nullptr)}));
         });
         cases.emplace_back([](World& w, auto R, auto, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
             EXPECT_NONFATAL_FAILURE( // disable until we have vel type checking..
                 {
                     EXPECT_THROW( // float type error
-                        w.app(exp_lam,
-                              {w.type_real(32),
-                               core::op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, R)}), w.lit(i32_t, 1000)),
-                               w.nom_lam(w.cn(w.type_real(32)), nullptr)}),
-                        TypeError);
+                        w.app(exp_lam, {w.type_real(32),
+                                        core::op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, R)}),
+                                                         w.lit(i32_t, 1000)),
+                                        w.nom_lam(w.cn(w.type_real(32)), nullptr)}),
+                        std::logic_error);
                 },
-                "TypeError");
+                "std::logic_error");
         });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto) {
-            EXPECT_THROW( // W type error
-                w.app(exp_lam, {i32_t, core::op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
-                                w.nom_lam(w.cn(i32_t), nullptr)}),
-                TypeError);
+            EXPECT_ANY_THROW( // W type error
+                w.app(exp_lam,
+                      {i32_t, core::op_bitcast(w.app(Exp, {w.vel(DT, i32_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
+                       w.nom_lam(w.cn(i32_t), nullptr)}));
         });
         cases.emplace_back(
             [](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto i32_t, auto i64_t) {
-            EXPECT_THROW( // W type error
-                w.app(exp_lam, {i64_t, core::op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
-                                w.nom_lam(w.cn(i64_t), nullptr)}),
-                TypeError);
-        });
+                EXPECT_ANY_THROW( // W type error
+                    w.app(exp_lam,
+                          {i64_t, core::op_bitcast(w.app(Exp, {w.vel(DT, i64_t), w.vel(RW, W)}), w.lit(i32_t, 1000)),
+                           w.nom_lam(w.cn(i64_t), nullptr)}));
+            });
         cases.emplace_back([](World& w, auto, auto W, auto Exp, auto exp_lam, auto DT, auto RW, auto, auto) {
-            EXPECT_THROW( // float + W type error (note, the float is not yet what triggers the issue..)
+            EXPECT_ANY_THROW( // float + W type error (note, the float is not yet what triggers the issue..)
                 w.app(exp_lam, {w.type_real(32),
                                 core::op_bitcast(w.app(Exp, {w.vel(DT, w.type_real(32)), w.vel(RW, W)}),
-                                             w.lit(w.type_real(32), 1000)),
-                                w.nom_lam(w.cn(w.type_real(32)), nullptr)}),
-                TypeError);
+                                                 w.lit(w.type_real(32), 1000)),
+                                w.nom_lam(w.cn(w.type_real(32)), nullptr)}));
         });
 
         for (auto&& test : cases) {
@@ -228,11 +230,11 @@ TEST(RestrictedDependentTypes, ll) {
     Normalizers normalizers;
     auto mem_d = Dialect::load("mem", {});
     mem_d.register_normalizers(normalizers);
-    Parser::import_module(w, "mem", {}, &normalizers);
+    fe::Parser::import_module(w, "mem", {}, &normalizers);
 
     auto core_d = Dialect::load("core", {});
     core_d.register_normalizers(normalizers);
-    Parser::import_module(w, "core", {}, &normalizers);
+    fe::Parser::import_module(w, "core", {}, &normalizers);
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int_width(32);

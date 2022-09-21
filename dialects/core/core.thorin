@@ -135,7 +135,6 @@
 /// ### %core.conv
 ///
 /// Bit width (and signedness) conversion for `%Int -> %Int` and `%Real -> %Real` as well as `%Real -> %Int` and `%Int -> %Real` conversions.
-///
 .ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -> %Int sw -> %Int dw, normalize_conv;
 .ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> %Int sw -> %Real dw, normalize_conv;
 .ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -> %Real sw -> %Int dw, normalize_conv;
@@ -145,5 +144,4 @@
 ///
 /// Bitcast to reinterpret a value as another type.
 /// Can be used for pointer / integer conversions as well as integer / nat conversions.
-///
 .ax %core.bitcast: Π [D: *, S: *] -> S -> D, normalize_bitcast;

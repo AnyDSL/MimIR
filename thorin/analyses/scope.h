@@ -23,7 +23,7 @@ using B_CFG = CFG<false>;
 /// The @p exit() is just a virtual dummy to have a unique exit dual to @p entry().
 class Scope {
 public:
-    Scope(const Scope&) = delete;
+    Scope(const Scope&)     = delete;
     Scope& operator=(Scope) = delete;
 
     explicit Scope(Def* entry);
@@ -72,7 +72,7 @@ private:
     mutable std::unique_ptr<const CFA> cfa_;
 };
 
-/// Does @p var occurr free in @p def?
-bool is_free(const Var* var, const Def* def);
+/// Does @p nom's Var occurr free in @p def?
+bool is_free(Def* nom, const Def* def);
 
 } // namespace thorin

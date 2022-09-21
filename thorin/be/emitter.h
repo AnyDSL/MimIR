@@ -3,16 +3,18 @@
 #include "thorin/world.h"
 
 #include "thorin/analyses/schedule.h"
+#include "thorin/phase/phase.h"
 
 namespace thorin {
 
 template<class Value, class Type, class BB, class Child>
-class Emitter {
+class Emitter : public ScopePhase {
 private:
     constexpr const Child& child() const { return *static_cast<const Child*>(this); };
     constexpr Child& child() { return *static_cast<Child*>(this); };
 
-    /// Internal wrapper for @p emit that checks and retrieves/puts the @c Value from @p locals_/@p globals_.
+    /// Internal wrapper for Emitter::emit that checks and retrieves/puts the `Value` from
+    /// Emitter::locals_/Emitter::globals_.
     Value emit_(const Def* def) {
         auto place = scheduler_.smart(def);
         auto& bb   = lam2bb_[place->as_nom<Lam>()];
@@ -23,23 +25,22 @@ public:
     Tab tab;
 
 protected:
-    Emitter(World& world, std::ostream& ostream)
-        : world_(world)
+    Emitter(World& world, std::string_view name, std::ostream& ostream)
+        : ScopePhase(world, name, false)
         , ostream_(ostream) {}
 
-    World& world() const { return world_; }
-    const Scope& scope() const { return *scope_; }
     std::ostream& ostream() const { return ostream_; }
 
-    /// Recursively emits code. @c mem -typed @p Def%s return sth that is @c !child().is_valid(value) - this variant
-    /// asserts in this case.
+    /// Recursively emits code.
+    /// `mem`-typed @p def%s return sth that is `!child().is_valid(value)`.
+    /// This variant asserts in this case.
     Value emit(const Def* def) {
         auto res = emit_unsafe(def);
         assert(child().is_valid(res));
         return res;
     }
 
-    /// As above but returning @c !child().is_valid(value) is permitted.
+    /// As above but returning `!child().is_valid(value)` is permitted.
     Value emit_unsafe(const Def* def) {
         if (auto i = globals_.find(def); i != globals_.end()) return i->second;
         if (auto i = locals_.find(def); i != locals_.end()) return i->second;
@@ -48,13 +49,8 @@ protected:
         return locals_[def] = val;
     }
 
-    void emit_module() {
-        world().template visit<false>([&](const Scope& scope) { emit_scope(scope); });
-    }
-
-    void emit_scope(const Scope& scope) {
+    void visit(const Scope& scope) override {
         if (entry_ = scope.entry()->isa_nom<Lam>(); !entry_) return;
-        scope_ = &scope;
 
         if (entry_->is_unset()) {
             child().emit_imported(entry_);
@@ -86,11 +82,9 @@ protected:
 
         child().finalize(scope);
         locals_.clear();
-        assert(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
+        assert_unused(lam2bb_.size() == old_size && "really make sure we didn't triger a rehash");
     }
 
-    World& world_;
-    const Scope* scope_ = nullptr;
     std::ostream& ostream_;
     Scheduler scheduler_;
     DefMap<Value> locals_;

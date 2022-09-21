@@ -4,23 +4,24 @@
 #include <string>
 #include <string_view>
 
+#include <absl/container/btree_map.h>
+#include <absl/container/btree_set.h>
+
 #include "thorin/axiom.h"
 #include "thorin/config.h"
 #include "thorin/debug.h"
 #include "thorin/error.h"
+#include "thorin/flags.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
 
 #include "thorin/util/hash.h"
+#include "thorin/util/log.h"
 
 namespace thorin {
 
-enum class LogLevel { Error, Warn, Info, Verbose, Debug };
-
 class Checker;
-class DepNode;
 class ErrorHandler;
-class RecStreamer;
 class Scope;
 
 /// The World represents the whole program and manages creation of Thorin nodes (Def%s).
@@ -34,43 +35,121 @@ class Scope;
 /// Note that types are also just Def%s and will be hashed as well.
 class World {
 public:
+    /// @name state
+    ///@{
+    struct State {
+        State() = default;
+        State(std::string_view name)
+            : name(name) {}
+
+        struct POD {
+            Log log;
+            Flags flags;
+            u32 curr_gid        = 0;
+            u32 curr_sub        = 0;
+            mutable bool frozen = false;
+        } pod;
+
+        std::string name = "module";
+        absl::btree_set<std::string> imported_dialects;
+#if THORIN_ENABLE_CHECKS
+        absl::flat_hash_set<u32> breakpoints;
+#endif
+        friend void swap(State& s1, State& s2) {
+            using std::swap;
+            // clang-format off
+            swap(s1.pod,                s2.pod);
+            swap(s1.name,               s2.name);
+            swap(s1.imported_dialects,  s2.imported_dialects);
+#if THORIN_ENABLE_CHECKS
+            swap(s1.breakpoints,        s2.breakpoints);
+#endif
+            // clang-format on
+        }
+    };
+
+    /// @name c'tor and d'tor
+    ///@{
     World& operator=(const World&) = delete;
 
+    /// Inherits the @p state into the new World.
+    explicit World(const State&);
     explicit World(std::string_view name = {});
     World(World&& other)
         : World() {
         swap(*this, other);
     }
     ~World();
-
-    /// Inherits the World::state_ of the @p other World.
-    World stub();
-
-    /// @name Sea of Nodes
-    ///@{
-    struct SeaHash {
-        size_t operator()(const Def* def) const { return def->hash(); };
-    };
-
-    struct SeaEq {
-        bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
-    };
-
-    using Sea = absl::flat_hash_set<const Def*, SeaHash, SeaEq>; ///< This HashSet contains Thorin's "sea of nodes".
-
-    const Sea& defs() const { return data_.defs_; }
     ///@}
 
-    /// @name name
+    /// @name misc getters/setters
     ///@{
-    std::string_view name() const { return data_.name_; }
-    void set_name(std::string_view name) { data_.name_ = name; }
+    const State& state() const { return state_; }
+
+    std::string_view name() const { return state_.name; }
+    void set_name(std::string_view name) { state_.name = name; }
+
+    void add_imported(std::string_view name) { state_.imported_dialects.emplace(name); }
+    const auto& imported() const { return state_.imported_dialects; }
+
+    /// Manage global identifier - a unique number for each Def.
+    u32 curr_gid() const { return state_.pod.curr_gid; }
+    u32 next_gid() { return ++state_.pod.curr_gid; }
+
+    /// Retrive compile Flags.
+    const Flags& flags() const { return state_.pod.flags; }
+    Flags& flags() { return state_.pod.flags; }
+
+    Checker& checker() { return *move_.checker; }
+    ErrorHandler* err() { return move_.err.get(); }
     ///@}
 
-    /// @name manage global identifier - a unique number for each Def
+    ///@}
+
+    /// @name freeze
     ///@{
-    u32 curr_gid() const { return state_.curr_gid; }
-    u32 next_gid() { return ++state_.curr_gid; }
+    /// In frozen state the World does not create any nodes.
+    bool is_frozen() const { return state_.pod.frozen; }
+
+    /// @returns old frozen state.
+    bool freeze(bool on = true) const {
+        bool old          = state_.pod.frozen;
+        state_.pod.frozen = on;
+        return old;
+    }
+
+    /// Use to World::freeze and automatically unfreeze at the end of scope.
+    struct Freezer {
+        Freezer(const World& world)
+            : world(world)
+            , old(world.freeze(true)) {}
+        ~Freezer() { world.freeze(old); }
+
+        const World& world;
+        bool old;
+    };
+    ///@}
+
+#if THORIN_ENABLE_CHECKS
+    /// @name debugging features
+    ///@{
+    void breakpoint(size_t number);
+    const Def* gid2def(u32 gid);
+    ///@}
+#endif
+
+    /// @name manage nodes
+    ///@{
+    const auto& axioms() const { return move_.axioms; }
+    const auto& externals() const { return move_.externals; }
+    bool empty() { return move_.externals.empty(); }
+    void make_external(Def* def) { move_.externals.emplace(def->name(), def); }
+    void make_internal(Def* def) { move_.externals.erase(def->name()); }
+    bool is_external(const Def* def) { return move_.externals.contains(def->name()); }
+    Def* lookup(const std::string& name) {
+        auto i = move_.externals.find(name);
+        return i != move_.externals.end() ? i->second : nullptr;
+    }
     ///@}
 
     /// @name Universe, Type, Var, Proxy, Infer
@@ -91,14 +170,16 @@ public:
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
     }
     Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
-    Infer* nom_infer(const Def* type, Sym sym, Loc loc) { return insert<Infer>(1, type, dbg({sym, loc})); }
+    Infer* nom_infer(const Def* type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
     Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
+    Infer* nom_infer_of_infer_level(const Def* dbg = {}) { return nom_infer(nom_infer_univ(dbg), dbg); }
     ///@}
 
     /// @name Axiom
     ///@{
     const Axiom* axiom(Def::NormalizeFn n, const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
-        return data_.axioms_[d | (t << 8u) | s] = unify<Axiom>(0, n, type, d, t, s, dbg);
+        auto ax                          = unify<Axiom>(0, n, type, d, t, s, dbg);
+        return move_.axioms[ax->flags()] = ax;
     }
     const Axiom* axiom(const Def* type, dialect_t d, tag_t t, sub_t s, const Def* dbg = {}) {
         return axiom(nullptr, type, d, t, s, dbg);
@@ -109,19 +190,17 @@ public:
     /// It uses the dialect Axiom::Global_Dialect and starts with `0` for Axiom::sub and counts up from there.
     /// The Axiom::tag is set to `0` and the Axiom::normalizer to `nullptr`.
     const Axiom* axiom(const Def* type, const Def* dbg = {}) {
-        return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.curr_sub++, dbg);
+        return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
     }
 
     /// Get axiom from a dialect.
     ///
     /// Use this to get an axiom with sub-tags.
     template<class AxTag>
-    const Axiom* ax(AxTag sub) const {
-        u64 int_sub = static_cast<u64>(sub);
-        auto it     = data_.axioms_.find(int_sub);
-        if (it == data_.axioms_.end())
-            thorin::err<AxiomNotFoundError>(Loc{}, "Axiom with tag '{}' not found in world.", int_sub);
-        return it->second;
+    const Axiom* ax(AxTag tag) const {
+        u64 flags = static_cast<u64>(tag);
+        if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
+        thorin::err("Axiom with tag '{}' not found in world", flags);
     }
 
     /// Get axiom from a dialect.
@@ -161,6 +240,7 @@ public:
         return unify<Lam>(2, pi, filter, body, dbg);
     }
     const Lam* lam(const Pi* pi, const Def* body, const Def* dbg) { return lam(pi, lit_tt(), body, dbg); }
+    Lam* exit() { return data_.exit_; } ///< Used as a dummy exit node within Scope.
     ///@}
 
     /// @name App
@@ -342,11 +422,11 @@ public:
     const Axiom* type_int() { return data_.type_int_; }
     const Axiom* type_real() { return data_.type_real_; }
     const App* type_bool() { return data_.type_bool_; }
-    const App* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
-    const App* type_int(nat_t mod) { return type_int(lit_nat(mod)); }
-    const App* type_real(nat_t width) { return type_real(lit_nat(width)); }
-    const App* type_int(const Def* mod) { return app(type_int(), mod)->as<App>(); }
-    const App* type_real(const Def* width) { return app(type_real(), width)->as<App>(); }
+    const Def* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
+    const Def* type_int(nat_t mod) { return type_int(lit_nat(mod)); }
+    const Def* type_real(nat_t width) { return type_real(lit_nat(width)); }
+    const Def* type_int(const Def* mod) { return app(type_int(), mod); }
+    const Def* type_real(const Def* width) { return app(type_real(), width); }
     ///@}
 
     /// @name bulitin axioms
@@ -455,117 +535,28 @@ public:
     /// @name helpers
     ///@{
     const Def* dbg(Debug d) { return d.def(*this); }
+    const Def* dbg(Sym sym, Loc loc, const Def* meta = {}) {
+        meta = meta ? meta : bot(type_bot());
+        return tuple({sym.str(), loc.def(*this), meta});
+    }
+    const Def* dbg(Sym sym, const Def* meta = {}) {
+        auto loc = sym.loc() ? sym.loc() : Loc().def(*this);
+        meta     = meta ? meta : bot(type_bot());
+        return tuple({sym.str(), loc, meta});
+    }
     const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
     ///@}
 
-    /// @name partial evaluation done?
+    /// @name dumping/logging
     ///@{
-    void mark_pe_done(bool flag = true) { state_.pe_done = flag; }
-    bool is_pe_done() const { return state_.pe_done; }
+    const Log& log() const { return state_.pod.log; }
+    Log& log() { return state_.pod.log; }
+    void dump(std::ostream& os) const;  ///< Dump to @p os.
+    void dump() const;                  ///< Dump to `std::cout`.
+    void debug_dump() const;            ///< Dump in Debug build if World::log::level is Log::Level::Debug.
+    void write(const char* file) const; ///< Write to a file named @p file; defaults to World::name.
+    void write() const;                 ///< Same above but file name defaults to World::name.
     ///@}
-
-    /// @name Manage Externals
-    ///@{
-    using Externals = absl::flat_hash_map<std::string, Def*>;
-    const Externals& externals() const { return data_.externals_; }
-    bool empty() { return data_.externals_.empty(); }
-    void make_external(Def* def) { data_.externals_.emplace(def->name(), def); }
-    void make_internal(Def* def) { data_.externals_.erase(def->name()); }
-    bool is_external(const Def* def) { return data_.externals_.contains(def->name()); }
-    Def* lookup(std::string_view name) {
-        auto i = data_.externals_.find(name);
-        return i != data_.externals_.end() ? i->second : nullptr;
-    }
-
-    using VisitFn = std::function<void(const Scope&)>;
-    /// Transitively visits all *reachable* Scope%s in this World that do not have free variables.
-    /// We call these Scope%s *top-level* Scope%s.
-    /// Select with @p elide_empty whether you want to visit trivial Scope%s of *noms* without body.
-    template<bool elide_empty = true>
-    void visit(VisitFn) const;
-    ///@}
-
-#if THORIN_ENABLE_CHECKS
-    /// @name Debugging Features
-    ///@{
-    using Breakpoints = absl::flat_hash_set<u32>;
-
-    void breakpoint(size_t number);
-    void enable_history(bool flag = true);
-    bool track_history() const;
-    const Def* gid2def(u32 gid);
-    ///@}
-#endif
-
-    /// @name Logging
-    ///@{
-    std::ostream& ostream() const { return *ostream_; }
-    LogLevel max_level() const { return state_.max_level; }
-
-    void set_log_level(LogLevel max_level) { state_.max_level = max_level; }
-    void set_log_level(std::string_view max_level) { set_log_level(str2level(max_level)); }
-    void set_log_ostream(std::ostream* ostream) { ostream_ = ostream; }
-
-    template<class... Args>
-    void log(LogLevel level, Loc loc, const char* fmt, Args&&... args) {
-        if (ostream_ && int(level) <= int(max_level())) {
-            std::ostringstream oss;
-            oss << loc;
-            print(ostream(), "{}:{}: ", colorize(level2acro(level), level2color(level)), colorize(oss.str(), 7));
-            print(ostream(), fmt, std::forward<Args&&>(args)...) << std::endl;
-        }
-    }
-    void log() const {} ///< for DLOG in Release build.
-
-    template<class... Args>
-    [[noreturn]] void error(Loc loc, const char* fmt, Args&&... args) {
-        log(LogLevel::Error, loc, fmt, std::forward<Args&&>(args)...);
-        std::abort();
-    }
-
-    // clang-format off
-    template<class... Args> void idef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Info, def->loc(), fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> void wdef(const Def* def, const char* fmt, Args&&... args) { log(LogLevel::Warn, def->loc(), fmt, std::forward<Args&&>(args)...); }
-    template<class... Args> void edef(const Def* def, const char* fmt, Args&&... args) { error(def->loc(), fmt, std::forward<Args&&>(args)...); }
-    // clang-format on
-
-    static std::string_view level2acro(LogLevel);
-    static LogLevel str2level(std::string_view);
-    static int level2color(LogLevel level);
-    static std::string colorize(std::string_view str, int color);
-    ///@}
-
-    /// @name stream
-    ///@{
-    std::ostream& stream(RecStreamer&, const DepNode*) const;
-    void debug_stream() const; ///< Stream thorin if World::State::max_level is LogLevel::debug.
-    void dump() const;
-    ///@}
-
-    /// @name error handling
-    ///@{
-    void set_error_handler(std::unique_ptr<ErrorHandler>&& err);
-    ErrorHandler* err() { return err_.get(); }
-    ///@}
-
-    void add_imported(std::string_view name) { data_.imported_dialects_.emplace(name); }
-    const absl::flat_hash_set<std::string>& imported() const { return data_.imported_dialects_; }
-
-    friend void swap(World& w1, World& w2) {
-        using std::swap;
-        // clang-format off
-        swap(w1.arena_,    w2.arena_);
-        swap(w1.data_,     w2.data_);
-        swap(w1.state_,    w2.state_);
-        swap(w1.ostream_,  w2.ostream_);
-        swap(w1.checker_,  w2.checker_);
-        swap(w1.err_,      w2.err_);
-        // clang-format on
-
-        swap(w1.data_.univ_->world_, w2.data_.univ_->world_);
-        assert(&w1.univ()->world() == &w1);
-        assert(&w2.univ()->world() == &w2);
-    }
 
 private:
     /// @name put into sea of nodes
@@ -574,36 +565,49 @@ private:
     const T* unify(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
         assert(!def->isa_nom());
-        auto [i, ins] = data_.defs_.emplace(def);
-        if (ins) {
 #if THORIN_ENABLE_CHECKS
-            if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+        if (flags().trace_gids) outln("{}: {}", def->node_name(), def->gid());
+        if (flags().reeval_breakpoints && state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
-            def->finalize();
-            return def;
+        if (is_frozen()) {
+            --state_.pod.curr_gid;
+            auto i = move_.defs.find(def);
+            arena_.deallocate<T>(def);
+            if (i != move_.defs.end()) return static_cast<const T*>(*i);
+            return nullptr;
         }
 
-        arena_.deallocate<T>(def);
-        return static_cast<const T*>(*i);
+        if (auto [i, ins] = move_.defs.emplace(def); !ins) {
+            arena_.deallocate<T>(def);
+            return static_cast<const T*>(*i);
+        }
+#if THORIN_ENABLE_CHECKS
+        if (!flags().reeval_breakpoints && state_.breakpoints.contains(def->gid())) thorin::breakpoint();
+#endif
+        def->finalize();
+        return def;
     }
 
     template<class T, class... Args>
     T* insert(size_t num_ops, Args&&... args) {
         auto def = arena_.allocate<T>(num_ops, std::forward<Args&&>(args)...);
 #if THORIN_ENABLE_CHECKS
+        if (flags().trace_gids) outln("{}: {}", def->node_name(), def->gid());
         if (state_.breakpoints.contains(def->gid())) thorin::breakpoint();
 #endif
-        auto [_, ins] = data_.defs_.emplace(def);
+        auto [_, ins] = move_.defs.emplace(def);
         assert_unused(ins);
         return def;
     }
     ///@}
 
+    State state_;
+
     class Arena {
     public:
         Arena()
-            : root_zone_(new Zone) // don't use 'new Zone()' - we keep the allocated Zone uninitialized
-            , curr_zone_(root_zone_.get()) {}
+            : root_(new Zone) // don't use 'new Zone()' - we keep the allocated Zone uninitialized
+            , curr_(root_.get()) {}
 
         struct Zone {
             static const size_t Size = 1024 * 1024 - sizeof(std::unique_ptr<int>); // 1MB - sizeof(next)
@@ -631,17 +635,17 @@ private:
             num_bytes        = align(num_bytes);
             assert(num_bytes < Zone::Size);
 
-            if (buffer_index_ + num_bytes >= Zone::Size) {
+            if (index_ + num_bytes >= Zone::Size) {
                 auto zone = new Zone;
-                curr_zone_->next.reset(zone);
-                curr_zone_    = zone;
-                buffer_index_ = 0;
+                curr_->next.reset(zone);
+                curr_  = zone;
+                index_ = 0;
             }
 
-            auto result = new (curr_zone_->buffer + buffer_index_) T(std::forward<Args&&>(args)...);
+            auto result = new (curr_->buffer + index_) T(std::forward<Args&&>(args)...);
             assert(result->num_ops() == num_ops);
-            buffer_index_ += num_bytes;
-            assert(buffer_index_ % alignof(T) == 0);
+            index_ += num_bytes;
+            assert(index_ % alignof(T) == 0);
 
             return result;
         }
@@ -651,9 +655,9 @@ private:
             size_t num_bytes = num_bytes_of<T>(def->num_ops());
             num_bytes        = align(num_bytes);
             def->~T();
-            if (ptrdiff_t(buffer_index_ - num_bytes) > 0) // don't care otherwise
-                buffer_index_ -= num_bytes;
-            assert(buffer_index_ % alignof(T) == 0);
+            if (ptrdiff_t(index_ - num_bytes) > 0) // don't care otherwise
+                index_ -= num_bytes;
+            assert(index_ % alignof(T) == 0);
         }
 
         static constexpr inline size_t align(size_t n) { return (n + (sizeof(void*) - 1)) & ~(sizeof(void*) - 1); }
@@ -664,24 +668,30 @@ private:
             return align(result);
         }
 
+        friend void swap(Arena& a1, Arena& a2) {
+            using std::swap;
+            // clang-format off
+            swap(a1.root_,  a2.root_);
+            swap(a1.curr_,  a2.curr_);
+            swap(a1.index_, a2.index_);
+            // clang-format on
+        }
+
     private:
-        std::unique_ptr<Zone> root_zone_;
-        Zone* curr_zone_;
-        size_t buffer_index_ = 0;
+        std::unique_ptr<Zone> root_;
+        Zone* curr_;
+        size_t index_ = 0;
     } arena_;
 
-    struct State {
-        LogLevel max_level = LogLevel::Error;
-        u32 curr_gid       = 0;
-        u32 curr_sub       = 0;
-        bool pe_done       = false;
-#if THORIN_ENABLE_CHECKS
-        bool track_history = false;
-        Breakpoints breakpoints;
-#endif
-    } state_;
+    struct SeaHash {
+        size_t operator()(const Def* def) const { return def->hash(); };
+    };
 
-    struct Data {
+    struct SeaEq {
+        bool operator()(const Def* d1, const Def* d2) const { return d1->equal(d2); }
+    };
+
+    struct {
         const Univ* univ_;
         const Type* type_0_;
         const Type* type_1_;
@@ -716,33 +726,47 @@ private:
         const Axiom* type_int_;
         const Axiom* type_real_;
         const Axiom* zip_;
-        absl::flat_hash_map<u64, const Axiom*> axioms_;
-        std::string name_;
-        Externals externals_;
-        Sea defs_;
-        DefDefMap<DefArray> cache_;
-        absl::flat_hash_set<std::string> imported_dialects_;
+        Lam* exit_;
     } data_;
 
-    std::unique_ptr<Checker> checker_;
-    std::unique_ptr<ErrorHandler> err_;
-    mutable std::ostream* ostream_ = nullptr;
+    struct Move {
+        Move(World&);
+
+        absl::btree_map<u64, const Axiom*> axioms;
+        absl::btree_map<std::string, Def*> externals;
+        absl::flat_hash_set<const Def*, SeaHash, SeaEq> defs;
+        DefDefMap<DefArray> cache;
+        std::unique_ptr<Checker> checker;
+        std::unique_ptr<ErrorHandler> err;
+
+        friend void swap(Move& m1, Move& m2) {
+            using std::swap;
+            // clang-format off
+            swap(m1.axioms,    m2.axioms);
+            swap(m1.externals, m2.externals);
+            swap(m1.defs,      m2.defs);
+            swap(m1.cache,     m2.cache);
+            swap(m1.checker,   m2.checker);
+            swap(m1.err,       m2.err);
+            // clang-format on
+        }
+    } move_;
+
+    friend void swap(World& w1, World& w2) {
+        using std::swap;
+        // clang-format off
+        swap(w1.state_, w2.state_);
+        swap(w1.arena_, w2.arena_);
+        swap(w1.data_,  w2.data_ );
+        swap(w1.move_,  w2.move_ );
+        // clang-format on
+
+        swap(w1.data_.univ_->world_, w2.data_.univ_->world_);
+        assert(&w1.univ()->world() == &w1);
+        assert(&w2.univ()->world() == &w2);
+    }
 
     friend DefArray Def::reduce(const Def*);
 };
-
-std::ostream& operator<<(std::ostream&, const World&);
-
-// clang-format off
-#define ELOG(...) log(thorin::LogLevel::Error,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define WLOG(...) log(thorin::LogLevel::Warn,    thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define ILOG(...) log(thorin::LogLevel::Info,    thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#define VLOG(...) log(thorin::LogLevel::Verbose, thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#ifndef NDEBUG
-#define DLOG(...) log(thorin::LogLevel::Debug,   thorin::Loc(__FILE__, {__LINE__, thorin::u32(-1)}, {__LINE__, thorin::u32(-1)}), __VA_ARGS__)
-#else
-#define DLOG(...) log()
-#endif
-// clang-format on
 
 } // namespace thorin

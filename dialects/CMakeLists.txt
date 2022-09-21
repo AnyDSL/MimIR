@@ -13,10 +13,6 @@ add_thorin_dialect(clos
     SOURCES
         clos/clos.cpp
         clos/clos.h
-        clos/clos_conv.cpp
-        clos/clos_conv.h
-        clos/lower_typed_clos.cpp
-        clos/lower_typed_clos.h
         clos/normalizers.cpp
         clos/pass/fp/lower_typed_clos_prep.cpp
         clos/pass/fp/lower_typed_clos_prep.h
@@ -26,6 +22,10 @@ add_thorin_dialect(clos
         clos/pass/rw/clos2sjlj.h
         clos/pass/rw/clos_conv_prep.cpp
         clos/pass/rw/clos_conv_prep.h
+        clos/phase/clos_conv.cpp
+        clos/phase/clos_conv.h
+        clos/phase/lower_typed_clos.cpp
+        clos/phase/lower_typed_clos.h
     DEPENDS
         mem
     HEADER_DEPENDS
@@ -46,6 +46,25 @@ add_thorin_dialect(core
     INSTALL
 )
 
+add_thorin_dialect(direct
+    SOURCES
+        direct/direct.cpp
+        direct/direct.h
+        direct/passes/ds2cps.cpp
+        direct/passes/ds2cps.h
+    INSTALL
+)
+
+add_thorin_dialect(debug
+    SOURCES
+        debug/debug.h
+        debug/debug.cpp
+        debug/passes/remove_perm.h
+        debug/passes/remove_perm.cpp
+        debug/normalizers.cpp
+    INSTALL
+)
+
 add_thorin_dialect(mem
     SOURCES
         mem/mem.cpp
@@ -59,14 +78,5 @@ add_thorin_dialect(mem
         mem/passes/rw/remem_elim.h
     HEADER_DEPENDS
         core
-    INSTALL
-)
-
-add_thorin_dialect(direct
-    SOURCES
-        direct/direct.cpp
-        direct/direct.h
-        direct/passes/ds2cps.cpp
-        direct/passes/ds2cps.h
     INSTALL
 )

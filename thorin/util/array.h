@@ -287,6 +287,10 @@ public:
         : storage_(size) {
         for (size_t i = 0; i != size; ++i) (*this)[i] = f(i);
     }
+    Array(ArrayRef<T> ref, std::function<T(T)> f)
+        : storage_(ref.size()) {
+        for (size_t i = 0, e = ref.size(); i != e; ++i) (*this)[i] = f(ref[i]);
+    }
 
     Array& operator=(Array other) {
         swap(*this, other);

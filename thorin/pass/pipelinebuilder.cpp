@@ -1,6 +1,7 @@
 #include "thorin/pass/pipelinebuilder.h"
 
 #include "thorin/pass/fp/beta_red.h"
+#include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/tail_rec_elim.h"
@@ -22,11 +23,12 @@ std::unique_ptr<PassMan> PipelineBuilder::opt_phase(World& world) {
     auto man = std::make_unique<PassMan>(world);
 
     man->add<PartialEval>();
-    man->add<BetaRed>();
+    auto br = man->add<BetaRed>();
     auto er = man->add<EtaRed>();
     auto ee = man->add<EtaExp>(er);
     man->add<Scalerize>(ee);
     man->add<TailRecElim>(er);
+    man->add<CopyProp>(br, ee);
 
     for (const auto& ext : opt_phase_extensions_) ext(*man);
 

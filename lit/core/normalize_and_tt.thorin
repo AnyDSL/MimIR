@@ -1,17 +1,14 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin %s --output-thorin - | FileCheck %s
+// RUN: %thorin %s -o - | FileCheck %s
 
 .import core;
 
-.lam .extern and_tt: .Cn [i :%Int 2, return : .Cn %Int 2] = {
-    .ff,
+.cn .extern and_tt [i :%Int 2, return : .Cn %Int 2] = {
     return (%core.bit2._and 2 (i, .tt))
 };
 
-// CHECK-DAG: and_tt: .Cn [(%Int 2), .Cn (%Int 2)], @(_[[valId_tt:[0-9]+]], _[[retId_tt:[0-9]+]]) = {
-// CHECK-DAG: _[[appId_tt:[0-9]+]]: ⊥:★ = _[[etaId_tt:[0-9]+]] _[[valId_tt]];
-// CHECK-DAG: _[[appId_tt]]
+// CHECK-DAG: and_tt _{{[0-9_]+}}::[i_[[valId_tt:[0-9_]+]]: (%Int 2), return_[[retId_tt:[0-9_]+]]: .Cn (%Int 2)] = {
+// CHECK-DAG: return_[[etaId_tt:[0-9_]+]] i_[[valId_tt]]
 
-// CHECK-DAG: _[[etaId_tt]]: .Cn (%Int 2), @_[[etaVar_tt:[0-9]+]] = {
-// CHECK-DAG: _[[appRetId_tt:[0-9]+]]: ⊥:★ = _[[retId_tt]] _[[etaVar_tt]];
-// CHECK-DAG: _[[appRetId_tt]]
+// CHECK-DAG: return_[[etaId_tt]] _[[etaVar_tt:[0-9_]+]]: (%Int 2) = {
+// CHECK-DAG: return_[[retId_tt]] _[[etaVar_tt]]
