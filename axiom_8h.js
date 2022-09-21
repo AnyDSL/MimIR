@@ -22,7 +22,6 @@ var axiom_8h =
     [ "base_value", "axiom_8h.html#a50ca9a05f008fef5575476e2a801ebde", null ],
     [ "isa", "axiom_8h.html#a57dfb1cbd8e3aced975ba276020a4c61", null ],
     [ "isa", "axiom_8h.html#a140dce6ed0b95d67cb652c739c6be1ec", null ],
-    [ "isa_sized_type", "axiom_8h.html#a8f906c3bc0a760e4d037bcc6597fd2bd", null ],
     [ "match", "axiom_8h.html#ad936a3edca20ab0e00d98690a7978910", null ],
     [ "match", "axiom_8h.html#a3b535c1405909d0a73b62794748bbf40", null ],
     [ "mod2width", "axiom_8h.html#a9b06ff5c2fceb4208a93b550fbc4ffd5", null ],

@@ -94,8 +94,8 @@ var core_2autogen_8h =
       [ "XYGLE", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6aa6ee9e715fd30e1b8e95843be4b2a9c8", null ],
       [ "t", "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6ae358efa489f58062f10dd7316b65649e", null ]
     ] ],
-    [ "Int", "core_2autogen_8h.html#ac8abdf2c671a7b6717b2f29be546f518", [
-      [ "Axiom_Id", "core_2autogen_8h.html#ac8abdf2c671a7b6717b2f29be546f518a51e0df3ca5c430d39d775ec66f8c6f45", null ]
+    [ "Real", "core_2autogen_8h.html#a1273c641b76150b74824064e018e6e10", [
+      [ "Axiom_Id", "core_2autogen_8h.html#a1273c641b76150b74824064e018e6e10a51e0df3ca5c430d39d775ec66f8c6f45", null ]
     ] ],
     [ "shr", "core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628", [
       [ "Axiom_Base", "core_2autogen_8h.html#ae493f33140e983cf79dc6b66a1637628a7ffa3232741894dfa13074c69ef34d64", null ],
@@ -128,8 +128,8 @@ var core_2autogen_8h =
     [ "operator&", "core_2autogen_8h.html#a545051cff523408546107bbcae9c40f0", null ],
     [ "operator&", "core_2autogen_8h.html#a97a54d2f272e1b439ff1ffd8572c788c", null ],
     [ "operator&", "core_2autogen_8h.html#ad55807ac4a3975ba1f59cbf60affeded", null ],
-    [ "operator&", "core_2autogen_8h.html#a4ffee08775065b35c5f02787a363c86b", null ],
-    [ "operator&", "core_2autogen_8h.html#a1cc0cf90f94f57aae3cd46d248075d83", null ],
+    [ "operator&", "core_2autogen_8h.html#a078a73181d46b48b34cbd8c5410a1e58", null ],
+    [ "operator&", "core_2autogen_8h.html#a1a5b54753a28d543b49f6e7032abe0fa", null ],
     [ "operator&", "core_2autogen_8h.html#a25b3c4186ffffa1b22e54542bb660aea", null ],
     [ "operator&", "core_2autogen_8h.html#adfa6dab6d7a1e3e327268c81a2f46e15", null ],
     [ "operator&", "core_2autogen_8h.html#a7556136648c01b7bac29e31f28def296", null ],
@@ -140,7 +140,7 @@ var core_2autogen_8h =
     [ "operator==", "core_2autogen_8h.html#a4aec5cf40a455d792a8f9764815326bb", null ],
     [ "operator==", "core_2autogen_8h.html#aeab498f128b5971760b77669353c7546", null ],
     [ "operator==", "core_2autogen_8h.html#af7189a73a7e154dd54e31a45b377d450", null ],
-    [ "operator==", "core_2autogen_8h.html#aec9278991bbb51f4965ba7f559779079", null ],
+    [ "operator==", "core_2autogen_8h.html#a1a288278d198873773289fbf77ea88ee", null ],
     [ "operator==", "core_2autogen_8h.html#a26a0179e8b3013640bc814dbe9c386aa", null ],
     [ "operator==", "core_2autogen_8h.html#a738a82272b1612556b754013be4597ff", null ],
     [ "operator|", "core_2autogen_8h.html#a252b198af3dbb13c03dbb4c0222381e0", null ],
@@ -155,8 +155,8 @@ var core_2autogen_8h =
     [ "operator|", "core_2autogen_8h.html#a472aa9a0adbb1409b4f11b32efc5e885", null ],
     [ "operator|", "core_2autogen_8h.html#ad8be529f38b9f99c2613089ad4506bce", null ],
     [ "operator|", "core_2autogen_8h.html#ae7e9b78a570fb962c12dcade067dc4c5", null ],
-    [ "operator|", "core_2autogen_8h.html#aa1ccbfa6dfc6a8e3077c654edc7838d2", null ],
-    [ "operator|", "core_2autogen_8h.html#aa47f7e6e366beed5c61c5f54bb271d05", null ],
+    [ "operator|", "core_2autogen_8h.html#a7e43292e4c3991dda2dfc0c74a451b46", null ],
+    [ "operator|", "core_2autogen_8h.html#adaf422a33facb272bf4634285dd2acd4", null ],
     [ "operator|", "core_2autogen_8h.html#ae6cc50d2d17f59ebbed5b82367c89101", null ],
     [ "operator|", "core_2autogen_8h.html#a64e4806f9976100ccf9e6d787974b9fb", null ],
     [ "operator|", "core_2autogen_8h.html#a6a1811ee14c01168dad5c7231591104d", null ],

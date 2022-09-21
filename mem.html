@@ -162,7 +162,7 @@ Operations with Side Effects</h1>
 Operations without Side Effects</h1>
 <h2><a class="anchor" id="autotoc_md88"></a>
 %mem.lea</h2>
-<p >Load effective address. Performs address computation. </p><div class="fragment"><div class="line">.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -&gt; Π [%mem.Ptr(«j: n; Ts#j», as), i: %Int n] -&gt; %mem.Ptr(Ts#i, as), normalize_lea;</div>
+<p >Load effective address. Performs address computation. </p><div class="fragment"><div class="line">.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -&gt; Π [%mem.Ptr(«j: n; Ts#j», as), i: .Int n] -&gt; %mem.Ptr(Ts#i, as), normalize_lea;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

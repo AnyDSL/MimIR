@@ -97,8 +97,8 @@ var namespacethorin =
         [ "XYGLE", "namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aa6ee9e715fd30e1b8e95843be4b2a9c8", null ],
         [ "t", "namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ae358efa489f58062f10dd7316b65649e", null ]
       ] ],
-      [ "Int", "namespacethorin_1_1core.html#ac8abdf2c671a7b6717b2f29be546f518", [
-        [ "Axiom_Id", "namespacethorin_1_1core.html#ac8abdf2c671a7b6717b2f29be546f518a51e0df3ca5c430d39d775ec66f8c6f45", null ]
+      [ "Real", "namespacethorin_1_1core.html#a1273c641b76150b74824064e018e6e10", [
+        [ "Axiom_Id", "namespacethorin_1_1core.html#a1273c641b76150b74824064e018e6e10a51e0df3ca5c430d39d775ec66f8c6f45", null ]
       ] ],
       [ "shr", "namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628", [
         [ "Axiom_Base", "namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a7ffa3232741894dfa13074c69ef34d64", null ],
@@ -154,8 +154,8 @@ var namespacethorin =
       [ "operator&", "namespacethorin_1_1core.html#a545051cff523408546107bbcae9c40f0", null ],
       [ "operator&", "namespacethorin_1_1core.html#a97a54d2f272e1b439ff1ffd8572c788c", null ],
       [ "operator&", "namespacethorin_1_1core.html#ad55807ac4a3975ba1f59cbf60affeded", null ],
-      [ "operator&", "namespacethorin_1_1core.html#a4ffee08775065b35c5f02787a363c86b", null ],
-      [ "operator&", "namespacethorin_1_1core.html#a1cc0cf90f94f57aae3cd46d248075d83", null ],
+      [ "operator&", "namespacethorin_1_1core.html#a078a73181d46b48b34cbd8c5410a1e58", null ],
+      [ "operator&", "namespacethorin_1_1core.html#a1a5b54753a28d543b49f6e7032abe0fa", null ],
       [ "operator&", "namespacethorin_1_1core.html#a25b3c4186ffffa1b22e54542bb660aea", null ],
       [ "operator&", "namespacethorin_1_1core.html#adfa6dab6d7a1e3e327268c81a2f46e15", null ],
       [ "operator&", "namespacethorin_1_1core.html#a7556136648c01b7bac29e31f28def296", null ],
@@ -166,7 +166,7 @@ var namespacethorin =
       [ "operator==", "namespacethorin_1_1core.html#a4aec5cf40a455d792a8f9764815326bb", null ],
       [ "operator==", "namespacethorin_1_1core.html#aeab498f128b5971760b77669353c7546", null ],
       [ "operator==", "namespacethorin_1_1core.html#af7189a73a7e154dd54e31a45b377d450", null ],
-      [ "operator==", "namespacethorin_1_1core.html#aec9278991bbb51f4965ba7f559779079", null ],
+      [ "operator==", "namespacethorin_1_1core.html#a1a288278d198873773289fbf77ea88ee", null ],
       [ "operator==", "namespacethorin_1_1core.html#a26a0179e8b3013640bc814dbe9c386aa", null ],
       [ "operator==", "namespacethorin_1_1core.html#a738a82272b1612556b754013be4597ff", null ],
       [ "operator|", "namespacethorin_1_1core.html#a252b198af3dbb13c03dbb4c0222381e0", null ],
@@ -181,8 +181,8 @@ var namespacethorin =
       [ "operator|", "namespacethorin_1_1core.html#a472aa9a0adbb1409b4f11b32efc5e885", null ],
       [ "operator|", "namespacethorin_1_1core.html#ad8be529f38b9f99c2613089ad4506bce", null ],
       [ "operator|", "namespacethorin_1_1core.html#ae7e9b78a570fb962c12dcade067dc4c5", null ],
-      [ "operator|", "namespacethorin_1_1core.html#aa1ccbfa6dfc6a8e3077c654edc7838d2", null ],
-      [ "operator|", "namespacethorin_1_1core.html#aa47f7e6e366beed5c61c5f54bb271d05", null ],
+      [ "operator|", "namespacethorin_1_1core.html#a7e43292e4c3991dda2dfc0c74a451b46", null ],
+      [ "operator|", "namespacethorin_1_1core.html#adaf422a33facb272bf4634285dd2acd4", null ],
       [ "operator|", "namespacethorin_1_1core.html#ae6cc50d2d17f59ebbed5b82367c89101", null ],
       [ "operator|", "namespacethorin_1_1core.html#a64e4806f9976100ccf9e6d787974b9fb", null ],
       [ "operator|", "namespacethorin_1_1core.html#a6a1811ee14c01168dad5c7231591104d", null ],
@@ -276,6 +276,7 @@ var namespacethorin =
     [ "Infer", "classthorin_1_1Infer.html", "classthorin_1_1Infer" ],
     [ "Inline", "structthorin_1_1Inline.html", "structthorin_1_1Inline" ],
     [ "Insert", "classthorin_1_1Insert.html", "classthorin_1_1Insert" ],
+    [ "Int", "classthorin_1_1Int.html", "classthorin_1_1Int" ],
     [ "Lam", "classthorin_1_1Lam.html", "classthorin_1_1Lam" ],
     [ "LamSpec", "classthorin_1_1LamSpec.html", "classthorin_1_1LamSpec" ],
     [ "Lit", "classthorin_1_1Lit.html", "classthorin_1_1Lit" ],
@@ -602,7 +603,6 @@ var namespacethorin =
     [ "isa_decl", "namespacethorin.html#a83dd1a97c4b17f7188a981d3036cb717", null ],
     [ "isa_ext", "namespacethorin.html#a00ac7dde2670cd6dd5035b081e992386", null ],
     [ "isa_lit", "namespacethorin.html#a196c8dd3968fd28a00dc082c191feee6", null ],
-    [ "isa_sized_type", "namespacethorin.html#a8f906c3bc0a760e4d037bcc6597fd2bd", null ],
     [ "isa_workable", "namespacethorin.html#afbcb1bda3428d2211797b024635936ee", null ],
     [ "lazy_init", "namespacethorin.html#aee2f56c5529fe06f8a103083f64d13f4", null ],
     [ "make_array", "namespacethorin.html#a6737a390d5f1205e580d3e9f32c1a266", null ],

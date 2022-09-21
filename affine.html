@@ -131,8 +131,8 @@ Operations</h1>
 <li>a <code>yield</code> continuation to prematurely continue with the next iteration.</li>
 </ul>
 <p >After termination of the loop <code>exit</code> is invoked. </p><div class="fragment"><div class="line">.ax %affine.For: Π [m: .Nat , n: .Nat , Ts: «n; *»] -&gt;</div>
-<div class="line">    .Cn [start: %Int m, stop: %Int m, step: %Int m, init: «i: n; Ts#i»,</div>
-<div class="line">        body: .Cn [iter: %Int m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]], </div>
+<div class="line">    .Cn [start: .Int m, stop: .Int m, step: .Int m, init: «i: n; Ts#i»,</div>
+<div class="line">        body: .Cn [iter: .Int m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]], </div>
 <div class="line">        exit: .Cn [«i: n; Ts#i»]];</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->

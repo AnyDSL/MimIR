@@ -35,11 +35,12 @@ var searchData=
   ['loc_32',['loc',['../classthorin_1_1fe_1_1AST.html#aa21d4d8a54478d28d5fbb2fbcc06618c',1,'thorin::fe::AST']]],
   ['log_33',['log',['../structthorin_1_1Log.html#ae791bffd028da940716cd67de4ae4d70',1,'thorin::Log::log(Level level, Loc loc, const char *fmt, Args &amp;&amp;... args)'],['../structthorin_1_1Log.html#aeab0c193c020c0ca157872a74c8f38f6',1,'thorin::Log::log()'],['../classthorin_1_1World.html#ab0fd127c2bf81aaf93b0ac4ca2746f0e',1,'thorin::World::log() const'],['../classthorin_1_1World.html#a44b545a88c58fda7f15606002ba6d073',1,'thorin::World::log()']]],
   ['lookup_34',['lookup',['../classthorin_1_1World.html#a9e395f39f57987d870c34df90ae0f80d',1,'thorin::World']]],
-  ['looptree_35',['LoopTree',['../classthorin_1_1LoopTree.html#a0da4823e67b8a40afeafa71f2c3c05a3',1,'thorin::LoopTree::LoopTree(const LoopTree &amp;)=delete'],['../classthorin_1_1LoopTree.html#a788caed573f427650316afaf6735d41b',1,'thorin::LoopTree::LoopTree(const CFG&lt; forward &gt; &amp;cfg)']]],
+  ['looptree_35',['LoopTree',['../classthorin_1_1LoopTree.html#a788caed573f427650316afaf6735d41b',1,'thorin::LoopTree']]],
   ['looptree_36',['looptree',['../classthorin_1_1CFG.html#a19030529390c9eddebab511e075400c7',1,'thorin::CFG']]],
-  ['looptreebuilder_37',['LoopTreeBuilder',['../classthorin_1_1LoopTreeBuilder.html#a1026774c35768d126137b47622093883',1,'thorin::LoopTreeBuilder']]],
-  ['lowerfor_38',['LowerFor',['../classthorin_1_1affine_1_1LowerFor.html#a1ccb326f60d9381a8ecd8af8ebb94ced',1,'thorin::affine::LowerFor']]],
-  ['lowertypedclos_39',['LowerTypedClos',['../classthorin_1_1clos_1_1LowerTypedClos.html#ae34dd43d483efec29ea0335be5199560',1,'thorin::clos::LowerTypedClos']]],
-  ['lowertypedclosprep_40',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html#aa033f29324dcaffb112b87a8c40022ad',1,'thorin::clos::LowerTypedClosPrep']]],
-  ['lrprec_41',['LRPrec',['../structthorin_1_1LRPrec.html#a6cb98f4eac50388d92b191cbef0712b0',1,'thorin::LRPrec']]]
+  ['looptree_37',['LoopTree',['../classthorin_1_1LoopTree.html#a0da4823e67b8a40afeafa71f2c3c05a3',1,'thorin::LoopTree']]],
+  ['looptreebuilder_38',['LoopTreeBuilder',['../classthorin_1_1LoopTreeBuilder.html#a1026774c35768d126137b47622093883',1,'thorin::LoopTreeBuilder']]],
+  ['lowerfor_39',['LowerFor',['../classthorin_1_1affine_1_1LowerFor.html#a1ccb326f60d9381a8ecd8af8ebb94ced',1,'thorin::affine::LowerFor']]],
+  ['lowertypedclos_40',['LowerTypedClos',['../classthorin_1_1clos_1_1LowerTypedClos.html#ae34dd43d483efec29ea0335be5199560',1,'thorin::clos::LowerTypedClos']]],
+  ['lowertypedclosprep_41',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html#aa033f29324dcaffb112b87a8c40022ad',1,'thorin::clos::LowerTypedClosPrep']]],
+  ['lrprec_42',['LRPrec',['../structthorin_1_1LRPrec.html#a6cb98f4eac50388d92b191cbef0712b0',1,'thorin::LRPrec']]]
 ];

@@ -118,10 +118,10 @@ Dependencies</h1>
 <div class="fragment"><div class="line">.import mem;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md52"></a>
 Operations related to longjmp</h1>
-<div class="fragment"><div class="line">.let BufPtr = %Int 8;</div>
+<div class="fragment"><div class="line">.let BufPtr = .Int 8;</div>
 <div class="line">.ax %clos.alloc_jmpbuf: [[], %mem.M] -&gt; [%mem.M, BufPtr];</div>
-<div class="line">.ax %clos.setjmp: [%mem.M, BufPtr] -&gt; [%mem.M, BufPtr, %Int 4294967296];</div>
-<div class="line">.ax %clos.longjmp: .Cn [%mem.M, BufPtr, %Int 4294967296];</div>
+<div class="line">.ax %clos.setjmp: [%mem.M, BufPtr] -&gt; [%mem.M, BufPtr, .Int 4294967296];</div>
+<div class="line">.ax %clos.longjmp: .Cn [%mem.M, BufPtr, .Int 4294967296];</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md53"></a>
 Closure Annotations</h1>
 <div class="fragment"><div class="line">.ax %clos.clos(ret, freeBB, fstclassBB, esc, bot): Π T: * -&gt; T -&gt; T, normalize_clos;</div>

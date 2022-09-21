@@ -108,7 +108,7 @@ $(document).ready(function(){initNavTree('core.html',''); initResizable(); });
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md54">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md55">Types</a><ul><li class="level2"><a href="#autotoc_md56">%core.Int</a></li>
+<li class="level1"><a href="#autotoc_md55">Types</a><ul><li class="level2"><a href="#autotoc_md56">%core.Real</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#autotoc_md57">Operations</a><ul><li class="level2"><a href="#autotoc_md58">%core.icmp</a></li>
@@ -130,8 +130,8 @@ Dependencies</h1>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md55"></a>
 Types</h1>
 <h2><a class="anchor" id="autotoc_md56"></a>
-%core.Int</h2>
-<div class="fragment"><div class="line">.ax %core.Int: .Nat -&gt; *;</div>
+%core.Real</h2>
+<div class="fragment"><div class="line">.ax %core.Real: .Nat -&gt; *;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md57"></a>
 Operations</h1>
 <h2><a class="anchor" id="autotoc_md58"></a>
@@ -243,7 +243,7 @@ Operations</h1>
 <div class="line">               xYgle,     xYglE,     xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,</div>
 <div class="line">               Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,</div>
 <div class="line">               XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):</div>
-<div class="line">    Π w: .Nat -&gt; [%Int w, %Int w] -&gt; .Bool , normalize_icmp;</div>
+<div class="line">    Π w: .Nat -&gt; [.Int w, .Int w] -&gt; .Bool , normalize_icmp;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md59"></a>
 %core.bit1</h2>
 <p >This <em>unary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Unary_operations">4 possible operations</a> as summarized in the following table:</p>
@@ -259,7 +259,7 @@ Operations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">t   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
 </table>
-<div class="fragment"><div class="line">.ax %core.bit1(f, neg, id, t): Π w: .Nat -&gt; %Int w -&gt; %Int w;</div>
+<div class="fragment"><div class="line">.ax %core.bit1(f, neg, id, t): Π w: .Nat -&gt; .Int w -&gt; .Int w;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md60"></a>
 %core.bit2</h2>
 <p >This <em>binary</em> bitwise operations offers all <a href="https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators">16 possible operations</a> as summarized in the following table:</p>
@@ -301,21 +301,21 @@ Operations</h1>
 </table>
 <div class="fragment"><div class="line">.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,</div>
 <div class="line">                _and,  nxor,    b,      iff,    a,      ciff, _or,  t):</div>
-<div class="line">    Π w: .Nat -&gt; [%Int w, %Int w] -&gt; %Int w , normalize_bit2;</div>
+<div class="line">    Π w: .Nat -&gt; [.Int w, .Int w] -&gt; .Int w , normalize_bit2;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md61"></a>
 %core.shr</h2>
-<div class="fragment"><div class="line">.ax %core.shr(ashr, lshr): Π w: .Nat -&gt; [%Int w, %Int w] -&gt; %Int w, normalize_shr;</div>
+<div class="fragment"><div class="line">.ax %core.shr(ashr, lshr): Π w: .Nat -&gt; [.Int w, .Int w] -&gt; .Int w, normalize_shr;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md62"></a>
 %core.wrap</h2>
-<div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -&gt; [%Int w, %Int w] -&gt; %Int w, normalize_wrap;</div>
+<div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -&gt; [.Int w, .Int w] -&gt; .Int w, normalize_wrap;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md63"></a>
 %core.div</h2>
-<div class="fragment"><div class="line">.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -&gt; [%mem.M, %Int w, %Int w] -&gt; [%mem.M, %Int w], normalize_div;</div>
+<div class="fragment"><div class="line">.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -&gt; [%mem.M, .Int w, .Int w] -&gt; [%mem.M, .Int w], normalize_div;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md64"></a>
 %core.conv</h2>
-<p >Bit width (and signedness) conversion for <code>Int -&gt; Int</code> and <code>Real -&gt; Real</code> as well as <code>Real -&gt; Int</code> and <code>Int -&gt; Real</code> conversions. </p><div class="fragment"><div class="line">.ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -&gt; %Int sw -&gt; %Int dw, normalize_conv;</div>
-<div class="line">.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -&gt; %Int sw -&gt; %Real dw, normalize_conv;</div>
-<div class="line">.ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -&gt; %Real sw -&gt; %Int dw, normalize_conv;</div>
+<p >Bit width (and signedness) conversion for <code>.Int -&gt; .Int</code> and <code>Real -&gt; Real</code> as well as <code>Real -&gt; .Int</code> and <code>.Int -&gt; Real</code> conversions. </p><div class="fragment"><div class="line">.ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -&gt; .Int sw -&gt; .Int dw, normalize_conv;</div>
+<div class="line">.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -&gt; .Int sw -&gt; %Real dw, normalize_conv;</div>
+<div class="line">.ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -&gt; %Real sw -&gt; .Int dw, normalize_conv;</div>
 <div class="line">.ax %core.conv(r2r): Π [dw: .Nat, sw: .Nat] -&gt; %Real sw -&gt; %Real dw, normalize_conv;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md65"></a>
 %core.bitcast</h2>

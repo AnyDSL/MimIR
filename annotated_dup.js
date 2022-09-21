@@ -149,6 +149,7 @@ var annotated_dup =
       [ "Infer", "classthorin_1_1Infer.html", "classthorin_1_1Infer" ],
       [ "Inline", "structthorin_1_1Inline.html", "structthorin_1_1Inline" ],
       [ "Insert", "classthorin_1_1Insert.html", "classthorin_1_1Insert" ],
+      [ "Int", "classthorin_1_1Int.html", "classthorin_1_1Int" ],
       [ "Lam", "classthorin_1_1Lam.html", "classthorin_1_1Lam" ],
       [ "LamSpec", "classthorin_1_1LamSpec.html", "classthorin_1_1LamSpec" ],
       [ "Lit", "classthorin_1_1Lit.html", "classthorin_1_1Lit" ],
