@@ -1,3 +1,8 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d affine %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %t ; test $? -eq 0
+// RUN: %t 1 2 3 ; test $? -eq 6
 
 .import mem;
 .import core;
