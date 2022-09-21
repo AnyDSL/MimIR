@@ -69,9 +69,9 @@ enum RMode : nat_t {
 };
 }
 
-/// Idxeger operations that neither take a @p WMode nor do produce a side effect - arithmetic or logical shift right.
+/// Integer operations that neither take a @p WMode nor do produce a side effect - arithmetic or logical shift right.
 #define THORIN_SHR(m) m(Shr, ashr) m(Shr, lshr)
-/// Idxeger operations that might wrap and, hence, take @p WMode.
+/// Integer operations that might wrap and, hence, take @p WMode.
 #define THORIN_WRAP(m) m(Wrap, add) m(Wrap, sub) m(Wrap, mul) m(Wrap, shl)
 /// Floating point (real) operations that take @p RMode.
 #define THORIN_R_OP(m) m(ROp, add) m(ROp, sub) m(ROp, mul) m(ROp, div) m(ROp, rem)
