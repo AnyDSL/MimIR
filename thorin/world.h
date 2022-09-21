@@ -155,7 +155,7 @@ public:
     /// @name Universe, Type, Var, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
-    const Type* type(const Def* level, const Def* dbg = {}) { return unify<Type>(1, level, dbg)->as<Type>(); }
+    const Type* type(const Def* level, const Def* dbg = {});
     template<level_t level = 0>
     const Type* type(const Def* dbg = {}) {
         if constexpr (level == 0)
@@ -419,7 +419,7 @@ public:
     /// @name types
     ///@{
     const Nat* type_nat() { return data_.type_nat_; }
-    const Int* type_int(const Def* size) { return unify<Int>(1, *this, size); }
+    const Int* type_int(const Def* size);
     const Int* type_int(nat_t size) { return type_int(lit_nat(size)); }
     const Int* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
     const Int* type_bool() { return data_.type_bool_; }

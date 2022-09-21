@@ -205,6 +205,26 @@ World::~World() {
  * core calculus
  */
 
+const Type* World::type(const Def* level, const Def* dbg) {
+    if (err()) {
+        if (!level->type()->isa<Univ>()) {
+            err()->err(level->loc(), "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level,
+                       level->type());
+        }
+    }
+    return unify<Type>(1, level, dbg)->as<Type>();
+}
+
+const Int* World::type_int(const Def* size) {
+    if (err()) {
+        if (!size->type()->isa<Nat>()) {
+            err()->err(size->loc(), "argument `{}` to `.Int` must be of type `.Nat` but is of type `{}`", size,
+                       size->type());
+        }
+    }
+    return unify<Int>(1, *this, size);
+}
+
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->isa<Pi>();
 
@@ -355,7 +375,8 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val, const D
     auto type    = d->unfold_type();
     auto index_t = index->type()->as<Int>();
 
-    if (err() && !checker().equiv(type->arity(), index_t->size(), dbg)) err()->index_out_of_range(type->arity(), index, dbg);
+    if (err() && !checker().equiv(type->arity(), index_t->size(), dbg))
+        err()->index_out_of_range(type->arity(), index, dbg);
 
     if (auto size = isa_lit(index_t->size()); size && *size == 1)
         return tuple(d, {val}, dbg); // d could be nom - that's why the tuple ctor is needed

@@ -71,7 +71,7 @@ const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) 
 
 inline const Def* get_size(const Def* type) {
     if (auto int_t = type->isa<Int>()) return int_t->size();
-    if (auto real  = isa<Tag::Real>(type)) return real->arg();
+    if (auto real = isa<Tag::Real>(type)) return real->arg();
     unreachable();
 }
 
