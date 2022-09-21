@@ -122,6 +122,7 @@ var namespacethorin =
       [ "fn", "namespacethorin_1_1core.html#a9e7bbf8f2eabdee513df72bc4dac79c6", null ],
       [ "fn_bitcast", "namespacethorin_1_1core.html#adf56b90ff695433e6bd4ce05711427c9", null ],
       [ "fold_conv", "namespacethorin_1_1core.html#a9d7242587c59b68f439c9a7710e1ed3d", null ],
+      [ "get_size", "namespacethorin_1_1core.html#ae4320f525a9cc7f472c70ab73076876b", null ],
       [ "insert_unsafe", "namespacethorin_1_1core.html#a81eef9e98d98fc3d5829db1c5db247bf", null ],
       [ "insert_unsafe", "namespacethorin_1_1core.html#a1e157a76ce6783baf11aa6c167c05a2d", null ],
       [ "normalize_bit2", "namespacethorin_1_1core.html#a1ab1c16fd0afc0203da7b84522fd8f32", null ],

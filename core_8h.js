@@ -9,6 +9,7 @@ var core_8h =
     [ "fn", "core_8h.html#ab68f4719b25dd30504f65e144bc36a25", null ],
     [ "fn", "core_8h.html#a9e7bbf8f2eabdee513df72bc4dac79c6", null ],
     [ "fn_bitcast", "core_8h.html#adf56b90ff695433e6bd4ce05711427c9", null ],
+    [ "get_size", "core_8h.html#ae4320f525a9cc7f472c70ab73076876b", null ],
     [ "insert_unsafe", "core_8h.html#a81eef9e98d98fc3d5829db1c5db247bf", null ],
     [ "insert_unsafe", "core_8h.html#a1e157a76ce6783baf11aa6c167c05a2d", null ],
     [ "op", "core_8h.html#aff464bd64bff33bd26c0c1ae3dd407c4", null ],
