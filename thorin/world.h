@@ -419,14 +419,13 @@ public:
     /// @name types
     ///@{
     const Nat* type_nat() { return data_.type_nat_; }
-    const Axiom* type_int() { return data_.type_int_; }
+    const Int* type_int(const Def* size) { return unify<Int>(1, *this, size); }
+    const Int* type_int(nat_t size) { return type_int(lit_nat(size)); }
+    const Int* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
+    const Int* type_bool() { return data_.type_bool_; }
     const Axiom* type_real() { return data_.type_real_; }
-    const App* type_bool() { return data_.type_bool_; }
-    const Def* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
-    const Def* type_int(nat_t mod) { return type_int(lit_nat(mod)); }
-    const Def* type_real(nat_t width) { return type_real(lit_nat(width)); }
-    const Def* type_int(const Def* mod) { return app(type_int(), mod); }
     const Def* type_real(const Def* width) { return app(type_real(), width); }
+    const Def* type_real(nat_t width) { return type_real(lit_nat(width)); }
     ///@}
 
     /// @name bulitin axioms
@@ -482,17 +481,19 @@ public:
 
     /// @name op - these guys build the final function application for the various operations
     ///@{
-    const Def* op(Bit o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, infer(a)), {a, b}, dbg); }
-    const Def* op(ICmp o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, infer(a)), {a, b}, dbg); }
+    const Def* op(Bit o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, iinfer(a)), {a, b}, dbg); }
+    const Def* op(ICmp o, const Def* a, const Def* b, const Def* dbg = {}) {
+        return app(fn(o, iinfer(a)), {a, b}, dbg);
+    }
     const Def* op(RCmp o, const Def* rmode, const Def* a, const Def* b, const Def* dbg = {}) {
-        return app(fn(o, rmode, infer(a)), {a, b}, dbg);
+        return app(fn(o, rmode, rinfer(a)), {a, b}, dbg);
     }
     const Def* op(ROp o, const Def* rmode, const Def* a, const Def* b, const Def* dbg = {}) {
-        return app(fn(o, rmode, infer(a)), {a, b}, dbg);
+        return app(fn(o, rmode, rinfer(a)), {a, b}, dbg);
     }
-    const Def* op(Shr o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, infer(a)), {a, b}, dbg); }
+    const Def* op(Shr o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, iinfer(a)), {a, b}, dbg); }
     const Def* op(Wrap o, const Def* wmode, const Def* a, const Def* b, const Def* dbg = {}) {
-        return app(fn(o, wmode, infer(a)), {a, b}, dbg);
+        return app(fn(o, wmode, iinfer(a)), {a, b}, dbg);
     }
     template<class O>
     const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) {
@@ -517,15 +518,15 @@ public:
     /// @name wrappers for unary operations
     ///@{
     const Def* op_negate(const Def* a, const Def* dbg = {}) {
-        auto w = as_lit(infer(a));
+        auto w = as_lit(iinfer(a));
         return op(Bit::_xor, lit_int(w, w - 1_u64), a, dbg);
     }
     const Def* op_rminus(const Def* rmode, const Def* a, const Def* dbg = {}) {
-        auto w = as_lit(infer(a));
+        auto w = as_lit(rinfer(a));
         return op(ROp::sub, rmode, lit_real(w, -0.0), a, dbg);
     }
     const Def* op_wminus(const Def* wmode, const Def* a, const Def* dbg = {}) {
-        auto w = as_lit(infer(a));
+        auto w = as_lit(iinfer(a));
         return op(Wrap::sub, wmode, lit_int(w, 0), a, dbg);
     }
     const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) { return op_rminus(lit_nat(rmode), a, dbg); }
@@ -544,7 +545,8 @@ public:
         meta     = meta ? meta : bot(type_bot());
         return tuple({sym.str(), loc, meta});
     }
-    const Def* infer(const Def* def) { return isa_sized_type(def->type()); }
+    const Def* iinfer(const Def* def) { return def->type()->as<Int>()->size(); }
+    const Def* rinfer(const Def* def) { return as<Tag::Real>(def->type())->arg(); }
     ///@}
 
     /// @name dumping/logging
@@ -696,7 +698,7 @@ private:
         const Type* type_0_;
         const Type* type_1_;
         const Bot* type_bot_;
-        const App* type_bool_;
+        const Int* type_bool_;
         const Top* top_nat_;
         const Sigma* sigma_;
         const Tuple* tuple_;
@@ -723,7 +725,6 @@ private:
         const Lit* lit_univ_1_;
         const Axiom* atomic_;
         const Axiom* bitcast_;
-        const Axiom* type_int_;
         const Axiom* type_real_;
         const Axiom* zip_;
         Lam* exit_;

@@ -127,8 +127,8 @@ std::string Emitter::convert(const Def* type) {
 
     if (type->isa<Nat>()) {
         return types_[type] = "i64";
-    } else if (isa<Tag::Int>(type)) {
-        auto size = isa_sized_type(type);
+    } else if (auto int_t = type->isa<Int>()) {
+        auto size = int_t->size();
         if (size->isa<Top>()) return types_[type] = "i64";
         if (auto width = mod2width(as_lit(size))) {
             switch (*width) {
@@ -455,8 +455,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
             return std::to_string(lit->get<nat_t>());
-        } else if (isa<Tag::Int>(lit->type())) {
-            auto size = isa_sized_type(lit->type());
+        } else if (auto int_t = lit->type()->isa<Int>()) {
+            auto size = int_t->size();
             if (size->isa<Top>()) return std::to_string(lit->get<nat_t>());
             if (auto mod = mod2width(as_lit(size))) {
                 switch (*mod) {
@@ -712,9 +712,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto dst_t = convert(conv->type());
 
         auto size2width = [&](const Def* type) {
-            if (auto int_ = isa<Tag::Int>(type)) {
-                if (int_->arg()->isa<Top>()) return 64_u64;
-                if (auto width = mod2width(as_lit(int_->arg()))) return *width;
+            if (auto int_t = type->isa<Int>()) {
+                if (int_t->size()->isa<Top>()) return 64_u64;
+                if (auto width = mod2width(as_lit(int_t->size()))) return *width;
                 return 64_u64;
             }
             return as_lit(as<Tag::Real>(type)->arg());
@@ -746,9 +746,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto dst_t = convert(conv->type());
 
         auto size2width = [&](const Def* type) {
-            if (auto int_ = isa<Tag::Int>(type)) {
-                if (int_->arg()->isa<Top>()) return 64_u64;
-                if (auto width = mod2width(as_lit(int_->arg()))) return *width;
+            if (auto int_t = type->isa<Int>()) {
+                if (int_t->size()->isa<Top>()) return 64_u64;
+                if (auto width = mod2width(as_lit(int_t->size()))) return *width;
                 return 64_u64;
             }
             return as_lit(as<Tag::Real>(type)->arg());
@@ -790,9 +790,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         auto size2width = [&](const Def* type) {
             if (type->isa<Nat>()) return 64_u64;
-            if (auto int_ = isa<Tag::Int>(type)) {
-                if (int_->arg()->isa<Top>() || !int_->arg()->isa<Lit>()) return 64_u64;
-                if (auto width = mod2width(as_lit(int_->arg()))) return std::bit_ceil(*width);
+            if (auto int_t = type->isa<Int>()) {
+                if (int_t->size()->isa<Top>() || !int_t->size()->isa<Lit>()) return 64_u64;
+                if (auto width = mod2width(as_lit(int_t->size()))) return std::bit_ceil(*width);
                 return 64_u64;
             }
             return 0_u64;
@@ -823,9 +823,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         auto size2width = [&](const Def* type) {
             if (type->isa<Nat>()) return 64_u64;
-            if (auto int_ = isa<Tag::Int>(type)) {
-                if (int_->arg()->isa<Top>() || !int_->arg()->isa<Lit>()) return 64_u64;
-                if (auto width = mod2width(as_lit(int_->arg()))) return std::bit_ceil(*width);
+            if (auto int_t = type->isa<Int>()) {
+                if (int_t->size()->isa<Top>() || !int_t->size()->isa<Lit>()) return 64_u64;
+                if (auto width = mod2width(as_lit(int_t->size()))) return std::bit_ceil(*width);
                 return 64_u64;
             }
             return 0_u64;
@@ -853,8 +853,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto ll_idx = emit(idx);
         auto idx_t  = convert(idx->type());
 
-        if (auto int_t = as<Tag::Int>(idx->type())) {
-            auto size = isa_sized_type(int_t);
+        if (auto int_t = idx->type()->isa<Int>()) {
+            auto size = int_t->size();
             if (auto s = isa_lit(size); s && *s == 2) { // mod(2) = width(1)
                 ll_idx = bb.assign(name + ".8", "zext i1 {} to i8", ll_idx);
                 idx_t  = "i8";

@@ -255,6 +255,7 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::D_brckt_l: return parse_sigma();
         case Tok::Tag::D_paren_l: return parse_tuple();
         case Tok::Tag::K_Cn:      return parse_Cn();
+        case Tok::Tag::K_Int:     return parse_int();
         case Tok::Tag::K_Type:    return parse_type();
         case Tok::Tag::K_Univ:    lex(); return world().univ();
         case Tok::Tag::K_Bool:    lex(); return world().type_bool();
@@ -278,8 +279,6 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
             // HACK hard-coded some built-in axioms
             auto tok = lex();
             auto s = tok.sym().to_string();
-            // if (s == "%Mem")      return world().ax();
-            if (s == "%Int"     ) return world().type_int();
             if (s == "%Real"    ) return world().type_real();
             if (s == "%Wrap_add") return world().ax(Wrap::add);
             if (s == "%Wrap_sub") return world().ax(Wrap::sub);
@@ -391,6 +390,13 @@ const Def* Parser::parse_type() {
     auto [l, r] = Tok::prec(Tok::Prec::App);
     auto level  = parse_expr("type level", r);
     return world().type(level, track);
+}
+
+const Def* Parser::parse_int() {
+    eat(Tok::Tag::K_Int);
+    auto [l, r] = Tok::prec(Tok::Prec::App);
+    auto size   = parse_expr("size of .Int", r);
+    return world().type_int(size);
 }
 
 const Def* Parser::parse_pi() {

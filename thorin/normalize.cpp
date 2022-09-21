@@ -637,9 +637,9 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
         return world.lit_nat(8);
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
-    } else if (auto int_ = isa<Tag::Int>(type)) {
+    } else if (auto int_ = type->isa<Int>()) {
         if (int_->type()->isa<Top>()) return world.lit_nat(8);
-        if (auto w = isa_lit(int_->arg())) {
+        if (auto w = isa_lit(int_->size())) {
             if (*w == 0) return world.lit_nat(8);
             if (*w <= 0x0000'0000'0000'0100_u64) return world.lit_nat(1);
             if (*w <= 0x0000'0000'0001'0000_u64) return world.lit_nat(2);
@@ -713,8 +713,8 @@ static const Def* fold_Conv(const Def* dst_type, const App* callee, const Def* s
             return world.lit(dst_type, as_lit(lit_src) % *lit_dw);
         }
 
-        if (isa<Tag::Int>(src->type())) *lit_sw = *mod2width(*lit_sw);
-        if (isa<Tag::Int>(dst_type)) *lit_dw = *mod2width(*lit_dw);
+        if (src->type()->isa<Int>()) *lit_sw = *mod2width(*lit_sw);
+        if (dst_type->isa<Int>()) *lit_dw = *mod2width(*lit_dw);
 
         Res res;
 #define CODE(sw, dw)                                                                                 \
@@ -778,7 +778,8 @@ const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* 
 
     if (auto lit = src->isa<Lit>()) {
         if (dst_type->isa<Nat>()) return world.lit(dst_type, lit->get(), dbg);
-        if (isa_sized_type(dst_type)) return world.lit(dst_type, lit->get(), dbg);
+        if (dst_type->isa<Int>()) return world.lit(dst_type, lit->get(), dbg);
+        if (isa<Tag::Real>(dst_type)) return world.lit(dst_type, lit->get(), dbg);
     }
 
     return world.raw_app(callee, src, dbg);

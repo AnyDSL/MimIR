@@ -156,13 +156,6 @@ Match<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
 
-/// Checks whether @p type is an Tag::Int or a Tag::Real and returns its mod or width, respectively.
-inline const Def* isa_sized_type(const Def* type) {
-    if (auto int_ = isa<Tag::Int>(type)) return int_->arg();
-    if (auto real = isa<Tag::Real>(type)) return real->arg();
-    return nullptr;
-}
-
 constexpr uint64_t width2mod(uint64_t n) {
     assert(n != 0);
     return n == 64 ? 0 : (1_u64 << n);
