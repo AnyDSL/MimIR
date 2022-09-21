@@ -23,7 +23,7 @@
 ///
 /// After termination of the loop `exit` is invoked.
 .ax %affine.For: Π [m: .Nat , n: .Nat , Ts: «n; *»] ->
-    .Cn [start: .Int m, stop: .Int m, step: .Int m, init: «i: n; Ts#i»,
-        body: .Cn [iter: .Int m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]], 
+    .Cn [start: .Idx m, stop: .Idx m, step: .Idx m, init: «i: n; Ts#i»,
+        body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]], 
         exit: .Cn [«i: n; Ts#i»]];
 

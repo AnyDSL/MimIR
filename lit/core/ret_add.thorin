@@ -7,27 +7,27 @@
 .import core;
 .import mem;
 
-.cn atoi [%mem.M, %mem.Ptr («⊤:.Nat; .Int 256», 0), .Cn [%mem.M, .Int 4294967296]];
+.cn atoi [%mem.M, %mem.Ptr («⊤:.Nat; .Idx 256», 0), .Cn [%mem.M, .Idx 4294967296]];
 
-.cn .extern main [mem : %mem.M, argc : .Int 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Int 256», 0)», 0:.Nat), return : .Cn [%mem.M, .Int 4294967296]] = {
-    .cn atoi_cont_a [mem : %mem.M, a : .Int 4294967296] = {
-        .cn atoi_cont_b [mem : %mem.M, b : .Int 4294967296] = {
+.cn .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
+    .cn atoi_cont_a [mem : %mem.M, a : .Idx 4294967296] = {
+        .cn atoi_cont_b [mem : %mem.M, b : .Idx 4294967296] = {
                 return (mem, %core.wrap.add (0, 4294967296) (a, b))
         };
 
-        .let argv_ptr_b = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .Int 256», 0)›, 0) (argv, 2:(.Int 4294967296));
-        .let argv_load_b = %mem.load (%mem.Ptr («⊤:.Nat; .Int 256», 0), 0) (mem, argv_ptr_b);
+        .let argv_ptr_b = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 2:(.Idx 4294967296));
+        .let argv_load_b = %mem.load (%mem.Ptr («⊤:.Nat; .Idx 256», 0), 0) (mem, argv_ptr_b);
         atoi (argv_load_b#.ff, argv_load_b#.tt, atoi_cont_b)
     };
 
-    .let argv_ptr_a = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .Int 256», 0)›, 0) (argv, 1:(.Int 4294967296));
-    .let argv_load_a = %mem.load (%mem.Ptr («⊤:.Nat; .Int 256», 0), 0) (mem, argv_ptr_a);
+    .let argv_ptr_a = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)›, 0) (argv, 1:(.Idx 4294967296));
+    .let argv_load_a = %mem.load (%mem.Ptr («⊤:.Nat; .Idx 256», 0), 0) (mem, argv_ptr_a);
     atoi (argv_load_a#.ff, argv_load_a#.tt, atoi_cont_a)
 };
 
-// CHECK-DAG: main _{{[0-9_]+}}::[mem_[[memId:[0-9_]+]]: %mem.M, (.Int 4294967296), argv_{{[0-9]+}}: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; (.Int 256)», 0)», 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, (.Int 4294967296)]] = {
+// CHECK-DAG: main _{{[0-9_]+}}::[mem_[[memId:[0-9_]+]]: %mem.M, (.Idx 4294967296), argv_{{[0-9]+}}: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; (.Idx 256)», 0)», 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, (.Idx 4294967296)]] = {
 
-// CHECK-DAG: atoi_cont_a_[[aContId:[0-9_]+]] _{{[0-9_]+}}::[mem_{{[0-9]+}}: %mem.M, a_[[aId:[0-9_]+]]: (.Int 4294967296)]
+// CHECK-DAG: atoi_cont_a_[[aContId:[0-9_]+]] _{{[0-9_]+}}::[mem_{{[0-9]+}}: %mem.M, a_[[aId:[0-9_]+]]: (.Idx 4294967296)]
 
-// CHECK-DAG: atoi_cont_b_[[bContId:[0-9_]+]] _{{[0-9_]+}}::[mem_{{[0-9]+}}: %mem.M, b_[[bId:[0-9_]+]]: (.Int 4294967296)]
+// CHECK-DAG: atoi_cont_b_[[bContId:[0-9_]+]] _{{[0-9_]+}}::[mem_{{[0-9]+}}: %mem.M, b_[[bId:[0-9_]+]]: (.Idx 4294967296)]
 // CHECK-DAG: %core.wrap.add (0, 4294967296) (a_[[aId]], b_[[bId]])

@@ -8,17 +8,17 @@
 .import mem;
 .import affine;
 
-.cn .extern main [mem : %mem.M, argc : .Int 4294967296, argv : %mem.Ptr (%mem.Ptr (.Int 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Int 0]] = {
-    .cn for_exit [acc : [.Int 4294967296, %Real 64]] = {
+.cn .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 0]] = {
+    .cn for_exit [acc : [.Idx 4294967296, %Real 64]] = {
         return (mem, %core.conv.r2u (0, 64) acc#.tt)
     };
 
-    .cn for_body [i : .Int 4294967296, [acc_a : .Int 4294967296, acc_b : %Real 64], continue : .Cn [[.Int 4294967296, %Real 64]]] = {
-        .let a : .Int 4294967296 = %core.wrap.add (0:.Nat, 4294967296:.Nat) (i, acc_a);
+    .cn for_body [i : .Idx 4294967296, [acc_a : .Idx 4294967296, acc_b : %Real 64], continue : .Cn [[.Idx 4294967296, %Real 64]]] = {
+        .let a : .Idx 4294967296 = %core.wrap.add (0:.Nat, 4294967296:.Nat) (i, acc_a);
         .let b : %Real 64 = %core.conv.u2r (64, 0) (%core.wrap.add (0:.Nat, 0:.Nat) (%core.conv.u2u (0, 4294967296) i, %core.conv.r2u (0, 64) acc_b));
         continue (a, b)
     };
-    %affine.For (4294967296, 2, (.Int 4294967296, %Real 64)) (0:(.Int 4294967296), argc, 1:(.Int 4294967296), (0:(.Int 4294967296), 0:(%Real 64)), for_body, for_exit)
+    %affine.For (4294967296, 2, (.Idx 4294967296, %Real 64)) (0:(.Idx 4294967296), argc, 1:(.Idx 4294967296), (0:(.Idx 4294967296), 0:(%Real 64)), for_body, for_exit)
 };
 
 // CHECK-NOT: affine.for

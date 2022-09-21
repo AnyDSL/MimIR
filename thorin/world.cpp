@@ -51,9 +51,9 @@ World::World(const State& state)
     data_.top_nat_     = insert<Top>(0, type_nat(), nullptr);
     data_.lit_nat_0_   = lit_nat(0);
     data_.lit_nat_1_   = lit_nat(1);
-    data_.type_bool_   = type_int(2);
-    data_.lit_bool_[0] = lit_int(2, 0_u64);
-    data_.lit_bool_[1] = lit_int(2, 1_u64);
+    data_.type_bool_   = type_idx(2);
+    data_.lit_bool_[0] = lit_idx(2, 0_u64);
+    data_.lit_bool_[1] = lit_idx(2, 1_u64);
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
     data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
 
@@ -67,21 +67,21 @@ World::World(const State& state)
     }
     { // bit: w: nat -> [int w, int w] -> int w
         auto ty    = nom_pi(type())->set_dom(nat);
-        auto int_w = type_int(ty->var(dbg("w")));
-        ty->set_codom(pi({int_w, int_w}, int_w));
+        auto idx_w = type_idx(ty->var(dbg("w")));
+        ty->set_codom(pi({idx_w, idx_w}, idx_w));
         THORIN_BIT(CODE)
     }
     { // Shr: w: nat -> [int w, int w] -> int w
         auto ty    = nom_pi(type())->set_dom(nat);
-        auto int_w = type_int(ty->var(dbg("w")));
-        ty->set_codom(pi({int_w, int_w}, int_w));
+        auto idx_w = type_idx(ty->var(dbg("w")));
+        ty->set_codom(pi({idx_w, idx_w}, idx_w));
         THORIN_SHR(CODE)
     }
     { // Wrap: [m: nat, w: nat] -> [int w, int w] -> int w
         auto ty     = nom_pi(type())->set_dom({nat, nat});
         auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
-        auto int_w  = type_int(w);
-        ty->set_codom(pi({int_w, int_w}, int_w));
+        auto idx_w  = type_idx(w);
+        ty->set_codom(pi({idx_w, idx_w}, idx_w));
         THORIN_WRAP(CODE)
     }
     { // ROp: [m: nat, w: nat] -> [real w, real w] -> real w
@@ -93,8 +93,8 @@ World::World(const State& state)
     }
     { // ICmp: w: nat -> [int w, int w] -> bool
         auto ty    = nom_pi(type())->set_dom(nat);
-        auto int_w = type_int(ty->var(dbg("w")));
-        ty->set_codom(pi({int_w, int_w}, type_bool()));
+        auto idx_w = type_idx(ty->var(dbg("w")));
+        ty->set_codom(pi({idx_w, idx_w}, type_bool()));
         THORIN_I_CMP(CODE)
     }
     { // RCmp: [m: nat, w: nat] -> [real w, real w] -> bool
@@ -113,7 +113,7 @@ World::World(const State& state)
     //     // TODO this is more a proof of concept
     //     auto ty = nom_pi(type())->set_dom(nat);
     //     auto n  = ty->var(0, dbg("n"));
-    //     ty->set_codom(cn_mem_ret(type_int(n), sigma()));
+    //     ty->set_codom(cn_mem_ret(type_idx(n), sigma()));
     //     THORIN_ACC(CODE)
     // }
 #undef CODE
@@ -121,8 +121,8 @@ World::World(const State& state)
         auto make_type = [&](Conv o) {
             auto ty       = nom_pi(type())->set_dom({nat, nat});
             auto [dw, sw] = ty->vars<2>({dbg("dw"), dbg("sw")});
-            auto type_dw  = o == Conv::s2r || o == Conv::u2r || o == Conv::r2r ? type_real(dw) : type_int(dw);
-            auto type_sw  = o == Conv::r2s || o == Conv::r2u || o == Conv::r2r ? type_real(sw) : type_int(sw);
+            auto type_dw  = o == Conv::s2r || o == Conv::u2r || o == Conv::r2r ? type_real(dw) : type_idx(dw);
+            auto type_sw  = o == Conv::r2s || o == Conv::r2u || o == Conv::r2r ? type_real(sw) : type_idx(sw);
             return ty->set_codom(pi(type_sw, type_dw));
         };
 #define CODE(T, o)                                                                                             \
@@ -215,14 +215,14 @@ const Type* World::type(const Def* level, const Def* dbg) {
     return unify<Type>(1, level, dbg)->as<Type>();
 }
 
-const Int* World::type_int(const Def* size) {
+const Idx* World::type_idx(const Def* size) {
     if (err()) {
         if (!size->type()->isa<Nat>()) {
-            err()->err(size->loc(), "argument `{}` to `.Int` must be of type `.Nat` but is of type `{}`", size,
+            err()->err(size->loc(), "argument `{}` to `.Idx` must be of type `.Nat` but is of type `{}`", size,
                        size->type());
         }
     }
-    return unify<Int>(1, *this, size);
+    return unify<Idx>(1, *this, size);
 }
 
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
@@ -328,7 +328,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
         return tuple(ops, dbg);
     }
 
-    auto index_t = index->type()->as<Int>();
+    auto index_t = index->type()->as<Idx>();
     auto type    = d->unfold_type();
     if (err()) {
         if (!checker().equiv(type->arity(), index_t->size(), dbg)) err()->index_out_of_range(type->arity(), index, dbg);
@@ -373,7 +373,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
 
 const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {
     auto type    = d->unfold_type();
-    auto index_t = index->type()->as<Int>();
+    auto index_t = index->type()->as<Idx>();
 
     if (err() && !checker().equiv(type->arity(), index_t->size(), dbg))
         err()->index_out_of_range(type->arity(), index, dbg);
@@ -471,8 +471,8 @@ const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
     return pack(shape.skip_back(), pack(shape.back(), body, dbg), dbg);
 }
 
-const Lit* World::lit_int(const Def* type, u64 i, const Def* dbg) {
-    auto size = type->as<Int>()->size();
+const Lit* World::lit_idx(const Def* type, u64 i, const Def* dbg) {
+    auto size = type->as<Idx>()->size();
     if (size->isa<Top>()) return lit(size, i, dbg);
 
     auto l = lit(type, i, dbg);

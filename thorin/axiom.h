@@ -156,12 +156,12 @@ Match<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
     return {std::get<0>(Axiom::get(d)), d->as<App>()};
 }
 
-constexpr uint64_t width2mod(uint64_t n) {
+constexpr uint64_t bitwidth2size(uint64_t n) {
     assert(n != 0);
     return n == 64 ? 0 : (1_u64 << n);
 }
 
-constexpr std::optional<uint64_t> mod2width(uint64_t n) {
+constexpr std::optional<uint64_t> size2bitwidth(uint64_t n) {
     if (n == 0) return 64;
     if (std::has_single_bit(n)) return std::bit_width(n - 1_u64);
     return {};

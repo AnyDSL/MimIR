@@ -1,4 +1,4 @@
-find_package(Python3 COMPONENTS Interpreter)
+find_package(Python3 COMPONENTS Idxerpreter)
 set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
 
 configure_file(lit.site.cfg.py.in lit.site.cfg.py @ONLY)

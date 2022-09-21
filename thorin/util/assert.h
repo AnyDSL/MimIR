@@ -5,7 +5,7 @@
 namespace thorin {
 
 // see https://stackoverflow.com/a/65258501
-#ifdef __GNUC__ // GCC 4.8+, Clang, Intel and other compilers compatible with GCC (-std=c++0x or above)
+#ifdef __GNUC__ // GCC 4.8+, Clang, Idxel and other compilers compatible with GCC (-std=c++0x or above)
 [[noreturn]] inline __attribute__((always_inline)) void unreachable() {
     assert(false);
     __builtin_unreachable();

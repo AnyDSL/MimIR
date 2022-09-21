@@ -40,8 +40,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
         core_d.register_normalizers(normalizers);
         fe::Parser::import_module(w, "core", {}, &normalizers);
 
-        auto i32_t = w.type_int_width(32);
-        auto i64_t = w.type_int_width(64);
+        auto i32_t = w.type_int_(32);
+        auto i64_t = w.type_int_(64);
 
         auto R = w.axiom(w.type(), w.dbg("R"));
         auto W = w.axiom(w.type(), w.dbg("W"));
@@ -136,8 +136,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
         for (auto&& test : cases) {
             test_on_world([&test](World& w, auto R, auto W, auto Exp) {
-                auto i32_t = w.type_int_width(32);
-                auto i64_t = w.type_int_width(64);
+                auto i32_t = w.type_int_(32);
+                auto i64_t = w.type_int_(64);
                 auto RW    = w.join({w.singleton(R), w.singleton(W)}, w.dbg("RW"));
                 auto DT    = w.join({w.singleton(i32_t), w.singleton(i64_t)}, w.dbg("DT"));
 
@@ -205,8 +205,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
         for (auto&& test : cases) {
             test_on_world([&test](World& w, auto R, auto W, auto Exp) {
-                auto i32_t = w.type_int_width(32);
-                auto i64_t = w.type_int_width(64);
+                auto i32_t = w.type_int_(32);
+                auto i64_t = w.type_int_(64);
                 auto RW    = w.join({w.singleton(R), w.singleton(W)}, w.dbg("RW"));
                 auto DT    = w.join({w.singleton(i32_t), w.singleton(i64_t)}, w.dbg("DT"));
 
@@ -237,7 +237,7 @@ TEST(RestrictedDependentTypes, ll) {
     fe::Parser::import_module(w, "core", {}, &normalizers);
 
     auto mem_t  = mem::type_mem(w);
-    auto i32_t  = w.type_int_width(32);
+    auto i32_t  = w.type_int_(32);
     auto argv_t = mem::type_ptr(mem::type_ptr(i32_t));
 
     // Cn [mem, i32, ptr(ptr(i32, 0), 0) Cn [mem, i32]]

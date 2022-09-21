@@ -19,7 +19,7 @@ protected:
 
 public:
     size_t find(const Def* type) const;
-    const Lit* index(const Def* type) const;
+    //const Lit* index(const Def* type) const;
     const Def* get(const Def* type) const { return op(find(type)); }
     const Sigma* convert() const;
 };
