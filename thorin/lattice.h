@@ -19,7 +19,6 @@ protected:
 
 public:
     size_t find(const Def* type) const;
-    const Lit* index(const Def* type) const;
     const Def* get(const Def* type) const { return op(find(type)); }
     const Sigma* convert() const;
 };
@@ -111,7 +110,8 @@ public:
     friend class World;
 };
 
-/// `test value, probe, match, clash` tests whether [value](@ref Test::value) currently holds **type** [probe](@ref Test::probe).
+/// `test value, probe, match, clash` tests whether [value](@ref Test::value) currently holds **type** [probe](@ref
+/// Test::probe).
 /// @note
 /// * [probe](@ref Test::probe) is a **type**!
 /// * This operation yields [match](@ref Test::match), if `true`, and [clash](@ref Test::clash) otherwise.

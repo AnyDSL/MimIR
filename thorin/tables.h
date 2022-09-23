@@ -25,14 +25,14 @@ using sub_t     = u8;
     m(Proxy, proxy)                                                           \
     m(Axiom, axiom)                                                           \
     m(Lit, lit)                                                               \
-    m(Nat, nat)                                                               \
+    m(Nat, nat)         m(Idx, int)                                           \
     m(Var, var)                                                               \
     m(Infer, infer)                                                           \
     m(Global, global)                                                         \
     m(Singleton, singleton)
 
 #define THORIN_TAG(m)                                                      \
-    m(Mem, mem) m(Int, int) m(Real, real) m(Ptr, ptr)                      \
+    m(Mem, mem) m(Real, real) m(Ptr, ptr)                                  \
     m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(ROp, rop)                      \
     m(ICmp, icmp) m(RCmp, rcmp)                                            \
     m(Trait, trait) m(Conv, conv) m(PE, pe) m(Acc, acc)                    \

@@ -172,12 +172,14 @@ public:
     Def* set_type(const Def*);
     void unset_type();
 
-    /// Are all Def::ops set?
-    /// * `true` if all operands are set or Def::num_ops ` == 0`.
-    /// * `false` if all operands are `nullptr`.
+    /// Are all Def::ops of this nominal set?
+    /// @returns
+    /// * `true`, if all operands are set or Def::num_ops` == 0`.
+    /// * `false`, if all operands are `nullptr`.
     /// * `assert`s otherwise.
     bool is_set() const;
-    bool is_unset() const { return !is_set(); } ///< *Not* Def::is_set.
+    bool is_unset() const { return !is_set(); } ///< **Not** Def::is_set.
+    bool is_unfinished() const;                 ///< Are there still some Def::ops **not** set?
     ///@}
 
     /// @name extended_ops
@@ -545,6 +547,25 @@ public:
     ///@}
 
     static constexpr auto Node = Node::Nat;
+    friend class World;
+};
+
+/// A type whose inhabitants range from `0`, ..., Idx::size() - 1.
+/// @note `size = 0` is special and actually encodes size $2^64$.
+/// An .Idx `0` (literally) wouldn't have any inhabitants anyway.
+class Idx : public Def {
+private:
+    Idx(World&, const Def* size);
+
+public:
+    const Def* size() const { return op(0); }
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Idx;
     friend class World;
 };
 

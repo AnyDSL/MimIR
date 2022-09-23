@@ -1,8 +1,8 @@
-/// # The debugging dialect {#debug}
+/// # The debug dialect {#debug}
 ///
 /// [TOC]
 ///
-/// debugs a given expression
+/// Debugs a given expression.
 ///
 /// ## Dependencies
 ///
@@ -16,13 +16,11 @@
 ///
 /// ### %debug.dbg
 /// 
-/// prints debug information of a given expression at construction time
-///
+/// Prints debug information of a given expression at construction time.
 .ax %debug.dbg: Π [T:*] -> T -> T, normalize_dbg;
 ///
 /// ### %debug.dbg_perm
 /// 
-/// permanently debugs at every construction
-/// gets removed at codegen preparation
-///
+/// Permanently debugs at every construction.
+/// Gets removed at codegen preparation.
 .ax %debug.dbg_perm: Π [T:*] -> T -> T, normalize_dbg_perm;

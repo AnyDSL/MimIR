@@ -35,20 +35,24 @@ In addition the following keywords are *terminals*:
 |-------------|---------------------------|
 | `.ax`       | axiom                     |
 | `.let`      | let expression            |
-| `.Pi`       | nominal Pi                |
-| `.lam`      | nominal lam               |
-| `.Arr`      | nominal Arr               |
-| `.pack`     | nominal pack              |
-| `.Sigma`    | nominal Sigma             |
+| `.Pi`       | nominal thorin::Pi        |
+| `.lam`      | nominal thorin::Lam       |
+| `.Arr`      | nominal thorin::Arr       |
+| `.pack`     | nominal thorin::Pack      |
+| `.Sigma`    | nominal thorin::Sigma     |
 | `.def`      | nominal definition        |
 | `.extern`   | marks nominal as external |
-| `.ins`      | insert expression         |
+| `.ins`      | thorin::Insert expression |
 | `.insert`   | alias for `.ins`          |
 | `.module`   | starts a module           |
 | `.import`   | imports a dialect         |
 | `.Nat`      | thorin::Nat               |
+| `.Idx`      | thorin::Idx               |
+| `.Bool`     | alias for `.Idx 2`        |
 | `.ff`       | alias for `0₂`            |
 | `.tt`       | alias for `1₂`            |
+| `.Type`     | thorin::Type              |
+| `.Univ`     | thorin::Univ              |
 
 All keywords start with a `.` to prevent name clashes with identifiers.
 
@@ -74,8 +78,8 @@ The following *terminals* comprise more complicated patterns that are specified 
 | L        | sign? 0x hex+ pP sign dec+           | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | L        | sign? 0x hex+ `.` hex\* pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | L        | sign? 0x hex\* `.` hex+ pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
-| I        | dec+ sub+                            | integer literal of type `:Int mod`                                                                |
-| I        | dec+ `_` dec+                        | integer literal of type `:Int mod`                                                                |
+| I        | dec+ sub+                            | index literal of type `.Idx sub`                                                                  |
+| I        | dec+ `_` dec+                        | index literal of type `.Idx sub`                                                                  |
 
 The previous table resorts to the following definitions as shorthand:
 
@@ -158,9 +162,17 @@ For this reason there is no rule `b -> s (p, ..., p)`.
 
 | Nonterminal | Right-Hand Side                                                               | New Scope? | Comment                             | Thorin Class    |
 |-------------|-------------------------------------------------------------------------------|------------|-------------------------------------|-----------------|
+| e           | `.Univ`                                                                       |            | universise: type of a type level    | thorin::Univ    |
+| e           | `.Type` e                                                                     |            | type of level e                     | thorin::Type    |
+| e           | `*`                                                                           |            | alias for `.Type (0:.Univ)`         | thorin::Type    |
+| e           | `□`                                                                           |            | alias for `.Type (1:.Univ)`         | thorin::Type    |
+| e           | `.Nat`                                                                        |            | natural number                      | thorin::Nat     |
+| e           | `.Idx` e                                                                      |            | index of size e                     | thorin::Idx     |
+| e           | `.Bool`                                                                       |            | alias for `.Idx 2`                  | thorin::Idx     |
 | e           | `{` e `}`                                                                     | ✓          | block                               | -               |
-| e           | `*`                                                                           |            | type                                | thorin::Type    |
 | e           | L `:` e<sub>type</sub>                                                        |            | literal                             | thorin::Lit     |
+| e           | `.ff`                                                                         |            | alias for `0:(.Idx 2)`              | thorin::Lit     |
+| e           | `.tt`                                                                         |            | alias for `1:(.Idx 2)`              | thorin::Lit     |
 | e           | ( `.bot` or `.top` ) ( `:` e<sub>type</sub> )?                                |            | bottom/top                          | thorin::TExt    |
 | e           | Sym                                                                           |            | identifier                          | -               |
 | e           | Ax                                                                            |            | use of an axiom                     | -               |

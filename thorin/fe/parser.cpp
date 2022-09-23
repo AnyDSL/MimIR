@@ -255,7 +255,9 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::D_brckt_l: return parse_sigma();
         case Tok::Tag::D_paren_l: return parse_tuple();
         case Tok::Tag::K_Cn:      return parse_Cn();
+        case Tok::Tag::K_Idx:     return parse_idx();
         case Tok::Tag::K_Type:    return parse_type();
+        case Tok::Tag::K_Univ:    lex(); return world().univ();
         case Tok::Tag::K_Bool:    lex(); return world().type_bool();
         case Tok::Tag::K_Nat:     lex(); return world().type_nat();
         case Tok::Tag::K_ff:      lex(); return world().lit_ff();
@@ -277,8 +279,6 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
             // HACK hard-coded some built-in axioms
             auto tok = lex();
             auto s = tok.sym().to_string();
-            // if (s == "%Mem")      return world().ax();
-            if (s == "%Int"     ) return world().type_int();
             if (s == "%Real"    ) return world().type_real();
             if (s == "%Wrap_add") return world().ax(Wrap::add);
             if (s == "%Wrap_sub") return world().ax(Wrap::sub);
@@ -349,7 +349,7 @@ const Def* Parser::parse_pack() {
         eat(Tok::Tag::T_colon);
 
         shape      = parse_expr("shape of a pack");
-        auto infer = world().nom_infer(world().type_int(shape), sym);
+        auto infer = world().nom_infer(world().type_idx(shape), sym);
         scopes_.bind(sym, infer);
     } else {
         shape = parse_expr("shape of a pack");
@@ -390,6 +390,13 @@ const Def* Parser::parse_type() {
     auto [l, r] = Tok::prec(Tok::Prec::App);
     auto level  = parse_expr("type level", r);
     return world().type(level, track);
+}
+
+const Def* Parser::parse_idx() {
+    eat(Tok::Tag::K_Idx);
+    auto [l, r] = Tok::prec(Tok::Prec::App);
+    auto size   = parse_expr("size of .Idx", r);
+    return world().type_idx(size);
 }
 
 const Def* Parser::parse_pi() {

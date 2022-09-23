@@ -109,11 +109,13 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
             nsw            = mode & WMode::nsw;
             nuw            = mode & WMode::nuw;
             width          = w;
+        } else if (auto idx = a->type()->isa<Idx>()) {
+            width = as_lit(idx->size());
         } else {
-            width = as_lit(a->type()->as<App>()->arg());
+            width = as_lit(as<Tag::Real>(a->type())->arg());
         }
 
-        if (is_int<Op>()) width = *mod2width(width);
+        if (is_int<Op>()) width = *size2bitwidth(width);
 
         Res res;
         switch (width) {
