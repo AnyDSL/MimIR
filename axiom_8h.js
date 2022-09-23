@@ -20,10 +20,10 @@ var axiom_8h =
     [ "as", "axiom_8h.html#aebc69de3550b550ff1283c2ad8527ac1", null ],
     [ "as", "axiom_8h.html#a492304706f15fd7209393ad3241045c0", null ],
     [ "base_value", "axiom_8h.html#a50ca9a05f008fef5575476e2a801ebde", null ],
+    [ "bitwidth2size", "axiom_8h.html#ab061c9551c28a8be9a8b97444b38ab9b", null ],
     [ "isa", "axiom_8h.html#a57dfb1cbd8e3aced975ba276020a4c61", null ],
     [ "isa", "axiom_8h.html#a140dce6ed0b95d67cb652c739c6be1ec", null ],
     [ "match", "axiom_8h.html#ad936a3edca20ab0e00d98690a7978910", null ],
     [ "match", "axiom_8h.html#a3b535c1405909d0a73b62794748bbf40", null ],
-    [ "mod2width", "axiom_8h.html#a9b06ff5c2fceb4208a93b550fbc4ffd5", null ],
-    [ "width2mod", "axiom_8h.html#a8e98aa9b8a5cb1f54a30eb334422b7a6", null ]
+    [ "size2bitwidth", "axiom_8h.html#a14599efad3033b587d9a191228d4fe1e", null ]
 ];

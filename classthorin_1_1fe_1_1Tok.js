@@ -12,7 +12,7 @@ var classthorin_1_1fe_1_1Tok =
       [ "K_let", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79abc3b81567a2120d32858af82e3a5fcea", null ],
       [ "K_Bool", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aa2228465e8e618283c7c6beca8b3a4e6", null ],
       [ "K_Nat", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aefffde19d56073e2539eb8c5b2d51296", null ],
-      [ "K_Int", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a54aeee908cd80f60874e64852baaacdd", null ],
+      [ "K_Idx", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aab54c87aafa7bce8586a296d8646b262", null ],
       [ "K_extern", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a8a60817c7b13b75f078509e5e3a32aac", null ],
       [ "K_Arr", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a792695ff85171415dd8308db378afdaf", null ],
       [ "K_Sigma", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79ae3df2a467ffbdf1e8c8629d62b09efbf", null ],

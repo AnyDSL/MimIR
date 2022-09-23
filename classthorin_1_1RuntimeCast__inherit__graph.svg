@@ -221,24 +221,24 @@
 <!-- Node17 -->
 <g id="node17" class="node">
 <title>Node17</title>
-<g id="a_node17"><a xlink:href="classthorin_1_1Infer.html" target="_top" xlink:title="This node is a hole in the IR that is inferred by its context later on.">
-<polygon fill="none" stroke="black" points="564.5,-646.5 564.5,-665.5 638.5,-665.5 638.5,-646.5 564.5,-646.5"/>
-<text text-anchor="middle" x="601.5" y="-653.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Infer</text>
+<g id="a_node17"><a xlink:href="classthorin_1_1Idx.html" target="_top" xlink:title="A type whose inhabitants range from 0, ..., Idx::size() &#45; 1.">
+<polygon fill="none" stroke="black" points="568.5,-646.5 568.5,-665.5 634.5,-665.5 634.5,-646.5 568.5,-646.5"/>
+<text text-anchor="middle" x="601.5" y="-653.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Idx</text>
 </a>
 </g>
 </g>
 <!-- Node6&#45;&gt;Node17 -->
 <g id="edge16" class="edge">
 <title>Node6&#45;&gt;Node17</title>
-<path fill="none" stroke="midnightblue" d="M488.26,-491.08C498.46,-494.35 508.54,-499.35 516,-507 536.97,-528.5 532.89,-614.69 553,-637 556.45,-640.83 560.77,-643.89 565.4,-646.35"/>
+<path fill="none" stroke="midnightblue" d="M488.26,-491.08C498.46,-494.35 508.54,-499.35 516,-507 536.97,-528.5 532.89,-614.69 553,-637 557.16,-641.62 562.6,-645.13 568.31,-647.8"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="489.1,-487.68 478.53,-488.45 487.27,-494.44 489.1,-487.68"/>
 </g>
 <!-- Node18 -->
 <g id="node18" class="node">
 <title>Node18</title>
-<g id="a_node18"><a xlink:href="classthorin_1_1Insert.html" target="_top" xlink:title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">
-<polygon fill="none" stroke="black" points="562,-608.5 562,-627.5 641,-627.5 641,-608.5 562,-608.5"/>
-<text text-anchor="middle" x="601.5" y="-615.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Insert</text>
+<g id="a_node18"><a xlink:href="classthorin_1_1Infer.html" target="_top" xlink:title="This node is a hole in the IR that is inferred by its context later on.">
+<polygon fill="none" stroke="black" points="564.5,-608.5 564.5,-627.5 638.5,-627.5 638.5,-608.5 564.5,-608.5"/>
+<text text-anchor="middle" x="601.5" y="-615.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Infer</text>
 </a>
 </g>
 </g>
@@ -251,16 +251,16 @@
 <!-- Node19 -->
 <g id="node19" class="node">
 <title>Node19</title>
-<g id="a_node19"><a xlink:href="classthorin_1_1Int.html" target="_top" xlink:title=" ">
-<polygon fill="none" stroke="black" points="569.5,-570.5 569.5,-589.5 633.5,-589.5 633.5,-570.5 569.5,-570.5"/>
-<text text-anchor="middle" x="601.5" y="-577.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Int</text>
+<g id="a_node19"><a xlink:href="classthorin_1_1Insert.html" target="_top" xlink:title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">
+<polygon fill="none" stroke="black" points="562,-570.5 562,-589.5 641,-589.5 641,-570.5 562,-570.5"/>
+<text text-anchor="middle" x="601.5" y="-577.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Insert</text>
 </a>
 </g>
 </g>
 <!-- Node6&#45;&gt;Node19 -->
 <g id="edge18" class="edge">
 <title>Node6&#45;&gt;Node19</title>
-<path fill="none" stroke="midnightblue" d="M488.71,-493.51C498.29,-496.7 507.96,-501.06 516,-507 539.4,-524.29 530.29,-542.81 553,-561 557.85,-564.89 563.6,-568.07 569.4,-570.64"/>
+<path fill="none" stroke="midnightblue" d="M488.71,-493.51C498.29,-496.7 507.96,-501.06 516,-507 539.4,-524.29 530.29,-542.81 553,-561 557.71,-564.78 563.28,-567.89 568.9,-570.42"/>
 <polygon fill="midnightblue" stroke="midnightblue" points="489.43,-490.07 478.85,-490.58 487.44,-496.78 489.43,-490.07"/>
 </g>
 <!-- Node20 -->
@@ -401,7 +401,7 @@
 <!-- Node29 -->
 <g id="node29" class="node">
 <title>Node29</title>
-<g id="a_node29"><a xlink:href="classthorin_1_1Test.html" target="_top" xlink:title="test value, probe, match, clash tests whether value currently holds type probe.">
+<g id="a_node29"><a xlink:href="classthorin_1_1Test.html" target="_top" xlink:title="test value, probe, match, clash tests whether value currently holds type [probe](Test::probe).">
 <polygon fill="none" stroke="black" points="566,-190.5 566,-209.5 637,-209.5 637,-190.5 566,-190.5"/>
 <text text-anchor="middle" x="601.5" y="-197.5" font-family="Helvetica,sans-Serif" font-size="10.00">thorin::Test</text>
 </a>

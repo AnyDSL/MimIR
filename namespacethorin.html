@@ -270,6 +270,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Global.html">Global</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Idx.html">Idx</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A type whose inhabitants range from <code>0</code>, ..., <a class="el" href="classthorin_1_1Idx.html#a87b6c519e112273f871ff692a4ed588e">Idx::size()</a> - 1.  <a href="classthorin_1_1Idx.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IndexMap.html">IndexMap</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1IndexSet.html">IndexSet</a></td></tr>
@@ -282,8 +285,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Insert.html">Insert</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new <a class="el" href="classthorin_1_1Tuple.html" title="Data constructor for a Sigma.">Tuple</a> / <a class="el" href="classthorin_1_1Pack.html">Pack</a> by inserting <a class="el" href="classthorin_1_1Insert.html#a665da72feeff8ecdc0d56e2d0b330ba9">Insert::value</a> at position <a class="el" href="classthorin_1_1Insert.html#af9695a6ae210f32f881025fe01a1e74e">Insert::index</a> into <a class="el" href="classthorin_1_1Insert.html#a4af05722ad5b8700d3d501af6dfac907">Insert::tuple</a>.  <a href="classthorin_1_1Insert.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Int.html">Int</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Lam.html">Lam</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -415,7 +416,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specific <a href="https://en.wikipedia.org/wiki/Join_and_meet">Bound</a> depending on <code>up</code>.  <a href="classthorin_1_1TBound.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Test.html">Test</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>test value, probe, match, clash</code> tests whether <a class="el" href="classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312">value</a> currently holds <b>type</b> <a class="el" href="classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d">probe</a>.  <a href="classthorin_1_1Test.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><code>test value, probe, match, clash</code> tests whether <a class="el" href="classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312">value</a> currently holds <b>type</b> [probe](<a class="el" href="classthorin_1_1Test.html#a3a7d472a4b86bd8c041575c4a56c801d">Test::probe</a>).  <a href="classthorin_1_1Test.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1TExt.html">TExt</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Ext.html" title="Common base for TExtremum.">Ext</a>remum. Either Top (<code>up</code>) or Bottom.  <a href="classthorin_1_1TExt.html#details">More...</a><br /></td></tr>
@@ -831,10 +832,10 @@ Functions</h2></td></tr>
 <tr class="memitem:a492304706f15fd7209393ad3241045c0"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">tag_t</a> t&gt; </td></tr>
 <tr class="memitem:a492304706f15fd7209393ad3241045c0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; <a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt;, <a class="el" href="namespacethorin.html#a1d07abb89c85326dcfaa5f0291a4c33c">Tag2Def</a>&lt; t &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a492304706f15fd7209393ad3241045c0">as</a> (<a class="el" href="namespacethorin.html#a629e02e5ae579987487c9e6a369cc626">Tag2Enum</a>&lt; t &gt; f, const <a class="el" href="classthorin_1_1Def.html">Def</a> *d)</td></tr>
 <tr class="separator:a492304706f15fd7209393ad3241045c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e98aa9b8a5cb1f54a30eb334422b7a6"><td class="memItemLeft" align="right" valign="top">constexpr uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a8e98aa9b8a5cb1f54a30eb334422b7a6">width2mod</a> (uint64_t n)</td></tr>
-<tr class="separator:a8e98aa9b8a5cb1f54a30eb334422b7a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b06ff5c2fceb4208a93b550fbc4ffd5"><td class="memItemLeft" align="right" valign="top">constexpr std::optional&lt; uint64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a9b06ff5c2fceb4208a93b550fbc4ffd5">mod2width</a> (uint64_t n)</td></tr>
-<tr class="separator:a9b06ff5c2fceb4208a93b550fbc4ffd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab061c9551c28a8be9a8b97444b38ab9b"><td class="memItemLeft" align="right" valign="top">constexpr uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ab061c9551c28a8be9a8b97444b38ab9b">bitwidth2size</a> (uint64_t n)</td></tr>
+<tr class="separator:ab061c9551c28a8be9a8b97444b38ab9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14599efad3033b587d9a191228d4fe1e"><td class="memItemLeft" align="right" valign="top">constexpr std::optional&lt; uint64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a14599efad3033b587d9a191228d4fe1e">size2bitwidth</a> (uint64_t n)</td></tr>
+<tr class="separator:a14599efad3033b587d9a191228d4fe1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b535c1405909d0a73b62794748bbf40"><td class="memTemplParams" colspan="2">template&lt;class AxTag , <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> Check = true&gt; </td></tr>
 <tr class="memitem:a3b535c1405909d0a73b62794748bbf40"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Match.html">Match</a>&lt; AxTag, <a class="el" href="namespacethorin_1_1detail.html#aa9db23848d73489a61ce1028e246ba84">detail::Enum2Def</a>&lt; AxTag &gt; &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a3b535c1405909d0a73b62794748bbf40">match</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="separator:a3b535c1405909d0a73b62794748bbf40"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3688,6 +3689,36 @@ template&lt;class D , class S &gt; </div>
 
 </div>
 </div>
+<a id="ab061c9551c28a8be9a8b97444b38ab9b" name="ab061c9551c28a8be9a8b97444b38ab9b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab061c9551c28a8be9a8b97444b38ab9b">&#9670;&nbsp;</a></span>bitwidth2size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr uint64_t thorin::bitwidth2size </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00159">159</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00429">thorin::World::type_int_()</a>.</p>
+
+</div>
+</div>
 <a id="a7ec2df0cc38989e607e76de0491ef48b" name="a7ec2df0cc38989e607e76de0491ef48b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7ec2df0cc38989e607e76de0491ef48b">&#9670;&nbsp;</a></span>breakpoint()</h2>
 
@@ -4295,7 +4326,7 @@ template&lt;<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4
 
 <p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00704">704</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00535">as_lit()</a>, <a class="el" href="world_8h_source.html#l00390">thorin::World::bot()</a>, <a class="el" href="normalize_8cpp_source.html#l00834">CODE</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="axiom_8h_source.html#l00164">mod2width()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="normalize_8cpp_source.html#l00696">TABLE</a>, <a class="el" href="def_8h_source.html#l00139">thorin::Def::type()</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa67a4340d7a68a1c8f6b8ccc2f4972b64">u2u</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00535">as_lit()</a>, <a class="el" href="world_8h_source.html#l00391">thorin::World::bot()</a>, <a class="el" href="normalize_8cpp_source.html#l00834">CODE</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="axiom_8h_source.html#l00164">size2bitwidth()</a>, <a class="el" href="normalize_8cpp_source.html#l00696">TABLE</a>, <a class="el" href="def_8h_source.html#l00139">thorin::Def::type()</a>, <a class="el" href="namespacethorin.html#a6216d5351f2eabcae4ab300001103a4fa67a4340d7a68a1c8f6b8ccc2f4972b64">u2u</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -4466,7 +4497,7 @@ template&lt;class T &gt; </div>
 
 <p class="reference">References <a class="el" href="hash_8h_source.html#l00081">hash_combine()</a>, and <a class="el" href="hash_8h_source.html#l00075">thorin::FNV1::offset</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00005">hash()</a>, and <a class="el" href="def_8h_source.html#l00650">thorin::UseHash::operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00005">hash()</a>, and <a class="el" href="def_8h_source.html#l00653">thorin::UseHash::operator()()</a>.</p>
 
 </div>
 </div>
@@ -4538,7 +4569,7 @@ template&lt;class T &gt; </div>
 
 <p class="reference">References <a class="el" href="hash_8h_source.html#l00076">thorin::FNV1::prime</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00005">hash()</a>, <a class="el" href="hash_8h_source.html#l00105">hash_begin()</a>, <a class="el" href="hash_8h_source.html#l00095">hash_combine()</a>, and <a class="el" href="def_8h_source.html#l00650">thorin::UseHash::operator()()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="hash_8cpp_source.html#l00005">hash()</a>, <a class="el" href="hash_8h_source.html#l00105">hash_begin()</a>, <a class="el" href="hash_8h_source.html#l00095">hash_combine()</a>, and <a class="el" href="def_8h_source.html#l00653">thorin::UseHash::operator()()</a>.</p>
 
 </div>
 </div>
@@ -4684,7 +4715,7 @@ template&lt;class T , class... Args&gt; </div>
 
 <p class="definition">Definition at line <a class="el" href="check_8cpp_source.html#l00008">8</a> of file <a class="el" href="check_8cpp_source.html">check.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00535">as_lit()</a>, <a class="el" href="error_8h_source.html#l00015">err()</a>, <a class="el" href="world_8h_source.html#l00339">thorin::World::lit_univ()</a>, and <a class="el" href="world_8cpp_source.html#l00208">thorin::World::type()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00535">as_lit()</a>, <a class="el" href="error_8h_source.html#l00015">err()</a>, <a class="el" href="world_8h_source.html#l00334">thorin::World::lit_univ()</a>, and <a class="el" href="world_8cpp_source.html#l00208">thorin::World::type()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00534">thorin::World::ac()</a>, <a class="el" href="world_8cpp_source.html#l00500">thorin::World::bound()</a>, <a class="el" href="world_8cpp_source.html#l00252">thorin::World::sigma()</a>, and <a class="el" href="ast_8cpp_source.html#l00033">thorin::fe::TuplePtrn::type()</a>.</p>
 
@@ -5222,7 +5253,7 @@ template&lt;class T  = u64&gt; </div>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00413">thorin::World::arr()</a>, <a class="el" href="check_8cpp_source.html#l00075">thorin::Checker::assignable()</a>, <a class="el" href="lattice_8cpp_source.html#l00020">thorin::TBound&lt; up &gt;::convert()</a>, <a class="el" href="ll_8cpp_source.html#l00416">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00320">thorin::World::extract()</a>, <a class="el" href="world_8cpp_source.html#l00374">thorin::World::insert()</a>, <a class="el" href="thorin_2debug_8cpp_source.html#l00052">thorin::Sym::is_anonymous()</a>, <a class="el" href="world_8cpp_source.html#l00474">thorin::World::lit_int()</a>, <a class="el" href="normalize_8cpp_source.html#l00282">normalize_Bit()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00262">thorin::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00506">thorin::core::normalize_div()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00008">thorin::mem::normalize_lea()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00408">thorin::core::normalize_shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00427">normalize_Shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00632">normalize_Trait()</a>, <a class="el" href="normalize_8cpp_source.html#l00788">normalize_zip()</a>, <a class="el" href="def_8h_source.html#l00225">thorin::Def::num_projs()</a>, <a class="el" href="world_8cpp_source.html#l00442">thorin::World::pack()</a>, <a class="el" href="def_8cpp_source.html#l00385">thorin::Def::proj()</a>, <a class="el" href="normalize_8cpp_source.html#l00199">thorin::normalize::reassociate()</a>, <a class="el" href="def_8cpp_source.html#l00141">thorin::Arr::restructure()</a>, <a class="el" href="def_8cpp_source.html#l00147">thorin::Pack::restructure()</a>, <a class="el" href="world_8cpp_source.html#l00543">thorin::World::test()</a>, and <a class="el" href="world_8cpp_source.html#l00277">thorin::World::tuple()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00413">thorin::World::arr()</a>, <a class="el" href="check_8cpp_source.html#l00075">thorin::Checker::assignable()</a>, <a class="el" href="lattice_8cpp_source.html#l00019">thorin::TBound&lt; up &gt;::convert()</a>, <a class="el" href="ll_8cpp_source.html#l00416">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00320">thorin::World::extract()</a>, <a class="el" href="world_8cpp_source.html#l00374">thorin::World::insert()</a>, <a class="el" href="thorin_2debug_8cpp_source.html#l00052">thorin::Sym::is_anonymous()</a>, <a class="el" href="world_8cpp_source.html#l00474">thorin::World::lit_idx()</a>, <a class="el" href="normalize_8cpp_source.html#l00282">normalize_Bit()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00262">thorin::core::normalize_bit2()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00506">thorin::core::normalize_div()</a>, <a class="el" href="mem_2normalizers_8cpp_source.html#l00008">thorin::mem::normalize_lea()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00408">thorin::core::normalize_shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00427">normalize_Shr()</a>, <a class="el" href="normalize_8cpp_source.html#l00632">normalize_Trait()</a>, <a class="el" href="normalize_8cpp_source.html#l00788">normalize_zip()</a>, <a class="el" href="def_8h_source.html#l00225">thorin::Def::num_projs()</a>, <a class="el" href="world_8cpp_source.html#l00442">thorin::World::pack()</a>, <a class="el" href="def_8cpp_source.html#l00385">thorin::Def::proj()</a>, <a class="el" href="normalize_8cpp_source.html#l00199">thorin::normalize::reassociate()</a>, <a class="el" href="def_8cpp_source.html#l00141">thorin::Arr::restructure()</a>, <a class="el" href="def_8cpp_source.html#l00147">thorin::Pack::restructure()</a>, <a class="el" href="world_8cpp_source.html#l00543">thorin::World::test()</a>, and <a class="el" href="world_8cpp_source.html#l00277">thorin::World::tuple()</a>.</p>
 
 </div>
 </div>
@@ -5547,36 +5578,6 @@ template&lt;class AxTag , <a class="el" href="namespace_3globalScope_4.html#clas
 <p class="definition">Definition at line <a class="el" href="tuple_8cpp_source.html#l00076">76</a> of file <a class="el" href="tuple_8cpp_source.html">tuple.cpp</a>.</p>
 
 <p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">a</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00315">thorin::Def::isa_nom()</a>, <a class="el" href="deptree_8cpp_source.html#l00007">merge()</a>, <a class="el" href="world_8cpp_source.html#l00267">thorin::World::tuple()</a>, <a class="el" href="def_8h_source.html#l00139">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::world()</a>.</p>
-
-</div>
-</div>
-<a id="a9b06ff5c2fceb4208a93b550fbc4ffd5" name="a9b06ff5c2fceb4208a93b550fbc4ffd5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b06ff5c2fceb4208a93b550fbc4ffd5">&#9670;&nbsp;</a></span>mod2width()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr std::optional&lt; uint64_t &gt; thorin::mod2width </td>
-          <td>(</td>
-          <td class="paramtype">uint64_t&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00164">164</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00416">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="normalize_8h_source.html#l00098">thorin::normalize::fold()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00556">thorin::core::fold_conv()</a>, and <a class="el" href="normalize_8cpp_source.html#l00704">fold_Conv()</a>.</p>
 
 </div>
 </div>
@@ -6048,7 +6049,7 @@ template&lt;<a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f
 
 <p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00770">770</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00390">thorin::World::bot()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00139">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00391">thorin::World::bot()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00139">thorin::Def::type()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::world()</a>.</p>
 
 <p class="reference">Referenced by <a class="el" href="world_8cpp_source.html#l00039">thorin::World::World()</a>.</p>
 
@@ -6188,7 +6189,7 @@ template&lt;<a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492de
 
 <p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00754">754</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00216">thorin::Def::dep_const()</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfa4f4000d921968b9665f52e88333007da">hlt</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfac90ae688b2a3b1fd0751fd743eb385cd">known</a>, <a class="el" href="world_8h_source.html#l00364">thorin::World::lit_ff()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00216">thorin::Def::dep_const()</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfa4f4000d921968b9665f52e88333007da">hlt</a>, <a class="el" href="namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfac90ae688b2a3b1fd0751fd743eb385cd">known</a>, <a class="el" href="world_8h_source.html#l00365">thorin::World::lit_ff()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -6372,7 +6373,7 @@ template&lt;<a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c5
 
 <p class="definition">Definition at line <a class="el" href="normalize_8cpp_source.html#l00632">632</a> of file <a class="el" href="normalize_8cpp_source.html">normalize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">a</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af792d1afb0399dce47533bead9d71a8a">align</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba92eb5ffee6ae2fec3ad71c777531578f">b</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00528">isa_lit()</a>, <a class="el" href="def_8h_source.html#l00305">thorin::Def::isa_structural()</a>, <a class="el" href="world_8h_source.html#l00334">thorin::World::lit_nat()</a>, <a class="el" href="namespacethorin.html#a65b28a70b601ee7898841af6af02d56fa353942263d1bedfbe06b7bfa78226253">mul</a>, <a class="el" href="tables_8h_source.html#l00049">thorin::WMode::nsw</a>, <a class="el" href="tables_8h_source.html#l00050">thorin::WMode::nuw</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="def_8h_source.html#l00149">thorin::Def::ops()</a>, <a class="el" href="normalize_8cpp_source.html#l00621">pad()</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af7bd60b75b29d79b660a2859395c1a24">size</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">t</a>, <a class="el" href="assert_8h_source.html#l00019">unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::world()</a>.</p>
+<p class="reference">References <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">a</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af792d1afb0399dce47533bead9d71a8a">align</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba92eb5ffee6ae2fec3ad71c777531578f">b</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00528">isa_lit()</a>, <a class="el" href="def_8h_source.html#l00305">thorin::Def::isa_structural()</a>, <a class="el" href="world_8h_source.html#l00337">thorin::World::lit_nat()</a>, <a class="el" href="namespacethorin.html#a65b28a70b601ee7898841af6af02d56fa353942263d1bedfbe06b7bfa78226253">mul</a>, <a class="el" href="tables_8h_source.html#l00049">thorin::WMode::nsw</a>, <a class="el" href="tables_8h_source.html#l00050">thorin::WMode::nuw</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="def_8h_source.html#l00149">thorin::Def::ops()</a>, <a class="el" href="normalize_8cpp_source.html#l00621">pad()</a>, <a class="el" href="namespacethorin.html#a1e00e0531df7da783e42b2c6c58c9d84af7bd60b75b29d79b660a2859395c1a24">size</a>, <a class="el" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785bae358efa489f58062f10dd7316b65649e">t</a>, <a class="el" href="assert_8h_source.html#l00019">unreachable()</a>, and <a class="el" href="def_8cpp_source.html#l00157">thorin::Def::world()</a>.</p>
 
 </div>
 </div>
@@ -8467,6 +8468,36 @@ template&lt;class T , class... Args&gt; </div>
 
 </div>
 </div>
+<a id="a14599efad3033b587d9a191228d4fe1e" name="a14599efad3033b587d9a191228d4fe1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14599efad3033b587d9a191228d4fe1e">&#9670;&nbsp;</a></span>size2bitwidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr std::optional&lt; uint64_t &gt; thorin::size2bitwidth </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00164">164</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00416">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="normalize_8h_source.html#l00098">thorin::normalize::fold()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00556">thorin::core::fold_conv()</a>, and <a class="el" href="normalize_8cpp_source.html#l00704">fold_Conv()</a>.</p>
+
+</div>
+</div>
 <a id="a1e02df3b598c738a2864a076f4d9002c" name="a1e02df3b598c738a2864a076f4d9002c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1e02df3b598c738a2864a076f4d9002c">&#9670;&nbsp;</a></span>sub_view()</h2>
 
@@ -8781,36 +8812,6 @@ template&lt;class Indexer , class Key &gt; </div>
 <p class="definition">Definition at line <a class="el" href="indexset_8h_source.html#l00107">107</a> of file <a class="el" href="indexset_8h_source.html">indexset.h</a>.</p>
 
 <p class="reference">References <a class="el" href="indexset_8h_source.html#l00074">thorin::IndexSet&lt; Indexer, Key &gt;::contains()</a>, and <a class="el" href="indexset_8h_source.html#l00102">visit()</a>.</p>
-
-</div>
-</div>
-<a id="a8e98aa9b8a5cb1f54a30eb334422b7a6" name="a8e98aa9b8a5cb1f54a30eb334422b7a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e98aa9b8a5cb1f54a30eb334422b7a6">&#9670;&nbsp;</a></span>width2mod()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr uint64_t thorin::width2mod </td>
-          <td>(</td>
-          <td class="paramtype">uint64_t&#160;</td>
-          <td class="paramname"><em>n</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="axiom_8h_source.html#l00159">159</a> of file <a class="el" href="axiom_8h_source.html">axiom.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00424">thorin::World::type_int_width()</a>.</p>
 
 </div>
 </div>

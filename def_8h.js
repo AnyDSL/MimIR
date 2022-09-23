@@ -12,7 +12,7 @@ var def_8h =
     [ "thorin::Type", "classthorin_1_1Type.html", "classthorin_1_1Type" ],
     [ "thorin::Lit", "classthorin_1_1Lit.html", "classthorin_1_1Lit" ],
     [ "thorin::Nat", "classthorin_1_1Nat.html", "classthorin_1_1Nat" ],
-    [ "thorin::Int", "classthorin_1_1Int.html", "classthorin_1_1Int" ],
+    [ "thorin::Idx", "classthorin_1_1Idx.html", "classthorin_1_1Idx" ],
     [ "thorin::Proxy", "classthorin_1_1Proxy.html", "classthorin_1_1Proxy" ],
     [ "thorin::Infer", "classthorin_1_1Infer.html", "classthorin_1_1Infer" ],
     [ "thorin::Global", "classthorin_1_1Global.html", "classthorin_1_1Global" ],
