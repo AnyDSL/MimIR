@@ -638,7 +638,7 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
     } else if (auto idx = type->isa<Idx>()) {
-        if (idx->type()->isa<Top>()) return world.lit_nat(8);
+        if (idx->size()->isa<Top>()) return world.lit_nat(8);
         if (auto w = isa_lit(idx->size())) {
             if (*w == 0) return world.lit_nat(8);
             if (*w <= 0x0000'0000'0000'0100_u64) return world.lit_nat(1);

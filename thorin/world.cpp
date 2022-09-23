@@ -472,13 +472,13 @@ const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
 }
 
 const Lit* World::lit_idx(const Def* type, u64 i, const Def* dbg) {
-    auto size = type->as<Idx>()->size();
-    if (size->isa<Top>()) return lit(size, i, dbg);
-
     auto l = lit(type, i, dbg);
+    auto size = type->as<Idx>()->size();
 
-    if (auto a = isa_lit(size)) {
-        if (err() && *a != 0 && i >= *a) err()->index_out_of_range(size, l, dbg);
+    if (err()) {
+        if (auto a = isa_lit(size)) {
+            if (*a != 0 && i >= *a) err()->index_out_of_range(size, l, dbg);
+        }
     }
 
     return l;
