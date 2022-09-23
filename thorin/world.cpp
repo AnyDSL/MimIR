@@ -472,7 +472,7 @@ const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
 }
 
 const Lit* World::lit_idx(const Def* type, u64 i, const Def* dbg) {
-    auto l = lit(type, i, dbg);
+    auto l    = lit(type, i, dbg);
     auto size = type->as<Idx>()->size();
 
     if (err()) {
