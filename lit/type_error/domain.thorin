@@ -1,6 +1,6 @@
 // RUN: ! %thorin %s 2>&1 | FileCheck %s 
 
-.let I32 = .Int  4294967296;
+.let I32 = .Idx  4294967296;
 .let R32 = %Real 32;
 .ax %foo.bar: .Cn [I32, R32];
 .let err = %foo.bar(23:R32, 42:I32);

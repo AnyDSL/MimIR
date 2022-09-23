@@ -306,7 +306,7 @@ public:
     /// @sa core::extract_unsafe
     ///@{
     const Def* extract(const Def* d, const Def* i, const Def* dbg = {});
-    const Def* extract(const Def* d, u64 a, u64 i, const Def* dbg = {}) { return extract(d, lit_int(a, i), dbg); }
+    const Def* extract(const Def* d, u64 a, u64 i, const Def* dbg = {}) { return extract(d, lit_idx(a, i), dbg); }
     const Def* extract(const Def* d, u64 i, const Def* dbg = {}) { return extract(d, as_lit(d->arity()), i, dbg); }
 
     /// Builds `(f, t)cond`.
@@ -321,7 +321,7 @@ public:
     ///@{
     const Def* insert(const Def* d, const Def* i, const Def* val, const Def* dbg = {});
     const Def* insert(const Def* d, u64 a, u64 i, const Def* val, const Def* dbg = {}) {
-        return insert(d, lit_int(a, i), val, dbg);
+        return insert(d, lit_idx(a, i), val, dbg);
     }
     const Def* insert(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
         return insert(d, as_lit(d->arity()), i, val, dbg);
@@ -331,33 +331,34 @@ public:
     /// @name Lit
     ///@{
     const Lit* lit(const Def* type, u64 val, const Def* dbg = {}) { return unify<Lit>(0, type, val, dbg); }
+    const Lit* lit_univ(u64 level, const Def* dbg = {}) { return lit(univ(), level, dbg); }
+    const Lit* lit_univ_0() { return data_.lit_univ_0_; }
+    const Lit* lit_univ_1() { return data_.lit_univ_1_; }
     const Lit* lit_nat(nat_t a, const Def* dbg = {}) { return lit(type_nat(), a, dbg); }
     const Lit* lit_nat_0() { return data_.lit_nat_0_; }
     const Lit* lit_nat_1() { return data_.lit_nat_1_; }
     const Lit* lit_nat_max() { return data_.lit_nat_max_; }
-    const Lit* lit_int(const Def* type, u64 val, const Def* dbg = {});
-    const Lit* lit_univ(u64 level, const Def* dbg = {}) { return lit(univ(), level, dbg); }
-    const Lit* lit_univ_0() { return data_.lit_univ_0_; }
-    const Lit* lit_univ_1() { return data_.lit_univ_1_; }
+    const Lit* lit_idx(const Def* type, u64 val, const Def* dbg = {});
 
-    /// Constructs Tag::Int Lit @p val via @p width, i.e. converts from *width* to *internal* *mod* value.
-    const Lit* lit_int_width(nat_t width, u64 val, const Def* dbg = {}) {
-        return lit_int(type_int_width(width), val, dbg);
-    }
+    /// Constructs a Lit of type Idx of size @p size.
+    /// @note `size = 0` means `2^64`.
+    const Lit* lit_idx(nat_t size, u64 val, const Def* dbg = {}) { return lit_idx(type_idx(size), val, dbg); }
 
-    /// Constructs Tag::Int Lit @p val with *external* *mod*.
-    /// I.e. if `mod == 0`, it will be adjusted to `uint_t(-1)` (special case for `2^64`).
-    const Lit* lit_int_mod(nat_t mod, u64 val, const Def* dbg = {}) {
-        return lit_int(type_int(mod), mod == 0 ? val : (val % mod), dbg);
-    }
-
-    /// Constructs Tag::Int Lit @p val with *internal* *mod*, i.e. without any conversions - `mod = 0` means `2^64`.
-    /// Use this version if you directly receive an *internal* `mod` which is already converted.
-    const Lit* lit_int(nat_t mod, u64 val, const Def* dbg = {}) { return lit_int(type_int(mod), val, dbg); }
     template<class I>
-    const Lit* lit_int(I val, const Def* dbg = {}) {
+    const Lit* lit_idx(I val, const Def* dbg = {}) {
         static_assert(std::is_integral<I>());
-        return lit_int(type_int(width2mod(sizeof(I) * 8)), val, dbg);
+        return lit_idx(type_idx(bitwidth2size(sizeof(I) * 8)), val, dbg);
+    }
+
+    /// Constructs a Lit @p of type Idx of size $2^width$.
+    /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
+    const Lit* lit_int_(nat_t width, u64 val, const Def* dbg = {}) { return lit_idx(type_int_(width), val, dbg); }
+
+    /// Constructs a Lit of type Idx of size @p mod.
+    /// The value @p val will be adjusted modulo @p mod.
+    /// @note `mod == 0` is the special case for $2^64$ and no modulo will be performed on @p val.
+    const Lit* lit_idx_mod(nat_t mod, u64 val, const Def* dbg = {}) {
+        return lit_idx(type_idx(mod), mod == 0 ? val : (val % mod), dbg);
     }
 
     const Lit* lit_bool(bool val) { return data_.lit_bool_[size_t(val)]; }
@@ -419,10 +420,14 @@ public:
     /// @name types
     ///@{
     const Nat* type_nat() { return data_.type_nat_; }
-    const Int* type_int(const Def* size);
-    const Int* type_int(nat_t size) { return type_int(lit_nat(size)); }
-    const Int* type_int_width(nat_t width) { return type_int(lit_nat(width2mod(width))); }
-    const Int* type_bool() { return data_.type_bool_; }
+    const Idx* type_idx(const Def* size);
+    /// @note `size = 0` means `2^64`.
+    const Idx* type_idx(nat_t size) { return type_idx(lit_nat(size)); }
+
+    /// Constructs a type Idx of size $2^width$.
+    /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
+    const Idx* type_int_(nat_t width) { return type_idx(lit_nat(bitwidth2size(width))); }
+    const Idx* type_bool() { return data_.type_bool_; }
     const Axiom* type_real() { return data_.type_real_; }
     const Def* type_real(const Def* width) { return app(type_real(), width); }
     const Def* type_real(nat_t width) { return type_real(lit_nat(width)); }
@@ -519,7 +524,7 @@ public:
     ///@{
     const Def* op_negate(const Def* a, const Def* dbg = {}) {
         auto w = as_lit(iinfer(a));
-        return op(Bit::_xor, lit_int(w, w - 1_u64), a, dbg);
+        return op(Bit::_xor, lit_idx(w, w - 1_u64), a, dbg);
     }
     const Def* op_rminus(const Def* rmode, const Def* a, const Def* dbg = {}) {
         auto w = as_lit(rinfer(a));
@@ -527,7 +532,7 @@ public:
     }
     const Def* op_wminus(const Def* wmode, const Def* a, const Def* dbg = {}) {
         auto w = as_lit(iinfer(a));
-        return op(Wrap::sub, wmode, lit_int(w, 0), a, dbg);
+        return op(Wrap::sub, wmode, lit_idx(w, 0), a, dbg);
     }
     const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) { return op_rminus(lit_nat(rmode), a, dbg); }
     const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) { return op_wminus(lit_nat(wmode), a, dbg); }
@@ -545,7 +550,7 @@ public:
         meta     = meta ? meta : bot(type_bot());
         return tuple({sym.str(), loc, meta});
     }
-    const Def* iinfer(const Def* def) { return def->type()->as<Int>()->size(); }
+    const Def* iinfer(const Def* def) { return def->type()->as<Idx>()->size(); }
     const Def* rinfer(const Def* def) { return as<Tag::Real>(def->type())->arg(); }
     ///@}
 
@@ -698,7 +703,7 @@ private:
         const Type* type_0_;
         const Type* type_1_;
         const Bot* type_bot_;
-        const Int* type_bool_;
+        const Idx* type_bool_;
         const Top* top_nat_;
         const Sigma* sigma_;
         const Tuple* tuple_;

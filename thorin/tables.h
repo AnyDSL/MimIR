@@ -25,7 +25,7 @@ using sub_t     = u8;
     m(Proxy, proxy)                                                           \
     m(Axiom, axiom)                                                           \
     m(Lit, lit)                                                               \
-    m(Nat, nat)         m(Int, int)                                           \
+    m(Nat, nat)         m(Idx, int)                                           \
     m(Var, var)                                                               \
     m(Infer, infer)                                                           \
     m(Global, global)                                                         \

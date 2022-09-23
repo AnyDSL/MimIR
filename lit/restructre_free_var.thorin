@@ -28,7 +28,7 @@
     ] ->
     %matrix.Mat (n,S,T);
 
-.let I32 = .Int 4294967296;
+.let I32 = .Idx 4294967296;
 .let test = %matrix.mapReduce 
     (2,(4,3),I32,
         2,

@@ -80,7 +80,7 @@
                xYgle,     xYglE,     xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
                Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
                XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
-    Π w: .Nat -> [.Int w, .Int w] -> .Bool , normalize_icmp;
+    Π w: .Nat -> [.Idx w, .Idx w] -> .Bool , normalize_icmp;
 ///
 /// ### %core.bit1
 ///
@@ -92,7 +92,7 @@
 /// | neg    | o | x | negate                       |
 /// | id     | x | o | identity                     |
 /// | t      | x | x | always true                  |
-.ax %core.bit1(f, neg, id, t): Π w: .Nat -> .Int w -> .Int w;
+.ax %core.bit1(f, neg, id, t): Π w: .Nat -> .Idx w -> .Idx w;
 ///
 /// ### %core.bit2
 ///
@@ -118,26 +118,26 @@
 /// | t      |  x |  x |  x |  x | always true                  |
 .ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
                 _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
-    Π w: .Nat -> [.Int w, .Int w] -> .Int w , normalize_bit2;
+    Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w , normalize_bit2;
 ///
 /// ### %core.shr
 ///
-.ax %core.shr(ashr, lshr): Π w: .Nat -> [.Int w, .Int w] -> .Int w, normalize_shr;
+.ax %core.shr(ashr, lshr): Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_shr;
 ///
 /// ### %core.wrap
 ///
-.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [.Int w, .Int w] -> .Int w, normalize_wrap;
+.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [.Idx w, .Idx w] -> .Idx w, normalize_wrap;
 ///
 /// ### %core.div
 ///
-.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, .Int w, .Int w] -> [%mem.M, .Int w], normalize_div;
+.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, .Idx w, .Idx w] -> [%mem.M, .Idx w], normalize_div;
 ///
 /// ### %core.conv
 ///
-/// Bit width (and signedness) conversion for `.Int -> .Int` and `%Real -> %Real` as well as `%Real -> .Int` and `.Int -> %Real` conversions.
-.ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -> .Int sw -> .Int dw, normalize_conv;
-.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> .Int sw -> %Real dw, normalize_conv;
-.ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -> %Real sw -> .Int dw, normalize_conv;
+/// Bit width (and signedness) conversion for `.Idx -> .Idx` and `%Real -> %Real` as well as `%Real -> .Idx` and `.Idx -> %Real` conversions.
+.ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> .Idx dw, normalize_conv;
+.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> %Real dw, normalize_conv;
+.ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -> %Real sw -> .Idx dw, normalize_conv;
 .ax %core.conv(r2r): Π [dw: .Nat, sw: .Nat] -> %Real sw -> %Real dw, normalize_conv;
 ///
 /// ### %core.bitcast

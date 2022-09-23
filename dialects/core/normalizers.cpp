@@ -277,8 +277,8 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
 
     // clang-format off
     switch (sub) {
-        case bit2::    f: return world.lit_int(*w,        0);
-        case bit2::    t: return world.lit_int(*w, *w-1_u64);
+        case bit2::    f: return world.lit_idx(*w,        0);
+        case bit2::    t: return world.lit_idx(*w, *w-1_u64);
         case bit2::    a: return a;
         case bit2::    b: return b;
         case bit2::   na: return world.op_negate(a, dbg);
@@ -290,21 +290,21 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
 
     if (la && lb) {
         switch (sub) {
-            case bit2::_and: return world.lit_int    (*w,   *la &  *lb);
-            case bit2:: _or: return world.lit_int    (*w,   *la |  *lb);
-            case bit2::_xor: return world.lit_int    (*w,   *la ^  *lb);
-            case bit2::nand: return world.lit_int_mod(*w, ~(*la &  *lb));
-            case bit2:: nor: return world.lit_int_mod(*w, ~(*la |  *lb));
-            case bit2::nxor: return world.lit_int_mod(*w, ~(*la ^  *lb));
-            case bit2:: iff: return world.lit_int_mod(*w, ~ *la |  *lb);
-            case bit2::niff: return world.lit_int    (*w,   *la & ~*lb);
+            case bit2::_and: return world.lit_idx    (*w,   *la &  *lb);
+            case bit2:: _or: return world.lit_idx    (*w,   *la |  *lb);
+            case bit2::_xor: return world.lit_idx    (*w,   *la ^  *lb);
+            case bit2::nand: return world.lit_idx_mod(*w, ~(*la &  *lb));
+            case bit2:: nor: return world.lit_idx_mod(*w, ~(*la |  *lb));
+            case bit2::nxor: return world.lit_idx_mod(*w, ~(*la ^  *lb));
+            case bit2:: iff: return world.lit_idx_mod(*w, ~ *la |  *lb);
+            case bit2::niff: return world.lit_idx    (*w,   *la & ~*lb);
             default: unreachable();
         }
     }
 
     auto unary = [&](bool x, bool y, const Def* a) -> const Def* {
-        if (!x && !y) return world.lit_int(*w, 0);
-        if ( x &&  y) return world.lit_int(*w, *w-1_u64);
+        if (!x && !y) return world.lit_idx(*w, 0);
+        if ( x &&  y) return world.lit_idx(*w, *w-1_u64);
         if (!x &&  y) return a;
         if ( x && !y && sub != bit2::_xor) return world.op_negate(a, dbg);
         return nullptr;
@@ -338,9 +338,9 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
 
     if (auto bb = is_not(b); bb && a == bb) {
         switch (sub) {
-            case IOp::iand: return world.lit_int(*w,       0);
-            case IOp::ior : return world.lit_int(*w, *w-1_u64);
-            case IOp::ixor: return world.lit_int(*w, *w-1_u64);
+            case IOp::iand: return world.lit_idx(*w,       0);
+            case IOp::ior : return world.lit_idx(*w, *w-1_u64);
+            case IOp::ixor: return world.lit_idx(*w, *w-1_u64);
             default: unreachable();
         }
     }
@@ -414,7 +414,7 @@ const Def* normalize_shr(const Def* type, const Def* c, const Def* arg, const De
     if (auto result = fold<shr, sub>(world, type, callee, a, b, dbg)) return result;
 
     if (auto la = a->isa<Lit>()) {
-        if (la == world.lit_int(*w, 0)) {
+        if (la == world.lit_idx(*w, 0)) {
             switch (sub) {
                 case shr::ashr: return la;
                 case shr::lshr: return la;
@@ -424,7 +424,7 @@ const Def* normalize_shr(const Def* type, const Def* c, const Def* arg, const De
     }
 
     if (auto lb = b->isa<Lit>()) {
-        if (lb == world.lit_int(*w, 0)) {
+        if (lb == world.lit_idx(*w, 0)) {
             switch (sub) {
                 case shr::ashr: return a;
                 case shr::lshr: return a;
@@ -449,7 +449,7 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
 
     // clang-format off
     if (auto la = a->isa<Lit>()) {
-        if (la == world.lit_int(*w, 0)) {
+        if (la == world.lit_idx(*w, 0)) {
             switch (sub) {
                 case wrap::add: return b;    // 0  + b -> b
                 case wrap::sub: break;
@@ -459,7 +459,7 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
             }
         }
 
-        if (la == world.lit_int(*w, 1)) {
+        if (la == world.lit_idx(*w, 1)) {
             switch (sub) {
                 case wrap::add: break;
                 case wrap::sub: break;
@@ -471,7 +471,7 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
     }
 
     if (auto lb = b->isa<Lit>()) {
-        if (lb == world.lit_int(*w, 0)) {
+        if (lb == world.lit_idx(*w, 0)) {
             switch (sub) {
                 case wrap::sub: return a;    // a  - 0 -> a
                 case wrap::shl: return a;    // a >> 0 -> a
@@ -481,15 +481,15 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
         }
 
         if (sub == wrap::sub)
-            return op(wrap::add, *m, a, world.lit_int_mod(*w, ~lb->get() + 1_u64)); // a - lb -> a + (~lb + 1)
+            return op(wrap::add, *m, a, world.lit_idx_mod(*w, ~lb->get() + 1_u64)); // a - lb -> a + (~lb + 1)
         else if (sub == wrap::shl && lb->get() > *w)
             return world.bot(type, dbg);
     }
 
     if (a == b) {
         switch (sub) {
-            case wrap::add: return op(wrap::mul, *m, world.lit_int(*w, 2), a, dbg); // a + a -> 2 * a
-            case wrap::sub: return world.lit_int(*w, 0);                                  // a - a -> 0
+            case wrap::add: return op(wrap::mul, *m, world.lit_idx(*w, 2), a, dbg); // a + a -> 2 * a
+            case wrap::sub: return world.lit_idx(*w, 0);                                  // a - a -> 0
             case wrap::mul: break;
             case wrap::shl: break;
             default: unreachable();
@@ -514,18 +514,18 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
     if (auto result = normalize::fold<div, op>(world, type, callee, a, b, dbg)) return make_res(result);
 
     if (auto la = a->isa<Lit>()) {
-        if (la == world.lit_int(*w, 0)) return make_res(la); // 0 / b -> 0 and 0 % b -> 0
+        if (la == world.lit_idx(*w, 0)) return make_res(la); // 0 / b -> 0 and 0 % b -> 0
     }
 
     if (auto lb = b->isa<Lit>()) {
-        if (lb == world.lit_int(*w, 0)) return make_res(world.bot(type)); // a / 0 -> ⊥ and a % 0 -> ⊥
+        if (lb == world.lit_idx(*w, 0)) return make_res(world.bot(type)); // a / 0 -> ⊥ and a % 0 -> ⊥
 
-        if (lb == world.lit_int(*w, 1)) {
+        if (lb == world.lit_idx(*w, 1)) {
             switch (op) {
                 case div::sdiv: return make_res(a);                    // a / 1 -> a
                 case div::udiv: return make_res(a);                    // a / 1 -> a
-                case div::srem: return make_res(world.lit_int(*w, 0)); // a % 1 -> 0
-                case div::urem: return make_res(world.lit_int(*w, 0)); // a % 1 -> 0
+                case div::srem: return make_res(world.lit_idx(*w, 0)); // a % 1 -> 0
+                case div::urem: return make_res(world.lit_idx(*w, 0)); // a % 1 -> 0
                 default: unreachable();
             }
         }
@@ -533,10 +533,10 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
 
     if (a == b) {
         switch (op) {
-            case div::sdiv: return make_res(world.lit_int(*w, 1)); // a / a -> 1
-            case div::udiv: return make_res(world.lit_int(*w, 1)); // a / a -> 1
-            case div::srem: return make_res(world.lit_int(*w, 0)); // a % a -> 0
-            case div::urem: return make_res(world.lit_int(*w, 0)); // a % a -> 0
+            case div::sdiv: return make_res(world.lit_idx(*w, 1)); // a / a -> 1
+            case div::udiv: return make_res(world.lit_idx(*w, 1)); // a / a -> 1
+            case div::srem: return make_res(world.lit_idx(*w, 0)); // a % a -> 0
+            case div::urem: return make_res(world.lit_idx(*w, 0)); // a % a -> 0
             default: unreachable();
         }
     }
@@ -565,8 +565,8 @@ static const Def* fold_conv(const Def* dst_type, const App* callee, const Def* s
             return world.lit(dst_type, as_lit(lit_src) % *lit_dw);
         }
 
-        if (src->type()->isa<Int>()) *lit_sw = *mod2width(*lit_sw);
-        if (dst_type->isa<Int>()) *lit_dw = *mod2width(*lit_dw);
+        if (src->type()->isa<Idx>()) *lit_sw = *size2bitwidth(*lit_sw);
+        if (dst_type->isa<Idx>()) *lit_dw = *size2bitwidth(*lit_dw);
 
         Res res;
 #define CODE(sw, dw)                                                                                 \
@@ -613,7 +613,7 @@ const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* 
 
     if (auto lit = src->isa<Lit>()) {
         if (dst_type->isa<Nat>()) return world.lit(dst_type, lit->get(), dbg);
-        if (dst_type->isa<Int>()) return world.lit(dst_type, lit->get(), dbg);
+        if (dst_type->isa<Idx>()) return world.lit(dst_type, lit->get(), dbg);
     }
 
     return world.raw_app(callee, src, dbg);

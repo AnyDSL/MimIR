@@ -65,4 +65,4 @@
 ///
 /// Load effective address. 
 /// Performs address computation.
-.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -> Π [%mem.Ptr(«j: n; Ts#j», as), i: .Int n] -> %mem.Ptr(Ts#i, as), normalize_lea;
+.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -> Π [%mem.Ptr(«j: n; Ts#j», as), i: .Idx n] -> %mem.Ptr(Ts#i, as), normalize_lea;

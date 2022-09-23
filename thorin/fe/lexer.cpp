@@ -183,14 +183,14 @@ std::optional<Tok> Lexer::parse_lit() {
                 next();
             }
             auto m = strtoull(mod.c_str(), nullptr, 10);
-            return Tok{loc_, world().lit_int_mod(m, i)};
+            return Tok{loc_, world().lit_idx_mod(m, i)};
         } else if (accept('_', false)) {
             auto i = strtoull(str_.c_str(), nullptr, 10);
             str_.clear();
             if (accept_if(isdigit)) {
                 parse_digits(10);
                 auto m = strtoull(str_.c_str(), nullptr, 10);
-                return Tok{loc_, world().lit_int_mod(m, i)};
+                return Tok{loc_, world().lit_idx_mod(m, i)};
             } else {
                 err(loc_, "stray underscore in unsigned literal");
                 auto i = strtoull(str_.c_str(), nullptr, 10);

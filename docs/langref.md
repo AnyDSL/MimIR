@@ -47,8 +47,8 @@ In addition the following keywords are *terminals*:
 | `.module`   | starts a module           |
 | `.import`   | imports a dialect         |
 | `.Nat`      | thorin::Nat               |
-| `.Int`      | thorin::Int               |
-| `.Bool`     | alias for `.Int 2`        |
+| `.Idx`      | thorin::Idx               |
+| `.Bool`     | alias for `.Idx 2`        |
 | `.ff`       | alias for `0₂`            |
 | `.tt`       | alias for `1₂`            |
 | `.Type`     | thorin::Type              |
@@ -78,8 +78,8 @@ The following *terminals* comprise more complicated patterns that are specified 
 | L        | sign? 0x hex+ pP sign dec+           | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | L        | sign? 0x hex+ `.` hex\* pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | L        | sign? 0x hex\* `.` hex+ pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
-| I        | dec+ sub+                            | integer literal of type `:Int mod`                                                                |
-| I        | dec+ `_` dec+                        | integer literal of type `:Int mod`                                                                |
+| I        | dec+ sub+                            | index literal of type `.Idx sub`                                                                  |
+| I        | dec+ `_` dec+                        | index literal of type `.Idx sub`                                                                  |
 
 The previous table resorts to the following definitions as shorthand:
 
@@ -167,12 +167,12 @@ For this reason there is no rule `b -> s (p, ..., p)`.
 | e           | `*`                                                                           |            | alias for `.Type (0:.Univ)`         | thorin::Type    |
 | e           | `□`                                                                           |            | alias for `.Type (1:.Univ)`         | thorin::Type    |
 | e           | `.Nat`                                                                        |            | natural number                      | thorin::Nat     |
-| e           | `.Int` e                                                                      |            | integer of size e                   | thorin::Int     |
-| e           | `.Bool`                                                                       |            | alias for `.Int 2`                  | thorin::Int     |
+| e           | `.Idx` e                                                                      |            | index of size e                     | thorin::Idx     |
+| e           | `.Bool`                                                                       |            | alias for `.Idx 2`                  | thorin::Idx     |
 | e           | `{` e `}`                                                                     | ✓          | block                               | -               |
 | e           | L `:` e<sub>type</sub>                                                        |            | literal                             | thorin::Lit     |
-| e           | `.ff`                                                                         |            | alias for `0:(.Int 2)`              | thorin::Lit     |
-| e           | `.tt`                                                                         |            | alias for `1:(.Int 2)`              | thorin::Lit     |
+| e           | `.ff`                                                                         |            | alias for `0:(.Idx 2)`              | thorin::Lit     |
+| e           | `.tt`                                                                         |            | alias for `1:(.Idx 2)`              | thorin::Lit     |
 | e           | ( `.bot` or `.top` ) ( `:` e<sub>type</sub> )?                                |            | bottom/top                          | thorin::TExt    |
 | e           | Sym                                                                           |            | identifier                          | -               |
 | e           | Ax                                                                            |            | use of an axiom                     | -               |

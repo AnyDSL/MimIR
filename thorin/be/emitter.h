@@ -13,7 +13,7 @@ private:
     constexpr const Child& child() const { return *static_cast<const Child*>(this); };
     constexpr Child& child() { return *static_cast<Child*>(this); };
 
-    /// Internal wrapper for Emitter::emit that checks and retrieves/puts the `Value` from
+    /// Integer wrapper for Emitter::emit that checks and retrieves/puts the `Value` from
     /// Emitter::locals_/Emitter::globals_.
     Value emit_(const Def* def) {
         auto place = scheduler_.smart(def);

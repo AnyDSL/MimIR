@@ -7,21 +7,21 @@
 
 .import mem;
 
-.let i32 = .Int 4294967296;
-.cn .extern main(mem: %mem.M, argc: i32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Int 256», 0)», 0), return: .Cn [%mem.M, i32]) = {
+.let i32 = .Idx 4294967296;
+.cn .extern main(mem: %mem.M, argc: i32, argv: %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return: .Cn [%mem.M, i32]) = {
     .let Tas = (i32, 0);
     .let allocd = %mem.alloc Tas mem;
-    .let store = %mem.store Tas (allocd#0:(.Int 2), allocd#1:(.Int 2), argc);
-    .let load = %mem.load Tas (store, allocd#1:(.Int 2));
+    .let store = %mem.store Tas (allocd#0:(.Idx 2), allocd#1:(.Idx 2), argc);
+    .let load = %mem.load Tas (store, allocd#1:(.Idx 2));
     // todo: free :)
     return load
 };
 
-// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: (.Int 4294967296), %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; (.Int 256)», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (.Int 4294967296)]] = {
-// CHECK-DAG: _[[appMSlotId:[0-9_]+]]: [%mem.M, %mem.Ptr ((.Int 4294967296), 0)] = %mem.malloc ((.Int 4294967296), 0) (mem_[[mainMemId]], 4);
-// CHECK-DAG: _[[appStoreId:[0-9_]+]]: %mem.M = %mem.store ((.Int 4294967296), 0) (_[[appMSlotId]]#0:(.Int 2), _[[appMSlotId]]#1:(.Int 2), argc_[[argcId]]);
-// CHECK-DAG: _[[appLoadId:[0-9_]+]]: [%mem.M, (.Int 4294967296)] = %mem.load ((.Int 4294967296), 0) (_[[appStoreId]], _[[appMSlotId]]#1:(.Int 2));
+// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: (.Idx 4294967296), %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; (.Idx 256)», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (.Idx 4294967296)]] = {
+// CHECK-DAG: _[[appMSlotId:[0-9_]+]]: [%mem.M, %mem.Ptr ((.Idx 4294967296), 0)] = %mem.malloc ((.Idx 4294967296), 0) (mem_[[mainMemId]], 4);
+// CHECK-DAG: _[[appStoreId:[0-9_]+]]: %mem.M = %mem.store ((.Idx 4294967296), 0) (_[[appMSlotId]]#0:(.Idx 2), _[[appMSlotId]]#1:(.Idx 2), argc_[[argcId]]);
+// CHECK-DAG: _[[appLoadId:[0-9_]+]]: [%mem.M, (.Idx 4294967296)] = %mem.load ((.Idx 4294967296), 0) (_[[appStoreId]], _[[appMSlotId]]#1:(.Idx 2));
 // CHECK-DAG: return_[[returnEtaId:[0-9_]+]] _[[appLoadId]]
 
-// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (.Int 4294967296)] = {
+// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (.Idx 4294967296)] = {
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]

@@ -70,7 +70,7 @@ const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) 
 }
 
 inline const Def* get_size(const Def* type) {
-    if (auto int_t = type->isa<Int>()) return int_t->size();
+    if (auto idx = type->isa<Idx>()) return idx->size();
     if (auto real = isa<Tag::Real>(type)) return real->arg();
     unreachable();
 }
@@ -92,7 +92,7 @@ inline const Def* op_bitcast(const Def* dst_type, const Def* src, const Def* dbg
 inline const Def* op_negate(const Def* a, const Def* dbg = {}) {
     World& w   = a->world();
     auto width = as_lit(w.iinfer(a));
-    return op(bit2::_xor, w.lit_int(width, width - 1_u64), a, dbg);
+    return op(bit2::_xor, w.lit_idx(width, width - 1_u64), a, dbg);
 }
 // todo: real op
 // const Def* op_rminus(const Def* rmode, const Def* a, const Def* dbg = {}) {
@@ -103,7 +103,7 @@ inline const Def* op_negate(const Def* a, const Def* dbg = {}) {
 inline const Def* op_wminus(const Def* wmode, const Def* a, const Def* dbg = {}) {
     World& w   = a->world();
     auto width = as_lit(w.iinfer(a));
-    return op(wrap::sub, wmode, w.lit_int(width, 0), a, dbg);
+    return op(wrap::sub, wmode, w.lit_idx(width, 0), a, dbg);
 }
 // todo: real op
 // const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) { return op_rminus(lit_nat(rmode), a, dbg); }
@@ -117,11 +117,11 @@ inline const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) {
 ///@{
 inline const Def* extract_unsafe(const Def* d, const Def* i, const Def* dbg = {}) {
     World& w = d->world();
-    return w.extract(d, op(conv::u2u, w.type_int(as_lit(d->unfold_type()->arity())), i, dbg), dbg);
+    return w.extract(d, op(conv::u2u, w.type_idx(as_lit(d->unfold_type()->arity())), i, dbg), dbg);
 }
 inline const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
     World& w = d->world();
-    return extract_unsafe(d, w.lit_int(0_u64, i), dbg);
+    return extract_unsafe(d, w.lit_idx(0_u64, i), dbg);
 }
 ///@}
 
@@ -129,11 +129,11 @@ inline const Def* extract_unsafe(const Def* d, u64 i, const Def* dbg = {}) {
 ///@{
 inline const Def* insert_unsafe(const Def* d, const Def* i, const Def* val, const Def* dbg = {}) {
     World& w = d->world();
-    return w.insert(d, op(conv::u2u, w.type_int(as_lit(d->unfold_type()->arity())), i), val, dbg);
+    return w.insert(d, op(conv::u2u, w.type_idx(as_lit(d->unfold_type()->arity())), i), val, dbg);
 }
 inline const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* dbg = {}) {
     World& w = d->world();
-    return insert_unsafe(d, w.lit_int(0_u64, i), val, dbg);
+    return insert_unsafe(d, w.lit_idx(0_u64, i), val, dbg);
 }
 ///@}
 

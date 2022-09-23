@@ -141,8 +141,8 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "Π {} → {}", pi->dom(), pi->codom());
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
-    } else if (auto int_ = u->isa<Int>()) {
-        return print(os, "(.Int {})", int_->size());
+    } else if (auto int_ = u->isa<Idx>()) {
+        return print(os, "(.Idx {})", int_->size());
     } else if (auto real = isa<Tag::Real>(*u)) {
         return print(os, "(%Real {})", real->arg());
     } else if (auto app = u->isa<App>()) {

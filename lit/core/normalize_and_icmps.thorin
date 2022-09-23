@@ -3,7 +3,7 @@
 
 .import core;
 
-.cn .extern and [a : .Int 2, b : .Int 2, return : .Cn .Int 2] = {
+.cn .extern and [a : .Idx 2, b : .Idx 2, return : .Cn .Idx 2] = {
     return
     (%core.bit2._and 2
         (%core.icmp.uge 2
@@ -12,9 +12,9 @@
             (a, b)))
 };
 
-// CHECK-DAG: .cn .extern and _{{[0-9_]+}}::[a_[[aId:[0-9_]+]]: (.Int 2), b_[[bId:[0-9_]+]]: (.Int 2), return_[[retId:[0-9_]+]]: .Cn (.Int 2)]
-// CHECK-DAG: .let _[[cmpId:[0-9_]+]]: (.Int 2) = %core.icmp.xYGle 2 (a_[[aId]], b_[[bId]]);
+// CHECK-DAG: .cn .extern and _{{[0-9_]+}}::[a_[[aId:[0-9_]+]]: (.Idx 2), b_[[bId:[0-9_]+]]: (.Idx 2), return_[[retId:[0-9_]+]]: .Cn (.Idx 2)]
+// CHECK-DAG: .let _[[cmpId:[0-9_]+]]: (.Idx 2) = %core.icmp.xYGle 2 (a_[[aId]], b_[[bId]]);
 // CHECK-DAG: return_[[etaId:[0-9_]+]] _[[cmpId]]
 
-// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: (.Int 2)
+// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: (.Idx 2)
 // CHECK-DAG: return_[[retId]] _[[etaVar]]

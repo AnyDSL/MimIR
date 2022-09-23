@@ -6,7 +6,7 @@
 .import direct;
 .import mem;
 
-.let I32 = .Int 4294967296;
+.let I32 = .Idx 4294967296;
 
 .lam f [a:I32] -> I32 = {
     %Wrap_add (0, 4294967296) (2:I32, a)
@@ -22,12 +22,12 @@
     h (mem, b, return)
 };
 
-.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Int 256, 0), 0), return : .Cn [%mem.M, I32]] = {
+.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
     g (mem, 40:I32, return)
 };
 
-// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, (.Int 4294967296), %mem.Ptr (%mem.Ptr ((.Int 256), 0), 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (.Int 4294967296)]] = {
-// CHECK-DAG: return_[[returnEtaId:[_0-9]*]] (mem_[[memId]], 45:(.Int 4294967296))
+// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (.Idx 4294967296)]] = {
+// CHECK-DAG: return_[[returnEtaId:[_0-9]*]] (mem_[[memId]], 45:(.Idx 4294967296))
 
-// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (.Int 4294967296)] = {
+// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (.Idx 4294967296)] = {
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]

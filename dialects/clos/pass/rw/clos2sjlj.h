@@ -20,10 +20,10 @@ public:
     const Def* rewrite(const Def*) override;
 
 private:
-    const Def* void_ptr() { return mem::type_ptr(world().type_int_width(8)); }
+    const Def* void_ptr() { return mem::type_ptr(world().type_int_(8)); }
     const Def* jb_type() { return void_ptr(); }
     const Def* rb_type() { return mem::type_ptr(void_ptr()); }
-    const Def* tag_type() { return world().type_int_width(32); }
+    const Def* tag_type() { return world().type_int_(32); }
 
     Lam* get_throw(const Def* res_type);
     Lam* get_lpad(Lam* lam, const Def* rb);

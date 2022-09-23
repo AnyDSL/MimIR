@@ -7,36 +7,36 @@
 .import core;
 .import mem;
 
-.cn .extern main(mem: %mem.M, argc: .Int 4294967296, argv: %mem.Ptr (%mem.Ptr (.Int 256, 0), 0), return: .Cn [%mem.M, .Int 4294967296]) = {
-    .cn loop(mem: %mem.M, i: .Int 4294967296, acc: .Int 4294967296) = {
-        .let cond: (.Int 2) = %core.icmp.ul 4294967296 (i, argc);
+.cn .extern main(mem: %mem.M, argc: .Idx 4294967296, argv: %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return: .Cn [%mem.M, .Idx 4294967296]) = {
+    .cn loop(mem: %mem.M, i: .Idx 4294967296, acc: .Idx 4294967296) = {
+        .let cond: (.Idx 2) = %core.icmp.ul 4294967296 (i, argc);
 
         .cn exit m: %mem.M = return (m, acc);
 
         .cn body m: %mem.M = {
-            .let inc: .Int 4294967296 = %Wrap_add (0, 4294967296) (1:(.Int 4294967296), i);
-            .let acci: .Int 4294967296 = %Wrap_add (0, 4294967296) (i, acc);
+            .let inc: .Idx 4294967296 = %Wrap_add (0, 4294967296) (1:(.Idx 4294967296), i);
+            .let acci: .Idx 4294967296 = %Wrap_add (0, 4294967296) (i, acc);
             loop (m, inc, acci)
         };
         (exit, body)#cond mem
     };
-    loop (mem, 0:(.Int 4294967296), 0:(.Int 4294967296))
+    loop (mem, 0:(.Idx 4294967296), 0:(.Idx 4294967296))
 };
 
-// CHECK-DAG: .cn .extern main _[[mainVarId:[0-9_]+]]::[mem_[[memId:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: (.Int 4294967296), %mem.Ptr (%mem.Ptr ((.Int 256), 0), 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, (.Int 4294967296)]] = {
-// CHECK-DAG: loop_[[loopId:[0-9_]+]] (mem_[[memId]], 0:(.Int 4294967296), 0:(.Int 4294967296))
+// CHECK-DAG: .cn .extern main _[[mainVarId:[0-9_]+]]::[mem_[[memId:[0-9_]+]]: %mem.M, argc_[[argcId:[0-9_]+]]: (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), return_[[returnId:[0-9_]+]]: .Cn [%mem.M, (.Idx 4294967296)]] = {
+// CHECK-DAG: loop_[[loopId:[0-9_]+]] (mem_[[memId]], 0:(.Idx 4294967296), 0:(.Idx 4294967296))
 
-// CHECK-DAG: .cn return_[[returnEtaId:[0-9_]+]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (.Int 4294967296)] = {
+// CHECK-DAG: .cn return_[[returnEtaId:[0-9_]+]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (.Idx 4294967296)] = {
 // CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]
 
-// CHECK-DAG: .cn loop_[[loopId]] _{{[0-9_]+}}::[mem_[[loopMemId:[0-9_]+]]: %mem.M, i_[[iterId:[0-9_]+]]: (.Int 4294967296), acc_[[accId:[0-9_]+]]: (.Int 4294967296)] = {
-// CHECK-DAG:   _[[condId:[0-9_]+]]: (.Int 2) = %core.icmp.XygLe 4294967296 (i_[[iterId]], argc_[[argcId]]);
+// CHECK-DAG: .cn loop_[[loopId]] _{{[0-9_]+}}::[mem_[[loopMemId:[0-9_]+]]: %mem.M, i_[[iterId:[0-9_]+]]: (.Idx 4294967296), acc_[[accId:[0-9_]+]]: (.Idx 4294967296)] = {
+// CHECK-DAG:   _[[condId:[0-9_]+]]: (.Idx 2) = %core.icmp.XygLe 4294967296 (i_[[iterId]], argc_[[argcId]]);
 // CHECK-DAG: (exit_[[exitId:[0-9_]+]], body_[[bodyId:[0-9_]+]])#_[[condId]] mem_[[loopMemId]]
 
 // CHECK-DAG: .cn exit_[[exitId]] m_[[mExitVarId:[0-9_]+]]: %mem.M = {
 // CHECK-DAG: return_[[returnEtaId]] (m_[[mExitVarId]], acc_[[accId]])
 
 // CHECK-DAG: .cn body_[[bodyId]] m_[[mBodyVarId:[0-9_]+]]: %mem.M = {
-// CHECK-DAG:   _[[addIterId:[0-9_]+]]: (.Int 4294967296) = %Wrap_add (0, 4294967296) (1:(.Int 4294967296), i_[[iterId]]);
-// CHECK-DAG:   _[[addAccId:[0-9_]+]]: (.Int 4294967296) = %Wrap_add (0, 4294967296) (acc_[[accId]], i_[[iterId]]);
+// CHECK-DAG:   _[[addIterId:[0-9_]+]]: (.Idx 4294967296) = %Wrap_add (0, 4294967296) (1:(.Idx 4294967296), i_[[iterId]]);
+// CHECK-DAG:   _[[addAccId:[0-9_]+]]: (.Idx 4294967296) = %Wrap_add (0, 4294967296) (acc_[[accId]], i_[[iterId]]);
 // CHECK-DAG: loop_[[loopId]] (m_[[mBodyVarId]], _[[addIterId]], _[[addAccId]])

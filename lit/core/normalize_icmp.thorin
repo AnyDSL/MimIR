@@ -3,7 +3,7 @@
 
 .import core;
 
-.cn .extern icmp_lit [return : .Cn .Int 2] = {
+.cn .extern icmp_lit [return : .Cn .Idx 2] = {
     return
     (%core.icmp.e 2
         (%core.icmp.uge 2
@@ -12,8 +12,8 @@
             (.tt, .ff)))
 };
 
-// CHECK-DAG: icmp_lit _[[retId:[0-9_]+]]: .Cn (.Int 2) = {
-// CHECK-DAG: _[[etaId:[0-9_]+]] 1:(.Int 2)
+// CHECK-DAG: icmp_lit _[[retId:[0-9_]+]]: .Cn (.Idx 2) = {
+// CHECK-DAG: _[[etaId:[0-9_]+]] 1:(.Idx 2)
 
-// CHECK-DAG: _[[etaId]] _[[etaVar:[0-9_]+]]: (.Int 2) = {
+// CHECK-DAG: _[[etaId]] _[[etaVar:[0-9_]+]]: (.Idx 2) = {
 // CHECK-DAG: _[[retId]] _[[etaVar]]
