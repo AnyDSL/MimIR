@@ -727,71 +727,80 @@ void Parser::parse_nom() {
 }
 
 void Parser::parse_nom_fun() {
-    auto track = tracker();
-    auto tok   = lex();
-    bool is_cn = tok.isa(Tok::Tag::K_cn);
-    assert(is_cn || tok.isa(Tok::Tag::K_lam));
-
-    scopes_.push(); // pi scope
-
+    auto track    = tracker();
+    auto tok      = lex();
+    bool is_cn    = tok.isa(Tok::Tag::K_cn);
     bool external = accept(Tok::Tag::K_extern).has_value();
     auto sym      = parse_sym("nominal lambda");
+    assert(is_cn || tok.isa(Tok::Tag::K_lam));
 
-    std::deque<std::tuple<std::unique_ptr<Ptrn>, Pi*, const Def*, Lam*>> doms;
+    auto outer = scopes_.curr();
+    scopes_.push();            // pi scope
+    Scopes::Scope other_scope; // lam scope
+
+    Lam* last_lam  = nullptr;
+    Lam* first_lam = nullptr;
+    std::deque<Pi*> pis;
     do {
-        auto prec = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
-        doms.emplace_back(parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec), nullptr, nullptr,
-                          nullptr);
-    } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) &&
-             !ahead().isa(Tok::Tag::T_semicolon));
-
-    Pi* last_pi = nullptr;
-    for (auto& [dom_p, pi, var_dbg, _] : doms) {
-        auto dom_t  = dom_p->type(world());
-        pi          = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
-        var_dbg     = world().dbg(dom_p->sym());
-        auto pi_var = pi->var(var_dbg);
+        auto prec         = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
+        const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
+        auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
+        auto dom_t        = dom_p->type(world());
+        auto pi           = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
+        auto var_dbg      = world().dbg(dom_p->sym());
+        auto pi_var       = pi->var(var_dbg);
 
         dom_p->bind(scopes_, pi_var);
+        scopes_.swap(other_scope); // swap to lam scope
 
-        if (last_pi) {
-            last_pi->set_codom(pi);
-            last_pi->set_type(pi->unfold_type());
-            // last_pi->set_dbg(track); // TODO
+        auto lam     = world().nom_lam(pi, last_lam ? nullptr : track.named(sym));
+        auto lam_var = lam->var(var_dbg);
+        if (!first_lam) first_lam = lam;
+        dom_p->bind(scopes_, lam_var);
+
+        if (accept(Tok::Tag::T_at)) {
+            if (accept(Tok::Tag::T_at)) {
+                filter = world().lit_tt();
+            } else {
+                expect(Tok::Tag::D_paren_l, "opening parenthesis of a filter");
+                filter = parse_expr("filter");
+                expect(Tok::Tag::D_paren_r, "closing parenthesis of a filter");
+            }
+        }
+        lam->set_filter(filter);
+        scopes_.swap(other_scope); // swap to pi scope
+
+        if (!pis.empty()) {
+            pis.back()->set_codom(pi);
+            last_lam->set_body(lam);
+        } else if (external) {
+            lam->make_external();
         }
 
-        last_pi = pi;
-    }
+        last_lam = lam;
+        pis.emplace_back(pi);
+    } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) &&
+             !ahead().isa(Tok::Tag::T_semicolon));
 
     auto codom = is_cn                     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
                                            : world().nom_infer_of_infer_level();
-    last_pi->set_codom(codom);
-    last_pi->set_type(codom->unfold_type());
-    last_pi->set_dbg(track);
+    pis.back()->set_codom(codom);
 
-    scopes_.pop(); // pi scope
-
-    auto outer = scopes_.curr();
-    scopes_.push(); // lam scope
-
-    Lam* last_lam = nullptr;
-    for (auto& [dom_p, pi, var_dbg, lam] : doms) {
-        lam          = world().nom_lam(pi, track.named(sym));
-        auto lam_var = lam->var(var_dbg);
-        dom_p->bind(scopes_, lam_var);
-
-        if (last_lam) last_lam->set(false, lam);
-        last_lam = lam;
+    for (auto& pi : pis | std::ranges::views::reverse) {
+        pi->set_type(codom->unfold_type());
+        codom = pi;
     }
 
-    auto first = std::get<Lam*>(doms.front());
-    scopes_.bind(outer, sym, first);
-    if (external) first->make_external();
+    scopes_.bind(outer, sym, first_lam);
 
+    scopes_.swap(other_scope); // swap to lam scope
     if (accept(Tok::Tag::T_assign)) {
         auto body = parse_expr("body of a lambda");
-        std::get<Lam*>(doms.back())->set(false, body);
+        last_lam->set_body(body);
+    } else {
+        // TODO error message if filter is non .ff
+        last_lam->unset(0);
     }
     expect(Tok::Tag::T_semicolon, "end of lambda");
 
