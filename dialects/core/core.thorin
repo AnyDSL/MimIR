@@ -176,11 +176,15 @@
 ///
 /// ### %core.conv
 ///
-/// Bit width (and signedness) conversion for `.Idx -> .Idx` and `%Real -> %Real` as well as `%Real -> .Idx` and `.Idx -> %Real` conversions.
+/// Bit width (and signedness) conversion for:
+/// * `s2s`/`u2u`: `.Idx -> .Idx` 
+/// * `s2r`/`u2r`: `.Idx -> %core.Real`
+/// * `r2s`/`r2u`: `%core.Real -> .Idx` 
+/// * `r2r`: `%core.Real -> %core.Real` 
 .ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> .Idx dw, normalize_conv;
-.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> %Real dw, normalize_conv;
-.ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -> %Real sw -> .Idx dw, normalize_conv;
-.ax %core.conv(r2r): Π [dw: .Nat, sw: .Nat] -> %Real sw -> %Real dw, normalize_conv;
+.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> %core.Real dw, normalize_conv;
+.ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -> %core.Real sw -> .Idx dw, normalize_conv;
+.ax %core.conv(r2r): Π [dw: .Nat, sw: .Nat] -> %core.Real sw -> %core.Real dw, normalize_conv;
 ///
 /// ### %core.bitcast
 ///
