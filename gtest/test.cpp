@@ -9,7 +9,6 @@
 #include "thorin/util/sys.h"
 
 #include "dialects/core/core.h"
-
 #include "helpers.h"
 
 using namespace thorin;

@@ -166,12 +166,12 @@ inline const Lit* lit_real(World& w, nat_t width, r64 val, const Def* dbg = {}) 
 ///@{
 inline const Def* op_negate(const Def* a, const Def* dbg = {}) {
     World& w = a->world();
-    auto s = as_lit(w.iinfer(a));
+    auto s   = as_lit(w.iinfer(a));
     return op(bit2::_xor, w.lit_idx(s, s - 1_u64), a, dbg);
 }
 inline const Def* op_wminus(const Def* wmode, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
-    auto s = as_lit(w.iinfer(a));
+    auto s   = as_lit(w.iinfer(a));
     return op(wrap::sub, wmode, w.lit_idx(s, 0), a, dbg);
 }
 inline const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) {
@@ -180,7 +180,7 @@ inline const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) {
 }
 inline const Def* op_rminus(const Def* rmode, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
-    auto s = as_lit(rinfer(a));
+    auto s   = as_lit(rinfer(a));
     return op(rop::sub, rmode, lit_real(w, s, -0.0), a, dbg);
 }
 inline const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) {
@@ -189,6 +189,5 @@ inline const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) {
 }
 
 ///@}
-
 
 } // namespace thorin::core
