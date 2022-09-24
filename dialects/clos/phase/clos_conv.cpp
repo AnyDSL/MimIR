@@ -4,6 +4,8 @@
 
 #include "thorin/analyses/scope.h"
 
+#include "dialects/mem/mem.h"
+
 namespace thorin::clos {
 
 /* auxillary functions */
@@ -327,11 +329,11 @@ static bool is_memop_res(const Def* fd) {
     auto proj = fd->isa<Extract>();
     if (!proj) return false;
     auto types = proj->tuple()->type()->ops();
-    return std::any_of(types.begin(), types.end(), [](auto d) { return isa<Tag::Mem>(d); });
+    return std::any_of(types.begin(), types.end(), [](auto d) { return match<mem::M>(d); });
 }
 
 void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue& worklist) {
-    assert(!isa<Tag::Mem>(fd) && "mem tokens must not be free");
+    assert(!match<mem::M>(fd) && "mem tokens must not be free");
     if (is_toplevel(fd)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
         if (var != lam->ret_var()) node->fvs.emplace(fd);

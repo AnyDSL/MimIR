@@ -146,7 +146,7 @@ std::string Emitter::convert(const Def* type) {
         } else {
             return types_[type] = "i64";
         }
-    } else if (auto real = isa<Tag::Real>(type)) {
+    } else if (auto real = match<core::Real>(type)) {
         switch (as_lit<nat_t>(real->arg())) {
             case 16: return types_[type] = "half";
             case 32: return types_[type] = "float";
@@ -475,7 +475,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             } else {
                 return std::to_string(lit->get<u64>());
             }
-        } else if (auto real = isa<Tag::Real>(lit->type())) {
+        } else if (auto real = match<core::Real>(lit->type())) {
             std::stringstream s;
             u64 hex;
 
@@ -497,25 +497,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         unreachable();
     } else if (def->isa<Bot>()) {
         return "undef";
-    } else if (auto bit = isa<Tag::Bit>(def)) {
-        auto [a, b] = bit->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(bit->type());
-
-        auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} 0, {}", t, x); };
-
-        switch (bit.sub()) {
-            // clang-format off
-            case Bit::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
-            case Bit:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);
-            case Bit::_xor: return bb.assign(name, "xor {} {}, {}", t, a, b);
-            case Bit::nand: return neg(bb.assign(name, "and {} {}, {}", t, a, b));
-            case Bit:: nor: return neg(bb.assign(name, "or  {} {}, {}", t, a, b));
-            case Bit::nxor: return neg(bb.assign(name, "xor {} {}, {}", t, a, b));
-            case Bit:: iff: return bb.assign(name, "and {} {}, {}", neg(a), b);
-            case Bit::niff: return bb.assign(name, "or  {} {}, {}", neg(a), b);
-            // clang-format on
-            default: unreachable();
-        }
     } else if (auto bit = match<core::bit2>(def)) {
         auto [a, b] = bit->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(bit->type());
@@ -524,7 +505,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         switch (bit.flags()) {
             // clang-format off
-            case core::bit2::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
             case core::bit2:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);
             case core::bit2::_xor: return bb.assign(name, "xor {} {}, {}", t, a, b);
             case core::bit2::nand: return neg(bb.assign(name, "and {} {}, {}", t, a, b));
@@ -535,17 +515,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             // clang-format on
             default: unreachable();
         }
-    } else if (auto shr = isa<Tag::Shr>(def)) {
-        auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(shr->type());
-
-        switch (shr.sub()) {
-            case Shr::ashr: op = "ashr"; break;
-            case Shr::lshr: op = "lshr"; break;
-            default: unreachable();
-        }
-
-        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto shr = match<core::shr>(def)) {
         auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(shr->type());
@@ -555,23 +524,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::shr::lshr: op = "lshr"; break;
             default: unreachable();
         }
-
-        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto wrap = isa<Tag::Wrap>(def)) {
-        auto [a, b]        = wrap->args<2>([this](auto def) { return emit(def); });
-        auto t             = convert(wrap->type());
-        auto [mode, width] = wrap->decurry()->args<2>(as_lit<nat_t>);
-
-        switch (wrap.sub()) {
-            case Wrap::add: op = "add"; break;
-            case Wrap::sub: op = "sub"; break;
-            case Wrap::mul: op = "mul"; break;
-            case Wrap::shl: op = "shl"; break;
-            default: unreachable();
-        }
-
-        if (mode & WMode::nuw) op += " nuw";
-        if (mode & WMode::nsw) op += " nsw";
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto wrap = match<core::wrap>(def)) {
@@ -607,17 +559,17 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto rop = isa<Tag::ROp>(def)) {
+    } else if (auto rop = match<core::rop>(def)) {
         auto [a, b]        = rop->args<2>([this](auto def) { return emit(def); });
         auto t             = convert(rop->type());
         auto [mode, width] = rop->decurry()->args<2>(as_lit<nat_t>);
 
-        switch (rop.sub()) {
-            case ROp::add: op = "fadd"; break;
-            case ROp::sub: op = "fsub"; break;
-            case ROp::mul: op = "fmul"; break;
-            case ROp::div: op = "fdiv"; break;
-            case ROp::rem: op = "frem"; break;
+        switch (rop.flags()) {
+            case core::rop::add: op = "fadd"; break;
+            case core::rop::sub: op = "fsub"; break;
+            case core::rop::mul: op = "fmul"; break;
+            case core::rop::div: op = "fdiv"; break;
+            case core::rop::rem: op = "frem"; break;
             default: unreachable();
         }
 
@@ -633,28 +585,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             if (mode & RMode::afn     ) op += " afn";
             if (mode & RMode::reassoc ) op += " reassoc";
             // clang-format on
-        }
-
-        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto icmp = isa<Tag::ICmp>(def)) {
-        auto [a, b] = icmp->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(icmp->arg(0)->type());
-        op          = "icmp ";
-
-        switch (icmp.sub()) {
-            // clang-format off
-            case ICmp::e:   op += "eq" ; break;
-            case ICmp::ne:  op += "ne" ; break;
-            case ICmp::sg:  op += "sgt"; break;
-            case ICmp::sge: op += "sge"; break;
-            case ICmp::sl:  op += "slt"; break;
-            case ICmp::sle: op += "sle"; break;
-            case ICmp::ug:  op += "ugt"; break;
-            case ICmp::uge: op += "uge"; break;
-            case ICmp::ul:  op += "ult"; break;
-            case ICmp::ule: op += "ule"; break;
-            // clang-format on
-            default: unreachable();
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
@@ -680,66 +610,32 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto rcmp = isa<Tag::RCmp>(def)) {
+    } else if (auto rcmp = match<core::rcmp>(def)) {
         auto [a, b] = rcmp->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(rcmp->arg(0)->type());
         op          = "fcmp ";
 
-        switch (rcmp.sub()) {
+        switch (rcmp.flags()) {
             // clang-format off
-            case RCmp::  e: op += "oeq"; break;
-            case RCmp::  l: op += "olt"; break;
-            case RCmp:: le: op += "ole"; break;
-            case RCmp::  g: op += "ogt"; break;
-            case RCmp:: ge: op += "oge"; break;
-            case RCmp:: ne: op += "one"; break;
-            case RCmp::  o: op += "ord"; break;
-            case RCmp::  u: op += "uno"; break;
-            case RCmp:: ue: op += "ueq"; break;
-            case RCmp:: ul: op += "ult"; break;
-            case RCmp::ule: op += "ule"; break;
-            case RCmp:: ug: op += "ugt"; break;
-            case RCmp::uge: op += "uge"; break;
-            case RCmp::une: op += "une"; break;
+            case core::rcmp::  e: op += "oeq"; break;
+            case core::rcmp::  l: op += "olt"; break;
+            case core::rcmp:: le: op += "ole"; break;
+            case core::rcmp::  g: op += "ogt"; break;
+            case core::rcmp:: ge: op += "oge"; break;
+            case core::rcmp:: ne: op += "one"; break;
+            case core::rcmp::  o: op += "ord"; break;
+            case core::rcmp::  u: op += "uno"; break;
+            case core::rcmp:: ue: op += "ueq"; break;
+            case core::rcmp:: ul: op += "ult"; break;
+            case core::rcmp::ule: op += "ule"; break;
+            case core::rcmp:: ug: op += "ugt"; break;
+            case core::rcmp::uge: op += "uge"; break;
+            case core::rcmp::une: op += "une"; break;
             // clang-format on
             default: unreachable();
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto conv = isa<Tag::Conv>(def)) {
-        auto src   = emit(conv->arg());
-        auto src_t = convert(conv->arg()->type());
-        auto dst_t = convert(conv->type());
-
-        auto size2width = [&](const Def* type) {
-            if (auto idx = type->isa<Idx>()) {
-                if (idx->size()->isa<Top>()) return 64_u64;
-                if (auto width = size2bitwidth(as_lit(idx->size()))) return *width;
-                return 64_u64;
-            }
-            return as_lit(as<Tag::Real>(type)->arg());
-        };
-
-        nat_t s_src = size2width(conv->arg()->type());
-        nat_t s_dst = size2width(conv->type());
-
-        // this might happen when casting from int top to i64
-        if (s_src == s_dst && (conv.sub() == Conv::s2s || conv.sub() == Conv::u2u)) return src;
-
-        switch (conv.sub()) {
-            // clang-format off
-            case Conv::s2s: op = s_src < s_dst ? "sext"  : "trunc";   break;
-            case Conv::u2u: op = s_src < s_dst ? "zext"  : "trunc";   break;
-            case Conv::r2r: op = s_src < s_dst ? "fpext" : "fptrunc"; break;
-            case Conv::s2r: op = "sitofp"; break;
-            case Conv::u2r: op = "uitofp"; break;
-            case Conv::r2s: op = "fptosi"; break;
-            case Conv::r2u: op = "fptoui"; break;
-            // clang-format on
-            default: unreachable();
-        }
-
-        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
     } else if (auto conv = match<core::conv>(def)) {
         auto src   = emit(conv->arg());
         auto src_t = convert(conv->arg()->type());
@@ -751,7 +647,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 if (auto width = size2bitwidth(as_lit(idx->size()))) return *width;
                 return 64_u64;
             }
-            return as_lit(as<Tag::Real>(type)->arg());
+            return as_lit(match<core::Real>(type)->arg());
         };
 
         nat_t s_src = size2width(conv->arg()->type());
@@ -773,39 +669,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             default: unreachable();
         }
 
-        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
-    } else if (auto bitcast = isa<Tag::Bitcast>(def)) {
-        auto dst_type_ptr = match<mem::Ptr>(bitcast->type());
-        auto src_type_ptr = match<mem::Ptr>(bitcast->arg()->type());
-        auto src          = emit(bitcast->arg());
-        auto src_t        = convert(bitcast->arg()->type());
-        auto dst_t        = convert(bitcast->type());
-
-        if (auto lit = isa_lit(bitcast->arg()); lit && *lit == 0) return "zeroinitializer";
-        // clang-format off
-        if (src_type_ptr && dst_type_ptr) return bb.assign(name,  "bitcast {} {} to {}", src_t, src, dst_t);
-        if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", src_t, src, dst_t);
-        if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
-        // clang-format on
-
-        auto size2width = [&](const Def* type) {
-            if (type->isa<Nat>()) return 64_u64;
-            if (auto idx = type->isa<Idx>()) {
-                if (idx->size()->isa<Top>() || !idx->size()->isa<Lit>()) return 64_u64;
-                if (auto width = size2bitwidth(as_lit(idx->size()))) return std::bit_ceil(*width);
-                return 64_u64;
-            }
-            return 0_u64;
-        };
-
-        auto src_size = size2width(bitcast->arg()->type());
-        auto dst_size = size2width(bitcast->type());
-
-        op = "bitcast";
-        if (src_size && dst_size) {
-            if (src_size == dst_size) return src;
-            op = (src_size < dst_size) ? "zext" : "trunc";
-        }
         return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
     } else if (auto bitcast = match<core::bitcast>(def)) {
         auto dst_type_ptr = match<mem::Ptr>(bitcast->type());
@@ -914,7 +777,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // TODO this was von closure-conv branch which I need to double-check
         if (tuple->isa<Var>()) {
             // computing the index may crash, so we bail out
-            assert(isa<Tag::Mem>(extract->type()) && "only mem-var should not be mapped");
+            assert(match<core::Mem>(extract->type()) && "only mem-var should not be mapped");
             return {};
         }
 #endif

@@ -67,7 +67,7 @@ static void commute(O op, const Def*& a, const Def*& b) {
 }
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. See commute().
-template<class Op, Op op, bool isaWrap = std::is_same_v<Op, Wrap>>
+template<class Op, Op op, bool isa_wrap = std::is_same_v<Op, wrap>>
 static const Def* fold(World& world, const Def* type, const App* callee, const Def*& a, const Def*& b, const Def* dbg) {
     static constexpr int min_w = std::is_same_v<Op, rop> || std::is_same_v<Op, rcmp> ? 16 : 1;
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
@@ -77,7 +77,7 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
     if (la && lb) {
         nat_t width;
         [[maybe_unused]] bool nsw = false, nuw = false;
-        if constexpr (std::is_same_v<Op, Wrap>) {
+        if constexpr (std::is_same_v<Op, wrap>) {
             auto [mode, w] = callee->args<2>(as_lit<nat_t>);
             nsw            = mode & WMode::nsw;
             nuw            = mode & WMode::nuw;
@@ -85,7 +85,7 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
         } else if (auto idx = a->type()->isa<Idx>()) {
             width = as_lit(idx->size());
         } else {
-            width = as_lit(as<Tag::Real>(a->type())->arg());
+            width = as_lit(match<Real>(a->type())->arg());
         }
 
         if (is_int<Op>()) width = *size2bitwidth(width);
@@ -95,7 +95,7 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
 #define CODE(i)                                                             \
     case i:                                                                 \
         if constexpr (i >= min_w) {                                         \
-            if constexpr (isaWrap)                                          \
+            if constexpr (isa_wrap)                                         \
                 res = Fold<Op, op, i>::run(la->get(), lb->get(), nsw, nuw); \
             else                                                            \
                 res = Fold<Op, op, i>::run(la->get(), lb->get());           \
@@ -375,6 +375,25 @@ const Def* normalize_rcmp(const Def* type, const Def* c, const Def* arg, const D
     return world.raw_app(callee, {a, b}, dbg);
 }
 
+template<bit1 sub>
+const Def* normalize_bit1(const Def* type, const Def* c, const Def* a, const Def* dbg) {
+    auto& world = type->world();
+    auto callee = c->as<App>();
+    auto s      = isa_lit(callee->arg());
+    auto l      = isa_lit(a);
+
+    switch (sub) {
+        case bit1::f: return world.lit_idx(*s, 0);
+        case bit1::t: return world.lit_idx(*s, *s - 1_u64);
+        case bit1::id: return a;
+        default: break;
+    }
+
+    if (l) return world.lit_idx_mod(*s, ~*l);
+
+    return world.raw_app(callee, a, dbg);
+}
+
 template<bit2 sub>
 const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
@@ -397,8 +416,8 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
         case bit2::    t: return world.lit_idx(*w, *w-1_u64);
         case bit2::    a: return a;
         case bit2::    b: return b;
-        case bit2::   na: return world.op_negate(a, dbg);
-        case bit2::   nb: return world.op_negate(b, dbg);
+        case bit2::   na: return op_negate(a, dbg);
+        case bit2::   nb: return op_negate(b, dbg);
         case bit2:: ciff: return op(bit2:: iff, b, a, dbg);
         case bit2::nciff: return op(bit2::niff, b, a, dbg);
         default:         break;
@@ -422,7 +441,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
         if (!x && !y) return world.lit_idx(*w, 0);
         if ( x &&  y) return world.lit_idx(*w, *w-1_u64);
         if (!x &&  y) return a;
-        if ( x && !y && sub != bit2::_xor) return world.op_negate(a, dbg);
+        if ( x && !y && sub != bit2::_xor) return op_negate(a, dbg);
         return nullptr;
     };
     // clang-format on
