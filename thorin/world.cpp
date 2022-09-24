@@ -58,70 +58,15 @@ World::World(const State& state)
     data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
 
     auto nat         = type_nat();
-    data_.type_real_ = axiom(pi(nat, type()), Axiom::Global_Dialect, Tag::Real, 0); // real: w: Nat -> *
 
     {
 #define CODE(T, o)             \
     data_.T##_[size_t(T::o)] = \
         axiom(normalize_##T<T::o>, ty, Axiom::Global_Dialect, Tag::T, sub_t(T::o), dbg(op2str(T::o)));
     }
-    { // bit: w: nat -> [int w, int w] -> int w
-        auto ty    = nom_pi(type())->set_dom(nat);
-        auto idx_w = type_idx(ty->var(dbg("w")));
-        ty->set_codom(pi({idx_w, idx_w}, idx_w));
-        THORIN_BIT(CODE)
-    }
-    { // Shr: w: nat -> [int w, int w] -> int w
-        auto ty    = nom_pi(type())->set_dom(nat);
-        auto idx_w = type_idx(ty->var(dbg("w")));
-        ty->set_codom(pi({idx_w, idx_w}, idx_w));
-        THORIN_SHR(CODE)
-    }
-    { // Wrap: [m: nat, w: nat] -> [int w, int w] -> int w
-        auto ty     = nom_pi(type())->set_dom({nat, nat});
-        auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
-        auto idx_w  = type_idx(w);
-        ty->set_codom(pi({idx_w, idx_w}, idx_w));
-        THORIN_WRAP(CODE)
-    }
-    { // ROp: [m: nat, w: nat] -> [real w, real w] -> real w
-        auto ty     = nom_pi(type())->set_dom({nat, nat});
-        auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
-        auto real_w = type_real(w);
-        ty->set_codom(pi({real_w, real_w}, real_w));
-        THORIN_R_OP(CODE)
-    }
-    { // ICmp: w: nat -> [int w, int w] -> bool
-        auto ty    = nom_pi(type())->set_dom(nat);
-        auto idx_w = type_idx(ty->var(dbg("w")));
-        ty->set_codom(pi({idx_w, idx_w}, type_bool()));
-        THORIN_I_CMP(CODE)
-    }
-    { // RCmp: [m: nat, w: nat] -> [real w, real w] -> bool
-        auto ty     = nom_pi(type())->set_dom({nat, nat});
-        auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
-        auto real_w = type_real(w);
-        ty->set_codom(pi({real_w, real_w}, type_bool()));
-        THORIN_R_CMP(CODE)
-    }
     { // trait: T: * -> nat
         auto ty = pi(type(), nat);
         THORIN_TRAIT(CODE)
-    }
-#undef CODE
-    { // Conv: [dw: nat, sw: nat] -> i/r sw -> i/r dw
-        auto make_type = [&](Conv o) {
-            auto ty       = nom_pi(type())->set_dom({nat, nat});
-            auto [dw, sw] = ty->vars<2>({dbg("dw"), dbg("sw")});
-            auto type_dw  = o == Conv::s2r || o == Conv::u2r || o == Conv::r2r ? type_real(dw) : type_idx(dw);
-            auto type_sw  = o == Conv::r2s || o == Conv::r2u || o == Conv::r2r ? type_real(sw) : type_idx(sw);
-            return ty->set_codom(pi(type_sw, type_dw));
-        };
-#define CODE(T, o)                                                                                             \
-    data_.Conv_[size_t(T::o)] = axiom(normalize_Conv<T::o>, make_type(T::o), Axiom::Global_Dialect, Tag::Conv, \
-                                      sub_t(T::o), dbg(op2str(T::o)));
-        THORIN_CONV(CODE)
-#undef CODE
     }
     { // hlt/run: T: * -> T -> T
         auto ty = nom_pi(type())->set_dom(type());
@@ -138,12 +83,6 @@ World::World(const State& state)
         ty->set_codom(pi(T, type_bool()));
         data_.PE_[size_t(PE::known)] = axiom(normalize_PE<PE::known>, ty, Axiom::Global_Dialect, Tag::PE,
                                              sub_t(PE::known), dbg(op2str(PE::known)));
-    }
-    { // bitcast: [D: *, S: *] -> S -> D
-        auto ty     = nom_pi(type())->set_dom({type(), type()});
-        auto [D, S] = ty->vars<2>({dbg("D"), dbg("S")});
-        ty->set_codom(pi(S, D));
-        data_.bitcast_ = axiom(normalize_bitcast, ty, Axiom::Global_Dialect, Tag::Bitcast, 0, dbg("bitcast"));
     }
     { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i»
         // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»

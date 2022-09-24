@@ -6,6 +6,8 @@
 
 namespace thorin::core {
 
+//const Def* rinfer(const Def* def) { return as<Tag::Real>(def->type())->arg(); }
+
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
 inline const Def* fn(bit2 o, const Def* mod, const Def* dbg = {}) {
@@ -150,5 +152,28 @@ inline const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* 
     return insert_unsafe(d, w.lit_idx(0_u64, i), val, dbg);
 }
 ///@}
+
+const Axiom* type_real() { return data_.type_real_; }
+const Def* type_real(const Def* width) { return app(type_real(), width); }
+const Def* type_real(nat_t width) { return type_real(lit_nat(width)); }
+
+template<class R>
+const Lit* lit_real(World& w, R val, const Def* dbg = {}) {
+    static_assert(std::is_floating_point<R>() || std::is_same<R, r16>());
+    if constexpr (false) {}
+    else if constexpr (sizeof(R) == 2) return w.lit(type_real(16), thorin::bitcast<u16>(val), dbg);
+    else if constexpr (sizeof(R) == 4) return w.lit(type_real(32), thorin::bitcast<u32>(val), dbg);
+    else if constexpr (sizeof(R) == 8) return w.lit(type_real(64), thorin::bitcast<u64>(val), dbg);
+    else unreachable();
+}
+
+const Lit* lit_real(nat_t width, r64 val, const Def* dbg = {}) {
+    switch (width) {
+        case 16: assert(r64(r16(r32(val))) == val && "loosing precision"); return lit_real(r16(r32(val)), dbg);
+        case 32: assert(r64(r32(   (val))) == val && "loosing precision"); return lit_real(r32(   (val)), dbg);
+        case 64: assert(r64(r64(   (val))) == val && "loosing precision"); return lit_real(r64(   (val)), dbg);
+        default: unreachable();
+    }
+}
 
 } // namespace thorin::core

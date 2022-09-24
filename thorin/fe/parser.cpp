@@ -279,9 +279,6 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
             // HACK hard-coded some built-in axioms
             auto tok = lex();
             auto s = tok.sym().to_string();
-            if (s == "%Real"    ) return world().type_real();
-            if (s == "%Wrap_add") return world().ax(Wrap::add);
-            if (s == "%Wrap_sub") return world().ax(Wrap::sub);
             return scopes_.find(tok.sym());
         }
         default:
