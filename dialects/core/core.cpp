@@ -1,9 +1,10 @@
+#include "dialects/core/core.h"
+
 #include <thorin/config.h>
 #include <thorin/pass/pass.h>
 
 #include "thorin/dialects.h"
 
-#include "dialects/core/core.h"
 #include "dialects/core/be/ll/ll.h"
 
 using namespace thorin;
@@ -44,4 +45,4 @@ const Sigma* convert(const TBound<up>* b) {
 template const Sigma* convert(const TBound<false>*);
 template const Sigma* convert(const TBound<true>*);
 
-}
+} // namespace thorin::core

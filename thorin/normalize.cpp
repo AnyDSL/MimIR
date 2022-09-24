@@ -62,7 +62,7 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
  * instantiate templates
  */
 
-#define CODE(T, o) template const Def* normalize_ ## T<T::o>(const Def*, const Def*, const Def*, const Def*);
+#define CODE(T, o) template const Def* normalize_##T<T::o>(const Def*, const Def*, const Def*, const Def*);
 THORIN_PE(CODE)
 #undef CODE
 

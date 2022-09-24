@@ -596,7 +596,7 @@ private:
         const Def* table_id;
         const Def* table_not;
         std::array<const Lit*, 2> lit_bool_;
-        std::array<const Axiom*, Num<PE   >> PE_;
+        std::array<const Axiom*, Num<PE>> PE_;
         const Lit* lit_nat_0_;
         const Lit* lit_nat_1_;
         const Lit* lit_nat_max_;
