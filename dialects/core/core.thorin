@@ -12,7 +12,58 @@
 ///
 .ax %core.Real: .Nat -> *;
 ///
-/// ## Operations
+/// ## Integer Operations
+///
+/// ### %core.bit1
+///
+/// This *unary* bitwise operations offers all [4 possible operations](https://en.wikipedia.org/wiki/Truth_table#Unary_operations) as summarized in the following table:
+///
+/// | Subtag | A | a | Comment                      |
+/// |--------|---|---|------------------------------|
+/// | f      | o | o | always false                 |
+/// | neg    | o | x | negate                       |
+/// | id     | x | o | identity                     |
+/// | t      | x | x | always true                  |
+.ax %core.bit1(f, neg, id, t): Π w: .Nat -> .Idx w -> .Idx w;
+///
+/// ### %core.bit2
+///
+/// This *binary* bitwise operations offers all [16 possible operations](https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators) as summarized in the following table:
+///
+/// | Subtag | AB | Ab | aB | ab | Comment                      |
+/// |--------|----|----|----|----|------------------------------|
+/// | f      |  o |  o |  o |  o | always false                 |
+/// | nor    |  o |  o |  o |  x | not or                       |
+/// | nciff  |  o |  o |  x |  o | not converse implication     |
+/// | na     |  o |  o |  x |  x | not first argument           |
+/// | niff   |  o |  x |  o |  o | not implication              |
+/// | nb     |  o |  x |  o |  x | not second argument          |
+/// | _xor   |  o |  x |  x |  o | exclusive or                 |
+/// | nand   |  o |  x |  x |  x | not and                      |
+/// | _and   |  x |  o |  o |  o | and                          |
+/// | nxor   |  x |  o |  o |  x | not exclusive or             |
+/// | b      |  x |  o |  x |  o | second argument              |
+/// | iff    |  x |  o |  x |  x | implication (if and only if) |
+/// | a      |  x |  x |  o |  o | first argment                |
+/// | ciff   |  x |  x |  o |  x | converse implication         |
+/// | _or    |  x |  x |  x |  o | or                           |
+/// | t      |  x |  x |  x |  x | always true                  |
+.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
+                _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
+    Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w , normalize_bit2;
+///
+/// ### %core.shr
+///
+/// Integer operations that neither take a WMode nor do produce a side effect - arithmetic or logical shift right.
+.ax %core.shr(ashr, lshr): Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_shr;
+///
+/// ### %core.wrap
+///
+.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [.Idx w, .Idx w] -> .Idx w, normalize_wrap;
+///
+/// ### %core.div
+///
+.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, .Idx w, .Idx w] -> [%mem.M, .Idx w], normalize_div;
 ///
 /// ### %core.icmp
 ///
@@ -82,55 +133,44 @@
                XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
     Π w: .Nat -> [.Idx w, .Idx w] -> .Bool , normalize_icmp;
 ///
-/// ### %core.bit1
+/// ## Real Operations
 ///
-/// This *unary* bitwise operations offers all [4 possible operations](https://en.wikipedia.org/wiki/Truth_table#Unary_operations) as summarized in the following table:
+/// ### %core.rop
 ///
-/// | Subtag | A | a | Comment                      |
-/// |--------|---|---|------------------------------|
-/// | f      | o | o | always false                 |
-/// | neg    | o | x | negate                       |
-/// | id     | x | o | identity                     |
-/// | t      | x | x | always true                  |
-.ax %core.bit1(f, neg, id, t): Π w: .Nat -> .Idx w -> .Idx w;
+.ax %core.rop(add, sub, mul, div, rem): Π [m: .Nat, w: .Nat] -> [%core.Real w, %core.Real w] -> %core.Real w, normalize_rop;
 ///
-/// ### %core.bit2
+/// ### %core.rcmp
 ///
-/// This *binary* bitwise operations offers all [16 possible operations](https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators) as summarized in the following table:
+/// | Subtag    | Alias | Meaning                      |        
+/// |-----------|-------|------------------------------|
+/// | `u g l e` |   `f` | always false                 |              
+/// | `u g l E` |   `e` | ordered and equal            |    
+/// | `u g L e` |   `l` | ordered and less             |    
+/// | `u g L E` |  `le` | ordered and less or equal    |    
+/// | `u G l e` |   `g` | ordered and greater          |    
+/// | `u G l E` |  `ge` | ordered and greater or equal |    
+/// | `u G L e` |  `ne` | ordered and not equal        |    
+/// | `u G L E` |   `o` | ordered (no NaNs)            |    
+/// | `U g l e` |   `u` | unordered (either NaNs)      |    
+/// | `U g l E` |  `ue` | unordered or equal           |    
+/// | `U g L e` |  `ul` | unordered or less            |    
+/// | `U g L E` | `ule` | unordered or less or equal   |    
+/// | `U G l e` |  `ug` | unordered or greater         |    
+/// | `U G l E` | `uge` | unordered or greater or equa |    
+/// | `U G L e` | `une` | unordered or not equal       |    
+/// | `U G L E` |   `t` | always true                  |    
 ///
-/// | Subtag | AB | Ab | aB | ab | Comment                      |
-/// |--------|----|----|----|----|------------------------------|
-/// | f      |  o |  o |  o |  o | always false                 |
-/// | nor    |  o |  o |  o |  x | not or                       |
-/// | nciff  |  o |  o |  x |  o | not converse implication     |
-/// | na     |  o |  o |  x |  x | not first argument           |
-/// | niff   |  o |  x |  o |  o | not implication              |
-/// | nb     |  o |  x |  o |  x | not second argument          |
-/// | _xor   |  o |  x |  x |  o | exclusive or                 |
-/// | nand   |  o |  x |  x |  x | not and                      |
-/// | _and   |  x |  o |  o |  o | and                          |
-/// | nxor   |  x |  o |  o |  x | not exclusive or             |
-/// | b      |  x |  o |  x |  o | second argument              |
-/// | iff    |  x |  o |  x |  x | implication (if and only if) |
-/// | a      |  x |  x |  o |  o | first argment                |
-/// | ciff   |  x |  x |  o |  x | converse implication         |
-/// | _or    |  x |  x |  x |  o | or                           |
-/// | t      |  x |  x |  x |  x | always true                  |
-.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
-                _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
-    Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w , normalize_bit2;
+/// * `U`: unordered
+/// * `G`: greater
+/// * `L`: less
+/// * `E`: equal
+.ax %core.rcmp(ugle =   f, uglE =   e, ugLe =   l, ugLE =  le,
+               uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
+               Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
+               UGle =  ug, UGlE = uge, UGLe = une, UGLE =   t):
+    Π [m: .Nat, w: .Nat] -> [%core.Real w, %core.Real w] -> .Bool, normalize_rcmp;
 ///
-/// ### %core.shr
-///
-.ax %core.shr(ashr, lshr): Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_shr;
-///
-/// ### %core.wrap
-///
-.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [.Idx w, .Idx w] -> .Idx w, normalize_wrap;
-///
-/// ### %core.div
-///
-.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, .Idx w, .Idx w] -> [%mem.M, .Idx w], normalize_div;
+/// ## Conversions
 ///
 /// ### %core.conv
 ///

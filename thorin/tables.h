@@ -35,13 +35,11 @@ using sub_t     = u8;
     m(Mem, mem) m(Real, real) m(Ptr, ptr)                                  \
     m(Bit, bit) m(Shr, shr) m(Wrap, wrap) m(ROp, rop)                      \
     m(ICmp, icmp) m(RCmp, rcmp)                                            \
-    m(Trait, trait) m(Conv, conv) m(PE, pe) m(Acc, acc)                    \
+    m(Trait, trait) m(Conv, conv) m(PE, pe)                                \
     m(Bitcast, bitcast) m(LEA, lea)                                        \
     m(Alloc, alloc) m(Slot, slot) m(Malloc, malloc) m(Mslot, mslot)        \
     m(Load, load) m(Remem, remem) m(Store, store)                          \
-    m(Atomic, atomic)                                                      \
-    m(Zip, zip) m(For, affine_for)                                         \
-    m(RevDiff, rev_diff) m(TangentVector, tangent_vector)                  \
+    m(Zip, zip)
 
 namespace WMode {
 enum : nat_t {
@@ -81,8 +79,6 @@ enum RMode : nat_t {
 #define THORIN_CONV(m) m(Conv, s2s) m(Conv, u2u) m(Conv, s2r) m(Conv, u2r) m(Conv, r2s) m(Conv, r2u) m(Conv, r2r)
 /// Partial Evaluation related operations
 #define THORIN_PE(m) m(PE, hlt) m(PE, known) m(PE, run)
-/// Accelerators
-#define THORIN_ACC(m) m(Acc, vecotrize) m(Acc, parallel) m(Acc, opencl) m(Acc, cuda) m(Acc, nvvm) m (Acc, amdgpu)
 
 
 /// The 5 relations are disjoint and are organized as follows:
@@ -200,7 +196,6 @@ enum class RCmp   : sub_t { THORIN_R_CMP(CODE) };
 enum class Trait  : sub_t { THORIN_TRAIT(CODE) };
 enum class Conv   : sub_t { THORIN_CONV (CODE) };
 enum class PE     : sub_t { THORIN_PE   (CODE) };
-enum class Acc    : sub_t { THORIN_ACC  (CODE) };
 #undef CODE
 
 constexpr ICmp operator|(ICmp a, ICmp b) { return ICmp(sub_t(a) | sub_t(b)); }
@@ -221,7 +216,6 @@ constexpr std::string_view op2str(RCmp  o) { switch (o) { THORIN_R_CMP(CODE) def
 constexpr std::string_view op2str(Trait o) { switch (o) { THORIN_TRAIT(CODE) default: unreachable(); } }
 constexpr std::string_view op2str(Conv  o) { switch (o) { THORIN_CONV (CODE) default: unreachable(); } }
 constexpr std::string_view op2str(PE    o) { switch (o) { THORIN_PE   (CODE) default: unreachable(); } }
-constexpr std::string_view op2str(Acc   o) { switch (o) { THORIN_ACC  (CODE) default: unreachable(); } }
 #undef CODE
 
 namespace AddrSpace {
@@ -249,7 +243,6 @@ template<> inline constexpr size_t Num<RCmp > = 0_s THORIN_R_CMP(CODE);
 template<> inline constexpr size_t Num<Trait> = 0_s THORIN_TRAIT(CODE);
 template<> inline constexpr size_t Num<Conv > = 0_s THORIN_CONV (CODE);
 template<> inline constexpr size_t Num<PE   > = 0_s THORIN_PE   (CODE);
-template<> inline constexpr size_t Num<Acc  > = 0_s THORIN_ACC  (CODE);
 #undef CODE
 
 template<tag_t t> struct Tag2Enum_      { using type = tag_t; };
@@ -262,7 +255,6 @@ template<> struct Tag2Enum_<Tag::RCmp > { using type = RCmp;    };
 template<> struct Tag2Enum_<Tag::Trait> { using type = Trait;   };
 template<> struct Tag2Enum_<Tag::Conv > { using type = Conv;    };
 template<> struct Tag2Enum_<Tag::PE   > { using type = PE;      };
-template<> struct Tag2Enum_<Tag::Acc  > { using type = Acc;     };
 template<tag_t t> using Tag2Enum = typename Tag2Enum_<t>::type;
 
 // clang-format on

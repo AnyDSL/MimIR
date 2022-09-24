@@ -108,14 +108,6 @@ World::World(const State& state)
         auto ty = pi(type(), nat);
         THORIN_TRAIT(CODE)
     }
-    // todo: move to some dialect..
-    // { // acc: n: nat -> cn[M, cn[M, int w n, cn[M, []]]]
-    //     // TODO this is more a proof of concept
-    //     auto ty = nom_pi(type())->set_dom(nat);
-    //     auto n  = ty->var(0, dbg("n"));
-    //     ty->set_codom(cn_mem_ret(type_idx(n), sigma()));
-    //     THORIN_ACC(CODE)
-    // }
 #undef CODE
     { // Conv: [dw: nat, sw: nat] -> i/r sw -> i/r dw
         auto make_type = [&](Conv o) {
@@ -152,12 +144,6 @@ World::World(const State& state)
         auto [D, S] = ty->vars<2>({dbg("D"), dbg("S")});
         ty->set_codom(pi(S, D));
         data_.bitcast_ = axiom(normalize_bitcast, ty, Axiom::Global_Dialect, Tag::Bitcast, 0, dbg("bitcast"));
-    }
-    { // atomic: [T: *, R: *] -> T -> R
-        auto ty     = nom_pi(type())->set_dom({type(), type()});
-        auto [T, R] = ty->vars<2>({dbg("T"), dbg("R")});
-        ty->set_codom(pi(T, R));
-        data_.atomic_ = axiom(nullptr, ty, Axiom::Global_Dialect, Tag::Atomic, 0, dbg("atomic"));
     }
     { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i»
         // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»

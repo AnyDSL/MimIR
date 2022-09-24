@@ -436,7 +436,6 @@ public:
     /// @name bulitin axioms
     ///@{
     // clang-format off
-    const Axiom* ax(Acc   o)  const { return data_.Acc_  [size_t(o)]; }
     const Axiom* ax(Bit   o)  const { return data_.Bit_  [size_t(o)]; }
     const Axiom* ax(Conv  o)  const { return data_.Conv_ [size_t(o)]; }
     const Axiom* ax(ICmp  o)  const { return data_.ICmp_ [size_t(o)]; }
@@ -446,7 +445,6 @@ public:
     const Axiom* ax(Shr   o)  const { return data_.Shr_  [size_t(o)]; }
     const Axiom* ax(Trait o)  const { return data_.Trait_[size_t(o)]; }
     const Axiom* ax(Wrap  o)  const { return data_.Wrap_ [size_t(o)]; }
-    const Axiom* ax_atomic()  const { return data_.atomic_;  }
     const Axiom* ax_bitcast() const { return data_.bitcast_; }
     const Axiom* ax_zip()     const { return data_.zip_;     }
     // clang-format on
@@ -477,7 +475,6 @@ public:
     const Def* fn(O o, nat_t other, nat_t size, const Def* dbg = {}) {
         return fn(o, lit_nat(other), lit_nat(size), dbg);
     }
-    const Def* fn_atomic(const Def* fn, const Def* dbg = {}) { return app(ax_atomic(), fn, dbg); }
     const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg = {}) {
         return app(ax_bitcast(), {dst_t, src_t}, dbg);
     }
@@ -511,10 +508,6 @@ public:
     }
     const Def* op(Trait o, const Def* type, const Def* dbg = {}) { return app(ax(o), type, dbg); }
     const Def* op(PE o, const Def* def, const Def* dbg = {}) { return app(app(ax(o), def->type()), def, dbg); }
-    const Def* op(Acc o, const Def* a, const Def* b, const Def* body, const Def* dbg = {}) {
-        return app(ax(o), {a, b, body}, dbg);
-    }
-    const Def* op_atomic(const Def* fn, Defs args, const Def* dbg = {}) { return app(fn_atomic(fn), args, dbg); }
     const Def* op_bitcast(const Def* dst_type, const Def* src, const Def* dbg = {}) {
         return app(fn_bitcast(dst_type, src->type()), src, dbg);
     }
@@ -721,14 +714,12 @@ private:
         std::array<const Axiom*, Num<Trait>> Trait_;
         std::array<const Axiom*, Num<Conv >> Conv_;
         std::array<const Axiom*, Num<PE   >> PE_;
-        std::array<const Axiom*, Num<Acc  >> Acc_;
         // clang-format on
         const Lit* lit_nat_0_;
         const Lit* lit_nat_1_;
         const Lit* lit_nat_max_;
         const Lit* lit_univ_0_;
         const Lit* lit_univ_1_;
-        const Axiom* atomic_;
         const Axiom* bitcast_;
         const Axiom* type_real_;
         const Axiom* zip_;

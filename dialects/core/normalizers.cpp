@@ -5,8 +5,113 @@
 
 #include "dialects/core/core.h"
 
-namespace thorin::normalize {
-using namespace thorin::core;
+namespace thorin::core {
+
+template<class T>
+static T get(u64 u) {
+    return thorin::bitcast<T>(u);
+}
+
+// clang-format off
+template<class O> constexpr bool is_int      () { return true;  }
+template<>        constexpr bool is_int<rop >() { return false; }
+template<>        constexpr bool is_int<rcmp>() { return false; }
+// clang-format on
+
+/*
+ * Fold
+ */
+
+// This code assumes two-complement arithmetic for unsigned operations.
+// This is *implementation-defined* but *NOT* *undefined behavior*.
+
+class Res {
+public:
+    Res()
+        : data_{} {}
+    template<class T>
+    Res(T val)
+        : data_(thorin::bitcast<u64>(val)) {}
+
+    constexpr const u64& operator*() const& { return *data_; }
+    constexpr u64& operator*() & { return *data_; }
+    explicit operator bool() const { return data_.has_value(); }
+
+private:
+    std::optional<u64> data_;
+};
+
+template<class T, T, nat_t>
+struct Fold {};
+
+/*
+ * bigger logic used by several ops
+ */
+
+template<class T>
+constexpr bool is_commutative(T) {
+    return false;
+}
+
+template<class T>
+constexpr bool is_associative(T op) {
+    return is_commutative(op);
+}
+
+template<class O>
+static void commute(O op, const Def*& a, const Def*& b) {
+    if (is_commutative(op)) {
+        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
+            std::swap(a, b); // swap lit to left, or smaller gid to left if no lit present
+    }
+}
+
+/// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. See commute().
+template<class Op, Op op, bool isaWrap = std::is_same_v<Op, Wrap>>
+static const Def* fold(World& world, const Def* type, const App* callee, const Def*& a, const Def*& b, const Def* dbg) {
+    static constexpr int min_w = std::is_same_v<Op, rop> || std::is_same_v<Op, rcmp> ? 16 : 1;
+    auto la = a->isa<Lit>(), lb = b->isa<Lit>();
+
+    if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type, dbg);
+
+    if (la && lb) {
+        nat_t width;
+        [[maybe_unused]] bool nsw = false, nuw = false;
+        if constexpr (std::is_same_v<Op, Wrap>) {
+            auto [mode, w] = callee->args<2>(as_lit<nat_t>);
+            nsw            = mode & WMode::nsw;
+            nuw            = mode & WMode::nuw;
+            width          = w;
+        } else if (auto idx = a->type()->isa<Idx>()) {
+            width = as_lit(idx->size());
+        } else {
+            width = as_lit(as<Tag::Real>(a->type())->arg());
+        }
+
+        if (is_int<Op>()) width = *size2bitwidth(width);
+
+        Res res;
+        switch (width) {
+#define CODE(i)                                                             \
+    case i:                                                                 \
+        if constexpr (i >= min_w) {                                         \
+            if constexpr (isaWrap)                                          \
+                res = Fold<Op, op, i>::run(la->get(), lb->get(), nsw, nuw); \
+            else                                                            \
+                res = Fold<Op, op, i>::run(la->get(), lb->get());           \
+        }                                                                   \
+        break;
+            THORIN_1_8_16_32_64(CODE)
+#undef CODE
+            default: unreachable();
+        }
+
+        return res ? world.lit(type, *res, dbg) : world.bot(type, dbg);
+    }
+
+    commute(op, a, b);
+    return nullptr;
+}
 
 /// Use like this:
 /// `a op b = tab[a][b]`
@@ -18,17 +123,13 @@ constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 sub) {
 }
 
 // clang-format off
-
-// we rely on dependent lookup, so these cannot be overloads, but instead have to be
-// template specializations
+// We rely on dependent lookup, so these cannot be overloads, but instead have to be template specializations.
 template <>
 constexpr bool is_commutative(wrap sub) { return sub == wrap:: add || sub == wrap::mul; }
-// todo: real op fixme
-// constexpr bool is_commutative(ROp  sub) { return sub == ROp :: add || sub == ROp ::mul; }
+constexpr bool is_commutative(rop  sub) { return sub == rop :: add || sub == rop ::mul; }
 template <>
 constexpr bool is_commutative(icmp sub) { return sub == icmp::   e || sub == icmp:: ne; }
-// todo: real op fixme
-// constexpr bool is_commutative(RCmp sub) { return sub == RCmp::   e || sub == RCmp:: ne; }
+constexpr bool is_commutative(rcmp sub) { return sub == rcmp::   e || sub == rcmp:: ne; }
 template <>
 constexpr bool is_commutative(bit2  sub) {
     auto tab = make_truth_table(sub);
@@ -50,7 +151,6 @@ constexpr bool is_associative(bit2 sub) {
         default: return false;
     }
 }
-
 
 template<nat_t w>
 struct Fold<wrap, wrap::add, w> {
@@ -114,12 +214,11 @@ template<nat_t w> struct Fold<div, div::urem, w> { static Res run(u64 a, u64 b) 
 template<nat_t w> struct Fold<shr, shr::ashr, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
 template<nat_t w> struct Fold<shr, shr::lshr, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
 
-// todo: real op fixme
-// template<nat_t w> struct Fold<ROp, ROp:: add, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) + get<T>(b)); } };
-// template<nat_t w> struct Fold<ROp, ROp:: sub, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) - get<T>(b)); } };
-// template<nat_t w> struct Fold<ROp, ROp:: mul, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) * get<T>(b)); } };
-// template<nat_t w> struct Fold<ROp, ROp:: div, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) / get<T>(b)); } };
-// template<nat_t w> struct Fold<ROp, ROp:: rem, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(rem(get<T>(a), get<T>(b))); } };
+template<nat_t w> struct Fold<rop, rop:: add, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) + get<T>(b)); } };
+template<nat_t w> struct Fold<rop, rop:: sub, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) - get<T>(b)); } };
+template<nat_t w> struct Fold<rop, rop:: mul, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) * get<T>(b)); } };
+template<nat_t w> struct Fold<rop, rop:: div, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) / get<T>(b)); } };
+template<nat_t w> struct Fold<rop, rop:: rem, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(rem(get<T>(a), get<T>(b))); } };
 // clang-format on
 
 template<icmp cmp, nat_t w>
@@ -135,6 +234,20 @@ struct Fold<icmp, cmp, w> {
         result |= ((cmp & icmp::xyGle) != icmp::f) && x > y && !mp;
         result |= ((cmp & icmp::xygLe) != icmp::f) && x < y && !pm;
         result |= ((cmp & icmp::xyglE) != icmp::f) && x == y;
+        return result;
+    }
+};
+
+template<rcmp cmp, nat_t w>
+struct Fold<rcmp, cmp, w> {
+    inline static Res run(u64 a, u64 b) {
+        using T = w2r<w>;
+        auto x = get<T>(a), y = get<T>(b);
+        bool result = false;
+        result |= ((cmp & rcmp::u) != rcmp::f) && std::isunordered(x, y);
+        result |= ((cmp & rcmp::g) != rcmp::f) && x > y;
+        result |= ((cmp & rcmp::l) != rcmp::f) && x < y;
+        result |= ((cmp & rcmp::e) != rcmp::f) && x == y;
         return result;
     }
 };
@@ -167,12 +280,10 @@ static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a
             res |= tab[a_sub & 1][b_sub & 1] << 7_u8;
         res >>= (7_u8 - u8(num_bits));
 
-        // auto& world = a->world();
-        // todo: real op fixme
-        // if constexpr (std::is_same_v<AxTag, rcmp>)
-        // return op(rcmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
-        // else
-        return op(icmp(flags_t(icmp::Axiom_Base) | res), a_cmp->arg(0), a_cmp->arg(1), dbg);
+        if constexpr (std::is_same_v<AxTag, rcmp>)
+            return op(rcmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
+        else
+            return op(icmp(flags_t(icmp::Axiom_Base) | res), a_cmp->arg(0), a_cmp->arg(1), dbg);
     }
 
     return nullptr;
@@ -204,24 +315,22 @@ reassociate(AxTag sub, World& /*world*/, [[maybe_unused]] const App* ab, const D
 
     std::function<const Def*(const Def*, const Def*)> make_op;
 
-    // todo: real op fixme
-    // if constexpr (sub == Tag::ROp) {
-    //     // build rmode for all new ops by using the least upper bound of all involved apps
-    //     nat_t rmode     = RMode::bot;
-    //     auto check_mode = [&](const App* app) {
-    //         auto app_m = isa_lit(app->arg(0));
-    //         if (!app_m || !(*app_m & RMode::reassoc)) return false;
-    //         rmode &= *app_m; // least upper bound
-    //         return true;
-    //     };
+     if constexpr (std::is_same_v<AxTag, rop>) {
+         // build rmode for all new ops by using the least upper bound of all involved apps
+         nat_t rmode     = RMode::bot;
+         auto check_mode = [&](const App* app) {
+             auto app_m = isa_lit(app->arg(0));
+             if (!app_m || !(*app_m & RMode::reassoc)) return false;
+             rmode &= *app_m; // least upper bound
+             return true;
+         };
 
-    //     if (!check_mode(ab)) return nullptr;
-    //     if (lx && !check_mode(xy->decurry())) return nullptr;
-    //     if (lz && !check_mode(zw->decurry())) return nullptr;
+         if (!check_mode(ab)) return nullptr;
+         if (lx && !check_mode(xy->decurry())) return nullptr;
+         if (lz && !check_mode(zw->decurry())) return nullptr;
 
-    //     make_op = [&](const Def* a, const Def* b) { return op(sub, rmode, a, b, dbg); };
-    // } else
-    if constexpr (std::is_same_v<AxTag, wrap>) {
+         make_op = [&](const Def* a, const Def* b) { return op(sub, rmode, a, b, dbg); };
+     } else if constexpr (std::is_same_v<AxTag, wrap>) {
         // if we reassociate Wraps, we have to forget about nsw/nuw
         make_op = [&](const Def* a, const Def* b) { return op(sub, WMode::none, a, b, dbg); };
     } else {
@@ -235,11 +344,6 @@ reassociate(AxTag sub, World& /*world*/, [[maybe_unused]] const App* ab, const D
 
     return nullptr;
 }
-} // namespace thorin::normalize
-
-namespace thorin::core {
-
-using namespace thorin::normalize;
 
 template<icmp sub>
 const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
@@ -258,6 +362,19 @@ const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg, const D
     return world.raw_app(callee, {a, b}, dbg);
 }
 
+template<rcmp op>
+const Def* normalize_rcmp(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+    auto& world = type->world();
+    auto callee = c->as<App>();
+    auto [a, b] = arg->projs<2>();
+
+    if (auto result = fold<rcmp, op>(world, type, callee, a, b, dbg)) return result;
+    if (op == rcmp::f) return world.lit_ff();
+    if (op == rcmp::t) return world.lit_tt();
+
+    return world.raw_app(callee, {a, b}, dbg);
+}
+
 template<bit2 sub>
 const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
@@ -269,8 +386,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
 
     auto tab = make_truth_table(sub);
     if (auto res = merge_cmps<icmp>(tab, a, b, dbg)) return res;
-    // todo: real op fixme
-    // if (auto res = merge_cmps<rcmp>(tab, a, b, dbg)) return res;
+    if (auto res = merge_cmps<rcmp>(tab, a, b, dbg)) return res;
 
     auto la = isa_lit(a);
     auto lb = isa_lit(b);
@@ -511,7 +627,7 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
     type             = type->as<Sigma>()->op(1); // peel of actual type
     auto make_res    = [&, mem = mem](const Def* res) { return world.tuple({mem, res}, dbg); };
 
-    if (auto result = normalize::fold<div, op>(world, type, callee, a, b, dbg)) return make_res(result);
+    if (auto result = fold<div, op>(world, type, callee, a, b, dbg)) return make_res(result);
 
     if (auto la = a->isa<Lit>()) {
         if (la == world.lit_idx(*w, 0)) return make_res(la); // 0 / b -> 0 and 0 % b -> 0
