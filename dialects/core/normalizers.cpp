@@ -345,6 +345,72 @@ reassociate(AxTag sub, World& /*world*/, [[maybe_unused]] const App* ab, const D
     return nullptr;
 }
 
+template<rop op>
+const Def* normalize_rop(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+    auto& world = type->world();
+    auto callee = c->as<App>();
+    auto [a, b] = arg->projs<2>();
+    auto [m, w] = callee->args<2>(isa_lit<nat_t>); // mode and width
+
+    if (auto result = fold<rop, op>(world, type, callee, a, b, dbg)) return result;
+
+    // clang-format off
+    // TODO check rmode properly
+    if (m && *m == RMode::fast) {
+        if (auto la = a->isa<Lit>()) {
+            if (la == lit_real(world, *w, 0.0)) {
+                switch (op) {
+                    case rop::add: return b;    // 0 + b -> b
+                    case rop::sub: break;
+                    case rop::mul: return la;   // 0 * b -> 0
+                    case rop::div: return la;   // 0 / b -> 0
+                    case rop::rem: return la;   // 0 % b -> 0
+                    default: unreachable();
+                }
+            }
+
+            if (la == lit_real(world, *w, 1.0)) {
+                switch (op) {
+                    case rop::add: break;
+                    case rop::sub: break;
+                    case rop::mul: return b;    // 1 * b -> b
+                    case rop::div: break;
+                    case rop::rem: break;
+                    default: unreachable();
+                }
+            }
+        }
+
+        if (auto lb = b->isa<Lit>()) {
+            if (lb == lit_real(world, *w, 0.0)) {
+                switch (op) {
+                    case rop::sub: return a;    // a - 0 -> a
+                    case rop::div: break;
+                    case rop::rem: break;
+                    default: unreachable();
+                    // add, mul are commutative, the literal has been normalized to the left
+                }
+            }
+        }
+
+        if (a == b) {
+            switch (op) {
+                case core::rop::add: return core::op(core::rop::mul, lit_real(world, *w, 2.0), a, dbg); // a + a -> 2 * a
+                case core::rop::sub: return lit_real(world, *w, 0.0);                             // a - a -> 0
+                case core::rop::mul: break;
+                case core::rop::div: return lit_real(world, *w, 1.0);                             // a / a -> 1
+                case core::rop::rem: break;
+                default: unreachable();
+            }
+        }
+    }
+    // clang-format on
+
+    if (auto res = reassociate<rop>(op, world, callee, a, b, dbg)) return res;
+
+    return world.raw_app(callee, {a, b}, dbg);
+}
+
 template<icmp sub>
 const Def* normalize_icmp(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
