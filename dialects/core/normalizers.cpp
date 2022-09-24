@@ -315,22 +315,22 @@ reassociate(AxTag sub, World& /*world*/, [[maybe_unused]] const App* ab, const D
 
     std::function<const Def*(const Def*, const Def*)> make_op;
 
-     if constexpr (std::is_same_v<AxTag, rop>) {
-         // build rmode for all new ops by using the least upper bound of all involved apps
-         nat_t rmode     = RMode::bot;
-         auto check_mode = [&](const App* app) {
-             auto app_m = isa_lit(app->arg(0));
-             if (!app_m || !(*app_m & RMode::reassoc)) return false;
-             rmode &= *app_m; // least upper bound
-             return true;
-         };
+    if constexpr (std::is_same_v<AxTag, rop>) {
+        // build rmode for all new ops by using the least upper bound of all involved apps
+        nat_t rmode     = RMode::bot;
+        auto check_mode = [&](const App* app) {
+            auto app_m = isa_lit(app->arg(0));
+            if (!app_m || !(*app_m & RMode::reassoc)) return false;
+            rmode &= *app_m; // least upper bound
+            return true;
+        };
 
-         if (!check_mode(ab)) return nullptr;
-         if (lx && !check_mode(xy->decurry())) return nullptr;
-         if (lz && !check_mode(zw->decurry())) return nullptr;
+        if (!check_mode(ab)) return nullptr;
+        if (lx && !check_mode(xy->decurry())) return nullptr;
+        if (lz && !check_mode(zw->decurry())) return nullptr;
 
-         make_op = [&](const Def* a, const Def* b) { return op(sub, rmode, a, b, dbg); };
-     } else if constexpr (std::is_same_v<AxTag, wrap>) {
+        make_op = [&](const Def* a, const Def* b) { return op(sub, rmode, a, b, dbg); };
+    } else if constexpr (std::is_same_v<AxTag, wrap>) {
         // if we reassociate Wraps, we have to forget about nsw/nuw
         make_op = [&](const Def* a, const Def* b) { return op(sub, WMode::none, a, b, dbg); };
     } else {
