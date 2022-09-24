@@ -57,7 +57,7 @@ World::World(const State& state)
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
     data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
 
-    auto nat         = type_nat();
+    auto nat = type_nat();
 
     {
 #define CODE(T, o)             \

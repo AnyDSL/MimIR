@@ -6,7 +6,7 @@
 
 namespace thorin::core {
 
-//const Def* rinfer(const Def* def) { return as<Tag::Real>(def->type())->arg(); }
+// const Def* rinfer(const Def* def) { return as<Tag::Real>(def->type())->arg(); }
 
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
@@ -157,6 +157,7 @@ const Axiom* type_real() { return data_.type_real_; }
 const Def* type_real(const Def* width) { return app(type_real(), width); }
 const Def* type_real(nat_t width) { return type_real(lit_nat(width)); }
 
+// clang-format off
 template<class R>
 const Lit* lit_real(World& w, R val, const Def* dbg = {}) {
     static_assert(std::is_floating_point<R>() || std::is_same<R, r16>());
@@ -175,5 +176,6 @@ const Lit* lit_real(nat_t width, r64 val, const Def* dbg = {}) {
         default: unreachable();
     }
 }
+// clang-format on
 
 } // namespace thorin::core
