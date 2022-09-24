@@ -98,6 +98,10 @@ inline const Def* op(conv o, const Def* dst_type, const Def* src, const Def* dbg
     auto s   = get_size(src->type());
     return w.app(fn(o, d, s), src, dbg);
 }
+inline const Def* op(trait o, const Def* type, const Def* dbg = {}) {
+    World& w = type->world();
+    return w.app(w.ax(o), type, dbg);
+}
 inline const Def* op_bitcast(const Def* dst_type, const Def* src, const Def* dbg = {}) {
     World& w = dst_type->world();
     return w.app(fn_bitcast(dst_type, src->type()), src, dbg);
@@ -189,5 +193,10 @@ inline const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) {
 }
 
 ///@}
+
+template<bool up>
+const Sigma* convert(const TBound<up>* b);
+
+inline const Sigma* convert(const Bound* b) { return b->isa<Join>() ? convert(b->as<Join>()) : convert(b->as<Meet>()); }
 
 } // namespace thorin::core

@@ -93,17 +93,8 @@ inline const Def* op_slot(const Def* type, const Def* mem, const Def* dbg = {}) 
     return w.app(w.app(w.ax<slot>(), {type, w.lit_nat_0()}), {mem, w.lit_nat(w.curr_gid())}, dbg);
 }
 
-inline const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {}) {
-    World& w  = type->world();
-    auto size = w.op(Trait::size, type);
-    return w.app(w.app(w.ax<malloc>(), {type, w.lit_nat_0()}), {mem, size}, dbg);
-}
-
-inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {}) {
-    World& w  = type->world();
-    auto size = w.op(Trait::size, type);
-    return w.app(w.app(w.ax<mslot>(), {type, w.lit_nat_0()}), {mem, size, id}, dbg);
-}
+const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
+const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
 
 inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
     return match<M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;

@@ -59,15 +59,6 @@ World::World(const State& state)
 
     auto nat = type_nat();
 
-    {
-#define CODE(T, o)             \
-    data_.T##_[size_t(T::o)] = \
-        axiom(normalize_##T<T::o>, ty, Axiom::Global_Dialect, Tag::T, sub_t(T::o), dbg(op2str(T::o)));
-    }
-    { // trait: T: * -> nat
-        auto ty = pi(type(), nat);
-        THORIN_TRAIT(CODE)
-    }
     { // hlt/run: T: * -> T -> T
         auto ty = nom_pi(type())->set_dom(type());
         auto T  = ty->var(dbg("T"));

@@ -4,6 +4,7 @@
 #include "thorin/tables.h"
 
 #include "dialects/core/core.h"
+#include "dialects/mem/mem.h"
 
 namespace thorin::core {
 
@@ -818,6 +819,79 @@ const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* 
     }
 
     return world.raw_app(callee, src, dbg);
+}
+
+// TODO I guess we can do that with C++20 <bit>
+inline u64 pad(u64 offset, u64 align) {
+    auto mod = offset % align;
+    if (mod != 0) offset += align - mod;
+    return offset;
+}
+
+// TODO this currently hard-codes x86_64 ABI
+// TODO in contrast to C, we might want to give singleton types like '.Idx 1' or '[]' a size of 0 and simply nuke each
+// and every occurance of these types in a later phase
+// TODO Pi and others
+template<trait op>
+const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const Def* dbg) {
+    auto& world = type->world();
+    if (auto ptr = match<mem::Ptr>(type)) {
+        return world.lit_nat(8);
+    } else if (type->isa<Pi>()) {
+        return world.lit_nat(8); // Gets lowered to function ptr
+    } else if (auto idx = type->isa<Idx>()) {
+        if (idx->size()->isa<Top>()) return world.lit_nat(8);
+        if (auto w = isa_lit(idx->size())) {
+            if (*w == 0) return world.lit_nat(8);
+            if (*w <= 0x0000'0000'0000'0100_u64) return world.lit_nat(1);
+            if (*w <= 0x0000'0000'0001'0000_u64) return world.lit_nat(2);
+            if (*w <= 0x0000'0001'0000'0000_u64) return world.lit_nat(4);
+            return world.lit_nat(8);
+        }
+    } else if (auto real = match<Real>(type)) {
+        if (auto w = isa_lit(real->arg())) {
+            switch (*w) {
+                case 16: return world.lit_nat(2);
+                case 32: return world.lit_nat(4);
+                case 64: return world.lit_nat(8);
+                default: unreachable();
+            }
+        }
+    } else if (type->isa<Sigma>() || type->isa<Meet>()) {
+        u64 offset = 0;
+        u64 align  = 1;
+        for (auto t : type->ops()) {
+            auto a = isa_lit(core::op(trait::align, t));
+            auto s = isa_lit(core::op(trait::size, t));
+            if (!a || !s) goto out;
+
+            align  = std::max(align, *a);
+            offset = pad(offset, *a) + *s;
+        }
+
+        offset   = pad(offset, align);
+        u64 size = std::max(1_u64, offset);
+
+        switch (op) {
+            case trait::align: return world.lit_nat(align);
+            case trait::size: return world.lit_nat(size);
+        }
+    } else if (auto arr = type->isa_structural<Arr>()) {
+        auto align = core::op(trait::align, arr->body());
+        if constexpr (op == trait::align) return align;
+
+        if (auto b = isa_lit(core::op(trait::size, arr->body()))) {
+            auto i64_t = world.type_int_(64);
+            auto s     = op_bitcast(i64_t, arr->shape());
+            auto mul   = core::op(wrap::mul, WMode::nsw | WMode::nuw, world.lit_idx(i64_t, *b), s);
+            return op_bitcast(world.type_nat(), mul);
+        }
+    } else if (auto join = type->isa<Join>()) {
+        if (auto sigma = convert(join)) return core::op(op, sigma, dbg);
+    }
+
+out:
+    return world.raw_app(callee, type, dbg);
 }
 
 THORIN_core_NORMALIZER_IMPL

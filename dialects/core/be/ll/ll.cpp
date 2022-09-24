@@ -726,7 +726,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t, p, ll_ptr, i_t, ll_i);
-    } else if (auto trait = isa<Tag::Trait>(def)) {
+    } else if (match<core::trait>(def)) {
         unreachable();
     } else if (auto malloc = match<mem::malloc>(def)) {
         emit_unsafe(malloc->arg(0));

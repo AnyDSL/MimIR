@@ -415,16 +415,12 @@ public:
 
     /// @name bulitin axioms
     ///@{
-    // clang-format off
-    const Axiom* ax(PE    o)  const { return data_.PE_   [size_t(o)]; }
-    const Axiom* ax(Trait o)  const { return data_.Trait_[size_t(o)]; }
-    const Axiom* ax_zip()     const { return data_.zip_;     }
-    // clang-format on
+    const Axiom* ax(PE o) const { return data_.PE_[size_t(o)]; }
+    const Axiom* ax_zip() const { return data_.zip_; }
     ///@}
 
     /// @name op - these guys build the final function application for the various operations
     ///@{
-    const Def* op(Trait o, const Def* type, const Def* dbg = {}) { return app(ax(o), type, dbg); }
     const Def* op(PE o, const Def* def, const Def* dbg = {}) { return app(app(ax(o), def->type()), def, dbg); }
     ///@}
 
@@ -600,10 +596,7 @@ private:
         const Def* table_id;
         const Def* table_not;
         std::array<const Lit*, 2> lit_bool_;
-        // clang-format off
-        std::array<const Axiom*, Num<Trait>> Trait_;
         std::array<const Axiom*, Num<PE   >> PE_;
-        // clang-format on
         const Lit* lit_nat_0_;
         const Lit* lit_nat_1_;
         const Lit* lit_nat_max_;

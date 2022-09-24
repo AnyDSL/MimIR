@@ -6,6 +6,7 @@
 #include "thorin/error.h"
 #include "thorin/world.h"
 
+#include "thorin/fe/parser.h"
 #include "thorin/util/sys.h"
 
 #include "dialects/core/core.h"
@@ -15,6 +16,11 @@ using namespace thorin;
 
 TEST(Zip, fold) {
     World w;
+
+    Normalizers normalizers;
+    auto core_d = Dialect::load("core", {});
+    core_d.register_normalizers(normalizers);
+    fe::Parser::import_module(w, "core", {}, &normalizers);
 
     // clang-format off
     auto a = w.tuple({w.tuple({w.lit_idx( 0), w.lit_idx( 1), w.lit_idx( 2)}),
