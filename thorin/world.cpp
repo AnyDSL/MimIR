@@ -15,7 +15,6 @@
 #include "thorin/def.h"
 #include "thorin/error.h"
 #include "thorin/rewrite.h"
-#include "thorin/tables.h"
 
 #include "thorin/analyses/scope.h"
 #include "thorin/util/array.h"

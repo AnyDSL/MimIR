@@ -11,8 +11,7 @@ namespace thorin::h {
 void Bootstrapper::emit(std::ostream& h) {
     tab.print(h, "#pragma once\n\n");
     tab.print(h, "#include \"thorin/axiom.h\"\n"
-                 "#include \"thorin/dialects.h\"\n"
-                 "#include \"thorin/tables.h\"\n\n");
+                 "#include \"thorin/dialects.h\"\n\n");
 
     tab.print(h, "namespace thorin {{\nnamespace {} {{\n\n", dialect_);
 

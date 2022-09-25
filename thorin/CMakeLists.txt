@@ -21,7 +21,6 @@ add_library(libthorin
     rewrite.h
     tuple.cpp
     tuple.h
-    tables.h
     world.cpp
     world.h
     analyses/cfg.cpp

@@ -124,34 +124,6 @@ struct Tag2Def_ {
 template<tag_t t>
 using Tag2Def = typename Tag2Def_<t>::type;
 
-template<tag_t t>
-Match<Tag2Enum<t>, Tag2Def<t>> isa(const Def* def) {
-    auto [axiom, curry] = Axiom::get(def);
-    if (axiom && axiom->dialect() == Axiom::Global_Dialect && axiom->tag() == t && curry == 0)
-        return {axiom, def->as<Tag2Def<t>>()};
-    return {};
-}
-
-template<tag_t t>
-Match<Tag2Enum<t>, Tag2Def<t>> isa(Tag2Enum<t> tag, const Def* def) {
-    auto [axiom, curry] = Axiom::get(def);
-    if (axiom && axiom->dialect() == Axiom::Global_Dialect && axiom->tag() == t && axiom->tag() == tag_t(tag) &&
-        curry == 0)
-        return {axiom, def->as<Tag2Def<t>>()};
-    return {};
-}
-
-template<tag_t t>
-Match<Tag2Enum<t>, Tag2Def<t>> as(const Def* d) {
-    assert(isa<t>(d));
-    return {std::get<0>(Axiom::get(d)), d->as<App>()};
-}
-template<tag_t t>
-Match<Tag2Enum<t>, Tag2Def<t>> as(Tag2Enum<t> f, const Def* d) {
-    assert((isa<t>(f, d)));
-    return {std::get<0>(Axiom::get(d)), d->as<App>()};
-}
-
 constexpr uint64_t bitwidth2size(uint64_t n) {
     assert(n != 0);
     return n == 64 ? 0 : (1_u64 << n);

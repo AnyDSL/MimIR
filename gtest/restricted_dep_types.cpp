@@ -8,7 +8,6 @@
 #include "thorin/def.h"
 #include "thorin/dialects.h"
 #include "thorin/error.h"
-#include "thorin/tables.h"
 #include "thorin/world.h"
 
 #include "thorin/fe/parser.h"

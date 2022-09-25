@@ -5,8 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "thorin/tables.h"
-
 #include "thorin/be/emitter.h"
 #include "thorin/pass/pass.h"
 #include "thorin/pass/pipelinebuilder.h"
