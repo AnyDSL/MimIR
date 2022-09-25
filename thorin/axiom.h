@@ -79,39 +79,29 @@ concept axiom_from_dialect = axiom_with_sub_tags<AxTag> || axiom_without_sub_tag
 template<class T, class D>
 class Match {
 public:
-    Match()
-        : axiom_(nullptr)
-        , def_(nullptr) {}
+    Match() = default;
     Match(const Axiom* axiom, const D* def)
         : axiom_(axiom)
         , def_(def) {}
 
+    /// @name getters
+    ///@{
     const Axiom* axiom() const { return axiom_; }
-    tag_t tag() const { return axiom()->tag(); }
-    auto sub() const {
-        if constexpr (axiom_from_dialect<T>)
-            return axiom()->sub();
-        else
-            return T(axiom()->sub());
-    }
-    auto flags() const {
-        if constexpr (axiom_from_dialect<T>)
-            return T(axiom()->flags());
-        else
-            return axiom()->flags();
-    }
-    void clear() {
-        axiom_ = nullptr;
-        def_   = nullptr;
-    }
-
     const D* operator->() const { return def_; }
     operator const D*() const { return def_; }
     explicit operator bool() { return axiom_ != nullptr; }
+    ///@}
+
+    /// @name split dialect name
+    ///@{
+    tag_t tag() const { return axiom()->tag(); }
+    auto sub() const { return axiom()->sub(); }
+    auto flags() const { return T(axiom()->flags()); }
+    ///@}
 
 private:
-    const Axiom* axiom_;
-    const D* def_;
+    const Axiom* axiom_ = nullptr;
+    const D* def_ = nullptr;
 };
 
 constexpr uint64_t bitwidth2size(uint64_t n) {
