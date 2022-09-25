@@ -54,9 +54,9 @@
 ///
 /// ### %core.shr
 ///
-/// Shift right - integer operations that neither takes a WMode nor produces a side effect:
+/// Shift right - integer operation that neither takes a WMode nor produces a side effect:
 /// * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
-/// * [`l`logical shift right](https://en.wikipedia.org/wiki/Logical_shift)
+/// * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
 .ax %core.shr(a, l): Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_shr;
 ///
 /// ### %core.wrap
@@ -66,6 +66,9 @@
 ///
 /// ### %core.div
 ///
+/// Signed and unsigned Integer division/remainder.
+/// Division by zero is undefined behavior and thus a visible side effect.
+/// For this reason, these axioms expect a `%mem.M`.
 .ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, .Idx w, .Idx w] -> [%mem.M, .Idx w], normalize_div;
 ///
 /// ### %core.icmp
@@ -96,40 +99,40 @@
 /// And here is the overview of all possible combinations of relations.
 /// Note the aliases you can use for the common integer comparisions front-ends typically want to use:
 ///
-/// | Subtag  | Aliases | X | Y | G | L | E | Meaning                                         |
-/// |---------|---------| --|---|---|---|---|-------------------------------------------------|
-/// | `xygle` |  `f`    | o | o | o | o | o | always false                                    |
-/// | `xyglE` |  `e`    | o | o | o | o | x | equal                                           |
-/// | `xygLe` |         | o | o | o | x | o | less (same sign)                                |
-/// | `xyglE` |         | o | o | o | x | x | less or equal                                   |
-/// | `xyGle` |         | o | o | x | o | o | greater (same sign)                             |
-/// | `xyGlE` |         | o | o | x | o | x | greater or equal                                |
-/// | `xyGLe` |         | o | o | x | x | o | greater or less                                 |
-/// | `xyGLE` |         | o | o | x | x | x | greater or less or equal == same sign           |
-/// | `xYgle` |         | o | x | o | o | o | minus plus                                      |
-/// | `xYglE` |         | o | x | o | o | x | minus plus or equal                             |
-/// | `xYgLe` |  `sl`   | o | x | o | x | o | signed less                                     |
-/// | `xYglE` |  `sle`  | o | x | o | x | x | signed less or equal                            |
-/// | `xYGle` |  `ug`   | o | x | x | o | o | unsigned greater                                |
-/// | `xYGlE` |  `uge`  | o | x | x | o | x | unsigned greater or equal                       |
-/// | `xYGLe` |         | o | x | x | x | o | minus plus or greater or less                   |
-/// | `xYGLE` |         | o | x | x | x | x | not plus minus                                  |
-/// | `Xygle` |         | x | o | o | o | o | plus minus                                      |
-/// | `XyglE` |         | x | o | o | o | x | plus minus or equal                             |
-/// | `XygLe` |  `ul`   | x | o | o | x | o | unsigned less                                   |
-/// | `XyglE` |  `ule`  | x | o | o | x | x | unsigned less or equal                          |
-/// | `XyGle` |  `sg`   | x | o | x | o | o | signed greater                                  |
-/// | `XyGlE` |  `sge`  | x | o | x | o | x | signed greater or equal                         |
-/// | `XyGLe` |         | x | o | x | x | o | greater or less or plus minus                   |
-/// | `XyGLE` |         | x | o | x | x | x | not minus plus                                  |
-/// | `XYgle` |         | x | x | o | o | o | different sign                                  |
-/// | `XYglE` |         | x | x | o | o | x | different sign or equal                         |
-/// | `XYgLe` |         | x | x | o | x | o | signed or unsigned less                         |
-/// | `XYglE` |         | x | x | o | x | x | signed or unsigned less or equal == not greater |
-/// | `XYGle` |         | x | x | x | o | o | signed or unsigned greater                      |
-/// | `XYGlE` |         | x | x | x | o | x | signed or unsigned greater or equal == not less |
-/// | `XYGLe` |  `ne`   | x | x | x | x | o | not equal                                       |
-/// | `XYGLE` |  `t`    | x | x | x | x | x | always true                                     |
+/// | Subtag  | Alias  | X | Y | G | L | E | Meaning                                         |
+/// |---------|--------| --|---|---|---|---|-------------------------------------------------|
+/// | `xygle` |  `f`   | o | o | o | o | o | always false                                    |
+/// | `xyglE` |  `e`   | o | o | o | o | x | equal                                           |
+/// | `xygLe` |        | o | o | o | x | o | less (same sign)                                |
+/// | `xyglE` |        | o | o | o | x | x | less or equal                                   |
+/// | `xyGle` |        | o | o | x | o | o | greater (same sign)                             |
+/// | `xyGlE` |        | o | o | x | o | x | greater or equal                                |
+/// | `xyGLe` |        | o | o | x | x | o | greater or less                                 |
+/// | `xyGLE` |        | o | o | x | x | x | greater or less or equal == same sign           |
+/// | `xYgle` |        | o | x | o | o | o | minus plus                                      |
+/// | `xYglE` |        | o | x | o | o | x | minus plus or equal                             |
+/// | `xYgLe` |  `sl`  | o | x | o | x | o | signed less                                     |
+/// | `xYglE` |  `sle` | o | x | o | x | x | signed less or equal                            |
+/// | `xYGle` |  `ug`  | o | x | x | o | o | unsigned greater                                |
+/// | `xYGlE` |  `uge` | o | x | x | o | x | unsigned greater or equal                       |
+/// | `xYGLe` |        | o | x | x | x | o | minus plus or greater or less                   |
+/// | `xYGLE` |        | o | x | x | x | x | not plus minus                                  |
+/// | `Xygle` |        | x | o | o | o | o | plus minus                                      |
+/// | `XyglE` |        | x | o | o | o | x | plus minus or equal                             |
+/// | `XygLe` |  `ul`  | x | o | o | x | o | unsigned less                                   |
+/// | `XyglE` |  `ule` | x | o | o | x | x | unsigned less or equal                          |
+/// | `XyGle` |  `sg`  | x | o | x | o | o | signed greater                                  |
+/// | `XyGlE` |  `sge` | x | o | x | o | x | signed greater or equal                         |
+/// | `XyGLe` |        | x | o | x | x | o | greater or less or plus minus                   |
+/// | `XyGLE` |        | x | o | x | x | x | not minus plus                                  |
+/// | `XYgle` |        | x | x | o | o | o | different sign                                  |
+/// | `XYglE` |        | x | x | o | o | x | different sign or equal                         |
+/// | `XYgLe` |        | x | x | o | x | o | signed or unsigned less                         |
+/// | `XYglE` |        | x | x | o | x | x | signed or unsigned less or equal == not greater |
+/// | `XYGle` |        | x | x | x | o | o | signed or unsigned greater                      |
+/// | `XYGlE` |        | x | x | x | o | x | signed or unsigned greater or equal == not less |
+/// | `XYGLe` |  `ne`  | x | x | x | x | o | not equal                                       |
+/// | `XYGLE` |  `t`   | x | x | x | x | x | always true                                     |
 .ax %core.icmp(xygle = f, xyglE = e, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,
                xYgle,     xYglE,     xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
                Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
@@ -201,14 +204,16 @@
 /// 
 /// Yields the size or align of a type.
 .ax %core.trait(size, align): * -> .Nat, normalize_trait;
-///
-/// For now, not a better place for this ...
-.ax %core.zip: Π [r: .Nat, s: «r; .Nat»] 
-    -> Π [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i»
-    -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»», normalize_zip;
 /// 
 /// ### %core.pe
 /// 
 /// Steers the partial evaluator.
 .ax %core.pe(hlt, run): Π T: * -> T -> T, normalize_pe;
 .ax %core.pe(known): Π T: * -> T -> .Bool, normalize_pe;
+///
+/// ### %core.zip
+///
+/// For now, not a better place for this and will be moved elsewhere.
+.ax %core.zip: Π [r: .Nat, s: «r; .Nat»] 
+    -> Π [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i»
+    -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»», normalize_zip;
