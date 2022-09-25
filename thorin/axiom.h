@@ -66,6 +66,9 @@ public:
 template<class T>
 constexpr size_t NumSubs = size_t(-1);
 
+template<class T>
+constexpr size_t AxId = size_t(-1);
+
 // clang-format off
 template<class AxTag>
 concept axiom_with_subs = NumSubs<AxTag> != 0;
@@ -122,26 +125,20 @@ struct Enum2DefImpl {
 template<class AxTag>
 using Enum2Def = typename Enum2DefImpl<AxTag>::type;
 
-template<class AxTag>
-constexpr AxTag base_value() {
-    static_assert(NumSubs<AxTag> != size_t(-1), "unknown sub tag");
-    if constexpr (axiom_with_subs<AxTag>)
-        return AxTag::Axiom_Base;
-    else
-        return AxTag::Axiom_Id;
-}
-
 } // namespace detail
 
 template<class AxTag, bool Check = true>
 Match<AxTag, detail::Enum2Def<AxTag>> match(const Def* def) {
+    static_assert(NumSubs<AxTag> != size_t(-1), "invalid number of sub tags");
+    static_assert(AxId<AxTag> != size_t(-1), "invalid axiom id");
+
     auto [axiom, curry] = Axiom::get(def);
     if constexpr (Check) {
-        if (axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>() && curry == 0)
+        if (axiom && (axiom->flags() & ~0xFF_u64) == AxId<AxTag> && curry == 0)
             return {axiom, def->as<detail::Enum2Def<AxTag>>()};
         return {};
     }
-    assert(axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>() && curry == 0 &&
+    assert(axiom && (axiom->flags() & ~0xFF_u64) == AxId<AxTag> && curry == 0 &&
            "assumed to be correct axiom");
     return {axiom, def->as<detail::Enum2Def<AxTag>>()};
 }

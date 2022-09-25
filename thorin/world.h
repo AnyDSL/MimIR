@@ -209,7 +209,7 @@ public:
     /// E.g. use `w.ax<mem::M>();` to get the `%mem.M` Axiom.
     template<axiom_without_subs AxTag>
     const Axiom* ax() const {
-        return ax(AxTag::Axiom_Id);
+        return ax(AxId<AxTag>);
     }
     ///@}
 
