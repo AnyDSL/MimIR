@@ -41,12 +41,6 @@ enum : node_t { THORIN_NODE(CODE) Max };
 template<class T>
 constexpr size_t Num = size_t(-1);
 
-template<tag_t t>
-struct Tag2Enum_ {
-    using type = tag_t;
-};
-template<tag_t t>
-using Tag2Enum = typename Tag2Enum_<t>::type;
 class App;
 class Axiom;
 class Var;

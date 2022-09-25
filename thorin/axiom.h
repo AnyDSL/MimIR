@@ -117,13 +117,6 @@ private:
     const D* def_;
 };
 
-template<tag_t>
-struct Tag2Def_ {
-    using type = App;
-};
-template<tag_t t>
-using Tag2Def = typename Tag2Def_<t>::type;
-
 constexpr uint64_t bitwidth2size(uint64_t n) {
     assert(n != 0);
     return n == 64 ? 0 : (1_u64 << n);
