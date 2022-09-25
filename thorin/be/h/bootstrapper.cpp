@@ -82,18 +82,10 @@ void Bootstrapper::emit(std::ostream& h) {
     tab.print(h, "\n");
 
     if (std::ranges::any_of(axioms, [](const auto& ax) { return !ax.second.pi; })) {
-        tab.print(h, "namespace detail {{\n");
-
-        for (const auto& [tag, ax] : axioms)
-            if (!ax.pi)
-                tab.print(h,
-                          "template<>\n"
-                          "struct Enum2DefImpl<{}::{}> {{\n"
-                          "    using type = Axiom;\n"
-                          "}};\n",
-                          ax.dialect, ax.tag);
-
-        tab.print(h, "}} // namespace detail\n");
+        for (const auto& [tag, ax] : axioms) {
+            if (ax.pi) continue;
+            tab.print(h, "template<> struct Axiom::Match<{}::{}> {{ using type = Axiom; }};\n", ax.dialect, ax.tag);
+        }
     }
 
     tab.print(h, "}} // namespace thorin\n");

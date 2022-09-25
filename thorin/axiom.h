@@ -32,14 +32,6 @@ public:
     static constexpr size_t Max_Dialect_Size  = 8;
     static constexpr dialect_t Global_Dialect = 0xffff'ffff'ffff'0000_u64;
 
-    /// Number of Axiom::sub%tags.
-    template<class T>
-    static constexpr size_t Num = size_t(-1);
-
-    /// Includes Axiom::dialect and Axiom::tag but **not** Axiom::sub.
-    template<class T>
-    static constexpr flags_t Base = flags_t(-1);
-
     /// Mangles @p s into a dense 48-bit representation.
     /// The layout is as follows:
     /// ```
@@ -58,13 +50,33 @@ public:
     /// | 54-63:  | `0`-`9` |
     /// The 0 is special and marks the end of the name if the name has less than 8 chars.
     /// @returns `std::nullopt` if encoding is not possible.
-    static std::optional<dialect_t> mangle(std::string_view s);
+    static std::optional<dialect_t>
+    mangle(std::string_view s);
 
     /// Reverts an Axiom::mangle%d string to a `std::string`.
     /// Ignores lower 16-bit of @p u.
     static std::string demangle(dialect_t u);
 
     static std::optional<std::array<std::string_view, 3>> split(std::string_view);
+    ///@}
+
+    /// @name Helpers for Matching
+    ///@{
+    /// These are set via template specialization.
+
+    /// Number of Axiom::sub%tags.
+    template<class T>
+    static constexpr size_t Num = size_t(-1);
+
+    /// Includes Axiom::dialect and Axiom::tag but **not** Axiom::sub.
+    template<class T>
+    static constexpr flags_t Base = flags_t(-1);
+
+    /// Type of Match::def_.
+    template<class T>
+    struct Match {
+        using type = App;
+    };
     ///@}
 
     static std::tuple<const Axiom*, u16> get(const Def*);
@@ -80,6 +92,9 @@ template<class T> concept axiom_without_subs = Axiom::Num<T> == 0;
 
 template<class T, class D>
 class Match {
+    static_assert(Axiom::Num<T> != size_t(-1), "invalid number of sub tags");
+    static_assert(Axiom::Base<T> != flags_t(-1), "invalid axiom base");
+
 public:
     Match() = default;
     Match(const Axiom* axiom, const D* def)
@@ -119,40 +134,32 @@ constexpr std::optional<uint64_t> size2bitwidth(uint64_t n) {
 }
 
 namespace detail {
-template<class AxTag>
-struct Enum2DefImpl {
-    using type = App;
-};
 
-template<class AxTag>
-using Enum2Def = typename Enum2DefImpl<AxTag>::type;
+template<class T, bool Check, bool Base>
+auto match(flags_t sub, const Def* def) {
+    static_assert(Axiom::Num<T> != size_t(-1), "invalid number of sub tags");
+    static_assert(Axiom::Base<T> != flags_t(-1), "invalid axiom base");
+
+    using D = typename Axiom::Match<T>::type;
+
+    auto [axiom, curry] = Axiom::get(def);
+    bool cond = axiom && curry == 0 && (Base ? axiom->base() : axiom->flags()) == sub;
+    if constexpr (Check) {
+        if (cond) return Match<T, D>(axiom, def->as<D>());
+        return Match<T, D>();
+    }
+    assert(cond && "assumed to be correct axiom");
+    return Match<T, D>(axiom, def->as<D>());
+}
 
 } // namespace detail
 
-template<class AxTag, bool Check = true>
-Match<AxTag, detail::Enum2Def<AxTag>> match(const Def* def) {
-    static_assert(Axiom::Num<AxTag> != size_t(-1), "invalid number of sub tags");
-    static_assert(Axiom::Base<AxTag> != flags_t(-1), "invalid axiom base");
+// clang-format off
+template<class T, bool Check = true>
+auto match(const Def* def) { return detail::match<T, Check, true>(Axiom::Base<T>, def); }
 
-    auto [axiom, curry] = Axiom::get(def);
-    if constexpr (Check) {
-        if (axiom && axiom->base() == Axiom::Base<AxTag> && curry == 0)
-            return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-        return {};
-    }
-    assert(axiom && axiom->base() == Axiom::Base<AxTag> && curry == 0 && "assumed to be correct axiom");
-    return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-}
-
-template<class AxTag, bool Check = true>
-Match<AxTag, detail::Enum2Def<AxTag>> match(AxTag sub, const Def* def) {
-    auto [axiom, curry] = Axiom::get(def);
-    if constexpr (Check) {
-        if (axiom && axiom->flags() == sub && curry == 0) return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-        return {};
-    }
-    assert(axiom && axiom->flags() == sub && curry == 0 && "assumed to be correct axiom");
-    return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-}
+template<class T, bool Check = true>
+auto match(T sub, const Def* def) { return detail::match<T, Check, false>((flags_t)sub, def); }
+// clang-format on
 
 } // namespace thorin
