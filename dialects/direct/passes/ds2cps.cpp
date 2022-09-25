@@ -111,8 +111,7 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
         // due to currying
         Lam* conv_cps       = nullptr;
         auto [axiom, curry] = Axiom::get(callee);
-        if (axiom && (axiom->flags() & ~0xFF_u64) == AxId<cps2ds>)
-            conv_cps = callee->as<App>()->arg()->as_nom<Lam>();
+        if (axiom && (axiom->flags() & ~0xFF_u64) == AxId<cps2ds>) conv_cps = callee->as<App>()->arg()->as_nom<Lam>();
 
         if ((!axiom && !callee->type()->as<Pi>()->is_cn()) || conv_cps) {
             /*

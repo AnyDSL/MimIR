@@ -138,8 +138,7 @@ Match<AxTag, detail::Enum2Def<AxTag>> match(const Def* def) {
             return {axiom, def->as<detail::Enum2Def<AxTag>>()};
         return {};
     }
-    assert(axiom && (axiom->flags() & ~0xFF_u64) == AxId<AxTag> && curry == 0 &&
-           "assumed to be correct axiom");
+    assert(axiom && (axiom->flags() & ~0xFF_u64) == AxId<AxTag> && curry == 0 && "assumed to be correct axiom");
     return {axiom, def->as<detail::Enum2Def<AxTag>>()};
 }
 
