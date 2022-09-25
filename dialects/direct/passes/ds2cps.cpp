@@ -107,11 +107,11 @@ const Def* DS2CPS::rewrite_inner(const Def* def) {
         // pre-order!
         auto new_arg = rewrite_(app->arg());
 
-        // manual unfolding instead of match<cps2ds>(callee)
-        // due to currying
+        // manual unfolding instead of match<cps2ds>(callee) due to currying
+        // TODO can we somehow enhance match to do this?
         Lam* conv_cps       = nullptr;
         auto [axiom, curry] = Axiom::get(callee);
-        if (axiom && (axiom->flags() & ~0xFF_u64) == Axiom::Base<cps2ds>)
+        if (axiom && axiom->base() == Axiom::Base<cps2ds>)
             conv_cps = callee->as<App>()->arg()->as_nom<Lam>();
 
         if ((!axiom && !callee->type()->as<Pi>()->is_cn()) || conv_cps) {
