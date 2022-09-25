@@ -654,15 +654,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (s_src == s_dst && (conv.flags() == core::conv::s2s || conv.flags() == core::conv::u2u)) return src;
 
         switch (conv.flags()) {
-            // clang-format off
-            case core::conv::s2s: op = s_src < s_dst ? "sext"  : "trunc";   break;
-            case core::conv::u2u: op = s_src < s_dst ? "zext"  : "trunc";   break;
+            case core::conv::s2s: op = s_src < s_dst ? "sext" : "trunc"; break;
+            case core::conv::u2u: op = s_src < s_dst ? "zext" : "trunc"; break;
             case core::conv::r2r: op = s_src < s_dst ? "fpext" : "fptrunc"; break;
             case core::conv::s2r: op = "sitofp"; break;
             case core::conv::u2r: op = "uitofp"; break;
             case core::conv::r2s: op = "fptosi"; break;
             case core::conv::r2u: op = "fptoui"; break;
-            // clang-format on
         }
 
         return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);

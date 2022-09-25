@@ -146,10 +146,10 @@
 /// ### %core.rcmp
 ///
 /// Floating point (real) comparison is made of 4 disjoint relations:
-///     * `U`: unordered
-///     * `G`: greater
-///     * `L`: less
-///     * `E`: equal
+///     * `U`nordered (yields true if either operand is a QNAN)
+///     * `G`reater
+///     * `L`ess
+///     * `E`qual
 ///
 /// | Subtag | Alias | Meaning                      |        
 /// |--------|-------|------------------------------|
