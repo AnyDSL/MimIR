@@ -204,3 +204,9 @@
 .ax %core.zip: Π [r: .Nat, s: «r; .Nat»] 
     -> Π [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i»
     -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»», normalize_zip;
+/// 
+/// ### %core.pe
+/// 
+/// Steers the partial evaluator.
+.ax %core.pe(hlt, run): Π T: * -> T -> T, normalize_pe;
+.ax %core.pe(known): Π T: * -> T -> .Bool, normalize_pe;

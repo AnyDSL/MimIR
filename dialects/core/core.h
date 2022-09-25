@@ -141,6 +141,10 @@ inline const Def* op_bitcast(const Def* dst_type, const Def* src, const Def* dbg
     World& w = dst_type->world();
     return w.app(fn_bitcast(dst_type, src->type()), src, dbg);
 }
+inline const Def* op(pe o, const Def* def, const Def* dbg = {}) {
+    World& w = def->world();
+    return w.app(w.app(w.ax(o), def->type()), def, dbg);
+}
 ///@}
 
 /// @name extract helper

@@ -193,9 +193,9 @@ public:
         return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
     }
 
-    /// Get axiom from a dialect.
+    /// Get Axiom from a dialect.
     ///
-    /// Use this to get an axiom with sub-tags.
+    /// Use this to get an Axiom with sub-tags.
     template<class AxTag>
     const Axiom* ax(AxTag tag) const {
         u64 flags = static_cast<u64>(tag);
@@ -203,10 +203,10 @@ public:
         thorin::err("Axiom with tag '{}' not found in world", flags);
     }
 
-    /// Get axiom from a dialect.
+    /// Get Axiom from a dialect.
     ///
-    /// Can be used to get an axiom without sub-tags.
-    /// E.g. use `w.ax<mem::M>();` to get the %mem.M axiom.
+    /// Can be used to get an Axiom without sub-tags.
+    /// E.g. use `w.ax<mem::M>();` to get the `%mem.M` Axiom.
     template<axiom_without_sub_tags AxTag>
     const Axiom* ax() const {
         return ax(AxTag::Axiom_Id);
@@ -413,16 +413,6 @@ public:
     const Idx* type_bool() { return data_.type_bool_; }
     ///@}
 
-    /// @name bulitin axioms
-    ///@{
-    const Axiom* ax(PE o) const { return data_.PE_[size_t(o)]; }
-    ///@}
-
-    /// @name op - these guys build the final function application for the various operations
-    ///@{
-    const Def* op(PE o, const Def* def, const Def* dbg = {}) { return app(app(ax(o), def->type()), def, dbg); }
-    ///@}
-
     /// @name helpers
     ///@{
     const Def* dbg(Debug d) { return d.def(*this); }
@@ -595,7 +585,6 @@ private:
         const Def* table_id;
         const Def* table_not;
         std::array<const Lit*, 2> lit_bool_;
-        std::array<const Axiom*, Num<PE>> PE_;
         const Lit* lit_nat_0_;
         const Lit* lit_nat_1_;
         const Lit* lit_nat_max_;

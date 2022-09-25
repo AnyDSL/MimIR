@@ -1,8 +1,5 @@
 #include <type_traits>
 
-#include "thorin/normalize.h"
-#include "thorin/tables.h"
-
 #include "dialects/core/core.h"
 #include "dialects/mem/mem.h"
 
@@ -933,6 +930,18 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
     }
 
     return w.raw_app(callee, arg, dbg);
+}
+
+template<pe op>
+const Def* normalize_pe(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& world = type->world();
+
+    if constexpr (op == pe::known) {
+        if (match(pe::hlt, arg)) return world.lit_ff();
+        if (arg->dep_const()) return world.lit_tt();
+    }
+
+    return world.raw_app(callee, arg, dbg);
 }
 
 THORIN_core_NORMALIZER_IMPL

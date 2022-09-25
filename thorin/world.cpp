@@ -14,7 +14,6 @@
 #include "thorin/check.h"
 #include "thorin/def.h"
 #include "thorin/error.h"
-#include "thorin/normalize.h"
 #include "thorin/rewrite.h"
 #include "thorin/tables.h"
 
@@ -56,23 +55,6 @@ World::World(const State& state)
     data_.lit_bool_[1] = lit_idx(2, 1_u64);
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
     data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
-
-    { // hlt/run: T: * -> T -> T
-        auto ty = nom_pi(type())->set_dom(type());
-        auto T  = ty->var(dbg("T"));
-        ty->set_codom(pi(T, T));
-        data_.PE_[size_t(PE::hlt)] =
-            axiom(normalize_PE<PE::hlt>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::hlt), dbg(op2str(PE::hlt)));
-        data_.PE_[size_t(PE::run)] =
-            axiom(normalize_PE<PE::run>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::run), dbg(op2str(PE::run)));
-    }
-    { // known: T: * -> T -> bool
-        auto ty = nom_pi(type())->set_dom(type());
-        auto T  = ty->var(dbg("T"));
-        ty->set_codom(pi(T, type_bool()));
-        data_.PE_[size_t(PE::known)] = axiom(normalize_PE<PE::known>, ty, Axiom::Global_Dialect, Tag::PE,
-                                             sub_t(PE::known), dbg(op2str(PE::known)));
-    }
 }
 
 World::World(std::string_view name /* = {}*/)
@@ -81,10 +63,6 @@ World::World(std::string_view name /* = {}*/)
 World::~World() {
     for (auto def : move_.defs) def->~Def();
 }
-
-/*
- * core calculus
- */
 
 const Type* World::type(const Def* level, const Def* dbg) {
     if (err()) {
