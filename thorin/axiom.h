@@ -50,8 +50,7 @@ public:
     /// | 54-63:  | `0`-`9` |
     /// The 0 is special and marks the end of the name if the name has less than 8 chars.
     /// @returns `std::nullopt` if encoding is not possible.
-    static std::optional<dialect_t>
-    mangle(std::string_view s);
+    static std::optional<dialect_t> mangle(std::string_view s);
 
     /// Reverts an Axiom::mangle%d string to a `std::string`.
     /// Ignores lower 16-bit of @p u.
@@ -143,7 +142,7 @@ auto match(flags_t sub, const Def* def) {
     using D = typename Axiom::Match<T>::type;
 
     auto [axiom, curry] = Axiom::get(def);
-    bool cond = axiom && curry == 0 && (Base ? axiom->base() : axiom->flags()) == sub;
+    bool cond           = axiom && curry == 0 && (Base ? axiom->base() : axiom->flags()) == sub;
     if constexpr (Check) {
         if (cond) return Match<T, D>(axiom, def->as<D>());
         return Match<T, D>();
