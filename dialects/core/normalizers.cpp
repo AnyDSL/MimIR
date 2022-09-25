@@ -363,7 +363,6 @@ const Def* normalize_rop(const Def* type, const Def* c, const Def* arg, const De
                     case rop::mul: return la;   // 0 * b -> 0
                     case rop::div: return la;   // 0 / b -> 0
                     case rop::rem: return la;   // 0 % b -> 0
-                    default: unreachable();
                 }
             }
 
@@ -374,7 +373,6 @@ const Def* normalize_rop(const Def* type, const Def* c, const Def* arg, const De
                     case rop::mul: return b;    // 1 * b -> b
                     case rop::div: break;
                     case rop::rem: break;
-                    default: unreachable();
                 }
             }
         }
@@ -393,12 +391,11 @@ const Def* normalize_rop(const Def* type, const Def* c, const Def* arg, const De
 
         if (a == b) {
             switch (op) {
-                case core::rop::add: return core::op(core::rop::mul, lit_real(world, *w, 2.0), a, dbg); // a + a -> 2 * a
-                case core::rop::sub: return lit_real(world, *w, 0.0);                             // a - a -> 0
-                case core::rop::mul: break;
-                case core::rop::div: return lit_real(world, *w, 1.0);                             // a / a -> 1
-                case core::rop::rem: break;
-                default: unreachable();
+                case rop::add: return core::op(rop::mul, lit_real(world, *w, 2.0), a, dbg); // a + a -> 2 * a
+                case rop::sub: return lit_real(world, *w, 0.0);                             // a - a -> 0
+                case rop::mul: break;
+                case rop::div: return lit_real(world, *w, 1.0);                             // a / a -> 1
+                case rop::rem: break;
             }
         }
     }
@@ -617,7 +614,6 @@ const Def* normalize_shr(const Def* type, const Def* c, const Def* arg, const De
             switch (sub) {
                 case shr::a: return la;
                 case shr::l: return la;
-                default: unreachable();
             }
         }
     }
@@ -627,7 +623,6 @@ const Def* normalize_shr(const Def* type, const Def* c, const Def* arg, const De
             switch (sub) {
                 case shr::a: return a;
                 case shr::l: return a;
-                default: unreachable();
             }
         }
 
@@ -654,7 +649,6 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
                 case wrap::sub: break;
                 case wrap::mul: return la;   // 0  * b -> 0
                 case wrap::shl: return la;   // 0 << b -> 0
-                default: unreachable();
             }
         }
 
@@ -664,7 +658,6 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
                 case wrap::sub: break;
                 case wrap::mul: return b;    // 1  * b -> b
                 case wrap::shl: break;
-                default: unreachable();
             }
         }
     }
@@ -691,7 +684,6 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
             case wrap::sub: return world.lit_idx(*w, 0);                                  // a - a -> 0
             case wrap::mul: break;
             case wrap::shl: break;
-            default: unreachable();
         }
     }
     // clang-format on
@@ -725,7 +717,6 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
                 case div::udiv: return make_res(a);                    // a / 1 -> a
                 case div::srem: return make_res(world.lit_idx(*w, 0)); // a % 1 -> 0
                 case div::urem: return make_res(world.lit_idx(*w, 0)); // a % 1 -> 0
-                default: unreachable();
             }
         }
     }
@@ -736,7 +727,6 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
             case div::udiv: return make_res(world.lit_idx(*w, 1)); // a / a -> 1
             case div::srem: return make_res(world.lit_idx(*w, 0)); // a % a -> 0
             case div::urem: return make_res(world.lit_idx(*w, 0)); // a % a -> 0
-            default: unreachable();
         }
     }
 
@@ -917,12 +907,12 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
             if (s_n) {
                 DefArray elems(*s_n, [&, f = f](size_t s_i) {
                     DefArray inner_args(args.size(), [&](size_t i) { return args[i]->proj(*s_n, s_i); });
-                    if (*lr == 1)
+                    if (*lr == 1) {
                         return w.app(f, inner_args);
-                    else
-                        return w.app(
-                            w.app(w.app(w.ax<core::zip>(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os),
-                            inner_args);
+                    } else {
+                        auto app_zip = w.app(w.ax<zip>(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())});
+                        return w.app(w.app(app_zip, is_os), inner_args);
+                    }
                 });
                 return w.tuple(elems);
             }
