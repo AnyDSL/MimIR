@@ -416,7 +416,6 @@ public:
     /// @name bulitin axioms
     ///@{
     const Axiom* ax(PE o) const { return data_.PE_[size_t(o)]; }
-    const Axiom* ax_zip() const { return data_.zip_; }
     ///@}
 
     /// @name op - these guys build the final function application for the various operations
@@ -603,7 +602,6 @@ private:
         const Lit* lit_univ_0_;
         const Lit* lit_univ_1_;
         const Axiom* bitcast_;
-        const Axiom* zip_;
         Lam* exit_;
     } data_;
 

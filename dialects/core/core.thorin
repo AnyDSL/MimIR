@@ -54,8 +54,10 @@
 ///
 /// ### %core.shr
 ///
-/// Integer operations that neither take a WMode nor do produce a side effect - arithmetic or logical shift right.
-.ax %core.shr(ashr, lshr): Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_shr;
+/// Shift right - integer operations that neither takes a WMode nor produces a side effect:
+/// * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
+/// * [`l`logical shift right](https://en.wikipedia.org/wiki/Logical_shift)
+.ax %core.shr(a, l): Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_shr;
 ///
 /// ### %core.wrap
 ///
@@ -197,3 +199,8 @@
 /// ### %core.trait
 /// 
 .ax %core.trait(size, align): * -> .Nat, normalize_trait;
+///
+/// For now, not a better place for this ...
+.ax %core.zip: Π [r: .Nat, s: «r; .Nat»] 
+    -> Π [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i»
+    -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»», normalize_zip;

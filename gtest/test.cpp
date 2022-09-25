@@ -34,7 +34,7 @@ TEST(Zip, fold) {
 
     auto f = core::fn(core::wrap::add, w.lit_nat(0), w.lit_nat(bitwidth2size(32)));
     auto i32_t = w.type_int_(32);
-    auto res = w.app(w.app(w.app(w.ax_zip(), {/*r*/w.lit_nat(2), /*s*/w.tuple({w.lit_nat(2), w.lit_nat(3)})}),
+    auto res = w.app(w.app(w.app(w.ax<core::zip>(), {/*r*/w.lit_nat(2), /*s*/w.tuple({w.lit_nat(2), w.lit_nat(3)})}),
                                              {/*n_i*/ w.lit_nat(2), /*Is*/w.pack(2, i32_t), /*n_o*/w.lit_nat(1), /*Os*/i32_t, f}),
                                              {a, b});
     // clang-format on

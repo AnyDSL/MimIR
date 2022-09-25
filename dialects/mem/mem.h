@@ -9,6 +9,16 @@
 
 namespace thorin::mem {
 
+namespace AddrSpace {
+enum : nat_t {
+    Generic  = 0,
+    Global   = 1,
+    Texture  = 2,
+    Shared   = 3,
+    Constant = 4,
+};
+}
+
 // constructors
 inline const Axiom* type_mem(World& w) { return w.ax<M>(); }
 

@@ -521,8 +521,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t      = convert(shr->type());
 
         switch (shr.flags()) {
-            case core::shr::ashr: op = "ashr"; break;
-            case core::shr::lshr: op = "lshr"; break;
+            case core::shr::a: op = "ashr"; break;
+            case core::shr::l: op = "lshr"; break;
             default: unreachable();
         }
 
@@ -540,8 +540,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             default: unreachable();
         }
 
-        if (mode & WMode::nuw) op += " nuw";
-        if (mode & WMode::nsw) op += " nsw";
+        if (mode & core::WMode::nuw) op += " nuw";
+        if (mode & core::WMode::nsw) op += " nsw";
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto div = match<core::div>(def)) {
@@ -574,17 +574,17 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             default: unreachable();
         }
 
-        if (mode == RMode::fast)
+        if (mode == core::RMode::fast)
             op += " fast";
         else {
             // clang-format off
-            if (mode & RMode::nnan    ) op += " nnan";
-            if (mode & RMode::ninf    ) op += " ninf";
-            if (mode & RMode::nsz     ) op += " nsz";
-            if (mode & RMode::arcp    ) op += " arcp";
-            if (mode & RMode::contract) op += " contract";
-            if (mode & RMode::afn     ) op += " afn";
-            if (mode & RMode::reassoc ) op += " reassoc";
+            if (mode & core::RMode::nnan    ) op += " nnan";
+            if (mode & core::RMode::ninf    ) op += " ninf";
+            if (mode & core::RMode::nsz     ) op += " nsz";
+            if (mode & core::RMode::arcp    ) op += " arcp";
+            if (mode & core::RMode::contract) op += " contract";
+            if (mode & core::RMode::afn     ) op += " afn";
+            if (mode & core::RMode::reassoc ) op += " reassoc";
             // clang-format on
         }
 

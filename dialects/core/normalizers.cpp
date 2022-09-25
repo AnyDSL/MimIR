@@ -212,8 +212,8 @@ template<nat_t w> struct Fold<div, div::udiv, w> { static Res run(u64 a, u64 b) 
 template<nat_t w> struct Fold<div, div::srem, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
 template<nat_t w> struct Fold<div, div::urem, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
 
-template<nat_t w> struct Fold<shr, shr::ashr, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
-template<nat_t w> struct Fold<shr, shr::lshr, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
+template<nat_t w> struct Fold<shr, shr::a, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
+template<nat_t w> struct Fold<shr, shr::l, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
 
 template<nat_t w> struct Fold<rop, rop:: add, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) + get<T>(b)); } };
 template<nat_t w> struct Fold<rop, rop:: sub, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) - get<T>(b)); } };
@@ -618,8 +618,8 @@ const Def* normalize_shr(const Def* type, const Def* c, const Def* arg, const De
     if (auto la = a->isa<Lit>()) {
         if (la == world.lit_idx(*w, 0)) {
             switch (sub) {
-                case shr::ashr: return la;
-                case shr::lshr: return la;
+                case shr::a: return la;
+                case shr::l: return la;
                 default: unreachable();
             }
         }
@@ -628,8 +628,8 @@ const Def* normalize_shr(const Def* type, const Def* c, const Def* arg, const De
     if (auto lb = b->isa<Lit>()) {
         if (lb == world.lit_idx(*w, 0)) {
             switch (sub) {
-                case shr::ashr: return a;
-                case shr::lshr: return a;
+                case shr::a: return a;
+                case shr::l: return a;
                 default: unreachable();
             }
         }
@@ -892,6 +892,47 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
 
 out:
     return world.raw_app(callee, type, dbg);
+}
+
+const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+    auto& w                    = type->world();
+    auto callee                = c->as<App>();
+    auto is_os                 = callee->arg();
+    auto [n_i, Is, n_o, Os, f] = is_os->projs<5>();
+    auto [r, s]                = callee->decurry()->args<2>();
+    auto lr                    = isa_lit(r);
+    auto ls                    = isa_lit(s);
+
+    // TODO commute
+    // TODO reassociate
+    // TODO more than one Os
+    // TODO select which Is/Os to zip
+
+    if (lr && ls && *lr == 1 && *ls == 1) return w.app(f, arg, dbg);
+
+    if (auto l_in = isa_lit(n_i)) {
+        auto args = arg->projs(*l_in);
+
+        if (lr && std::ranges::all_of(args, [](auto arg) { return is_tuple_or_pack(arg); })) {
+            auto shapes = s->projs(*lr);
+            auto s_n    = isa_lit(shapes.front());
+
+            if (s_n) {
+                DefArray elems(*s_n, [&, f = f](size_t s_i) {
+                    DefArray inner_args(args.size(), [&](size_t i) { return args[i]->proj(*s_n, s_i); });
+                    if (*lr == 1)
+                        return w.app(f, inner_args);
+                    else
+                        return w.app(
+                            w.app(w.app(w.ax<core::zip>(), {w.lit_nat(*lr - 1), w.tuple(shapes.skip_front())}), is_os),
+                            inner_args);
+                });
+                return w.tuple(elems);
+            }
+        }
+    }
+
+    return w.raw_app(callee, arg, dbg);
 }
 
 THORIN_core_NORMALIZER_IMPL
