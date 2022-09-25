@@ -25,6 +25,7 @@ void Bootstrapper::emit(std::ostream& h) {
         tab.print(h, "enum class {} : flags_t {{\n", ax.tag);
         ++tab;
         flags_t ax_id = dialect_id | (ax.tag_id << 8u);
+
         if (auto& subs = ax.subs; !subs.empty()) {
             tab.print(h, "Axiom_Base = 0x{},\n", ax_id);
             for (const auto& aliases : subs) {
@@ -60,7 +61,7 @@ void Bootstrapper::emit(std::ostream& h) {
                   "static_cast<flags_t>(rhs); }}\n\n",
                   ax.tag, ax.tag);
 
-        print(outer_namespace.emplace_back(), "template<> inline constexpr size_t Num<{}::{}> = {};\n", dialect_,
+        print(outer_namespace.emplace_back(), "template<> inline constexpr size_t NumSubs<{}::{}> = {};\n", dialect_,
               ax.tag, ax.subs.size());
 
         if (!ax.normalizer.empty()) {

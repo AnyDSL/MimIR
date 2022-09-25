@@ -37,10 +37,6 @@ enum : node_t { THORIN_NODE(CODE) Max };
 #undef CODE
 } // namespace Node
 
-// This trick let's us count the number of elements in an enum class without tainting it with an extra "Num" field.
-template<class T>
-constexpr size_t Num = size_t(-1);
-
 class App;
 class Axiom;
 class Var;

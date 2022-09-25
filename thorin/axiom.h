@@ -63,15 +63,16 @@ public:
     friend class World;
 };
 
+template<class T>
+constexpr size_t NumSubs = size_t(-1);
+
+// clang-format off
 template<class AxTag>
-concept axiom_with_sub_tags = requires(AxTag t) {
-    AxTag::Axiom_Base;
-};
+concept axiom_with_subs = NumSubs<AxTag> != 0;
 
 template<class AxTag>
-concept axiom_without_sub_tags = requires(AxTag t) {
-    AxTag::Axiom_Id;
-};
+concept axiom_without_subs = NumSubs<AxTag> == 0;
+// clang-format on
 
 template<class T, class D>
 class Match {
@@ -123,7 +124,8 @@ using Enum2Def = typename Enum2DefImpl<AxTag>::type;
 
 template<class AxTag>
 constexpr AxTag base_value() {
-    if constexpr (axiom_with_sub_tags<AxTag>)
+    static_assert(NumSubs<AxTag> != size_t(-1), "unknown sub tag");
+    if constexpr (axiom_with_subs<AxTag>)
         return AxTag::Axiom_Base;
     else
         return AxTag::Axiom_Id;

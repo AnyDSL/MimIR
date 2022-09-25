@@ -207,7 +207,7 @@ public:
     ///
     /// Can be used to get an Axiom without sub-tags.
     /// E.g. use `w.ax<mem::M>();` to get the `%mem.M` Axiom.
-    template<axiom_without_sub_tags AxTag>
+    template<axiom_without_subs AxTag>
     const Axiom* ax() const {
         return ax(AxTag::Axiom_Id);
     }

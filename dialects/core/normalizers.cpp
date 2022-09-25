@@ -264,7 +264,7 @@ template<nat_t dw, nat_t sw> struct FoldConv<conv::r2r, dw, sw> { static Res run
 template<class AxTag>
 static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
     static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
-    static constexpr size_t num_bits = std::bit_width(Num<AxTag> - 1_u64);
+    static constexpr size_t num_bits = std::bit_width(NumSubs<AxTag> - 1_u64);
 
     auto a_cmp = match<AxTag>(a);
     auto b_cmp = match<AxTag>(b);
