@@ -101,7 +101,7 @@ public:
 
 private:
     const Axiom* axiom_ = nullptr;
-    const D* def_ = nullptr;
+    const D* def_       = nullptr;
 };
 
 constexpr uint64_t bitwidth2size(uint64_t n) {
