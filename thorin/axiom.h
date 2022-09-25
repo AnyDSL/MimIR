@@ -76,9 +76,6 @@ concept axiom_without_sub_tags = requires(AxTag t) {
 template<class AxTag>
 concept axiom_from_dialect = axiom_with_sub_tags<AxTag> || axiom_without_sub_tags<AxTag>;
 
-template<class AxTag>
-concept axiom_from_thorin = !axiom_from_dialect<AxTag>;
-
 template<class T, class D>
 class Match {
 public:

@@ -47,16 +47,16 @@ void Bootstrapper::emit(std::ostream& h) {
 
         tab.print(h, "inline bool operator==({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) == rhs; }}\n",
                   ax.tag);
-        tab.print(h, "inline bool operator&({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) & rhs; }}\n",
+        tab.print(h, "inline flags_t operator&({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) & rhs; }}\n",
                   ax.tag);
         tab.print(h,
-                  "inline bool operator&({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) & "
+                  "inline flags_t operator&({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) & "
                   "static_cast<flags_t>(rhs); }}\n",
                   ax.tag, ax.tag);
-        tab.print(h, "inline bool operator|({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) | rhs; }}\n",
+        tab.print(h, "inline flags_t operator|({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) | rhs; }}\n",
                   ax.tag);
         tab.print(h,
-                  "inline bool operator|({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) | "
+                  "inline flags_t operator|({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) | "
                   "static_cast<flags_t>(rhs); }}\n\n",
                   ax.tag, ax.tag);
 
