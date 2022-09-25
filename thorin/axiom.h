@@ -16,6 +16,8 @@ public:
     dialect_t dialect() const { return flags() & Global_Dialect; }
     tag_t tag() const { return tag_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
     sub_t sub() const { return sub_t(flags() & 0x0000'0000'0000'00ff_u64); }
+    /// Includes Axiom::dialect and Axiom::tag but **not** Axiom::sub.
+    flags_t base() const { return flags() & ~0xff_u64; }
     NormalizeFn normalizer() const { return normalizer_; }
     u16 curry() const { return curry_; }
     ///@}
@@ -29,6 +31,14 @@ public:
     ///@{
     static constexpr size_t Max_Dialect_Size  = 8;
     static constexpr dialect_t Global_Dialect = 0xffff'ffff'ffff'0000_u64;
+
+    /// Number of Axiom::sub%tags.
+    template<class T>
+    static constexpr size_t Num = size_t(-1);
+
+    /// Includes Axiom::dialect and Axiom::tag but **not** Axiom::sub.
+    template<class T>
+    static constexpr flags_t Base = flags_t(-1);
 
     /// Mangles @p s into a dense 48-bit representation.
     /// The layout is as follows:
@@ -63,18 +73,9 @@ public:
     friend class World;
 };
 
-template<class T>
-constexpr size_t NumSubs = size_t(-1);
-
-template<class T>
-constexpr size_t AxId = size_t(-1);
-
 // clang-format off
-template<class AxTag>
-concept axiom_with_subs = NumSubs<AxTag> != 0;
-
-template<class AxTag>
-concept axiom_without_subs = NumSubs<AxTag> == 0;
+template<class T> concept axiom_with_subs    = Axiom::Num<T> != 0;
+template<class T> concept axiom_without_subs = Axiom::Num<T> == 0;
 // clang-format on
 
 template<class T, class D>
@@ -93,11 +94,12 @@ public:
     explicit operator bool() { return axiom_ != nullptr; }
     ///@}
 
-    /// @name split dialect name
+    /// @name name
     ///@{
-    tag_t tag() const { return axiom()->tag(); }
+    auto dialect() const { return axiom()->dialect(); }
+    auto tag() const { return axiom()->tag(); }
     auto sub() const { return axiom()->sub(); }
-    auto flags() const { return T(axiom()->flags()); }
+    auto id() const { return T(axiom()->flags()); }
     ///@}
 
 private:
@@ -129,16 +131,16 @@ using Enum2Def = typename Enum2DefImpl<AxTag>::type;
 
 template<class AxTag, bool Check = true>
 Match<AxTag, detail::Enum2Def<AxTag>> match(const Def* def) {
-    static_assert(NumSubs<AxTag> != size_t(-1), "invalid number of sub tags");
-    static_assert(AxId<AxTag> != size_t(-1), "invalid axiom id");
+    static_assert(Axiom::Num<AxTag> != size_t(-1), "invalid number of sub tags");
+    static_assert(Axiom::Base<AxTag> != flags_t(-1), "invalid axiom base");
 
     auto [axiom, curry] = Axiom::get(def);
     if constexpr (Check) {
-        if (axiom && (axiom->flags() & ~0xFF_u64) == AxId<AxTag> && curry == 0)
+        if (axiom && axiom->base() == Axiom::Base<AxTag> && curry == 0)
             return {axiom, def->as<detail::Enum2Def<AxTag>>()};
         return {};
     }
-    assert(axiom && (axiom->flags() & ~0xFF_u64) == AxId<AxTag> && curry == 0 && "assumed to be correct axiom");
+    assert(axiom && axiom->base() == Axiom::Base<AxTag> && curry == 0 && "assumed to be correct axiom");
     return {axiom, def->as<detail::Enum2Def<AxTag>>()};
 }
 

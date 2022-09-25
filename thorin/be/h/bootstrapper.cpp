@@ -27,7 +27,7 @@ void Bootstrapper::emit(std::ostream& h) {
         flags_t ax_id = dialect_id | (ax.tag_id << 8u);
 
         auto& os = outer_namespace.emplace_back();
-        print(os << std::hex, "template<> inline constexpr size_t AxId<{}::{}> = 0x{};\n", dialect_, ax.tag, ax_id);
+        print(os << std::hex, "template<> constexpr flags_t Axiom::Base<{}::{}> = 0x{};\n", dialect_, ax.tag, ax_id);
 
         if (auto& subs = ax.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
@@ -41,7 +41,7 @@ void Bootstrapper::emit(std::ostream& h) {
             }
         } else {
             if (!ax.normalizer.empty())
-                print(normalizers.emplace_back(), "normalizers[flags_t(AxId<{}>)] = &{};", ax.tag, ax.normalizer);
+                print(normalizers.emplace_back(), "normalizers[flags_t(Axiom::Base<{}>)] = &{};", ax.tag, ax.normalizer);
         }
         --tab;
         tab.print(h, "}};\n\n");
@@ -52,7 +52,7 @@ void Bootstrapper::emit(std::ostream& h) {
         tab.print(h, "inline flags_t operator|({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) | rhs; }}\n", ax.tag);
         tab.print(h, "inline flags_t operator|({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) | static_cast<flags_t>(rhs); }}\n\n", ax.tag, ax.tag);
 
-        print(outer_namespace.emplace_back(), "template<> inline constexpr size_t NumSubs<{}::{}> = {};\n", dialect_, ax.tag, ax.subs.size());
+        print(outer_namespace.emplace_back(), "template<> constexpr size_t Axiom::Num<{}::{}> = {};\n", dialect_, ax.tag, ax.subs.size());
 
         if (!ax.normalizer.empty()) {
             if (auto& subs = ax.subs; !subs.empty()) {

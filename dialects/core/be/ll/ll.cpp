@@ -503,7 +503,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} 0, {}", t, x); };
 
-        switch (bit.flags()) {
+        switch (bit.id()) {
             // clang-format off
             case core::bit2::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
             case core::bit2:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);
@@ -520,7 +520,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto [a, b] = shr->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(shr->type());
 
-        switch (shr.flags()) {
+        switch (shr.id()) {
             case core::shr::a: op = "ashr"; break;
             case core::shr::l: op = "lshr"; break;
         }
@@ -531,7 +531,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t             = convert(wrap->type());
         auto [mode, width] = wrap->decurry()->args<2>(as_lit<nat_t>);
 
-        switch (wrap.flags()) {
+        switch (wrap.id()) {
             case core::wrap::add: op = "add"; break;
             case core::wrap::sub: op = "sub"; break;
             case core::wrap::mul: op = "mul"; break;
@@ -549,7 +549,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto a = emit(x);
         auto b = emit(y);
 
-        switch (div.flags()) {
+        switch (div.id()) {
             case core::div::sdiv: op = "sdiv"; break;
             case core::div::udiv: op = "udiv"; break;
             case core::div::srem: op = "srem"; break;
@@ -562,7 +562,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t             = convert(rop->type());
         auto [mode, width] = rop->decurry()->args<2>(as_lit<nat_t>);
 
-        switch (rop.flags()) {
+        switch (rop.id()) {
             case core::rop::add: op = "fadd"; break;
             case core::rop::sub: op = "fsub"; break;
             case core::rop::mul: op = "fmul"; break;
@@ -590,7 +590,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t      = convert(icmp->arg(0)->type());
         op          = "icmp ";
 
-        switch (icmp.flags()) {
+        switch (icmp.id()) {
             // clang-format off
             case core::icmp::e:   op += "eq" ; break;
             case core::icmp::ne:  op += "ne" ; break;
@@ -612,7 +612,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t      = convert(rcmp->arg(0)->type());
         op          = "fcmp ";
 
-        switch (rcmp.flags()) {
+        switch (rcmp.id()) {
             // clang-format off
             case core::rcmp::  e: op += "oeq"; break;
             case core::rcmp::  l: op += "olt"; break;
@@ -651,9 +651,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         nat_t s_dst = size2width(conv->type());
 
         // this might happen when casting from int top to i64
-        if (s_src == s_dst && (conv.flags() == core::conv::s2s || conv.flags() == core::conv::u2u)) return src;
+        if (s_src == s_dst && (conv.id() == core::conv::s2s || conv.id() == core::conv::u2u)) return src;
 
-        switch (conv.flags()) {
+        switch (conv.id()) {
             case core::conv::s2s: op = s_src < s_dst ? "sext" : "trunc"; break;
             case core::conv::u2u: op = s_src < s_dst ? "zext" : "trunc"; break;
             case core::conv::r2r: op = s_src < s_dst ? "fpext" : "fptrunc"; break;

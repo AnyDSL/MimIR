@@ -194,7 +194,6 @@ public:
     }
 
     /// Get Axiom from a dialect.
-    ///
     /// Use this to get an Axiom with sub-tags.
     template<class AxTag>
     const Axiom* ax(AxTag tag) const {
@@ -204,12 +203,11 @@ public:
     }
 
     /// Get Axiom from a dialect.
-    ///
     /// Can be used to get an Axiom without sub-tags.
     /// E.g. use `w.ax<mem::M>();` to get the `%mem.M` Axiom.
     template<axiom_without_subs AxTag>
     const Axiom* ax() const {
-        return ax(AxId<AxTag>);
+        return ax(Axiom::Base<AxTag>);
     }
     ///@}
 
