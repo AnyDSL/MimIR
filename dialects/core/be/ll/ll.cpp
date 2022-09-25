@@ -523,7 +523,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         switch (shr.flags()) {
             case core::shr::a: op = "ashr"; break;
             case core::shr::l: op = "lshr"; break;
-            default: unreachable();
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
@@ -537,7 +536,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::wrap::sub: op = "sub"; break;
             case core::wrap::mul: op = "mul"; break;
             case core::wrap::shl: op = "shl"; break;
-            default: unreachable();
         }
 
         if (mode & core::WMode::nuw) op += " nuw";
@@ -556,7 +554,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::div::udiv: op = "udiv"; break;
             case core::div::srem: op = "srem"; break;
             case core::div::urem: op = "urem"; break;
-            default: unreachable();
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
@@ -571,7 +568,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::rop::mul: op = "fmul"; break;
             case core::rop::div: op = "fdiv"; break;
             case core::rop::rem: op = "frem"; break;
-            default: unreachable();
         }
 
         if (mode == core::RMode::fast)
@@ -667,7 +663,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::conv::r2s: op = "fptosi"; break;
             case core::conv::r2u: op = "fptoui"; break;
             // clang-format on
-            default: unreachable();
         }
 
         return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);

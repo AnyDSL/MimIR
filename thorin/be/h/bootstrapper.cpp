@@ -18,8 +18,7 @@ void Bootstrapper::emit(std::ostream& h) {
     dialect_t dialect_id = *Axiom::mangle(dialect_);
     std::vector<std::ostringstream> normalizers, outer_namespace;
 
-    h << std::hex;
-    tab.print(h, "static constexpr dialect_t Dialect_Id = 0x{};\n\n", dialect_id);
+    tab.print(h << std::hex, "static constexpr dialect_t Dialect_Id = 0x{};\n\n", dialect_id);
 
     // clang-format off
     for (const auto& [key, ax] : axioms) {
@@ -27,7 +26,8 @@ void Bootstrapper::emit(std::ostream& h) {
         ++tab;
         flags_t ax_id = dialect_id | (ax.tag_id << 8u);
 
-        print(outer_namespace.emplace_back(), "template<> inline constexpr size_t AxId<{}::{}> = {};\n", dialect_, ax.tag, ax_id);
+        auto& os = outer_namespace.emplace_back();
+        print(os << std::hex, "template<> inline constexpr size_t AxId<{}::{}> = 0x{};\n", dialect_, ax.tag, ax_id);
 
         if (auto& subs = ax.subs; !subs.empty()) {
             for (const auto& aliases : subs) {
