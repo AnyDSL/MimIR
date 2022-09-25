@@ -145,29 +145,30 @@
 ///
 /// ### %core.rcmp
 ///
-/// | Subtag    | Alias | Meaning                      |        
-/// |-----------|-------|------------------------------|
-/// | `u g l e` |   `f` | always false                 |              
-/// | `u g l E` |   `e` | ordered and equal            |    
-/// | `u g L e` |   `l` | ordered and less             |    
-/// | `u g L E` |  `le` | ordered and less or equal    |    
-/// | `u G l e` |   `g` | ordered and greater          |    
-/// | `u G l E` |  `ge` | ordered and greater or equal |    
-/// | `u G L e` |  `ne` | ordered and not equal        |    
-/// | `u G L E` |   `o` | ordered (no NaNs)            |    
-/// | `U g l e` |   `u` | unordered (either NaNs)      |    
-/// | `U g l E` |  `ue` | unordered or equal           |    
-/// | `U g L e` |  `ul` | unordered or less            |    
-/// | `U g L E` | `ule` | unordered or less or equal   |    
-/// | `U G l e` |  `ug` | unordered or greater         |    
-/// | `U G l E` | `uge` | unordered or greater or equa |    
-/// | `U G L e` | `une` | unordered or not equal       |    
-/// | `U G L E` |   `t` | always true                  |    
+/// Floating point (real) comparison is made of 4 disjoint relations:
+///     * `U`: unordered
+///     * `G`: greater
+///     * `L`: less
+///     * `E`: equal
 ///
-/// * `U`: unordered
-/// * `G`: greater
-/// * `L`: less
-/// * `E`: equal
+/// | Subtag | Alias | Meaning                      |        
+/// |--------|-------|------------------------------|
+/// | `ugle` |   `f` | always false                 |              
+/// | `uglE` |   `e` | ordered and equal            |    
+/// | `ugLe` |   `l` | ordered and less             |    
+/// | `ugLE` |  `le` | ordered and less or equal    |    
+/// | `uGle` |   `g` | ordered and greater          |    
+/// | `uGlE` |  `ge` | ordered and greater or equal |    
+/// | `uGLe` |  `ne` | ordered and not equal        |    
+/// | `uGLE` |   `o` | ordered (no NaNs)            |    
+/// | `Ugle` |   `u` | unordered (either NaNs)      |    
+/// | `UglE` |  `ue` | unordered or equal           |    
+/// | `UgLe` |  `ul` | unordered or less            |    
+/// | `UgLE` | `ule` | unordered or less or equal   |    
+/// | `UGle` |  `ug` | unordered or greater         |    
+/// | `UGlE` | `uge` | unordered or greater or equa |    
+/// | `UGLe` | `une` | unordered or not equal       |    
+/// | `UGLE` |   `t` | always true                  |    
 .ax %core.rcmp(ugle =   f, uglE =   e, ugLe =   l, ugLE =  le,
                uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
                Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
@@ -179,10 +180,10 @@
 /// ### %core.conv
 ///
 /// Bit width (and signedness) conversion for:
-/// * `s2s`/`u2u`: `.Idx -> .Idx` 
-/// * `s2r`/`u2r`: `.Idx -> %core.Real`
-/// * `r2s`/`r2u`: `%core.Real -> .Idx` 
-/// * `r2r`: `%core.Real -> %core.Real` 
+///     * `s2s`/`u2u`: `.Idx -> .Idx` 
+///     * `s2r`/`u2r`: `.Idx -> %core.Real`
+///     * `r2s`/`r2u`: `%core.Real -> .Idx` 
+///     * `r2r`: `%core.Real -> %core.Real` 
 .ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> .Idx dw, normalize_conv;
 .ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> %core.Real dw, normalize_conv;
 .ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -> %core.Real sw -> .Idx dw, normalize_conv;
@@ -198,6 +199,7 @@
 /// 
 /// ### %core.trait
 /// 
+/// Yields the size or align of a type.
 .ax %core.trait(size, align): * -> .Nat, normalize_trait;
 ///
 /// For now, not a better place for this ...
