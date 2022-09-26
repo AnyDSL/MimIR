@@ -11,15 +11,36 @@ private:
     Axiom(NormalizeFn normalizer, const Def* type, dialect_t dialect, tag_t tag, sub_t sub, const Def* dbg);
 
 public:
-    /// @name getters
+    /// @name curry depth and normalizer
     ///@{
-    dialect_t dialect() const { return flags() & Global_Dialect; }
-    tag_t tag() const { return tag_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
-    sub_t sub() const { return sub_t(flags() & 0x0000'0000'0000'00ff_u64); }
-    /// Includes Axiom::dialect and Axiom::tag but **not** Axiom::sub.
-    flags_t base() const { return flags() & ~0xff_u64; }
     NormalizeFn normalizer() const { return normalizer_; }
     u16 curry() const { return curry_; }
+
+    /// @returns currying depth of @p def untill we finally hit an Axiom.
+    /// `{nullptr, u16(-1)}` indicates that no Axiom is present.
+    static std::tuple<const Axiom*, u16> get(const Def* def);
+    ///@}
+
+    /// @name Axiom name
+    ///@{
+    /// Anatomy of an Axiom name:
+    /// ```
+    /// %dialect.tag.sub
+    /// ```
+    /// * Def::name() retrieves the full name as `std::string`.
+    /// * Def::flags() retrieves the full name as Axiom::mangle%d integer.
+
+    /// This retrieves the `dialect` part of the name as integer.
+    dialect_t dialect() const { return flags() & Global_Dialect; }
+
+    /// This retrieves the `tag` part of the name as integer.
+    tag_t tag() const { return tag_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
+
+    /// This retrieves the `sub` part of the name as integer.
+    sub_t sub() const { return sub_t(flags() & 0x0000'0000'0000'00ff_u64); }
+
+    /// Includes Axiom::dialect() and Axiom::tag() but **not** Axiom::sub.
+    flags_t base() const { return flags() & ~0xff_u64; }
     ///@}
 
     /// @name virtual methods
@@ -64,11 +85,11 @@ public:
     /// These are set via template specialization.
 
     /// Number of Axiom::sub%tags.
-    template<class T>
+    template<class Id>
     static constexpr size_t Num = size_t(-1);
 
-    /// Includes Axiom::dialect and Axiom::tag but **not** Axiom::sub.
-    template<class T>
+    /// @sa Axiom::base.
+    template<class Id>
     static constexpr flags_t Base = flags_t(-1);
 
     /// Type of Match::def_.
@@ -78,21 +99,19 @@ public:
     };
     ///@}
 
-    static std::tuple<const Axiom*, u16> get(const Def*);
-
     static constexpr auto Node = Node::Axiom;
     friend class World;
 };
 
 // clang-format off
-template<class T> concept axiom_with_subs    = Axiom::Num<T> != 0;
-template<class T> concept axiom_without_subs = Axiom::Num<T> == 0;
+template<class Id> concept axiom_with_subs    = Axiom::Num<Id> != 0;
+template<class Id> concept axiom_without_subs = Axiom::Num<Id> == 0;
 // clang-format on
 
-template<class T, class D>
+template<class Id, class D>
 class Match {
-    static_assert(Axiom::Num<T> != size_t(-1), "invalid number of sub tags");
-    static_assert(Axiom::Base<T> != flags_t(-1), "invalid axiom base");
+    static_assert(Axiom::Num<Id> != size_t(-1), "invalid number of sub tags");
+    static_assert(Axiom::Base<Id> != flags_t(-1), "invalid axiom base");
 
 public:
     Match() = default;
@@ -108,12 +127,13 @@ public:
     explicit operator bool() { return axiom_ != nullptr; }
     ///@}
 
-    /// @name name
+    /// @name Axiom name
     ///@{
-    auto dialect() const { return axiom()->dialect(); }
-    auto tag() const { return axiom()->tag(); }
-    auto sub() const { return axiom()->sub(); }
-    auto id() const { return T(axiom()->flags()); }
+    auto dialect() const { return axiom()->dialect(); } ///< @sa Axion::dialect.
+    auto tag() const { return axiom()->tag(); }         ///< @sa Axion::tag.
+    auto sub() const { return axiom()->sub(); }         ///< @sa Axion::sub.
+    auto base() const { return axiom()->sub(); }        ///< @sa Axion::base.
+    auto id() const { return Id(axiom()->flags()); }    ///< Axion::flags cast to @p Id.
     ///@}
 
 private:
@@ -134,31 +154,31 @@ constexpr std::optional<uint64_t> size2bitwidth(uint64_t n) {
 
 namespace detail {
 
-template<class T, bool Check, bool Base>
+template<class Id, bool Check, bool Base>
 auto match(flags_t sub, const Def* def) {
-    static_assert(Axiom::Num<T> != size_t(-1), "invalid number of sub tags");
-    static_assert(Axiom::Base<T> != flags_t(-1), "invalid axiom base");
+    static_assert(Axiom::Num<Id> != size_t(-1), "invalid number of sub tags");
+    static_assert(Axiom::Base<Id> != flags_t(-1), "invalid axiom base");
 
-    using D = typename Axiom::Match<T>::type;
+    using D = typename Axiom::Match<Id>::type;
 
     auto [axiom, curry] = Axiom::get(def);
     bool cond           = axiom && curry == 0 && (Base ? axiom->base() : axiom->flags()) == sub;
     if constexpr (Check) {
-        if (cond) return Match<T, D>(axiom, def->as<D>());
-        return Match<T, D>();
+        if (cond) return Match<Id, D>(axiom, def->as<D>());
+        return Match<Id, D>();
     }
     assert(cond && "assumed to be correct axiom");
-    return Match<T, D>(axiom, def->as<D>());
+    return Match<Id, D>(axiom, def->as<D>());
 }
 
 } // namespace detail
 
 // clang-format off
-template<class T, bool Check = true>
-auto match(const Def* def) { return detail::match<T, Check, true>(Axiom::Base<T>, def); }
+template<class Id, bool Check = true>
+auto match(const Def* def) { return detail::match<Id, Check, true>(Axiom::Base<Id>, def); }
 
-template<class T, bool Check = true>
-auto match(T sub, const Def* def) { return detail::match<T, Check, false>((flags_t)sub, def); }
+template<class Id, bool Check = true>
+auto match(Id sub, const Def* def) { return detail::match<Id, Check, false>((flags_t)sub, def); }
 // clang-format on
 
 } // namespace thorin

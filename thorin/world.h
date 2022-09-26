@@ -194,20 +194,20 @@ public:
     }
 
     /// Get Axiom from a dialect.
-    /// Use this to get an Axiom with sub-tags.
-    template<class AxTag>
-    const Axiom* ax(AxTag tag) const {
-        u64 flags = static_cast<u64>(tag);
+    /// Use this to get an Axiom via Axiom::id.
+    template<class Id>
+    const Axiom* ax(Id id) const {
+        u64 flags = static_cast<u64>(id);
         if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
-        thorin::err("Axiom with tag '{}' not found in world", flags);
+        thorin::err("Axiom with ID '{}' not found in world", flags);
     }
 
     /// Get Axiom from a dialect.
     /// Can be used to get an Axiom without sub-tags.
     /// E.g. use `w.ax<mem::M>();` to get the `%mem.M` Axiom.
-    template<axiom_without_subs AxTag>
+    template<axiom_without_subs id>
     const Axiom* ax() const {
-        return ax(Axiom::Base<AxTag>);
+        return ax(Axiom::Base<id>);
     }
     ///@}
 
@@ -588,7 +588,6 @@ private:
         const Lit* lit_nat_max_;
         const Lit* lit_univ_0_;
         const Lit* lit_univ_1_;
-        const Axiom* bitcast_;
         Lam* exit_;
     } data_;
 
