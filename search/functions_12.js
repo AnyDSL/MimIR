@@ -2,7 +2,7 @@ var searchData=
 [
   ['tab_0',['Tab',['../classthorin_1_1Tab.html#a90e3e6f9586f056b9ad97c0dfc97b35f',1,'thorin::Tab']]],
   ['tab_1',['tab',['../classthorin_1_1Tab.html#ac89b5f96935cc8a6eed9ebd32cbf594a',1,'thorin::Tab']]],
-  ['tag_2',['tag',['../classthorin_1_1Match.html#a14760a6c3dc608e2bdadde94018244b1',1,'thorin::Match::tag()'],['../classthorin_1_1Proxy.html#a33449d4206d2c4ecd374b12afe4e2959',1,'thorin::Proxy::tag()'],['../classthorin_1_1fe_1_1Tok.html#abf873630723f154cb493c524b01e9976',1,'thorin::fe::Tok::tag()'],['../classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534',1,'thorin::Axiom::tag()']]],
+  ['tag_2',['tag',['../classthorin_1_1Match.html#aae7ddefa2552123253175c154fe1840c',1,'thorin::Match::tag()'],['../classthorin_1_1Proxy.html#a33449d4206d2c4ecd374b12afe4e2959',1,'thorin::Proxy::tag()'],['../classthorin_1_1fe_1_1Tok.html#abf873630723f154cb493c524b01e9976',1,'thorin::fe::Tok::tag()'],['../classthorin_1_1Axiom.html#a52fbe82684065787e1a12f483a93e534',1,'thorin::Axiom::tag()']]],
   ['tag2str_3',['tag2str',['../classthorin_1_1fe_1_1Tok.html#a258aa41adeecb6f25f1bbadad0108be9',1,'thorin::fe::Tok']]],
   ['tail_4',['tail',['../structthorin_1_1ll_1_1BB.html#a68f2d2cbdaea0a815c52b4533c59e03a',1,'thorin::ll::BB::tail()'],['../structthorin_1_1ll_1_1BB.html#a3b03c198eb00e5b6e231295e732f1720',1,'thorin::ll::BB::tail(const char *s, Args &amp;&amp;... args)']]],
   ['tailrecelim_5',['TailRecElim',['../classthorin_1_1TailRecElim.html#a3bf48d7a1fe24c52d777ac01c5eab4f1',1,'thorin::TailRecElim']]],
@@ -29,5 +29,5 @@ var searchData=
   ['type_5fmem_26',['type_mem',['../namespacethorin_1_1mem.html#a0246ffea30f87b7af8ef581b9aafbdb0',1,'thorin::mem']]],
   ['type_5fnat_27',['type_nat',['../classthorin_1_1World.html#a8dc783e28f2818ec5e847645700acbee',1,'thorin::World']]],
   ['type_5fptr_28',['type_ptr',['../namespacethorin_1_1mem.html#a538c585266aeecfe400ba79cd77145ea',1,'thorin::mem::type_ptr(World &amp;w)'],['../namespacethorin_1_1mem.html#a0e289bc9b1881b62334ac3a361e182cb',1,'thorin::mem::type_ptr(const Def *pointee, const Def *addr_space, const Def *dbg={})'],['../namespacethorin_1_1mem.html#a90ffbd2492b54f725dcc64e46dd52c1f',1,'thorin::mem::type_ptr(const Def *pointee, nat_t addr_space=AddrSpace::Generic, const Def *dbg={})']]],
-  ['type_5freal_29',['type_real',['../classthorin_1_1World.html#a4cff2da0a665bfdb4c669d08131600cb',1,'thorin::World::type_real(nat_t width)'],['../classthorin_1_1World.html#a5059db8db19faad259c49b676008e0bc',1,'thorin::World::type_real(const Def *width)'],['../classthorin_1_1World.html#ab68312b4fab76b13437ca784b74c3924',1,'thorin::World::type_real()']]]
+  ['type_5freal_29',['type_real',['../namespacethorin_1_1core.html#ab0e1621421cea42c2a7ea7b234cbbd9f',1,'thorin::core::type_real(World &amp;w)'],['../namespacethorin_1_1core.html#a2854f1b06c6d979b0fabcc2f5351c92b',1,'thorin::core::type_real(const Def *width)'],['../namespacethorin_1_1core.html#a68a82c55be4860dce6b61edf4457e33b',1,'thorin::core::type_real(World &amp;w, nat_t width)']]]
 ];

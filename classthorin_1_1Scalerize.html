@@ -175,9 +175,8 @@ Public Member Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >Perform Scalarization (= Argument simplification), i.e. </p>
-<p >: </p><div class="fragment"><div class="line"><a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a> := λ (x_1:[T_1, T_2], .., x_n:T_n).E`</div>
-<div class="ttc" id="anamespacethorin_html_a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7"><div class="ttname"><a href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">thorin::Bit::f</a></div><div class="ttdeci">@ f</div></div>
-</div><!-- fragment --><p> will be transformed to </p><div class="fragment"><div class="line"><a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a><span class="stringliteral">&#39; := λ (y_1:T_1, y_2:T2, .. y_n:T_n).E[x_1 \ (y_1, y2); ..; x_n \ y_n]</span></div>
+<p >: </p><div class="fragment"><div class="line">f := λ (x_1:[T_1, T_2], .., x_n:T_n).E`</div>
+</div><!-- fragment --><p> will be transformed to </p><div class="fragment"><div class="line">f<span class="stringliteral">&#39; := λ (y_1:T_1, y_2:T2, .. y_n:T_n).E[x_1 \ (y_1, y2); ..; x_n \ y_n]</span></div>
 </div><!-- fragment --><p> if <code>f</code> appears in callee position only (see <code><a class="el" href="classthorin_1_1EtaExp.html" title="Performs η-expansion: f -&gt; λx.f x, if f is a Lam with more than one user and does not appear in calle...">EtaExp</a></code>). It will not flatten nominal <code><a class="el" href="classthorin_1_1Sigma.html">Sigma</a>s</code> or <code><a class="el" href="classthorin_1_1Arr.html">Arr</a>ays</code>. </p>
 
 <p class="definition">Definition at line <a class="el" href="scalarize_8h_source.html#l00019">19</a> of file <a class="el" href="scalarize_8h_source.html">scalarize.h</a>.</p>
@@ -249,7 +248,7 @@ Public Member Functions</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="scalarize_8cpp_source.html#l00056">56</a> of file <a class="el" href="scalarize_8cpp_source.html">scalarize.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00017">thorin::flatten()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00315">thorin::Def::isa_nom()</a>, and <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>.</p>
+<p class="reference">References <a class="el" href="tuple_8cpp_source.html#l00017">thorin::flatten()</a>, <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00338">thorin::Def::isa_nom()</a>, and <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>.</p>
 
 </div>
 </div>

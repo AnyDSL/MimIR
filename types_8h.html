@@ -127,7 +127,7 @@ Include dependency graph for types.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="types_8h__dep__incl.svg" width="4119" height="484"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="types_8h__dep__incl.svg" width="3172" height="634"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -219,6 +219,18 @@ Typedefs</h2></td></tr>
 <tr class="memitem:a0ab59ddb51e0b81c66518044da8abe84"><td class="memTemplParams" colspan="2">template&lt;int w&gt; </td></tr>
 <tr class="memitem:a0ab59ddb51e0b81c66518044da8abe84"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a0ab59ddb51e0b81c66518044da8abe84">thorin::w2r</a> = typename w2r_&lt; w &gt;::type</td></tr>
 <tr class="separator:a0ab59ddb51e0b81c66518044da8abe84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a529e2848fe27ea9f7ccf59bec4fd1e91"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">thorin::nat_t</a> = u64</td></tr>
+<tr class="separator:a529e2848fe27ea9f7ccf59bec4fd1e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0ec74d835ce935c637499bea15e74f2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae0ec74d835ce935c637499bea15e74f2">thorin::node_t</a> = u8</td></tr>
+<tr class="separator:ae0ec74d835ce935c637499bea15e74f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4dba9b3be2d9956cd3c0df92ba53dc2"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ae4dba9b3be2d9956cd3c0df92ba53dc2">thorin::flags_t</a> = u64</td></tr>
+<tr class="separator:ae4dba9b3be2d9956cd3c0df92ba53dc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb7875050bd88ae8cd44a2fc16a7143d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#adb7875050bd88ae8cd44a2fc16a7143d">thorin::dialect_t</a> = u64</td></tr>
+<tr class="separator:adb7875050bd88ae8cd44a2fc16a7143d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6f0807de74648433d98df664cbb79ba"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad6f0807de74648433d98df664cbb79ba">thorin::tag_t</a> = u8</td></tr>
+<tr class="separator:ad6f0807de74648433d98df664cbb79ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a15ce090292f7ca88b828d15baf109838"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a15ce090292f7ca88b828d15baf109838">thorin::sub_t</a> = u8</td></tr>
+<tr class="separator:a15ce090292f7ca88b828d15baf109838"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -618,8 +630,8 @@ type</td>
 <div class="line">    template&lt;&gt; <span class="keyword">struct </span>w2u_&lt;i&gt; { <span class="keyword">using </span>type = u ## i; };                                 \</div>
 <div class="line">    template&lt;&gt; <span class="keyword">struct </span>w2s_&lt;i&gt; { <span class="keyword">using </span>type = s ## i; };                                 \</div>
 <div class="line">    constexpr s ## i <span class="keyword">operator</span><span class="stringliteral">&quot;&quot;</span> _s ## i(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> s) { <span class="keywordflow">return</span> s ## i(s); } \</div>
-<div class="line">    constexpr <a class="code hl_enumvalue" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9a7b774effe4a349c6dd82ad4f4f21d34c">u</a> ## i <span class="keyword">operator</span><span class="stringliteral">&quot;&quot;</span> _u ## i(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> u) { <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9a7b774effe4a349c6dd82ad4f4f21d34c">u</a> ## i(u); }</div>
-<div class="ttc" id="anamespacethorin_html_ae0379be856253deabcafe1fcdc0785a9a7b774effe4a349c6dd82ad4f4f21d34c"><div class="ttname"><a href="namespacethorin.html#ae0379be856253deabcafe1fcdc0785a9a7b774effe4a349c6dd82ad4f4f21d34c">thorin::RCmp::u</a></div><div class="ttdeci">@ u</div></div>
+<div class="line">    constexpr <a class="code hl_enumvalue" href="namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dda7b774effe4a349c6dd82ad4f4f21d34c">u</a> ## i <span class="keyword">operator</span><span class="stringliteral">&quot;&quot;</span> _u ## i(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span> u) { <span class="keywordflow">return</span> <a class="code hl_enumvalue" href="namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dda7b774effe4a349c6dd82ad4f4f21d34c">u</a> ## i(u); }</div>
+<div class="ttc" id="anamespacethorin_1_1core_html_aef22e655d972e6e071c044c985a494dda7b774effe4a349c6dd82ad4f4f21d34c"><div class="ttname"><a href="namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dda7b774effe4a349c6dd82ad4f4f21d34c">thorin::core::rcmp::u</a></div><div class="ttdeci">@ u</div></div>
 </div><!-- fragment -->
 <p class="definition">Definition at line <a class="el" href="types_8h_source.html#l00068">68</a> of file <a class="el" href="types_8h_source.html">types.h</a>.</p>
 

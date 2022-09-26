@@ -176,18 +176,15 @@ Public Member Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p >This pass converts a direct style functions (abbreviated as ds) into CPS. </p>
 <p >the main conversion is shown in this pseudocode: </p><div class="fragment"><div class="line">h:</div>
-<div class="line">  <a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba92eb5ffee6ae2fec3ad71c777531578f">b</a> = <a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a> <a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">a</a></div>
-<div class="line">  C[<a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba92eb5ffee6ae2fec3ad71c777531578f">b</a>]</div>
-<div class="ttc" id="anamespacethorin_html_a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661"><div class="ttname"><a href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::Bit::a</a></div><div class="ttdeci">@ a</div></div>
-<div class="ttc" id="anamespacethorin_html_a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7"><div class="ttname"><a href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">thorin::Bit::f</a></div><div class="ttdeci">@ f</div></div>
-<div class="ttc" id="anamespacethorin_html_a3fcd9c66f7bd3db93a602aca8f7f785ba92eb5ffee6ae2fec3ad71c777531578f"><div class="ttname"><a href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba92eb5ffee6ae2fec3ad71c777531578f">thorin::Bit::b</a></div><div class="ttdeci">@ b</div></div>
+<div class="line">  b = f a</div>
+<div class="line">  C[b]</div>
 </div><!-- fragment --><p> becomes </p><div class="fragment"><div class="line">h:</div>
-<div class="line">    <a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a><span class="stringliteral">&#39;(a,h_cont)</span></div>
+<div class="line">    f<span class="stringliteral">&#39;(a,h_cont)</span></div>
 <div class="line"><span class="stringliteral"></span> </div>
 <div class="line"><span class="stringliteral">h_cont(b):</span></div>
 <div class="line"><span class="stringliteral">    C[b]</span></div>
-</div><!-- fragment --><p> with the following types: </p><div class="fragment"><div class="line"><a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a> : A -&gt; B</div>
-<div class="line"><a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a><span class="stringliteral">&#39;: .Cn [A, ret: .Cn[B]]</span></div>
+</div><!-- fragment --><p> with the following types: </p><div class="fragment"><div class="line">f : A -&gt; B</div>
+<div class="line">f<span class="stringliteral">&#39;: .Cn [A, ret: .Cn[B]]</span></div>
 </div><!-- fragment --><p> The idea is to create a cps function for each ds function invoke the cps function with a continuation that takes the computation result and uses it in the original context. For each ds function, a new cps function is introduced. For each ds call site, a new continuation is introduced. </p>
 
 <p class="definition">Definition at line <a class="el" href="ds2cps_8h_source.html#l00033">33</a> of file <a class="el" href="ds2cps_8h_source.html">ds2cps.h</a>.</p>

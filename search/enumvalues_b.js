@@ -24,5 +24,5 @@ var searchData=
   ['k_5ftype_21',['K_Type',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a99c9443b98ae3d0847fdcd64f6600e25',1,'thorin::fe::Tok']]],
   ['k_5funiv_22',['K_Univ',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a49b3d477647d73a29f5821aad9819448',1,'thorin::fe::Tok']]],
   ['kind_23',['Kind',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead626102cfc2416a570fc0dc582a9b771',1,'thorin']]],
-  ['known_24',['known',['../namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfac90ae688b2a3b1fd0751fd743eb385cd',1,'thorin']]]
+  ['known_24',['known',['../namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aac90ae688b2a3b1fd0751fd743eb385cd',1,'thorin::core']]]
 ];

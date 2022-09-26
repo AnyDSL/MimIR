@@ -116,7 +116,6 @@ $(document).ready(function(){initNavTree('def_8h.html',''); initResizable(); });
 <div class="textblock"><code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="thorin_2debug_8h_source.html">thorin/debug.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="tables_8h_source.html">thorin/tables.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="array_8h_source.html">thorin/util/array.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="cast_8h_source.html">thorin/util/cast.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="container_8h_source.html">thorin/util/container.h</a>&quot;</code><br />
@@ -125,13 +124,13 @@ $(document).ready(function(){initNavTree('def_8h.html',''); initResizable(); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for def.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="1880" height="351"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="def_8h__incl.svg" width="2439" height="351"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="def_8h__dep__incl.svg" width="3756" height="648"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="def_8h__dep__incl.svg" width="3280" height="648"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -180,9 +179,15 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacethorin_1_1Node"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1Node.html">thorin::Node</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:ad441fba8cfece95e5b9a6bfb4e2c65f1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="def_8h.html#ad441fba8cfece95e5b9a6bfb4e2c65f1">THORIN_NODE</a>(m)</td></tr>
+<tr class="separator:ad441fba8cfece95e5b9a6bfb4e2c65f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad04b3972ae1c6d4df84a276ed64f06cb"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="def_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb">CODE</a>(node,  name)&#160;&#160;&#160;node,</td></tr>
+<tr class="separator:ad04b3972ae1c6d4df84a276ed64f06cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf5d1a62a53cfba7b0dcd4caac0090ab"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="def_8h.html#adf5d1a62a53cfba7b0dcd4caac0090ab">THORIN_PROJ</a>(NAME,  CONST)</td></tr>
 <tr class="memdesc:adf5d1a62a53cfba7b0dcd4caac0090ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use as mixin to wrap all kind of Def::proj and Def::projs variants.  <a href="def_8h.html#adf5d1a62a53cfba7b0dcd4caac0090ab">More...</a><br /></td></tr>
 <tr class="separator:adf5d1a62a53cfba7b0dcd4caac0090ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,6 +235,46 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:a8f9ce7cae6b718bac0ca504d3fe29afb"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">: node_t { <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba921d97e8cfab1f7c0026e2d98995d14c">thorin::Node::Type</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbae882a8f030afe817e8f82f3a2bc2710a">thorin::Node::Univ</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbacc524d86ec74bf18ee3f5a5ec4d36b6d">thorin::Node::Pi</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbad26ed8ccf9be433863b45140f88c43ff">thorin::Node::App</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbadebbca699bf3e5ae3338dd01934423bc">thorin::Node::Tuple</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba257bf2499ed2c21151ca373f7c4c0307">thorin::Node::Extract</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba5d47f4021a0e2f797e8232d6e4b29cc4">thorin::Node::Insert</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba5f71ccf180cb6f7fb169c8632cc66912">thorin::Node::Arr</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac5d4ed55a25bdab2945a7027dc213778">thorin::Node::Pack</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac41543bb0ee7c88b2ca13e9f72de28dc">thorin::Node::Join</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba8488f8c3464a90aa07238d6ae0bce35d">thorin::Node::Vel</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba2761c4aad624ceedae7edbf3c551c49b">thorin::Node::Test</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbaed6c4ae568966987abe32f7fc9342f3e">thorin::Node::Top</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1176c238713240939d0ce7767f2c83fd">thorin::Node::Meet</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba756f26cda5f2e0caa8254e8e9aa11e49">thorin::Node::Ac</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba32daf84d1b553daef38b172edace4d9c">thorin::Node::Pick</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba68c4ea4a1177ed112e3b590ef39b6538">thorin::Node::Bot</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbaad888bbf600987dd2d6f78a8e50c88b7">thorin::Node::Proxy</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1e0700ae57d0a544e259f1ae04af55c4">thorin::Node::Axiom</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba8a318b95f9e4e08fd5b5cbcadcd93b7e">thorin::Node::Lit</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1b3ad193ab60d8bfe3aa5f31beef9355">thorin::Node::Nat</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba14586df6a2656fabf41a56e19c844434">thorin::Node::Idx</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba7a5700ae028d415a5e1e20feac76eda5">thorin::Node::Var</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba8d94437120ef9485341077ce00c86443">thorin::Node::Infer</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbabd8d7821a2fd1239acef09706db6bace">thorin::Node::Global</a>
+, <a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba9aa3d738ffa11f86c81842510d5288df">thorin::Node::Singleton</a>
+, <br />
+&#160;&#160;<a class="el" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba96995d2f451e6ea4dca3296b37f8b3f2">thorin::Node::Max</a>
+<br />
+ }</td></tr>
+<tr class="separator:a8f9ce7cae6b718bac0ca504d3fe29afb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb917bebc699083d990fc4592abcc50e"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50e">thorin::Sort</a> { <br />
 &#160;&#160;<a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eacf5f3091e30dee6597885d8c0e0c357f">thorin::Term</a>
 , <a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508">thorin::Type</a>
@@ -257,6 +302,100 @@ Functions</h2></td></tr>
 <tr class="separator:a77128b6187ea06fcc6b07e5e34efcc3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="ad04b3972ae1c6d4df84a276ed64f06cb" name="ad04b3972ae1c6d4df84a276ed64f06cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad04b3972ae1c6d4df84a276ed64f06cb">&#9670;&nbsp;</a></span>CODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define CODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">node, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">name&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td>&#160;&#160;&#160;node,</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00035">35</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+</div>
+</div>
+<a id="ad441fba8cfece95e5b9a6bfb4e2c65f1" name="ad441fba8cfece95e5b9a6bfb4e2c65f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad441fba8cfece95e5b9a6bfb4e2c65f1">&#9670;&nbsp;</a></span>THORIN_NODE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define THORIN_NODE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">m</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba921d97e8cfab1f7c0026e2d98995d14c">Type</a>, type)       m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbae882a8f030afe817e8f82f3a2bc2710a">Univ</a>, univ)                                         \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbacc524d86ec74bf18ee3f5a5ec4d36b6d">Pi</a>, pi)           m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba3083dfa50d05b28c3cafe6ec116d0362">Lam</a>, lam)     m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbad26ed8ccf9be433863b45140f88c43ff">App</a>, app)                           \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac1fb2543759c1fd49ae0fea3855ea812">Sigma</a>, sigma)     m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbadebbca699bf3e5ae3338dd01934423bc">Tuple</a>, tuple) m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba257bf2499ed2c21151ca373f7c4c0307">Extract</a>, extract) m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba5d47f4021a0e2f797e8232d6e4b29cc4">Insert</a>, insert) \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba5f71ccf180cb6f7fb169c8632cc66912">Arr</a>, arr)         m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac5d4ed55a25bdab2945a7027dc213778">Pack</a>, pack)                                         \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac41543bb0ee7c88b2ca13e9f72de28dc">Join</a>, join)       m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba8488f8c3464a90aa07238d6ae0bce35d">Vel</a>, vel)     m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba2761c4aad624ceedae7edbf3c551c49b">Test</a>, test)       m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbaed6c4ae568966987abe32f7fc9342f3e">Top</a>, <a class="code hl_enumvalue" href="namespacethorin_1_1core_1_1RMode.html#ab1738d486dcdeaaefb42bb676ba05b91aa23431afbc8c2bd86f9fa58f962fb4a6">top</a>)       \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1176c238713240939d0ce7767f2c83fd">Meet</a>, meet)       m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba756f26cda5f2e0caa8254e8e9aa11e49">Ac</a>,  ac )     m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba32daf84d1b553daef38b172edace4d9c">Pick</a>, pick)       m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba68c4ea4a1177ed112e3b590ef39b6538">Bot</a>, <a class="code hl_enumvalue" href="namespacethorin_1_1core_1_1RMode.html#ab1738d486dcdeaaefb42bb676ba05b91a17ab963847feadcef96c47fe71be4470">bot</a>)       \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbaad888bbf600987dd2d6f78a8e50c88b7">Proxy</a>, proxy)                                                           \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1e0700ae57d0a544e259f1ae04af55c4">Axiom</a>, axiom)                                                           \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba8a318b95f9e4e08fd5b5cbcadcd93b7e">Lit</a>, lit)                                                               \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1b3ad193ab60d8bfe3aa5f31beef9355">Nat</a>, nat)         m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba14586df6a2656fabf41a56e19c844434">Idx</a>, <span class="keywordtype">int</span>)                                           \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba7a5700ae028d415a5e1e20feac76eda5">Var</a>, var)                                                               \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba8d94437120ef9485341077ce00c86443">Infer</a>, infer)                                                           \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbabd8d7821a2fd1239acef09706db6bace">Global</a>, global)                                                         \</div>
+<div class="line">    m(<a class="code hl_enumvalue" href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba9aa3d738ffa11f86c81842510d5288df">Singleton</a>, singleton)</div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba1176c238713240939d0ce7767f2c83fd"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1176c238713240939d0ce7767f2c83fd">thorin::Node::Meet</a></div><div class="ttdeci">@ Meet</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba14586df6a2656fabf41a56e19c844434"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba14586df6a2656fabf41a56e19c844434">thorin::Node::Idx</a></div><div class="ttdeci">@ Idx</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba1b3ad193ab60d8bfe3aa5f31beef9355"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1b3ad193ab60d8bfe3aa5f31beef9355">thorin::Node::Nat</a></div><div class="ttdeci">@ Nat</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba1e0700ae57d0a544e259f1ae04af55c4"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1e0700ae57d0a544e259f1ae04af55c4">thorin::Node::Axiom</a></div><div class="ttdeci">@ Axiom</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba257bf2499ed2c21151ca373f7c4c0307"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba257bf2499ed2c21151ca373f7c4c0307">thorin::Node::Extract</a></div><div class="ttdeci">@ Extract</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba2761c4aad624ceedae7edbf3c551c49b"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba2761c4aad624ceedae7edbf3c551c49b">thorin::Node::Test</a></div><div class="ttdeci">@ Test</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba3083dfa50d05b28c3cafe6ec116d0362"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba3083dfa50d05b28c3cafe6ec116d0362">thorin::Node::Lam</a></div><div class="ttdeci">@ Lam</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba32daf84d1b553daef38b172edace4d9c"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba32daf84d1b553daef38b172edace4d9c">thorin::Node::Pick</a></div><div class="ttdeci">@ Pick</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba5d47f4021a0e2f797e8232d6e4b29cc4"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba5d47f4021a0e2f797e8232d6e4b29cc4">thorin::Node::Insert</a></div><div class="ttdeci">@ Insert</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba5f71ccf180cb6f7fb169c8632cc66912"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba5f71ccf180cb6f7fb169c8632cc66912">thorin::Node::Arr</a></div><div class="ttdeci">@ Arr</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba68c4ea4a1177ed112e3b590ef39b6538"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba68c4ea4a1177ed112e3b590ef39b6538">thorin::Node::Bot</a></div><div class="ttdeci">@ Bot</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba756f26cda5f2e0caa8254e8e9aa11e49"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba756f26cda5f2e0caa8254e8e9aa11e49">thorin::Node::Ac</a></div><div class="ttdeci">@ Ac</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba7a5700ae028d415a5e1e20feac76eda5"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba7a5700ae028d415a5e1e20feac76eda5">thorin::Node::Var</a></div><div class="ttdeci">@ Var</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba8488f8c3464a90aa07238d6ae0bce35d"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba8488f8c3464a90aa07238d6ae0bce35d">thorin::Node::Vel</a></div><div class="ttdeci">@ Vel</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba8a318b95f9e4e08fd5b5cbcadcd93b7e"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba8a318b95f9e4e08fd5b5cbcadcd93b7e">thorin::Node::Lit</a></div><div class="ttdeci">@ Lit</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba8d94437120ef9485341077ce00c86443"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba8d94437120ef9485341077ce00c86443">thorin::Node::Infer</a></div><div class="ttdeci">@ Infer</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba921d97e8cfab1f7c0026e2d98995d14c"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba921d97e8cfab1f7c0026e2d98995d14c">thorin::Node::Type</a></div><div class="ttdeci">@ Type</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afba9aa3d738ffa11f86c81842510d5288df"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba9aa3d738ffa11f86c81842510d5288df">thorin::Node::Singleton</a></div><div class="ttdeci">@ Singleton</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afbaad888bbf600987dd2d6f78a8e50c88b7"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbaad888bbf600987dd2d6f78a8e50c88b7">thorin::Node::Proxy</a></div><div class="ttdeci">@ Proxy</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afbabd8d7821a2fd1239acef09706db6bace"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbabd8d7821a2fd1239acef09706db6bace">thorin::Node::Global</a></div><div class="ttdeci">@ Global</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afbac1fb2543759c1fd49ae0fea3855ea812"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac1fb2543759c1fd49ae0fea3855ea812">thorin::Node::Sigma</a></div><div class="ttdeci">@ Sigma</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afbac41543bb0ee7c88b2ca13e9f72de28dc"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac41543bb0ee7c88b2ca13e9f72de28dc">thorin::Node::Join</a></div><div class="ttdeci">@ Join</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afbac5d4ed55a25bdab2945a7027dc213778"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac5d4ed55a25bdab2945a7027dc213778">thorin::Node::Pack</a></div><div class="ttdeci">@ Pack</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afbacc524d86ec74bf18ee3f5a5ec4d36b6d"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbacc524d86ec74bf18ee3f5a5ec4d36b6d">thorin::Node::Pi</a></div><div class="ttdeci">@ Pi</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afbad26ed8ccf9be433863b45140f88c43ff"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbad26ed8ccf9be433863b45140f88c43ff">thorin::Node::App</a></div><div class="ttdeci">@ App</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afbadebbca699bf3e5ae3338dd01934423bc"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbadebbca699bf3e5ae3338dd01934423bc">thorin::Node::Tuple</a></div><div class="ttdeci">@ Tuple</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afbae882a8f030afe817e8f82f3a2bc2710a"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbae882a8f030afe817e8f82f3a2bc2710a">thorin::Node::Univ</a></div><div class="ttdeci">@ Univ</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1Node_html_a8f9ce7cae6b718bac0ca504d3fe29afbaed6c4ae568966987abe32f7fc9342f3e"><div class="ttname"><a href="namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbaed6c4ae568966987abe32f7fc9342f3e">thorin::Node::Top</a></div><div class="ttdeci">@ Top</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00036">def.h:36</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_1_1RMode_html_ab1738d486dcdeaaefb42bb676ba05b91a17ab963847feadcef96c47fe71be4470"><div class="ttname"><a href="namespacethorin_1_1core_1_1RMode.html#ab1738d486dcdeaaefb42bb676ba05b91a17ab963847feadcef96c47fe71be4470">thorin::core::RMode::bot</a></div><div class="ttdeci">@ bot</div><div class="ttdef"><b>Definition:</b> <a href="core_8h_source.html#l00040">core.h:40</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_1_1RMode_html_ab1738d486dcdeaaefb42bb676ba05b91aa23431afbc8c2bd86f9fa58f962fb4a6"><div class="ttname"><a href="namespacethorin_1_1core_1_1RMode.html#ab1738d486dcdeaaefb42bb676ba05b91aa23431afbc8c2bd86f9fa58f962fb4a6">thorin::core::RMode::top</a></div><div class="ttdeci">@ top</div><div class="ttdef"><b>Definition:</b> <a href="core_8h_source.html#l00041">core.h:41</a></div></div>
+</div><!-- fragment -->
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00015">15</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+</div>
+</div>
 <a id="adf5d1a62a53cfba7b0dcd4caac0090ab" name="adf5d1a62a53cfba7b0dcd4caac0090ab"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adf5d1a62a53cfba7b0dcd4caac0090ab">&#9670;&nbsp;</a></span>THORIN_PROJ</h2>
 
@@ -286,8 +425,8 @@ Functions</h2></td></tr>
 <div class="line">    const Def* NAME(<a class="code hl_typedef" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> a, <a class="code hl_typedef" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> i, <span class="keyword">const</span> Def* <a class="code hl_enumeration" href="namespacethorin_1_1debug.html#ab07aa4fe81250a31770bbdd988a8c2b1">dbg</a> = {}) CONST { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;proj(a, i, <a class="code hl_enumeration" href="namespacethorin_1_1debug.html#ab07aa4fe81250a31770bbdd988a8c2b1">dbg</a>); } \</div>
 <div class="line">    const Def* NAME(<a class="code hl_typedef" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> i, <span class="keyword">const</span> Def* <a class="code hl_enumeration" href="namespacethorin_1_1debug.html#ab07aa4fe81250a31770bbdd988a8c2b1">dbg</a> = {}) CONST { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;proj(i, <a class="code hl_enumeration" href="namespacethorin_1_1debug.html#ab07aa4fe81250a31770bbdd988a8c2b1">dbg</a>); }             \</div>
 <div class="line">    template&lt;<a class="code hl_typedef" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> A = -1_s, <span class="keyword">class </span>F&gt;                                                                              \</div>
-<div class="line">    auto NAME##s(F <a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a>, <a class="code hl_typedef" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> dbgs = {}) CONST {                                                                      \</div>
-<div class="line">        return ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;A, F&gt;(<a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a>, dbgs);                                                         \</div>
+<div class="line">    auto NAME##s(F <a class="code hl_enumvalue" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349a8fa14cdd754f91cc6554c9e71929cce7">f</a>, <a class="code hl_typedef" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> dbgs = {}) CONST {                                                                      \</div>
+<div class="line">        return ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;A, F&gt;(<a class="code hl_enumvalue" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349a8fa14cdd754f91cc6554c9e71929cce7">f</a>, dbgs);                                                         \</div>
 <div class="line">    }                                                                                                              \</div>
 <div class="line">    template&lt;<a class="code hl_typedef" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> A = -1_s&gt;                                                                                       \</div>
 <div class="line">    auto NAME##s(<a class="code hl_typedef" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> dbgs = {}) CONST {                                                                           \</div>
@@ -295,18 +434,18 @@ Functions</h2></td></tr>
 <div class="line">    }                                                                                                              \</div>
 <div class="line">    template&lt;class F&gt;                                                                                              \</div>
 <div class="line">    auto NAME##s(<a class="code hl_typedef" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> a, F f, <a class="code hl_typedef" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> dbgs = {}) CONST {                                                             \</div>
-<div class="line">        return ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;F&gt;(<a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">a</a>, <a class="code hl_enumvalue" href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">f</a>, dbgs);                                                         \</div>
+<div class="line">        return ((<span class="keyword">const</span> Def*)NAME())-&gt;projs&lt;F&gt;(<a class="code hl_enumvalue" href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a0cc175b9c0f1b6a831c399e269772661">a</a>, <a class="code hl_enumvalue" href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349a8fa14cdd754f91cc6554c9e71929cce7">f</a>, dbgs);                                                         \</div>
 <div class="line">    }                                                                                                              \</div>
 <div class="line">    auto NAME##s(<a class="code hl_typedef" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> a, <a class="code hl_typedef" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> dbgs = {}) CONST { <span class="keywordflow">return</span> ((<span class="keyword">const</span> Def*)NAME())-&gt;projs(a, dbgs); }</div>
-<div class="ttc" id="anamespacethorin_1_1debug_html_ab07aa4fe81250a31770bbdd988a8c2b1"><div class="ttname"><a href="namespacethorin_1_1debug.html#ab07aa4fe81250a31770bbdd988a8c2b1">thorin::debug::dbg</a></div><div class="ttdeci">dbg</div><div class="ttdef"><b>Definition:</b> <a href="debug_2autogen_8h_source.html#l00012">autogen.h:12</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a2d1ba8b5552b3120a6648deb2bf7eb16"><div class="ttname"><a href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">thorin::Defs</a></div><div class="ttdeci">ArrayRef&lt; const Def * &gt; Defs</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00023">def.h:23</a></div></div>
-<div class="ttc" id="anamespacethorin_html_a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661"><div class="ttname"><a href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba0cc175b9c0f1b6a831c399e269772661">thorin::Bit::a</a></div><div class="ttdeci">@ a</div></div>
-<div class="ttc" id="anamespacethorin_html_a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7"><div class="ttname"><a href="namespacethorin.html#a3fcd9c66f7bd3db93a602aca8f7f785ba8fa14cdd754f91cc6554c9e71929cce7">thorin::Bit::f</a></div><div class="ttdeci">@ f</div></div>
-<div class="ttc" id="anamespacethorin_html_a529e2848fe27ea9f7ccf59bec4fd1e91"><div class="ttname"><a href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">thorin::nat_t</a></div><div class="ttdeci">u64 nat_t</div><div class="ttdef"><b>Definition:</b> <a href="tables_8h_source.html#l00011">tables.h:11</a></div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a60b6d2484fb68ef9ce568db15502e349a8fa14cdd754f91cc6554c9e71929cce7"><div class="ttname"><a href="namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349a8fa14cdd754f91cc6554c9e71929cce7">thorin::core::bit1::f</a></div><div class="ttdeci">@ f</div></div>
+<div class="ttc" id="anamespacethorin_1_1core_html_a70895f76bd16fdb3db2c75dd1fd38978a0cc175b9c0f1b6a831c399e269772661"><div class="ttname"><a href="namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a0cc175b9c0f1b6a831c399e269772661">thorin::core::bit2::a</a></div><div class="ttdeci">@ a</div></div>
+<div class="ttc" id="anamespacethorin_1_1debug_html_ab07aa4fe81250a31770bbdd988a8c2b1"><div class="ttname"><a href="namespacethorin_1_1debug.html#ab07aa4fe81250a31770bbdd988a8c2b1">thorin::debug::dbg</a></div><div class="ttdeci">dbg</div><div class="ttdef"><b>Definition:</b> <a href="debug_2autogen_8h_source.html#l00022">autogen.h:22</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a2d1ba8b5552b3120a6648deb2bf7eb16"><div class="ttname"><a href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">thorin::Defs</a></div><div class="ttdeci">ArrayRef&lt; const Def * &gt; Defs</div><div class="ttdef"><b>Definition:</b> <a href="def_8h_source.html#l00046">def.h:46</a></div></div>
+<div class="ttc" id="anamespacethorin_html_a529e2848fe27ea9f7ccf59bec4fd1e91"><div class="ttname"><a href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">thorin::nat_t</a></div><div class="ttdeci">u64 nat_t</div><div class="ttdef"><b>Definition:</b> <a href="types_8h_source.html#l00083">types.h:83</a></div></div>
 </div><!-- fragment -->
 <p>Use as mixin to wrap all kind of Def::proj and Def::projs variants. </p>
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00083">83</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00106">106</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

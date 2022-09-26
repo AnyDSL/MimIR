@@ -1,13 +1,14 @@
 var classthorin_1_1Match =
 [
-    [ "Match", "classthorin_1_1Match.html#a8626cc54590d30d8546c5bd9c4560c8c", null ],
-    [ "Match", "classthorin_1_1Match.html#a76783a24616ebc4e01c38b3093a67e6d", null ],
-    [ "axiom", "classthorin_1_1Match.html#a6d248a36cc0aa2448dddfda5cf499812", null ],
-    [ "clear", "classthorin_1_1Match.html#a8d538d7678edaf259710432dd002d5b5", null ],
-    [ "flags", "classthorin_1_1Match.html#af7a1a2979171219afcaffe9531c9f40e", null ],
-    [ "operator bool", "classthorin_1_1Match.html#a44e59003a9be9e10c618b8249f3fe27f", null ],
-    [ "operator const D *", "classthorin_1_1Match.html#aafbfd2e89c939e7b46fd685cd3e60c51", null ],
-    [ "operator->", "classthorin_1_1Match.html#a3827fb74f0d72793ee2d8736d059ea69", null ],
-    [ "sub", "classthorin_1_1Match.html#ae34669f3d56c5a1672975c9bc9006f04", null ],
-    [ "tag", "classthorin_1_1Match.html#a14760a6c3dc608e2bdadde94018244b1", null ]
+    [ "Match", "classthorin_1_1Match.html#a1c485e4f1115270df5028011fc1fca30", null ],
+    [ "Match", "classthorin_1_1Match.html#a05d2fe56e93d9e8582b0cf648181ba56", null ],
+    [ "axiom", "classthorin_1_1Match.html#a6c64d82d805303af541d534928d2fc01", null ],
+    [ "base", "classthorin_1_1Match.html#a2e4185a6228dc0aebb6219c2f3c70a5e", null ],
+    [ "dialect", "classthorin_1_1Match.html#ae8a6244004cef9cddd384b9d89967e98", null ],
+    [ "id", "classthorin_1_1Match.html#a9eb66637814d1f726aadbd1b6ceb304a", null ],
+    [ "operator bool", "classthorin_1_1Match.html#acd7bf0b3bc070ada86c41cf156bfc171", null ],
+    [ "operator const D *", "classthorin_1_1Match.html#a03d3bec93b65c76f6cc52a6f19676f90", null ],
+    [ "operator->", "classthorin_1_1Match.html#a0863cad7c3e302f020fad0407263346c", null ],
+    [ "sub", "classthorin_1_1Match.html#a68df8bc834a9d2fe593e0600c322d3ec", null ],
+    [ "tag", "classthorin_1_1Match.html#aae7ddefa2552123253175c154fe1840c", null ]
 ];

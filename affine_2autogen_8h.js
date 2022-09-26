@@ -1,12 +1,10 @@
 var affine_2autogen_8h =
 [
-    [ "For", "affine_2autogen_8h.html#ae9bd5d8f8b435003df098cc8f09b30d6", [
-      [ "Axiom_Id", "affine_2autogen_8h.html#ae9bd5d8f8b435003df098cc8f09b30d6a51e0df3ca5c430d39d775ec66f8c6f45", null ]
-    ] ],
-    [ "operator&", "affine_2autogen_8h.html#ab8749c442801afe605cb3899be6b3d08", null ],
-    [ "operator&", "affine_2autogen_8h.html#a073c117a1c8c1d35dfdf6d208ca76692", null ],
+    [ "For", "affine_2autogen_8h.html#ae9bd5d8f8b435003df098cc8f09b30d6", null ],
+    [ "operator&", "affine_2autogen_8h.html#ac66a5cf9db879fc1df4349ef39c5f847", null ],
+    [ "operator&", "affine_2autogen_8h.html#ab02611cf38130a6ce937c278cf3a533a", null ],
     [ "operator==", "affine_2autogen_8h.html#a26dd00313435d196e5468fdddbbf4d58", null ],
-    [ "operator|", "affine_2autogen_8h.html#a9d241b3691e31e75c5e7e56b0e7932a3", null ],
-    [ "operator|", "affine_2autogen_8h.html#a1e14147737b461e2500789f7b6757ad6", null ],
+    [ "operator|", "affine_2autogen_8h.html#a21feaed294367bb2981f9bbed18280eb", null ],
+    [ "operator|", "affine_2autogen_8h.html#a8eafb88b611c6281c2cac28cebee14ec", null ],
     [ "Dialect_Id", "affine_2autogen_8h.html#ae73ed068961b3d87291dea2a795638d0", null ]
 ];

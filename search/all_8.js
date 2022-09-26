@@ -13,5 +13,5 @@ var searchData=
   ['head_10',['Head',['../classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cba98921133d10fbdb0fb6dbb7b2648befe',1,'thorin::LoopTree::Base']]],
   ['head_11',['head',['../structthorin_1_1ll_1_1BB.html#ab6c05d26f3078afff39a6cb5da9d33b2',1,'thorin::ll::BB']]],
   ['head_12',['Head',['../classthorin_1_1LoopTreeBuilder.html#af2176b1acfc3d10dc70c6e8915000925',1,'thorin::LoopTreeBuilder::Head()'],['../classthorin_1_1LoopTree_1_1Head.html',1,'thorin::LoopTree&lt; forward &gt;::Head']]],
-  ['hlt_13',['hlt',['../namespacethorin.html#a66430eff8ba4a2e321f9d492dec39fcfa4f4000d921968b9665f52e88333007da',1,'thorin']]]
+  ['hlt_13',['hlt',['../namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aa4f4000d921968b9665f52e88333007da',1,'thorin::core']]]
 ];

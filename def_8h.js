@@ -16,6 +16,8 @@ var def_8h =
     [ "thorin::Proxy", "classthorin_1_1Proxy.html", "classthorin_1_1Proxy" ],
     [ "thorin::Infer", "classthorin_1_1Infer.html", "classthorin_1_1Infer" ],
     [ "thorin::Global", "classthorin_1_1Global.html", "classthorin_1_1Global" ],
+    [ "CODE", "def_8h.html#ad04b3972ae1c6d4df84a276ed64f06cb", null ],
+    [ "THORIN_NODE", "def_8h.html#ad441fba8cfece95e5b9a6bfb4e2c65f1", null ],
     [ "THORIN_PROJ", "def_8h.html#adf5d1a62a53cfba7b0dcd4caac0090ab", null ],
     [ "Def2Def", "def_8h.html#a7907156065ecc2f7a8ad6d0c4b48752d", null ],
     [ "DefArray", "def_8h.html#a81c6780cfdf58e5be888c4c16c68476d", null ],
