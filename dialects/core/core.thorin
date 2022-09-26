@@ -44,7 +44,7 @@
 /// | nxor   |  x |  o |  o |  x | not exclusive or             |
 /// | snd    |  x |  o |  x |  o | second argument              |
 /// | iff    |  x |  o |  x |  x | implication (if and only if) |
-/// | fst    |  x |  x |  o |  o | first argment                |
+/// | fst    |  x |  x |  o |  o | first argument               |
 /// | ciff   |  x |  x |  o |  x | converse implication         |
 /// | _or    |  x |  x |  x |  o | or                           |
 /// | t      |  x |  x |  x |  x | always true                  |
@@ -62,14 +62,16 @@
 /// ### %core.wrap
 ///
 /// Integer operations that might wrap and, hence, take a WMode.
-.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [.Idx w, .Idx w] -> .Idx w, normalize_wrap;
+.ax %core.wrap(add, sub, mul, shl): 
+    Π [m: .Nat, w: .Nat] -> [.Idx w, .Idx w] -> .Idx w, normalize_wrap;
 ///
 /// ### %core.div
 ///
 /// Signed and unsigned Integer division/remainder.
 /// Division by zero is undefined behavior and thus a visible side effect.
 /// For this reason, these axioms expect a `%%mem.M`.
-.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, .Idx w, .Idx w] -> [%mem.M, .Idx w], normalize_div;
+.ax %core.div(sdiv, udiv, srem, urem):
+    Π w: .Nat -> [%mem.M, .Idx w, .Idx w] -> [%mem.M, .Idx w], normalize_div;
 ///
 /// ### %core.icmp
 ///
@@ -133,10 +135,14 @@
 /// | `XYGlE` |        | x | x | x | o | x | signed or unsigned greater or equal == not less |
 /// | `XYGLe` |  `ne`  | x | x | x | x | o | not equal                                       |
 /// | `XYGLE` |  `t`   | x | x | x | x | x | always true                                     |
-.ax %core.icmp(xygle = f, xyglE = e, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,
-               xYgle,     xYglE,     xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
-               Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
-               XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
+.ax %core.icmp(xygle = f,  xyglE = e,   xygLe,      xygLE,       
+               xyGle,      xyGlE,       xyGLe,      xyGLE,
+               xYgle,      xYglE,       xYgLe = sl, xYgLE = sle, 
+               xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
+               Xygle,      XyglE,       XygLe = ul, XygLE = ule, 
+               XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
+               XYgle,      XYglE,       XYgLe,      XYgLE,       
+               XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
     Π w: .Nat -> [.Idx w, .Idx w] -> .Bool , normalize_icmp;
 ///
 /// ## Real Operations
@@ -144,7 +150,8 @@
 /// ### %core.rop
 ///
 /// Floating point (real) operations that take RMode.
-.ax %core.rop(add, sub, mul, div, rem): Π [m: .Nat, w: .Nat] -> [%core.Real w, %core.Real w] -> %core.Real w, normalize_rop;
+.ax %core.rop(add, sub, mul, div, rem): 
+    Π [m: .Nat, w: .Nat] -> [%core.Real w, %core.Real w] -> %core.Real w, normalize_rop;
 ///
 /// ### %core.rcmp
 ///
