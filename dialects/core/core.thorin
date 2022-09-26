@@ -68,7 +68,7 @@
 ///
 /// Signed and unsigned Integer division/remainder.
 /// Division by zero is undefined behavior and thus a visible side effect.
-/// For this reason, these axioms expect a `%mem.M`.
+/// For this reason, these axioms expect a `%%mem.M`.
 .ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, .Idx w, .Idx w] -> [%mem.M, .Idx w], normalize_div;
 ///
 /// ### %core.icmp
@@ -80,7 +80,7 @@
 ///     * `L`: less with same sign
 ///     * `E`: equal
 ///
-/// Here is the complete picture for `%core.icmp.xygle x, y` for 3 bit wide integers:
+/// Here is the complete picture for `%%core.icmp.xygle x, y` for 3 bit wide integers:
 ///
 /// |        | x        |        |       |       |       | y     |       |       |       |       |
 /// |--------|----------|--------|-------|-------|-------|-------|-------|-------|-------|-------|
@@ -184,9 +184,9 @@
 ///
 /// Bit width (and signedness) conversion for:
 ///     * `s2s`/`u2u`: `.Idx -> .Idx` 
-///     * `s2r`/`u2r`: `.Idx -> %core.Real`
-///     * `r2s`/`r2u`: `%core.Real -> .Idx` 
-///     * `r2r`: `%core.Real -> %core.Real` 
+///     * `s2r`/`u2r`: `.Idx -> %%core.Real`
+///     * `r2s`/`r2u`: `%%core.Real -> .Idx` 
+///     * `r2r`: `%%core.Real -> %%core.Real` 
 .ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> .Idx dw, normalize_conv;
 .ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> %core.Real dw, normalize_conv;
 .ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -> %core.Real sw -> .Idx dw, normalize_conv;
