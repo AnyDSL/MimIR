@@ -23,20 +23,17 @@
 namespace thorin {
 
 void PipelineBuilder::extend_opt_phase(std::function<void(PassMan&)> extension) {
-    extend_opt_phase(100, std::move(extension));
+    extend_opt_phase(OPT_PHASE, std::move(extension));
 }
 
 void PipelineBuilder::extend_codegen_prep_phase(std::function<void(PassMan&)> extension) {
-    extend_opt_phase(300, std::move(extension));
+    extend_opt_phase(CODEGEN_PREP_PHASE, std::move(extension));
 }
 
 void PipelineBuilder::extend_opt_phase(int i, std::function<void(PassMan&)> extension, int priority) {
     // adds extension to the i-th optimization phase
     // if the ith phase does not exist, it is created
-    if (!phase_extensions_.contains(i)) {
-        // phase_extensions_.emplace(i, std::vector<>());
-        phase_extensions_[i] = std::vector<PrioPassBuilder>();
-    }
+    if (!phase_extensions_.contains(i)) { phase_extensions_[i] = std::vector<PrioPassBuilder>(); }
     phase_extensions_[i].push_back({priority, extension});
 }
 
@@ -51,7 +48,7 @@ void PipelineBuilder::add_opt(int i) {
             man.add<Scalerize>(ee);
             man.add<TailRecElim>(er);
         },
-        50); // elevated priority
+        PASS_INTERNAL_PRIORITY); // elevated priority
 }
 
 std::vector<int> PipelineBuilder::passes() {
@@ -68,13 +65,7 @@ std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
 
     std::sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), passCmp());
 
-    // printf("====\n");
-    for (const auto& ext : phase_extensions_[i]) {
-        // printf("add pass with prio %d\n", ext.first);
-        ext.second(*man);
-    }
-    // printf("====\n");
-    // assert(0);
+    for (const auto& ext : phase_extensions_[i]) { ext.second(*man); }
 
     return man;
 }
