@@ -127,6 +127,7 @@ add_thorin_dialect(autodiff
         mem
         core
         clos
+        tool
         affine
         direct
     INSTALL
