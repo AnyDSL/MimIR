@@ -143,7 +143,11 @@ public:
     const auto& axioms() const { return move_.axioms; }
     const auto& externals() const { return move_.externals; }
     bool empty() { return move_.externals.empty(); }
-    void make_external(Def* def) { move_.externals.emplace(def->name(), def); }
+    void make_external(Def* def) {
+        assert(!def->name().empty());
+        auto [_, ins] = move_.externals.emplace(def->name(), def);
+        assert(ins);
+    }
     void make_internal(Def* def) { move_.externals.erase(def->name()); }
     bool is_external(const Def* def) { return move_.externals.contains(def->name()); }
     Def* lookup(const std::string& name) {
