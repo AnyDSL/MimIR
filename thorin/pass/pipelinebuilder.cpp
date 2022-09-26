@@ -23,11 +23,11 @@
 namespace thorin {
 
 void PipelineBuilder::extend_opt_phase(std::function<void(PassMan&)> extension) {
-    extend_opt_phase(OPT_PHASE, std::move(extension));
+    extend_opt_phase(Opt_Phase, std::move(extension));
 }
 
 void PipelineBuilder::extend_codegen_prep_phase(std::function<void(PassMan&)> extension) {
-    extend_opt_phase(CODEGEN_PREP_PHASE, std::move(extension));
+    extend_opt_phase(Codegen_Prep_PHASE, std::move(extension));
 }
 
 void PipelineBuilder::extend_opt_phase(int i, std::function<void(PassMan&)> extension, int priority) {
@@ -48,7 +48,7 @@ void PipelineBuilder::add_opt(int i) {
             man.add<Scalerize>(ee);
             man.add<TailRecElim>(er);
         },
-        PASS_INTERNAL_PRIORITY); // elevated priority
+        Pass_Internal_Priority); // elevated priority
 }
 
 std::vector<int> PipelineBuilder::passes() {
@@ -56,7 +56,7 @@ std::vector<int> PipelineBuilder::passes() {
     for (auto iter = phase_extensions_.begin(); iter != phase_extensions_.end(); iter++) {
         keys.push_back(iter->first);
     }
-    std::sort(keys.begin(), keys.end());
+    std::ranges::sort(keys);
     return keys;
 }
 

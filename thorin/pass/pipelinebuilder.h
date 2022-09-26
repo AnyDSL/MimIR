@@ -22,7 +22,7 @@ class PipelineBuilder {
 public:
     explicit PipelineBuilder() {}
 
-    void extend_opt_phase(int i, std::function<void(PassMan&)>, int priority = PASS_DEFAULT_PRIORITY);
+    void extend_opt_phase(int i, std::function<void(PassMan&)>, int priority = Pass_Default_Priority);
     void extend_opt_phase(std::function<void(PassMan&)>);
     void add_opt(int i);
     void extend_codegen_prep_phase(std::function<void(PassMan&)>);

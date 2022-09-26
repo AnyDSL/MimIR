@@ -2,10 +2,10 @@
 
 namespace thorin {
 
-const int PASS_INTERNAL_PRIORITY = 50;
-const int PASS_DEFAULT_PRIORITY  = 100;
-const int OPT_PHASE              = 100;
-const int CODEGEN_PREP_PHASE     = 300;
+static constexpr int Pass_Internal_Priority = 50;
+static constexpr int Pass_Default_Priority  = 100;
+static constexpr int Opt_Phase              = 100;
+static constexpr int Codegen_Prep_PHASE     = 300;
 
 class World;
 class PipelineBuilder;
