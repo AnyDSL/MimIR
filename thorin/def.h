@@ -550,6 +550,25 @@ public:
     friend class World;
 };
 
+/// A type whose inhabitants range from `0`, ..., Idx::size() - 1.
+/// @note `size = 0` is special and actually encodes size $2^64$.
+/// An .Idx `0` (literally) wouldn't have any inhabitants anyway.
+class Idx : public Def {
+private:
+    Idx(World&, const Def* size);
+
+public:
+    const Def* size() const { return op(0); }
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::Idx;
+    friend class World;
+};
+
 class Proxy : public Def {
 private:
     Proxy(const Def* type, Defs ops, u32 pass, u32 tag, const Def* dbg)

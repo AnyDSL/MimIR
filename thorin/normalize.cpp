@@ -296,8 +296,8 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
 
     // clang-format off
     switch (op) {
-        case Bit::    f: return world.lit_int(*w,        0);
-        case Bit::    t: return world.lit_int(*w, *w-1_u64);
+        case Bit::    f: return world.lit_idx(*w,        0);
+        case Bit::    t: return world.lit_idx(*w, *w-1_u64);
         case Bit::    a: return a;
         case Bit::    b: return b;
         case Bit::   na: return world.op_negate(a, dbg);
@@ -309,21 +309,21 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
 
     if (la && lb) {
         switch (op) {
-            case Bit::_and: return world.lit_int    (*w,   *la &  *lb);
-            case Bit:: _or: return world.lit_int    (*w,   *la |  *lb);
-            case Bit::_xor: return world.lit_int    (*w,   *la ^  *lb);
-            case Bit::nand: return world.lit_int_mod(*w, ~(*la &  *lb));
-            case Bit:: nor: return world.lit_int_mod(*w, ~(*la |  *lb));
-            case Bit::nxor: return world.lit_int_mod(*w, ~(*la ^  *lb));
-            case Bit:: iff: return world.lit_int_mod(*w, ~ *la |  *lb);
-            case Bit::niff: return world.lit_int    (*w,   *la & ~*lb);
+            case Bit::_and: return world.lit_idx    (*w,   *la &  *lb);
+            case Bit:: _or: return world.lit_idx    (*w,   *la |  *lb);
+            case Bit::_xor: return world.lit_idx    (*w,   *la ^  *lb);
+            case Bit::nand: return world.lit_idx_mod(*w, ~(*la &  *lb));
+            case Bit:: nor: return world.lit_idx_mod(*w, ~(*la |  *lb));
+            case Bit::nxor: return world.lit_idx_mod(*w, ~(*la ^  *lb));
+            case Bit:: iff: return world.lit_idx_mod(*w, ~ *la |  *lb);
+            case Bit::niff: return world.lit_idx    (*w,   *la & ~*lb);
             default: unreachable();
         }
     }
 
     auto unary = [&](bool x, bool y, const Def* a) -> const Def* {
-        if (!x && !y) return world.lit_int(*w, 0);
-        if ( x &&  y) return world.lit_int(*w, *w-1_u64);
+        if (!x && !y) return world.lit_idx(*w, 0);
+        if ( x &&  y) return world.lit_idx(*w, *w-1_u64);
         if (!x &&  y) return a;
         if ( x && !y && op != Bit::_xor) return world.op_negate(a, dbg);
         return nullptr;
@@ -357,9 +357,9 @@ const Def* normalize_Bit(const Def* type, const Def* c, const Def* arg, const De
 
     if (auto bb = is_not(b); bb && a == bb) {
         switch (op) {
-            case IOp::iand: return world.lit_int(*w,       0);
-            case IOp::ior : return world.lit_int(*w, *w-1_u64);
-            case IOp::ixor: return world.lit_int(*w, *w-1_u64);
+            case IOp::iand: return world.lit_idx(*w,       0);
+            case IOp::ior : return world.lit_idx(*w, *w-1_u64);
+            case IOp::ixor: return world.lit_idx(*w, *w-1_u64);
             default: unreachable();
         }
     }
@@ -433,7 +433,7 @@ const Def* normalize_Shr(const Def* type, const Def* c, const Def* arg, const De
     if (auto result = fold<Shr, op>(world, type, callee, a, b, dbg)) return result;
 
     if (auto la = a->isa<Lit>()) {
-        if (la == world.lit_int(*w, 0)) {
+        if (la == world.lit_idx(*w, 0)) {
             switch (op) {
                 case Shr::ashr: return la;
                 case Shr::lshr: return la;
@@ -443,7 +443,7 @@ const Def* normalize_Shr(const Def* type, const Def* c, const Def* arg, const De
     }
 
     if (auto lb = b->isa<Lit>()) {
-        if (lb == world.lit_int(*w, 0)) {
+        if (lb == world.lit_idx(*w, 0)) {
             switch (op) {
                 case Shr::ashr: return a;
                 case Shr::lshr: return a;
@@ -468,7 +468,7 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
 
     // clang-format off
     if (auto la = a->isa<Lit>()) {
-        if (la == world.lit_int(*w, 0)) {
+        if (la == world.lit_idx(*w, 0)) {
             switch (op) {
                 case Wrap::add: return b;    // 0  + b -> b
                 case Wrap::sub: break;
@@ -478,7 +478,7 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
             }
         }
 
-        if (la == world.lit_int(*w, 1)) {
+        if (la == world.lit_idx(*w, 1)) {
             switch (op) {
                 case Wrap::add: break;
                 case Wrap::sub: break;
@@ -490,7 +490,7 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
     }
 
     if (auto lb = b->isa<Lit>()) {
-        if (lb == world.lit_int(*w, 0)) {
+        if (lb == world.lit_idx(*w, 0)) {
             switch (op) {
                 case Wrap::sub: return a;    // a  - 0 -> a
                 case Wrap::shl: return a;    // a >> 0 -> a
@@ -500,15 +500,15 @@ const Def* normalize_Wrap(const Def* type, const Def* c, const Def* arg, const D
         }
 
         if (op == Wrap::sub)
-            return world.op(Wrap::add, *m, a, world.lit_int_mod(*w, ~lb->get() + 1_u64)); // a - lb -> a + (~lb + 1)
+            return world.op(Wrap::add, *m, a, world.lit_idx_mod(*w, ~lb->get() + 1_u64)); // a - lb -> a + (~lb + 1)
         else if (op == Wrap::shl && lb->get() > *w)
             return world.bot(type, dbg);
     }
 
     if (a == b) {
         switch (op) {
-            case Wrap::add: return world.op(Wrap::mul, *m, world.lit_int(*w, 2), a, dbg); // a + a -> 2 * a
-            case Wrap::sub: return world.lit_int(*w, 0);                                  // a - a -> 0
+            case Wrap::add: return world.op(Wrap::mul, *m, world.lit_idx(*w, 2), a, dbg); // a + a -> 2 * a
+            case Wrap::sub: return world.lit_idx(*w, 0);                                  // a - a -> 0
             case Wrap::mul: break;
             case Wrap::shl: break;
             default: unreachable();
@@ -625,7 +625,7 @@ inline u64 pad(u64 offset, u64 align) {
 }
 
 // TODO this currently hard-codes x86_64 ABI
-// TODO in contrast to C, we might want to give singleton types like 'int 1' or '[]' a size of 0 and simply nuke each
+// TODO in contrast to C, we might want to give singleton types like '.Idx 1' or '[]' a size of 0 and simply nuke each
 // and every occurance of these types in a later phase
 // TODO Pi and others
 template<Trait op>
@@ -637,9 +637,9 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
         return world.lit_nat(8);
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
-    } else if (auto int_ = isa<Tag::Int>(type)) {
-        if (int_->type()->isa<Top>()) return world.lit_nat(8);
-        if (auto w = isa_lit(int_->arg())) {
+    } else if (auto idx = type->isa<Idx>()) {
+        if (idx->size()->isa<Top>()) return world.lit_nat(8);
+        if (auto w = isa_lit(idx->size())) {
             if (*w == 0) return world.lit_nat(8);
             if (*w <= 0x0000'0000'0000'0100_u64) return world.lit_nat(1);
             if (*w <= 0x0000'0000'0001'0000_u64) return world.lit_nat(2);
@@ -679,9 +679,9 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
         if constexpr (op == Trait::align) return align;
 
         if (auto b = isa_lit(world.op(Trait::size, arr->body()))) {
-            auto i64_t = world.type_int_width(64);
+            auto i64_t = world.type_int_(64);
             auto s     = world.op_bitcast(i64_t, arr->shape());
-            auto mul   = world.op(Wrap::mul, WMode::nsw | WMode::nuw, world.lit_int(i64_t, *b), s);
+            auto mul   = world.op(Wrap::mul, WMode::nsw | WMode::nuw, world.lit_idx(i64_t, *b), s);
             return world.op_bitcast(world.type_nat(), mul);
         }
     } else if (auto join = type->isa<Join>()) {
@@ -713,8 +713,8 @@ static const Def* fold_Conv(const Def* dst_type, const App* callee, const Def* s
             return world.lit(dst_type, as_lit(lit_src) % *lit_dw);
         }
 
-        if (isa<Tag::Int>(src->type())) *lit_sw = *mod2width(*lit_sw);
-        if (isa<Tag::Int>(dst_type)) *lit_dw = *mod2width(*lit_dw);
+        if (src->type()->isa<Idx>()) *lit_sw = *size2bitwidth(*lit_sw);
+        if (dst_type->isa<Idx>()) *lit_dw = *size2bitwidth(*lit_dw);
 
         Res res;
 #define CODE(sw, dw)                                                                                 \
@@ -778,7 +778,8 @@ const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* 
 
     if (auto lit = src->isa<Lit>()) {
         if (dst_type->isa<Nat>()) return world.lit(dst_type, lit->get(), dbg);
-        if (isa_sized_type(dst_type)) return world.lit(dst_type, lit->get(), dbg);
+        if (dst_type->isa<Idx>()) return world.lit(dst_type, lit->get(), dbg);
+        if (isa<Tag::Real>(dst_type)) return world.lit(dst_type, lit->get(), dbg);
     }
 
     return world.raw_app(callee, src, dbg);
