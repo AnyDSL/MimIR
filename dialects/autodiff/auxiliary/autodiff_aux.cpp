@@ -102,7 +102,8 @@ const Def* autodiff_type_fun(const Def* ty) {
     world.DLOG("AutoDiff on type: {}", ty);
     if (auto app = ty->isa<App>()) {
         auto callee = app->callee();
-        if (callee == world.type_int() || callee == world.type_real()) { return ty; }
+        // if (callee == world.type_int_() || callee == world.type_real()) { return ty; }
+        if (callee->isa<Idx>() || callee == world.type_real()) { return ty; }
     }
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
@@ -147,9 +148,9 @@ const Def* zero_def(const Def* T) {
         // auto args = app->args();
         world.DLOG("app callee: {} : {} <{}>", callee, callee->type(), callee->node_name());
         // TODO: can you directly match Tag::Int?
-        if (callee == world.type_int()) {
+        if (callee->isa<Idx>()) {
             // auto size = app->arg(0);
-            auto zero = world.lit_int(T, 0, world.dbg("zero"));
+            auto zero = world.lit_idx(T, 0, world.dbg("zero"));
             // world.DLOG("zero_def for int of size {} is {}", size, zero);
             world.DLOG("zero_def for int is {}", zero);
             return zero;
@@ -184,8 +185,7 @@ bool is_continuation_type(const Def* E) {
 bool is_continuation(const Def* e) { return is_continuation_type(e->type()); }
 
 bool is_returning_continuation(const Def* e) {
-    auto& world = e->world();
-    auto E      = e->type();
+    auto E = e->type();
     if (auto pi = E->isa<Pi>()) {
         // R world.DLOG("codom is {}", pi->codom());
         // R world.DLOG("codom kind is {}", pi->codom()->node_name());
@@ -198,13 +198,9 @@ bool is_returning_continuation(const Def* e) {
     return false;
 }
 
-bool is_open_continuation(const Def* e) {
-    auto& world = e->world();
-    return is_continuation(e) && !is_returning_continuation(e);
-}
+bool is_open_continuation(const Def* e) { return is_continuation(e) && !is_returning_continuation(e); }
 
 bool is_direct_style_function(const Def* e) {
-    auto& world = e->world();
     // codom != Bot
     return e->type()->isa<Pi>() && !is_continuation(e);
 }

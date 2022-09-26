@@ -159,9 +159,9 @@ D load =
     ret inner_pb
 };
 
-.rule (A:*) (n:.Nat) (c:(%Int n)) :
+.rule (A:*) (n:.Nat) (c:(.Idx n)) :
     (%autodiff.inner_autodiff A c) ->
-    (c, %direct.cps2ds_dep (...) zero_pb (A, %Int n));
+    (c, %direct.cps2ds_dep (...) zero_pb (A, .Idx n));
 
 /// application
 
@@ -259,13 +259,13 @@ D load =
 .rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i»):
     (%autodiff.inner_autodiff A t) ->
     .let t_diff = ‹i:n; %autodiff.inner_autodiff A (t#i) ›;
-    .let t_aug = ‹i:n; (t_diff#i)#(0:(%Int 2)) ›;
+    .let t_aug = ‹i:n; (t_diff#i)#(0:(.Idx 2)) ›;
     .cn t_pb [
         s: «i:n; %autodiff.tangent_type (ET#i) »,
         ret: .Cn (%autodiff.tangent_type A)
     ] = {
         ret (%autodiff.sum (n, %autodiff.tangent_type A) (
-            ‹i:n; %direct.cps2ds_dep ... ((t_diff#i)#(1:(%Int 2))) (s#i) ›
+            ‹i:n; %direct.cps2ds_dep ... ((t_diff#i)#(1:(.Idx 2))) (s#i) ›
         ))
     };
     (
@@ -277,12 +277,12 @@ D load =
 .rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i»):
     (%autodiff.inner_shadow_autodiff A t) ->
     .let t_diff = ‹i:n; %autodiff.inner_autodiff A (t#i) ›;
-    ‹i:n; (t_diff#i)#(1:(%Int 2)) ›;
+    ‹i:n; (t_diff#i)#(1:(.Idx 2)) ›;
 
 
 /// projection
 // needs meta reasoning (like app)
-.rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i») (j:(%Int n)):
+.rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i») (j:(.Idx n)):
     (%autodiff.inner_autodiff A (t#j)) ->
     .let (t_aug, t_pb) = %autodiff.inner_autodiff A t;
     .let (j_aug, _) = %autodiff.inner_autodiff A j;
@@ -293,7 +293,7 @@ D load =
     );
 
 // if no shadow pb
-.rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i») (j:(%Int n)):
+.rule (A:*) (n:.Nat) (ET:«n; *») (t:«i:n; ET#i») (j:(.Idx n)):
     (%autodiff.inner_autodiff A (t#j)) ->
     .let (t_aug, t_pb) = %autodiff.inner_autodiff A t;
     .let (j_aug, _) = %autodiff.inner_autodiff A j;

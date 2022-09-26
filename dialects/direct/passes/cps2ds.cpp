@@ -18,7 +18,7 @@ void CPS2DS::enter() {
     rewrite_lam(lam);
 }
 
-const Def* CPS2DS::rewrite_lam(Lam* lam) {
+void CPS2DS::rewrite_lam(Lam* lam) {
     // if (auto i = rewritten_lams.find(lam); i != rewritten_lams.end()) return;
 
     // Lam* prev = curr_lam_;
@@ -86,7 +86,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
 
                         const Def* inst_ret_ty;
                         if (auto ty_pi = ty->isa_nom<Pi>()) {
-                            auto ty_dom = ty->as_nom<Pi>()->var();
+                            auto ty_dom = ty_pi->var();
                             world.DLOG("replace ty_dom: {} : {} <{};{}>", ty_dom, ty_dom->type(), ty_dom->unique_name(),
                                        ty_dom->node_name());
 

@@ -92,15 +92,15 @@
 
 .lam .extern internal_diff_core_icmp_xYgLE 
     [w: .Nat] ->
-    (.Cn[[%Int w, %Int w], .Cn[%Int 2, .Cn[%Int 2, .Cn[%Int w, %Int w]]]])
-    = (1:(%Int 2)),{
+    (.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]])
+    = (1:(.Idx 2)),{
         .cn inner_cmp 
-        [[a: %Int w, b: %Int w], ret:.Cn[%Int 2, .Cn[%Int 2, .Cn[%Int w, %Int w]]]]
-        = (1:(%Int 2)),{
+        [[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
+        = (1:(.Idx 2)),{
             .let result = %core.icmp.sle (w) (a,b);
-            .cn cmp_pb [s: %Int 2, pb_ret:.Cn[%Int w, %Int w]]
-            = (1:(%Int 2)),{
-                .let z = 0:(%Int w);
+            .cn cmp_pb [s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
+            = (1:(.Idx 2)),{
+                .let z = 0:(.Idx w);
                 pb_ret (z, z)
             };
             ret (result,cmp_pb)
@@ -111,13 +111,13 @@
 
 .lam .extern internal_diff_core_wrap_add
     [m:.Nat, w:.Nat] -> 
-    (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
-    = (1:(%Int 2)),{
+    (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])
+    = (1:(.Idx 2)),{
     .cn inner_add_deriv_cps
-        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
-        = (1:(%Int 2)),{
+        [[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]
+        = (1:(.Idx 2)),{
         .let result = %core.wrap.add (m,w) (a,b);
-        .cn add_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = (1:(%Int 2)),{
+        .cn add_pb [s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])] = (1:(.Idx 2)),{
             pb_ret (s,s)
         };
         ret (result,add_pb)
@@ -128,18 +128,18 @@
 
 .lam .extern internal_diff_core_wrap_mul
     [m:.Nat, w:.Nat] -> 
-    (.Cn[[%Int w, %Int w], .Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]])
-    = (1:(%Int 2)),{ 
+    (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])
+    = (1:(.Idx 2)),{ 
     .cn inner_mul_deriv_cps
-        [[a:%Int w, b:%Int w], ret:.Cn[%Int w, .Cn[%Int w, .Cn[%Int w, %Int w]]]]
-        = (1:(%Int 2)),{
+        [[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]
+        = (1:(.Idx 2)),{
         .let result = %core.wrap.mul (m,w) (a,b);
-        .cn mul_pb [s:(%Int w), pb_ret:(.Cn [%Int w, %Int w])] = (1:(%Int 2)),{
+        .cn mul_pb [s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])] = (1:(.Idx 2)),{
             .let lhs = %core.wrap.mul (m,w) (s,b);
             .let rhs = %core.wrap.mul (m,w) (s,a);
             pb_ret (lhs, rhs)
         };
-        // %tool.set_filter (1:(%Int 2),ret (result,mul_pb))
+        // %tool.set_filter (1:(.Idx 2),ret (result,mul_pb))
         ret (result,mul_pb)
     };
     inner_mul_deriv_cps
