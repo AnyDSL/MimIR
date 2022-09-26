@@ -23,9 +23,9 @@ public:
     explicit PipelineBuilder() {}
 
     void extend_opt_phase(int i, std::function<void(PassMan&)>, int priority = Pass_Default_Priority);
-    void extend_opt_phase(std::function<void(PassMan&)>);
+    void extend_opt_phase(std::function<void(PassMan&)>&&);
     void add_opt(int i);
-    void extend_codegen_prep_phase(std::function<void(PassMan&)>);
+    void extend_codegen_prep_phase(std::function<void(PassMan&)>&&);
 
     std::unique_ptr<PassMan> opt_phase(int i, World& world);
     void add_opt(PassMan man);
