@@ -152,33 +152,26 @@ constexpr std::optional<uint64_t> size2bitwidth(uint64_t n) {
     return {};
 }
 
-namespace detail {
-
-template<class Id, bool Check, bool Base>
-auto match(flags_t sub, const Def* def) {
-    static_assert(Axiom::Num<Id> != size_t(-1), "invalid number of sub tags");
-    static_assert(Axiom::Base<Id> != flags_t(-1), "invalid axiom base");
-
-    using D = typename Axiom::Match<Id>::type;
-
+template<class Id, bool DynCast = true>
+auto match(const Def* def) {
+    using D             = typename Axiom::Match<Id>::type;
     auto [axiom, curry] = Axiom::get(def);
-    bool cond           = axiom && curry == 0 && (Base ? axiom->base() : axiom->flags()) == sub;
-    if constexpr (Check) {
-        if (cond) return Match<Id, D>(axiom, def->as<D>());
-        return Match<Id, D>();
-    }
+    bool cond           = axiom && curry == 0 && axiom->base() == Axiom::Base<Id>;
+
+    if constexpr (DynCast) return cond ? Match<Id, D>(axiom, def->as<D>()) : Match<Id, D>();
     assert(cond && "assumed to be correct axiom");
     return Match<Id, D>(axiom, def->as<D>());
 }
 
-} // namespace detail
+template<class Id, bool DynCast = true>
+auto match(Id id, const Def* def) {
+    using D             = typename Axiom::Match<Id>::type;
+    auto [axiom, curry] = Axiom::get(def);
+    bool cond           = axiom && curry == 0 && axiom->flags() == (flags_t)id;
 
-// clang-format off
-template<class Id, bool Check = true>
-auto match(const Def* def) { return detail::match<Id, Check, true>(Axiom::Base<Id>, def); }
-
-template<class Id, bool Check = true>
-auto match(Id sub, const Def* def) { return detail::match<Id, Check, false>((flags_t)sub, def); }
-// clang-format on
+    if constexpr (DynCast) return cond ? Match<Id, D>(axiom, def->as<D>()) : Match<Id, D>();
+    assert(cond && "assumed to be correct axiom");
+    return Match<Id, D>(axiom, def->as<D>());
+}
 
 } // namespace thorin
