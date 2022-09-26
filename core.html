@@ -192,7 +192,7 @@ Integer Operations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">iff   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">implication (if and only if)    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">fst   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">first argment    </td></tr>
+<td class="markdownTableBodyNone">fst   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">first argument    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">ciff   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">converse implication    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -212,10 +212,12 @@ Integer Operations</h1>
 </ul>
 <h2><a class="anchor" id="autotoc_md61"></a>
 %core.wrap</h2>
-<p >Integer operations that might wrap and, hence, take a WMode. </p><div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -&gt; [.Idx w, .Idx w] -&gt; .Idx w, normalize_wrap;</div>
+<p >Integer operations that might wrap and, hence, take a WMode. </p><div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): </div>
+<div class="line">    Π [m: .Nat, w: .Nat] -&gt; [.Idx w, .Idx w] -&gt; .Idx w, normalize_wrap;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md62"></a>
 %core.div</h2>
-<p >Signed and unsigned Integer division/remainder. Division by zero is undefined behavior and thus a visible side effect. For this reason, these axioms expect a <code>%mem.M</code>. </p><div class="fragment"><div class="line">.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -&gt; [%mem.M, .Idx w, .Idx w] -&gt; [%mem.M, .Idx w], normalize_div;</div>
+<p >Signed and unsigned Integer division/remainder. Division by zero is undefined behavior and thus a visible side effect. For this reason, these axioms expect a <code>%mem.M</code>. </p><div class="fragment"><div class="line">.ax %core.div(sdiv, udiv, srem, urem):</div>
+<div class="line">    Π w: .Nat -&gt; [%mem.M, .Idx w, .Idx w] -&gt; [%mem.M, .Idx w], normalize_div;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md63"></a>
 %core.icmp</h2>
 <p >Integer comparison is made of 5 disjoint relations:</p><ul>
@@ -321,16 +323,21 @@ Integer Operations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>XYGLE</code>   </td><td class="markdownTableBodyNone"><code>t</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
 </table>
-<div class="fragment"><div class="line">.ax %core.icmp(xygle = f, xyglE = e, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,</div>
-<div class="line">               xYgle,     xYglE,     xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,</div>
-<div class="line">               Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,</div>
-<div class="line">               XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):</div>
+<div class="fragment"><div class="line">.ax %core.icmp(xygle = f,  xyglE = e,   xygLe,      xygLE,       </div>
+<div class="line">               xyGle,      xyGlE,       xyGLe,      xyGLE,</div>
+<div class="line">               xYgle,      xYglE,       xYgLe = sl, xYgLE = sle, </div>
+<div class="line">               xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,</div>
+<div class="line">               Xygle,      XyglE,       XygLe = ul, XygLE = ule, </div>
+<div class="line">               XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,</div>
+<div class="line">               XYgle,      XYglE,       XYgLe,      XYgLE,       </div>
+<div class="line">               XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):</div>
 <div class="line">    Π w: .Nat -&gt; [.Idx w, .Idx w] -&gt; .Bool , normalize_icmp;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md64"></a>
 Real Operations</h1>
 <h2><a class="anchor" id="autotoc_md65"></a>
 %core.rop</h2>
-<p >Floating point (real) operations that take RMode. </p><div class="fragment"><div class="line">.ax %core.rop(add, sub, mul, div, rem): Π [m: .Nat, w: .Nat] -&gt; [%core.Real w, %core.Real w] -&gt; %core.Real w, normalize_rop;</div>
+<p >Floating point (real) operations that take RMode. </p><div class="fragment"><div class="line">.ax %core.rop(add, sub, mul, div, rem): </div>
+<div class="line">    Π [m: .Nat, w: .Nat] -&gt; [%core.Real w, %core.Real w] -&gt; %core.Real w, normalize_rop;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md66"></a>
 %core.rcmp</h2>
 <p >Floating point (real) comparison is made of 4 disjoint relations:</p><ul>
