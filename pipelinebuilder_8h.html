@@ -105,17 +105,19 @@ $(document).ready(function(){initNavTree('pipelinebuilder_8h.html',''); initResi
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
-<a href="#namespaces">Namespaces</a>  </div>
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#typedef-members">Typedefs</a>  </div>
   <div class="headertitle"><div class="title">pipelinebuilder.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="optimize_8h_source.html">thorin/pass/optimize.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="pass_8h_source.html">thorin/pass/pass.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for pipelinebuilder.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="pipelinebuilder_8h__incl.svg" width="1835" height="739"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="pipelinebuilder_8h__incl.svg" width="1964" height="739"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -129,6 +131,8 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structthorin_1_1passCmp.html">thorin::passCmp</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1PipelineBuilder.html">thorin::PipelineBuilder</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -136,6 +140,15 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:aba2ab99605e8ef055f372dbb7705a76c"><td class="memItemLeft" align="right" valign="top">typedef std::function&lt; void(PassMan &amp;)&gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aba2ab99605e8ef055f372dbb7705a76c">thorin::PassBuilder</a></td></tr>
+<tr class="separator:aba2ab99605e8ef055f372dbb7705a76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b70f081c1cf30ced183906476cc33de"><td class="memItemLeft" align="right" valign="top">typedef std::pair&lt; int, PassBuilder &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a3b70f081c1cf30ced183906476cc33de">thorin::PrioPassBuilder</a></td></tr>
+<tr class="separator:a3b70f081c1cf30ced183906476cc33de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78ba7d91fee9a7b774e5484755f5fd16"><td class="memItemLeft" align="right" valign="top">typedef std::vector&lt; PrioPassBuilder &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a78ba7d91fee9a7b774e5484755f5fd16">thorin::PassList</a></td></tr>
+<tr class="separator:a78ba7d91fee9a7b774e5484755f5fd16"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

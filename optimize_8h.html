@@ -105,14 +105,15 @@ $(document).ready(function(){initNavTree('optimize_8h.html',''); initResizable()
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">optimize.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="optimize_8h__dep__incl.svg" width="194" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="optimize_8h__dep__incl.svg" width="3531" height="663"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -126,7 +127,19 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">thorin::optimize</a> (World &amp;world, PipelineBuilder &amp;builder)</td></tr>
+<tr class="memdesc:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="mdescLeft">&#160;</td><td class="mdescRight">The optimizations proceed in a pipeline ordered by priorities Each phase is a sequence of passes that are run interleaved The passes are added to the phase ordered by their priority.  <a href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">More...</a><br /></td></tr>
 <tr class="separator:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ad2645d21940158f0873772e873a93d74"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#ad2645d21940158f0873772e873a93d74">thorin::Pass_Internal_Priority</a> = 50</td></tr>
+<tr class="separator:ad2645d21940158f0873772e873a93d74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a059124239118c15303c151cd962c4810"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a059124239118c15303c151cd962c4810">thorin::Pass_Default_Priority</a> = 100</td></tr>
+<tr class="separator:a059124239118c15303c151cd962c4810"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abadbe084084bfcf68cc729ee654ab58f"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#abadbe084084bfcf68cc729ee654ab58f">thorin::Opt_Phase</a> = 100</td></tr>
+<tr class="separator:abadbe084084bfcf68cc729ee654ab58f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd1d23f27c7886876815367373f946f7"><td class="memItemLeft" align="right" valign="top">static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#acd1d23f27c7886876815367373f946f7">thorin::Codegen_Prep_Phase</a> = 300</td></tr>
+<tr class="separator:acd1d23f27c7886876815367373f946f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->

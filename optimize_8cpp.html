@@ -110,16 +110,20 @@ $(document).ready(function(){initNavTree('optimize_8cpp.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="optimize_8h_source.html">thorin/pass/optimize.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="beta__red_8h_source.html">thorin/pass/fp/beta_red.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="eta__exp_8h_source.html">thorin/pass/fp/eta_exp.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="eta__red_8h_source.html">thorin/pass/fp/eta_red.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="tail__rec__elim_8h_source.html">thorin/pass/fp/tail_rec_elim.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="pipelinebuilder_8h_source.html">thorin/pass/pipelinebuilder.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="lam__spec_8h_source.html">thorin/pass/rw/lam_spec.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="partial__eval_8h_source.html">thorin/pass/rw/partial_eval.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="ret__wrap_8h_source.html">thorin/pass/rw/ret_wrap.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="scalarize_8h_source.html">thorin/pass/rw/scalarize.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="phase_8h_source.html">thorin/phase/phase.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for optimize.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="optimize_8cpp__incl.svg" width="2231" height="754"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="optimize_8cpp__incl.svg" width="2271" height="679"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -133,6 +137,7 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">thorin::optimize</a> (World &amp;world, PipelineBuilder &amp;builder)</td></tr>
+<tr class="memdesc:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="mdescLeft">&#160;</td><td class="mdescRight">The optimizations proceed in a pipeline ordered by priorities Each phase is a sequence of passes that are run interleaved The passes are added to the phase ordered by their priority.  <a href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">More...</a><br /></td></tr>
 <tr class="separator:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
