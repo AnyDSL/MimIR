@@ -8,5 +8,6 @@ var classthorin_1_1fe_1_1Scopes =
     [ "find", "classthorin_1_1fe_1_1Scopes.html#a5822243809fc1577987bd4a568b2f26d", null ],
     [ "merge", "classthorin_1_1fe_1_1Scopes.html#ae2f464f1efb3ae51da627c6125a58d3b", null ],
     [ "pop", "classthorin_1_1fe_1_1Scopes.html#ab60385d699a5a71d9bdeefb40afe839b", null ],
-    [ "push", "classthorin_1_1fe_1_1Scopes.html#a296a055b0407e4412e0581ad04e67942", null ]
+    [ "push", "classthorin_1_1fe_1_1Scopes.html#a296a055b0407e4412e0581ad04e67942", null ],
+    [ "swap", "classthorin_1_1fe_1_1Scopes.html#a98afa47cc8d17a4fac0d54772e910373", null ]
 ];

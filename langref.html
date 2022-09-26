@@ -434,11 +434,9 @@ Precedence</h3>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>.lam</code> Sym <code>:</code> e   </td><td class="markdownTableBodyNone">nominal lambda declaration   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>.cn</code> Sym <code>:</code> e   </td><td class="markdownTableBodyNone">nominal continuation declaration   </td><td class="markdownTableBodyNone">-    </td></tr>
-<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e <code>→</code> e   </td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone">right-to-left   </td></tr>
 </table>
-<p >Note that the domain of a dependent function type binds slightly stronger than <code>→</code>. This has the effect that, e.g., <code>Π T: * → T → T</code> has the expected binding like this: (<code>Π T: *</code>) <code>→</code> (<code>T → T</code>). Otherwise, <code>→</code> would be consumed by the domain: <code>Π T:</code> (<code>* →</code> (<code>T → T</code>)) ↯. A similar situation occurs for <code>.lam</code>/<code>.cn</code> declaration.</p>
+<p >Note that the domain of a dependent function type binds slightly stronger than <code>→</code>. This has the effect that, e.g., <code>Π T: * → T → T</code> has the expected binding like this: (<code>Π T: *</code>) <code>→</code> (<code>T → T</code>). Otherwise, <code>→</code> would be consumed by the domain: <code>Π T:</code> (<code>* →</code> (<code>T → T</code>)) ↯. A similar situation occurs for a <code>.lam</code> declaration.</p>
 <h1><a class="anchor" id="autotoc_md28"></a>
 Scoping</h1>
 <p >Thorin uses <a href="https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope"><em>lexical scoping</em></a> where all names live within the same namespace - with a few exceptions noted below. The grammar tables above also indiciate which constructs open new scopes (and close them again).</p>

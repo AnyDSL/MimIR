@@ -49,6 +49,7 @@ var classthorin_1_1fe_1_1Tok =
       [ "T_arrow", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a2ab208dbb70e7df673fbabe32bb142eb", null ],
       [ "T_assign", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a5cde09f8e1c778aeb1790bb89e72982b", null ],
       [ "T_at", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aeaceb769432bd45ba1afd43aeafcc8e4", null ],
+      [ "T_bang", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a8772d34c7179f87d90b37f6a96d003ff", null ],
       [ "T_bot", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aee3aae0dddbaf29b850c9b7bbbbe779f", null ],
       [ "T_top", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aebb1f15fad917162106ecb82540f245a", null ],
       [ "T_box", "classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a6f445a0b0cd800daf9178be123ce0bed", null ],
