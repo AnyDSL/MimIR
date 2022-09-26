@@ -26,17 +26,19 @@ public:
     /// Anatomy of an Axiom name:
     /// ```
     /// %dialect.tag.sub
+    /// |  48   | 8 | 8 | <-- Number of bits per field.
     /// ```
     /// * Def::name() retrieves the full name as `std::string`.
-    /// * Def::flags() retrieves the full name as Axiom::mangle%d integer.
+    /// * Def::flags() retrieves the full name as Axiom::mangle%d 64-bit integer.
 
-    /// This retrieves the `dialect` part of the name as integer.
+    /// @returns the `dialect` part of the name as integer.
+    /// It consists of 48 relevant bits that are returned in the highest 6 bytes of a 64-bit integer.
     dialect_t dialect() const { return flags() & Global_Dialect; }
 
-    /// This retrieves the `tag` part of the name as integer.
+    /// @returns the `tag` part of the name as integer.
     tag_t tag() const { return tag_t((flags() & 0x0000'0000'0000'ff00_u64) >> 8_u64); }
 
-    /// This retrieves the `sub` part of the name as integer.
+    /// @returns the `sub` part of the name as integer.
     sub_t sub() const { return sub_t(flags() & 0x0000'0000'0000'00ff_u64); }
 
     /// Includes Axiom::dialect() and Axiom::tag() but **not** Axiom::sub.
@@ -129,11 +131,11 @@ public:
 
     /// @name Axiom name
     ///@{
-    auto dialect() const { return axiom()->dialect(); } ///< @sa Axion::dialect.
-    auto tag() const { return axiom()->tag(); }         ///< @sa Axion::tag.
-    auto sub() const { return axiom()->sub(); }         ///< @sa Axion::sub.
-    auto base() const { return axiom()->sub(); }        ///< @sa Axion::base.
-    auto id() const { return Id(axiom()->flags()); }    ///< Axion::flags cast to @p Id.
+    auto dialect() const { return axiom()->dialect(); } ///< @sa Axiom::dialect.
+    auto tag() const { return axiom()->tag(); }         ///< @sa Axiom::tag.
+    auto sub() const { return axiom()->sub(); }         ///< @sa Axiom::sub.
+    auto base() const { return axiom()->sub(); }        ///< @sa Axiom::base.
+    auto id() const { return Id(axiom()->flags()); }    ///< Axiom::flags cast to @p Id.
     ///@}
 
 private:
