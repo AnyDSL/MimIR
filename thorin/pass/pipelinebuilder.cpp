@@ -27,7 +27,7 @@ void PipelineBuilder::extend_opt_phase(std::function<void(PassMan&)>&& extension
 }
 
 void PipelineBuilder::extend_codegen_prep_phase(std::function<void(PassMan&)>&& extension) {
-    extend_opt_phase(Codegen_Prep_PHASE, std::move(extension));
+    extend_opt_phase(Codegen_Prep_Phase, std::move(extension));
 }
 
 void PipelineBuilder::extend_opt_phase(int i, std::function<void(PassMan&)> extension, int priority) {
