@@ -396,8 +396,10 @@ void Emitter::emit_epilogue(Lam* lam) {
             auto ret_ty = convert_ret_pi(ret_lam->type());
             bb.tail("{} = call {} {}({, })", name, ret_ty, emmited_callee, args);
 
-            for (size_t i = 1, e = ret_lam->num_vars(); i != e; ++i) {
-                auto phi   = ret_lam->var(i);
+            for (size_t i = 0, e = ret_lam->num_vars(); i != e; ++i) {
+                auto phi = ret_lam->var(i);
+                if (match<mem::M>(phi->type())) continue;
+
                 auto namei = name;
                 if (e > 2) {
                     namei += '.' + std::to_string(i - 1);
