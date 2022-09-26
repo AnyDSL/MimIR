@@ -276,12 +276,8 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::M_i:       return lex().index();
         case Tok::Tag::K_ins:     return parse_insert();
         case Tok::Tag::M_ax: {
-            // HACK hard-coded some built-in axioms
             auto tok = lex();
             auto s = tok.sym().to_string();
-            if (s == "%Real"    ) return world().type_real();
-            if (s == "%Wrap_add") return world().ax(Wrap::add);
-            if (s == "%Wrap_sub") return world().ax(Wrap::sub);
             return scopes_.find(tok.sym());
         }
         default:

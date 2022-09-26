@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "thorin/debug.h"
-#include "thorin/tables.h"
 
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
@@ -12,7 +11,31 @@
 #include "thorin/util/hash.h"
 #include "thorin/util/print.h"
 
+// clang-format off
+#define THORIN_NODE(m)                                                        \
+    m(Type, type)       m(Univ, univ)                                         \
+    m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
+    m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
+    m(Arr, arr)         m(Pack, pack)                                         \
+    m(Join, join)       m(Vel, vel)     m(Test, test)       m(Top, top)       \
+    m(Meet, meet)       m(Ac,  ac )     m(Pick, pick)       m(Bot, bot)       \
+    m(Proxy, proxy)                                                           \
+    m(Axiom, axiom)                                                           \
+    m(Lit, lit)                                                               \
+    m(Nat, nat)         m(Idx, int)                                           \
+    m(Var, var)                                                               \
+    m(Infer, infer)                                                           \
+    m(Global, global)                                                         \
+    m(Singleton, singleton)
+// clang-format on
+
 namespace thorin {
+
+namespace Node {
+#define CODE(node, name) node,
+enum : node_t { THORIN_NODE(CODE) Max };
+#undef CODE
+} // namespace Node
 
 class App;
 class Axiom;

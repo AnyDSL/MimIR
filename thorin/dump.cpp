@@ -116,18 +116,10 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto top = u->isa<Top>()) {
         return print(os, "⊤:{}", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
-        const auto& name = axiom->debug().name;
+        const auto& name = axiom->name();
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());
-        if (auto real = isa<Tag::Real>(lit->type())) {
-            switch (as_lit(real->arg())) {
-                case 16: return print(os, "{}:(%Real 16)", lit->get<r16>());
-                case 32: return print(os, "{}:(%Real 32)", lit->get<r32>());
-                case 64: return print(os, "{}:(%Real 64)", lit->get<r64>());
-                default: unreachable();
-            }
-        }
         return print(os, "{}:{}", lit->get(), lit->type());
     } else if (auto ex = u->isa<Extract>()) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
@@ -143,8 +135,6 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto int_ = u->isa<Idx>()) {
         return print(os, "(.Idx {})", int_->size());
-    } else if (auto real = isa<Tag::Real>(*u)) {
-        return print(os, "(%Real {})", real->arg());
     } else if (auto app = u->isa<App>()) {
         return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
     } else if (auto sigma = u->isa<Sigma>()) {

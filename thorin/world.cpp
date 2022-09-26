@@ -14,9 +14,7 @@
 #include "thorin/check.h"
 #include "thorin/def.h"
 #include "thorin/error.h"
-#include "thorin/normalize.h"
 #include "thorin/rewrite.h"
-#include "thorin/tables.h"
 
 #include "thorin/analyses/scope.h"
 #include "thorin/util/array.h"
@@ -56,142 +54,6 @@ World::World(const State& state)
     data_.lit_bool_[1] = lit_idx(2, 1_u64);
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
     data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
-
-    auto nat         = type_nat();
-    data_.type_real_ = axiom(pi(nat, type()), Axiom::Global_Dialect, Tag::Real, 0); // real: w: Nat -> *
-
-    {
-#define CODE(T, o)             \
-    data_.T##_[size_t(T::o)] = \
-        axiom(normalize_##T<T::o>, ty, Axiom::Global_Dialect, Tag::T, sub_t(T::o), dbg(op2str(T::o)));
-    }
-    { // bit: w: nat -> [int w, int w] -> int w
-        auto ty    = nom_pi(type())->set_dom(nat);
-        auto idx_w = type_idx(ty->var(dbg("w")));
-        ty->set_codom(pi({idx_w, idx_w}, idx_w));
-        THORIN_BIT(CODE)
-    }
-    { // Shr: w: nat -> [int w, int w] -> int w
-        auto ty    = nom_pi(type())->set_dom(nat);
-        auto idx_w = type_idx(ty->var(dbg("w")));
-        ty->set_codom(pi({idx_w, idx_w}, idx_w));
-        THORIN_SHR(CODE)
-    }
-    { // Wrap: [m: nat, w: nat] -> [int w, int w] -> int w
-        auto ty     = nom_pi(type())->set_dom({nat, nat});
-        auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
-        auto idx_w  = type_idx(w);
-        ty->set_codom(pi({idx_w, idx_w}, idx_w));
-        THORIN_WRAP(CODE)
-    }
-    { // ROp: [m: nat, w: nat] -> [real w, real w] -> real w
-        auto ty     = nom_pi(type())->set_dom({nat, nat});
-        auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
-        auto real_w = type_real(w);
-        ty->set_codom(pi({real_w, real_w}, real_w));
-        THORIN_R_OP(CODE)
-    }
-    { // ICmp: w: nat -> [int w, int w] -> bool
-        auto ty    = nom_pi(type())->set_dom(nat);
-        auto idx_w = type_idx(ty->var(dbg("w")));
-        ty->set_codom(pi({idx_w, idx_w}, type_bool()));
-        THORIN_I_CMP(CODE)
-    }
-    { // RCmp: [m: nat, w: nat] -> [real w, real w] -> bool
-        auto ty     = nom_pi(type())->set_dom({nat, nat});
-        auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
-        auto real_w = type_real(w);
-        ty->set_codom(pi({real_w, real_w}, type_bool()));
-        THORIN_R_CMP(CODE)
-    }
-    { // trait: T: * -> nat
-        auto ty = pi(type(), nat);
-        THORIN_TRAIT(CODE)
-    }
-    // todo: move to some dialect..
-    // { // acc: n: nat -> cn[M, cn[M, int w n, cn[M, []]]]
-    //     // TODO this is more a proof of concept
-    //     auto ty = nom_pi(type())->set_dom(nat);
-    //     auto n  = ty->var(0, dbg("n"));
-    //     ty->set_codom(cn_mem_ret(type_idx(n), sigma()));
-    //     THORIN_ACC(CODE)
-    // }
-#undef CODE
-    { // Conv: [dw: nat, sw: nat] -> i/r sw -> i/r dw
-        auto make_type = [&](Conv o) {
-            auto ty       = nom_pi(type())->set_dom({nat, nat});
-            auto [dw, sw] = ty->vars<2>({dbg("dw"), dbg("sw")});
-            auto type_dw  = o == Conv::s2r || o == Conv::u2r || o == Conv::r2r ? type_real(dw) : type_idx(dw);
-            auto type_sw  = o == Conv::r2s || o == Conv::r2u || o == Conv::r2r ? type_real(sw) : type_idx(sw);
-            return ty->set_codom(pi(type_sw, type_dw));
-        };
-#define CODE(T, o)                                                                                             \
-    data_.Conv_[size_t(T::o)] = axiom(normalize_Conv<T::o>, make_type(T::o), Axiom::Global_Dialect, Tag::Conv, \
-                                      sub_t(T::o), dbg(op2str(T::o)));
-        THORIN_CONV(CODE)
-#undef CODE
-    }
-    { // hlt/run: T: * -> T -> T
-        auto ty = nom_pi(type())->set_dom(type());
-        auto T  = ty->var(dbg("T"));
-        ty->set_codom(pi(T, T));
-        data_.PE_[size_t(PE::hlt)] =
-            axiom(normalize_PE<PE::hlt>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::hlt), dbg(op2str(PE::hlt)));
-        data_.PE_[size_t(PE::run)] =
-            axiom(normalize_PE<PE::run>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::run), dbg(op2str(PE::run)));
-    }
-    { // known: T: * -> T -> bool
-        auto ty = nom_pi(type())->set_dom(type());
-        auto T  = ty->var(dbg("T"));
-        ty->set_codom(pi(T, type_bool()));
-        data_.PE_[size_t(PE::known)] = axiom(normalize_PE<PE::known>, ty, Axiom::Global_Dialect, Tag::PE,
-                                             sub_t(PE::known), dbg(op2str(PE::known)));
-    }
-    { // bitcast: [D: *, S: *] -> S -> D
-        auto ty     = nom_pi(type())->set_dom({type(), type()});
-        auto [D, S] = ty->vars<2>({dbg("D"), dbg("S")});
-        ty->set_codom(pi(S, D));
-        data_.bitcast_ = axiom(normalize_bitcast, ty, Axiom::Global_Dialect, Tag::Bitcast, 0, dbg("bitcast"));
-    }
-    { // atomic: [T: *, R: *] -> T -> R
-        auto ty     = nom_pi(type())->set_dom({type(), type()});
-        auto [T, R] = ty->vars<2>({dbg("T"), dbg("R")});
-        ty->set_codom(pi(T, R));
-        data_.atomic_ = axiom(nullptr, ty, Axiom::Global_Dialect, Tag::Atomic, 0, dbg("atomic"));
-    }
-    { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i»
-        // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
-        // TODO select which Is/Os to zip
-        auto rs = nom_sigma(type(), 2);
-        rs->set(0, nat);
-        rs->set(1, arr(rs->var(0, dbg("r")), nat));
-        auto rs_pi = nom_pi(type())->set_dom(rs);
-        auto s     = rs_pi->var(1, dbg("s"));
-
-        // [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»,]
-        auto is_os = nom_sigma(type<1>(), 5);
-        is_os->set(0, nat);
-        is_os->set(1, arr(is_os->var(0, dbg("n_i")), type()));
-        is_os->set(2, nat);
-        is_os->set(3, arr(is_os->var(2, dbg("n_o")), type()));
-        auto f_i = nom_arr()->set_shape(is_os->var(0_u64));
-        auto f_o = nom_arr()->set_shape(is_os->var(2_u64));
-        f_i->set_body(extract(is_os->var(1, dbg("Is")), f_i->var()));
-        f_o->set_body(extract(is_os->var(3, dbg("Os")), f_o->var()));
-        is_os->set(4, pi(f_i, f_o));
-        auto is_os_pi = nom_pi(type())->set_dom(is_os);
-
-        // «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
-        auto dom = nom_arr()->set_shape(is_os_pi->var(0_u64, dbg("n_i")));
-        auto cod = nom_arr()->set_shape(is_os_pi->var(2_u64, dbg("n_o")));
-        dom->set_body(arr(s, extract(is_os_pi->var(1, dbg("Is")), dom->var())));
-        cod->set_body(arr(s, extract(is_os_pi->var(3, dbg("Os")), cod->var())));
-
-        is_os_pi->set_codom(pi(dom, cod));
-        rs_pi->set_codom(is_os_pi);
-
-        data_.zip_ = axiom(normalize_zip, rs_pi, Axiom::Global_Dialect, Tag::Zip, 0, dbg("zip"));
-    }
 }
 
 World::World(std::string_view name /* = {}*/)
@@ -200,10 +62,6 @@ World::World(std::string_view name /* = {}*/)
 World::~World() {
     for (auto def : move_.defs) def->~Def();
 }
-
-/*
- * core calculus
- */
 
 const Type* World::type(const Def* level, const Def* dbg) {
     if (err()) {
