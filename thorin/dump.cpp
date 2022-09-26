@@ -265,7 +265,10 @@ void Dumper::dump(Lam* lam) {
         if (dep) recurse(dep->nom2node(lam));
         recurse(lam->filter());
         recurse(lam->body(), true);
-        tab.print(os, "{}\n", Inline(lam->body()));
+        if (lam->body()->isa_nom())
+            tab.print(os, "{}\n", lam->body());
+        else
+            tab.print(os, "{}\n", Inline(lam->body()));
     } else {
         tab.print(os, " <unset>\n");
     }
