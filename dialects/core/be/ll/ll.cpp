@@ -397,7 +397,7 @@ void Emitter::emit_epilogue(Lam* lam) {
             bb.tail("{} = call {} {}({, })", name, ret_ty, emmited_callee, args);
 
             for (size_t i = 0, e = ret_lam->num_vars(); i != e; ++i) {
-                auto phi   = ret_lam->var(i);
+                auto phi = ret_lam->var(i);
                 if (match<mem::M>(phi->type())) continue;
 
                 auto namei = name;
