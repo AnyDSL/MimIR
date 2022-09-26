@@ -230,7 +230,6 @@ inline const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     return op_rminus(w.lit_nat(rmode), a, dbg);
 }
-
 ///@}
 
 template<bool up>

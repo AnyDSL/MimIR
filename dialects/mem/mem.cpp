@@ -37,19 +37,3 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
             },
             nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
 }
-
-namespace thorin::mem {
-
-const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg) {
-    World& w  = type->world();
-    auto size = core::op(core::trait::size, type);
-    return w.app(w.app(w.ax<malloc>(), {type, w.lit_nat_0()}), {mem, size}, dbg);
-}
-
-const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg) {
-    World& w  = type->world();
-    auto size = core::op(core::trait::size, type);
-    return w.app(w.app(w.ax<mslot>(), {type, w.lit_nat_0()}), {mem, size, id}, dbg);
-}
-
-} // namespace thorin::mem
