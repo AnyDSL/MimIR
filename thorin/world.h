@@ -111,7 +111,7 @@ public:
     /// In frozen state the World does not create any nodes.
     bool is_frozen() const { return state_.pod.frozen; }
 
-    /// @returns old frozen state.
+    /// Yields old frozen state.
     bool freeze(bool on = true) const {
         bool old          = state_.pod.frozen;
         state_.pod.frozen = on;

@@ -12,7 +12,7 @@
 
 namespace thorin::sys {
 
-/// @returns `std::nullopt` if an error occurred.
+/// Yields `std::nullopt` if an error occurred.
 std::optional<std::filesystem::path> path_to_curr_exe();
 
 /// Executes command @p cmd.

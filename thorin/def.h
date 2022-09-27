@@ -158,9 +158,9 @@ public:
 
     /// @name type
     ///@{
-    /// @returns the **literal** type of this Def. See Def::unfold_type.
+    /// Yields the **raw** type of this Def; maybe `nullptr`. @sa Def::unfold_type.
     const Def* type() const { return type_; }
-    /// @returns the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
+    /// Yields the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
     const Def* unfold_type() const;
     Sort sort() const;
     const Def* arity() const;
@@ -244,7 +244,7 @@ public:
     ///@{
     /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
 
-    /// @returns Def::arity as_lit, if it is in fact a Lit, or `1` otherwise.
+    /// Yields Def::arity as_lit, if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const {
         if (auto a = isa_lit(arity())) return *a;
         return 1;

@@ -89,7 +89,7 @@ protected:
         return result;
     }
 
-    /// @return `true` if @p pred holds.
+    /// Yields `true` if @p pred holds.
     /// In this case invoke @p next() and append to @p str_;
     template<class Pred>
     bool accept_if(Pred pred, bool append = true) {
