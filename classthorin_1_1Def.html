@@ -145,11 +145,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa84ede5f4d52d42442032223babde36d"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aa84ede5f4d52d42442032223babde36d">node_name</a> () const</td></tr>
 <tr class="separator:aa84ede5f4d52d42442032223babde36d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">type</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><dl class="section return"><dt>Returns</dt><dd>the <b>literal</b> type of this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>. See <a class="el" href="classthorin_1_1Def.html#adb0d70b94a20ed10f7385a3c6f9ccd8e">Def::unfold_type</a>. </dd></dl>
+<tr><td colspan="2"><div class="groupText"><p >Yields the <b>raw</b> type of this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a>; maybe <code>nullptr</code>.</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classthorin_1_1Def.html#adb0d70b94a20ed10f7385a3c6f9ccd8e" title="Yields the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.">Def::unfold_type</a>. </dd></dl>
 </div></td></tr>
 <tr class="memitem:aa7ad6f240ca55e9056230ce136c67c90"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90">type</a> () const</td></tr>
 <tr class="separator:aa7ad6f240ca55e9056230ce136c67c90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb0d70b94a20ed10f7385a3c6f9ccd8e"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#adb0d70b94a20ed10f7385a3c6f9ccd8e">unfold_type</a> () const</td></tr>
+<tr class="memdesc:adb0d70b94a20ed10f7385a3c6f9ccd8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields the type of this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> and unfolds it if necessary. See <a class="el" href="classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90">Def::type</a>, <a class="el" href="classthorin_1_1Def.html#aa6e4f7e30889bb5fdda61f235a5e40b9" title="Transitively Def::reduce Lams, if this is an App.">Def::reduce_rec</a>.  <a href="classthorin_1_1Def.html#adb0d70b94a20ed10f7385a3c6f9ccd8e">More...</a><br /></td></tr>
 <tr class="separator:adb0d70b94a20ed10f7385a3c6f9ccd8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6c3098861fae53f0b0a01e145736eff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#abb917bebc699083d990fc4592abcc50e">Sort</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#aa6c3098861fae53f0b0a01e145736eff">sort</a> () const</td></tr>
 <tr class="separator:aa6c3098861fae53f0b0a01e145736eff"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -226,12 +228,13 @@ Public Member Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupText"><p >Splits this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> via <a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.">Extract</a>s or directly accessing the <a class="el" href="classthorin_1_1Def.html#a246337e70da227a251e631aab3fad84d">Def::ops</a> in the case of <a class="el" href="classthorin_1_1Sigma.html">Sigma</a>s or <a class="el" href="classthorin_1_1Arr.html">Arr</a>ays. </p>
 </div></td></tr>
 <tr class="memitem:ade4d2dbcacdc78e6662c7ddf431f57e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">num_projs</a> () const</td></tr>
+<tr class="memdesc:ade4d2dbcacdc78e6662c7ddf431f57e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <a class="el" href="classthorin_1_1Def.html#a5077873bd4203c0ea099b044b0231d3d">Def::arity</a> as_lit, if it is in fact a <a class="el" href="classthorin_1_1Lit.html">Lit</a>, or <code>1</code> otherwise.  <a href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">More...</a><br /></td></tr>
 <tr class="separator:ade4d2dbcacdc78e6662c7ddf431f57e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ea644f59a105983052c886b3b02692b"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a0ea644f59a105983052c886b3b02692b">proj</a> (<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> a, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> i, const <a class="el" href="classthorin_1_1Def.html">Def</a> *<a class="el" href="classthorin_1_1Def.html#aaee0c31208310b95c932bc0e107816bf">dbg</a>={}) const</td></tr>
 <tr class="memdesc:a0ea644f59a105983052c886b3b02692b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Similar to <a class="el" href="classthorin_1_1World.html#a44bfd20a5ce5269ebbf3ed939e2ee8ab">World::extract</a> while assuming an arity of <code>a</code> but also works on <a class="el" href="classthorin_1_1Sigma.html">Sigma</a>s, and <a class="el" href="classthorin_1_1Arr.html">Arr</a>ays.  <a href="classthorin_1_1Def.html#a0ea644f59a105983052c886b3b02692b">More...</a><br /></td></tr>
 <tr class="separator:a0ea644f59a105983052c886b3b02692b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ec48303a042839042c5c7f85f496845"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#a3ec48303a042839042c5c7f85f496845">proj</a> (<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> i, const <a class="el" href="classthorin_1_1Def.html">Def</a> *<a class="el" href="classthorin_1_1Def.html#aaee0c31208310b95c932bc0e107816bf">dbg</a>={}) const</td></tr>
-<tr class="memdesc:a3ec48303a042839042c5c7f85f496845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as above but takes <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">Def::num_projs</a> as arity.  <a href="classthorin_1_1Def.html#a3ec48303a042839042c5c7f85f496845">More...</a><br /></td></tr>
+<tr class="memdesc:a3ec48303a042839042c5c7f85f496845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as above but takes <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::arity as_lit, if it is in fact a Lit, or 1 otherwise.">Def::num_projs</a> as arity.  <a href="classthorin_1_1Def.html#a3ec48303a042839042c5c7f85f496845">More...</a><br /></td></tr>
 <tr class="separator:a3ec48303a042839042c5c7f85f496845"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7440467a9b76cd3cccfd25886615806"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> A = -1_s, class F &gt; </td></tr>
 <tr class="memitem:ad7440467a9b76cd3cccfd25886615806"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1Def.html#ad7440467a9b76cd3cccfd25886615806">projs</a> (F f, <a class="el" href="namespacethorin.html#a2d1ba8b5552b3120a6648deb2bf7eb16">Defs</a> dbgs={}) const</td></tr>
@@ -1790,7 +1793,8 @@ template&lt;class T  = Def&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classthorin_1_1Def.html#a5077873bd4203c0ea099b044b0231d3d">Def::arity</a> as_lit, if it is in fact a <a class="el" href="classthorin_1_1Lit.html">Lit</a>, or <code>1</code> otherwise. </dd></dl>
+
+<p>Yields <a class="el" href="classthorin_1_1Def.html#a5077873bd4203c0ea099b044b0231d3d">Def::arity</a> as_lit, if it is in fact a <a class="el" href="classthorin_1_1Lit.html">Lit</a>, or <code>1</code> otherwise. </p>
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00248">248</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
@@ -2090,7 +2094,7 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classsize__t">size
 </table>
 </div><div class="memdoc">
 
-<p>Same as above but takes <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2">Def::num_projs</a> as arity. </p>
+<p>Same as above but takes <a class="el" href="classthorin_1_1Def.html#ade4d2dbcacdc78e6662c7ddf431f57e2" title="Yields Def::arity as_lit, if it is in fact a Lit, or 1 otherwise.">Def::num_projs</a> as arity. </p>
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00257">257</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
@@ -2751,7 +2755,8 @@ template&lt;class F &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>the type of this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> and unfolds it if necessary. See <a class="el" href="classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90">Def::type</a>, <a class="el" href="classthorin_1_1Def.html#aa6e4f7e30889bb5fdda61f235a5e40b9" title="Transitively Def::reduce Lams, if this is an App.">Def::reduce_rec</a>. </dd></dl>
+
+<p>Yields the type of this <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> and unfolds it if necessary. See <a class="el" href="classthorin_1_1Def.html#aa7ad6f240ca55e9056230ce136c67c90">Def::type</a>, <a class="el" href="classthorin_1_1Def.html#aa6e4f7e30889bb5fdda61f235a5e40b9" title="Transitively Def::reduce Lams, if this is an App.">Def::reduce_rec</a>. </p>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00163">163</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 

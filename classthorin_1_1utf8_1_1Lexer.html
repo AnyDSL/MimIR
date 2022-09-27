@@ -141,6 +141,7 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ad29428b48f635a4f5d0f29b91d9c0c3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8501db85f043276bad22a6fb4e90df77"><td class="memTemplParams" colspan="2">template&lt;class Pred &gt; </td></tr>
 <tr class="memitem:a8501db85f043276bad22a6fb4e90df77"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classthorin_1_1utf8_1_1Lexer.html#a8501db85f043276bad22a6fb4e90df77">accept_if</a> (Pred pred, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> <a class="el" href="namespacethorin_1_1utf8.html#ab193286524b0df4c5483ae6290004959">append</a>=true)</td></tr>
+<tr class="memdesc:a8501db85f043276bad22a6fb4e90df77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Yields <code>true</code> if <code>pred</code> holds.  <a href="classthorin_1_1utf8_1_1Lexer.html#a8501db85f043276bad22a6fb4e90df77">More...</a><br /></td></tr>
 <tr class="separator:a8501db85f043276bad22a6fb4e90df77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1529c4a3eb02da85de1160f94079db93"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1utf8_1_1Lexer.html#a1529c4a3eb02da85de1160f94079db93">accept</a> (char32_t val, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> <a class="el" href="namespacethorin_1_1utf8.html#ab193286524b0df4c5483ae6290004959">append</a>=true)</td></tr>
 <tr class="separator:a1529c4a3eb02da85de1160f94079db93"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -310,7 +311,9 @@ template&lt;class Pred &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd><code>true</code> if <code>pred</code> holds. In this case invoke <code><a class="el" href="classthorin_1_1utf8_1_1Lexer.html#ad29428b48f635a4f5d0f29b91d9c0c3f">next()</a></code> and append to <code>str_</code>; </dd></dl>
+
+<p>Yields <code>true</code> if <code>pred</code> holds. </p>
+<p >In this case invoke <code><a class="el" href="classthorin_1_1utf8_1_1Lexer.html#ad29428b48f635a4f5d0f29b91d9c0c3f">next()</a></code> and append to <code>str_</code>; </p>
 
 <p class="definition">Definition at line <a class="el" href="utf8_8h_source.html#l00095">95</a> of file <a class="el" href="utf8_8h_source.html">utf8.h</a>.</p>
 
