@@ -13,9 +13,9 @@
 
 namespace thorin {
 
-/// The optimizations proceed in a pipeline ordered by priorities
-/// Each phase is a sequence of passes that are run interleaved
-/// The passes are added to the phase ordered by their priority
+/// The optimizations proceed in a pipeline ordered by priorities.
+/// Each phase is a sequence of passes that are run interleaved.
+/// The passes are added to the phase ordered by their priority.
 
 /// Order:
 /// * 1-10: initial passes
@@ -55,7 +55,7 @@ void optimize(World& world, PipelineBuilder& builder) {
     Pipeline pipe(world);
 
     auto passes = builder.passes();
-    for (auto p : passes) { pipe.add<PassManPhase>(builder.opt_phase(p, world)); }
+    for (auto p : passes) pipe.add<PassManPhase>(builder.opt_phase(p, world));
 
     pipe.run();
 }
