@@ -45,18 +45,6 @@ Parser::Parser(World& world,
     prev_ = Loc(file, {1, 1}, {1, 1});
 }
 
-Parser::Parser(World& world,
-               std::string_view file,
-               std::istream& istream,
-               ArrayRef<std::string> import_search_paths,
-               const Normalizers* normalizers,
-               const Scopes& inhert_scopes,
-               const SymSet& inhert_imported)
-    : Parser(world, file, istream, import_search_paths, normalizers) {
-    scopes_   = inhert_scopes;
-    imported_ = inhert_imported;
-}
-
 /*
  * helpers
  */

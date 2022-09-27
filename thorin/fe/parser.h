@@ -170,14 +170,6 @@ private:
     [[noreturn]] void syntax_err(std::string_view what, std::string_view ctxt) { syntax_err(what, ahead(), ctxt); }
     ///@}
 
-    Parser(World&,
-           std::string_view,
-           std::istream&,
-           ArrayRef<std::string>,
-           const Normalizers*,
-           const Scopes&,
-           const SymSet&);
-
     Lexer lexer_;
     Scopes scopes_;
     Loc prev_;
