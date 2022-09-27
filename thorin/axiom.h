@@ -176,4 +176,9 @@ auto match(Id id, const Def* def) {
     return Match<Id, D>(axiom, def->as<D>());
 }
 
+// clang-format off
+template<class Id> auto force(       const Def* def) { return match<Id, false>(    def); }
+template<class Id> auto force(Id id, const Def* def) { return match<Id, false>(id, def); }
+// clang-format on
+
 } // namespace thorin
