@@ -102,7 +102,7 @@
 /// Note the aliases you can use for the common integer comparisions front-ends typically want to use:
 ///
 /// | Subtag  | Alias  | X | Y | G | L | E | Meaning                                         |
-/// |---------|--------| --|---|---|---|---|-------------------------------------------------|
+/// |---------|--------|---|---|---|---|---|-------------------------------------------------|
 /// | `xygle` |  `f`   | o | o | o | o | o | always false                                    |
 /// | `xyglE` |  `e`   | o | o | o | o | x | equal                                           |
 /// | `xygLe` |        | o | o | o | x | o | less (same sign)                                |
@@ -161,24 +161,24 @@
 ///     * `L`ess
 ///     * `E`qual
 ///
-/// | Subtag | Alias | Meaning                      |        
-/// |--------|-------|------------------------------|
-/// | `ugle` |   `f` | always false                 |              
-/// | `uglE` |   `e` | ordered and equal            |    
-/// | `ugLe` |   `l` | ordered and less             |    
-/// | `ugLE` |  `le` | ordered and less or equal    |    
-/// | `uGle` |   `g` | ordered and greater          |    
-/// | `uGlE` |  `ge` | ordered and greater or equal |    
-/// | `uGLe` |  `ne` | ordered and not equal        |    
-/// | `uGLE` |   `o` | ordered (no NaNs)            |    
-/// | `Ugle` |   `u` | unordered (either NaNs)      |    
-/// | `UglE` |  `ue` | unordered or equal           |    
-/// | `UgLe` |  `ul` | unordered or less            |    
-/// | `UgLE` | `ule` | unordered or less or equal   |    
-/// | `UGle` |  `ug` | unordered or greater         |    
-/// | `UGlE` | `uge` | unordered or greater or equa |    
-/// | `UGLe` | `une` | unordered or not equal       |    
-/// | `UGLE` |   `t` | always true                  |    
+/// | Subtag | Alias | U | G | L | E | Meaning                      |        
+/// |--------|-------|---|---|---|---|------------------------------|
+/// | `ugle` |   `f` | o | o | o | o | always false                 |              
+/// | `uglE` |   `e` | o | o | o | x | ordered and equal            |    
+/// | `ugLe` |   `l` | o | o | x | o | ordered and less             |    
+/// | `ugLE` |  `le` | o | o | x | x | ordered and less or equal    |    
+/// | `uGle` |   `g` | o | x | o | o | ordered and greater          |    
+/// | `uGlE` |  `ge` | o | x | o | x | ordered and greater or equal |    
+/// | `uGLe` |  `ne` | o | x | x | o | ordered and not equal        |    
+/// | `uGLE` |   `o` | o | x | x | x | ordered (no NaNs)            |    
+/// | `Ugle` |   `u` | x | o | o | o | unordered (either NaNs)      |    
+/// | `UglE` |  `ue` | x | o | o | x | unordered or equal           |    
+/// | `UgLe` |  `ul` | x | o | x | o | unordered or less            |    
+/// | `UgLE` | `ule` | x | o | x | x | unordered or less or equal   |    
+/// | `UGle` |  `ug` | x | x | o | o | unordered or greater         |    
+/// | `UGlE` | `uge` | x | x | o | x | unordered or greater or equa |    
+/// | `UGLe` | `une` | x | x | x | o | unordered or not equal       |    
+/// | `UGLE` |   `t` | x | x | x | x | always true                  |    
 .ax %core.rcmp(ugle =   f, uglE =   e, ugLe =   l, ugLE =  le,
                uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
                Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
