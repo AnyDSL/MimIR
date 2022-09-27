@@ -4,9 +4,9 @@
 .import clos;
 
 
-.let i32 = %Int 4294967296;
-.let f32 = %Real 4294967296;
-.let i8 = %Int 256;
+.let i32 = .Idx 4294967296;
+.let f32 = %core.Real 4294967296;
+.let i8 = .Idx 256;
 
 .cn f [mem: %mem.M, x : i32, return : .Cn [%mem.M, i32]] = {
     return (mem, %core.wrap.add (0, 4294967296) (x, 42:i32))
@@ -17,7 +17,7 @@
 };
 
 
-.cn .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
+.cn .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
 
     .cn h [mem: %mem.M, x : i32, return : .Cn [%mem.M, i32]] = {
         return (mem, %core.wrap.add (0, 4294967296) (x, argc))
@@ -47,13 +47,13 @@
     .let fn_lea = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 2:i32);
     .let load = %mem.load Tas (mem5, fn_lea);
 
-    .let load_mem = load#0:(%Int 2);
+    .let load_mem = load#0:(.Idx 2);
     .let load2 = %mem.load real_arr_type (load_mem, lea);
 
-    .let func = load#1:(%Int 2);
+    .let func = load#1:(.Idx 2);
 
-    .let load2_mem = load2#0:(%Int 2);
-    .let load2_val = load2#1:(%Int 2);
+    .let load2_mem = load2#0:(.Idx 2);
+    .let load2_val = load2#1:(.Idx 2);
 
     .cn callback [mem: %mem.M, x : i32] = {
         return (mem, x)

@@ -3,8 +3,8 @@
 .import core;
 .import direct;
 
-.let i32 = %Int 4294967296;
-.let i8 = %Int 256;
+.let i32 = .Idx 4294967296;
+.let i8 = .Idx 256;
 
 .cn printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
 
@@ -131,7 +131,7 @@
     init(mem_assign_pb_anchor, a_arr, init_a)
 };
 
-.cn .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
+.cn .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
     .cn callback (mem: %mem.M, x : i32) = {
         return (mem, x)
     };
