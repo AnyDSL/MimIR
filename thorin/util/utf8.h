@@ -80,7 +80,7 @@ protected:
             ++back.pos.row;
             back.pos.col = 0;
         } else if (back.c32 == EoF) {
-                /* do nothing */
+            /* do nothing */
         } else {
             ++back.pos.col;
         }
