@@ -53,26 +53,10 @@ void optimize(World& world, PipelineBuilder& builder) {
         Codegen_Prep_Phase, [](thorin::PassMan& man) { man.add<RetWrap>(); }, 50);
 
     Pipeline pipe(world);
-<<<<<<< HEAD
-    pipe.add<Scalerize>();
-    pipe.add<EtaRed>();
-    pipe.add<TailRecElim>();
-    builder.opt_phase(world, pipe);
-    pipe.add<LamSpec>();
-    pipe.add<PassManPhase>(builder.codegen_prep_phase(world));
-||||||| 6d1bfd59d
-    pipe.add<Scalerize>();
-    pipe.add<EtaRed>();
-    pipe.add<TailRecElim>();
-    pipe.add<PassManPhase>(builder.opt_phase(world));
-    pipe.add<LamSpec>();
-    pipe.add<PassManPhase>(builder.codegen_prep_phase(world));
-=======
 
     auto passes = builder.passes();
     for (auto p : passes) pipe.add<PassManPhase>(builder.opt_phase(p, world));
 
->>>>>>> master
     pipe.run();
 }
 

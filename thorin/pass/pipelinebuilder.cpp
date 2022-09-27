@@ -14,7 +14,6 @@
 #include "thorin/pass/rw/partial_eval.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
-#include "thorin/phase/phase.h"
 
 #include "dialects/mem/passes/fp/copy_prop.h"
 #include "dialects/mem/passes/fp/ssa_constr.h"
@@ -31,11 +30,6 @@ void PipelineBuilder::extend_codegen_prep_phase(std::function<void(PassMan&)>&& 
     extend_opt_phase(Codegen_Prep_Phase, extension);
 }
 
-<<<<<<< HEAD
-void PipelineBuilder::opt_phase(World& world, Pipeline& pipeline) {
-||||||| 6d1bfd59d
-std::unique_ptr<PassMan> PipelineBuilder::opt_phase(World& world) {
-=======
 void PipelineBuilder::extend_opt_phase(int i, std::function<void(PassMan&)> extension, int priority) {
     // adds extension to the i-th optimization phase
     // if the ith phase does not exist, it is created
@@ -67,58 +61,11 @@ std::vector<int> PipelineBuilder::passes() {
 }
 
 std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
->>>>>>> master
-    auto man = std::make_unique<PassMan>(world);
-<<<<<<< HEAD
-    man->add<PartialEval>();
-    man->add<BetaRed>();
-    auto er = man->add<EtaRed>();
-    auto ee = man->add<EtaExp>(er);
-    man->add<Scalerize>(ee);
-    man->add<TailRecElim>(er);
-    pipeline.add<PassManPhase>(std::move(man));
-||||||| 6d1bfd59d
-
-    man->add<PartialEval>();
-    man->add<BetaRed>();
-    auto er = man->add<EtaRed>();
-    auto ee = man->add<EtaExp>(er);
-    man->add<Scalerize>(ee);
-    man->add<TailRecElim>(er);
-=======
-
-    std::sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), passCmp());
->>>>>>> master
-
-<<<<<<< HEAD
-    for (const auto& ext : opt_phase_extensions_) {
-        auto man = std::make_unique<PassMan>(world);
-        ext(*man);
-        pipeline.add<PassManPhase>(std::move(man));
-    }
-}
-
-std::unique_ptr<PassMan> PipelineBuilder::codegen_prep_phase(World& world) {
     auto man = std::make_unique<PassMan>(world);
 
-    man->add<RetWrap>();
+    std::sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), PassLt());
 
-    for (const auto& ext : codegen_prep_phase_extensions_) ext(*man);
-||||||| 6d1bfd59d
-    for (const auto& ext : opt_phase_extensions_) ext(*man);
-
-    return man;
-}
-
-std::unique_ptr<PassMan> PipelineBuilder::codegen_prep_phase(World& world) {
-    auto man = std::make_unique<PassMan>(world);
-
-    man->add<RetWrap>();
-
-    for (const auto& ext : codegen_prep_phase_extensions_) ext(*man);
-=======
     for (const auto& ext : phase_extensions_[i]) { ext.second(*man); }
->>>>>>> master
 
     return man;
 }

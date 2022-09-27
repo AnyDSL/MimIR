@@ -5,7 +5,6 @@
 
 #include "thorin/pass/optimize.h"
 #include "thorin/pass/pass.h"
-#include "thorin/phase/phase.h"
 
 namespace thorin {
 
@@ -13,7 +12,7 @@ typedef std::function<void(PassMan&)> PassBuilder;
 typedef std::pair<int, PassBuilder> PrioPassBuilder;
 typedef std::vector<PrioPassBuilder> PassList;
 
-struct passCmp {
+struct PassLt {
     constexpr bool operator()(PrioPassBuilder const& a, PrioPassBuilder const& b) const noexcept {
         return a.first < b.first;
     }
@@ -28,18 +27,10 @@ public:
     void add_opt(int i);
     void extend_codegen_prep_phase(std::function<void(PassMan&)>&&);
 
-<<<<<<< HEAD
-    void opt_phase(World& world, Pipeline& pipeline);
-    std::unique_ptr<PassMan> codegen_prep_phase(World& world);
-||||||| 6d1bfd59d
-    std::unique_ptr<PassMan> opt_phase(World& world);
-    std::unique_ptr<PassMan> codegen_prep_phase(World& world);
-=======
     std::unique_ptr<PassMan> opt_phase(int i, World& world);
     void add_opt(PassMan man);
 
     std::vector<int> passes();
->>>>>>> master
 
 private:
     std::map<int, PassList> phase_extensions_;

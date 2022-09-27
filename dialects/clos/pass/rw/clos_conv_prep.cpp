@@ -7,10 +7,6 @@
 namespace thorin::clos {
 
 // FIXME: these guys do not work if another pass rewrites curr_nom()'s body
-static bool isa_unset(const App* body, const Def* def, size_t i) {
-    return body->callee_type()->is_returning() && !body->callee()->is_set() && i == def->num_ops() - 1;
-}
-
 static bool isa_cont(const App* body, const Def* def, size_t i) {
     return body->callee_type()->is_returning() && body->arg() == def && i == def->num_ops() - 1;
 }
@@ -51,26 +47,25 @@ void ClosConvPrep::enter() {
     }
     if (auto body = curr_nom()->body()->isa<App>();
         !wrapper_.contains(curr_nom()) && body && body->callee_type()->is_cn())
-        ignore = false;
+        ignore_ = false;
     else
-        ignore = true;
+        ignore_ = true;
 }
 
-const App* ClosConvPrep::rewriteArgs(const App* app){
-    auto& w = world();
+const App* ClosConvPrep::rewriteArgs(const App* app) {
+    auto& w  = world();
     auto arg = app->arg();
 
-    if (arg->isa<Var>())
-        return app;
+    if (arg->isa<Var>()) return app;
 
     for (auto i = 0u; i < arg->num_projs(); i++) {
-        auto op     = arg->proj(i);
+        auto op = arg->proj(i);
 
         auto refine = [&](const Def* new_op) {
             const Def* args;
-            if(arg == op){
+            if (arg == op) {
                 args = new_op;
-            }else{
+            } else {
                 args = arg->refine(i, new_op);
             }
             return app->refine(1, args)->as<App>();
@@ -96,8 +91,8 @@ const App* ClosConvPrep::rewriteArgs(const App* app){
             }
         }
 
-        if(!isa_callee_br(app, arg, i)){
-            if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock() ) {
+        if (!isa_callee_br(app, arg, i)) {
+            if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock()) {
                 w.DLOG("found firstclass use of BB: {}", bb_lam);
                 return refine(thorin::clos::op(clos::fstclassBB, bb_lam));
             }
@@ -112,10 +107,10 @@ const App* ClosConvPrep::rewriteArgs(const App* app){
     return app;
 }
 
-const App* ClosConvPrep::rewriteCallee(const App* app){
+const App* ClosConvPrep::rewriteCallee(const App* app) {
     auto& w = world();
     if (app->callee_type()->is_cn()) {
-        if (auto br = app->callee()->isa<Extract>()){
+        if (auto br = app->callee()->isa<Extract>()) {
             auto branches = br->tuple();
             // Eta-Expand branches
             if (branches->isa<Tuple>() && branches->type()->isa<Sigma>()) {
@@ -135,8 +130,7 @@ const App* ClosConvPrep::rewriteCallee(const App* app){
 }
 
 const Def* ClosConvPrep::rewrite(const Def* def) {
-    auto& w = world();
-    if (ignore || match<clos>(def)) return def;
+    if (ignore_ || match<clos>(def)) return def;
 
     if (auto app = def->isa<App>(); app) {
         app = rewriteArgs(app);
