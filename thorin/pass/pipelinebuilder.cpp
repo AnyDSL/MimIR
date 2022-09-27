@@ -91,7 +91,7 @@ std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
 >>>>>>> master
 
 <<<<<<< HEAD
-    for (const auto& ext : opt_phase_extensions_){
+    for (const auto& ext : opt_phase_extensions_) {
         auto man = std::make_unique<PassMan>(world);
         ext(*man);
         pipeline.add<PassManPhase>(std::move(man));

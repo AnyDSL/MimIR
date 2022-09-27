@@ -29,7 +29,7 @@ public:
     void extend_codegen_prep_phase(std::function<void(PassMan&)>&&);
 
 <<<<<<< HEAD
-    void opt_phase(World& world, Pipeline& pipeline) ;
+    void opt_phase(World& world, Pipeline& pipeline);
     std::unique_ptr<PassMan> codegen_prep_phase(World& world);
 ||||||| 6d1bfd59d
     std::unique_ptr<PassMan> opt_phase(World& world);
