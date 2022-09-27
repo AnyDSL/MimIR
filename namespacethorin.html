@@ -718,7 +718,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a9ad62aaa1872eb162b0da183bb68f3e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">For now, only η-reduce <code>lam x.e x</code> if e is a <code><a class="el" href="classthorin_1_1Var.html">Var</a></code> or a <code><a class="el" href="classthorin_1_1Lam.html">Lam</a></code>.  <a href="namespacethorin.html#a9ad62aaa1872eb162b0da183bb68f3e9">More...</a><br /></td></tr>
 <tr class="separator:a9ad62aaa1872eb162b0da183bb68f3e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">optimize</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world, <a class="el" href="classthorin_1_1PipelineBuilder.html">PipelineBuilder</a> &amp;builder)</td></tr>
-<tr class="memdesc:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="mdescLeft">&#160;</td><td class="mdescRight">The optimizations proceed in a pipeline ordered by priorities Each phase is a sequence of passes that are run interleaved The passes are added to the phase ordered by their priority.  <a href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">More...</a><br /></td></tr>
+<tr class="memdesc:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="mdescLeft">&#160;</td><td class="mdescRight">The optimizations proceed in a pipeline ordered by priorities.  <a href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">More...</a><br /></td></tr>
 <tr class="separator:aafbe7c65f3fb4df3b05a04b70cebe149"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ea2d1f8b0075a5710d3da6b0447ab01"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html#a1ea2d1f8b0075a5710d3da6b0447ab01">is_top_level</a> (<a class="el" href="namespacethorin.html#ac4e11da8b7018338a4ffddad585f61e8">LamMap</a>&lt; <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> &gt; &amp;top, <a class="el" href="classthorin_1_1Lam.html">Lam</a> *lam)</td></tr>
 <tr class="separator:a1ea2d1f8b0075a5710d3da6b0447ab01"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -5512,8 +5512,8 @@ template&lt;<a class="el" href="namespace_3globalScope_4.html#classbool">bool</a
       </table>
 </div><div class="memdoc">
 
-<p>The optimizations proceed in a pipeline ordered by priorities Each phase is a sequence of passes that are run interleaved The passes are added to the phase ordered by their priority. </p>
-<p >Order:</p><ul>
+<p>The optimizations proceed in a pipeline ordered by priorities. </p>
+<p >Each phase is a sequence of passes that are run interleaved. The passes are added to the phase ordered by their priority. Order:</p><ul>
 <li>1-10: initial passes</li>
 <li>100: Main optimization phase (default for extend_opt_phase)</li>
 <li>200: Pre-CodeGen Optimization</li>
