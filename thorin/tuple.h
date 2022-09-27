@@ -66,6 +66,8 @@ public:
     Arr* set_body(const Def* body) { return Def::set(1, body)->as<Arr>(); }
     ///@}
 
+    const Def* reduce(const Def* arg) const;
+
     /// @name virtual methods
     ///@{
     bool check() override;
@@ -96,6 +98,8 @@ public:
     const Def* shape() const { return type()->shape(); }
     Pack* set(const Def* body) { return Def::set(0, body)->as<Pack>(); }
     ///@}
+
+    const Def* reduce(const Def* arg) const;
 
     /// @name virtual methods
     ///@{

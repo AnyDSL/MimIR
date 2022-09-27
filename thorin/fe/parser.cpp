@@ -255,7 +255,9 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::D_brckt_l: return parse_sigma();
         case Tok::Tag::D_paren_l: return parse_tuple();
         case Tok::Tag::K_Cn:      return parse_Cn();
+        case Tok::Tag::K_Idx:     return parse_idx();
         case Tok::Tag::K_Type:    return parse_type();
+        case Tok::Tag::K_Univ:    lex(); return world().univ();
         case Tok::Tag::K_Bool:    lex(); return world().type_bool();
         case Tok::Tag::K_Nat:     lex(); return world().type_nat();
         case Tok::Tag::K_ff:      lex(); return world().lit_ff();
@@ -274,14 +276,8 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::M_i:       return lex().index();
         case Tok::Tag::K_ins:     return parse_insert();
         case Tok::Tag::M_ax: {
-            // HACK hard-coded some built-in axioms
             auto tok = lex();
             auto s = tok.sym().to_string();
-            // if (s == "%Mem")      return world().ax();
-            if (s == "%Int"     ) return world().type_int();
-            if (s == "%Real"    ) return world().type_real();
-            if (s == "%Wrap_add") return world().ax(Wrap::add);
-            if (s == "%Wrap_sub") return world().ax(Wrap::sub);
             return scopes_.find(tok.sym());
         }
         default:
@@ -349,7 +345,7 @@ const Def* Parser::parse_pack() {
         eat(Tok::Tag::T_colon);
 
         shape      = parse_expr("shape of a pack");
-        auto infer = world().nom_infer(world().type_int(shape), sym);
+        auto infer = world().nom_infer(world().type_idx(shape), sym);
         scopes_.bind(sym, infer);
     } else {
         shape = parse_expr("shape of a pack");
@@ -390,6 +386,13 @@ const Def* Parser::parse_type() {
     auto [l, r] = Tok::prec(Tok::Prec::App);
     auto level  = parse_expr("type level", r);
     return world().type(level, track);
+}
+
+const Def* Parser::parse_idx() {
+    eat(Tok::Tag::K_Idx);
+    auto [l, r] = Tok::prec(Tok::Prec::App);
+    auto size   = parse_expr("size of .Idx", r);
+    return world().type_idx(size);
 }
 
 const Def* Parser::parse_pi() {
@@ -720,42 +723,80 @@ void Parser::parse_nom() {
 }
 
 void Parser::parse_nom_fun() {
-    auto track = tracker();
-    auto key   = lex().tag();
-
-    scopes_.push(); // pi scope
-
+    auto track    = tracker();
+    auto tok      = lex();
+    bool is_cn    = tok.isa(Tok::Tag::K_cn);
     bool external = accept(Tok::Tag::K_extern).has_value();
     auto sym      = parse_sym("nominal lambda");
-    auto dom_p    = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", Tok::Prec::Pi);
-    auto dom_t    = dom_p->type(world());
-    auto pi       = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
-    auto var_dbg  = world().dbg(dom_p->sym());
-    auto pi_var   = pi->var(var_dbg);
-
-    dom_p->bind(scopes_, pi_var);
-
-    auto codom = key == Tok::Tag::K_cn     ? world().type_bot()
-               : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
-                                           : world().nom_infer_of_infer_level();
-    pi->set_codom(codom);
-    pi->set_type(codom->unfold_type());
-    pi->set_dbg(track);
-
-    scopes_.pop(); // pi scope
+    assert(is_cn || tok.isa(Tok::Tag::K_lam));
 
     auto outer = scopes_.curr();
-    scopes_.push(); // lam scope
+    scopes_.push();            // pi scope
+    Scopes::Scope other_scope; // lam scope
 
-    auto lam     = world().nom_lam(pi, track.named(sym));
-    auto lam_var = lam->var(var_dbg);
-    if (external) lam->make_external();
-    scopes_.bind(outer, sym, lam);
-    dom_p->bind(scopes_, lam_var);
+    Lam* last_lam  = nullptr;
+    Lam* first_lam = nullptr;
+    std::deque<Pi*> pis;
+    do {
+        auto prec         = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
+        const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
+        auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
+        auto dom_t        = dom_p->type(world());
+        auto pi           = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
+        auto var_dbg      = world().dbg(dom_p->sym());
+        auto pi_var       = pi->var(var_dbg);
 
+        dom_p->bind(scopes_, pi_var);
+        scopes_.swap(other_scope); // swap to lam scope
+
+        auto lam     = world().nom_lam(pi, last_lam ? nullptr : track.named(sym));
+        auto lam_var = lam->var(var_dbg);
+        if (!first_lam) first_lam = lam;
+        dom_p->bind(scopes_, lam_var);
+
+        if (accept(Tok::Tag::T_at)) {
+            if (accept(Tok::Tag::T_at)) {
+                filter = world().lit_tt();
+            } else {
+                expect(Tok::Tag::D_paren_l, "opening parenthesis of a filter");
+                filter = parse_expr("filter");
+                expect(Tok::Tag::D_paren_r, "closing parenthesis of a filter");
+            }
+        }
+        lam->set_filter(filter);
+        scopes_.swap(other_scope); // swap to pi scope
+
+        if (!pis.empty()) {
+            pis.back()->set_codom(pi);
+            last_lam->set_body(lam);
+        } else if (external) {
+            lam->make_external();
+        }
+
+        last_lam = lam;
+        pis.emplace_back(pi);
+    } while (!ahead().isa(Tok::Tag::T_arrow) && !ahead().isa(Tok::Tag::T_assign) &&
+             !ahead().isa(Tok::Tag::T_semicolon));
+
+    auto codom = is_cn                     ? world().type_bot()
+               : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
+                                           : world().nom_infer_of_infer_level();
+    pis.back()->set_codom(codom);
+
+    for (auto& pi : pis | std::ranges::views::reverse) {
+        pi->set_type(codom->unfold_type());
+        codom = pi;
+    }
+
+    scopes_.bind(outer, sym, first_lam);
+
+    scopes_.swap(other_scope); // swap to lam scope
     if (accept(Tok::Tag::T_assign)) {
         auto body = parse_expr("body of a lambda");
-        lam->set(false, body);
+        last_lam->set_body(body);
+    } else {
+        // TODO error message if filter is non .ff
+        last_lam->unset(0);
     }
     expect(Tok::Tag::T_semicolon, "end of lambda");
 

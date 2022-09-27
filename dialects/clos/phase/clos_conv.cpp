@@ -5,6 +5,8 @@
 #include "thorin/analyses/scope.h"
 #include "dialects/mem/autogen.h"
 
+#include "dialects/mem/mem.h"
+
 namespace thorin::clos {
 
 /* auxillary functions */
@@ -90,7 +92,7 @@ ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
         auto fnc = std::get<1_u64>(clos_unpack(tpl));
         if (auto q = match<clos>(fnc)) {
             fnc = q->arg();
-            cc  = q.flags();
+            cc  = q.id();
         }
         if (!lambda_or_branch || fnc->isa<Lam>()) return ClosLit(tpl, cc);
     }
@@ -206,7 +208,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             }
             return new_lam;
         }
-    }else if (auto q = match<clos>(def); q && (q.flags() == clos::fstclassBB || q.flags() == clos::freeBB)) {
+    } else if (auto q = match<clos>(def); q && (q.id() == clos::fstclassBB || q.id() == clos::freeBB)) {
         // Note: Same thing about η-conversion applies here
         auto bb_lam = q->arg()->isa_nom<Lam>();
         assert(bb_lam && bb_lam->is_basicblock());

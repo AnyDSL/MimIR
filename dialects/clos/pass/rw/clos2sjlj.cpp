@@ -157,7 +157,7 @@ void Clos2SJLJ::enter() {
     auto m0 = body->arg(0);
     assert(m0->type() == mem::type_mem(w));
     auto [m1, tag] = op_setjmp(m0, cur_jbuf_)->projs<2>();
-    tag            = op(core::conv::s2s, w.type_int(branches.size()), tag);
+    tag            = op(core::conv::s2s, w.type_idx(branches.size()), tag);
     auto branch    = w.extract(w.tuple(branches), tag);
     curr_nom()->set_body(clos_apply(branch, m1));
 }
@@ -167,7 +167,7 @@ const Def* Clos2SJLJ::rewrite(const Def* def) {
         auto& w     = world();
         auto [i, _] = lam2tag_[c.fnc_as_lam()];
         auto tlam   = get_throw(c.fnc_as_lam()->dom());
-        return clos_pack(w.tuple({cur_jbuf_, cur_rbuf_, w.lit_int(i)}), tlam, c.type());
+        return clos_pack(w.tuple({cur_jbuf_, cur_rbuf_, w.lit_idx(i)}), tlam, c.type());
     }
     return def;
 }

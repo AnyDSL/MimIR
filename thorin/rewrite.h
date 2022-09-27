@@ -25,8 +25,10 @@ public:
     virtual const Def* rewrite(const Def* old_def);
 
     /// Rewrite a given Def in pre-order.
-    /// @return `{nullptr, false}` to do nothing, `{new_def, false}` to return `new_def` **without** recursing on
-    /// `new_def` again, and `{new_def, true}` to return `new_def` **with** recursing on `new_def` again.
+    /// @return
+    /// * `{nullptr, false}` to do nothing
+    /// * `{new_def, false}` to return `new_def` **without** recursing on `new_def` again
+    /// * `{new_def, true}` to return `new_def` **with** recursing on `new_def` again
     virtual std::pair<const Def*, bool> pre_rewrite(const Def*) { return {nullptr, false}; }
     /// As above but in post-order.
     virtual std::pair<const Def*, bool> post_rewrite(const Def*) { return {nullptr, false}; }

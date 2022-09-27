@@ -14,9 +14,7 @@
 #include "thorin/check.h"
 #include "thorin/def.h"
 #include "thorin/error.h"
-#include "thorin/normalize.h"
 #include "thorin/rewrite.h"
-#include "thorin/tables.h"
 
 #include "thorin/analyses/scope.h"
 #include "thorin/util/array.h"
@@ -51,152 +49,11 @@ World::World(const State& state)
     data_.top_nat_     = insert<Top>(0, type_nat(), nullptr);
     data_.lit_nat_0_   = lit_nat(0);
     data_.lit_nat_1_   = lit_nat(1);
+    data_.type_bool_   = type_idx(2);
+    data_.lit_bool_[0] = lit_idx(2, 0_u64);
+    data_.lit_bool_[1] = lit_idx(2, 1_u64);
     data_.lit_nat_max_ = lit_nat(nat_t(-1));
     data_.exit_        = nom_lam(cn(type_bot()), dbg("exit"));
-    auto nat           = type_nat();
-
-    { // int/real: w: Nat -> *
-        auto p             = pi(nat, type());
-        data_.type_int_    = nullptr; // hack for alpha equiv check of sigma (dbg..)
-        data_.type_int_    = axiom(p, Axiom::Global_Dialect, Tag::Int, 0, dbg("Int"));
-        data_.type_real_   = axiom(p, Axiom::Global_Dialect, Tag::Real, 0, dbg("Real"));
-        data_.type_bool_   = type_int(2)->as<App>();
-        data_.lit_bool_[0] = lit_int(2, 0_u64);
-        data_.lit_bool_[1] = lit_int(2, 1_u64);
-    }
-
-    {
-#define CODE(T, o)             \
-    data_.T##_[size_t(T::o)] = \
-        axiom(normalize_##T<T::o>, ty, Axiom::Global_Dialect, Tag::T, sub_t(T::o), dbg(op2str(T::o)));
-    }
-    { // bit: w: nat -> [int w, int w] -> int w
-        auto ty    = nom_pi(type())->set_dom(nat);
-        auto int_w = type_int(ty->var(dbg("w")));
-        ty->set_codom(pi({int_w, int_w}, int_w));
-        THORIN_BIT(CODE)
-    }
-    { // Shr: w: nat -> [int w, int w] -> int w
-        auto ty    = nom_pi(type())->set_dom(nat);
-        auto int_w = type_int(ty->var(dbg("w")));
-        ty->set_codom(pi({int_w, int_w}, int_w));
-        THORIN_SHR(CODE)
-    }
-    { // Wrap: [m: nat, w: nat] -> [int w, int w] -> int w
-        auto ty     = nom_pi(type())->set_dom({nat, nat});
-        auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
-        auto int_w  = type_int(w);
-        ty->set_codom(pi({int_w, int_w}, int_w));
-        THORIN_WRAP(CODE)
-    }
-    { // ROp: [m: nat, w: nat] -> [real w, real w] -> real w
-        auto ty     = nom_pi(type())->set_dom({nat, nat});
-        auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
-        auto real_w = type_real(w);
-        ty->set_codom(pi({real_w, real_w}, real_w));
-        THORIN_R_OP(CODE)
-    }
-    { // ICmp: w: nat -> [int w, int w] -> bool
-        auto ty    = nom_pi(type())->set_dom(nat);
-        auto int_w = type_int(ty->var(dbg("w")));
-        ty->set_codom(pi({int_w, int_w}, type_bool()));
-        THORIN_I_CMP(CODE)
-    }
-    { // RCmp: [m: nat, w: nat] -> [real w, real w] -> bool
-        auto ty     = nom_pi(type())->set_dom({nat, nat});
-        auto [m, w] = ty->vars<2>({dbg("m"), dbg("w")});
-        auto real_w = type_real(w);
-        ty->set_codom(pi({real_w, real_w}, type_bool()));
-        THORIN_R_CMP(CODE)
-    }
-    { // trait: T: * -> nat
-        auto ty = pi(type(), nat);
-        THORIN_TRAIT(CODE)
-    }
-    // todo: move to some dialect..
-    // { // acc: n: nat -> cn[M, cn[M, int w n, cn[M, []]]]
-    //     // TODO this is more a proof of concept
-    //     auto ty = nom_pi(type())->set_dom(nat);
-    //     auto n  = ty->var(0, dbg("n"));
-    //     ty->set_codom(cn_mem_ret(type_int(n), sigma()));
-    //     THORIN_ACC(CODE)
-    // }
-#undef CODE
-    { // Conv: [dw: nat, sw: nat] -> i/r sw -> i/r dw
-        auto make_type = [&](Conv o) {
-            auto ty       = nom_pi(type())->set_dom({nat, nat});
-            auto [dw, sw] = ty->vars<2>({dbg("dw"), dbg("sw")});
-            auto type_dw  = o == Conv::s2r || o == Conv::u2r || o == Conv::r2r ? type_real(dw) : type_int(dw);
-            auto type_sw  = o == Conv::r2s || o == Conv::r2u || o == Conv::r2r ? type_real(sw) : type_int(sw);
-            return ty->set_codom(pi(type_sw, type_dw));
-        };
-#define CODE(T, o)                                                                                             \
-    data_.Conv_[size_t(T::o)] = axiom(normalize_Conv<T::o>, make_type(T::o), Axiom::Global_Dialect, Tag::Conv, \
-                                      sub_t(T::o), dbg(op2str(T::o)));
-        THORIN_CONV(CODE)
-#undef CODE
-    }
-    { // hlt/run: T: * -> T -> T
-        auto ty = nom_pi(type())->set_dom(type());
-        auto T  = ty->var(dbg("T"));
-        ty->set_codom(pi(T, T));
-        data_.PE_[size_t(PE::hlt)] =
-            axiom(normalize_PE<PE::hlt>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::hlt), dbg(op2str(PE::hlt)));
-        data_.PE_[size_t(PE::run)] =
-            axiom(normalize_PE<PE::run>, ty, Axiom::Global_Dialect, Tag::PE, sub_t(PE::run), dbg(op2str(PE::run)));
-    }
-    { // known: T: * -> T -> bool
-        auto ty = nom_pi(type())->set_dom(type());
-        auto T  = ty->var(dbg("T"));
-        ty->set_codom(pi(T, type_bool()));
-        data_.PE_[size_t(PE::known)] = axiom(normalize_PE<PE::known>, ty, Axiom::Global_Dialect, Tag::PE,
-                                             sub_t(PE::known), dbg(op2str(PE::known)));
-    }
-    { // bitcast: [D: *, S: *] -> S -> D
-        auto ty     = nom_pi(type())->set_dom({type(), type()});
-        auto [D, S] = ty->vars<2>({dbg("D"), dbg("S")});
-        ty->set_codom(pi(S, D));
-        data_.bitcast_ = axiom(normalize_bitcast, ty, Axiom::Global_Dialect, Tag::Bitcast, 0, dbg("bitcast"));
-    }
-    { // atomic: [T: *, R: *] -> T -> R
-        auto ty     = nom_pi(type())->set_dom({type(), type()});
-        auto [T, R] = ty->vars<2>({dbg("T"), dbg("R")});
-        ty->set_codom(pi(T, R));
-        data_.atomic_ = axiom(nullptr, ty, Axiom::Global_Dialect, Tag::Atomic, 0, dbg("atomic"));
-    }
-    { // zip: [r: nat, s: «r; nat»] -> [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i»
-        // -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
-        // TODO select which Is/Os to zip
-        auto rs = nom_sigma(type(), 2);
-        rs->set(0, nat);
-        rs->set(1, arr(rs->var(0, dbg("r")), nat));
-        auto rs_pi = nom_pi(type())->set_dom(rs);
-        auto s     = rs_pi->var(1, dbg("s"));
-
-        // [n_i: nat, Is: «n_i; *», n_o: nat, Os: «n_o; *», f: «i: n_i; Is#i» -> «o: n_o; Os#o»,]
-        auto is_os = nom_sigma(type<1>(), 5);
-        is_os->set(0, nat);
-        is_os->set(1, arr(is_os->var(0, dbg("n_i")), type()));
-        is_os->set(2, nat);
-        is_os->set(3, arr(is_os->var(2, dbg("n_o")), type()));
-        auto f_i = nom_arr()->set_shape(is_os->var(0_u64));
-        auto f_o = nom_arr()->set_shape(is_os->var(2_u64));
-        f_i->set_body(extract(is_os->var(1, dbg("Is")), f_i->var()));
-        f_o->set_body(extract(is_os->var(3, dbg("Os")), f_o->var()));
-        is_os->set(4, pi(f_i, f_o));
-        auto is_os_pi = nom_pi(type())->set_dom(is_os);
-
-        // «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»»
-        auto dom = nom_arr()->set_shape(is_os_pi->var(0_u64, dbg("n_i")));
-        auto cod = nom_arr()->set_shape(is_os_pi->var(2_u64, dbg("n_o")));
-        dom->set_body(arr(s, extract(is_os_pi->var(1, dbg("Is")), dom->var())));
-        cod->set_body(arr(s, extract(is_os_pi->var(3, dbg("Os")), cod->var())));
-
-        is_os_pi->set_codom(pi(dom, cod));
-        rs_pi->set_codom(is_os_pi);
-
-        data_.zip_ = axiom(normalize_zip, rs_pi, Axiom::Global_Dialect, Tag::Zip, 0, dbg("zip"));
-    }
 }
 
 World::World(std::string_view name /* = {}*/)
@@ -206,9 +63,25 @@ World::~World() {
     for (auto def : move_.defs) def->~Def();
 }
 
-/*
- * core calculus
- */
+const Type* World::type(const Def* level, const Def* dbg) {
+    if (err()) {
+        if (!level->type()->isa<Univ>()) {
+            err()->err(level->loc(), "argument `{}` to `.Type` must be of type `.Univ` but is of type `{}`", level,
+                       level->type());
+        }
+    }
+    return unify<Type>(1, level, dbg)->as<Type>();
+}
+
+const Idx* World::type_idx(const Def* size) {
+    if (err()) {
+        if (!size->type()->isa<Nat>()) {
+            err()->err(size->loc(), "argument `{}` to `.Idx` must be of type `.Nat` but is of type `{}`", size,
+                       size->type());
+        }
+    }
+    return unify<Idx>(1, *this, size);
+}
 
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
     auto pi = callee->type()->isa<Pi>();
@@ -238,7 +111,7 @@ const Def* World::sigma(Defs ops, const Def* dbg) {
     auto n = ops.size();
     if (n == 0) return sigma();
     if (n == 1) return ops[0];
-    if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return arr(n, ops[0]);
+    if (auto uni = checker().is_uniform(ops, dbg)) return arr(n, uni, dbg);
     return unify<Sigma>(ops.size(), infer_type_level(*this, ops), ops, dbg);
 }
 
@@ -268,32 +141,31 @@ const Def* World::tuple(const Def* type, Defs ops, const Def* dbg) {
     if (!type->isa_nom<Sigma>()) {
         if (n == 0) return tuple();
         if (n == 1) return ops[0];
-        if (std::all_of(ops.begin() + 1, ops.end(), [&](auto op) { return ops[0] == op; })) return pack(n, ops[0]);
+        if (auto uni = checker().is_uniform(ops, dbg)) return pack(n, uni, dbg);
     }
 
-    // eta rule for tuples:
-    // (extract(tup, 0), extract(tup, 1), extract(tup, 2)) -> tup
-    if (n == 0) goto out;
-
-    if (auto extract = ops[0]->isa<Extract>()) {
-        auto tup = extract->tuple();
-        bool eta = tup->type() == type;
-        for (size_t i = 0; i != n && eta; ++i) {
-            if (auto extract = ops[i]->isa<Extract>()) {
-                if (auto index = isa_lit(extract->index())) {
-                    if (eta &= u64(i) == *index) {
-                        eta &= extract->tuple() == tup;
-                        continue;
+    if (n != 0) {
+        // eta rule for tuples:
+        // (extract(tup, 0), extract(tup, 1), extract(tup, 2)) -> tup
+        if (auto extract = ops[0]->isa<Extract>()) {
+            auto tup = extract->tuple();
+            bool eta = tup->type() == type;
+            for (size_t i = 0; i != n && eta; ++i) {
+                if (auto extract = ops[i]->isa<Extract>()) {
+                    if (auto index = isa_lit(extract->index())) {
+                        if (eta &= u64(i) == *index) {
+                            eta &= extract->tuple() == tup;
+                            continue;
+                        }
                     }
                 }
+                eta = false;
             }
-            eta = false;
-        }
 
-        if (eta) return tup;
+            if (eta) return tup;
+        }
     }
 
-out:
     return unify<Tuple>(ops.size(), type, ops, dbg);
 }
 
@@ -304,24 +176,24 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
 }
 
 const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
-    if (index->isa<Arr>() || index->isa<Pack>()) {
-        DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
-        return index->isa<Arr>() ? sigma(ops, dbg) : tuple(ops, dbg);
-    } else if (index->isa<Sigma>() || index->isa<Tuple>()) {
+    if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
         DefArray ops(n, [&](size_t i) { return d->proj(n, as_lit(idx[i])); });
-        return index->isa<Sigma>() ? sigma(ops, dbg) : tuple(ops, dbg);
+        return tuple(ops, dbg);
+    } else if (index->isa<Pack>()) {
+        DefArray ops(as_lit(index->arity()), [&](size_t) { return extract(d, index->ops().back()); });
+        return tuple(ops, dbg);
     }
 
-    auto type = d->unfold_type();
+    auto index_t = index->type()->as<Idx>();
+    auto type    = d->unfold_type();
     if (err()) {
-        if (!checker().equiv(type->arity(), isa_sized_type(index->type()), dbg))
-            err()->index_out_of_range(type->arity(), index, dbg);
+        if (!checker().equiv(type->arity(), index_t->size(), dbg)) err()->index_out_of_range(type->arity(), index, dbg);
     }
 
     // nom sigmas can be 1-tuples
-    if (auto mod = isa_lit(isa_sized_type(index->type())); mod && *mod == 1 && !d->type()->isa_nom<Sigma>()) return d;
+    if (auto size = isa_lit(index_t->size()); size && *size == 1 && !d->type()->isa_nom<Sigma>()) return d;
     if (auto pack = d->isa_structural<Pack>()) return pack->body();
 
     // extract(insert(x, index, val), index) -> val
@@ -348,27 +220,23 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
         }
     }
 
-    // e.g. (t, f)#cond, where t&f's types contain nominals but still are alpha-equiv
-    // for now just use t's type.
-    if (auto sigma = type->isa<Sigma>();
-        sigma /*&& std::all_of(sigma->ops().begin() + 1, sigma->ops().end(),
-                             [&](auto op) { return checker().equiv<false>(sigma->op(0), op, dbg); })*/)
-        return unify<Extract>(2, sigma->op(0), d, index, dbg);
+    const Def* elem_t;
+    if (auto arr = type->isa<Arr>())
+        elem_t = arr->reduce(index);
+    else
+        elem_t = extract(tuple(type->as<Sigma>()->ops(), dbg), index, dbg);
 
-    if (err() && !type->isa<Arr>())
-        err()->err(dbg->loc(), "cannot extract from non-homogeneous sigma with non-literal index");
-
-    type = type->as<Arr>()->body();
-    return unify<Extract>(2, type, d, index, dbg);
+    return unify<Extract>(2, elem_t, d, index, dbg);
 }
 
 const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {
-    auto type = d->unfold_type();
+    auto type    = d->unfold_type();
+    auto index_t = index->type()->as<Idx>();
 
-    if (err() && !checker().equiv(type->arity(), isa_sized_type(index->type()), dbg))
+    if (err() && !checker().equiv(type->arity(), index_t->size(), dbg))
         err()->index_out_of_range(type->arity(), index, dbg);
 
-    if (auto mod = isa_lit(isa_sized_type(index->type())); mod && *mod == 1)
+    if (auto size = isa_lit(index_t->size()); size && *size == 1)
         return tuple(d, {val}, dbg); // d could be nom - that's why the tuple ctor is needed
 
     // insert((a, b, c, d), 2, x) -> (a, b, x, d)
@@ -408,6 +276,14 @@ const Def* World::arr(const Def* shape, const Def* body, const Def* dbg) {
     if (auto a = isa_lit<u64>(shape)) {
         if (*a == 0) return sigma();
         if (*a == 1) return body;
+    }
+
+    // «(a, b)#i; T» -> («a, T», <b, T»)#i
+    if (auto ex = shape->isa<Extract>()) {
+        if (auto tup = ex->tuple()->isa<Tuple>()) {
+            DefArray arrs(tup->num_ops(), [&](size_t i) { return arr(tup->op(i), body); });
+            return extract(tuple(arrs), ex->index(), dbg);
+        }
     }
 
     // «(a, b, c); body» -> «a; «(b, c); body»»
@@ -453,14 +329,14 @@ const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
     return pack(shape.skip_back(), pack(shape.back(), body, dbg), dbg);
 }
 
-const Lit* World::lit_int(const Def* type, u64 i, const Def* dbg) {
-    auto size = isa_sized_type(type);
-    if (size->isa<Top>()) return lit(size, i, dbg);
+const Lit* World::lit_idx(const Def* type, u64 i, const Def* dbg) {
+    auto l    = lit(type, i, dbg);
+    auto size = type->as<Idx>()->size();
 
-    auto l = lit(type, i, dbg);
-
-    if (auto a = isa_lit(size)) {
-        if (err() && *a != 0 && i >= *a) err()->index_out_of_range(size, l, dbg);
+    if (err()) {
+        if (auto a = isa_lit(size)) {
+            if (*a != 0 && i >= *a) err()->index_out_of_range(size, l, dbg);
+        }
     }
 
     return l;

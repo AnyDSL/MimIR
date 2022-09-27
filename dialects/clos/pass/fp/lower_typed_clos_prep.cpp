@@ -3,6 +3,8 @@
 #include "thorin/util/bitset.h"
 #include "dialects/mem/autogen.h"
 
+#include "dialects/mem/mem.h"
+
 namespace thorin::clos {
 
 static bool interesting_type(const Def* type, DefSet& visited) {
