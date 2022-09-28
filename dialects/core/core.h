@@ -42,7 +42,7 @@ enum RMode : nat_t {
 };
 }
 
-inline const Def* rinfer(const Def* def) { return match<Real>(def->type())->arg(); }
+inline const Def* rinfer(const Def* def) { return force<Real>(def->type())->arg(); }
 
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{

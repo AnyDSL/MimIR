@@ -646,7 +646,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                 if (auto width = size2bitwidth(as_lit(idx->size()))) return *width;
                 return 64_u64;
             }
-            return as_lit(match<core::Real>(type)->arg());
+            return as_lit(force<core::Real>(type)->arg());
         };
 
         nat_t s_src = size2width(conv->arg()->type());
@@ -702,7 +702,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto lea = match<mem::lea>(def)) {
         auto [ptr, i] = lea->args<2>();
         auto ll_ptr   = emit(ptr);
-        auto pointee  = match<mem::Ptr, false>(ptr->type())->arg(0);
+        auto pointee  = force<mem::Ptr>(ptr->type())->arg(0);
         auto t        = convert(pointee);
         auto p        = convert(ptr->type());
         if (pointee->isa<Sigma>())
@@ -726,7 +726,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto malloc = match<mem::malloc>(def)) {
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
-        auto ptr_t = convert(match<mem::Ptr, false>(def->proj(1)->type()));
+        auto ptr_t = convert(force<mem::Ptr>(def->proj(1)->type()));
         bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
         return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
     } else if (auto mslot = match<mem::mslot>(def)) {
@@ -740,7 +740,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(load->arg(0));
         auto ptr       = emit(load->arg(1));
         auto ptr_t     = convert(load->arg(1)->type());
-        auto pointee_t = convert(match<mem::Ptr, false>(load->arg(1)->type())->arg(0));
+        auto pointee_t = convert(force<mem::Ptr>(load->arg(1)->type())->arg(0));
         return bb.assign(name, "load {}, {} {}", pointee_t, ptr_t, ptr);
     } else if (auto store = match<mem::store>(def)) {
         emit_unsafe(store->arg(0));
@@ -813,7 +813,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "insertvalue {} {}, {} {}, {}", tup_t, tuple, val_t, value, index);
     } else if (auto global = def->isa<Global>()) {
         auto init                  = emit(global->init());
-        auto [pointee, addr_space] = match<mem::Ptr, false>(global->type())->args<2>();
+        auto [pointee, addr_space] = force<mem::Ptr>(global->type())->args<2>();
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
         return globals_[global] = name;
     }

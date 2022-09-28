@@ -112,7 +112,7 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
         } else if (auto idx = a->type()->isa<Idx>()) {
             width = as_lit(idx->size());
         } else {
-            width = as_lit(match<Real>(a->type())->arg());
+            width = as_lit(force<Real>(a->type())->arg());
         }
 
         if (is_int<Id>()) width = *size2bitwidth(width);
