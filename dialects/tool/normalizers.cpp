@@ -6,7 +6,6 @@ namespace thorin::tool {
 
 const Def* normalize_force_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // debug_print("force_type", arg);
     if (auto app = arg->isa<App>()) {
         auto callee = app->callee();
         auto args   = app->arg();
@@ -22,7 +21,6 @@ const Def* normalize_force_type(const Def* type, const Def* callee, const Def* a
 
 const Def* normalize_set_filter(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // auto [filter, lam] = arg->projs<2>();
 
     return world.raw_app(callee, arg, dbg);
 }

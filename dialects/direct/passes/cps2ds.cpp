@@ -19,12 +19,7 @@ void CPS2DS::enter() {
 }
 
 void CPS2DS::rewrite_lam(Lam* lam) {
-    // if (auto i = rewritten_lams.find(lam); i != rewritten_lams.end()) return;
-
-    // Lam* prev = curr_lam_;
     curr_lam_ = lam;
-
-    // if (prev) rewritten_[lam] = lam;
 
     auto result = rewrite_body(curr_lam_->body());
     curr_lam_->set_body(result);
@@ -53,8 +48,6 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         auto cps_fun = fun_app->arg();
                         world.DLOG("function: {} : {}", cps_fun, cps_fun->type());
 
-                        // TODO: move to function
-
                         /*
                         h:
                         b = f a
@@ -73,7 +66,6 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         */
 
                         // TODO: rewrite map vs thorin::rewrite
-
                         // TODO: unify replacements
 
                         // replace continuing function call with argument instantiation

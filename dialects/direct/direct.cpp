@@ -20,21 +20,8 @@ using namespace thorin;
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"direct",
             [](thorin::PipelineBuilder& builder) {
-                builder.extend_opt_phase(115, [](thorin::PassMan& man) {
-                    man.add<direct::DS2CPS>();
-                    // auto ds2cps = man.add<direct::DS2CPS>();
-                    // man.add<direct::DSCall>(ds2cps);
-                });
+                builder.extend_opt_phase(115, [](thorin::PassMan& man) { man.add<direct::DS2CPS>(); });
                 builder.extend_opt_phase(116, [](thorin::PassMan& man) { man.add<direct::CPS2DS>(); });
-                // builder.extend_codegen_prep_phase([](thorin::PassMan& man) {
-                //     man.add<direct::CPS2DS>();
-                //     man.add<PartialEval>();
-                //     man.add<BetaRed>();
-                //     auto er = man.add<EtaRed>();
-                //     auto ee = man.add<EtaExp>(er);
-                //     man.add<Scalerize>(ee);
-                //     man.add<TailRecElim>(er);
-                // });
                 builder.add_opt(120);
             },
             nullptr, [](Normalizers& normalizers) { direct::register_normalizers(normalizers); }};
