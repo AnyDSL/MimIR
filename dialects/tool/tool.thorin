@@ -1,0 +1,25 @@
+/// # The tool dialect {#tool}
+///
+/// [TOC]
+///
+/// A toolkit for gadgets
+///
+/// ## Dependencies
+///
+/// none
+///
+/// ## Types
+///
+/// none 
+///
+/// ## Operations
+///
+/// ### %tool.force
+/// 
+/// Forces beta reduction
+.ax %tool.force_type: * -> *, normalize_force_type;
+///
+/// ### %tool.set_filter
+/// 
+// .ax %tool.set_filter: Π [T: *] -> [.Idx 2,T] -> T, normalize_set_filter;
+.ax %tool.set_filter: [.Idx 2,⊥:★] -> ⊥:★, normalize_set_filter;

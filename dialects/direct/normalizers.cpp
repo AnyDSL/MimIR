@@ -1,4 +1,3 @@
-#include "thorin/normalize.h"
 #include "thorin/world.h"
 
 #include "dialects/direct/direct.h"

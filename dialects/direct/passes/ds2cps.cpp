@@ -30,70 +30,17 @@ const Def* DS2CPS::rewrite(const Def* def) {
     auto& world = def->world();
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
-        auto args   = app->args();
-
-        // pre-order!
-        auto new_arg = rewrite_(app->arg());
-
-        // manual unfolding instead of match<cps2ds>(callee) due to currying
-        // TODO can we somehow enhance match to do this?
-        Lam* conv_cps       = nullptr;
-        auto [axiom, curry] = Axiom::get(callee);
-        if (axiom && axiom->base() == Axiom::Base<cps2ds>) conv_cps = callee->as<App>()->arg()->as_nom<Lam>();
-
-        if ((!axiom && !callee->type()->as<Pi>()->is_cn()) || conv_cps) {
-            /*
-            h:
-              b = f a
-              C[b]
-
-            =>
-
-            h:
-                f'(a,h_cont)
-
-            h_cont(b):
-                C[b]
-
-            f : A -> B
-            f': .Cn [A, ret: .Cn[B]]
-            */
-
-            auto ty     = callee->type();
-            auto ret_ty = ty->as<Pi>()->codom();
-
-            const Def* lam_cps;
-            if (conv_cps) {
-                lam_cps = conv_cps;
-            } else {
-                // "real" ds function
-                lam_cps = rewrite_(callee);
-            }
-
-            // continuation of call site to receive result
-            auto fun_cont = world.nom_lam(world.cn(ret_ty), world.dbg(curr_lam_->name() + "_cont"));
-            fun_cont->set_filter(curr_lam_->filter());
-
-            // f a -> f_cps(a,cont)
-            auto cps_call = world.app(lam_cps, {new_arg, fun_cont}, world.dbg("cps_call"));
-            if (curr_lam_->body()) rewritten_bodies_[curr_lam_->body()] = cps_call;
-            world.DLOG("  overwrite body {} of {} : {} with {} : {}", curr_lam_->body(), curr_lam_, curr_lam_->type(),
-                       cps_call->unique_name(), cps_call->type());
-
-            curr_lam_->set_body(cps_call);
-            // Fixme: would be great to PE the newly added overhead away..
-            // The current PE just does not terminate on loops.. :/
-            // curr_lam_->set_filter(true);
-
-            // write the body context in the newly created continuation
-            // that has access to the result (as its argument)
-            curr_lam_ = fun_cont;
-            // result of ds function
-            auto res = fun_cont->var();
-
-            world.DLOG("  result {} : {} instead of {} : {}\n", res, res->type(), def, def->type());
-            // replace call with the result in the context that will be placed in the continuation
-            return res;
+        // world.DLOG("callee {} : {}", callee, callee->type());
+        // world.DLOG("arg {} : {}", app->arg(), app->arg()->type());
+        if (auto lam = callee->isa_nom<Lam>()) {
+            world.DLOG("encountered lam app");
+            auto new_lam = rewrite_lam(lam);
+            world.DLOG("new lam: {} : {}", new_lam, new_lam->type());
+            auto arg = app->arg();
+            world.DLOG("arg: {} : {}", arg, arg->type());
+            auto new_app = world.app(new_lam, app->arg());
+            world.DLOG("new app: {} : {}", new_app, new_app->type());
+            return new_app;
         }
     }
     return def;
@@ -110,7 +57,11 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
     // ignore ds on type level
     if (lam->type()->codom()->isa<Type>()) { return lam; }
     // ignore higher order function
-    if (lam->type()->codom()->isa<Pi>()) { return lam; }
+    if (lam->type()->codom()->isa<Pi>()) {
+        // causes segfault in depth
+        // lam->set_filter(true);
+        return lam;
+    }
 
     world().DLOG("rewrite DS function {} : {}", lam, lam->type());
 
