@@ -822,6 +822,8 @@ void Parser::parse_def(Sym sym /*= {}*/) {
 
 void Parser::parse_rule() {
     eat(Tok::Tag::K_rule);
+
+    auto outer = scopes_.curr();
     scopes_.push();
     auto sym   = parse_sym("name of a rule");
     auto dom_p = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a rule");
@@ -831,6 +833,7 @@ void Parser::parse_rule() {
     expect(Tok::Tag::T_assign, "rule");
     scopes_.push();
     auto rule = world().nom_rule(dom_t);
+    scopes_.bind(outer, sym, rule);
     dom_p->bind(scopes_, rule->var());
     auto lhs = parse_expr("left-hand side of a rule");
     expect(Tok::Tag::T_fatarrow, "rule");
