@@ -99,13 +99,18 @@ const Def* autodiff_type_fun(const Def* ty) {
     if (auto pi = ty->isa<Pi>()) { return autodiff_type_fun_pi(pi); }
     // TODO: what is this object? (only numbers are printed)
     // possible abstract type from autodiff axiom
-    world.DLOG("AutoDiff on type: {}", ty);
-    if (auto app = ty->isa<App>()) {
-        auto callee = app->callee();
-        // if (callee == world.type_int_() || callee == world.type_real()) { return ty; }
-        // TODO: compare real
-        if (callee->isa<Idx>()) { return ty; }
+    world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
+    if (ty->isa<Idx>()) {
+        // world.DLOG("Idx");
+        return ty;
     }
+    // if (auto app = ty->isa<App>()) {
+    //     auto callee = app->callee();
+    //     // if (callee == world.type_int_() || callee == world.type_real()) { return ty; }
+    //     // TODO: compare real
+    //     world.DLOG("callee: {}", callee);
+    //     if (callee->isa<Idx>()) { return ty; }
+    // }
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->shape();
@@ -144,18 +149,23 @@ const Def* zero_def(const Def* T) {
         return zero_arr;
         // }else if(auto lit = match<type_int_>()) { }
         // }else if(auto tint = T->isa<Tag::Int>()) {
-    } else if (auto app = T->isa<App>()) {
-        auto callee = app->callee();
-        // auto args = app->args();
-        world.DLOG("app callee: {} : {} <{}>", callee, callee->type(), callee->node_name());
-        // TODO: can you directly match Tag::Int?
-        if (callee->isa<Idx>()) {
-            // auto size = app->arg(0);
-            auto zero = world.lit_idx(T, 0, world.dbg("zero"));
-            // world.DLOG("zero_def for int of size {} is {}", size, zero);
-            world.DLOG("zero_def for int is {}", zero);
-            return zero;
-        }
+    } else if (auto idx = T->isa<Idx>()) {
+        auto zero = world.lit_idx(T, 0, world.dbg("zero"));
+        // world.DLOG("zero_def for int of size {} is {}", size, zero);
+        world.DLOG("zero_def for int is {}", zero);
+        return zero;
+        // } else if (auto app = T->isa<App>()) {
+        //     auto callee = app->callee();
+        //     // auto args = app->args();
+        //     world.DLOG("app callee: {} : {} <{}>", callee, callee->type(), callee->node_name());
+        //     // TODO: can you directly match Tag::Int?
+        //     if (callee->isa<Idx>()) {
+        //         // auto size = app->arg(0);
+        //         auto zero = world.lit_idx(T, 0, world.dbg("zero"));
+        //         // world.DLOG("zero_def for int of size {} is {}", size, zero);
+        //         world.DLOG("zero_def for int is {}", zero);
+        //         return zero;
+        //     }
     } else if (auto sig = T->isa<Sigma>()) {
         DefArray ops(sig->ops(), [&](const Def* op) { return world.app(world.ax<zero>(), op); });
         return world.tuple(ops);
