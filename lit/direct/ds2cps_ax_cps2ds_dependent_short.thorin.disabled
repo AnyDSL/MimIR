@@ -1,8 +1,8 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d direct %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: %thorin -d tool -d direct %s --output-ll %t.ll -o - | FileCheck %s
 
 // tests a direct call to a cps fucntion wrapped in cps2ds
-// ./build/bin/thorin -d direct -d debug ./lit/direct/ds2cps_ax_cps2ds_dependent_short.thorin --output-thorin -
+// ./build/bin/thorin -d direct -d tool ./lit/direct/ds2cps_ax_cps2ds_dependent_short.thorin --output-thorin -
 
 .import direct;
 .import mem;
@@ -14,8 +14,10 @@
     return b
 };
 
+.lam lam_Idx n: .Nat = .Idx n;
+
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
-    .let g = %direct.cps2ds_dep (.Nat,.Idx) f;
+    .let g = %direct.cps2ds_dep (.Nat,lam_Idx) f;
     .let c = g (4294967296);
     return (mem, c)
 };
