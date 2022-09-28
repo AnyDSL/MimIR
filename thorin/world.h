@@ -13,6 +13,7 @@
 #include "thorin/error.h"
 #include "thorin/flags.h"
 #include "thorin/lattice.h"
+#include "thorin/rule.h"
 #include "thorin/tuple.h"
 
 #include "thorin/util/hash.h"
@@ -102,8 +103,6 @@ public:
 
     Checker& checker() { return *move_.checker; }
     ErrorHandler* err() { return move_.err.get(); }
-    ///@}
-
     ///@}
 
     /// @name freeze
@@ -394,6 +393,15 @@ public:
     const Def* pick(const Def* type, const Def* value, const Def* dbg = {});
     const Def* test(const Def* value, const Def* probe, const Def* match, const Def* clash, const Def* dbg = {});
     const Def* singleton(const Def* inner_type, const Def* dbg = {});
+    ///@}
+
+    /// @name rules
+    ///@{
+    const RuleType* rule_type(const Def* dom, const Def* dbg = {}) { return unify<RuleType>(1, dom->type(), dom, dbg); }
+    Rule* nom_rule(const Def* dom, const Def* dbg = {}) {
+        auto rt = rule_type(dom, dbg);
+        return insert<Rule>(2, rt, dbg);
+    }
     ///@}
 
     /// @name globals -- depdrecated; will be removed

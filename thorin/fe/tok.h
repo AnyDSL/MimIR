@@ -24,6 +24,7 @@ namespace thorin::fe {
     m(K_Univ,   ".Univ"  )             \
     m(K_pack,   ".pack"  )             \
     m(K_Pi,     ".Pi"    )             \
+    m(K_rule,   ".rule"  )             \
     m(K_lam,    ".lam"   )             \
     m(K_Cn,     ".Cn"    )             \
     m(K_cn,     ".cn"    )             \
@@ -62,6 +63,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     /* further tokens */                \
     m(T_Pi,         "Π")                \
     m(T_arrow,      "→")                \
+    m(T_fatarrow,   "=>")               \
     m(T_assign,     "=")                \
     m(T_at,         "@")                \
     m(T_bang,       "!")                \
@@ -78,7 +80,6 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_star,       "*")                \
 
 #define THORIN_SUBST(m)                 \
-    m("->",      T_arrow)               \
     m(".bot",    T_bot  )               \
     m(".top",    T_top  )               \
     m(".insert", K_ins  )               \

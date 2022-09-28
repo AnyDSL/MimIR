@@ -559,6 +559,7 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
             case Tok::Tag::K_cn:
             case Tok::Tag::K_lam:       parse_nom_fun(); break;
             case Tok::Tag::K_def:       parse_def();     break;
+            case Tok::Tag::K_rule:      parse_rule();    break;
             default:                    return expr ? parse_expr("scope of a declaration") : nullptr;
         }
         // clang-format on
@@ -817,6 +818,26 @@ void Parser::parse_def(Sym sym /*= {}*/) {
     }
 
     expect(Tok::Tag::T_semicolon, "end of a nominal definition");
+}
+
+void Parser::parse_rule() {
+    eat(Tok::Tag::K_rule);
+    scopes_.push();
+    auto sym   = parse_sym("name of a rule");
+    auto dom_p = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a rule");
+    auto dom_t = dom_p->type(world());
+    scopes_.pop();
+
+    expect(Tok::Tag::T_assign, "rule");
+    scopes_.push();
+    auto rule  = world().nom_rule(dom_t);
+    dom_p->bind(scopes_, rule->var());
+    auto lhs = parse_expr("left-hand side of a rule");
+    expect(Tok::Tag::T_fatarrow, "rule");
+    auto rhs = parse_expr("right-hand side of a rule");
+    rule->set(lhs, rhs);
+    scopes_.pop();
+    expect(Tok::Tag::T_semicolon, "right-hand side of a rule");
 }
 
 } // namespace thorin::fe

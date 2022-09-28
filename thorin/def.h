@@ -12,20 +12,21 @@
 #include "thorin/util/print.h"
 
 // clang-format off
-#define THORIN_NODE(m)                                                        \
-    m(Type, type)       m(Univ, univ)                                         \
-    m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
-    m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
-    m(Arr, arr)         m(Pack, pack)                                         \
-    m(Join, join)       m(Vel, vel)     m(Test, test)       m(Top, top)       \
-    m(Meet, meet)       m(Ac,  ac )     m(Pick, pick)       m(Bot, bot)       \
-    m(Proxy, proxy)                                                           \
-    m(Axiom, axiom)                                                           \
-    m(Lit, lit)                                                               \
-    m(Nat, nat)         m(Idx, int)                                           \
-    m(Var, var)                                                               \
-    m(Infer, infer)                                                           \
-    m(Global, global)                                                         \
+#define THORIN_NODE(m)                                                         \
+    m(Type, type)       m(Univ, univ)                                          \
+    m(Pi, pi)           m(Lam, lam)       m(App, app)                          \
+    m(Sigma, sigma)     m(Tuple, tuple)   m(Extract, extract) m(Insert, insert)\
+    m(Arr, arr)         m(Pack, pack)                                          \
+    m(Join, join)       m(Vel, vel)       m(Test, test)       m(Top, top)      \
+    m(Meet, meet)       m(Ac,  ac )       m(Pick, pick)       m(Bot, bot)      \
+    m(Rule, rule)       m(RuleType, Rule)                                      \
+    m(Proxy, proxy)                                                            \
+    m(Axiom, axiom)                                                            \
+    m(Lit, lit)                                                                \
+    m(Nat, nat)         m(Idx, int)                                            \
+    m(Var, var)                                                                \
+    m(Infer, infer)                                                            \
+    m(Global, global)                                                          \
     m(Singleton, singleton)
 // clang-format on
 
