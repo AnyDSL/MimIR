@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "thorin/debug.h"
-#include "thorin/tables.h"
 
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
@@ -12,7 +11,31 @@
 #include "thorin/util/hash.h"
 #include "thorin/util/print.h"
 
+// clang-format off
+#define THORIN_NODE(m)                                                        \
+    m(Type, type)       m(Univ, univ)                                         \
+    m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
+    m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
+    m(Arr, arr)         m(Pack, pack)                                         \
+    m(Join, join)       m(Vel, vel)     m(Test, test)       m(Top, top)       \
+    m(Meet, meet)       m(Ac,  ac )     m(Pick, pick)       m(Bot, bot)       \
+    m(Proxy, proxy)                                                           \
+    m(Axiom, axiom)                                                           \
+    m(Lit, lit)                                                               \
+    m(Nat, nat)         m(Idx, int)                                           \
+    m(Var, var)                                                               \
+    m(Infer, infer)                                                           \
+    m(Global, global)                                                         \
+    m(Singleton, singleton)
+// clang-format on
+
 namespace thorin {
+
+namespace Node {
+#define CODE(node, name) node,
+enum : node_t { THORIN_NODE(CODE) Max };
+#undef CODE
+} // namespace Node
 
 class App;
 class Axiom;
@@ -135,9 +158,9 @@ public:
 
     /// @name type
     ///@{
-    /// @returns the **literal** type of this Def. See Def::unfold_type.
+    /// Yields the **raw** type of this Def; maybe `nullptr`. @sa Def::unfold_type.
     const Def* type() const { return type_; }
-    /// @returns the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
+    /// Yields the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
     const Def* unfold_type() const;
     Sort sort() const;
     const Def* arity() const;
@@ -221,7 +244,7 @@ public:
     ///@{
     /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
 
-    /// @returns Def::arity as_lit, if it is in fact a Lit, or `1` otherwise.
+    /// Yields Def::arity as_lit, if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const {
         if (auto a = isa_lit(arity())) return *a;
         return 1;

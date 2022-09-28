@@ -20,7 +20,6 @@ protected:
 public:
     size_t find(const Def* type) const;
     const Def* get(const Def* type) const { return op(find(type)); }
-    const Sigma* convert() const;
 };
 
 /// Specific [Bound](https://en.wikipedia.org/wiki/Join_and_meet) depending on @p up.
@@ -44,8 +43,6 @@ public:
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     TBound* stub(World&, const Def*, const Def*) override;
     ///@}
-
-    const Sigma* convert() const;
 
     static constexpr auto Node = up ? Node::Join : Node::Meet;
     friend class World;

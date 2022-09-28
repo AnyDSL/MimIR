@@ -111,7 +111,7 @@ public:
     /// In frozen state the World does not create any nodes.
     bool is_frozen() const { return state_.pod.frozen; }
 
-    /// @returns old frozen state.
+    /// Yields old frozen state.
     bool freeze(bool on = true) const {
         bool old          = state_.pod.frozen;
         state_.pod.frozen = on;
@@ -143,7 +143,11 @@ public:
     const auto& axioms() const { return move_.axioms; }
     const auto& externals() const { return move_.externals; }
     bool empty() { return move_.externals.empty(); }
-    void make_external(Def* def) { move_.externals.emplace(def->name(), def); }
+    void make_external(Def* def) {
+        assert(!def->name().empty());
+        auto [_, ins] = move_.externals.emplace(def->name(), def);
+        assert(ins);
+    }
     void make_internal(Def* def) { move_.externals.erase(def->name()); }
     bool is_external(const Def* def) { return move_.externals.contains(def->name()); }
     Def* lookup(const std::string& name) {
@@ -193,23 +197,21 @@ public:
         return axiom(nullptr, type, Axiom::Global_Dialect, 0, state_.pod.curr_sub++, dbg);
     }
 
-    /// Get axiom from a dialect.
-    ///
-    /// Use this to get an axiom with sub-tags.
-    template<class AxTag>
-    const Axiom* ax(AxTag tag) const {
-        u64 flags = static_cast<u64>(tag);
+    /// Get Axiom from a dialect.
+    /// Use this to get an Axiom via Axiom::id.
+    template<class Id>
+    const Axiom* ax(Id id) const {
+        u64 flags = static_cast<u64>(id);
         if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
-        thorin::err("Axiom with tag '{}' not found in world", flags);
+        thorin::err("Axiom with ID '{}' not found in world", flags);
     }
 
-    /// Get axiom from a dialect.
-    ///
-    /// Can be used to get an axiom without sub-tags.
-    /// E.g. use `w.ax<mem::M>();` to get the %mem.M axiom.
-    template<axiom_without_sub_tags AxTag>
+    /// Get Axiom from a dialect.
+    /// Can be used to get an Axiom without sub-tags.
+    /// E.g. use `w.ax<mem::M>();` to get the `%mem.M` Axiom.
+    template<axiom_without_subs id>
     const Axiom* ax() const {
-        return ax(AxTag::Axiom_Id);
+        return ax(Axiom::Base<id>);
     }
     ///@}
 
@@ -365,23 +367,6 @@ public:
     const Lit* lit_ff() { return data_.lit_bool_[0]; }
     const Lit* lit_tt() { return data_.lit_bool_[1]; }
     // clang-format off
-    const Lit* lit_real(nat_t width, r64 val, const Def* dbg = {}) {
-        switch (width) {
-            case 16: assert(r64(r16(r32(val))) == val && "loosing precision"); return lit_real(r16(r32(val)), dbg);
-            case 32: assert(r64(r32(   (val))) == val && "loosing precision"); return lit_real(r32(   (val)), dbg);
-            case 64: assert(r64(r64(   (val))) == val && "loosing precision"); return lit_real(r64(   (val)), dbg);
-            default: unreachable();
-        }
-    }
-    template<class R>
-    const Lit* lit_real(R val, const Def* dbg = {}) {
-        static_assert(std::is_floating_point<R>() || std::is_same<R, r16>());
-        if constexpr (false) {}
-        else if constexpr (sizeof(R) == 2) return lit(type_real(16), thorin::bitcast<u16>(val), dbg);
-        else if constexpr (sizeof(R) == 4) return lit(type_real(32), thorin::bitcast<u32>(val), dbg);
-        else if constexpr (sizeof(R) == 8) return lit(type_real(64), thorin::bitcast<u64>(val), dbg);
-        else unreachable();
-    }
     ///@}
 
     /// @name lattice
@@ -428,114 +413,6 @@ public:
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
     const Idx* type_int_(nat_t width) { return type_idx(lit_nat(bitwidth2size(width))); }
     const Idx* type_bool() { return data_.type_bool_; }
-    const Axiom* type_real() { return data_.type_real_; }
-    const Def* type_real(const Def* width) { return app(type_real(), width); }
-    const Def* type_real(nat_t width) { return type_real(lit_nat(width)); }
-    ///@}
-
-    /// @name bulitin axioms
-    ///@{
-    // clang-format off
-    const Axiom* ax(Acc   o)  const { return data_.Acc_  [size_t(o)]; }
-    const Axiom* ax(Bit   o)  const { return data_.Bit_  [size_t(o)]; }
-    const Axiom* ax(Conv  o)  const { return data_.Conv_ [size_t(o)]; }
-    const Axiom* ax(ICmp  o)  const { return data_.ICmp_ [size_t(o)]; }
-    const Axiom* ax(PE    o)  const { return data_.PE_   [size_t(o)]; }
-    const Axiom* ax(RCmp  o)  const { return data_.RCmp_ [size_t(o)]; }
-    const Axiom* ax(ROp   o)  const { return data_.ROp_  [size_t(o)]; }
-    const Axiom* ax(Shr   o)  const { return data_.Shr_  [size_t(o)]; }
-    const Axiom* ax(Trait o)  const { return data_.Trait_[size_t(o)]; }
-    const Axiom* ax(Wrap  o)  const { return data_.Wrap_ [size_t(o)]; }
-    const Axiom* ax_atomic()  const { return data_.atomic_;  }
-    const Axiom* ax_bitcast() const { return data_.bitcast_; }
-    const Axiom* ax_zip()     const { return data_.zip_;     }
-    // clang-format on
-    ///@}
-
-    /// @name fn - these guys yield the final function to be invoked for the various operations
-    ///@{
-    const Def* fn(Bit o, const Def* mod, const Def* dbg = {}) { return app(ax(o), mod, dbg); }
-    const Def* fn(Conv o, const Def* dst_w, const Def* src_w, const Def* dbg = {}) {
-        return app(ax(o), {dst_w, src_w}, dbg);
-    }
-    const Def* fn(ICmp o, const Def* mod, const Def* dbg = {}) { return app(ax(o), mod, dbg); }
-    const Def* fn(RCmp o, const Def* rmode, const Def* width, const Def* dbg = {}) {
-        return app(ax(o), {rmode, width}, dbg);
-    }
-    const Def* fn(ROp o, const Def* rmode, const Def* width, const Def* dbg = {}) {
-        return app(ax(o), {rmode, width}, dbg);
-    }
-    const Def* fn(Shr o, const Def* mod, const Def* dbg = {}) { return app(ax(o), mod, dbg); }
-    const Def* fn(Wrap o, const Def* wmode, const Def* mod, const Def* dbg = {}) {
-        return app(ax(o), {wmode, mod}, dbg);
-    }
-    template<class O>
-    const Def* fn(O o, nat_t size, const Def* dbg = {}) {
-        return fn(o, lit_nat(size), dbg);
-    }
-    template<class O>
-    const Def* fn(O o, nat_t other, nat_t size, const Def* dbg = {}) {
-        return fn(o, lit_nat(other), lit_nat(size), dbg);
-    }
-    const Def* fn_atomic(const Def* fn, const Def* dbg = {}) { return app(ax_atomic(), fn, dbg); }
-    const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg = {}) {
-        return app(ax_bitcast(), {dst_t, src_t}, dbg);
-    }
-    const Def* fn_for(Defs params);
-    ///@}
-
-    /// @name op - these guys build the final function application for the various operations
-    ///@{
-    const Def* op(Bit o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, iinfer(a)), {a, b}, dbg); }
-    const Def* op(ICmp o, const Def* a, const Def* b, const Def* dbg = {}) {
-        return app(fn(o, iinfer(a)), {a, b}, dbg);
-    }
-    const Def* op(RCmp o, const Def* rmode, const Def* a, const Def* b, const Def* dbg = {}) {
-        return app(fn(o, rmode, rinfer(a)), {a, b}, dbg);
-    }
-    const Def* op(ROp o, const Def* rmode, const Def* a, const Def* b, const Def* dbg = {}) {
-        return app(fn(o, rmode, rinfer(a)), {a, b}, dbg);
-    }
-    const Def* op(Shr o, const Def* a, const Def* b, const Def* dbg = {}) { return app(fn(o, iinfer(a)), {a, b}, dbg); }
-    const Def* op(Wrap o, const Def* wmode, const Def* a, const Def* b, const Def* dbg = {}) {
-        return app(fn(o, wmode, iinfer(a)), {a, b}, dbg);
-    }
-    template<class O>
-    const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) {
-        return op(o, lit_nat(mode), a, b, dbg);
-    }
-    const Def* op(Conv o, const Def* dst_type, const Def* src, const Def* dbg = {}) {
-        auto d = dst_type->as<App>()->arg();
-        auto s = src->type()->as<App>()->arg();
-        return app(fn(o, d, s), src, dbg);
-    }
-    const Def* op(Trait o, const Def* type, const Def* dbg = {}) { return app(ax(o), type, dbg); }
-    const Def* op(PE o, const Def* def, const Def* dbg = {}) { return app(app(ax(o), def->type()), def, dbg); }
-    const Def* op(Acc o, const Def* a, const Def* b, const Def* body, const Def* dbg = {}) {
-        return app(ax(o), {a, b, body}, dbg);
-    }
-    const Def* op_atomic(const Def* fn, Defs args, const Def* dbg = {}) { return app(fn_atomic(fn), args, dbg); }
-    const Def* op_bitcast(const Def* dst_type, const Def* src, const Def* dbg = {}) {
-        return app(fn_bitcast(dst_type, src->type()), src, dbg);
-    }
-    ///@}
-
-    /// @name wrappers for unary operations
-    ///@{
-    const Def* op_negate(const Def* a, const Def* dbg = {}) {
-        auto w = as_lit(iinfer(a));
-        return op(Bit::_xor, lit_idx(w, w - 1_u64), a, dbg);
-    }
-    const Def* op_rminus(const Def* rmode, const Def* a, const Def* dbg = {}) {
-        auto w = as_lit(rinfer(a));
-        return op(ROp::sub, rmode, lit_real(w, -0.0), a, dbg);
-    }
-    const Def* op_wminus(const Def* wmode, const Def* a, const Def* dbg = {}) {
-        auto w = as_lit(iinfer(a));
-        return op(Wrap::sub, wmode, lit_idx(w, 0), a, dbg);
-    }
-    const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) { return op_rminus(lit_nat(rmode), a, dbg); }
-    const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) { return op_wminus(lit_nat(wmode), a, dbg); }
     ///@}
 
     /// @name helpers
@@ -551,7 +428,6 @@ public:
         return tuple({sym.str(), loc, meta});
     }
     const Def* iinfer(const Def* def) { return def->type()->as<Idx>()->size(); }
-    const Def* rinfer(const Def* def) { return as<Tag::Real>(def->type())->arg(); }
     ///@}
 
     /// @name dumping/logging
@@ -711,27 +587,11 @@ private:
         const Def* table_id;
         const Def* table_not;
         std::array<const Lit*, 2> lit_bool_;
-        // clang-format off
-        std::array<const Axiom*, Num<Bit  >> Bit_;
-        std::array<const Axiom*, Num<Shr  >> Shr_;
-        std::array<const Axiom*, Num<Wrap >> Wrap_;
-        std::array<const Axiom*, Num<ROp  >> ROp_;
-        std::array<const Axiom*, Num<ICmp >> ICmp_;
-        std::array<const Axiom*, Num<RCmp >> RCmp_;
-        std::array<const Axiom*, Num<Trait>> Trait_;
-        std::array<const Axiom*, Num<Conv >> Conv_;
-        std::array<const Axiom*, Num<PE   >> PE_;
-        std::array<const Axiom*, Num<Acc  >> Acc_;
-        // clang-format on
         const Lit* lit_nat_0_;
         const Lit* lit_nat_1_;
         const Lit* lit_nat_max_;
         const Lit* lit_univ_0_;
         const Lit* lit_univ_1_;
-        const Axiom* atomic_;
-        const Axiom* bitcast_;
-        const Axiom* type_real_;
-        const Axiom* zip_;
         Lam* exit_;
     } data_;
 

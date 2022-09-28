@@ -5,9 +5,8 @@
 #include <string>
 #include <string_view>
 
-#include "thorin/tables.h"
-
 #include "thorin/util/print.h"
+#include "thorin/util/types.h"
 
 #include "absl/container/flat_hash_map.h"
 

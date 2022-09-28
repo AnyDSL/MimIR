@@ -22,7 +22,7 @@ public:
     /// @note This is different from `equiv(type, value->type(), dbg)` since @p type may be dependent.
     bool assignable(const Def* type, const Def* value, const Def* dbg);
 
-    /// @returns `defs.front()`, if all @p defs are alpha-equiv%alent and `nullptr` otherwise.
+    /// Yields `defs.front()`, if all @p defs are alpha-equiv%alent and `nullptr` otherwise.
     const Def* is_uniform(Defs defs, const Def* dbg);
 
 private:

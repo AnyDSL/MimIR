@@ -388,7 +388,11 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
 }
 
 const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
-    if (a == 1 && (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>())) return this;
+    if (a == 1) {
+        if (!type()) return this;
+        if (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>()) return this;
+    }
+
     World& w = world();
 
     if (isa<Tuple>() || isa<Sigma>()) {
