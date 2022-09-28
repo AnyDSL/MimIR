@@ -8,11 +8,70 @@
 ///
 /// ## Types
 ///
-/// ### %core.Int
+/// ### %core.Real
 ///
-.ax %core.Int: .Nat -> *;
+.ax %core.Real: .Nat -> *;
 ///
-/// ## Operations
+/// ## Integer Operations
+///
+/// ### %core.bit1
+///
+/// This *unary* bitwise operations offers all [4 possible operations](https://en.wikipedia.org/wiki/Truth_table#Unary_operations) as summarized in the following table:
+///
+/// | Subtag | A | a | Comment                      |
+/// |--------|---|---|------------------------------|
+/// | f      | o | o | always false                 |
+/// | neg    | o | x | negate                       |
+/// | id     | x | o | identity                     |
+/// | t      | x | x | always true                  |
+.ax %core.bit1(f, neg, id, t): Π w: .Nat -> .Idx w -> .Idx w, normalize_bit1;
+///
+/// ### %core.bit2
+///
+/// This *binary* bitwise operations offers all [16 possible operations](https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators) as summarized in the following table:
+///
+/// | Subtag | AB | Ab | aB | ab | Comment                      |
+/// |--------|----|----|----|----|------------------------------|
+/// | f      |  o |  o |  o |  o | always false                 |
+/// | nor    |  o |  o |  o |  x | not or                       |
+/// | nciff  |  o |  o |  x |  o | not converse implication     |
+/// | nfst   |  o |  o |  x |  x | not first argument           |
+/// | niff   |  o |  x |  o |  o | not implication              |
+/// | nsnd   |  o |  x |  o |  x | not second argument          |
+/// | _xor   |  o |  x |  x |  o | exclusive or                 |
+/// | nand   |  o |  x |  x |  x | not and                      |
+/// | _and   |  x |  o |  o |  o | and                          |
+/// | nxor   |  x |  o |  o |  x | not exclusive or             |
+/// | snd    |  x |  o |  x |  o | second argument              |
+/// | iff    |  x |  o |  x |  x | implication (if and only if) |
+/// | fst    |  x |  x |  o |  o | first argument               |
+/// | ciff   |  x |  x |  o |  x | converse implication         |
+/// | _or    |  x |  x |  x |  o | or                           |
+/// | t      |  x |  x |  x |  x | always true                  |
+.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
+                _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
+    Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w , normalize_bit2;
+///
+/// ### %core.shr
+///
+/// Shift right - integer operation that neither takes a WMode nor produces a side effect:
+/// * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
+/// * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
+.ax %core.shr(a, l): Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_shr;
+///
+/// ### %core.wrap
+///
+/// Integer operations that might wrap and, hence, take a WMode.
+.ax %core.wrap(add, sub, mul, shl): 
+    Π [m: .Nat, w: .Nat] -> [.Idx w, .Idx w] -> .Idx w, normalize_wrap;
+///
+/// ### %core.div
+///
+/// Signed and unsigned Integer division/remainder.
+/// Division by zero is undefined behavior and thus a visible side effect.
+/// For this reason, these axioms expect a `%%mem.M`.
+.ax %core.div(sdiv, udiv, srem, urem):
+    Π w: .Nat -> [%mem.M, .Idx w, .Idx w] -> [%mem.M, .Idx w], normalize_div;
 ///
 /// ### %core.icmp
 ///
@@ -23,7 +82,7 @@
 ///     * `L`: less with same sign
 ///     * `E`: equal
 ///
-/// Here is the complete picture for `%core.icmp.xygle x, y` for 3 bit wide integers:
+/// Here is the complete picture for `%%core.icmp.xygle x, y` for 3 bit wide integers:
 ///
 /// |        | x        |        |       |       |       | y     |       |       |       |       |
 /// |--------|----------|--------|-------|-------|-------|-------|-------|-------|-------|-------|
@@ -42,106 +101,126 @@
 /// And here is the overview of all possible combinations of relations.
 /// Note the aliases you can use for the common integer comparisions front-ends typically want to use:
 ///
-/// | Subtag  | Aliases | X | Y | G | L | E | Meaning                                         |
-/// |---------|---------| --|---|---|---|---|-------------------------------------------------|
-/// | `xygle` |  `f`    | o | o | o | o | o | always false                                    |
-/// | `xyglE` |  `e`    | o | o | o | o | x | equal                                           |
-/// | `xygLe` |         | o | o | o | x | o | less (same sign)                                |
-/// | `xyglE` |         | o | o | o | x | x | less or equal                                   |
-/// | `xyGle` |         | o | o | x | o | o | greater (same sign)                             |
-/// | `xyGlE` |         | o | o | x | o | x | greater or equal                                |
-/// | `xyGLe` |         | o | o | x | x | o | greater or less                                 |
-/// | `xyGLE` |         | o | o | x | x | x | greater or less or equal == same sign           |
-/// | `xYgle` |         | o | x | o | o | o | minus plus                                      |
-/// | `xYglE` |         | o | x | o | o | x | minus plus or equal                             |
-/// | `xYgLe` |  `sl`   | o | x | o | x | o | signed less                                     |
-/// | `xYglE` |  `sle`  | o | x | o | x | x | signed less or equal                            |
-/// | `xYGle` |  `ug`   | o | x | x | o | o | unsigned greater                                |
-/// | `xYGlE` |  `uge`  | o | x | x | o | x | unsigned greater or equal                       |
-/// | `xYGLe` |         | o | x | x | x | o | minus plus or greater or less                   |
-/// | `xYGLE` |         | o | x | x | x | x | not plus minus                                  |
-/// | `Xygle` |         | x | o | o | o | o | plus minus                                      |
-/// | `XyglE` |         | x | o | o | o | x | plus minus or equal                             |
-/// | `XygLe` |  `ul`   | x | o | o | x | o | unsigned less                                   |
-/// | `XyglE` |  `ule`  | x | o | o | x | x | unsigned less or equal                          |
-/// | `XyGle` |  `sg`   | x | o | x | o | o | signed greater                                  |
-/// | `XyGlE` |  `sge`  | x | o | x | o | x | signed greater or equal                         |
-/// | `XyGLe` |         | x | o | x | x | o | greater or less or plus minus                   |
-/// | `XyGLE` |         | x | o | x | x | x | not minus plus                                  |
-/// | `XYgle` |         | x | x | o | o | o | different sign                                  |
-/// | `XYglE` |         | x | x | o | o | x | different sign or equal                         |
-/// | `XYgLe` |         | x | x | o | x | o | signed or unsigned less                         |
-/// | `XYglE` |         | x | x | o | x | x | signed or unsigned less or equal == not greater |
-/// | `XYGle` |         | x | x | x | o | o | signed or unsigned greater                      |
-/// | `XYGlE` |         | x | x | x | o | x | signed or unsigned greater or equal == not less |
-/// | `XYGLe` |  `ne`   | x | x | x | x | o | not equal                                       |
-/// | `XYGLE` |  `t`    | x | x | x | x | x | always true                                     |
-.ax %core.icmp(xygle = f, xyglE = e, xygLe,      xygLE,       xyGle,      xyGlE,       xyGLe,      xyGLE,
-               xYgle,     xYglE,     xYgLe = sl, xYgLE = sle, xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
-               Xygle,     XyglE,     XygLe = ul, XygLE = ule, XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
-               XYgle,     XYglE,     XYgLe,      XYgLE,       XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
-    Π w: .Nat -> [%Int w, %Int w] -> .Bool , normalize_icmp;
+/// | Subtag  | Alias  | X | Y | G | L | E | Meaning                                         |
+/// |---------|--------|---|---|---|---|---|-------------------------------------------------|
+/// | `xygle` |  `f`   | o | o | o | o | o | always false                                    |
+/// | `xyglE` |  `e`   | o | o | o | o | x | equal                                           |
+/// | `xygLe` |        | o | o | o | x | o | less (same sign)                                |
+/// | `xyglE` |        | o | o | o | x | x | less or equal                                   |
+/// | `xyGle` |        | o | o | x | o | o | greater (same sign)                             |
+/// | `xyGlE` |        | o | o | x | o | x | greater or equal                                |
+/// | `xyGLe` |        | o | o | x | x | o | greater or less                                 |
+/// | `xyGLE` |        | o | o | x | x | x | greater or less or equal == same sign           |
+/// | `xYgle` |        | o | x | o | o | o | minus plus                                      |
+/// | `xYglE` |        | o | x | o | o | x | minus plus or equal                             |
+/// | `xYgLe` |  `sl`  | o | x | o | x | o | signed less                                     |
+/// | `xYglE` |  `sle` | o | x | o | x | x | signed less or equal                            |
+/// | `xYGle` |  `ug`  | o | x | x | o | o | unsigned greater                                |
+/// | `xYGlE` |  `uge` | o | x | x | o | x | unsigned greater or equal                       |
+/// | `xYGLe` |        | o | x | x | x | o | minus plus or greater or less                   |
+/// | `xYGLE` |        | o | x | x | x | x | not plus minus                                  |
+/// | `Xygle` |        | x | o | o | o | o | plus minus                                      |
+/// | `XyglE` |        | x | o | o | o | x | plus minus or equal                             |
+/// | `XygLe` |  `ul`  | x | o | o | x | o | unsigned less                                   |
+/// | `XyglE` |  `ule` | x | o | o | x | x | unsigned less or equal                          |
+/// | `XyGle` |  `sg`  | x | o | x | o | o | signed greater                                  |
+/// | `XyGlE` |  `sge` | x | o | x | o | x | signed greater or equal                         |
+/// | `XyGLe` |        | x | o | x | x | o | greater or less or plus minus                   |
+/// | `XyGLE` |        | x | o | x | x | x | not minus plus                                  |
+/// | `XYgle` |        | x | x | o | o | o | different sign                                  |
+/// | `XYglE` |        | x | x | o | o | x | different sign or equal                         |
+/// | `XYgLe` |        | x | x | o | x | o | signed or unsigned less                         |
+/// | `XYglE` |        | x | x | o | x | x | signed or unsigned less or equal == not greater |
+/// | `XYGle` |        | x | x | x | o | o | signed or unsigned greater                      |
+/// | `XYGlE` |        | x | x | x | o | x | signed or unsigned greater or equal == not less |
+/// | `XYGLe` |  `ne`  | x | x | x | x | o | not equal                                       |
+/// | `XYGLE` |  `t`   | x | x | x | x | x | always true                                     |
+.ax %core.icmp(xygle = f,  xyglE = e,   xygLe,      xygLE,       
+               xyGle,      xyGlE,       xyGLe,      xyGLE,
+               xYgle,      xYglE,       xYgLe = sl, xYgLE = sle, 
+               xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,
+               Xygle,      XyglE,       XygLe = ul, XygLE = ule, 
+               XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
+               XYgle,      XYglE,       XYgLe,      XYgLE,       
+               XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
+    Π w: .Nat -> [.Idx w, .Idx w] -> .Bool , normalize_icmp;
 ///
-/// ### %core.bit1
+/// ## Real Operations
 ///
-/// This *unary* bitwise operations offers all [4 possible operations](https://en.wikipedia.org/wiki/Truth_table#Unary_operations) as summarized in the following table:
+/// ### %core.rop
 ///
-/// | Subtag | A | a | Comment                      |
-/// |--------|---|---|------------------------------|
-/// | f      | o | o | always false                 |
-/// | neg    | o | x | negate                       |
-/// | id     | x | o | identity                     |
-/// | t      | x | x | always true                  |
-.ax %core.bit1(f, neg, id, t): Π w: .Nat -> %Int w -> %Int w;
+/// Floating point (real) operations that take RMode.
+.ax %core.rop(add, sub, mul, div, rem): 
+    Π [m: .Nat, w: .Nat] -> [%core.Real w, %core.Real w] -> %core.Real w, normalize_rop;
 ///
-/// ### %core.bit2
+/// ### %core.rcmp
 ///
-/// This *binary* bitwise operations offers all [16 possible operations](https://en.wikipedia.org/wiki/Truth_table#Truth_table_for_all_binary_logical_operators) as summarized in the following table:
+/// Floating point (real) comparison is made of 4 disjoint relations:
+///     * `U`nordered (yields true if either operand is a QNAN)
+///     * `G`reater
+///     * `L`ess
+///     * `E`qual
 ///
-/// | Subtag | AB | Ab | aB | ab | Comment                      |
-/// |--------|----|----|----|----|------------------------------|
-/// | f      |  o |  o |  o |  o | always false                 |
-/// | nor    |  o |  o |  o |  x | not or                       |
-/// | nciff  |  o |  o |  x |  o | not converse implication     |
-/// | na     |  o |  o |  x |  x | not first argument           |
-/// | niff   |  o |  x |  o |  o | not implication              |
-/// | nb     |  o |  x |  o |  x | not second argument          |
-/// | _xor   |  o |  x |  x |  o | exclusive or                 |
-/// | nand   |  o |  x |  x |  x | not and                      |
-/// | _and   |  x |  o |  o |  o | and                          |
-/// | nxor   |  x |  o |  o |  x | not exclusive or             |
-/// | b      |  x |  o |  x |  o | second argument              |
-/// | iff    |  x |  o |  x |  x | implication (if and only if) |
-/// | a      |  x |  x |  o |  o | first argment                |
-/// | ciff   |  x |  x |  o |  x | converse implication         |
-/// | _or    |  x |  x |  x |  o | or                           |
-/// | t      |  x |  x |  x |  x | always true                  |
-.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
-                _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
-    Π w: .Nat -> [%Int w, %Int w] -> %Int w , normalize_bit2;
+/// | Subtag | Alias | U | G | L | E | Meaning                      |        
+/// |--------|-------|---|---|---|---|------------------------------|
+/// | `ugle` |   `f` | o | o | o | o | always false                 |              
+/// | `uglE` |   `e` | o | o | o | x | ordered and equal            |    
+/// | `ugLe` |   `l` | o | o | x | o | ordered and less             |    
+/// | `ugLE` |  `le` | o | o | x | x | ordered and less or equal    |    
+/// | `uGle` |   `g` | o | x | o | o | ordered and greater          |    
+/// | `uGlE` |  `ge` | o | x | o | x | ordered and greater or equal |    
+/// | `uGLe` |  `ne` | o | x | x | o | ordered and not equal        |    
+/// | `uGLE` |   `o` | o | x | x | x | ordered (no NaNs)            |    
+/// | `Ugle` |   `u` | x | o | o | o | unordered (either NaNs)      |    
+/// | `UglE` |  `ue` | x | o | o | x | unordered or equal           |    
+/// | `UgLe` |  `ul` | x | o | x | o | unordered or less            |    
+/// | `UgLE` | `ule` | x | o | x | x | unordered or less or equal   |    
+/// | `UGle` |  `ug` | x | x | o | o | unordered or greater         |    
+/// | `UGlE` | `uge` | x | x | o | x | unordered or greater or equa |    
+/// | `UGLe` | `une` | x | x | x | o | unordered or not equal       |    
+/// | `UGLE` |   `t` | x | x | x | x | always true                  |    
+.ax %core.rcmp(ugle =   f, uglE =   e, ugLe =   l, ugLE =  le,
+               uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
+               Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
+               UGle =  ug, UGlE = uge, UGLe = une, UGLE =   t):
+    Π [m: .Nat, w: .Nat] -> [%core.Real w, %core.Real w] -> .Bool, normalize_rcmp;
 ///
-/// ### %core.shr
-///
-.ax %core.shr(ashr, lshr): Π w: .Nat -> [%Int w, %Int w] -> %Int w, normalize_shr;
-///
-/// ### %core.wrap
-///
-.ax %core.wrap(add, sub, mul, shl): Π [m: .Nat, w: .Nat] -> [%Int w, %Int w] -> %Int w, normalize_wrap;
-///
-/// ### %core.div
-///
-.ax %core.div(sdiv, udiv, srem, urem): Π w: .Nat -> [%mem.M, %Int w, %Int w] -> [%mem.M, %Int w], normalize_div;
+/// ## Conversions
 ///
 /// ### %core.conv
 ///
-/// Bit width (and signedness) conversion for `%Int -> %Int` and `%Real -> %Real` as well as `%Real -> %Int` and `%Int -> %Real` conversions.
-.ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -> %Int sw -> %Int dw, normalize_conv;
-.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> %Int sw -> %Real dw, normalize_conv;
-.ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -> %Real sw -> %Int dw, normalize_conv;
-.ax %core.conv(r2r): Π [dw: .Nat, sw: .Nat] -> %Real sw -> %Real dw, normalize_conv;
+/// Bit width (and signedness) conversion for:
+///     * `s2s`/`u2u`: `.Idx -> .Idx` 
+///     * `s2r`/`u2r`: `.Idx -> %%core.Real`
+///     * `r2s`/`r2u`: `%%core.Real -> .Idx` 
+///     * `r2r`: `%%core.Real -> %%core.Real` 
+.ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> .Idx dw, normalize_conv;
+.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> %core.Real dw, normalize_conv;
+.ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -> %core.Real sw -> .Idx dw, normalize_conv;
+.ax %core.conv(r2r): Π [dw: .Nat, sw: .Nat] -> %core.Real sw -> %core.Real dw, normalize_conv;
 ///
 /// ### %core.bitcast
 ///
 /// Bitcast to reinterpret a value as another type.
 /// Can be used for pointer / integer conversions as well as integer / nat conversions.
 .ax %core.bitcast: Π [D: *, S: *] -> S -> D, normalize_bitcast;
+///
+/// ## Other Operations
+/// 
+/// ### %core.trait
+/// 
+/// Yields the size or align of a type.
+.ax %core.trait(size, align): * -> .Nat, normalize_trait;
+/// 
+/// ### %core.pe
+/// 
+/// Steers the partial evaluator.
+.ax %core.pe(hlt, run): Π T: * -> T -> T, normalize_pe;
+.ax %core.pe(known): Π T: * -> T -> .Bool, normalize_pe;
+///
+/// ### %core.zip
+///
+/// For now, not a better place for this and will be moved elsewhere.
+.ax %core.zip: Π [r: .Nat, s: «r; .Nat»] 
+    -> Π [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i»
+    -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»», normalize_zip;

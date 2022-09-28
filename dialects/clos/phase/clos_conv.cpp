@@ -4,6 +4,8 @@
 
 #include "thorin/analyses/scope.h"
 
+#include "dialects/mem/mem.h"
+
 namespace thorin::clos {
 
 /* auxillary functions */
@@ -89,7 +91,7 @@ ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
         auto fnc = std::get<1_u64>(clos_unpack(tpl));
         if (auto q = match<clos>(fnc)) {
             fnc = q->arg();
-            cc  = q.flags();
+            cc  = q.id();
         }
         if (!lambda_or_branch || fnc->isa<Lam>()) return ClosLit(tpl, cc);
     }
@@ -205,7 +207,7 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
             }
             return new_lam;
         }
-    } else if (auto q = match<clos>(def); q && (q.flags() == clos::fstclassBB || q.flags() == clos::freeBB)) {
+    } else if (auto q = match<clos>(def); q && (q.id() == clos::fstclassBB || q.id() == clos::freeBB)) {
         // Note: Same thing about η-conversion applies here
         auto bb_lam = q->arg()->isa_nom<Lam>();
         assert(bb_lam && bb_lam->is_basicblock());
@@ -327,11 +329,11 @@ static bool is_memop_res(const Def* fd) {
     auto proj = fd->isa<Extract>();
     if (!proj) return false;
     auto types = proj->tuple()->type()->ops();
-    return std::any_of(types.begin(), types.end(), [](auto d) { return isa<Tag::Mem>(d); });
+    return std::any_of(types.begin(), types.end(), [](auto d) { return match<mem::M>(d); });
 }
 
 void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue& worklist) {
-    assert(!isa<Tag::Mem>(fd) && "mem tokens must not be free");
+    assert(!match<mem::M>(fd) && "mem tokens must not be free");
     if (is_toplevel(fd)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
         if (var != lam->ret_var()) node->fvs.emplace(fd);

@@ -82,4 +82,11 @@ constexpr r32 operator""_r32(long double d) { return r32(d); }
 constexpr r64 operator""_r64(long double d) { return r64(d); }
 // clang-format on
 
+using nat_t     = u64;
+using node_t    = u8;
+using flags_t   = u64;
+using dialect_t = u64;
+using tag_t     = u8;
+using sub_t     = u8;
+
 } // namespace thorin

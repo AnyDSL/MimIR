@@ -16,6 +16,7 @@ namespace thorin::fe {
     m(K_let,    ".let"   )             \
     m(K_Bool,   ".Bool"  )             \
     m(K_Nat,    ".Nat"   )             \
+    m(K_Idx,    ".Idx"   )             \
     m(K_extern, ".extern")             \
     m(K_Arr,    ".Arr"   )             \
     m(K_Sigma,  ".Sigma" )             \
@@ -63,6 +64,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_arrow,      "→")                \
     m(T_assign,     "=")                \
     m(T_at,         "@")                \
+    m(T_bang,       "!")                \
     m(T_bot,        "⊥")                \
     m(T_top,        "⊤")                \
     m(T_box,        "□")                \

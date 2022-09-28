@@ -47,6 +47,8 @@ In addition the following keywords are *terminals*:
 | `.module`   | starts a module           |
 | `.import`   | imports a dialect         |
 | `.Nat`      | thorin::Nat               |
+| `.Idx`      | thorin::Idx               |
+| `.Bool`     | alias for `.Idx 2`        |
 | `.ff`       | alias for `0₂`            |
 | `.tt`       | alias for `1₂`            |
 | `.Type`     | thorin::Type              |
@@ -76,8 +78,8 @@ The following *terminals* comprise more complicated patterns that are specified 
 | L        | sign? 0x hex+ pP sign dec+           | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | L        | sign? 0x hex+ `.` hex\* pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | L        | sign? 0x hex\* `.` hex+ pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
-| I        | dec+ sub+                            | integer literal of type `:Int mod`                                                                |
-| I        | dec+ `_` dec+                        | integer literal of type `:Int mod`                                                                |
+| I        | dec+ sub+                            | index literal of type `.Idx sub`                                                                  |
+| I        | dec+ `_` dec+                        | index literal of type `.Idx sub`                                                                  |
 
 The previous table resorts to the following definitions as shorthand:
 
@@ -160,9 +162,17 @@ For this reason there is no rule `b -> s (p, ..., p)`.
 
 | Nonterminal | Right-Hand Side                                                               | New Scope? | Comment                             | Thorin Class    |
 |-------------|-------------------------------------------------------------------------------|------------|-------------------------------------|-----------------|
+| e           | `.Univ`                                                                       |            | universise: type of a type level    | thorin::Univ    |
+| e           | `.Type` e                                                                     |            | type of level e                     | thorin::Type    |
+| e           | `*`                                                                           |            | alias for `.Type (0:.Univ)`         | thorin::Type    |
+| e           | `□`                                                                           |            | alias for `.Type (1:.Univ)`         | thorin::Type    |
+| e           | `.Nat`                                                                        |            | natural number                      | thorin::Nat     |
+| e           | `.Idx` e                                                                      |            | index of size e                     | thorin::Idx     |
+| e           | `.Bool`                                                                       |            | alias for `.Idx 2`                  | thorin::Idx     |
 | e           | `{` e `}`                                                                     | ✓          | block                               | -               |
-| e           | `*`                                                                           |            | type                                | thorin::Type    |
 | e           | L `:` e<sub>type</sub>                                                        |            | literal                             | thorin::Lit     |
+| e           | `.ff`                                                                         |            | alias for `0:(.Idx 2)`              | thorin::Lit     |
+| e           | `.tt`                                                                         |            | alias for `1:(.Idx 2)`              | thorin::Lit     |
 | e           | ( `.bot` or `.top` ) ( `:` e<sub>type</sub> )?                                |            | bottom/top                          | thorin::TExt    |
 | e           | Sym                                                                           |            | identifier                          | -               |
 | e           | Ax                                                                            |            | use of an axiom                     | -               |
@@ -195,13 +205,12 @@ Expressions nesting is disambiguated according to the following precedence table
 | e e              | application                         | left-to-right |
 | `Π` Sym `:` e    | domain of a dependent function type | -             |
 | `.lam` Sym `:` e | nominal lambda declaration          | -             |
-| `.cn` Sym `:` e  | nominal continuation declaration    | -             |
 | e `→` e          | function type                       | right-to-left |
 
 Note that the domain of a dependent function type binds slightly stronger than `→`.
 This has the effect that, e.g., `Π T: * → T → T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
 Otherwise, `→` would be consumed by the domain: `Π T:` (`* →` (`T → T`)) ↯.
-A similar situation occurs for `.lam`/`.cn` declaration.
+A similar situation occurs for a `.lam` declaration.
 
 ## Scoping
 

@@ -33,6 +33,62 @@ git config --local core.hooksPath .githooks/
 Note that you can [disable clang-format for a piece of code](https://clang.llvm.org/docs/ClangFormatStyleOptions.html#disabling-formatting-on-a-piece-of-code).
 In addition, you might want to check out plugins like the [Vim integration](https://clang.llvm.org/docs/ClangFormat.html#vim-integration).
 
+## Debugging
+
+For logging and automatic firing of breakpoints refer to the [Command-Line Reference](@ref clidebug).
+
+### Dumping
+
+Note that you can simply invoke thorin::Def::dump, thorin::Def::write, thorin::World::dump, or thorin::World::write from within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
+```gdb
+call def->dump()
+call def->dump(0)
+call def->dump(3)
+call world().write("out.thorin")
+```
+In particular, note the different output levels of thorin::Def::dump.
+What is more, you can adjust the output behavior directly from within GDB by modifying thorin::World::flags or thorin::World::log:
+```gdb
+call world.flags().dump_gid = 1
+call world.flags().dump_recursive = 1
+call world.log().level = 4
+```
+
+### Conditional Breakpoints
+
+Often, you will want to inspect a certain thorin::Def at a particular point within the program.
+You can use [conditional breakpoints](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html) for this.
+For example, the following GDB command will break, if the thorin::Def::gid of variable `def` is `42` in source code location `foo.cpp:23`:
+```gdb
+break foo.cpp:23 if def->gid() == 42
+```
+
+### Catching Throw
+
+For several things like errors in Thorin's front end, Thorin relies on C++ exceptions for error handling.
+Simply, do this to encounter them within GDB:
+```gdb
+catch throw
+```
+
+### Valgrind & GDB
+
+If you encounter memory related problems, you might want to run the program with [Valgrind's GDB server](https://valgrind.org/docs/manual/manual-core-adv.html).
+Simply launch the program like this
+```sh
+valgrind --vgdb=yes --vgdb-error=0 thorin-gtest
+```
+and follow the instructions.
+
+### VS Code
+
+As a utility to make debugging Thorin itself less painful with certain debuggers, the `thorin.natvis` file can be loaded for getting more expressive value inspection.
+In VS Code you can do so by adding the following to the `launch.json` configurations. When launching from VS Code via CMake, put it in `settings.json`'s `"cmake.debugConfig":`:
+```json
+"visualizerFile": "${workspaceFolder}/thorin.natvis",
+"showDisplayString": true,
+```
+
 ## Tests {#tests}
 
 ### lit Tests
@@ -47,7 +103,7 @@ cd lit
 ./lit ../build/lit -a --filter foo.thorin
 ```
 
-### Unit Tests
+### GoogleTest
 
 Run the [GoogleTest](https://google.github.io/googletest/) unit tests within the `build` folder with:
 ```sh
@@ -58,55 +114,6 @@ In addition, you can enable [Valgrind](https://valgrind.org/) with:
 ctest -T memcheck
 ```
 
-# Debugging
-
-For logging and automatic firing of breakpoints refer to the [Command-Line Reference](@ref clidebug).
-
-## Dumping
-
-Note that you can simply invoke thorin::Def::dump, thorin::Def::write, thorin::World::dump, or thorin::World::write from within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
-```gdb
-call def->dump()
-call def->dump(0)
-call def->dump(3)
-call world().write("out.thorin")
-```
-In particular, note the different output levels of thorin::Def::dump.
-What is more, you can adjust the output behavior directly from within GDB by modifying thorin::World::flags or thorin::World::log:
-```gdb
-call world.flags().dump_gid = 1
-call world.log().level = 4
-```
-
-## Conditional Breakpoints
-
-Often, you will want to inspect a certain thorin::Def at a particular point within the program.
-You can use [conditional breakpoints](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_33.html) for this.
-For example, the following GDB command will break, if the thorin::Def::gid of variable `def` is `666` in source code location `foo.cpp:23`:
-```gdb
-break foo.cpp:23 if def->gid() == 666
-```
-
-## Catching Throw
-
-For several things like errors in Thorin's front end, Thorin relies on C++ exceptions for error handling.
-Simply, do this to encounter them within GDB:
-```gdb
-catch throw
-```
-
-## Valgrind & GDB
-
-If you encounter memory related problems, you might want to run the program with [Valgrind's GDB server](https://valgrind.org/docs/manual/manual-core-adv.html).
-Simply launch the program like this
-```sh
-valgrind --vgdb=yes --vgdb-error=0 thorin-gtest
-```
-and follow the instructions.
-
-## GoogleTest
-
-Thorin's unit test suite uses [GoogleTest](https://google.github.io/googletest/).
 During debugging you probably only want to run a specifig test case.
 You can [filter](https://github.com/google/googletest/blob/main/docs/advanced.md#running-a-subset-of-the-tests) the test cases like this:
 ```sh
@@ -121,16 +128,11 @@ In addition, you may find it helpful to turn assertion failures into debugger br
 ./thorin-test --gtest_break_on_failure
 ```
 
-## VS Code
+## Syntax Highlighting
 
-As a utility to make debugging Thorin itself less painful with certain debuggers, the `thorin.natvis` file can be loaded for getting more expressive value inspection.
-In VS Code you can do so by adding the following to the `launch.json` configurations. When launching from VS Code via CMake, put it in `settings.json`'s `"cmake.debugConfig":`:
-```json
-"visualizerFile": "${workspaceFolder}/thorin.natvis",
-"showDisplayString": true,
-```
+[This](https://github.com/AnyDSL/vim-thorin2) Vim plugin provides syntax highlighting for Thorin files.
 
-# Third-Party Dialects
+## Third-Party Dialects
 
 After installing Thorin, third-party dialects just need to find the `thorin` package:
 ```cmake
@@ -151,7 +153,7 @@ cmake .. -Dthorin_DIR=<THORIN_INSTALL_PREFIX>/lib/cmake/thorin
 ```
 to configure the project.
 
-## add_thorin_dialect
+### add_thorin_dialect
 
 Registers a new Thorin dialect.
 
