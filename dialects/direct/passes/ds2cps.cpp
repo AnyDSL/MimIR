@@ -35,7 +35,11 @@ const Def* DS2CPS::rewrite(const Def* def) {
         if (auto lam = callee->isa_nom<Lam>()) {
             world.DLOG("encountered lam app");
             auto new_lam = rewrite_lam(lam);
+            world.DLOG("new lam: {} : {}", new_lam, new_lam->type());
+            auto arg = app->arg();
+            world.DLOG("arg: {} : {}", arg, arg->type());
             auto new_app = world.app(new_lam, app->arg());
+            world.DLOG("new app: {} : {}", new_app, new_app->type());
             return new_app;
         }
     }

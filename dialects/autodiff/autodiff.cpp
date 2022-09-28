@@ -17,7 +17,6 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"autodiff",
             [](thorin::PipelineBuilder& builder) {
                 builder.add_opt(110);
-                builder.add_opt(120);
                 builder.extend_opt_phase(105, [](thorin::PassMan& man) { man.add<thorin::autodiff::AutoDiffEval>(); });
                 builder.extend_opt_phase(111, [](thorin::PassMan& man) {
                     // in theory only after partial eval (beta, ...)

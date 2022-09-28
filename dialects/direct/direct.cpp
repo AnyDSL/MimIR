@@ -35,6 +35,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                 //     man.add<Scalerize>(ee);
                 //     man.add<TailRecElim>(er);
                 // });
+                builder.add_opt(120);
             },
             nullptr, [](Normalizers& normalizers) { direct::register_normalizers(normalizers); }};
 }
