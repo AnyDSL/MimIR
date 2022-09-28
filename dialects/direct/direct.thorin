@@ -28,4 +28,3 @@
 /// 
 .ax %direct.cps2ds: Π [T: *, U: *] -> (.Cn [T, .Cn U]) -> (T -> U), normalize_cps2ds;
 .ax %direct.cps2ds_dep: Π [T: *, U: T -> *] -> (.Cn [t:T, .Cn (%tool.force_type (U t))]) -> (Π [t:T] -> (%tool.force_type (U t)));
-// .ax %direct.cps2ds_dep: Π [T: *, U: T -> *] -> (.Cn [t:T, .Cn ((U t))]) -> (Π [t:T] -> ((U t)));
