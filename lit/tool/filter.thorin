@@ -8,11 +8,12 @@
 
 .import tool;
 .import mem;
+.import core;
 
 .let I32 = .Idx 4294967296;
 
 .cn f [a:I32, ret: .Cn [I32]] = {
-    .let b = %Wrap_add (0:.Nat, 4294967296:.Nat) (a, a);
+    .let b = %core.wrap.add (0:.Nat, 4294967296:.Nat) (a, a);
     %tool.set_filter (1:(.Idx 2), ret b)
 };
 
