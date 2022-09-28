@@ -238,6 +238,8 @@ var namespacethorin =
     [ "flatten", "namespacethorin.html#a4e087368518f24e3174721f3f993b20e", null ],
     [ "flatten", "namespacethorin.html#a3c8f47ae3611992a68b885cfe1b513c8", null ],
     [ "fmt", "namespacethorin.html#ac2a988f71a64a048c61d5a2238269ea8", null ],
+    [ "force", "namespacethorin.html#a26d5e95b9100626e61154373ab908bd5", null ],
+    [ "force", "namespacethorin.html#ad9f61ede0f76bb937047d9c1c5ee8a6c", null ],
     [ "get_plugin_search_paths", "namespacethorin.html#aa3b59dc6bf2e5b086b84f2d4a6be00d5", null ],
     [ "get_sign", "namespacethorin.html#ac76b51109303662a47f30fa874337254", null ],
     [ "get_var_lam", "namespacethorin.html#afa219845413436ebd217a971fb700df5", null ],
