@@ -830,7 +830,7 @@ void Parser::parse_rule() {
 
     expect(Tok::Tag::T_assign, "rule");
     scopes_.push();
-    auto rule  = world().nom_rule(dom_t);
+    auto rule = world().nom_rule(dom_t);
     dom_p->bind(scopes_, rule->var());
     auto lhs = parse_expr("left-hand side of a rule");
     expect(Tok::Tag::T_fatarrow, "rule");
