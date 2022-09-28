@@ -242,10 +242,13 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         return map(new_nom);
     } else {
         auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite(def->op(i), subst); });
-        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
+        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>()) {
             return map(clos_apply(new_ops[0], new_ops[1]));
-        else
+        }else if(def->isa<Axiom>()){
+            return def;
+        }else{
             return map(def->rebuild(w, new_type, new_ops, new_dbg));
+        }
     }
 
     thorin::unreachable();

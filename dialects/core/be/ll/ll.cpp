@@ -446,8 +446,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
             auto e = tuple->proj(n, i);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
-                std::cout << name << std::endl;
-                def->world().dump();
                 auto elem_t = convert(e->type());
                 auto namei  = name + "." + std::to_string(i);
                 prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, i);

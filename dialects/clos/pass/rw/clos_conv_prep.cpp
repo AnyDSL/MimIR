@@ -113,7 +113,7 @@ const App* ClosConvPrep::rewriteCallee(const App* app) {
         if (auto br = app->callee()->isa<Extract>()) {
             auto branches = br->tuple();
             // Eta-Expand branches
-            if (branches->isa<Tuple>() && branches->type()->isa<Sigma>()) {
+            if (branches->isa<Tuple>() && branches->type()->isa<Arr>()) {
                 for (auto i = 0u; i < branches->num_ops(); i++) {
                     if (!branches->op(i)->isa_nom<Lam>()) {
                         auto wrapper = eta_wrap(branches->op(i), clos::bot, "eta_br");

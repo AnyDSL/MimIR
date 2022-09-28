@@ -659,7 +659,6 @@ const Def* normalize_Trait(const Def*, const Def* callee, const Def* type, const
         u64 offset = 0;
         u64 align  = 1;
         for (auto t : type->ops()) {
-            t->dump();
             auto a = isa_lit(world.op(Trait::align, t));
             auto s = isa_lit(world.op(Trait::size, t));
             if (!a || !s) goto out;
