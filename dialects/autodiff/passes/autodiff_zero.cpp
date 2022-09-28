@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include <thorin/lam.h>
-#include <thorin/tables.h>
 
 #include "dialects/affine/affine.h"
 #include "dialects/core/core.h"

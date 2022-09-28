@@ -103,7 +103,8 @@ const Def* autodiff_type_fun(const Def* ty) {
     if (auto app = ty->isa<App>()) {
         auto callee = app->callee();
         // if (callee == world.type_int_() || callee == world.type_real()) { return ty; }
-        if (callee->isa<Idx>() || callee == world.type_real()) { return ty; }
+        // TODO: compare real
+        if (callee->isa<Idx>()) { return ty; }
     }
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {

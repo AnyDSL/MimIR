@@ -36,31 +36,31 @@ const Def* continuation_codom(const Def* E);
 /// the given functions are expected to be in cps
 const Def* compose_continuation(const Def* f, const Def* g);
 
-/// match without curry check
-template<class AxTag, bool Check = true>
-Match<AxTag, detail::Enum2Def<AxTag>> raw_match(const Def* def) {
-    auto [axiom, curry] = Axiom::get(def);
-    if constexpr (Check) {
-        if (axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>())
-            return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-        return {};
-    }
-    assert(axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>() && "assumed to be correct axiom");
-    return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-}
+// /// match without curry check
+// template<class AxTag, bool Check = true>
+// Match<AxTag, detail::Enum2Def<AxTag>> raw_match(const Def* def) {
+//     auto [axiom, curry] = Axiom::get(def);
+//     if constexpr (Check) {
+//         if (axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>())
+//             return {axiom, def->as<detail::Enum2Def<AxTag>>()};
+//         return {};
+//     }
+//     assert(axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>() && "assumed to be correct axiom");
+//     return {axiom, def->as<detail::Enum2Def<AxTag>>()};
+// }
 
-// equivalent to flags == given axiom
-// but error with cast
-template<class AxTag, bool Check = true>
-Match<AxTag, detail::Enum2Def<AxTag>> raw_match(AxTag sub, const Def* def) {
-    auto [axiom, curry] = Axiom::get(def);
-    if constexpr (Check) {
-        if (axiom && axiom->flags() == sub) return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-        return {};
-    }
-    assert(axiom && axiom->flags() == sub && "assumed to be correct axiom");
-    return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-}
+// // equivalent to flags == given axiom
+// // but error with cast
+// template<class AxTag, bool Check = true>
+// Match<AxTag, detail::Enum2Def<AxTag>> raw_match(AxTag sub, const Def* def) {
+//     auto [axiom, curry] = Axiom::get(def);
+//     if constexpr (Check) {
+//         if (axiom && axiom->flags() == sub) return {axiom, def->as<detail::Enum2Def<AxTag>>()};
+//         return {};
+//     }
+//     assert(axiom && axiom->flags() == sub && "assumed to be correct axiom");
+//     return {axiom, def->as<detail::Enum2Def<AxTag>>()};
+// }
 
 } // namespace thorin
 

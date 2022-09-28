@@ -48,7 +48,7 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         if (auto fun_app = callee->isa<App>()) {
             if (auto ty_app = fun_app->callee()->isa<App>(); ty_app) {
                 if (auto axiom = ty_app->callee()->isa<Axiom>()) {
-                    if (axiom->flags() == cps2ds_dep::Axiom_Id) {
+                    if (axiom->flags() == ((flags_t)Axiom::Base<cps2ds_dep>)) {
                         world.DLOG("rewrite cps axiom {} : {}", ty_app, ty_app->type());
                         auto cps_fun = fun_app->arg();
                         world.DLOG("function: {} : {}", cps_fun, cps_fun->type());

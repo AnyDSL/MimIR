@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include <thorin/lam.h>
-#include <thorin/tables.h>
 
 #include "dialects/tool/tool.h"
 
