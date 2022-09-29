@@ -17,7 +17,7 @@
     .Idx n
 };
 
-.lam .extern f [n:.Nat] -> (.Idx n) = {
+.lam f [n:.Nat] -> (.Idx n) = {
     42:(.Idx n)
 };
 
