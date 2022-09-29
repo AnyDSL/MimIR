@@ -21,7 +21,8 @@
                 "tool",
                 "-d",
                 "autodiff",
-                "${file}",
+                "${workspaceFolder}/lit/autodiff/simple_autodiff.thorin",
+                //"${file}",
                 "--output-thorin",
                 "-",
                 "-VVVV",
@@ -31,7 +32,7 @@
             "cwd": "${fileDirname}",
             "environment": [],
             "externalConsole": false,
-            "MIMode": "gdb",
+            "MIMode": "lldb",
             "setupCommands": [
                 {
                     "description": "Automatische Strukturierung und Einrückung für \"gdb\" aktivieren",

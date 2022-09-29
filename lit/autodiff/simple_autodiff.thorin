@@ -10,36 +10,28 @@
 
 .let I32 = .Idx 4294967296;
 
-.cn f [a:I32, ret: .Cn [I32]] = {
+.cn f [[mem : %mem.M, a:I32], ret: .Cn [%mem.M, I32]] = {
     // is pack
     // .let b = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (a, a);
     .let b = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (2:I32, a);
-    ret b
+    ret (mem, b)
 };
 
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
 
-
-    .cn pb_ret_cont [pr:I32] = {
+    .cn pb_ret_cont [[%mem.M, pr:I32]] = {
         return (mem, pr)
     };
 
-    .cn ret_cont [r:I32,pb:.Cn[I32,.Cn[I32]]] = {
+    .cn ret_cont [[mem: %mem.M, r:I32],pb:.Cn[[%mem.M, I32],.Cn[[%mem.M, I32]]]] = {
         // return (mem, r)
-        pb((1:I32),pb_ret_cont)
+        pb((mem, 1:I32),pb_ret_cont)
     };
 
-    .let f_diff = %autodiff.autodiff (.Cn [I32,.Cn[I32]]) f;
-    .let f_diff_cast = 
-        // %core.bitcast 
-        // (
-        //     .Cn [I32, .Cn[I32, .Cn[I32, .Cn[I32]]]],
-        //     %autodiff.autodiff_type (.Cn [I32, .Cn[I32]])
-        // ) 
-        f_diff;
+    .let f_diff = %autodiff.autodiff (.Cn [[%mem.M, I32],.Cn[[%mem.M, I32]]]) f;
 
-    .let c = (43:I32);
-    f_diff_cast (c,ret_cont)
+    .let c = (mem, 43:I32);
+    f_diff (c,ret_cont)
 };
 
 

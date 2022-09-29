@@ -4,6 +4,8 @@
 #include "thorin/tuple.h"
 
 #include "dialects/autodiff/autodiff.h"
+#include "dialects/mem/autogen.h"
+#include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
 
@@ -42,6 +44,40 @@ const Def* zero_pullback(const Def* E, const Def* A) {
 //  TODO: rename to op_tangent_type
 const Def* tangent_type_fun(const Def* ty) { return ty; }
 
+const Def* equip_mem(const Def* def){
+    auto& world = def->world();
+    auto memType = mem::type_mem(world);
+    if(match<mem::M>(def->proj(0))){
+        return def;
+    }
+
+    def->dump();
+    if(def->isa<Sigma>()){
+        size_t size = def->num_ops() + 1;
+        DefArray newOps(size, [&](size_t i){
+            return i == 0 ? memType : def->op(i - 1);
+        });
+
+        return world.sigma(newOps);
+    }else if(auto pack = def->isa<Pack>()){
+        auto count = as_lit(pack->shape());
+        DefArray newOps(count + 1, [&](size_t i){
+            return i == 0 ? memType : pack->body();
+        });
+
+        return world.sigma(newOps);
+    }else if(auto pack = def->isa<Arr>()){
+        auto count = as_lit(pack->shape());
+        DefArray newOps(count + 1, [&](size_t i){
+            return i == 0 ? memType : pack->body();
+        });
+
+        return world.sigma(newOps);
+    }else{
+        return world.sigma({memType, def});
+    }
+}
+
 /// computes pb type E* -> A*
 /// E - type of the expression (return type for a function)
 /// A - type of the argument (point of orientation resp. derivative - argument type for partial pullbacks)
@@ -49,7 +85,10 @@ const Pi* pullback_type(const Def* E, const Def* A) {
     auto& world   = E->world();
     auto tang_arg = tangent_type_fun(A);
     auto tang_ret = tangent_type_fun(E);
-    auto pb_ty    = world.cn({tang_ret, world.cn({tang_arg})});
+    tang_arg->dump();
+    tang_ret->dump();
+    auto pb_ty    = world.cn({equip_mem(tang_ret), world.cn(equip_mem(tang_arg))});
+    pb_ty->dump();
     return pb_ty;
 }
 
@@ -57,6 +96,7 @@ const Pi* pullback_type(const Def* E, const Def* A) {
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     auto& world = arg->world();
     world.DLOG("autodiff type for {} => {}", arg, ret);
+    arg->dump();
     auto aug_arg = autodiff_type_fun(arg);
     auto aug_ret = autodiff_type_fun(ret);
     world.DLOG("augmented types: {} => {}", aug_arg, aug_ret);
@@ -100,12 +140,20 @@ const Def* autodiff_type_fun(const Def* ty) {
     // TODO: what is this object? (only numbers are printed)
     // possible abstract type from autodiff axiom
     world.DLOG("AutoDiff on type: {}", ty);
-    if (auto app = ty->isa<App>()) {
-        auto callee = app->callee();
-        // if (callee == world.type_int_() || callee == world.type_real()) { return ty; }
-        // TODO: compare real
-        if (callee->isa<Idx>()) { return ty; }
+
+    if (auto mem = match<mem::M>(ty)) {
+        return mem;
     }
+
+    if( auto ptr = match<mem::Ptr>(ty) ){
+        auto type = ptr->op(0);
+        return ptr;
+    }
+
+    if (ty->isa<Idx>()) { 
+        return ty; 
+    }
+
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->shape();
@@ -119,6 +167,7 @@ const Def* autodiff_type_fun(const Def* ty) {
         DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
         return world.sigma(ops);
     }
+
     world.WLOG("no-diff type: {}", ty);
     // ty->dump(300);
     // world.write("tmp.txt");

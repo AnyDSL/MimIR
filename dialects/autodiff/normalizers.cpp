@@ -4,6 +4,7 @@
 #include "thorin/world.h"
 
 #include "dialects/autodiff/autodiff.h"
+#include "dialects/mem/autogen.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/core/core.h"
 
@@ -91,6 +92,10 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         world.DLOG("pack {}", pack);
         return pack;
         // assert(0);
+    } else if (auto ptr = match<mem::Ptr>(T)) {
+        return a;
+    } else if (auto ptr = match<mem::M>(T)) {
+        return b;
     } else if (auto app = T->isa<App>()) {
         auto callee = app->callee();
         if (callee->isa<Idx>()) {

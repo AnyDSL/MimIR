@@ -1,0 +1,49 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d autodiff %s --output-ll %t.ll --output-thorin - | FileCheck %s
+
+// a call to a autodiff style function
+// ./build/bin/thorin -d debug -d direct -d autodiff ./lit/autodiff/multiply_autodiff.thorin --output-thorin - -VVVV
+
+.import core;
+.import autodiff;
+.import mem;
+
+.let i32 = .Idx 4294967296;
+
+.cn f [[mem : %mem.M, a: %mem.Ptr («100:.Nat; i32», 0)], ret: .Cn [mem : %mem.M, i32]] = {
+    .let lea = %mem.lea (100:.Nat, <100:.Nat; i32>, 0) (a, 1:(.Idx 100));
+    .let (load_mem, load_val) = %mem.load (i32, 0) (mem, lea);
+    ret (load_mem, load_val)
+};
+
+.cn .extern main [mem : %mem.M, argc : i32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, i32]] = {
+
+    .cn ret_cont [[mem : %mem.M, a: i32], pb:.Cn[[%mem.M, i32],.Cn[[%mem.M, %mem.Ptr («100:.Nat; i32», 0)]]]] = {
+        .cn pb_ret_cont [mem : %mem.M, a: %mem.Ptr («100:.Nat; i32», 0)] = {
+            return (mem, 99:i32)
+        };
+        pb((mem, a), pb_ret_cont)
+    };
+
+    .let (alloc_mem, alloc_val) = %mem.alloc («100:.Nat; i32», 0) mem;
+
+    //.let (alloc_mem, alloc_val) = %mem.malloc (i32, 0) (mem, 4);
+    .let lea = %mem.lea (100:.Nat, <100:.Nat; i32>, 0) (alloc_val, 1:(.Idx 100));
+    .let store = %mem.store (i32, 0) (alloc_mem, lea, argc);
+
+    .let f_diff = %autodiff.autodiff (.Cn [[%mem.M, %mem.Ptr («100:.Nat; i32», 0)],.Cn[%mem.M, i32]]) f;
+
+    f_diff ((store, alloc_val),ret_cont)
+
+    //f ((store, alloc_val),return)
+};
+
+
+
+// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, (i32), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (i32)]] = {
+// CHECK-DAG: _[[appId:[_0-9]*]]: ⊥:★ = return_[[returnEtaId:[_0-9]*]] (mem_[[memId]], 42:(i32));
+// CHECK-DAG: _[[appId]]
+
+// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (i32)] = {
+// CHECK-DAG: return_[[retAppId:[_0-9]*]]: ⊥:★ = return_[[returnId]] _[[returnEtaVarId]];
+// CHECK-DAG: return_[[retAppId]]

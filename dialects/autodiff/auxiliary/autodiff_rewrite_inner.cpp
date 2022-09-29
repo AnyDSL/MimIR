@@ -10,6 +10,8 @@
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
+#include "dialects/mem/autogen.h"
+#include "dialects/autodiff/autogen.h"
 
 namespace thorin::autodiff {
 
@@ -143,8 +145,11 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
 
     // augment ops
 
+    auto isMem = match<mem::M>(tup->type()->proj(0)) ? 1 : 0;
+
+    auto projs = tup->projs();
     // TODO: should use ops instead?
-    DefArray aug_ops(tup->projs(), [&](const Def* op) { return augment(op, f, f_diff); });
+    DefArray aug_ops(projs.skip_front(isMem), [&](const Def* op) { return augment(op, f, f_diff); });
     auto aug_tup = world.tuple(aug_ops);
 
     DefArray pbs(aug_ops, [&](const Def* op) { return partial_pullback[op]; });
@@ -166,11 +171,22 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     auto pb_tangent = pb->var((nat_t)0, world.dbg("tup_s"));
 
     // TODO: move op_cps2ds to direct dialect and merge then
-    DefArray tangents(pbs.size(),
-                      [&](nat_t i) { return world.app(direct::op_cps2ds_dep(pbs[i]), world.extract(pb_tangent, i)); });
-    pb->app(true, pb->var(1),
-            // summed up tangents
-            op_sum(tangent_type_fun(f_arg_ty), tangents));
+    auto T = tangent_type_fun(f_arg_ty);
+    auto mem = pb->var((nat_t)0)->proj(0);
+    auto sum = world.app(world.ax<zero>(), T);
+
+    for(size_t i = 0 ; i < pbs.size() ; i++){
+        auto re = direct::op_cps2ds_dep(pbs[i]);
+        auto extract = world.extract(pb_tangent, i + 1);
+        auto app = world.app(re, {mem, extract});
+        mem = world.extract(app, (nat_t)0);
+        mem->dump();
+        mem->dump();
+        sum = world.app(world.app(world.ax<add>(), T), {sum, app});
+    }
+
+    //DefArray tangents(pbs.size(), [&](nat_t i) { return world.app(direct::op_cps2ds_dep(pbs[i]), world.extract(pb_tangent, i)); });
+    pb->app(true, pb->var(1), sum);
     partial_pullback[aug_tup] = pb;
 
     return aug_tup;
@@ -455,6 +471,36 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     assert(false && "should not be reached");
 }
 
+
+const Def* AutoDiffEval::augment_lea(const App* lea, Lam* f, Lam* f_diff) {
+    auto [ptr, as] = augment(lea->arg(), f, f_diff)->projs<2>();
+
+    auto pb = partial_pullback[ptr];
+
+    lea->dump();
+    pb->dump();
+    lea->dump();
+    return lea;
+}
+
+const Def* AutoDiffEval::augment_load(const App* load, Lam* f, Lam* f_diff) {
+
+    auto aug_arg = augment(load->arg(), f, f_diff);
+
+    load->dump();
+    load->dump();
+    return load;
+}
+
+const Def* AutoDiffEval::augment_store(const App* store, Lam* f, Lam* f_diff) {
+
+    auto aug_arg = augment(store->arg(), f, f_diff);
+
+    store->dump();
+    store->dump();
+    return store;
+}
+
 /// rewrite the given definition
 ///
 const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
@@ -470,6 +516,18 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     //     ->dom(1)->as<Pi>()->dom(); // arg tangent type
 
     world.DLOG("Augment def {} : {}", def, def->type());
+
+    if (auto lea = match<mem::lea>(def)) {
+        return augment_lea(lea->as<App>(), f, f_diff);
+    }
+
+    if (auto load = match<mem::load>(def)) {
+        return augment_load(load->as<App>(), f, f_diff);
+    }
+
+    if (auto store = match<mem::store>(def)) {
+        return augment_store(store->as<App>(), f, f_diff);
+    }
 
     // app => cont, operator, function
     if (auto app = def->isa<App>()) {
