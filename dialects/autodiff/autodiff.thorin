@@ -89,9 +89,9 @@
 /// the ds version is more direct
 /// but needs a ds handling of inlining
 
-.lam .extern id_ext [n:.Nat] -> .Nat = {
-    n
-};
+// .lam .extern id_ext [n:.Nat] -> .Nat = {
+//     n
+// };
 
 .lam .extern internal_diff_core_icmp_xYgLE 
     ![w: .Nat] ->
