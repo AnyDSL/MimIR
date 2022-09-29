@@ -1,7 +1,7 @@
 AutoDiff:
 | file                              | works | error | viewed |
 | --------------------------------- | ----- | ----- | ------ |
-| 2out.thorin                       | [ ]   | [x]   | [x]    | segfault  |
+| 2out.thorin                       | [ ]   | [x]   | [x]    | old var (new DS2CPS error) |
 | autodiff_mult_in_call2_2.thorin   | [x]   | [ ]   | [x]    |
 | autodiff_mult_in_call2_3.thorin   | [x]   | [ ]   | [x]    |
 | autodiff_mult_in_call2.thorin     | [x]   | [ ]   | [x]    |
@@ -10,7 +10,7 @@ AutoDiff:
 | call_autodiff_cont.thorin         | [x]   | [ ]   | [x]    |
 | call_autodiff.thorin              | [x]   | [ ]   | [x]    |
 | id_autodiff_info_out.thorin       | [x]   | [ ]   | [x]    |
-| id_autodiff_mult_in_mem.thorin    | [ ]   | [x]   | [x]    | seg fault |
+| id_autodiff_mult_in_mem.thorin    | [x]   | [ ]   | [x]    |
 | id_autodiff_mult_in.thorin        | [x]   | [ ]   | [x]    |
 | id_autodiff_mult_in_mult.thorin   | [x]   | [ ]   | [x]    |
 | id_autodiff_mult_in_mult2.thorin  | [x]   | [ ]   | [x]    |
@@ -19,7 +19,7 @@ AutoDiff:
 | multiply_autodiff_cond.thorin     | [x]   | [ ]   | [x]    |
 | multiply_autodiff_cond2.thorin    | [x]   | [ ]   | [x]    |
 | multiply_autodiff.thorin          | [x]   | [ ]   | [x]    |
-| pow_autodiff.thorin               | [ ]   | [x]   | [x]    | eta       |
+| pow_autodiff.thorin               | [ ]   | [x]   | [x]    | eta                        |
 | simple_autodiff.thorin            | [x]   | [ ]   | [x]    |
 | square_autodiff.thorin            | [x]   | [ ]   | [x]    |
 | square.thorin                     | [x]   | [ ]   | [x]    |
@@ -41,3 +41,5 @@ General:
 | zero_tuple.thorin          | [ ]   | [x]   | [ ]    |
 | simple.thorin              | [ ]   | [x]   | [ ]    |
 | simple_real.thorin         | [ ]   | [x]   | [ ]    |
+| 2out.thorin                | [ ]   | [x]   | [ ]    |
+| 2out_2.thorin              | [ ]   | [x]   | [ ]    |
