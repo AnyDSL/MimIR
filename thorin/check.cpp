@@ -45,6 +45,10 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
     if (!equiv(d1->type(), d2->type(), dbg)) return false;
     if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type(), dbg);
 
+    if (auto n1 = d1->isa_nom()) {
+        if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1, n2);
+    }
+
     if (is_sigma_or_arr(d1)) {
         if (!equiv(d1->arity(), d2->arity(), dbg)) return false;
 
@@ -63,10 +67,6 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
             if (var->nom() == n1) return d2->as<Var>()->nom() == n2;
         }
         return false;
-    }
-
-    if (auto n1 = d1->isa_nom()) {
-        if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1, n2);
     }
 
     return std::ranges::equal(d1->ops(), d2->ops(), [this, dbg](auto op1, auto op2) { return equiv(op1, op2, dbg); });
