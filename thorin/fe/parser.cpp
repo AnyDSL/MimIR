@@ -714,6 +714,7 @@ void Parser::parse_nom_fun() {
     auto track    = tracker();
     auto tok      = lex();
     bool is_cn    = tok.isa(Tok::Tag::K_cn);
+    auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = accept(Tok::Tag::K_extern).has_value();
     auto sym      = parse_sym("nominal lambda");
     assert(is_cn || tok.isa(Tok::Tag::K_lam));
@@ -726,7 +727,6 @@ void Parser::parse_nom_fun() {
     Lam* first_lam = nullptr;
     std::deque<Pi*> pis;
     do {
-        auto prec         = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
         const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
         auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
         auto dom_t        = dom_p->type(world());
