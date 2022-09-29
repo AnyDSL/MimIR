@@ -130,5 +130,7 @@ add_thorin_dialect(autodiff
         tool
         affine
         direct
+    HEADER_DEPENDS
+        mem
     INSTALL
 )

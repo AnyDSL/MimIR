@@ -4,6 +4,7 @@
 #include "thorin/tuple.h"
 
 #include "dialects/autodiff/autodiff.h"
+#include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
 
@@ -122,8 +123,11 @@ const Def* autodiff_type_fun(const Def* ty) {
     if (auto sig = ty->isa<Sigma>()) {
         // TODO: nom sigma
         DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
+        world.DLOG("ops: {,}", ops);
         return world.sigma(ops);
     }
+    // mem
+    if (match<mem::M>(ty)) return ty;
     world.WLOG("no-diff type: {}", ty);
     // ty->dump(300);
     // world.write("tmp.txt");
