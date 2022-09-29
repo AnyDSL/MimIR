@@ -24,7 +24,7 @@ const Def* normalize_reify(const Def*, const Def*, const Def* arg, const Def* db
 const Def* normalize_reflect(const Def*, const Def*, const Def* arg, const Def*) { return do_reflect(arg); }
 
 const Def* normalize_refine(const Def*, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world      = arg->world();
+    auto& world       = arg->world();
     auto [code, i, x] = arg->projs<3>();
     if (auto l = isa_lit(i)) {
         auto def = do_reflect(code);
