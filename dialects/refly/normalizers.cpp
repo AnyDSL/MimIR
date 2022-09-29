@@ -10,9 +10,7 @@ static const Def* do_reify(const Def* def, const Def* dbg = {}) {
     return def->world().lit(type_exp(def->world()), (u64)def, dbg);
 }
 
-static const Def* do_reflect(const Def* def) {
-    return reinterpret_cast<const Def*>(def->as<Lit>()->get());
-}
+static const Def* do_reflect(const Def* def) { return reinterpret_cast<const Def*>(def->as<Lit>()->get()); }
 
 template<dbg id>
 const Def* normalize_dbg(const Def*, const Def* callee, const Def* arg, const Def* dbg) {
@@ -21,16 +19,12 @@ const Def* normalize_dbg(const Def*, const Def* callee, const Def* arg, const De
     return id == dbg::perm ? world.raw_app(callee, arg, dbg) : arg;
 }
 
-const Def* normalize_reify(const Def*, const Def*, const Def* arg, const Def* dbg) {
-    return do_reify(arg, dbg);
-}
+const Def* normalize_reify(const Def*, const Def*, const Def* arg, const Def* dbg) { return do_reify(arg, dbg); }
 
-const Def* normalize_reflect(const Def*, const Def*, const Def* arg, const Def*) {
-    return do_reflect(arg);
-}
+const Def* normalize_reflect(const Def*, const Def*, const Def* arg, const Def*) { return do_reflect(arg); }
 
 const Def* normalize_refine(const Def*, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world = arg->world();
+    auto& world      = arg->world();
     auto [exp, i, x] = arg->projs<3>();
     if (auto l = isa_lit(i)) {
         auto def = do_reflect(exp);
