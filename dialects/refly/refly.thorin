@@ -10,19 +10,19 @@
 ///
 /// ## Types
 ///
-.ax %refly.Exp: *;
+.ax %refly.Code: *;
 ///
 /// ## Reify/Reflect
 ///
 /// ### %refly.reify
 ///
-/// Yields the internal presentation of a Thorin expression as `%%refly.Exp`.
-.ax %refly.reify: Π T: * -> T -> %refly.Exp, normalize_reify;
+/// Yields the internal presentation of a Thorin expression as `%%refly.Code`.
+.ax %refly.reify: Π T: * -> T -> %refly.Code, normalize_reify;
 ///
 /// ### %refly.reflect
 ///
-/// Converts a `%%refly.Exp` back to a Thorin expression.
-.ax %refly.reflect: Π T: * -> %refly.Exp -> T, normalize_reflect;
+/// Converts a `%%refly.Code` back to a Thorin expression.
+.ax %refly.reflect: Π T: * -> %refly.Code -> T, normalize_reflect;
 ///
 /// ## Inspect and Manipulate
 ///
@@ -33,8 +33,8 @@
 ///
 /// ### %refly.gid
 ///
-/// Sets the `i`th operand of the reified Exp `e` to `x`.
-.ax %refly.refine: Π T: * -> [e: %refly.Exp, i: .Nat, x: T] -> %refly.Exp, normalize_refine;
+/// Sets the `i`th operand of the reified Code `e` to `x`.
+.ax %refly.refine: Π T: * -> [e: %refly.Code, i: .Nat, x: T] -> %refly.Code, normalize_refine;
 ///
 /// ## Debug Operations
 ///

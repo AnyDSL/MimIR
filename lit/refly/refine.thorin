@@ -16,7 +16,6 @@
     .let tup = %refly.reflect <<4; .Nat>> new;
     .let x   = %core.bitcast (I64, .Nat) tup#1_4;
     return (mem, %core.conv.u2u (_32, 0) x)
-    // return (mem, 0:I32)
 };
 
 // CHECK-DAG: return{{.*}}42

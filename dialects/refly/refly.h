@@ -9,7 +9,7 @@
 namespace thorin::refly {
 
 // constructors
-inline const Axiom* type_exp(World& w) { return w.ax<Exp>(); }
+inline const Axiom* type_code(World& w) { return w.ax<Code>(); }
 
 void debug_print(const Def* def);
 } // namespace thorin::refly

@@ -7,7 +7,7 @@ namespace thorin::refly {
 static_assert(sizeof(const Def*) <= sizeof(u64), "pointer doesn't fit into Lit");
 
 static const Def* do_reify(const Def* def, const Def* dbg = {}) {
-    return def->world().lit(type_exp(def->world()), (u64)def, dbg);
+    return def->world().lit(type_code(def->world()), (u64)def, dbg);
 }
 
 static const Def* do_reflect(const Def* def) { return reinterpret_cast<const Def*>(def->as<Lit>()->get()); }
@@ -25,9 +25,9 @@ const Def* normalize_reflect(const Def*, const Def*, const Def* arg, const Def*)
 
 const Def* normalize_refine(const Def*, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world      = arg->world();
-    auto [exp, i, x] = arg->projs<3>();
+    auto [code, i, x] = arg->projs<3>();
     if (auto l = isa_lit(i)) {
-        auto def = do_reflect(exp);
+        auto def = do_reflect(code);
         return do_reify(def->refine(*l, x), dbg);
     }
 
