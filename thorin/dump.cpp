@@ -31,7 +31,7 @@ static Def* isa_decl(const Def* def) {
 }
 
 static std::string id(const Def* def) {
-    if (def->is_external() || (!def->is_unfinished() && def->isa<Lam>())) return def->name();
+    if (def->is_external() || (!def->is_set() && def->isa<Lam>())) return def->name();
     return def->unique_name();
 }
 

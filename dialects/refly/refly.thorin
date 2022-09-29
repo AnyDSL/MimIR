@@ -1,0 +1,48 @@
+/// # The refly dialect {#refly}
+///
+/// The refly dialect allows to reify and reflect Thorin's own representation.
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+/// none
+///
+/// ## Types
+///
+.ax %refly.Exp: *;
+///
+/// ## Reify/Reflect
+///
+/// ### %refly.reify
+///
+/// Yields the internal presentation of a Thorin expression as `%%refly.Exp`.
+.ax %refly.reify: Π T: * -> T -> %refly.Exp, normalize_reify;
+///
+/// ### %refly.reflect
+///
+/// Converts a `%%refly.Exp` back to a Thorin expression.
+.ax %refly.reflect: Π T: * -> %refly.Exp -> T, normalize_reflect;
+///
+/// ## Inspect and Manipulate
+///
+/// ### %refly.gid
+///
+/// Retuns the internal Def::gid of the argument.
+.ax %refly.gid: Π T: * -> T -> .Nat, normalize_gid;
+///
+/// ### %refly.gid
+///
+/// Sets the `i`th operand of the reified Exp `e` to `x`.
+.ax %refly.refine: Π T: * -> [e: %refly.Exp, i: .Nat, x: T] -> %refly.Exp, normalize_refine;
+///
+/// ## Debug Operations
+///
+/// Debugs a given expression.
+///
+/// ### %refly.dbg
+/// 
+/// * `tmp`: Prints debug information of a given expression at construction time and vanishes afterwrads.
+/// * `perm`: Permanently debugs at every construction.
+///   Gets removed at codegen preparation in thorin::refly::RemoveDbgPerm.
+.ax %refly.dbg(tmp, perm): Π T: * -> T -> T, normalize_dbg;

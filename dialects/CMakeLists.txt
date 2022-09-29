@@ -55,13 +55,13 @@ add_thorin_dialect(direct
     INSTALL
 )
 
-add_thorin_dialect(debug
+add_thorin_dialect(refly
     SOURCES
-        debug/debug.h
-        debug/debug.cpp
-        debug/passes/remove_perm.h
-        debug/passes/remove_perm.cpp
-        debug/normalizers.cpp
+        refly/refly.h
+        refly/refly.cpp
+        refly/passes/remove_perm.h
+        refly/passes/remove_perm.cpp
+        refly/normalizers.cpp
     INSTALL
 )
 
