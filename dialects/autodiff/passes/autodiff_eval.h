@@ -15,6 +15,7 @@ public:
 
     /// act on toplevel autodiff on closed terms
     /// replaced lambdas, operators with the appropriate derivatives
+    /// creates new lambda, calls associate variables, init maps, calls augment
     const Def* derive(const Def*);
     const Def* derive_(const Def*);
 
@@ -26,6 +27,7 @@ public:
     /// - replacement of operations with derivatives (especially functions; operators are beta-equivalent to the
     /// original) only creates a partial pullback if one exist => not every returning expression has a pullback takes
     /// the function with respect to which the expression is differentiated
+    /// can be seen as augmentation with a dual computation that generates the derivatives
     const Def* augment(const Def*, Lam*, Lam*);
     const Def* augment_(const Def*, Lam*, Lam*);
     /// helper functions for augment
@@ -44,15 +46,10 @@ private:
     /// expr (closed term = lambda, operator) -> derived expr
     /// f => f' = λ x. (f x, f*_x)
     /// src Def -> dst Def
-    /// R: for continuations the partial derivative (TODO: maybe split? - or move to partial pullback?)
-    ///  ^ not needed (handled by var augmentation)
     Def2Def derived;
     /// rewritten expressions (not necessarily closed) in a functional context
     /// src Def -> dst Def
     Def2Def augmented;
-
-    // remove: a modular pullback does not exist on its own
-    // Def2Def modular_pullbacks;
 
     /// dst Def -> dst Def
     Def2Def partial_pullback;
@@ -64,12 +61,20 @@ private:
     /// the structure pullback only preserves structure shallowly
     ///     a n-times nested tuple has a tuple of "normal" pullbacks
     ///     each inner nested tuples should have their own structure pullback by construction
-    /// TODO: explain [B0->A, ...]
+    /// e  : [B0, [B11, B12], B2]
+    /// e* : [B0, [B11, B12], B2] -> A
+    /// e*S: [B0 -> A, [B11, B12] -> A, B2 -> A]
     /// dst Def -> dst Def
+    /// short theory of shadow pb:
+    /// t: [B0, ..., Bn]
+    /// t*: [B0, ..., Bn] -> A
+    /// t*_S: [B0 -> A, ..., Bn -> A]
+    /// b = t#i : Bi
+    /// b* : Bi -> A
+    /// b* = t*_S #i (if exists)
+    /// equivalent to
+    ///    \lambda (s:Bi). t*_S (insert s at i in (zero [B0, ..., Bn]))
     Def2Def shadow_pullback;
-
-    // TODO: remove?
-    Def2Def app_pb;
 };
 
 } // namespace thorin::autodiff

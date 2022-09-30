@@ -11,19 +11,16 @@ namespace thorin::autodiff {
 
 const Def* normalize_autodiff(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // auto [mat, index, val] = arg->projs<3>();
 
     // do nothing (everything handled in the rewrite pass)
-    // TODO: maybe directly handle operations
+    // TODO: maybe handle operations directly
 
     return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_autodiff_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // return arg;
-    // return world.lit_int_width(32,42);
-    auto ad_ty = autodiff_type_fun(arg);
+    auto ad_ty  = autodiff_type_fun(arg);
     if (ad_ty) return ad_ty;
     return world.raw_app(callee, arg, dbg);
 }
@@ -42,16 +39,12 @@ const Def* normalize_zero(const Def* type, const Def* callee, const Def* arg, co
     // as add would no longer be able to shortcut them
 
     auto T = arg;
-    // auto zero = zero_def(T);
-    // if(zero)
-    //     return zero;
 
     return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // auto [mat, index, val] = arg->projs<3>();
 
     // TODO: add tuple -> tuple of adds
     // TODO: add zero -> other
@@ -90,59 +83,31 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
                             {world.extract(a, pack->var()), world.extract(b, pack->var())}));
         world.DLOG("pack {}", pack);
         return pack;
-        // assert(0);
     } else if (auto idx = T->isa<Idx>()) {
         world.DLOG("add int");
         auto width = as_lit(world.iinfer(a));
         world.DLOG("width {}", width);
-        // auto int_add = core::op(thorin::core::wrap::add, 0, a,b);
         auto int_add =
             world.app(world.app(world.ax(core::wrap::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
         world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
         return int_add;
-        // return
-        // world.app(world.app(
-        //     world.ax(core::)
-        // ))
     } else if (auto app = T->isa<App>()) {
         auto callee = app->callee();
-        // if (callee->isa<Idx>()) {
-        //     world.DLOG("add int");
-        //     auto width = as_lit(world.iinfer(a));
-        //     world.DLOG("width {}", width);
-        //     // auto int_add = core::op(thorin::core::wrap::add, 0, a,b);
-        //     auto int_add =
-        //         world.app(world.app(world.ax(core::wrap::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
-        //     world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
-        //     return int_add;
-        //     // return
-        //     // world.app(world.app(
-        //     //     world.ax(core::)
-        //     // ))
-        // }
         assert(0 && "not handled");
     }
     // TODO: mem stays here (only resolved after direct simplification)
-    // assert(0);
 
     return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // sum (n,T) arr
 
     auto [count, T] = callee->as<App>()->args<2>();
 
-    // world.DLOG("sum {}:{} {}:{}", count, count->type(), T, T->type());
     if (auto lit = count->isa<Lit>()) {
-        // auto val = lit
-        // auto val=lit->as<nat_t>();
         auto val = lit->get<nat_t>();
         world.DLOG("val: {}", val);
-        // R not necessary if sum is evaluated before zero (needs zero as pass)
-        // R if(val == 1)
-        // R     return arg;
         DefArray args = arg->projs(val);
         auto sum      = world.app(world.ax<zero>(), T);
         // would also be handled by add zero

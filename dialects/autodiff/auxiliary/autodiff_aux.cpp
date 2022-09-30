@@ -13,15 +13,10 @@ const Def* id_pullback(const Def* A) {
     auto arg_pb_ty    = pullback_type(A, A);
     auto id_pb        = world.nom_lam(arg_pb_ty, world.dbg("id_pb"));
     auto id_pb_scalar = id_pb->var((nat_t)0, world.dbg("s"));
-    // assert(id_pb!=NULL);
-    // assert(id_pb->ret_var()!=NULL);
-    // assert(id_pb_scalar!=NULL);
     id_pb->app(true,
-               // id_pb->ret_var(),
                id_pb->var(1), // can not use ret_var as the result might be higher order
                id_pb_scalar);
 
-    // world.DLOG("id_pb for type {} is {} : {}",A,id_pb,id_pb->type());
     return id_pb;
 }
 
@@ -35,9 +30,6 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     return pb;
 }
 
-// R P => P'
-// R TODO: function => extend
-// R const Def* augment_type_fun(const Def* ty) { return ty; }
 //  P => P*
 //  TODO: nothing? function => R? Mem => R?
 //  TODO: rename to op_tangent_type
@@ -98,20 +90,9 @@ const Def* autodiff_type_fun(const Def* ty) {
     auto& world = ty->world();
     // TODO: handle DS (operators)
     if (auto pi = ty->isa<Pi>()) { return autodiff_type_fun_pi(pi); }
-    // TODO: what is this object? (only numbers are printed)
-    // possible abstract type from autodiff axiom
+    // also handles autodiff call from axiom declaration => abstract => leave it
     world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
-    if (ty->isa<Idx>()) {
-        // world.DLOG("Idx");
-        return ty;
-    }
-    // if (auto app = ty->isa<App>()) {
-    //     auto callee = app->callee();
-    //     // if (callee == world.type_int_() || callee == world.type_real()) { return ty; }
-    //     // TODO: compare real
-    //     world.DLOG("callee: {}", callee);
-    //     if (callee->isa<Idx>()) { return ty; }
-    // }
+    if (ty->isa<Idx>()) { return ty; }
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->shape();
@@ -129,11 +110,6 @@ const Def* autodiff_type_fun(const Def* ty) {
     // mem
     if (match<mem::M>(ty)) return ty;
     world.WLOG("no-diff type: {}", ty);
-    // ty->dump(300);
-    // world.write("tmp.txt");
-    // can not work with
-    // assert(false && "autodiff_type should not be invoked on non-pi types");
-    // return ty;
     return nullptr;
 }
 
@@ -143,33 +119,18 @@ const Def* zero_def(const Def* T) {
     auto& world = T->world();
     world.DLOG("zero_def for type {} <{}>", T, T->node_name());
     if (auto arr = T->isa<Arr>()) {
-        auto shape = arr->shape();
-        auto body  = arr->body();
-        // auto inner_zero = zero_def(body);
+        auto shape      = arr->shape();
+        auto body       = arr->body();
         auto inner_zero = world.app(world.ax<zero>(), body);
         auto zero_arr   = world.pack(shape, inner_zero);
         world.DLOG("zero_def for array of shape {} with type {}", shape, body);
         world.DLOG("zero_arr: {}", zero_arr);
         return zero_arr;
-        // }else if(auto lit = match<type_int_>()) { }
-        // }else if(auto tint = T->isa<Tag::Int>()) {
     } else if (auto idx = T->isa<Idx>()) {
+        // TODO: real
         auto zero = world.lit_idx(T, 0, world.dbg("zero"));
-        // world.DLOG("zero_def for int of size {} is {}", size, zero);
         world.DLOG("zero_def for int is {}", zero);
         return zero;
-        // } else if (auto app = T->isa<App>()) {
-        //     auto callee = app->callee();
-        //     // auto args = app->args();
-        //     world.DLOG("app callee: {} : {} <{}>", callee, callee->type(), callee->node_name());
-        //     // TODO: can you directly match Tag::Int?
-        //     if (callee->isa<Idx>()) {
-        //         // auto size = app->arg(0);
-        //         auto zero = world.lit_idx(T, 0, world.dbg("zero"));
-        //         // world.DLOG("zero_def for int of size {} is {}", size, zero);
-        //         world.DLOG("zero_def for int is {}", zero);
-        //         return zero;
-        //     }
     } else if (auto sig = T->isa<Sigma>()) {
         DefArray ops(sig->ops(), [&](const Def* op) { return world.app(world.ax<zero>(), op); });
         return world.tuple(ops);
@@ -202,8 +163,6 @@ bool is_continuation(const Def* e) { return is_continuation_type(e->type()); }
 bool is_returning_continuation(const Def* e) {
     auto E = e->type();
     if (auto pi = E->isa<Pi>()) {
-        // R world.DLOG("codom is {}", pi->codom());
-        // R world.DLOG("codom kind is {}", pi->codom()->node_name());
         //  duck-typing applies here
         //  use short-circuit evaluation to reuse previous results
         return is_continuation_type(pi) &&       // continuation

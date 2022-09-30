@@ -1,13 +1,13 @@
+#include "dialects/autodiff/passes/autodiff_eval.h"
+
 #include <iostream>
 
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/core/core.h"
-// #include "dialects/direct/direct.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
-#include "dialects/autodiff/passes/autodiff_eval.h"
+#include "dialects/core/core.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
@@ -30,19 +30,14 @@ const Def* AutoDiffEval::rewrite(const Def* def) {
         // callee = autodiff T
         // arg = function of type T
         //   (or operator)
-        // auto callee = ad_app->callee();
         auto arg = ad_app->arg();
         world().DLOG("found a autodiff::autodiff of {}", arg);
-        // world.DLOG("found a autodiff::autodiff {} to {}",callee,arg);
 
-        if (arg->isa<Lam>()) {
-            // world.DLOG("found a autodiff::autodiff of a lambda");
-            return derive(arg);
-        }
+        if (arg->isa<Lam>()) { return derive(arg); }
 
-        // TODO: handle operators analogous 
+        // TODO: handle operators analogous
 
-        assert(0);
+        assert(0 && "not implemented");
         return def;
     }
 

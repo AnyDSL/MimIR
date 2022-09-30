@@ -61,7 +61,6 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("pb type is {}", pb_ty);
         auto aug_ty = world.cn({aug_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
-        // assert(0);
         auto aug_lam              = world.nom_lam(aug_ty, world.dbg("aug_" + lam->name()));
         auto aug_var              = aug_lam->var((nat_t)0);
         augmented[lam->var()]     = aug_var;
@@ -74,11 +73,6 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         aug_lam->set_filter(lam->filter());
         aug_lam->set_body(new_body);
 
-        // R auto lam_pb_ty = pullback_type(lam->type(), f_arg_ty);
-        // R auto lam_pb = world.cn(lam_pb_ty);
-        // R lam_pb->app(
-
-        // R )
         auto lam_pb               = zero_pullback(lam->type(), f_arg_ty);
         partial_pullback[aug_lam] = lam_pb;
         world.DLOG("augmented {} : {}", lam, lam->type());
@@ -227,7 +221,6 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 
     auto aug_arg    = augment(arg, f, f_diff);
     auto aug_callee = augment(callee, f, f_diff);
-    // auto arg_ppb    = partial_pullback[aug_arg];
 
     world.DLOG("augmented argument <{}> {} : {}", aug_arg->unique_name(), aug_arg, aug_arg->type());
     world.DLOG("augmented callee  <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
@@ -390,57 +383,9 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         auto r_pb = c1->var(1);
         c1->app(true, aug_cont, {res, compose_continuation(e_pb, r_pb)});
 
-        // auto X = continuation_codom(g->type());
-        // // auto A = f_diff->var((nat_t)0);
-        // auto A = f_diff->type()->dom(0);
-        // // auto E = g_deriv->var((nat_t)0);
-        // auto E = g_deriv->type()->as<Pi>()->dom(0);
-        // world.DLOG("A (var f): {}", A);
-        // world.DLOG("E (var g): {}", E);
-        // world.DLOG("X (out g = out f): {}", X);
-        // // auto ret_g_deriv = g_deriv->var(1);
-        // auto ret_g_deriv_ty = g_deriv->type()->as<Pi>()->dom(1);
-        // world.DLOG("ret_g_deriv_ty: {} ", ret_g_deriv_ty);
-        // // auto ret_f_deriv=f_diff->var(1);
-        // // world.DLOG("ret_f_deriv: {} : {}", ret_f_deriv, ret_f_deriv->type());
-
-        // // TODO: better debug names
-        // auto c1_ty=ret_g_deriv_ty->as<Pi>();
-        // world.DLOG("c1_ty: (cn[X, cn[X+, cn E+]]) {}", c1_ty);
-        // auto c2_ty=aug_cont->type()->as<Pi>()->dom(2)->as<Pi>();
-        // world.DLOG("c2_ty: (cn[X+, cn A+]) {}", c2_ty);
-        // auto c3_ty=c1_ty->dom(2)->as<Pi>()->dom(2)->as<Pi>();
-        // world.DLOG("c3_ty: (cn E+) {}", c3_ty);
-        // auto c1 = world.nom_lam(c1_ty,world.dbg("c1"));
-        // auto c2 = world.nom_lam(c2_ty,world.dbg("c2"));
-        // auto c3 = world.nom_lam(c3_ty,world.dbg("c3"));
-
-        // c1->app(true,
-        //     aug_cont,
-        //     {
-        //         c1->var((nat_t)0),
-        //         c2
-        //     }
-        // );
-        // c2->app(true,
-        //     c1->var(1),
-        //     {
-        //         c2->var((nat_t)0),
-        //         c3
-        //     }
-        // );
-        // c3->app(true,
-        //     e_pb,
-        //     {
-        //         c3->var((nat_t)0),
-        //         c2->var(1)
-        //     }
-        // );
-
         auto aug_app = world.app(aug_callee, {real_aug_args, c1});
         world.DLOG("aug_app: {} : {}", aug_app, aug_app->type());
 
-        // assert(0);
         return aug_app;
     }
 
@@ -449,8 +394,6 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 
     // TODO: handle cascading functions
     // TODO: handle axiom app before or after augment
-
-    // return def;
 
     assert(false && "should not be reached");
 }
@@ -525,7 +468,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     }
 
     // axiom
-    //  TODO: move concrete handling to own file, directory
+    //  TODO: move concrete handling to own function / file / directory (file per dialect)
     else if (auto ax = def->isa<Axiom>()) {
         world.DLOG("Augment axiom: {} : {}", ax, ax->type());
         world.DLOG("axiom curry: {}", ax->curry());
