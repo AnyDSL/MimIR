@@ -35,8 +35,8 @@ var menudata={children:[
 {text:"clos",url:"clos.html"},
 {text:"core",url:"core.html"},
 {text:"direct",url:"direct.html"},
-{text:"refly",url:"refly.html"},
-{text:"mem",url:"mem.html"}]},
+{text:"mem",url:"mem.html"},
+{text:"refly",url:"refly.html"}]},
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[

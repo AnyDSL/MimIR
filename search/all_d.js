@@ -35,7 +35,7 @@ var searchData=
   ['merge_5ftuple_32',['merge_tuple',['../namespacethorin.html#a51e00c5b59d67f48d2b918497cacf0df',1,'thorin']]],
   ['meta_33',['meta',['../classthorin_1_1Def.html#a7b977900411e059a5e3a09833b1bd95a',1,'thorin::Def::meta()'],['../classthorin_1_1Debug.html#a1a2381046065095c09048cb961c3a169',1,'thorin::Debug::meta()']]],
   ['mslot_34',['mslot',['../namespacethorin_1_1mem.html#a85840c980bb08ec14431b1f0eba6dd77',1,'thorin::mem']]],
-  ['mul_35',['mul',['../namespacethorin_1_1core.html#a1833f0faa946e3a89689c05e7aefb62ca353942263d1bedfbe06b7bfa78226253',1,'thorin::core::mul()'],['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa353942263d1bedfbe06b7bfa78226253',1,'thorin::core::mul()']]],
+  ['mul_35',['mul',['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa353942263d1bedfbe06b7bfa78226253',1,'thorin::core::mul()'],['../namespacethorin_1_1core.html#a1833f0faa946e3a89689c05e7aefb62ca353942263d1bedfbe06b7bfa78226253',1,'thorin::core::mul()']]],
   ['murmur3_36',['murmur3',['../namespacethorin.html#aa8858444c651d4782136a10c4562574b',1,'thorin::murmur3(hash_t h, uint32_t key)'],['../namespacethorin.html#a85d359a40aef5ef0148d3fc6880b8a00',1,'thorin::murmur3(hash_t h, uint64_t key)'],['../namespacethorin.html#af7a988abfdb3962f8db0c32f2a4a0110',1,'thorin::murmur3(hash_t h)']]],
   ['murmur3_5ffinalize_37',['murmur3_finalize',['../namespacethorin.html#a11d9f60317a743a4384f429a270db9de',1,'thorin']]],
   ['murmur3_5frest_38',['murmur3_rest',['../namespacethorin.html#afd6542b4bbcecac2fe7e4e87251a37f6',1,'thorin::murmur3_rest(hash_t h, uint8_t key)'],['../namespacethorin.html#a79e278c20d96a1b195018a8417e9702b',1,'thorin::murmur3_rest(hash_t h, uint16_t key)']]],
