@@ -207,10 +207,10 @@ Integer Operations</h1>
 %core.shr</h2>
 <p >Shift right - integer operation that neither takes a WMode nor produces a side effect:</p><ul>
 <li><a href="https://en.wikipedia.org/wiki/Arithmetic_shift"><code>a</code>rithmetic shift right</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Logical_shift"><code>l</code>ogical shift right</a> <div class="fragment"><div class="line">.ax %core.shr(a, l): Π w: .Nat -&gt; [.Idx w, .Idx w] -&gt; .Idx w, normalize_shr;</div>
-</div><!-- fragment --></li>
+<li><a href="https://en.wikipedia.org/wiki/Logical_shift"><code>l</code>ogical shift right</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md61"></a>
+<div class="fragment"><div class="line">.ax %core.shr(a, l): Π w: .Nat -&gt; [.Idx w, .Idx w] -&gt; .Idx w, normalize_shr;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md61"></a>
 %core.wrap</h2>
 <p >Integer operations that might wrap and, hence, take a WMode. </p><div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): </div>
 <div class="line">    Π [m: .Nat, w: .Nat] -&gt; [.Idx w, .Idx w] -&gt; .Idx w, normalize_wrap;</div>
@@ -395,13 +395,13 @@ Conversions</h1>
 <li><code>s2s</code>/<code>u2u</code>: <code>.Idx -&gt; .Idx</code></li>
 <li><code>s2r</code>/<code>u2r</code>: <code>.Idx -&gt; %core.Real</code></li>
 <li><code>r2s</code>/<code>r2u</code>: <code>%core.Real -&gt; .Idx</code></li>
-<li><code>r2r</code>: <code>%core.Real -&gt; %core.Real</code> <div class="fragment"><div class="line">.ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -&gt; .Idx sw -&gt; .Idx dw, normalize_conv;</div>
+<li><code>r2r</code>: <code>%core.Real -&gt; %core.Real</code></li>
+</ul>
+<div class="fragment"><div class="line">.ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -&gt; .Idx sw -&gt; .Idx dw, normalize_conv;</div>
 <div class="line">.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -&gt; .Idx sw -&gt; %core.Real dw, normalize_conv;</div>
 <div class="line">.ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -&gt; %core.Real sw -&gt; .Idx dw, normalize_conv;</div>
 <div class="line">.ax %core.conv(r2r): Π [dw: .Nat, sw: .Nat] -&gt; %core.Real sw -&gt; %core.Real dw, normalize_conv;</div>
-</div><!-- fragment --></li>
-</ul>
-<h2><a class="anchor" id="autotoc_md69"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md69"></a>
 %core.bitcast</h2>
 <p >Bitcast to reinterpret a value as another type. Can be used for pointer / integer conversions as well as integer / nat conversions. </p><div class="fragment"><div class="line">.ax %core.bitcast: Π [D: *, S: *] -&gt; S -&gt; D, normalize_bitcast;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md70"></a>
