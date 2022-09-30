@@ -77,32 +77,23 @@
 /// the pullback has to be in cps for compliance
 /// mul* := λ s. (s*b,s*a)
 /// 
-/// version 1: mul' as direct style function
-/// mul'_ds : Π [m:.Nat,w:.Nat] -> [a:Int,b:Int] -> [Int,cn[Int,cn[Int,Int]]]
-/// r,r* = mul'_ds (m,w) (a,b)
-/// 
 /// version 2: mul' as cps style function
 /// mul'_cps : Π [m:.Nat,w:.Nat] -> cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]
 /// r,r* = (cps2ds (mul'_cps (m,w))) (a,b)
-/// 
-/// both are normalizing by one inlining step
-/// the ds version is more direct
-/// but needs a ds handling of inlining
-
-// .lam .extern id_ext [n:.Nat] -> .Nat = {
-//     n
-// };
+/// direct apply to meta-params => inlined
+///     transformed with cps2ds
+/// ds2cps will not touch other curried DS
 
 .lam .extern internal_diff_core_icmp_xYgLE 
     ![w: .Nat] ->
     (.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]])
-    = { // (1:(.Idx 2)),
+    = { 
         .cn inner_cmp 
         ![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
-        = { // (1:(.Idx 2)),
+        = { 
             .let result = %core.icmp.sle (w) (a,b);
             .cn cmp_pb ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
-            = { // (1:(.Idx 2)),
+            = { 
                 .let z = 0:(.Idx w);
                 pb_ret (z, z)
             };
@@ -115,12 +106,12 @@
 .lam .extern internal_diff_core_wrap_add
     ![m:.Nat, w:.Nat] -> 
     (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])
-    = { // (1:(.Idx 2)),
+    = { 
     .cn inner_add_deriv_cps
         ![[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]
-        = { // (1:(.Idx 2)),
+        = { 
         .let result = %core.wrap.add (m,w) (a,b);
-        .cn add_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])] = { // (1:(.Idx 2)),
+        .cn add_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])] = { 
             pb_ret (s,s)
         };
         ret (result,add_pb)
@@ -129,37 +120,19 @@
 };
 
 
-
-
-// .cn .extern internal_diff_core_wrap_mul
-//     !(m:.Nat, w:.Nat)@(.tt)
-//     [[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]@(.tt)
-//     = {
-//         .let result = %core.wrap.mul (m,w) (a,b);
-//         .cn mul_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])]@(.tt) = { // (1:(.Idx 2)),
-//             .let lhs = %core.wrap.mul (m,w) (s,b);
-//             .let rhs = %core.wrap.mul (m,w) (s,a);
-//             pb_ret (lhs, rhs)
-//         };
-//         // %tool.set_filter (1:(.Idx 2),ret (result,mul_pb))
-//         ret (result,mul_pb)
-//     };
-
-
 .lam .extern internal_diff_core_wrap_mul
     ![m:.Nat, w:.Nat] -> 
     (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])
-    = { // (1:(.Idx 2)), 
+    = { 
     .cn inner_mul_deriv_cps
         ![[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]@(.tt)
-        = { // (1:(.Idx 2)),
+        = { 
         .let result = %core.wrap.mul (m,w) (a,b);
-        .cn mul_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])]@(.tt) = { // (1:(.Idx 2)),
+        .cn mul_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])]@(.tt) = { 
             .let lhs = %core.wrap.mul (m,w) (s,b);
             .let rhs = %core.wrap.mul (m,w) (s,a);
             pb_ret (lhs, rhs)
         };
-        // %tool.set_filter (1:(.Idx 2),ret (result,mul_pb))
         ret (result,mul_pb)
     };
     inner_mul_deriv_cps
@@ -264,7 +237,7 @@ Variant 2: Ptr(V)ᵗ = Vᵗ
 
 
 
-/// meta:
+/// meta rules (see rewrite_inner):
 /// - sigma
 /// - tuple elementwise + sum
 /// - pointer
@@ -275,11 +248,6 @@ Variant 2: Ptr(V)ᵗ = Vᵗ
 
 
 // notes:
-
-// rule syntax
-// .rule args :
-//     lhs -> rhs
-
 // function convention
 // .Cn [[mem, [args]], .Cn [mem, [outs]]]
 // .Cn [[mem, [A, B, C]], .Cn [mem, [X, Y]]]
