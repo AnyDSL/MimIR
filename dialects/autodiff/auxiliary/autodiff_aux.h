@@ -39,7 +39,6 @@ const Def* continuation_codom(const Def* E);
 /// the given functions are expected to be in cps
 const Def* compose_continuation(const Def* f, const Def* g);
 
-
 } // namespace thorin
 
 void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr);
