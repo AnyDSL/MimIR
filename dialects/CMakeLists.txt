@@ -55,16 +55,6 @@ add_thorin_dialect(direct
     INSTALL
 )
 
-add_thorin_dialect(refly
-    SOURCES
-        refly/refly.h
-        refly/refly.cpp
-        refly/passes/remove_perm.h
-        refly/passes/remove_perm.cpp
-        refly/normalizers.cpp
-    INSTALL
-)
-
 add_thorin_dialect(mem
     SOURCES
         mem/mem.cpp
@@ -80,5 +70,15 @@ add_thorin_dialect(mem
         mem/passes/rw/remem_elim.h
     HEADER_DEPENDS
         core
+    INSTALL
+)
+
+add_thorin_dialect(refly
+    SOURCES
+        refly/refly.h
+        refly/refly.cpp
+        refly/passes/remove_perm.h
+        refly/passes/remove_perm.cpp
+        refly/normalizers.cpp
     INSTALL
 )

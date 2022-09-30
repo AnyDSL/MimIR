@@ -34,9 +34,10 @@
 /// ### %refly.dbg
 /// 
 /// Debugs a given expression.
-/// * `tmp`: Prints debug information of a given expression at construction time and vanishes afterwrads.
+/// * `tmp`: Prints debug information of a given expression at construction time and vanishes afterwards.
 /// * `perm`: Permanently debugs at every construction.
 ///   Gets removed at codegen preparation in thorin::refly::RemoveDbgPerm.
+/// 
 .ax %refly.dbg(tmp, perm): Π T: * -> T -> T, normalize_dbg;
 /// 
 /// ## Manipulate
