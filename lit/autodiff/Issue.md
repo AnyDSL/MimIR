@@ -33,13 +33,11 @@ Second Order:
 General:
 | file                       | works | error | viewed |
 | -------------------------- | ----- | ----- | ------ |
-| cps_inline.thorin          | [ ]   | [x]   | [ ]    |
-| ds_inline.thorin           | [ ]   | [x]   | [ ]    |
-| invoke_ds.thorin           | [ ]   | [x]   | [ ]    |
-| multiply_deriv_test.thorin | [ ]   | [x]   | [ ]    |
-| tangent_type_cast.thorin   | [ ]   | [x]   | [ ]    |
-| zero_tuple.thorin          | [ ]   | [x]   | [ ]    |
-| simple.thorin              | [ ]   | [x]   | [ ]    |
-| simple_real.thorin         | [ ]   | [x]   | [ ]    |
-| 2out.thorin                | [ ]   | [x]   | [ ]    |
-| 2out_2.thorin              | [ ]   | [x]   | [ ]    |
+| 2out.thorin                | [x]   | [ ]   | [x]    |
+| cps_inline.thorin          | [x]   | [ ]   | [x]    |
+| ds_inline.thorin           | [x]   | [ ]   | [x]    |
+| invoke_ds.thorin           | [x]   | [ ]   | [x]    |
+| simple_real.thorin         | [ ]   | [x]   | [x]    | no reals |
+| tangent_type_cast.thorin   | [x]   | [ ]   | [x]    |
+| zero_tuple.thorin          | [x]   | [ ]   | [x]    |
+| 2out_2.thorin              | [x]   | [ ]   | [ ]    |
