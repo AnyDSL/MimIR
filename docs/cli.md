@@ -17,7 +17,7 @@
 
 * You can trigger a breakpoint upon construction of a thorin::Def with a specific global id.
 
-    For example, this will trigger a breakpoint if the thorin::Def with [global id](@ref thorin::Def::gid) `666` is being created:
+    For example, this will trigger a breakpoint if the thorin::Def with [global id](@ref thorin::Def::gid) `4223` is being created:
     ```
-    thorin -b 666 in.thorin
+    thorin -b 4223 in.thorin
     ```
