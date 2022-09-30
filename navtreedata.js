@@ -45,7 +45,8 @@ var NAVTREE =
       [ "core", "core.html", null ],
       [ "direct", "direct.html", null ],
       [ "mem", "mem.html", null ],
-      [ "refly", "refly.html", null ]
+      [ "refly", "refly.html", null ],
+      [ "demo", "demo.html", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -88,26 +89,26 @@ var NAVTREEINDEX =
 [
 "affine.html",
 "classthorin_1_1ArrayRef.html#a2a6828a3ee980d848690c8dfa74a503f",
-"classthorin_1_1Axiom.html#ad1470de2ff689e04a5173754a332dd3c",
-"classthorin_1_1Def.html#a0478725100ec49c9cb03ae02864a78d6",
-"classthorin_1_1DomFrontierBase.html#a4f538c14a8ab877683bc138f5d7d7711",
-"classthorin_1_1IndexMap.html#aed3c25a875eaf9017815b7a1a76a6925",
-"classthorin_1_1Match.html#acd7bf0b3bc070ada86c41cf156bfc171",
-"classthorin_1_1RWPhase.html#a0e90c3ab58594ea18fb94149f0024cb8",
-"classthorin_1_1Test.html#a87f38021c859f41caaa12611b7b4fef2",
-"classthorin_1_1World.html#ab0fd127c2bf81aaf93b0ac4ca2746f0e",
-"classthorin_1_1fe_1_1IdPtrn.html#aecd084649e58bd4751b63f9bf24e9a0d",
-"classthorin_1_1ll_1_1Emitter.html",
-"core_2autogen_8h.html#a124777bee4522d7fbba61a9aefe26cb7",
-"core_8cpp.html",
-"error_8h.html#aac934f1d1e901ba18050dd1302d65507",
-"mem_2autogen_8h.html#adeb51e6cf95882710ed9840f113a5346",
-"namespacethorin.html#ac2b25fb3f41080aac9d95007038fcd72",
-"namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978",
-"namespacethorin_1_1h.html#ad433edac06c7a019d6f049d942076437",
-"refly_2autogen_8h.html#a92faae55bee6f0288f073c05b5d5608b",
-"structthorin_1_1Pos.html#af96fe1b7effe294140f1051ca3a1ff13",
-"tuple_8h.html#a51e00c5b59d67f48d2b918497cacf0df"
+"classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39",
+"classthorin_1_1Def.html",
+"classthorin_1_1DomFrontierBase.html#a0d9ab8924d7875af3bcd06f4cf305046",
+"classthorin_1_1IndexMap.html#ac8b2406aed0f5f5cd5fa5d723c42b629",
+"classthorin_1_1Match.html#a9eb66637814d1f726aadbd1b6ceb304a",
+"classthorin_1_1RWPass.html#a7d0a6ccffb1efc8369210396f0eed6de",
+"classthorin_1_1Test.html#a419b77a5a01ac63e6b05fe4348b0b312",
+"classthorin_1_1World.html#aaea794ad46a5e21e9571a46c8e92b86a",
+"classthorin_1_1fe_1_1IdPtrn.html#a1c6c32c789a1b02844c2b79e77e69214",
+"classthorin_1_1h_1_1Bootstrapper.html#a335a449c3761a1cf433a3ad38516ed9d",
+"core_2autogen_8h.html#a016fae77d6f5857b429ceb5b433c4937aea350c7fd00b82fa94ce264a386a57cb",
+"core_2normalizers_8cpp.html#ad5a47b64d694f32241f3e7a5f7369ab9",
+"dot_8cpp.html#a60eef4cef3906b067e5cb3336127afe2",
+"mem_2autogen_8h.html#a85f6dddc05019ffa4d67a0d4c84dc258",
+"namespacethorin.html#ab1a9abc89dbfee14f1535dfbcacf5f97",
+"namespacethorin_1_1core.html#a47d533588f87f57bdd23186080ea51ca",
+"namespacethorin_1_1detail.html#a923e8f4b4842964409d2fbf66c72d0b0",
+"print_8h.html#a1e961804cf2964efea4388ebe218f496",
+"structthorin_1_1Log.html#aa0b95355e12aa74f6bb27a0079fcfca2",
+"thorin_2pass_2rw_2remem__elim_8cpp_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

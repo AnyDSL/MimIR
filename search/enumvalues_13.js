@@ -21,8 +21,8 @@ var searchData=
   ['test_18',['Test',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba2761c4aad624ceedae7edbf3c551c49b',1,'thorin::Node']]],
   ['texture_19',['Texture',['../namespacethorin_1_1mem_1_1AddrSpace.html#ab340bcab19267ad3cd0f434a547f806da0072015b7121be02140372660cab8971',1,'thorin::mem::AddrSpace']]],
   ['tmp_20',['tmp',['../namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70afa816edb83e95bf0c8da580bdfd491ef',1,'thorin::refly']]],
-  ['top_21',['Top',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbaed6c4ae568966987abe32f7fc9342f3e',1,'thorin::Node']]],
-  ['top_22',['top',['../namespacethorin_1_1core_1_1RMode.html#ab1738d486dcdeaaefb42bb676ba05b91aa23431afbc8c2bd86f9fa58f962fb4a6',1,'thorin::core::RMode']]],
+  ['top_21',['top',['../namespacethorin_1_1core_1_1RMode.html#ab1738d486dcdeaaefb42bb676ba05b91aa23431afbc8c2bd86f9fa58f962fb4a6',1,'thorin::core::RMode']]],
+  ['top_22',['Top',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbaed6c4ae568966987abe32f7fc9342f3e',1,'thorin::Node']]],
   ['traxy_23',['Traxy',['../classthorin_1_1mem_1_1SSAConstr.html#a74945efa38f2a7a750661ede05512660a448827b64332b5626d53fbe2a9b7ed79',1,'thorin::mem::SSAConstr']]],
   ['tuple_24',['Tuple',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbadebbca699bf3e5ae3338dd01934423bc',1,'thorin::Node']]],
   ['type_25',['Type',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba921d97e8cfab1f7c0026e2d98995d14c',1,'thorin::Node::Type()'],['../namespacethorin.html#abb917bebc699083d990fc4592abcc50eaa1fa27779242b4902f7ae3bdd5c6d508',1,'thorin::Type()']]]
