@@ -82,3 +82,11 @@ add_thorin_dialect(refly
         refly/normalizers.cpp
     INSTALL
 )
+
+add_thorin_dialect(demo
+    SOURCES
+        demo/demo.cpp
+        demo/demo.h
+        demo/normalizers.cpp
+    INSTALL
+)

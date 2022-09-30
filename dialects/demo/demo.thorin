@@ -1,0 +1,20 @@
+/// # The demo dialect {#demo}
+///
+/// [TOC]
+///
+/// A minimal demo plugin
+///
+/// ## Dependencies
+///
+/// none
+///
+/// ## Types
+///
+/// none 
+///
+/// ## Operations
+///
+/// ### %demo.const
+/// 
+/// The 42 constant, evaluated using a normalizer
+.ax %demo.constIdx: Π [n:.Nat] -> .Idx n, normalize_const;
