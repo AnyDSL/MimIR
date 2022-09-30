@@ -6,6 +6,13 @@ var classthorin_1_1Axiom =
     [ "Match< mem::M >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1M_01_4", [
       [ "type", "classthorin_1_1Axiom.html#adcf7c21e3b3e0287680818e5ae2d939d", null ]
     ] ],
+    [ "Match< refly::Code >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1Code_01_4", [
+      [ "type", "classthorin_1_1Axiom.html#ad1470de2ff689e04a5173754a332dd3c", null ]
+    ] ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
+    [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
     [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
     [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
     [ "Base", "classthorin_1_1Axiom.html#aa01d170ce1411990dc364e13f4db5a39", null ],
@@ -46,6 +53,10 @@ var classthorin_1_1Axiom =
     [ "get", "classthorin_1_1Axiom.html#a265f692e0ffd62145b40b8a2320bce1a", null ],
     [ "mangle", "classthorin_1_1Axiom.html#ab6ef63ca140ce780391b1b5d4101aaf0", null ],
     [ "normalizer", "classthorin_1_1Axiom.html#a05d2e899a18e55005f71c1803da89ae3", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
+    [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
     [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
     [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],
     [ "Num", "classthorin_1_1Axiom.html#a7521343dfb16782e284821a8ec396350", null ],

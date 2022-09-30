@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zip_0',['zip',['../namespacethorin_1_1core.html#a4786eb5f5c5a7edca2c2bc332c0dfa4a',1,'thorin::core']]]
+  ['wrap_0',['wrap',['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f',1,'thorin::core']]]
 ];

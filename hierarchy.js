@@ -94,6 +94,7 @@ var hierarchy =
     [ "thorin::Axiom::Match< T >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match", null ],
     [ "thorin::Match< Id, D >", "classthorin_1_1Match.html", null ],
     [ "thorin::Axiom::Match< mem::M >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01mem_1_1M_01_4", null ],
+    [ "thorin::Axiom::Match< refly::Code >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1Code_01_4", null ],
     [ "thorin::fe::Parser", "classthorin_1_1fe_1_1Parser.html", null ],
     [ "thorin::Pass", "classthorin_1_1Pass.html", [
       [ "thorin::RWPass< BetaRed, Def >", "classthorin_1_1RWPass.html", [
@@ -145,9 +146,6 @@ var hierarchy =
           [ "thorin::clos::LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", null ]
         ] ]
       ] ],
-      [ "thorin::RWPass< DebugRemovePerm, Lam >", "classthorin_1_1RWPass.html", [
-        [ "thorin::debug::DebugRemovePerm", "classthorin_1_1debug_1_1DebugRemovePerm.html", null ]
-      ] ],
       [ "thorin::RWPass< DS2CPS, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::direct::DS2CPS", "classthorin_1_1direct_1_1DS2CPS.html", null ]
       ] ],
@@ -166,6 +164,9 @@ var hierarchy =
         [ "thorin::FPPass< SSAConstr, Lam >", "classthorin_1_1FPPass.html", [
           [ "thorin::mem::SSAConstr", "classthorin_1_1mem_1_1SSAConstr.html", null ]
         ] ]
+      ] ],
+      [ "thorin::RWPass< RemoveDbgPerm, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::refly::RemoveDbgPerm", "classthorin_1_1refly_1_1RemoveDbgPerm.html", null ]
       ] ],
       [ "thorin::RWPass< P, N >", "classthorin_1_1RWPass.html", [
         [ "thorin::FPPass< P, N >", "classthorin_1_1FPPass.html", null ]

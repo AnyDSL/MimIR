@@ -3,7 +3,6 @@ var namespacethorin =
     [ "affine", "namespacethorin_1_1affine.html", "namespacethorin_1_1affine" ],
     [ "clos", "namespacethorin_1_1clos.html", "namespacethorin_1_1clos" ],
     [ "core", "namespacethorin_1_1core.html", "namespacethorin_1_1core" ],
-    [ "debug", "namespacethorin_1_1debug.html", "namespacethorin_1_1debug" ],
     [ "detail", "namespacethorin_1_1detail.html", "namespacethorin_1_1detail" ],
     [ "direct", "namespacethorin_1_1direct.html", "namespacethorin_1_1direct" ],
     [ "dl", "namespacethorin_1_1dl.html", "namespacethorin_1_1dl" ],
@@ -13,6 +12,7 @@ var namespacethorin =
     [ "ll", "namespacethorin_1_1ll.html", "namespacethorin_1_1ll" ],
     [ "mem", "namespacethorin_1_1mem.html", "namespacethorin_1_1mem" ],
     [ "Node", "namespacethorin_1_1Node.html", null ],
+    [ "refly", "namespacethorin_1_1refly.html", "namespacethorin_1_1refly" ],
     [ "sys", "namespacethorin_1_1sys.html", [
       [ "exec", "namespacethorin_1_1sys.html#ac4dd1156a86eb6db52f2cd93fec5a962", null ],
       [ "find_cmd", "namespacethorin_1_1sys.html#a2eda434a3eb1dcbf48dd570d8d2f7733", null ],

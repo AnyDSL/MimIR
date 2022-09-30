@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['rcmp_0',['rcmp',['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dd',1,'thorin::core']]],
-  ['real_1',['Real',['../namespacethorin_1_1core.html#a1273c641b76150b74824064e018e6e10',1,'thorin::core']]],
-  ['remem_2',['remem',['../namespacethorin_1_1mem.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14',1,'thorin::mem']]],
-  ['rmode_3',['RMode',['../namespacethorin_1_1core_1_1RMode.html#ab1738d486dcdeaaefb42bb676ba05b91',1,'thorin::core::RMode']]],
-  ['rop_4',['rop',['../namespacethorin_1_1core.html#a1833f0faa946e3a89689c05e7aefb62c',1,'thorin::core']]]
+  ['pe_0',['pe',['../namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254a',1,'thorin::core']]],
+  ['pos_1',['Pos',['../classthorin_1_1EtaExp.html#a156b61a8e9d0843a3e598adb259c7abd',1,'thorin::EtaExp']]],
+  ['prec_2',['Prec',['../classthorin_1_1fe_1_1Tok.html#a5a4207be68a5850473177397df2e34fa',1,'thorin::fe::Tok']]],
+  ['ptr_3',['Ptr',['../namespacethorin_1_1mem.html#a1e9242c771b97a95fe41b54fbe0385ab',1,'thorin::mem']]]
 ];

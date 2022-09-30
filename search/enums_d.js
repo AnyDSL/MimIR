@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['wrap_0',['wrap',['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74f',1,'thorin::core']]]
+  ['tag_0',['Tag',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79',1,'thorin::fe::Tok']]],
+  ['trait_1',['trait',['../namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbf',1,'thorin::core']]]
 ];

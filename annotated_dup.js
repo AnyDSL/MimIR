@@ -43,9 +43,6 @@ var annotated_dup =
         [ "FoldConv< conv::u2u, dw, sw >", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1u2u_00_01dw_00_01sw_01_4.html", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1u2u_00_01dw_00_01sw_01_4" ],
         [ "Res", "classthorin_1_1core_1_1Res.html", "classthorin_1_1core_1_1Res" ]
       ] ],
-      [ "debug", "namespacethorin_1_1debug.html", [
-        [ "DebugRemovePerm", "classthorin_1_1debug_1_1DebugRemovePerm.html", "classthorin_1_1debug_1_1DebugRemovePerm" ]
-      ] ],
       [ "direct", "namespacethorin_1_1direct.html", [
         [ "DS2CPS", "classthorin_1_1direct_1_1DS2CPS.html", "classthorin_1_1direct_1_1DS2CPS" ]
       ] ],
@@ -79,6 +76,9 @@ var annotated_dup =
         [ "CopyProp", "classthorin_1_1mem_1_1CopyProp.html", "classthorin_1_1mem_1_1CopyProp" ],
         [ "RememElim", "classthorin_1_1mem_1_1RememElim.html", "classthorin_1_1mem_1_1RememElim" ],
         [ "SSAConstr", "classthorin_1_1mem_1_1SSAConstr.html", "classthorin_1_1mem_1_1SSAConstr" ]
+      ] ],
+      [ "refly", "namespacethorin_1_1refly.html", [
+        [ "RemoveDbgPerm", "classthorin_1_1refly_1_1RemoveDbgPerm.html", "classthorin_1_1refly_1_1RemoveDbgPerm" ]
       ] ],
       [ "utf8", "namespacethorin_1_1utf8.html", [
         [ "Lexer", "classthorin_1_1utf8_1_1Lexer.html", "classthorin_1_1utf8_1_1Lexer" ]

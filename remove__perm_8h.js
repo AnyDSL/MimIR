@@ -1,4 +1,4 @@
 var remove__perm_8h =
 [
-    [ "thorin::debug::DebugRemovePerm", "classthorin_1_1debug_1_1DebugRemovePerm.html", "classthorin_1_1debug_1_1DebugRemovePerm" ]
+    [ "thorin::refly::RemoveDbgPerm", "classthorin_1_1refly_1_1RemoveDbgPerm.html", "classthorin_1_1refly_1_1RemoveDbgPerm" ]
 ];
