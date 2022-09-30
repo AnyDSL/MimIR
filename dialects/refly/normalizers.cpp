@@ -6,10 +6,12 @@ namespace thorin::refly {
 
 static_assert(sizeof(const Def*) <= sizeof(u64), "pointer doesn't fit into Lit");
 
+/// The trick is that we simply "box" the pointer of @p def inside a Lit of type `%refly.Code`.
 static const Def* do_reify(const Def* def, const Def* dbg = {}) {
-    return def->world().lit(type_code(def->world()), (u64)def, dbg);
+    return def->world().lit(type_code(def->world()), reinterpret_cast<u64>(def), dbg);
 }
 
+/// And here we are doing the reverse to retrieve the original pointer again.
 static const Def* do_reflect(const Def* def) { return reinterpret_cast<const Def*>(def->as<Lit>()->get()); }
 
 template<dbg id>
@@ -28,15 +30,14 @@ const Def* normalize_refine(const Def*, const Def* callee, const Def* arg, const
     auto [code, i, x] = arg->projs<3>();
     if (auto l = isa_lit(i)) {
         auto def = do_reflect(code);
-        return do_reify(def->refine(*l, x), dbg);
+        return do_reify(def->refine(*l, do_reflect(x)), dbg);
     }
 
     return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_gid(const Def*, const Def*, const Def* arg, const Def*) {
-    auto& world = arg->world();
-    return world.lit_nat(arg->gid());
+    return arg->world().lit_nat(arg->gid());
 }
 
 THORIN_refly_NORMALIZER_IMPL

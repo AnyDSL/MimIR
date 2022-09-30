@@ -5,7 +5,7 @@
 
 namespace thorin::refly {
 
-/// Removes all permanent `%refly.debug` markers for code gen.
+/// Removes all `%refly.debug.perm` markers for code gen.
 class RemoveDbgPerm : public RWPass<RemoveDbgPerm, Lam> {
 public:
     RemoveDbgPerm(PassMan& man)

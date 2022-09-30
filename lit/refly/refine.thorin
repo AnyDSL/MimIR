@@ -12,7 +12,7 @@
 .let I64 = .Idx 0;
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
     .let exp = %refly.reify <<4; .Nat>> (0, 1, 2, 4);
-    .let new = %refly.refine .Nat (exp, 1, 42);
+    .let new = %refly.refine (exp, 1, %refly.reify .Nat 42);
     .let tup = %refly.reflect <<4; .Nat>> new;
     .let x   = %core.bitcast (I64, .Nat) tup#1_4;
     return (mem, %core.conv.u2u (_32, 0) x)
