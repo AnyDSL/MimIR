@@ -5,7 +5,7 @@ var namespacethorin =
     [ "core", "namespacethorin_1_1core.html", "namespacethorin_1_1core" ],
     [ "demo", "namespacethorin_1_1demo.html", [
       [ "constIdx", "namespacethorin_1_1demo.html#a47ac0f1b8414b61332e12f3d6161a32c", null ],
-      [ "normalize_const", "namespacethorin_1_1demo.html#aed411ba7af975c606f216dfa3cf7ab28", null ],
+      [ "normalize_const", "namespacethorin_1_1demo.html#a1b5145b413efb1f1a54613d91d87db27", null ],
       [ "operator&", "namespacethorin_1_1demo.html#a775790b87ffc1bb40e8f854d86264920", null ],
       [ "operator&", "namespacethorin_1_1demo.html#a3e9505fd1a24128d652ac08f99722a05", null ],
       [ "operator==", "namespacethorin_1_1demo.html#aaf1f41b182574c914b368615fadc8431", null ],

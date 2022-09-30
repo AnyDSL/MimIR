@@ -43,10 +43,10 @@ var NAVTREE =
       [ "affine", "affine.html", null ],
       [ "clos", "clos.html", null ],
       [ "core", "core.html", null ],
+      [ "demo", "demo.html", null ],
       [ "direct", "direct.html", null ],
       [ "mem", "mem.html", null ],
-      [ "refly", "refly.html", null ],
-      [ "demo", "demo.html", null ]
+      [ "refly", "refly.html", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
