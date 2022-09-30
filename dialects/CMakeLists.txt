@@ -46,6 +46,14 @@ add_thorin_dialect(core
     INSTALL
 )
 
+add_thorin_dialect(demo
+    SOURCES
+        demo/demo.cpp
+        demo/demo.h
+        demo/normalizers.cpp
+    INSTALL
+)
+
 add_thorin_dialect(direct
     SOURCES
         direct/direct.cpp
@@ -80,13 +88,5 @@ add_thorin_dialect(refly
         refly/passes/remove_perm.h
         refly/passes/remove_perm.cpp
         refly/normalizers.cpp
-    INSTALL
-)
-
-add_thorin_dialect(demo
-    SOURCES
-        demo/demo.cpp
-        demo/demo.h
-        demo/normalizers.cpp
     INSTALL
 )
