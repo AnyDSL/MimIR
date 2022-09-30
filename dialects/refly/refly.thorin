@@ -1,0 +1,47 @@
+/// # The refly dialect {#refly}
+///
+/// The refly dialect allows to [reify](https://en.wikipedia.org/wiki/Reification_(computer_science)) and [reflect](https://en.wikipedia.org/wiki/Reflective_programming) Thorin's own representation.
+///
+/// [TOC]
+///
+/// ## Dependencies
+///
+/// none
+///
+/// ## Types
+///
+.ax %refly.Code: *;
+///
+/// ## Reify/Reflect
+///
+/// ### %refly.reify
+///
+/// Yields the internal representation of a Thorin expression as `%%refly.Code`.
+.ax %refly.reify: Π T: * -> T -> %refly.Code, normalize_reify;
+///
+/// ### %refly.reflect
+///
+/// Converts a `%%refly.Code` back to a Thorin expression.
+.ax %refly.reflect: Π T: * -> %refly.Code -> T, normalize_reflect;
+///
+/// ## Inspect
+///
+/// ### %refly.gid
+///
+/// Retuns the internal thorin::Def::gid of the argument.
+.ax %refly.gid: Π T: * -> T -> .Nat, normalize_gid;
+///
+/// ### %refly.dbg
+/// 
+/// Debugs a given expression.
+/// * `tmp`: Prints debug information of a given expression at construction time and vanishes afterwrads.
+/// * `perm`: Permanently debugs at every construction.
+///   Gets removed at codegen preparation in thorin::refly::RemoveDbgPerm.
+.ax %refly.dbg(tmp, perm): Π T: * -> T -> T, normalize_dbg;
+/// 
+/// ## Manipulate
+/// 
+/// ### %refly.refine
+///
+/// Sets the `i`th operand of the reified Code `e` to `x`.
+.ax %refly.refine: [e: %refly.Code, i: .Nat, x: %refly.Code] -> %refly.Code, normalize_refine;
