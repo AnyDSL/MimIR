@@ -56,16 +56,6 @@ add_thorin_dialect(tool
     INSTALL
 )
 
-add_thorin_dialect(debug
-    SOURCES
-        debug/debug.cpp
-        debug/debug.h
-        debug/passes/remove_perm.h
-        debug/passes/remove_perm.cpp
-        debug/normalizers.cpp
-    INSTALL
-)
-
 add_thorin_dialect(direct
     SOURCES
         direct/direct.cpp
@@ -76,7 +66,7 @@ add_thorin_dialect(direct
         direct/passes/cps2ds.h
         direct/normalizers.cpp
     DEPENDS
-        debug
+        tool
     INSTALL
 )
 
@@ -98,13 +88,16 @@ add_thorin_dialect(mem
     INSTALL
 )
 
+add_thorin_dialect(refly
+    SOURCES
+        refly/refly.h
+        refly/refly.cpp
+        refly/passes/remove_perm.h
+        refly/passes/remove_perm.cpp
+        refly/normalizers.cpp
+    INSTALL
+)
 
-# TODO: make this work
-# file(GLOB autodiff_SRC
-#      "autodiff/passes/*.h"
-#      "autodiff/passes/*.cpp"
-# )
-# ${autodiff_SRC}
 
 add_thorin_dialect(autodiff
     SOURCES

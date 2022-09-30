@@ -57,6 +57,7 @@
 /// Shift right - integer operation that neither takes a WMode nor produces a side effect:
 /// * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
 /// * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
+///
 .ax %core.shr(a, l): Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_shr;
 ///
 /// ### %core.wrap
@@ -194,6 +195,7 @@
 ///     * `s2r`/`u2r`: `.Idx -> %%core.Real`
 ///     * `r2s`/`r2u`: `%%core.Real -> .Idx` 
 ///     * `r2r`: `%%core.Real -> %%core.Real` 
+///
 .ax %core.conv(s2s, u2u): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> .Idx dw, normalize_conv;
 .ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> %core.Real dw, normalize_conv;
 .ax %core.conv(r2s, r2u): Π [dw: .Nat, sw: .Nat] -> %core.Real sw -> .Idx dw, normalize_conv;

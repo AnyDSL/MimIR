@@ -53,7 +53,7 @@ What is more, you can adjust the output behavior directly from within GDB by mod
 (gdb) call world.flags().dump_recursive = 1
 (gdb) call world.log().level = 4
 ```
-In other useful feature is to retrieve a `Def*` from a Def::gid via World::gid2def:
+Another useful feature is to retrieve a `Def*` from a thorin::Def::gid via thorin::World::gid2def:
 ```gdb
 (gdb) p world.gid2def(123);
 $1 = ...
