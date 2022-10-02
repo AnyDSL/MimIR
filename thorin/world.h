@@ -42,6 +42,7 @@ public:
         State(std::string_view name)
             : name(name) {}
 
+        /// [Plain Old Data](https://en.cppreference.com/w/cpp/named_req/PODType)
         struct POD {
             Log log;
             Flags flags;
