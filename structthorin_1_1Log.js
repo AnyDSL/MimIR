@@ -10,8 +10,8 @@ var structthorin_1_1Log =
     [ "colorize", "structthorin_1_1Log.html#ad81027bbd12e257e9285305c6fee465e", null ],
     [ "level2acro", "structthorin_1_1Log.html#a5ee67d670442fd8476290292f0f4a738", null ],
     [ "level2color", "structthorin_1_1Log.html#aa0b95355e12aa74f6bb27a0079fcfca2", null ],
-    [ "log", "structthorin_1_1Log.html#aeab0c193c020c0ca157872a74c8f38f6", null ],
-    [ "log", "structthorin_1_1Log.html#ae791bffd028da940716cd67de4ae4d70", null ],
+    [ "log", "structthorin_1_1Log.html#acc7eb80bd9799badbfdb44a45f26f0e8", null ],
+    [ "log", "structthorin_1_1Log.html#ae71c3bf4868ad20c8ee2dcef8c72813f", null ],
     [ "str2level", "structthorin_1_1Log.html#a06c1e1a99d980b61192e10020bb53928", null ],
     [ "level", "structthorin_1_1Log.html#a63ea2999521567a43b28f00081cd1e82", null ],
     [ "ostream", "structthorin_1_1Log.html#a9a8c7b53890137fd684f4e90cb1fb0e0", null ]

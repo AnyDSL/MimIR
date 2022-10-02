@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['l_0',['l',['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dda2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()'],['../namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()']]],
+  ['l_0',['l',['../namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()'],['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dda2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()']]],
   ['l_5fr_1',['L_r',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aff4732a008160f463364cd4285d4bc9f',1,'thorin::fe::Tok']]],
   ['l_5fs_2',['L_s',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a210614a1117e89a255b9d0b39516b604',1,'thorin::fe::Tok']]],
   ['l_5fu_3',['L_u',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a7e6dfe77ddaaa4a0c994660de2d38ead',1,'thorin::fe::Tok']]],
@@ -64,7 +64,7 @@ var searchData=
   ['loc_5f_61',['loc_',['../classthorin_1_1utf8_1_1Lexer.html#abddcf2b8c107fa35d85c5a1e549f4597',1,'thorin::utf8::Lexer']]],
   ['locals_5f_62',['locals_',['../classthorin_1_1Emitter.html#a860e366d86e79f6821ea44fc34a5a6bd',1,'thorin::Emitter']]],
   ['lock_63',['Lock',['../structthorin_1_1World_1_1Arena_1_1Lock.html',1,'thorin::World::Arena']]],
-  ['log_64',['log',['../structthorin_1_1World_1_1State.html#abd02362e4b18515bcda5b614fe70468e',1,'thorin::World::State::POD::log()'],['../structthorin_1_1Log.html#ae791bffd028da940716cd67de4ae4d70',1,'thorin::Log::log(Level level, Loc loc, const char *fmt, Args &amp;&amp;... args)'],['../structthorin_1_1Log.html#aeab0c193c020c0ca157872a74c8f38f6',1,'thorin::Log::log()'],['../classthorin_1_1World.html#ab0fd127c2bf81aaf93b0ac4ca2746f0e',1,'thorin::World::log() const'],['../classthorin_1_1World.html#a44b545a88c58fda7f15606002ba6d073',1,'thorin::World::log()']]],
+  ['log_64',['log',['../structthorin_1_1World_1_1State.html#abd02362e4b18515bcda5b614fe70468e',1,'thorin::World::State::POD::log()'],['../structthorin_1_1Log.html#ae71c3bf4868ad20c8ee2dcef8c72813f',1,'thorin::Log::log(Level level, Loc loc, const char *fmt, Args &amp;&amp;... args) const'],['../structthorin_1_1Log.html#acc7eb80bd9799badbfdb44a45f26f0e8',1,'thorin::Log::log() const'],['../classthorin_1_1World.html#ab0fd127c2bf81aaf93b0ac4ca2746f0e',1,'thorin::World::log() const'],['../classthorin_1_1World.html#a44b545a88c58fda7f15606002ba6d073',1,'thorin::World::log()']]],
   ['log_65',['Log',['../structthorin_1_1Log.html',1,'thorin']]],
   ['log_2ecpp_66',['log.cpp',['../log_8cpp.html',1,'']]],
   ['log_2eh_67',['log.h',['../log_8h.html',1,'']]],
