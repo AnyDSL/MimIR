@@ -145,8 +145,7 @@ public:
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def) {
         assert(!def->name().empty());
-        auto name = def->name();
-        // assert(!move_.externals.contains(name));
+        auto name     = def->name();
         auto [i, ins] = move_.externals.emplace(def->name(), def);
         // assert((ins || (def == i->second)) && "make sure the external isn't inserted twice");
     }
