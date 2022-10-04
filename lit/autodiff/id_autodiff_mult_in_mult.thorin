@@ -34,8 +34,4 @@
     f_diff (c,ret_cont)
 };
 
-// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0), 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (.Idx 4294967296)]] = {
-// CHECK-DAG: return_[[returnEtaId:[_0-9]*]] (mem_[[memId]], 18064342:(.Idx 4294967296))
-
-// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (.Idx 4294967296)] = {
-// CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]
+// CHECK-DAG: return{{.*}}18064342
