@@ -56,13 +56,11 @@ add_thorin_dialect(tool
     INSTALL
 )
 
-add_thorin_dialect(debug
+add_thorin_dialect(demo
     SOURCES
-        debug/debug.cpp
-        debug/debug.h
-        debug/passes/remove_perm.h
-        debug/passes/remove_perm.cpp
-        debug/normalizers.cpp
+        demo/demo.cpp
+        demo/demo.h
+        demo/normalizers.cpp
     INSTALL
 )
 
@@ -76,7 +74,7 @@ add_thorin_dialect(direct
         direct/passes/cps2ds.h
         direct/normalizers.cpp
     DEPENDS
-        debug
+        tool
     INSTALL
 )
 
@@ -95,5 +93,15 @@ add_thorin_dialect(mem
         mem/passes/rw/remem_elim.h
     HEADER_DEPENDS
         core
+    INSTALL
+)
+
+add_thorin_dialect(refly
+    SOURCES
+        refly/refly.h
+        refly/refly.cpp
+        refly/passes/remove_perm.h
+        refly/passes/remove_perm.cpp
+        refly/normalizers.cpp
     INSTALL
 )

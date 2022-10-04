@@ -10,7 +10,7 @@ struct Log {
     enum class Level { Error, Warn, Info, Verbose, Debug };
 
     template<class... Args>
-    void log(Level level, Loc loc, const char* fmt, Args&&... args) {
+    void log(Level level, Loc loc, const char* fmt, Args&&... args) const {
         if (ostream && int(level) <= int(this->level)) {
             std::ostringstream oss;
             oss << loc;
@@ -18,7 +18,7 @@ struct Log {
             print(*ostream, fmt, std::forward<Args&&>(args)...) << std::endl;
         }
     }
-    void log() {} ///< Dummy for Debug build.
+    void log() const {} ///< Dummy for Debug build.
 
     static std::string_view level2acro(Level);
     static Level str2level(std::string_view);
