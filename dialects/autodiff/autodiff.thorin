@@ -63,27 +63,29 @@
 .ax %autodiff.add: Π [T:*] -> [T,T] -> T, normalize_add;
 .ax %autodiff.sum: Π [n:.Nat,T:*] -> «n; T» -> T, normalize_sum;
 ///
-///
-
-
-
+/// ```
 /// mul' => args -> result*pullback
 /// call: r    = mul  (m,w) (a,b) 
 /// res : r,r* = mul' (m,w) (a,b)
-/// we shorten (Int w) to Int
+/// ```
+/// we shorten `(Int w)` to `Int`
+/// ```
 /// mul : Π [m:.Nat,w:.Nat] -> [a:Int,b:Int] -> Int
 /// r   : Int
 /// r*  : cn[Int,cn[Int,Int]]
+/// ```
 /// the pullback has to be in cps for compliance
+/// ```
 /// mul* := λ s. (s*b,s*a)
-/// 
-/// version 2: mul' as cps style function
+/// ```
+/// version 2: `mul'` as cps style function
+/// ```
 /// mul'_cps : Π [m:.Nat,w:.Nat] -> cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]
 /// r,r* = (cps2ds (mul'_cps (m,w))) (a,b)
+/// ```
 /// direct apply to meta-params => inlined
 ///     transformed with cps2ds
 /// ds2cps will not touch other curried DS
-
 .lam .extern internal_diff_core_icmp_xYgLE 
     ![w: .Nat] ->
     (.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]])
@@ -102,7 +104,6 @@
         inner_cmp
     };
 
-
 .lam .extern internal_diff_core_wrap_add
     ![m:.Nat, w:.Nat] -> 
     (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])
@@ -118,7 +119,6 @@
     };
     inner_add_deriv_cps
 };
-
 
 .lam .extern internal_diff_core_wrap_mul
     ![m:.Nat, w:.Nat] -> 
