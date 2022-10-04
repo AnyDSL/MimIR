@@ -422,7 +422,6 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         return augment_app(app, f, f_diff);
     }
 
-    // projection
     else if (auto ext = def->isa<Extract>()) {
         // world.DLOG("Augment extract: {}", def);
         auto tuple = ext->tuple();
@@ -431,13 +430,11 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         return augment_extract(ext, f, f_diff);
     }
 
-    // vars (function argument)
     else if (auto var = def->isa<Var>()) {
         world.DLOG("Augment variable: {}", var);
         return augment_var(var, f, f_diff);
     }
 
-    // lam
     else if (auto lam = def->isa_nom<Lam>()) {
         world.DLOG("Augment nom lambda: {}", lam);
         return augment_lam(lam, f, f_diff);
@@ -446,19 +443,16 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         assert(false && "can not handle non-nominal lambdas");
     }
 
-    // constants
     else if (auto lit = def->isa<Lit>()) {
         world.DLOG("Augment literal: {}", def);
         return augment_lit(lit, f, f_diff);
     }
 
-    // tuple
     else if (auto tup = def->isa<Tuple>()) {
         world.DLOG("Augment tuple: {}", def);
         return augment_tuple(tup, f, f_diff);
     }
 
-    // pack
     else if (auto pack = def->isa<Pack>()) {
         // TODO: nom pack
         auto shape = pack->arity(); // TODO: arity vs shape
@@ -467,7 +461,6 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         return augment_pack(pack, f, f_diff);
     }
 
-    // axiom
     //  TODO: move concrete handling to own function / file / directory (file per dialect)
     else if (auto ax = def->isa<Axiom>()) {
         world.DLOG("Augment axiom: {} : {}", ax, ax->type());
