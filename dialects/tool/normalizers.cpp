@@ -19,12 +19,6 @@ const Def* normalize_force_type(const Def* type, const Def* callee, const Def* a
     return world.raw_app(callee, arg, dbg);
 }
 
-const Def* normalize_set_filter(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
-
-    return world.raw_app(callee, arg, dbg);
-}
-
 THORIN_tool_NORMALIZER_IMPL
 
 } // namespace thorin::tool
