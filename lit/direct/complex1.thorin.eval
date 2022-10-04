@@ -2,26 +2,6 @@
 .import debug;
 .import direct;
 .import mem;
-// .lam .extern internal_diff_core_icmp_xYgLE __690955: .Nat → .Cn [«2:.Nat; .Idx __690955», .Cn [(.Idx 2), .Cn [(.Idx 2), .Cn «2:.Nat; .Idx __690955»]]] = {
-//     .cn cmp_pb_691047 __691058::[(.Idx 2), pb_ret_691060: .Cn «2:.Nat; .Idx __690955»] = {
-//         pb_ret_691060 ‹2:.Nat; 0:(.Idx __690955)›
-//     };
-//     .cn inner_cmp_690996 __691005::[__691023::[_691027: .Idx __690955, _691031: .Idx __690955], ret_691007: .Cn [(.Idx 2), .Cn [(.Idx 2), .Cn «2:.Nat; .Idx __690955»]]] = {
-//         .let _691034: (.Idx 2) = %core.icmp.sle __690955 __691023;
-//         ret_691007 (_691034, cmp_pb_691047)
-//     };
-//     inner_cmp_690996
-// };
-// .lam .extern internal_diff_core_wrap_add __691155::[_691242: .Nat, w_691156: .Nat] → .Cn [«2:.Nat; .Idx w_691156», .Cn [.Idx w_691156, .Cn [.Idx w_691156, .Cn «2:.Nat; .Idx w_691156»]]] = {
-//     .cn add_pb_691255 __691264::[s_691271: .Idx w_691156, pb_ret_691266: .Cn «2:.Nat; .Idx w_691156»] = {
-//         pb_ret_691266 ‹2:.Nat; s_691271›
-//     };
-//     .cn inner_add_deriv_cps_691201 __691210::[__691230::[_691234: .Idx w_691156, _691238: .Idx w_691156], ret_691212: .Cn [.Idx w_691156, .Cn [.Idx w_691156, .Cn «2:.Nat; .Idx w_691156»]]] = {
-//         .let _691245: .Idx w_691156 = %core.wrap.add __691155 __691230;
-//         ret_691212 (_691245, add_pb_691255)
-//     };
-//     inner_add_deriv_cps_691201
-// };
 .lam .extern internal_diff_core_wrap_mul __691353::[_691435: .Nat, w_691354: .Nat] → .Cn [«2:.Nat; .Idx w_691354», .Cn [.Idx w_691354, .Cn [.Idx w_691354, .Cn «2:.Nat; .Idx w_691354»]]] = {
     .cn inner_mul_deriv_cps_691394 __691403::[__691423::[_691427: .Idx w_691354, _691431: .Idx w_691354], ret_691405: .Cn [.Idx w_691354, .Cn [.Idx w_691354, .Cn «2:.Nat; .Idx w_691354»]]] = {
         .cn mul_pb_691448 __691457::[s_691472: .Idx w_691354, pb_ret_691459: .Cn «2:.Nat; .Idx w_691354»] = {
