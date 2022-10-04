@@ -4,6 +4,14 @@
 // tests a direct call to a cps fucntion wrapped in cps2ds
 // ./build/bin/thorin -d direct -d tool ./lit/direct/ds2cps_ax_cps2ds_dependent_short.thorin --output-thorin -
 
+/*
+Current issue:
+:4294967295: error: 'Π n_167425: .Nat → .infer (<nullptr>)' used as a type but is in fact a term
+
+Issue: 
+https://github.com/AnyDSL/thorin2/issues/95
+*/
+
 .import direct;
 .import mem;
 

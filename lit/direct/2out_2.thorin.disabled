@@ -4,6 +4,14 @@
 
 // ./build/bin/thorin -d direct -d tool ./lit/direct/2out_2.thorin --output-thorin - -VVVV
 
+/*
+Current Issue:
+old var access
+(view using dump-recursive)
+*/
+
+
+
 .import core;
 .import direct;
 .import mem;
