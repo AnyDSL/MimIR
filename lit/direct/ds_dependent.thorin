@@ -1,10 +1,10 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d tool -d direct %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: %thorin -d direct %s --output-ll %t.ll -o - | FileCheck %s
 
 // tests a direct call to a cps fucntion wrapped in cps2ds
-// ./build/bin/thorin -d direct -d tool ./lit/direct/ds_dependent.thorin --output-thorin - -VVVV
-// ./build/bin/thorin -d direct -d tool ./lit/direct/ds_dependent.thorin --output-thorin - -VVVV --output-ll t.ll
-// ./build/bin/thorin -d direct -d tool ./lit/direct/ds_dependent.thorin --output-ll ./lit/direct/ds_dependent.ll -o - | FileCheck ./lit/direct/ds_dependent.thorin
+// ./build/bin/thorin -d direct ./lit/direct/ds_dependent.thorin --output-thorin - -VVVV
+// ./build/bin/thorin -d direct ./lit/direct/ds_dependent.thorin --output-thorin - -VVVV --output-ll t.ll
+// ./build/bin/thorin -d direct ./lit/direct/ds_dependent.thorin --output-ll ./lit/direct/ds_dependent.ll -o - | FileCheck ./lit/direct/ds_dependent.thorin
 
 .import direct;
 .import core;

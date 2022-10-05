@@ -29,7 +29,7 @@ const Def* normalize_cps2ds(const Def* type, const Def* callee, const Def* arg, 
     // world.DLOG("curry body: {} : {}", ax, ax->type());
     auto fun = curry_args[1];
     auto r   = op_cps2ds_dep(fun);
-    for (int i = 2; i < curry_args.size(); i++) { r = world.app(r, curry_args[i]); }
+    for (size_t i = 2; i < curry_args.size(); ++i) r = world.app(r, curry_args[i]);
     return r;
 
     // cps2ds types fun

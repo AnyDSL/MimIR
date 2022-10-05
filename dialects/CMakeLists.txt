@@ -46,14 +46,6 @@ add_thorin_dialect(core
     INSTALL
 )
 
-add_thorin_dialect(tool
-    SOURCES
-        tool/tool.cpp
-        tool/tool.h
-        tool/normalizers.cpp
-    INSTALL
-)
-
 add_thorin_dialect(demo
     SOURCES
         demo/demo.cpp
@@ -71,8 +63,6 @@ add_thorin_dialect(direct
         direct/passes/cps2ds.cpp
         direct/passes/cps2ds.h
         direct/normalizers.cpp
-    DEPENDS
-        tool
     INSTALL
 )
 

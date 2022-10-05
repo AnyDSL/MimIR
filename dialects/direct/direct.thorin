@@ -7,14 +7,6 @@
 /// 2. Wrap DS functions to CPS functions using an axiom.
 /// 3. Convert CPS functions to DS functions using an axiom.
 ///
-/// ## Dependencies
-///
-.import tool;
-///
-/// ## Types
-///
-/// none 
-///
 /// ## Operations
 ///
 /// ### %direct.ds2cps
@@ -27,5 +19,4 @@
 /// the function is not converted; only the call site is changed
 /// 
 .ax %direct.cps2ds: Π [T: *, U: *] -> (.Cn [T, .Cn U]) -> (T -> U), normalize_cps2ds;
-.ax %direct.cps2ds_dep: Π [T: *, U: T -> *] -> (.Cn [t:T, .Cn (%tool.force_type (U t))]) -> (Π [t:T] -> (%tool.force_type (U t)));
-// .ax %direct.cps2ds_dep: Π [T: *, U: T -> *] -> (.Cn [t:T, .Cn ((U t))]) -> (Π [t:T] -> ((U t)));
+.ax %direct.cps2ds_dep: Π [T: *, U: T -> *] -> (.Cn [t:T, .Cn ((U t))]) -> (Π [t:T] -> ((U t)));
