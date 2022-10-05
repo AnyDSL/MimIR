@@ -243,10 +243,10 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::D_brckt_l: return parse_sigma();
         case Tok::Tag::D_paren_l: return parse_tuple();
         case Tok::Tag::K_Cn:      return parse_Cn();
-        case Tok::Tag::K_Idx:     return parse_idx();
         case Tok::Tag::K_Type:    return parse_type();
         case Tok::Tag::K_Univ:    lex(); return world().univ();
         case Tok::Tag::K_Bool:    lex(); return world().type_bool();
+        case Tok::Tag::K_Idx:     lex(); return world().type_idx();
         case Tok::Tag::K_Nat:     lex(); return world().type_nat();
         case Tok::Tag::K_ff:      lex(); return world().lit_ff();
         case Tok::Tag::K_tt:      lex(); return world().lit_tt();
@@ -374,13 +374,6 @@ const Def* Parser::parse_type() {
     auto [l, r] = Tok::prec(Tok::Prec::App);
     auto level  = parse_expr("type level", r);
     return world().type(level, track);
-}
-
-const Def* Parser::parse_idx() {
-    eat(Tok::Tag::K_Idx);
-    auto [l, r] = Tok::prec(Tok::Prec::App);
-    auto size   = parse_expr("size of .Idx", r);
-    return world().type_idx(size);
 }
 
 const Def* Parser::parse_pi() {
