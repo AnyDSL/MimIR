@@ -159,6 +159,8 @@ cmake .. -Dthorin_DIR=<THORIN_INSTALL_PREFIX>/lib/cmake/thorin
 ```
 to configure the project.
 
+Check out the [demo](@ref demo) dialect for a minimalistic plugin.
+
 ### add_thorin_dialect
 
 Registers a new Thorin dialect.
