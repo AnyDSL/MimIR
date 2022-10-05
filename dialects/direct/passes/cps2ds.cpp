@@ -48,22 +48,22 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         auto cps_fun = fun_app->arg();
                         world.DLOG("function: {} : {}", cps_fun, cps_fun->type());
 
-                        /// ```
-                        /// h:
-                        /// b = f a
-                        /// C[b]
-                        /// ```
-                        /// =>
-                        /// ```
-                        /// h:
-                        ///     f'(a,h_cont)
-                        ///
-                        /// h_cont(b):
-                        ///     C[b]
-                        ///
-                        /// f : A -> B
-                        /// f': .Cn [A, ret: .Cn[B]]
-                        /// ```
+                        // ```
+                        // h:
+                        // b = f a
+                        // C[b]
+                        // ```
+                        // =>
+                        // ```
+                        // h:
+                        //     f'(a,h_cont)
+                        //
+                        // h_cont(b):
+                        //     C[b]
+                        //
+                        // f : A -> B
+                        // f': .Cn [A, ret: .Cn[B]]
+                        // ```
 
                         // TODO: rewrite map vs thorin::rewrite
                         // TODO: unify replacements

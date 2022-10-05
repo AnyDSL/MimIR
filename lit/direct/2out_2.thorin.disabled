@@ -1,14 +1,11 @@
-
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d tool -d direct %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: %thorin -d direct %s --output-ll %t.ll -o - | FileCheck %s
 
 /*
 Current Issue:
 old var access
 (view using dump-recursive)
 */
-
-
 
 .import core;
 .import direct;
