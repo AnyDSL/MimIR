@@ -1,10 +1,6 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin -d direct -d tool %s --output-ll %t.ll -o - | FileCheck %s
 
-// tests a direct call to a cps fucntion wrapped in cps2ds
-// ./build/bin/thorin -d direct -d tool ./lit/direct/ds2cps_ax_cps2ds_dependent2.thorin --output-thorin - -VVVV
-// ./build/bin/thorin -d direct -d tool ./lit/direct/ds2cps_ax_cps2ds_dependent2.thorin --output-ll ./lit/direct/ds2cps_ax_cps2ds_dependent2.ll -o - | FileCheck ./lit/direct/ds2cps_ax_cps2ds_dependent2.thorin
-
 .import direct;
 .import core;
 .import mem;
