@@ -9,12 +9,10 @@
 
 namespace thorin::autodiff {
 
+/// Currently this normalizer does nothin.
+/// TODO: Maybe we want to handle trivial lookup replacements here.
 const Def* normalize_autodiff(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-
-    // do nothing (everything handled in the rewrite pass)
-    // TODO: maybe handle operations directly
-
     return world.raw_app(callee, arg, dbg);
 }
 
@@ -30,19 +28,16 @@ const Def* normalize_tangent_type(const Def* type, const Def* callee, const Def*
     return tangent_type_fun(arg);
 }
 
-// TODO: zero of type Nat, Real, Int -> 0
+/// Currently this normalizer does nothing.
+/// We usually want to keep zeros as long as possible to avoid unnecessary allocations.
+/// A high-level addition with zero can be shortened directly.
 const Def* normalize_zero(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-
-    // TODO: move to pass
-    // do not normalize complex types (arrays, tuples, etc) here
-    // as add would no longer be able to shortcut them
-
-    auto T = arg;
-
     return world.raw_app(callee, arg, dbg);
 }
 
+/// Currently resolved the full addition.
+/// There is no benefit in keeping additions around longer than necessary.
 const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
 
@@ -63,8 +58,7 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         world.DLOG("0+a");
         return a;
     }
-    // TODO: value vs type level match (what is easier)
-    // value level match harder as a tuple might in reality be a var or extract
+    // A value level match would be harder as a tuple might in reality be a var or extract
     if (auto sig = T->isa<Sigma>()) {
         world.DLOG("add tuple");
         auto p = sig->num_ops(); // TODO: or num_projs
@@ -73,8 +67,7 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         });
         return world.tuple(ops);
     } else if (auto arr = T->isa<Arr>()) {
-        // TODO: is this working for non-lit (non-tuple)?
-        //   or do we need a loop
+        // TODO: is this working for non-lit (non-tuple) or do we need a loop?
         world.DLOG("add arrays {} {} {}", T, a, b);
         auto pack      = world.nom_pack(T);
         auto body_type = arr->body();
@@ -110,7 +103,7 @@ const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, con
         world.DLOG("val: {}", val);
         DefArray args = arg->projs(val);
         auto sum      = world.app(world.ax<zero>(), T);
-        // would also be handled by add zero
+        // This special case would also be handled by add zero
         if (val >= 1) { sum = args[0]; }
         for (auto i = 1; i < val; ++i) { sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]}); }
         return sum;

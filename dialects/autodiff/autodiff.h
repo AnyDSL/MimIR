@@ -8,8 +8,8 @@ namespace thorin::autodiff {
 
 inline const Def* op_autodiff(const Def* fun) {
     World& world = fun->world();
-    // we rely on the normalized thorin convention that all arguments in functions are grouped
-    // cn[[args], cont:=cn[returns]]
+    // We rely on the normalized thorin convention that all arguments in functions are grouped.
+    // `cn[[args], cont:=cn[returns]]`
     return world.app(world.app(world.ax<autodiff>(), fun->type()), fun);
 }
 

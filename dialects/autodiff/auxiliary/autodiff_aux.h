@@ -4,7 +4,7 @@
 #include <thorin/def.h>
 #include <thorin/lam.h>
 
-/// helper function related to automatic differentiation
+/// Helper function related to automatic differentiation.
 namespace thorin::autodiff {
 
 const Def* id_pullback(const Def*);
@@ -20,7 +20,7 @@ const Def* op_sum(const Def* T, DefArray defs);
 
 } // namespace thorin::autodiff
 
-/// helper functions of general interest
+/// Helper functions of general interest.
 namespace thorin {
 
 // TODO: replace with closedness checks (scopes) at appropriate places
@@ -31,14 +31,15 @@ bool is_returning_continuation(const Def* e);
 bool is_open_continuation(const Def* e);
 bool is_direct_style_function(const Def* e);
 
-/// wrapper to access parts of a cps function type
+/// A wrapper to access parts of a cps function type.
 const Def* continuation_dom(const Def* E);
 const Def* continuation_codom(const Def* E);
 
-/// computes λ x. f(g(x))
-/// the given functions are expected to be in cps
+/// Computes the composition `λ x. f(g(x))`.
+/// The given functions `f` and `g` are expected to be in cps.
 const Def* compose_continuation(const Def* f, const Def* g);
 
 } // namespace thorin
 
-void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr);
+/// General thorin-unrelated C++ helper functions.
+void findAndReplaceAll(std::string & data, std::string toSearch, std::string replaceStr);

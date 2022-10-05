@@ -5,7 +5,7 @@
 
 namespace thorin::autodiff {
 
-/// @brief Removes all external autodiff axioms extensions from the program.
+/// Removes all external autodiff axioms extensions from the program.
 class AutoDiffExternalCleanup : public RWPass<AutoDiffExternalCleanup, Lam> {
 public:
     AutoDiffExternalCleanup(PassMan& man)
