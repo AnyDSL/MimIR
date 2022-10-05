@@ -30,14 +30,14 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     return pb;
 }
 
-//  P => P*
+//  `P` => `P*`
 //  TODO: nothing? function => R? Mem => R?
 //  TODO: rename to op_tangent_type
 const Def* tangent_type_fun(const Def* ty) { return ty; }
 
-/// computes pb type E* -> A*
-/// E - type of the expression (return type for a function)
-/// A - type of the argument (point of orientation resp. derivative - argument type for partial pullbacks)
+/// computes pb type `E* -> A*`
+/// `E` - type of the expression (return type for a function)
+/// `A` - type of the argument (point of orientation resp. derivative - argument type for partial pullbacks)
 const Pi* pullback_type(const Def* E, const Def* A) {
     auto& world   = E->world();
     auto tang_arg = tangent_type_fun(A);
@@ -46,7 +46,7 @@ const Pi* pullback_type(const Def* E, const Def* A) {
     return pb_ty;
 }
 
-// A,R => A'->R' * (R* -> A*)
+// `A,R` => `(A->R)' = A' -> R' * (R* -> A*)`
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     auto& world = arg->world();
     world.DLOG("autodiff type for {} => {}", arg, ret);
@@ -54,10 +54,10 @@ const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     auto aug_ret = autodiff_type_fun(ret);
     world.DLOG("augmented types: {} => {}", aug_arg, aug_ret);
     if (!aug_arg || !aug_ret) return nullptr;
-    // Q* -> P*
+    // `Q* -> P*`
     auto pb_ty = pullback_type(ret, arg);
     world.DLOG("pb type: {}", pb_ty);
-    // P' -> Q' * (Q* -> P*)
+    // `P' -> Q' * (Q* -> P*)`
 
     auto deriv_ty = world.cn({aug_arg, world.cn({aug_ret, pb_ty})});
     world.DLOG("autodiff type: {}", deriv_ty);
@@ -85,12 +85,13 @@ const Pi* autodiff_type_fun_pi(const Pi* pi) {
     return autodiff_type_fun(arg, ret);
 }
 
-// P->Q => P'->Q' * (Q* -> P*)
+// In general transforms `A` => `A'`.
+// Especially `P->Q` => `P'->Q' * (Q* -> P*)`.
 const Def* autodiff_type_fun(const Def* ty) {
     auto& world = ty->world();
     // TODO: handle DS (operators)
     if (auto pi = ty->isa<Pi>()) { return autodiff_type_fun_pi(pi); }
-    // also handles autodiff call from axiom declaration => abstract => leave it
+    // Also handles autodiff call from axiom declaration => abstract => leave it.
     world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
     if (ty->isa<Idx>()) { return ty; }
     if (ty == world.type_nat()) return ty;
@@ -137,7 +138,6 @@ const Def* zero_def(const Def* T) {
     }
 
     // or return bot
-    // assert(0);
     // or id => zero T
     // return world.app(world.ax<zero>(), T);
     return nullptr;
@@ -161,6 +161,7 @@ bool is_continuation_type(const Def* E) {
 bool is_continuation(const Def* e) { return is_continuation_type(e->type()); }
 
 bool is_returning_continuation(const Def* e) {
+    // TODO: fix open functions
     auto E = e->type();
     if (auto pi = E->isa<Pi>()) {
         //  duck-typing applies here
@@ -192,11 +193,14 @@ const Def* continuation_codom(const Def* E) {
     return pi->dom(1)->as<Pi>()->dom();
 }
 
-/// high level
+/// The high level view is:
+/// ```
 /// f: B -> C
 /// g: A -> B
 /// f o g := λ x. f(g(x)) : A -> C
-/// with cps style
+/// ```
+/// In cps the types look like:
+/// ```
 /// f: cn[B, cn C]
 /// g: cn[A, cn B]
 /// h = f o g
@@ -204,6 +208,7 @@ const Def* continuation_codom(const Def* E) {
 /// h = λ a ret_h. g(a,h')
 /// h' : cn B
 /// h' = λ b. f(b,ret_h)
+/// ```
 const Def* compose_continuation(const Def* f, const Def* g) {
     assert(is_continuation(f));
     auto& world = f->world();
@@ -218,9 +223,7 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     auto A = continuation_dom(G);
     auto B = continuation_codom(G);
     auto C = continuation_codom(F);
-    // better handled by application type checks
-    // auto B2 = continuation_dom(F);
-    // assert(B == B2);
+    // The type check of codom G = dom F is better handled by the application type checking
 
     world.DLOG("compose f (B->C): {} : {}", f, F);
     world.DLOG("compose g (A->B): {} : {}", g, G);

@@ -4,7 +4,7 @@
 
 namespace thorin::autodiff {
 
-/// side effect: register pullback
+/// Additionally to the derivation, the pullback is registered and the maps are initialized.
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& world = def->world();
     if (auto lam = def->isa_nom<Lam>()) {
@@ -12,10 +12,10 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         auto deriv_ty = autodiff_type_fun_pi(lam->type());
         auto deriv    = world.nom_lam(deriv_ty, world.dbg(lam->name() + "_deriv"));
 
-        // pre register derivative
-        // needed for recursion
-        // (could also be used for projecting out the variables
-        //  instead of pre-partial-pullback initialization)
+        // We first pre-register the derivatives.
+        // This knowledge is needed for recursion.
+        // (Alternatively, we could also use projections out the variables instead of pre-partial-pullback
+        // initialization.)
         derived[lam] = deriv;
 
         auto [arg_ty, ret_pi] = lam->type()->doms<2>();
@@ -24,18 +24,14 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         auto deriv_all_args  = deriv->var();
         const Def* deriv_arg = deriv->var((nat_t)0, world.dbg("arg"));
 
-        // let shadow pb be created dynamically
-        // only handle toplevel [args, ret] specially with a pseudo shadow pb
-        //
-        // but the DS/CPS special case has to be handled separately
+        // We generate the shadow pullbacks dynamically to save work and avoid code duplication.
+        // Only the toplevel pullback for arguments and return continuation is special cased.
 
-        // TODO: check identity
-        // could use identity tangent(arg_ty) = tangent(augment(arg_ty))
-        // with deriv_arg->type() = augment(arg_ty)
+        // TODO: check identity: could use identity tangent(arg_ty) = tangent(augment(arg_ty)) with deriv_arg->type() =
+        // augment(arg_ty) We give the argument the identity pullback.
         auto arg_id_pb              = id_pullback(arg_ty);
         partial_pullback[deriv_arg] = arg_id_pb;
-        // set no pullback to all_arg and return
-        // second component has to exist but should not be accessed
+        // The return continuation has to formally exist but should never be directly accessed.
         auto ret_var              = deriv->var(1);
         auto ret_pb               = zero_pullback(lam->var(1)->type(), arg_ty);
         partial_pullback[ret_var] = ret_pb;
@@ -46,9 +42,9 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         world.DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args],
                    shadow_pullback[deriv_all_args]->type());
 
-        // pre-register augment replacements
-        // TODO: maybe leave out
-        // function call (duplication with derived)
+        // We pre-register the augment replacements.
+        // The function and its variables are replaced by their new derived versions.
+        // TODO: maybe leave out function call (duplication with derived)
         augmented[def] = deriv;
         world.DLOG("Associate {} with {}", def, deriv);
         world.DLOG("  {} : {}", lam, lam->type());
@@ -63,12 +59,10 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         //   this is needed for continuations (without closure conversion)
         //   but also essentially for the return continuation
 
-        // reminder of types:
-        // expression e: B
-        //   implicit: e_fun: A -> B
-        // partial pullback: e*: B* -> A*
-        // partial derivative: e': B' × (B* -> A*)
-        //   implicit: e'_fun: A' -> B' × (B* -> A*)
+        // Here a reminder of types:
+        // The expression `e: B` has the implicit function `e_fun: A -> B`
+        // The partial pullback is then `e*: B* -> A*`
+        // The derivatived version is `e': B' × (B* -> A*)` which is an application of `e'_fun: A' -> B' × (B* -> A*)`
         auto new_body = augment(lam->body(), lam, deriv);
         deriv->set_filter(true);
         deriv->set_body(new_body);
