@@ -178,7 +178,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
     }
 
     auto size = Idx::size(index->type());
-    auto type    = d->unfold_type();
+    auto type = d->unfold_type();
     if (err()) {
         if (!checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
     }
@@ -224,8 +224,7 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val, const D
     auto type = d->unfold_type();
     auto size = Idx::size(index->type());
 
-    if (err() && !checker().equiv(type->arity(), size, dbg))
-        err()->index_out_of_range(type->arity(), index, dbg);
+    if (err() && !checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
 
     if (auto l = isa_lit(size); l && *l == 1)
         return tuple(d, {val}, dbg); // d could be nom - that's why the tuple ctor is needed
