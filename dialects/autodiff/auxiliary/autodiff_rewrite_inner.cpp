@@ -48,7 +48,7 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     // TODO: better fix (another pass as analysis?)
     // TODO: handle open functions
     if (is_open_continuation(lam) || lam->name().find("ret") != std::string::npos ||
-        lam->name().find("_cont") != std::string::npos) {
+        lam->name().find("_cont") != std::string::npos || !is_closed(lam)) {
         // A open continuation behaves the same as return:
         // ```
         // cont: Cn[X]
@@ -65,6 +65,8 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("pb type is {}", pb_ty);
         auto aug_ty = world.cn({aug_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
+        assert(0);
+
         auto aug_lam              = world.nom_lam(aug_ty, world.dbg("aug_" + lam->name()));
         auto aug_var              = aug_lam->var((nat_t)0);
         augmented[lam->var()]     = aug_var;
@@ -82,11 +84,15 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("augmented {} : {}", lam, lam->type());
         world.DLOG("to {} : {}", aug_lam, aug_lam->type());
         world.DLOG("ppb for lam cont: {}", lam_pb);
+        assert(0);
 
         return aug_lam;
     }
     world.DLOG("found a closed function call {} : {}", lam, lam->type());
     // Some general function in the program needs to be differentiated.
+
+    assert(is_closed(lam));
+
     auto aug_lam = op_autodiff(lam);
     // TODO: directly more association here? => partly inline op_autodiff
     world.DLOG("augmented function is {} : {}", aug_lam, aug_lam->type());

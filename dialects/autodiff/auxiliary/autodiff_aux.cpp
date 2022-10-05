@@ -66,6 +66,7 @@ const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
 
 const Pi* autodiff_type_fun_pi(const Pi* pi) {
     auto& world = pi->world();
+    world.DLOG("autodiff type for pi: {}", pi);
     if (!is_continuation_type(pi)) {
         // TODO: dependency
         auto arg = pi->dom();
@@ -246,6 +247,11 @@ const Def* compose_continuation(const Def* f, const Def* g) {
                });
 
     return h;
+}
+
+bool is_closed(Lam* lam) {
+    Scope s{lam};
+    return s.free_vars().empty();
 }
 
 } // namespace thorin

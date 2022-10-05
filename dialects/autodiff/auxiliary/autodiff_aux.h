@@ -23,6 +23,8 @@ const Def* op_sum(const Def* T, DefArray defs);
 /// Helper functions of general interest.
 namespace thorin {
 
+bool is_closed(Lam* lam);
+
 // TODO: replace with closedness checks (scopes) at appropriate places
 bool is_continuation_type(const Def* E);
 bool is_continuation(const Def* e);
