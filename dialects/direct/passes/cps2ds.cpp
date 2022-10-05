@@ -48,28 +48,27 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                         auto cps_fun = fun_app->arg();
                         world.DLOG("function: {} : {}", cps_fun, cps_fun->type());
 
-                        /*
-                        h:
-                        b = f a
-                        C[b]
-
-                        =>
-
-                        h:
-                            f'(a,h_cont)
-
-                        h_cont(b):
-                            C[b]
-
-                        f : A -> B
-                        f': .Cn [A, ret: .Cn[B]]
-                        */
+                        /// ```
+                        /// h:
+                        /// b = f a
+                        /// C[b]
+                        /// ```
+                        /// =>
+                        /// ```
+                        /// h:
+                        ///     f'(a,h_cont)
+                        ///
+                        /// h_cont(b):
+                        ///     C[b]
+                        ///
+                        /// f : A -> B
+                        /// f': .Cn [A, ret: .Cn[B]]
+                        /// ```
 
                         // TODO: rewrite map vs thorin::rewrite
                         // TODO: unify replacements
 
-                        // replace continuing function call with argument instantiation
-
+                        // We instantiate the function type with the applied argument.
                         auto ty     = callee->type();
                         auto ret_ty = ty->as<Pi>()->codom();
                         world.DLOG("callee {} : {}", callee, ty);
@@ -89,30 +88,29 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
                             inst_ret_ty = ret_ty;
                         }
 
-                        // continuation of call site to receive result
+                        // The continuation that receives the result of the cps function call.
                         auto fun_cont = world.nom_lam(world.cn(inst_ret_ty), world.dbg(curr_lam_->name() + "_cont"));
-                        // f a -> f_cps(a,cont)
+                        // Generate the cps function call `f a` -> `f_cps(a,cont)`
                         auto cps_call = world.app(cps_fun, {new_arg, fun_cont}, world.dbg("cps_call"));
                         world.DLOG("  curr_lam {}", curr_lam_->name());
                         curr_lam_->set_body(cps_call);
+
                         // Fixme: would be great to PE the newly added overhead away..
                         // The current PE just does not terminate on loops.. :/
                         // curr_lam_->set_filter(true);
 
-                        // filter only here as otherwise a debug print causes
-                        // the "some operands are set" issue
+                        // The filter can only be set here (not earlier) as otherwise a debug print causes the "some
+                        // operands are set" issue.
                         fun_cont->set_filter(curr_lam_->filter());
 
-                        // write the body context in the newly created continuation
-                        // that has access to the result (as its argument)
+                        // We write the body context in the newly created continuation that has access to the result (as
+                        // its argument).
                         curr_lam_ = fun_cont;
-                        // result of ds function
+                        // `res` is the result of the cps function.
                         auto res = fun_cont->var();
 
                         world.DLOG("  result {} : {} instead of {} : {}", res, res->type(), def, def->type());
-                        // replace call with the result in the context that will be placed in the continuation
 
-                        // assert(0);
                         return res;
                     }
                 }
@@ -122,13 +120,10 @@ const Def* CPS2DS::rewrite_body_(const Def* def) {
         auto new_calle = rewrite_body(app->callee());
         return world.app(new_calle, new_arg);
     }
-    // TODO:
-    // are ops rewrites
-    // + app calle/arg rewrites
-    // all possible combinations?
+    // TODO: are ops rewrites + app calle/arg rewrites all possible combinations?
+    // TODO: check if lam is necessary or if var is enough
 
-    // TODO: check if lam is necessary or var is enough
-    // do not descend into infinite chain through function
+    // We need this case to not descend into infinite chains through function
     if (auto var = def->isa<Var>()) { return var; }
 
     if (auto old_nom = def->isa_nom()) { return old_nom; }

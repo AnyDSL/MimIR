@@ -38,9 +38,6 @@ inline const Def* op_cps2ds_dep(const Def* f) {
     world.DLOG("axiom app: {} : {}", ax_app, ax_app->type());
 
     return world.raw_app(ax_app, f);
-
-    // TODO: check if app can be used instead of raw_app
-    // return world.raw_app(world.raw_app(world.ax<direct::cps2ds>(), {T, U}), f);
 }
 
 } // namespace thorin::direct
