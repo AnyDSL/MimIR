@@ -46,6 +46,21 @@ const Pi* pullback_type(const Def* E, const Def* A) {
     return pb_ty;
 }
 
+// TODO:
+// A' := D A
+// D (Cn [A, Cn B]) = Cn [D A, Cn (D_A B)]
+
+// TODO: directly D_A on Cn B ?
+
+// type transformation respective A
+// D_A B = [D B, Cn [B^T, Cn A^T]]
+const Pi* autodiff_inner_type(const Def* B, const Def* A) {
+    auto& world = B->world();
+    auto pb_ty  = pullback_type(B, A);  // B^T -> A^T
+    auto aug_B  = autodiff_type_fun(B); // D B
+    return world.sigma({aug_B, pb_ty});
+}
+
 // `A,R` => `(A->R)' = A' -> R' * (R* -> A*)`
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     auto& world = arg->world();
