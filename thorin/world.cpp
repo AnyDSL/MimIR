@@ -46,6 +46,7 @@ World::World(const State& state)
     data_.sigma_       = insert<Sigma>(0, type(), Defs{}, nullptr)->as<Sigma>();
     data_.tuple_       = insert<Tuple>(0, sigma(), Defs{}, nullptr)->as<Tuple>();
     data_.type_nat_    = insert<Nat>(0, *this);
+    data_.type_idx_    = insert<Idx>(0, pi(type_nat(), type()));
     data_.top_nat_     = insert<Top>(0, type_nat(), nullptr);
     data_.lit_nat_0_   = lit_nat(0);
     data_.lit_nat_1_   = lit_nat(1);
@@ -71,16 +72,6 @@ const Type* World::type(const Def* level, const Def* dbg) {
         }
     }
     return unify<Type>(1, level, dbg)->as<Type>();
-}
-
-const Idx* World::type_idx(const Def* size) {
-    if (err()) {
-        if (!size->type()->isa<Nat>()) {
-            err()->err(size->loc(), "argument `{}` to `.Idx` must be of type `.Nat` but is of type `{}`", size,
-                       size->type());
-        }
-    }
-    return unify<Idx>(1, *this, size);
 }
 
 const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
@@ -186,14 +177,14 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
         return tuple(ops, dbg);
     }
 
-    auto index_t = index->type()->as<Idx>();
-    auto type    = d->unfold_type();
+    auto size = Idx::size(index->type());
+    auto type = d->unfold_type();
     if (err()) {
-        if (!checker().equiv(type->arity(), index_t->size(), dbg)) err()->index_out_of_range(type->arity(), index, dbg);
+        if (!checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
     }
 
     // nom sigmas can be 1-tuples
-    if (auto size = isa_lit(index_t->size()); size && *size == 1 && !d->type()->isa_nom<Sigma>()) return d;
+    if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_nom<Sigma>()) return d;
     if (auto pack = d->isa_structural<Pack>()) return pack->body();
 
     // extract(insert(x, index, val), index) -> val
@@ -230,13 +221,12 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
 }
 
 const Def* World::insert(const Def* d, const Def* index, const Def* val, const Def* dbg) {
-    auto type    = d->unfold_type();
-    auto index_t = index->type()->as<Idx>();
+    auto type = d->unfold_type();
+    auto size = Idx::size(index->type());
 
-    if (err() && !checker().equiv(type->arity(), index_t->size(), dbg))
-        err()->index_out_of_range(type->arity(), index, dbg);
+    if (err() && !checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
 
-    if (auto size = isa_lit(index_t->size()); size && *size == 1)
+    if (auto l = isa_lit(size); l && *l == 1)
         return tuple(d, {val}, dbg); // d could be nom - that's why the tuple ctor is needed
 
     // insert((a, b, c, d), 2, x) -> (a, b, x, d)
@@ -331,7 +321,7 @@ const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
 
 const Lit* World::lit_idx(const Def* type, u64 i, const Def* dbg) {
     auto l    = lit(type, i, dbg);
-    auto size = type->as<Idx>()->size();
+    auto size = Idx::size(type);
 
     if (err()) {
         if (auto a = isa_lit(size)) {

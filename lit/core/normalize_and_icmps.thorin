@@ -12,9 +12,9 @@
             (a, b)))
 };
 
-// CHECK-DAG: .cn .extern and _{{[0-9_]+}}::[a_[[aId:[0-9_]+]]: (.Idx 2), b_[[bId:[0-9_]+]]: (.Idx 2), return_[[retId:[0-9_]+]]: .Cn (.Idx 2)]
-// CHECK-DAG: .let _[[cmpId:[0-9_]+]]: (.Idx 2) = %core.icmp.xYGle 2 (a_[[aId]], b_[[bId]]);
+// CHECK-DAG: .cn .extern and _{{[0-9_]+}}::[a_[[aId:[0-9_]+]]: .Idx 2, b_[[bId:[0-9_]+]]: .Idx 2, return_[[retId:[0-9_]+]]: .Cn .Idx 2]
+// CHECK-DAG: .let _[[cmpId:[0-9_]+]]: .Idx 2 = %core.icmp.xYGle 2 (a_[[aId]], b_[[bId]]);
 // CHECK-DAG: return_[[etaId:[0-9_]+]] _[[cmpId]]
 
-// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: (.Idx 2)
+// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 2
 // CHECK-DAG: return_[[retId]] _[[etaVar]]
