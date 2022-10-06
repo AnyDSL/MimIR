@@ -79,6 +79,7 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         // We are still in same closed function.
         auto new_body = augment(lam->body(), f, f_diff);
         aug_lam->set_filter(lam->filter());
+        // aug_lam->set_filter(false);
         aug_lam->set_body(new_body);
 
         auto lam_pb               = zero_pullback(lam->type(), f_arg_ty);
