@@ -58,14 +58,15 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         // (All derivatives are with respect to the arguments of a closed function.)
 
         world.DLOG("found an open continuation {} : {}", lam, lam->type());
-        auto cont_dom = lam->type()->dom(); // not only 0 but all
-        auto pb_ty    = pullback_type(cont_dom, f_arg_ty);
-        auto aug_dom  = autodiff_type_fun(cont_dom);
-        world.DLOG("augmented domain {}", aug_dom);
-        world.DLOG("pb type is {}", pb_ty);
-        auto aug_ty = world.cn({aug_dom, pb_ty});
+        // auto cont_dom = lam->type()->dom(); // not only 0 but all
+        // auto pb_ty    = pullback_type(cont_dom, f_arg_ty);
+        // auto aug_dom  = autodiff_inner_type_fun(cont_dom, f_arg_ty);
+        // world.DLOG("augmented domain {}", aug_dom);
+        // world.DLOG("pb type is {}", pb_ty);
+        // auto aug_ty = world.cn({aug_dom, pb_ty});
+        auto aug_ty = autodiff_inner_type_fun(lam->type(), f_arg_ty)->as<Pi>();
         world.DLOG("augmented type is {}", aug_ty);
-        assert(0);
+        // assert(0);
 
         auto aug_lam              = world.nom_lam(aug_ty, world.dbg("aug_" + lam->name()));
         auto aug_var              = aug_lam->var((nat_t)0);
@@ -84,7 +85,7 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("augmented {} : {}", lam, lam->type());
         world.DLOG("to {} : {}", aug_lam, aug_lam->type());
         world.DLOG("ppb for lam cont: {}", lam_pb);
-        assert(0);
+        // assert(0);
 
         return aug_lam;
     }
@@ -126,8 +127,13 @@ const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff
         auto pb_ty    = pullback_type(ext->type(), f_arg_ty);
         auto pb_fun   = world.nom_lam(pb_ty, world.dbg("extract_pb"));
         world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
+        world.DLOG("Tuple pb is {} : {}", tuple_pb, tuple_pb->type());
         auto pb_tangent = pb_fun->var((nat_t)0, world.dbg("s"));
-        auto tuple_tan  = world.insert(op_zero(aug_tuple->type()), aug_index, pb_tangent, world.dbg("tup_s"));
+        // R auto tuple_tan  = world.insert(op_zero(aug_tuple->type()), aug_index, pb_tangent, world.dbg("tup_s"));
+        //  we create a uni vector of E^T (not to be confused with (E')^T)
+        auto tuple_tan_type = tuple_pb->type()->as<Pi>()->dom(0);
+        auto tuple_tan      = world.insert(op_zero(tuple_tan_type), aug_index, pb_tangent, world.dbg("tup_s"));
+        world.DLOG("Unit Vector: {} : {}", tuple_tan, tuple_tan->type());
         pb_fun->app(true, tuple_pb,
                     {
                         tuple_tan,

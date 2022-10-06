@@ -11,6 +11,7 @@ const Def* id_pullback(const Def*);
 const Def* zero_pullback(const Def* E, const Def* A);
 
 const Def* tangent_type_fun(const Def*);
+const Def* autodiff_inner_type_fun(const Def* B, const Def* A);
 const Pi* autodiff_type_fun_pi(const Pi*);
 const Def* autodiff_type_fun(const Def*);
 const Pi* pullback_type(const Def* E, const Def* A);
@@ -44,4 +45,4 @@ const Def* compose_continuation(const Def* f, const Def* g);
 } // namespace thorin
 
 /// General thorin-unrelated C++ helper functions.
-void findAndReplaceAll(std::string & data, std::string toSearch, std::string replaceStr);
+void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr);
