@@ -85,7 +85,7 @@
 /// The tuple pullback transports the partial pullbacks of the operands and handles the sums.
 /// By its nature the pullback of a tuple needs to be a sum.
 /// 
-/// ### %core.icmp.xYgLE (eq)
+/// ### %core.icmp.xYgLE (sle)
 /// 
 /// The comparison pullback exists formally but is not used.
 /// 
@@ -97,6 +97,24 @@
         ![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
         = { 
             .let result = %core.icmp.sle (w) (a,b);
+            .cn cmp_pb ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
+            = { 
+                .let z = 0:(.Idx w);
+                pb_ret (z, z)
+            };
+            ret (result,cmp_pb)
+        };
+        inner_cmp
+    };
+/// core.icmp.e
+.lam .extern internal_diff_core_icmp_xyglE 
+    ![w: .Nat] ->
+    (.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]])
+    = { 
+        .cn inner_cmp 
+        ![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
+        = { 
+            .let result = %core.icmp.e (w) (a,b);
             .cn cmp_pb ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
             = { 
                 .let z = 0:(.Idx w);
