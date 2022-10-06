@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"structthorin_1_1Log.html#a9a8c7b53890137fd684f4e90cb1fb0e0":[3,0,0,69,8],
+"structthorin_1_1Log.html#a9a8c7b53890137fd684f4e90cb1fb0e0":[5,0,0,65,8],
 "structthorin_1_1Log.html#aa0b95355e12aa74f6bb27a0079fcfca2":[3,0,0,69,3],
 "structthorin_1_1Log.html#aa0b95355e12aa74f6bb27a0079fcfca2":[5,0,0,65,3],
 "structthorin_1_1Log.html#acc7eb80bd9799badbfdb44a45f26f0e8":[3,0,0,69,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "sys_8h_source.html":[6,0,3,5,17],
 "tail__rec__elim_8cpp.html":[6,0,3,3,0,6],
 "tail__rec__elim_8cpp_source.html":[6,0,3,3,0,6],
-"tail__rec__elim_8h.html":[6,0,3,3,0,7],
-"tail__rec__elim_8h_source.html":[6,0,3,3,0,7],
-"thorin_2pass_2rw_2remem__elim_8cpp.html":[6,0,3,3,1,4]
+"tail__rec__elim_8h.html":[6,0,3,3,0,7]
 };

@@ -43,7 +43,7 @@ var searchData=
   ['lit_5fff_40',['lit_ff',['../classthorin_1_1World.html#adb4b657ad253bcbb0e49512ec501bccf',1,'thorin::World']]],
   ['lit_5fidx_41',['lit_idx',['../classthorin_1_1World.html#abcde6d380294a553d2f7802e03206eb0',1,'thorin::World::lit_idx(const Def *type, u64 val, const Def *dbg={})'],['../classthorin_1_1World.html#a41ec26abcafae838a9981e5232fc218d',1,'thorin::World::lit_idx(nat_t size, u64 val, const Def *dbg={})'],['../classthorin_1_1World.html#ac3d1035190c34ad5f51de22011e51c1e',1,'thorin::World::lit_idx(I val, const Def *dbg={})']]],
   ['lit_5fidx_5fmod_42',['lit_idx_mod',['../classthorin_1_1World.html#a310402e6c11d1a6c08c8de912959fbb2',1,'thorin::World']]],
-  ['lit_5fint_5f_43',['lit_int_',['../classthorin_1_1World.html#a51d1a8feb2e866e1d25d9c40e6f56d13',1,'thorin::World']]],
+  ['lit_5fint_43',['lit_int',['../classthorin_1_1World.html#a0b6e17513a0eaecbb34c3826d0888d4d',1,'thorin::World']]],
   ['lit_5fnat_44',['lit_nat',['../classthorin_1_1World.html#ac3b17a5fa38e15c2174a25a2550627ca',1,'thorin::World']]],
   ['lit_5fnat_5f0_45',['lit_nat_0',['../classthorin_1_1World.html#ad94fd55be8dab25a916ff38874cc72b0',1,'thorin::World']]],
   ['lit_5fnat_5f1_46',['lit_nat_1',['../classthorin_1_1World.html#ac553f2a359e5a84e2413de0986a73d94',1,'thorin::World']]],

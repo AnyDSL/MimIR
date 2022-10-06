@@ -1,5 +1,7 @@
 var NAVTREEINDEX18 =
 {
+"namespacethorin_1_1detail.html":[3,0,0,4],
+"namespacethorin_1_1detail.html#a425b2158f0d5c5ea2d8f27542c1f8ec3":[3,0,0,4,1],
 "namespacethorin_1_1detail.html#a923e8f4b4842964409d2fbf66c72d0b0":[3,0,0,4,2],
 "namespacethorin_1_1direct.html":[3,0,0,5],
 "namespacethorin_1_1direct.html#a06bbcec41bb9503971f3292dc5172fe1":[3,0,0,5,7],
@@ -247,7 +249,5 @@ var NAVTREEINDEX18 =
 "print_8cpp.html":[6,0,3,5,14],
 "print_8cpp.html#a425b2158f0d5c5ea2d8f27542c1f8ec3":[6,0,3,5,14,0],
 "print_8cpp.html#a7dae34cc4eb75fe0cf5a914431353c8c":[6,0,3,5,14,1],
-"print_8cpp_source.html":[6,0,3,5,14],
-"print_8h.html":[6,0,3,5,15],
-"print_8h.html#a01d195c52d754394a58dec37e2913430":[6,0,3,5,15,5]
+"print_8cpp_source.html":[6,0,3,5,14]
 };

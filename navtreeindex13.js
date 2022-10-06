@@ -1,5 +1,7 @@
 var NAVTREEINDEX13 =
 {
+"core_2normalizers_8cpp.html#ac0d1f9418484a71cb21980018a1cbeb4":[6,0,1,2,3,57],
+"core_2normalizers_8cpp.html#accc185c1a4e10a22e2a8b619f87b8754":[6,0,1,2,3,52],
 "core_2normalizers_8cpp.html#ad5a47b64d694f32241f3e7a5f7369ab9":[6,0,1,2,3,55],
 "core_2normalizers_8cpp.html#ae27f8befa842a36b7b165dba29d7f55e":[6,0,1,2,3,46],
 "core_2normalizers_8cpp.html#ae8b348f83cfac9f1bc2f3f973e90ba6a":[6,0,1,2,3,61],
@@ -247,7 +249,5 @@ var NAVTREEINDEX13 =
 "domtree_8h.html":[6,0,3,0,7],
 "domtree_8h.html#a27a76a1f311546f00c650982da319cb5":[6,0,3,0,7,1],
 "domtree_8h.html#a72fc99d5c04f3932ba954f5d859ffb0a":[6,0,3,0,7,2],
-"domtree_8h_source.html":[6,0,3,0,7],
-"dot_8cpp.html":[6,0,3,1,0,0],
-"dot_8cpp.html#a0accd07b6689c0d7eafd53273e630a3b":[6,0,3,1,0,0,3]
+"domtree_8h_source.html":[6,0,3,0,7]
 };
