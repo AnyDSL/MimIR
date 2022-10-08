@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"tail__rec__elim_8cpp_source.html":[6,0,3,3,0,6],
+"tail__rec__elim_8h.html":[6,0,3,3,0,7],
 "tail__rec__elim_8h_source.html":[6,0,3,3,0,7],
 "thorin_2pass_2rw_2remem__elim_8cpp.html":[6,0,3,3,1,4],
 "thorin_2pass_2rw_2remem__elim_8cpp_source.html":[6,0,3,3,1,4],
