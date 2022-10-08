@@ -761,7 +761,7 @@ void Parser::parse_nom_fun() {
 
     auto codom = is_cn                     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
-                                           : world().nom_infer_of_infer_level();
+                                           : world().type_infer_univ();
     pis.back()->set_codom(codom);
 
     for (auto& pi : pis | std::ranges::views::reverse) {
