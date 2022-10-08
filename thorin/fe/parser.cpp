@@ -210,7 +210,7 @@ const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
                     if (meta->proj(a, i) == sym) return world().extract(lhs, a, i, track);
                 }
             }
-            err(sym.loc(), "could not find elemement '{}' to extract from '{} of type '{}'", sym, lhs, sigma);
+            err(sym.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", sym, lhs, sigma);
         }
     }
 
