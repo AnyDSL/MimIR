@@ -723,7 +723,7 @@ void Parser::parse_nom_fun() {
         const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
         auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
         auto dom_t        = dom_p->type(world());
-        auto pi           = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
+        auto pi           = world().nom_pi(world().type_infer_univ())->set_dom(dom_t);
         auto var_dbg      = world().dbg(dom_p->sym());
         auto pi_var       = pi->var(var_dbg);
 
