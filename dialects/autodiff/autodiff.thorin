@@ -2,27 +2,6 @@
 ///
 /// [TOC]
 ///
-/// <TODO:>
-/// 
-/// Transformations:
-/// - autodiff
-///   - on types
-///     computed the augmented derivation type of a function type
-///     `autodiff (T -> U) = (T -> U × (U -> T))`
-///   - on closed terms (functions, operators, higher-order argument, registered instance, ... (if I forgot something))
-///     replaces the term with the augmented term that computes and simultaneously returns the modular full pullback
-///     `autodiff f = f' = λ args. (f args, f*)` 
-/// - tangent type
-///   remaining type transformation
-///   zero for non-differentiable types
-///   structure preserving functor for non-exponential containers
-/// - partial pullback
-///   pullback computation for non-closed terms
-///   always acts with in a function environment
-///   C++ function (in meta space)
-///   importantly acts on tuples and
-///     (function) applications (uses autodiff here)
-///
 /// ## Dependencies
 ///
 .import mem;
@@ -40,69 +19,86 @@
 ///
 /// ### %autodiff.autodiff
 /// 
-/// operates on functions and types
+/// This axiom operates on functions and types.
 ///
+/// For function types the augmented type is computed: `(T -> U) => (T -> U × (U -> T))`
 .ax %autodiff.autodiff_type: * -> *, 
     normalize_autodiff_type;
+/// On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned.
+/// The augmented term `f'` returns the result together with the pullback.
+/// `autodiff f = f' = λ args. (f args, f*)` 
 .ax %autodiff.autodiff: Π [T: *] -> T -> 
     %autodiff.autodiff_type T, 
     normalize_autodiff;
 ///
 /// ### %autodiff.zero
 /// 
-/// a universal zero such that (zero T) +_T t = t
+/// Represents universal zero such that `(zero T) +_T t = t`.
 ///
-// TODO: convert to bot:T at codegen
 .ax %autodiff.zero: Π [T:*] -> T, normalize_zero;
 ///
 /// ### %autodiff.add
 /// 
-/// a universal add
+/// A universal addition that consumes zeros and defaults to normal addition for scalar types.
+/// It lifts additions over types with structure and performs special casing for types with do not allow for addition.
+/// The sum construct performs addition over a list of terms.
 ///
 /// TODO: how do we handle summations that need memory? (grab current memory?)
 .ax %autodiff.add: Π [T:*] -> [T,T] -> T, normalize_add;
 .ax %autodiff.sum: Π [n:.Nat,T:*] -> «n; T» -> T, normalize_sum;
 ///
-///
-
-
-
+/// ## Registered translations
+/// 
+/// In this section, we define translations for axioms of other dialects.
+/// This best would be done using a register mechanism in a third dialect or at least in a separate file.
+/// 
+/// The general concept is that a call to an axiom is replaced with a call to the augmented axiom.
+/// The augmented axiom needs a wrapper for meta arguments (HO-function).
+/// Appropiate cps2ds wrappers are introduced to handle that the augmented axioms are in cps where the original axioms were in ds.
+/// Example:
+/// ```
 /// mul' => args -> result*pullback
 /// call: r    = mul  (m,w) (a,b) 
 /// res : r,r* = mul' (m,w) (a,b)
-/// we shorten (Int w) to Int
+/// ```
+/// The types (with `Int` for `(Int w)`) are:
+/// ```
 /// mul : Π [m:.Nat,w:.Nat] -> [a:Int,b:Int] -> Int
 /// r   : Int
 /// r*  : cn[Int,cn[Int,Int]]
-/// the pullback has to be in cps for compliance
+/// ```
+/// The pullback has to be in cps for compliance.
+/// ```
 /// mul* := λ s. (s*b,s*a)
-/// 
-/// version 1: mul' as direct style function
-/// mul'_ds : Π [m:.Nat,w:.Nat] -> [a:Int,b:Int] -> [Int,cn[Int,cn[Int,Int]]]
-/// r,r* = mul'_ds (m,w) (a,b)
-/// 
-/// version 2: mul' as cps style function
+/// ```
+/// ```
 /// mul'_cps : Π [m:.Nat,w:.Nat] -> cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]
 /// r,r* = (cps2ds (mul'_cps (m,w))) (a,b)
+/// ```
 /// 
-/// both are normalizing by one inlining step
-/// the ds version is more direct
-/// but needs a ds handling of inlining
-
-// .lam .extern id_ext [n:.Nat] -> .Nat = {
-//     n
-// };
-
+/// The pullback is the derivative with respect to the input (weighted with the out tangent).
+/// For arithmetic operations, s is simply multiplied to each input tangent:
+/// `∂_i f(x1,...,xn) * s`
+/// You will also come to the conclusion that the applied partial pullback needs to be:
+/// `sum x_i*(∂_i f(x1,...,xn) * s) = sum x_i*(•)` with • as the formula from above
+/// This is a direct result from the chain composition with the partial pullback of a tuple.
+/// The tuple pullback transports the partial pullbacks of the operands and handles the sums.
+/// By its nature the pullback of a tuple needs to be a sum.
+/// 
+/// ### %core.icmp.xYgLE (eq)
+/// 
+/// The comparison pullback exists formally but is not used.
+/// 
 .lam .extern internal_diff_core_icmp_xYgLE 
-    [w: .Nat] ->
+    ![w: .Nat] ->
     (.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]])
-    = { // (1:(.Idx 2)),
+    = { 
         .cn inner_cmp 
-        [[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
-        = { // (1:(.Idx 2)),
+        ![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
+        = { 
             .let result = %core.icmp.sle (w) (a,b);
-            .cn cmp_pb [s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
-            = { // (1:(.Idx 2)),
+            .cn cmp_pb ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
+            = { 
                 .let z = 0:(.Idx w);
                 pb_ret (z, z)
             };
@@ -110,159 +106,45 @@
         };
         inner_cmp
     };
-
-
+///
+/// ### %core.wrap.add
+/// 
+/// s ↦ (s, s)
+///
 .lam .extern internal_diff_core_wrap_add
-    [m:.Nat, w:.Nat] -> 
+    ![m:.Nat, w:.Nat] -> 
     (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])
-    = { // (1:(.Idx 2)),
+    = { 
     .cn inner_add_deriv_cps
-        [[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]
-        = { // (1:(.Idx 2)),
+        ![[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]
+        = { 
         .let result = %core.wrap.add (m,w) (a,b);
-        .cn add_pb [s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])] = { // (1:(.Idx 2)),
+        .cn add_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])] = { 
             pb_ret (s,s)
         };
         ret (result,add_pb)
     };
     inner_add_deriv_cps
 };
-
-
+///
+/// ### %core.wrap.mul
+///
+/// s ↦ (s*b, s*a)
+/// 
 .lam .extern internal_diff_core_wrap_mul
-    [m:.Nat, w:.Nat] -> 
+    ![m:.Nat, w:.Nat] -> 
     (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])
-    = { // (1:(.Idx 2)), 
+    = { 
     .cn inner_mul_deriv_cps
-        [[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]
-        = { // (1:(.Idx 2)),
+        ![[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]@(.tt)
+        = { 
         .let result = %core.wrap.mul (m,w) (a,b);
-        .cn mul_pb [s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])] = { // (1:(.Idx 2)),
+        .cn mul_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])]@(.tt) = { 
             .let lhs = %core.wrap.mul (m,w) (s,b);
             .let rhs = %core.wrap.mul (m,w) (s,a);
             pb_ret (lhs, rhs)
         };
-        // %tool.set_filter (1:(.Idx 2),ret (result,mul_pb))
         ret (result,mul_pb)
     };
     inner_mul_deriv_cps
 };
-
-
-
-// the pullback is the derivative with respect to the input (weighted with the out tangent)
-// for arithmetic operations, s is simply multiplied to each input tangent
-// as formula: the tuple: ∂_i f(x1,...,xn) * s
-// you will also come to the conclusion that the applied partial pullback needs to be
-// sum x_i*(∂_i f(x1,...,xn) * s)
-// = sum x_i*(•) with • as the formula from above
-// this is a direct result from the chain composition with the partial pullback of a tuple
-// the tuple pullback transports the partial pullbacks of the operands and handles the sums
-// by its nature the pullback of a tuple needs to be a sum
-
-// fully cps
-
-// s ↦ (s*b, s*a)
-// mul
-
-// s ↦ (s, s)
-// add
-
-// s ↦ (s, -s)
-// sub
-
-// s ↦ (s/b, -s*a/(b*b) = -(a/b)* (s/b))
-// div
-
-// compare does not need one / dummy derivative
-
-
-// load : Mem * Ptr(V) -> Mem * V
-
-/* 
-r = m2,v = load (m,p)
-r,r* = (m2,v),r* = load' (m,p)
-args = (m,p)
-
-r* : M*V -> M*P(V)
-args* : M*P(V) -> A
-where args* := λ (sm, sp). m*(sm) + p*(sp)
-  m* will most likely be id or zero
-  r*,p* can be chosen
-r* := λ (sm, sv).
-  // or use other memory
-  let (sm2, ps) = slot V sm in
-  let (sm3) = store (sm2,(ps,sv)) in
-  (sm3,sp)
-r* is closed => can not argue about partial pullbacks
-(but could use load arguments)
-v* is necessarily partial
-
-idea: p* := unpack ptr => sv => plug into loaded shadow pb
-  question: when to load for correct order
-idea: (assume inner pointer for now)
-  1. augment arguments; shadow pointer exists
-  2. construct load*
-    2.1 set p* using current memory (from args) and shadow pointer
-  3. compose with args* ∋ p*
-
-Variant 1: Ptr(V)ᵗ = Ptr(Vᵗ)
-  load' : Mem * Ptr(V) -> (Mem * V) * (Mem * V -> Mem * Ptr(V))
-    // short: M*P(V) -> (M*V) * (M*V -> M*P(V))
-  load' := λ m p.
-    if shadow p then
-        // p_S: Ptr(V -> A)
-        // v* : V -> A
-        let m2, v* = load m p_S in
-        let m3, v = load m2 p;
-        // p*: P(V) -> A
-        set p* = (wrapped) v* (load ...)
-        (
-            (m3,v), 
-            // r*: 
-            // see above
-        )
-    else
-
-
-Variant 2: Ptr(V)ᵗ = Vᵗ
-  load' : Mem * Ptr(V) -> (Mem * V) * (Mem * V -> Mem * V)
-  load' := λ m p.
-    if shadow p then
-        // p_S: Ptr(V -> A)
-        // v* : V -> A
-        let m2, v* = load m p_S in
-        let m3, v = load m2 p;
-        (
-            (m3,v), 
-            λ s_m s_v.
-                v* s_v
-        )
-    else
-
-
-*/
-
-
-
-
-
-/// meta:
-/// - sigma
-/// - tuple elementwise + sum
-/// - pointer
-/// - function args
-/// - registering
-
-
-
-
-// notes:
-
-// rule syntax
-// .rule args :
-//     lhs -> rhs
-
-// function convention
-// .Cn [[mem, [args]], .Cn [mem, [outs]]]
-// .Cn [[mem, [A, B, C]], .Cn [mem, [X, Y]]]

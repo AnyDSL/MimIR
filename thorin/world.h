@@ -43,6 +43,7 @@ public:
         State(std::string_view name)
             : name(name) {}
 
+        /// [Plain Old Data](https://en.cppreference.com/w/cpp/named_req/PODType)
         struct POD {
             Log log;
             Flags flags;
@@ -146,10 +147,9 @@ public:
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def) {
         assert(!def->name().empty());
-        auto name = def->name();
-        // assert(!move_.externals.contains(name));
-        auto [_, ins] = move_.externals.emplace(name, def);
-        // assert(ins);
+        auto name     = def->name();
+        auto [i, ins] = move_.externals.emplace(def->name(), def);
+        // assert((ins || (def == i->second)) && "make sure the external isn't inserted twice");
     }
     void make_internal(Def* def) { move_.externals.erase(def->name()); }
     bool is_external(const Def* def) { return move_.externals.contains(def->name()); }

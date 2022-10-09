@@ -5,6 +5,7 @@
 
 namespace thorin::autodiff {
 
+/// Replaces remaining zeros (not resolvable) with ⊥.
 class AutoDiffZeroCleanup : public RWPass<AutoDiffZeroCleanup, Lam> {
 public:
     AutoDiffZeroCleanup(PassMan& man)

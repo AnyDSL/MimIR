@@ -8,34 +8,18 @@
 
 namespace thorin::direct {
 
-// void DS2CPS::enter() {
-//     Lam* lam = curr_nom();
-//     if (!lam->isa_nom()) {
-//         lam->world().DLOG("skipped non-nom {}", lam);
-//         return;
-//     }
-//     rewrite_lam(lam);
-
-//     // Scope scope{lam};
-//     // ScopeRewriter rewriter(world(), scope);
-//     // rewriter.old2new.insert(rewritten_.begin(), rewritten_.end());
-//     // auto body = lam->body();
-//     // auto b    = rewriter.rewrite(body);
-//     // lam->set_body(b);
-//     // world().ILOG("rewrote {}", lam);
-//     // if (body != b) world().ILOG("changed body of {}", lam);
-// }
-
 const Def* DS2CPS::rewrite(const Def* def) {
     auto& world = def->world();
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
-        // world.DLOG("callee {} : {}", callee, callee->type());
-        // world.DLOG("arg {} : {}", app->arg(), app->arg()->type());
         if (auto lam = callee->isa_nom<Lam>()) {
             world.DLOG("encountered lam app");
             auto new_lam = rewrite_lam(lam);
+            world.DLOG("new lam: {} : {}", new_lam, new_lam->type());
+            auto arg = app->arg();
+            world.DLOG("arg: {} : {}", arg, arg->type());
             auto new_app = world.app(new_lam, app->arg());
+            world.DLOG("new app: {} : {}", new_app, new_app->type());
             return new_app;
         }
     }
@@ -100,17 +84,5 @@ const Def* DS2CPS::rewrite_lam(Lam* lam) {
 
     return rewritten_[lam];
 }
-
-// const Def* DS2CPS::rewrite(const Def* def) {
-//     world().DLOG("rewrite in ds2cps pass {} : {}", def, def->type());
-//     if (rewritten_.find(def) != rewritten_.end()) {
-//         world().DLOG("Rewrite: {} : {}", def, def->type());
-//         world().DLOG("to {} : {}", rewritten_[def], rewritten_[def]->type());
-//         assert(0);
-//         return rewritten_[def];
-//     }
-
-//     return def;
-// }
 
 } // namespace thorin::direct

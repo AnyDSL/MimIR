@@ -56,14 +56,14 @@ std::vector<int> PipelineBuilder::passes() {
     for (auto iter = phase_extensions_.begin(); iter != phase_extensions_.end(); iter++) {
         keys.push_back(iter->first);
     }
-    std::ranges::sort(keys);
+    std::ranges::stable_sort(keys);
     return keys;
 }
 
 std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
     auto man = std::make_unique<PassMan>(world);
 
-    std::sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), passCmp());
+    std::stable_sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), passCmp());
 
     for (const auto& ext : phase_extensions_[i]) { ext.second(*man); }
 

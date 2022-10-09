@@ -33,8 +33,6 @@ public:
     std::vector<int> passes();
 
 private:
-    // std::map<int, std::vector<std::function<void(PassMan&)>>> phase_extensions_;
-    // std::vector<std::function<void(PassMan&)>> codegen_prep_phase_extensions_;
     std::map<int, PassList> phase_extensions_;
 };
 

@@ -16,7 +16,6 @@ const Def* SetFilter::rewrite(const Def* def) {
         world().DLOG("lambda: {}", lam);
         world().DLOG("current filter is: {}", lam->filter());
         lam->set_filter(filter);
-        // assert(0);
         return v;
     }
 

@@ -1,22 +1,6 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d autodiff %s --output-ll %t.ll --output-thorin - | FileCheck %s
+// RUN: %thorin -d tool -d direct -d autodiff %s --output-ll %t.ll --output-thorin - | FileCheck %s
 
-// a call to a autodiff style function
-// ./build/bin/thorin -d debug -d direct -d autodiff ./lit/autodiff/multiply_autodiff.thorin --output-thorin - -VVVV
-
-// triple take
-/*
-eval_thorin () { 
- ./build/bin/thorin -d debug -d direct -d autodiff $1 --output-thorin $2 -VVVV   
-}
-T0=./lit/autodiff/multiply_autodiff.thorin
-T1=$(mktemp)
-T2=$(mktemp)
-eval_thorin $T0 $T1 && \
-eval_thorin $T1 $T2 && \
-eval_thorin $T2 -
-
-*/
 .import core;
 .import autodiff;
 .import mem;
@@ -41,28 +25,10 @@ eval_thorin $T2 -
     };
 
     .let f_diff = %autodiff.autodiff (.Cn [I32,.Cn[I32]]) f;
-    .let f_diff_cast = 
-        // %core.bitcast 
-        // (
-        //     .Cn [I32, .Cn[I32, .Cn[I32, .Cn[I32]]]],
-        //     %autodiff.autodiff_type (.Cn [I32, .Cn[I32]])
-        // ) 
-        f_diff;
+    .let f_diff_cast = f_diff;
 
     .let c = (42:I32);
     f_diff_cast (c,ret_cont)
 };
 
-
-    // .let b = %Wrap_mul (0:.Nat, 4294967296:.Nat) (3:I32, a);
-
-    // .let c = f (42:I32);
-    // return (mem, c)
-
-// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (.Idx 4294967296)]] = {
-// CHECK-DAG: _[[appId:[_0-9]*]]: ⊥:★ = return_[[returnEtaId:[_0-9]*]] (mem_[[memId]], 42:(.Idx 4294967296));
-// CHECK-DAG: _[[appId]]
-
-// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (.Idx 4294967296)] = {
-// CHECK-DAG: return_[[retAppId:[_0-9]*]]: ⊥:★ = return_[[returnId]] _[[returnEtaVarId]];
-// CHECK-DAG: return_[[retAppId]]
+// CHECK-DAG: return{{.*}}1764084

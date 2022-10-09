@@ -41,17 +41,23 @@ For logging and automatic firing of breakpoints refer to the [Command-Line Refer
 
 Note that you can simply invoke thorin::Def::dump, thorin::Def::write, thorin::World::dump, or thorin::World::write from within [GDB](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_30.html):
 ```gdb
-call def->dump()
-call def->dump(0)
-call def->dump(3)
-call world().write("out.thorin")
+(gdb) call def->dump()
+(gdb) call def->dump(0)
+(gdb) call def->dump(3)
+(gdb) call world().write("out.thorin")
 ```
 In particular, note the different output levels of thorin::Def::dump.
 What is more, you can adjust the output behavior directly from within GDB by modifying thorin::World::flags or thorin::World::log:
 ```gdb
-call world.flags().dump_gid = 1
-call world.flags().dump_recursive = 1
-call world.log().level = 4
+(gdb) call world.flags().dump_gid = 1
+(gdb) call world.flags().dump_recursive = 1
+(gdb) call world.log().level = 4
+```
+Another useful feature is to retrieve a `Def*` from a thorin::Def::gid via thorin::World::gid2def:
+```gdb
+(gdb) p world.gid2def(123);
+$1 = ...
+(gdb) $1->dump();
 ```
 
 ### Conditional Breakpoints
@@ -152,6 +158,8 @@ Use
 cmake .. -Dthorin_DIR=<THORIN_INSTALL_PREFIX>/lib/cmake/thorin
 ```
 to configure the project.
+
+Check out the [demo](@ref demo) dialect for a minimalistic plugin.
 
 ### add_thorin_dialect
 

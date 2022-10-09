@@ -535,3 +535,71 @@ use add f1 f2 = lambda s. add (f1 s) (f2 s)
 
 
 */
+
+
+
+// load : Mem * Ptr(V) -> Mem * V
+
+/* 
+r = m2,v = load (m,p)
+r,r* = (m2,v),r* = load' (m,p)
+args = (m,p)
+
+r* : M*V -> M*P(V)
+args* : M*P(V) -> A
+where args* := λ (sm, sp). m*(sm) + p*(sp)
+  m* will most likely be id or zero
+  r*,p* can be chosen
+r* := λ (sm, sv).
+  // or use other memory
+  let (sm2, ps) = slot V sm in
+  let (sm3) = store (sm2,(ps,sv)) in
+  (sm3,sp)
+r* is closed => can not argue about partial pullbacks
+(but could use load arguments)
+v* is necessarily partial
+
+idea: p* := unpack ptr => sv => plug into loaded shadow pb
+  question: when to load for correct order
+idea: (assume inner pointer for now)
+  1. augment arguments; shadow pointer exists
+  2. construct load*
+    2.1 set p* using current memory (from args) and shadow pointer
+  3. compose with args* ∋ p*
+
+Variant 1: Ptr(V)ᵗ = Ptr(Vᵗ)
+  load' : Mem * Ptr(V) -> (Mem * V) * (Mem * V -> Mem * Ptr(V))
+    // short: M*P(V) -> (M*V) * (M*V -> M*P(V))
+  load' := λ m p.
+    if shadow p then
+        // p_S: Ptr(V -> A)
+        // v* : V -> A
+        let m2, v* = load m p_S in
+        let m3, v = load m2 p;
+        // p*: P(V) -> A
+        set p* = (wrapped) v* (load ...)
+        (
+            (m3,v), 
+            // r*: 
+            // see above
+        )
+    else
+
+
+Variant 2: Ptr(V)ᵗ = Vᵗ
+  load' : Mem * Ptr(V) -> (Mem * V) * (Mem * V -> Mem * V)
+  load' := λ m p.
+    if shadow p then
+        // p_S: Ptr(V -> A)
+        // v* : V -> A
+        let m2, v* = load m p_S in
+        let m3, v = load m2 p;
+        (
+            (m3,v), 
+            λ s_m s_v.
+                v* s_v
+        )
+    else
+
+
+*/
