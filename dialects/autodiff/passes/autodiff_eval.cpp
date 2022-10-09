@@ -35,14 +35,9 @@ const Def* AutoDiffEval::rewrite(const Def* def) {
         world().DLOG("found a autodiff::autodiff of {}", arg);
         // world.DLOG("found a autodiff::autodiff {} to {}",callee,arg);
 
-        if (arg->isa<Lam>()) {
-            // world.DLOG("found a autodiff::autodiff of a lambda");
-            return derive(arg);
-        }
-
+        assert(arg->isa<Lam>());
         // TODO: handle operators analogous 
-
-        assert(0);
+        def = derive(arg);
         return def;
     }
 

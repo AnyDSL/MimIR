@@ -136,7 +136,7 @@ const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, con
         // R if(val == 1)
         // R     return arg;
         DefArray args = arg->projs(val);
-        auto sum      = world.app(world.ax<zero>(), T);
+        auto sum      = op_zero(T);
         // would also be handled by add zero
         if (val >= 1) { sum = args[0]; }
         for (auto i = 1; i < val; ++i) { sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]}); }

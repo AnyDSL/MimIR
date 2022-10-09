@@ -11,8 +11,6 @@
 .let I32 = .Idx 4294967296;
 
 .cn f [[mem : %mem.M, a:I32], ret: .Cn [%mem.M, I32]] = {
-    // is pack
-    // .let b = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (a, a);
     .let b = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (2:I32, a);
     ret (mem, b)
 };

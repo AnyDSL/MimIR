@@ -40,6 +40,9 @@ public:
     const Def* augment_load(const App*, Lam*, Lam*);
     const Def* augment_store(const App*, Lam*, Lam*);
 
+    const Def* autodiff_zero(const Def* mem, Lam* f);
+    const Def* autodiff_zero(const Def* mem, const Def* def);
+
     /// fills partial_pullback and shadow/structure pullback maps
     void create_shadow_id_pb(const Def*);
 
@@ -73,6 +76,10 @@ private:
 
     // TODO: remove?
     Def2Def app_pb;
+
+    Def2Def shadow_pullback_array;
+    Def2Def shadow_gradient_array;
+    const Def* current_mem;
 };
 
 } // namespace thorin::autodiff

@@ -109,6 +109,13 @@ inline const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg) {
     return w.app(w.app(w.ax<malloc>(), {type, w.lit_nat_0()}), {mem, size}, dbg);
 }
 
+inline const Def* op_free(const Def* type, const Def* mem, const Def* ptr, const Def* dbg) {
+    World& w  = type->world();
+    auto ptr_ty = match<Ptr>(ptr->type())->as<App>();
+    auto pointee = ptr_ty->arg(0_s);
+    return w.app(w.app(w.ax<free>(), {pointee, w.lit_nat_0()}), {mem, ptr}, dbg);
+}
+
 inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg) {
     World& w  = type->world();
     auto size = core::op(core::trait::size, type);

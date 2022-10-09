@@ -127,6 +127,7 @@ inline const Def* op_autodiff(const Def* fun) {
 
 inline const Def* op_zero(const Def* A) {
     World& world = A->world();
+    A->dump();
     return world.app(world.ax<zero>(), A);
 }
 

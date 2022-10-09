@@ -2,6 +2,9 @@
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 
+#include "dialects/mem/autogen.h"
+#include "dialects/mem/mem.h"
+
 namespace thorin::autodiff {
 
 // void AutoDiffEval::create_shadow_id_pb(const Def* def) {
@@ -41,6 +44,64 @@ namespace thorin::autodiff {
 // //     // no structure => needs no structure pullback (base case also needs no str. pb because it is shallow)
 // }
 
+const Def* hoa(const Def* def, const Def* arg_ty){
+    if(auto arr = def->isa<Arr>()){
+        auto &world = def->world();
+        auto shape = arr->shape();
+        auto body = hoa(arr->body(), arg_ty);
+        return world.arr(shape, body);
+    }
+
+    auto pb_ty = pullback_type(def, arg_ty);
+    return pb_ty;
+}
+
+const Def* AutoDiffEval::autodiff_zero(const Def* mem, Lam* f) {
+    return autodiff_zero(mem, augmented[f->var()]->proj(0));
+}
+
+const Def* AutoDiffEval::autodiff_zero(const Def* mem, const Def* def) {
+    auto& world = def->world();
+
+    auto ty = def->type();
+
+    if (auto tup = def->isa<Tuple>()) {
+        DefArray ops(tup->ops(), [&](const Def* op) { return autodiff_zero(mem, op); });
+        return world.tuple(ops);
+    }
+/*
+    if (auto var = def->isa<Var>()) {
+        DefArray ops(var->projs(), [&](const Def* op) { return autodiff_zero(op); });
+        return world.tuple(ops);
+    }*/
+
+    if (auto app = ty->isa<App>()) {
+        auto callee = app->callee();
+        // auto args = app->args();
+        world.DLOG("app callee: {} : {} <{}>", callee, callee->type(), callee->node_name());
+        // TODO: can you directly match Tag::Int?
+        if (callee->isa<Idx>()) {
+            // auto size = app->arg(0);
+            auto zero = world.lit_idx(ty, 0, world.dbg("zero"));
+            // world.DLOG("zero_def for int of size {} is {}", size, zero);
+            world.DLOG("zero_def for int is {}", zero);
+            return zero;
+        }
+    } 
+    
+    if(match<mem::M>(ty)){
+        return mem;
+    }
+    
+    if(match<mem::Ptr>(ty)){
+        return shadow_gradient_array[def];
+    }
+
+    def->dump();
+    def->type()->dump();
+    return nullptr;
+}
+
 /// side effect: register pullback
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& world = def->world();
@@ -48,6 +109,9 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         world.DLOG("Derive lambda: {}", def);
         auto deriv_ty = autodiff_type_fun_pi(lam->type());
         auto deriv    = world.nom_lam(deriv_ty, world.dbg(lam->name() + "_deriv"));
+        auto memType = mem::type_mem(world);
+        auto deriv_inner    = world.nom_lam(world.cn({memType}), world.dbg(lam->name() + "_deriv_inner"));
+
 
         // pre register derivative
         // needed for recursion
@@ -78,8 +142,6 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         //     id_pb_scalar
         // );
 
-        auto deriv_all_args  = deriv->var();
-        const Def* deriv_arg = deriv->var((nat_t)0, world.dbg("arg"));
         // R auto deriv_ret = deriv->var((nat_t)1, world.dbg("ret"));
         // R partial_pullback[deriv_arg] = id_pb;
 
@@ -102,9 +164,43 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         //
         // but the DS/CPS special case has to be handled separately
 
+        const Def* var = deriv->var();
+
+        if(match<mem::M>(deriv->dom((nat_t) 0)->proj(0))){
+            auto vars = var->projs();
+            auto arg = vars[0];
+            current_mem = arg->proj(0);
+            auto args = arg->projs();
+            args[0] = deriv_inner->var();
+            arg = world.tuple(args);
+
+            for(auto var : deriv->var((nat_t)0)->projs()){
+                auto var_ty = var->type();
+                if(auto ptr = match<mem::Ptr>(var_ty)){
+
+                    auto [mem2, gradient_ptr] = mem::op_malloc(ptr->arg(0), current_mem, world.dbg("gradient_arr"))->projs<2>();
+                    auto pb_ty = hoa(ptr->arg(0), arg_ty);
+                    auto [mem3, pb_ptr] = mem::op_malloc(pb_ty, mem2, world.dbg("pullback_arr"))->projs<2>();
+                    current_mem = mem3;
+
+                    shadow_gradient_array[var] = gradient_ptr;
+                    shadow_pullback_array[var] = pb_ptr;
+                    var_ty->dump();
+                }
+            }
+            
+            vars[0] = arg;
+            var = world.tuple(vars);
+        }
+
+        augmented[lam->var()] = var;
+
+        //auto deriv_all_args  = deriv->var();
+
         // TODO: check identity
         // could use identity tangent(arg_ty) = tangent(augment(arg_ty))
         // with deriv_arg->type() = augment(arg_ty)
+        const Def* deriv_arg = deriv->var((nat_t)0, world.dbg("arg"));
         auto arg_id_pb              = id_pullback(arg_ty);
         partial_pullback[deriv_arg] = arg_id_pb;
         // set no pullback to all_arg and return
@@ -115,11 +211,11 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         auto ret_pb               = zero_pullback(lam->var(1)->type(), arg_ty);
         partial_pullback[ret_var] = ret_pb;
 
-        shadow_pullback[deriv_all_args] = world.tuple({arg_id_pb, ret_pb});
+        shadow_pullback[var] = world.tuple({arg_id_pb, ret_pb});
         world.DLOG("pullback for argument {} : {} is {} : {}", deriv_arg, deriv_arg->type(), arg_id_pb,
                    arg_id_pb->type());
-        world.DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args],
-                   shadow_pullback[deriv_all_args]->type());
+        world.DLOG("args shadow pb is {} : {}", shadow_pullback[var],
+                   shadow_pullback[var]->type());
 
         // TODO: remove as this is subsumed by lam->deriv
         // R const Def* lam_ret   = lam->var(1, world.dbg("ret"));
@@ -136,7 +232,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         // TODO: transively remove
         // arguments (maybe not necessary)
         // auto src_arg = lam->var()
-        augmented[lam->var()] = deriv->var();
+        
         world.DLOG("Associate vars {} with {}", lam->var(), deriv->var());
 
         // already contains the correct application of
@@ -146,6 +242,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         //   this is needed for continuations (without closure conversion)
         //   but also essentially for the return continuation
 
+
         // reminder of types:
         // expression e: B
         //   implicit: e_fun: A -> B
@@ -153,8 +250,12 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         // partial derivative: e': B' × (B* -> A*)
         //   implicit: e'_fun: A' -> B' × (B* -> A*)
         auto new_body = augment(lam->body(), lam, deriv);
+        deriv_inner->set_filter(true);
+        deriv_inner->set_body(new_body);
+
         deriv->set_filter(true);
-        deriv->set_body(new_body);
+        deriv->set_body(world.app(deriv_inner, {current_mem}));
+        deriv->dump(10);
 
         return deriv;
     }

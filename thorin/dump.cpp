@@ -108,13 +108,13 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
 
     if (auto type = u->isa<Type>()) {
         auto level = as_lit(type->level()); // TODO other levels
-        return print(os, level == 0 ? "★" : "□");
+        return print(os, level == 0 ? "*" : "□");
     } else if (u->isa<Nat>()) {
         return print(os, ".Nat");
     } else if (auto bot = u->isa<Bot>()) {
-        return print(os, "⊥:{}", bot->type());
+        return print(os, ".bot:{}", bot->type());
     } else if (auto top = u->isa<Top>()) {
-        return print(os, "⊤:{}", top->type());
+        return print(os, ".top:{}", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
         const auto& name = axiom->name();
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
@@ -129,8 +129,8 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto pi = u->isa<Pi>()) {
         if (pi->is_cn()) return print(os, ".Cn {}", pi->dom());
         if (auto nom = pi->isa_nom<Pi>(); nom && nom->var())
-            return print(os, "Π {}: {} → {}", nom->var(), pi->dom(), pi->codom());
-        return print(os, "Π {} → {}", pi->dom(), pi->codom());
+            return print(os, "Π {}: {} -> {}", nom->var(), pi->dom(), pi->codom());
+        return print(os, "Π {} -> {}", pi->dom(), pi->codom());
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto int_ = u->isa<Idx>()) {
@@ -153,12 +153,12 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
     } else if (auto arr = u->isa<Arr>()) {
         if (auto nom = arr->isa_nom<Arr>(); nom && nom->var())
-            return print(os, "«{}: {}; {}»", nom->var(), nom->shape(), nom->body());
-        return print(os, "«{}; {}»", arr->shape(), arr->body());
+            return print(os, "<<{}: {}; {}>>", nom->var(), nom->shape(), nom->body());
+        return print(os, "<<{}; {}>>", arr->shape(), arr->body());
     } else if (auto pack = u->isa<Pack>()) {
         if (auto nom = pack->isa_nom<Pack>(); nom && nom->var())
-            return print(os, "‹{}: {}; {}›", nom->var(), nom->shape(), nom->body());
-        return print(os, "‹{}; {}›", pack->shape(), pack->body());
+            return print(os, "<{}: {}; {}>", nom->var(), nom->shape(), nom->body());
+        return print(os, "<{}; {}>", pack->shape(), pack->body());
     } else if (auto proxy = u->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
     } else if (auto bound = isa_bound(*u)) {

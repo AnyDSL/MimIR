@@ -44,40 +44,6 @@ const Def* zero_pullback(const Def* E, const Def* A) {
 //  TODO: rename to op_tangent_type
 const Def* tangent_type_fun(const Def* ty) { return ty; }
 
-const Def* equip_mem(const Def* def){
-    auto& world = def->world();
-    auto memType = mem::type_mem(world);
-    if(match<mem::M>(def->proj(0))){
-        return def;
-    }
-
-    def->dump();
-    if(def->isa<Sigma>()){
-        size_t size = def->num_ops() + 1;
-        DefArray newOps(size, [&](size_t i){
-            return i == 0 ? memType : def->op(i - 1);
-        });
-
-        return world.sigma(newOps);
-    }else if(auto pack = def->isa<Pack>()){
-        auto count = as_lit(pack->shape());
-        DefArray newOps(count + 1, [&](size_t i){
-            return i == 0 ? memType : pack->body();
-        });
-
-        return world.sigma(newOps);
-    }else if(auto pack = def->isa<Arr>()){
-        auto count = as_lit(pack->shape());
-        DefArray newOps(count + 1, [&](size_t i){
-            return i == 0 ? memType : pack->body();
-        });
-
-        return world.sigma(newOps);
-    }else{
-        return world.sigma({memType, def});
-    }
-}
-
 /// computes pb type E* -> A*
 /// E - type of the expression (return type for a function)
 /// A - type of the argument (point of orientation resp. derivative - argument type for partial pullbacks)
@@ -186,7 +152,7 @@ const Def* zero_def(const Def* T) {
         auto shape = arr->shape();
         auto body  = arr->body();
         // auto inner_zero = zero_def(body);
-        auto inner_zero = world.app(world.ax<zero>(), body);
+        auto inner_zero = op_zero(body);
         auto zero_arr   = world.pack(shape, inner_zero);
         world.DLOG("zero_def for array of shape {} with type {}", shape, body);
         world.DLOG("zero_arr: {}", zero_arr);
@@ -206,14 +172,23 @@ const Def* zero_def(const Def* T) {
             return zero;
         }
     } else if (auto sig = T->isa<Sigma>()) {
-        DefArray ops(sig->ops(), [&](const Def* op) { return world.app(world.ax<zero>(), op); });
+        DefArray ops(sig->ops(), [&](const Def* op) { return op_zero(op); });
         return world.tuple(ops);
+    }
+    
+    if(match<mem::M>(T)){
+        return world.bot(mem::type_mem(world));
+    }
+    
+    if(match<mem::Ptr>(T)){
+        auto lit_zero = world.lit_int_(64, 0);
+        return core::op_bitcast(T, lit_zero);
     }
 
     // or return bot
     // assert(0);
     // or id => zero T
-    // return world.app(world.ax<zero>(), T);
+    T->dump();
     return nullptr;
 }
 
@@ -226,6 +201,121 @@ const Def* op_sum(const Def* T, DefArray defs) {
 } // namespace thorin::autodiff
 
 namespace thorin {
+
+
+
+const Pi* cn_mem_wrap(const Pi* pi){
+    auto &world = pi->world();
+    auto dom = pi->dom();
+
+    const Pi* result;
+    if(pi->ret_pi()){    
+        auto arg = equip_mem(dom->proj(0));
+        auto ret_pi = cn_mem_wrap(dom->proj(1)->as<Pi>());
+        result = world.cn({arg, ret_pi});
+    }else{
+        auto arg = equip_mem(dom);
+        result = world.cn({arg});
+    }
+
+    return result;
+}
+
+const Def* lam_mem_wrap(const Def* lam){
+    auto &world = lam->world();
+    auto type = lam->type()->as<Pi>();
+    if(!match<mem::M>(type->dom(0)->proj(0))){
+
+        auto wrap = cn_mem_wrap(type);
+
+        auto mem_lam = world.nom_lam(wrap, world.dbg("memorized_" + lam->name()));
+        auto lam_return = world.nom_lam(type->ret_pi(), world.dbg("memorized_return_" + lam->name()));
+
+        auto mem_vars = mem_lam->var((nat_t)0)->projs();
+        auto mem = mem_vars[0];
+        auto vars = lam_return->vars();
+
+        auto compound = world.builder().add(mem).add(vars).tuple();
+        auto compound2 = world.builder().add(mem_vars.skip_front()).add(lam_return).tuple();
+
+        lam_return->set_body(
+            world.app(mem_lam->ret_var(), compound)
+        );
+
+        mem_lam->set_body(
+            world.app(lam, compound2)
+        );
+
+        mem_lam->set_filter(true);
+        lam_return->set_filter(true);
+        return mem_lam;
+    }
+
+    return lam;
+}
+
+const Def* get_mem(const Def* def){
+    auto& world = def->world();
+    
+    if(match<mem::M>(def->type()->op(0))){
+        return def->proj(0);
+    } 
+
+    return nullptr;
+}
+
+const Def* remove_mem(const Def* def){
+    auto& world = def->world();
+
+    if(def->isa<Sigma>() && match<mem::M>(def->op(0))){
+        auto ops = def->ops();
+        return world.sigma(ops.skip_front(1));
+    }else if(match<mem::M>(def->type()->op(0))){
+        auto ops = def->projs();
+        return world.tuple(ops.skip_front(1));
+    } 
+
+    return def;
+}
+
+const Def* equip_mem(const Def* def){
+    auto& world = def->world();
+    auto memType = mem::type_mem(world);
+    if(match<mem::M>(def->proj(0))){
+        return def;
+    }
+
+    if(def->isa<Sigma>()){
+        size_t size = def->num_ops() + 1;
+        DefArray newOps(size, [&](size_t i){
+            return i == 0 ? memType : def->op(i - 1);
+        });
+
+        return world.sigma(newOps);
+    }else if(auto pack = def->isa<Pack>()){
+        auto count = as_lit(pack->shape());
+        DefArray newOps(count + 1, [&](size_t i){
+            return i == 0 ? memType : pack->body();
+        });
+
+        return world.sigma(newOps);
+    }else if(auto pack = def->isa<Arr>()){
+        auto count = as_lit(pack->shape());
+        DefArray newOps(count + 1, [&](size_t i){
+            return i == 0 ? memType : pack->body();
+        });
+
+        return world.sigma(newOps);
+    }else{
+        return world.sigma({memType, def});
+    }
+}
+
+const Def* continuation_codom(const Def* E) {
+    auto pi = E->as<Pi>();
+    assert(pi != NULL);
+    return pi->dom(1)->as<Pi>()->dom();
+}
 
 bool is_continuation_type(const Def* E) {
     if (auto pi = E->isa<Pi>()) { return pi->codom()->isa<Bot>(); }
@@ -262,12 +352,6 @@ const Def* continuation_dom(const Def* E) {
     return pi->dom(0);
 }
 
-const Def* continuation_codom(const Def* E) {
-    auto pi = E->as<Pi>();
-    assert(pi != NULL);
-    return pi->dom(1)->as<Pi>()->dom();
-}
-
 /// high level
 /// f: B -> C
 /// g: A -> B
@@ -287,12 +371,22 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     world.DLOG("compose g (A->B): {} : {}", g, g->type());
     assert(is_returning_continuation(f));
     assert(is_returning_continuation(g));
+    
+    f = lam_mem_wrap(f);
+    g = lam_mem_wrap(g);
 
     auto F = f->type()->as<Pi>();
     auto G = g->type()->as<Pi>();
 
+    auto is_mem = match<mem::M>(F->dom(0)->proj(0));
+
+    F->dump();
+    G->dump();
+
     auto A = continuation_dom(G);
     auto B = continuation_codom(G);
+
+    auto B_hat = continuation_dom(F);
     auto C = continuation_codom(F);
     // better handled by application type checks
     // auto B2 = continuation_dom(F);
@@ -307,7 +401,7 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     auto H     = world.cn({A, world.cn(C)});
     auto Hcont = world.cn(B);
 
-    auto h     = world.nom_lam(H, world.dbg("comp_" + f->name() + "_" + g->name()));
+    auto h     = world.nom_lam(H,  world.dbg("comp_" + f->name() + "_" + g->name()));
     auto hcont = world.nom_lam(Hcont, world.dbg("comp_" + f->name() + "_" + g->name() + "_cont"));
 
     h->app(true, g, {h->var((nat_t)0), hcont});

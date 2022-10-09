@@ -221,7 +221,8 @@ std::string Emitter::convert_ret_pi(const Pi* pi) {
 void Emitter::start() {
     Super::start();
 
-    ostream() << "declare i8* @malloc(i64)" << '\n'; // HACK
+    ostream() << "declare i8* @calloc(i64)" << '\n'; // HACK
+    ostream() << "declare void @free(i8*)" << '\n'; // HACK
     // SJLJ intrinsics (GLIBC Versions)
     ostream() << "declare i32 @_setjmp(i8*) returns_twice" << '\n';
     ostream() << "declare void @longjmp(i8*, i32) noreturn" << '\n';
@@ -727,8 +728,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
         auto ptr_t = convert(force<mem::Ptr>(def->proj(1)->type()));
-        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
+        bb.assign(name + ".i8", "call i8* @calloc(i64 {})", size);
         return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
+    }  else if (auto free = match<mem::free>(def)) {
+        emit_unsafe(free->arg(0));
+        auto ptr  = emit(free->arg(1));
+        auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
+
+        bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
+        bb.tail("call void @free(i8* {})", name + ".i8");
+        return {};
     } else if (auto mslot = match<mem::mslot>(def)) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
@@ -817,6 +826,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
         return globals_[global] = name;
     }
+    def->dump();
+    def->dump();
+    def->dump();
 
     unreachable(); // not yet implemented
 }
