@@ -1,43 +1,3 @@
-add_thorin_dialect(affine
-    SOURCES
-        affine/affine.cpp
-        affine/affine.h
-        affine/passes/lower_for.cpp
-        affine/passes/lower_for.h
-    DEPENDS
-        core
-    INSTALL
-)
-
-add_thorin_dialect(autodiff
-    SOURCES
-        autodiff/autodiff.cpp
-        autodiff/autodiff.h
-        autodiff/passes/autodiff_eval.cpp
-        autodiff/passes/autodiff_eval.h
-        autodiff/passes/autodiff_zero.cpp
-        autodiff/passes/autodiff_zero.h
-        autodiff/passes/autodiff_zero_cleanup.cpp
-        autodiff/passes/autodiff_zero_cleanup.h
-        autodiff/passes/autodiff_ext_cleanup.cpp
-        autodiff/passes/autodiff_ext_cleanup.h
-        autodiff/auxiliary/autodiff_aux.cpp
-        autodiff/auxiliary/autodiff_aux.h
-        autodiff/auxiliary/autodiff_rewrite_inner.cpp
-        autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
-        autodiff/normalizers.cpp
-    DEPENDS
-        mem
-        core
-        clos
-        tool
-        affine
-        direct
-    HEADER_DEPENDS
-        mem
-    INSTALL
-)
-
 add_thorin_dialect(clos
     SOURCES
         clos/clos.cpp
@@ -83,20 +43,6 @@ add_thorin_dialect(demo
     INSTALL
 )
 
-add_thorin_dialect(direct
-    SOURCES
-        direct/direct.cpp
-        direct/direct.h
-        direct/passes/ds2cps.cpp
-        direct/passes/ds2cps.h
-        direct/passes/cps2ds.cpp
-        direct/passes/cps2ds.h
-        direct/normalizers.cpp
-    DEPENDS
-        tool
-    INSTALL
-)
-
 add_thorin_dialect(mem
     SOURCES
         mem/mem.cpp
@@ -132,5 +78,59 @@ add_thorin_dialect(tool
         tool/passes/set_filter.h
         tool/passes/set_filter.cpp
         tool/normalizers.cpp
+    INSTALL
+)
+
+add_thorin_dialect(direct
+    SOURCES
+        direct/direct.cpp
+        direct/direct.h
+        direct/passes/ds2cps.cpp
+        direct/passes/ds2cps.h
+        direct/passes/cps2ds.cpp
+        direct/passes/cps2ds.h
+        direct/normalizers.cpp
+    DEPENDS
+        tool
+    INSTALL
+)
+
+add_thorin_dialect(affine
+    SOURCES
+        affine/affine.cpp
+        affine/affine.h
+        affine/passes/lower_for.cpp
+        affine/passes/lower_for.h
+    DEPENDS
+        core
+    INSTALL
+)
+
+add_thorin_dialect(autodiff
+    SOURCES
+        autodiff/autodiff.cpp
+        autodiff/autodiff.h
+        autodiff/passes/autodiff_eval.cpp
+        autodiff/passes/autodiff_eval.h
+        autodiff/passes/autodiff_zero.cpp
+        autodiff/passes/autodiff_zero.h
+        autodiff/passes/autodiff_zero_cleanup.cpp
+        autodiff/passes/autodiff_zero_cleanup.h
+        autodiff/passes/autodiff_ext_cleanup.cpp
+        autodiff/passes/autodiff_ext_cleanup.h
+        autodiff/auxiliary/autodiff_aux.cpp
+        autodiff/auxiliary/autodiff_aux.h
+        autodiff/auxiliary/autodiff_rewrite_inner.cpp
+        autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
+        autodiff/normalizers.cpp
+    DEPENDS
+        mem
+        core
+        clos
+        tool
+        affine
+        direct
+    HEADER_DEPENDS
+        mem
     INSTALL
 )
