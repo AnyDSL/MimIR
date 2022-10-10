@@ -35,25 +35,25 @@
     ret b
 };
 
-// .cn g [a:R32, ret: .Cn [R32, .Cn [R32, .Cn [R32]]]] = {
-//     .let f_diff = %autodiff.autodiff (.Cn [R32,.Cn[R32]]) f;
-//     f_diff (a,ret)
-// };
+.cn g [a:R32, ret: .Cn [R32, .Cn [R32, .Cn [R32]]]] = {
+    .let f_diff = %autodiff.autodiff (.Cn [R32,.Cn[R32]]) f;
+    f_diff (a,ret)
+};
 
-.cn .extern test [[], ret: .Cn [R32]] = {
-    // .cn inner [r:R32, pb:.Cn [R32, .Cn [R32]]] = {
-    //     .cn pb_rec p::[R32] = {
-    //         // ret (5.0:R32)
-    //         ret r
-    //     };
-    //     pb (1.0:R32, pb_rec)
+.cn .extern test [[], ret: .Cn [[R32,R32],[R32,R32]]] = {
+    .cn inner [r:R32, pb:.Cn [R32, .Cn [R32]]] = {
+        .cn pb_rec p::[R32] = {
+            // ret (5.0:R32)
+            ret ((25.0:R32,10.0:R32),(r,p))
+        };
+        pb (1.0:R32, pb_rec)
+    };
+    g (5.0:R32, inner)
+
+
+    // .cn pb_rec p::[R32] = {
+    //     ret (25.0:R32,p)
     // };
-    // g (5.0:R32, inner)
-
-
-    //     .cn pb_rec p::[R32] = {
-    //         ret p
-    //     };
 
     // f (5.0:R32, pb_rec)
 
@@ -61,10 +61,9 @@
     // ret (6.0:R32)
 
     // .let b = %core.rop.mul (0, _32) (2.0:R32, 3.0:R32);
-    .let b = 6.0:R32;
-    ret b
+    // .let b = 6.0:R32;
+    // ret b
 };
 
-// could return pair of (result, pb)
 
-// CHECK-DAG: return{{.*}}176484
+// CHECK-DAG: ret{{.*}}‹2;{{.*}}›
