@@ -23,10 +23,7 @@ const Def* normalize_autodiff_type(const Def* type, const Def* callee, const Def
     return world.raw_app(callee, arg, dbg);
 }
 
-const Def* normalize_tangent_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
-    return tangent_type_fun(arg);
-}
+const Def* normalize_tangent_type(const Def*, const Def*, const Def* arg, const Def*) { return tangent_type_fun(arg); }
 
 /// Currently this normalizer does nothing.
 /// We usually want to keep zeros as long as possible to avoid unnecessary allocations.
@@ -76,7 +73,7 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
                             {world.extract(a, pack->var()), world.extract(b, pack->var())}));
         world.DLOG("pack {}", pack);
         return pack;
-    } else if (auto size = Idx::size(type)) {
+    } else if (Idx::size(type)) {
         world.DLOG("add int");
         auto width = as_lit(world.iinfer(a));
         world.DLOG("width {}", width);
@@ -84,8 +81,7 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
             world.app(world.app(world.ax(core::wrap::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
         world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
         return int_add;
-    } else if (auto app = T->isa<App>()) {
-        auto callee = app->callee();
+    } else if (T->isa<App>()) {
         assert(0 && "not handled");
     }
     // TODO: mem stays here (only resolved after direct simplification)
@@ -105,7 +101,7 @@ const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, con
         auto sum      = world.app(world.ax<zero>(), T);
         // This special case would also be handled by add zero
         if (val >= 1) { sum = args[0]; }
-        for (auto i = 1; i < val; ++i) { sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]}); }
+        for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]});
         return sum;
     }
     assert(0);

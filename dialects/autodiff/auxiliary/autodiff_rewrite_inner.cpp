@@ -333,48 +333,34 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         auto arg    = app->arg();
         world.DLOG("Augment application: app {} with {}", callee, arg);
         return augment_app(app, f, f_diff);
-    }
-
-    else if (auto ext = def->isa<Extract>()) {
+    } else if (auto ext = def->isa<Extract>()) {
         auto tuple = ext->tuple();
         auto index = ext->index();
         world.DLOG("Augment extract: {} #[{}]", tuple, index);
         return augment_extract(ext, f, f_diff);
-    }
-
-    else if (auto var = def->isa<Var>()) {
+    } else if (auto var = def->isa<Var>()) {
         world.DLOG("Augment variable: {}", var);
         return augment_var(var, f, f_diff);
-    }
-
-    else if (auto lam = def->isa_nom<Lam>()) {
+    } else if (auto lam = def->isa_nom<Lam>()) {
         world.DLOG("Augment nom lambda: {}", lam);
         return augment_lam(lam, f, f_diff);
     } else if (auto lam = def->isa<Lam>()) {
         world.ELOG("Augment lambda: {}", lam);
         assert(false && "can not handle non-nominal lambdas");
-    }
-
-    else if (auto lit = def->isa<Lit>()) {
+    } else if (auto lit = def->isa<Lit>()) {
         world.DLOG("Augment literal: {}", def);
         return augment_lit(lit, f, f_diff);
-    }
-
-    else if (auto tup = def->isa<Tuple>()) {
+    } else if (auto tup = def->isa<Tuple>()) {
         world.DLOG("Augment tuple: {}", def);
         return augment_tuple(tup, f, f_diff);
-    }
-
-    else if (auto pack = def->isa<Pack>()) {
+    } else if (auto pack = def->isa<Pack>()) {
         // TODO: handle nom packs (dependencies in the pack) (=> see paper about vectors)
         auto shape = pack->arity(); // TODO: arity vs shape
         auto body  = pack->body();
         world.DLOG("Augment pack: {} : {} with {}", shape, shape->type(), body);
         return augment_pack(pack, f, f_diff);
-    }
-
-    //  TODO: move concrete handling to own function / file / directory (file per dialect)
-    else if (auto ax = def->isa<Axiom>()) {
+    } else if (auto ax = def->isa<Axiom>()) {
+        //  TODO: move concrete handling to own function / file / directory (file per dialect)
         world.DLOG("Augment axiom: {} : {}", ax, ax->type());
         world.DLOG("axiom curry: {}", ax->curry());
         world.DLOG("axiom flags: {}", ax->flags());
@@ -397,7 +383,6 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     }
 
     // TODO: handle Pi for axiom app
-
     // TODO: remaining (lambda, axiom)
 
     world.ELOG("did not expect to augment: {} : {}", def, def->type());
