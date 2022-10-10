@@ -637,6 +637,24 @@ public:
     friend class World;
 };
 
+/// Retrieves Infer::arg from @p def
+inline const Def* refer(const Def* def) {
+    if (auto infer = def->isa<Infer>(); infer && infer->op()) return infer->op();
+    return def;
+}
+
+/// Helper class to retrieve Infer::arg if present.
+class Refer {
+    Refer(const Def* def)
+        : def_(def) {}
+
+    const Def* operator*() const { return refer(def_); }
+    const Def* operator->() const { return refer(def_); }
+
+private:
+    const Def* def_;
+};
+
 /// @deprecated A global variable in the data segment.
 /// A Global may be mutable or immutable.
 /// @attention WILL BE REMOVED.
