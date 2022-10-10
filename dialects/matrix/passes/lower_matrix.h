@@ -49,7 +49,7 @@ namespace thorin::matrix {
 ///       write (output, (i_0, ..., i_{n-1}), s)
 /// ```
 /// TODO: identify patterns and emit specialized operations like matrix product (blas)
-class LowerMatrix : public RWPass<Lam> {
+class LowerMatrix : public RWPass<LowerMatrix, Lam> {
 public:
     LowerMatrix(PassMan& man)
         : RWPass(man, "lower_matrix") {}

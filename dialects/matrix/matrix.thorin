@@ -293,31 +293,31 @@ let multiiter f n S:=
 
 // TODO: introduce dummies
 // dummy = has correct type but can not produce code (should always be eliminated)
-.ax %matrix.mapReduce: 
-    // out shape depends on in shape but is complex
-    Π [n: .Nat, S: «n; .Nat», T: *, // out shape
-        m: .Nat, // number of inputs
-        NI: «m; .Nat», // input dimensions
-        TI: «m; *», // input types
-        SI: «i:m; «NI#i; .Nat»» // input shapes
-    ] -> 
-    // main arguments
-    [
-        mem: %mem.M, // memory
-        zero: T, // initial value
-        add: [T,T]->T, // reduction operation
-        mul: [%mem.M,TI]->[%mem.M,T], // inner combination
-        // out_index not needed => always ij (0 ... n) for n dimensions
-        input:
-            «i:m; 
-                [
-                    «NI#i;.Nat»,
-                    %matrix.Mat (NI#i,SI#i,TI#i)
-                ]
-            »
-    ] ->
-    [%mem.M, %matrix.Mat (n,S,T)],
-    normalize_mapReduce;
+// .ax %matrix.mapReduce: 
+//     // out shape depends on in shape but is complex
+//     Π [n: .Nat, S: «n; .Nat», T: *, // out shape
+//         m: .Nat, // number of inputs
+//         NI: «m; .Nat», // input dimensions
+//         TI: «m; *», // input types
+//         SI: «i:m; «NI#i; .Nat»» // input shapes
+//     ] -> 
+//     // main arguments
+//     [
+//         mem: %mem.M, // memory
+//         zero: T, // initial value
+//         add: [T,T]->T, // reduction operation
+//         mul: [%mem.M,TI]->[%mem.M,T], // inner combination
+//         // out_index not needed => always ij (0 ... n) for n dimensions
+//         input:
+//             «i:m; 
+//                 [
+//                     «NI#i;.Nat»,
+//                     %matrix.Mat (NI#i,SI#i,TI#i)
+//                 ]
+//             »
+//     ] ->
+//     [%mem.M, %matrix.Mat (n,S,T)],
+//     normalize_mapReduce;
 
 // .lam .extern snd 
 //     Π [T:*] -> [a:T,b:T] -> T = {.tt, b};
