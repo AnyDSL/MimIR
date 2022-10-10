@@ -1,6 +1,7 @@
 var namespacethorin =
 [
     [ "affine", "namespacethorin_1_1affine.html", "namespacethorin_1_1affine" ],
+    [ "autodiff", "namespacethorin_1_1autodiff.html", "namespacethorin_1_1autodiff" ],
     [ "clos", "namespacethorin_1_1clos.html", "namespacethorin_1_1clos" ],
     [ "core", "namespacethorin_1_1core.html", "namespacethorin_1_1core" ],
     [ "demo", "namespacethorin_1_1demo.html", [
@@ -234,9 +235,12 @@ var namespacethorin =
     [ "bitcast", "namespacethorin.html#a35ef19aa33b6c70ef2aca7bf23009527", null ],
     [ "bitwidth2size", "namespacethorin.html#ab061c9551c28a8be9a8b97444b38ab9b", null ],
     [ "breakpoint", "namespacethorin.html#a7ec2df0cc38989e607e76de0491ef48b", null ],
+    [ "compose_continuation", "namespacethorin.html#acf49208b60df987a099eb7169d5f9b1a", null ],
     [ "concat", "namespacethorin.html#a78f69bd0bad07415aba080f4cdb39a89", null ],
     [ "concat", "namespacethorin.html#a3871d8e6d247d00a69094936175c20e1", null ],
     [ "concat", "namespacethorin.html#a6a5fe614398a8848c84a14253a2a1497", null ],
+    [ "continuation_codom", "namespacethorin.html#a1ccde7c1c9adff3ffb13e6e446172d20", null ],
+    [ "continuation_dom", "namespacethorin.html#ade26ba34cbcb194e6b96ccfc21082998", null ],
     [ "end_mask", "namespacethorin.html#a1d6a97e091228875812bc54c1bc5b235", null ],
     [ "err", "namespacethorin.html#aac934f1d1e901ba18050dd1302d65507", null ],
     [ "err", "namespacethorin.html#a76230671e563449407228fa716175097", null ],
@@ -264,7 +268,12 @@ var namespacethorin =
     [ "id", "namespacethorin.html#ad96bfe437b4653d610aaaaa36251bdac", null ],
     [ "infer_sigma", "namespacethorin.html#ab00a9a6925103ec81b0aa99c38c00f48", null ],
     [ "infer_type_level", "namespacethorin.html#ab569c2d6da9167b91cb5ce868a67e06c", null ],
+    [ "is_continuation", "namespacethorin.html#ac6e27d72d2211d13e189af49ddc717f4", null ],
+    [ "is_continuation_type", "namespacethorin.html#a293eec4d876c70c9376000e5b9120e04", null ],
+    [ "is_direct_style_function", "namespacethorin.html#a55a7da963656b8c3f65c93d3fc00e32e", null ],
     [ "is_free", "namespacethorin.html#a6047fecaa815c67296485564a7874bf1", null ],
+    [ "is_open_continuation", "namespacethorin.html#a04d7ea39b2aa86ac8a25f569e0c6d38a", null ],
+    [ "is_returning_continuation", "namespacethorin.html#a7136a2402b395156401826b0041b771e", null ],
     [ "is_shape", "namespacethorin.html#ab4e8096218f5bbe9c8076b54793b1342", null ],
     [ "is_sigma_or_arr", "namespacethorin.html#ac6eab898b3d47f7bfc303837cbfc25e0", null ],
     [ "is_top_level", "namespacethorin.html#afe55cb6b936b3de14b79b554d8fa1026", null ],

@@ -132,6 +132,18 @@ var hierarchy =
       [ "thorin::RWPass< LowerFor, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::affine::LowerFor", "classthorin_1_1affine_1_1LowerFor.html", null ]
       ] ],
+      [ "thorin::RWPass< AutoDiffEval, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::autodiff::AutoDiffEval", "classthorin_1_1autodiff_1_1AutoDiffEval.html", null ]
+      ] ],
+      [ "thorin::RWPass< AutoDiffExternalCleanup, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::autodiff::AutoDiffExternalCleanup", "classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html", null ]
+      ] ],
+      [ "thorin::RWPass< AutoDiffZero, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::autodiff::AutoDiffZero", "classthorin_1_1autodiff_1_1AutoDiffZero.html", null ]
+      ] ],
+      [ "thorin::RWPass< AutoDiffZeroCleanup, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::autodiff::AutoDiffZeroCleanup", "classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html", null ]
+      ] ],
       [ "thorin::RWPass< BranchClosElim, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::clos::BranchClosElim", "classthorin_1_1clos_1_1BranchClosElim.html", null ]
       ] ],
