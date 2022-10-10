@@ -9,10 +9,10 @@
 
 namespace thorin::clos {
 
-class BranchClosElim : public RWPass<Lam> {
+class BranchClosElim : public RWPass<BranchClosElim, Lam> {
 public:
     BranchClosElim(PassMan& man)
-        : RWPass<Lam>(man, "unbox_closures")
+        : RWPass(man, "unbox_closures")
         , branch2dropped_() {}
 
     const Def* rewrite(const Def*) override;

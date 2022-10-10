@@ -7,44 +7,75 @@
 
 namespace thorin {
 
-class Binder;
+class Infer;
+class Sigma;
 
-class Ptrn {
+namespace fe {
+
+class Scopes;
+
+class AST {
 public:
-    Ptrn(Loc loc)
+    AST(Loc loc)
         : loc_(loc) {}
-    virtual ~Ptrn() {}
+    virtual ~AST(){};
 
-    virtual void scrutinize(Binder&, const Def*) const = 0;
+    Loc loc() const { return loc_; }
 
 private:
     Loc loc_;
 };
 
-class IdPtrn : public Ptrn {
+/*
+ * Pattern
+ */
+
+class Ptrn : public AST {
 public:
-    IdPtrn(Loc loc, Sym sym, const Def* type)
-        : Ptrn(loc)
+    Ptrn(Loc loc, Sym sym, const Def* type)
+        : AST(loc)
         , sym_(sym)
         , type_(type) {}
 
-    void scrutinize(Binder&, const Def*) const override;
+    Sym sym() const { return sym_; }
+    bool is_anonymous() const { return sym_.is_anonymous(); }
+    virtual void bind(Scopes&, const Def*) const = 0;
+    virtual const Def* type(World&) const        = 0;
 
-private:
+protected:
     Sym sym_;
-    const Def* type_;
+    mutable const Def* type_;
+};
+
+using Ptrns = std::deque<std::unique_ptr<Ptrn>>;
+
+class IdPtrn : public Ptrn {
+public:
+    IdPtrn(Loc loc, Sym sym, const Def* type)
+        : Ptrn(loc, sym, type) {}
+
+    void bind(Scopes&, const Def*) const override;
+    const Def* type(World&) const override;
 };
 
 class TuplePtrn : public Ptrn {
 public:
-    TuplePtrn(Loc loc, std::deque<std::unique_ptr<Ptrn>>&& ptrns)
-        : Ptrn(loc)
-        , ptrns_(std::move(ptrns)) {}
+    TuplePtrn(Loc loc, Sym sym, Ptrns&& ptrns, const Def* type, std::vector<Infer*>&& infers)
+        : Ptrn(loc, sym, type)
+        , ptrns_(std::move(ptrns))
+        , infers_(std::move(infers)) {}
 
-    void scrutinize(Binder&, const Def*) const override;
+    const Ptrns& ptrns() const { return ptrns_; }
+    const Ptrn* ptrn(size_t i) const { return ptrns_[i].get(); }
+    size_t num_ptrns() const { return ptrns().size(); }
+
+    void bind(Scopes&, const Def*) const override;
+    const Def* type(World&) const override;
 
 private:
-    std::deque<std::unique_ptr<Ptrn>> ptrns_;
+    Ptrns ptrns_;
+    std::vector<Infer*> infers_;
 };
 
+} // namespace fe
 } // namespace thorin

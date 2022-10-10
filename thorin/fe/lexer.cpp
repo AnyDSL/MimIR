@@ -4,7 +4,7 @@
 
 using namespace std::literals;
 
-namespace thorin {
+namespace thorin::fe {
 
 static bool issign(char32_t i) { return i == '+' || i == '-'; }
 static bool issubscsr(char32_t i) { return U'₀' <= i && i <= U'₉'; }
@@ -45,8 +45,8 @@ Tok Lexer::lex() {
         // delimiters
         if (accept( '(')) return tok(Tok::Tag::D_paren_l);
         if (accept( ')')) return tok(Tok::Tag::D_paren_r);
-        if (accept( '[')) return tok(Tok::Tag::D_bracket_l);
-        if (accept( ']')) return tok(Tok::Tag::D_bracket_r);
+        if (accept( '[')) return tok(Tok::Tag::D_brckt_l);
+        if (accept( ']')) return tok(Tok::Tag::D_brckt_r);
         if (accept( '{')) return tok(Tok::Tag::D_brace_l);
         if (accept( '}')) return tok(Tok::Tag::D_brace_r);
         if (accept(U'«')) return tok(Tok::Tag::D_quote_l);
@@ -65,15 +65,22 @@ Tok Lexer::lex() {
         if (accept(U'→')) return tok(Tok::Tag::T_arrow);
         if (accept( '@')) return tok(Tok::Tag::T_at);
         if (accept( '=')) return tok(Tok::Tag::T_assign);
+        if (accept( '!')) return tok(Tok::Tag::T_bang);
         if (accept(U'⊥')) return tok(Tok::Tag::T_bot);
         if (accept(U'⊤')) return tok(Tok::Tag::T_top);
         if (accept(U'□')) return tok(Tok::Tag::T_box);
-        if (accept( ':')) return tok(Tok::Tag::T_colon);
         if (accept( ',')) return tok(Tok::Tag::T_comma);
         if (accept( '#')) return tok(Tok::Tag::T_extract);
         if (accept(U'λ')) return tok(Tok::Tag::T_lam);
         if (accept('\\')) return tok(Tok::Tag::T_lam);
         if (accept(U'Π')) return tok(Tok::Tag::T_Pi);
+        if (accept( ';')) return tok(Tok::Tag::T_semicolon);
+        if (accept(U'★')) return tok(Tok::Tag::T_star);
+        if (accept( '*')) return tok(Tok::Tag::T_star);
+        if (accept( ':')) {
+            if (accept( ':')) return tok(Tok::Tag::T_colon_colon);
+            return tok(Tok::Tag::T_colon);
+        }
         if (accept( '|')) {
             if (accept('~')) {
                 if (accept('|')) return tok(Tok::Tag::T_Pi);
@@ -81,9 +88,6 @@ Tok Lexer::lex() {
             err(loc_, "invalid input char '{}'; maybe you wanted to use '|~|'?", str_);
             continue;
         }
-        if (accept( ';')) return tok(Tok::Tag::T_semicolon);
-        if (accept(U'★')) return tok(Tok::Tag::T_star);
-        if (accept( '*')) return tok(Tok::Tag::T_star);
         // clang-format on
 
         if (accept('%')) {
@@ -180,14 +184,14 @@ std::optional<Tok> Lexer::parse_lit() {
                 next();
             }
             auto m = strtoull(mod.c_str(), nullptr, 10);
-            return Tok{loc_, world().lit_int_mod(m, i)};
+            return Tok{loc_, world().lit_idx_mod(m, i)};
         } else if (accept('_', false)) {
             auto i = strtoull(str_.c_str(), nullptr, 10);
             str_.clear();
             if (accept_if(isdigit)) {
                 parse_digits(10);
                 auto m = strtoull(str_.c_str(), nullptr, 10);
-                return Tok{loc_, world().lit_int_mod(m, i)};
+                return Tok{loc_, world().lit_idx_mod(m, i)};
             } else {
                 err(loc_, "stray underscore in unsigned literal");
                 auto i = strtoull(str_.c_str(), nullptr, 10);
@@ -279,4 +283,4 @@ void Lexer::emit_md(bool start_of_file) {
     }
 }
 
-} // namespace thorin
+} // namespace thorin::fe

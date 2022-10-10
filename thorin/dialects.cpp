@@ -92,7 +92,7 @@ Dialect Dialect::load(const std::string& name, ArrayRef<std::string> search_path
         }
     }
 
-    if (!handle) throw std::runtime_error("cannot open plugin");
+    if (!handle) throw std::runtime_error("cannot open plugin '" + name + "'");
 
     return Dialect{plugin_path, std::move(handle)};
 }

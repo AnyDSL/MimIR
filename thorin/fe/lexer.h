@@ -12,6 +12,8 @@ namespace thorin {
 
 class World;
 
+namespace fe {
+
 class Lexer : public utf8::Lexer<3> {
     using Super = utf8::Lexer<3>;
 
@@ -40,11 +42,6 @@ private:
         return res;
     }
 
-    template<class... Args>
-    [[noreturn]] void err(Loc loc, const char* fmt, Args&&... args) {
-        thorin::err<LexError>(loc, fmt, std::forward<Args&&>(args)...);
-    }
-
     Tok tok(Tok::Tag tag) { return {loc(), tag}; }
     bool lex_id();
     std::optional<Tok> parse_lit();
@@ -63,4 +60,5 @@ private:
     absl::flat_hash_map<std::string, Tok::Tag> keywords_;
 };
 
+} // namespace fe
 } // namespace thorin

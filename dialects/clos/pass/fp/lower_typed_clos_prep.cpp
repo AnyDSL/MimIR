@@ -2,7 +2,7 @@
 
 #include "thorin/util/bitset.h"
 
-#include "dialects/clos/clos_conv.h"
+#include "dialects/mem/mem.h"
 
 namespace thorin::clos {
 
@@ -77,7 +77,7 @@ undo_t LowerTypedClosPrep::analyze(const Def* def) {
     if (auto c = isa_clos_lit(def, false)) {
         w.DLOG("closure ({}, {})", c.env(), c.fnc());
         if (!c.fnc_as_lam() || is_esc(c.fnc_as_lam()) || is_esc(c.env_var())) return set_esc(c.env());
-    } else if (auto store = isa<Tag::Store>(def)) {
+    } else if (auto store = match<mem::store>(def)) {
         w.DLOG("store {}", store->arg(2));
         return set_esc(store->arg(2));
     } else if (auto app = def->isa<App>(); app && app->callee_type()->is_cn()) {

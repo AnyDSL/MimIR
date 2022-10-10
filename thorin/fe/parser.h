@@ -7,10 +7,10 @@
 
 #include "thorin/be/h/bootstrapper.h"
 #include "thorin/fe/ast.h"
-#include "thorin/fe/binder.h"
 #include "thorin/fe/lexer.h"
+#include "thorin/fe/scopes.h"
 
-namespace thorin {
+namespace thorin::fe {
 
 /// Parses Thorin code into the provided World.
 ///
@@ -62,7 +62,7 @@ private:
         Loc loc() const { return {parser_.prev_.file, pos_, parser_.prev_.finis}; }
         operator const Def*() const { return parser_.world().dbg({"", loc()}); }
         const Def* meta(const Def* m) const { return parser_.world().dbg({"", loc(), m}); }
-        const Def* named(Sym sym) const { return parser_.world().dbg({sym.to_string(), loc()}); }
+        const Def* named(Sym sym) const { return parser_.world().dbg(sym, loc()); }
         const Def* named(const std::string& str) const { return parser_.world().dbg({str, loc()}); }
 
     private:
@@ -71,26 +71,28 @@ private:
     };
 
     Sym parse_sym(std::string_view ctxt = {});
+    Sym anonymous_sym() { return {world().lit_nat('_'), nullptr}; }
     void parse_import();
+    const Def* parse_type_ascr(std::string_view ctxt = {});
 
     /// @name exprs
     ///@{
-    const Def* parse_dep_expr(std::string_view ctxt, Binders*, Tok::Prec = Tok::Prec::Bot);
-    const Def* parse_expr(std::string_view c, Tok::Prec p = Tok::Prec::Bot) { return parse_dep_expr(c, nullptr, p); }
-    const Def* parse_primary_expr(std::string_view ctxt, Binders*);
+    const Def* parse_expr(std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+    const Def* parse_primary_expr(std::string_view ctxt);
+    const Def* parse_infix_expr(Tracker, const Def* lhs, Tok::Prec = Tok::Prec::Bot);
     const Def* parse_extract(Tracker, const Def*, Tok::Prec);
     ///@}
 
     /// @name primary exprs
     ///@{
-    const Def* parse_Cn(Binders*);
+    const Def* parse_Cn();
     const Def* parse_arr();
     const Def* parse_pack();
     const Def* parse_block();
-    const Def* parse_sigma(Binders*);
+    const Def* parse_sigma();
     const Def* parse_tuple();
     const Def* parse_type();
-    const Def* parse_pi(Binders*);
+    const Def* parse_pi();
     const Def* parse_lam();
     const Def* parse_lit();
     const Def* parse_var();
@@ -99,9 +101,10 @@ private:
 
     /// @name ptrns
     ///@{
-    std::unique_ptr<Ptrn> parse_ptrn(std::string_view ctxt);
-    std::unique_ptr<IdPtrn> parse_id_ptrn();
-    std::unique_ptr<TuplePtrn> parse_tuple_ptrn();
+
+    /// Depending on @p tag, this parses a `()`-style (Tok::Tag::D_paren_l) or `[]`-style (Tok::Tag::D_brckt_l) Ptrn.
+    std::unique_ptr<Ptrn> parse_ptrn(Tok::Tag tag, std::string_view ctxt, Tok::Prec = Tok::Prec::Bot);
+    std::unique_ptr<TuplePtrn> parse_tuple_ptrn(Tracker, Sym);
     ///@}
 
     /// @name decls
@@ -110,6 +113,7 @@ private:
     void parse_ax();
     void parse_let();
     void parse_nom();
+    void parse_nom_fun();
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
     void parse_def(Sym sym = {});
@@ -124,8 +128,6 @@ private:
         }
         expect(delim_r, std::string("closing delimiter of a ") + ctxt);
     }
-
-    void parse_var_list(Binders&);
 
     /// Factory method to build a Parser::Tracker.
     Tracker tracker() { return Tracker(*this, ahead().loc().begin); }
@@ -159,29 +161,16 @@ private:
 
     /// @name error messages
     ///@{
-    template<class... Args>
-    [[noreturn]] void err(Loc loc, const char* fmt, Args&&... args) {
-        thorin::err<ParseError>(loc, fmt, std::forward<Args&&>(args)...);
-    }
-
     /// Issue an error message of the form:
     /// "expected \<what\>, got '\<tok>\' while parsing \<ctxt\>"
-    [[noreturn]] void err(std::string_view what, const Tok& tok, std::string_view ctxt);
+    [[noreturn]] void syntax_err(std::string_view what, const Tok& tok, std::string_view ctxt);
 
     /// Same above but uses @p ahead() as @p tok.
-    [[noreturn]] void err(std::string_view what, std::string_view ctxt) { err(what, ahead(), ctxt); }
+    [[noreturn]] void syntax_err(std::string_view what, std::string_view ctxt) { syntax_err(what, ahead(), ctxt); }
     ///@}
 
-    Parser(World&,
-           std::string_view,
-           std::istream&,
-           ArrayRef<std::string>,
-           const Normalizers*,
-           const Binder&,
-           const SymSet&);
-
     Lexer lexer_;
-    Binder binder_;
+    Scopes scopes_;
     Loc prev_;
     std::string dialect_;
     static constexpr size_t Max_Ahead = 2; ///< maximum lookahead
@@ -192,4 +181,4 @@ private:
     const Normalizers* normalizers_;
 };
 
-} // namespace thorin
+} // namespace thorin::fe

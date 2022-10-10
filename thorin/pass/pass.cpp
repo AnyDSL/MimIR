@@ -1,12 +1,11 @@
 #include "thorin/pass/pass.h"
 
-#include "thorin/rewrite.h"
-
+#include "thorin/phase/phase.h"
 #include "thorin/util/container.h"
 
 namespace thorin {
 
-IPass::IPass(PassMan& man, const char* name)
+Pass::Pass(PassMan& man, std::string_view name)
     : man_(man)
     , name_(name)
     , index_(man.passes().size()) {}
@@ -45,7 +44,7 @@ void PassMan::run() {
     for (size_t i = 0; i != num; ++i) curr_state().data[i] = passes_[i]->alloc();
 
     for (auto&& pass : passes_) world().ILOG(" + {}", pass->name());
-    world().debug_stream();
+    world().debug_dump();
 
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (const auto& [_, nom] : externals) {
@@ -83,12 +82,12 @@ void PassMan::run() {
     world().ILOG("finished");
     pop_states(0);
 
-    world().debug_stream();
-    cleanup(world());
+    world().debug_dump();
+    Phase::run<Cleanup>(world());
 }
 
 const Def* PassMan::rewrite(const Def* old_def) {
-    if (old_def->no_dep()) return old_def;
+    if (old_def->dep_none()) return old_def;
 
     if (auto nom = old_def->isa_nom()) {
         curr_state().nom2visit.emplace(nom, curr_undo());
@@ -130,7 +129,7 @@ const Def* PassMan::rewrite(const Def* old_def) {
 undo_t PassMan::analyze(const Def* def) {
     undo_t undo = No_Undo;
 
-    if (def->no_dep() || analyzed(def)) {
+    if (def->dep_none() || analyzed(def)) {
         // do nothing
     } else if (auto nom = def->isa_nom()) {
         curr_state().stack.push(nom);

@@ -1,6 +1,6 @@
 #include "dialects/clos/pass/rw/branch_clos_elim.h"
 
-#include "dialects/clos/clos_conv.h"
+#include "dialects/clos/clos.h"
 
 namespace thorin::clos {
 

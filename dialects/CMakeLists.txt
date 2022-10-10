@@ -13,10 +13,6 @@ add_thorin_dialect(clos
     SOURCES
         clos/clos.cpp
         clos/clos.h
-        clos/clos_conv.cpp
-        clos/clos_conv.h
-        clos/lower_typed_clos.cpp
-        clos/lower_typed_clos.h
         clos/normalizers.cpp
         clos/pass/fp/lower_typed_clos_prep.cpp
         clos/pass/fp/lower_typed_clos_prep.h
@@ -26,6 +22,10 @@ add_thorin_dialect(clos
         clos/pass/rw/clos2sjlj.h
         clos/pass/rw/clos_conv_prep.cpp
         clos/pass/rw/clos_conv_prep.h
+        clos/phase/clos_conv.cpp
+        clos/phase/clos_conv.h
+        clos/phase/lower_typed_clos.cpp
+        clos/phase/lower_typed_clos.h
     DEPENDS
         mem
     HEADER_DEPENDS
@@ -43,6 +43,23 @@ add_thorin_dialect(core
     DEPENDS
         mem
         clos
+    INSTALL
+)
+
+add_thorin_dialect(demo
+    SOURCES
+        demo/demo.cpp
+        demo/demo.h
+        demo/normalizers.cpp
+    INSTALL
+)
+
+add_thorin_dialect(direct
+    SOURCES
+        direct/direct.cpp
+        direct/direct.h
+        direct/passes/ds2cps.cpp
+        direct/passes/ds2cps.h
     INSTALL
 )
 
@@ -64,12 +81,13 @@ add_thorin_dialect(mem
     INSTALL
 )
 
-add_thorin_dialect(direct
+add_thorin_dialect(refly
     SOURCES
-        direct/direct.cpp
-        direct/direct.h
-        direct/passes/ds2cps.cpp
-        direct/passes/ds2cps.h
+        refly/refly.h
+        refly/refly.cpp
+        refly/passes/remove_perm.h
+        refly/passes/remove_perm.cpp
+        refly/normalizers.cpp
     INSTALL
 )
 

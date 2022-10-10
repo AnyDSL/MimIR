@@ -6,7 +6,7 @@
 
 namespace thorin::mem {
 
-static const Def* get_sloxy_type(const Proxy* sloxy) { return match<mem::Ptr, false>(sloxy->type())->arg(0); }
+static const Def* get_sloxy_type(const Proxy* sloxy) { return force<mem::Ptr>(sloxy->type())->arg(0); }
 
 static std::tuple<const Proxy*, Lam*> split_phixy(const Proxy* phixy) {
     return {phixy->op(0)->as<Proxy>(), phixy->op(1)->as_nom<Lam>()};
@@ -180,11 +180,6 @@ undo_t SSAConstr::analyze(const Def* def) {
     }
 
     return No_Undo;
-}
-
-PassTag* SSAConstr::ID() {
-    static PassTag Key;
-    return &Key;
 }
 
 } // namespace thorin::mem

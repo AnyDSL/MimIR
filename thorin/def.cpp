@@ -11,17 +11,22 @@
 
 namespace thorin {
 
+// Just assuming looking through the uses is faster if uses().size() is small.
+static constexpr int Search_In_Uses_Threshold = 8;
+
 /*
  * constructors
  */
 
-Def::Def(node_t node, const Def* type, Defs ops, flags_t flags, const Def* dbg)
-    : flags_(flags)
+Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const Def* dbg)
+    : world_(w)
+    , flags_(flags)
     , node_(unsigned(node))
     , nom_(false)
-    , var_(false)
-    , dep_(Dep::Bot)
-    , proxy_(0)
+    , dep_(node == Node::Axiom   ? Dep::Axiom
+           : node == Node::Proxy ? Dep::Proxy
+           : node == Node::Var   ? Dep::Var
+                                 : Dep::None)
     , num_ops_(ops.size())
     , dbg_(dbg)
     , type_(type) {
@@ -39,20 +44,21 @@ Def::Def(node_t node, const Def* type, Defs ops, flags_t flags, const Def* dbg)
     }
 }
 
+Def::Def(node_t n, const Def* type, Defs ops, flags_t flags, const Def* dbg)
+    : Def(nullptr, n, type, ops, flags, dbg) {}
+
 Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def* dbg)
     : flags_(flags)
     , node_(node)
     , nom_(true)
-    , var_(false)
     , dep_(Dep::Nom)
-    , proxy_(0)
     , num_ops_(num_ops)
     , dbg_(dbg)
     , type_(type) {
     gid_  = world().next_gid();
     hash_ = murmur3(gid());
     std::fill_n(ops_ptr(), num_ops, nullptr);
-    if (!type->no_dep()) type->uses_.emplace(this, -1);
+    if (!type->dep_const()) type->uses_.emplace(this, Use::Type);
 }
 
 Nat::Nat(World& world)
@@ -69,6 +75,7 @@ const Def* App      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) co
 const Def* Arr      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.arr(o[0], o[1], dbg); }
 const Def* Extract  ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.extract(o[0], o[1], dbg); }
 const Def* Insert   ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.insert(o[0], o[1], o[2], dbg); }
+const Def* Idx      ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_idx(); }
 const Def* Lam      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.lam(t->as<Pi>(), o[0], o[1], dbg); }
 const Def* Lit      ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.lit(t, get(), dbg); }
 const Def* Nat      ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_nat(); }
@@ -118,27 +125,25 @@ TBound<up>* TBound<up>::stub(World& w, const Def* t, const Def* dbg) {
  */
 
 const Pi* Pi::restructure() {
-    if (!is_free(var(), codom())) return world().pi(dom(), codom(), dbg());
+    if (!is_free(this, codom())) return world().pi(dom(), codom(), dbg());
     return nullptr;
 }
 
 const Sigma* Sigma::restructure() {
-    if (std::ranges::none_of(ops(), [this](auto op) { return is_free(var(), op); }))
+    if (std::ranges::none_of(ops(), [this](auto op) { return is_free(this, op); }))
         return static_cast<const Sigma*>(world().sigma(ops(), dbg()));
     return nullptr;
 }
 
 const Def* Arr::restructure() {
     auto& w = world();
-    if (auto n = isa_lit(shape()))
-        return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)).back(); }));
+    if (auto n = isa_lit(shape())) return w.sigma(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
     return nullptr;
 }
 
 const Def* Pack::restructure() {
     auto& w = world();
-    if (auto n = isa_lit(shape()))
-        return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_int(*n, i)).back(); }));
+    if (auto n = isa_lit(shape())) return w.tuple(DefArray(*n, [&](size_t i) { return reduce(w.lit_idx(*n, i)); }));
     return nullptr;
 }
 
@@ -182,12 +187,23 @@ Defs Def::extended_ops() const {
 
 const Var* Def::var(const Def* dbg) {
     auto& w = world();
+
+    if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
+        for (auto u : uses()) {
+            if (auto var = u->isa<Var>(); var && var->nom() == this) return var;
+        }
+
+        if (w.is_frozen()) return nullptr;
+    }
+
     if (auto lam  = isa<Lam  >()) return w.var(lam ->dom(), lam, dbg);
     if (auto pi   = isa<Pi   >()) return w.var(pi  ->dom(),  pi, dbg);
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig, dbg);
-    if (auto arr  = isa<Arr  >()) return w.var(w.type_int(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
-    if (auto pack = isa<Pack >()) return w.var(w.type_int(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
+    if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
+    if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
     if (isa_bound(this)) return w.var(this, this,  dbg);
+    if (isa<Infer >())   return nullptr;
+    if (isa<Global>())   return nullptr;
     unreachable();
 }
 
@@ -235,15 +251,6 @@ bool Def::equal(const Def* other) const {
     return result;
 }
 
-const Def* Def::debug_history() const {
-#if THORIN_ENABLE_CHECKS
-    auto& w = world();
-    if (w.track_history())
-        return dbg() ? w.insert(dbg(), 3_s, 0_s, w.tuple_str(unique_name())) : w.tuple_str(unique_name());
-#endif
-    return dbg();
-}
-
 #ifndef NDEBUG
 void Def::set_debug_name(std::string_view n) const {
     auto& w   = world();
@@ -262,32 +269,22 @@ void Def::set_debug_name(std::string_view n) const {
 #endif
 
 void Def::finalize() {
+    assert(!dbg() || dbg()->dep_none());
+
     for (size_t i = 0, e = num_ops(); i != e; ++i) {
-        if (auto dep = op(i)->dep(); dep != Dep::Bot) {
-            dep_ |= dep;
+        dep_ |= op(i)->dep();
+        if (!op(i)->dep_const()) {
             const auto& p = op(i)->uses_.emplace(this, i);
             assert_unused(p.second);
         }
     }
 
-    if (!isa<Univ>() && !isa<Type>() && !isa<Axiom>()) {
-        if (auto dep = type()->dep(); dep != Dep::Bot) {
-            dep_ |= dep;
-            const auto& p = type()->uses_.emplace(this, -1);
+    if (auto t = type()) {
+        dep_ |= t->dep();
+        if (!t->dep_const()) {
+            const auto& p = type()->uses_.emplace(this, Use::Type);
             assert_unused(p.second);
         }
-    }
-
-    assert(!dbg() || dbg()->no_dep());
-    if (auto var = isa<Var>()) {
-        var->nom()->var_ = true;
-        dep_             = Dep::Var;
-    }
-
-    if (isa<Proxy>()) {
-        proxy_ = true;
-    } else {
-        for (auto op : extended_ops()) proxy_ |= op->contains_proxy();
     }
 }
 
@@ -318,27 +315,30 @@ void Def::unset(size_t i) {
 Def* Def::set_type(const Def* type) {
     if (type_ != nullptr) unset_type();
     type_ = type;
-    type->uses_.emplace(this, -1);
+    type->uses_.emplace(this, Use::Type);
     return this;
 }
 
 void Def::unset_type() {
-    assert(type_->uses_.contains(Use(this, size_t(-1))));
-    type_->uses_.erase(Use(this, size_t(-1)));
-    assert(!type_->uses_.contains(Use(this, size_t(-1))));
+    assert(type_->uses_.contains(Use(this, Use::Type)));
+    type_->uses_.erase(Use(this, Use::Type));
+    assert(!type_->uses_.contains(Use(this, Use::Type)));
     type_ = nullptr;
 }
 
+// TODO Maybe we can speed is_set/is_unfinished up by setting some flags.
+// These tests can easily explode quadratically.
 bool Def::is_set() const {
-    if (!isa_nom()) {
-        assert(std::ranges::all_of(ops(), [](auto op) { return op != nullptr; }) && "structurals must be always set");
-        return true;
-    }
+    auto all_set = std::ranges::all_of(ops(), [](auto op) { return op != nullptr; });
+    assert((!isa_structural() || all_set) && "structurals must be always set");
 
-    if (std::ranges::all_of(ops(), [](auto op) { return op != nullptr; })) return true;
-
+    if (all_set) return true;
     assert(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
     return false;
+}
+
+bool Def::is_unfinished() const {
+    return std::ranges::any_of(ops(), [](auto op) { return op == nullptr; });
 }
 
 void Def::make_external() { return world().make_external(this); }
@@ -353,7 +353,7 @@ DefArray Def::reduce(const Def* arg) const {
 }
 
 DefArray Def::reduce(const Def* arg) {
-    auto& cache = world().data_.cache_;
+    auto& cache = world().move_.cache;
     if (auto i = cache.find({this, arg}); i != cache.end()) return i->second;
 
     return cache[{this, arg}] = rewrite(this, arg);
@@ -380,19 +380,46 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
 }
 
 const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
-    if (a == 1 && (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>())) return this;
+    if (a == 1) {
+        if (!type()) return this;
+        if (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>()) return this;
+    }
+
+    World& w = world();
 
     if (isa<Tuple>() || isa<Sigma>()) {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();
-        if (!world().type_int()) return arr->op(i); // hack for alpha equiv check of sigma (dbg of %Int..)
-        return arr->reduce(world().lit_int(as_lit(arr->arity()), i)).back();
+        return arr->reduce(w.lit_idx(as_lit(arr->arity()), i));
     } else if (auto pack = isa<Pack>()) {
         if (pack->arity()->isa<Top>()) return pack->body();
-        return pack->reduce(world().lit_int(as_lit(pack->arity()), i)).back();
+        assert(!w.is_frozen() && "TODO");
+        return pack->reduce(w.lit_idx(as_lit(pack->arity()), i));
     } else if (sort() == Sort::Term) {
-        return world().extract(this, a, i, dbg);
+        if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
+            for (auto u : uses()) {
+                if (auto ex = u->isa<Extract>(); ex && ex->tuple() == this) {
+                    if (auto index = isa_lit(ex->index()); *index == i) return ex;
+                }
+            }
+
+            if (w.is_frozen()) return nullptr;
+        }
+
+        return w.extract(this, a, i, dbg);
+    }
+
+    return nullptr;
+}
+
+/*
+ * Idx
+ */
+
+const Def* Idx::size(const Def* def) {
+    if (auto app = def->isa<App>()) {
+        if (app->callee()->isa<Idx>()) return app->arg();
     }
 
     return nullptr;

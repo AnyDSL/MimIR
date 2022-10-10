@@ -49,6 +49,11 @@ const Def* Debug::def(World& w) const {
 size_t SymHash::operator()(Sym sym) const { return murmur3(sym.str()->gid()); }
 std::string Sym::to_string() const { return tuple2str(str()); }
 
+bool Sym::is_anonymous() const {
+    if (auto lit = isa_lit(str())) return lit == '_';
+    return false;
+}
+
 /*
  * ostream
  */

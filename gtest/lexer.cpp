@@ -9,6 +9,7 @@
 
 using namespace std::literals;
 using namespace thorin;
+using namespace thorin::fe;
 
 TEST(Lexer, Toks) {
     World world;
@@ -19,8 +20,8 @@ TEST(Lexer, Toks) {
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brace_r));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_paren_l));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_paren_r));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_bracket_l));
-    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_bracket_r));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brckt_l));
+    EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_brckt_r));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_angle_l));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_angle_r));
     EXPECT_TRUE(lexer.lex().isa(Tok::Tag::D_quote_l));
@@ -66,20 +67,20 @@ TEST(Lexer, Errors) {
     std::istringstream is1("asdf \xc0\xc0");
     Lexer l1(world, "<is1>", is1);
     l1.lex();
-    EXPECT_THROW(l1.lex(), LexError);
+    EXPECT_ANY_THROW(l1.lex());
 
     std::istringstream is2("foo \xaa");
     Lexer l2(world, "<is2>", is2);
     l2.lex();
-    EXPECT_THROW(l2.lex(), LexError);
+    EXPECT_ANY_THROW(l2.lex());
 
     std::istringstream is3("+");
     Lexer l3(world, "<is3>", is3);
-    EXPECT_THROW(l3.lex(), LexError);
+    EXPECT_ANY_THROW(l3.lex());
 
     std::istringstream is4("-");
     Lexer l4(world, "<is4>", is4);
-    EXPECT_THROW(l4.lex(), LexError);
+    EXPECT_ANY_THROW(l4.lex());
 }
 
 TEST(Lexer, Eof) {
@@ -126,11 +127,11 @@ TEST_P(Real, sign) {
 
     std::istringstream is1("0x2.34");
     Lexer l1(w, "<is1>", is1);
-    EXPECT_THROW(l1.lex(), LexError);
+    EXPECT_ANY_THROW(l1.lex());
 
     std::istringstream is2("2.34e");
     Lexer l2(w, "<is2>", is2);
-    EXPECT_THROW(l2.lex(), LexError);
+    EXPECT_ANY_THROW(l2.lex());
 }
 
 TEST(Lexer, utf8) {

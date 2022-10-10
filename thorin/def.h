@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "thorin/debug.h"
-#include "thorin/tables.h"
 
 #include "thorin/util/array.h"
 #include "thorin/util/cast.h"
@@ -12,7 +11,31 @@
 #include "thorin/util/hash.h"
 #include "thorin/util/print.h"
 
+// clang-format off
+#define THORIN_NODE(m)                                                        \
+    m(Type, type)       m(Univ, univ)                                         \
+    m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
+    m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
+    m(Arr, arr)         m(Pack, pack)                                         \
+    m(Join, join)       m(Vel, vel)     m(Test, test)       m(Top, top)       \
+    m(Meet, meet)       m(Ac,  ac )     m(Pick, pick)       m(Bot, bot)       \
+    m(Proxy, proxy)                                                           \
+    m(Axiom, axiom)                                                           \
+    m(Lit, lit)                                                               \
+    m(Nat, nat)         m(Idx, idx)                                           \
+    m(Var, var)                                                               \
+    m(Infer, infer)                                                           \
+    m(Global, global)                                                         \
+    m(Singleton, singleton)
+// clang-format on
+
 namespace thorin {
+
+namespace Node {
+#define CODE(node, name) node,
+enum : node_t { THORIN_NODE(CODE) Max };
+#undef CODE
+} // namespace Node
 
 class App;
 class Axiom;
@@ -36,12 +59,13 @@ T as_lit(const Def* def);
 /// A Def `u` which uses Def `d` as `i^th` operand is a Use with Use::index `i` of Def `d`.
 class Use {
 public:
+    static constexpr size_t Type = -1_s;
+
     Use() {}
     Use(const Def* def, size_t index)
         : def_(def)
         , index_(index) {}
 
-    bool is_used_as_type() const { return index() == -1_s; }
     size_t index() const { return index_; }
     const Def* def() const { return def_; }
     operator const Def*() const { return def_; }
@@ -68,14 +92,15 @@ enum class Sort { Term, Type, Kind, Space, Univ };
 
 //------------------------------------------------------------------------------
 
-namespace Dep {
-enum : unsigned {
-    Bot,
-    Nom,
-    Var,
-    Top = Nom | Var,
+struct Dep {
+    enum : unsigned {
+        None  = 0,
+        Axiom = 1 << 0,
+        Proxy = 1 << 1,
+        Nom   = 1 << 2,
+        Var   = 1 << 3,
+    };
 };
-}
 
 /// Use as mixin to wrap all kind of Def::proj and Def::projs variants.
 #define THORIN_PROJ(NAME, CONST)                                                                                   \
@@ -114,7 +139,8 @@ private:
 
 protected:
     /// Constructor for a structural Def.
-    Def(node_t, const Def* type, Defs ops, flags_t flags, const Def* dbg);
+    Def(World*, node_t, const Def* type, Defs ops, flags_t flags, const Def* dbg);
+    Def(node_t n, const Def* type, Defs ops, flags_t flags, const Def* dbg);
     /// Constructor for a *nom*inal Def.
     Def(node_t, const Def* type, size_t num_ops, flags_t flags, const Def* dbg);
     virtual ~Def() = default;
@@ -132,9 +158,9 @@ public:
 
     /// @name type
     ///@{
-    /// @returns the **literal** type of this Def. See Def::unfold_type.
+    /// Yields the **raw** type of this Def; maybe `nullptr`. @sa Def::unfold_type.
     const Def* type() const { return type_; }
-    /// @returns the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
+    /// Yields the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
     const Def* unfold_type() const;
     Sort sort() const;
     const Def* arity() const;
@@ -169,12 +195,14 @@ public:
     Def* set_type(const Def*);
     void unset_type();
 
-    /// Are all Def::ops set?
-    /// * `true` if all operands are set or Def::num_ops ` == 0`.
-    /// * `false` if all operands are `nullptr`.
+    /// Are all Def::ops of this nominal set?
+    /// @returns
+    /// * `true`, if all operands are set or Def::num_ops` == 0`.
+    /// * `false`, if all operands are `nullptr`.
     /// * `assert`s otherwise.
     bool is_set() const;
-    bool is_unset() const { return !is_set(); } ///< *Not* Def::is_set.
+    bool is_unset() const { return !is_set(); } ///< **Not** Def::is_set.
+    bool is_unfinished() const;                 ///< Are there still some Def::ops **not** set?
     ///@}
 
     /// @name extended_ops
@@ -206,18 +234,17 @@ public:
     /// @name dependence checks
     ///@{
     /// @see Dep.
-
     unsigned dep() const { return dep_; }
-    bool no_dep() const { return dep() == Dep::Bot; }
-    bool has_dep(unsigned dep) const { return (dep_ & dep) != 0; }
-    bool contains_proxy() const { return proxy_; }
+    bool dep_none() const { return dep() == Dep::None; }
+    bool dep_const() const { return !(dep() & (Dep::Nom | Dep::Var)); }
+    bool dep_proxy() const { return dep_ & Dep::Proxy; }
     ///@}
 
     /// @name proj
     ///@{
     /// Splits this Def via Extract%s or directly accessing the Def::ops in the case of Sigma%s or Arr%ays.
 
-    /// @returns Def::arity as_lit, if it is in fact a Lit, or `1` otherwise.
+    /// Yields Def::arity as_lit, if it is in fact a Lit, or `1` otherwise.
     nat_t num_projs() const {
         if (auto a = isa_lit(arity())) return *a;
         return 1;
@@ -292,8 +319,6 @@ public:
 #else
     void set_debug_name(std::string_view) const {}
 #endif
-    /// In `Debug` build if World::enable_history is `true`, this thing keeps the Def::gid to track a history of gids.
-    const Def* debug_history() const;
     std::string unique_name() const; ///< name + "_" + Def::gid
     ///@}
 
@@ -333,8 +358,6 @@ public:
     ///@{
     /// Retrieve Var for *nominals*.
 
-    /// Only returns ap Var for this *nom*inal if it has ever been created.
-    const Var* has_var() { return var_ ? var() : nullptr; }
     const Var* var(const Def* dbg = {});
     THORIN_PROJ(var, )
     ///@}
@@ -360,13 +383,14 @@ public:
     virtual const Def* restructure() { return nullptr; }
     ///@}
 
-    /// @name stream
+    /// @name dump
     ///@{
-    std::ostream& stream(std::ostream&, Tab&) const;
-    std::ostream& stream(std::ostream&, size_t max) const;
-    std::ostream& let(std::ostream&, Tab&) const;
     void dump() const;
-    void dump(size_t) const;
+    void dump(int max) const;
+    void write(int max) const;
+    void write(int max, const char* file) const;
+    std::ostream& stream(std::ostream&, int max) const;
+    friend std::ostream& operator<<(std::ostream&, const Def*);
     ///@}
 
 protected:
@@ -379,14 +403,13 @@ protected:
     union {
         NormalizeFn normalizer_; ///< Axiom%s use this member to store their normalizer.
         const Axiom* axiom_;     /// Curried App%s of Axiom%s use this member to propagate the Axiom.
+        mutable World* world_;
     };
 
     flags_t flags_;
     uint8_t node_;
     unsigned nom_    : 1;
-    unsigned var_    : 1;
-    unsigned dep_    : 2;
-    unsigned proxy_  : 1;
+    unsigned dep_    : 4;
     unsigned pading_ : 3;
     u16 curry_;
     hash_t hash_;
@@ -394,16 +417,11 @@ protected:
     u32 num_ops_;
     mutable Uses uses_;
     mutable const Def* dbg_;
-    union {
-        const Def* type_;
-        mutable World* world_;
-    };
+    const Def* type_;
 
     friend class World;
     friend void swap(World&, World&);
 };
-
-std::ostream& operator<<(std::ostream&, const Def* def);
 
 template<class T>
 const T* isa(flags_t f, const Def* def) {
@@ -425,8 +443,6 @@ using DefSet  = GIDSet<const Def*>;
 using Def2Def = DefMap<const Def*>;
 using DefDef  = std::tuple<const Def*, const Def*>;
 using DefVec  = std::vector<const Def*>;
-
-std::ostream& operator<<(std::ostream&, std::pair<const Def*, const Def*>);
 
 struct DefDefHash {
     hash_t operator()(DefDef pair) const {
@@ -479,7 +495,7 @@ using Var2Var = VarMap<const Var*>;
 class Univ : public Def {
 private:
     Univ(World& world)
-        : Def(Node, reinterpret_cast<const Def*>(&world), Defs{}, 0, nullptr) {}
+        : Def(&world, Node, nullptr, Defs{}, 0, nullptr) {}
 
 public:
     /// @name virtual methods
@@ -554,6 +570,25 @@ public:
     ///@}
 
     static constexpr auto Node = Node::Nat;
+    friend class World;
+};
+
+/// A built-in constant of type `.Nat -> *`.
+class Idx : public Def {
+private:
+    Idx(const Def* type)
+        : Def(Node, type, Defs{}, 0, nullptr) {}
+
+public:
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
+    static const Def* size(const Def* def);
+
+    static constexpr auto Node = Node::Idx;
     friend class World;
 };
 

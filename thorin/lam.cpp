@@ -32,7 +32,7 @@ Lam* Lam::set_filter(Filter filter) {
         f = world().lit_bool(*b);
     else
         f = std::get<const Def*>(filter);
-    return set(0, f);
+    return Def::set(0, f)->as<Lam>();
 }
 
 Lam* Lam::app(Filter f, const Def* callee, const Def* arg, const Def* dbg) {

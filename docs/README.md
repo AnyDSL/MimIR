@@ -90,21 +90,6 @@ cmake --build build -j $(nproc) -t install
 | `THORIN_BUILD_TESTING` | `ON` \| `OFF`                            | `OFF`        | If `ON`, Thorin will build all of Thorin's own tests.                               |
 | `THORIN_ENABLE_CHECKS` | `ON` \| `OFF`                            | `ON`         | If `ON`, enables expensive runtime checks <br> (requires `CMAKE_BUILD_TYPE=Debug`). |
 
-### Tests
-
-Run the [lit](https://llvm.org/docs/CommandGuide/lit.html) testsuite with:
-```sh
-cmake --build build -t check
-```
-Run the [GoogleTest](https://google.github.io/googletest/) unit tests within the `build` folder with:
-```sh
-ctest
-```
-In addition, you can enable [Valgrind](https://valgrind.org/) with:
-```sh
-ctest -T memcheck
-```
-
 ## Dependencies
 
 In addition to the provided submodules:

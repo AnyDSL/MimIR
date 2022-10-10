@@ -9,7 +9,7 @@ This guide summaries typicical idioms you want to use when working with Thorin a
 Here is a small example that first constructs a `main` function and simply returns the `argc`:
 ```cpp
     World w;
-    
+
     auto mem_d = Dialect::load("mem", {});
     Normalizers normalizers;
     mem_d.register_normalizers(normalizers);
@@ -123,12 +123,4 @@ The simplest way is to kick off with [World::externals](@ref thorin::World::exte
     }
 
 ```
-
-[World::visit](@ref thorin::World::visit) allows you to visit all top-level scopes one by one:
-```{.cpp}
-    world.visit([&](const Scope& scope) {
-        // ...
-    });
-```
-
-Finally, if you want to transform the program you probably want to use the [pass](passes.md) infrastructure.
+However, you will most likely want to use the [pass](passes.md) or the phase infrastructure.

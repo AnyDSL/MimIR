@@ -8,13 +8,13 @@ std::ostream& print(std::ostream& os, const char* s) {
 
         switch (*s) {
             case '{':
-                if (match2nd(os, next, s, '{')) continue;
+                if (detail::match2nd(os, next, s, '{')) continue;
                 while (*s && *s != '}') s++;
                 assert(*s != '}' && "invalid format string for 'streamf': missing argument(s)");
                 unreachable();
                 break;
             case '}':
-                if (match2nd(os, next, s, '}')) continue;
+                if (detail::match2nd(os, next, s, '}')) continue;
                 assert(false && "unmatched/unescaped closing brace '}' in format string");
                 unreachable();
             default: os << *s++;
@@ -22,6 +22,8 @@ std::ostream& print(std::ostream& os, const char* s) {
     }
     return os;
 }
+
+namespace detail {
 
 bool match2nd(std::ostream& os, const char* next, const char*& s, const char c) {
     if (*next == c) {
@@ -31,5 +33,7 @@ bool match2nd(std::ostream& os, const char* next, const char*& s, const char c) 
     }
     return false;
 }
+
+} // namespace detail
 
 } // namespace thorin

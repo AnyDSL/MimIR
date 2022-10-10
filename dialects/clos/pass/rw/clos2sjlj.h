@@ -2,14 +2,15 @@
 
 #include "thorin/pass/pass.h"
 
+#include "dialects/clos/clos.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::clos {
 
-class Clos2SJLJ : public RWPass<Lam> {
+class Clos2SJLJ : public RWPass<Clos2SJLJ, Lam> {
 public:
     Clos2SJLJ(PassMan& man)
-        : RWPass<Lam>(man, "closure2sjlj")
+        : RWPass(man, "closure2sjlj")
         , lam2tag_()
         , dom2throw_()
         , lam2lpad_()
@@ -19,10 +20,10 @@ public:
     const Def* rewrite(const Def*) override;
 
 private:
-    const Def* void_ptr() { return mem::type_ptr(world().type_int_width(8)); }
+    const Def* void_ptr() { return mem::type_ptr(world().type_int(8)); }
     const Def* jb_type() { return void_ptr(); }
     const Def* rb_type() { return mem::type_ptr(void_ptr()); }
-    const Def* tag_type() { return world().type_int_width(32); }
+    const Def* tag_type() { return world().type_int(32); }
 
     Lam* get_throw(const Def* res_type);
     Lam* get_lpad(Lam* lam, const Def* rb);
