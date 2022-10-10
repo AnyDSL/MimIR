@@ -13,19 +13,16 @@
 
 namespace thorin::autodiff {
 
+// TODO remove macro
 #define f_arg_ty continuation_dom(f->type())
 
-const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam* f_diff) {
-    auto& world = lit->world();
-
-    auto aug_lit              = lit;
+const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam*) {
     auto pb                   = zero_pullback(lit->type(), f_arg_ty);
-    partial_pullback[aug_lit] = pb;
+    partial_pullback[lit] = pb;
     return lit;
 }
 
-const Def* AutoDiffEval::augment_var(const Var* var, Lam* f, Lam* f_diff) {
-    auto& world = var->world();
+const Def* AutoDiffEval::augment_var(const Var* var, Lam*, Lam*) {
     assert(augmented.count(var));
     auto aug_var = augmented[var];
     assert(partial_pullback.count(aug_var));
