@@ -60,6 +60,9 @@ add_thorin_dialect(direct
         direct/direct.h
         direct/passes/ds2cps.cpp
         direct/passes/ds2cps.h
+        direct/passes/cps2ds.cpp
+        direct/passes/cps2ds.h
+        direct/normalizers.cpp
     INSTALL
 )
 
