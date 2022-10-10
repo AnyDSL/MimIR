@@ -4,6 +4,7 @@
 
 #include "thorin/analyses/scope.h"
 
+#include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::clos {
@@ -195,9 +196,9 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         return map(closure);
     } else if (auto q = match(clos::ret, def)) {
         if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
-            assert(ret_lam && ret_lam->is_basicblock());
-            // Note: This should be cont_lam's only occurance after η-expansion, so its okay to
-            // put into the local subst only
+            // assert(ret_lam && ret_lam->is_basicblock());
+            //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
+            //  put into the local subst only
             auto new_doms  = DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
             auto new_lam   = ret_lam->stub(w, w.cn(new_doms), ret_lam->dbg());
             subst[ret_lam] = new_lam;
@@ -241,11 +242,16 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         return map(new_nom);
     } else {
         auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite(def->op(i), subst); });
-        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
+        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>()) {
             return map(clos_apply(new_ops[0], new_ops[1]));
-        else
+        }else if(def->isa<Axiom>()){
+            return def;
+        }else{
             return map(def->rebuild(w, new_type, new_ops, new_dbg));
+        }
     }
+
+    thorin::unreachable();
 }
 
 Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, Def2Def& subst) {
@@ -314,7 +320,8 @@ ClosConv::ClosureStub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2D
 
 ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
     if (auto i = closures_.find(old_lam); i != closures_.end()) return i->second;
-    auto closure = make_stub(fva_.run(old_lam), old_lam, subst);
+    auto fvs     = fva_.run(old_lam);
+    auto closure = make_stub(fvs, old_lam, subst);
     worklist_.emplace(closure.fn);
     return closure;
 }
@@ -336,9 +343,9 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
     assert(!match<mem::M>(fd) && "mem tokens must not be free");
     if (is_toplevel(fd)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
-        if (var != lam->ret_var()) node->fvs.emplace(fd);
+        if (var != lam->ret_var()) { node->add_fvs(fd); }
     } else if (auto q = match(clos::freeBB, fd)) {
-        node->fvs.emplace(q);
+        node->add_fvs(q);
     } else if (auto pred = fd->isa_nom()) {
         if (pred != node->nom) {
             auto [pnode, inserted] = build_node(pred, worklist);
@@ -349,10 +356,10 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
     } else if (fd->dep() == Dep::Var && !fd->isa<Tuple>()) {
         // Note: Var's can still have Def::Top, if their type is a nom!
         // So the first case is *not* redundant
-        node->fvs.emplace(fd);
+        node->add_fvs(fd);
     } else if (is_memop_res(fd)) {
         // Results of memops must not be floated down
-        node->fvs.emplace(fd);
+        node->add_fvs(fd);
     } else {
         for (auto op : fd->ops()) split_fd(node, op, init_node, worklist);
     }
@@ -387,7 +394,7 @@ void FreeDefAna::run(NodeQueue& worklist) {
         mark(node);
         for (auto p : node->preds) {
             auto& pfvs = p->fvs;
-            for (auto&& pfv : pfvs) changed |= node->fvs.insert(pfv).second;
+            for (auto&& pfv : pfvs) { changed |= node->add_fvs(pfv).second; }
             // w.DLOG("\tFV({}) ∪= FV({}) = {{{, }}}\b", node->nom, p->nom, pfvs);
         }
         if (changed) {
@@ -405,6 +412,7 @@ DefSet& FreeDefAna::run(Lam* lam) {
         cur_pass_id++;
         run(worklist);
     }
+
     return node->fvs;
 }
 
