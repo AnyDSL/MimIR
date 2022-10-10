@@ -122,7 +122,7 @@ const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) 
 }
 
 inline const Def* get_size(const Def* type) {
-    if (auto idx = type->isa<Idx>()) return idx->size();
+    if (auto size = Idx::size(type)) return size;
     if (auto real = match<Real>(type)) return real->arg();
     unreachable();
 }

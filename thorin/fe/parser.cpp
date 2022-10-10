@@ -210,7 +210,7 @@ const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
                     if (meta->proj(a, i) == sym) return world().extract(lhs, a, i, track);
                 }
             }
-            err(sym.loc(), "could not find elemement '{}' to extract from '{} of type '{}'", sym, lhs, sigma);
+            err(sym.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", sym, lhs, sigma);
         }
     }
 
@@ -243,10 +243,10 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::D_brckt_l: return parse_sigma();
         case Tok::Tag::D_paren_l: return parse_tuple();
         case Tok::Tag::K_Cn:      return parse_Cn();
-        case Tok::Tag::K_Idx:     return parse_idx();
         case Tok::Tag::K_Type:    return parse_type();
         case Tok::Tag::K_Univ:    lex(); return world().univ();
         case Tok::Tag::K_Bool:    lex(); return world().type_bool();
+        case Tok::Tag::K_Idx:     lex(); return world().type_idx();
         case Tok::Tag::K_Nat:     lex(); return world().type_nat();
         case Tok::Tag::K_ff:      lex(); return world().lit_ff();
         case Tok::Tag::K_tt:      lex(); return world().lit_tt();
@@ -374,13 +374,6 @@ const Def* Parser::parse_type() {
     auto [l, r] = Tok::prec(Tok::Prec::App);
     auto level  = parse_expr("type level", r);
     return world().type(level, track);
-}
-
-const Def* Parser::parse_idx() {
-    eat(Tok::Tag::K_Idx);
-    auto [l, r] = Tok::prec(Tok::Prec::App);
-    auto size   = parse_expr("size of .Idx", r);
-    return world().type_idx(size);
 }
 
 const Def* Parser::parse_pi() {
@@ -730,7 +723,7 @@ void Parser::parse_nom_fun() {
         const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
         auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
         auto dom_t        = dom_p->type(world());
-        auto pi           = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
+        auto pi           = world().nom_pi(world().type_infer_univ())->set_dom(dom_t);
         auto var_dbg      = world().dbg(dom_p->sym());
         auto pi_var       = pi->var(var_dbg);
 
@@ -768,7 +761,7 @@ void Parser::parse_nom_fun() {
 
     auto codom = is_cn                     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
-                                           : world().nom_infer_of_infer_level();
+                                           : world().type_infer_univ();
     pis.back()->set_codom(codom);
 
     for (auto& pi : pis | std::ranges::views::reverse) {

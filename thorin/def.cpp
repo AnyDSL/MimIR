@@ -64,9 +64,6 @@ Def::Def(node_t node, const Def* type, size_t num_ops, flags_t flags, const Def*
 Nat::Nat(World& world)
     : Def(Node, world.type(), Defs{}, 0, nullptr) {}
 
-Idx::Idx(World& world, const Def* size)
-    : Def(Node, world.type(), Defs{size}, 0, nullptr) {}
-
 // clang-format off
 
 /*
@@ -78,7 +75,7 @@ const Def* App      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) co
 const Def* Arr      ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.arr(o[0], o[1], dbg); }
 const Def* Extract  ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.extract(o[0], o[1], dbg); }
 const Def* Insert   ::rebuild(World& w, const Def*  , Defs o, const Def* dbg) const { return w.insert(o[0], o[1], o[2], dbg); }
-const Def* Idx      ::rebuild(World& w, const Def*  , Defs o, const Def*    ) const { return w.type_idx(o[0]); }
+const Def* Idx      ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_idx(); }
 const Def* Lam      ::rebuild(World& w, const Def* t, Defs o, const Def* dbg) const { return w.lam(t->as<Pi>(), o[0], o[1], dbg); }
 const Def* Lit      ::rebuild(World& w, const Def* t, Defs  , const Def* dbg) const { return w.lit(t, get(), dbg); }
 const Def* Nat      ::rebuild(World& w, const Def*  , Defs  , const Def*    ) const { return w.type_nat(); }
@@ -416,6 +413,18 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
         }
 
         return w.extract(this, a, i, dbg);
+    }
+
+    return nullptr;
+}
+
+/*
+ * Idx
+ */
+
+const Def* Idx::size(const Def* def) {
+    if (auto app = def->isa<App>()) {
+        if (app->callee()->isa<Idx>()) return app->arg();
     }
 
     return nullptr;

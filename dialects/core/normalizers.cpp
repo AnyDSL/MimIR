@@ -109,8 +109,8 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
             nsw            = mode & WMode::nsw;
             nuw            = mode & WMode::nuw;
             width          = w;
-        } else if (auto idx = a->type()->isa<Idx>()) {
-            width = as_lit(idx->size());
+        } else if (auto size = Idx::size(a->type())) {
+            width = as_lit(size);
         } else {
             width = as_lit(force<Real>(a->type())->arg());
         }
@@ -676,8 +676,8 @@ static const Def* fold_conv(const Def* dst_type, const App* callee, const Def* s
             return world.lit(dst_type, as_lit(lit_src) % *lit_dw);
         }
 
-        if (src->type()->isa<Idx>()) *lit_sw = *size2bitwidth(*lit_sw);
-        if (dst_type->isa<Idx>()) *lit_dw = *size2bitwidth(*lit_dw);
+        if (Idx::size(src->type())) *lit_sw = *size2bitwidth(*lit_sw);
+        if (Idx::size(dst_type)) *lit_dw = *size2bitwidth(*lit_dw);
 
         Res res;
 #define CODE(sw, dw)                                                                                 \
@@ -724,7 +724,7 @@ const Def* normalize_bitcast(const Def* dst_type, const Def* callee, const Def* 
 
     if (auto lit = src->isa<Lit>()) {
         if (dst_type->isa<Nat>()) return world.lit(dst_type, lit->get(), dbg);
-        if (dst_type->isa<Idx>()) return world.lit(dst_type, lit->get(), dbg);
+        if (Idx::size(dst_type)) return world.lit(dst_type, lit->get(), dbg);
     }
 
     return world.raw_app(callee, src, dbg);
@@ -748,9 +748,9 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
         return world.lit_nat(8);
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
-    } else if (auto idx = type->isa<Idx>()) {
-        if (idx->size()->isa<Top>()) return world.lit_nat(8);
-        if (auto w = isa_lit(idx->size())) {
+    } else if (auto size = Idx::size(type)) {
+        if (size->isa<Top>()) return world.lit_nat(8);
+        if (auto w = isa_lit(size)) {
             if (*w == 0) return world.lit_nat(8);
             if (*w <= 0x0000'0000'0000'0100_u64) return world.lit_nat(1);
             if (*w <= 0x0000'0000'0001'0000_u64) return world.lit_nat(2);
@@ -790,7 +790,7 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
         if constexpr (id == trait::align) return align;
 
         if (auto b = isa_lit(core::op(trait::size, arr->body()))) {
-            auto i64_t = world.type_int_(64);
+            auto i64_t = world.type_int(64);
             auto s     = op_bitcast(i64_t, arr->shape());
             auto mul   = core::op(wrap::mul, WMode::nsw | WMode::nuw, world.lit_idx(i64_t, *b), s);
             return op_bitcast(world.type_nat(), mul);
