@@ -44,6 +44,7 @@ var annotated_dup =
         [ "Res", "classthorin_1_1core_1_1Res.html", "classthorin_1_1core_1_1Res" ]
       ] ],
       [ "direct", "namespacethorin_1_1direct.html", [
+        [ "CPS2DS", "classthorin_1_1direct_1_1CPS2DS.html", "classthorin_1_1direct_1_1CPS2DS" ],
         [ "DS2CPS", "classthorin_1_1direct_1_1DS2CPS.html", "classthorin_1_1direct_1_1DS2CPS" ]
       ] ],
       [ "dl", "namespacethorin_1_1dl.html", [

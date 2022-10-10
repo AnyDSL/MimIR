@@ -146,6 +146,9 @@ var hierarchy =
           [ "thorin::clos::LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", null ]
         ] ]
       ] ],
+      [ "thorin::RWPass< CPS2DS, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::direct::CPS2DS", "classthorin_1_1direct_1_1CPS2DS.html", null ]
+      ] ],
       [ "thorin::RWPass< DS2CPS, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::direct::DS2CPS", "classthorin_1_1direct_1_1DS2CPS.html", null ]
       ] ],
