@@ -146,8 +146,9 @@ public:
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def) {
         assert(!def->name().empty());
-        auto [_, ins] = move_.externals.emplace(def->name(), def);
-        assert(ins);
+        auto name     = def->name();
+        auto [i, ins] = move_.externals.emplace(def->name(), def);
+        // assert((ins || (def == i->second)) && "make sure the external isn't inserted twice");
     }
     void make_internal(Def* def) { move_.externals.erase(def->name()); }
     bool is_external(const Def* def) { return move_.externals.contains(def->name()); }
