@@ -92,8 +92,6 @@ add_thorin_dialect(direct
         direct/passes/cps2ds.cpp
         direct/passes/cps2ds.h
         direct/normalizers.cpp
-    DEPENDS
-        tool
     INSTALL
 )
 
@@ -122,15 +120,5 @@ add_thorin_dialect(refly
         refly/passes/remove_perm.h
         refly/passes/remove_perm.cpp
         refly/normalizers.cpp
-    INSTALL
-)
-
-add_thorin_dialect(tool
-    SOURCES
-        tool/tool.cpp
-        tool/tool.h
-        tool/passes/set_filter.h
-        tool/passes/set_filter.cpp
-        tool/normalizers.cpp
     INSTALL
 )

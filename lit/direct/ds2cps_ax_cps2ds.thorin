@@ -1,10 +1,6 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin -d tool -d direct %s --output-ll %t.ll -o - | FileCheck %s
 
-// tests a direct call to a cps fucntion wrapped in cps2ds
-// ./build/bin/thorin -d tool -d direct ./lit/direct/ds2cps_ax_cps2ds.thorin --output-thorin - -VVVV
-// ./build/bin/thorin -d tool -d direct ./lit/direct/ds2cps_ax_cps2ds.thorin --output-ll ./lit/direct/ds2cps_ax_cps2ds.ll -o - | FileCheck ./lit/direct/ds2cps_ax_cps2ds.thorin
-
 .import direct;
 .import mem;
 .import core;
@@ -22,8 +18,4 @@
     return (mem, c)
 };
 
-// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]+]]: %mem.M, .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_[[returnId:[_0-9]+]]: .Cn [%mem.M, .Idx 4294967296]] = {
-// CHECK-DAG: return_[[returnEtaId:[_0-9]+]] (mem_[[memId]], 42:(.Idx 4294967296))
-
-// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, .Idx 4294967296] = {
-// CHECK-DAG: return_[[returnId]] _[[returnEtaVarId]]
+// CHECK-DAG: return{{.*}}42
