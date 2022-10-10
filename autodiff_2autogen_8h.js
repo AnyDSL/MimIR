@@ -11,7 +11,7 @@ var autodiff_2autogen_8h =
     [ "normalize_autodiff", "autodiff_2autogen_8h.html#ac8b68b4b18de4500d22f5a2d5deaf65f", null ],
     [ "normalize_autodiff_type", "autodiff_2autogen_8h.html#ac4b44d6c80088510721d5e29e06401f4", null ],
     [ "normalize_sum", "autodiff_2autogen_8h.html#a4a6c69b660a28849fe64d4712d60e48d", null ],
-    [ "normalize_tangent_type", "autodiff_2autogen_8h.html#aca5d7397e5c924ee7b55a1e697e2238f", null ],
+    [ "normalize_tangent_type", "autodiff_2autogen_8h.html#aa0f62e0f2c7d993a4616a5c0de3cd1c8", null ],
     [ "normalize_zero", "autodiff_2autogen_8h.html#a2ba4143282cde5c7fce7b791b6e3f7e3", null ],
     [ "operator&", "autodiff_2autogen_8h.html#ac9a9cb7f4949f27726bed4d0c775096f", null ],
     [ "operator&", "autodiff_2autogen_8h.html#a73e4aa6301bf28ff44d36834014fd622", null ],

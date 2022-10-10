@@ -52,7 +52,7 @@ var searchData=
   ['normalize_5fshr_49',['normalize_shr',['../namespacethorin_1_1core.html#a3a1b7ea1e0c793bd5c8bba896d6c8d91',1,'thorin::core']]],
   ['normalize_5fstore_50',['normalize_store',['../namespacethorin_1_1mem.html#a8876a3d55871c5572e77eebb66863fa3',1,'thorin::mem']]],
   ['normalize_5fsum_51',['normalize_sum',['../namespacethorin_1_1autodiff.html#a4a6c69b660a28849fe64d4712d60e48d',1,'thorin::autodiff']]],
-  ['normalize_5ftangent_5ftype_52',['normalize_tangent_type',['../namespacethorin_1_1autodiff.html#aca5d7397e5c924ee7b55a1e697e2238f',1,'thorin::autodiff']]],
+  ['normalize_5ftangent_5ftype_52',['normalize_tangent_type',['../namespacethorin_1_1autodiff.html#aa0f62e0f2c7d993a4616a5c0de3cd1c8',1,'thorin::autodiff']]],
   ['normalize_5ftrait_53',['normalize_trait',['../namespacethorin_1_1core.html#ac0d1f9418484a71cb21980018a1cbeb4',1,'thorin::core']]],
   ['normalize_5fwrap_54',['normalize_wrap',['../namespacethorin_1_1core.html#aa2a8519281f2f3630acf8bc6b6b61108',1,'thorin::core']]],
   ['normalize_5fzero_55',['normalize_zero',['../namespacethorin_1_1autodiff.html#a2ba4143282cde5c7fce7b791b6e3f7e3',1,'thorin::autodiff']]],
