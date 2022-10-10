@@ -333,6 +333,11 @@ bool Def::is_set() const {
     assert((!isa_structural() || all_set) && "structurals must be always set");
 
     if (all_set) return true;
+    if (!(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }))) {
+        world().ELOG("{} {}", this->unique_name(), this->name());
+        assert(false && "some operands are set, others aren't");
+    }
+
     assert(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
     return false;
 }

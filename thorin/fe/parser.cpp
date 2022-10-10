@@ -128,7 +128,7 @@ void Parser::parse_import() {
     expect(Tok::Tag::T_semicolon, "end of import");
     auto name_str = name.sym().to_string();
 
-    if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
+    if (auto [_, ins] = imported_.emplace(name.sym()); !ins) return;
 
     // search file and import
     auto parser = Parser::import_module(world(), name_str, user_search_paths_, normalizers_);
@@ -136,7 +136,6 @@ void Parser::parse_import() {
 
     // transitvely remember which files we transitively imported
     imported_.merge(parser.imported_);
-    imported_.emplace(name.sym());
 }
 
 Sym Parser::parse_sym(std::string_view ctxt) {
