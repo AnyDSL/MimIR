@@ -114,7 +114,7 @@ void Parser::bootstrap(std::ostream& h) { bootstrapper_.emit(h); }
 void Parser::parse_module() {
     while (ahead().tag() == Tok::Tag::K_import) parse_import();
 
-    parse_decls(false);
+    parse_decls({});
     expect(Tok::Tag::M_eof, "module");
 };
 
@@ -236,7 +236,6 @@ const Def* Parser::parse_insert() {
 const Def* Parser::parse_primary_expr(std::string_view ctxt) {
     // clang-format off
     switch (ahead().tag()) {
-        case DECL:                return parse_decls();
         case Tok::Tag::D_quote_l: return parse_arr();
         case Tok::Tag::D_angle_l: return parse_pack();
         case Tok::Tag::D_brace_l: return parse_block();
@@ -349,7 +348,7 @@ const Def* Parser::parse_pack() {
 const Def* Parser::parse_block() {
     scopes_.push();
     eat(Tok::Tag::D_brace_l);
-    auto res = parse_expr("block expression");
+    auto res = parse_decls("block expression");
     expect(Tok::Tag::D_brace_r, "block expression");
     scopes_.pop();
     return res;
@@ -538,7 +537,7 @@ std::unique_ptr<TuplePtrn> Parser::parse_tuple_ptrn(Tracker track, Sym sym) {
  * decls
  */
 
-const Def* Parser::parse_decls(bool expr /*= true*/) {
+const Def* Parser::parse_decls(std::string_view ctxt) {
     while (true) {
         // clang-format off
         switch (ahead().tag()) {
@@ -552,7 +551,7 @@ const Def* Parser::parse_decls(bool expr /*= true*/) {
             case Tok::Tag::K_cn:
             case Tok::Tag::K_lam:       parse_nom_fun(); break;
             case Tok::Tag::K_def:       parse_def();     break;
-            default:                    return expr ? parse_expr("scope of a declaration") : nullptr;
+            default:                    return ctxt.empty() ? nullptr : parse_expr(ctxt);
         }
         // clang-format on
     }
@@ -681,19 +680,9 @@ void Parser::parse_nom() {
     scopes_.bind(sym, nom);
 
     scopes_.push();
-    // for (auto [sym, i] : binders) scopes_.bind(sym, nom->var(i));
     if (external) nom->make_external();
 
     scopes_.push();
-#if 0
-    if (accept(Tok::Tag::T_comma)) {
-        binders.clear();
-        parse_var_list(binders);
-        assert(binders.size() == nom->num_vars());
-        for (auto [sym, i] : binders) scopes_.bind(sym, nom->var(i, world().dbg(sym)));
-    }
-#endif
-
     if (ahead().isa(Tok::Tag::T_assign))
         parse_def(sym);
     else
@@ -773,7 +762,7 @@ void Parser::parse_nom_fun() {
 
     scopes_.swap(other_scope); // swap to lam scope
     if (accept(Tok::Tag::T_assign)) {
-        auto body = parse_expr("body of a lambda");
+        auto body = parse_decls("body of a lambda");
         last_lam->set_body(body);
     } else {
         // TODO error message if filter is non .ff
@@ -800,11 +789,11 @@ void Parser::parse_def(Sym sym /*= {}*/) {
         scopes_.push();
         parse_list("nominal definition", Tok::Tag::D_brace_l, [&]() {
             if (i == n) err(prev_, "too many operands");
-            nom->set(i++, parse_expr("operand of a nominal"));
+            nom->set(i++, parse_decls("operand of a nominal"));
         });
         scopes_.pop();
     } else if (n - i == 1) {
-        nom->set(i, parse_expr("operand of a nominal"));
+        nom->set(i, parse_decls("operand of a nominal"));
     } else {
         err(prev_, "expected operands for nominal definition");
     }
