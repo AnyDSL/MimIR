@@ -76,7 +76,7 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
                             {world.extract(a, pack->var()), world.extract(b, pack->var())}));
         world.DLOG("pack {}", pack);
         return pack;
-    } else if (auto idx = T->isa<Idx>()) {
+    } else if (auto size = Idx::size(type)) {
         world.DLOG("add int");
         auto width = as_lit(world.iinfer(a));
         world.DLOG("width {}", width);
