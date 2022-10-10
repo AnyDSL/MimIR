@@ -7,7 +7,7 @@ namespace thorin::autodiff {
 /// Additionally to the derivation, the pullback is registered and the maps are initialized.
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& world = def->world();
-    auto lam = def->as_nom<Lam>(); // TODO check if nominal
+    auto lam    = def->as_nom<Lam>(); // TODO check if nominal
     world.DLOG("Derive lambda: {}", def);
     auto deriv_ty = autodiff_type_fun_pi(lam->type());
     auto deriv    = world.nom_lam(deriv_ty, world.dbg(lam->name() + "_deriv"));
@@ -35,10 +35,8 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     partial_pullback[ret_var] = ret_pb;
 
     shadow_pullback[deriv_all_args] = world.tuple({arg_id_pb, ret_pb});
-    world.DLOG("pullback for argument {} : {} is {} : {}", deriv_arg, deriv_arg->type(), arg_id_pb,
-                arg_id_pb->type());
-    world.DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args],
-                shadow_pullback[deriv_all_args]->type());
+    world.DLOG("pullback for argument {} : {} is {} : {}", deriv_arg, deriv_arg->type(), arg_id_pb, arg_id_pb->type());
+    world.DLOG("args shadow pb is {} : {}", shadow_pullback[deriv_all_args], shadow_pullback[deriv_all_args]->type());
 
     // We pre-register the augment replacements.
     // The function and its variables are replaced by their new derived versions.
