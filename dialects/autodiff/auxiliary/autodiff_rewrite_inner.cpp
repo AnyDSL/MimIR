@@ -17,7 +17,7 @@ namespace thorin::autodiff {
 #define f_arg_ty continuation_dom(f->type())
 
 const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam*) {
-    auto pb                   = zero_pullback(lit->type(), f_arg_ty);
+    auto pb               = zero_pullback(lit->type(), f_arg_ty);
     partial_pullback[lit] = pb;
     return lit;
 }
