@@ -194,6 +194,16 @@ u64 get_max_index(u64 init, Defs inputs) {
 //     // //                            world.dbg("TI"), world.dbg("SI")});
 // }
 
+const Def* normalize_prod(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& world = type->world();
+    return world.raw_app(callee, arg, dbg);
+}
+
+const Def* normalize_transpose(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+    auto& world = type->world();
+    return world.raw_app(callee, arg, dbg);
+}
+
 THORIN_matrix_NORMALIZER_IMPL
 
 } // namespace thorin::matrix
