@@ -31,14 +31,14 @@ var menudata={children:[
 {text:"Developer Guide",url:"dev.html"},
 {text:"Passes",url:"passes.html"}]},
 {text:"Dialects",url:"usergroup1.html",children:[
+{text:"affine",url:"affine.html"},
+{text:"autodiff",url:"autodiff.html"},
 {text:"core",url:"core.html"},
-{text:"mem",url:"mem.html"},
 {text:"clos",url:"clos.html"},
 {text:"demo",url:"demo.html"},
 {text:"direct",url:"direct.html"},
-{text:"affine",url:"affine.html"},
-{text:"refly",url:"refly.html"},
-{text:"autodiff",url:"autodiff.html"}]},
+{text:"mem",url:"mem.html"},
+{text:"refly",url:"refly.html"}]},
 {text:"Namespaces",url:"namespaces.html",children:[
 {text:"Namespace List",url:"namespaces.html"},
 {text:"Namespace Members",url:"namespacemembers.html",children:[

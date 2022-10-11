@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('autodiff.html',''); initResizable(); }
 <h1><a class="anchor" id="autotoc_md51"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import mem;</div>
-</div><!-- fragment --><p> for derivatives </p><div class="fragment"><div class="line">.import core;</div>
+</div><!-- fragment --><p> For derivatives: </p><div class="fragment"><div class="line">.import core;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md52"></a>
 Types</h1>
 <div class="fragment"><div class="line">.ax %autodiff.tangent_type: * -&gt; *, normalize_tangent_type;</div>
@@ -158,7 +158,7 @@ Registered translations</h1>
 <div class="line">r   : Int</div>
 <div class="line">r*  : cn[Int,cn[Int,Int]]</div>
 </div><!-- fragment --><p> The pullback has to be in cps for compliance. </p><div class="fragment"><div class="line">mul* := λ s. (s*b,s*a)</div>
-</div><!-- fragment --> <div class="fragment"><div class="line">mul&#39;_cps : Π [m:.Nat,w:.Nat] -&gt; cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]</div>
+<div class="line">mul&#39;_cps : Π [m:.Nat,w:.Nat] -&gt; cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]</div>
 <div class="line">r,r* = (cps2ds (mul&#39;_cps (m,w))) (a,b)</div>
 </div><!-- fragment --><p >The pullback is the derivative with respect to the input (weighted with the out tangent). For arithmetic operations, s is simply multiplied to each input tangent: <code>∂_i f(x1,...,xn) * s</code> You will also come to the conclusion that the applied partial pullback needs to be: <code>sum x_i*(∂_i f(x1,...,xn) * s) = sum x_i*(•)</code> with • as the formula from above This is a direct result from the chain composition with the partial pullback of a tuple. The tuple pullback transports the partial pullbacks of the operands and handles the sums. By its nature the pullback of a tuple needs to be a sum.</p>
 <h2><a class="anchor" id="autotoc_md58"></a>

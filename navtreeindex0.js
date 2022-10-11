@@ -1,6 +1,6 @@
 var NAVTREEINDEX0 =
 {
-"affine.html":[2,5],
+"affine.html":[2,0],
 "affine_2autogen_8h.html":[6,0,0,1,0,0,0],
 "affine_2autogen_8h.html#a21feaed294367bb2981f9bbed18280eb":[6,0,0,1,0,0,0,4],
 "affine_2autogen_8h.html#a26dd00313435d196e5468fdddbbf4d58":[6,0,0,1,0,0,0,3],
@@ -38,7 +38,7 @@ var NAVTREEINDEX0 =
 "ast_8h.html":[6,0,3,2,1],
 "ast_8h.html#a42a193d43619ab8dde374ddc8b4fdd37":[6,0,3,2,1,4],
 "ast_8h_source.html":[6,0,3,2,1],
-"autodiff.html":[2,7],
+"autodiff.html":[2,1],
 "autodiff_2autogen_8h.html":[6,0,0,1,0,1,0],
 "autodiff_2autogen_8h.html#a07d0b701d10b621efc3c060ffe6d9e6a":[6,0,0,1,0,1,0,22],
 "autodiff_2autogen_8h.html#a09cd2bebb37f60631db04d04495215fe":[6,0,0,1,0,1,0,21],

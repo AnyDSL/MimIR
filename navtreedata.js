@@ -40,14 +40,14 @@ var NAVTREE =
       [ "Passes", "passes.html", null ]
     ] ],
     [ "Dialects", "usergroup1.html", [
+      [ "affine", "affine.html", null ],
+      [ "autodiff", "autodiff.html", null ],
       [ "core", "core.html", null ],
-      [ "mem", "mem.html", null ],
       [ "clos", "clos.html", null ],
       [ "demo", "demo.html", null ],
       [ "direct", "direct.html", null ],
-      [ "affine", "affine.html", null ],
-      [ "refly", "refly.html", null ],
-      [ "autodiff", "autodiff.html", null ]
+      [ "mem", "mem.html", null ],
+      [ "refly", "refly.html", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
