@@ -5,46 +5,27 @@
 
 namespace thorin::direct {
 
-/// This pass converts a direct style functions (abbreviated as ds) into CPS.
-/// the main conversion is shown in this pseudocode:
-/// ```
-/// h:
-///   b = f a
-///   C[b]
-/// ```
-/// becomes
-/// ```
-/// h:
-///     f'(a,h_cont)
+/// Converts direct style function to cps functions.
+/// To do so, for each (non-type-level) ds function a corresponding cps function is created:
+/// `f: Π a : A -> B`
+/// `f_cps : cn[a:A, cn B]`
+/// Only the type signature of the function is changed and the body is wrapped in the newly added return continuation.
+/// (Technical detail: the arguments are substituted to fit the new function)
 ///
-/// h_cont(b):
-///     C[b]
-/// ```
-/// with the following types:
-/// ```
-/// f : A -> B
-/// f': .Cn [A, ret: .Cn[B]]
-/// ```
-/// The idea is to create a cps function for each ds function
-/// invoke the cps function with a continuation that takes the
-/// computation result and uses it in the original context.
-/// For each ds function, a new cps function is introduced.
-/// For each ds call site, a new continuation is introduced.
+/// In a second distinct but connected step, the call sites are converted:
+/// For a direct style call `f args`, the call to the cps function `cps2ds_dep ... f_cps args` is introduced.
+/// The underlying substitution is `f` -> `cps2ds_dep ... f_cps`.
 class DS2CPS : public RWPass<DS2CPS, Lam> {
 public:
     DS2CPS(PassMan& man)
         : RWPass(man, "ds2cps") {}
 
-    void enter() override;
+    const Def* rewrite(const Def*) override;
 
 private:
     Def2Def rewritten_;
-    Def2Def rewritten_bodies_;
-    Lam* curr_lam_ = nullptr;
 
-    void rewrite_lam(Lam* lam);
-    const Def* rewrite_(const Def*);
-    const Def* rewrite_inner(const Def*);
+    const Def* rewrite_lam(Lam* lam);
 };
 
 } // namespace thorin::direct
