@@ -22,10 +22,31 @@ const Def* infer_type_level(World& world, Defs defs) {
 
 bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
     if (d1 == d2) return true;
-    if (!d1 || !d2 || d1->is_unfinished() || d2->is_unfinished()) return false;
+    if (!d1 || !d2) return false;
 
-    // normalize: always put smaller gid to the left
-    if (d1->gid() > d2->gid()) std::swap(d1, d2);
+    // normalize: Infer to the left; smaller gid to the left (with this priority)
+    auto i1 = d1->isa_nom<Infer>();
+    auto i2 = d2->isa_nom<Infer>();
+    if ((!i1 && d1->is_unfinished()) || (!i2 && d2->is_unfinished())) return false;
+
+    // clang-format off
+    if (false) {}
+    else if ( i1 &&  i2) assert(false && "TODO: both are Infer");
+    else if (!i1 &&  i2) std::swap(d1, d2);
+    else if ( i1 && !i2) { /* do nothing */ }
+    else if (!i1 && !i2) {
+        if (d1->gid() > d2->gid()) std::swap(d1, d2);
+    }
+    // clang-format on
+
+    if (auto infer = d1->isa_nom<Infer>()) {
+        if (infer->is_unset()) {
+            infer->set(d2);
+            return true;
+        } else {
+            d1 = infer->op();
+        }
+    }
 
     if (auto [it, ins] = equiv_.emplace(std::pair(d1, d2), Equiv::Unknown); !ins) {
         switch (it->second) {
@@ -76,10 +97,19 @@ bool Checker::assignable(const Def* type, const Def* val, const Def* dbg /*= {}*
     if (type == val->type()) return true;
 
     if (auto sigma = type->isa<Sigma>()) {
-        if (!equiv(type->arity(), val->type()->arity(), dbg)) return false;
+        auto infer = val->isa_nom<Infer>();
+        if (!infer && !equiv(type->arity(), val->type()->arity(), dbg)) return false;
 
+        size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
-        for (size_t i = 0, a = red.size(); i != a; ++i) {
+
+        if (infer && infer->is_unset()) {
+            Array<const Def*> infer_ops(a, [&](size_t i) { return world().nom_infer(red[i], dbg); });
+            infer->set(world().tuple(infer_ops, dbg));
+            if (auto t = infer->type()->isa_nom<Infer>(); t && t->is_unset()) t->set(sigma);
+        }
+
+        for (size_t i = 0; i != a; ++i) {
             if (!assignable(red[i], val->proj(a, i, dbg), dbg)) return false;
         }
 

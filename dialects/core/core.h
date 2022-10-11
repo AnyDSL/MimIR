@@ -54,17 +54,9 @@ inline const Def* fn(icmp o, const Def* mod, const Def* dbg = {}) {
     World& w = mod->world();
     return w.app(w.ax(o), mod, dbg);
 }
-inline const Def* fn(shr o, const Def* mod, const Def* dbg = {}) {
-    World& w = mod->world();
-    return w.app(w.ax(o), mod, dbg);
-}
 inline const Def* fn(wrap o, const Def* wmode, const Def* mod, const Def* dbg = {}) {
     World& w = mod->world();
     return w.app(w.ax(o), {wmode, mod}, dbg);
-}
-inline const Def* fn(div o, const Def* mod, const Def* dbg = {}) {
-    World& w = mod->world();
-    return w.app(w.ax(o), mod, dbg);
 }
 inline const Def* fn(rop o, const Def* rmode, const Def* width, const Def* dbg = {}) {
     World& w = rmode->world();
@@ -94,17 +86,9 @@ inline const Def* op(icmp o, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = a->world();
     return w.app(fn(o, w.iinfer(a)), {a, b}, dbg);
 }
-inline const Def* op(shr o, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, w.iinfer(a)), {a, b}, dbg);
-}
 inline const Def* op(wrap o, const Def* wmode, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = a->world();
     return w.app(fn(o, wmode, w.iinfer(a)), {a, b}, dbg);
-}
-inline const Def* op(div o, const Def* mem, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = mem->world();
-    return w.app(fn(o, w.iinfer(a)), {mem, a, b}, dbg);
 }
 inline const Def* op(rop o, const Def* rmode, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = rmode->world();

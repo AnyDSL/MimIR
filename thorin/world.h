@@ -172,6 +172,7 @@ public:
         else
             return type(lit_univ(level), dbg);
     }
+    const Type* type_infer_univ(const Def* dbg = {}) { return type(nom_infer_univ(dbg), dbg); }
     const Var* var(const Def* type, Def* nom, const Def* dbg = {}) { return unify<Var>(1, type, nom, dbg); }
     const Proxy* proxy(const Def* type, Defs ops, u32 index, u32 tag, const Def* dbg = {}) {
         return unify<Proxy>(ops.size(), type, ops, index, tag, dbg);
@@ -180,7 +181,12 @@ public:
     Infer* nom_infer(const Def* type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
     Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
     Infer* nom_infer_type(const Def* dbg = {}) { return nom_infer(type_infer_univ(dbg), dbg); }
-    const Type* type_infer_univ(const Def* dbg = {}) { return type(nom_infer_univ(dbg), dbg); }
+
+    /// Either a value `?:?:.Type ?` or a type `?:.Type ?:.Type ?+1`.
+    Infer* nom_infer_entity(const Def* dbg = {}) {
+        auto t = type_infer_univ();
+        return nom_infer(nom_infer(t), dbg);
+    }
     ///@}
 
     /// @name Axiom
@@ -257,6 +263,34 @@ public:
     const Def* raw_app(const Def* callee, const Def* arg, const Def* dbg = {});
     /// Same as World::app but does *not* apply NormalizeFn.
     const Def* raw_app(const Def* callee, Defs args, const Def* dbg = {}) { return raw_app(callee, tuple(args), dbg); }
+    ///@}
+
+    /// @name call - App with type inference
+    ///@{
+    /// Infers the args of a curried Axiom.
+    template<class Id>
+    const Def* call(Id id, const Def* arg, const Def* dbg = {}) {
+        auto axiom        = ax(id);
+        const Def* callee = axiom;
+        for (size_t i = 1, e = axiom->curry(); i < e; ++i) callee = app(callee, nom_infer_entity(), dbg);
+        return app(callee, arg, dbg);
+    }
+    template<class Id>
+    const Def* call(Id id, Defs args, const Def* dbg = {}) {
+        return call(id, tuple(args), dbg);
+    }
+
+    template<class Id>
+    const Def* call(const Def* arg, const Def* dbg = {}) {
+        auto axiom        = ax<Id>();
+        const Def* callee = axiom;
+        for (size_t i = 1, e = axiom->curry(); i < e; ++i) callee = app(callee, nom_infer_entity(), dbg);
+        return app(callee, arg, dbg);
+    }
+    template<class Id>
+    const Def* call(Defs args, const Def* dbg = {}) {
+        return call<Id>(tuple(args), dbg);
+    }
     ///@}
 
     /// @name Sigma
