@@ -186,8 +186,8 @@ public:
     Infer* nom_infer_entity(const Def* = {}) {
         return nom_infer(nom_infer(type()));
         // TODO
-        //auto t = type_infer_univ();
-        //return nom_infer(nom_infer(t), dbg);
+        // auto t = type_infer_univ();
+        // return nom_infer(nom_infer(t), dbg);
     }
     ///@}
 

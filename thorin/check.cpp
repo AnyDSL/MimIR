@@ -41,9 +41,9 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
         }
         assert(false && "TODO");
         return true;
-    } else if (!i1 &&  i2) {
+    } else if (!i1 && i2) {
         std::swap(d1, d2);
-    } else if ( i1 && !i2) {
+    } else if (i1 && !i2) {
         // do nothing
     } else if (!i1 && !i2) {
         if (d1->gid() > d2->gid()) std::swap(d1, d2);
