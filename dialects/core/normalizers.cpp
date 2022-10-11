@@ -256,8 +256,9 @@ static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a
     static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
     static constexpr size_t num_bits = std::bit_width(Axiom::Num<Id> - 1_u64);
 
-    auto a_cmp = match<Id>(a);
-    auto b_cmp = match<Id>(b);
+    auto a_cmp  = match<Id>(a);
+    auto b_cmp  = match<Id>(b);
+    auto& world = a->world();
 
     if (a_cmp && b_cmp && a_cmp->args() == b_cmp->args()) {
         // push sub bits of a_cmp and b_cmp through truth table
@@ -271,7 +272,7 @@ static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a
         if constexpr (std::is_same_v<Id, rcmp>)
             return op(rcmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
         else
-            return op(icmp(Axiom::Base<icmp> | res), a_cmp->arg(0), a_cmp->arg(1), dbg);
+            return world.call(icmp(Axiom::Base<icmp> | res), {a_cmp->arg(0), a_cmp->arg(1)}, dbg);
     }
 
     return nullptr;

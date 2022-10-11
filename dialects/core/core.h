@@ -50,10 +50,6 @@ inline const Def* fn(bit2 o, const Def* mod, const Def* dbg = {}) {
     World& w = mod->world();
     return w.app(w.ax(o), mod, dbg);
 }
-inline const Def* fn(icmp o, const Def* mod, const Def* dbg = {}) {
-    World& w = mod->world();
-    return w.app(w.ax(o), mod, dbg);
-}
 inline const Def* fn(wrap o, const Def* wmode, const Def* mod, const Def* dbg = {}) {
     World& w = mod->world();
     return w.app(w.ax(o), {wmode, mod}, dbg);
@@ -79,10 +75,6 @@ inline const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg 
 /// @name op - these guys build the final function application for the various operations
 ///@{
 inline const Def* op(bit2 o, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, w.iinfer(a)), {a, b}, dbg);
-}
-inline const Def* op(icmp o, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = a->world();
     return w.app(fn(o, w.iinfer(a)), {a, b}, dbg);
 }
