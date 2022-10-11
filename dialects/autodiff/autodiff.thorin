@@ -5,7 +5,7 @@
 /// ## Dependencies
 ///
 .import mem;
-/// for derivatives
+/// For derivatives:
 .import core;
 ///
 ///
@@ -68,8 +68,6 @@
 /// The pullback has to be in cps for compliance.
 /// ```
 /// mul* := λ s. (s*b,s*a)
-/// ```
-/// ```
 /// mul'_cps : Π [m:.Nat,w:.Nat] -> cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]
 /// r,r* = (cps2ds (mul'_cps (m,w))) (a,b)
 /// ```
