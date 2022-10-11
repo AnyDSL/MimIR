@@ -29,15 +29,25 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
     auto i2 = d2->isa_nom<Infer>();
     if ((!i1 && d1->is_unfinished()) || (!i2 && d2->is_unfinished())) return false;
 
-    // clang-format off
-    if (false) {}
-    else if ( i1 &&  i2) assert(false && "TODO: both are Infer");
-    else if (!i1 &&  i2) std::swap(d1, d2);
-    else if ( i1 && !i2) { /* do nothing */ }
-    else if (!i1 && !i2) {
+    if (i1 && i2) {
+        if (i1->is_set() && i2->is_set()) return equiv(i1->op(), i2->op(), dbg);
+        if (i1->is_set() && !i2->is_set()) {
+            i2->set(i1->op());
+            return true;
+        }
+        if (!i1->is_set() && i2->is_set()) {
+            i1->set(i2->op());
+            return true;
+        }
+        assert(false && "TODO");
+        return true;
+    } else if (!i1 &&  i2) {
+        std::swap(d1, d2);
+    } else if ( i1 && !i2) {
+        // do nothing
+    } else if (!i1 && !i2) {
         if (d1->gid() > d2->gid()) std::swap(d1, d2);
     }
-    // clang-format on
 
     if (auto infer = d1->isa_nom<Infer>()) {
         if (infer->is_unset()) {

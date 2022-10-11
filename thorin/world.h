@@ -183,9 +183,11 @@ public:
     Infer* nom_infer_type(const Def* dbg = {}) { return nom_infer(type_infer_univ(dbg), dbg); }
 
     /// Either a value `?:?:.Type ?` or a type `?:.Type ?:.Type ?+1`.
-    Infer* nom_infer_entity(const Def* dbg = {}) {
-        auto t = type_infer_univ();
-        return nom_infer(nom_infer(t), dbg);
+    Infer* nom_infer_entity(const Def* = {}) {
+        return nom_infer(nom_infer(type()));
+        // TODO
+        //auto t = type_infer_univ();
+        //return nom_infer(nom_infer(t), dbg);
     }
     ///@}
 

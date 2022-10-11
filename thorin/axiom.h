@@ -126,7 +126,7 @@ public:
     const Axiom* axiom() const { return axiom_; }
     const D* operator->() const { return def_; }
     operator const D*() const { return def_; }
-    explicit operator bool() { return axiom_ != nullptr; }
+    explicit operator bool() { return axiom_; }
     ///@}
 
     /// @name Axiom name

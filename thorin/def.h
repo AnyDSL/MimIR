@@ -48,10 +48,27 @@ using DefArray = Array<const Def*>;
 
 //------------------------------------------------------------------------------
 
+/// Retrieves Infer::arg from @p def
+const Def* refer(const Def* def);
+
+/// Helper class to retrieve Infer::arg if present.
+class Refer {
+public:
+    Refer(const Def* def)
+        : def_(def) {}
+
+    const Def* operator*() const { return refer(def_); }
+    const Def* operator->() const { return refer(def_); }
+    explicit operator bool() const { return def_; }
+
+private:
+    const Def* def_;
+};
+
 template<class T = u64>
-std::optional<T> isa_lit(const Def*);
+std::optional<T> isa_lit(Refer);
 template<class T = u64>
-T as_lit(const Def* def);
+T as_lit(Refer);
 
 //------------------------------------------------------------------------------
 
@@ -548,14 +565,14 @@ public:
 };
 
 template<class T>
-std::optional<T> isa_lit(const Def* def) {
-    if (def == nullptr) return {};
+std::optional<T> isa_lit(Refer def) {
+    if (*def == nullptr) return {};
     if (auto lit = def->isa<Lit>()) return lit->get<T>();
     return {};
 }
 
 template<class T>
-T as_lit(const Def* def) {
+T as_lit(Refer def) {
     return def->as<Lit>()->get<T>();
 }
 
@@ -635,24 +652,6 @@ public:
 
     static constexpr auto Node = Node::Infer;
     friend class World;
-};
-
-/// Retrieves Infer::arg from @p def
-inline const Def* refer(const Def* def) {
-    if (auto infer = def->isa<Infer>(); infer && infer->op()) return infer->op();
-    return def;
-}
-
-/// Helper class to retrieve Infer::arg if present.
-class Refer {
-    Refer(const Def* def)
-        : def_(def) {}
-
-    const Def* operator*() const { return refer(def_); }
-    const Def* operator->() const { return refer(def_); }
-
-private:
-    const Def* def_;
 };
 
 /// @deprecated A global variable in the data segment.
