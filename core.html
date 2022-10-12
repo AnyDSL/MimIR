@@ -111,8 +111,8 @@ $(document).ready(function(){initNavTree('core.html',''); initResizable(); });
 <li class="level1"><a href="#autotoc_md65">Types</a><ul><li class="level2"><a href="#autotoc_md66">%core.Real</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md67">Nat Operations</a><ul><li class="level2"><a href="#autotoc_md68">%core.ncmp</a></li>
-<li class="level2"><a href="#autotoc_md69">%core.nop</a></li>
+<li class="level1"><a href="#autotoc_md67">Nat Operations</a><ul><li class="level2"><a href="#autotoc_md68">%core.nop</a></li>
+<li class="level2"><a href="#autotoc_md69">%core.ncmp</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#autotoc_md70">Integer Operations</a><ul><li class="level2"><a href="#autotoc_md71">%core.bit1</a></li>
@@ -150,6 +150,10 @@ Types</h1>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md67"></a>
 Nat Operations</h1>
 <h2><a class="anchor" id="autotoc_md68"></a>
+%core.nop</h2>
+<p >Standard arithmetic operations on <code>.Nat</code>s.</p>
+<div class="fragment"><div class="line">.ax %core.nop(add, mul): Π [.Nat, .Nat] -&gt; .Nat, normalize_nop;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md69"></a>
 %core.ncmp</h2>
 <p >Nat comparison is made of 3 disjoint relations:</p><ul>
 <li><code>G</code>reater</li>
@@ -179,10 +183,6 @@ Nat Operations</h1>
 <div class="fragment"><div class="line">.ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,</div>
 <div class="line">               Gle = g, GlE = ge, GLe = ne, GLE =  t): </div>
 <div class="line">    Π [.Nat, .Nat] -&gt; .Bool, normalize_ncmp;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md69"></a>
-%core.nop</h2>
-<p >Standard arithmetic operations on <code>.Nat</code>s.</p>
-<div class="fragment"><div class="line">.ax %core.nop(add, mul): Π [.Nat, .Nat] -&gt; .Nat, normalize_nop;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md70"></a>
 Integer Operations</h1>
 <h2><a class="anchor" id="autotoc_md71"></a>
