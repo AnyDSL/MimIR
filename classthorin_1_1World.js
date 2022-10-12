@@ -62,7 +62,6 @@ var classthorin_1_1World =
     [ "lit", "classthorin_1_1World.html#a321f6e3321dabccd619c7b289fc350e5", null ],
     [ "lit_bool", "classthorin_1_1World.html#a7db061f1254682653991b7119d536dcc", null ],
     [ "lit_ff", "classthorin_1_1World.html#adb4b657ad253bcbb0e49512ec501bccf", null ],
-    [ "lit_idx", "classthorin_1_1World.html#abcde6d380294a553d2f7802e03206eb0", null ],
     [ "lit_idx", "classthorin_1_1World.html#ac3d1035190c34ad5f51de22011e51c1e", null ],
     [ "lit_idx", "classthorin_1_1World.html#a41ec26abcafae838a9981e5232fc218d", null ],
     [ "lit_idx_mod", "classthorin_1_1World.html#a310402e6c11d1a6c08c8de912959fbb2", null ],

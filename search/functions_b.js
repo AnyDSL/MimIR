@@ -13,7 +13,7 @@ var searchData=
   ['lit_10',['lit',['../classthorin_1_1World.html#a321f6e3321dabccd619c7b289fc350e5',1,'thorin::World']]],
   ['lit_5fbool_11',['lit_bool',['../classthorin_1_1World.html#a7db061f1254682653991b7119d536dcc',1,'thorin::World']]],
   ['lit_5fff_12',['lit_ff',['../classthorin_1_1World.html#adb4b657ad253bcbb0e49512ec501bccf',1,'thorin::World']]],
-  ['lit_5fidx_13',['lit_idx',['../classthorin_1_1World.html#a41ec26abcafae838a9981e5232fc218d',1,'thorin::World::lit_idx(nat_t size, u64 val, const Def *dbg={})'],['../classthorin_1_1World.html#ac3d1035190c34ad5f51de22011e51c1e',1,'thorin::World::lit_idx(I val, const Def *dbg={})'],['../classthorin_1_1World.html#abcde6d380294a553d2f7802e03206eb0',1,'thorin::World::lit_idx(const Def *type, u64 val, const Def *dbg={})']]],
+  ['lit_5fidx_13',['lit_idx',['../classthorin_1_1World.html#ac3d1035190c34ad5f51de22011e51c1e',1,'thorin::World::lit_idx(I val, const Def *dbg={})'],['../classthorin_1_1World.html#a41ec26abcafae838a9981e5232fc218d',1,'thorin::World::lit_idx(nat_t size, u64 val, const Def *dbg={})']]],
   ['lit_5fidx_5fmod_14',['lit_idx_mod',['../classthorin_1_1World.html#a310402e6c11d1a6c08c8de912959fbb2',1,'thorin::World']]],
   ['lit_5fint_15',['lit_int',['../classthorin_1_1World.html#a0b6e17513a0eaecbb34c3826d0888d4d',1,'thorin::World']]],
   ['lit_5fnat_16',['lit_nat',['../classthorin_1_1World.html#ac3b17a5fa38e15c2174a25a2550627ca',1,'thorin::World']]],
