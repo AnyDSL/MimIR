@@ -824,7 +824,7 @@ void Parser::parse_rule() {
     auto rule = world().nom_rule(dom_t);
     scopes_.bind(outer, sym, rule);
     dom_p->bind(scopes_, rule->var());
-    auto ptrn = parse_expr("pattern of a rule");
+    auto ptrn  = parse_expr("pattern of a rule");
     auto guard = accept(Tok::Tag::T_bar) ? parse_expr("guard of a rule") : world().lit_tt();
     expect(Tok::Tag::T_fatarrow, "rule");
     auto rhs = parse_expr("right-hand side of a rule");
