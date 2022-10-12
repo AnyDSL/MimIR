@@ -36,7 +36,7 @@
 /// | `Gle`  | `g`   | x | o | o | greater          |
 /// | `GlE`  | `ge`  | x | o | x | greater or equal |
 /// | `GLe`  | `ne`  | x | x | o | not equal        |
-/// | `GLE`  | `t`   | x | x | x | NaNs)            |
+/// | `GLE`  | `t`   | x | x | x | always true      |
 ///
 .ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,
                Gle = g, GlE = ge, GLe = ne, GLE =  t): 
