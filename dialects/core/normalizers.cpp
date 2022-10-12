@@ -336,14 +336,14 @@ reassociate(Id id, World& /*world*/, [[maybe_unused]] const App* ab, const Def* 
 template<nop id>
 const Def* normalize_nop(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    //auto [a, b] = arg->projs<2>();
+    // auto [a, b] = arg->projs<2>();
     return world.raw_app(callee, arg, dbg);
 }
 
 template<ncmp id>
 const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    //auto [a, b] = arg->projs<2>();
+    // auto [a, b] = arg->projs<2>();
     return world.raw_app(callee, arg, dbg);
 }
 
