@@ -42,4 +42,4 @@ const Def* compose_continuation(const Def* f, const Def* g);
 } // namespace thorin
 
 /// General thorin-unrelated C++ helper functions.
-void findAndReplaceAll(std::string & data, std::string toSearch, std::string replaceStr);
+void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr);
