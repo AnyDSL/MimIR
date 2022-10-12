@@ -1,0 +1,23 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d autodiff %s --output-ll %t.ll --output-thorin - | FileCheck %s
+
+.import autodiff;
+.import mem;
+
+.let I32 = .Idx 4294967296;
+.let R32 = %Real 4294967296;
+
+.cn f [a:R32, ret: .Cn [R32]] = {
+    .let b = %ROp_add (0:.Nat, 4294967296:.Nat) (a, a);
+    ret b
+};
+
+.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, R32]] = {
+
+    .cn ret_cont r::[R32] = {
+        return (mem, r)
+    };
+
+    .let c = (43:R32);
+    f (c,ret_cont)
+};

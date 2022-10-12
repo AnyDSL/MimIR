@@ -146,8 +146,10 @@ public:
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def) {
         assert(!def->name().empty());
-        auto [_, ins] = move_.externals.emplace(def->name(), def);
-        assert(ins);
+        auto name = def->name();
+        move_.externals.emplace(def->name(), def); // TODO enable assert again
+        // auto [i, ins] = move_.externals.emplace(def->name(), def);
+        // assert((ins || (def == i->second)) && "two different externals registered with the same name");
     }
     void make_internal(Def* def) { move_.externals.erase(def->name()); }
     bool is_external(const Def* def) { return move_.externals.contains(def->name()); }
@@ -177,7 +179,8 @@ public:
     Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
     Infer* nom_infer(const Def* type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
     Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
-    Infer* nom_infer_of_infer_level(const Def* dbg = {}) { return nom_infer(nom_infer_univ(dbg), dbg); }
+    Infer* nom_infer_type(const Def* dbg = {}) { return nom_infer(type_infer_univ(dbg), dbg); }
+    const Type* type_infer_univ(const Def* dbg = {}) { return type(nom_infer_univ(dbg), dbg); }
     ///@}
 
     /// @name Axiom

@@ -128,7 +128,7 @@ void Parser::parse_import() {
     expect(Tok::Tag::T_semicolon, "end of import");
     auto name_str = name.sym().to_string();
 
-    if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
+    if (auto [_, ins] = imported_.emplace(name.sym()); !ins) return;
 
     // search file and import
     auto parser = Parser::import_module(world(), name_str, user_search_paths_, normalizers_);
@@ -136,7 +136,6 @@ void Parser::parse_import() {
 
     // transitvely remember which files we transitively imported
     imported_.merge(parser.imported_);
-    imported_.emplace(name.sym());
 }
 
 Sym Parser::parse_sym(std::string_view ctxt) {
@@ -210,7 +209,7 @@ const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
                     if (meta->proj(a, i) == sym) return world().extract(lhs, a, i, track);
                 }
             }
-            err(sym.loc(), "could not find elemement '{}' to extract from '{} of type '{}'", sym, lhs, sigma);
+            err(sym.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", sym, lhs, sigma);
         }
     }
 
@@ -723,7 +722,7 @@ void Parser::parse_nom_fun() {
         const Def* filter = world().lit_bool(accept(Tok::Tag::T_bang).has_value());
         auto dom_p        = parse_ptrn(Tok::Tag::D_paren_l, "domain pattern of a lambda", prec);
         auto dom_t        = dom_p->type(world());
-        auto pi           = world().nom_pi(world().nom_infer_univ())->set_dom(dom_t);
+        auto pi           = world().nom_pi(world().type_infer_univ())->set_dom(dom_t);
         auto var_dbg      = world().dbg(dom_p->sym());
         auto pi_var       = pi->var(var_dbg);
 
@@ -761,7 +760,7 @@ void Parser::parse_nom_fun() {
 
     auto codom = is_cn                     ? world().type_bot()
                : accept(Tok::Tag::T_arrow) ? parse_expr("return type of a lambda", Tok::Prec::Arrow)
-                                           : world().nom_infer_of_infer_level();
+                                           : world().type_infer_univ();
     pis.back()->set_codom(codom);
 
     for (auto& pi : pis | std::ranges::views::reverse) {
