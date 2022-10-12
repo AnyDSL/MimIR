@@ -7,14 +7,19 @@
 .import mem;
 .import core;
 
+.let top = ⊤:.Nat;
 .let _32 = 4294967296;
 .let I32 = .Idx 4294967296;
 .let R64 = %core.Real 64;
+.let void_ptr = %mem.Ptr («⊤:.Nat; []», 0);
+.let char_ptr = %mem.Ptr («⊤:.Nat; .Idx 256», 0);
 
 // .cn printInteger [mem: %mem.M, val: I32, return : .Cn [%mem.M]];
 // .cn printIntegerNL [mem: %mem.M, val: I32, return : .Cn [%mem.M]];
-.cn printNL [mem: %mem.M, return : .Cn [%mem.M]];
+.cn print_newline [mem: %mem.M, return : .Cn [%mem.M]];
 .cn sqrt [mem: %mem.M, x:R64, return : .Cn [%mem.M, R64]];
+.cn time [mem: %mem.M, return : .Cn [%mem.M, void_ptr]];
+.cn print_time_diff [mem: %mem.M, t1: void_ptr, t2: void_ptr, return : .Cn [%mem.M]];
 
 
 
@@ -65,10 +70,13 @@
 
             .let index_part = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (i, N);
             .let index_int = %core.wrap.add (0:.Nat, 4294967296:.Nat) (index_part, j);
-            .let index_idx = %core.bitcast (.Idx size, I32) index_int;
+            // .let index_idx = %core.bitcast (.Idx size, I32) index_int;
 
-            .let u_ptr = %mem.lea (size, <size; R64>, 0) (u, index_idx);
-            .let v_ptr = %mem.lea (size, <size; R64>, 0) (v, index_idx);
+            // .let u_ptr = %mem.lea (size, <size; R64>, 0) (u, index_idx);
+            // .let v_ptr = %mem.lea (size, <size; R64>, 0) (v, index_idx);
+            // TODO: top should not be necessary here. But Idx 1024 can not be emitted as llvm
+            .let u_ptr = %mem.lea (top, <top; R64>, 0) (u, index_int);
+            .let v_ptr = %mem.lea (top, <top; R64>, 0) (v, index_int);
 
 
             .cn cont_sqrtY [mem3:%mem.M, sqrtY:R64] = {
@@ -119,9 +127,34 @@
 
 .cn .extern main [mem: %mem.M, argc: I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, I32]] = {
     .cn callback (mem: %mem.M) = {
-        return (mem, 1:I32)
+        return (mem, 0:I32)
     };
 
-    callback (mem)
+    .cn cont_time_start [mem1:%mem.M, time_start:void_ptr] = {
+        .let (mem2, x1) = %mem.alloc (<<size; R64>>, 0) (mem1);
+        .let (mem3, x2) = %mem.alloc (<<size; R64>>, 0) (mem2);
+        .let (mem4, adjoint1) = %mem.alloc (<<size; R64>>, 0) (mem3);
+        .let (mem5, adjoint2) = %mem.alloc (<<size; R64>>, 0) (mem4);
+
+        .cn cont_time_end [memB2:%mem.M, time_end:void_ptr] = {
+            // print_newline(memB2,callback)
+            print_time_diff(memB2,time_start,time_end,callback)
+        };
+        .cn cont2 [memB1:%mem.M] = {
+            // .let t = 2.1:R64;
+            // .let (memB2, time_end)  = time (memB1);
+            // .let memB3 = print_newline (memB2);
+            // callback memB1
+            time (memB1, cont_time_end)
+        };
+        .cn cont1 [memA1:%mem.M] = {
+            init_brusselator ((memA1, adjoint1, adjoint2), cont2)
+        };
+        init_brusselator ((mem5, x1, x2), cont1)
+    };
+    time (mem, cont_time_start)
+
+
+    // callback (mem)
     // outer(mem, 1:i32, callback)
 };
