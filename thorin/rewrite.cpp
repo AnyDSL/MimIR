@@ -18,7 +18,7 @@ const Def* Rewriter::rewrite(const Def* old_def) {
     auto new_dbg  = old_def->dbg() ? rewrite(old_def->dbg()) : nullptr;
 
     if (auto infer = old_def->isa_nom<Infer>()) {
-        if (auto op = infer->op()) return op;
+        if (auto op = infer->op()) return rewrite(op);
     }
 
     if (auto old_nom = old_def->isa_nom()) {
