@@ -133,7 +133,7 @@
     .let _151002: %core.Real 64 = %core.rop.add (0, 64) (min_150545, _150990);
     return_150726 (mem_150494, _151002)
 };
-.cn .extern range _149647::[mem_149653: %mem.M, a_149695: .Idx 4294967296, b_149737: .Idx 4294967296, body_149786: .Cn [%mem.M, .Idx 4294967296, .Cn %mem.M], return_149836: .Cn %mem.M] = {
+.cn range _149647::[mem_149653: %mem.M, a_149695: .Idx 4294967296, b_149737: .Idx 4294967296, body_149786: .Cn [%mem.M, .Idx 4294967296, .Cn %mem.M], return_149836: .Cn %mem.M] = {
     .cn if_join_149984 _150002::[mem_150008: %mem.M, _150434: []] = {
         return_149836 mem_150008
     };
@@ -175,8 +175,9 @@
     .let _149044: .Idx 2 = %core.rcmp.ugLE (0, 64) (_148990, 4576918229304087675:(%core.Real 64));
     (if_else_149223, and_t_149341)#_149044 mem_148269
 };
-// TODO: find out why this does code can not be emitted to llvm
-.cn brusselator_2d_loop _151060::[[mem_151066: %mem.M, du_151113: %mem.Ptr («size; %core.Real 64», 0), dv_151159: %mem.Ptr («size; %core.Real 64», 0), u_151201: %mem.Ptr («size; %core.Real 64», 0), v_151243: %mem.Ptr («size; %core.Real 64», 0), p_151285::[_151772: %core.Real 64, _151853: %core.Real 64, _152176: %core.Real 64], t_151327: %core.Real 64], return_151377: .Cn %mem.M] = {
+
+// TODO: find out why this does code can not be emitted to 
+.cn .extern brusselator_2d_loop _151060::[[mem_151066: %mem.M, du_151113: %mem.Ptr («size; %core.Real 64», 0), dv_151159: %mem.Ptr («size; %core.Real 64», 0), u_151201: %mem.Ptr («size; %core.Real 64», 0), v_151243: %mem.Ptr («size; %core.Real 64», 0), p_151285::[_151772: %core.Real 64, _151853: %core.Real 64, _152176: %core.Real 64], t_151327: %core.Real 64], return_151377: .Cn %mem.M] = {
     .cn lambda_152386 _152404::[mem_152410: %mem.M, i_152452: .Idx 4294967296, continue_152505: .Cn %mem.M] = {
         .cn break_153684 _153702: %mem.M = {
             continue_152505 _153702
@@ -305,11 +306,14 @@
             (if_else_152735, if_then_152689)#_152934 mem_152630
         };
         .let _152548: %core.Real 64 = %core.conv.s2r (64, 4294967296) i_152452;
+
+        // return_151377 mem_152410
         RANGE_cps (mem_152410, 0:(%core.Real 64), 4607182418800017408:(%core.Real 64), _152548, 4629700416936869888:(%core.Real 64), RANGE_cps_cont_152606)
     };
     .cn break_152284 _152302: %mem.M = {
         return_151377 _152302
     };
+        // return_151377 mem_151066
     range (mem_151066, 0:(.Idx 4294967296), 32:(.Idx 4294967296), lambda_152386, break_152284)
 };
 
