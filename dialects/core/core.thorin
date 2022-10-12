@@ -12,6 +12,16 @@
 ///
 .ax %core.Real: .Nat -> *;
 ///
+/// ## Nat Operations
+///
+/// ### %core.ncmp
+///
+.ax %core.ncmp(e, ne, l, le, g, ge): Π [.Nat, .Nat] -> .Bool, normalize_ncmp;
+///
+/// ### %core.nop
+///
+.ax %core.nop(add, mul): Π [.Nat, .Nat] -> .Nat, normalize_nop;
+///
 /// ## Integer Operations
 ///
 /// ### %core.bit1
