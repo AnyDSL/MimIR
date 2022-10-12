@@ -361,16 +361,16 @@ const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg, co
 
     if (auto la = isa_lit(a)) {
         if (auto lb = isa_lit(b)) {
+            // clang-format off
             switch (id) {
-                // clang-format off
                 case ncmp:: e: return world.lit_nat(*la == *lb);
                 case ncmp::ne: return world.lit_nat(*la != *lb);
                 case ncmp::l : return world.lit_nat(*la <  *lb);
                 case ncmp::le: return world.lit_nat(*la <= *lb);
                 case ncmp::g : return world.lit_nat(*la >  *lb);
                 case ncmp::ge: return world.lit_nat(*la >= *lb);
-                // clang-format on
             }
+            // clang-format on
         }
     }
 
