@@ -14,6 +14,12 @@
 ///
 /// ## Nat Operations
 ///
+/// ### %core.nop
+///
+/// Standard arithmetic operations on `.Nat`s.
+///
+.ax %core.nop(add, mul): Π [.Nat, .Nat] -> .Nat, normalize_nop;
+///
 /// ### %core.ncmp
 ///
 /// Nat comparison is made of 3 disjoint relations:
@@ -30,17 +36,11 @@
 /// | `Gle`  | `g`   | x | o | o | greater          |
 /// | `GlE`  | `ge`  | x | o | x | greater or equal |
 /// | `GLe`  | `ne`  | x | x | o | not equal        |
-/// | `GLE`  | `t`   | x | x | x | NaNs)            |
+/// | `GLE`  | `t`   | x | x | x | always true      |
 ///
 .ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,
                Gle = g, GlE = ge, GLe = ne, GLE =  t): 
     Π [.Nat, .Nat] -> .Bool, normalize_ncmp;
-///
-/// ### %core.nop
-///
-/// Standard arithmetic operations on `.Nat`s.
-///
-.ax %core.nop(add, mul): Π [.Nat, .Nat] -> .Nat, normalize_nop;
 ///
 /// ## Integer Operations
 ///
