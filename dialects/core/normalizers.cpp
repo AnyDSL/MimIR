@@ -683,8 +683,8 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
 
         if (lb == world.lit(type, 1)) {
             switch (id) {
-                case div::sdiv: return make_res(a);                    // a / 1 -> a
-                case div::udiv: return make_res(a);                    // a / 1 -> a
+                case div::sdiv: return make_res(a);                  // a / 1 -> a
+                case div::udiv: return make_res(a);                  // a / 1 -> a
                 case div::srem: return make_res(world.lit(type, 0)); // a % 1 -> 0
                 case div::urem: return make_res(world.lit(type, 0)); // a % 1 -> 0
             }
