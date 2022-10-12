@@ -151,8 +151,34 @@ Types</h1>
 Nat Operations</h1>
 <h2><a class="anchor" id="autotoc_md68"></a>
 %core.ncmp</h2>
-<p >Standard relational operations on <code>.Nat</code>s.</p>
-<div class="fragment"><div class="line">.ax %core.ncmp(e, ne, l, le, g, ge): Π [.Nat, .Nat] -&gt; .Bool, normalize_ncmp;</div>
+<p >Nat comparison is made of 3 disjoint relations:</p><ul>
+<li><code>G</code>reater</li>
+<li><code>L</code>ess</li>
+<li><code>E</code>qual</li>
+</ul>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Subtag   </th><th class="markdownTableHeadNone">Alias   </th><th class="markdownTableHeadNone">G   </th><th class="markdownTableHeadNone">L   </th><th class="markdownTableHeadNone">E   </th><th class="markdownTableHeadNone">Meaning    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>gle</code>   </td><td class="markdownTableBodyNone"><code>f</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">always false    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>glE</code>   </td><td class="markdownTableBodyNone"><code>e</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">equal    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>gLe</code>   </td><td class="markdownTableBodyNone"><code>l</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">less    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>gLE</code>   </td><td class="markdownTableBodyNone"><code>le</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">less or equal    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>Gle</code>   </td><td class="markdownTableBodyNone"><code>g</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">greater    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>GlE</code>   </td><td class="markdownTableBodyNone"><code>ge</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">greater or equal    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><code>GLe</code>   </td><td class="markdownTableBodyNone"><code>ne</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">not equal    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>GLE</code>   </td><td class="markdownTableBodyNone"><code>t</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">NaNs)   </td></tr>
+</table>
+<div class="fragment"><div class="line">.ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,</div>
+<div class="line">               Gle = g, GlE = ge, GLe = ne, GLE =  t): </div>
+<div class="line">    Π [.Nat, .Nat] -&gt; .Bool, normalize_ncmp;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md69"></a>
 %core.nop</h2>
 <p >Standard arithmetic operations on <code>.Nat</code>s.</p>
@@ -226,7 +252,7 @@ Integer Operations</h1>
 <div class="fragment"><div class="line">.ax %core.shr(a, l): Π w: .Nat -&gt; [.Idx w, .Idx w] -&gt; .Idx w, normalize_shr;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md74"></a>
 %core.wrap</h2>
-<p >Integer operations that might wrap and, hence, take a WMode. </p><div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl): </div>
+<p >Integer operations that might wrap and, hence, take a WMode. </p><div class="fragment"><div class="line">.ax %core.wrap(add, sub, mul, shl):</div>
 <div class="line">    Π [m: .Nat, w: .Nat] -&gt; [.Idx w, .Idx w] -&gt; .Idx w, normalize_wrap;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md75"></a>
 %core.div</h2>
@@ -337,20 +363,20 @@ Integer Operations</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>XYGLE</code>   </td><td class="markdownTableBodyNone"><code>t</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">always true   </td></tr>
 </table>
-<div class="fragment"><div class="line">.ax %core.icmp(xygle = f,  xyglE = e,   xygLe,      xygLE,       </div>
+<div class="fragment"><div class="line">.ax %core.icmp(xygle = f,  xyglE = e,   xygLe,      xygLE,</div>
 <div class="line">               xyGle,      xyGlE,       xyGLe,      xyGLE,</div>
-<div class="line">               xYgle,      xYglE,       xYgLe = sl, xYgLE = sle, </div>
+<div class="line">               xYgle,      xYglE,       xYgLe = sl, xYgLE = sle,</div>
 <div class="line">               xYGle = ug, xYGlE = uge, xYGLe,      xYGLE,</div>
-<div class="line">               Xygle,      XyglE,       XygLe = ul, XygLE = ule, </div>
+<div class="line">               Xygle,      XyglE,       XygLe = ul, XygLE = ule,</div>
 <div class="line">               XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,</div>
-<div class="line">               XYgle,      XYglE,       XYgLe,      XYgLE,       </div>
+<div class="line">               XYgle,      XYglE,       XYgLe,      XYgLE,</div>
 <div class="line">               XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):</div>
 <div class="line">    Π w: .Nat -&gt; [.Idx w, .Idx w] -&gt; .Bool , normalize_icmp;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md77"></a>
 Real Operations</h1>
 <h2><a class="anchor" id="autotoc_md78"></a>
 %core.rop</h2>
-<p >Floating point (real) operations that take RMode. </p><div class="fragment"><div class="line">.ax %core.rop(add, sub, mul, div, rem): </div>
+<p >Floating point (real) operations that take RMode. </p><div class="fragment"><div class="line">.ax %core.rop(add, sub, mul, div, rem):</div>
 <div class="line">    Π [m: .Nat, w: .Nat] -&gt; [%core.Real w, %core.Real w] -&gt; %core.Real w, normalize_rop;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md79"></a>
 %core.rcmp</h2>
@@ -429,7 +455,7 @@ Other Operations</h1>
 <div class="line">.ax %core.pe(known): Π T: * -&gt; T -&gt; .Bool, normalize_pe;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md86"></a>
 %core.zip</h2>
-<p >For now, not a better place for this and will be moved elsewhere. </p><div class="fragment"><div class="line">.ax %core.zip: Π [r: .Nat, s: «r; .Nat»] </div>
+<p >For now, not a better place for this and will be moved elsewhere. </p><div class="fragment"><div class="line">.ax %core.zip: Π [r: .Nat, s: «r; .Nat»]</div>
 <div class="line">    -&gt; Π [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i»</div>
 <div class="line">    -&gt; «o: n_o; Os#o»] -&gt; «i: n_i; «s; Is#i»» -&gt; «o: n_o; «s; Os#o»», normalize_zip;</div>
 </div><!-- fragment --> </div></div><!-- contents -->

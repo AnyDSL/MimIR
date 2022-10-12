@@ -22,8 +22,17 @@ var searchData=
   ['gidnodemap_19',['GIDNodeMap',['../namespacethorin.html#abbb08512ded2c0a47698a71177d29217',1,'thorin']]],
   ['gidnodeset_20',['GIDNodeSet',['../namespacethorin.html#a56063a2d17c29f75d2e405b36278df32',1,'thorin']]],
   ['gidset_21',['GIDSet',['../namespacethorin.html#ad35b50772866ed1025ef1473bb99856a',1,'thorin']]],
-  ['global_22',['global',['../classthorin_1_1World.html#a76965a47c1b49afec2aa3978ac9bc86b',1,'thorin::World']]],
-  ['global_23',['Global',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbabd8d7821a2fd1239acef09706db6bace',1,'thorin::Node::Global()'],['../namespacethorin_1_1mem_1_1AddrSpace.html#ab340bcab19267ad3cd0f434a547f806da4834d1ef8216ffc9b3da65239b2fa4ec',1,'thorin::mem::AddrSpace::Global()'],['../classthorin_1_1Global.html',1,'thorin::Global']]],
-  ['global_5fdialect_24',['Global_Dialect',['../classthorin_1_1Axiom.html#a5a2d4a4ceb6b5424e316d0c52baea3e3',1,'thorin::Axiom']]],
-  ['globals_5f_25',['globals_',['../classthorin_1_1Emitter.html#ae6996cbfe877290dc33a25c67a5e3cee',1,'thorin::Emitter']]]
+  ['gle_22',['glE',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea88a95e934a9b0832f07799852a8d0fd1',1,'thorin::core']]],
+  ['gle_23',['GLE',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eadd101b0057a1ed60edcbacfdb2f8c043',1,'thorin::core']]],
+  ['gle_24',['gLe',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eabdeec3c370a9d97fb295c2db7c0c7698',1,'thorin::core']]],
+  ['gle_25',['gLE',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eae9108c689ff05a39ee50cdbf911300c2',1,'thorin::core']]],
+  ['gle_26',['gle',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea6044f05aa3ccdbb9313c6a26b30036b6',1,'thorin::core']]],
+  ['gle_27',['Gle',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea84d1c26f5ac0e101a7276706d9ce99c0',1,'thorin::core']]],
+  ['gle_28',['GlE',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eaa3260f4420196b037e527e07b35dd4a7',1,'thorin::core']]],
+  ['gle_29',['GLe',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea529d63d370d40509c6d83f72bbbb56d8',1,'thorin::core']]],
+  ['global_30',['Global',['../namespacethorin_1_1mem_1_1AddrSpace.html#ab340bcab19267ad3cd0f434a547f806da4834d1ef8216ffc9b3da65239b2fa4ec',1,'thorin::mem::AddrSpace::Global()'],['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbabd8d7821a2fd1239acef09706db6bace',1,'thorin::Node::Global()']]],
+  ['global_31',['global',['../classthorin_1_1World.html#a76965a47c1b49afec2aa3978ac9bc86b',1,'thorin::World']]],
+  ['global_32',['Global',['../classthorin_1_1Global.html',1,'thorin']]],
+  ['global_5fdialect_33',['Global_Dialect',['../classthorin_1_1Axiom.html#a5a2d4a4ceb6b5424e316d0c52baea3e3',1,'thorin::Axiom']]],
+  ['globals_5f_34',['globals_',['../classthorin_1_1Emitter.html#ae6996cbfe877290dc33a25c67a5e3cee',1,'thorin::Emitter']]]
 ];
