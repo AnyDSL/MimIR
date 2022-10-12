@@ -27,7 +27,7 @@ void TuplePtrn::bind(Scopes& scopes, const Def* def) const {
 
 const Def* IdPtrn::type(World& world) const {
     if (type_) return type_;
-    return type_ = world.nom_infer_of_infer_level(world.dbg(loc()));
+    return type_ = world.nom_infer_type(world.dbg(loc()));
 }
 
 const Def* TuplePtrn::type(World& world) const {

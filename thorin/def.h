@@ -12,21 +12,21 @@
 #include "thorin/util/print.h"
 
 // clang-format off
-#define THORIN_NODE(m)                                                         \
-    m(Type, type)       m(Univ, univ)                                          \
-    m(Pi, pi)           m(Lam, lam)       m(App, app)                          \
-    m(Sigma, sigma)     m(Tuple, tuple)   m(Extract, extract) m(Insert, insert)\
-    m(Arr, arr)         m(Pack, pack)                                          \
-    m(Join, join)       m(Vel, vel)       m(Test, test)       m(Top, top)      \
-    m(Meet, meet)       m(Ac,  ac )       m(Pick, pick)       m(Bot, bot)      \
-    m(Rule, rule)       m(RuleType, Rule)                                      \
-    m(Proxy, proxy)                                                            \
-    m(Axiom, axiom)                                                            \
-    m(Lit, lit)                                                                \
-    m(Nat, nat)         m(Idx, int)                                            \
-    m(Var, var)                                                                \
-    m(Infer, infer)                                                            \
-    m(Global, global)                                                          \
+#define THORIN_NODE(m)                                                        \
+    m(Type, type)       m(Univ, univ)                                         \
+    m(Pi, pi)           m(Lam, lam)     m(App, app)                           \
+    m(Sigma, sigma)     m(Tuple, tuple) m(Extract, extract) m(Insert, insert) \
+    m(Arr, arr)         m(Pack, pack)                                         \
+    m(Join, join)       m(Vel, vel)     m(Test, test)       m(Top, top)       \
+    m(Meet, meet)       m(Ac,  ac )     m(Pick, pick)       m(Bot, bot)       \
+    m(Rule, rule)       m(RuleType, Rule)                                     \
+    m(Proxy, proxy)                                                           \
+    m(Axiom, axiom)                                                           \
+    m(Lit, lit)                                                               \
+    m(Nat, nat)         m(Idx, idx)                                           \
+    m(Var, var)                                                               \
+    m(Infer, infer)                                                           \
+    m(Global, global)                                                         \
     m(Singleton, singleton)
 // clang-format on
 
@@ -574,20 +574,20 @@ public:
     friend class World;
 };
 
-/// A type whose inhabitants range from `0`, ..., Idx::size() - 1.
-/// @note `size = 0` is special and actually encodes size $2^64$.
-/// An .Idx `0` (literally) wouldn't have any inhabitants anyway.
+/// A built-in constant of type `.Nat -> *`.
 class Idx : public Def {
 private:
-    Idx(World&, const Def* size);
+    Idx(const Def* type)
+        : Def(Node, type, Defs{}, 0, nullptr) {}
 
 public:
-    const Def* size() const { return op(0); }
-
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
     ///@}
+
+    /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
+    static const Def* size(const Def* def);
 
     static constexpr auto Node = Node::Idx;
     friend class World;
