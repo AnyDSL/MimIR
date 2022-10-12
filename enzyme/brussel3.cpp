@@ -68,23 +68,26 @@ void brusselator_2d_loop(double* du, double* dv, const double* u, const double* 
 }
 
 double foobar_exec(const double* p,
-                   const std::array<double, 2 * N * N> x,
-                   const std::array<double, 2 * N * N> adjoint,
+                   const std::array<double, N * N> x1,
+                   const std::array<double, N * N> x2,
+                   const std::array<double, N * N> adjoint1,
+                   const std::array<double, N * N> adjoint2,
                    double t) {
     double dp[3] = {0.};
 
     // std::array<double, 2 * N* N> dx = {0.};
 
-    std::array<double, 2 * N* N> dadjoint_inp = adjoint;
+    std::array<double, N* N> dadjoint_inp1 = adjoint1;
+    std::array<double, N* N> dadjoint_inp2 = adjoint2;
 
     // state_type dxdu;
 
-    brusselator_2d_loop(dadjoint_inp.data(),         // du
-                        dadjoint_inp.data() + N * N, // dv
-                        x.data(),                    // u
-                        x.data() + N * N,            // v
-                        p,                           // p
-                        t                            // t
+    brusselator_2d_loop(dadjoint_inp1.data(), // du
+                        dadjoint_inp2.data(), // dv
+                        x1.data(),            // u
+                        x2.data(),            // v
+                        p,                    // p
+                        t                     // t
     );
 
     // __enzyme_autodiff<void>(
@@ -95,7 +98,7 @@ double foobar_exec(const double* p,
     // enzyme_dup, x.data(), dx.data(), enzyme_dup, x.data() + N * N, dx.data() + N * N, enzyme_dup, p, dp,
     // enzyme_const, t);
 
-    return dadjoint_inp[0];
+    return dadjoint_inp1[0];
 }
 
 static float tdiff(struct timeval* start, struct timeval* end) {
@@ -105,11 +108,13 @@ static float tdiff(struct timeval* start, struct timeval* end) {
 int main() {
     const double p[3] = {/*A*/ 3.4, /*B*/ 1, /*alpha*/ 10.};
 
-    std::array<double, 2 * N * N> x;
-    init_brusselator(x.data(), x.data() + N * N);
+    std::array<double, N * N> x1;
+    std::array<double, N * N> x2;
+    init_brusselator(x1.data(), x2.data());
 
-    std::array<double, 2 * N * N> adjoint;
-    init_brusselator(adjoint.data(), adjoint.data() + N * N);
+    std::array<double, N * N> adjoint1;
+    std::array<double, N * N> adjoint2;
+    init_brusselator(adjoint1.data(), adjoint2.data());
 
     double t = 2.1;
     {
@@ -117,7 +122,7 @@ int main() {
         gettimeofday(&start, NULL);
 
         double res;
-        for (int i = 0; i < 10000; i++) res = foobar_exec(p, x, adjoint, t);
+        for (int i = 0; i < 10000; i++) res = foobar_exec(p, x1, x2, adjoint1, adjoint2, t);
 
         gettimeofday(&end, NULL);
         printf("Run %0.6f res=%f\n", tdiff(&start, &end), res);

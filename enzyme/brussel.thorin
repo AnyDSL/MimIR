@@ -1,0 +1,127 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d affine %s --output-ll %t.ll -o - | FileCheck %s
+// RUN: clang++ lit/clos/lib.cpp %t.ll -o %t -lc -Wno-override-module
+// RUN: %t ; test $? -eq 0
+
+.import affine;
+.import mem;
+.import core;
+
+.let _32 = 4294967296;
+.let I32 = .Idx 4294967296;
+.let R64 = %core.Real 64;
+
+// .cn printInteger [mem: %mem.M, val: I32, return : .Cn [%mem.M]];
+// .cn printIntegerNL [mem: %mem.M, val: I32, return : .Cn [%mem.M]];
+.cn printNL [mem: %mem.M, return : .Cn [%mem.M]];
+.cn sqrt [mem: %mem.M, x:R64, return : .Cn [%mem.M, R64]];
+
+
+
+.let N = 32:I32;
+.let N_double = 32.0:R64;
+.let xmin = 0.0:R64;
+.let xmax = 1.0:R64;
+.let ymin = 0.0:R64;
+.let ymax = 1.0:R64;
+// .let size = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (N, N);
+.let size = 1024;
+
+.lam RANGE ![[min: R64, max: R64, i : R64, N:R64]] -> R64 = {
+    .let r0 = %core.rop.sub (0:.Nat, 64:.Nat) (max, min);
+    .let N1 = %core.rop.sub (0:.Nat, 64:.Nat) (N, 1.0:R64);
+    .let r1 = %core.rop.div (0:.Nat, 64:.Nat) (r0, N1);
+    .let r2 = %core.rop.mul (0:.Nat, 64:.Nat) (r1, i);
+    .let r3 = %core.rop.add (0:.Nat, 64:.Nat) (r2, min);
+    r3
+};
+
+// .cn RANGE_cps [[min: R64, max: R64, i : R64, N:R64], return : .Cn [R64]] = {
+//     .let r0 = %core.rop.sub (0:.Nat, 64:.Nat) (max, min);
+//     .let N1 = %core.rop.sub (0:.Nat, 64:.Nat) (N, 1.0:R64);
+//     .let r1 = %core.rop.div (0:.Nat, 64:.Nat) (r0, N1);
+//     .let r2 = %core.rop.mul (0:.Nat, 64:.Nat) (r1, i);
+//     .let r3 = %core.rop.add (0:.Nat, 64:.Nat) (r2, min);
+//     return r3
+// };
+
+.cn init_brusselator [[
+        mem: %mem.M,
+        u  : %mem.Ptr (<<size; R64>>, 0:.Nat),
+        v  : %mem.Ptr (<<size; R64>>, 0:.Nat)
+    ],
+    ret: .Cn [%mem.M]
+] = {
+    .cn loop_body_1 [i:I32, mem1:%mem.M, yield1: .Cn [%mem.M]] = {
+        .let i_double = %core.conv.u2r (64, _32) i;
+        .let x = RANGE (xmin,xmax,i_double,N_double);
+        .let x1=%core.rop.sub (0, 64) (1.0:R64, x);
+        .let xx1 = %core.rop.mul (0, 64) (x, x1);
+        .cn loop_body_2 [j:I32, mem2:%mem.M, yield2: .Cn [%mem.M]] = {
+            .let j_double = %core.conv.u2r (64, _32) j;
+            .let y = RANGE (ymin,ymax,j_double,N_double);
+            .let y1=%core.rop.sub (0, 64) (1.0:R64, y);
+            .let yy1 = %core.rop.mul (0, 64) (y, y1);
+
+            .let index_part = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (i, N);
+            .let index_int = %core.wrap.add (0:.Nat, 4294967296:.Nat) (index_part, j);
+            .let index_idx = %core.bitcast (.Idx size, I32) index_int;
+
+            .let u_ptr = %mem.lea (size, <size; R64>, 0) (u, index_idx);
+            .let v_ptr = %mem.lea (size, <size; R64>, 0) (v, index_idx);
+
+
+            .cn cont_sqrtY [mem3:%mem.M, sqrtY:R64] = {
+                .cn cont_sqrtX [mem4:%mem.M, sqrtX:R64] = {
+                    .let x_v = 
+                        %core.rop.mul (0, 64) (
+                            22.0:R64,
+                            %core.rop.mul (0, 64) (
+                                yy1,
+                                sqrtY
+                            )
+                        );
+                    .let y_v = 
+                        %core.rop.mul (0, 64) (
+                            27.0:R64,
+                            %core.rop.mul (0, 64) (
+                                xx1,
+                                sqrtX
+                            )
+                        );
+                    .let mem4_1 = mem4;
+                    .let mem4_2 = %mem.store (R64, 0) (mem4_1, u_ptr, y_v);
+                    .let mem4_3 = %mem.store (R64, 0) (mem4_2, u_ptr, y_v);
+                    yield2 mem4_3
+                };
+                sqrt(mem3, xx1, cont_sqrtX)
+            };
+            sqrt(mem2, yy1, cont_sqrtY)
+        };
+
+        %affine.For (_32, 1, (%mem.M))
+        (
+            0:I32,N, 1:I32, (mem1),
+            loop_body_2,
+            yield1
+        )
+    };
+
+    %affine.For (_32, 1, (%mem.M))
+    (
+        0:I32,N, 1:I32, (mem),
+        loop_body_1,
+        ret
+    )
+};
+
+
+
+.cn .extern main [mem: %mem.M, argc: I32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, I32]] = {
+    .cn callback (mem: %mem.M) = {
+        return (mem, 1:I32)
+    };
+
+    callback (mem)
+    // outer(mem, 1:i32, callback)
+};
