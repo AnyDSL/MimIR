@@ -146,12 +146,9 @@ Sym Parser::parse_sym(std::string_view ctxt) {
 }
 
 const Def* Parser::parse_type_ascr(std::string_view ctxt /*= {}*/) {
-    std::string msg("type ascription of ");
-    msg += ctxt;
-
-    if (accept(Tok::Tag::T_colon)) return parse_expr(msg);
+    if (accept(Tok::Tag::T_colon)) return parse_expr(ctxt);
     if (ctxt.empty()) return nullptr;
-    err(prev_, msg.c_str());
+    syntax_err("':'", ctxt);
 }
 
 /*
@@ -601,7 +598,7 @@ void Parser::parse_ax() {
     else if (!is_new && !new_subs.empty() && info.subs.empty())
         err(ax.loc(), "cannot extend subs of axiom '{}' which does not have subs", ax);
 
-    auto type = parse_type_ascr("an axiom");
+    auto type = parse_type_ascr("type ascription of an axiom");
     if (!is_new && info.pi != (type->isa<Pi>() != nullptr))
         err(ax.loc(), "all declarations of axiom '{}' have to be PIs if any is", ax);
     info.pi = type->isa<Pi>() != nullptr;
