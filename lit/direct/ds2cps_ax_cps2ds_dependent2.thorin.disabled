@@ -20,7 +20,7 @@
     I32
 };
 
-.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return : .Cn [%mem.M, I32]] = {
     // .let g = %direct.cps2ds_dep (.Nat,U) f;
     .let n = 4294967296;
     .let c = %direct.cps2ds_dep (I32,U) (f (n, 0)) (5:(.Idx n));

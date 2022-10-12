@@ -6,13 +6,14 @@
 #include "thorin/debug.h"
 
 #include "thorin/util/print.h"
+#include "thorin/util/types.h"
 
 namespace thorin {
 
 class Def;
 
 template<class T = std::logic_error, class... Args>
-[[noreturn]] 
+[[noreturn]]
 void err(const char* fmt, Args&&... args) {
     std::ostringstream oss;
     print(oss << "error: ", fmt, std::forward<Args&&>(args)...);
@@ -20,7 +21,7 @@ void err(const char* fmt, Args&&... args) {
 }
 
 template<class T = std::logic_error, class... Args>
-[[noreturn]] 
+[[noreturn]]
 void err(Loc loc, const char* fmt, Args&&... args) {
     std::ostringstream oss;
     print(oss, "{}: error: ", loc);
@@ -35,11 +36,12 @@ public:
     virtual void expected_shape(const Def* def, const Def* dbg);
     virtual void expected_type(const Def* def, const Def* dbg);
     virtual void index_out_of_range(const Def* arity, const Def* index, const Def* dbg);
+    virtual void index_out_of_range(const Def* arity, nat_t index, const Def* dbg);
     virtual void ill_typed_app(const Def* callee, const Def* arg, const Def* dbg);
 
     /// Place holder until we have better methods.
     template<class T = std::logic_error, class... Args>
-    [[noreturn]] 
+    [[noreturn]]
     void err(Loc loc, const char* fmt, Args&&... args) {
         thorin::err(loc, fmt, std::forward<Args&&>(args)...);
     }
