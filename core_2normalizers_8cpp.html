@@ -217,10 +217,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a9606122c9fbc0a145fe55ab034386ebe"><td class="memTemplParams" colspan="2">template&lt;class Id &gt; </td></tr>
 <tr class="memitem:a9606122c9fbc0a145fe55ab034386ebe"><td class="memTemplItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a9606122c9fbc0a145fe55ab034386ebe">thorin::core::is_commutative</a> (Id)</td></tr>
 <tr class="separator:a9606122c9fbc0a145fe55ab034386ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab07b3cc4210222fbd67d5097a0b23ed3"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ab07b3cc4210222fbd67d5097a0b23ed3">thorin::core::is_commutative</a> (nop)</td></tr>
+<tr class="separator:ab07b3cc4210222fbd67d5097a0b23ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09f46777f6cba920607c5367fb344adf"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a09f46777f6cba920607c5367fb344adf">thorin::core::is_commutative</a> (wrap id)</td></tr>
 <tr class="separator:a09f46777f6cba920607c5367fb344adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c54f89d149988889bd1701c652f458f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a5c54f89d149988889bd1701c652f458f">thorin::core::is_commutative</a> (rop id)</td></tr>
 <tr class="separator:a5c54f89d149988889bd1701c652f458f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5fcf3a4f1eefc8862314b70e16faccb"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ab5fcf3a4f1eefc8862314b70e16faccb">thorin::core::is_commutative</a> (ncmp id)</td></tr>
+<tr class="separator:ab5fcf3a4f1eefc8862314b70e16faccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5784c2e03b73e64ecf01da36094a22d0"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a5784c2e03b73e64ecf01da36094a22d0">thorin::core::is_commutative</a> (icmp id)</td></tr>
 <tr class="separator:a5784c2e03b73e64ecf01da36094a22d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54af76c1944ae50756e8b40d0cf7467f"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#a54af76c1944ae50756e8b40d0cf7467f">thorin::core::is_commutative</a> (rcmp id)</td></tr>
@@ -245,6 +249,12 @@ Functions</h2></td></tr>
 <tr class="memitem:ae8b348f83cfac9f1bc2f3f973e90ba6a"><td class="memTemplItemLeft" align="right" valign="top">static const Def *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ae8b348f83cfac9f1bc2f3f973e90ba6a">thorin::core::reassociate</a> (Id id, World &amp;, const App *ab, const Def *a, const Def *b, const Def *dbg)</td></tr>
 <tr class="memdesc:ae8b348f83cfac9f1bc2f3f973e90ba6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reassociates <code>a</code> und <code>b</code> according to following rules.  <a href="namespacethorin_1_1core.html#ae8b348f83cfac9f1bc2f3f973e90ba6a">More...</a><br /></td></tr>
 <tr class="separator:ae8b348f83cfac9f1bc2f3f973e90ba6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addcb11650497c24e35e978d54128602b"><td class="memTemplParams" colspan="2">template&lt;nop id&gt; </td></tr>
+<tr class="memitem:addcb11650497c24e35e978d54128602b"><td class="memTemplItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#addcb11650497c24e35e978d54128602b">thorin::core::normalize_nop</a> (const Def *type, const Def *callee, const Def *arg, const Def *dbg)</td></tr>
+<tr class="separator:addcb11650497c24e35e978d54128602b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0fa3e90fc141397ca743c47518a3c53"><td class="memTemplParams" colspan="2">template&lt;ncmp id&gt; </td></tr>
+<tr class="memitem:ac0fa3e90fc141397ca743c47518a3c53"><td class="memTemplItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ac0fa3e90fc141397ca743c47518a3c53">thorin::core::normalize_ncmp</a> (const Def *type, const Def *callee, const Def *arg, const Def *dbg)</td></tr>
+<tr class="separator:ac0fa3e90fc141397ca743c47518a3c53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5a47b64d694f32241f3e7a5f7369ab9"><td class="memTemplParams" colspan="2">template&lt;rop id&gt; </td></tr>
 <tr class="memitem:ad5a47b64d694f32241f3e7a5f7369ab9"><td class="memTemplItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1core.html#ad5a47b64d694f32241f3e7a5f7369ab9">thorin::core::normalize_rop</a> (const Def *type, const Def *c, const Def *arg, const Def *dbg)</td></tr>
 <tr class="separator:ad5a47b64d694f32241f3e7a5f7369ab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -302,7 +312,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 <div class="textblock"><div class="compoundTemplParams">template&lt;class T, T, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>&gt;<br />
 struct thorin::core::Fold&lt; T, T, nat_t &gt;</div>
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00086">86</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00088">88</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 </div>
 </div>
 </div>
@@ -319,7 +329,7 @@ struct thorin::core::Fold&lt; T, T, nat_t &gt;</div>
 </div><div class="memdoc">
 <div class="textblock"><div class="compoundTemplParams">template&lt;<a class="el" href="namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937">conv</a> id, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>, <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>&gt;<br />
 struct thorin::core::FoldConv&lt; id, nat_t, nat_t &gt;</div>
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00244">244</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00246">246</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 </div>
 </div>
 </div>
@@ -405,7 +415,7 @@ struct thorin::core::FoldConv&lt; id, nat_t, nat_t &gt;</div>
 <div class="line">                 m(32,  1) m(32,  8) m(32, 16) m(32, 32) m(32, 64) \</div>
 <div class="line">                 m(64,  1) m(64,  8) m(64, 16) m(64, 32) m(64, 64)</div>
 </div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00659">659</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="core_2normalizers_8cpp_source.html#l00703">703</a> of file <a class="el" href="core_2normalizers_8cpp_source.html">normalizers.cpp</a>.</p>
 
 </div>
 </div>
