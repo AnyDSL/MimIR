@@ -46,3 +46,9 @@
 ///
 /// Sets the `i`th operand of the reified Code `e` to `x`.
 .ax %refly.refine: [e: %refly.Code, i: .Nat, x: %refly.Code] -> %refly.Code, normalize_refine;
+///
+/// ## Rules
+/// 
+/// ### %refly.rapp
+/// 
+.ax %refly.rapp: [.Rule, %refly.Code] -> %refly.Code, normalize_rapp;

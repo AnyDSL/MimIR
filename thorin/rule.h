@@ -58,25 +58,4 @@ public:
     friend class World;
 };
 
-class RApp : public Def {
-private:
-    RApp(const Def* type, const Def* rule, const Def* arg, const Def* dbg)
-        : Def(Node, type, {rule, arg}, 0, dbg) {}
-
-public:
-    /// @name ops
-    ///@{
-    const Def* rule() const { return op(0); }
-    const Def* arg() const { return op(1); }
-    ///@}
-
-    /// @name virtual methods
-    ///@{
-    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
-    ///@}
-
-    static constexpr auto Node = Node::RApp;
-    friend class World;
-};
-
 } // namespace thorin

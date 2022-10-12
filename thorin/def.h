@@ -19,7 +19,7 @@
     m(Arr, arr)         m(Pack, pack)                                         \
     m(Join, join)       m(Vel, vel)     m(Test, test)       m(Top, top)       \
     m(Meet, meet)       m(Ac,  ac )     m(Pick, pick)       m(Bot, bot)       \
-    m(Rule, rule)       m(RuleType, RuleType) m(RApp, rapp)                       \
+    m(Rule, rule)       m(RuleType, RuleType)                                 \
     m(Proxy, proxy)                                                           \
     m(Axiom, axiom)                                                           \
     m(Lit, lit)                                                               \
