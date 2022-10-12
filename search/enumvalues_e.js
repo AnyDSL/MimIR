@@ -5,7 +5,7 @@ var searchData=
   ['nat_2',['Nat',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba1b3ad193ab60d8bfe3aa5f31beef9355',1,'thorin::Node']]],
   ['nb_3',['nb',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a9c59153d22d9f7cc021b17b425cc31c5',1,'thorin::core']]],
   ['nciff_4',['nciff',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978aeffa8ffb6de709887fb7ed786629cbfa',1,'thorin::core']]],
-  ['ne_5',['ne',['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494ddad4f917633649a3c47c7ab917fa990146',1,'thorin::core::ne()'],['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ad4f917633649a3c47c7ab917fa990146',1,'thorin::core::ne()']]],
+  ['ne_5',['ne',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ad4f917633649a3c47c7ab917fa990146',1,'thorin::core::ne()'],['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494ddad4f917633649a3c47c7ab917fa990146',1,'thorin::core::ne()']]],
   ['neg_6',['neg',['../namespacethorin_1_1core.html#a60b6d2484fb68ef9ce568db15502e349af24c2c15b9d03797c6874986a8d19516',1,'thorin::core']]],
   ['niff_7',['niff',['../namespacethorin_1_1core.html#a70895f76bd16fdb3db2c75dd1fd38978a9f55314dfb4d78a2ccc362618a05a9c4',1,'thorin::core']]],
   ['nil_8',['Nil',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a4da8b7eb2c3f2007cf8238334401ef51',1,'thorin::fe::Tok']]],
