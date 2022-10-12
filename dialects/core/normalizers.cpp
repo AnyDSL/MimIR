@@ -356,6 +356,10 @@ const Def* normalize_nop(const Def* type, const Def* callee, const Def* arg, con
 template<ncmp id>
 const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
+
+    if (id == ncmp::t) return world.lit_tt();
+    if (id == ncmp::f) return world.lit_ff();
+
     auto [a, b] = arg->projs<2>();
     commute(id, a, b);
 
@@ -369,6 +373,7 @@ const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg, co
                 case ncmp::le: return world.lit_nat(*la <= *lb);
                 case ncmp::g : return world.lit_nat(*la >  *lb);
                 case ncmp::ge: return world.lit_nat(*la >= *lb);
+                default: unreachable();
             }
             // clang-format on
         }
