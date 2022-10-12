@@ -16,9 +16,13 @@
 ///
 /// ### %core.ncmp
 ///
+/// Standard relational operations on `.Nat`s.
+///
 .ax %core.ncmp(e, ne, l, le, g, ge): Π [.Nat, .Nat] -> .Bool, normalize_ncmp;
 ///
 /// ### %core.nop
+///
+/// Standard arithmetic operations on `.Nat`s.
 ///
 .ax %core.nop(add, mul): Π [.Nat, .Nat] -> .Nat, normalize_nop;
 ///
