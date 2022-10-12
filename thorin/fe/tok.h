@@ -24,6 +24,7 @@ namespace thorin::fe {
     m(K_Univ,   ".Univ"  )             \
     m(K_pack,   ".pack"  )             \
     m(K_Pi,     ".Pi"    )             \
+    m(K_Rule,   ".Rule"  )             \
     m(K_rule,   ".rule"  )             \
     m(K_lam,    ".lam"   )             \
     m(K_Cn,     ".Cn"    )             \

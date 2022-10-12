@@ -46,6 +46,7 @@ World::World(const State& state)
     data_.sigma_       = insert<Sigma>(0, type(), Defs{}, nullptr)->as<Sigma>();
     data_.tuple_       = insert<Tuple>(0, sigma(), Defs{}, nullptr)->as<Tuple>();
     data_.type_nat_    = insert<Nat>(0, *this);
+    data_.type_rule_   = insert<RuleType>(0, *this);
     data_.type_idx_    = insert<Idx>(0, pi(type_nat(), type()));
     data_.top_nat_     = insert<Top>(0, type_nat(), nullptr);
     data_.lit_nat_0_   = lit_nat(0);

@@ -6,15 +6,9 @@ namespace thorin {
 
 class RuleType : public Def {
 private:
-    RuleType(const Def* type, const Def* dom, const Def* dbg)
-        : Def(Node, type, {dom}, 0, dbg) {}
+    RuleType(World&);
 
 public:
-    /// @name ops
-    ///@{
-    const Def* dom() const { return op(0); }
-    ///@}
-
     /// @name virtual methods
     ///@{
     const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
@@ -27,29 +21,32 @@ public:
 class Rule : public Def {
 private:
     Rule(const Def* type, const Def* dbg)
-        : Def(Node, type, 3, 0, dbg) {}
+        : Def(Node, type, 4, 0, dbg) {}
 
 public:
     /// @name ops
     ///@{
-    const Def* ptrn() const { return op(0); }
-    const Def* guard() const { return op(1); }
-    const Def* rhs() const { return op(2); }
+
+    /// Signature of the ptrn variable.
+    const Def* dom() const { return op(0); }
+    const Def* ptrn() const { return op(1); }
+    const Def* guard() const { return op(2); }
+    const Def* rhs() const { return op(3); }
     ///@}
 
     /// @name ops
     ///@{
+    Rule* set_dom(const Def* dom) { return Def::set(0, dom)->as<Rule>(); }
     Rule* set(const Def* ptrn, const Def* guard, const Def* rhs) {
-        Def::set(0, ptrn);
-        Def::set(1, guard);
-        return Def::set(2, rhs)->as<Rule>();
+        Def::set(1, ptrn);
+        Def::set(2, guard);
+        return Def::set(3, rhs)->as<Rule>();
     }
     ///@}
 
     /// @name type
     ///@{
     const RuleType* type() const { return Def::type()->as<RuleType>(); }
-    const Def* dom() const { return type()->dom(); }
     ///@}
 
     /// @name virtual methods
@@ -58,6 +55,27 @@ public:
     ///@}
 
     static constexpr auto Node = Node::Rule;
+    friend class World;
+};
+
+class RApp : public Def {
+private:
+    RApp(const Def* type, const Def* rule, const Def* arg, const Def* dbg)
+        : Def(Node, type, {rule, arg}, 0, dbg) {}
+
+public:
+    /// @name ops
+    ///@{
+    const Def* rule() const { return op(0); }
+    const Def* arg() const { return op(1); }
+    ///@}
+
+    /// @name virtual methods
+    ///@{
+    const Def* rebuild(World&, const Def*, Defs, const Def*) const override;
+    ///@}
+
+    static constexpr auto Node = Node::RApp;
     friend class World;
 };
 

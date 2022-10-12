@@ -401,10 +401,9 @@ public:
 
     /// @name rules
     ///@{
-    const RuleType* rule_type(const Def* dom, const Def* dbg = {}) { return unify<RuleType>(1, dom->type(), dom, dbg); }
-    Rule* nom_rule(const Def* dom, const Def* dbg = {}) {
-        auto rt = rule_type(dom, dbg);
-        return insert<Rule>(3, rt, dbg);
+    const RuleType* type_rule() { return data_.type_rule_; }
+    Rule* nom_rule(const Def* dbg = {}) {
+        return insert<Rule>(4, type_rule(), dbg);
     }
     ///@}
 
@@ -598,6 +597,7 @@ private:
         const Sigma* sigma_;
         const Tuple* tuple_;
         const Nat* type_nat_;
+        const RuleType* type_rule_;
         const Idx* type_idx_;
         const Def* table_id;
         const Def* table_not;

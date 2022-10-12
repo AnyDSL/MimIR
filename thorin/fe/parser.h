@@ -97,6 +97,7 @@ private:
     const Def* parse_lit();
     const Def* parse_var();
     const Def* parse_insert();
+    const Def* parse_rule();
     ///@}
 
     /// @name ptrns
@@ -114,7 +115,6 @@ private:
     void parse_let();
     void parse_nom();
     void parse_nom_fun();
-    void parse_rule();
     /// If @p sym is **not** empty, this is an inline definition of @p sym,
     /// otherwise it's a standalone definition.
     void parse_def(Sym sym = {});
