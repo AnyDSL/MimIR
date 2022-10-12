@@ -27,20 +27,22 @@ public:
 class Rule : public Def {
 private:
     Rule(const Def* type, const Def* dbg)
-        : Def(Node, type, 2, 0, dbg) {}
+        : Def(Node, type, 3, 0, dbg) {}
 
 public:
     /// @name ops
     ///@{
-    const Def* lhs() const { return op(0); }
-    const Def* rhs() const { return op(1); }
+    const Def* ptrn() const { return op(0); }
+    const Def* guard() const { return op(1); }
+    const Def* rhs() const { return op(2); }
     ///@}
 
     /// @name ops
     ///@{
-    Rule* set(const Def* lhs, const Def* rhs) {
-        Def::set(0, lhs);
-        return Def::set(1, rhs)->as<Rule>();
+    Rule* set(const Def* ptrn, const Def* guard, const Def* rhs) {
+        Def::set(0, ptrn);
+        Def::set(1, guard);
+        return Def::set(2, rhs)->as<Rule>();
     }
     ///@}
 

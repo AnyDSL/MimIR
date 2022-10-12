@@ -404,7 +404,7 @@ public:
     const RuleType* rule_type(const Def* dom, const Def* dbg = {}) { return unify<RuleType>(1, dom->type(), dom, dbg); }
     Rule* nom_rule(const Def* dom, const Def* dbg = {}) {
         auto rt = rule_type(dom, dbg);
-        return insert<Rule>(2, rt, dbg);
+        return insert<Rule>(3, rt, dbg);
     }
     ///@}
 

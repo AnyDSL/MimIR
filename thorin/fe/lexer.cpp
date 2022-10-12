@@ -69,6 +69,7 @@ Tok Lexer::lex() {
         if (accept(U'→')) return tok(Tok::Tag::T_arrow);
         if (accept( '@')) return tok(Tok::Tag::T_at);
         if (accept( '!')) return tok(Tok::Tag::T_bang);
+        if (accept( '|')) return tok(Tok::Tag::T_bar);
         if (accept(U'⊥')) return tok(Tok::Tag::T_bot);
         if (accept(U'⊤')) return tok(Tok::Tag::T_top);
         if (accept(U'□')) return tok(Tok::Tag::T_box);
