@@ -125,7 +125,7 @@
 
 
 
-.cn .extern RANGE_cps _150488::[mem_150494: %mem.M, min_150545: %core.Real 64, max_150592: %core.Real 64, i_150634: %core.Real 64, N_150676: %core.Real 64, return_150726: .Cn [%mem.M, %core.Real 64]] = {
+.cn RANGE_cps !_150488::[mem_150494: %mem.M, min_150545: %core.Real 64, max_150592: %core.Real 64, i_150634: %core.Real 64, N_150676: %core.Real 64, return_150726: .Cn [%mem.M, %core.Real 64]] = {
     .let _150811: %core.Real 64 = %core.rop.sub (0, 64) (max_150592, min_150545);
     .let _150896: %core.Real 64 = %core.rop.sub (0, 64) (N_150676, 4607182418800017408:(%core.Real 64));
     .let _150908: %core.Real 64 = %core.rop.div (0, 64) (_150811, _150896);
@@ -175,7 +175,7 @@
     .let _149044: .Idx 2 = %core.rcmp.ugLE (0, 64) (_148990, 4576918229304087675:(%core.Real 64));
     (if_else_149223, and_t_149341)#_149044 mem_148269
 };
-.cn .extern brusselator_2d_loop _151060::[mem_151066: %mem.M, du_151113: %mem.Ptr («⊤:.Nat; %core.Real 64», 0), dv_151159: %mem.Ptr («⊤:.Nat; %core.Real 64», 0), u_151201: %mem.Ptr («⊤:.Nat; %core.Real 64», 0), v_151243: %mem.Ptr («⊤:.Nat; %core.Real 64», 0), p_151285::[_151772: %core.Real 64, _151853: %core.Real 64, _152176: %core.Real 64], t_151327: %core.Real 64, return_151377: .Cn %mem.M] = {
+.cn .extern brusselator_2d_loop _151060::[mem_151066: %mem.M, du_151113: %mem.Ptr («size; %core.Real 64», 0), dv_151159: %mem.Ptr («size; %core.Real 64», 0), u_151201: %mem.Ptr («size; %core.Real 64», 0), v_151243: %mem.Ptr («size; %core.Real 64», 0), p_151285::[_151772: %core.Real 64, _151853: %core.Real 64, _152176: %core.Real 64], t_151327: %core.Real 64, return_151377: .Cn %mem.M] = {
     .cn lambda_152386 _152404::[mem_152410: %mem.M, i_152452: .Idx 4294967296, continue_152505: .Cn %mem.M] = {
         .cn break_153684 _153702: %mem.M = {
             continue_152505 _153702
@@ -186,14 +186,14 @@
                     .cn lambda_153786 _153804::[mem_153810: %mem.M, j_153852: .Idx 4294967296, continue_153904: .Cn %mem.M] = {
                         .cn RANGE_cps_cont_154004 _154022::[mem_154028: %mem.M, RANGE_cps_154039: %core.Real 64] = {
                             .cn if_join_154183 _154201::[mem_154207: %mem.M, _154554: .Idx 4294967296] = {
-                                .cn if_join_154697 _154715::[mem_154721: %mem.M, _155038: .Idx 4294967296] = {
-                                    .cn brusselator_f_cont_158280 _158298::[mem_158304: %mem.M, brusselator_f_158315: %core.Real 64] = {
+                                .cn if_join_154697 _154715::[mem1: %mem.M, _155038: .Idx 4294967296] = {
+                                    .cn brusselator_f_cont_158280 _158298::[mem2: %mem.M, brusselator_f_158315: %core.Real 64] = {
                                         .let _155231: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (32:(.Idx 4294967296), i_152452);
                                         .let _155243: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (j_153852, _155231);
                                         .let _155267: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _155243;
                                         .let _156126: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (du_151113, _155267);
                                         .let _155323: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _155267);
-                                        .let _155384: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (mem_154721, _155323);
+                                        .let _155384: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (mem2, _155323);
                                         .let _155628: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_155384#0:(.Idx 2), _155323);
                                         .let _155654: %core.Real 64 = %core.rop.mul (0, 64) (_155384#1:(.Idx 2), _155628#1:(.Idx 2));
                                         .let _155835: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _155267);
@@ -232,7 +232,7 @@
                                         .let _158206: %core.Real 64 = %core.rop.mul (0, 64) (_157950, _158183#1:(.Idx 2));
                                         .let _158218: %core.Real 64 = %core.rop.sub (0, 64) (_157830, _158206);
                                         .let _158328: %core.Real 64 = %core.rop.add (0, 64) (_158218, brusselator_f_158315);
-                                        .let _158385: %mem.M = %mem.store (%core.Real 64, 0) (mem_158304, _156126, _158328);
+                                        .let _158385: %mem.M = %mem.store (%core.Real 64, 0) (_158183#0:(.Idx 2), _156126, _158328);
                                         .let _159027: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _156597);
                                         .let _159079: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_158385, _159027);
                                         .let _159271: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _156841);
@@ -256,7 +256,7 @@
                                         .let _160578: %mem.M = %mem.store (%core.Real 64, 0) (_160479#0:(.Idx 2), _158601, _160527);
                                         continue_153904 _160578
                                     };
-                                    brusselator_f (_158183#0:(.Idx 2), RANGE_cps_152641, RANGE_cps_154039, t_151327, brusselator_f_cont_158280)
+                                    brusselator_f (mem1, RANGE_cps_152641, RANGE_cps_154039, t_151327, brusselator_f_cont_158280)
                                 };
                                 .cn if_else_154647 _154885: %mem.M = {
                                     .let _154991: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (4294967295:(.Idx 4294967296), j_153852);
