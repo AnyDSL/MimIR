@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include <thorin/lam.h>
-#include <thorin/tables.h>
 
 #include "dialects/affine/affine.h"
 #include "dialects/core/core.h"
@@ -24,7 +23,7 @@ const Def* LowerMatrix::rewrite(const Def* def) {
 Lam* multifor(World& world, Array<const Def*> bounds, const Def* inner_body) {
     auto count = bounds.size();
     Array<const Def*> iterators(count);
-    auto I32         = world.type_int_width(32);
+    auto I32         = world.type_int(32);
     Defs empty_tuple = {};
     auto empty_type  = world.tuple(empty_tuple)->type(); // TODO: check
     auto res_ty      = world.cn({mem::type_mem(world), empty_type});
@@ -35,8 +34,8 @@ Lam* multifor(World& world, Array<const Def*> bounds, const Def* inner_body) {
     auto outer_container   = world.nom_lam(outer_ty, world.dbg("outer"));
     auto [mem, acc, yield] = outer_container->vars<3>();
 
-    auto zero_lit = world.lit_int_width(32, 0, world.dbg("zero"));
-    auto one_lit  = world.lit_int_width(32, 1, world.dbg("one"));
+    auto zero_lit = world.lit_int(32, 0, world.dbg("zero"));
+    auto one_lit  = world.lit_int(32, 1, world.dbg("one"));
 
     Lam* container = outer_container;
 
@@ -89,12 +88,12 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         auto n_lit = as_lit(n);
         auto m_lit = as_lit(m);
 
-        auto zero_lit    = world.lit_int_width(32, 0, world.dbg("zero"));
-        auto one_lit     = world.lit_int_width(32, 1, world.dbg("one"));
+        auto zero_lit    = world.lit_int(32, 0, world.dbg("zero"));
+        auto one_lit     = world.lit_int(32, 1, world.dbg("one"));
         Defs empty_tuple = {};
         auto empty_type  = world.tuple(empty_tuple)->type(); // TODO: check
 
-        auto I32 = world.type_int_width(32);
+        auto I32 = world.type_int(32);
 
         // idx number (>n), max_size
         std::vector<std::pair<u64, const Def*>> inner_idxs;
@@ -176,7 +175,7 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         DefArray cast_out_idxs(n_lit);
         for (int i = 0; i < n_lit; i++) {
             auto dim_nat     = world.extract(S, i);
-            cast_out_idxs[i] = core::op_bitcast(world.type_int(dim_nat), out_idxs[i]);
+            cast_out_idxs[i] = core::op_bitcast(world.type_idx(dim_nat), out_idxs[i]);
         }
 
         auto [mmem2, sum_ptr] = mem::op_alloc(zero->type(), mid_mem, world.dbg("sum"))->projs<2>();
@@ -213,7 +212,7 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
             auto ni_lit = access.size();
             // TODO: check with ni
             DefArray idxs(ni_lit);
-            for(auto j = 0; j < ni_lit; j++) {
+            for (auto j = 0; j < ni_lit; j++) {
                 auto access_var = access[j];
                 // get var by first finding position of access_var in inner_idxs.fst
                 auto pos = -1;
@@ -228,8 +227,8 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
                 auto inner_idx_var = world.extract(inn_idx, pos);
                 // this variable is an I32
                 // need Int (Si#j)
-                auto dim_nat     = world.extract(Si, j);
-                idxs[j] = core::op_bitcast(world.type_int(dim_nat), inner_idx_var);
+                auto dim_nat = world.extract(Si, j);
+                idxs[j]      = core::op_bitcast(world.type_idx(dim_nat), inner_idx_var);
             }
             // TODO: check indices
 
@@ -241,22 +240,22 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
             elements[i]         = element;
         }
 
-        auto [new_mem,result] = world.app(mul,{curr_inner_most_mem,world.tuple(elements)})->projs<2>();
-        curr_inner_most_mem = new_mem;
+        auto [new_mem, result] = world.app(mul, {curr_inner_most_mem, world.tuple(elements)})->projs<2>();
+        curr_inner_most_mem    = new_mem;
         // read from sum,
         // add
         // write to sum
         // TODO: make sum no ptr but accumulator
-        auto [new_mem2,v] = mem::op_load(curr_inner_most_mem, sum_ptr, world.dbg("sum_load"))->projs<2>();
+        auto [new_mem2, v]  = mem::op_load(curr_inner_most_mem, sum_ptr, world.dbg("sum_load"))->projs<2>();
         curr_inner_most_mem = new_mem2;
 
-        auto new_v=v;
+        auto new_v = v;
 
         curr_inner_most_mem = mem::op_store(curr_inner_most_mem, sum_ptr, new_v, world.dbg("sum_store"));
 
         innermost_body->app(true, inn_yield, {curr_inner_most_mem, inn_acc});
 
-        auto ret_def_call = direct::op_cps2ds(outer_container);
+        auto ret_def_call = direct::op_cps2ds_dep(outer_container);
         // TODO: check
         auto ret_def = world.app(ret_def_call, args);
 

@@ -45,7 +45,7 @@
 ///
 /// normalization rules: 
 /// * resolve shape calls at construction by replacing them with the size argument
-.ax %matrix.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), i: %Int n] -> .Nat, normalize_shape;
+.ax %matrix.shape:  Π [n: .Nat, S: «n; .Nat», T: *] -> [%matrix.Mat (n,S,T), i: .Idx n] -> .Nat, normalize_shape;
 ///
 /// ### %matrix.prod
 ///
@@ -112,7 +112,7 @@
 /// normalization:
 /// * read(insert)
 /// * read(const)
-.ax %matrix.read: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M, %matrix.Mat (n,S,T), idx: «i: n; %Int S#i»] -> [%mem.M,T], normalize_read;
+.ax %matrix.read: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M, %matrix.Mat (n,S,T), idx: «i: n; .Idx S#i»] -> [%mem.M,T], normalize_read;
 /// 
 /// ### %matrix.insert
 ///
@@ -125,7 +125,7 @@
 /// normalization:
 /// * with other inserts
 /// * with initialization
-.ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat (n,S,T), idx: «i: n; %Int S#i», val: T] -> [%mem.M,%matrix.Mat (n,S,T)], normalize_insert;
+.ax %matrix.insert: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat (n,S,T), idx: «i: n; .Idx S#i», val: T] -> [%mem.M,%matrix.Mat (n,S,T)], normalize_insert;
 ///
 /// ## Related operations
 ///
@@ -138,7 +138,7 @@
 /// * function: mem -> index -> mem
 /// the function is taken in cps style
 // .ax %matrix.multiiter: Π [n: .Nat, S: «n; .Nat»] -> 
-//     .Cn[mem: %mem.M, body: .Cn[%mem.M, «i: n; %Int (S#i)», .Cn[%mem.M]], .Cn[%mem.M]], normalize_multiiter;
+//     .Cn[mem: %mem.M, body: .Cn[%mem.M, «i: n; .Idx (S#i)», .Cn[%mem.M]], .Cn[%mem.M]], normalize_multiiter;
 ///
 /// ## Internal operations
 /// 
@@ -150,9 +150,9 @@
 /// ## Definitions and aliases
 /// 
 /// ### zero
-// .lam .extern matrix_zero_int: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(%Int m)) = {
+// .lam .extern matrix_zero_int: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(.Idx m)) = {
 //     .tt,
-//     %matrix.constMat (n,S,(%Int m)) (0: (%Int m))
+//     %matrix.constMat (n,S,(.Idx m)) (0: (.Idx m))
 // };
 // .lam .extern matrix_zero: Π [n: .Nat, S: «n; .Nat», m: .Nat] -> %matrix.Mat (n,S,(%Real m)) = {
 //     .tt,
@@ -246,7 +246,7 @@ let multiiter f n S:=
 // define alias:
 // * fst, snd, split
 // * zip = zipWith id
-// .ax %matrix.id: Π [k: .Nat, m: .Nat] -> %matrix.Mat (2,(k,k),(%Int m));
+// .ax %matrix.id: Π [k: .Nat, m: .Nat] -> %matrix.Mat (2,(k,k),(.Idx m));
 // .ax %matrix.transpose: Π [kl: «2: .Nat; .Nat», T: *] -> 
 //     .let (k,l) = kl;
 //     %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_tranpose;
@@ -325,7 +325,7 @@ let multiiter f n S:=
 // .let dummyAdd = snd;
 
 
-// .let I32 = %Int 4294967296;
+// .let I32 = .Idx 4294967296;
 // .let TT = I32;
 // .let test = %matrix.mapReduce 
 //         (2,(4,3),I32,
@@ -369,7 +369,7 @@ let multiiter f n S:=
 
 Needed:
 * - better error messages (:4294967295: error: symbol 'n' already declared in the current scope here: :4294967295)
-* - a : %Int 5 should be a : (%Int 5) and not (a : %Int) 5
+* - a : .Idx 5 should be a : (.Idx 5) and not (a : .Idx) 5
 * - currying syntax
 
 WIP:

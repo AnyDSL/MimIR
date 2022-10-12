@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "thorin/axiom.h"
-#include "thorin/normalize.h"
 #include "thorin/world.h"
 
 #include "dialects/matrix/matrix.h"
