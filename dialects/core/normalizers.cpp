@@ -31,8 +31,10 @@ constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
 
 // clang-format off
 template<class Id> constexpr bool is_commutative(Id) { return false; }
+constexpr bool is_commutative(nop    ) { return true; }
 constexpr bool is_commutative(wrap id) { return id == wrap::add || id == wrap::mul; }
 constexpr bool is_commutative(rop  id) { return id == rop ::add || id == rop ::mul; }
+constexpr bool is_commutative(ncmp id) { return id == ncmp::  e || id == ncmp:: ne; }
 constexpr bool is_commutative(icmp id) { return id == icmp::  e || id == icmp:: ne; }
 constexpr bool is_commutative(rcmp id) { return id == rcmp::  e || id == rcmp:: ne; }
 // clang-format off
@@ -337,6 +339,17 @@ template<nop id>
 const Def* normalize_nop(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
+    commute(id, a, b);
+
+    if (auto la = isa_lit(a)) {
+        if (auto lb = isa_lit(b)) {
+            switch (id) {
+                case nop::add: return world.lit_nat(*la + *lb);
+                case nop::mul: return world.lit_nat(*la * *lb);
+            }
+        }
+    }
+
     return world.raw_app(callee, a, dbg);
 }
 
@@ -344,6 +357,23 @@ template<ncmp id>
 const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
+    commute(id, a, b);
+
+    if (auto la = isa_lit(a)) {
+        if (auto lb = isa_lit(b)) {
+            switch (id) {
+                // clang-format off
+                case ncmp:: e: return world.lit_nat(*la == *lb);
+                case ncmp::ne: return world.lit_nat(*la != *lb);
+                case ncmp::l : return world.lit_nat(*la <  *lb);
+                case ncmp::le: return world.lit_nat(*la <= *lb);
+                case ncmp::g : return world.lit_nat(*la >  *lb);
+                case ncmp::ge: return world.lit_nat(*la >= *lb);
+                // clang-format on
+            }
+        }
+    }
+
     return world.raw_app(callee, a, dbg);
 }
 
