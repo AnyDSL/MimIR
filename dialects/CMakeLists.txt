@@ -50,6 +50,47 @@ add_thorin_dialect(core
     INSTALL
 )
 
+add_thorin_dialect(autodiff
+    SOURCES
+        autodiff/autodiff.cpp
+        autodiff/autodiff.h
+        autodiff/passes/autodiff_eval.cpp
+        autodiff/passes/autodiff_eval.h
+        autodiff/passes/autodiff_zero.cpp
+        autodiff/passes/autodiff_zero.h
+        autodiff/passes/autodiff_zero_cleanup.cpp
+        autodiff/passes/autodiff_zero_cleanup.h
+        autodiff/passes/autodiff_ext_cleanup.cpp
+        autodiff/passes/autodiff_ext_cleanup.h
+        autodiff/auxiliary/autodiff_aux.cpp
+        autodiff/auxiliary/autodiff_aux.h
+        autodiff/auxiliary/autodiff_rewrite_inner.cpp
+        autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
+        autodiff/normalizers.cpp
+    DEPENDS
+        mem
+        core
+        clos
+        affine
+        direct
+    HEADER_DEPENDS
+        mem
+    INSTALL
+)
+
+add_thorin_dialect(core
+    SOURCES
+        core/core.cpp
+        core/core.h
+        core/normalizers.cpp
+        core/be/ll/ll.cpp
+        core/be/ll/ll.h
+    DEPENDS
+        mem
+        clos
+    INSTALL
+)
+
 add_thorin_dialect(clos
     SOURCES
         clos/clos.cpp
