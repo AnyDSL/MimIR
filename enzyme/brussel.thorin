@@ -154,28 +154,31 @@
     (if_else_149932, if_thenR_149886)#_150055 mem_149653
 };
 // TODO: can not be external even if it is the identity function
-.cn .extern brusselator_f _148263::[mem_148269: %mem.M, x_148311: %core.Real 64, y_148353: %core.Real 64, t_148395: %core.Real 64, return_148446: .Cn [%mem.M, %core.Real 64]] = {
-    return_148446 (mem_148269, 42:(%core.Real 64))
-    // .cn if_join_149273 _149291::[mem_149297: %mem.M, _149590: %core.Real 64] = {
-    //     return_148446 _149291
-    // };
-    // .cn if_else_149223 _149504: %mem.M = {
-    //     if_join_149273 (_149504, 0:(%core.Real 64))
-    // };
-    // .cn if_thenBf_149177 _149424: %mem.M = {
-    //     if_join_149273 (_149424, 4617315517961601024:(%core.Real 64))
-    // };
-    // .cn and_t_149341 _149382: %mem.M = {
-    //     .let _149129: .Idx 2 = %core.rcmp.uGlE (0, 64) (t_148395, 4607632778762754458:(%core.Real 64));
-    //     (if_else_149223, if_thenBf_149177)#_149129 _149382
-    // };
-    // .let _148644: %core.Real 64 = %core.rop.sub (0, 64) (x_148311, 4599075939470750515:(%core.Real 64));
-    // .let _148751: %core.Real 64 = %core.rop.mul (0, 64) ‹2; _148644›;
-    // .let _148871: %core.Real 64 = %core.rop.sub (0, 64) (y_148353, 4603579539098121011:(%core.Real 64));
-    // .let _148978: %core.Real 64 = %core.rop.mul (0, 64) ‹2; _148871›;
-    // .let _148990: %core.Real 64 = %core.rop.add (0, 64) (_148751, _148978);
-    // .let _149044: .Idx 2 = %core.rcmp.ugLE (0, 64) (_148990, 4576918229304087675:(%core.Real 64));
-    // (if_else_149223, and_t_149341)#_149044 mem_148269
+.cn brusselator_f _148263::[mem_148269: %mem.M, x_148311: %core.Real 64, y_148353: %core.Real 64, t_148395: %core.Real 64, return_148446: .Cn [%mem.M, %core.Real 64]] = {
+    // return_148446 (mem_148269, 42:(%core.Real 64))
+    .cn if_join_149273 _149291::[mem_149297: %mem.M, _149590: %core.Real 64] = {
+        return_148446 _149291
+    };
+    .cn if_else_149223 _149504: %mem.M = {
+        if_join_149273 (_149504, 0:(%core.Real 64))
+    };
+    .cn if_thenBf_149177 _149424: %mem.M = {
+        if_join_149273 (_149424, 4617315517961601024:(%core.Real 64))
+    };
+    .cn and_t_149341 _149382: %mem.M = {
+        .let _149129: .Idx 2 = %core.rcmp.uGlE (0, 64) (t_148395, 4607632778762754458:(%core.Real 64));
+        ((if_else_149223, if_thenBf_149177)#_149129) _149382
+        // if_thenBf_149177 _149382
+    };
+    .let _148644: %core.Real 64 = %core.rop.sub (0, 64) (x_148311, 4599075939470750515:(%core.Real 64));
+    .let _148751: %core.Real 64 = %core.rop.mul (0, 64) ‹2; _148644›;
+    .let _148871: %core.Real 64 = %core.rop.sub (0, 64) (y_148353, 4603579539098121011:(%core.Real 64));
+    .let _148978: %core.Real 64 = %core.rop.mul (0, 64) ‹2; _148871›;
+    .let _148990: %core.Real 64 = %core.rop.add (0, 64) (_148751, _148978);
+    .let _149044: .Idx 2 = %core.rcmp.ugLE (0, 64) (_148990, 4576918229304087675:(%core.Real 64));
+    // return_148446 (mem_148269, 42:(%core.Real 64))
+    (if_else_149223, and_t_149341)#_149044 mem_148269
+    // (if_else_149223, if_thenBf_149177)#_149044 mem_148269
 };
 
 // TODO: find out why this does code can not be emitted to 
