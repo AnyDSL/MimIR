@@ -21,6 +21,11 @@ void ErrorHandler::index_out_of_range(const Def* arity, const Def* index, const 
     err(d.loc, "index '{}' does not fit within arity '{}'", index, arity);
 }
 
+void ErrorHandler::index_out_of_range(const Def* arity, nat_t index, const Def* dbg) {
+    Debug d(dbg);
+    err(d.loc, "index '{}' does not fit within arity '{}'", index, arity);
+}
+
 void ErrorHandler::ill_typed_app(const Def* callee, const Def* arg, const Def* dbg) {
     Debug d(dbg ? dbg : arg->dbg());
     err(d.loc, "cannot pass argument '{}' of type '{}' to '{}' of domain '{}'", arg, arg->type(), callee,
