@@ -59,9 +59,6 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     // The expression `e: B` has the implicit function `e_fun: A -> B`
     // The partial pullback is then `e*: B* -> A*`
     // The derivatived version is `e': B' × (B* -> A*)` which is an application of `e'_fun: A' -> B' × (B* -> A*)`
-    auto new_body = augment(lam->body(), lam, deriv);
-    deriv->set_filter(true);
-    deriv->set_body(new_body);
 
     return deriv;
 }

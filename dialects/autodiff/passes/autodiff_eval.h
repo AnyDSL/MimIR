@@ -75,6 +75,9 @@ private:
     /// `\lambda (s:Bi). t*_S (insert s at i in (zero [B0, ..., Bn]))`
     /// dst Def -> dst Def
     Def2Def shadow_pullback;
+
+    /// dst Def set
+    DefSet open_continuation;
 };
 
 } // namespace thorin::autodiff
