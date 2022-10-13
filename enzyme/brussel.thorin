@@ -23,14 +23,14 @@
 
 
 
-.let N = 32:I32;
-.let N_double = 32.0:R64;
+.let N = 2:I32;//32
+.let N_double = 2.0:R64;//32
 .let xmin = 0.0:R64;
 .let xmax = 1.0:R64;
 .let ymin = 0.0:R64;
 .let ymax = 1.0:R64;
 // .let size = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (N, N);
-.let size = 1024;
+.let size = 4;//1024
 
 .lam RANGE ![[min: R64, max: R64, i : R64, N:R64]] -> R64 = {
     .let r0 = %core.rop.sub (0:.Nat, 64:.Nat) (max, min);
@@ -133,7 +133,7 @@
     .let _151002: %core.Real 64 = %core.rop.add (0, 64) (min_150545, _150990);
     return_150726 (mem_150494, _151002)
 };
-.cn range _149647::[mem_149653: %mem.M, a_149695: .Idx 4294967296, b_149737: .Idx 4294967296, body_149786: .Cn [%mem.M, .Idx 4294967296, .Cn %mem.M], return_149836: .Cn %mem.M] = {
+.cn range _149647::[mem_149653: %mem.M, a_149695: .Idx 4294967296, b_149737: .Idx 4294967296, body_149786: .Cn [%mem.M, .Idx 4294967296, .Cn %mem.M], return_149836: .Cn %mem.M]@(0:(.Idx 2)) = {
     .cn if_join_149984 _150002::[mem_150008: %mem.M, _150434: []] = {
         return_149836 mem_150008
     };
@@ -147,11 +147,11 @@
         .let _150267: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), a_149695);
         range (_150164, _150267, b_149737, body_149786, range_cont_150318)
     };
-    .cn if_then_149886 _150096: %mem.M = {
+    .cn if_thenR_149886 _150096: %mem.M = {
         body_149786 (_150096, a_149695, body_cont_150146)
     };
     .let _150055: .Idx 2 = %core.icmp.xYgLe 4294967296 (a_149695, b_149737);
-    (if_else_149932, if_then_149886)#_150055 mem_149653
+    (if_else_149932, if_thenR_149886)#_150055 mem_149653
 };
 .cn .extern brusselator_f _148263::[mem_148269: %mem.M, x_148311: %core.Real 64, y_148353: %core.Real 64, t_148395: %core.Real 64, return_148446: .Cn [%mem.M, %core.Real 64]] = {
     .cn if_join_149273 _149291::[mem_149297: %mem.M, _149590: %core.Real 64] = {
@@ -160,12 +160,12 @@
     .cn if_else_149223 _149504: %mem.M = {
         if_join_149273 (_149504, 0:(%core.Real 64))
     };
-    .cn if_then_149177 _149424: %mem.M = {
+    .cn if_thenBf_149177 _149424: %mem.M = {
         if_join_149273 (_149424, 4617315517961601024:(%core.Real 64))
     };
     .cn and_t_149341 _149382: %mem.M = {
         .let _149129: .Idx 2 = %core.rcmp.uGlE (0, 64) (t_148395, 4607632778762754458:(%core.Real 64));
-        (if_else_149223, if_then_149177)#_149129 _149382
+        (if_else_149223, if_thenBf_149177)#_149129 _149382
     };
     .let _148644: %core.Real 64 = %core.rop.sub (0, 64) (x_148311, 4599075939470750515:(%core.Real 64));
     .let _148751: %core.Real 64 = %core.rop.mul (0, 64) ‹2; _148644›;
@@ -178,14 +178,14 @@
 
 // TODO: find out why this does code can not be emitted to 
 .cn .extern brusselator_2d_loop _151060::[[mem_151066: %mem.M, du_151113: %mem.Ptr («size; %core.Real 64», 0), dv_151159: %mem.Ptr («size; %core.Real 64», 0), u_151201: %mem.Ptr («size; %core.Real 64», 0), v_151243: %mem.Ptr («size; %core.Real 64», 0), p_151285::[_151772: %core.Real 64, _151853: %core.Real 64, _152176: %core.Real 64], t_151327: %core.Real 64], return_151377: .Cn %mem.M] = {
-    .cn lambda_152386 _152404::[mem_152410: %mem.M, i_152452: .Idx 4294967296, continue_152505: .Cn %mem.M] = {
+    .cn lambda_152386 _152404::[mem_152410: %mem.M, i_152452: .Idx 4294967296, continue_152505: .Cn %mem.M]@(0:(.Idx 2)) = {
         .cn break_153684 _153702: %mem.M = {
             continue_152505 _153702
         };
         .cn RANGE_cps_cont_152606 _152624::[mem_152630: %mem.M, RANGE_cps_152641: %core.Real 64] = {
             .cn if_join_152785 _152803::[mem_152809: %mem.M, _153156: .Idx 4294967296] = {
                 .cn if_join_153299 _153317::[mem_153323: %mem.M, _153640: .Idx 4294967296] = {
-                    .cn lambda_153786 _153804::[mem_153810: %mem.M, j_153852: .Idx 4294967296, continue_153904: .Cn %mem.M] = {
+                    .cn lambda_153786 _153804::[mem_153810: %mem.M, j_153852: .Idx 4294967296, continue_153904: .Cn %mem.M]@(0:(.Idx 2)) = {
                         .cn RANGE_cps_cont_154004 _154022::[mem_154028: %mem.M, RANGE_cps_154039: %core.Real 64] = {
                             .cn if_join_154183 _154201::[mem_154207: %mem.M, _154554: .Idx 4294967296] = {
                                 .cn if_join_154697 _154715::[mem1: %mem.M, _155038: .Idx 4294967296] = {
@@ -264,21 +264,21 @@
                                     .let _154991: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (4294967295:(.Idx 4294967296), j_153852);
                                     if_join_154697 (_154885, _154991)
                                 };
-                                .cn if_then_154601 _154843: %mem.M = {
+                                .cn if_thenB1_154601 _154843: %mem.M = {
                                     if_join_154697 (_154843, j_153852)
                                 };
                                 .let _154802: .Idx 2 = %core.icmp.xyglE 4294967296 (0:(.Idx 4294967296), j_153852);
-                                (if_else_154647, if_then_154601)#_154802 mem_154207
+                                (if_else_154647, if_thenB1_154601)#_154802 mem_154207
                             };
                             .cn if_else_154133 _154415: %mem.M = {
                                 .let _154507: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), j_153852);
                                 if_join_154183 (_154415, _154507)
                             };
-                            .cn if_then_154087 _154373: %mem.M = {
+                            .cn if_thenB2_154087 _154373: %mem.M = {
                                 if_join_154183 (_154373, j_153852)
                             };
                             .let _154332: .Idx 2 = %core.icmp.xyglE 4294967296 (31:(.Idx 4294967296), j_153852);
-                            (if_else_154133, if_then_154087)#_154332 mem_154028
+                            (if_else_154133, if_thenB2_154087)#_154332 mem_154028
                         };
                         .let _153947: %core.Real 64 = %core.conv.s2r (64, 4294967296) j_153852;
                         RANGE_cps (mem_153810, 0:(%core.Real 64), 4607182418800017408:(%core.Real 64), _153947, 4629700416936869888:(%core.Real 64), RANGE_cps_cont_154004)
@@ -289,21 +289,21 @@
                     .let _153593: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (4294967295:(.Idx 4294967296), i_152452);
                     if_join_153299 (_153487, _153593)
                 };
-                .cn if_then_153203 _153445: %mem.M = {
+                .cn if_thenB3_153203 _153445: %mem.M = {
                     if_join_153299 (_153445, i_152452)
                 };
                 .let _153404: .Idx 2 = %core.icmp.xyglE 4294967296 (0:(.Idx 4294967296), i_152452);
-                (if_else_153249, if_then_153203)#_153404 mem_152809
+                (if_else_153249, if_thenB3_153203)#_153404 mem_152809
             };
             .cn if_else_152735 _153017: %mem.M = {
                 .let _153109: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), i_152452);
                 if_join_152785 (_153017, _153109)
             };
-            .cn if_then_152689 _152975: %mem.M = {
+            .cn if_thenB4_152689 _152975: %mem.M = {
                 if_join_152785 (_152975, i_152452)
             };
             .let _152934: .Idx 2 = %core.icmp.xyglE 4294967296 (31:(.Idx 4294967296), i_152452);
-            (if_else_152735, if_then_152689)#_152934 mem_152630
+            (if_else_152735, if_thenB4_152689)#_152934 mem_152630
         };
         .let _152548: %core.Real 64 = %core.conv.s2r (64, 4294967296) i_152452;
 
