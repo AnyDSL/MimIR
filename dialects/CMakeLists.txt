@@ -9,6 +9,47 @@ add_thorin_dialect(affine
     INSTALL
 )
 
+add_thorin_dialect(autodiff
+    SOURCES
+        autodiff/autodiff.cpp
+        autodiff/autodiff.h
+        autodiff/passes/autodiff_eval.cpp
+        autodiff/passes/autodiff_eval.h
+        autodiff/passes/autodiff_zero.cpp
+        autodiff/passes/autodiff_zero.h
+        autodiff/passes/autodiff_zero_cleanup.cpp
+        autodiff/passes/autodiff_zero_cleanup.h
+        autodiff/passes/autodiff_ext_cleanup.cpp
+        autodiff/passes/autodiff_ext_cleanup.h
+        autodiff/auxiliary/autodiff_aux.cpp
+        autodiff/auxiliary/autodiff_aux.h
+        autodiff/auxiliary/autodiff_rewrite_inner.cpp
+        autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
+        autodiff/normalizers.cpp
+    DEPENDS
+        mem
+        core
+        clos
+        affine
+        direct
+    HEADER_DEPENDS
+        mem
+    INSTALL
+)
+
+add_thorin_dialect(core
+    SOURCES
+        core/core.cpp
+        core/core.h
+        core/normalizers.cpp
+        core/be/ll/ll.cpp
+        core/be/ll/ll.h
+    DEPENDS
+        mem
+        clos
+    INSTALL
+)
+
 add_thorin_dialect(clos
     SOURCES
         clos/clos.cpp
@@ -35,17 +76,11 @@ add_thorin_dialect(clos
     INSTALL
 )
 
-add_thorin_dialect(core
+add_thorin_dialect(demo
     SOURCES
-        core/core.cpp
-        core/core.h
-        core/normalizers.cpp
-        core/be/ll/ll.cpp
-        core/be/ll/ll.h
-    DEPENDS
-        mem
-        clos
-        affine
+        demo/demo.cpp
+        demo/demo.h
+        demo/normalizers.cpp
     INSTALL
 )
 
@@ -55,16 +90,9 @@ add_thorin_dialect(direct
         direct/direct.h
         direct/passes/ds2cps.cpp
         direct/passes/ds2cps.h
-    INSTALL
-)
-
-add_thorin_dialect(debug
-    SOURCES
-        debug/debug.h
-        debug/debug.cpp
-        debug/passes/remove_perm.h
-        debug/passes/remove_perm.cpp
-        debug/normalizers.cpp
+        direct/passes/cps2ds.cpp
+        direct/passes/cps2ds.h
+        direct/normalizers.cpp
     INSTALL
 )
 
@@ -83,5 +111,15 @@ add_thorin_dialect(mem
         mem/passes/rw/remem_elim.h
     HEADER_DEPENDS
         core
+    INSTALL
+)
+
+add_thorin_dialect(refly
+    SOURCES
+        refly/refly.h
+        refly/refly.cpp
+        refly/passes/remove_perm.h
+        refly/passes/remove_perm.cpp
+        refly/normalizers.cpp
     INSTALL
 )

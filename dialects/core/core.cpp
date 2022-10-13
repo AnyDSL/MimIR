@@ -34,7 +34,7 @@ const Sigma* convert(const TBound<up>* b) {
         }
 
         assert(size % align == 0);
-        auto arr = w.arr(size / align, w.type_int_(align * 8_u64));
+        auto arr = w.arr(size / align, w.type_int(align * 8_u64));
 
         return w.sigma({w.type_idx(b->num_ops()), arr})->template as<Sigma>();
     } else {

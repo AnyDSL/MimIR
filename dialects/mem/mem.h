@@ -60,14 +60,14 @@ static inline const Def* tuple_of_types(const Def* t) {
 
 inline const Def* op_lea(const Def* ptr, const Def* index, const Def* dbg = {}) {
     World& w                   = ptr->world();
-    auto [pointee, addr_space] = match<Ptr, false>(ptr->type())->args<2>();
+    auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
     auto Ts                    = tuple_of_types(pointee);
     return w.app(w.app(w.ax<lea>(), {pointee->arity(), Ts, addr_space}), {ptr, index}, dbg);
 }
 
 inline const Def* op_lea_unsafe(const Def* ptr, const Def* i, const Def* dbg = {}) {
     World& w      = ptr->world();
-    auto safe_int = w.type_idx(match<Ptr, false>(ptr->type())->arg(0)->arity());
+    auto safe_int = w.type_idx(force<Ptr>(ptr->type())->arg(0)->arity());
     return op_lea(ptr, core::op(core::conv::u2u, safe_int, i), dbg);
 }
 
@@ -78,13 +78,13 @@ inline const Def* op_lea_unsafe(const Def* ptr, u64 i, const Def* dbg = {}) {
 
 inline const Def* op_load(const Def* mem, const Def* ptr, const Def* dbg = {}) {
     World& w    = mem->world();
-    auto [T, a] = match<Ptr, false>(ptr->type())->args<2>();
+    auto [T, a] = force<Ptr>(ptr->type())->args<2>();
     return w.app(w.app(w.ax<load>(), {T, a}), {mem, ptr}, dbg);
 }
 
 inline const Def* op_store(const Def* mem, const Def* ptr, const Def* val, const Def* dbg = {}) {
     World& w    = mem->world();
-    auto [T, a] = match<Ptr, false>(ptr->type())->args<2>();
+    auto [T, a] = force<Ptr>(ptr->type())->args<2>();
     return w.app(w.app(w.ax<store>(), {T, a}), {mem, ptr, val}, dbg);
 }
 

@@ -91,7 +91,6 @@ private:
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();
-    const Def* parse_idx();
     const Def* parse_type();
     const Def* parse_pi();
     const Def* parse_lam();
@@ -169,14 +168,6 @@ private:
     /// Same above but uses @p ahead() as @p tok.
     [[noreturn]] void syntax_err(std::string_view what, std::string_view ctxt) { syntax_err(what, ahead(), ctxt); }
     ///@}
-
-    Parser(World&,
-           std::string_view,
-           std::istream&,
-           ArrayRef<std::string>,
-           const Normalizers*,
-           const Scopes&,
-           const SymSet&);
 
     Lexer lexer_;
     Scopes scopes_;

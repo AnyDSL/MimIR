@@ -42,7 +42,7 @@ enum RMode : nat_t {
 };
 }
 
-inline const Def* rinfer(const Def* def) { return match<Real>(def->type())->arg(); }
+inline const Def* rinfer(const Def* def) { return force<Real>(def->type())->arg(); }
 
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
@@ -122,7 +122,7 @@ const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) 
 }
 
 inline const Def* get_size(const Def* type) {
-    if (auto idx = type->isa<Idx>()) return idx->size();
+    if (auto size = Idx::size(type)) return size;
     if (auto real = match<Real>(type)) return real->arg();
     unreachable();
 }
