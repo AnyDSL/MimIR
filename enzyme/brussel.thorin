@@ -178,7 +178,7 @@
 
 // TODO: find out why this does code can not be emitted to 
 // TODO: this function has problems with lamspec and .extern
-.cn .extern brusselator_2d_loop _151060::[mem_151066: %mem.M, du_151113: %mem.Ptr («size; %core.Real 64», 0), dv_151159: %mem.Ptr («size; %core.Real 64», 0), u_151201: %mem.Ptr («size; %core.Real 64», 0), v_151243: %mem.Ptr («size; %core.Real 64», 0), p_151285::[_151772: %core.Real 64, _151853: %core.Real 64, _152176: %core.Real 64, t_151327: %core.Real 64], return_151377: .Cn %mem.M] = {
+.cn .extern brusselator_2d_loop _151060::[mem_151066: %mem.M, du_151113: %mem.Ptr («size; %core.Real 64», 0), dv_151159: %mem.Ptr («size; %core.Real 64», 0), u_151201: %mem.Ptr («size; %core.Real 64», 0), v_151243: %mem.Ptr («size; %core.Real 64», 0), p_151285::[_151772: %core.Real 64, _151853: %core.Real 64, _152176: %core.Real 64], t_151327: %core.Real 64, return_151377: .Cn %mem.M] = {
     .cn lambda_152386 _152404::[mem_152410: %mem.M, i_152452: .Idx 4294967296, continue_152505: .Cn %mem.M]@(0:(.Idx 2)) = {
         .cn break_153684 _153702: %mem.M = {
             continue_152505 _153702
@@ -188,110 +188,121 @@
             .cn if_join_152785 _152803::[mem_152809: %mem.M, _153156: .Idx 4294967296] = {
                 .cn if_join_153299 _153317::[mem_153323: %mem.M, _153640: .Idx 4294967296] = {
 
-                    // .cn lambda_153786 _153804::[mem_153810: %mem.M, j_153852: .Idx 4294967296, continue_153904: .Cn %mem.M]@(0:(.Idx 2)) = {
-                    //     break_153684 mem_153810
-                    //     // continue_153904 mem_153810
+                    .cn lambda_153786 _153804::[mem_153810: %mem.M, j_153852: .Idx 4294967296, continue_153904: .Cn %mem.M]@(0:(.Idx 2)) = {
+                        // the break would cause llvm emitter issues
+                        // break_153684 mem_153810
+                        // continue works
+                        // continue_153904 mem_153810
 
-                    //     // .cn RANGE_cps_cont_154004 _154022::[mem_154028: %mem.M, RANGE_cps_154039: %core.Real 64] = {
-                    //     //     .cn if_join_154183 _154201::[mem_154207: %mem.M, _154554: .Idx 4294967296] = {
-                    //     //         .cn if_join_154697 _154715::[mem1: %mem.M, _155038: .Idx 4294967296] = {
-                    //     //             .cn brusselator_f_cont_158280 _158298::[mem2: %mem.M, brusselator_f_158315: %core.Real 64] = {
-                    //     //                 .let _155231: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (32:(.Idx 4294967296), i_152452);
-                    //     //                 .let _155243: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (j_153852, _155231);
-                    //     //                 .let _155267: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _155243;
-                    //     //                 .let _156126: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (du_151113, _155267);
-                    //     //                 .let _155323: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _155267);
-                    //     //                 .let _155384: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (mem2, _155323);
-                    //     //                 .let _155628: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_155384#0:(.Idx 2), _155323);
-                    //     //                 .let _155654: %core.Real 64 = %core.rop.mul (0, 64) (_155384#1:(.Idx 2), _155628#1:(.Idx 2));
-                    //     //                 .let _155835: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _155267);
-                    //     //                 .let _155887: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_155628#0:(.Idx 2), _155835);
-                    //     //                 .let _155910: %core.Real 64 = %core.rop.mul (0, 64) (_155654, _155887#1:(.Idx 2));
-                    //     //                 .let _152240: %core.Real 64 = %core.rop.div (0, 64) (p_151285#2:(.Idx 3), 4562441663708960045:(%core.Real 64));
-                    //     //                 .let _156564: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (32:(.Idx 4294967296), _153640);
-                    //     //                 .let _156576: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (j_153852, _156564);
-                    //     //                 .let _156597: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _156576;
-                    //     //                 .let _156622: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _156597);
-                    //     //                 .let _156674: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_155887#0:(.Idx 2), _156622);
-                    //     //                 .let _156808: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (32:(.Idx 4294967296), _153156);
-                    //     //                 .let _156820: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (j_153852, _156808);
-                    //     //                 .let _156841: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _156820;
-                    //     //                 .let _156866: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _156841);
-                    //     //                 .let _156918: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_156674#0:(.Idx 2), _156866);
-                    //     //                 .let _156941: %core.Real 64 = %core.rop.add (0, 64) (_156674#1:(.Idx 2), _156918#1:(.Idx 2));
-                    //     //                 .let _157076: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (_154554, _155231);
-                    //     //                 .let _157097: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _157076;
-                    //     //                 .let _157122: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _157097);
-                    //     //                 .let _157174: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_156918#0:(.Idx 2), _157122);
-                    //     //                 .let _157197: %core.Real 64 = %core.rop.add (0, 64) (_156941, _157174#1:(.Idx 2));
-                    //     //                 .let _157332: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (_155038, _155231);
-                    //     //                 .let _157353: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _157332;
-                    //     //                 .let _157378: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _157353);
-                    //     //                 .let _157430: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_157174#0:(.Idx 2), _157378);
-                    //     //                 .let _157453: %core.Real 64 = %core.rop.add (0, 64) (_157197, _157430#1:(.Idx 2));
-                    //     //                 .let _157759: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_157430#0:(.Idx 2), _155323);
-                    //     //                 .let _157782: %core.Real 64 = %core.rop.mul (0, 64) (4616189618054758400:(%core.Real 64), _157759#1:(.Idx 2));
-                    //     //                 .let _157794: %core.Real 64 = %core.rop.sub (0, 64) (_157453, _157782);
-                    //     //                 .let _157806: %core.Real 64 = %core.rop.mul (0, 64) (_152240, _157794);
-                    //     //                 .let _157818: %core.Real 64 = %core.rop.add (0, 64) (p_151285#1:(.Idx 3), _157806);
-                    //     //                 .let _157830: %core.Real 64 = %core.rop.add (0, 64) (_155910, _157818);
-                    //     //                 .let _157950: %core.Real 64 = %core.rop.add (0, 64) (4607182418800017408:(%core.Real 64), p_151285#0:(.Idx 3));
-                    //     //                 .let _158183: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_157759#0:(.Idx 2), _155323);
-                    //     //                 .let _158206: %core.Real 64 = %core.rop.mul (0, 64) (_157950, _158183#1:(.Idx 2));
-                    //     //                 .let _158218: %core.Real 64 = %core.rop.sub (0, 64) (_157830, _158206);
-                    //     //                 .let _158328: %core.Real 64 = %core.rop.add (0, 64) (_158218, brusselator_f_158315);
-                    //     //                 .let _158385: %mem.M = %mem.store (%core.Real 64, 0) (_158183#0:(.Idx 2), _156126, _158328);
-                    //     //                 .let _159027: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _156597);
-                    //     //                 .let _159079: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_158385, _159027);
-                    //     //                 .let _159271: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _156841);
-                    //     //                 .let _159323: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_159079#0:(.Idx 2), _159271);
-                    //     //                 .let _159527: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _157097);
-                    //     //                 .let _159579: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_159323#0:(.Idx 2), _159527);
-                    //     //                 .let _159783: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _157353);
-                    //     //                 .let _159835: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_159579#0:(.Idx 2), _159783);
-                    //     //                 .let _160164: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_159835#0:(.Idx 2), _155835);
-                    //     //                 .let _160479: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_160164#0:(.Idx 2), _155323);
-                    //     //                 .let _158601: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (dv_151159, _155267);
-                    //     //                 .let _159346: %core.Real 64 = %core.rop.add (0, 64) (_159079#1:(.Idx 2), _159323#1:(.Idx 2));
-                    //     //                 .let _159602: %core.Real 64 = %core.rop.add (0, 64) (_159346, _159579#1:(.Idx 2));
-                    //     //                 .let _159858: %core.Real 64 = %core.rop.add (0, 64) (_159602, _159835#1:(.Idx 2));
-                    //     //                 .let _160187: %core.Real 64 = %core.rop.mul (0, 64) (4616189618054758400:(%core.Real 64), _160164#1:(.Idx 2));
-                    //     //                 .let _160199: %core.Real 64 = %core.rop.sub (0, 64) (_159858, _160187);
-                    //     //                 .let _160211: %core.Real 64 = %core.rop.mul (0, 64) (_152240, _160199);
-                    //     //                 .let _160503: %core.Real 64 = %core.rop.mul (0, 64) (p_151285#0:(.Idx 3), _160479#1:(.Idx 2));
-                    //     //                 .let _160515: %core.Real 64 = %core.rop.add (0, 64) (_160211, _160503);
-                    //     //                 .let _160527: %core.Real 64 = %core.rop.sub (0, 64) (_160515, _155910);
-                    //     //                 .let _160578: %mem.M = %mem.store (%core.Real 64, 0) (_160479#0:(.Idx 2), _158601, _160527);
-                    //     //                 continue_153904 _160578
-                    //     //             };
-                    //     //             brusselator_f (mem1, RANGE_cps_152641, RANGE_cps_154039, t_151327, brusselator_f_cont_158280)
-                    //     //         };
-                    //     //         .cn if_else_154647 _154885: %mem.M = {
-                    //     //             .let _154991: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (4294967295:(.Idx 4294967296), j_153852);
-                    //     //             if_join_154697 (_154885, _154991)
-                    //     //         };
-                    //     //         .cn if_thenB1_154601 _154843: %mem.M = {
-                    //     //             if_join_154697 (_154843, j_153852)
-                    //     //         };
-                    //     //         .let _154802: .Idx 2 = %core.icmp.xyglE 4294967296 (0:(.Idx 4294967296), j_153852);
-                    //     //         (if_else_154647, if_thenB1_154601)#_154802 mem_154207
-                    //     //     };
-                    //     //     .cn if_else_154133 _154415: %mem.M = {
-                    //     //         .let _154507: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), j_153852);
-                    //     //         if_join_154183 (_154415, _154507)
-                    //     //     };
-                    //     //     .cn if_thenB2_154087 _154373: %mem.M = {
-                    //     //         if_join_154183 (_154373, j_153852)
-                    //     //     };
-                    //     //     .let _154332: .Idx 2 = %core.icmp.xyglE 4294967296 (31:(.Idx 4294967296), j_153852);
-                    //     //     (if_else_154133, if_thenB2_154087)#_154332 mem_154028
-                    //     // };
-                    //     // .let _153947: %core.Real 64 = %core.conv.s2r (64, 4294967296) j_153852;
-                    //     // RANGE_cps (mem_153810, 0:(%core.Real 64), 4607182418800017408:(%core.Real 64), _153947, 4629700416936869888:(%core.Real 64), RANGE_cps_cont_154004)
-                    // };
-                    // range (mem_153323, 0:(.Idx 4294967296), 32:(.Idx 4294967296), lambda_153786, break_153684)
+                        .cn RANGE_cps_cont_154004 _154022::[mem_154028: %mem.M, RANGE_cps_154039: %core.Real 64] = {
+                            .cn if_join_154183 _154201::[mem_154207: %mem.M, _154554: .Idx 4294967296] = {
+                                .cn if_join_154697 _154715::[mem1: %mem.M, _155038: .Idx 4294967296] = {
+                                    .cn brusselator_f_cont_158280 _158298::[mem2: %mem.M, brusselator_f_158315: %core.Real 64] = {
+                                //         .let _155231: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (32:(.Idx 4294967296), i_152452);
+                                //         .let _155243: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (j_153852, _155231);
+                                //         .let _155267: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _155243;
+                                //         .let _156126: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (du_151113, _155267);
+                                //         .let _155323: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _155267);
+                                //         .let _155384: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (mem2, _155323);
+                                //         .let _155628: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_155384#0:(.Idx 2), _155323);
+                                //         .let _155654: %core.Real 64 = %core.rop.mul (0, 64) (_155384#1:(.Idx 2), _155628#1:(.Idx 2));
+                                //         .let _155835: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _155267);
+                                //         .let _155887: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_155628#0:(.Idx 2), _155835);
+                                //         .let _155910: %core.Real 64 = %core.rop.mul (0, 64) (_155654, _155887#1:(.Idx 2));
+                                //         .let _152240: %core.Real 64 = %core.rop.div (0, 64) (p_151285#2:(.Idx 3), 4562441663708960045:(%core.Real 64));
+                                //         .let _156564: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (32:(.Idx 4294967296), _153640);
+                                //         .let _156576: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (j_153852, _156564);
+                                //         .let _156597: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _156576;
+                                //         .let _156622: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _156597);
+                                //         .let _156674: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_155887#0:(.Idx 2), _156622);
+                                //         .let _156808: .Idx 4294967296 = %core.wrap.mul (1, 4294967296) (32:(.Idx 4294967296), _153156);
+                                //         .let _156820: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (j_153852, _156808);
+                                //         .let _156841: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _156820;
+                                //         .let _156866: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _156841);
+                                //         .let _156918: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_156674#0:(.Idx 2), _156866);
+                                //         .let _156941: %core.Real 64 = %core.rop.add (0, 64) (_156674#1:(.Idx 2), _156918#1:(.Idx 2));
+                                //         .let _157076: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (_154554, _155231);
+                                //         .let _157097: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _157076;
+                                //         .let _157122: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _157097);
+                                //         .let _157174: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_156918#0:(.Idx 2), _157122);
+                                //         .let _157197: %core.Real 64 = %core.rop.add (0, 64) (_156941, _157174#1:(.Idx 2));
+                                //         .let _157332: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (_155038, _155231);
+                                //         .let _157353: .Idx ⊤:.Nat = %core.conv.u2u ‹2; ⊤:.Nat› _157332;
+                                //         .let _157378: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (u_151201, _157353);
+                                //         .let _157430: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_157174#0:(.Idx 2), _157378);
+                                //         .let _157453: %core.Real 64 = %core.rop.add (0, 64) (_157197, _157430#1:(.Idx 2));
+                                //         .let _157759: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_157430#0:(.Idx 2), _155323);
+                                //         .let _157782: %core.Real 64 = %core.rop.mul (0, 64) (4616189618054758400:(%core.Real 64), _157759#1:(.Idx 2));
+                                //         .let _157794: %core.Real 64 = %core.rop.sub (0, 64) (_157453, _157782);
+                                //         .let _157806: %core.Real 64 = %core.rop.mul (0, 64) (_152240, _157794);
+                                //         .let _157818: %core.Real 64 = %core.rop.add (0, 64) (p_151285#1:(.Idx 3), _157806);
+                                //         .let _157830: %core.Real 64 = %core.rop.add (0, 64) (_155910, _157818);
+                                //         .let _157950: %core.Real 64 = %core.rop.add (0, 64) (4607182418800017408:(%core.Real 64), p_151285#0:(.Idx 3));
+                                //         .let _158183: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_157759#0:(.Idx 2), _155323);
+                                //         .let _158206: %core.Real 64 = %core.rop.mul (0, 64) (_157950, _158183#1:(.Idx 2));
+                                //         .let _158218: %core.Real 64 = %core.rop.sub (0, 64) (_157830, _158206);
+                                //         .let _158328: %core.Real 64 = %core.rop.add (0, 64) (_158218, brusselator_f_158315);
+                                //         .let _158385: %mem.M = %mem.store (%core.Real 64, 0) (_158183#0:(.Idx 2), _156126, _158328);
+                                //         .let _159027: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _156597);
+                                //         .let _159079: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_158385, _159027);
+                                //         .let _159271: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _156841);
+                                //         .let _159323: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_159079#0:(.Idx 2), _159271);
+                                //         .let _159527: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _157097);
+                                //         .let _159579: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_159323#0:(.Idx 2), _159527);
+                                //         .let _159783: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (v_151243, _157353);
+                                //         .let _159835: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_159579#0:(.Idx 2), _159783);
+                                //         .let _160164: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_159835#0:(.Idx 2), _155835);
+                                //         .let _160479: [%mem.M, %core.Real 64] = %mem.load (%core.Real 64, 0) (_160164#0:(.Idx 2), _155323);
+                                //         .let _158601: %mem.Ptr (%core.Real 64, 0) = %mem.lea (⊤:.Nat, ‹⊤:.Nat; %core.Real 64›, 0) (dv_151159, _155267);
+                                //         .let _159346: %core.Real 64 = %core.rop.add (0, 64) (_159079#1:(.Idx 2), _159323#1:(.Idx 2));
+                                //         .let _159602: %core.Real 64 = %core.rop.add (0, 64) (_159346, _159579#1:(.Idx 2));
+                                //         .let _159858: %core.Real 64 = %core.rop.add (0, 64) (_159602, _159835#1:(.Idx 2));
+                                //         .let _160187: %core.Real 64 = %core.rop.mul (0, 64) (4616189618054758400:(%core.Real 64), _160164#1:(.Idx 2));
+                                //         .let _160199: %core.Real 64 = %core.rop.sub (0, 64) (_159858, _160187);
+                                //         .let _160211: %core.Real 64 = %core.rop.mul (0, 64) (_152240, _160199);
+                                //         .let _160503: %core.Real 64 = %core.rop.mul (0, 64) (p_151285#0:(.Idx 3), _160479#1:(.Idx 2));
+                                //         .let _160515: %core.Real 64 = %core.rop.add (0, 64) (_160211, _160503);
+                                //         .let _160527: %core.Real 64 = %core.rop.sub (0, 64) (_160515, _155910);
+                                //         .let _160578: %mem.M = %mem.store (%core.Real 64, 0) (_160479#0:(.Idx 2), _158601, _160527);
+                                //         continue_153904 _160578
+                                        continue_153904 mem2
+                                    };
+                                    brusselator_f (mem1, RANGE_cps_152641, RANGE_cps_154039, t_151327, brusselator_f_cont_158280)
+                                        // continue_153904 mem1
+                                };
+                                .cn if_else_154647 _154885: %mem.M = {
+                                    .let _154991: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (4294967295:(.Idx 4294967296), j_153852);
+                                    if_join_154697 (_154885, _154991)
+                                };
+                                .cn if_thenB1_154601 _154843: %mem.M = {
+                                    if_join_154697 (_154843, j_153852)
+                                };
+                                .let _154802: .Idx 2 = %core.icmp.xyglE 4294967296 (0:(.Idx 4294967296), j_153852);
+                                (if_else_154647, if_thenB1_154601)#_154802 mem_154207
 
-                    break_153684 mem_153323
+                                        // continue_153904 mem_154207
+                            };
+                            .cn if_else_154133 _154415: %mem.M = {
+                                .let _154507: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (1:(.Idx 4294967296), j_153852);
+                                if_join_154183 (_154415, _154507)
+                            };
+                            .cn if_thenB2_154087 _154373: %mem.M = {
+                                if_join_154183 (_154373, j_153852)
+                            };
+                            .let _154332: .Idx 2 = %core.icmp.xyglE 4294967296 (31:(.Idx 4294967296), j_153852);
+                            (if_else_154133, if_thenB2_154087)#_154332 mem_154028
+
+
+                                        // continue_153904 mem_154028
+                        };
+
+                        .let _153947: %core.Real 64 = %core.conv.s2r (64, 4294967296) j_153852;
+                        // continue_153904 mem_153810
+                        RANGE_cps (mem_153810, 0:(%core.Real 64), 4607182418800017408:(%core.Real 64), _153947, 4629700416936869888:(%core.Real 64), RANGE_cps_cont_154004)
+                    };
+                    range (mem_153323, 0:(.Idx 4294967296), 32:(.Idx 4294967296), lambda_153786, break_153684)
+
+                    // break_153684 mem_153323
                 };
                 .cn if_else_153249 _153487: %mem.M = {
                     .let _153593: .Idx 4294967296 = %core.wrap.add (1, 4294967296) (4294967295:(.Idx 4294967296), i_152452);
