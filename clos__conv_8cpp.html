@@ -112,11 +112,12 @@ $(document).ready(function(){initNavTree('clos__conv_8cpp.html',''); initResizab
 <div class="textblock"><code>#include &quot;<a class="el" href="clos__conv_8h_source.html">dialects/clos/phase/clos_conv.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="check_8h_source.html">thorin/check.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="scope_8h_source.html">thorin/analyses/scope.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="mem_2autogen_8h_source.html">dialects/mem/autogen.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="mem_8h_source.html">dialects/mem/mem.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for clos_conv.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="clos__conv_8cpp__incl.svg" width="2155" height="992"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="clos__conv_8cpp__incl.svg" width="2118" height="1067"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 </div>
@@ -138,9 +139,9 @@ Functions</h2></td></tr>
 <tr class="separator:aa870d5cda29752b22314c750f90cc52c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad828c49a37cc4cfcb2bb799b47dcdf66"><td class="memItemLeft" align="right" valign="top">static const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#ad828c49a37cc4cfcb2bb799b47dcdf66">thorin::clos::ctype</a> (World &amp;w, Defs doms, const Def *env_type=nullptr)</td></tr>
 <tr class="separator:ad828c49a37cc4cfcb2bb799b47dcdf66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2583fab92188aa336c5a2e565436cd0f"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a2583fab92188aa336c5a2e565436cd0f">thorin::clos::is_toplevel</a> (const Def *fd)</td></tr>
+<tr class="memitem:a2583fab92188aa336c5a2e565436cd0f"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a2583fab92188aa336c5a2e565436cd0f">thorin::clos::is_toplevel</a> (const Def *fd)</td></tr>
 <tr class="separator:a2583fab92188aa336c5a2e565436cd0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f38319913759722e2f0d8eafe6b5c92"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a1f38319913759722e2f0d8eafe6b5c92">thorin::clos::is_memop_res</a> (const Def *fd)</td></tr>
+<tr class="memitem:a1f38319913759722e2f0d8eafe6b5c92"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a1f38319913759722e2f0d8eafe6b5c92">thorin::clos::is_memop_res</a> (const Def *fd)</td></tr>
 <tr class="separator:a1f38319913759722e2f0d8eafe6b5c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">closure environments</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p ><code>tup_or_sig</code> should generally be a Tuple, Sigma or Var. </p>
@@ -169,7 +170,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a24fed2ec22c1aaf1108c47205d4ac25a"><td class="memItemLeft" align="right" valign="top">const Def *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a24fed2ec22c1aaf1108c47205d4ac25a">thorin::clos::clos_apply</a> (const Def *closure, const Def *args)</td></tr>
 <tr class="memdesc:a24fed2ec22c1aaf1108c47205d4ac25a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply a closure to arguments.  <a href="namespacethorin_1_1clos.html#a24fed2ec22c1aaf1108c47205d4ac25a">More...</a><br /></td></tr>
 <tr class="separator:a24fed2ec22c1aaf1108c47205d4ac25a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92b58d7f3f1d2560b80ebf39de3d0ecb"><td class="memItemLeft" align="right" valign="top">ClosLit&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a92b58d7f3f1d2560b80ebf39de3d0ecb">thorin::clos::isa_clos_lit</a> (const Def *def, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> fn_isa_lam=true)</td></tr>
+<tr class="memitem:a92b58d7f3f1d2560b80ebf39de3d0ecb"><td class="memItemLeft" align="right" valign="top">ClosLit&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a92b58d7f3f1d2560b80ebf39de3d0ecb">thorin::clos::isa_clos_lit</a> (const Def *def, bool fn_isa_lam=true)</td></tr>
 <tr class="memdesc:a92b58d7f3f1d2560b80ebf39de3d0ecb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to match a closure literal.  <a href="namespacethorin_1_1clos.html#a92b58d7f3f1d2560b80ebf39de3d0ecb">More...</a><br /></td></tr>
 <tr class="separator:a92b58d7f3f1d2560b80ebf39de3d0ecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
