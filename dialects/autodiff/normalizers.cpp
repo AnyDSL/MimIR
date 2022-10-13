@@ -81,7 +81,16 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
             world.app(world.app(world.ax(core::wrap::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
         world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
         return int_add;
-    } else if (T->isa<App>()) {
+    } else if (auto real = match<core::Real>(T)) {
+        auto width = as_lit<nat_t>(real->arg());
+        world.DLOG("width {}", width);
+        auto real_add =
+            world.app(world.app(world.ax(core::rop::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
+        world.DLOG("real add {} : {}", real_add, real_add->type());
+        return real_add;
+
+    } else if (auto app = T->isa<App>()) {
+        auto callee = app->callee();
         assert(0 && "not handled");
     }
     // TODO: mem stays here (only resolved after direct simplification)

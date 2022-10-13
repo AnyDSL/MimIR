@@ -140,12 +140,13 @@ const Def* autodiff_type_fun(const Def* ty) {
         auto body_ad = autodiff_type_fun(body);
         if (!body_ad) return nullptr;
         return world.arr(shape, body_ad);
-    }
-    if (auto sig = ty->isa<Sigma>()) {
+    } else if (auto sig = ty->isa<Sigma>()) {
         // TODO: nom sigma
         DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
         world.DLOG("ops: {,}", ops);
         return world.sigma(ops);
+    } else if (auto real = match<core::Real>(ty)) {
+        return ty;
     }
     // mem
     if (match<mem::M>(ty)) return ty;
@@ -170,6 +171,11 @@ const Def* zero_def(const Def* T) {
         // TODO: real
         auto zero = world.lit(T, 0, world.dbg("zero"));
         world.DLOG("zero_def for int is {}", zero);
+        return zero;
+    } else if (auto real = match<core::Real>(T)) {
+        auto width = as_lit<nat_t>(real->arg());
+        auto zero  = core::lit_real(T->world(), width, 0.0);
+        world.DLOG("zero_def for real is {}", zero);
         return zero;
     } else if (auto sig = T->isa<Sigma>()) {
         DefArray ops(sig->ops(), [&](const Def* op) { return world.app(world.ax<zero>(), op); });

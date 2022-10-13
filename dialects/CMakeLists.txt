@@ -1,42 +1,3 @@
-add_thorin_dialect(affine
-    SOURCES
-        affine/affine.cpp
-        affine/affine.h
-        affine/passes/lower_for.cpp
-        affine/passes/lower_for.h
-    DEPENDS
-        core
-    INSTALL
-)
-
-add_thorin_dialect(autodiff
-    SOURCES
-        autodiff/autodiff.cpp
-        autodiff/autodiff.h
-        autodiff/passes/autodiff_eval.cpp
-        autodiff/passes/autodiff_eval.h
-        autodiff/passes/autodiff_zero.cpp
-        autodiff/passes/autodiff_zero.h
-        autodiff/passes/autodiff_zero_cleanup.cpp
-        autodiff/passes/autodiff_zero_cleanup.h
-        autodiff/passes/autodiff_ext_cleanup.cpp
-        autodiff/passes/autodiff_ext_cleanup.h
-        autodiff/auxiliary/autodiff_aux.cpp
-        autodiff/auxiliary/autodiff_aux.h
-        autodiff/auxiliary/autodiff_rewrite_inner.cpp
-        autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
-        autodiff/normalizers.cpp
-    DEPENDS
-        mem
-        core
-        clos
-        affine
-        direct
-    HEADER_DEPENDS
-        mem
-    INSTALL
-)
-
 add_thorin_dialect(core
     SOURCES
         core/core.cpp
@@ -119,5 +80,44 @@ add_thorin_dialect(refly
         refly/passes/remove_perm.h
         refly/passes/remove_perm.cpp
         refly/normalizers.cpp
+    INSTALL
+)
+
+add_thorin_dialect(affine
+    SOURCES
+        affine/affine.cpp
+        affine/affine.h
+        affine/passes/lower_for.cpp
+        affine/passes/lower_for.h
+    DEPENDS
+        core
+    INSTALL
+)
+
+add_thorin_dialect(autodiff
+    SOURCES
+        autodiff/autodiff.cpp
+        autodiff/autodiff.h
+        autodiff/passes/autodiff_eval.cpp
+        autodiff/passes/autodiff_eval.h
+        autodiff/passes/autodiff_zero.cpp
+        autodiff/passes/autodiff_zero.h
+        autodiff/passes/autodiff_zero_cleanup.cpp
+        autodiff/passes/autodiff_zero_cleanup.h
+        autodiff/passes/autodiff_ext_cleanup.cpp
+        autodiff/passes/autodiff_ext_cleanup.h
+        autodiff/auxiliary/autodiff_aux.cpp
+        autodiff/auxiliary/autodiff_aux.h
+        autodiff/auxiliary/autodiff_rewrite_inner.cpp
+        autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
+        autodiff/normalizers.cpp
+    DEPENDS
+        mem
+        core
+        clos
+        affine
+        direct
+    HEADER_DEPENDS
+        mem
     INSTALL
 )
