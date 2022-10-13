@@ -128,7 +128,7 @@ void Parser::parse_import() {
     expect(Tok::Tag::T_semicolon, "end of import");
     auto name_str = name.sym().to_string();
 
-    if (auto it = imported_.find(name.sym()); it != imported_.end()) return;
+    if (auto [_, ins] = imported_.emplace(name.sym()); !ins) return;
 
     // search file and import
     auto parser = Parser::import_module(world(), name_str, user_search_paths_, normalizers_);
@@ -136,7 +136,6 @@ void Parser::parse_import() {
 
     // transitvely remember which files we transitively imported
     imported_.merge(parser.imported_);
-    imported_.emplace(name.sym());
 }
 
 Sym Parser::parse_sym(std::string_view ctxt) {
@@ -147,12 +146,9 @@ Sym Parser::parse_sym(std::string_view ctxt) {
 }
 
 const Def* Parser::parse_type_ascr(std::string_view ctxt /*= {}*/) {
-    std::string msg("type ascription of ");
-    msg += ctxt;
-
-    if (accept(Tok::Tag::T_colon)) return parse_expr(msg);
+    if (accept(Tok::Tag::T_colon)) return parse_expr(ctxt);
     if (ctxt.empty()) return nullptr;
-    err(prev_, msg.c_str());
+    syntax_err("':'", ctxt);
 }
 
 /*
@@ -602,7 +598,7 @@ void Parser::parse_ax() {
     else if (!is_new && !new_subs.empty() && info.subs.empty())
         err(ax.loc(), "cannot extend subs of axiom '{}' which does not have subs", ax);
 
-    auto type = parse_type_ascr("an axiom");
+    auto type = parse_type_ascr("type ascription of an axiom");
     if (!is_new && info.pi != (type->isa<Pi>() != nullptr))
         err(ax.loc(), "all declarations of axiom '{}' have to be PIs if any is", ax);
     info.pi = type->isa<Pi>() != nullptr;
