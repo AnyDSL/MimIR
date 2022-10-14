@@ -44,7 +44,7 @@ const Def* SSAConstr::rewrite(const Def* def) {
         if (auto sloxy = isa_proxy(ptr, Sloxy)) {
             if (data(curr_nom()).writable.contains(sloxy)) {
                 set_val(curr_nom(), sloxy, val);
-                return op_remem(mem, store->dbg());
+                return world().call<remem>(mem, store->dbg());
             }
         }
     } else if (auto [app, mem_lam] = isa_apped_nom_lam(def); isa_workable(mem_lam)) {

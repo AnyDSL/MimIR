@@ -76,11 +76,6 @@ inline const Def* op_lea_unsafe(Refer ptr, u64 i, Refer dbg = {}) {
     return op_lea_unsafe(ptr, w.lit_idx(i), dbg);
 }
 
-inline const Def* op_remem(Refer mem, Refer dbg = {}) {
-    World& w = mem->world();
-    return w.app(w.ax<remem>(), mem, dbg);
-}
-
 inline const Def* op_alloc(Refer type, Refer mem, Refer dbg = {}) {
     World& w = type->world();
     return w.app(w.app(w.ax<alloc>(), {type, w.lit_nat_0()}), mem, dbg);

@@ -265,6 +265,7 @@ public:
     const Def* raw_app(const Def* callee, Defs args, const Def* dbg = {}) { return raw_app(callee, tuple(args), dbg); }
     ///@}
 
+    ///
     /// @name call - App with type inference
     ///@{
     /// Infers the args of a curried Axiom.
