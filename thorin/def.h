@@ -54,21 +54,23 @@ const Def* refer(const Def* def);
 /// Helper class to retrieve Infer::arg if present.
 class Refer {
 public:
+    Refer() = default;
     Refer(const Def* def)
         : def_(def) {}
 
     const Def* operator*() const { return refer(def_); }
     const Def* operator->() const { return refer(def_); }
+    operator const Def*() const { return refer(def_); }
     explicit operator bool() const { return def_; }
 
 private:
-    const Def* def_;
+    const Def* def_ = nullptr;
 };
 
 template<class T = u64>
-std::optional<T> isa_lit(Refer);
+std::optional<T> isa_lit(const Def*);
 template<class T = u64>
-T as_lit(Refer);
+T as_lit(const Def*);
 
 //------------------------------------------------------------------------------
 
@@ -176,11 +178,11 @@ public:
     /// @name type
     ///@{
     /// Yields the **raw** type of this Def; maybe `nullptr`. @sa Def::unfold_type.
-    const Def* type() const { return type_; }
+    Refer type() const { return type_; }
     /// Yields the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
-    const Def* unfold_type() const;
+    Refer unfold_type() const;
     Sort sort() const;
-    const Def* arity() const;
+    Refer arity() const;
     ///@}
 
     /// @name ops
@@ -193,13 +195,13 @@ public:
             return ArrayRef<const Def*>(N, ops_ptr()).template to_array<N>();
         }
     }
-    const Def* op(size_t i) const { return ops()[i]; }
+    Refer op(size_t i) const { return ops()[i]; }
     size_t num_ops() const { return num_ops_; }
     ///@}
 
     /// @name set/unset ops
     ///@{
-    Def* set(size_t i, const Def* def);
+    Def* set(size_t i, Refer def);
     Def* set(Defs ops) {
         for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
         return this;
@@ -209,7 +211,7 @@ public:
     void unset() {
         for (size_t i = 0, e = num_ops(); i != e; ++i) unset(i);
     }
-    Def* set_type(const Def*);
+    Def* set_type(Refer);
     void unset_type();
 
     /// Are all Def::ops of this nominal set?
@@ -227,7 +229,7 @@ public:
     /// Includes Def::dbg (if not `nullptr`), Def::type() (if not `nullptr`),
     /// and then the other Def::ops() (if Def::is_set) in this order.
     Defs extended_ops() const;
-    const Def* extended_op(size_t i) const { return extended_ops()[i]; }
+    Refer extended_op(size_t i) const { return extended_ops()[i]; }
     size_t num_extended_ops() const { return extended_ops().size(); }
     ///@}
 
@@ -237,7 +239,7 @@ public:
     /// Also works with partially set Def%s and doesn't assert.
     /// Unset operands are `nullptr`.
     Defs partial_ops() const { return Defs(num_ops_ + 2, ops_ptr() - 2); }
-    const Def* partial_op(size_t i) const { return partial_ops()[i]; }
+    Refer partial_op(size_t i) const { return partial_ops()[i]; }
     size_t num_partial_ops() const { return partial_ops().size(); }
     ///@}
 
@@ -268,10 +270,10 @@ public:
     }
     /// Similar to World::extract while assuming an arity of @p a but also works on Sigma%s, and Arr%ays.
     /// If `this` is a Sort::Term (see Def::sort), Def::proj resorts to World::extract.
-    const Def* proj(nat_t a, nat_t i, const Def* dbg = {}) const;
+    const Def* proj(nat_t a, nat_t i, Refer dbg = {}) const;
 
     /// Same as above but takes Def::num_projs as arity.
-    const Def* proj(nat_t i, const Def* dbg = {}) const { return proj(num_projs(), i, dbg); }
+    const Def* proj(nat_t i, Refer dbg = {}) const { return proj(num_projs(), i, dbg); }
 
     /// Splits this Def via Def::proj%ections into an Arr%ay (if `A == -1_s`) or `std::array` (otherwise).
     /// Applies @p f to each element.
@@ -565,14 +567,13 @@ public:
 };
 
 template<class T>
-std::optional<T> isa_lit(Refer def) {
-    if (*def == nullptr) return {};
+std::optional<T> isa_lit(const Def* def) {
     if (auto lit = def->isa<Lit>()) return lit->get<T>();
     return {};
 }
 
 template<class T>
-T as_lit(Refer def) {
+T as_lit(const Def* def) {
     return def->as<Lit>()->get<T>();
 }
 
@@ -603,7 +604,7 @@ public:
     ///@}
 
     /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
-    static const Def* size(const Def* def);
+    static Refer size(Refer def);
 
     static constexpr auto Node = Node::Idx;
     friend class World;

@@ -79,7 +79,7 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
 
     if (err()) {
         if (!pi)
-            err()->err(dbg->loc(), "called expression '{}' : '{}' is not of function type", callee, callee->type());
+            err()->err(dbg, "called expression '{}' : '{}' is not of function type", callee, callee->type());
         if (!checker().assignable(pi->dom(), arg, dbg)) err()->ill_typed_app(callee, arg, dbg);
     }
 
@@ -170,7 +170,7 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
     return tuple(ops, dbg);
 }
 
-const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
+const Def* World::extract(Refer d, Refer index, Refer dbg) {
     if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
@@ -323,13 +323,13 @@ const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
     return pack(shape.skip_back(), pack(shape.back(), body, dbg), dbg);
 }
 
-const Lit* World::lit(const Def* type, u64 val, const Def* dbg) {
-    if (auto size = Idx::size(type)) {
+const Lit* World::lit(Refer type, u64 val, const Def* dbg) {
+    if (auto size = refer(Idx::size(type))) {
         if (err()) {
             if (auto s = isa_lit(size)) {
                 if (*s != 0 && val >= *s) err()->index_out_of_range(size, val, dbg);
             } else if (val != 0) { // 0 of any size is allowed
-                err()->err(dbg->loc(), "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
+                err()->err(dbg, "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
             }
         }
     }

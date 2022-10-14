@@ -20,7 +20,7 @@ const Def* infer_type_level(World& world, Defs defs) {
     return world.type(world.lit_univ(level));
 }
 
-bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
+bool Checker::equiv(Refer d1, Refer d2, Refer dbg, bool optimistic) {
     if (d1 == d2) return true;
     if (!d1 || !d2) return false;
 
@@ -30,7 +30,7 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
     if ((!i1 && d1->is_unfinished()) || (!i2 && d2->is_unfinished())) return false;
 
     if (i1 && i2) {
-        if (i1->is_set() && i2->is_set()) return equiv(i1->op(), i2->op(), dbg);
+        if (i1->is_set() && i2->is_set()) return equiv(i1->op(), i2->op(), dbg, optimistic);
         if (i1->is_set() && !i2->is_set()) {
             i2->set(i1->op());
             return true;
@@ -39,8 +39,7 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
             i1->set(i2->op());
             return true;
         }
-        assert(false && "TODO");
-        return true;
+        return optimistic;
     } else if (!i1 && i2) {
         std::swap(d1, d2);
     } else if (i1 && !i2) {
@@ -51,8 +50,12 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
 
     if (auto infer = d1->isa_nom<Infer>()) {
         if (infer->is_unset()) {
-            infer->set(d2);
-            return true;
+            if (optimistic) {
+                infer->set(d2);
+                return true;
+            } else {
+                return false;
+            }
         } else {
             d1 = infer->op();
         }
@@ -67,25 +70,26 @@ bool Checker::equiv(const Def* d1, const Def* d2, const Def* dbg /*= {}*/) {
         }
     }
 
-    bool res                  = equiv_internal(d1, d2, dbg);
+    // TODO consider 'optimistic' whether we want to put this into equiv_?
+    bool res                  = equiv_internal(d1, d2, dbg, optimistic);
     equiv_[std::pair(d1, d2)] = res ? Equiv::Equiv : Equiv::Distinct;
     return res;
 }
 
-bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
-    if (!equiv(d1->type(), d2->type(), dbg)) return false;
-    if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type(), dbg);
+bool Checker::equiv_internal(Refer d1, Refer d2, Refer dbg, bool optimistic) {
+    if (!equiv(d1->type(), d2->type(), dbg, optimistic)) return false;
+    if (d1->isa<Top>() || d2->isa<Top>()) return equiv(d1->type(), d2->type(), dbg, optimistic);
 
     if (auto n1 = d1->isa_nom()) {
         if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1, n2);
     }
 
     if (is_sigma_or_arr(d1)) {
-        if (!equiv(d1->arity(), d2->arity(), dbg)) return false;
+        if (!equiv(d1->arity(), d2->arity(), dbg, optimistic)) return false;
 
         if (auto a = isa_lit(d1->arity())) {
             for (size_t i = 0; i != a; ++i) {
-                if (!equiv(d1->proj(*a, i), d2->proj(*a, i), dbg)) return false;
+                if (!equiv(d1->proj(*a, i), d2->proj(*a, i), dbg, optimistic)) return false;
             }
             return true;
         }
@@ -100,15 +104,17 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
         return false;
     }
 
-    return std::ranges::equal(d1->ops(), d2->ops(), [this, dbg](auto op1, auto op2) { return equiv(op1, op2, dbg); });
+    return std::ranges::equal(d1->ops(), d2->ops(),
+                              [&](auto op1, auto op2) { return equiv(op1, op2, dbg, optimistic); });
 }
 
-bool Checker::assignable(const Def* type, const Def* val, const Def* dbg /*= {}*/) {
-    if (type == val->type()) return true;
+bool Checker::assignable(Refer type, Refer val, Refer dbg /*= {}*/) {
+    auto val_ty = refer(val->type());
+    if (type == val_ty) return true;
 
     if (auto sigma = type->isa<Sigma>()) {
         auto infer = val->isa_nom<Infer>();
-        if (!infer && !equiv(type->arity(), val->type()->arity(), dbg)) return false;
+        if (!infer && !equiv(type->arity(), val_ty->arity(), dbg)) return false;
 
         size_t a = sigma->num_ops();
         auto red = sigma->reduce(val);
@@ -125,7 +131,7 @@ bool Checker::assignable(const Def* type, const Def* val, const Def* dbg /*= {}*
 
         return true;
     } else if (auto arr = type->isa<Arr>()) {
-        if (!equiv(type->arity(), val->type()->arity(), dbg)) return false;
+        if (!equiv(type->arity(), val_ty->arity(), dbg)) return false;
 
         if (auto a = isa_lit(arr->arity())) {
             for (size_t i = 0; i != *a; ++i) {
@@ -138,14 +144,14 @@ bool Checker::assignable(const Def* type, const Def* val, const Def* dbg /*= {}*
         if (assignable(type, vel->value(), dbg)) return true;
     }
 
-    return equiv(type, val->type(), dbg);
+    return equiv(type, val_ty, dbg);
 }
 
-const Def* Checker::is_uniform(Defs defs, const Def* dbg) {
+const Def* Checker::is_uniform(Defs defs, Refer dbg) {
     assert(!defs.empty());
     auto first = defs.front();
     auto ops   = defs.skip_front();
-    return std::ranges::all_of(ops, [this, first, dbg](auto op) { return equiv(first, op, dbg); }) ? first : nullptr;
+    return std::ranges::all_of(ops, [&](auto op) { return equiv(first, op, dbg, false); }) ? first : nullptr;
 }
 
 } // namespace thorin

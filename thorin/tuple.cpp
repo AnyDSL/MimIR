@@ -7,10 +7,10 @@
 
 namespace thorin {
 
-static bool should_flatten(const Def* def) { return is_sigma_or_arr(def->sort() == Sort::Term ? def->type() : def); }
+static bool should_flatten(const Def* def) { return is_sigma_or_arr(def->sort() == Sort::Term ? *def->type() : def); }
 
 static bool nom_val_or_typ(const Def* def) {
-    auto typ = (def->sort() == Sort::Term) ? def->type() : def;
+    auto typ = (def->sort() == Sort::Term) ? *def->type() : def;
     return typ->isa_nom();
 }
 

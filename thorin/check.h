@@ -16,17 +16,19 @@ public:
     World& world() const { return world_; }
 
     /// Are @p d1 and @p d2 alpha-equivalent?
-    bool equiv(const Def* d1, const Def* d2, const Def* dbg);
+    /// If both @p d1 and @p d2 are Def::unset Infer%s, @p optimisitc indicates the return value.
+    /// Usually, you want to be optimisitic; Checker::is_uniform, however, is pessimistic.
+    bool equiv(Refer d1, Refer d2, Refer dbg, bool optimisitc = true);
 
     /// Can @p value be assigned to sth of @p type?
     /// @note This is different from `equiv(type, value->type(), dbg)` since @p type may be dependent.
-    bool assignable(const Def* type, const Def* value, const Def* dbg);
+    bool assignable(Refer type, Refer value, Refer dbg);
 
     /// Yields `defs.front()`, if all @p defs are alpha-equiv%alent and `nullptr` otherwise.
-    const Def* is_uniform(Defs defs, const Def* dbg);
+    const Def* is_uniform(Defs defs, Refer dbg);
 
 private:
-    bool equiv_internal(const Def*, const Def*, const Def*);
+    bool equiv_internal(Refer, Refer, Refer, bool);
 
     enum class Equiv {
         Distinct,

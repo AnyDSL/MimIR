@@ -155,7 +155,7 @@ constexpr std::optional<uint64_t> size2bitwidth(uint64_t n) {
 }
 
 template<class Id, bool DynCast = true>
-auto match(const Def* def) {
+auto match(Refer def) {
     using D             = typename Axiom::Match<Id>::type;
     auto [axiom, curry] = Axiom::get(def);
     bool cond           = axiom && curry == 0 && axiom->base() == Axiom::Base<Id>;
@@ -166,7 +166,7 @@ auto match(const Def* def) {
 }
 
 template<class Id, bool DynCast = true>
-auto match(Id id, const Def* def) {
+auto match(Id id, Refer def) {
     using D             = typename Axiom::Match<Id>::type;
     auto [axiom, curry] = Axiom::get(def);
     bool cond           = axiom && curry == 0 && axiom->flags() == (flags_t)id;
@@ -177,8 +177,8 @@ auto match(Id id, const Def* def) {
 }
 
 // clang-format off
-template<class Id> auto force(       const Def* def) { return match<Id, false>(    def); }
-template<class Id> auto force(Id id, const Def* def) { return match<Id, false>(id, def); }
+template<class Id> auto force(       Refer def) { return match<Id, false>(    def); }
+template<class Id> auto force(Id id, Refer def) { return match<Id, false>(id, def); }
 // clang-format on
 
 } // namespace thorin

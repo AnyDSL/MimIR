@@ -142,7 +142,7 @@ Sym Parser::parse_sym(std::string_view ctxt) {
     auto track = tracker();
     if (auto id = accept(Tok::Tag::M_id)) return id->sym();
     syntax_err("identifier", ctxt);
-    return world().sym("<error>", world().dbg((Loc)track));
+    return world().sym("<error>", world().dbg(track.loc()));
 }
 
 const Def* Parser::parse_type_ascr(std::string_view ctxt /*= {}*/) {
@@ -174,12 +174,12 @@ const Def* Parser::parse_infix_expr(Tracker track, const Def* lhs, Tok::Prec p /
             if (l < p) break;
             lex();
             auto rhs = parse_expr("right-hand side of an function type", r);
-            lhs      = world().pi(lhs, rhs, track);
+            lhs      = world().pi(lhs, rhs, track.dbg());
         } else {
             auto [l, r] = Tok::prec(Tok::Prec::App);
             if (l < p) break;
             if (auto rhs = parse_expr({}, r)) {
-                lhs = world().app(lhs, rhs, track); // if we can parse an expression, it's an App
+                lhs = world().app(lhs, rhs, track.dbg()); // if we can parse an expression, it's an App
             } else {
                 return lhs;
             }
@@ -203,7 +203,7 @@ const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
             if (meta->arity() == sigma->arity()) {
                 size_t a = sigma->num_ops();
                 for (size_t i = 0; i != a; ++i) {
-                    if (meta->proj(a, i) == sym) return world().extract(lhs, a, i, track);
+                    if (meta->proj(a, i) == sym) return world().extract(lhs, a, i, track.dbg());
                 }
             }
             err(sym.loc(), "could not find elemement '{}' to extract from '{}' of type '{}'", sym, lhs, sigma);
@@ -211,7 +211,7 @@ const Def* Parser::parse_extract(Tracker track, const Def* lhs, Tok::Prec p) {
     }
 
     auto rhs = parse_expr("right-hand side of an extract", r);
-    return world().extract(lhs, rhs, track);
+    return world().extract(lhs, rhs, track.dbg());
 }
 
 const Def* Parser::parse_insert() {
@@ -226,7 +226,7 @@ const Def* Parser::parse_insert() {
     auto value = parse_expr("insert value");
     expect(Tok::Tag::D_paren_r, "closing paren for insert arguments");
 
-    return world().insert(tuple, index, value, track);
+    return world().insert(tuple, index, value, track.dbg());
 }
 
 const Def* Parser::parse_primary_expr(std::string_view ctxt) {
@@ -276,7 +276,7 @@ const Def* Parser::parse_Cn() {
     auto track = tracker();
     eat(Tok::Tag::K_Cn);
     auto dom = parse_ptrn(Tok::Tag::D_brckt_l, "domain of a continuation type");
-    return world().cn(dom->type(world()), track);
+    return world().cn(dom->type(world()), track.dbg());
 }
 
 const Def* Parser::parse_var() {
@@ -313,7 +313,7 @@ const Def* Parser::parse_arr() {
     scopes_.pop();
 
     if (arr) return arr->set_body(body)->set_type(body->unfold_type());
-    return world().arr(shape, body, track);
+    return world().arr(shape, body, track.dbg());
 }
 
 const Def* Parser::parse_pack() {
@@ -339,7 +339,7 @@ const Def* Parser::parse_pack() {
     auto body = parse_expr("body of a pack");
     expect(Tok::Tag::D_angle_r, "closing delimiter of a pack");
     scopes_.pop();
-    return world().pack(shape, body, track);
+    return world().pack(shape, body, track.dbg());
 }
 
 const Def* Parser::parse_block() {
@@ -361,7 +361,7 @@ const Def* Parser::parse_tuple() {
     auto track = tracker();
     DefVec ops;
     parse_list("tuple", Tok::Tag::D_paren_l, [&]() { ops.emplace_back(parse_expr("tuple element")); });
-    return world().tuple(ops, track);
+    return world().tuple(ops, track.dbg());
 }
 
 const Def* Parser::parse_type() {
@@ -369,7 +369,7 @@ const Def* Parser::parse_type() {
     eat(Tok::Tag::K_Type);
     auto [l, r] = Tok::prec(Tok::Prec::App);
     auto level  = parse_expr("type level", r);
-    return world().type(level, track);
+    return world().type(level, track.dbg());
 }
 
 const Def* Parser::parse_pi() {
@@ -386,7 +386,7 @@ const Def* Parser::parse_pi() {
     auto codom = parse_expr("codomain of a dependent function type", Tok::Prec::Arrow);
     pi->set_codom(codom);
     pi->set_type(codom->unfold_type());
-    pi->set_dbg(track);
+    pi->set_dbg(track.dbg());
 
     scopes_.pop();
     return pi;
@@ -418,20 +418,20 @@ const Def* Parser::parse_lit() {
             case Tok::Tag::L_s: meta = world().lit_nat('s'); break;
             case Tok::Tag::L_u: meta = world().lit_nat('u'); break;
             case Tok::Tag::L_r: meta = world().lit_nat('r'); break;
-            case Tok::Tag::T_bot: return world().bot(type, track);
-            case Tok::Tag::T_top: return world().top(type, track);
+            case Tok::Tag::T_bot: return world().bot(type, track.dbg());
+            case Tok::Tag::T_top: return world().top(type, track.dbg());
             default: unreachable();
         }
         // clang-format on
         return world().lit(type, lit.u(), track.meta(meta));
     }
 
-    if (lit.tag() == Tok::Tag::T_bot) return world().bot(world().type(), track);
-    if (lit.tag() == Tok::Tag::T_top) return world().top(world().type(), track);
+    if (lit.tag() == Tok::Tag::T_bot) return world().bot(world().type(), track.dbg());
+    if (lit.tag() == Tok::Tag::T_top) return world().top(world().type(), track.dbg());
     if (lit.tag() == Tok::Tag::L_s) err(prev_, ".Nat literal specified as signed but must be unsigned");
     if (lit.tag() == Tok::Tag::L_r) err(prev_, ".Nat literal specified as floating-point but must be unsigned");
 
-    return world().lit_nat(lit.u(), track);
+    return world().lit_nat(lit.u(), track.dbg());
 }
 
 /*
@@ -662,7 +662,7 @@ void Parser::parse_nom() {
         case Tok::Tag::K_Arr: {
             expect(Tok::Tag::T_comma, "nominal array");
             auto shape = parse_expr("shape of a nominal array");
-            nom        = world().nom_arr(type, track)->set_shape(shape);
+            nom        = world().nom_arr(type, track.dbg())->set_shape(shape);
             break;
         }
         case Tok::Tag::K_pack: nom = world().nom_pack(type, track.named(sym)); break;

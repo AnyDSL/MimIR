@@ -182,12 +182,10 @@ public:
     Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
     Infer* nom_infer_type(const Def* dbg = {}) { return nom_infer(type_infer_univ(dbg), dbg); }
 
-    /// Either a value `?:?:.Type ?` or a type `?:.Type ?:.Type ?+1`.
-    Infer* nom_infer_entity(const Def* = {}) {
-        return nom_infer(nom_infer(type()));
-        // TODO
-        // auto t = type_infer_univ();
-        // return nom_infer(nom_infer(t), dbg);
+    /// Either a value `?:?:.Type ?` or a type `?:.Type ?:.Type ?`.
+    Infer* nom_infer_entity(const Def* dbg = {}) {
+        auto t = type_infer_univ();
+        return nom_infer(nom_infer(t), dbg);
     }
     ///@}
 
@@ -347,7 +345,7 @@ public:
     /// @name Extract
     /// @sa core::extract_unsafe
     ///@{
-    const Def* extract(const Def* d, const Def* i, const Def* dbg = {});
+    const Def* extract(Refer d, Refer i, Refer dbg = {});
     const Def* extract(const Def* d, u64 a, u64 i, const Def* dbg = {}) { return extract(d, lit_idx(a, i), dbg); }
     const Def* extract(const Def* d, u64 i, const Def* dbg = {}) { return extract(d, as_lit(d->arity()), i, dbg); }
 
@@ -372,7 +370,7 @@ public:
 
     /// @name Lit
     ///@{
-    const Lit* lit(const Def* type, u64 val, const Def* dbg = {});
+    const Lit* lit(Refer type, u64 val, const Def* dbg = {});
     const Lit* lit_univ(u64 level, const Def* dbg = {}) { return lit(univ(), level, dbg); }
     const Lit* lit_univ_0() { return data_.lit_univ_0_; }
     const Lit* lit_univ_1() { return data_.lit_univ_1_; }
@@ -467,7 +465,7 @@ public:
         meta     = meta ? meta : bot(type_bot());
         return tuple({sym.str(), loc, meta});
     }
-    const Def* iinfer(const Def* def) { return Idx::size(def->type()); }
+    const Def* iinfer(Refer def) { return refer(Idx::size(refer(def->type()))); }
     ///@}
 
     /// @name dumping/logging

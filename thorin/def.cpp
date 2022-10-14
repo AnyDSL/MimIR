@@ -15,6 +15,8 @@ namespace thorin {
 static constexpr int Search_In_Uses_Threshold = 8;
 
 const Def* refer(const Def* def) {
+    if (!def) return nullptr;
+
     // find inferred Def through chain of Infers
     while (auto infer = def->isa<Infer>()) {
         if (auto op = infer->op())
@@ -170,7 +172,7 @@ World& Def::world() const {
     return type()->world(); // TODO unroll
 }
 
-const Def* Def::unfold_type() const {
+Refer Def::unfold_type() const {
     if (!type_) {
         if (auto t = isa<Type>()) return world().type(world().lit_univ(as_lit(t->level()) + 1)); // TODO non-lit level
         assert(isa<Univ>());
@@ -244,7 +246,7 @@ Sort Def::sort() const {
     }
 }
 
-const Def* Def::arity() const {
+Refer Def::arity() const {
     if (auto sigma  = isa<Sigma>()) return world().lit_nat(sigma->num_ops());
     if (auto arr    = isa<Arr  >()) return arr->shape();
     if (sort() == Sort::Term)       return type()->arity();
@@ -301,7 +303,7 @@ void Def::finalize() {
     }
 }
 
-Def* Def::set(size_t i, const Def* def) {
+Def* Def::set(size_t i, Refer def) {
     if (op(i) == def) return this;
     if (op(i) != nullptr) unset(i);
 
@@ -325,7 +327,7 @@ void Def::unset(size_t i) {
     ops_ptr()[i] = nullptr;
 }
 
-Def* Def::set_type(const Def* type) {
+Def* Def::set_type(Refer type) {
     if (type_ != nullptr) unset_type();
     type_ = type;
     type->uses_.emplace(this, Use::Type);
@@ -397,7 +399,7 @@ const Def* Def::refine(size_t i, const Def* new_op) const {
     return rebuild(world(), type(), new_ops, dbg());
 }
 
-const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
+const Def* Def::proj(nat_t a, nat_t i, Refer dbg) const {
     if (a == 1) {
         if (!type()) return this;
         if (!isa_nom<Sigma>() && !type()->isa_nom<Sigma>()) return this;
@@ -435,7 +437,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
  * Idx
  */
 
-const Def* Idx::size(const Def* def) {
+Refer Idx::size(Refer def) {
     if (auto app = def->isa<App>()) {
         if (app->callee()->isa<Idx>()) return app->arg();
     }
