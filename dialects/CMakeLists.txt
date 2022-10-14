@@ -28,8 +28,10 @@ add_thorin_dialect(clos
         clos/phase/clos_conv.h
         clos/phase/lower_typed_clos.cpp
         clos/phase/lower_typed_clos.h
+        mem/passes/fp/copy_prop.cpp
     DEPENDS
         mem
+        affine
     HEADER_DEPENDS
         core
     INSTALL
@@ -90,7 +92,7 @@ add_thorin_dialect(affine
         affine/passes/lower_for.cpp
         affine/passes/lower_for.h
     DEPENDS
-        core
+        mem
     INSTALL
 )
 

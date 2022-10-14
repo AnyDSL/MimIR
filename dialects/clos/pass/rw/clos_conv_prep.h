@@ -16,15 +16,21 @@ public:
         : RWPass(man, "eta_cont")
         , eta_exp_(eta_exp)
         , old2wrapper_()
-        , lam2fscope_()
-        , cur_body_(nullptr) {}
+        , lam2fscope_() {}
 
     void enter() override;
     const Def* rewrite(const Def*) override;
+    const App* rewriteArgs(const App* app);
+    const App* rewriteCallee(const App* app);
 
     Lam* scope(Lam* lam);
 
-    bool from_outer_scope(Lam* lam) { return scope(lam) && scope(lam) != scope(curr_nom()); }
+    bool from_outer_scope(Lam* lam) {
+        // return scope_.free_defs().contains(lam);
+        return scope(lam) && scope(lam) != scope(curr_nom());
+    }
+
+    bool from_outer_scope(const Def* lam) { return scope_->free_defs().contains(lam); }
 
     const Def* eta_wrap(const Def* def, clos c, const std::string& dbg) {
         auto& w                = world();
@@ -44,7 +50,8 @@ private:
     DefMap<Lam*> old2wrapper_;
     DefSet wrapper_;
     Lam2Lam lam2fscope_;
-    const App* cur_body_;
+    std::unique_ptr<Scope> scope_;
+    bool ignore_ = false;
 };
 
 } // namespace clos
