@@ -293,7 +293,7 @@ static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a
 /// ```
 template<class Id>
 static const Def*
-reassociate(Id id, World& /*world*/, [[maybe_unused]] const App* ab, const Def* a, const Def* b, const Def* dbg) {
+reassociate(Id id, World& world, [[maybe_unused]] const App* ab, const Def* a, const Def* b, const Def* dbg) {
     if (!is_associative(id)) return nullptr;
 
     auto la = a->isa<Lit>();
@@ -325,7 +325,7 @@ reassociate(Id id, World& /*world*/, [[maybe_unused]] const App* ab, const Def* 
         // if we reassociate Wraps, we have to forget about nsw/nuw
         make_op = [&](const Def* a, const Def* b) { return op(id, WMode::none, a, b, dbg); };
     } else {
-        make_op = [&](const Def* a, const Def* b) { return op(id, a, b, dbg); };
+        make_op = [&](const Def* a, const Def* b) { return world.call(id, {a, b}, dbg); };
     }
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
@@ -484,8 +484,8 @@ const Def* normalize_bit1(const Def* type, const Def* c, const Def* a, const Def
     auto l      = isa_lit(a);
 
     switch (id) {
-        case bit1::f: return world.lit_idx(*s, 0);
-        case bit1::t: return world.lit_idx(*s, *s - 1_u64);
+        case bit1::f: return world.lit(type, 0);
+        case bit1::t: return world.lit(type, *s - 1_u64);
         case bit1::id: return a;
         default: break;
     }
@@ -517,10 +517,10 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
         case bit2::    t: if (w) return world.lit(type, *w-1_u64); break;
         case bit2::    a: return a;
         case bit2::    b: return b;
-        case bit2::   na: return op_negate(a, dbg);
-        case bit2::   nb: return op_negate(b, dbg);
-        case bit2:: ciff: return op(bit2:: iff, b, a, dbg);
-        case bit2::nciff: return op(bit2::niff, b, a, dbg);
+        case bit2::   na: return world.call(bit1::neg, a, dbg);
+        case bit2::   nb: return world.call(bit1::neg, b, dbg);
+        case bit2:: ciff: return world.call(bit2:: iff, {b, a}, dbg);
+        case bit2::nciff: return world.call(bit2::niff, {b, a}, dbg);
         default:         break;
     }
 
@@ -542,7 +542,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
         if (!x && !y) return world.lit(type, 0);
         if ( x &&  y) return w ? world.lit(type, *w-1_u64) : nullptr;
         if (!x &&  y) return a;
-        if ( x && !y && id != bit2::_xor) return op_negate(a, dbg);
+        if ( x && !y && id != bit2::_xor) return world.call(bit1::neg, a, dbg);
         return nullptr;
     };
     // clang-format on

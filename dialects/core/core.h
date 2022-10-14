@@ -46,10 +46,6 @@ inline const Def* rinfer(Refer def) { return refer(force<Real>(refer(def->type()
 
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
-inline const Def* fn(bit2 o, Refer mod, Refer dbg = {}) {
-    World& w = mod->world();
-    return w.app(w.ax(o), mod, dbg);
-}
 inline const Def* fn(wrap o, Refer wmode, Refer mod, Refer dbg = {}) {
     World& w = mod->world();
     return w.app(w.ax(o), {wmode, mod}, dbg);
@@ -74,10 +70,6 @@ inline const Def* fn_bitcast(Refer dst_t, Refer src_t, Refer dbg = {}) {
 
 /// @name op - these guys build the final function application for the various operations
 ///@{
-inline const Def* op(bit2 o, Refer a, Refer b, Refer dbg = {}) {
-    World& w = a->world();
-    return w.app(fn(o, w.iinfer(a)), {a, b}, dbg);
-}
 inline const Def* op(wrap o, Refer wmode, Refer a, Refer b, Refer dbg = {}) {
     World& w = a->world();
     return w.app(fn(o, wmode, w.iinfer(a)), {a, b}, dbg);
@@ -183,11 +175,6 @@ inline const Lit* lit_real(World& w, nat_t width, r64 val, const Def* dbg = {}) 
 
 /// @name wrappers for unary operations
 ///@{
-inline const Def* op_negate(const Def* a, const Def* dbg = {}) {
-    World& w = a->world();
-    auto s   = as_lit(w.iinfer(a));
-    return op(bit2::_xor, w.lit_idx(s, s - 1_u64), a, dbg);
-}
 inline const Def* op_wminus(const Def* wmode, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     auto s   = as_lit(w.iinfer(a));
