@@ -11,19 +11,19 @@ namespace thorin::autodiff {
 
 /// Currently this normalizer does nothin.
 /// TODO: Maybe we want to handle trivial lookup replacements here.
-const Def* normalize_autodiff(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_ad(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     return world.raw_app(callee, arg, dbg);
 }
 
-const Def* normalize_autodiff_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_AD(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     auto ad_ty  = autodiff_type_fun(arg);
     if (ad_ty) return ad_ty;
     return world.raw_app(callee, arg, dbg);
 }
 
-const Def* normalize_tangent_type(const Def*, const Def*, const Def* arg, const Def*) { return tangent_type_fun(arg); }
+const Def* normalize_Tangent(const Def*, const Def*, const Def* arg, const Def*) { return tangent_type_fun(arg); }
 
 /// Currently this normalizer does nothing.
 /// We usually want to keep zeros as long as possible to avoid unnecessary allocations.
