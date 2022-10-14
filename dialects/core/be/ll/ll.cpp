@@ -790,10 +790,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         auto tup_t = convert(tuple->type());
         if (isa_lit(index)) {
-            if (ll_tup.empty()) {
-                std::cout << "empty tuple: " << tuple << " : " << tuple->type() << std::endl;
-                std::cout << "empty index: " << index << std::endl;
-            }
             assert(!ll_tup.empty());
             return bb.assign(name, "extractvalue {} {}, {}", tup_t, ll_tup, ll_idx);
         } else {
