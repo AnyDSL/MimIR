@@ -109,7 +109,7 @@ $(document).ready(function(){initNavTree('autodiff.html',''); initResizable(); }
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md51">Dependencies</a></li>
 <li class="level1"><a href="#autotoc_md52">Types</a></li>
-<li class="level1"><a href="#autotoc_md53">Operations</a><ul><li class="level2"><a href="#autotoc_md54">%autodiff.autodiff</a></li>
+<li class="level1"><a href="#autotoc_md53">Operations</a><ul><li class="level2"><a href="#autotoc_md54">%autodiff.ad</a></li>
 <li class="level2"><a href="#autotoc_md55">%autodiff.zero</a></li>
 <li class="level2"><a href="#autotoc_md56">%autodiff.add</a></li>
 </ul>
@@ -128,17 +128,14 @@ Dependencies</h1>
 </div><!-- fragment --><p> For derivatives: </p><div class="fragment"><div class="line">.import core;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md52"></a>
 Types</h1>
-<div class="fragment"><div class="line">.ax %autodiff.tangent_type: * -&gt; *, normalize_tangent_type;</div>
+<div class="fragment"><div class="line">.ax %autodiff.Tangent: * -&gt; *, normalize_Tangent;</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md53"></a>
 Operations</h1>
 <h2><a class="anchor" id="autotoc_md54"></a>
-%autodiff.autodiff</h2>
+%autodiff.ad</h2>
 <p >This axiom operates on functions and types.</p>
-<p >For function types the augmented type is computed: <code>(T -&gt; U) =&gt; (T -&gt; U × (U -&gt; T))</code> </p><div class="fragment"><div class="line">.ax %autodiff.autodiff_type: * -&gt; *, </div>
-<div class="line">    normalize_autodiff_type;</div>
-</div><!-- fragment --><p> On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned. The augmented term &lsquo;f&rsquo;<code>returns the result together with the pullback. </code>autodiff f = f' = λ args. (f args, f*)` </p><div class="fragment"><div class="line">.ax %autodiff.autodiff: Π [T: *] -&gt; T -&gt; </div>
-<div class="line">    %autodiff.autodiff_type T, </div>
-<div class="line">    normalize_autodiff;</div>
+<p >For function types the augmented type is computed: <code>(T -&gt; U) =&gt; (T -&gt; U × (U -&gt; T))</code> </p><div class="fragment"><div class="line">.ax %autodiff.AD: * -&gt; *, normalize_AD;</div>
+</div><!-- fragment --><p> On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned. The augmented term &lsquo;f&rsquo;<code>returns the result together with the pullback. </code>autodiff f = f' = λ args. (f args, f*)` </p><div class="fragment"><div class="line">.ax %autodiff.ad: Π [T: *] -&gt; T -&gt; %autodiff.AD T, normalize_ad;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md55"></a>
 %autodiff.zero</h2>
 <p >Represents universal zero such that <code>(zero T) +_T t = t</code>.</p>
