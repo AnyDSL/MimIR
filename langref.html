@@ -325,12 +325,10 @@ Declarations</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">d   </td><td class="markdownTableBodyNone"><code>.def</code> Sym n   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">nominal definition   </td><td class="markdownTableBodyNone">nominals    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">v   </td><td class="markdownTableBodyNone"><code>,</code> <code>@</code> Sym | <code>,</code> <code>@</code> <code>(</code> Sym <code>,</code> ... <code>,</code> Sym <code>)</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">nominal variable declaration   </td><td class="markdownTableBodyNone">nominals    </td></tr>
-<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">n   </td><td class="markdownTableBodyNone"><code>;</code> | o   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">nominal definition   </td><td class="markdownTableBodyNone">-    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"><code>=</code> e <code>;</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">operand of nominal definition   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"><code>=</code> de <code>;</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">operand of nominal definition   </td><td class="markdownTableBodyNone">-    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone"><code>=</code> <code>{</code> e <code>,</code> ... <code>,</code> e <code>}</code> <code>;</code>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">operands of nominal definition   </td><td class="markdownTableBodyNone">-   </td></tr>
 </table>
 <h2><a class="anchor" id="autotoc_md25"></a>
@@ -360,57 +358,57 @@ Expressions</h2>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Nonterminal   </th><th class="markdownTableHeadNone">Right-Hand Side   </th><th class="markdownTableHeadNone">New Scope?   </th><th class="markdownTableHeadNone">Comment   </th><th class="markdownTableHeadNone">Thorin Class    </th></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">de   </td><td class="markdownTableBodyNone">d* e   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">declaration expression   </td><td class="markdownTableBodyNone">-    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Univ</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">universise: type of a type level   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Univ.html">thorin::Univ</a>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Type</code> e   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">type of level e   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>*</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">alias for <code>.Type (0:.Univ)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>□</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">alias for <code>.Type (1:.Univ)</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Type.html">thorin::Type</a>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Nat</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">natural number   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Nat.html">thorin::Nat</a>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Idx</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">builtin constant of type <code>.Nat -&gt; *</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Idx.html" title="A built-in constant of type .Nat -&gt; *.">thorin::Idx</a>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.Bool</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">alias for <code>.Idx 2</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Idx.html" title="A built-in constant of type .Nat -&gt; *.">thorin::Idx</a>    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>{</code> e <code>}</code>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">block   </td><td class="markdownTableBodyNone">-    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>{</code> de <code>}</code>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">block   </td><td class="markdownTableBodyNone">-    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">L <code>:</code> e<sub>type</sub>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">literal   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lit.html">thorin::Lit</a>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.ff</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">alias for <code>0_2</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lit.html">thorin::Lit</a>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.tt</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">alias for <code>1_2</code>   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lit.html">thorin::Lit</a>    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">( <code>.bot</code> or <code>.top</code> ) ( <code>:</code> e<sub>type</sub> )?   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">bottom/top   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1TExt.html" title="Extremum. Either Top (up) or Bottom.">thorin::TExt</a>    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">( <code>.bot</code> | <code>.top</code> ) ( <code>:</code> e<sub>type</sub> )?   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">bottom/top   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1TExt.html" title="Extremum. Either Top (up) or Bottom.">thorin::TExt</a>    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">Sym   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">identifier   </td><td class="markdownTableBodyNone">-    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">Ax   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">use of an axiom   </td><td class="markdownTableBodyNone">-    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">e e   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">application   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1App.html">thorin::App</a>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>λ</code> Sym <code>:</code> e<sub>dom</sub> <code>→</code> e<sub>codom</sub> <code>.</code> e<sub>body</sub>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">lambda   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Lam.html">thorin::Lam</a>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">e<sub>dom</sub> <code>→</code> e<sub>codom</sub>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">function type   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html" title="A function type AKA Pi type.">thorin::Pi</a>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>Π</code> b <code>→</code> e<sub>codom</sub>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">dependent function type   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pi.html" title="A function type AKA Pi type.">thorin::Pi</a>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">e <code>#</code> Sym   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">extract via field "Sym"   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.">thorin::Extract</a>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">e <code>#</code> e<sub>index</sub>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">extract   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Extract.html" title="Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.">thorin::Extract</a>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>.ins</code> <code>(</code> e<sub>tuple</sub> <code>,</code> e<sub>index</sub> <code>,</code> e<sub>value</sub> <code>)</code>   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">insert   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Insert.html" title="Creates a new Tuple / Pack by inserting Insert::value at position Insert::index into Insert::tuple.">thorin::Insert</a>    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>(</code> e<sub>0</sub> <code>,</code> ... <code>,</code> e<sub>n-1</sub><code>)</code> ( <code>:</code> e<sub>type</sub> )?   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">tuple with optional type ascription   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Tuple.html" title="Data constructor for a Sigma.">thorin::Tuple</a>    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>[</code> b <code>,</code> ... <code>,</code> b <code>]</code>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">sigma   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Sigma.html">thorin::Sigma</a>    </td></tr>
-<tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>‹</code> i e<sub>shape</sub> <code>;</code> e<sub>body</sub><code>›</code>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">pack   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pack.html">thorin::Pack</a>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>«</code> i e<sub>shape</sub> <code>;</code> e<sub>body</sub><code>»</code>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">array   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Arr.html">thorin::Arr</a>    </td></tr>
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>‹</code> i e<sub>shape</sub> <code>;</code> e<sub>body</sub><code>›</code>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">pack   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Pack.html">thorin::Pack</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone">d e   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">declaration   </td><td class="markdownTableBodyNone">-   </td></tr>
+<td class="markdownTableBodyNone">e   </td><td class="markdownTableBodyNone"><code>«</code> i e<sub>shape</sub> <code>;</code> e<sub>body</sub><code>»</code>   </td><td class="markdownTableBodyNone">✓   </td><td class="markdownTableBodyNone">array   </td><td class="markdownTableBodyNone"><a class="el" href="classthorin_1_1Arr.html">thorin::Arr</a>   </td></tr>
 </table>
 <p >An elided type of</p><ul>
 <li>a literal defaults to <code>.Nat</code>,</li>
