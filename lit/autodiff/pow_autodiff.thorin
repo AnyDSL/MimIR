@@ -1,6 +1,16 @@
 // RUN: rm -f %t.ll ; \
 // RUN: timeout 20 %thorin -d direct -d autodiff %s --output-ll %t.ll --output-thorin - | FileCheck %s
 
+
+/*
+TODO: investigate and open issue
+with closure:
+D:dialects/clos/phase/clos_conv.cpp:237: RW: nom Π w_793927: .Nat → Π «2; .Idx w_793927» → .Idx 2
+build/lib/thorin/autodiff.thorin:95:27-95:50: error: cannot pass argument '__799272' of type '«2; .Idx __797033»' to '%core.icmp.xYgLE __799437' of domain '«2; .Idx __799437»'
+*/
+
+
+
 .import core;
 .import autodiff;
 .import mem;
