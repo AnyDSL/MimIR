@@ -23,9 +23,7 @@ const Def* op_sum(const Def* T, DefArray defs);
 namespace thorin {
 
 
-const Def* get_mem(const Def* def);
 const Def* equip_mem(const Def* def);
-const Def* remove_mem(const Def* def);
 const Def* lam_mem_wrap(const Def* lam);
 const Pi* cn_mem_wrap(const Pi* pi);
 

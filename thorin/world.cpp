@@ -177,6 +177,7 @@ const Def* World::tuple_str(std::string_view s, const Def* dbg) {
 }
 
 const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
+    assert(d);
     if (index->isa<Tuple>()) {
         auto n = index->num_ops();
         DefArray idx(n, [&](size_t i) { return index->op(i); });
@@ -227,6 +228,7 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
     else
         elem_t = extract(tuple(type->as<Sigma>()->ops(), dbg), index, dbg);
 
+    assert(d);
     return unify<Extract>(2, elem_t, d, index, dbg);
 }
 
@@ -234,8 +236,14 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val, const D
     auto type    = d->unfold_type();
     auto index_t = index->type()->as<Idx>();
 
-    if (err() && !checker().equiv(type->arity(), index_t->size(), dbg))
-        err()->index_out_of_range(type->arity(), index, dbg);
+    if (err()){
+        if(!checker().equiv(type->arity(), index_t->size(), dbg)) err()->index_out_of_range(type->arity(), index, dbg);
+
+        if (auto index_lit = isa_lit(index)){
+            auto target_type = type->proj(*index_lit);
+            if (!checker().assignable(target_type, val, dbg)) err()->expected_type(target_type, dbg);
+        }
+    }
 
     if (auto size = isa_lit(index_t->size()); size && *size == 1)
         return tuple(d, {val}, dbg); // d could be nom - that's why the tuple ctor is needed

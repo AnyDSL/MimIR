@@ -7,6 +7,7 @@
 #include "dialects/mem/autogen.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/core/core.h"
+#include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
 
@@ -94,25 +95,10 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         // assert(0);
     } else if (auto ptr = match<mem::Ptr>(T)) {
         return a;
-    } else if (auto ptr = match<mem::M>(T)) {
-        return b;
-    } else if (auto app = T->isa<App>()) {
-        auto callee = app->callee();
-        if (callee->isa<Idx>()) {
-            world.DLOG("add int");
-            auto width = as_lit(world.iinfer(a));
-            world.DLOG("width {}", width);
-            // auto int_add = core::op(thorin::core::wrap::add, 0, a,b);
-            auto int_add =
-                world.app(world.app(world.ax(core::wrap::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
-            world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
-            return int_add;
-            // return
-            // world.app(world.app(
-            //     world.ax(core::)
-            // ))
-        }
-        assert(0 && "not handled");
+    } else if (auto mem = match<mem::M>(T)) {
+        return world.top(mem::type_mem(world));
+    } else if (T->isa<Idx>()) {
+        return core::op(core::wrap::add, core::WMode::none, a, b);
     }
     // TODO: mem stays here (only resolved after direct simplification)
     // assert(0);

@@ -106,6 +106,24 @@
         };
         inner_cmp
     };
+
+.lam .extern internal_diff_core_icmp_XygLe
+    ![w: .Nat] ->
+    (.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]])
+    = { 
+        .cn inner_cmp 
+        ![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
+        = { 
+            .let result = %core.icmp.ul (w) (a,b);
+            .cn cmp_pb ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
+            = { 
+                .let z = 0:(.Idx w);
+                pb_ret (z, z)
+            };
+            ret (result,cmp_pb)
+        };
+        inner_cmp
+    };
 ///
 /// ### %core.wrap.add
 /// 

@@ -12,18 +12,20 @@
             "program": "${workspaceFolder}/build/bin/thorin",
             "args": [
                 "-d",
+                "clos",
+                "-d",
                 "affine",
                 "-d",
                 "mem",
                 "-d",
                 "direct",
-                "-d",
-                "debug",
+                //"-d",
+                //"debug",
                 "-d",
                 "tool",
                 "-d",
                 "autodiff",
-                "${workspaceFolder}/lit/autodiff/arr.thorin",
+                "${workspaceFolder}/lit/autodiff/arr2.thorin",
                 //"${workspaceFolder}/lit/autodiff/simple_autodiff.thorin",
                 //"${file}",
                 "--output-ll",
@@ -51,6 +53,11 @@
                 }
             ],
             "preLaunchTask": "CMake: build",
+        },
+
+        {
+            "other":"settings",
+            "cmake.configureArgs": [ "-j 10", ]
         }
 
     ]

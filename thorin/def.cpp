@@ -266,7 +266,7 @@ void Def::set_debug_name(std::string_view n) const {
         auto meta  = w.bot(w.type_bot());
         dbg_       = w.tuple({name, w.tuple({file, begin, finis}), meta});
     } else {
-        dbg_ = w.insert(dbg_, 3_s, 0_s, name);
+        dbg_       = w.tuple({name, dbg_->proj(1), dbg_->proj(2)});
     }
 }
 #endif

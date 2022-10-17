@@ -159,6 +159,11 @@ const Def* zero_def(const Def* T) {
         return zero_arr;
         // }else if(auto lit = match<type_int_>()) { }
         // }else if(auto tint = T->isa<Tag::Int>()) {
+    } else if (auto idx = T->isa<Idx>()) {
+        // TODO: real
+        auto zero = world.lit_idx(T, 0, world.dbg("zero"));
+        world.DLOG("zero_def for int is {}", zero);
+        return zero;
     } else if (auto app = T->isa<App>()) {
         auto callee = app->callee();
         // auto args = app->args();
@@ -254,34 +259,25 @@ const Def* lam_mem_wrap(const Def* lam){
     return lam;
 }
 
-const Def* get_mem(const Def* def){
-    auto& world = def->world();
-    
-    if(match<mem::M>(def->type()->op(0))){
-        return def->proj(0);
-    } 
+bool contains_mem(const Def* def){
+    if(match<mem::M>(def)){
+        return true;
+    }
 
-    return nullptr;
-}
-
-const Def* remove_mem(const Def* def){
-    auto& world = def->world();
-
-    if(def->isa<Sigma>() && match<mem::M>(def->op(0))){
-        auto ops = def->ops();
-        return world.sigma(ops.skip_front(1));
-    }else if(match<mem::M>(def->type()->op(0))){
-        auto ops = def->projs();
-        return world.tuple(ops.skip_front(1));
-    } 
-
-    return def;
+    bool is_mem = false;
+    if(def->isa<Sigma>()){
+        return std::ranges::any_of(def->ops(), [](auto op) { return contains_mem(op); });
+    }else if(auto pack = def->isa<Pack>()){
+        return contains_mem(pack->body());
+    }else if(auto arr = def->isa<Arr>()){
+        return contains_mem(arr->body());
+    }
 }
 
 const Def* equip_mem(const Def* def){
     auto& world = def->world();
     auto memType = mem::type_mem(world);
-    if(match<mem::M>(def->proj(0))){
+    if(contains_mem(def)){
         return def;
     }
 
@@ -299,10 +295,10 @@ const Def* equip_mem(const Def* def){
         });
 
         return world.sigma(newOps);
-    }else if(auto pack = def->isa<Arr>()){
-        auto count = as_lit(pack->shape());
+    }else if(auto arr = def->isa<Arr>()){
+        auto count = as_lit(arr->shape());
         DefArray newOps(count + 1, [&](size_t i){
-            return i == 0 ? memType : pack->body();
+            return i == 0 ? memType : arr->body();
         });
 
         return world.sigma(newOps);

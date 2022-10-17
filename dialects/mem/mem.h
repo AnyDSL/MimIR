@@ -125,7 +125,92 @@ inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const
 const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
 const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
 
-inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
-    return match<M>(lam->var(0_s)->type()) ? lam->var(0, dbg) : nullptr;
+static const Def* mem_def(const Def* def){
+    if(match<mem::M>(def->type())){
+        return def;
+    }
+
+    if(def->num_projs() > 1){
+        for(auto proj : def->projs()){
+            if(auto mem = mem_def(proj)){
+                return mem;
+            }
+        }
+    }
+
+    return nullptr;
 }
+
+static const size_t mem_index(const Def* def){
+    for( size_t i = 0 ; i < def->num_projs() ; i++ ){
+        if(auto mem = mem_def(def->proj(i))){
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
+    return mem_def(lam->var());
+}
+
+static const Def* strip_mem_ty(const Def* def){
+    auto& world = def->world();
+
+    if(auto sigma = def->isa<Sigma>()){
+        DefVec newOps;
+        for( auto op : sigma->ops()){
+            auto newOp = strip_mem_ty(op);
+            if(newOp != world.sigma()){
+                newOps.push_back(newOp);
+            }
+        }
+
+        if(newOps.size() == 1){
+            return newOps[0];
+        }
+
+        return world.sigma(newOps);
+    }else if(match<mem::M>(def)){
+        return world.sigma();
+    } 
+
+    return def;
+}
+
+static const Def* strip_mem(const Def* def){
+    auto& world = def->world();
+
+    if(auto sigma = def->isa<Tuple>()){
+        DefVec newOps;
+        for( auto op : sigma->ops()){
+            auto newOp = strip_mem(op);
+            if(newOp != world.tuple()){
+                newOps.push_back(newOp);
+            }
+        }
+
+        return world.tuple(newOps);
+    }else if(match<mem::M>(def->type())){
+        return world.tuple();
+    }else if(auto extract = def->isa<Extract>()){
+        if(extract->num_projs() == 1){
+            return extract;
+        }
+
+        DefVec newOps;
+        for( auto op : extract->projs()){
+            auto newOp = strip_mem(op);
+            if(newOp != world.tuple()){
+                newOps.push_back(newOp);
+            }
+        }
+
+        return world.tuple(newOps);
+    }
+
+    return def;
+}
+
 } // namespace thorin::mem

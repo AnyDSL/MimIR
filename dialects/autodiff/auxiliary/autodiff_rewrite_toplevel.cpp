@@ -57,7 +57,9 @@ const Def* hoa(const Def* def, const Def* arg_ty){
 }
 
 const Def* AutoDiffEval::autodiff_zero(const Def* mem, Lam* f) {
-    return autodiff_zero(mem, augmented[f->var()]->proj(0));
+    auto mapped = augmented[f->var()];
+
+    return autodiff_zero(mem, mapped->proj(0));
 }
 
 const Def* AutoDiffEval::autodiff_zero(const Def* mem, const Def* def) {
@@ -69,11 +71,10 @@ const Def* AutoDiffEval::autodiff_zero(const Def* mem, const Def* def) {
         DefArray ops(tup->ops(), [&](const Def* op) { return autodiff_zero(mem, op); });
         return world.tuple(ops);
     }
-/*
-    if (auto var = def->isa<Var>()) {
-        DefArray ops(var->projs(), [&](const Def* op) { return autodiff_zero(op); });
-        return world.tuple(ops);
-    }*/
+    
+    if(match<mem::M>(ty)){
+        return mem;
+    }
 
     if (auto app = ty->isa<App>()) {
         auto callee = app->callee();
@@ -88,18 +89,32 @@ const Def* AutoDiffEval::autodiff_zero(const Def* mem, const Def* def) {
             return zero;
         }
     } 
-    
-    if(match<mem::M>(ty)){
-        return mem;
+
+     else if (auto idx = ty->isa<Idx>()) {
+        // TODO: real
+        auto zero = world.lit_idx(ty, 0, world.dbg("zero"));
+        world.DLOG("zero_def for int is {}", zero);
+        return zero;
     }
     
     if(match<mem::Ptr>(ty)){
-        return shadow_gradient_array[def];
+        auto gradient = shadow_gradient_array[def];
+
+        if(gradient == nullptr){
+            return world.top(ty);
+        }
+
+        return gradient;
+    }
+
+    if (def->type()->isa<Sigma>()) {
+        DefArray ops(def->projs(), [&](const Def* op) { return autodiff_zero(mem, op); });
+        return world.tuple(ops);
     }
 
     def->dump();
     def->type()->dump();
-    return nullptr;
+    assert(false);
 }
 
 /// side effect: register pullback
@@ -110,7 +125,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         auto deriv_ty = autodiff_type_fun_pi(lam->type());
         auto deriv    = world.nom_lam(deriv_ty, world.dbg(lam->name() + "_deriv"));
         auto memType = mem::type_mem(world);
-        auto deriv_inner    = world.nom_lam(world.cn({memType}), world.dbg(lam->name() + "_deriv_inner"));
+        auto deriv_inner    = world.nom_lam(world.cn({memType, deriv->ret_pi()}), world.dbg(lam->name() + "_deriv_inner"));
 
 
         // pre register derivative
@@ -166,12 +181,12 @@ const Def* AutoDiffEval::derive_(const Def* def) {
 
         const Def* var = deriv->var();
 
+        auto vars = var->projs();
         if(match<mem::M>(deriv->dom((nat_t) 0)->proj(0))){
-            auto vars = var->projs();
             auto arg = vars[0];
             current_mem = arg->proj(0);
             auto args = arg->projs();
-            args[0] = deriv_inner->var();
+            args[0] = deriv_inner->var(0_s);
             arg = world.tuple(args);
 
             for(auto var : deriv->var((nat_t)0)->projs()){
@@ -190,8 +205,10 @@ const Def* AutoDiffEval::derive_(const Def* def) {
             }
             
             vars[0] = arg;
-            var = world.tuple(vars);
         }
+
+        vars[1] = deriv_inner->var(1);
+        var = world.tuple(vars);
 
         augmented[lam->var()] = var;
 
@@ -205,10 +222,10 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         partial_pullback[deriv_arg] = arg_id_pb;
         // set no pullback to all_arg and return
         // second component has to exist but should not be accessed
-        auto ret_var = deriv->var(1);
+        auto ret_var = deriv_inner->var(1);
         // auto ret_pb=world.bot(world.type_bot());
         // auto ret_pb = zero_pullback(ret_var->type(), arg_ty);
-        auto ret_pb               = zero_pullback(lam->var(1)->type(), arg_ty);
+        auto ret_pb               = zero_pullback(lam->var(1)->type(), lam);
         partial_pullback[ret_var] = ret_pb;
 
         shadow_pullback[var] = world.tuple({arg_id_pb, ret_pb});
@@ -253,8 +270,20 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         deriv_inner->set_filter(true);
         deriv_inner->set_body(new_body);
 
+       /* auto result_lam = world.nom_lam(deriv_inner->dom(1)->as<Pi>(), world.dbg("stub"));
+        auto result = result_lam->var(0_s);
+        auto result_pullback = result_lam->var(1_s);
+        result_lam->set_body();
+
+        
+        auto test2 = world.nom_lam(test->dom(1)->as<Pi>(), world.dbg("stub"));
+        auto test3 = world.nom_lam(test2->dom(1)->as<Pi>(), world.dbg("stub"));
+
+        auto ret_var = deriv->proj(1);
+        */
+
         deriv->set_filter(true);
-        deriv->set_body(world.app(deriv_inner, {current_mem}));
+        deriv->set_body(world.app(deriv_inner, {current_mem, deriv->var(1_s)}));
         deriv->dump(10);
 
         return deriv;

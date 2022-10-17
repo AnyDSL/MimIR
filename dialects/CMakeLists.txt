@@ -55,6 +55,8 @@ add_thorin_dialect(clos
         clos/phase/clos_conv.h
         clos/phase/lower_typed_clos.cpp
         clos/phase/lower_typed_clos.h
+        clos/phase/higher_order_scalerize.cpp
+        clos/phase/higher_order_scalerize.h
         mem/passes/fp/copy_prop.cpp
     DEPENDS
         mem

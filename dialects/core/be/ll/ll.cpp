@@ -201,17 +201,11 @@ std::string Emitter::convert(const Def* type) {
 }
 
 std::string Emitter::convert_ret_pi(const Pi* pi) {
-    switch (pi->num_doms()) {
-        case 0: return "void";
-        case 1:
-            if (match<mem::M>(pi->dom())) return "void";
-            return convert(pi->dom());
-        case 2:
-            if (match<mem::M>(pi->dom(0))) return convert(pi->dom(1));
-            if (match<mem::M>(pi->dom(1))) return convert(pi->dom(0));
-            [[fallthrough]];
-        default: return convert(pi->dom());
+    auto dom = mem::strip_mem_ty(pi->dom());
+    if(dom == world().sigma()){
+        return "void";
     }
+    return convert(dom);
 }
 
 /*
@@ -301,6 +295,8 @@ void Emitter::emit_epilogue(Lam* lam) {
     auto app = lam->body()->as<App>();
     auto& bb = lam2bb_[lam];
 
+    lam->dump();
+
     if (app->callee() == entry_->ret_var()) { // return
         std::vector<std::string> values;
         std::vector<const Def*> types;
@@ -330,7 +326,20 @@ void Emitter::emit_epilogue(Lam* lam) {
             }
         }
     } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
-        emit_unsafe(app->arg());
+        
+        for(auto callee_def : ex->tuple()->projs()){
+            auto callee = callee_def->isa_nom<Lam>();
+            assert(callee);
+            for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
+                if (auto arg = emit_unsafe(app->arg(i)); !arg.empty()) {
+                    auto phi = callee->var(i);
+                    assert(!match<mem::M>(phi->type()));
+                    lam2bb_[callee].phis[phi].emplace_back(arg, id(lam, true));
+                    locals_[phi] = id(phi);
+                }
+            }
+        }
+
         auto c = emit(ex->index());
         if (ex->tuple()->num_projs() == 2) {
             auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
@@ -365,6 +374,8 @@ void Emitter::emit_epilogue(Lam* lam) {
         auto emmited_callee = emit(app->callee());
 
         std::vector<std::string> args;
+        lam->dump();
+        app->arg()->dump();
         auto app_args = app->args();
         for (auto arg : app_args.skip_back()) {
             if (auto emitted_arg = emit_unsafe(arg); !emitted_arg.empty())
@@ -444,12 +455,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         std::string prev = "undef";
         auto t           = convert(tuple->type());
-        for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
-            auto e = tuple->proj(n, i);
+        for (size_t src = 0, dst = 0, n = tuple->num_projs(); src != n; ++src) {
+            auto e = tuple->proj(n, src);
             if (auto elem = emit_unsafe(e); !elem.empty()) {
                 auto elem_t = convert(e->type());
-                auto namei  = name + "." + std::to_string(i);
-                prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, i);
+                auto namei  = name + "." + std::to_string(dst);
+                prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, dst);
+                dst++;
             }
         }
         return prev;
@@ -782,10 +794,18 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // TODO this was von closure-conv branch which I need to double-check
         if (tuple->isa<Var>()) {
             // computing the index may crash, so we bail out
-            assert(match<core::Mem>(extract->type()) && "only mem-var should not be mapped");
+            assert(match<mem::M>(extract->type()) && "only mem-var should not be mapped");
             return {};
         }
 #endif
+
+        std::stringstream ss;
+        ss << tuple->type();
+
+        if(ss.str() == "[%mem.M, [.Cn [%mem.M, %mem.Ptr ([], 0), .Cn [%mem.M, %mem.Ptr (<<100; (.Idx 4294967296)>>, 0), %mem.Ptr (<<100; (.Idx 4294967296)>>, 0)]], %mem.Ptr ([], 0)]]"){
+            tuple->dump();
+        }
+
 
         auto ll_tup = emit_unsafe(tuple);
 

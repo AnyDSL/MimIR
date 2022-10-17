@@ -5,6 +5,8 @@
 
 namespace thorin::autodiff {
 
+const Def* hoa(const Def* def, const Def* arg_ty);
+
 /// This pass is the heart of AD.
 /// We replace an `autodiff fun` call with the differentiated function.
 class AutoDiffEval : public RWPass<AutoDiffEval, Lam> {
@@ -40,9 +42,16 @@ public:
     const Def* augment_lea(const App*, Lam*, Lam*);
     const Def* augment_load(const App*, Lam*, Lam*);
     const Def* augment_store(const App*, Lam*, Lam*);
+    const Def* augment_malloc(const App*, Lam*, Lam*);
+    const Def* augment_alloc(const App*, Lam*, Lam*);
+    const Def* augment_bitcast(const App*, Lam*, Lam*);
 
     const Def* autodiff_zero(const Def* mem, Lam* f);
     const Def* autodiff_zero(const Def* mem, const Def* def);
+
+    const Def* zero_pullback(const Def* domain, Lam* f);
+
+    const Def* get_pullback(const Def* op, Lam* f);
 
 private:
     /// Transforms closed terms (lambda, operator) to derived expressions.
@@ -87,6 +96,8 @@ private:
 
     Def2Def shadow_pullback_array;
     Def2Def shadow_gradient_array;
+
+    DefSet caches;
     const Def* current_mem;
 };
 
