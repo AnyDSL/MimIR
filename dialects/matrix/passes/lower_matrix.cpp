@@ -66,7 +66,24 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
 
     auto& world = def->world();
 
-    // if (auto mapReduce_ax = match<matrix::mapReduce>(def); mapReduce_ax) {
+    if (auto mapReduce_ax = match<matrix::mapReduce>(def); mapReduce_ax) {
+        // mapRed
+        //   n = out-count, (nat)
+        //   S = out-dim, (n*nat)
+        //   T = out-type (*)
+        //   m = in-count (nat)
+        //   NI = in-dim-count (m*nat)
+        //   TI = types (m**)
+        //   SI = dimensions (m*NI#i)
+        // -----
+        //   mem
+        //   zero = accumulator init (T)
+        //   combination function (mem, acc, inputs) -> (mem, acc)
+        //   input matrixes
+        auto [mem, zero, comb, inputs] = mapReduce_ax->args<4>();
+        auto [n, S, T, m, NI, TI, SI]  = mapReduce_ax->callee()->as<App>()->args<7>();
+        world.DLOG("mapReduce_ax", mapReduce_ax);
+    }
     //     auto mapReduce_pi = mapReduce_ax->callee_type();
 
     //     auto args                         = mapReduce_ax->arg();
@@ -88,12 +105,12 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
     //     auto n_lit = as_lit(n);
     //     auto m_lit = as_lit(m);
 
-    auto zero_lit    = world.lit_int(32, 0, world.dbg("zero"));
-    auto one_lit     = world.lit_int(32, 1, world.dbg("one"));
-    Defs empty_tuple = {};
-    auto empty_type  = world.tuple(empty_tuple)->type(); // TODO: check
+    // auto zero_lit    = world.lit_int(32, 0, world.dbg("zero"));
+    // auto one_lit     = world.lit_int(32, 1, world.dbg("one"));
+    // Defs empty_tuple = {};
+    // auto empty_type  = world.tuple(empty_tuple)->type(); // TODO: check
 
-    auto I32 = world.type_int(32);
+    // auto I32 = world.type_int(32);
 
     //     // idx number (>n), max_size
     //     std::vector<std::pair<u64, const Def*>> inner_idxs;
