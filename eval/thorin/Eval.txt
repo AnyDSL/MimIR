@@ -1,15 +1,18 @@
 .let size = 100000:.Nat;
 
+``` 
 Running ./loopDiff
 Average: .0070
 Running ./loopDiff2
 Average: .0057
+``` 
 
 Ratio: 1.228
 
 
 Alloca except in enter (all in main):
 
+``` 
 Running ./loopDiff
 Average: .0071
 Running ./loopDiff2
@@ -18,3 +21,19 @@ Running ./loopDiff_alloca
 Average: .0071
 Running ./loopDiff2_alloca
 Average: .0054
+``` 
+
+
+Completely alloca
+needs `ulimit -s unlimited`
+
+``` 
+Running ./loopDiff
+Average: 0.0078s
+Running ./loopDiff2
+Average: 0.0056s
+Running ./loopDiff_alloca
+Average: 0.0054s
+Running ./loopDiff2_alloca
+Average: 0.0028s
+``` 

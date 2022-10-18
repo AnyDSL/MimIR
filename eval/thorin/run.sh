@@ -1,6 +1,8 @@
-programs=('./loopDiff' './loopDiff2')
-# programs=('./loopDiff' './loopDiff2' './loopDiff_alloca' './loopDiff2_alloca')
+# programs=('./loopDiff' './loopDiff2')
+programs=('./loopDiff' './loopDiff2' './loopDiff_alloca' './loopDiff2_alloca')
 iterations=100
+
+echo "Averaging over $iterations iterations"
 
 for program in "${programs[@]}"; do
     if [ ! -f "$program" ]; then
@@ -14,5 +16,5 @@ for program in "${programs[@]}"; do
         # echo "Iteration $i: $time"
         sum=$(echo "$sum + $time" | bc)
     done
-    echo "Average: $(echo "scale=4;$sum / $iterations" | bc)"
+    echo "Average: 0$(echo "scale=4;$sum / $iterations" | bc)s"
 done
