@@ -1,5 +1,5 @@
-# programs=('./loopDiff' './loopDiff2')
-programs=('./loopDiff' './loopDiff2' './loopDiff_alloca' './loopDiff2_alloca')
+programs=('./loopDiff' './loopDiff2')
+# programs=('./loopDiff' './loopDiff2' './loopDiff_alloca' './loopDiff2_alloca')
 iterations=100
 
 for program in "${programs[@]}"; do

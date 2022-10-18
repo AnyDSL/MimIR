@@ -11,10 +11,10 @@ extern "C" {
 // void* alloc(size_t size) { return alloca(size); }
 // void* alloc(size_t size) { return malloc(size); }
 
-void test() {
-    void* a = malloc(1);
-    void* b = alloca(1);
-}
+// void test() {
+//     void* a = malloc(1);
+//     void* b = alloca(1);
+// }
 
 void* time() {
     struct timeval* tv = new timeval;
