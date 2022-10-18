@@ -312,7 +312,7 @@ let multiiter f n S:=
         mem: %mem.M, // memory
         zero: T, // initial value
         // TODO: propagate change: no addition but instead take acc as argument (like mlir.linarith.generic)
-        comb: [%mem.M, T, «i: m; TI#i»]->[%mem.M,T], // inner combination
+        comb: .Cn[[%mem.M, T, «i: m; TI#i»],.Cn[%mem.M,T]], // inner combination
         // out_index not needed => always ij (0 ... n) for n dimensions
         input:
             «i:m; 
