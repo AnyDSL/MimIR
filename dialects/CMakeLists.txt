@@ -130,6 +130,7 @@ add_thorin_dialect(matrix
         matrix/passes/lower_matrix.cpp
         matrix/passes/lower_matrix.h
     DEPENDS
+        direct
         affine
         mem
     INSTALL

@@ -62,27 +62,149 @@ Lam* multifor(World& world, Array<const Def*> bounds, const Def* inner_body) {
 // TODO: replace sum_ptr by using sum as accumulator
 // TODO: extract inner loop into function (for read normalizer)
 const Def* LowerMatrix::rewrite_(const Def* def) {
-    // std::cout << "rewriting " << def << std::endl;
-
     auto& world = def->world();
 
     if (auto mapReduce_ax = match<matrix::mapReduce>(def); mapReduce_ax) {
-        // mapRed
-        //   n = out-count, (nat)
-        //   S = out-dim, (n*nat)
-        //   T = out-type (*)
-        //   m = in-count (nat)
-        //   NI = in-dim-count (m*nat)
-        //   TI = types (m**)
-        //   SI = dimensions (m*NI#i)
-        // -----
-        //   mem
-        //   zero = accumulator init (T)
-        //   combination function (mem, acc, inputs) -> (mem, acc)
-        //   input matrixes
+        // meta arguments:
+        // * n = out-count, (nat)
+        // * S = out-dim, (n*nat)
+        // * T = out-type (*)
+        // * m = in-count (nat)
+        // * NI = in-dim-count (m*nat)
+        // * TI = types (m**)
+        // * SI = dimensions (m*NI#i)
+        // arguments:
+        // * mem
+        // * zero = accumulator init (T)
+        // * combination function (mem, acc, inputs) -> (mem, acc)
+        // * input matrixes
         auto [mem, zero, comb, inputs] = mapReduce_ax->args<4>();
         auto [n, S, T, m, NI, TI, SI]  = mapReduce_ax->callee()->as<App>()->args<7>();
-        world.DLOG("mapReduce_ax", mapReduce_ax);
+        world.DLOG("mapReduce_ax {} : {}", mapReduce_ax, mapReduce_ax->type());
+        world.DLOG("meta variables:");
+        world.DLOG("  n = {}", n);
+        world.DLOG("  S = {}", S);
+        world.DLOG("  T = {}", T);
+        world.DLOG("  m = {}", m);
+        world.DLOG("  NI = {} : {}", NI, NI->type());
+        world.DLOG("  TI = {} : {}", TI, TI->type());
+        world.DLOG("  SI = {} : {}", SI, SI->type());
+        world.DLOG("arguments:");
+        world.DLOG("  mem = {}", mem);
+        world.DLOG("  zero = {}", zero);
+        world.DLOG("  comb = {} : {}", comb, comb->type());
+        world.DLOG("  inputs = {} : {}", inputs, inputs->type());
+
+        // Goal: generate call to function that performs:
+        // ```
+        // matrix = new matrix (n, S, T)
+        // for out_idx { // n for loops
+        //     acc = zero
+        //     for in_idx { // remaining loops
+        //         inps = read from matrices // m-tuple
+        //         acc = comb(mem, acc, inps)
+        //     }
+        //     write acc to output matrix
+        // }
+        // return matrix
+        // ```
+
+        std::map<u64, const Def*> dims;         // i ↦ nat (size bound = dimension)
+        std::map<u64, const Def*> raw_iterator; // i ↦ I32
+        std::map<u64, const Def*> iterator;     // i ↦ %Idx (S/NI#i)
+        std::vector<u64> out_indices;           // output indices 0..n-1
+        std::vector<u64> in_indices;            // input indices ≥ n
+
+        std::vector<const Def*> output_dims;             // i<n ↦ nat (dimension S#i)
+        std::vector<std::vector<const Def*>> input_dims; // i<m ↦ j<NI#i ↦ nat (dimension SI#i#j)
+        std::vector<u64> n_input;                        // i<m ↦ nat (number of dimensions of SI#i)
+
+        auto n_nat = n->as<Lit>()->get<u64>(); // number of output dimensions (in S)
+        auto m_nat = m->as<Lit>()->get<u64>(); // number of input matrices
+
+        // collect out dimensions
+        world.DLOG("out dims (n) = {}", n_nat);
+        for (u64 i = 0; i < n_nat; ++i) {
+            auto dim = S->proj(i);
+            world.DLOG("dim {} = {}", i, dim);
+            dims[i] = dim;
+            output_dims.push_back(dim);
+        }
+
+        // collect other (input) dimensions
+        world.DLOG("matrix count (m) = {}", m_nat);
+
+        for (u64 i = 0; i < m_nat; ++i) {
+            auto ni     = NI->proj(i);
+            auto ni_nat = ni->as<Lit>()->get<u64>();
+            world.DLOG("  dims({i}) = {}", i, ni_nat);
+            auto SI_i = SI->proj(i);
+            std::vector<const Def*> input_dims_i;
+            for (u64 j = 0; j < ni_nat; ++j) {
+                auto dim = SI_i->proj(j);
+                world.DLOG("    dim {} {} = {}", i, j, dim);
+                // dims[i * n_nat + j] = dim;
+                input_dims_i.push_back(dim);
+            }
+            input_dims.push_back(input_dims_i);
+            n_input.push_back(ni_nat);
+        }
+
+        // extracts bounds for each index (in, out)
+        for (u64 i = 0; i < m_nat; ++i) {
+            world.DLOG("investigate {} / {}", i, m_nat);
+            auto [indices, mat] = inputs->proj(i)->projs<2>();
+            world.DLOG("  indices {} = {}", i, indices);
+            world.DLOG("  matrix {} = {}", i, mat);
+            for (u64 j = 0; j < n_input[i]; ++j) {
+                // world.DLOG("    dimension {} / {}", j, n_input[i]);
+                auto idx     = indices->proj(j);
+                auto idx_nat = idx->as<Lit>()->get<u64>();
+                auto dim     = input_dims[i][j];
+                world.DLOG("      index {} = {}", j, idx);
+                world.DLOG("        dim {} = {}", idx, dim);
+                if (!dims.contains(idx_nat)) {
+                    dims[idx_nat] = dim;
+                    world.DLOG("        {} ↦ {}", idx_nat, dim);
+                } else {
+                    // assert(dims[idx_nat] == dim);
+                    auto prev_dim = dims[idx_nat];
+                    world.DLOG("        prev dim {} = {}", idx_nat, prev_dim);
+                    // override with more precise information
+                    if (auto dim_lit = dim->isa<Lit>()) {
+                        if (auto prev_dim_lit = prev_dim->isa<Lit>()) {
+                            assert(dim_lit->get<u64>() == prev_dim_lit->get<u64>() && "dimensions must be equal");
+                        } else {
+                            dims[idx_nat] = dim;
+                        }
+                    }
+                }
+            }
+        }
+
+        for (auto [idx, dim] : dims) {
+            world.DLOG("dim {} = {}", idx, dim);
+            if (idx < n_nat) {
+                out_indices.push_back(idx);
+            } else {
+                in_indices.push_back(idx);
+            }
+        }
+
+        // create function `%mem.M -> [%mem.M, %matrix.Mat (n,S,T)]` to replace axiom call
+
+        auto mem_type = mem::type_mem(world);
+        auto fun_ty   = world.cn({mem_type, world.cn(mapReduce_ax->type())});
+        world.DLOG("fun_ty = {}", fun_ty);
+        auto fun = world.nom_lam(fun_ty, world.dbg("mapRed"));
+
+        // assert(0);
+        auto call = direct::op_cps2ds_dep(fun);
+        world.DLOG("call {} : {}", call, call->type());
+
+        return call;
+
+        // create out iterations
     }
     //     auto mapReduce_pi = mapReduce_ax->callee_type();
 
