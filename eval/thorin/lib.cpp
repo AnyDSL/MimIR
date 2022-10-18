@@ -1,10 +1,21 @@
-#include <alloca.h>
+// #include <alloca.h>
 #include <cmath>
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/time.h>
 // #include <setjmp.h>
 
 extern "C" {
+
+// void* malloc(size_t size);
+// void* alloc(size_t size) { return alloca(size); }
+// void* alloc(size_t size) { return malloc(size); }
+
+void test() {
+    void* a = malloc(1);
+    void* b = alloca(1);
+}
+
 void* time() {
     struct timeval* tv = new timeval;
     gettimeofday(tv, NULL);

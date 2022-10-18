@@ -5,4 +5,16 @@ Average: .0070
 Running ./loopDiff2
 Average: .0057
 
-1.228
+Ratio: 1.228
+
+
+Alloca except in enter (all in main):
+
+Running ./loopDiff
+Average: .0071
+Running ./loopDiff2
+Average: .0056
+Running ./loopDiff_alloca
+Average: .0071
+Running ./loopDiff2_alloca
+Average: .0054
