@@ -132,6 +132,7 @@ add_thorin_dialect(matrix
     DEPENDS
         direct
         affine
+        core
         mem
     INSTALL
 )

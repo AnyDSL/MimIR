@@ -23,8 +23,7 @@ const Def* normalize_read(const Def* type, const Def* callee, const Def* arg, co
         world.DLOG("  extract: {}\n", mex);
         auto ccall = mex->tuple();
         world.DLOG("  ex_mat: {}\n", ccall);
-        auto mcm = match<constMat>(ccall);
-        if (mcm) {
+        if (auto mcm = match<constMat>(ccall)) {
             world.DLOG("  const mat: {}\n", mcm);
             auto [cmem, v] = mcm->arg()->projs<2>();
             return world.tuple({mem, v});

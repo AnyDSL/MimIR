@@ -14,6 +14,19 @@ inline const Def* zero_int(World& w, const Def* n, const Def* S, Def* mem, nat_t
     return w.app(w.ax<matrix::constMat>(), {n, S, w.type_idx(m), mem, w.lit_idx(m, 0)});
 }
 
+inline const Def* op_read(const Def* mem, const Def* matrix, const Def* idx) {
+    auto& world = matrix->world();
+    auto mat_ty = match<Mat>(matrix->type());
+    assert(mat_ty);
+    world.DLOG("matrix read: {}[{}]", matrix, idx);
+    world.DLOG(" matrix type: {}", matrix->type());
+    auto [n, S, T] = mat_ty->args<3>();
+    world.DLOG(" (n,S,T): {}, {}, {}", n, S, T);
+    return world.app(world.app(world.ax<read>(), {n, S, T}), {mem, matrix, idx});
+    // assert(0);
+    // return w.app(w.ax<matrix::constMat>(), {n, S, w.type_idx(m), mem, w.lit_idx(m, 0)});
+}
+
 } // namespace thorin::matrix
 
 #endif

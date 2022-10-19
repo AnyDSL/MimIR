@@ -18,45 +18,58 @@ const Def* LowerMatrix::rewrite(const Def* def) {
     return rewritten[def];
 }
 
+std::pair<Lam*, const Def*> counting_for(const Def* bound, Defs acc, const Def* exit, const char* name = "for_body") {
+    auto& world   = bound->world();
+    auto acc_ty   = world.tuple(acc)->type();
+    auto body     = world.nom_lam(world.cn({
+                                      world.type_int(32), // iterator
+                                      acc_ty,             // acc = memory+extra
+                                      world.cn({acc_ty})  // exit = return
+                              }),
+                                  world.dbg(name));
+    auto for_loop = affine::op_for(world, world.lit_int(32, 0), bound, world.lit_int(32, 1), acc, body, exit);
+    return {body, for_loop};
+}
+
 // TODO: documentation (arguments, functionality, for control flow, for arguments)
 // TODO: generalize to general start, step, accumulators
-Lam* multifor(World& world, Array<const Def*> bounds, const Def* inner_body) {
-    auto count = bounds.size();
-    Array<const Def*> iterators(count);
-    auto I32         = world.type_int(32);
-    Defs empty_tuple = {};
-    auto empty_type  = world.tuple(empty_tuple)->type(); // TODO: check
-    auto res_ty      = world.cn({mem::type_mem(world), empty_type});
-    auto iter_ty     = world.cn({mem::type_mem(world), I32, empty_type, res_ty});
+// Lam* multifor(World& world, Array<const Def*> bounds, const Def* inner_body) {
+//     auto count = bounds.size();
+//     Array<const Def*> iterators(count);
+//     auto I32         = world.type_int(32);
+//     Defs empty_tuple = {};
+//     auto empty_type  = world.tuple(empty_tuple)->type(); // TODO: check
+//     auto res_ty      = world.cn({mem::type_mem(world), empty_type});
+//     auto iter_ty     = world.cn({mem::type_mem(world), I32, empty_type, res_ty});
 
-    auto outer_ty = world.cn({mem::type_mem(world), empty_type, res_ty});
+//     auto outer_ty = world.cn({mem::type_mem(world), empty_type, res_ty});
 
-    auto outer_container   = world.nom_lam(outer_ty, world.dbg("outer"));
-    auto [mem, acc, yield] = outer_container->vars<3>();
+//     auto outer_container   = world.nom_lam(outer_ty, world.dbg("outer"));
+//     auto [mem, acc, yield] = outer_container->vars<3>();
 
-    auto zero_lit = world.lit_int(32, 0, world.dbg("zero"));
-    auto one_lit  = world.lit_int(32, 1, world.dbg("one"));
+//     auto zero_lit = world.lit_int(32, 0, world.dbg("zero"));
+//     auto one_lit  = world.lit_int(32, 1, world.dbg("one"));
 
-    Lam* container = outer_container;
+//     Lam* container = outer_container;
 
-    Lam* for_body;
-    for (size_t i = 0; i < count; ++i) {
-        for_body  = world.nom_lam(iter_ty, world.dbg("container_" + std::to_string(i)));
-        auto call = affine::op_for(world, mem, zero_lit, bounds[i], one_lit, empty_tuple, for_body, yield);
+//     Lam* for_body;
+//     for (size_t i = 0; i < count; ++i) {
+//         for_body  = world.nom_lam(iter_ty, world.dbg("container_" + std::to_string(i)));
+//         auto call = affine::op_for(world, mem, zero_lit, bounds[i], one_lit, empty_tuple, for_body, yield);
 
-        container->set_body(call);
-        container->set_filter(true);
-        container    = for_body;
-        mem          = container->var(0, world.dbg("mem"));
-        auto idx     = container->var(1, world.dbg("idx"));
-        acc          = container->var(2, world.dbg("acc"));
-        yield        = container->var(3, world.dbg("yield"));
-        iterators[i] = idx;
-    }
-    container->app(true, inner_body, {mem::mem_var(container), world.tuple(iterators), acc, yield});
+//         container->set_body(call);
+//         container->set_filter(true);
+//         container    = for_body;
+//         mem          = container->var(0, world.dbg("mem"));
+//         auto idx     = container->var(1, world.dbg("idx"));
+//         acc          = container->var(2, world.dbg("acc"));
+//         yield        = container->var(3, world.dbg("yield"));
+//         iterators[i] = idx;
+//     }
+//     container->app(true, inner_body, {mem::mem_var(container), world.tuple(iterators), acc, yield});
 
-    return outer_container;
-}
+//     return outer_container;
+// }
 
 // TODO: compare with other impala version (why is one easier than the other?)
 // TODO: replace sum_ptr by using sum as accumulator
@@ -109,9 +122,9 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         // return matrix
         // ```
 
-        std::map<u64, const Def*> dims;         // i ↦ nat (size bound = dimension)
-        std::map<u64, const Def*> raw_iterator; // i ↦ I32
-        std::map<u64, const Def*> iterator;     // i ↦ %Idx (S/NI#i)
+        std::map<u64, const Def*> dims;         // idx ↦ nat (size bound = dimension)
+        std::map<u64, const Def*> raw_iterator; // idx ↦ I32
+        std::map<u64, const Def*> iterator;     // idx ↦ %Idx (S/NI#i)
         std::vector<u64> out_indices;           // output indices 0..n-1
         std::vector<u64> in_indices;            // input indices ≥ n
 
@@ -199,8 +212,185 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         auto fun = world.nom_lam(fun_ty, world.dbg("mapRed"));
 
         // assert(0);
-        auto call = direct::op_cps2ds_dep(fun);
+        auto ds_fun = direct::op_cps2ds_dep(fun);
+        world.DLOG("ds_fun {} : {}", ds_fun, ds_fun->type());
+        auto call = world.app(ds_fun, {mem});
         world.DLOG("call {} : {}", call, call->type());
+
+        // flowchart:
+        // ```
+        // -> init
+        // -> forOut1 with yieldOut1
+        //    => exitOut1 = return_cont
+        // -> forOut2 with yieldOut2
+        //    => exitOut2 = yieldOut1
+        // -> ...
+        // -> accumulator init
+        // -> forIn1 with yieldIn1
+        //    => exitIn1 = writeCont
+        // -> forIn2 with yieldIn2
+        //    => exitIn2 = yieldIn1
+        // -> ...
+        // -> read matrices
+        // -> fun
+        //    => exitFun = yieldInM
+        //
+        // (return path)
+        // -> ...
+        // -> write
+        // -> yieldOutN
+        // -> ...
+        // ```
+
+        // First create the output matrix.
+        auto current_mem      = mem;
+        auto [mem2, init_mat] = world.app(world.ax<matrix::init>(), {n, S, T, current_mem})->projs<2>();
+        current_mem           = mem2;
+
+        // The function on where to continue -- return after all output loops.
+        auto cont        = fun->var(1);
+        auto current_nom = fun;
+
+        // Each of the outer loops contains the memory and matrix as accumulator (in an inner monad).
+        Defs acc = {current_mem, init_mat};
+
+        for (auto idx : out_indices) {
+            char for_name[32];
+            sprintf(for_name, "forOut_%lu", idx);
+
+            auto dim_nat_def = dims[idx];
+            auto dim         = core::op_bitcast(world.type_int(32), dim_nat_def);
+
+            auto [body, for_call]       = counting_for(dim, acc, cont, for_name);
+            auto [iter, new_acc, yield] = body->vars<3>();
+            cont                        = yield;
+            raw_iterator[idx]           = iter;
+            iterator[idx]               = core::op_bitcast(world.type_idx(dim_nat_def), iter);
+            auto [new_mem, new_mat]     = new_acc->projs<2>();
+            acc                         = {new_mem, new_mat};
+            current_nom->set_body(for_call);
+            current_nom->set_filter(dim_nat_def);
+            current_nom = body;
+        }
+
+        // Now the inner loops for the inputs:
+        // Each of the inner loops contains the element accumulator and memory as accumulator (in an inner monad).
+        world.DLOG("acc at inner: {;}", acc);
+        // world.DLOG("acc[0] at inner: {} : {}", acc[0], acc[0]->type());
+        // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
+        // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
+
+        // First create the accumulator.
+        auto element_acc = zero;
+        element_acc->set_debug_name("acc");
+        current_mem    = acc[0];
+        auto wb_matrix = acc[1];
+        // world.DLOG("wb_matrix {} ", wb_matrix);
+        assert(wb_matrix);
+        world.DLOG("wb_matrix {} : {}", wb_matrix, wb_matrix->type());
+        // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
+
+        // Write back element to matrix. Set this as return after all inner loops.
+        auto write_back = world.nom_lam(world.cn({mem::type_mem(world), T}), world.dbg("matrixWriteBack"));
+        // TODO: why is acc no longer valid from here on?
+        world.DLOG("write_back {} : {}", write_back, write_back->type());
+        // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
+        auto [wb_mem, element_final] = write_back->vars<2>();
+        // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
+        // world.DLOG("acc[1] at inner: {} : {}", acc[1], acc[1]->type());
+
+        DefArray output_iterators((size_t)n_nat, [&](u64 i) {
+            auto idx = out_indices[i];
+            assert(idx == i && "output indices must be consecutive 0..n-1");
+            // auto iter_int_def = raw_iterator[idx];
+            // auto dim          = dims[idx];
+            // world.DLOG("dim of {} = {}", i, dim);
+            // return iter_int_def;
+            // auto iter_idx_def = core::op_bitcast(world.type_idx(dim), iter_int_def);
+            auto iter_idx_def = iterator[idx];
+            return iter_idx_def;
+        });
+        auto output_it_tuple = world.tuple(output_iterators);
+        world.DLOG("output tuple: {} : {}", output_it_tuple, output_it_tuple->type());
+
+        auto [wb_mem2, written_matrix] = world
+                                             .app(world.app(world.ax<matrix::insert>(), {n, S, T}),
+                                                  {wb_mem, wb_matrix, output_it_tuple, element_final})
+                                             ->projs<2>();
+
+        write_back->app(true, cont, {wb_mem2, written_matrix});
+
+        // From here on the continuations take the element and memory.
+        acc  = {current_mem, element_acc};
+        cont = write_back;
+
+        for (auto idx : in_indices) {
+            char for_name[32];
+            sprintf(for_name, "forIn_%lu", idx);
+
+            auto dim_nat_def = dims[idx];
+            auto dim         = core::op_bitcast(world.type_int(32), dim_nat_def);
+
+            auto [body, for_call]       = counting_for(dim, acc, cont, for_name);
+            auto [iter, new_acc, yield] = body->vars<3>();
+            cont                        = yield;
+            raw_iterator[idx]           = iter;
+            iterator[idx]               = core::op_bitcast(world.type_idx(dim_nat_def), iter);
+            auto [new_mem, new_element] = new_acc->projs<2>();
+            acc                         = {new_mem, new_element};
+            current_nom->set_body(for_call);
+            current_nom->set_filter(dim_nat_def);
+            current_nom = body;
+        }
+
+        // For testing: id in innermost loop instead of read, fun:
+        // current_nom->app(true, cont, acc);
+
+        current_mem = acc[0];
+        element_acc = acc[1];
+
+        // Read element from input matrix.
+        DefArray input_elements((size_t)m_nat);
+        // DefArray input_elements((size_t)m_nat, [&](u64 i) {
+        // auto idx = in_indices[i];
+        // assert(idx == i && "input indices must be consecutive 0..m-1");
+        // auto iter_idx_def = iterator[idx];
+        // return world.app(world.app(world.ax<matrix::at>(), {n, S, T}), {current_mem, input_matrix,
+        // iter_idx_def});
+        // });
+        for (u64 i = 0; i < m_nat; i++) {
+            // TODO: case m_nat == 1
+            auto [input_idx_tup, input_matrix] = inputs->proj(i)->projs<2>();
+
+            // DefArray input_iterators((size_t)n_nat, [&](u64 j) {
+            //     auto
+            //     return iterator[idx];
+            // });
+            auto indices = input_idx_tup->projs(n_input[i]);
+            DefArray input_iterators(n_input[i], [&](u64 j) {
+                auto idx     = indices[j];
+                auto idx_lit = idx->as<Lit>()->get<u64>();
+                world.DLOG("  idx {} {} = {}", i, j, idx_lit);
+                return iterator[idx_lit];
+            });
+            auto input_it_tuple = world.tuple(input_iterators);
+
+            auto [new_mem, element_i] = op_read(current_mem, input_matrix, input_it_tuple)->projs<2>();
+            current_mem               = new_mem;
+            input_elements[i]         = element_i;
+
+            // auto idx = in_indices[i];
+            // assert(idx == i && "input indices must be consecutive 0..m-1");
+            // auto iter_idx_def = iterator[idx];
+            // input_elements[i] = world.app(world.app(world.ax<matrix::at>(), {n, S, T}),
+            //                               {current_mem, input_matrix, iter_idx_def});
+        }
+
+        world.DLOG("  read elements {,}", input_elements);
+        world.DLOG("  fun {} : {}", fun, fun->type());
+
+        // current_nom->app(true, cont, {current_mem, element_acc});
+        current_nom->app(true, fun, {world.tuple({current_mem, element_acc, world.tuple(input_elements)}), cont});
 
         return call;
 

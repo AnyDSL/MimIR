@@ -8,6 +8,7 @@
 .import core;
 // needed to access cps2ds
 .import direct;
+.import affine;
 ///
 /// ## Types
 ///
@@ -147,7 +148,7 @@
 /// ### %matrix.init
 ///
 /// a fresh matrix 
-.ax %matrix.init: Π [n: .Nat, S: «n; .Nat», %mem.M, T: *] -> [%mem.M,%matrix.Mat (n,S,T)];
+.ax %matrix.init: Π [n: .Nat, S: «n; .Nat», T: *, %mem.M] -> [%mem.M,%matrix.Mat (n,S,T)];
 ///
 /// ## Definitions and aliases
 /// 
