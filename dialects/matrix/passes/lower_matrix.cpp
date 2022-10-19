@@ -390,7 +390,9 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
         world.DLOG("  fun {} : {}", fun, fun->type());
 
         // current_nom->app(true, cont, {current_mem, element_acc});
-        current_nom->app(true, fun, {world.tuple({current_mem, element_acc, world.tuple(input_elements)}), cont});
+        // TODO: make non-scalar or completely scalar?
+        current_nom->app(true, comb, {world.tuple({current_mem, element_acc, world.tuple(input_elements)}), cont});
+        // current_nom->app(true, comb, {current_mem, element_acc, world.tuple(input_elements), cont});
 
         return call;
 
