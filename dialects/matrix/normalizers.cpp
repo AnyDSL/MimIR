@@ -56,7 +56,7 @@ const Def* normalize_insert(const Def* type, const Def* callee, const Def* arg, 
 /// - transpose (insert m v (i,j)) -> insert (transpose m) v (j,i) (TODO: implement, maybe other way around?)
 /// - transpose (tranpose m) -> m (TODO: implement)
 
-/// - shape (@mat n (k1,k2,...,kn) i) -> (k1,k2,...,kn)#i (TODO: implement)
+/// - shape `(%mat n (k1,k2,...,kn) i)` -> (k1,k2,...,kn)#i (TODO: implement)
 const Def* normalize_shape(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world                   = type->world();
     auto [mat, index]             = arg->projs<2>();
