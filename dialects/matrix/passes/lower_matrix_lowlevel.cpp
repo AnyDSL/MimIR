@@ -40,34 +40,42 @@ const Def* op_nop(const Def* a, const Def* b, NOpKind kind) {
     // return c;
 }
 
-const Def* computeSize(const Def* S) {
-    auto& world = S->world();
-    auto n      = S->num_projs();
-    world.DLOG("compute Size of {} ({} dims)", S, n);
-    const Def* size = world.lit_nat_1();
-    for (size_t i = 0; i < n; i++) {
-        auto dim = S->proj(i);
-        // world.DLOG("dim {}: {}", i, dim);
-        // size = world.app(world.ax(core::nop::mul), {size, dim});
-        size = op_nop(size, dim, mul);
-    }
+// const Def* computeSize(const Def* S) {
+//     auto& world = S->world();
+//     auto n      = S->num_projs();
+//     world.DLOG("compute Size of {} ({} dims)", S, n);
+//     const Def* size = world.lit_nat_1();
+//     for (size_t i = 0; i < n; i++) {
+//         auto dim = S->proj(i);
+//         // world.DLOG("dim {}: {}", i, dim);
+//         // size = world.app(world.ax(core::nop::mul), {size, dim});
+//         size = op_nop(size, dim, mul);
+//     }
 
-    // assert(0);
-    // size = world.lit_nat(42);
-    return size;
-}
+//     // assert(0);
+//     // size = world.lit_nat(42);
+//     return size;
+// }
 
-const Def* sizeOfMatrix(const Def* Mat) {
-    auto mat_ax = match<matrix::Mat>(Mat);
-    assert(mat_ax && "type must be a matrix");
-    auto [n_def, S, T] = mat_ax->args<3>();
-    return computeSize(S);
-}
+// const Def* sizeOfMatrix(const Def* Mat) {
+//     auto mat_ax = match<matrix::Mat>(Mat);
+//     assert(mat_ax && "type must be a matrix");
+//     auto [n_def, S, T] = mat_ax->args<3>();
+//     return computeSize(S);
+// }
 
 const Def* arrTyOfMatrixTy(const Def* S, const Def* T) {
     auto& world = S->world();
-    auto size   = computeSize(S);
-    auto arr_ty = world.arr(size, T);
+    // auto size   = computeSize(S);
+    // auto arr_ty = world.arr(size, T);
+    auto n      = S->num_projs();
+    auto arr_ty = T;
+    for (int i = n - 1; i >= 0; i--) {
+        auto dim = S->proj(i);
+        world.DLOG("dim {}: {}", i, dim);
+        arr_ty = world.arr(dim, arr_ty);
+        world.DLOG("arr_ty {}..{}: {}", i, n, arr_ty);
+    }
     return arr_ty;
 }
 
