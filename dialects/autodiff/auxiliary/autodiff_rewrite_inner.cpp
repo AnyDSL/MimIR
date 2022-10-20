@@ -357,7 +357,7 @@ Lam* call_pullbacks(const Def* gradient, const Def* pullback){
 }
 
 const Def* AutoDiffEval::wrap_call_pullbacks(const Def* arg_pb, const Def* arg){
-    auto& world = arg->world();
+    auto& w = arg->world();
 
     DefVec pullbacks;
     for( auto arg_proj : arg->projs() ){
@@ -368,7 +368,7 @@ const Def* AutoDiffEval::wrap_call_pullbacks(const Def* arg_pb, const Def* arg){
         pullbacks.push_back(pullback_root);
     }
 
-    auto propagate_gradients = world.nom_lam(arg_pb->type()->as<Pi>(), world.dbg("propagate_gradients"));
+    auto propagate_gradients = w.nom_lam(arg_pb->type()->as<Pi>(), w.dbg("propagate_gradients"));
     propagate_gradients->set_filter(false);
 
     DefVec gradients;
@@ -389,36 +389,49 @@ const Def* AutoDiffEval::wrap_call_pullbacks(const Def* arg_pb, const Def* arg){
         auto gradient = gradients[i];
         auto pullback = pullbacks[i];
 
-        auto next = mem_lam(world, "next_loop", false);
+        auto next = mem_lam(w, "next_loop", false);
         auto loop_lam = call_pullbacks(gradient, pullback);
-        current->set_body(world.app(loop_lam, {mem::mem_var(current), next}));
+        current->set_body(w.app(loop_lam, {mem::mem_var(current), next}));
         current = next;
     }
 
     auto exit_arg = mem::replace_mem(mem::mem_var(current), propagate_gradients->var());
-    current->set_body(world.app(arg_pb, exit_arg));
+    current->set_body(w.app(arg_pb, exit_arg));
     return propagate_gradients;
 }
 
-Lam* AutoDiffEval::wrap_free_memory(const Def* pullback){
-    auto& w = pullback->world();
+Lam* AutoDiffEval::free_memory_lam(){
+    auto& w = world();
 
-    auto pb_type = pullback->type()->as<Pi>();
-    auto free = w.nom_lam(pb_type, w.dbg("free"));
-    free->set_filter(false);
+    auto free = mem_return_lam(w, "free");
 
-    auto pb_return_type = pb_type->dom(1)->as<Pi>();
-    auto free_body = w.nom_lam(pb_return_type, w.dbg("free_body"));
-    free_body->set_filter(false);
-
-    auto mem = mem::mem_var(free_body);
+    auto mem = mem::mem_var(free);
     for( auto memory : allocated_memory ){
         mem = mem::op_free(mem, memory);
     }
 
-    free_body->set_body(w.app(free->var(1_s), mem::replace_mem(mem, free_body->var())));
-    free->set_body(w.app(pullback, {free->var(0_s), free_body}));
+    free->set_body(w.app(free->var(1_s), mem));
     return free;
+}
+
+const Lam* wrap_append_app(const Def* lam, const Def* call_after_lam){
+    auto& w = lam->world();
+
+    auto lam_ty = lam->type()->as<Pi>();
+    auto lam_ret_ty = lam_ty->dom(1)->as<Pi>();
+
+    auto wrapper = w.nom_lam(lam_ty, w.dbg(lam->name() + "_wrapper"));
+    wrapper->set_filter(true);
+    auto after_first = w.nom_lam(lam_ret_ty, w.dbg(lam->name() + "_after_lam"));
+    after_first->set_filter(true);
+    auto after_second = mem_lam(w, lam->name() + "_after_suffix");
+    after_second->set_filter(true);
+
+    auto arg = mem::replace_mem(mem::mem_var(after_second), after_first->var());
+    after_second->set_body(w.app(wrapper->var(1_s), arg));
+    after_first->set_body(w.app(call_after_lam, {mem::mem_var(after_first), after_second}));
+    wrapper->set_body(w.app(lam, {wrapper->var(0_s), after_first}));
+    return wrapper;
 }
 
 const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
@@ -475,7 +488,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 
         if(callee == f->ret_var()){
             arg_pb = wrap_call_pullbacks(arg_pb, arg);
-            arg_pb = wrap_free_memory(arg_pb);
+            arg_pb = wrap_append_app(arg_pb, free_memory_lam());
         }
 
         auto aug_app = world.app(aug_callee, {aug_arg, arg_pb});

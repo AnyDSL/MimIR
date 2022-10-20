@@ -56,7 +56,7 @@ public:
     const Def* wrap_call_pullbacks(const Def* arg_pb, const Def* arg);
     Lam* create_gradient_collector(const Def* gradient_array, Lam* f);
     const Def* get_pullback(const Def* op, Lam* f);
-    Lam* wrap_free_memory(const Def* pullback);
+    Lam* free_memory_lam();
 
 private:
     /// Transforms closed terms (lambda, operator) to derived expressions.

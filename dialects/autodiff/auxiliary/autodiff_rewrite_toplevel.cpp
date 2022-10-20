@@ -79,13 +79,15 @@ const Def* AutoDiffEval::autodiff_epilogue(Lam* f_outer, Lam* f_inner, const Def
             auto var_ty = var->type();
             if(auto ptr = match<mem::Ptr>(var_ty)){
                 auto [mem2, gradient_ptr] = mem::op_alloc(ptr->arg(0), current_mem, world.dbg(var->name() + "_gradient_arr"))->projs<2>();
-                auto pb_ty = create_ho_pb_type(ptr->arg(0), diff_ty);
-                auto [mem3, pb_ptr] = mem::op_alloc(pb_ty, mem2, world.dbg(var->name() + "_pullback_arr"))->projs<2>();
-                current_mem = mem3;
+                current_mem = mem2;
 
-                allocated_memory.insert(pb_ptr);
+                //auto pb_ty = create_ho_pb_type(ptr->arg(0), diff_ty);
+                //auto [mem3, pb_ptr] = mem::op_alloc(pb_ty, mem2, world.dbg(var->name() + "_pullback_arr"))->projs<2>();
+                //current_mem = mem3;
+
+                //allocated_memory.insert(pb_ptr);
                 gradient_ptrs[var] = gradient_ptr;
-                shadow_pullbacks[var] = pb_ptr;
+                //shadow_pullbacks[var] = pb_ptr;
             }
         }
 
