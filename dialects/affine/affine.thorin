@@ -26,4 +26,3 @@
     .Cn [start: .Idx m, stop: .Idx m, step: .Idx m, init: «i: n; Ts#i»,
         body: .Cn [iter: .Idx m, acc: «i: n; Ts#i», yield: .Cn [«i: n; Ts#i»]], 
         exit: .Cn [«i: n; Ts#i»]];
-

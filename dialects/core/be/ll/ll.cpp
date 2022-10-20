@@ -497,13 +497,18 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         unreachable();
     } else if (def->isa<Bot>()) {
         return "undef";
-    } else if (auto bit = match<core::bit2>(def)) {
-        auto [a, b] = bit->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(bit->type());
+    } else if (auto bit1 = match<core::bit1>(def)) {
+        assert(bit1.id() == core::bit1::neg);
+        auto x = emit(bit1->arg());
+        auto t = convert(bit1->type());
+        return bb.assign(name, "xor {} -1, {}", t, x);
+    } else if (auto bit2 = match<core::bit2>(def)) {
+        auto [a, b] = bit2->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(bit2->type());
 
-        auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} 0, {}", t, x); };
+        auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} -1, {}", t, x); };
 
-        switch (bit.id()) {
+        switch (bit2.id()) {
             // clang-format off
             case core::bit2::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
             case core::bit2:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);

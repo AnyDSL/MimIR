@@ -323,17 +323,18 @@ const Def* World::pack(Defs shape, const Def* body, const Def* dbg) {
     return pack(shape.skip_back(), pack(shape.back(), body, dbg), dbg);
 }
 
-const Lit* World::lit_idx(const Def* type, u64 i, const Def* dbg) {
-    auto l    = lit(type, i, dbg);
-    auto size = Idx::size(type);
-
-    if (err()) {
-        if (auto a = isa_lit(size)) {
-            if (*a != 0 && i >= *a) err()->index_out_of_range(size, l, dbg);
+const Lit* World::lit(const Def* type, u64 val, const Def* dbg) {
+    if (auto size = Idx::size(type)) {
+        if (err()) {
+            if (auto s = isa_lit(size)) {
+                if (*s != 0 && val >= *s) err()->index_out_of_range(size, val, dbg);
+            } else if (val != 0) { // 0 of any size is allowed
+                err()->err(dbg->loc(), "cannot create literal '{}' of '.Idx {}' as size is unknown", val, size);
+            }
         }
     }
 
-    return l;
+    return unify<Lit>(0, type, val, dbg);
 }
 
 /*

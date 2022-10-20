@@ -8,6 +8,7 @@
 #include "thorin/phase/phase.h"
 
 #include "dialects/clos/clos.h"
+#include "dialects/mem/autogen.h"
 
 namespace thorin::clos {
 
@@ -42,6 +43,11 @@ private:
         Nodes preds;
         Nodes succs;
         unsigned pass_id; //
+
+        auto add_fvs(const Def* def){
+            assert(!match<mem::M>(def->type()));
+            return fvs.emplace(def);
+        }
     };
     /// @}
 

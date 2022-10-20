@@ -129,7 +129,7 @@ const Def* zero_def(const Def* T) {
         return zero_arr;
     } else if (Idx::size(T)) {
         // TODO: real
-        auto zero = world.lit_idx(T, 0, world.dbg("zero"));
+        auto zero = world.lit(T, 0, world.dbg("zero"));
         world.DLOG("zero_def for int is {}", zero);
         return zero;
     } else if (auto sig = T->isa<Sigma>()) {
