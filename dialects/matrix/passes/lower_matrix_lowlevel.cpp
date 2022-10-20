@@ -20,7 +20,8 @@ namespace thorin::matrix {
 
 const Def* LowerMatrixLowLevel::rewrite(const Def* def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
-    rewritten[def] = rewrite_(def);
+    auto new_def   = rewrite_(def);
+    rewritten[def] = new_def;
     return rewritten[def];
 }
 

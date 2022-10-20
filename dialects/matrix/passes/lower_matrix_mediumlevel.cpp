@@ -1,3 +1,5 @@
+#include "dialects/matrix/passes/lower_matrix_mediumlevel.h"
+
 #include <iostream>
 
 #include <thorin/lam.h>
@@ -6,14 +8,14 @@
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
 #include "dialects/matrix/matrix.h"
-#include "dialects/matrix/passes/lower_matrix_mediumlevel.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::matrix {
 
 const Def* LowerMatrixMediumLevel::rewrite(const Def* def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
-    rewritten[def] = rewrite_(def);
+    auto new_def   = rewrite_(def);
+    rewritten[def] = new_def;
     return rewritten[def];
 }
 
