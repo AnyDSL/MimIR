@@ -28,17 +28,16 @@ enum NOpKind { add, mul };
 
 const Def* op_nop(const Def* a, const Def* b, NOpKind kind) {
     auto& world = a->world();
-    // TODO: use this when fixed
-    // return world.app(world.ax(kind == add ? core::nop::add : core::nop::mul), {a, b});
+    return world.app(world.ax(kind == add ? core::nop::add : core::nop::mul), {a, b});
 
-    auto I32   = world.type_int(32);
-    auto a_i32 = core::op_bitcast(I32, a);
-    auto b_i32 = core::op_bitcast(I32, b);
-    auto c_i32 = world.app(world.app(world.ax(kind == add ? core::nop::add : core::nop::mul),
-                                     {world.lit_nat_0(), world.lit_nat(bitwidth2size(32))}),
-                           {a_i32, b_i32});
-    auto c     = core::op_bitcast(world.type_nat(), c_i32);
-    return c;
+    // auto I32   = world.type_int(32);
+    // auto a_i32 = core::op_bitcast(I32, a);
+    // auto b_i32 = core::op_bitcast(I32, b);
+    // auto c_i32 = world.app(world.app(world.ax(kind == add ? core::nop::add : core::nop::mul),
+    //                                  {world.lit_nat_0(), world.lit_nat(bitwidth2size(32))}),
+    //                        {a_i32, b_i32});
+    // auto c     = core::op_bitcast(world.type_nat(), c_i32);
+    // return c;
 }
 
 const Def* computeSize(const Def* S) {
@@ -48,7 +47,7 @@ const Def* computeSize(const Def* S) {
     const Def* size = world.lit_nat_1();
     for (size_t i = 0; i < n; i++) {
         auto dim = S->proj(i);
-        world.DLOG("dim {}: {}", i, dim);
+        // world.DLOG("dim {}: {}", i, dim);
         // size = world.app(world.ax(core::nop::mul), {size, dim});
         size = op_nop(size, dim, mul);
     }
@@ -106,23 +105,24 @@ const Def* LowerMatrixLowLevel::rewrite_(const Def* def) {
         // return mat_ty;
 
         // TODO: why does replacement not take effect
-        return world.type_nat();
+        // return world.type_nat();
 
         // auto arr_ty = world.arr(size, T);
-        // auto arr_ty = arrTyOfMatrixTy(mat_ax);
+        auto arr_ty = arrTyOfMatrixTy(mat_ax);
 
-        // auto addr_space = world.lit_nat_0();
-        // auto ptr_ty     = world.app(world.ax<mem::Ptr>(), {arr_ty, addr_space});
+        auto addr_space = world.lit_nat_0();
+        auto ptr_ty     = world.app(world.ax<mem::Ptr>(), {arr_ty, addr_space});
 
-        // return ptr_ty;
+        return ptr_ty;
     } else if (auto init_ax = match<matrix::init>(def)) {
-        // auto [n, S, T, mem] = init_ax->args<4>();
-        // auto arr_ty         = arrTyOfMatrixTy(S, T);
-        // auto addr_space     = world.lit_nat_0();
-        // auto ptr_mat        = world.app(world.app(world.ax<mem::alloc>(), {arr_ty, addr_space}), mem);
-        // return ptr_mat;
-
+        auto [n, S, T, mem] = init_ax->args<4>();
+        auto arr_ty         = arrTyOfMatrixTy(S, T);
+        auto addr_space     = world.lit_nat_0();
+        auto ptr_mat        = world.app(world.app(world.ax<mem::alloc>(), {arr_ty, addr_space}), mem);
+        return ptr_mat;
     } else if (auto read_ax = match<matrix::read>(def)) {
+        auto [mem, mat, idx] = read_ax->args<3>();
+
     } else if (auto insert_ax = match<matrix::insert>(def)) {
     } else if (auto const_ax = match<matrix::constMat>(def)) {
     }
