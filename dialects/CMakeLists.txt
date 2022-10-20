@@ -127,8 +127,12 @@ add_thorin_dialect(matrix
         matrix/matrix.cpp
         matrix/matrix.h
         matrix/normalizers.cpp
-        matrix/passes/lower_matrix.cpp
-        matrix/passes/lower_matrix.h
+        matrix/passes/lower_matrix_highlevel.cpp
+        matrix/passes/lower_matrix_highlevel.h
+        matrix/passes/lower_matrix_mediumlevel.cpp
+        matrix/passes/lower_matrix_mediumlevel.h
+        matrix/passes/lower_matrix_lowlevel.cpp
+        matrix/passes/lower_matrix_lowlevel.h
     DEPENDS
         direct
         affine

@@ -1,5 +1,5 @@
-#ifndef THORIN_PASS_RW_LOWER_MATRIX_H
-#define THORIN_PASS_RW_LOWER_MATRIX_H
+#ifndef THORIN_PASS_RW_LOWER_MATRIX_MEDIUMLEVEL_H
+#define THORIN_PASS_RW_LOWER_MATRIX_MEDIUMLEVEL_H
 
 #include <thorin/def.h>
 #include <thorin/pass/pass.h>
@@ -49,10 +49,10 @@ namespace thorin::matrix {
 ///       write (output, (i_0, ..., i_{n-1}), s)
 /// ```
 /// TODO: identify patterns and emit specialized operations like matrix product (blas)
-class LowerMatrix : public RWPass<LowerMatrix, Lam> {
+class LowerMatrixMediumLevel : public RWPass<LowerMatrixMediumLevel, Lam> {
 public:
-    LowerMatrix(PassMan& man)
-        : RWPass(man, "lower_matrix") {}
+    LowerMatrixMediumLevel(PassMan& man)
+        : RWPass(man, "lower_matrix_mediumlevel") {}
 
     /// custom rewrite function
     /// memoized version of rewrite_

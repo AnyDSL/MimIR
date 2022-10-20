@@ -1,5 +1,3 @@
-#include "dialects/matrix/passes/lower_matrix.h"
-
 #include <iostream>
 
 #include <thorin/lam.h>
@@ -8,11 +6,12 @@
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
 #include "dialects/matrix/matrix.h"
+#include "dialects/matrix/passes/lower_matrix_mediumlevel.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::matrix {
 
-const Def* LowerMatrix::rewrite(const Def* def) {
+const Def* LowerMatrixMediumLevel::rewrite(const Def* def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
     rewritten[def] = rewrite_(def);
     return rewritten[def];
@@ -74,7 +73,7 @@ std::pair<Lam*, const Def*> counting_for(const Def* bound, Defs acc, const Def* 
 // TODO: compare with other impala version (why is one easier than the other?)
 // TODO: replace sum_ptr by using sum as accumulator
 // TODO: extract inner loop into function (for read normalizer)
-const Def* LowerMatrix::rewrite_(const Def* def) {
+const Def* LowerMatrixMediumLevel::rewrite_(const Def* def) {
     auto& world = def->world();
 
     if (auto mapReduce_ax = match<matrix::mapReduce>(def); mapReduce_ax) {
@@ -597,7 +596,7 @@ const Def* LowerMatrix::rewrite_(const Def* def) {
     return def;
 }
 
-PassTag* LowerMatrix::ID() {
+PassTag* LowerMatrixMediumLevel::ID() {
     static PassTag Key;
     return &Key;
 }
