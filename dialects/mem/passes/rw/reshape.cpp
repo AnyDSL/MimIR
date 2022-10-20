@@ -8,17 +8,14 @@
 namespace thorin::mem {
 
 void Reshape::enter() {
-    auto nom = curr_nom();
-    nom->dump();
-    rewrite(nom);
+    rewrite(curr_nom());
 
     while (!worklist_.empty()) {
         auto lam = worklist_.top();
         worklist_.pop();
         if (lam->is_set()) {
             auto app = lam->body()->as<App>();
-            auto callee = app->op(0);
-            auto arg = app->op(1);
+            auto [callee, arg] = app->ops<2>();
             lam->set(callee->reduce(arg));
         }
     }
@@ -28,6 +25,7 @@ const Def* Reshape::rewrite(const Def* def) {
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
     auto new_def = rewrite_convert(def);
     old2new_[def] = new_def;
+    old2new_[new_def] = new_def;
     return new_def;
 } 
 
@@ -85,7 +83,7 @@ const Def* Reshape::convert_ty(const Def* ty){
             auto new_body = convert_ty(arr->body());
             auto shape = arr->shape();
             return w.arr(shape, new_body);
-        }else if(auto pi = ty->isa<Pi>()){
+        }else if(ty->isa<Pi>()){
             auto test = flatten_ty(ty)->as<Pi>();
             auto doms = test->doms();
 

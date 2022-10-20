@@ -8,6 +8,7 @@ namespace thorin::mem {
 
 using DefQueue = std::deque<const Def*>;
 
+static int i = 0;
 class Reshape : public RWPass<Reshape, Lam> {
 public:
     enum Mode{
