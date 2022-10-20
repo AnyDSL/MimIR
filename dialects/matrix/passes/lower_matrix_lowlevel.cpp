@@ -18,10 +18,10 @@
 
 namespace thorin::matrix {
 
-const Def* LowerMatrixLowLevel::rewrite(const Def* def) {
-    if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
-    rewritten[def] = rewrite_(def);
-    return rewritten[def];
+const Def* LowerMatrixLowLevel::rewrite(const Def* old_def) {
+    if (auto i = rewritten.find(old_def); i != rewritten.end()) return i->second;
+    auto new_def = rewrite_(old_def);
+    return rewritten[old_def] = new_def;
 }
 
 enum NOpKind { add, mul };
