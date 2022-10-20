@@ -1,0 +1,11 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s -o - | FileCheck %s
+
+.import core;
+
+.cn .extern f [[a:.Nat, b:.Nat], return : .Cn .Nat] = {
+    return (%core.nop.add (b,a))
+};
+
+// TODO: check dag text
+
