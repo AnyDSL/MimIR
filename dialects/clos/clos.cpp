@@ -14,21 +14,11 @@
 #include "dialects/clos/pass/rw/clos_conv_prep.h"
 #include "dialects/clos/phase/clos_conv.h"
 #include "dialects/clos/phase/lower_typed_clos.h"
-#include "dialects/clos/phase/higher_order_scalerize.h"
+#include "dialects/mem/passes/rw/reshape.h"
 #include "dialects/mem/passes/fp/copy_prop.h"
 #include "dialects/clos/pass/fp/lower_typed_clos_prep.h"
 
 using namespace thorin;
-
-class HigherOrderScalerizeWrapper : public RWPass<HigherOrderScalerizeWrapper, Lam>{
-public:
-    HigherOrderScalerizeWrapper(PassMan& man)
-            : RWPass(man, "higher_order_scalerize_wrapper") {}
-
-    void prepare() override{
-        clos::HigherOrderScalerize(world()).run();
-    }
-};
 
 class ClosConvWrapper : public RWPass<ClosConvWrapper, Lam>{
 public:
@@ -71,7 +61,10 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 builder.add_opt(base++);
 
                 builder.extend_opt_phase(base++, [](PassMan& man) {
-                    man.add<HigherOrderScalerizeWrapper>();
+                    man.add<DebugWrapper>();
+                });
+                builder.extend_opt_phase(base++, [](PassMan& man) {
+                    man.add<mem::Reshape>(mem::Reshape::Flat);
                 });
 
                 builder.extend_opt_phase(base++, [](PassMan& man) {

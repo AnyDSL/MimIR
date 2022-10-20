@@ -1,13 +1,15 @@
-#include "dialects/clos/phase/higher_order_scalerize.h"
 
 #include <functional>
 
 #include "thorin/check.h"
+#include "dialects/mem/mem.h"
+#include "dialects/mem/passes/rw/reshape.h"
 
-namespace thorin::clos {
+namespace thorin::mem {
 
-void HigherOrderScalerize::enter() {
+void Reshape::enter() {
     auto nom = curr_nom();
+    nom->dump();
     rewrite(nom);
 
     while (!worklist_.empty()) {
@@ -22,7 +24,7 @@ void HigherOrderScalerize::enter() {
     }
 }
 
-const Def* HigherOrderScalerize::rewrite(const Def* def) {
+const Def* Reshape::rewrite(const Def* def) {
     if (auto i = old2new_.find(def); i != old2new_.end()) return i->second;
     auto new_def = rewrite_convert(def);
     old2new_[def] = new_def;
@@ -31,7 +33,7 @@ const Def* HigherOrderScalerize::rewrite(const Def* def) {
 
 const Def* reshape(const Def* arg, const Pi* target_pi);
 
-void HigherOrderScalerize::aggregate_sigma(const Def* ty, DefQueue& ops){
+void Reshape::aggregate_sigma(const Def* ty, DefQueue& ops){
     if(auto sigma = ty->isa<Sigma>()){
         for( auto op : sigma->ops() ){
             aggregate_sigma(op, ops);
@@ -49,7 +51,7 @@ void HigherOrderScalerize::aggregate_sigma(const Def* ty, DefQueue& ops){
     return;
 }
 
-const Def* HigherOrderScalerize::flatten_ty_convert(const Def* ty){
+const Def* Reshape::flatten_ty_convert(const Def* ty){
     auto& w = ty->world();
     if(auto arr = ty->isa<Arr>()){
         auto new_body = flatten_ty(arr->body());
@@ -67,7 +69,7 @@ const Def* HigherOrderScalerize::flatten_ty_convert(const Def* ty){
 
     return ty;
 }
-const Def* HigherOrderScalerize::flatten_ty(const Def* ty){
+const Def* Reshape::flatten_ty(const Def* ty){
     auto flatten_ty = old2flatten_[ty];
     if(flatten_ty) return flatten_ty;
     auto flat_ty = flatten_ty_convert(ty);
@@ -75,7 +77,7 @@ const Def* HigherOrderScalerize::flatten_ty(const Def* ty){
     return flat_ty;
 }
 
-const Def* HigherOrderScalerize::convert_ty(const Def* ty){
+const Def* Reshape::convert_ty(const Def* ty){
     auto& w = ty->world();
 
     if(mode_ == Mode::Arg){
@@ -129,34 +131,33 @@ void convert(const Def* def, DefQueue& vars){
     });
 }
 
-const Def* wrap(const Def* def, const Def* target_ty) {
+const Def* Reshape::wrap(const Def* def, const Def* target_ty) {
     auto def_ty = def->type()->isa<Pi>();
     auto target_pi = target_ty->isa<Pi>();
     if(!def_ty || !target_pi) return def;
+    if(target_pi == def_ty) return def;
     
     auto& w = def->world();
-
     auto wrapper = w.nom_lam(target_pi, def->dbg());
     auto arg = reshape(wrapper->var(), def_ty);
 
     wrapper->set_body(w.app(def, arg));
     wrapper->set_filter(true);
+    if(target_pi == convert_ty(target_pi)){
+        worklist_.push(wrapper);
+    }
     return wrapper;
 }
 
-const Def* HigherOrderScalerize::convert(const Def* def) {
+const Def* Reshape::convert(const Def* def) {
     auto pi_ty = def->type()->isa<Pi>();
     if(!pi_ty) return def;
     auto new_ty = convert_ty(pi_ty);
-    if( new_ty == pi_ty) return def;
-
-    auto& w = def->world();
-    auto wrapper = wrap(def, new_ty)->as_nom<Lam>();
-    worklist_.push(wrapper);
-    return wrapper;
+    if( new_ty == pi_ty ) return def;
+    return wrap(def, new_ty)->as_nom<Lam>();
 }
 
-const Def* reshape(const Def* mem, const Def* ty, DefQueue& vars){
+const Def* Reshape::reshape(const Def* mem, const Def* ty, DefQueue& vars){
     if(ty->isa<Sigma>() || ty->isa<Arr>() ){
         auto& w = ty->world();
         auto ops = DefArray(ty->num_ops(), [&](auto i) { return reshape(mem, ty->op(i), vars); });
@@ -171,11 +172,7 @@ const Def* reshape(const Def* mem, const Def* ty, DefQueue& vars){
     const Def* next = vars.front();
     vars.pop_front();
 
-    if( ty->isa<Pi>() && next->type() != ty ){
-        next = wrap(next, ty);
-    }
-
-    return next;
+    return wrap(next, ty);;
 }
 
 const Def* fill_extract_mem(const Def* def, DefQueue& vars){
@@ -190,7 +187,7 @@ const Def* fill_extract_mem(const Def* def, DefQueue& vars){
     return mem;
 }
 
-const Def* reshape(const Def* arg, const Pi* target_pi){
+const Def* Reshape::reshape(const Def* arg, const Pi* target_pi){
     DefQueue queue;
     const Def* mem = fill_extract_mem(arg, queue);
     auto target_arg = reshape(mem, target_pi->dom(), queue);
@@ -198,7 +195,7 @@ const Def* reshape(const Def* arg, const Pi* target_pi){
     return target_arg;
 }
 
-const Def* HigherOrderScalerize::rewrite_convert(const Def* def){
+const Def* Reshape::rewrite_convert(const Def* def){
     switch (def->node()) {
         case Node::Bot:
         case Node::Top:

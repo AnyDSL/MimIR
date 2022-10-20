@@ -4,22 +4,18 @@
 
 #include "thorin/phase/phase.h"
 
-#include "dialects/clos/clos.h"
-#include "dialects/mem/mem.h"
-
-
-namespace thorin::clos {
+namespace thorin::mem {
 
 using DefQueue = std::deque<const Def*>;
 
-class HigherOrderScalerize : public RWPass<HigherOrderScalerize, Lam> {
+class Reshape : public RWPass<Reshape, Lam> {
 public:
     enum Mode{
         Flat, Arg
     };
 
-    HigherOrderScalerize(PassMan& man, Mode mode)
-        : RWPass(man, "higher_order_scalerize"),
+    Reshape(PassMan& man, Mode mode)
+        : RWPass(man, "reshape"),
             mode_(mode) {}
 
     void enter() override;
@@ -34,6 +30,9 @@ private:
     const Def* flatten_ty(const Def* ty);
     const Def* flatten_ty_convert(const Def* ty);
     void aggregate_sigma(const Def* ty, DefQueue& ops);
+    const Def* wrap(const Def* def, const Def* target_ty);
+    const Def* reshape(const Def* mem, const Def* ty, DefQueue& vars);
+    const Def* reshape(const Def* arg, const Pi* target_pi);
     //const Def* make_scalar_inv(const Def* def, const Def* ty);
 
     Def2Def old2new_;

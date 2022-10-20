@@ -51,6 +51,10 @@ public:
 
     const Def* zero_pullback(const Def* domain, Lam* f);
 
+
+    const Def* autodiff_epilogue(Lam* f_outer, Lam* f_inner, const Def* diff_ty);
+    const Def* wrap_call_pullbacks(const Def* arg, const Def* arg_pb);
+    Lam* create_gradient_collector(const Def* gradient_array, Lam* f);
     const Def* get_pullback(const Def* op, Lam* f);
 
 private:
@@ -98,7 +102,6 @@ private:
     Def2Def shadow_gradient_array;
 
     DefSet caches;
-    const Def* current_mem;
 };
 
 } // namespace thorin::autodiff

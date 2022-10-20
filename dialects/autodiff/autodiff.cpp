@@ -10,6 +10,8 @@
 #include "dialects/autodiff/passes/autodiff_zero.h"
 #include "dialects/autodiff/passes/autodiff_zero_cleanup.h"
 #include "dialects/direct/passes/ds2cps.h"
+#include "dialects/mem/passes/rw/reshape.h"
+#include "dialects/affine/passes/lower_for.h"
 
 using namespace thorin;
 
@@ -23,8 +25,17 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"autodiff",
             [](thorin::PipelineBuilder& builder) {
                 builder.add_opt(110);
-                builder.extend_opt_phase(105, [](thorin::PassMan& man) { man.add<thorin::autodiff::AutoDiffEval>(); });
-                builder.extend_opt_phase(106, [](thorin::PassMan& man) {
+
+                builder.extend_opt_phase(104, [](PassMan& man) {
+                    man.add<mem::Reshape>(mem::Reshape::Arg);
+                });
+                builder.extend_opt_phase(105, [](thorin::PassMan& man) { 
+                    man.add<thorin::autodiff::AutoDiffEval>(); 
+                });
+                builder.extend_opt_phase(106, [](thorin::PassMan& man) { 
+                    man.add<thorin::affine::LowerFor>(); 
+                });
+                builder.extend_opt_phase(107, [](thorin::PassMan& man) {
                     // in theory only after partial eval (beta, ...)
                     // but before other simplification
                     // zero and add need to be close together

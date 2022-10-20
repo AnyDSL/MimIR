@@ -155,6 +155,19 @@ inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
     return mem_def(lam->var());
 }
 
+inline const Def* replace_mem(const Def* mem, const Def* arg) {
+    if( arg->num_projs() > 1 ){
+        auto& w = mem->world();
+        return w.tuple(DefArray(arg->num_projs(), [&](auto i){ return replace_mem(mem, arg->proj(i)); }));
+    }
+
+    if(match<mem::M>(arg->type())){
+        return mem;
+    }
+
+    return arg;
+}
+
 static const Def* strip_mem_ty(const Def* def){
     auto& world = def->world();
 
@@ -165,10 +178,6 @@ static const Def* strip_mem_ty(const Def* def){
             if(newOp != world.sigma()){
                 newOps.push_back(newOp);
             }
-        }
-
-        if(newOps.size() == 1){
-            return newOps[0];
         }
 
         return world.sigma(newOps);

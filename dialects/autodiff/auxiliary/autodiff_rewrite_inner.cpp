@@ -12,19 +12,12 @@
 #include "dialects/direct/direct.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
+#include "dialects/affine/affine.h"
 #include "dialects/autodiff/autogen.h"
 
 namespace thorin::autodiff {
 
 #define f_arg_ty continuation_dom(f->type())
-
-void assert_stub(bool assert_stubion){
-    if(!assert_stubion){
-        printf("test");
-    }
-
-    assert(assert_stubion);
-}
 
 const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam* f_diff) {
     auto& world = lit->world();
@@ -38,9 +31,9 @@ const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam* f_diff) {
 
 const Def* AutoDiffEval::augment_var(const Var* var, Lam* f, Lam* f_diff) {
     auto& world = var->world();
-    assert_stub(augmented.count(var));
+    assert(augmented.count(var));
     auto aug_var = augmented[var];
-    assert_stub(partial_pullback.count(aug_var));
+    assert(partial_pullback.count(aug_var));
     return var;
 }
 
@@ -72,7 +65,7 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         world.DLOG("pb type is {}", pb_ty);
         auto aug_ty = world.cn({aug_dom, pb_ty});
         world.DLOG("augmented type is {}", aug_ty);
-        // assert_stub(0);
+        // assert(0);
         auto aug_lam              = world.nom_lam(aug_ty, world.dbg("aug_" + lam->name()));
         auto aug_var              = aug_lam->var((nat_t)0);
         augmented[lam->var()]     = aug_var;
@@ -137,7 +130,7 @@ const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff
         world.DLOG("Shadow pullback: {} : {}", shadow_tuple_pb, shadow_tuple_pb->type());
         pb = world.extract(shadow_tuple_pb, aug_index);
     } else {
-        assert_stub(partial_pullback.count(aug_tuple));
+        assert(partial_pullback.count(aug_tuple));
         auto tuple_pb = partial_pullback[aug_tuple];
         auto pb_ty    = pullback_type(ext->type(), f_arg_ty);
         auto pb_fun   = world.nom_lam(pb_ty, world.dbg("extract_pb"));
@@ -169,14 +162,11 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
 
     // augment ops
 
-    auto isMem = match<mem::M>(tup->type()->proj(0)) ? 1 : 0;
-
     auto projs = tup->projs();
     // TODO: should use ops instead?
     DefArray aug_ops(projs, [&](const Def* op) { 
         return augment(op, f, f_diff); 
     });
-
 
     auto aug_tup = world.tuple(aug_ops);
 
@@ -210,7 +200,6 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     size_t src = 0;
     for(size_t i = 0 ; i < pbs.size() ; i++){
         auto re = direct::op_cps2ds_dep(pbs[i]);
-        auto codom = re->type()->as<Pi>()->codom();
         const Def* app;
         if(match<mem::M>(aug_ops[i]->type())){
             app = world.app(re, {mem});
@@ -246,7 +235,7 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
 
     auto aug_pack = world.pack(aug_shape, aug_body);
 
-    assert_stub(partial_pullback[aug_body] && "pack pullback should exists");
+    assert(partial_pullback[aug_body] && "pack pullback should exists");
     // TODO: or use scale axiom
     auto body_pb              = partial_pullback[aug_body];
     auto pb_pack              = world.pack(aug_shape, body_pb);
@@ -279,13 +268,147 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
     return aug_pack;
 }
 
+Lam* mem_return_lam(World& w, std::string name, Defs domain = {}, bool filter = true){
+    auto mem_ty = mem::type_mem(w);
+    auto cn = w.builder().add(mem_ty).add(domain).add(w.cn({mem_ty})).cn();
+    auto lam = w.nom_lam(cn, w.dbg(name));
+    lam->set_filter(filter);
+    return lam;
+}
+
+Lam* return_lam(World& w, std::string name, Defs domain = {}, bool filter = true){
+    auto mem_ty = mem::type_mem(w);
+    auto cn = w.builder().add(domain).add(w.cn({mem_ty})).cn();
+    auto lam = w.nom_lam(cn, w.dbg(name));
+    lam->set_filter(filter);
+    return lam;
+}
+
+Lam* mem_lam(World& w, std::string name, bool filter = true){
+    auto mem_ty = mem::type_mem(w);
+    auto lam = w.nom_lam(w.cn({mem_ty}), w.dbg(name));
+    lam->set_filter(filter);
+    return lam;
+}
+
+Lam* call_pullback_ptr(const Def* gradient_ptr, const Def* pullback_ptr){
+    auto& w = gradient_ptr->world();
+    auto lam = mem_return_lam(w, "call_pullback", {}, false);
+
+    auto [mem2, gradient_val] = mem::op_load(mem::mem_var(lam), gradient_ptr)->projs<2>();
+    auto [mem3, pullback_val] = mem::op_load(mem2, pullback_ptr)->projs<2>();
+
+    auto yield_ty = pullback_val->type()->as<Pi>()->dom(1)->as<Pi>();
+    auto yield = w.nom_lam(yield_ty, w.dbg("end_call_pullback"));
+    yield->set_filter(false);
+
+    yield->set_body(w.app(lam->var(1_s), mem::mem_var(yield)));
+    auto arg = w.tuple({w.tuple({mem3, gradient_val}), yield});
+    lam->set_body(w.app(pullback_val, arg));
+    return lam;
+}
+
+Lam* call_pullbacks(const Def* gradient, const Def* pullback);
+Lam* call_pullback_arr(const Def* gradient_arr, const Def* pullback_arr){
+    auto& w = gradient_arr->world();
+
+    auto ptr_ty = match<mem::Ptr>(gradient_arr->type());
+    auto arr_ty = ptr_ty->arg(0)->isa<Arr>();
+    auto shape = arr_ty->shape();
+
+    auto shape_lit = as_lit(shape);
+
+    auto shape_i32 = core::op_bitcast(w.type_int_(32), shape);
+
+    auto loop = mem_return_lam(w, "call_pullback_arr", {}, false);
+    auto brk = mem_lam(w, "end_call_pullback_arr", false);
+    auto body = return_lam(w, "body_call_pullback_arr", {w.type_int_(32), mem::type_mem(w)}, false);
+    auto next = body->var(2);
+
+    brk->set_body(w.app(loop->var(1_s), mem::mem_var(brk)));
+
+    auto i = body->var(0_s);
+    auto i_idx = core::op_bitcast(w.type_idx(shape_lit), i);
+
+    auto gradient_lea = mem::op_lea(gradient_arr, i_idx);
+    auto pullback_lea = mem::op_lea(pullback_arr, i_idx);
+
+    Lam* caller = call_pullbacks(gradient_lea, pullback_lea);
+
+    auto yield = mem_lam(w, "next_pullback_call",  false);
+    yield->set_filter(false);
+    yield->set_body(w.app(next, mem::mem_var(yield)));
+
+    body->set_body(w.app(caller, {mem::mem_var(body), yield}));
+   
+    auto app = affine::op_for(w, w.lit_int_(32, 0), shape_i32, w.lit_int_(32, 1), {mem::mem_var(loop)}, body, brk);
+    loop->set_body(app);
+    return loop;
+}
+
+Lam* call_pullbacks(const Def* gradient, const Def* pullback){
+    auto ptr = match<mem::Ptr>(gradient->type());
+    auto pointee = ptr->arg(0);
+    if(pointee->isa<Arr>()){
+        return call_pullback_arr(gradient, pullback);
+    }else{
+        return call_pullback_ptr(gradient, pullback);
+    }
+}
+
+const Def* AutoDiffEval::wrap_call_pullbacks(const Def* arg, const Def* arg_pb){
+    auto& world = arg->world();
+
+    DefVec pullbacks;
+    for( auto arg_proj : arg->projs() ){
+        auto augment_arg_proj = augmented[arg_proj];
+        if(!augment_arg_proj) continue;
+        auto pullback_root = shadow_pullback_array[augment_arg_proj];
+        if(!pullback_root) continue;
+        pullbacks.push_back(pullback_root);
+    }
+
+    auto propagate_gradients = world.nom_lam(arg_pb->type()->as<Pi>(), world.dbg("propagate_gradients"));
+    propagate_gradients->set_filter(false);
+
+    DefVec gradients;
+    for( auto var : propagate_gradients->var(0_s)->projs() ){
+        if(match<mem::Ptr>(var->type())){
+            gradients.push_back(var);
+        }
+    }
+
+    auto pullbacks_size = pullbacks.size();
+    auto gradients_size = gradients.size();
+
+    assert(pullbacks_size == gradients_size);
+
+    auto current = propagate_gradients;
+
+    for(size_t i = 0 ; i < pullbacks_size ; i++){
+        auto gradient = gradients[i];
+        auto pullback = pullbacks[i];
+
+        auto next = mem_lam(world, "next_loop", false);
+        auto loop_lam = call_pullbacks(gradient, pullback);
+        current->set_body(world.app(loop_lam, {mem::mem_var(current), next}));
+        current = next;
+    }
+
+    auto exit_arg = mem::replace_mem(mem::mem_var(current), propagate_gradients->var());
+    current->set_body(world.app(arg_pb, exit_arg));
+    return propagate_gradients;
+}
+
 const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     auto& world = app->world();
 
     auto callee = app->callee();
     auto arg    = app->arg();
 
+    callee->type()->dump();
     arg->type()->dump();
+
     auto aug_arg    = augment(arg, f, f_diff);
     auto aug_callee = augment(callee, f, f_diff);
     // auto arg_ppb    = partial_pullback[aug_arg];
@@ -328,10 +451,14 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
             augment(arg,f,f_diff);
         }
         auto arg_pb  = partial_pullback[aug_arg];
+
+        auto return_arg = f->ret_var();
+        if(callee == return_arg){
+            arg_pb = wrap_call_pullbacks(arg, arg_pb);
+        }
+
         auto aug_app = world.app(aug_callee, {aug_arg, arg_pb});
         world.DLOG("Augmented application: {} : {}", aug_app, aug_app->type());
-        // world.debug_dump();
-        // assert_stub(false);
         return aug_app;
     }
 
@@ -346,7 +473,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         // compose fun_pb with argument_pb to get result pb
         // TODO: combine case with cps function case
         auto arg_pb = partial_pullback[aug_arg];
-        assert_stub(arg_pb);
+        assert(arg_pb);
         // fun_pb: out_tan -> arg_tan
         // arg_pb: arg_tan -> fun_tan
         world.DLOG("function pullback: {} : {}", fun_pb, fun_pb->type());
@@ -354,10 +481,10 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         auto res_pb = compose_continuation(arg_pb, fun_pb);
         world.DLOG("result pullback: {} : {}", res_pb, res_pb->type());
         partial_pullback[aug_res] = res_pb;
-        // assert_stub(0);
+        // assert(0);
         world.debug_dump();
-        // assert_stub(0);
-        // R assert_stub(false);
+        // assert(0);
+        // R assert(false);
         return aug_res;
     }
 
@@ -458,7 +585,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         auto aug_app = world.app(aug_callee, {real_aug_args, c1});
         world.DLOG("aug_app: {} : {}", aug_app, aug_app->type());
 
-        // assert_stub(0);
+        // assert(0);
         return aug_app;
     }
 
@@ -470,71 +597,11 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 
     // return def;
 
-    assert_stub(false && "should not be reached");
+    assert(false && "should not be reached");
 }
 
 const Def* AutoDiffEval::augment_lea(const App* lea, Lam* f, Lam* f_diff) {
-    //auto &world = lea->world();
-
-    /*auto [arr_ptr, idx] = lea->arg()->projs<2>();
-
-    auto aug_ptr = augment(arr_ptr, f, f_diff);
-    auto aug_idx = augment(idx, f, f_diff);
-
-    auto aug_arg = augment(lea->arg(), f, f_diff);
-
-    //auto [ptr, idx] = aug_arg->projs<2>();
-    //auto ptr_def = ptr->as<App>();
-
-    auto ptr_ty = lea->type()->as<App>();
-    auto elem_ty = ptr_ty->arg(0);
-
-    auto [arg_ty, ret_pi] = f->type()->doms<2>();
-
-    auto pb_type = pullback_type(elem_ty, arg_ty);
-
-    auto pb_lam = world.nom_lam(pb_type, world.dbg("test"));
-
-    auto pb_arg = pb_lam->var((nat_t)0);
-    auto pb_ret = pb_lam->var((nat_t)1);
-    auto pb_mem = pb_arg->proj(0);
-    auto pb_s = pb_arg->proj(1);
-
-    auto gradient_array = shadow_gradient_array[aug_ptr];
-    auto pullback_array = shadow_pullback_array[aug_ptr];
-
-    const Def* mem = pb_mem;
-    const Def* pb;
-    if(gradient_array){
-        auto gradient_lea = mem::op_lea(gradient_array, aug_idx, world.dbg("gradient_array_lea"));
-        auto [gradient_mem, gradient] = mem::op_load(mem, gradient_lea,  world.dbg("gradient_array_load"))->projs<2>();
-        //auto [pb_s_mem, pb_s] = op_load(gradient_mem, pb_s_ptr)->projs<2>();
-        auto add = core::op(core::wrap::add, core::WMode::none, gradient, pb_s);
-        auto store_mem = mem::op_store(gradient_mem, gradient_lea, add, world.dbg("add_to_gradient") );
-
-        auto default_zero = autodiff_zero(mem, f);
-        pb_lam->set_body(world.app(pb_ret, {default_zero}));
-        pb_lam->set_filter(true);
-
-        pb = pb_lam;
-        mem = store_mem;
-    }else if(pullback_array){
-        auto pullback_lea = mem::op_lea(pullback_array, aug_idx, world.dbg("pullback_lea"));
-        auto [pullback_mem, pullback] = mem::op_load(mem, pullback_lea,  world.dbg("pullback_load"))->projs<2>();
-        mem = pullback_mem;
-        pb = pullback;
-
-        pullback->type()->dump();
-        pullback->type()->dump();
-        //auto [pb_s_mem, pb_s] = op_load(gradient_mem, pb_s_ptr)->projs<2>();
-        //auto add = core::op(core::wrap::add, core::WMode::none, gradient, pb_s);
-        //auto store_mem = mem::op_store(gradient_mem, gradient_lea, add, world.dbg("pullback_store") );
-
-        //mem = store_mem;
-    }*/
-
-
-    //auto zero_ret = world.app(world.ax<zero>(), arg_ty);
+    auto &w = world();
 
     auto [arr_ptr, idx] = lea->arg()->projs<2>();
     auto aug_ptr = augment(arr_ptr, f, f_diff);
@@ -542,91 +609,85 @@ const Def* AutoDiffEval::augment_lea(const App* lea, Lam* f, Lam* f_diff) {
 
     auto aug_lea = mem::op_lea(aug_ptr, aug_idx);
     partial_pullback[aug_lea] = zero_pullback(aug_lea->type(), f);
+
+    auto gradient_array = shadow_gradient_array[aug_ptr];
+    //no pullbacks, just need shadow information for ptr
+    if(gradient_array){
+        shadow_gradient_array[aug_lea] = mem::op_lea(gradient_array, aug_idx, w.dbg("pullback_lea"));
+    }else{
+        auto pullback_array = shadow_pullback_array[aug_ptr];
+        assert(pullback_array);
+        shadow_pullback_array[aug_lea] = mem::op_lea(pullback_array, aug_idx, w.dbg("pullback_lea"));
+    }
+
     return aug_lea;
 }
 
-const Def* AutoDiffEval::augment_load(const App* load, Lam* f, Lam* f_diff) {
-    auto &world = load->world();
-
-    auto [load_mem, load_lea] = load->args<2>();
-
-    auto aug_mem = augment(load_mem, f, f_diff);
-    auto aug_lea = augment(load_lea, f, f_diff);
-
-    auto aug_load = mem::op_load(aug_mem, aug_lea, world.dbg("aug_load"))->as<App>();
-
-    auto [aug_load_mem, aug_load_lea] = aug_load->args<2>();
-    auto [aug_ptr, aug_idx] = aug_load_lea->as<App>()->args<2>();
-    auto ptr_ty = aug_load_lea->type()->as<App>();
-    auto elem_ty = ptr_ty->arg(0);
+Lam* AutoDiffEval::create_gradient_collector(const Def* gradient_lea, Lam* f){
+    auto &w = world();
+    auto elem_ty = match<mem::Ptr>(gradient_lea->type())->arg(0);
     auto [arg_ty, ret_pi] = f->type()->doms<2>();
     auto pb_type = pullback_type(elem_ty, arg_ty);
-    auto pb_lam = world.nom_lam(pb_type, world.dbg("load_pb"));
 
-    auto pb_arg = pb_lam->var((nat_t)0);
-    auto pb_ret = pb_lam->var((nat_t)1);
-    auto pb_mem = pb_arg->proj(0);
-    auto pb_s = pb_arg->proj(1);
+    auto pb_lam = w.nom_lam(pb_type, w.dbg("load_pb"));
+
+    auto [pb_arg, pb_ret] = pb_lam->vars<2>();
+    auto [pb_mem, pb_s] = pb_arg->projs<2>();
+
+    auto [gradient_mem, gradient] = mem::op_load(pb_mem, gradient_lea,  w.dbg("gradient_array_load"))->projs<2>();
+    auto add = core::op(core::wrap::add, core::WMode::none, gradient, pb_s);
+    auto store_mem = mem::op_store(gradient_mem, gradient_lea, add, w.dbg("add_to_gradient") );
+
+    auto default_zero = autodiff_zero(store_mem, f);
+    pb_lam->set_body(w.app(pb_ret, {default_zero}));
+    pb_lam->set_filter(true);
+
+    return pb_lam;
+}
+
+const Def* AutoDiffEval::augment_load(const App* load, Lam* f, Lam* f_diff) {
+    auto &w = world();
+
+    auto [load_mem, load_ptr] = load->args<2>();
+
+    auto aug_mem = augment(load_mem, f, f_diff);
+    auto aug_ptr = augment(load_ptr, f, f_diff);
+
+    auto aug_load = mem::op_load(aug_mem, aug_ptr, w.dbg("aug_load"))->as<App>();
+
+    auto aug_load_mem = aug_load->arg(1);
 
     auto gradient_array = shadow_gradient_array[aug_ptr];
-    auto pullback_array = shadow_pullback_array[aug_ptr];
-
-    const Def* mem = pb_mem;
-    const Def* pb;
     if(gradient_array){
-        auto gradient_lea = mem::op_lea(gradient_array, aug_idx, world.dbg("gradient_array_lea"));
-        auto [gradient_mem, gradient] = mem::op_load(mem, gradient_lea,  world.dbg("gradient_array_load"))->projs<2>();
-        //auto [pb_s_mem, pb_s] = op_load(gradient_mem, pb_s_ptr)->projs<2>();
-        auto add = core::op(core::wrap::add, core::WMode::none, gradient, pb_s);
-        auto store_mem = mem::op_store(gradient_mem, gradient_lea, add, world.dbg("add_to_gradient") );
-
-        auto default_zero = autodiff_zero(store_mem, f);
-        pb_lam->set_body(world.app(pb_ret, {default_zero}));
-        pb_lam->set_filter(true);
-
-        pb = pb_lam;
-        mem = store_mem;
-    }else if(pullback_array){
-        auto pullback_lea = mem::op_lea(pullback_array, aug_idx, world.dbg("pullback_lea"));
-        auto [pullback_mem, pullback] = mem::op_load(mem, pullback_lea,  world.dbg("pullback_load"))->projs<2>();
-        mem = pullback_mem;
-        pb = pullback;
+        //for arrays with gradient array instead of loading pullbacks 
+        //we can specify a continuation which will add the gradient to the gradient array
+        partial_pullback[aug_load] = create_gradient_collector(gradient_array, f);
+        return aug_load;
+    }else{
+        //load pullback from shadow array
+        auto pullback_ptr = shadow_pullback_array[aug_ptr];
+        assert(pullback_ptr);
+        auto [pullback_mem, pullback] = mem::op_load(aug_load_mem, pullback_ptr,  w.dbg("pullback_load"))->projs<2>();
+        partial_pullback[aug_load] = pullback;
+        return w.tuple({pullback_mem, aug_load});
     }
-
-    partial_pullback[aug_load] = pb;
-
-    return aug_load;
 }
 
 const Def* AutoDiffEval::augment_store(const App* store, Lam* f, Lam* f_diff) {
     auto &world = store->world();
 
     auto aug_arg = augment(store->arg(), f, f_diff);
-    auto [aug_mem, aug_lea, aug_val] = aug_arg->projs<3>();
+    auto [aug_mem, aug_ptr, aug_val] = aug_arg->projs<3>();
 
-
-    auto lea_app = aug_lea->as<App>();
-    auto [lea_ptr, lea_idx] = lea_app->args<2>();
-    
-    auto shadow_pb = shadow_pullback_array[lea_ptr];
+    auto shadow_pb_ptr = shadow_pullback_array[aug_ptr];
 
     auto pb = partial_pullback[aug_val];
-    auto pb_lea = mem::op_lea(shadow_pb, lea_idx);
-    auto pb_store = mem::op_store(aug_mem, pb_lea, pb);
-
-    auto aug_store = mem::op_store(pb_store, aug_lea, aug_val);
-
+    auto pb_store = mem::op_store(aug_mem, shadow_pb_ptr, pb);
+    auto aug_store = mem::op_store(pb_store, aug_ptr, aug_val);
     return aug_store;
 }
 
-const Def* AutoDiffEval::augment_malloc(const App* malloc, Lam* f, Lam* f_diff) {
 
-    auto aug_arg = augment(malloc->arg(), f, f_diff);
-
-    malloc->dump();
-    malloc->dump();
-    return malloc;
-}
 
 const Def* AutoDiffEval::zero_pullback(const Def* domain, Lam* f) {
     const Def* A = f_arg_ty;
@@ -646,7 +707,6 @@ const Def* AutoDiffEval::get_pullback(const Def* op, Lam* f){
     return pb;
 }
 
-
 const Def* AutoDiffEval::augment_alloc(const App* alloc, Lam* f, Lam* f_diff) {
     auto &world = alloc->world();
     auto aug_mem = augment(alloc->arg(0_s), f, f_diff);
@@ -657,7 +717,7 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc, Lam* f, Lam* f_diff) {
     auto [alloc_mem, alloc_ptr] = mem::op_alloc(type, aug_mem)->projs<2>();
 
     auto pb_ty = hoa(type, f->dom(0_s));
-    auto [alloc_mem_2, pullback_ptr] = mem::op_malloc(pb_ty, alloc_mem, world.dbg("gradient_arr"))->projs<2>();
+    auto [alloc_mem_2, pullback_ptr] = mem::op_malloc(pb_ty, alloc_mem, world.dbg(alloc->name() + "_pullback_alloc_arr"))->projs<2>();
     shadow_pullback_array[alloc_ptr] = pullback_ptr;
     auto tup = world.tuple({alloc_mem_2, alloc_ptr});
 
@@ -665,9 +725,15 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc, Lam* f, Lam* f_diff) {
     partial_pullback[alloc_mem_2] = zero_pullback(alloc_mem_2->type(), f);
     partial_pullback[pullback_ptr] = zero_pullback(pullback_ptr->type(), f);
 
-    alloc->dump();
-    alloc->dump();
     return tup;
+}
+
+const Def* AutoDiffEval::augment_malloc(const App* malloc, Lam* f, Lam* f_diff) {
+    auto aug_arg = augment(malloc->arg(), f, f_diff);
+    //TODO: not yet implemented
+    malloc->dump();
+    malloc->dump();
+    return malloc;
 }
 
 const Def* AutoDiffEval::augment_bitcast(const App* bitcast, Lam* f, Lam* f_diff) {
@@ -742,7 +808,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
         return augment_lam(lam, f, f_diff);
     } else if (auto lam = def->isa<Lam>()) {
         world.ELOG("Augment lambda: {}", lam);
-        assert_stub(false && "can not handle non-nominal lambdas");
+        assert(false && "can not handle non-nominal lambdas");
     }
 
     // constants
@@ -784,7 +850,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
             world.ELOG("derivation not found: {}", diff_name);
             auto expected_type = autodiff_type_fun(ax->type());
             world.ELOG("expected: {} : {}", diff_name, expected_type);
-            assert_stub(false && "unhandled axiom");
+            assert(false && "unhandled axiom");
         }
         // TODO: why does this cause a depth error?
         // if (auto diff_lam = diff_fun->isa_nom<Lam>()) { diff_lam->set_filter(true); }
@@ -799,7 +865,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
 
     world.ELOG("did not expect to augment: {} : {}", def, def->type());
     world.ELOG("node: {}", def->node_name());
-    assert_stub(false && "augment not implemented on this def");
+    assert(false && "augment not implemented on this def");
 }
 
 } // namespace thorin::autodiff

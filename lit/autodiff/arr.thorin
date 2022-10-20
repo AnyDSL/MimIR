@@ -78,3 +78,14 @@
 // CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (i32)] = {
 // CHECK-DAG: return_[[retAppId:[_0-9]*]]: ⊥:★ = return_[[returnId]] _[[returnEtaVarId]];
 // CHECK-DAG: return_[[retAppId]]
+
+
+:4294967295: error: cannot pass argument '(0:(.Idx 4294967296), 100:(.Idx 4294967296), 1:(.Idx 4294967296), _833003, body_call_pullbacks_832945, end_call_pullbacks_832903)' of type
+
+'[(.Idx 4294967296), (.Idx 4294967296), (.Idx 4294967296), %mem.M, .Cn [(.Idx 4294967296), %mem.M, .Cn %mem.M], .Cn [%mem.M, .Cn %mem.M]]'
+
+to '%affine.For (4294967296, 1, %mem.M)'
+
+of domain
+
+'[(.Idx 4294967296), (.Idx 4294967296), (.Idx 4294967296), %mem.M, .Cn [(.Idx 4294967296), %mem.M, .Cn %mem.M], .Cn %mem.M]'

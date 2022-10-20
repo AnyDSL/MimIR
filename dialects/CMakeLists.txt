@@ -26,6 +26,8 @@ add_thorin_dialect(autodiff
         autodiff/auxiliary/autodiff_rewrite_inner.cpp
         autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
         autodiff/normalizers.cpp
+        affine/passes/lower_for.cpp
+        mem/passes/rw/reshape.cpp
     DEPENDS
         mem
         core
@@ -55,9 +57,8 @@ add_thorin_dialect(clos
         clos/phase/clos_conv.h
         clos/phase/lower_typed_clos.cpp
         clos/phase/lower_typed_clos.h
-        clos/phase/higher_order_scalerize.cpp
-        clos/phase/higher_order_scalerize.h
         mem/passes/fp/copy_prop.cpp
+        mem/passes/rw/reshape.cpp
     DEPENDS
         mem
         affine
@@ -115,6 +116,8 @@ add_thorin_dialect(mem
         mem/passes/rw/alloc2malloc.h
         mem/passes/rw/remem_elim.cpp
         mem/passes/rw/remem_elim.h
+        mem/passes/rw/reshape.cpp
+        mem/passes/rw/reshape.h
     HEADER_DEPENDS
         core
     INSTALL
