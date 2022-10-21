@@ -261,9 +261,9 @@ let multiiter f n S:=
 // .ax %matrix.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %matrix.Mat n S P, normalize_parallel_map;
 // .ax %matrix.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: T -> P ] -> %matrix.Mat n S P, normalize_meta_map;
 // .ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> [%matrix.Mat (2,(m, k),%Real w), %matrix.Mat (2,(k, l),%Real w)] -> %matrix.Mat (2,(m, l),%Real w), normalize_prod;
-.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> [%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)] -> %matrix.Mat (2,(m, l),%core.Real w), normalize_prod;
+.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> [%mem.M,%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)] -> [%mem.M,%matrix.Mat (2,(m, l),%core.Real w)], normalize_prod;
 .ax %matrix.transpose: Π [[k:.Nat, l:.Nat], T: *] -> 
-    %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_transpose;
+    [%mem.M,%matrix.Mat (2,(k,l),T)] -> [%mem.M,%matrix.Mat (2,(l,k),T)], normalize_transpose;
 
 // .ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat (n,S,T)] -> [%mem.M,T];
 .ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», w:.Nat] -> [%mem.M,%matrix.Mat (n,S,%core.Real w)] -> [%mem.M,%core.Real w];
