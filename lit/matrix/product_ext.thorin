@@ -17,6 +17,10 @@
 
 // flat by scalerize
 // Mat (n,S,T) => Ptr(<S1...<Sn, T>...>) => T*
+
+// TODO: generalize over w such that it generates a declaration specialized for Real w
+// .lam ![w:.Nat] -> ... = {.cn ...} ?
+// TODO: can be generalize to keep the original type scheme? (How handle m,k,l curried?)
 .cn .extern prod_extern [
     [
         %mem.M, 
