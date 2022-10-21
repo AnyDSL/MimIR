@@ -1,6 +1,8 @@
 # programs=('./loopDiff' './loopDiff2')
-programs=('./loopDiff' './loopDiff2' './loopDiff_alloca' './loopDiff2_alloca')
-iterations=100
+# programs=('./loopDiff' './loopDiff2' './loopDiff_alloca' './loopDiff2_alloca')
+# iterations=100
+programs=('./loopDiff_large' './loopDiff2_large')
+iterations=10
 
 echo "Averaging over $iterations iterations"
 
