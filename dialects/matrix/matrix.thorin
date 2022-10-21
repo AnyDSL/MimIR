@@ -261,7 +261,8 @@ let multiiter f n S:=
 // .ax %matrix.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %matrix.Mat n S P, normalize_parallel_map;
 // .ax %matrix.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: T -> P ] -> %matrix.Mat n S P, normalize_meta_map;
 // .ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> [%matrix.Mat (2,(m, k),%Real w), %matrix.Mat (2,(k, l),%Real w)] -> %matrix.Mat (2,(m, l),%Real w), normalize_prod;
-.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> [%mem.M,%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)] -> [%mem.M,%matrix.Mat (2,(m, l),%core.Real w)], normalize_prod;
+.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> 
+    [%mem.M,%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)] -> [%mem.M,%matrix.Mat (2,(m, l),%core.Real w)], normalize_prod;
 .ax %matrix.transpose: Π [[k:.Nat, l:.Nat], T: *] -> 
     [%mem.M,%matrix.Mat (2,(k,l),T)] -> [%mem.M,%matrix.Mat (2,(l,k),T)], normalize_transpose;
 
@@ -413,3 +414,54 @@ Not necessarily needed:
 //     };
 //     matrix_map_unfold_curry
 // };
+
+
+.lam .extern internal_mapRed_matrix_prod 
+    ![m: .Nat, k: .Nat, l: .Nat, w: .Nat] ->
+    (.Cn[
+        [%mem.M,%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)],
+        .Cn[%mem.M,%matrix.Mat (2,(m, l),%core.Real w)]
+    ]) 
+    = {
+    .let R = %core.Real w;
+
+    .cn prod_comb [[mem:%mem.M, acc:R, [a:R, b:R]], ret:.Cn[%mem.M,R]] = {
+        .let v = %core.rop.mul (0, w) (a,b);
+
+        // reduce op = addition
+        .let new_acc = %core.rop.add (0, w) (acc,v);
+        ret (mem, new_acc)
+    };
+    .cn inner_matrix_prod 
+        ![
+            [
+                mem:%mem.M,
+                M:%matrix.Mat (2,(m, k),R), 
+                N: %matrix.Mat (2,(k, l),R)
+            ],
+            ret: .Cn[%mem.M,%matrix.Mat (2,(m, l),R)]
+        ]
+    = {
+        .let zero_64 = 0.0:(%core.Real 64);
+        .let zero_real = %core.conv.r2r (w, 64) zero_64;
+        ret (
+            %matrix.mapReduce
+                (2, (m, l), R, 
+                    2,
+                    (2, 2),
+                    (R,R),
+                    ((m,k),(k,l))
+                )
+                (
+                    mem,
+                    zero_real,
+                    prod_comb,
+                    (
+                        ((0,2), M),
+                        ((2,1), N)
+                    )
+                )
+        )
+    };
+    inner_matrix_prod
+};
