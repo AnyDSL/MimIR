@@ -21,8 +21,8 @@ var searchData=
   ['fnc_5fas_5flam_18',['fnc_as_lam',['../classthorin_1_1clos_1_1ClosLit.html#a51a4f1587fa905b50da0734b0c98a2f1',1,'thorin::clos::ClosLit']]],
   ['fnc_5ftype_19',['fnc_type',['../classthorin_1_1clos_1_1ClosLit.html#ac87fb989d17adc3af4c553eebebaf3aa',1,'thorin::clos::ClosLit']]],
   ['fold_20',['fold',['../namespacethorin_1_1core.html#a232565743ea1d76d00d53c647688d401',1,'thorin::core']]],
-  ['fold_5fconv_21',['fold_conv',['../namespacethorin_1_1core.html#a9d7242587c59b68f439c9a7710e1ed3d',1,'thorin::core']]],
-  ['fold_5fconv_22',['fold_Conv',['../namespacethorin.html#a9936b95c92a3cbd2712e329d3af5f0c7',1,'thorin']]],
+  ['fold_5fconv_21',['fold_Conv',['../namespacethorin.html#a9936b95c92a3cbd2712e329d3af5f0c7',1,'thorin']]],
+  ['fold_5fconv_22',['fold_conv',['../namespacethorin_1_1core.html#a9d7242587c59b68f439c9a7710e1ed3d',1,'thorin::core']]],
   ['force_23',['force',['../namespacethorin.html#a26d5e95b9100626e61154373ab908bd5',1,'thorin::force(const Def *def)'],['../namespacethorin.html#ad9f61ede0f76bb937047d9c1c5ee8a6c',1,'thorin::force(Id id, const Def *def)']]],
   ['fppass_24',['FPPass',['../classthorin_1_1FPPass.html#a18f70226c4e61e8eaa53233dd312f443',1,'thorin::FPPass']]],
   ['fpphase_25',['FPPhase',['../classthorin_1_1FPPhase.html#a061743c95a236da5759c6eaac3944173',1,'thorin::FPPhase']]],
@@ -33,5 +33,5 @@ var searchData=
   ['freeze_30',['freeze',['../classthorin_1_1World.html#a6ef8fb413467aba06af8825a891ec049',1,'thorin::World']]],
   ['freezer_31',['Freezer',['../structthorin_1_1World_1_1Freezer.html#a4c9b6bc7c31051438b83fa559e3b5fab',1,'thorin::World::Freezer']]],
   ['from_5fouter_5fscope_32',['from_outer_scope',['../classthorin_1_1clos_1_1ClosConvPrep.html#adce4582f944a9344eabb64b5930790b8',1,'thorin::clos::ClosConvPrep::from_outer_scope(const Def *lam)'],['../classthorin_1_1clos_1_1ClosConvPrep.html#ab6ae151a1cfaf58b208be8b28cd18e34',1,'thorin::clos::ClosConvPrep::from_outer_scope(Lam *lam)']]],
-  ['front_33',['front',['../classthorin_1_1unique__queue.html#aa5cb6efdf0387545a73e968d076f56d0',1,'thorin::unique_queue::front()'],['../classthorin_1_1Array.html#aa820fca7c6f7c785f1bfa18786a8ff68',1,'thorin::Array::front() const'],['../classthorin_1_1Array.html#ad8561aef9d4eb3c6dee457b9ae4a0d05',1,'thorin::Array::front()'],['../classthorin_1_1ArrayRef.html#ae90aa33866ab681469b7e0ec8a68ca98',1,'thorin::ArrayRef::front()']]]
+  ['front_33',['front',['../classthorin_1_1unique__queue.html#aa5cb6efdf0387545a73e968d076f56d0',1,'thorin::unique_queue::front()'],['../classthorin_1_1Array.html#aa820fca7c6f7c785f1bfa18786a8ff68',1,'thorin::Array::front() const'],['../classthorin_1_1Array.html#ad8561aef9d4eb3c6dee457b9ae4a0d05',1,'thorin::Array::front()'],['../classthorin_1_1Span.html#a90dba53efb6ff6c9a1f9887985d39541',1,'thorin::Span::front()']]]
 ];

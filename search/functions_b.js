@@ -26,7 +26,7 @@ var searchData=
   ['lit_5funiv_5f0_23',['lit_univ_0',['../classthorin_1_1World.html#a5f7f815be2001a8b6765a2d6c1628f48',1,'thorin::World']]],
   ['lit_5funiv_5f1_24',['lit_univ_1',['../classthorin_1_1World.html#adc1e909d71e102ae69ec4e28d6628f12',1,'thorin::World']]],
   ['lnprint_25',['lnprint',['../classthorin_1_1Tab.html#aca529771d167c2e1ba539a41e06ad71c',1,'thorin::Tab']]],
-  ['load_26',['load',['../classthorin_1_1Dialect.html#ab687abd995355cf570a212e8f47aebbb',1,'thorin::Dialect']]],
+  ['load_26',['load',['../classthorin_1_1Dialect.html#ae3c2b785b35ead53ad4125dde890d06e',1,'thorin::Dialect']]],
   ['loc_27',['loc',['../classthorin_1_1fe_1_1Lexer.html#aad3939a9b3826459683fb88bbfc42331',1,'thorin::fe::Lexer::loc()'],['../classthorin_1_1Sym.html#ac289dab975200929dd4a4fdc5697a34e',1,'thorin::Sym::loc()'],['../classthorin_1_1Def.html#aaa260e29035d724e0f5c4286b93c5f0d',1,'thorin::Def::loc()']]],
   ['loc_28',['Loc',['../structthorin_1_1Loc.html#a9e1b49d1cdbecc6bcc202755d45fc74c',1,'thorin::Loc::Loc(const Def *dbg)'],['../structthorin_1_1Loc.html#ab13ed0aacfef4c36a607fa4c2d5e444c',1,'thorin::Loc::Loc(std::string_view file, Pos begin, Pos finis)']]],
   ['loc_29',['loc',['../classthorin_1_1fe_1_1AST.html#aa21d4d8a54478d28d5fbb2fbcc06618c',1,'thorin::fe::AST::loc()'],['../classthorin_1_1fe_1_1Tok.html#a711173d18041d0aecbee725796ae9322',1,'thorin::fe::Tok::loc()']]],

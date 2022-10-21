@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['l_0',['l',['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dda2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()'],['../namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()']]],
+  ['l_0',['l',['../namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()'],['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dda2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()']]],
   ['l_5fr_1',['L_r',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aff4732a008160f463364cd4285d4bc9f',1,'thorin::fe::Tok']]],
   ['l_5fs_2',['L_s',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a210614a1117e89a255b9d0b39516b604',1,'thorin::fe::Tok']]],
   ['l_5fu_3',['L_u',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a7e6dfe77ddaaa4a0c994660de2d38ead',1,'thorin::fe::Tok']]],
@@ -27,8 +27,8 @@ var searchData=
   ['lea_24',['lea',['../namespacethorin_1_1mem.html#ad2d2b99586c12a6da32e2aec650a018a',1,'thorin::mem']]],
   ['leaf_25',['Leaf',['../classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cbac3b5e1f7de11d645fb1da6c5415b1fa5',1,'thorin::LoopTree::Base::Leaf()'],['../classthorin_1_1LoopTreeBuilder.html#ac690cf3a399ddce6920cc5cc7449a5d3',1,'thorin::LoopTreeBuilder::Leaf()'],['../classthorin_1_1LoopTree_1_1Leaf.html',1,'thorin::LoopTree&lt; forward &gt;::Leaf']]],
   ['least_5fcommon_5fancestor_26',['least_common_ancestor',['../classthorin_1_1DomTreeBase.html#a8d66dda27fbfe5be9a90a5f65df791a7',1,'thorin::DomTreeBase']]],
-  ['level_27',['Level',['../structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a',1,'thorin::Log']]],
-  ['level_28',['level',['../classthorin_1_1Type.html#a1a0b11f4a53c4e501669c5bfa1531d76',1,'thorin::Type::level()'],['../structthorin_1_1Log.html#a63ea2999521567a43b28f00081cd1e82',1,'thorin::Log::level()']]],
+  ['level_27',['level',['../classthorin_1_1Type.html#a1a0b11f4a53c4e501669c5bfa1531d76',1,'thorin::Type::level()'],['../structthorin_1_1Log.html#a63ea2999521567a43b28f00081cd1e82',1,'thorin::Log::level()']]],
+  ['level_28',['Level',['../structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1a',1,'thorin::Log']]],
   ['level2acro_29',['level2acro',['../structthorin_1_1Log.html#a5ee67d670442fd8476290292f0f4a738',1,'thorin::Log']]],
   ['level2color_30',['level2color',['../structthorin_1_1Log.html#aa0b95355e12aa74f6bb27a0079fcfca2',1,'thorin::Log']]],
   ['level_5ft_31',['level_t',['../namespacethorin.html#ae2b9a3abaa277c7852b0f465240b0dd7',1,'thorin']]],
@@ -57,7 +57,7 @@ var searchData=
   ['ll_2ecpp_54',['ll.cpp',['../ll_8cpp.html',1,'']]],
   ['ll_2eh_55',['ll.h',['../ll_8h.html',1,'']]],
   ['lnprint_56',['lnprint',['../classthorin_1_1Tab.html#aca529771d167c2e1ba539a41e06ad71c',1,'thorin::Tab']]],
-  ['load_57',['load',['../namespacethorin_1_1mem.html#adb2bf49c45c2574f69f55e237f3f2e8f',1,'thorin::mem::load()'],['../classthorin_1_1Dialect.html#ab687abd995355cf570a212e8f47aebbb',1,'thorin::Dialect::load()']]],
+  ['load_57',['load',['../namespacethorin_1_1mem.html#adb2bf49c45c2574f69f55e237f3f2e8f',1,'thorin::mem::load()'],['../classthorin_1_1Dialect.html#ae3c2b785b35ead53ad4125dde890d06e',1,'thorin::Dialect::load()']]],
   ['loc_58',['Loc',['../structthorin_1_1Loc.html#a9e1b49d1cdbecc6bcc202755d45fc74c',1,'thorin::Loc']]],
   ['loc_59',['loc',['../classthorin_1_1Debug.html#a557dfaa075cb4f02e652644cd5fc07a7',1,'thorin::Debug::loc()'],['../classthorin_1_1Sym.html#ac289dab975200929dd4a4fdc5697a34e',1,'thorin::Sym::loc()'],['../classthorin_1_1Def.html#aaa260e29035d724e0f5c4286b93c5f0d',1,'thorin::Def::loc()'],['../classthorin_1_1fe_1_1AST.html#aa21d4d8a54478d28d5fbb2fbcc06618c',1,'thorin::fe::AST::loc()'],['../classthorin_1_1fe_1_1Lexer.html#aad3939a9b3826459683fb88bbfc42331',1,'thorin::fe::Lexer::loc()'],['../classthorin_1_1fe_1_1Tok.html#a711173d18041d0aecbee725796ae9322',1,'thorin::fe::Tok::loc()']]],
   ['loc_60',['Loc',['../structthorin_1_1Loc.html#a2801619c99a72f74d25ed4542a66be6b',1,'thorin::Loc::Loc()=default'],['../structthorin_1_1Loc.html#ab13ed0aacfef4c36a607fa4c2d5e444c',1,'thorin::Loc::Loc(std::string_view file, Pos begin, Pos finis)'],['../structthorin_1_1Loc.html#ab3498f210f94e517178f93269b549e97',1,'thorin::Loc::Loc(std::string_view file, Pos pos)'],['../structthorin_1_1Loc.html',1,'thorin::Loc']]],
