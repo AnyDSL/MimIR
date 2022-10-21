@@ -45,18 +45,17 @@ std::optional<const Def*> internal_function_of_axiom(const Axiom* axiom, const D
 
 const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
     auto& world = def->world();
-    // assert(0);
 
-    if (auto mapProd_ax = match<matrix::prod>(def)) {
-        world.DLOG("lower product: {}", mapProd_ax);
-        auto args      = mapProd_ax->arg();
-        auto meta_args = mapProd_ax->callee()->as<App>()->arg();
-
-        auto axiom = mapProd_ax->axiom();
-
-        if (auto internal_fun = internal_function_of_axiom(axiom, meta_args, args)) {
-            world.DLOG("  internal_fun: {}", *internal_fun);
-            return *internal_fun;
+    if (auto outer_app = def->isa<App>()) {
+        if (auto inner_app = outer_app->callee()->isa<App>()) {
+            if (auto axiom = inner_app->callee()->isa<Axiom>()) {
+                // world.DLOG("try to lower axiom: {}", def);
+                if (auto internal_function = internal_function_of_axiom(axiom, inner_app->arg(), outer_app->arg())) {
+                    world.DLOG("lower matrix axiom {} in {} : {}", axiom->name(), def, def->type());
+                    world.DLOG("lower matrix axiom using: {} : {}", *internal_function, (*internal_function)->type());
+                    return *internal_function;
+                }
+            }
         }
     }
 
