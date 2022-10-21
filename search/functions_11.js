@@ -3,9 +3,9 @@ var searchData=
   ['scalerize_0',['Scalerize',['../classthorin_1_1Scalerize.html#a2ecdf7f702b7a629ac8e7c7cf70e6e78',1,'thorin::Scalerize']]],
   ['schedule_1',['schedule',['../namespacethorin.html#a86accd63c7f340ac15fcfb923f9ff462',1,'thorin']]],
   ['scheduler_2',['Scheduler',['../classthorin_1_1Scheduler.html#aea097a0893dca330de7a5713bbcbe937',1,'thorin::Scheduler::Scheduler()=default'],['../classthorin_1_1Scheduler.html#a637466e564bdec5a37e310fb142db773',1,'thorin::Scheduler::Scheduler(const Scope &amp;)']]],
-  ['scope_3',['Scope',['../classthorin_1_1Scope.html#ad242537b0a05480bfb15dbac4d211900',1,'thorin::Scope']]],
-  ['scope_4',['scope',['../classthorin_1_1CFA.html#ab954b6513f675c18fe8cd6523c046a48',1,'thorin::CFA::scope()'],['../classthorin_1_1Scheduler.html#a3337cd18d5fe2a3a102a3fc2aa950059',1,'thorin::Scheduler::scope()'],['../classthorin_1_1ScopePhase.html#abff810010f44ad3c53ac2e74e9f2f308',1,'thorin::ScopePhase::scope()'],['../classthorin_1_1clos_1_1ClosConvPrep.html#ab697e909609a7070023344d9a05d85ec',1,'thorin::clos::ClosConvPrep::scope()']]],
-  ['scope_5',['Scope',['../classthorin_1_1Scope.html#a1c6b1b6b8394e9f5f8a5d6d99874e324',1,'thorin::Scope']]],
+  ['scope_3',['scope',['../classthorin_1_1Scheduler.html#a3337cd18d5fe2a3a102a3fc2aa950059',1,'thorin::Scheduler::scope()'],['../classthorin_1_1ScopePhase.html#abff810010f44ad3c53ac2e74e9f2f308',1,'thorin::ScopePhase::scope()'],['../classthorin_1_1clos_1_1ClosConvPrep.html#ab697e909609a7070023344d9a05d85ec',1,'thorin::clos::ClosConvPrep::scope()']]],
+  ['scope_4',['Scope',['../classthorin_1_1Scope.html#a1c6b1b6b8394e9f5f8a5d6d99874e324',1,'thorin::Scope::Scope(const Scope &amp;)=delete'],['../classthorin_1_1Scope.html#ad242537b0a05480bfb15dbac4d211900',1,'thorin::Scope::Scope(Def *entry)']]],
+  ['scope_5',['scope',['../classthorin_1_1CFA.html#ab954b6513f675c18fe8cd6523c046a48',1,'thorin::CFA']]],
   ['scopephase_6',['ScopePhase',['../classthorin_1_1ScopePhase.html#a7e4121deb0093a19946fd920743c4bc8',1,'thorin::ScopePhase']]],
   ['scoperewriter_7',['ScopeRewriter',['../classthorin_1_1ScopeRewriter.html#aea90b2a111c66c7f32f5f921e38ec7d4',1,'thorin::ScopeRewriter']]],
   ['scopes_8',['Scopes',['../classthorin_1_1fe_1_1Scopes.html#a501e60072aa501e37cf79e48d14e86fd',1,'thorin::fe::Scopes']]],
@@ -50,7 +50,7 @@ var searchData=
   ['sub_5fview_47',['sub_view',['../namespacethorin.html#a1e02df3b598c738a2864a076f4d9002c',1,'thorin']]],
   ['succs_48',['succs',['../classthorin_1_1CFG.html#ada7df7890bc4099a7b87e0c63b9ce975',1,'thorin::CFG::succs()'],['../classthorin_1_1DomFrontierBase.html#a2aec5566b6c1697071902085bb4b9803',1,'thorin::DomFrontierBase::succs()'],['../classthorin_1_1CFG.html#a4ab2c62c5cc4cbc2572c0dc7009b2213',1,'thorin::CFG::succs()']]],
   ['swap_49',['swap',['../classthorin_1_1BitSet.html#aa577861df219851e6060c6fa2aa376d8',1,'thorin::BitSet::swap()'],['../classthorin_1_1fe_1_1Scopes.html#a98afa47cc8d17a4fac0d54772e910373',1,'thorin::fe::Scopes::swap()']]],
-  ['sym_50',['sym',['../classthorin_1_1World.html#a7084a3cd63ce19dcf8e52a18c6bb15fb',1,'thorin::World::sym()'],['../classthorin_1_1fe_1_1Tok.html#a4d185bfbdb0361210067d6d7916a4b62',1,'thorin::fe::Tok::sym()'],['../classthorin_1_1fe_1_1Ptrn.html#ae8f34dd5c0036196432bbac817c01540',1,'thorin::fe::Ptrn::sym()']]],
-  ['sym_51',['Sym',['../classthorin_1_1Sym.html#af51b2e0705b83edd3bed0f64129cd9f5',1,'thorin::Sym::Sym(const Def *str, const Def *loc)'],['../classthorin_1_1Sym.html#a4835a8e93b67876f72e81d03c8b2ec43',1,'thorin::Sym::Sym()']]],
+  ['sym_50',['Sym',['../classthorin_1_1Sym.html#af51b2e0705b83edd3bed0f64129cd9f5',1,'thorin::Sym::Sym(const Def *str, const Def *loc)'],['../classthorin_1_1Sym.html#a4835a8e93b67876f72e81d03c8b2ec43',1,'thorin::Sym::Sym()']]],
+  ['sym_51',['sym',['../classthorin_1_1World.html#a7084a3cd63ce19dcf8e52a18c6bb15fb',1,'thorin::World::sym()'],['../classthorin_1_1fe_1_1Tok.html#a4d185bfbdb0361210067d6d7916a4b62',1,'thorin::fe::Tok::sym()'],['../classthorin_1_1fe_1_1Ptrn.html#ae8f34dd5c0036196432bbac817c01540',1,'thorin::fe::Ptrn::sym()']]],
   ['system_52',['system',['../namespacethorin_1_1sys.html#a932508f0d5bde98eb7127e4f2533776f',1,'thorin::sys']]]
 ];

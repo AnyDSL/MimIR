@@ -1,9 +1,5 @@
 var NAVTREEINDEX20 =
 {
-"namespacethorin_1_1mem.html#a9d4ea82eace58b5dd84188748fc02545":[3,0,0,12,52],
-"namespacethorin_1_1mem.html#a9d8294210f976d06f74b8e0d13bf1cd7":[3,0,0,12,34],
-"namespacethorin_1_1mem.html#a9ec9680517a3eb77fd256886e1866f05":[3,0,0,12,71],
-"namespacethorin_1_1mem.html#aa29b8d113c4fcec681990bb0209b4a5f":[3,0,0,12,83],
 "namespacethorin_1_1mem.html#aa2a8e587713166f6985ba3350d831662":[3,0,0,12,30],
 "namespacethorin_1_1mem.html#aa5d647565afc653cae8c79ed4fad7fa1":[3,0,0,12,40],
 "namespacethorin_1_1mem.html#aa9cf943c64ecb6efff79939fdd26ca74":[3,0,0,12,70],
@@ -249,5 +245,9 @@ var NAVTREEINDEX20 =
 "refly_2normalizers_8cpp.html#aad095ca0ef86913c7ce8d931ff816683":[6,0,1,7,1,4],
 "refly_2normalizers_8cpp.html#ac3810123d87bbdcb09c083de4eaeeee4":[6,0,1,7,1,3],
 "refly_2normalizers_8cpp.html#adfade3a7a14a96ccdc7c38ce55ebc972":[6,0,1,7,1,1],
-"refly_2normalizers_8cpp.html#aed5ff18498852f85e913f23724f1b383":[6,0,1,7,1,6]
+"refly_2normalizers_8cpp.html#aed5ff18498852f85e913f23724f1b383":[6,0,1,7,1,6],
+"refly_2normalizers_8cpp.html#afcef2ec7eb1bbff00c0cebb1edded628":[6,0,1,7,1,5],
+"refly_2normalizers_8cpp_source.html":[6,0,1,7,1],
+"refly_8cpp.html":[6,0,1,7,2],
+"refly_8cpp.html#a2c21eaacd70577467e5becbb4bab374a":[6,0,1,7,2,3]
 };
