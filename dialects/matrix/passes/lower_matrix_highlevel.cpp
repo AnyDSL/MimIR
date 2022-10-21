@@ -46,6 +46,23 @@ std::optional<const Def*> internal_function_of_axiom(const Axiom* axiom, const D
 const Def* LowerMatrixHighLevelMapRed::rewrite_(const Def* def) {
     auto& world = def->world();
 
+    if (auto mat_ax = match<matrix::prod>(def)) {
+        auto args      = mat_ax->arg();
+        auto meta_args = mat_ax->callee()->as<App>()->arg();
+
+        auto [m, k, l, w] = meta_args->projs<4>();
+        auto [mem, M, N]  = args->projs<3>();
+
+        auto w_lit = w->isa<Lit>();
+
+        auto ext_fun = world.lookup("extern_matrix_prod");
+        if (ext_fun && (w_lit && w_lit->get<u64>() == 64)) {
+            auto ds_fun  = direct::op_cps2ds_dep(ext_fun);
+            auto fun_app = world.app(ds_fun, {mem, m, k, l, M, N});
+            return fun_app;
+        }
+    }
+
     if (auto outer_app = def->isa<App>()) {
         if (auto inner_app = outer_app->callee()->isa<App>()) {
             if (auto axiom = inner_app->callee()->isa<Axiom>()) {
