@@ -5,7 +5,7 @@ add_thorin_dialect(affine
         affine/passes/lower_for.cpp
         affine/passes/lower_for.h
     DEPENDS
-        core
+        mem
     INSTALL
 )
 
@@ -67,8 +67,10 @@ add_thorin_dialect(clos
         clos/phase/clos_conv.h
         clos/phase/lower_typed_clos.cpp
         clos/phase/lower_typed_clos.h
+        mem/passes/fp/copy_prop.cpp
     DEPENDS
         mem
+        affine
     HEADER_DEPENDS
         core
     INSTALL
@@ -127,8 +129,12 @@ add_thorin_dialect(matrix
         matrix/matrix.cpp
         matrix/matrix.h
         matrix/normalizers.cpp
-        matrix/passes/lower_matrix.cpp
-        matrix/passes/lower_matrix.h
+        matrix/passes/lower_matrix_highlevel.cpp
+        matrix/passes/lower_matrix_highlevel.h
+        matrix/passes/lower_matrix_mediumlevel.cpp
+        matrix/passes/lower_matrix_mediumlevel.h
+        matrix/passes/lower_matrix_lowlevel.cpp
+        matrix/passes/lower_matrix_lowlevel.h
     DEPENDS
         direct
         affine
