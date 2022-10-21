@@ -15,13 +15,15 @@ namespace thorin::autodiff {
 // TODO: maybe use template (https://codereview.stackexchange.com/questions/141961/memoization-via-template) to memoize
 const Def* AutoDiffEval::augment(const Def* def, Lam* f, Lam* f_diff) {
     if (auto i = augmented.find(def); i != augmented.end()) return i->second;
-    augmented[def] = augment_(def, f, f_diff);
+    auto augmented_def = augment_(def, f, f_diff);
+    augmented[def]     = augmented_def;
     return augmented[def];
 }
 
 const Def* AutoDiffEval::derive(const Def* def) {
     if (auto i = derived.find(def); i != derived.end()) return i->second;
-    derived[def] = derive_(def);
+    auto derived_def = derive_(def);
+    derived[def]     = derived_def;
     return derived[def];
 }
 
