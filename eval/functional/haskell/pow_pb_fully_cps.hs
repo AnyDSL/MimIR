@@ -4,15 +4,15 @@ n_pb (s,ret) = ret (0,s)
 
 -- tan_add :: (Num a, Num b) => (((a, b), (a, b)), (a, b) -> t) -> t
 -- tan_add :: (Num a, Num b) => (((a, b), (a, b)), (a, b) -> ()) -> ()
-tan_add :: (((Integer, Integer), (Integer, Integer)), (Integer, Integer) -> t) -> t
+-- tan_add :: (((Integer, Integer), (Integer, Integer)), (Integer, Integer) -> t) -> t
 tan_add (((x,y),(x',y')),ret) = ret (x+x', y+y')
 
 sub' ((x,y),ret) = ret (x-y, \(s,ret) -> ret (s, -s))
 mul' ((x,y),ret) = ret (x*y, \(s,ret) -> ret (s*y, x*s))
 
-tup_pb :: ((a, (Integer, Integer) -> t) -> t,
-          (b, (Integer, Integer) -> t) -> t)
-          -> ((a, b), (Integer, Integer) -> t) -> t
+-- tup_pb :: ((a, (Integer, Integer) -> t) -> t,
+--           (b, (Integer, Integer) -> t) -> t)
+--           -> ((a, b), (Integer, Integer) -> t) -> t
 tup_pb (pb1,pb2) ((s1,s2),ret) = 
     pb1 (s1, \t1 ->
         pb2 (s2, \t2 ->
