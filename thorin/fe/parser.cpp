@@ -33,7 +33,7 @@ namespace thorin::fe {
 Parser::Parser(World& world,
                std::string_view file,
                std::istream& istream,
-               ArrayRef<std::string> import_search_paths,
+               Span<std::string> import_search_paths,
                const Normalizers* normalizers,
                std::ostream* md)
     : lexer_(world, file, istream, md)
@@ -81,7 +81,7 @@ void Parser::syntax_err(std::string_view what, const Tok& tok, std::string_view 
 
 Parser Parser::import_module(World& world,
                              std::string_view name,
-                             ArrayRef<std::string> user_search_paths,
+                             Span<std::string> user_search_paths,
                              const Normalizers* normalizers) {
     auto search_paths = get_plugin_search_paths(user_search_paths);
 
