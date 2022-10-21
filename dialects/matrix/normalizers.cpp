@@ -4,6 +4,9 @@
 #include "thorin/world.h"
 
 #include "dialects/matrix/matrix.h"
+
+// TODO: combine mapReduce calls
+
 namespace thorin::matrix {
 
 /// Normalizer for read opertions
