@@ -111,15 +111,14 @@ public:
     ///@{
     Span<T> skip_front(size_t num = 1) const { return Span<T>(size() - num, ptr_ + num); }
     Span<T> skip_back(size_t num = 1) const { return Span<T>(size() - num, ptr_); }
-    Span<T> get_front(size_t num = 1) const {
+    Span<T> first(size_t num = 1) const {
         assert(num <= size());
         return Span<T>(num, ptr_);
     }
-    Span<T> get_back(size_t num = 1) const {
+    Span<T> last(size_t num = 1) const {
         assert(num <= size());
         return Span<T>(num, ptr_ + size() - num);
     }
-    Array<T> cut(Span<size_t> indices, size_t reserve = 0) const;
     ///@}
 
     /// @name relational operators
@@ -352,15 +351,14 @@ public:
     ///@{
     Span<T> skip_front(size_t num = 1) const { return Span<T>(size() - num, data() + num); }
     Span<T> skip_back(size_t num = 1) const { return Span<T>(size() - num, data()); }
-    Span<T> get_front(size_t num = 1) const {
+    Span<T> first(size_t num = 1) const {
         assert(num <= size());
         return Span<T>(num, data());
     }
-    Span<T> get_back(size_t num = 1) const {
+    Span<T> last(size_t num = 1) const {
         assert(num <= size());
         return Span<T>(num, data() + size() - num);
     }
-    Array<T> cut(Span<size_t> indices, size_t reserve = 0) const { return Span<T>(*this).cut(indices, reserve); }
     ///@}
 
     /// @name convert
@@ -383,24 +381,6 @@ public:
 private:
     ArrayStorage<T, std::is_trivial<T>::value ? 5 : 0> storage_;
 };
-
-template<class T>
-Array<T> Span<T>::cut(Span<size_t> indices, size_t reserve) const {
-    size_t num_old = size();
-    size_t num_idx = indices.size();
-    size_t num_res = num_old - num_idx;
-
-    Array<T> result(num_res + reserve);
-
-    for (size_t o = 0, i = 0, r = 0; o < num_old; ++o) {
-        if (i < num_idx && indices[i] == o)
-            ++i;
-        else
-            result[r++] = (*this)[o];
-    }
-
-    return result;
-}
 
 template<class T, class U>
 auto concat(const T& a, const U& b) -> Array<typename T::value_type> {
