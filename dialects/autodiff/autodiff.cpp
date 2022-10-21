@@ -6,7 +6,6 @@
 #include "thorin/dialects.h"
 
 #include "dialects/autodiff/passes/autodiff_eval.h"
-#include "dialects/autodiff/passes/autodiff_ext_cleanup.h"
 #include "dialects/autodiff/passes/autodiff_zero.h"
 #include "dialects/autodiff/passes/autodiff_zero_cleanup.h"
 #include "dialects/direct/passes/ds2cps.h"
@@ -30,10 +29,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     // zero and add need to be close together
                     man.add<thorin::autodiff::AutoDiffZero>();
                 });
-                builder.extend_opt_phase(299, [](PassMan& man) {
-                    man.add<thorin::autodiff::AutoDiffZeroCleanup>();
-                    man.add<thorin::autodiff::AutoDiffExternalCleanup>();
-                });
+                builder.extend_opt_phase(299, [](PassMan& man) { man.add<thorin::autodiff::AutoDiffZeroCleanup>(); });
             },
             nullptr, [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); }};
 }

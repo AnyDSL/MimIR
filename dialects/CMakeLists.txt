@@ -19,8 +19,6 @@ add_thorin_dialect(autodiff
         autodiff/passes/autodiff_zero.h
         autodiff/passes/autodiff_zero_cleanup.cpp
         autodiff/passes/autodiff_zero_cleanup.h
-        autodiff/passes/autodiff_ext_cleanup.cpp
-        autodiff/passes/autodiff_ext_cleanup.h
         autodiff/auxiliary/autodiff_aux.cpp
         autodiff/auxiliary/autodiff_aux.h
         autodiff/auxiliary/autodiff_rewrite_inner.cpp
@@ -120,6 +118,8 @@ add_thorin_dialect(refly
         refly/refly.cpp
         refly/passes/remove_perm.h
         refly/passes/remove_perm.cpp
+        refly/passes/remove_internal.h
+        refly/passes/remove_internal.cpp
         refly/normalizers.cpp
     INSTALL
 )

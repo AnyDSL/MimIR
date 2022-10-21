@@ -4,6 +4,7 @@
 #include <thorin/dialects.h>
 #include <thorin/pass/pass.h>
 
+#include "dialects/refly/passes/remove_internal.h"
 #include "dialects/refly/passes/remove_perm.h"
 
 using namespace thorin;
@@ -15,6 +16,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"refly",
             [](thorin::PipelineBuilder& builder) {
                 builder.extend_codegen_prep_phase([](PassMan& man) { man.add<thorin::refly::RemoveDbgPerm>(); });
+                builder.extend_codegen_prep_phase([](PassMan& man) { man.add<thorin::refly::InternalCleanup>(); });
             },
             nullptr, [](Normalizers& normalizers) { refly::register_normalizers(normalizers); }};
 }
