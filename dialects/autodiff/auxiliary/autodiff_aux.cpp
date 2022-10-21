@@ -4,6 +4,7 @@
 #include "thorin/tuple.h"
 
 #include "dialects/autodiff/autodiff.h"
+#include "dialects/autodiff/builder.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
@@ -232,8 +233,8 @@ const Def* lam_mem_wrap(const Def* lam) {
         auto mem      = mem_vars[0];
         auto vars     = lam_return->vars();
 
-        auto compound  = world.builder().add(mem).add(vars).tuple();
-        auto compound2 = world.builder().add(mem_vars.skip_front()).add(lam_return).tuple();
+        auto compound = build(world).add(mem).add(vars).tuple();
+        auto compound2 = build(world).add(mem_vars.skip_front()).add(lam_return).tuple();
 
         lam_return->set_body(world.app(mem_lam->ret_var(), compound));
 

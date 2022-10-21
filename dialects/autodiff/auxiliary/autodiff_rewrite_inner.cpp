@@ -14,6 +14,7 @@
 #include "dialects/mem/mem.h"
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/autogen.h"
+#include "dialects/autodiff/builder.h"
 
 namespace thorin::autodiff {
 
@@ -270,7 +271,7 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
 
 Lam* mem_return_lam(World& w, std::string name, Defs domain = {}, bool filter = true){
     auto mem_ty = mem::type_mem(w);
-    auto cn = w.builder().add(mem_ty).add(domain).add(w.cn({mem_ty})).cn();
+    auto cn = build(w).add(mem_ty).add(domain).add(w.cn({mem_ty})).cn();
     auto lam = w.nom_lam(cn, w.dbg(name));
     lam->set_filter(filter);
     return lam;
@@ -278,7 +279,7 @@ Lam* mem_return_lam(World& w, std::string name, Defs domain = {}, bool filter = 
 
 Lam* return_lam(World& w, std::string name, Defs domain = {}, bool filter = true){
     auto mem_ty = mem::type_mem(w);
-    auto cn = w.builder().add(domain).add(w.cn({mem_ty})).cn();
+    auto cn = build(w).add(domain).add(w.cn({mem_ty})).cn();
     auto lam = w.nom_lam(cn, w.dbg(name));
     lam->set_filter(filter);
     return lam;

@@ -23,8 +23,6 @@ add_library(libthorin
     tuple.h
     world.cpp
     world.h
-    builder.cpp
-    builder.h
     analyses/cfg.cpp
     analyses/cfg.h
     analyses/deptree.cpp

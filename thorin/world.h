@@ -14,7 +14,6 @@
 #include "thorin/flags.h"
 #include "thorin/lattice.h"
 #include "thorin/tuple.h"
-#include "thorin/builder.h"
 
 #include "thorin/util/hash.h"
 #include "thorin/util/log.h"
@@ -443,10 +442,6 @@ public:
     void write(const char* file) const; ///< Write to a file named @p file; defaults to World::name.
     void write() const;                 ///< Same above but file name defaults to World::name.
     ///@}
-
-    Builder builder(){
-        return Builder(*this);
-    }
 
 private:
     /// @name put into sea of nodes
