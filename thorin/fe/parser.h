@@ -32,19 +32,14 @@ namespace thorin::fe {
 ///      * If default argument is **provided** we have the same behavior as in 2.
 class Parser {
 public:
-    Parser(World&,
-           std::string_view,
-           std::istream&,
-           ArrayRef<std::string>,
-           const Normalizers*,
-           std::ostream* md = nullptr);
+    Parser(World&, std::string_view, std::istream&, Span<std::string>, const Normalizers*, std::ostream* md = nullptr);
 
     World& world() { return lexer_.world(); }
 
     /// @name entry points
     ///@{
     static Parser
-    import_module(World&, std::string_view, ArrayRef<std::string> = {}, const Normalizers* normalizers = nullptr);
+    import_module(World&, std::string_view, Span<std::string> = {}, const Normalizers* normalizers = nullptr);
     void parse_module();
     void bootstrap(std::ostream&);
     ///@}

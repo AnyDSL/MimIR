@@ -43,7 +43,7 @@ class Var;
 class Def;
 class World;
 
-using Defs     = ArrayRef<const Def*>;
+using Defs     = Span<const Def*>;
 using DefArray = Array<const Def*>;
 
 //------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ public:
         if constexpr (N == -1_s) {
             return Defs(num_ops_, ops_ptr());
         } else {
-            return ArrayRef<const Def*>(N, ops_ptr()).template to_array<N>();
+            return Span<const Def*>(N, ops_ptr()).template to_array<N>();
         }
     }
     const Def* op(size_t i) const { return ops()[i]; }
