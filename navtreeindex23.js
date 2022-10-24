@@ -1,10 +1,5 @@
 var NAVTREEINDEX23 =
 {
-"sys_8h.html#a932508f0d5bde98eb7127e4f2533776f":[6,0,3,5,17,5],
-"sys_8h.html#a96556c7da85943f938569ad30a44fae9":[6,0,3,5,17,3],
-"sys_8h.html#ac4dd1156a86eb6db52f2cd93fec5a962":[6,0,3,5,17,1],
-"sys_8h.html#ac7f063860c3477d428af8c6387ef38ee":[6,0,3,5,17,4],
-"sys_8h_source.html":[6,0,3,5,17],
 "tail__rec__elim_8cpp.html":[6,0,3,3,0,6],
 "tail__rec__elim_8cpp_source.html":[6,0,3,3,0,6],
 "tail__rec__elim_8h.html":[6,0,3,3,0,7],

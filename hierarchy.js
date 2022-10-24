@@ -317,6 +317,7 @@ var hierarchy =
     [ "thorin::w2u_< 8 >", "namespacethorin.html#structthorin_1_1w2u___3_018_01_4", null ],
     [ "thorin::World", "classthorin_1_1World.html", null ],
     [ "thorin::World::Arena::Zone", "structthorin_1_1World_1_1Arena_1_1Zone.html", null ],
+    [ "bool", "namespace_3globalScope_4.html#classbool", null ],
     [ "DefMap< std::string >", "namespace_3globalScope_4.html#classDefMap_3_01std_1_1string_01_4", null ],
     [ "DefMap< thorin::Type >", "namespace_3globalScope_4.html#classDefMap_3_01thorin_1_1Type_01_4", null ],
     [ "LamMap< BB >", "namespace_3globalScope_4.html#classLamMap_3_01BB_01_4", null ],
