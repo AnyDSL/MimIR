@@ -26,5 +26,3 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
             },
             nullptr, [](Normalizers& normalizers) { direct::register_normalizers(normalizers); }};
 }
-
-namespace thorin::direct {} // namespace thorin::direct

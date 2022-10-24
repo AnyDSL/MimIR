@@ -146,9 +146,10 @@ public:
     bool empty() { return move_.externals.empty(); }
     void make_external(Def* def) {
         assert(!def->name().empty());
-        auto name     = def->name();
-        auto [i, ins] = move_.externals.emplace(def->name(), def);
-        // assert((ins || (def == i->second)) && "make sure the external isn't inserted twice");
+        auto name = def->name();
+        move_.externals.emplace(def->name(), def); // TODO enable assert again
+        // auto [i, ins] = move_.externals.emplace(def->name(), def);
+        // assert((ins || (def == i->second)) && "two different externals registered with the same name");
     }
     void make_internal(Def* def) { move_.externals.erase(def->name()); }
     bool is_external(const Def* def) { return move_.externals.contains(def->name()); }
@@ -178,7 +179,8 @@ public:
     Infer* nom_infer(const Def* type, const Def* dbg = {}) { return insert<Infer>(1, type, dbg); }
     Infer* nom_infer(const Def* type, Sym sym) { return insert<Infer>(1, type, dbg(sym)); }
     Infer* nom_infer_univ(const Def* dbg = {}) { return nom_infer(univ(), dbg); }
-    Infer* nom_infer_of_infer_level(const Def* dbg = {}) { return nom_infer(nom_infer_univ(dbg), dbg); }
+    Infer* nom_infer_type(const Def* dbg = {}) { return nom_infer(type_infer_univ(dbg), dbg); }
+    const Type* type_infer_univ(const Def* dbg = {}) { return type(nom_infer_univ(dbg), dbg); }
     ///@}
 
     /// @name Axiom
@@ -334,7 +336,7 @@ public:
 
     /// @name Lit
     ///@{
-    const Lit* lit(const Def* type, u64 val, const Def* dbg = {}) { return unify<Lit>(0, type, val, dbg); }
+    const Lit* lit(const Def* type, u64 val, const Def* dbg = {});
     const Lit* lit_univ(u64 level, const Def* dbg = {}) { return lit(univ(), level, dbg); }
     const Lit* lit_univ_0() { return data_.lit_univ_0_; }
     const Lit* lit_univ_1() { return data_.lit_univ_1_; }
@@ -342,27 +344,25 @@ public:
     const Lit* lit_nat_0() { return data_.lit_nat_0_; }
     const Lit* lit_nat_1() { return data_.lit_nat_1_; }
     const Lit* lit_nat_max() { return data_.lit_nat_max_; }
-    const Lit* lit_idx(const Def* type, u64 val, const Def* dbg = {});
-
     /// Constructs a Lit of type Idx of size @p size.
     /// @note `size = 0` means `2^64`.
-    const Lit* lit_idx(nat_t size, u64 val, const Def* dbg = {}) { return lit_idx(type_idx(size), val, dbg); }
+    const Lit* lit_idx(nat_t size, u64 val, const Def* dbg = {}) { return lit(type_idx(size), val, dbg); }
 
     template<class I>
     const Lit* lit_idx(I val, const Def* dbg = {}) {
         static_assert(std::is_integral<I>());
-        return lit_idx(type_idx(bitwidth2size(sizeof(I) * 8)), val, dbg);
+        return lit_idx(bitwidth2size(sizeof(I) * 8), val, dbg);
     }
 
     /// Constructs a Lit @p of type Idx of size $2^width$.
     /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    const Lit* lit_int_(nat_t width, u64 val, const Def* dbg = {}) { return lit_idx(type_int_(width), val, dbg); }
+    const Lit* lit_int(nat_t width, u64 val, const Def* dbg = {}) { return lit_idx(bitwidth2size(width), val, dbg); }
 
     /// Constructs a Lit of type Idx of size @p mod.
     /// The value @p val will be adjusted modulo @p mod.
     /// @note `mod == 0` is the special case for $2^64$ and no modulo will be performed on @p val.
     const Lit* lit_idx_mod(nat_t mod, u64 val, const Def* dbg = {}) {
-        return lit_idx(type_idx(mod), mod == 0 ? val : (val % mod), dbg);
+        return lit_idx(mod, mod == 0 ? val : (val % mod), dbg);
     }
 
     const Lit* lit_bool(bool val) { return data_.lit_bool_[size_t(val)]; }
@@ -407,14 +407,16 @@ public:
     /// @name types
     ///@{
     const Nat* type_nat() { return data_.type_nat_; }
-    const Idx* type_idx(const Def* size);
+    const Idx* type_idx() { return data_.type_idx_; }
     /// @note `size = 0` means `2^64`.
-    const Idx* type_idx(nat_t size) { return type_idx(lit_nat(size)); }
+    const Def* type_idx(const Def* size, const Def* dbg = {}) { return app(type_idx(), size, dbg); }
+    /// @note `size = 0` means `2^64`.
+    const Def* type_idx(nat_t size) { return type_idx(lit_nat(size)); }
 
     /// Constructs a type Idx of size $2^width$.
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    const Idx* type_int_(nat_t width) { return type_idx(lit_nat(bitwidth2size(width))); }
-    const Idx* type_bool() { return data_.type_bool_; }
+    const Def* type_int(nat_t width) { return type_idx(lit_nat(bitwidth2size(width))); }
+    const Def* type_bool() { return data_.type_bool_; }
     ///@}
 
     /// @name helpers
@@ -429,7 +431,7 @@ public:
         meta     = meta ? meta : bot(type_bot());
         return tuple({sym.str(), loc, meta});
     }
-    const Def* iinfer(const Def* def) { return def->type()->as<Idx>()->size(); }
+    const Def* iinfer(const Def* def) { return Idx::size(def->type()); }
     ///@}
 
     /// @name dumping/logging
@@ -581,11 +583,12 @@ private:
         const Type* type_0_;
         const Type* type_1_;
         const Bot* type_bot_;
-        const Idx* type_bool_;
+        const Def* type_bool_;
         const Top* top_nat_;
         const Sigma* sigma_;
         const Tuple* tuple_;
         const Nat* type_nat_;
+        const Idx* type_idx_;
         const Def* table_id;
         const Def* table_not;
         std::array<const Lit*, 2> lit_bool_;

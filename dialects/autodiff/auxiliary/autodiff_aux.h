@@ -11,6 +11,7 @@ const Def* zero_pullback(const Def* E, const Def* A);
 
 const Def* tangent_type_fun(const Def*);
 // R const Def* augment_type_fun(const Def*);
+const Def* autodiff_inner_type_fun(const Def* B, const Def* A);
 const Pi* autodiff_type_fun_pi(const Pi*);
 const Def* autodiff_type_fun(const Def*);
 const Pi* pullback_type(const Def* E, const Def* A);
@@ -22,11 +23,13 @@ const Def* op_sum(const Def* T, DefArray defs);
 
 namespace thorin {
 
-
 const Def* equip_mem(const Def* def);
 const Def* lam_mem_wrap(const Def* lam);
 const Pi* cn_mem_wrap(const Pi* pi);
 
+bool is_closed(Lam* lam);
+
+// TODO: replace with closedness checks (scopes) at appropriate places
 bool is_continuation_type(const Def* E);
 bool is_continuation(const Def* e);
 // TODO: change name to returning_continuation
@@ -69,4 +72,5 @@ const Def* compose_continuation(const Def* f, const Def* g);
 
 } // namespace thorin
 
+/// General thorin-unrelated C++ helper functions.
 void findAndReplaceAll(std::string& data, std::string toSearch, std::string replaceStr);

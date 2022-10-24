@@ -4,14 +4,16 @@
 #include "thorin/world.h"
 
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/mem/autogen.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/core/core.h"
+#include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
 
-const Def* normalize_autodiff(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+/// Currently this normalizer does nothin.
+/// TODO: Maybe we want to handle trivial lookup replacements here.
+const Def* normalize_ad(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     // auto [mat, index, val] = arg->projs<3>();
 
@@ -21,7 +23,7 @@ const Def* normalize_autodiff(const Def* type, const Def* callee, const Def* arg
     return world.raw_app(callee, arg, dbg);
 }
 
-const Def* normalize_autodiff_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
+const Def* normalize_AD(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     // return arg;
     // return world.lit_int_width(32,42);
@@ -30,10 +32,7 @@ const Def* normalize_autodiff_type(const Def* type, const Def* callee, const Def
     return world.raw_app(callee, arg, dbg);
 }
 
-const Def* normalize_tangent_type(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
-    auto& world = type->world();
-    return tangent_type_fun(arg);
-}
+const Def* normalize_Tangent(const Def*, const Def*, const Def* arg, const Def*) { return tangent_type_fun(arg); }
 
 // TODO: zero of type Nat, Real, Int -> 0
 const Def* normalize_zero(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
@@ -97,8 +96,27 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         return a;
     } else if (auto mem = match<mem::M>(T)) {
         return world.top(mem::type_mem(world));
-    } else if (T->isa<Idx>()) {
-        return core::op(core::wrap::add, core::WMode::none, a, b);
+        // } else if (T->isa<Idx>()) {
+        //     return core::op(core::wrap::add, core::WMode::none, a, b);
+    } else if (Idx::size(type)) {
+        world.DLOG("add int");
+        auto width = as_lit(world.iinfer(a));
+        world.DLOG("width {}", width);
+        auto int_add =
+            world.app(world.app(world.ax(core::wrap::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
+        world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
+        return int_add;
+    } else if (auto real = match<core::Real>(T)) {
+        auto width = as_lit<nat_t>(real->arg());
+        world.DLOG("width {}", width);
+        auto real_add =
+            world.app(world.app(world.ax(core::rop::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
+        world.DLOG("real add {} : {}", real_add, real_add->type());
+        return real_add;
+
+    } else if (auto app = T->isa<App>()) {
+        auto callee = app->callee();
+        assert(0 && "not handled");
     }
     // TODO: mem stays here (only resolved after direct simplification)
     // assert(0);
@@ -125,7 +143,7 @@ const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, con
         auto sum      = op_zero(T);
         // would also be handled by add zero
         if (val >= 1) { sum = args[0]; }
-        for (auto i = 1; i < val; ++i) { sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]}); }
+        for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]});
         return sum;
     }
     assert(0);

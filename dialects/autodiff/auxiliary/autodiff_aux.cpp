@@ -59,28 +59,67 @@ const Pi* pullback_type(const Def* E, const Def* A) {
     return pb_ty;
 }
 
+// TODO:
+// A' := D A
+// D (Cn [A, Cn B]) = Cn [D A, Cn (D_A B)]
+
+// TODO: directly D_A on Cn B ?
+
+// type transformation respective A
+// D_A B = [D B, Cn [B^T, Cn A^T]]
+const Def* autodiff_inner_type_fun(const Def* B, const Def* A) {
+    auto& world = B->world();
+    if (auto pi = B->isa<Pi>()) {
+        // TODO: direct style
+        auto B     = pi->dom();
+        auto aug_B = autodiff_inner_type_fun(B, A); // D_A B
+        auto pb_ty = pullback_type(B, A);           // B^T -> A^T
+        auto aug_T = world.cn(world.sigma({aug_B, pb_ty}));
+        // return world.cn(autodiff_inner_type_fun(dom, A));
+        world.DLOG("computed inner ad type for {} resp. {}", B, A);
+        world.DLOG("inner ad type: {}", aug_T);
+        return aug_T;
+    }
+    if (auto sig = B->isa<Sigma>()) {
+        // TODO: nom sigma
+        DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_inner_type_fun(op, A); });
+        world.DLOG("ops: {,}", ops);
+        return world.sigma(ops);
+    }
+    return autodiff_type_fun(B);
+    // auto aug_B = autodiff_type_fun(B); // D B
+    // auto pb_ty = pullback_type(B, A);  // B^T -> A^T
+    // auto aug_T = world.sigma({aug_B, pb_ty});
+    // return aug_T;
+}
+
 // `A,R => A'->R' * (R* -> A*) = (A->R)' `
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     auto& world = arg->world();
     world.DLOG("autodiff type for {} => {}", arg, ret);
     arg->dump();
     auto aug_arg = autodiff_type_fun(arg);
-    auto aug_ret = autodiff_type_fun(ret);
+    // auto aug_ret = autodiff_inner_type_fun(ret, arg);
+    auto aug_ret = autodiff_inner_type_fun(world.cn(ret), arg);
     world.DLOG("augmented types: {} => {}", aug_arg, aug_ret);
     if (!aug_arg || !aug_ret) return nullptr;
     // `Q* -> P*`
-    auto pb_ty = pullback_type(ret, arg);
-    world.DLOG("pb type: {}", pb_ty);
+    // auto pb_ty = pullback_type(ret, arg);
+    // world.DLOG("pb type: {}", pb_ty);
     // `P' -> Q' * (Q* -> P*)`
 
-    auto deriv_ty = world.cn({aug_arg, world.cn({aug_ret, pb_ty})});
+    // auto deriv_ty = world.cn({aug_arg, world.cn({aug_ret, pb_ty})});
+    // auto deriv_ty = world.cn({aug_arg, world.cn(aug_ret)});
+    auto deriv_ty = world.cn({aug_arg, aug_ret});
     world.DLOG("autodiff type: {}", deriv_ty);
     return deriv_ty;
 }
 
 const Pi* autodiff_type_fun_pi(const Pi* pi) {
     auto& world = pi->world();
+    world.DLOG("autodiff type for pi: {}", pi);
     if (!is_continuation_type(pi)) {
+        // direct style
         // TODO: dependency
         auto arg = pi->dom();
         auto ret = pi->codom();
@@ -116,8 +155,11 @@ const Def* autodiff_type_fun(const Def* ty) {
         return ptr;
     }
 
-    if (ty->isa<Idx>()) { return ty; }
+    // R if (ty->isa<Idx>()) { return ty; }
 
+    // Also handles autodiff call from axiom declaration => abstract => leave it.
+    world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
+    if (Idx::size(ty)) { return ty; }
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->shape();
@@ -125,11 +167,12 @@ const Def* autodiff_type_fun(const Def* ty) {
         auto body_ad = autodiff_type_fun(body);
         if (!body_ad) return nullptr;
         return world.arr(shape, body_ad);
-    }
-    if (auto sig = ty->isa<Sigma>()) {
+    } else if (auto sig = ty->isa<Sigma>()) {
         // TODO: nom sigma
         DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
         return world.sigma(ops);
+    } else if (auto real = match<core::Real>(ty)) {
+        return ty;
     }
 
     world.WLOG("no-diff type: {}", ty);
@@ -155,25 +198,17 @@ const Def* zero_def(const Def* T) {
         world.DLOG("zero_def for array of shape {} with type {}", shape, body);
         world.DLOG("zero_arr: {}", zero_arr);
         return zero_arr;
-        // }else if(auto lit = match<type_int_>()) { }
-        // }else if(auto tint = T->isa<Tag::Int>()) {
-    } else if (auto idx = T->isa<Idx>()) {
+        // R } else if (auto idx = T->isa<Idx>()) {
+    } else if (Idx::size(T)) {
         // TODO: real
-        auto zero = world.lit_idx(T, 0, world.dbg("zero"));
+        auto zero = world.lit(T, 0, world.dbg("zero"));
         world.DLOG("zero_def for int is {}", zero);
         return zero;
-    } else if (auto app = T->isa<App>()) {
-        auto callee = app->callee();
-        // auto args = app->args();
-        world.DLOG("app callee: {} : {} <{}>", callee, callee->type(), callee->node_name());
-        // TODO: can you directly match Tag::Int?
-        if (callee->isa<Idx>()) {
-            // auto size = app->arg(0);
-            auto zero = world.lit_idx(T, 0, world.dbg("zero"));
-            // world.DLOG("zero_def for int of size {} is {}", size, zero);
-            world.DLOG("zero_def for int is {}", zero);
-            return zero;
-        }
+    } else if (auto real = match<core::Real>(T)) {
+        auto width = as_lit<nat_t>(real->arg());
+        auto zero  = core::lit_real(T->world(), width, 0.0);
+        world.DLOG("zero_def for real is {}", zero);
+        return zero;
     } else if (auto sig = T->isa<Sigma>()) {
         DefArray ops(sig->ops(), [&](const Def* op) { return op_zero(op); });
         return world.tuple(ops);
@@ -233,7 +268,7 @@ const Def* lam_mem_wrap(const Def* lam) {
         auto mem      = mem_vars[0];
         auto vars     = lam_return->vars();
 
-        auto compound = build(world).add(mem).add(vars).tuple();
+        auto compound  = build(world).add(mem).add(vars).tuple();
         auto compound2 = build(world).add(mem_vars.skip_front()).add(lam_return).tuple();
 
         lam_return->set_body(world.app(mem_lam->ret_var(), compound));
@@ -388,6 +423,11 @@ const Def* compose_continuation(const Def* f, const Def* g) {
                });
 
     return h;
+}
+
+bool is_closed(Lam* lam) {
+    Scope s{lam};
+    return s.free_vars().empty();
 }
 
 } // namespace thorin

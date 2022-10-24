@@ -79,6 +79,7 @@ private:
     const int dump_gid_;
 };
 
+// TODO prec is currently broken
 template<bool L>
 struct LRPrec {
     LRPrec(const Def* l, const Def* r)
@@ -111,6 +112,8 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, level == 0 ? "*" : "□");
     } else if (u->isa<Nat>()) {
         return print(os, ".Nat");
+    } else if (u->isa<Idx>()) {
+        return print(os, ".Idx");
     } else if (auto bot = u->isa<Bot>()) {
         return print(os, ".bot:{}", bot->type());
     } else if (auto top = u->isa<Top>()) {
@@ -120,6 +123,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());
+        if (lit->type()->isa<App>()) return print(os, "{}:({})", lit->get(), lit->type()); // HACK prec magic is broken
         return print(os, "{}:{}", lit->get(), lit->type());
     } else if (auto ex = u->isa<Extract>()) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
@@ -133,8 +137,6 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "Π {} -> {}", pi->dom(), pi->codom());
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
-    } else if (auto int_ = u->isa<Idx>()) {
-        return print(os, "(.Idx {})", int_->size());
     } else if (auto app = u->isa<App>()) {
         return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
     } else if (auto sigma = u->isa<Sigma>()) {
@@ -255,7 +257,7 @@ void Dumper::dump(Lam* lam) {
     auto ptrn = [&](auto&) { dump_ptrn(lam->var(), lam->type()->dom()); };
 
     if (lam->type()->is_cn()) {
-        tab.println(os, ".cn {}{} {} = {{", external(lam), id(lam), ptrn);
+        tab.println(os, ".cn {}{} {} @({}) = {{", external(lam), id(lam), ptrn, lam->filter());
     } else {
         tab.println(os, ".lam {}{} {} → {} = {{", external(lam), id(lam), ptrn, lam->type()->codom());
     }

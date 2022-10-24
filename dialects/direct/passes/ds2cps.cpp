@@ -26,20 +26,18 @@ const Def* DS2CPS::rewrite(const Def* def) {
     return def;
 }
 
-/// generates the cps function `f_cps : cn [a:A, cn B]`
-/// for a ds function `f: Π a : A -> B`
-/// associates the functions in `rewritten_`.
+/// This function generates the cps function `f_cps : cn [a:A, cn B]` for a ds function `f: Π a : A -> B`.
+/// The translation is associated in the `rewritten_` map.
 const Def* DS2CPS::rewrite_lam(Lam* lam) {
     if (auto i = rewritten_.find(lam); i != rewritten_.end()) return i->second;
 
     // only look at lambdas (ds not cps)
-    if (lam->type()->codom()->isa<Bot>()) { return lam; }
+    if (lam->type()->is_cn()) { return lam; }
     // ignore ds on type level
     if (lam->type()->codom()->isa<Type>()) { return lam; }
     // ignore higher order function
     if (lam->type()->codom()->isa<Pi>()) {
-        // causes segfault in depth
-        // lam->set_filter(true);
+        // We can not set the filter here as this causes segfaults.
         return lam;
     }
 

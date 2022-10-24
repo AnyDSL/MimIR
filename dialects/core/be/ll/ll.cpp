@@ -127,8 +127,7 @@ std::string Emitter::convert(const Def* type) {
 
     if (type->isa<Nat>()) {
         return types_[type] = "i64";
-    } else if (auto idx = type->isa<Idx>()) {
-        auto size = idx->size();
+    } else if (auto size = Idx::size(type)) {
         if (size->isa<Top>()) return types_[type] = "i64";
         if (auto width = size2bitwidth(as_lit(size))) {
             switch (*width) {
@@ -470,8 +469,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     if (auto lit = def->isa<Lit>()) {
         if (lit->type()->isa<Nat>()) {
             return std::to_string(lit->get<nat_t>());
-        } else if (auto idx = lit->type()->isa<Idx>()) {
-            auto size = idx->size();
+        } else if (auto size = Idx::size(lit->type())) {
             if (size->isa<Top>()) return std::to_string(lit->get<nat_t>());
             if (auto mod = size2bitwidth(as_lit(size))) {
                 switch (*mod) {
@@ -512,13 +510,18 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         unreachable();
     } else if (def->isa<Bot>()) {
         return "undef";
-    } else if (auto bit = match<core::bit2>(def)) {
-        auto [a, b] = bit->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(bit->type());
+    } else if (auto bit1 = match<core::bit1>(def)) {
+        assert(bit1.id() == core::bit1::neg);
+        auto x = emit(bit1->arg());
+        auto t = convert(bit1->type());
+        return bb.assign(name, "xor {} -1, {}", t, x);
+    } else if (auto bit2 = match<core::bit2>(def)) {
+        auto [a, b] = bit2->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(bit2->type());
 
-        auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} 0, {}", t, x); };
+        auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} -1, {}", t, x); };
 
-        switch (bit.id()) {
+        switch (bit2.id()) {
             // clang-format off
             case core::bit2::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
             case core::bit2:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);
@@ -654,9 +657,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto dst_t = convert(conv->type());
 
         auto size2width = [&](const Def* type) {
-            if (auto idx = type->isa<Idx>()) {
-                if (idx->size()->isa<Top>()) return 64_u64;
-                if (auto width = size2bitwidth(as_lit(idx->size()))) return *width;
+            if (auto size = Idx::size(type)) {
+                if (size->isa<Top>()) return 64_u64;
+                if (auto width = size2bitwidth(as_lit(size))) return *width;
                 return 64_u64;
             }
             return as_lit(force<core::Real>(type)->arg());
@@ -695,9 +698,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         auto size2width = [&](const Def* type) {
             if (type->isa<Nat>()) return 64_u64;
-            if (auto idx = type->isa<Idx>()) {
-                if (idx->size()->isa<Top>() || !idx->size()->isa<Lit>()) return 64_u64;
-                if (auto width = size2bitwidth(as_lit(idx->size()))) return std::bit_ceil(*width);
+            if (auto size = Idx::size(type)) {
+                if (size->isa<Top>() || !size->isa<Lit>()) return 64_u64;
+                if (auto width = size2bitwidth(as_lit(size))) return std::bit_ceil(*width);
                 return 64_u64;
             }
             return 0_u64;
@@ -725,8 +728,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto ll_i = emit(i);
         auto i_t  = convert(i->type());
 
-        if (auto idx = i->type()->isa<Idx>()) {
-            auto size = idx->size();
+        if (auto size = Idx::size(i->type())) {
             if (auto s = isa_lit(size); s && *s == 2) { // mod(2) = width(1)
                 ll_i = bb.assign(name + ".8", "zext i1 {} to i8", ll_i);
                 i_t  = "i8";

@@ -4,13 +4,13 @@
 
 namespace thorin::direct {
 
+/// Helper function to cope with the fact that normalizers take all arguments and not only its axiom arguments.
 std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
     std::vector<const Def*> args;
     if (auto app = def->isa<App>()) {
         auto callee               = app->callee();
         auto arg                  = app->arg();
         auto [inner_callee, args] = collect_args(callee);
-        // args.insert(args.begin(), arg);
         args.push_back(arg);
         return {inner_callee, args};
     } else {
@@ -18,30 +18,27 @@ std::pair<const Def*, std::vector<const Def*>> collect_args(const Def* def) {
     }
 }
 
-/// call (op_cps2ds_dep f)
+/// `cps2ds` is directly converted to `op_cps2ds_dep f` in its normalizer.
 const Def* normalize_cps2ds(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
 
-    // world.DLOG("arg: {} : {}", arg, arg->type());
+    // Collect all arguments of the application.
+    // For example in
+    // `cps2ds (A,B) f x`
+    // `arg` is `x`
+    // Example2:
+    // `cps2ds (A,B->C) f x y`
+    // `arg` is `y`
+    // `callee` is `cps2ds (A,B->C) f x`
+    // We are mainly interested in `f` here.
     auto [ax, curry_args] = collect_args(callee);
     curry_args.push_back(arg);
-    // world.DLOG("curry_args: { , }", curry_args);
-    // world.DLOG("curry body: {} : {}", ax, ax->type());
+    // The function is the second argument (after the type tuple).
     auto fun = curry_args[1];
     auto r   = op_cps2ds_dep(fun);
-    for (int i = 2; i < curry_args.size(); i++) { r = world.app(r, curry_args[i]); }
+    for (size_t i = 2; i < curry_args.size(); ++i) r = world.app(r, curry_args[i]);
     return r;
 
-    // cps2ds types fun
-    // but returns function =>
-    // cps2ds types fun arg
-    // ^ callee         ^ arg
-
-    // world.DLOG("arg {} : {}", arg, arg->type());
-    // auto [T,U] = callee->as<App>()->arg()->projs<2>();
-    // world.DLOG("T = {}", T);
-    // world.DLOG("U = {}", U);
-    // U->as_nom<Lam>()->set_filter(true);
     return world.raw_app(callee, arg, dbg);
 }
 

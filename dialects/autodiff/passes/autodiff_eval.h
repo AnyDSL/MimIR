@@ -39,6 +39,7 @@ public:
     const Def* augment_lit(const Lit*, Lam*, Lam*);
     const Def* augment_tuple(const Tuple*, Lam*, Lam*);
     const Def* augment_pack(const Pack* pack, Lam* f, Lam* f_diff);
+
     const Def* augment_lea(const App*, Lam*, Lam*);
     const Def* augment_load(const App*, Lam*, Lam*);
     const Def* augment_store(const App*, Lam*, Lam*);
@@ -50,7 +51,6 @@ public:
     const Def* autodiff_zero(const Def* mem, const Def* def);
 
     const Def* zero_pullback(const Def* domain, Lam* f);
-
 
     const Def* autodiff_epilogue(Lam* f_outer, Lam* f_inner, const Def* diff_ty);
     const Def* wrap_call_pullbacks(const Def* arg_pb, const Def* arg);
@@ -96,14 +96,14 @@ private:
     /// dst Def -> dst Def
     Def2Def shadow_pullback;
 
-    // TODO: remove?
-    Def2Def app_pb;
+    // R Def2Def app_pb;
 
-    Def2Def shadow_pullbacks;
     Def2Def gradient_ptrs;
-
     DefSet allocated_memory;
     DefSet caches;
+
+    /// dst Def set
+    DefSet open_continuation;
 };
 
 } // namespace thorin::autodiff

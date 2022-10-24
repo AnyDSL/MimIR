@@ -1,5 +1,5 @@
 ds2cps_ax_cps2ds_dependent.thorin
-./build/bin/thorin -d direct -d tool ./lit/direct/ds2cps_ax_cps2ds_dependent.thorin --output-thorin - -VVVV
+./build/bin/thorin -d direct ./lit/direct/ds2cps_ax_cps2ds_dependent.thorin -o - -VVVV
 
 ./lit/direct/ds2cps_ax_cps2ds_dependent.thorin:32:14-32:47: error: cannot pass argument 'f_258568' of type 
 '.Cn [n_258456: .Nat, _258468: .Cn (.Idx n_258456)]' to '%direct.cps2ds_dep (.Nat, U_259700)' of domain 

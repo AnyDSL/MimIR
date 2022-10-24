@@ -5,31 +5,26 @@
 /// ## Dependencies
 ///
 .import mem;
-/// for derivatives
+/// For derivatives:
 .import core;
-.import direct;
-.import tool;
 ///
 ///
 /// ## Types
 ///
-.ax %autodiff.tangent_type: * -> *, normalize_tangent_type;
+.ax %autodiff.Tangent: * -> *, normalize_Tangent;
 ///
 /// ## Operations
 ///
-/// ### %autodiff.autodiff
+/// ### %autodiff.ad
 /// 
 /// This axiom operates on functions and types.
 ///
 /// For function types the augmented type is computed: `(T -> U) => (T -> U × (U -> T))`
-.ax %autodiff.autodiff_type: * -> *, 
-    normalize_autodiff_type;
+.ax %autodiff.AD: * -> *, normalize_AD;
 /// On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned.
 /// The augmented term `f'` returns the result together with the pullback.
 /// `autodiff f = f' = λ args. (f args, f*)` 
-.ax %autodiff.autodiff: Π [T: *] -> T -> 
-    %autodiff.autodiff_type T, 
-    normalize_autodiff;
+.ax %autodiff.ad: Π [T: *] -> T -> %autodiff.AD T, normalize_ad;
 ///
 /// ### %autodiff.zero
 /// 
@@ -70,8 +65,6 @@
 /// The pullback has to be in cps for compliance.
 /// ```
 /// mul* := λ s. (s*b,s*a)
-/// ```
-/// ```
 /// mul'_cps : Π [m:.Nat,w:.Nat] -> cn[[Int,Int],cn[Int,   cn[Int,cn[Int,Int]]]]
 /// r,r* = (cps2ds (mul'_cps (m,w))) (a,b)
 /// ```
@@ -85,7 +78,7 @@
 /// The tuple pullback transports the partial pullbacks of the operands and handles the sums.
 /// By its nature the pullback of a tuple needs to be a sum.
 /// 
-/// ### %core.icmp.xYgLE (eq)
+/// ### %core.icmp.xYgLE (sle)
 /// 
 /// The comparison pullback exists formally but is not used.
 /// 
@@ -106,7 +99,7 @@
         };
         inner_cmp
     };
-
+/// core.icmp.ul
 .lam .extern internal_diff_core_icmp_XygLe
     ![w: .Nat] ->
     (.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]])
@@ -115,6 +108,24 @@
         ![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
         = { 
             .let result = %core.icmp.ul (w) (a,b);
+            .cn cmp_pb ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
+            = { 
+                .let z = 0:(.Idx w);
+                pb_ret (z, z)
+            };
+            ret (result,cmp_pb)
+        };
+        inner_cmp
+    };
+/// core.icmp.e
+.lam .extern internal_diff_core_icmp_xyglE 
+    ![w: .Nat] ->
+    (.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]])
+    = { 
+        .cn inner_cmp 
+        ![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
+        = { 
+            .let result = %core.icmp.e (w) (a,b);
             .cn cmp_pb ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
             = { 
                 .let z = 0:(.Idx w);

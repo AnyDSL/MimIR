@@ -12,7 +12,7 @@ typedef std::function<void(PassMan&)> PassBuilder;
 typedef std::pair<int, PassBuilder> PrioPassBuilder;
 typedef std::vector<PrioPassBuilder> PassList;
 
-struct PassLt {
+struct passCmp {
     constexpr bool operator()(PrioPassBuilder const& a, PrioPassBuilder const& b) const noexcept {
         return a.first < b.first;
     }

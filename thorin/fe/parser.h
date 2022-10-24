@@ -91,7 +91,6 @@ private:
     const Def* parse_block();
     const Def* parse_sigma();
     const Def* parse_tuple();
-    const Def* parse_idx();
     const Def* parse_type();
     const Def* parse_pi();
     const Def* parse_lam();
@@ -110,7 +109,7 @@ private:
 
     /// @name decls
     ///@{
-    const Def* parse_decls(bool expr = true);
+    const Def* parse_decls(std::string_view ctxt);
     void parse_ax();
     void parse_let();
     void parse_nom();

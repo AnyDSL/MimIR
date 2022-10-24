@@ -1,3 +1,93 @@
+add_thorin_dialect(core
+    SOURCES
+        core/core.cpp
+        core/core.h
+        core/normalizers.cpp
+        core/be/ll/ll.cpp
+        core/be/ll/ll.h
+    DEPENDS
+        mem
+        clos
+    INSTALL
+)
+
+add_thorin_dialect(mem
+    SOURCES
+        mem/mem.cpp
+        mem/mem.h
+        mem/normalizers.cpp
+        mem/passes/fp/copy_prop.cpp
+        mem/passes/fp/copy_prop.h
+        mem/passes/fp/ssa_constr.cpp
+        mem/passes/fp/ssa_constr.h
+        mem/passes/rw/alloc2malloc.cpp
+        mem/passes/rw/alloc2malloc.h
+        mem/passes/rw/remem_elim.cpp
+        mem/passes/rw/remem_elim.h
+        mem/passes/rw/reshape.cpp
+        mem/passes/rw/reshape.h
+    HEADER_DEPENDS
+        core
+    INSTALL
+)
+
+add_thorin_dialect(clos
+    SOURCES
+        clos/clos.cpp
+        clos/clos.h
+        clos/normalizers.cpp
+        clos/pass/fp/lower_typed_clos_prep.cpp
+        clos/pass/fp/lower_typed_clos_prep.h
+        clos/pass/rw/branch_clos_elim.cpp
+        clos/pass/rw/branch_clos_elim.h
+        clos/pass/rw/clos2sjlj.cpp
+        clos/pass/rw/clos2sjlj.h
+        clos/pass/rw/clos_conv_prep.cpp
+        clos/pass/rw/clos_conv_prep.h
+        clos/phase/clos_conv.cpp
+        clos/phase/clos_conv.h
+        clos/phase/lower_typed_clos.cpp
+        clos/phase/lower_typed_clos.h
+        mem/passes/fp/copy_prop.cpp
+        mem/passes/rw/reshape.cpp
+    DEPENDS
+        mem
+        affine
+    HEADER_DEPENDS
+        core
+    INSTALL
+)
+
+add_thorin_dialect(direct
+    SOURCES
+        direct/direct.cpp
+        direct/direct.h
+        direct/passes/ds2cps.cpp
+        direct/passes/ds2cps.h
+        direct/passes/cps2ds.cpp
+        direct/passes/cps2ds.h
+        direct/normalizers.cpp
+    INSTALL
+)
+
+add_thorin_dialect(refly
+    SOURCES
+        refly/refly.h
+        refly/refly.cpp
+        refly/passes/remove_perm.h
+        refly/passes/remove_perm.cpp
+        refly/normalizers.cpp
+    INSTALL
+)
+
+add_thorin_dialect(demo
+    SOURCES
+        demo/demo.cpp
+        demo/demo.h
+        demo/normalizers.cpp
+    INSTALL
+)
+
 add_thorin_dialect(affine
     SOURCES
         affine/affine.cpp
@@ -33,113 +123,9 @@ add_thorin_dialect(autodiff
         mem
         core
         clos
-        tool
         affine
         direct
     HEADER_DEPENDS
         mem
-    INSTALL
-)
-
-add_thorin_dialect(clos
-    SOURCES
-        clos/clos.cpp
-        clos/clos.h
-        clos/normalizers.cpp
-        clos/pass/fp/lower_typed_clos_prep.cpp
-        clos/pass/fp/lower_typed_clos_prep.h
-        clos/pass/rw/branch_clos_elim.cpp
-        clos/pass/rw/branch_clos_elim.h
-        clos/pass/rw/clos2sjlj.cpp
-        clos/pass/rw/clos2sjlj.h
-        clos/pass/rw/clos_conv_prep.cpp
-        clos/pass/rw/clos_conv_prep.h
-        clos/phase/clos_conv.cpp
-        clos/phase/clos_conv.h
-        clos/phase/lower_typed_clos.cpp
-        clos/phase/lower_typed_clos.h
-        mem/passes/fp/copy_prop.cpp
-        mem/passes/rw/reshape.cpp
-    DEPENDS
-        mem
-        affine
-    HEADER_DEPENDS
-        core
-    INSTALL
-)
-
-add_thorin_dialect(core
-    SOURCES
-        core/core.cpp
-        core/core.h
-        core/normalizers.cpp
-        core/be/ll/ll.cpp
-        core/be/ll/ll.h
-    DEPENDS
-        mem
-        clos
-        affine
-    INSTALL
-)
-
-add_thorin_dialect(demo
-    SOURCES
-        demo/demo.cpp
-        demo/demo.h
-        demo/normalizers.cpp
-    INSTALL
-)
-
-add_thorin_dialect(direct
-    SOURCES
-        direct/direct.cpp
-        direct/direct.h
-        direct/passes/ds2cps.cpp
-        direct/passes/ds2cps.h
-        direct/passes/cps2ds.cpp
-        direct/passes/cps2ds.h
-        direct/normalizers.cpp
-    DEPENDS
-        tool
-    INSTALL
-)
-
-add_thorin_dialect(mem
-    SOURCES
-        mem/mem.cpp
-        mem/mem.h
-        mem/normalizers.cpp
-        mem/passes/fp/copy_prop.cpp
-        mem/passes/fp/copy_prop.h
-        mem/passes/fp/ssa_constr.cpp
-        mem/passes/fp/ssa_constr.h
-        mem/passes/rw/alloc2malloc.cpp
-        mem/passes/rw/alloc2malloc.h
-        mem/passes/rw/remem_elim.cpp
-        mem/passes/rw/remem_elim.h
-        mem/passes/rw/reshape.cpp
-        mem/passes/rw/reshape.h
-    HEADER_DEPENDS
-        core
-    INSTALL
-)
-
-add_thorin_dialect(refly
-    SOURCES
-        refly/refly.h
-        refly/refly.cpp
-        refly/passes/remove_perm.h
-        refly/passes/remove_perm.cpp
-        refly/normalizers.cpp
-    INSTALL
-)
-
-add_thorin_dialect(tool
-    SOURCES
-        tool/tool.cpp
-        tool/tool.h
-        tool/passes/set_filter.h
-        tool/passes/set_filter.cpp
-        tool/normalizers.cpp
     INSTALL
 )

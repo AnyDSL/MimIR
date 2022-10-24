@@ -7,8 +7,8 @@
     return (%core.bit2._and 2 (.ff, .tt))
 };
 
-// CHECK-DAG: and_lit_ff_tt _[[retId_ff_tt:[0-9_]+]]: .Cn (.Idx 2)
+// CHECK-DAG: and_lit_ff_tt _[[retId_ff_tt:[0-9_]+]]: .Cn .Idx 2
 // CHECK-DAG: _[[etaId_ff_tt:[0-9_]+]] 0:(.Idx 2)
 
-// CHECK-DAG: _[[etaId_ff_tt]] _[[etaVar_ff_tt:[0-9_]+]]: (.Idx 2)
+// CHECK-DAG: _[[etaId_ff_tt]] _[[etaVar_ff_tt:[0-9_]+]]: .Idx 2
 // CHECK-DAG: _[[retId_ff_tt]] _[[etaVar_ff_tt]]
