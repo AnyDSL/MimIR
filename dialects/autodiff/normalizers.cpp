@@ -6,7 +6,7 @@
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/core/core.h"
-#include "dialects/mem/autogen.h"
+// #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
@@ -15,44 +15,25 @@ namespace thorin::autodiff {
 /// TODO: Maybe we want to handle trivial lookup replacements here.
 const Def* normalize_ad(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // auto [mat, index, val] = arg->projs<3>();
-
-    // do nothing (everything handled in the rewrite pass)
-    // TODO: maybe directly handle operations
-
     return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_AD(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // return arg;
-    // return world.lit_int_width(32,42);
-    auto ad_ty = autodiff_type_fun(arg);
+    auto ad_ty  = autodiff_type_fun(arg);
     if (ad_ty) return ad_ty;
     return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_Tangent(const Def*, const Def*, const Def* arg, const Def*) { return tangent_type_fun(arg); }
 
-// TODO: zero of type Nat, Real, Int -> 0
 const Def* normalize_zero(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-
-    // TODO: move to pass
-    // do not normalize complex types (arrays, tuples, etc) here
-    // as add would no longer be able to shortcut them
-
-    auto T = arg;
-    // auto zero = zero_def(T);
-    // if(zero)
-    //     return zero;
-
     return world.raw_app(callee, arg, dbg);
 }
 
 const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // auto [mat, index, val] = arg->projs<3>();
 
     // TODO: add tuple -> tuple of adds
     // TODO: add zero -> other
@@ -71,8 +52,6 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         world.DLOG("0+a");
         return a;
     }
-    // TODO: value vs type level match (what is easier)
-    // value level match harder as a tuple might in reality be a var or extract
     if (auto sig = T->isa<Sigma>()) {
         world.DLOG("add tuple");
         auto p = sig->num_ops(); // TODO: or num_projs
@@ -81,8 +60,6 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         });
         return world.tuple(ops);
     } else if (auto arr = T->isa<Arr>()) {
-        // TODO: is this working for non-lit (non-tuple)?
-        //   or do we need a loop
         world.DLOG("add arrays {} {} {}", T, a, b);
         auto pack      = world.nom_pack(T);
         auto body_type = arr->body();
@@ -91,13 +68,12 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
                             {world.extract(a, pack->var()), world.extract(b, pack->var())}));
         world.DLOG("pack {}", pack);
         return pack;
-        // assert(0);
     } else if (auto ptr = match<mem::Ptr>(T)) {
+        // TODO: see review
         return a;
     } else if (auto mem = match<mem::M>(T)) {
+        // TODO: see review
         return world.top(mem::type_mem(world));
-        // } else if (T->isa<Idx>()) {
-        //     return core::op(core::wrap::add, core::WMode::none, a, b);
     } else if (Idx::size(type)) {
         world.DLOG("add int");
         auto width = as_lit(world.iinfer(a));
@@ -119,7 +95,6 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         assert(0 && "not handled");
     }
     // TODO: mem stays here (only resolved after direct simplification)
-    // assert(0);
 
     return world.raw_app(callee, arg, dbg);
 }
@@ -130,18 +105,12 @@ const Def* normalize_sum(const Def* type, const Def* callee, const Def* arg, con
 
     auto [count, T] = callee->as<App>()->args<2>();
 
-    // world.DLOG("sum {}:{} {}:{}", count, count->type(), T, T->type());
     if (auto lit = count->isa<Lit>()) {
-        // auto val = lit
-        // auto val=lit->as<nat_t>();
         auto val = lit->get<nat_t>();
         world.DLOG("val: {}", val);
-        // R not necessary if sum is evaluated before zero (needs zero as pass)
-        // R if(val == 1)
-        // R     return arg;
         DefArray args = arg->projs(val);
         auto sum      = op_zero(T);
-        // would also be handled by add zero
+        // This special case would also be handled by add zero.
         if (val >= 1) { sum = args[0]; }
         for (size_t i = 1; i < val; ++i) sum = world.app(world.app(world.ax<add>(), T), {sum, args[i]});
         return sum;

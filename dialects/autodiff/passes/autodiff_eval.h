@@ -96,8 +96,6 @@ private:
     /// dst Def -> dst Def
     Def2Def shadow_pullback;
 
-    // R Def2Def app_pb;
-
     Def2Def gradient_ptrs;
     DefSet allocated_memory;
     DefSet caches;
