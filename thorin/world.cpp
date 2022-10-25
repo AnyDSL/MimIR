@@ -184,13 +184,14 @@ const Def* World::extract(const Def* d, const Def* index, const Def* dbg) {
 
     auto size = Idx::size(index->type());
     auto type = d->unfold_type();
-    if (err()) {
-        if (!checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
-    }
 
     // nom sigmas can be 1-tuples
     if (auto l = isa_lit(size); l && *l == 1 && !d->type()->isa_nom<Sigma>()) return d;
     if (auto pack = d->isa_structural<Pack>()) return pack->body();
+
+    if (err()) {
+        if (!checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
+    }
 
     // extract(insert(x, index, val), index) -> val
     if (auto insert = d->isa<Insert>()) {

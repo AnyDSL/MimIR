@@ -34,7 +34,7 @@ public:
         Node node() const { return node_; }
         int depth() const { return depth_; }
         const Head* parent() const { return parent_; }
-        ArrayRef<const CFNode*> cf_nodes() const { return cf_nodes_; }
+        Span<const CFNode*> cf_nodes() const { return cf_nodes_; }
         size_t num_cf_nodes() const { return cf_nodes().size(); }
 
     protected:
@@ -51,7 +51,7 @@ public:
             : Base(Node, parent, depth, cf_nodes) {}
 
     public:
-        ArrayRef<std::unique_ptr<Base>> children() const { return children_; }
+        Span<std::unique_ptr<Base>> children() const { return children_; }
         const Base* child(size_t i) const { return children_[i].get(); }
         size_t num_children() const { return children().size(); }
         bool is_root() const { return Base::parent_ == 0; }
@@ -87,7 +87,7 @@ public:
         friend class LoopTreeBuilder<forward>;
     };
 
-    LoopTree(const LoopTree&) = delete;
+    LoopTree(const LoopTree&)     = delete;
     LoopTree& operator=(LoopTree) = delete;
 
     explicit LoopTree(const CFG<forward>& cfg);

@@ -50,11 +50,11 @@
 //     return r3
 // };
 
-.cn init_brusselator [[
+.cn init_brusselator [
         mem: %mem.M,
         u  : %mem.Ptr (<<size; R64>>, 0:.Nat),
         v  : %mem.Ptr (<<size; R64>>, 0:.Nat)
-    ],
+    ,
     ret: .Cn [%mem.M]
 ] = {
     .cn loop_body_1 [i:I32, mem1:%mem.M, yield1: .Cn [%mem.M]] = {
@@ -375,9 +375,9 @@
             time (memB1, cont_time_end)
         };
         .cn cont1 [memA1:%mem.M] = {
-            init_brusselator ((memA1, adjoint1, adjoint2), cont2)
+            init_brusselator (memA1, adjoint1, adjoint2, cont2)
         };
-        init_brusselator ((mem5, x1, x2), cont1)
+        init_brusselator (mem5, x1, x2, cont1)
     };
     time (mem, cont_time_start)
 
