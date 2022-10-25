@@ -4,7 +4,6 @@
 #include "thorin/tuple.h"
 
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/autodiff/builder.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
@@ -256,21 +255,28 @@ const Pi* cn_mem_wrap(const Pi* pi) {
     return result;
 }
 
+// TODO: should not be in AD
+/// wrapps a lambda in memory
 const Def* lam_mem_wrap(const Def* lam) {
     auto& world = lam->world();
     auto type   = lam->type()->as<Pi>();
     if (!match<mem::M>(type->dom(0)->proj(0))) {
         auto wrap = cn_mem_wrap(type);
 
-        auto mem_lam    = world.nom_lam(wrap, world.dbg("memorized_" + lam->name()));
-        auto lam_return = world.nom_lam(type->ret_pi(), world.dbg("memorized_return_" + lam->name()));
+        auto mem_lam    = world.nom_lam(wrap, world.dbg("mem_" + lam->name()));
+        auto lam_return = world.nom_lam(type->ret_pi(), world.dbg("return_mem_" + lam->name()));
 
         auto mem_vars = mem_lam->var((nat_t)0)->projs();
         auto mem      = mem_vars[0];
         auto vars     = lam_return->vars();
 
-        auto compound  = build(world).add(mem).add(vars).tuple();
-        auto compound2 = build(world).add(mem_vars.skip_front()).add(lam_return).tuple();
+        // TODO: why not use [[mem,[args]],ret[mem,[rest]]]
+        // TODO: or use flat_tuple function
+        // auto compound  = build(world).add(mem).add(vars).tuple();
+        // auto compound2 = build(world).add(mem_vars.skip_front()).add(lam_return).tuple();
+        // TODO: better names
+        auto compound  = world.tuple({mem, world.tuple(vars)});
+        auto compound2 = world.tuple({world.tuple(mem_vars.skip_front()), lam_return});
 
         lam_return->set_body(world.app(mem_lam->ret_var(), compound));
 

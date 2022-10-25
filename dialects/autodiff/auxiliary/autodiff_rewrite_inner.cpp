@@ -9,7 +9,6 @@
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/autogen.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
-#include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
@@ -295,16 +294,19 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
 
 Lam* mem_return_lam(World& w, std::string name, Defs domain = {}, bool filter = true) {
     auto mem_ty = mem::type_mem(w);
-    auto cn     = build(w).add(mem_ty).add(domain).add(w.cn({mem_ty})).cn();
-    auto lam    = w.nom_lam(cn, w.dbg(name));
+    // TODO: see comments from aux
+    // auto cn     = build(w).add(mem_ty).add(domain).add(w.cn({mem_ty})).cn();
+    auto cn  = w.cn({w.tuple({mem_ty, w.tuple(domain)}), w.cn({mem_ty})});
+    auto lam = w.nom_lam(cn, w.dbg(name));
     lam->set_filter(filter);
     return lam;
 }
 
 Lam* return_lam(World& w, std::string name, Defs domain = {}, bool filter = true) {
     auto mem_ty = mem::type_mem(w);
-    auto cn     = build(w).add(domain).add(w.cn({mem_ty})).cn();
-    auto lam    = w.nom_lam(cn, w.dbg(name));
+    // auto cn     = build(w).add(domain).add(w.cn({mem_ty})).cn();
+    auto cn  = w.cn({w.tuple(domain), w.cn({mem_ty})});
+    auto lam = w.nom_lam(cn, w.dbg(name));
     lam->set_filter(filter);
     return lam;
 }
