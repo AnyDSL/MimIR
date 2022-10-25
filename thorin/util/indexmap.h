@@ -29,7 +29,7 @@ public:
     IndexMap(const Indexer& indexer, const Value& value = Value())
         : indexer_(indexer)
         , array_(indexer.size(), value) {}
-    IndexMap(const Indexer& indexer, ArrayRef<Value> array)
+    IndexMap(const Indexer& indexer, Span<Value> array)
         : indexer_(indexer)
         , array_(array) {}
     template<class I>

@@ -12,18 +12,19 @@ namespace thorin::clos {
 /// This pass lowers *typed closures* to *untyped closures*.
 /// For details on typed closures, see ClosConv.
 /// In general, untyped closure have the form `(pointer-to-environment, code)` with the following exceptions:
-/// - Lam%s in callee-position should be λ-lifted and thus don't receive an environment.
-/// - External and imported (not set)  Lam%s also don't receive an environment (they are appropriately η-wrapped by
-/// ClosConv)
-/// - If the environment is of integer type, it's directly stored in the environment-pointer ("unboxed").
-///   Note: In theory this should work for other primitive types as well, but the LL backend does not handle the
+/// * Lam%s in callee-position should be λ-lifted and thus don't receive an environment.
+/// * External and imported (not set) Lam%s also don't receive an environment.
+///   They are appropriately η-wrapped by ClosConv.
+/// * If the environment is of integer type, it's directly stored in the environment-pointer ("unboxed").
+///   @note In theory this should work for other primitive types as well, but the LL backend does not handle the
 ///   required conversion correctly.
 ///
-/// Further, first class continuations are rewritten to returning functions. They receive `⊥` as a dummy continuation.
+/// Further, first class continuations are rewritten to returning functions.
+/// They receive `⊥` as a dummy continuation.
 /// Therefore Clos2SJLJ should have taken place prior to this pass.
 ///
-/// This pass will heap-allocate closures if they are annotated with ClosKind::esc and stack-allocate everything
-/// else. These annotations are introduced by LowerTypedClosPrep.
+/// This pass will heap-allocate ClosKind::esc closures and stack-allocate everything else.
+/// These annotations are introduced by LowerTypedClosPrep.
 class LowerTypedClos : public Phase {
 public:
     LowerTypedClos(World& world)
@@ -50,8 +51,9 @@ private:
     Lam* make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type);
 
     /// @name helpers
-    /// @{
-    /// @name wrapper arround old2new_
+    ///@{
+
+    /// wrapper arround old2new_
     template<class D = const Def>
     D* map(const Def* old_def, D* new_def) {
         old2new_[old_def] = static_cast<const Def*>(new_def);
@@ -63,7 +65,7 @@ private:
         auto& w = world();
         return mem::type_ptr(w.sigma());
     }
-    /// @}
+    ///@}
 
     Def2Def old2new_;
     StubQueue worklist_;
@@ -71,10 +73,10 @@ private:
     const Def* const dummy_ret_; //< dummy return continuation
 
     /// @name memory-tokens
-    /// @{
+    ///@{
     const Def* lvm_; //< Last visited memory token
     const Def* lcm_; //< Last created memory token
-    /// @}
+    ///@}
 };
 
 } // namespace thorin::clos
