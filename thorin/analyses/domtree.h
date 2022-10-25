@@ -11,7 +11,7 @@ namespace thorin {
 template<bool forward>
 class DomTreeBase {
 public:
-    DomTreeBase(const DomTreeBase&) = delete;
+    DomTreeBase(const DomTreeBase&)     = delete;
     DomTreeBase& operator=(DomTreeBase) = delete;
 
     explicit DomTreeBase(const CFG<forward>& cfg)

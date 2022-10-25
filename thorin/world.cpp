@@ -234,6 +234,7 @@ const Def* World::insert(const Def* d, const Def* index, const Def* val, const D
     if (err()) {
         if (!checker().equiv(type->arity(), size, dbg)) err()->index_out_of_range(type->arity(), index, dbg);
 
+        // The value type does not match the type in the tuple at position index.
         if (auto index_lit = isa_lit(index)) {
             auto target_type = type->proj(*index_lit);
             if (!checker().assignable(target_type, val, dbg)) err()->expected_type(target_type, dbg);

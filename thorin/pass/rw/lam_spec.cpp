@@ -37,7 +37,8 @@ const Def* LamSpec::rewrite(const Def* def) {
     if (!isa_workable(old_lam)) return def;
 
     Scope scope(old_lam);
-    if(scope.free_defs().contains(old_lam)) return def;
+    // Skip recursion to avoid infinite inlining.
+    if (scope.free_defs().contains(old_lam)) return def;
 
     DefVec new_doms, new_vars, new_args;
     auto skip     = old_lam->ret_var() && is_top_level(old_lam);
