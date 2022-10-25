@@ -103,7 +103,6 @@ DefSet& FreeDefAna::run(Lam* lam) {
  * Closure Conversion
  */
 
-
 void ClosConv::start() {
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     auto subst     = Def2Def();
