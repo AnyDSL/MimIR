@@ -737,8 +737,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // TODO array with size
         // auto size = emit(mslot->arg(1));
         auto [pointee, addr_space] = mslot->decurry()->args<2>();
-        // TODO placing allocas not in the entry block may cause severe performance problems
-        // print(lam2bb_[entry_].body().emplace_front(), "{} = alloca {}", name, convert(pointee));
         print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
         return name;
     } else if (auto free = match<mem::free>(def)) {
