@@ -96,8 +96,6 @@ inline const Def* apply_closure(const Def* closure, Defs args) {
     return clos_apply(closure, w.tuple(args));
 }
 
-///@}
-
 // TODO: rename this
 /// Checks is def is the variable of a nom of type N.
 template<class N>
@@ -108,6 +106,7 @@ std::tuple<const Extract*, N*> ca_isa_var(const Def* def) {
     }
     return {nullptr, nullptr};
 }
+///@}
 
 /// @name closure types
 ///@{
@@ -124,14 +123,21 @@ const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type = nullptr);
 
 ///@}
 
-std::tuple<Lam*, const Def*, const Def*> clos_lam_stub(const Def* env_type, const Def* dom, const Def* dbg = {});
-
 /// @name closure environments
-/// @p tup_or_sig should generally be a  Tuple, Sigma or Var.
+/// @p tup_or_sig should generally be a Tuple, Sigma or Var.
 ///@{
 
 /// Describes where the environment is placed in the argument list.
 static constexpr size_t Clos_Env_Param = 1_u64;
+
+// Adjust the index of an argument to account for the env param
+inline size_t shift_env(size_t i) { return (i < Clos_Env_Param) ? i : i - 1_u64; }
+
+// Same but skip the env param
+inline size_t skip_env(size_t i) { return (i < Clos_Env_Param) ? i : i + 1_u64; }
+
+// TODO what does this do exactly?
+const Def* ctype(World& w, Defs doms, const Def* env_type = nullptr);
 
 const Def* clos_insert_env(size_t i, const Def* env, std::function<const Def*(size_t)> f);
 inline const Def* clos_insert_env(size_t i, const Def* env, const Def* a) {
