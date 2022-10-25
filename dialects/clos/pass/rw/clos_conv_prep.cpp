@@ -33,8 +33,6 @@ Lam* ClosConvPrep::scope(Lam* lam) {
 }
 
 void ClosConvPrep::enter() {
-
-    world().debug_dump();
     if (curr_nom()->type()->is_returning()) {
         lam2fscope_[curr_nom()] = curr_nom();
         world().DLOG("scope {} -> {}", curr_nom(), curr_nom());
@@ -49,7 +47,8 @@ void ClosConvPrep::enter() {
     }
 
     auto body = curr_nom()->body()->isa<App>();
-    ignore_ = !(body && body->callee_type()->is_cn() && !wrapper_.contains(curr_nom()));
+    // Skip if the nominal is already wrapped or the body is undefined/no continuation.
+    ignore_ = !(body && body->callee_type()->is_cn()) || wrapper_.contains(curr_nom());
 }
 
 const App* ClosConvPrep::rewriteArgs(const App* app) {
