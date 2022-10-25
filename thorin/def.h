@@ -386,7 +386,6 @@ public:
     /// @name dump
     ///@{
     void dump() const;
-    void dumpClass() const;
     void dump(int max) const;
     void write(int max) const;
     void write(int max, const char* file) const;
