@@ -52,6 +52,11 @@
 /// The difference to %mem.alloc is that the `size` is automatically inferred.
 .ax %mem.malloc: Π [T: *, as: .Nat] -> [%mem.M, .Nat] -> [%mem.M, %mem.Ptr(T, as)];
 ///
+/// ### %mem.free
+///
+/// Frees memory of type `T` in address space `as`.
+.ax %mem.free: Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as)] -> [%mem.M];
+///
 /// ### %mem.mslot
 ///
 /// Reserves a memory slot for type `T` in address space `as`.

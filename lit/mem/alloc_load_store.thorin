@@ -13,8 +13,8 @@
     .let allocd = %mem.alloc Tas mem;
     .let store = %mem.store Tas (allocd#0:(.Idx 2), allocd#1:(.Idx 2), argc);
     .let load = %mem.load Tas (store, allocd#1:(.Idx 2));
-    // todo: free :)
-    return load
+    .let free = %mem.free Tas (load#0:(.Idx 2), allocd#1:(.Idx 2));
+    return (free, load#1:(.Idx 2))
 };
 
 // CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[mainMemId:[_0-9]*]]: %mem.M, argc_[[argcId:[0-9_]+]]: .Idx 4294967296, %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0)», 0), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, .Idx 4294967296]] = {
