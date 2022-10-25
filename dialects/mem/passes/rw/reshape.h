@@ -11,13 +11,11 @@ using DefQueue = std::deque<const Def*>;
 static int i = 0;
 class Reshape : public RWPass<Reshape, Lam> {
 public:
-    enum Mode{
-        Flat, Arg
-    };
+    enum Mode { Flat, Arg };
 
     Reshape(PassMan& man, Mode mode)
-        : RWPass(man, "reshape"),
-            mode_(mode) {}
+        : RWPass(man, "reshape")
+        , mode_(mode) {}
 
     void enter() override;
 
@@ -34,7 +32,6 @@ private:
     const Def* wrap(const Def* def, const Def* target_ty);
     const Def* reshape(const Def* mem, const Def* ty, DefQueue& vars);
     const Def* reshape(const Def* arg, const Pi* target_pi);
-    //const Def* make_scalar_inv(const Def* def, const Def* ty);
 
     Def2Def old2new_;
     std::stack<Lam*> worklist_;
@@ -42,4 +39,4 @@ private:
     Def2Def old2flatten_;
 };
 
-} // namespace thorin::clos
+} // namespace thorin::mem
