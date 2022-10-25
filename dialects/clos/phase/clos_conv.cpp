@@ -39,8 +39,8 @@ Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)-
 
 const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
     assert(isa_clos_type(ct));
-    auto& w = ct->world();
-    auto pi = ct->op(1_u64)->as<Pi>();
+    auto& w      = ct->world();
+    auto pi      = ct->op(1_u64)->as<Pi>();
     auto new_dom = new_env_type ? clos_sub_env(pi->dom(), new_env_type) : clos_remove_env(pi->dom());
     return w.cn(new_dom);
 }
@@ -59,8 +59,8 @@ const Def* clos_pack_dbg(const Def* env, const Def* lam, const Def* dbg, const D
     assert(env && lam);
     assert(!ct || isa_clos_type(ct));
     auto& w = env->world();
-    auto pi = lam->type()->isa<Pi>();
-    assert(pi && env->type() == pi->dom(Clos_Env_Param));
+    auto pi = lam->type()->as<Pi>();
+    assert(env->type() == pi->dom(Clos_Env_Param));
     ct = (ct) ? ct : clos_type(w.cn(clos_remove_env(pi->dom())));
     return w.tuple(ct, {env->type(), lam, env}, dbg)->isa<Tuple>();
 }
