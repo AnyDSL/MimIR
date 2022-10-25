@@ -221,6 +221,7 @@ void Emitter::start() {
     Super::start();
 
     ostream() << "declare i8* @malloc(i64)" << '\n'; // HACK
+    ostream() << "declare void @free(i8*)" << '\n';
     // SJLJ intrinsics (GLIBC Versions)
     ostream() << "declare i32 @_setjmp(i8*) returns_twice" << '\n';
     ostream() << "declare void @longjmp(i8*, i32) noreturn" << '\n';
@@ -497,13 +498,18 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         unreachable();
     } else if (def->isa<Bot>()) {
         return "undef";
-    } else if (auto bit = match<core::bit2>(def)) {
-        auto [a, b] = bit->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(bit->type());
+    } else if (auto bit1 = match<core::bit1>(def)) {
+        assert(bit1.id() == core::bit1::neg);
+        auto x = emit(bit1->arg());
+        auto t = convert(bit1->type());
+        return bb.assign(name, "xor {} -1, {}", t, x);
+    } else if (auto bit2 = match<core::bit2>(def)) {
+        auto [a, b] = bit2->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(bit2->type());
 
-        auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} 0, {}", t, x); };
+        auto neg = [&](std::string_view x) { return bb.assign(name + ".neg", "xor {} -1, {}", t, x); };
 
-        switch (bit.id()) {
+        switch (bit2.id()) {
             // clang-format off
             case core::bit2::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
             case core::bit2:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);
@@ -731,8 +737,18 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // TODO array with size
         // auto size = emit(mslot->arg(1));
         auto [pointee, addr_space] = mslot->decurry()->args<2>();
-        print(lam2bb_[entry_].body().emplace_front(), "{} = alloca {}", name, convert(pointee));
+        // TODO placing allocas not in the entry block may cause severe performance problems
+        // print(lam2bb_[entry_].body().emplace_front(), "{} = alloca {}", name, convert(pointee));
+        print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
         return name;
+    } else if (auto free = match<mem::free>(def)) {
+        emit_unsafe(free->arg(0));
+        auto ptr   = emit(free->arg(1));
+        auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
+
+        bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
+        bb.tail("call void @free(i8* {})", name + ".i8");
+        return {};
     } else if (auto load = match<mem::load>(def)) {
         emit_unsafe(load->arg(0));
         auto ptr       = emit(load->arg(1));

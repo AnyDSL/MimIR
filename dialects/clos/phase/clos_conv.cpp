@@ -4,6 +4,7 @@
 
 #include "thorin/analyses/scope.h"
 
+#include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::clos {
@@ -24,7 +25,7 @@ const Def* clos_remove_env(size_t i, std::function<const Def*(size_t)> f) { retu
 
 static const Def* ctype(World& w, Defs doms, const Def* env_type = nullptr) {
     if (!env_type) {
-        auto sigma = w.nom_sigma(w.type(), 3_u64, w.dbg("closure_type"));
+        auto sigma = w.nom_sigma(w.type(), 3_u64, w.dbg("Clos"));
         sigma->set(0_u64, w.type());
         sigma->set(1_u64, ctype(w, doms, sigma->var(0_u64)));
         sigma->set(2_u64, sigma->var(0_u64));
@@ -38,9 +39,8 @@ Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)-
 
 const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
     assert(isa_clos_type(ct));
-    auto& w = ct->world();
-    auto pi = ct->op(1_u64)->isa<Pi>();
-    assert(pi);
+    auto& w      = ct->world();
+    auto pi      = ct->op(1_u64)->as<Pi>();
     auto new_dom = new_env_type ? clos_sub_env(pi->dom(), new_env_type) : clos_remove_env(pi->dom());
     return w.cn(new_dom);
 }
@@ -59,8 +59,8 @@ const Def* clos_pack_dbg(const Def* env, const Def* lam, const Def* dbg, const D
     assert(env && lam);
     assert(!ct || isa_clos_type(ct));
     auto& w = env->world();
-    auto pi = lam->type()->isa<Pi>();
-    assert(pi && env->type() == pi->dom(Clos_Env_Param));
+    auto pi = lam->type()->as<Pi>();
+    assert(env->type() == pi->dom(Clos_Env_Param));
     ct = (ct) ? ct : clos_type(w.cn(clos_remove_env(pi->dom())));
     return w.tuple(ct, {env->type(), lam, env}, dbg)->isa<Tuple>();
 }
@@ -184,20 +184,19 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
     if (auto i = subst.find(def); i != subst.end()) {
         return i->second;
     } else if (auto pi = def->isa<Pi>(); pi && pi->is_cn()) {
-        return map(closure_type(pi, subst));
+        return map(type_clos(pi, subst));
     } else if (auto lam = def->isa_nom<Lam>(); lam && lam->type()->is_cn()) {
-        auto& w                       = world();
         auto [_, __, fv_env, new_lam] = make_stub(lam, subst);
-        auto closure_type             = rewrite(lam->type(), subst);
+        auto clos_ty                  = rewrite(lam->type(), subst);
         auto env                      = rewrite(fv_env, subst);
-        auto closure                  = clos_pack(env, new_lam, closure_type);
-        w.DLOG("RW: pack {} ~> {} : {}", lam, closure, closure_type);
+        auto closure                  = clos_pack(env, new_lam, clos_ty);
+        world().DLOG("RW: pack {} ~> {} : {}", lam, closure, clos_ty);
         return map(closure);
     } else if (auto q = match(clos::ret, def)) {
         if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
-            assert(ret_lam && ret_lam->is_basicblock());
-            // Note: This should be cont_lam's only occurance after η-expansion, so its okay to
-            // put into the local subst only
+            // assert(ret_lam && ret_lam->is_basicblock());
+            //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
+            //  put into the local subst only
             auto new_doms  = DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
             auto new_lam   = ret_lam->stub(w, w.cn(new_doms), ret_lam->dbg());
             subst[ret_lam] = new_lam;
@@ -241,11 +240,16 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         return map(new_nom);
     } else {
         auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite(def->op(i), subst); });
-        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>())
+        if (auto app = def->isa<App>(); app && new_ops[0]->type()->isa<Sigma>()) {
             return map(clos_apply(new_ops[0], new_ops[1]));
-        else
+        } else if (def->isa<Axiom>()) {
+            return def;
+        } else {
             return map(def->rebuild(w, new_type, new_ops, new_dbg));
+        }
     }
+
+    thorin::unreachable();
 }
 
 Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, Def2Def& subst) {
@@ -258,17 +262,17 @@ Def* ClosConv::rewrite_nom(Def* nom, const Def* new_type, const Def* new_dbg, De
     return new_nom;
 }
 
-const Pi* ClosConv::rewrite_cont_type(const Pi* pi, Def2Def& subst) {
+const Pi* ClosConv::rewrite_type_cn(const Pi* pi, Def2Def& subst) {
     assert(pi->is_basicblock());
     auto new_ops = DefArray(pi->num_doms(), [&](auto i) { return rewrite(pi->dom(i), subst); });
     return world().cn(new_ops);
 }
 
-const Def* ClosConv::closure_type(const Pi* pi, Def2Def& subst, const Def* env_type) {
+const Def* ClosConv::type_clos(const Pi* pi, Def2Def& subst, const Def* env_type) {
     if (auto i = glob_noms_.find(pi); i != glob_noms_.end() && !env_type) return i->second;
     auto& w       = world();
     auto new_doms = DefArray(pi->num_doms(), [&](auto i) {
-        return (i == pi->num_doms() - 1 && pi->is_returning()) ? rewrite_cont_type(pi->ret_pi(), subst)
+        return (i == pi->num_doms() - 1 && pi->is_returning()) ? rewrite_type_cn(pi->ret_pi(), subst)
                                                                : rewrite(pi->dom(i), subst);
     });
     auto ct       = ctype(w, new_doms, env_type);
@@ -281,12 +285,12 @@ const Def* ClosConv::closure_type(const Pi* pi, Def2Def& subst, const Def* env_t
     return ct;
 }
 
-ClosConv::ClosureStub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& subst) {
+ClosConv::Stub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2Def& subst) {
     auto& w          = world();
     auto env         = w.tuple(DefArray(fvs.begin(), fvs.end()));
     auto num_fvs     = fvs.size();
     auto env_type    = rewrite(env->type(), subst);
-    auto new_fn_type = closure_type(old_lam->type(), subst, env_type)->as<Pi>();
+    auto new_fn_type = type_clos(old_lam->type(), subst, env_type)->as<Pi>();
     auto new_lam     = old_lam->stub(w, new_fn_type, w.dbg(old_lam->name()));
     new_lam->set_debug_name((old_lam->is_external() || !old_lam->is_set()) ? "cc_" + old_lam->name() : old_lam->name());
     if (!isa_workable(old_lam)) {
@@ -306,15 +310,16 @@ ClosConv::ClosureStub ClosConv::make_stub(const DefSet& fvs, Lam* old_lam, Def2D
         new_lam->set(old_lam->filter(), old_lam->body());
     }
     w.DLOG("STUB {} ~~> ({}, {})", old_lam, env, new_lam);
-    auto closure = ClosureStub{old_lam, num_fvs, env, new_lam};
+    auto closure = Stub{old_lam, num_fvs, env, new_lam};
     closures_.emplace(old_lam, closure);
     closures_.emplace(closure.fn, closure);
     return closure;
 }
 
-ClosConv::ClosureStub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
+ClosConv::Stub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
     if (auto i = closures_.find(old_lam); i != closures_.end()) return i->second;
-    auto closure = make_stub(fva_.run(old_lam), old_lam, subst);
+    auto fvs     = fva_.run(old_lam);
+    auto closure = make_stub(fvs, old_lam, subst);
     worklist_.emplace(closure.fn);
     return closure;
 }
@@ -336,9 +341,9 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
     assert(!match<mem::M>(fd) && "mem tokens must not be free");
     if (is_toplevel(fd)) return;
     if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
-        if (var != lam->ret_var()) node->fvs.emplace(fd);
+        if (var != lam->ret_var()) { node->add_fvs(fd); }
     } else if (auto q = match(clos::freeBB, fd)) {
-        node->fvs.emplace(q);
+        node->add_fvs(q);
     } else if (auto pred = fd->isa_nom()) {
         if (pred != node->nom) {
             auto [pnode, inserted] = build_node(pred, worklist);
@@ -349,10 +354,10 @@ void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue&
     } else if (fd->dep() == Dep::Var && !fd->isa<Tuple>()) {
         // Note: Var's can still have Def::Top, if their type is a nom!
         // So the first case is *not* redundant
-        node->fvs.emplace(fd);
+        node->add_fvs(fd);
     } else if (is_memop_res(fd)) {
         // Results of memops must not be floated down
-        node->fvs.emplace(fd);
+        node->add_fvs(fd);
     } else {
         for (auto op : fd->ops()) split_fd(node, op, init_node, worklist);
     }
@@ -376,7 +381,6 @@ std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* nom, NodeQueue& w
 }
 
 void FreeDefAna::run(NodeQueue& worklist) {
-    // auto& w = world();
     int iter = 0;
     while (!worklist.empty()) {
         auto node = worklist.front();
@@ -387,7 +391,7 @@ void FreeDefAna::run(NodeQueue& worklist) {
         mark(node);
         for (auto p : node->preds) {
             auto& pfvs = p->fvs;
-            for (auto&& pfv : pfvs) changed |= node->fvs.insert(pfv).second;
+            for (auto&& pfv : pfvs) { changed |= node->add_fvs(pfv).second; }
             // w.DLOG("\tFV({}) ∪= FV({}) = {{{, }}}\b", node->nom, p->nom, pfvs);
         }
         if (changed) {
@@ -395,7 +399,6 @@ void FreeDefAna::run(NodeQueue& worklist) {
         }
         iter++;
     }
-    // w.DLOG("FVA: done");
 }
 
 DefSet& FreeDefAna::run(Lam* lam) {
@@ -405,6 +408,7 @@ DefSet& FreeDefAna::run(Lam* lam) {
         cur_pass_id++;
         run(worklist);
     }
+
     return node->fvs;
 }
 

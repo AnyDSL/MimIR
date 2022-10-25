@@ -63,6 +63,8 @@ public:
     /// *outside* This means that this PassMan::curr_nom has already been encountered elsewhere. Otherwise, we wouldn't
     /// have seen PassMan::curr_nom to begin with (unless it is Def::is_external).
     virtual void enter() {}
+
+    virtual void prepare() {}
     ///@}
 
     /// @name proxy

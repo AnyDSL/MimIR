@@ -350,7 +350,7 @@ const Def* normalize_nop(const Def* type, const Def* callee, const Def* arg, con
         }
     }
 
-    return world.raw_app(callee, a, dbg);
+    return world.raw_app(callee, arg, dbg);
 }
 
 template<ncmp id>
@@ -379,7 +379,7 @@ const Def* normalize_ncmp(const Def* type, const Def* callee, const Def* arg, co
         }
     }
 
-    return world.raw_app(callee, a, dbg);
+    return world.raw_app(callee, arg, dbg);
 }
 
 template<rop id>

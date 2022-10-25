@@ -411,7 +411,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
         if (w.is_frozen() || uses().size() < Search_In_Uses_Threshold) {
             for (auto u : uses()) {
                 if (auto ex = u->isa<Extract>(); ex && ex->tuple() == this) {
-                    if (auto index = isa_lit(ex->index()); *index == i) return ex;
+                    if (auto index = isa_lit(ex->index()); index && *index == i) return ex;
                 }
             }
 

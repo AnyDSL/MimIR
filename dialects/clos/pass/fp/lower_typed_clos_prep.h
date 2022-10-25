@@ -10,10 +10,7 @@ namespace thorin::clos {
 class LowerTypedClosPrep : public FPPass<LowerTypedClosPrep, Lam> {
 public:
     LowerTypedClosPrep(PassMan& man)
-        : FPPass<LowerTypedClosPrep, Lam>(man, "closure_analysis")
-        , esc_() {}
-
-    using Data = int; // Dummy
+        : FPPass<LowerTypedClosPrep, Lam>(man, "lower_typed_clos_prep") {}
 
 private:
     const Def* rewrite(const Def*) override;
