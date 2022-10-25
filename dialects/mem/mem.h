@@ -110,8 +110,8 @@ inline const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg) {
 }
 
 inline const Def* op_free(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-    World& w  = mem->world();
-    auto ptr_ty = match<Ptr>(ptr->type())->as<App>();
+    World& w     = mem->world();
+    auto ptr_ty  = match<Ptr>(ptr->type())->as<App>();
     auto pointee = ptr_ty->arg(0_s);
     return w.app(w.app(w.ax<free>(), {pointee, w.lit_nat_0()}), {mem, ptr}, dbg);
 }
@@ -125,95 +125,76 @@ inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const
 const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
 const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
 
-static const Def* mem_def(const Def* def){
-    if(match<mem::M>(def->type())){
-        return def;
-    }
+/// Returns the (first) element of type mem::M from the given tuple.
+static const Def* mem_def(const Def* def) {
+    if (match<mem::M>(def->type())) { return def; }
 
-    if(def->num_projs() > 1){
-        for(auto proj : def->projs()){
-            if(auto mem = mem_def(proj)){
-                return mem;
-            }
+    if (def->num_projs() > 1) {
+        for (auto proj : def->projs()) {
+            if (auto mem = mem_def(proj)) { return mem; }
         }
     }
 
     return nullptr;
 }
 
-static const size_t mem_index(const Def* def){
-    for( size_t i = 0 ; i < def->num_projs() ; i++ ){
-        if(auto mem = mem_def(def->proj(i))){
-            return i;
-        }
-    }
+/// Returns the memory argument of a function if it has one.
+inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) { return mem_def(lam->var()); }
 
-    return -1;
-}
-
-inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) {
-    return mem_def(lam->var());
-}
-
+/// Swapps the memory occurrences in the given def with the given memory.
 inline const Def* replace_mem(const Def* mem, const Def* arg) {
-    if( arg->num_projs() > 1 ){
+    if (arg->num_projs() > 1) {
         auto& w = mem->world();
-        return w.tuple(DefArray(arg->num_projs(), [&](auto i){ return replace_mem(mem, arg->proj(i)); }));
+        return w.tuple(DefArray(arg->num_projs(), [&](auto i) { return replace_mem(mem, arg->proj(i)); }));
     }
 
-    if(match<mem::M>(arg->type())){
-        return mem;
-    }
+    if (match<mem::M>(arg->type())) { return mem; }
 
     return arg;
 }
 
-static const Def* strip_mem_ty(const Def* def){
+/// Removes recusively all occurences of mem from a type (sigma).
+static const Def* strip_mem_ty(const Def* def) {
     auto& world = def->world();
 
-    if(auto sigma = def->isa<Sigma>()){
+    if (auto sigma = def->isa<Sigma>()) {
         DefVec newOps;
-        for( auto op : sigma->ops()){
+        for (auto op : sigma->ops()) {
             auto newOp = strip_mem_ty(op);
-            if(newOp != world.sigma()){
-                newOps.push_back(newOp);
-            }
+            if (newOp != world.sigma()) { newOps.push_back(newOp); }
         }
 
         return world.sigma(newOps);
-    }else if(match<mem::M>(def)){
+    } else if (match<mem::M>(def)) {
         return world.sigma();
-    } 
+    }
 
     return def;
 }
 
-static const Def* strip_mem(const Def* def){
+/// Removes recusively all occurences of mem from a tuple.
+/// Returns an empty tuple if applied with mem alone.
+static const Def* strip_mem(const Def* def) {
     auto& world = def->world();
 
-    if(auto sigma = def->isa<Tuple>()){
+    if (auto tuple = def->isa<Tuple>()) {
         DefVec newOps;
-        for( auto op : sigma->ops()){
+        for (auto op : tuple->ops()) {
             auto newOp = strip_mem(op);
-            if(newOp != world.tuple()){
-                newOps.push_back(newOp);
-            }
+            if (newOp != world.tuple()) { newOps.push_back(newOp); }
         }
 
         return world.tuple(newOps);
-    }else if(match<mem::M>(def->type())){
+    } else if (match<mem::M>(def->type())) {
         return world.tuple();
-    }else if(auto extract = def->isa<Extract>()){
-        if(extract->num_projs() == 1){
-            return extract;
-        }
+    } else if (auto extract = def->isa<Extract>()) {
+        // The case that this one element is a mem and should return () is handled above.
+        if (extract->num_projs() == 1) { return extract; }
 
         DefVec newOps;
-        for( auto op : extract->projs()){
+        for (auto op : extract->projs()) {
             auto newOp = strip_mem(op);
-            if(newOp != world.tuple()){
-                newOps.push_back(newOp);
-            }
+            if (newOp != world.tuple()) { newOps.push_back(newOp); }
         }
 
         return world.tuple(newOps);

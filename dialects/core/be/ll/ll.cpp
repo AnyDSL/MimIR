@@ -201,9 +201,7 @@ std::string Emitter::convert(const Def* type) {
 
 std::string Emitter::convert_ret_pi(const Pi* pi) {
     auto dom = mem::strip_mem_ty(pi->dom());
-    if(dom == world().sigma()){
-        return "void";
-    }
+    if (dom == world().sigma()) { return "void"; }
     return convert(dom);
 }
 
@@ -213,9 +211,9 @@ std::string Emitter::convert_ret_pi(const Pi* pi) {
 
 void Emitter::start() {
     Super::start();
-
+    ostream() << "declare i8* @malloc(i64)" << '\n'; // HACK
     ostream() << "declare i8* @calloc(i64)" << '\n'; // HACK
-    ostream() << "declare void @free(i8*)" << '\n'; // HACK
+    ostream() << "declare void @free(i8*)" << '\n';  // HACK
     // SJLJ intrinsics (GLIBC Versions)
     ostream() << "declare i32 @_setjmp(i8*) returns_twice" << '\n';
     ostream() << "declare void @longjmp(i8*, i32) noreturn" << '\n';
@@ -294,8 +292,6 @@ void Emitter::emit_epilogue(Lam* lam) {
     auto app = lam->body()->as<App>();
     auto& bb = lam2bb_[lam];
 
-    lam->dump();
-
     if (app->callee() == entry_->ret_var()) { // return
         std::vector<std::string> values;
         std::vector<const Def*> types;
@@ -325,8 +321,7 @@ void Emitter::emit_epilogue(Lam* lam) {
             }
         }
     } else if (auto ex = app->callee()->isa<Extract>(); ex && app->callee_type()->is_basicblock()) {
-        
-        for(auto callee_def : ex->tuple()->projs()){
+        for (auto callee_def : ex->tuple()->projs()) {
             auto callee = callee_def->isa_nom<Lam>();
             assert(callee);
             for (size_t i = 0, e = callee->num_vars(); i != e; ++i) {
@@ -373,8 +368,6 @@ void Emitter::emit_epilogue(Lam* lam) {
         auto emmited_callee = emit(app->callee());
 
         std::vector<std::string> args;
-        lam->dump();
-        app->arg()->dump();
         auto app_args = app->args();
         for (auto arg : app_args.skip_back()) {
             if (auto emitted_arg = emit_unsafe(arg); !emitted_arg.empty())
@@ -742,11 +735,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
         auto ptr_t = convert(force<mem::Ptr>(def->proj(1)->type()));
-        bb.assign(name + ".i8", "call i8* @calloc(i64 {})", size);
+        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
         return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
-    }  else if (auto free = match<mem::free>(def)) {
+    } else if (auto free = match<mem::free>(def)) {
         emit_unsafe(free->arg(0));
-        auto ptr  = emit(free->arg(1));
+        auto ptr   = emit(free->arg(1));
         auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
 
         bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
@@ -803,14 +796,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 #endif
 
-        std::stringstream ss;
-        ss << tuple->type();
-
-        if(ss.str() == "[%mem.M, [.Cn [%mem.M, %mem.Ptr ([], 0), .Cn [%mem.M, %mem.Ptr (<<100; (.Idx 4294967296)>>, 0), %mem.Ptr (<<100; (.Idx 4294967296)>>, 0)]], %mem.Ptr ([], 0)]]"){
-            tuple->dump();
-        }
-
-
         auto ll_tup = emit_unsafe(tuple);
 
         // this exact location is important: after emitting the tuple -> ordering of mem ops
@@ -850,8 +835,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
         return globals_[global] = name;
     }
-    def->dump();
-    def->dump();
+    auto& world = def->world();
+    world.DLOG("unhandled def: {} : {}", def, def->type());
     def->dump();
 
     unreachable(); // not yet implemented
