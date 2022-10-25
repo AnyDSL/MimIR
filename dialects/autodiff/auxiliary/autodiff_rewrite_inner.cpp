@@ -343,11 +343,11 @@ Lam* call_pullback_arr(const Def* gradient_arr, const Def* pullback_arr) {
 
     auto shape_lit = as_lit(shape);
 
-    auto shape_i32 = core::op_bitcast(w.type_int_(32), shape);
+    auto shape_i32 = core::op_bitcast(w.type_int(32), shape);
 
     auto loop = mem_return_lam(w, "call_pullback_arr", {}, false);
     auto brk  = mem_lam(w, "end_call_pullback_arr", false);
-    auto body = return_lam(w, "body_call_pullback_arr", {w.type_int_(32), mem::type_mem(w)}, false);
+    auto body = return_lam(w, "body_call_pullback_arr", {w.type_int(32), mem::type_mem(w)}, false);
     auto next = body->var(2);
 
     brk->set_body(w.app(loop->var(1_s), mem::mem_var(brk)));
@@ -366,7 +366,7 @@ Lam* call_pullback_arr(const Def* gradient_arr, const Def* pullback_arr) {
 
     body->set_body(w.app(caller, {mem::mem_var(body), yield}));
 
-    auto app = affine::op_for(w, w.lit_int_(32, 0), shape_i32, w.lit_int_(32, 1), {mem::mem_var(loop)}, body, brk);
+    auto app = affine::op_for(w, w.lit_int(32, 0), shape_i32, w.lit_int(32, 1), {mem::mem_var(loop)}, body, brk);
     loop->set_body(app);
     return loop;
 }
@@ -388,7 +388,7 @@ const Def* AutoDiffEval::wrap_call_pullbacks(const Def* arg_pb, const Def* arg) 
     for (auto arg_proj : arg->projs()) {
         auto augment_arg_proj = augmented[arg_proj];
         if (!augment_arg_proj) continue;
-        auto pullback_root = shadow_pullbacks[augment_arg_proj];
+        auto pullback_root = shadow_pullback[augment_arg_proj];
         if (!pullback_root) continue;
         pullbacks.push_back(pullback_root);
     }
@@ -670,9 +670,9 @@ const Def* AutoDiffEval::augment_lea(const App* lea, Lam* f, Lam* f_diff) {
     if (gradient_array) {
         gradient_ptrs[aug_lea] = mem::op_lea(gradient_array, aug_idx, w.dbg("pullback_lea"));
     } else {
-        auto pullback_array = shadow_pullbacks[aug_ptr];
+        auto pullback_array = shadow_pullback[aug_ptr];
         assert(pullback_array);
-        shadow_pullbacks[aug_lea] = mem::op_lea(pullback_array, aug_idx, w.dbg("pullback_lea"));
+        shadow_pullback[aug_lea] = mem::op_lea(pullback_array, aug_idx, w.dbg("pullback_lea"));
     }
 
     return aug_lea;
@@ -720,7 +720,7 @@ const Def* AutoDiffEval::augment_load(const App* load, Lam* f, Lam* f_diff) {
         return aug_load;
     } else {
         // load pullback from shadow array
-        auto pullback_ptr = shadow_pullbacks[aug_ptr];
+        auto pullback_ptr = shadow_pullback[aug_ptr];
         assert(pullback_ptr);
         auto [pullback_mem, pullback] = mem::op_load(aug_load_mem, pullback_ptr, w.dbg("pullback_load"))->projs<2>();
         partial_pullback[aug_load]    = pullback;
@@ -734,7 +734,7 @@ const Def* AutoDiffEval::augment_store(const App* store, Lam* f, Lam* f_diff) {
     auto aug_arg                     = augment(store->arg(), f, f_diff);
     auto [aug_mem, aug_ptr, aug_val] = aug_arg->projs<3>();
 
-    auto shadow_pb_ptr = shadow_pullbacks[aug_ptr];
+    auto shadow_pb_ptr = shadow_pullback[aug_ptr];
 
     auto pb        = partial_pullback[aug_val];
     auto pb_store  = mem::op_store(aug_mem, shadow_pb_ptr, pb);
@@ -772,7 +772,7 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc, Lam* f, Lam* f_diff) {
         mem::op_malloc(pb_ty, alloc_mem, world.dbg(alloc->name() + "_pullback_alloc_arr"))->projs<2>();
 
     allocated_memory.insert(pullback_ptr);
-    shadow_pullbacks[alloc_ptr] = pullback_ptr;
+    shadow_pullback[alloc_ptr] = pullback_ptr;
 
     auto tup = world.tuple({alloc_mem_2, alloc_ptr});
 

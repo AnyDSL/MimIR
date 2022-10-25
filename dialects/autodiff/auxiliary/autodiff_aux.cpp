@@ -217,8 +217,9 @@ const Def* zero_def(const Def* T) {
     if (match<mem::M>(T)) { return world.bot(mem::type_mem(world)); }
 
     if (match<mem::Ptr>(T)) {
-        auto lit_zero = world.lit_int_(64, 0);
-        return core::op_bitcast(T, lit_zero);
+        // A zero of a pointer is conceptually senseless (in the sense of addition).
+        // Therefore, the zero is not the null pointer, but a dummy value instead.
+        return world.bot(T);
     }
 
     // or return bot
@@ -294,6 +295,7 @@ bool contains_mem(const Def* def) {
     } else if (auto arr = def->isa<Arr>()) {
         return contains_mem(arr->body());
     }
+    return false;
 }
 
 const Def* equip_mem(const Def* def) {

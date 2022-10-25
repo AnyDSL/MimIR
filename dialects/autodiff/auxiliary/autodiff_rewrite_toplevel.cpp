@@ -40,9 +40,9 @@ const Def* AutoDiffEval::autodiff_zero(const Def* mem, const Def* def) {
         return mem;
     }
 
-    else if (auto idx = ty->isa<Idx>()) {
+    else if (Idx::size(ty)) {
         // TODO: real
-        auto zero = world.lit_idx(ty, 0, world.dbg("zero"));
+        auto zero = world.lit(ty, 0, world.dbg("zero"));
         world.DLOG("zero_def for int is {}", zero);
         return zero;
     }
@@ -116,7 +116,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         derived[lam] = deriv_outer;
 
         auto [arg_ty, ret_pi] = lam->type()->doms<2>();
-        auto deriv_all_args   = deriv->var();
+        auto deriv_all_args   = deriv_outer->var();
         // const Def* deriv_arg  = deriv->var((nat_t)0, world.dbg("arg"));
 
         const Def* deriv_arg = deriv_outer->var((nat_t)0, world.dbg("arg"));
@@ -143,15 +143,15 @@ const Def* AutoDiffEval::derive_(const Def* def) {
         // We pre-register the augment replacements.
         // The function and its variables are replaced by their new derived versions.
         // TODO: maybe leave out function call (duplication with derived)
-        augmented[def] = deriv;
-        world.DLOG("Associate {} with {}", def, deriv);
+        augmented[def] = deriv_outer;
+        world.DLOG("Associate {} with {}", def, deriv_outer);
         world.DLOG("  {} : {}", lam, lam->type());
-        world.DLOG("  {} : {}", deriv, deriv->type());
+        world.DLOG("  {} : {}", deriv_outer, deriv_outer->type());
         // augmented[lam->var()] = deriv->var();
 
         const Def* var        = autodiff_epilogue(deriv_outer, deriv_inner, arg_ty);
         augmented[lam->var()] = var;
-        world.DLOG("Associate vars {} with {}", lam->var(), deriv->var());
+        world.DLOG("Associate vars {} with {}", lam->var(), deriv_outer->var());
 
         // already contains the correct application of
         // deriv->ret_var() by specification
