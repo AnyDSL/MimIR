@@ -743,7 +743,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return name;
     } else if (auto free = match<mem::free>(def)) {
         emit_unsafe(free->arg(0));
-        auto ptr  = emit(free->arg(1));
+        auto ptr   = emit(free->arg(1));
         auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
 
         bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);

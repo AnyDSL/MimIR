@@ -120,7 +120,7 @@ const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* d
 
 inline const Def* op_free(const Def* mem, const Def* ptr, const Def* dbg = {}) {
     World& w  = mem->world();
-    auto ptr_ty = match<Ptr>(ptr->type())->as<App>();
+    auto ptr_ty  = force<Ptr>(ptr->type())->as<App>();
     auto pointee = ptr_ty->arg(0);
     return w.app(w.app(w.ax<free>(), {pointee, w.lit_nat_0()}), {mem, ptr}, dbg);
 }
