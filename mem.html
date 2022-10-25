@@ -117,10 +117,11 @@ $(document).ready(function(){initNavTree('mem.html',''); initResizable(); });
 <li class="level2"><a href="#autotoc_md101">%mem.alloc</a></li>
 <li class="level2"><a href="#autotoc_md102">%mem.slot</a></li>
 <li class="level2"><a href="#autotoc_md103">%mem.malloc</a></li>
-<li class="level2"><a href="#autotoc_md104">%mem.mslot</a></li>
+<li class="level2"><a href="#autotoc_md104">%mem.free</a></li>
+<li class="level2"><a href="#autotoc_md105">%mem.mslot</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md105">Operations without Side Effects</a><ul><li class="level2"><a href="#autotoc_md106">%mem.lea</a></li>
+<li class="level1"><a href="#autotoc_md106">Operations without Side Effects</a><ul><li class="level2"><a href="#autotoc_md107">%mem.lea</a></li>
 </ul>
 </li>
 </ul>
@@ -156,11 +157,14 @@ Operations with Side Effects</h1>
 %mem.malloc</h2>
 <p >Allocates memory of type <code>T</code> in address space <code>as</code>. The difference to mem.alloc is that the <code>size</code> is automatically inferred. </p><div class="fragment"><div class="line">.ax %mem.malloc: Π [T: *, as: .Nat] -&gt; [%mem.M, .Nat] -&gt; [%mem.M, %mem.Ptr(T, as)];</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md104"></a>
+%mem.free</h2>
+<p >Frees memory of type <code>T</code> in address space <code>as</code>. </p><div class="fragment"><div class="line">.ax %mem.free: Π [T: *, as: .Nat] -&gt; [%mem.M, %mem.Ptr(T, as)] -&gt; %mem.M;</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md105"></a>
 %mem.mslot</h2>
 <p >Reserves a memory slot for type <code>T</code> in address space <code>as</code>. The reserved slot will be <code>size</code> bytes large. <code>id</code> has to be provided an unique id. </p><div class="fragment"><div class="line">.ax %mem.mslot: Π [T: *, as: .Nat] -&gt; [%mem.M, size: .Nat, id: .Nat] -&gt; [%mem.M, %mem.Ptr(T, as)];</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md105"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md106"></a>
 Operations without Side Effects</h1>
-<h2><a class="anchor" id="autotoc_md106"></a>
+<h2><a class="anchor" id="autotoc_md107"></a>
 %mem.lea</h2>
 <p >Load effective address. Performs address computation by offsetting the passed pointer with index <code>i</code>. </p><div class="fragment"><div class="line">.ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -&gt; Π [%mem.Ptr(«j: n; Ts#j», as), i: .Idx n] -&gt; %mem.Ptr(Ts#i, as), normalize_lea;</div>
 </div><!-- fragment --> </div></div><!-- contents -->

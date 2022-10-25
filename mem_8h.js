@@ -5,6 +5,7 @@ var mem_8h =
     [ "fn_mem", "mem_8h.html#a607d5ccb22e83abf4baec38192120eca", null ],
     [ "mem_var", "mem_8h.html#a28c51f5179e5caf76f81cdb7c0ed6382", null ],
     [ "op_alloc", "mem_8h.html#ae2286229b0ffff64314a6559cf081d28", null ],
+    [ "op_free", "mem_8h.html#a2de837d7cd0dffe17205f6969093bb89", null ],
     [ "op_lea", "mem_8h.html#a6ae7a6ac1629b20abf03e6f2070a6087", null ],
     [ "op_lea_unsafe", "mem_8h.html#af3b4daa09fc63060ee413289b0e47fef", null ],
     [ "op_lea_unsafe", "mem_8h.html#a32555602dcd1d53c50c41ab3109879a3", null ],
