@@ -11,7 +11,7 @@ namespace thorin::clos {
 
 /*
  * Free variable analysis
- * */
+ */
 
 static bool is_toplevel(const Def* fd) {
     return fd->dep_const() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term;
@@ -101,7 +101,8 @@ DefSet& FreeDefAna::run(Lam* lam) {
 
 /*
  * Closure Conversion
- * */
+ */
+
 
 void ClosConv::start() {
     auto externals = std::vector(world().externals().begin(), world().externals().end());
