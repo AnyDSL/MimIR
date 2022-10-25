@@ -105,6 +105,7 @@ $(document).ready(function(){initNavTree('clos_8cpp.html',''); initResizable(); 
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">clos.cpp File Reference</div></div>
 </div><!--header-->
@@ -135,15 +136,55 @@ Include dependency graph for clos.cpp:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClosConvWrapper.html">ClosConvWrapper</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1clos_1_1ClosConvWrapper.html">thorin::clos::ClosConvWrapper</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLowerTypedClosWrapper.html">LowerTypedClosWrapper</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1clos_1_1LowerTypedClosWrapper.html">thorin::clos::LowerTypedClosWrapper</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacethorin"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin.html">thorin</a></td></tr>
+<tr class="memdesc:namespacethorin"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper functions of general interest. <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacethorin_1_1clos"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html">thorin::clos</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:a63090a34caf572bdd21bbe2441bf661d"><td class="memItemLeft" align="right" valign="top">THORIN_EXPORT <a class="el" href="structthorin_1_1DialectInfo.html">DialectInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clos_8cpp.html#a63090a34caf572bdd21bbe2441bf661d">thorin_get_dialect_info</a> ()</td></tr>
 <tr class="separator:a63090a34caf572bdd21bbe2441bf661d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">closures</div></td></tr>
+<tr class="memitem:a92b58d7f3f1d2560b80ebf39de3d0ecb"><td class="memItemLeft" align="right" valign="top">ClosLit&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a92b58d7f3f1d2560b80ebf39de3d0ecb">thorin::clos::isa_clos_lit</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> fn_isa_lam=true)</td></tr>
+<tr class="memdesc:a92b58d7f3f1d2560b80ebf39de3d0ecb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to match a closure literal.  <a href="namespacethorin_1_1clos.html#a92b58d7f3f1d2560b80ebf39de3d0ecb">More...</a><br /></td></tr>
+<tr class="separator:a92b58d7f3f1d2560b80ebf39de3d0ecb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b0ad060415562ce3fb3b5ae86afbb56"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a5b0ad060415562ce3fb3b5ae86afbb56">thorin::clos::clos_pack_dbg</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *env, const <a class="el" href="classthorin_1_1Def.html">Def</a> *fn, const <a class="el" href="classthorin_1_1Def.html">Def</a> *dbg, const <a class="el" href="classthorin_1_1Def.html">Def</a> *ct=nullptr)</td></tr>
+<tr class="memdesc:a5b0ad060415562ce3fb3b5ae86afbb56"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classthorin_1_1Pack.html">Pack</a> a typed closure. This assumes that <code>fn</code> expects the environment as its Clos_Env_Paramth argument.  <a href="namespacethorin_1_1clos.html#a5b0ad060415562ce3fb3b5ae86afbb56">More...</a><br /></td></tr>
+<tr class="separator:a5b0ad060415562ce3fb3b5ae86afbb56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd17e5f0a3f813c31eaac630cb0be063"><td class="memItemLeft" align="right" valign="top">std::tuple&lt; const <a class="el" href="classthorin_1_1Def.html">Def</a> *, const <a class="el" href="classthorin_1_1Def.html">Def</a> *, const <a class="el" href="classthorin_1_1Def.html">Def</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#abd17e5f0a3f813c31eaac630cb0be063">thorin::clos::clos_unpack</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *c)</td></tr>
+<tr class="memdesc:abd17e5f0a3f813c31eaac630cb0be063"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deconstruct a closure into <code>(env_type, function, env)</code>.  <a href="namespacethorin_1_1clos.html#abd17e5f0a3f813c31eaac630cb0be063">More...</a><br /></td></tr>
+<tr class="separator:abd17e5f0a3f813c31eaac630cb0be063"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24fed2ec22c1aaf1108c47205d4ac25a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a24fed2ec22c1aaf1108c47205d4ac25a">thorin::clos::clos_apply</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *closure, const <a class="el" href="classthorin_1_1Def.html">Def</a> *args)</td></tr>
+<tr class="memdesc:a24fed2ec22c1aaf1108c47205d4ac25a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Apply a closure to arguments.  <a href="namespacethorin_1_1clos.html#a24fed2ec22c1aaf1108c47205d4ac25a">More...</a><br /></td></tr>
+<tr class="separator:a24fed2ec22c1aaf1108c47205d4ac25a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">closure types</div></td></tr>
+<tr class="memitem:a875e5e478d24d94486a3c33b4f6eb4f8"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Sigma.html">Sigma</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a875e5e478d24d94486a3c33b4f6eb4f8">thorin::clos::isa_clos_type</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
+<tr class="memdesc:a875e5e478d24d94486a3c33b4f6eb4f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>def</code> if <code>def</code> is a closure and <code>nullptr</code> otherwise.  <a href="namespacethorin_1_1clos.html#a875e5e478d24d94486a3c33b4f6eb4f8">More...</a><br /></td></tr>
+<tr class="separator:a875e5e478d24d94486a3c33b4f6eb4f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cc6b4b4cf4768906d3a8aa726c2b524"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1Sigma.html">Sigma</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a2cc6b4b4cf4768906d3a8aa726c2b524">thorin::clos::clos_type</a> (const <a class="el" href="classthorin_1_1Pi.html">Pi</a> *pi)</td></tr>
+<tr class="memdesc:a2cc6b4b4cf4768906d3a8aa726c2b524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a typed closure type from <code>pi</code>.  <a href="namespacethorin_1_1clos.html#a2cc6b4b4cf4768906d3a8aa726c2b524">More...</a><br /></td></tr>
+<tr class="separator:a2cc6b4b4cf4768906d3a8aa726c2b524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e3631fc456bf06ff74feabdaeeedcfa"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Pi.html">Pi</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a0e3631fc456bf06ff74feabdaeeedcfa">thorin::clos::clos_type_to_pi</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *ct, const <a class="el" href="classthorin_1_1Def.html">Def</a> *new_env_type=nullptr)</td></tr>
+<tr class="memdesc:a0e3631fc456bf06ff74feabdaeeedcfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a closure type to a <a class="el" href="classthorin_1_1Pi.html" title="A function type AKA Pi type.">Pi</a>, where the environment type has been removed or replaced by <code>new_env_type</code> (if <code>new_env_type</code> != <code>nullptr</code>)  <a href="namespacethorin_1_1clos.html#a0e3631fc456bf06ff74feabdaeeedcfa">More...</a><br /></td></tr>
+<tr class="separator:a0e3631fc456bf06ff74feabdaeeedcfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">closure environments</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p ><code>tup_or_sig</code> should generally be a Tuple, Sigma or Var. </p>
+</div></td></tr>
+<tr class="memitem:a30d29b81cb262a385c460a51c39125eb"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a30d29b81cb262a385c460a51c39125eb">thorin::clos::clos_insert_env</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i, const <a class="el" href="classthorin_1_1Def.html">Def</a> *env, std::function&lt; const <a class="el" href="classthorin_1_1Def.html">Def</a> *(<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>)&gt; f)</td></tr>
+<tr class="separator:a30d29b81cb262a385c460a51c39125eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a555806ba90ad1bbad51d1119b033b6e6"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a555806ba90ad1bbad51d1119b033b6e6">thorin::clos::clos_remove_env</a> (<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a> i, std::function&lt; const <a class="el" href="classthorin_1_1Def.html">Def</a> *(<a class="el" href="namespace_3globalScope_4.html#classsize__t">size_t</a>)&gt; f)</td></tr>
+<tr class="separator:a555806ba90ad1bbad51d1119b033b6e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48eef88454fcd1208019568f6def838c"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacethorin_1_1clos.html#a48eef88454fcd1208019568f6def838c">thorin::clos::ctype</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;w, <a class="el" href="namespacethorin.html#ab6c106c44c8584cd4bdb99b75b915c38">Defs</a> doms, const <a class="el" href="classthorin_1_1Def.html">Def</a> *env_type)</td></tr>
+<tr class="separator:a48eef88454fcd1208019568f6def838c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a63090a34caf572bdd21bbe2441bf661d" name="a63090a34caf572bdd21bbe2441bf661d"></a>
@@ -161,9 +202,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="clos_8cpp_source.html#l00039">39</a> of file <a class="el" href="clos_8cpp_source.html">clos.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="clos_8cpp_source.html#l00158">158</a> of file <a class="el" href="clos_8cpp_source.html">clos.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="pass_8h_source.html#l00126">thorin::PassMan::add()</a>, and <a class="el" href="namespacethorin_1_1autodiff.html#ab63c854a52fb3a0419962a2b4e826510">thorin::autodiff::register_normalizers()</a>.</p>
+<p class="reference">References <a class="el" href="pass_8h_source.html#l00126">thorin::PassMan::add()</a>, and <a class="el" href="namespacethorin_1_1clos.html#ab4e2702acfbe14c56bc38803308aae1f">thorin::clos::register_normalizers()</a>.</p>
 
 </div>
 </div>

@@ -86,7 +86,7 @@ var searchData=
   ['lowerfor_83',['LowerFor',['../classthorin_1_1affine_1_1LowerFor.html#a1ccb326f60d9381a8ecd8af8ebb94ced',1,'thorin::affine::LowerFor::LowerFor()'],['../classthorin_1_1affine_1_1LowerFor.html',1,'thorin::affine::LowerFor']]],
   ['lowertypedclos_84',['LowerTypedClos',['../classthorin_1_1clos_1_1LowerTypedClos.html#ae34dd43d483efec29ea0335be5199560',1,'thorin::clos::LowerTypedClos::LowerTypedClos()'],['../classthorin_1_1clos_1_1LowerTypedClos.html',1,'thorin::clos::LowerTypedClos']]],
   ['lowertypedclosprep_85',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html#aa033f29324dcaffb112b87a8c40022ad',1,'thorin::clos::LowerTypedClosPrep::LowerTypedClosPrep()'],['../classthorin_1_1clos_1_1LowerTypedClosPrep.html',1,'thorin::clos::LowerTypedClosPrep']]],
-  ['lowertypedcloswrapper_86',['LowerTypedClosWrapper',['../classLowerTypedClosWrapper.html',1,'LowerTypedClosWrapper'],['../classLowerTypedClosWrapper.html#ae61553a36ec4e5076ebab4a4dc082a57',1,'LowerTypedClosWrapper::LowerTypedClosWrapper()']]],
+  ['lowertypedcloswrapper_86',['LowerTypedClosWrapper',['../classthorin_1_1clos_1_1LowerTypedClosWrapper.html#a03e57e3718ca057bf0b74b72c34d4129',1,'thorin::clos::LowerTypedClosWrapper::LowerTypedClosWrapper()'],['../classthorin_1_1clos_1_1LowerTypedClosWrapper.html',1,'thorin::clos::LowerTypedClosWrapper']]],
   ['lprec_87',['LPrec',['../namespacethorin.html#a8a6f378914383c7e6e801d31a00d0eb0',1,'thorin']]],
   ['lrprec_88',['LRPrec',['../structthorin_1_1LRPrec.html#a6cb98f4eac50388d92b191cbef0712b0',1,'thorin::LRPrec::LRPrec()'],['../structthorin_1_1LRPrec.html',1,'thorin::LRPrec&lt; L &gt;']]]
 ];

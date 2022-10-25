@@ -117,12 +117,6 @@ var hierarchy =
     [ "thorin::Axiom::Match< refly::Code >", "classthorin_1_1Axiom.html#structthorin_1_1Axiom_1_1Match_3_01refly_1_1Code_01_4", null ],
     [ "thorin::fe::Parser", "classthorin_1_1fe_1_1Parser.html", null ],
     [ "thorin::Pass", "classthorin_1_1Pass.html", [
-      [ "thorin::RWPass< ClosConvWrapper, Lam >", "classthorin_1_1RWPass.html", [
-        [ "ClosConvWrapper", "classClosConvWrapper.html", null ]
-      ] ],
-      [ "thorin::RWPass< LowerTypedClosWrapper, Lam >", "classthorin_1_1RWPass.html", [
-        [ "LowerTypedClosWrapper", "classLowerTypedClosWrapper.html", null ]
-      ] ],
       [ "thorin::RWPass< BetaRed, Def >", "classthorin_1_1RWPass.html", [
         [ "thorin::FPPass< BetaRed, Def >", "classthorin_1_1FPPass.html", [
           [ "thorin::BetaRed", "classthorin_1_1BetaRed.html", null ]
@@ -179,10 +173,16 @@ var hierarchy =
       [ "thorin::RWPass< ClosConvPrep, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::clos::ClosConvPrep", "classthorin_1_1clos_1_1ClosConvPrep.html", null ]
       ] ],
+      [ "thorin::RWPass< ClosConvWrapper, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::clos::ClosConvWrapper", "classthorin_1_1clos_1_1ClosConvWrapper.html", null ]
+      ] ],
       [ "thorin::RWPass< LowerTypedClosPrep, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::FPPass< LowerTypedClosPrep, Lam >", "classthorin_1_1FPPass.html", [
           [ "thorin::clos::LowerTypedClosPrep", "classthorin_1_1clos_1_1LowerTypedClosPrep.html", null ]
         ] ]
+      ] ],
+      [ "thorin::RWPass< LowerTypedClosWrapper, Lam >", "classthorin_1_1RWPass.html", [
+        [ "thorin::clos::LowerTypedClosWrapper", "classthorin_1_1clos_1_1LowerTypedClosWrapper.html", null ]
       ] ],
       [ "thorin::RWPass< CPS2DS, Lam >", "classthorin_1_1RWPass.html", [
         [ "thorin::direct::CPS2DS", "classthorin_1_1direct_1_1CPS2DS.html", null ]

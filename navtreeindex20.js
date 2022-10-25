@@ -1,5 +1,10 @@
 var NAVTREEINDEX20 =
 {
+"namespacethorin_1_1mem.html#a81d3b973d35cb21d082235f54ace4749":[3,0,0,12,41],
+"namespacethorin_1_1mem.html#a81db583382c74565ff7676ab80e65d2c":[3,0,0,12,58],
+"namespacethorin_1_1mem.html#a85840c980bb08ec14431b1f0eba6dd77":[3,0,0,12,11],
+"namespacethorin_1_1mem.html#a85f6dddc05019ffa4d67a0d4c84dc258":[3,0,0,12,61],
+"namespacethorin_1_1mem.html#a87fd494c27231b1b1556b3a3c28d0e45":[3,0,0,12,73],
 "namespacethorin_1_1mem.html#a8876a3d55871c5572e77eebb66863fa3":[3,0,0,12,24],
 "namespacethorin_1_1mem.html#a8e84ce1b6a80335e86b0c49eda7aa569":[3,0,0,12,23],
 "namespacethorin_1_1mem.html#a90ffbd2492b54f725dcc64e46dd52c1f":[3,0,0,12,97],
@@ -244,10 +249,5 @@ var NAVTREEINDEX20 =
 "refly_2autogen_8h.html#ac3810123d87bbdcb09c083de4eaeeee4":[6,0,0,1,0,7,0,9],
 "refly_2autogen_8h.html#ac720db4987a880c2337d69d8fe594eae":[6,0,0,1,0,7,0,23],
 "refly_2autogen_8h.html#adcc7265ff231e32ed92065fd90f065bb":[6,0,0,1,0,7,0,41],
-"refly_2autogen_8h.html#ae1f0ffa94ba8ecc878b7849b6c1ad04f":[6,0,0,1,0,7,0,44],
-"refly_2autogen_8h.html#ae389b324c53f4efb690dbf398a22238a":[6,0,0,1,0,7,0,31],
-"refly_2autogen_8h.html#ae72dc13dbef2f0e3ad88121597187f6d":[6,0,0,1,0,7,0,17],
-"refly_2autogen_8h.html#ae8fdcf3f0f8d8b632ec234b574ef8df4":[6,0,0,1,0,7,0,40],
-"refly_2autogen_8h.html#aed5ff18498852f85e913f23724f1b383":[6,0,0,1,0,7,0,12],
-"refly_2autogen_8h.html#af1d82efa555451fd161d4901b5acc0b4":[6,0,0,1,0,7,0,13]
+"refly_2autogen_8h.html#ae1f0ffa94ba8ecc878b7849b6c1ad04f":[6,0,0,1,0,7,0,44]
 };

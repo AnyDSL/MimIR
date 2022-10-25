@@ -40,6 +40,6 @@ var searchData=
   ['lowerfor_37',['LowerFor',['../classthorin_1_1affine_1_1LowerFor.html#a1ccb326f60d9381a8ecd8af8ebb94ced',1,'thorin::affine::LowerFor']]],
   ['lowertypedclos_38',['LowerTypedClos',['../classthorin_1_1clos_1_1LowerTypedClos.html#ae34dd43d483efec29ea0335be5199560',1,'thorin::clos::LowerTypedClos']]],
   ['lowertypedclosprep_39',['LowerTypedClosPrep',['../classthorin_1_1clos_1_1LowerTypedClosPrep.html#aa033f29324dcaffb112b87a8c40022ad',1,'thorin::clos::LowerTypedClosPrep']]],
-  ['lowertypedcloswrapper_40',['LowerTypedClosWrapper',['../classLowerTypedClosWrapper.html#ae61553a36ec4e5076ebab4a4dc082a57',1,'LowerTypedClosWrapper']]],
+  ['lowertypedcloswrapper_40',['LowerTypedClosWrapper',['../classthorin_1_1clos_1_1LowerTypedClosWrapper.html#a03e57e3718ca057bf0b74b72c34d4129',1,'thorin::clos::LowerTypedClosWrapper']]],
   ['lrprec_41',['LRPrec',['../structthorin_1_1LRPrec.html#a6cb98f4eac50388d92b191cbef0712b0',1,'thorin::LRPrec']]]
 ];

@@ -7,7 +7,6 @@ var clos_8h =
     [ "clos_insert_env", "clos_8h.html#a57a44083707c54d9e086f9f3fe4d96b9", null ],
     [ "clos_insert_env", "clos_8h.html#a6fbb8e43a2949109bd89aafdea47f233", null ],
     [ "clos_insert_env", "clos_8h.html#a30d29b81cb262a385c460a51c39125eb", null ],
-    [ "clos_lam_stub", "clos_8h.html#a70eee52769548593855cd3657757ab42", null ],
     [ "clos_pack", "clos_8h.html#a852ba328ba8d45ec5bc708aa434306b3", null ],
     [ "clos_pack_dbg", "clos_8h.html#a5b0ad060415562ce3fb3b5ae86afbb56", null ],
     [ "clos_remove_env", "clos_8h.html#af2ee3a545a2e1b4a8c97bfe0e3e1ed11", null ],
@@ -17,11 +16,14 @@ var clos_8h =
     [ "clos_type", "clos_8h.html#a2cc6b4b4cf4768906d3a8aa726c2b524", null ],
     [ "clos_type_to_pi", "clos_8h.html#a0e3631fc456bf06ff74feabdaeeedcfa", null ],
     [ "clos_unpack", "clos_8h.html#abd17e5f0a3f813c31eaac630cb0be063", null ],
+    [ "ctype", "clos_8h.html#a48eef88454fcd1208019568f6def838c", null ],
     [ "isa_clos_lit", "clos_8h.html#a92b58d7f3f1d2560b80ebf39de3d0ecb", null ],
     [ "isa_clos_type", "clos_8h.html#a875e5e478d24d94486a3c33b4f6eb4f8", null ],
     [ "op", "clos_8h.html#aad6fd2dc52043560b14b200f972534dc", null ],
     [ "op_alloc_jumpbuf", "clos_8h.html#ac0d4724f3f7b4434cba80ddda46ef83f", null ],
     [ "op_longjmp", "clos_8h.html#a9f7a193f266e8a5bdbfc2c9f4658a570", null ],
     [ "op_setjmp", "clos_8h.html#a67513db74064640169686fc46aa55338", null ],
+    [ "shift_env", "clos_8h.html#a46b2a773e74be9e492162c7ae269a163", null ],
+    [ "skip_env", "clos_8h.html#a0f2d253f8e6ad46b3e0dd8b73f6f63b5", null ],
     [ "Clos_Env_Param", "clos_8h.html#aef2b719a7074044446ad7efd00ed8d86", null ]
 ];
