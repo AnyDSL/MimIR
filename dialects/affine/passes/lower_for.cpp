@@ -35,11 +35,9 @@ const Def* LowerFor::rewrite(const Def* def) {
         { // construct for
             auto [iter, end, step, acc] = for_lam->vars<4>();
 
-
-
             // reduce the body to remove the cn parameter
             auto nom_body = body->as_nom<Lam>();
-            auto new_body = nom_body->stub(w, w.cn(acc->type()), body->dbg())->as<Lam>();
+            auto new_body = nom_body->stub(w, w.cn(acc->type()), body->dbg());
             new_body->set(nom_body->reduce(w.tuple({iter, new_body->var(), yield_lam})));
 
             // break
