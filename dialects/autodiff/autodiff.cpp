@@ -20,7 +20,7 @@ using namespace thorin;
 /// * perform ad [105]
 /// * resolve unsolved zeros (not added) [111]
 /// * optimize further, cleanup direct style [115-120] (in direct)
-/// * cleanup (zeros, externals) [299]
+/// * cleanup (zeros, externals) [126]
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"autodiff",
             [](thorin::PipelineBuilder& builder) {
