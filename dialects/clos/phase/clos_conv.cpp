@@ -177,28 +177,36 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         auto closure                  = clos_pack(env, new_lam, clos_ty);
         world().DLOG("RW: pack {} ~> {} : {}", lam, closure, clos_ty);
         return map(closure);
-    } else if (auto q = match(clos::ret, def)) {
-        if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
-            // assert(ret_lam && ret_lam->is_basicblock());
-            //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
-            //  put into the local subst only
-            auto new_doms  = DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
-            auto new_lam   = ret_lam->stub(w, w.cn(new_doms), ret_lam->dbg());
-            subst[ret_lam] = new_lam;
-            if (ret_lam->is_set()) {
-                new_lam->set_filter(rewrite(ret_lam->filter(), subst));
-                new_lam->set_body(rewrite(ret_lam->body(), subst));
+    } else if (auto q = match<clos>(def)) {
+        switch (q.id()) {
+            case clos::ret:
+                if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
+                    // assert(ret_lam && ret_lam->is_basicblock());
+                    //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
+                    //  put into the local subst only
+                    auto new_doms =
+                        DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
+                    auto new_lam   = ret_lam->stub(w, w.cn(new_doms), ret_lam->dbg());
+                    subst[ret_lam] = new_lam;
+                    if (ret_lam->is_set()) {
+                        new_lam->set_filter(rewrite(ret_lam->filter(), subst));
+                        new_lam->set_body(rewrite(ret_lam->body(), subst));
+                    }
+                    return new_lam;
+                }
+                break;
+            case clos::fstclassBB:
+            case clos::freeBB: {
+                // Note: Same thing about η-conversion applies here
+                auto bb_lam = q->arg()->isa_nom<Lam>();
+                assert(bb_lam && bb_lam->is_basicblock());
+                auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
+                subst[bb_lam]              = clos_pack(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
+                rewrite_body(new_lam, subst);
+                return map(subst[bb_lam]);
             }
-            return new_lam;
+            default: break;
         }
-    } else if (auto q = match<clos>(def); q && (q.id() == clos::fstclassBB || q.id() == clos::freeBB)) {
-        // Note: Same thing about η-conversion applies here
-        auto bb_lam = q->arg()->isa_nom<Lam>();
-        assert(bb_lam && bb_lam->is_basicblock());
-        auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
-        subst[bb_lam]              = clos_pack(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
-        rewrite_body(new_lam, subst);
-        return map(subst[bb_lam]);
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && lam->ret_var() == var) {
         // HACK to rewrite a retvar that is defined in an enclosing lambda
         // If we put external bb's into the env, this should never happen
