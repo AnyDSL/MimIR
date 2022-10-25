@@ -1,22 +1,49 @@
-#include "dialects/autodiff/passes/autodiff_eval.h"
-
 #include <iostream>
+#include <thorin/dump.cpp>
 
+#include <thorin/analyses/deptree.h>
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
+#include "dialects/core/core.h"
+// #include "dialects/direct/direct.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
-#include "dialects/core/core.h"
+#include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
 
-// TODO: maybe use template (https://codereview.stackexchange.com/questions/141961/memoization-via-template) to memoize
-const Def* AutoDiffEval::augment(const Def* def, Lam* f, Lam* f_diff) {
-    if (auto i = augmented.find(def); i != augmented.end()) return i->second;
-    augmented[def] = augment_(def, f, f_diff);
-    return augmented[def];
+LoopData& LoopFrame::data() {
+    if (autodiff_.current_state == State::Augment) {
+        return forward;
+    } else if (autodiff_.current_state == State::Invert) {
+        return backward;
+    }
+
+    thorin::unreachable();
+}
+
+const Def* AutoDiffEval::augment(const Def* def) {
+    const Def* augment;
+    if (augment = augmented[def]; !augment) {
+        assert(current_state == State::Augment);
+        augment        = augment_(def);
+        augmented[def] = augment;
+    }
+    assert(augment);
+    return augment;
+}
+
+const Def* AutoDiffEval::invert(const Def* def) {
+    const Def* invert;
+    if (invert = inverted[def]; !invert) {
+        assert(current_state == State::Invert);
+        invert = invert_(def);
+        add_inverted(def, invert);
+    }
+    assert(invert);
+    return invert;
 }
 
 const Def* AutoDiffEval::derive(const Def* def) {
@@ -26,18 +53,17 @@ const Def* AutoDiffEval::derive(const Def* def) {
 }
 
 const Def* AutoDiffEval::rewrite(const Def* def) {
-    if (auto ad_app = match<ad>(def); ad_app) {
+    if (auto ad_app = match<autodiff>(def)) {
         // callee = autodiff T
         // arg = function of type T
         //   (or operator)
+        // auto callee = ad_app->callee();
         auto arg = ad_app->arg();
         world().DLOG("found a autodiff::autodiff of {}", arg);
 
-        if (arg->isa<Lam>()) { return derive(arg); }
+        assert(arg->isa<Lam>());
 
-        // TODO: handle operators analogous
-
-        assert(0 && "not implemented");
+        def = derive(arg);
         return def;
     }
 

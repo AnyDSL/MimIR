@@ -5,389 +5,993 @@
 
 #include "thorin/util/assert.h"
 
+#include "dialects/affine/affine.h"
 #include "dialects/autodiff/autodiff.h"
+#include "dialects/autodiff/autogen.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
+#include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
+#include "dialects/mem/autogen.h"
+#include "dialects/mem/mem.h"
+
+//#define todo 0
 
 namespace thorin::autodiff {
 
-// TODO remove macro
 #define f_arg_ty continuation_dom(f->type())
 
-const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam*) {
-    auto pb               = zero_pullback(lit->type(), f_arg_ty);
-    partial_pullback[lit] = pb;
+const Def* zero(World& w) { return w.lit_int(32, 0); }
+
+const Def* one(World& w) { return w.lit_int(32, 1); }
+
+Lam* chain(const Def* mem, Lam* lam, const Def* next) {
+    auto& w       = mem->world();
+    auto callback = build(w).mem_ty().lam(next->name() + "_callback");
+    callback->set_body(w.app(lam->var(1_s), {mem::mem_var(callback)}));
+    lam->set_body(w.app(next, {mem, callback}));
+    return lam;
+}
+
+Lam* chain(const Def* first, const Def* second) {
+    auto& w              = first->world();
+    auto chain           = build(w).mem_ty().mem_cn().lam(first->name() + "_chain");
+    auto callback_first  = build(w).mem_ty().lam(first->name() + "_callback");
+    auto callback_second = build(w).mem_ty().lam(second->name() + "_callback");
+    chain->set_body(w.app(first, {mem::mem_var(chain), callback_first}));
+    callback_first->set_body(w.app(second, {mem::mem_var(callback_first), callback_second}));
+    callback_second->set_body(w.app(chain->var(1_s), {mem::mem_var(callback_second)}));
+    return chain;
+}
+
+Lam* AutoDiffEval::create_block(const std::string& name) {
+    auto& w  = world();
+    auto lam = build(w).mem_ty().mem_cn().with_filter().lam(name);
+    init_mem(lam);
+    return lam;
+}
+
+Lam* AutoDiffEval::create_return(const std::string& name) {
+    auto& w  = world();
+    auto lam = build(w).mem_ty().with_filter().lam("return_" + name);
+    init_mem(lam);
+    return lam;
+}
+
+Lam* AutoDiffEval::create_end(const std::string& name) {
+    auto& w  = world();
+    auto lam = create_block(name);
+    ret(lam);
+    return lam;
+}
+
+Lam* AutoDiffEval::create_invert_block(const std::string& name) { return create_block("invert_" + name); }
+
+Lam* AutoDiffEval::create_invert_return(const std::string& name) { return create_return("invert_" + name); }
+
+Lam* AutoDiffEval::create_invert_end() { return create_end("invert_end"); }
+
+const Def* AutoDiffEval::augment_lit(const Lit* lit) {
+    auto& w = world();
+
+    auto aug_lit = lit;
+    // set zero pullback
+    // auto pb                   = zero_pullback(lit->type());
+    // partial_pullback[aug_lit] = pb;
     return lit;
 }
 
-const Def* AutoDiffEval::augment_var(const Var* var, Lam*, Lam*) {
-    assert(augmented.count(var));
-    auto aug_var = augmented[var];
-    assert(partial_pullback.count(aug_var));
+const Def* AutoDiffEval::augment_var(const Var* var) {
+    auto& w = world();
+    assert(false);
+    // assert(partial_pullback.count(aug_var));
     return var;
 }
 
-const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
-    auto& world = lam->world();
-    // TODO: we need partial pullbacks for tuples (higher-order / ret-cont application)
-    // also for higher-order args, ret_cont (at another point)
-    // the pullback is not important but formally required by tuple rule
-    if (augmented.count(lam)) {
-        // We already know the function:
-        // * recursion
-        // * higher order arguments
-        // * new encounter of previous function
-        world.DLOG("already augmented {} : {} to {} : {}", lam, lam->type(), augmented[lam], augmented[lam]->type());
-        return augmented[lam];
-    }
-    // TODO: better fix (another pass as analysis?)
-    // TODO: handle open functions
-    if (is_open_continuation(lam) || lam->name().find("ret") != std::string::npos ||
-        lam->name().find("_cont") != std::string::npos) {
-        // A open continuation behaves the same as return:
-        // ```
-        // cont: Cn[X]
-        // cont': Cn[X,Cn[X,A]]
-        // ```
-        // There is dependency on the closed function context.
-        // (All derivatives are with respect to the arguments of a closed function.)
+const Def* AutoDiffEval::augment_lam(Lam* lam) {
+    auto& w      = world();
+    auto aug_lam = w.nom_lam(lam->type()->as<Pi>(), w.dbg("aug_" + lam->name()));
+    aug_lam->set_filter(true);
+    augmented[lam->var()] = aug_lam->var();
+    augmented[lam]        = aug_lam;
 
-        world.DLOG("found an open continuation {} : {}", lam, lam->type());
-        auto cont_dom = lam->type()->dom(); // not only 0 but all
-        auto pb_ty    = pullback_type(cont_dom, f_arg_ty);
-        auto aug_dom  = autodiff_type_fun(cont_dom);
-        world.DLOG("augmented domain {}", aug_dom);
-        world.DLOG("pb type is {}", pb_ty);
-        auto aug_ty = world.cn({aug_dom, pb_ty});
-        world.DLOG("augmented type is {}", aug_ty);
-        auto aug_lam              = world.nom_lam(aug_ty, world.dbg("aug_" + lam->name()));
-        auto aug_var              = aug_lam->var((nat_t)0);
-        augmented[lam->var()]     = aug_var;
-        augmented[lam]            = aug_lam; // TODO: only one of these two
-        derived[lam]              = aug_lam;
-        auto pb                   = aug_lam->var(1);
-        partial_pullback[aug_var] = pb;
-        // We are still in same closed function.
-        auto new_body = augment(lam->body(), f, f_diff);
-        aug_lam->set_filter(lam->filter());
-        aug_lam->set_body(new_body);
-
-        auto lam_pb               = zero_pullback(lam->type(), f_arg_ty);
-        partial_pullback[aug_lam] = lam_pb;
-        world.DLOG("augmented {} : {}", lam, lam->type());
-        world.DLOG("to {} : {}", aug_lam, aug_lam->type());
-        world.DLOG("ppb for lam cont: {}", lam_pb);
-
-        return aug_lam;
-    }
-    world.DLOG("found a closed function call {} : {}", lam, lam->type());
-    // Some general function in the program needs to be differentiated.
-    auto aug_lam = op_autodiff(lam);
-    // TODO: directly more association here? => partly inline op_autodiff
-    world.DLOG("augmented function is {} : {}", aug_lam, aug_lam->type());
+    auto aug_body = augment(lam->body());
+    aug_lam->set_body(aug_body);
     return aug_lam;
 }
 
-const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff) {
+const Def* AutoDiffEval::augment_extract(const Extract* ext) {
     auto& world = ext->world();
 
     auto tuple = ext->tuple();
     auto index = ext->index();
 
-    auto aug_tuple = augment(tuple, f, f_diff);
-    auto aug_index = augment(index, f, f_diff);
+    auto aug_tuple = augment(tuple);
+    auto aug_index = augment(index);
 
-    const Def* pb;
-    world.DLOG("tuple was: {} : {}", tuple, tuple->type());
-    world.DLOG("aug tuple: {} : {}", aug_tuple, aug_tuple->type());
-    if (shadow_pullback.count(aug_tuple)) {
-        auto shadow_tuple_pb = shadow_pullback[aug_tuple];
-        world.DLOG("Shadow pullback: {} : {}", shadow_tuple_pb, shadow_tuple_pb->type());
-        pb = world.extract(shadow_tuple_pb, aug_index);
-    } else {
-        // ```
-        // e:T, b:B
-        // b = e#i
-        // b* = \lambda (s:B). e* (insert s at i in (zero T))
-        // ```
-        assert(partial_pullback.count(aug_tuple));
-        auto tuple_pb = partial_pullback[aug_tuple];
-        auto pb_ty    = pullback_type(ext->type(), f_arg_ty);
-        auto pb_fun   = world.nom_lam(pb_ty, world.dbg("extract_pb"));
-        world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
-        auto pb_tangent = pb_fun->var((nat_t)0, world.dbg("s"));
-        auto tuple_tan  = world.insert(op_zero(aug_tuple->type()), aug_index, pb_tangent, world.dbg("tup_s"));
-        pb_fun->app(true, tuple_pb,
-                    {
-                        tuple_tan,
-                        pb_fun->var(1) // ret_var but make sure to select correct one
-                    });
-        pb = pb_fun;
-    }
-
-    auto aug_ext              = world.extract(aug_tuple, aug_index);
-    partial_pullback[aug_ext] = pb;
+    auto aug_ext = world.extract(aug_tuple, aug_index);
 
     return aug_ext;
 }
 
-const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
+const Def* AutoDiffEval::augment_tuple(const Tuple* tup) {
     auto& world = tup->world();
 
+    // augment ops
+
+    auto projs = tup->projs();
     // TODO: should use ops instead?
-    DefArray aug_ops(tup->projs(), [&](const Def* op) { return augment(op, f, f_diff); });
+    DefArray aug_ops(projs, [&](const Def* op) { return augment(op); });
+
     auto aug_tup = world.tuple(aug_ops);
-
-    DefArray pbs(aug_ops, [&](const Def* op) { return partial_pullback[op]; });
-    world.DLOG("tuple pbs {,}", pbs);
-    // shadow pb = tuple of pbs
-    auto shadow_pb           = world.tuple(pbs);
-    shadow_pullback[aug_tup] = shadow_pb;
-
-    // ```
-    // \lambda (s:[E0,...,Em]).
-    //    sum (m,A)
-    //      ((cps2ds e0*) (s#0), ..., (cps2ds em*) (s#m))
-    // ```
-    auto pb_ty = pullback_type(tup->type(), f_arg_ty);
-    auto pb    = world.nom_lam(pb_ty, world.dbg("tup_pb"));
-    world.DLOG("Augmented tuple: {} : {}", aug_tup, aug_tup->type());
-    world.DLOG("Tuple Pullback: {} : {}", pb, pb->type());
-    world.DLOG("shadow pb: {} : {}", shadow_pb, shadow_pb->type());
-
-    auto pb_tangent = pb->var((nat_t)0, world.dbg("tup_s"));
-
-    DefArray tangents(pbs.size(),
-                      [&](nat_t i) { return world.app(direct::op_cps2ds_dep(pbs[i]), world.extract(pb_tangent, i)); });
-    pb->app(true, pb->var(1),
-            // summed up tangents
-            op_sum(tangent_type_fun(f_arg_ty), tangents));
-    partial_pullback[aug_tup] = pb;
 
     return aug_tup;
 }
 
-const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
-    auto& world = pack->world();
-    auto shape  = pack->arity(); // TODO: arity vs shape
-    auto body   = pack->body();
+const Def* AutoDiffEval::augment_pack(const Pack* pack) {
+    // TODO:
 
-    auto aug_shape = augment_(shape, f, f_diff);
-    auto aug_body  = augment(body, f, f_diff);
-
-    auto aug_pack = world.pack(aug_shape, aug_body);
-
-    assert(partial_pullback[aug_body] && "pack pullback should exists");
-    // TODO: or use scale axiom
-    auto body_pb              = partial_pullback[aug_body];
-    auto pb_pack              = world.pack(aug_shape, body_pb);
-    shadow_pullback[aug_pack] = pb_pack;
-
-    world.DLOG("shadow pb of pack: {} : {}", pb_pack, pb_pack->type());
-
-    auto pb_type = pullback_type(pack->type(), f_arg_ty);
-    auto pb      = world.nom_lam(pb_type, world.dbg("pack_pb"));
-
-    world.DLOG("pb of pack: {} : {}", pb, pb_type);
-
-    auto f_arg_ty_diff = tangent_type_fun(f_arg_ty);
-    auto app_pb        = world.nom_pack(world.arr(aug_shape, f_arg_ty_diff));
-
-    // TODO: special case for const width (special tuple)
-
-    // <i:n, cps2ds body_pb (s#i)>
-    app_pb->set(world.raw_app(direct::op_cps2ds_dep(body_pb), world.extract(pb->var((nat_t)0), app_pb->var())));
-
-    world.DLOG("app pb of pack: {} : {}", app_pb, app_pb->type());
-
-    auto sumup = world.raw_app(world.ax<sum>(), {aug_shape, f_arg_ty_diff});
-    world.DLOG("sumup: {} : {}", sumup, sumup->type());
-
-    pb->app(true, pb->var(1), world.raw_app(sumup, app_pb));
-
-    partial_pullback[aug_pack] = pb;
-
-    return aug_pack;
+    return pack;
 }
 
-const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
+Lam* AutoDiffEval::free_memory_lam() {
+    auto& w = world();
+
+    auto free = build(w).mem_ty().mem_cn().lam("free");
+
+    auto mem = mem::mem_var(free);
+    for (auto memory : allocated_memory) { mem = mem::op_free(mem, memory); }
+
+    free->set_body(w.app(free->var(1_s), mem));
+    return free;
+}
+
+const Lam* wrap_append_app(const Def* lam, const Def* call_after_lam) {
+    auto& w = lam->world();
+
+    auto lam_ty     = lam->type()->as<Pi>();
+    auto lam_ret_ty = lam_ty->dom(1)->as<Pi>();
+
+    auto wrapper = w.nom_lam(lam_ty, w.dbg(lam->name() + "_wrapper"));
+    wrapper->set_filter(true);
+    auto after_first = w.nom_lam(lam_ret_ty, w.dbg(lam->name() + "_after_lam"));
+    after_first->set_filter(true);
+    auto after_second = build(w).mem_ty().lam(lam->name() + "_after_suffix");
+    after_second->set_filter(true);
+
+    auto arg = mem::replace_mem(mem::mem_var(after_second), after_first->var());
+    after_second->set_body(w.app(wrapper->var(1_s), arg));
+    after_first->set_body(w.app(call_after_lam, {mem::mem_var(after_first), after_second}));
+    wrapper->set_body(w.app(lam, {wrapper->var(0_s), after_first}));
+    return wrapper;
+}
+
+const Def* AutoDiffEval::augment_app(const App* app) {
     auto& world = app->world();
 
     auto callee = app->callee();
     auto arg    = app->arg();
 
-    auto aug_arg    = augment(arg, f, f_diff);
-    auto aug_callee = augment(callee, f, f_diff);
+    callee->type()->dump();
+    arg->type()->dump();
 
-    world.DLOG("augmented argument <{}> {} : {}", aug_arg->unique_name(), aug_arg, aug_arg->type());
-    world.DLOG("augmented callee  <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
-    // TODO: move down to if(!is_cont(callee))
-    if (!is_continuation(callee) && is_continuation(aug_callee)) {
-        aug_callee = direct::op_cps2ds_dep(aug_callee);
-        world.DLOG("wrapped augmented callee: <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
+#ifdef todo
+
+    bool caching = false;
+
+    if (match<core::wrap::mul>(ax)) {
+        auto value    = invert[app];
+        invert[left]  = value * value_cache[right];
+        invert[right] = value * value_cache[left];
+    } else if (match<core::wrap::add>(ax)) {
+        auto value    = invert[app];
+        invert[left]  = value;
+        invert[right] = value;
     }
 
-    // nested (inner application)
-    if (app->type()->isa<Pi>()) {
-        world.DLOG("Nested application callee: {} : {}", aug_callee, aug_callee->type());
-        world.DLOG("Nested application arg: {} : {}", aug_arg, aug_arg->type());
-        auto aug_app = world.app(aug_callee, aug_arg);
-        world.DLOG("Nested application result: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
-        // We do not add a pullback as the pullback is bundled in the cps call or returned by the ds call
-        return aug_app;
-    }
+#else
 
-    // continuation (ret, if, ...)
-    if (is_open_continuation(callee)) {
-        // TODO: check if function (not operator)
-        // The original function is an open function (return cont / continuation) of type `Cn[E]`
-        // The augmented function `aug_callee` looks like a function but is not really a function has the type `Cn[E,
-        // Cn[E, Cn[A]]]`
+#endif
 
-        // ret(e) => ret'(e, e*)
+    auto aug_arg    = augment(arg);
+    auto aug_callee = augment(callee);
+    // auto arg_ppb    = partial_pullback[aug_arg];
 
-        world.DLOG("continuation {} : {} => {} : {}", callee, callee->type(), aug_callee, aug_callee->type());
-
-        auto arg_pb  = partial_pullback[aug_arg];
-        auto aug_app = world.app(aug_callee, {aug_arg, arg_pb});
-        world.DLOG("Augmented application: {} : {}", aug_app, aug_app->type());
-        return aug_app;
-    }
-
-    // ds function
-    if (!is_continuation(callee)) {
-        auto aug_app = world.app(aug_callee, aug_arg);
-        world.DLOG("Augmented application: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
-
-        world.DLOG("ds function: {} : {}", aug_app, aug_app->type());
-        // The calle is ds function (e.g. operator (or its partial application))
-        auto [aug_res, fun_pb] = aug_app->projs<2>();
-        // We compose `fun_pb` with `argument_pb` to get the result pb
-        // TODO: combine case with cps function case
-        auto arg_pb = partial_pullback[aug_arg];
-        assert(arg_pb);
-        // `fun_pb: out_tan -> arg_tan`
-        // `arg_pb: arg_tan -> fun_tan`
-        world.DLOG("function pullback: {} : {}", fun_pb, fun_pb->type());
-        world.DLOG("argument pullback: {} : {}", arg_pb, arg_pb->type());
-        auto res_pb = compose_continuation(arg_pb, fun_pb);
-        world.DLOG("result pullback: {} : {}", res_pb, res_pb->type());
-        partial_pullback[aug_res] = res_pb;
-        world.debug_dump();
-        return aug_res;
-    }
-
-    // TODO: dest with a function such that f args != g args
-    {
-        // normal function app
-        // ```
-        // g: cn[E, cn X]
-        // g(args,cont)
-        // g': cn[E, cn[X, cn[X, cn E]]]
-        // g'(aug_args, ____)
-        // ```
-        auto g = callee;
-        // At this point g_deriv might still be "autodiff ... g".
-        auto g_deriv = aug_callee;
-        world.DLOG("g: {} : {}", g, g->type());
-        world.DLOG("g': {} : {}", g_deriv, g_deriv->type());
-
-        auto [real_aug_args, aug_cont] = aug_arg->projs<2>();
-        world.DLOG("real_aug_args: {} : {}", real_aug_args, real_aug_args->type());
-        world.DLOG("aug_cont: {} : {}", aug_cont, aug_cont->type());
-        auto e_pb = partial_pullback[real_aug_args];
-        world.DLOG("e_pb (arg_pb): {} : {}", e_pb, e_pb->type());
-
-        // TODO: better debug names
-        auto ret_g_deriv_ty = g_deriv->type()->as<Pi>()->dom(1);
-        world.DLOG("ret_g_deriv_ty: {} ", ret_g_deriv_ty);
-        auto c1_ty = ret_g_deriv_ty->as<Pi>();
-        world.DLOG("c1_ty: (cn[X, cn[X+, cn E+]]) {}", c1_ty);
-        auto c1   = world.nom_lam(c1_ty, world.dbg("c1"));
-        auto res  = c1->var((nat_t)0);
-        auto r_pb = c1->var(1);
-        c1->app(true, aug_cont, {res, compose_continuation(e_pb, r_pb)});
-
-        auto aug_app = world.app(aug_callee, {real_aug_args, c1});
-        world.DLOG("aug_app: {} : {}", aug_app, aug_app->type());
-
-        // The result is * => no pb needed, no composition needed.
-        return aug_app;
-    }
-    assert(false && "should not be reached");
+    return world.app(aug_callee, aug_arg);
 }
 
-/// Rewrites the given definition in a lambda environment.
-const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
-    auto& world = def->world();
-    // We use macros above to avoid recomputation.
-    // TODO: Alternative: Use class instances to rewrite inside a function and save such values (f, f_diff, f_arg_ty).
+const Def* AutoDiffEval::augment_lea(const App* lea) {
+    auto& w = world();
 
-    world.DLOG("Augment def {} : {}", def, def->type());
+    auto [arr_ptr, idx] = lea->arg()->projs<2>();
+    auto aug_ptr        = augment(arr_ptr);
+    auto aug_idx        = augment(idx);
 
-    // Applications are continuations, operators, or full functions
+    auto aug_lea = mem::op_lea(aug_ptr, aug_idx, arr_ptr->dbg());
+
+    return aug_lea;
+}
+
+const Def* AutoDiffEval::create_init_frame(const std::string& name, std::function<const Def*(const Def*)> func) {
+    auto& w  = world();
+    Lam* lam = build(w).mem_ty().lam(name);
+    auto mem = func(mem::mem_var(lam));
+    init_frames.push(InitFrame{.lam = lam, .mem = mem});
+}
+
+const Def* AutoDiffEval::create_init_alloc_frame(const std::string& name, const Def* alloc_ty) {
+    const Def* ptr = nullptr;
+    create_init_frame("alloc_" + name, [&](const Def* mem) {
+        auto& w                                 = mem->world();
+        auto alloc_cache                        = mem::op_malloc(alloc_ty, mem, w.dbg(name));
+        auto [alloc_cache_mem, alloc_cache_ptr] = alloc_cache->projs<2>();
+        ptr                                     = alloc_cache_ptr;
+        return alloc_cache_mem;
+    });
+
+    return ptr;
+}
+
+bool has_op_store(const Def* def, DefSet& visited) {
+    if (visited.contains(def)) return false;
+    visited.insert(def);
+
+    if (auto extr = def->isa<Extract>()) {
+        if (has_op_store(extr->tuple(), visited)) { return true; }
+    } else if (auto lea = match<mem::lea>(def)) {
+        auto [arr_ptr, _] = lea->args<2>();
+
+        if (has_op_store(arr_ptr, visited)) { return true; }
+    } else if (match<mem::store>(def)) {
+        return true;
+    }
+
+    if (match<mem::Ptr>(def->type()) || def->isa<Tuple>()) {
+        for (auto use : def->uses()) {
+            if (has_op_store(use, visited)) { return true; }
+        }
+    }
+
+    return false;
+}
+
+bool has_op_store(const Def* ptr) {
+    DefSet visited;
+    return has_op_store(ptr, visited);
+}
+
+const Def* AutoDiffEval::wrap_cache(const App* load, const App* aug_load) {
+    auto& w = world();
+
+    auto [_, load_ptr] = load->args<2>();
+    load_ptr->dump(2);
+    bool has_store = has_op_store(load_ptr);
+
+    std::string name = "cache";
+
+    const Def* cache_ptr      = aug_load->arg(1);
+    auto [load_mem, load_val] = aug_load->projs<2>();
+    auto result_mem           = load_mem;
+
+    load_ptr->dump(2);
+    std::cout << has_store << std::endl;
+    if (has_store || true) {
+        auto loop_size   = current_loop->size;
+        auto cache_index = current_loop->cache_index();
+
+        auto loop_size_nat = core::op_bitcast(w.type_nat(), loop_size);
+
+        auto arr_ty = w.arr(loop_size_nat, load_val->type());
+
+        auto alloc_cache_ptr = create_init_alloc_frame(name, arr_ty);
+
+        auto unsized_arr_ptr_ty = mem::type_ptr(w.arr(w.top(w.type_nat()), load_val->type()));
+        cache_ptr               = core::op_bitcast(unsized_arr_ptr_ty, alloc_cache_ptr, w.dbg(name));
+
+        auto cache_lea                   = mem::op_lea(cache_ptr, cache_index, w.dbg("lea_" + name));
+        result_mem                       = mem::op_store(load_mem, cache_lea, load_val, w.dbg("store_" + name));
+        cache_map[load]                  = cache_ptr;
+        cache_loop_assignment[cache_ptr] = current_loop;
+    }
+
+    return w.tuple({result_mem, load_val});
+}
+
+const Def* AutoDiffEval::augment_load(const App* load) {
+    auto& w = world();
+
+    auto [load_mem, load_ptr] = load->args<2>();
+
+    auto aug_mem = augment(load_mem);
+    auto aug_ptr = augment(load_ptr);
+
+    loads_.insert(load);
+
+    auto aug_load  = mem::op_load(aug_mem, aug_ptr, w.dbg(aug_ptr->name() + "_val"))->as<App>();
+    auto wrap_load = wrap_cache(load, aug_load);
+
+    return wrap_load;
+}
+
+const Def* AutoDiffEval::augment_store(const App* store) {
+    auto& world = store->world();
+
+    auto aug_arg                     = augment(store->arg());
+    auto [aug_mem, aug_ptr, aug_val] = aug_arg->projs<3>();
+
+    // auto shadow_pb_ptr = shadow_pullbacks[aug_ptr];
+
+    // auto pb = partial_pullback[aug_val];
+    // auto pb_store = mem::op_store(aug_mem, shadow_pb_ptr, pb);
+    auto aug_store = mem::op_store(aug_mem, aug_ptr, aug_val, store->dbg());
+    return aug_store;
+}
+
+const Def* AutoDiffEval::zero_pullback(const Def* domain) {
+    const Def* A   = f_arg_ty;
+    auto& world    = A->world();
+    auto A_tangent = tangent_type_fun(A);
+    auto pb_ty     = pullback_type(domain, A);
+    auto pb        = world.nom_lam(pb_ty, world.dbg("zero_pb"));
+    pb->app(true, pb->var(1), autodiff_zero(mem::mem_var(pb)));
+    return pb;
+}
+
+const Def* AutoDiffEval::get_pullback(const Def* op) {
+    auto pb = partial_pullback[op];
+    if (!pb) { return zero_pullback(op->type()); }
+    return pb;
+}
+
+const Def* AutoDiffEval::augment_alloc(const App* alloc) {
+    auto org_ptr = alloc->proj(1);
+    auto aug_mem = augment(alloc->arg(0_s));
+
+    auto callee = alloc->callee()->as<App>();
+    auto type   = callee->arg(0_s);
+
+    auto aug_alloc = mem::op_alloc(type, aug_mem);
+    auto value_ptr = aug_alloc->proj(1);
+
+    auto gradient_ptr = create_init_alloc_frame("gradient_arr", type);
+
+    // add to list of allocated memory
+    allocated_memory.insert(gradient_ptr);
+    gradient_ptrs[org_ptr] = gradient_ptr;
+
+    return aug_alloc;
+}
+
+const Def* AutoDiffEval::augment_malloc(const App* malloc) {
+    auto aug_arg = augment(malloc->arg());
+    // TODO: not yet implemented
+    malloc->dump();
+    malloc->dump();
+    return malloc;
+}
+
+const Def* AutoDiffEval::augment_bitcast(const App* bitcast) {
+    auto& world  = bitcast->world();
+    auto aug_arg = augment(bitcast->arg());
+
+    auto dst = core::op_bitcast(bitcast->type(), aug_arg, bitcast->arg()->dbg());
+    return dst;
+}
+
+const Def* for_size(const Def*& mem, const Def* start, const Def* end, const Def* inc) {
+    auto& w            = start->world();
+    auto span          = core::op(core::wrap::sub, core::WMode::none, end, start);
+    auto inc_minus_one = core::op(core::wrap::sub, core::WMode::none, inc, one(w));
+    auto span_ext      = core::op(core::wrap::add, core::WMode::none, span, inc_minus_one);
+    auto [mem2, size]  = core::op(core::div::udiv, mem, span_ext, inc)->projs<2>();
+    mem                = mem2;
+    return size;
+}
+
+const Def* end_index(const Def*& mem, const Def* start, const Def* end, const Def* inc) {
+    auto span             = core::op(core::wrap::sub, core::WMode::none, end, start);
+    auto [mem2, repeats]  = core::op(core::div::udiv, mem, span, inc)->projs<2>();
+    mem                   = mem2;
+    auto discretized_span = core::op(core::wrap::mul, core::WMode::none, repeats, inc);
+    auto end_index        = core::op(core::wrap::add, core::WMode::none, discretized_span, start);
+    return end_index;
+}
+
+const Def* normalized_to_loop_index(const Def* start, const Def* inc, const Def* normalized_index) {
+    auto correct_increment = core::op(core::wrap::mul, core::WMode::none, normalized_index, inc);
+    auto loop_index        = core::op(core::wrap::add, core::WMode::none, correct_increment, start);
+    return loop_index;
+}
+
+const Def* replace(const Def* tup, int index, const Def* replacement) {
+    auto& w = tup->world();
+    assert(tup->num_projs() > 1);
+    assert(tup->num_projs() >= index + 1);
+    auto projs   = tup->projs();
+    projs[index] = replacement;
+    return w.tuple(projs);
+}
+
+#ifdef todo
+
+#else
+
+#endif
+
+const Def* AutoDiffEval::invert_lam(Lam* lam_def) {
+    auto& w = world();
+
+    auto lam = lam_def->isa_nom<Lam>();
+    assert(lam);
+
+    auto inv_body_lam = invert(lam->body());
+
+    /*
+    const Def* new_app = nullptr;
+    if( auto app = lam_def->isa<App>() ){
+        auto callee = app->callee();
+        auto arg    = app->arg();
+
+        auto call_mem = end_mem();
+
+        auto invert_callee = invert(callee);
+        auto invert_arg = invert(arg);
+
+        auto combined = chain(invert_callee, invert_arg);
+
+        new_app = w.app(combined, mem);
+    }*/
+
+    // auto invert_lam = create_invert_block("lam");
+    // invert_lam->set_body(new_app);
+    // return chain(end_mem(), invert_lam, invert_lam);
+
+    return inv_body_lam;
+}
+
+const Def* AutoDiffEval::normalized_to_cache_index(const Def* normalized_index) {
+    const Def* cache_index;
+    auto parent = current_loop->parent;
+    if (parent != nullptr) {
+        cache_index = core::op(core::wrap::mul, core::WMode::none, parent->size, normalized_index);
+        cache_index = core::op(core::wrap::add, core::WMode::none, parent->index(), cache_index);
+    } else {
+        cache_index = normalized_index;
+    }
+
+    return cache_index;
+}
+
+const Def* AutoDiffEval::invert_for_body(const App* for_app) {
+    auto& w = world();
+
+    auto [start, end, inc, acc, body, exit] = for_app->args<6>();
+
+    auto aug_start = augment(start);
+    auto aug_inc   = augment(inc);
+
+    auto loop_body = body->isa_nom<Lam>();
+    auto raw_index = loop_body->var(0_s);
+
+    assert(loop_body);
+
+    Lam* inv_loop_body = w.nom_lam(loop_body->type()->as<Pi>(), w.dbg("invert_" + loop_body->name()));
+    inv_loop_body->set_filter(true);
+
+    current_loop->size->dump();
+    const Def* size_sub_one = core::op(core::wrap::sub, core::WMode::none, current_loop->local_size, one(w));
+
+    auto normalized_index = inv_loop_body->var(0_s);
+    normalized_index      = core::op(core::wrap::sub, core::WMode::none, size_sub_one, normalized_index);
+
+    current_loop->index()       = normalized_to_loop_index(aug_start, aug_inc, normalized_index);
+    current_loop->cache_index() = normalized_to_cache_index(normalized_index);
+
+    add_inverted(raw_index, current_loop->index());
+    add_inverted(loop_body->var(loop_body->num_vars() - 1), create_invert_end());
+    add_inverted(mem::mem_var(loop_body), create_invert_end());
+    add_inverted(loop_body, inv_loop_body);
+    auto body_app = loop_body->body();
+
+    auto inv_body = invert(body_app);
+
+    auto body_mem      = mem::mem_var(inv_loop_body);
+    auto body_continue = inv_loop_body->var(inv_loop_body->num_vars() - 1);
+    inv_loop_body->set_body(w.app(inv_body, {body_mem, body_continue}));
+
+    return inv_loop_body;
+}
+
+const Def* AutoDiffEval::invert_for(const App* for_app) {
+    auto& w = world();
+
+    auto [start, end, inc, acc, body, exit] = for_app->args<6>();
+
+    auto aug_start = augment(start);
+    auto aug_end   = augment(end);
+    auto aug_inc   = augment(inc);
+
+    auto invert_for     = create_invert_block("for");
+    auto invert_start   = zero(w);
+    auto invert_inc     = one(w);
+    auto size           = for_size(current_mem, aug_start, aug_end, aug_inc);
+    auto invert_end     = size;
+    auto invert_for_mem = end_mem();
+
+    // for_size(current_mem, aug_start, aug_end, aug_inc);
+
+    push_loop_frame(for_app, size);
+    auto invert_body = invert_for_body(for_app);
+    pop_loop_frame();
+    auto invert_exit = invert(exit);
+
+    auto return_exit     = create_invert_return("exit");
+    auto return_exit_mem = end_mem();
+
+    auto return_for     = create_invert_return("for");
+    auto return_for_mem = end_mem();
+
+    auto return_entry     = create_invert_return("for_entry");
+    auto return_entry_mem = end_mem();
+
+    auto invert_entry = invert(mem::mem_def(acc));
+
+    return_entry->set_body(w.app(invert_for->var(1_s), return_entry_mem));
+    return_for->set_body(w.app(invert_entry, {return_for_mem, return_entry}));
+    return_exit->set_body(
+        affine::op_for(w, invert_start, invert_end, invert_inc, {return_exit_mem}, invert_body, return_for));
+    invert_for->set_body(w.app(invert_exit, {invert_for_mem, return_exit}));
+
+    return invert_for;
+}
+
+void AutoDiffEval::push_loop_frame(const App* for_app, const Def* size) {
+    if (loop_assignment.contains(for_app)) {
+        current_loop = loop_assignment[for_app];
+    } else {
+        auto next_frame = std::make_shared<LoopFrame>(*this);
+        if (current_loop != nullptr) {
+            next_frame->parent = current_loop;
+            next_frame->size   = core::op(core::wrap::mul, core::WMode::none, current_loop->size, size);
+        } else {
+            next_frame->size = size;
+        }
+
+        next_frame->local_size   = size;
+        loop_assignment[for_app] = next_frame;
+        current_loop             = next_frame;
+    }
+}
+
+void AutoDiffEval::pop_loop_frame() { current_loop = current_loop->parent; }
+
+const Def* AutoDiffEval::augment_for_body(const Def* body, const Def* start, const Def* inc) {
+    auto& w = world();
+
+    auto loop_body = body->as_nom<Lam>();
+    Lam* aug_body  = w.nom_lam(loop_body->type()->as<Pi>(), w.dbg("aug_" + loop_body->name()));
+    aug_body->set_filter(true);
+
+    auto org_index        = loop_body->var(0_s);
+    auto normalized_index = aug_body->var(0_s);
+    current_loop->index() = normalized_to_loop_index(start, inc, normalized_index);
+
+    index_map[org_index]        = current_loop->index();
+    augmented[loop_body->var()] = replace(aug_body->var(), 0, current_loop->index());
+    augmented[loop_body]        = aug_body;
+
+    current_loop->cache_index() = normalized_to_cache_index(normalized_index);
+    aug_body->set_body(augment(loop_body->body()));
+
+    return aug_body;
+}
+
+const Def* AutoDiffEval::augment_for(const App* for_app) {
+    auto& w                                 = world();
+    auto [start, end, inc, acc, body, exit] = for_app->args<6>();
+
+    auto aug_start = augment(start);
+    auto aug_end   = augment(end);
+    auto aug_inc   = augment(inc);
+    auto aug_acc   = augment(acc);
+
+    auto mem = mem::mem_def(aug_acc);
+
+    auto size = for_size(mem, aug_start, aug_end, aug_inc);
+    push_loop_frame(for_app, size);
+    auto aug_body = augment_for_body(body, aug_start, aug_inc);
+    pop_loop_frame();
+    auto aug_exit = augment(exit);
+
+    if (current_loop == nullptr) {
+        Lam* current   = build(w).mem_ty().lam("init_caches");
+        InitFrame last = {.lam = current, .mem = mem::mem_var(current)};
+        for (; !init_frames.empty();) {
+            auto next = init_frames.top();
+            init_frames.pop();
+            last.lam->set_body(w.app(next.lam, last.mem));
+            // last.lam->set(next.lam->reduce(last.mem));
+            last = next;
+        }
+
+        aug_acc = mem::replace_mem(last.mem, aug_acc);
+        last.lam->set_body(affine::op_for(w, zero(w), size, one(w), aug_acc->projs(), aug_body, aug_exit));
+        return w.app(current, {mem});
+    }
+
+    aug_acc = mem::replace_mem(mem, aug_acc);
+    return affine::op_for(w, zero(w), size, one(w), aug_acc->projs(), aug_body, aug_exit);
+}
+
+/// rewrite the given definition
+///
+const Def* AutoDiffEval::augment_(const Def* def) {
+    auto& w = world();
+    // for types holds:
+    // we use macros above to avoid recomputation
+    // TODO: alternative: use class instance to rewrite inside a function and save such values (f, f_diff, f_arg_ty)
+
+    w.DLOG("Augment def {} : {}", def, def->type());
+
+    if (auto for_app = match<affine::For>(def)) { return augment_for(for_app); }
+
+    if (auto lea = match<mem::lea>(def)) { return augment_lea(lea->as<App>()); }
+
+    if (auto load = match<mem::load>(def)) { return augment_load(load->as<App>()); }
+
+    if (auto store = match<mem::store>(def)) { return augment_store(store->as<App>()); }
+
+    if (auto malloc = match<mem::malloc>(def)) { return augment_malloc(malloc->as<App>()); }
+
+    if (auto alloc = match<mem::alloc>(def)) { return augment_alloc(alloc->as<App>()); }
+
+    if (auto bitcast = match<core::bitcast>(def)) { return augment_bitcast(bitcast->as<App>()); }
+
+    // app => cont, operator, function
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
         auto arg    = app->arg();
-        world.DLOG("Augment application: app {} with {}", callee, arg);
-        return augment_app(app, f, f_diff);
-    } else if (auto ext = def->isa<Extract>()) {
-        auto tuple = ext->tuple();
-        auto index = ext->index();
-        world.DLOG("Augment extract: {} #[{}]", tuple, index);
-        return augment_extract(ext, f, f_diff);
-    } else if (auto var = def->isa<Var>()) {
-        world.DLOG("Augment variable: {}", var);
-        return augment_var(var, f, f_diff);
-    } else if (auto lam = def->isa_nom<Lam>()) {
-        world.DLOG("Augment nom lambda: {}", lam);
-        return augment_lam(lam, f, f_diff);
-    } else if (auto lam = def->isa<Lam>()) {
-        world.ELOG("Augment lambda: {}", lam);
-        assert(false && "can not handle non-nominal lambdas");
-    } else if (auto lit = def->isa<Lit>()) {
-        world.DLOG("Augment literal: {}", def);
-        return augment_lit(lit, f, f_diff);
-    } else if (auto tup = def->isa<Tuple>()) {
-        world.DLOG("Augment tuple: {}", def);
-        return augment_tuple(tup, f, f_diff);
-    } else if (auto pack = def->isa<Pack>()) {
-        // TODO: handle nom packs (dependencies in the pack) (=> see paper about vectors)
-        auto shape = pack->arity(); // TODO: arity vs shape
-        auto body  = pack->body();
-        world.DLOG("Augment pack: {} : {} with {}", shape, shape->type(), body);
-        return augment_pack(pack, f, f_diff);
-    } else if (auto ax = def->isa<Axiom>()) {
-        //  TODO: move concrete handling to own function / file / directory (file per dialect)
-        world.DLOG("Augment axiom: {} : {}", ax, ax->type());
-        world.DLOG("axiom curry: {}", ax->curry());
-        world.DLOG("axiom flags: {}", ax->flags());
-        std::string diff_name = ax->name();
-        findAndReplaceAll(diff_name, ".", "_");
-        findAndReplaceAll(diff_name, "%", "");
-        diff_name = "internal_diff_" + diff_name;
-        world.DLOG("axiom name: {}", ax->name());
-        world.DLOG("axiom function name: {}", diff_name);
-
-        auto diff_fun = world.lookup(diff_name);
-        if (!diff_fun) {
-            world.ELOG("derivation not found: {}", diff_name);
-            auto expected_type = autodiff_type_fun(ax->type());
-            world.ELOG("expected: {} : {}", diff_name, expected_type);
-            assert(false && "unhandled axiom");
-        }
-        // TODO: why does this cause a depth error?
-        return diff_fun;
+        w.DLOG("Augment application: app {} with {}", callee, arg);
+        return augment_app(app);
     }
 
-    // TODO: handle Pi for axiom app
+    // projection
+    else if (auto ext = def->isa<Extract>()) {
+        // world.DLOG("Augment extract: {}", def);
+        auto tuple = ext->tuple();
+        auto index = ext->index();
+        w.DLOG("Augment extract: {} #[{}]", tuple, index);
+        return augment_extract(ext);
+    }
+
+    // vars (function argument)
+    else if (auto var = def->isa<Var>()) {
+        w.DLOG("Augment variable: {}", var);
+        return augment_var(var);
+    }
+
+    // lam
+    else if (auto lam = def->isa_nom<Lam>()) {
+        w.DLOG("Augment nom lambda: {}", lam);
+        return augment_lam(lam);
+    } else if (auto lam = def->isa<Lam>()) {
+        w.ELOG("Augment lambda: {}", lam);
+        assert(false && "can not handle non-nominal lambdas");
+    }
+
+    // constants
+    else if (auto lit = def->isa<Lit>()) {
+        w.DLOG("Augment literal: {}", def);
+        return augment_lit(lit);
+    }
+
+    // tuple
+    else if (auto tup = def->isa<Tuple>()) {
+        w.DLOG("Augment tuple: {}", def);
+        return augment_tuple(tup);
+    }
+
+    // pack
+    else if (auto pack = def->isa<Pack>()) {
+        // TODO: nom pack
+        auto shape = pack->arity(); // TODO: arity vs shape
+        auto body  = pack->body();
+        w.DLOG("Augment pack: {} : {} with {}", shape, shape->type(), body);
+        return augment_pack(pack);
+    }
+
+    else if (auto axiom = def->isa<Axiom>()) {
+        return axiom;
+    }
+
+    // for axiom app
+    // else if (auto pi = def->isa<Pi>()) {
+    // }
+
     // TODO: remaining (lambda, axiom)
 
-    world.ELOG("did not expect to augment: {} : {}", def, def->type());
-    world.ELOG("node: {}", def->node_name());
+    w.ELOG("did not expect to augment: {} : {}", def, def->type());
+    w.ELOG("node: {}", def->node_name());
     assert(false && "augment not implemented on this def");
+}
+
+const Def* AutoDiffEval::invert_(const Def* def) {
+    auto& w = world();
+    // for types holds:
+    // we use macros above to avoid recomputation
+    // TODO: alternative: use class instance to rewrite inside a function and save such values (f, f_diff, f_arg_ty)
+
+    w.DLOG("Augment def {} : {}", def, def->type());
+
+    if (auto for_app = match<affine::For>(def)) { return invert_for(for_app); }
+
+    if (auto lea = match<mem::lea>(def)) { return invert_lea(lea->as<App>()); }
+
+    if (auto load = match<mem::load>(def)) { return invert_load(load->as<App>()); }
+
+    if (auto store = match<mem::store>(def)) { return invert_store(store->as<App>()); }
+
+    if (auto malloc = match<mem::malloc>(def)) { return invert_malloc(malloc->as<App>()); }
+
+    if (auto alloc = match<mem::alloc>(def)) { return invert_alloc(alloc->as<App>()); }
+
+    if (auto bitcast = match<core::bitcast>(def)) { return invert_bitcast(bitcast->as<App>()); }
+
+    // app => cont, operator, function
+    if (auto app = def->isa<App>()) {
+        auto callee = app->callee();
+        auto arg    = app->arg();
+        w.DLOG("Augment application: app {} with {}", callee, arg);
+        return invert_app(app);
+    }
+
+    // projection
+    else if (auto ext = def->isa<Extract>()) {
+        // world.DLOG("Augment extract: {}", def);
+        auto tuple = ext->tuple();
+        auto index = ext->index();
+        w.DLOG("Augment extract: {} #[{}]", tuple, index);
+        return invert_extract(ext);
+    }
+
+    // vars (function argument)
+    else if (auto var = def->isa<Var>()) {
+        w.DLOG("Augment variable: {}", var);
+        return invert_var(var);
+    }
+
+    // lam
+    else if (auto lam = def->isa_nom<Lam>()) {
+        w.DLOG("Augment nom lambda: {}", lam);
+        return invert_lam(lam);
+    } else if (auto lam = def->isa<Lam>()) {
+        w.ELOG("Augment lambda: {}", lam);
+        assert(false && "can not handle non-nominal lambdas");
+    }
+
+    // constants
+    else if (auto lit = def->isa<Lit>()) {
+        w.DLOG("Augment literal: {}", def);
+        return invert_lit(lit);
+    }
+
+    // tuple
+    else if (auto tup = def->isa<Tuple>()) {
+        w.DLOG("Augment tuple: {}", def);
+        return invert_tuple(tup);
+    } else if (auto ax = def->isa<Axiom>()) {
+        return ax;
+    }
+}
+
+const Def* AutoDiffEval::invert_var(const Var* var) { return create_invert_end(); }
+const Def* AutoDiffEval::invert_extract(const Extract* extract) {
+    auto tup   = extract->tuple();
+    auto index = extract->index();
+
+    // assert(!tup->isa<Var>());
+    if (tup->isa<Var>()) { return create_invert_end(); }
+
+    auto test = invert(tup);
+
+    if (auto lam = test->isa_nom<Lam>()) { return test; }
+
+    return extract;
+}
+const Def* AutoDiffEval::invert_app(const App* app) {
+    auto& w = world();
+
+    auto callee = app->callee();
+    auto arg    = app->arg();
+
+    auto invert_callee = invert(callee);
+    auto invert_arg    = invert(arg);
+
+    return chain(invert_callee, invert_arg);
+}
+const Def* AutoDiffEval::invert_lit(const Lit* lit) { return create_invert_end(); }
+const Def* AutoDiffEval::invert_tuple(const Tuple* tuple) { return tuple; }
+const Def* AutoDiffEval::invert_pack(const Pack* pack) { return pack; }
+const Def* AutoDiffEval::invert_lea(const App* lea) {
+    auto [ptr, index] = lea->args<2>();
+
+    auto inv_index = resolve(index);
+
+    auto gradient_arr = gradient_ptrs[ptr];
+    auto gradient_ptr = mem::op_lea(gradient_arr, inv_index);
+
+    // return mem::op_lea(inv_ptr, inv_index);
+    return gradient_ptr;
+}
+
+const Def* AutoDiffEval::invert_load(const App* load) {
+    auto& w         = world();
+    auto [_, value] = load->projs<2>();
+    auto [mem, ptr] = load->args<2>();
+
+    auto gradient_ptr = invert(ptr);
+
+    auto invert_load = create_invert_block("load");
+
+    auto last_gradient = op_load(gradient_ptr);
+    auto sink          = gradient_sinks[load];
+    auto sink_value    = op_load(sink);
+    auto next_gradient = core::op(core::wrap::add, core::WMode::none, last_gradient, sink_value);
+    op_store(gradient_ptr, next_gradient);
+    op_store(sink, zero(w));
+
+    auto last_mem    = end_mem();
+    auto invert_next = invert(mem);
+    return chain(last_mem, invert_load, invert_next);
+}
+
+const Def* AutoDiffEval::op_load(const Def* ptr, bool with_mem) {
+    assert(match<mem::M>(current_mem->type()));
+    auto load              = mem::op_load(current_mem, ptr);
+    auto [next_mem, value] = load->projs<2>();
+    current_mem            = next_mem;
+    if (with_mem) { return load; }
+
+    return value;
+}
+
+void AutoDiffEval::op_store(const Def* ptr, const Def* value) { current_mem = mem::op_store(current_mem, ptr, value); }
+
+void AutoDiffEval::op_free(const Def* ptr) { current_mem = mem::op_free(current_mem, ptr); }
+
+const Def* AutoDiffEval::op_slot(const Def* type, const std::string& name) {
+    auto& w                = world();
+    auto [next_mem, value] = mem::op_slot(type, current_mem, w.dbg(name))->projs<2>();
+    current_mem            = next_mem;
+    return value;
+}
+
+void AutoDiffEval::ret(Lam* lam) {
+    auto& w = world();
+    lam->set_body(w.app(lam->var(1_s), end_mem()));
+}
+
+const Def* AutoDiffEval::resolve(const Def* def) {
+    auto& w = world();
+
+    if (def->isa<Axiom>()) { return def; }
+
+    if (auto load = match<mem::load>(def)) {
+        auto cache_arr = cache_map[def];
+        const Def* cache_ptr;
+        if (!cache_arr) {
+            auto ptr  = load->arg(1);
+            cache_ptr = resolve(ptr);
+        } else {
+            auto loop        = cache_loop_assignment[cache_arr];
+            auto cache_index = loop->cache_index();
+            cache_ptr        = mem::op_lea(cache_arr, cache_index);
+        }
+        auto grad_val = op_load(cache_ptr, true);
+        return grad_val;
+    }
+
+    auto inv_def = inverted[def];
+    if (inv_def) { return inv_def; }
+
+    assert(!def->isa<Var>());
+
+    auto new_ops = DefArray(def->num_ops(), [&](auto i) { return resolve(def->op(i)); });
+
+    auto new_def = def->rebuild(w, def->type(), new_ops, def->dbg());
+
+    return new_def;
+}
+
+void AutoDiffEval::propagate(const Def* target, const Def* gradient) {
+    if (auto extract = target->isa<Extract>()) {
+        if (auto load = match<mem::load>(extract->tuple())) {
+            auto sink          = gradient_sinks[load];
+            auto current_value = op_load(sink);
+            auto sum           = core::op(core::wrap::add, core::WMode::none, current_value, gradient);
+            op_store(sink, sum);
+            return;
+        }
+    }
+
+    if (auto wrap = match<core::wrap>(target)) {
+        auto [left, right] = wrap->args<2>();
+
+        if (wrap.id() == core::wrap::add) {
+            propagate(left, gradient);
+            propagate(right, gradient);
+        } else if (wrap.id() == core::wrap::sub) {
+            propagate(left, gradient);
+            propagate(right, core::op_wminus(core::WMode::none, gradient));
+        } else if (wrap.id() == core::wrap::mul) {
+            auto left_value  = resolve(left);
+            auto right_value = resolve(right);
+
+            auto left_gradient  = core::op(core::wrap::mul, core::WMode::none, gradient, right_value);
+            auto right_gradient = core::op(core::wrap::mul, core::WMode::none, gradient, left_value);
+
+            propagate(left, left_gradient);
+            propagate(right, right_gradient);
+        }
+    } else if (auto div = match<core::div>(target)) {
+        auto [mem, left, right] = div->args<3>();
+        if (div.id() == core::div::sdiv || div.id() == core::div::udiv) {
+            auto left_value  = resolve(left);
+            auto right_value = resolve(right);
+
+            auto [div_mem, left_gradient] = core::op(div.id(), core::WMode::none, gradient, right_value)->projs<2>();
+            auto right_gradient           = core::op(core::wrap::mul, core::WMode::none,
+                                                     core::op_wminus(core::WMode::none, left_gradient), left_value);
+            current_mem                   = div_mem;
+            propagate(left, left_gradient);
+            propagate(right, right_gradient);
+        }
+    }
+}
+
+const Def* AutoDiffEval::invert_store(const App* store) {
+    auto& w                = world();
+    auto [mem, ptr, value] = store->args<3>();
+
+    auto invert_store = create_invert_block("store");
+
+    auto grad_ptr = invert(ptr);
+
+    auto load_gradient = op_load(grad_ptr);
+    op_store(grad_ptr, zero(w));
+
+    // push gradients to target
+    propagate(value, load_gradient);
+
+    auto next_mem = end_mem();
+    // get next mem block which will be executed after this.
+    auto invert_next = invert(mem);
+
+    return chain(next_mem, invert_store, invert_next);
+}
+const Def* AutoDiffEval::invert_malloc(const App* malloc) { return malloc; }
+const Def* AutoDiffEval::invert_alloc(const App* alloc) {
+    auto [mem, alloc_ptr] = alloc->projs<2>();
+    auto callee           = alloc->callee()->as<App>();
+    auto type             = callee->arg(0_s);
+
+    // prepends decicion when memory will be allocated by wrapping in lam.
+    // auto gradient_ptr = create_init_alloc_frame("gradient_arr", type);
+
+    // add to list of allocated memory
+    // allocated_memory.insert(gradient_ptr);
+    // gradient_ptrs[alloc_ptr] = gradient_ptr;
+
+    return invert(mem);
+}
+const Def* AutoDiffEval::invert_bitcast(const App* bitcast) {
+    auto& w      = world();
+    auto new_ops = DefArray(bitcast->num_ops(), [&](auto i) { return invert(bitcast->op(i)); });
+
+    auto new_def = bitcast->rebuild(w, bitcast->type(), new_ops, bitcast->dbg());
+
+    return new_def;
 }
 
 } // namespace thorin::autodiff

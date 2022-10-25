@@ -5,11 +5,11 @@
 
 #include "thorin/dialects.h"
 
+#include "dialects/affine/passes/lower_for.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/autodiff/passes/autodiff_ext_cleanup.h"
-#include "dialects/autodiff/passes/autodiff_zero.h"
-#include "dialects/autodiff/passes/autodiff_zero_cleanup.h"
 #include "dialects/direct/passes/ds2cps.h"
+#include "dialects/mem/passes/rw/reshape.h"
 
 using namespace thorin;
 
@@ -23,17 +23,41 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"autodiff",
             [](thorin::PipelineBuilder& builder) {
                 builder.add_opt(110);
+
+                builder.extend_opt_phase(104, [](PassMan& man) {
+                    auto reshape = man.add<mem::Reshape>(mem::Reshape::Arg);
+                    reshape->add_plugin([](mem::Reshape& reshape, const Def* def) {
+                        if (auto app = def->isa<App>()) {
+                            auto callee = app->op(0);
+
+                            if (auto autodiff = match<autodiff::autodiff>(callee)) {
+                                auto& w     = def->world();
+                                auto arg    = reshape.rewrite(app->op(1));
+                                auto diffee = autodiff->arg();
+                                auto curry  = autodiff->decurry();
+                                if (curry->arg(1) != w.lit_bool(true)) return (const Def*)nullptr;
+
+                                auto new_diffee   = reshape.rewrite(diffee);
+                                auto new_autodiff = autodiff::op_autodiff(new_diffee, w.lit_bool(false));
+
+                                arg          = reshape.reshape(arg, new_autodiff->type()->as<Pi>());
+                                auto new_app = w.app(new_autodiff, arg);
+                                return new_app;
+                            }
+                        }
+
+                        return (const Def*)nullptr;
+                    });
+                });
                 builder.extend_opt_phase(105, [](thorin::PassMan& man) { man.add<thorin::autodiff::AutoDiffEval>(); });
-                builder.extend_opt_phase(111, [](thorin::PassMan& man) {
-                    // in theory only after partial eval (beta, ...)
-                    // but before other simplification
-                    // zero and add need to be close together
-                    man.add<thorin::autodiff::AutoDiffZero>();
-                });
-                builder.extend_opt_phase(299, [](PassMan& man) {
-                    man.add<thorin::autodiff::AutoDiffZeroCleanup>();
-                    man.add<thorin::autodiff::AutoDiffExternalCleanup>();
-                });
+                builder.extend_opt_phase(106, [](thorin::PassMan& man) { man.add<thorin::affine::LowerFor>(); });
+                /*builder.extend_opt_phase(107, [](PassMan& man) {
+                    man.add<mem::Reshape>(mem::Reshape::Flat);
+                });*/
+                builder.extend_opt_phase(126,
+                                         [](PassMan& man) { man.add<thorin::autodiff::AutoDiffExternalCleanup>(); });
+
+                builder.add_opt(125);
             },
             nullptr, [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); }};
 }

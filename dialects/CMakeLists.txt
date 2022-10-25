@@ -13,12 +13,10 @@ add_thorin_dialect(autodiff
     SOURCES
         autodiff/autodiff.cpp
         autodiff/autodiff.h
+        autodiff/builder.cpp
+        autodiff/builder.h
         autodiff/passes/autodiff_eval.cpp
         autodiff/passes/autodiff_eval.h
-        autodiff/passes/autodiff_zero.cpp
-        autodiff/passes/autodiff_zero.h
-        autodiff/passes/autodiff_zero_cleanup.cpp
-        autodiff/passes/autodiff_zero_cleanup.h
         autodiff/passes/autodiff_ext_cleanup.cpp
         autodiff/passes/autodiff_ext_cleanup.h
         autodiff/auxiliary/autodiff_aux.cpp
@@ -26,6 +24,8 @@ add_thorin_dialect(autodiff
         autodiff/auxiliary/autodiff_rewrite_inner.cpp
         autodiff/auxiliary/autodiff_rewrite_toplevel.cpp
         autodiff/normalizers.cpp
+        affine/passes/lower_for.cpp
+        mem/passes/rw/reshape.cpp
     DEPENDS
         mem
         core
@@ -118,6 +118,8 @@ add_thorin_dialect(mem
         mem/passes/rw/alloc2malloc.h
         mem/passes/rw/remem_elim.cpp
         mem/passes/rw/remem_elim.h
+        mem/passes/rw/reshape.cpp
+        mem/passes/rw/reshape.h
     HEADER_DEPENDS
         core
     INSTALL
