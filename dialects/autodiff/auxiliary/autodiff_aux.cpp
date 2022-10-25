@@ -97,7 +97,7 @@ const Def* autodiff_inner_type_fun(const Def* B, const Def* A) {
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     auto& world = arg->world();
     world.DLOG("autodiff type for {} => {}", arg, ret);
-    arg->dump();
+    // arg->dump();
     auto aug_arg = autodiff_type_fun(arg);
     // auto aug_ret = autodiff_inner_type_fun(ret, arg);
     auto aug_ret = autodiff_inner_type_fun(world.cn(ret), arg);
