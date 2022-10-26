@@ -357,7 +357,6 @@ public:
     /// @name var
     ///@{
     /// Retrieve Var for *nominals*.
-
     const Var* var(const Def* dbg = {});
     THORIN_PROJ(var, )
     ///@}
