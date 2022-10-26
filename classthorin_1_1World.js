@@ -93,7 +93,6 @@ var classthorin_1_1World =
     [ "nom_join", "classthorin_1_1World.html#ad10597d401c5dc0d0b6b16558aaaa258", null ],
     [ "nom_join", "classthorin_1_1World.html#ac8f9c69a404bc66e1e1a4675306f78e1", null ],
     [ "nom_lam", "classthorin_1_1World.html#a7fc347c99bbd1e091b7b144a49694c7b", null ],
-    [ "nom_lam", "classthorin_1_1World.html#a2580155172942910821bc6a8a98f4934", null ],
     [ "nom_meet", "classthorin_1_1World.html#ac487137f5af13a62f2ed4a0c34122776", null ],
     [ "nom_meet", "classthorin_1_1World.html#a9eaead7a98544f074454b24d2c180f3a", null ],
     [ "nom_pack", "classthorin_1_1World.html#a361136cad494901944189fc26761f94a", null ],
