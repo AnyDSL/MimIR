@@ -69,7 +69,7 @@ public:
     const Def* autodiff_zero(const Def* mem, Lam* f);
     const Def* autodiff_zero(const Def* mem, const Def* def);
 
-    const Def* zero_pullback(const Def* domain, Lam* f);
+    const Def* zero_pullback_fun(const Def* domain, Lam* f);
 
     const Def* wrap_call_pullbacks(const Def* arg_pb, const Def* arg);
     Lam* create_gradient_collector(const Def* gradient_array, Lam* f);

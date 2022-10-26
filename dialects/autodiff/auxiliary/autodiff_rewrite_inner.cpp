@@ -20,20 +20,10 @@ namespace thorin::autodiff {
 #define f_arg_ty continuation_dom(f->type())
 
 const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam*) {
-    auto& world = lit->world();
-
-    auto aug_lit = lit;
-    // set zero pullback
-    auto pb                   = zero_pullback(lit->type(), f);
-    partial_pullback[aug_lit] = pb;
+    auto pb               = zero_pullback(lit->type(), f_arg_ty);
+    partial_pullback[lit] = pb;
     return lit;
 }
-
-// const Def* AutoDiffEval::augment_lit(const Lit* lit, Lam* f, Lam*) {
-//     auto pb               = zero_pullback(lit->type(), f_arg_ty);
-//     partial_pullback[lit] = pb;
-//     return lit;
-// }
 
 const Def* AutoDiffEval::augment_var(const Var* var, Lam*, Lam*) {
     assert(augmented.count(var));
@@ -44,24 +34,28 @@ const Def* AutoDiffEval::augment_var(const Var* var, Lam*, Lam*) {
 
 const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     auto& world = lam->world();
-    // TODO: need partial pullbacks for tuples (higher-order / ret-cont application)
+    // TODO: we need partial pullbacks for tuples (higher-order / ret-cont application)
     // also for higher-order args, ret_cont (at another point)
     // the pullback is not important but formally required by tuple rule
     if (augmented.count(lam)) {
-        // includes lam==f, out == f_diff
-        // handle like higher order argument
-        // replace with derived function
+        // We already know the function:
+        // * recursion
+        // * higher order arguments
+        // * new encounter of previous function
         world.DLOG("already augmented {} : {} to {} : {}", lam, lam->type(), augmented[lam], augmented[lam]->type());
         return augmented[lam];
     }
     // TODO: better fix (another pass as analysis?)
+    // TODO: handle open functions
     if (is_open_continuation(lam) || lam->name().find("ret") != std::string::npos ||
         lam->name().find("_cont") != std::string::npos || !is_closed(lam)) {
-        // An open continuation behaves the same as return:
+        // A open continuation behaves the same as return:
         // ```
         // cont: Cn[X]
         // cont': Cn[X,Cn[X,A]]
-        // dependency on closed function context
+        // ```
+        // There is dependency on the closed function context.
+        // (All derivatives are with respect to the arguments of a closed function.)
 
         world.DLOG("found an open continuation {} : {}", lam, lam->type());
         // auto cont_dom = lam->type()->dom(); // not only 0 but all
@@ -82,20 +76,13 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
         derived[lam]              = aug_lam;
         auto pb                   = aug_lam->var(1);
         partial_pullback[aug_var] = pb;
-
-        auto testVar = lam->var();
-        // still in same closed function
+        // We are still in same closed function.
         auto new_body = augment(lam->body(), f, f_diff);
         aug_lam->set_filter(lam->filter());
         // aug_lam->set_filter(false);
         aug_lam->set_body(new_body);
 
-        // R auto lam_pb_ty = pullback_type(lam->type(), f_arg_ty);
-        // R auto lam_pb = world.cn(lam_pb_ty);
-        // R lam_pb->app(
-
-        // R )
-        auto lam_pb               = zero_pullback(lam->type(), f);
+        auto lam_pb               = zero_pullback(lam->type(), f_arg_ty);
         partial_pullback[aug_lam] = lam_pb;
         world.DLOG("augmented {} : {}", lam, lam->type());
         world.DLOG("to {} : {}", aug_lam, aug_lam->type());
@@ -110,7 +97,7 @@ const Def* AutoDiffEval::augment_lam(Lam* lam, Lam* f, Lam* f_diff) {
     assert(is_closed(lam));
 
     auto aug_lam = op_autodiff(lam);
-    // TODO: directly more association here?
+    // TODO: directly more association here? => partly inline op_autodiff
     world.DLOG("augmented function is {} : {}", aug_lam, aug_lam->type());
     return aug_lam;
 }
@@ -124,26 +111,28 @@ const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff
     auto aug_tuple = augment(tuple, f, f_diff);
     auto aug_index = augment(index, f, f_diff);
 
-    auto aug_ext = world.extract(aug_tuple, aug_index);
-
-    if (match<mem::M>(ext->type())) {
-        partial_pullback[aug_ext] = zero_pullback(ext->type(), f);
-        return aug_ext;
-    }
-
-    // TODO: if not exists use:
-    // e:T, b:B
-    // b = e#i
-    // b* = \lambda (s:B). e* (insert s at i in (zero T))
-
-    const Def* pb;
     world.DLOG("tuple was: {} : {}", tuple, tuple->type());
     world.DLOG("aug tuple: {} : {}", aug_tuple, aug_tuple->type());
+    auto aug_ext = world.extract(aug_tuple, aug_index);
+
+    // TODO: check, but this case should be handled by shadow pullbacks (or id pb for argument which handles memory
+    // correctly)
+    // R if (match<mem::M>(ext->type())) {
+    // R     partial_pullback[aug_ext] = zero_pullback_fun(ext->type(), f);
+    // R     return aug_ext;
+    // R }
+
+    const Def* pb;
     if (shadow_pullback.count(aug_tuple)) {
         auto shadow_tuple_pb = shadow_pullback[aug_tuple];
         world.DLOG("Shadow pullback: {} : {}", shadow_tuple_pb, shadow_tuple_pb->type());
         pb = world.extract(shadow_tuple_pb, aug_index);
     } else {
+        // ```
+        // e:T, b:B
+        // b = e#i
+        // b* = \lambda (s:B). e* (insert s at i in (zero T))
+        // ```
         assert(partial_pullback.count(aug_tuple));
         auto tuple_pb = partial_pullback[aug_tuple];
         auto pb_ty    = pullback_type(ext->type(), f_arg_ty);
@@ -667,7 +656,7 @@ const Def* AutoDiffEval::augment_lea(const App* lea, Lam* f, Lam* f_diff) {
     auto aug_idx        = augment(idx, f, f_diff);
 
     auto aug_lea              = mem::op_lea(aug_ptr, aug_idx);
-    partial_pullback[aug_lea] = zero_pullback(aug_lea->type(), f);
+    partial_pullback[aug_lea] = zero_pullback_fun(aug_lea->type(), f);
 
     auto gradient_array = gradient_ptrs[aug_ptr];
     // no pullbacks, just need shadow information for ptr
@@ -682,6 +671,7 @@ const Def* AutoDiffEval::augment_lea(const App* lea, Lam* f, Lam* f_diff) {
     return aug_lea;
 }
 
+// TODO: rename to make connection to load clear
 Lam* AutoDiffEval::create_gradient_collector(const Def* gradient_lea, Lam* f) {
     auto& w               = world();
     auto elem_ty          = match<mem::Ptr>(gradient_lea->type())->arg(0);
@@ -694,9 +684,11 @@ Lam* AutoDiffEval::create_gradient_collector(const Def* gradient_lea, Lam* f) {
     auto [pb_mem, pb_s]   = pb_arg->projs<2>();
 
     auto [gradient_mem, gradient] = mem::op_load(pb_mem, gradient_lea, w.dbg("gradient_array_load"))->projs<2>();
-    auto add                      = core::op(core::wrap::add, core::WMode::none, gradient, pb_s);
-    auto store_mem                = mem::op_store(gradient_mem, gradient_lea, add, w.dbg("add_to_gradient"));
+    // TODO: use generalized add (maybe even on ptr?)
+    auto add       = core::op(core::wrap::add, core::WMode::none, gradient, pb_s);
+    auto store_mem = mem::op_store(gradient_mem, gradient_lea, add, w.dbg("add_to_gradient"));
 
+    // TODO: split more make memory flow clear
     auto default_zero = autodiff_zero(store_mem, f);
     pb_lam->set_body(w.app(pb_ret, {default_zero}));
     pb_lam->set_filter(true);
@@ -746,7 +738,7 @@ const Def* AutoDiffEval::augment_store(const App* store, Lam* f, Lam* f_diff) {
     return aug_store;
 }
 
-const Def* AutoDiffEval::zero_pullback(const Def* domain, Lam* f) {
+const Def* AutoDiffEval::zero_pullback_fun(const Def* domain, Lam* f) {
     const Def* A   = f_arg_ty;
     auto& world    = A->world();
     auto A_tangent = tangent_type_fun(A);
@@ -759,7 +751,7 @@ const Def* AutoDiffEval::zero_pullback(const Def* domain, Lam* f) {
 
 const Def* AutoDiffEval::get_pullback(const Def* op, Lam* f) {
     auto pb = partial_pullback[op];
-    if (!pb) { return zero_pullback(op->type(), f); }
+    if (!pb) { return zero_pullback_fun(op->type(), f); }
     return pb;
 }
 
@@ -781,9 +773,9 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc, Lam* f, Lam* f_diff) {
 
     auto tup = world.tuple({alloc_mem_2, alloc_ptr});
 
-    partial_pullback[tup]          = zero_pullback(tup->type(), f);
-    partial_pullback[alloc_mem_2]  = zero_pullback(alloc_mem_2->type(), f);
-    partial_pullback[pullback_ptr] = zero_pullback(pullback_ptr->type(), f);
+    partial_pullback[tup]          = zero_pullback_fun(tup->type(), f);
+    partial_pullback[alloc_mem_2]  = zero_pullback_fun(alloc_mem_2->type(), f);
+    partial_pullback[pullback_ptr] = zero_pullback_fun(pullback_ptr->type(), f);
 
     return tup;
 }
@@ -801,7 +793,7 @@ const Def* AutoDiffEval::augment_bitcast(const App* bitcast, Lam* f, Lam* f_diff
     auto aug_arg = augment(bitcast->arg(), f, f_diff);
 
     auto dst              = core::op_bitcast(bitcast->type(), aug_arg);
-    partial_pullback[dst] = zero_pullback(dst->type(), f);
+    partial_pullback[dst] = zero_pullback_fun(dst->type(), f);
     return dst;
 }
 

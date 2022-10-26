@@ -20,12 +20,14 @@ const Def* shadow_array(const Def* def, const Def* arg_ty) {
     return pb_ty;
 }
 
+// TODO: remove
 const Def* AutoDiffEval::autodiff_zero(const Def* mem, Lam* f) {
     auto mapped = augmented[f->var()];
 
     return autodiff_zero(mem, mapped->proj(0));
 }
 
+// TODO: remove (and incorporate two special cases to other)
 const Def* AutoDiffEval::autodiff_zero(const Def* mem, const Def* def) {
     auto& world = def->world();
 

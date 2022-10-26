@@ -24,7 +24,8 @@ void AutoDiffEval::prepareArguments(Lam* lam, Lam* deriv) {
     auto arg_id_pb              = id_pullback(arg_ty);
     partial_pullback[deriv_arg] = arg_id_pb;
     // The return continuation has to formally exist but should never be directly accessed.
-    auto ret_var              = deriv->var(1);
+    auto ret_var = deriv->var(1);
+    // TODO: think about just returning bot instead of zero
     auto ret_pb               = zero_pullback(lam->var(1)->type(), arg_ty);
     partial_pullback[ret_var] = ret_pb;
 
