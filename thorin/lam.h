@@ -100,7 +100,13 @@ public:
     Lam* app(Filter filter, const Def* callee, Defs args, const Def* dbg = {});
     /// Set body to an App of `(f, t)#cond mem`.
     Lam* branch(Filter filter, const Def* cond, const Def* t, const Def* f, const Def* mem, const Def* dbg = {});
-    Lam* test(Filter filter, const Def* val, const Def* idx, const Def* match, const Def* clash, const Def* mem, const Def* dbg = {});
+    Lam* test(Filter filter,
+              const Def* val,
+              const Def* idx,
+              const Def* match,
+              const Def* clash,
+              const Def* mem,
+              const Def* dbg = {});
     ///@}
 
     /// @name virtual methods

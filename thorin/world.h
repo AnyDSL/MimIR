@@ -207,7 +207,7 @@ public:
     const Axiom* ax(Id id) const {
         u64 flags = static_cast<u64>(id);
         if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
-        thorin::err("Axiom with ID '{}' not found in world; demangled dialect name is '{}'", flags, Axiom::demangle(flags));
+        thorin::err("Axiom with ID '{}' not found; demangled dialect name is '{}'", flags, Axiom::demangle(flags));
     }
 
     /// Get Axiom from a dialect.
