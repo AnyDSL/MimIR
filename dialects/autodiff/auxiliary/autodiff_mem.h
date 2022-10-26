@@ -4,6 +4,9 @@
 #include <thorin/def.h>
 #include <thorin/lam.h>
 
+#include "dialects/autodiff/passes/autodiff_eval.h"
+
 namespace thorin::autodiff {
-const Def* create_ho_pb_type(const Def* def, const Def* arg_ty);
+const Def* shadow_array(const Def* def, const Def* arg_ty);
+
 } // namespace thorin::autodiff

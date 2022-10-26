@@ -5,7 +5,7 @@
 
 namespace thorin::autodiff {
 
-const Def* create_ho_pb_type(const Def* def, const Def* arg_ty);
+const Def* shadow_array(const Def* def, const Def* arg_ty);
 
 /// This pass is the heart of AD.
 /// We replace an `autodiff fun` call with the differentiated function.
@@ -71,7 +71,6 @@ public:
 
     const Def* zero_pullback(const Def* domain, Lam* f);
 
-    const Def* autodiff_epilogue(Lam* f_outer, Lam* f_inner, const Def* diff_ty);
     const Def* wrap_call_pullbacks(const Def* arg_pb, const Def* arg);
     Lam* create_gradient_collector(const Def* gradient_array, Lam* f);
     const Def* get_pullback(const Def* op, Lam* f);

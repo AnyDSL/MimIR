@@ -768,7 +768,7 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc, Lam* f, Lam* f_diff) {
 
     auto [alloc_mem, alloc_ptr] = mem::op_alloc(type, aug_mem)->projs<2>();
 
-    auto pb_ty = create_ho_pb_type(type, f->dom(0_s));
+    auto pb_ty = shadow_array(type, f->dom(0_s));
     auto [alloc_mem_2, pullback_ptr] =
         mem::op_malloc(pb_ty, alloc_mem, world.dbg(alloc->name() + "_pullback_alloc_arr"))->projs<2>();
 
