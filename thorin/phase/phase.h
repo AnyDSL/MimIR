@@ -49,6 +49,7 @@ protected:
 
 /// Visits the current Phase::world and constructs a new RWPhase::world along the way.
 /// It recursively **rewrites** all World::externals().
+/// @note You can override Rewriter::rewrite, Rewriter::rewrite_structural, and Rewriter::rewrite_nom.
 class RWPhase : public Phase, public Rewriter {
 public:
     RWPhase(World& old_world, std::string_view name)
