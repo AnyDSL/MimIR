@@ -812,15 +812,10 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     world.DLOG("Augment def {} : {}", def, def->type());
 
     if (auto lea = match<mem::lea>(def)) { return augment_lea(lea->as<App>(), f, f_diff); }
-
     if (auto load = match<mem::load>(def)) { return augment_load(load->as<App>(), f, f_diff); }
-
     if (auto store = match<mem::store>(def)) { return augment_store(store->as<App>(), f, f_diff); }
-
     if (auto malloc = match<mem::malloc>(def)) { return augment_malloc(malloc->as<App>(), f, f_diff); }
-
     if (auto alloc = match<mem::alloc>(def)) { return augment_alloc(alloc->as<App>(), f, f_diff); }
-
     if (auto bitcast = match<core::bitcast>(def)) { return augment_bitcast(bitcast->as<App>(), f, f_diff); }
 
     // app => cont, operator, function

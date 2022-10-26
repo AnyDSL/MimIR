@@ -31,7 +31,18 @@ public:
     /// This transformation can be seen as an augmentation with a dual computation that generates the derivatives.
     const Def* augment(const Def*, Lam*, Lam*);
     const Def* augment_(const Def*, Lam*, Lam*);
-    /// helper functions for augment
+
+    /// Some expressions require special structure like shadow container.
+    /// This structure is built up on first encounter / entry of the expression.
+    /// For created expressions, this is the point of the construction.
+    /// Additionally, expressions can enter as function argument.
+    /// For some cases, it might be enough to lazily create the structure on first use.
+    /// But for other cases, the structure need to exist before the first use.
+    /// This function generates the structure for the function arguments.
+    void prepareArguments(Lam* lam, Lam* deriv);
+
+    /// @name metalevel differentiation of core axioms
+    ///@{
     const Def* augment_var(const Var*, Lam*, Lam*);
     const Def* augment_lam(Lam*, Lam*, Lam*);
     const Def* augment_extract(const Extract*, Lam*, Lam*);
@@ -39,7 +50,11 @@ public:
     const Def* augment_lit(const Lit*, Lam*, Lam*);
     const Def* augment_tuple(const Tuple*, Lam*, Lam*);
     const Def* augment_pack(const Pack* pack, Lam* f, Lam* f_diff);
+    ///@}
 
+    /// @name metalevel differentiation of memory axioms
+    ///@{
+    // TODO: remove functions that can be formulated in thorin itself
     const Def* augment_lea(const App*, Lam*, Lam*);
     const Def* augment_load(const App*, Lam*, Lam*);
     const Def* augment_store(const App*, Lam*, Lam*);
@@ -47,6 +62,10 @@ public:
     const Def* augment_alloc(const App*, Lam*, Lam*);
     const Def* augment_bitcast(const App*, Lam*, Lam*);
 
+    // We generate the shadow pointers which contain the accumulated gradients with respect to the pointer.
+    void prepareMemArguments(Lam* lam, Lam* deriv);
+
+    // TODO: |- remove from here
     const Def* autodiff_zero(const Def* mem, Lam* f);
     const Def* autodiff_zero(const Def* mem, const Def* def);
 
@@ -57,6 +76,8 @@ public:
     Lam* create_gradient_collector(const Def* gradient_array, Lam* f);
     const Def* get_pullback(const Def* op, Lam* f);
     Lam* free_memory_lam();
+    // TODO: |- to here
+    ///@}
 
 private:
     /// Transforms closed terms (lambda, operator) to derived expressions.
@@ -96,12 +117,18 @@ private:
     /// dst Def -> dst Def
     Def2Def shadow_pullback;
 
+    /// This map logs whether a function is open or closed (when created in augment_lam) to choose correct handling in
+    /// augment_app.
+    /// dst Def set
+    DefSet open_continuation;
+
+    /// @name maps for memory differentiation
+    ///@{
+    // TODO: only keep strictly necessary maps in here
     Def2Def gradient_ptrs;
     DefSet allocated_memory;
     DefSet caches;
-
-    /// dst Def set
-    DefSet open_continuation;
+    ///@}
 };
 
 } // namespace thorin::autodiff

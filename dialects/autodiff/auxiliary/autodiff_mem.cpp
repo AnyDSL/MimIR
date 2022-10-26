@@ -95,4 +95,31 @@ const Def* AutoDiffEval::autodiff_epilogue(Lam* f_outer, Lam* f_inner, const Def
     return world.tuple({arg, f_inner->var(1)});
 }
 
+void AutoDiffEval::prepareMemArguments(Lam* lam, Lam* deriv) {
+    const Def* deriv_mem = mem::mem_var(deriv);
+    if (!deriv_mem) return;
+    const Def* current_mem = deriv_mem;
+
+    auto& world          = deriv->world();
+    const Def* deriv_arg = deriv->var((nat_t)0, world.dbg("arg"));
+
+    for (auto arg : deriv_arg->projs()) {
+        auto arg_ty = arg->type();
+        if (auto ptr = match<mem::Ptr>(arg_ty)) {
+            auto [mem2, gradient_ptr] =
+                mem::op_alloc(ptr->arg(0), current_mem, world.dbg(arg->name() + "_gradient_arr"))->projs<2>();
+            current_mem = mem2;
+
+            gradient_ptrs[arg] = gradient_ptr;
+        }
+    }
+
+    // Reassociate the arguments to replace the old memory with the new one.
+    // We reassociate all arguments together to prevent early skips.
+    // TODO: test if this works as intended
+    // deriv_mem |-> current_mem
+    // Alternatively to replace_mem, a subst call could be used.
+    augmented[lam->var()] = mem::replace_mem(current_mem, deriv->var());
+}
+
 } // namespace thorin::autodiff
