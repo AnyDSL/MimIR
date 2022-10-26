@@ -241,7 +241,7 @@ var hierarchy =
     [ "thorin::IndexSet< Indexer, Key >::reference", "classthorin_1_1IndexSet_1_1reference.html", null ],
     [ "thorin::core::Res", "classthorin_1_1core_1_1Res.html", null ],
     [ "thorin::Rewriter", "classthorin_1_1Rewriter.html", [
-      [ "thorin::PhaseRewriter", "classthorin_1_1PhaseRewriter.html", null ],
+      [ "thorin::RWPhase", "classthorin_1_1RWPhase.html", null ],
       [ "thorin::ScopeRewriter", "classthorin_1_1ScopeRewriter.html", null ]
     ] ],
     [ "std::runtime_error", null, [

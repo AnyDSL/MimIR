@@ -105,96 +105,46 @@ $(document).ready(function(){initNavTree('classthorin_1_1Rewriter.html',''); ini
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classthorin_1_1Rewriter-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">thorin::Rewriter Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Rewrites part of a program.  
+<p>Recurseivly rewrites part of a program <b>into</b> the provided <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a>.  
  <a href="classthorin_1_1Rewriter.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="rewrite_8h_source.html">thorin/rewrite.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for thorin::Rewriter:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1Rewriter__inherit__graph.svg" width="360" height="112"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classthorin_1_1Rewriter__inherit__graph.svg" width="398" height="187"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac23aab56f0b5d2f05dcceaf69d53676e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#ac23aab56f0b5d2f05dcceaf69d53676e">Rewriter</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;<a class="el" href="classthorin_1_1Rewriter.html#a30f487c4537a940ff672c5f3cbab7f8d">old_world</a>, <a class="el" href="classthorin_1_1World.html">World</a> &amp;<a class="el" href="classthorin_1_1Rewriter.html#a54b5c3e6a1aa40e6496f15412433878a">new_world</a>)</td></tr>
-<tr class="separator:ac23aab56f0b5d2f05dcceaf69d53676e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a293eaaddc06822804fb895150a3edc0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a293eaaddc06822804fb895150a3edc0f">Rewriter</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;world)</td></tr>
+<tr class="memitem:a293eaaddc06822804fb895150a3edc0f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a293eaaddc06822804fb895150a3edc0f">Rewriter</a> (<a class="el" href="classthorin_1_1World.html">World</a> &amp;<a class="el" href="classthorin_1_1Rewriter.html#a02e6136af63730146609ef84a373f890">world</a>)</td></tr>
 <tr class="separator:a293eaaddc06822804fb895150a3edc0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">rewrite</div></td></tr>
-<tr class="memitem:af3752aa20936c606b65cf909d4c8a6e5"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#af3752aa20936c606b65cf909d4c8a6e5">rewrite</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *old_def)</td></tr>
-<tr class="memdesc:af3752aa20936c606b65cf909d4c8a6e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recursively rewrites <code>old_def</code>.  <a href="classthorin_1_1Rewriter.html#af3752aa20936c606b65cf909d4c8a6e5">More...</a><br /></td></tr>
-<tr class="separator:af3752aa20936c606b65cf909d4c8a6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a4dcedc0937ff28c3a77caf6749aa18"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; const <a class="el" href="classthorin_1_1Def.html">Def</a> *, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a3a4dcedc0937ff28c3a77caf6749aa18">pre_rewrite</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
-<tr class="memdesc:a3a4dcedc0937ff28c3a77caf6749aa18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rewrite a given <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> in pre-order.  <a href="classthorin_1_1Rewriter.html#a3a4dcedc0937ff28c3a77caf6749aa18">More...</a><br /></td></tr>
-<tr class="separator:a3a4dcedc0937ff28c3a77caf6749aa18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac98fe58e45244b32b7e60d1538e52c45"><td class="memItemLeft" align="right" valign="top">virtual std::pair&lt; const <a class="el" href="classthorin_1_1Def.html">Def</a> *, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#ac98fe58e45244b32b7e60d1538e52c45">post_rewrite</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
-<tr class="memdesc:ac98fe58e45244b32b7e60d1538e52c45"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above but in post-order.  <a href="classthorin_1_1Rewriter.html#ac98fe58e45244b32b7e60d1538e52c45">More...</a><br /></td></tr>
-<tr class="separator:ac98fe58e45244b32b7e60d1538e52c45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a30f487c4537a940ff672c5f3cbab7f8d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a30f487c4537a940ff672c5f3cbab7f8d">old_world</a></td></tr>
-<tr class="separator:a30f487c4537a940ff672c5f3cbab7f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54b5c3e6a1aa40e6496f15412433878a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a54b5c3e6a1aa40e6496f15412433878a">new_world</a></td></tr>
-<tr class="separator:a54b5c3e6a1aa40e6496f15412433878a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43763f4b1da4026338efabd1c0ef9be2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacethorin.html#a7907156065ecc2f7a8ad6d0c4b48752d">Def2Def</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a43763f4b1da4026338efabd1c0ef9be2">old2new</a></td></tr>
-<tr class="separator:a43763f4b1da4026338efabd1c0ef9be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02e6136af63730146609ef84a373f890"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a02e6136af63730146609ef84a373f890">world</a> ()</td></tr>
+<tr class="separator:a02e6136af63730146609ef84a373f890"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">recursively rewrite old Defs</div></td></tr>
+<tr class="memitem:af4673508fde7194f0ba16c03c48424f0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#af4673508fde7194f0ba16c03c48424f0">map</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *old_def, const <a class="el" href="classthorin_1_1Def.html">Def</a> *new_def)</td></tr>
+<tr class="separator:af4673508fde7194f0ba16c03c48424f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0672e94954b54a638f67081796a8a58"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#ab0672e94954b54a638f67081796a8a58">rewrite</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
+<tr class="separator:ab0672e94954b54a638f67081796a8a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c380b720f711a5f0ec667e6b647275a"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#a7c380b720f711a5f0ec667e6b647275a">rewrite_structural</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
+<tr class="separator:a7c380b720f711a5f0ec667e6b647275a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc61a59833679a2c40d9a7dbfdfa4c02"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Rewriter.html#abc61a59833679a2c40d9a7dbfdfa4c02">rewrite_nom</a> (<a class="el" href="classthorin_1_1Def.html">Def</a> *)</td></tr>
+<tr class="separator:abc61a59833679a2c40d9a7dbfdfa4c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p >Rewrites part of a program. </p>
+<div class="textblock"><p >Recurseivly rewrites part of a program <b>into</b> the provided <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a>. </p>
+<p >This <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a> may be different than the <a class="el" href="classthorin_1_1World.html" title="The World represents the whole program and manages creation of Thorin nodes (Defs).">World</a> we started with. </p>
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00010">10</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00011">11</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ac23aab56f0b5d2f05dcceaf69d53676e" name="ac23aab56f0b5d2f05dcceaf69d53676e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac23aab56f0b5d2f05dcceaf69d53676e">&#9670;&nbsp;</a></span>Rewriter() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">thorin::Rewriter::Rewriter </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
-          <td class="paramname"><em>old_world</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classthorin_1_1World.html">World</a> &amp;&#160;</td>
-          <td class="paramname"><em>new_world</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00012">12</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
-
-<p class="reference">References <a class="el" href="rewrite_8h_source.html#l00038">new_world</a>, <a class="el" href="rewrite_8h_source.html#l00039">old2new</a>, <a class="el" href="rewrite_8h_source.html#l00037">old_world</a>, and <a class="el" href="world_8h_source.html#l00164">thorin::World::univ()</a>.</p>
-
-</div>
-</div>
 <a id="a293eaaddc06822804fb895150a3edc0f" name="a293eaaddc06822804fb895150a3edc0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a293eaaddc06822804fb895150a3edc0f">&#9670;&nbsp;</a></span>Rewriter() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a293eaaddc06822804fb895150a3edc0f">&#9670;&nbsp;</a></span>Rewriter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,13 +167,13 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00017">17</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00013">13</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac98fe58e45244b32b7e60d1538e52c45" name="ac98fe58e45244b32b7e60d1538e52c45"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac98fe58e45244b32b7e60d1538e52c45">&#9670;&nbsp;</a></span>post_rewrite()</h2>
+<a id="af4673508fde7194f0ba16c03c48424f0" name="af4673508fde7194f0ba16c03c48424f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4673508fde7194f0ba16c03c48424f0">&#9670;&nbsp;</a></span>map()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -232,72 +182,38 @@ Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::pair&lt; const <a class="el" href="classthorin_1_1Def.html">Def</a> *, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> &gt; thorin::Rewriter::post_rewrite </td>
+          <td class="memname">const <a class="el" href="classthorin_1_1Def.html">Def</a> * thorin::Rewriter::map </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="paramname"><em>old_def</em>, </td>
         </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>As above but in post-order. </p>
-
-<p>Reimplemented in <a class="el" href="classthorin_1_1PhaseRewriter.html#a0b686832e011a69ac764b78e3e2dcc8e">thorin::PhaseRewriter</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00034">34</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>.</p>
-
-</div>
-</div>
-<a id="a3a4dcedc0937ff28c3a77caf6749aa18" name="a3a4dcedc0937ff28c3a77caf6749aa18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a4dcedc0937ff28c3a77caf6749aa18">&#9670;&nbsp;</a></span>pre_rewrite()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
         <tr>
-          <td class="memname">virtual std::pair&lt; const <a class="el" href="classthorin_1_1Def.html">Def</a> *, <a class="el" href="namespace_3globalScope_4.html#classbool">bool</a> &gt; thorin::Rewriter::pre_rewrite </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>new_def</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Rewrite a given <a class="el" href="classthorin_1_1Def.html" title="Base class for all Defs.">Def</a> in pre-order. </p>
-<dl class="section return"><dt>Returns</dt><dd><ul>
-<li><code>{nullptr, false}</code> to do nothing</li>
-<li><code>{new_def, false}</code> to return <code>new_def</code> <b>without</b> recursing on <code>new_def</code> again</li>
-<li><code>{new_def, true}</code> to return <code>new_def</code> <b>with</b> recursing on <code>new_def</code> again </li>
-</ul>
-</dd></dl>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00020">20</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p>Reimplemented in <a class="el" href="classthorin_1_1PhaseRewriter.html#a49c65233d7972fbf24ff313988e09b1f">thorin::PhaseRewriter</a>.</p>
-
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00032">32</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00045">thorin::rewrite()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_nom()</a>.</p>
 
 </div>
 </div>
-<a id="af3752aa20936c606b65cf909d4c8a6e5" name="af3752aa20936c606b65cf909d4c8a6e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3752aa20936c606b65cf909d4c8a6e5">&#9670;&nbsp;</a></span>rewrite()</h2>
+<a id="ab0672e94954b54a638f67081796a8a58" name="ab0672e94954b54a638f67081796a8a58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0672e94954b54a638f67081796a8a58">&#9670;&nbsp;</a></span>rewrite()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -320,71 +236,106 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Recursively rewrites <code>old_def</code>. </p>
-<p >Invokes <a class="el" href="classthorin_1_1Rewriter.html#a3a4dcedc0937ff28c3a77caf6749aa18" title="Rewrite a given Def in pre-order.">Rewriter::pre_rewrite</a> at the beginning and <a class="el" href="classthorin_1_1Rewriter.html#ac98fe58e45244b32b7e60d1538e52c45" title="As above but in post-order.">Rewriter::post_rewrite</a> at the end. </p>
-
 <p>Reimplemented in <a class="el" href="classthorin_1_1ScopeRewriter.html#a96f69bb6602da6f899e8e6f54b65c6d6">thorin::ScopeRewriter</a>.</p>
 
 <p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00009">9</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="def_8h_source.html#l00310">thorin::Def::dbg()</a>, <a class="el" href="def_8h_source.html#l00338">thorin::Def::isa_nom()</a>, <a class="el" href="rewrite_8h_source.html#l00038">new_world</a>, <a class="el" href="def_8h_source.html#l00180">thorin::Def::num_ops()</a>, <a class="el" href="rewrite_8h_source.html#l00039">old2new</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="def_8h_source.html#l00179">thorin::Def::op()</a>, <a class="el" href="rewrite_8h_source.html#l00034">post_rewrite()</a>, <a class="el" href="rewrite_8h_source.html#l00032">pre_rewrite()</a>, <a class="el" href="def_8h_source.html#l00379">thorin::Def::rebuild()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, and <a class="el" href="def_8h_source.html#l00162">thorin::Def::type()</a>.</p>
+<p class="reference">References <a class="el" href="cast_8h_source.html#l00029">thorin::RuntimeCast&lt; Base &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00338">thorin::Def::isa_nom()</a>, <a class="el" href="rewrite_8h_source.html#l00020">map()</a>, <a class="el" href="clos_8h_source.html#l00021">thorin::clos::op()</a>, <a class="el" href="def_8h_source.html#l00179">thorin::Def::op()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_nom()</a>, <a class="el" href="rewrite_8cpp_source.html#l00024">rewrite_structural()</a>, <a class="el" href="world_8h_source.html#l00164">thorin::World::univ()</a>, and <a class="el" href="rewrite_8h_source.html#l00016">world()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00086">thorin::RWPhase::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00048">thorin::ScopeRewriter::rewrite()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="rewrite_8h_source.html#l00039">thorin::ScopeRewriter::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_nom()</a>, <a class="el" href="rewrite_8cpp_source.html#l00024">rewrite_structural()</a>, and <a class="el" href="phase_8cpp_source.html#l00011">thorin::RWPhase::start()</a>.</p>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a54b5c3e6a1aa40e6496f15412433878a" name="a54b5c3e6a1aa40e6496f15412433878a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54b5c3e6a1aa40e6496f15412433878a">&#9670;&nbsp;</a></span>new_world</h2>
+<a id="abc61a59833679a2c40d9a7dbfdfa4c02" name="abc61a59833679a2c40d9a7dbfdfa4c02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc61a59833679a2c40d9a7dbfdfa4c02">&#9670;&nbsp;</a></span>rewrite_nom()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1World.html">World</a>&amp; thorin::Rewriter::new_world</td>
+          <td class="memname">const <a class="el" href="classthorin_1_1Def.html">Def</a> * thorin::Rewriter::rewrite_nom </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>old_nom</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00038">38</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00031">31</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00012">Rewriter()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00310">thorin::Def::dbg()</a>, <a class="el" href="rewrite_8h_source.html#l00020">map()</a>, <a class="el" href="def_8h_source.html#l00180">thorin::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00179">thorin::Def::op()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="def_8h_source.html#l00381">thorin::Def::stub()</a>, <a class="el" href="def_8h_source.html#l00162">thorin::Def::type()</a>, and <a class="el" href="rewrite_8h_source.html#l00016">world()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>.</p>
 
 </div>
 </div>
-<a id="a43763f4b1da4026338efabd1c0ef9be2" name="a43763f4b1da4026338efabd1c0ef9be2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43763f4b1da4026338efabd1c0ef9be2">&#9670;&nbsp;</a></span>old2new</h2>
+<a id="a7c380b720f711a5f0ec667e6b647275a" name="a7c380b720f711a5f0ec667e6b647275a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c380b720f711a5f0ec667e6b647275a">&#9670;&nbsp;</a></span>rewrite_structural()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacethorin.html#a7907156065ecc2f7a8ad6d0c4b48752d">Def2Def</a> thorin::Rewriter::old2new</td>
+          <td class="memname">const <a class="el" href="classthorin_1_1Def.html">Def</a> * thorin::Rewriter::rewrite_structural </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>old_def</em></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00039">39</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8cpp_source.html#l00024">24</a> of file <a class="el" href="rewrite_8cpp_source.html">rewrite.cpp</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="phase_8h_source.html#l00079">thorin::RWPhase::old2new()</a>, <a class="el" href="rewrite_8cpp_source.html#l00048">thorin::rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, and <a class="el" href="rewrite_8h_source.html#l00012">Rewriter()</a>.</p>
+<p class="reference">References <a class="el" href="def_8h_source.html#l00310">thorin::Def::dbg()</a>, <a class="el" href="def_8h_source.html#l00180">thorin::Def::num_ops()</a>, <a class="el" href="def_8h_source.html#l00378">thorin::Def::rebuild()</a>, <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="def_8h_source.html#l00162">thorin::Def::type()</a>, and <a class="el" href="rewrite_8h_source.html#l00016">world()</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>.</p>
 
 </div>
 </div>
-<a id="a30f487c4537a940ff672c5f3cbab7f8d" name="a30f487c4537a940ff672c5f3cbab7f8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a30f487c4537a940ff672c5f3cbab7f8d">&#9670;&nbsp;</a></span>old_world</h2>
+<a id="a02e6136af63730146609ef84a373f890" name="a02e6136af63730146609ef84a373f890"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02e6136af63730146609ef84a373f890">&#9670;&nbsp;</a></span>world()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classthorin_1_1World.html">World</a>&amp; thorin::Rewriter::old_world</td>
+          <td class="memname"><a class="el" href="classthorin_1_1World.html">World</a> &amp; thorin::Rewriter::world </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00037">37</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rewrite_8h_source.html#l00016">16</a> of file <a class="el" href="rewrite_8h_source.html">rewrite.h</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="rewrite_8h_source.html#l00012">Rewriter()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="rewrite_8cpp_source.html#l00009">rewrite()</a>, <a class="el" href="rewrite_8cpp_source.html#l00031">rewrite_nom()</a>, and <a class="el" href="rewrite_8cpp_source.html#l00024">rewrite_structural()</a>.</p>
 
 </div>
 </div>

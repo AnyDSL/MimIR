@@ -1,7 +1,6 @@
 var phase_8h =
 [
     [ "thorin::Phase", "classthorin_1_1Phase.html", "classthorin_1_1Phase" ],
-    [ "thorin::PhaseRewriter", "classthorin_1_1PhaseRewriter.html", "classthorin_1_1PhaseRewriter" ],
     [ "thorin::RWPhase", "classthorin_1_1RWPhase.html", "classthorin_1_1RWPhase" ],
     [ "thorin::Cleanup", "classthorin_1_1Cleanup.html", "classthorin_1_1Cleanup" ],
     [ "thorin::FPPhase", "classthorin_1_1FPPhase.html", "classthorin_1_1FPPhase" ],

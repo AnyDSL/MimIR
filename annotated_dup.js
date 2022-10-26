@@ -182,7 +182,6 @@ var annotated_dup =
       [ "PassPhase", "classthorin_1_1PassPhase.html", "classthorin_1_1PassPhase" ],
       [ "PassTag", "namespacethorin.html#structthorin_1_1PassTag", null ],
       [ "Phase", "classthorin_1_1Phase.html", "classthorin_1_1Phase" ],
-      [ "PhaseRewriter", "classthorin_1_1PhaseRewriter.html", "classthorin_1_1PhaseRewriter" ],
       [ "Pi", "classthorin_1_1Pi.html", "classthorin_1_1Pi" ],
       [ "Pick", "classthorin_1_1Pick.html", "classthorin_1_1Pick" ],
       [ "Pipeline", "classthorin_1_1Pipeline.html", "classthorin_1_1Pipeline" ],
