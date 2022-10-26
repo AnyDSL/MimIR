@@ -158,7 +158,7 @@ using namespace thorin;
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"clos",
             [](PipelineBuilder& builder) {
-                int base = 121;
+                int base = 140;
                 // closure_conv
                 builder.extend_opt_phase(base++, [](PassMan& man) { man.add<clos::ClosConvPrep>(nullptr); });
                 builder.extend_opt_phase(base++, [](PassMan& man) { man.add<EtaExp>(nullptr); });
