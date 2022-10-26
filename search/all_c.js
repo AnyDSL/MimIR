@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['l_0',['l',['../namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()'],['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dda2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()']]],
+  ['l_0',['l',['../namespacethorin_1_1core.html#ae493f33140e983cf79dc6b66a1637628a2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()'],['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dda2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ea2db95e8e1a9267b7a1188556b2013b33',1,'thorin::core::l()']]],
   ['l_5fr_1',['L_r',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79aff4732a008160f463364cd4285d4bc9f',1,'thorin::fe::Tok']]],
   ['l_5fs_2',['L_s',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a210614a1117e89a255b9d0b39516b604',1,'thorin::fe::Tok']]],
   ['l_5fu_3',['L_u',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a7e6dfe77ddaaa4a0c994660de2d38ead',1,'thorin::fe::Tok']]],
@@ -24,7 +24,7 @@ var searchData=
   ['lattice_2ecpp_21',['lattice.cpp',['../lattice_8cpp.html',1,'']]],
   ['lattice_2eh_22',['lattice.h',['../lattice_8h.html',1,'']]],
   ['lazy_5finit_23',['lazy_init',['../namespacethorin.html#aee2f56c5529fe06f8a103083f64d13f4',1,'thorin']]],
-  ['le_24',['le',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ead9180594744f870aeefb086982e980bb',1,'thorin::core::le()'],['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494ddad9180594744f870aeefb086982e980bb',1,'thorin::core::le()']]],
+  ['le_24',['le',['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494ddad9180594744f870aeefb086982e980bb',1,'thorin::core::le()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47ead9180594744f870aeefb086982e980bb',1,'thorin::core::le()']]],
   ['lea_25',['lea',['../namespacethorin_1_1mem.html#ad2d2b99586c12a6da32e2aec650a018a',1,'thorin::mem']]],
   ['leaf_26',['Leaf',['../classthorin_1_1LoopTree_1_1Base.html#a449337d35abc984599dba1e9f5f200cbac3b5e1f7de11d645fb1da6c5415b1fa5',1,'thorin::LoopTree::Base::Leaf()'],['../classthorin_1_1LoopTreeBuilder.html#ac690cf3a399ddce6920cc5cc7449a5d3',1,'thorin::LoopTreeBuilder::Leaf()'],['../classthorin_1_1LoopTree_1_1Leaf.html',1,'thorin::LoopTree&lt; forward &gt;::Leaf']]],
   ['least_5fcommon_5fancestor_27',['least_common_ancestor',['../classthorin_1_1DomTreeBase.html#a8d66dda27fbfe5be9a90a5f65df791a7',1,'thorin::DomTreeBase']]],
