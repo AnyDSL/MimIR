@@ -5,7 +5,7 @@
 
 namespace thorin::autodiff {
 
-const Def* shadow_array(const Def* def, const Def* arg_ty);
+const Def* shadow_array_type(const Def* def, const Def* arg_ty);
 
 /// This pass is the heart of AD.
 /// We replace an `autodiff fun` call with the differentiated function.
@@ -55,11 +55,13 @@ public:
     /// @name metalevel differentiation of memory axioms
     ///@{
     // TODO: remove functions that can be formulated in thorin itself
+    // A lea is reflected into a lea on the gradient pointer (array).
     const Def* augment_lea(const App*, Lam*, Lam*);
     const Def* augment_load(const App*, Lam*, Lam*);
     const Def* augment_store(const App*, Lam*, Lam*);
     const Def* augment_malloc(const App*, Lam*, Lam*);
     const Def* augment_alloc(const App*, Lam*, Lam*);
+    // TODO: zero pb => remove and handle in Thorin
     const Def* augment_bitcast(const App*, Lam*, Lam*);
 
     // We generate the shadow pointers which contain the accumulated gradients with respect to the pointer.

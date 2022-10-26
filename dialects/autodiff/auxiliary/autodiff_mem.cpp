@@ -7,12 +7,12 @@
 
 namespace thorin::autodiff {
 
-const Def* shadow_array(const Def* def, const Def* arg_ty) {
+const Def* shadow_array_type(const Def* def, const Def* arg_ty) {
     if (auto arr = def->isa<Arr>()) {
         auto& world = def->world();
         auto shape  = arr->shape();
         // TODO: does this need to be a deep structure?
-        auto body = shadow_array(arr->body(), arg_ty);
+        auto body = shadow_array_type(arr->body(), arg_ty);
         return world.arr(shape, body);
     }
 

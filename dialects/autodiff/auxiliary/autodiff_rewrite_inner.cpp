@@ -653,6 +653,7 @@ const Def* AutoDiffEval::augment_lea(const App* lea, Lam* f, Lam* f_diff) {
     if (gradient_array) {
         gradient_ptrs[aug_lea] = mem::op_lea(gradient_array, aug_idx, w.dbg("pullback_lea"));
     } else {
+        // TODO: incorporate gradient_ptrs in shadow, remove cases
         auto pullback_array = shadow_pullback[aug_ptr];
         assert(pullback_array);
         shadow_pullback[aug_lea] = mem::op_lea(pullback_array, aug_idx, w.dbg("pullback_lea"));
@@ -727,8 +728,10 @@ const Def* AutoDiffEval::augment_store(const App* store, Lam* f, Lam* f_diff) {
 
     auto shadow_pb_ptr = shadow_pullback[aug_ptr];
 
-    auto pb        = partial_pullback[aug_val];
-    auto pb_store  = mem::op_store(aug_mem, shadow_pb_ptr, pb);
+    auto pb = partial_pullback[aug_val];
+    // store the element pb
+    auto pb_store = mem::op_store(aug_mem, shadow_pb_ptr, pb);
+    // store the element in forward pass
     auto aug_store = mem::op_store(pb_store, aug_ptr, aug_val);
     return aug_store;
 }
@@ -744,6 +747,7 @@ const Def* AutoDiffEval::zero_pullback_fun(const Def* domain, Lam* f) {
     return pb;
 }
 
+// TODO: remove, create zero pullback at initialization, assert pullback existance at other positions
 const Def* AutoDiffEval::get_pullback(const Def* op, Lam* f) {
     auto pb = partial_pullback[op];
     if (!pb) { return zero_pullback_fun(op->type(), f); }
@@ -751,19 +755,24 @@ const Def* AutoDiffEval::get_pullback(const Def* op, Lam* f) {
 }
 
 const Def* AutoDiffEval::augment_alloc(const App* alloc, Lam* f, Lam* f_diff) {
-    auto& world  = alloc->world();
-    auto aug_mem = augment(alloc->arg(0_s), f, f_diff);
+    // alloc: {T,as} -> Mem -> Mem * Ptr
+    auto& world = alloc->world();
+    // TODO: augment all arguments
+    auto aug_mem = augment(alloc->arg(), f, f_diff);
 
     auto callee = alloc->callee()->as<App>();
-    auto type   = callee->arg(0_s);
+    // TODO: think about higher order types
+    auto type = callee->arg(0_s);
 
+    // TODO: maybe reorder allocation order to inline pullback in flow
     auto [alloc_mem, alloc_ptr] = mem::op_alloc(type, aug_mem)->projs<2>();
 
-    auto pb_ty = shadow_array(type, f->dom(0_s));
+    auto pb_ty = shadow_array_type(type, f->dom(0_s));
     auto [alloc_mem_2, pullback_ptr] =
-        mem::op_malloc(pb_ty, alloc_mem, world.dbg(alloc->name() + "_pullback_alloc_arr"))->projs<2>();
+        mem::op_malloc(pb_ty, alloc_mem, world.dbg(alloc->name() + "_pullback_alloc"))->projs<2>();
 
     allocated_memory.insert(pullback_ptr);
+    // TODO: check if this should be gradient_ptrs
     shadow_pullback[alloc_ptr] = pullback_ptr;
 
     auto tup = world.tuple({alloc_mem_2, alloc_ptr});
@@ -779,7 +788,7 @@ const Def* AutoDiffEval::augment_malloc(const App* malloc, Lam* f, Lam* f_diff) 
     auto aug_arg = augment(malloc->arg(), f, f_diff);
     // TODO: not yet implemented
     malloc->dump();
-    malloc->dump();
+    assert(false && "not yet implemented");
     return malloc;
 }
 
@@ -802,12 +811,12 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
 
     world.DLOG("Augment def {} : {}", def, def->type());
 
-    if (auto lea = match<mem::lea>(def)) { return augment_lea(lea->as<App>(), f, f_diff); }
-    if (auto load = match<mem::load>(def)) { return augment_load(load->as<App>(), f, f_diff); }
-    if (auto store = match<mem::store>(def)) { return augment_store(store->as<App>(), f, f_diff); }
-    if (auto malloc = match<mem::malloc>(def)) { return augment_malloc(malloc->as<App>(), f, f_diff); }
-    if (auto alloc = match<mem::alloc>(def)) { return augment_alloc(alloc->as<App>(), f, f_diff); }
-    if (auto bitcast = match<core::bitcast>(def)) { return augment_bitcast(bitcast->as<App>(), f, f_diff); }
+    if (auto lea = match<mem::lea>(def)) { return augment_lea(lea, f, f_diff); }
+    if (auto load = match<mem::load>(def)) { return augment_load(load, f, f_diff); }
+    if (auto store = match<mem::store>(def)) { return augment_store(store, f, f_diff); }
+    if (auto malloc = match<mem::malloc>(def)) { return augment_malloc(malloc, f, f_diff); }
+    if (auto alloc = match<mem::alloc>(def)) { return augment_alloc(alloc, f, f_diff); }
+    if (auto bitcast = match<core::bitcast>(def)) { return augment_bitcast(bitcast, f, f_diff); }
 
     // app => cont, operator, function
     if (auto app = def->isa<App>()) {
