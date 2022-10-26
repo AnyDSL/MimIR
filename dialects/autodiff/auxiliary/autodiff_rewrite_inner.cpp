@@ -663,6 +663,10 @@ const Def* AutoDiffEval::augment_lea(const App* lea, Lam* f, Lam* f_diff) {
 
 // TODO: rename to make connection to load clear
 Lam* AutoDiffEval::create_gradient_collector(const Def* gradient_lea, Lam* f) {
+    // load  : Mem * Ptr -> Mem * T
+    // load' : cn[[Mem^T, T^T], cn[Mem^T, Ptr^T]]
+    //            pb_mem, pb_s
+
     auto& w               = world();
     auto elem_ty          = match<mem::Ptr>(gradient_lea->type())->arg(0);
     auto [arg_ty, ret_pi] = f->type()->doms<2>();
@@ -673,14 +677,15 @@ Lam* AutoDiffEval::create_gradient_collector(const Def* gradient_lea, Lam* f) {
     auto [pb_arg, pb_ret] = pb_lam->vars<2>();
     auto [pb_mem, pb_s]   = pb_arg->projs<2>();
 
+    // TODO: can we generalize add even more? (maybe even on ptr?)
     auto [gradient_mem, gradient] = mem::op_load(pb_mem, gradient_lea, w.dbg("gradient_array_load"))->projs<2>();
-    // TODO: use generalized add (maybe even on ptr?)
-    auto add       = core::op(core::wrap::add, core::WMode::none, gradient, pb_s);
-    auto store_mem = mem::op_store(gradient_mem, gradient_lea, add, w.dbg("add_to_gradient"));
+    auto add                      = op_add(gradient, pb_s);
+    auto store_mem                = mem::op_store(gradient_mem, gradient_lea, add, w.dbg("add_to_gradient"));
 
-    // TODO: split more make memory flow clear
-    auto default_zero = autodiff_zero(store_mem, f);
-    pb_lam->set_body(w.app(pb_ret, {default_zero}));
+    // TODO: before the gradient was returned; is this necessary?
+    auto ptr_zero = op_zero(pb_ret->type()->as<Pi>()->dom(1));
+
+    pb_lam->set_body(w.app(pb_ret, {store_mem, ptr_zero}));
     pb_lam->set_filter(true);
 
     return pb_lam;

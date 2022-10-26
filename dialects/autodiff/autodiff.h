@@ -18,4 +18,15 @@ inline const Def* op_zero(const Def* A) {
     return world.app(world.ax<zero>(), A);
 }
 
+inline const Def* op_sum(const Def* T, DefArray defs) {
+    // TODO: assert all are of type T
+    auto& world = T->world();
+    return world.raw_app(world.raw_app(world.ax<sum>(), {world.lit_nat(defs.size()), T}), world.tuple(defs));
+}
+
+inline const Def* op_add(const Def* a, const Def* b) {
+    auto& world = a->world();
+    return world.app(world.app(world.ax<add>(), a->type()), {a, b});
+}
+
 } // namespace thorin::autodiff

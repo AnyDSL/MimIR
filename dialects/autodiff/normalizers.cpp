@@ -78,8 +78,7 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         world.DLOG("add int");
         auto width = as_lit(world.iinfer(a));
         world.DLOG("width {}", width);
-        auto int_add =
-            world.app(world.app(world.ax(core::wrap::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
+        auto int_add = core::op(core::wrap::add, core::WMode::none, a, b);
         world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
         return int_add;
     } else if (auto real = match<core::Real>(T)) {
