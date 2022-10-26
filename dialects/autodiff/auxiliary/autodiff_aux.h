@@ -11,10 +11,12 @@ const Def* zero_pullback(const Def* E, const Def* A);
 
 const Def* tangent_type_fun(const Def*);
 // R const Def* augment_type_fun(const Def*);
-const Pi* autodiff_type_fun_pi(const Pi*, bool flat = false);
-const Def* autodiff_type_fun(const Def*, bool flat = false);
-const Pi* pullback_type(const Def* in, const Def* out, bool flat = false);
+const Pi* autodiff_type_fun_pi(const Pi*, bool flat = true);
+const Def* autodiff_type_fun(const Def*, bool flat = true);
+const Pi* pullback_type(const Def* in, const Def* out, bool flat = true);
 const Pi* forward_to_backward(const Pi* forward_ty);
+const Def* flatten_deep(const Def* def);
+Lam* callee_isa_var(const Def* def);
 
 const Def* zero_def(const Def* T);
 const Def* op_sum(const Def* T, DefArray defs);

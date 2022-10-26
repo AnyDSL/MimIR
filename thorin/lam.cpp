@@ -17,14 +17,38 @@ const Pi* Pi::ret_pi(const Def* dbg) const {
     return nullptr;
 }
 
+const Def* Pi::ret_dom(const Def* dbg) const {
+    auto ret_pi_def = ret_pi();
+    if (!ret_pi_def) return nullptr;
+    return ret_pi_def->dom();
+}
+
 Pi* Pi::set_dom(Defs doms) { return Def::set(0, world().sigma(doms))->as<Pi>(); }
 bool Pi::is_cn() const { return codom()->isa<Bot>(); }
+
+const Def* Pi::arg() const {
+    if (is_returning()) {
+        auto dom_arr = doms();
+        return world().sigma(dom_arr.skip_back());
+    } else {
+        return dom();
+    }
+}
 
 /*
  * Lam
  */
 
 const Def* Lam::ret_var(const Def* dbg) { return type()->ret_pi() ? var(num_vars() - 1, dbg) : nullptr; }
+
+const Def* Lam::arg(const Def* dbg) {
+    if (is_returning()) {
+        auto var_arr = vars();
+        return world().tuple(var_arr.skip_back(), dbg);
+    } else {
+        return var(dbg);
+    }
+}
 
 Lam* Lam::set_filter(Filter filter) {
     const Def* f;

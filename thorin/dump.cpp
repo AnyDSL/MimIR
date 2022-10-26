@@ -155,12 +155,12 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return tuple->type()->isa_nom() ? print(os, ":{}", tuple->type()) : os;
     } else if (auto arr = u->isa<Arr>()) {
         if (auto nom = arr->isa_nom<Arr>(); nom && nom->var())
-            return print(os, "«{}: {}; {}»", nom->var(), nom->shape(), nom->body());
-        return print(os, "«{}; {}»", arr->shape(), arr->body());
+            return print(os, "<<{}: {}; {}>>", nom->var(), nom->shape(), nom->body());
+        return print(os, "<<{}; {}>>", arr->shape(), arr->body());
     } else if (auto pack = u->isa<Pack>()) {
         if (auto nom = pack->isa_nom<Pack>(); nom && nom->var())
-            return print(os, "‹{}: {}; {}›", nom->var(), nom->shape(), nom->body());
-        return print(os, "‹{}; {}›", pack->shape(), pack->body());
+            return print(os, "<{}: {}; {}>", nom->var(), nom->shape(), nom->body());
+        return print(os, "<{}; {}>", pack->shape(), pack->body());
     } else if (auto proxy = u->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
     } else if (auto bound = isa_bound(*u)) {

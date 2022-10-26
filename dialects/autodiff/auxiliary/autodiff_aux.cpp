@@ -30,6 +30,13 @@ const Def* flatten_deep(const Def* def) {
     }
 }
 
+Lam* callee_isa_var(const Def* def) {
+    if (auto proj = def->isa<Extract>()) {
+        if (auto var = proj->tuple()->isa<Var>(); var && var->nom()->isa<Lam>()) { return var->nom()->as<Lam>(); }
+    }
+    return nullptr;
+}
+
 // R P => P'
 // R TODO: function => extend
 // R const Def* augment_type_fun(const Def* ty) { return ty; }
@@ -70,11 +77,7 @@ const Pi* pullback_type(const Def* in, const Def* out, bool flat) {
     return pb_ty;
 }
 
-const Pi* forward_to_backward(const Pi* forward_pi) {
-    auto [arg, ret_pi] = forward_pi->doms<2>();
-    auto ret           = ret_pi->as<Pi>()->dom();
-    return pullback_type(ret, arg);
-}
+const Pi* forward_to_backward(const Pi* forward_pi) { return pullback_type(forward_pi->ret_dom(), forward_pi->arg()); }
 
 // A,R => A'->R' * (R* -> A*)
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret, bool flat) {
@@ -133,8 +136,6 @@ const Pi* autodiff_type_fun_pi(const Pi* pi, bool flat) {
     world.DLOG("compute AD type for pi");
     auto result = autodiff_type_fun(arg, ret, flat);
 
-    result->dump();
-
     return result;
 }
 
@@ -154,6 +155,9 @@ const Def* autodiff_type_fun(const Def* ty, bool flat) {
         return ptr;
     }
 
+    if (auto app = ty->isa<App>()) {
+        if (app->callee()->isa<Idx>()) { return ty; }
+    }
     if (ty->isa<Idx>()) { return ty; }
 
     if (ty == world.type_nat()) return ty;

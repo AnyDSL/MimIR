@@ -1,10 +1,13 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include <thorin/def.h>
 #include <thorin/pass/pass.h>
 
+#include "dialects/affine/affine.h"
+#include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
@@ -51,6 +54,96 @@ Lam* chain(const Def* mem, Lam* lam, const Def* next);
 Lam* chain(const Def* first, const Def* second);
 const Def* zero(World& w);
 const Def* one(World& w);
+
+struct Node;
+using Nodes = std::unordered_set<Node*>;
+
+struct Node {
+    Def* nom;
+    const Def* def;
+    Nodes preds;
+    Nodes succs;
+};
+
+class AutodiffAnalysis {
+public:
+    AutodiffAnalysis(Lam* entry)
+        : entry_lam_(entry) {
+        exit_node_ = node(entry->ret_var());
+        run(entry);
+        entry_node_ = node(entry);
+    }
+
+    ~AutodiffAnalysis() {
+        for (auto [key, value] : nodes_) { delete value; }
+    }
+
+    Node* node(const Def* def) {
+        Node* result = nodes_[def];
+        if (!result) {
+            result      = new Node();
+            result->def = def;
+            nodes_[def] = result;
+        }
+
+        return result;
+    }
+
+    Node* entry() { return entry_node_; }
+
+    Node* exit() { return exit_node_; }
+
+private:
+    bool link(Node* left, Node* right) {
+        auto size_before = left->succs.size();
+
+        left->succs.insert(right);
+        right->preds.insert(left);
+
+        return size_before != left->succs.size();
+    }
+
+    void run(Lam* lam) { run(lam, lam->body()); }
+
+    void run(const Def* prev, const Def* curr) {
+        bool inserted = link(node(prev), node(curr));
+        if (!inserted) return;
+
+        if (node(curr) == exit_node_) { curr->dump(); }
+
+        if (auto lam = curr->isa_nom<Lam>()) {
+            run(lam, lam->body());
+        } else if (auto loop = match<affine::For>(curr)) {
+            // for loop
+            auto body = loop->arg(4);
+            auto exit = loop->arg(5);
+
+            exit->dump();
+
+            run(loop, body);
+            run(loop, exit);
+        } else if (auto app = curr->isa<App>()) {
+            auto callee = app->callee();
+            if (callee_isa_var(callee)) {
+                link(node(app), node(callee));
+            } else if (auto extract = callee->isa<Extract>()) {
+                auto branches = extract->tuple();
+
+                for (auto branch : branches->projs()) { run(curr, branch); }
+            } else if (auto next_lam = callee->isa_nom<Lam>()) {
+                run(curr, next_lam);
+            } else {
+                assert(false);
+            }
+        }
+    }
+
+    const Def* entry_lam_;
+
+    Node* entry_node_;
+    Node* exit_node_;
+    DefMap<Node*> nodes_;
+};
 
 /// This pass is the heart of AD.
 /// We replace an `autodiff fun` call with the differentiated function.
@@ -154,7 +247,6 @@ public:
 
     void add_inverted(const Def* key, const Def* value) {
         assert(value);
-        key->dump();
         inverted[key] = value;
     }
 

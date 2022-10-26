@@ -31,8 +31,8 @@ public:
     Def* nom() const { return nom_; }
 
 private:
-    const CFNodes& preds() const { return preds_; }
     const CFNodes& succs() const { return succs_; }
+    const CFNodes& preds() const { return preds_; }
     void link(const CFNode* other) const;
 
     mutable size_t f_index_ = -1; ///< RPO index in a **forward** CFG.

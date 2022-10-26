@@ -61,15 +61,13 @@ const Def* AutoDiffEval::autodiff_zero(const Def* mem, const Def* def) {
         return world.tuple(ops);
     }
 
-    def->dump();
-    def->type()->dump();
     assert(false);
     world.bot(def);
 }
 
 void AutoDiffEval::fetch_gradients(Lam* diffee, Lam* backward) {
-    auto forward_arg  = diffee->var(0_s);
-    auto backward_arg = backward->var(0_s);
+    auto forward_arg  = diffee->arg();
+    auto backward_arg = backward->arg();
 
     size_t fwd_i = 0;
     size_t bwd_i = 0;
@@ -90,7 +88,7 @@ void AutoDiffEval::fetch_gradients(Lam* diffee, Lam* backward) {
 
 const Def* AutoDiffEval::build_gradient_tuple(const Def* mem, Lam* diffee) {
     auto& w         = world();
-    auto diffee_arg = diffee->var(0_s);
+    auto diffee_arg = diffee->arg();
 
     DefVec ops;
     for (auto def : diffee_arg->projs()) {
@@ -101,8 +99,13 @@ const Def* AutoDiffEval::build_gradient_tuple(const Def* mem, Lam* diffee) {
             auto gradient_ptr = gradient_ptrs[def];
             assert(gradient_ptr);
             ops.push_back(gradient_ptr);
-        } else if (def->type()->isa<Idx>()) {
-            ops.push_back(zero(w));
+        } else if (auto app = def->type()->isa<App>()) {
+            if (app->callee()->isa<Idx>()) {
+                ops.push_back(zero(w));
+
+            } else {
+                assert(false);
+            }
         }
     }
 
@@ -135,6 +138,17 @@ Lam* AutoDiffEval::free_memory() {
     return free_memory;
 }
 
+const Def* mask(const Def* target, size_t i, const Def* def) {
+    auto& w    = target->world();
+    auto projs = target->projs();
+    projs[i]   = def;
+    return w.tuple(projs);
+}
+
+const Def* mask_first(const Def* target, const Def* def) { return mask(target, 0, def); }
+
+const Def* mask_last(const Def* target, const Def* def) { return mask(target, target->num_projs() - 1, def); }
+
 /// side effect: register pullback
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& w     = world();
@@ -150,12 +164,11 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto inv_lam    = w.nom_lam(inv_lam_ty, w.dbg("diff_backward_" + diffee->name()));
     inv_lam->set_filter(true);
 
-    auto lam_return_ty = diffee->type()->as<Pi>()->dom(1)->as<Pi>();
+    auto lam_return_ty = diffee->type()->ret_pi();
     auto forward_end   = w.nom_lam(lam_return_ty, w.dbg("forward_end"));
     forward_end->set_filter(true);
 
-    augmented[diffee->var()]    = diff_lam->var();
-    augmented[diffee->var(1_s)] = forward_end;
+    augmented[diffee->var()] = mask_last(diff_lam->var(), forward_end);
 
     fetch_gradients(diffee, inv_lam);
 
@@ -166,23 +179,19 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto init_sink_lam = init_sinks();
     auto init_sink_mem = end_mem();
 
-    auto arg        = diffee->var(0_s);
-    auto return_var = diffee->var(diffee->num_vars() - 1);
-    add_inverted(return_var, create_invert_end());
-    add_inverted(arg, diff_lam->var(0_s));
-    add_inverted(mem::mem_def(arg), create_invert_end());
+    auto inverted_var = mask_last(mask_first(diff_lam->var(), create_invert_end()), create_invert_end());
+    add_inverted(diffee->var(), inverted_var);
 
     current_state          = State::Invert;
-    auto raw_backward_pass = invert(diffee->body());
+    auto raw_backward_pass = invert(diffee);
 
-    auto free_memory_lam = free_memory();
-
-    forward_end->set_body(w.app(diff_lam->var(1_s), {forward_end->var(), inv_lam}));
+    forward_end->set_body(w.app(diff_lam->ret_var(), {forward_end->var(), inv_lam}));
     auto backward_pass = chain(init_sink_mem, init_sink_lam, raw_backward_pass);
+    backward_pass      = chain(backward_pass, free_memory());
 
     auto backward_end    = create_return("backward");
     auto gradient_result = build_gradient_tuple(end_mem(), diffee);
-    backward_end->set_body(w.app(inv_lam->var(1_s), gradient_result));
+    backward_end->set_body(w.app(inv_lam->ret_var(), gradient_result));
     inv_lam->set_body(w.app(backward_pass, {mem::mem_var(inv_lam), backward_end}));
 
     return diff_lam;

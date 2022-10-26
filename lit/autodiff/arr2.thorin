@@ -1,0 +1,113 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d autodiff %s --output-ll %t.ll --output-thorin - | FileCheck %s
+
+// a call to a autodiff style function
+// ./build/bin/thorin -d debug -d direct -d autodiff ./lit/autodiff/multiply_autodiff.thorin --output-thorin - -VVVV
+
+.import core;
+.import autodiff;
+.import mem;
+.import affine;
+
+.let i32 = .Idx 4294967296;
+.let arr_size = 100:.Nat;
+
+.cn printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
+
+.cn f [[mem : %mem.M, a: %mem.Ptr («100:.Nat; i32», 0), b: %mem.Ptr («100:.Nat; i32», 0)], ret: .Cn [mem : %mem.M, %mem.Ptr («100:.Nat; i32», 0)]] = {
+    
+    .let (alloc_c_mem, c) = %mem.alloc («100:.Nat; i32», 0) mem;
+
+    .cn for_exit [mem : %mem.M] = {
+        ret (mem, c)
+    };
+
+    .cn for_body [i : i32, mem : %mem.M, continue : .Cn [%mem.M]] = {
+        .let idx_100_i = %core.bitcast ((.Idx 100), i32) i;
+
+        .let lea_a = %mem.lea (100:.Nat, <100:.Nat; i32>, 0) (a, idx_100_i);
+        .let lea_b = %mem.lea (100:.Nat, <100:.Nat; i32>, 0) (b, idx_100_i);
+        .let lea_c = %mem.lea (100:.Nat, <100:.Nat; i32>, 0) (c, idx_100_i);
+        .let (load_mem1, load_val1) = %mem.load (i32, 0) (mem, lea_a);
+        .let (load_mem2, load_val2) = %mem.load (i32, 0) (load_mem1, lea_b);
+        .let prod = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (load_val1, load_val2);
+
+        .let store_mem = %mem.store (i32, 0) (load_mem2, lea_c, prod);
+        continue (store_mem)
+    };
+    
+    %affine.For (4294967296, 1, (%mem.M)) (0:i32, 100:i32, 1:i32, (alloc_c_mem), for_body, for_exit)
+};
+
+.cn init [mem: %mem.M, arr : %mem.Ptr (<<100:.Nat; i32>>, 0:.Nat), offset : i32, return : .Cn [%mem.M]] = {
+    .cn for_body [i : i32, mem : %mem.M, continue : .Cn [%mem.M]] = {
+        .let idx_100_i = %core.bitcast ((.Idx 100), i32) i;
+        .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (arr, idx_100_i);
+        .let add = %core.wrap.add (0, 4294967296) (offset, i);
+        .let store_mem = %mem.store (i32, 0) (mem, lea, add);
+        continue(store_mem)
+    };
+    %affine.For (4294967296, 1, (%mem.M)) (0:i32, 100:i32, 1:i32, (mem), for_body, return)
+};
+
+.cn .extern main [mem : %mem.M, argc : i32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, i32]] = {
+
+    .let (alloc_a_mem, a) = %mem.alloc («100:.Nat; i32», 0) mem;
+    .let (alloc_b_mem, b) = %mem.alloc («100:.Nat; i32», 0) alloc_a_mem;
+    .let (alloc_cd_mem, cd) = %mem.alloc («100:.Nat; i32», 0) alloc_b_mem;
+
+    .cn ret_cont [[mem : %mem.M, c: %mem.Ptr («100:.Nat; i32», 0)], pb:.Cn[[%mem.M, %mem.Ptr («100:.Nat; i32», 0)],.Cn[[%mem.M, %mem.Ptr («100:.Nat; i32», 0), %mem.Ptr («100:.Nat; i32», 0)]]]] = {
+        .cn pb_ret_cont [mem : %mem.M, ad: %mem.Ptr («100:.Nat; i32», 0), bd: %mem.Ptr («100:.Nat; i32», 0)] = {
+            .cn print_integer_callback2 [mem : %mem.M] = {
+                .let free_mem = %mem.free («100:.Nat; i32», 0) (mem, a);
+                return (free_mem, 0:i32)
+            };
+
+            .cn print_integer_callback [mem : %mem.M] = {
+                .let lea2 = %mem.lea (100:.Nat, <100:.Nat; i32>, 0) (bd, 1:(.Idx 100));
+                .let (load_mem2, load_val) = %mem.load (i32, 0) (mem, lea2);
+                printInteger ( load_mem2, load_val, print_integer_callback2 )
+            };
+
+            .cn print_integer_backward [mem : %mem.M] = {
+                .let lea1 = %mem.lea (100:.Nat, <100:.Nat; i32>, 0) (ad, 0:(.Idx 100));
+                .let (load_mem1, load_val) = %mem.load (i32, 0) (mem, lea1);
+                printInteger ( load_mem1, load_val, print_integer_callback )
+            };
+
+            printInteger ( mem, 22:i32, print_integer_backward )
+        };
+
+        .cn print_integer_forward [mem : %mem.M] = {
+            pb((mem, cd), pb_ret_cont)
+        };
+
+        printInteger ( mem, 42:i32, print_integer_forward )
+    };
+
+    .let f_diff = %autodiff.autodiff (.Cn [[%mem.M, %mem.Ptr («100:.Nat; i32», 0), %mem.Ptr («100:.Nat; i32», 0)],.Cn[%mem.M, %mem.Ptr («100:.Nat; i32», 0)]]) f;
+
+    .cn init_callback_2 [mem : %mem.M] = {
+        f_diff ((mem, a, b),ret_cont)
+    };
+
+    .cn init_callback [mem : %mem.M] = {
+        init(mem, b, 0:i32, init_callback_2)
+    };
+
+    .cn print_first_integer [mem : %mem.M] = {
+        init(alloc_cd_mem, a, 0:i32, init_callback)
+    };
+
+    printInteger ( alloc_cd_mem, 99:i32, print_first_integer )
+};
+
+
+
+// CHECK-DAG: .cn .extern main _{{[0-9_]+}}::[mem_[[memId:[_0-9]*]]: %mem.M, (i32), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), return_[[returnId:[_0-9]*]]: .Cn [%mem.M, (i32)]] = {
+// CHECK-DAG: _[[appId:[_0-9]*]]: ⊥:★ = return_[[returnEtaId:[_0-9]*]] (mem_[[memId]], 42:(i32));
+// CHECK-DAG: _[[appId]]
+
+// CHECK-DAG: return_[[returnEtaId]] _[[returnEtaVarId:[0-9_]+]]: [%mem.M, (i32)] = {
+// CHECK-DAG: return_[[retAppId:[_0-9]*]]: ⊥:★ = return_[[returnId]] _[[returnEtaVarId]];
+// CHECK-DAG: return_[[retAppId]]
