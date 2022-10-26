@@ -34,6 +34,8 @@ struct LoopFrame {
     LoopData forward;
     LoopData backward;
 
+    DefMap<DefVec> attachments;
+
     const Def*& index() { return data().index; }
 
     const Def*& cache_index() { return data().cache_index; }
@@ -59,10 +61,34 @@ struct Node;
 using Nodes = std::unordered_set<Node*>;
 
 struct Node {
+    enum Type{
+        Bot,
+        App,
+        For,
+        Branch,
+        Return,
+        Lam
+    };
+
+    Node(Type type) : type_(type){
+
+    }
+
+    Type type_;
     Def* nom;
     const Def* def;
     Nodes preds;
     Nodes succs;
+    mutable size_t index = -1;
+
+    bool isa(Type type){
+        return type_ == type;
+    }
+
+    Node* pred(){
+        assert(preds.size() == 1);
+        return *(preds.begin());
+    }
 };
 
 class AutodiffAnalysis {
@@ -78,12 +104,15 @@ public:
         for (auto [key, value] : nodes_) { delete value; }
     }
 
-    Node* node(const Def* def) {
+    Node* node(const Def* def, Node::Type type = Node::Type::Bot) {
         Node* result = nodes_[def];
         if (!result) {
-            result      = new Node();
+            result      = new Node(type);
             result->def = def;
             nodes_[def] = result;
+        }else if(type != Node::Type::Bot && !result->isa(type)){
+            assert(result->isa(Node::Type::Bot));
+            result->type_ = type;
         }
 
         return result;
@@ -93,7 +122,10 @@ public:
 
     Node* exit() { return exit_node_; }
 
+    size_t size() { return nodes_.size(); }
+
 private:
+
     bool link(Node* left, Node* right) {
         auto size_before = left->succs.size();
 
@@ -103,46 +135,105 @@ private:
         return size_before != left->succs.size();
     }
 
-    void run(Lam* lam) { run(lam, lam->body()); }
+    void run(Lam* lam) { 
+        node(lam, Node::Type::Lam);
+        run(lam, lam->body()); 
+    }
 
     void run(const Def* prev, const Def* curr) {
         bool inserted = link(node(prev), node(curr));
         if (!inserted) return;
+        run(curr);
+    }
 
-        if (node(curr) == exit_node_) { curr->dump(); }
+    void run(const Def* curr) {
+        if(curr->isa<Var>()) return;
 
         if (auto lam = curr->isa_nom<Lam>()) {
-            run(lam, lam->body());
+            run(lam);
         } else if (auto loop = match<affine::For>(curr)) {
-            // for loop
             auto body = loop->arg(4);
             auto exit = loop->arg(5);
-
-            exit->dump();
-
+            node(loop, Node::Type::For);
             run(loop, body);
             run(loop, exit);
         } else if (auto app = curr->isa<App>()) {
             auto callee = app->callee();
             if (callee_isa_var(callee)) {
-                link(node(app), node(callee));
+                link(node(curr, Node::Type::App), node(callee));
             } else if (auto extract = callee->isa<Extract>()) {
                 auto branches = extract->tuple();
-
+                node(curr, Node::Type::Branch);
                 for (auto branch : branches->projs()) { run(curr, branch); }
             } else if (auto next_lam = callee->isa_nom<Lam>()) {
+                node(curr, Node::Type::App);
                 run(curr, next_lam);
-            } else {
-                assert(false);
+            }else{
+                run(curr, app->arg());
+                return;
             }
+
+            run(app->arg());
+        }else if( auto tup = curr->isa<Tuple>() ){
+            for(auto proj : tup->projs()){
+                run(curr, proj);
+            }
+        }else if( auto pack = curr->isa<Pack>() ){
+            run(curr, pack->body());
+        }else if( auto extract = curr->isa<Extract>() ){
+            curr->dump();
+            run(curr, extract->tuple());
+        }else{
+            
         }
     }
 
     const Def* entry_lam_;
 
+    DefVec order_;
     Node* entry_node_;
     Node* exit_node_;
     DefMap<Node*> nodes_;
+};
+
+class PostOrderVisitor{
+
+    AutodiffAnalysis& analysis_;
+    std::map<size_t, const Node*> nodes_;
+    std::vector<const Node*> node_vec_;
+
+public:
+    PostOrderVisitor(AutodiffAnalysis& analysis) : analysis_(analysis){
+
+    }
+
+    std::vector<const Node*>& post_order_visit(const Def* def){
+        nodes_.clear();
+        auto node = analysis_.node(def);
+        size_t i = post_order_visit(node, analysis_.size());
+        
+        node_vec_.clear();
+        for( auto [key, value] : nodes_ ) {
+            node_vec_.push_back( value );
+        }
+
+        return node_vec_;
+    }
+
+private:
+    
+    size_t post_order_visit(const Node* n, size_t i) {
+        auto& n_index = n->index;
+        n_index       = size_t(-2);
+
+        for (auto succ : n->succs) {
+            if (succ->index == size_t(-1)) i = post_order_visit(succ, i);
+        }
+
+        n_index = i - 1;
+        nodes_.emplace(n_index, n);
+        return n_index;
+    }
 };
 
 /// This pass is the heart of AD.
@@ -205,6 +296,8 @@ public:
     const Def* invert_for(const App*);
     const Def* invert_for_body(const App* for_app);
 
+    void attach_gradient( const Def* dst, const Def* grad );
+
     const Def* create_init_frame(const std::string& name, std::function<const Def*(const Def*)> func);
     const Def* create_init_alloc_frame(const std::string& name, const Def* alloc_ty);
 
@@ -222,6 +315,8 @@ public:
     const Def* resolve(const Def* def);
     void propagate(const Def* target, const Def* gradient);
 
+    const Def* grad_arr(const Def* def);
+
     const Def* autodiff_zero(const Def* mem);
     const Def* autodiff_zero(const Def* mem, const Def* def);
     const Def* zero_pullback(const Def* domain);
@@ -238,12 +333,16 @@ public:
     Lam* free_memory();
 
     void fetch_gradients(Lam* diff, Lam* backward);
-    const Def* build_gradient_tuple(const Def* mem, Lam* diffee);
+    const Def* build_result(const Def* mem, Lam* backward_start, Lam* backward_end);
 
     const Def* wrap_cache(const App* load, const App* aug_load);
     const Def* get_pullback(const Def* op);
     Lam* free_memory_lam();
     const Def* augment_loop_body(const Def* body);
+
+    const Def* grad_sum(const Def* def);
+    const Def* grad_sum(const Def* def, const Def* default_zero_ty);
+    void prop(Scope& scope, const Def* def);
 
     void add_inverted(const Def* key, const Def* value) {
         assert(value);
@@ -318,6 +417,7 @@ private:
     Def2Def index_map;
     Def2Def gradient_sinks;
     Def2Def sharing;
+    DefMap<DefVec> attachments;
     DefMap<std::shared_ptr<LoopFrame>> cache_loop_assignment;
     DefMap<std::shared_ptr<LoopFrame>> loop_assignment;
     bool is_propagating;

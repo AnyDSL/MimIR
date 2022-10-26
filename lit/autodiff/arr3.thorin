@@ -18,7 +18,7 @@
 
 .cn printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
 
-.cn f [[mem : %mem.M, a: ptr_ty, b: ptr_ty, c: ptr_ty], ret: .Cn [mem : %mem.M]] = {
+.cn f [mem : %mem.M, a: ptr_ty, b: ptr_ty, c: ptr_ty, ret: .Cn [mem : %mem.M]] = {
     
     .cn for_exit [mem : %mem.M] = {
         ret (mem)
@@ -83,7 +83,7 @@
     .let (alloc_bd_mem, bd) = %mem.alloc (arr_size, 0) alloc_ad_mem;
     .let (alloc_cd_mem, cd) = %mem.alloc (arr_size, 0) alloc_bd_mem;
 
-    .cn ret_cont [[mem : %mem.M], pb:.Cn[[%mem.M, ptr_ty, ptr_ty, ptr_ty],.Cn[[%mem.M, ptr_ty, ptr_ty, ptr_ty]]]] = {
+    .cn ret_cont [mem : %mem.M, pb:.Cn[%mem.M, ptr_ty, ptr_ty, ptr_ty,.Cn[%mem.M, ptr_ty, ptr_ty, ptr_ty]]] = {
         .cn pb_ret_cont [mem : %mem.M, ad: ptr_ty, bd: ptr_ty, cd: ptr_ty] = {
             .cn print_integer_callback2 [mem : %mem.M] = {
                 .let free_mem = %mem.free (arr_size, 0) (mem, a);
@@ -106,7 +106,7 @@
         };
 
         .cn print_integer_forward [mem : %mem.M] = {
-            pb((mem, ad, bd, cd), pb_ret_cont)
+            pb(mem, ad, bd, cd, pb_ret_cont)
         };
 
         .let lea_c = %mem.lea (size, <size; i32>, 0) (c, 1:size_idx);
@@ -114,10 +114,10 @@
         printInteger ( load_mem1, load_val, print_integer_forward )
     };
 
-    .let f_diff = %autodiff.autodiff (.Cn [[%mem.M, ptr_ty, ptr_ty, ptr_ty],.Cn[%mem.M]]) f;
+    .let f_diff = %autodiff.ad (.Cn [%mem.M, ptr_ty, ptr_ty, ptr_ty,.Cn[%mem.M]]) f;
 
     .cn enter_diff [mem : %mem.M] = {
-        f_diff ((mem, a, b, c),ret_cont)
+        f_diff (mem, a, b, c,ret_cont)
     };
 
     .cn init_cd [mem : %mem.M] = {

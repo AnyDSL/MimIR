@@ -7,15 +7,15 @@
 
 .let I32 = .Idx 4294967296;
 
-.cn swap [[a:I32, b:I32], ret: .Cn [I32,I32]] = {
+.cn swap [a:I32, b:I32, ret: .Cn [I32,I32]] = {
     ret (b,a)
 };
 
-.cn f [[a:I32, b:I32], ret: .Cn [I32]] = {
+.cn f [a:I32, b:I32, ret: .Cn [I32]] = {
     .cn f_cont [x:I32,y:I32] = {
         ret x
     };
-    swap((a,b),f_cont)
+    swap(a,b,f_cont)
 };
 
 .cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
@@ -29,13 +29,12 @@
             .let o  = %core.wrap.add (0:.Nat, 4294967296:.Nat) (sr, sp);
             return (mem, o)
         };
-        pb((1:I32),pb_ret_cont)
+        pb(1:I32,pb_ret_cont)
     };
 
-    .let f_diff = %autodiff.ad (.Cn [[I32,I32],.Cn[I32]]) f;
+    .let f_diff = %autodiff.ad (.Cn [I32,I32,.Cn[I32]]) f;
 
-    .let c = (42:I32,43:I32);
-    f_diff (c,ret_cont)
+    f_diff (42:I32,43:I32,ret_cont)
 };
 
 // CHECK-DAG: return{{.*}}430001

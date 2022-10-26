@@ -23,7 +23,7 @@
         pb((1:I32),pb_ret_cont)
     };
 
-    .let f_diff = %autodiff.ad (.Cn [I32,.Cn[I32]]) f;
+    .let f_diff = %autodiff.autodiff (.Cn [I32,.Cn[I32]]) f;
     .let f_diff_cast = f_diff;
 
     .let c = (43:I32);

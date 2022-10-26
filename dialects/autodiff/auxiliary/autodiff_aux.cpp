@@ -66,8 +66,8 @@ const Pi* pullback_type(const Def* in, const Def* out, bool flat) {
     auto tang_arg = tangent_arg_type_fun(in, out);
     auto tang_ret = tangent_type_fun(out);
 
-    tang_ret = equip_mem(tang_ret);
-    tang_arg = equip_mem(tang_arg);
+    //tang_ret = equip_mem(tang_ret);
+    //tang_arg = equip_mem(tang_arg);
 
     auto dom = world.sigma({tang_arg, world.cn(tang_ret)});
 

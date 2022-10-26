@@ -16,7 +16,7 @@
 ///
 /// ## Operations
 ///
-/// ### %autodiff.autodiff
+/// ### %autodiff.ad
 /// 
 /// This axiom operates on functions and types.
 ///
@@ -26,7 +26,7 @@
 /// On closed terms (functions, operators, ho arguments, registered axioms, etc.) the augmented term is returned.
 /// The augmented term `f'` returns the result together with the pullback.
 /// `autodiff f = f' = λ args. (f args, f*)` 
-.ax %autodiff.autodiff: Π [T: *] -> T -> 
+.ax %autodiff.ad: Π [T: *] -> T -> 
     %autodiff.autodiff_type (T), 
     normalize_autodiff;
 ///
