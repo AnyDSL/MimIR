@@ -139,33 +139,23 @@ const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff
         auto pb_fun   = world.nom_lam(pb_ty, world.dbg("extract_pb"));
         world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
 
-        // auto aug_tuple_type = aug_tuple->type();
+        world.DLOG("Tuple pb is {} : {}", tuple_pb, tuple_pb->type());
+        auto pb_tangent = pb_fun->var((nat_t)0, world.dbg("s"));
+        //  we create a unit vector of E^T (not to be confused with (E')^T)
+        auto tuple_tan_type = tuple_pb->type()->as<Pi>()->dom(0);
 
-        auto mem = mem::mem_var(pb_fun);
-        // auto pb_tangent_ty = mem::strip_mem_ty(pb_fun->dom(0));
-
-        auto pb_tangent = mem::strip_mem(pb_fun->var((nat_t)0, world.dbg("s")));
-
-        // TODO: should work with lazy zero (might even be more efficient as we only care about the insert index and
+        // We want a lazy zero here (this is more efficient as we only care about the insert index and
         // read(insert index _) is index)
-        auto init = autodiff_zero(mem, aug_tuple);
+        auto zero_vec  = op_zero(tuple_tan_type);
+        auto tuple_tan = world.insert(zero_vec, aug_index, pb_tangent, world.dbg("tup_s"));
+        world.DLOG("Unit Vector: {} : {}", tuple_tan, tuple_tan->type());
 
-        const Def* tuple_tan = world.insert(init, aug_index, pb_tangent, world.dbg("tup_s"));
+        pb_fun->app(true, tuple_pb,
+                    {
+                        tuple_tan,
+                        pb_fun->var(1) // ret_var but make sure to select correct one
+                    });
 
-        pb_fun->app(true, tuple_pb, {tuple_tan, pb_fun->var(1)});
-
-        // world.DLOG("Tuple pb is {} : {}", tuple_pb, tuple_pb->type());
-        // auto pb_tangent = pb_fun->var((nat_t)0, world.dbg("s"));
-        // // R auto tuple_tan  = world.insert(op_zero(aug_tuple->type()), aug_index, pb_tangent, world.dbg("tup_s"));
-        // //  we create a uni vector of E^T (not to be confused with (E')^T)
-        // auto tuple_tan_type = tuple_pb->type()->as<Pi>()->dom(0);
-        // auto tuple_tan      = world.insert(op_zero(tuple_tan_type), aug_index, pb_tangent, world.dbg("tup_s"));
-        // world.DLOG("Unit Vector: {} : {}", tuple_tan, tuple_tan->type());
-        // pb_fun->app(true, tuple_pb,
-        //             {
-        //                 tuple_tan,
-        //                 pb_fun->var(1) // ret_var but make sure to select correct one
-        //             });
         pb = pb_fun;
     }
     assert(pb);
