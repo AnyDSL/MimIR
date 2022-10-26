@@ -158,6 +158,7 @@ public:
 
     /// @name type
     ///@{
+
     /// Yields the **raw** type of this Def; maybe `nullptr`. @sa Def::unfold_type.
     const Def* type() const { return type_; }
     /// Yields the type of this Def and unfolds it if necessary. See Def::type, Def::reduce_rec.
