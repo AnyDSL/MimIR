@@ -10,7 +10,6 @@ const Def* id_pullback(const Def*);
 const Def* zero_pullback(const Def* E, const Def* A);
 
 const Def* tangent_type_fun(const Def*);
-// R const Def* augment_type_fun(const Def*);
 const Def* autodiff_inner_type_fun(const Def* B, const Def* A);
 const Pi* autodiff_type_fun_pi(const Pi*);
 const Def* autodiff_type_fun(const Def*);
@@ -23,10 +22,6 @@ const Def* op_sum(const Def* T, DefArray defs);
 
 namespace thorin {
 
-const Def* equip_mem(const Def* def);
-const Def* lam_mem_wrap(const Def* lam);
-const Pi* cn_mem_wrap(const Pi* pi);
-
 bool is_closed(Lam* lam);
 
 // TODO: replace with closedness checks (scopes) at appropriate places
@@ -34,41 +29,26 @@ bool is_continuation_type(const Def* E);
 bool is_continuation(const Def* e);
 // TODO: change name to returning_continuation
 bool is_returning_continuation(const Def* e);
+bool is_returning_continuation_type(const Def* E);
 bool is_open_continuation(const Def* e);
 bool is_direct_style_function(const Def* e);
 
 const Def* continuation_dom(const Def* E);
 const Def* continuation_codom(const Def* E);
 
-/// computes λ x. f(g(x))
-/// the given functions are expected to be in cps
+/// Computes the composition `λ x. f(g(x))`.
+/// The given functions `f` and `g` are expected to be in cps.
 const Def* compose_continuation(const Def* f, const Def* g);
 
-// /// match without curry check
-// template<class AxTag, bool Check = true>
-// Match<AxTag, detail::Enum2Def<AxTag>> raw_match(const Def* def) {
-//     auto [axiom, curry] = Axiom::get(def);
-//     if constexpr (Check) {
-//         if (axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>())
-//             return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-//         return {};
-//     }
-//     assert(axiom && (axiom->flags() & ~0xFF_u64) == detail::base_value<AxTag>() && "assumed to be correct axiom");
-//     return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-// }
+//// memory operations
 
-// // equivalent to flags == given axiom
-// // but error with cast
-// template<class AxTag, bool Check = true>
-// Match<AxTag, detail::Enum2Def<AxTag>> raw_match(AxTag sub, const Def* def) {
-//     auto [axiom, curry] = Axiom::get(def);
-//     if constexpr (Check) {
-//         if (axiom && axiom->flags() == sub) return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-//         return {};
-//     }
-//     assert(axiom && axiom->flags() == sub && "assumed to be correct axiom");
-//     return {axiom, def->as<detail::Enum2Def<AxTag>>()};
-// }
+/// Adds memory types to a function type (and its return type).
+const Pi* cn_mem_wrap(const Pi* pi);
+/// Returns whether the type T contains a memory type.
+bool contains_mem(const Def* T);
+/// Adds a memory type to a sigma/pack/array as flat tuple.
+const Def* equip_mem(const Def* T);
+const Def* lam_mem_wrap(const Def* lam);
 
 } // namespace thorin
 

@@ -4,7 +4,6 @@
 #include "thorin/tuple.h"
 
 #include "dialects/autodiff/autodiff.h"
-#include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
@@ -14,15 +13,10 @@ const Def* id_pullback(const Def* A) {
     auto arg_pb_ty    = pullback_type(A, A);
     auto id_pb        = world.nom_lam(arg_pb_ty, world.dbg("id_pb"));
     auto id_pb_scalar = id_pb->var((nat_t)0, world.dbg("s"));
-    // assert(id_pb!=NULL);
-    // assert(id_pb->ret_var()!=NULL);
-    // assert(id_pb_scalar!=NULL);
     id_pb->app(true,
-               // id_pb->ret_var(),
                id_pb->var(1), // can not use ret_var as the result might be higher order
                id_pb_scalar);
 
-    // world.DLOG("id_pb for type {} is {} : {}",A,id_pb,id_pb->type());
     return id_pb;
 }
 
@@ -36,9 +30,6 @@ const Def* zero_pullback(const Def* E, const Def* A) {
     return pb;
 }
 
-// R P => P'
-// R TODO: function => extend
-// R const Def* augment_type_fun(const Def* ty) { return ty; }
 //  P => P*
 //  TODO: nothing? function => R? Mem => R?
 //  TODO: rename to op_tangent_type
@@ -51,10 +42,9 @@ const Pi* pullback_type(const Def* E, const Def* A) {
     auto& world   = E->world();
     auto tang_arg = tangent_type_fun(A);
     auto tang_ret = tangent_type_fun(E);
-    tang_arg->dump();
-    tang_ret->dump();
-    auto pb_ty = world.cn({equip_mem(tang_ret), world.cn(equip_mem(tang_arg))});
-    pb_ty->dump();
+    // TODO: [Merge] remove memory from general case
+    // auto pb_ty = world.cn({equip_mem(tang_ret), world.cn(equip_mem(tang_arg))});
+    auto pb_ty = world.cn({tang_ret, world.cn(tang_arg)});
     return pb_ty;
 }
 
@@ -92,7 +82,7 @@ const Def* autodiff_inner_type_fun(const Def* B, const Def* A) {
     // return aug_T;
 }
 
-// `A,R => A'->R' * (R* -> A*) = (A->R)' `
+// `A,R` => `(A->R)' = A' -> R' * (R* -> A*)`
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret) {
     auto& world = arg->world();
     world.DLOG("autodiff type for {} => {}", arg, ret);
@@ -147,15 +137,6 @@ const Def* autodiff_type_fun(const Def* ty) {
     // possible abstract type from autodiff axiom
     world.DLOG("AutoDiff on type: {}", ty);
 
-    if (auto mem = match<mem::M>(ty)) { return mem; }
-
-    if (auto ptr = match<mem::Ptr>(ty)) {
-        auto type = ptr->op(0);
-        return ptr;
-    }
-
-    // R if (ty->isa<Idx>()) { return ty; }
-
     // Also handles autodiff call from axiom declaration => abstract => leave it.
     world.DLOG("AutoDiff on type: {} <{}>", ty, ty->node_name());
     if (Idx::size(ty)) { return ty; }
@@ -173,13 +154,15 @@ const Def* autodiff_type_fun(const Def* ty) {
     } else if (auto real = match<core::Real>(ty)) {
         return ty;
     }
+    // Memory operations
+    else if (auto mem = match<mem::M>(ty)) {
+        return ty;
+    } else if (auto ptr = match<mem::Ptr>(ty)) {
+        // auto type = ptr->op(0);
+        return ty;
+    }
 
     world.WLOG("no-diff type: {}", ty);
-    // ty->dump(300);
-    // world.write("tmp.txt");
-    // can not work with
-    // assert(false && "autodiff_type should not be invoked on non-pi types");
-    // return ty;
     return nullptr;
 }
 
@@ -189,15 +172,13 @@ const Def* zero_def(const Def* T) {
     auto& world = T->world();
     world.DLOG("zero_def for type {} <{}>", T, T->node_name());
     if (auto arr = T->isa<Arr>()) {
-        auto shape = arr->shape();
-        auto body  = arr->body();
-        // auto inner_zero = zero_def(body);
+        auto shape      = arr->shape();
+        auto body       = arr->body();
         auto inner_zero = op_zero(body);
         auto zero_arr   = world.pack(shape, inner_zero);
         world.DLOG("zero_def for array of shape {} with type {}", shape, body);
         world.DLOG("zero_arr: {}", zero_arr);
         return zero_arr;
-        // R } else if (auto idx = T->isa<Idx>()) {
     } else if (Idx::size(T)) {
         // TODO: real
         auto zero = world.lit(T, 0, world.dbg("zero"));
@@ -212,10 +193,10 @@ const Def* zero_def(const Def* T) {
         DefArray ops(sig->ops(), [&](const Def* op) { return op_zero(op); });
         return world.tuple(ops);
     }
-
-    if (match<mem::M>(T)) { return world.bot(mem::type_mem(world)); }
-
-    if (match<mem::Ptr>(T)) {
+    // memory operations
+    else if (match<mem::M>(T)) {
+        return world.bot(mem::type_mem(world));
+    } else if (match<mem::Ptr>(T)) {
         // A zero of a pointer is conceptually senseless (in the sense of addition).
         // Therefore, the zero is not the null pointer, but a dummy value instead.
         return world.bot(T);
@@ -238,21 +219,171 @@ const Def* op_sum(const Def* T, DefArray defs) {
 
 namespace thorin {
 
+bool is_continuation_type(const Def* E) {
+    if (auto pi = E->isa<Pi>()) { return pi->codom()->isa<Bot>(); }
+    return false;
+}
+
+bool is_continuation(const Def* e) { return is_continuation_type(e->type()); }
+
+bool is_returning_continuation_type(const Def* E) {
+    if (auto pi = E->isa<Pi>()) {
+        //  duck-typing applies here
+        //  use short-circuit evaluation to reuse previous results
+        return is_continuation_type(pi) &&       // continuation
+               pi->num_doms() == 2 &&            // args, return
+               is_continuation_type(pi->dom(1)); // return type
+    }
+    return false;
+}
+
+bool is_returning_continuation(const Def* e) { return is_returning_continuation_type(e->type()); }
+
+bool is_open_continuation(const Def* e) { return is_continuation(e) && !is_returning_continuation(e); }
+
+bool is_direct_style_function(const Def* e) {
+    // codom != Bot
+    return e->type()->isa<Pi>() && !is_continuation(e);
+}
+
+const Def* continuation_dom(const Def* E) {
+    // TODO: fix open functions
+    auto pi = E->as<Pi>();
+    assert(pi != NULL);
+    if (pi->num_doms() == 0) { return pi->dom(); }
+    return pi->dom(0);
+}
+
+const Def* continuation_codom(const Def* E) {
+    auto pi = E->as<Pi>();
+    assert(pi != NULL);
+    return pi->dom(1)->as<Pi>()->dom();
+}
+
+/// The high level view is:
+/// ```
+/// f: B -> C
+/// g: A -> B
+/// f o g := λ x. f(g(x)) : A -> C
+/// ```
+/// In cps the types look like:
+/// ```
+/// f: cn[B, cn C]
+/// g: cn[A, cn B]
+/// h = f o g
+/// h : cn[A, cn C]
+/// h = λ a ret_h. g(a,h')
+/// h' : cn B
+/// h' = λ b. f(b,ret_h)
+/// ```
+const Def* compose_continuation(const Def* f, const Def* g) {
+    assert(is_continuation(f));
+    auto& world = f->world();
+    world.DLOG("compose f (B->C): {} : {}", f, f->type());
+    world.DLOG("compose g (A->B): {} : {}", g, g->type());
+    assert(is_returning_continuation(f));
+    assert(is_returning_continuation(g));
+
+    f = lam_mem_wrap(f);
+    g = lam_mem_wrap(g);
+
+    auto F = f->type()->as<Pi>();
+    auto G = g->type()->as<Pi>();
+
+    auto is_mem = match<mem::M>(F->dom(0)->proj(0));
+
+    F->dump();
+    G->dump();
+
+    auto A = continuation_dom(G);
+    auto B = continuation_codom(G);
+    auto C = continuation_codom(F);
+    // The type check of codom G = dom F is better handled by the application type checking
+
+    world.DLOG("compose f (B->C): {} : {}", f, F);
+    world.DLOG("compose g (A->B): {} : {}", g, G);
+    world.DLOG("  A: {}", A);
+    world.DLOG("  B: {}", B);
+    world.DLOG("  C: {}", C);
+
+    auto H     = world.cn({A, world.cn(C)});
+    auto Hcont = world.cn(B);
+
+    auto h     = world.nom_lam(H, world.dbg("comp_" + f->name() + "_" + g->name()));
+    auto hcont = world.nom_lam(Hcont, world.dbg("comp_" + f->name() + "_" + g->name() + "_cont"));
+
+    h->app(true, g, {h->var((nat_t)0), hcont});
+
+    hcont->app(true, f,
+               {
+                   hcont->var(), // Warning: not var(0) => only one var => normalization flattens tuples down here
+                   h->var(1)     // ret_var
+               });
+
+    return h;
+}
+
+bool is_closed(Lam* lam) {
+    Scope s{lam};
+    return s.free_vars().empty();
+}
+
+/// memory specific operations
+
 const Pi* cn_mem_wrap(const Pi* pi) {
     auto& world = pi->world();
-    auto dom    = pi->dom();
-
     const Pi* result;
-    if (pi->ret_pi()) {
-        auto arg    = equip_mem(dom->proj(0));
-        auto ret_pi = cn_mem_wrap(dom->proj(1)->as<Pi>());
+    if (is_returning_continuation_type(pi)) {
+        auto arg = equip_mem(pi->dom(0));
+        // auto ret_pi = cn_mem_wrap(pi->dom(1)->as<Pi>());
+        auto ret_pi = equip_mem(pi->dom(1)->as<Pi>());
         result      = world.cn({arg, ret_pi});
     } else {
-        auto arg = equip_mem(dom);
+        auto arg = equip_mem(pi->dom());
         result   = world.cn({arg});
     }
 
     return result;
+}
+
+bool contains_mem(const Def* T) {
+    if (match<mem::M>(T)) { return true; }
+
+    bool is_mem = false;
+    if (T->isa<Sigma>()) {
+        return std::ranges::any_of(T->ops(), [](auto op) { return contains_mem(op); });
+    } else if (auto pack = T->isa<Pack>()) {
+        return contains_mem(pack->body());
+    } else if (auto arr = T->isa<Arr>()) {
+        return contains_mem(arr->body());
+    }
+    return false;
+}
+
+const Def* equip_mem(const Def* def) {
+    auto& world  = def->world();
+    auto memType = mem::type_mem(world);
+    if (contains_mem(def)) { return def; }
+
+    // TODO: handle everything as [mem, def]
+    if (def->isa<Sigma>()) {
+        size_t size = def->num_ops() + 1;
+        DefArray newOps(size, [&](size_t i) { return i == 0 ? memType : def->op(i - 1); });
+
+        return world.sigma(newOps);
+    } else if (auto pack = def->isa<Pack>()) {
+        auto count = as_lit(pack->shape());
+        DefArray newOps(count + 1, [&](size_t i) { return i == 0 ? memType : pack->body(); });
+
+        return world.sigma(newOps);
+    } else if (auto arr = def->isa<Arr>()) {
+        auto count = as_lit(arr->shape());
+        DefArray newOps(count + 1, [&](size_t i) { return i == 0 ? memType : arr->body(); });
+
+        return world.sigma(newOps);
+    } else {
+        return world.sigma({memType, def});
+    }
 }
 
 // TODO: should not be in AD
@@ -288,154 +419,6 @@ const Def* lam_mem_wrap(const Def* lam) {
     }
 
     return lam;
-}
-
-bool contains_mem(const Def* def) {
-    if (match<mem::M>(def)) { return true; }
-
-    bool is_mem = false;
-    if (def->isa<Sigma>()) {
-        return std::ranges::any_of(def->ops(), [](auto op) { return contains_mem(op); });
-    } else if (auto pack = def->isa<Pack>()) {
-        return contains_mem(pack->body());
-    } else if (auto arr = def->isa<Arr>()) {
-        return contains_mem(arr->body());
-    }
-    return false;
-}
-
-const Def* equip_mem(const Def* def) {
-    auto& world  = def->world();
-    auto memType = mem::type_mem(world);
-    if (contains_mem(def)) { return def; }
-
-    if (def->isa<Sigma>()) {
-        size_t size = def->num_ops() + 1;
-        DefArray newOps(size, [&](size_t i) { return i == 0 ? memType : def->op(i - 1); });
-
-        return world.sigma(newOps);
-    } else if (auto pack = def->isa<Pack>()) {
-        auto count = as_lit(pack->shape());
-        DefArray newOps(count + 1, [&](size_t i) { return i == 0 ? memType : pack->body(); });
-
-        return world.sigma(newOps);
-    } else if (auto arr = def->isa<Arr>()) {
-        auto count = as_lit(arr->shape());
-        DefArray newOps(count + 1, [&](size_t i) { return i == 0 ? memType : arr->body(); });
-
-        return world.sigma(newOps);
-    } else {
-        return world.sigma({memType, def});
-    }
-}
-
-const Def* continuation_codom(const Def* E) {
-    auto pi = E->as<Pi>();
-    assert(pi != NULL);
-    return pi->dom(1)->as<Pi>()->dom();
-}
-
-bool is_continuation_type(const Def* E) {
-    if (auto pi = E->isa<Pi>()) { return pi->codom()->isa<Bot>(); }
-    return false;
-}
-
-bool is_continuation(const Def* e) { return is_continuation_type(e->type()); }
-
-bool is_returning_continuation(const Def* e) {
-    auto E = e->type();
-    if (auto pi = E->isa<Pi>()) {
-        // R world.DLOG("codom is {}", pi->codom());
-        // R world.DLOG("codom kind is {}", pi->codom()->node_name());
-        //  duck-typing applies here
-        //  use short-circuit evaluation to reuse previous results
-        return is_continuation_type(pi) &&       // continuation
-               pi->num_doms() == 2 &&            // args, return
-               is_continuation_type(pi->dom(1)); // return type
-    }
-    return false;
-}
-
-bool is_open_continuation(const Def* e) { return is_continuation(e) && !is_returning_continuation(e); }
-
-bool is_direct_style_function(const Def* e) {
-    // codom != Bot
-    return e->type()->isa<Pi>() && !is_continuation(e);
-}
-
-const Def* continuation_dom(const Def* E) {
-    auto pi = E->as<Pi>();
-    assert(pi != NULL);
-    if (pi->num_doms() == 0) { return pi->dom(); }
-    return pi->dom(0);
-}
-
-/// high level
-/// f: B -> C
-/// g: A -> B
-/// f o g := λ x. f(g(x)) : A -> C
-/// with cps style
-/// f: cn[B, cn C]
-/// g: cn[A, cn B]
-/// h = f o g
-/// h : cn[A, cn C]
-/// h = λ a ret_h. g(a,h')
-/// h' : cn B
-/// h' = λ b. f(b,ret_h)
-const Def* compose_continuation(const Def* f, const Def* g) {
-    assert(is_continuation(f));
-    auto& world = f->world();
-    world.DLOG("compose f (B->C): {} : {}", f, f->type());
-    world.DLOG("compose g (A->B): {} : {}", g, g->type());
-    assert(is_returning_continuation(f));
-    assert(is_returning_continuation(g));
-
-    f = lam_mem_wrap(f);
-    g = lam_mem_wrap(g);
-
-    auto F = f->type()->as<Pi>();
-    auto G = g->type()->as<Pi>();
-
-    auto is_mem = match<mem::M>(F->dom(0)->proj(0));
-
-    F->dump();
-    G->dump();
-
-    auto A = continuation_dom(G);
-    auto B = continuation_codom(G);
-
-    auto B_hat = continuation_dom(F);
-    auto C     = continuation_codom(F);
-    // better handled by application type checks
-    // auto B2 = continuation_dom(F);
-    // assert(B == B2);
-
-    world.DLOG("compose f (B->C): {} : {}", f, F);
-    world.DLOG("compose g (A->B): {} : {}", g, G);
-    world.DLOG("  A: {}", A);
-    world.DLOG("  B: {}", B);
-    world.DLOG("  C: {}", C);
-
-    auto H     = world.cn({A, world.cn(C)});
-    auto Hcont = world.cn(B);
-
-    auto h     = world.nom_lam(H, world.dbg("comp_" + f->name() + "_" + g->name()));
-    auto hcont = world.nom_lam(Hcont, world.dbg("comp_" + f->name() + "_" + g->name() + "_cont"));
-
-    h->app(true, g, {h->var((nat_t)0), hcont});
-
-    hcont->app(true, f,
-               {
-                   hcont->var(), // Warning: not var(0) => only one var => normalization flattens tuples down here
-                   h->var(1)     // ret_var
-               });
-
-    return h;
-}
-
-bool is_closed(Lam* lam) {
-    Scope s{lam};
-    return s.free_vars().empty();
 }
 
 } // namespace thorin
