@@ -49,32 +49,23 @@ protected:
 
 /// Visits the current Phase::world and constructs a new RWPhase::world along the way.
 /// It recursively **rewrites** all World::externals().
-class RWPhase : public Phase {
+class RWPhase : public Phase, public Rewriter {
 public:
     RWPhase(World& old_world, std::string_view name)
         : Phase(old_world, name, false)
-        , new_world_(old_world.state())
-        , rewriter_(new_world_) {}
+        , Rewriter(new_world_)
+        , new_world_(old_world.state()) {}
 
     void start() override;
 
     /// @name getters
     ///@{
-    const World& old_world() { return world_; }
-    World& world() { return new_world_; } ///< RWPhase::new_world_ is the "default" world.
-    const Def* map(const Def* old_def, const Def* new_def) { return rewriter_.map(old_def, new_def); }
-    ///@}
-
-    /// @name rewrite
-    ///@{
-    virtual const Def* rewrite(const Def* old_def) { return rewriter_.rewrite(old_def); }
-    virtual const Def* rewrite_structural(const Def* old_def) { return rewriter_.rewrite_structural(old_def); }
-    virtual const Def* rewrite_nom(Def* old_nom) { return rewriter_.rewrite_nom(old_nom); }
+    const World& old_world() const { return Phase::world_; }
+    World& world() { return new_world_; } ///< The "target" World RWPhase::new_world_ is the "default" world.
     ///@}
 
 protected:
     World new_world_;
-    Rewriter rewriter_;
 };
 
 /// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping afterwards.

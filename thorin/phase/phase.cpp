@@ -12,7 +12,7 @@ void RWPhase::start() {
     for (const auto& [_, ax] : old_world().axioms()) rewrite(ax);
     for (const auto& [_, nom] : old_world().externals()) rewrite(nom)->as_nom()->make_external();
 
-    swap(world_, new_world_);
+    swap(Phase::world_, new_world_);
 }
 
 void FPPhase::start() {
