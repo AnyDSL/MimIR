@@ -150,13 +150,15 @@ const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff
         auto pb_fun   = world.nom_lam(pb_ty, world.dbg("extract_pb"));
         world.DLOG("Pullback: {} : {}", pb_fun, pb_fun->type());
 
-        auto aug_tuple_type = aug_tuple->type();
+        // auto aug_tuple_type = aug_tuple->type();
 
-        auto mem           = mem::mem_var(pb_fun);
-        auto pb_tangent_ty = mem::strip_mem_ty(pb_fun->dom(0));
+        auto mem = mem::mem_var(pb_fun);
+        // auto pb_tangent_ty = mem::strip_mem_ty(pb_fun->dom(0));
 
         auto pb_tangent = mem::strip_mem(pb_fun->var((nat_t)0, world.dbg("s")));
 
+        // TODO: should work with lazy zero (might even be more efficient as we only care about the insert index and
+        // read(insert index _) is index)
         auto init = autodiff_zero(mem, aug_tuple);
 
         const Def* tuple_tan = world.insert(init, aug_index, pb_tangent, world.dbg("tup_s"));
@@ -217,6 +219,7 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
 
     auto mem = mem::mem_var(pb);
     // auto T_without_mem = remove_mem(T);
+    // TODO: here we explicitly want a lazy zero
     auto sum = autodiff_zero(mem, f);
 
     size_t src = 0;
@@ -749,6 +752,7 @@ const Def* AutoDiffEval::zero_pullback(const Def* domain, Lam* f) {
     auto A_tangent = tangent_type_fun(A);
     auto pb_ty     = pullback_type(domain, A);
     auto pb        = world.nom_lam(pb_ty, world.dbg("zero_pb"));
+    // TODO: use lazy zero to delay execution as long as possible and allow for shortcut evaluation
     pb->app(true, pb->var(1), autodiff_zero(mem::mem_var(pb), f));
     return pb;
 }

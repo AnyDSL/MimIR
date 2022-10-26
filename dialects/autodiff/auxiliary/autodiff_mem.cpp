@@ -60,9 +60,9 @@ const Def* AutoDiffEval::autodiff_zero(const Def* mem, const Def* def) {
         return world.tuple(ops);
     }
 
-    def->dump();
-    def->type()->dump();
-    assert(false);
+    // def->dump();
+    // def->type()->dump();
+    assert(false && "unhandled type in autodiff_zero");
 }
 
 void AutoDiffEval::prepareMemArguments(Lam* lam, Lam* deriv) {
