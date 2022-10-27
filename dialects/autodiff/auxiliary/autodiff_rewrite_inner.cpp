@@ -593,6 +593,21 @@ Lam* AutoDiffEval::invert_lam(Lam* lam_def) {
     w.debug_dump();
 
     if (lam->is_returning()) {
+
+        if(auto app = lam->body()->isa<App>()){
+            if(app->arg() == lam->var()){
+                auto called_lam = app->callee()->as_nom<Lam>();
+
+                auto tmp = inverted[lam_def->var()];
+                inverted[called_lam->var()] = tmp;
+
+                auto inv = invert_lam(called_lam);
+                return inv;
+            }
+        }
+
+
+
         auto ret_dom    = lam->ret_dom();
         auto arg_type   = lam->arg()->type();
         auto inv_arg_ty = w.sigma({ret_dom, w.cn(arg_type)});
@@ -613,6 +628,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam_def) {
         while (true) {
             assert(current);
             auto call = current->pred(Node::Type::App | Node::Type::For);
+            assert(call);
             auto app  = call->def->as<App>();
             auto arg  = app->arg();
 
@@ -1023,12 +1039,7 @@ const Def* AutoDiffEval::augment_(const Def* def) {
     if (auto bitcast = match<core::bitcast>(def)) { return augment_bitcast(bitcast->as<App>()); }
 
     // app => cont, operator, function
-    if (auto app = def->isa<App>()) {
-        auto callee = app->callee();
-        auto arg    = app->arg();
-        w.DLOG("Augment application: app {} with {}", callee, arg);
-        return augment_app(app);
-    }
+    if (auto app = def->isa<App>()) { return augment_app(app); }
 
     // projection
     else if (auto ext = def->isa<Extract>()) {
@@ -1075,19 +1086,15 @@ const Def* AutoDiffEval::augment_(const Def* def) {
         return augment_pack(pack);
     }
 
-    else if (auto axiom = def->isa<Axiom>()) {
-        return axiom;
-    }
+    //else if (auto axiom = def->isa<Axiom>()) {
+    //    return axiom;
+    //}
 
-    // for axiom app
-    // else if (auto pi = def->isa<Pi>()) {
-    // }
-
-    // TODO: remaining (lambda, axiom)
-
+    return def;
+/*
     w.ELOG("did not expect to augment: {} : {}", def, def->type());
     w.ELOG("node: {}", def->node_name());
-    assert(false && "augment not implemented on this def");
+    assert(false && "augment not implemented on this def");*/
 }
 
 const Def* AutoDiffEval::invert_(const Def* def) {
