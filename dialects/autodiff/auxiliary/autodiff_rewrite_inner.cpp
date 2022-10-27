@@ -28,23 +28,32 @@ const Def* zero(const Def* ty) {
 const Def* zero(World& w) { return w.lit_int(32, 0); }
 const Def* one(World& w) { return w.lit_int(32, 1); }
 
-Lam* chain(const Def* mem, Lam* lam, const Def* next) {
-    auto& w       = mem->world();
-    auto callback = build(w).mem_ty().lam(next->name() + "_callback");
-    callback->set_body(w.app(lam->var(1_s), {mem::mem_var(callback)}));
-    lam->set_body(w.app(next, {mem, callback}));
-    return lam;
+bool has_op_store(const Def* def, DefSet& visited) {
+    if (visited.contains(def)) return false;
+    visited.insert(def);
+
+    if (auto extr = def->isa<Extract>()) {
+        if (has_op_store(extr->tuple(), visited)) { return true; }
+    } else if (auto lea = match<mem::lea>(def)) {
+        auto [arr_ptr, _] = lea->args<2>();
+
+        if (has_op_store(arr_ptr, visited)) { return true; }
+    } else if (match<mem::store>(def)) {
+        return true;
+    }
+
+    if (match<mem::Ptr>(def->type()) || def->isa<Tuple>()) {
+        for (auto use : def->uses()) {
+            if (has_op_store(use, visited)) { return true; }
+        }
+    }
+
+    return false;
 }
 
-Lam* chain(const Def* first, const Def* second) {
-    auto& w              = first->world();
-    auto chain           = build(w).mem_ty().mem_cn().lam(first->name() + "_chain");
-    auto callback_first  = build(w).mem_ty().lam(first->name() + "_callback");
-    auto callback_second = build(w).mem_ty().lam(second->name() + "_callback");
-    chain->set_body(w.app(first, {mem::mem_var(chain), callback_first}));
-    callback_first->set_body(w.app(second, {mem::mem_var(callback_first), callback_second}));
-    callback_second->set_body(w.app(chain->var(1_s), {mem::mem_var(callback_second)}));
-    return chain;
+bool has_op_store(const Def* ptr) {
+    DefSet visited;
+    return has_op_store(ptr, visited);
 }
 
 Lam* AutoDiffEval::create_block(const std::string& name) {
@@ -76,11 +85,10 @@ Lam* AutoDiffEval::create_end(const std::string& name) {
     return lam;
 }
 
-Lam* AutoDiffEval::create_invert_block(const std::string& name) { return create_block("invert_" + name); }
-
-Lam* AutoDiffEval::create_invert_return(const std::string& name) { return create_return("invert_" + name); }
-
-Lam* AutoDiffEval::create_invert_end() { return create_end("invert_end"); }
+void AutoDiffEval::ret(Lam* lam) {
+    auto& w = world();
+    lam->set_body(w.app(lam->ret_var(), end_mem()));
+}
 
 void deep_compare(const Def* src, const Def* dst, std::function<void(const Def*, const Def*)> differ) {
     auto num_projs = src->num_projs();
@@ -92,37 +100,20 @@ void deep_compare(const Def* src, const Def* dst, std::function<void(const Def*,
 
     differ(src, dst);
 }
+
 const Def* AutoDiffEval::augment_lit(const Lit* lit) {
     auto& w = world();
-
-    auto aug_lit = lit;
-    // set zero pullback
-    // auto pb                   = zero_pullback(lit->type());
-    // partial_pullback[aug_lit] = pb;
     return lit;
 }
 
 const Def* AutoDiffEval::augment_var(const Var* var) {
-    auto& w = world();
     assert(false);
-    // assert(partial_pullback.count(aug_var));
     return var;
 }
 
 const Def* AutoDiffEval::augment_lam(Lam* lam) {
     auto& w = world();
 
-    if (auto app = lam->body()->isa<App>()) {
-        if (app->arg() == lam->var()) {
-            auto called_lam = app->callee()->as_nom<Lam>();
-
-            auto tmp                     = augmented[lam->var()];
-            augmented[called_lam->var()] = tmp;
-
-            auto augment = augment_lam(called_lam);
-            return augment;
-        }
-    }
 
     auto aug_lam = w.nom_lam(lam->type()->as<Pi>(), w.dbg("aug_" + lam->name()));
     aug_lam->set_filter(true);
@@ -242,34 +233,6 @@ const Def* AutoDiffEval::create_init_alloc_frame(const std::string& name, const 
     return ptr;
 }
 
-bool has_op_store(const Def* def, DefSet& visited) {
-    if (visited.contains(def)) return false;
-    visited.insert(def);
-
-    if (auto extr = def->isa<Extract>()) {
-        if (has_op_store(extr->tuple(), visited)) { return true; }
-    } else if (auto lea = match<mem::lea>(def)) {
-        auto [arr_ptr, _] = lea->args<2>();
-
-        if (has_op_store(arr_ptr, visited)) { return true; }
-    } else if (match<mem::store>(def)) {
-        return true;
-    }
-
-    if (match<mem::Ptr>(def->type()) || def->isa<Tuple>()) {
-        for (auto use : def->uses()) {
-            if (has_op_store(use, visited)) { return true; }
-        }
-    }
-
-    return false;
-}
-
-bool has_op_store(const Def* ptr) {
-    DefSet visited;
-    return has_op_store(ptr, visited);
-}
-
 const Def* AutoDiffEval::wrap_cache(const App* load, const App* aug_load) {
     auto& w = world();
 
@@ -312,8 +275,6 @@ const Def* AutoDiffEval::augment_load(const App* load) {
 
     auto aug_mem = augment(load_mem);
     auto aug_ptr = augment(load_ptr);
-
-    loads_.insert(load);
 
     auto aug_load  = mem::op_load(aug_mem, aug_ptr, w.dbg(aug_ptr->name() + "_val"))->as<App>();
     auto wrap_load = wrap_cache(load, aug_load);
@@ -603,7 +564,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
 
             left_grad  = core::op(core::rop::mul, core::RMode::none, gradient, right_value);
             right_grad = core::op(core::rop::mul, core::RMode::none, gradient, left_value);
-        }else if (rop.id() == core::rop::div) {
+        } else if (rop.id() == core::rop::div) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
@@ -1104,49 +1065,18 @@ const Def* AutoDiffEval::invert_(const Def* def) {
     }
 }
 
-const Def* AutoDiffEval::invert_var(const Var* var) { return create_invert_end(); }
+const Def* AutoDiffEval::invert_var(const Var* var) {  }
 const Def* AutoDiffEval::invert_extract(const Extract* extract) {
-    auto tup   = extract->tuple();
-    auto index = extract->index();
-
-    // assert(!tup->isa<Var>());
-    if (tup->isa<Var>()) { return create_invert_end(); }
-
-    auto test = invert(tup);
-
-    if (auto lam = test->isa_nom<Lam>()) { return test; }
-
-    return extract;
+    
 }
 const Def* AutoDiffEval::invert_app(const App* app) {
-    auto& w = world();
-
-    auto callee = app->callee();
-    auto arg    = app->arg();
-
-    auto invert_arg = invert(arg);
-    if (auto lam = callee->isa_nom<Lam>()) {
-        deep_compare(lam->var(), invert_arg, [&](const Def* left, const Def* right) { add_inverted(left, right); });
-    }
-
-    auto invert_callee = invert(callee);
-
-    return chain(invert_callee, invert_arg);
+    
 }
-const Def* AutoDiffEval::invert_lit(const Lit* lit) { return create_invert_end(); }
+const Def* AutoDiffEval::invert_lit(const Lit* lit) {  }
 const Def* AutoDiffEval::invert_tuple(const Tuple* tuple) { return tuple; }
 const Def* AutoDiffEval::invert_pack(const Pack* pack) { return pack; }
 const Def* AutoDiffEval::invert_lea(const App* lea) {
-    auto [ptr, index] = lea->args<2>();
-
-    auto inv_index = resolve(index);
-
-    auto gradient_arr = gradient_ptrs[ptr];
-    assert(gradient_arr);
-    auto gradient_ptr = mem::op_lea(gradient_arr, inv_index);
-
-    // return mem::op_lea(inv_ptr, inv_index);
-    return gradient_ptr;
+    
 }
 
 const Def* AutoDiffEval::invert_load(const App* load) { assert(false); }
@@ -1170,11 +1100,6 @@ const Def* AutoDiffEval::op_slot(const Def* type, const std::string& name) {
     auto [next_mem, value] = mem::op_slot(type, current_mem, w.dbg(name))->projs<2>();
     current_mem            = next_mem;
     return value;
-}
-
-void AutoDiffEval::ret(Lam* lam) {
-    auto& w = world();
-    lam->set_body(w.app(lam->ret_var(), end_mem()));
 }
 
 const Def* AutoDiffEval::resolve(const Def* def) {

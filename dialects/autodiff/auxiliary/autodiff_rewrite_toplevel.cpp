@@ -112,21 +112,6 @@ const Def* AutoDiffEval::build_result(const Def* mem, Lam* backward_begin, Lam* 
     return w.tuple(ops);
 }
 
-Lam* AutoDiffEval::init_sinks() {
-    auto& w = world();
-
-    auto sinks = create_block("gradient_sinks");
-
-    for (auto load : loads_) {
-        auto type = load->proj(1)->type();
-        auto slot = op_slot(type, "sink");
-        op_store(slot, zero(w));
-        gradient_sinks[load] = slot;
-    }
-
-    return sinks;
-}
-
 Lam* AutoDiffEval::free_memory() {
     auto& w = world();
 
