@@ -173,7 +173,8 @@ const Def* AutoDiffEval::augment_app(const App* app) {
     auto aug_arg = augment(arg);
 
     if (auto lam = callee->isa_nom<Lam>()) {
-        deep_compare(arg, lam->var(), [&](const Def* src, const Def* dst) { gradient_pointers[dst] = gradient_pointers[src]; });
+        deep_compare(arg, lam->var(),
+                     [&](const Def* src, const Def* dst) { gradient_pointers[dst] = gradient_pointers[src]; });
     }
 
     auto aug_callee = augment(callee);
@@ -267,7 +268,7 @@ const Def* AutoDiffEval::augment_store(const App* store) {
 
     auto aug_arg                     = augment(store->arg());
     auto [aug_mem, aug_ptr, aug_val] = aug_arg->projs<3>();
-    auto aug_store = mem::op_store(aug_mem, aug_ptr, aug_val, store->dbg());
+    auto aug_store                   = mem::op_store(aug_mem, aug_ptr, aug_val, store->dbg());
     return aug_store;
 }
 
@@ -314,15 +315,6 @@ const Def* for_size(const Def*& mem, const Def* start, const Def* end, const Def
     return size;
 }
 
-const Def* end_index(const Def*& mem, const Def* start, const Def* end, const Def* inc) {
-    auto span             = core::op(core::wrap::sub, core::WMode::none, end, start);
-    auto [mem2, repeats]  = core::op(core::div::udiv, mem, span, inc)->projs<2>();
-    mem                   = mem2;
-    auto discretized_span = core::op(core::wrap::mul, core::WMode::none, repeats, inc);
-    auto end_index        = core::op(core::wrap::add, core::WMode::none, discretized_span, start);
-    return end_index;
-}
-
 const Def* normalized_to_loop_index(const Def* start, const Def* inc, const Def* normalized_index) {
     auto correct_increment = core::op(core::wrap::mul, core::WMode::none, normalized_index, inc);
     auto loop_index        = core::op(core::wrap::add, core::WMode::none, correct_increment, start);
@@ -349,7 +341,6 @@ const Def* sum(const Def* left, const Def* right) {
     assert(left->type() == right->type());
 
     if (left->isa<Bot>()) { return right; }
-
     if (right->isa<Bot>()) { return left; }
 
     if (is_idx(left->type())) {
@@ -421,10 +412,10 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         for (auto proj : def->projs()) { prop(scope, proj); }
     }
 
-    auto& w = world();
+    auto& w       = world();
     auto gradient = grad_sum(def);
     if (gradient == nullptr) { return; }
-    
+
     if (auto load = match<mem::load>(def)) {
         auto arr  = load->arg(1);
         auto val  = load->proj(1);
@@ -456,8 +447,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         return;
     }
 
-    if (auto lea = match<mem::lea>(def)) { return; }
-
     if (auto extract = def->isa<Extract>()) {
         auto tup   = extract->tuple();
         auto index = as_lit(extract->index());
@@ -474,8 +463,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         attach_gradient(tup, w.tuple(vec));
         return;
     }
-
-    if (match<mem::M>(def->type())) { return; }
 
     if (auto wrap = match<core::wrap>(def)) {
         auto [left, right] = wrap->args<2>();
@@ -526,10 +513,11 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
-            auto [div_mem, left_grad] = core::op(core::rop::div, current_mem, gradient, right_value)->projs<2>();
-            auto right_grad =
+            auto left_div = core::op(core::rop::div, current_mem, gradient, right_value);
+            left_grad = left_div->proj(1);
+            right_grad =
                 core::op(core::rop::mul, core::RMode::none, core::op_rminus(core::RMode::none, left_grad), left_value);
-            current_mem = div_mem;
+            current_mem = left_div->proj(0);
         }
 
         attach_gradient(rop->arg(), w.tuple({left_grad, right_grad}));
