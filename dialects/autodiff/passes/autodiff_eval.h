@@ -56,6 +56,7 @@ public:
     ///@{
     // TODO: remove functions that can be formulated in thorin itself
     // A lea is reflected into a lea on the gradient pointer (array).
+    std::optional<const Def*> handle_memory(const Def*, Lam*, Lam*);
     const Def* augment_lea(const App*, Lam*, Lam*);
     const Def* augment_load(const App*, Lam*, Lam*);
     const Def* augment_store(const App*, Lam*, Lam*);

@@ -2,7 +2,7 @@
 #include "dialects/affine/autogen.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
-#include "dialects/autodiff/auxiliary/autodiff_mem.h"
+#include "dialects/autodiff/auxiliary/mem/autodiff_mem_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/mem/mem.h"
 
