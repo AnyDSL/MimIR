@@ -43,8 +43,6 @@ Lam* AutoDiffEval::free_memory() {
 
 Lam* strip_eta(Lam* lam) {
     if (auto app = lam->body()->isa<App>()) {
-        app->arg()->dump(1);
-        lam->var()->dump(1);
         if (app->arg() == lam->var()) {
             auto called_lam = app->callee()->as_nom<Lam>();
             return strip_eta(called_lam);
@@ -54,7 +52,6 @@ Lam* strip_eta(Lam* lam) {
     return lam;
 }
 
-/// side effect: register pullback
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& w     = world();
     auto diffee = strip_eta(def->isa_nom<Lam>());
@@ -83,17 +80,10 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto aug_body = augment(diffee->body());
     diff_lam->set_body(aug_body);
 
-    // auto init_sink_lam = init_sinks();
-    // auto init_sink_mem = end_mem();
-
     add_inverted(diffee->var(), diff_lam->var());
 
     current_state   = State::Invert;
     auto inv_diffee = invert_lam(diffee);
-
-    //                 ______________
-    //                |              |
-    // backward_begin -+> inv_diffee -+> backward_begin->ret
 
     forward_end->set_body(w.app(diff_lam->ret_var(), merge_flat(forward_end->var(), backward_begin)));
     auto backward_end = w.nom_lam(inv_diffee->ret_pi(), w.dbg("backward_end_" + diffee->name()));

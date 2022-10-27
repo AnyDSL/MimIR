@@ -226,7 +226,8 @@ private:
 class AutoDiffEval : public RWPass<AutoDiffEval, Lam> {
 public:
     AutoDiffEval(PassMan& man)
-        : RWPass(man, "autodiff_eval") {}
+        : RWPass(man, "autodiff_eval") {
+    }
 
     const Def* rewrite(const Def*) override;
 
@@ -333,7 +334,7 @@ private:
     DefSet visited_prop;
 
     Def2Def gradient_pointers;
-    DefMap<DefVec> gradients;
+    //DefMap<DefVec> gradients;
 
     DefSet allocated_memory;
     Def2Def cache_map;
@@ -341,6 +342,8 @@ private:
     DefMap<std::shared_ptr<LoopFrame>> loop_assignment;
 
     std::stack<InitFrame> init_frames;
+
+    std::shared_ptr<LoopFrame> root;
     std::shared_ptr<LoopFrame> current_loop = nullptr;
 
     const Def* current_mem = nullptr;

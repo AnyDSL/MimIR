@@ -359,20 +359,15 @@ const Def* sum(const Def* left, const Def* right) {
 
 const Def* AutoDiffEval::grad_sum(const Def* def) {
     auto& w = world();
-    DefVec* grads;
-    if (current_loop) {
-        grads = &(current_loop->gradients[def]);
-    } else {
-        grads = &(gradients[def]);
-    }
+    DefVec  &gradients = current_loop->gradients[def];
 
     const Def* result = nullptr;
 
-    for (auto grad : *grads) {
+    for (auto gradient : gradients) {
         if (result == nullptr) {
-            result = grad;
+            result = gradient;
         } else {
-            result = sum(result, grad);
+            result = sum(result, gradient);
         }
     }
 
@@ -514,7 +509,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
             auto right_value = resolve(right);
 
             auto left_div = core::op(core::rop::div, current_mem, gradient, right_value);
-            left_grad = left_div->proj(1);
+            left_grad     = left_div->proj(1);
             right_grad =
                 core::op(core::rop::mul, core::RMode::none, core::op_rminus(core::RMode::none, left_grad), left_value);
             current_mem = left_div->proj(0);
@@ -683,8 +678,6 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
     current_loop->index()       = normalized_to_loop_index(aug_start, aug_inc, normalized_index);
     current_loop->cache_index() = normalized_to_cache_index(normalized_index);
 
-    auto test = current_loop->index();
-
     add_inverted(raw_index, current_loop->index());
 
     auto inv_body_lam_new = invert_lam(loop_body);
@@ -717,7 +710,7 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
         }
     };
 
-    if (acc_ops.size() > 0) {
+    if (!acc_ops.empty()) {
         auto acc_ty          = flatten_deep(w.sigma({mem::type_mem(w), w.tuple(acc_ops)->type()}));
         auto inv_loop_ty     = w.cn({w.type_int(32), acc_ty, w.cn(acc_ty)});
         Lam* inv_for_acc_lam = create_lam(inv_loop_ty, "invert_for_acc_" + loop_body->name());
@@ -773,17 +766,12 @@ const Def* AutoDiffEval::invert_for(const App* for_app) {
 }
 
 void AutoDiffEval::push_loop_frame(const App* for_app, const Def* size) {
-    if (loop_assignment.contains(for_app)) {
-        current_loop = loop_assignment[for_app];
+    if (auto cached_loop = loop_assignment[for_app]) {
+        current_loop = cached_loop;
     } else {
         auto next_frame = std::make_shared<LoopFrame>(*this);
-        if (current_loop != nullptr) {
-            next_frame->parent = current_loop;
-            next_frame->size   = core::op(core::wrap::mul, core::WMode::none, current_loop->size, size);
-        } else {
-            next_frame->size = size;
-        }
-
+        next_frame->parent = current_loop;
+        next_frame->size   = core::op(core::wrap::mul, core::WMode::none, current_loop->size, size);
         next_frame->local_size   = size;
         loop_assignment[for_app] = next_frame;
         current_loop             = next_frame;
@@ -830,14 +818,13 @@ const Def* AutoDiffEval::augment_for(const App* for_app) {
     pop_loop_frame();
     auto aug_exit = augment(exit);
 
-    if (current_loop == nullptr) {
+    if (current_loop == root) {
         Lam* current   = build(w).mem_ty().lam("init_caches");
         InitFrame last = {.lam = current, .mem = mem::mem_var(current)};
         for (; !init_frames.empty();) {
             auto next = init_frames.top();
             init_frames.pop();
             last.lam->set_body(w.app(next.lam, last.mem));
-            // last.lam->set(next.lam->reduce(last.mem));
             last = next;
         }
 
@@ -854,9 +841,6 @@ const Def* AutoDiffEval::augment_for(const App* for_app) {
 ///
 const Def* AutoDiffEval::augment_(const Def* def) {
     auto& w = world();
-    // for types holds:
-    // we use macros above to avoid recomputation
-    // TODO: alternative: use class instance to rewrite inside a function and save such values (f, f_diff, f_arg_ty)
 
     w.DLOG("Augment def {} : {}", def, def->type());
 
@@ -881,7 +865,6 @@ const Def* AutoDiffEval::augment_(const Def* def) {
 
     // projection
     else if (auto ext = def->isa<Extract>()) {
-        // world.DLOG("Augment extract: {}", def);
         auto tuple = ext->tuple();
         auto index = ext->index();
         w.DLOG("Augment extract: {} #[{}]", tuple, index);
@@ -924,22 +907,12 @@ const Def* AutoDiffEval::augment_(const Def* def) {
         return augment_pack(pack);
     }
 
-    // else if (auto axiom = def->isa<Axiom>()) {
-    //     return axiom;
-    // }
 
     return def;
-    /*
-        w.ELOG("did not expect to augment: {} : {}", def, def->type());
-        w.ELOG("node: {}", def->node_name());
-        assert(false && "augment not implemented on this def");*/
 }
 
 const Def* AutoDiffEval::invert_(const Def* def) {
     auto& w = world();
-    // for types holds:
-    // we use macros above to avoid recomputation
-    // TODO: alternative: use class instance to rewrite inside a function and save such values (f, f_diff, f_arg_ty)
 
     w.DLOG("Augment def {} : {}", def, def->type());
 
@@ -1065,11 +1038,7 @@ const Def* AutoDiffEval::resolve(const Def* def) {
 }
 
 void AutoDiffEval::attach_gradient(const Def* dst, const Def* grad) {
-    if (current_loop) {
-        current_loop->gradients[dst].push_back(grad);
-    } else {
-        gradients[dst].push_back(grad);
-    }
+    current_loop->gradients[dst].push_back(grad);
 }
 
 const Def* AutoDiffEval::invert_store(const App* store) {}
