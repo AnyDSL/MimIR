@@ -178,6 +178,8 @@ const Def* autodiff_type_fun(const Def* ty, bool flat) {
     }
     if (ty->isa<Idx>()) { return ty; }
 
+    if (match<core::Real>(ty)) { return ty; }
+
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
         auto shape   = arr->shape();

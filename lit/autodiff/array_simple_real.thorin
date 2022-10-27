@@ -10,48 +10,50 @@
 .import affine;
 
 .let i32 = .Idx 4294967296;
-.let r32 = %core.Real 64;
+.let r64 = %core.Real 64;
 .let size = 100:.Nat;
 .let size_idx = (.Idx 100);
 .let size_int = 100:i32;
-.let arr_size = <<size; i32>>;
+.let arr_size = <<size; r64>>;
 .let ptr_ty = %mem.Ptr (arr_size, 0);
 
 .cn printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
 
-.cn f [mem : %mem.M, a: ptr_ty, ret: .Cn [ %mem.M, i32]] = {
-    .let idx_100_i = %core.bitcast (size_idx, i32) 0:i32;
-    .let lea_a = %mem.lea (size, <size; i32>, 0) (a, idx_100_i);
-    .let load = %mem.load (i32, 0) (mem, lea_a);
+.cn f [mem : %mem.M, a: ptr_ty, ret: .Cn [ %mem.M, r64]] = {
+    .let idx_100_i = %core.bitcast (size_idx, r64) 0.0:r64;
+    .let lea_a = %mem.lea (size, <size; r64>, 0) (a, idx_100_i);
+    .let load = %mem.load (r64, 0) (mem, lea_a);
     ret load
 };
+//.ax %core.conv(s2r, u2r): Π [dw: .Nat, sw: .Nat] -> .Idx sw -> %core.Real dw, normalize_conv;
 
-.cn init [mem: %mem.M, ptr : ptr_ty, offset : i32, ret : .Cn [%mem.M]] = {
+.cn init [mem: %mem.M, ptr : ptr_ty, offset : r64, ret : .Cn [%mem.M]] = {
     .cn for_exit [mem : %mem.M] = {
         ret (mem)
     };
 
     .cn for_body [i : i32, mem : %mem.M, continue : .Cn [%mem.M]] = {
         .let idx_100_i = %core.bitcast (size_idx, i32) i;
-        .let lea = %mem.lea (size, <size; i32>, 0) (ptr, idx_100_i);
+        .let lea = %mem.lea (size, <size; r64>, 0) (ptr, idx_100_i);
+        .let real_i = %core.conv.s2r (64, 4294967296) i;
 
-        .let sum = %core.wrap.add (0:.Nat, 4294967296:.Nat) (offset, i);
-        .let store_mem = %mem.store (i32, 0) (mem, lea, sum);
+        .let sum = %core.rop.add (0:.Nat, 64:.Nat) (offset, real_i);
+        .let store_mem = %mem.store (r64, 0) (mem, lea, sum);
         continue (store_mem)
     };
 
     %affine.For (4294967296, 1, (%mem.M)) (0:i32, size_int, 1:i32, (mem), for_body, for_exit)
 };
 
-.cn const [mem: %mem.M, ptr : ptr_ty, value : i32, ret : .Cn [%mem.M]] = {
+.cn const [mem: %mem.M, ptr : ptr_ty, value : r64, ret : .Cn [%mem.M]] = {
     .cn for_exit [mem : %mem.M] = {
         ret (mem)
     };
 
     .cn for_body [i : i32, mem : %mem.M, continue : .Cn [%mem.M]] = {
         .let idx_100_i = %core.bitcast (size_idx, i32) i;
-        .let lea = %mem.lea (size, <size; i32>, 0) (ptr, idx_100_i);
-        .let store_mem = %mem.store (i32, 0) (mem, lea, value);
+        .let lea = %mem.lea (size, <size; r64>, 0) (ptr, idx_100_i);
+        .let store_mem = %mem.store (r64, 0) (mem, lea, value);
         continue (store_mem)
     };
 
@@ -63,7 +65,7 @@
     .let (alloc_a_mem, a) = %mem.alloc (arr_size, 0) mem;
     .let (alloc_ad_mem, ad) = %mem.alloc (arr_size, 0) alloc_a_mem;
 
-    .cn ret_cont [mem : %mem.M, result: i32, pb:.Cn[%mem.M, ptr_ty, s: i32, .Cn[%mem.M, ptr_ty]]] = {
+    .cn ret_cont [mem : %mem.M, result: r64, pb:.Cn[%mem.M, ptr_ty, s: r64, .Cn[%mem.M, ptr_ty]]] = {
         .cn pb_ret_cont [mem : %mem.M, ad: ptr_ty] = {
             .cn finish [mem : %mem.M] = {
                 .let free_mem = %mem.free (arr_size, 0) (mem, a);
@@ -74,21 +76,21 @@
             finish ( mem )
         };
 
-        pb(mem, ad, 1:i32, pb_ret_cont)
+        pb(mem, ad, 1.0:r64, pb_ret_cont)
     };
 
-    .let f_diff = %autodiff.ad (.Cn [%mem.M, ptr_ty,.Cn[%mem.M, i32]]) f;
+    .let f_diff = %autodiff.ad (.Cn [%mem.M, ptr_ty,.Cn[%mem.M, r64]]) f;
 
     .cn enter_diff [mem : %mem.M] = {
         f_diff (mem, a,ret_cont)
     };
 
     .cn init_ad [mem : %mem.M] = {
-        const(mem, ad, 0:i32, enter_diff)
+        const(mem, ad, 0.0:r64, enter_diff)
     };
 
     .cn init_a [mem : %mem.M] = {
-        init(mem, a, 1:i32, init_ad)
+        init(mem, a, 1.0:r64, init_ad)
     };
 
     printInteger ( alloc_ad_mem, 99:i32, init_a )

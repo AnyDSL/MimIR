@@ -20,6 +20,11 @@ namespace thorin::autodiff {
 
 #define f_arg_ty continuation_dom(f->type())
 
+const Def* zero(const Def* ty) {
+    auto& w = ty->world();
+    if (match<core::Real>(ty)) { return w.lit(ty, 0.0); }
+    return w.lit(ty, 0);
+}
 const Def* zero(World& w) { return w.lit_int(32, 0); }
 const Def* one(World& w) { return w.lit_int(32, 1); }
 
@@ -429,12 +434,16 @@ const Def* sum(const Def* left, const Def* right) {
 
     if (is_idx(left->type())) {
         return core::op(core::wrap::add, core::WMode::none, left, right);
+    } else if (match<core::Real>(left->type())) {
+        return core::op(core::rop::add, core::RMode::none, left, right);
     } else if (left->isa<Tuple>()) {
         DefVec new_ops;
         for (size_t i = 0; i < left->num_projs(); i++) { new_ops.push_back(sum(left->proj(i), right->proj(i))); }
 
         return w.tuple(new_ops);
     }
+
+    assert(false);
 }
 
 const Def* AutoDiffEval::grad_sum(const Def* def) {
@@ -483,18 +492,13 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
     return nullptr;
 }
 
-
 void AutoDiffEval::prop(Scope& scope, const Def* def) {
     if (!scope.bound(def)) return;
     auto& w = world();
-    if(!visited_prop.insert(def).second){
-        return;
-    }
-    
-    if(def->isa<App>()){
-        for(auto proj : def->projs()){
-            prop(scope, proj);
-        }
+    if (!visited_prop.insert(def).second) { return; }
+
+    if (def->isa<App>()) {
+        for (auto proj : def->projs()) { prop(scope, proj); }
     }
 
     auto gradient = grad_sum(def);
@@ -504,7 +508,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto grad = grad_arr(arr);
 
         auto test = grad_sum(val);
-
 
         auto gradient_val = gradient->proj(1);
         assert(gradient_val);
@@ -527,7 +530,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto ptr      = store->arg(1);
         auto grad_ptr = grad_arr(ptr);
         auto load_val = op_load(grad_ptr);
-        op_store(grad_ptr, zero(w));
+        op_store(grad_ptr, zero(load_val->type()));
         attach_gradient(store->arg(), w.tuple({w.bot(mem::type_mem(w)), w.bot(ptr->type()), load_val}));
         return;
     }
@@ -585,6 +588,32 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
             current_mem = div_mem;
             attach_gradient(wrap->arg(), w.tuple({left_grad, right_grad}));
         }
+    } else if (auto rop = match<core::rop>(def)) {
+        auto [left, right] = rop->args<2>();
+
+        const Def* left_grad  = gradient;
+        const Def* right_grad = gradient;
+
+        if (rop.id() == core::rop::add) {
+        } else if (rop.id() == core::rop::sub) {
+            right_grad = core::op_rminus(core::RMode::none, gradient);
+        } else if (rop.id() == core::rop::mul) {
+            auto left_value  = resolve(left);
+            auto right_value = resolve(right);
+
+            left_grad  = core::op(core::rop::mul, core::RMode::none, gradient, right_value);
+            right_grad = core::op(core::rop::mul, core::RMode::none, gradient, left_value);
+        }else if (rop.id() == core::rop::div) {
+            auto left_value  = resolve(left);
+            auto right_value = resolve(right);
+
+            auto [div_mem, left_grad] = core::op(core::rop::div, current_mem, gradient, right_value)->projs<2>();
+            auto right_grad =
+                core::op(core::rop::mul, core::RMode::none, core::op_rminus(core::RMode::none, left_grad), left_value);
+            current_mem = div_mem;
+        }
+
+        attach_gradient(rop->arg(), w.tuple({left_grad, right_grad}));
     }
 }
 
