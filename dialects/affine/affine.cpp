@@ -10,7 +10,7 @@
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"affine",
             [](thorin::PipelineBuilder& builder) {
-                builder.extend_opt_phase(110, [](thorin::PassMan& man) { man.add<thorin::affine::LowerFor>(); });
+                builder.extend_opt_phase(130, [](thorin::PassMan& man) { man.add<thorin::affine::LowerFor>(); });
             },
             nullptr, nullptr};
 }

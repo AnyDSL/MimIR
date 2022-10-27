@@ -108,6 +108,19 @@ const Def* AutoDiffEval::augment_var(const Var* var) {
 
 const Def* AutoDiffEval::augment_lam(Lam* lam) {
     auto& w      = world();
+
+    if (auto app = lam->body()->isa<App>()) {
+        if (app->arg() == lam->var()) {
+            auto called_lam = app->callee()->as_nom<Lam>();
+
+            auto tmp                    = augmented[lam->var()];
+            augmented[called_lam->var()] = tmp;
+
+            auto augment = augment_lam(called_lam);
+            return augment;
+        }
+    }
+
     auto aug_lam = w.nom_lam(lam->type()->as<Pi>(), w.dbg("aug_" + lam->name()));
     aug_lam->set_filter(true);
     augmented[lam->var()] = aug_lam->var();
@@ -584,29 +597,24 @@ const Def* zero_def(const Def* mem, const Def* ty) {
     }
 }
 
-Lam* AutoDiffEval::invert_lam(Lam* lam_def) {
+Lam* AutoDiffEval::invert_lam(Lam* lam) {
     auto& w = world();
 
-    auto lam = lam_def->isa_nom<Lam>();
-    assert(lam);
 
     w.debug_dump();
 
     if (lam->is_returning()) {
-
-        if(auto app = lam->body()->isa<App>()){
-            if(app->arg() == lam->var()){
+        if (auto app = lam->body()->isa<App>()) {
+            if (app->arg() == lam->var()) {
                 auto called_lam = app->callee()->as_nom<Lam>();
 
-                auto tmp = inverted[lam_def->var()];
+                auto tmp                    = inverted[lam->var()];
                 inverted[called_lam->var()] = tmp;
 
                 auto inv = invert_lam(called_lam);
                 return inv;
             }
         }
-
-
 
         auto ret_dom    = lam->ret_dom();
         auto arg_type   = lam->arg()->type();
@@ -615,7 +623,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam_def) {
         auto inv_lam    = w.nom_lam(inv_pi, w.dbg("inv_" + lam->name()));
         inv_lam->set_filter(true);
 
-        inverted[lam_def->ret_var()] = inv_lam;
+        inverted[lam->ret_var()] = inv_lam;
 
         AutodiffAnalysis analyze(lam);
         PostOrderVisitor visitor(analyze);
@@ -629,8 +637,8 @@ Lam* AutoDiffEval::invert_lam(Lam* lam_def) {
             assert(current);
             auto call = current->pred(Node::Type::App | Node::Type::For);
             assert(call);
-            auto app  = call->def->as<App>();
-            auto arg  = app->arg();
+            auto app = call->def->as<App>();
+            auto arg = app->arg();
 
             auto caller     = call->pred();
             auto caller_def = caller->def;
@@ -779,6 +787,23 @@ const Def* AutoDiffEval::normalized_to_cache_index(const Def* normalized_index) 
     return cache_index;
 }
 
+const Def* AutoDiffEval::rewrite_rebuild(Rewriter& rewriter, const Def* def){
+    auto result = rewriter.rewrite(def);
+
+    if(result != def){
+        return result;
+    }
+
+    if( def->isa<Var>() || def->isa<Axiom>() ){
+        return def;
+    }
+
+    auto& w = world();
+    auto new_ops = DefArray(def->num_ops(), [&](auto i) { return rewrite_rebuild(rewriter, def->op(i)); });
+    auto new_def = def->rebuild(w, def->type(), new_ops, def->dbg());
+    return new_def;
+}
+
 std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
     auto& w = world();
 
@@ -809,19 +834,15 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
 
     auto ret_lam = create_lam(inv_body_lam_new->ret_pi(), "invert_return_body_" + loop_body->name());
 
-    // ret_lam->set_body(w.app(inv_loop_body->ret_var(), end_mem()));
     ret_lam->set_body(w.app(inv_loop_body->ret_var(), end_mem()));
-    // inv_loop_body->set(inv_body_lam_new->reduce(w.tuple({mem::mem_var(inv_loop_body), ret_lam})));
-    // inv_loop_body->set_body(w.app(inv_body_lam_new, w.tuple({mem::mem_var(inv_loop_body), ret_lam})));
 
     Scope scope2(inv_body_lam_new);
-    AutodiffRewriter first_rewriter(world(), scope2);
+    ScopeRewriter first_rewriter(world(), scope2);
     auto replacement                                = w.tuple({mem::mem_var(inv_loop_body), ret_lam});
     first_rewriter.old2new[inv_body_lam_new->var()] = replacement;
     auto new_args                                   = DefArray(inv_body_lam_new->num_ops(),
-                                                               [&](size_t i) { return first_rewriter.rewrite_scoped(inv_body_lam_new->op(i)); });
+                                                               [&](size_t i) { return first_rewriter.rewrite(inv_body_lam_new->op(i)); });
     inv_loop_body->set(new_args);
-
     inv_body_lam_new->set_body(w.top_nat());
 
     // acc wrapper###############
@@ -851,16 +872,15 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
         auto replacement = w.tuple({acc_index, mem, ret_acc_lam});
 
         Scope scope(inv_loop_body);
-        AutodiffRewriter rewriter(world(), scope);
+        ScopeRewriter rewriter(world(), scope);
         rewriter.old2new[inv_loop_body->var()] = replacement;
-        auto new_args =
-            DefArray(inv_loop_body->num_ops(), [&](size_t i) { return rewriter.rewrite_scoped(inv_loop_body->op(i)); });
+        auto new_args = DefArray(inv_loop_body->num_ops(), [&](size_t i) { return rewriter.rewrite(inv_loop_body->op(i)); });
         inv_for_acc_lam->set(new_args);
         inv_loop_body->set_body(w.top_nat());
 
         for (auto& acc_op : acc_ops) {
-            acc_op = first_rewriter.rewrite_un_scoped(acc_op);
-            acc_op = rewriter.rewrite_un_scoped(acc_op);
+            acc_op = rewrite_rebuild(first_rewriter, acc_op);
+            acc_op = rewrite_rebuild(rewriter, acc_op);
         }
 
         auto acc_var = inv_for_acc_lam->arg(1_s);
@@ -1039,7 +1059,9 @@ const Def* AutoDiffEval::augment_(const Def* def) {
     if (auto bitcast = match<core::bitcast>(def)) { return augment_bitcast(bitcast->as<App>()); }
 
     // app => cont, operator, function
-    if (auto app = def->isa<App>()) { return augment_app(app); }
+    if (auto app = def->isa<App>()) {
+        return augment_app(app);
+    }
 
     // projection
     else if (auto ext = def->isa<Extract>()) {
@@ -1086,15 +1108,15 @@ const Def* AutoDiffEval::augment_(const Def* def) {
         return augment_pack(pack);
     }
 
-    //else if (auto axiom = def->isa<Axiom>()) {
-    //    return axiom;
-    //}
+    // else if (auto axiom = def->isa<Axiom>()) {
+    //     return axiom;
+    // }
 
     return def;
-/*
-    w.ELOG("did not expect to augment: {} : {}", def, def->type());
-    w.ELOG("node: {}", def->node_name());
-    assert(false && "augment not implemented on this def");*/
+    /*
+        w.ELOG("did not expect to augment: {} : {}", def, def->type());
+        w.ELOG("node: {}", def->node_name());
+        assert(false && "augment not implemented on this def");*/
 }
 
 const Def* AutoDiffEval::invert_(const Def* def) {
@@ -1284,9 +1306,7 @@ const Def* AutoDiffEval::resolve(const Def* def) {
     assert(!def->isa<Var>());
 
     auto new_ops = DefArray(def->num_ops(), [&](auto i) { return resolve(def->op(i)); });
-
     auto new_def = def->rebuild(w, def->type(), new_ops, def->dbg());
-
     return new_def;
 }
 

@@ -318,6 +318,8 @@ public:
     const Def* invert_alloc(const App*);
     const Def* invert_bitcast(const App*);
     const Def* invert_for(const App*);
+
+    const Def* rewrite_rebuild(Rewriter& rewriter, const Def* def);
     std::tuple<Lam*, Lam*> invert_for_body(const App* for_app);
 
     void attach_gradient(const Def* dst, const Def* grad);
