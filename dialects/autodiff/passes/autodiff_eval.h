@@ -399,6 +399,7 @@ private:
     /// src Def -> dst Def
     Def2Def augmented;
     Def2Def inverted;
+    DefSet visited_prop;
 
     /// dst Def -> dst Def
     Def2Def partial_pullback;

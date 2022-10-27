@@ -18,9 +18,7 @@ public:
     DebugWrapper(PassMan& man)
         : RWPass(man, "debug_pass") {}
 
-    void prepare() override { 
-        world().debug_dump();
-    }
+    void prepare() override { world().debug_dump(); }
 };
 
 /// optimization idea:
@@ -37,7 +35,8 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                 // man.add<thorin::autodiff::AutoDiffExternalCleanup>(); });
 
                 builder.add_opt(126);
-                builder.extend_opt_phase(131, [](thorin::PassMan& man) { man.add<thorin::mem::Reshape>(thorin::mem::Reshape::Flat); });
+                builder.extend_opt_phase(
+                    131, [](thorin::PassMan& man) { man.add<thorin::mem::Reshape>(thorin::mem::Reshape::Flat); });
                 builder.add_opt(132);
                 builder.extend_opt_phase(133, [](thorin::PassMan& man) { man.add<DebugWrapper>(); });
             },

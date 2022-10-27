@@ -368,8 +368,6 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc) {
 const Def* AutoDiffEval::augment_malloc(const App* malloc) {
     auto aug_arg = augment(malloc->arg());
     // TODO: not yet implemented
-    malloc->dump();
-    malloc->dump();
     return malloc;
 }
 
@@ -485,16 +483,30 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
     return nullptr;
 }
 
+
 void AutoDiffEval::prop(Scope& scope, const Def* def) {
     if (!scope.bound(def)) return;
     auto& w = world();
+    if(!visited_prop.insert(def).second){
+        return;
+    }
+    
+    if(def->isa<App>()){
+        for(auto proj : def->projs()){
+            prop(scope, proj);
+        }
+    }
 
+    auto gradient = grad_sum(def);
     if (auto load = match<mem::load>(def)) {
         auto arr  = load->arg(1);
         auto val  = load->proj(1);
         auto grad = grad_arr(arr);
 
-        auto gradient_val = grad_sum(val);
+        auto test = grad_sum(val);
+
+
+        auto gradient_val = gradient->proj(1);
         assert(gradient_val);
 
         auto load_val = op_load(grad);
@@ -504,8 +516,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         return;
     }
 
-    def->dump(1);
-    auto gradient = grad_sum(def);
     if (gradient == nullptr) { return; }
 
     if (auto tuple = def->isa<Tuple>()) {
@@ -639,7 +649,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
 
                 auto invert_start = zero(w);
                 auto invert_inc   = one(w);
-                current_mem->type()->dump();
+
                 auto size           = for_size(current_mem, aug_start, aug_end, aug_inc);
                 auto invert_end     = size;
                 auto invert_for_mem = end_mem();
@@ -1110,9 +1120,7 @@ const Def* AutoDiffEval::invert_lea(const App* lea) {
     return gradient_ptr;
 }
 
-const Def* AutoDiffEval::invert_load(const App* load) {
-    assert(false);
-}
+const Def* AutoDiffEval::invert_load(const App* load) { assert(false); }
 
 const Def* AutoDiffEval::op_load(const Def* ptr, bool with_mem) {
     assert(match<mem::M>(current_mem->type()));
@@ -1182,9 +1190,7 @@ void AutoDiffEval::attach_gradient(const Def* dst, const Def* grad) {
     }
 }
 
-const Def* AutoDiffEval::invert_store(const App* store) {
-    assert(false);
-}
+const Def* AutoDiffEval::invert_store(const App* store) { assert(false); }
 const Def* AutoDiffEval::invert_malloc(const App* malloc) { return malloc; }
 const Def* AutoDiffEval::invert_alloc(const App* alloc) {
     auto [mem, alloc_ptr] = alloc->projs<2>();
