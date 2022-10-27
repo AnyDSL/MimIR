@@ -13,8 +13,6 @@
 
 using namespace thorin;
 
-
-
 class DebugWrapper : public RWPass<DebugWrapper, Lam> {
 public:
     DebugWrapper(PassMan& man)
@@ -34,14 +32,14 @@ public:
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"autodiff",
             [](thorin::PipelineBuilder& builder) {
-              
-                builder.extend_opt_phase(106, [](thorin::PassMan& man) { man.add<DebugWrapper>(); });
                 builder.extend_opt_phase(107, [](thorin::PassMan& man) { man.add<thorin::autodiff::AutoDiffEval>(); });
-                builder.extend_opt_phase(108, [](thorin::PassMan& man) { man.add<DebugWrapper>(); });
-                //builder.extend_opt_phase(109, [](thorin::PassMan& man) { man.add<thorin::affine::LowerFor>(); });
-                //builder.extend_opt_phase(126, [](PassMan& man) { man.add<thorin::autodiff::AutoDiffExternalCleanup>(); });
+                // builder.extend_opt_phase(126, [](PassMan& man) {
+                // man.add<thorin::autodiff::AutoDiffExternalCleanup>(); });
 
-                builder.add_opt(125);
+                builder.add_opt(126);
+                builder.extend_opt_phase(131, [](thorin::PassMan& man) { man.add<thorin::mem::Reshape>(thorin::mem::Reshape::Flat); });
+                builder.add_opt(132);
+                builder.extend_opt_phase(133, [](thorin::PassMan& man) { man.add<DebugWrapper>(); });
             },
             nullptr, [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); }};
 }

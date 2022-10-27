@@ -339,7 +339,6 @@ public:
     void pop_loop_frame();
 
     const Def* resolve(const Def* def);
-    void propagate(const Def* target, const Def* gradient);
 
     const Def* grad_arr(const Def* def);
 

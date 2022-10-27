@@ -138,8 +138,10 @@ Lam* AutoDiffEval::free_memory() {
     return free_memory;
 }
 
-Lam* strip_eta(Lam* lam){
+Lam* strip_eta(Lam* lam) {
     if (auto app = lam->body()->isa<App>()) {
+        app->arg()->dump(1);
+        lam->var()->dump(1);
         if (app->arg() == lam->var()) {
             auto called_lam = app->callee()->as_nom<Lam>();
             return strip_eta(called_lam);
