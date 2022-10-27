@@ -1,0 +1,150 @@
+diff_lam->world().debug_dump()
+.import affine;
+.import autodiff;
+.import core;
+.import direct;
+.import mem;
+.cn .extern const __895172::[mem_895192: %mem.M, size_895174: .Idx 4294967296, ptr_895327: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), value_895353: .Idx 4294967296, ret_895368: .Cn %mem.M] = {
+    .cn for_body_895206 __895215::[i_895335: .Idx 4294967296, mem_895247: %mem.M, continue_895217: .Cn %mem.M] = {
+        .let _895345: %mem.Ptr (.Idx 4294967296, 0) = %mem.lea (xe2x8axa4:.Nat, <xe2x8axa4:.Nat; .Idx 4294967296>, 0) (ptr_895327, i_895335);
+        .let _895360: %mem.M = %mem.store (.Idx 4294967296, 0) (mem_895247, _895345, value_895353);
+        continue_895217 _895360
+    };
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), size_895174, 1:(.Idx 4294967296), mem_895192, for_body_895206, ret_895368)
+};
+.cn .extern init __895393::[mem_895401: %mem.M, size_895395: .Idx 4294967296, ptr_895439: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), offset_895491: .Idx 4294967296, ret_895512: .Cn %mem.M] = {
+    .cn for_body_895406 __895415::[i_895444: .Idx 4294967296, mem_895430: %mem.M, continue_895417: .Cn %mem.M] = {
+        .let _895454: %mem.Ptr (.Idx 4294967296, 0) = %mem.lea (xe2x8axa4:.Nat, <xe2x8axa4:.Nat; .Idx 4294967296>, 0) (ptr_895439, i_895444);
+        .let _895498: .Idx 4294967296 = %core.wrap.add (0, 4294967296) (i_895444, offset_895491);
+        .let _895505: %mem.M = %mem.store (.Idx 4294967296, 0) (mem_895430, _895454, _895498);
+        continue_895417 _895505
+    };
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), size_895395, 1:(.Idx 4294967296), mem_895401, for_body_895406, ret_895512)
+};
+.lam .extern internal_diff_core_icmp_XygLe __895605: .Nat xe2x86x92 .Cn [<<2; .Idx __895533>>, .Cn [.Idx 2, .Cn [.Idx 2, .Cn <<2; .Idx __895533>>]]] = {
+    .cn cmp_pb_895712 __895726::[.Idx 2, pb_ret_895728: .Cn <<2; .Idx __895605>>] = {
+        pb_ret_895728 <2; 0:(.Idx __895605)>
+    };
+    .cn inner_cmp_895652 __895668::[__895687::[_895691: .Idx __895605, _895695: .Idx __895605], ret_895670: .Cn [.Idx 2, .Cn [.Idx 2, .Cn <<2; .Idx __895605>>]]] = {
+        .let _895698: .Idx 2 = %core.icmp.XygLe __895605 __895687;
+        ret_895670 (_895698, cmp_pb_895712)
+    };
+    inner_cmp_895652
+};
+.lam .extern internal_diff_core_icmp_xYgLE __895818: .Nat xe2x86x92 .Cn [<<2; .Idx __895761>>, .Cn [.Idx 2, .Cn [.Idx 2, .Cn <<2; .Idx __895761>>]]] = {
+    .cn cmp_pb_895897 __895903::[.Idx 2, pb_ret_895905: .Cn <<2; .Idx __895818>>] = {
+        pb_ret_895905 <2; 0:(.Idx __895818)>
+    };
+    .cn inner_cmp_895856 __895862::[__895881::[_895885: .Idx __895818, _895889: .Idx __895818], ret_895864: .Cn [.Idx 2, .Cn [.Idx 2, .Cn <<2; .Idx __895818>>]]] = {
+        .let _895892: .Idx 2 = %core.icmp.xYgLE __895818 __895881;
+        ret_895864 (_895892, cmp_pb_895897)
+    };
+    inner_cmp_895856
+};
+.lam .extern internal_diff_core_wrap_add __896006::[_896097: .Nat, w_896007: .Nat] xe2x86x92 .Cn [<<2; .Idx w_895939>>, .Cn [.Idx w_895939, .Cn [.Idx w_895939, .Cn <<2; .Idx w_895939>>]]] = {
+    .cn add_pb_896110 __896119::[s_896129: .Idx w_896007, pb_ret_896121: .Cn <<2; .Idx w_896007>>] = {
+        pb_ret_896121 <2; s_896129>
+    };
+    .cn inner_add_deriv_cps_896056 __896065::[__896085::[_896089: .Idx w_896007, _896093: .Idx w_896007], ret_896067: .Cn [.Idx w_896007, .Cn [.Idx w_896007, .Cn <<2; .Idx w_896007>>]]] = {
+        .let _896100: .Idx w_896007 = %core.wrap.add __896006 __896085;
+        ret_896067 (_896100, add_pb_896110)
+    };
+    inner_add_deriv_cps_896056
+};
+.lam .extern internal_diff_core_wrap_mul __896216::[_896301: .Nat, w_896217: .Nat] xe2x86x92 .Cn [<<2; .Idx w_896155>>, .Cn [.Idx w_896155, .Cn [.Idx w_896155, .Cn <<2; .Idx w_896155>>]]] = {
+    .cn inner_mul_deriv_cps_896260 __896269::[__896289::[_896293: .Idx w_896217, _896297: .Idx w_896217], ret_896271: .Cn [.Idx w_896217, .Cn [.Idx w_896217, .Cn <<2; .Idx w_896217>>]]] = {
+        .cn mul_pb_896314 __896323::[s_896338: .Idx w_896217, pb_ret_896325: .Cn <<2; .Idx w_896217>>] = {
+            .let _896350: .Idx w_896217 = %core.wrap.mul __896216 (__896289#1:(.Idx 2), s_896338);
+            .let _896360: .Idx w_896217 = %core.wrap.mul __896216 (__896289#0:(.Idx 2), s_896338);
+            pb_ret_896325 (_896350, _896360)
+        };
+        .let _896304: .Idx w_896217 = %core.wrap.mul __896216 __896289;
+        ret_896271 (_896304, mul_pb_896314)
+    };
+    inner_mul_deriv_cps_896260
+};
+.cn printInteger [%mem.M, .Idx 4294967296, .Cn %mem.M] = {
+     <unset>
+};
+.cn f_897051 __897062::[mem_897102: %mem.M, size_897066: .Idx 4294967296, a_897114: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), b_897203: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), c_897240: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), ret_897327: .Cn %mem.M] = {
+    .cn for_body2_897144 __897150::[j_897207: .Idx 4294967296, mem_897190: %mem.M, continue_897152: .Cn %mem.M] = {
+        .let _897217: %mem.Ptr (.Idx 4294967296, 0) = %mem.lea (xe2x8axa4:.Nat, <xe2x8axa4:.Nat; .Idx 4294967296>, 0) (b_897203, j_897207);
+        .let _897225: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (mem_897190, _897217);
+        .let _897250: %mem.Ptr (.Idx 4294967296, 0) = %mem.lea (xe2x8axa4:.Nat, <xe2x8axa4:.Nat; .Idx 4294967296>, 0) (c_897240, j_897207);
+        .let _897258: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (_897225#0:(.Idx 2), _897250);
+        .let _897124: %mem.Ptr (.Idx 4294967296, 0) = %mem.lea (xe2x8axa4:.Nat, <xe2x8axa4:.Nat; .Idx 4294967296>, 0) (a_897114, 0:(.Idx 4294967296));
+        .let _897132: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (mem_897102, _897124);
+        .let _897307: .Idx 4294967296 = %core.wrap.mul (0, 4294967296) (_897132#1:(.Idx 2), _897225#1:(.Idx 2));
+        .let _897312: .Idx 4294967296 = %core.wrap.add (0, 4294967296) (_897258#1:(.Idx 2), _897307);
+        .let _897319: %mem.M = %mem.store (.Idx 4294967296, 0) (_897258#0:(.Idx 2), _897250, _897312);
+        continue_897152 _897319
+    };
+    %affine.For (4294967296, 1, %mem.M) (0:(.Idx 4294967296), size_897066, 1:(.Idx 4294967296), _897132#0:(.Idx 2), for_body2_897144, ret_897327)
+};
+.cn .extern main __896576::[mem_896580: %mem.M, .Idx 4294967296, %mem.Ptr (%mem.Ptr (.Idx 256, 0), 0), return_897655: .Cn [%mem.M, .Idx 4294967296]] = {
+    .cn pb_ret_cont_897408 __897436::[mem_897438: %mem.M, .Idx 4294967296, ad_897530: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), bd_897607: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), cd_897735: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0)] = {
+        .cn print_integer_callback2_897644 __897714: %mem.M = {
+            .let _896581: [%mem.M, %mem.Ptr (<<100; .Idx 4294967296>>, 0)] = %mem.alloc (<<100; .Idx 4294967296>>, 0) mem_896580;
+            .let _896657: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) = %core.bitcast <2; %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0)> _896581#1:(.Idx 2);
+            .let _897716: %mem.M = %mem.free (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) (__897714, _896657);
+            .let _896584: [%mem.M, %mem.Ptr (<<100; .Idx 4294967296>>, 0)] = %mem.alloc (<<100; .Idx 4294967296>>, 0) _896581#0:(.Idx 2);
+            .let _896694: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) = %core.bitcast <2; %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0)> _896584#1:(.Idx 2);
+            .let _897718: %mem.M = %mem.free (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) (_897716, _896694);
+            .let _896587: [%mem.M, %mem.Ptr (<<100; .Idx 4294967296>>, 0)] = %mem.alloc (<<100; .Idx 4294967296>>, 0) _896584#0:(.Idx 2);
+            .let _896736: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) = %core.bitcast <2; %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0)> _896587#1:(.Idx 2);
+            .let _897720: %mem.M = %mem.free (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) (_897718, _896736);
+            .let _897722: %mem.M = %mem.free (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) (_897720, ad_897530);
+            .let _897724: %mem.M = %mem.free (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) (_897722, bd_897607);
+            .let _897737: %mem.M = %mem.free (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) (_897724, cd_897735);
+            return_897655 (_897737, 0:(.Idx 4294967296))
+        };
+        .cn print_integer_callback_897566 __897590: %mem.M = {
+            .let _897617: %mem.Ptr (.Idx 4294967296, 0) = %mem.lea (xe2x8axa4:.Nat, <xe2x8axa4:.Nat; .Idx 4294967296>, 0) (bd_897607, 1:(.Idx 4294967296));
+            .let _897625: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (__897590, _897617);
+            printInteger (_897625#0:(.Idx 2), _897625#1:(.Idx 2), print_integer_callback2_897644)
+        };
+        .cn print_integer_backward_897488 __897512: %mem.M = {
+            .let _897540: %mem.Ptr (.Idx 4294967296, 0) = %mem.lea (xe2x8axa4:.Nat, <xe2x8axa4:.Nat; .Idx 4294967296>, 0) (ad_897530, 1:(.Idx 4294967296));
+            .let _897548: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (__897512, _897540);
+            printInteger (_897548#0:(.Idx 2), _897548#1:(.Idx 2), print_integer_callback_897566)
+        };
+        .let _897455: %mem.Ptr (.Idx 4294967296, 0) = %mem.lea (xe2x8axa4:.Nat, <xe2x8axa4:.Nat; .Idx 4294967296>, 0) (_896736, 1:(.Idx 4294967296));
+        .let _897463: [%mem.M, .Idx 4294967296] = %mem.load (.Idx 4294967296, 0) (mem_897438, _897455);
+        printInteger (_897463#0:(.Idx 2), _897463#1:(.Idx 2), print_integer_backward_897488)
+    };
+    .cn ret_cont_897343 __897361::[mem_897363: %mem.M, pb_897394: .Cn [%mem.M, %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), .Cn [%mem.M, .Idx 4294967296, %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0)]]] = {
+        .cn print_integer_forward_897384 __897398: %mem.M = {
+            .let _896590: [%mem.M, %mem.Ptr (<<100; .Idx 4294967296>>, 0)] = %mem.alloc (<<100; .Idx 4294967296>>, 0) _896587#0:(.Idx 2);
+            .let _896778: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) = %core.bitcast <2; %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0)> _896590#1:(.Idx 2);
+            .let _896593: [%mem.M, %mem.Ptr (<<100; .Idx 4294967296>>, 0)] = %mem.alloc (<<100; .Idx 4294967296>>, 0) _896590#0:(.Idx 2);
+            .let _896814: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) = %core.bitcast <2; %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0)> _896593#1:(.Idx 2);
+            .let _896596: [%mem.M, %mem.Ptr (<<100; .Idx 4294967296>>, 0)] = %mem.alloc (<<100; .Idx 4294967296>>, 0) _896593#0:(.Idx 2);
+            .let _896850: %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0) = %core.bitcast <2; %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0)> _896596#1:(.Idx 2);
+            pb_897394 (__897398, _896778, _896814, _896850, pb_ret_cont_897408)
+        };
+        printInteger (mem_897363, 42:(.Idx 4294967296), print_integer_forward_897384)
+    };
+    .cn enter_diff_896864 __897334: %mem.M = {
+        %autodiff.ad .Cn [%mem.M, .Idx 4294967296, %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), %mem.Ptr (<<xe2x8axa4:.Nat; .Idx 4294967296>>, 0), .Cn %mem.M] f_897051 (__897334, 100:(.Idx 4294967296), _896657, _896694, _896736, ret_cont_897343)
+    };
+    .cn init_cd_896824 __896837: %mem.M = {
+        const (__896837, 100:(.Idx 4294967296), _896850, 1:(.Idx 4294967296), enter_diff_896864)
+    };
+    .cn init_bd_896788 __896801: %mem.M = {
+        const (__896801, 100:(.Idx 4294967296), _896814, 0:(.Idx 4294967296), init_cd_896824)
+    };
+    .cn init_ad_896751 __896765: %mem.M = {
+        const (__896765, 100:(.Idx 4294967296), _896778, 0:(.Idx 4294967296), init_bd_896788)
+    };
+    .cn init_c_896709 __896723: %mem.M = {
+        const (__896723, 100:(.Idx 4294967296), _896736, 0:(.Idx 4294967296), init_ad_896751)
+    };
+    .cn init_b_896667 __896681: %mem.M = {
+        init (__896681, 100:(.Idx 4294967296), _896694, 2:(.Idx 4294967296), init_c_896709)
+    };
+    .cn init_a_896613 __896626: %mem.M = {
+        init (__896626, 100:(.Idx 4294967296), _896657, 1:(.Idx 4294967296), init_b_896667)
+    };
+    printInteger (_896596#0:(.Idx 2), 99:(.Idx 4294967296), init_a_896613)
+};
+unknown error

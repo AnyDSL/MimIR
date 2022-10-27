@@ -19,48 +19,22 @@
         a: %mem.Ptr (<<⊤:.Nat; i32>>, 0), 
         b: %mem.Ptr (<<⊤:.Nat; i32>>, 0), 
         c: %mem.Ptr (<<⊤:.Nat; i32>>, 0), ret: .Cn [mem : %mem.M]] = {
-    
-    .cn for_body [i : i32, mem : %mem.M, continue : .Cn [%mem.M]] = {
-        .let lea_a = %mem.lea (⊤:.Nat, <⊤:.Nat; i32>, 0) (a, i);
 
+    .let lea_a = %mem.lea (⊤:.Nat, <⊤:.Nat; i32>, 0) (a, 1:i32);
+    .let (load_mem, a_val) = %mem.load (i32, 0) (mem, lea_a);
 
-        .let (mem, a_val) = %mem.load (i32, 0) (mem, lea_a);
-
-        .cn for_exit2 [mem : %mem.M] = {
-
-            .cn for_body3 [i : i32, mem : %mem.M, continue : .Cn [%mem.M]] = {
-                .let lea_b = %mem.lea (⊤:.Nat, <⊤:.Nat; i32>, 0) (b, i);
-                .let lea_c = %mem.lea (⊤:.Nat, <⊤:.Nat; i32>, 0) (c, i);
-
-
-                .let (load_mem1, b_val) = %mem.load (i32, 0) (mem, lea_b);
-                .let (load_mem2, c_val) = %mem.load (i32, 0) (load_mem1, lea_c);
-                .let prod = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (a_val, b_val);
-                .let sum = %core.wrap.add (0:.Nat, 4294967296:.Nat) (c_val, prod);
-                .let store_mem = %mem.store (i32, 0) (load_mem2, lea_c, sum);
-                continue (store_mem)
-            };
-            
-            %affine.For (4294967296, 1, (%mem.M)) (0:i32, size, 1:i32, (mem), for_body3, continue)
-        };
-
-        .cn for_body2 [i : i32, mem : %mem.M, continue : .Cn [%mem.M]] = {
-            .let lea_b = %mem.lea (⊤:.Nat, <⊤:.Nat; i32>, 0) (b, i);
-            .let lea_c = %mem.lea (⊤:.Nat, <⊤:.Nat; i32>, 0) (c, i);
-
-
-            .let (load_mem1, b_val) = %mem.load (i32, 0) (mem, lea_b);
-            .let (load_mem2, c_val) = %mem.load (i32, 0) (load_mem1, lea_c);
-            .let prod = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (a_val, b_val);
-            .let sum = %core.wrap.add (0:.Nat, 4294967296:.Nat) (c_val, prod);
-            .let store_mem = %mem.store (i32, 0) (load_mem2, lea_c, sum);
-            continue (store_mem)
-        };
-        
-        %affine.For (4294967296, 1, (%mem.M)) (0:i32, size, 1:i32, (mem), for_body2, for_exit2)
+    .cn for_body2 [j : i32, mem : %mem.M, continue : .Cn [%mem.M]] = {
+        .let lea_b = %mem.lea (⊤:.Nat, <⊤:.Nat; i32>, 0) (b, j);
+        .let lea_c = %mem.lea (⊤:.Nat, <⊤:.Nat; i32>, 0) (c, j);
+        .let (load_mem1, b_val) = %mem.load (i32, 0) (mem, lea_b);
+        .let (load_mem2, c_val) = %mem.load (i32, 0) (load_mem1, lea_c);
+        .let prod = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (a_val, b_val);
+        .let sum = %core.wrap.add (0:.Nat, 4294967296:.Nat) (c_val, prod);
+        .let store_mem = %mem.store (i32, 0) (load_mem2, lea_c, sum);
+        continue (store_mem)
     };
-    
-    %affine.For (4294967296, 1, (%mem.M)) (0:i32, size, 1:i32, (mem), for_body, ret)
+
+    %affine.For (4294967296, 1, (%mem.M)) (0:i32, size, 1:i32, (load_mem), for_body2, ret)
 };
 
 .cn .extern init [mem: %mem.M, size : i32, ptr : %mem.Ptr (<<⊤:.Nat; i32>>, 0), offset : i32, ret : .Cn [%mem.M]] = {

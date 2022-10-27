@@ -66,7 +66,7 @@ const Def* AutoDiffEval::autodiff_zero(const Def* mem, const Def* def) {
 }
 
 void AutoDiffEval::fetch_gradients(Lam* src, Lam* backward) {
-    auto src_arg  = src->arg();
+    auto src_arg      = src->arg();
     auto backward_arg = backward->arg();
 
     size_t fwd_i = 0;
@@ -138,22 +138,6 @@ Lam* AutoDiffEval::free_memory() {
     return free_memory;
 }
 
-const Def* mask(const Def* target, size_t i, const Def* def) {
-    auto& w    = target->world();
-    auto projs = target->projs();
-    projs[i]   = def;
-    return w.tuple(projs);
-}
-
-const Def* mask_first(const Def* target, const Def* def) { return mask(target, 0, def); }
-
-const Def* mask_last(const Def* target, const Def* def) { return mask(target, target->num_projs() - 1, def); }
-
-const Def* merge_flat(const Def* left, const Def* right){
-    auto& w    = left->world();
-    return flatten_deep(w.tuple({left, right}));
-}
-
 /// side effect: register pullback
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& w     = world();
@@ -165,13 +149,15 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto diff_lam = w.nom_lam(diff_ty, w.dbg("forward_begin_" + diffee->name()));
     diff_lam->set_filter(true);
 
-    auto inv_lam_ty = forward_to_backward(diffee->type()->as<Pi>());
-    auto backward_begin    = w.nom_lam(inv_lam_ty, w.dbg("backward_begin_" + diffee->name()));
+    auto inv_lam_ty     = forward_to_backward(diffee->type()->as<Pi>());
+    auto backward_begin = w.nom_lam(inv_lam_ty, w.dbg("backward_begin_" + diffee->name()));
     backward_begin->set_filter(true);
+    backward_begin->set_body(w.top_nat());
 
     auto lam_return_ty = diffee->type()->ret_pi();
     auto forward_end   = w.nom_lam(lam_return_ty, w.dbg("forward_end_" + diffee->name()));
     forward_end->set_filter(true);
+    forward_end->set_body(w.top_nat());
 
     augmented[diffee->var()] = mask_last(diff_lam->var(), forward_end);
 
@@ -181,8 +167,8 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto aug_body = augment(diffee->body());
     diff_lam->set_body(aug_body);
 
-    //auto init_sink_lam = init_sinks();
-    //auto init_sink_mem = end_mem();
+    // auto init_sink_lam = init_sinks();
+    // auto init_sink_mem = end_mem();
 
     add_inverted(diffee->var(), diff_lam->var());
 
@@ -191,35 +177,34 @@ const Def* AutoDiffEval::derive_(const Def* def) {
 
     //                 ______________
     //                |              |
-    //backward_begin -+> inv_diffee -+> backward_begin->ret
-
+    // backward_begin -+> inv_diffee -+> backward_begin->ret
 
     forward_end->set_body(w.app(diff_lam->ret_var(), merge_flat(forward_end->var(), backward_begin)));
     auto backward_end = w.nom_lam(inv_diffee->ret_pi(), w.dbg("backward_end_" + diffee->name()));
+    backward_end->set_body(w.top_nat());
     backward_end->set_filter(true);
 
-    auto ret_ret = diffee->ret_pi()->num_doms();
+    auto ret_ret     = diffee->ret_pi()->num_doms();
     auto inv_num_ret = backward_begin->num_doms() - 1;
 
     auto num_gradients = inv_num_ret - ret_ret;
 
-    DefVec test;
-    DefVec test2;
-
+    DefVec gradient_results;
     size_t i = num_gradients;
-    for( auto var : backward_begin->args() ){
-        if(match<mem::M>(var->type()) || i <= 0){
-            test.push_back(var);
-        }else if(i > 0){
+    for (auto var : backward_begin->args()) {
+        if (match<mem::M>(var->type()) || i <= 0) {
+            gradient_results.push_back(var);
+        } else {
             i--;
         }
     }
 
-    test.push_back(backward_end);
-
-    backward_begin->set_body(w.app(inv_diffee, test));
+    gradient_results.push_back(backward_end);
+    backward_begin->set_body(w.app(inv_diffee, gradient_results));
     backward_end->set_body(w.app(backward_begin->ret_var(), backward_end->var()));
 
+
+    diff_lam->world().debug_dump();
     return diff_lam;
 }
 

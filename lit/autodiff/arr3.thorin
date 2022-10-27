@@ -137,11 +137,11 @@
     };
 
     .cn init_b [mem : %mem.M] = {
-        init(mem, b, 2:i32, init_c)
+        init(mem, b, 20:i32, init_c)
     };
 
     .cn init_a [mem : %mem.M] = {
-        init(mem, a, 1:i32, init_b)
+        init(mem, a, 10:i32, init_b)
     };
 
     printInteger ( alloc_cd_mem, 99:i32, init_a )

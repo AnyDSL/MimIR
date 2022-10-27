@@ -61,18 +61,18 @@ struct Node;
 using Nodes = std::unordered_set<Node*>;
 
 struct Node {
-    enum Type{
-        Bot,
-        App,
-        For,
-        Branch,
-        Return,
-        Lam
+    enum Type { 
+        Any = 0,
+        Bot = 1, 
+        App = 2, 
+        For = 4, 
+        Branch = 8, 
+        Return = 16, 
+        Lam = 32 
     };
 
-    Node(Type type) : type_(type){
-
-    }
+    Node(Type type)
+        : type_(type) {}
 
     Type type_;
     Def* nom;
@@ -81,15 +81,28 @@ struct Node {
     Nodes succs;
     mutable size_t index = -1;
 
-    bool isa(Type type){
-        return type_ == type;
-    }
+    bool isa(Type type) { return type_ == Any || (type_ & type) != 0; }
 
-    Node* pred(){
+    Node* pred() {
         assert(preds.size() == 1);
         return *(preds.begin());
     }
+
+    Node* pred(Node::Type type) {
+        for( auto& node : preds ){
+            if( node->isa(type) ){
+                return node;
+            }
+        }
+
+        return nullptr;
+    }
 };
+
+inline Node::Type operator|(Node::Type a, Node::Type b)
+{
+    return static_cast<Node::Type>(static_cast<int>(a) | static_cast<int>(b));
+}
 
 class AutodiffAnalysis {
 public:
@@ -110,7 +123,7 @@ public:
             result      = new Node(type);
             result->def = def;
             nodes_[def] = result;
-        }else if(type != Node::Type::Bot && !result->isa(type)){
+        } else if (type != Node::Type::Bot && !result->isa(type)) {
             assert(result->isa(Node::Type::Bot));
             result->type_ = type;
         }
@@ -125,7 +138,6 @@ public:
     size_t size() { return nodes_.size(); }
 
 private:
-
     bool link(Node* left, Node* right) {
         auto size_before = left->succs.size();
 
@@ -135,9 +147,9 @@ private:
         return size_before != left->succs.size();
     }
 
-    void run(Lam* lam) { 
+    void run(Lam* lam) {
         node(lam, Node::Type::Lam);
-        run(lam, lam->body()); 
+        run(lam, lam->body());
     }
 
     void run(const Def* prev, const Def* curr) {
@@ -147,19 +159,19 @@ private:
     }
 
     void run(const Def* curr) {
-        if(curr->isa<Var>()) return;
+        if (curr->isa<Var>()) return;
 
         if (auto lam = curr->isa_nom<Lam>()) {
             run(lam);
-        } else if (auto loop = match<affine::For>(curr)) {
-            auto body = loop->arg(4);
-            auto exit = loop->arg(5);
-            node(loop, Node::Type::For);
-            run(loop, body);
-            run(loop, exit);
         } else if (auto app = curr->isa<App>()) {
             auto callee = app->callee();
-            if (callee_isa_var(callee)) {
+            if (auto loop = match<affine::For>(curr)) {
+                auto body = loop->arg(4);
+                auto exit = loop->arg(5);
+                node(loop, Node::Type::For);
+                run(loop, body);
+                run(loop, exit);
+            }else if (callee_isa_var(callee)) {
                 link(node(curr, Node::Type::App), node(callee));
             } else if (auto extract = callee->isa<Extract>()) {
                 auto branches = extract->tuple();
@@ -168,23 +180,20 @@ private:
             } else if (auto next_lam = callee->isa_nom<Lam>()) {
                 node(curr, Node::Type::App);
                 run(curr, next_lam);
-            }else{
+            } else {
                 run(curr, app->arg());
                 return;
             }
 
             run(app->arg());
-        }else if( auto tup = curr->isa<Tuple>() ){
-            for(auto proj : tup->projs()){
-                run(curr, proj);
-            }
-        }else if( auto pack = curr->isa<Pack>() ){
+        } else if (auto tup = curr->isa<Tuple>()) {
+            for (auto proj : tup->projs()) { run(curr, proj); }
+        } else if (auto pack = curr->isa<Pack>()) {
             run(curr, pack->body());
-        }else if( auto extract = curr->isa<Extract>() ){
+        } else if (auto extract = curr->isa<Extract>()) {
             curr->dump();
             run(curr, extract->tuple());
-        }else{
-            
+        } else {
         }
     }
 
@@ -196,37 +205,63 @@ private:
     DefMap<Node*> nodes_;
 };
 
-class PostOrderVisitor{
+class AutodiffRewriter : public Rewriter {
+public:
+    AutodiffRewriter(World& world, Scope& scope)
+        : Rewriter(world), scope_(scope) {}
 
+    enum Mode{
+        Scoped, UnScoped
+    };
+
+    const Def* rewrite_scoped(const Def* old_def) {
+        mode = Scoped;
+        return rewrite(old_def);
+    }
+
+    const Def* rewrite_un_scoped(const Def* old_def) {
+        mode = UnScoped;
+        return rewrite(old_def);
+    }
+
+    const Def* rewrite(const Def* old_def) override {
+        if(mode == Scoped && !scope_.bound(old_def)){
+            return old_def;
+        }else if (old_def->isa<Axiom>()) return old_def;
+        return Rewriter::rewrite(old_def);
+    }
+
+    Mode mode;
+    Scope& scope_;
+};
+
+class PostOrderVisitor {
     AutodiffAnalysis& analysis_;
     std::map<size_t, const Node*> nodes_;
     std::vector<const Node*> node_vec_;
 
 public:
-    PostOrderVisitor(AutodiffAnalysis& analysis) : analysis_(analysis){
+    PostOrderVisitor(AutodiffAnalysis& analysis)
+        : analysis_(analysis) {}
 
-    }
-
-    std::vector<const Node*>& post_order_visit(const Def* def){
+    std::vector<const Node*>& post_order_visit(const Def* def) {
         nodes_.clear();
         auto node = analysis_.node(def);
-        size_t i = post_order_visit(node, analysis_.size());
-        
+        size_t i  = post_order_visit(node, analysis_.size());
+
         node_vec_.clear();
-        for( auto [key, value] : nodes_ ) {
-            node_vec_.push_back( value );
-        }
+        for (auto [key, value] : nodes_) { node_vec_.push_back(value); }
 
         return node_vec_;
     }
 
 private:
-    
     size_t post_order_visit(const Node* n, size_t i) {
         auto& n_index = n->index;
         n_index       = size_t(-2);
 
         for (auto succ : n->succs) {
+            if(!succ->isa(Node::Type::Bot)) continue;
             if (succ->index == size_t(-1)) i = post_order_visit(succ, i);
         }
 
@@ -281,7 +316,7 @@ public:
     const Def* invert_(const Def* def);
 
     const Def* invert_var(const Var*);
-    const Def* invert_lam(Lam*);
+    Lam* invert_lam(Lam*);
     const Def* invert_extract(const Extract*);
     const Def* invert_app(const App*);
     const Def* invert_lit(const Lit*);
@@ -294,9 +329,9 @@ public:
     const Def* invert_alloc(const App*);
     const Def* invert_bitcast(const App*);
     const Def* invert_for(const App*);
-    const Def* invert_for_body(const App* for_app);
+    std::tuple<Lam*, Lam*> invert_for_body(const App* for_app);
 
-    void attach_gradient( const Def* dst, const Def* grad );
+    void attach_gradient(const Def* dst, const Def* grad);
 
     const Def* create_init_frame(const std::string& name, std::function<const Def*(const Def*)> func);
     const Def* create_init_alloc_frame(const std::string& name, const Def* alloc_ty);
@@ -323,6 +358,7 @@ public:
 
     Lam* create_block(const std::string& name);
     Lam* create_return(const std::string& name);
+    Lam* create_lam(const Def* cn, const std::string& name);
     Lam* create_end(const std::string& name);
 
     Lam* create_invert_block(const std::string& name);
@@ -424,8 +460,6 @@ private:
 
     Lam* f;
     Lam* f_diff;
-
-    // std::stack<LoopContext> loop_stack;
 
     std::stack<InitFrame> init_frames;
     std::shared_ptr<LoopFrame> current_loop = nullptr;

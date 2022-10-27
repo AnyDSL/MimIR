@@ -16,6 +16,10 @@ void flatten_deep(const Def* def, DefVec& ops) {
         return;
     }
 
+    if(def->num_projs() == 0){
+        return;
+    }
+
     ops.push_back(def);
 }
 
@@ -58,6 +62,25 @@ const Def* tangent_arg_type_fun(const Def* in, const Def* out) {
     return b.sigma();
 }
 
+
+
+const Def* mask(const Def* target, size_t i, const Def* def) {
+    auto& w    = target->world();
+    auto projs = target->projs();
+    projs[i]   = def;
+    return w.tuple(projs);
+}
+
+const Def* mask_first(const Def* target, const Def* def) { return mask(target, 0, def); }
+
+const Def* mask_last(const Def* target, const Def* def) { return mask(target, target->num_projs() - 1, def); }
+
+const Def* merge_flat(const Def* left, const Def* right) {
+    auto& w = left->world();
+    return flatten_deep(w.tuple({left, right}));
+}
+
+
 /// computes pb type E* -> A*
 /// in - type of the expression (return type for a function)
 /// out - type of the argument (point of orientation resp. derivative - argument type for partial pullbacks)
@@ -66,8 +89,8 @@ const Pi* pullback_type(const Def* in, const Def* out, bool flat) {
     auto tang_arg = tangent_arg_type_fun(in, out);
     auto tang_ret = tangent_type_fun(out);
 
-    //tang_ret = equip_mem(tang_ret);
-    //tang_arg = equip_mem(tang_arg);
+    // tang_ret = equip_mem(tang_ret);
+    // tang_arg = equip_mem(tang_arg);
 
     auto dom = world.sigma({tang_arg, world.cn(tang_ret)});
 
