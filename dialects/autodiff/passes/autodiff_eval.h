@@ -342,29 +342,15 @@ public:
 
     const Def* grad_arr(const Def* def);
 
-    const Def* autodiff_zero(const Def* mem);
-    const Def* autodiff_zero(const Def* mem, const Def* def);
-    const Def* zero_pullback(const Def* domain);
-
     Lam* create_block(const std::string& name);
-    Lam* create_return(const std::string& name);
     Lam* create_lam(const Def* cn, const std::string& name);
     Lam* create_end(const std::string& name);
 
-    Lam* create_invert_block(const std::string& name);
-    Lam* create_invert_return(const std::string& name);
-    Lam* create_invert_end();
-
-    Lam* init_sinks();
     Lam* free_memory();
 
     void fetch_gradients(Lam* diff, Lam* backward);
-    const Def* build_result(const Def* mem, Lam* backward_start, Lam* backward_end);
 
     const Def* wrap_cache(const App* load, const App* aug_load);
-    const Def* get_pullback(const Def* op);
-    Lam* free_memory_lam();
-    const Def* augment_loop_body(const Def* body);
 
     const Def* grad_sum(const Def* def);
     const Def* grad_sum(const Def* def, const Def* default_zero_ty);
@@ -428,26 +414,17 @@ private:
     /// This is equivalent to:
     /// `\lambda (s:Bi). t*_S (insert s at i in (zero [B0, ..., Bn]))`
     /// dst Def -> dst Def
-    Def2Def shadow_pullback;
 
-    // TODO: remove?
-    Def2Def app_pb;
-
-    Def2Def shadow_pullbacks;
     Def2Def gradient_ptrs;
 
     DefSet allocated_memory;
     DefSet caches;
-    DefSet loads_;
 
     Def2Def cache_map;
-    Def2Def index_map;
-    Def2Def gradient_sinks;
     Def2Def sharing;
     DefMap<DefVec> attachments;
     DefMap<std::shared_ptr<LoopFrame>> cache_loop_assignment;
     DefMap<std::shared_ptr<LoopFrame>> loop_assignment;
-    bool is_propagating;
 
     Lam* f;
     Lam* f_diff;

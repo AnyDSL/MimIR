@@ -63,13 +63,6 @@ Lam* AutoDiffEval::create_block(const std::string& name) {
     return lam;
 }
 
-Lam* AutoDiffEval::create_return(const std::string& name) {
-    auto& w  = world();
-    auto lam = build(w).mem_ty().with_filter().lam("return_" + name);
-    init_mem(lam);
-    return lam;
-}
-
 Lam* AutoDiffEval::create_lam(const Def* cn, const std::string& name) {
     auto& w  = world();
     auto lam = w.nom_lam(cn->as<Pi>(), w.dbg(name));
@@ -114,7 +107,6 @@ const Def* AutoDiffEval::augment_var(const Var* var) {
 const Def* AutoDiffEval::augment_lam(Lam* lam) {
     auto& w = world();
 
-
     auto aug_lam = w.nom_lam(lam->type()->as<Pi>(), w.dbg("aug_" + lam->name()));
     aug_lam->set_filter(true);
     augmented[lam->var()] = aug_lam->var();
@@ -150,18 +142,6 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack) {
     auto shape = augment(pack->shape());
     auto body  = augment(pack->body());
     return w.pack(shape, body);
-}
-
-Lam* AutoDiffEval::free_memory_lam() {
-    auto& w = world();
-
-    auto free = build(w).mem_ty().mem_cn().lam("free");
-
-    auto mem = mem::mem_var(free);
-    for (auto memory : allocated_memory) { mem = mem::op_free(mem, memory); }
-
-    free->set_body(w.app(free->ret_var(), mem));
-    return free;
 }
 
 const Lam* wrap_append_app(const Def* lam, const Def* call_after_lam) {
@@ -294,22 +274,6 @@ const Def* AutoDiffEval::augment_store(const App* store) {
     // auto pb_store = mem::op_store(aug_mem, shadow_pb_ptr, pb);
     auto aug_store = mem::op_store(aug_mem, aug_ptr, aug_val, store->dbg());
     return aug_store;
-}
-
-const Def* AutoDiffEval::zero_pullback(const Def* domain) {
-    const Def* A   = f_arg_ty;
-    auto& world    = A->world();
-    auto A_tangent = tangent_type_fun(A);
-    auto pb_ty     = pullback_type(domain, A);
-    auto pb        = world.nom_lam(pb_ty, world.dbg("zero_pb"));
-    pb->app(true, pb->ret_var(), autodiff_zero(mem::mem_var(pb)));
-    return pb;
-}
-
-const Def* AutoDiffEval::get_pullback(const Def* op) {
-    auto pb = partial_pullback[op];
-    if (!pb) { return zero_pullback(op->type()); }
-    return pb;
 }
 
 const Def* AutoDiffEval::augment_alloc(const App* alloc) {
@@ -583,35 +547,28 @@ const Def* zero_def(const Def* mem, const Def* ty) {
     if (auto sig = ty->isa<Sigma>()) {
         DefArray ops(sig->ops(), [&](const Def* op) { return zero_def(mem, op); });
         return w.tuple(ops);
-    } else if (is_idx(ty)) {
-        return zero(w);
     } else if (match<mem::M>(ty)) {
         return mem;
+    }else{
+        return zero(ty);
     }
 }
 
 Lam* AutoDiffEval::invert_lam(Lam* lam) {
     auto& w = world();
 
-    w.debug_dump();
-
     if (lam->is_returning()) {
         auto ret_dom    = lam->ret_dom();
         auto arg_type   = lam->arg()->type();
         auto inv_arg_ty = w.sigma({ret_dom, w.cn(arg_type)});
         auto inv_pi     = w.cn(flatten_deep(inv_arg_ty));
-        auto inv_lam    = w.nom_lam(inv_pi, w.dbg("inv_" + lam->name()));
-        inv_lam->set_filter(true);
-
-        inverted[lam->ret_var()] = inv_lam;
+        auto inv_lam    = create_lam(inv_pi, "inv_" + lam->name());
 
         AutodiffAnalysis analyze(lam);
         PostOrderVisitor visitor(analyze);
         Scope scope(lam);
 
         auto current = analyze.exit();
-        current_mem  = mem::mem_var(inv_lam);
-
         auto current_lam = inv_lam;
         while (true) {
             assert(current);
@@ -1065,19 +1022,13 @@ const Def* AutoDiffEval::invert_(const Def* def) {
     }
 }
 
-const Def* AutoDiffEval::invert_var(const Var* var) {  }
-const Def* AutoDiffEval::invert_extract(const Extract* extract) {
-    
-}
-const Def* AutoDiffEval::invert_app(const App* app) {
-    
-}
-const Def* AutoDiffEval::invert_lit(const Lit* lit) {  }
+const Def* AutoDiffEval::invert_var(const Var* var) {}
+const Def* AutoDiffEval::invert_extract(const Extract* extract) {}
+const Def* AutoDiffEval::invert_app(const App* app) {}
+const Def* AutoDiffEval::invert_lit(const Lit* lit) {}
 const Def* AutoDiffEval::invert_tuple(const Tuple* tuple) { return tuple; }
 const Def* AutoDiffEval::invert_pack(const Pack* pack) { return pack; }
-const Def* AutoDiffEval::invert_lea(const App* lea) {
-    
-}
+const Def* AutoDiffEval::invert_lea(const App* lea) {}
 
 const Def* AutoDiffEval::invert_load(const App* load) { assert(false); }
 
@@ -1122,8 +1073,7 @@ const Def* AutoDiffEval::resolve(const Def* def) {
         return grad_val;
     }
 
-    auto inv_def = inverted[def];
-    if (inv_def) { return inv_def; }
+    if (auto inv_def = inverted[def]) { return inv_def; }
 
     assert(!def->isa<Var>());
 
@@ -1133,10 +1083,6 @@ const Def* AutoDiffEval::resolve(const Def* def) {
 }
 
 void AutoDiffEval::attach_gradient(const Def* dst, const Def* grad) {
-    /*if( match<mem::M>(dst->type()) ){
-        return;
-    }*/
-
     if (current_loop) {
         current_loop->attachments[dst].push_back(grad);
     } else {
@@ -1144,29 +1090,20 @@ void AutoDiffEval::attach_gradient(const Def* dst, const Def* grad) {
     }
 }
 
-const Def* AutoDiffEval::invert_store(const App* store) { assert(false); }
-const Def* AutoDiffEval::invert_malloc(const App* malloc) { return malloc; }
-const Def* AutoDiffEval::invert_alloc(const App* alloc) {
-    auto [mem, alloc_ptr] = alloc->projs<2>();
-    auto callee           = alloc->callee()->as<App>();
-    auto type             = callee->arg(0_s);
-
-    // prepends decicion when memory will be allocated by wrapping in lam.
-    // auto gradient_ptr = create_init_alloc_frame("gradient_arr", type);
-
-    // add to list of allocated memory
-    // allocated_memory.insert(gradient_ptr);
-    // gradient_ptrs[alloc_ptr] = gradient_ptr;
-
-    return invert(mem);
+const Def* AutoDiffEval::invert_store(const App* store) {
+    
 }
+
+const Def* AutoDiffEval::invert_malloc(const App* malloc) { 
+    
+}
+
+const Def* AutoDiffEval::invert_alloc(const App* alloc) {
+    
+}
+
 const Def* AutoDiffEval::invert_bitcast(const App* bitcast) {
-    auto& w      = world();
-    auto new_ops = DefArray(bitcast->num_ops(), [&](auto i) { return invert(bitcast->op(i)); });
-
-    auto new_def = bitcast->rebuild(w, bitcast->type(), new_ops, bitcast->dbg());
-
-    return new_def;
+    
 }
 
 } // namespace thorin::autodiff

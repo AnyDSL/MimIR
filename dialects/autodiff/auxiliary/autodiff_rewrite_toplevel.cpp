@@ -9,62 +9,6 @@
 
 namespace thorin::autodiff {
 
-const Def* create_ho_pb_type(const Def* def, const Def* arg_ty) {
-    if (auto arr = def->isa<Arr>()) {
-        auto& world = def->world();
-        auto shape  = arr->shape();
-        auto body   = create_ho_pb_type(arr->body(), arg_ty);
-        return world.arr(shape, body);
-    }
-
-    auto pb_ty = pullback_type(def, arg_ty);
-    return pb_ty;
-}
-
-const Def* AutoDiffEval::autodiff_zero(const Def* mem) {
-    auto mapped = augmented[f->var()];
-
-    return autodiff_zero(mem, mapped->proj(0));
-}
-
-const Def* AutoDiffEval::autodiff_zero(const Def* mem, const Def* def) {
-    auto& world = def->world();
-
-    auto ty = def->type();
-
-    if (auto tup = def->isa<Tuple>()) {
-        DefArray ops(tup->ops(), [&](const Def* op) { return autodiff_zero(mem, op); });
-        return world.tuple(ops);
-    }
-
-    if (match<mem::M>(ty)) {
-        return mem;
-    }
-
-    else if (auto idx = ty->isa<Idx>()) {
-        // TODO: real
-        auto zero = world.lit(ty, 0, world.dbg("zero"));
-        world.DLOG("zero_def for int is {}", zero);
-        return zero;
-    }
-
-    if (match<mem::Ptr>(ty)) {
-        auto gradient = gradient_ptrs[def];
-
-        if (gradient == nullptr) { return world.top(ty); }
-
-        return gradient;
-    }
-
-    if (def->type()->isa<Sigma>()) {
-        DefArray ops(def->projs(), [&](const Def* op) { return autodiff_zero(mem, op); });
-        return world.tuple(ops);
-    }
-
-    assert(false);
-    world.bot(def);
-}
-
 void AutoDiffEval::fetch_gradients(Lam* src, Lam* backward) {
     auto src_arg      = src->arg();
     auto backward_arg = backward->arg();
@@ -84,32 +28,6 @@ void AutoDiffEval::fetch_gradients(Lam* src, Lam* backward) {
 
         fwd_i++;
     }
-}
-
-const Def* AutoDiffEval::build_result(const Def* mem, Lam* backward_begin, Lam* backward_result) {
-    auto& w         = world();
-    auto diffee_arg = backward_result->var();
-
-    DefVec ops;
-    for (auto def : diffee_arg->projs()) {
-        if (match<mem::M>(def->type())) {
-            ops.push_back(mem);
-            continue;
-        } else if (match<mem::Ptr>(def->type())) {
-            auto gradient_ptr = gradient_ptrs[def];
-            assert(gradient_ptr);
-            ops.push_back(gradient_ptr);
-        } else if (auto app = def->type()->isa<App>()) {
-            if (app->callee()->isa<Idx>()) {
-                ops.push_back(zero(w));
-
-            } else {
-                assert(false);
-            }
-        }
-    }
-
-    return w.tuple(ops);
 }
 
 Lam* AutoDiffEval::free_memory() {
@@ -171,7 +89,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     add_inverted(diffee->var(), diff_lam->var());
 
     current_state   = State::Invert;
-    auto inv_diffee = invert(diffee)->as_nom<Lam>();
+    auto inv_diffee = invert_lam(diffee);
 
     //                 ______________
     //                |              |
