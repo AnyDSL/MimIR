@@ -173,7 +173,7 @@ const Def* AutoDiffEval::augment_app(const App* app) {
     auto aug_arg = augment(arg);
 
     if (auto lam = callee->isa_nom<Lam>()) {
-        deep_compare(arg, lam->var(), [&](const Def* src, const Def* dst) { gradient_ptrs[dst] = gradient_ptrs[src]; });
+        deep_compare(arg, lam->var(), [&](const Def* src, const Def* dst) { gradient_pointers[dst] = gradient_pointers[src]; });
     }
 
     auto aug_callee = augment(callee);
@@ -267,11 +267,6 @@ const Def* AutoDiffEval::augment_store(const App* store) {
 
     auto aug_arg                     = augment(store->arg());
     auto [aug_mem, aug_ptr, aug_val] = aug_arg->projs<3>();
-
-    // auto shadow_pb_ptr = shadow_pullbacks[aug_ptr];
-
-    // auto pb = partial_pullback[aug_val];
-    // auto pb_store = mem::op_store(aug_mem, shadow_pb_ptr, pb);
     auto aug_store = mem::op_store(aug_mem, aug_ptr, aug_val, store->dbg());
     return aug_store;
 }
@@ -290,7 +285,7 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc) {
 
     // add to list of allocated memory
     allocated_memory.insert(gradient_ptr);
-    gradient_ptrs[org_ptr] = gradient_ptr;
+    gradient_pointers[org_ptr] = gradient_ptr;
 
     return aug_alloc;
 }
@@ -375,9 +370,9 @@ const Def* AutoDiffEval::grad_sum(const Def* def) {
     auto& w = world();
     DefVec* grads;
     if (current_loop) {
-        grads = &(current_loop->attachments[def]);
+        grads = &(current_loop->gradients[def]);
     } else {
-        grads = &(attachments[def]);
+        grads = &(gradients[def]);
     }
 
     const Def* result = nullptr;
@@ -410,7 +405,7 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
         auto [arr, index] = lea->args<2>();
         auto grad         = grad_arr(arr);
         return mem::op_lea(grad, resolve(index));
-    } else if (auto grad_ptr = gradient_ptrs[def]) {
+    } else if (auto grad_ptr = gradient_pointers[def]) {
         return grad_ptr;
     }
 
@@ -419,14 +414,17 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
 
 void AutoDiffEval::prop(Scope& scope, const Def* def) {
     if (!scope.bound(def)) return;
-    auto& w = world();
+    if (def->isa<Var>()) { return; }
     if (!visited_prop.insert(def).second) { return; }
 
     if (def->isa<App>()) {
         for (auto proj : def->projs()) { prop(scope, proj); }
     }
 
+    auto& w = world();
     auto gradient = grad_sum(def);
+    if (gradient == nullptr) { return; }
+    
     if (auto load = match<mem::load>(def)) {
         auto arr  = load->arg(1);
         auto val  = load->proj(1);
@@ -444,8 +442,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         return;
     }
 
-    if (gradient == nullptr) { return; }
-
     if (auto tuple = def->isa<Tuple>()) {
         for (size_t i = 0; i < tuple->num_ops(); i++) { attach_gradient(tuple->op(i), gradient->proj(i)); }
         return;
@@ -459,8 +455,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         attach_gradient(store->arg(), w.tuple({w.bot(mem::type_mem(w)), w.bot(ptr->type()), load_val}));
         return;
     }
-
-    if (def->isa<Var>()) { return; }
 
     if (auto lea = match<mem::lea>(def)) { return; }
 
@@ -549,7 +543,7 @@ const Def* zero_def(const Def* mem, const Def* ty) {
         return w.tuple(ops);
     } else if (match<mem::M>(ty)) {
         return mem;
-    }else{
+    } else {
         return zero(ty);
     }
 }
@@ -568,7 +562,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
         PostOrderVisitor visitor(analyze);
         Scope scope(lam);
 
-        auto current = analyze.exit();
+        auto current     = analyze.exit();
         auto current_lam = inv_lam;
         while (true) {
             assert(current);
@@ -1084,26 +1078,18 @@ const Def* AutoDiffEval::resolve(const Def* def) {
 
 void AutoDiffEval::attach_gradient(const Def* dst, const Def* grad) {
     if (current_loop) {
-        current_loop->attachments[dst].push_back(grad);
+        current_loop->gradients[dst].push_back(grad);
     } else {
-        attachments[dst].push_back(grad);
+        gradients[dst].push_back(grad);
     }
 }
 
-const Def* AutoDiffEval::invert_store(const App* store) {
-    
-}
+const Def* AutoDiffEval::invert_store(const App* store) {}
 
-const Def* AutoDiffEval::invert_malloc(const App* malloc) { 
-    
-}
+const Def* AutoDiffEval::invert_malloc(const App* malloc) {}
 
-const Def* AutoDiffEval::invert_alloc(const App* alloc) {
-    
-}
+const Def* AutoDiffEval::invert_alloc(const App* alloc) {}
 
-const Def* AutoDiffEval::invert_bitcast(const App* bitcast) {
-    
-}
+const Def* AutoDiffEval::invert_bitcast(const App* bitcast) {}
 
 } // namespace thorin::autodiff

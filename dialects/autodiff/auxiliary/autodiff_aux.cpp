@@ -256,7 +256,6 @@ bool is_returning_continuation(const Def* e) {
     return false;
 }
 
-
 const Def* continuation_dom(const Def* E) {
     auto pi = E->as<Pi>();
     assert(pi != NULL);
@@ -265,4 +264,3 @@ const Def* continuation_dom(const Def* E) {
 }
 
 } // namespace thorin
-

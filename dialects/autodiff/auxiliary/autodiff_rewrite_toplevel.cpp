@@ -20,7 +20,7 @@ void AutoDiffEval::fetch_gradients(Lam* src, Lam* backward) {
             auto variable = src_arg->proj(fwd_i);
             auto gradient = backward_arg->proj(bwd_i);
 
-            gradient_ptrs[variable] = gradient;
+            gradient_pointers[variable] = gradient;
             bwd_i++;
         } else if (match<mem::M>(def->type())) {
             bwd_i++;

@@ -34,7 +34,7 @@ struct LoopFrame {
     LoopData forward;
     LoopData backward;
 
-    DefMap<DefVec> attachments;
+    DefMap<DefVec> gradients;
 
     const Def*& index() { return data().index; }
 
@@ -48,12 +48,7 @@ struct InitFrame {
     const Def* mem;
 };
 
-struct ShareFrame {
-    DefVec items;
-};
-
-Lam* chain(const Def* mem, Lam* lam, const Def* next);
-Lam* chain(const Def* first, const Def* second);
+const Def* zero(const Def* ty);
 const Def* zero(World& w);
 const Def* one(World& w);
 
@@ -95,8 +90,7 @@ inline Node::Type operator|(Node::Type a, Node::Type b) {
 
 class AutodiffAnalysis {
 public:
-    AutodiffAnalysis(Lam* entry)
-        : entry_lam_(entry) {
+    AutodiffAnalysis(Lam* entry) {
         exit_node_ = node(entry->ret_var());
         run(entry);
         entry_node_ = node(entry);
@@ -186,42 +180,9 @@ private:
         }
     }
 
-    const Def* entry_lam_;
-
-    DefVec order_;
     Node* entry_node_;
     Node* exit_node_;
     DefMap<Node*> nodes_;
-};
-
-class AutodiffRewriter : public Rewriter {
-public:
-    AutodiffRewriter(World& world, Scope& scope)
-        : Rewriter(world)
-        , scope_(scope) {}
-
-    enum Mode { Scoped, UnScoped };
-
-    const Def* rewrite_scoped(const Def* old_def) {
-        mode = Scoped;
-        return rewrite(old_def);
-    }
-
-    const Def* rewrite_un_scoped(const Def* old_def) {
-        mode = UnScoped;
-        return rewrite(old_def);
-    }
-
-    const Def* rewrite(const Def* old_def) override {
-        if (mode == Scoped && !scope_.bound(old_def)) {
-            return old_def;
-        } else if (old_def->isa<Axiom>())
-            return old_def;
-        return Rewriter::rewrite(old_def);
-    }
-
-    Mode mode;
-    Scope& scope_;
 };
 
 class PostOrderVisitor {
@@ -267,24 +228,13 @@ public:
     AutoDiffEval(PassMan& man)
         : RWPass(man, "autodiff_eval") {}
 
-    /// Detect autodiff calls.
     const Def* rewrite(const Def*) override;
 
-    /// Acts on toplevel autodiff on closed terms:
-    /// * Replaces lambdas, operators with the appropriate derivatives.
-    /// * Creates new lambda, calls associate variables, init maps, calls augment.
     const Def* derive(const Def*);
     const Def* derive_(const Def*);
 
-    /// Applies to (open) expressions in a functional context.
-    /// Returns the rewritten expressions and augments the partial and modular pullbacks.
-    /// The rewrite is identity on the term up to renaming of variables.
-    /// Otherwise, only pullbacks are added.
-    /// To do so, some calls (e.g. axioms) are replaced by their derivatives.
-    /// This transformation can be seen as an augmentation with a dual computation that generates the derivatives.
     const Def* augment(const Def*);
     const Def* augment_(const Def*);
-    /// helper functions for augment
     const Def* augment_var(const Var*);
     const Def* augment_lam(Lam*);
     const Def* augment_extract(const Extract*);
@@ -377,57 +327,18 @@ public:
     friend LoopFrame;
 
 private:
-    /// Transforms closed terms (lambda, operator) to derived expressions.
-    /// `f => f' = λ x. (f x, f*_x)`
-    /// src Def -> dst Def
     Def2Def derived;
-    /// Associates expressions (not necessarily closed) in a functional context to their derivatived counterpart.
-    /// src Def -> dst Def
     Def2Def augmented;
     Def2Def inverted;
     DefSet visited_prop;
 
-    /// dst Def -> dst Def
-    Def2Def partial_pullback;
-
-    /// Shadows the structure of containers for additional auxiliary pullbacks.
-    /// A very advanced optimization might be able to recover shadow pullbacks from the partial pullbacks.
-    /// Example: The shadow pullback of a tuple is a tuple of pullbacks.
-    /// Shadow pullbacks are not modular (composable with other pullbacks).
-    /// The structure pullback only preserves structure shallowly:
-    /// A n-times nested tuple has a tuple of "normal" pullbacks as shadow pullback.
-    /// Each inner nested tuples should have their own structure pullback by construction.
-    /// ```
-    /// e  : [B0, [B11, B12], B2]
-    /// e* : [B0, [B11, B12], B2] -> A
-    /// e*S: [B0 -> A, [B11, B12] -> A, B2 -> A]
-    /// ```
-    /// short theory of shadow pb:
-    /// ```
-    /// t: [B0, ..., Bn]
-    /// t*: [B0, ..., Bn] -> A
-    /// t*_S: [B0 -> A, ..., Bn -> A]
-    /// b = t#i : Bi
-    /// b* : Bi -> A
-    /// b* = t*_S #i (if exists)
-    /// ```
-    /// This is equivalent to:
-    /// `\lambda (s:Bi). t*_S (insert s at i in (zero [B0, ..., Bn]))`
-    /// dst Def -> dst Def
-
-    Def2Def gradient_ptrs;
+    Def2Def gradient_pointers;
+    DefMap<DefVec> gradients;
 
     DefSet allocated_memory;
-    DefSet caches;
-
     Def2Def cache_map;
-    Def2Def sharing;
-    DefMap<DefVec> attachments;
     DefMap<std::shared_ptr<LoopFrame>> cache_loop_assignment;
     DefMap<std::shared_ptr<LoopFrame>> loop_assignment;
-
-    Lam* f;
-    Lam* f_diff;
 
     std::stack<InitFrame> init_frames;
     std::shared_ptr<LoopFrame> current_loop = nullptr;

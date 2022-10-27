@@ -23,7 +23,6 @@ const Def* merge_flat(const Def* left, const Def* right);
 
 namespace thorin {
 
-
 bool is_continuation_type(const Def* E);
 
 const Def* continuation_dom(const Def* E);
