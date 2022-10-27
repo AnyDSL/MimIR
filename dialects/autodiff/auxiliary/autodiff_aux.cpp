@@ -16,9 +16,7 @@ void flatten_deep(const Def* def, DefVec& ops) {
         return;
     }
 
-    if(def->num_projs() == 0){
-        return;
-    }
+    if (def->num_projs() == 0) { return; }
 
     ops.push_back(def);
 }
@@ -62,8 +60,6 @@ const Def* tangent_arg_type_fun(const Def* in, const Def* out) {
     return b.sigma();
 }
 
-
-
 const Def* mask(const Def* target, size_t i, const Def* def) {
     auto& w    = target->world();
     auto projs = target->projs();
@@ -79,7 +75,6 @@ const Def* merge_flat(const Def* left, const Def* right) {
     auto& w = left->world();
     return flatten_deep(w.tuple({left, right}));
 }
-
 
 /// computes pb type E* -> A*
 /// in - type of the expression (return type for a function)

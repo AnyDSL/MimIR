@@ -492,7 +492,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto gradient_val = grad_sum(val);
 
         auto load_val = op_load(grad);
-        auto grad_sum             = sum(load_val, gradient_val);
+        auto grad_sum = sum(load_val, gradient_val);
         op_store(grad, grad_sum);
         attach_gradient(load->arg(), w.tuple({w.bot(mem::type_mem(w)), w.bot(arr->type())}));
         return;
@@ -500,9 +500,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
 
     def->dump(1);
     auto gradient = grad_sum(def);
-    if (gradient == nullptr) { 
-        return;
-    }
+    if (gradient == nullptr) { return; }
 
     if (auto tuple = def->isa<Tuple>()) {
         for (size_t i = 0; i < tuple->num_ops(); i++) { attach_gradient(tuple->op(i), gradient->proj(i)); }
@@ -512,7 +510,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
     if (def->isa<Var>()) { return; }
 
     if (auto store = match<mem::store>(def)) {
-        auto ptr = store->arg(1);
+        auto ptr      = store->arg(1);
         auto grad_ptr = grad_arr(ptr);
         auto load_val = op_load(grad_ptr);
         op_store(grad_ptr, zero(w));
@@ -558,7 +556,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
             right_grad = core::op(core::wrap::mul, core::WMode::none, gradient, left_value);
         }
 
-
         attach_gradient(wrap->arg(), w.tuple({left_grad, right_grad}));
     } else if (auto div = match<core::div>(def)) {
         auto [mem, left, right] = div->args<3>();
@@ -575,14 +572,14 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
     }
 }
 
-const Def* zero_def( const Def* mem, const Def* ty ){
+const Def* zero_def(const Def* mem, const Def* ty) {
     auto& w = ty->world();
     if (auto sig = ty->isa<Sigma>()) {
         DefArray ops(sig->ops(), [&](const Def* op) { return zero_def(mem, op); });
         return w.tuple(ops);
-    }else if(is_idx(ty)){
+    } else if (is_idx(ty)) {
         return zero(w);
-    }else if (match<mem::M>(ty)) { 
+    } else if (match<mem::M>(ty)) {
         return mem;
     }
 }
@@ -610,16 +607,16 @@ Lam* AutoDiffEval::invert_lam(Lam* lam_def) {
         Scope scope(lam);
 
         auto current = analyze.exit();
-        current_mem = mem::mem_var(inv_lam);
+        current_mem  = mem::mem_var(inv_lam);
 
         auto current_lam = inv_lam;
-        while(true){
+        while (true) {
             assert(current);
             auto call = current->pred(Node::Type::App | Node::Type::For);
-            auto app = call->def->as<App>();
-            auto arg = app->arg();
+            auto app  = call->def->as<App>();
+            auto arg  = app->arg();
 
-            auto caller = call->pred();
+            auto caller     = call->pred();
             auto caller_def = caller->def;
 
             bool for_hack = false;
@@ -630,15 +627,14 @@ Lam* AutoDiffEval::invert_lam(Lam* lam_def) {
                 assert(num_proj == arg->num_projs());
                 attach_gradient(arg, lam_arg_var);
             } else if (call->isa(Node::Type::For)) {
-
                 auto [start, end, inc, acc, body, exit] = arg->projs<6>();
 
                 auto aug_start = augment(start);
                 auto aug_end   = augment(end);
                 auto aug_inc   = augment(inc);
 
-                auto invert_start   = zero(w);
-                auto invert_inc     = one(w);
+                auto invert_start = zero(w);
+                auto invert_inc   = one(w);
                 current_mem->type()->dump();
                 auto size           = for_size(current_mem, aug_start, aug_end, aug_inc);
                 auto invert_end     = size;
@@ -647,24 +643,23 @@ Lam* AutoDiffEval::invert_lam(Lam* lam_def) {
                 auto [invert_body, invert_exit] = invert_for_body(app);
 
                 auto zero_acc = zero_def(invert_for_mem, invert_body->ret_dom());
-                current_lam->set_body(affine::op_for(w, invert_start, invert_end, invert_inc, zero_acc->projs(), invert_body, invert_exit));
+                current_lam->set_body(affine::op_for(w, invert_start, invert_end, invert_inc, zero_acc->projs(),
+                                                     invert_body, invert_exit));
 
                 current_lam = invert_exit;
-                for_hack = true;
-            }else{
+                for_hack    = true;
+            } else {
                 assert(false);
             }
 
-            for (auto node : visitor.post_order_visit(arg)) { 
-                prop(scope, node->def);
-            }
+            for (auto node : visitor.post_order_visit(arg)) { prop(scope, node->def); }
 
             DefVec inv_args;
             for (auto proj : lam->args()) {
                 const Def* grad;
-                if(match<mem::M>(proj->type())){
+                if (match<mem::M>(proj->type())) {
                     grad = end_mem();
-                }else{
+                } else {
                     grad = grad_sum(proj, proj->type());
                 }
                 assert(grad);
@@ -673,20 +668,19 @@ Lam* AutoDiffEval::invert_lam(Lam* lam_def) {
 
             auto inv_arg = w.tuple(inv_args);
 
-            if( caller_def == lam ){
+            if (caller_def == lam) {
                 current_lam->set_body(w.app(inv_lam->ret_var(), inv_arg));
                 break;
-            }else{
+            } else {
                 auto next_inv_lam = w.nom_lam(caller_def->type()->as<Pi>(), w.dbg("inv_" + lam->name()));
+                next_inv_lam->set_filter(false);
 
-                if(for_hack){
-                    inv_arg = mem::mem_def(inv_arg);
-                }
+                if (for_hack) { inv_arg = mem::mem_def(inv_arg); }
 
                 current_lam->set_body(w.app(next_inv_lam, mem::mem_def(inv_arg)));
                 current_lam = next_inv_lam;
                 current_mem = mem::mem_var(next_inv_lam);
-                current = caller;
+                current     = caller;
             }
         }
 
@@ -695,34 +689,30 @@ Lam* AutoDiffEval::invert_lam(Lam* lam_def) {
 
     assert(false);
 
+    // follow mem
+    // propagate gradient attachments
+    /*
+                auto caller = call->pred();
 
+                if(caller->isa(Node::Type::Lam)){
+                    auto lam = caller->def->as_nom<Lam>();
 
+                    for( auto var : lam->arg()->projs()){
+                        var->dump();
+                        var->dump();
 
-
-            // follow mem
-            // propagate gradient attachments
-            /*
-                        auto caller = call->pred();
-
-                        if(caller->isa(Node::Type::Lam)){
-                            auto lam = caller->def->as_nom<Lam>();
-
-                            for( auto var : lam->arg()->projs()){
-                                var->dump();
-                                var->dump();
-
-                                for(auto use : var->uses()){
-                                    use->dump(2);
-                                }
-                            }
-
-                            lam->dump();
+                        for(auto use : var->uses()){
+                            use->dump(2);
                         }
+                    }
 
-                        if( caller->def == lam ){
-                            auto inv_args = inverted[lam->arg()];
-                            inv_lam->set_body(w.app(inv_lam->ret_var(), inv_args));
-                        }*/
+                    lam->dump();
+                }
+
+                if( caller->def == lam ){
+                    auto inv_args = inverted[lam->arg()];
+                    inv_lam->set_body(w.app(inv_lam->ret_var(), inv_args));
+                }*/
     /*
             auto body = lam->body();
 
@@ -803,41 +793,41 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
 
     auto ret_lam = create_lam(inv_body_lam_new->ret_pi(), "invert_return_body_" + loop_body->name());
 
-    //ret_lam->set_body(w.app(inv_loop_body->ret_var(), end_mem()));
+    // ret_lam->set_body(w.app(inv_loop_body->ret_var(), end_mem()));
     ret_lam->set_body(w.app(inv_loop_body->ret_var(), end_mem()));
-    //inv_loop_body->set(inv_body_lam_new->reduce(w.tuple({mem::mem_var(inv_loop_body), ret_lam})));
-    //inv_loop_body->set_body(w.app(inv_body_lam_new, w.tuple({mem::mem_var(inv_loop_body), ret_lam})));
+    // inv_loop_body->set(inv_body_lam_new->reduce(w.tuple({mem::mem_var(inv_loop_body), ret_lam})));
+    // inv_loop_body->set_body(w.app(inv_body_lam_new, w.tuple({mem::mem_var(inv_loop_body), ret_lam})));
 
     Scope scope2(inv_body_lam_new);
     AutodiffRewriter first_rewriter(world(), scope2);
-    auto replacement = w.tuple({mem::mem_var(inv_loop_body), ret_lam});
+    auto replacement                                = w.tuple({mem::mem_var(inv_loop_body), ret_lam});
     first_rewriter.old2new[inv_body_lam_new->var()] = replacement;
-    auto new_args = DefArray(inv_body_lam_new->num_ops(), [&](size_t i) { return first_rewriter.rewrite_scoped(inv_body_lam_new->op(i)); });
+    auto new_args                                   = DefArray(inv_body_lam_new->num_ops(),
+                                                               [&](size_t i) { return first_rewriter.rewrite_scoped(inv_body_lam_new->op(i)); });
     inv_loop_body->set(new_args);
 
     inv_body_lam_new->set_body(w.top_nat());
 
-
-    //acc wrapper###############
+    // acc wrapper###############
 
     DefVec acc_fvs;
     DefVec acc_ops;
     Scope scope(loop_body);
-    for( auto free_def : scope.free_defs() ){
-        if(is_idx(free_def->type())){
+    for (auto free_def : scope.free_defs()) {
+        if (is_idx(free_def->type())) {
             auto acc_grad = grad_sum(free_def);
-            if(acc_grad){
+            if (acc_grad) {
                 acc_ops.push_back(acc_grad);
                 acc_fvs.push_back(free_def);
             }
         }
     };
 
-    if(acc_ops.size() > 0 ){
-        auto acc_ty = flatten_deep(w.sigma({mem::type_mem(w), w.tuple(acc_ops)->type()}));
-        auto inv_loop_ty = w.cn({w.type_int(32), acc_ty, w.cn(acc_ty) });
+    if (acc_ops.size() > 0) {
+        auto acc_ty          = flatten_deep(w.sigma({mem::type_mem(w), w.tuple(acc_ops)->type()}));
+        auto inv_loop_ty     = w.cn({w.type_int(32), acc_ty, w.cn(acc_ty)});
         Lam* inv_for_acc_lam = create_lam(inv_loop_ty, "invert_for_acc_" + loop_body->name());
-        auto acc_index = inv_for_acc_lam->arg(0_s);
+        auto acc_index       = inv_for_acc_lam->arg(0_s);
 
         auto mem = end_mem();
 
@@ -847,11 +837,12 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
         Scope scope(inv_loop_body);
         AutodiffRewriter rewriter(world(), scope);
         rewriter.old2new[inv_loop_body->var()] = replacement;
-        auto new_args = DefArray(inv_loop_body->num_ops(), [&](size_t i) { return rewriter.rewrite_scoped(inv_loop_body->op(i)); });
+        auto new_args =
+            DefArray(inv_loop_body->num_ops(), [&](size_t i) { return rewriter.rewrite_scoped(inv_loop_body->op(i)); });
         inv_for_acc_lam->set(new_args);
         inv_loop_body->set_body(w.top_nat());
 
-        for( auto& acc_op : acc_ops ){
+        for (auto& acc_op : acc_ops) {
             acc_op = first_rewriter.rewrite_un_scoped(acc_op);
             acc_op = rewriter.rewrite_un_scoped(acc_op);
         }
@@ -861,7 +852,7 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
         size_t i = 1;
         DefVec next_acc_ops;
         next_acc_ops.push_back(end_mem());
-        for(auto op : acc_ops ){
+        for (auto op : acc_ops) {
             next_acc_ops.push_back(sum(op, acc_var->proj(i)));
             i++;
         }
@@ -877,56 +868,55 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
     pop_loop_frame();
 
     size_t i = 0;
-    for( ; i < acc_fvs.size() ; i++ ){
-        attach_gradient(acc_fvs[i], exit_for->arg(i + 1));
-    }   
+    for (; i < acc_fvs.size(); i++) { attach_gradient(acc_fvs[i], exit_for->arg(i + 1)); }
 
     return {inv_loop_body, exit_for};
 }
 
 const Def* AutoDiffEval::invert_for(const App* for_app) {
     auto& w = world();
-/*
-    auto [start, end, inc, acc, body, exit] = for_app->args<6>();
+    /*
+        auto [start, end, inc, acc, body, exit] = for_app->args<6>();
 
-    auto aug_start = augment(start);
-    auto aug_end   = augment(end);
-    auto aug_inc   = augment(inc);
+        auto aug_start = augment(start);
+        auto aug_end   = augment(end);
+        auto aug_inc   = augment(inc);
 
-    auto invert_for     = create_invert_block("for");
-    auto invert_start   = zero(w);
-    auto invert_inc     = one(w);
-    auto size           = for_size(current_mem, aug_start, aug_end, aug_inc);
-    auto invert_end     = size;
-    auto invert_for_mem = end_mem();
+        auto invert_for     = create_invert_block("for");
+        auto invert_start   = zero(w);
+        auto invert_inc     = one(w);
+        auto size           = for_size(current_mem, aug_start, aug_end, aug_inc);
+        auto invert_end     = size;
+        auto invert_for_mem = end_mem();
 
-    // for_size(current_mem, aug_start, aug_end, aug_inc);
+        // for_size(current_mem, aug_start, aug_end, aug_inc);
 
-    push_loop_frame(for_app, size);
-    auto invert_body = invert_for_body(for_app);
-    pop_loop_frame();
+        push_loop_frame(for_app, size);
+        auto invert_body = invert_for_body(for_app);
+        pop_loop_frame();
 
-    auto new_for = affine::op_for(w, invert_start, invert_end, invert_inc, {return_exit_mem}, invert_body, return_for);
-*/
-    //auto invert_exit = invert(exit);
+        auto new_for = affine::op_for(w, invert_start, invert_end, invert_inc, {return_exit_mem}, invert_body,
+       return_for);
+    */
+    // auto invert_exit = invert(exit);
 
-    //auto return_exit     = create_invert_return("exit");
-    //auto return_exit_mem = end_mem();
+    // auto return_exit     = create_invert_return("exit");
+    // auto return_exit_mem = end_mem();
 
-    //auto return_for     = create_invert_return("for");
-    //auto return_for_mem = end_mem();
+    // auto return_for     = create_invert_return("for");
+    // auto return_for_mem = end_mem();
 
-    //auto return_entry     = create_invert_return("for_entry");
-    //auto return_entry_mem = end_mem();
+    // auto return_entry     = create_invert_return("for_entry");
+    // auto return_entry_mem = end_mem();
 
-    //auto invert_entry = invert(mem::mem_def(acc));
+    // auto invert_entry = invert(mem::mem_def(acc));
 
-    //return_entry->set_body(w.app(invert_for->var(1_s), return_entry_mem));
-    //return_for->set_body(w.app(invert_entry, {return_for_mem, return_entry}));
-    //return_exit->set_body();
-    //invert_for->set_body(w.app(invert_exit, {invert_for_mem, return_exit}));
+    // return_entry->set_body(w.app(invert_for->var(1_s), return_entry_mem));
+    // return_for->set_body(w.app(invert_entry, {return_for_mem, return_entry}));
+    // return_exit->set_body();
+    // invert_for->set_body(w.app(invert_exit, {invert_for_mem, return_exit}));
 
-    //return invert_for;
+    // return invert_for;
     return nullptr;
 }
 

@@ -21,8 +21,6 @@ Lam* callee_isa_var(const Def* def);
 const Def* zero_def(const Def* T);
 const Def* op_sum(const Def* T, DefArray defs);
 
-
-
 const Def* mask(const Def* target, size_t i, const Def* def);
 
 const Def* mask_first(const Def* target, const Def* def);
@@ -30,7 +28,6 @@ const Def* mask_first(const Def* target, const Def* def);
 const Def* mask_last(const Def* target, const Def* def);
 
 const Def* merge_flat(const Def* left, const Def* right);
-
 
 } // namespace thorin::autodiff
 

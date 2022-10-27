@@ -203,7 +203,6 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     backward_begin->set_body(w.app(inv_diffee, gradient_results));
     backward_end->set_body(w.app(backward_begin->ret_var(), backward_end->var()));
 
-
     diff_lam->world().debug_dump();
     return diff_lam;
 }

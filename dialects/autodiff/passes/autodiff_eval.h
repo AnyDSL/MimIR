@@ -61,15 +61,7 @@ struct Node;
 using Nodes = std::unordered_set<Node*>;
 
 struct Node {
-    enum Type { 
-        Any = 0,
-        Bot = 1, 
-        App = 2, 
-        For = 4, 
-        Branch = 8, 
-        Return = 16, 
-        Lam = 32 
-    };
+    enum Type { Any = 0, Bot = 1, App = 2, For = 4, Branch = 8, Return = 16, Lam = 32 };
 
     Node(Type type)
         : type_(type) {}
@@ -89,18 +81,15 @@ struct Node {
     }
 
     Node* pred(Node::Type type) {
-        for( auto& node : preds ){
-            if( node->isa(type) ){
-                return node;
-            }
+        for (auto& node : preds) {
+            if (node->isa(type)) { return node; }
         }
 
         return nullptr;
     }
 };
 
-inline Node::Type operator|(Node::Type a, Node::Type b)
-{
+inline Node::Type operator|(Node::Type a, Node::Type b) {
     return static_cast<Node::Type>(static_cast<int>(a) | static_cast<int>(b));
 }
 
@@ -171,7 +160,7 @@ private:
                 node(loop, Node::Type::For);
                 run(loop, body);
                 run(loop, exit);
-            }else if (callee_isa_var(callee)) {
+            } else if (callee_isa_var(callee)) {
                 link(node(curr, Node::Type::App), node(callee));
             } else if (auto extract = callee->isa<Extract>()) {
                 auto branches = extract->tuple();
@@ -208,11 +197,10 @@ private:
 class AutodiffRewriter : public Rewriter {
 public:
     AutodiffRewriter(World& world, Scope& scope)
-        : Rewriter(world), scope_(scope) {}
+        : Rewriter(world)
+        , scope_(scope) {}
 
-    enum Mode{
-        Scoped, UnScoped
-    };
+    enum Mode { Scoped, UnScoped };
 
     const Def* rewrite_scoped(const Def* old_def) {
         mode = Scoped;
@@ -225,9 +213,10 @@ public:
     }
 
     const Def* rewrite(const Def* old_def) override {
-        if(mode == Scoped && !scope_.bound(old_def)){
+        if (mode == Scoped && !scope_.bound(old_def)) {
             return old_def;
-        }else if (old_def->isa<Axiom>()) return old_def;
+        } else if (old_def->isa<Axiom>())
+            return old_def;
         return Rewriter::rewrite(old_def);
     }
 
@@ -261,7 +250,7 @@ private:
         n_index       = size_t(-2);
 
         for (auto succ : n->succs) {
-            if(!succ->isa(Node::Type::Bot)) continue;
+            if (!succ->isa(Node::Type::Bot)) continue;
             if (succ->index == size_t(-1)) i = post_order_visit(succ, i);
         }
 
