@@ -62,6 +62,7 @@ const Def* AutoDiffEval::augment_load(const App* load, Lam* f, Lam* f_diff) {
         // load pullback from shadow array
         auto pullback_ptr = shadow_pullback[aug_ptr];
         assert(pullback_ptr);
+        // TODO: pullback is missing memory object
         auto [pullback_mem, pullback] = mem::op_load(aug_load_mem, pullback_ptr, w.dbg("pullback_load"))->projs<2>();
         partial_pullback[aug_load]    = pullback;
         return w.tuple({pullback_mem, aug_load});

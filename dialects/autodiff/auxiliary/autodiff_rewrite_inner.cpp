@@ -259,7 +259,7 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
 
     // TODO: special case for const width (special tuple)
 
-    // <i:n, cps2ds body_pb (s#i)
+    // <i:n, cps2ds body_pb (s#i)>
     app_pb->set(world.raw_app(direct::op_cps2ds_dep(body_pb), world.extract(pb->var((nat_t)0), app_pb->var())));
 
     world.DLOG("app pb of pack: {} : {}", app_pb, app_pb->type());
@@ -478,15 +478,14 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
 ///
 const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     auto& world = def->world();
-    // for types holds:
-    // we use macros above to avoid recomputation
-    // TODO: alternative: use class instance to rewrite inside a function and save such values (f, f_diff, f_arg_ty)
+    // We use macros above to avoid recomputation.
+    // TODO: Alternative: Use class instances to rewrite inside a function and save such values (f, f_diff, f_arg_ty).
 
     world.DLOG("Augment def {} : {}", def, def->type());
 
     if (auto aug_def = handle_memory(def, f, f_diff)) { return *aug_def; }
 
-    // app => cont, operator, function
+    // Applications are continuations, operators, or full functions
     if (auto app = def->isa<App>()) {
         auto callee = app->callee();
         auto arg    = app->arg();
@@ -537,8 +536,7 @@ const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
             world.ELOG("expected: {} : {}", diff_name, expected_type);
             assert(false && "unhandled axiom");
         }
-        // TODO: why does this cause a depth error?
-        // if (auto diff_lam = diff_fun->isa_nom<Lam>()) { diff_lam->set_filter(true); }
+        // TODO: why cant we set the filter of diff_fun (if lam) without depth error?
         return diff_fun;
     }
 

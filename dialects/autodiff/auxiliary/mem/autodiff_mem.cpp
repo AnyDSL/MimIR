@@ -164,6 +164,7 @@ Lam* AutoDiffEval::create_gradient_collector(const Def* gradient_lea, Lam* f) {
     auto store_mem                = mem::op_store(gradient_mem, gradient_lea, add, w.dbg("add_to_gradient"));
 
     // TODO: before the gradient was returned; is this necessary?
+    // TODO: we want to return the gradient ptrs here (and zero for others)
     auto ptr_zero = op_zero(pb_ret->type()->as<Pi>()->dom(1));
 
     pb_lam->set_body(w.app(pb_ret, {store_mem, ptr_zero}));
