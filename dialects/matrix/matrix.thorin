@@ -216,31 +216,6 @@
 //         matrix_snd (n,S,[P,Q]) (M)
 //     )
 // };
-///
-/// ## Unfolding functions
-/// 
-/// ### product
-/// 
-/// 
-/// ### map
-/// 
-/// 
-/// ### multiiter
-/// 
-/*
-let multiiter f n S:=
-    let idx = <0: n>;
-    let inner m :=
-        if m = 0 then
-            f (idx)
-        else
-            for ...
-                (i -> 
-                    insert (idx, m - 1) i;
-                    inner (m - 1)
-                )
-*/
-/// TODO:
 
 
 
@@ -260,10 +235,10 @@ let multiiter f n S:=
 // .ax %matrix.map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P), normalize_map;
 // .ax %matrix.parallel_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: .Cn [T, .Cn [P] ] ] -> %matrix.Mat n S P, normalize_parallel_map;
 // .ax %matrix.meta_map:  Π [n: .Nat, S: «n; .Nat», T: *, P: *] -> [%matrix.Mat n S T, f: T -> P ] -> %matrix.Mat n S P, normalize_meta_map;
-// .ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> [%matrix.Mat (2,(m, k),%Real w), %matrix.Mat (2,(k, l),%Real w)] -> %matrix.Mat (2,(m, l),%Real w), normalize_prod;
-.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> [%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)] -> %matrix.Mat (2,(m, l),%core.Real w), normalize_prod;
+.ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> 
+    [%mem.M,%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)] -> [%mem.M,%matrix.Mat (2,(m, l),%core.Real w)], normalize_prod;
 .ax %matrix.transpose: Π [[k:.Nat, l:.Nat], T: *] -> 
-    %matrix.Mat (2,(k,l),T) -> %matrix.Mat (2,(l,k),T), normalize_transpose;
+    [%mem.M,%matrix.Mat (2,(k,l),T)] -> [%mem.M,%matrix.Mat (2,(l,k),T)], normalize_transpose;
 
 // .ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,%matrix.Mat (n,S,T)] -> [%mem.M,T];
 .ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», w:.Nat] -> [%mem.M,%matrix.Mat (n,S,%core.Real w)] -> [%mem.M,%core.Real w];
@@ -327,89 +302,171 @@ let multiiter f n S:=
     [%mem.M, %matrix.Mat (n,S,T)],
     normalize_mapReduce;
 
-// .lam .extern snd 
-//     Π [T:*] -> [a:T,b:T] -> T = {.tt, b};
-// .ax %matrix.dummyZero: Π [T:*] -> T;
-// .let dummyAdd = snd;
 
 
-// .let I32 = .Idx 4294967296;
-// .let TT = I32;
-// .let test = %matrix.mapReduce 
-//         (2,(4,3),I32,
-//             2,
-//             (2,3),
-//             (I32,I32), // <2;I32>
-//             (
-//                 (0,1),
-//                 (1,0,1)
-//             )
-//         );
 
 
-// .lam .extern transpose:
-//     Π [kl: «2: .Nat; .Nat»] ->
-//     .let (k,l) = kl;
-//     %matrix.Mat (2,(k,l),TT) -> %matrix.Mat (2,(l,k),TT) = {
-//     .tt,
-//     .let (k,l) = kl;
-//     .lam transpose_curry :
-//         [M:%matrix.Mat (2,(k,l),TT)] -> %matrix.Mat (2,(l,k),TT) = {
-//         .tt,
-//         %matrix.mapReduce 
-//             (
-//                 2, (l,k), TT, 
-//                 2,
-//                 <1;2>,
-//                 <1;TT>,
-//                 // <1;(k,l)>
-//                 (k,l)
-//                 // (2,2),
-//                 // (TT,TT),
-//                 // ((k,l),(k,l))
-//             )
+
+// ///
+// /// ## Unfolding functions
+// /// 
+// /// ### product
+// /// 
+// .lam .extern internal_mapRed_matrix_prod 
+//     ![m: .Nat, k: .Nat, l: .Nat, w: .Nat] ->
+//     (.Cn[
+//         [%mem.M,%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)],
+//         .Cn[%mem.M,%matrix.Mat (2,(m, l),%core.Real w)]
+//     ]) 
+//     = {
+//     .let R = %core.Real w;
+
+//     .cn prod_comb [[mem:%mem.M, acc:R, [a:R, b:R]], ret:.Cn[%mem.M,R]] = {
+//         .let v = %core.rop.mul (0, w) (a,b);
+
+//         // reduce op = addition
+//         .let new_acc = %core.rop.add (0, w) (acc,v);
+//         ret (mem, new_acc)
 //     };
-//     transpose_curry
+//     .cn inner_matrix_prod 
+//         ![
+//             [
+//                 mem:%mem.M,
+//                 M:%matrix.Mat (2,(m, k),R), 
+//                 N: %matrix.Mat (2,(k, l),R)
+//             ],
+//             ret: .Cn[%mem.M,%matrix.Mat (2,(m, l),R)]
+//         ]
+//     = {
+//         .let zero_64 = 0.0:(%core.Real 64);
+//         .let zero_real = %core.conv.r2r (w, 64) zero_64;
+//         ret (
+//             %matrix.mapReduce
+//                 (2, (m, l), R, 
+//                     2,
+//                     (2, 2),
+//                     (R,R),
+//                     ((m,k),(k,l))
+//                 )
+//                 (
+//                     mem,
+//                     zero_real,
+//                     prod_comb,
+//                     (
+//                         ((0,2), M),
+//                         ((2,1), N)
+//                     )
+//                 )
+//         )
+//     };
+//     inner_matrix_prod
 // };
-
-/*
-* wishes for dialects (not all are sensible):
-
-Needed:
-* - better error messages (:4294967295: error: symbol 'n' already declared in the current scope here: :4294967295)
-* - a : .Idx 5 should be a : (.Idx 5) and not (a : .Idx) 5
-* - currying syntax
-
-WIP:
-* - transparent definitions
-* - holes 
-
-Not necessarily needed:
-* - type inference ([m, k] above) if not already possible (subsumed by infer)
-* - dependend destruct pattern [[k:.Nat, l:.Nat], T:*] (done by using lets)
-* - autoquantification / Variable environment
-
-* other points:
-* - the parallel (mem free) version and the meta version (or the other way around)
-*   should be automatically derivable from the other version
-* - do not tell the name of the domain type but the type definition
-*/
-
-
-
-
-// .lam .extern matrix_map_unfold: 
-//     Π [n: .Nat, S: «n; .Nat», P: *, Q: *] -> 
-//     [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> %matrix.Mat (n,S,P) = {
-//     .tt,
-//     .lam .extern matrix_map_unfold_curry: 
-//         Π [%matrix.Mat (n,S,T), f: .Cn [%mem.M, T, .Cn [%mem.M, P] ] ] -> 
-//         %matrix.Mat (n,S,P) = {
-//         .tt,
-
-        
-
-
+// /// 
+// /// ### transpose
+// /// 
+// // TODO: check code for 1-matrix edge case
+// // TODO: would this automatically be handled by read(transpose) ?
+// .lam .extern internal_mapRed_matrix_transpose
+//     ![[k: .Nat, l: .Nat], T:*] ->
+//     (.Cn[
+//         [%mem.M,%matrix.Mat (2,(k, l),T)],
+//         .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
+//     ]) 
+//     = {
+//     .cn transpose_comb [[mem:%mem.M, acc:T, [a:T]], ret:.Cn[%mem.M,T]] = {
+//         // TODO: or use generalized addition function
+//         // ignore acc
+//         .let new_acc = a;
+//         ret (mem, new_acc)
 //     };
-//     matrix_map_unfold_curry
+//     .cn inner_matrix_transpose
+//         ![
+//             [
+//                 mem:%mem.M,
+//                 M:%matrix.Mat (2,(k, l),T), 
+//             ],
+//             ret: .Cn[%mem.M,%matrix.Mat (2,(l, k),T)]
+//         ]
+//     = {
+//         // TODO: use generalized zero
+//         .let zero = (⊥:T);
+//         ret (
+//             %matrix.mapReduce
+//                 (2, (l, k), T, 
+//                     1,
+//                     2,
+//                     T,
+//                     (k,l)
+//                 )
+//                 (
+//                     mem,
+//                     zero,
+//                     transpose_comb,
+//                     (
+//                         ((1,0), M)
+//                     )
+//                 )
+//         )
+//     };
+//     inner_matrix_transpose
+// };
+// /// 
+// /// ### sum
+// /// 
+// // TODO: test 0d matrix (edge cases in code)
+// .lam .extern internal_mapRed_matrix_sum
+//     ![n: .Nat, S: «n; .Nat», w:.Nat] ->
+//     (.Cn[
+//         [%mem.M,%matrix.Mat (n,S,%core.Real w)],
+//         .Cn[%mem.M,%core.Real w]
+//     ]) 
+//     = {
+//     .let R = %core.Real w;
+//     .cn sum_comb [[mem:%mem.M, acc:R, [a:R]], ret:.Cn[%mem.M,R]] = {
+//         .let new_acc = %core.rop.add (0, w) (acc,a);
+//         ret (mem, new_acc)
+//     };
+//     .cn inner_matrix_sum
+//         ![
+//             [
+//                 mem:%mem.M,
+//                 M:%matrix.Mat (n,S,R), 
+//             ],
+//             ret: .Cn[%mem.M,R]
+//         ]
+//     = {
+//         // TODO: use generalized zero
+//         .let zero_64 = 0.0:(%core.Real 64);
+//         .let zero_real = %core.conv.r2r (w, 64) zero_64;
+//         // should be normalized to lit tuple
+//         // TODO: test normalization
+//         .let idxs =
+//             <i:n;
+//             %core.nop.add (1,
+//                 %core.bitcast (.Nat, .Idx n) i
+//             )
+//             >;
+//         .let (mem2,res) = %matrix.mapReduce
+//                 (1, (1), R, 
+//                     1,
+//                     n,
+//                     R,
+//                     S
+//                 )
+//                 (
+//                     mem,
+//                     zero_real,
+//                     sum_comb,
+//                     (
+//                         (idxs, M)
+//                     )
+//                 );
+//         ret (mem2,
+//             %core.bitcast (
+//                 R,
+//                 %matrix.Mat (1,1,R)
+//             ) res
+//         )
+//     };
+//     inner_matrix_sum
 // };

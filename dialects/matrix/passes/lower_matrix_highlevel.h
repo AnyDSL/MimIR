@@ -9,9 +9,9 @@ namespace thorin::matrix {
 /// Resolves lowering of high level operations into medium/other high-level operations.
 /// Some of these transformations could be done as normalizer.
 
-class LowerMatrixHighLevel : public RWPass<LowerMatrixHighLevel, Lam> {
+class LowerMatrixHighLevelMapRed : public RWPass<LowerMatrixHighLevelMapRed, Lam> {
 public:
-    LowerMatrixHighLevel(PassMan& man)
+    LowerMatrixHighLevelMapRed(PassMan& man)
         : RWPass(man, "lower_matrix_highlevel") {}
 
     /// custom rewrite function

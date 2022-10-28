@@ -45,7 +45,7 @@ const Def* op_lea_tuple(const Def* arr, const Def* tuple) {
     // mem::op_lea(arr, tuple);
     auto n       = tuple->num_projs();
     auto element = arr;
-    for (size_t i = 0; i < n; ++i) { element = mem::op_lea(element, tuple->proj(i)); }
+    for (size_t i = 0; i < n; ++i) { element = mem::op_lea(element, tuple->proj(n, i)); }
     return element;
 }
 
@@ -56,7 +56,7 @@ const Def* op_pack_tuple(u64 n, const Def* tuple, const Def* val) {
     // world.DLOG("create {} dimensional pack", n);
     auto element = val;
     for (int i = n - 1; i >= 0; i--) {
-        auto dim = tuple->proj(i);
+        auto dim = tuple->proj(n, i);
         // world.DLOG("dim {}: {}", i, dim);
         element = world.pack(dim, element);
     }
@@ -96,7 +96,7 @@ const Def* arrTyOfMatrixTy(const Def* S, const Def* T) {
     auto n      = S->num_projs();
     auto arr_ty = T;
     for (int i = n - 1; i >= 0; i--) {
-        auto dim = S->proj(i);
+        auto dim = S->proj(n, i);
         world.DLOG("dim {}: {}", i, dim);
         arr_ty = world.arr(dim, arr_ty);
         world.DLOG("arr_ty {}..{}: {}", i, n, arr_ty);

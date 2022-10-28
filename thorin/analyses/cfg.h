@@ -56,7 +56,7 @@ std::ostream& operator<<(std::ostream&, const CFNode*);
 /// Control Flow Analysis.
 class CFA {
 public:
-    CFA(const CFA&) = delete;
+    CFA(const CFA&)     = delete;
     CFA& operator=(CFA) = delete;
 
     explicit CFA(const Scope& scope);
@@ -116,7 +116,7 @@ public:
     using Map = IndexMap<CFG<forward>, const CFNode*, Value>;
     using Set = IndexSet<CFG<forward>, const CFNode*>;
 
-    CFG(const CFG&) = delete;
+    CFG(const CFG&)     = delete;
     CFG& operator=(CFG) = delete;
 
     explicit CFG(const CFA&);
@@ -134,7 +134,7 @@ public:
     const CFNode* entry() const { return forward ? cfa().entry() : cfa().exit(); }
     const CFNode* exit() const { return forward ? cfa().exit() : cfa().entry(); }
 
-    ArrayRef<const CFNode*> reverse_post_order() const { return rpo_.array(); }
+    Span<const CFNode*> reverse_post_order() const { return rpo_.array(); }
     auto post_order() const { return std::views::reverse(rpo_.array()); }
     /// Maps from reverse post-order index to CFNode.
     const CFNode* reverse_post_order(size_t i) const { return rpo_.array()[i]; }

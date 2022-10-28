@@ -15,11 +15,14 @@ using namespace thorin;
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"matrix",
             [](PipelineBuilder& builder) {
-                builder.extend_opt_phase([](thorin::PassMan& man) {
-                    man.add<thorin::matrix::LowerMatrixHighLevel>();
-                    man.add<thorin::matrix::LowerMatrixMediumLevel>();
-                    man.add<thorin::matrix::LowerMatrixLowLevel>();
-                });
+                // Ordering in a phase is non-deterministic
+                auto base = 150;
+                builder.extend_opt_phase(
+                    base + 0, [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixHighLevelMapRed>(); });
+                builder.extend_opt_phase(
+                    base + 1, [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixMediumLevel>(); });
+                builder.extend_opt_phase(base + 2,
+                                         [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixLowLevel>(); });
             },
             nullptr, [](Normalizers& normalizers) { matrix::register_normalizers(normalizers); }};
 }
