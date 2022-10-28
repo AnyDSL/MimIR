@@ -2,9 +2,6 @@
 
 namespace thorin {
 
-std::pair<const Def*, bool> PhaseRewriter::pre_rewrite(const Def* def) { return phase.pre_rewrite(def); }
-std::pair<const Def*, bool> PhaseRewriter::post_rewrite(const Def* def) { return phase.post_rewrite(def); }
-
 void Phase::run() {
     world().ILOG("=== {}: start ===", name());
     start();
@@ -12,10 +9,10 @@ void Phase::run() {
 }
 
 void RWPhase::start() {
-    for (const auto& [_, ax] : world().axioms()) rewrite(ax);
-    for (const auto& [_, nom] : world().externals()) rewrite(nom)->as_nom()->make_external();
+    for (const auto& [_, ax] : old_world().axioms()) rewrite(ax);
+    for (const auto& [_, nom] : old_world().externals()) rewrite(nom)->as_nom()->make_external();
 
-    swap(world_, new_world());
+    swap(Phase::world_, new_world_);
 }
 
 void FPPhase::start() {

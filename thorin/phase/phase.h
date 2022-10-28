@@ -47,52 +47,26 @@ protected:
     bool dirty_;
 };
 
-class RWPhase;
-
-class PhaseRewriter : public Rewriter {
-public:
-    PhaseRewriter(RWPhase& phase, World& old_world, World& new_world)
-        : Rewriter(old_world, new_world)
-        , phase(phase) {}
-
-    std::pair<const Def*, bool> pre_rewrite(const Def*) override;
-    std::pair<const Def*, bool> post_rewrite(const Def*) override;
-
-    RWPhase& phase;
-};
-
-/// Visits the current Phase::world and constructs a new World Phase::new_world along the way.
+/// Visits the current Phase::world and constructs a new RWPhase::world along the way.
 /// It recursively **rewrites** all World::externals().
-class RWPhase : public Phase {
+/// @note You can override Rewriter::rewrite, Rewriter::rewrite_structural, and Rewriter::rewrite_nom.
+class RWPhase : public Phase, public Rewriter {
 public:
-    RWPhase(World& world, std::string_view name)
-        : Phase(world, name, false)
-        , new_world_(world.state())
-        , rewriter_(*this, world, new_world_) {}
+    RWPhase(World& old_world, std::string_view name)
+        : Phase(old_world, name, false)
+        , Rewriter(new_world_)
+        , new_world_(old_world.state()) {}
 
     void start() override;
 
     /// @name getters
     ///@{
-    const World& old_world() { return world(); }
-    World& new_world() { return new_world_; }
-    Def2Def& old2new() { return rewriter_.old2new; }
-    ///@}
-
-    /// @name rewrite
-    ///@{
-
-    /// See thorin::Rewriter::rewrite.
-    const Def* rewrite(const Def* old_def) { return rewriter_.rewrite(old_def); }
-    /// See thorin::Rewriter::pre_rewrite.
-    virtual std::pair<const Def*, bool> pre_rewrite(const Def*) { return {nullptr, false}; }
-    /// See thorin::Rewriter::post_rewrite.
-    virtual std::pair<const Def*, bool> post_rewrite(const Def*) { return {nullptr, false}; }
+    const World& old_world() const { return Phase::world_; }
+    World& world() { return new_world_; } ///< The "target" World RWPhase::new_world_ is the "default" world.
     ///@}
 
 protected:
     World new_world_;
-    PhaseRewriter rewriter_;
 };
 
 /// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping afterwards.

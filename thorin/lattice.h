@@ -107,15 +107,14 @@ public:
     friend class World;
 };
 
-/// `test value, probe, match, clash` tests whether [value](@ref Test::value) currently holds **type** [probe](@ref
-/// Test::probe).
+/// `test value, probe, match, clash` tests whether Test::value currently holds **type** Test::probe.
 /// @note
-/// * [probe](@ref Test::probe) is a **type**!
-/// * This operation yields [match](@ref Test::match), if `true`, and [clash](@ref Test::clash) otherwise.
+/// * Test::probe is a **type**!
+/// * This operation yields Test::match, if `tt`, and Test::clash otherwise.
 /// @invariant
-/// * [value](@ref Test::value) must be of type [Join](@ref thorin::Join).
-/// * [match](@ref Test::match) must be of type `A -> B`.
-/// * [clash](@ref Test::clash) must be of type `[A, probe] -> C`.
+/// * Test::value must be of type Join.
+/// * Test::match must be of type `A -> B`.
+/// * Test::clash must be of type `[A, probe] -> C`.
 /// @remark This operation is usually known as `case` but named `Test` since `case` is a keyword in C++.
 class Test : public Def {
 private:
