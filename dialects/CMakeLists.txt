@@ -96,6 +96,14 @@ add_thorin_dialect(direct
     INSTALL
 )
 
+add_thorin_dialect(math
+    SOURCES
+        math/math.cpp
+        math/math.h
+        math/normalizers.cpp
+    INSTALL
+)
+
 add_thorin_dialect(mem
     SOURCES
         mem/mem.cpp

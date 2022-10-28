@@ -1,0 +1,94 @@
+/// # The math Dialect {#math}
+///
+/// [TOC]
+///
+/// ## Types
+///
+/// ### %math.Real
+///
+/// A floating-point type with `p` many bits as precision and `e` many bits as exponent.
+/// The sign bit is neither included in `p` nor in `e`.
+/// Thus, the total number of bits occupied by a value of this type is `p + e + 1`.
+/// Common types:
+/// ```
+/// .let %math.R16     = %math.Real (10,  5);
+/// .let %math.R32     = %math.Real (23,  8);
+/// .let %math.R64     = %math.Real (11, 52);
+/// .let %math.BF16    = %math.Real ( 7,  8);
+/// .let %math.NVTF32  = %math.Real (10,  8); // actually 19 bits; aligns to 32 bit
+/// .let %math.AMDFP24 = %math.Real (16,  7);
+/// .let %math.PXR24   = %math.Real (15,  8);
+/// ```
+.ax %math.real: [p: .Nat, e: .Nat] -> *;
+///
+/// ## Nat Operations
+///
+/// ## Real Operations
+///
+/// ### %math.rop
+///
+/// Floating point (real) operations that take RMode.
+.ax %math.rop(add, sub, mul, div, rem):
+    Π [m: .Nat, w: .Nat] -> [%math.Real w, %math.Real w] -> %math.Real w, normalize_rop;
+///
+/// ### %math.rtri
+///
+/// Trigonometric functions.
+///
+.ax %math.rtri(sin, cos, tan):
+    Π m: .Nat -> Π w: .Nat] -> %math.Real w -> %math.Real w, normalize_rtri;
+///
+/// ### %math.rhyp
+///
+/// Hyperbolic functions.
+///
+.ax %math.rhyp(sin, cos, tan):
+    Π m: .Nat -> Π w: .Nat] -> %math.Real w -> %math.Real w, normalize_rhyp;
+///
+/// ### %math.ratri
+///
+/// Inverse (arcus) Trigonometric functions.
+///
+.ax %math.ratri(sin, cos, tan):
+    Π m: .Nat -> Π w: .Nat] -> %math.Real w -> %math.Real w, normalize_ratri;
+///
+/// ### %math.rahyp
+///
+/// Inverse (arcus) hyperbolic functions.
+///
+.ax %math.rahyp(sin, cos, tan):
+    Π m: .Nat -> Π w: .Nat] -> %math.Real w -> %math.Real w, normalize_rahyp
+///
+/// ### %math.cmp
+///
+/// Floating point (real) comparison is made of 4 disjoint relations:
+///     * `U`nordered (yields true if either operand is a QNAN)
+///     * `G`reater
+///     * `L`ess
+///     * `E`qual
+///
+/// | Subtag | Alias | U | G | L | E | Meaning                      |
+/// |--------|-------|---|---|---|---|------------------------------|
+/// | `ugle` |   `f` | o | o | o | o | always false                 |
+/// | `uglE` |   `e` | o | o | o | x | ordered and equal            |
+/// | `ugLe` |   `l` | o | o | x | o | ordered and less             |
+/// | `ugLE` |  `le` | o | o | x | x | ordered and less or equal    |
+/// | `uGle` |   `g` | o | x | o | o | ordered and greater          |
+/// | `uGlE` |  `ge` | o | x | o | x | ordered and greater or equal |
+/// | `uGLe` |  `ne` | o | x | x | o | ordered and not equal        |
+/// | `uGLE` |   `o` | o | x | x | x | ordered (no NaNs)            |
+/// | `Ugle` |   `u` | x | o | o | o | unordered (either NaNs)      |
+/// | `UglE` |  `ue` | x | o | o | x | unordered or equal           |
+/// | `UgLe` |  `ul` | x | o | x | o | unordered or less            |
+/// | `UgLE` | `ule` | x | o | x | x | unordered or less or equal   |
+/// | `UGle` |  `ug` | x | x | o | o | unordered or greater         |
+/// | `UGlE` | `uge` | x | x | o | x | unordered or greater or equa |
+/// | `UGLe` | `une` | x | x | x | o | unordered or not equal       |
+/// | `UGLE` |   `t` | x | x | x | x | always true                  |
+.ax %math.cmp(ugle =   f, uglE =   e, ugLe =   l, ugLE =  le,
+              uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
+              Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
+              UGle =  ug, UGlE = uge, UGLe = une, UGLE =   t):
+    Π [m: .Nat, w: .Nat] -> [%math.Real w, %math.Real w] -> .Bool, normalize_cmp;
+///
+

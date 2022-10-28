@@ -54,6 +54,7 @@
 /// | neg    | o | x | negate                       |
 /// | id     | x | o | identity                     |
 /// | t      | x | x | always true                  |
+///
 .ax %core.bit1(f, neg, id, t): Π w: .Nat -> .Idx w -> .Idx w, normalize_bit1;
 ///
 /// ### %core.bit2
@@ -78,6 +79,7 @@
 /// | ciff   |  x |  x |  o |  x | converse implication         |
 /// | _or    |  x |  x |  x |  o | or                           |
 /// | t      |  x |  x |  x |  x | always true                  |
+///
 .ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
                 _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
     Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w , normalize_bit2;
@@ -93,6 +95,7 @@
 /// ### %core.wrap
 ///
 /// Integer operations that might wrap and, hence, take a WMode.
+///
 .ax %core.wrap(add, sub, mul, shl):
     Π [m: .Nat, w: .Nat] -> [.Idx w, .Idx w] -> .Idx w, normalize_wrap;
 ///
@@ -101,6 +104,7 @@
 /// Signed and unsigned Integer division/remainder.
 /// Division by zero is undefined behavior and thus a visible side effect.
 /// For this reason, these axioms expect a `%%mem.M`.
+///
 .ax %core.div(sdiv, udiv, srem, urem):
     Π w: .Nat -> [%mem.M, .Idx w, .Idx w] -> [%mem.M, .Idx w], normalize_div;
 ///
@@ -166,6 +170,7 @@
 /// | `XYGlE` |        | x | x | x | o | x | signed or unsigned greater or equal == not less |
 /// | `XYGLe` |  `ne`  | x | x | x | x | o | not equal                                       |
 /// | `XYGLE` |  `t`   | x | x | x | x | x | always true                                     |
+///
 .ax %core.icmp(xygle = f,  xyglE = e,   xygLe,      xygLE,
                xyGle,      xyGlE,       xyGLe,      xyGLE,
                xYgle,      xYglE,       xYgLe = sl, xYgLE = sle,
@@ -181,6 +186,7 @@
 /// ### %core.rop
 ///
 /// Floating point (real) operations that take RMode.
+///
 .ax %core.rop(add, sub, mul, div, rem):
     Π [m: .Nat, w: .Nat] -> [%core.Real w, %core.Real w] -> %core.Real w, normalize_rop;
 ///
@@ -210,6 +216,7 @@
 /// | `UGlE` | `uge` | x | x | o | x | unordered or greater or equa |
 /// | `UGLe` | `une` | x | x | x | o | unordered or not equal       |
 /// | `UGLE` |   `t` | x | x | x | x | always true                  |
+///
 .ax %core.rcmp(ugle =   f, uglE =   e, ugLe =   l, ugLE =  le,
                uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
                Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
@@ -235,6 +242,7 @@
 ///
 /// Bitcast to reinterpret a value as another type.
 /// Can be used for pointer / integer conversions as well as integer / nat conversions.
+///
 .ax %core.bitcast: Π [D: *, S: *] -> S -> D, normalize_bitcast;
 ///
 /// ## Other Operations
@@ -242,17 +250,20 @@
 /// ### %core.trait
 ///
 /// Yields the size or align of a type.
+///
 .ax %core.trait(size, align): * -> .Nat, normalize_trait;
 ///
 /// ### %core.pe
 ///
 /// Steers the partial evaluator.
+///
 .ax %core.pe(hlt, run): Π T: * -> T -> T, normalize_pe;
 .ax %core.pe(known): Π T: * -> T -> .Bool, normalize_pe;
 ///
 /// ### %core.zip
 ///
 /// For now, not a better place for this and will be moved elsewhere.
+///
 .ax %core.zip: Π [r: .Nat, s: «r; .Nat»]
     -> Π [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i»
     -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»», normalize_zip;

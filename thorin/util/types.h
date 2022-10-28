@@ -60,6 +60,9 @@ template<> struct w2s_<1> { using type = bool; };
 using r16 = half;
 using r32 = float;
 using r64 = double;
+using f16 = half;
+using f32 = float;
+using f64 = double;
 
 inline half        rem(half        a, half        b) { return      fmod(a, b); }
 inline float       rem(float       a, float       b) { return std::fmod(a, b); }
@@ -80,6 +83,9 @@ constexpr size_t operator""_s(unsigned long long int i) { return size_t(i); }
 inline /*constexpr*/ r16 operator""_r16(long double d) { return r16(float(d)); } // wait till fixed upstream
 constexpr r32 operator""_r32(long double d) { return r32(d); }
 constexpr r64 operator""_r64(long double d) { return r64(d); }
+inline /*constexpr*/ f16 operator""_f16(long double d) { return f16(float(d)); } // wait till fixed upstream
+constexpr f32 operator""_f32(long double d) { return f32(d); }
+constexpr f64 operator""_f64(long double d) { return f64(d); }
 // clang-format on
 
 using nat_t     = u64;

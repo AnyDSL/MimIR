@@ -86,6 +86,10 @@ inline const Def* fn_bitcast(const Def* dst_t, const Def* src_t, const Def* dbg 
 
 /// @name op - these guys build the final function application for the various operations
 ///@{
+inline const Def* op(nop o, const Def* a, const Def* b, const Def* dbg = {}) {
+    World& w = a->world();
+    return w.app(w.ax(o), {a, b}, dbg);
+}
 inline const Def* op(bit2 o, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = a->world();
     return w.app(fn(o, w.iinfer(a)), {a, b}, dbg);
