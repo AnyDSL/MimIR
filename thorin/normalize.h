@@ -30,12 +30,17 @@ static T get(u64 u) {
     return thorin::bitcast<T>(u);
 }
 
-template<class Id> constexpr bool is_commutative(Id) { return false; }
+template<class Id>
+constexpr bool is_commutative(Id) {
+    return false;
+}
 
 /// @warning By default we assume that any commutative operation is also associative.
 /// Please provide a proper specialization if this is not the case.
 template<class Id>
-constexpr bool is_associative(Id id) { return is_commutative(id); }
+constexpr bool is_associative(Id id) {
+    return is_commutative(id);
+}
 
 template<class Id>
 static void commute(Id id, const Def*& a, const Def*& b) {
