@@ -41,20 +41,9 @@ Lam* AutoDiffEval::free_memory() {
     return free_memory;
 }
 
-Lam* strip_eta(Lam* lam) {
-    if (auto app = lam->body()->isa<App>()) {
-        if (app->arg() == lam->var()) {
-            auto called_lam = app->callee()->as_nom<Lam>();
-            return strip_eta(called_lam);
-        }
-    }
-
-    return lam;
-}
-
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& w     = world();
-    auto diffee = strip_eta(def->isa_nom<Lam>());
+    auto diffee = def->isa_nom<Lam>();
     assert(diffee);
 
     auto diff_ty = autodiff_type_fun_pi(diffee->type());

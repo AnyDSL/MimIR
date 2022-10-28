@@ -15,10 +15,10 @@ add_thorin_dialect(autodiff
         autodiff/autodiff.h
         autodiff/builder.cpp
         autodiff/builder.h
+        autodiff/passes/autodiff_reduce.cpp
+        autodiff/passes/autodiff_reduce.h
         autodiff/passes/autodiff_eval.cpp
         autodiff/passes/autodiff_eval.h
-        autodiff/passes/autodiff_ext_cleanup.cpp
-        autodiff/passes/autodiff_ext_cleanup.h
         autodiff/auxiliary/autodiff_aux.cpp
         autodiff/auxiliary/autodiff_aux.h
         autodiff/auxiliary/autodiff_rewrite_inner.cpp

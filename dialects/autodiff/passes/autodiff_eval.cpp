@@ -1,3 +1,5 @@
+#include "dialects/autodiff/passes/autodiff_eval.h"
+
 #include <iostream>
 #include <thorin/dump.cpp>
 
@@ -5,11 +7,9 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/core/core.h"
-// #include "dialects/direct/direct.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
-#include "dialects/autodiff/passes/autodiff_eval.h"
+#include "dialects/core/core.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {

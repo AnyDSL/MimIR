@@ -7,8 +7,7 @@
 
 #include "dialects/affine/passes/lower_for.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
-#include "dialects/autodiff/passes/autodiff_ext_cleanup.h"
-#include "dialects/direct/passes/ds2cps.h"
+#include "dialects/autodiff/passes/autodiff_reduce.h"
 #include "dialects/mem/passes/rw/reshape.h"
 
 using namespace thorin;
@@ -30,9 +29,10 @@ public:
 extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
     return {"autodiff",
             [](thorin::PipelineBuilder& builder) {
-                builder.extend_opt_phase(107, [](thorin::PassMan& man) { man.add<thorin::autodiff::AutoDiffEval>(); });
-                // builder.extend_opt_phase(126, [](PassMan& man) {
-                // man.add<thorin::autodiff::AutoDiffExternalCleanup>(); });
+                builder.extend_opt_phase(107, [](thorin::PassMan& man) {
+                    man.add<thorin::autodiff::AutodiffReduce>();
+                    man.add<thorin::autodiff::AutoDiffEval>();
+                });
 
                 builder.add_opt(126);
                 builder.extend_opt_phase(

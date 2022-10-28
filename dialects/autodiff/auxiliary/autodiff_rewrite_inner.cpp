@@ -689,10 +689,10 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
 
     Scope scope2(inv_body_lam_new);
     ScopeRewriter first_rewriter(world(), scope2);
-    auto replacement                                = w.tuple({mem::mem_var(inv_loop_body), ret_lam});
+    auto replacement = w.tuple({mem::mem_var(inv_loop_body), ret_lam});
     first_rewriter.map(inv_body_lam_new->var(), replacement);
-    auto new_args                                   = DefArray(inv_body_lam_new->num_ops(),
-                                                               [&](size_t i) { return first_rewriter.rewrite(inv_body_lam_new->op(i)); });
+    auto new_args = DefArray(inv_body_lam_new->num_ops(),
+                             [&](size_t i) { return first_rewriter.rewrite(inv_body_lam_new->op(i)); });
     inv_loop_body->set(new_args);
     inv_body_lam_new->set_body(w.top_nat());
 

@@ -333,7 +333,6 @@ private:
     DefSet visited_prop;
 
     Def2Def gradient_pointers;
-    // DefMap<DefVec> gradients;
 
     DefSet allocated_memory;
     Def2Def cache_map;

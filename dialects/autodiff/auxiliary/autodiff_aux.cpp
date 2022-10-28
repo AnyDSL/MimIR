@@ -193,38 +193,6 @@ const Def* autodiff_type_fun(const Def* ty, bool flat) {
     return nullptr;
 }
 
-const Def* zero_def(const Def* T) {
-    auto& world = T->world();
-    world.DLOG("zero_def for type {} <{}>", T, T->node_name());
-    if (auto arr = T->isa<Arr>()) {
-        auto shape = arr->shape();
-        auto body  = arr->body();
-        // auto inner_zero = zero_def(body);
-        auto inner_zero = op_zero(body);
-        auto zero_arr   = world.pack(shape, inner_zero);
-        world.DLOG("zero_def for array of shape {} with type {}", shape, body);
-        world.DLOG("zero_arr: {}", zero_arr);
-        return zero_arr;
-    } else if (auto idx = T->isa<Idx>()) {
-        // TODO: real
-        auto zero = world.lit(T, 0, world.dbg("zero"));
-        world.DLOG("zero_def for int is {}", zero);
-        return zero;
-    } else if (auto sig = T->isa<Sigma>()) {
-        DefArray ops(sig->ops(), [&](const Def* op) { return op_zero(op); });
-        return world.tuple(ops);
-    }
-
-    if (match<mem::M>(T)) { return world.bot(mem::type_mem(world)); }
-
-    if (match<mem::Ptr>(T)) {
-        auto lit_zero = world.lit_int(64, 0);
-        return core::op_bitcast(T, lit_zero);
-    }
-
-    return nullptr;
-}
-
 } // namespace thorin::autodiff
 
 namespace thorin {
