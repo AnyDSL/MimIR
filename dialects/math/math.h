@@ -121,8 +121,7 @@ const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) 
 template<nat_t P, nat_t E>
 inline auto match_f(const Def* def) {
     if (auto f_ty = match<F>(def)) {
-        if (auto [p, e] = f_ty->arg()->projs<2>(isa_lit<nat_t>); p && e && *p == P && *e == E)
-            return f_ty;
+        if (auto [p, e] = f_ty->arg()->projs<2>(isa_lit<nat_t>); p && e && *p == P && *e == E) return f_ty;
     }
     return Match<F, App>();
 }
@@ -196,4 +195,3 @@ inline const Def* op_rminus(nat_t mode, const Def* a, const Def* dbg = {}) {
 ///@}
 
 } // namespace thorin::math
-

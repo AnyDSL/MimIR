@@ -1,7 +1,7 @@
 #include <type_traits>
 
-#include "dialects/math/math.h"
 #include "dialects/core/core.h"
+#include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::math {
@@ -324,13 +324,13 @@ static const Def* fold_conv(const Def* dst_type, const App* callee, const Def* s
         if (Idx::size(dst_type)) *lit_dw = *size2bitwidth(*lit_dw);
 
         Res res;
-#define CODE(sw, dw)                                                                                 \
-    else if (*lit_dw == dw && *lit_sw == sw) {                                                       \
-        if constexpr (dw >= min_dw && sw >= min_sw) res = FoldConv<id, dw, sw>::run(lit_src->get()); \
-    }
+#    define CODE(sw, dw)                                                                                 \
+        else if (*lit_dw == dw && *lit_sw == sw) {                                                       \
+            if constexpr (dw >= min_dw && sw >= min_sw) res = FoldConv<id, dw, sw>::run(lit_src->get()); \
+        }
         if (false) {}
         TABLE(CODE)
-#undef CODE
+#    undef CODE
         if (res) return world.lit(dst_type, *res, dbg);
         return world.bot(dst_type, dbg);
     }
