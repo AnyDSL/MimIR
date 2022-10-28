@@ -226,8 +226,7 @@ private:
 class AutoDiffEval : public RWPass<AutoDiffEval, Lam> {
 public:
     AutoDiffEval(PassMan& man)
-        : RWPass(man, "autodiff_eval") {
-    }
+        : RWPass(man, "autodiff_eval") {}
 
     const Def* rewrite(const Def*) override;
 
@@ -334,7 +333,7 @@ private:
     DefSet visited_prop;
 
     Def2Def gradient_pointers;
-    //DefMap<DefVec> gradients;
+    // DefMap<DefVec> gradients;
 
     DefSet allocated_memory;
     Def2Def cache_map;

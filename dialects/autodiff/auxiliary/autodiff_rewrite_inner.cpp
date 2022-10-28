@@ -227,7 +227,6 @@ const Def* AutoDiffEval::wrap_cache(const App* load, const App* aug_load) {
     auto result_mem           = load_mem;
 
     if (has_store) {
-        assert(current_loop);
         auto loop_size   = current_loop->size;
         auto cache_index = current_loop->cache_index();
 
@@ -358,8 +357,8 @@ const Def* sum(const Def* left, const Def* right) {
 }
 
 const Def* AutoDiffEval::grad_sum(const Def* def) {
-    auto& w = world();
-    DefVec  &gradients = current_loop->gradients[def];
+    auto& w           = world();
+    DefVec& gradients = current_loop->gradients[def];
 
     const Def* result = nullptr;
 
@@ -396,6 +395,20 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
     }
 
     return nullptr;
+}
+
+const Def* one_hot_other_bot(const Def* pattern, const Def* def, size_t position){
+    auto& w       = def->world();
+    DefArray vec(pattern->num_projs(), [&](size_t index) {
+        auto proj = pattern->proj(index);
+        if (position == index) {
+            return def;
+        } else {
+            return w.bot(proj->type());
+        }
+    });
+
+    return w.tuple(vec);
 }
 
 void AutoDiffEval::prop(Scope& scope, const Def* def) {
@@ -446,16 +459,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto tup   = extract->tuple();
         auto index = as_lit(extract->index());
 
-        DefArray vec(tup->num_projs(), [&](size_t i) {
-            auto proj = tup->proj(i);
-            if (index == i) {
-                return gradient;
-            } else {
-                return w.bot(proj->type());
-            }
-        });
-
-        attach_gradient(tup, w.tuple(vec));
+        attach_gradient(tup, one_hot_other_bot(tup, gradient, index));
         return;
     }
 
@@ -769,16 +773,19 @@ void AutoDiffEval::push_loop_frame(const App* for_app, const Def* size) {
     if (auto cached_loop = loop_assignment[for_app]) {
         current_loop = cached_loop;
     } else {
-        auto next_frame = std::make_shared<LoopFrame>(*this);
-        next_frame->parent = current_loop;
-        next_frame->size   = core::op(core::wrap::mul, core::WMode::none, current_loop->size, size);
+        auto next_frame          = std::make_shared<LoopFrame>(*this);
+        next_frame->parent       = current_loop;
+        next_frame->size         = core::op(core::wrap::mul, core::WMode::none, current_loop->size, size);
         next_frame->local_size   = size;
         loop_assignment[for_app] = next_frame;
         current_loop             = next_frame;
     }
 }
 
-void AutoDiffEval::pop_loop_frame() { current_loop = current_loop->parent; }
+void AutoDiffEval::pop_loop_frame() { 
+    assert(current_loop->parent);
+    current_loop = current_loop->parent; 
+}
 
 const Def* AutoDiffEval::augment_for_body(const Def* body, const Def* start, const Def* inc) {
     auto& w = world();
@@ -906,7 +913,6 @@ const Def* AutoDiffEval::augment_(const Def* def) {
         w.DLOG("Augment pack: {} : {} with {}", shape, shape->type(), body);
         return augment_pack(pack);
     }
-
 
     return def;
 }
@@ -1037,9 +1043,7 @@ const Def* AutoDiffEval::resolve(const Def* def) {
     return new_def;
 }
 
-void AutoDiffEval::attach_gradient(const Def* dst, const Def* grad) {
-    current_loop->gradients[dst].push_back(grad);
-}
+void AutoDiffEval::attach_gradient(const Def* dst, const Def* grad) { current_loop->gradients[dst].push_back(grad); }
 
 const Def* AutoDiffEval::invert_store(const App* store) {}
 
