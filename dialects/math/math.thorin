@@ -4,64 +4,137 @@
 ///
 /// ## Types
 ///
-/// ### %math.Real
+/// ### %math.F
 ///
 /// A floating-point type with `p` many bits as precision and `e` many bits as exponent.
 /// The sign bit is neither included in `p` nor in `e`.
 /// Thus, the total number of bits occupied by a value of this type is `p + e + 1`.
-/// Common types:
+/// Common types are:
 /// ```
-/// .let %math.R16     = %math.Real (10,  5);
-/// .let %math.R32     = %math.Real (23,  8);
-/// .let %math.R64     = %math.Real (11, 52);
-/// .let %math.BF16    = %math.Real ( 7,  8);
-/// .let %math.NVTF32  = %math.Real (10,  8); // actually 19 bits; aligns to 32 bit
-/// .let %math.AMDFP24 = %math.Real (16,  7);
-/// .let %math.PXR24   = %math.Real (15,  8);
+/// .let F16     = %math.F (10,  5);
+/// .let F32     = %math.F (23,  8);
+/// .let F64     = %math.F (52, 11);
+/// .let BF16    = %math.F ( 7,  8);
+/// .let NVTF32  = %math.F (10,  8); // actually 19 bits; aligns to 32 bit
+/// .let AMDFP24 = %math.F (16,  7);
+/// .let PXR24   = %math.F (15,  8);
 /// ```
-.ax %math.real: [p: .Nat, e: .Nat] -> *;
+.ax %math.F: [p: .Nat, e: .Nat] -> *;
 ///
-/// ## Nat Operations
+/// ## Operations
 ///
-/// ## Real Operations
+/// ### %math.arith
 ///
-/// ### %math.rop
+/// Arithmetic operations.
+.ax %math.arith(add, sub, mul, div, rem):
+    Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_arith;
 ///
-/// Floating point (real) operations that take RMode.
-.ax %math.rop(add, sub, mul, div, rem):
-    Π [m: .Nat, w: .Nat] -> [%math.Real w, %math.Real w] -> %math.Real w, normalize_rop;
+/// ### %math.x
 ///
-/// ### %math.rtri
+/// Minimum and Maximum.
+///
+.ax %math.x(min, max): Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_x;
+///
+/// ### %math.tri
 ///
 /// Trigonometric functions.
 ///
-.ax %math.rtri(sin, cos, tan):
-    Π m: .Nat -> Π w: .Nat] -> %math.Real w -> %math.Real w, normalize_rtri;
+/// * `FF`: sine, cosine, tangent, *unused*
+/// * `R`eciprocal counterpart
+/// * `H`yperbolic counterpart
+/// * `A`rcus/`A`rea counterpart (inverse)
 ///
-/// ### %math.rhyp
+/// | Subtag  | Alias        | A | H | R | FF | Meaning                   | Semantic                |
+/// |---------|--------------|---|---|---|----|---------------------------|-------------------------|
+/// | `ahrff` |  `sin`       | o | o | o | oo | sine                      | \f$\sin x\f$            |
+/// | `ahrfF` |  `cos`       | o | o | o | xo | cosine                    | \f$\cos x\f$            |
+/// | `ahrFf` |  `tan`       | o | o | o | ox | tangent                   | \f$\tan x\f$            |
+/// | `ahrFF` |              | o | o | o | xx | *unused*                  | -                       |
+/// | `ahRff` |  `csc` ,`r`  | o | o | x | oo | cosecant                  | \f$\csc x\f$            |
+/// | `ahRfF` |  `sec`       | o | o | x | xo | secant                    | \f$\sec x\f$            |
+/// | `ahRFf` |  `cot`       | o | o | x | ox | cotangent                 | \f$\cot x\f$            |
+/// | `ahRFF` |              | o | o | x | xx | *unused*                  | -                       |
+/// | `aHrff` |  `sinh`, `h` | o | x | o | oo | hyperbolic sine           | \f$\sinh x\f$           |
+/// | `aHrfF` |  `cosh`      | o | x | o | xo | hyperbolic cosine         | \f$\cosh x\f$           |
+/// | `aHrFf` |  `tanh`      | o | x | o | ox | hyperbolic tangent        | \f$\tanh x\f$           |
+/// | `aHrFF` |              | o | x | o | xx | *unused*                  | -                       |
+/// | `aHRff` |  `csch`      | o | x | x | oo | hyperbolic cosecant       | \f$\textrm{csch}\,x\f$  |
+/// | `aHRfF` |  `sech`      | o | x | x | xo | hyperbolic secant         | \f$\textrm{sech}\,x\f$  |
+/// | `aHRFf` |  `coth`      | o | x | x | ox | hyperbolic cotangent      | \f$\textrm{coth}\,x\f$  |
+/// | `aHRFF` |              | o | x | x | xx | *unused*                  | -                       |
+/// | `Ahrff` | `asin` , `a` | x | o | o | oo | arcus sine                | \f$\textrm{asin}\,x\f$  |
+/// | `AhrfF` | `acos`       | x | o | o | xo | arcus cosine              | \f$\textrm{acos}\,x\f$  |
+/// | `AhrFf` | `atan`       | x | o | o | ox | arcus tangent             | \f$\textrm{atan}\,x\f$  |
+/// | `AhrFF` |              | x | o | o | xx | arcus *unused*            | -                       |
+/// | `AhRff` | `acsc`       | x | o | x | oo | arcus cosecant            | \f$\textrm{acsc}\,x\f$  |
+/// | `AhRfF` | `asec`       | x | o | x | xo | arcus secant              | \f$\textrm{asec}\,x\f$  |
+/// | `AhRFf` | `acot`       | x | o | x | ox | arcus cotangent           | \f$\textrm{acot}\,x\f$  |
+/// | `AhRFF` |              | x | o | x | xx | *unused*                  | -                       |
+/// | `AHrff` | `asinh`      | x | x | o | oo | area hyperbolic sine      | \f$\textrm{asinh}\,x\f$ |
+/// | `AHrfF` | `acosh`      | x | x | o | xo | area hyperbolic cosine    | \f$\textrm{acosh}\,x\f$ |
+/// | `AHrFf` | `atanh`      | x | x | o | ox | area hyperbolic tangent   | \f$\textrm{atanh}\,x\f$ |
+/// | `AHrFF` |              | x | x | o | xx | *unused*                  | -                       |
+/// | `AHRff` | `acsch`      | x | x | x | oo | area hyperbolic cosecant  | \f$\textrm{acsch}\,x\f$ |
+/// | `AHRfF` | `asech`      | x | x | x | xo | area hyperbolic secant    | \f$\textrm{asech}\,x\f$ |
+/// | `AHRFf` | `acoth`      | x | x | x | ox | area hyperbolic cotangent | \f$\textrm{acoth}\,x\f$ |
+/// | `AHRFF` |              | x | x | x | xx | *unused*                  | -                       |
 ///
-/// Hyperbolic functions.
+.ax %math.tri(ahrff =  sin     , ahrfF =  cos , ahrFf =  tan , ahrFF,
+              ahRff =  csc  = r, ahRfF =  sec , ahRFf =  cot , ahRFF,
+              aHrff =  sinh = h, aHrfF =  cosh, aHrFf =  tanh, aHrFF,
+              aHRff =  csch    , aHRfF =  sech, aHRFf =  coth, aHRFF,
+              Ahrff = asin  = a, AhrfF = acos , AhrFf = atan , AhrFF,
+              AhRff = acsc     , AhRfF = asec , AhRFf = acot , AhRFF,
+              AHrff = asinh    , AHrfF = acosh, AHrFf = atanh, AHrFF,
+              AHRff = acsch    , AHRfF = asech, AHRFf = acoth, AHRFF):
+    Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_tri;
 ///
-.ax %math.rhyp(sin, cos, tan):
-    Π m: .Nat -> Π w: .Nat] -> %math.Real w -> %math.Real w, normalize_rhyp;
+/// ### %math.pow
 ///
-/// ### %math.ratri
+/// Power function: \f$x^y\f$
 ///
-/// Inverse (arcus) Trigonometric functions.
+.ax %math.pow: Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_pow;
 ///
-.ax %math.ratri(sin, cos, tan):
-    Π m: .Nat -> Π w: .Nat] -> %math.Real w -> %math.Real w, normalize_ratri;
+/// ### %math.rt
 ///
-/// ### %math.rahyp
+/// Square and cubic root:
+/// * `%%math.rt.sq`: \f$\sqrt{x}\f$
+/// * `%%math.rt.cb`: \f$\sqrt[3]{x}\f$
 ///
-/// Inverse (arcus) hyperbolic functions.
+.ax %math.rt(sq,cb): Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_rt;
 ///
-.ax %math.rahyp(sin, cos, tan):
-    Π m: .Nat -> Π w: .Nat] -> %math.Real w -> %math.Real w, normalize_rahyp
+/// ### %math.exp
+///
+/// Exponential and logarithm functions.
+///
+/// | Subtag | Alias       | B | L | Meaning                 | Semantic       |
+/// |--------|-------------|---|---|-------------------------|----------------|
+/// | `bl`   | `exp`       | o | o | natural exponential     | \f$e^x\f$      |
+/// | `bL`   | `log`       | o | x | natural logarithm       | \f$\ln x\f$    |
+/// | `Bl`   | `exp2`, `b` | x | o | exponential with base 2 | \f$2^x\f$      |
+/// | `BL`   | `log2`      | x | x | logarithm with base 2   | \f$\log_2 x\f$ |
+///
+.ax %math.exp(bl = exp, bL = log, Bl = exp2 = b, BL = log2):
+    Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_exp;
+///
+/// ### %math.er
+///
+/// * Error function `%%math.er.f`: \f$\frac{2}{\sqrt\pi}\int_0^z e^{-t^2}\,dt\f$
+/// * Complementary error function `%%math.er.fc`
+///
+.ax %math.er(f, fc): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_er;
+///
+/// ### %math.gamma
+///
+/// Gamma function and its natural logarithm.
+///
+.ax %math.gamma(t, l): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_gamma;
+///
+/// ## Other Operations
 ///
 /// ### %math.cmp
 ///
-/// Floating point (real) comparison is made of 4 disjoint relations:
+/// Floating point comparison is made of 4 disjoint relations:
 ///     * `U`nordered (yields true if either operand is a QNAN)
 ///     * `G`reater
 ///     * `L`ess
@@ -85,10 +158,26 @@
 /// | `UGlE` | `uge` | x | x | o | x | unordered or greater or equa |
 /// | `UGLe` | `une` | x | x | x | o | unordered or not equal       |
 /// | `UGLE` |   `t` | x | x | x | x | always true                  |
+///
 .ax %math.cmp(ugle =   f, uglE =   e, ugLe =   l, ugLE =  le,
               uGle =   g, uGlE =  ge, uGLe =  ne, uGLE =   o,
               Ugle =   u, UglE =  ue, UgLe =  ul, UgLE = ule,
               UGle =  ug, UGlE = uge, UGLe = une, UGLE =   t):
-    Π [m: .Nat, w: .Nat] -> [%math.Real w, %math.Real w] -> .Bool, normalize_cmp;
+    Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> .Bool, normalize_cmp;
 ///
-
+/// ### %math.conv
+///
+/// Bit width (and signedness) conversion for:
+/// * `s2f`/`u2f`: `.Idx -> %%math.F`
+/// * `f2s`/`f2u`: `%%math.F -> .Idx`
+/// * `f2f`: `%%math.F -> %%math.F`
+///
+.ax %math.conv(s2f, u2f): Π s: .Nat -> Π [p: .Nat, e: .Nat] -> .Idx s -> %math.F (p, e), normalize_conv;
+.ax %math.conv(f2s, f2u): Π [p: .Nat, e: .Nat] -> Π s: .Nat -> %math.F (p, e) -> .Idx s, normalize_conv;
+.ax %math.conv(f2f):      Π [sp: .Nat, se: .Nat] -> Π [dp: .Nat, de: .Nat] -> %math.F (sp, se) -> %math.F (dp, de), normalize_conv;
+///
+/// ### %core.trait
+///
+/// Yields the size or align of a type.
+///
+.ax %math.trait(size, align): * -> .Nat, normalize_trait;
