@@ -397,8 +397,8 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
     return nullptr;
 }
 
-const Def* one_hot_other_bot(const Def* pattern, const Def* def, size_t position){
-    auto& w       = def->world();
+const Def* one_hot_other_bot(const Def* pattern, const Def* def, size_t position) {
+    auto& w = def->world();
     DefArray vec(pattern->num_projs(), [&](size_t index) {
         auto proj = pattern->proj(index);
         if (position == index) {
@@ -437,7 +437,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto load_val = op_load(grad);
         auto grad_sum = sum(load_val, gradient_val);
         op_store(grad, grad_sum);
-        attach_gradient(load->arg(), w.tuple({w.bot(mem::type_mem(w)), w.bot(arr->type())}));
         return;
     }
 
@@ -451,7 +450,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto grad_ptr = grad_arr(ptr);
         auto load_val = op_load(grad_ptr);
         op_store(grad_ptr, zero(load_val->type()));
-        attach_gradient(store->arg(), w.tuple({w.bot(mem::type_mem(w)), w.bot(ptr->type()), load_val}));
+        attach_gradient(store->arg(), one_hot_other_bot(store->arg(), load_val, 2));
         return;
     }
 
@@ -782,9 +781,9 @@ void AutoDiffEval::push_loop_frame(const App* for_app, const Def* size) {
     }
 }
 
-void AutoDiffEval::pop_loop_frame() { 
+void AutoDiffEval::pop_loop_frame() {
     assert(current_loop->parent);
-    current_loop = current_loop->parent; 
+    current_loop = current_loop->parent;
 }
 
 const Def* AutoDiffEval::augment_for_body(const Def* body, const Def* start, const Def* inc) {
