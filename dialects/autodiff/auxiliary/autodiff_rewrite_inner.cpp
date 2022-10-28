@@ -511,11 +511,9 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
-            auto left_div = core::op(core::rop::div, current_mem, gradient, right_value);
-            left_grad     = left_div->proj(1);
+            left_grad = core::op(core::rop::div, core::RMode::none, gradient, right_value);
             right_grad =
                 core::op(core::rop::mul, core::RMode::none, core::op_rminus(core::RMode::none, left_grad), left_value);
-            current_mem = left_div->proj(0);
         }
 
         attach_gradient(rop->arg(), w.tuple({left_grad, right_grad}));
