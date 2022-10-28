@@ -7,6 +7,7 @@
 .import mem;
 /// For derivatives:
 .import core;
+// .import matrix;
 ///
 ///
 /// ## Types
@@ -159,3 +160,52 @@
     };
     inner_mul_deriv_cps
 };
+// .ax %matrix.constMat: Π [n: .Nat, S: «n; .Nat», T: *] -> [%mem.M,T] -> [%mem.M,%matrix.Mat (n,S,T)];
+// .ax %matrix.init: Π [n: .Nat, S: «n; .Nat», T: *, %mem.M] -> [%mem.M,%matrix.Mat (n,S,T)];
+// .ax %matrix.prod:  Π [m: .Nat, k: .Nat, l: .Nat, w: .Nat] -> 
+//     [%mem.M,%matrix.Mat (2,(m, k),%core.Real w), %matrix.Mat (2,(k, l),%core.Real w)] -> [%mem.M,%matrix.Mat (2,(m, l),%core.Real w)], normalize_prod;
+// .ax %matrix.transpose: Π [[k:.Nat, l:.Nat], T: *] -> 
+//     [%mem.M,%matrix.Mat (2,(k,l),T)] -> [%mem.M,%matrix.Mat (2,(l,k),T)], normalize_transpose;
+// .ax %matrix.sum: Π [n: .Nat, S: «n; .Nat», w:.Nat] -> [%mem.M,%matrix.Mat (n,S,%core.Real w)] -> [%mem.M,%core.Real w];
+
+/// ### %matrix.transpose
+/// 
+/// mem*Mat -> mem*Mat * (mem*Mat -> mem*Mat)
+/// 
+// .lam .extern internal_diff_matrix_transpose
+//     ![[k:.Nat, l:.Nat], T: *] -> 
+//     (.Cn[
+//         [%mem.M,%matrix.Mat (2,(k,l),T)], 
+//         .Cn[
+//             [%mem.M,%matrix.Mat (2,(l,k),T)], 
+//             .Cn[
+//                 [%mem.M,%matrix.Mat (2,(l,k),T)], 
+//                 .Cn[%mem.M,%matrix.Mat (2,(k,l),T)]
+//             ]
+//         ]
+//     ])
+//     = { 
+//     .cn inner_deriv_cps_transpose
+//         ![
+//         [mem:%mem.M, M:%matrix.Mat (2,(k,l),T)], 
+//         ret: .Cn[
+//             [%mem.M,%matrix.Mat (2,(l,k),T)], 
+//             .Cn[
+//                 [%mem.M,%matrix.Mat (2,(l,k),T)], 
+//                 .Cn[%mem.M,%matrix.Mat (2,(k,l),T)]
+//             ]
+//         ]
+//         ]@(.tt)
+//         = { 
+//         .let result = %matrix.transpose ((k,l),T) (mem,M);
+//         .cn pb ![
+//             [mem:%mem.M,S:%matrix.Mat (2,(l,k),T)], 
+//             pb_ret: .Cn[%mem.M,%matrix.Mat (2,(k,l),T)]
+//         ]@(.tt) = { 
+//             .let pb_res = %matrix.transpose ((l,k),T) (mem,S);
+//             pb_ret pb_res
+//         };
+//         ret (result,pb)
+//     };
+//     inner_deriv_cps_transpose
+// };
