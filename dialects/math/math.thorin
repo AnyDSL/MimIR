@@ -37,7 +37,7 @@
 ///
 /// ### %math.tri
 ///
-/// Trigonometric functions.
+/// [Trigonometric](https://en.wikipedia.org/wiki/Trigonometric_functions) and [hypberbolic](https://en.wikipedia.org/wiki/Hyperbolic_functions) functions.
 ///
 /// * `FF`: sine, cosine, tangent, *unused*
 /// * `R`eciprocal counterpart
@@ -119,8 +119,12 @@
 ///
 /// ### %math.er
 ///
-/// * Error function `%%math.er.f`: \f$\frac{2}{\sqrt\pi}\int_0^z e^{-t^2}\,dt\f$
-/// * Complementary error function `%%math.er.fc`
+/// [Error](https://en.wikipedia.org/wiki/Error_function) and [Complementary error function](https://en.wikipedia.org/wiki/Error_function#Complementary_error_function).
+///
+/// | Name           | Meaning                      | Semantic                                                                 |
+/// |----------------|------------------------------|--------------------------------------------------------------------------|
+/// | `%%math.er.f`  | error function               | \f$\frac{2}{\sqrt\pi}\int_0^x e^{-t^2}\,dt\f$                            |
+/// | `%%math.er.fc` | complementary error funciton | \f$\frac{2}{\sqrt\pi}\int_x^\infty e^{-t^2}\,dt = 1 - \textrm{erf}(x)\f$ |
 ///
 .ax %math.er(f, fc): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_er;
 ///
@@ -167,10 +171,7 @@
 ///
 /// ### %math.conv
 ///
-/// Bit width (and signedness) conversion for:
-/// * `s2f`/`u2f`: `.Idx -> %%math.F`
-/// * `f2s`/`f2u`: `%%math.F -> .Idx`
-/// * `f2f`: `%%math.F -> %%math.F`
+/// Conversion between floating point and index types - both signed and unsigned - of different sizes.
 ///
 .ax %math.conv(s2f, u2f): Π s: .Nat -> Π [p: .Nat, e: .Nat] -> .Idx s -> %math.F (p, e), normalize_conv;
 .ax %math.conv(f2s, f2u): Π [p: .Nat, e: .Nat] -> Π s: .Nat -> %math.F (p, e) -> .Idx s, normalize_conv;

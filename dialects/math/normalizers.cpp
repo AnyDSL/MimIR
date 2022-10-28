@@ -1,89 +1,27 @@
 #include <type_traits>
 
+#include "thorin/normalize.h"
+
 #include "dialects/core/core.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
-namespace thorin::math {
+namespace thorin::normalize {
 
-template<class T>
-static T get(u64 u) {
-    return thorin::bitcast<T>(u);
+// clang-format off
+constexpr bool is_commutative(math::x       ) { return true; }
+constexpr bool is_commutative(math::arith id) { return id == math::arith ::add || id == math::arith::mul; }
+constexpr bool is_commutative(math::cmp   id) { return id == math::cmp   ::e   || id == math::cmp  ::ne ; }
+// clang-format off
+
 }
 
-/*
- * is_commutative & is_associative
- */
+using namespace thorin::normalize;
 
-// clang-format off
-template<class Id> constexpr bool is_commutative(Id) { return false; }
-constexpr bool is_commutative(arith id) { return id == arith ::add || id == arith::mul; }
-constexpr bool is_commutative(cmp   id) { return id == cmp   ::e   || id == cmp  ::ne ; }
-// clang-format off
-
-template<class Id>
-constexpr bool is_associative(Id id) { return is_commutative(id); }
-
-/*
- * Fold
- */
-
-// This code assumes two-complement arithmetic for unsigned operations.
-// This is *implementation-defined* but *NOT* *undefined behavior*.
-
-class Res {
-public:
-    Res()
-        : data_{} {}
-    template<class T>
-    Res(T val)
-        : data_(thorin::bitcast<u64>(val)) {}
-
-    constexpr const u64& operator*() const& { return *data_; }
-    constexpr u64& operator*() & { return *data_; }
-    explicit operator bool() const { return data_.has_value(); }
-
-private:
-    std::optional<u64> data_;
-};
+namespace thorin::math {
 
 template<class T, T, nat_t>
 struct Fold {};
-
-template<class Id>
-static void commute(Id id, const Def*& a, const Def*& b) {
-    if (is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
-            std::swap(a, b); // swap lit to left, or smaller gid to left if no lit present
-    }
-}
-
-/// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
-template<class Id, Id id>
-static const Def* fold2(World& world, const Def* type, const Def*& a, const Def*& b, const Def* dbg) {
-    auto la = a->isa<Lit>(), lb = b->isa<Lit>();
-
-    if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type, dbg);
-
-    if (la && lb) {
-        nat_t width = *isa_f(a->type());
-        Res res;
-        switch (width) {
-#define CODE(i)                                                   \
-            case i:                                               \
-                res = Fold<Id, id, i>::run(la->get(), lb->get()); \
-                break;
-            THORIN_16_32_64(CODE)
-#undef CODE
-            default: unreachable();
-        }
-
-        return res ? world.lit(type, *res, dbg) : world.bot(type, dbg);
-    }
-
-    commute(id, a, b);
-    return nullptr;
-}
 
 // clang-format off
 template<nat_t w> struct Fold<arith, arith::add, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) + get<T>(b)); } };
@@ -116,26 +54,28 @@ template<nat_t dw, nat_t sw> struct FoldConv<conv::f2u, dw, sw> { static Res run
 template<nat_t dw, nat_t sw> struct FoldConv<conv::f2f, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2r<sw>>(src)); } };
 // clang-format on
 
-template<class Id>
-static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
-    static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
-    static constexpr size_t num_bits = std::bit_width(Axiom::Num<Id> - 1_u64);
+/// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
+template<class Id, Id id>
+static const Def* fold2(World& world, const Def* type, const Def*& a, const Def*& b, const Def* dbg) {
+    auto la = a->isa<Lit>(), lb = b->isa<Lit>();
 
-    auto a_cmp = match<Id>(a);
-    auto b_cmp = match<Id>(b);
+    if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type, dbg);
 
-    if (a_cmp && b_cmp && a_cmp->args() == b_cmp->args()) {
-        // push sub bits of a_cmp and b_cmp through truth table
-        sub_t res   = 0;
-        sub_t a_sub = a_cmp.sub();
-        sub_t b_sub = b_cmp.sub();
-        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_sub >>= 1, b_sub >>= 1)
-            res |= tab[a_sub & 1][b_sub & 1] << 7_u8;
-        res >>= (7_u8 - u8(num_bits));
+    if (la && lb) {
+        nat_t width = *isa_f(a->type());
+        Res res;
+        switch (width) {
+#define CODE(i) \
+    case i: res = Fold<Id, id, i>::run(la->get(), lb->get()); break;
+            THORIN_16_32_64(CODE)
+#undef CODE
+            default: unreachable();
+        }
 
-        return op(cmp(res), /*rmode*/ a_cmp->decurry()->arg(), a_cmp->arg(0), a_cmp->arg(1), dbg);
+        return res ? world.lit(type, *res, dbg) : world.bot(type, dbg);
     }
 
+    commute(id, a, b);
     return nullptr;
 }
 

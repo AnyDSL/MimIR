@@ -1,7 +1,36 @@
-#include <type_traits>
+#include "thorin/normalize.h"
 
 #include "dialects/core/core.h"
 #include "dialects/mem/mem.h"
+
+namespace thorin::normalize {
+
+// clang-format off
+constexpr bool is_commutative(core::nop    ) { return true; }
+constexpr bool is_commutative(core::wrap id) { return id == core::wrap::add || id == core::wrap::mul; }
+constexpr bool is_commutative(core::rop  id) { return id == core::rop ::add || id == core::rop ::mul; }
+constexpr bool is_commutative(core::ncmp id) { return id == core::ncmp::  e || id == core::ncmp:: ne; }
+constexpr bool is_commutative(core::icmp id) { return id == core::icmp::  e || id == core::icmp:: ne; }
+constexpr bool is_commutative(core::rcmp id) { return id == core::rcmp::  e || id == core::rcmp:: ne; }
+// clang-format off
+
+constexpr bool is_associative(core::bit2 id) {
+    switch (id) {
+        case core::bit2::t:
+        case core::bit2::_xor:
+        case core::bit2::_and:
+        case core::bit2::nxor:
+        case core::bit2::a:
+        case core::bit2::b:
+        case core::bit2::_or:
+        case core::bit2::f: return true;
+        default: return false;
+    }
+}
+
+}
+
+using namespace thorin::normalize;
 
 namespace thorin::core {
 
@@ -16,84 +45,12 @@ template<>         constexpr bool is_int<rop >() { return false; }
 template<>         constexpr bool is_int<rcmp>() { return false; }
 // clang-format on
 
-/// Use like this:
-/// `a op b = tab[a][b]`
-constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
-    return {
-        {{sub_t(id) & sub_t(0b0001) ? u64(-1) : 0, sub_t(id) & sub_t(0b0100) ? u64(-1) : 0},
-         {sub_t(id) & sub_t(0b0010) ? u64(-1) : 0, sub_t(id) & sub_t(0b1000) ? u64(-1) : 0}}
-    };
-}
-
-/*
- * is_commutative & is_associative
- */
-
-// clang-format off
-template<class Id> constexpr bool is_commutative(Id) { return false; }
-constexpr bool is_commutative(nop    ) { return true; }
-constexpr bool is_commutative(wrap id) { return id == wrap::add || id == wrap::mul; }
-constexpr bool is_commutative(rop  id) { return id == rop ::add || id == rop ::mul; }
-constexpr bool is_commutative(ncmp id) { return id == ncmp::  e || id == ncmp:: ne; }
-constexpr bool is_commutative(icmp id) { return id == icmp::  e || id == icmp:: ne; }
-constexpr bool is_commutative(rcmp id) { return id == rcmp::  e || id == rcmp:: ne; }
-// clang-format off
-
-constexpr bool is_commutative(bit2  id) {
-    auto tab = make_truth_table(id);
-    return tab[0][1] == tab[1][0];
-}
-
-template<class Id>
-constexpr bool is_associative(Id id) { return is_commutative(id); }
-
-constexpr bool is_associative(bit2 id) {
-    switch (id) {
-        case bit2::t:
-        case bit2::_xor:
-        case bit2::_and:
-        case bit2::nxor:
-        case bit2::a:
-        case bit2::b:
-        case bit2::_or:
-        case bit2::f: return true;
-        default: return false;
-    }
-}
-
 /*
  * Fold
  */
 
-// This code assumes two-complement arithmetic for unsigned operations.
-// This is *implementation-defined* but *NOT* *undefined behavior*.
-
-class Res {
-public:
-    Res()
-        : data_{} {}
-    template<class T>
-    Res(T val)
-        : data_(thorin::bitcast<u64>(val)) {}
-
-    constexpr const u64& operator*() const& { return *data_; }
-    constexpr u64& operator*() & { return *data_; }
-    explicit operator bool() const { return data_.has_value(); }
-
-private:
-    std::optional<u64> data_;
-};
-
 template<class T, T, nat_t>
 struct Fold {};
-
-template<class Id>
-static void commute(Id id, const Def*& a, const Def*& b) {
-    if (is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
-            std::swap(a, b); // swap lit to left, or smaller gid to left if no lit present
-    }
-}
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
 template<class Id, Id id, bool isa_wrap = std::is_same_v<Id, wrap>>
@@ -252,32 +209,6 @@ template<nat_t dw, nat_t sw> struct FoldConv<conv::r2s, dw, sw> { static Res run
 template<nat_t dw, nat_t sw> struct FoldConv<conv::r2u, dw, sw> { static Res run(u64 src) { return w2u<dw>(get<w2r<sw>>(src)); } };
 template<nat_t dw, nat_t sw> struct FoldConv<conv::r2r, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2r<sw>>(src)); } };
 // clang-format on
-
-template<class Id>
-static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
-    static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
-    static constexpr size_t num_bits = std::bit_width(Axiom::Num<Id> - 1_u64);
-
-    auto a_cmp = match<Id>(a);
-    auto b_cmp = match<Id>(b);
-
-    if (a_cmp && b_cmp && a_cmp->args() == b_cmp->args()) {
-        // push sub bits of a_cmp and b_cmp through truth table
-        sub_t res   = 0;
-        sub_t a_sub = a_cmp.sub();
-        sub_t b_sub = b_cmp.sub();
-        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_sub >>= 1, b_sub >>= 1)
-            res |= tab[a_sub & 1][b_sub & 1] << 7_u8;
-        res >>= (7_u8 - u8(num_bits));
-
-        if constexpr (std::is_same_v<Id, rcmp>)
-            return op(rcmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
-        else
-            return op(icmp(Axiom::Base<icmp> | res), a_cmp->arg(0), a_cmp->arg(1), dbg);
-    }
-
-    return nullptr;
-}
 
 /// Reassociates @p a und @p b according to following rules.
 /// We use the following naming convention while literals are prefixed with an 'l':
@@ -494,12 +425,38 @@ const Def* normalize_bit1(const Def* type, const Def* c, const Def* a, const Def
     return world.raw_app(callee, a, dbg);
 }
 
+template<class Id>
+static const Def* merge_cmps(std::array<std::array<u64, 2>, 2> tab, const Def* a, const Def* b, const Def* dbg) {
+    static_assert(sizeof(sub_t) == 1, "if this ever changes, please adjust the logic below");
+    static constexpr size_t num_bits = std::bit_width(Axiom::Num<Id> - 1_u64);
+
+    auto a_cmp = match<Id>(a);
+    auto b_cmp = match<Id>(b);
+
+    if (a_cmp && b_cmp && a_cmp->arg() == b_cmp->arg()) {
+        // push sub bits of a_cmp and b_cmp through truth table
+        sub_t res   = 0;
+        sub_t a_sub = a_cmp.sub();
+        sub_t b_sub = b_cmp.sub();
+        for (size_t i = 0; i != num_bits; ++i, res >>= 1, a_sub >>= 1, b_sub >>= 1)
+            res |= tab[a_sub & 1][b_sub & 1] << 7_u8;
+        res >>= (7_u8 - u8(num_bits));
+
+        if constexpr (std::is_same_v<Id, rcmp>)
+            return op(rcmp(res), /*rmode*/ a_cmp->decurry()->arg(0), a_cmp->arg(0), a_cmp->arg(1), dbg);
+        else
+            return op(icmp(Axiom::Base<icmp> | res), a_cmp->arg(0), a_cmp->arg(1), dbg);
+    }
+
+    return nullptr;
+}
+
 template<bit2 id>
 const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto w      = isa_lit(callee->arg());
+    auto s      = isa_lit(callee->arg());
 
     commute(id, a, b);
 
@@ -513,7 +470,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
     // clang-format off
     switch (id) {
         case bit2::    f: return world.lit(type,        0);
-        case bit2::    t: if (w) return world.lit(type, *w-1_u64); break;
+        case bit2::    t: if (s) return world.lit(type, *s-1_u64); break;
         case bit2::    a: return a;
         case bit2::    b: return b;
         case bit2::   na: return op_negate(a, dbg);
@@ -525,21 +482,21 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
 
     if (la && lb) {
         switch (id) {
-            case bit2::_and: return world.lit_idx    (*w,   *la &  *lb);
-            case bit2:: _or: return world.lit_idx    (*w,   *la |  *lb);
-            case bit2::_xor: return world.lit_idx    (*w,   *la ^  *lb);
-            case bit2::nand: return world.lit_idx_mod(*w, ~(*la &  *lb));
-            case bit2:: nor: return world.lit_idx_mod(*w, ~(*la |  *lb));
-            case bit2::nxor: return world.lit_idx_mod(*w, ~(*la ^  *lb));
-            case bit2:: iff: return world.lit_idx_mod(*w, ~ *la |  *lb);
-            case bit2::niff: return world.lit_idx    (*w,   *la & ~*lb);
+            case bit2::_and: return world.lit_idx    (*s,   *la &  *lb);
+            case bit2:: _or: return world.lit_idx    (*s,   *la |  *lb);
+            case bit2::_xor: return world.lit_idx    (*s,   *la ^  *lb);
+            case bit2::nand: return world.lit_idx_mod(*s, ~(*la &  *lb));
+            case bit2:: nor: return world.lit_idx_mod(*s, ~(*la |  *lb));
+            case bit2::nxor: return world.lit_idx_mod(*s, ~(*la ^  *lb));
+            case bit2:: iff: return world.lit_idx_mod(*s, ~ *la |  *lb);
+            case bit2::niff: return world.lit_idx    (*s,   *la & ~*lb);
             default: unreachable();
         }
     }
 
     auto unary = [&](bool x, bool y, const Def* a) -> const Def* {
         if (!x && !y) return world.lit(type, 0);
-        if ( x &&  y) return w ? world.lit(type, *w-1_u64) : nullptr;
+        if ( x &&  y) return s ? world.lit(type, *s-1_u64) : nullptr;
         if (!x &&  y) return a;
         if ( x && !y && id != bit2::_xor) return op_negate(a, dbg);
         return nullptr;
@@ -553,7 +510,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
     if (la) {
         if (*la == 0) {
             if (auto res = unary(tab[0][0], tab[0][1], b)) return res;
-        } else if (*la == *w - 1_u64) {
+        } else if (*la == *s - 1_u64) {
             if (auto res = unary(tab[1][0], tab[1][1], b)) return res;
         }
     }
@@ -561,7 +518,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
     if (lb) {
         if (*lb == 0) {
             if (auto res = unary(tab[0][0], tab[1][0], b)) return res;
-        } else if (*lb == *w - 1_u64) {
+        } else if (*lb == *s - 1_u64) {
             if (auto res = unary(tab[0][1], tab[1][1], b)) return res;
         }
     }

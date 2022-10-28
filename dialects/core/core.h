@@ -236,6 +236,15 @@ inline const Def* op_rminus(nat_t rmode, const Def* a, const Def* dbg = {}) {
 }
 ///@}
 
+/// Use like this:
+/// `a op b = tab[a][b]`
+inline std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
+    return {
+        {{sub_t(id) & sub_t(0b0001) ? u64(-1) : 0, sub_t(id) & sub_t(0b0100) ? u64(-1) : 0},
+         {sub_t(id) & sub_t(0b0010) ? u64(-1) : 0, sub_t(id) & sub_t(0b1000) ? u64(-1) : 0}}
+    };
+}
+
 template<bool up>
 const Sigma* convert(const TBound<up>* b);
 
