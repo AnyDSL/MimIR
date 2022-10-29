@@ -499,6 +499,62 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         unreachable();
     } else if (def->isa<Bot>()) {
         return "undef";
+    } else if (auto tuple = def->isa<Tuple>()) {
+        return emit_tuple(tuple);
+    } else if (auto pack = def->isa<Pack>()) {
+        if (auto lit = isa_lit(pack->body()); lit && *lit == 0) return "zeroinitializer";
+        return emit_tuple(pack);
+    } else if (auto extract = def->isa<Extract>()) {
+        auto tuple = extract->tuple();
+        auto index = extract->index();
+
+#if 0
+        // TODO this was von closure-conv branch which I need to double-check
+        if (tuple->isa<Var>()) {
+            // computing the index may crash, so we bail out
+            assert(match<core::Mem>(extract->type()) && "only mem-var should not be mapped");
+            return {};
+        }
+#endif
+
+        auto ll_tup = emit_unsafe(tuple);
+
+        // this exact location is important: after emitting the tuple -> ordering of mem ops
+        // before emitting the index, as it might be a weird value for mem vars.
+        if (match<mem::M>(extract->type())) return {};
+
+        auto ll_idx = emit_unsafe(index);
+
+        if (tuple->num_projs() == 2) {
+            if (match<mem::M>(tuple->proj(2, 0_s)->type())) return ll_tup;
+            if (match<mem::M>(tuple->proj(2, 1_s)->type())) return ll_tup;
+        }
+
+        auto tup_t = convert(tuple->type());
+        if (isa_lit(index)) {
+            assert(!ll_tup.empty());
+            return bb.assign(name, "extractvalue {} {}, {}", tup_t, ll_tup, ll_idx);
+        } else {
+            auto elem_t = convert(extract->type());
+            print(lam2bb_[entry_].body().emplace_front(),
+                  "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, tup_t);
+            print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", tup_t, ll_tup, tup_t, name);
+            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, i64 {}", name,
+                  tup_t, tup_t, name, ll_idx);
+            return bb.assign(name, "load {}, {}* {}.gep", elem_t, elem_t, name);
+        }
+    } else if (auto insert = def->isa<Insert>()) {
+        auto tuple = emit(insert->tuple());
+        auto index = emit(insert->index());
+        auto value = emit(insert->value());
+        auto tup_t = convert(insert->tuple()->type());
+        auto val_t = convert(insert->value()->type());
+        return bb.assign(name, "insertvalue {} {}, {} {}, {}", tup_t, tuple, val_t, value, index);
+    } else if (auto global = def->isa<Global>()) {
+        auto init                  = emit(global->init());
+        auto [pointee, addr_space] = force<mem::Ptr>(global->type())->args<2>();
+        print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
+        return globals_[global] = name;
     } else if (auto nop = match<core::nop>(def)) {
         auto [a, b] = nop->args<2>([this](auto def) { return emit(def); });
 
@@ -508,6 +564,23 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} nsw nuw i64 {}, {}", op, a, b);
+    } else if (auto ncmp = match<core::ncmp>(def)) {
+        auto [a, b] = ncmp->args<2>([this](auto def) { return emit(def); });
+        op          = "icmp ";
+
+        switch (ncmp.id()) {
+            // clang-format off
+            case core::ncmp::e:  op += "eq" ; break;
+            case core::ncmp::ne: op += "ne" ; break;
+            case core::ncmp::g:  op += "ugt"; break;
+            case core::ncmp::ge: op += "uge"; break;
+            case core::ncmp::l:  op += "ult"; break;
+            case core::ncmp::le: op += "ule"; break;
+            // clang-format on
+            default: unreachable();
+        }
+
+        return bb.assign(name, "{} i64 {}, {}", op, a, b);
     } else if (auto bit1 = match<core::bit1>(def)) {
         assert(bit1.id() == core::bit1::neg);
         auto x = emit(bit1->arg());
@@ -573,51 +646,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto arith = match<math::arith>(def)) {
-        auto [a, b] = arith->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(arith->type());
-        auto mode   = as_lit(arith->decurry()->arg());
-
-        switch (arith.id()) {
-            case math::arith::add: op = "fadd"; break;
-            case math::arith::sub: op = "fsub"; break;
-            case math::arith::mul: op = "fmul"; break;
-            case math::arith::div: op = "fdiv"; break;
-            case math::arith::rem: op = "frem"; break;
-        }
-
-        if (mode == math::Mode::fast)
-            op += " fast";
-        else {
-            // clang-format off
-            if (mode & math::Mode::nnan    ) op += " nnan";
-            if (mode & math::Mode::ninf    ) op += " ninf";
-            if (mode & math::Mode::nsz     ) op += " nsz";
-            if (mode & math::Mode::arcp    ) op += " arcp";
-            if (mode & math::Mode::contract) op += " contract";
-            if (mode & math::Mode::afn     ) op += " afn";
-            if (mode & math::Mode::reassoc ) op += " reassoc";
-            // clang-format on
-        }
-
-        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto ncmp = match<core::ncmp>(def)) {
-        auto [a, b] = ncmp->args<2>([this](auto def) { return emit(def); });
-        op          = "icmp ";
-
-        switch (ncmp.id()) {
-            // clang-format off
-            case core::ncmp::e:  op += "eq" ; break;
-            case core::ncmp::ne: op += "ne" ; break;
-            case core::ncmp::g:  op += "ugt"; break;
-            case core::ncmp::ge: op += "uge"; break;
-            case core::ncmp::l:  op += "ult"; break;
-            case core::ncmp::le: op += "ule"; break;
-            // clang-format on
-            default: unreachable();
-        }
-
-        return bb.assign(name, "{} i64 {}, {}", op, a, b);
     } else if (auto icmp = match<core::icmp>(def)) {
         auto [a, b] = icmp->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(icmp->arg(0)->type());
@@ -635,32 +663,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::icmp::uge: op += "uge"; break;
             case core::icmp::ul:  op += "ult"; break;
             case core::icmp::ule: op += "ule"; break;
-            // clang-format on
-            default: unreachable();
-        }
-
-        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto cmp = match<math::cmp>(def)) {
-        auto [a, b] = cmp->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(cmp->arg(0)->type());
-        op          = "fcmp ";
-
-        switch (cmp.id()) {
-            // clang-format off
-            case math::cmp::  e: op += "oeq"; break;
-            case math::cmp::  l: op += "olt"; break;
-            case math::cmp:: le: op += "ole"; break;
-            case math::cmp::  g: op += "ogt"; break;
-            case math::cmp:: ge: op += "oge"; break;
-            case math::cmp:: ne: op += "one"; break;
-            case math::cmp::  o: op += "ord"; break;
-            case math::cmp::  u: op += "uno"; break;
-            case math::cmp:: ue: op += "ueq"; break;
-            case math::cmp:: ul: op += "ult"; break;
-            case math::cmp::ule: op += "ule"; break;
-            case math::cmp:: ug: op += "ugt"; break;
-            case math::cmp::uge: op += "uge"; break;
-            case math::cmp::une: op += "une"; break;
             // clang-format on
             default: unreachable();
         }
@@ -687,23 +689,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         switch (conv.id()) {
             case core::conv::s2s: op = s_src < s_dst ? "sext" : "trunc"; break;
             case core::conv::u2u: op = s_src < s_dst ? "zext" : "trunc"; break;
-        }
-
-        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
-    } else if (auto conv = match<math::conv>(def)) {
-        auto src   = emit(conv->arg());
-        auto src_t = convert(conv->arg()->type());
-        auto dst_t = convert(conv->type());
-
-        auto s_src = math::isa_f(conv->arg()->type());
-        auto s_dst = math::isa_f(conv->type());
-
-        switch (conv.id()) {
-            case math::conv::f2f: op = s_src < s_dst ? "fpext" : "fptrunc"; break;
-            case math::conv::s2f: op = "sitofp"; break;
-            case math::conv::u2f: op = "uitofp"; break;
-            case math::conv::f2s: op = "fptosi"; break;
-            case math::conv::f2u: op = "fptoui"; break;
         }
 
         return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
@@ -808,62 +793,94 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         emit_unsafe(mem);
         auto emitted_jb = emit(jmpbuf);
         return bb.assign(name, "call i32 @_setjmp(i8* {})", emitted_jb);
-    } else if (auto tuple = def->isa<Tuple>()) {
-        return emit_tuple(tuple);
-    } else if (auto pack = def->isa<Pack>()) {
-        if (auto lit = isa_lit(pack->body()); lit && *lit == 0) return "zeroinitializer";
-        return emit_tuple(pack);
-    } else if (auto extract = def->isa<Extract>()) {
-        auto tuple = extract->tuple();
-        auto index = extract->index();
+    } else if (auto arith = match<math::arith>(def)) {
+        auto [a, b] = arith->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(arith->type());
+        auto mode   = as_lit(arith->decurry()->arg());
 
-#if 0
-        // TODO this was von closure-conv branch which I need to double-check
-        if (tuple->isa<Var>()) {
-            // computing the index may crash, so we bail out
-            assert(match<core::Mem>(extract->type()) && "only mem-var should not be mapped");
-            return {};
-        }
-#endif
-
-        auto ll_tup = emit_unsafe(tuple);
-
-        // this exact location is important: after emitting the tuple -> ordering of mem ops
-        // before emitting the index, as it might be a weird value for mem vars.
-        if (match<mem::M>(extract->type())) return {};
-
-        auto ll_idx = emit_unsafe(index);
-
-        if (tuple->num_projs() == 2) {
-            if (match<mem::M>(tuple->proj(2, 0_s)->type())) return ll_tup;
-            if (match<mem::M>(tuple->proj(2, 1_s)->type())) return ll_tup;
+        switch (arith.id()) {
+            case math::arith::add: op = "fadd"; break;
+            case math::arith::sub: op = "fsub"; break;
+            case math::arith::mul: op = "fmul"; break;
+            case math::arith::div: op = "fdiv"; break;
+            case math::arith::rem: op = "frem"; break;
         }
 
-        auto tup_t = convert(tuple->type());
-        if (isa_lit(index)) {
-            assert(!ll_tup.empty());
-            return bb.assign(name, "extractvalue {} {}, {}", tup_t, ll_tup, ll_idx);
-        } else {
-            auto elem_t = convert(extract->type());
-            print(lam2bb_[entry_].body().emplace_front(),
-                  "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, tup_t);
-            print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", tup_t, ll_tup, tup_t, name);
-            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, i64 {}", name,
-                  tup_t, tup_t, name, ll_idx);
-            return bb.assign(name, "load {}, {}* {}.gep", elem_t, elem_t, name);
+        if (mode == math::Mode::fast)
+            op += " fast";
+        else {
+            // clang-format off
+            if (mode & math::Mode::nnan    ) op += " nnan";
+            if (mode & math::Mode::ninf    ) op += " ninf";
+            if (mode & math::Mode::nsz     ) op += " nsz";
+            if (mode & math::Mode::arcp    ) op += " arcp";
+            if (mode & math::Mode::contract) op += " contract";
+            if (mode & math::Mode::afn     ) op += " afn";
+            if (mode & math::Mode::reassoc ) op += " reassoc";
+            // clang-format on
         }
-    } else if (auto insert = def->isa<Insert>()) {
-        auto tuple = emit(insert->tuple());
-        auto index = emit(insert->index());
-        auto value = emit(insert->value());
-        auto tup_t = convert(insert->tuple()->type());
-        auto val_t = convert(insert->value()->type());
-        return bb.assign(name, "insertvalue {} {}, {} {}, {}", tup_t, tuple, val_t, value, index);
-    } else if (auto global = def->isa<Global>()) {
-        auto init                  = emit(global->init());
-        auto [pointee, addr_space] = force<mem::Ptr>(global->type())->args<2>();
-        print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
-        return globals_[global] = name;
+
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
+    } else if (auto tri = match<math::tri>(def)) {
+        auto a    = emit(tri->arg());
+        auto t    = convert(tri->type());
+
+        std::string f;
+        if ((tri.id() & math::tri::a) == math::tri::a) f += "a";
+
+        switch (math::tri(tri.id() & 0x3_u64)) {
+            case math::tri::sin: f += "sin"; break;
+            case math::tri::cos: f += "cos"; break;
+            case math::tri::tan: f += "tan"; break;
+            default: unreachable();
+        }
+
+        if (tri.id() & math::tri::h) f += "h";
+
+        return bb.assign(name, "{} tail call @{}({} noundef {})", t, f, f, a);
+    } else if (auto cmp = match<math::cmp>(def)) {
+        auto [a, b] = cmp->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(cmp->arg(0)->type());
+        op          = "fcmp ";
+
+        switch (cmp.id()) {
+            // clang-format off
+            case math::cmp::  e: op += "oeq"; break;
+            case math::cmp::  l: op += "olt"; break;
+            case math::cmp:: le: op += "ole"; break;
+            case math::cmp::  g: op += "ogt"; break;
+            case math::cmp:: ge: op += "oge"; break;
+            case math::cmp:: ne: op += "one"; break;
+            case math::cmp::  o: op += "ord"; break;
+            case math::cmp::  u: op += "uno"; break;
+            case math::cmp:: ue: op += "ueq"; break;
+            case math::cmp:: ul: op += "ult"; break;
+            case math::cmp::ule: op += "ule"; break;
+            case math::cmp:: ug: op += "ugt"; break;
+            case math::cmp::uge: op += "uge"; break;
+            case math::cmp::une: op += "une"; break;
+            // clang-format on
+            default: unreachable();
+        }
+
+        return bb.assign(name, "{} {} {}, {}", op, t, a, b);
+    } else if (auto conv = match<math::conv>(def)) {
+        auto src   = emit(conv->arg());
+        auto src_t = convert(conv->arg()->type());
+        auto dst_t = convert(conv->type());
+
+        auto s_src = math::isa_f(conv->arg()->type());
+        auto s_dst = math::isa_f(conv->type());
+
+        switch (conv.id()) {
+            case math::conv::f2f: op = s_src < s_dst ? "fpext" : "fptrunc"; break;
+            case math::conv::s2f: op = "sitofp"; break;
+            case math::conv::u2f: op = "uitofp"; break;
+            case math::conv::f2s: op = "fptosi"; break;
+            case math::conv::f2u: op = "fptoui"; break;
+        }
+
+        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
     }
 
     unreachable(); // not yet implemented
