@@ -13,6 +13,7 @@
 
 #include "dialects/clos/clos.h"
 #include "dialects/core/core.h"
+#include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
 // Lessons learned:
@@ -145,8 +146,8 @@ std::string Emitter::convert(const Def* type) {
         } else {
             return types_[type] = "i64";
         }
-    } else if (auto real = match<core::Real>(type)) {
-        switch (as_lit<nat_t>(real->arg())) {
+    } else if (auto w = math::isa_f(type)) {
+        switch (*w) {
             case 16: return types_[type] = "half";
             case 32: return types_[type] = "float";
             case 64: return types_[type] = "double";
@@ -476,11 +477,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             } else {
                 return std::to_string(lit->get<u64>());
             }
-        } else if (auto real = match<core::Real>(lit->type())) {
+        } else if (auto w = math::isa_f(lit->type())) {
             std::stringstream s;
             u64 hex;
 
-            switch (as_lit<nat_t>(real->arg())) {
+            switch (*w) {
                 case 16:
                     s << "0xH" << std::setfill('0') << std::setw(4) << std::right << std::hex << lit->get<u16>();
                     return s.str();
@@ -563,30 +564,30 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto rop = match<core::rop>(def)) {
-        auto [a, b]        = rop->args<2>([this](auto def) { return emit(def); });
-        auto t             = convert(rop->type());
-        auto [mode, width] = rop->decurry()->args<2>(as_lit<nat_t>);
+    } else if (auto arith = match<math::arith>(def)) {
+        auto [a, b] = arith->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(arith->type());
+        auto mode  = as_lit(arith->decurry()->arg());
 
-        switch (rop.id()) {
-            case core::rop::add: op = "fadd"; break;
-            case core::rop::sub: op = "fsub"; break;
-            case core::rop::mul: op = "fmul"; break;
-            case core::rop::div: op = "fdiv"; break;
-            case core::rop::rem: op = "frem"; break;
+        switch (arith.id()) {
+            case math::arith::add: op = "fadd"; break;
+            case math::arith::sub: op = "fsub"; break;
+            case math::arith::mul: op = "fmul"; break;
+            case math::arith::div: op = "fdiv"; break;
+            case math::arith::rem: op = "frem"; break;
         }
 
         if (mode == core::RMode::fast)
             op += " fast";
         else {
             // clang-format off
-            if (mode & core::RMode::nnan    ) op += " nnan";
-            if (mode & core::RMode::ninf    ) op += " ninf";
-            if (mode & core::RMode::nsz     ) op += " nsz";
-            if (mode & core::RMode::arcp    ) op += " arcp";
-            if (mode & core::RMode::contract) op += " contract";
-            if (mode & core::RMode::afn     ) op += " afn";
-            if (mode & core::RMode::reassoc ) op += " reassoc";
+            if (mode & math::Mode::nnan    ) op += " nnan";
+            if (mode & math::Mode::ninf    ) op += " ninf";
+            if (mode & math::Mode::nsz     ) op += " nsz";
+            if (mode & math::Mode::arcp    ) op += " arcp";
+            if (mode & math::Mode::contract) op += " contract";
+            if (mode & math::Mode::afn     ) op += " afn";
+            if (mode & math::Mode::reassoc ) op += " reassoc";
             // clang-format on
         }
 
@@ -613,27 +614,27 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
-    } else if (auto rcmp = match<core::rcmp>(def)) {
-        auto [a, b] = rcmp->args<2>([this](auto def) { return emit(def); });
-        auto t      = convert(rcmp->arg(0)->type());
+    } else if (auto cmp = match<math::cmp>(def)) {
+        auto [a, b] = cmp->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(cmp->arg(0)->type());
         op          = "fcmp ";
 
-        switch (rcmp.id()) {
+        switch (cmp.id()) {
             // clang-format off
-            case core::rcmp::  e: op += "oeq"; break;
-            case core::rcmp::  l: op += "olt"; break;
-            case core::rcmp:: le: op += "ole"; break;
-            case core::rcmp::  g: op += "ogt"; break;
-            case core::rcmp:: ge: op += "oge"; break;
-            case core::rcmp:: ne: op += "one"; break;
-            case core::rcmp::  o: op += "ord"; break;
-            case core::rcmp::  u: op += "uno"; break;
-            case core::rcmp:: ue: op += "ueq"; break;
-            case core::rcmp:: ul: op += "ult"; break;
-            case core::rcmp::ule: op += "ule"; break;
-            case core::rcmp:: ug: op += "ugt"; break;
-            case core::rcmp::uge: op += "uge"; break;
-            case core::rcmp::une: op += "une"; break;
+            case math::cmp::  e: op += "oeq"; break;
+            case math::cmp::  l: op += "olt"; break;
+            case math::cmp:: le: op += "ole"; break;
+            case math::cmp::  g: op += "ogt"; break;
+            case math::cmp:: ge: op += "oge"; break;
+            case math::cmp:: ne: op += "one"; break;
+            case math::cmp::  o: op += "ord"; break;
+            case math::cmp::  u: op += "uno"; break;
+            case math::cmp:: ue: op += "ueq"; break;
+            case math::cmp:: ul: op += "ult"; break;
+            case math::cmp::ule: op += "ule"; break;
+            case math::cmp:: ug: op += "ugt"; break;
+            case math::cmp::uge: op += "uge"; break;
+            case math::cmp::une: op += "une"; break;
             // clang-format on
             default: unreachable();
         }
@@ -645,12 +646,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto dst_t = convert(conv->type());
 
         auto size2width = [&](const Def* type) {
-            if (auto size = Idx::size(type)) {
-                if (size->isa<Top>()) return 64_u64;
-                if (auto width = size2bitwidth(as_lit(size))) return *width;
-                return 64_u64;
-            }
-            return as_lit(force<core::Real>(type)->arg());
+            auto size = Idx::size(type);
+            if (size->isa<Top>()) return 64_u64;
+            if (auto width = size2bitwidth(as_lit(size))) return *width;
+            unreachable();
         };
 
         nat_t s_src = size2width(conv->arg()->type());
@@ -662,11 +661,23 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         switch (conv.id()) {
             case core::conv::s2s: op = s_src < s_dst ? "sext" : "trunc"; break;
             case core::conv::u2u: op = s_src < s_dst ? "zext" : "trunc"; break;
-            case core::conv::r2r: op = s_src < s_dst ? "fpext" : "fptrunc"; break;
-            case core::conv::s2r: op = "sitofp"; break;
-            case core::conv::u2r: op = "uitofp"; break;
-            case core::conv::r2s: op = "fptosi"; break;
-            case core::conv::r2u: op = "fptoui"; break;
+        }
+
+        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
+    } else if (auto conv = match<math::conv>(def)) {
+        auto src   = emit(conv->arg());
+        auto src_t = convert(conv->arg()->type());
+        auto dst_t = convert(conv->type());
+
+        auto s_src = math::isa_f(conv->arg()->type());
+        auto s_dst = math::isa_f(conv->type());
+
+        switch (conv.id()) {
+            case math::conv::f2f: op = s_src < s_dst ? "fpext" : "fptrunc"; break;
+            case math::conv::s2f: op = "sitofp"; break;
+            case math::conv::u2f: op = "uitofp"; break;
+            case math::conv::f2s: op = "fptosi"; break;
+            case math::conv::f2u: op = "fptoui"; break;
         }
 
         return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);

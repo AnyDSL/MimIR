@@ -176,9 +176,3 @@
 .ax %math.conv(s2f, u2f): Π s: .Nat -> Π [p: .Nat, e: .Nat] -> .Idx s -> %math.F (p, e), normalize_conv;
 .ax %math.conv(f2s, f2u): Π [p: .Nat, e: .Nat] -> Π s: .Nat -> %math.F (p, e) -> .Idx s, normalize_conv;
 .ax %math.conv(f2f):      Π [sp: .Nat, se: .Nat] -> Π [dp: .Nat, de: .Nat] -> %math.F (sp, se) -> %math.F (dp, de), normalize_conv;
-///
-/// ### %core.trait
-///
-/// Yields the size or align of a type.
-///
-.ax %math.trait(size, align): * -> .Nat, normalize_trait;

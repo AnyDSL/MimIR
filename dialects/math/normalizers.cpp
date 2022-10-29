@@ -133,7 +133,8 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto [m, w] = callee->args<2>(isa_lit<nat_t>); // mode and width
+    auto m      = isa_lit(callee->decurry()->arg());
+    auto w      = isa_f(a->type());
 
     if (auto result = fold2<arith, id>(world, type, a, b, dbg)) return result;
 
@@ -248,20 +249,20 @@ const Def* normalize_cmp(const Def* type, const Def* c, const Def* arg, const De
 
 #if 0
 template<nat_t min_sw, nat_t min_dw, conv id>
-static const Def* fold_conv(const Def* dst_type, const App* callee, const Def* src, const Def* dbg) {
-    auto& world = dst_type->world();
-    if (src->isa<Bot>()) return world.bot(dst_type, dbg);
+static const Def* fold_conv(const Def* dst_t, const App* callee, const Def* src, const Def* dbg) {
+    auto& world = dst_t->world();
+    if (src->isa<Bot>()) return world.bot(dst_t, dbg);
 
     auto [lit_dw, lit_sw] = callee->args<2>(isa_lit<nat_t>);
     auto lit_src          = src->isa<Lit>();
     if (lit_src && lit_dw && lit_sw) {
         if (id == conv::u2u) {
-            if (*lit_dw == 0) return world.lit(dst_type, as_lit(lit_src));
-            return world.lit(dst_type, as_lit(lit_src) % *lit_dw);
+            if (*lit_dw == 0) return world.lit(dst_t, as_lit(lit_src));
+            return world.lit(dst_t, as_lit(lit_src) % *lit_dw);
         }
 
         if (Idx::size(src->type())) *lit_sw = *size2bitwidth(*lit_sw);
-        if (Idx::size(dst_type)) *lit_dw = *size2bitwidth(*lit_dw);
+        if (Idx::size(dst_t)) *lit_dw = *size2bitwidth(*lit_dw);
 
         Res res;
 #    define CODE(sw, dw)                                                                                 \
@@ -271,8 +272,8 @@ static const Def* fold_conv(const Def* dst_type, const App* callee, const Def* s
         if (false) {}
         TABLE(CODE)
 #    undef CODE
-        if (res) return world.lit(dst_type, *res, dbg);
-        return world.bot(dst_type, dbg);
+        if (res) return world.lit(dst_t, *res, dbg);
+        return world.bot(dst_t, dbg);
     }
 
     return nullptr;
@@ -280,20 +281,20 @@ static const Def* fold_conv(const Def* dst_type, const App* callee, const Def* s
 #endif
 
 template<conv id>
-const Def* normalize_conv(const Def* dst_type, const Def* c, const Def* src, const Def* dbg) {
-    auto& world = dst_type->world();
+const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* src, const Def* dbg) {
+    auto& world = dst_t->world();
     auto callee = c->as<App>();
 #if 0
 
     static constexpr auto min_sw = id == conv::r2s || id == conv::r2u || id == conv::r2r ? 16 : 1;
     static constexpr auto min_dw = id == conv::s2r || id == conv::u2r || id == conv::r2r ? 16 : 1;
-    if (auto result = fold_conv<min_sw, min_dw, id>(dst_type, callee, src, dbg)) return result;
+    if (auto result = fold_conv<min_sw, min_dw, id>(dst_t, callee, src, dbg)) return result;
 
     auto [dw, sw] = callee->args<2>(isa_lit<nat_t>);
-    if (sw == dw && dst_type == src->type()) return src;
+    if (sw == dw && dst_t == src->type()) return src;
 
     if constexpr (id == conv::s2s) {
-        if (sw && dw && *sw < *dw) return math::op(conv::u2u, dst_type, src, dbg);
+        if (sw && dw && *sw < *dw) return math::op(conv::u2u, dst_t, src, dbg);
     }
 #endif
 
@@ -305,62 +306,6 @@ inline u64 pad(u64 offset, u64 align) {
     auto mod = offset % align;
     if (mod != 0) offset += align - mod;
     return offset;
-}
-
-// TODO this currently hard-codes x86_64 ABI
-// TODO in contrast to C, we might want to give singleton types like '.Idx 1' or '[]' a size of 0 and simply nuke each
-// and every occurance of these types in a later phase
-// TODO Pi and others
-template<trait id>
-const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const Def* dbg) {
-    auto& world = type->world();
-    if (auto ptr = match<mem::Ptr>(type)) {
-        return world.lit_nat(8);
-    } else if (type->isa<Pi>()) {
-        return world.lit_nat(8); // Gets lowered to function ptr
-    } else if (auto size = Idx::size(type)) {
-        if (size->isa<Top>()) return world.lit_nat(8);
-        if (auto w = isa_lit(size)) {
-            if (*w == 0) return world.lit_nat(8);
-            if (*w <= 0x0000'0000'0000'0100_u64) return world.lit_nat(1);
-            if (*w <= 0x0000'0000'0001'0000_u64) return world.lit_nat(2);
-            if (*w <= 0x0000'0001'0000'0000_u64) return world.lit_nat(4);
-            return world.lit_nat(8);
-        }
-    } else if (auto w = isa_f(type)) {
-        switch (*w) {
-            case 16: return world.lit_nat(2);
-            case 32: return world.lit_nat(4);
-            case 64: return world.lit_nat(8);
-            default: unreachable();
-        }
-    } else if (type->isa<Sigma>() || type->isa<Meet>()) {
-        u64 offset = 0;
-        u64 align  = 1;
-        for (auto t : type->ops()) {
-            auto a = isa_lit(math::op(trait::align, t));
-            auto s = isa_lit(math::op(trait::size, t));
-            if (!a || !s) goto out;
-
-            align  = std::max(align, *a);
-            offset = pad(offset, *a) + *s;
-        }
-
-        offset   = pad(offset, align);
-        u64 size = std::max(1_u64, offset);
-
-        switch (id) {
-            case trait::align: return world.lit_nat(align);
-            case trait::size: return world.lit_nat(size);
-        }
-    } else if (auto arr = type->isa_structural<Arr>()) {
-        auto align = math::op(trait::align, arr->body());
-        if constexpr (id == trait::align) return align;
-        if (auto b = math::op(trait::size, arr->body())->isa<Lit>()) return core::op(core::nop::mul, arr->shape(), b);
-    }
-
-out:
-    return world.raw_app(callee, type, dbg);
 }
 
 THORIN_math_NORMALIZER_IMPL

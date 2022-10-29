@@ -72,45 +72,51 @@ inline const Def* fn(cmp o, const Def* pe, const Def* mode, const Def* dbg = {})
     World& w = mode->world();
     return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
 }
+inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* dbg = {}) {
+    World& w = src_s->world();
+    return w.app(w.app(w.ax(o), src_s), dst_s, dbg);
+}
 ///@}
 
 /// @name op - these guys build the final function application for the various operations
 ///@{
 inline const Def* op(arith o, const Def* mode, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = mode->world();
-    return w.app(fn(o, mode, finfer(a)), {a, b}, dbg);
+    return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
 }
 inline const Def* op(x o, const Def* mode, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = mode->world();
-    return w.app(fn(o, mode, finfer(a)), {a, b}, dbg);
+    return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
 }
 inline const Def* op(pow o, const Def* mode, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = mode->world();
-    return w.app(fn(o, mode, finfer(a)), {a, b}, dbg);
+    return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
 }
 inline const Def* op(rt o, const Def* mode, const Def* a, const Def* dbg = {}) {
     World& w = mode->world();
-    return w.app(fn(o, mode, finfer(a)), a, dbg);
+    return w.app(fn(o, finfer(a), mode), a, dbg);
 }
 inline const Def* op(tri o, const Def* mode, const Def* a, const Def* dbg = {}) {
     World& w = mode->world();
-    return w.app(fn(o, mode, finfer(a)), a, dbg);
+    return w.app(fn(o, finfer(a), mode), a, dbg);
 }
 inline const Def* op(exp o, const Def* mode, const Def* a, const Def* dbg = {}) {
     World& w = mode->world();
-    return w.app(fn(o, mode, finfer(a)), a, dbg);
+    return w.app(fn(o, finfer(a), mode), a, dbg);
 }
 inline const Def* op(er o, const Def* mode, const Def* a, const Def* dbg = {}) {
     World& w = mode->world();
-    return w.app(fn(o, mode, finfer(a)), a, dbg);
+    return w.app(fn(o, finfer(a), mode), a, dbg);
 }
 inline const Def* op(cmp o, const Def* mode, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = mode->world();
-    return w.app(fn(o, mode, finfer(a)), {a, b}, dbg);
+    return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
 }
-inline const Def* op(trait o, const Def* type, const Def* dbg = {}) {
-    World& w = type->world();
-    return w.app(w.ax(o), type, dbg);
+inline const Def* op(conv o, const Def* dst_t, const Def* src, const Def* dbg = {}) {
+    World& w = dst_t->world();
+    auto d   = Idx::size(dst_t);
+    auto s   = Idx::size(src->type());
+    return w.app(fn(o, d, s), src, dbg);
 }
 template<class O>
 const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) {
