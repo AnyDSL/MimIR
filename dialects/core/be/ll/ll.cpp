@@ -500,7 +500,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (def->isa<Bot>()) {
         return "undef";
     } else if (auto nop = match<core::nop>(def)) {
-        auto [a, b]        = nop->args<2>([this](auto def) { return emit(def); });
+        auto [a, b] = nop->args<2>([this](auto def) { return emit(def); });
 
         switch (nop.id()) {
             case core::nop::add: op = "add"; break;
