@@ -582,8 +582,8 @@ const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* src, const 
 
     if (auto result = fold_conv<id>(dst_t, src, dbg)) return result;
 
-    auto ss = Idx::size(dst_t);
-    auto ds = Idx::size(src->type());
+    auto ss  = Idx::size(dst_t);
+    auto ds  = Idx::size(src->type());
     auto lss = isa_lit(ss);
     auto lds = isa_lit(ds);
 
