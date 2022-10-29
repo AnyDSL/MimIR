@@ -129,7 +129,7 @@ inline const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* 
 inline const Def* op_negate(const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     auto s   = as_lit(w.iinfer(a));
-    return op(bit2::_xor, w.lit_idx(s, s - 1_u64), a, dbg);
+    return op(bit2::xor_, w.lit_idx(s, s - 1_u64), a, dbg);
 }
 inline const Def* op_wminus(const Def* wmode, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
