@@ -29,6 +29,14 @@ jobs:
         wget https://www.doxygen.nl/files/doxygen-1.9.5.linux.bin.tar.gz
         tar xf doxygen-1.9.5.linux.bin.tar.gz
 
+    - name: Install Ghostscript
+      run: |
+        mkdir -p ${HOME}/.local/bin
+        echo "${HOME}/.local/bin" >> $GITHUB_PATH
+        wget https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs1000/ghostscript-10.0.0-linux-x86_64.tgz
+        tar xf ghostscript-10.0.0-linux-x86_64.tgz
+        mv ghostscript-10.0.0-linux-x86_64/gs-1000-linux-x86_64 ${HOME}/.local/bin/gs
+
     - name: Configure
       run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DTHORIN_BUILD_DOCS=ON -DDOXYGEN_EXECUTABLE=${{github.workspace}}/doxygen-1.9.5/bin/doxygen
 
