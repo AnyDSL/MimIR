@@ -582,12 +582,15 @@ const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* src, const 
 
     if (auto result = fold_conv<id>(dst_t, src, dbg)) return result;
 
-    auto ds = isa_lit(callee->decurry()->arg());
-    auto ss = isa_lit(callee->decurry()->decurry()->arg());
+    auto ss = Idx::size(dst_t);
+    auto ds = Idx::size(src->type());
+    auto lss = isa_lit(ss);
+    auto lds = isa_lit(ds);
+
     if (ss == ds && dst_t == src->type()) return src;
 
     if constexpr (id == conv::s2s) {
-        if (ss && ds && *ss < *ds) return op(conv::u2u, dst_t, src, dbg);
+        if (ss && ds && lss < lds) return op(conv::u2u, dst_t, src, dbg);
     }
 
     return world.raw_app(callee, src, dbg);

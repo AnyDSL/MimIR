@@ -114,9 +114,9 @@ inline const Def* op(cmp o, const Def* mode, const Def* a, const Def* b, const D
 }
 inline const Def* op(conv o, const Def* dst_t, const Def* src, const Def* dbg = {}) {
     World& w = dst_t->world();
-    auto d   = Idx::size(dst_t);
-    auto s   = Idx::size(src->type());
-    return w.app(fn(o, d, s), src, dbg);
+    auto d   = dst_t->as<App>()->arg();
+    auto s   = src->type()->as<App>()->arg();
+    return w.app(fn(o, s, d), src, dbg);
 }
 template<class O>
 const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) {
