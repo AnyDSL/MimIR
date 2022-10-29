@@ -27,6 +27,16 @@ constexpr bool is_associative(core::bit2 id) {
     }
 }
 
+// TODO move to normalize.h
+/// Swap Lit to left - or smaller gid, if no lit present.
+template<class Id>
+static void commute(Id id, const Def*& a, const Def*& b) {
+    if (is_commutative(id)) {
+        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
+            std::swap(a, b);
+    }
+}
+
 }
 
 using namespace thorin::normalize;
@@ -51,7 +61,7 @@ template<class T, T, nat_t>
 struct Fold {};
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
-template<class Id, Id id, bool isa_wrap = std::is_same_v<Id, wrap>>
+template<class Id, Id id>
 static const Def* fold(World& world, const Def* type, const App* callee, const Def*& a, const Def*& b, const Def* dbg) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
 
@@ -75,7 +85,7 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
         switch (width) {
 #define CODE(i)                                                         \
     case i:                                                             \
-        if constexpr (isa_wrap)                                         \
+        if constexpr (std::is_same_v<Id, wrap>)                         \
             res = Fold<Id, id, i>::run(la->get(), lb->get(), nsw, nuw); \
         else                                                            \
             res = Fold<Id, id, i>::run(la->get(), lb->get());           \
@@ -444,7 +454,7 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
     auto [a, b] = arg->projs<2>();
     auto [m, w] = callee->args<2>(isa_lit<nat_t>); // mode and width
 
-    if (auto result = fold<wrap, id, true>(world, type, callee, a, b, dbg)) return result;
+    if (auto result = fold<wrap, id>(world, type, callee, a, b, dbg)) return result;
 
     // clang-format off
     if (auto la = a->isa<Lit>()) {

@@ -42,12 +42,4 @@ constexpr bool is_associative(Id id) {
     return is_commutative(id);
 }
 
-template<class Id>
-static void commute(Id id, const Def*& a, const Def*& b) {
-    if (is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
-            std::swap(a, b); // swap lit to left, or smaller gid to left if no lit present
-    }
-}
-
 } // namespace thorin::normalize

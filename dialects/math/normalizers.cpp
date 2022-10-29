@@ -14,6 +14,16 @@ constexpr bool is_commutative(math::arith id) { return id == math::arith ::add |
 constexpr bool is_commutative(math::cmp   id) { return id == math::cmp   ::e   || id == math::cmp  ::ne ; }
 // clang-format off
 
+// TODO move to normalize.h
+/// Swap Lit to left - or smaller gid, if no lit present.
+template<class Id>
+static void commute(Id id, const Def*& a, const Def*& b) {
+    if (is_commutative(id)) {
+        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
+            std::swap(a, b);
+    }
+}
+
 }
 
 using namespace thorin::normalize;
