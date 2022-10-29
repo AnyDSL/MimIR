@@ -250,6 +250,7 @@ public:
     const Def* augment_lea(const App*);
     const Def* augment_load(const App*);
     const Def* augment_store(const App*);
+    const Def* augment_slot(const App*);
     const Def* augment_malloc(const App*);
     const Def* augment_alloc(const App*);
     const Def* augment_bitcast(const App*);

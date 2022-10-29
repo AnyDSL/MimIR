@@ -179,7 +179,7 @@ void AutoDiffEval::preserve(const Def* target) {
 
         auto arr_ty = w.arr(loop_size_nat, value->type());
 
-        auto alloc_cache_ptr = create_init_alloc_frame("cache" + value->name(), arr_ty);
+        auto alloc_cache_ptr = create_init_alloc_frame("cache_" + value->name(), arr_ty);
 
         auto unsized_arr_ptr_ty = mem::type_ptr(w.arr(w.top(w.type_nat()), value->type()));
         const Def* cache_ptr    = core::op_bitcast(unsized_arr_ptr_ty, alloc_cache_ptr, alloc_cache_ptr->dbg());
@@ -207,6 +207,17 @@ const Def* AutoDiffEval::augment_store(const App* store) {
     auto [_, aug_ptr, aug_val] = aug_arg->projs<3>();
     auto aug_store             = op_store(aug_ptr, aug_val, store->dbg());
     return aug_store;
+}
+
+const Def* AutoDiffEval::augment_slot(const App* slot) {
+    auto& world = slot->world();
+    augment(slot->arg(0_s));
+    auto type     = slot->decurry()->arg(0_s);
+    auto aug_slot = op_slot_mem(type);
+    auto grad_ptr = op_slot(type);
+    op_store(grad_ptr, zero(type));
+    gradient_pointers[slot->proj(1)] = grad_ptr;
+    return aug_slot;
 }
 
 const Def* AutoDiffEval::augment_alloc(const App* alloc) {
@@ -355,6 +366,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto val  = load->proj(1);
         auto grad = grad_arr(arr);
 
+        assert(grad);
         auto test = get_gradient(val);
 
         auto gradient_val = gradient->proj(1);
@@ -807,6 +819,8 @@ const Def* AutoDiffEval::augment_(const Def* def) {
     if (auto load = match<mem::load>(def)) { return augment_load(load->as<App>()); }
 
     if (auto store = match<mem::store>(def)) { return augment_store(store->as<App>()); }
+
+    if (auto slot = match<mem::slot>(def)) { return augment_slot(slot->as<App>()); }
 
     if (auto malloc = match<mem::malloc>(def)) { return augment_malloc(malloc->as<App>()); }
 
