@@ -297,27 +297,12 @@ const Def* sum(const Def* left, const Def* right) {
     assert(false);
 }
 
-const Def* AutoDiffEval::grad_sum(const Def* def) {
-    auto& w           = world();
-    DefVec& gradients = current_loop->gradients[def];
+const Def* AutoDiffEval::get_gradient(const Def* def) { return current_loop->gradient[def]; }
 
-    const Def* result = nullptr;
-
-    for (auto gradient : gradients) {
-        if (result == nullptr) {
-            result = gradient;
-        } else {
-            result = sum(result, gradient);
-        }
-    }
-
-    return result;
-}
-
-const Def* AutoDiffEval::grad_sum(const Def* def, const Def* default_zero_ty) {
+const Def* AutoDiffEval::get_gradient(const Def* def, const Def* default_zero_ty) {
     if (auto grad = grad_arr(def)) { return grad; }
 
-    auto result = grad_sum(def);
+    auto result = get_gradient(def);
     if (result == nullptr) {
         auto& w = world();
         return w.lit(default_zero_ty, 0);
@@ -362,7 +347,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
     }
 
     auto& w       = world();
-    auto gradient = grad_sum(def);
+    auto gradient = get_gradient(def);
     if (gradient == nullptr) { return; }
 
     if (auto load = match<mem::load>(def)) {
@@ -370,18 +355,20 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto val  = load->proj(1);
         auto grad = grad_arr(arr);
 
-        auto test = grad_sum(val);
+        auto test = get_gradient(val);
 
         auto gradient_val = gradient->proj(1);
         assert(gradient_val);
 
-        auto load_val = op_load(grad);
-        auto grad_sum = sum(load_val, gradient_val);
-        op_store(grad, grad_sum);
+        auto load_val     = op_load(grad);
+        auto get_gradient = sum(load_val, gradient_val);
+        op_store(grad, get_gradient);
         return;
     }
 
     if (auto tuple = def->isa<Tuple>()) {
+        auto ops  = tuple->ops();
+        auto ops2 = gradient->ops();
         for (size_t i = 0; i < tuple->num_ops(); i++) { attach_gradient(tuple->op(i), gradient->proj(i)); }
         return;
     }
@@ -550,7 +537,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 if (match<mem::M>(proj->type())) {
                     grad = end_mem();
                 } else {
-                    grad = grad_sum(proj, proj->type());
+                    grad = get_gradient(proj, proj->type());
                 }
                 assert(grad);
                 inv_args.push_back(grad);
@@ -655,7 +642,7 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
     for (auto free_def : scope.free_defs()) {
         auto free_ty = free_def->type();
         if (is_idx(free_ty) || match<core::Real>(free_ty)) {
-            auto acc_grad = grad_sum(free_def);
+            auto acc_grad = get_gradient(free_def);
             if (acc_grad) {
                 acc_ops.push_back(acc_grad);
                 acc_fvs.push_back(free_def);
@@ -1012,7 +999,17 @@ const Def* AutoDiffEval::resolve(const Def* def) {
     return new_def;
 }
 
-void AutoDiffEval::attach_gradient(const Def* dst, const Def* grad) { current_loop->gradients[dst].push_back(grad); }
+void AutoDiffEval::attach_gradient(const Def* dst, const Def* new_gradient) {
+    auto gradient = current_loop->gradient[dst];
+
+    if (gradient) {
+        gradient = sum(gradient, new_gradient);
+    } else {
+        gradient = new_gradient;
+    }
+
+    current_loop->gradient[dst] = gradient;
+}
 
 const Def* AutoDiffEval::invert_store(const App* store) {}
 

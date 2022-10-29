@@ -34,7 +34,8 @@ struct LoopFrame {
     LoopData forward;
     LoopData backward;
 
-    DefMap<DefVec> gradients;
+    // DefMap<DefVec> gradients;
+    Def2Def gradient;
 
     const Def*& index() { return data().index; }
 
@@ -308,8 +309,8 @@ public:
 
     void preserve(const Def* value);
 
-    const Def* grad_sum(const Def* def);
-    const Def* grad_sum(const Def* def, const Def* default_zero_ty);
+    const Def* get_gradient(const Def* def);
+    const Def* get_gradient(const Def* def, const Def* default_zero_ty);
     void prop(Scope& scope, const Def* def);
 
     void add_inverted(const Def* key, const Def* value) {
