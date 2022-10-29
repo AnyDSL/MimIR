@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['table_0',['TABLE',['../core_2normalizers_8cpp.html#a124b33f1732bce75d0c4099f0d65145d',1,'TABLE():&#160;normalizers.cpp'],['../normalize_8cpp.html#a124b33f1732bce75d0c4099f0d65145d',1,'TABLE():&#160;normalize.cpp']]],
+  ['table_0',['TABLE',['../core_2normalizers_8cpp.html#a124b33f1732bce75d0c4099f0d65145d',1,'normalizers.cpp']]],
   ['thorin_5f16_5f32_5f64_1',['THORIN_16_32_64',['../types_8h.html#ad0f62d33662ee0f5536f9be2b2560144',1,'types.h']]],
   ['thorin_5f1_5f8_5f16_5f32_5f64_2',['THORIN_1_8_16_32_64',['../types_8h.html#abed9e2c94bf4ae298244734bda96b214',1,'types.h']]],
   ['thorin_5f8_5f16_5f32_5f64_3',['THORIN_8_16_32_64',['../types_8h.html#ac0cd2b23cb8624d2ade40573fb299d15',1,'types.h']]],

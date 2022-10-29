@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['pack_0',['Pack',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac5d4ed55a25bdab2945a7027dc213778',1,'thorin::Node']]],
-  ['perm_1',['perm',['../namespacethorin_1_1refly.html#ac062d21f6636a7927391d6c70c40ce70aca659200663cf654dc4410ed494451ee',1,'thorin::refly']]],
-  ['phixy_2',['Phixy',['../classthorin_1_1mem_1_1SSAConstr.html#a74945efa38f2a7a750661ede05512660a63b02c4b7d2deaade5660666c2a1b3b0',1,'thorin::mem::SSAConstr']]],
-  ['pi_3',['Pi',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbacc524d86ec74bf18ee3f5a5ec4d36b6d',1,'thorin::Node']]],
-  ['pick_4',['Pick',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba32daf84d1b553daef38b172edace4d9c',1,'thorin::Node']]],
-  ['proxy_5',['Proxy',['../structthorin_1_1Dep.html#a21b17259c01a71c07132faf0ba6d7c79a2d56936e7fae678d5146a237fd8f3e2a',1,'thorin::Dep::Proxy()'],['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbaad888bbf600987dd2d6f78a8e50c88b7',1,'thorin::Node::Proxy()']]]
+  ['r2r_0',['r2r',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a5e8fe2a329c8ef1e555d617feda85540',1,'thorin::core']]],
+  ['r2s_1',['r2s',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aea350c7fd00b82fa94ce264a386a57cb',1,'thorin::core']]],
+  ['r2u_2',['r2u',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a746a49b2e21a5bcacd046f0c02ab6022',1,'thorin::core']]],
+  ['reassoc_3',['reassoc',['../namespacethorin_1_1core_1_1RMode.html#ab1738d486dcdeaaefb42bb676ba05b91a6e887212ecf35c49cdf6386d272b66c8',1,'thorin::core::RMode']]],
+  ['reduce_4',['Reduce',['../classthorin_1_1EtaRed.html#a4ac1f54e62bd9e356510aa0b4520553fa9b1bddd7ef27576ea56928fc370ab13a',1,'thorin::EtaRed']]],
+  ['rem_5',['rem',['../namespacethorin_1_1core.html#a1833f0faa946e3a89689c05e7aefb62ca5cadb523cb6909f92350f70f124adfb8',1,'thorin::core']]],
+  ['ret_6',['ret',['../namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293a2cb9df9898e55fd0ad829dc202ddbd1c',1,'thorin::clos']]],
+  ['run_7',['run',['../namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aaa53108f7543b75adbb34afc035d4cdf6',1,'thorin::core']]]
 ];

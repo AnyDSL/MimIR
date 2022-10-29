@@ -105,13 +105,13 @@ var NAVTREEINDEX =
 "core_2autogen_8h.html#afab2045241ef2b508a0c6867099991e6ae358efa489f58062f10dd7316b65649e",
 "dir_e925b2e9311ea88d6ed8c8d868701100.html",
 "log_8h.html#a16e6a53bea50271aa28355f071f7df6b",
-"namespacethorin.html#a4c922f53424c5c4db54b11e49cb3b052",
-"namespacethorin_1_1autodiff.html#aca240fd39eb8b23acfd9fc5691cb2d2e",
-"namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfaf792d1afb0399dce47533bead9d71a8a",
-"namespacethorin_1_1mem.html#a25028ecf932c732a9ff2a0cd1f894d13",
-"refly_2autogen_8h.html#a25a798ca300b6a46c5bdb3762fe65f8c",
-"structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aad4a9fa383ab700c5bdd6f31cf7df0faf",
-"structthorin_1_1normalize_1_1Fold_3_01ROp_00_01ROp_1_1sub_00_01w_01_4.html#ac748f5a46aa9e09d2a32d7a0aa4a538f"
+"namespacethorin.html#a50211555a7f845dea0837f6d6c22cedd",
+"namespacethorin_1_1clos.html#a092567bc43f2e13c25a4e72157efa50f",
+"namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa353942263d1bedfbe06b7bfa78226253",
+"namespacethorin_1_1mem.html#a4d25dcbf6fc36ffe021fc403cab770bb",
+"refly_8cpp.html#a5aebfba92373e0dc8a76d272bcd8e85d",
+"structthorin_1_1World_1_1State.html#a7f6b68de40c0d4e36c8b26ec364f503d",
+"types_8h.html#ab1ed0de0e01b65bb1ae173a42333ec6b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

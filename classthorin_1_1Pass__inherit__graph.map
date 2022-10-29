@@ -1,51 +1,51 @@
 <map id="thorin::Pass" name="thorin::Pass">
-<area shape="rect" id="node1" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="5,1005,103,1032"/>
-<area shape="rect" id="node2" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="574,388,767,430"/>
-<area shape="rect" id="node4" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="579,1044,762,1086"/>
-<area shape="rect" id="node6" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="579,455,763,496"/>
-<area shape="rect" id="node8" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,838,769,879"/>
-<area shape="rect" id="node10" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="567,84,774,126"/>
-<area shape="rect" id="node12" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,215,768,256"/>
-<area shape="rect" id="node14" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,744,769,786"/>
-<area shape="rect" id="node16" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="564,19,777,60"/>
-<area shape="rect" id="node18" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,150,769,191"/>
-<area shape="rect" id="node20" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="577,668,764,710"/>
-<area shape="rect" id="node22" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="577,282,764,323"/>
-<area shape="rect" id="node24" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="577,596,764,638"/>
-<area shape="rect" id="node26" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="577,1775,764,1816"/>
-<area shape="rect" id="node28" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="567,1960,774,2002"/>
-<area shape="rect" id="node30" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,1420,769,1462"/>
-<area shape="rect" id="node32" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1707,768,1748"/>
-<area shape="rect" id="node34" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1354,768,1395"/>
-<area shape="rect" id="node36" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="565,1890,776,1931"/>
-<area shape="rect" id="node38" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="565,2036,776,2078"/>
-<area shape="rect" id="node40" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="576,1148,765,1190"/>
-<area shape="rect" id="node42" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="576,524,765,566"/>
-<area shape="rect" id="node44" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="560,1490,781,1531"/>
-<area shape="rect" id="node45" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,950,771,991"/>
-<area shape="rect" id="node46" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="561,1556,780,1598"/>
-<area shape="rect" id="node47" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="567,1248,774,1290"/>
-<area shape="rect" id="node48" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="563,1642,778,1683"/>
-<area shape="rect" id="node49" href="$classthorin_1_1RWPass.html" title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="152,1005,327,1032"/>
-<area shape="rect" id="node3" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="847,388,1033,430"/>
-<area shape="rect" id="node5" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="851,1044,1029,1086"/>
-<area shape="rect" id="node7" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="851,455,1029,496"/>
-<area shape="rect" id="node9" href="$classthorin_1_1LamSpec.html" title=" " alt="" coords="877,845,1003,872"/>
-<area shape="rect" id="node11" href="$classthorin_1_1PartialEval.html" title=" " alt="" coords="871,92,1009,118"/>
-<area shape="rect" id="node13" href="$classthorin_1_1RetWrap.html" title=" " alt="" coords="878,222,1002,249"/>
-<area shape="rect" id="node15" href="$classthorin_1_1Scalerize.html" title="Perform Scalarization (= Argument simplification), i.e." alt="" coords="877,752,1003,778"/>
-<area shape="rect" id="node17" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="837,19,1043,60"/>
-<area shape="rect" id="node19" href="$classthorin_1_1affine_1_1LowerFor.html" title="Lowers the for axiom to actual control flow in CPS style." alt="" coords="854,157,1026,184"/>
-<area shape="rect" id="node21" href="$classthorin_1_1autodiff_1_1AutoDiffEval.html" title="This pass is the heart of AD." alt="" coords="837,676,1043,702"/>
-<area shape="rect" id="node23" href="$classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html" title="Removes all external autodiff axioms extensions from the program." alt="" coords="851,282,1029,323"/>
-<area shape="rect" id="node25" href="$classthorin_1_1autodiff_1_1AutoDiffZero.html" title="Replaces calls to the zero axioms with actual zeros." alt="" coords="835,604,1045,630"/>
-<area shape="rect" id="node27" href="$classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html" title="Replaces remaining zeros (not resolvable) with ⊥." alt="" coords="851,1775,1029,1816"/>
-<area shape="rect" id="node29" href="$classthorin_1_1clos_1_1BranchClosElim.html" title=" " alt="" coords="838,1968,1042,1994"/>
-<area shape="rect" id="node31" href="$classthorin_1_1clos_1_1Clos2SJLJ.html" title=" " alt="" coords="859,1428,1021,1454"/>
-<area shape="rect" id="node33" href="$classthorin_1_1clos_1_1ClosConvPrep.html" title=" " alt="" coords="844,1714,1036,1741"/>
-<area shape="rect" id="node35" href="$classthorin_1_1clos_1_1ClosConvWrapper.html" title=" " alt="" coords="831,1361,1049,1388"/>
-<area shape="rect" id="node37" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="837,1890,1043,1931"/>
-<area shape="rect" id="node39" href="$classthorin_1_1clos_1_1LowerTypedClosWrapper.html" title=" " alt="" coords="851,2036,1029,2078"/>
-<area shape="rect" id="node41" href="$classthorin_1_1direct_1_1CPS2DS.html" title="This is the second part of ds2cps." alt="" coords="858,1156,1022,1182"/>
-<area shape="rect" id="node43" href="$classthorin_1_1direct_1_1DS2CPS.html" title="Converts direct style function to cps functions." alt="" coords="858,532,1022,558"/>
+<area shape="rect" id="node1" title="All Passes that want to be registered in the PassMan must implement this interface." alt="" coords="5,1133,103,1159"/>
+<area shape="rect" id="node2" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="574,289,767,329"/>
+<area shape="rect" id="node3" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="579,609,762,649"/>
+<area shape="rect" id="node4" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="579,543,763,583"/>
+<area shape="rect" id="node5" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,753,769,793"/>
+<area shape="rect" id="node7" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="567,882,774,922"/>
+<area shape="rect" id="node9" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,91,768,131"/>
+<area shape="rect" id="node11" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,1370,769,1410"/>
+<area shape="rect" id="node13" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="564,817,777,857"/>
+<area shape="rect" id="node14" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,21,769,61"/>
+<area shape="rect" id="node16" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="577,170,764,210"/>
+<area shape="rect" id="node18" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="577,457,764,497"/>
+<area shape="rect" id="node20" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="577,366,764,406"/>
+<area shape="rect" id="node22" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="577,678,764,718"/>
+<area shape="rect" id="node24" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="567,1627,774,1667"/>
+<area shape="rect" id="node26" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="572,1891,769,1931"/>
+<area shape="rect" id="node28" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,2149,768,2189"/>
+<area shape="rect" id="node30" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="573,1254,768,1294"/>
+<area shape="rect" id="node32" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="565,1542,776,1582"/>
+<area shape="rect" id="node33" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="565,1691,776,1731"/>
+<area shape="rect" id="node35" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="576,1178,765,1218"/>
+<area shape="rect" id="node37" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="576,1453,765,1493"/>
+<area shape="rect" id="node39" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="560,1823,781,1863"/>
+<area shape="rect" id="node41" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="571,1965,771,2005"/>
+<area shape="rect" id="node42" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="561,1757,780,1797"/>
+<area shape="rect" id="node44" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="567,2047,774,2087"/>
+<area shape="rect" id="node45" href="$classthorin_1_1RWPass.html" title=" " alt="" coords="563,1091,778,1131"/>
+<area shape="rect" id="node47" href="$classthorin_1_1RWPass.html" title="Inherit from this class if your Pass does not need state and a fixed&#45;point iteration." alt="" coords="152,1044,327,1069"/>
+<area shape="rect" id="node6" href="$classthorin_1_1LamSpec.html" title=" " alt="" coords="877,760,1003,785"/>
+<area shape="rect" id="node8" href="$classthorin_1_1PartialEval.html" title=" " alt="" coords="871,889,1009,915"/>
+<area shape="rect" id="node10" href="$classthorin_1_1RetWrap.html" title=" " alt="" coords="878,99,1002,124"/>
+<area shape="rect" id="node12" href="$classthorin_1_1Scalerize.html" title="Perform Scalarization (= Argument simplification), i.e.:" alt="" coords="877,1377,1003,1403"/>
+<area shape="rect" id="node15" href="$classthorin_1_1affine_1_1LowerFor.html" title="Lowers the for axiom to actual control flow in CPS style." alt="" coords="854,28,1026,53"/>
+<area shape="rect" id="node17" href="$classthorin_1_1autodiff_1_1AutoDiffEval.html" title="This pass is the heart of AD." alt="" coords="837,177,1043,203"/>
+<area shape="rect" id="node19" href="$classthorin_1_1autodiff_1_1AutoDiffExternalCleanup.html" title="Removes all external autodiff axioms extensions from the program." alt="" coords="851,457,1029,497"/>
+<area shape="rect" id="node21" href="$classthorin_1_1autodiff_1_1AutoDiffZero.html" title="Replaces calls to the zero axioms with actual zeros." alt="" coords="835,373,1045,399"/>
+<area shape="rect" id="node23" href="$classthorin_1_1autodiff_1_1AutoDiffZeroCleanup.html" title="Replaces remaining zeros (not resolvable) with ⊥." alt="" coords="851,678,1029,718"/>
+<area shape="rect" id="node25" href="$classthorin_1_1clos_1_1BranchClosElim.html" title=" " alt="" coords="838,1635,1042,1660"/>
+<area shape="rect" id="node27" href="$classthorin_1_1clos_1_1Clos2SJLJ.html" title=" " alt="" coords="859,1899,1021,1924"/>
+<area shape="rect" id="node29" href="$classthorin_1_1clos_1_1ClosConvPrep.html" title=" " alt="" coords="844,2156,1036,2181"/>
+<area shape="rect" id="node31" href="$classthorin_1_1clos_1_1ClosConvWrapper.html" title=" " alt="" coords="831,1261,1049,1287"/>
+<area shape="rect" id="node34" href="$classthorin_1_1clos_1_1LowerTypedClosWrapper.html" title=" " alt="" coords="851,1691,1029,1731"/>
+<area shape="rect" id="node36" href="$classthorin_1_1direct_1_1CPS2DS.html" title="This is the second part of ds2cps." alt="" coords="858,1185,1022,1211"/>
+<area shape="rect" id="node38" href="$classthorin_1_1direct_1_1DS2CPS.html" title="Converts direct style function to cps functions." alt="" coords="858,1460,1022,1485"/>
+<area shape="rect" id="node40" href="$classthorin_1_1mem_1_1Alloc2Malloc.html" title=" " alt="" coords="843,1831,1037,1856"/>
+<area shape="rect" id="node43" href="$classthorin_1_1mem_1_1RememElim.html" title=" " alt="" coords="845,1764,1035,1789"/>
+<area shape="rect" id="node46" href="$classthorin_1_1refly_1_1RemoveDbgPerm.html" title="Removes all refly.debug.perm markers for code gen." alt="" coords="831,1099,1049,1124"/>
+<area shape="rect" id="node48" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="577,953,764,993"/>
+<area shape="rect" id="node49" href="$classthorin_1_1FPPass.html" title=" " alt="" coords="582,1017,759,1057"/>
 </map>

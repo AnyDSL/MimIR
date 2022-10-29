@@ -1,11 +1,19 @@
 var searchData=
 [
-  ['r2r_0',['r2r',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a5e8fe2a329c8ef1e555d617feda85540',1,'thorin::core']]],
-  ['r2s_1',['r2s',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937aea350c7fd00b82fa94ce264a386a57cb',1,'thorin::core']]],
-  ['r2u_2',['r2u',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a746a49b2e21a5bcacd046f0c02ab6022',1,'thorin::core']]],
-  ['reassoc_3',['reassoc',['../namespacethorin_1_1core_1_1RMode.html#ab1738d486dcdeaaefb42bb676ba05b91a6e887212ecf35c49cdf6386d272b66c8',1,'thorin::core::RMode']]],
-  ['reduce_4',['Reduce',['../classthorin_1_1EtaRed.html#a4ac1f54e62bd9e356510aa0b4520553fa9b1bddd7ef27576ea56928fc370ab13a',1,'thorin::EtaRed']]],
-  ['rem_5',['rem',['../namespacethorin_1_1core.html#a1833f0faa946e3a89689c05e7aefb62ca5cadb523cb6909f92350f70f124adfb8',1,'thorin::core']]],
-  ['ret_6',['ret',['../namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293a2cb9df9898e55fd0ad829dc202ddbd1c',1,'thorin::clos']]],
-  ['run_7',['run',['../namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254aaa53108f7543b75adbb34afc035d4cdf6',1,'thorin::core']]]
+  ['s2r_0',['s2r',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a588c850cce77827aeaa0468d9c1c8ff4',1,'thorin::core']]],
+  ['s2s_1',['s2s',['../namespacethorin_1_1core.html#a016fae77d6f5857b429ceb5b433c4937a56c61ed958d9e124f3c2767637147a0c',1,'thorin::core']]],
+  ['sdiv_2',['sdiv',['../namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309ea2ccfa40273acf334bf92c6132f66f779',1,'thorin::core']]],
+  ['sg_3',['sg',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5dae429688af1c521ad87ac394192c6d',1,'thorin::core']]],
+  ['sge_4',['sge',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a2a2ab400d355ac301859e4abb5432138',1,'thorin::core']]],
+  ['shared_5',['Shared',['../namespacethorin_1_1mem_1_1AddrSpace.html#ab340bcab19267ad3cd0f434a547f806da1ff9ce50188f11dfac454d7bf865babb',1,'thorin::mem::AddrSpace']]],
+  ['shl_6',['shl',['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fabc192716b0e1d5c96a67961dd0d3f9da',1,'thorin::core']]],
+  ['sigma_7',['Sigma',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afbac1fb2543759c1fd49ae0fea3855ea812',1,'thorin::Node']]],
+  ['singleton_8',['Singleton',['../namespacethorin_1_1Node.html#a8f9ce7cae6b718bac0ca504d3fe29afba9aa3d738ffa11f86c81842510d5288df',1,'thorin::Node']]],
+  ['size_9',['size',['../namespacethorin_1_1core.html#aa0072b0cc07c0996ceb3516d925c5fbfaf7bd60b75b29d79b660a2859395c1a24',1,'thorin::core']]],
+  ['sl_10',['sl',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a54a2bf8c09ace67d3513aaa1aa7aa0f3',1,'thorin::core']]],
+  ['sle_11',['sle',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6aaa7c2f8b74458aeae4e388c376197581',1,'thorin::core']]],
+  ['sloxy_12',['Sloxy',['../classthorin_1_1mem_1_1SSAConstr.html#a74945efa38f2a7a750661ede05512660af063dc6bc3d5932e9e2c622b78754004',1,'thorin::mem::SSAConstr']]],
+  ['space_13',['Space',['../namespacethorin.html#abb917bebc699083d990fc4592abcc50ead511f8439ecde36647437fbba67a4394',1,'thorin']]],
+  ['srem_14',['srem',['../namespacethorin_1_1core.html#abaf61e089dbdb52b9c30b4b166f8309ea6dcaf449415765e1fc8503e76318736b',1,'thorin::core']]],
+  ['sub_15',['sub',['../namespacethorin_1_1core.html#a1833f0faa946e3a89689c05e7aefb62ca8a68dc3e925eacf92633be230722a140',1,'thorin::core::sub()'],['../namespacethorin_1_1core.html#ab1f42e21a4de8bd328e18b8006b9f74fa8a68dc3e925eacf92633be230722a140',1,'thorin::core::sub()']]]
 ];

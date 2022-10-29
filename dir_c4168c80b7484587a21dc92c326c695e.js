@@ -24,7 +24,6 @@ var dir_c4168c80b7484587a21dc92c326c695e =
     [ "lam.h", "lam_8h.html", "lam_8h" ],
     [ "lattice.cpp", "lattice_8cpp.html", null ],
     [ "lattice.h", "lattice_8h.html", "lattice_8h" ],
-    [ "normalize.cpp", "normalize_8cpp.html", "normalize_8cpp" ],
     [ "rewrite.cpp", "rewrite_8cpp.html", "rewrite_8cpp" ],
     [ "rewrite.h", "rewrite_8h.html", "rewrite_8h" ],
     [ "tuple.cpp", "tuple_8cpp.html", "tuple_8cpp" ],
