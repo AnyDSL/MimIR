@@ -16,11 +16,12 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install newest g++, graphviz
+    - name: Install newest g++, graphviz, texlive
       run: |
         sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test 
         sudo apt-get update
-        sudo apt-get install g++-11 graphviz
+        sudo apt-get install g++-11 graphviz texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
+
         export CXX=g++-11
 
     - name: Install Doxygen

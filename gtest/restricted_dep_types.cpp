@@ -30,11 +30,7 @@ using namespace thorin;
 TEST(RestrictedDependentTypes, join_singleton) {
     auto test_on_world = [](auto test) {
         World w;
-
         Normalizers normalizers;
-        auto math_d = Dialect::load("math", {});
-        math_d.register_normalizers(normalizers);
-        fe::Parser::import_module(w, "math", {}, &normalizers);
 
         auto mem_d = Dialect::load("mem", {});
         mem_d.register_normalizers(normalizers);
@@ -43,6 +39,10 @@ TEST(RestrictedDependentTypes, join_singleton) {
         auto core_d = Dialect::load("core", {});
         core_d.register_normalizers(normalizers);
         fe::Parser::import_module(w, "core", {}, &normalizers);
+
+        auto math_d = Dialect::load("math", {});
+        math_d.register_normalizers(normalizers);
+        fe::Parser::import_module(w, "math", {}, &normalizers);
 
         auto i32_t = w.type_int(32);
         auto i64_t = w.type_int(64);
@@ -230,8 +230,8 @@ TEST(RestrictedDependentTypes, join_singleton) {
 
 TEST(RestrictedDependentTypes, ll) {
     World w;
-
     Normalizers normalizers;
+
     auto mem_d = Dialect::load("mem", {});
     mem_d.register_normalizers(normalizers);
     fe::Parser::import_module(w, "mem", {}, &normalizers);
@@ -239,6 +239,10 @@ TEST(RestrictedDependentTypes, ll) {
     auto core_d = Dialect::load("core", {});
     core_d.register_normalizers(normalizers);
     fe::Parser::import_module(w, "core", {}, &normalizers);
+
+    auto math_d = Dialect::load("math", {});
+    math_d.register_normalizers(normalizers);
+    fe::Parser::import_module(w, "math", {}, &normalizers);
 
     auto mem_t  = mem::type_mem(w);
     auto i32_t  = w.type_int(32);
