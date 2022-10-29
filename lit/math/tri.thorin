@@ -1,6 +1,6 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin %s -d refly --output-ll %t.ll
-// RUN: clang %t.ll -o %t -Wno-override-module -lm
+// RUN: clang++ %t.ll -o %t -Wno-override-module
 // RUN: %t foo; test $? -eq 98
 
 .import math;
