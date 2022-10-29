@@ -186,7 +186,7 @@ void AutoDiffEval::preserve(const Def* target) {
 
         auto cache_lea = mem::op_lea(cache_ptr, cache_index, w.dbg("lea_cache"));
         op_store(cache_lea, value, w.dbg("store_cache"));
-        cache_map[value]                 = cache_ptr;
+        cache_map[target]                = cache_ptr;
         cache_loop_assignment[cache_ptr] = current_loop;
     }
 }
@@ -430,6 +430,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         } else if (rop.id() == core::rop::sub) {
             right_grad = core::op_rminus(core::RMode::none, gradient);
         } else if (rop.id() == core::rop::mul) {
+            right->dump(1);
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
