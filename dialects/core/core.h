@@ -7,38 +7,11 @@
 
 namespace thorin::core {
 
-namespace WMode {
+namespace Mode {
 enum : nat_t {
     none = 0,
     nsw  = 1 << 0,
     nuw  = 1 << 1,
-};
-}
-
-namespace RMode {
-enum RMode : nat_t {
-    none = 0,
-    nnan = 1 << 0, ///< No NaNs - Allow optimizations to assume the arguments and result are not NaN. Such optimizations
-                   ///< are required to retain defined behavior over NaNs, but the value of the result is undefined.
-    ninf =
-        1 << 1, ///< No Infs - Allow optimizations to assume the arguments and result are not +/-Inf. Such optimizations
-                ///< are required to retain defined behavior over +/-Inf, but the value of the result is undefined.
-    nsz = 1
-       << 2, ///< No Signed Zeros - Allow optimizations to treat the sign of a zero argument or result as insignificant.
-    arcp = 1 << 3, ///< Allow Reciprocal - Allow optimizations to use the reciprocal of an argument rather than perform
-                   ///< division.
-    contract = 1 << 4, ///< Allow floating-point contraction (e.g. fusing a multiply followed by an addition into a
-                       ///< fused multiply-and-add).
-    afn = 1 << 5, ///< Approximate functions - Allow substitution of approximate calculations for functions (sin, log,
-                  ///< sqrt, etc). See floating-point intrinsic definitions for places where this can apply to LLVM’s
-                  ///< intrinsic math functions.
-    reassoc = 1 << 6, ///< Allow reassociation transformations for floating-point operations. This may dramatically
-                      ///< change results in floating point.
-    finite = nnan | ninf,
-    unsafe = nsz | arcp | reassoc,
-    fast   = nnan | ninf | nsz | arcp | contract | afn | reassoc,
-    bot    = fast,
-    top    = none,
 };
 }
 

@@ -191,8 +191,8 @@ inline const Lit* lit_f(World& w, nat_t width, r64 val, const Def* dbg = {}) {
 ///@{
 inline const Def* op_rminus(const Def* mode, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
-    auto s   = as_lit(finfer(a));
-    return op(arith::sub, mode, lit_f(w, s, -0.0), a, dbg);
+    auto s   = isa_f(a->type());
+    return op(arith::sub, mode, lit_f(w, *s, -0.0), a, dbg);
 }
 inline const Def* op_rminus(nat_t mode, const Def* a, const Def* dbg = {}) {
     World& w = a->world();

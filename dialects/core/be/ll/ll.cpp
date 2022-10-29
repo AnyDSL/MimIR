@@ -545,8 +545,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case core::wrap::shl: op = "shl"; break;
         }
 
-        if (mode & core::WMode::nuw) op += " nuw";
-        if (mode & core::WMode::nsw) op += " nsw";
+        if (mode & core::Mode::nuw) op += " nuw";
+        if (mode & core::Mode::nsw) op += " nsw";
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto div = match<core::div>(def)) {
@@ -577,7 +577,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case math::arith::rem: op = "frem"; break;
         }
 
-        if (mode == core::RMode::fast)
+        if (mode == math::Mode::fast)
             op += " fast";
         else {
             // clang-format off

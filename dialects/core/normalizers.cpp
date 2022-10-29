@@ -62,8 +62,8 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
         [[maybe_unused]] bool nsw = false, nuw = false;
         if constexpr (std::is_same_v<Id, wrap>) {
             auto [mode, w] = callee->args<2>(as_lit<nat_t>);
-            nsw            = mode & WMode::nsw;
-            nuw            = mode & WMode::nuw;
+            nsw            = mode & Mode::nsw;
+            nuw            = mode & Mode::nuw;
             width          = w;
         } else if (auto size = Idx::size(a->type())) {
             width = as_lit(size);
@@ -206,7 +206,7 @@ reassociate(Id id, World& /*world*/, [[maybe_unused]] const App* ab, const Def* 
 
     if constexpr (std::is_same_v<Id, wrap>) {
         // if we reassociate Wraps, we have to forget about nsw/nuw
-        make_op = [&](const Def* a, const Def* b) { return op(id, WMode::none, a, b, dbg); };
+        make_op = [&](const Def* a, const Def* b) { return op(id, Mode::none, a, b, dbg); };
     } else {
         make_op = [&](const Def* a, const Def* b) { return op(id, a, b, dbg); };
     }
