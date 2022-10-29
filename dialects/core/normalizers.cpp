@@ -13,6 +13,11 @@ constexpr bool is_commutative(core::ncmp id) { return id == core::ncmp::  e || i
 constexpr bool is_commutative(core::icmp id) { return id == core::icmp::  e || id == core::icmp:: ne; }
 // clang-format off
 
+constexpr bool is_commutative(core::bit2 id) {
+    auto tab = make_truth_table(id);
+    return tab[0][1] == tab[1][0];
+}
+
 constexpr bool is_associative(core::bit2 id) {
     switch (id) {
         case core::bit2::t:
@@ -404,9 +409,9 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
 
     if (lb) {
         if (*lb == 0) {
-            if (auto res = unary(tab[0][0], tab[1][0], b)) return res;
+            if (auto res = unary(tab[0][0], tab[1][0], a)) return res;
         } else if (*lb == *s - 1_u64) {
-            if (auto res = unary(tab[0][1], tab[1][1], b)) return res;
+            if (auto res = unary(tab[0][1], tab[1][1], a)) return res;
         }
     }
 

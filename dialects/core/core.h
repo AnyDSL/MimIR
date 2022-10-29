@@ -124,9 +124,6 @@ inline const Def* insert_unsafe(const Def* d, u64 i, const Def* val, const Def* 
 }
 ///@}
 
-// clang-format on
-///@}
-
 /// @name wrappers for unary operations
 ///@{
 inline const Def* op_negate(const Def* a, const Def* dbg = {}) {
@@ -147,7 +144,7 @@ inline const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) {
 
 /// Use like this:
 /// `a op b = tab[a][b]`
-inline std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
+constexpr std::array<std::array<u64, 2>, 2> make_truth_table(bit2 id) {
     return {
         {{sub_t(id) & sub_t(0b0001) ? u64(-1) : 0, sub_t(id) & sub_t(0b0100) ? u64(-1) : 0},
          {sub_t(id) & sub_t(0b0010) ? u64(-1) : 0, sub_t(id) & sub_t(0b1000) ? u64(-1) : 0}}

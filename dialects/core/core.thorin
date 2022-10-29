@@ -192,6 +192,8 @@
 ///
 /// ## Other Operations
 ///
+/// ### %core.trait
+///
 /// Yields the size or align of a type.
 ///
 .ax %core.trait(size, align): * -> .Nat, normalize_trait;
