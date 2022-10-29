@@ -567,7 +567,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto arith = match<math::arith>(def)) {
         auto [a, b] = arith->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(arith->type());
-        auto mode  = as_lit(arith->decurry()->arg());
+        auto mode   = as_lit(arith->decurry()->arg());
 
         switch (arith.id()) {
             case math::arith::add: op = "fadd"; break;

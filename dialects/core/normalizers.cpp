@@ -73,8 +73,8 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
 
         Res res;
         switch (width) {
-#define CODE(i)                                                             \
-    case i:                                                                 \
+#define CODE(i)                                                         \
+    case i:                                                             \
         if constexpr (isa_wrap)                                         \
             res = Fold<Id, id, i>::run(la->get(), lb->get(), nsw, nuw); \
         else                                                            \
