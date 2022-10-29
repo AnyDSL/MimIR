@@ -30,6 +30,7 @@ const Def* AutoDiffEval::augment(const Def* def) {
         assert(current_state == State::Augment);
         augment        = augment_(def);
         augmented[def] = augment;
+        preserve(def);
     }
     assert(augment);
     return augment;

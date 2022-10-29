@@ -8,6 +8,7 @@
 #include "dialects/affine/passes/lower_for.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/autodiff/passes/autodiff_reduce.h"
+#include "dialects/autodiff/passes/autodiff_prep.h"
 #include "dialects/mem/passes/rw/reshape.h"
 
 using namespace thorin;

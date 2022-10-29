@@ -9,6 +9,35 @@
 
 namespace thorin::autodiff {
 
+bool has_op_store(const Def* def, DefSet& visited) {
+    if (visited.contains(def)) return false;
+    visited.insert(def);
+
+    if (auto extr = def->isa<Extract>()) {
+        if (has_op_store(extr->tuple(), visited)) { return true; }
+    } else if (auto lea = match<mem::lea>(def)) {
+        auto [arr_ptr, _] = lea->args<2>();
+
+        if (has_op_store(arr_ptr, visited)) { return true; }
+    } else if (match<mem::store>(def)) {
+        return true;
+    }
+
+    if (match<mem::Ptr>(def->type()) || def->isa<Tuple>()) {
+        for (auto use : def->uses()) {
+            if (has_op_store(use, visited)) { return true; }
+        }
+    }
+
+    return false;
+}
+
+bool has_op_store(const Def* ptr) {
+    DefSet visited;
+    return has_op_store(ptr, visited);
+}
+
+
 void AutoDiffEval::fetch_gradients(Lam* src, Lam* backward) {
     auto src_arg      = src->arg();
     auto backward_arg = backward->arg();
@@ -41,10 +70,65 @@ Lam* AutoDiffEval::free_memory() {
     return free_memory;
 }
 
+void AutoDiffEval::mark(const Def* def){
+    markings.insert(def);
+}
+
+void AutoDiffEval::scan(const Def* def){
+    if(!visited_scan.insert(def).second) return;
+
+    if( auto rop = match<core::rop>(def) ){
+        if(rop.id() == core::rop::mul || rop.id() == core::rop::div){
+            mark(rop->arg(0));
+            mark(rop->arg(1));
+        }
+    }else if( auto rop = match<core::wrap>(def) ){
+        if(rop.id() == core::wrap::mul){
+            mark(rop->arg(0));
+            mark(rop->arg(1));
+        }
+    }else if( auto rop = match<core::div>(def) ){
+        mark(rop->arg(0));
+        mark(rop->arg(1));
+    }
+
+    for( auto op : def->ops() ){
+        scan(op);
+    }
+}
+
+const App* is_load_val(const Def* def){
+    if( auto extr = def->isa<Extract>() ){
+        auto tuple = extr->tuple();
+        if(auto load = match<mem::load>(tuple)){
+            return load;
+        }
+    }
+
+    return nullptr;
+}
+
+void AutoDiffEval::prepare(const Def* def) {
+    scan(def);
+
+    for( auto mark : markings ){
+        if(auto load = is_load_val(mark)){
+            auto ptr = load->arg(1);
+            if(has_op_store(ptr)){
+                requires_caching.insert(mark);
+            }
+        }else{
+            //requires_caching.insert(mark);
+        }
+    }
+}
+
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& w     = world();
     auto diffee = def->isa_nom<Lam>();
     assert(diffee);
+
+    prepare(diffee);
 
     auto diff_ty = autodiff_type_fun_pi(diffee->type());
 
@@ -66,6 +150,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     fetch_gradients(diffee, backward_begin);
 
     current_state = State::Augment;
+    init_mem(diff_lam);
     auto aug_body = augment(diffee->body());
     diff_lam->set_body(aug_body);
 

@@ -228,6 +228,10 @@ public:
     AutoDiffEval(PassMan& man)
         : RWPass(man, "autodiff_eval") {}
 
+    void prepare(const Def*);
+    void mark(const Def* def);
+    void scan(const Def* def);
+
     const Def* rewrite(const Def*) override;
 
     const Def* derive(const Def*);
@@ -279,10 +283,12 @@ public:
 
     const Def* normalized_to_cache_index(const Def* normalized_index);
 
-    const Def* op_load(const Def* ptr, bool with_mem = false);
-    void op_store(const Def* ptr, const Def* value);
-    const Def* op_slot(const Def* type, const std::string& name = "");
-    void op_free(const Def* ptr);
+    const Def* op_load_mem(const Def* ptr, const Def* dbg = {});
+    const Def* op_load(const Def* ptr, const Def* dbg = {});
+    const Def* op_store(const Def* ptr, const Def* value, const Def* dbg = {});
+    const Def* op_slot_mem(const Def* type, const Def* dbg = {});
+    const Def* op_slot(const Def* type, const Def* dbg = {});
+    const Def* op_free(const Def* ptr, const Def* dbg = {});
     void ret(Lam* lam);
 
     void push_loop_frame(const App* for_app, const Def* size);
@@ -300,7 +306,7 @@ public:
 
     void fetch_gradients(Lam* diff, Lam* backward);
 
-    const Def* wrap_cache(const App* load, const App* aug_load);
+    void preserve(const Def* value);
 
     const Def* grad_sum(const Def* def);
     const Def* grad_sum(const Def* def, const Def* default_zero_ty);
@@ -311,14 +317,34 @@ public:
         inverted[key] = value;
     }
 
+    void check_mem(){
+        assert(current_mem != nullptr);
+    }
+
     void init_mem(const Def* mem) {
+        if(current_mem != nullptr){
+            current_mem->dump(2);
+            current_mem->dump(2);
+        }
         assert(current_mem == nullptr);
         current_mem = mem;
     }
 
     void init_mem(Lam* lam) { init_mem(mem::mem_var(lam)); }
 
+    void push_mem(Lam* lam){
+        mem_stack.push(end_mem());
+        init_mem(lam);
+    }
+
+    void pop_mem(){
+        auto top_mem = mem_stack.top();
+        mem_stack.pop();
+        init_mem(top_mem);
+    }
+
     const Def* end_mem() {
+        check_mem();
         auto mem    = current_mem;
         current_mem = nullptr;
         return mem;
@@ -331,6 +357,9 @@ private:
     Def2Def augmented;
     Def2Def inverted;
     DefSet visited_prop;
+    DefSet visited_scan;
+    DefSet markings;
+    DefSet requires_caching;
 
     Def2Def gradient_pointers;
 
@@ -346,6 +375,7 @@ private:
 
     const Def* current_mem = nullptr;
     State current_state    = State::Unknown;
+    std::stack<const Def*> mem_stack;
 };
 
 } // namespace thorin::autodiff
