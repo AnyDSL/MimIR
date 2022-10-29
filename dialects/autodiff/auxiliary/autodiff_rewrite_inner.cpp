@@ -20,9 +20,16 @@ namespace thorin::autodiff {
 
 #define f_arg_ty continuation_dom(f->type())
 
+bool is_idx(const Def* ty) {
+    if (auto app = ty->isa<App>()) { return app->callee()->isa<Idx>(); }
+    return false;
+}
+
 const Def* zero(const Def* ty) {
     auto& w = ty->world();
     if (match<core::Real>(ty)) { return w.lit(ty, 0.0); }
+    if (is_idx(ty)) { return w.lit(ty, 0); }
+    if (auto arr = ty->isa<Arr>()) { return w.pack(arr->shape(), zero(arr->body())); }
     return w.lit(ty, 0);
 }
 const Def* zero(World& w) { return w.lit_int(32, 0); }
@@ -152,13 +159,14 @@ const Def* AutoDiffEval::create_init_frame(const std::string& name, std::functio
     init_frames.push(InitFrame{.lam = lam, .mem = mem});
 }
 
-const Def* AutoDiffEval::create_init_alloc_frame(const std::string& name, const Def* alloc_ty) {
+const Def* AutoDiffEval::create_init_alloc_frame(const std::string& name, const Def* alloc_ty, const Def* init) {
     const Def* ptr = nullptr;
     create_init_frame("alloc_" + name, [&](const Def* mem) {
         auto& w                                 = mem->world();
         auto alloc_cache                        = mem::op_malloc(alloc_ty, mem, w.dbg(name));
         auto [alloc_cache_mem, alloc_cache_ptr] = alloc_cache->projs<2>();
         ptr                                     = alloc_cache_ptr;
+        if (init) { alloc_cache_mem = mem::op_store(alloc_cache_mem, alloc_cache_ptr, init); }
         return alloc_cache_mem;
     });
 
@@ -221,25 +229,18 @@ const Def* AutoDiffEval::augment_slot(const App* slot) {
 }
 
 const Def* AutoDiffEval::augment_alloc(const App* alloc) {
-    assert(false);
-    // using current_mem ops
-
     auto org_ptr = alloc->proj(1);
-    auto aug_mem = augment(alloc->arg(0_s));
+    augment(alloc->arg(0_s));
 
-    auto callee = alloc->callee()->as<App>();
-    auto type   = callee->arg(0_s);
-
-    auto aug_alloc = mem::op_alloc(type, aug_mem);
-    auto value_ptr = aug_alloc->proj(1);
-
-    auto gradient_ptr = create_init_alloc_frame("gradient_arr", type);
+    auto type          = alloc->decurry()->arg(0_s);
+    auto aug_alloc_mem = op_alloc_mem(type);
+    auto gradient_ptr  = create_init_alloc_frame("gradient_arr", type, zero(type));
 
     // add to list of allocated memory
     allocated_memory.insert(gradient_ptr);
     gradient_pointers[org_ptr] = gradient_ptr;
 
-    return aug_alloc;
+    return aug_alloc_mem;
 }
 
 const Def* AutoDiffEval::augment_malloc(const App* malloc) {
@@ -249,10 +250,16 @@ const Def* AutoDiffEval::augment_malloc(const App* malloc) {
 }
 
 const Def* AutoDiffEval::augment_bitcast(const App* bitcast) {
-    auto& world  = bitcast->world();
-    auto aug_arg = augment(bitcast->arg());
+    auto& world = bitcast->world();
+    auto arg    = bitcast->arg();
 
-    auto dst = core::op_bitcast(bitcast->type(), aug_arg, bitcast->arg()->dbg());
+    auto aug_arg = augment(arg);
+    auto dst     = core::op_bitcast(bitcast->type(), aug_arg, arg->dbg());
+
+    if (auto grad_ptr = gradient_pointers[arg]) {
+        gradient_pointers[bitcast] = core::op_bitcast(bitcast->type(), grad_ptr, arg->dbg());
+    }
+
     return dst;
 }
 
@@ -279,12 +286,6 @@ const Def* replace(const Def* tup, int index, const Def* replacement) {
     auto projs   = tup->projs();
     projs[index] = replacement;
     return w.tuple(projs);
-}
-
-bool is_idx(const Def* ty) {
-    if (auto app = ty->isa<App>()) { return app->callee()->isa<Idx>(); }
-
-    return false;
 }
 
 const Def* sum(const Def* left, const Def* right) {
@@ -326,6 +327,7 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
     if (auto lea = match<mem::lea>(def)) {
         auto [arr, index] = lea->args<2>();
         auto grad         = grad_arr(arr);
+        assert(grad);
         return mem::op_lea(grad, resolve(index));
     } else if (auto grad_ptr = gradient_pointers[def]) {
         return grad_ptr;
@@ -986,6 +988,16 @@ const Def* AutoDiffEval::op_slot_mem(const Def* type, const Def* dbg) {
 }
 
 const Def* AutoDiffEval::op_slot(const Def* type, const Def* dbg) { return op_slot_mem(type, dbg)->proj(1); }
+
+const Def* AutoDiffEval::op_alloc_mem(const Def* type, const Def* dbg) {
+    check_mem();
+    auto& w     = world();
+    auto slot   = mem::op_alloc(type, current_mem, dbg);
+    current_mem = slot->proj(0);
+    return slot;
+}
+
+const Def* AutoDiffEval::op_alloc(const Def* type, const Def* dbg) { return op_alloc_mem(type, dbg)->proj(1); }
 
 const Def* AutoDiffEval::resolve(const Def* def) {
     auto& w = world();

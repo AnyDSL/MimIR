@@ -163,10 +163,7 @@ const Def* autodiff_type_fun(const Def* ty, bool flat) {
 
     if (auto mem = match<mem::M>(ty)) { return mem; }
 
-    if (auto ptr = match<mem::Ptr>(ty)) {
-        auto type = ptr->op(0);
-        return ptr;
-    }
+    if (auto ptr = match<mem::Ptr>(ty)) { return ptr; }
 
     if (auto app = ty->isa<App>()) {
         if (app->callee()->isa<Idx>()) { return ty; }
@@ -184,7 +181,6 @@ const Def* autodiff_type_fun(const Def* ty, bool flat) {
         return world.arr(shape, body_ad);
     }
     if (auto sig = ty->isa<Sigma>()) {
-        // TODO: nom sigma
         DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op, flat); });
         return world.sigma(ops);
     }
