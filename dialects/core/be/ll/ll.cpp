@@ -90,11 +90,19 @@ public:
     void prepare(Lam*, std::string_view);
     void finalize(const Scope&);
 
+    template<class... Args>
+    void declare(const char* s, Args&&... args) {
+        std::ostringstream decl;
+        print(decl << "declare ", s, std::forward<Args&&>(args)...);
+        decls_.emplace(decl.str());
+    }
+
 private:
     std::string id(const Def*, bool force_bb = false) const;
     std::string convert(const Def*);
     std::string convert_ret_pi(const Pi*);
 
+    absl::btree_set<std::string> decls_;
     std::ostringstream type_decls_;
     std::ostringstream vars_decls_;
     std::ostringstream func_decls_;
@@ -221,19 +229,15 @@ std::string Emitter::convert_ret_pi(const Pi* pi) {
 void Emitter::start() {
     Super::start();
 
-    ostream() << "declare i8* @malloc(i64)" << '\n'; // HACK
-    ostream() << "declare void @free(i8*)" << '\n';
-    // SJLJ intrinsics (GLIBC Versions)
-    ostream() << "declare i32 @_setjmp(i8*) returns_twice" << '\n';
-    ostream() << "declare void @longjmp(i8*, i32) noreturn" << '\n';
-    ostream() << "declare i64 @jmpbuf_size()" << '\n';
     ostream() << type_decls_.str() << '\n';
+    for (auto&& decl : decls_) ostream() << decl << '\n';
     ostream() << func_decls_.str() << '\n';
     ostream() << vars_decls_.str() << '\n';
     ostream() << func_impls_.str() << '\n';
 }
 
 void Emitter::emit_imported(Lam* lam) {
+    // TODO merge with declare method
     print(func_decls_, "declare {} {}(", convert_ret_pi(lam->type()->ret_pi()), id(lam));
 
     auto sep  = "";
@@ -355,6 +359,8 @@ void Emitter::emit_epilogue(Lam* lam) {
         }
         return bb.tail("br label {}", id(callee));
     } else if (auto longjmp = match<clos::longjmp>(app)) {
+        declare("void @longjmp(i8*, i32) noreturn");
+
         auto [mem, jbuf, tag] = app->args<3>();
         emit_unsafe(mem);
         auto emitted_jb  = emit(jbuf);
@@ -414,6 +420,16 @@ void Emitter::emit_epilogue(Lam* lam) {
 
         return bb.tail("br label {}", id(ret_lam));
     }
+}
+
+static const char* math_suffix(const Def* type) {
+    if (auto s = math::isa_f(type)) {
+        switch (*s) {
+            case 32: return "f";
+            case 64: return "";
+        }
+    }
+    err("unsupported foating point type '{}'", type);
 }
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
@@ -749,6 +765,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (match<core::trait>(def)) {
         unreachable();
     } else if (auto malloc = match<mem::malloc>(def)) {
+        declare("i8* @malloc(i64)");
+
         emit_unsafe(malloc->arg(0));
         auto size  = emit(malloc->arg(1));
         auto ptr_t = convert(force<mem::Ptr>(def->proj(1)->type()));
@@ -762,6 +780,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
         return name;
     } else if (auto free = match<mem::free>(def)) {
+        declare("void @free(i8*)");
+
         emit_unsafe(free->arg(0));
         auto ptr   = emit(free->arg(1));
         auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
@@ -784,11 +804,15 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         print(bb.body().emplace_back(), "store {} {}, {} {}", val_t, val, ptr_t, ptr);
         return {};
     } else if (auto q = match<clos::alloc_jmpbuf>(def)) {
+        declare("i64 @jmpbuf_size()");
+
         emit_unsafe(q->arg());
         auto size = name + ".size";
         bb.assign(size, "call i64 @jmpbuf_size()");
         return bb.assign(name, "alloca i8, i64 {}", size);
     } else if (auto setjmp = match<clos::setjmp>(def)) {
+        declare("i32 @_setjmp(i8*) returns_twice");
+
         auto [mem, jmpbuf] = setjmp->arg()->projs<2>();
         emit_unsafe(mem);
         auto emitted_jb = emit(jmpbuf);
@@ -826,18 +850,29 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t = convert(tri->type());
 
         std::string f;
-        if ((tri.id() & math::tri::a) == math::tri::a) f += "a";
+        if (tri.sub() & sub_t(math::tri::a)) f += "a";
 
-        switch (math::tri(tri.id() & 0x3_u64)) {
+        switch (math::tri((tri.id() & 0x3) | Axiom::Base<math::tri>)) {
             case math::tri::sin: f += "sin"; break;
             case math::tri::cos: f += "cos"; break;
             case math::tri::tan: f += "tan"; break;
+            case math::tri::ahFF: err("this axiom is supposed to be unused");
             default: unreachable();
         }
 
-        if (tri.id() & math::tri::h) f += "h";
+        if (tri.sub() & sub_t(math::tri::h)) f += "h";
+        f += math_suffix(tri->type());
 
-        return bb.assign(name, "{} tail call @{}({} noundef {})", t, f, f, a);
+        declare("{} @{}({} noundef)", t, f, t);
+        return bb.assign(name, "tail call {} @{}({} noundef {})", t, f, t, a);
+    } else if (auto pow = match<math::pow>(def)) {
+        auto [a, b]   = pow->args<2>([this](auto def) { return emit(def); });
+        auto t        = convert(pow->type());
+        std::string f = "pow";
+        f += math_suffix(pow->type());
+
+        declare("{} @{}({} noundef, {} noundef)", t, f, t, t);
+        return bb.assign(name, "tail call {} @{}({} noundef {}, {} noundef {})", t, f, t, a, t, b);
     } else if (auto cmp = match<math::cmp>(def)) {
         auto [a, b] = cmp->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(cmp->arg(0)->type());
