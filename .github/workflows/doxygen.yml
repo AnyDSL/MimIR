@@ -25,11 +25,11 @@ jobs:
 
     - name: Install Doxygen
       run: |
-        wget https://www.doxygen.nl/files/doxygen-1.9.4.linux.bin.tar.gz
-        tar xf doxygen-1.9.4.linux.bin.tar.gz
+        wget https://www.doxygen.nl/files/doxygen-1.9.5.linux.bin.tar.gz
+        tar xf doxygen-1.9.5.linux.bin.tar.gz
 
     - name: Configure
-      run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DTHORIN_BUILD_DOCS=ON -DDOXYGEN_EXECUTABLE=${{github.workspace}}/doxygen-1.9.4/bin/doxygen
+      run: CXX=g++-11 cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Debug -DTHORIN_BUILD_DOCS=ON -DDOXYGEN_EXECUTABLE=${{github.workspace}}/doxygen-1.9.5/bin/doxygen
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build -v --target docs
