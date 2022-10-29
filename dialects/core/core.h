@@ -210,7 +210,7 @@ inline const Lit* lit_real(World& w, nat_t width, r64 val, const Def* dbg = {}) 
 inline const Def* op_negate(const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     auto s   = as_lit(w.iinfer(a));
-    return op(bit2::_xor, w.lit_idx(s, s - 1_u64), a, dbg);
+    return op(bit2::xor_, w.lit_idx(s, s - 1_u64), a, dbg);
 }
 inline const Def* op_wminus(const Def* wmode, const Def* a, const Def* dbg = {}) {
     World& w = a->world();

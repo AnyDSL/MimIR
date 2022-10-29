@@ -68,18 +68,18 @@
 /// | nfst   |  o |  o |  x |  x | not first argument           |
 /// | niff   |  o |  x |  o |  o | not implication              |
 /// | nsnd   |  o |  x |  o |  x | not second argument          |
-/// | _xor   |  o |  x |  x |  o | exclusive or                 |
+/// | xor_   |  o |  x |  x |  o | exclusive or                 |
 /// | nand   |  o |  x |  x |  x | not and                      |
-/// | _and   |  x |  o |  o |  o | and                          |
+/// | and_   |  x |  o |  o |  o | and                          |
 /// | nxor   |  x |  o |  o |  x | not exclusive or             |
 /// | snd    |  x |  o |  x |  o | second argument              |
 /// | iff    |  x |  o |  x |  x | implication (if and only if) |
 /// | fst    |  x |  x |  o |  o | first argument               |
 /// | ciff   |  x |  x |  o |  x | converse implication         |
-/// | _or    |  x |  x |  x |  o | or                           |
+/// | or_    |  x |  x |  x |  o | or                           |
 /// | t      |  x |  x |  x |  x | always true                  |
-.ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   _xor, nand,
-                _and,  nxor,    b,      iff,    a,      ciff, _or,  t):
+.ax %core.bit2(f,    nor,  nciff, na,  niff, nb,   xor_, nand,
+               and_, nxor, b,     iff, a,    ciff, or_,  t):
     Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w , normalize_bit2;
 ///
 /// ### %core.shr
