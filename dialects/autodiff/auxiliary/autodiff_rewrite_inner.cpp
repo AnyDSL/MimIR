@@ -42,6 +42,14 @@ Lam* AutoDiffEval::create_block(const std::string& name) {
     return lam;
 }
 
+Lam* AutoDiffEval::create_ret(const Lam* lam) {
+    auto& w  = world();
+    auto ret_lam = w.nom_lam(lam->type()->as<Pi>()->ret_pi(), w.dbg("return_" + lam->name()));
+    ret_lam->set_filter(true);
+    init_mem(ret_lam);
+    return ret_lam;
+}
+
 Lam* AutoDiffEval::create_lam(const Def* cn, const std::string& name) {
     auto& w  = world();
     auto lam = w.nom_lam(cn->as<Pi>(), w.dbg(name));

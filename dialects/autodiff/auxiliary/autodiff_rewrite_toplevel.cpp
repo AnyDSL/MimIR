@@ -60,11 +60,8 @@ void AutoDiffEval::fetch_gradients(Lam* src, Lam* backward) {
 
 Lam* AutoDiffEval::free_memory() {
     auto& w = world();
-
     auto free_memory = create_block("free_memory");
-
     for (auto ptr : allocated_memory) { op_free(ptr); }
-
     ret(free_memory);
     return free_memory;
 }
@@ -169,11 +166,14 @@ const Def* AutoDiffEval::derive_(const Def* def) {
             i--;
         }
     }
-
     gradient_results.push_back(backward_end);
-    backward_begin->set_body(w.app(inv_diffee, gradient_results));
-    backward_end->set_body(w.app(backward_begin->ret_var(), backward_end->var()));
 
+    auto free_lam = free_memory();
+    auto free_ret = create_ret(free_lam);
+
+    backward_begin->set_body(w.app(inv_diffee, gradient_results));
+    backward_end->set_body(w.app(free_lam, {mem::mem_var(backward_end), free_ret}));
+    free_ret->set_body(w.app(backward_begin->ret_var(), mem::replace_mem(mem::mem_var(free_ret), backward_end->var())));
     return diff_lam;
 }
 

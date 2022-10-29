@@ -303,6 +303,7 @@ public:
     const Def* grad_arr(const Def* def);
 
     Lam* create_block(const std::string& name);
+    Lam* create_ret(const Lam* lam);
     Lam* create_lam(const Def* cn, const std::string& name);
     Lam* create_end(const std::string& name);
 
