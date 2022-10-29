@@ -516,8 +516,8 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 auto invert_start = zero(w);
                 auto invert_inc   = one(w);
 
-                auto size           = for_size(/*current_mem,*/ aug_start, aug_end, aug_inc);
-                auto invert_end     = size;
+                auto size       = for_size(/*current_mem,*/ aug_start, aug_end, aug_inc);
+                auto invert_end = size;
 
                 auto body_lam = app->arg(4)->as_nom<Lam>();
 
@@ -993,21 +993,21 @@ const Def* AutoDiffEval::resolve(const Def* def) {
     if (auto inv_def = inverted[def]) { return inv_def; }
     assert(!def->isa<Var>());
 
-    if(auto cache_arr = cache_map[def]){
+    if (auto cache_arr = cache_map[def]) {
         auto loop        = cache_loop_assignment[cache_arr];
         auto cache_index = loop->cache_index();
-        auto cache_lea        = mem::op_lea(cache_arr, cache_index);
+        auto cache_lea   = mem::op_lea(cache_arr, cache_index);
         return op_load(cache_lea);
     }
 
     if (auto load = match<mem::load>(def)) {
-        auto ptr  = load->arg(1);
+        auto ptr       = load->arg(1);
         auto cache_ptr = resolve(ptr);
         return op_load_mem(cache_ptr);
     }
 
-    auto new_ops = DefArray(def->num_ops(), [&](auto i) { return resolve(def->op(i)); });
-    auto new_def = def->rebuild(w, def->type(), new_ops, def->dbg());
+    auto new_ops  = DefArray(def->num_ops(), [&](auto i) { return resolve(def->op(i)); });
+    auto new_def  = def->rebuild(w, def->type(), new_ops, def->dbg());
     inverted[def] = new_def;
     return new_def;
 }
