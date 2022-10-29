@@ -2,9 +2,7 @@
 
 #include "thorin/normalize.h"
 
-#include "dialects/core/core.h"
 #include "dialects/math/math.h"
-#include "dialects/mem/mem.h"
 
 namespace thorin::normalize {
 
