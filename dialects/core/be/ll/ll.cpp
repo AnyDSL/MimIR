@@ -499,6 +499,15 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         unreachable();
     } else if (def->isa<Bot>()) {
         return "undef";
+    } else if (auto nop = match<core::nop>(def)) {
+        auto [a, b]        = nop->args<2>([this](auto def) { return emit(def); });
+
+        switch (nop.id()) {
+            case core::nop::add: op = "add"; break;
+            case core::nop::mul: op = "mul"; break;
+        }
+
+        return bb.assign(name, "{} nsw nuw i64 {}, {}", op, a, b);
     } else if (auto bit1 = match<core::bit1>(def)) {
         assert(bit1.id() == core::bit1::neg);
         auto x = emit(bit1->arg());
@@ -592,6 +601,23 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
+    } else if (auto ncmp = match<core::ncmp>(def)) {
+        auto [a, b] = ncmp->args<2>([this](auto def) { return emit(def); });
+        op          = "icmp ";
+
+        switch (ncmp.id()) {
+            // clang-format off
+            case core::ncmp::e:  op += "eq" ; break;
+            case core::ncmp::ne: op += "ne" ; break;
+            case core::ncmp::g:  op += "ugt"; break;
+            case core::ncmp::ge: op += "uge"; break;
+            case core::ncmp::l:  op += "ult"; break;
+            case core::ncmp::le: op += "ule"; break;
+            // clang-format on
+            default: unreachable();
+        }
+
+        return bb.assign(name, "{} i64 {}, {}", op, a, b);
     } else if (auto icmp = match<core::icmp>(def)) {
         auto [a, b] = icmp->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(icmp->arg(0)->type());
@@ -649,7 +675,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             auto size = Idx::size(type);
             if (size->isa<Top>()) return 64_u64;
             if (auto width = size2bitwidth(as_lit(size))) return *width;
-            unreachable();
+            return 64_u64;
         };
 
         nat_t s_src = size2width(conv->arg()->type());
