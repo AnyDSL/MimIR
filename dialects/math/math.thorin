@@ -40,7 +40,6 @@
 /// [Trigonometric](https://en.wikipedia.org/wiki/Trigonometric_functions) and [hypberbolic](https://en.wikipedia.org/wiki/Hyperbolic_functions) functions.
 ///
 /// * `FF`: sine, cosine, tangent, *unused*
-/// * `R`eciprocal counterpart
 /// * `H`yperbolic counterpart
 /// * `A`rcus/`A`rea counterpart (inverse)
 ///
@@ -50,43 +49,23 @@
 /// | `ahrfF` |  `cos`       | o | o | o | xo | cosine                    | \f$\cos x\f$            |
 /// | `ahrFf` |  `tan`       | o | o | o | ox | tangent                   | \f$\tan x\f$            |
 /// | `ahrFF` |              | o | o | o | xx | *unused*                  | -                       |
-/// | `ahRff` |  `csc` ,`r`  | o | o | x | oo | cosecant                  | \f$\csc x\f$            |
-/// | `ahRfF` |  `sec`       | o | o | x | xo | secant                    | \f$\sec x\f$            |
-/// | `ahRFf` |  `cot`       | o | o | x | ox | cotangent                 | \f$\cot x\f$            |
-/// | `ahRFF` |              | o | o | x | xx | *unused*                  | -                       |
 /// | `aHrff` |  `sinh`, `h` | o | x | o | oo | hyperbolic sine           | \f$\sinh x\f$           |
 /// | `aHrfF` |  `cosh`      | o | x | o | xo | hyperbolic cosine         | \f$\cosh x\f$           |
 /// | `aHrFf` |  `tanh`      | o | x | o | ox | hyperbolic tangent        | \f$\tanh x\f$           |
 /// | `aHrFF` |              | o | x | o | xx | *unused*                  | -                       |
-/// | `aHRff` |  `csch`      | o | x | x | oo | hyperbolic cosecant       | \f$\textrm{csch}\,x\f$  |
-/// | `aHRfF` |  `sech`      | o | x | x | xo | hyperbolic secant         | \f$\textrm{sech}\,x\f$  |
-/// | `aHRFf` |  `coth`      | o | x | x | ox | hyperbolic cotangent      | \f$\textrm{coth}\,x\f$  |
-/// | `aHRFF` |              | o | x | x | xx | *unused*                  | -                       |
 /// | `Ahrff` | `asin` , `a` | x | o | o | oo | arcus sine                | \f$\textrm{asin}\,x\f$  |
 /// | `AhrfF` | `acos`       | x | o | o | xo | arcus cosine              | \f$\textrm{acos}\,x\f$  |
 /// | `AhrFf` | `atan`       | x | o | o | ox | arcus tangent             | \f$\textrm{atan}\,x\f$  |
 /// | `AhrFF` |              | x | o | o | xx | arcus *unused*            | -                       |
-/// | `AhRff` | `acsc`       | x | o | x | oo | arcus cosecant            | \f$\textrm{acsc}\,x\f$  |
-/// | `AhRfF` | `asec`       | x | o | x | xo | arcus secant              | \f$\textrm{asec}\,x\f$  |
-/// | `AhRFf` | `acot`       | x | o | x | ox | arcus cotangent           | \f$\textrm{acot}\,x\f$  |
-/// | `AhRFF` |              | x | o | x | xx | *unused*                  | -                       |
 /// | `AHrff` | `asinh`      | x | x | o | oo | area hyperbolic sine      | \f$\textrm{asinh}\,x\f$ |
 /// | `AHrfF` | `acosh`      | x | x | o | xo | area hyperbolic cosine    | \f$\textrm{acosh}\,x\f$ |
 /// | `AHrFf` | `atanh`      | x | x | o | ox | area hyperbolic tangent   | \f$\textrm{atanh}\,x\f$ |
 /// | `AHrFF` |              | x | x | o | xx | *unused*                  | -                       |
-/// | `AHRff` | `acsch`      | x | x | x | oo | area hyperbolic cosecant  | \f$\textrm{acsch}\,x\f$ |
-/// | `AHRfF` | `asech`      | x | x | x | xo | area hyperbolic secant    | \f$\textrm{asech}\,x\f$ |
-/// | `AHRFf` | `acoth`      | x | x | x | ox | area hyperbolic cotangent | \f$\textrm{acoth}\,x\f$ |
-/// | `AHRFF` |              | x | x | x | xx | *unused*                  | -                       |
 ///
 .ax %math.tri(ahrff =  sin     , ahrfF =  cos , ahrFf =  tan , ahrFF,
-              ahRff =  csc  = r, ahRfF =  sec , ahRFf =  cot , ahRFF,
               aHrff =  sinh = h, aHrfF =  cosh, aHrFf =  tanh, aHrFF,
-              aHRff =  csch    , aHRfF =  sech, aHRFf =  coth, aHRFF,
               Ahrff = asin  = a, AhrfF = acos , AhrFf = atan , AhrFF,
-              AhRff = acsc     , AhRfF = asec , AhRFf = acot , AhRFF,
-              AHrff = asinh    , AHrfF = acosh, AHrFf = atanh, AHrFF,
-              AHRff = acsch    , AHRfF = asech, AHRFf = acoth, AHRFF):
+              AHrff = asinh    , AHrfF = acosh, AHrFf = atanh, AHrFF):
     Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_tri;
 ///
 /// ### %math.pow
