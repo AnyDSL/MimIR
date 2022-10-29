@@ -37,7 +37,6 @@ bool has_op_store(const Def* ptr) {
     return has_op_store(ptr, visited);
 }
 
-
 void AutoDiffEval::fetch_gradients(Lam* src, Lam* backward) {
     auto src_arg      = src->arg();
     auto backward_arg = backward->arg();
@@ -70,39 +69,33 @@ Lam* AutoDiffEval::free_memory() {
     return free_memory;
 }
 
-void AutoDiffEval::mark(const Def* def){
-    markings.insert(def);
-}
+void AutoDiffEval::mark(const Def* def) { markings.insert(def); }
 
-void AutoDiffEval::scan(const Def* def){
-    if(!visited_scan.insert(def).second) return;
+void AutoDiffEval::scan(const Def* def) {
+    if (!visited_scan.insert(def).second) return;
 
-    if( auto rop = match<core::rop>(def) ){
-        if(rop.id() == core::rop::mul || rop.id() == core::rop::div){
+    if (auto rop = match<core::rop>(def)) {
+        if (rop.id() == core::rop::mul || rop.id() == core::rop::div) {
             mark(rop->arg(0));
             mark(rop->arg(1));
         }
-    }else if( auto rop = match<core::wrap>(def) ){
-        if(rop.id() == core::wrap::mul){
+    } else if (auto rop = match<core::wrap>(def)) {
+        if (rop.id() == core::wrap::mul) {
             mark(rop->arg(0));
             mark(rop->arg(1));
         }
-    }else if( auto rop = match<core::div>(def) ){
+    } else if (auto rop = match<core::div>(def)) {
         mark(rop->arg(0));
         mark(rop->arg(1));
     }
 
-    for( auto op : def->ops() ){
-        scan(op);
-    }
+    for (auto op : def->ops()) { scan(op); }
 }
 
-const App* is_load_val(const Def* def){
-    if( auto extr = def->isa<Extract>() ){
+const App* is_load_val(const Def* def) {
+    if (auto extr = def->isa<Extract>()) {
         auto tuple = extr->tuple();
-        if(auto load = match<mem::load>(tuple)){
-            return load;
-        }
+        if (auto load = match<mem::load>(tuple)) { return load; }
     }
 
     return nullptr;
@@ -111,14 +104,12 @@ const App* is_load_val(const Def* def){
 void AutoDiffEval::prepare(const Def* def) {
     scan(def);
 
-    for( auto mark : markings ){
-        if(auto load = is_load_val(mark)){
+    for (auto mark : markings) {
+        if (auto load = is_load_val(mark)) {
             auto ptr = load->arg(1);
-            if(has_op_store(ptr)){
-                requires_caching.insert(mark);
-            }
-        }else{
-            //requires_caching.insert(mark);
+            if (has_op_store(ptr)) { requires_caching.insert(mark); }
+        } else {
+            // requires_caching.insert(mark);
         }
     }
 }

@@ -317,12 +317,10 @@ public:
         inverted[key] = value;
     }
 
-    void check_mem(){
-        assert(current_mem != nullptr);
-    }
+    void check_mem() { assert(current_mem != nullptr); }
 
     void init_mem(const Def* mem) {
-        if(current_mem != nullptr){
+        if (current_mem != nullptr) {
             current_mem->dump(2);
             current_mem->dump(2);
         }
@@ -332,12 +330,12 @@ public:
 
     void init_mem(Lam* lam) { init_mem(mem::mem_var(lam)); }
 
-    void push_mem(Lam* lam){
+    void push_mem(Lam* lam) {
         mem_stack.push(end_mem());
         init_mem(lam);
     }
 
-    void pop_mem(){
+    void pop_mem() {
         auto top_mem = mem_stack.top();
         mem_stack.pop();
         init_mem(top_mem);

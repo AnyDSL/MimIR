@@ -11,9 +11,7 @@ public:
 
     const Def* rewrite(const Def*) override;
 
-    void mark(const Def* def){
-        marked.insert(def);
-    }
+    void mark(const Def* def) { marked.insert(def); }
 
     DefSet visited;
     DefSet marked;

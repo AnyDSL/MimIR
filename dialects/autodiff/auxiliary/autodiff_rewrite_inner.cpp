@@ -28,7 +28,6 @@ const Def* zero(const Def* ty) {
 const Def* zero(World& w) { return w.lit_int(32, 0); }
 const Def* one(World& w) { return w.lit_int(32, 1); }
 
-
 Lam* AutoDiffEval::create_block(const std::string& name) {
     auto& w  = world();
     auto lam = build(w).mem_ty().mem_cn().with_filter().lam(name);
@@ -129,9 +128,7 @@ const Def* AutoDiffEval::augment_app(const App* app) {
 
     auto aug_callee = augment(callee);
 
-    if(mem::mem_def(aug_arg)){
-        aug_arg = mem::replace_mem(end_mem(), aug_arg);
-    }
+    if (mem::mem_def(aug_arg)) { aug_arg = mem::replace_mem(end_mem(), aug_arg); }
 
     return world.app(aug_callee, aug_arg);
 }
@@ -173,7 +170,7 @@ void AutoDiffEval::preserve(const Def* target) {
         requires_caching.erase(target);
 
         const Def* value = augment(target);
-        auto& w = world();
+        auto& w          = world();
 
         auto loop_size   = current_loop->size;
         auto cache_index = current_loop->cache_index();
@@ -185,11 +182,11 @@ void AutoDiffEval::preserve(const Def* target) {
         auto alloc_cache_ptr = create_init_alloc_frame("cache" + value->name(), arr_ty);
 
         auto unsized_arr_ptr_ty = mem::type_ptr(w.arr(w.top(w.type_nat()), value->type()));
-        const Def*  cache_ptr               = core::op_bitcast(unsized_arr_ptr_ty, alloc_cache_ptr, alloc_cache_ptr->dbg());
+        const Def* cache_ptr    = core::op_bitcast(unsized_arr_ptr_ty, alloc_cache_ptr, alloc_cache_ptr->dbg());
 
-        auto cache_lea                   = mem::op_lea(cache_ptr, cache_index, w.dbg("lea_cache"));
+        auto cache_lea = mem::op_lea(cache_ptr, cache_index, w.dbg("lea_cache"));
         op_store(cache_lea, value, w.dbg("store_cache"));
-        cache_map[value]                  = cache_ptr;
+        cache_map[value]                 = cache_ptr;
         cache_loop_assignment[cache_ptr] = current_loop;
     }
 }
@@ -199,23 +196,22 @@ const Def* AutoDiffEval::augment_load(const App* load) {
 
     auto [_, aug_ptr] = augment(load->arg())->projs<2>();
 
-    auto aug_load  = op_load_mem(aug_ptr, w.dbg(aug_ptr->name() + "_val"));
+    auto aug_load = op_load_mem(aug_ptr, w.dbg(aug_ptr->name() + "_val"));
     return aug_load;
 }
 
 const Def* AutoDiffEval::augment_store(const App* store) {
     auto& world = store->world();
 
-    auto aug_arg                     = augment(store->arg());
+    auto aug_arg               = augment(store->arg());
     auto [_, aug_ptr, aug_val] = aug_arg->projs<3>();
-    auto aug_store                   = op_store(aug_ptr, aug_val, store->dbg());
+    auto aug_store             = op_store(aug_ptr, aug_val, store->dbg());
     return aug_store;
 }
 
 const Def* AutoDiffEval::augment_alloc(const App* alloc) {
-
     assert(false);
-    //using current_mem ops
+    // using current_mem ops
 
     auto org_ptr = alloc->proj(1);
     auto aug_mem = augment(alloc->arg(0_s));
@@ -253,9 +249,9 @@ const Def* for_size(/*const Def*& mem,*/ const Def* start, const Def* end, const
     auto& w            = start->world();
     auto span          = core::op(core::wrap::sub, core::WMode::none, end, start);
     auto inc_minus_one = core::op(core::wrap::sub, core::WMode::none, inc, one(w));
-    auto size      = core::op(core::wrap::add, core::WMode::none, span, inc_minus_one);
-    //auto [mem2, size]  = core::op(core::div::udiv, mem, span_ext, inc)->projs<2>();
-    //mem                = mem2;
+    auto size          = core::op(core::wrap::add, core::WMode::none, span, inc_minus_one);
+    // auto [mem2, size]  = core::op(core::div::udiv, mem, span_ext, inc)->projs<2>();
+    // mem                = mem2;
     return size;
 }
 
@@ -522,7 +518,17 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
 
                 auto size           = for_size(/*current_mem,*/ aug_start, aug_end, aug_inc);
                 auto invert_end     = size;
+
+                auto body_lam = app->arg(4)->as_nom<Lam>();
+
+                Scope scope(body_lam);
+                for (const Def* free_def : scope.free_defs()) {
+                    auto free_ty = free_def->type();
+                    if (is_idx(free_ty) || match<core::Real>(free_ty)) { resolve(free_def); }
+                }
+
                 auto invert_for_mem = end_mem();
+
                 push_loop_frame(app, size);
                 auto [invert_body, invert_exit] = invert_for_body(app);
 
@@ -564,7 +570,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 current_lam->set_body(w.app(next_inv_lam, mem::mem_def(inv_arg)));
                 current_lam = next_inv_lam;
                 init_mem(next_inv_lam);
-                current     = caller;
+                current = caller;
             }
         }
 
@@ -647,7 +653,8 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
     DefVec acc_ops;
     Scope scope(loop_body);
     for (auto free_def : scope.free_defs()) {
-        if (is_idx(free_def->type())) {
+        auto free_ty = free_def->type();
+        if (is_idx(free_ty) || match<core::Real>(free_ty)) {
             auto acc_grad = grad_sum(free_def);
             if (acc_grad) {
                 acc_ops.push_back(acc_grad);
@@ -762,17 +769,14 @@ const Def* AutoDiffEval::augment_for(const App* for_app) {
     auto aug_inc   = augment(inc);
     auto aug_acc   = augment(acc);
 
-
     auto size = for_size(aug_start, aug_end, aug_inc);
 
     auto body_lam = body->as_nom<Lam>();
 
     Scope scope(body_lam);
-    for( const Def* free_def : scope.free_defs() ){
+    for (const Def* free_def : scope.free_defs()) {
         auto free_ty = free_def->type();
-        if(is_idx(free_ty) || match<core::Real>(free_ty)){
-            augment(free_def);
-        }
+        if (is_idx(free_ty) || match<core::Real>(free_ty)) { augment(free_def); }
     }
 
     push_loop_frame(for_app, size);
@@ -952,64 +956,59 @@ const Def* AutoDiffEval::invert_load(const App* load) { assert(false); }
 
 const Def* AutoDiffEval::op_load_mem(const Def* ptr, const Def* dbg) {
     check_mem();
-    auto load              = mem::op_load(current_mem, ptr, dbg);
-    current_mem            = load->proj(0);
+    auto load   = mem::op_load(current_mem, ptr, dbg);
+    current_mem = load->proj(0);
     return load;
 }
 
-const Def* AutoDiffEval::op_load(const Def* ptr, const Def* dbg) {
-    return op_load_mem(ptr, dbg)->proj(1);
-}
+const Def* AutoDiffEval::op_load(const Def* ptr, const Def* dbg) { return op_load_mem(ptr, dbg)->proj(1); }
 
-const Def* AutoDiffEval::op_store(const Def* ptr, const Def* value, const Def* dbg) { 
+const Def* AutoDiffEval::op_store(const Def* ptr, const Def* value, const Def* dbg) {
     check_mem();
-    current_mem = mem::op_store(current_mem, ptr, value, dbg); 
+    current_mem = mem::op_store(current_mem, ptr, value, dbg);
     return current_mem;
 }
 
-const Def* AutoDiffEval::op_free(const Def* ptr, const Def* dbg) { 
+const Def* AutoDiffEval::op_free(const Def* ptr, const Def* dbg) {
     check_mem();
-    current_mem = mem::op_free(current_mem, ptr, dbg); 
+    current_mem = mem::op_free(current_mem, ptr, dbg);
     return current_mem;
 }
 
 const Def* AutoDiffEval::op_slot_mem(const Def* type, const Def* dbg) {
     check_mem();
-    auto& w                = world();
-    auto slot = mem::op_slot(type, current_mem, dbg);
-    current_mem            = slot->proj(0);
+    auto& w     = world();
+    auto slot   = mem::op_slot(type, current_mem, dbg);
+    current_mem = slot->proj(0);
     return slot;
 }
 
-const Def* AutoDiffEval::op_slot(const Def* type, const Def* dbg) {
-    return op_slot_mem(type, dbg)->proj(1);
-}
+const Def* AutoDiffEval::op_slot(const Def* type, const Def* dbg) { return op_slot_mem(type, dbg)->proj(1); }
 
 const Def* AutoDiffEval::resolve(const Def* def) {
     auto& w = world();
 
+    assert(!match<mem::M>(def->type()));
     if (def->isa<Axiom>()) { return def; }
+    if (auto inv_def = inverted[def]) { return inv_def; }
+    assert(!def->isa<Var>());
+
+    if(auto cache_arr = cache_map[def]){
+        auto loop        = cache_loop_assignment[cache_arr];
+        auto cache_index = loop->cache_index();
+        auto cache_lea        = mem::op_lea(cache_arr, cache_index);
+        return op_load(cache_lea);
+    }
 
     if (auto load = match<mem::load>(def)) {
-        auto cache_arr = cache_map[def];
-        const Def* cache_ptr;
-        if (!cache_arr) {
-            auto ptr  = load->arg(1);
-            cache_ptr = resolve(ptr);
-        } else {
-            auto loop        = cache_loop_assignment[cache_arr];
-            auto cache_index = loop->cache_index();
-            cache_ptr        = mem::op_lea(cache_arr, cache_index);
-        }
+        auto ptr  = load->arg(1);
+        auto cache_ptr = resolve(ptr);
         return op_load_mem(cache_ptr);
     }
 
-    if (auto inv_def = inverted[def]) { return inv_def; }
-
-    assert(!def->isa<Var>());
-
     auto new_ops = DefArray(def->num_ops(), [&](auto i) { return resolve(def->op(i)); });
     auto new_def = def->rebuild(w, def->type(), new_ops, def->dbg());
+    inverted[def] = new_def;
     return new_def;
 }
 
