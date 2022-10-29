@@ -511,9 +511,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         switch (bit2.id()) {
             // clang-format off
-            case core::bit2::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
-            case core::bit2:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);
-            case core::bit2::_xor: return bb.assign(name, "xor {} {}, {}", t, a, b);
+            case core::bit2::and_: return bb.assign(name, "and {} {}, {}", t, a, b);
+            case core::bit2:: or_: return bb.assign(name, "or  {} {}, {}", t, a, b);
+            case core::bit2::xor_: return bb.assign(name, "xor {} {}, {}", t, a, b);
             case core::bit2::nand: return neg(bb.assign(name, "and {} {}, {}", t, a, b));
             case core::bit2:: nor: return neg(bb.assign(name, "or  {} {}, {}", t, a, b));
             case core::bit2::nxor: return neg(bb.assign(name, "xor {} {}, {}", t, a, b));
