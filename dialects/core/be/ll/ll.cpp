@@ -822,8 +822,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto tri = match<math::tri>(def)) {
-        auto a    = emit(tri->arg());
-        auto t    = convert(tri->type());
+        auto a = emit(tri->arg());
+        auto t = convert(tri->type());
 
         std::string f;
         if ((tri.id() & math::tri::a) == math::tri::a) f += "a";
