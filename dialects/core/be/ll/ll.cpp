@@ -431,6 +431,16 @@ static const char* math_suffix(const Def* type) {
     }
     err("unsupported foating point type '{}'", type);
 }
+static const char* llvm_suffix(const Def* type) {
+    if (auto s = math::isa_f(type)) {
+        switch (*s) {
+            case 16: return "f16";
+            case 32: return "f32";
+            case 64: return "f64";
+        }
+    }
+    err("unsupported foating point type '{}'", type);
+}
 
 std::string Emitter::emit_bb(BB& bb, const Def* def) {
     if (def->isa<Var>()) return {};
@@ -863,16 +873,60 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (tri.sub() & sub_t(math::tri::h)) f += "h";
         f += math_suffix(tri->type());
 
-        declare("{} @{}({} noundef)", t, f, t);
-        return bb.assign(name, "tail call {} @{}({} noundef {})", t, f, t, a);
+        declare("{} @{}({})", t, f, t);
+        return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
+    } else if (auto x = match<math::x>(def)) {
+        auto [a, b]   = x->args<2>([this](auto def) { return emit(def); });
+        auto t        = convert(x->type());
+        std::string f = "llvm.";
+        f += x.id() == math::x::min ? "minum." : "maxnum.";
+        f += llvm_suffix(x->type());
+
+        declare("{} @{}({}, {})", t, f, t, t);
+        return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
     } else if (auto pow = match<math::pow>(def)) {
         auto [a, b]   = pow->args<2>([this](auto def) { return emit(def); });
         auto t        = convert(pow->type());
         std::string f = "pow";
         f += math_suffix(pow->type());
-
-        declare("{} @{}({} noundef, {} noundef)", t, f, t, t);
-        return bb.assign(name, "tail call {} @{}({} noundef {}, {} noundef {})", t, f, t, a, t, b);
+        declare("{} @{}({}, {})", t, f, t, t);
+        return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
+    } else if (auto rt = match<math::rt>(def)) {
+        auto a        = emit(rt->arg());
+        auto t        = convert(rt->type());
+        std::string f = rt.id() == math::rt::sq ? "sqrt" : "cbrt";
+        f += math_suffix(rt->type());
+        declare("{} @{}({})", t, f, t);
+        return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
+    } else if (auto exp = match<math::exp>(def)) {
+        auto a = emit(exp->arg());
+        auto t = convert(exp->type());
+        std::string f;
+        // clang-format off
+        switch (exp.id()) {
+            case math::exp::exp:  f += "exp" ; break;
+            case math::exp::exp2: f += "exp2"; break;
+            case math::exp::log:  f += "log" ; break;
+            case math::exp::log2: f += "log2"; break;
+        }
+        // clang-format on
+        f += math_suffix(exp->type());
+        declare("{} @{}({})", t, f, t);
+        return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
+    } else if (auto er = match<math::er>(def)) {
+        auto a        = emit(er->arg());
+        auto t        = convert(er->type());
+        std::string f = er.id() == math::er::f ? "erf" : "erfc";
+        f += math_suffix(er->type());
+        declare("{} @{}({})", t, f, t);
+        return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
+    } else if (auto gamma = match<math::gamma>(def)) {
+        auto a        = emit(gamma->arg());
+        auto t        = convert(gamma->type());
+        std::string f = gamma.id() == math::gamma::t ? "tgamma" : "lgamma";
+        f += math_suffix(gamma->type());
+        declare("{} @{}({})", t, f, t);
+        return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto cmp = match<math::cmp>(def)) {
         auto [a, b] = cmp->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(cmp->arg(0)->type());
