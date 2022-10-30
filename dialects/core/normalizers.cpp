@@ -1,73 +1,46 @@
-#include "thorin/normalize.h"
-
 #include "dialects/core/core.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
-namespace thorin::normalize {
-
-// clang-format off
-constexpr bool is_commutative(core::nop    ) { return true; }
-constexpr bool is_commutative(core::wrap id) { return id == core::wrap::add || id == core::wrap::mul; }
-constexpr bool is_commutative(core::ncmp id) { return id == core::ncmp::  e || id == core::ncmp:: ne; }
-constexpr bool is_commutative(core::icmp id) { return id == core::icmp::  e || id == core::icmp:: ne; }
-// clang-format off
-
-constexpr bool is_commutative(core::bit2 id) {
-    auto tab = make_truth_table(id);
-    return tab[0][1] == tab[1][0];
-}
-
-constexpr bool is_associative(core::bit2 id) {
-    switch (id) {
-        case core::bit2::t:
-        case core::bit2::xor_:
-        case core::bit2::and_:
-        case core::bit2::nxor:
-        case core::bit2::a:
-        case core::bit2::b:
-        case core::bit2::or_:
-        case core::bit2::f: return true;
-        default: return false;
-    }
-}
+namespace thorin::core {
 
 // TODO move to normalize.h
 /// Swap Lit to left - or smaller gid, if no lit present.
 template<class Id>
 static void commute(Id id, const Def*& a, const Def*& b) {
     if (is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
-            std::swap(a, b);
+        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
 }
-
-}
-
-using namespace thorin::normalize;
-
-namespace thorin::core {
-
-template<class T>
-static T get(u64 u) {
-    return thorin::bitcast<T>(u);
-}
-
-// clang-format off
-template<class Id> constexpr bool is_int           () { return true;  }
-template<>         constexpr bool is_int<math::cmp>() { return false; }
 
 /*
  * Fold
  */
 
+class Res {
+public:
+    Res()
+        : data_{} {}
+    template<class T>
+    Res(T val)
+        : data_(thorin::bitcast<u64>(val)) {}
+
+    constexpr const u64& operator*() const& { return *data_; }
+    constexpr u64& operator*() & { return *data_; }
+    explicit operator bool() const { return data_.has_value(); }
+
+private:
+    std::optional<u64> data_;
+};
+
+// clang-format off
 // See https://stackoverflow.com/a/64354296 for static_assert trick below.
 template<class Id, Id id, nat_t w>
 Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
     using ST = w2s<w>;
     using UT = w2u<w>;
-    auto s = get<ST>(a), t = get<ST>(b);
-    auto u = get<UT>(a), v = get<UT>(b);
+    auto s = thorin::bitcast<ST>(a), t = thorin::bitcast<ST>(b);
+    auto u = thorin::bitcast<UT>(a), v = thorin::bitcast<UT>(b);
 
     if constexpr (std::is_same_v<Id, wrap>) {
         if constexpr (id == wrap::add) {
@@ -553,7 +526,7 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
             // clang-format off
             if (false) {}
 #define M(S, D) \
-            else if (S == *sw && D == *dw) return world.lit(d_ty, w2s<D>(get<w2s<S>>(*l)), dbg);
+            else if (S == *sw && D == *dw) return world.lit(d_ty, w2s<D>(thorin::bitcast<w2s<S>>(*l)), dbg);
             M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
                       M( 8, 16) M( 8, 32) M( 8, 64)
                                 M(16, 32) M(16, 64)

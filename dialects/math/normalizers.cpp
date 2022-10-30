@@ -1,38 +1,41 @@
 #include <type_traits>
 
-#include "thorin/normalize.h"
-
 #include "dialects/math/math.h"
 
-namespace thorin::normalize {
-
-// clang-format off
-constexpr bool is_commutative(math::x       ) { return true; }
-constexpr bool is_commutative(math::arith id) { return id == math::arith ::add || id == math::arith::mul; }
-constexpr bool is_commutative(math::cmp   id) { return id == math::cmp   ::e   || id == math::cmp  ::ne ; }
-// clang-format off
+namespace thorin {
 
 // TODO move to normalize.h
 /// Swap Lit to left - or smaller gid, if no lit present.
 template<class Id>
 static void commute(Id id, const Def*& a, const Def*& b) {
     if (is_commutative(id)) {
-        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>()))
-            std::swap(a, b);
+        if (b->isa<Lit>() || (a->gid() > b->gid() && !a->isa<Lit>())) std::swap(a, b);
     }
 }
 
-}
-
-using namespace thorin::normalize;
+} // namespace thorin
 
 namespace thorin::math {
+
+class Res {
+public:
+    Res() = default;
+    template<class T>
+    Res(T val)
+        : data_(thorin::bitcast<u64>(val)) {}
+
+    constexpr const u64& operator*() const& { return data_; }
+    constexpr u64& operator*() & { return data_; }
+
+private:
+    u64 data_;
+};
 
 // clang-format off
 template<class Id, Id id, nat_t w>
 Res fold(u64 a, u64 b) {
     using T = w2f<w>;
-    auto x = get<T>(a), y = get<T>(b);
+    auto x = bitcast<T>(a), y = bitcast<T>(b);
     if constexpr (std::is_same_v<Id, arith>) {
         if constexpr (false) {}
         else if constexpr (id == arith::add) return T(    x + y);
@@ -72,7 +75,7 @@ static const Def* fold(World& world, const Def* type, const Def*& a, const Def*&
             default: unreachable();
         }
 
-        return res ? world.lit(type, *res, dbg) : world.bot(type, dbg);
+        return world.lit(type, *res, dbg);
     }
 
     commute(id, a, b);
@@ -243,7 +246,7 @@ template<class Id, Id id, nat_t sw, nat_t dw>
 Res fold(u64 a) {
     using S = std::conditional_t<id == conv::s2f, w2s<sw>, std::conditional_t<id == conv::u2f, w2u<sw>, w2f<sw>>>;
     using D = std::conditional_t<id == conv::f2s, w2s<dw>, std::conditional_t<id == conv::f2u, w2u<dw>, w2f<dw>>>;
-    return D(get<S>(a));
+    return D(bitcast<S>(a));
 }
 
 template<conv id>

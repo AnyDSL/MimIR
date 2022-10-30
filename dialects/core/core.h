@@ -157,3 +157,36 @@ const Sigma* convert(const TBound<up>* b);
 inline const Sigma* convert(const Bound* b) { return b->isa<Join>() ? convert(b->as<Join>()) : convert(b->as<Meet>()); }
 
 } // namespace thorin::core
+
+namespace thorin {
+
+/// @name is_commutative/is_associative
+///@{
+// clang-format off
+constexpr bool is_commutative(core::nop    ) { return true; }
+constexpr bool is_commutative(core::wrap id) { return id == core::wrap::add || id == core::wrap::mul; }
+constexpr bool is_commutative(core::ncmp id) { return id == core::ncmp::  e || id == core::ncmp:: ne; }
+constexpr bool is_commutative(core::icmp id) { return id == core::icmp::  e || id == core::icmp:: ne; }
+// clang-format off
+
+constexpr bool is_commutative(core::bit2 id) {
+    auto tab = make_truth_table(id);
+    return tab[0][1] == tab[1][0];
+}
+
+constexpr bool is_associative(core::bit2 id) {
+    switch (id) {
+        case core::bit2::t:
+        case core::bit2::xor_:
+        case core::bit2::and_:
+        case core::bit2::nxor:
+        case core::bit2::a:
+        case core::bit2::b:
+        case core::bit2::or_:
+        case core::bit2::f: return true;
+        default: return false;
+    }
+}
+///@}
+
+} // namespace thorin

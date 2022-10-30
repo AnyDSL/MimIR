@@ -17,7 +17,6 @@ add_library(libthorin
     lam.h
     lattice.cpp
     lattice.h
-    normalize.h
     rewrite.cpp
     rewrite.h
     tuple.cpp

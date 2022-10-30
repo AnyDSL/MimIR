@@ -201,3 +201,16 @@ inline const Def* op_rminus(nat_t mode, const Def* a, const Def* dbg = {}) {
 ///@}
 
 } // namespace thorin::math
+
+namespace thorin {
+
+/// @name is_commutative/is_associative
+///@{
+// clang-format off
+constexpr bool is_commutative(math::x       ) { return true; }
+constexpr bool is_commutative(math::arith id) { return id == math::arith ::add || id == math::arith::mul; }
+constexpr bool is_commutative(math::cmp   id) { return id == math::cmp   ::e   || id == math::cmp  ::ne ; }
+// clang-format off
+///@}
+
+} // namespace thorin
