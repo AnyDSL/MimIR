@@ -552,10 +552,10 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
     auto callee = c->as<App>();
     auto s_ty   = x->type()->as<App>();
     auto d_ty   = dst_ty->as<App>();
-    auto d      = s_ty->arg();
-    auto s      = d_ty->arg();
-    auto ls     = isa_lit(d);
-    auto ld     = isa_lit(s);
+    auto s      = s_ty->arg();
+    auto d      = d_ty->arg();
+    auto ls     = isa_lit(s);
+    auto ld     = isa_lit(d);
 
     if (s_ty == d_ty) return x;
     if (x->isa<Bot>()) return world.bot(d_ty, dbg);
@@ -576,7 +576,7 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
             // clang-format off
             if (false) {}
 #define M(S, D) \
-            else if (*sw == S && *dw == D) return world.lit(d_ty, w2s<D>(get<w2s<S>>(*l)), dbg);
+            else if (S == *sw && D == *dw) return world.lit(d_ty, w2s<D>(get<w2s<S>>(*l)), dbg);
             M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
                       M( 8, 16) M( 8, 32) M( 8, 64)
                                 M(16, 32) M(16, 64)

@@ -254,145 +254,50 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
     auto callee = c->as<App>();
     auto s_ty   = x->type()->as<App>();
     auto d_ty   = dst_ty->as<App>();
-    auto d      = s_ty->arg();
-    auto s      = d_ty->arg();
-    auto ls     = isa_lit(d);
-    auto ld     = isa_lit(s);
+    auto s      = s_ty->arg();
+    auto d      = d_ty->arg();
+    auto ls     = isa_lit(s);
+    auto ld     = isa_lit(d);
 
-#if 0
     if (s_ty == d_ty) return x;
     if (x->isa<Bot>()) return world.bot(d_ty, dbg);
-    if constexpr (id == conv::s2s) {
-        if (ls && ld && *ld < *ls) return op(conv::u2u, d_ty, x, dbg); // just truncate - we don't care for signedness
-    }
 
     if (auto l = isa_lit(x); l && ls && ld) {
-        if constexpr (id == conv::u2u) {
-            if (*ld == 0) return world.lit(d_ty, *l); // I64
-            return world.lit(d_ty, *l % *ld);
-        }
-
-        auto sw = size2bitwidth(*ls);
-        auto dw = size2bitwidth(*ld);
+        constexpr bool sf     = id == conv::f2f || id == conv::f2s || id == conv::f2u;
+        constexpr bool df     = id == conv::f2f || id == conv::s2f || id == conv::u2f;
+        constexpr nat_t min_s = sf ? 16 : 1;
+        constexpr nat_t min_d = df ? 16 : 1;
+        auto sw               = sf ? isa_f(s_ty) : size2bitwidth(*ls);
+        auto dw               = df ? isa_f(d_ty) : size2bitwidth(*ld);
 
         if (sw && dw) {
+            Res res;
             // clang-format off
             if (false) {}
 #define M(S, D) \
-            else if (*sw == S && *dw == D) return world.lit(d_ty, w2s<D>(get<w2s<S>>(*l)), dbg);
-            M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
-                      M( 8, 16) M( 8, 32) M( 8, 64)
-                                M(16, 32) M(16, 64)
-                                          M(32, 64)
+            else if (S == *sw && D == *dw) { \
+                if constexpr (S >= min_s && D >= min_d) \
+                    res = FoldConv<id, S, D>::run(*l); \
+                else \
+                    goto out; \
+            }
+            M( 1,  1) M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
+            M( 8,  1) M( 8,  8) M( 8, 16) M( 8, 32) M( 8, 64)
+            M(16,  1) M(16,  8) M(16, 16) M(16, 32) M(16, 64)
+            M(32,  1) M(32,  8) M(32, 16) M(32, 32) M(32, 64)
+            M(64,  1) M(64,  8) M(64, 16) M(64, 32) M(64, 64)
+
             else unreachable();
             // clang-format on
+
+            if (res) return world.lit(d_ty, *res, dbg);
+            assert(false && "TODO");
+            return world.bot(d_ty, dbg);
         }
     }
-#endif
-
+out:
     return world.raw_app(callee, x, dbg);
 }
-
-#if 0
-    auto lit_src          = src->isa<Lit>();
-    if (lit_src && lit_dw && lit_sw) {
-        if (id == conv::u2u) {
-            if (*lit_dw == 0) return world.lit(dst_t, as_lit(lit_src));
-            return world.lit(dst_t, as_lit(lit_src) % *lit_dw);
-        }
-
-        if (Idx::size(src->type())) *lit_sw = *size2bitwidth(*lit_sw);
-        if (Idx::size(dst_t)) *lit_dw = *size2bitwidth(*lit_dw);
-
-        Res res;
-#    define CODE(sw, dw)                                                                                 \
-        else if (*lit_dw == dw && *lit_sw == sw) {                                                       \
-            if constexpr (dw >= min_dw && sw >= min_sw) res = FoldConv<id, dw, sw>::run(lit_src->get()); \
-        }
-        if (false) {}
-        TABLE(CODE)
-#    undef CODE
-        if (res) return world.lit(dst_t, *res, dbg);
-        return world.bot(dst_t, dbg);
-    }
-
-    return nullptr;
-}
-#endif
-
-#if 0
-template<conv id>
-const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const Def* dbg) {
-    auto& world = dst_ty->world();
-    auto callee = c->as<App>();
-    auto s_ty   = x->type()->as<App>();
-    auto d_ty   = dst_ty->as<App>();
-    auto d      = s_ty->arg();
-    auto s      = d_ty->arg();
-
-    if (s_ty == d_ty) return x;
-    if (x->isa<Bot>()) return world.bot(d_ty, dbg);
-
-    if (auto l = x->isa<Lit>()) {
-        switch (id) {
-            case conv::f2f: {
-                auto ls = isa_f(s);
-                auto ld = isa_f(d);
-                if (ls && ld) {
-                    Res res;
-                    if (false) {}
-#    define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
-                    // clang-format off
-                    M(16, 16) M(16, 32) M(16, 64)
-                    M(32, 16) M(32, 32) M(32, 64)
-                    M(64, 16) M(64, 32) M(64, 64)
-                    // clang-format on
-#    undef M
-                }
-                break;
-            }
-            case conv::f2s:
-                    Res res;
-                    if (false) {}
-#    define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
-                    // clang-format off
-                    M(16,  1) M(16,  8) M(16, 16) M(16, 32) M(16, 64)
-                    M(32,  1) M(32,  8) M(32, 16) M(32, 32) M(32, 64)
-                    M(64,  1) M(64,  8) M(64, 16) M(64, 32) M(64, 64)
-                    // clang-format on
-#    undef M
-                }
-            case conv::f2u: {
-                auto ls = isa_f(s);
-                auto ld = Idx::size(s);
-                if (ls && ld) {}
-                    Res res;
-                    if (false) {}
-#    define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
-                    // clang-format off
-                    M( 1, 16) M( 1, 32) M( 1, 64)
-                    M( 8, 16) M( 8, 32) M( 8, 64)
-                    M(16, 16) M(16, 32) M(16, 64)
-                    M(32, 16) M(32, 32) M(32, 64)
-                    M(64, 16) M(64, 32) M(64, 64)
-                    // clang-format on
-#    undef M
-                }
-                break;
-            }
-            case conv::s2f:
-            case conv::u2f: {
-                auto ls = Idx::size(s);
-                auto ld = isa_f(d);
-                if (ls && ld) {}
-                break;
-            }
-        }
-    }
-
-    return world.raw_app(callee, x, dbg);
-}
-#endif
 
 // TODO I guess we can do that with C++20 <bit>
 inline u64 pad(u64 offset, u64 align) {
