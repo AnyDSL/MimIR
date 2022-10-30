@@ -72,9 +72,9 @@ inline const Def* fn(cmp o, const Def* pe, const Def* mode, const Def* dbg = {})
     World& w = mode->world();
     return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
 }
-inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* mode, const Def* dbg = {}) {
+inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* dbg = {}) {
     World& w = src_s->world();
-    return w.app(w.app(w.app(w.ax(o), src_s), dst_s), mode, dbg);
+    return w.app(w.app(w.ax(o), src_s), dst_s, dbg);
 }
 ///@}
 
@@ -112,11 +112,11 @@ inline const Def* op(cmp o, const Def* mode, const Def* a, const Def* b, const D
     World& w = mode->world();
     return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
 }
-inline const Def* op(conv o, const Def* dst_t, const Def* mode, const Def* src, const Def* dbg = {}) {
+inline const Def* op(conv o, const Def* dst_t, const Def* src, const Def* dbg = {}) {
     World& w = dst_t->world();
     auto d   = dst_t->as<App>()->arg();
     auto s   = src->type()->as<App>()->arg();
-    return w.app(fn(o, s, d, mode), src, dbg);
+    return w.app(fn(o, s, d), src, dbg);
 }
 template<class O>
 const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) {
