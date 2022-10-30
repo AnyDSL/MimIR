@@ -65,7 +65,7 @@ template<nat_t sw, nat_t dw> struct FoldConv<conv::f2f, sw, dw> { static Res run
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
 template<class Id, Id id>
-static const Def* fold2(World& world, const Def* type, const Def*& a, const Def*& b, const Def* dbg) {
+static const Def* fold(World& world, const Def* type, const Def*& a, const Def*& b, const Def* dbg) {
     auto la = a->isa<Lit>(), lb = b->isa<Lit>();
 
     if (a->isa<Bot>() || b->isa<Bot>()) return world.bot(type, dbg);
@@ -145,7 +145,7 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
     auto m      = isa_lit(callee->decurry()->arg());
     auto w      = isa_f(a->type());
 
-    if (auto result = fold2<arith, id>(world, type, a, b, dbg)) return result;
+    if (auto result = fold<arith, id>(world, type, a, b, dbg)) return result;
 
     // clang-format off
     // TODO check rmode properly
@@ -241,7 +241,7 @@ const Def* normalize_cmp(const Def* type, const Def* c, const Def* arg, const De
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
 
-    if (auto result = fold2<cmp, id>(world, type, a, b, dbg)) return result;
+    if (auto result = fold<cmp, id>(world, type, a, b, dbg)) return result;
     if (id == cmp::f) return world.lit_ff();
     if (id == cmp::t) return world.lit_tt();
 
