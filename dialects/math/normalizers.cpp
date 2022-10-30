@@ -341,26 +341,26 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
                 if (ls && ld) {
                     Res res;
                     if (false) {}
-#define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
+#    define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
                     // clang-format off
                     M(16, 16) M(16, 32) M(16, 64)
                     M(32, 16) M(32, 32) M(32, 64)
                     M(64, 16) M(64, 32) M(64, 64)
                     // clang-format on
-#undef M
+#    undef M
                 }
                 break;
             }
             case conv::f2s:
                     Res res;
                     if (false) {}
-#define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
+#    define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
                     // clang-format off
                     M(16,  1) M(16,  8) M(16, 16) M(16, 32) M(16, 64)
                     M(32,  1) M(32,  8) M(32, 16) M(32, 32) M(32, 64)
                     M(64,  1) M(64,  8) M(64, 16) M(64, 32) M(64, 64)
                     // clang-format on
-#undef M
+#    undef M
                 }
             case conv::f2u: {
                 auto ls = isa_f(s);
@@ -368,7 +368,7 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
                 if (ls && ld) {}
                     Res res;
                     if (false) {}
-#define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
+#    define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
                     // clang-format off
                     M( 1, 16) M( 1, 32) M( 1, 64)
                     M( 8, 16) M( 8, 32) M( 8, 64)
@@ -376,7 +376,7 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
                     M(32, 16) M(32, 32) M(32, 64)
                     M(64, 16) M(64, 32) M(64, 64)
                     // clang-format on
-#undef M
+#    undef M
                 }
                 break;
             }
