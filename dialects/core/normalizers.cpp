@@ -56,7 +56,6 @@ static T get(u64 u) {
 // clang-format off
 template<class Id> constexpr bool is_int           () { return true;  }
 template<>         constexpr bool is_int<math::cmp>() { return false; }
-// clang-format on
 
 /*
  * Fold
