@@ -187,12 +187,6 @@ struct Fold<icmp, cmp, w> {
     }
 };
 
-// clang-format off
-template<conv id, nat_t, nat_t> struct FoldConv {};
-template<nat_t ss, nat_t ds> struct FoldConv<conv::s2s, ss, ds> { static Res run(u64 src) { return w2s<ds>(get<w2s<ss>>(src)); } };
-template<nat_t ss, nat_t ds> struct FoldConv<conv::u2u, ss, ds> { static Res run(u64 src) { return w2u<ds>(get<w2u<ss>>(src)); } };
-// clang-format on
-
 /// Reassociates @p a und @p b according to following rules.
 /// We use the following naming convention while literals are prefixed with an 'l':
 /// ```
@@ -552,63 +546,47 @@ const Def* normalize_div(const Def* type, const Def* c, const Def* arg, const De
     return world.raw_app(callee, {mem, a, b}, dbg);
 }
 
-// clang-format off
-#define TABLE(m) m( 1,  1) m( 1,  8) m( 1, 16) m( 1, 32) m( 1, 64) \
-                 m( 8,  1) m( 8,  8) m( 8, 16) m( 8, 32) m( 8, 64) \
-                 m(16,  1) m(16,  8) m(16, 16) m(16, 32) m(16, 64) \
-                 m(32,  1) m(32,  8) m(32, 16) m(32, 32) m(32, 64) \
-                 m(64,  1) m(64,  8) m(64, 16) m(64, 32) m(64, 64)
-// clang-format on
-
 template<conv id>
-static const Def* fold_conv(const Def* dst_t, const Def* src, const Def* dbg) {
-    auto& world = dst_t->world();
-    if (src->isa<Bot>()) return world.bot(dst_t, dbg);
+const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const Def* dbg) {
+    auto& world = dst_ty->world();
+    auto callee = c->as<App>();
+    auto s_ty   = x->type()->as<App>();
+    auto d_ty   = dst_ty->as<App>();
+    auto d      = s_ty->arg();
+    auto s      = d_ty->arg();
+    auto ls     = isa_lit(d);
+    auto ld     = isa_lit(s);
 
-    auto lds = isa_lit(Idx::size(src->type()));
-    auto lss = isa_lit(Idx::size(dst_t));
-    auto lit = src->isa<Lit>();
+    if (s_ty == d_ty) return x;
+    if (x->isa<Bot>()) return world.bot(d_ty, dbg);
+    if constexpr (id == conv::s2s) {
+        if (ls && ld && *ld < *ls) return op(conv::u2u, d_ty, x, dbg); // just truncate - we don't care for signedness
+    }
 
-    if (lit && lds && lss) {
-        if (id == conv::u2u) {
-            if (*lds == 0) return world.lit(dst_t, lit->get()); // I64
-            return world.lit(dst_t, lit->get() % *lds);
+    if (auto l = isa_lit(x); l && ls && ld) {
+        if constexpr (id == conv::u2u) {
+            if (*ld == 0) return world.lit(d_ty, *l); // I64
+            return world.lit(d_ty, *l % *ld);
         }
 
-        if (Idx::size(src->type())) *lss = *size2bitwidth(*lss);
-        if (Idx::size(dst_t)) *lds = *size2bitwidth(*lds);
+        auto sw = size2bitwidth(*ls);
+        auto dw = size2bitwidth(*ld);
 
-        Res res;
-        if (false) {}
-#define CODE(ss, ds) else if (*lds == ds && *lss == ss) res = FoldConv<id, ds, ss>::run(lit->get());
-        TABLE(CODE)
-#undef CODE
-        if (res) return world.lit(dst_t, *res, dbg);
-        return world.bot(dst_t, dbg);
+        if (sw && dw) {
+            // clang-format off
+            if (false) {}
+#define M(S, D) \
+            else if (*sw == S && *dw == D) return world.lit(d_ty, w2s<D>(get<w2s<S>>(*l)), dbg);
+            M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
+                      M( 8, 16) M( 8, 32) M( 8, 64)
+                                M(16, 32) M(16, 64)
+                                          M(32, 64)
+            else unreachable();
+            // clang-format on
+        }
     }
 
-    return nullptr;
-}
-
-template<conv id>
-const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* src, const Def* dbg) {
-    auto& world = dst_t->world();
-    auto callee = c->as<App>();
-
-    if (auto result = fold_conv<id>(dst_t, src, dbg)) return result;
-
-    auto ss  = Idx::size(dst_t);
-    auto ds  = Idx::size(src->type());
-    auto lss = isa_lit(ss);
-    auto lds = isa_lit(ds);
-
-    if (ss == ds && dst_t == src->type()) return src;
-
-    if constexpr (id == conv::s2s) {
-        if (ss && ds && lss < lds) return op(conv::u2u, dst_t, src, dbg);
-    }
-
-    return world.raw_app(callee, src, dbg);
+    return world.raw_app(callee, x, dbg);
 }
 
 const Def* normalize_bitcast(const Def* dst_t, const Def* callee, const Def* src, const Def* dbg) {

@@ -502,7 +502,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                     s << "0xH" << std::setfill('0') << std::setw(4) << std::right << std::hex << lit->get<u16>();
                     return s.str();
                 case 32: {
-                    hex = std::bit_cast<u64>(r64(lit->get<r32>()));
+                    hex = std::bit_cast<u64>(f64(lit->get<f32>()));
                     break;
                 }
                 case 64: hex = lit->get<u64>(); break;

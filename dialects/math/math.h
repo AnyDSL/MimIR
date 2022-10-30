@@ -72,9 +72,9 @@ inline const Def* fn(cmp o, const Def* pe, const Def* mode, const Def* dbg = {})
     World& w = mode->world();
     return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
 }
-inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* dbg = {}) {
+inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* mode, const Def* dbg = {}) {
     World& w = src_s->world();
-    return w.app(w.app(w.ax(o), src_s), dst_s, dbg);
+    return w.app(w.app(w.app(w.ax(o), src_s), dst_s), mode, dbg);
 }
 ///@}
 
@@ -112,11 +112,11 @@ inline const Def* op(cmp o, const Def* mode, const Def* a, const Def* b, const D
     World& w = mode->world();
     return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
 }
-inline const Def* op(conv o, const Def* dst_t, const Def* src, const Def* dbg = {}) {
+inline const Def* op(conv o, const Def* dst_t, const Def* mode, const Def* src, const Def* dbg = {}) {
     World& w = dst_t->world();
     auto d   = dst_t->as<App>()->arg();
     auto s   = src->type()->as<App>()->arg();
-    return w.app(fn(o, s, d), src, dbg);
+    return w.app(fn(o, s, d, mode), src, dbg);
 }
 template<class O>
 const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) {
@@ -168,7 +168,7 @@ inline const Def* type_f64(World& w) { return type_f(w, 52, 11); }
 // clang-format off
 template<class R>
 const Lit* lit_f(World& w, R val, const Def* dbg = {}) {
-    static_assert(std::is_floating_point<R>() || std::is_same<R, r16>());
+    static_assert(std::is_floating_point<R>() || std::is_same<R, f16>());
     if constexpr (false) {}
     else if constexpr (sizeof(R) == 2) return w.lit(type_f16(w), thorin::bitcast<u16>(val), dbg);
     else if constexpr (sizeof(R) == 4) return w.lit(type_f32(w), thorin::bitcast<u32>(val), dbg);
@@ -176,11 +176,11 @@ const Lit* lit_f(World& w, R val, const Def* dbg = {}) {
     else unreachable();
 }
 
-inline const Lit* lit_f(World& w, nat_t width, r64 val, const Def* dbg = {}) {
+inline const Lit* lit_f(World& w, nat_t width, f64 val, const Def* dbg = {}) {
     switch (width) {
-        case 16: assert(r64(r16(r32(val))) == val && "loosing precision"); return lit_f(w, r16(r32(val)), dbg);
-        case 32: assert(r64(r32(   (val))) == val && "loosing precision"); return lit_f(w, r32(   (val)), dbg);
-        case 64: assert(r64(r64(   (val))) == val && "loosing precision"); return lit_f(w, r64(   (val)), dbg);
+        case 16: assert(f64(f16(f32(val))) == val && "loosing precision"); return lit_f(w, f16(f32(val)), dbg);
+        case 32: assert(f64(f32(   (val))) == val && "loosing precision"); return lit_f(w, f32(   (val)), dbg);
+        case 64: assert(f64(f64(   (val))) == val && "loosing precision"); return lit_f(w, f64(   (val)), dbg);
         default: unreachable();
     }
 }

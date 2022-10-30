@@ -32,17 +32,17 @@ template<class T, T, nat_t>
 struct Fold {};
 
 // clang-format off
-template<nat_t w> struct Fold<arith, arith::add, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) + get<T>(b)); } };
-template<nat_t w> struct Fold<arith, arith::sub, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) - get<T>(b)); } };
-template<nat_t w> struct Fold<arith, arith::mul, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) * get<T>(b)); } };
-template<nat_t w> struct Fold<arith, arith::div, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(get<T>(a) / get<T>(b)); } };
-template<nat_t w> struct Fold<arith, arith::rem, w> { static Res run(u64 a, u64 b) { using T = w2r<w>; return T(rem(get<T>(a), get<T>(b))); } };
+template<nat_t w> struct Fold<arith, arith::add, w> { static Res run(u64 a, u64 b) { using T = w2f<w>; return T(get<T>(a) + get<T>(b)); } };
+template<nat_t w> struct Fold<arith, arith::sub, w> { static Res run(u64 a, u64 b) { using T = w2f<w>; return T(get<T>(a) - get<T>(b)); } };
+template<nat_t w> struct Fold<arith, arith::mul, w> { static Res run(u64 a, u64 b) { using T = w2f<w>; return T(get<T>(a) * get<T>(b)); } };
+template<nat_t w> struct Fold<arith, arith::div, w> { static Res run(u64 a, u64 b) { using T = w2f<w>; return T(get<T>(a) / get<T>(b)); } };
+template<nat_t w> struct Fold<arith, arith::rem, w> { static Res run(u64 a, u64 b) { using T = w2f<w>; return T(rem(get<T>(a), get<T>(b))); } };
 // clang-format on
 
 template<cmp r, nat_t w>
 struct Fold<cmp, r, w> {
     inline static Res run(u64 a, u64 b) {
-        using T = w2r<w>;
+        using T = w2f<w>;
         auto x = get<T>(a), y = get<T>(b);
         bool result = false;
         result |= ((r & cmp::u) != cmp::f) && std::isunordered(x, y);
@@ -53,13 +53,14 @@ struct Fold<cmp, r, w> {
     }
 };
 
+// TODO Deal with UB in the context of signed conversions.
 // clang-format off
 template<conv id, nat_t, nat_t> struct FoldConv {};
-template<nat_t dw, nat_t sw> struct FoldConv<conv::s2f, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2s<sw>>(src)); } };
-template<nat_t dw, nat_t sw> struct FoldConv<conv::u2f, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2u<sw>>(src)); } };
-template<nat_t dw, nat_t sw> struct FoldConv<conv::f2s, dw, sw> { static Res run(u64 src) { return w2s<dw>(get<w2r<sw>>(src)); } };
-template<nat_t dw, nat_t sw> struct FoldConv<conv::f2u, dw, sw> { static Res run(u64 src) { return w2u<dw>(get<w2r<sw>>(src)); } };
-template<nat_t dw, nat_t sw> struct FoldConv<conv::f2f, dw, sw> { static Res run(u64 src) { return w2r<dw>(get<w2r<sw>>(src)); } };
+template<nat_t sw, nat_t dw> struct FoldConv<conv::s2f, sw, dw> { static Res run(u64 s) { return w2f<dw>(get<w2s<sw>>(s)); } };
+template<nat_t sw, nat_t dw> struct FoldConv<conv::u2f, sw, dw> { static Res run(u64 s) { return w2f<dw>(get<w2u<sw>>(s)); } };
+template<nat_t sw, nat_t dw> struct FoldConv<conv::f2s, sw, dw> { static Res run(u64 s) { return w2s<dw>(get<w2f<sw>>(s)); } };
+template<nat_t sw, nat_t dw> struct FoldConv<conv::f2u, sw, dw> { static Res run(u64 s) { return w2u<dw>(get<w2f<sw>>(s)); } };
+template<nat_t sw, nat_t dw> struct FoldConv<conv::f2f, sw, dw> { static Res run(u64 s) { return w2f<dw>(get<w2f<sw>>(s)); } };
 // clang-format on
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
@@ -247,21 +248,52 @@ const Def* normalize_cmp(const Def* type, const Def* c, const Def* arg, const De
     return world.raw_app(callee, {a, b}, dbg);
 }
 
-// clang-format off
-#define TABLE(m) m( 1,  1) m( 1,  8) m( 1, 16) m( 1, 32) m( 1, 64) \
-                 m( 8,  1) m( 8,  8) m( 8, 16) m( 8, 32) m( 8, 64) \
-                 m(16,  1) m(16,  8) m(16, 16) m(16, 32) m(16, 64) \
-                 m(32,  1) m(32,  8) m(32, 16) m(32, 32) m(32, 64) \
-                 m(64,  1) m(64,  8) m(64, 16) m(64, 32) m(64, 64)
-// clang-format on
+template<conv id>
+const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const Def* dbg) {
+    auto& world = dst_ty->world();
+    auto callee = c->as<App>();
+    auto s_ty   = x->type()->as<App>();
+    auto d_ty   = dst_ty->as<App>();
+    auto d      = s_ty->arg();
+    auto s      = d_ty->arg();
+    auto ls     = isa_lit(d);
+    auto ld     = isa_lit(s);
 
 #if 0
-template<nat_t min_sw, nat_t min_dw, conv id>
-static const Def* fold_conv(const Def* dst_t, const App* callee, const Def* src, const Def* dbg) {
-    auto& world = dst_t->world();
-    if (src->isa<Bot>()) return world.bot(dst_t, dbg);
+    if (s_ty == d_ty) return x;
+    if (x->isa<Bot>()) return world.bot(d_ty, dbg);
+    if constexpr (id == conv::s2s) {
+        if (ls && ld && *ld < *ls) return op(conv::u2u, d_ty, x, dbg); // just truncate - we don't care for signedness
+    }
 
-    auto [lit_dw, lit_sw] = callee->args<2>(isa_lit<nat_t>);
+    if (auto l = isa_lit(x); l && ls && ld) {
+        if constexpr (id == conv::u2u) {
+            if (*ld == 0) return world.lit(d_ty, *l); // I64
+            return world.lit(d_ty, *l % *ld);
+        }
+
+        auto sw = size2bitwidth(*ls);
+        auto dw = size2bitwidth(*ld);
+
+        if (sw && dw) {
+            // clang-format off
+            if (false) {}
+#define M(S, D) \
+            else if (*sw == S && *dw == D) return world.lit(d_ty, w2s<D>(get<w2s<S>>(*l)), dbg);
+            M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
+                      M( 8, 16) M( 8, 32) M( 8, 64)
+                                M(16, 32) M(16, 64)
+                                          M(32, 64)
+            else unreachable();
+            // clang-format on
+        }
+    }
+#endif
+
+    return world.raw_app(callee, x, dbg);
+}
+
+#if 0
     auto lit_src          = src->isa<Lit>();
     if (lit_src && lit_dw && lit_sw) {
         if (id == conv::u2u) {
@@ -288,26 +320,79 @@ static const Def* fold_conv(const Def* dst_t, const App* callee, const Def* src,
 }
 #endif
 
-template<conv id>
-const Def* normalize_conv(const Def* dst_t, const Def* c, const Def* src, const Def* dbg) {
-    auto& world = dst_t->world();
-    auto callee = c->as<App>();
 #if 0
+template<conv id>
+const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const Def* dbg) {
+    auto& world = dst_ty->world();
+    auto callee = c->as<App>();
+    auto s_ty   = x->type()->as<App>();
+    auto d_ty   = dst_ty->as<App>();
+    auto d      = s_ty->arg();
+    auto s      = d_ty->arg();
 
-    static constexpr auto min_sw = id == conv::r2s || id == conv::r2u || id == conv::r2r ? 16 : 1;
-    static constexpr auto min_dw = id == conv::s2r || id == conv::u2r || id == conv::r2r ? 16 : 1;
-    if (auto result = fold_conv<min_sw, min_dw, id>(dst_t, callee, src, dbg)) return result;
+    if (s_ty == d_ty) return x;
+    if (x->isa<Bot>()) return world.bot(d_ty, dbg);
 
-    auto [dw, sw] = callee->args<2>(isa_lit<nat_t>);
-    if (sw == dw && dst_t == src->type()) return src;
-
-    if constexpr (id == conv::s2s) {
-        if (sw && dw && *sw < *dw) return math::op(conv::u2u, dst_t, src, dbg);
+    if (auto l = x->isa<Lit>()) {
+        switch (id) {
+            case conv::f2f: {
+                auto ls = isa_f(s);
+                auto ld = isa_f(d);
+                if (ls && ld) {
+                    Res res;
+                    if (false) {}
+#define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
+                    // clang-format off
+                    M(16, 16) M(16, 32) M(16, 64)
+                    M(32, 16) M(32, 32) M(32, 64)
+                    M(64, 16) M(64, 32) M(64, 64)
+                    // clang-format on
+#undef M
+                }
+                break;
+            }
+            case conv::f2s:
+                    Res res;
+                    if (false) {}
+#define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
+                    // clang-format off
+                    M(16,  1) M(16,  8) M(16, 16) M(16, 32) M(16, 64)
+                    M(32,  1) M(32,  8) M(32, 16) M(32, 32) M(32, 64)
+                    M(64,  1) M(64,  8) M(64, 16) M(64, 32) M(64, 64)
+                    // clang-format on
+#undef M
+                }
+            case conv::f2u: {
+                auto ls = isa_f(s);
+                auto ld = Idx::size(s);
+                if (ls && ld) {}
+                    Res res;
+                    if (false) {}
+#define M(cs, cd) else if (*ls == cs && *ld == cd) res = FoldConv<id, cs, cd>::run(l->get());
+                    // clang-format off
+                    M( 1, 16) M( 1, 32) M( 1, 64)
+                    M( 8, 16) M( 8, 32) M( 8, 64)
+                    M(16, 16) M(16, 32) M(16, 64)
+                    M(32, 16) M(32, 32) M(32, 64)
+                    M(64, 16) M(64, 32) M(64, 64)
+                    // clang-format on
+#undef M
+                }
+                break;
+            }
+            case conv::s2f:
+            case conv::u2f: {
+                auto ls = Idx::size(s);
+                auto ld = isa_f(d);
+                if (ls && ld) {}
+                break;
+            }
+        }
     }
-#endif
 
-    return world.raw_app(callee, src, dbg);
+    return world.raw_app(callee, x, dbg);
 }
+#endif
 
 // TODO I guess we can do that with C++20 <bit>
 inline u64 pad(u64 offset, u64 align) {
