@@ -62,8 +62,71 @@ template<>         constexpr bool is_int<math::cmp>() { return false; }
  * Fold
  */
 
-template<class T, T, nat_t>
-struct Fold {};
+// See https://stackoverflow.com/a/64354296 for static_assert trick below.
+template<class Id, Id id, nat_t w>
+Res fold(u64 a, u64 b, [[maybe_unused]] bool nsw, [[maybe_unused]] bool nuw) {
+    using ST = w2s<w>;
+    using UT = w2u<w>;
+    auto s = get<ST>(a), t = get<ST>(b);
+    auto u = get<UT>(a), v = get<UT>(b);
+
+    if constexpr (std::is_same_v<Id, wrap>) {
+        if constexpr (id == wrap::add) {
+            auto res = u + v;
+            if (nuw && res < u) return {};
+            // TODO nsw
+            return res;
+        } else if constexpr (id == wrap::sub) {
+            auto res = u - v;
+            //  TODO nsw
+            return res;
+        } else if constexpr (id == wrap::mul) {
+            if constexpr (std::is_same_v<UT, bool>)
+                return UT(u & v);
+            else
+                return UT(u * v);
+        } else if constexpr (id == wrap::shl) {
+            if (b >= w) return {};
+            decltype(u) res;
+            if constexpr (std::is_same_v<UT, bool>)
+                res = bool(u64(u) << u64(v));
+            else
+                res = u << v;
+            if (nuw && res < u) return {};
+            if (nsw && get_sign(u) != get_sign(res)) return {};
+            return res;
+        } else {
+            []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+        }
+    } else if constexpr (std::is_same_v<Id, shr>) {
+        if (b >= w) return {};
+        if constexpr (false) {}
+        else if constexpr (id == shr::a) return s >> t;
+        else if constexpr (id == shr::l) return u >> v;
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, div>) {
+        if (b == 0) return {};
+        if constexpr (false) {}
+        else if constexpr (id == div::sdiv) return s / t;
+        else if constexpr (id == div::udiv) return u / v;
+        else if constexpr (id == div::srem) return s % t;
+        else if constexpr (id == div::urem) return u % v;
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, icmp>) {
+        bool res = false;
+        auto pm  = !(u >> UT(w - 1)) &&  (v >> UT(w - 1));
+        auto mp  =  (u >> UT(w - 1)) && !(v >> UT(w - 1));
+        res |= ((id & icmp::Xygle) != icmp::f) && pm;
+        res |= ((id & icmp::xYgle) != icmp::f) && mp;
+        res |= ((id & icmp::xyGle) != icmp::f) && u > v && !mp;
+        res |= ((id & icmp::xygLe) != icmp::f) && u < v && !pm;
+        res |= ((id & icmp::xyglE) != icmp::f) && u == v;
+        return res;
+    } else {
+        []<bool flag = false>() { static_assert(flag, "missing tag"); }();
+    }
+}
+// clang-format on
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
 template<class Id, Id id>
@@ -74,7 +137,7 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
 
     if (la && lb) {
         nat_t width;
-        [[maybe_unused]] bool nsw = false, nuw = false;
+        bool nsw = false, nuw = false;
         if constexpr (std::is_same_v<Id, wrap>) {
             auto [mode, w] = callee->args<2>(as_lit<nat_t>);
             nsw            = mode & Mode::nsw;
@@ -88,13 +151,8 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
 
         Res res;
         switch (width) {
-#define CODE(i)                                                         \
-    case i:                                                             \
-        if constexpr (std::is_same_v<Id, wrap>)                         \
-            res = Fold<Id, id, i>::run(la->get(), lb->get(), nsw, nuw); \
-        else                                                            \
-            res = Fold<Id, id, i>::run(la->get(), lb->get());           \
-        break;
+#define CODE(i) \
+    case i: res = fold<Id, id, i>(la->get(), lb->get(), nsw, nuw); break;
             THORIN_1_8_16_32_64(CODE)
 #undef CODE
             default: unreachable();
@@ -106,86 +164,6 @@ static const Def* fold(World& world, const Def* type, const App* callee, const D
     commute(id, a, b);
     return nullptr;
 }
-
-template<nat_t w>
-struct Fold<wrap, wrap::add, w> {
-    static Res run(u64 a, u64 b, bool /*nsw*/, bool nuw) {
-        auto x = get<w2u<w>>(a), y = get<w2u<w>>(b);
-        decltype(x) res = x + y;
-        if (nuw && res < x) return {};
-        // TODO nsw
-        return res;
-    }
-};
-
-template<nat_t w>
-struct Fold<wrap, wrap::sub, w> {
-    static Res run(u64 a, u64 b, bool /*nsw*/, bool /*nuw*/) {
-        using UT = w2u<w>;
-        auto x = get<UT>(a), y = get<UT>(b);
-        decltype(x) res = x - y;
-        // if (nuw && y && x > std::numeric_limits<UT>::max() / y) return {};
-        //  TODO nsw
-        return res;
-    }
-};
-
-template<nat_t w>
-struct Fold<wrap, wrap::mul, w> {
-    static Res run(u64 a, u64 b, bool /*nsw*/, bool /*nuw*/) {
-        using UT = w2u<w>;
-        auto x = get<UT>(a), y = get<UT>(b);
-        if constexpr (std::is_same_v<UT, bool>)
-            return UT(x & y);
-        else
-            return UT(x * y);
-        // TODO nsw/nuw
-    }
-};
-
-template<nat_t w>
-struct Fold<wrap, wrap::shl, w> {
-    static Res run(u64 a, u64 b, bool nsw, bool nuw) {
-        using T = w2u<w>;
-        auto x = get<T>(a), y = get<T>(b);
-        if (u64(y) >= w) return {};
-        decltype(x) res;
-        if constexpr (std::is_same_v<T, bool>)
-            res = bool(u64(x) << u64(y));
-        else
-            res = x << y;
-        if (nuw && res < x) return {};
-        if (nsw && get_sign(x) != get_sign(res)) return {};
-        return res;
-    }
-};
-
-// clang-format off
-template<nat_t w> struct Fold<div, div::sdiv, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
-template<nat_t w> struct Fold<div, div::udiv, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) / r); } };
-template<nat_t w> struct Fold<div, div::srem, w> { static Res run(u64 a, u64 b) { using T = w2s<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
-template<nat_t w> struct Fold<div, div::urem, w> { static Res run(u64 a, u64 b) { using T = w2u<w>; T r = get<T>(b); if (r == 0) return {}; return T(get<T>(a) % r); } };
-
-template<nat_t w> struct Fold<shr, shr::a   , w> { static Res run(u64 a, u64 b) { using T = w2s<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
-template<nat_t w> struct Fold<shr, shr::l   , w> { static Res run(u64 a, u64 b) { using T = w2u<w>; if (b > w) return {}; return T(get<T>(a) >> get<T>(b)); } };
-// clang-format on
-
-template<icmp cmp, nat_t w>
-struct Fold<icmp, cmp, w> {
-    inline static Res run(u64 a, u64 b) {
-        using T = w2u<w>;
-        auto x = get<T>(a), y = get<T>(b);
-        bool result = false;
-        auto pm     = !(x >> T(w - 1)) && (y >> T(w - 1));
-        auto mp     = (x >> T(w - 1)) && !(y >> T(w - 1));
-        result |= ((cmp & icmp::Xygle) != icmp::f) && pm;
-        result |= ((cmp & icmp::xYgle) != icmp::f) && mp;
-        result |= ((cmp & icmp::xyGle) != icmp::f) && x > y && !mp;
-        result |= ((cmp & icmp::xygLe) != icmp::f) && x < y && !pm;
-        result |= ((cmp & icmp::xyglE) != icmp::f) && x == y;
-        return result;
-    }
-};
 
 /// Reassociates @p a und @p b according to following rules.
 /// We use the following naming convention while literals are prefixed with an 'l':

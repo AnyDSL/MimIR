@@ -28,39 +28,30 @@ using namespace thorin::normalize;
 
 namespace thorin::math {
 
-template<class T, T, nat_t>
-struct Fold {};
-
 // clang-format off
-template<nat_t w> struct Fold<arith, arith::add, w> { static Res run(u64 a, u64 b) { using T = w2f<w>; return T(get<T>(a) + get<T>(b)); } };
-template<nat_t w> struct Fold<arith, arith::sub, w> { static Res run(u64 a, u64 b) { using T = w2f<w>; return T(get<T>(a) - get<T>(b)); } };
-template<nat_t w> struct Fold<arith, arith::mul, w> { static Res run(u64 a, u64 b) { using T = w2f<w>; return T(get<T>(a) * get<T>(b)); } };
-template<nat_t w> struct Fold<arith, arith::div, w> { static Res run(u64 a, u64 b) { using T = w2f<w>; return T(get<T>(a) / get<T>(b)); } };
-template<nat_t w> struct Fold<arith, arith::rem, w> { static Res run(u64 a, u64 b) { using T = w2f<w>; return T(rem(get<T>(a), get<T>(b))); } };
-// clang-format on
-
-template<cmp r, nat_t w>
-struct Fold<cmp, r, w> {
-    inline static Res run(u64 a, u64 b) {
-        using T = w2f<w>;
-        auto x = get<T>(a), y = get<T>(b);
-        bool result = false;
-        result |= ((r & cmp::u) != cmp::f) && std::isunordered(x, y);
-        result |= ((r & cmp::g) != cmp::f) && x > y;
-        result |= ((r & cmp::l) != cmp::f) && x < y;
-        result |= ((r & cmp::e) != cmp::f) && x == y;
-        return result;
+template<class Id, Id id, nat_t w>
+Res fold(u64 a, u64 b) {
+    using T = w2f<w>;
+    auto x = get<T>(a), y = get<T>(b);
+    if constexpr (std::is_same_v<Id, arith>) {
+        if constexpr (false) {}
+        else if constexpr (id == arith::add) return T(    x + y);
+        else if constexpr (id == arith::sub) return T(    x - y);
+        else if constexpr (id == arith::mul) return T(    x * y);
+        else if constexpr (id == arith::div) return T(    x / y);
+        else if constexpr (id == arith::rem) return T(rem(x,  y));
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, cmp>) {
+        bool res = false;
+        res |= ((id & cmp::u) != cmp::f) && std::isunordered(x, y);
+        res |= ((id & cmp::g) != cmp::f) && x > y;
+        res |= ((id & cmp::l) != cmp::f) && x < y;
+        res |= ((id & cmp::e) != cmp::f) && x == y;
+        return res;
+    } else {
+        []<bool flag = false>() { static_assert(flag, "missing tag"); }();
     }
-};
-
-// TODO Deal with UB in the context of signed conversions.
-// clang-format off
-template<conv id, nat_t, nat_t> struct FoldConv {};
-template<nat_t sw, nat_t dw> struct FoldConv<conv::s2f, sw, dw> { static Res run(u64 s) { return w2f<dw>(get<w2s<sw>>(s)); } };
-template<nat_t sw, nat_t dw> struct FoldConv<conv::u2f, sw, dw> { static Res run(u64 s) { return w2f<dw>(get<w2u<sw>>(s)); } };
-template<nat_t sw, nat_t dw> struct FoldConv<conv::f2s, sw, dw> { static Res run(u64 s) { return w2s<dw>(get<w2f<sw>>(s)); } };
-template<nat_t sw, nat_t dw> struct FoldConv<conv::f2u, sw, dw> { static Res run(u64 s) { return w2u<dw>(get<w2f<sw>>(s)); } };
-template<nat_t sw, nat_t dw> struct FoldConv<conv::f2f, sw, dw> { static Res run(u64 s) { return w2f<dw>(get<w2f<sw>>(s)); } };
+}
 // clang-format on
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
@@ -75,7 +66,7 @@ static const Def* fold(World& world, const Def* type, const Def*& a, const Def*&
         Res res;
         switch (width) {
 #define CODE(i) \
-    case i: res = Fold<Id, id, i>::run(la->get(), lb->get()); break;
+    case i: res = fold<Id, id, i>(la->get(), lb->get()); break;
             THORIN_16_32_64(CODE)
 #undef CODE
             default: unreachable();
@@ -248,6 +239,13 @@ const Def* normalize_cmp(const Def* type, const Def* c, const Def* arg, const De
     return world.raw_app(callee, {a, b}, dbg);
 }
 
+template<class Id, Id id, nat_t sw, nat_t dw>
+Res fold(u64 a) {
+    using S = std::conditional_t<id == conv::s2f, w2s<sw>, std::conditional_t<id == conv::u2f, w2u<sw>, w2f<sw>>>;
+    using D = std::conditional_t<id == conv::f2s, w2s<dw>, std::conditional_t<id == conv::f2u, w2u<dw>, w2f<dw>>>;
+    return D(get<S>(a));
+}
+
 template<conv id>
 const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const Def* dbg) {
     auto& world = dst_ty->world();
@@ -274,12 +272,12 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
             Res res;
             // clang-format off
             if (false) {}
-#define M(S, D) \
-            else if (S == *sw && D == *dw) { \
+#define M(S, D)                                         \
+            else if (S == *sw && D == *dw) {            \
                 if constexpr (S >= min_s && D >= min_d) \
-                    res = FoldConv<id, S, D>::run(*l); \
-                else \
-                    goto out; \
+                    res = fold<conv, id, S, D>(*l);     \
+                else                                    \
+                    goto out;                           \
             }
             M( 1,  1) M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
             M( 8,  1) M( 8,  8) M( 8, 16) M( 8, 32) M( 8, 64)
@@ -290,9 +288,7 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
             else unreachable();
             // clang-format on
 
-            if (res) return world.lit(d_ty, *res, dbg);
-            assert(false && "TODO");
-            return world.bot(d_ty, dbg);
+            return world.lit(d_ty, *res, dbg);
         }
     }
 out:

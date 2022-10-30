@@ -37,9 +37,9 @@ bool get_sign(T val) {
         return val >> (T(sizeof(val)) * T(8) - T(1));
 }
 
-template<int> struct w2u_ {};
-template<int> struct w2s_ {};
-template<int> struct w2f_ {};
+template<int> struct w2u_ { using type = void; };
+template<int> struct w2s_ { using type = void; };
+template<int> struct w2f_ { using type = void; };
 
 #define CODE(i)                                                                         \
     using s ## i =  int ## i ##_t;                                                      \
