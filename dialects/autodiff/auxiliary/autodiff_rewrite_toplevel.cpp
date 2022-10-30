@@ -59,7 +59,7 @@ void AutoDiffEval::fetch_gradients(Lam* src, Lam* backward) {
 }
 
 Lam* AutoDiffEval::free_memory() {
-    auto& w = world();
+    auto& w          = world();
     auto free_memory = create_block("free_memory");
     for (auto ptr : allocated_memory) { op_free(ptr); }
     ret(free_memory);
@@ -76,14 +76,6 @@ void AutoDiffEval::scan(const Def* def) {
             mark(rop->arg(0));
             mark(rop->arg(1));
         }
-    } else if (auto rop = match<core::wrap>(def)) {
-        if (rop.id() == core::wrap::mul) {
-            mark(rop->arg(0));
-            mark(rop->arg(1));
-        }
-    } else if (auto rop = match<core::div>(def)) {
-        mark(rop->arg(0));
-        mark(rop->arg(1));
     }
 
     for (auto op : def->ops()) { scan(op); }
@@ -102,11 +94,12 @@ void AutoDiffEval::prepare(const Def* def) {
     scan(def);
 
     for (auto mark : markings) {
+        mark->dump(1);
         if (auto load = is_load_val(mark)) {
             auto ptr = load->arg(1);
             if (has_op_store(ptr)) { requires_caching.insert(mark); }
         } else {
-            // requires_caching.insert(mark);
+            requires_caching.insert(mark);
         }
     }
 }

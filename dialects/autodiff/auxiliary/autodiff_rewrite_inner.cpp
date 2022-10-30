@@ -43,7 +43,7 @@ Lam* AutoDiffEval::create_block(const std::string& name) {
 }
 
 Lam* AutoDiffEval::create_ret(const Lam* lam) {
-    auto& w  = world();
+    auto& w      = world();
     auto ret_lam = w.nom_lam(lam->type()->as<Pi>()->ret_pi(), w.dbg("return_" + lam->name()));
     ret_lam->set_filter(true);
     init_mem(ret_lam);
@@ -409,6 +409,18 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto index = as_lit(extract->index());
 
         attach_gradient(tup, one_hot_other_bot(tup, gradient, index));
+        return;
+    }
+
+    if (auto pack = def->isa<Pack>()) {
+        auto shape = resolve(pack->shape());
+        auto body  = pack->body();
+
+        auto gradient_val    = gradient->as<Pack>()->body();
+        auto shape_val_idx   = core::op_bitcast(w.type_int(64), shape);
+        auto shape_val       = core::op(core::conv::u2r, gradient_val->type(), shape_val_idx);
+        auto scaled_gradient = core::op(core::rop::mul, core::RMode::none, shape_val, gradient_val);
+        attach_gradient(body, scaled_gradient);
         return;
     }
 
