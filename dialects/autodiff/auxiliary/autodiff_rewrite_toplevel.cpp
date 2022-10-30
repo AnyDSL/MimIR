@@ -4,6 +4,7 @@
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
+#include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
@@ -71,8 +72,8 @@ void AutoDiffEval::mark(const Def* def) { markings.insert(def); }
 void AutoDiffEval::scan(const Def* def) {
     if (!visited_scan.insert(def).second) return;
 
-    if (auto rop = match<core::rop>(def)) {
-        if (rop.id() == core::rop::mul || rop.id() == core::rop::div) {
+    if (auto rop = match<math::arith>(def)) {
+        if (rop.id() == math::arith::mul || rop.id() == math::arith::div) {
             mark(rop->arg(0));
             mark(rop->arg(1));
         }

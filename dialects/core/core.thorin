@@ -212,9 +212,3 @@
 .ax %core.zip: Π [r: .Nat, s: «r; .Nat»]
     -> Π [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i»
     -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»», normalize_zip;
-
-.ax %core.math1(sin, cos, lgamma, log, tanh, exp, sqrt):
-    Π [w: .Nat] -> %core.Real w -> %core.Real w;
-
-.ax %core.math2(max):
-    Π [w: .Nat] -> [%core.Real w, %core.Real w] -> %core.Real w;

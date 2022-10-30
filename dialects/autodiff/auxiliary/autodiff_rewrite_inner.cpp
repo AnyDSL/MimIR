@@ -13,6 +13,7 @@
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/core/core.h"
 #include "dialects/direct/direct.h"
+#include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
@@ -27,7 +28,7 @@ bool is_idx(const Def* ty) {
 
 const Def* zero(const Def* ty) {
     auto& w = ty->world();
-    if (match<core::Real>(ty)) { return w.lit(ty, 0.0); }
+    if (match<math::F>(ty)) { return w.lit(ty, 0.0); }
     if (is_idx(ty)) { return w.lit(ty, 0); }
     if (auto arr = ty->isa<Arr>()) { return w.pack(arr->shape(), zero(arr->body())); }
     return w.lit(ty, 0);
@@ -273,17 +274,17 @@ const Def* AutoDiffEval::augment_bitcast(const App* bitcast) {
 
 const Def* for_size(/*const Def*& mem,*/ const Def* start, const Def* end, const Def* inc) {
     auto& w            = start->world();
-    auto span          = core::op(core::wrap::sub, core::WMode::none, end, start);
-    auto inc_minus_one = core::op(core::wrap::sub, core::WMode::none, inc, one(w));
-    auto size          = core::op(core::wrap::add, core::WMode::none, span, inc_minus_one);
+    auto span          = core::op(core::wrap::sub, core::Mode::none, end, start);
+    auto inc_minus_one = core::op(core::wrap::sub, core::Mode::none, inc, one(w));
+    auto size          = core::op(core::wrap::add, core::Mode::none, span, inc_minus_one);
     // auto [mem2, size]  = core::op(core::div::udiv, mem, span_ext, inc)->projs<2>();
     // mem                = mem2;
     return size;
 }
 
 const Def* normalized_to_loop_index(const Def* start, const Def* inc, const Def* normalized_index) {
-    auto correct_increment = core::op(core::wrap::mul, core::WMode::none, normalized_index, inc);
-    auto loop_index        = core::op(core::wrap::add, core::WMode::none, correct_increment, start);
+    auto correct_increment = core::op(core::wrap::mul, core::Mode::none, normalized_index, inc);
+    auto loop_index        = core::op(core::wrap::add, core::Mode::none, correct_increment, start);
     return loop_index;
 }
 
@@ -304,9 +305,9 @@ const Def* sum(const Def* left, const Def* right) {
     if (right->isa<Bot>()) { return left; }
 
     if (is_idx(left->type())) {
-        return core::op(core::wrap::add, core::WMode::none, left, right);
-    } else if (match<core::Real>(left->type())) {
-        return core::op(core::rop::add, core::RMode::none, left, right);
+        return core::op(core::wrap::add, core::Mode::none, left, right);
+    } else if (match<math::F>(left->type())) {
+        return math::op(math::arith::add, math::Mode::none, left, right);
     } else if (left->isa<Tuple>()) {
         DefVec new_ops;
         for (size_t i = 0; i < left->num_projs(); i++) { new_ops.push_back(sum(left->proj(i), right->proj(i))); }
@@ -365,14 +366,14 @@ const Def* scale(const Def* shape, const Def* def) {
         return w.tuple(new_ops);
     }
 
-    if (match<core::Real>(def->type())) {
+    if (match<math::F>(def->type())) {
         auto shape_idx       = core::op_bitcast(w.type_int(64), shape);
-        auto shape_val       = core::op(core::conv::u2r, def->type(), shape_idx);
-        auto scaled_gradient = core::op(core::rop::mul, core::RMode::none, shape_val, def);
+        auto shape_val       = math::op(math::conv::u2f, def->type(), shape_idx);
+        auto scaled_gradient = math::op(math::arith::mul, math::Mode::none, shape_val, def);
         return scaled_gradient;
     } else if (is_idx(def->type())) {
         auto shape_idx       = core::op_bitcast(def->type(), shape);
-        auto scaled_gradient = core::op(core::wrap::mul, core::WMode::none, shape_idx, def);
+        auto scaled_gradient = core::op(core::wrap::mul, core::Mode::none, shape_idx, def);
         return scaled_gradient;
     }
 
@@ -450,13 +451,13 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
 
         if (wrap.id() == core::wrap::add) {
         } else if (wrap.id() == core::wrap::sub) {
-            right_grad = core::op_wminus(core::WMode::none, gradient);
+            right_grad = core::op_wminus(core::Mode::none, gradient);
         } else if (wrap.id() == core::wrap::mul) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
-            left_grad  = core::op(core::wrap::mul, core::WMode::none, gradient, right_value);
-            right_grad = core::op(core::wrap::mul, core::WMode::none, gradient, left_value);
+            left_grad  = core::op(core::wrap::mul, core::Mode::none, gradient, right_value);
+            right_grad = core::op(core::wrap::mul, core::Mode::none, gradient, left_value);
         }
 
         attach_gradient(wrap->arg(), w.tuple({left_grad, right_grad}));
@@ -468,33 +469,33 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
 
             auto [div_mem, left_grad] = core::op(div.id(), current_mem, gradient, right_value)->projs<2>();
             auto right_grad =
-                core::op(core::wrap::mul, core::WMode::none, core::op_wminus(core::WMode::none, left_grad), left_value);
+                core::op(core::wrap::mul, core::Mode::none, core::op_wminus(core::Mode::none, left_grad), left_value);
             current_mem = div_mem;
             attach_gradient(wrap->arg(), w.tuple({left_grad, right_grad}));
         }
-    } else if (auto rop = match<core::rop>(def)) {
+    } else if (auto rop = match<math::arith>(def)) {
         auto [left, right] = rop->args<2>();
 
         const Def* left_grad  = gradient;
         const Def* right_grad = gradient;
 
-        if (rop.id() == core::rop::add) {
-        } else if (rop.id() == core::rop::sub) {
-            right_grad = core::op_rminus(core::RMode::none, gradient);
-        } else if (rop.id() == core::rop::mul) {
+        if (rop.id() == math::arith::add) {
+        } else if (rop.id() == math::arith::sub) {
+            right_grad = math::op_rminus(math::Mode::none, gradient);
+        } else if (rop.id() == math::arith::mul) {
             right->dump(1);
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
-            left_grad  = core::op(core::rop::mul, core::RMode::none, gradient, right_value);
-            right_grad = core::op(core::rop::mul, core::RMode::none, gradient, left_value);
-        } else if (rop.id() == core::rop::div) {
+            left_grad  = math::op(math::arith::mul, math::Mode::none, gradient, right_value);
+            right_grad = math::op(math::arith::mul, math::Mode::none, gradient, left_value);
+        } else if (rop.id() == math::arith::div) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
-            left_grad = core::op(core::rop::div, core::RMode::none, gradient, right_value);
+            left_grad = math::op(math::arith::div, math::Mode::none, gradient, right_value);
             right_grad =
-                core::op(core::rop::mul, core::RMode::none, core::op_rminus(core::RMode::none, left_grad), left_value);
+                math::op(math::arith::mul, math::Mode::none, math::op_rminus(math::Mode::none, left_grad), left_value);
         }
 
         attach_gradient(rop->arg(), w.tuple({left_grad, right_grad}));
@@ -564,7 +565,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 Scope scope(body_lam);
                 for (const Def* free_def : scope.free_defs()) {
                     auto free_ty = free_def->type();
-                    if (is_idx(free_ty) || match<core::Real>(free_ty)) { resolve(free_def); }
+                    if (is_idx(free_ty) || match<math::F>(free_ty)) { resolve(free_def); }
                 }
 
                 auto invert_for_mem = end_mem();
@@ -624,8 +625,8 @@ const Def* AutoDiffEval::normalized_to_cache_index(const Def* normalized_index) 
     const Def* cache_index;
     auto parent = current_loop->parent;
     if (parent != nullptr) {
-        cache_index = core::op(core::wrap::mul, core::WMode::none, parent->size, normalized_index);
-        cache_index = core::op(core::wrap::add, core::WMode::none, parent->index(), cache_index);
+        cache_index = core::op(core::wrap::mul, core::Mode::none, parent->size, normalized_index);
+        cache_index = core::op(core::wrap::add, core::Mode::none, parent->index(), cache_index);
     } else {
         cache_index = normalized_index;
     }
@@ -662,10 +663,10 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
     Lam* inv_loop_body = w.nom_lam(loop_body->type()->as<Pi>(), w.dbg("invert_" + loop_body->name()));
     inv_loop_body->set_filter(true);
 
-    const Def* size_sub_one = core::op(core::wrap::sub, core::WMode::none, current_loop->local_size, one(w));
+    const Def* size_sub_one = core::op(core::wrap::sub, core::Mode::none, current_loop->local_size, one(w));
 
     auto normalized_index = inv_loop_body->arg(0_s);
-    normalized_index      = core::op(core::wrap::sub, core::WMode::none, size_sub_one, normalized_index);
+    normalized_index      = core::op(core::wrap::sub, core::Mode::none, size_sub_one, normalized_index);
 
     current_loop->index()       = normalized_to_loop_index(aug_start, aug_inc, normalized_index);
     current_loop->cache_index() = normalized_to_cache_index(normalized_index);
@@ -694,7 +695,7 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
     Scope scope(loop_body);
     for (auto free_def : scope.free_defs()) {
         auto free_ty = free_def->type();
-        if (is_idx(free_ty) || match<core::Real>(free_ty)) {
+        if (is_idx(free_ty) || match<math::F>(free_ty)) {
             auto acc_grad = get_gradient(free_def);
             if (acc_grad) {
                 acc_ops.push_back(acc_grad);
@@ -764,7 +765,7 @@ void AutoDiffEval::push_loop_frame(const App* for_app, const Def* size) {
     } else {
         auto next_frame          = std::make_shared<LoopFrame>(*this);
         next_frame->parent       = current_loop;
-        next_frame->size         = core::op(core::wrap::mul, core::WMode::none, current_loop->size, size);
+        next_frame->size         = core::op(core::wrap::mul, core::Mode::none, current_loop->size, size);
         next_frame->local_size   = size;
         loop_assignment[for_app] = next_frame;
         current_loop             = next_frame;
@@ -816,7 +817,7 @@ const Def* AutoDiffEval::augment_for(const App* for_app) {
     Scope scope(body_lam);
     for (const Def* free_def : scope.free_defs()) {
         auto free_ty = free_def->type();
-        if (is_idx(free_ty) || match<core::Real>(free_ty)) { augment(free_def); }
+        if (is_idx(free_ty) || match<math::F>(free_ty)) { augment(free_def); }
     }
 
     push_loop_frame(for_app, size);

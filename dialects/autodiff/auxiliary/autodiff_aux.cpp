@@ -5,6 +5,7 @@
 
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/builder.h"
+#include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
@@ -170,7 +171,7 @@ const Def* autodiff_type_fun(const Def* ty, bool flat) {
     }
     if (ty->isa<Idx>()) { return ty; }
 
-    if (match<core::Real>(ty)) { return ty; }
+    if (match<math::F>(ty)) { return ty; }
 
     if (ty == world.type_nat()) return ty;
     if (auto arr = ty->isa<Arr>()) {
