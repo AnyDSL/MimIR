@@ -358,20 +358,20 @@ const Def* one_hot_other_bot(const Def* pattern, const Def* def, size_t position
     return w.tuple(vec);
 }
 
-const Def* scale( const Def* shape, const Def* def ){
+const Def* scale(const Def* shape, const Def* def) {
     auto& w = shape->world();
-    if(def->num_projs() > 1){
-        DefArray new_ops(def->projs(), [&](const Def* op){ return scale(shape, op); });
+    if (def->num_projs() > 1) {
+        DefArray new_ops(def->projs(), [&](const Def* op) { return scale(shape, op); });
         return w.tuple(new_ops);
     }
 
-    if(match<core::Real>(def->type())){
-        auto shape_idx = core::op_bitcast(w.type_int(64), shape);
+    if (match<core::Real>(def->type())) {
+        auto shape_idx       = core::op_bitcast(w.type_int(64), shape);
         auto shape_val       = core::op(core::conv::u2r, def->type(), shape_idx);
         auto scaled_gradient = core::op(core::rop::mul, core::RMode::none, shape_val, def);
         return scaled_gradient;
-    }else if(is_idx(def->type())){
-        auto shape_idx = core::op_bitcast( def->type(), shape);
+    } else if (is_idx(def->type())) {
+        auto shape_idx       = core::op_bitcast(def->type(), shape);
         auto scaled_gradient = core::op(core::wrap::mul, core::WMode::none, shape_idx, def);
         return scaled_gradient;
     }
@@ -437,7 +437,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto shape = resolve(pack->shape());
         auto body  = pack->body();
 
-        auto gradient_val    = gradient->as<Pack>()->body();
+        auto gradient_val = gradient->as<Pack>()->body();
         attach_gradient(body, scale(shape, gradient_val));
         return;
     }
