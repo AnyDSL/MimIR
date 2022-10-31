@@ -33,16 +33,67 @@ private:
 
 // clang-format off
 template<class Id, Id id, nat_t w>
+Res fold(u64 a) {
+    using T = w2f<w>;
+    auto x = bitcast<T>(a);
+    if constexpr (std::is_same_v<Id, tri>) {
+        if constexpr (false) {}
+        else if constexpr (id == tri:: sin ) return  sin (x);
+        else if constexpr (id == tri:: cos ) return  cos (x);
+        else if constexpr (id == tri:: tan ) return  tan (x);
+        else if constexpr (id == tri:: sinh) return  sinh(x);
+        else if constexpr (id == tri:: cosh) return  cosh(x);
+        else if constexpr (id == tri:: tanh) return  tanh(x);
+        else if constexpr (id == tri::asin ) return asin (x);
+        else if constexpr (id == tri::acos ) return acos (x);
+        else if constexpr (id == tri::atan ) return atan (x);
+        else if constexpr (id == tri::asinh) return asinh(x);
+        else if constexpr (id == tri::acosh) return acosh(x);
+        else if constexpr (id == tri::atanh) return atanh(x);
+        else unreachable();
+    } else if constexpr (std::is_same_v<Id, rt>) {
+        if constexpr (false) {}
+        else if constexpr (id == rt::sq) return std::sqrt(x);
+        else if constexpr (id == rt::cb) return std::cbrt(x);
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, exp>) {
+        if constexpr (false) {}
+        else if constexpr (id == exp::exp ) return std::exp (x);
+        else if constexpr (id == exp::exp2) return std::exp2(x);
+        else if constexpr (id == exp::log ) return std::log (x);
+        else if constexpr (id == exp::log2) return std::log2(x);
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, er>) {
+        if constexpr (false) {}
+        else if constexpr (id == er::f ) return std::erf (x);
+        else if constexpr (id == er::fc) return std::erfc(x);
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, gamma>) {
+        if constexpr (false) {}
+        else if constexpr (id == gamma::t) return std::tgamma(x);
+        else if constexpr (id == gamma::l) return std::lgamma(x);
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else {
+        []<bool flag = false>() { static_assert(flag, "missing tag"); }();
+    }
+}
+
+template<class Id, Id id, nat_t w>
 Res fold(u64 a, u64 b) {
     using T = w2f<w>;
     auto x = bitcast<T>(a), y = bitcast<T>(b);
     if constexpr (std::is_same_v<Id, arith>) {
         if constexpr (false) {}
-        else if constexpr (id == arith::add) return T(    x + y);
-        else if constexpr (id == arith::sub) return T(    x - y);
-        else if constexpr (id == arith::mul) return T(    x * y);
-        else if constexpr (id == arith::div) return T(    x / y);
-        else if constexpr (id == arith::rem) return T(rem(x,  y));
+        else if constexpr (id == arith::add) return     x + y;
+        else if constexpr (id == arith::sub) return     x - y;
+        else if constexpr (id == arith::mul) return     x * y;
+        else if constexpr (id == arith::div) return     x / y;
+        else if constexpr (id == arith::rem) return rem(x,  y);
+        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, math::x>) {
+        if constexpr (false) {}
+        else if constexpr (id == x::min) return fmin(x, y);
+        else if constexpr (id == x::max) return fmax(x, y);
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, cmp>) {
         bool res = false;
@@ -56,6 +107,28 @@ Res fold(u64 a, u64 b) {
     }
 }
 // clang-format on
+
+template<class Id, Id id>
+static const Def* fold(World& world, const Def* type, const Def* a, const Def* dbg) {
+    if (a->isa<Bot>()) return world.bot(type, dbg);
+    auto la = a->isa<Lit>();
+
+    if (la) {
+        nat_t width = *isa_f(a->type());
+        Res res;
+        switch (width) {
+#define CODE(i) \
+    case i: res = fold<Id, id, i>(la->get()); break;
+            THORIN_16_32_64(CODE)
+#undef CODE
+            default: unreachable();
+        }
+
+        return world.lit(type, *res, dbg);
+    }
+
+    return nullptr;
+}
 
 /// @attention Note that @p a and @p b are passed by reference as fold also commutes if possible. @sa commute().
 template<class Id, Id id>
@@ -197,36 +270,51 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
 
 template<x id>
 const Def* normalize_x(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    return type->world().raw_app(c, arg, dbg);
+    auto& world = type->world();
+    auto [a, b] = arg->projs<2>();
+    if (auto lit = fold<x, id>(world, type, a, b, dbg)) return lit;
+    return world.raw_app(c, arg, dbg);
 }
 
 template<tri id>
 const Def* normalize_tri(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    return type->world().raw_app(c, arg, dbg);
+    auto& world = type->world();
+    if (auto lit = fold<tri, id>(world, type, arg, dbg)) return lit;
+    return world.raw_app(c, arg, dbg);
 }
 
 const Def* normalize_pow(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    return type->world().raw_app(c, arg, dbg);
+    auto& world = type->world();
+    // TODO constant folding
+    return world.raw_app(c, arg, dbg);
 }
 
 template<rt id>
 const Def* normalize_rt(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    return type->world().raw_app(c, arg, dbg);
+    auto& world = type->world();
+    if (auto lit = fold<rt, id>(world, type, arg, dbg)) return lit;
+    return world.raw_app(c, arg, dbg);
 }
 
 template<exp id>
 const Def* normalize_exp(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    return type->world().raw_app(c, arg, dbg);
+    auto& world = type->world();
+    if (auto lit = fold<exp, id>(world, type, arg, dbg)) return lit;
+    return world.raw_app(c, arg, dbg);
 }
 
 template<er id>
 const Def* normalize_er(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    return type->world().raw_app(c, arg, dbg);
+    auto& world = type->world();
+    if (auto lit = fold<er, id>(world, type, arg, dbg)) return lit;
+    return world.raw_app(c, arg, dbg);
 }
 
 template<gamma id>
 const Def* normalize_gamma(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
-    return type->world().raw_app(c, arg, dbg);
+    auto& world = type->world();
+    if (auto lit = fold<gamma, id>(world, type, arg, dbg)) return lit;
+    return world.raw_app(c, arg, dbg);
 }
 
 template<cmp id>
