@@ -95,6 +95,8 @@ Res fold(u64 a, u64 b) {
         else if constexpr (id == x::min) return fmin(x, y);
         else if constexpr (id == x::max) return fmax(x, y);
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
+    } else if constexpr (std::is_same_v<Id, pow>) {
+        return std::pow(a, b);
     } else if constexpr (std::is_same_v<Id, cmp>) {
         bool res = false;
         res |= ((id & cmp::u) != cmp::f) && std::isunordered(x, y);
@@ -285,7 +287,8 @@ const Def* normalize_tri(const Def* type, const Def* c, const Def* arg, const De
 
 const Def* normalize_pow(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
-    // TODO constant folding
+    auto [a, b] = arg->projs<2>();
+    if (auto lit = fold<pow, pow(0)>(world, type, a, b, dbg)) return lit;
     return world.raw_app(c, arg, dbg);
 }
 
