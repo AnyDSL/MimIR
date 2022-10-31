@@ -288,7 +288,7 @@ const Def* normalize_tri(const Def* type, const Def* c, const Def* arg, const De
 const Def* normalize_pow(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
-    if (auto lit = fold<pow, pow(0)>(world, type, a, b, dbg)) return lit;
+    if (auto lit = fold<pow, /*dummy*/pow(0)>(world, type, a, b, dbg)) return lit;
     return world.raw_app(c, arg, dbg);
 }
 
