@@ -21,7 +21,7 @@
 /// ```
 .ax %math.F: [p: .Nat, e: .Nat] -> *;
 ///
-/// ## Operations
+/// ## Numerical Operations
 ///
 /// ### %math.arith
 ///
@@ -43,7 +43,7 @@
 /// * `H`yperbolic counterpart
 /// * `A`rcus/`A`rea counterpart (inverse)
 ///
-/// | Subtag | Alias        | A | H | R | FF | Meaning                   | Semantic                |
+/// | Subtag | Alias        | A | H | R | FF | Meaning                   | Semantics               |
 /// |--------|--------------|---|---|---|----|---------------------------|-------------------------|
 /// | `ahff` |  `sin`       | o | o | o | oo | sine                      | \f$\sin x\f$            |
 /// | `ahfF` |  `cos`       | o | o | o | xo | cosine                    | \f$\cos x\f$            |
@@ -76,17 +76,22 @@
 ///
 /// ### %math.rt
 ///
-/// Square and cubic root:
-/// * `%%math.rt.sq`: \f$\sqrt{x}\f$
-/// * `%%math.rt.cb`: \f$\sqrt[3]{x}\f$
+/// [Square](https://en.wikipedia.org/wiki/Square_root) and [cube root](https://en.wikipedia.org/wiki/Cube_root):
+///
+/// | Name           | Meaning     | Semantics          |
+/// |----------------|-------------|--------------------|
+/// | `%%math.rt.sq` | square root | \f$\sqrt{x}\f$     |
+/// | `%%math.rt.cb` | cube root   |\f$\sqrt[3]{x}\f$   |
 ///
 .ax %math.rt(sq,cb): Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_rt;
 ///
 /// ### %math.exp
 ///
-/// Exponential and logarithm functions.
+/// [Exponential function](https://en.wikipedia.org/wiki/Exponential_function) and [logarithm](https://en.wikipedia.org/wiki/Logarithm):
+///     * `L`ogarithm
+///     * `B`ase 2 or natural
 ///
-/// | Subtag | Alias       | B | L | Meaning                 | Semantic       |
+/// | Subtag | Alias       | B | L | Meaning                 | Semantics      |
 /// |--------|-------------|---|---|-------------------------|----------------|
 /// | `bl`   | `exp`       | o | o | natural exponential     | \f$e^x\f$      |
 /// | `bL`   | `log`       | o | x | natural logarithm       | \f$\ln x\f$    |
@@ -98,9 +103,9 @@
 ///
 /// ### %math.er
 ///
-/// [Error](https://en.wikipedia.org/wiki/Error_function) and [Complementary error function](https://en.wikipedia.org/wiki/Error_function#Complementary_error_function).
+/// [Error](https://en.wikipedia.org/wiki/Error_function) and [complementary error function](https://en.wikipedia.org/wiki/Error_function#Complementary_error_function).
 ///
-/// | Name           | Meaning                      | Semantic                                                                 |
+/// | Name           | Meaning                      | Semantics                                                                |
 /// |----------------|------------------------------|--------------------------------------------------------------------------|
 /// | `%%math.er.f`  | error function               | \f$\frac{2}{\sqrt\pi}\int_0^x e^{-t^2}\,dt\f$                            |
 /// | `%%math.er.fc` | complementary error funciton | \f$\frac{2}{\sqrt\pi}\int_x^\infty e^{-t^2}\,dt = 1 - \textrm{erf}(x)\f$ |
@@ -109,7 +114,12 @@
 ///
 /// ### %math.gamma
 ///
-/// Gamma function and its natural logarithm.
+/// [Gamma function](https://en.wikipedia.org/wiki/Gamma_function) and its natural [logarithm](https://en.wikipedia.org/wiki/Gamma_function#The_log-gamma_function).
+/// 
+/// | Name               | Meaning                             | Semantics                                                        |
+/// |--------------------|-------------------------------------|------------------------------------------------------------------|
+/// | ``%%math.gamma.t`` | gamma funciton                      | \f$\Gamma(x) = \int_0^\infty t^{x-1} e^{-t}\,dt\f$               |
+/// | ``%%math.gamma.l`` | natural logarithm of gamma funciton | \f$\ln \mid \int_0^\infty t^{x-1} e^{-t}\,dt \mid\f$ |
 ///
 .ax %math.gamma(t, l): Π [p: .Nat, e: .Nat] -> .Nat -> %math.F (p, e) -> %math.F (p, e), normalize_gamma;
 ///
