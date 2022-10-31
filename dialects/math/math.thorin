@@ -39,14 +39,14 @@
 ///     `-0.0` is considered to be less than `+0.0` for this intrinsic. 
 ///     Note that these are the semantics specified in the draft of IEEE 754-2018.
 ///     * `N`: 
-///     Follows the IEEE-754 semantics for minNum/maxNum, **except for handling of signaling NaNs**.
-///     **This match’s the behavior of libm’s fmin/fmax**.
+///         Follows the IEEE-754 semantics for minNum/maxNum, **except for handling of signaling NaNs**.
+///         **This match’s the behavior of libm’s fmin/fmax**.
 ///     
-///     If either operand is a NaN, returns the other non-NaN operand.
-///     Returns NaN only if both operands are NaN.
-///     The returned NaN is always quiet.
-///     If the operands compare equal, returns a value that compares equal to both operands.
-///     This means that `fmin(+/-0.0, +/-0.0)` could return either `-0.0` or `0.0`.
+///         If either operand is a NaN, returns the other non-NaN operand.
+///         Returns NaN only if both operands are NaN.
+///         The returned NaN is always quiet.
+///         If the operands compare equal, returns a value that compares equal to both operands.
+///         This means that `fmin(+/-0.0, +/-0.0)` could return either `-0.0` or `0.0`.
 ///
 /// | Subtag | Alias        | N | M |
 /// |--------|--------------|---|---|
