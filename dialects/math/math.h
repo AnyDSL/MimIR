@@ -44,7 +44,7 @@ inline const Def* fn(arith o, const Def* pe, const Def* mode, const Def* dbg = {
     World& w = mode->world();
     return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
 }
-inline const Def* fn(x o, const Def* pe, const Def* mode, const Def* dbg = {}) {
+inline const Def* fn(extrema o, const Def* pe, const Def* mode, const Def* dbg = {}) {
     World& w = mode->world();
     return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
 }
@@ -84,7 +84,7 @@ inline const Def* op(arith o, const Def* mode, const Def* a, const Def* b, const
     World& w = mode->world();
     return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
 }
-inline const Def* op(x o, const Def* mode, const Def* a, const Def* b, const Def* dbg = {}) {
+inline const Def* op(extrema o, const Def* mode, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = mode->world();
     return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
 }
@@ -207,7 +207,7 @@ namespace thorin {
 /// @name is_commutative/is_associative
 ///@{
 // clang-format off
-constexpr bool is_commutative(math::x       ) { return true; }
+constexpr bool is_commutative(math::extrema ) { return true; }
 constexpr bool is_commutative(math::arith id) { return id == math::arith ::add || id == math::arith::mul; }
 constexpr bool is_commutative(math::cmp   id) { return id == math::cmp   ::e   || id == math::cmp  ::ne ; }
 // clang-format off

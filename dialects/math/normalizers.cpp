@@ -90,10 +90,15 @@ Res fold(u64 a, u64 b) {
         else if constexpr (id == arith::div) return     x / y;
         else if constexpr (id == arith::rem) return rem(x,  y);
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
-    } else if constexpr (std::is_same_v<Id, math::x>) {
+    } else if constexpr (std::is_same_v<Id, math::extrema>) {
         if constexpr (false) {}
-        else if constexpr (id == x::min) return fmin(x, y);
-        else if constexpr (id == x::max) return fmax(x, y);
+        else if constexpr (id == extrema::minimum) return fmin(x, y);
+        else if constexpr (id == extrema::maximum) return fmax(x, y);
+        else if constexpr (id == extrema::minnum || id == extrema::maxnum){
+            if (std::isnan(x)) return y;
+            if (std::isnan(y)) return y;
+            return id == extrema::minnum ? fmin(x, y) : fmax(x, y);
+        }
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, pow>) {
         return std::pow(a, b);
@@ -270,11 +275,11 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
     return world.raw_app(callee, {a, b}, dbg);
 }
 
-template<x id>
-const Def* normalize_x(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
+template<extrema id>
+const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
     auto [a, b] = arg->projs<2>();
-    if (auto lit = fold<x, id>(world, type, a, b, dbg)) return lit;
+    if (auto lit = fold<extrema, id>(world, type, a, b, dbg)) return lit;
     return world.raw_app(c, arg, dbg);
 }
 

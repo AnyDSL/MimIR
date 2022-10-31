@@ -875,12 +875,17 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
-    } else if (auto x = match<math::x>(def)) {
-        auto [a, b]   = x->args<2>([this](auto def) { return emit(def); });
-        auto t        = convert(x->type());
+    } else if (auto extrema = match<math::extrema>(def)) {
+        auto [a, b]   = extrema->args<2>([this](auto def) { return emit(def); });
+        auto t        = convert(extrema->type());
         std::string f = "llvm.";
-        f += x.id() == math::x::min ? "minum." : "maxnum.";
-        f += llvm_suffix(x->type());
+        switch (extrema.id()) {
+            case math::extrema::minimum: f += "minimum"; break;
+            case math::extrema::maximum: f += "maximum"; break;
+            case math::extrema::minnum: f += "minnum"; break;
+            case math::extrema::maxnum: f += "maxnum"; break;
+        }
+        f += llvm_suffix(extrema->type());
 
         declare("{} @{}({}, {})", t, f, t, t);
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
