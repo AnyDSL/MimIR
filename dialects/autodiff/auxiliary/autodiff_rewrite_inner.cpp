@@ -273,12 +273,12 @@ const Def* AutoDiffEval::augment_bitcast(const App* bitcast) {
 }
 
 const Def* for_size(/*const Def*& mem,*/ const Def* start, const Def* end, const Def* inc) {
-    auto& w            = start->world();
-    auto span          = core::op(core::wrap::sub, core::Mode::none, end, start);
-    auto inc_minus_one = core::op(core::wrap::sub, core::Mode::none, inc, one(w));
-    auto size          = core::op(core::wrap::add, core::Mode::none, span, inc_minus_one);
-    // auto [mem2, size]  = core::op(core::div::udiv, mem, span_ext, inc)->projs<2>();
-    // mem                = mem2;
+    auto& w   = start->world();
+    auto size = core::op(core::wrap::sub, core::Mode::none, end, start);
+    // auto inc_minus_one = core::op(core::wrap::sub, core::Mode::none, inc, one(w));
+    // auto size          = core::op(core::wrap::add, core::Mode::none, span, inc_minus_one);
+    //  auto [mem2, size]  = core::op(core::div::udiv, mem, span_ext, inc)->projs<2>();
+    //  mem                = mem2;
     return size;
 }
 
@@ -441,6 +441,15 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto gradient_val = gradient->as<Pack>()->body();
         attach_gradient(body, scale(shape, gradient_val));
         return;
+    }
+
+    if (auto exp = match<math::exp>(def)) {
+        if (exp.id() == math::exp::exp) {
+            auto result_exp    = resolve(exp);
+            auto upstream_grad = math::op(math::arith::mul, math::Mode::none, result_exp, gradient);
+            attach_gradient(exp->arg(), upstream_grad);
+            return;
+        }
     }
 
     if (auto wrap = match<core::wrap>(def)) {
@@ -826,21 +835,6 @@ const Def* AutoDiffEval::augment_for(const App* for_app) {
     auto aug_exit = augment(exit);
 
     auto mem = end_mem();
-
-    if (current_loop == root) {
-        Lam* current   = build(w).mem_ty().lam("init_caches");
-        InitFrame last = {.lam = current, .mem = mem::mem_var(current)};
-        for (; !init_frames.empty();) {
-            auto next = init_frames.top();
-            init_frames.pop();
-            last.lam->set_body(w.app(next.lam, last.mem));
-            last = next;
-        }
-
-        aug_acc = mem::replace_mem(last.mem, aug_acc);
-        last.lam->set_body(affine::op_for(w, zero(w), size, one(w), aug_acc->projs(), aug_body, aug_exit));
-        return w.app(current, {mem});
-    }
 
     aug_acc = mem::replace_mem(mem, aug_acc);
     return affine::op_for(w, zero(w), size, one(w), aug_acc->projs(), aug_body, aug_exit);

@@ -79,6 +79,10 @@ void AutoDiffEval::scan(const Def* def) {
         }
     }
 
+    if (auto exp = match<math::exp>(def)) {
+        if (exp.id() == math::exp::exp) { mark(exp); }
+    }
+
     for (auto op : def->ops()) { scan(op); }
 }
 
@@ -105,6 +109,21 @@ void AutoDiffEval::prepare(const Def* def) {
     }
 }
 
+Lam* AutoDiffEval::init_caches(Lam* next) {
+    auto& w        = world();
+    Lam* current   = build(w).mem_ty().lam("init_caches");
+    InitFrame last = {.lam = current, .mem = mem::mem_var(current)};
+    for (; !init_frames.empty();) {
+        auto next = init_frames.top();
+        init_frames.pop();
+        last.lam->set_body(w.app(next.lam, last.mem));
+        last = next;
+    }
+
+    last.lam->set_body(w.app(next, last.mem));
+    return current;
+}
+
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& w     = world();
     auto diffee = def->isa_nom<Lam>();
@@ -114,8 +133,11 @@ const Def* AutoDiffEval::derive_(const Def* def) {
 
     auto diff_ty = autodiff_type_fun_pi(diffee->type());
 
-    auto diff_lam = w.nom_lam(diff_ty, w.dbg("forward_begin_" + diffee->name()));
+    auto diff_lam = w.nom_lam(diff_ty, w.dbg("diff_lam_" + diffee->name()));
     diff_lam->set_filter(true);
+
+    auto forward_begin = w.nom_lam(w.cn(mem::type_mem(w)), w.dbg("forward_begin_" + diffee->name()));
+    forward_begin->set_filter(true);
 
     auto inv_lam_ty     = forward_to_backward(diffee->type()->as<Pi>());
     auto backward_begin = w.nom_lam(inv_lam_ty, w.dbg("backward_begin_" + diffee->name()));
@@ -132,9 +154,9 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     fetch_gradients(diffee, backward_begin);
 
     current_state = State::Augment;
-    init_mem(diff_lam);
+    init_mem(forward_begin);
     auto aug_body = augment(diffee->body());
-    diff_lam->set_body(aug_body);
+    forward_begin->set_body(aug_body);
 
     add_inverted(diffee->var(), diff_lam->var());
 
@@ -168,6 +190,9 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     backward_begin->set_body(w.app(inv_diffee, gradient_results));
     backward_end->set_body(w.app(free_lam, {mem::mem_var(backward_end), free_ret}));
     free_ret->set_body(w.app(backward_begin->ret_var(), mem::replace_mem(mem::mem_var(free_ret), backward_end->var())));
+
+    diff_lam->set_body(w.app(init_caches(forward_begin), mem::mem_var(diff_lam)));
+
     return diff_lam;
 }
 

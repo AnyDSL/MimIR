@@ -232,6 +232,7 @@ public:
     void prepare(const Def*);
     void mark(const Def* def);
     void scan(const Def* def);
+    Lam* init_caches(Lam* next);
 
     const Def* rewrite(const Def*) override;
 
