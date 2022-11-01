@@ -501,10 +501,13 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         } else if (rop.id() == math::arith::div) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
+            auto value = resolve(def);
 
             left_grad = math::op(math::arith::div, math::Mode::none, gradient, right_value);
-            right_grad =
-                math::op(math::arith::mul, math::Mode::none, math::op_rminus(math::Mode::none, left_grad), left_value);
+
+            right_grad = math::op_rminus(math::Mode::none, gradient);
+            right_grad = math::op(math::arith::mul, math::Mode::none, right_grad, value);
+            right_grad = math::op(math::arith::div, math::Mode::none, right_grad, right_value);
         }
 
         attach_gradient(rop->arg(), w.tuple({left_grad, right_grad}));

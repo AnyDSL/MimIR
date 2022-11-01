@@ -73,9 +73,13 @@ void AutoDiffEval::scan(const Def* def) {
     if (!visited_scan.insert(def).second) return;
 
     if (auto rop = match<math::arith>(def)) {
-        if (rop.id() == math::arith::mul || rop.id() == math::arith::div) {
+        if (rop.id() == math::arith::mul) {
             mark(rop->arg(0));
             mark(rop->arg(1));
+        }else if (rop.id() == math::arith::div) {
+            mark(rop->arg(0));
+            mark(rop->arg(1));
+            mark(def);
         }
     }
 
