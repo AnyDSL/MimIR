@@ -7,7 +7,6 @@
 
 namespace thorin::math {
 
-namespace Mode {
 enum Mode : nat_t {
     none = 0,
     nnan = 1 << 0,     ///< No NaNs.
@@ -34,43 +33,50 @@ enum Mode : nat_t {
     bot    = fast,
     top    = none,
 };
+
+using VMode = std::variant<Mode, nat_t, const Def*>;
+
+inline const Def* mode(World& w, VMode m) {
+    if (auto def = std::get_if<const Def*>(&m)) return *def;
+    if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
+    return w.lit_nat(std::get<Mode>(m));
 }
 
 inline const Def* finfer(const Def* def) { return force<F>(def->type())->arg(); }
 
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
-inline const Def* fn(arith o, const Def* pe, const Def* mode, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
+inline const Def* fn(arith o, const Def* pe, VMode m, const Def* dbg = {}) {
+    World& w = pe->world();
+    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
 }
-inline const Def* fn(extrema o, const Def* pe, const Def* mode, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
+inline const Def* fn(extrema o, const Def* pe, VMode m, const Def* dbg = {}) {
+    World& w = pe->world();
+    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
 }
-inline const Def* fn(pow o, const Def* pe, const Def* mode, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
+inline const Def* fn(pow o, const Def* pe, VMode m, const Def* dbg = {}) {
+    World& w = pe->world();
+    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
 }
-inline const Def* fn(rt o, const Def* pe, const Def* mode, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
+inline const Def* fn(rt o, const Def* pe, VMode m, const Def* dbg = {}) {
+    World& w = pe->world();
+    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
 }
-inline const Def* fn(tri o, const Def* pe, const Def* mode, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
+inline const Def* fn(tri o, const Def* pe, VMode m, const Def* dbg = {}) {
+    World& w = pe->world();
+    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
 }
-inline const Def* fn(exp o, const Def* pe, const Def* mode, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
+inline const Def* fn(exp o, const Def* pe, VMode m, const Def* dbg = {}) {
+    World& w = pe->world();
+    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
 }
-inline const Def* fn(er o, const Def* pe, const Def* mode, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
+inline const Def* fn(er o, const Def* pe, VMode m, const Def* dbg = {}) {
+    World& w = pe->world();
+    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
 }
-inline const Def* fn(cmp o, const Def* pe, const Def* mode, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(w.app(w.ax(o), pe, dbg), mode, dbg);
+inline const Def* fn(cmp o, const Def* pe, VMode m, const Def* dbg = {}) {
+    World& w = pe->world();
+    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
 }
 inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* dbg = {}) {
     World& w = src_s->world();
@@ -80,48 +86,43 @@ inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* dbg 
 
 /// @name op - these guys build the final function application for the various operations
 ///@{
-inline const Def* op(arith o, const Def* mode, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
+inline const Def* op(arith o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
+    World& w = a->world();
+    return w.app(fn(o, finfer(a), m), {a, b}, dbg);
 }
-inline const Def* op(extrema o, const Def* mode, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
+inline const Def* op(extrema o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
+    World& w = a->world();
+    return w.app(fn(o, finfer(a), m), {a, b}, dbg);
 }
-inline const Def* op(pow o, const Def* mode, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
+inline const Def* op(pow o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
+    World& w = a->world();
+    return w.app(fn(o, finfer(a), m), {a, b}, dbg);
 }
-inline const Def* op(rt o, const Def* mode, const Def* a, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(fn(o, finfer(a), mode), a, dbg);
+inline const Def* op(rt o, VMode m, const Def* a, const Def* dbg = {}) {
+    World& w = a->world();
+    return w.app(fn(o, finfer(a), m), a, dbg);
 }
-inline const Def* op(tri o, const Def* mode, const Def* a, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(fn(o, finfer(a), mode), a, dbg);
+inline const Def* op(tri o, VMode m, const Def* a, const Def* dbg = {}) {
+    World& w = a->world();
+    return w.app(fn(o, finfer(a), m), a, dbg);
 }
-inline const Def* op(exp o, const Def* mode, const Def* a, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(fn(o, finfer(a), mode), a, dbg);
+inline const Def* op(exp o, VMode m, const Def* a, const Def* dbg = {}) {
+    World& w = a->world();
+    return w.app(fn(o, finfer(a), m), a, dbg);
 }
-inline const Def* op(er o, const Def* mode, const Def* a, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(fn(o, finfer(a), mode), a, dbg);
+inline const Def* op(er o, VMode m, const Def* a, const Def* dbg = {}) {
+    World& w = a->world();
+    return w.app(fn(o, finfer(a), m), a, dbg);
 }
-inline const Def* op(cmp o, const Def* mode, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = mode->world();
-    return w.app(fn(o, finfer(a), mode), {a, b}, dbg);
+inline const Def* op(cmp o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
+    World& w = a->world();
+    return w.app(fn(o, finfer(a), m), {a, b}, dbg);
 }
 inline const Def* op(conv o, const Def* dst_t, const Def* src, const Def* dbg = {}) {
     World& w = dst_t->world();
     auto d   = dst_t->as<App>()->arg();
     auto s   = src->type()->as<App>()->arg();
     return w.app(fn(o, s, d), src, dbg);
-}
-template<class O>
-const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return op(o, w.lit_nat(mode), a, b, dbg);
 }
 
 template<nat_t P, nat_t E>
@@ -189,14 +190,10 @@ inline const Lit* lit_f(World& w, nat_t width, f64 val, const Def* dbg = {}) {
 
 /// @name wrappers for unary operations
 ///@{
-inline const Def* op_rminus(const Def* mode, const Def* a, const Def* dbg = {}) {
+inline const Def* op_rminus(VMode m, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     auto s   = isa_f(a->type());
-    return op(arith::sub, mode, lit_f(w, *s, -0.0), a, dbg);
-}
-inline const Def* op_rminus(nat_t mode, const Def* a, const Def* dbg = {}) {
-    World& w = a->world();
-    return op_rminus(w.lit_nat(mode), a, dbg);
+    return op(arith::sub, m, lit_f(w, *s, -0.0), a, dbg);
 }
 ///@}
 

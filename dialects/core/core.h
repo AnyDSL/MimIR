@@ -7,35 +7,41 @@
 
 namespace thorin::core {
 
-namespace Mode {
-enum : nat_t {
+enum Mode : nat_t {
     none = 0,
     nsw  = 1 << 0,
     nuw  = 1 << 1,
 };
+
+using VMode = std::variant<Mode, nat_t, const Def*>;
+
+inline const Def* mode(World& w, VMode m) {
+    if (auto def = std::get_if<const Def*>(&m)) return *def;
+    if (auto nat = std::get_if<nat_t>(&m)) return w.lit_nat(*nat);
+    return w.lit_nat(std::get<Mode>(m));
 }
 
 /// @name fn - these guys yield the final function to be invoked for the various operations
 ///@{
-inline const Def* fn(bit2 o, const Def* mod, const Def* dbg = {}) {
-    World& w = mod->world();
-    return w.app(w.ax(o), mod, dbg);
+inline const Def* fn(bit2 o, const Def* s, const Def* dbg = {}) {
+    World& w = s->world();
+    return w.app(w.ax(o), s, dbg);
 }
-inline const Def* fn(icmp o, const Def* mod, const Def* dbg = {}) {
-    World& w = mod->world();
-    return w.app(w.ax(o), mod, dbg);
+inline const Def* fn(icmp o, const Def* s, const Def* dbg = {}) {
+    World& w = s->world();
+    return w.app(w.ax(o), s, dbg);
 }
-inline const Def* fn(shr o, const Def* mod, const Def* dbg = {}) {
-    World& w = mod->world();
-    return w.app(w.ax(o), mod, dbg);
+inline const Def* fn(shr o, const Def* s, const Def* dbg = {}) {
+    World& w = s->world();
+    return w.app(w.ax(o), s, dbg);
 }
-inline const Def* fn(wrap o, const Def* wmode, const Def* mod, const Def* dbg = {}) {
-    World& w = mod->world();
-    return w.app(w.ax(o), {wmode, mod}, dbg);
+inline const Def* fn(wrap o, VMode m, const Def* s, const Def* dbg = {}) {
+    World& w = s->world();
+    return w.app(w.ax(o), {mode(w, m), s}, dbg);
 }
-inline const Def* fn(div o, const Def* mod, const Def* dbg = {}) {
-    World& w = mod->world();
-    return w.app(w.ax(o), mod, dbg);
+inline const Def* fn(div o, const Def* s, const Def* dbg = {}) {
+    World& w = s->world();
+    return w.app(w.ax(o), s, dbg);
 }
 inline const Def* fn(conv o, const Def* src_s, const Def* dst_s, const Def* dbg = {}) {
     World& w = src_s->world();
@@ -65,21 +71,14 @@ inline const Def* op(shr o, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = a->world();
     return w.app(fn(o, w.iinfer(a)), {a, b}, dbg);
 }
-inline const Def* op(wrap o, const Def* wmode, const Def* a, const Def* b, const Def* dbg = {}) {
+inline const Def* op(wrap o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = a->world();
-    return w.app(fn(o, wmode, w.iinfer(a)), {a, b}, dbg);
+    return w.app(fn(o, m, w.iinfer(a)), {a, b}, dbg);
 }
 inline const Def* op(div o, const Def* mem, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = mem->world();
     return w.app(fn(o, w.iinfer(a)), {mem, a, b}, dbg);
 }
-
-template<class O>
-const Def* op(O o, nat_t mode, const Def* a, const Def* b, const Def* dbg = {}) {
-    World& w = a->world();
-    return op(o, w.lit_nat(mode), a, b, dbg);
-}
-
 inline const Def* op(conv o, const Def* dst_t, const Def* src, const Def* dbg = {}) {
     World& w = dst_t->world();
     auto d   = Idx::size(dst_t);
@@ -131,14 +130,10 @@ inline const Def* op_negate(const Def* a, const Def* dbg = {}) {
     auto s   = as_lit(w.iinfer(a));
     return op(bit2::xor_, w.lit_idx(s, s - 1_u64), a, dbg);
 }
-inline const Def* op_wminus(const Def* wmode, const Def* a, const Def* dbg = {}) {
+inline const Def* op_wminus(Mode m, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     auto s   = as_lit(w.iinfer(a));
-    return op(wrap::sub, wmode, w.lit_idx(s, 0), a, dbg);
-}
-inline const Def* op_wminus(nat_t wmode, const Def* a, const Def* dbg = {}) {
-    World& w = a->world();
-    return op_wminus(w.lit_nat(wmode), a, dbg);
+    return op(wrap::sub, m, w.lit_idx(s, 0), a, dbg);
 }
 ///@}
 
