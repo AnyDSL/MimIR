@@ -860,18 +860,25 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t = convert(tri->type());
 
         std::string f;
-        if (tri.sub() & sub_t(math::tri::a)) f += "a";
 
-        switch (math::tri((tri.id() & 0x3) | Axiom::Base<math::tri>)) {
-            case math::tri::sin: f += "sin"; break;
-            case math::tri::cos: f += "cos"; break;
-            case math::tri::tan: f += "tan"; break;
-            case math::tri::ahFF: err("this axiom is supposed to be unused");
-            default: unreachable();
+        if (tri.id() == math::tri::sin) {
+            f = "llvm.sin"s + llvm_suffix(tri->type());
+        } else if (tri.id() == math::tri::cos) {
+            f = "llvm.cos"s + llvm_suffix(tri->type());
+        } else {
+            if (tri.sub() & sub_t(math::tri::a)) f += "a";
+
+            switch (math::tri((tri.id() & 0x3) | Axiom::Base<math::tri>)) {
+                case math::tri::sin: f += "sin"; break;
+                case math::tri::cos: f += "cos"; break;
+                case math::tri::tan: f += "tan"; break;
+                case math::tri::ahFF: err("this axiom is supposed to be unused");
+                default: unreachable();
+            }
+
+            if (tri.sub() & sub_t(math::tri::h)) f += "h";
+            f += math_suffix(tri->type());
         }
-
-        if (tri.sub() & sub_t(math::tri::h)) f += "h";
-        f += math_suffix(tri->type());
 
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
@@ -892,21 +899,24 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto pow = match<math::pow>(def)) {
         auto [a, b]   = pow->args<2>([this](auto def) { return emit(def); });
         auto t        = convert(pow->type());
-        std::string f = "pow";
-        f += math_suffix(pow->type());
+        std::string f = "llvm.pow";
+        f += llvm_suffix(pow->type());
         declare("{} @{}({}, {})", t, f, t, t);
         return bb.assign(name, "tail call {} @{}({} {}, {} {})", t, f, t, a, t, b);
     } else if (auto rt = match<math::rt>(def)) {
-        auto a        = emit(rt->arg());
-        auto t        = convert(rt->type());
-        std::string f = rt.id() == math::rt::sq ? "sqrt" : "cbrt";
-        f += math_suffix(rt->type());
+        auto a = emit(rt->arg());
+        auto t = convert(rt->type());
+        std::string f;
+        if (rt.id() == math::rt::sq)
+            f = "llvm.sqrt"s + llvm_suffix(rt->type());
+        else
+            f = "cbrt"s += math_suffix(rt->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto exp = match<math::exp>(def)) {
-        auto a = emit(exp->arg());
-        auto t = convert(exp->type());
-        std::string f;
+        auto a        = emit(exp->arg());
+        auto t        = convert(exp->type());
+        std::string f = "llvm.";
         // clang-format off
         switch (exp.id()) {
             case math::exp::exp:  f += "exp" ; break;
@@ -915,7 +925,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case math::exp::log2: f += "log2"; break;
         }
         // clang-format on
-        f += math_suffix(exp->type());
+        f += llvm_suffix(exp->type());
         declare("{} @{}({})", t, f, t);
         return bb.assign(name, "tail call {} @{}({} {})", t, f, t, a);
     } else if (auto er = match<math::er>(def)) {
