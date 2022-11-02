@@ -50,12 +50,12 @@ constexpr bool is_associative(Id id) { return is_commutative(id); }
 constexpr bool is_associative(bit2 id) {
     switch (id) {
         case bit2::t:
-        case bit2::_xor:
-        case bit2::_and:
+        case bit2::xor_:
+        case bit2::and_:
         case bit2::nxor:
         case bit2::a:
         case bit2::b:
-        case bit2::_or:
+        case bit2::or_:
         case bit2::f: return true;
         default: return false;
     }
@@ -525,9 +525,9 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
 
     if (la && lb) {
         switch (id) {
-            case bit2::_and: return world.lit_idx    (*w,   *la &  *lb);
-            case bit2:: _or: return world.lit_idx    (*w,   *la |  *lb);
-            case bit2::_xor: return world.lit_idx    (*w,   *la ^  *lb);
+            case bit2::and_: return world.lit_idx    (*w,   *la &  *lb);
+            case bit2:: or_: return world.lit_idx    (*w,   *la |  *lb);
+            case bit2::xor_: return world.lit_idx    (*w,   *la ^  *lb);
             case bit2::nand: return world.lit_idx_mod(*w, ~(*la &  *lb));
             case bit2:: nor: return world.lit_idx_mod(*w, ~(*la |  *lb));
             case bit2::nxor: return world.lit_idx_mod(*w, ~(*la ^  *lb));
@@ -541,7 +541,7 @@ const Def* normalize_bit2(const Def* type, const Def* c, const Def* arg, const D
         if (!x && !y) return world.lit(type, 0);
         if ( x &&  y) return w ? world.lit(type, *w-1_u64) : nullptr;
         if (!x &&  y) return a;
-        if ( x && !y && id != bit2::_xor) return op_negate(a, dbg);
+        if ( x && !y && id != bit2::xor_) return op_negate(a, dbg);
         return nullptr;
     };
     // clang-format on

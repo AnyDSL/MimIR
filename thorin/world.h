@@ -159,7 +159,7 @@ public:
     }
     ///@}
 
-    /// @name Universe, Type, Var, Proxy, Infer
+    /// @name Univ, Type, Var, Proxy, Infer
     ///@{
     const Univ* univ() { return data_.univ_; }
     const Type* type(const Def* level, const Def* dbg = {});
@@ -207,7 +207,7 @@ public:
     const Axiom* ax(Id id) const {
         u64 flags = static_cast<u64>(id);
         if (auto i = move_.axioms.find(flags); i != move_.axioms.end()) return i->second;
-        thorin::err("Axiom with ID '{}' not found in world; demangled dialect name is '{}'", flags, Axiom::demangle(flags));
+        thorin::err("Axiom with ID '{}' not found; demangled dialect name is '{}'", flags, Axiom::demangle(flags));
     }
 
     /// Get Axiom from a dialect.
@@ -228,20 +228,16 @@ public:
     Pi* nom_pi(const Def* type, const Def* dbg = {}) { return insert<Pi>(2, type, dbg); }
     ///@}
 
-    /// @name Pi: continuation type (cn), i.e., Pi type with codom Bottom
+    /// @name Cn (Pi with codom Bot)
     ///@{
     const Pi* cn() { return cn(sigma()); }
     const Pi* cn(const Def* dom, const Def* dbg = {}) { return pi(dom, type_bot(), dbg); }
     const Pi* cn(Defs doms, const Def* dbg = {}) { return cn(sigma(doms), dbg); }
     ///@}
 
-    /// @name Lam%bda
+    /// @name Lam
     ///@{
-    Lam* nom_lam(const Pi* cn, Lam::CC cc = Lam::CC::C, const Def* dbg = {}) {
-        auto lam = insert<Lam>(2, cn, cc, dbg);
-        return lam;
-    }
-    Lam* nom_lam(const Pi* cn, const Def* dbg = {}) { return nom_lam(cn, Lam::CC::C, dbg); }
+    Lam* nom_lam(const Pi* cn, const Def* dbg = {}) { return insert<Lam>(2, cn, dbg); }
     const Lam* lam(const Pi* pi, const Def* filter, const Def* body, const Def* dbg) {
         return unify<Lam>(2, pi, filter, body, dbg);
     }

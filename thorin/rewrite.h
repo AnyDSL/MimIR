@@ -6,51 +6,43 @@
 
 namespace thorin {
 
-/// Rewrites part of a program.
+/// Recurseivly rewrites part of a program **into** the provided World.
+/// This World may be different than the World we started with.
 class Rewriter {
 public:
-    Rewriter(World& old_world, World& new_world)
-        : old_world(old_world)
-        , new_world(new_world) {
-        old2new[old_world.univ()] = new_world.univ();
-    }
     Rewriter(World& world)
-        : Rewriter(world, world) {}
+        : world_(world) {}
 
-    /// @name rewrite
+    World& world() { return world_; }
+
+    /// @name recursively rewrite old Defs
     ///@{
-
-    /// Recursively rewrites @p old_def.
-    /// Invokes Rewriter::pre_rewrite at the beginning and Rewriter::post_rewrite at the end.
-    virtual const Def* rewrite(const Def* old_def);
-
-    /// Rewrite a given Def in pre-order.
-    /// @return
-    /// * `{nullptr, false}` to do nothing
-    /// * `{new_def, false}` to return `new_def` **without** recursing on `new_def` again
-    /// * `{new_def, true}` to return `new_def` **with** recursing on `new_def` again
-    virtual std::pair<const Def*, bool> pre_rewrite(const Def*) { return {nullptr, false}; }
-    /// As above but in post-order.
-    virtual std::pair<const Def*, bool> post_rewrite(const Def*) { return {nullptr, false}; }
+    const Def* map(const Def* old_def, const Def* new_def) { return old2new_[old_def] = new_def; }
+    virtual const Def* rewrite(const Def*);
+    virtual const Def* rewrite_structural(const Def*);
+    virtual const Def* rewrite_nom(Def*);
     ///@}
 
-    World& old_world;
-    World& new_world;
-    Def2Def old2new;
+private:
+    World& world_;
+    Def2Def old2new_;
 };
 
 class ScopeRewriter : public Rewriter {
 public:
     ScopeRewriter(World& world, const Scope& scope)
         : Rewriter(world)
-        , scope(scope) {}
+        , scope_(scope) {}
+
+    const Scope& scope() const { return scope_; }
 
     const Def* rewrite(const Def* old_def) override {
-        if (!scope.bound(old_def)) return old_def;
+        if (!old_def || !scope().bound(old_def)) return old_def;
         return Rewriter::rewrite(old_def);
     }
 
-    const Scope& scope;
+private:
+    const Scope& scope_;
 };
 
 /// Rewrites @p def by mapping @p old_def to @p new_def while obeying @p scope.
