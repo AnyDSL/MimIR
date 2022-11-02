@@ -51,9 +51,9 @@
 /// | Subtag | Alias        | N | M |
 /// |--------|--------------|---|---|
 /// | `nm`   | `minimum`    | o | o |
-/// | `nM`   | `maximum`    | o | o |
-/// | `Nm`   | `minnum`     | o | o |
-/// | `NM`   | `maxnum`     | o | o |
+/// | `nM`   | `maximum`    | o | x |
+/// | `Nm`   | `minnum`     | x | o |
+/// | `NM`   | `maxnum`     | x | x |
 ///
 .ax %math.extrema(nm = minimum, nM = maximum,
                   Nm = minnum,  NM = maxnum): 
