@@ -114,22 +114,22 @@ $(document).ready(function(){initNavTree('clos.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md61">Dependencies</a></li>
-<li class="level1"><a href="#autotoc_md62">Operations related to longjmp</a></li>
-<li class="level1"><a href="#autotoc_md63">Closure Annotations</a></li>
+<ul><li class="level1"><a href="#autotoc_md60">Dependencies</a></li>
+<li class="level1"><a href="#autotoc_md61">Operations related to longjmp</a></li>
+<li class="level1"><a href="#autotoc_md62">Closure Annotations</a></li>
 </ul>
 </div>
 <div class="textblock"><p ><a class="anchor" id="md_build_docs_dialects_clos"></a></p>
-<h1><a class="anchor" id="autotoc_md61"></a>
+<h1><a class="anchor" id="autotoc_md60"></a>
 Dependencies</h1>
 <div class="fragment"><div class="line">.import mem;</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md62"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md61"></a>
 Operations related to longjmp</h1>
 <div class="fragment"><div class="line">.let BufPtr = %mem.Ptr ((.Idx 256), 0:.Nat);</div>
 <div class="line">.ax %clos.alloc_jmpbuf: [[], %mem.M] -&gt; [%mem.M, BufPtr];</div>
 <div class="line">.ax %clos.setjmp: [%mem.M, BufPtr] -&gt; [%mem.M, .Idx 4294967296];</div>
 <div class="line">.ax %clos.longjmp: .Cn [%mem.M, BufPtr, .Idx 4294967296];</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md63"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md62"></a>
 Closure Annotations</h1>
 <div class="fragment"><div class="line">.ax %clos.clos(ret, freeBB, fstclassBB, esc, bot): Π T: * -&gt; T -&gt; T, normalize_clos;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
