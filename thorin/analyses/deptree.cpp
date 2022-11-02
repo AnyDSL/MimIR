@@ -26,16 +26,27 @@ VarSet DepTree::run(Def* nom) {
     auto parent = root_.get();
     for (auto var : result) {
         auto n = nom2node_[var->nom()].get();
+        if (!n) {
+            world().ELOG("var {} used before nom {} discovered, old var still around?", var, var->nom());
+            world().ELOG("var {} : {}", var, var->type());
+            world().ELOG("var nom {} : {}", var->nom(), var->nom()->type());
+        }
+        assert(n && "Old var still around?");
+
         parent = n->depth() > parent->depth() ? n : parent;
     }
-    node->set_parent(parent);
+    if (nom->is_external() && parent != root_.get()) {
+        world().WLOG("external {} would be hidden inside parent {}..", nom, parent->nom());
+        node->set_parent(root_.get());
+    } else
+        node->set_parent(parent);
 
     stack_.pop_back();
     return result;
 }
 
 VarSet DepTree::run(Def* curr_nom, const Def* def) {
-    if (def->no_dep()) return {};
+    if (def->dep_const()) return {};
     if (auto i = def2vars_.find(def); i != def2vars_.end()) return i->second;
     if (auto nom = def->isa_nom(); nom && curr_nom != nom) return run(nom);
 

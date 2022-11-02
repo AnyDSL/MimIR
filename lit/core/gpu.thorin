@@ -1,26 +1,26 @@
-// RUN: rm -f %t.ll ; \
-// RUN: not %thorin %s --output-ll %t.ll
+// RUN: rm -f %t.ll runner %t.hsaco; \
+// RUN: %thorin %s --output-ll %t.ll
 // RUN: llvm-link %t.ll  /opt/rocm/amdgcn/bitcode/ocml.bc /opt/rocm/amdgcn/bitcode/ockl.bc  /opt/rocm/amdgcn/bitcode/oclc_daz_opt_off.bc /opt/rocm/amdgcn/bitcode/oclc_unsafe_math_off.bc  /opt/rocm/amdgcn/bitcode/oclc_finite_only_off.bc /opt/rocm/amdgcn/bitcode/oclc_correctly_rounded_sqrt_on.bc  /opt/rocm/amdgcn/bitcode/oclc_wavefrontsize64_on.bc /opt/rocm/amdgcn/bitcode/oclc_isa_version_90c.bc /opt/rocm/amdgcn/bitcode/oclc_abi_version_400.bc -o %t.linked.bc --only-needed
-// RUN: /opt/rocm/llvm/bin/clang++ -x ir %t.linked.bc -O3 --cuda-gpu-arch=gfx90c -o %t.hsaco --cuda-device-only -target amdgcn-amd-amdhsa -mcpu=gfx90c
-// RUN: /opt/rocm/llvm/bin/clang++ launch_gcn.hip --offload-arch=gfx90c -lamdhip64 -L/opt/rocm/hip/lib/ -o runner
+// RUN: /opt/rocm/llvm/bin/clang++ -x ir %t.linked.bc -O3 --cuda-gpu-arch=gfx906 -o %t.hsaco --cuda-device-only -target amdgcn-amd-amdhsa -mcpu=gfx906
+// RUN: /opt/rocm/llvm/bin/clang++ %S/launch_gcn.hip --offload-arch=gfx906 -lamdhip64 -L/opt/rocm/hip/lib/ -o runner
 // RUN: ./runner %t.hsaco
 
 .import core;
 .import mem;
 
-.let i32 = %Int 4294967296;
+.let i32 = .Idx 4294967296;
 
-.cn kernel [mem : %mem.M, arg : %mem.Ptr (<<⊤:.Nat; (%Int 256)>>, 0:.Nat), exit : .Cn [%mem.M]] = {
+.cn kernel [mem : %mem.M, arg : %mem.Ptr (<<⊤:.Nat; (.Idx 256)>>, 0:.Nat), exit : .Cn [%mem.M]] = {
     .let group_offset = %core.wrap.mul (0, 0) (%core.group_id (0, 0), %core.group_size (0, 0));
     .let global_id = %core.wrap.add (0, 0) (%core.local_id (0, 0), group_offset);
-    .let lea = %mem.lea (⊤:.Nat, <⊤:.Nat; (%Int 256)>, 0:.Nat) (arg, global_id);
-    .let (lmem, val) = %mem.load ((%Int 256), 0) (mem, lea);
+    .let lea = %mem.lea (⊤:.Nat, <⊤:.Nat; (.Idx 256)>, 0:.Nat) (arg, global_id);
+    .let (lmem, val) = %mem.load ((.Idx 256), 0) (mem, lea);
     .let inc = %core.wrap.add (0, 256) (val, val);
-    .let smem = %mem.store (%Int 256, 0) (lmem, lea, inc);
+    .let smem = %mem.store (.Idx 256, 0) (lmem, lea, inc);
     exit smem
 };
 
-.cn .extern main [mem : %mem.M, argc : %Int 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; %Int 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, %Int 4294967296]] = {
-    .let gpu_mem = %core.gpu (4294967296, %mem.Ptr («⊤:.Nat; %Int 256», 0)) (mem, 1:i32, 16:i32, kernel);
+.cn .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
+    .let gpu_mem = %core.gpu (4294967296, %mem.Ptr («⊤:.Nat; .Idx 256», 0)) (mem, 1:i32, 16:i32, kernel);
     return (gpu_mem, argc)
 };

@@ -2,6 +2,7 @@
 
 #include <cassert>
 
+#include "thorin/rewrite.h"
 #include "thorin/world.h"
 
 namespace thorin {
@@ -107,6 +108,20 @@ bool Arr::check() {
 bool Sigma::check() {
     // TODO
     return true;
+}
+
+/*
+ * reduce
+ */
+
+const Def* Arr::reduce(const Def* arg) const {
+    if (auto nom = isa_nom<Arr>()) return rewrite(nom, arg, 1);
+    return body();
+}
+
+const Def* Pack::reduce(const Def* arg) const {
+    if (auto nom = isa_nom<Pack>()) return rewrite(nom, arg, 0);
+    return body();
 }
 
 } // namespace thorin

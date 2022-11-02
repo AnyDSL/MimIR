@@ -13,8 +13,7 @@ private:
     constexpr const Child& child() const { return *static_cast<const Child*>(this); };
     constexpr Child& child() { return *static_cast<Child*>(this); };
 
-    /// Internal wrapper for Emitter::emit that checks and retrieves/puts the `Value` from
-    /// Emitter::locals_/Emitter::globals_.
+    /// Internal wrapper for Emitter::emit that schedules @p def and invokes `child().emit_bb`.
     Value emit_(const Def* def) {
         auto place = scheduler_.smart(def);
         auto& bb   = lam2bb_[place->as_nom<Lam>()];

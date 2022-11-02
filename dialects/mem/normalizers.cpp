@@ -1,4 +1,3 @@
-#include "thorin/normalize.h"
 #include "thorin/world.h"
 
 #include "dialects/mem/mem.h"
@@ -8,7 +7,7 @@ namespace thorin::mem {
 const Def* normalize_lea(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world                = type->world();
     auto [ptr, index]          = arg->projs<2>();
-    auto [pointee, addr_space] = match<Ptr, false>(ptr->type())->args<2>();
+    auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
 
     if (auto a = isa_lit(pointee->arity()); a && *a == 1) return ptr;
     // TODO
@@ -19,7 +18,7 @@ const Def* normalize_lea(const Def* type, const Def* callee, const Def* arg, con
 const Def* normalize_load(const Def* type, const Def* callee, const Def* arg, const Def* dbg) {
     auto& world                = type->world();
     auto [mem, ptr]            = arg->projs<2>();
-    auto [pointee, addr_space] = match<Ptr, false>(ptr->type())->args<2>();
+    auto [pointee, addr_space] = force<Ptr>(ptr->type())->args<2>();
 
     if (ptr->isa<Bot>()) return world.tuple({mem, world.bot(type->as<Sigma>()->op(1))}, dbg);
 

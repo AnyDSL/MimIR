@@ -55,7 +55,7 @@ struct Inline {
     const Def* operator->() const { return def_; };
     const Def* operator*() const { return def_; };
     explicit operator bool() const {
-        if (def_->no_dep()) return true;
+        if (def_->dep_const()) return true;
 
         if (auto nom = def_->isa_nom()) {
             if (isa_decl(nom)) return false;
@@ -79,6 +79,7 @@ private:
     const int dump_gid_;
 };
 
+// TODO prec is currently broken
 template<bool L>
 struct LRPrec {
     LRPrec(const Def* l, const Def* r)
@@ -111,22 +112,18 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, level == 0 ? "★" : "□");
     } else if (u->isa<Nat>()) {
         return print(os, ".Nat");
+    } else if (u->isa<Idx>()) {
+        return print(os, ".Idx");
     } else if (auto bot = u->isa<Bot>()) {
         return print(os, "⊥:{}", bot->type());
     } else if (auto top = u->isa<Top>()) {
         return print(os, "⊤:{}", top->type());
     } else if (auto axiom = u->isa<Axiom>()) {
-        const auto& name = axiom->debug().name;
+        const auto& name = axiom->name();
         return print(os, "{}{}", name[0] == '%' ? "" : "%", name);
     } else if (auto lit = u->isa<Lit>()) {
-        if (auto real = thorin::isa<Tag::Real>(lit->type())) {
-            switch (as_lit(real->arg())) {
-                case 16: return print(os, "{}:(%Real 16)", lit->get<r16>());
-                case 32: return print(os, "{}:(%Real 32)", lit->get<r32>());
-                case 64: return print(os, "{}:(%Real 64)", lit->get<r64>());
-                default: unreachable();
-            }
-        }
+        if (lit->type()->isa<Nat>()) return print(os, "{}", lit->get());
+        if (lit->type()->isa<App>()) return print(os, "{}:({})", lit->get(), lit->type()); // HACK prec magic is broken
         return print(os, "{}:{}", lit->get(), lit->type());
     } else if (auto ex = u->isa<Extract>()) {
         if (ex->tuple()->isa<Var>() && ex->index()->isa<Lit>()) return print(os, "{}", ex->unique_name());
@@ -141,11 +138,6 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
     } else if (auto lam = u->isa<Lam>()) {
         return print(os, "{}, {}", lam->filter(), lam->body());
     } else if (auto app = u->isa<App>()) {
-        if (auto size = isa_lit(isa_sized_type(app))) {
-            if (auto real = thorin::isa<Tag::Real>(app)) return print(os, "(%Real {})", *size);
-            if (auto _int = thorin::isa<Tag::Int>(app)) return print(os, "(%Int {})", *size);
-            unreachable();
-        }
         return print(os, "{} {}", LPrec(app->callee(), app), RPrec(app, app->arg()));
     } else if (auto sigma = u->isa<Sigma>()) {
         if (auto nom = sigma->isa_nom<Sigma>(); nom && nom->var()) {
@@ -275,7 +267,10 @@ void Dumper::dump(Lam* lam) {
         if (dep) recurse(dep->nom2node(lam));
         recurse(lam->filter());
         recurse(lam->body(), true);
-        tab.print(os, "{}\n", Inline(lam->body()));
+        if (lam->body()->isa_nom())
+            tab.print(os, "{}\n", lam->body());
+        else
+            tab.print(os, "{}\n", Inline(lam->body()));
     } else {
         tab.print(os, " <unset>\n");
     }

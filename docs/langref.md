@@ -35,20 +35,24 @@ In addition the following keywords are *terminals*:
 |-------------|---------------------------|
 | `.ax`       | axiom                     |
 | `.let`      | let expression            |
-| `.Pi`       | nominal Pi                |
-| `.lam`      | nominal lam               |
-| `.Arr`      | nominal Arr               |
-| `.pack`     | nominal pack              |
-| `.Sigma`    | nominal Sigma             |
+| `.Pi`       | nominal thorin::Pi        |
+| `.lam`      | nominal thorin::Lam       |
+| `.Arr`      | nominal thorin::Arr       |
+| `.pack`     | nominal thorin::Pack      |
+| `.Sigma`    | nominal thorin::Sigma     |
 | `.def`      | nominal definition        |
 | `.extern`   | marks nominal as external |
-| `.ins`      | insert expression         |
+| `.ins`      | thorin::Insert expression |
 | `.insert`   | alias for `.ins`          |
 | `.module`   | starts a module           |
 | `.import`   | imports a dialect         |
 | `.Nat`      | thorin::Nat               |
+| `.Idx`      | thorin::Idx               |
+| `.Bool`     | alias for `.Idx 2`        |
 | `.ff`       | alias for `0₂`            |
 | `.tt`       | alias for `1₂`            |
+| `.Type`     | thorin::Type              |
+| `.Univ`     | thorin::Univ              |
 
 All keywords start with a `.` to prevent name clashes with identifiers.
 
@@ -74,8 +78,8 @@ The following *terminals* comprise more complicated patterns that are specified 
 | L        | sign? 0x hex+ pP sign dec+           | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | L        | sign? 0x hex+ `.` hex\* pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
 | L        | sign? 0x hex\* `.` hex+ pP sign dec+ | [floating-point hexadecimal](https://en.cppreference.com/w/cpp/language/floating_literal) literal |
-| I        | dec+ sub+                            | integer literal of type `:Int mod`                                                                |
-| I        | dec+ `_` dec+                        | integer literal of type `:Int mod`                                                                |
+| I        | dec+ sub+                            | index literal of type `.Idx sub`                                                                  |
+| I        | dec+ `_` dec+                        | index literal of type `.Idx sub`                                                                  |
 
 The previous table resorts to the following definitions as shorthand:
 
@@ -134,9 +138,8 @@ The following tables comprise all production rules:
 | d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  |            | nominal pack declaration         | thorin::Pack  |
 | d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n |            | nominal sigma declaration        | thorin::Sigma |
 | d           | `.def` Sym n                                                      |            | nominal definition               | nominals      |
-| v           | `,` `@` Sym \| `,` `@` `(` Sym `,` ... `,` Sym `)`                |            | nominal variable declaration     | nominals      |
 | n           | `;` \| o                                                          |            | nominal definition               | -             |
-| o           | `=` e `;`                                                         |            | operand of nominal definition    | -             |
+| o           | `=` de `;`                                                        |            | operand of nominal definition    | -             |
 | o           | `=` `{` e `,` ... `,` e  `}` `;`                                  | ✓          | operands of nominal definition   | -             |
 
 ### Patterns
@@ -156,26 +159,34 @@ For this reason there is no rule `b -> s (p, ..., p)`.
 
 ### Expressions
 
-| Nonterminal | Right-Hand Side                                                               | New Scope? | Comment                             | Thorin Class    |
-|-------------|-------------------------------------------------------------------------------|------------|-------------------------------------|-----------------|
-| e           | `{` e `}`                                                                     | ✓          | block                               | -               |
-| e           | `*`                                                                           |            | type                                | thorin::Type    |
-| e           | L `:` e<sub>type</sub>                                                        |            | literal                             | thorin::Lit     |
-| e           | ( `.bot` or `.top` ) ( `:` e<sub>type</sub> )?                                |            | bottom/top                          | thorin::TExt    |
-| e           | Sym                                                                           |            | identifier                          | -               |
-| e           | Ax                                                                            |            | use of an axiom                     | -               |
-| e           | e e                                                                           |            | application                         | thorin::App     |
-| e           | `λ` Sym `:` e<sub>dom</sub> `→` e<sub>codom</sub> `.` e<sub>body</sub>        | ✓          | lambda                              | thorin::Lam     |
-| e           | e<sub>dom</sub> `→` e<sub>codom</sub>                                         |            | function type                       | thorin::Pi      |
-| e           | `Π` b `→` e<sub>codom</sub>                                                   | ✓          | dependent function type             | thorin::Pi      |
-| e           | e `#` Sym                                                                     |            | extract via field "Sym"             | thorin::Extract |
-| e           | e `#` e<sub>index</sub>                                                       |            | extract                             | thorin::Extract |
-| e           | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` |            | insert                              | thorin::Insert  |
-| e           | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>` )` ( `:` e<sub>type</sub> )?   |            | tuple with optional type ascription | thorin::Tuple   |
-| e           | `[` b `,` ... `,` b `]`                                                       | ✓          | sigma                               | thorin::Sigma   |
-| e           | `‹` i e<sub>shape</sub> `;` e<sub>body</sub>`›`                               | ✓          | pack                                | thorin::Pack    |
-| e           | `«` i e<sub>shape</sub> `;` e<sub>body</sub>`»`                               | ✓          | array                               | thorin::Arr     |
-| e           | d e                                                                           |            | declaration                         | -               |
+| Nonterminal | Right-Hand Side                                                               | New Scope? | Comment                              | Thorin Class    |
+|-------------|-------------------------------------------------------------------------------|------------|--------------------------------------|-----------------|
+| de          | d\* e                                                                         |            | declaration expression               | -               |
+| e           | `.Univ`                                                                       |            | universise: type of a type level     | thorin::Univ    |
+| e           | `.Type` e                                                                     |            | type of level e                      | thorin::Type    |
+| e           | `*`                                                                           |            | alias for `.Type (0:.Univ)`          | thorin::Type    |
+| e           | `□`                                                                           |            | alias for `.Type (1:.Univ)`          | thorin::Type    |
+| e           | `.Nat`                                                                        |            | natural number                       | thorin::Nat     |
+| e           | `.Idx`                                                                        |            | builtin constant of type `.Nat -> *` | thorin::Idx     |
+| e           | `.Bool`                                                                       |            | alias for `.Idx 2`                   | thorin::Idx     |
+| e           | `{` de `}`                                                                    | ✓          | block                                | -               |
+| e           | L `:` e<sub>type</sub>                                                        |            | literal                              | thorin::Lit     |
+| e           | `.ff`                                                                         |            | alias for `0_2`                      | thorin::Lit     |
+| e           | `.tt`                                                                         |            | alias for `1_2`                      | thorin::Lit     |
+| e           | ( `.bot` \| `.top` ) ( `:` e<sub>type</sub> )?                                |            | bottom/top                           | thorin::TExt    |
+| e           | Sym                                                                           |            | identifier                           | -               |
+| e           | Ax                                                                            |            | use of an axiom                      | -               |
+| e           | e e                                                                           |            | application                          | thorin::App     |
+| e           | `λ` Sym `:` e<sub>dom</sub> `→` e<sub>codom</sub> `.` e<sub>body</sub>        | ✓          | lambda                               | thorin::Lam     |
+| e           | e<sub>dom</sub> `→` e<sub>codom</sub>                                         |            | function type                        | thorin::Pi      |
+| e           | `Π` b `→` e<sub>codom</sub>                                                   | ✓          | dependent function type              | thorin::Pi      |
+| e           | e `#` Sym                                                                     |            | extract via field "Sym"              | thorin::Extract |
+| e           | e `#` e<sub>index</sub>                                                       |            | extract                              | thorin::Extract |
+| e           | `.ins` `(` e<sub>tuple</sub> `,` e<sub>index</sub> `,` e<sub>value</sub> ` )` |            | insert                               | thorin::Insert  |
+| e           | `(` e<sub>0</sub> `,` ... `,` e<sub>n-1</sub>` )` ( `:` e<sub>type</sub> )?   |            | tuple with optional type ascription  | thorin::Tuple   |
+| e           | `[` b `,` ... `,` b `]`                                                       | ✓          | sigma                                | thorin::Sigma   |
+| e           | `‹` i e<sub>shape</sub> `;` e<sub>body</sub>`›`                               | ✓          | pack                                 | thorin::Pack    |
+| e           | `«` i e<sub>shape</sub> `;` e<sub>body</sub>`»`                               | ✓          | array                                | thorin::Arr     |
 
 An elided type of
 * a literal defaults to `.Nat`,
@@ -186,17 +197,19 @@ An elided type of
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
 
-| Operator      | Description                         | Associativity |
-|---------------|-------------------------------------|---------------|
-| L `:` e       | type ascription of a literal        | -             |
-| e `#` e       | extract                             | left-to-right |
-| e e           | application                         | left-to-right |
-| `Π` Sym `:` e | domain of a dependent function type | -             |
-| e `→` e       | function type                       | right-to-left |
+| Operator         | Description                         | Associativity |
+|------------------|-------------------------------------|---------------|
+| L `:` e          | type ascription of a literal        | -             |
+| e `#` e          | extract                             | left-to-right |
+| e e              | application                         | left-to-right |
+| `Π` Sym `:` e    | domain of a dependent function type | -             |
+| `.lam` Sym `:` e | nominal lambda declaration          | -             |
+| e `→` e          | function type                       | right-to-left |
 
 Note that the domain of a dependent function type binds slightly stronger than `→`.
-This has the effect that, e.g., `Π T: * → T -> T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
+This has the effect that, e.g., `Π T: * → T → T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
 Otherwise, `→` would be consumed by the domain: `Π T:` (`* →` (`T → T`)) ↯.
+A similar situation occurs for a `.lam` declaration.
 
 ## Scoping
 
@@ -229,10 +242,10 @@ These names take precedence over the usual scope.
 In the following example, `i` refers to the first element `i` of `X` and **not** to the `i` introduced via `.let`:
 ```
 .let i = 1_2;
-Π X: [i: .Nat, j: .Nat] -> f X#i;
+Π X: [i: .Nat, j: .Nat] → f X#i;
 ```
 Use parentheses to refer to the `.let`-bounded `i`:
 ```
 .let i = 1_2;
-Π X: [i: .Nat, j: .Nat] -> f X#(i);
+Π X: [i: .Nat, j: .Nat] → f X#(i);
 ```

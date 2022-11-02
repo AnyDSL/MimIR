@@ -6,6 +6,7 @@
 #include "thorin/debug.h"
 
 #include "thorin/util/print.h"
+#include "thorin/util/types.h"
 
 namespace thorin {
 
@@ -33,6 +34,7 @@ public:
     virtual void expected_shape(const Def* def, const Def* dbg);
     virtual void expected_type(const Def* def, const Def* dbg);
     virtual void index_out_of_range(const Def* arity, const Def* index, const Def* dbg);
+    virtual void index_out_of_range(const Def* arity, nat_t index, const Def* dbg);
     virtual void ill_typed_app(const Def* callee, const Def* arg, const Def* dbg);
 
     /// Place holder until we have better methods.

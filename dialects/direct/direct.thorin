@@ -2,25 +2,21 @@
 ///
 /// [TOC]
 ///
-/// this dialect has three jobs:
-/// * convert inline direct style calls to cps (and their functions)
-/// * wrap ds functions to cps functions using an axiom
-/// * convert cps functions to ds functions using an axiom
-///
-/// ## Dependencies
-///
-/// none
-///
-/// ## Types
-///
-/// none 
+/// This dialect has three jobs:
+/// 1. Convert inline direct style calls to CPS (and their functions).
+/// 2. Wrap DS functions to CPS functions using an axiom.
+/// 3. Convert CPS functions to DS functions using an axiom.
 ///
 /// ## Operations
 ///
 /// ### %direct.ds2cps
 ///
-.ax %direct.ds2cps: Π [T: *, U: *] -> (T -> U) -> .Cn [T, .Cn U];
+// .ax %direct.ds2cps: Π [T: *, U: *] -> (T -> U) -> .Cn [T, .Cn U];
 ///
 /// ### %direct.cps2ds
 ///
-.ax %direct.cps2ds: Π [T: *, U: *] -> (.Cn [T, .Cn U]) -> (T -> U);
+/// This axiom lets the user call a cps function in direct style.
+/// The function is not converted. Only the call site is changed.
+/// 
+.ax %direct.cps2ds: Π [T: *, U: *] -> (.Cn [T, .Cn U]) -> (T -> U), normalize_cps2ds;
+.ax %direct.cps2ds_dep: Π [T: *, U: T -> *] -> (.Cn [t:T, .Cn ((U t))]) -> (Π [t:T] -> ((U t)));

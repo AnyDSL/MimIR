@@ -17,13 +17,10 @@ add_library(libthorin
     lam.h
     lattice.cpp
     lattice.h
-    normalize.cpp
-    normalize.h
     rewrite.cpp
     rewrite.h
     tuple.cpp
     tuple.h
-    tables.h
     world.cpp
     world.h
     analyses/cfg.cpp
