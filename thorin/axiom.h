@@ -143,17 +143,8 @@ private:
     const D* def_       = nullptr;
 };
 
-constexpr uint64_t bitwidth2size(uint64_t n) {
-    assert(n != 0);
-    return n == 64 ? 0 : (1_u64 << n);
-}
-
-constexpr std::optional<uint64_t> size2bitwidth(uint64_t n) {
-    if (n == 0) return 64;
-    if (std::has_single_bit(n)) return std::bit_width(n - 1_u64);
-    return {};
-}
-
+/// @name match/force
+///@{
 template<class Id, bool DynCast = true>
 auto match(const Def* def) {
     using D             = typename Axiom::Match<Id>::type;
@@ -179,6 +170,15 @@ auto match(Id id, const Def* def) {
 // clang-format off
 template<class Id> auto force(       const Def* def) { return match<Id, false>(    def); }
 template<class Id> auto force(Id id, const Def* def) { return match<Id, false>(id, def); }
+///@}
+
+/// @name is_commutative/is_associative
+///@{
+template<class Id> constexpr bool is_commutative(Id) { return false; }
+/// @warning By default we assume that any commutative operation is also associative.
+/// Please provide a proper specialization if this is not the case.
+template<class Id> constexpr bool is_associative(Id id) { return is_commutative(id); }
+///@}
 // clang-format on
 
 } // namespace thorin
