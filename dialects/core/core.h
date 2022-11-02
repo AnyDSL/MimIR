@@ -130,7 +130,7 @@ inline const Def* op_negate(const Def* a, const Def* dbg = {}) {
     auto s   = as_lit(w.iinfer(a));
     return op(bit2::xor_, w.lit_idx(s, s - 1_u64), a, dbg);
 }
-inline const Def* op_wminus(Mode m, const Def* a, const Def* dbg = {}) {
+inline const Def* op_wminus(VMode m, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     auto s   = as_lit(w.iinfer(a));
     return op(wrap::sub, m, w.lit_idx(s, 0), a, dbg);
