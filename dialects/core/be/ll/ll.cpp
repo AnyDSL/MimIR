@@ -434,9 +434,9 @@ static const char* math_suffix(const Def* type) {
 static const char* llvm_suffix(const Def* type) {
     if (auto s = math::isa_f(type)) {
         switch (*s) {
-            case 16: return "f16";
-            case 32: return "f32";
-            case 64: return "f64";
+            case 16: return ".f16";
+            case 32: return ".f32";
+            case 64: return ".f64";
         }
     }
     err("unsupported foating point type '{}'", type);
