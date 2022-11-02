@@ -256,3 +256,15 @@
 .ax %core.zip: Π [r: .Nat, s: «r; .Nat»]
     -> Π [n_i: .Nat, Is: «n_i; *», n_o: .Nat, Os: «n_o; *», f: «i: n_i; Is#i»
     -> «o: n_o; Os#o»] -> «i: n_i; «s; Is#i»» -> «o: n_o; «s; Os#o»», normalize_zip;
+
+///
+/// ### %core.gpu
+///
+/// Execute function on GPU.
+///
+.ax %core.gpu: Π [idx_size: .Nat, Args : *] -> [sideffect: %mem.M, num_groups : .Idx idx_size, threads_per_group : .Idx idx_size, Func : .Cn [%mem.M, Args, .Cn %mem.M]] -> %mem.M;
+
+.ax %core.local_id: Π [dim : .Nat, idx_size: .Nat] -> .Idx idx_size;
+.ax %core.group_id: Π [dim : .Nat, idx_size: .Nat] -> .Idx idx_size;
+.ax %core.group_size: Π [dim : .Nat, idx_size: .Nat] -> .Idx idx_size;
+.ax %core.num_groups: Π [dim : .Nat, idx_size: .Nat] -> .Idx idx_size;
