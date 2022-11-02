@@ -23,32 +23,6 @@ var annotated_dup =
         [ "LowerTypedClosWrapper", "classthorin_1_1clos_1_1LowerTypedClosWrapper.html", "classthorin_1_1clos_1_1LowerTypedClosWrapper" ]
       ] ],
       [ "core", "namespacethorin_1_1core.html", [
-        [ "Fold", "namespacethorin_1_1core.html#structthorin_1_1core_1_1Fold", null ],
-        [ "Fold< div, div::sdiv, w >", "structthorin_1_1core_1_1Fold_3_01div_00_01div_1_1sdiv_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01div_00_01div_1_1sdiv_00_01w_01_4" ],
-        [ "Fold< div, div::srem, w >", "structthorin_1_1core_1_1Fold_3_01div_00_01div_1_1srem_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01div_00_01div_1_1srem_00_01w_01_4" ],
-        [ "Fold< div, div::udiv, w >", "structthorin_1_1core_1_1Fold_3_01div_00_01div_1_1udiv_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01div_00_01div_1_1udiv_00_01w_01_4" ],
-        [ "Fold< div, div::urem, w >", "structthorin_1_1core_1_1Fold_3_01div_00_01div_1_1urem_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01div_00_01div_1_1urem_00_01w_01_4" ],
-        [ "Fold< icmp, cmp, w >", "structthorin_1_1core_1_1Fold_3_01icmp_00_01cmp_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01icmp_00_01cmp_00_01w_01_4" ],
-        [ "Fold< rcmp, cmp, w >", "structthorin_1_1core_1_1Fold_3_01rcmp_00_01cmp_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01rcmp_00_01cmp_00_01w_01_4" ],
-        [ "Fold< rop, rop::add, w >", "structthorin_1_1core_1_1Fold_3_01rop_00_01rop_1_1add_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01rop_00_01rop_1_1add_00_01w_01_4" ],
-        [ "Fold< rop, rop::div, w >", "structthorin_1_1core_1_1Fold_3_01rop_00_01rop_1_1div_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01rop_00_01rop_1_1div_00_01w_01_4" ],
-        [ "Fold< rop, rop::mul, w >", "structthorin_1_1core_1_1Fold_3_01rop_00_01rop_1_1mul_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01rop_00_01rop_1_1mul_00_01w_01_4" ],
-        [ "Fold< rop, rop::rem, w >", "structthorin_1_1core_1_1Fold_3_01rop_00_01rop_1_1rem_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01rop_00_01rop_1_1rem_00_01w_01_4" ],
-        [ "Fold< rop, rop::sub, w >", "structthorin_1_1core_1_1Fold_3_01rop_00_01rop_1_1sub_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01rop_00_01rop_1_1sub_00_01w_01_4" ],
-        [ "Fold< shr, shr::a, w >", "structthorin_1_1core_1_1Fold_3_01shr_00_01shr_1_1a_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01shr_00_01shr_1_1a_00_01w_01_4" ],
-        [ "Fold< shr, shr::l, w >", "structthorin_1_1core_1_1Fold_3_01shr_00_01shr_1_1l_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01shr_00_01shr_1_1l_00_01w_01_4" ],
-        [ "Fold< wrap, wrap::add, w >", "structthorin_1_1core_1_1Fold_3_01wrap_00_01wrap_1_1add_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01wrap_00_01wrap_1_1add_00_01w_01_4" ],
-        [ "Fold< wrap, wrap::mul, w >", "structthorin_1_1core_1_1Fold_3_01wrap_00_01wrap_1_1mul_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01wrap_00_01wrap_1_1mul_00_01w_01_4" ],
-        [ "Fold< wrap, wrap::shl, w >", "structthorin_1_1core_1_1Fold_3_01wrap_00_01wrap_1_1shl_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01wrap_00_01wrap_1_1shl_00_01w_01_4" ],
-        [ "Fold< wrap, wrap::sub, w >", "structthorin_1_1core_1_1Fold_3_01wrap_00_01wrap_1_1sub_00_01w_01_4.html", "structthorin_1_1core_1_1Fold_3_01wrap_00_01wrap_1_1sub_00_01w_01_4" ],
-        [ "FoldConv", "namespacethorin_1_1core.html#structthorin_1_1core_1_1FoldConv", null ],
-        [ "FoldConv< conv::r2r, dw, sw >", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1r2r_00_01dw_00_01sw_01_4.html", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1r2r_00_01dw_00_01sw_01_4" ],
-        [ "FoldConv< conv::r2s, dw, sw >", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1r2s_00_01dw_00_01sw_01_4.html", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1r2s_00_01dw_00_01sw_01_4" ],
-        [ "FoldConv< conv::r2u, dw, sw >", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1r2u_00_01dw_00_01sw_01_4.html", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1r2u_00_01dw_00_01sw_01_4" ],
-        [ "FoldConv< conv::s2r, dw, sw >", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1s2r_00_01dw_00_01sw_01_4.html", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1s2r_00_01dw_00_01sw_01_4" ],
-        [ "FoldConv< conv::s2s, dw, sw >", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1s2s_00_01dw_00_01sw_01_4.html", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1s2s_00_01dw_00_01sw_01_4" ],
-        [ "FoldConv< conv::u2r, dw, sw >", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1u2r_00_01dw_00_01sw_01_4.html", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1u2r_00_01dw_00_01sw_01_4" ],
-        [ "FoldConv< conv::u2u, dw, sw >", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1u2u_00_01dw_00_01sw_01_4.html", "structthorin_1_1core_1_1FoldConv_3_01conv_1_1u2u_00_01dw_00_01sw_01_4" ],
         [ "Res", "classthorin_1_1core_1_1Res.html", "classthorin_1_1core_1_1Res" ]
       ] ],
       [ "direct", "namespacethorin_1_1direct.html", [
@@ -79,6 +53,9 @@ var annotated_dup =
       [ "ll", "namespacethorin_1_1ll.html", [
         [ "BB", "structthorin_1_1ll_1_1BB.html", "structthorin_1_1ll_1_1BB" ],
         [ "Emitter", "classthorin_1_1ll_1_1Emitter.html", "classthorin_1_1ll_1_1Emitter" ]
+      ] ],
+      [ "math", "namespacethorin_1_1math.html", [
+        [ "Res", "classthorin_1_1math_1_1Res.html", "classthorin_1_1math_1_1Res" ]
       ] ],
       [ "mem", "namespacethorin_1_1mem.html", [
         [ "Alloc2Malloc", "classthorin_1_1mem_1_1Alloc2Malloc.html", "classthorin_1_1mem_1_1Alloc2Malloc" ],
@@ -195,14 +172,14 @@ var annotated_dup =
       [ "UseHash", "structthorin_1_1UseHash.html", "structthorin_1_1UseHash" ],
       [ "Var", "classthorin_1_1Var.html", "classthorin_1_1Var" ],
       [ "Vel", "classthorin_1_1Vel.html", "classthorin_1_1Vel" ],
-      [ "w2r_", "namespacethorin.html#structthorin_1_1w2r__", null ],
-      [ "w2s_", "namespacethorin.html#structthorin_1_1w2s__", null ],
+      [ "w2f_", "namespacethorin.html#structthorin_1_1w2f__", "namespacethorin_structthorin_1_1w2f___dup" ],
+      [ "w2s_", "namespacethorin.html#structthorin_1_1w2s__", "namespacethorin_structthorin_1_1w2s___dup" ],
       [ "w2s_< 1 >", "namespacethorin.html#structthorin_1_1w2s___3_011_01_4", "namespacethorin_structthorin_1_1w2s___3_011_01_4_dup" ],
       [ "w2s_< 16 >", "namespacethorin.html#structthorin_1_1w2s___3_0116_01_4", "namespacethorin_structthorin_1_1w2s___3_0116_01_4_dup" ],
       [ "w2s_< 32 >", "namespacethorin.html#structthorin_1_1w2s___3_0132_01_4", "namespacethorin_structthorin_1_1w2s___3_0132_01_4_dup" ],
       [ "w2s_< 64 >", "namespacethorin.html#structthorin_1_1w2s___3_0164_01_4", "namespacethorin_structthorin_1_1w2s___3_0164_01_4_dup" ],
       [ "w2s_< 8 >", "namespacethorin.html#structthorin_1_1w2s___3_018_01_4", "namespacethorin_structthorin_1_1w2s___3_018_01_4_dup" ],
-      [ "w2u_", "namespacethorin.html#structthorin_1_1w2u__", null ],
+      [ "w2u_", "namespacethorin.html#structthorin_1_1w2u__", "namespacethorin_structthorin_1_1w2u___dup" ],
       [ "w2u_< 1 >", "namespacethorin.html#structthorin_1_1w2u___3_011_01_4", "namespacethorin_structthorin_1_1w2u___3_011_01_4_dup" ],
       [ "w2u_< 16 >", "namespacethorin.html#structthorin_1_1w2u___3_0116_01_4", "namespacethorin_structthorin_1_1w2u___3_0116_01_4_dup" ],
       [ "w2u_< 32 >", "namespacethorin.html#structthorin_1_1w2u___3_0132_01_4", "namespacethorin_structthorin_1_1w2u___3_0132_01_4_dup" ],

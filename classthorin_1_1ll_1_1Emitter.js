@@ -2,6 +2,7 @@ var classthorin_1_1ll_1_1Emitter =
 [
     [ "Super", "classthorin_1_1ll_1_1Emitter.html#abd8c55ae877a2be9af0a6cf53ee2bde9", null ],
     [ "Emitter", "classthorin_1_1ll_1_1Emitter.html#a989b943b500f720be43dee82bbbe1862", null ],
+    [ "declare", "classthorin_1_1ll_1_1Emitter.html#af9f4ce2e758282772905e42b5c5fc4a3", null ],
     [ "emit_bb", "classthorin_1_1ll_1_1Emitter.html#aec6c07697e1ad7b58d302aabb48cc0b6", null ],
     [ "emit_epilogue", "classthorin_1_1ll_1_1Emitter.html#a6ac92ab4531a2a4e46f943f2fff60901", null ],
     [ "emit_imported", "classthorin_1_1ll_1_1Emitter.html#a07ad2f5806d38cbf2b690835775c5f29", null ],

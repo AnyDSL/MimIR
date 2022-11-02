@@ -7,10 +7,10 @@ var axiom_8h =
     [ "thorin::Match< Id, D >", "classthorin_1_1Match.html", "classthorin_1_1Match" ],
     [ "thorin::axiom_with_subs", "conceptthorin_1_1axiom__with__subs.html", null ],
     [ "thorin::axiom_without_subs", "conceptthorin_1_1axiom__without__subs.html", null ],
-    [ "bitwidth2size", "axiom_8h.html#ab061c9551c28a8be9a8b97444b38ab9b", null ],
     [ "force", "axiom_8h.html#a26d5e95b9100626e61154373ab908bd5", null ],
     [ "force", "axiom_8h.html#ad9f61ede0f76bb937047d9c1c5ee8a6c", null ],
+    [ "is_associative", "axiom_8h.html#a4cccb6dae2ff7654bbb7ba358d0d6362", null ],
+    [ "is_commutative", "axiom_8h.html#ac6d11963ed59da6221500882f51215ac", null ],
     [ "match", "axiom_8h.html#ad24aec250c7e5c9160c1d1b38e788065", null ],
-    [ "match", "axiom_8h.html#a18cb65ef938f5bdd133d02aed150fe4b", null ],
-    [ "size2bitwidth", "axiom_8h.html#a14599efad3033b587d9a191228d4fe1e", null ]
+    [ "match", "axiom_8h.html#a18cb65ef938f5bdd133d02aed150fe4b", null ]
 ];

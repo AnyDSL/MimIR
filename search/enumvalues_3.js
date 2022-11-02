@@ -11,5 +11,5 @@ var searchData=
   ['d_5fquote_5fl_8',['D_quote_l',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79a5be9fecd8fb8ece5f3217942ae9f6c4a',1,'thorin::fe::Tok']]],
   ['d_5fquote_5fr_9',['D_quote_r',['../classthorin_1_1fe_1_1Tok.html#aec20e733703a47cbb2a949219dc77b79add7e7307bb61b436ebfaff2f7f0e0e29',1,'thorin::fe::Tok']]],
   ['debug_10',['Debug',['../structthorin_1_1Log.html#ae8ff4129d521840f869d27c15ead3a1aaa603905470e2a5b8c13e96b579ef0dba',1,'thorin::Log']]],
-  ['div_11',['div',['../namespacethorin_1_1core.html#a1833f0faa946e3a89689c05e7aefb62ca38696558dc98494c08d951c052900a2a',1,'thorin::core']]]
+  ['div_11',['div',['../namespacethorin_1_1math.html#aa313bc84ec271c77a5d5d1f6b3897ec4a38696558dc98494c08d951c052900a2a',1,'thorin::math']]]
 ];

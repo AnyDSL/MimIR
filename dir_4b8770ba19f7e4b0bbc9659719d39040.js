@@ -6,6 +6,7 @@ var dir_4b8770ba19f7e4b0bbc9659719d39040 =
     [ "core", "dir_34bfe2063d65b9d749da9463709903df.html", "dir_34bfe2063d65b9d749da9463709903df" ],
     [ "demo", "dir_2e4367678b59cb90f0f8cc5a0dbc70fa.html", "dir_2e4367678b59cb90f0f8cc5a0dbc70fa" ],
     [ "direct", "dir_80746e965e0f886a9aa50e95efaf45c9.html", "dir_80746e965e0f886a9aa50e95efaf45c9" ],
+    [ "math", "dir_c0d50df951438bde77c2dac75a324f36.html", "dir_c0d50df951438bde77c2dac75a324f36" ],
     [ "mem", "dir_ec892acb8df8da37504494c241407fe1.html", "dir_ec892acb8df8da37504494c241407fe1" ],
     [ "refly", "dir_19cab0e9bb43ad8baa77bddca19ab0c8.html", "dir_19cab0e9bb43ad8baa77bddca19ab0c8" ]
 ];

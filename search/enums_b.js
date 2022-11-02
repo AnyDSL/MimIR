@@ -1,11 +1,8 @@
 var searchData=
 [
-  ['rcmp_0',['rcmp',['../namespacethorin_1_1core.html#aef22e655d972e6e071c044c985a494dd',1,'thorin::core']]],
-  ['real_1',['Real',['../namespacethorin_1_1core.html#a1273c641b76150b74824064e018e6e10',1,'thorin::core']]],
-  ['refine_2',['refine',['../namespacethorin_1_1refly.html#a2d98aa6b6e4f6092e4fcd6e329611518',1,'thorin::refly']]],
-  ['reflect_3',['reflect',['../namespacethorin_1_1refly.html#a95226b5a00778394709d73b0d0b113ae',1,'thorin::refly']]],
-  ['reify_4',['reify',['../namespacethorin_1_1refly.html#ab126eca8fb6114846260a8c356d1488d',1,'thorin::refly']]],
-  ['remem_5',['remem',['../namespacethorin_1_1mem.html#a59ec3b6d3bf2ec52f66c9a16aad2ff14',1,'thorin::mem']]],
-  ['rmode_6',['RMode',['../namespacethorin_1_1core_1_1RMode.html#ab1738d486dcdeaaefb42bb676ba05b91',1,'thorin::core::RMode']]],
-  ['rop_7',['rop',['../namespacethorin_1_1core.html#a1833f0faa946e3a89689c05e7aefb62c',1,'thorin::core']]]
+  ['pe_0',['pe',['../namespacethorin_1_1core.html#a9b3426ae9489ca2217b83a20c38d254a',1,'thorin::core']]],
+  ['pos_1',['Pos',['../classthorin_1_1EtaExp.html#a156b61a8e9d0843a3e598adb259c7abd',1,'thorin::EtaExp']]],
+  ['pow_2',['pow',['../namespacethorin_1_1math.html#a324add07f496847fd3381b0f642b5cec',1,'thorin::math']]],
+  ['prec_3',['Prec',['../classthorin_1_1fe_1_1Tok.html#a5a4207be68a5850473177397df2e34fa',1,'thorin::fe::Tok']]],
+  ['ptr_4',['Ptr',['../namespacethorin_1_1mem.html#a1e9242c771b97a95fe41b54fbe0385ab',1,'thorin::mem']]]
 ];

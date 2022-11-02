@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['w2r_0',['w2r',['../namespacethorin.html#a0ab59ddb51e0b81c66518044da8abe84',1,'thorin']]],
-  ['w2r_5f_1',['w2r_',['../namespacethorin.html#structthorin_1_1w2r__',1,'thorin']]],
+  ['w2f_0',['w2f',['../namespacethorin.html#a3f9e22246d8928f1c6223ce04744bbe0',1,'thorin']]],
+  ['w2f_5f_1',['w2f_',['../namespacethorin.html#structthorin_1_1w2f__',1,'thorin']]],
   ['w2s_2',['w2s',['../namespacethorin.html#aff779207196c19859b63760c693b389a',1,'thorin']]],
   ['w2s_5f_3',['w2s_',['../namespacethorin.html#structthorin_1_1w2s__',1,'thorin']]],
   ['w2s_5f_3c_201_20_3e_4',['w2s_&lt; 1 &gt;',['../namespacethorin.html#structthorin_1_1w2s___3_011_01_4',1,'thorin']]],
