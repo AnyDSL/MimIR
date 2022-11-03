@@ -18,9 +18,12 @@
 
 namespace thorin::matrix {
 
-const Def* LowerMatrixLowLevel::rewrite(const Def* def) {
+void LowerMatrixLowLevel::enter() { rewrite_lam(curr_nom()); }
+void LowerMatrixLowLevel::rewrite_lam(Lam* lam) { lam->set_body(rewrite_def(lam->body())); }
+
+const Def* LowerMatrixLowLevel::rewrite_def(const Def* def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
-    auto new_def = rewrite_(def);
+    auto new_def = rewrite_def_(def);
     // if (def->type() != new_def->type()) new_def = core::op_bitcast(def->type(), new_def);
     rewritten[def] = new_def;
     return rewritten[def];
@@ -44,6 +47,8 @@ const Def* op_nop(const Def* a, const Def* b, NOpKind kind) {
 
 const Def* op_lea_tuple(const Def* arr, const Def* tuple) {
     // mem::op_lea(arr, tuple);
+    auto& world = arr->world();
+    world.DLOG("op_lea_tuple arr {} : {}", arr, arr->type());
     auto n       = tuple->num_projs();
     auto element = arr;
     for (size_t i = 0; i < n; ++i) { element = mem::op_lea(element, tuple->proj(n, i)); }
@@ -123,7 +128,7 @@ const Def* arrTyOfMatrixTy(const Def* Mat) {
 //     rewritten_lam->set_body(rewrite(lam->body()));
 // }
 
-const Def* LowerMatrixLowLevel::rewrite_(const Def* def) {
+const Def* LowerMatrixLowLevel::rewrite_def_(const Def* def) {
     auto& world = def->world();
 
     assert(!match<matrix::mapReduce>(def) && "mapReduce should have been lowered to for loops by now");
@@ -133,8 +138,21 @@ const Def* LowerMatrixLowLevel::rewrite_(const Def* def) {
     assert(!match<matrix::sum>(def) && "high level operations should have been lowered to for loops by now");
 
     if (auto lam = def->isa_nom<Lam>()) {
-        world.DLOG("lower lam {}", lam);
-        assert(0);
+        world.DLOG("lower lam {} : {}", lam, lam->type());
+        auto ty     = lam->type();
+        auto new_ty = rewrite_def(ty);
+
+        world.DLOG("new ty {}", new_ty);
+        auto new_lam          = world.nom_lam(new_ty->as<Pi>());
+        rewritten[lam->var()] = new_lam->var();
+        rewritten[lam]        = new_lam;
+        new_lam->set_body(rewrite_def(lam->body()));
+        // new_lam->set_filter(lam->filter());
+        new_lam->set_filter(false);
+        return new_lam;
+        // lam->set_type(new_ty);
+        // assert(0);
+        // rewrite_lam(lam);
     }
 
     world.DLOG("inspect {} : {}", def, def->type());
@@ -172,14 +190,17 @@ const Def* LowerMatrixLowLevel::rewrite_(const Def* def) {
     } else if (auto read_ax = match<matrix::read>(def)) {
         auto [mem, mat, idx] = read_ax->args<3>();
         // TODO: check if mat is already converted
-        auto element_ptr = op_lea_tuple(mat, idx);
+        auto ptr_mat     = rewrite_def(mat);
+        auto element_ptr = op_lea_tuple(ptr_mat, idx);
         auto [mem2, val] = mem::op_load(mem, element_ptr)->projs<2>();
         return world.tuple({mem2, val});
     } else if (auto insert_ax = match<matrix::insert>(def)) {
         auto [mem, mat, idx, val] = insert_ax->args<4>();
-        auto element_ptr          = op_lea_tuple(mat, idx);
+        auto ptr_mat              = rewrite_def(mat);
+        auto element_ptr          = op_lea_tuple(ptr_mat, idx);
         auto mem2                 = mem::op_store(mem, element_ptr, val);
-        return mem2;
+        // return mem2, ptr_mat);
+        return world.tuple({mem2, ptr_mat});
     } else if (auto const_ax = match<matrix::constMat>(def)) {
         auto [mem, val]      = const_ax->args<2>();
         auto [n_def, S, T]   = const_ax->callee()->as<App>()->args<3>();
@@ -196,9 +217,23 @@ const Def* LowerMatrixLowLevel::rewrite_(const Def* def) {
         return world.tuple({mem3, ptr_mat});
     }
 
-    world.DLOG("unmodified {}", def);
+    // if (auto app = def->isa<App>()) {
+    //     auto new_arg   = rewrite_def(app->arg());
+    //     auto new_calle = rewrite_def(app->callee());
+    //     return world.app(new_calle, new_arg);
+    // }
 
-    return def;
+    // world.DLOG("unmodified {}", def);
+
+    // if (auto var = def->isa<Var>()) { return var; }
+
+    if (auto old_nom = def->isa_nom()) { return old_nom; }
+    DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_def(op); }};
+    if (def->isa<Tuple>()) return world.tuple(new_ops, def->dbg());
+
+    return def->rebuild(world, def->type(), new_ops, def->dbg());
+
+    // return def;
 }
 
 PassTag* LowerMatrixLowLevel::ID() {

@@ -13,10 +13,11 @@ public:
 
     /// custom rewrite function
     /// memoized version of rewrite_
-    const Def* rewrite(const Def*) override;
-    const Def* rewrite_(const Def*);
+    const Def* rewrite_def(const Def*);
+    const Def* rewrite_def_(const Def*);
 
-    // void enter() override;
+    void enter() override;
+    void rewrite_lam(Lam* lam);
 
     static PassTag* ID();
 
