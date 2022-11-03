@@ -452,6 +452,27 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         }
     }
 
+    if (auto extrema = match<math::extrema>(def)) {
+        if (extrema.id() == math::extrema::maximum) {
+            auto [left, right] = extrema->args<2>();
+            auto left_value    = resolve(left);
+            auto right_value   = resolve(right);
+
+            auto comparison     = math::op(math::cmp::g, w.lit_nat(math::Mode::none), left_value, right_value);
+            auto zero_val       = zero(gradient->type());
+            auto left_gradient  = w.tuple({gradient, zero_val});
+            auto right_gradient = w.tuple({zero_val, gradient});
+
+            auto first_select  = w.extract(left_gradient, comparison);
+            auto second_select = w.extract(right_gradient, comparison);
+
+            auto result = w.tuple({first_select, second_select});
+
+            attach_gradient(extrema->arg(), result);
+            return;
+        }
+    }
+
     if (auto wrap = match<core::wrap>(def)) {
         auto [left, right] = wrap->args<2>();
 
@@ -501,7 +522,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         } else if (rop.id() == math::arith::div) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
-            auto value = resolve(def);
+            auto value       = resolve(def);
 
             left_grad = math::op(math::arith::div, math::Mode::none, gradient, right_value);
 
@@ -595,6 +616,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 assert(false);
             }
 
+            this->current_lam = current_lam;
             for (auto node : visitor.post_order_visit(arg)) { prop(scope, node->def); }
 
             DefVec inv_args;

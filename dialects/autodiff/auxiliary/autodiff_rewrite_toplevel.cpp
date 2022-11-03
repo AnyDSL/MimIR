@@ -69,27 +69,6 @@ Lam* AutoDiffEval::free_memory() {
 
 void AutoDiffEval::mark(const Def* def) { markings.insert(def); }
 
-void AutoDiffEval::scan(const Def* def) {
-    if (!visited_scan.insert(def).second) return;
-
-    if (auto rop = match<math::arith>(def)) {
-        if (rop.id() == math::arith::mul) {
-            mark(rop->arg(0));
-            mark(rop->arg(1));
-        }else if (rop.id() == math::arith::div) {
-            mark(rop->arg(0));
-            mark(rop->arg(1));
-            mark(def);
-        }
-    }
-
-    if (auto exp = match<math::exp>(def)) {
-        if (exp.id() == math::exp::exp) { mark(exp); }
-    }
-
-    for (auto op : def->ops()) { scan(op); }
-}
-
 const App* is_load_val(const Def* def) {
     if (auto extr = def->isa<Extract>()) {
         auto tuple = extr->tuple();
@@ -99,16 +78,48 @@ const App* is_load_val(const Def* def) {
     return nullptr;
 }
 
+void AutoDiffEval::scan(const Def* def) {
+    if (!visited_scan.insert(def).second) return;
+
+    if (auto rop = match<math::arith>(def)) {
+        if (rop.id() == math::arith::mul) {
+            mark(rop->arg(0));
+            mark(rop->arg(1));
+        } else if (rop.id() == math::arith::div) {
+            mark(rop->arg(0));
+            mark(rop->arg(1));
+            mark(def);
+        }
+    } else if (auto extrema = match<math::extrema>(def)) {
+        if (extrema.id() == math::extrema::maximum || extrema.id() == math::extrema::minimum) {
+            mark(extrema->arg(0));
+            mark(extrema->arg(1));
+        }
+    }
+
+    if (auto exp = match<math::exp>(def)) {
+        if (exp.id() == math::exp::exp) {
+            mark(exp->arg(0));
+            mark(exp);
+        }
+    }
+    /*
+        if (auto load = is_load_val(def)) {
+            mark(def);
+        }*/
+
+    for (auto op : def->ops()) { scan(op); }
+}
+
 void AutoDiffEval::prepare(const Def* def) {
     scan(def);
 
     for (auto mark : markings) {
-        mark->dump(1);
         if (auto load = is_load_val(mark)) {
             auto ptr = load->arg(1);
             if (has_op_store(ptr)) { requires_caching.insert(mark); }
-        } else {
-            requires_caching.insert(mark);
+        } else if (!mark->isa<Lit>()) {
+            // requires_caching.insert(mark);
         }
     }
 }

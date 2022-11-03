@@ -378,6 +378,7 @@ private:
     std::shared_ptr<LoopFrame> current_loop = nullptr;
 
     const Def* current_mem = nullptr;
+    Lam* current_lam       = nullptr;
     State current_state    = State::Unknown;
     std::stack<const Def*> mem_stack;
 };
