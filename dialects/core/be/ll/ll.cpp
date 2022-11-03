@@ -560,6 +560,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (isa_lit(index)) {
             assert(!ll_tup.empty());
             return bb.assign(name, "extractvalue {} {}, {}", tup_t, ll_tup, ll_idx);
+        } else if (index->type() == index->world().type_bool()) {
+            auto elem_t                = convert(extract->type());
+            auto [false_def, true_def] = tuple->ops<2>();
+
+            auto false_val = emit_unsafe(false_def);
+            auto true_val  = emit_unsafe(true_def);
+
+            return bb.assign(name, "select fast i1 {}, {} {}, {} {} ", ll_idx, elem_t, true_val, elem_t, false_val);
         } else {
             auto elem_t  = convert(extract->type());
             auto index_t = convert(index->type());
