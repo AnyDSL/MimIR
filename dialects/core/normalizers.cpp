@@ -569,6 +569,7 @@ inline u64 pad(u64 offset, u64 align) {
 // TODO Pi and others
 template<trait id>
 const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const Def* dbg) {
+    assert(!match<mem::M>(type));
     auto& world = type->world();
     if (auto ptr = match<mem::Ptr>(type)) {
         return world.lit_nat(8);

@@ -17,6 +17,7 @@ private:
     Value emit_(const Def* def) {
         auto place = scheduler_.smart(def);
         auto& bb   = lam2bb_[place->as_nom<Lam>()];
+        def->dump(1);
         return child().emit_bb(bb, def);
     }
 

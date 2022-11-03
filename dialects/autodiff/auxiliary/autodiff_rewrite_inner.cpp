@@ -31,7 +31,15 @@ const Def* zero(const Def* ty) {
     if (match<math::F>(ty)) { return w.lit(ty, 0.0); }
     if (is_idx(ty)) { return w.lit(ty, 0); }
     if (auto arr = ty->isa<Arr>()) { return w.pack(arr->shape(), zero(arr->body())); }
-    return w.lit(ty, 0);
+    assert(false);
+}
+
+const Def* one(const Def* ty) {
+    auto& w = ty->world();
+    if (match<math::F>(ty)) { return w.lit(ty, 1.0); }
+    if (is_idx(ty)) { return w.lit(ty, 0); }
+    if (auto arr = ty->isa<Arr>()) { return w.pack(arr->shape(), one(arr->body())); }
+    assert(false);
 }
 const Def* zero(World& w) { return w.lit_int(32, 0); }
 const Def* one(World& w) { return w.lit_int(32, 1); }
@@ -449,7 +457,31 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
             auto upstream_grad = math::op(math::arith::mul, math::Mode::none, result_exp, gradient);
             attach_gradient(exp->arg(), upstream_grad);
             return;
+        }else if (exp.id() == math::exp::log) {
+            auto result_arg    = resolve(exp->arg());
+            auto upstream_grad = math::op(math::arith::div, math::Mode::none, gradient, result_arg);
+            attach_gradient(exp->arg(), upstream_grad);
+            return;
         }
+    }
+
+    if (auto gamma = match<math::gamma>(def)) {
+        auto x = resolve(gamma->arg());
+
+        //(lgamma(x - delta) + lgamma(x + delta)) / (2 * delta)
+        auto delta = w.lit(x->type(), 0.0000001);
+        auto two = w.lit(x->type(), 2.0);
+        auto two_delta = math::op(math::arith::mul, math::Mode::none, two, delta);
+
+        auto left_x = math::op(math::arith::sub, math::Mode::none, x, delta);
+        auto left = math::op(math::gamma::l, w.lit_nat(math::Mode::none), left_x);
+
+        auto right_x = math::op(math::arith::add, math::Mode::none, x, delta);
+        auto right = math::op(math::gamma::l, w.lit_nat(math::Mode::none), right_x);
+
+        auto sum =  math::op(math::arith::add, math::Mode::none, left, right);
+        auto grad = math::op(math::arith::div, math::Mode::none, sum, two_delta);
+        attach_gradient(gamma->arg(), grad);
     }
 
     if (auto extrema = match<math::extrema>(def)) {
@@ -460,14 +492,13 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
 
             auto comparison     = math::op(math::cmp::g, w.lit_nat(math::Mode::none), left_value, right_value);
             auto zero_val       = zero(gradient->type());
-            auto left_gradient  = w.tuple({gradient, zero_val});
-            auto right_gradient = w.tuple({zero_val, gradient});
+            auto left_gradient  = w.tuple({zero_val, gradient});
+            auto right_gradient = w.tuple({gradient, zero_val});
 
             auto first_select  = w.extract(left_gradient, comparison);
             auto second_select = w.extract(right_gradient, comparison);
 
             auto result = w.tuple({first_select, second_select});
-
             attach_gradient(extrema->arg(), result);
             return;
         }
