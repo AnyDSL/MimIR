@@ -74,6 +74,10 @@ inline const Def* fn(er o, const Def* pe, VMode m, const Def* dbg = {}) {
     World& w = pe->world();
     return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
 }
+inline const Def* fn(gamma o, const Def* pe, VMode m, const Def* dbg = {}) {
+    World& w = pe->world();
+    return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
+}
 inline const Def* fn(cmp o, const Def* pe, VMode m, const Def* dbg = {}) {
     World& w = pe->world();
     return w.app(w.app(w.ax(o), pe, dbg), mode(w, m), dbg);
@@ -111,6 +115,10 @@ inline const Def* op(exp o, VMode m, const Def* a, const Def* dbg = {}) {
     return w.app(fn(o, finfer(a), m), a, dbg);
 }
 inline const Def* op(er o, VMode m, const Def* a, const Def* dbg = {}) {
+    World& w = a->world();
+    return w.app(fn(o, finfer(a), m), a, dbg);
+}
+inline const Def* op(gamma o, VMode m, const Def* a, const Def* dbg = {}) {
     World& w = a->world();
     return w.app(fn(o, finfer(a), m), a, dbg);
 }
