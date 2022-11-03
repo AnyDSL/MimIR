@@ -7,25 +7,26 @@
 
 namespace thorin::math {
 
+// clang-format off
 enum Mode : nat_t {
-    none = 0,
-    nnan = 1 << 0,     ///< No NaNs.
+    none     = 0,
+    nnan     = 1 << 0, ///< No NaNs.
                        ///< Allow optimizations to assume the arguments and result are not NaN.
                        ///< Such optimizations are required to retain defined behavior over NaNs,
                        ///< but the value of the result is undefined.
-    ninf = 1 << 1,     ///< No Infs.
+    ninf     = 1 << 1, ///< No Infs.
                        ///> Allow optimizations to assume the arguments and result are not +/-Inf.
                        ///< Such optimizations are required to retain defined behavior over +/-Inf,
                        ///< but the value of the result is undefined.
-    nsz = 1 << 2,      ///< No Signed Zeros.
+    nsz      = 1 << 2, ///< No Signed Zeros.
                        ///< Allow optimizations to treat the sign of a zero argument or result as insignificant.
-    arcp = 1 << 3,     ///< Allow Reciprocal.
+    arcp     = 1 << 3, ///< Allow Reciprocal.
                        ///< Allow optimizations to use the reciprocal of an argument rather than perform division.
     contract = 1 << 4, ///< Allow floating-point contraction.
                        ///< (e.g. fusing a multiply followed by an addition into a fused multiply-and-add).
-    afn = 1 << 5,      ///< Approximate functions.
+    afn      = 1 << 5, ///< Approximate functions.
                        ///< Allow substitution of approximate calculations for functions (sin, log, sqrt, etc).
-    reassoc = 1 << 6,  ///< Allow reassociation transformations for floating-point operations.
+    reassoc  = 1 << 6, ///< Allow reassociation transformations for floating-point operations.
                        ///< This may dramatically change results in floating point.
     finite = nnan | ninf,
     unsafe = nsz | arcp | reassoc,
@@ -33,6 +34,7 @@ enum Mode : nat_t {
     bot    = fast,
     top    = none,
 };
+// clang-format on
 
 using VMode = std::variant<Mode, nat_t, const Def*>;
 

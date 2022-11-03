@@ -91,15 +91,18 @@ Res fold(u64 a, u64 b) {
         else if constexpr (id == arith::rem) return rem(x,  y);
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, math::extrema>) {
-        if constexpr (false) {}
-        else if constexpr (id == extrema::minimum) return std::fmin(x, y);
-        else if constexpr (id == extrema::maximum) return std::fmax(x, y);
-        else if constexpr (id == extrema::minnum || id == extrema::maxnum){
+        if (x == T(-0.0) && y == T(+0.0)) return (id == extrema::minimum || id == extrema::minnum) ? x : y;
+        if (x == T(+0.0) && y == T(-0.0)) return (id == extrema::minimum || id == extrema::minnum) ? y : x;
+
+        if constexpr (id == extrema::minnum || id == extrema::maxnum) {
+            return id == extrema::minnum ? std::fmin(x, y) : std::fmax(x, y);
+        } else if constexpr (id == extrema::minimum || id == extrema::maximum) {
             if (std::isnan(x)) return x;
             if (std::isnan(y)) return y;
-            return id == extrema::minnum ? std::fmin(x, y) : std::fmax(x, y);
+            return id == extrema::minimum ? std::fmin(x, y) : std::fmax(x, y);
+        } else {
+            []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
         }
-        else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, pow>) {
         return std::pow(a, b);
     } else if constexpr (std::is_same_v<Id, cmp>) {
@@ -278,8 +281,21 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
 template<extrema id>
 const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg, const Def* dbg) {
     auto& world = type->world();
+    auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
+    auto m      = callee->decurry()->arg();
+    auto lm     = isa_lit(m);
+
     if (auto lit = fold<extrema, id>(world, type, a, b, dbg)) return lit;
+
+    if (lm && *lm & (Mode::nnan | Mode::nsz)) { // if ignore NaNs and signed zero, then *imum -> *num
+        switch (id) {
+            case extrema::minimum: return op(extrema::minnum, m, a, b, dbg);
+            case extrema::maximum: return op(extrema::maxnum, m, a, b, dbg);
+            default: break;
+        }
+    }
+
     return world.raw_app(c, arg, dbg);
 }
 
