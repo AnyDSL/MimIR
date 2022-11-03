@@ -109,13 +109,6 @@ inline const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg) {
     return w.app(w.app(w.ax<malloc>(), {type, w.lit_nat_0()}), {mem, size}, dbg);
 }
 
-inline const Def* op_free(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-    World& w     = mem->world();
-    auto ptr_ty  = match<Ptr>(ptr->type())->as<App>();
-    auto pointee = ptr_ty->arg(0_s);
-    return w.app(w.app(w.ax<free>(), {pointee, w.lit_nat_0()}), {mem, ptr}, dbg);
-}
-
 inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg) {
     World& w  = type->world();
     auto size = core::op(core::trait::size, type);
@@ -125,8 +118,15 @@ inline const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const
 const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
 const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
 
+inline const Def* op_free(const Def* mem, const Def* ptr, const Def* dbg = {}) {
+    World& w     = mem->world();
+    auto ptr_ty  = force<Ptr>(ptr->type())->as<App>();
+    auto pointee = ptr_ty->arg(0);
+    return w.app(w.app(w.ax<free>(), {pointee, w.lit_nat_0()}), {mem, ptr}, dbg);
+}
+
 /// Returns the (first) element of type mem::M from the given tuple.
-static const Def* mem_def(const Def* def) {
+static const Def* mem_def(const Def* def, const Def* dbg = {}) {
     if (match<mem::M>(def->type())) { return def; }
 
     if (def->num_projs() > 1) {
@@ -139,7 +139,7 @@ static const Def* mem_def(const Def* def) {
 }
 
 /// Returns the memory argument of a function if it has one.
-inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) { return mem_def(lam->var()); }
+inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) { return mem_def(lam->var(), dbg); }
 
 /// Swapps the memory occurrences in the given def with the given memory.
 inline const Def* replace_mem(const Def* mem, const Def* arg) {

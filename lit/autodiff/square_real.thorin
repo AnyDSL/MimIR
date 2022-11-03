@@ -1,5 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d tool -d direct -d autodiff %s --output-ll %t.ll --output-thorin - | FileCheck %s
+// RUN: %thorin -d direct -d autodiff %s --output-ll %t.ll --output-thorin - | FileCheck %s
 
 .import core;
 .import autodiff;
@@ -29,40 +29,26 @@
 
 
 
-
 .cn f [a:R32, ret: .Cn [R32]] = {
     .let b = %core.rop.mul (0, _32) (a, a);
     ret b
 };
 
 .cn g [a:R32, ret: .Cn [R32, .Cn [R32, .Cn [R32]]]] = {
-    .let f_diff = %autodiff.autodiff (.Cn [R32,.Cn[R32]]) f;
+    .let f_diff = %autodiff.ad (.Cn [R32,.Cn[R32]]) f;
     f_diff (a,ret)
 };
 
 .cn .extern test [[], ret: .Cn [[R32,R32],[R32,R32]]] = {
     .cn inner [r:R32, pb:.Cn [R32, .Cn [R32]]] = {
         .cn pb_rec p::[R32] = {
-            // ret (5.0:R32)
+            // We return expected result and derivative together with the real values.
+            // If both are the same, the normalizer creates a pack which is tested for.
             ret ((25.0:R32,10.0:R32),(r,p))
         };
         pb (1.0:R32, pb_rec)
     };
     g (5.0:R32, inner)
-
-
-    // .cn pb_rec p::[R32] = {
-    //     ret (25.0:R32,p)
-    // };
-
-    // f (5.0:R32, pb_rec)
-
-
-    // ret (6.0:R32)
-
-    // .let b = %core.rop.mul (0, _32) (2.0:R32, 3.0:R32);
-    // .let b = 6.0:R32;
-    // ret b
 };
 
 

@@ -212,8 +212,7 @@ std::string Emitter::convert_ret_pi(const Pi* pi) {
 void Emitter::start() {
     Super::start();
     ostream() << "declare i8* @malloc(i64)" << '\n'; // HACK
-    ostream() << "declare i8* @calloc(i64)" << '\n'; // HACK
-    ostream() << "declare void @free(i8*)" << '\n';  // HACK
+    ostream() << "declare void @free(i8*)" << '\n';
     // SJLJ intrinsics (GLIBC Versions)
     ostream() << "declare i32 @_setjmp(i8*) returns_twice" << '\n';
     ostream() << "declare void @longjmp(i8*, i32) noreturn" << '\n';
@@ -516,9 +515,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         switch (bit2.id()) {
             // clang-format off
-            case core::bit2::_and: return bb.assign(name, "and {} {}, {}", t, a, b);
-            case core::bit2:: _or: return bb.assign(name, "or  {} {}, {}", t, a, b);
-            case core::bit2::_xor: return bb.assign(name, "xor {} {}, {}", t, a, b);
+            case core::bit2::and_: return bb.assign(name, "and {} {}, {}", t, a, b);
+            case core::bit2:: or_: return bb.assign(name, "or  {} {}, {}", t, a, b);
+            case core::bit2::xor_: return bb.assign(name, "xor {} {}, {}", t, a, b);
             case core::bit2::nand: return neg(bb.assign(name, "and {} {}, {}", t, a, b));
             case core::bit2:: nor: return neg(bb.assign(name, "or  {} {}, {}", t, a, b));
             case core::bit2::nxor: return neg(bb.assign(name, "xor {} {}, {}", t, a, b));
@@ -750,10 +749,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // TODO array with size
         // auto size = emit(mslot->arg(1));
         auto [pointee, addr_space] = mslot->decurry()->args<2>();
-        // TODO placing allocas not in the entry block may cause severe performance problems
-        // print(lam2bb_[entry_].body().emplace_front(), "{} = alloca {}", name, convert(pointee));
         print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
         return name;
+    } else if (auto free = match<mem::free>(def)) {
+        emit_unsafe(free->arg(0));
+        auto ptr   = emit(free->arg(1));
+        auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
+
+        bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
+        bb.tail("call void @free(i8* {})", name + ".i8");
+        return {};
     } else if (auto load = match<mem::load>(def)) {
         emit_unsafe(load->arg(0));
         auto ptr       = emit(load->arg(1));
