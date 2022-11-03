@@ -95,7 +95,7 @@ Res fold(u64 a, u64 b) {
         else if constexpr (id == extrema::minimum) return fmin(x, y);
         else if constexpr (id == extrema::maximum) return fmax(x, y);
         else if constexpr (id == extrema::minnum || id == extrema::maxnum){
-            if (std::isnan(x)) return y;
+            if (std::isnan(x)) return x;
             if (std::isnan(y)) return y;
             return id == extrema::minnum ? fmin(x, y) : fmax(x, y);
         }
