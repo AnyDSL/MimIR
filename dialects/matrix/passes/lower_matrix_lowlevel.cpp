@@ -20,7 +20,8 @@ namespace thorin::matrix {
 
 const Def* LowerMatrixLowLevel::rewrite(const Def* def) {
     if (auto i = rewritten.find(def); i != rewritten.end()) return i->second;
-    auto new_def   = rewrite_(def);
+    auto new_def = rewrite_(def);
+    // if (def->type() != new_def->type()) new_def = core::op_bitcast(def->type(), new_def);
     rewritten[def] = new_def;
     return rewritten[def];
 }
@@ -97,9 +98,9 @@ const Def* arrTyOfMatrixTy(const Def* S, const Def* T) {
     auto arr_ty = T;
     for (int i = n - 1; i >= 0; i--) {
         auto dim = S->proj(n, i);
-        world.DLOG("dim {}: {}", i, dim);
+        // world.DLOG("dim {}: {}", i, dim);
         arr_ty = world.arr(dim, arr_ty);
-        world.DLOG("arr_ty {}..{}: {}", i, n, arr_ty);
+        // world.DLOG("arr_ty {}..{}: {}", i, n, arr_ty);
     }
     return arr_ty;
 }
@@ -113,6 +114,15 @@ const Def* arrTyOfMatrixTy(const Def* Mat) {
     return arrTyOfMatrixTy(S, T);
 }
 
+// void LowerMatrixLowLevel::enter() {
+//     if (!curr_nom()->is_external()) return;
+//     auto lam = curr_nom()->isa_nom<Lam>();
+//     if (!lam) return;
+//     auto rewritten_pi  = rewrite(lam->type())->as<Pi>();
+//     auto rewritten_lam = world().nom_lam(rewritten_pi);
+//     rewritten_lam->set_body(rewrite(lam->body()));
+// }
+
 const Def* LowerMatrixLowLevel::rewrite_(const Def* def) {
     auto& world = def->world();
 
@@ -121,6 +131,13 @@ const Def* LowerMatrixLowLevel::rewrite_(const Def* def) {
     assert(!match<matrix::prod>(def) && "high level operations should have been lowered to for loops by now");
     assert(!match<matrix::transpose>(def) && "high level operations should have been lowered to for loops by now");
     assert(!match<matrix::sum>(def) && "high level operations should have been lowered to for loops by now");
+
+    if (auto lam = def->isa_nom<Lam>()) {
+        world.DLOG("lower lam {}", lam);
+        assert(0);
+    }
+
+    world.DLOG("inspect {} : {}", def, def->type());
 
     if (auto mat_ax = match<matrix::Mat>(def)) {
         // auto [n_def, S, T] = mat_ax->args<3>();
@@ -178,6 +195,8 @@ const Def* LowerMatrixLowLevel::rewrite_(const Def* def) {
 
         return world.tuple({mem3, ptr_mat});
     }
+
+    world.DLOG("unmodified {}", def);
 
     return def;
 }

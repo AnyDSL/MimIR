@@ -16,6 +16,8 @@ public:
     const Def* rewrite(const Def*) override;
     const Def* rewrite_(const Def*);
 
+    // void enter() override;
+
     static PassTag* ID();
 
 private:
