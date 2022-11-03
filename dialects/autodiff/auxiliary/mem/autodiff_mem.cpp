@@ -173,13 +173,6 @@ Lam* AutoDiffEval::create_gradient_collector(const Def* gradient_lea, Lam* f) {
     return pb_lam;
 }
 
-// TODO: remove, create zero pullback at initialization, assert pullback existance at other positions
-const Def* AutoDiffEval::get_pullback(const Def* op, Lam* f) {
-    auto pb = partial_pullback[op];
-    if (!pb) { return zero_pullback_fun(op->type(), f); }
-    return pb;
-}
-
 const Def* AutoDiffEval::zero_pullback_fun(const Def* domain, Lam* f) {
     const Def* A   = f_arg_ty;
     auto& world    = A->world();

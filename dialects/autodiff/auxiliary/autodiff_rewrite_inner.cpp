@@ -142,7 +142,7 @@ const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff
 
         world.DLOG("Tuple pb is {} : {}", tuple_pb, tuple_pb->type());
         auto pb_tangent = pb_fun->var((nat_t)0, world.dbg("s"));
-        //  we create a unit vector of E^T (not to be confused with (E')^T)
+        // We create a unit vector of `E^T` (not to be confused with `(E')^T`)
         auto tuple_tan_type = tuple_pb->type()->as<Pi>()->dom(0);
 
         // We want a lazy zero here (this is more efficient as we only care about the insert index and
@@ -176,16 +176,21 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
 
     auto aug_tup = world.tuple(aug_ops);
 
-    DefArray pbs(aug_ops, [&](const Def* op) { return get_pullback(op, f); });
+    DefArray pbs(aug_ops, [&](const Def* op) {
+        auto pb = partial_pullback[op];
+        assert(pb && "pb should exists -- if not, create a zero_pb at correct position");
+        return pb;
+    });
     world.DLOG("tuple pbs {,}", pbs);
-    // create shadow pb
+    // We create the shadow pb (a shallow tuple of pullbacks).
     auto shadow_pb           = world.tuple(pbs);
     shadow_pullback[aug_tup] = shadow_pb;
 
-    // create partial pb
+    // ```
     // \lambda (s:[E0,...,Em]).
     //    sum (m,A)
     //      ((cps2ds e0*) (s#0), ..., (cps2ds em*) (s#m))
+    // ```
     auto pb_ty = pullback_type(tup->type(), f_arg_ty);
     auto pb    = world.nom_lam(pb_ty, world.dbg("tup_pb"));
     world.DLOG("Augmented tuple: {} : {}", aug_tup, aug_tup->type());
@@ -194,7 +199,6 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
 
     auto pb_tangent = pb->var((nat_t)0, world.dbg("tup_s"));
 
-    // TODO: move op_cps2ds to direct dialect and merge then
     auto T = tangent_type_fun(f_arg_ty);
 
     auto mem = mem::mem_var(pb);
@@ -474,8 +478,7 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     assert(false && "should not be reached");
 }
 
-/// rewrite the given definition
-///
+/// Rewrites the given definition in a lambda environment.
 const Def* AutoDiffEval::augment_(const Def* def, Lam* f, Lam* f_diff) {
     auto& world = def->world();
     // We use macros above to avoid recomputation.
