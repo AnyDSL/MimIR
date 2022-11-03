@@ -315,7 +315,7 @@ const Def* sum(const Def* left, const Def* right) {
     if (is_idx(left->type())) {
         return core::op(core::wrap::add, core::Mode::none, left, right);
     } else if (match<math::F>(left->type())) {
-        return math::op(math::arith::add, math::Mode::none, left, right);
+        return math::op(math::arith::add, math::Mode::fast, left, right);
     } else if (left->isa<Tuple>()) {
         DefVec new_ops;
         for (size_t i = 0; i < left->num_projs(); i++) { new_ops.push_back(sum(left->proj(i), right->proj(i))); }
@@ -377,7 +377,7 @@ const Def* scale(const Def* shape, const Def* def) {
     if (match<math::F>(def->type())) {
         auto shape_idx       = core::op_bitcast(w.type_int(64), shape);
         auto shape_val       = math::op(math::conv::u2f, def->type(), shape_idx);
-        auto scaled_gradient = math::op(math::arith::mul, math::Mode::none, shape_val, def);
+        auto scaled_gradient = math::op(math::arith::mul, math::Mode::fast, shape_val, def);
         return scaled_gradient;
     } else if (is_idx(def->type())) {
         auto shape_idx       = core::op_bitcast(def->type(), shape);
@@ -454,12 +454,12 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
     if (auto exp = match<math::exp>(def)) {
         if (exp.id() == math::exp::exp) {
             auto result_exp    = resolve(exp);
-            auto upstream_grad = math::op(math::arith::mul, math::Mode::none, result_exp, gradient);
+            auto upstream_grad = math::op(math::arith::mul, math::Mode::fast, result_exp, gradient);
             attach_gradient(exp->arg(), upstream_grad);
             return;
-        }else if (exp.id() == math::exp::log) {
+        } else if (exp.id() == math::exp::log) {
             auto result_arg    = resolve(exp->arg());
-            auto upstream_grad = math::op(math::arith::div, math::Mode::none, gradient, result_arg);
+            auto upstream_grad = math::op(math::arith::div, math::Mode::fast, gradient, result_arg);
             attach_gradient(exp->arg(), upstream_grad);
             return;
         }
@@ -468,19 +468,21 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
     if (auto gamma = match<math::gamma>(def)) {
         auto x = resolve(gamma->arg());
 
-        //(lgamma(x - delta) + lgamma(x + delta)) / (2 * delta)
-        auto delta = w.lit(x->type(), 0.0000001);
-        auto two = w.lit(x->type(), 2.0);
-        auto two_delta = math::op(math::arith::mul, math::Mode::none, two, delta);
+        auto s   = math::isa_f(x->type());
+        assert(s);
 
-        auto left_x = math::op(math::arith::sub, math::Mode::none, x, delta);
-        auto left = math::op(math::gamma::l, w.lit_nat(math::Mode::none), left_x);
+        auto delta     =  math::lit_f(w, *s, 0.0000001);
+        auto two       =  math::lit_f(w, *s, 2.0);
+        auto two_delta = math::op(math::arith::mul, math::Mode::fast, two, delta);
 
-        auto right_x = math::op(math::arith::add, math::Mode::none, x, delta);
-        auto right = math::op(math::gamma::l, w.lit_nat(math::Mode::none), right_x);
+        auto left_x = math::op(math::arith::add, math::Mode::fast, x, delta);
+        auto left   = math::op(math::gamma::l, math::Mode::fast, left_x);
 
-        auto sum =  math::op(math::arith::add, math::Mode::none, left, right);
-        auto grad = math::op(math::arith::div, math::Mode::none, sum, two_delta);
+        auto right_x = math::op(math::arith::sub, math::Mode::fast, x, delta);
+        auto right   = math::op(math::gamma::l, math::Mode::fast, right_x);;
+
+        auto sum  = math::op(math::arith::sub, math::Mode::fast, left, right);
+        auto grad = math::op(math::arith::div, math::Mode::fast, sum, two_delta);
         attach_gradient(gamma->arg(), grad);
     }
 
@@ -490,7 +492,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
             auto left_value    = resolve(left);
             auto right_value   = resolve(right);
 
-            auto comparison     = math::op(math::cmp::g, w.lit_nat(math::Mode::none), left_value, right_value);
+            auto comparison     = math::op(math::cmp::g, w.lit_nat(math::Mode::fast), left_value, right_value);
             auto zero_val       = zero(gradient->type());
             auto left_gradient  = w.tuple({zero_val, gradient});
             auto right_gradient = w.tuple({gradient, zero_val});
@@ -542,24 +544,24 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
 
         if (rop.id() == math::arith::add) {
         } else if (rop.id() == math::arith::sub) {
-            right_grad = math::op_rminus(math::Mode::none, gradient);
+            right_grad = math::op_rminus(math::Mode::fast, gradient);
         } else if (rop.id() == math::arith::mul) {
             right->dump(1);
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
-            left_grad  = math::op(math::arith::mul, math::Mode::none, gradient, right_value);
-            right_grad = math::op(math::arith::mul, math::Mode::none, gradient, left_value);
+            left_grad  = math::op(math::arith::mul, math::Mode::fast, gradient, right_value);
+            right_grad = math::op(math::arith::mul, math::Mode::fast, gradient, left_value);
         } else if (rop.id() == math::arith::div) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
             auto value       = resolve(def);
 
-            left_grad = math::op(math::arith::div, math::Mode::none, gradient, right_value);
+            left_grad = math::op(math::arith::div, math::Mode::fast, gradient, right_value);
 
-            right_grad = math::op_rminus(math::Mode::none, gradient);
-            right_grad = math::op(math::arith::mul, math::Mode::none, right_grad, value);
-            right_grad = math::op(math::arith::div, math::Mode::none, right_grad, right_value);
+            right_grad = math::op_rminus(math::Mode::fast, gradient);
+            right_grad = math::op(math::arith::mul, math::Mode::fast, right_grad, value);
+            right_grad = math::op(math::arith::div, math::Mode::fast, right_grad, right_value);
         }
 
         attach_gradient(rop->arg(), w.tuple({left_grad, right_grad}));

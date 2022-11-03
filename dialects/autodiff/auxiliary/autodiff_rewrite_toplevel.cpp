@@ -100,14 +100,12 @@ void AutoDiffEval::scan(const Def* def) {
     if (auto exp = match<math::exp>(def)) {
         if (exp.id() == math::exp::exp) {
             mark(exp->arg(0));
-        }else if (exp.id() == math::exp::log) {
+        } else if (exp.id() == math::exp::log) {
             mark(exp->arg(0));
         }
     }
 
-    if (auto gamma = match<math::gamma>(def)) {
-        mark(gamma->arg(0));
-    }
+    if (auto gamma = match<math::gamma>(def)) { mark(gamma->arg(0)); }
 
     for (auto op : def->ops()) { scan(op); }
 }
@@ -120,7 +118,7 @@ void AutoDiffEval::prepare(const Def* def) {
             auto ptr = load->arg(1);
             if (has_op_store(ptr)) { requires_caching.insert(mark); }
         } else if (!mark->isa<Lit>()) {
-            //requires_caching.insert(mark);
+            // requires_caching.insert(mark);
         }
     }
 }
