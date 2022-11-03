@@ -468,18 +468,18 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
     if (auto gamma = match<math::gamma>(def)) {
         auto x = resolve(gamma->arg());
 
-        auto s   = math::isa_f(x->type());
+        auto s = math::isa_f(x->type());
         assert(s);
 
-        auto delta     =  math::lit_f(w, *s, 0.0000001);
-        auto two       =  math::lit_f(w, *s, 2.0);
+        auto delta     = math::lit_f(w, *s, 0.0000001);
+        auto two       = math::lit_f(w, *s, 2.0);
         auto two_delta = math::op(math::arith::mul, math::Mode::fast, two, delta);
 
         auto left_x = math::op(math::arith::add, math::Mode::fast, x, delta);
         auto left   = math::op(math::gamma::l, math::Mode::fast, left_x);
 
         auto right_x = math::op(math::arith::sub, math::Mode::fast, x, delta);
-        auto right   = math::op(math::gamma::l, math::Mode::fast, right_x);;
+        auto right   = math::op(math::gamma::l, math::Mode::fast, right_x);
 
         auto sum  = math::op(math::arith::sub, math::Mode::fast, left, right);
         auto grad = math::op(math::arith::div, math::Mode::fast, sum, two_delta);
