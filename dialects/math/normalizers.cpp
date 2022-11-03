@@ -92,12 +92,12 @@ Res fold(u64 a, u64 b) {
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, math::extrema>) {
         if constexpr (false) {}
-        else if constexpr (id == extrema::minimum) return fmin(x, y);
-        else if constexpr (id == extrema::maximum) return fmax(x, y);
+        else if constexpr (id == extrema::minimum) return std::fmin(x, y);
+        else if constexpr (id == extrema::maximum) return std::fmax(x, y);
         else if constexpr (id == extrema::minnum || id == extrema::maxnum){
             if (std::isnan(x)) return x;
             if (std::isnan(y)) return y;
-            return id == extrema::minnum ? fmin(x, y) : fmax(x, y);
+            return id == extrema::minnum ? std::fmin(x, y) : std::fmax(x, y);
         }
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, pow>) {
