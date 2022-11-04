@@ -16,8 +16,8 @@
 .let I32 = .Idx 4294967296;
 
 .cn g [a:I32, ret: .Cn [I32]] = {
-    .let b = %core.wrap.add (0:.Nat, 4294967296:.Nat) (3:I32, a);
-    .let c = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (a, b);
+    .let b = %core.wrap.add 4294967296:.Nat 0:.Nat (3:I32, a);
+    .let c = %core.wrap.mul 4294967296:.Nat 0:.Nat (a, b);
     ret c
 };
 
@@ -36,8 +36,8 @@
 
     .cn ret_cont [r:I32,pb:.Cn[I32,.Cn[I32]]] = {
         .cn pb_ret_cont [pr:I32] = {
-            .let c = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (100:I32, r);
-            .let d = %core.wrap.add (0:.Nat, 4294967296:.Nat) (c, pr);
+            .let c = %core.wrap.mul 4294967296:.Nat 0:.Nat (100:I32, r);
+            .let d = %core.wrap.add 4294967296:.Nat 0:.Nat (c, pr);
             return (mem, d)
         };
         // return (mem, r)

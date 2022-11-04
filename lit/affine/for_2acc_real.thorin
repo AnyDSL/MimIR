@@ -14,14 +14,14 @@
 .let f64 = (52, 11);
 .let F64 = %math.F f64;
 
-.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I32, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 0]] = {
+.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I32, 0), 0), return : .Cn [%mem.M, .Idx 0]] = {
     .cn for_exit [acc : [I32, F64]] = {
         return (mem, %math.conv.f2u f64 0 acc#.tt)
     };
 
     .cn for_body [i : I32, [acc_a : I32, acc_b : F64], continue : .Cn [[I32, F64]]] = {
-        .let a : I32 = %core.wrap.add (0:.Nat, 4294967296:.Nat) (i, acc_a);
-        .let b : F64 = %math.conv.u2f 0 f64 (%core.wrap.add (0:.Nat, 0:.Nat) (%core.conv.u2u 4294967296 0 i, %math.conv.f2u f64 0 acc_b));
+        .let a : I32 = %core.wrap.add 4294967296 0 (i, acc_a);
+        .let b : F64 = %math.conv.u2f 0 f64 (%core.wrap.add 0 0 (%core.conv.u2u 4294967296 0 i, %math.conv.f2u f64 0 acc_b));
         continue (a, b)
     };
     %affine.For (4294967296, 2, (I32, F64)) (0:I32, argc, 1:I32, (0:I32, 0:F64), for_body, for_exit)

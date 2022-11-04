@@ -646,7 +646,6 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     } else if (auto wrap = match<core::wrap>(def)) {
         auto [a, b]        = wrap->args<2>([this](auto def) { return emit(def); });
         auto t             = convert(wrap->type());
-        auto width         = as_lit(Idx::size(wrap->type()));
         auto mode          = as_lit(wrap->decurry()->arg());
 
         switch (wrap.id()) {
