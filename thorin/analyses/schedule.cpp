@@ -36,7 +36,7 @@ Scheduler::Scheduler(const Scope& s)
         auto def = queue.front();
         queue.pop();
 
-        if (def->is_unset()) continue;
+        if (!def->is_set()) continue;
 
         for (size_t i = 0, e = def->num_ops(); i != e; ++i) {
             // all reachable noms have already been registered above

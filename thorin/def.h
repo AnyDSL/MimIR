@@ -181,8 +181,12 @@ public:
     size_t num_ops() const { return num_ops_; }
     ///@}
 
-    /// @name set/unset ops
+    /// @name set/unset ops (nominals only)
     ///@{
+    /// You are supposed to set operands from left to right.
+    /// You can change operands later on or even Def::unset them.
+    /// @warning But Thorin assumes that a nominal is "final" if its last operands is set.
+    /// So, don't set the last operand and leave the first one unset.
     Def* set(size_t i, const Def* def);
     Def* set(Defs ops) {
         for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
@@ -196,14 +200,8 @@ public:
     Def* set_type(const Def*);
     void unset_type();
 
-    /// Are all Def::ops of this nominal set?
-    /// @returns
-    /// * `true`, if all operands are set or Def::num_ops` == 0`.
-    /// * `false`, if all operands are `nullptr`.
-    /// * `assert`s otherwise.
+    /// Yields `true` if empty or the last op is set.
     bool is_set() const;
-    bool is_unset() const { return !is_set(); } ///< **Not** Def::is_set.
-    bool is_unfinished() const;                 ///< Are there still some Def::ops **not** set?
     ///@}
 
     /// @name extended_ops
