@@ -35,9 +35,9 @@ inline const Def* fn(shr o, const Def* s, const Def* dbg = {}) {
     World& w = s->world();
     return w.app(w.ax(o), s, dbg);
 }
-inline const Def* fn(wrap o, VMode m, const Def* s, const Def* dbg = {}) {
+inline const Def* fn(wrap o, const Def* s, VMode m, const Def* dbg = {}) {
     World& w = s->world();
-    return w.app(w.ax(o), {mode(w, m), s}, dbg);
+    return w.app(w.app(w.ax(o), s), mode(w, m), dbg);
 }
 inline const Def* fn(div o, const Def* s, const Def* dbg = {}) {
     World& w = s->world();
@@ -73,7 +73,7 @@ inline const Def* op(shr o, const Def* a, const Def* b, const Def* dbg = {}) {
 }
 inline const Def* op(wrap o, VMode m, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = a->world();
-    return w.app(fn(o, m, w.iinfer(a)), {a, b}, dbg);
+    return w.app(fn(o, w.iinfer(a), m), {a, b}, dbg);
 }
 inline const Def* op(div o, const Def* mem, const Def* a, const Def* b, const Def* dbg = {}) {
     World& w = mem->world();

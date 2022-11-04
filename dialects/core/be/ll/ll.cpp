@@ -644,9 +644,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto wrap = match<core::wrap>(def)) {
-        auto [a, b]        = wrap->args<2>([this](auto def) { return emit(def); });
-        auto t             = convert(wrap->type());
-        auto [mode, width] = wrap->decurry()->args<2>(as_lit<nat_t>);
+        auto [a, b] = wrap->args<2>([this](auto def) { return emit(def); });
+        auto t      = convert(wrap->type());
+        auto mode   = as_lit(wrap->decurry()->arg());
 
         switch (wrap.id()) {
             case core::wrap::add: op = "add"; break;
