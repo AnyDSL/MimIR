@@ -191,12 +191,12 @@ reassociate(Id id, World& /*world*/, [[maybe_unused]] const App* ab, const Def* 
 
     std::function<const Def*(const Def*, const Def*)> make_op;
 
-    // build rmode for all new ops by using the least upper bound of all involved apps
-    nat_t rmode     = Mode::bot;
+    // build mode for all new ops by using the least upper bound of all involved apps
+    nat_t mode      = Mode::bot;
     auto check_mode = [&](const App* app) {
         auto app_m = isa_lit(app->arg(0));
         if (!app_m || !(*app_m & Mode::reassoc)) return false;
-        rmode &= *app_m; // least upper bound
+        mode &= *app_m; // least upper bound
         return true;
     };
 
@@ -204,7 +204,7 @@ reassociate(Id id, World& /*world*/, [[maybe_unused]] const App* ab, const Def* 
     if (lx && !check_mode(xy->decurry())) return nullptr;
     if (lz && !check_mode(zw->decurry())) return nullptr;
 
-    make_op = [&](const Def* a, const Def* b) { return op(id, rmode, a, b, dbg); };
+    make_op = [&](const Def* a, const Def* b) { return op(id, mode, a, b, dbg); };
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
     if (lx && lz) return make_op(make_op(lx, lz), make_op(y, w)); // (2)
@@ -219,13 +219,13 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto m      = isa_lit(callee->decurry()->arg());
+    auto m      = isa_lit(callee->arg());
     auto w      = isa_f(a->type());
 
     if (auto result = fold<arith, id>(world, type, a, b, dbg)) return result;
 
     // clang-format off
-    // TODO check rmode properly
+    // TODO check mode properly
     if (m && *m == Mode::fast) {
         if (auto la = a->isa<Lit>()) {
             if (la == lit_f(world, *w, 0.0)) {
@@ -283,7 +283,7 @@ const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg, cons
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto m      = callee->decurry()->arg();
+    auto m      = callee->arg();
     auto lm     = isa_lit(m);
 
     if (auto lit = fold<extrema, id>(world, type, a, b, dbg)) return lit;
