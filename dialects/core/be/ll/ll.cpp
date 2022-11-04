@@ -889,10 +889,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t        = convert(extrema->type());
         std::string f = "llvm.";
         switch (extrema.id()) {
-            case math::extrema::minimum: f += "minimum"; break;
-            case math::extrema::maximum: f += "maximum"; break;
-            case math::extrema::minnum: f += "minnum"; break;
-            case math::extrema::maxnum: f += "maxnum"; break;
+            case math::extrema::fmin: f += "minnum"; break;
+            case math::extrema::fmax: f += "maxnum"; break;
+            case math::extrema::ieee754min: f += "minimum"; break;
+            case math::extrema::ieee754max: f += "maximum"; break;
         }
         f += llvm_suffix(extrema->type());
 

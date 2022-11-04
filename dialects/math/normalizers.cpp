@@ -91,15 +91,15 @@ Res fold(u64 a, u64 b) {
         else if constexpr (id == arith::rem) return rem(x,  y);
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, math::extrema>) {
-        if (x == T(-0.0) && y == T(+0.0)) return (id == extrema::minimum || id == extrema::minnum) ? x : y;
-        if (x == T(+0.0) && y == T(-0.0)) return (id == extrema::minimum || id == extrema::minnum) ? y : x;
+        if (x == T(-0.0) && y == T(+0.0)) return (id == extrema::fmin || id == extrema::ieee754min) ? x : y;
+        if (x == T(+0.0) && y == T(-0.0)) return (id == extrema::fmin || id == extrema::ieee754min) ? y : x;
 
-        if constexpr (id == extrema::minnum || id == extrema::maxnum) {
-            return id == extrema::minnum ? std::fmin(x, y) : std::fmax(x, y);
-        } else if constexpr (id == extrema::minimum || id == extrema::maximum) {
+        if constexpr (id == extrema::fmin || id == extrema::fmax) {
+            return id == extrema::fmin ? std::fmin(x, y) : std::fmax(x, y);
+        } else if constexpr (id == extrema::ieee754min || id == extrema::ieee754max) {
             if (std::isnan(x)) return x;
             if (std::isnan(y)) return y;
-            return id == extrema::minimum ? std::fmin(x, y) : std::fmax(x, y);
+            return id == extrema::ieee754min ? std::fmin(x, y) : std::fmax(x, y);
         } else {
             []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
         }
@@ -290,8 +290,8 @@ const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg, cons
 
     if (lm && *lm & (Mode::nnan | Mode::nsz)) { // if ignore NaNs and signed zero, then *imum -> *num
         switch (id) {
-            case extrema::minimum: return op(extrema::minnum, m, a, b, dbg);
-            case extrema::maximum: return op(extrema::maxnum, m, a, b, dbg);
+            case extrema::ieee754min: return op(extrema::fmin, m, a, b, dbg);
+            case extrema::ieee754max: return op(extrema::fmax, m, a, b, dbg);
             default: break;
         }
     }
