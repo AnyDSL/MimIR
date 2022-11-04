@@ -341,11 +341,16 @@ const Def* AutoDiffEval::get_gradient(const Def* def, const Def* default_zero_ty
 }
 
 const Def* AutoDiffEval::grad_arr(const Def* def) {
+    auto& w = world();
+
     if (auto lea = match<mem::lea>(def)) {
         auto [arr, index] = lea->args<2>();
         auto grad         = grad_arr(arr);
         assert(grad);
         return mem::op_lea(grad, resolve(index));
+    } else if (auto bitcast = match<core::bitcast>(def)) {
+        auto grad_arg = grad_arr(bitcast->arg());
+        return w.app(bitcast->callee(), grad_arg);
     } else if (auto grad_ptr = gradient_pointers[def]) {
         return grad_ptr;
     }
