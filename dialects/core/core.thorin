@@ -80,22 +80,23 @@
 ///
 /// ### %core.shr
 ///
-/// Shift right - integer operation that neither takes a WMode nor produces a side effect:
-/// * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
-/// * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
+/// Shift right:
+///     * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
+///     * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
 ///
 .ax %core.shr(a, l): Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_shr;
 ///
 /// ### %core.wrap
 ///
-/// Integer operations that might wrap and, hence, take a WMode.
+/// Integer operations that might wrap and, hence, take a core::Mode.
 ///
 .ax %core.wrap(add, sub, mul, shl):
-    Π [m: .Nat, w: .Nat] -> [.Idx w, .Idx w] -> .Idx w, normalize_wrap;
+    Π w: .Nat -> .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_wrap;
 ///
 /// ### %core.div
 ///
 /// Signed and unsigned Integer division/remainder.
+///
 /// Division by zero is undefined behavior and thus a visible side effect.
 /// For this reason, these axioms expect a `%%mem.M`.
 ///
