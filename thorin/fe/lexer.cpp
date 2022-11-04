@@ -105,7 +105,7 @@ Tok Lexer::lex() {
             if (accept_if(isdigit)) {
                 parse_digits();
                 parse_exp();
-                return {loc_, r64(strtod(str_.c_str(), nullptr))};
+                return {loc_, f64(strtod(str_.c_str(), nullptr))};
             }
 
             return tok(Tok::Tag::T_dot);
@@ -219,7 +219,7 @@ std::optional<Tok> Lexer::parse_lit() {
     if (is_float && base == 16) str_.insert(0, "0x"sv);
     if (sign && *sign) str_.insert(0, "-"sv);
 
-    if (is_float) return Tok{loc_, r64(strtod  (str_.c_str(), nullptr      ))};
+    if (is_float) return Tok{loc_, f64(strtod  (str_.c_str(), nullptr      ))};
     if (sign)     return Tok{loc_, u64(strtoll (str_.c_str(), nullptr, base))};
     else          return Tok{loc_, u64(strtoull(str_.c_str(), nullptr, base))};
 }

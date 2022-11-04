@@ -149,7 +149,7 @@ public:
         : loc_(loc)
         , tag_(Tag::L_s)
         , u_(std::bit_cast<u64>(s)) {}
-    Tok(Loc loc, r64 r)
+    Tok(Loc loc, f64 r)
         : loc_(loc)
         , tag_(Tag::L_r)
         , u_(std::bit_cast<u64>(r)) {}
