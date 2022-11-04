@@ -88,7 +88,8 @@
 ///
 /// ### %core.wrap
 ///
-/// Integer operations that might wrap and, hence, take a core::Mode.
+/// Integer operations that may overflow.
+/// You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a thorin::core::Mode as `.Nat`.
 ///
 .ax %core.wrap(add, sub, mul, shl):
     Π s: .Nat -> .Nat -> [.Idx s, .Idx s] -> .Idx s, normalize_wrap;
