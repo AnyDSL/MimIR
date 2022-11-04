@@ -250,15 +250,17 @@ const Def* LowerMatrixLowLevel::rewrite_def_(const Def* def) {
 
     // world.DLOG("unmodified {}", def);
 
-    // if (auto var = def->isa<Var>()) { return var; }
+    if (auto var = def->isa<Var>()) { return var; }
 
     // if (auto old_nom = def->isa_nom()) { return old_nom; }
-    // world.DLOG("unmodified ops {,}", def->ops());
 
     // if (def->isa<Pi>()) { return def; }
 
     // world.DLOG("unmodified name {}", def->node_name());
+    world.DLOG("info {}", def->node_name());
     world.DLOG("unmodified {}", def);
+    world.DLOG("unmodified {} : {}", def, def->type());
+    world.DLOG("unmodified ops {, }", def->ops());
     // world.DLOG("unmodified {} : {}", def, def->type());
     DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_def(op); }};
     if (def->isa<Tuple>()) return world.tuple(new_ops, def->dbg());
@@ -266,9 +268,9 @@ const Def* LowerMatrixLowLevel::rewrite_def_(const Def* def) {
     // return def->rebuild(world, def->type(), new_ops, def->dbg());
     auto type = def->type();
     const Def* new_type;
-    if (type != nullptr && !(type->isa<Type>()) &&
+    if (type != nullptr && !(type->isa<Type>())) {
         // (def->isa_nom())
-        !(type->isa<Pi>())) {
+        // !(type->isa<Pi>())) {
         new_type = rewrite_def(type);
     } else {
         new_type = type;
