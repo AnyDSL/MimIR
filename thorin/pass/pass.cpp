@@ -59,7 +59,7 @@ void PassMan::run() {
         curr_nom_ = pop(curr_state().stack);
         world().VLOG("=== state {}: {} ===", states_.size() - 1, curr_nom_);
 
-        if (curr_nom_->is_unset()) continue;
+        if (!curr_nom_->is_set()) continue;
 
         for (auto&& pass : passes_) {
             if (pass->inspect()) pass->enter();

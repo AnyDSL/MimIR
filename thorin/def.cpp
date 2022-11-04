@@ -326,24 +326,12 @@ void Def::unset_type() {
     type_ = nullptr;
 }
 
-// TODO Maybe we can speed is_set/is_unfinished up by setting some flags.
-// These tests can easily explode quadratically.
 bool Def::is_set() const {
-    auto all_set = std::ranges::all_of(ops(), [](auto op) { return op != nullptr; });
-    assert((!isa_structural() || all_set) && "structurals must be always set");
-
-    if (all_set) return true;
-    if (!(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }))) {
-        world().ELOG("{} {}", this->unique_name(), this->name());
-        assert(false && "some operands are set, others aren't");
-    }
-
-    assert(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }) && "some operands are set, others aren't");
-    return false;
-}
-
-bool Def::is_unfinished() const {
-    return std::ranges::any_of(ops(), [](auto op) { return op == nullptr; });
+    if (num_ops() == 0) return true;
+    bool result = ops().back();
+    assert((!result || std::ranges::all_of(ops().skip_back(), [](auto op) { return op; })) &&
+           "the last operand is set but others in front of it aren't");
+    return result;
 }
 
 void Def::make_external() { return world().make_external(this); }

@@ -89,7 +89,7 @@ const Def* World::app(const Def* callee, const Def* arg, const Def* dbg) {
         if (auto normalize = axiom->normalizer()) return normalize(type, callee, arg, dbg);
     }
 
-    if (auto lam = callee->isa<Lam>(); lam && !lam->is_unfinished() && lam->codom()->sort() > Sort::Type)
+    if (auto lam = callee->isa<Lam>(); lam && lam->is_set() && lam->codom()->sort() > Sort::Type)
         return lam->reduce(arg).back();
 
     return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
