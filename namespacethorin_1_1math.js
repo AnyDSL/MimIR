@@ -66,14 +66,14 @@ var namespacethorin_1_1math =
       [ "log2", "namespacethorin_1_1math.html#a00e74d198c086fe1fb880c87ea3bb8fea7b1a5a4dd8df61dc8e4ea38fa24f4490", null ]
     ] ],
     [ "extrema", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8", [
-      [ "nm", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a93122a9e4abcba124d5a7d4beaba3f89", null ],
-      [ "minimum", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8ae383234c8c5c6cf7eb44a3208e26d50f", null ],
-      [ "nM", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8abb33d975b61fa15342248b8f4f28d3b8", null ],
-      [ "maximum", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a65b0e2883c997f2bea5dd11c923b94cf", null ],
-      [ "Nm", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8aa4033ef25d14c21b1b5b5c56438062b5", null ],
-      [ "minnum", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a65efbd0482620787a5ad04c90adbb729", null ],
-      [ "NM", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8ae0f3dba3248a6ccb26950955635d93e2", null ],
-      [ "maxnum", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a5e91993b33c5f655c8020333e7dc312f", null ]
+      [ "im", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a73bebce395b6f1efedcf6842fbdb4d76", null ],
+      [ "fmin", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a91b8694b07e3650d5332a6d51af36421", null ],
+      [ "iM", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a705d9cf5220b93288d854cdc637f44c6", null ],
+      [ "fmax", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a6245653b1ded5cde266a956a325465ce", null ],
+      [ "Im", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8ad0fa7c3b5984b6f28d08dcba9cc682ec", null ],
+      [ "ieee754min", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8aff773765da5f802b186ec7dc8abcff13", null ],
+      [ "IM", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a7c78ebb4c223c96f8e6ccc29f73cc28e", null ],
+      [ "ieee754max", "namespacethorin_1_1math.html#a774a066119a3684958cf3d8565ff52a8a72d218e43966c28053831edff6a62f33", null ]
     ] ],
     [ "F", "namespacethorin_1_1math.html#a9dcd63c8ff0e514ef5d45f52082e9444", null ],
     [ "gamma", "namespacethorin_1_1math.html#a89cb7767a778d4204e26860588096530", [

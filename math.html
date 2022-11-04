@@ -156,25 +156,27 @@ Numerical Operations</h1>
 %math.extrema</h2>
 <p >Minimum and Maximum.</p><ul>
 <li><code>m</code>in or <code>M</code>ax</li>
-<li><code>n</code>: If either operand is a NaN, returns NaN. Otherwise returns the lesser of the two arguments. <code>-0.0</code> is considered to be less than <code>+0.0</code> for this intrinsic. Note that these are the semantics specified in the draft of IEEE 754-2018.</li>
-<li><p class="startli"><code>N</code>: Follows the IEEE-754 semantics for minNum/maxNum, <b>except for handling of signaling NaNs</b>. <b>This match’s the behavior of libm’s fmin/fmax</b>.</p>
+<li><p class="startli"><code>i</code>: Follows the behavior of libm’s fmin/fmax.</p>
 <p class="startli">If either operand is a NaN, returns the other non-NaN operand. Returns NaN only if both operands are NaN. The returned NaN is always quiet. If the operands compare equal, returns a value that compares equal to both operands. This means that <code>fmin(+/-0.0, +/-0.0)</code> could return either <code>-0.0</code> or <code>0.0</code>.</p>
+</li>
+<li><p class="startli"><code>I</code>: Follows the semantics of <em>minNum</em>/*maxNum* specified in the draft of IEEE 754-2018.</p>
+<p class="startli">If either operand is a NaN, returns NaN. Otherwise returns the lesser of the two arguments. <code>-0.0</code> is considered to be less than <code>+0.0</code> for this intrinsic.</p>
 </li>
 </ul>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Subtag   </th><th class="markdownTableHeadNone">Alias   </th><th class="markdownTableHeadNone">N   </th><th class="markdownTableHeadNone">M    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>nm</code>   </td><td class="markdownTableBodyNone"><code>minimum</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o    </td></tr>
+<td class="markdownTableBodyNone"><code>im</code>   </td><td class="markdownTableBodyNone"><code>fmin</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">o    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>nM</code>   </td><td class="markdownTableBodyNone"><code>maximum</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x    </td></tr>
+<td class="markdownTableBodyNone"><code>iM</code>   </td><td class="markdownTableBodyNone"><code>fmax</code>   </td><td class="markdownTableBodyNone">o   </td><td class="markdownTableBodyNone">x    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>Nm</code>   </td><td class="markdownTableBodyNone"><code>minnum</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o    </td></tr>
+<td class="markdownTableBodyNone"><code>Im</code>   </td><td class="markdownTableBodyNone"><code>ieee754min</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">o    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>NM</code>   </td><td class="markdownTableBodyNone"><code>maxnum</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td></tr>
+<td class="markdownTableBodyNone"><code>IM</code>   </td><td class="markdownTableBodyNone"><code>ieee754max</code>   </td><td class="markdownTableBodyNone">x   </td><td class="markdownTableBodyNone">x   </td></tr>
 </table>
-<div class="fragment"><div class="line">.ax %math.extrema(nm = minimum, nM = maximum,</div>
-<div class="line">                  Nm = minnum,  NM = maxnum): </div>
+<div class="fragment"><div class="line">.ax %math.extrema(im = fmin,       iM = fmax,</div>
+<div class="line">                  Im = ieee754min, IM = ieee754max): </div>
 <div class="line">    Π [p: .Nat, e: .Nat] -&gt; .Nat -&gt; [%math.F (p, e), %math.F (p, e)] -&gt; %math.F (p, e), normalize_extrema;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md91"></a>
 %math.tri</h2>
