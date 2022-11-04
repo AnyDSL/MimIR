@@ -148,7 +148,8 @@ const Def* LowerMatrixLowLevel::rewrite_def_(const Def* def) {
         rewritten[lam]        = new_lam;
         new_lam->set_body(rewrite_def(lam->body()));
         // new_lam->set_filter(lam->filter());
-        new_lam->set_filter(false);
+        new_lam->set_filter(rewrite_def(lam->filter()));
+        // new_lam->set_filter(false);
         return new_lam;
         // lam->set_type(new_ty);
         // assert(0);
@@ -217,11 +218,11 @@ const Def* LowerMatrixLowLevel::rewrite_def_(const Def* def) {
         return world.tuple({mem3, ptr_mat});
     }
 
-    // if (auto app = def->isa<App>()) {
-    //     auto new_arg   = rewrite_def(app->arg());
-    //     auto new_calle = rewrite_def(app->callee());
-    //     return world.app(new_calle, new_arg);
-    // }
+    if (auto app = def->isa<App>()) {
+        auto new_arg   = rewrite_def(app->arg());
+        auto new_calle = rewrite_def(app->callee());
+        return world.app(new_calle, new_arg);
+    }
 
     // world.DLOG("unmodified {}", def);
 
