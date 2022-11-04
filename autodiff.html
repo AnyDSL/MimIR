@@ -188,41 +188,35 @@ Registered translations</h1>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md58"></a>
 %core.wrap.add</h2>
 <p >s ↦ (s, s)</p>
-<div class="fragment"><div class="line">.lam .extern internal_diff_core_wrap_add</div>
-<div class="line">    ![m:.Nat, w:.Nat] -&gt; </div>
-<div class="line">    (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])</div>
-<div class="line">    = { </div>
-<div class="line">    .cn inner_add_deriv_cps</div>
-<div class="line">        ![[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]</div>
-<div class="line">        = { </div>
-<div class="line">        .let result = %core.wrap.add (m,w) (a,b);</div>
-<div class="line">        .cn add_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])] = { </div>
-<div class="line">            pb_ret (s,s)</div>
+<div class="fragment"><div class="line">.lam .extern internal_diff_core_wrap_add!s:.Nat -&gt; .Nat -&gt; (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = </div>
+<div class="line">    .lam lam_mode m: .Nat -&gt; (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = { </div>
+<div class="line">        .cn inner_add_deriv_cps![[a:.Idx s, b:.Idx s], ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]] = { </div>
+<div class="line">            .let result = %core.wrap.add s m (a,b);</div>
+<div class="line">            .cn add_pb ![i:(.Idx s), pb_ret:(.Cn [.Idx s, .Idx s])] = { </div>
+<div class="line">                pb_ret (i,i)</div>
+<div class="line">            };</div>
+<div class="line">            ret (result,add_pb)</div>
 <div class="line">        };</div>
-<div class="line">        ret (result,add_pb)</div>
+<div class="line">        inner_add_deriv_cps</div>
 <div class="line">    };</div>
-<div class="line">    inner_add_deriv_cps</div>
-<div class="line">};</div>
+<div class="line">    lam_mode;</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md59"></a>
 %core.wrap.mul</h2>
 <p >s ↦ (s*b, s*a)</p>
-<div class="fragment"><div class="line">.lam .extern internal_diff_core_wrap_mul</div>
-<div class="line">    ![m:.Nat, w:.Nat] -&gt; </div>
-<div class="line">    (.Cn[[.Idx w, .Idx w], .Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]])</div>
-<div class="line">    = { </div>
-<div class="line">    .cn inner_mul_deriv_cps</div>
-<div class="line">        ![[a:.Idx w, b:.Idx w], ret:.Cn[.Idx w, .Cn[.Idx w, .Cn[.Idx w, .Idx w]]]]@(.tt)</div>
-<div class="line">        = { </div>
-<div class="line">        .let result = %core.wrap.mul (m,w) (a,b);</div>
-<div class="line">        .cn mul_pb ![s:(.Idx w), pb_ret:(.Cn [.Idx w, .Idx w])]@(.tt) = { </div>
-<div class="line">            .let lhs = %core.wrap.mul (m,w) (s,b);</div>
-<div class="line">            .let rhs = %core.wrap.mul (m,w) (s,a);</div>
-<div class="line">            pb_ret (lhs, rhs)</div>
+<div class="fragment"><div class="line">.lam .extern internal_diff_core_wrap_mul!s:.Nat -&gt; .Nat -&gt; (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = </div>
+<div class="line">    .lam lam_mode m: .Nat -&gt; (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = { </div>
+<div class="line">        .cn inner_mul_deriv_cps![[a:.Idx s, b:.Idx s], ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]] = { </div>
+<div class="line">            .let result = %core.wrap.mul s m (a,b);</div>
+<div class="line">            .cn mul_pb ![i:(.Idx s), pb_ret:(.Cn [.Idx s, .Idx s])] = { </div>
+<div class="line">                .let lhs = %core.wrap.mul s m (i,b);</div>
+<div class="line">                .let rhs = %core.wrap.mul s m (i,a);</div>
+<div class="line">                pb_ret (lhs, rhs)</div>
+<div class="line">            };</div>
+<div class="line">            ret (result,mul_pb)</div>
 <div class="line">        };</div>
-<div class="line">        ret (result,mul_pb)</div>
+<div class="line">        inner_mul_deriv_cps</div>
 <div class="line">    };</div>
-<div class="line">    inner_mul_deriv_cps</div>
-<div class="line">};</div>
+<div class="line">    lam_mode;</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

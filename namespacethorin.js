@@ -321,6 +321,7 @@ var namespacethorin =
     [ "operator\"\"_f16", "namespacethorin.html#a46f692eb62a7bc86d7344d8b6404834e", null ],
     [ "operator\"\"_f32", "namespacethorin.html#ab9ded46c5f49fb0cfa62298d6c02815a", null ],
     [ "operator\"\"_f64", "namespacethorin.html#a31d63af589b908d3c86842e24f045b9f", null ],
+    [ "operator\"\"_n", "namespacethorin.html#a318d11eac70c88469c2ed83dc56ec94b", null ],
     [ "operator\"\"_s", "namespacethorin.html#a1fb0aa15b4f666015b8571bbac5a6d29", null ],
     [ "operator\"\"_s16", "namespacethorin.html#ab492d5bf259b9311be082f83c78b6a77", null ],
     [ "operator\"\"_s32", "namespacethorin.html#accecfaeb806e251d33e1028c9c239928", null ],

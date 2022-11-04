@@ -5,7 +5,7 @@ var core_2normalizers_8cpp =
     [ "M", "core_2normalizers_8cpp.html#aeaded74fae54146d0f196f3f31367c89", null ],
     [ "commute", "core_2normalizers_8cpp.html#a4395176fbfc6813fe00b7539e986958c", null ],
     [ "fold", "core_2normalizers_8cpp.html#ab05e7dba85ac63fab5c8de4438297c78", null ],
-    [ "fold", "core_2normalizers_8cpp.html#a8d83391e597f8bff5eec68dd3036dc5f", null ],
+    [ "fold", "core_2normalizers_8cpp.html#ad68afaf43f0ba0e6b75c5cabca98c65a", null ],
     [ "merge_cmps", "core_2normalizers_8cpp.html#ae27f8befa842a36b7b165dba29d7f55e", null ],
     [ "normalize_bit1", "core_2normalizers_8cpp.html#a74679b538b423df9e03c80e2baa3b5de", null ],
     [ "normalize_bit2", "core_2normalizers_8cpp.html#a1ab1c16fd0afc0203da7b84522fd8f32", null ],

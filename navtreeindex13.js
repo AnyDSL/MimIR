@@ -23,8 +23,8 @@ var NAVTREEINDEX13 =
 "clos__conv__prep_8h_source.html":[6,0,1,2,0,1,5],
 "coding.html":[1,2],
 "concepts.html":[4],
-"conceptthorin_1_1axiom__with__subs.html":[3,0,0,135],
 "conceptthorin_1_1axiom__with__subs.html":[4,0,1],
+"conceptthorin_1_1axiom__with__subs.html":[3,0,0,135],
 "conceptthorin_1_1axiom__without__subs.html":[4,0,2],
 "conceptthorin_1_1axiom__without__subs.html":[3,0,0,136],
 "conceptthorin_1_1detail_1_1Elemable.html":[4,0,0,0],
@@ -247,7 +247,7 @@ var NAVTREEINDEX13 =
 "core_2normalizers_8cpp.html#a4395176fbfc6813fe00b7539e986958c":[6,0,1,3,3,3],
 "core_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c":[6,0,1,3,3,1],
 "core_2normalizers_8cpp.html#a74679b538b423df9e03c80e2baa3b5de":[6,0,1,3,3,7],
-"core_2normalizers_8cpp.html#a8d83391e597f8bff5eec68dd3036dc5f":[6,0,1,3,3,5],
 "core_2normalizers_8cpp.html#a9bc1a3442ba7ac5ca8c557c0afeaa321":[6,0,1,3,3,15],
-"core_2normalizers_8cpp.html#aa2a8519281f2f3630acf8bc6b6b61108":[6,0,1,3,3,18]
+"core_2normalizers_8cpp.html#aa2a8519281f2f3630acf8bc6b6b61108":[6,0,1,3,3,18],
+"core_2normalizers_8cpp.html#ab05e7dba85ac63fab5c8de4438297c78":[6,0,1,3,3,4]
 };
