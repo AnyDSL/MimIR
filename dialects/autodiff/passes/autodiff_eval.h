@@ -326,10 +326,6 @@ public:
     void check_mem() { assert(current_mem != nullptr); }
 
     void init_mem(const Def* mem) {
-        if (current_mem != nullptr) {
-            current_mem->dump(2);
-            current_mem->dump(2);
-        }
         assert(current_mem == nullptr);
         current_mem = mem;
     }
@@ -378,7 +374,6 @@ private:
     std::shared_ptr<LoopFrame> current_loop = nullptr;
 
     const Def* current_mem = nullptr;
-    Lam* current_lam       = nullptr;
     State current_state    = State::Unknown;
     std::stack<const Def*> mem_stack;
 };

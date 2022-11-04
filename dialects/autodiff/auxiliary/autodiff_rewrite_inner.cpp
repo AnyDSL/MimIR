@@ -153,8 +153,11 @@ const Def* AutoDiffEval::augment_app(const App* app) {
     auto aug_callee = augment(callee);
 
     if (mem::mem_def(aug_arg)) { aug_arg = mem::replace_mem(end_mem(), aug_arg); }
+    auto aug_app = world.app(aug_callee, aug_arg);
 
-    return world.app(aug_callee, aug_arg);
+    if (auto next_mem = mem::mem_def(aug_app)) { current_mem = next_mem; }
+
+    return aug_app;
 }
 
 const Def* AutoDiffEval::augment_lea(const App* lea) {
@@ -250,8 +253,9 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc) {
     augment(alloc->arg(0_s));
 
     auto type          = alloc->decurry()->arg(0_s);
-    auto aug_alloc_mem = op_alloc_mem(type);
-    auto gradient_ptr  = create_init_alloc_frame("gradient_arr", type, zero(type));
+    auto aug_type      = augment(type);
+    auto aug_alloc_mem = op_alloc_mem(aug_type);
+    auto gradient_ptr  = create_init_alloc_frame("gradient_arr", aug_type, zero(aug_type));
 
     // add to list of allocated memory
     allocated_memory.insert(gradient_ptr);
@@ -535,11 +539,11 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
-            auto [div_mem, left_grad] = core::op(div.id(), current_mem, gradient, right_value)->projs<2>();
+            auto [div_mem, left_grad] = core::op(div.id(), current_mem, gradient->proj(1), right_value)->projs<2>();
             auto right_grad =
                 core::op(core::wrap::mul, core::Mode::none, core::op_wminus(core::Mode::none, left_grad), left_value);
             current_mem = div_mem;
-            attach_gradient(wrap->arg(), w.tuple({left_grad, right_grad}));
+            attach_gradient(div->arg(), w.tuple({w.bot(mem::type_mem(w)), left_grad, right_grad}));
         }
     } else if (auto rop = match<math::arith>(def)) {
         auto [left, right] = rop->args<2>();
@@ -654,7 +658,6 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 assert(false);
             }
 
-            this->current_lam = current_lam;
             for (auto node : visitor.post_order_visit(arg)) { prop(scope, node->def); }
 
             DefVec inv_args;
@@ -910,6 +913,8 @@ const Def* AutoDiffEval::augment_(const Def* def) {
 
     w.DLOG("Augment def {} : {}", def, def->type());
 
+    if (match<core::div>(def)) { def->dump(); }
+
     if (auto for_app = match<affine::For>(def)) { return augment_for(for_app); }
 
     if (auto lea = match<mem::lea>(def)) { return augment_lea(lea->as<App>()); }
@@ -925,6 +930,12 @@ const Def* AutoDiffEval::augment_(const Def* def) {
     if (auto alloc = match<mem::alloc>(def)) { return augment_alloc(alloc->as<App>()); }
 
     if (auto bitcast = match<core::bitcast>(def)) { return augment_bitcast(bitcast->as<App>()); }
+
+    if (auto arr = def->isa<Arr>()) {
+        auto shape = augment(arr->shape());
+        auto body  = augment(arr->body());
+        return w.arr(shape, body);
+    }
 
     // app => cont, operator, function
     if (auto app = def->isa<App>()) {
