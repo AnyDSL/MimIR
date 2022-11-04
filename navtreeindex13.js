@@ -1,9 +1,5 @@
 var NAVTREEINDEX13 =
 {
-"clos_8h.html#a852ba328ba8d45ec5bc708aa434306b3":[6,0,1,2,3,7],
-"clos_8h.html#a875e5e478d24d94486a3c33b4f6eb4f8":[6,0,1,2,3,18],
-"clos_8h.html#a8b6a405996c38f5dc227038dc5e5d480":[6,0,1,2,3,2],
-"clos_8h.html#a92b58d7f3f1d2560b80ebf39de3d0ecb":[6,0,1,2,3,17],
 "clos_8h.html#a9f7a193f266e8a5bdbfc2c9f4658a570":[6,0,1,2,3,21],
 "clos_8h.html#aad6fd2dc52043560b14b200f972534dc":[6,0,1,2,3,19],
 "clos_8h.html#abd17e5f0a3f813c31eaac630cb0be063":[6,0,1,2,3,15],
@@ -27,8 +23,8 @@ var NAVTREEINDEX13 =
 "clos__conv__prep_8h_source.html":[6,0,1,2,0,1,5],
 "coding.html":[1,2],
 "concepts.html":[4],
-"conceptthorin_1_1axiom__with__subs.html":[4,0,1],
 "conceptthorin_1_1axiom__with__subs.html":[3,0,0,135],
+"conceptthorin_1_1axiom__with__subs.html":[4,0,1],
 "conceptthorin_1_1axiom__without__subs.html":[4,0,2],
 "conceptthorin_1_1axiom__without__subs.html":[3,0,0,136],
 "conceptthorin_1_1detail_1_1Elemable.html":[4,0,0,0],
@@ -249,5 +245,9 @@ var NAVTREEINDEX13 =
 "core_2normalizers_8cpp.html#a28ecd1e51dc5e323cfaac6071b7f8dec":[6,0,1,3,3,19],
 "core_2normalizers_8cpp.html#a3a1b7ea1e0c793bd5c8bba896d6c8d91":[6,0,1,3,3,16],
 "core_2normalizers_8cpp.html#a4395176fbfc6813fe00b7539e986958c":[6,0,1,3,3,3],
-"core_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c":[6,0,1,3,3,1]
+"core_2normalizers_8cpp.html#a48da5e6acc28b0cfe9f3402f29ae9a1c":[6,0,1,3,3,1],
+"core_2normalizers_8cpp.html#a74679b538b423df9e03c80e2baa3b5de":[6,0,1,3,3,7],
+"core_2normalizers_8cpp.html#a8d83391e597f8bff5eec68dd3036dc5f":[6,0,1,3,3,5],
+"core_2normalizers_8cpp.html#a9bc1a3442ba7ac5ca8c557c0afeaa321":[6,0,1,3,3,15],
+"core_2normalizers_8cpp.html#aa2a8519281f2f3630acf8bc6b6b61108":[6,0,1,3,3,18]
 };

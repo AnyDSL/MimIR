@@ -29,8 +29,6 @@ var classthorin_1_1Def =
     [ "is_external", "classthorin_1_1Def.html#a7701ec0e042a91951dcff7bf0b56573c", null ],
     [ "is_internal", "classthorin_1_1Def.html#a89257054c01a40a9c0388cf97eaab282", null ],
     [ "is_set", "classthorin_1_1Def.html#a6570bc149ba85c9db290765e9d0c6495", null ],
-    [ "is_unfinished", "classthorin_1_1Def.html#af3c43c21e49615f0d73c48d53398164f", null ],
-    [ "is_unset", "classthorin_1_1Def.html#ad80387c2b8b00161b6285241cc1c64ed", null ],
     [ "isa_nom", "classthorin_1_1Def.html#ac79cb2db748fbf0177eb2e6c0fef3fdc", null ],
     [ "isa_structural", "classthorin_1_1Def.html#ac2017047b0b25ea75b038cb2427ea164", null ],
     [ "loc", "classthorin_1_1Def.html#aaa260e29035d724e0f5c4286b93c5f0d", null ],
