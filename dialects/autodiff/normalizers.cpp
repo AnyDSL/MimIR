@@ -84,10 +84,11 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
         return int_add;
     } else if (auto real = match<math::F>(T)) {
-        auto width = as_lit<nat_t>(real->arg());
-        world.DLOG("width {}", width);
-        auto real_add =
-            world.app(world.app(world.ax(math::arith::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
+        auto real_add = math::op(math::arith::add, math::Mode::fast, a, b);
+        // auto width = as_lit<nat_t>(real->arg());
+        // world.DLOG("width {}", width);
+        // auto real_add =
+        //     world.app(world.app(world.ax(math::arith::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
         world.DLOG("real add {} : {}", real_add, real_add->type());
         return real_add;
 
