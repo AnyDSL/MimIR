@@ -398,7 +398,7 @@ const Def* normalize_wrap(const Def* type, const Def* c, const Def* arg, const D
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto mode   = callee->decurry()->arg();
+    auto mode   = callee->arg();
     auto s      = Idx::size(a->type());
     auto ls     = isa_lit(s);
 
