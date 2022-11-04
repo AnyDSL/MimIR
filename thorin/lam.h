@@ -159,7 +159,7 @@ public:
 
 /// These are Lam%s that are neither `nullptr`, nor Lam::is_external, nor Lam::is_unset.
 inline Lam* isa_workable(Lam* lam) {
-    if (!lam || lam->is_external() || lam->is_unset()) return nullptr;
+    if (!lam || lam->is_external() || !lam->is_set()) return nullptr;
     return lam;
 }
 
