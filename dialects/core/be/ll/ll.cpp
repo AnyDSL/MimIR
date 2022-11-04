@@ -796,6 +796,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
         return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
     } else if (auto free = match<mem::free>(def)) {
+        declare("void @free(i8*)");
         emit_unsafe(free->arg(0));
         auto ptr   = emit(free->arg(1));
         auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
