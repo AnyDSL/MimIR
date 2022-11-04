@@ -263,7 +263,7 @@ void Def::set_debug_name(std::string_view n) const {
         auto meta  = w.bot(w.type_bot());
         dbg_       = w.tuple({name, w.tuple({file, begin, finis}), meta});
     } else {
-        dbg_       = w.tuple({name, dbg_->proj(1), dbg_->proj(2)});
+        dbg_ = w.tuple({name, dbg_->proj(1), dbg_->proj(2)});
     }
 }
 #endif
@@ -335,6 +335,10 @@ bool Def::is_set() const {
     if (all_set) return true;
     if (!(std::ranges::all_of(ops(), [](auto op) { return op == nullptr; }))) {
         world().ELOG("{} {}", this->unique_name(), this->name());
+        if (auto lam = isa<Lam>()) {
+            world().ELOG("  {}", lam->filter());
+            world().ELOG("  {}", lam->body());
+        }
         assert(false && "some operands are set, others aren't");
     }
 
