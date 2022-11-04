@@ -1,54 +1,66 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d direct -d autodiff %s --output-ll %t.ll --output-thorin - | FileCheck %s
+// RUN: %thorin -d direct -d autodiff -d math %s --output-ll %t.ll --output-thorin - | FileCheck %s
 
 .import core;
 .import autodiff;
 .import mem;
+.import math;
 
-.let _32 = 64;
-.let R32 = %core.Real _32;
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let f32 = (23,  8);
+.let f64 = (52, 11);
+.let F32 = %math.F f32;
+.let F64 = %math.F f64;
 
 
-.lam .extern internal_diff_core_rop_mul
-    ![m:.Nat, w:.Nat] -> 
-    (.Cn[[%core.Real w, %core.Real w], .Cn[%core.Real w, .Cn[%core.Real w, .Cn[%core.Real w, %core.Real w]]]])
+.lam .extern internal_diff_math_arith_mul
+    ![p:.Nat, e:.Nat] -> 
+    ([.Nat] -> 
+    (.Cn[[%math.F (p, e), %math.F (p, e)], .Cn[%math.F (p, e), .Cn[%math.F (p, e), .Cn[%math.F (p, e), %math.F (p, e)]]]]))
     = { 
-    .cn inner_mul_deriv_cps
-        ![[a:%core.Real w, b:%core.Real w], ret:.Cn[%core.Real w, .Cn[%core.Real w, .Cn[%core.Real w, %core.Real w]]]]@(.tt)
-        = { 
-        .let result = %core.rop.mul (m,w) (a,b);
-        .cn mul_pb ![s:(%core.Real w), pb_ret:(.Cn [%core.Real w, %core.Real w])]@(.tt) = { 
-            .let lhs = %core.rop.mul (m,w) (s,b);
-            .let rhs = %core.rop.mul (m,w) (s,a);
-            pb_ret (lhs, rhs)
+    .lam wrap 
+    ![mode: .Nat] -> 
+    (.Cn[[%math.F (p, e), %math.F (p, e)], .Cn[%math.F (p, e), .Cn[%math.F (p, e), .Cn[%math.F (p, e), %math.F (p, e)]]]])
+    = { 
+        .cn inner_deriv
+            ![[a:%math.F (p, e), b:%math.F (p, e)], ret:.Cn[%math.F (p, e), .Cn[%math.F (p, e), .Cn[%math.F (p, e), %math.F (p, e)]]]]@(.tt)
+            = { 
+            .let result = %math.arith.mul (p,e) mode (a,b);
+            .cn pb ![s:(%math.F (p,e)), pb_ret:(.Cn [%math.F (p, e), %math.F (p, e)])]@(.tt) = { 
+                .let lhs = %math.arith.mul (p,e) mode (s,b);
+                .let rhs = %math.arith.mul (p,e) mode (s,a);
+                pb_ret (lhs, rhs)
+            };
+            ret (result,pb)
         };
-        ret (result,mul_pb)
+        inner_deriv
     };
-    inner_mul_deriv_cps
+    wrap
 };
 
 
 
-.cn f [a:R32, ret: .Cn [R32]] = {
-    .let b = %core.rop.mul (0, _32) (a, a);
+.cn f [a:F64, ret: .Cn [F64]] = {
+    .let b = %math.arith.mul f64 0 (a, a);
     ret b
 };
 
-.cn g [a:R32, ret: .Cn [R32, .Cn [R32, .Cn [R32]]]] = {
-    .let f_diff = %autodiff.ad (.Cn [R32,.Cn[R32]]) f;
+.cn g [a:F64, ret: .Cn [F64, .Cn [F64, .Cn [F64]]]] = {
+    .let f_diff = %autodiff.ad (.Cn [F64,.Cn[F64]]) f;
     f_diff (a,ret)
 };
 
-.cn .extern test [[], ret: .Cn [[R32,R32],[R32,R32]]] = {
-    .cn inner [r:R32, pb:.Cn [R32, .Cn [R32]]] = {
-        .cn pb_rec p::[R32] = {
+.cn .extern test [[], ret: .Cn [[F64,F64],[F64,F64]]] = {
+    .cn inner [r:F64, pb:.Cn [F64, .Cn [F64]]] = {
+        .cn pb_rec p::[F64] = {
             // We return expected result and derivative together with the real values.
             // If both are the same, the normalizer creates a pack which is tested for.
-            ret ((25.0:R32,10.0:R32),(r,p))
+            ret ((25.0:F64,10.0:F64),(r,p))
         };
-        pb (1.0:R32, pb_rec)
+        pb (1.0:F64, pb_rec)
     };
-    g (5.0:R32, inner)
+    g (5.0:F64, inner)
 };
 
 

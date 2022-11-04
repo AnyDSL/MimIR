@@ -4,6 +4,7 @@
 #include "thorin/tuple.h"
 
 #include "dialects/autodiff/autodiff.h"
+#include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
@@ -151,7 +152,7 @@ const Def* autodiff_type_fun(const Def* ty) {
         // TODO: nom sigma
         DefArray ops(sig->ops(), [&](const Def* op) { return autodiff_type_fun(op); });
         return world.sigma(ops);
-    } else if (auto real = match<core::Real>(ty)) {
+    } else if (auto real = match<math::F>(ty)) {
         return ty;
     }
     // Memory operations
@@ -184,9 +185,10 @@ const Def* zero_def(const Def* T) {
         auto zero = world.lit(T, 0, world.dbg("zero"));
         world.DLOG("zero_def for int is {}", zero);
         return zero;
-    } else if (auto real = match<core::Real>(T)) {
-        auto width = as_lit<nat_t>(real->arg());
-        auto zero  = core::lit_real(T->world(), width, 0.0);
+    } else if (auto real = match<math::F>(T)) {
+        // auto width = as_lit<nat_t>(real->arg());
+        // TODO: get width correctly
+        auto zero = math::lit_f(T->world(), 64, 0.0);
         world.DLOG("zero_def for real is {}", zero);
         return zero;
     } else if (auto sig = T->isa<Sigma>()) {

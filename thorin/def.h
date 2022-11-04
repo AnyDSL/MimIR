@@ -592,6 +592,20 @@ public:
     friend class World;
 };
 
+/// @name convert Idx::size to bitwidth and vice versa
+///@{
+constexpr u64 bitwidth2size(u64 n) {
+    assert(n != 0);
+    return n == 64 ? 0 : (1_u64 << n);
+}
+
+constexpr std::optional<u64> size2bitwidth(u64 n) {
+    if (n == 0) return 64;
+    if (std::has_single_bit(n)) return std::bit_width(n - 1_u64);
+    return {};
+}
+///@}
+
 class Proxy : public Def {
 private:
     Proxy(const Def* type, Defs ops, u32 pass, u32 tag, const Def* dbg)
