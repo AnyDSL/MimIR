@@ -34,7 +34,7 @@
 ///
 .ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,
                Gle = g, GlE = ge, GLe = ne, GLE =  t): 
-    Π [.Nat, .Nat] -> .Bool, normalize_ncmp;
+    [.Nat, .Nat] -> .Bool, normalize_ncmp;
 ///
 /// ## Integer Operations
 ///
