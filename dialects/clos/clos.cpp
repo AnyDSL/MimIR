@@ -45,11 +45,11 @@ const Def* ClosLit::env_var() { return fnc_as_lam()->var(Clos_Env_Param); }
 ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_clos_type(def->type())) {
-        auto a = attr::bot;
+        auto a   = attr::bot;
         auto fnc = std::get<1_u64>(clos_unpack(tpl));
         if (auto fa = match<attr>(fnc)) {
             fnc = fa->arg();
-            a  = fa.id();
+            a   = fa.id();
         }
         if (!lambda_or_branch || fnc->isa<Lam>()) return ClosLit(tpl, a);
     }
