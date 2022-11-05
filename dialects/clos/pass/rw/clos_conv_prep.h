@@ -20,8 +20,8 @@ public:
 
     void enter() override;
     const Def* rewrite(const Def*) override;
-    const App* rewriteArgs(const App* app);
-    const App* rewriteCallee(const App* app);
+    const App* rewrite_arg(const App* app);
+    const App* rewrite_callee(const App* app);
 
     Lam* scope(Lam* lam);
 

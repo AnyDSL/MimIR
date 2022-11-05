@@ -52,7 +52,7 @@ void ClosConvPrep::enter() {
         ignore_ = true;
 }
 
-const App* ClosConvPrep::rewriteArgs(const App* app) {
+const App* ClosConvPrep::rewrite_arg(const App* app) {
     auto& w  = world();
     auto arg = app->arg();
 
@@ -107,7 +107,7 @@ const App* ClosConvPrep::rewriteArgs(const App* app) {
     return app;
 }
 
-const App* ClosConvPrep::rewriteCallee(const App* app) {
+const App* ClosConvPrep::rewrite_callee(const App* app) {
     auto& w = world();
     if (app->callee_type()->is_cn()) {
         if (auto br = app->callee()->isa<Extract>()) {
@@ -133,8 +133,8 @@ const Def* ClosConvPrep::rewrite(const Def* def) {
     if (ignore_ || match<clos>(def)) return def;
 
     if (auto app = def->isa<App>(); app) {
-        app = rewriteArgs(app);
-        app = rewriteCallee(app);
+        app = rewrite_arg(app);
+        app = rewrite_callee(app);
         return app;
     }
 
