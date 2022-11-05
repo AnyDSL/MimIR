@@ -190,8 +190,8 @@ $(document).ready(function(){initNavTree('clos__conv_8h_source.html',''); initRe
 <div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="comment"></span> </div>
 <div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><span class="comment">/// Performs *typed closure conversion*.</span></div>
 <div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="comment">/// This is based on the [Simply Typed Closure Conversion](https://dl.acm.org/doi/abs/10.1145/237721.237791).</span></div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">/// Closures are represented using dependent pairs `[env_type:*, cn[env_type, Args..], env_type]`.</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">/// In general only *continuations* are converted (i.e Lam%s that have type `cn[...]`).</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">/// Closures are represented using tuples: `[Env: *, .Cn [Env, Args..], Env]`.</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">/// In general only *continuations* are converted.</span></div>
 <div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">/// Different kind of Lam%s may be rewritten differently:</span></div>
 <div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span><span class="comment">/// - *returning continuations* (&quot;functions&quot;), *join-points* and *branches* are fully closure converted.</span></div>
 <div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span><span class="comment">/// - *return continuations* are not closure converted.</span></div>
