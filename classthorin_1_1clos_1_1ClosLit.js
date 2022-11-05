@@ -6,7 +6,7 @@ var classthorin_1_1clos_1_1ClosLit =
     [ "fnc", "classthorin_1_1clos_1_1ClosLit.html#a935f165a70ce9b67b3d81d7349bcebed", null ],
     [ "fnc_as_lam", "classthorin_1_1clos_1_1ClosLit.html#a51a4f1587fa905b50da0734b0c98a2f1", null ],
     [ "fnc_type", "classthorin_1_1clos_1_1ClosLit.html#ac87fb989d17adc3af4c553eebebaf3aa", null ],
-    [ "get", "classthorin_1_1clos_1_1ClosLit.html#a32fab2779de387bc4a8f744bbbc84958", null ],
+    [ "get", "classthorin_1_1clos_1_1ClosLit.html#a108df5d7e4d2dd26970d1b2b44dbd9b5", null ],
     [ "is_basicblock", "classthorin_1_1clos_1_1ClosLit.html#ad5f48350220535ed2eaec331a4eed7cf", null ],
     [ "is_returning", "classthorin_1_1clos_1_1ClosLit.html#aaaeaea4724db39a322f4d523c667c030", null ],
     [ "operator bool", "classthorin_1_1clos_1_1ClosLit.html#ad3dbbc1a4cbef0c377c2e72fe139b88f", null ],

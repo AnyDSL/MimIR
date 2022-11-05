@@ -108,7 +108,7 @@ var NAVTREEINDEX =
 "math_2autogen_8h.html#a1914a72504aea437bf73ec521ebb8397",
 "mem_2autogen_8h.html#a25028ecf932c732a9ff2a0cd1f894d13",
 "namespacethorin.html#a7dae34cc4eb75fe0cf5a914431353c8c",
-"namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293afe63353cdfb591c479c9e6076beccb55",
+"namespacethorin_1_1clos.html#a5698360345b1caca9075d726826bde9b",
 "namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6a5bf8820b7f741b5e3326b175f03a2141",
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa31f644026e4c96dee546c228a1894c68",
 "optimize_8h.html#acd1d23f27c7886876815367373f946f7",

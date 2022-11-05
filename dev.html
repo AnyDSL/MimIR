@@ -141,7 +141,7 @@ Compiling and Executing</h1>
 <div class="line"><span class="comment">// Cn [mem, i32, Cn [mem, i32]]</span></div>
 <div class="line"><span class="keyword">auto</span> main_t = w.cn({mem_t, i32_t, argv_t, w.cn({mem_t, i32_t})});</div>
 <div class="line"><span class="keyword">auto</span> main = w.nom_lam(main_t, w.dbg(<span class="stringliteral">&quot;main&quot;</span>));</div>
-<div class="line"><span class="keyword">auto</span> [mem, argc, argv, <a class="code hl_enumvalue" href="namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293a2cb9df9898e55fd0ad829dc202ddbd1c">ret</a>] = main-&gt;vars&lt;4&gt;();</div>
+<div class="line"><span class="keyword">auto</span> [mem, argc, argv, <a class="code hl_enumvalue" href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2cb9df9898e55fd0ad829dc202ddbd1c">ret</a>] = main-&gt;vars&lt;4&gt;();</div>
 <div class="line">main-&gt;app(ret, {mem, argc});</div>
 <div class="line">main-&gt;make_external();</div>
 <div class="line"> </div>
@@ -160,7 +160,7 @@ Compiling and Executing</h1>
 <div class="line"> </div>
 <div class="line">std::system(<span class="stringliteral">&quot;clang test.ll -o test&quot;</span>);</div>
 <div class="line">assert(4 == WEXITSTATUS(std::system(<span class="stringliteral">&quot;./test a b c&quot;</span>)));</div>
-<div class="ttc" id="anamespacethorin_1_1clos_html_a4f790c1b00df9b8c0c241b5fb060c293a2cb9df9898e55fd0ad829dc202ddbd1c"><div class="ttname"><a href="namespacethorin_1_1clos.html#a4f790c1b00df9b8c0c241b5fb060c293a2cb9df9898e55fd0ad829dc202ddbd1c">thorin::clos::clos::ret</a></div><div class="ttdeci">@ ret</div></div>
+<div class="ttc" id="anamespacethorin_1_1clos_html_a5c55a5bd62132e28b49915902ea0117aa2cb9df9898e55fd0ad829dc202ddbd1c"><div class="ttname"><a href="namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aa2cb9df9898e55fd0ad829dc202ddbd1c">thorin::clos::attr::ret</a></div><div class="ttdeci">@ ret</div></div>
 <div class="ttc" id="anamespacethorin_html_aafbe7c65f3fb4df3b05a04b70cebe149"><div class="ttname"><a href="namespacethorin.html#aafbe7c65f3fb4df3b05a04b70cebe149">thorin::optimize</a></div><div class="ttdeci">void optimize(World &amp;world, PipelineBuilder &amp;builder)</div><div class="ttdoc">The optimizations proceed in a pipeline ordered by priorities.</div><div class="ttdef"><b>Definition:</b> <a href="optimize_8cpp_source.html#l00043">optimize.cpp:43</a></div></div>
 <div class="ttc" id="anamespacethorin_html_ab70a3eb6856bc409f9ed3627fff8ab36"><div class="ttname"><a href="namespacethorin.html#ab70a3eb6856bc409f9ed3627fff8ab36">thorin::Backends</a></div><div class="ttdeci">std::map&lt; std::string, std::function&lt; void(World &amp;, std::ostream &amp;)&gt; &gt; Backends</div><div class="ttdef"><b>Definition:</b> <a href="dialects_8h_source.html#l00016">dialects.h:16</a></div></div>
 </div><!-- fragment --><p> TODO explain</p>
