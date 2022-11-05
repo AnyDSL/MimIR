@@ -73,19 +73,19 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
 
         if (auto lam = isa_retvar(op); lam && from_outer_scope(lam)) {
             w.DLOG("found return var from enclosing scope: {}", op);
-            return refine(eta_wrap(op, clos::freeBB, "free_ret"));
+            return refine(eta_wrap(op, attr::freeBB, "free_ret"));
         }
         if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock() && from_outer_scope(bb_lam)) {
             w.DLOG("found BB from enclosing scope {}", op);
-            return refine(thorin::clos::op(clos::freeBB, op));
+            return refine(thorin::clos::op(attr::freeBB, op));
         }
         if (isa_cont(app, arg, i)) {
-            if (match<clos>(clos::ret, op) || isa_retvar(op)) {
+            if (match<attr>(attr::ret, op) || isa_retvar(op)) {
                 return app;
             } else if (auto contlam = op->isa_nom<Lam>()) {
-                return refine(thorin::clos::op(clos::ret, contlam));
+                return refine(thorin::clos::op(attr::ret, contlam));
             } else {
-                auto wrapper = eta_wrap(op, clos::ret, "eta_cont");
+                auto wrapper = eta_wrap(op, attr::ret, "eta_cont");
                 w.DLOG("eta expanded return cont: {} -> {}", op, wrapper);
                 return refine(wrapper);
             }
@@ -94,12 +94,12 @@ const App* ClosConvPrep::rewrite_arg(const App* app) {
         if (!isa_callee_br(app, arg, i)) {
             if (auto bb_lam = op->isa_nom<Lam>(); bb_lam && bb_lam->is_basicblock()) {
                 w.DLOG("found firstclass use of BB: {}", bb_lam);
-                return refine(thorin::clos::op(clos::fstclassBB, bb_lam));
+                return refine(thorin::clos::op(attr::fstclassBB, bb_lam));
             }
             // TODO: If EtaRed eta-reduces branches, we have to wrap them again!
             if (isa_retvar(op)) {
                 w.DLOG("found firstclass use of return var: {}", op);
-                return refine(eta_wrap(op, clos::fstclassBB, "fstclass_ret"));
+                return refine(eta_wrap(op, attr::fstclassBB, "fstclass_ret"));
             }
         }
     }
@@ -116,7 +116,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
             if (branches->isa<Tuple>() && branches->type()->isa<Arr>()) {
                 for (auto i = 0u; i < branches->num_ops(); i++) {
                     if (!branches->op(i)->isa_nom<Lam>()) {
-                        auto wrapper = eta_wrap(branches->op(i), clos::bot, "eta_br");
+                        auto wrapper = eta_wrap(branches->op(i), attr::bot, "eta_br");
                         w.DLOG("eta wrap branch: {} -> {}", branches->op(i), wrapper);
                         branches = branches->refine(i, wrapper);
                     }
@@ -130,7 +130,7 @@ const App* ClosConvPrep::rewrite_callee(const App* app) {
 }
 
 const Def* ClosConvPrep::rewrite(const Def* def) {
-    if (ignore_ || match<clos>(def)) return def;
+    if (ignore_ || match<attr>(def)) return def;
 
     if (auto app = def->isa<App>(); app) {
         app = rewrite_arg(app);

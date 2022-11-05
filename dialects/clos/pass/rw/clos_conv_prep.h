@@ -32,7 +32,7 @@ public:
 
     bool from_outer_scope(const Def* lam) { return scope_->free_defs().contains(lam); }
 
-    const Def* eta_wrap(const Def* def, clos c, const std::string& dbg) {
+    const Def* eta_wrap(const Def* def, attr a, const std::string& dbg) {
         auto& w                = world();
         auto [entry, inserted] = old2wrapper_.emplace(def, nullptr);
         auto& wrapper          = entry->second;
@@ -42,7 +42,7 @@ public:
             lam2fscope_[wrapper] = scope(curr_nom());
             wrapper_.emplace(wrapper);
         }
-        return op(c, wrapper);
+        return op(a, wrapper);
     }
 
 private:
