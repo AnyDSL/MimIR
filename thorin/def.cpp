@@ -31,7 +31,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const 
     , dbg_(dbg)
     , type_(type) {
     std::ranges::copy(ops, ops_ptr());
-    gid_ = world().next_gid();
+    gid_ = w->next_gid();
 
     if (node == Node::Univ) {
         hash_ = murmur3(gid());
@@ -152,9 +152,8 @@ const Def* Pack::restructure() {
  */
 
 World& Def::world() const {
-    // Don't use dynamic_casts here; it's used in constructors.
-    if (node() == Node::Univ) return *world_;
-    if (node() == Node::Type) return static_cast<const Type*>(this)->level()->world();
+    if (isa<Univ>()) return *world_;
+    if (auto type = isa<Type>()) return type->level()->world();
     return type()->world(); // TODO unroll
 }
 
