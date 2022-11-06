@@ -380,7 +380,7 @@ const Def* Def::proj(nat_t a, nat_t i, const Def* dbg) const {
 
     World& w = world();
 
-    if (isa<Tuple>() || isa<Sigma>()) {
+    if (isa<Tuple, Sigma>()) {
         return op(i);
     } else if (auto arr = isa<Arr>()) {
         if (arr->arity()->isa<Top>()) return arr->body();

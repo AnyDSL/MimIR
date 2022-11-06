@@ -48,9 +48,7 @@ public:
     ///@}
 
     operator bool() const { return def_ != nullptr; }
-
     operator const Tuple*() { return def_; }
-
     const Tuple* operator->() {
         assert(def_);
         return def_;
@@ -163,6 +161,11 @@ inline const Def* clos_remove_env(const Def* tup_or_sig) {
 inline const Def* clos_sub_env(const Def* tup_or_sig, const Def* new_env) {
     return tup_or_sig->refine(Clos_Env_Param, new_env);
 }
+
+size_t env_idx(const Def*);
+const Def* env_insert(const Def* def, const Def* env);
+
+
 ///@}
 
 } // namespace thorin::clos

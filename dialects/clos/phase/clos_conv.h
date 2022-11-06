@@ -19,7 +19,7 @@ public:
     FreeDefAna(World& world)
         : world_(world)
         , cur_pass_id(1)
-        , lam2nodes_(){};
+        , lam2nodes_() {}
 
     /// FreeDefAna::run will compute free defs (FD) that appear in @p lam%s body.
     /// Nominal Def%s are only considered free if they are annotated with Clos::freeBB or
