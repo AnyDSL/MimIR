@@ -12,7 +12,5 @@ var lattice_8h =
     [ "Bot", "lattice_8h.html#adefa1d05bd6416bf0770c785c9221a02", null ],
     [ "Join", "lattice_8h.html#ae311e26ec0350fe3dbae561de879d594", null ],
     [ "Meet", "lattice_8h.html#a62e7b6eac5be14e5d20aafbf32e4ec8c", null ],
-    [ "Top", "lattice_8h.html#ae6638e502eba2c4a1229a5a1af1cfb29", null ],
-    [ "isa_bound", "lattice_8h.html#acf74d6ffc9168d125bb73ff17c3b8395", null ],
-    [ "isa_ext", "lattice_8h.html#a00ac7dde2670cd6dd5035b081e992386", null ]
+    [ "Top", "lattice_8h.html#ae6638e502eba2c4a1229a5a1af1cfb29", null ]
 ];
