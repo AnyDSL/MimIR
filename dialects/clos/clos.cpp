@@ -131,7 +131,6 @@ const Sigma* isa_clos_type(const Def* def) {
 }
 
 Sigma* clos_type(const Pi* pi) { return pi2clos(pi); }
-    //return ctype(pi->world(), pi->doms(), nullptr)->as_nom<Sigma>(); }
 
 const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
     assert(isa_clos_type(ct));

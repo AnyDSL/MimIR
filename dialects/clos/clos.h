@@ -165,7 +165,6 @@ inline const Def* clos_sub_env(const Def* tup_or_sig, const Def* new_env) {
 size_t env_idx(const Def*);
 const Def* env_insert(const Def* def, const Def* env);
 
-
 ///@}
 
 } // namespace thorin::clos
