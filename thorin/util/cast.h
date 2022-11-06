@@ -21,28 +21,16 @@ inline D bitcast(const S& src) {
     return dst;
 }
 
-/// Provides a @c dynamic_cast -like feature without resorting to RTTI.
+/// Handy wrapper for `dynamic_cast`.
 template<class Base>
-class RuntimeCast {
+class RTTICast {
 public:
-    template<class T>
-    T* isa() {
-        return static_cast<Base*>(this)->node() == T::Node ? static_cast<T*>(this) : nullptr;
-    } ///< Dynamic cast.
-    template<class T>
-    const T* isa() const {
-        return static_cast<const Base*>(this)->node() == T::Node ? static_cast<const T*>(this) : nullptr;
-    } ///< Dynamic cast. @c const version.
-    template<class T>
-    T* as() {
-        assert(isa<T>());
-        return static_cast<T*>(this);
-    } ///< Static cast with debug check.
-    template<class T>
-    const T* as() const {
-        assert(isa<T>());
-        return static_cast<const T*>(this);
-    } ///< Static cast with debug check. @c const version.
+    // clang-format off
+    template<class T>       T* isa()       {                   return dynamic_cast<      T*>(static_cast<      Base*>(this)); } ///< `dynamic_cast`.
+    template<class T> const T* isa() const {                   return dynamic_cast<const T*>(static_cast<const Base*>(this)); } ///< As above - `const` version.
+    template<class T>       T*  as()       { assert(isa<T>()); return  static_cast<      T*>(this); }                           ///< `static_cast` with debug check.
+    template<class T> const T*  as() const { assert(isa<T>()); return  static_cast<const T*>(this); }                           ///< As above - `const` version.
+    // clang-format on
 };
 
 } // namespace thorin

@@ -163,7 +163,7 @@ std::ostream& operator<<(std::ostream& os, Inline u) {
         return print(os, "‹{}; {}›", pack->shape(), pack->body());
     } else if (auto proxy = u->isa<Proxy>()) {
         return print(os, ".proxy#{}#{} {, }", proxy->pass(), proxy->tag(), proxy->ops());
-    } else if (auto bound = isa_bound(*u)) {
+    } else if (auto bound = u->isa<Bound>()) {
         auto op = bound->isa<Join>() ? "∪" : "∩";
         if (auto nom = u->isa_nom()) print(os, "{}{}: {}", op, nom->unique_name(), nom->type());
         return print(os, "{}({, })", op, bound->ops());

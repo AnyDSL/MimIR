@@ -129,7 +129,7 @@ struct Dep {
 ///                |-------extended_ops------|
 /// ```
 /// @attention This means that any subclass of Def **must not** introduce additional members.
-class Def : public RuntimeCast<Def> {
+class Def : public RTTICast<Def> {
 public:
     using NormalizeFn = const Def* (*)(const Def*, const Def*, const Def*, const Def*);
 
@@ -323,14 +323,15 @@ public:
 
     /// @name casts
     ///@{
-    template<class T = Def>
-    const T* isa_structural() const {
-        return isa_nom<T, true>();
-    }
-    template<class T = Def>
-    const T* as_structural() const {
-        return as_nom<T, true>();
-    }
+    // clang-format off
+    template<class T> T* isa() { return RTTICast<Def>::isa<T>(); } // need to explicitly forward due to the overload below
+    template<class T> const T* isa() const { return RTTICast<Def>::isa<T>(); }
+    /// Yields `this` if it is *either* @p T or @p U and `nullptr* otherwise.
+    template<class T, class U> const Def* isa() const { return (isa<T>() || isa<U>()) ? this : nullptr; }
+
+    template<class T = Def> const T* isa_structural() const { return isa_nom<T, true>(); }
+    template<class T = Def> const T*  as_structural() const { return  as_nom<T, true>(); }
+    // clang-format on
 
     /// If `this` is *nom*inal, it will cast constness away and perform a dynamic cast to @p T.
     template<class T = Def, bool invert = false>

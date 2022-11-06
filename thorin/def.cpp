@@ -152,8 +152,9 @@ const Def* Pack::restructure() {
  */
 
 World& Def::world() const {
-    if (isa<Univ>()) return *world_;
-    if (auto type = isa<Type>()) return type->level()->world();
+    // Don't use dynamic_casts here; it's used in constructors.
+    if (node() == Node::Univ) return *world_;
+    if (node() == Node::Type) return static_cast<const Type*>(this)->level()->world();
     return type()->world(); // TODO unroll
 }
 
@@ -201,9 +202,9 @@ const Var* Def::var(const Def* dbg) {
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig, dbg);
     if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
     if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
-    if (isa_bound(this)) return w.var(this, this,  dbg);
-    if (isa<Infer >())   return nullptr;
-    if (isa<Global>())   return nullptr;
+    if (isa<Bound >()) return w.var(this, this,  dbg);
+    if (isa<Infer >()) return nullptr;
+    if (isa<Global>()) return nullptr;
     unreachable();
 }
 

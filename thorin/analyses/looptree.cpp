@@ -192,9 +192,8 @@ int LoopTreeBuilder<forward>::walk_scc(const CFNode* cur, Head* parent, int dept
 //------------------------------------------------------------------------------
 
 template<bool forward>
-LoopTree<forward>::Base::Base(Node node, Head* parent, int depth, const std::vector<const CFNode*>& cf_nodes)
-    : node_(node)
-    , parent_(parent)
+LoopTree<forward>::Base::Base(Head* parent, int depth, const std::vector<const CFNode*>& cf_nodes)
+    : parent_(parent)
     , cf_nodes_(cf_nodes)
     , depth_(depth) {
     if (parent_) parent_->children_.emplace_back(this);
