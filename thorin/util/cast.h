@@ -26,7 +26,7 @@ template<class T>
 concept Nodeable = requires {
     T::Node;
 };
-}
+} // namespace detail
 
 template<class B>
 class RuntimeCast {
