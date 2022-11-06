@@ -31,7 +31,7 @@ Def::Def(World* w, node_t node, const Def* type, Defs ops, flags_t flags, const 
     , dbg_(dbg)
     , type_(type) {
     std::ranges::copy(ops, ops_ptr());
-    gid_ = w->next_gid();
+    gid_ = world().next_gid();
 
     if (node == Node::Univ) {
         hash_ = murmur3(gid());
