@@ -201,9 +201,9 @@ const Var* Def::var(const Def* dbg) {
     if (auto sig  = isa<Sigma>()) return w.var(sig,         sig, dbg);
     if (auto arr  = isa<Arr  >()) return w.var(w.type_idx(arr ->shape()), arr,  dbg); // TODO shapes like (2, 3)
     if (auto pack = isa<Pack >()) return w.var(w.type_idx(pack->shape()), pack, dbg); // TODO shapes like (2, 3)
-    if (isa_bound(this)) return w.var(this, this,  dbg);
-    if (isa<Infer >())   return nullptr;
-    if (isa<Global>())   return nullptr;
+    if (isa<Bound >()) return w.var(this, this,  dbg);
+    if (isa<Infer >()) return nullptr;
+    if (isa<Global>()) return nullptr;
     unreachable();
 }
 

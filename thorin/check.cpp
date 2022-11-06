@@ -49,7 +49,7 @@ bool Checker::equiv_internal(const Def* d1, const Def* d2, const Def* dbg) {
         if (auto n2 = d2->isa_nom()) vars_.emplace_back(n1, n2);
     }
 
-    if (is_sigma_or_arr(d1)) {
+    if (d1->isa<Sigma, Arr>()) {
         if (!equiv(d1->arity(), d2->arity(), dbg)) return false;
 
         if (auto a = isa_lit(d1->arity())) {

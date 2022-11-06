@@ -323,14 +323,10 @@ public:
 
     /// @name casts
     ///@{
-    template<class T = Def>
-    const T* isa_structural() const {
-        return isa_nom<T, true>();
-    }
-    template<class T = Def>
-    const T* as_structural() const {
-        return as_nom<T, true>();
-    }
+    // clang-format off
+    template<class T = Def> const T* isa_structural() const { return isa_nom<T, true>(); }
+    template<class T = Def> const T*  as_structural() const { return  as_nom<T, true>(); }
+    // clang-format on
 
     /// If `this` is *nom*inal, it will cast constness away and perform a dynamic cast to @p T.
     template<class T = Def, bool invert = false>

@@ -640,7 +640,7 @@ const Def* normalize_zip(const Def* type, const Def* c, const Def* arg, const De
     if (auto l_in = isa_lit(n_i)) {
         auto args = arg->projs(*l_in);
 
-        if (lr && std::ranges::all_of(args, [](auto arg) { return is_tuple_or_pack(arg); })) {
+        if (lr && std::ranges::all_of(args, [](const Def* arg) { return arg->isa<Tuple, Pack>(); })) {
             auto shapes = s->projs(*lr);
             auto s_n    = isa_lit(shapes.front());
 
