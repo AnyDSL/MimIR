@@ -127,15 +127,6 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     return "%" + def->unique_name();
 }
 
-static nat_t size2llbits(const Def* size) {
-    if (auto s = Idx::size2bitwidth(size)) {
-        nat_t r = std::bit_ceil(*s);
-        if (1 < r && r <= 8) return 8;
-        return r;
-    }
-    return 64;
-}
-
 std::string Emitter::convert(const Def* type) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
@@ -146,7 +137,7 @@ std::string Emitter::convert(const Def* type) {
     if (type->isa<Nat>()) {
         return types_[type] = "i64";
     } else if (auto size = Idx::size(type)) {
-        return types_[type] = "i" + std::to_string(size2llbits(size));
+        return types_[type] = "i" + std::to_string(*Idx::size2bitwidth(size));
     } else if (auto w = math::isa_f(type)) {
         switch (*w) {
             case 16: return types_[type] = "half";
@@ -415,8 +406,8 @@ void Emitter::emit_epilogue(Lam* lam) {
 }
 
 static const char* math_suffix(const Def* type) {
-    if (auto s = math::isa_f(type)) {
-        switch (*s) {
+    if (auto w = math::isa_f(type)) {
+        switch (*w) {
             case 32: return "f";
             case 64: return "";
         }
@@ -424,8 +415,8 @@ static const char* math_suffix(const Def* type) {
     err("unsupported foating point type '{}'", type);
 }
 static const char* llvm_suffix(const Def* type) {
-    if (auto s = math::isa_f(type)) {
-        switch (*s) {
+    if (auto w = math::isa_f(type)) {
+        switch (*w) {
             case 16: return ".f16";
             case 32: return ".f32";
             case 64: return ".f64";
@@ -478,9 +469,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_i = convert(index->type());
 
         if (auto size = Idx::size(index->type())) {
-            if (auto s = isa_lit(size); s && *s == 2) { // mod(2) = width(1)
-                v_i = bb.assign(name + ".8", "zext i1 {} to i8", v_i);
-                t_i = "i8";
+            if (auto w = Idx::size2bitwidth(size); w && *w < 32) {
+                v_i = bb.assign(name + ".32", "zext {} {} to i32", t_i, v_i);
+                t_i = "i32";
             }
         }
 
@@ -488,16 +479,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     };
 
     if (auto lit = def->isa<Lit>()) {
-        if (lit->type()->isa<Nat>()) {
-            return std::to_string(lit->get<nat_t>());
-        } else if (auto size = Idx::size(lit->type())) {
-            switch (size2llbits(size)) {
-#define CODE(x) \
-    case x: return std::to_string(lit->get<u##x>());
-                THORIN_1_8_16_32_64(CODE)
-#undef CODE
-                default: unreachable();
-            }
+        if (lit->type()->isa<Nat>() || Idx::size(lit->type())) {
+            return std::to_string(lit->get());
         } else if (auto w = math::isa_f(lit->type())) {
             std::stringstream s;
             u64 hex;
@@ -696,14 +679,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_src = convert(conv->arg()->type());
         auto t_dst = convert(conv->type());
 
-        nat_t s_src = size2llbits(Idx::size(conv->arg()->type()));
-        nat_t s_dst = size2llbits(Idx::size(conv->type()));
+        nat_t w_src = *Idx::size2bitwidth(Idx::size(conv->arg()->type()));
+        nat_t w_dst = *Idx::size2bitwidth(Idx::size(conv->type()));
 
-        if (s_src == s_dst) return v_src; // This can happen when casting e.g from top to i64.
+        if (w_src == w_dst) return v_src;
 
         switch (conv.id()) {
-            case core::conv::s2s: op = s_src < s_dst ? "sext" : "trunc"; break;
-            case core::conv::u2u: op = s_src < s_dst ? "zext" : "trunc"; break;
+            case core::conv::s2s: op = w_src < w_dst ? "sext" : "trunc"; break;
+            case core::conv::u2u: op = w_src < w_dst ? "zext" : "trunc"; break;
         }
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
@@ -723,7 +706,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         auto size2width = [&](const Def* type) {
             if (type->isa<Nat>()) return 64_n;
-            if (auto size = Idx::size(type)) return size2llbits(size);
+            if (auto size = Idx::size(type)) return *Idx::size2bitwidth(size);
             return 0_n;
         };
 

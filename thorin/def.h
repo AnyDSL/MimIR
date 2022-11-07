@@ -584,16 +584,10 @@ public:
 
     /// @name convert between Idx::size and bitwidth and vice versa
     ///@{
-    static constexpr nat_t bitwidth2size(nat_t n) {
-        assert(n != 0);
-        return n == 64 ? 0 : (1_n << n);
-    }
-
-    static constexpr nat_t size2bitwidth(nat_t n) {
-        if (n == 0) return 64;
-        return std::bit_width(n - 1_n);
-    }
-
+    // clang-format off
+    static constexpr nat_t bitwidth2size(nat_t n) { assert(n != 0); return n == 64 ? 0 : (1_n << n); }
+    static constexpr nat_t size2bitwidth(nat_t n) { return n == 0 ? 64 : std::bit_width(n - 1_n); }
+    // clang-format on
     static std::optional<nat_t> size2bitwidth(const Def* size);
     ///@}
 

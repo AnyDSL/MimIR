@@ -573,7 +573,7 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
     } else if (auto size = Idx::size(type)) {
-        if (auto s = Idx::size2bitwidth(size)) return world.lit_nat(std::max(1_n, std::bit_ceil(*s) / 8_n));
+        if (auto w = Idx::size2bitwidth(size)) return world.lit_nat(std::max(1_n, std::bit_ceil(*w) / 8_n));
     } else if (auto w = math::isa_f(type)) {
         switch (*w) {
             case 16: return world.lit_nat(2);
