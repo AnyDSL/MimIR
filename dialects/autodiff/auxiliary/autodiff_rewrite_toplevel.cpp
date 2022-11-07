@@ -10,34 +10,6 @@
 
 namespace thorin::autodiff {
 
-bool has_op_store(const Def* def, DefSet& visited) {
-    if (visited.contains(def)) return false;
-    visited.insert(def);
-
-    if (auto extr = def->isa<Extract>()) {
-        if (has_op_store(extr->tuple(), visited)) { return true; }
-    } else if (auto lea = match<mem::lea>(def)) {
-        auto [arr_ptr, _] = lea->args<2>();
-
-        if (has_op_store(arr_ptr, visited)) { return true; }
-    } else if (match<mem::store>(def)) {
-        return true;
-    }
-
-    if (match<mem::Ptr>(def->type()) || def->isa<Tuple>()) {
-        for (auto use : def->uses()) {
-            if (has_op_store(use, visited)) { return true; }
-        }
-    }
-
-    return false;
-}
-
-bool has_op_store(const Def* ptr) {
-    DefSet visited;
-    return has_op_store(ptr, visited);
-}
-
 void AutoDiffEval::fetch_gradients(Lam* src, Lam* backward) {
     auto src_arg      = src->arg();
     auto backward_arg = backward->arg();
@@ -78,6 +50,45 @@ const App* is_load_val(const Def* def) {
     return nullptr;
 }
 
+bool has_op_store(const Def* def, DefSet& visited) {
+    if (visited.contains(def)) return false;
+    visited.insert(def);
+
+    if (auto extr = def->isa<Extract>()) {
+        if (has_op_store(extr->tuple(), visited)) { return true; }
+    } else if (auto lea = match<mem::lea>(def)) {
+        auto [arr_ptr, _] = lea->args<2>();
+
+        if (has_op_store(arr_ptr, visited)) { return true; }
+    } else if (match<mem::store>(def)) {
+        return true;
+    }
+
+    if (match<mem::Ptr>(def->type()) || def->isa<Tuple>()) {
+        for (auto use : def->uses()) {
+            if (has_op_store(use, visited)) { return true; }
+        }
+    }
+
+    return false;
+}
+
+bool has_op_store(const Def* ptr) {
+    DefSet visited;
+    return has_op_store(ptr, visited);
+}
+
+bool contains_load(const Def* def) {
+    if (def->isa<Var>()) return false;
+    if (match<mem::load>(def)) return true;
+
+    for (auto op : def->ops()) {
+        if (contains_load(op)) { return true; }
+    }
+
+    return false;
+}
+
 void AutoDiffEval::scan(const Def* def) {
     if (!visited_scan.insert(def).second) return;
 
@@ -88,7 +99,6 @@ void AutoDiffEval::scan(const Def* def) {
         } else if (rop.id() == math::arith::div) {
             mark(rop->arg(0));
             mark(rop->arg(1));
-            mark(def);
         }
     } else if (auto extrema = match<math::extrema>(def)) {
         if (extrema.id() == math::extrema::maximum || extrema.id() == math::extrema::minimum) {
@@ -99,17 +109,15 @@ void AutoDiffEval::scan(const Def* def) {
 
     if (auto exp = match<math::exp>(def)) {
         if (exp.id() == math::exp::exp) {
-            mark(exp->arg(0));
             mark(exp);
         } else if (exp.id() == math::exp::log) {
             mark(exp->arg(0));
-            mark(exp);
         }
     }
 
     if (auto lea = match<mem::lea>(def)) {
         auto index = lea->arg(1);
-        mark(index);
+        if (contains_load(index)) { mark(index); }
     }
 
     if (auto gamma = match<math::gamma>(def)) { mark(gamma->arg(0)); }
@@ -125,9 +133,9 @@ void AutoDiffEval::prepare(Lam* lam) {
         if (scope.bound(mark)) {
             if (auto load = is_load_val(mark)) {
                 auto ptr = load->arg(1);
-                if (has_op_store(ptr)) { requires_caching.insert(mark); }
+                if (has_op_store(ptr) || true) { requires_caching.insert(mark); }
             } else if (!mark->isa<Lit>()) {
-                // requires_caching.insert(mark);
+                requires_caching.insert(mark);
             }
         }
     }

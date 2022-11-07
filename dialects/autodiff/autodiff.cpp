@@ -32,7 +32,8 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                 // builder.extend_opt_phase(131, [](thorin::PassMan& man) {
                 // man.add<thorin::mem::Reshape>(thorin::mem::Reshape::Flat); });
                 builder.add_opt(133);
-                builder.extend_opt_phase(133, [](thorin::PassMan& man) { man.add<thorin::autodiff::MemOptimize>(); });
+                // builder.extend_opt_phase(133, [](thorin::PassMan& man) { man.add<thorin::autodiff::MemOptimize>();
+                // });
             },
             nullptr, [](Normalizers& normalizers) { autodiff::register_normalizers(normalizers); }};
 }

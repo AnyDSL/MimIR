@@ -91,10 +91,7 @@ void deep_compare(const Def* src, const Def* dst, std::function<void(const Def*,
     differ(src, dst);
 }
 
-const Def* AutoDiffEval::augment_lit(const Lit* lit) {
-    auto& w = world();
-    return lit;
-}
+const Def* AutoDiffEval::augment_lit(const Lit* lit) { return lit; }
 
 const Def* AutoDiffEval::augment_var(const Var* var) {
     assert(false);
@@ -125,7 +122,7 @@ const Def* AutoDiffEval::augment_extract(const Extract* ext) {
     auto aug_tuple = augment(tuple);
     auto aug_index = augment(index);
 
-    auto aug_ext = world.extract(aug_tuple, aug_index);
+    auto aug_ext = world.extract(aug_tuple, aug_index, ext->dbg());
 
     return aug_ext;
 }
@@ -152,8 +149,6 @@ const Def* AutoDiffEval::augment_app(const App* app) {
     auto aug_arg = augment(arg);
 
     auto aug_callee = augment(callee);
-
-    if (auto div = match<core::div>(app)) { div->dump(); }
 
     if (mem::mem_def(aug_arg)) { aug_arg = mem::replace_mem(end_mem(), aug_arg); }
     auto aug_app = world.app(aug_callee, aug_arg);
@@ -354,7 +349,6 @@ const Def* AutoDiffEval::resolve_impl(const Def* def) {
     if (auto cache_arr = cache_map[def]) {
         auto loop        = cache_loop_assignment[cache_arr];
         auto cache_index = loop->cache_index();
-        loop->local_size->dump(3);
         assert(cache_index);
         auto cache_lea = mem::op_lea(cache_arr, cache_index);
         return op_load(cache_lea);
@@ -369,8 +363,6 @@ const Def* AutoDiffEval::resolve_impl(const Def* def) {
     if (auto alloc = match<mem::alloc>(def)) { assert(false); }
 
     if (auto slot = match<mem::slot>(def)) { assert(false); }
-
-    if (auto div = match<core::div>(def)) { div->dump(); }
 
     auto new_ops = DefArray(def->num_ops(), [&](auto i) {
         auto op = def->op(i);
@@ -424,7 +416,7 @@ void AutoDiffEval::check_grad_arr(const Def* def) {
                 auto ptr          = alloc->proj(1);
                 auto type         = alloc->decurry()->arg(0_s);
                 auto aug_type     = augment(type);
-                auto gradient_ptr = op_alloc(aug_type, w.dbg("gradient_ptr"));
+                auto gradient_ptr = op_alloc(aug_type, w.dbg("gradient_ptr_" + def->name()));
                 op_store(gradient_ptr, zero(aug_type));
                 current_loop->allocated_memory.insert(gradient_ptr);
                 gradient_pointers[ptr] = gradient_ptr;
@@ -514,8 +506,6 @@ const Def* scale(const Def* shape, const Def* def) {
 }
 
 void AutoDiffEval::prop(Scope& scope, const Def* def) {
-    if (auto load = match<mem::load>(def)) { def->dump(1); }
-    def->dump(1);
     if (!scope.bound(def)) return;
     if (def->isa<Var>()) { return; }
     if (!visited_prop.insert(def).second) { return; }
@@ -667,7 +657,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         } else if (rop.id() == math::arith::sub) {
             right_grad = math::op_rminus(math::Mode::fast, gradient);
         } else if (rop.id() == math::arith::mul) {
-            right->dump(1);
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
@@ -676,13 +665,14 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         } else if (rop.id() == math::arith::div) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
-            auto value       = resolve(def);
+            // auto value       = resolve(def);
 
             left_grad = math::op(math::arith::div, math::Mode::fast, gradient, right_value);
 
-            right_grad = math::op_rminus(math::Mode::fast, gradient);
-            right_grad = math::op(math::arith::mul, math::Mode::fast, right_grad, value);
-            right_grad = math::op(math::arith::div, math::Mode::fast, right_grad, right_value);
+            right_grad  = math::op_rminus(math::Mode::fast, gradient);
+            right_grad  = math::op(math::arith::mul, math::Mode::fast, right_grad, left_value);
+            right_value = math::op(math::arith::mul, math::Mode::fast, right_value, right_value);
+            right_grad  = math::op(math::arith::div, math::Mode::fast, right_grad, right_value);
         }
 
         attach_gradient(rop->arg(), w.tuple({left_grad, right_grad}));
@@ -755,7 +745,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 Scope scope(body_lam);
                 for (const Def* free_def : scope.free_defs()) {
                     auto free_ty = free_def->type();
-                    // if (is_idx(free_ty) || match<math::F>(free_ty)) { resolve(free_def); }
+                    if (markings.contains(free_ty)) { resolve(free_def); }
                     if (match<mem::Ptr>(free_ty)) { check_grad_arr(free_def); }
                 }
 
@@ -814,7 +804,7 @@ const Def* AutoDiffEval::normalized_to_cache_index(const Def* normalized_index) 
     auto parent = current_loop->parent;
     if (parent != nullptr) {
         cache_index = core::op(core::wrap::mul, core::Mode::none, parent->size, normalized_index);
-        cache_index = core::op(core::wrap::add, core::Mode::none, parent->index(), cache_index);
+        cache_index = core::op(core::wrap::add, core::Mode::none, parent->cache_index(), cache_index);
     } else {
         cache_index = normalized_index;
     }

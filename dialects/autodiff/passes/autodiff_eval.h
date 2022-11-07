@@ -169,7 +169,6 @@ private:
                 node(curr, Node::Type::App);
                 run(curr, next_lam);
             } else {
-                app->dump(1);
                 run(curr, app->arg());
                 return;
             }
@@ -180,7 +179,6 @@ private:
         } else if (auto pack = curr->isa<Pack>()) {
             run(curr, pack->body());
         } else if (auto extract = curr->isa<Extract>()) {
-            curr->dump();
             run(curr, extract->tuple());
         } else {
         }
