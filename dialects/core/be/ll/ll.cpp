@@ -470,7 +470,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         if (auto size = Idx::size(index->type())) {
             if (auto w = Idx::size2bitwidth(size); w && *w < 64) {
-                v_i = bb.assign(name + ".zext", "zext {} {} to i{} ; add one more bit for gep index as it is treated as signed value", t_i, v_i, *w + 1);
+                v_i = bb.assign(name + ".zext",
+                                "zext {} {} to i{} ; add one more bit for gep index as it is treated as signed value",
+                                t_i, v_i, *w + 1);
                 t_i = "i" + std::to_string(*w + 1);
             }
         }
