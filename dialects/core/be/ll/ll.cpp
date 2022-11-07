@@ -167,7 +167,7 @@ std::string Emitter::convert(const Def* type) {
         print(s, "{}*", convert(pointee));
     } else if (auto arr = type->isa<Arr>()) {
         auto t_elem = convert(arr->body());
-        u64 size       = 0;
+        u64 size    = 0;
         if (auto arity = isa_lit(arr->shape())) size = *arity;
         print(s, "[{} x {}]", size, t_elem);
     } else if (auto pi = type->isa<Pi>()) {
@@ -373,8 +373,7 @@ void Emitter::emit_epilogue(Lam* lam) {
         std::vector<std::string> args;
         auto app_args = app->args();
         for (auto arg : app_args.skip_back()) {
-            if (auto v_arg = emit_unsafe(arg); !v_arg.empty())
-                args.emplace_back(convert(arg->type()) + " " + v_arg);
+            if (auto v_arg = emit_unsafe(arg); !v_arg.empty()) args.emplace_back(convert(arg->type()) + " " + v_arg);
         }
 
         if (app->args().back()->isa<Bot>()) {
@@ -483,12 +482,12 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
     auto emit_index = [&](const Def* index) {
         auto v_i = emit(index);
-        auto t_i  = convert(index->type());
+        auto t_i = convert(index->type());
 
         if (auto size = Idx::size(index->type())) {
             if (auto s = isa_lit(size); s && *s == 2) { // mod(2) = width(1)
                 v_i = bb.assign(name + ".8", "zext i1 {} to i8", v_i);
-                t_i  = "i8";
+                t_i = "i8";
             }
         }
 
@@ -575,14 +574,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             assert(!v_tup.empty());
             return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_idx);
         } else {
-            auto t_elem      = convert(extract->type());
+            auto t_elem     = convert(extract->type());
             auto [v_i, t_i] = emit_index(index);
 
             print(lam2bb_[entry_].body().emplace_front(),
                   "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, t_tup);
             print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", t_tup, v_tup, t_tup, name);
-            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}",
-                  name, t_tup, t_tup, name, t_i, v_i);
+            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}", name,
+                  t_tup, t_tup, name, t_i, v_i);
             return bb.assign(name, "load {}, {}* {}.gep", t_elem, t_elem, name);
         }
     } else if (auto insert = def->isa<Insert>()) {
@@ -711,7 +710,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto conv = match<core::conv>(def)) {
-        auto v_src   = emit(conv->arg());
+        auto v_src = emit(conv->arg());
         auto t_src = convert(conv->arg()->type());
         auto t_dst = convert(conv->type());
 
@@ -774,7 +773,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_pointee = convert(pointee);
         auto t_ptr     = convert(ptr->type());
         if (pointee->isa<Sigma>())
-            return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, i32 {}", t_pointee, t_ptr, v_ptr, as_lit(i));
+            return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, i32 {}", t_pointee, t_ptr, v_ptr,
+                             as_lit(i));
 
         assert(pointee->isa<Arr>());
         auto [v_i, t_i] = emit_index(i);
@@ -977,7 +977,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto conv = match<math::conv>(def)) {
-        auto v_src   = emit(conv->arg());
+        auto v_src = emit(conv->arg());
         auto t_src = convert(conv->arg()->type());
         auto t_dst = convert(conv->type());
 
