@@ -166,10 +166,10 @@ std::string Emitter::convert(const Def* type) {
         // TODO addr_space
         print(s, "{}*", convert(pointee));
     } else if (auto arr = type->isa<Arr>()) {
-        auto elem_type = convert(arr->body());
+        auto t_elem = convert(arr->body());
         u64 size       = 0;
         if (auto arity = isa_lit(arr->shape())) size = *arity;
-        print(s, "[{} x {}]", size, elem_type);
+        print(s, "[{} x {}]", size, t_elem);
     } else if (auto pi = type->isa<Pi>()) {
         assert(pi->is_returning() && "should never have to convert type of BB");
         print(s, "{} (", convert_ret_pi(pi->ret_pi()));
@@ -323,10 +323,10 @@ void Emitter::emit_epilogue(Lam* lam) {
                 std::string prev = "undef";
                 auto type        = convert(world().sigma(types));
                 for (size_t i = 0, n = values.size(); i != n; ++i) {
-                    auto elem   = values[i];
-                    auto elem_t = convert(types[i]);
+                    auto v_elem = values[i];
+                    auto t_elem = convert(types[i]);
                     auto namei  = "%ret_val." + std::to_string(i);
-                    bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, elem_t, elem, i);
+                    bb.tail("{} = insertvalue {} {}, {} {}, {}", namei, type, prev, t_elem, v_elem, i);
                     prev = namei;
                 }
 
@@ -340,10 +340,10 @@ void Emitter::emit_epilogue(Lam* lam) {
             auto [f, t] = ex->tuple()->projs<2>([this](auto def) { return emit(def); });
             return bb.tail("br i1 {}, label {}, label {}", c, t, f);
         } else {
-            auto c_ty = convert(ex->index()->type());
-            bb.tail("switch {} {}, label {} [ ", c_ty, c, emit(ex->tuple()->proj(0)));
+            auto t_c = convert(ex->index()->type());
+            bb.tail("switch {} {}, label {} [ ", t_c, c, emit(ex->tuple()->proj(0)));
             for (auto i = 1u; i < ex->tuple()->num_projs(); i++)
-                print(bb.tail().back(), "{} {}, label {} ", c_ty, std::to_string(i), emit(ex->tuple()->proj(i)));
+                print(bb.tail().back(), "{} {}, label {} ", t_c, std::to_string(i), emit(ex->tuple()->proj(i)));
             print(bb.tail().back(), "]");
         }
     } else if (app->callee()->isa<Bot>()) {
@@ -363,24 +363,24 @@ void Emitter::emit_epilogue(Lam* lam) {
 
         auto [mem, jbuf, tag] = app->args<3>();
         emit_unsafe(mem);
-        auto emitted_jb  = emit(jbuf);
-        auto emitted_tag = emit(tag);
-        bb.tail("call void @longjmp(i8* {}, i32 {})", emitted_jb, emitted_tag);
+        auto v_jb  = emit(jbuf);
+        auto v_tag = emit(tag);
+        bb.tail("call void @longjmp(i8* {}, i32 {})", v_jb, v_tag);
         return bb.tail("unreachable");
     } else if (app->callee_type()->is_returning()) { // function call
-        auto emmited_callee = emit(app->callee());
+        auto v_callee = emit(app->callee());
 
         std::vector<std::string> args;
         auto app_args = app->args();
         for (auto arg : app_args.skip_back()) {
-            if (auto emitted_arg = emit_unsafe(arg); !emitted_arg.empty())
-                args.emplace_back(convert(arg->type()) + " " + emitted_arg);
+            if (auto v_arg = emit_unsafe(arg); !v_arg.empty())
+                args.emplace_back(convert(arg->type()) + " " + v_arg);
         }
 
         if (app->args().back()->isa<Bot>()) {
             // TODO: Perhaps it'd be better to simply η-wrap this prior to the BE...
             assert(convert_ret_pi(app->callee_type()->ret_pi()) == "void");
-            bb.tail("call void {}({, })", emmited_callee, args);
+            bb.tail("call void {}({, })", v_callee, args);
             return bb.tail("unreachable");
         }
 
@@ -397,11 +397,11 @@ void Emitter::emit_epilogue(Lam* lam) {
         }
 
         if (n == 0) {
-            bb.tail("call void {}({, })", emmited_callee, args);
+            bb.tail("call void {}({, })", v_callee, args);
         } else {
-            auto name   = "%" + app->unique_name() + ".ret";
-            auto ret_ty = convert_ret_pi(ret_lam->type());
-            bb.tail("{} = call {} {}({, })", name, ret_ty, emmited_callee, args);
+            auto name  = "%" + app->unique_name() + ".ret";
+            auto t_ret = convert_ret_pi(ret_lam->type());
+            bb.tail("{} = call {} {}({, })", name, t_ret, v_callee, args);
 
             for (size_t i = 0, e = ret_lam->num_vars(); i != e; ++i) {
                 auto phi = ret_lam->var(i);
@@ -410,7 +410,7 @@ void Emitter::emit_epilogue(Lam* lam) {
                 auto namei = name;
                 if (e > 2) {
                     namei += '.' + std::to_string(i - 1);
-                    bb.tail("{} = extractvalue {} {}, {}", namei, ret_ty, name, i - 1);
+                    bb.tail("{} = extractvalue {} {}, {}", namei, t_ret, name, i - 1);
                 }
                 assert(!match<mem::M>(phi->type()));
                 lam2bb_[ret_lam].phis[phi].emplace_back(namei, id(lam, true));
@@ -458,9 +458,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             auto sep = "";
             for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
                 auto e = tuple->proj(n, i);
-                if (auto elem = emit_unsafe(e); !elem.empty()) {
-                    auto elem_t = convert(e->type());
-                    s += sep + elem_t + " " + elem;
+                if (auto v_elem = emit_unsafe(e); !v_elem.empty()) {
+                    auto t_elem = convert(e->type());
+                    s += sep + t_elem + " " + v_elem;
                     sep = ", ";
                 }
             }
@@ -472,13 +472,27 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t           = convert(tuple->type());
         for (size_t i = 0, n = tuple->num_projs(); i != n; ++i) {
             auto e = tuple->proj(n, i);
-            if (auto elem = emit_unsafe(e); !elem.empty()) {
-                auto elem_t = convert(e->type());
+            if (auto v_elem = emit_unsafe(e); !v_elem.empty()) {
+                auto t_elem = convert(e->type());
                 auto namei  = name + "." + std::to_string(i);
-                prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, elem_t, elem, i);
+                prev        = bb.assign(namei, "insertvalue {} {}, {} {}, {}", t, prev, t_elem, v_elem, i);
             }
         }
         return prev;
+    };
+
+    auto emit_index = [&](const Def* index) {
+        auto v_i = emit(index);
+        auto t_i  = convert(index->type());
+
+        if (auto size = Idx::size(index->type())) {
+            if (auto s = isa_lit(size); s && *s == 2) { // mod(2) = width(1)
+                v_i = bb.assign(name + ".8", "zext i1 {} to i8", v_i);
+                t_i  = "i8";
+            }
+        }
+
+        return std::pair(v_i, t_i);
     };
 
     if (auto lit = def->isa<Lit>()) {
@@ -543,45 +557,45 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         }
 #endif
 
-        auto ll_tup = emit_unsafe(tuple);
+        auto v_tup = emit_unsafe(tuple);
 
         // this exact location is important: after emitting the tuple -> ordering of mem ops
         // before emitting the index, as it might be a weird value for mem vars.
         if (match<mem::M>(extract->type())) return {};
 
-        auto ll_idx = emit_unsafe(index);
+        auto v_idx = emit_unsafe(index);
 
         if (tuple->num_projs() == 2) {
-            if (match<mem::M>(tuple->proj(2, 0_s)->type())) return ll_tup;
-            if (match<mem::M>(tuple->proj(2, 1_s)->type())) return ll_tup;
+            if (match<mem::M>(tuple->proj(2, 0_s)->type())) return v_tup;
+            if (match<mem::M>(tuple->proj(2, 1_s)->type())) return v_tup;
         }
 
-        auto tup_t = convert(tuple->type());
+        auto t_tup = convert(tuple->type());
         if (isa_lit(index)) {
-            assert(!ll_tup.empty());
-            return bb.assign(name, "extractvalue {} {}, {}", tup_t, ll_tup, ll_idx);
+            assert(!v_tup.empty());
+            return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_idx);
         } else {
-            auto elem_t  = convert(extract->type());
-            auto index_t = convert(index->type());
+            auto t_elem      = convert(extract->type());
+            auto [v_i, t_i] = emit_index(index);
+
             print(lam2bb_[entry_].body().emplace_front(),
-                  "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, tup_t);
-            print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", tup_t, ll_tup, tup_t, name);
-            print(bb.body().emplace_back(), "{}.zext = zext {} {} to i64", ll_idx, index_t, ll_idx);
-            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, i64 {}.zext",
-                  name, tup_t, tup_t, name, ll_idx);
-            return bb.assign(name, "load {}, {}* {}.gep", elem_t, elem_t, name);
+                  "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, t_tup);
+            print(bb.body().emplace_back(), "store {} {}, {}* {}.alloca", t_tup, v_tup, t_tup, name);
+            print(bb.body().emplace_back(), "{}.gep = getelementptr inbounds {}, {}* {}.alloca, i64 0, {} {}",
+                  name, t_tup, t_tup, name, t_i, v_i);
+            return bb.assign(name, "load {}, {}* {}.gep", t_elem, t_elem, name);
         }
     } else if (auto insert = def->isa<Insert>()) {
-        auto tuple = emit(insert->tuple());
-        auto index = emit(insert->index());
-        auto value = emit(insert->value());
-        auto tup_t = convert(insert->tuple()->type());
-        auto val_t = convert(insert->value()->type());
-        return bb.assign(name, "insertvalue {} {}, {} {}, {}", tup_t, tuple, val_t, value, index);
+        auto v_tuple = emit(insert->tuple());
+        auto v_index = emit(insert->index());
+        auto v_value = emit(insert->value());
+        auto t_tuple = convert(insert->tuple()->type());
+        auto t_value = convert(insert->value()->type());
+        return bb.assign(name, "insertvalue {} {}, {} {}, {}", t_tuple, v_tuple, t_value, v_value, v_index);
     } else if (auto global = def->isa<Global>()) {
-        auto init                  = emit(global->init());
+        auto v_init                = emit(global->init());
         auto [pointee, addr_space] = force<mem::Ptr>(global->type())->args<2>();
-        print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), init);
+        print(vars_decls_, "{} = global {} {}\n", name, convert(pointee), v_init);
         return globals_[global] = name;
     } else if (auto nop = match<core::nop>(def)) {
         auto [a, b] = nop->args<2>([this](auto def) { return emit(def); });
@@ -697,9 +711,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto conv = match<core::conv>(def)) {
-        auto src   = emit(conv->arg());
-        auto src_t = convert(conv->arg()->type());
-        auto dst_t = convert(conv->type());
+        auto v_src   = emit(conv->arg());
+        auto t_src = convert(conv->arg()->type());
+        auto t_dst = convert(conv->type());
 
         auto size2width = [&](const Def* type) {
             auto size = Idx::size(type);
@@ -712,26 +726,26 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         nat_t s_dst = size2width(conv->type());
 
         // this might happen when casting from int top to i64
-        if (s_src == s_dst && (conv.id() == core::conv::s2s || conv.id() == core::conv::u2u)) return src;
+        if (s_src == s_dst && (conv.id() == core::conv::s2s || conv.id() == core::conv::u2u)) return v_src;
 
         switch (conv.id()) {
             case core::conv::s2s: op = s_src < s_dst ? "sext" : "trunc"; break;
             case core::conv::u2u: op = s_src < s_dst ? "zext" : "trunc"; break;
         }
 
-        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
+        return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
     } else if (auto bitcast = match<core::bitcast>(def)) {
         auto dst_type_ptr = match<mem::Ptr>(bitcast->type());
         auto src_type_ptr = match<mem::Ptr>(bitcast->arg()->type());
-        auto src          = emit(bitcast->arg());
-        auto src_t        = convert(bitcast->arg()->type());
-        auto dst_t        = convert(bitcast->type());
+        auto v_src        = emit(bitcast->arg());
+        auto t_src        = convert(bitcast->arg()->type());
+        auto t_dst        = convert(bitcast->type());
 
         if (auto lit = isa_lit(bitcast->arg()); lit && *lit == 0) return "zeroinitializer";
         // clang-format off
-        if (src_type_ptr && dst_type_ptr) return bb.assign(name,  "bitcast {} {} to {}", src_t, src, dst_t);
-        if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", src_t, src, dst_t);
-        if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", src_t, src, dst_t);
+        if (src_type_ptr && dst_type_ptr) return bb.assign(name,  "bitcast {} {} to {}", t_src, v_src, t_dst);
+        if (src_type_ptr)                 return bb.assign(name, "ptrtoint {} {} to {}", t_src, v_src, t_dst);
+        if (dst_type_ptr)                 return bb.assign(name, "inttoptr {} {} to {}", t_src, v_src, t_dst);
         // clang-format on
 
         auto size2width = [&](const Def* type) {
@@ -749,45 +763,37 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         op = "bitcast";
         if (src_size && dst_size) {
-            if (src_size == dst_size) return src;
+            if (src_size == dst_size) return v_src;
             op = (src_size < dst_size) ? "zext" : "trunc";
         }
-        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
+        return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
     } else if (auto lea = match<mem::lea>(def)) {
-        auto [ptr, i] = lea->args<2>();
-        auto ll_ptr   = emit(ptr);
-        auto pointee  = force<mem::Ptr>(ptr->type())->arg(0);
-        auto t        = convert(pointee);
-        auto p        = convert(ptr->type());
+        auto [ptr, i]  = lea->args<2>();
+        auto pointee   = force<mem::Ptr>(ptr->type())->arg(0);
+        auto v_ptr     = emit(ptr);
+        auto t_pointee = convert(pointee);
+        auto t_ptr     = convert(ptr->type());
         if (pointee->isa<Sigma>())
-            return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, i32 {}", t, p, ll_ptr, as_lit<u64>(i));
+            return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, i32 {}", t_pointee, t_ptr, v_ptr, as_lit(i));
 
         assert(pointee->isa<Arr>());
-        auto ll_i = emit(i);
-        auto i_t  = convert(i->type());
+        auto [v_i, t_i] = emit_index(i);
 
-        if (auto size = Idx::size(i->type())) {
-            if (auto s = isa_lit(size); s && *s == 2) { // mod(2) = width(1)
-                ll_i = bb.assign(name + ".8", "zext i1 {} to i8", ll_i);
-                i_t  = "i8";
-            }
-        }
-
-        return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t, p, ll_ptr, i_t, ll_i);
+        return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t_pointee, t_ptr, v_ptr, t_i, v_i);
     } else if (match<core::trait>(def)) {
         unreachable();
     } else if (auto malloc = match<mem::malloc>(def)) {
         declare("i8* @malloc(i64)");
 
         emit_unsafe(malloc->arg(0));
-        auto size  = emit(malloc->arg(1));
-        auto ptr_t = convert(force<mem::Ptr>(def->proj(1)->type()));
-        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", size);
-        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", ptr_t);
+        auto v_size = emit(malloc->arg(1));
+        auto t_ptr  = convert(force<mem::Ptr>(def->proj(1)->type()));
+        bb.assign(name + ".i8", "call i8* @malloc(i64 {})", v_size);
+        return bb.assign(name, "bitcast i8* {} to {}", name + ".i8", t_ptr);
     } else if (auto mslot = match<mem::mslot>(def)) {
         emit_unsafe(mslot->arg(0));
         // TODO array with size
-        // auto size = emit(mslot->arg(1));
+        // auto v_size = emit(mslot->arg(1));
         auto [pointee, addr_space] = mslot->decurry()->args<2>();
         print(bb.body().emplace_back(), "{} = alloca {}", name, convert(pointee));
         return name;
@@ -795,25 +801,25 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         declare("void @free(i8*)");
 
         emit_unsafe(free->arg(0));
-        auto ptr   = emit(free->arg(1));
-        auto ptr_t = convert(force<mem::Ptr>(free->arg(1)->type()));
+        auto v_ptr = emit(free->arg(1));
+        auto t_ptr = convert(force<mem::Ptr>(free->arg(1)->type()));
 
-        bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
+        bb.assign(name + ".i8", "bitcast {} {} to i8*", t_ptr, v_ptr);
         bb.tail("call void @free(i8* {})", name + ".i8");
         return {};
     } else if (auto load = match<mem::load>(def)) {
         emit_unsafe(load->arg(0));
-        auto ptr       = emit(load->arg(1));
-        auto ptr_t     = convert(load->arg(1)->type());
-        auto pointee_t = convert(force<mem::Ptr>(load->arg(1)->type())->arg(0));
-        return bb.assign(name, "load {}, {} {}", pointee_t, ptr_t, ptr);
+        auto v_ptr     = emit(load->arg(1));
+        auto t_ptr     = convert(load->arg(1)->type());
+        auto t_pointee = convert(force<mem::Ptr>(load->arg(1)->type())->arg(0));
+        return bb.assign(name, "load {}, {} {}", t_pointee, t_ptr, v_ptr);
     } else if (auto store = match<mem::store>(def)) {
         emit_unsafe(store->arg(0));
-        auto ptr   = emit(store->arg(1));
-        auto val   = emit(store->arg(2));
-        auto ptr_t = convert(store->arg(1)->type());
-        auto val_t = convert(store->arg(2)->type());
-        print(bb.body().emplace_back(), "store {} {}, {} {}", val_t, val, ptr_t, ptr);
+        auto v_ptr = emit(store->arg(1));
+        auto v_val = emit(store->arg(2));
+        auto t_ptr = convert(store->arg(1)->type());
+        auto t_val = convert(store->arg(2)->type());
+        print(bb.body().emplace_back(), "store {} {}, {} {}", t_val, v_val, t_ptr, v_ptr);
         return {};
     } else if (auto q = match<clos::alloc_jmpbuf>(def)) {
         declare("i64 @jmpbuf_size()");
@@ -827,8 +833,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         auto [mem, jmpbuf] = setjmp->arg()->projs<2>();
         emit_unsafe(mem);
-        auto emitted_jb = emit(jmpbuf);
-        return bb.assign(name, "call i32 @_setjmp(i8* {})", emitted_jb);
+        auto v_jb = emit(jmpbuf);
+        return bb.assign(name, "call i32 @_setjmp(i8* {})", v_jb);
     } else if (auto arith = match<math::arith>(def)) {
         auto [a, b] = arith->args<2>([this](auto def) { return emit(def); });
         auto t      = convert(arith->type());
@@ -971,9 +977,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         return bb.assign(name, "{} {} {}, {}", op, t, a, b);
     } else if (auto conv = match<math::conv>(def)) {
-        auto src   = emit(conv->arg());
-        auto src_t = convert(conv->arg()->type());
-        auto dst_t = convert(conv->type());
+        auto v_src   = emit(conv->arg());
+        auto t_src = convert(conv->arg()->type());
+        auto t_dst = convert(conv->type());
 
         auto s_src = math::isa_f(conv->arg()->type());
         auto s_dst = math::isa_f(conv->type());
@@ -986,7 +992,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             case math::conv::f2u: op = "fptoui"; break;
         }
 
-        return bb.assign(name, "{} {} {} to {}", op, src_t, src, dst_t);
+        return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
     }
 
     unreachable(); // not yet implemented
