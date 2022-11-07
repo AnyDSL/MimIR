@@ -576,11 +576,11 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
         return world.lit_nat(8); // Gets lowered to function ptr
     } else if (auto size = Idx::size(type)) {
         if (size->isa<Top>()) return world.lit_nat(8);
-        if (auto w = isa_lit(size)) {
-            if (*w == 0) return world.lit_nat(8);
-            if (*w <= 0x0000'0000'0000'0100_u64) return world.lit_nat(1);
-            if (*w <= 0x0000'0000'0001'0000_u64) return world.lit_nat(2);
-            if (*w <= 0x0000'0001'0000'0000_u64) return world.lit_nat(4);
+        if (auto s = isa_lit(size)) {
+            if (*s == 0) return world.lit_nat(8); // i64
+            if (*s <= 0x0000'0000'0000'0100_u64) return world.lit_nat(1);
+            if (*s <= 0x0000'0000'0001'0000_u64) return world.lit_nat(2);
+            if (*s <= 0x0000'0001'0000'0000_u64) return world.lit_nat(4);
             return world.lit_nat(8);
         }
     } else if (auto w = math::isa_f(type)) {

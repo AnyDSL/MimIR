@@ -127,6 +127,18 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     return "%" + def->unique_name();
 }
 
+
+static size_t size2llbits(const Def* size) {
+    if (auto s = isa_lit(size)) {
+        if (*s == 0)                         return 64;
+        if (*s <= 0x0000'0000'0000'0002_u64) return 1;
+        if (*s <= 0x0000'0000'0000'0100_u64) return 8;
+        if (*s <= 0x0000'0000'0001'0000_u64) return 16;
+        if (*s <= 0x0000'0001'0000'0000_u64) return 32;
+    }
+    return 64;
+}
+
 std::string Emitter::convert(const Def* type) {
     if (auto i = types_.find(type); i != types_.end()) return i->second;
 
@@ -137,23 +149,7 @@ std::string Emitter::convert(const Def* type) {
     if (type->isa<Nat>()) {
         return types_[type] = "i64";
     } else if (auto size = Idx::size(type)) {
-        if (size->isa<Top>()) return types_[type] = "i64";
-        if (auto width = size2bitwidth(as_lit(size))) {
-            switch (*width) {
-                // clang-format off
-                case  1: return types_[type] = "i1";
-                case  2:
-                case  4:
-                case  8: return types_[type] = "i8";
-                case 16: return types_[type] = "i16";
-                case 32: return types_[type] = "i32";
-                case 64: return types_[type] = "i64";
-                // clang-format on
-                default: unreachable();
-            }
-        } else {
-            return types_[type] = "i64";
-        }
+        return types_[type] = "i" + std::to_string(size2llbits(size));
     } else if (auto w = math::isa_f(type)) {
         switch (*w) {
             case 16: return types_[type] = "half";
@@ -498,24 +494,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (lit->type()->isa<Nat>()) {
             return std::to_string(lit->get<nat_t>());
         } else if (auto size = Idx::size(lit->type())) {
-            if (size->isa<Top>()) return std::to_string(lit->get<nat_t>());
-            if (auto mod = size2bitwidth(as_lit(size))) {
-                switch (*mod) {
-                    // clang-format off
-                    case  0: return {};
-                    case  1: return std::to_string(lit->get< u1>());
-                    case  2:
-                    case  4:
-                    case  8: return std::to_string(lit->get< u8>());
-                    case 16: return std::to_string(lit->get<u16>());
-                    case 32: return std::to_string(lit->get<u32>());
-                    case 64: return std::to_string(lit->get<u64>());
-                    // clang-format on
-                    default: return std::to_string(lit->get<u64>());
-                }
-            } else {
-                return std::to_string(lit->get<u64>());
+            if (auto s = isa_lit(size)) {
+                if (*s == 0) return std::to_string(lit->get<u64>());
+                if (*s <= 0x0000'0000'0000'0002_u64) return std::to_string(lit->get<u1>());
+                if (*s <= 0x0000'0000'0000'0100_u64) return std::to_string(lit->get<u8>());
+                if (*s <= 0x0000'0000'0001'0000_u64) return std::to_string(lit->get<u16>());
+                if (*s <= 0x0000'0001'0000'0000_u64) return std::to_string(lit->get<u32>());
             }
+            return std::to_string(lit->get<u64>());
         } else if (auto w = math::isa_f(lit->type())) {
             std::stringstream s;
             u64 hex;
@@ -714,18 +700,10 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_src = convert(conv->arg()->type());
         auto t_dst = convert(conv->type());
 
-        auto size2width = [&](const Def* type) {
-            auto size = Idx::size(type);
-            if (size->isa<Top>()) return 64_u64;
-            if (auto width = size2bitwidth(as_lit(size))) return *width;
-            return 64_u64;
-        };
+        nat_t s_src = size2llbits(Idx::size(conv->arg()->type()));
+        nat_t s_dst = size2llbits(Idx::size(conv->type()));
 
-        nat_t s_src = size2width(conv->arg()->type());
-        nat_t s_dst = size2width(conv->type());
-
-        // this might happen when casting from int top to i64
-        if (s_src == s_dst && (conv.id() == core::conv::s2s || conv.id() == core::conv::u2u)) return v_src;
+        if (s_src == s_dst) return v_src; // This can happen when casting e.g from top to i64.
 
         switch (conv.id()) {
             case core::conv::s2s: op = s_src < s_dst ? "sext" : "trunc"; break;
@@ -749,11 +727,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
 
         auto size2width = [&](const Def* type) {
             if (type->isa<Nat>()) return 64_u64;
-            if (auto size = Idx::size(type)) {
-                if (size->isa<Top>() || !size->isa<Lit>()) return 64_u64;
-                if (auto width = size2bitwidth(as_lit(size))) return std::bit_ceil(*width);
-                return 64_u64;
-            }
+            if (auto size = Idx::size(type)) return size2llbits(size);
             return 0_u64;
         };
 
