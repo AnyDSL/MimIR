@@ -464,14 +464,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return prev;
     };
 
-    auto emit_index = [&](const Def* index) {
+    auto emit_gep_index = [&](const Def* index) {
         auto v_i = emit(index);
         auto t_i = convert(index->type());
 
         if (auto size = Idx::size(index->type())) {
-            if (auto w = Idx::size2bitwidth(size); w && *w < 32) {
-                v_i = bb.assign(name + ".32", "zext {} {} to i32", t_i, v_i);
-                t_i = "i32";
+            if (auto w = Idx::size2bitwidth(size); w && *w < 64) {
+                v_i = bb.assign(name + ".zext", "zext {} {} to i{} ; add one more bit for gep index as it is treated as signed value", t_i, v_i, *w + 1);
+                t_i = "i" + std::to_string(*w + 1);
             }
         }
 
@@ -540,7 +540,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_idx);
         } else {
             auto t_elem     = convert(extract->type());
-            auto [v_i, t_i] = emit_index(index);
+            auto [v_i, t_i] = emit_gep_index(index);
 
             print(lam2bb_[entry_].body().emplace_front(),
                   "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, t_tup);
@@ -730,7 +730,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                              as_lit(i));
 
         assert(pointee->isa<Arr>());
-        auto [v_i, t_i] = emit_index(i);
+        auto [v_i, t_i] = emit_gep_index(i);
 
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t_pointee, t_ptr, v_ptr, t_i, v_i);
     } else if (match<core::trait>(def)) {
