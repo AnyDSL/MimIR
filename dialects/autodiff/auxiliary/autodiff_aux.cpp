@@ -280,16 +280,16 @@ const Def* compose_continuation(const Def* f, const Def* g) {
     assert(is_returning_continuation(f));
     assert(is_returning_continuation(g));
 
-    f = lam_mem_wrap(f);
-    g = lam_mem_wrap(g);
+    // f = lam_mem_wrap(f);
+    // g = lam_mem_wrap(g);
 
     auto F = f->type()->as<Pi>();
     auto G = g->type()->as<Pi>();
 
     auto is_mem = match<mem::M>(F->dom(0)->proj(0));
 
-    F->dump();
-    G->dump();
+    // F->dump();
+    // G->dump();
 
     auto A = continuation_dom(G);
     auto B = continuation_codom(G);

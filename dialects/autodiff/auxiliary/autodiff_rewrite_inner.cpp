@@ -199,6 +199,18 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
 
     auto pb_tangent = pb->var((nat_t)0, world.dbg("tup_s"));
 
+    DefArray tangents(pbs.size(),
+                      [&](nat_t i) { return world.app(direct::op_cps2ds_dep(pbs[i]), world.extract(pb_tangent, i)); });
+    pb->app(true, pb->var(1),
+            // summed up tangents
+            op_sum(tangent_type_fun(f_arg_ty), tangents));
+
+    partial_pullback[aug_tup] = pb;
+
+    return aug_tup;
+
+// TODO: incorporate
+#if 0
     auto T = tangent_type_fun(f_arg_ty);
 
     auto mem = mem::mem_var(pb);
@@ -233,6 +245,7 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     partial_pullback[aug_tup] = pb;
 
     return aug_tup;
+#endif
 }
 
 const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
@@ -284,12 +297,11 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
     auto callee = app->callee();
     auto arg    = app->arg();
 
-    callee->type()->dump();
-    arg->type()->dump();
+    // callee->type()->dump();
+    // arg->type()->dump();
 
     auto aug_arg    = augment(arg, f, f_diff);
     auto aug_callee = augment(callee, f, f_diff);
-    // auto arg_ppb    = partial_pullback[aug_arg];
 
     world.DLOG("augmented argument <{}> {} : {}", aug_arg->unique_name(), aug_arg, aug_arg->type());
     world.DLOG("augmented callee  <{}> {} : {}", aug_callee->unique_name(), aug_callee, aug_callee->type());
@@ -305,24 +317,21 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         world.DLOG("Nested application arg: {} : {}", aug_arg, aug_arg->type());
         auto aug_app = world.app(aug_callee, aug_arg);
         world.DLOG("Nested application result: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
-        // TODO: rephrase
-        // partial_pullback[aug_app] = partial_pullback[aug_callee];
-        // or app with args
-        // => nothing because we handle pullbacks of callees differently (in term level as they are closed)
+        // We do not add a pullback as the pullback is bundled in the cps call or returned by the ds call
         return aug_app;
     }
 
     // continuation (ret, if, ...)
     if (is_open_continuation(callee) || open_continuation.contains(aug_callee)) {
         // TODO: check if function (not operator)
-        // original function = unclosed function (return cont / continuation)
-        //   Cn[E]
-        // aug_calle (looks like a function but is not really)
-        //   Cn[E, Cn[E, Cn[A]]]
+        // The original function is an open function (return cont / continuation) of type `Cn[E]`
+        // The augmented function `aug_callee` looks like a function but is not really a function has the type `Cn[E,
+        // Cn[E, Cn[A]]]`
 
         // ret(e) => ret'(e, e*)
 
         world.DLOG("continuation {} : {} => {} : {}", callee, callee->type(), aug_callee, aug_callee->type());
+#if 0
         bool isa = aug_arg->isa<Extract>();
         if (!partial_pullback[aug_arg]) {
             augmented.erase(arg);
@@ -334,6 +343,8 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
             arg_pb = wrap_call_pullbacks(arg_pb, arg);
             arg_pb = wrap_append_app(arg_pb, free_memory_lam());
         }
+#endif
+        auto arg_pb = partial_pullback[aug_arg];
 
         auto aug_app = world.app(aug_callee, {aug_arg, arg_pb});
         world.DLOG("Augmented application: {} : {}", aug_app, aug_app->type());
@@ -346,100 +357,34 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         world.DLOG("Augmented application: <{}> {} : {}", aug_app->unique_name(), aug_app, aug_app->type());
 
         world.DLOG("ds function: {} : {}", aug_app, aug_app->type());
-        // calle is ds function (e.g. operator (or its partial application))
+        // The calle is ds function (e.g. operator (or its partial application))
         auto [aug_res, fun_pb] = aug_app->projs<2>();
-        // compose fun_pb with argument_pb to get result pb
+        // We compose `fun_pb` with `argument_pb` to get the result pb
         // TODO: combine case with cps function case
         auto arg_pb = partial_pullback[aug_arg];
         assert(arg_pb);
-        // fun_pb: out_tan -> arg_tan
-        // arg_pb: arg_tan -> fun_tan
+        // `fun_pb: out_tan -> arg_tan`
+        // `arg_pb: arg_tan -> fun_tan`
         world.DLOG("function pullback: {} : {}", fun_pb, fun_pb->type());
         world.DLOG("argument pullback: {} : {}", arg_pb, arg_pb->type());
         auto res_pb = compose_continuation(arg_pb, fun_pb);
         world.DLOG("result pullback: {} : {}", res_pb, res_pb->type());
         partial_pullback[aug_res] = res_pb;
-        // assert(0);
-        world.debug_dump();
-        // assert(0);
-        // R assert(false);
+        // world.debug_dump();
         return aug_res;
     }
-
-    // normal function app
-    // g: cn[E, cn X]
-    // g(args,cont)
-    // g': cn[E, cn[X, cn[X, cn E]]]
-    // g'(aug_args, ____)
-
-    /*
-    example:
-    g: cn[E, cn X]
-    g(e,ret_g):
-        ret_g(x)
-    f: cn[A, cn X]
-    f(a,ret_f):
-        g(e,ret_f)
-        ^ this app
-
-    g': cn[E, cn[X, cn[X, cn E]]]
-    g'(e, ret_g'):
-        ret_g'(aug_x, x*)
-    f': cn[A, cn[X, cn[X, cn A]]]
-        g'(aug_e, ?)
-
-    TODO: compare with old approach
-
-    idea (+ is ^t / ᵗ):
-      1. we get the result rx from g
-      2. forward it to ret (ret_f)
-      3. get out_tangent x+
-      4. convert it to e-tangent e+
-      5. convert e tangent to a tangent a+
-      6. return a tangent
-    we have:
-        ref_f': cn[X, cn[X+, cn A+]]
-        ret_g': cn[X+, cn[X+, cn E+]]
-        e*: cn[E+, cn A+]
-
-    TODO: names
-    define:
-        (1,2)
-        c1 : cn [X, cn [X+, cn E+]]
-        does 1-6 tansitively
-        takes result and pullback of result with respect to g arguments
-        c1 := λ rx r*. ret_f' (rx, c2)
-
-        (3,4)
-        c2: cn [X+, cn A+]
-        takes out tangent and acceptor of in tangent
-        c2 := λ x+ fa+. r* (x+, c3)
-
-        (4,5, 6)
-        c3: cn E+
-        takes e (g argument) tangent
-        c3 := λ e+. e*(e+, fa+)
-        (we used eta-conversion to fold fa+ directly into the application of e*)
-
-    with reduction:
-    we generalize ret_f' to cont:
-        c1   : cn [X, cn [X+, cn E+]]
-        rx   : X
-        r*   : cn [X+, cn E+]
-        cont : cn [X, cn [X+, cn A+]]
-        e*   : cn [E+, cn A+]
-        e*.r*: cn [X+, cn A+]
-        c1 := λ rx r*. cont (rx, e* . r*)
-        where . is composition
-
-    */
-
     // TODO: dest with a function such that f args != g args
 
-    // if(auto g_deriv=aug_callee->isa_nom<Lam>()){
     {
+        // normal function app
+        // ```
+        // g: cn[E, cn X]
+        // g(args,cont)
+        // g': cn[E, cn[X, cn[X, cn E]]]
+        // g'(aug_args, ____)
+        // ```
         auto g = callee;
-        // at this point g_deriv might still be "autodiff ... g"
+        // At this point g_deriv might still be "autodiff ... g".
         auto g_deriv = aug_callee;
         world.DLOG("g: {} : {}", g, g->type());
         world.DLOG("g': {} : {}", g_deriv, g_deriv->type());
@@ -463,17 +408,9 @@ const Def* AutoDiffEval::augment_app(const App* app, Lam* f, Lam* f_diff) {
         auto aug_app = world.app(aug_callee, {real_aug_args, c1});
         world.DLOG("aug_app: {} : {}", aug_app, aug_app->type());
 
-        // assert(0);
+        // The result is * => no pb needed, no composition needed.
         return aug_app;
     }
-
-    // result is * => no pb needed, no composition needed
-    // TODO: compose pb (currently wrong)
-
-    // TODO: handle cascading functions
-    // TODO: handle axiom app before or after augment
-
-    // return def;
 
     assert(false && "should not be reached");
 }
