@@ -30,7 +30,7 @@
     .let lea = %mem.lea (100:.Nat, <100:.Nat; i32>, 0) (alloc_val, 1:(.Idx 100));
     .let store = %mem.store (i32, 0) (alloc_mem, lea, argc);
 
-    .let f_diff = %autodiff.autodiff (.Cn [[%mem.M, %mem.Ptr («100:.Nat; i32», 0)],.Cn[%mem.M, i32]]) f;
+    .let f_diff = %autodiff.ad (.Cn [[%mem.M, %mem.Ptr («100:.Nat; i32», 0)],.Cn[%mem.M, i32]]) f;
 
     f_diff ((store, alloc_val),ret_cont)
 };

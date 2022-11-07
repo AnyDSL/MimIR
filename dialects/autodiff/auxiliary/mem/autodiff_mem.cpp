@@ -68,16 +68,18 @@ void AutoDiffEval::prepareMemArguments(Lam* lam, Lam* deriv) {
     auto& world          = deriv->world();
     const Def* deriv_arg = deriv->var((nat_t)0, world.dbg("arg"));
 
-    for (auto arg : deriv_arg->projs()) {
-        auto arg_ty = arg->type();
-        if (auto ptr = match<mem::Ptr>(arg_ty)) {
-            auto [mem2, gradient_ptr] =
-                mem::op_alloc(ptr->arg(0), current_mem, world.dbg(arg->name() + "_gradient_arr"))->projs<2>();
-            current_mem = mem2;
+    // TODO: go deeper
 
-            gradient_ptrs[arg] = gradient_ptr;
-        }
-    }
+    // for (auto arg : deriv_arg->projs()) {
+    //     auto arg_ty = arg->type();
+    //     if (auto ptr = match<mem::Ptr>(arg_ty)) {
+    //         auto [ptr_ty, addr_space] = ptr->args<2>();
+    //         auto [mem2, gradient_ptr] =
+    //             mem::op_alloc(ptr_ty, current_mem, world.dbg(arg->name() + "_gradient_arr"))->projs<2>();
+    //         current_mem = mem2;
+    //         gradient_ptrs[arg] = gradient_ptr;
+    //     }
+    // }
 
     // Reassociate the arguments to replace the old memory with the new one.
     // We reassociate all arguments together to prevent early skips.
