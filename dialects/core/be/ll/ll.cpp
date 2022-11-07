@@ -128,12 +128,10 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
 }
 
 static nat_t size2llbits(const Def* size) {
-    if (auto s = isa_lit(size)) {
-        if (*s == 0) return 64;
-        if (*s <= 0x0000'0000'0000'0002_u64) return 1;
-        if (*s <= 0x0000'0000'0000'0100_u64) return 8;
-        if (*s <= 0x0000'0000'0001'0000_u64) return 16;
-        if (*s <= 0x0000'0001'0000'0000_u64) return 32;
+    if (auto s = Idx::size2bitwidth(size)) {
+        nat_t r = std::bit_ceil(*s);
+        if (1 < r && r <= 8) return 8;
+        return r;
     }
     return 64;
 }
@@ -493,14 +491,13 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         if (lit->type()->isa<Nat>()) {
             return std::to_string(lit->get<nat_t>());
         } else if (auto size = Idx::size(lit->type())) {
-            if (auto s = isa_lit(size)) {
-                if (*s == 0) return std::to_string(lit->get<u64>());
-                if (*s <= 0x0000'0000'0000'0002_u64) return std::to_string(lit->get<u1>());
-                if (*s <= 0x0000'0000'0000'0100_u64) return std::to_string(lit->get<u8>());
-                if (*s <= 0x0000'0000'0001'0000_u64) return std::to_string(lit->get<u16>());
-                if (*s <= 0x0000'0001'0000'0000_u64) return std::to_string(lit->get<u32>());
+            switch (size2llbits(size)) {
+#define CODE(x) \
+    case x: return std::to_string(lit->get<u##x>());
+                THORIN_1_8_16_32_64(CODE)
+#undef CODE
+                default: unreachable();
             }
-            return std::to_string(lit->get<u64>());
         } else if (auto w = math::isa_f(lit->type())) {
             std::stringstream s;
             u64 hex;

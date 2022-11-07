@@ -582,23 +582,24 @@ public:
     /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
     static const Def* size(const Def* def);
 
+    /// @name convert between Idx::size and bitwidth and vice versa
+    ///@{
+    static constexpr nat_t bitwidth2size(nat_t n) {
+        assert(n != 0);
+        return n == 64 ? 0 : (1_n << n);
+    }
+
+    static constexpr nat_t size2bitwidth(nat_t n) {
+        if (n == 0) return 64;
+        return std::bit_width(n - 1_n);
+    }
+
+    static std::optional<nat_t> size2bitwidth(const Def* size);
+    ///@}
+
     static constexpr auto Node = Node::Idx;
     friend class World;
 };
-
-/// @name convert Idx::size to bitwidth and vice versa
-///@{
-constexpr u64 bitwidth2size(u64 n) {
-    assert(n != 0);
-    return n == 64 ? 0 : (1_u64 << n);
-}
-
-constexpr std::optional<u64> size2bitwidth(u64 n) {
-    if (n == 0) return 64;
-    if (std::has_single_bit(n)) return std::bit_width(n - 1_u64);
-    return {};
-}
-///@}
 
 class Proxy : public Def {
 private:
