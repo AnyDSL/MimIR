@@ -818,9 +818,27 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "load {}, {} {}", pointee_t, ptr_t, ptr);
     } else if (auto store = match<mem::store>(def)) {
         emit_unsafe(store->arg(0));
-        auto ptr   = emit(store->arg(1));
-        auto val   = emit(store->arg(2));
-        auto ptr_t = convert(store->arg(1)->type());
+        auto ptr     = emit(store->arg(1));
+        auto ptr_t   = convert(store->arg(1)->type());
+        auto val_def = store->arg(2);
+
+        if (auto pack = val_def->isa<Pack>()) {
+            auto shape_def = pack->shape();
+            if (auto lit = isa_lit(pack->body()); lit && *lit == 0 && !isa_lit(shape_def)) {
+                declare("void @llvm.memset.p0.i64({}, i8, i64, i1)", ptr_t);
+                auto shape   = emit(shape_def);
+                auto shape_t = convert(shape_def->type());
+                if (shape_t != "i64") {
+                    print(bb.body().emplace_back(), "{}.zext = zext {} {} to i64", shape, shape_t, shape);
+                    shape += ".zext";
+                }
+                print(bb.body().emplace_back(), "call void @llvm.memset.p0.i64({} {}, i8 0, i64 {}, i1 false)", ptr_t,
+                      ptr, shape);
+                return {};
+            }
+        }
+
+        auto val   = emit(val_def);
         auto val_t = convert(store->arg(2)->type());
         print(bb.body().emplace_back(), "store {} {}, {} {}", val_t, val, ptr_t, ptr);
         return {};
