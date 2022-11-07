@@ -127,7 +127,7 @@ std::string Emitter::id(const Def* def, bool force_bb /*= false*/) const {
     return "%" + def->unique_name();
 }
 
-static size_t size2llbits(const Def* size) {
+static nat_t size2llbits(const Def* size) {
     if (auto s = isa_lit(size)) {
         if (*s == 0) return 64;
         if (*s <= 0x0000'0000'0000'0002_u64) return 1;
@@ -725,9 +725,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // clang-format on
 
         auto size2width = [&](const Def* type) {
-            if (type->isa<Nat>()) return 64_u64;
+            if (type->isa<Nat>()) return 64_n;
             if (auto size = Idx::size(type)) return size2llbits(size);
-            return 0_u64;
+            return 0_n;
         };
 
         auto src_size = size2width(bitcast->arg()->type());
