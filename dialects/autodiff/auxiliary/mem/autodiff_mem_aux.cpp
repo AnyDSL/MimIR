@@ -4,6 +4,7 @@
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
+#include "dialects/direct/direct.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
@@ -130,6 +131,86 @@ const Lam* wrap_append_app(const Def* lam, const Def* call_after_lam) {
     after_first->set_body(w.app(call_after_lam, {mem::mem_var(after_first), after_second}));
     wrapper->set_body(w.app(lam, {wrapper->var(0_s), after_first}));
     return wrapper;
+}
+
+const Def* AutoDiffEval::buildAugmentedTuple(World& world, Defs aug_ops, const Pi* pb_ty, Lam* f, Lam*) {
+    world.DLOG("buildAugmentedTuple of {,}", aug_ops);
+    world.DLOG("buildAugmentedTuple pb_ty {}", pb_ty);
+    auto aug_tup = world.tuple(aug_ops);
+
+    DefArray pbs(aug_ops, [&](const Def* op) {
+        auto pb = partial_pullback[op];
+        if (!pb) {
+            // pb = zero_pullback(op->type(), f_arg_ty);
+            world.DLOG("No pullback for {} : {}", op, op->type());
+            assert(pb && "pb should exists -- if not, create a zero_pb at correct position");
+        }
+        return pb;
+    });
+    world.DLOG("tuple pbs {,}", pbs);
+    // We create the shadow pb (a shallow tuple of pullbacks).
+    auto shadow_pb           = world.tuple(pbs);
+    shadow_pullback[aug_tup] = shadow_pb;
+
+    // ```
+    // \lambda (s:[E0,...,Em]).
+    //    sum (m,A)
+    //      ((cps2ds e0*) (s#0), ..., (cps2ds em*) (s#m))
+    // ```
+    auto pb = world.nom_lam(pb_ty, world.dbg("tup_pb"));
+    world.DLOG("Augmented tuple: {} : {}", aug_tup, aug_tup->type());
+    world.DLOG("Tuple Pullback: {} : {}", pb, pb->type());
+    world.DLOG("shadow pb: {} : {}", shadow_pb, shadow_pb->type());
+
+    auto pb_tangent = pb->var((nat_t)0, world.dbg("tup_s"));
+
+    DefArray tangents(pbs.size(),
+                      [&](nat_t i) { return world.app(direct::op_cps2ds_dep(pbs[i]), world.extract(pb_tangent, i)); });
+    pb->app(true, pb->var(1),
+            // summed up tangents
+            op_sum(tangent_type_fun(continuation_dom(f->type())), tangents));
+
+    partial_pullback[aug_tup] = pb;
+
+    return aug_tup;
+
+// TODO: incorporate
+#if 0
+    auto T = tangent_type_fun(f_arg_ty);
+
+    auto mem = mem::mem_var(pb);
+    // auto T_without_mem = remove_mem(T);
+    // TODO: here we explicitly want a lazy zero
+    auto sum = autodiff_zero(mem, f);
+
+    size_t src = 0;
+    for (size_t i = 0; i < pbs.size(); i++) {
+        auto re = direct::op_cps2ds_dep(pbs[i]);
+        const Def* app;
+        if (match<mem::M>(aug_ops[i]->type())) {
+            app = world.app(re, {mem});
+        } else {
+            auto extract = world.extract(pb_tangent, src);
+            while (match<mem::M>(extract->type())) {
+                src++;
+                extract = world.extract(pb_tangent, src);
+            }
+            src++;
+            app = world.app(re, {mem, extract});
+        }
+        mem = world.extract(app, (nat_t)0);
+        sum = world.app(world.app(world.ax<add>(), T), {sum, app});
+    }
+
+    sum = world.insert(sum, (u64)0, mem);
+
+    // DefArray tangents(pbs.size(), [&](nat_t i) { return world.app(direct::op_cps2ds_dep(pbs[i]),
+    // world.extract(pb_tangent, i)); });
+    pb->app(true, pb->var(1), sum);
+    partial_pullback[aug_tup] = pb;
+
+    return aug_tup;
+#endif
 }
 
 } // namespace thorin::autodiff

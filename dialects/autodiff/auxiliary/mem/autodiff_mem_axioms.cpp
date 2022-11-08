@@ -64,8 +64,10 @@ const Def* AutoDiffEval::augment_load(const App* load, Lam* f, Lam* f_diff) {
         assert(pullback_ptr);
         // TODO: pullback is missing memory object
         auto [pullback_mem, pullback] = mem::op_load(aug_load_mem, pullback_ptr, w.dbg("pullback_load"))->projs<2>();
-        partial_pullback[aug_load]    = pullback;
-        auto pb_ty                    = pullback_type(load->arg()->type(), continuation_dom(f->type()));
+        assert(partial_pullback[aug_mem] && "pullback for memory object missing");
+        partial_pullback[pullback_mem] = partial_pullback[aug_mem]; // TODO: is this correct?
+        partial_pullback[aug_load_val] = pullback;
+        auto pb_ty                     = pullback_type(load->type(), continuation_dom(f->type()));
         return buildAugmentedTuple(w, {pullback_mem, aug_load_val}, pb_ty, f, f_diff);
     }
 }
@@ -81,6 +83,9 @@ const Def* AutoDiffEval::augment_store(const App* store, Lam* f, Lam* f_diff) {
     auto pb_store = mem::op_store(aug_mem, shadow_pb_ptr, pb);
     // store the element in forward pass
     auto aug_store = mem::op_store(pb_store, aug_ptr, aug_val);
+
+    // TODO: correct pullback
+    partial_pullback[aug_store] = zero_pullback_fun(aug_store->type(), f);
     return aug_store;
 }
 
@@ -107,6 +112,7 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc, Lam* f, Lam* f_diff) {
 
     auto tup = world.tuple({alloc_mem_2, alloc_ptr});
 
+    // TODO: correct pullbacks instead
     partial_pullback[tup]          = zero_pullback_fun(tup->type(), f);
     partial_pullback[alloc_mem_2]  = zero_pullback_fun(alloc_mem_2->type(), f);
     partial_pullback[pullback_ptr] = zero_pullback_fun(pullback_ptr->type(), f);
