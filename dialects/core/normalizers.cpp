@@ -110,7 +110,7 @@ fold(World& world, const Def* type, const Def*& a, const Def*& b, const Def* dbg
 
     if (la && lb) {
         auto size  = as_lit(Idx::size(a->type()));
-        auto width = *size2bitwidth(size);
+        auto width = Idx::size2bitwidth(size);
         bool nsw = false, nuw = false;
         if constexpr (std::is_same_v<Id, wrap>) {
             auto m = as_lit(mode);
@@ -519,21 +519,19 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
             return world.lit(d_ty, *l % *ld);
         }
 
-        auto sw = size2bitwidth(*ls);
-        auto dw = size2bitwidth(*ld);
+        auto sw = Idx::size2bitwidth(*ls);
+        auto dw = Idx::size2bitwidth(*ld);
 
-        if (sw && dw) {
-            // clang-format off
-            if (false) {}
+        // clang-format off
+        if (false) {}
 #define M(S, D) \
-            else if (S == *sw && D == *dw) return world.lit(d_ty, w2s<D>(thorin::bitcast<w2s<S>>(*l)), dbg);
-            M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
-                      M( 8, 16) M( 8, 32) M( 8, 64)
-                                M(16, 32) M(16, 64)
-                                          M(32, 64)
-            else unreachable();
-            // clang-format on
-        }
+        else if (S == sw && D == dw) return world.lit(d_ty, w2s<D>(thorin::bitcast<w2s<S>>(*l)), dbg);
+        M( 1,  8) M( 1, 16) M( 1, 32) M( 1, 64)
+                  M( 8, 16) M( 8, 32) M( 8, 64)
+                            M(16, 32) M(16, 64)
+                                      M(32, 64)
+        else assert(false && "TODO: conversion between different Idx sizes");
+        // clang-format on
     }
 
     return world.raw_app(callee, x, dbg);
@@ -575,14 +573,7 @@ const Def* normalize_trait(const Def*, const Def* callee, const Def* type, const
     } else if (type->isa<Pi>()) {
         return world.lit_nat(8); // Gets lowered to function ptr
     } else if (auto size = Idx::size(type)) {
-        if (size->isa<Top>()) return world.lit_nat(8);
-        if (auto w = isa_lit(size)) {
-            if (*w == 0) return world.lit_nat(8);
-            if (*w <= 0x0000'0000'0000'0100_u64) return world.lit_nat(1);
-            if (*w <= 0x0000'0000'0001'0000_u64) return world.lit_nat(2);
-            if (*w <= 0x0000'0001'0000'0000_u64) return world.lit_nat(4);
-            return world.lit_nat(8);
-        }
+        if (auto w = Idx::size2bitwidth(size)) return world.lit_nat(std::max(1_n, std::bit_ceil(*w) / 8_n));
     } else if (auto w = math::isa_f(type)) {
         switch (*w) {
             case 16: return world.lit_nat(2);

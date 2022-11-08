@@ -347,12 +347,14 @@ public:
     template<class I>
     const Lit* lit_idx(I val, const Def* dbg = {}) {
         static_assert(std::is_integral<I>());
-        return lit_idx(bitwidth2size(sizeof(I) * 8), val, dbg);
+        return lit_idx(Idx::bitwidth2size(sizeof(I) * 8), val, dbg);
     }
 
     /// Constructs a Lit @p of type Idx of size $2^width$.
     /// `val = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    const Lit* lit_int(nat_t width, u64 val, const Def* dbg = {}) { return lit_idx(bitwidth2size(width), val, dbg); }
+    const Lit* lit_int(nat_t width, u64 val, const Def* dbg = {}) {
+        return lit_idx(Idx::bitwidth2size(width), val, dbg);
+    }
 
     /// Constructs a Lit of type Idx of size @p mod.
     /// The value @p val will be adjusted modulo @p mod.
@@ -411,7 +413,7 @@ public:
 
     /// Constructs a type Idx of size $2^width$.
     /// `width = 64` will be automatically converted to size `0` - the encoding for $2^64$.
-    const Def* type_int(nat_t width) { return type_idx(lit_nat(bitwidth2size(width))); }
+    const Def* type_int(nat_t width) { return type_idx(lit_nat(Idx::bitwidth2size(width))); }
     const Def* type_bool() { return data_.type_bool_; }
     ///@}
 

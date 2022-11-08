@@ -137,23 +137,7 @@ std::string Emitter::convert(const Def* type) {
     if (type->isa<Nat>()) {
         return types_[type] = "i64";
     } else if (auto size = Idx::size(type)) {
-        if (size->isa<Top>()) return types_[type] = "i64";
-        if (auto width = size2bitwidth(as_lit(size))) {
-            switch (*width) {
-                // clang-format off
-                case  1: return types_[type] = "i1";
-                case  2:
-                case  4:
-                case  8: return types_[type] = "i8";
-                case 16: return types_[type] = "i16";
-                case 32: return types_[type] = "i32";
-                case 64: return types_[type] = "i64";
-                // clang-format on
-                default: unreachable();
-            }
-        } else {
-            return types_[type] = "i64";
-        }
+        return types_[type] = "i" + std::to_string(*Idx::size2bitwidth(size));
     } else if (auto w = math::isa_f(type)) {
         switch (*w) {
             case 16: return types_[type] = "half";
@@ -422,8 +406,8 @@ void Emitter::emit_epilogue(Lam* lam) {
 }
 
 static const char* math_suffix(const Def* type) {
-    if (auto s = math::isa_f(type)) {
-        switch (*s) {
+    if (auto w = math::isa_f(type)) {
+        switch (*w) {
             case 32: return "f";
             case 64: return "";
         }
@@ -431,8 +415,8 @@ static const char* math_suffix(const Def* type) {
     err("unsupported foating point type '{}'", type);
 }
 static const char* llvm_suffix(const Def* type) {
-    if (auto s = math::isa_f(type)) {
-        switch (*s) {
+    if (auto w = math::isa_f(type)) {
+        switch (*w) {
             case 16: return ".f16";
             case 32: return ".f32";
             case 64: return ".f64";
@@ -480,14 +464,16 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return prev;
     };
 
-    auto emit_index = [&](const Def* index) {
+    auto emit_gep_index = [&](const Def* index) {
         auto v_i = emit(index);
         auto t_i = convert(index->type());
 
         if (auto size = Idx::size(index->type())) {
-            if (auto s = isa_lit(size); s && *s == 2) { // mod(2) = width(1)
-                v_i = bb.assign(name + ".8", "zext i1 {} to i8", v_i);
-                t_i = "i8";
+            if (auto w = Idx::size2bitwidth(size); w && *w < 64) {
+                v_i = bb.assign(name + ".zext",
+                                "zext {} {} to i{} ; add one more bit for gep index as it is treated as signed value",
+                                t_i, v_i, *w + 1);
+                t_i = "i" + std::to_string(*w + 1);
             }
         }
 
@@ -495,27 +481,8 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
     };
 
     if (auto lit = def->isa<Lit>()) {
-        if (lit->type()->isa<Nat>()) {
-            return std::to_string(lit->get<nat_t>());
-        } else if (auto size = Idx::size(lit->type())) {
-            if (size->isa<Top>()) return std::to_string(lit->get<nat_t>());
-            if (auto mod = size2bitwidth(as_lit(size))) {
-                switch (*mod) {
-                    // clang-format off
-                    case  0: return {};
-                    case  1: return std::to_string(lit->get< u1>());
-                    case  2:
-                    case  4:
-                    case  8: return std::to_string(lit->get< u8>());
-                    case 16: return std::to_string(lit->get<u16>());
-                    case 32: return std::to_string(lit->get<u32>());
-                    case 64: return std::to_string(lit->get<u64>());
-                    // clang-format on
-                    default: return std::to_string(lit->get<u64>());
-                }
-            } else {
-                return std::to_string(lit->get<u64>());
-            }
+        if (lit->type()->isa<Nat>() || Idx::size(lit->type())) {
+            return std::to_string(lit->get());
         } else if (auto w = math::isa_f(lit->type())) {
             std::stringstream s;
             u64 hex;
@@ -575,7 +542,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             return bb.assign(name, "extractvalue {} {}, {}", t_tup, v_tup, v_idx);
         } else {
             auto t_elem     = convert(extract->type());
-            auto [v_i, t_i] = emit_index(index);
+            auto [v_i, t_i] = emit_gep_index(index);
 
             print(lam2bb_[entry_].body().emplace_front(),
                   "{}.alloca = alloca {} ; copy to alloca to emulate extract with store + gep + load", name, t_tup);
@@ -714,22 +681,14 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto t_src = convert(conv->arg()->type());
         auto t_dst = convert(conv->type());
 
-        auto size2width = [&](const Def* type) {
-            auto size = Idx::size(type);
-            if (size->isa<Top>()) return 64_u64;
-            if (auto width = size2bitwidth(as_lit(size))) return *width;
-            return 64_u64;
-        };
+        nat_t w_src = *Idx::size2bitwidth(Idx::size(conv->arg()->type()));
+        nat_t w_dst = *Idx::size2bitwidth(Idx::size(conv->type()));
 
-        nat_t s_src = size2width(conv->arg()->type());
-        nat_t s_dst = size2width(conv->type());
-
-        // this might happen when casting from int top to i64
-        if (s_src == s_dst && (conv.id() == core::conv::s2s || conv.id() == core::conv::u2u)) return v_src;
+        if (w_src == w_dst) return v_src;
 
         switch (conv.id()) {
-            case core::conv::s2s: op = s_src < s_dst ? "sext" : "trunc"; break;
-            case core::conv::u2u: op = s_src < s_dst ? "zext" : "trunc"; break;
+            case core::conv::s2s: op = w_src < w_dst ? "sext" : "trunc"; break;
+            case core::conv::u2u: op = w_src < w_dst ? "zext" : "trunc"; break;
         }
 
         return bb.assign(name, "{} {} {} to {}", op, t_src, v_src, t_dst);
@@ -748,13 +707,9 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         // clang-format on
 
         auto size2width = [&](const Def* type) {
-            if (type->isa<Nat>()) return 64_u64;
-            if (auto size = Idx::size(type)) {
-                if (size->isa<Top>() || !size->isa<Lit>()) return 64_u64;
-                if (auto width = size2bitwidth(as_lit(size))) return std::bit_ceil(*width);
-                return 64_u64;
-            }
-            return 0_u64;
+            if (type->isa<Nat>()) return 64_n;
+            if (auto size = Idx::size(type)) return *Idx::size2bitwidth(size);
+            return 0_n;
         };
 
         auto src_size = size2width(bitcast->arg()->type());
@@ -777,7 +732,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
                              as_lit(i));
 
         assert(pointee->isa<Arr>());
-        auto [v_i, t_i] = emit_index(i);
+        auto [v_i, t_i] = emit_gep_index(i);
 
         return bb.assign(name, "getelementptr inbounds {}, {} {}, i64 0, {} {}", t_pointee, t_ptr, v_ptr, t_i, v_i);
     } else if (match<core::trait>(def)) {
