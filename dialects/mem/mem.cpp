@@ -16,9 +16,9 @@
 #include "dialects/mem/passes/fp/copy_prop.h"
 #include "dialects/mem/passes/fp/ssa_constr.h"
 #include "dialects/mem/passes/rw/alloc2malloc.h"
-#include "dialects/mem/passes/rw/remem_elim.h"
 #include "dialects/mem/passes/rw/mem_optimize.h"
 #include "dialects/mem/passes/rw/pack2memset.h"
+#include "dialects/mem/passes/rw/remem_elim.h"
 
 using namespace thorin;
 

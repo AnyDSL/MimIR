@@ -125,7 +125,7 @@ void AutoDiffEval::scan(const Def* def) {
 
     if (auto lea = match<mem::lea>(def)) {
         auto index = lea->arg(1);
-        if (contains_load(index)) { mark(index); }
+        // if (contains_load(index)) { mark(index); }
     }
 
     if (auto gamma = match<math::gamma>(def)) { mark(gamma->arg(0)); }
@@ -143,7 +143,7 @@ void AutoDiffEval::prepare(Lam* lam) {
                 auto ptr = load->arg(1);
                 if (has_op_store(ptr) || true) { requires_caching.insert(mark); }
             } else if (!mark->isa<Lit>()) {
-                requires_caching.insert(mark);
+                // requires_caching.insert(mark);
             }
         }
     }

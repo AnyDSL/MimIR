@@ -15,4 +15,4 @@ public:
     const Def* optimize_store(const Def* mem, const Def* ptr);
 };
 
-} // namespace thorin::autodiff
+} // namespace thorin::mem

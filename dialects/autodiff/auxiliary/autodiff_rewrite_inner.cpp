@@ -185,8 +185,8 @@ const Def* AutoDiffEval::create_init_alloc_frame(const std::string& name, const 
         auto [alloc_cache_mem, alloc_cache_ptr] = alloc_cache->projs<2>();
         ptr                                     = alloc_cache_ptr;
 
-        auto init_mem = mem::op_store(alloc_cache_mem, alloc_cache_ptr, zero(alloc_ty));
-        return init_mem;
+        // auto init_mem = mem::op_store(alloc_cache_mem, alloc_cache_ptr, zero(alloc_ty));
+        return alloc_cache_mem;
     });
 
     return ptr;

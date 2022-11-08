@@ -64,4 +64,4 @@ const Def* MemOptimize::rewrite(const Def* def) {
     return def;
 }
 
-} // namespace thorin::autodiff
+} // namespace thorin::mem

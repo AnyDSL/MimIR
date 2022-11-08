@@ -14,7 +14,7 @@ std::pair<const App*, const Pack*> is_pack_store(const Def* def) {
         }
     }
 
-    return {};
+    return {nullptr, nullptr};
 }
 
 const Def* Pack2Memset::rewrite(const Def* def) {
