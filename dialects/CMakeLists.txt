@@ -19,8 +19,6 @@ add_thorin_dialect(autodiff
         autodiff/passes/autodiff_reduce.h
         autodiff/passes/autodiff_eval.cpp
         autodiff/passes/autodiff_eval.h
-        autodiff/passes/mem_optimize.cpp
-        autodiff/passes/mem_optimize.h
         autodiff/auxiliary/autodiff_aux.cpp
         autodiff/auxiliary/autodiff_aux.h
         autodiff/auxiliary/autodiff_rewrite_inner.cpp
@@ -122,6 +120,8 @@ add_thorin_dialect(mem
         mem/passes/rw/remem_elim.h
         mem/passes/rw/reshape.cpp
         mem/passes/rw/reshape.h
+        mem/passes/rw/mem_optimize.cpp
+        mem/passes/rw/mem_optimize.h
         mem/passes/rw/pack2memset.cpp
         mem/passes/rw/pack2memset.h
     HEADER_DEPENDS

@@ -16,8 +16,9 @@
 #include "dialects/mem/passes/fp/copy_prop.h"
 #include "dialects/mem/passes/fp/ssa_constr.h"
 #include "dialects/mem/passes/rw/alloc2malloc.h"
-#include "dialects/mem/passes/rw/pack2memset.h"
 #include "dialects/mem/passes/rw/remem_elim.h"
+#include "dialects/mem/passes/rw/mem_optimize.h"
+#include "dialects/mem/passes/rw/pack2memset.h"
 
 using namespace thorin;
 
@@ -35,6 +36,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::RememElim>();
                     man.add<mem::Alloc2Malloc>();
                     man.add<mem::Pack2Memset>();
+                    man.add<mem::MemOptimize>();
                 });
             },
             nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
