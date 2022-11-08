@@ -418,6 +418,12 @@ const Def* Idx::size(const Def* def) {
     return nullptr;
 }
 
+std::optional<nat_t> Idx::size2bitwidth(const Def* size) {
+    if (size->isa<Top>()) return 64;
+    if (auto s = isa_lit(size)) return size2bitwidth(*s);
+    return {};
+}
+
 /*
  * Global
  */

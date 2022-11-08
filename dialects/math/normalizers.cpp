@@ -380,8 +380,8 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
         constexpr bool df     = id == conv::f2f || id == conv::s2f || id == conv::u2f;
         constexpr nat_t min_s = sf ? 16 : 1;
         constexpr nat_t min_d = df ? 16 : 1;
-        auto sw               = sf ? isa_f(s_ty) : size2bitwidth(*ls);
-        auto dw               = df ? isa_f(d_ty) : size2bitwidth(*ld);
+        auto sw               = sf ? isa_f(s_ty) : Idx::size2bitwidth(*ls);
+        auto dw               = df ? isa_f(d_ty) : Idx::size2bitwidth(*ld);
 
         if (sw && dw) {
             Res res;
