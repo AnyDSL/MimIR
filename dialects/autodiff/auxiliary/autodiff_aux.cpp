@@ -95,32 +95,25 @@ const Pi* forward_to_backward(const Pi* forward_pi) { return pullback_type(forwa
 
 // A,R => A'->R' * (R* -> A*)
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret, bool flat) {
-
-
-
     auto& w = arg->world();
 
     DefVec forward_in;
-    for( auto def : arg->projs() ){
+    for (auto def : arg->projs()) {
         forward_in.push_back(def);
-        if(match<mem::Ptr>(def)){
-            forward_in.push_back(def);
-        }
+        if (match<mem::Ptr>(def)) { forward_in.push_back(def); }
     }
 
     DefVec backward;
-    for( auto def : ret->projs() ){
-        if(!match<mem::Ptr>(def)){
-            backward.push_back(def);
-        }
+    for (auto def : ret->projs()) {
+        if (!match<mem::Ptr>(def)) { backward.push_back(def); }
     }
 
     auto tangent_ret = w.cn(arg);
     backward.push_back(tangent_ret);
-    auto tangent = w.cn(backward);
+    auto tangent     = w.cn(backward);
     auto diff_ret_ty = w.cn(flatten_deep(w.sigma({ret, tangent})));
     forward_in.push_back(diff_ret_ty);
-    auto diff_ty =  w.cn(forward_in);
+    auto diff_ty = w.cn(forward_in);
 
     return diff_ty;
 }

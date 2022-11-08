@@ -810,17 +810,17 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
         bb.tail("call void @free(i8* {})", name + ".i8");
         return {};
-    }  else if (auto memset = match<mem::memset>(def)) {
+    } else if (auto memset = match<mem::memset>(def)) {
         declare("void @llvm.memset.p0.i64(i8*, i8, i64, i1)");
 
         emit_unsafe(memset->arg(0));
 
-        auto ptr   = emit(memset->arg(1));
-        auto size   = emit(memset->arg(2));
-        auto val   = emit(memset->arg(3));
+        auto ptr  = emit(memset->arg(1));
+        auto size = emit(memset->arg(2));
+        auto val  = emit(memset->arg(3));
 
-        print(bb.body().emplace_back(), "call void @llvm.memset.p0.i64(i8* {}, i8 {}, i64 {}, i1 false)", 
-                      ptr, val, size);
+        print(bb.body().emplace_back(), "call void @llvm.memset.p0.i64(i8* {}, i8 {}, i64 {}, i1 false)", ptr, val,
+              size);
         return {};
     } else if (auto load = match<mem::load>(def)) {
         emit_unsafe(load->arg(0));
@@ -834,7 +834,7 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         auto ptr_t   = convert(ptr_def->type());
         auto val_def = store->arg(2);
 
-        auto ptr     = emit(ptr_def);
+        auto ptr   = emit(ptr_def);
         auto val   = emit(val_def);
         auto val_t = convert(store->arg(2)->type());
         print(bb.body().emplace_back(), "store {} {}, {} {}", val_t, val, ptr_t, ptr);

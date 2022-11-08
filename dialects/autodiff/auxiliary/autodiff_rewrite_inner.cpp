@@ -37,7 +37,7 @@ const Def* zero(const Def* ty) {
 const Def* one(const Def* ty) {
     auto& w = ty->world();
     if (match<math::F>(ty)) { return w.lit(ty, 1.0); }
-    if (is_idx(ty)) { return w.lit(ty, 0); }
+    if (is_idx(ty)) { return w.lit(ty, 1.0); }
     if (auto arr = ty->isa<Arr>()) { return w.pack(arr->shape(), one(arr->body())); }
     assert(false);
 }
@@ -184,8 +184,9 @@ const Def* AutoDiffEval::create_init_alloc_frame(const std::string& name, const 
         auto alloc_cache                        = mem::op_malloc(alloc_ty, mem, w.dbg(name));
         auto [alloc_cache_mem, alloc_cache_ptr] = alloc_cache->projs<2>();
         ptr                                     = alloc_cache_ptr;
-        if (init) { alloc_cache_mem = mem::op_store(alloc_cache_mem, alloc_cache_ptr, init); }
-        return alloc_cache_mem;
+
+        auto init_mem = mem::op_store(alloc_cache_mem, alloc_cache_ptr, zero(alloc_ty));
+        return init_mem;
     });
 
     return ptr;
@@ -359,21 +360,17 @@ const Def* AutoDiffEval::resolve_impl(const Def* def) {
     int need_mem = -1;
     auto new_ops = DefArray(def->num_ops(), [&](auto i) {
         auto op = def->op(i);
-        if(match<mem::M>(op)){
+        if (match<mem::M>(op)) {
             need_mem = i;
             return (const Def*)nullptr;
-        }else{
+        } else {
             return resolve(op);
         }
     });
 
-    if(need_mem != -1){
-        new_ops[need_mem] = current_mem;
-    }
+    if (need_mem != -1) { new_ops[need_mem] = current_mem; }
     auto new_def = def->rebuild(w, def->type(), new_ops, def->dbg());
-    if(need_mem != -1){
-        current_mem = mem::mem_def(new_def);
-    }
+    if (need_mem != -1) { current_mem = mem::mem_def(new_def); }
     return new_def;
 }
 
@@ -807,13 +804,12 @@ const Def* AutoDiffEval::normalized_to_cache_index(const Def* normalized_index) 
     const Def* cache_index;
     auto parent = current_loop->parent;
     if (parent != nullptr) {
-        cache_index = core::op(core::wrap::mul, core::Mode::none, parent->size, normalized_index);
-        cache_index = core::op(core::wrap::add, core::Mode::none, parent->cache_index(), cache_index);
+        const Def* offset =
+            core::op(core::wrap::mul, core::Mode::none, current_loop->local_size, parent->cache_index());
+        return core::op(core::wrap::add, core::Mode::none, offset, normalized_index);
     } else {
-        cache_index = normalized_index;
+        return normalized_index;
     }
-
-    return cache_index;
 }
 
 const Def* AutoDiffEval::rewrite_rebuild(Rewriter& rewriter, const Def* def) {
@@ -835,6 +831,7 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
     auto [start, end, inc, acc, body, exit] = for_app->args<6>();
 
     auto aug_start = resolve(start);
+    auto aug_end   = resolve(end);
     auto aug_inc   = augment(inc);
 
     auto loop_body = body->isa_nom<Lam>();
@@ -845,10 +842,11 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
     Lam* inv_loop_body     = create_lam(loop_body->type()->as<Pi>(), "invert_" + loop_body->name());
     auto inv_loop_body_mem = end_mem();
 
-    const Def* size_sub_one = core::op(core::wrap::sub, core::Mode::none, current_loop->local_size, one(w));
+    const Def* relative_size = core::op(core::wrap::sub, core::Mode::none, aug_end, aug_start);
+    relative_size            = core::op(core::wrap::sub, core::Mode::none, relative_size, one(w));
 
     auto normalized_index = inv_loop_body->arg(0_s);
-    normalized_index      = core::op(core::wrap::sub, core::Mode::none, size_sub_one, normalized_index);
+    normalized_index      = core::op(core::wrap::sub, core::Mode::none, relative_size, normalized_index);
 
     current_loop->index()       = normalized_to_loop_index(aug_start, aug_inc, normalized_index);
     current_loop->cache_index() = normalized_to_cache_index(normalized_index);

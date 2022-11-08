@@ -11,14 +11,14 @@
 namespace thorin::autodiff {
 
 void AutoDiffEval::assign_gradients(Lam* diffee, Lam* diff) {
-    auto &w = world();
-    auto num = diff->num_vars();
+    auto& w         = world();
+    auto num        = diff->num_vars();
     size_t diffee_i = 0;
-    size_t diff_i = 0;
-    for (;diff_i < num;) {
+    size_t diff_i   = 0;
+    for (; diff_i < num;) {
         auto def = diff->var(diff_i++);
         if (match<mem::Ptr>(def->type())) {
-            auto values = diffee->var(diffee_i);
+            auto values   = diffee->var(diffee_i);
             auto gradient = diff->var(diff_i++);
 
             gradient_pointers[values] = gradient;
@@ -28,16 +28,14 @@ void AutoDiffEval::assign_gradients(Lam* diffee, Lam* diff) {
 }
 
 const Def* AutoDiffEval::input_mapping(Lam* forward) {
-    auto &w = world();
+    auto& w  = world();
     auto num = forward->num_vars();
     size_t i = 0;
     DefVec var_mapping;
-    for (;i < num;) {
+    for (; i < num;) {
         auto values = forward->var(i++);
         var_mapping.push_back(values);
-        if (match<mem::Ptr>(values->type())) {
-            i++;
-        }
+        if (match<mem::Ptr>(values->type())) { i++; }
     }
 
     return w.tuple(var_mapping);
@@ -183,11 +181,11 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     forward_begin->set_filter(true);
     forward_begin->set_body(w.top_nat());
 
-    auto diff_ret_type = diff_ty->dom(diff_ty->num_doms() - 1)->as<Pi>();
-    auto inv_lam_ty = diff_ret_type->dom(diff_ret_type->num_doms() - 1)->as<Pi>();
+    auto diff_ret_type  = diff_ty->dom(diff_ty->num_doms() - 1)->as<Pi>();
+    auto inv_lam_ty     = diff_ret_type->dom(diff_ret_type->num_doms() - 1)->as<Pi>();
     auto backward_begin = w.nom_lam(inv_lam_ty, w.dbg("backward_begin_" + diffee->name()));
     backward_begin->set_filter(true);
-    backward_begin->set_body(w.top_nat()); 
+    backward_begin->set_body(w.top_nat());
 
     auto lam_return_ty = diffee->type()->ret_pi();
     auto forward_end   = w.nom_lam(lam_return_ty, w.dbg("forward_end_" + diffee->name()));
@@ -195,7 +193,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     forward_end->set_body(w.top_nat());
 
     assign_gradients(diffee, diff_lam);
-    auto mapping = mask_last(input_mapping(diff_lam), forward_end);
+    auto mapping             = mask_last(input_mapping(diff_lam), forward_end);
     augmented[diffee->var()] = mapping;
     add_inverted(diffee->var(), mapping);
 
@@ -215,13 +213,11 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto ret_ret     = diffee->ret_pi()->num_doms();
     auto inv_num_ret = backward_begin->num_doms() - 1;
 
-    auto num_gradients = inv_num_ret - ret_ret;// yes
+    auto num_gradients = inv_num_ret - ret_ret; // yes
 
     DefVec gradient_results;
     size_t i = num_gradients;
-    for (auto var : backward_begin->args()) {
-        gradient_results.push_back(var);
-    }
+    for (auto var : backward_begin->args()) { gradient_results.push_back(var); }
     gradient_results.push_back(backward_end);
 
     auto free_lam = free_memory();
