@@ -27,6 +27,10 @@ VarSet DepTree::run(Def* nom) {
     for (auto var : result) {
         auto n = nom2node_[var->nom()].get();
         if (!n) {
+            for (auto& node : stack_) {}
+
+            for (auto it = stack_.cbegin(); it != stack_.cend(); ++it) { (*it)->nom()->dump(); }
+
             world().ELOG("var {} used before nom {} discovered, old var still around?", var, var->nom());
             world().ELOG("var {} : {}", var, var->type());
             world().ELOG("var nom {} : {}", var->nom(), var->nom()->type());

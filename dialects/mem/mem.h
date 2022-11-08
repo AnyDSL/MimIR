@@ -119,7 +119,7 @@ const Def* op_malloc(const Def* type, const Def* mem, const Def* dbg = {});
 const Def* op_mslot(const Def* type, const Def* mem, const Def* id, const Def* dbg = {});
 
 inline const Def* op_free(const Def* mem, const Def* ptr, const Def* dbg = {}) {
-    World& w  = mem->world();
+    World& w     = mem->world();
     auto ptr_ty  = force<Ptr>(ptr->type())->as<App>();
     auto pointee = ptr_ty->arg(0);
     return w.app(w.app(w.ax<free>(), {pointee, w.lit_nat_0()}), {mem, ptr}, dbg);
@@ -137,7 +137,7 @@ static const Def* mem_def(const Def* def) {
     return nullptr;
 }
 
-inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) { return mem_def(lam->var()); }
+inline const Def* mem_var(Lam* lam) { return mem_def(lam->var()); }
 
 inline const Def* replace_mem(const Def* mem, const Def* arg) {
     if (arg->num_projs() > 1) {

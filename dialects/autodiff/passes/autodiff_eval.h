@@ -35,7 +35,10 @@ struct LoopFrame {
     LoopData backward;
 
     // DefMap<DefVec> gradients;
+    DefSet allocated_memory;
+    DefSet free_def;
     Def2Def gradient;
+    const Def* for_def = nullptr;
 
     const Def*& index() { return data().index; }
 
@@ -89,6 +92,7 @@ inline Node::Type operator|(Node::Type a, Node::Type b) {
     return static_cast<Node::Type>(static_cast<int>(a) | static_cast<int>(b));
 }
 
+class PostOrderVisitor;
 class AutodiffAnalysis {
 public:
     AutodiffAnalysis(Lam* entry) {
@@ -165,6 +169,7 @@ private:
                 node(curr, Node::Type::App);
                 run(curr, next_lam);
             } else {
+                app->dump(1);
                 run(curr, app->arg());
                 return;
             }
@@ -184,6 +189,8 @@ private:
     Node* entry_node_;
     Node* exit_node_;
     DefMap<Node*> nodes_;
+
+    friend PostOrderVisitor;
 };
 
 class PostOrderVisitor {
@@ -191,29 +198,38 @@ class PostOrderVisitor {
     std::map<size_t, const Node*> nodes_;
     std::vector<const Node*> node_vec_;
 
+    size_t last_index = -1;
+
 public:
     PostOrderVisitor(AutodiffAnalysis& analysis)
         : analysis_(analysis) {}
 
-    std::vector<const Node*>& post_order_visit(const Def* def) {
-        nodes_.clear();
-        auto node = analysis_.node(def);
-        size_t i  = post_order_visit(node, analysis_.size());
+    void add(const Def* def) {
+        auto node  = analysis_.node(def);
+        last_index = post_order_visit(node, last_index);
+    }
 
+    void begin() {
+        nodes_.clear();
+        for (auto [def, node] : analysis_.nodes_) { node->index = -1; }
+        last_index = analysis_.size();
+    }
+
+    std::vector<const Node*>& post_order_visit() {
         node_vec_.clear();
         for (auto [key, value] : nodes_) { node_vec_.push_back(value); }
-
         return node_vec_;
     }
 
 private:
     size_t post_order_visit(const Node* n, size_t i) {
         auto& n_index = n->index;
-        n_index       = size_t(-2);
+        if (n_index != size_t(-1)) return i;
+        n_index = size_t(-2);
 
         for (auto succ : n->succs) {
-            if (!succ->isa(Node::Type::Bot)) continue;
-            if (succ->index == size_t(-1)) i = post_order_visit(succ, i);
+            if (!succ->isa(Node::Type::Bot)) { continue; }
+            i = post_order_visit(succ, i);
         }
 
         n_index = i - 1;
@@ -229,7 +245,7 @@ public:
     AutoDiffEval(PassMan& man)
         : RWPass(man, "autodiff_eval") {}
 
-    void prepare(const Def*);
+    void prepare(Lam*);
     void mark(const Def* def);
     void scan(const Def* def);
     Lam* init_caches(Lam* next);
@@ -300,8 +316,10 @@ public:
     void pop_loop_frame();
 
     const Def* resolve(const Def* def);
+    const Def* resolve_impl(const Def* def);
 
     const Def* grad_arr(const Def* def);
+    void check_grad_arr(const Def* def);
 
     Lam* create_block(const std::string& name);
     Lam* create_ret(const Lam* lam);
@@ -317,6 +335,8 @@ public:
     const Def* get_gradient(const Def* def);
     const Def* get_gradient(const Def* def, const Def* default_zero_ty);
     void prop(Scope& scope, const Def* def);
+
+    const Def* upper_bound_size(const Def* size, bool lower = false);
 
     void add_inverted(const Def* key, const Def* value) {
         assert(value);
@@ -363,10 +383,10 @@ private:
 
     Def2Def gradient_pointers;
 
-    DefSet allocated_memory;
     Def2Def cache_map;
     DefMap<std::shared_ptr<LoopFrame>> cache_loop_assignment;
     DefMap<std::shared_ptr<LoopFrame>> loop_assignment;
+    DefMap<std::shared_ptr<LoopFrame>> index_loop_map;
 
     std::stack<InitFrame> init_frames;
 

@@ -62,7 +62,7 @@ void AutoDiffEval::fetch_gradients(Lam* src, Lam* backward) {
 Lam* AutoDiffEval::free_memory() {
     auto& w          = world();
     auto free_memory = create_block("free_memory");
-    for (auto ptr : allocated_memory) { op_free(ptr); }
+    // for (auto ptr : current_loop->allocated_memory) { op_free(ptr); }
     ret(free_memory);
     return free_memory;
 }
@@ -100,9 +100,16 @@ void AutoDiffEval::scan(const Def* def) {
     if (auto exp = match<math::exp>(def)) {
         if (exp.id() == math::exp::exp) {
             mark(exp->arg(0));
+            mark(exp);
         } else if (exp.id() == math::exp::log) {
             mark(exp->arg(0));
+            mark(exp);
         }
+    }
+
+    if (auto lea = match<mem::lea>(def)) {
+        auto index = lea->arg(1);
+        mark(index);
     }
 
     if (auto gamma = match<math::gamma>(def)) { mark(gamma->arg(0)); }
@@ -110,15 +117,18 @@ void AutoDiffEval::scan(const Def* def) {
     for (auto op : def->ops()) { scan(op); }
 }
 
-void AutoDiffEval::prepare(const Def* def) {
-    scan(def);
+void AutoDiffEval::prepare(Lam* lam) {
+    scan(lam);
 
+    Scope scope(lam);
     for (auto mark : markings) {
-        if (auto load = is_load_val(mark)) {
-            auto ptr = load->arg(1);
-            if (has_op_store(ptr)) { requires_caching.insert(mark); }
-        } else if (!mark->isa<Lit>()) {
-            // requires_caching.insert(mark);
+        if (scope.bound(mark)) {
+            if (auto load = is_load_val(mark)) {
+                auto ptr = load->arg(1);
+                if (has_op_store(ptr)) { requires_caching.insert(mark); }
+            } else if (!mark->isa<Lit>()) {
+                // requires_caching.insert(mark);
+            }
         }
     }
 }
@@ -149,9 +159,11 @@ const Def* AutoDiffEval::derive_(const Def* def) {
 
     auto diff_lam = w.nom_lam(diff_ty, w.dbg("diff_lam_" + diffee->name()));
     diff_lam->set_filter(true);
+    diff_lam->set_body(w.top_nat());
 
     auto forward_begin = w.nom_lam(w.cn(mem::type_mem(w)), w.dbg("forward_begin_" + diffee->name()));
     forward_begin->set_filter(true);
+    forward_begin->set_body(w.top_nat());
 
     auto inv_lam_ty     = forward_to_backward(diffee->type()->as<Pi>());
     auto backward_begin = w.nom_lam(inv_lam_ty, w.dbg("backward_begin_" + diffee->name()));

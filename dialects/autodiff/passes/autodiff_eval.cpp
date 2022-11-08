@@ -64,16 +64,18 @@ const Def* AutoDiffEval::rewrite(const Def* def) {
 
         assert(arg->isa<Lam>());
 
-        root    = std::make_shared<LoopFrame>(*this);
-        auto& w = world();
-        LoopData data;
-        root->size       = one(w);
-        root->local_size = one(w);
-        data.index       = zero(w);
-        data.cache_index = zero(w);
-        root->forward    = data;
-        root->backward   = data;
-        current_loop     = root;
+        {
+            root    = std::make_shared<LoopFrame>(*this);
+            auto& w = world();
+            LoopData data;
+            root->size       = one(w);
+            root->local_size = one(w);
+            data.index       = zero(w);
+            data.cache_index = zero(w);
+            root->forward    = data;
+            root->backward   = data;
+            current_loop     = root;
+        }
 
         def = derive(arg);
         return def;

@@ -63,6 +63,7 @@ Lam* AutoDiffEval::create_lam(const Def* cn, const std::string& name) {
     auto& w  = world();
     auto lam = w.nom_lam(cn->as<Pi>(), w.dbg(name));
     lam->set_filter(true);
+    lam->set_body(w.bot(w.type_nat()));
     init_mem(lam);
     return lam;
 }
@@ -151,6 +152,8 @@ const Def* AutoDiffEval::augment_app(const App* app) {
     auto aug_arg = augment(arg);
 
     auto aug_callee = augment(callee);
+
+    if (auto div = match<core::div>(app)) { div->dump(); }
 
     if (mem::mem_def(aug_arg)) { aug_arg = mem::replace_mem(end_mem(), aug_arg); }
     auto aug_app = world.app(aug_callee, aug_arg);
@@ -242,9 +245,9 @@ const Def* AutoDiffEval::augment_slot(const App* slot) {
     augment(slot->arg(0_s));
     auto type     = slot->decurry()->arg(0_s);
     auto aug_slot = op_slot_mem(type);
-    auto grad_ptr = op_slot(type);
-    op_store(grad_ptr, zero(type));
-    gradient_pointers[slot->proj(1)] = grad_ptr;
+
+    if (current_loop == root) { add_inverted(slot->proj(1), aug_slot->proj(1)); }
+
     return aug_slot;
 }
 
@@ -255,11 +258,8 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc) {
     auto type          = alloc->decurry()->arg(0_s);
     auto aug_type      = augment(type);
     auto aug_alloc_mem = op_alloc_mem(aug_type);
-    auto gradient_ptr  = create_init_alloc_frame("gradient_arr", aug_type, zero(aug_type));
 
-    // add to list of allocated memory
-    allocated_memory.insert(gradient_ptr);
-    gradient_pointers[org_ptr] = gradient_ptr;
+    if (current_loop == root) { add_inverted(alloc->proj(1), aug_alloc_mem->proj(1)); }
 
     return aug_alloc_mem;
 }
@@ -276,10 +276,6 @@ const Def* AutoDiffEval::augment_bitcast(const App* bitcast) {
 
     auto aug_arg = augment(arg);
     auto dst     = core::op_bitcast(bitcast->type(), aug_arg, arg->dbg());
-
-    if (auto grad_ptr = gradient_pointers[arg]) {
-        gradient_pointers[bitcast] = core::op_bitcast(bitcast->type(), grad_ptr, arg->dbg());
-    }
 
     return dst;
 }
@@ -330,6 +326,74 @@ const Def* sum(const Def* left, const Def* right) {
     assert(false);
 }
 
+const Def* AutoDiffEval::resolve(const Def* def) {
+    if (match<mem::M>(def->type())) { return current_mem; }
+    if (def->isa<Axiom>() || def->isa<Lit>()) { return def; }
+    const Def* invert;
+    if (invert = inverted[def]; !invert) {
+        invert        = resolve_impl(def);
+        inverted[def] = invert;
+    }
+    assert(invert);
+
+    if (auto mem = mem::mem_def(invert)) {
+        if (auto var = invert->isa<Var>()) {
+            invert = mem::replace_mem(current_mem, invert);
+        } else {
+            current_mem = mem;
+        }
+    }
+    return invert;
+}
+
+const Def* AutoDiffEval::resolve_impl(const Def* def) {
+    auto& w = world();
+
+    assert(!def->isa<Var>());
+
+    if (auto cache_arr = cache_map[def]) {
+        auto loop        = cache_loop_assignment[cache_arr];
+        auto cache_index = loop->cache_index();
+        loop->local_size->dump(3);
+        assert(cache_index);
+        auto cache_lea = mem::op_lea(cache_arr, cache_index);
+        return op_load(cache_lea);
+    }
+
+    if (auto load = match<mem::load>(def)) {
+        auto ptr       = load->arg(1);
+        auto cache_ptr = resolve(ptr);
+        return op_load_mem(cache_ptr);
+    }
+
+    if (auto alloc = match<mem::alloc>(def)) { assert(false); }
+
+    if (auto slot = match<mem::slot>(def)) { assert(false); }
+
+    if (auto div = match<core::div>(def)) { div->dump(); }
+
+    auto new_ops = DefArray(def->num_ops(), [&](auto i) {
+        auto op = def->op(i);
+        return resolve(op);
+    });
+    auto new_def = def->rebuild(w, def->type(), new_ops, def->dbg());
+    add_inverted(def, new_def);
+    return new_def;
+}
+
+void AutoDiffEval::attach_gradient(const Def* dst, const Def* new_gradient) {
+    assert(new_gradient);
+    auto gradient = current_loop->gradient[dst];
+
+    if (gradient) {
+        gradient = sum(gradient, new_gradient);
+    } else {
+        gradient = new_gradient;
+    }
+
+    current_loop->gradient[dst] = gradient;
+}
+
 const Def* AutoDiffEval::get_gradient(const Def* def) { return current_loop->gradient[def]; }
 
 const Def* AutoDiffEval::get_gradient(const Def* def, const Def* default_zero_ty) {
@@ -344,6 +408,37 @@ const Def* AutoDiffEval::get_gradient(const Def* def, const Def* default_zero_ty
     return result;
 }
 
+void AutoDiffEval::check_grad_arr(const Def* def) {
+    auto& w = world();
+
+    if (auto lea = match<mem::lea>(def)) {
+        auto [arr, index] = lea->args<2>();
+        check_grad_arr(arr);
+    } else if (auto bitcast = match<core::bitcast>(def)) {
+        check_grad_arr(bitcast->arg());
+    } else {
+        if (auto grad_ptr = gradient_pointers[def]) {
+        } else if (auto extract = def->isa<Extract>()) {
+            auto tup = extract->tuple();
+            if (auto alloc = match<mem::alloc>(tup)) {
+                auto ptr          = alloc->proj(1);
+                auto type         = alloc->decurry()->arg(0_s);
+                auto aug_type     = augment(type);
+                auto gradient_ptr = op_alloc(aug_type, w.dbg("gradient_ptr"));
+                op_store(gradient_ptr, zero(aug_type));
+                current_loop->allocated_memory.insert(gradient_ptr);
+                gradient_pointers[ptr] = gradient_ptr;
+            } else if (auto slot = match<mem::slot>(tup)) {
+                auto ptr          = slot->proj(1);
+                auto type         = slot->decurry()->arg(0_s);
+                auto gradient_ptr = op_slot(type);
+                op_store(gradient_ptr, zero(type));
+                gradient_pointers[ptr] = gradient_ptr;
+            }
+        }
+    }
+}
+
 const Def* AutoDiffEval::grad_arr(const Def* def) {
     auto& w = world();
 
@@ -355,8 +450,29 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
     } else if (auto bitcast = match<core::bitcast>(def)) {
         auto grad_arg = grad_arr(bitcast->arg());
         return w.app(bitcast->callee(), grad_arg);
-    } else if (auto grad_ptr = gradient_pointers[def]) {
-        return grad_ptr;
+    } else {
+        if (auto grad_ptr = gradient_pointers[def]) {
+            return grad_ptr;
+        } else if (auto extract = def->isa<Extract>()) {
+            auto tup = extract->tuple();
+            if (auto alloc = match<mem::alloc>(tup)) {
+                auto ptr          = alloc->proj(1);
+                auto type         = alloc->decurry()->arg(0_s);
+                auto aug_type     = augment(type);
+                auto gradient_ptr = op_alloc(aug_type, w.dbg("gradient_ptr"));
+                op_store(gradient_ptr, zero(aug_type));
+                current_loop->allocated_memory.insert(gradient_ptr);
+                gradient_pointers[ptr] = gradient_ptr;
+                return gradient_ptr;
+            } else if (auto slot = match<mem::slot>(tup)) {
+                auto ptr          = slot->proj(1);
+                auto type         = slot->decurry()->arg(0_s);
+                auto gradient_ptr = op_slot(type);
+                op_store(gradient_ptr, zero(type));
+                gradient_pointers[ptr] = gradient_ptr;
+                return gradient_ptr;
+            }
+        }
     }
 
     return nullptr;
@@ -398,12 +514,19 @@ const Def* scale(const Def* shape, const Def* def) {
 }
 
 void AutoDiffEval::prop(Scope& scope, const Def* def) {
+    if (auto load = match<mem::load>(def)) { def->dump(1); }
+    def->dump(1);
     if (!scope.bound(def)) return;
     if (def->isa<Var>()) { return; }
     if (!visited_prop.insert(def).second) { return; }
 
-    if (def->isa<App>()) {
-        for (auto proj : def->projs()) { prop(scope, proj); }
+    if (auto store = match<mem::store>(def)) {
+        auto ptr      = store->arg(1);
+        auto grad_ptr = grad_arr(ptr);
+        auto load_val = op_load(grad_ptr);
+        op_store(grad_ptr, zero(load_val->type()));
+        attach_gradient(store->arg(), one_hot_other_bot(store->arg(), load_val, 2));
+        return;
     }
 
     auto& w       = world();
@@ -414,9 +537,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto arr  = load->arg(1);
         auto val  = load->proj(1);
         auto grad = grad_arr(arr);
-
         assert(grad);
-        auto test = get_gradient(val);
 
         auto gradient_val = gradient->proj(1);
         assert(gradient_val);
@@ -431,15 +552,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto ops  = tuple->ops();
         auto ops2 = gradient->ops();
         for (size_t i = 0; i < tuple->num_ops(); i++) { attach_gradient(tuple->op(i), gradient->proj(i)); }
-        return;
-    }
-
-    if (auto store = match<mem::store>(def)) {
-        auto ptr      = store->arg(1);
-        auto grad_ptr = grad_arr(ptr);
-        auto load_val = op_load(grad_ptr);
-        op_store(grad_ptr, zero(load_val->type()));
-        attach_gradient(store->arg(), one_hot_other_bot(store->arg(), load_val, 2));
         return;
     }
 
@@ -614,8 +726,11 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
 
             auto caller     = call->pred();
             auto caller_def = caller->def;
+            Scope prop_scope(caller_def->as_nom<Lam>());
 
-            bool for_hack = false;
+            visitor.begin();
+            visitor.add(arg);
+
             if (call->isa(Node::Type::App)) {
                 auto lam_arg_var = current_lam->arg();
 
@@ -625,9 +740,9 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
             } else if (call->isa(Node::Type::For)) {
                 auto [start, end, inc, acc, body, exit] = arg->projs<6>();
 
-                auto aug_start = augment(start);
-                auto aug_end   = augment(end);
-                auto aug_inc   = augment(inc);
+                auto aug_start = resolve(start);
+                auto aug_end   = resolve(end);
+                auto aug_inc   = resolve(inc);
 
                 auto invert_start = zero(w);
                 auto invert_inc   = one(w);
@@ -640,7 +755,8 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 Scope scope(body_lam);
                 for (const Def* free_def : scope.free_defs()) {
                     auto free_ty = free_def->type();
-                    if (is_idx(free_ty) || match<math::F>(free_ty)) { resolve(free_def); }
+                    // if (is_idx(free_ty) || match<math::F>(free_ty)) { resolve(free_def); }
+                    if (match<mem::Ptr>(free_ty)) { check_grad_arr(free_def); }
                 }
 
                 auto invert_for_mem = end_mem();
@@ -653,12 +769,13 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                                                      invert_body, invert_exit));
 
                 current_lam = invert_exit;
-                for_hack    = true;
+
+                for (auto [dst, grad] : current_loop->gradient) { visitor.add(dst); }
             } else {
                 assert(false);
             }
 
-            for (auto node : visitor.post_order_visit(arg)) { prop(scope, node->def); }
+            for (auto node : visitor.post_order_visit()) { prop(prop_scope, node->def); }
 
             DefVec inv_args;
             for (auto proj : lam->args()) {
@@ -678,15 +795,11 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 current_lam->set_body(w.app(inv_lam->ret_var(), inv_arg));
                 break;
             } else {
-                auto next_inv_lam = w.nom_lam(caller_def->type()->as<Pi>(), w.dbg("inv_" + lam->name()));
-                next_inv_lam->set_filter(false);
-
-                if (for_hack) { inv_arg = mem::mem_def(inv_arg); }
+                auto next_inv_lam = create_lam(caller_def->type()->as<Pi>(), "inv_" + lam->name());
 
                 current_lam->set_body(w.app(next_inv_lam, mem::mem_def(inv_arg)));
                 current_lam = next_inv_lam;
-                init_mem(next_inv_lam);
-                current = caller;
+                current     = caller;
             }
         }
 
@@ -727,7 +840,7 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
 
     auto [start, end, inc, acc, body, exit] = for_app->args<6>();
 
-    auto aug_start = augment(start);
+    auto aug_start = resolve(start);
     auto aug_inc   = augment(inc);
 
     auto loop_body = body->isa_nom<Lam>();
@@ -735,8 +848,8 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
 
     auto raw_index = loop_body->arg(0_s);
 
-    Lam* inv_loop_body = w.nom_lam(loop_body->type()->as<Pi>(), w.dbg("invert_" + loop_body->name()));
-    inv_loop_body->set_filter(true);
+    Lam* inv_loop_body     = create_lam(loop_body->type()->as<Pi>(), "invert_" + loop_body->name());
+    auto inv_loop_body_mem = end_mem();
 
     const Def* size_sub_one = core::op(core::wrap::sub, core::Mode::none, current_loop->local_size, one(w));
 
@@ -756,7 +869,7 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
 
     Scope scope2(inv_body_lam_new);
     ScopeRewriter first_rewriter(world(), scope2);
-    auto replacement = w.tuple({mem::mem_var(inv_loop_body), ret_lam});
+    auto replacement = w.tuple({inv_loop_body_mem, ret_lam});
     first_rewriter.map(inv_body_lam_new->var(), replacement);
     auto new_args = DefArray(inv_body_lam_new->num_ops(),
                              [&](size_t i) { return first_rewriter.rewrite(inv_body_lam_new->op(i)); });
@@ -834,12 +947,36 @@ const Def* AutoDiffEval::invert_for(const App* for_app) {
     return nullptr;
 }
 
+const Def* AutoDiffEval::upper_bound_size(const Def* size, bool lower) {
+    if (auto loop = index_loop_map[size]) {
+        if (lower) {
+            return zero(size->type());
+        } else {
+            return loop->local_size;
+        }
+    }
+
+    auto& w = world();
+    if (auto wrap = match<core::wrap>(size)) {
+        auto [left, right] = wrap->args<2>();
+
+        auto new_left  = upper_bound_size(left, lower);
+        auto new_right = upper_bound_size(right, lower != (wrap.id() == core::wrap::sub));
+
+        return w.app(wrap->callee(), {new_left, new_right});
+    }
+
+    return size;
+}
+
 void AutoDiffEval::push_loop_frame(const App* for_app, const Def* size) {
     if (auto cached_loop = loop_assignment[for_app]) {
         current_loop = cached_loop;
     } else {
         auto next_frame          = std::make_shared<LoopFrame>(*this);
         next_frame->parent       = current_loop;
+        next_frame->for_def      = for_app;
+        size                     = upper_bound_size(size);
         next_frame->size         = core::op(core::wrap::mul, core::Mode::none, current_loop->size, size);
         next_frame->local_size   = size;
         loop_assignment[for_app] = next_frame;
@@ -859,15 +996,16 @@ const Def* AutoDiffEval::augment_for_body(const Def* body, const Def* start, con
     Lam* aug_body  = w.nom_lam(loop_body->type()->as<Pi>(), w.dbg("aug_" + loop_body->name()));
     aug_body->set_filter(true);
 
-    auto org_index        = loop_body->var(0_s);
-    auto normalized_index = aug_body->var(0_s);
-    current_loop->index() = normalized_to_loop_index(start, inc, normalized_index);
+    auto org_index              = loop_body->var(0_s);
+    auto normalized_index       = aug_body->var(0_s);
+    current_loop->index()       = normalized_to_loop_index(start, inc, normalized_index);
+    current_loop->cache_index() = normalized_to_cache_index(normalized_index);
+
+    index_loop_map[normalized_index] = current_loop;
 
     augmented[org_index]        = current_loop->index();
     augmented[loop_body->var()] = replace(aug_body->var(), 0, current_loop->index());
     augmented[loop_body]        = aug_body;
-
-    current_loop->cache_index() = normalized_to_cache_index(normalized_index);
 
     push_mem(aug_body);
     aug_body->set_body(augment(loop_body->body()));
@@ -912,8 +1050,6 @@ const Def* AutoDiffEval::augment_(const Def* def) {
     auto& w = world();
 
     w.DLOG("Augment def {} : {}", def, def->type());
-
-    if (match<core::div>(def)) { def->dump(); }
 
     if (auto for_app = match<affine::For>(def)) { return augment_for(for_app); }
 
@@ -1105,45 +1241,6 @@ const Def* AutoDiffEval::op_alloc_mem(const Def* type, const Def* dbg) {
 }
 
 const Def* AutoDiffEval::op_alloc(const Def* type, const Def* dbg) { return op_alloc_mem(type, dbg)->proj(1); }
-
-const Def* AutoDiffEval::resolve(const Def* def) {
-    auto& w = world();
-
-    assert(!match<mem::M>(def->type()));
-    if (def->isa<Axiom>()) { return def; }
-    if (auto inv_def = inverted[def]) { return inv_def; }
-    assert(!def->isa<Var>());
-
-    if (auto cache_arr = cache_map[def]) {
-        auto loop        = cache_loop_assignment[cache_arr];
-        auto cache_index = loop->cache_index();
-        auto cache_lea   = mem::op_lea(cache_arr, cache_index);
-        return op_load(cache_lea);
-    }
-
-    if (auto load = match<mem::load>(def)) {
-        auto ptr       = load->arg(1);
-        auto cache_ptr = resolve(ptr);
-        return op_load_mem(cache_ptr);
-    }
-
-    auto new_ops  = DefArray(def->num_ops(), [&](auto i) { return resolve(def->op(i)); });
-    auto new_def  = def->rebuild(w, def->type(), new_ops, def->dbg());
-    inverted[def] = new_def;
-    return new_def;
-}
-
-void AutoDiffEval::attach_gradient(const Def* dst, const Def* new_gradient) {
-    auto gradient = current_loop->gradient[dst];
-
-    if (gradient) {
-        gradient = sum(gradient, new_gradient);
-    } else {
-        gradient = new_gradient;
-    }
-
-    current_loop->gradient[dst] = gradient;
-}
 
 const Def* AutoDiffEval::invert_store(const App* store) {}
 
