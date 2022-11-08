@@ -48,9 +48,9 @@ const Def* AutoDiffEval::augment_load(const App* load, Lam* f, Lam* f_diff) {
     auto aug_mem = augment(load_mem, f, f_diff);
     auto aug_ptr = augment(load_ptr, f, f_diff);
 
-    auto aug_load = mem::op_load(aug_mem, aug_ptr, w.dbg("aug_load"))->as<App>();
+    auto aug_load = mem::op_load(aug_mem, aug_ptr, w.dbg("aug_load")); //->as<App>();
 
-    auto aug_load_mem = aug_load->arg(1);
+    auto [aug_load_mem, aug_load_val] = aug_load->projs<2>();
 
     auto gradient_ptr = gradient_ptrs[aug_ptr];
     if (gradient_ptr) {
@@ -65,7 +65,7 @@ const Def* AutoDiffEval::augment_load(const App* load, Lam* f, Lam* f_diff) {
         // TODO: pullback is missing memory object
         auto [pullback_mem, pullback] = mem::op_load(aug_load_mem, pullback_ptr, w.dbg("pullback_load"))->projs<2>();
         partial_pullback[aug_load]    = pullback;
-        return w.tuple({pullback_mem, aug_load});
+        return w.tuple({pullback_mem, aug_load_val});
     }
 }
 
