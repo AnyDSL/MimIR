@@ -330,14 +330,6 @@ const Def* AutoDiffEval::resolve(const Def* def) {
         inverted[def] = invert;
     }
     assert(invert);
-
-    if (auto mem = mem::mem_def(invert)) {
-        if (auto var = invert->isa<Var>()) {
-            invert = mem::replace_mem(current_mem, invert);
-        } else {
-            current_mem = mem;
-        }
-    }
     return invert;
 }
 
@@ -364,12 +356,24 @@ const Def* AutoDiffEval::resolve_impl(const Def* def) {
 
     if (auto slot = match<mem::slot>(def)) { assert(false); }
 
+    int need_mem = -1;
     auto new_ops = DefArray(def->num_ops(), [&](auto i) {
         auto op = def->op(i);
-        return resolve(op);
+        if(match<mem::M>(op)){
+            need_mem = i;
+            return (const Def*)nullptr;
+        }else{
+            return resolve(op);
+        }
     });
+
+    if(need_mem != -1){
+        new_ops[need_mem] = current_mem;
+    }
     auto new_def = def->rebuild(w, def->type(), new_ops, def->dbg());
-    add_inverted(def, new_def);
+    if(need_mem != -1){
+        current_mem = mem::mem_def(new_def);
+    }
     return new_def;
 }
 

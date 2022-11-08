@@ -95,34 +95,34 @@ const Pi* forward_to_backward(const Pi* forward_pi) { return pullback_type(forwa
 
 // A,R => A'->R' * (R* -> A*)
 const Pi* autodiff_type_fun(const Def* arg, const Def* ret, bool flat) {
-    auto& world = arg->world();
-    world.DLOG("autodiff type for {} => {}", arg, ret);
-    auto aug_arg = autodiff_type_fun(arg, flat);
-    auto aug_ret = autodiff_type_fun(ret, flat);
-    world.DLOG("augmented types: {} => {}", aug_arg, aug_ret);
-    if (!aug_arg || !aug_ret) return nullptr;
-    // Q* -> P*
-    auto pb_ty = pullback_type(ret, arg, flat);
-    world.DLOG("pb type: {}", pb_ty);
 
-    // P' -> Q' * (Q* -> P*)
 
-    if (flat) {
-        aug_ret = flatten_deep(aug_ret);
-        aug_arg = flatten_deep(aug_arg);
+
+    auto& w = arg->world();
+
+    DefVec forward_in;
+    for( auto def : arg->projs() ){
+        forward_in.push_back(def);
+        if(match<mem::Ptr>(def)){
+            forward_in.push_back(def);
+        }
     }
 
-    auto ret_dom = world.sigma({aug_ret, pb_ty});
+    DefVec backward;
+    for( auto def : ret->projs() ){
+        if(!match<mem::Ptr>(def)){
+            backward.push_back(def);
+        }
+    }
 
-    if (flat) { ret_dom = flatten_deep(ret_dom); }
+    auto tangent_ret = w.cn(arg);
+    backward.push_back(tangent_ret);
+    auto tangent = w.cn(backward);
+    auto diff_ret_ty = w.cn(flatten_deep(w.sigma({ret, tangent})));
+    forward_in.push_back(diff_ret_ty);
+    auto diff_ty =  w.cn(forward_in);
 
-    auto dom = world.sigma({aug_arg, world.cn(ret_dom)});
-
-    if (flat) { dom = flatten_deep(dom); }
-
-    auto deriv_ty = world.cn(dom);
-    world.DLOG("autodiff type: {}", deriv_ty);
-    return deriv_ty;
+    return diff_ty;
 }
 
 const Pi* autodiff_type_fun_pi(const Pi* pi, bool flat) {

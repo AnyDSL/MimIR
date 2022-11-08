@@ -326,7 +326,10 @@ public:
 
     Lam* free_memory();
 
-    void fetch_gradients(Lam* diff, Lam* backward);
+    const Def* fetch_gradients(Lam* backward);
+
+    void assign_gradients(Lam* diffee, Lam* diff);
+    const Def* input_mapping(Lam* forward);
 
     void preserve(const Def* value);
 

@@ -826,11 +826,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
             auto shape_def = pack->shape();
             if (auto lit = isa_lit(pack->body()); lit && *lit == 0 && !isa_lit(shape_def)) {
                 declare("void @llvm.memset.p0.i64({}, i8, i64, i1)", ptr_t);
-                auto &w = shape_def->world();
+                auto& w        = shape_def->world();
                 auto body_size = core::op(core::trait::size, pack->body()->type());
-                auto size_def = core::op(core::nop::mul, shape_def, body_size);
-                auto size   = emit(size_def);
-                auto size_t = convert(size_def->type());
+                auto size_def  = core::op(core::nop::mul, shape_def, body_size);
+                auto size      = emit(size_def);
+                auto size_t    = convert(size_def->type());
 
                 print(bb.body().emplace_back(), "call void @llvm.memset.p0.i64({} {}, i8 0, i64 {}, i1 false)", ptr_t,
                       ptr, size);

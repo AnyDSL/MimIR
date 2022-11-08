@@ -73,6 +73,8 @@ protected:
         Scheduler new_scheduler(scope);
         swap(scheduler_, new_scheduler);
 
+        world().debug_dump();
+
         for (auto nom : noms) {
             if (auto lam = nom->isa<Lam>(); lam && lam != scope.exit()) {
                 assert(lam == entry_ || lam->is_basicblock());
