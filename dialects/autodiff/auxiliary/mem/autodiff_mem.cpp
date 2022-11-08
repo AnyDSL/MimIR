@@ -182,7 +182,8 @@ const Def* AutoDiffEval::zero_pullback_fun(const Def* domain, Lam* f) {
     auto pb_ty     = pullback_type(domain, A);
     auto pb        = world.nom_lam(pb_ty, world.dbg("zero_pb"));
     // TODO: use lazy zero to delay execution as long as possible and allow for shortcut evaluation
-    pb->app(true, pb->var(1), autodiff_zero(mem::mem_var(pb), f));
+    // pb->app(true, pb->var(1), autodiff_zero(mem::mem_var(pb), f));
+    pb->app(true, pb->var(1), op_zero(A_tangent));
     return pb;
 }
 
