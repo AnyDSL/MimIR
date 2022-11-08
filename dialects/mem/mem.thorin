@@ -71,3 +71,10 @@
 /// Load effective address. 
 /// Performs address computation by offsetting the passed pointer with index `i`.
 .ax %mem.lea: Π [n: .Nat, Ts: «n; *», as: .Nat] -> Π [%mem.Ptr(«j: n; Ts#j», as), i: .Idx n] -> %mem.Ptr(Ts#i, as), normalize_lea;
+///
+/// ### %mem.memset
+///
+/// Reserves a memory slot for type `T` in address space `as`.
+/// The reserved slot will be `size` bytes large.
+/// `id` has to be provided an unique id.
+.ax %mem.memset: Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as), size: .Nat, val: i8] -> %mem.M;

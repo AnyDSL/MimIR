@@ -810,6 +810,18 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         bb.assign(name + ".i8", "bitcast {} {} to i8*", ptr_t, ptr);
         bb.tail("call void @free(i8* {})", name + ".i8");
         return {};
+    }  else if (auto memset = match<mem::memset>(def)) {
+        declare("void @llvm.memset.p0.i64(i8*, i8, i64, i1)");
+
+        emit_unsafe(memset->arg(0));
+
+        auto ptr   = emit(memset->arg(1));
+        auto size   = emit(memset->arg(2));
+        auto val   = emit(memset->arg(3));
+
+        print(bb.body().emplace_back(), "call void @llvm.memset.p0.i64(i8* {}, i8 {}, i64 {}, i1 false)", 
+                      ptr, val, size);
+        return {};
     } else if (auto load = match<mem::load>(def)) {
         emit_unsafe(load->arg(0));
         auto ptr       = emit(load->arg(1));
@@ -818,26 +830,11 @@ std::string Emitter::emit_bb(BB& bb, const Def* def) {
         return bb.assign(name, "load {}, {} {}", pointee_t, ptr_t, ptr);
     } else if (auto store = match<mem::store>(def)) {
         emit_unsafe(store->arg(0));
-        auto ptr     = emit(store->arg(1));
-        auto ptr_t   = convert(store->arg(1)->type());
+        auto ptr_def = store->arg(1);
+        auto ptr_t   = convert(ptr_def->type());
         auto val_def = store->arg(2);
 
-        if (auto pack = val_def->isa<Pack>()) {
-            auto shape_def = pack->shape();
-            if (auto lit = isa_lit(pack->body()); lit && *lit == 0 && !isa_lit(shape_def)) {
-                declare("void @llvm.memset.p0.i64({}, i8, i64, i1)", ptr_t);
-                auto& w        = shape_def->world();
-                auto body_size = core::op(core::trait::size, pack->body()->type());
-                auto size_def  = core::op(core::nop::mul, shape_def, body_size);
-                auto size      = emit(size_def);
-                auto size_t    = convert(size_def->type());
-
-                print(bb.body().emplace_back(), "call void @llvm.memset.p0.i64({} {}, i8 0, i64 {}, i1 false)", ptr_t,
-                      ptr, size);
-                return {};
-            }
-        }
-
+        auto ptr     = emit(ptr_def);
         auto val   = emit(val_def);
         auto val_t = convert(store->arg(2)->type());
         print(bb.body().emplace_back(), "store {} {}, {} {}", val_t, val, ptr_t, ptr);

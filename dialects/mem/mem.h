@@ -125,6 +125,13 @@ inline const Def* op_free(const Def* mem, const Def* ptr, const Def* dbg = {}) {
     return w.app(w.app(w.ax<free>(), {pointee, w.lit_nat_0()}), {mem, ptr}, dbg);
 }
 
+inline const Def* op_memset(const Def* mem, const Def* ptr, const Def* size, const Def* value, const Def* dbg = {}) {
+    World& w     = ptr->world();
+    auto ptr_ty  = force<Ptr>(ptr->type())->as<App>();
+    auto pointee = ptr_ty->arg(0);
+    return w.app(w.app(w.ax<memset>(), {pointee, w.lit_nat_0()}), {mem, ptr, size, value}, dbg);
+}
+
 static const Def* mem_def(const Def* def) {
     if (match<mem::M>(def->type())) { return def; }
 
