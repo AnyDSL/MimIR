@@ -41,6 +41,9 @@ public:
     /// This function generates the structure for the function arguments.
     void prepareArguments(Lam* lam, Lam* deriv);
 
+    // TODO: comment
+    const Def* buildAugmentedTuple(World& world, Defs aug_ops, const Pi* pb_ty, Lam* f, Lam* f_diff);
+
     /// @name metalevel differentiation of core axioms
     ///@{
     const Def* augment_var(const Var*, Lam*, Lam*);

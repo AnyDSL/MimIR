@@ -65,13 +65,12 @@ const Def* AutoDiffEval::augment_load(const App* load, Lam* f, Lam* f_diff) {
         // TODO: pullback is missing memory object
         auto [pullback_mem, pullback] = mem::op_load(aug_load_mem, pullback_ptr, w.dbg("pullback_load"))->projs<2>();
         partial_pullback[aug_load]    = pullback;
-        return w.tuple({pullback_mem, aug_load_val});
+        auto pb_ty                    = pullback_type(load->arg()->type(), continuation_dom(f->type()));
+        return buildAugmentedTuple(w, {pullback_mem, aug_load_val}, pb_ty, f, f_diff);
     }
 }
 
 const Def* AutoDiffEval::augment_store(const App* store, Lam* f, Lam* f_diff) {
-    auto& world = store->world();
-
     auto aug_arg                     = augment(store->arg(), f, f_diff);
     auto [aug_mem, aug_ptr, aug_val] = aug_arg->projs<3>();
 
@@ -116,7 +115,7 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc, Lam* f, Lam* f_diff) {
 }
 
 const Def* AutoDiffEval::augment_malloc(const App* malloc, Lam* f, Lam* f_diff) {
-    auto aug_arg = augment(malloc->arg(), f, f_diff);
+    // auto aug_arg = augment(malloc->arg(), f, f_diff);
     // TODO: not yet implemented
     malloc->dump();
     assert(false && "not yet implemented");
@@ -124,7 +123,6 @@ const Def* AutoDiffEval::augment_malloc(const App* malloc, Lam* f, Lam* f_diff) 
 }
 
 const Def* AutoDiffEval::augment_bitcast(const App* bitcast, Lam* f, Lam* f_diff) {
-    auto& world  = bitcast->world();
     auto aug_arg = augment(bitcast->arg(), f, f_diff);
 
     auto dst              = core::op_bitcast(bitcast->type(), aug_arg);

@@ -165,15 +165,7 @@ const Def* AutoDiffEval::augment_extract(const Extract* ext, Lam* f, Lam* f_diff
     return aug_ext;
 }
 
-const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
-    auto& world = tup->world();
-
-    // augment ops
-
-    auto projs = tup->projs();
-    // TODO: should use ops instead?
-    DefArray aug_ops(projs, [&](const Def* op) { return augment(op, f, f_diff); });
-
+const Def* AutoDiffEval::buildAugmentedTuple(World& world, Defs aug_ops, const Pi* pb_ty, Lam* f, Lam*) {
     auto aug_tup = world.tuple(aug_ops);
 
     DefArray pbs(aug_ops, [&](const Def* op) {
@@ -191,8 +183,7 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
     //    sum (m,A)
     //      ((cps2ds e0*) (s#0), ..., (cps2ds em*) (s#m))
     // ```
-    auto pb_ty = pullback_type(tup->type(), f_arg_ty);
-    auto pb    = world.nom_lam(pb_ty, world.dbg("tup_pb"));
+    auto pb = world.nom_lam(pb_ty, world.dbg("tup_pb"));
     world.DLOG("Augmented tuple: {} : {}", aug_tup, aug_tup->type());
     world.DLOG("Tuple Pullback: {} : {}", pb, pb->type());
     world.DLOG("shadow pb: {} : {}", shadow_pb, shadow_pb->type());
@@ -246,6 +237,20 @@ const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
 
     return aug_tup;
 #endif
+}
+
+const Def* AutoDiffEval::augment_tuple(const Tuple* tup, Lam* f, Lam* f_diff) {
+    auto& world = tup->world();
+
+    // augment ops
+
+    auto projs = tup->projs();
+    // TODO: should use ops instead?
+    DefArray aug_ops(projs, [&](const Def* op) { return augment(op, f, f_diff); });
+
+    auto pb_ty   = pullback_type(tup->type(), f_arg_ty);
+    auto aug_tup = buildAugmentedTuple(world, aug_ops, pb_ty, f, f_diff);
+    return aug_tup;
 }
 
 const Def* AutoDiffEval::augment_pack(const Pack* pack, Lam* f, Lam* f_diff) {
