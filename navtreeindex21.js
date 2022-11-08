@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa8fa14cdd754f91cc6554c9e71929cce7":[3,0,0,12,3,1],
+"namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa92df19e29c9d45d888ed5f68bad1c3b5":[3,0,0,12,3,29],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fa99cd078887c1055b37f975c255967aa0":[3,0,0,12,3,20],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5faa18cc1625e1c6002a3a8c893acb3dad2":[3,0,0,12,3,22],
 "namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5faa24ae7cbbb43af91676ca4407a6e86d9":[3,0,0,12,3,4],
@@ -247,7 +249,5 @@ var NAVTREEINDEX21 =
 "parser_8h_source.html":[6,0,3,2,5],
 "partial__eval_8cpp.html":[6,0,3,3,1,2],
 "partial__eval_8cpp_source.html":[6,0,3,3,1,2],
-"partial__eval_8h.html":[6,0,3,3,1,3],
-"partial__eval_8h_source.html":[6,0,3,3,1,3],
-"pass_8cpp.html":[6,0,3,3,4]
+"partial__eval_8h.html":[6,0,3,3,1,3]
 };

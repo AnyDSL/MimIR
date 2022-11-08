@@ -1,5 +1,11 @@
 var NAVTREEINDEX13 =
 {
+"clos_8h.html#af2ee3a545a2e1b4a8c97bfe0e3e1ed11":[6,0,1,2,3,9],
+"clos_8h.html#af490651715a7eef676eb6571b74531cb":[6,0,1,2,3,19],
+"clos_8h_source.html":[6,0,1,2,3],
+"clos__conv_8cpp.html":[6,0,1,2,1,0],
+"clos__conv_8cpp.html#a1f38319913759722e2f0d8eafe6b5c92":[6,0,1,2,1,0,0],
+"clos__conv_8cpp.html#a2583fab92188aa336c5a2e565436cd0f":[6,0,1,2,1,0,1],
 "clos__conv_8cpp_source.html":[6,0,1,2,1,0],
 "clos__conv_8h.html":[6,0,1,2,1,1],
 "clos__conv_8h_source.html":[6,0,1,2,1,1],
@@ -15,10 +21,10 @@ var NAVTREEINDEX13 =
 "concepts.html":[4],
 "conceptthorin_1_1axiom__with__subs.html":[3,0,0,135],
 "conceptthorin_1_1axiom__with__subs.html":[4,0,1],
-"conceptthorin_1_1axiom__without__subs.html":[3,0,0,136],
 "conceptthorin_1_1axiom__without__subs.html":[4,0,2],
-"conceptthorin_1_1detail_1_1Elemable.html":[4,0,0,1],
+"conceptthorin_1_1axiom__without__subs.html":[3,0,0,136],
 "conceptthorin_1_1detail_1_1Elemable.html":[3,0,0,5,1],
+"conceptthorin_1_1detail_1_1Elemable.html":[4,0,0,1],
 "conceptthorin_1_1detail_1_1Nodeable.html":[4,0,0,0],
 "conceptthorin_1_1detail_1_1Nodeable.html":[3,0,0,5,0],
 "container_8h.html":[6,0,3,5,5],
@@ -243,11 +249,5 @@ var NAVTREEINDEX13 =
 "core_2normalizers_8cpp.html#aa2a8519281f2f3630acf8bc6b6b61108":[6,0,1,3,3,18],
 "core_2normalizers_8cpp.html#ab05e7dba85ac63fab5c8de4438297c78":[6,0,1,3,3,4],
 "core_2normalizers_8cpp.html#abad584c6ebc6fdcdd2aa5a040f04d229":[6,0,1,3,3,10],
-"core_2normalizers_8cpp.html#ac0d1f9418484a71cb21980018a1cbeb4":[6,0,1,3,3,17],
-"core_2normalizers_8cpp.html#ac0fa3e90fc141397ca743c47518a3c53":[6,0,1,3,3,13],
-"core_2normalizers_8cpp.html#accc185c1a4e10a22e2a8b619f87b8754":[6,0,1,3,3,12],
-"core_2normalizers_8cpp.html#acd0e350aad128d712e8628f602adae31":[6,0,1,3,3,9],
-"core_2normalizers_8cpp.html#ad68afaf43f0ba0e6b75c5cabca98c65a":[6,0,1,3,3,5],
-"core_2normalizers_8cpp.html#addcb11650497c24e35e978d54128602b":[6,0,1,3,3,14],
-"core_2normalizers_8cpp.html#ae27f8befa842a36b7b165dba29d7f55e":[6,0,1,3,3,6]
+"core_2normalizers_8cpp.html#ac0d1f9418484a71cb21980018a1cbeb4":[6,0,1,3,3,17]
 };

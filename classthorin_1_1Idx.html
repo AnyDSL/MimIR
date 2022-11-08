@@ -342,6 +342,13 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a233330a4230d61d4031557f77d6eb2f2"><td class="memItemLeft" align="right" valign="top">static const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Idx.html#a233330a4230d61d4031557f77d6eb2f2">size</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *def)</td></tr>
 <tr class="memdesc:a233330a4230d61d4031557f77d6eb2f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if <code>def</code> isa <code>.<a class="el" href="classthorin_1_1Idx.html" title="A built-in constant of type .Nat -&gt; *.">Idx</a> s</code> and returns s or <code>nullptr</code> otherwise.  <a href="classthorin_1_1Idx.html#a233330a4230d61d4031557f77d6eb2f2">More...</a><br /></td></tr>
 <tr class="separator:a233330a4230d61d4031557f77d6eb2f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">convert between Idx::size and bitwidth and vice versa</div></td></tr>
+<tr class="memitem:a4c41acc0e7b30781bbd85d82f51fa1d3"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Idx.html#a4c41acc0e7b30781bbd85d82f51fa1d3">bitwidth2size</a> (<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> n)</td></tr>
+<tr class="separator:a4c41acc0e7b30781bbd85d82f51fa1d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8df71d71f9471826e15df4a58e49844f"><td class="memItemLeft" align="right" valign="top">static constexpr <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Idx.html#a8df71d71f9471826e15df4a58e49844f">size2bitwidth</a> (<a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> n)</td></tr>
+<tr class="separator:a8df71d71f9471826e15df4a58e49844f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff1cd5016b1bafb2d55fb51c531210b7"><td class="memItemLeft" align="right" valign="top">static std::optional&lt; <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classthorin_1_1Idx.html#aff1cd5016b1bafb2d55fb51c531210b7">size2bitwidth</a> (const <a class="el" href="classthorin_1_1Def.html">Def</a> *<a class="el" href="classthorin_1_1Idx.html#a233330a4230d61d4031557f77d6eb2f2">size</a>)</td></tr>
+<tr class="separator:aff1cd5016b1bafb2d55fb51c531210b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -417,6 +424,36 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00571">571</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a4c41acc0e7b30781bbd85d82f51fa1d3" name="a4c41acc0e7b30781bbd85d82f51fa1d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c41acc0e7b30781bbd85d82f51fa1d3">&#9670;&#160;</a></span>bitwidth2size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> thorin::Idx::bitwidth2size </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00588">588</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="world_8h_source.html#l00416">thorin::World::type_int()</a>.</p>
+
+</div>
+</div>
 <a id="aa359d11b677fd9430d427ca805c0d98a" name="aa359d11b677fd9430d427ca805c0d98a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa359d11b677fd9430d427ca805c0d98a">&#9670;&#160;</a></span>rebuild()</h2>
 
@@ -467,7 +504,7 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00078">78</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
 
-<p class="reference">References <a class="el" href="world_8h_source.html#l00406">thorin::World::type_idx()</a>.</p>
+<p class="reference">References <a class="el" href="world_8h_source.html#l00408">thorin::World::type_idx()</a>.</p>
 
 </div>
 </div>
@@ -501,7 +538,67 @@ Additional Inherited Members</h2></td></tr>
 
 <p class="reference">References <a class="el" href="cast_8h_source.html#l00040">thorin::RuntimeCast&lt; B &gt;::isa()</a>.</p>
 
-<p class="reference">Referenced by <a class="el" href="autodiff__aux_8cpp_source.html#l00090">thorin::autodiff::autodiff_type_fun()</a>, <a class="el" href="ll_8cpp_source.html#l00444">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00173">thorin::World::extract()</a>, <a class="el" href="world_8h_source.html#l00430">thorin::World::iinfer()</a>, <a class="el" href="world_8cpp_source.html#l00228">thorin::World::insert()</a>, <a class="el" href="world_8cpp_source.html#l00327">thorin::World::lit()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00038">thorin::autodiff::normalize_add()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00541">thorin::core::normalize_bitcast()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00364">thorin::core::normalize_shr()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00570">thorin::core::normalize_trait()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00397">thorin::core::normalize_wrap()</a>, and <a class="el" href="autodiff__aux_8cpp_source.html#l00117">thorin::autodiff::zero_def()</a>.</p>
+<p class="reference">Referenced by <a class="el" href="autodiff__aux_8cpp_source.html#l00090">thorin::autodiff::autodiff_type_fun()</a>, <a class="el" href="ll_8cpp_source.html#l00428">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="world_8cpp_source.html#l00173">thorin::World::extract()</a>, <a class="el" href="world_8h_source.html#l00432">thorin::World::iinfer()</a>, <a class="el" href="world_8cpp_source.html#l00228">thorin::World::insert()</a>, <a class="el" href="world_8cpp_source.html#l00327">thorin::World::lit()</a>, <a class="el" href="autodiff_2normalizers_8cpp_source.html#l00038">thorin::autodiff::normalize_add()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00539">thorin::core::normalize_bitcast()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00364">thorin::core::normalize_shr()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00568">thorin::core::normalize_trait()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00397">thorin::core::normalize_wrap()</a>, <a class="el" href="def_8cpp_source.html#l00420">size2bitwidth()</a>, and <a class="el" href="autodiff__aux_8cpp_source.html#l00117">thorin::autodiff::zero_def()</a>.</p>
+
+</div>
+</div>
+<a id="aff1cd5016b1bafb2d55fb51c531210b7" name="aff1cd5016b1bafb2d55fb51c531210b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff1cd5016b1bafb2d55fb51c531210b7">&#9670;&#160;</a></span>size2bitwidth() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> &gt; thorin::Idx::size2bitwidth </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classthorin_1_1Def.html">Def</a> *&#160;</td>
+          <td class="paramname"><em>size</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="def_8cpp_source.html#l00420">420</a> of file <a class="el" href="def_8cpp_source.html">def.cpp</a>.</p>
+
+<p class="reference">References <a class="el" href="cast_8h_source.html#l00040">thorin::RuntimeCast&lt; B &gt;::isa()</a>, <a class="el" href="def_8h_source.html#l00545">thorin::isa_lit()</a>, <a class="el" href="def_8cpp_source.html#l00412">size()</a>, and <a class="el" href="def_8h_source.html#l00589">size2bitwidth()</a>.</p>
+
+</div>
+</div>
+<a id="a8df71d71f9471826e15df4a58e49844f" name="a8df71d71f9471826e15df4a58e49844f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8df71d71f9471826e15df4a58e49844f">&#9670;&#160;</a></span>size2bitwidth() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static constexpr <a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a> thorin::Idx::size2bitwidth </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacethorin.html#a529e2848fe27ea9f7ccf59bec4fd1e91">nat_t</a>&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00589">589</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+
+<p class="reference">Referenced by <a class="el" href="ll_8cpp_source.html#l00428">thorin::ll::Emitter::emit_bb()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00499">thorin::core::normalize_conv()</a>, <a class="el" href="math_2normalizers_8cpp_source.html#l00363">thorin::math::normalize_conv()</a>, <a class="el" href="core_2normalizers_8cpp_source.html#l00568">thorin::core::normalize_trait()</a>, and <a class="el" href="def_8cpp_source.html#l00420">size2bitwidth()</a>.</p>
 
 </div>
 </div>
@@ -526,7 +623,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00586">586</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00595">595</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>
@@ -551,7 +648,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00585">585</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="def_8h_source.html#l00594">594</a> of file <a class="el" href="def_8h_source.html">def.h</a>.</p>
 
 </div>
 </div>

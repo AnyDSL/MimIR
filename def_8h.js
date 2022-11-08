@@ -45,8 +45,6 @@ var def_8h =
     ] ],
     [ "as", "def_8h.html#a77128b6187ea06fcc6b07e5e34efcc3d", null ],
     [ "as_lit", "def_8h.html#a4784a7ada8e2badb49500623824d79e5", null ],
-    [ "bitwidth2size", "def_8h.html#a6063534306e7f37494ae79373e188690", null ],
     [ "isa", "def_8h.html#a4ee21e07e5bfcf99d87cf5b3effb1ba1", null ],
-    [ "isa_lit", "def_8h.html#a196c8dd3968fd28a00dc082c191feee6", null ],
-    [ "size2bitwidth", "def_8h.html#abac2a72ecbe8b34ab7244fc923c4de97", null ]
+    [ "isa_lit", "def_8h.html#a196c8dd3968fd28a00dc082c191feee6", null ]
 ];

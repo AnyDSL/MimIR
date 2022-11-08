@@ -77,7 +77,7 @@ var types_8h =
     [ "operator\"\"_f16", "types_8h.html#a46f692eb62a7bc86d7344d8b6404834e", null ],
     [ "operator\"\"_f32", "types_8h.html#ab9ded46c5f49fb0cfa62298d6c02815a", null ],
     [ "operator\"\"_f64", "types_8h.html#a31d63af589b908d3c86842e24f045b9f", null ],
-    [ "operator\"\"_n", "types_8h.html#a318d11eac70c88469c2ed83dc56ec94b", null ],
+    [ "operator\"\"_n", "types_8h.html#afff921d77b031717b42e5b701d92d0e5", null ],
     [ "operator\"\"_s", "types_8h.html#a1fb0aa15b4f666015b8571bbac5a6d29", null ],
     [ "operator\"\"_s16", "types_8h.html#ab492d5bf259b9311be082f83c78b6a77", null ],
     [ "operator\"\"_s32", "types_8h.html#accecfaeb806e251d33e1028c9c239928", null ],
