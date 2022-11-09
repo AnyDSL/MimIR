@@ -43,6 +43,7 @@ add_thorin_dialect(core
         core/be/ll/ll.cpp
         core/be/ll/ll.h
     DEPENDS
+        math
         mem
         clos
     INSTALL
@@ -91,6 +92,14 @@ add_thorin_dialect(direct
         direct/passes/cps2ds.cpp
         direct/passes/cps2ds.h
         direct/normalizers.cpp
+    INSTALL
+)
+
+add_thorin_dialect(math
+    SOURCES
+        math/math.cpp
+        math/math.h
+        math/normalizers.cpp
     INSTALL
 )
 

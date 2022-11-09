@@ -181,8 +181,12 @@ public:
     size_t num_ops() const { return num_ops_; }
     ///@}
 
-    /// @name set/unset ops
+    /// @name set/unset ops (nominals only)
     ///@{
+    /// You are supposed to set operands from left to right.
+    /// You can change operands later on or even Def::unset them.
+    /// @warning But Thorin assumes that a nominal is "final" if its last operands is set.
+    /// So, don't set the last operand and leave the first one unset.
     Def* set(size_t i, const Def* def);
     Def* set(Defs ops) {
         for (size_t i = 0, e = num_ops(); i != e; ++i) set(i, ops[i]);
@@ -196,14 +200,8 @@ public:
     Def* set_type(const Def*);
     void unset_type();
 
-    /// Are all Def::ops of this nominal set?
-    /// @returns
-    /// * `true`, if all operands are set or Def::num_ops` == 0`.
-    /// * `false`, if all operands are `nullptr`.
-    /// * `assert`s otherwise.
+    /// Yields `true` if empty or the last op is set.
     bool is_set() const;
-    bool is_unset() const { return !is_set(); } ///< **Not** Def::is_set.
-    bool is_unfinished() const;                 ///< Are there still some Def::ops **not** set?
     ///@}
 
     /// @name extended_ops
@@ -325,14 +323,10 @@ public:
 
     /// @name casts
     ///@{
-    template<class T = Def>
-    const T* isa_structural() const {
-        return isa_nom<T, true>();
-    }
-    template<class T = Def>
-    const T* as_structural() const {
-        return as_nom<T, true>();
-    }
+    // clang-format off
+    template<class T = Def> const T* isa_structural() const { return isa_nom<T, true>(); }
+    template<class T = Def> const T*  as_structural() const { return  as_nom<T, true>(); }
+    // clang-format on
 
     /// If `this` is *nom*inal, it will cast constness away and perform a dynamic cast to @p T.
     template<class T = Def, bool invert = false>
@@ -587,6 +581,15 @@ public:
 
     /// Checks if @p def isa `.Idx s` and returns s or `nullptr` otherwise.
     static const Def* size(const Def* def);
+
+    /// @name convert between Idx::size and bitwidth and vice versa
+    ///@{
+    // clang-format off
+    static constexpr nat_t bitwidth2size(nat_t n) { assert(n != 0); return n == 64 ? 0 : (1_n << n); }
+    static constexpr nat_t size2bitwidth(nat_t n) { return n == 0 ? 64 : std::bit_width(n - 1_n); }
+    // clang-format on
+    static std::optional<nat_t> size2bitwidth(const Def* size);
+    ///@}
 
     static constexpr auto Node = Node::Idx;
     friend class World;

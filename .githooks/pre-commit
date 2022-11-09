@@ -2,7 +2,9 @@
 
 BASEDIR=$(dirname "$0")
 
-for FILE in $(git diff --cached --name-only | grep -E '.*\.(c|cpp|h|hpp)$')
-do
-    clang-format -i $FILE
+git diff --cached --name-only | grep -E '.*\.(c|cpp|h|hpp)$' | while read FILE; do
+    if [[ -f $FILE ]]; then
+        echo "formatting '$FILE'"
+        clang-format -i $FILE
+    fi
 done

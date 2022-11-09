@@ -38,7 +38,7 @@ void ScopePhase::start() {
 
     while (!noms.empty()) {
         auto nom = noms.pop();
-        if (elide_empty_ && nom->is_unset()) continue;
+        if (elide_empty_ && !nom->is_set()) continue;
 
         Scope scope(nom);
         scope_ = &scope;

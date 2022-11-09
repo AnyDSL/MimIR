@@ -112,9 +112,6 @@ public:
     friend class World;
 };
 
-inline bool is_sigma_or_arr(const Def* def) { return def->isa<Sigma>() || def->isa<Arr>(); }
-inline bool is_tuple_or_pack(const Def* def) { return def->isa<Tuple>() || def->isa<Pack>(); }
-
 /// Extracts from a Sigma or Arr-typed Extract::tuple the element at position Extract::index.
 class Extract : public Def {
 private:

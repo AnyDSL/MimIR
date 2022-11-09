@@ -36,7 +36,7 @@ const Def* ClosLit::fnc() {
 
 Lam* ClosLit::fnc_as_lam() {
     auto f = fnc();
-    if (auto q = match<clos>(f)) f = q->arg();
+    if (auto a = match<attr>(f)) f = a->arg();
     return f->isa_nom<Lam>();
 }
 
@@ -45,15 +45,15 @@ const Def* ClosLit::env_var() { return fnc_as_lam()->var(Clos_Env_Param); }
 ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
     auto tpl = def->isa<Tuple>();
     if (tpl && isa_clos_type(def->type())) {
-        auto cc  = clos::bot;
+        auto a   = attr::bot;
         auto fnc = std::get<1_u64>(clos_unpack(tpl));
-        if (auto q = match<clos>(fnc)) {
-            fnc = q->arg();
-            cc  = q.id();
+        if (auto fa = match<attr>(fnc)) {
+            fnc = fa->arg();
+            a   = fa.id();
         }
-        if (!lambda_or_branch || fnc->isa<Lam>()) return ClosLit(tpl, cc);
+        if (!lambda_or_branch || fnc->isa<Lam>()) return ClosLit(tpl, a);
     }
-    return ClosLit(nullptr, clos::bot);
+    return ClosLit(nullptr, attr::bot);
 }
 
 const Def* clos_pack_dbg(const Def* env, const Def* lam, const Def* dbg, const Def* ct) {
