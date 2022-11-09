@@ -33,5 +33,5 @@ var searchData=
   ['rowcol_30',['rowcol',['../structthorin_1_1Pos.html#aa97257d36e9907125e825cf4eb64c679',1,'thorin::Pos']]],
   ['run_31',['run',['../namespacethorin_1_1sys.html#ac7f063860c3477d428af8c6387ef38ee',1,'thorin::sys::run()'],['../classthorin_1_1PassMan.html#ae2a34b331418abd402ef465c2be3120c',1,'thorin::PassMan::run()'],['../classthorin_1_1PassMan.html#afaee1f52d697a2ef34af153b77588627',1,'thorin::PassMan::run(World &amp;world, Args &amp;&amp;... args)'],['../classthorin_1_1Phase.html#aad5eb1c3758fd31069e13bb4e538b80b',1,'thorin::Phase::run()'],['../classthorin_1_1Phase.html#ad1755fec57234e097f2578d306008d58',1,'thorin::Phase::run(Args &amp;&amp;... args)'],['../classthorin_1_1clos_1_1FreeDefAna.html#aea7de749452fb6dcd24a53e559358695',1,'thorin::clos::FreeDefAna::run()']]],
   ['rwpass_32',['RWPass',['../classthorin_1_1RWPass.html#a1728f88604f0ed69043f9f9d6dcf3ee1',1,'thorin::RWPass']]],
-  ['rwphase_33',['RWPhase',['../classthorin_1_1RWPhase.html#ab09fb4f1e19dee21787c8bd9eaed0d91',1,'thorin::RWPhase']]]
+  ['rwphase_33',['RWPhase',['../classthorin_1_1RWPhase.html#a28c0bdf51baf34c5e95fd598cccd194f',1,'thorin::RWPhase']]]
 ];

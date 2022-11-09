@@ -163,11 +163,11 @@ var hierarchy =
     [ "thorin::PassMan", "classthorin_1_1PassMan.html", null ],
     [ "thorin::PassTag", "namespacethorin.html#structthorin_1_1PassTag", null ],
     [ "thorin::Phase", "classthorin_1_1Phase.html", [
+      [ "thorin::Cleanup", "classthorin_1_1Cleanup.html", null ],
       [ "thorin::PassManPhase", "classthorin_1_1PassManPhase.html", null ],
       [ "thorin::PassPhase< P >", "classthorin_1_1PassPhase.html", null ],
       [ "thorin::Pipeline", "classthorin_1_1Pipeline.html", null ],
       [ "thorin::RWPhase", "classthorin_1_1RWPhase.html", [
-        [ "thorin::Cleanup", "classthorin_1_1Cleanup.html", null ],
         [ "thorin::FPPhase", "classthorin_1_1FPPhase.html", null ]
       ] ],
       [ "thorin::ScopePhase", "classthorin_1_1ScopePhase.html", [
