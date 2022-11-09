@@ -308,6 +308,7 @@ public:
     const Def* op_free(const Def* ptr, const Def* dbg = {});
     const Def* op_alloc_mem(const Def* type, const Def* dbg = {});
     const Def* op_alloc(const Def* type, const Def* dbg = {});
+    const Def* op_memset(const Def* ptr, const Def* dbg = {});
     void ret(Lam* lam);
 
     void push_loop_frame(const App* for_app, const Def* size);

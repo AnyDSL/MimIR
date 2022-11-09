@@ -31,6 +31,7 @@ const Def* zero(const Def* ty) {
     if (match<math::F>(ty)) { return w.lit(ty, 0.0); }
     if (is_idx(ty)) { return w.lit(ty, 0); }
     if (auto arr = ty->isa<Arr>()) { return w.pack(arr->shape(), zero(arr->body())); }
+    if (auto ptr = match<mem::Ptr>(ty)) { return core::op_bitcast(ty, zero(w)); }
     assert(false);
 }
 
@@ -185,7 +186,7 @@ const Def* AutoDiffEval::create_init_alloc_frame(const std::string& name, const 
         auto [alloc_cache_mem, alloc_cache_ptr] = alloc_cache->projs<2>();
         ptr                                     = alloc_cache_ptr;
 
-        if (zero_) alloc_cache_mem = mem::op_store(alloc_cache_mem, alloc_cache_ptr, zero(alloc_ty));
+        if (zero_) alloc_cache_mem = mem::op_memset(alloc_cache_mem, alloc_cache_ptr);
         return alloc_cache_mem;
     });
 
@@ -1232,6 +1233,12 @@ const Def* AutoDiffEval::op_load_mem(const Def* ptr, const Def* dbg) {
 }
 
 const Def* AutoDiffEval::op_load(const Def* ptr, const Def* dbg) { return op_load_mem(ptr, dbg)->proj(1); }
+
+const Def* AutoDiffEval::op_memset(const Def* ptr, const Def* dbg) {
+    check_mem();
+    current_mem = mem::op_memset(current_mem, ptr, dbg);
+    return current_mem;
+}
 
 const Def* AutoDiffEval::op_store(const Def* ptr, const Def* value, const Def* dbg) {
     check_mem();
