@@ -9,114 +9,99 @@
 
 namespace thorin::clos {
 
-/* auxillary functions */
+/*
+ * Free variable analysis
+ */
 
-// Adjust the index of an argument to account for the env param
-static size_t shift_env(size_t i) { return (i < Clos_Env_Param) ? i : i - 1_u64; }
-
-// Same but skip the env param
-static size_t skip_env(size_t i) { return (i < Clos_Env_Param) ? i : i + 1_u64; }
-
-const Def* clos_insert_env(size_t i, const Def* env, std::function<const Def*(size_t)> f) {
-    return (i == Clos_Env_Param) ? env : f(shift_env(i));
+static bool is_toplevel(const Def* fd) {
+    return fd->dep_const() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term;
 }
 
-const Def* clos_remove_env(size_t i, std::function<const Def*(size_t)> f) { return f(skip_env(i)); }
-
-static const Def* ctype(World& w, Defs doms, const Def* env_type = nullptr) {
-    if (!env_type) {
-        auto sigma = w.nom_sigma(w.type(), 3_u64, w.dbg("Clos"));
-        sigma->set(0_u64, w.type());
-        sigma->set(1_u64, ctype(w, doms, sigma->var(0_u64)));
-        sigma->set(2_u64, sigma->var(0_u64));
-        return sigma;
-    }
-    return w.cn(DefArray(doms.size() + 1,
-                         [&](auto i) { return clos_insert_env(i, env_type, [&](auto j) { return doms[j]; }); }));
+static bool is_memop_res(const Def* fd) {
+    auto proj = fd->isa<Extract>();
+    if (!proj) return false;
+    auto types = proj->tuple()->type()->ops();
+    return std::any_of(types.begin(), types.end(), [](auto d) { return match<mem::M>(d); });
 }
 
-Sigma* clos_type(const Pi* pi) { return ctype(pi->world(), pi->doms(), nullptr)->as_nom<Sigma>(); }
-
-const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
-    assert(isa_clos_type(ct));
-    auto& w      = ct->world();
-    auto pi      = ct->op(1_u64)->as<Pi>();
-    auto new_dom = new_env_type ? clos_sub_env(pi->dom(), new_env_type) : clos_remove_env(pi->dom());
-    return w.cn(new_dom);
-}
-
-const Sigma* isa_clos_type(const Def* def) {
-    auto& w  = def->world();
-    auto sig = def->isa_nom<Sigma>();
-    if (!sig || sig->num_ops() < 3 || sig->op(0_u64) != w.type()) return nullptr;
-    auto var = sig->var(0_u64);
-    if (sig->op(2_u64) != var) return nullptr;
-    auto pi = sig->op(1_u64)->isa<Pi>();
-    return (pi && pi->is_cn() && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
-}
-
-const Def* clos_pack_dbg(const Def* env, const Def* lam, const Def* dbg, const Def* ct) {
-    assert(env && lam);
-    assert(!ct || isa_clos_type(ct));
-    auto& w = env->world();
-    auto pi = lam->type()->as<Pi>();
-    assert(env->type() == pi->dom(Clos_Env_Param));
-    ct = (ct) ? ct : clos_type(w.cn(clos_remove_env(pi->dom())));
-    return w.tuple(ct, {env->type(), lam, env}, dbg)->isa<Tuple>();
-}
-
-std::tuple<const Def*, const Def*, const Def*> clos_unpack(const Def* c) {
-    assert(c && isa_clos_type(c->type()));
-    // auto& w       = c->world();
-    // auto env_type = c->proj(0_u64);
-    // // auto pi       = clos_type_to_pi(c->type(), env_type);
-    // auto fn       = w.extract(c, w.lit_int(3, 1));
-    // auto env      = w.extract(c, w.lit_int(3, 2));
-    // return {env_type, fn, env};
-    auto [ty, pi, env] = c->projs<3>();
-    return {ty, pi, env};
-}
-
-const Def* clos_apply(const Def* closure, const Def* args) {
-    auto& w           = closure->world();
-    auto [_, fn, env] = clos_unpack(closure);
-    auto pi           = fn->type()->as<Pi>();
-    return w.app(fn, DefArray(pi->num_doms(), [&](auto i) { return clos_insert_env(i, env, args); }));
-}
-
-ClosLit isa_clos_lit(const Def* def, bool lambda_or_branch) {
-    auto tpl = def->isa<Tuple>();
-    if (tpl && isa_clos_type(def->type())) {
-        auto cc  = clos::bot;
-        auto fnc = std::get<1_u64>(clos_unpack(tpl));
-        if (auto q = match<clos>(fnc)) {
-            fnc = q->arg();
-            cc  = q.id();
+void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue& worklist) {
+    assert(!match<mem::M>(fd) && "mem tokens must not be free");
+    if (is_toplevel(fd)) return;
+    if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
+        if (var != lam->ret_var()) { node->add_fvs(fd); }
+    } else if (auto q = match(attr::freeBB, fd)) {
+        node->add_fvs(q);
+    } else if (auto pred = fd->isa_nom()) {
+        if (pred != node->nom) {
+            auto [pnode, inserted] = build_node(pred, worklist);
+            node->preds.push_back(pnode);
+            pnode->succs.push_back(node);
+            init_node |= inserted;
         }
-        if (!lambda_or_branch || fnc->isa<Lam>()) return ClosLit(tpl, cc);
+    } else if (fd->dep() == Dep::Var && !fd->isa<Tuple>()) {
+        // Note: Var's can still have Def::Top, if their type is a nom!
+        // So the first case is *not* redundant
+        node->add_fvs(fd);
+    } else if (is_memop_res(fd)) {
+        // Results of memops must not be floated down
+        node->add_fvs(fd);
+    } else {
+        for (auto op : fd->ops()) split_fd(node, op, init_node, worklist);
     }
-    return ClosLit(nullptr, clos::bot);
 }
 
-const Def* ClosLit::env() {
-    assert(def_);
-    return std::get<2_u64>(clos_unpack(def_));
+std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* nom, NodeQueue& worklist) {
+    auto& w            = world();
+    auto [p, inserted] = lam2nodes_.emplace(nom, nullptr);
+    if (!inserted) return {p->second.get(), false};
+    w.DLOG("FVA: create node: {}", nom);
+    p->second      = std::make_unique<Node>(Node{nom, {}, {}, {}, 0});
+    auto node      = p->second.get();
+    auto scope     = Scope(nom);
+    bool init_node = false;
+    for (auto v : scope.free_defs()) { split_fd(node, v, init_node, worklist); }
+    if (!init_node) {
+        worklist.push(node);
+        w.DLOG("FVA: init {}", nom);
+    }
+    return {node, true};
 }
 
-const Def* ClosLit::fnc() {
-    assert(def_);
-    return std::get<1_u64>(clos_unpack(def_));
+void FreeDefAna::run(NodeQueue& worklist) {
+    int iter = 0;
+    while (!worklist.empty()) {
+        auto node = worklist.front();
+        worklist.pop();
+        // w.DLOG("FA: iter {}: {}", iter, node->nom);
+        if (is_done(node)) continue;
+        auto changed = is_bot(node);
+        mark(node);
+        for (auto p : node->preds) {
+            auto& pfvs = p->fvs;
+            for (auto&& pfv : pfvs) { changed |= node->add_fvs(pfv).second; }
+            // w.DLOG("\tFV({}) ∪= FV({}) = {{{, }}}\b", node->nom, p->nom, pfvs);
+        }
+        if (changed) {
+            for (auto s : node->succs) { worklist.push(s); }
+        }
+        iter++;
+    }
 }
 
-Lam* ClosLit::fnc_as_lam() {
-    auto f = fnc();
-    if (auto q = match<clos>(f)) f = q->arg();
-    return f->isa_nom<Lam>();
+DefSet& FreeDefAna::run(Lam* lam) {
+    auto worklist  = NodeQueue();
+    auto [node, _] = build_node(lam, worklist);
+    if (!is_done(node)) {
+        cur_pass_id++;
+        run(worklist);
+    }
+
+    return node->fvs;
 }
 
-const Def* ClosLit::env_var() { return fnc_as_lam()->var(Clos_Env_Param); }
-
-/* Closure Conversion */
+/*
+ * Closure Conversion
+ */
 
 void ClosConv::start() {
     auto externals = std::vector(world().externals().begin(), world().externals().end());
@@ -192,28 +177,36 @@ const Def* ClosConv::rewrite(const Def* def, Def2Def& subst) {
         auto closure                  = clos_pack(env, new_lam, clos_ty);
         world().DLOG("RW: pack {} ~> {} : {}", lam, closure, clos_ty);
         return map(closure);
-    } else if (auto q = match(clos::ret, def)) {
-        if (auto ret_lam = q->arg()->isa_nom<Lam>()) {
-            // assert(ret_lam && ret_lam->is_basicblock());
-            //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
-            //  put into the local subst only
-            auto new_doms  = DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
-            auto new_lam   = ret_lam->stub(w, w.cn(new_doms), ret_lam->dbg());
-            subst[ret_lam] = new_lam;
-            if (ret_lam->is_set()) {
-                new_lam->set_filter(rewrite(ret_lam->filter(), subst));
-                new_lam->set_body(rewrite(ret_lam->body(), subst));
+    } else if (auto a = match<attr>(def)) {
+        switch (a.id()) {
+            case attr::ret:
+                if (auto ret_lam = a->arg()->isa_nom<Lam>()) {
+                    // assert(ret_lam && ret_lam->is_basicblock());
+                    //  Note: This should be cont_lam's only occurance after η-expansion, so its okay to
+                    //  put into the local subst only
+                    auto new_doms =
+                        DefArray(ret_lam->num_doms(), [&](auto i) { return rewrite(ret_lam->dom(i), subst); });
+                    auto new_lam   = ret_lam->stub(w, w.cn(new_doms), ret_lam->dbg());
+                    subst[ret_lam] = new_lam;
+                    if (ret_lam->is_set()) {
+                        new_lam->set_filter(rewrite(ret_lam->filter(), subst));
+                        new_lam->set_body(rewrite(ret_lam->body(), subst));
+                    }
+                    return new_lam;
+                }
+                break;
+            case attr::fstclassBB:
+            case attr::freeBB: {
+                // Note: Same thing about η-conversion applies here
+                auto bb_lam = a->arg()->isa_nom<Lam>();
+                assert(bb_lam && bb_lam->is_basicblock());
+                auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
+                subst[bb_lam]              = clos_pack(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
+                rewrite_body(new_lam, subst);
+                return map(subst[bb_lam]);
             }
-            return new_lam;
+            default: break;
         }
-    } else if (auto q = match<clos>(def); q && (q.id() == clos::fstclassBB || q.id() == clos::freeBB)) {
-        // Note: Same thing about η-conversion applies here
-        auto bb_lam = q->arg()->isa_nom<Lam>();
-        assert(bb_lam && bb_lam->is_basicblock());
-        auto [_, __, ___, new_lam] = make_stub({}, bb_lam, subst);
-        subst[bb_lam]              = clos_pack(w.tuple(), new_lam, rewrite(bb_lam->type(), subst));
-        rewrite_body(new_lam, subst);
-        return map(subst[bb_lam]);
     } else if (auto [var, lam] = ca_isa_var<Lam>(def); var && lam && lam->ret_var() == var) {
         // HACK to rewrite a retvar that is defined in an enclosing lambda
         // If we put external bb's into the env, this should never happen
@@ -322,94 +315,6 @@ ClosConv::Stub ClosConv::make_stub(Lam* old_lam, Def2Def& subst) {
     auto closure = make_stub(fvs, old_lam, subst);
     worklist_.emplace(closure.fn);
     return closure;
-}
-
-/* Free variable analysis */
-
-static bool is_toplevel(const Def* fd) {
-    return fd->dep_const() || fd->isa_nom<Global>() || fd->isa<Axiom>() || fd->sort() != Sort::Term;
-}
-
-static bool is_memop_res(const Def* fd) {
-    auto proj = fd->isa<Extract>();
-    if (!proj) return false;
-    auto types = proj->tuple()->type()->ops();
-    return std::any_of(types.begin(), types.end(), [](auto d) { return match<mem::M>(d); });
-}
-
-void FreeDefAna::split_fd(Node* node, const Def* fd, bool& init_node, NodeQueue& worklist) {
-    assert(!match<mem::M>(fd) && "mem tokens must not be free");
-    if (is_toplevel(fd)) return;
-    if (auto [var, lam] = ca_isa_var<Lam>(fd); var && lam) {
-        if (var != lam->ret_var()) { node->add_fvs(fd); }
-    } else if (auto q = match(clos::freeBB, fd)) {
-        node->add_fvs(q);
-    } else if (auto pred = fd->isa_nom()) {
-        if (pred != node->nom) {
-            auto [pnode, inserted] = build_node(pred, worklist);
-            node->preds.push_back(pnode);
-            pnode->succs.push_back(node);
-            init_node |= inserted;
-        }
-    } else if (fd->dep() == Dep::Var && !fd->isa<Tuple>()) {
-        // Note: Var's can still have Def::Top, if their type is a nom!
-        // So the first case is *not* redundant
-        node->add_fvs(fd);
-    } else if (is_memop_res(fd)) {
-        // Results of memops must not be floated down
-        node->add_fvs(fd);
-    } else {
-        for (auto op : fd->ops()) split_fd(node, op, init_node, worklist);
-    }
-}
-
-std::pair<FreeDefAna::Node*, bool> FreeDefAna::build_node(Def* nom, NodeQueue& worklist) {
-    auto& w            = world();
-    auto [p, inserted] = lam2nodes_.emplace(nom, nullptr);
-    if (!inserted) return {p->second.get(), false};
-    w.DLOG("FVA: create node: {}", nom);
-    p->second      = std::make_unique<Node>(Node{nom, {}, {}, {}, 0});
-    auto node      = p->second.get();
-    auto scope     = Scope(nom);
-    bool init_node = false;
-    for (auto v : scope.free_defs()) { split_fd(node, v, init_node, worklist); }
-    if (!init_node) {
-        worklist.push(node);
-        w.DLOG("FVA: init {}", nom);
-    }
-    return {node, true};
-}
-
-void FreeDefAna::run(NodeQueue& worklist) {
-    int iter = 0;
-    while (!worklist.empty()) {
-        auto node = worklist.front();
-        worklist.pop();
-        // w.DLOG("FA: iter {}: {}", iter, node->nom);
-        if (is_done(node)) continue;
-        auto changed = is_bot(node);
-        mark(node);
-        for (auto p : node->preds) {
-            auto& pfvs = p->fvs;
-            for (auto&& pfv : pfvs) { changed |= node->add_fvs(pfv).second; }
-            // w.DLOG("\tFV({}) ∪= FV({}) = {{{, }}}\b", node->nom, p->nom, pfvs);
-        }
-        if (changed) {
-            for (auto s : node->succs) { worklist.push(s); }
-        }
-        iter++;
-    }
-}
-
-DefSet& FreeDefAna::run(Lam* lam) {
-    auto worklist  = NodeQueue();
-    auto [node, _] = build_node(lam, worklist);
-    if (!is_done(node)) {
-        cur_pass_id++;
-        run(worklist);
-    }
-
-    return node->fvs;
 }
 
 } // namespace thorin::clos

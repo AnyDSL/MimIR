@@ -64,6 +64,7 @@ public:
     /// have seen PassMan::curr_nom to begin with (unless it is Def::is_external).
     virtual void enter() {}
 
+    /// Invoked **once** before entering the main rewrite loop.
     virtual void prepare() {}
     ///@}
 

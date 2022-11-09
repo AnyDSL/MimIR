@@ -14,7 +14,7 @@
     .let t = %autodiff.add [I32,I32] (((41:I32),(42:I32)),((43:I32),(44:I32)));
     .let a = t#(0:(.Idx 2));
     .let b = t#(1:(.Idx 2));
-    .let c = %core.wrap.mul (0:.Nat, 4294967296:.Nat) (a, b);
+    .let c = %core.wrap.mul 4294967296:.Nat 0:.Nat (a, b);
     return (mem,c)
 };
 

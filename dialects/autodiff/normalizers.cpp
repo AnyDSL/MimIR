@@ -6,6 +6,7 @@
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/core/core.h"
+#include "dialects/math/math.h"
 
 namespace thorin::autodiff {
 
@@ -77,18 +78,17 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         world.DLOG("add int");
         auto width = as_lit(world.iinfer(a));
         world.DLOG("width {}", width);
-        auto int_add =
-            world.app(world.app(world.ax(core::wrap::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
+        auto int_add = core::op(core::wrap::add, 0_n, a, b);
         world.DLOG("int add {} : {}", int_add, world.iinfer(int_add));
         return int_add;
-    } else if (auto real = match<core::Real>(T)) {
-        auto width = as_lit<nat_t>(real->arg());
-        world.DLOG("width {}", width);
-        auto real_add =
-            world.app(world.app(world.ax(core::rop::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
-        world.DLOG("real add {} : {}", real_add, real_add->type());
-        return real_add;
-
+    } else if (auto real = match<math::F>(T)) {
+        // auto width = as_lit<nat_t>(real->arg());
+        // world.DLOG("width {}", width);
+        // auto real_add =
+        //     world.app(world.app(world.ax(core::rop::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
+        // world.DLOG("real add {} : {}", real_add, real_add->type());
+        // return real_add;
+        assert(false && "TODO: add floats");
     } else if (auto app = T->isa<App>()) {
         auto callee = app->callee();
         assert(0 && "not handled");
