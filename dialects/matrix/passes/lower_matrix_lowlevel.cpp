@@ -192,19 +192,33 @@ const Def* LowerMatrixLowLevel::rewrite_def_(const Def* def) {
         // return world.type_nat();
 
         // auto arr_ty = world.arr(size, T);
-        auto arr_ty = arrTyOfMatrixTy(mat_ax);
+
+        // DefArray new_ops{def->ops(), [&](const Def* op) { return rewrite_def(op); }};
+        // auto aug_mat_ax = def->rebuild(world, def->type(), new_ops, def->dbg());
+
+        // auto arr_ty = arrTyOfMatrixTy(aug_mat_ax);
+        auto [_, S, T] = mat_ax->args<3>();
+        S              = rewrite_def(S);
+        T              = rewrite_def(T);
+        auto arr_ty    = arrTyOfMatrixTy(S, T);
 
         auto addr_space = world.lit_nat_0();
         auto ptr_ty     = world.app(world.ax<mem::Ptr>(), {arr_ty, addr_space});
 
         return ptr_ty;
     } else if (auto init_ax = match<matrix::init>(def)) {
-        auto [n, S, T, mem]  = init_ax->args<4>();
+        auto [_, S, T, mem]  = init_ax->args<4>();
+        S                    = rewrite_def(S);
+        T                    = rewrite_def(T);
+        mem                  = rewrite_def(mem);
         auto arr_ty          = arrTyOfMatrixTy(S, T);
         auto [mem2, ptr_mat] = mem::op_alloc(arr_ty, mem)->projs<2>();
         return world.tuple({mem2, ptr_mat});
     } else if (auto read_ax = match<matrix::read>(def)) {
         auto [mem, mat, idx] = read_ax->args<3>();
+        mem                  = rewrite_def(mem);
+        mat                  = rewrite_def(mat);
+        idx                  = rewrite_def(idx);
         // TODO: check if mat is already converted
         auto ptr_mat     = rewrite_def(mat);
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
@@ -212,6 +226,10 @@ const Def* LowerMatrixLowLevel::rewrite_def_(const Def* def) {
         return world.tuple({mem2, val});
     } else if (auto insert_ax = match<matrix::insert>(def)) {
         auto [mem, mat, idx, val] = insert_ax->args<4>();
+        mem                       = rewrite_def(mem);
+        mat                       = rewrite_def(mat);
+        idx                       = rewrite_def(idx);
+        val                       = rewrite_def(val);
         auto ptr_mat              = rewrite_def(mat);
         auto element_ptr          = op_lea_tuple(ptr_mat, idx);
         auto mem2                 = mem::op_store(mem, element_ptr, val);
@@ -219,7 +237,11 @@ const Def* LowerMatrixLowLevel::rewrite_def_(const Def* def) {
         return world.tuple({mem2, ptr_mat});
     } else if (auto const_ax = match<matrix::constMat>(def)) {
         auto [mem, val]      = const_ax->args<2>();
+        mem                  = rewrite_def(mem);
+        val                  = rewrite_def(val);
         auto [n_def, S, T]   = const_ax->callee()->as<App>()->args<3>();
+        S                    = rewrite_def(S);
+        T                    = rewrite_def(T);
         auto arr_ty          = arrTyOfMatrixTy(S, T);
         auto [mem2, ptr_mat] = mem::op_alloc(arr_ty, mem)->projs<2>();
 
