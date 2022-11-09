@@ -124,6 +124,7 @@ add_thorin_dialect(autodiff
         autodiff/normalizers.cpp
     DEPENDS
         mem
+        math
         core
         clos
         affine

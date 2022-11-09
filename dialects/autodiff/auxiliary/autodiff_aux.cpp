@@ -174,11 +174,11 @@ const Def* zero_def(const Def* T) {
         world.DLOG("zero_def for int is {}", zero);
         return zero;
     } else if (auto real = match<math::F>(T)) {
-        auto width = as_lit<nat_t>(real->arg());
-        // auto zero  = math::lit_(T->world(), width, 0.0);
-        // world.DLOG("zero_def for real is {}", zero);
-        // return zero;
-        assert(false && "TODO: floats");
+        // auto width = as_lit<nat_t>(real->arg());
+        // TODO: get width correctly
+        auto zero = math::lit_f(T->world(), 64, 0.0);
+        world.DLOG("zero_def for real is {}", zero);
+        return zero;
     } else if (auto sig = T->isa<Sigma>()) {
         DefArray ops(sig->ops(), [&](const Def* op) { return world.app(world.ax<zero>(), op); });
         return world.tuple(ops);

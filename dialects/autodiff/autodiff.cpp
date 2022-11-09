@@ -30,7 +30,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
                     // zero and add need to be close together
                     man.add<thorin::autodiff::AutoDiffZero>();
                 });
-                builder.extend_opt_phase(299, [](PassMan& man) {
+                builder.extend_opt_phase(126, [](PassMan& man) {
                     man.add<thorin::autodiff::AutoDiffZeroCleanup>();
                     man.add<thorin::autodiff::AutoDiffExternalCleanup>();
                 });
