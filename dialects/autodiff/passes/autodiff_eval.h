@@ -8,6 +8,8 @@
 
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
+#include "dialects/autodiff/auxiliary/autodiff_cache_analysis.h"
+#include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
 #include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
@@ -243,9 +245,6 @@ public:
     AutoDiffEval(PassMan& man)
         : RWPass(man, "autodiff_eval") {}
 
-    void prepare(Lam*);
-    void mark(const Def* def);
-    void scan(const Def* def);
     Lam* init_caches(Lam* next);
 
     const Def* rewrite(const Def*) override;
@@ -372,6 +371,14 @@ public:
         return mem;
     }
 
+    bool requires_caching(const Def* def){
+        return cache_analysis->requires_caching(def);
+    }
+
+    bool isa_flow_def(const Def* def){
+        return flow_analysis->isa_flow_def(def);
+    }
+
     friend LoopFrame;
 
 private:
@@ -381,7 +388,6 @@ private:
     DefSet visited_prop;
     DefSet visited_scan;
     DefSet markings;
-    DefSet requires_caching;
 
     Def2Def gradient_pointers;
 
@@ -398,6 +404,9 @@ private:
     const Def* current_mem = nullptr;
     State current_state    = State::Unknown;
     std::stack<const Def*> mem_stack;
+
+    std::unique_ptr<FlowAnalysis> flow_analysis;
+    std::unique_ptr<CacheAnalysis> cache_analysis;
 };
 
 } // namespace thorin::autodiff

@@ -207,9 +207,7 @@ const Def* AutoDiffEval::create_init_slot_frame(const std::string& name, const D
 }
 
 void AutoDiffEval::preserve(const Def* target) {
-    if (requires_caching.contains(target)) {
-        requires_caching.erase(target);
-
+    if (requires_caching(target)) {
         const Def* value = augment(target);
         auto& w          = world();
 
@@ -256,8 +254,11 @@ const Def* AutoDiffEval::augment_slot(const App* slot) {
     auto aug_slot = op_slot_mem(type);
 
     auto ptr               = slot->proj(1);
-    auto gradient_ptr      = create_init_slot_frame("gradient_" + slot->name(), type, true);
-    gradient_pointers[ptr] = gradient_ptr;
+
+    if(isa_flow_def(ptr)){
+        auto gradient_ptr      = create_init_slot_frame("gradient_" + slot->name(), type, true);
+        gradient_pointers[ptr] = gradient_ptr;
+    }
 
     if (current_loop == root) { add_inverted(ptr, aug_slot->proj(1)); }
 
@@ -271,10 +272,12 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc) {
     auto type          = alloc->decurry()->arg(0_s);
     auto aug_type      = augment(type);
     auto aug_alloc_mem = op_alloc_mem(aug_type);
-
     auto ptr               = alloc->proj(1);
-    auto gradient_ptr      = create_init_alloc_frame("gradient_" + alloc->name(), aug_type);
-    gradient_pointers[ptr] = gradient_ptr;
+
+    if(isa_flow_def(ptr)){
+        auto gradient_ptr      = create_init_alloc_frame("gradient_" + alloc->name(), aug_type);
+        gradient_pointers[ptr] = gradient_ptr;
+    }
 
     if (current_loop == root) { add_inverted(ptr, aug_alloc_mem->proj(1)); }
 
@@ -469,7 +472,7 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
     } else {
         if (auto grad_ptr = gradient_pointers[def]) {
             return grad_ptr;
-        } else if (auto extract = def->isa<Extract>()) {
+        }/* else if (auto extract = def->isa<Extract>()) {
             auto tup = extract->tuple();
             if (auto alloc = match<mem::alloc>(tup)) {
                 assert(false);
@@ -490,7 +493,7 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
                 gradient_pointers[ptr] = gradient_ptr;
                 return gradient_ptr;
             }
-        }
+        }*/
     }
 
     return nullptr;
@@ -539,9 +542,12 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
     if (auto store = match<mem::store>(def)) {
         auto ptr      = store->arg(1);
         auto grad_ptr = grad_arr(ptr);
-        auto load_val = op_load(grad_ptr);
-        op_store(grad_ptr, zero(load_val->type()));
-        attach_gradient(store->arg(), one_hot_other_bot(store->arg(), load_val, 2));
+
+        if(grad_ptr){
+            auto load_val = op_load(grad_ptr);
+            op_store(grad_ptr, zero(load_val->type()));
+            attach_gradient(store->arg(), one_hot_other_bot(store->arg(), load_val, 2));
+        }
         return;
     }
 
@@ -553,14 +559,15 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto arr  = load->arg(1);
         auto val  = load->proj(1);
         auto grad = grad_arr(arr);
-        assert(grad);
+        if(grad){
+            assert(grad);
+            auto gradient_val = gradient->proj(1);
+            assert(gradient_val);
 
-        auto gradient_val = gradient->proj(1);
-        assert(gradient_val);
-
-        auto load_val     = op_load(grad);
-        auto get_gradient = sum(load_val, gradient_val);
-        op_store(grad, get_gradient);
+            auto load_val     = op_load(grad);
+            auto get_gradient = sum(load_val, gradient_val);
+            op_store(grad, get_gradient);
+        }
         return;
     }
 
@@ -771,7 +778,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 Scope scope(body_lam);
                 for (const Def* free_def : scope.free_defs()) {
                     auto free_ty = free_def->type();
-                    if (requires_caching.contains(free_ty)) { resolve(free_def); }
+                    if (requires_caching(free_ty)) { resolve(free_def); }
                     // if (match<mem::Ptr>(free_ty)) { check_grad_arr(free_def); }
                 }
 

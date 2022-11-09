@@ -48,108 +48,6 @@ Lam* AutoDiffEval::free_memory() {
     return free_memory;
 }
 
-void AutoDiffEval::mark(const Def* def) { markings.insert(def); }
-
-const App* is_load_val(const Def* def) {
-    if (auto extr = def->isa<Extract>()) {
-        auto tuple = extr->tuple();
-        if (auto load = match<mem::load>(tuple)) { return load; }
-    }
-
-    return nullptr;
-}
-
-bool has_op_store(const Def* def, DefSet& visited) {
-    if (visited.contains(def)) return false;
-    visited.insert(def);
-
-    if (auto extr = def->isa<Extract>()) {
-        if (has_op_store(extr->tuple(), visited)) { return true; }
-    } else if (auto lea = match<mem::lea>(def)) {
-        auto [arr_ptr, _] = lea->args<2>();
-
-        if (has_op_store(arr_ptr, visited)) { return true; }
-    } else if (match<mem::store>(def)) {
-        return true;
-    }
-
-    if (match<mem::Ptr>(def->type()) || def->isa<Tuple>()) {
-        for (auto use : def->uses()) {
-            if (has_op_store(use, visited)) { return true; }
-        }
-    }
-
-    return false;
-}
-
-bool has_op_store(const Def* ptr) {
-    DefSet visited;
-    return has_op_store(ptr, visited);
-}
-
-bool contains_load(const Def* def) {
-    if (def->isa<Var>()) return false;
-    if (match<mem::load>(def)) return true;
-
-    for (auto op : def->ops()) {
-        if (contains_load(op)) { return true; }
-    }
-
-    return false;
-}
-
-void AutoDiffEval::scan(const Def* def) {
-    if (!visited_scan.insert(def).second) return;
-
-    if (auto rop = match<math::arith>(def)) {
-        if (rop.id() == math::arith::mul) {
-            mark(rop->arg(0));
-            mark(rop->arg(1));
-        } else if (rop.id() == math::arith::div) {
-            mark(rop->arg(0));
-            mark(rop->arg(1));
-        }
-    } else if (auto extrema = match<math::extrema>(def)) {
-        if (extrema.id() == math::extrema::maximum || extrema.id() == math::extrema::minimum) {
-            mark(extrema->arg(0));
-            mark(extrema->arg(1));
-        }
-    }
-
-    if (auto exp = match<math::exp>(def)) {
-        if (exp.id() == math::exp::exp) {
-            mark(exp);
-        } else if (exp.id() == math::exp::log) {
-            mark(exp->arg(0));
-        }
-    }
-
-    if (auto lea = match<mem::lea>(def)) {
-        auto index = lea->arg(1);
-        if (contains_load(index)) { mark(index); }
-    }
-
-    if (auto gamma = match<math::gamma>(def)) { mark(gamma->arg(0)); }
-
-    for (auto op : def->ops()) { scan(op); }
-}
-
-void AutoDiffEval::prepare(Lam* lam) {
-    scan(lam);
-
-    Scope scope(lam);
-    for (auto mark : markings) {
-        if (scope.bound(mark)) {
-            if (auto load = is_load_val(mark)) {
-                auto ptr = load->arg(1);
-                if (has_op_store(ptr)) { requires_caching.insert(mark); }
-            } else if (!mark->isa<Lit>()) {
-                requires_caching.insert(mark);
-            }
-        }
-    }
-}
-
 Lam* AutoDiffEval::init_caches(Lam* next) {
     auto& w        = world();
     Lam* current   = build(w).mem_ty().lam("init_caches");
@@ -170,18 +68,10 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto diffee = def->isa_nom<Lam>();
     assert(diffee);
 
-    FlowAnalysis flow_analysis;
-    flow_analysis.run(diffee);
-    CacheAnalysis cache_analysis(flow_analysis);
-    cache_analysis.run();
-
-    requires_caching = cache_analysis.targets();
-
-    for (auto def : requires_caching) { def->dump(1); }
-
-    auto size = requires_caching.size();
-
-    // prepare(diffee);
+    flow_analysis = std::make_unique<FlowAnalysis>();
+    flow_analysis->run(diffee);
+    cache_analysis = std::make_unique<CacheAnalysis>(*flow_analysis.get());
+    cache_analysis->run();
 
     auto diff_ty = autodiff_type_fun_pi(diffee->type());
 

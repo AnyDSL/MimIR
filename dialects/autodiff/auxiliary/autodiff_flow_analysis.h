@@ -16,6 +16,14 @@ public:
     DefSet flow_set;
     std::vector<std::pair<const Def*, const Def*>> reasoning_list;
 
+    DefSet& flow_defs(){
+        return flow_set;
+    }
+
+    bool isa_flow_def(const Def* def){
+        return flow_set.contains(def);
+    }
+
     bool add(const Def* present, const Def* next) {
         if (flow_set.contains(present)) {
             reasoning_list.push_back({present, next});

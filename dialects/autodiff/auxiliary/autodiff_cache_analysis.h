@@ -24,6 +24,10 @@ public:
 
     DefSet& targets() { return targets_; }
 
+    bool requires_caching(const Def* def){
+        return targets_.contains(def);
+    }
+
     void require(const Def* def) { requirements.insert(def); }
 
     void visit(const Def* def) {
@@ -60,16 +64,14 @@ public:
     }
 
     void filter(const Def* def) {
-        /*if(auto arith = match<math::arith>(def)){
+        if(auto arith = match<math::arith>(def)){
             auto [left, right] = arith->args<2>();
 
             filter(left);
             filter(right);
         }else{
             requirements_filtered.insert(def);
-        }*/
-
-        requirements_filtered.insert(def);
+        }
     }
 
     void filter() {
@@ -77,13 +79,11 @@ public:
     }
 
     void run() {
-        auto& flow_set = flow_analysis.flow_set;
-
-        for (auto flow_def : flow_set) { visit(flow_def); }
+        for (auto flow_def : flow_analysis.flow_defs()) { visit(flow_def); }
 
         filter();
 
-        for (auto requirement : requirements) {
+        for (auto requirement : requirements_filtered) {
             if (auto load = is_load_val(requirement)) {
                 auto ptr = load->arg(1);
                 if (has_op_store(ptr)) { targets_.insert(requirement); }
