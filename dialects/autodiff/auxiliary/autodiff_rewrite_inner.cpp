@@ -216,12 +216,12 @@ void AutoDiffEval::preserve(const Def* target) {
 
         auto loop_size_nat = core::op_bitcast(w.type_nat(), loop_size);
 
-        auto arr_ty          = w.arr(loop_size_nat, value->type());
+        auto arr_ty = w.arr(loop_size_nat, value->type());
 
         const Def* alloc_cache_ptr;
-        if(isa_lit(loop_size_nat)){
+        if (isa_lit(loop_size_nat)) {
             alloc_cache_ptr = create_init_slot_frame("cache_" + value->name(), arr_ty);
-        }else{      
+        } else {
             alloc_cache_ptr = create_init_alloc_frame("cache_" + value->name(), arr_ty);
         }
 
@@ -262,9 +262,9 @@ const Def* AutoDiffEval::augment_slot(const App* slot) {
     auto ptr = slot->proj(1);
 
     if (isa_flow_def(ptr)) {
-        //auto gradient_ptr = op_slot(type, w.dbg("gradient_" + slot->name()));
-        //op_store(gradient_ptr, zero(type));
-        //gradient_pointers[ptr] = gradient_ptr;
+        // auto gradient_ptr = op_slot(type, w.dbg("gradient_" + slot->name()));
+        // op_store(gradient_ptr, zero(type));
+        // gradient_pointers[ptr] = gradient_ptr;
         auto gradient_ptr      = create_init_slot_frame("gradient_" + slot->name(), type, true);
         gradient_pointers[ptr] = gradient_ptr;
     }
@@ -275,7 +275,7 @@ const Def* AutoDiffEval::augment_slot(const App* slot) {
 }
 
 const Def* AutoDiffEval::augment_alloc(const App* alloc) {
-    auto& w = world();
+    auto& w      = world();
     auto org_ptr = alloc->proj(1);
     augment(alloc->arg(0_s));
 
@@ -285,10 +285,10 @@ const Def* AutoDiffEval::augment_alloc(const App* alloc) {
     auto ptr           = alloc->proj(1);
 
     if (isa_flow_def(ptr)) {
-        //auto gradient_ptr      = create_init_slot_frame("gradient_" + alloc->name(), aug_type, true);
-        //gradient_pointers[ptr] = gradient_ptr;
+        // auto gradient_ptr      = create_init_slot_frame("gradient_" + alloc->name(), aug_type, true);
+        // gradient_pointers[ptr] = gradient_ptr;
 
-        auto gradient_ptr      = op_alloc(aug_type, w.dbg("gradient_" + alloc->name()));
+        auto gradient_ptr = op_alloc(aug_type, w.dbg("gradient_" + alloc->name()));
         op_store(gradient_ptr, zero(aug_type));
         gradient_pointers[ptr] = gradient_ptr;
     }
@@ -471,13 +471,13 @@ const Def* AutoDiffEval::grad_arr(const Def* def) {
 
     if (auto grad_ptr = gradient_pointers[def]) {
         return grad_ptr;
-    }else if (auto lea = match<mem::lea>(def)) {
+    } else if (auto lea = match<mem::lea>(def)) {
         auto [arr, index] = lea->args<2>();
         auto grad         = grad_arr(arr);
-        if(grad != nullptr) return mem::op_lea(grad, resolve(index));
+        if (grad != nullptr) return mem::op_lea(grad, resolve(index));
     } else if (auto bitcast = match<core::bitcast>(def)) {
         auto grad = grad_arr(bitcast->arg());
-        if(grad != nullptr) return w.app(bitcast->callee(), grad);
+        if (grad != nullptr) return w.app(bitcast->callee(), grad);
     }
 
     return nullptr;
@@ -522,7 +522,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
     if (!scope.bound(def)) return;
     if (def->isa<Var>()) { return; }
     if (!visited_prop.insert(def).second) { return; }
-    auto& w       = world();
+    auto& w = world();
 
     if (auto store = match<mem::store>(def)) {
         auto ptr      = store->arg(1);
@@ -536,7 +536,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         return;
     }
 
-    /*if (auto alloc = match<mem::alloc>(def)) {
+    if (auto alloc = match<mem::alloc>(def)) {
         auto ptr      = alloc->proj(1);
         auto grad_ptr = grad_arr(ptr);
 
@@ -544,7 +544,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
             op_free(grad_ptr, w.dbg("free_" + grad_ptr->name()));
         }
         return;
-    }*/
+    }
 
     auto gradient = get_gradient(def);
     if (gradient == nullptr) { return; }

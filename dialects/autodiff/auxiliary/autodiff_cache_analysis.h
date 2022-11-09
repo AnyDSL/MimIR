@@ -91,11 +91,10 @@ public:
         }
     }
 
-
-    bool isa_nested_var(const Def* def){
-        if( auto extract = def->isa<Extract>() ){
+    bool isa_nested_var(const Def* def) {
+        if (auto extract = def->isa<Extract>()) {
             return isa_nested_var(extract->tuple());
-        }else if( def->isa<Var>() ){
+        } else if (def->isa<Var>()) {
             return true;
         }
 

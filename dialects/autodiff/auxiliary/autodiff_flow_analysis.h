@@ -14,7 +14,7 @@ namespace thorin::autodiff {
 class FlowAnalysis {
 public:
     DefSet flow_set;
-    //std::vector<std::pair<const Def*, const Def*>> reasoning_list;
+    // std::vector<std::pair<const Def*, const Def*>> reasoning_list;
 
     DefSet& flow_defs() { return flow_set; }
 
@@ -22,14 +22,14 @@ public:
 
     bool add(const Def* present, const Def* next) {
         if (flow_set.contains(present)) {
-            //reasoning_list.push_back({present, next});
+            // reasoning_list.push_back({present, next});
             flow_set.insert(next);
             return true;
         } else {
             return false;
         }
     }
-    
+
     bool add_projs(const Def* present, const Def* next) {
         if (flow_set.contains(present)) {
             for (auto proj : next->projs()) { flow_set.insert(proj); }
@@ -74,7 +74,6 @@ public:
                 exit = app->callee();
                 return add_projs(exit, arg);
             }
-
         }
 
         return true;
