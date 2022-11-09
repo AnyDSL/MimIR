@@ -216,20 +216,22 @@ void AutoDiffEval::preserve(const Def* target) {
 
         auto loop_size_nat = core::op_bitcast(w.type_nat(), loop_size);
 
-        auto arr_ty = w.arr(loop_size_nat, value->type());
+        auto ty = value->type();
 
-        const Def* alloc_cache_ptr;
-        if (isa_lit(loop_size_nat)) {
-            alloc_cache_ptr = create_init_slot_frame("cache_" + value->name(), arr_ty);
+        const Def* cache_ptr = nullptr;
+        const Def* store_lea = nullptr;
+        if (auto lit = isa_lit(loop_size_nat); lit && *lit == 1) {
+            store_lea = create_init_slot_frame("cache_" + value->name(), ty);
+            cache_ptr = store_lea;
         } else {
-            alloc_cache_ptr = create_init_alloc_frame("cache_" + value->name(), arr_ty);
+            auto arr_ty             = w.arr(loop_size_nat, ty);
+            auto alloc_cache_ptr    = create_init_alloc_frame("cache_" + value->name(), arr_ty);
+            auto unsized_arr_ptr_ty = mem::type_ptr(w.arr(w.top(w.type_nat()), value->type()));
+            cache_ptr               = core::op_bitcast(unsized_arr_ptr_ty, alloc_cache_ptr, alloc_cache_ptr->dbg());
+            store_lea               = mem::op_lea(cache_ptr, cache_index, w.dbg("lea_cache"));
         }
 
-        auto unsized_arr_ptr_ty = mem::type_ptr(w.arr(w.top(w.type_nat()), value->type()));
-        const Def* cache_ptr    = core::op_bitcast(unsized_arr_ptr_ty, alloc_cache_ptr, alloc_cache_ptr->dbg());
-
-        auto cache_lea = mem::op_lea(cache_ptr, cache_index, w.dbg("lea_cache"));
-        op_store(cache_lea, value, w.dbg("store_cache"));
+        op_store(store_lea, value, w.dbg("store_cache"));
         cache_map[target]                = cache_ptr;
         cache_loop_assignment[cache_ptr] = current_loop;
     }
@@ -372,10 +374,15 @@ const Def* AutoDiffEval::resolve_impl(const Def* def) {
     assert(!def->isa<Var>());
 
     if (auto cache_arr = cache_map[def]) {
-        auto loop        = cache_loop_assignment[cache_arr];
-        auto cache_index = loop->cache_index();
-        assert(cache_index);
-        auto cache_lea = mem::op_lea(cache_arr, cache_index);
+        auto loop = cache_loop_assignment[cache_arr];
+        const Def* cache_lea;
+        if (loop == root) {
+            cache_lea = cache_arr;
+        } else {
+            auto cache_index = loop->cache_index();
+            assert(cache_index);
+            cache_lea = mem::op_lea(cache_arr, cache_index);
+        }
         return op_load(cache_lea);
     }
 
@@ -540,9 +547,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         auto ptr      = alloc->proj(1);
         auto grad_ptr = grad_arr(ptr);
 
-        if (grad_ptr) {
-            op_free(grad_ptr, w.dbg("free_" + grad_ptr->name()));
-        }
+        if (grad_ptr) { op_free(grad_ptr, w.dbg("free_" + grad_ptr->name())); }
         return;
     }
 
@@ -684,6 +689,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         } else if (rop.id() == math::arith::sub) {
             right_grad = math::op_rminus(math::Mode::fast, gradient);
         } else if (rop.id() == math::arith::mul) {
+            left->dump(1);
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
@@ -772,7 +778,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 Scope scope(body_lam);
                 for (const Def* free_def : scope.free_defs()) {
                     auto free_ty = free_def->type();
-                    if (requires_caching(free_ty)) { resolve(free_def); }
+                    if (requires_caching(free_def)) { resolve(free_def); }
                     // if (match<mem::Ptr>(free_ty)) { check_grad_arr(free_def); }
                 }
 
