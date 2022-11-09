@@ -107,23 +107,21 @@ const Def* ClosConv_::rewrite_structural(const Def* def) {
     if (auto pi = def->isa<Pi>(); pi && pi->is_cn()) {
         if (auto ret_pi = pi->ret_pi()) {
             size_t n = pi->num_doms();
-            DefArray new_doms(n, [&](auto i) { return i != n - 1 ? rewrite(pi->dom(i)) : world().cn(rewrite(ret_pi->dom())); });
+            DefArray new_doms(
+                n, [&](auto i) { return i != n - 1 ? rewrite(pi->dom(i)) : world().cn(rewrite(ret_pi->dom())); });
             return doms2clos(world(), new_doms);
         }
         auto new_dom = rewrite(pi->dom());
         return doms2clos(world(), new_dom->projs());
     } else if (auto a = match<attr>(def)) {
         switch (a.id()) {
-            case attr::esc:
-                break;
+            case attr::esc: break;
         }
     }
     return Rewriter::rewrite_structural(def);
 }
 
-const Def* ClosConv_::rewrite_nom(Def* nom) {
-    return Rewriter::rewrite_nom(nom);
-}
+const Def* ClosConv_::rewrite_nom(Def* nom) { return Rewriter::rewrite_nom(nom); }
 
 /*
  * Closure Conversion
