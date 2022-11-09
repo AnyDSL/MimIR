@@ -2,6 +2,8 @@
 #include "dialects/affine/autogen.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
+#include "dialects/autodiff/auxiliary/autodiff_cache_analysis.h"
+#include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
 #include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/math/math.h"
@@ -11,7 +13,6 @@
 namespace thorin::autodiff {
 
 void AutoDiffEval::assign_gradients(Lam* diffee, Lam* diff) {
-    auto& w         = world();
     auto num        = diff->num_vars();
     size_t diffee_i = 0;
     size_t diff_i   = 0;
@@ -125,7 +126,7 @@ void AutoDiffEval::scan(const Def* def) {
 
     if (auto lea = match<mem::lea>(def)) {
         auto index = lea->arg(1);
-        // if (contains_load(index)) { mark(index); }
+        if (contains_load(index)) { mark(index); }
     }
 
     if (auto gamma = match<math::gamma>(def)) { mark(gamma->arg(0)); }
@@ -141,9 +142,9 @@ void AutoDiffEval::prepare(Lam* lam) {
         if (scope.bound(mark)) {
             if (auto load = is_load_val(mark)) {
                 auto ptr = load->arg(1);
-                if (has_op_store(ptr) || true) { requires_caching.insert(mark); }
+                if (has_op_store(ptr)) { requires_caching.insert(mark); }
             } else if (!mark->isa<Lit>()) {
-                // requires_caching.insert(mark);
+                requires_caching.insert(mark);
             }
         }
     }
@@ -169,7 +170,18 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto diffee = def->isa_nom<Lam>();
     assert(diffee);
 
-    prepare(diffee);
+    FlowAnalysis flow_analysis;
+    flow_analysis.run(diffee);
+    CacheAnalysis cache_analysis(flow_analysis);
+    cache_analysis.run();
+
+    requires_caching = cache_analysis.targets();
+
+    for (auto def : requires_caching) { def->dump(1); }
+
+    auto size = requires_caching.size();
+
+    // prepare(diffee);
 
     auto diff_ty = autodiff_type_fun_pi(diffee->type());
 
@@ -210,13 +222,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     backward_end->set_body(w.top_nat());
     backward_end->set_filter(true);
 
-    auto ret_ret     = diffee->ret_pi()->num_doms();
-    auto inv_num_ret = backward_begin->num_doms() - 1;
-
-    auto num_gradients = inv_num_ret - ret_ret; // yes
-
     DefVec gradient_results;
-    size_t i = num_gradients;
     for (auto var : backward_begin->args()) { gradient_results.push_back(var); }
     gradient_results.push_back(backward_end);
 

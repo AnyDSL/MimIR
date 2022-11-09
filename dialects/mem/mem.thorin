@@ -77,4 +77,4 @@
 /// Reserves a memory slot for type `T` in address space `as`.
 /// The reserved slot will be `size` bytes large.
 /// `id` has to be provided an unique id.
-.ax %mem.memset: Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as), size: .Nat, val: i8] -> %mem.M;
+.ax %mem.memset: Π [T: *, as: .Nat] -> [%mem.M, %mem.Ptr(T, as), size: .Nat, val: (.Idx 256)] -> %mem.M;
