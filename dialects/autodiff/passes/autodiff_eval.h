@@ -371,13 +371,9 @@ public:
         return mem;
     }
 
-    bool requires_caching(const Def* def){
-        return cache_analysis->requires_caching(def);
-    }
+    bool requires_caching(const Def* def) { return cache_analysis->requires_caching(def); }
 
-    bool isa_flow_def(const Def* def){
-        return flow_analysis->isa_flow_def(def);
-    }
+    bool isa_flow_def(const Def* def) { return flow_analysis->isa_flow_def(def); }
 
     friend LoopFrame;
 

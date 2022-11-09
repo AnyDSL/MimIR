@@ -24,9 +24,7 @@ public:
 
     DefSet& targets() { return targets_; }
 
-    bool requires_caching(const Def* def){
-        return targets_.contains(def);
-    }
+    bool requires_caching(const Def* def) { return targets_.contains(def); }
 
     void require(const Def* def) { requirements.insert(def); }
 
@@ -64,12 +62,12 @@ public:
     }
 
     void filter(const Def* def) {
-        if(auto arith = match<math::arith>(def)){
+        if (auto arith = match<math::arith>(def)) {
             auto [left, right] = arith->args<2>();
 
             filter(left);
             filter(right);
-        }else{
+        } else {
             requirements_filtered.insert(def);
         }
     }
@@ -87,10 +85,21 @@ public:
             if (auto load = is_load_val(requirement)) {
                 auto ptr = load->arg(1);
                 if (has_op_store(ptr)) { targets_.insert(requirement); }
-            } else if (!requirement->isa<Lit>()) {
+            } else if (!requirement->isa<Lit>() && !isa_nested_var(requirement)) {
                 targets_.insert(requirement);
             }
         }
+    }
+
+
+    bool isa_nested_var(const Def* def){
+        if( auto extract = def->isa<Extract>() ){
+            return isa_nested_var(extract->tuple());
+        }else if( def->isa<Var>() ){
+            return true;
+        }
+
+        return false;
     }
 
     const App* is_load_val(const Def* def) {

@@ -14,20 +14,25 @@ namespace thorin::autodiff {
 class FlowAnalysis {
 public:
     DefSet flow_set;
-    std::vector<std::pair<const Def*, const Def*>> reasoning_list;
+    //std::vector<std::pair<const Def*, const Def*>> reasoning_list;
 
-    DefSet& flow_defs(){
-        return flow_set;
-    }
+    DefSet& flow_defs() { return flow_set; }
 
-    bool isa_flow_def(const Def* def){
-        return flow_set.contains(def);
-    }
+    bool isa_flow_def(const Def* def) { return flow_set.contains(def); }
 
     bool add(const Def* present, const Def* next) {
         if (flow_set.contains(present)) {
-            reasoning_list.push_back({present, next});
+            //reasoning_list.push_back({present, next});
             flow_set.insert(next);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    bool add_projs(const Def* present, const Def* next) {
+        if (flow_set.contains(present)) {
+            for (auto proj : next->projs()) { flow_set.insert(proj); }
             return true;
         } else {
             return false;
@@ -36,11 +41,7 @@ public:
 
     bool visit(const Def* def) {
         if (auto tuple = def->isa<Tuple>()) {
-            if (flow_set.contains(tuple)) {
-                for (auto proj : tuple->projs()) { flow_set.insert(proj); }
-            } else {
-                return false;
-            }
+            return add_projs(tuple, tuple);
         } else if (auto pack = def->isa<Pack>()) {
             return add(pack, pack->body());
         } else if (auto app = def->isa<App>()) {
@@ -71,15 +72,9 @@ public:
                 exit = for_affine->arg(5);
             } else {
                 exit = app->callee();
+                return add_projs(exit, arg);
             }
 
-            // return add(exit, val);
-
-            if (flow_set.contains(exit)) {
-                for (auto proj : arg->projs()) {
-                    if (!match<mem::M>(proj->type())) { flow_set.insert(proj); }
-                }
-            }
         }
 
         return true;
@@ -117,10 +112,10 @@ public:
             current_state = next_state;
         }
 
-        for (auto [prev, next] : reasoning_list) {
+        /*for (auto [prev, next] : reasoning_list) {
             prev->dump(1);
             next->dump(1);
-        }
+        }*/
     }
 };
 
