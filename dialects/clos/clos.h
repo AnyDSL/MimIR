@@ -162,8 +162,20 @@ inline const Def* clos_sub_env(const Def* tup_or_sig, const Def* new_env) {
     return tup_or_sig->refine(Clos_Env_Param, new_env);
 }
 
-size_t env_idx(const Def*);
-const Def* env_insert(const Def* def, const Def* env);
+size_t env_idx(Defs);
+
+template<bool type>
+const Def* env_insert(World& world, Defs defs, const Def* env) {
+    size_t n = defs.size();
+    size_t x = env_idx(defs);
+
+    DefArray new_ops(n + 1);
+    for (size_t i = 0, j = 0; i != n + 1; ++i) new_ops[i] = i == x ? env : defs[j++];
+
+    return type ? world.sigma(new_ops) : world.tuple(new_ops);
+}
+
+Sigma* doms2clos(World& world, Defs doms);
 
 ///@}
 

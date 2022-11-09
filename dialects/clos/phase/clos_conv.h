@@ -73,6 +73,19 @@ private:
     DefMap<std::unique_ptr<Node>> lam2nodes_;
 };
 
+class ClosConv_ : public RWPhase {
+public:
+    ClosConv_(World& world)
+        : RWPhase(world, "clos_conv")
+        , fva_(world) {}
+
+    const Def* rewrite_structural(const Def*) override;
+    const Def* rewrite_nom(Def*) override;
+
+private:
+    FreeDefAna fva_;
+};
+
 /// Performs *typed closure conversion*.
 /// This is based on the [Simply Typed Closure Conversion](https://dl.acm.org/doi/abs/10.1145/237721.237791).
 /// Closures are represented using tuples: `[Env: *, .Cn [Env, Args..], Env]`.

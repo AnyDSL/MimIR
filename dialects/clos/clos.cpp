@@ -20,36 +20,22 @@
 
 namespace thorin::clos {
 
-template<bool type>
-size_t env_idx(const Def* def) {
-    size_t n = def->num_projs();
-    if (n == 0) return 0;
-    auto first = def->proj(n, 0_s);
-    if ((type && match<mem::M>(first)) || (!type && match<mem::M>(first->type()))) return 1;
+size_t env_idx(Defs defs) {
+    if (defs.empty()) return 0;
+    if (match<mem::M>(defs.front()) || match<mem::M>(defs.front()->type())) return 1;
     return 0;
 }
 
-template<bool type>
-const Def* env_insert(const Def* def, const Def* env) {
-    auto& w  = env->world();
-    size_t n = def->num_projs();
-    size_t x = env_idx<type>(def);
-
-    DefArray new_ops(n + 1);
-    for (size_t i = 0, j = 0; i != n + 1; ++i) new_ops[i] = i == x ? env : def->proj(n, j++);
-
-    return type ? w.sigma(new_ops) : w.tuple(new_ops);
-}
-
-Sigma* pi2clos(const Pi* pi) {
-    auto& world  = pi->world();
-    auto sigma   = world.nom_sigma(world.type(), 3, world.dbg("Clos"))->set(0, world.type());
+Sigma* doms2clos(World& world, Defs doms) {
+    auto sigma   = world.nom_sigma(world.type<1>(), 3, world.dbg("Clos"))->set(0, world.type());
     auto env_t   = sigma->var(0_s);
-    auto new_dom = env_insert<true>(pi->dom(), env_t);
-    sigma->set(1, world.pi(new_dom, pi->codom()));
+    auto new_dom = env_insert<true>(world, doms, env_t);
+    sigma->set(1, world.cn(new_dom));
     sigma->set(2, env_t);
     return sigma;
 }
+
+Sigma* pi2clos(World& world, const Pi* pi) { return doms2clos(world, pi->doms()); }
 
 /*
  * ClosLit
@@ -130,7 +116,7 @@ const Sigma* isa_clos_type(const Def* def) {
     return (pi && pi->is_cn() && pi->num_ops() > 1_u64 && pi->dom(Clos_Env_Param) == var) ? sig : nullptr;
 }
 
-Sigma* clos_type(const Pi* pi) { return pi2clos(pi); }
+Sigma* clos_type(const Pi* pi) { return pi2clos(pi->world(), pi); }
 
 const Pi* clos_type_to_pi(const Def* ct, const Def* new_env_type) {
     assert(isa_clos_type(ct));
