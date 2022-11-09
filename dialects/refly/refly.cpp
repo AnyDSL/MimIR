@@ -24,7 +24,7 @@ extern "C" THORIN_EXPORT thorin::DialectInfo thorin_get_dialect_info() {
 #define BLANK  "\033[0m"
 
 namespace thorin::refly {
-void debug_print(const Def* def) {
+void debug_print(const thorin::Def* def) {
     auto& world = def->world();
     world.DLOG(YELLOW "debug_print: {}" BLANK, def);
     world.DLOG("def : {}", def);

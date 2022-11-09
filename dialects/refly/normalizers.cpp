@@ -4,28 +4,38 @@
 
 namespace thorin::refly {
 
-static_assert(sizeof(const Def*) <= sizeof(u64), "pointer doesn't fit into Lit");
+using tDef = const thorin::Def*;
+
+static_assert(sizeof(tDef) <= sizeof(u64), "pointer doesn't fit into Lit");
 
 /// The trick is that we simply "box" the pointer of @p def inside a Lit of type `%refly.Code`.
-static const Def* do_reify(const Def* def, const Def* dbg = {}) {
-    return def->world().lit(type_code(def->world()), reinterpret_cast<u64>(def), dbg);
+static tDef do_reify(tDef def, tDef dbg = {}) {
+    return def->world().lit(type_def(def->world()), reinterpret_cast<u64>(def), dbg);
 }
 
 /// And here we are doing the reverse to retrieve the original pointer again.
-static const Def* do_reflect(const Def* def) { return reinterpret_cast<const Def*>(def->as<Lit>()->get()); }
+static tDef do_reflect(tDef def) { return reinterpret_cast<tDef>(def->as<Lit>()->get()); }
+
+static tDef world_reify(thorin::World& world, tDef dbg = {}) {
+    return world.lit(type_world(world), reinterpret_cast<u64>(&world), dbg);
+}
+
+static thorin::World& world_reflect(tDef def) { return *reinterpret_cast<thorin::World*>(def->as<Lit>()->get()); }
 
 template<dbg id>
-const Def* normalize_dbg(const Def*, const Def* callee, const Def* arg, const Def* dbg) {
+tDef normalize_dbg(tDef, tDef callee, tDef arg, tDef dbg) {
     auto& world = arg->world();
     debug_print(arg);
     return id == dbg::perm ? world.raw_app(callee, arg, dbg) : arg;
 }
 
-const Def* normalize_reify(const Def*, const Def*, const Def* arg, const Def* dbg) { return do_reify(arg, dbg); }
+tDef normalize_reify(tDef, tDef, tDef arg, tDef dbg) { return do_reify(arg, dbg); }
 
-const Def* normalize_reflect(const Def*, const Def*, const Def* arg, const Def*) { return do_reflect(arg); }
+tDef normalize_world(tDef, tDef, tDef arg, tDef dbg) { return world_reify(arg->world(), dbg); }
 
-const Def* normalize_refine(const Def*, const Def* callee, const Def* arg, const Def* dbg) {
+tDef normalize_reflect(tDef, tDef, tDef arg, tDef) { return do_reflect(arg); }
+
+tDef normalize_refine(tDef, tDef callee, tDef arg, tDef dbg) {
     auto& world       = arg->world();
     auto [code, i, x] = arg->projs<3>();
     if (auto l = isa_lit(i)) {
@@ -36,9 +46,7 @@ const Def* normalize_refine(const Def*, const Def* callee, const Def* arg, const
     return world.raw_app(callee, arg, dbg);
 }
 
-const Def* normalize_gid(const Def*, const Def*, const Def* arg, const Def*) {
-    return arg->world().lit_nat(arg->gid());
-}
+tDef normalize_gid(tDef, tDef, tDef arg, tDef) { return arg->world().lit_nat(arg->gid()); }
 
 THORIN_refly_NORMALIZER_IMPL
 

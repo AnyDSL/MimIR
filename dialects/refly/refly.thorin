@@ -6,19 +6,25 @@
 ///
 /// ## Types
 ///
-.ax %refly.Code: *;
+.ax %refly.Def: *;
+.ax %refly.World: *;
 ///
 /// ## Reify/Reflect
 ///
 /// ### %refly.reify
 ///
-/// Yields the internal representation of a Thorin expression as `%%refly.Code`.
-.ax %refly.reify: Π T: * -> T -> %refly.Code, normalize_reify;
+/// Yields the internal thorin::Def of a Thorin expression as `%%refly.Def`.
+.ax %refly.reify: Π T: * -> T -> %refly.Def, normalize_reify;
+///
+/// ### %refly.world
+///
+/// Yields the thorin::World of the current program as `%%refly.World`.
+.ax %refly.world: Π () -> %refly.World, normalize_world;
 ///
 /// ### %refly.reflect
 ///
-/// Converts a `%%refly.Code` back to a Thorin expression.
-.ax %refly.reflect: Π T: * -> %refly.Code -> T, normalize_reflect;
+/// Converts a `%%refly.Def` back to a Thorin expression.
+.ax %refly.reflect: Π T: * -> %refly.Def -> T, normalize_reflect;
 ///
 /// ## Inspect
 ///
@@ -40,5 +46,5 @@
 /// 
 /// ### %refly.refine
 ///
-/// Sets the `i`th operand of the reified Code `e` to `x`.
-.ax %refly.refine: [e: %refly.Code, i: .Nat, x: %refly.Code] -> %refly.Code, normalize_refine;
+/// Sets the `i`th operand of the reified Def `e` to `x`.
+.ax %refly.refine: [e: %refly.Def, i: .Nat, x: %refly.Def] -> %refly.Def, normalize_refine;
