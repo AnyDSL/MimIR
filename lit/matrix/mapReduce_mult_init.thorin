@@ -1,7 +1,6 @@
 // RUN: rm -f %t.ll ; \
 // RUN: %thorin -d matrix -o - %s | FileCheck %s
 
-// ./build/bin/thorin -d matrix ./lit/matrix/mapReduce.thorin --output-thorin -
 
 .import core;
 .import mem;

@@ -1,11 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d matrix -e thorin %s -e ll -o %t | FileCheck %s
-// RUN: clang %t.ll -o %t -Wno-override-module
-// RUN: %t ; test $? -eq 5
-// RUN: %t 1 2 3 ; test $? -eq 5
-// RUN: %t a b c d e f ; test $? -eq 5
-
-// ./build/bin/thorin -d matrix ./lit/matrix/mapReduce.thorin --output-thorin -
+// RUN: %thorin -d matrix -o - %s 
 
 .import core;
 .import mem;
@@ -52,3 +46,4 @@
 
     return (mem2, MN)
 };
+
