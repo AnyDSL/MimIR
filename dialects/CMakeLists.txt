@@ -129,6 +129,8 @@ add_thorin_dialect(mem
         mem/passes/rw/remem_elim.h
         mem/passes/rw/reshape.cpp
         mem/passes/rw/reshape.h
+        mem/passes/rw/add_mem.cpp
+        mem/passes/rw/add_mem.h
     HEADER_DEPENDS
         core
     INSTALL

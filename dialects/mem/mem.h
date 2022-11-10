@@ -143,6 +143,7 @@ inline const Def* mem_var(Lam* lam, const Def* dbg = nullptr) { return mem_def(l
 
 /// Swapps the memory occurrences in the given def with the given memory.
 inline const Def* replace_mem(const Def* mem, const Def* arg) {
+    // TODO: maybe use rebuild instead?
     if (arg->num_projs() > 1) {
         auto& w = mem->world();
         return w.tuple(DefArray(arg->num_projs(), [&](auto i) { return replace_mem(mem, arg->proj(i)); }));
