@@ -7,6 +7,15 @@
 
 namespace thorin::mem {
 
+/// Adds an additional memory argument to all functions.
+/// If a memory argument is already present, the signature is not changed.
+/// Otherwise, the signatures `[[..args], ret]` and `[..ret]` are converted to `[[mem,[..args]], ret']` and
+/// `[mem,..ret]` respectively. An additional pass is required to ensure that functions always contain their memory at
+/// position 1. Functions are converted recursively. Calls (in CPS position) are augmented with an additional memory
+/// argument if not present. The memory is tracked and propagated through the program.
+/// The current memory is the last output of an operation (often as part of a tuple).
+/// The recursion order proceeds from left to right, bottom up with recursive descent and following ascend.
+
 class AddMem : public RWPhase {
 public:
     AddMem(World& world)
