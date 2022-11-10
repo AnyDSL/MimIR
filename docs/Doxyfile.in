@@ -1046,6 +1046,7 @@ EXCLUDE_SYMBOLS        =
 # command).
 
 EXAMPLE_PATH           = @CMAKE_CURRENT_SOURCE_DIR@/../thorin \
+                         @CMAKE_CURRENT_SOURCE_DIR@/../dialects \
                          @CMAKE_CURRENT_BINARY_DIR@
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
