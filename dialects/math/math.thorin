@@ -1,5 +1,9 @@
 /// # The math Dialect {#math}
 ///
+/// Introduces a type constructor `%%math.F` for viarious [IEEE-754](https://en.wikipedia.org/wiki/IEEE_754) floating-point formats and a set of operations to calculate with instances of these types.
+/// All operations with the exception of `%%math.conv` expect a `.Nat` just in front of its actual argument.
+/// Here you can fine adjust via thorin::math::Mode how strictly you want to obey floating-point transformations.
+///
 /// [TOC]
 ///
 /// ## Types
@@ -33,30 +37,30 @@
 ///
 /// Minimum and Maximum.
 ///     * `m`in or `M`ax
-///     * `n`:
-///     If either operand is a NaN, returns NaN.
-///     Otherwise returns the lesser of the two arguments. 
-///     `-0.0` is considered to be less than `+0.0` for this intrinsic. 
-///     Note that these are the semantics specified in the draft of IEEE 754-2018.
-///     * `N`: 
-///         Follows the IEEE-754 semantics for minNum/maxNum, **except for handling of signaling NaNs**.
-///         **This match’s the behavior of libm’s fmin/fmax**.
+///     * `i`: 
+///         Follows the behavior of libm’s fmin/fmax.
 ///     
 ///         If either operand is a NaN, returns the other non-NaN operand.
 ///         Returns NaN only if both operands are NaN.
 ///         The returned NaN is always quiet.
 ///         If the operands compare equal, returns a value that compares equal to both operands.
 ///         This means that `fmin(+/-0.0, +/-0.0)` could return either `-0.0` or `0.0`.
+///     * `I`:
+///         Follows the semantics of `minNum`/`maxNum` specified in the draft of IEEE 754-2018.
+///         
+///         If either operand is a NaN, returns NaN.
+///         Otherwise returns the lesser of the two arguments. 
+///         `-0.0` is considered to be less than `+0.0` for this intrinsic. 
 ///
 /// | Subtag | Alias        | N | M |
 /// |--------|--------------|---|---|
-/// | `nm`   | `minimum`    | o | o |
-/// | `nM`   | `maximum`    | o | x |
-/// | `Nm`   | `minnum`     | x | o |
-/// | `NM`   | `maxnum`     | x | x |
+/// | `im`   | `fmin`       | o | o |
+/// | `iM`   | `fmax`       | o | x |
+/// | `Im`   | `ieee754min` | x | o |
+/// | `IM`   | `ieee754max` | x | x |
 ///
-.ax %math.extrema(nm = minimum, nM = maximum,
-                  Nm = minnum,  NM = maxnum): 
+.ax %math.extrema(im = fmin,       iM = fmax,
+                  Im = ieee754min, IM = ieee754max): 
     Π [p: .Nat, e: .Nat] -> .Nat -> [%math.F (p, e), %math.F (p, e)] -> %math.F (p, e), normalize_extrema;
 ///
 /// ### %math.tri

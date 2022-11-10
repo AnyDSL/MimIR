@@ -89,7 +89,6 @@ const Def* normalize_add(const Def* type, const Def* callee, const Def* arg, con
         //     world.app(world.app(world.ax(math::arith::add), {world.lit_nat_0(), world.lit_nat(width)}), {a, b});
         world.DLOG("real add {} : {}", real_add, real_add->type());
         return real_add;
-
     } else if (auto app = T->isa<App>()) {
         auto callee = app->callee();
         assert(0 && "not handled");

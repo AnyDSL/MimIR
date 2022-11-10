@@ -18,7 +18,7 @@ inline const Def* op_longjmp(const Def* mem, const Def* buf, const Def* id, cons
     World& w = mem->world();
     return w.app(w.ax<longjmp>(), {mem, buf, id}, dbg);
 }
-inline const Def* op(clos o, const Def* def, const Def* dbg = {}) {
+inline const Def* op(attr o, const Def* def, const Def* dbg = {}) {
     World& w = def->world();
     return w.app(w.app(w.ax(o), def->type()), def, dbg);
 }
@@ -60,16 +60,16 @@ public:
     ///@{
     bool is_returning() { return fnc_type()->is_returning(); }
     bool is_basicblock() { return fnc_type()->is_basicblock(); }
-    clos get() { return clos_; } ///< Clos annotation. These should appear in front of the code-part.
+    attr get() { return attr_; } ///< Clos annotation. These should appear in front of the code-part.
     ///@}
 
 private:
-    ClosLit(const Tuple* def, clos c = clos::bot)
+    ClosLit(const Tuple* def, attr a = attr::bot)
         : def_(def)
-        , clos_(c){};
+        , attr_(a) {}
 
     const Tuple* def_;
-    const clos clos_;
+    const attr attr_;
 
     friend ClosLit isa_clos_lit(const Def*, bool);
 };

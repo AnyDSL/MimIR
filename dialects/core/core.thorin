@@ -34,7 +34,7 @@
 ///
 .ax %core.ncmp(gle = f, glE =  e, gLe =  l, gLE = le,
                Gle = g, GlE = ge, GLe = ne, GLE =  t): 
-    Π [.Nat, .Nat] -> .Bool, normalize_ncmp;
+    [.Nat, .Nat] -> .Bool, normalize_ncmp;
 ///
 /// ## Integer Operations
 ///
@@ -49,7 +49,7 @@
 /// | id     | x | o | identity                     |
 /// | t      | x | x | always true                  |
 ///
-.ax %core.bit1(f, neg, id, t): Π w: .Nat -> .Idx w -> .Idx w, normalize_bit1;
+.ax %core.bit1(f, neg, id, t): Π s: .Nat -> .Idx s -> .Idx s, normalize_bit1;
 ///
 /// ### %core.bit2
 ///
@@ -76,31 +76,33 @@
 ///
 .ax %core.bit2( f,      nor,    nciff,  na,     niff,   nb,   xor_, nand,
                 and_,  nxor,    b,      iff,    a,      ciff, or_,  t):
-    Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w , normalize_bit2;
+    Π s: .Nat -> [.Idx s, .Idx s] -> .Idx s , normalize_bit2;
 ///
 /// ### %core.shr
 ///
-/// Shift right - integer operation that neither takes a WMode nor produces a side effect:
-/// * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
-/// * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
+/// Shift right:
+///     * [`a`rithmetic shift right](https://en.wikipedia.org/wiki/Arithmetic_shift)
+///     * [`l`ogical shift right](https://en.wikipedia.org/wiki/Logical_shift)
 ///
-.ax %core.shr(a, l): Π w: .Nat -> [.Idx w, .Idx w] -> .Idx w, normalize_shr;
+.ax %core.shr(a, l): Π s: .Nat -> [.Idx s, .Idx s] -> .Idx s, normalize_shr;
 ///
 /// ### %core.wrap
 ///
-/// Integer operations that might wrap and, hence, take a WMode.
+/// Integer operations that may overflow.
+/// You can specify the desired behavior in the case of an overflow with the curried argument just in front of the actual argument by providing a thorin::core::Mode as `.Nat`.
 ///
 .ax %core.wrap(add, sub, mul, shl):
-    Π [m: .Nat, w: .Nat] -> [.Idx w, .Idx w] -> .Idx w, normalize_wrap;
+    Π s: .Nat -> .Nat -> [.Idx s, .Idx s] -> .Idx s, normalize_wrap;
 ///
 /// ### %core.div
 ///
 /// Signed and unsigned Integer division/remainder.
+///
 /// Division by zero is undefined behavior and thus a visible side effect.
 /// For this reason, these axioms expect a `%%mem.M`.
 ///
 .ax %core.div(sdiv, udiv, srem, urem):
-    Π w: .Nat -> [%mem.M, .Idx w, .Idx w] -> [%mem.M, .Idx w], normalize_div;
+    Π s: .Nat -> [%mem.M, .Idx s, .Idx s] -> [%mem.M, .Idx s], normalize_div;
 ///
 /// ### %core.icmp
 ///
@@ -173,7 +175,7 @@
                XyGle = sg, XyGlE = sge, XyGLe,      XyGLE,
                XYgle,      XYglE,       XYgLe,      XYgLE,
                XYGle,      XYGlE,       XYGLe = ne, XYGLE = t):
-    Π w: .Nat -> [.Idx w, .Idx w] -> .Bool , normalize_icmp;
+    Π s: .Nat -> [.Idx s, .Idx s] -> .Bool , normalize_icmp;
 ///
 /// ## Conversions
 ///

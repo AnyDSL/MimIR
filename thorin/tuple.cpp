@@ -5,9 +5,13 @@
 #include "thorin/rewrite.h"
 #include "thorin/world.h"
 
+// TODO this code needs to be rewritten
+
 namespace thorin {
 
-static bool should_flatten(const Def* def) { return is_sigma_or_arr(def->sort() == Sort::Term ? def->type() : def); }
+static bool should_flatten(const Def* def) {
+    return (def->sort() == Sort::Term ? def->type() : def)->isa<Sigma, Arr>();
+}
 
 static bool nom_val_or_typ(const Def* def) {
     auto typ = (def->sort() == Sort::Term) ? def->type() : def;

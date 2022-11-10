@@ -75,18 +75,19 @@ template<int w> using w2u = typename w2u_<w>::type;
 template<int w> using w2s = typename w2s_<w>::type;
 template<int w> using w2f = typename w2f_<w>::type;
 
-/// A `size_t` literal. Use `0_s` to disambiguate `0` from `nullptr`.
-constexpr size_t operator""_s(unsigned long long int i) { return size_t(i); }
-inline /*constexpr*/ f16 operator""_f16(long double d) { return f16(float(d)); } // wait till fixed upstream
-constexpr f32 operator""_f32(long double d) { return f32(d); }
-constexpr f64 operator""_f64(long double d) { return f64(d); }
-// clang-format on
-
 using nat_t     = u64;
 using node_t    = u8;
 using flags_t   = u64;
 using dialect_t = u64;
 using tag_t     = u8;
 using sub_t     = u8;
+
+/// A `size_t` literal. Use `0_s` to disambiguate `0` from `nullptr`.
+constexpr size_t operator""_s(unsigned long long int i) { return size_t(i); }
+constexpr nat_t operator""_n(unsigned long long int i) { return nat_t(i); }
+inline /*constexpr*/ f16 operator""_f16(long double d) { return f16(float(d)); } // wait till fixed upstream
+constexpr f32 operator""_f32(long double d) { return f32(d); }
+constexpr f64 operator""_f64(long double d) { return f64(d); }
+// clang-format on
 
 } // namespace thorin

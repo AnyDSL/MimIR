@@ -91,15 +91,15 @@ Res fold(u64 a, u64 b) {
         else if constexpr (id == arith::rem) return rem(x,  y);
         else []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
     } else if constexpr (std::is_same_v<Id, math::extrema>) {
-        if (x == T(-0.0) && y == T(+0.0)) return (id == extrema::minimum || id == extrema::minnum) ? x : y;
-        if (x == T(+0.0) && y == T(-0.0)) return (id == extrema::minimum || id == extrema::minnum) ? y : x;
+        if (x == T(-0.0) && y == T(+0.0)) return (id == extrema::fmin || id == extrema::ieee754min) ? x : y;
+        if (x == T(+0.0) && y == T(-0.0)) return (id == extrema::fmin || id == extrema::ieee754min) ? y : x;
 
-        if constexpr (id == extrema::minnum || id == extrema::maxnum) {
-            return id == extrema::minnum ? std::fmin(x, y) : std::fmax(x, y);
-        } else if constexpr (id == extrema::minimum || id == extrema::maximum) {
+        if constexpr (id == extrema::fmin || id == extrema::fmax) {
+            return id == extrema::fmin ? std::fmin(x, y) : std::fmax(x, y);
+        } else if constexpr (id == extrema::ieee754min || id == extrema::ieee754max) {
             if (std::isnan(x)) return x;
             if (std::isnan(y)) return y;
-            return id == extrema::minimum ? std::fmin(x, y) : std::fmax(x, y);
+            return id == extrema::ieee754min ? std::fmin(x, y) : std::fmax(x, y);
         } else {
             []<bool flag = false>() { static_assert(flag, "missing sub tag"); }();
         }
@@ -191,12 +191,12 @@ reassociate(Id id, World& /*world*/, [[maybe_unused]] const App* ab, const Def* 
 
     std::function<const Def*(const Def*, const Def*)> make_op;
 
-    // build rmode for all new ops by using the least upper bound of all involved apps
-    nat_t rmode     = Mode::bot;
+    // build mode for all new ops by using the least upper bound of all involved apps
+    nat_t mode      = Mode::bot;
     auto check_mode = [&](const App* app) {
         auto app_m = isa_lit(app->arg(0));
         if (!app_m || !(*app_m & Mode::reassoc)) return false;
-        rmode &= *app_m; // least upper bound
+        mode &= *app_m; // least upper bound
         return true;
     };
 
@@ -204,7 +204,7 @@ reassociate(Id id, World& /*world*/, [[maybe_unused]] const App* ab, const Def* 
     if (lx && !check_mode(xy->decurry())) return nullptr;
     if (lz && !check_mode(zw->decurry())) return nullptr;
 
-    make_op = [&](const Def* a, const Def* b) { return op(id, rmode, a, b, dbg); };
+    make_op = [&](const Def* a, const Def* b) { return op(id, mode, a, b, dbg); };
 
     if (la && lz) return make_op(make_op(la, lz), w);             // (1)
     if (lx && lz) return make_op(make_op(lx, lz), make_op(y, w)); // (2)
@@ -219,13 +219,13 @@ const Def* normalize_arith(const Def* type, const Def* c, const Def* arg, const 
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto m      = isa_lit(callee->decurry()->arg());
+    auto m      = isa_lit(callee->arg());
     auto w      = isa_f(a->type());
 
     if (auto result = fold<arith, id>(world, type, a, b, dbg)) return result;
 
     // clang-format off
-    // TODO check rmode properly
+    // TODO check mode properly
     if (m && *m == Mode::fast) {
         if (auto la = a->isa<Lit>()) {
             if (la == lit_f(world, *w, 0.0)) {
@@ -283,15 +283,15 @@ const Def* normalize_extrema(const Def* type, const Def* c, const Def* arg, cons
     auto& world = type->world();
     auto callee = c->as<App>();
     auto [a, b] = arg->projs<2>();
-    auto m      = callee->decurry()->arg();
+    auto m      = callee->arg();
     auto lm     = isa_lit(m);
 
     if (auto lit = fold<extrema, id>(world, type, a, b, dbg)) return lit;
 
     if (lm && *lm & (Mode::nnan | Mode::nsz)) { // if ignore NaNs and signed zero, then *imum -> *num
         switch (id) {
-            case extrema::minimum: return op(extrema::minnum, m, a, b, dbg);
-            case extrema::maximum: return op(extrema::maxnum, m, a, b, dbg);
+            case extrema::ieee754min: return op(extrema::fmin, m, a, b, dbg);
+            case extrema::ieee754max: return op(extrema::fmax, m, a, b, dbg);
             default: break;
         }
     }
@@ -380,8 +380,8 @@ const Def* normalize_conv(const Def* dst_ty, const Def* c, const Def* x, const D
         constexpr bool df     = id == conv::f2f || id == conv::s2f || id == conv::u2f;
         constexpr nat_t min_s = sf ? 16 : 1;
         constexpr nat_t min_d = df ? 16 : 1;
-        auto sw               = sf ? isa_f(s_ty) : size2bitwidth(*ls);
-        auto dw               = df ? isa_f(d_ty) : size2bitwidth(*ld);
+        auto sw               = sf ? isa_f(s_ty) : Idx::size2bitwidth(*ls);
+        auto dw               = df ? isa_f(d_ty) : Idx::size2bitwidth(*ld);
 
         if (sw && dw) {
             Res res;

@@ -26,7 +26,7 @@
 
     .cn loop_head [mem: %mem.M, i : i32] = {
         .cn yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add (0, 4294967296) (i, 1:i32) )
+            loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
         };
 
         .cn enter [mem: %mem.M] = {
@@ -50,14 +50,14 @@
 
     .cn loop_body [mem: %mem.M, i : i32, continue : .Cn %mem.M] = {
         .let lea = %mem.lea (arr_size, <arr_size; i32>, 0) (arr, i);
-        .let add = %core.wrap.add (0, 4294967296) (offset, i);
+        .let add = %core.wrap.add 4294967296 0 (offset, i);
         .let store_mem = %mem.store (i32, 0) (mem, lea, add);
         continue(store_mem)
     };
 
     .cn loop_head [mem: %mem.M, i : i32] = {
         .cn yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add (0, 4294967296) (i, 1:i32) )
+            loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
         };
 
         .cn enter [mem: %mem.M] = {
@@ -85,7 +85,7 @@
 
     .cn loop_head [mem: %mem.M, i : i32] = {
         .cn yield [mem: %mem.M] = {
-            loop_head( mem, %core.wrap.add (0, 4294967296) (i, 1:i32) )
+            loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
         };
 
         .cn enter [mem: %mem.M] = {
@@ -130,14 +130,14 @@
         .let (a_load_mem, a_val) = %mem.load (i32, 0) (mem, a_lea);
         .let (b_load_mem, b_val) = %mem.load (i32, 0) (a_load_mem, b_lea);
 
-        .let prod = %core.wrap.mul (0, 4294967296) (a_val, b_val);
+        .let prod = %core.wrap.mul 4294967296 0 (a_val, b_val);
 
         .let c_store_mem = %mem.store (i32, 0) (b_load_mem, c_lea, prod);
 
         .cn left_pb [mem: %mem.M, s : i32, return: .Cn [%mem.M]] = {
             .let ad_lea = %mem.lea (arr_size, <arr_size; i32>, 0) (ad_arr, i);
             .let (load_mem, val) = %mem.load (i32, 0) (mem, ad_lea);
-            .let new_val = %core.wrap.add (0, 4294967296) (val, s);
+            .let new_val = %core.wrap.add 4294967296 0 (val, s);
             .let store_mem = %mem.store (i32, 0) (load_mem, ad_lea, new_val);
             return store_mem
         };
@@ -145,16 +145,16 @@
         .cn right_pb [mem: %mem.M, s : i32, return: .Cn [%mem.M]] = {
             .let bd_lea = %mem.lea (arr_size, <arr_size; i32>, 0) (bd_arr, i);
             .let (load_mem, val) = %mem.load (i32, 0) (mem, bd_lea);
-            .let new_val = %core.wrap.add (0, 4294967296) (val, s);
+            .let new_val = %core.wrap.add 4294967296 0 (val, s);
             .let store_mem = %mem.store (i32, 0) (load_mem, bd_lea, new_val);
             return store_mem
         };
 
         .cn mul_pb [mem: %mem.M, s : i32, return: .Cn [%mem.M]] = {
-            .let sa_mul = %core.wrap.mul (0, 4294967296) (s, b_val);
+            .let sa_mul = %core.wrap.mul 4294967296 0 (s, b_val);
 
             .cn next [mem: %mem.M] = {
-                .let sb_mul = %core.wrap.mul (0, 4294967296) (s, a_val);
+                .let sb_mul = %core.wrap.mul 4294967296 0 (s, a_val);
                 right_pb(mem, sb_mul, return)
             };
 
@@ -206,7 +206,7 @@
 
         .cn backward_loop_head [mem: %mem.M, i : i32] = {
             .cn yield [mem: %mem.M] = {
-                backward_loop_head( mem, %core.wrap.add (0, 4294967296) (i, 1:i32) )
+                backward_loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
             };
 
             .cn enter [mem: %mem.M] = {
