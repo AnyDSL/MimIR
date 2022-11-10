@@ -201,14 +201,17 @@ An elided type of
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
 
-| Operator         | Description                         | Associativity |
-|------------------|-------------------------------------|---------------|
-| L `:` e          | type ascription of a literal        | -             |
-| e `#` e          | extract                             | left-to-right |
-| e e              | application                         | left-to-right |
-| `Π` Sym `:` e    | domain of a dependent function type | -             |
-| `.lam` Sym `:` e | nominal lambda declaration          | -             |
-| e `→` e          | function type                       | right-to-left |
+| Operator             | Description                         | Associativity |
+|----------------------|-------------------------------------|---------------|
+| L `:` e              | type ascription of a literal        | -             |
+| e `#` e              | extract                             | left-to-right |
+| e e                  | application                         | left-to-right |
+| `Π` Sym `:` e        | domain of a dependent function type | -             |
+| `.fun` Sym Sym `:` e | nominal funciton declaration        | -             |
+| `.lam` Sym Sym `:` e | nominal continuation declaration    | -             |
+| `.fn` Sym `:` e      | nominal funciton expression         | -             |
+| `.lm` Sym `:` e      | nominal continuation expression     | -             |
+| e `→` e              | function type                       | right-to-left |
 
 Note that the domain of a dependent function type binds slightly stronger than `→`.
 This has the effect that, e.g., `Π T: * → T → T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).
