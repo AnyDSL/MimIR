@@ -2,13 +2,17 @@
 #include "dialects/affine/autogen.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
+#include "dialects/autodiff/auxiliary/autodiff_dep_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_cache_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
+#include "dialects/autodiff/auxiliary/autodiff_war_analysis.h"
 #include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
+
+#include "thorin/analyses/domtree.h"
 
 namespace thorin::autodiff {
 
@@ -63,6 +67,8 @@ Lam* AutoDiffEval::init_caches(Lam* next) {
     return current;
 }
 
+
+
 const Def* AutoDiffEval::derive_(const Def* def) {
     auto& w     = world();
     auto diffee = def->isa_nom<Lam>();
@@ -72,6 +78,10 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     flow_analysis->run(diffee);
     cache_analysis = std::make_unique<CacheAnalysis>(*flow_analysis.get());
     cache_analysis->run();
+
+    WARAnalysis war_analysis(diffee);
+
+
 
     auto diff_ty = autodiff_type_fun_pi(diffee->type());
 

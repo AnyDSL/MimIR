@@ -17,6 +17,8 @@
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
 
+#include "dialects/autodiff/auxiliary/autodiff_dep_analysis.h"
+
 namespace thorin::autodiff {
 
 #define f_arg_ty continuation_dom(f->type())
@@ -799,7 +801,11 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
                 assert(false);
             }
 
-            for (auto node : visitor.post_order_visit()) { prop(prop_scope, node->def); }
+            for (auto node : visitor.post_order_visit()) {
+                if(node->isa(Node::Bot)){
+                    prop(prop_scope, node->def); 
+                }
+            }
 
             DefVec inv_args;
             for (auto proj : lam->args()) {

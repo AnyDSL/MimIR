@@ -48,12 +48,11 @@ public:
             if (exp.id() == math::exp::exp) {
                 require(exp);
             } else if (exp.id() == math::exp::log) {
-                require(exp->arg(0));
+                require(exp->arg());
             }
         }
 
         if (auto lea = match<mem::lea>(def)) {
-            lea->dump(1);
             auto index = lea->arg(1);
             if (contains_load(index)) { require(index); }
         }
