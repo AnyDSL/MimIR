@@ -681,10 +681,10 @@ void Parser::parse_nom() {
 }
 
 Lam* Parser::parse_lam(bool decl) {
+    // TODO .fn/.fun
     auto track    = tracker();
     auto tok      = lex();
     bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
-    bool is_fn    = tok.isa(Tok::Tag::K_fn) || tok.isa(Tok::Tag::K_fun);
     auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = accept(Tok::Tag::K_extern).has_value();
     Sym sym       = decl ? parse_sym("nominal lambda") : anonymous_sym();
