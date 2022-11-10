@@ -90,7 +90,7 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
 
     if (auto mat_ax = match<matrix::Mat>(def)) {
         // auto [n_def, S, T] = mat_ax->args<3>();
-        world.DLOG("Lowering Mat {} to Ptr", mat_ax);
+        // world.DLOG("Lowering Mat {} to Ptr", mat_ax);
         // auto n = (size_t)(n_def->as<Lit>()->get<u64>());
 
         // const Def* size = world.app(world.ax<core::nop>(core::nop::mul), {S->proj(0), S->proj(1)});
@@ -143,7 +143,7 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
         world.DLOG("  mat: {} : {}", mat, mat->type());
         world.DLOG("  idx: {} : {}", idx, idx->type());
         // TODO: check if mat is already converted
-        auto ptr_mat     = rewrite(mat);
+        auto ptr_mat     = mat;
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
         auto [mem2, val] = mem::op_load(mem, element_ptr)->projs<2>();
         return world.tuple({mem2, val});
@@ -163,7 +163,7 @@ const Def* LowerMatrixLowLevel::rewrite_structural(const Def* def) {
         world.DLOG("  mat: {} : {}", mat, mat->type());
         world.DLOG("  idx: {} : {}", idx, idx->type());
         world.DLOG("  val: {} : {}", val, val->type());
-        auto ptr_mat     = mat; // rewrite(mat);
+        auto ptr_mat     = mat;
         auto element_ptr = op_lea_tuple(ptr_mat, idx);
         auto mem2        = mem::op_store(mem, element_ptr, val);
         // return mem2, ptr_mat);
