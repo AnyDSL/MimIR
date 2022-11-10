@@ -23,12 +23,15 @@ namespace thorin::fe {
     m(K_Type,   ".Type"  )             \
     m(K_Univ,   ".Univ"  )             \
     m(K_pack,   ".pack"  )             \
-    m(K_Pi,     ".Pi"    )             \
-    m(K_lam,    ".lam"   )             \
     m(K_Cn,     ".Cn"    )             \
-    m(K_cn,     ".cn"    )             \
     m(K_Fn,     ".Fn"    )             \
+    m(K_Pi,     ".Pi"    )             \
+    m(K_con,    ".con"   )             \
+    m(K_fun,    ".fun"   )             \
+    m(K_lam,    ".lam"   )             \
+    m(K_cn,     ".cn"    )             \
     m(K_fn,     ".fn"    )             \
+    m(K_lm,     ".lm"    )             \
     m(K_ff,     ".ff"    )             \
     m(K_tt,     ".tt"    )             \
     m(K_ins,    ".ins"   )             \
@@ -73,7 +76,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_comma,      ",")                \
     m(T_dot,        ".")                \
     m(T_extract,    "#")                \
-    m(T_lam,        "λ")                \
+    m(T_lm,         "λ")                \
     m(T_semicolon,  ";")                \
     m(T_star,       "*")                \
 

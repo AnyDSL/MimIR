@@ -71,8 +71,8 @@ Tok Lexer::lex() {
         if (accept(U'□')) return tok(Tok::Tag::T_box);
         if (accept( ',')) return tok(Tok::Tag::T_comma);
         if (accept( '#')) return tok(Tok::Tag::T_extract);
-        if (accept(U'λ')) return tok(Tok::Tag::T_lam);
-        if (accept('\\')) return tok(Tok::Tag::T_lam);
+        if (accept(U'λ')) return tok(Tok::Tag::T_lm);
+        if (accept('\\')) return tok(Tok::Tag::T_lm);
         if (accept(U'Π')) return tok(Tok::Tag::T_Pi);
         if (accept( ';')) return tok(Tok::Tag::T_semicolon);
         if (accept(U'★')) return tok(Tok::Tag::T_star);

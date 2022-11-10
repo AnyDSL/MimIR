@@ -7,17 +7,17 @@
 .let i32 = .Idx 4294967296;
 .let i8 = .Idx 256;
 
-.cn printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
+.con printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
 
-.cn init [mem: %mem.M, return : .Cn [%mem.M]] = {
+.con init [mem: %mem.M, return : .Cn [%mem.M]] = {
     .let arr_size = ⊤:.Nat;
 
-    .cn loop_head [mem: %mem.M, i : i32] = {
-        .cn yield [mem: %mem.M] = {
+    .con loop_head [mem: %mem.M, i : i32] = {
+        .con yield [mem: %mem.M] = {
             loop_head( mem, %core.wrap.add 4294967296 0 (i, 1:i32) )
         };
 
-        .cn print [mem: %mem.M] = {
+        .con print [mem: %mem.M] = {
             printInteger( mem, i, yield )
         };
 
@@ -29,12 +29,12 @@
     loop_head ( mem, 0:i32 )
 };
 
-.cn .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
-    .cn init_b [mem: %mem.M] = {
+.con .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
+    .con init_b [mem: %mem.M] = {
         return ( mem, 0:i32 )
     };
 
-    .cn init_a [mem: %mem.M] = {
+    .con init_a [mem: %mem.M] = {
         init(mem, init_b)
     };
 

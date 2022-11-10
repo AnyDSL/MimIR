@@ -3,7 +3,7 @@
 
 .import core;
 
-.cn .extern add0 [i :.Idx 256, return : .Cn .Idx 256] = {
+.con .extern add0 [i :.Idx 256, return : .Cn .Idx 256] = {
     return (%core.wrap.add 256 0 (i, 0:(.Idx 256)))
 };
 
@@ -13,7 +13,7 @@
 // CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 256
 // CHECK-DAG: return_[[retId]] _[[etaVar]]
 
-.cn .extern add_lit [return : .Cn .Idx 256] = {
+.con .extern add_lit [return : .Cn .Idx 256] = {
     return (%core.wrap.add 256 0 (6 : (.Idx 256), 0:(.Idx 256)))
 };
 
