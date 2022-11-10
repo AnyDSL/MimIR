@@ -31,7 +31,6 @@ namespace thorin::fe {
     m(K_lam,    ".lam"   )             \
     m(K_cn,     ".cn"    )             \
     m(K_fn,     ".fn"    )             \
-    m(K_lm,     ".lm"    )             \
     m(K_ff,     ".ff"    )             \
     m(K_tt,     ".tt"    )             \
     m(K_ins,    ".ins"   )             \
@@ -81,7 +80,7 @@ constexpr auto Num_Keys = size_t(0) THORIN_KEY(CODE);
     m(T_star,       "*")                \
 
 #define THORIN_SUBST(m)                 \
-    m("->",      T_arrow)               \
+    m(".lm",     T_lm   )               \
     m(".bot",    T_bot  )               \
     m(".top",    T_top  )               \
     m(".insert", K_ins  )               \

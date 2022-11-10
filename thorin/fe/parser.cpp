@@ -250,7 +250,6 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::T_at:      return parse_var();
         case Tok::Tag::K_cn:
         case Tok::Tag::K_fn:
-        case Tok::Tag::K_lm:
         case Tok::Tag::T_lm:      return parse_lam();
         case Tok::Tag::T_star:    lex(); return world().type();
         case Tok::Tag::T_box:     lex(); return world().type<1>();
