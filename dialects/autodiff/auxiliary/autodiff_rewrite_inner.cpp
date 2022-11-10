@@ -691,8 +691,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         } else if (rop.id() == math::arith::sub) {
             right_grad = math::op_rminus(math::Mode::fast, gradient);
         } else if (rop.id() == math::arith::mul) {
-            left->dump(1);
-            right->dump(1);
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
@@ -701,8 +699,6 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         } else if (rop.id() == math::arith::div) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
-            // auto value       = resolve(def);
-
             left_grad = math::op(math::arith::div, math::Mode::fast, gradient, right_value);
 
             right_grad  = math::op_rminus(math::Mode::fast, gradient);
@@ -737,7 +733,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
         auto inv_pi     = w.cn(flatten_deep(inv_arg_ty));
         auto inv_lam    = create_lam(inv_pi, "inv_" + lam->name());
 
-        AutodiffAnalysis analyze(lam);
+        DepAnalysis analyze(lam);
         PostOrderVisitor visitor(analyze);
         Scope scope(lam);
 
@@ -891,7 +887,6 @@ std::tuple<Lam*, Lam*> AutoDiffEval::invert_for_body(const App* for_app) {
     add_inverted(raw_index, current_loop->index());
 
     auto inv_body_lam_new = invert_lam(loop_body);
-    inv_body_lam_new->dump(1);
 
     auto ret_lam = create_lam(inv_body_lam_new->ret_pi(), "invert_return_body_" + loop_body->name());
 

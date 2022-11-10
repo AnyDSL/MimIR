@@ -37,15 +37,15 @@ public:
     bool is_overwritten(const Def* def) { return overwritten.contains(def); }
 
     void run() {
-        build(nullptr, lam_);
+        build(lam_);
         for (Lam* lam : lams) { collect(lam); }
         todo_ = true;
-        for(;todo_;){
+        for (; todo_;) {
             todo_ = false;
             for (Lam* lam : lams) { wipe(lam); }
             stores = dst_stores_;
         }
-        //for (Lam* lam : lams) { collect(lam, false); }
+        // for (Lam* lam : lams) { collect(lam, false); }
         for (Lam* lam : lams) { find(lam); }
     }
 
@@ -64,16 +64,15 @@ public:
             auto node = lea_analysis.representative(ptr);
             leas.insert(node);
         } else if (auto app = match<mem::load>(op)) {
+            auto val  = app->proj(1);
             auto ptr  = app->arg(1);
             auto node = lea_analysis.representative(ptr);
-            if (leas.contains(node)) { 
-                overwritten.insert(app); 
-            }
+            if (leas.contains(node)) { overwritten.insert(val); }
         }
 
-        if (auto app = op->isa<App>()) { 
+        if (auto app = op->isa<App>()) {
             auto mem_arg = mem::mem_def(app->arg());
-            find(lam, mem_arg); 
+            find(lam, mem_arg);
         }
     }
 
@@ -82,24 +81,22 @@ public:
         auto mem  = mem::mem_def(body->arg());
 
         leas.clear();
-        for( auto store : stores[lam] ){
-            auto ptr  = store->as<App>()->arg(1);
+        for (auto store : stores[lam]) {
+            auto ptr = store->as<App>()->arg(1);
             leas.insert(lea_analysis.representative(ptr));
         }
 
         find(lam, mem);
     }
 
-    void meet_stores(const Def* src, const Def* dst){
-        if(!src || !dst) return;
+    void meet_stores(const Def* src, const Def* dst) {
+        if (!src || !dst) return;
         auto& src_stores = stores[src];
         auto& dst_stores = dst_stores_[dst];
-        size_t before = dst_stores.size();
+        size_t before    = dst_stores.size();
         dst_stores.insert(src_stores.begin(), src_stores.end());
         size_t after = dst_stores.size();
-        if(before != after){
-            todo_ = true;
-        }
+        if (before != after) { todo_ = true; }
     }
 
     void wipe(Lam* lam) {
@@ -122,13 +119,11 @@ public:
 
     bool collect(Lam* lam, const Def* mem) {
         auto op = unextract(mem);
-        if (auto app = match<mem::store>(op)) {
-            stores[lam].insert(app);
-        }
+        if (auto app = match<mem::store>(op)) { stores[lam].insert(app); }
 
-        if (auto app = op->isa<App>()) { 
+        if (auto app = op->isa<App>()) {
             auto mem_arg = mem::mem_def(app->arg());
-            collect(lam, mem_arg); 
+            collect(lam, mem_arg);
         }
     }
 
@@ -138,21 +133,16 @@ public:
         collect(lam, mem);
     }
 
-    void apply(const Def* src, const Def* dst){
-
-    }
-    void build(Lam* prev, const Def* def) {
+    void build(const Def* def) {
         Lam* lam = def->isa_nom<Lam>();
-        if (!lam){
-            return;
-        }
+        if (!lam) { return; }
         auto body = lam->body()->as<App>();
 
         if (match<affine::For>(body)) {
-            build(lam, body->arg(5));
-            build(lam, body->arg(4));
+            build(body->arg(5));
+            build(body->arg(4));
         } else {
-            build(lam, body->callee());
+            build(body->callee());
         }
 
         lams.push_back(lam);

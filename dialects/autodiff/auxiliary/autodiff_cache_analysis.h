@@ -6,6 +6,8 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
+#include "dialects/autodiff/auxiliary/autodiff_dep_analysis.h"
+#include "dialects/autodiff/auxiliary/autodiff_cache_optimizer.h"
 #include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_war_analysis.h"
 #include "dialects/math/math.h"
@@ -21,9 +23,11 @@ public:
 
     WARAnalysis war_analysis;
     FlowAnalysis flow_analysis;
+    CacheOptimizer cache_optimizer;
     explicit CacheAnalysis(Lam* lam)
         : flow_analysis(lam)
-        , war_analysis(lam) {
+        , war_analysis(lam)
+        , cache_optimizer(lam) {
         run();
     }
 
@@ -72,34 +76,44 @@ public:
     void filter(const Def* def) {
         if (auto arith = match<math::arith>(def)) {
             auto [left, right] = arith->args<2>();
-
             filter(left);
             filter(right);
+        } else if (auto wrap = match<core::wrap>(def)) {
+            auto [left, right] = wrap->args<2>();
+            filter(left);
+            filter(right);
+        } else if (auto conv = match<math::conv>(def)) {
+            filter(conv->arg());
+        } else if (auto conv = match<core::conv>(def)) {
+            filter(conv->arg());
+        } else if (auto app = match<math::exp>(def)) {
+            filter(app->arg());
+        } else if (auto app = match<math::gamma>(def)) {
+            filter(app->arg());
         } else {
             requirements_filtered.insert(def);
         }
     }
 
     void filter() {
-        for (auto requirement : requirements) { filter(requirement); }
+        for (auto requirement : requirements) {
+            filter(requirement);
+        }
     }
 
     void run() {
         for (auto flow_def : flow_analysis.flow_defs()) { visit(flow_def); }
-
         filter();
-
         for (auto requirement : requirements_filtered) {
             if (auto load = is_load_val(requirement)) {
-                load->dump(1);
-                auto ptr = load->arg(1);
-                if (war_analysis.is_overwritten(load)) { 
-                    targets_.insert(requirement); 
-                }
+                if (war_analysis.is_overwritten(requirement)) { targets_.insert(requirement); }
             } else if (!requirement->isa<Lit>() && !isa_nested_var(requirement)) {
                 targets_.insert(requirement);
             }
         }
+        auto old_size = targets_.size();
+        targets_ = cache_optimizer.optimize(requirements);
+        auto new_size = targets_.size();
     }
 
     bool isa_nested_var(const Def* def) {

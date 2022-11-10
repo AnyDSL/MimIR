@@ -19,14 +19,17 @@ using Nodes = std::unordered_set<Node*>;
 struct Node {
     enum Type { Any = 0, Bot = 1, App = 2, For = 4, Branch = 8, Return = 16, Lam = 32 };
 
-    Node(Type type)
-        : type_(type) {}
+    Node(const Def* def, Type type, size_t depth)
+        : def(def)
+        , type_(type)
+        , depth(depth) {}
 
     Type type_;
-    Def* nom;
     const Def* def;
     Nodes preds;
     Nodes succs;
+    size_t depth;
+
     mutable size_t index = -1;
 
     bool isa(Type type) const { return type_ == Any || (type_ & type) != 0; }
@@ -50,23 +53,32 @@ inline Node::Type operator|(Node::Type a, Node::Type b) {
 }
 
 class PostOrderVisitor;
-class AutodiffAnalysis {
+class DepAnalysis {
 public:
-    AutodiffAnalysis(Lam* entry) {
-        exit_node_ = node(entry->ret_var());
+    Node* entry_node_;
+    Node* exit_node_;
+    DefMap<Node*> nodes_;
+    size_t depth = 0;
+
+    DepAnalysis(Lam* entry) {
+        exit_node_ = create(entry->ret_var());
         run(entry);
-        entry_node_ = node(entry);
+        entry_node_ = create(entry);
     }
 
-    ~AutodiffAnalysis() {
+    ~DepAnalysis() {
         for (auto [key, value] : nodes_) { delete value; }
     }
 
-    Node* node(const Def* def, Node::Type type = Node::Type::Bot) {
+    Node* node(const Def* def, Node::Type type = Node::Type::Bot) { 
+        if(!nodes_.contains(def)) return nullptr;
+        return nodes_[def]; 
+    }
+
+    Node* create(const Def* def, Node::Type type = Node::Type::Bot) {
         Node* result = nodes_[def];
         if (!result) {
-            result      = new Node(type);
-            result->def = def;
+            result      = new Node(def, type, depth);
             nodes_[def] = result;
         } else if (type != Node::Type::Bot && !result->isa(type)) {
             assert(result->isa(Node::Type::Bot));
@@ -93,12 +105,12 @@ private:
     }
 
     void run(Lam* lam) {
-        node(lam, Node::Type::Lam);
+        create(lam, Node::Type::Lam);
         run(lam, lam->body());
     }
 
     void run(const Def* prev, const Def* curr) {
-        bool inserted = link(node(prev), node(curr));
+        bool inserted = link(create(prev), create(curr));
         if (!inserted) return;
         run(curr);
     }
@@ -113,17 +125,19 @@ private:
             if (auto loop = match<affine::For>(curr)) {
                 auto body = loop->arg(4);
                 auto exit = loop->arg(5);
-                node(loop, Node::Type::For);
+                create(loop, Node::Type::For);
+                depth++;
                 run(loop, body);
+                depth--;
                 run(loop, exit);
             } else if (callee_isa_var(callee)) {
-                link(node(curr, Node::Type::App), node(callee));
+                link(create(curr, Node::Type::App), create(callee));
             } else if (auto extract = callee->isa<Extract>()) {
                 auto branches = extract->tuple();
-                node(curr, Node::Type::Branch);
+                create(curr, Node::Type::Branch);
                 for (auto branch : branches->projs()) { run(curr, branch); }
             } else if (auto next_lam = callee->isa_nom<Lam>()) {
-                node(curr, Node::Type::App);
+                create(curr, Node::Type::App);
                 run(curr, next_lam);
             } else {
                 run(curr, app->arg());
@@ -141,29 +155,28 @@ private:
         }
     }
 
-    Node* entry_node_;
-    Node* exit_node_;
-    DefMap<Node*> nodes_;
-
     friend PostOrderVisitor;
 };
 
 class PostOrderVisitor {
-    AutodiffAnalysis& analysis_;
+    DepAnalysis& analysis_;
     std::map<size_t, const Node*> nodes_;
     std::vector<const Node*> node_vec_;
 
     size_t last_index = -1;
 
 public:
-    PostOrderVisitor(AutodiffAnalysis& analysis)
+    PostOrderVisitor(DepAnalysis& analysis)
         : analysis_(analysis) {
         for (auto [_, node] : analysis.nodes_) { add(node); }
     }
 
     void add(const Def* def) { add(analysis_.node(def)); }
 
-    void add(Node* node) { last_index = post_order_visit(node, last_index); }
+    void add(Node* node) { 
+        if(!node) return;
+        last_index = post_order_visit(node, last_index); 
+    }
 
     void begin() {
         nodes_.clear();

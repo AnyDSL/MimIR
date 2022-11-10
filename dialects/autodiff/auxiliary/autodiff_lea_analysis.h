@@ -66,7 +66,7 @@ public:
                 auto idx = arg->proj(1);
 
                 unify(ptr_node(arr), ptr_node(lea));
-            }else if (auto bitcast = match<core::bitcast>(def)) {
+            } else if (auto bitcast = match<core::bitcast>(def)) {
                 auto ptr = bitcast->arg();
                 unify(ptr_node(bitcast), ptr_node(ptr));
             }
