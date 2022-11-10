@@ -9,8 +9,10 @@ void Phase::run() {
 }
 
 void RWPhase::start() {
-    for (const auto& [_, ax] : world().axioms()) rewrite(ax);
-    for (const auto& [_, nom] : world().externals()) rewrite(nom)->as_nom()->make_external();
+    for (const auto& [_, ax] : old_world().axioms()) rewrite(ax);
+    for (const auto& [_, nom] : old_world().externals()) rewrite(nom)->as_nom()->make_external();
+
+    swap(Phase::world_, new_world_);
 }
 
 void FPPhase::start() {
@@ -20,16 +22,6 @@ void FPPhase::start() {
     }
 
     RWPhase::start();
-}
-
-void Cleanup::start() {
-    World new_world(world().state());
-    Rewriter rewriter(new_world);
-
-    for (const auto& [_, ax] : world().axioms()) rewriter.rewrite(ax);
-    for (const auto& [_, nom] : world().externals()) rewriter.rewrite(nom)->as_nom()->make_external();
-
-    swap(world(), new_world);
 }
 
 void Pipeline::start() {

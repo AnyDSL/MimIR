@@ -30,11 +30,16 @@ void PipelineBuilder::extend_codegen_prep_phase(std::function<void(PassMan&)>&& 
     extend_opt_phase(Codegen_Prep_Phase, extension);
 }
 
+void PipelineBuilder::append_phase(int i, PhaseBuilder extension, int priority) {
+    if (!phase_extensions_.contains(i)) { phase_extensions_[i] = PhaseList(); }
+    phase_extensions_[i].push_back({priority, extension});
+}
+
 void PipelineBuilder::extend_opt_phase(int i, std::function<void(PassMan&)> extension, int priority) {
     // adds extension to the i-th optimization phase
     // if the ith phase does not exist, it is created
-    if (!phase_extensions_.contains(i)) { phase_extensions_[i] = std::vector<PrioPassBuilder>(); }
-    phase_extensions_[i].push_back({priority, extension});
+    if (!pass_extensions_.contains(i)) { pass_extensions_[i] = std::vector<PrioPassBuilder>(); }
+    pass_extensions_[i].push_back({priority, extension});
 }
 
 void PipelineBuilder::add_opt(int i) {
@@ -53,6 +58,14 @@ void PipelineBuilder::add_opt(int i) {
 
 std::vector<int> PipelineBuilder::passes() {
     std::vector<int> keys;
+    for (auto iter = pass_extensions_.begin(); iter != pass_extensions_.end(); iter++) { keys.push_back(iter->first); }
+    std::ranges::stable_sort(keys);
+    return keys;
+}
+
+std::vector<int> PipelineBuilder::phases() {
+    std::vector<int> keys;
+    for (auto iter = pass_extensions_.begin(); iter != pass_extensions_.end(); iter++) { keys.push_back(iter->first); }
     for (auto iter = phase_extensions_.begin(); iter != phase_extensions_.end(); iter++) {
         keys.push_back(iter->first);
     }
@@ -63,11 +76,26 @@ std::vector<int> PipelineBuilder::passes() {
 std::unique_ptr<PassMan> PipelineBuilder::opt_phase(int i, World& world) {
     auto man = std::make_unique<PassMan>(world);
 
-    std::stable_sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), passCmp());
+    std::stable_sort(pass_extensions_[i].begin(), pass_extensions_[i].end(), passCmp());
 
-    for (const auto& ext : phase_extensions_[i]) { ext.second(*man); }
+    for (const auto& ext : pass_extensions_[i]) { ext.second(*man); }
 
     return man;
+}
+
+void PipelineBuilder::buildPipeline(Pipeline& pipeline) {
+    for (auto i : phases()) { buildPipelinePart(i, pipeline); }
+}
+void PipelineBuilder::buildPipelinePart(int i, Pipeline& pipeline) {
+    // if (pass_extensions_.contains(i)) {
+    //     pipeline.add_passes(opt_phase(i, pipeline.world()));
+    // }
+    if (pass_extensions_.contains(i)) { pipeline.add<PassManPhase>(opt_phase(i, pipeline.world())); }
+
+    if (phase_extensions_.contains(i)) {
+        std::stable_sort(phase_extensions_[i].begin(), phase_extensions_[i].end(), phaseCmp());
+        for (const auto& ext : phase_extensions_[i]) { ext.second(pipeline); }
+    }
 }
 
 } // namespace thorin
