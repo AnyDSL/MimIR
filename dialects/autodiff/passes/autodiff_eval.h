@@ -42,7 +42,6 @@ struct LoopFrame {
     Def2Def gradient;
     const Def* for_def = nullptr;
 
-
     const Def*& index() { return data().index; }
     const Def*& cache_index() { return data().cache_index; }
 
@@ -57,7 +56,6 @@ struct InitFrame {
 const Def* zero(const Def* ty);
 const Def* zero(World& w);
 const Def* one(World& w);
-
 
 /// This pass is the heart of AD.
 /// We replace an `autodiff fun` call with the differentiated function.
@@ -195,7 +193,7 @@ public:
 
     bool requires_caching(const Def* def) { return cache_analysis->requires_caching(def); }
 
-    bool isa_flow_def(const Def* def) { return flow_analysis->isa_flow_def(def); }
+    bool isa_flow_def(const Def* def) { return cache_analysis->flow().isa_flow_def(def); }
 
     friend LoopFrame;
 
@@ -223,7 +221,6 @@ private:
     State current_state    = State::Unknown;
     std::stack<const Def*> mem_stack;
 
-    std::unique_ptr<FlowAnalysis> flow_analysis;
     std::unique_ptr<CacheAnalysis> cache_analysis;
 };
 

@@ -6,7 +6,7 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
+#include "dialects/autodiff/auxiliary/autodiff_lea_analysis.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
@@ -14,58 +14,149 @@ namespace thorin::autodiff {
 
 class WARAnalysis {
 public:
-
     Lam* lam_;
-    explicit WARAnalysis(Lam* lam) : lam_(lam) { run(); }
+    LEAAnalysis lea_analysis;
+    DefSet found_;
+    DefSet overwritten;
 
-    void run(){
-        scan(lam_);
+    std::vector<Lam*> lams;
+
+    DefMap<DefSet>& stores;
+    DefMap<DefSet> src_stores_;
+    DefMap<DefSet> dst_stores_;
+    DefSet leas;
+    bool todo_ = false;
+
+    explicit WARAnalysis(Lam* lam)
+        : lam_(lam)
+        , lea_analysis(lam)
+        , stores(src_stores_) {
+        run();
     }
 
-    const Def* unextract(const Def* mem){
-        if(auto extract = mem->isa<Extract>()){
-            return extract->tuple();
-        }else{
+    bool is_overwritten(const Def* def) { return overwritten.contains(def); }
+
+    void run() {
+        build(nullptr, lam_);
+        for (Lam* lam : lams) { collect(lam); }
+        todo_ = true;
+        for(;todo_;){
+            todo_ = false;
+            for (Lam* lam : lams) { wipe(lam); }
+            stores = dst_stores_;
+        }
+        //for (Lam* lam : lams) { collect(lam, false); }
+        for (Lam* lam : lams) { find(lam); }
+    }
+
+    const Def* unextract(const Def* mem) {
+        if (auto extract = mem->isa<Extract>()) {
+            return unextract(extract->tuple());
+        } else {
             return mem;
         }
     }
 
-    void propagate(const Def* mem){
+    bool find(Lam* lam, const Def* mem) {
         auto op = unextract(mem);
+        if (auto app = match<mem::store>(op)) {
+            auto ptr  = app->arg(1);
+            auto node = lea_analysis.representative(ptr);
+            leas.insert(node);
+        } else if (auto app = match<mem::load>(op)) {
+            auto ptr  = app->arg(1);
+            auto node = lea_analysis.representative(ptr);
+            if (leas.contains(node)) { 
+                overwritten.insert(app); 
+            }
+        }
 
-        if( auto app = match<mem::store>(op) ){
-            app->dump();
-        }else if(auto app = match<mem::load>(op)){
-            app->dump();
-        }else if(auto app = op->isa<App>()){
-            propagate(mem::mem_def(app->arg()));
+        if (auto app = op->isa<App>()) { 
+            auto mem_arg = mem::mem_def(app->arg());
+            find(lam, mem_arg); 
         }
     }
 
-    void visit(Lam* lam){
+    void find(Lam* lam) {
         auto body = lam->body()->as<App>();
-        auto mem = mem::mem_def(body->arg());
+        auto mem  = mem::mem_def(body->arg());
 
-        propagate(mem);
+        leas.clear();
+        for( auto store : stores[lam] ){
+            auto ptr  = store->as<App>()->arg(1);
+            leas.insert(lea_analysis.representative(ptr));
+        }
 
-        lam->dump();
+        find(lam, mem);
     }
 
-    void scan(const Def* def){
+    void meet_stores(const Def* src, const Def* dst){
+        if(!src || !dst) return;
+        auto& src_stores = stores[src];
+        auto& dst_stores = dst_stores_[dst];
+        size_t before = dst_stores.size();
+        dst_stores.insert(src_stores.begin(), src_stores.end());
+        size_t after = dst_stores.size();
+        if(before != after){
+            todo_ = true;
+        }
+    }
+
+    void wipe(Lam* lam) {
+        auto body = lam->body()->as<App>();
+        auto mem  = mem::mem_def(body->arg());
+
+        if (match<affine::For>(body)) {
+            auto loop = body->arg(4)->as_nom<Lam>();
+            auto exit = body->arg(5);
+
+            meet_stores(exit, lam);
+            meet_stores(loop, lam);
+            meet_stores(exit, loop->ret_var());
+            meet_stores(loop, loop->ret_var());
+        } else {
+            auto callee = body->callee();
+            meet_stores(callee, lam);
+        }
+    }
+
+    bool collect(Lam* lam, const Def* mem) {
+        auto op = unextract(mem);
+        if (auto app = match<mem::store>(op)) {
+            stores[lam].insert(app);
+        }
+
+        if (auto app = op->isa<App>()) { 
+            auto mem_arg = mem::mem_def(app->arg());
+            collect(lam, mem_arg); 
+        }
+    }
+
+    void collect(Lam* lam) {
+        auto body = lam->body()->as<App>();
+        auto mem  = mem::mem_def(body->arg());
+        collect(lam, mem);
+    }
+
+    void apply(const Def* src, const Def* dst){
+
+    }
+    void build(Lam* prev, const Def* def) {
         Lam* lam = def->isa_nom<Lam>();
-        if(!lam) return;
+        if (!lam){
+            return;
+        }
         auto body = lam->body()->as<App>();
 
-        if( match<affine::For>(body) ){
-            scan(body->arg(5));
-            scan(body->arg(4));
-        }else{
-            scan(body->callee());
+        if (match<affine::For>(body)) {
+            build(lam, body->arg(5));
+            build(lam, body->arg(4));
+        } else {
+            build(lam, body->callee());
         }
 
-        visit(lam);
+        lams.push_back(lam);
     }
-
 };
 
 } // namespace thorin::autodiff

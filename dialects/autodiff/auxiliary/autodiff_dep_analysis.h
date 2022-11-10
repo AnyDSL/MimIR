@@ -158,18 +158,12 @@ class PostOrderVisitor {
 public:
     PostOrderVisitor(AutodiffAnalysis& analysis)
         : analysis_(analysis) {
-            for(auto [_, node] : analysis.nodes_){
-                add(node);
-            }
-        }
-
-    void add(const Def* def) {
-        add(analysis_.node(def));
+        for (auto [_, node] : analysis.nodes_) { add(node); }
     }
 
-    void add(Node* node) {
-        last_index = post_order_visit(node, last_index);
-    }
+    void add(const Def* def) { add(analysis_.node(def)); }
+
+    void add(Node* node) { last_index = post_order_visit(node, last_index); }
 
     void begin() {
         nodes_.clear();

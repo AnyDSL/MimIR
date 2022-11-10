@@ -11,46 +11,11 @@
 
 namespace thorin::autodiff {
 
-template<class T>
-struct UnionNode {
-    UnionNode(T value)
-        : parent(this)
-        , value(value) {}
-
-    bool is_root() const { return parent != nullptr; }
-    UnionNode<T>* parent;
-    T value;
-};
-
-template<class T>
-UnionNode<T>* unify(UnionNode<T>* x, UnionNode<T>* y) {
-    assert(x->is_root() && y->is_root());
-
-    if (x == y) return x;
-    return y->parent = x;
-}
-
-template<class T>
-UnionNode<T>* find(UnionNode<T>* node) {
-    if (node->parent != node) { node->parent = find(node->parent); }
-    return node->parent;
-}
-
 class FlowAnalysis {
 public:
-    DefSet flow_set;
-    std::unordered_map<const Def*, UnionNode<const Def*>> ptr_union;
-    // std::vector<std::pair<const Def*, const Def*>> reasoning_list;
+    FlowAnalysis(Lam* lam) { run(lam); }
 
-    UnionNode<const Def*>* ptr_node(const Def* def) {
-        auto i = ptr_union.find(def);
-        if (i == ptr_union.end()) {
-            auto p = ptr_union.emplace(def, UnionNode(def));
-            assert_unused(p.second);
-            i = p.first;
-        }
-        return &i->second;
-    }
+    DefSet flow_set;
 
     DefSet& flow_defs() { return flow_set; }
 
@@ -89,7 +54,6 @@ public:
                 auto arr = arg->proj(0);
                 auto idx = arg->proj(1);
 
-                unify(ptr_node(arr), ptr_node(lea));
                 return add(lea, arr) || add(arr, lea);
             } else if (auto store = match<mem::store>(app)) {
                 auto ptr = arg->proj(1);

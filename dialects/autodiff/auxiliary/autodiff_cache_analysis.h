@@ -7,6 +7,7 @@
 
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
+#include "dialects/autodiff/auxiliary/autodiff_war_analysis.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
@@ -18,9 +19,17 @@ public:
     DefSet requirements_filtered;
     DefSet targets_;
 
-    FlowAnalysis& flow_analysis;
-    explicit CacheAnalysis(FlowAnalysis& flow_analysis)
-        : flow_analysis(flow_analysis) {}
+    WARAnalysis war_analysis;
+    FlowAnalysis flow_analysis;
+    explicit CacheAnalysis(Lam* lam)
+        : flow_analysis(lam)
+        , war_analysis(lam) {
+        run();
+    }
+
+    FlowAnalysis& flow() { return flow_analysis; }
+
+    WARAnalysis& war() { return war_analysis; }
 
     DefSet& targets() { return targets_; }
 
@@ -82,8 +91,11 @@ public:
 
         for (auto requirement : requirements_filtered) {
             if (auto load = is_load_val(requirement)) {
+                load->dump(1);
                 auto ptr = load->arg(1);
-                if (has_op_store(ptr)) { targets_.insert(requirement); }
+                if (war_analysis.is_overwritten(load)) { 
+                    targets_.insert(requirement); 
+                }
             } else if (!requirement->isa<Lit>() && !isa_nested_var(requirement)) {
                 targets_.insert(requirement);
             }
@@ -107,34 +119,6 @@ public:
         }
 
         return nullptr;
-    }
-
-    bool has_op_store(const Def* def, DefSet& visited) {
-        if (visited.contains(def)) return false;
-        visited.insert(def);
-
-        if (auto extr = def->isa<Extract>()) {
-            if (has_op_store(extr->tuple(), visited)) { return true; }
-        } else if (auto lea = match<mem::lea>(def)) {
-            auto [arr_ptr, _] = lea->args<2>();
-
-            if (has_op_store(arr_ptr, visited)) { return true; }
-        } else if (match<mem::store>(def)) {
-            return true;
-        }
-
-        if (match<mem::Ptr>(def->type()) || def->isa<Tuple>()) {
-            for (auto use : def->uses()) {
-                if (has_op_store(use, visited)) { return true; }
-            }
-        }
-
-        return false;
-    }
-
-    bool has_op_store(const Def* ptr) {
-        DefSet visited;
-        return has_op_store(ptr, visited);
     }
 
     bool contains_load(const Def* def) {

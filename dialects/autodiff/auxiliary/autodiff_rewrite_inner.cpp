@@ -9,6 +9,7 @@
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/autogen.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
+#include "dialects/autodiff/auxiliary/autodiff_dep_analysis.h"
 #include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/core/core.h"
@@ -16,8 +17,6 @@
 #include "dialects/math/math.h"
 #include "dialects/mem/autogen.h"
 #include "dialects/mem/mem.h"
-
-#include "dialects/autodiff/auxiliary/autodiff_dep_analysis.h"
 
 namespace thorin::autodiff {
 
@@ -693,6 +692,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
             right_grad = math::op_rminus(math::Mode::fast, gradient);
         } else if (rop.id() == math::arith::mul) {
             left->dump(1);
+            right->dump(1);
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
 
@@ -802,9 +802,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
             }
 
             for (auto node : visitor.post_order_visit()) {
-                if(node->isa(Node::Bot)){
-                    prop(prop_scope, node->def); 
-                }
+                if (node->isa(Node::Bot)) { prop(prop_scope, node->def); }
             }
 
             DefVec inv_args;
