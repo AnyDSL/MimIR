@@ -1,6 +1,5 @@
 // RUN: rm -f %t.ll ; \
-// RUN: %thorin -d matrix -e thorin %s -e ll -o %t | FileCheck %s
-// RUN: clang %t.ll -o %t -Wno-override-module
+// RUN: %thorin -d matrix -o - %s | FileCheck %s
 
 .import core;
 .import mem;
@@ -17,3 +16,5 @@
 
     return (mem2, M)
 };
+
+// CHECK-NOT: %matrix.
