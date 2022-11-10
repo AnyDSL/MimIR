@@ -21,8 +21,11 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     base + 0, [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixHighLevelMapRed>(); });
                 builder.extend_opt_phase(
                     base + 1, [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixMediumLevel>(); });
-                builder.extend_opt_phase(base + 2,
-                                         [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixLowLevel>(); });
+                builder.append_phase(
+                    base + 2, [](thorin::Pipeline& pipeline) { pipeline.add<thorin::matrix::LowerMatrixLowLevel>(); });
+                // builder.extend_opt_phase(base + 2,
+                //                          [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixLowLevel>();
+                //                          });
             },
             nullptr, [](Normalizers& normalizers) { matrix::register_normalizers(normalizers); }};
 }

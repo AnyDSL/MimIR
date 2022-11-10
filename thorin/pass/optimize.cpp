@@ -54,8 +54,9 @@ void optimize(World& world, PipelineBuilder& builder) {
 
     Pipeline pipe(world);
 
-    auto passes = builder.passes();
-    for (auto p : passes) pipe.add<PassManPhase>(builder.opt_phase(p, world));
+    // auto passes = builder.passes();
+    // for (auto p : passes) pipe.add<PassManPhase>(builder.opt_phase(p, world));
+    builder.buildPipeline(pipe);
 
     pipe.run();
 }
