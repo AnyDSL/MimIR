@@ -69,7 +69,7 @@ public:
         if (next_state->computed_defs.insert(removed).second) {
             for (auto def : parts->projs()) {
                 if (!next_state->computed_defs.contains(def)) {
-                    if (needs_cache(def)) {
+                    if (needs_cache(def) && !depends_on_cache(def, next_state->cached_defs)) {
                         auto result = next_state->cached_defs.insert(def);
 
                         if (result.second && !requires_cache(def)) { next_state->queue.push(def); }
@@ -129,12 +129,12 @@ public:
         if (!is_flow_op(node->def)) return;
         if (!visited.insert(node->def).second) return;
         if (!is_load_val(node->def)) {
-            for (auto succ : node->succs) { find(succ, visited); }
+            for (auto succ : node->succs_) { find(succ, visited); }
         }
 
         if (is_load_val(node->def) && !war_analysis.is_overwritten(node->def)) { return; }
 
-        for (auto prev : node->preds) { find(prev, visited); }
+        for (auto prev : node->preds_) { find(prev, visited); }
     }
 
     void search(std::shared_ptr<CacheState> current) {

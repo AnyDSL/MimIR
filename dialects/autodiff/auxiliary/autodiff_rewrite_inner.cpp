@@ -610,6 +610,17 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         }
     }
 
+    if (auto tri = match<math::tri>(def)) {
+        if (tri.id() == math::tri::tanh) {
+            auto result_arg    = resolve(tri->arg());
+            auto cosh = math::op(math::tri::cosh, math::Mode::fast, gradient, result_arg);
+            auto cosh2 = math::op(math::arith::mul, math::Mode::fast, cosh, cosh);
+            auto upstream_grad = math::op(math::arith::div, math::Mode::fast, one(cosh2->type()), cosh2);
+            attach_gradient(tri->arg(), upstream_grad);
+            return;
+        } 
+    }
+
     if (auto gamma = match<math::gamma>(def)) {
         auto x = resolve(gamma->arg());
 
@@ -741,8 +752,12 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
         auto current_lam = inv_lam;
         while (true) {
             assert(current);
-            auto call = current->pred(Node::Type::App | Node::Type::For);
+            auto call = current->pred(Node::Type::App | Node::Type::For | Node::Type::Branch);
             assert(call);
+
+            if(call->isa(Node::Type::Branch)){
+                call->def->dump(1);
+            }
             auto app = call->def->as<App>();
             auto arg = app->arg();
 

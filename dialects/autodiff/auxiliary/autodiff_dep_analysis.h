@@ -26,8 +26,8 @@ struct Node {
 
     Type type_;
     const Def* def;
-    Nodes preds;
-    Nodes succs;
+    Nodes preds_;
+    Nodes succs_;
     size_t depth;
 
     mutable size_t index = -1;
@@ -35,16 +35,25 @@ struct Node {
     bool isa(Type type) const { return type_ == Any || (type_ & type) != 0; }
 
     Node* pred() {
-        assert(preds.size() == 1);
-        return *(preds.begin());
+        assert(preds_.size() == 1);
+        return *(preds_.begin());
     }
 
     Node* pred(Node::Type type) {
-        for (auto& node : preds) {
+        for (auto& node : preds_) {
             if (node->isa(type)) { return node; }
         }
 
         return nullptr;
+    }
+
+    DefVec pred2(Node::Type type) {
+        DefVec result;
+        for (auto& node : preds_) {
+            if (node->isa(type)) { result.push_back(node->def); }
+        }
+
+        return result;
     }
 };
 
@@ -93,12 +102,12 @@ public:
 
 private:
     bool link(Node* left, Node* right) {
-        auto size_before = left->succs.size();
+        auto size_before = left->succs_.size();
 
-        left->succs.insert(right);
-        right->preds.insert(left);
+        left->succs_.insert(right);
+        right->preds_.insert(left);
 
-        return size_before != left->succs.size();
+        return size_before != left->succs_.size();
     }
 
     void run(Lam* lam) {
@@ -193,7 +202,7 @@ private:
         if (n_index != size_t(-1)) return i;
         n_index = size_t(-2);
 
-        for (auto succ : n->succs) {
+        for (auto succ : n->succs_) {
             if (!succ->isa(Node::Type::Bot)) { continue; }
             i = post_order_visit(succ, i);
         }

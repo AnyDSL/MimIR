@@ -113,7 +113,13 @@ public:
             meet_stores(loop, loop->ret_var());
         } else {
             auto callee = body->callee();
-            meet_stores(callee, lam);
+            if(auto extract = callee->isa<Extract>()){
+                for(auto branch : extract->tuple()->projs()){
+                    meet_stores(branch, lam);
+                }
+            }else{
+                meet_stores(callee, lam);
+            }
         }
     }
 
@@ -136,13 +142,20 @@ public:
     void build(const Def* def) {
         Lam* lam = def->isa_nom<Lam>();
         if (!lam) { return; }
-        auto body = lam->body()->as<App>();
-
-        if (match<affine::For>(body)) {
-            build(body->arg(5));
-            build(body->arg(4));
-        } else {
-            build(body->callee());
+        auto body = lam->body();
+        
+        if(auto app = body->as<App>()){
+            auto callee = app->callee();
+            if (match<affine::For>(app)) {
+                build(app->arg(5));
+                build(app->arg(4));
+            } else if(auto extract = callee->isa<Extract>()){
+                for(auto branch : extract->tuple()->projs()){
+                    build(branch);
+                }
+            } else {
+                build(callee);
+            }
         }
 
         lams.push_back(lam);

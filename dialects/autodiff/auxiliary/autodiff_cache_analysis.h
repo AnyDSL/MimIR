@@ -9,7 +9,6 @@
 #include "dialects/autodiff/auxiliary/autodiff_cache_optimizer.h"
 #include "dialects/autodiff/auxiliary/autodiff_dep_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
-#include "dialects/autodiff/auxiliary/autodiff_war_analysis.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
@@ -21,8 +20,8 @@ public:
     DefSet requirements_filtered;
     DefSet targets_;
 
-    WARAnalysis war_analysis;
     FlowAnalysis flow_analysis;
+    WARAnalysis war_analysis;
     CacheOptimizer cache_optimizer;
     explicit CacheAnalysis(Lam* lam)
         : flow_analysis(lam)
@@ -33,13 +32,15 @@ public:
 
     FlowAnalysis& flow() { return flow_analysis; }
 
-    WARAnalysis& war() { return war_analysis; }
-
     DefSet& targets() { return targets_; }
 
     bool requires_caching(const Def* def) { return targets_.contains(def); }
 
-    void require(const Def* def) { requirements.insert(def); }
+    void require(const Def* def) { 
+        if (!def->isa<Lit>()) {
+            requirements.insert(def);
+        }
+    }
 
     void visit(const Def* def) {
         if (auto rop = match<math::arith>(def)) {
@@ -63,6 +64,10 @@ public:
             } else if (exp.id() == math::exp::log) {
                 require(exp->arg());
             }
+        }
+
+        if (auto tri = match<math::tri>(def)) {
+            require(tri->arg());
         }
 
         if (auto lea = match<mem::lea>(def)) {
@@ -101,17 +106,26 @@ public:
 
     void run() {
         for (auto flow_def : flow_analysis.flow_defs()) { visit(flow_def); }
-        filter();
-        for (auto requirement : requirements_filtered) {
+        //filter();
+        targets_ = cache_optimizer.optimize(requirements);
+        //filter();
+        /*for (auto requirement : requirements_filtered) {
             if (auto load = is_load_val(requirement)) {
                 if (war_analysis.is_overwritten(requirement)) { targets_.insert(requirement); }
             } else if (!requirement->isa<Lit>() && !isa_nested_var(requirement)) {
                 targets_.insert(requirement);
             }
-        }
-        auto old_size = targets_.size();
+        }*/
+        /*auto old_size = targets_.size();
         targets_      = cache_optimizer.optimize(requirements);
-        auto new_size = targets_.size();
+        auto new_size = targets_.size();*/
+
+/*
+        for (auto requirement : requirements) {
+            if (!requirement->isa<Lit>() && !isa_nested_var(requirement)) {
+                targets_.insert(requirement);
+            }
+        }*/
     }
 
     bool isa_nested_var(const Def* def) {

@@ -38,9 +38,16 @@ const Def* AutodiffReduce::reduce(const Def* def, const Def* ret) {
                 if (callee == ret) { break; }
 
                 if (callee->is_set()) {
-                    auto callee_lam = callee->as_nom<Lam>();
                     auto arg        = app->arg();
-                    lam->set(callee_lam->reduce(arg));
+                    if(auto extract = callee->isa<Extract>()){
+                        DefArray new_branches(extract->tuple()->ops(), [&](const Def* def){ return reduce(def, ret); });
+                        auto new_callee = w.extract(w.tuple(new_branches), extract->index());
+                        lam->set_body(w.app(new_callee, arg));
+                        break;
+                    }else{
+                        auto callee_lam = callee->as_nom<Lam>();
+                        lam->set(callee->reduce(arg));
+                    }
                 } else {
                     auto last_index = app->num_args() - 1;
                     auto ret_cont   = app->arg(last_index);
