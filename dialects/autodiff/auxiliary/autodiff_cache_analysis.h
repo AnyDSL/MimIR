@@ -6,8 +6,8 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/auxiliary/autodiff_dep_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_cache_optimizer.h"
+#include "dialects/autodiff/auxiliary/autodiff_dep_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_war_analysis.h"
 #include "dialects/math/math.h"
@@ -96,9 +96,7 @@ public:
     }
 
     void filter() {
-        for (auto requirement : requirements) {
-            filter(requirement);
-        }
+        for (auto requirement : requirements) { filter(requirement); }
     }
 
     void run() {
@@ -112,7 +110,7 @@ public:
             }
         }
         auto old_size = targets_.size();
-        targets_ = cache_optimizer.optimize(requirements);
+        targets_      = cache_optimizer.optimize(requirements);
         auto new_size = targets_.size();
     }
 

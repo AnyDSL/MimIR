@@ -699,7 +699,7 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
         } else if (rop.id() == math::arith::div) {
             auto left_value  = resolve(left);
             auto right_value = resolve(right);
-            left_grad = math::op(math::arith::div, math::Mode::fast, gradient, right_value);
+            left_grad        = math::op(math::arith::div, math::Mode::fast, gradient, right_value);
 
             right_grad  = math::op_rminus(math::Mode::fast, gradient);
             right_grad  = math::op(math::arith::mul, math::Mode::fast, right_grad, left_value);
@@ -839,6 +839,7 @@ const Def* AutoDiffEval::normalized_to_cache_index(const Def* normalized_index) 
     if (parent != nullptr) {
         const Def* offset =
             core::op(core::wrap::mul, core::Mode::none, current_loop->local_size, parent->cache_index());
+        normalized_index = core::op_bitcast(offset->type(), normalized_index);
         return core::op(core::wrap::add, core::Mode::none, offset, normalized_index);
     } else {
         return normalized_index;
@@ -1002,6 +1003,8 @@ void AutoDiffEval::push_loop_frame(const App* for_app, const Def* size) {
         next_frame->parent       = current_loop;
         next_frame->for_def      = for_app;
         size                     = upper_bound_size(size);
+        auto loop_index_ty       = current_loop->size->type();
+        size                     = core::op_bitcast(loop_index_ty, size);
         next_frame->size         = core::op(core::wrap::mul, core::Mode::none, current_loop->size, size);
         next_frame->local_size   = size;
         loop_assignment[for_app] = next_frame;

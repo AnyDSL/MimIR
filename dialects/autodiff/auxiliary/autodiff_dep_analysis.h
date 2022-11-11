@@ -70,10 +70,7 @@ public:
         for (auto [key, value] : nodes_) { delete value; }
     }
 
-    Node* node(const Def* def, Node::Type type = Node::Type::Bot) { 
-        if(!nodes_.contains(def)) return nullptr;
-        return nodes_[def]; 
-    }
+    Node* node(const Def* def, Node::Type type = Node::Type::Bot) { return nodes_[def]; }
 
     Node* create(const Def* def, Node::Type type = Node::Type::Bot) {
         Node* result = nodes_[def];
@@ -173,9 +170,9 @@ public:
 
     void add(const Def* def) { add(analysis_.node(def)); }
 
-    void add(Node* node) { 
-        if(!node) return;
-        last_index = post_order_visit(node, last_index); 
+    void add(Node* node) {
+        if (!node) return;
+        last_index = post_order_visit(node, last_index);
     }
 
     void begin() {

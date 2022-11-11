@@ -55,6 +55,7 @@ struct InitFrame {
 
 const Def* zero(const Def* ty);
 const Def* zero(World& w);
+const Def* one(const Def* ty);
 const Def* one(World& w);
 
 /// This pass is the heart of AD.
