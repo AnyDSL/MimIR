@@ -15,6 +15,7 @@
 
 #include "dialects/mem/passes/fp/copy_prop.h"
 #include "dialects/mem/passes/fp/ssa_constr.h"
+#include "dialects/mem/passes/rw/add_mem.h"
 #include "dialects/mem/passes/rw/alloc2malloc.h"
 #include "dialects/mem/passes/rw/remem_elim.h"
 
@@ -34,6 +35,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::RememElim>();
                     man.add<mem::Alloc2Malloc>();
                 });
+                builder.append_phase(130, [](Pipeline& pipeline) { pipeline.add<mem::AddMem>(); });
             },
             nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
 }

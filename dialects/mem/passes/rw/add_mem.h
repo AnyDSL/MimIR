@@ -22,11 +22,14 @@ public:
         : RWPhase(world, "add_mem") {}
 
     const Def* rewrite_structural(const Def*) override;
+    // const Def* rewrite(const Def*) override;
+    const Def* rewrite_nom(Def*) override;
 
     static PassTag* ID();
 
 private:
-    Def2Def rewritten;
+    // Def2Def rewritten;
+    const Def* current_mem;
 };
 
 } // namespace thorin::mem
