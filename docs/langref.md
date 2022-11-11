@@ -19,13 +19,13 @@ The [grammatical rules](#grammar) will directly reference these *primary [termin
 For example, the lexer doesn't care, if you use `⊥` or `.bot`.
 Both tokens are identified as `⊥`.
 
-| Primary Terminals           | Secondary Terminals                        | Comment                   |
-|-----------------------------|--------------------------------------------|---------------------------|
-| `(` `)` `[` `]` `{` `}`     |                                            | delimiters                |
-| `‹` `›` `«` `»`             | `<<` `>>` `<` `>`                          | UTF-8 delimiters          |
-| `→` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `.bot` `.top` `*` `\`  <tt>\|~\|</tt> | further UTF-8 tokens      |
-| `=` `,` `;` `.` `#` `:` `%` |                                            | further tokens            |
-| `<eof>`                     |                                            | marks the end of the file |
+| Primary Terminals           | Secondary Terminals                         | Comment                   |
+|-----------------------------|---------------------------------------------|---------------------------|
+| `(` `)` `[` `]` `{` `}`     |                                             | delimiters                |
+| `‹` `›` `«` `»`             | `<<` `>>` `<` `>`                           | UTF-8 delimiters          |
+| `→` `⊥` `⊤` `★` `□` `λ` `Π` | `->` `.bot` `.top` `*` `.lm` <tt>\|~\|</tt> | further UTF-8 tokens      |
+| `=` `,` `;` `.` `#` `:` `%` |                                             | further tokens            |
+| `<eof>`                     |                                             | marks the end of the file |
 
 #### Keywords
 
@@ -132,8 +132,9 @@ The following tables comprise all production rules:
 | d           | `.ax` Ax `:` e<sub>type</sub> `;`                                 |            | axiom                            | thorin::Axiom |
 | d           | `.let` p  `=` e `;`                                               |            | let                              | -             |
 | d           | `.Pi` Sym ( `:` e<sub>type</sub> )? `,` e<sub>dom</sub> n         |            | nominal Pi declaration           | thorin::Pi    |
+| d           | `.con` Sym p                       n                              |            | nominal continuation declaration | thorin::Lam   |
+| d           | `.fun` Sym p `→` e<sub>codom</sub> n                              |            | nominal CPS function declaration | thorin::Lam   |
 | d           | `.lam` Sym p `→` e<sub>codom</sub> n                              |            | nominal lambda declaration       | thorin::Lam   |
-| d           | `.cn` Sym p n                                                     |            | nominal continuation declaration | thorin::Lam   |
 | d           | `.Arr` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n   |            | nominal array declaration        | thorin::Arr   |
 | d           | `.pack` Sym ( `:` e<sub>type</sub> )? `,` e<sub>shape</sub> v? n  |            | nominal pack declaration         | thorin::Pack  |
 | d           | `.Sigma` Sym ( `:` e<sub>type</sub> )? `,` L<sub>arity</sub> v? n |            | nominal sigma declaration        | thorin::Sigma |
@@ -177,7 +178,10 @@ For this reason there is no rule `b -> s (p, ..., p)`.
 | e           | Sym                                                                           |            | identifier                           | -               |
 | e           | Ax                                                                            |            | use of an axiom                      | -               |
 | e           | e e                                                                           |            | application                          | thorin::App     |
-| e           | `λ` Sym `:` e<sub>dom</sub> `→` e<sub>codom</sub> `.` e<sub>body</sub>        | ✓          | lambda                               | thorin::Lam     |
+| e           |  Sym `:` e<sub>dom</sub> `→` e<sub>codom</sub> `.` e<sub>body</sub>           | ✓          | lambda                               | thorin::Lam     |
+| d           | `.cn` Sym p                       `=` de                                      |            | nominal continuation expression      | thorin::Lam     |
+| d           | `.fn` Sym p `→` e<sub>codom</sub> `=` de                                      |            | nominal CPS function expression      | thorin::Lam     |
+| d           | `λ`   Sym p `→` e<sub>codom</sub> `=` de                                      |            | nominal lambda expression            | thorin::Lam     |
 | e           | e<sub>dom</sub> `→` e<sub>codom</sub>                                         |            | function type                        | thorin::Pi      |
 | e           | `Π` b `→` e<sub>codom</sub>                                                   | ✓          | dependent function type              | thorin::Pi      |
 | e           | e `#` Sym                                                                     |            | extract via field "Sym"              | thorin::Extract |
@@ -197,14 +201,17 @@ An elided type of
 
 Expressions nesting is disambiguated according to the following precedence table (from strongest to weakest binding):
 
-| Operator         | Description                         | Associativity |
-|------------------|-------------------------------------|---------------|
-| L `:` e          | type ascription of a literal        | -             |
-| e `#` e          | extract                             | left-to-right |
-| e e              | application                         | left-to-right |
-| `Π` Sym `:` e    | domain of a dependent function type | -             |
-| `.lam` Sym `:` e | nominal lambda declaration          | -             |
-| e `→` e          | function type                       | right-to-left |
+| Operator             | Description                         | Associativity |
+|----------------------|-------------------------------------|---------------|
+| L `:` e              | type ascription of a literal        | -             |
+| e `#` e              | extract                             | left-to-right |
+| e e                  | application                         | left-to-right |
+| `Π` Sym `:` e        | domain of a dependent function type | -             |
+| `.fun` Sym Sym `:` e | nominal funciton declaration        | -             |
+| `.lam` Sym Sym `:` e | nominal continuation declaration    | -             |
+| `.fn` Sym `:` e      | nominal funciton expression         | -             |
+| `.lm` Sym `:` e      | nominal continuation expression     | -             |
+| e `→` e              | function type                       | right-to-left |
 
 Note that the domain of a dependent function type binds slightly stronger than `→`.
 This has the effect that, e.g., `Π T: * → T → T` has the expected binding like this: (`Π T: *`) `→` (`T → T`).

@@ -82,22 +82,10 @@
 /// 
 /// The comparison pullback exists formally but is not used.
 /// 
-.lam .extern internal_diff_core_icmp_xYgLE 
-    ![w: .Nat] ->
-    (.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]])
-    = { 
-        .cn inner_cmp 
-        ![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]
-        = { 
-            .let result = %core.icmp.sle (w) (a,b);
-            .cn cmp_pb ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]]
-            = { 
-                .let z = 0:(.Idx w);
-                pb_ret (z, z)
-            };
-            ret (result,cmp_pb)
-        };
-        inner_cmp
+.lam .extern internal_diff_core_icmp_xYgLE![w: .Nat] ->(.Cn[[.Idx w, .Idx w], .Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]]) =
+    .cn![[a: .Idx w, b: .Idx w], ret:.Cn[.Idx 2, .Cn[.Idx 2, .Cn[.Idx w, .Idx w]]]] = { 
+        .let result = %core.icmp.sle (w) (a,b);
+        ret (result, .cn ![s: .Idx 2, pb_ret:.Cn[.Idx w, .Idx w]] = { .let z = 0:(.Idx w); pb_ret (z, z) })
     };
 ///
 /// ### %core.wrap.add
@@ -105,33 +93,23 @@
 /// s ↦ (s, s)
 ///
 .lam .extern internal_diff_core_wrap_add!s:.Nat -> .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = 
-    .lam lam_mode m: .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = { 
-        .cn inner_add_deriv_cps![[a:.Idx s, b:.Idx s], ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]] = { 
+    .lm m: .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) =
+        .cn ![[a:.Idx s, b:.Idx s], ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]] = {
             .let result = %core.wrap.add s m (a,b);
-            .cn add_pb ![i:(.Idx s), pb_ret:(.Cn [.Idx s, .Idx s])] = { 
-                pb_ret (i,i)
-            };
-            ret (result,add_pb)
+            ret (result, .cn ![i:(.Idx s), pb_ret:(.Cn [.Idx s, .Idx s])] = pb_ret (i,i))
         };
-        inner_add_deriv_cps
-    };
-    lam_mode;
 ///
 /// ### %core.wrap.mul
 ///
 /// s ↦ (s*b, s*a)
 /// 
 .lam .extern internal_diff_core_wrap_mul!s:.Nat -> .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = 
-    .lam lam_mode m: .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) = { 
-        .cn inner_mul_deriv_cps![[a:.Idx s, b:.Idx s], ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]] = { 
+    .lm m: .Nat -> (.Cn[[.Idx s, .Idx s], .Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]]) =
+        .cn ![[a:.Idx s, b:.Idx s], ret:.Cn[.Idx s, .Cn[.Idx s, .Cn[.Idx s, .Idx s]]]] = { 
             .let result = %core.wrap.mul s m (a,b);
-            .cn mul_pb ![i:(.Idx s), pb_ret:(.Cn [.Idx s, .Idx s])] = { 
+            ret (result, .cn ![i:(.Idx s), pb_ret:(.Cn [.Idx s, .Idx s])] = { 
                 .let lhs = %core.wrap.mul s m (i,b);
                 .let rhs = %core.wrap.mul s m (i,a);
                 pb_ret (lhs, rhs)
-            };
-            ret (result,mul_pb)
+            })
         };
-        inner_mul_deriv_cps
-    };
-    lam_mode;

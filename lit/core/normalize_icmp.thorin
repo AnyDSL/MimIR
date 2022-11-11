@@ -3,7 +3,7 @@
 
 .import core;
 
-.cn .extern icmp_lit [return : .Cn .Idx 2] = {
+.con .extern icmp_lit [return : .Cn .Idx 2] = {
     return
     (%core.icmp.e 2
         (%core.icmp.uge 2

@@ -16,14 +16,15 @@
 // clang-format off
 #define DECL                \
          Tok::Tag::K_ax:    \
-    case Tok::Tag::K_cn:    \
-    case Tok::Tag::K_let:   \
-    case Tok::Tag::K_Sigma: \
     case Tok::Tag::K_Arr:   \
-    case Tok::Tag::K_pack:  \
     case Tok::Tag::K_Pi:    \
+    case Tok::Tag::K_Sigma: \
+    case Tok::Tag::K_con:   \
+    case Tok::Tag::K_def:   \
+    case Tok::Tag::K_fun:   \
     case Tok::Tag::K_lam:   \
-    case Tok::Tag::K_def
+    case Tok::Tag::K_let:   \
+    case Tok::Tag::K_pack:
 // clang-format on
 
 using namespace std::string_literals;
@@ -246,8 +247,10 @@ const Def* Parser::parse_primary_expr(std::string_view ctxt) {
         case Tok::Tag::K_ff:      lex(); return world().lit_ff();
         case Tok::Tag::K_tt:      lex(); return world().lit_tt();
         case Tok::Tag::T_Pi:      return parse_pi();
-        case Tok::Tag::T_lam:     return parse_lam();
         case Tok::Tag::T_at:      return parse_var();
+        case Tok::Tag::K_cn:
+        case Tok::Tag::K_fn:
+        case Tok::Tag::T_lm:      return parse_lam();
         case Tok::Tag::T_star:    lex(); return world().type();
         case Tok::Tag::T_box:     lex(); return world().type<1>();
         case Tok::Tag::T_bot:
@@ -391,18 +394,6 @@ const Def* Parser::parse_pi() {
     return pi;
 }
 
-const Def* Parser::parse_lam() {
-#if 0
-    auto track = tracker();
-    eat(Tok::Tag::T_lam);
-    auto var = parse_sym("variable of a lambda abstraction");
-    expect(Tok::Tag::T_semicolon, "lambda abstraction");
-    auto type = parse_expr("type of a lambda abstraction");
-#endif
-
-    return nullptr;
-}
-
 const Def* Parser::parse_lit() {
     auto track  = tracker();
     auto lit    = lex();
@@ -544,8 +535,9 @@ const Def* Parser::parse_decls(std::string_view ctxt) {
             case Tok::Tag::K_Arr:
             case Tok::Tag::K_pack:
             case Tok::Tag::K_Pi:        parse_nom();     break;
-            case Tok::Tag::K_cn:
-            case Tok::Tag::K_lam:       parse_nom_fun(); break;
+            case Tok::Tag::K_con:
+            case Tok::Tag::K_fun:
+            case Tok::Tag::K_lam:       parse_lam(true); break;
             case Tok::Tag::K_def:       parse_def();     break;
             default:                    return ctxt.empty() ? nullptr : parse_expr(ctxt);
         }
@@ -688,14 +680,14 @@ void Parser::parse_nom() {
     scopes_.pop();
 }
 
-void Parser::parse_nom_fun() {
+Lam* Parser::parse_lam(bool decl) {
+    // TODO .fn/.fun
     auto track    = tracker();
     auto tok      = lex();
-    bool is_cn    = tok.isa(Tok::Tag::K_cn);
+    bool is_cn    = tok.isa(Tok::Tag::K_cn) || tok.isa(Tok::Tag::K_con);
     auto prec     = is_cn ? Tok::Prec::Bot : Tok::Prec::Pi;
     bool external = accept(Tok::Tag::K_extern).has_value();
-    auto sym      = parse_sym("nominal lambda");
-    assert(is_cn || tok.isa(Tok::Tag::K_lam));
+    Sym sym       = decl ? parse_sym("nominal lambda") : anonymous_sym();
 
     auto outer = scopes_.curr();
     scopes_.push();            // pi scope
@@ -761,12 +753,15 @@ void Parser::parse_nom_fun() {
         auto body = parse_decls("body of a lambda");
         last_lam->set_body(body);
     } else {
+        if (!decl) err(prev_, "body of a lambda expression is mandatory");
         // TODO error message if filter is non .ff
         last_lam->unset(0);
     }
-    expect(Tok::Tag::T_semicolon, "end of lambda");
+
+    if (decl) expect(Tok::Tag::T_semicolon, "end of lambda");
 
     scopes_.pop(); // lam scope
+    return first_lam;
 }
 
 void Parser::parse_def(Sym sym /*= {}*/) {

@@ -8,12 +8,12 @@
 .import mem;
 .import core;
 
-.cn .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
-    .cn for_exit [acc : [.Idx 4294967296, .Idx 4294967296]] = {
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 4294967296, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
+    .con for_exit [acc : [.Idx 4294967296, .Idx 4294967296]] = {
         return (mem, acc#.ff)
     };
 
-    .cn for_body [i : .Idx 4294967296, acc : [.Idx 4294967296, .Idx 4294967296], continue : .Cn [[.Idx 4294967296, .Idx 4294967296]]] = {
+    .con for_body [i : .Idx 4294967296, acc : [.Idx 4294967296, .Idx 4294967296], continue : .Cn [[.Idx 4294967296, .Idx 4294967296]]] = {
         .let a : .Idx 4294967296 = %core.wrap.add 4294967296:.Nat 0:.Nat (i, acc#.ff);
         .let b : .Idx 4294967296 = %core.wrap.sub 4294967296:.Nat 0:.Nat (i, acc#.tt);
         continue (a, b)
