@@ -101,17 +101,17 @@ var NAVTREEINDEX =
 "classthorin_1_1World.html#a44b545a88c58fda7f15606002ba6d073",
 "classthorin_1_1autodiff_1_1AutoDiffEval.html#ad79b64506ca90c519a557ab8419698fe",
 "classthorin_1_1fe_1_1Tok.html#a24090cbe5e4bc59caa86ba90ea02c44c",
-"classthorin_1_1refly_1_1RemoveDbgPerm.html#acdab05f5471b2c7a417daa92fb88d822",
-"core_2autogen_8h.html#a921b6a01143ba73015fa7d262b12cbfa",
-"dialects_2mem_2passes_2rw_2remem__elim_8cpp.html",
-"lam_8h.html#ac4e11da8b7018338a4ffddad585f61e8",
-"math_2normalizers_8cpp.html#a36d7fc37fbbed2d25ae857b5f58e8a78",
-"namespacethorin.html#a56063a2d17c29f75d2e405b36278df32",
-"namespacethorin_1_1clos.html#a6de5a72a27162097768c57a865741a3e",
-"namespacethorin_1_1demo.html#ae329b50f1f9cc56aa27189f1c08c5915",
-"namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da99db06b0f6fa55d229cf508034a70871",
-"ssa__constr_8cpp.html#a0b87ca7c95e3fc724d2c7272e0435dac",
-"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html#a4c634cf7b4559d6d83ba1e501c2b1bda"
+"classthorin_1_1mem_1_1SSAConstr.html#structthorin_1_1mem_1_1SSAConstr_1_1Info",
+"core_2autogen_8h.html#a7551e53258352c571450549b0f99c47eae9108c689ff05a39ee50cdbf911300c2",
+"deptree_8cpp_source.html",
+"lam_8cpp.html#afa219845413436ebd217a971fb700df5",
+"math_2normalizers_8cpp.html#a203125b7865c862699c650180bc5c21f",
+"namespacethorin.html#a51e00c5b59d67f48d2b918497cacf0df",
+"namespacethorin_1_1clos.html#a5c55a5bd62132e28b49915902ea0117aafe63353cdfb591c479c9e6076beccb55",
+"namespacethorin_1_1demo.html",
+"namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2d",
+"scopes_8cpp_source.html",
+"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

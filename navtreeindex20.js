@@ -1,5 +1,9 @@
 var NAVTREEINDEX20 =
 {
+"namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2d":[3,0,0,12,4],
+"namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da13156e347b1734f38db62eea70f7b0a5":[3,0,0,12,4,4],
+"namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da35969b84486cf31b7cb10d0b72667c9e":[3,0,0,12,4,2],
+"namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da6f1b24606bb7e8db4c05756f725f21a7":[3,0,0,12,4,3],
 "namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2da99db06b0f6fa55d229cf508034a70871":[3,0,0,12,4,1],
 "namespacethorin_1_1math.html#af5795434c033575fef9826010d58bc2dac097c68a2820a5bb17fa2d9b3a9fd7ed":[3,0,0,12,4,0],
 "namespacethorin_1_1math.html#af6ff928603f930814700e2ea16846363":[3,0,0,12,89],
@@ -245,9 +249,5 @@ var NAVTREEINDEX20 =
 "scope_8h.html#af1f71555d0d56905937ef1c9a5bc2c96":[6,0,3,0,13,1],
 "scope_8h.html#afd74630831fc44cb2fc4a0615cc60c0a":[6,0,3,0,13,2],
 "scope_8h_source.html":[6,0,3,0,13],
-"scopes_8cpp.html":[6,0,3,2,6],
-"scopes_8cpp_source.html":[6,0,3,2,6],
-"scopes_8h.html":[6,0,3,2,7],
-"scopes_8h_source.html":[6,0,3,2,7],
-"ssa__constr_8cpp.html":[6,0,1,7,0,0,2]
+"scopes_8cpp.html":[6,0,3,2,6]
 };

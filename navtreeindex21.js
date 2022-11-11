@@ -1,5 +1,9 @@
 var NAVTREEINDEX21 =
 {
+"scopes_8cpp_source.html":[6,0,3,2,6],
+"scopes_8h.html":[6,0,3,2,7],
+"scopes_8h_source.html":[6,0,3,2,7],
+"ssa__constr_8cpp.html":[6,0,1,7,0,0,2],
 "ssa__constr_8cpp.html#a0b87ca7c95e3fc724d2c7272e0435dac":[6,0,1,7,0,0,2,0],
 "ssa__constr_8cpp.html#aad66148a6a1aae3329173e9a23b6045e":[6,0,1,7,0,0,2,1],
 "ssa__constr_8cpp_source.html":[6,0,1,7,0,0,2],
@@ -245,9 +249,5 @@ var NAVTREEINDEX21 =
 "structthorin_1_1passCmp.html":[5,0,0,75],
 "structthorin_1_1passCmp.html#a5d4d336e65dfa0af7533fe3679fb85b7":[5,0,0,75,0],
 "structthorin_1_1passCmp.html#a5d4d336e65dfa0af7533fe3679fb85b7":[3,0,0,79,0],
-"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html":[5,0,0,13,0,0],
-"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html":[3,0,0,17,0,0],
-"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html#a439449a21b4cd10ceb84c0ba151fa8ab":[3,0,0,17,0,0,2],
-"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html#a439449a21b4cd10ceb84c0ba151fa8ab":[5,0,0,13,0,0,2],
-"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html#a4c634cf7b4559d6d83ba1e501c2b1bda":[5,0,0,13,0,0,3]
+"structthorin_1_1utf8_1_1Lexer_1_1Ahead.html":[5,0,0,13,0,0]
 };
