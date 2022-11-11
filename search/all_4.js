@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['e_0',['e',['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eae1671797c52e15f763380b45e841ec32',1,'thorin::core::e()'],['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ae1671797c52e15f763380b45e841ec32',1,'thorin::core::e()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fae1671797c52e15f763380b45e841ec32',1,'thorin::math::e()']]],
+  ['e_0',['e',['../namespacethorin_1_1core.html#afab2045241ef2b508a0c6867099991e6ae1671797c52e15f763380b45e841ec32',1,'thorin::core::e()'],['../namespacethorin_1_1core.html#a7551e53258352c571450549b0f99c47eae1671797c52e15f763380b45e841ec32',1,'thorin::core::e()'],['../namespacethorin_1_1math.html#ab58b0e0aa2975069c10eaf88cff49d5fae1671797c52e15f763380b45e841ec32',1,'thorin::math::e()']]],
   ['early_1',['early',['../classthorin_1_1Scheduler.html#ac327f6bf1e80d3aeb499b27892e89589',1,'thorin::Scheduler']]],
   ['elem_2',['Elem',['../structthorin_1_1Elem.html#a6bfad49817f9558d69b923f5bd69297b',1,'thorin::Elem::Elem()'],['../structthorin_1_1Elem.html',1,'thorin::Elem&lt; R, F &gt;']]],
   ['elog_3',['ELOG',['../log_8h.html#a16e6a53bea50271aa28355f071f7df6b',1,'log.h']]],
