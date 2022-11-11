@@ -17,8 +17,18 @@
 #include "dialects/mem/passes/fp/ssa_constr.h"
 #include "dialects/mem/passes/rw/alloc2malloc.h"
 #include "dialects/mem/passes/rw/remem_elim.h"
+#include "dialects/mem/phases/rw/add_mem.h"
 
 using namespace thorin;
+
+
+class AddMemWrapper : public RWPass<AddMemWrapper, Lam> {
+public:
+    AddMemWrapper(PassMan& man)
+        : RWPass(man, "add_mem") {}
+
+    void prepare() override { mem::AddMem(world()).run(); }
+};
 
 extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
     return {"mem",
@@ -31,6 +41,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::CopyProp>(br, ee);
                 });
                 builder.extend_codegen_prep_phase([](PassMan& man) {
+                    man.add<AddMemWrapper>();
                     man.add<mem::RememElim>();
                     man.add<mem::Alloc2Malloc>();
                 });
