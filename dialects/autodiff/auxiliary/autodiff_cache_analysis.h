@@ -36,10 +36,8 @@ public:
 
     bool requires_caching(const Def* def) { return targets_.contains(def); }
 
-    void require(const Def* def) { 
-        if (!def->isa<Lit>()) {
-            requirements.insert(def);
-        }
+    void require(const Def* def) {
+        if (!def->isa<Lit>()) { requirements.insert(def); }
     }
 
     void visit(const Def* def) {
@@ -66,9 +64,7 @@ public:
             }
         }
 
-        if (auto tri = match<math::tri>(def)) {
-            require(tri->arg());
-        }
+        if (auto tri = match<math::tri>(def)) { require(tri->arg()); }
 
         if (auto lea = match<mem::lea>(def)) {
             auto index = lea->arg(1);
@@ -106,9 +102,9 @@ public:
 
     void run() {
         for (auto flow_def : flow_analysis.flow_defs()) { visit(flow_def); }
-        //filter();
+        // filter();
         targets_ = cache_optimizer.optimize(requirements);
-        //filter();
+        // filter();
         /*for (auto requirement : requirements_filtered) {
             if (auto load = is_load_val(requirement)) {
                 if (war_analysis.is_overwritten(requirement)) { targets_.insert(requirement); }
@@ -120,12 +116,12 @@ public:
         targets_      = cache_optimizer.optimize(requirements);
         auto new_size = targets_.size();*/
 
-/*
-        for (auto requirement : requirements) {
-            if (!requirement->isa<Lit>() && !isa_nested_var(requirement)) {
-                targets_.insert(requirement);
-            }
-        }*/
+        /*
+                for (auto requirement : requirements) {
+                    if (!requirement->isa<Lit>() && !isa_nested_var(requirement)) {
+                        targets_.insert(requirement);
+                    }
+                }*/
     }
 
     bool isa_nested_var(const Def* def) {

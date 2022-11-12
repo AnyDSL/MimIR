@@ -36,11 +36,11 @@ UnionNode<T>* find(UnionNode<T>* node) {
     return node->parent;
 }
 
-class LEAAnalysis {
+class PtrAnalysis {
 public:
     std::unordered_map<const Def*, std::unique_ptr<UnionNode<const Def*>>> ptr_union;
 
-    LEAAnalysis(Lam* lam) { run(lam); }
+    PtrAnalysis(Lam* lam) { run(lam); }
 
     const Def* representative(const Def* def) {
         auto node = ptr_node(def);

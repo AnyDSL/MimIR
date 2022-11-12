@@ -5,10 +5,10 @@
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/auxiliary/autodiff_cache_analysis.h"
+#include "dialects/autodiff/auxiliary/autodiff_cache_optimizer.h"
 #include "dialects/autodiff/auxiliary/autodiff_dep_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_war_analysis.h"
-#include "dialects/autodiff/auxiliary/autodiff_cache_optimizer.h"
 #include "dialects/autodiff/builder.h"
 #include "dialects/autodiff/passes/autodiff_eval.h"
 #include "dialects/math/math.h"
@@ -73,12 +73,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto diffee = def->isa_nom<Lam>();
     assert(diffee);
 
-    // flow_analysis = std::make_unique<FlowAnalysis>();
-    // flow_analysis->run(diffee);
-    //*flow_analysis.get()
-    cache_analysis = std::make_unique<CacheAnalysis>(diffee);
-    // cache_analysis->run();
-
+    analyses = std::make_unique<AnalysesCollection>(diffee);
 
     auto diff_ty = autodiff_type_fun_pi(diffee->type());
 

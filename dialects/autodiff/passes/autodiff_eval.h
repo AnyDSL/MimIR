@@ -7,6 +7,7 @@
 #include <thorin/pass/pass.h>
 
 #include "dialects/affine/affine.h"
+#include "dialects/autodiff/auxiliary/analyses_collection.h"
 #include "dialects/autodiff/auxiliary/autodiff_aux.h"
 #include "dialects/autodiff/auxiliary/autodiff_cache_analysis.h"
 #include "dialects/autodiff/auxiliary/autodiff_flow_analysis.h"
@@ -192,9 +193,22 @@ public:
         return mem;
     }
 
-    bool requires_caching(const Def* def) { return cache_analysis->requires_caching(def); }
+    void push_scope(Lam* lam) { scope_stack.push(lam); }
 
-    bool isa_flow_def(const Def* def) { return cache_analysis->flow().isa_flow_def(def); }
+    void pop_scope() { scope_stack.pop(); }
+
+    Lam* current_scope() { return scope_stack.top(); }
+
+    bool requires_caching(const Def* def) { return analyses->cache().requires_caching(def); }
+
+    bool isa_flow_def(const Def* def) { return analyses->flow().isa_flow_def(def); }
+
+    size_t count_caller(const Def* def) { return analyses->dep().count_caller(def); }
+
+    const Def* branch_index(const Def* def) {
+        size_t index = analyses->dep().branch_index(def);
+        return world().lit_int(8, index);
+    }
 
     friend LoopFrame;
 
@@ -221,8 +235,9 @@ private:
     const Def* current_mem = nullptr;
     State current_state    = State::Unknown;
     std::stack<const Def*> mem_stack;
+    std::stack<Lam*> scope_stack;
 
-    std::unique_ptr<CacheAnalysis> cache_analysis;
+    std::unique_ptr<AnalysesCollection> analyses;
 };
 
 } // namespace thorin::autodiff

@@ -18,7 +18,25 @@ Lam* AutodiffReduce::reduce(Lam* lam) {
     return result->as_nom<Lam>();
 }
 
+static const Def* build_wrapper(const Def* ret) {
+    auto& w      = ret->world();
+    auto wrapper = w.nom_lam(ret->type()->as<Pi>(), ret->dbg());
+    wrapper->app(false, ret, wrapper->var(), ret->dbg());
+    return wrapper;
+}
+
+const Def* AutodiffReduce::wrap(const Def* def) {
+    auto return_wrapper = return_wrappers[def];
+    if (!return_wrapper) {
+        return_wrapper       = build_wrapper(def);
+        return_wrappers[def] = return_wrapper;
+    }
+
+    return return_wrapper;
+}
+
 const Def* AutodiffReduce::reduce(const Def* def, const Def* ret) {
+    assert(def != ret);
     if (def == ret) { return def; }
 
     auto lam = def->as_nom<Lam>();
@@ -27,24 +45,33 @@ const Def* AutodiffReduce::reduce(const Def* def, const Def* ret) {
     while (true) {
         auto body = lam->body();
         if (auto app = body->isa<App>()) {
+            auto arg = app->arg();
             if (match<affine::For>(app)) {
-                auto arg = app->arg();
-                arg      = arg->refine(4, reduce(app->arg(4)->as_nom<Lam>()));
-                arg      = arg->refine(5, reduce(app->arg(5), ret));
+                arg = arg->refine(4, reduce(app->arg(4)->as_nom<Lam>()));
+                arg = arg->refine(5, reduce(app->arg(5), ret));
                 lam->set_body(w.app(app->callee(), arg));
                 break;
             } else {
                 auto callee = app->callee();
-                if (callee == ret) { break; }
+                if (callee == ret) {
+                    lam->set_body(w.app(wrap(callee), arg));
+                    break;
+                }
 
                 if (callee->is_set()) {
-                    auto arg        = app->arg();
-                    if(auto extract = callee->isa<Extract>()){
-                        DefArray new_branches(extract->tuple()->ops(), [&](const Def* def){ return reduce(def, ret); });
+                    auto arg = app->arg();
+                    if (auto extract = callee->isa<Extract>()) {
+                        DefArray new_branches(extract->tuple()->ops(), [&](const Def* def) {
+                            if (def == ret) {
+                                return wrap(def);
+                            } else {
+                                return reduce(def, ret); // TODO: needs wraping
+                            }
+                        });
                         auto new_callee = w.extract(w.tuple(new_branches), extract->index());
                         lam->set_body(w.app(new_callee, arg));
                         break;
-                    }else{
+                    } else {
                         auto callee_lam = callee->as_nom<Lam>();
                         lam->set(callee->reduce(arg));
                     }

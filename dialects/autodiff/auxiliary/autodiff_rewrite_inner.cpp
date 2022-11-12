@@ -103,15 +103,42 @@ const Def* AutoDiffEval::augment_var(const Var* var) {
 const Def* AutoDiffEval::augment_lam(Lam* lam) {
     auto& w = world();
 
-    auto aug_lam = w.nom_lam(lam->type()->as<Pi>(), w.dbg("aug_" + lam->name()));
+    auto lam_ty = lam->type()->as<Pi>();
+
+    size_t needs_context = count_caller(lam) > 1;
+
+    if (needs_context) { lam_ty = w.cn(merge_sigma(lam_ty->dom(), {w.type_int(8)})); }
+
+    auto aug_lam = w.nom_lam(lam_ty, w.dbg("aug_" + lam->name()));
     aug_lam->set_filter(true);
-    augmented[lam->var()] = aug_lam->var();
+
+    const Def* new_var = aug_lam->var();
+    push_mem(aug_lam);
+    if (needs_context) {
+        auto projs        = new_var->projs();
+        new_var           = w.tuple(projs.skip_back());
+        auto branch_index = projs.back();
+
+        auto loop_size          = current_loop->size;
+        auto cache_index        = current_loop->cache_index();
+        auto loop_size_nat      = core::op_bitcast(w.type_nat(), loop_size);
+        auto val_ty             = w.type_int(8);
+        auto arr_ty             = w.arr(loop_size_nat, val_ty);
+        auto alloc_cache_ptr    = create_init_alloc_frame("branch_table_" + lam->name(), arr_ty);
+        auto unsized_arr_ptr_ty = mem::type_ptr(w.arr(w.top(w.type_nat()), val_ty));
+        const Def* cache_ptr    = core::op_bitcast(unsized_arr_ptr_ty, alloc_cache_ptr, alloc_cache_ptr->dbg());
+        const Def* store_lea    = mem::op_lea(cache_ptr, cache_index, w.dbg("lea_branch_table"));
+        op_store(store_lea, branch_index);
+    }
+
+    augmented[lam->var()] = new_var;
     augmented[lam]        = aug_lam;
 
-    push_mem(aug_lam);
+    push_scope(lam);
     auto aug_body = augment(lam->body());
     aug_lam->set_body(aug_body);
     pop_mem();
+    pop_scope();
     return aug_lam;
 }
 
@@ -143,19 +170,32 @@ const Def* AutoDiffEval::augment_pack(const Pack* pack) {
 }
 
 const Def* AutoDiffEval::augment_app(const App* app) {
-    auto& world = app->world();
+    auto& w = world();
 
     auto callee = app->callee();
     auto arg    = app->arg();
 
-    auto aug_arg = augment(arg);
-
+    auto aug_arg    = augment(arg);
     auto aug_callee = augment(callee);
 
-    if (mem::mem_def(aug_arg)) { aug_arg = mem::replace_mem(end_mem(), aug_arg); }
-    auto aug_app = world.app(aug_callee, aug_arg);
+    if (auto callee_lam = callee->isa_nom<Lam>()) {
+        size_t needs_context = count_caller(callee_lam) > 1;
+        if (needs_context) {
+            auto caller      = current_scope();
+            const Def* index = branch_index(caller);
+            aug_arg          = merge_tuple(aug_arg, {index});
+            aug_arg->dump();
+        }
+    }
 
-    if (auto next_mem = mem::mem_def(aug_app)) { current_mem = next_mem; }
+    const Def* aug_app;
+    if (mem::mem_def(aug_arg)) {
+        aug_arg     = mem::replace_mem(end_mem(), aug_arg);
+        aug_app     = w.app(aug_callee, aug_arg);
+        current_mem = mem::mem_def(aug_app);
+    } else {
+        aug_app = w.app(aug_callee, aug_arg);
+    }
 
     return aug_app;
 }
@@ -613,12 +653,12 @@ void AutoDiffEval::prop(Scope& scope, const Def* def) {
     if (auto tri = match<math::tri>(def)) {
         if (tri.id() == math::tri::tanh) {
             auto result_arg    = resolve(tri->arg());
-            auto cosh = math::op(math::tri::cosh, math::Mode::fast, gradient, result_arg);
-            auto cosh2 = math::op(math::arith::mul, math::Mode::fast, cosh, cosh);
+            auto cosh          = math::op(math::tri::cosh, math::Mode::fast, gradient, result_arg);
+            auto cosh2         = math::op(math::arith::mul, math::Mode::fast, cosh, cosh);
             auto upstream_grad = math::op(math::arith::div, math::Mode::fast, one(cosh2->type()), cosh2);
             attach_gradient(tri->arg(), upstream_grad);
             return;
-        } 
+        }
     }
 
     if (auto gamma = match<math::gamma>(def)) {
@@ -746,18 +786,18 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
 
         DepAnalysis analyze(lam);
         PostOrderVisitor visitor(analyze);
-        Scope scope(lam);
 
         auto current     = analyze.exit();
         auto current_lam = inv_lam;
         while (true) {
             assert(current);
             auto call = current->pred(Node::Type::App | Node::Type::For | Node::Type::Branch);
+
+            auto callers = current->preds(Node::Type::App | Node::Type::For | Node::Type::Branch);
+            size_t size  = callers.size();
+
             assert(call);
 
-            if(call->isa(Node::Type::Branch)){
-                call->def->dump(1);
-            }
             auto app = call->def->as<App>();
             auto arg = app->arg();
 
@@ -817,7 +857,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
             }
 
             DefVec inv_args;
-            for (auto proj : lam->args()) {
+            for (auto proj : current_lam->args()) {
                 const Def* grad;
                 if (match<mem::M>(proj->type())) {
                     grad = end_mem();
@@ -836,7 +876,7 @@ Lam* AutoDiffEval::invert_lam(Lam* lam) {
             } else {
                 auto next_inv_lam = create_lam(caller_def->type()->as<Pi>(), "inv_" + lam->name());
 
-                current_lam->set_body(w.app(next_inv_lam, mem::mem_def(inv_arg)));
+                current_lam->set_body(w.app(next_inv_lam, inv_arg));
                 current_lam = next_inv_lam;
                 current     = caller;
             }

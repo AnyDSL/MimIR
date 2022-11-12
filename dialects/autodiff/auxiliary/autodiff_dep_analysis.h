@@ -47,13 +47,22 @@ struct Node {
         return nullptr;
     }
 
-    DefVec pred2(Node::Type type) {
-        DefVec result;
+    std::vector<Node*> preds(Node::Type type) {
+        std::vector<Node*> result;
         for (auto& node : preds_) {
-            if (node->isa(type)) { result.push_back(node->def); }
+            if (node->isa(type)) { result.push_back(node); }
         }
 
         return result;
+    }
+
+    size_t count(Node::Type type) {
+        size_t count = 0;
+        for (auto& node : preds_) {
+            if (node->isa(type)) count++;
+        }
+
+        return count;
     }
 };
 
@@ -67,7 +76,9 @@ public:
     Node* entry_node_;
     Node* exit_node_;
     DefMap<Node*> nodes_;
-    size_t depth = 0;
+    DefMap<size_t> branch_table;
+    size_t depth           = 0;
+    bool branch_table_init = false;
 
     DepAnalysis(Lam* entry) {
         exit_node_ = create(entry->ret_var());
@@ -77,6 +88,37 @@ public:
 
     ~DepAnalysis() {
         for (auto [key, value] : nodes_) { delete value; }
+    }
+
+    size_t count_caller(const Def* def) {
+        auto def_node = node(def);
+        if (!def_node) return 0;
+        return def_node->count(Node::Type::App | Node::Type::For | Node::Type::Branch);
+    }
+
+    size_t branch_index(const Def* def) {
+        if (!branch_table_init) {
+            branch_table_init = true;
+            build_branch_table();
+        }
+        assert(branch_table.contains(def));
+        return branch_table[def];
+    }
+
+    void build_branch_table() {
+        DefSet visited;
+        build_branch_table(exit(), visited);
+    }
+
+    void build_branch_table(Node* node, DefSet& visited) {
+        if (!visited.insert(node->def).second) return;
+        size_t index = 0;
+        for (auto pred : node->preds(Node::Type::App | Node::Type::For | Node::Type::Branch)) {
+            auto caller = pred->pred(Node::Type::Lam);
+            if (branch_table.contains(caller->def)) return;
+            branch_table[caller->def] = index++;
+            build_branch_table(caller, visited);
+        }
     }
 
     Node* node(const Def* def, Node::Type type = Node::Type::Bot) { return nodes_[def]; }

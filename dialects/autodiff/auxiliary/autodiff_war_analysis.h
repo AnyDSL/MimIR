@@ -6,7 +6,7 @@
 #include <thorin/lam.h>
 
 #include "dialects/affine/affine.h"
-#include "dialects/autodiff/auxiliary/autodiff_lea_analysis.h"
+#include "dialects/autodiff/auxiliary/autodiff_ptr_analysis.h"
 #include "dialects/math/math.h"
 #include "dialects/mem/mem.h"
 
@@ -15,7 +15,7 @@ namespace thorin::autodiff {
 class WARAnalysis {
 public:
     Lam* lam_;
-    LEAAnalysis lea_analysis;
+    PtrAnalysis ptr_analysis;
     DefSet found_;
     DefSet overwritten;
 
@@ -29,7 +29,7 @@ public:
 
     explicit WARAnalysis(Lam* lam)
         : lam_(lam)
-        , lea_analysis(lam)
+        , ptr_analysis(lam)
         , stores(src_stores_) {
         run();
     }
@@ -61,12 +61,12 @@ public:
         auto op = unextract(mem);
         if (auto app = match<mem::store>(op)) {
             auto ptr  = app->arg(1);
-            auto node = lea_analysis.representative(ptr);
+            auto node = ptr_analysis.representative(ptr);
             leas.insert(node);
         } else if (auto app = match<mem::load>(op)) {
             auto val  = app->proj(1);
             auto ptr  = app->arg(1);
-            auto node = lea_analysis.representative(ptr);
+            auto node = ptr_analysis.representative(ptr);
             if (leas.contains(node)) { overwritten.insert(val); }
         }
 
@@ -83,7 +83,7 @@ public:
         leas.clear();
         for (auto store : stores[lam]) {
             auto ptr = store->as<App>()->arg(1);
-            leas.insert(lea_analysis.representative(ptr));
+            leas.insert(ptr_analysis.representative(ptr));
         }
 
         find(lam, mem);
@@ -113,11 +113,9 @@ public:
             meet_stores(loop, loop->ret_var());
         } else {
             auto callee = body->callee();
-            if(auto extract = callee->isa<Extract>()){
-                for(auto branch : extract->tuple()->projs()){
-                    meet_stores(branch, lam);
-                }
-            }else{
+            if (auto extract = callee->isa<Extract>()) {
+                for (auto branch : extract->tuple()->projs()) { meet_stores(branch, lam); }
+            } else {
                 meet_stores(callee, lam);
             }
         }
@@ -143,16 +141,14 @@ public:
         Lam* lam = def->isa_nom<Lam>();
         if (!lam) { return; }
         auto body = lam->body();
-        
-        if(auto app = body->as<App>()){
+
+        if (auto app = body->as<App>()) {
             auto callee = app->callee();
             if (match<affine::For>(app)) {
                 build(app->arg(5));
                 build(app->arg(4));
-            } else if(auto extract = callee->isa<Extract>()){
-                for(auto branch : extract->tuple()->projs()){
-                    build(branch);
-                }
+            } else if (auto extract = callee->isa<Extract>()) {
+                for (auto branch : extract->tuple()->projs()) { build(branch); }
             } else {
                 build(callee);
             }

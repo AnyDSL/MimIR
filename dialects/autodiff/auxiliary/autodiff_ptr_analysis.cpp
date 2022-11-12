@@ -1,4 +1,4 @@
-#include "dialects/autodiff/auxiliary/autodiff_lea_analysis.h"
+#include "dialects/autodiff/auxiliary/autodiff_ptr_analysis.h"
 
 #include "thorin/def.h"
 #include "thorin/tuple.h"
