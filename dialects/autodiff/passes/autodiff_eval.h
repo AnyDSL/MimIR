@@ -97,6 +97,7 @@ public:
 
     const Def* invert_var(const Var*);
     Lam* invert_lam(Lam*);
+    Lam* invert_lam(Node* call, const Def* ret_var);
     const Def* invert_extract(const Extract*);
     const Def* invert_app(const App*);
     const Def* invert_lit(const Lit*);
@@ -167,31 +168,37 @@ public:
     }
 
     void check_mem() { assert(current_mem != nullptr); }
-
+/*
     void init_mem(const Def* mem) {
         assert(current_mem == nullptr);
         current_mem = mem;
     }
 
-    void init_mem(Lam* lam) { init_mem(mem::mem_var(lam)); }
+    void init_mem(Lam* lam) { init_mem(mem::mem_var(lam)); }*/
 
     void push_mem(Lam* lam) {
-        mem_stack.push(end_mem());
-        init_mem(lam);
+        push_mem(mem::mem_var(lam));
     }
 
-    void pop_mem() {
+    void push_mem(const Def* mem) {
+        mem_stack.push(current_mem);
+        current_mem = mem;
+    }
+
+    const Def* pop_mem() {
+        auto last_mem = current_mem;
         auto top_mem = mem_stack.top();
         mem_stack.pop();
-        init_mem(top_mem);
+        current_mem = top_mem;
+        return last_mem;
     }
-
+/*
     const Def* end_mem() {
         check_mem();
         auto mem    = current_mem;
         current_mem = nullptr;
         return mem;
-    }
+    }*/
 
     void push_scope(Lam* lam) { scope_stack.push(lam); }
 
@@ -223,6 +230,8 @@ private:
     Def2Def gradient_pointers;
 
     Def2Def cache_map;
+    DefMap<Lam*> lam2inv;
+    Def2Def lam2branch;
     DefMap<std::shared_ptr<LoopFrame>> cache_loop_assignment;
     DefMap<std::shared_ptr<LoopFrame>> loop_assignment;
     DefMap<std::shared_ptr<LoopFrame>> index_loop_map;

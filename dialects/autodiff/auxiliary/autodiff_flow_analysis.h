@@ -21,9 +21,34 @@ public:
 
     bool isa_flow_def(const Def* def) { return flow_set.contains(def); }
 
+    bool is_const(const Def* def){
+        if(def->isa<Lit>()){
+            return true;
+        }else if(auto app = def->isa<App>()){
+            return is_const(app->arg());
+        }else if(auto tuple = def->isa<Tuple>()){
+            for( auto op : tuple->ops() ){
+                if(!is_const(op)){
+                    return false;
+                }
+            }
+
+            return true;
+        }else if(auto pack = def->isa<Pack>()){
+            return is_const(pack->body());
+        }
+
+        return false;
+    }
+
+    bool add(const Def* next){
+        assert(!is_const(next));
+        flow_set.insert(next);
+    }
+
     bool add(const Def* present, const Def* next) {
         if (flow_set.contains(present)) {
-            flow_set.insert(next);
+            add(next);
             return true;
         } else {
             return false;
@@ -32,7 +57,7 @@ public:
 
     bool add_projs(const Def* present, const Def* next) {
         if (flow_set.contains(present)) {
-            for (auto proj : next->projs()) { flow_set.insert(proj); }
+            for (auto proj : next->projs()) add(proj);
             return true;
         } else {
             return false;

@@ -81,7 +81,9 @@ public:
     bool branch_table_init = false;
 
     DepAnalysis(Lam* entry) {
-        exit_node_ = create(entry->ret_var());
+        if(auto ret_var = entry->ret_var()){
+            exit_node_ = create(ret_var);
+        }
         run(entry);
         entry_node_ = create(entry);
     }

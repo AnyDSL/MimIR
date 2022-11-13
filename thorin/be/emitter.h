@@ -36,6 +36,9 @@ protected:
     /// This variant asserts in this case.
     Value emit(const Def* def) {
         auto res = emit_unsafe(def);
+        std::cout << "---" << std::endl;
+        def->dump(10);
+        def->dump();
         assert(child().is_valid(res));
         return res;
     }
@@ -73,12 +76,12 @@ protected:
         Scheduler new_scheduler(scope);
         swap(scheduler_, new_scheduler);
 
-        world().debug_dump();
-
         for (auto nom : noms) {
             if (auto lam = nom->isa<Lam>(); lam && lam != scope.exit()) {
+                if(!(lam == entry_ || lam->is_basicblock())){
+                    lam->dump(1);
+                }
                 assert(lam == entry_ || lam->is_basicblock());
-                lam->dump(1);
                 child().emit_epilogue(lam);
             }
         }

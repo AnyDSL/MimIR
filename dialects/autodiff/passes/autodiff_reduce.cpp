@@ -2,6 +2,9 @@
 
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/autodiff.h"
+#include "dialects/math/math.h"
+#include "thorin/analyses/schedule.h"
+
 
 namespace thorin::autodiff {
 
@@ -95,7 +98,8 @@ const Def* AutodiffReduce::reduce(const Def* def, const Def* ret) {
 const Def* AutodiffReduce::rewrite(const Def* def) {
     if (auto ad_app = match<ad>(def); ad_app && !visited.contains(def)) {
         auto diffee = ad_app->arg()->as_nom<Lam>();
-        def         = op_autodiff(reduce(diffee));
+        auto reduced = reduce(diffee);
+        def         = op_autodiff(reduced);
         visited.insert(def);
     }
 

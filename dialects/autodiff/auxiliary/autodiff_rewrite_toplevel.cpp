@@ -78,22 +78,22 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     auto diff_ty = autodiff_type_fun_pi(diffee->type());
 
     auto diff_lam = w.nom_lam(diff_ty, w.dbg("diff_lam_" + diffee->name()));
-    diff_lam->set_filter(true);
+    diff_lam->set_filter(false);
     diff_lam->set_body(w.top_nat());
 
     auto forward_begin = w.nom_lam(w.cn(mem::type_mem(w)), w.dbg("forward_begin_" + diffee->name()));
-    forward_begin->set_filter(true);
+    forward_begin->set_filter(false);
     forward_begin->set_body(w.top_nat());
 
     auto diff_ret_type  = diff_ty->dom(diff_ty->num_doms() - 1)->as<Pi>();
     auto inv_lam_ty     = diff_ret_type->dom(diff_ret_type->num_doms() - 1)->as<Pi>();
     auto backward_begin = w.nom_lam(inv_lam_ty, w.dbg("backward_begin_" + diffee->name()));
-    backward_begin->set_filter(true);
+    backward_begin->set_filter(false);
     backward_begin->set_body(w.top_nat());
 
     auto lam_return_ty = diffee->type()->ret_pi();
     auto forward_end   = w.nom_lam(lam_return_ty, w.dbg("forward_end_" + diffee->name()));
-    forward_end->set_filter(true);
+    forward_end->set_filter(false);
     forward_end->set_body(w.top_nat());
 
     assign_gradients(diffee, diff_lam);
@@ -102,7 +102,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     add_inverted(diffee->var(), mapping);
 
     current_state = State::Augment;
-    init_mem(forward_begin);
+    push_mem(forward_begin);
     auto aug_body = augment(diffee->body());
     forward_begin->set_body(aug_body);
 
@@ -112,7 +112,7 @@ const Def* AutoDiffEval::derive_(const Def* def) {
     forward_end->set_body(w.app(diff_lam->ret_var(), merge_flat(forward_end->var(), backward_begin)));
     auto backward_end = w.nom_lam(inv_diffee->ret_pi(), w.dbg("backward_end_" + diffee->name()));
     backward_end->set_body(w.top_nat());
-    backward_end->set_filter(true);
+    backward_end->set_filter(false);
 
     DefVec gradient_results;
     for (auto var : backward_begin->args()) { gradient_results.push_back(var); }
