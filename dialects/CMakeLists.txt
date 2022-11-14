@@ -119,8 +119,6 @@ add_thorin_dialect(mem
         mem/mem.cpp
         mem/mem.h
         mem/normalizers.cpp
-        mem/passes/fp/copy_prop.cpp
-        mem/passes/fp/copy_prop.h
         mem/passes/fp/ssa_constr.cpp
         mem/passes/fp/ssa_constr.h
         mem/passes/rw/alloc2malloc.cpp

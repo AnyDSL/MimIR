@@ -1,10 +1,10 @@
 #include "dialects/autodiff/passes/autodiff_reduce.h"
 
+#include "thorin/analyses/schedule.h"
+
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/math/math.h"
-#include "thorin/analyses/schedule.h"
-
 
 namespace thorin::autodiff {
 
@@ -97,9 +97,9 @@ const Def* AutodiffReduce::reduce(const Def* def, const Def* ret) {
 
 const Def* AutodiffReduce::rewrite(const Def* def) {
     if (auto ad_app = match<ad>(def); ad_app && !visited.contains(def)) {
-        auto diffee = ad_app->arg()->as_nom<Lam>();
+        auto diffee  = ad_app->arg()->as_nom<Lam>();
         auto reduced = reduce(diffee);
-        def         = op_autodiff(reduced);
+        def          = op_autodiff(reduced);
         visited.insert(def);
     }
 

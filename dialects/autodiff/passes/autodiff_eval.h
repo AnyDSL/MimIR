@@ -168,17 +168,15 @@ public:
     }
 
     void check_mem() { assert(current_mem != nullptr); }
-/*
-    void init_mem(const Def* mem) {
-        assert(current_mem == nullptr);
-        current_mem = mem;
-    }
+    /*
+        void init_mem(const Def* mem) {
+            assert(current_mem == nullptr);
+            current_mem = mem;
+        }
 
-    void init_mem(Lam* lam) { init_mem(mem::mem_var(lam)); }*/
+        void init_mem(Lam* lam) { init_mem(mem::mem_var(lam)); }*/
 
-    void push_mem(Lam* lam) {
-        push_mem(mem::mem_var(lam));
-    }
+    void push_mem(Lam* lam) { push_mem(mem::mem_var(lam)); }
 
     void push_mem(const Def* mem) {
         mem_stack.push(current_mem);
@@ -187,18 +185,18 @@ public:
 
     const Def* pop_mem() {
         auto last_mem = current_mem;
-        auto top_mem = mem_stack.top();
+        auto top_mem  = mem_stack.top();
         mem_stack.pop();
         current_mem = top_mem;
         return last_mem;
     }
-/*
-    const Def* end_mem() {
-        check_mem();
-        auto mem    = current_mem;
-        current_mem = nullptr;
-        return mem;
-    }*/
+    /*
+        const Def* end_mem() {
+            check_mem();
+            auto mem    = current_mem;
+            current_mem = nullptr;
+            return mem;
+        }*/
 
     void push_scope(Lam* lam) { scope_stack.push(lam); }
 

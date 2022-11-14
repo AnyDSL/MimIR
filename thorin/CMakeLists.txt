@@ -62,6 +62,8 @@ add_library(libthorin
     pass/fp/eta_red.h
     pass/fp/beta_red.cpp
     pass/fp/beta_red.h
+    pass/fp/copy_prop.cpp
+    pass/fp/copy_prop.h
     pass/fp/tail_rec_elim.cpp
     pass/fp/tail_rec_elim.h
     pass/rw/lam_spec.cpp

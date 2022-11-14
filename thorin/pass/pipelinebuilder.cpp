@@ -8,17 +8,13 @@
 #include "thorin/lattice.h"
 
 #include "thorin/pass/fp/beta_red.h"
+#include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/fp/tail_rec_elim.h"
 #include "thorin/pass/rw/partial_eval.h"
 #include "thorin/pass/rw/ret_wrap.h"
 #include "thorin/pass/rw/scalarize.h"
-
-#include "dialects/mem/passes/fp/copy_prop.h"
-#include "dialects/mem/passes/fp/ssa_constr.h"
-#include "dialects/mem/passes/rw/alloc2malloc.h"
-#include "dialects/mem/passes/rw/remem_elim.h"
 
 namespace thorin {
 
@@ -42,11 +38,12 @@ void PipelineBuilder::add_opt(int i) {
         i,
         [](thorin::PassMan& man) {
             man.add<PartialEval>();
-            man.add<BetaRed>();
+            auto br = man.add<BetaRed>();
             auto er = man.add<EtaRed>();
             auto ee = man.add<EtaExp>(er);
             man.add<Scalerize>(ee);
             man.add<TailRecElim>(er);
+            man.add<CopyProp>(br, ee);
         },
         Pass_Internal_Priority); // elevated priority
 }
