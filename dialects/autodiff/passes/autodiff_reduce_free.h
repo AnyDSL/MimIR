@@ -7,27 +7,49 @@
 
 namespace thorin::autodiff {
 
-struct Test {
-    const Lam* lam;
-    DefVec extra;
-};
-
-class AutodiffRewriter {
+class FreeAvoidRewriter {
 public:
-    AutodiffRewriter(World& w)
+    FreeAvoidRewriter(World& w)
         : w(w) {}
 
     const Def* rewrite(const Def* old_def) {
         assert(old_def);
         if (old_def->isa<Univ>() || old_def->isa<Axiom>()) return old_def;
-        if (auto i = old2new_.find(old_def); i != old2new_.end()) return i->second;
-        auto new_def      = rewrite_convert(old_def);
-        old2new_[old_def] = new_def;
-        old2new_[new_def] = new_def;
+        const Def* new_def;
+        if (auto i = old2new_.find(old_def); i != old2new_.end()) {
+            new_def = i->second;
+        } else {
+            new_def           = rewrite_convert(old_def);
+            old2new_[old_def] = new_def;
+            old2new_[new_def] = new_def;
+        }
+
+        assert(new_def);
         return new_def;
     }
 
+    const Def* check_projs(const Def* old_def) {
+        if (old_def->num_projs() > 1) {
+            DefVec vec;
+            for (auto proj : old_def->projs()) {
+                const Def* new_def = nullptr;
+                if (auto extract = proj->isa<Extract>()) {
+                    if (auto i = old2new_.find(extract); i != old2new_.end()) { new_def = i->second; }
+                } else {
+                    new_def = rewrite(proj);
+                }
+
+                if (!new_def) { return nullptr; }
+                vec.push_back(new_def);
+            }
+            return w.tuple(vec);
+        }
+        return nullptr;
+    }
+
     const Def* rewrite_convert(const Def* old_def) {
+        if (auto new_def = check_projs(old_def)) { return new_def; }
+
         if (old_def->isa<Var>()) {
             DefVec result;
             for (auto proj : old_def->projs()) {
@@ -41,8 +63,6 @@ public:
             return w.extract(rewrite(extract->tuple()), rewrite(extract->index()));
         } else if (auto tuple = old_def->isa<Tuple>()) {
             DefArray array(tuple->ops(), [&](const Def* op) { return rewrite(op); });
-            for (size_t i = 0; i < array.size(); i++) { array[i]->dump(1); }
-
             return w.tuple(array);
         } else if (auto pack = old_def->isa<Pack>()) {
             return w.pack(rewrite(pack->shape()), rewrite(pack->body()));
@@ -59,6 +79,8 @@ public:
 
     void map(const Def* old_def, const Def* new_def) { old2new_[old_def] = new_def; }
 
+    void map(Def2Def& old2new) { old2new_.insert(old2new.begin(), old2new.end()); }
+
 private:
     World& w;
     Def2Def old2new_;
@@ -67,25 +89,19 @@ private:
 class AutodiffReduceFree : public RWPass<AutodiffReduceFree, Lam> {
 public:
     AutodiffReduceFree(PassMan& man)
-        : RWPass(man, "autodiff_reduce")
-        , rewriter(world()) {}
+        : RWPass(man, "autodiff_reduce") {}
 
     const Def* rewrite(const Def*) override;
     Lam* reduce(Lam* lam);
-    void find(Lam* parent, const Def* def, DefSet& bin);
-    void find(Lam* parent, Lam* child, DefSet& bin);
-    void explore(Lam* lam);
-    void map(const Def* old_def, const Def* new_def) { rewriter.map(old_def, new_def); }
+    DefVec get_extra(Lam* lam);
+    DefVec get_extra_ty(Lam* lam);
+    Lam* build(Lam* parent, Lam* lam);
+    void prop_extra(const F_CFG& cfg, DefMap<DefSet>& extras, const CFNodes& node, const Def* def, Def* lam);
 
-    const Def* rew(const Def* def) { return rewriter.rewrite(def); }
-    AutodiffRewriter rewriter;
-    DefSet visited;
     Scheduler scheduler;
-    std::unordered_map<Lam*, Test> tests;
-
-    Def2Def extras_;
     Def2Def old2new_;
-    DefSet visited_;
+    DefMap<DefVec> extras_;
+    const Def* new_return;
 };
 
 } // namespace thorin::autodiff

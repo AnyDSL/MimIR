@@ -195,7 +195,7 @@ const Def* AutoDiffEval::augment_app(const App* app) {
         size_t needs_context = count_caller(callee_lam) > 1;
         if (needs_context) {
             auto caller      = current_scope();
-            const Def* index = branch_index(caller);
+            const Def* index = branch_id(caller);
             aug_arg          = merge_tuple(aug_arg, {index});
             aug_arg->dump();
         }
@@ -878,7 +878,7 @@ Lam* AutoDiffEval::invert_lam(Node* call, const Def* ret_var) {
         if (node->isa(Node::Bot)) { prop(scope, node->def); }
     }
 
-    auto gradient = get_gradient(caller_lam->var());
+    auto gradient = get_gradient(caller_lam->arg());
     if (gradient) {
         gradient = mem::replace_mem(pop_mem(), gradient);
     } else {
@@ -908,10 +908,16 @@ Lam* AutoDiffEval::invert_lam(Node* call, const Def* ret_var) {
     } else if (branches.size() == 1) {
         current_lam->set_body(w.app(branches[0], gradient));
     } else {
-        auto branch_index = lam2branch[caller_lam];
-        auto branch_tup   = w.tuple(branches);
-        auto conv_idx     = core::op_bitcast(w.type_idx(branches.size()), branch_index);
-        auto extract      = w.extract(branch_tup, conv_idx);
+        auto branch_idx = lam2branch[caller_lam];
+
+        DefArray arr(branches.size());
+
+        size_t i = 0;
+        for (auto caller : callers) { arr[branch_id_lit(caller->pred(Node::Type::Lam)->def)] = branches[i++]; }
+
+        auto branch_tup = w.tuple(arr);
+        auto conv_idx   = core::op_bitcast(w.type_idx(branches.size()), branch_idx);
+        auto extract    = w.extract(branch_tup, conv_idx);
         current_lam->set_body(w.app(extract, gradient));
     }
 

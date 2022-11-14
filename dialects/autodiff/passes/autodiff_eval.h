@@ -210,10 +210,9 @@ public:
 
     size_t count_caller(const Def* def) { return analyses->dep().count_caller(def); }
 
-    const Def* branch_index(const Def* def) {
-        size_t index = analyses->dep().branch_index(def);
-        return world().lit_int(8, index);
-    }
+    size_t branch_id_lit(const Def* def) { return analyses->dep().branch_index(def); }
+
+    const Def* branch_id(const Def* def) { return world().lit_int(8, branch_id_lit(def)); }
 
     friend LoopFrame;
 
@@ -227,9 +226,10 @@ private:
 
     Def2Def gradient_pointers;
 
+    Def2Def lam2branch;
+
     Def2Def cache_map;
     DefMap<Lam*> lam2inv;
-    Def2Def lam2branch;
     DefMap<std::shared_ptr<LoopFrame>> cache_loop_assignment;
     DefMap<std::shared_ptr<LoopFrame>> loop_assignment;
     DefMap<std::shared_ptr<LoopFrame>> index_loop_map;

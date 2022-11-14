@@ -80,13 +80,15 @@ public:
         auto body = lam->body()->as<App>();
         auto mem  = mem::mem_def(body->arg());
 
-        leas.clear();
-        for (auto store : stores[lam]) {
-            auto ptr = store->as<App>()->arg(1);
-            leas.insert(ptr_analysis.representative(ptr));
-        }
+        if (mem) {
+            leas.clear();
+            for (auto store : stores[lam]) {
+                auto ptr = store->as<App>()->arg(1);
+                leas.insert(ptr_analysis.representative(ptr));
+            }
 
-        find(lam, mem);
+            find(lam, mem);
+        }
     }
 
     void meet_stores(const Def* src, const Def* dst) {
@@ -134,7 +136,7 @@ public:
     void collect(Lam* lam) {
         auto body = lam->body()->as<App>();
         auto mem  = mem::mem_def(body->arg());
-        collect(lam, mem);
+        if (mem) { collect(lam, mem); }
     }
 
     void build(const Def* def) {

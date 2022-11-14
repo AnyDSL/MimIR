@@ -5,147 +5,163 @@
 #include "dialects/affine/affine.h"
 #include "dialects/autodiff/autodiff.h"
 #include "dialects/math/math.h"
+#include "dialects/mem/mem.h"
 
 namespace thorin::autodiff {
-
-void AutodiffReduceFree::find(Lam* parent, const Def* def, DefSet& bin) {
-    if (def->isa<Lit>()) { return; }
-
-    if (scheduler.smart(def) == parent) {
-        bin.insert(def);
-        return;
-    } else if (auto app = def->isa<App>()) {
-        auto arg = app->arg();
-        for (auto op : arg->projs()) { find(parent, op, bin); }
-    }
-}
-
-void AutodiffReduceFree::find(Lam* parent, Lam* child, DefSet& bin) {
-    Scope scope(child);
-    for (auto free_def : scope.free_defs()) {
-        if (match<math::F>(free_def->type())) { find(parent, free_def, bin); }
-    }
-}
 
 bool is_return(const Def* callee) {
     auto extract = callee->isa<Extract>();
     return extract && extract->tuple()->isa<Var>();
 }
 
-void for_each_child(const Def* callee, std::function<void(Lam*)> f) {
+void for_each_lam(const Def* callee, std::function<void(Lam*)> f) {
+    if (is_return(callee)) return;
     if (auto callee_lam = callee->isa_nom<Lam>()) {
         f(callee_lam);
     } else if (auto extract = callee->isa<Extract>()) {
-        for (auto branch : extract->tuple()->projs()) {
-            auto branch_lam = branch->as_nom<Lam>();
-            f(branch_lam);
-        }
+        for (auto branch : extract->tuple()->projs()) { for_each_lam(branch, f); }
     }
 }
 
-void AutodiffReduceFree::explore(Lam* parent) {
-    if (!visited_.insert(parent).second) return;
-    auto& w   = world();
-    auto body = parent->body();
+DefVec AutodiffReduceFree::get_extra(Lam* lam) {
+    DefVec result;
+    if (lam) { result = extras_[lam]; }
 
-    auto parent_ty = parent->type()->as<Pi>();
+    return result;
+}
 
-    auto parent_extras = extras_[parent];
+DefVec AutodiffReduceFree::get_extra_ty(Lam* lam) {
+    DefVec extra = get_extra(lam);
+    DefVec result;
 
-    if (parent_extras) { parent_ty = w.cn(merge_sigma(parent_ty->dom(), parent_extras->type()->projs())); }
+    for (auto def : extra) { result.push_back(def->type()); }
 
-    auto new_parent = w.nom_lam(parent_ty, parent->dbg());
-    new_parent->set_filter(false);
-    new_parent->set_body(w.bot(w.type_nat()));
-    // old2new_[parent] = new_parent;
+    return result;
+}
 
-    if (parent_extras) {
-        auto old_num_vars = parent->num_vars();
-        auto new_num_vars = new_parent->num_vars();
+Lam* AutodiffReduceFree::build(Lam* parent, Lam* lam) {
+    if (auto i = old2new_.find(lam); i != old2new_.end()) return i->second->as_nom<Lam>();
+
+    auto& w       = world();
+    auto extra_ty = get_extra_ty(parent);
+
+    auto dom = lam->type()->as<Pi>()->dom();
+
+    auto lam_ty = w.cn(merge_sigma(dom, extra_ty));
+
+    auto new_lam      = w.nom_lam(lam_ty, lam->dbg());
+    old2new_[lam]     = new_lam;
+    old2new_[new_lam] = new_lam;
+
+    if (parent == nullptr) { old2new_[lam->ret_var()] = new_lam->ret_var(); }
+
+    new_lam->set_filter(false);
+    new_lam->set_body(w.bot(w.type_nat()));
+
+    auto old_num_vars = lam->num_vars();
+
+    auto new_num_vars = new_lam->num_vars();
+
+    FreeAvoidRewriter r(w);
+
+    auto extra = get_extra(parent);
+    if (dom->num_projs() == 0 && extra.size() == 1) {
+        r.map(extra[0], new_lam->var());
+        old2new_[extra[0]] = new_lam->var();
+    } else {
+        auto vars = new_lam->vars();
         for (size_t i = 0; i < new_num_vars; i++) {
             if (i < old_num_vars) {
-                map(parent->var(i), new_parent->var(i));
+                r.map(lam->var(i), vars[i]);
+                old2new_[lam->var(i)] = vars[i];
             } else {
-                map(parent_extras->proj(i - old_num_vars), new_parent->var(i));
+                r.map(extra[i - old_num_vars], vars[i]);
+                old2new_[extra[i - old_num_vars]] = vars[i];
             }
         }
-    } else {
-        map(parent->var(), new_parent->var());
     }
 
-    map(parent, new_parent);
-
+    auto body = lam->body();
     if (auto app = body->isa<App>()) {
         auto arg    = app->arg();
         auto callee = app->callee();
+        r.map(old2new_);
+        auto new_arg = merge_tuple(r.rewrite(arg), r.rewrite(w.tuple(get_extra(lam)))->projs());
 
-        auto new_arg = rew(arg);
+        for_each_lam(callee, [&](Lam* child) { build(lam, child); });
+        r.map(old2new_);
+        new_lam->set_body(w.app(r.rewrite(app->callee()), new_arg));
+    }
 
-        // map(arg, new_arg);
+    return new_lam;
+}
 
-        if (is_return(callee)) {
-            new_parent->set_body(rew(app));
-            return;
+void mem_first_sort(DefVec& vec) {
+    std::sort(vec.begin(), vec.end(), [](const Def* left, const Def* right) { return !match<mem::M>(right->type()); });
+}
+
+void AutodiffReduceFree::prop_extra(const F_CFG& cfg,
+                                    DefMap<DefSet>& extras,
+                                    const CFNodes& nodes,
+                                    const Def* def,
+                                    Def* nom) {
+    for (auto node : nodes) {
+        auto current = node->nom();
+
+        for (auto op : def->projs()) {
+            if (!match<mem::Ptr>(op->type())) { extras[current].insert(op); }
         }
 
-        DefSet bin;
-        for_each_child(callee, [&](Lam* child) { find(parent, child, bin); });
-
-        DefVec extras_vec(bin.begin(), bin.end());
-        const Def* extras = w.tuple(extras_vec);
-
-        new_arg = merge_tuple(new_arg, rew(extras)->projs());
-
-        for_each_child(callee, [&](Lam* child) {
-            extras_[child] = extras;
-            explore(child);
-        });
-
-        auto new_callee = rew(app->callee());
-        app->dump(1);
-        new_callee->dump(1);
-        new_parent->set_body(w.app(new_callee, new_arg));
-
-        /*if( auto callee_lam = callee->isa_nom<Lam>() ){
-            auto new_callee = old2new_[callee_lam];
-            new_parent->set_body(w.app(new_callee, new_arg));
-        }else if( auto extract = callee->isa<Extract>() ){
-            DefVec branches;
-            for( auto branch : extract->tuple()->projs() ){
-                auto branch_lam = branch->as_nom<Lam>();
-                auto new_branch = old2new_[branch_lam];
-                branches.push_back(new_branch);
-            }
-
-            auto branch_tup = w.tuple(branches);
-            auto branch_extract = w.extract(branch_tup, extract->index());
-            new_parent->set_body(w.app(branch_extract, new_arg));
-        }*/
-
-        //
-        // tests.emplace(parent, Test{.lam = parent, .extra = extra});
+        if (current != nom) { prop_extra(cfg, extras, cfg.preds(current), def, nom); }
     }
 }
 
-/*
-void AutodiffReduceFree::explore(Lam* parent, Lam* child, DefSet& bin){
-
-    find(parent, scope, bin);
-    explore(child);
-}*/
 Lam* AutodiffReduceFree::reduce(Lam* lam) {
+    if (auto i = old2new_.find(lam); i != old2new_.end()) return i->second->as_nom<Lam>();
+
     Scope scope(lam);
     scheduler = Scheduler(scope);
-    explore(lam);
-    return rew(lam)->as_nom<Lam>();
+
+    NomMap<DefSet> nom2defs;
+    DefMap<Def*> def2nom;
+    NomSet lams;
+
+    for (auto bound : scope.bound()) {
+        if (!bound->isa<Lit>() && !bound->isa<Var>() && !bound->type()->isa<Pi>()) {
+            auto lam = scheduler.smart(bound);
+            nom2defs[lam].insert(bound);
+            def2nom[bound] = lam;
+            lams.insert(lam);
+        }
+    }
+
+    auto& cfg = scope.f_cfg();
+
+    DefMap<DefSet> extras;
+    for (auto dst_lam : lams) {
+        for (auto def : nom2defs[dst_lam]) {
+            for (auto op : def->ops()) {
+                auto src_lam = def2nom[op];
+                if (src_lam && src_lam != dst_lam) { prop_extra(cfg, extras, cfg.preds(dst_lam), op, src_lam); }
+            }
+        }
+    }
+
+    for (auto [lam, set] : extras) {
+        DefVec extra(set.begin(), set.end());
+        mem_first_sort(extra);
+        extras_.emplace(lam, extra);
+    }
+
+    auto result = build(nullptr, lam);
+
+    return result;
 }
 
 const Def* AutodiffReduceFree::rewrite(const Def* def) {
-    if (auto ad_app = match<ad>(def); ad_app && !visited.contains(def)) {
-        auto diffee  = ad_app->arg()->as_nom<Lam>();
-        auto reduced = reduce(diffee);
-        def          = op_autodiff(reduced);
-        visited.insert(def);
+    if (auto ad_app = match<ad>(def)) {
+        auto diffee = ad_app->arg()->as_nom<Lam>();
+        def         = op_autodiff(reduce(diffee));
     }
 
     return def;

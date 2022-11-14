@@ -5,6 +5,7 @@
 
 #include "thorin/dialects.h"
 
+#include "thorin/pass/fp/copy_prop.h"
 #include "thorin/pass/fp/eta_exp.h"
 #include "thorin/pass/fp/eta_red.h"
 #include "thorin/pass/rw/scalarize.h"
@@ -16,7 +17,6 @@
 #include "dialects/clos/phase/clos_conv.h"
 #include "dialects/clos/phase/lower_typed_clos.h"
 #include "dialects/mem/mem.h"
-#include "dialects/mem/passes/fp/copy_prop.h"
 
 namespace thorin::clos {
 
@@ -172,7 +172,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 builder.extend_opt_phase(base++, [](PassMan& man) {
                     man.add<Scalerize>(nullptr);
                     man.add<clos::BranchClosElim>();
-                    man.add<mem::CopyProp>(nullptr, nullptr, true);
+                    man.add<CopyProp>(nullptr, nullptr, true);
                     man.add<clos::LowerTypedClosPrep>();
                     man.add<clos::Clos2SJLJ>();
                 });
