@@ -11,16 +11,16 @@
 .let _32 = 4294967296;
 .let I32 = .Idx _32;
 
-.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I32, 0), 0), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (I32, 0), 0), return : .Cn [%mem.M, I32]] = {
     // .let arr_size = 16;
     .let arr_size = ⊤:.Nat;
     .let (alloc_mem, ptr) = %mem.alloc (<<%core.bitcast (.Nat, I32) argc; I32>>, 0) (mem);
-    .cn for_exit acc :: [mem : %mem.M, I32, I32] = {
+    .con for_exit acc :: [mem : %mem.M, I32, I32] = {
         .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u2u _32 arr_size (%core.wrap.sub _32 0 (argc, 4:I32)));
         .let (load_mem, val) = %mem.load (I32, 0) (mem, lea);
         return (load_mem, val)
     };
-    .cn for_body [i : I32, [mem : %mem.M, acc_a : I32, acc_b : I32], continue : .Cn [%mem.M, I32, I32]] = {
+    .con for_body [i : I32, [mem : %mem.M, acc_a : I32, acc_b : I32], continue : .Cn [%mem.M, I32, I32]] = {
         .let a : I32 = %core.wrap.add _32 0 (i, acc_a);
         .let b : I32 = %core.wrap.sub _32 0 (i, acc_b);
         .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (ptr, %core.conv.u2u _32 arr_size i);

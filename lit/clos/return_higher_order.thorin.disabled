@@ -13,9 +13,9 @@ thorin: /dialects/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::
 .let i32 = .Idx 4294967296;
 .let i8 = .Idx 256;
 
-.cn printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
+.con printInteger [mem: %mem.M, val: i32, return : .Cn [%mem.M]];
 
-.cn outer [mem: %mem.M, return : .Cn [%mem.M]] = {
+.con outer [mem: %mem.M, return : .Cn [%mem.M]] = {
     .let pb_type = .Cn [%mem.M];
     .let (alloc_pb_mem, pb_ptr) = %mem.malloc (pb_type, 0) (mem, 32);
 
@@ -30,8 +30,8 @@ thorin: /dialects/clos/phase/clos_conv.cpp:64: const thorin::Def* thorin::clos::
     load_clos(load_clos_mem)
 };
 
-.cn .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
-    .cn callback (mem: %mem.M) = {
+.con .extern main [mem: %mem.M, argc: i32, argv : %mem.Ptr («⊤:.Nat; %mem.Ptr («⊤:.Nat; .Idx 256», 0:.Nat)», 0:.Nat), return : .Cn [%mem.M, i32]] = {
+    .con callback (mem: %mem.M) = {
         return (mem, 1:i32)
     };
 
