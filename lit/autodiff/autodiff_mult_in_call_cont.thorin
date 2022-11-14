@@ -7,17 +7,17 @@
 
 .let I32 = .Idx 4294967296;
 
-.cn f [[a:I32, b:I32], ret: .Cn [I32]] = {
-    .cn f_cont [x:I32,y:I32] = {
+.con f [[a:I32, b:I32], ret: .Cn [I32]] = {
+    .con f_cont [x:I32,y:I32] = {
         ret x
     };
     f_cont((b,a))
 };
 
-.cn .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
 
-    .cn ret_cont [r:I32,pb:.Cn[I32,.Cn[I32,I32]]] = {
-        .cn pb_ret_cont [pr_a:I32,pr_b:I32] = {
+    .con ret_cont [r:I32,pb:.Cn[I32,.Cn[I32,I32]]] = {
+        .con pb_ret_cont [pr_a:I32,pr_b:I32] = {
             .let sr = %core.wrap.mul 4294967296:.Nat 0:.Nat (10000:I32, r);
             .let sa = %core.wrap.mul 4294967296:.Nat 0:.Nat (100:I32, pr_a);
             .let sb = pr_b;

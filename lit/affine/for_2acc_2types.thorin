@@ -8,12 +8,12 @@
 .import mem;
 .import affine;
 
-.cn .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 4294967296, 0), 0), return : .Cn [%mem.M, .Idx 0]] = {
-    .cn for_exit [acc : [.Idx 4294967296, .Idx 0]] = {
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 4294967296, 0), 0), return : .Cn [%mem.M, .Idx 0]] = {
+    .con for_exit [acc : [.Idx 4294967296, .Idx 0]] = {
         return (mem, acc#.tt)
     };
 
-    .cn for_body [i : .Idx 4294967296, acc : [.Idx 4294967296, .Idx 0], continue : .Cn [[.Idx 4294967296, .Idx 0]]] = {
+    .con for_body [i : .Idx 4294967296, acc : [.Idx 4294967296, .Idx 0], continue : .Cn [[.Idx 4294967296, .Idx 0]]] = {
         .let a : .Idx 4294967296 = %core.wrap.add 4294967296 0 (i, acc#.ff);
         .let b : .Idx 0 = %core.wrap.add 0 0 (%core.conv.u2u 4294967296 0 i, acc#.tt);
         continue (a, b)
