@@ -1,0 +1,61 @@
+.import autodiff;
+.import core;
+.import debug;
+.import direct;
+.import mem;
+.import tool;
+.lam internal_diff_core_wrap_mul_723130 __723154::[_723241: .Nat, w_723155: .Nat] → .Cn [«2:.Nat; .Idx w_723155», .Cn [.Idx w_723155, .Cn [.Idx w_723155, .Cn «2:.Nat; .Idx w_723155»]]] = {
+    .con inner_mul_deriv_cps_723200 __723208::[__723229::[_723233: .Idx w_723155, _723237: .Idx w_723155], ret_723210: .Cn [.Idx w_723155, .Cn [.Idx w_723155, .Cn «2:.Nat; .Idx w_723155»]]] = {
+        .con mul_pb_723257 __723271::[s_723286: .Idx w_723155, pb_ret_723273: .Cn «2:.Nat; .Idx w_723155»] = {
+            .let _723291: .Idx w_723155 = %core.wrap.mul __723154 (__723229#1:(.Idx 2), s_723286);
+            .let _723301: .Idx w_723155 = %core.wrap.mul __723154 (__723229#0:(.Idx 2), s_723286);
+            pb_ret_723273 (_723291, _723301)
+        };
+        .let _723244: .Idx w_723155 = %core.wrap.mul __723154 __723229;
+        ret_723210 (_723244, mul_pb_723257)
+    };
+    // %tool.set_filter (.Cn[__723229::[_723233: .Idx w_723155, _723237: .Idx w_723155], ret_723210: .Cn [.Idx w_723155, .Cn [.Idx w_723155, .Cn «2:.Nat; .Idx w_723155»]]]) (1:(.Idx 2), inner_mul_deriv_cps_723200)
+    inner_mul_deriv_cps_723200
+};
+.lam internal_diff_core_wrap_add_723408 __723420::[_723502: .Nat, w_723421: .Nat] → .Cn [«2:.Nat; .Idx w_723421», .Cn [.Idx w_723421, .Cn [.Idx w_723421, .Cn «2:.Nat; .Idx w_723421»]]] = {
+    .con add_pb_723515 __723524::[s_723531: .Idx w_723421, pb_ret_723526: .Cn «2:.Nat; .Idx w_723421»] = {
+        pb_ret_723526 ‹2:.Nat; s_723531›
+    };
+    .con inner_add_deriv_cps_723461 __723470::[__723490::[_723494: .Idx w_723421, _723498: .Idx w_723421], ret_723472: .Cn [.Idx w_723421, .Cn [.Idx w_723421, .Cn «2:.Nat; .Idx w_723421»]]] = {
+        .let _723505: .Idx w_723421 = %core.wrap.add __723420 __723490;
+        ret_723472 (_723505, add_pb_723515)
+    };
+    // %tool.set_filter (0:(.Idx 2), inner_add_deriv_cps_723461)
+    inner_add_deriv_cps_723461
+};
+.lam Uf_723605 _723623: «2:.Nat; (.Idx 4294967296)» → ★ = {
+    [(.Idx 4294967296), .Cn [(.Idx 4294967296), .Cn «2:.Nat; (.Idx 4294967296)»]]
+};
+.lam Uf_723660 _723678: «2:.Nat; (.Idx 4294967296)» → ★ = {
+    [(.Idx 4294967296), .Cn [(.Idx 4294967296), .Cn «2:.Nat; (.Idx 4294967296)»]]
+};
+.con .extern main __723734::[mem_723752: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), return_723738: .Cn [%mem.M, (.Idx 4294967296)]] = {
+    .con main_cont_723343 _723558::[_723560: (.Idx 4294967296), _723726: .Cn [(.Idx 4294967296), .Cn «2:.Nat; (.Idx 4294967296)»]] = {
+        .con main_cont_cont_cont_723582 _723583::[_723788: (.Idx 4294967296), _723585: .Cn [(.Idx 4294967296), .Cn «2:.Nat; (.Idx 4294967296)»]] = {
+            .con comp_tup_pb__cont_723729 _723800::[(.Idx 4294967296), _723801: (.Idx 4294967296)] = {
+                .let _723799: (.Idx 4294967296) = %core.wrap.mul 4294967296:.Nat 0:.Nat (100:(.Idx 4294967296), _723788);
+                .let _723806: (.Idx 4294967296) = %core.wrap.add 4294967296:.Nat 0:.Nat (_723799, _723801);
+                return_723738 (mem_723752, _723806)
+            };
+            .con comp_tup_pb__cont_723724 _723727::[(.Idx 4294967296), _723728: (.Idx 4294967296)] = {
+                _723726 (_723728, comp_tup_pb__cont_723729)
+            };
+            .con comp_tup_pb__cont_723594 _723722::[(.Idx 4294967296), _723723: (.Idx 4294967296)] = {
+                .let _723715: [(.Idx 4294967296), .Cn [(.Idx 4294967296), .Cn «2:.Nat; (.Idx 4294967296)»]] = %direct.cps2ds_dep («2:.Nat; (.Idx 4294967296)», Uf_723660) (internal_diff_core_wrap_mul_723130 (0:.Nat, 4294967296:.Nat)) (2:(.Idx 4294967296), 42:(.Idx 4294967296));
+                .let _723719: [(.Idx 4294967296), .Cn [(.Idx 4294967296), .Cn «2:.Nat; (.Idx 4294967296)»]] = %direct.cps2ds_dep («2:.Nat; (.Idx 4294967296)», Uf_723605) (internal_diff_core_wrap_add_723408 (0:.Nat, 4294967296:.Nat)) (3:(.Idx 4294967296), _723715#0:(.Idx 2));
+                _723719#1:(.Idx 2) (_723723, comp_tup_pb__cont_723724)
+            };
+            _723585 (1:(.Idx 4294967296), comp_tup_pb__cont_723594)
+        };
+        .con main_cont_cont_723567 _723573::[_723575: (.Idx 4294967296), .Cn [(.Idx 4294967296), .Cn «2:.Nat; (.Idx 4294967296)»]] = {
+            internal_diff_core_wrap_mul_723130 (0:.Nat, 4294967296:.Nat) ((4:(.Idx 4294967296), _723575), main_cont_cont_cont_723582)
+        };
+        internal_diff_core_wrap_add_723408 (0:.Nat, 4294967296:.Nat) ((3:(.Idx 4294967296), _723560), main_cont_cont_723567)
+    };
+    internal_diff_core_wrap_mul_723130 (0:.Nat, 4294967296:.Nat) ((2:(.Idx 4294967296), 42:(.Idx 4294967296)), main_cont_723343)
+};

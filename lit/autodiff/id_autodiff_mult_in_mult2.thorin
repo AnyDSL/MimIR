@@ -1,0 +1,35 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d direct -d autodiff %s --output-ll %t.ll -o - | FileCheck %s
+
+.import core;
+.import autodiff;
+.import mem;
+
+.let I32 = .Idx 4294967296;
+
+.con f [[a:I32, b:I32], ret: .Cn [I32]] = {
+    .let x = %core.wrap.mul 4294967296:.Nat 0:.Nat (a, b);
+    ret x
+};
+
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+
+    .con ret_cont [r:I32,pb:.Cn[I32,.Cn[I32,I32]]] = {
+        .con pb_ret_cont [pr_a:I32,pr_b:I32] = {
+            .let sr = %core.wrap.mul 4294967296:.Nat 0:.Nat (10000:I32, r);
+            .let sa = %core.wrap.mul 4294967296:.Nat 0:.Nat (100:I32, pr_a);
+            .let sb = pr_b;
+            .let sp = %core.wrap.add 4294967296:.Nat 0:.Nat (sa, sb);
+            .let o  = %core.wrap.add 4294967296:.Nat 0:.Nat (sr, sp);
+            return (mem, o)
+        };
+        pb((1:I32),pb_ret_cont)
+    };
+
+    .let f_diff = %autodiff.ad (.Cn [[I32,I32],.Cn[I32]]) f;
+
+    .let c = (42:I32,43:I32);
+    f_diff (c,ret_cont)
+};
+
+// CHECK-DAG: return{{.*}}18064342

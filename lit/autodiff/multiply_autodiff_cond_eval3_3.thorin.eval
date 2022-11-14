@@ -1,0 +1,11 @@
+.import autodiff;
+.import core;
+.import debug;
+.import direct;
+.import mem;
+.con .extern main __635710_709387_636142::[mem_635729_709403_636158: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), return_635714_709391_636146: .Cn [%mem.M, (.Idx 4294967296)]] = {
+    .con return_635714_709391_636137 _636147: [%mem.M, (.Idx 4294967296)] = {
+        return_635714_709391_636146 _636147
+    };
+    return_635714_709391_636137 (mem_635729_709403_636158, 12603:(.Idx 4294967296))
+};

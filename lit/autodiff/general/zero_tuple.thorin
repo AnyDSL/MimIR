@@ -1,0 +1,19 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d autodiff %s --output-ll %t.ll -o - | FileCheck %s
+
+.import core;
+.import direct;
+.import autodiff;
+.import mem;
+
+.let I32 = .Idx 4294967296;
+
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+
+    .let t = %autodiff.zero [I32,I32];
+    .let c = t#(0:(.Idx 2));
+    return (mem,c)
+};
+
+
+// CHECK-DAG: return{{.*}}0

@@ -1,0 +1,36 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d direct -d autodiff %s --output-ll %t.ll -o - | FileCheck %s
+
+.import core;
+.import direct;
+.import mem;
+
+.import autodiff;
+
+.con extract_pb_535733 _535735::[s_535741: %mem.M, _535737: .Cn [%mem.M, «2:.Nat; (.Idx 4294967296)»]] = {
+    .con _535734 _535738: [%mem.M, «2:.Nat; (.Idx 4294967296)»] = {
+        _535737 _535738
+    };
+    _535734 (s_535741, ‹2:.Nat; 0:(.Idx 4294967296)›)
+};
+.con extract_pb_535776 _535778::[s_535787: (.Idx 4294967296), _535780: .Cn [%mem.M, «2:.Nat; (.Idx 4294967296)»]] = {
+    .con _535777 _535781: [%mem.M, «2:.Nat; (.Idx 4294967296)»] = {
+        _535780 _535781
+    };
+    _535777 (%autodiff.zero %mem.M, (0:(.Idx 4294967296), s_535787))
+};
+.con .extern main __535682::[mem_535757: %mem.M, (.Idx 4294967296), %mem.Ptr (%mem.Ptr ((.Idx 256), 0:.Nat), 0:.Nat), return_535686: .Cn [%mem.M, (.Idx 4294967296)]] = {
+    .con return_535681 _535687: [%mem.M, (.Idx 4294967296)] = {
+        return_535686 _535687
+    };
+    .let _535758: [%mem.M, «2:.Nat; (.Idx 4294967296)»] = %direct.cps2ds (%mem.M, [%mem.M, «2:.Nat; (.Idx 4294967296)»]) extract_pb_535733 mem_535757;
+    .let _535793: [%mem.M, «2:.Nat; (.Idx 4294967296)»] = %direct.cps2ds ((.Idx 4294967296), [%mem.M, «2:.Nat; (.Idx 4294967296)»]) extract_pb_535776 1:(.Idx 4294967296);
+    .let _535797: %mem.M = %autodiff.add %mem.M (_535758#0:(.Idx 2), _535793#0:(.Idx 2));
+    .let _535843: «2:.Nat; (.Idx 4294967296)» = %autodiff.add «2:.Nat; (.Idx 4294967296)» (_535758#1:(.Idx 2), _535793#1:(.Idx 2));
+    .let _535879: (.Idx 4294967296) = %core.wrap.mul 4294967296:.Nat 0:.Nat (100:(.Idx 4294967296), _535843#0:(.Idx 2));
+    .let _535884: (.Idx 4294967296) = %core.wrap.add 4294967296:.Nat 0:.Nat (_535843#1:(.Idx 2), _535879);
+    .let _535895: (.Idx 4294967296) = %core.wrap.add 4294967296:.Nat 0:.Nat (430000:(.Idx 4294967296), _535884);
+    return_535681 (_535797, _535895)
+};
+
+// CHECK-DAG: return{{.*}}430001

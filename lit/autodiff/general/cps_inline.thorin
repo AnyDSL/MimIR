@@ -1,0 +1,25 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
+
+.import mem;
+.import core;
+
+.let I32 = .Idx 4294967296;
+
+.con f [a:I32, ret: .Cn [I32]] = {
+    .let b = %core.wrap.mul 4294967296:.Nat 0:.Nat (2:I32, a);
+    ret b
+};
+
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+
+    .con ret_cont r::[I32] = {
+        return (mem, r)
+    };
+
+    .let c = (42:I32);
+    f (c,ret_cont)
+};
+
+
+// CHECK-DAG: return{{.*}}84
