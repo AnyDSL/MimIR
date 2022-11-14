@@ -80,6 +80,25 @@ void AddMem::start() {
     }
 }
 
+const Def* AddMem::rewrite_pi(const Pi* pi) {
+    auto rewrite_op = [this](const Def* op) -> const Def* {
+        if (auto pi_arg = op->isa<Pi>()) return rewrite_pi(pi_arg);
+        return op;
+    };
+
+    auto dom     = pi->dom();
+    auto new_dom = DefArray{dom->num_projs(), [&](size_t i) { return rewrite_op(dom->proj(i)); }};
+    if (pi->num_doms() > 0 && match<mem::M>(pi->dom(0_s)))
+        new_dom = dom->projs();
+    else if (dom->isa<Sigma>() || dom->isa<Arr>() || dom->isa<Pack>()) { // what about packs / arrays..?
+        new_dom = DefArray{dom->num_projs() + 1,
+                           [&](size_t i) { return i == 0 ? mem::type_mem(world()) : rewrite_op(dom->proj(i - 1)); }};
+    } else {
+        new_dom = {mem::type_mem(world()), dom};
+    }
+    return world().pi(new_dom, pi->codom(), pi->dbg());
+}
+
 const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     auto place   = static_cast<Lam*>(sched().smart(def));
     auto mem_var = [&](Lam* nom) -> const Def* {
@@ -104,99 +123,86 @@ const Def* AddMem::add_mem_to_lams(Lam* curr_lam, const Def* def) {
     }
     if (match<mem::M>(def->type())) { world().DLOG("new mem {} in {}", def, curr_lam); }
 
-    // todo: do we need to stub noms ..?
-    if (auto nom = def->isa_nom<Lam>()) {
-        mem_rewritten_[nom] = nom;
-        for (size_t i = 0, n = nom->num_ops(); i < n; ++i) {
-            static_cast<Def*>(nom)->set(i, add_mem_to_lams(nom, nom->op(i)));
+    auto rewrite_lam = [&](Lam* nom) -> const Def* {
+        if (auto it = mem_rewritten_.find(nom); it != mem_rewritten_.end()) // already rewritten
+            if (auto pi = it->second->type()->as<Pi>(); pi->num_doms() > 0 && match<mem::M>(pi->dom(0_s)))
+                return it->second;
+        bool is_bound = sched().scope().bound(nom) || nom == curr_lam;
+        auto deleter  = [this, is_bound](Scope* scp) {
+            if (!is_bound) sched_.pop_back();
+            delete scp;
+        };
+        std::unique_ptr<Scope, decltype(deleter)> bound_scope{nullptr, deleter};
+        if (!is_bound) {
+            world().DLOG("free lam {}", nom);
+            bound_scope.reset(new Scope{nom});
+            sched_.emplace_back(*bound_scope);
         }
-        return nom;
-    }
+
+        if (auto pi = nom->type()->as<Pi>(); pi->num_doms() > 0 && match<mem::M>(pi->dom(0_s))) { // already has a mem
+            // todo: deal with unbound lams...
+            auto new_nom = nom;
+            if (auto new_pi = rewrite_pi(pi); new_pi != pi) { new_nom = nom->stub(world(), new_pi, nom->dbg()); }
+            mem_rewritten_[nom] = new_nom;
+            for (size_t i = 0, n = new_nom->num_ops(); i < n; ++i) {
+                if (auto op = nom->op(i)) static_cast<Def*>(new_nom)->set(i, add_mem_to_lams(nom, op));
+            }
+            return new_nom;
+        }
+
+        auto pi = nom->type()->as<Pi>();
+
+        auto new_nom = nom->stub(world(), rewrite_pi(pi), nom->dbg());
+
+        for (size_t i = 0; i < nom->num_vars(); ++i)
+            mem_rewritten_[nom->var(i)] = new_nom->var(i + 1, nom->var(i)->dbg());
+        if (nom->num_vars() > 1) mem_rewritten_[nom->var()] = new_nom->var(nom->var()->dbg());
+
+        mem_rewritten_[new_nom] = new_nom;
+        mem_rewritten_[nom]     = new_nom;
+        val2mem_[new_nom]       = new_nom->var(0_s);
+        val2mem_[nom]           = new_nom->var(0_s);
+
+        new_nom->set(add_mem_to_lams(place, nom->filter()), add_mem_to_lams(place, nom->body()));
+
+        if (nom->is_external()) {
+            nom->make_internal();
+            new_nom->make_external();
+        }
+
+        return new_nom;
+    };
+    if (auto nom = def->isa_nom<Lam>()) { return rewrite_lam(nom); }
     assert(!def->isa_nom());
 
+    auto rewrite_arg = [&](const Def* arg) -> const Def* {
+        if (arg->type()->num_projs() > 0 && match<mem::M>(arg->type()->proj(0)))
+            return arg->rebuild(arg->world(), arg->type(),
+                                DefArray{arg->ops(), [&](const Def* op) { return add_mem_to_lams(place, op); }},
+                                arg->dbg());
+
+        if (arg->isa<Tuple>() || arg->isa<Arr>() || arg->isa<Pack>()) {
+            DefArray new_args{arg->num_projs() + 1};
+            for (int i = arg->num_projs(); i >= 0; i--) {
+                new_args[i] = i == 0 ? add_mem_to_lams(place, follow_mem(val2mem_, mem_var(place)))
+                                     : add_mem_to_lams(place, arg->proj(i - 1));
+            }
+            return arg->world().tuple(new_args, arg->dbg());
+        }
+
+        return arg->world().tuple(
+            {add_mem_to_lams(place, follow_mem(val2mem_, mem_var(place))), add_mem_to_lams(place, arg)}, arg->dbg());
+    };
+
     if (auto apped_nom = isa_apped_nom_lam_in_tuple(def); apped_nom.first) {
-        auto rewrite_arg = [&](const Def* arg) -> const Def* {
-            if (arg->type()->num_projs() > 0 && match<mem::M>(arg->type()->proj(0)))
-                return arg->rebuild(arg->world(), arg->type(),
-                                    DefArray{arg->ops(), [&](const Def* op) { return add_mem_to_lams(place, op); }},
-                                    arg->dbg());
-
-            // return arg->rebuild(arg->world(), arg->type(),
-            // DefArray{arg->ops(),
-            //          [&](const Def* op) {
-            //              if (match<mem::M>(op->type()))
-            //                  return add_mem_to_lams(place,
-            //                                         follow_mem(val2mem_, mem_var(place)));
-            //              return add_mem_to_lams(place, op);
-            //          }},
-            // arg->dbg());
-
-            if (arg->isa<Tuple>() || arg->isa<Arr>() || arg->isa<Pack>()) {
-                DefArray new_args{arg->num_projs() + 1};
-                for (int i = arg->num_projs(); i >= 0; i--) {
-                    new_args[i] = i == 0 ? add_mem_to_lams(place, follow_mem(val2mem_, mem_var(place)))
-                                         : add_mem_to_lams(place, arg->proj(i - 1));
-                }
-                return arg->world().tuple(new_args, arg->dbg());
-            }
-
-            return arg->world().tuple(
-                {add_mem_to_lams(place, follow_mem(val2mem_, mem_var(place))), add_mem_to_lams(place, arg)},
-                arg->dbg());
-        };
-
-        auto rewrite_lam = [&](Lam* nom) -> const Def* {
-            if (auto it = mem_rewritten_.find(nom); it != mem_rewritten_.end()) // already rewritten
-                if (auto pi = it->second->type()->as<Pi>(); pi->num_doms() > 0 && match<mem::M>(pi->dom(0_s)))
-                    return it->second;
-            bool is_bound = sched().scope().bound(nom);
-            auto deleter  = [this, is_bound](Scope* scp) {
-                if (!is_bound) sched_.pop_back();
-                delete scp;
-            };
-            std::unique_ptr<Scope, decltype(deleter)> bound_scope{nullptr, deleter};
-            if (!is_bound) {
-                world().DLOG("free lam {}", nom);
-                bound_scope.reset(new Scope{nom});
-                sched_.emplace_back(*bound_scope);
-            }
-
-            if (auto pi = nom->type()->as<Pi>();
-                pi->num_doms() > 0 && match<mem::M>(pi->dom(0_s))) { // already has a mem
-                                                                     // todo: deal with unbound lams...
-                if (!is_bound) return add_mem_to_lams(nom, nom);
-                return add_mem_to_lams(place, nom);
-            }
-
-            auto pi            = nom->type()->as<Pi>();
-            auto dom           = pi->dom();
-            const Def* new_dom = nullptr;
-            if (dom->isa<Sigma>() || dom->isa<Arr>() || dom->isa<Pack>()) { // what about packs / arrays..?
-                new_dom = world().sigma(DefArray{dom->num_projs() + 1, [&](size_t i) {
-                                                     return i == 0 ? mem::type_mem(world()) : dom->proj(i - 1);
-                                                 }});
-            } else {
-                new_dom = world().sigma({mem::type_mem(world()), dom});
-            }
-
-            auto new_nom = nom->stub(world(), world().pi(new_dom, pi->codom()), nom->dbg());
-
-            for (size_t i = 0; i < nom->num_vars(); ++i) mem_rewritten_[nom->var(i)] = new_nom->var(i + 1);
-            if (nom->num_vars() > 1) mem_rewritten_[nom->var()] = new_nom->var();
-
-            mem_rewritten_[new_nom] = new_nom;
-            mem_rewritten_[nom]     = new_nom;
-            val2mem_[new_nom]       = new_nom->var(0_s);
-            val2mem_[nom]           = new_nom->var(0_s);
-
-            new_nom->set(add_mem_to_lams(place, nom->filter()), add_mem_to_lams(place, nom->body()));
-
-            return new_nom;
-        };
-
         return mem_rewritten_[def] =
-                   rewrite_apped_nom_lam_in_tuple(def, rewrite_lam, std::move(rewrite_arg),
+                   rewrite_apped_nom_lam_in_tuple(def, std::move(rewrite_lam), std::move(rewrite_arg),
                                                   [&](const Def* def) { return add_mem_to_lams(place, def); });
+    }
+
+    if (auto app = def->isa<App>(); app && (app->callee()->dep() & Dep::Var)) {
+        return mem_rewritten_[def] = app->rebuild(
+                   world(), app->type(), {add_mem_to_lams(place, app->callee()), rewrite_arg(app->arg())}, app->dbg());
     }
 
     DefArray new_ops{def->ops(), [&](const Def* op) { return add_mem_to_lams(place, op); }};

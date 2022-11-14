@@ -15,6 +15,8 @@ public:
 
 private:
     const Def* add_mem_to_lams(Lam*, const Def*);
+    const Def* rewrite_pi(const Pi*);
+
     Scheduler& sched() { return sched_.back(); }
 
     std::vector<Scheduler> sched_;
