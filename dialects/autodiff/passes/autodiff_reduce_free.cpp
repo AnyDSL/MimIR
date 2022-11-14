@@ -39,8 +39,27 @@ DefVec AutodiffReduceFree::get_extra_ty(Lam* lam) {
     return result;
 }
 
+void AutodiffReduceFree::map_free_to_var(Lam* parent, Lam* old_lam, Lam* new_lam) {
+    auto extra = get_extra(parent);
+    auto dom   = old_lam->type()->as<Pi>()->dom();
+    if (dom->num_projs() == 0 && extra.size() == 1) {
+        map(extra[0], new_lam->var());
+    } else {
+        auto old_num_vars = old_lam->num_vars();
+        auto new_num_vars = new_lam->num_vars();
+        auto vars         = new_lam->vars();
+        for (size_t i = 0; i < new_num_vars; i++) {
+            if (i < old_num_vars) {
+                map(old_lam->var(i), vars[i]);
+            } else {
+                map(extra[i - old_num_vars], vars[i]);
+            }
+        }
+    }
+}
+
 Lam* AutodiffReduceFree::build(Lam* parent, Lam* lam) {
-    if (auto i = old2new_.find(lam); i != old2new_.end()) return i->second->as_nom<Lam>();
+    if (auto new_lam = has(lam)) return new_lam->as_nom<Lam>();
 
     auto& w       = world();
     auto extra_ty = get_extra_ty(parent);
@@ -49,48 +68,31 @@ Lam* AutodiffReduceFree::build(Lam* parent, Lam* lam) {
 
     auto lam_ty = w.cn(merge_sigma(dom, extra_ty));
 
-    auto new_lam      = w.nom_lam(lam_ty, lam->dbg());
-    old2new_[lam]     = new_lam;
-    old2new_[new_lam] = new_lam;
+    auto new_lam = w.nom_lam(lam_ty, lam->dbg());
+    map(lam, new_lam);
 
-    if (parent == nullptr) { old2new_[lam->ret_var()] = new_lam->ret_var(); }
+    if (parent == nullptr) { map(lam->ret_var(), new_lam->ret_var()); }
 
     new_lam->set_filter(false);
     new_lam->set_body(w.bot(w.type_nat()));
-
-    auto old_num_vars = lam->num_vars();
-
-    auto new_num_vars = new_lam->num_vars();
-
-    FreeAvoidRewriter r(w);
-
-    auto extra = get_extra(parent);
-    if (dom->num_projs() == 0 && extra.size() == 1) {
-        r.map(extra[0], new_lam->var());
-        old2new_[extra[0]] = new_lam->var();
-    } else {
-        auto vars = new_lam->vars();
-        for (size_t i = 0; i < new_num_vars; i++) {
-            if (i < old_num_vars) {
-                r.map(lam->var(i), vars[i]);
-                old2new_[lam->var(i)] = vars[i];
-            } else {
-                r.map(extra[i - old_num_vars], vars[i]);
-                old2new_[extra[i - old_num_vars]] = vars[i];
-            }
-        }
-    }
 
     auto body = lam->body();
     if (auto app = body->isa<App>()) {
         auto arg    = app->arg();
         auto callee = app->callee();
-        r.map(old2new_);
-        auto new_arg = merge_tuple(r.rewrite(arg), r.rewrite(w.tuple(get_extra(lam)))->projs());
 
-        for_each_lam(callee, [&](Lam* child) { build(lam, child); });
-        r.map(old2new_);
-        new_lam->set_body(w.app(r.rewrite(app->callee()), new_arg));
+        save();
+        map_free_to_var(parent, lam, new_lam);
+        auto new_arg = merge_tuple(rew(arg), rew(w.tuple(get_extra(lam)))->projs());
+        restore();
+
+        for_each_lam(callee, [&](Lam* child) {
+            map_free_to_var(parent, lam, new_lam);
+            build(lam, child);
+        });
+
+        map_free_to_var(parent, lam, new_lam);
+        new_lam->set_body(w.app(rew(app->callee()), new_arg));
     }
 
     return new_lam;
@@ -117,7 +119,7 @@ void AutodiffReduceFree::prop_extra(const F_CFG& cfg,
 }
 
 Lam* AutodiffReduceFree::reduce(Lam* lam) {
-    if (auto i = old2new_.find(lam); i != old2new_.end()) return i->second->as_nom<Lam>();
+    if (auto new_lam = has(lam)) return new_lam->as_nom<Lam>();
 
     Scope scope(lam);
     scheduler = Scheduler(scope);

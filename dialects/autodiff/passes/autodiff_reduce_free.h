@@ -77,29 +77,53 @@ public:
         return old_def;
     }
 
-    void map(const Def* old_def, const Def* new_def) { old2new_[old_def] = new_def; }
+    void map(const Def* old_def, const Def* new_def) {
+        old2new_[old_def] = new_def;
+        old2new_[new_def] = new_def;
+    }
 
     void map(Def2Def& old2new) { old2new_.insert(old2new.begin(), old2new.end()); }
+
+    const Def* has(const Def* def) {
+        if (auto i = old2new_.find(def); i != old2new_.end()) { return i->second; }
+        return nullptr;
+    }
+
+    void save() { save_ = old2new_; }
+
+    void restore() { old2new_ = save_; }
 
 private:
     World& w;
     Def2Def old2new_;
+    Def2Def save_;
 };
 
 class AutodiffReduceFree : public RWPass<AutodiffReduceFree, Lam> {
 public:
     AutodiffReduceFree(PassMan& man)
-        : RWPass(man, "autodiff_reduce") {}
+        : RWPass(man, "autodiff_reduce")
+        , r_(world()) {}
 
     const Def* rewrite(const Def*) override;
     Lam* reduce(Lam* lam);
     DefVec get_extra(Lam* lam);
     DefVec get_extra_ty(Lam* lam);
     Lam* build(Lam* parent, Lam* lam);
+    void map_free_to_var(Lam* parent, Lam* old_lam, Lam* new_lam);
     void prop_extra(const F_CFG& cfg, DefMap<DefSet>& extras, const CFNodes& node, const Def* def, Def* lam);
 
+    const Def* rew(const Def* old_def) { return r_.rewrite(old_def); }
+    void map(const Def* old_def, const Def* new_def) { r_.map(old_def, new_def); }
+    const Def* has(const Def* old_def) { return r_.has(old_def); }
+
+    void save() { r_.save(); }
+
+    void restore() { r_.restore(); }
+
+    FreeAvoidRewriter r_;
     Scheduler scheduler;
-    Def2Def old2new_;
+    // Def2Def old2new_;
     DefMap<DefVec> extras_;
     const Def* new_return;
 };
