@@ -25,12 +25,9 @@
 
 // CHECK-DAG: .con for_[[forId:[0-9_]+]] _[[forVarId:[0-9_]+]]::[_[[forIdxId:[0-9_]+]]: .Idx 4294967296, _[[forAccId:[0-9_]+]]: .Idx 4294967296]
 // CHECK-DAG: _[[cmpId:[0-9_]+]]: .Idx 2 = %core.icmp.XygLe
-// CHECK-DAG: (_[[falseId:[0-9_]+]], for_body_[[bodyId:[0-9_]+]])#_[[cmpId]]
+// CHECK-DAG: ([[falseId:[a-z0-9_]+]], for_body_[[bodyId:[0-9_]+]])#_[[cmpId]]
 
-// CHECK-DAG: .con _{{[0-9]+}} []
-// CHECK-DAG: return_[[returnId]] (mem_[[memVar]], _{{[0-9]+}})
-
-// CHECK-DAG: .con for_body_[[bodyId]] []
+// CHECK-DAG: .con for_body_[[bodyId]] 
 // CHECK-DAG: = %core.wrap.add
 // CHECK-DAG: = %core.wrap.add
 // CHECK-DAG: for_[[forId]]

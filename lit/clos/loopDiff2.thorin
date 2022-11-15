@@ -4,7 +4,8 @@
 .import mem;
 .import core;
 
-.let i32 = .Idx 4294967296;
+.let _32 = 4294967296;
+.let i32 = .Idx _32;
 .let i8 = .Idx 256;
 .let void_ptr = %mem.Ptr («⊤:.Nat; []», 0);
 
@@ -227,7 +228,7 @@
             };
 
             .con yield [mem: %mem.M] = {
-                loop_head( mem, %core.wrap.add (0, 4294967296) (i, 1:i32) )
+                loop_head( mem, %core.wrap.add _32 0 (i, 1:i32) )
             };
 
             .con enter [mem: %mem.M] = {
