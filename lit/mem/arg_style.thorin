@@ -1,0 +1,79 @@
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin %s --output-ll %t.ll -o - | FileCheck %s
+
+.import core;
+.import mem;
+
+.let _32 = 4294967296;
+.let I32 = .Idx _32;
+.let Tas = (I32, 0);
+
+.con f1 [mem: %mem.M, a: I32, ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con f2 [[mem: %mem.M, a: I32], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con g1 [mem: %mem.M, a: I32, b:I32, ret: .Cn [%mem.M, I32]] = {
+    .let c = %core.wrap.add _32 0 (a,b);
+    ret (mem,c)
+};
+
+.con g2 [[mem: %mem.M, a: I32, b:I32], ret: .Cn [%mem.M, I32]] = {
+    .let c = %core.wrap.add _32 0 (a,b);
+    ret (mem,c)
+};
+
+.con g3 [[mem: %mem.M, [a: I32, b:I32]], ret: .Cn [%mem.M, I32]] = {
+    .let c = %core.wrap.add _32 0 (a,b);
+    ret (mem,c)
+};
+
+.con g4 [mem: %mem.M, [a: I32, b:I32], ret: .Cn [%mem.M, I32]] = {
+    .let c = %core.wrap.add _32 0 (a,b);
+    ret (mem,c)
+};
+
+.con h1 [mem: %mem.M, a: I32, x:%mem.Ptr (I32, 0), ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con h2 [mem: %mem.M, [a: I32, x:%mem.Ptr (I32, 0)], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con h3 [[mem: %mem.M, a: I32, x:%mem.Ptr (I32, 0)], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con h4 [[mem: %mem.M, [a: I32, x:%mem.Ptr (I32, 0)]], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con e1 [mem: %mem.M, a: I32, [], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con e2 [mem: %mem.M, [a: I32, []], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con e3 [[mem: %mem.M, [a: I32, []]], ret: .Cn [%mem.M, I32]] = {
+    ret (mem,a)
+};
+
+.con .extern main [mem : %mem.M, argc : I32, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, I32]] = {
+    
+    .let (mem2,p) = %mem.alloc Tas mem;
+    // .let mem3 = %mem.store Tas (mem2, p, argc);
+
+    // .con cont_f1 [mem:%mem.M, v:I32] = {
+    //     f1 ()
+    // };
+    return (mem2, argc)
+
+};
+
+// TODO: check for 1+x, 2+x, a+b
