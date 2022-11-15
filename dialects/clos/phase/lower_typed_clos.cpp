@@ -46,6 +46,7 @@ Lam* LowerTypedClos::make_stub(Lam* lam, enum Mode mode, bool adjust_bb_type) {
     auto new_type = w.cn(new_dom);
     auto new_lam  = lam->stub(w, new_type, w.dbg(lam->name()));
     w.DLOG("stub {} ~> {}", lam, new_lam);
+    new_lam->set_debug_name(lam->name());
     new_lam->set_body(lam->body());
     new_lam->set_filter(lam->filter());
     if (lam->is_external()) {

@@ -204,12 +204,6 @@ std::string Emitter::convert_ret_pi(const Pi* pi) {
 
 void Emitter::start() {
     Super::start();
-    // ostream() << "declare i8* @malloc(i64)" << '\n'; // HACK
-    // ostream() << "declare void @free(i8*)" << '\n';
-    // // SJLJ intrinsics (GLIBC Versions)
-    // ostream() << "declare i32 @_setjmp(i8*) returns_twice" << '\n';
-    // ostream() << "declare void @longjmp(i8*, i32) noreturn" << '\n';
-    // ostream() << "declare i64 @jmpbuf_size()" << '\n';
 
     ostream() << type_decls_.str() << '\n';
     for (auto&& decl : decls_) ostream() << decl << '\n';

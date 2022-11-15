@@ -35,7 +35,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::RememElim>();
                     man.add<mem::Alloc2Malloc>();
                 });
-                builder.append_phase(130, [](Pipeline& pipeline) { pipeline.add<mem::AddMem>(); });
+                // builder.append_phase(130, [](Pipeline& pipeline) { pipeline.add<mem::AddMem>(); });
             },
             nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
 }

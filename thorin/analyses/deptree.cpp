@@ -32,7 +32,8 @@ VarSet DepTree::run(Def* nom) {
             world().ELOG("var nom {} : {}", var->nom(), var->nom()->type());
         }
         assert(n && "Old var still around?");
-        if (n) parent = n->depth() > parent->depth() ? n : parent;
+        // if (n)
+        parent = n->depth() > parent->depth() ? n : parent;
     }
     if (nom->is_external() && parent != root_.get()) {
         world().WLOG("external {} would be hidden inside parent {}..", nom, parent->nom());
