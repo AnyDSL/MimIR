@@ -18,6 +18,7 @@
 #include "dialects/mem/passes/rw/add_mem.h"
 #include "dialects/mem/passes/rw/alloc2malloc.h"
 #include "dialects/mem/passes/rw/remem_elim.h"
+#include "dialects/mem/passes/rw/reshape.h"
 
 using namespace thorin;
 
@@ -35,6 +36,8 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::RememElim>();
                     man.add<mem::Alloc2Malloc>();
                 });
+                // builder.extend_opt_phase(104, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Arg); });
+                builder.extend_opt_phase(104, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
                 // builder.append_phase(130, [](Pipeline& pipeline) { pipeline.add<mem::AddMem>(); });
             },
             nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
