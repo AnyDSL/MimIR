@@ -37,8 +37,10 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::Alloc2Malloc>();
                 });
                 // builder.extend_opt_phase(104, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Arg); });
-                builder.extend_opt_phase(160, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
                 // builder.append_phase(130, [](Pipeline& pipeline) { pipeline.add<mem::AddMem>(); });
+
+                // after AD, before closure conv
+                builder.extend_opt_phase(139, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
             },
             nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
 }
