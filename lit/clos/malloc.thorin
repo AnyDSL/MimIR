@@ -45,9 +45,8 @@
     .let lea_2 = %mem.lea (arr_size, <arr_size; pb_type>, 0) (pb_arr, 2:I32);
     .let mem4 = %mem.store Tas (mem3, lea_2, h);
 
-    // TODO: why did this work without reshape? (wrong index type I32 vs Idx 4) The size is not cases like with the other array
-    // .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (a_arr, 0:I32);
-    .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (a_arr, 0:(.Idx 4));
+    .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (a_arr, 0:I32);
+    // .let lea = %mem.lea (arr_size, <arr_size; I32>, 0) (a_arr, 0:(.Idx 4));
 
     .let mem5 = %mem.store real_arr_type (mem4, lea, 10:I32);
 
