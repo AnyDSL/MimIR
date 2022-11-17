@@ -145,7 +145,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 builder.add_opt(base++);
 
                 builder.extend_opt_phase(base++, [](PassMan& man) { man.add<DebugDump>(); });
-                // builder.extend_opt_phase(base++, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
+                builder.extend_opt_phase(base++, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
                 builder.extend_opt_phase(base++, [](PassMan& man) { man.add<DebugDump>(); });
 
                 builder.extend_opt_phase(base++, [](PassMan& man) { man.add<clos::ClosConvPrep>(nullptr); });

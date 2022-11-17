@@ -40,7 +40,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                 // builder.append_phase(130, [](Pipeline& pipeline) { pipeline.add<mem::AddMem>(); });
 
                 // after AD, before closure conv
-                builder.extend_opt_phase(139, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
+                // builder.extend_opt_phase(139, [](PassMan& man) { man.add<mem::Reshape>(mem::Reshape::Flat); });
             },
             nullptr, [](Normalizers& normalizers) { mem::register_normalizers(normalizers); }};
 }
