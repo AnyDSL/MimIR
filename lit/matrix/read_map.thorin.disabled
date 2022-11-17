@@ -13,12 +13,12 @@
 .let I32 = .Idx _32;
 .let MT = (2, (2,4), I32);
 
-.cn .extern f [mem : %mem.M, v: I32, return: .Cn[%mem.M, I32]] = {
+.con .extern f [mem : %mem.M, v: I32, return: .Cn[%mem.M, I32]] = {
     .let v2 = %core.wrap.add _32 0 (v, v);
     return (mem, v2)
 };
 
-.cn cont [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, I32]] = {
+.con cont [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, I32]] = {
     .let m2 = map (2,(2,4),I32,I32) (m,f);
     .let idx = (1:(.Idx 2),3:(.Idx 4));
     .let d = %matrix.read MT (m2, idx);
@@ -26,7 +26,7 @@
 };
 
 
-.cn .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
     .let c = 5:I32;
     .let m = %matrix.constMat MT c;
     cont (mem, m, return)

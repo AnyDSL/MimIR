@@ -9,7 +9,7 @@
 .let I32 = .Idx _32;
 // .let MT = (2, (2,4), I32);
 
-.cn .extern fun [[mem:%mem.M, acc:I32, [a:I32, b:I32]], ret:.Cn[%mem.M,I32]] = {
+.con .extern fun [[mem:%mem.M, acc:I32, [a:I32, b:I32]], ret:.Cn[%mem.M,I32]] = {
     .let v = %core.wrap.mul _32 0 (a,b);
 
     // reduce op = addition
@@ -18,7 +18,7 @@
     ret (mem, new_acc)
 };
 
-.cn .extern f [mem : %mem.M, 
+.con .extern f [mem : %mem.M, 
     [k:.Nat, l:.Nat, m:.Nat],
     M:%matrix.Mat (2,(k,m),I32),
     N:%matrix.Mat (2,(m,l),I32),

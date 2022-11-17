@@ -21,7 +21,7 @@
     %core.wrap.add (0, _32) (acc,a)
 };
 
-.cn .extern f [mem : %mem.M, 
+.con .extern f [mem : %mem.M, 
     kl: «2: .Nat; .Nat»,
     M:%matrix.Mat (2,kl,I32),
     return: .Cn[%mem.M, %matrix.Mat (2,(kl#(1:(.Idx 2)),kl#(0:(.Idx 2))),I32)]] = {

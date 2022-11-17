@@ -8,7 +8,7 @@
 .let _32 = 4294967296;
 .let I32 = .Idx _32;
 
-.cn .extern f [mem : %mem.M, 
+.con .extern f [mem : %mem.M, 
     [k:.Nat, l:.Nat],
     return: .Cn[%mem.M]] = {
 

@@ -8,7 +8,7 @@
 .let MT = (2, (2,4), I32);
 .let MT2 = (2, (4,2), I32);
 
-.cn .extern cont [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, I32]] = {
+.con .extern cont [mem : %mem.M, m : (%matrix.Mat MT), return : .Cn [%mem.M, I32]] = {
     .let (mem2,m2) = %matrix.transpose ((2,4), I32) (mem,m);
     .let idx2 = (3:(.Idx 4),1:(.Idx 2));
     .let (mem3,d) = %matrix.read MT2 (mem2,m2, idx2);
@@ -19,7 +19,7 @@
 };
 
 
-.cn .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
+.con .extern main [mem : %mem.M, argc : .Idx 4294967296, argv : %mem.Ptr (%mem.Ptr (.Idx 256, 0:.Nat), 0:.Nat), return : .Cn [%mem.M, .Idx 4294967296]] = {
     .let c = 5:I32;
     .let (mem2,m) = %matrix.constMat MT (mem,c);
     cont (mem2, m, return)
