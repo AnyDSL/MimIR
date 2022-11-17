@@ -151,7 +151,9 @@ add_thorin_dialect(matrix
         matrix/passes/lower_matrix_mediumlevel.h
         matrix/passes/lower_matrix_lowlevel.cpp
         matrix/passes/lower_matrix_lowlevel.h
+        refly/passes/remove_internal.cpp
     DEPENDS
+        refly
         direct
         affine
         core

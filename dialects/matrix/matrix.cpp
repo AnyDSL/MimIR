@@ -9,6 +9,8 @@
 #include "dialects/matrix/passes/lower_matrix_highlevel.h"
 #include "dialects/matrix/passes/lower_matrix_lowlevel.h"
 #include "dialects/matrix/passes/lower_matrix_mediumlevel.h"
+#include "dialects/refly/passes/remove_internal.h"
+#include "dialects/refly/refly.h"
 
 using namespace thorin;
 
@@ -23,6 +25,8 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     base + 1, [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixMediumLevel>(); });
                 builder.append_phase(
                     base + 2, [](thorin::Pipeline& pipeline) { pipeline.add<thorin::matrix::LowerMatrixLowLevel>(); });
+                builder.append_phase(
+                    base + 3, [](thorin::Pipeline& pipeline) { pipeline.add<thorin::refly::InternalCleanup>(); });
                 // builder.extend_opt_phase(base + 2,
                 //                          [](thorin::PassMan& man) { man.add<thorin::matrix::LowerMatrixLowLevel>();
                 //                          });

@@ -1,4 +1,5 @@
-// run with matrix and direct
+// RUN: rm -f %t.ll ; \
+// RUN: %thorin -d matrix -o - %s | FileCheck %s
 
 .import core;
 .import mem;
@@ -24,3 +25,5 @@
     .let (mem2,m) = %matrix.constMat MT (mem,c);
     cont (mem2, m, return)
 };
+
+// CHECK-NOT: %matrix.
