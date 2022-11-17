@@ -153,8 +153,10 @@ const Def* Reshape::convert(const Def* def) {
 
 const Def* Reshape::reshape(const Def* mem, const Def* ty, DefQueue& vars) {
     if (ty->isa<Sigma>() || ty->isa<Arr>()) {
-        auto& w  = ty->world();
-        auto ops = DefArray(ty->num_ops(), [&](auto i) { return reshape(mem, ty->op(i), vars); });
+        auto& w = ty->world();
+        // op is not number of components in general
+        // auto ops = DefArray(ty->num_ops(), [&](auto i) { return reshape(mem, ty->op(i), vars); });
+        auto ops = DefArray(ty->num_projs(), [&](auto i) { return reshape(mem, ty->proj(i), vars); });
         return w.tuple(ty, ops);
     }
 
@@ -189,6 +191,7 @@ const Def* Reshape::reshape(const Def* arg, const Pi* target_pi) {
     auto& w = arg->world();
     w.DLOG("Reshape::reshape: arg = {} : {}", arg, arg->type());
     w.DLOG("Reshape::reshape: target_pi = {} : {}", target_pi, target_pi->type());
+    w.DLOG("Reshape::reshape: target_dom = {} : {}", target_pi->dom(), target_pi->dom()->type());
     const Def* mem  = fill_extract_mem(arg, queue);
     auto target_arg = reshape(mem, target_pi->dom(), queue);
     w.DLOG("Reshape::reshape: target_arg = {} : {}", target_arg, target_arg->type());
