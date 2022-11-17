@@ -30,10 +30,10 @@
 // CHECK-DAG:   _[[condId:[0-9_]+]]: .Idx 2 = %core.icmp.XygLe 4294967296 (i_[[iterId]], argc_[[argcId]]);
 // CHECK-DAG: (_[[exitId:[0-9_]+]], body_[[bodyId:[0-9_]+]])#_[[condId]] mem_[[loopMemId]]
 
-// CHECK-DAG: .con _[[exitId]] m_[[mExitVarId:[0-9_]+]]: %mem.M {{(@.*)?}}= {
-// CHECK-DAG: return_[[returnEtaId]] (m_[[mExitVarId]], acc_[[accId]])
+// CHECK-DAG: .con _[[exitId]] _[[mExitVarId:[0-9_]+]]: %mem.M {{(@.*)?}}= {
+// CHECK-DAG: return_[[returnEtaId]] (_[[mExitVarId]], acc_[[accId]])
 
-// CHECK-DAG: .con body_[[bodyId]] m_[[mBodyVarId:[0-9_]+]]: %mem.M {{(@.*)?}}= {
+// CHECK-DAG: .con body_[[bodyId]] _[[mBodyVarId:[0-9_]+]]: %mem.M {{(@.*)?}}= {
 // CHECK-DAG:   _[[addIterId:[0-9_]+]]: .Idx 4294967296 = %core.wrap.add 4294967296 0 (1:(.Idx 4294967296), i_[[iterId]]);
 // CHECK-DAG:   _[[addAccId:[0-9_]+]]: .Idx 4294967296 = %core.wrap.add 4294967296 0 (acc_[[accId]], i_[[iterId]]);
-// CHECK-DAG: loop_[[loopId]] (m_[[mBodyVarId]], _[[addIterId]], _[[addAccId]])
+// CHECK-DAG: loop_[[loopId]] (_[[mBodyVarId]], _[[addIterId]], _[[addAccId]])
