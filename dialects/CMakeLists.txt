@@ -62,11 +62,13 @@ add_thorin_dialect(clos
         clos/pass/rw/clos2sjlj.h
         clos/pass/rw/clos_conv_prep.cpp
         clos/pass/rw/clos_conv_prep.h
+        clos/pass/rw/phase_wrapper.h
         clos/phase/clos_conv.cpp
         clos/phase/clos_conv.h
         clos/phase/lower_typed_clos.cpp
         clos/phase/lower_typed_clos.h
         mem/passes/fp/copy_prop.cpp
+        mem/passes/rw/reshape.cpp
     DEPENDS
         mem
         affine
@@ -116,6 +118,10 @@ add_thorin_dialect(mem
         mem/passes/rw/alloc2malloc.h
         mem/passes/rw/remem_elim.cpp
         mem/passes/rw/remem_elim.h
+        mem/passes/rw/reshape.cpp
+        mem/passes/rw/reshape.h
+        mem/passes/rw/add_mem.cpp
+        mem/passes/rw/add_mem.h
     HEADER_DEPENDS
         core
     INSTALL
@@ -129,6 +135,7 @@ add_thorin_dialect(refly
         refly/passes/remove_perm.cpp
         refly/passes/remove_internal.h
         refly/passes/remove_internal.cpp
+        refly/passes/debug_dump.h
         refly/normalizers.cpp
     INSTALL
 )

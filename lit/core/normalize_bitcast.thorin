@@ -4,13 +4,13 @@
 
 .import core;
 
-.cn .extern bitcast_bitcast [i : %mem.Ptr (.Idx 256, 0), return : .Cn .Idx 4294967296] = {
+.con .extern bitcast_bitcast [i : %mem.Ptr (.Idx 256, 0), return : .Cn .Idx 4294967296] = {
     return (%core.bitcast (.Idx 4294967296, .Nat) (%core.bitcast (.Nat, %mem.Ptr (.Idx 256, 0)) i))
 };
 
-// CHECK-DAG: bitcast_bitcast _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: %mem.Ptr (.Idx 256, 0), return_[[retId:[0-9_]+]]: .Cn .Idx 4294967296] = {
+// CHECK-DAG: bitcast_bitcast _{{[0-9_]+}}::[i_[[valId:[0-9_]+]]: %mem.Ptr (.Idx 256, 0), return_[[retId:[0-9_]+]]: .Cn .Idx 4294967296] {{(@.*)?}}= {
 // CHECK-DAG: .let _[[castedId:[0-9_]+]]: .Idx 4294967296 = %core.bitcast (.Idx 4294967296, %mem.Ptr (.Idx 256, 0)) i_[[valId]];
 // CHECK-DAG: return_[[etaId:[0-9_]+]] _[[castedId]]
 
-// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 4294967296 = {
+// CHECK-DAG: return_[[etaId]] _[[etaVar:[0-9_]+]]: .Idx 4294967296 {{(@.*)?}}= {
 // CHECK-DAG: return_[[retId]] _[[etaVar]]

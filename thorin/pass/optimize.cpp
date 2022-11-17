@@ -47,7 +47,7 @@ void optimize(World& world, PipelineBuilder& builder) {
 
     // main phase
     builder.add_opt(Opt_Phase);
-    builder.extend_opt_phase(200, [](thorin::PassMan& man) { man.add<LamSpec>(); });
+    // builder.extend_opt_phase(200, [](thorin::PassMan& man) { man.add<LamSpec>(); });
     // codegen prep phase
     builder.extend_opt_phase(
         Codegen_Prep_Phase, [](thorin::PassMan& man) { man.add<RetWrap>(); }, Pass_Internal_Priority);

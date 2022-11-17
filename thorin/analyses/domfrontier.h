@@ -12,7 +12,7 @@ namespace thorin {
 template<bool forward>
 class DomFrontierBase {
 public:
-    DomFrontierBase(const DomFrontierBase&) = delete;
+    DomFrontierBase(const DomFrontierBase&)     = delete;
     DomFrontierBase& operator=(DomFrontierBase) = delete;
 
     explicit DomFrontierBase(const CFG<forward>& cfg)

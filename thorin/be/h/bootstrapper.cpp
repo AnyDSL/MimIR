@@ -46,11 +46,13 @@ void Bootstrapper::emit(std::ostream& h) {
         --tab;
         tab.print(h, "}};\n\n");
 
-        tab.print(h, "inline bool operator==({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) == rhs; }}\n", ax.tag);
-        tab.print(h, "inline flags_t operator&({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) & rhs; }}\n", ax.tag);
-        tab.print(h, "inline flags_t operator&({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) & static_cast<flags_t>(rhs); }}\n", ax.tag, ax.tag);
-        tab.print(h, "inline flags_t operator|({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) | rhs; }}\n", ax.tag);
-        tab.print(h, "inline flags_t operator|({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) | static_cast<flags_t>(rhs); }}\n\n", ax.tag, ax.tag);
+        if (!ax.subs.empty()) {
+            tab.print(h, "inline bool operator==({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) == rhs; }}\n", ax.tag);
+            tab.print(h, "inline flags_t operator&({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) & rhs; }}\n", ax.tag);
+            tab.print(h, "inline flags_t operator&({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) & static_cast<flags_t>(rhs); }}\n", ax.tag, ax.tag);
+            tab.print(h, "inline flags_t operator|({} lhs, flags_t rhs) {{ return static_cast<flags_t>(lhs) | rhs; }}\n", ax.tag);
+            tab.print(h, "inline flags_t operator|({} lhs, {} rhs) {{ return static_cast<flags_t>(lhs) | static_cast<flags_t>(rhs); }}\n\n", ax.tag, ax.tag);
+        }
 
         print(outer_namespace.emplace_back(), "template<> constexpr size_t Axiom::Num<{}::{}> = {};\n", dialect_, ax.tag, ax.subs.size());
 
