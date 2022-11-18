@@ -27,6 +27,8 @@ public:
     /// Yields `defs.front()`, if all @p defs are alpha-equiv%alent and `nullptr` otherwise.
     const Def* is_uniform(Defs defs, Refer dbg);
 
+    static void swap(Checker& c1, Checker& c2) { std::swap(c1.world_, c2.world_); }
+
 private:
     bool equiv_internal(Refer, Refer, Refer, bool);
 
@@ -36,7 +38,7 @@ private:
         Equiv,
     };
 
-    World& world_;
+    std::reference_wrapper<World> world_;
     DefDefMap<Equiv> equiv_;
     std::deque<std::pair<Def*, Def*>> vars_;
 };

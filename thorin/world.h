@@ -8,6 +8,7 @@
 #include <absl/container/btree_set.h>
 
 #include "thorin/axiom.h"
+#include "thorin/check.h"
 #include "thorin/config.h"
 #include "thorin/debug.h"
 #include "thorin/error.h"
@@ -79,6 +80,7 @@ public:
     World(World&& other)
         : World() {
         swap(*this, other);
+        assert(&move_.checker->world() == this);
     }
     ~World();
     ///@}
@@ -101,7 +103,7 @@ public:
     const Flags& flags() const { return state_.pod.flags; }
     Flags& flags() { return state_.pod.flags; }
 
-    Checker& checker() { return *move_.checker; }
+    Checker& checker();
     ErrorHandler* err() { return move_.err.get(); }
     ///@}
 
@@ -185,7 +187,9 @@ public:
     /// Either a value `?:?:.Type ?` or a type `?:.Type ?:.Type ?`.
     Infer* nom_infer_entity(const Def* dbg = {}) {
         auto t = type_infer_univ();
-        return nom_infer(nom_infer(t), dbg);
+        auto res =  nom_infer(nom_infer(t), dbg);
+        assert(this == &res->world());
+        return res;
     }
     ///@}
 
@@ -269,29 +273,13 @@ public:
     /// @name call - App with type inference
     ///@{
     /// Infers the args of a curried Axiom.
-    template<class Id>
-    const Def* call(Id id, const Def* arg, const Def* dbg = {}) {
-        auto axiom        = ax(id);
-        const Def* callee = axiom;
-        for (size_t i = 1, e = axiom->curry(); i < e; ++i) callee = app(callee, nom_infer_entity(), dbg);
-        return app(callee, arg, dbg);
-    }
-    template<class Id>
-    const Def* call(Id id, Defs args, const Def* dbg = {}) {
-        return call(id, tuple(args), dbg);
-    }
-
-    template<class Id>
-    const Def* call(const Def* arg, const Def* dbg = {}) {
-        auto axiom        = ax<Id>();
-        const Def* callee = axiom;
-        for (size_t i = 1, e = axiom->curry(); i < e; ++i) callee = app(callee, nom_infer_entity(), dbg);
-        return app(callee, arg, dbg);
-    }
-    template<class Id>
-    const Def* call(Defs args, const Def* dbg = {}) {
-        return call<Id>(tuple(args), dbg);
-    }
+    const Def* call(const Axiom* axiom, const Def* arg, const Def* dbg = {});
+    // clang-format off
+    template<class Id> const Def* call(Id id, const Def* arg, const Def* dbg = {}) { return call(ax(id),   arg, dbg); }
+    template<class Id> const Def* call(       const Def* arg, const Def* dbg = {}) { return call(ax<Id>(), arg, dbg); }
+    template<class Id> const Def* call(Id id, Defs args, const Def* dbg = {}) { return call(id, tuple(args), dbg); }
+    template<class Id> const Def* call(       Defs args, const Def* dbg = {}) { return call<Id>(tuple(args), dbg); }
+    // clang-format on
     ///@}
 
     /// @name Sigma
@@ -480,6 +468,8 @@ public:
     void write() const;                 ///< Same above but file name defaults to World::name.
     ///@}
 
+
+    void sane() { assert(&checker().world() == this); }
 private:
     /// @name put into sea of nodes
     ///@{
@@ -655,6 +645,7 @@ private:
             swap(m1.checker,   m2.checker);
             swap(m1.err,       m2.err);
             // clang-format on
+            Checker::swap(*m1.checker, *m2.checker);
         }
     } move_;
 
@@ -670,6 +661,8 @@ private:
         swap(w1.data_.univ_->world_, w2.data_.univ_->world_);
         assert(&w1.univ()->world() == &w1);
         assert(&w2.univ()->world() == &w2);
+        assert(&w1.checker().world() == &w1);
+        assert(&w2.checker().world() == &w2);
     }
 
     friend DefArray Def::reduce(const Def*);

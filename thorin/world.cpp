@@ -64,6 +64,8 @@ World::~World() {
     for (auto def : move_.defs) def->~Def();
 }
 
+Checker& World::checker() { assert(&move_.checker->world() == this); return *move_.checker; }
+
 const Type* World::type(const Def* level, const Def* dbg) {
     if (err()) {
         if (!level->type()->isa<Univ>()) {
@@ -99,6 +101,24 @@ const Def* World::raw_app(const Def* callee, const Def* arg, const Def* dbg) {
     auto type           = pi->reduce(arg).back();
     auto [axiom, curry] = Axiom::get(callee);
     return unify<App>(2, axiom, curry - 1, type, callee, arg, dbg);
+}
+
+const Def* World::call(const Axiom* axiom, const Def* arg, const Def* dbg) {
+    switch (axiom->curry()) {
+        case 1: return app(axiom, arg, dbg);
+        case 2: {
+            auto infer = nom_infer_entity();
+            auto a = app(app(axiom, infer, dbg), arg, dbg);
+            if (auto r = refer(infer); r && !r->isa<Infer>()) return app(app(axiom, r, dbg), arg, dbg);
+            return a;
+        }
+        default: assert(false && "TODO");
+    }
+#if 0
+    const Def* callee = axiom;
+    for (size_t i = 1, e = axiom->curry(); i < e; ++i) callee = app(callee, nom_infer_entity(), dbg);
+    return app(callee, arg, dbg);
+#endif
 }
 
 const Def* World::sigma(Defs ops, const Def* dbg) {
