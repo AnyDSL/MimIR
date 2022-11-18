@@ -15,10 +15,10 @@
 
 #include "dialects/mem/passes/fp/copy_prop.h"
 #include "dialects/mem/passes/fp/ssa_constr.h"
-#include "dialects/mem/passes/rw/add_mem.h"
 #include "dialects/mem/passes/rw/alloc2malloc.h"
 #include "dialects/mem/passes/rw/remem_elim.h"
 #include "dialects/mem/passes/rw/reshape.h"
+#include "dialects/mem/phases/rw/add_mem.h"
 
 using namespace thorin;
 
@@ -33,6 +33,7 @@ extern "C" THORIN_EXPORT DialectInfo thorin_get_dialect_info() {
                     man.add<mem::CopyProp>(br, ee);
                 });
                 builder.extend_codegen_prep_phase([](PassMan& man) {
+                    man.add<mem::AddMemWrapper>();
                     man.add<mem::RememElim>();
                     man.add<mem::Alloc2Malloc>();
                 });

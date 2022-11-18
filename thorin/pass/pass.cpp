@@ -46,13 +46,13 @@ void PassMan::run() {
     for (auto&& pass : passes_) world().ILOG(" + {}", pass->name());
     world().debug_dump();
 
+    for (auto&& pass : passes_) pass->prepare();
+    
     auto externals = std::vector(world().externals().begin(), world().externals().end());
     for (const auto& [_, nom] : externals) {
         analyzed(nom);
         curr_state().stack.push(nom);
     }
-
-    for (auto&& pass : passes_) pass->prepare();
 
     while (!curr_state().stack.empty()) {
         for (auto&& pass : passes_) world().ILOG(" + {}", pass->name());

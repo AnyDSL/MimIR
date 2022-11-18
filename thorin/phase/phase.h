@@ -52,28 +52,21 @@ protected:
 /// @note You can override Rewriter::rewrite, Rewriter::rewrite_structural, and Rewriter::rewrite_nom.
 class RWPhase : public Phase, public Rewriter {
 public:
-    RWPhase(World& old_world, std::string_view name)
-        : Phase(old_world, name, false)
-        , Rewriter(new_world_)
-        , new_world_(old_world.state()) {}
+    RWPhase(World& world, std::string_view name)
+        : Phase(world, name, true)
+        , Rewriter(world) {}
 
+    World& world() { return Phase::world(); }
     void start() override;
-
-    /// @name getters
-    ///@{
-    const World& old_world() const { return Phase::world_; }
-    World& world() { return new_world_; } ///< The "target" World RWPhase::new_world_ is the "default" world.
-    ///@}
-
-protected:
-    World new_world_;
 };
 
 /// Removes unreachable and dead code by rebuilding the whole World into a new one and `swap`ping afterwards.
-class Cleanup : public RWPhase {
+class Cleanup : public Phase {
 public:
     Cleanup(World& world)
-        : RWPhase(world, "cleanup") {}
+        : Phase(world, "cleanup", false) {}
+
+    void start() override;
 };
 
 /// Like a RWPhase but starts with a fixed-point loop of FPPhase::analyze beforehand.
